@@ -34,6 +34,10 @@ public class BasePage {
         wait.until(ExpectedConditions.elementToBeClickable(webelement));
     }
 
+    public void waitForInvisibility(WebElement webelement) {
+        wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.invisibilityOf(webelement));
+    }
+
     public void waitForComponent(String xpath) {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
     }
