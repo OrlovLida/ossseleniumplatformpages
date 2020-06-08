@@ -1,5 +1,6 @@
 package com.oss;
 
+import com.oss.framework.widgets.Wizard;
 import com.oss.pages.exportguiwizard.ExportGuiWizardPage;
 import com.oss.pages.languageservice.LanguageServicePage;
 import org.testng.Assert;
@@ -15,7 +16,7 @@ public class ExportGuiWizardTest extends BaseTestCase {
 
     @BeforeClass
     public void prepareTests() {
-        languageServicePage = homePage.goToLanguageServicePage(LANGUAGE_SERVICE_PAGE_URL);
+        this.languageServicePage = LanguageServicePage.goToLanguageServicePage(driver, BASIC_URL);
         languageServicePage
                 .typeIdOfFirstServiceInSearch();
     }
@@ -33,6 +34,7 @@ public class ExportGuiWizardTest extends BaseTestCase {
                 .chooseCSV()
                 .uncheckTheExportToFileWithHeaders()
                 .closeTheWizard();
+
         Assert.assertEquals(languageServicePage.howManyNotifications(), 1);
     }
 

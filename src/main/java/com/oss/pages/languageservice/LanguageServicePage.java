@@ -14,6 +14,12 @@ import java.util.List;
 
 public class LanguageServicePage extends BasePage {
 
+    public static LanguageServicePage goToLanguageServicePage(WebDriver driver, String baseURL){
+        driver.get(String.format("%s/#/views/languagesservice/views/translations" +
+                "?perspective=LIVE", baseURL));
+        return new LanguageServicePage(driver);
+    }
+
     public LanguageServicePage(WebDriver driver) {super(driver);}
 
     @FindBy(xpath = "//a[contains(@class, 'loginButton')]")

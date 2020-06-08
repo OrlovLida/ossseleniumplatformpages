@@ -1,6 +1,7 @@
 package com.oss.pages.exportguiwizard;
 
 import com.oss.framework.components.Input;
+import com.oss.framework.components.Input.ComponentType;
 import com.oss.framework.components.TextField;
 import com.oss.framework.data.Data;
 import com.oss.framework.utils.DelayUtils;
@@ -47,11 +48,13 @@ public class ExportGuiWizardPage extends BasePage {
     }
 
     protected void setValueOnCombobox (String COMBOBOX_ID, String value){
-        typeValueOnCombobox(COMBOBOX_ID, value);
-        Actions actions = new Actions(driver);
-        actions.sendKeys(Keys.ARROW_DOWN).perform();
-        actions.sendKeys(Keys.ENTER).perform();
-        DelayUtils.sleep(200);
+//        typeValueOnCombobox(COMBOBOX_ID, value);
+//        Actions actions = new Actions(driver);
+//        actions.sendKeys(Keys.ARROW_DOWN).perform();
+//        actions.sendKeys(Keys.ENTER).perform();
+//        DelayUtils.sleep(200);
+        getWizard().getComponent(COMBOBOX_ID, ComponentType.COMBOBOX)
+                .setSingleStringValue(value);
     }
 
     private void typeValueOnCombobox(String COMBOBOX_ID, String value) {
@@ -97,17 +100,21 @@ public class ExportGuiWizardPage extends BasePage {
     public ExportGuiWizardPage chooseXLSX(){setValueOnCombobox(COMBOBOX_FILE_TYPE_ID, "XLSX"); return this;}
 
     public ExportGuiWizardPage chooseXLS(){
-        typeValueOnCombobox(COMBOBOX_FILE_TYPE_ID, "XLS");
-        Actions actions = new Actions(driver);
-        actions.sendKeys(Keys.ARROW_DOWN).perform();
-        actions.sendKeys(Keys.ARROW_DOWN).perform();
-        actions.sendKeys(Keys.ENTER).perform();
+        setValueOnCombobox(COMBOBOX_FILE_TYPE_ID, "XLS");
+//        Actions actions = new Actions(driver);
+//        actions.sendKeys(Keys.ARROW_DOWN).perform();
+//        actions.sendKeys(Keys.ARROW_DOWN).perform();
+//        actions.sendKeys(Keys.ENTER).perform();
         return this;
     }
 
     public ExportGuiWizardPage chooseXML(){setValueOnCombobox(COMBOBOX_FILE_TYPE_ID, "XML"); return this;}
 
-    public ExportGuiWizardPage chooseExportToPDF(){checkTheCheckbox(CHECKBOX_GENERATE_PDF_ID); return this;}
+    public ExportGuiWizardPage chooseExportToPDF(){
+        Input checkBox = getWizard().getComponent(CHECKBOX_GENERATE_PDF_ID, ComponentType.CHECKBOX);
+        //checkTheCheckbox(CHECKBOX_GENERATE_PDF_ID);
+        checkBox.setSingleStringValue("true");
+        return this;}
 
     public ExportGuiWizardPage chooseCompressedFile(){checkTheCheckbox(CHECKBOX_COMPRESS_FILE_ID); return this;}
 
