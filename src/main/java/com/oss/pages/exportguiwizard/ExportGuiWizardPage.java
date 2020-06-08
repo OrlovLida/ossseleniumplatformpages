@@ -57,6 +57,16 @@ public class ExportGuiWizardPage extends BasePage {
                 .setSingleStringValue(value);
     }
 
+    protected void setValueContainsOnCombobox (String COMBOBOX_ID, String value){
+//        typeValueOnCombobox(COMBOBOX_ID, value);
+//        Actions actions = new Actions(driver);
+//        actions.sendKeys(Keys.ARROW_DOWN).perform();
+//        actions.sendKeys(Keys.ENTER).perform();
+//        DelayUtils.sleep(200);
+        getWizard().getComponent(COMBOBOX_ID, ComponentType.COMBOBOX)
+                .setSingleStringValueContains(value);
+    }
+
     private void typeValueOnCombobox(String COMBOBOX_ID, String value) {
         WebElement combobox = driver.findElement(By.xpath("//div[contains (@data-attributename,'" + COMBOBOX_ID + "')]//input"));
         combobox.click();
@@ -142,6 +152,6 @@ public class ExportGuiWizardPage extends BasePage {
 
     public ExportGuiWizardPage changeCSVDelimiter(String value){setValueOnCombobox(COMBOBOX_CSV_DELIMITER_ID, value); return this;}
 
-    public ExportGuiWizardPage changeDateMask(String value){setValueOnCombobox(COMBOBOX_DATE_MASK_ID, value); return this;}
+    public ExportGuiWizardPage changeDateMask(String value){setValueContainsOnCombobox(COMBOBOX_DATE_MASK_ID, value); return this;}
 }
 

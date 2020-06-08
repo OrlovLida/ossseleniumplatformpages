@@ -24,7 +24,7 @@ public class NotificationWrapperPage extends BasePage {
     }
 
     public NotificationWrapperPage waitForExportFinish(){
-        waitForComponent("//button[contains (text(), 'Download file')]");
+        waitForComponent("//a[contains (text(), 'Download file')]");
         return this;
     }
 

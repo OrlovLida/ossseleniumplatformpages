@@ -8,14 +8,12 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import static com.oss.configuration.Configuration.CONFIGURATION;
-
 public class ExportByScheduleTest extends BaseTestCase{
 
     private static final String LANGUAGE_SERVICE_PAGE_URL = String.format("%s/#/views/languagesservice/views/translations" +
             "?perspective=LIVE", BASIC_URL);
-    private static final String SCHEDULER_SERVICE_PAGE_URL = String.format("%s/#/view/scheduler-service-view/main/global?perspective=LIVE" +
-            "?perspective=LIVE", CONFIGURATION.getValue("baseUrl"));
+    private static final String SCHEDULER_SERVICE_PAGE_URL = String.format("%s/#/view/scheduler-service-view/main/global" +
+            "?perspective=LIVE", BASIC_URL);
     private static  String TASK_NAME = "Test_Export123";
 
     private LanguageServicePage languageServicePage;
@@ -44,7 +42,7 @@ public class ExportByScheduleTest extends BaseTestCase{
                 .closeTheWizard();
         schedulerServicePage = homePage.goToSchedulerServicePage(SCHEDULER_SERVICE_PAGE_URL);
         schedulerServicePage
-                .findJobAndClickOnIT(TASK_NAME);
+                .findJobAndClickOnIt(TASK_NAME);
         Assert.assertEquals(schedulerServicePage.getTextOfJob(TASK_NAME), TASK_NAME);
     }
 
@@ -59,7 +57,7 @@ public class ExportByScheduleTest extends BaseTestCase{
                 .closeTheWizard();
         schedulerServicePage = homePage.goToSchedulerServicePage(SCHEDULER_SERVICE_PAGE_URL);
         schedulerServicePage
-                .findJobAndClickOnIT(TASK_NAME);
+                .findJobAndClickOnIt(TASK_NAME);
         Assert.assertEquals(schedulerServicePage.getTextOfJob(TASK_NAME), TASK_NAME);
     }
 
@@ -75,7 +73,7 @@ public class ExportByScheduleTest extends BaseTestCase{
                 .closeTheWizard();
         schedulerServicePage = homePage.goToSchedulerServicePage(SCHEDULER_SERVICE_PAGE_URL);
         schedulerServicePage
-                .findJobAndClickOnIT(TASK_NAME);
+                .findJobAndClickOnIt(TASK_NAME);
         Assert.assertEquals(schedulerServicePage.getTextOfJob(TASK_NAME), TASK_NAME);
     }
 
@@ -86,12 +84,12 @@ public class ExportByScheduleTest extends BaseTestCase{
                 .goToTheScheduleTask()
                 .typeTaskName(TASK_NAME)
                 .chooseMonthlySchedule()
-                .repeatEveryDay("11")
+                .repeatEveryDayMonthly("1")
                 .setActualTime()
                 .closeTheWizard();
         schedulerServicePage = homePage.goToSchedulerServicePage(SCHEDULER_SERVICE_PAGE_URL);
         schedulerServicePage
-                .findJobAndClickOnIT(TASK_NAME);
+                .findJobAndClickOnIt(TASK_NAME);
         Assert.assertEquals(schedulerServicePage.getTextOfJob(TASK_NAME), TASK_NAME);
     }
 
@@ -103,12 +101,12 @@ public class ExportByScheduleTest extends BaseTestCase{
                 .typeTaskName(TASK_NAME)
                 .chooseYearlySchedule()
                 .repeatEveryMonth("June")
-                .repeatEveryDay("11")
+                .repeatEveryDayYearly("1")
                 .setActualTime()
                 .closeTheWizard();
         schedulerServicePage = homePage.goToSchedulerServicePage(SCHEDULER_SERVICE_PAGE_URL);
         schedulerServicePage
-                .findJobAndClickOnIT(TASK_NAME);
+                .findJobAndClickOnIt(TASK_NAME);
         Assert.assertEquals(schedulerServicePage.getTextOfJob(TASK_NAME), TASK_NAME);
     }
 
