@@ -47,8 +47,13 @@
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-release-plugin</artifactId>
+                        <version>2.5.3</version>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
-                        <version>2.7</version>
+                        <version>2.12.4</version>
                         <configuration>
                             <skipTests>true</skipTests>
                         </configuration>
@@ -57,4 +62,15 @@
             </build>
         </profile>
     </profiles>
+
+    <distributionManagement>
+        <repository>
+            <id>comarch.release</id>
+            <url>http://oss-repo-master.krakow.comarch/nexus/content/repositories/release/</url>
+        </repository>
+        <snapshotRepository>
+            <id>comarch.snapshot</id>
+            <url>http://oss-repo-master.krakow.comarch/nexus/content/repositories/snapshot/</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>
