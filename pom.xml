@@ -51,6 +51,9 @@
                         <version>2.7</version>
                         <configuration>
                             <skipTests>true</skipTests>
+                            <systemPropertyVariables>
+                                <URL>http://10.132.118.88:25080</URL>
+                            </systemPropertyVariables>
                         </configuration>
                     </plugin>
                 </plugins>

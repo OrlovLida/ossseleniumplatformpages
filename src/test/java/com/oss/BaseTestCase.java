@@ -14,7 +14,8 @@ import static com.oss.configuration.Configuration.CONFIGURATION;
 
 public class BaseTestCase {
 
-    public static final String BASIC_URL = CONFIGURATION.getValue("baseUrl");
+    public static final String BASIC_URL = System.getProperty("URL");
+   // public static final String BASIC_URL = CONFIGURATION.getValue("baseUrl");
     public static final String MOCK_PATH = CONFIGURATION.getValue("mockPath");
 
     public WebDriver driver;
