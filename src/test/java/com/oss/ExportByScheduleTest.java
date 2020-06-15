@@ -3,6 +3,7 @@ package com.oss;
 import com.oss.pages.exportguiwizard.ExportGuiWizardPage;
 import com.oss.pages.languageservice.LanguageServicePage;
 import com.oss.pages.schedulerservice.SchedulerServicePage;
+import io.qameta.allure.Description;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -31,6 +32,7 @@ public class ExportByScheduleTest extends BaseTestCase{
     }
 
     @Test
+    @Description("Single Export using schedule export task")
     public void singleExportUsingScheduleExportTask(){
         new ExportGuiWizardPage(driver)
                 .chooseScheduleExport()
@@ -47,6 +49,7 @@ public class ExportByScheduleTest extends BaseTestCase{
     }
 
     @Test
+    @Description("Daily Export using schedule export task")
     public void dailyExportUsingScheduleExportTask(){
         new ExportGuiWizardPage(driver)
                 .chooseScheduleExport()
@@ -62,6 +65,7 @@ public class ExportByScheduleTest extends BaseTestCase{
     }
 
     @Test
+    @Description("Weekly Export Using Schedule Export Task")
     public void weeklyExportUsingScheduleExportTask(){
         new ExportGuiWizardPage(driver)
                 .chooseScheduleExport()
@@ -78,6 +82,7 @@ public class ExportByScheduleTest extends BaseTestCase{
     }
 
     @Test
+    @Description("Monthly Export Using Schedule Export Task")
     public void monthlyExportUsingScheduleExportTask(){
         new ExportGuiWizardPage(driver)
                 .chooseScheduleExport()
@@ -94,6 +99,7 @@ public class ExportByScheduleTest extends BaseTestCase{
     }
 
     @Test
+    @Description("Yearly Export Using Schedule Export Task")
     public void yearlyExportUsingScheduleExportTask(){
         new ExportGuiWizardPage(driver)
                 .chooseScheduleExport()
