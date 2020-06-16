@@ -14,7 +14,8 @@ import static com.oss.configuration.Configuration.CONFIGURATION;
 
 public class BaseTestCase {
 
-    public static final String BASIC_URL = CONFIGURATION.getValue("baseUrl");
+    public static final String BASIC_URL = System.getProperty("URL");
+   // public static final String BASIC_URL = CONFIGURATION.getValue("baseUrl");
     public static final String MOCK_PATH = CONFIGURATION.getValue("mockPath");
 
     public WebDriver driver;
@@ -25,8 +26,9 @@ public class BaseTestCase {
     public void openBrowser() {
         System.setProperty("webdriver.chrome.driver", CONFIGURATION.getValue("chromeDriverPath"));
         ChromeOptions options = new ChromeOptions();
-//        options.addArguments("headless");
-        options.addArguments("start-maximized");
+        options.addArguments("--headless");
+        options.addArguments("--window-size=1920,1080");
+        //options.addArguments("start-maximized");
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
         driver = new ChromeDriver(options);

@@ -46,7 +46,7 @@ public class SchedulerServicePage extends BasePage {
         return driver.findElement(By.xpath(getPathOfRowContainsText(text))).getText();
     }
 
-    public SchedulerServicePage findJobAndClickOnIT(String name){
+    public SchedulerServicePage findJobAndClickOnIt(String name){
         typeInSearchField(name);
         clickOnRowContainsText(name);
         return this;
