@@ -19,8 +19,10 @@ public class ScheduleTaskPage extends ExportGuiWizardPage{
     private String TIME_SINGLE_ID = "timeSingle";
     private String OCCURRENCE_INPUT_DAILY_SINGLE_ID = "occurrenceInputDaily";
     private String TIME_INPUT_ID = "timeInput";
-    private String COMBO_MONTH_ID = "comboMonth";
+    private String COMBO_MONTH_ID = "comboMonthYearly";
     private String COMBO_DAY_ID = "comboDay";
+    private String COMBO_DAY_MONTH_ID = "comboDayMonthly";
+    private String COMBO_DAY_YEAR_ID = "comboDayYearly";
     private String DAY_BUTTON_CONTAINER_ID= "dayButtonContainer";
 
     public ScheduleTaskPage typeTaskName(String taskName){
@@ -58,8 +60,13 @@ public class ScheduleTaskPage extends ExportGuiWizardPage{
         return this;
     }
 
-    public ScheduleTaskPage repeatEveryDay(String howManyDays){
-        setValueOnCombobox(COMBO_DAY_ID,howManyDays);
+    public ScheduleTaskPage repeatEveryDayMonthly(String howManyDays){
+        setValueOnCombobox(COMBO_DAY_MONTH_ID,howManyDays);
+        return this;
+    }
+
+    public ScheduleTaskPage repeatEveryDayYearly(String howManyDays){
+        setValueOnCombobox(COMBO_DAY_YEAR_ID,howManyDays);
         return this;
     }
 

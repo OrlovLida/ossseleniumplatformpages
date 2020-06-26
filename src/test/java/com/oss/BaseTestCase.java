@@ -25,8 +25,9 @@ public class BaseTestCase {
     public void openBrowser() {
         System.setProperty("webdriver.chrome.driver", CONFIGURATION.getValue("chromeDriverPath"));
         ChromeOptions options = new ChromeOptions();
-//        options.addArguments("headless");
-        options.addArguments("start-maximized");
+        options.addArguments("--headless");
+        options.addArguments("--window-size=1920,1080");
+        //options.addArguments("start-maximized");
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
         driver = new ChromeDriver(options);

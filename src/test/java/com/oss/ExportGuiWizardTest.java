@@ -1,7 +1,9 @@
 package com.oss;
 
+import com.oss.framework.widgets.Wizard;
 import com.oss.pages.exportguiwizard.ExportGuiWizardPage;
 import com.oss.pages.languageservice.LanguageServicePage;
+import io.qameta.allure.Description;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
@@ -15,7 +17,7 @@ public class ExportGuiWizardTest extends BaseTestCase {
 
     @BeforeClass
     public void prepareTests() {
-        languageServicePage = homePage.goToLanguageServicePage(LANGUAGE_SERVICE_PAGE_URL);
+        this.languageServicePage = LanguageServicePage.goToLanguageServicePage(driver, BASIC_URL);
         languageServicePage
                 .typeIdOfFirstServiceInSearch();
     }
@@ -28,15 +30,18 @@ public class ExportGuiWizardTest extends BaseTestCase {
     }
 
     @Test
+    @Description("Export to CSV File from Language Service using Export Gui Wizard")
     public void exportCSVFile(){
         new ExportGuiWizardPage(driver)
                 .chooseCSV()
                 .uncheckTheExportToFileWithHeaders()
                 .closeTheWizard();
+
         Assert.assertEquals(languageServicePage.howManyNotifications(), 1);
     }
 
     @Test
+    @Description("Export to XLS File from Language Service using Export Gui Wizard")
     public void exportXLSFile(){
         new ExportGuiWizardPage(driver)
                 .chooseXLS()
@@ -45,6 +50,7 @@ public class ExportGuiWizardTest extends BaseTestCase {
     }
 
     @Test
+    @Description("Export to XLSX File from Language Service using Export Gui Wizard")
     public void exportXLSXFile(){
         new ExportGuiWizardPage(driver)
                 .chooseXLSX()
@@ -53,6 +59,7 @@ public class ExportGuiWizardTest extends BaseTestCase {
     }
 
     @Test
+    @Description("Export to XML File from Language Service using Export Gui Wizard")
     public void exportXMLFile(){
         new ExportGuiWizardPage(driver)
                 .chooseXML()
@@ -61,6 +68,7 @@ public class ExportGuiWizardTest extends BaseTestCase {
     }
 
     @Test
+    @Description("Export to PDF File from Language Service using Export Gui Wizard")
     public void exportToPDFFile(){
         new ExportGuiWizardPage(driver)
                 .chooseExportToPDF()
@@ -69,6 +77,7 @@ public class ExportGuiWizardTest extends BaseTestCase {
     }
 
     @Test
+    @Description("Export to PDF File from Language Service using Export Gui Wizard")
     public void exportToCompressedFile(){
         new ExportGuiWizardPage(driver)
                 .chooseCompressedFile()
@@ -77,6 +86,7 @@ public class ExportGuiWizardTest extends BaseTestCase {
     }
 
     @Test
+    @Description("Export to File with Headers from Language Service using Export Gui Wizard")
     public void exportToFileWithHeaders(){
         new ExportGuiWizardPage(driver)
                 .chooseExportToFileWithHeaders()
@@ -85,6 +95,7 @@ public class ExportGuiWizardTest extends BaseTestCase {
     }
 
     @Test
+    @Description("Export to File with Headers from Language Service using Export Gui Wizard")
     public void exportToFileWithChangedDataMask(){
         new ExportGuiWizardPage(driver)
                 .chooseCSV()
@@ -94,6 +105,7 @@ public class ExportGuiWizardTest extends BaseTestCase {
     }
 
     @Test
+    @Description("Export to File with Headers from Language Service using Export Gui Wizard")
     public void exportToFileWithChangedFormat(){
         new ExportGuiWizardPage(driver)
                 .chooseCSV()
@@ -104,6 +116,7 @@ public class ExportGuiWizardTest extends BaseTestCase {
     }
 
     @Test
+    @Description("Export to File with Sending Email from Language Service using Export Gui Wizard")
     public void exportWithSendingEmail(){
         new ExportGuiWizardPage(driver)
                 .chooseSendByEmail()
@@ -114,6 +127,7 @@ public class ExportGuiWizardTest extends BaseTestCase {
     }
 
     @Test
+    @Description("Export to File with Sending Email with Attachment from Language Service using Export Gui Wizard")
     public void exportWithSendingEmailWithAttachment(){
         new ExportGuiWizardPage(driver)
                 .chooseSendByEmail()
@@ -125,6 +139,7 @@ public class ExportGuiWizardTest extends BaseTestCase {
     }
 
     @Test
+    @Description("Export to Remote Location By SCP from Language Service using Export Gui Wizard")
     public void exportToRemoteLocationBySCP(){
         new ExportGuiWizardPage(driver)
                 .chooseRemoteUpload()
@@ -139,6 +154,7 @@ public class ExportGuiWizardTest extends BaseTestCase {
     }
 
     @Test
+    @Description("Export to Remote Location By SFTP from Language Service using Export Gui Wizard")
     public void exportToRemoteLocationBySFTP(){
         new ExportGuiWizardPage(driver)
                 .chooseRemoteUpload()
