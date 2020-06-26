@@ -20,35 +20,50 @@ public class LocationWizardPage extends BasePage {
     public static final String COMBOBOX_ID_IMPORTANCE = "physicalinventory_physical_location_form_importance_category";
     public static final String COMBOBOX_ID_USE = "BuildingUseCategory-MasterBuildingUseCategory-Name";
 
-    private Wizard wizard;
+
+    public static LocationWizardPage goToLocationWizardPageLive(WebDriver driver, String basicURL){
+        driver.get(String.format("%s/#/view/location-inventory/wizard/physicallocation/create/select-type?"+"perspective=LIVE",basicURL));
+        return new LocationWizardPage(driver);
+    }
+    public static LocationWizardPage goToLocationWizardPagePlan(WebDriver driver, String basicURL,String perspective){
+        driver.get(String.format("%s/#/view/location-inventory/wizard/physicallocation/create/select-type?"+ perspective,basicURL));
+        return new LocationWizardPage(driver);
+    }
 
     public LocationWizardPage(WebDriver driver) {
         super(driver);
     }
+    private Wizard locationWizard = Wizard.createWizard(driver,wait);
 
-    private Wizard getWizard() {
-        if(this.wizard == null) {
-            this.wizard = Wizard.createWizard(this.driver, this.wait);
-        }
-        return wizard;
-    }
+//    private Wizard getWizard() {
+//        if(this.wizard == null) {
+//            this.wizard = Wizard.createWizard(this.driver, this.wait);
+//        }
+//        return wizard;
+//    }
 
     public void setComponentValue(String componentId, String value, Input.ComponentType componentType) {
-        Input input = getWizard().getComponent(componentId, componentType);
+        Input input = locationWizard.getComponent(componentId, componentType);
         input.setSingleStringValue(value);
     }
 
     public String getComponentValue(String componentId, Input.ComponentType componentType) {
-        Input input = getWizard().getComponent(componentId, componentType);
+        Input input = locationWizard.getComponent(componentId, componentType);
         return input.getStringValue();
     }
 
     public Input getComponent(String componentId, Input.ComponentType componentType) {
-        return getWizard().getComponent(componentId, componentType);
+        return locationWizard.getComponent(componentId, componentType);
     }
 
     public void proceed() {
-        getWizard().proceed();
+        locationWizard.proceed();
+    }
+    public void accept() {
+        locationWizard.clickAccept();
+    }
+    public void next() {
+        locationWizard.clickNext();
     }
 
     public void checkIfSuccess() {
