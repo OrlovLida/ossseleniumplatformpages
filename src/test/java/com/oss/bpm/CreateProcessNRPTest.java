@@ -7,29 +7,19 @@
 package com.oss.bpm;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Random;
 import java.util.regex.Pattern;
 
-import org.apache.http.util.Asserts;
 import org.assertj.core.api.Assertions;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import com.google.common.base.Splitter;
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
-import com.oss.framework.components.Input;
-import com.oss.framework.mainheader.MainHeader;
-import com.oss.framework.mainheader.UserSettings;
-import com.oss.framework.prompts.ConfirmationBox;
-import com.oss.framework.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.ProcessInstancesPage;
 import com.oss.pages.bpm.ProcessWizardPage;
 import com.oss.pages.bpm.TasksPage;
 import com.oss.pages.physical.DeviceWizardPage;
-import com.oss.pages.physical.LocationWizardPage;
 
 
 /**
