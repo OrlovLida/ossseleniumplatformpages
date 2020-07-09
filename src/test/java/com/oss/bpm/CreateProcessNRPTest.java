@@ -7,29 +7,22 @@
 package com.oss.bpm;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Random;
 import java.util.regex.Pattern;
 
-import org.apache.http.util.Asserts;
 import org.assertj.core.api.Assertions;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import com.google.common.base.Splitter;
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
-import com.oss.framework.components.Input;
-import com.oss.framework.mainheader.MainHeader;
+import com.oss.framework.mainheader.PerspectiveChooser;
 import com.oss.framework.mainheader.UserSettings;
-import com.oss.framework.prompts.ConfirmationBox;
-import com.oss.framework.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.pages.bpm.IntegrationProcessWizardPage;
 import com.oss.pages.bpm.ProcessInstancesPage;
 import com.oss.pages.bpm.ProcessWizardPage;
 import com.oss.pages.bpm.TasksPage;
 import com.oss.pages.physical.DeviceWizardPage;
-import com.oss.pages.physical.LocationWizardPage;
 
 
 /**
@@ -38,17 +31,21 @@ import com.oss.pages.physical.LocationWizardPage;
 public class CreateProcessNRPTest extends BaseTestCase {
 
     private String processNRPName;
-    private String processNRPCode;
+    private String processIPName1= "S.1-"+(int) (Math.random() * 1001);
+    private String processIPName2= "S.2-"+(int) (Math.random() * 1001);
+    private String processNRPCode= "NRP-103";
     private ProcessInstancesPage processInstancesPage;
     public String perspectiveContext;
 
 
     @BeforeClass
     public void openProcessInstancesPage(){
-         processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
 //        UserSettings userSettings =UserSettings.create(driver,webDriverWait);
 //        userSettings.chooseLanguage("English");
-//        System.out.println("Test");
+        processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
+        //PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
+        //perspectiveChooser.setPlanPerspective("NRP-103");
+        //System.out.println("Test");
 
 
     }
@@ -61,6 +58,8 @@ public class CreateProcessNRPTest extends BaseTestCase {
         Assertions.assertThat(messages).hasSize(1);
         Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
         Assertions.assertThat(messages.get(0).getText()).contains(processNRPCode);
+        System.out.println("Test");
+
 
     }
     @Test(priority=2)
@@ -87,22 +86,51 @@ public class CreateProcessNRPTest extends BaseTestCase {
         perspectiveContext = split[1];
         Assertions.assertThat(perspectiveContext).contains("PLAN");
     }
+
     @Test(priority = 5)
     public void createPhysicalDevice(){
-        DeviceWizardPage deviceWizardPage = DeviceWizardPage.goToDeviceWizardPagePlan(driver,BASIC_URL,"project_id=148835809&perspective=PLAN");
-        String deviceName = deviceWizardPage.createGenericIPDevice();
+        //DeviceWizardPage deviceWizardPage = DeviceWizardPage.goToDeviceWizardPagePlan(driver,BASIC_URL,"project_id=148835809&perspective=PLAN");
+        DeviceWizardPage deviceWizardPage = DeviceWizardPage.goToDeviceWizardPageLive(driver, BASIC_URL);
+        //PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
+        //perspectiveChooser.setPlanPerspective("NRP-103");
+        deviceWizardPage.createGenericIPDevice();
         SystemMessageContainer systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
         Assertions.assertThat(messages).hasSize(1);
-        Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
-        System.out.println("test");
+        Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(()->  new RuntimeException("The list is empty")).getMessageType())
+                .isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
 
     }
     @Test (priority = 6)
     public void assignFile(){
 
 
+    }
+    @Test (priority =  7)
+    public void completeLLPTask(){
+        DelayUtils.sleep(3000);
+        TasksPage tasksPage = TasksPage.goToTasksPage(driver, BASIC_URL);
+        tasksPage.completeTask(processNRPCode,"Low Level Planning");
+    }
+
+    @Test(priority = 8)
+    public void startRIRTask(){
+        DelayUtils.sleep(3000);
+        TasksPage tasksPage = TasksPage.goToTasksPage(driver, BASIC_URL);
+        tasksPage.startTask(processNRPCode, "Ready for Integration");
+    }
+    @Test(priority = 9)
+    public void setupIntegration(){
+        TasksPage tasksPage = TasksPage.goToTasksPage(driver,BASIC_URL);
+        tasksPage.setupIntegration(processNRPCode);
+        IntegrationProcessWizardPage integrationWizard= new IntegrationProcessWizardPage(driver);
+        integrationWizard.createIntegrationProcess(processIPName1,"2020-07-01");
+        integrationWizard.deleteIntegrationProcess(processIPName2);
+        integrationWizard.createIntegrationProcess(processIPName2,"2020-07-02");
+
+        System.out.println("Test");
 
     }
+
 
 }

@@ -60,7 +60,7 @@ public class ProcessWizardPage extends BasePage {
         Input componentRelease = wizardFirstStep.getComponent("release-combobox-input", Input.ComponentType.COMBOBOX);
         componentRelease.setSingleStringValue("Latest");
         wizardFirstStep.clickAccept();
-        wizardFirstStep.waitToClose();
+        //wizardFirstStep.waitToClose();
 
         Wizard wizardSecondStep = Wizard.createWizard(driver, wait);
         Input processNameTextField =wizardSecondStep.getComponent("processNameTextFieldId", Input.ComponentType.TEXT_FIELD);
@@ -68,7 +68,7 @@ public class ProcessWizardPage extends BasePage {
         Input finishedDueDate = wizardSecondStep.getComponent("FINISHED_DUE_DATE", Input.ComponentType.DATE);
         finishedDueDate.setSingleStringValue(LocalDate.now().plusDays(plusDays).toString());
         wizardSecondStep.clickAccept();
-        wizardSecondStep.waitToClose();
+
         SystemMessageContainer systemMessageContainer = SystemMessageContainer.create(driver, wait);
         List<SystemMessageContainer.Message> messages = systemMessageContainer.getMessages();
         String text = messages.get(0).getText();

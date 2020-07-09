@@ -51,6 +51,12 @@ public class TasksPage extends BasePage {
         findTask(processCode,taskName);
         actionTask("Complete task");
     }
+    public void setupIntegration(String processCode){
+        findTask(processCode,"Ready for Integration");
+        TabsInterface tabs= OldTabs.create(driver,wait);
+        tabs.selectTabByLabel("Form");
+        tabs.callActionByLabel("Setup Integration");
+    }
     private void actionTask(String actionLabel){
         TabsInterface tabs= OldTabs.create(driver,wait);
         tabs.selectTabByLabel("Form");
