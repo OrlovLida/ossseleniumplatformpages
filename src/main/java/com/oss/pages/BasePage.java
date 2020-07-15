@@ -38,6 +38,11 @@ public class BasePage {
         wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.invisibilityOf(webelement));
     }
 
+    public void waitForInvisibilityOfLoadbars() {
+        List<WebElement> loadBars = driver.findElements(By.xpath("//div[@class='load-bar']"));
+        wait.until(ExpectedConditions.invisibilityOfAllElements(loadBars));
+    }
+
     public void waitForComponent(String xpath) {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
     }
