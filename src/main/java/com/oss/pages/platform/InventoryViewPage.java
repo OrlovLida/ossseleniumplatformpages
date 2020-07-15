@@ -1,6 +1,8 @@
 package com.oss.pages.platform;
 
+import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.components.portals.Popup;
+import com.oss.framework.mainheader.ButtonPanel;
 import com.oss.framework.widgets.Widget;
 import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.propertypanel.PropertiesFilter;
@@ -9,6 +11,7 @@ import com.oss.framework.widgets.propertypanel.PropertyPanel;
 import com.oss.framework.widgets.tablewidget.TableWidget;
 import com.oss.framework.widgets.tabswidget.TabsWidget;
 import com.oss.pages.BasePage;
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -19,14 +22,19 @@ public class InventoryViewPage extends BasePage {
 
     private TableWidget mainTable;
     private TabsWidget tabsWidget;
-    private Popup popup;
     private PropertyPanel propertyPanel;
-    private PropertiesFilterPanel propertiesFilterPanel;
     private PropertiesFilter propertiesFilter;
     private Wizard wizard;
+    private InventoryViewPage inventoryViewPage;
 
     public InventoryViewPage(WebDriver driver) {
         super(driver);
+    }
+
+    public static InventoryViewPage goToInventoryViewPage(WebDriver driver, String basicURL, String context ) {
+        driver.get(String.format("%s/#/views/management/views/inventory-view/"+context+
+                "?perspective=LIVE", basicURL));
+        return new InventoryViewPage(driver);
     }
 
     public TableWidget getTableWidget() {
@@ -77,5 +85,24 @@ public class InventoryViewPage extends BasePage {
 
     public boolean isLoadBarDisplayed(){
         return getLoadBar().isDisplayed();
+    }
+
+    public int howManyRows(){return driver.findElements(By.xpath("//div[@class='view-v2-content']/div/div[@class='row']")).size();}
+
+    public int howManyColumns(){return driver.findElements(By.xpath("//div[@class='view-v2-content']/div/div/div[contains(@class,'column')]")).size();}
+
+    @Step("Change layout to Horizontal Orientation")
+    public InventoryViewPage changeLayoutToHorizontal(){
+        ButtonPanel.create(driver, wait).getButtonIcon("layout").click();
+        DropdownList.create(driver,wait).selectOptionWithIconContains("Horizontal");
+        return this;
+    }
+
+    @Step("Change layout to Vertical Orientation")
+    public InventoryViewPage changeLayoutToVertical(){
+        waitForInvisibilityOfLoadbars();
+        ButtonPanel.create(driver, wait).getButtonIcon("layout").click();
+        DropdownList.create(driver,wait).selectOptionWithIconContains("Vertical");
+        return this;
     }
 }
