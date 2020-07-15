@@ -15,8 +15,6 @@ import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
-import com.oss.framework.mainheader.PerspectiveChooser;
-import com.oss.framework.mainheader.UserSettings;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.IntegrationProcessWizardPage;
 import com.oss.pages.bpm.ProcessInstancesPage;
@@ -124,9 +122,10 @@ public class CreateProcessNRPTest extends BaseTestCase {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver,BASIC_URL);
         tasksPage.setupIntegration(processNRPCode);
         IntegrationProcessWizardPage integrationWizard= new IntegrationProcessWizardPage(driver);
-        integrationWizard.createIntegrationProcess(processIPName1,"2020-07-01");
-        integrationWizard.deleteIntegrationProcess(processIPName2);
-        integrationWizard.createIntegrationProcess(processIPName2,"2020-07-02");
+        integrationWizard.defineIntegrationProcess(processIPName1,"2020-07-01",1);
+        integrationWizard.defineIntegrationProcess(processIPName2,"2020-07-02",2);
+        integrationWizard.clickNext();
+        integrationWizard.dragAndDrop("DOW193-Router-1",processIPName1);
 
         System.out.println("Test");
 

@@ -39,6 +39,7 @@ public class TasksPage extends BasePage {
 
         table.searchByAttributeWithLabel("Name", Input.ComponentType.TEXT_FIELD,taskName);
         table.searchByAttributeWithLabel("Process Code", Input.ComponentType.TEXT_FIELD,processCode);
+        DelayUtils.sleep(1000);
         table.selectRowByAttributeValueWithLabel("Process Code",processCode);
 
     }
