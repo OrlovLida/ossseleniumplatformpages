@@ -36,4 +36,12 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         return mainTree;
     }
 
+    public void waitForTreeExpansion() {
+        if (mainTree == null) {
+            Widget.waitForWidget(wait, "TreeView");
+            mainTree = TreeWidget.createByClass(driver, "TreeView", wait);
+        }
+        mainTree.waitForXpathDisapear("//i[contains(@class, 'list-plus')]");
+    }
+
 }

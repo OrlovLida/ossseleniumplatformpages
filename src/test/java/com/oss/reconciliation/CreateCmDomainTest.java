@@ -27,7 +27,12 @@ public class CreateCmDomainTest extends BaseTestCase {
     public void deleteCmDomain() {
         networkDiscoveryControlViewPage
                 .getTreeView()
-                .performSearchWithEnter(cmDomainName)
+                .performSearchWithEnter(cmDomainName);
+
+        networkDiscoveryControlViewPage.waitForTreeExpansion();
+
+        networkDiscoveryControlViewPage
+                .getTreeView()
                 .selectTreeRowByText(cmDomainName);
         networkDiscoveryControlViewPage.useContextAction("EDIT", "Delete CM Domain");
         new CmDomainWizardPage(driver).deleteCmDomain();
