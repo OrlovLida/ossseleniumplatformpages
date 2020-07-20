@@ -46,11 +46,11 @@ public class DeviceWizardPage extends BasePage {
     }
 
     public String createGenericIPDevice(){
-        String deviceName="Device-Selenium-"+ (int) (Math.random() * 101);
+        String deviceName="Device-Selenium-"+ (int) (Math.random() * 1001);
         createDevice("Generic IP Device",deviceName," ","Other",deviceName);
-        DelayUtils.sleep(1000);
-        Assertions.assertThat(getComponentValue("search_location", Input.ComponentType.SEARCH_FIELD)).isNotEmpty();
+        DelayUtils.sleep(2000);
         deviceName = getComponentValue("text_name", Input.ComponentType.TEXT_FIELD);
+        Assertions.assertThat(getComponentValue("search_location", Input.ComponentType.SEARCH_FIELD)).isNotEmpty();
         physicalDeviceWizard.clickCreate();
         physicalDeviceWizard.waitToClose();
         return deviceName;

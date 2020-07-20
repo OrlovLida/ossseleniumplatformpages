@@ -16,6 +16,7 @@ import org.testng.annotations.Test;
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.pages.bpm.IntegrationProcessWizardPage;
 import com.oss.pages.bpm.ProcessInstancesPage;
 import com.oss.pages.bpm.ProcessWizardPage;
 import com.oss.pages.bpm.TasksPage;
@@ -28,17 +29,21 @@ import com.oss.pages.physical.DeviceWizardPage;
 public class CreateProcessNRPTest extends BaseTestCase {
 
     private String processNRPName;
-    private String processNRPCode;
+    private String processIPName1= "S.1-"+(int) (Math.random() * 1001);
+    private String processIPName2= "S.2-"+(int) (Math.random() * 1001);
+    private String processNRPCode= "NRP-103";
     private ProcessInstancesPage processInstancesPage;
     public String perspectiveContext;
 
 
     @BeforeClass
     public void openProcessInstancesPage(){
-         processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
 //        UserSettings userSettings =UserSettings.create(driver,webDriverWait);
 //        userSettings.chooseLanguage("English");
-//        System.out.println("Test");
+        processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
+        //PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
+        //perspectiveChooser.setPlanPerspective("NRP-103");
+        //System.out.println("Test");
 
 
     }
@@ -51,6 +56,8 @@ public class CreateProcessNRPTest extends BaseTestCase {
         Assertions.assertThat(messages).hasSize(1);
         Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
         Assertions.assertThat(messages.get(0).getText()).contains(processNRPCode);
+        System.out.println("Test");
+
 
     }
     @Test(priority=2)
@@ -77,24 +84,52 @@ public class CreateProcessNRPTest extends BaseTestCase {
         perspectiveContext = split[1];
         Assertions.assertThat(perspectiveContext).contains("PLAN");
     }
+
     @Test(priority = 5)
     public void createPhysicalDevice(){
-        DeviceWizardPage deviceWizardPage = DeviceWizardPage.goToDeviceWizardPagePlan(driver,BASIC_URL,"project_id=148835809&perspective=PLAN");
-        String deviceName = deviceWizardPage.createGenericIPDevice();
+        //DeviceWizardPage deviceWizardPage = DeviceWizardPage.goToDeviceWizardPagePlan(driver,BASIC_URL,"project_id=148835809&perspective=PLAN");
+        DeviceWizardPage deviceWizardPage = DeviceWizardPage.goToDeviceWizardPageLive(driver, BASIC_URL);
+        //PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
+        //perspectiveChooser.setPlanPerspective("NRP-103");
+        deviceWizardPage.createGenericIPDevice();
         SystemMessageContainer systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
         Assertions.assertThat(messages).hasSize(1);
-        Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
-
-
-        System.out.println("test");
+        Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(()->  new RuntimeException("The list is empty")).getMessageType())
+                .isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
 
     }
     @Test (priority = 6)
     public void assignFile(){
 
 
+    }
+    @Test (priority =  7)
+    public void completeLLPTask(){
+        DelayUtils.sleep(3000);
+        TasksPage tasksPage = TasksPage.goToTasksPage(driver, BASIC_URL);
+        tasksPage.completeTask(processNRPCode,"Low Level Planning");
+    }
+
+    @Test(priority = 8)
+    public void startRIRTask(){
+        DelayUtils.sleep(3000);
+        TasksPage tasksPage = TasksPage.goToTasksPage(driver, BASIC_URL);
+        tasksPage.startTask(processNRPCode, "Ready for Integration");
+    }
+    @Test(priority = 9)
+    public void setupIntegration(){
+        TasksPage tasksPage = TasksPage.goToTasksPage(driver,BASIC_URL);
+        tasksPage.setupIntegration(processNRPCode);
+        IntegrationProcessWizardPage integrationWizard= new IntegrationProcessWizardPage(driver);
+        integrationWizard.defineIntegrationProcess(processIPName1,"2020-07-01",1);
+        integrationWizard.defineIntegrationProcess(processIPName2,"2020-07-02",2);
+        integrationWizard.clickNext();
+        integrationWizard.dragAndDrop("DOW193-Router-1",processIPName1);
+
+        System.out.println("Test");
 
     }
+
 
 }
