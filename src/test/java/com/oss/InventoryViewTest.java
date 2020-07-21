@@ -24,13 +24,14 @@ import com.oss.pages.platform.InventoryViewPage;
 
 public class InventoryViewTest extends BaseTestCase {
 
-    private static final String TABLE_WIDGET_URL = String.format("%s/#/views/management/views/inventory-view/Location" +
-            "?perspective=LIVE", BASIC_URL);
+/*    private static final String TABLE_WIDGET_URL = String.format("%s/#/views/management/views/inventory-view/Location" +
+            "?perspective=LIVE", BASIC_URL);*/
     private InventoryViewPage inventoryViewPage;
 
     @BeforeClass
     public void goToInventoryView() {
-        inventoryViewPage = homePage.goToInventoryViewPage(TABLE_WIDGET_URL);
+
+        inventoryViewPage = InventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Location");
     }
 
     @Test

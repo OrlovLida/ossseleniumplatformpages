@@ -24,8 +24,6 @@ public class LanguageServicePage extends BasePage {
 
     @FindBy(xpath = "//a[contains(@class, 'loginButton')]")
     private WebElement loginButton;
-    @FindBy(id = "frameworkCustomButtonsGroup")
-    private WebElement menu;
     @FindBy(id = "tableExportGUI")
     private List<WebElement> exportGui;
     @FindBy(id = "exportButton")
@@ -37,12 +35,14 @@ public class LanguageServicePage extends BasePage {
     @FindBy(xpath = "(//div[@type='Translation'])[1]")
     private WebElement firstService;
 
+    private String MENU_BUTTON_ID = "frameworkCustomButtonsGroup";
+
     private ExportGuiWizardPage exportGuiWizard;
 //    private boolean existsElement(List<WebElement> element) {return element.size() != 0;}
 
     private LanguageServicePage expandMenu() {
-        waitforclickability(menu);
-        menu.click();
+        waitForComponent("//div[@id='"+MENU_BUTTON_ID+"']");
+        driver.findElement(By.id(MENU_BUTTON_ID)).click();
         return this;
     }
 
@@ -68,7 +68,7 @@ public class LanguageServicePage extends BasePage {
     public ExportGuiWizardPage openExportFileWizard(){
         DelayUtils.sleep(100);
         expandMenu();
-        waitforclickability(exportButton);
+        waitForVisibility(exportButton);
         exportButton.click();
         return new ExportGuiWizardPage(driver);
     }

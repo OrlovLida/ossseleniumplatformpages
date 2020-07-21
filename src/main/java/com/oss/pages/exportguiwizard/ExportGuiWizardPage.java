@@ -8,7 +8,6 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
 import com.oss.pages.languageservice.LanguageServicePage;
-
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -16,6 +15,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class ExportGuiWizardPage extends BasePage {
 
@@ -27,6 +27,8 @@ public class ExportGuiWizardPage extends BasePage {
     private WebElement serverDataProgressBar;
     @FindBy(xpath = "//div[contains (@class, 'simple-progress-bar') and contains(text(), 'Schedule')]")
     private WebElement scheduleTasklProgressBar;
+    @FindBy(xpath = "//button[text()='Accept']")
+    private WebElement acceptButton;
 
     private final String CHECKBOX_EXPORT_WITH_HEADERS_ID = "exportgui-components-withheadercheckbox";
     private final String CHECKBOX_GENERATE_PDF_ID = "exportgui-components-generatepdfcheckbox";
@@ -39,7 +41,6 @@ public class ExportGuiWizardPage extends BasePage {
     private final String COMBOBOX_DATE_MASK_ID = "exportgui-components-dateMaskchoose-input";
     private final String COMBOBOX_CSV_DELIMITER_ID = "exportgui-components-csvdelimitertxt-input";
     private final String COMBOBOX_QUOTE_CHARACTER_ID = "exportgui-components-csvquotechartxt-input";
-
     private Wizard wizard;
 
     public Wizard getWizard() {
@@ -151,7 +152,8 @@ public class ExportGuiWizardPage extends BasePage {
     public ExportGuiWizardPage typeFileName(String FILE_NAME){setValueOnTextField(TEXT_FIELD_FILE_NAME_ID, Data.createSingleData(FILE_NAME)); return this;}
 
     @Step("Close the wizard")
-    public LanguageServicePage closeTheWizard(){DelayUtils.sleep(300);clickOnAccept(); return new LanguageServicePage(driver);}
+    public LanguageServicePage closeTheWizard(){DelayUtils.sleep(300);clickOnAccept(); getWizard().waitToClose();
+    return new LanguageServicePage(driver);}
 
     @Step("Go to next step of wizard - Fill Server Data")
     public FillServerDataPage goToTheFillServerData(){waitForVisibility(serverDataProgressBar);clickOnNext(); return new FillServerDataPage(driver);}

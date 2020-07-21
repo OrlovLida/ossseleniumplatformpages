@@ -48,6 +48,7 @@ public class SchedulerServicePage extends BasePage {
 
     public SchedulerServicePage findJobAndClickOnIt(String name){
         typeInSearchField(name);
+        DelayUtils.sleep(800);
         clickOnRowContainsText(name);
         return this;
     }
