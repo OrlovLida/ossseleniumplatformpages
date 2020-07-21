@@ -68,7 +68,13 @@ public class IntegrationProcessWizardPage extends BasePage {
         //WebElement source = row.findElement(By.xpath("//*[name()='svg' and @data-icon='grip-vertical']"));
         WebElement source = row.findElement(By.xpath("//div[contains(@class,'dragButton')]//div"));
         Actions action = new Actions(driver);
-       action.dragAndDrop(source,target).build().perform();
+        action.click(source);
+        action.moveToElement(target,5,5);
+        action.perform();
+        DelayUtils.sleep(250);
+        action.release(target);
+        action.perform();
+      // action.dragAndDrop(source,target).build().perform();
        //action.clickAndHold(source).moveToElement(target).release(source).build().perform();
         //dragNdrop.perform();
         DelayUtils.sleep(10000);

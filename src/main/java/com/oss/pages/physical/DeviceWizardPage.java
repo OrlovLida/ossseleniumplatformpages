@@ -55,12 +55,12 @@ public class DeviceWizardPage extends BasePage {
         physicalDeviceWizard.waitToClose();
         return deviceName;
     }
-    public void createDevice(String deviceName, String preciseLocation){
-        createDevice("Generic IP Device",deviceName,preciseLocation,"Other",deviceName);
+    public void createDevice(String deviceName, String preciseLocation,String deviceModel){
+        createDevice(deviceModel,deviceName,preciseLocation,"Other",deviceName);
         DelayUtils.sleep(1000);
         Assertions.assertThat(getComponentValue("search_location", Input.ComponentType.SEARCH_FIELD)).isNotEmpty();
         physicalDeviceWizard.clickCreate();
-
+        physicalDeviceWizard.waitToClose();
 
     }
     private void createDevice(String deviceModel,String deviceName, String preciseLocation, String networkDomain, String hostName){

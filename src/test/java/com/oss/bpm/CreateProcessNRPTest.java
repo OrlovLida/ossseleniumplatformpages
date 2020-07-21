@@ -16,6 +16,10 @@ import org.testng.annotations.Test;
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.tablewidget.OldTable;
+import com.oss.framework.widgets.tablewidget.TableInterface;
+import com.oss.framework.widgets.tabswidget.OldTabs;
+import com.oss.framework.widgets.tabswidget.TabsInterface;
 import com.oss.pages.bpm.IntegrationProcessWizardPage;
 import com.oss.pages.bpm.ProcessInstancesPage;
 import com.oss.pages.bpm.ProcessWizardPage;
@@ -33,6 +37,8 @@ public class CreateProcessNRPTest extends BaseTestCase {
     private String processIPName2= "S.2-"+(int) (Math.random() * 1001);
     private String processNRPCode= "NRP-103";
     private ProcessInstancesPage processInstancesPage;
+    private String processIPCode1;
+    private String processIPCode2;
     public String perspectiveContext;
 
 
@@ -101,6 +107,9 @@ public class CreateProcessNRPTest extends BaseTestCase {
     }
     @Test (priority = 6)
     public void assignFile(){
+        TasksPage tasksPage = TasksPage.goToTasksPage(driver,BASIC_URL);
+        tasksPage.addFile("NRP-110","Ready for Integration");
+        System.out.println("Test");
 
 
     }
@@ -127,7 +136,18 @@ public class CreateProcessNRPTest extends BaseTestCase {
         integrationWizard.clickNext();
         integrationWizard.dragAndDrop("DOW193-Router-1",processIPName1);
 
-        System.out.println("Test");
+
+    }
+    @Test(priority = 10)
+    public void getIPCode(){
+        TasksPage tasksPage = TasksPage.goToTasksPage(driver,BASIC_URL);
+        tasksPage.findTask("NRP-110","Ready For Integration");
+        TableInterface ipTable = OldTable.createByComponentId(driver, webDriverWait, "ip_involved_nrp_group1");
+        int rowNumber = ipTable.getRowNumber("S.1", "Name");
+        processIPCode1 = ipTable.getValueCell(rowNumber, "Code");
+        int rowNumber2 = ipTable.getRowNumber("S.2", "Name");
+        processIPCode2 = ipTable.getValueCell(rowNumber2, "Code");
+        System.out.println(processIPCode1 + processIPCode2);
 
     }
 

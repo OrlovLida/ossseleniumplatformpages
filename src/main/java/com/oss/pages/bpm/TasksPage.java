@@ -39,7 +39,7 @@ public class TasksPage extends BasePage {
 
         table.searchByAttributeWithLabel("Name", Input.ComponentType.TEXT_FIELD,taskName);
         table.searchByAttributeWithLabel("Process Code", Input.ComponentType.TEXT_FIELD,processCode);
-        DelayUtils.sleep(1000);
+        //DelayUtils.sleep(1000);
         table.selectRowByAttributeValueWithLabel("Process Code",processCode);
 
     }
@@ -58,6 +58,15 @@ public class TasksPage extends BasePage {
         tabs.selectTabByLabel("Form");
         tabs.callActionByLabel("Setup Integration");
     }
+    public void addFile(String processCode, String taskName){
+        findTask(processCode,taskName);
+        TabsInterface tabs= OldTabs.create(driver,wait);
+        tabs.selectTabByLabel("Attachments");
+        DelayUtils.sleep(1000);
+        tabs.callActionByLabel("Attach file");
+
+    }
+
     private void actionTask(String actionLabel){
         TabsInterface tabs= OldTabs.create(driver,wait);
         tabs.selectTabByLabel("Form");
