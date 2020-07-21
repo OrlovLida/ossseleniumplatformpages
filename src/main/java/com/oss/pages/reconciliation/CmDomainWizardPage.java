@@ -21,7 +21,7 @@ public class CmDomainWizardPage extends BasePage {
         return wizard;
     }
 
-    public void createCmDomain(String cmDomainName, String cmInterfaceName, String domainName) {
+    public void fillCmDomainWizardAndClose(String cmDomainName, String cmInterfaceName, String domainName) {
         Wizard wizard = Wizard.createWizard(driver, wait);
         Input name = wizard.getComponent("narComponent_networkDiscoveryControlViewIdnameTextFieldId", ComponentType.TEXT_FIELD);
         name.setSingleStringValue(cmDomainName);
@@ -30,11 +30,7 @@ public class CmDomainWizardPage extends BasePage {
         Input domain = wizard.getComponent("narComponent_networkDiscoveryControlViewIddomainSearchBoxId", ComponentType.TEXT_FIELD);
         domain.setSingleStringValue(domainName);
         wizard.clickSave();
-    }
-
-    public void deleteCmDomain() {
-        Wizard wizard = Wizard.createWizard(driver, wait);
-        wizard.clickDelete();
+        wizard.waitToClose();
     }
 
 }
