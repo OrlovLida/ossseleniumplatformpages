@@ -6,6 +6,8 @@
  */
 package com.oss.pages.bpm;
 
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -39,6 +41,7 @@ public class TasksPage extends BasePage {
     public void findTask(String processCode, String taskName){
         TableInterface table = OldTable.createByWindowTitle(driver, wait, "Tasks");
         table.searchByAttributeWithLabel("Process Code", Input.ComponentType.TEXT_FIELD,processCode);
+        DelayUtils.sleep(1000);
         table.searchByAttributeWithLabel("Name", Input.ComponentType.TEXT_FIELD,taskName);
 
         //DelayUtils.sleep(1000);
@@ -70,7 +73,6 @@ public class TasksPage extends BasePage {
         attachFileWizardPage.attachFile("C:\\Users\\Comarch\\Desktop\\SeleniumTest.txt");
         attachFileWizardPage.nextButton();
         attachFileWizardPage.acceptButton();
-
 
     }
 

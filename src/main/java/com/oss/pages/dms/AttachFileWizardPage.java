@@ -6,6 +6,8 @@
  */
 package com.oss.pages.dms;
 
+import java.util.List;
+
 import org.openqa.selenium.WebDriver;
 import com.oss.framework.components.Input;
 import com.oss.framework.widgets.Wizard;
@@ -30,14 +32,14 @@ public class AttachFileWizardPage extends BasePage {
     public void acceptButton(){
         addFileWizard.clickAccept();
     }
-    public void deleteFile(){
+    public void deleteFiles(){
         Input input = addFileWizard.getComponent("file", Input.ComponentType.FILE_CHOOSER);
         input.clear();
 
     }
-    public String getAttachmentName(){
+    public List<String> getAttachmentName(){
         Input input = addFileWizard.getComponent("file", Input.ComponentType.FILE_CHOOSER);
-        return input.getStringValue();
+        return input.getStringValues();
 
 
     }
