@@ -12,6 +12,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.oss.framework.components.Input;
+import com.oss.framework.components.contextactions.ButtonContainer;
 import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
@@ -21,6 +22,7 @@ import com.oss.framework.widgets.tablewidget.TableWidget;
 import com.oss.framework.widgets.tabswidget.OldTabs;
 import com.oss.framework.widgets.tabswidget.TabsInterface;
 import com.oss.pages.BasePage;
+import com.oss.pages.dms.AttachFileWizardPage;
 
 /**
  * @author Gabriela Kasza
@@ -35,10 +37,10 @@ public class TasksPage extends BasePage {
         super(driver);
     }
     public void findTask(String processCode, String taskName){
-       TableInterface table = OldTable.createByWindowTitle(driver, wait, "Tasks");
-
-        table.searchByAttributeWithLabel("Name", Input.ComponentType.TEXT_FIELD,taskName);
+        TableInterface table = OldTable.createByWindowTitle(driver, wait, "Tasks");
         table.searchByAttributeWithLabel("Process Code", Input.ComponentType.TEXT_FIELD,processCode);
+        table.searchByAttributeWithLabel("Name", Input.ComponentType.TEXT_FIELD,taskName);
+
         //DelayUtils.sleep(1000);
         table.selectRowByAttributeValueWithLabel("Process Code",processCode);
 
@@ -62,8 +64,13 @@ public class TasksPage extends BasePage {
         findTask(processCode,taskName);
         TabsInterface tabs= OldTabs.create(driver,wait);
         tabs.selectTabByLabel("Attachments");
-        DelayUtils.sleep(1000);
-        tabs.callActionByLabel("Attach file");
+        ButtonContainer action = ButtonContainer.create(driver, wait);
+        action.callActionByLabel("Attach file");
+        AttachFileWizardPage attachFileWizardPage = new AttachFileWizardPage(driver);
+        attachFileWizardPage.attachFile("C:\\Users\\Comarch\\Desktop\\SeleniumTest.txt");
+        attachFileWizardPage.nextButton();
+        attachFileWizardPage.acceptButton();
+
 
     }
 

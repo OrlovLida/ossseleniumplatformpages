@@ -15,6 +15,7 @@ import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
+import com.oss.framework.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tablewidget.TableInterface;
@@ -35,7 +36,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     private String processNRPName;
     private String processIPName1= "S.1-"+(int) (Math.random() * 1001);
     private String processIPName2= "S.2-"+(int) (Math.random() * 1001);
-    private String processNRPCode= "NRP-103";
+    private String processNRPCode;
     private ProcessInstancesPage processInstancesPage;
     private String processIPCode1;
     private String processIPCode2;
@@ -47,9 +48,9 @@ public class CreateProcessNRPTest extends BaseTestCase {
 //        UserSettings userSettings =UserSettings.create(driver,webDriverWait);
 //        userSettings.chooseLanguage("English");
         processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
-        //PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
-        //perspectiveChooser.setPlanPerspective("NRP-103");
-        //System.out.println("Test");
+//        PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
+//        perspectiveChooser.setPlanPerspective("NRP-103");
+        System.out.println("Test");
 
 
     }
@@ -93,7 +94,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
 
     @Test(priority = 5)
     public void createPhysicalDevice(){
-        //DeviceWizardPage deviceWizardPage = DeviceWizardPage.goToDeviceWizardPagePlan(driver,BASIC_URL,"project_id=148835809&perspective=PLAN");
+       // DeviceWizardPage deviceWizardPage = DeviceWizardPage.goToDeviceWizardPagePlan(driver,BASIC_URL,"project_id=148835809&perspective=PLAN");
         DeviceWizardPage deviceWizardPage = DeviceWizardPage.goToDeviceWizardPageLive(driver, BASIC_URL);
         //PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
         //perspectiveChooser.setPlanPerspective("NRP-103");
@@ -141,11 +142,11 @@ public class CreateProcessNRPTest extends BaseTestCase {
     @Test(priority = 10)
     public void getIPCode(){
         TasksPage tasksPage = TasksPage.goToTasksPage(driver,BASIC_URL);
-        tasksPage.findTask("NRP-110","Ready For Integration");
+        tasksPage.findTask(processNRPCode,"Ready For Integration");
         TableInterface ipTable = OldTable.createByComponentId(driver, webDriverWait, "ip_involved_nrp_group1");
-        int rowNumber = ipTable.getRowNumber("S.1", "Name");
+        int rowNumber = ipTable.getRowNumber(processIPName1, "Name");
         processIPCode1 = ipTable.getValueCell(rowNumber, "Code");
-        int rowNumber2 = ipTable.getRowNumber("S.2", "Name");
+        int rowNumber2 = ipTable.getRowNumber(processIPName2, "Name");
         processIPCode2 = ipTable.getValueCell(rowNumber2, "Code");
         System.out.println(processIPCode1 + processIPCode2);
 
