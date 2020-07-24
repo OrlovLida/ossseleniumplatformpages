@@ -9,7 +9,10 @@ import com.oss.framework.components.systemMessage.SystemMessage;
 import com.oss.framework.components.systemMessage.SystemMessageInterface;
 import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.prompts.ConfirmationBoxInterface;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Widget;
+import com.oss.framework.widgets.tablewidget.OldTable;
+import com.oss.framework.widgets.tablewidget.TableInterface;
 import com.oss.framework.widgets.tabswidget.TabWindowWidget;
 import com.oss.framework.widgets.tabswidget.TabsInterface;
 import com.oss.framework.widgets.treewidget.TreeWidget;
@@ -20,7 +23,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     private TreeWidget mainTree;
     private String reconciliation = "narComponent_CmDomainActionFullReconciliationId";
 
-    public static NetworkDiscoveryControlViewPage goToNetworkInconsistenciesViewPage(WebDriver driver, String basicURL) {
+    public static NetworkDiscoveryControlViewPage goToNetworkDiscoveryControlViewPage(WebDriver driver, String basicURL) {
         driver.get(String.format("%s/#/view/reco/network-repository-view/network-discovery" +
                 "?perspective=NETWORK", basicURL));
         return new NetworkDiscoveryControlViewPage(driver);
@@ -52,14 +55,30 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
                 .selectTreeRowByText(cmDomainName);
     }
 
-    public boolean runReconciliation() {
+    public void runReconciliation() {
         TabsInterface tabs = TabWindowWidget.create(driver, wait);
         tabs.selectTabByLabel("Tree");
         tabs.callActionById(reconciliation);
         ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
         prompt.clickButtonByLabel("Reconcile");
         SystemMessageInterface info = SystemMessage.create(driver, wait);
-        return info.getMessage().equals("Reconciliation started.");
+        Assertions.assertThat(info.getMessage().equals("Reconciliation started.")).isTrue();
+    }
+
+    public void waitForEndOfReco() {
+        TableInterface tableWidget = OldTable.createByClassNameAndOrder(driver, wait, "AppComponentContainer", 6);
+        tableWidget.clickOnKebabMenu();
+        tableWidget.clickOnAction("Refresh");
+        TableInterface table = OldTable.createByClassNameAndOrder(driver, wait, "OSSTableWidget TableFullWidth", 2);
+        String status = table.getValueCell(0, "Status");
+        while (status.equals("IN_PROGRESS") || status.equals("PENDING")) {
+            DelayUtils.sleep(5000);
+            tableWidget.clickOnKebabMenu();
+            tableWidget.clickOnAction("Refresh");
+            DelayUtils.sleep(1000);
+            status = table.getValueCell(0, "Status");
+        }
+        Assertions.assertThat(status.equals("SUCCESS"));
     }
 
     public void deleteCmDomain(String cmDomainName) {
@@ -72,7 +91,13 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         prompt.clickButtonByLabel("Delete");
         SystemMessageInterface info = SystemMessage.create(driver, wait);
         Assertions.assertThat(info.getMessage().equals("Deleting CM Domain started. Please check notifications for updates.")).isTrue();
-        Assertions.assertThat(notifications.waitAndGetFinishedNotificationText().equals("Deleting CM Domain: " + cmDomainName + "")).isTrue();
+        Assertions.assertThat(notifications.waitAndGetFinishedNotificationText().equals("Deleting CM Domain: " + cmDomainName + " finished")).isTrue();
+    }
+
+    public void moveToNivFromNdcv() {
+        TabsInterface ndcvTabs = TabWindowWidget.create(driver, wait);
+        ndcvTabs.selectTabByLabel("Tree");
+        ndcvTabs.callActionByLabel("NAVIGATION", "Inconsistencies");
     }
 
 }
