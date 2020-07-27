@@ -51,21 +51,11 @@ public class ExportGuiWizardPage extends BasePage {
     }
 
     protected void setValueOnCombobox (String COMBOBOX_ID, String value){
-//        typeValueOnCombobox(COMBOBOX_ID, value);
-//        Actions actions = new Actions(driver);
-//        actions.sendKeys(Keys.ARROW_DOWN).perform();
-//        actions.sendKeys(Keys.ENTER).perform();
-//        DelayUtils.sleep(200);
         getWizard().getComponent(COMBOBOX_ID, ComponentType.COMBOBOX)
                 .setSingleStringValue(value);
     }
 
     protected void setValueContainsOnCombobox (String COMBOBOX_ID, String value){
-//        typeValueOnCombobox(COMBOBOX_ID, value);
-//        Actions actions = new Actions(driver);
-//        actions.sendKeys(Keys.ARROW_DOWN).perform();
-//        actions.sendKeys(Keys.ENTER).perform();
-//        DelayUtils.sleep(200);
         getWizard().getComponent(COMBOBOX_ID, ComponentType.COMBOBOX)
                 .setSingleStringValueContains(value);
     }
@@ -117,10 +107,6 @@ public class ExportGuiWizardPage extends BasePage {
     @Step("Choose XLS File Type")
     public ExportGuiWizardPage chooseXLS(){
         setValueOnCombobox(COMBOBOX_FILE_TYPE_ID, "XLS");
-//        Actions actions = new Actions(driver);
-//        actions.sendKeys(Keys.ARROW_DOWN).perform();
-//        actions.sendKeys(Keys.ARROW_DOWN).perform();
-//        actions.sendKeys(Keys.ENTER).perform();
         return this;
     }
 

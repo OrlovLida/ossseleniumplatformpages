@@ -13,9 +13,7 @@ public class ExportByScheduleTest extends BaseTestCase{
 
     private static final String LANGUAGE_SERVICE_PAGE_URL = String.format("%s/#/views/languagesservice/views/translations" +
             "?perspective=LIVE", BASIC_URL);
-    private static final String SCHEDULER_SERVICE_PAGE_URL = String.format("%s/#/view/scheduler-service-view/main/global" +
-            "?perspective=LIVE", BASIC_URL);
-    private static  String TASK_NAME = "Test_Export123";
+    private static  String TASK_NAME = "!Test_Export123";
 
     private LanguageServicePage languageServicePage;
     private SchedulerServicePage schedulerServicePage;
@@ -42,7 +40,7 @@ public class ExportByScheduleTest extends BaseTestCase{
                 .setActualDate()
                 .setTime("2359")
                 .closeTheWizard();
-        schedulerServicePage = homePage.goToSchedulerServicePage(SCHEDULER_SERVICE_PAGE_URL);
+        schedulerServicePage=SchedulerServicePage.goToSchedulerServicePage(driver, BASIC_URL);
         schedulerServicePage
                 .findJobAndClickOnIt(TASK_NAME);
         Assert.assertEquals(schedulerServicePage.getTextOfJob(TASK_NAME), TASK_NAME);
@@ -58,7 +56,7 @@ public class ExportByScheduleTest extends BaseTestCase{
                 .chooseDailySchedule()
                 .setActualTime()
                 .closeTheWizard();
-        schedulerServicePage = homePage.goToSchedulerServicePage(SCHEDULER_SERVICE_PAGE_URL);
+        schedulerServicePage=SchedulerServicePage.goToSchedulerServicePage(driver, BASIC_URL);
         schedulerServicePage
                 .findJobAndClickOnIt(TASK_NAME);
         Assert.assertEquals(schedulerServicePage.getTextOfJob(TASK_NAME), TASK_NAME);
@@ -75,7 +73,7 @@ public class ExportByScheduleTest extends BaseTestCase{
                 .repeatEveryWeekOn(1)
                 .setActualTime()
                 .closeTheWizard();
-        schedulerServicePage = homePage.goToSchedulerServicePage(SCHEDULER_SERVICE_PAGE_URL);
+        schedulerServicePage=SchedulerServicePage.goToSchedulerServicePage(driver, BASIC_URL);
         schedulerServicePage
                 .findJobAndClickOnIt(TASK_NAME);
         Assert.assertEquals(schedulerServicePage.getTextOfJob(TASK_NAME), TASK_NAME);
@@ -92,7 +90,7 @@ public class ExportByScheduleTest extends BaseTestCase{
                 .repeatEveryDayMonthly("1")
                 .setActualTime()
                 .closeTheWizard();
-        schedulerServicePage = homePage.goToSchedulerServicePage(SCHEDULER_SERVICE_PAGE_URL);
+        schedulerServicePage=SchedulerServicePage.goToSchedulerServicePage(driver, BASIC_URL);
         schedulerServicePage
                 .findJobAndClickOnIt(TASK_NAME);
         Assert.assertEquals(schedulerServicePage.getTextOfJob(TASK_NAME), TASK_NAME);
@@ -110,7 +108,7 @@ public class ExportByScheduleTest extends BaseTestCase{
                 .repeatEveryDayYearly("1")
                 .setActualTime()
                 .closeTheWizard();
-        schedulerServicePage = homePage.goToSchedulerServicePage(SCHEDULER_SERVICE_PAGE_URL);
+        schedulerServicePage=SchedulerServicePage.goToSchedulerServicePage(driver, BASIC_URL);
         schedulerServicePage
                 .findJobAndClickOnIt(TASK_NAME);
         Assert.assertEquals(schedulerServicePage.getTextOfJob(TASK_NAME), TASK_NAME);
