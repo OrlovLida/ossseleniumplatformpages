@@ -4,6 +4,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import com.oss.framework.components.portals.DropdownList;
+import com.oss.framework.mainheader.ButtonPanel;
 import com.oss.framework.widgets.Widget;
 import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.propertypanel.PropertiesFilter;
@@ -97,16 +99,16 @@ public class InventoryViewPage extends BasePage {
 
     @Step("Change layout to Horizontal Orientation")
     public InventoryViewPage changeLayoutToHorizontal() {
-//        ButtonPanel.create(driver, wait).getButtonIcon("layout").click();
-//        DropdownList.create(driver, wait).selectOptionWithIconContains("Horizontal");
+        ButtonPanel.create(driver, wait).getButtonIcon("layout").click();
+        DropdownList.create(driver, wait).selectOptionWithIconContains("Horizontal");
         return this;
     }
 
     @Step("Change layout to Vertical Orientation")
     public InventoryViewPage changeLayoutToVertical() {
         waitForInvisibilityOfLoadbars();
-//        ButtonPanel.create(driver, wait).getButtonIcon("layout").click();
-//        DropdownList.create(driver, wait).selectOptionWithIconContains("Vertical");
+        ButtonPanel.create(driver, wait).getButtonIcon("layout").click();
+        DropdownList.create(driver, wait).selectOptionWithIconContains("Vertical");
         return this;
     }
 }
