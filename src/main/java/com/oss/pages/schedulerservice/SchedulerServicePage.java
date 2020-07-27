@@ -24,13 +24,20 @@ public class SchedulerServicePage extends BasePage {
     @FindBy(xpath = "//button[contains(@class, 'actionButton') and contains (@class, 'danger')]")
     private WebElement confirmDeleteButton;
 
+    public static SchedulerServicePage goToSchedulerServicePage(WebDriver driver, String basicURL) {
+        driver.get(String.format("%s/#/view/scheduler-service-view/main/global" +
+                "?perspective=LIVE", basicURL));
+        return new SchedulerServicePage(driver);
+    }
+
     private void typeInSearchField(String value){
         waitForVisibility(searchField);
         searchField.sendKeys(value);
     }
 
-    private void clickOnFirstJob(){
-        firstJob.click();
+    private boolean isRowContainsTextVisible(String text){
+        waitForVisibility(firstJob);
+        return driver.findElements(By.xpath(getPathOfRowContainsText(text))).size() > 0;
     }
 
     private void clickOnRowContainsText(String text){
@@ -47,8 +54,9 @@ public class SchedulerServicePage extends BasePage {
     }
 
     public SchedulerServicePage findJobAndClickOnIt(String name){
-        typeInSearchField(name);
-        DelayUtils.sleep(800);
+        if(!isRowContainsTextVisible(name)) {
+            typeInSearchField(name);
+        }
         clickOnRowContainsText(name);
         return this;
     }
