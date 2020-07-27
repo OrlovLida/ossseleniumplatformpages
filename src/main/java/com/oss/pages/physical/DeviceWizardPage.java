@@ -31,21 +31,22 @@ public class DeviceWizardPage extends BasePage {
         }
         return wizard;
     }
-    private Wizard physicalDeviceWizard= Wizard.createWizard(driver,wait);
+   // private Wizard physicalDeviceWizard= Wizard.createWizard(driver,wait);
 
     public void setComponentValue(String componentId, String value, Input.ComponentType componentType) {
-        Input input = physicalDeviceWizard.getComponent(componentId, componentType);
+        Input input = Wizard.createWizard(driver,wait).getComponent(componentId, componentType);
         input.setSingleStringValue(value);
     }
 
     public String getComponentValue(String componentId, Input.ComponentType componentType) {
 
-        Input input = physicalDeviceWizard.getComponent(componentId, componentType);
+        Input input = Wizard.createWizard(driver,wait).getComponent(componentId, componentType);
         //Input input = getWizard().getComponent(componentId, componentType);
         return input.getStringValue();
     }
 
     public String createGenericIPDevice(){
+        Wizard physicalDeviceWizard= Wizard.createWizard(driver,wait);
         String deviceName="Device-Selenium-"+ (int) (Math.random() * 1001);
         createDevice("Generic IP Device",deviceName," ","Other",deviceName);
         DelayUtils.sleep(2000);
@@ -56,6 +57,8 @@ public class DeviceWizardPage extends BasePage {
         return deviceName;
     }
     public void createDevice(String deviceName, String preciseLocation,String deviceModel){
+        Wizard physicalDeviceWizard= Wizard.createWizard(driver,wait);
+
         createDevice(deviceModel,deviceName,preciseLocation,"Other",deviceName);
         DelayUtils.sleep(1000);
         Assertions.assertThat(getComponentValue("search_location", Input.ComponentType.SEARCH_FIELD)).isNotEmpty();
@@ -66,7 +69,7 @@ public class DeviceWizardPage extends BasePage {
     private void createDevice(String deviceModel,String deviceName, String preciseLocation, String networkDomain, String hostName){
         setComponentValue("search_model", deviceModel, Input.ComponentType.SEARCH_FIELD);
         setComponentValue("text_name",deviceName, Input.ComponentType.TEXT_FIELD);
-        setComponentValue("search_precise_location",preciseLocation, Input.ComponentType.SEARCH_FIELD);
+        setComponentValue("search_precise_location","A", Input.ComponentType.SEARCH_FIELD);
         setComponentValue("search_network_domain",networkDomain, Input.ComponentType.SEARCH_FIELD);
        if(driver.getPageSource().contains("Hostname")){
             setComponentValue("text_hostname",hostName, Input.ComponentType.TEXT_FIELD);
@@ -76,8 +79,8 @@ public class DeviceWizardPage extends BasePage {
 
 
     public void cancel() {
-        physicalDeviceWizard.cancel();
+        Wizard.createWizard(driver,wait).cancel();
     }
-    public void create(){physicalDeviceWizard.clickCreate();}
+    public void create(){Wizard.createWizard(driver,wait).clickCreate();}
 
 }

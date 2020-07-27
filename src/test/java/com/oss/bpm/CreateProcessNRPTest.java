@@ -6,6 +6,10 @@
  */
 package com.oss.bpm;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -14,6 +18,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
+import com.oss.configuration.Configuration;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
@@ -41,6 +46,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     private String processIPCode1;
     private String processIPCode2;
     public String perspectiveContext;
+    private String physicalDeviceName;
 
 
     @BeforeClass
@@ -63,8 +69,6 @@ public class CreateProcessNRPTest extends BaseTestCase {
         Assertions.assertThat(messages).hasSize(1);
         Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
         Assertions.assertThat(messages.get(0).getText()).contains(processNRPCode);
-        System.out.println("Test");
-
 
     }
     @Test(priority=2)
@@ -94,11 +98,11 @@ public class CreateProcessNRPTest extends BaseTestCase {
 
     @Test(priority = 5)
     public void createPhysicalDevice(){
-       // DeviceWizardPage deviceWizardPage = DeviceWizardPage.goToDeviceWizardPagePlan(driver,BASIC_URL,"project_id=148835809&perspective=PLAN");
+        //DeviceWizardPage deviceWizardPage = DeviceWizardPage.goToDeviceWizardPagePlan(driver,BASIC_URL,"project_id=148835809&perspective=PLAN");
         DeviceWizardPage deviceWizardPage = DeviceWizardPage.goToDeviceWizardPageLive(driver, BASIC_URL);
-        //PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
-        //perspectiveChooser.setPlanPerspective("NRP-103");
-        deviceWizardPage.createGenericIPDevice();
+        PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
+        perspectiveChooser.setPlanPerspective(processNRPCode);
+        physicalDeviceName = deviceWizardPage.createGenericIPDevice();
         SystemMessageContainer systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
         Assertions.assertThat(messages).hasSize(1);
@@ -108,11 +112,14 @@ public class CreateProcessNRPTest extends BaseTestCase {
     }
     @Test (priority = 6)
     public void assignFile(){
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver,BASIC_URL);
-        tasksPage.addFile("NRP-110","Ready for Integration");
-        System.out.println("Test");
-
-
+        try {
+            TasksPage tasksPage = TasksPage.goToTasksPage(driver,BASIC_URL);
+            URL a =CreateProcessNRPTest.class.getClassLoader().getResource("SeleniumTest.txt");
+            String absolutePath = Paths.get(a.toURI()).toFile().getAbsolutePath();
+            tasksPage.addFile(processNRPCode,"Low Level Planning", absolutePath);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("Cant load file", e);
+        }
     }
     @Test (priority =  7)
     public void completeLLPTask(){
@@ -135,22 +142,22 @@ public class CreateProcessNRPTest extends BaseTestCase {
         integrationWizard.defineIntegrationProcess(processIPName1,"2020-07-01",1);
         integrationWizard.defineIntegrationProcess(processIPName2,"2020-07-02",2);
         integrationWizard.clickNext();
-        integrationWizard.dragAndDrop("DOW193-Router-1",processIPName1);
+        integrationWizard.dragAndDrop(physicalDeviceName,processIPName1);
 
 
     }
-    @Test(priority = 10)
-    public void getIPCode(){
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver,BASIC_URL);
-        tasksPage.findTask(processNRPCode,"Ready For Integration");
-        TableInterface ipTable = OldTable.createByComponentId(driver, webDriverWait, "ip_involved_nrp_group1");
-        int rowNumber = ipTable.getRowNumber(processIPName1, "Name");
-        processIPCode1 = ipTable.getValueCell(rowNumber, "Code");
-        int rowNumber2 = ipTable.getRowNumber(processIPName2, "Name");
-        processIPCode2 = ipTable.getValueCell(rowNumber2, "Code");
-        System.out.println(processIPCode1 + processIPCode2);
-
-    }
+//    @Test(priority = 10)
+//    public void getIPCode(){
+//        TasksPage tasksPage = TasksPage.goToTasksPage(driver,BASIC_URL);
+//        tasksPage.findTask(processNRPCode,"Ready For Integration");
+//        TableInterface ipTable = OldTable.createByComponentId(driver, webDriverWait, "ip_involved_nrp_group1");
+//        int rowNumber = ipTable.getRowNumber(processIPName1, "Name");
+//        processIPCode1 = ipTable.getValueCell(rowNumber, "Code");
+//        int rowNumber2 = ipTable.getRowNumber(processIPName2, "Name");
+//        processIPCode2 = ipTable.getValueCell(rowNumber2, "Code");
+//        System.out.println(processIPCode1 + processIPCode2);
+//
+//    }
 
 
 }

@@ -63,14 +63,14 @@ public class TasksPage extends BasePage {
         tabs.selectTabByLabel("Form");
         tabs.callActionByLabel("Setup Integration");
     }
-    public void addFile(String processCode, String taskName){
+    public void addFile(String processCode, String taskName, String filePath){
         findTask(processCode,taskName);
         TabsInterface tabs= OldTabs.create(driver,wait);
         tabs.selectTabByLabel("Attachments");
         ButtonContainer action = ButtonContainer.create(driver, wait);
         action.callActionByLabel("Attach file");
         AttachFileWizardPage attachFileWizardPage = new AttachFileWizardPage(driver);
-        attachFileWizardPage.attachFile("C:\\Users\\Comarch\\Desktop\\SeleniumTest.txt");
+        attachFileWizardPage.attachFile(filePath);
         attachFileWizardPage.nextButton();
         attachFileWizardPage.acceptButton();
 
@@ -82,6 +82,5 @@ public class TasksPage extends BasePage {
         tabs.callActionByLabel(actionLabel);
         ConfirmationBoxInterface prompt= ConfirmationBox.create(driver, wait);
         prompt.clickButtonByLabel("Proceed");
-        wait.until(ExpectedConditions.invisibilityOf(driver.findElement(By.xpath("//div[contains(@class,'OssWindow newPrompt')]"))));
     }
 }
