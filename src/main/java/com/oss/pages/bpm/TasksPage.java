@@ -57,6 +57,5 @@ public class TasksPage extends BasePage {
         tabs.callActionByLabel(actionLabel);
         ConfirmationBoxInterface prompt= ConfirmationBox.create(driver, wait);
         prompt.clickButtonByLabel("Proceed");
-        wait.until(ExpectedConditions.invisibilityOf(driver.findElement(By.xpath("//div[contains(@class,'OssWindow newPrompt')]"))));
     }
 }
