@@ -165,7 +165,7 @@ public class InputsWizardTest extends BaseTestCase {
     public void testFileChooser() {
 
         //TODO: refactor fileChooser - fileChooser nie dziala, nie wrzuca wybranego pliku
-        FileChooser fileChooser = new FileChooser(driver);
+        FileChooser fileChooser = FileChooser.create(driver, webDriverWait, "file");
     }
 
 
