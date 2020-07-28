@@ -8,8 +8,6 @@ import org.testng.annotations.Test;
 
 public class LayoutTest extends BaseTestCase{
 
-    private static final String NEW_INVENTORY_VIEW_URL = String.format("%s/#/views/management/views/inventory-view/Location" +
-            "?perspective=LIVE", BASIC_URL);
     private InventoryViewPage inventoryViewPage;
 
     @BeforeClass

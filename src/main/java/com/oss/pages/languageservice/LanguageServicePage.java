@@ -1,6 +1,5 @@
 package com.oss.pages.languageservice;
 
-import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.BasePage;
 import com.oss.pages.exportguiwizard.ExportGuiWizardPage;
 import com.oss.pages.platform.LoginPanelPage;
@@ -66,7 +65,7 @@ public class LanguageServicePage extends BasePage {
     }
 
     public ExportGuiWizardPage openExportFileWizard(){
-        DelayUtils.sleep(100);
+        waitForInvisibilityOfLoadbars();
         expandMenu();
         waitForVisibility(exportButton);
         exportButton.click();
