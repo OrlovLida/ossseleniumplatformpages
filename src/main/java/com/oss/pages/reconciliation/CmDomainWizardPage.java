@@ -4,6 +4,7 @@ import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.Input;
 import com.oss.framework.components.Input.ComponentType;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
 
@@ -29,6 +30,7 @@ public class CmDomainWizardPage extends BasePage {
         interfaceField.setSingleStringValue(cmInterfaceName);
         Input domain = wizard.getComponent("narComponent_networkDiscoveryControlViewIddomainSearchBoxId", ComponentType.TEXT_FIELD);
         domain.setSingleStringValue(domainName);
+        DelayUtils.sleep(2000);
         wizard.clickSave();
         wizard.waitToClose();
     }
