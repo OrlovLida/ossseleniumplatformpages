@@ -71,9 +71,13 @@ public class TasksPage extends BasePage {
         action.callActionByLabel("Attach file");
         AttachFileWizardPage attachFileWizardPage = new AttachFileWizardPage(driver);
         attachFileWizardPage.attachFile(filePath);
+        attachFileWizardPage.selectRadioButton("Upload anyway");
         attachFileWizardPage.nextButton();
         attachFileWizardPage.acceptButton();
-
+    }
+    public void selectTab(String tabLabel){
+        TabsInterface tabs= OldTabs.create(driver,wait);
+        tabs.selectTabByLabel(tabLabel);
     }
 
     private void actionTask(String actionLabel){

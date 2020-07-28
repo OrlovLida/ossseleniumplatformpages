@@ -20,6 +20,8 @@ import org.testng.annotations.Test;
 import com.oss.BaseTestCase;
 import com.oss.configuration.Configuration;
 import com.oss.framework.alerts.SystemMessageContainer;
+import com.oss.framework.components.systemMessage.SystemMessage;
+import com.oss.framework.listwidget.EditableList;
 import com.oss.framework.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.OldTable;
@@ -54,9 +56,9 @@ public class CreateProcessNRPTest extends BaseTestCase {
 //        UserSettings userSettings =UserSettings.create(driver,webDriverWait);
 //        userSettings.chooseLanguage("English");
         processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
-//        PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
+       PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
+ //      perspectiveChooser.setPlanDatePerspective("2020-05-12");
 //        perspectiveChooser.setPlanPerspective("NRP-103");
-        System.out.println("Test");
 
 
     }
@@ -117,9 +119,18 @@ public class CreateProcessNRPTest extends BaseTestCase {
             URL a =CreateProcessNRPTest.class.getClassLoader().getResource("SeleniumTest.txt");
             String absolutePath = Paths.get(a.toURI()).toFile().getAbsolutePath();
             tasksPage.addFile(processNRPCode,"Low Level Planning", absolutePath);
+            Assertions.assertThat(SystemMessage.create(driver,webDriverWait).getMessage()).contains("Attachment has been added");
+
         } catch (URISyntaxException e) {
             throw new RuntimeException("Cant load file", e);
         }
+//        TasksPage tasksPage = TasksPage.goToTasksPage(driver,BASIC_URL);
+//        tasksPage.findTask("NRP-122","Low Level Planning");
+//        tasksPage.selectTab("Attachments");
+//        List<String> values = EditableList.create(driver, webDriverWait).getValues();
+
+
+
     }
     @Test (priority =  7)
     public void completeLLPTask(){
@@ -142,7 +153,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
         integrationWizard.defineIntegrationProcess(processIPName1,"2020-07-01",1);
         integrationWizard.defineIntegrationProcess(processIPName2,"2020-07-02",2);
         integrationWizard.clickNext();
-        integrationWizard.dragAndDrop(physicalDeviceName,processIPName1);
+        //integrationWizard.dragAndDrop(physicalDeviceName,processIPName1);
 
 
     }
