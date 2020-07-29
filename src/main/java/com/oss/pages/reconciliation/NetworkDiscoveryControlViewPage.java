@@ -34,9 +34,10 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     }
 
     public void createCmDomain(String cmDomainName, String cmInterfaceName, String domainName) {
+        waitForPageToLoad();
         TabsInterface tabs = TabWindowWidget.create(driver, wait);
-        tabs.selectTabByLabel("Tree");
-        tabs.callActionByLabel("CREATE", "Create CM Domain");
+        tabs.selectTabByLabel("narComponent_networkDiscoveryControlViewIdcmDomainsTreeTabId");
+        tabs.callActionById("CREATE", "narComponent_CmDomainActionCreateId");
         new CmDomainWizardPage(driver).fillCmDomainWizardAndClose(cmDomainName, cmInterfaceName, domainName);
     }
 
@@ -49,15 +50,20 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     }
 
     public void queryAndSelectCmDomain(String cmDomainName) {
+        DelayUtils.sleep(500);
+        waitForPageToLoad();
         getTreeView()
-                .performSearchWithEnter(cmDomainName).waitForTreeExpansion();
+                .performSearchWithEnter(cmDomainName);
+//                .waitForTreeExpansion();
+        DelayUtils.sleep(500);
+        waitForPageToLoad();
         getTreeView()
                 .selectTreeRowByText(cmDomainName);
     }
 
     public void runReconciliation() {
         TabsInterface tabs = TabWindowWidget.create(driver, wait);
-        tabs.selectTabByLabel("Tree");
+        tabs.selectTabByLabel("narComponent_networkDiscoveryControlViewIdcmDomainsTreeTabId");
         tabs.callActionById(reconciliation);
         ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
         prompt.clickButtonByLabel("Reconcile");
@@ -86,8 +92,8 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         NotificationsInterface notifications = Notifications.create(driver, wait);
         notifications.clearAllNotification();
         TabsInterface tabs = TabWindowWidget.create(driver, wait);
-        tabs.selectTabByLabel("Tree");
-        tabs.callActionByLabel("EDIT", "Delete CM Domain");
+        tabs.selectTabByLabel("narComponent_networkDiscoveryControlViewIdcmDomainsTreeTabId");
+        tabs.callActionById("EDIT", "narComponent_CmDomainActionDeleteCmDomainId");
         ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
         prompt.clickButtonByLabel("Delete");
         SystemMessageInterface info = SystemMessage.create(driver, wait);
@@ -97,15 +103,15 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     public void moveToNivFromNdcv() {
         TabsInterface ndcvTabs = TabWindowWidget.create(driver, wait);
-        ndcvTabs.selectTabByLabel("Tree");
-        ndcvTabs.callActionByLabel("NAVIGATION", "Inconsistencies");
+        ndcvTabs.selectTabByLabel("narComponent_networkDiscoveryControlViewIdcmDomainsTreeTabId");
+        ndcvTabs.callActionById("NAVIGATION", "narComponent_CmDomainActionShowInconsistenciesId");
         waitForInvisibilityOfLoadbars();
     }
 
     public void moveToSamplesManagement() {
         TabsInterface ndcvTabs = TabWindowWidget.create(driver, wait);
-        ndcvTabs.selectTabByLabel("Tree");
-        ndcvTabs.callActionByLabel("NAVIGATION", "CM Samples Management");
+        ndcvTabs.selectTabByLabel("narComponent_networkDiscoveryControlViewIdcmDomainsTreeTabId");
+        ndcvTabs.callActionById("NAVIGATION", "narComponent_CmDomainActionCmSamplesManagementId");
     }
 
 }

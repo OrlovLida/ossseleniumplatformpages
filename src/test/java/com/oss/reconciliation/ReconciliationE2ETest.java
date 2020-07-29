@@ -26,7 +26,7 @@ public class ReconciliationE2ETest extends BaseTestCase {
 
     @Test(priority = 2)
     public void uploadSamples() {
-        DelayUtils.sleep(500);
+        DelayUtils.sleep(1000);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
         networkDiscoveryControlViewPage.moveToSamplesManagement();
         SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);

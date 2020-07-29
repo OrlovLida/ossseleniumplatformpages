@@ -9,6 +9,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -41,6 +42,16 @@ public class BasePage {
     public void waitForInvisibilityOfLoadbars() {
         List<WebElement> loadBars = driver.findElements(By.xpath("//div[@class='load-bar']"));
         wait.until(ExpectedConditions.invisibilityOfAllElements(loadBars));
+    }
+
+    public void waitForPageToLoad() {
+        List<WebElement> spinners = driver.findElements(By.xpath("//i[contains(@class,'fa-spin')]"));
+        List<WebElement> loadBars = driver.findElements(By.xpath("//div[@class='load-bar']"));
+        List<WebElement> appPreloader = driver.findElements(By.xpath("//div[contains(@class,'appPreloader')]"));
+        List<WebElement> newList = new ArrayList<WebElement>(spinners);
+        newList.addAll(loadBars);
+        newList.addAll(appPreloader);
+        wait.until(ExpectedConditions.invisibilityOfAllElements(newList));
     }
 
     public void waitForComponent(String xpath) {

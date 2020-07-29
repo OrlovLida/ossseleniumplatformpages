@@ -47,22 +47,27 @@ public class NetworkInconsistenciesViewPage extends BasePage {
     }
 
     public void expantTree() {
-        DelayUtils.sleep(1000);
+        DelayUtils.sleep(500);
+        waitForPageToLoad();
         getTreeView().expandFirstTreeRow();
-        DelayUtils.sleep(1000);
+        DelayUtils.sleep(500);
+        waitForPageToLoad();
         getTreeView().expandFirstTreeRow();
-        DelayUtils.sleep(1000);
+        DelayUtils.sleep(500);
+        waitForPageToLoad();
     }
 
     public void assignLocation() {
         getTreeView().selectTreeRowByOrder(3);
-        DelayUtils.sleep(1000);
+        DelayUtils.sleep(500);
+        waitForPageToLoad();
         ActionsInterface actionsContainer = ActionsContainer.createFromParent(driver.findElement(By.xpath("//div[@class='OssWindow']//div[@class='context-actions-wrapper']")), driver, wait);
-        actionsContainer.callActionByLabel("EDIT", "Assign location");
+        actionsContainer.callActionById("EDIT", "UpdateDeviceWizardAction");
         Wizard wizard = Wizard.createWizard(driver, wait);
         Input preciseLocation = wizard.getComponent("search_precise_location", ComponentType.SEARCH_FIELD);
         preciseLocation.setSingleStringValue(" ");
-        DelayUtils.sleep(1000);
+        DelayUtils.sleep(500);
+        waitForPageToLoad();
         wizard.clickUpdate();
         SystemMessageInterface info = SystemMessage.create(driver, wait);
         Assertions.assertThat(info.getMessage().equals("Device " + groupDiscrepancyLabel + " has been updated successfully.")).isTrue();
@@ -73,7 +78,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         notifications.clearAllNotification();
         getTreeView().selectTreeRowByOrder(2);
         TabsInterface nivTabs = TabWindowWidget.create(driver, wait);
-        nivTabs.selectTabByLabel("Tree");
+        nivTabs.selectTabByLabel("narComponent_networkInconsistenciesViewIddiscrepanciesTreeTabId");
         nivTabs.callActionById(applyButtonId);
         DelayUtils.sleep(1000);
         Assertions.assertThat(notifications.waitAndGetFinishedNotificationText().equals("Accepting discrepancies related to " + groupDiscrepancyLabel + " finished")).isTrue();
