@@ -69,6 +69,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         TableInterface tableWidget = OldTable.createByClassNameAndOrder(driver, wait, "AppComponentContainer", 6);
         tableWidget.clickOnKebabMenu();
         tableWidget.clickOnAction("Refresh");
+        DelayUtils.sleep(500);
         TableInterface table = OldTable.createByClassNameAndOrder(driver, wait, "OSSTableWidget TableFullWidth", 2);
         String status = table.getValueCell(0, "Status");
         while (status.equals("IN_PROGRESS") || status.equals("PENDING")) {
@@ -98,6 +99,13 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         TabsInterface ndcvTabs = TabWindowWidget.create(driver, wait);
         ndcvTabs.selectTabByLabel("Tree");
         ndcvTabs.callActionByLabel("NAVIGATION", "Inconsistencies");
+        waitForInvisibilityOfLoadbars();
+    }
+
+    public void moveToSamplesManagement() {
+        TabsInterface ndcvTabs = TabWindowWidget.create(driver, wait);
+        ndcvTabs.selectTabByLabel("Tree");
+        ndcvTabs.callActionByLabel("NAVIGATION", "CM Samples Management");
     }
 
 }

@@ -25,7 +25,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
 
     private TreeWidget mainTree;
     private String applyButtonId = "narComponent_GroupDiscrepancyActionApplyId";
-    private String groupDiscrepancyLabel = "KPSMOKE2";
+    private String groupDiscrepancyLabel = "CiscoSeleniumTest";
 
     public static NetworkInconsistenciesViewPage goToNetworkInconsistenciesViewPage(WebDriver driver, String basicURL) {
         driver.get(String.format("%s/#/view/reco/network-repository-view/discrepancies" +
