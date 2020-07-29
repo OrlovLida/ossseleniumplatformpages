@@ -51,24 +51,23 @@ public class ProcessWizardPage extends BasePage {
     public String createProcess(String processName, Long plusDays, String processType){
         TableInterface table = OldTable.createByWindowTitle(driver, wait, "Process Instances");
         table.callActionByLabel("Create new process");
-        Wizard wizardFirstStep = Wizard.createWizard(driver, wait);
+        Wizard wizardFirstStep = Wizard.createByComponentId(driver, wait,"start-process-wizard");
         Input componentDomain = wizardFirstStep.getComponent("domain-combobox-input", Input.ComponentType.COMBOBOX);
         if (!componentDomain.getValue().getStringValue().equals("Inventory Processes")){componentDomain.setSingleStringValue("Inventory Processes");}
-        //componentDomain.setSingleStringValue("Inventory Processes");
         Input componentDefinition = wizardFirstStep.getComponent("definition-combobox-input", Input.ComponentType.COMBOBOX);
         componentDefinition.setSingleStringValue(processType);
         Input componentRelease = wizardFirstStep.getComponent("release-combobox-input", Input.ComponentType.COMBOBOX);
         componentRelease.setSingleStringValue("Latest");
         wizardFirstStep.clickAccept();
-        wizardFirstStep.waitToClose();
+        //wizardFirstStep.waitToClose();
 
-        Wizard wizardSecondStep = Wizard.createWizard(driver, wait);
+        Wizard wizardSecondStep = Wizard.createByComponentId(driver, wait, "bpm_processes_view_start-process-details-prompt_processCreateFormId");
         Input processNameTextField =wizardSecondStep.getComponent("processNameTextFieldId", Input.ComponentType.TEXT_FIELD);
         processNameTextField.setSingleStringValue(processName);
         Input finishedDueDate = wizardSecondStep.getComponent("FINISHED_DUE_DATE", Input.ComponentType.DATE);
         finishedDueDate.setSingleStringValue(LocalDate.now().plusDays(plusDays).toString());
         wizardSecondStep.clickAccept();
-        wizardSecondStep.waitToClose();
+
         SystemMessageContainer systemMessageContainer = SystemMessageContainer.create(driver, wait);
         List<SystemMessageContainer.Message> messages = systemMessageContainer.getMessages();
         String text = messages.get(0).getText();
