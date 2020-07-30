@@ -67,6 +67,8 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         waitForPageToLoad();
         ActionsInterface actionsContainer = ActionsContainer.createFromParent(driver.findElement(By.xpath("//div[@class='OssWindow']//div[@class='context-actions-wrapper']")), driver, wait);
         actionsContainer.callActionById("EDIT", "UpdateDeviceWizardAction");
+        DelayUtils.sleep(500);
+        waitForPageToLoad();
         Wizard wizard = Wizard.createWizard(driver, wait);
         Input preciseLocation = wizard.getComponent("search_precise_location", ComponentType.SEARCH_FIELD);
         preciseLocation.setSingleStringValue(" ");
