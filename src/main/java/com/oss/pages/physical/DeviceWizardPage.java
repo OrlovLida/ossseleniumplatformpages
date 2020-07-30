@@ -48,7 +48,7 @@ public class DeviceWizardPage extends BasePage {
     public String createGenericIPDevice(){
         Wizard physicalDeviceWizard= Wizard.createWizard(driver,wait);
         String deviceName="Device-Selenium-"+ (int) (Math.random() * 1001);
-        createDevice("Generic IP Device",deviceName," ","Other",deviceName);
+        createDevice("Generic IP Device",deviceName,"A","Other",deviceName);
         DelayUtils.sleep(2000);
         deviceName = getComponentValue("text_name", Input.ComponentType.TEXT_FIELD);
         Assertions.assertThat(getComponentValue("search_location", Input.ComponentType.SEARCH_FIELD)).isNotEmpty();
@@ -69,7 +69,7 @@ public class DeviceWizardPage extends BasePage {
     private void createDevice(String deviceModel,String deviceName, String preciseLocation, String networkDomain, String hostName){
         setComponentValue("search_model", deviceModel, Input.ComponentType.SEARCH_FIELD);
         setComponentValue("text_name",deviceName, Input.ComponentType.TEXT_FIELD);
-        setComponentValue("search_precise_location","A", Input.ComponentType.SEARCH_FIELD);
+        setComponentValue("search_precise_location",preciseLocation, Input.ComponentType.SEARCH_FIELD);
         setComponentValue("search_network_domain",networkDomain, Input.ComponentType.SEARCH_FIELD);
        if(driver.getPageSource().contains("Hostname")){
             setComponentValue("text_hostname",hostName, Input.ComponentType.TEXT_FIELD);
