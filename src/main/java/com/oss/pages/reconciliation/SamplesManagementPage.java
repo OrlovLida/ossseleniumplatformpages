@@ -19,6 +19,8 @@ import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.treewidget.TreeWidget;
 import com.oss.pages.BasePage;
 
+import io.qameta.allure.Step;
+
 public class SamplesManagementPage extends BasePage {
 
     private TreeWidget mainTree;
@@ -42,12 +44,14 @@ public class SamplesManagementPage extends BasePage {
         return mainTree;
     }
 
+    @Step("Select samples path")
     public void selectPath() {
         DelayUtils.sleep(500);
         waitForPageToLoad();
         getTreeView().selectTreeRowByOrder(0);
     }
 
+    @Step("Upload samples for CM Domain")
     public void uploadSamples(String path) {
         ActionsInterface actionsContainer = ActionsContainer.createFromParent(driver.findElement(By.xpath("//div[@class='OssWindow']//div[@class='context-actions-wrapper']")), driver, wait);
         actionsContainer.callActionById("OTHER", "narComponent_CmSampleActionUploadId");
@@ -64,6 +68,7 @@ public class SamplesManagementPage extends BasePage {
         }
     }
 
+    @Step("Delete samples for CM Domain")
     public void deleteDirectoryContent() {
         ActionsInterface actionsContainer = ActionsContainer.createFromParent(driver.findElement(By.xpath("//div[@class='OssWindow']//div[@class='context-actions-wrapper']")), driver, wait);
         actionsContainer.callActionById("EDIT", "narComponent_CmSampleActionDeleteContentId");
@@ -72,6 +77,7 @@ public class SamplesManagementPage extends BasePage {
         wizard.clickDelete();
     }
 
+    @Step("Create samples directory for CM Domain")
     public void createDirectory(String cmDomainName) {
         ActionsInterface actionsContainer = ActionsContainer.createFromParent(driver.findElement(By.xpath("//div[@class='OssWindow']//div[@class='context-actions-wrapper']")), driver, wait);
         actionsContainer.callActionById("CREATE", "narComponent_CmSampleActionCreateId");

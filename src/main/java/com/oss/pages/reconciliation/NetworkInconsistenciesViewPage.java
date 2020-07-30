@@ -21,6 +21,8 @@ import com.oss.framework.widgets.tabswidget.TabsInterface;
 import com.oss.framework.widgets.treewidget.TreeWidget;
 import com.oss.pages.BasePage;
 
+import io.qameta.allure.Step;
+
 public class NetworkInconsistenciesViewPage extends BasePage {
 
     private TreeWidget mainTree;
@@ -46,6 +48,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         return mainTree;
     }
 
+    @Step("Expand two first tree levels of Inconsistencies")
     public void expantTree() {
         DelayUtils.sleep(500);
         waitForPageToLoad();
@@ -57,6 +60,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         waitForPageToLoad();
     }
 
+    @Step("Select first Device and use Physical Device Update Wizard to assign location")
     public void assignLocation() {
         getTreeView().selectTreeRowByOrder(3);
         DelayUtils.sleep(500);
@@ -73,6 +77,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         Assertions.assertThat(info.getMessage().equals("Device " + groupDiscrepancyLabel + " has been updated successfully.")).isTrue();
     }
 
+    @Step("Select first group of Inconsistencies and apply discrepancies to Live perspective")
     public void applyInconsistencies() {
         NotificationsInterface notifications = Notifications.create(driver, wait);
         notifications.clearAllNotification();

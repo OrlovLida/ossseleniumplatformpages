@@ -18,6 +18,8 @@ import com.oss.framework.widgets.tabswidget.TabsInterface;
 import com.oss.framework.widgets.treewidget.TreeWidget;
 import com.oss.pages.BasePage;
 
+import io.qameta.allure.Step;
+
 public class NetworkDiscoveryControlViewPage extends BasePage {
 
     private TreeWidget mainTree;
@@ -33,6 +35,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         super(driver);
     }
 
+    @Step("Open CM Domain Wizard")
     public void createCmDomain(String cmDomainName, String cmInterfaceName, String domainName) {
         waitForPageToLoad();
         TabsInterface tabs = TabWindowWidget.create(driver, wait);
@@ -49,18 +52,19 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         return mainTree;
     }
 
+    @Step("Query and select CM Domain in Network Discovery Control View")
     public void queryAndSelectCmDomain(String cmDomainName) {
         DelayUtils.sleep(500);
         waitForPageToLoad();
         getTreeView()
                 .performSearchWithEnter(cmDomainName);
-//                .waitForTreeExpansion();
         DelayUtils.sleep(500);
         waitForPageToLoad();
         getTreeView()
                 .selectTreeRowByText(cmDomainName);
     }
 
+    @Step("Run full reconciliation for selected CM Domain")
     public void runReconciliation() {
         TabsInterface tabs = TabWindowWidget.create(driver, wait);
         tabs.selectTabByLabel("narComponent_networkDiscoveryControlViewIdcmDomainsTreeTabId");
@@ -71,6 +75,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         Assertions.assertThat(info.getMessage().equals("Reconciliation started.")).isTrue();
     }
 
+    @Step("Waiting until reconciliation is over")
     public void waitForEndOfReco() {
         TableInterface tableWidget = OldTable.createByClassNameAndOrder(driver, wait, "AppComponentContainer", 6);
         tableWidget.clickOnKebabMenu();
@@ -88,6 +93,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         Assertions.assertThat(status.equals("SUCCESS"));
     }
 
+    @Step("Delete selected CM Domain")
     public void deleteCmDomain(String cmDomainName) {
         NotificationsInterface notifications = Notifications.create(driver, wait);
         notifications.clearAllNotification();
@@ -101,6 +107,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         Assertions.assertThat(notifications.waitAndGetFinishedNotificationText().equals("Deleting CM Domain: " + cmDomainName + " finished")).isTrue();
     }
 
+    @Step("Move from Network Discovery Control View to Network Inconsistencies View in context of selected CM Domain")
     public void moveToNivFromNdcv() {
         TabsInterface ndcvTabs = TabWindowWidget.create(driver, wait);
         ndcvTabs.selectTabByLabel("narComponent_networkDiscoveryControlViewIdcmDomainsTreeTabId");
@@ -108,6 +115,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         waitForInvisibilityOfLoadbars();
     }
 
+    @Step("Move from Network Discovery Control View to CM Samples Management view in context of selected CM Domain")
     public void moveToSamplesManagement() {
         TabsInterface ndcvTabs = TabWindowWidget.create(driver, wait);
         ndcvTabs.selectTabByLabel("narComponent_networkDiscoveryControlViewIdcmDomainsTreeTabId");
