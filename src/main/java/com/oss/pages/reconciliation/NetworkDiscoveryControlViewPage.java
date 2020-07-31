@@ -54,11 +54,9 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     @Step("Query and select CM Domain in Network Discovery Control View")
     public void queryAndSelectCmDomain(String cmDomainName) {
-        DelayUtils.sleep(500);
         waitForPageToLoad();
         getTreeView()
                 .performSearchWithEnter(cmDomainName);
-        DelayUtils.sleep(500);
         waitForPageToLoad();
         getTreeView()
                 .selectTreeRowByText(cmDomainName);
@@ -136,6 +134,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         TabsInterface ndcvTabs = TabWindowWidget.create(driver, wait);
         ndcvTabs.selectTabByLabel("narComponent_networkDiscoveryControlViewIdcmDomainsTreeTabId");
         ndcvTabs.callActionById("NAVIGATION", "narComponent_CmDomainActionCmSamplesManagementId");
+        waitForPageToLoad();
     }
 
 }

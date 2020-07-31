@@ -33,7 +33,6 @@ public class CmDomainWizardPage extends BasePage {
         interfaceField.setSingleStringValue(cmInterfaceName);
         Input domain = wizard.getComponent("narComponent_networkDiscoveryControlViewIddomainSearchBoxId", ComponentType.TEXT_FIELD);
         domain.setSingleStringValue(domainName);
-        DelayUtils.sleep(2000);
         waitForPageToLoad();
         wizard.clickSave();
         wizard.waitToClose();
