@@ -5,7 +5,10 @@ import com.oss.pages.languageservice.LanguageServicePage;
 import io.qameta.allure.Description;
 import org.testng.Assert;
 import org.testng.annotations.*;
+import com.oss.utils.*;
 
+
+@Listeners({TestListener.class})
 public class ExportGuiWizardTest extends BaseTestCase {
 
     private LanguageServicePage languageServicePage;
