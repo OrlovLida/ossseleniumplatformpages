@@ -71,6 +71,10 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         tabs.callActionById(reconciliation);
         ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
         prompt.clickButtonByLabel("Reconcile");
+    }
+
+    @Step("Check system message after starting reconciliation")
+    public void checkReconciliationStartedSystemMessage(){
         SystemMessageInterface info = SystemMessage.create(driver, wait);
         Assertions.assertThat(info.getMessage().equals("Reconciliation started.")).isTrue();
     }
@@ -94,17 +98,29 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     }
 
     @Step("Delete selected CM Domain")
-    public void deleteCmDomain(String cmDomainName) {
-        NotificationsInterface notifications = Notifications.create(driver, wait);
-        notifications.clearAllNotification();
+    public void deleteCmDomain() {
         TabsInterface tabs = TabWindowWidget.create(driver, wait);
         tabs.selectTabByLabel("narComponent_networkDiscoveryControlViewIdcmDomainsTreeTabId");
         tabs.callActionById("EDIT", "narComponent_CmDomainActionDeleteCmDomainId");
         ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
         prompt.clickButtonByLabel("Delete");
+    }
+
+    @Step("Check system message after deleting CM Domain")
+    public void checkDeleteCmDomainSystemMessage() {
         SystemMessageInterface info = SystemMessage.create(driver, wait);
         Assertions.assertThat(info.getMessage().equals("Deleting CM Domain started. Please check notifications for updates.")).isTrue();
-        Assertions.assertThat(notifications.waitAndGetFinishedNotificationText().equals("Deleting CM Domain: " + cmDomainName + " finished")).isTrue();
+    }
+
+    @Step("Check notification after deleting CM Domain")
+    public void checkDeleteCmDomainNotification(String cmDomainName) {
+        Assertions.assertThat(Notifications.create(driver, wait).waitAndGetFinishedNotificationText().equals("Deleting CM Domain: " + cmDomainName + " finished")).isTrue();
+    }
+
+    @Step("Clear old notifications")
+    public void clearOldNotifications() {
+        NotificationsInterface notifications = Notifications.create(driver, wait);
+        notifications.clearAllNotification();
     }
 
     @Step("Move from Network Discovery Control View to Network Inconsistencies View in context of selected CM Domain")

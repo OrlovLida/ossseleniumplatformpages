@@ -75,19 +75,32 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         DelayUtils.sleep(500);
         waitForPageToLoad();
         wizard.clickUpdate();
+    }
+
+    @Step("Check system message after device update")
+    public void checkUpdateDeviceSystemMessage() {
         SystemMessageInterface info = SystemMessage.create(driver, wait);
         Assertions.assertThat(info.getMessage().equals("Device " + groupDiscrepancyLabel + " has been updated successfully.")).isTrue();
     }
 
     @Step("Select first group of Inconsistencies and apply discrepancies to Live perspective")
     public void applyInconsistencies() {
-        NotificationsInterface notifications = Notifications.create(driver, wait);
-        notifications.clearAllNotification();
         getTreeView().selectTreeRowByOrder(2);
         TabsInterface nivTabs = TabWindowWidget.create(driver, wait);
         nivTabs.selectTabByLabel("narComponent_networkInconsistenciesViewIddiscrepanciesTreeTabId");
         nivTabs.callActionById(applyButtonId);
         DelayUtils.sleep(1000);
+    }
+
+    @Step("Clear old notifications")
+    public void clearOldNotification() {
+        NotificationsInterface notifications = Notifications.create(driver, wait);
+        notifications.clearAllNotification();
+    }
+
+    @Step("Check notification about accepting inconsistencies")
+    public void checkNotificationAfterApplyInconsistencies() {
+        NotificationsInterface notifications = Notifications.create(driver, wait);
         Assertions.assertThat(notifications.waitAndGetFinishedNotificationText().equals("Accepting discrepancies related to " + groupDiscrepancyLabel + " finished")).isTrue();
     }
 }

@@ -46,6 +46,7 @@ public class ReconciliationE2ETest extends BaseTestCase {
         DelayUtils.sleep(100);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
         networkDiscoveryControlViewPage.runReconciliation();
+        networkDiscoveryControlViewPage.checkReconciliationStartedSystemMessage();
         networkDiscoveryControlViewPage.waitForEndOfReco();
     }
 
@@ -55,7 +56,10 @@ public class ReconciliationE2ETest extends BaseTestCase {
         NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
         networkInconsistenciesViewPage.expantTree();
         networkInconsistenciesViewPage.assignLocation();
+        networkInconsistenciesViewPage.checkUpdateDeviceSystemMessage();
+        networkInconsistenciesViewPage.clearOldNotification();
         networkInconsistenciesViewPage.applyInconsistencies();
+        networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies();
     }
 
     @Test(priority = 5)
@@ -82,6 +86,7 @@ public class ReconciliationE2ETest extends BaseTestCase {
         DelayUtils.sleep(100);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
         networkDiscoveryControlViewPage.runReconciliation();
+        networkDiscoveryControlViewPage.checkReconciliationStartedSystemMessage();
         networkDiscoveryControlViewPage.waitForEndOfReco();
     }
 
@@ -90,13 +95,18 @@ public class ReconciliationE2ETest extends BaseTestCase {
         networkDiscoveryControlViewPage.moveToNivFromNdcv();
         NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
         networkInconsistenciesViewPage.expantTree();
+        networkInconsistenciesViewPage.clearOldNotification();
         networkInconsistenciesViewPage.applyInconsistencies();
+        networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies();
     }
 
     @Test(priority = 8)
     public void deleteCmDomain() {
         openNetworkDiscoveryControlView();
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
-        networkDiscoveryControlViewPage.deleteCmDomain(cmDomainName);
+        networkDiscoveryControlViewPage.clearOldNotifications();
+        networkDiscoveryControlViewPage.deleteCmDomain();
+        networkDiscoveryControlViewPage.checkDeleteCmDomainSystemMessage();
+        networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(cmDomainName);
     }
 }
