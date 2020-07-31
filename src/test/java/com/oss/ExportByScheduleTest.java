@@ -29,7 +29,7 @@ public class ExportByScheduleTest extends BaseTestCase{
                 .openExportFileWizard();
     }
 
-    @Test
+    @Test(priority = 1)
     @Description("Single Export using schedule export task")
     public void singleExportUsingScheduleExportTask(){
         new ExportGuiWizardPage(driver)
@@ -46,7 +46,7 @@ public class ExportByScheduleTest extends BaseTestCase{
         Assert.assertEquals(schedulerServicePage.getTextOfJob(TASK_NAME), TASK_NAME);
     }
 
-    @Test
+    @Test(priority = 2)
     @Description("Daily Export using schedule export task")
     public void dailyExportUsingScheduleExportTask(){
         new ExportGuiWizardPage(driver)
@@ -62,7 +62,7 @@ public class ExportByScheduleTest extends BaseTestCase{
         Assert.assertEquals(schedulerServicePage.getTextOfJob(TASK_NAME), TASK_NAME);
     }
 
-    @Test
+    @Test(priority = 3)
     @Description("Weekly Export Using Schedule Export Task")
     public void weeklyExportUsingScheduleExportTask(){
         new ExportGuiWizardPage(driver)
@@ -79,7 +79,7 @@ public class ExportByScheduleTest extends BaseTestCase{
         Assert.assertEquals(schedulerServicePage.getTextOfJob(TASK_NAME), TASK_NAME);
     }
 
-    @Test
+    @Test(priority = 4)
     @Description("Monthly Export Using Schedule Export Task")
     public void monthlyExportUsingScheduleExportTask(){
         new ExportGuiWizardPage(driver)
@@ -96,7 +96,7 @@ public class ExportByScheduleTest extends BaseTestCase{
         Assert.assertEquals(schedulerServicePage.getTextOfJob(TASK_NAME), TASK_NAME);
     }
 
-    @Test
+    @Test(priority = 5)
     @Description("Yearly Export Using Schedule Export Task")
     public void yearlyExportUsingScheduleExportTask(){
         new ExportGuiWizardPage(driver)
