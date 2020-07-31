@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.oss.framework.utils.DelayUtils;
+
 public class BasePage {
     protected final WebDriver driver;
     public final WebDriverWait wait;
@@ -45,12 +47,15 @@ public class BasePage {
     }
 
     public void waitForPageToLoad() {
+        DelayUtils.sleep(2000);
         List<WebElement> spinners = driver.findElements(By.xpath("//i[contains(@class,'fa-spin')]"));
         List<WebElement> loadBars = driver.findElements(By.xpath("//div[@class='load-bar']"));
         List<WebElement> appPreloader = driver.findElements(By.xpath("//div[contains(@class,'appPreloader')]"));
+        List<WebElement> preloaderWrapper = driver.findElements(By.xpath("//div[@class='preloaderWrapper']"));
         List<WebElement> newList = new ArrayList<WebElement>(spinners);
         newList.addAll(loadBars);
         newList.addAll(appPreloader);
+        newList.addAll(preloaderWrapper);
         wait.until(ExpectedConditions.invisibilityOfAllElements(newList));
     }
 

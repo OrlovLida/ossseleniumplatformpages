@@ -46,7 +46,6 @@ public class SamplesManagementPage extends BasePage {
 
     @Step("Select samples path")
     public void selectPath() {
-        DelayUtils.sleep(500);
         waitForPageToLoad();
         getTreeView().selectTreeRowByOrder(0);
     }

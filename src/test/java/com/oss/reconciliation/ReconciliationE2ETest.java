@@ -1,6 +1,7 @@
 package com.oss.reconciliation;
 
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
@@ -8,7 +9,9 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
 import com.oss.pages.reconciliation.NetworkInconsistenciesViewPage;
 import com.oss.pages.reconciliation.SamplesManagementPage;
+import com.oss.utils.TestListener;
 
+@Listeners({ TestListener.class})
 public class ReconciliationE2ETest extends BaseTestCase {
 
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
