@@ -51,6 +51,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
     @Step("Expand two first tree levels of Inconsistencies")
     public void expantTree() {
         waitForPageToLoad();
+        Assertions.assertThat(getTreeView().getVisibleTreeRow().size() > 1);
         getTreeView().expandFirstTreeRow();
         waitForPageToLoad();
         getTreeView().expandFirstTreeRow();
@@ -66,7 +67,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         waitForPageToLoad();
         Wizard wizard = Wizard.createWizard(driver, wait);
         Input preciseLocation = wizard.getComponent("search_precise_location", ComponentType.SEARCH_FIELD);
-        preciseLocation.setSingleStringValue(" ");
+        preciseLocation.setSingleStringValue("a");
         waitForPageToLoad();
         wizard.clickUpdate();
     }

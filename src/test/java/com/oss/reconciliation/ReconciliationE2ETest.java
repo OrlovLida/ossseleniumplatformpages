@@ -11,7 +11,7 @@ import com.oss.pages.reconciliation.NetworkInconsistenciesViewPage;
 import com.oss.pages.reconciliation.SamplesManagementPage;
 import com.oss.utils.TestListener;
 
-@Listeners({ TestListener.class})
+@Listeners({ TestListener.class })
 public class ReconciliationE2ETest extends BaseTestCase {
 
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
@@ -62,6 +62,7 @@ public class ReconciliationE2ETest extends BaseTestCase {
         networkInconsistenciesViewPage.checkUpdateDeviceSystemMessage();
         networkInconsistenciesViewPage.clearOldNotification();
         networkInconsistenciesViewPage.applyInconsistencies();
+        DelayUtils.sleep(500);
         networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies();
     }
 
@@ -100,6 +101,7 @@ public class ReconciliationE2ETest extends BaseTestCase {
         networkInconsistenciesViewPage.expantTree();
         networkInconsistenciesViewPage.clearOldNotification();
         networkInconsistenciesViewPage.applyInconsistencies();
+        DelayUtils.sleep(500);
         networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies();
     }
 

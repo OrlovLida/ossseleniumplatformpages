@@ -83,6 +83,7 @@ public class SamplesManagementPage extends BasePage {
         Wizard wizard = Wizard.createWizard(driver, wait);
         Input name = wizard.getComponent("narComponent_CMSamplesManagementViewIdFileNameTextFieldId", ComponentType.TEXT_FIELD);
         name.setSingleStringValue(cmDomainName);
+        waitForPageToLoad();
         DelayUtils.sleep(500);
         wizard.clickCreate();
     }
