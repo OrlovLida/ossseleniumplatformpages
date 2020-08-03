@@ -38,4 +38,10 @@ public class LoginPage extends BasePage {
         loginButton.click();
         return new HomePage(driver);
     }
+
+    public void login(String user, String password){
+        userInput.sendKeys(user);
+        passwordInput.sendKeys(password);
+        loginButton.click();
+    }
 }

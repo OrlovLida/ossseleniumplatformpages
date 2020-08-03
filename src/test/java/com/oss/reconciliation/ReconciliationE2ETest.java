@@ -1,6 +1,7 @@
 package com.oss.reconciliation;
 
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
@@ -8,7 +9,9 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
 import com.oss.pages.reconciliation.NetworkInconsistenciesViewPage;
 import com.oss.pages.reconciliation.SamplesManagementPage;
+import com.oss.utils.TestListener;
 
+@Listeners({ TestListener.class })
 public class ReconciliationE2ETest extends BaseTestCase {
 
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
@@ -26,7 +29,7 @@ public class ReconciliationE2ETest extends BaseTestCase {
 
     @Test(priority = 2)
     public void uploadSamples() {
-        DelayUtils.sleep(500);
+        DelayUtils.sleep(1000);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
         networkDiscoveryControlViewPage.moveToSamplesManagement();
         SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
@@ -46,6 +49,7 @@ public class ReconciliationE2ETest extends BaseTestCase {
         DelayUtils.sleep(100);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
         networkDiscoveryControlViewPage.runReconciliation();
+        networkDiscoveryControlViewPage.checkReconciliationStartedSystemMessage();
         networkDiscoveryControlViewPage.waitForEndOfReco();
     }
 
@@ -55,7 +59,11 @@ public class ReconciliationE2ETest extends BaseTestCase {
         NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
         networkInconsistenciesViewPage.expantTree();
         networkInconsistenciesViewPage.assignLocation();
+        networkInconsistenciesViewPage.checkUpdateDeviceSystemMessage();
+        networkInconsistenciesViewPage.clearOldNotification();
         networkInconsistenciesViewPage.applyInconsistencies();
+        DelayUtils.sleep(500);
+        networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies();
     }
 
     @Test(priority = 5)
@@ -82,6 +90,7 @@ public class ReconciliationE2ETest extends BaseTestCase {
         DelayUtils.sleep(100);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
         networkDiscoveryControlViewPage.runReconciliation();
+        networkDiscoveryControlViewPage.checkReconciliationStartedSystemMessage();
         networkDiscoveryControlViewPage.waitForEndOfReco();
     }
 
@@ -90,13 +99,19 @@ public class ReconciliationE2ETest extends BaseTestCase {
         networkDiscoveryControlViewPage.moveToNivFromNdcv();
         NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
         networkInconsistenciesViewPage.expantTree();
+        networkInconsistenciesViewPage.clearOldNotification();
         networkInconsistenciesViewPage.applyInconsistencies();
+        DelayUtils.sleep(500);
+        networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies();
     }
 
     @Test(priority = 8)
     public void deleteCmDomain() {
         openNetworkDiscoveryControlView();
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
-        networkDiscoveryControlViewPage.deleteCmDomain(cmDomainName);
+        networkDiscoveryControlViewPage.clearOldNotifications();
+        networkDiscoveryControlViewPage.deleteCmDomain();
+        networkDiscoveryControlViewPage.checkDeleteCmDomainSystemMessage();
+        networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(cmDomainName);
     }
 }

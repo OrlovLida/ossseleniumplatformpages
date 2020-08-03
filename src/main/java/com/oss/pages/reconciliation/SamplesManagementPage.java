@@ -19,6 +19,8 @@ import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.treewidget.TreeWidget;
 import com.oss.pages.BasePage;
 
+import io.qameta.allure.Step;
+
 public class SamplesManagementPage extends BasePage {
 
     private TreeWidget mainTree;
@@ -42,14 +44,16 @@ public class SamplesManagementPage extends BasePage {
         return mainTree;
     }
 
+    @Step("Select samples path")
     public void selectPath() {
-        DelayUtils.sleep(1000);
+        waitForPageToLoad();
         getTreeView().selectTreeRowByOrder(0);
     }
 
+    @Step("Upload samples for CM Domain")
     public void uploadSamples(String path) {
         ActionsInterface actionsContainer = ActionsContainer.createFromParent(driver.findElement(By.xpath("//div[@class='OssWindow']//div[@class='context-actions-wrapper']")), driver, wait);
-        actionsContainer.callActionByLabel("OTHER", "Upload samples");
+        actionsContainer.callActionById("OTHER", "narComponent_CmSampleActionUploadId");
         URL res = getClass().getClassLoader().getResource(path);
         try {
             File file = Paths.get(res.toURI()).toFile();
@@ -63,19 +67,23 @@ public class SamplesManagementPage extends BasePage {
         }
     }
 
+    @Step("Delete samples for CM Domain")
     public void deleteDirectoryContent() {
         ActionsInterface actionsContainer = ActionsContainer.createFromParent(driver.findElement(By.xpath("//div[@class='OssWindow']//div[@class='context-actions-wrapper']")), driver, wait);
-        actionsContainer.callActionByLabel("EDIT", "Delete directory content");
+        actionsContainer.callActionById("EDIT", "narComponent_CmSampleActionDeleteContentId");
+        waitForPageToLoad();
         Wizard wizard = Wizard.createWizard(driver, wait);
         wizard.clickDelete();
     }
 
+    @Step("Create samples directory for CM Domain")
     public void createDirectory(String cmDomainName) {
         ActionsInterface actionsContainer = ActionsContainer.createFromParent(driver.findElement(By.xpath("//div[@class='OssWindow']//div[@class='context-actions-wrapper']")), driver, wait);
-        actionsContainer.callActionByLabel("CREATE", "Create directory");
+        actionsContainer.callActionById("CREATE", "narComponent_CmSampleActionCreateId");
         Wizard wizard = Wizard.createWizard(driver, wait);
         Input name = wizard.getComponent("narComponent_CMSamplesManagementViewIdFileNameTextFieldId", ComponentType.TEXT_FIELD);
         name.setSingleStringValue(cmDomainName);
+        waitForPageToLoad();
         DelayUtils.sleep(500);
         wizard.clickCreate();
     }

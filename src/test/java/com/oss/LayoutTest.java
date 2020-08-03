@@ -4,8 +4,12 @@ import com.oss.pages.platform.InventoryViewPage;
 import io.qameta.allure.Description;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import com.oss.utils.*;
 
+
+@Listeners({TestListener.class})
 public class LayoutTest extends BaseTestCase{
 
     private InventoryViewPage inventoryViewPage;

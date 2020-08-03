@@ -1,18 +1,21 @@
 package com.oss.pages.reconciliation;
 
+import java.util.List;
+
 import org.assertj.core.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import com.oss.framework.alerts.SystemMessageContainer;
+import com.oss.framework.alerts.SystemMessageContainer.Message;
+import com.oss.framework.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.components.Input;
 import com.oss.framework.components.Input.ComponentType;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.contextactions.ActionsInterface;
 import com.oss.framework.components.notifications.Notifications;
 import com.oss.framework.components.notifications.NotificationsInterface;
-import com.oss.framework.components.systemMessage.SystemMessage;
-import com.oss.framework.components.systemMessage.SystemMessageInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Widget;
 import com.oss.framework.widgets.Wizard;
@@ -20,6 +23,8 @@ import com.oss.framework.widgets.tabswidget.TabWindowWidget;
 import com.oss.framework.widgets.tabswidget.TabsInterface;
 import com.oss.framework.widgets.treewidget.TreeWidget;
 import com.oss.pages.BasePage;
+
+import io.qameta.allure.Step;
 
 public class NetworkInconsistenciesViewPage extends BasePage {
 
@@ -46,36 +51,57 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         return mainTree;
     }
 
+    @Step("Expand two first tree levels of Inconsistencies")
     public void expantTree() {
-        DelayUtils.sleep(1000);
+        waitForPageToLoad();
+        Assertions.assertThat(getTreeView().getVisibleTreeRow().size() > 1);
         getTreeView().expandFirstTreeRow();
-        DelayUtils.sleep(1000);
+        waitForPageToLoad();
         getTreeView().expandFirstTreeRow();
-        DelayUtils.sleep(1000);
+        waitForPageToLoad();
     }
 
+    @Step("Select first Device and use Physical Device Update Wizard to assign location")
     public void assignLocation() {
         getTreeView().selectTreeRowByOrder(3);
-        DelayUtils.sleep(1000);
+        waitForPageToLoad();
         ActionsInterface actionsContainer = ActionsContainer.createFromParent(driver.findElement(By.xpath("//div[@class='OssWindow']//div[@class='context-actions-wrapper']")), driver, wait);
-        actionsContainer.callActionByLabel("EDIT", "Assign location");
+        actionsContainer.callActionById("EDIT", "UpdateDeviceWizardAction");
+        waitForPageToLoad();
         Wizard wizard = Wizard.createWizard(driver, wait);
         Input preciseLocation = wizard.getComponent("search_precise_location", ComponentType.SEARCH_FIELD);
-        preciseLocation.setSingleStringValue(" ");
-        DelayUtils.sleep(1000);
+        preciseLocation.setSingleStringValue("a");
+        waitForPageToLoad();
         wizard.clickUpdate();
-        SystemMessageInterface info = SystemMessage.create(driver, wait);
-        Assertions.assertThat(info.getMessage().equals("Device " + groupDiscrepancyLabel + " has been updated successfully.")).isTrue();
     }
 
+    @Step("Check system message after device update")
+    public void checkUpdateDeviceSystemMessage() {
+        SystemMessageContainer systemMessage = SystemMessageContainer.create(driver, wait);
+        List<Message> messages = systemMessage.getMessages();
+        Assertions.assertThat(messages).hasSize(1);
+        Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType())
+                .isEqualTo(MessageType.SUCCESS);
+    }
+
+    @Step("Select first group of Inconsistencies and apply discrepancies to Live perspective")
     public void applyInconsistencies() {
-        NotificationsInterface notifications = Notifications.create(driver, wait);
-        notifications.clearAllNotification();
         getTreeView().selectTreeRowByOrder(2);
         TabsInterface nivTabs = TabWindowWidget.create(driver, wait);
-        nivTabs.selectTabByLabel("Tree");
+        nivTabs.selectTabByLabel("narComponent_networkInconsistenciesViewIddiscrepanciesTreeTabId");
         nivTabs.callActionById(applyButtonId);
         DelayUtils.sleep(1000);
+    }
+
+    @Step("Clear old notifications")
+    public void clearOldNotification() {
+        NotificationsInterface notifications = Notifications.create(driver, wait);
+        notifications.clearAllNotification();
+    }
+
+    @Step("Check notification about accepting inconsistencies")
+    public void checkNotificationAfterApplyInconsistencies() {
+        NotificationsInterface notifications = Notifications.create(driver, wait);
         Assertions.assertThat(notifications.waitAndGetFinishedNotificationText().equals("Accepting discrepancies related to " + groupDiscrepancyLabel + " finished")).isTrue();
     }
 }

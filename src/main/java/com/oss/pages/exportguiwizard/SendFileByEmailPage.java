@@ -1,5 +1,6 @@
 package com.oss.pages.exportguiwizard;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -11,15 +12,18 @@ public class SendFileByEmailPage extends ExportGuiWizardPage{
     private String RECEIPIENTS_ID = "exportgui-components-emailreceipientsmultisearchtag";
     private String ATTACH_EXPORTED_FILE_ID = "exportgui-components-emailattachexportedcheckbox";
 
+    @Step("Choose email address to send")
     public SendFileByEmailPage chooseEmail(String email){
         setValueOnMultiSearch(RECEIPIENTS_ID,email);
         return this;
     }
 
+    @Step("Check the checkbox to attach exported file")
     public SendFileByEmailPage chooseAttachExportedFile(){
         checkTheCheckbox(ATTACH_EXPORTED_FILE_ID);
         return this;
     }
+
 
     private void setValueOnMultiSearch(String COMPONENT_ID, String value) {
         clickOnMultiSearch(COMPONENT_ID);
@@ -32,6 +36,7 @@ public class SendFileByEmailPage extends ExportGuiWizardPage{
         waitForComponent(xpath);
         return driver.findElement(By.xpath(xpath));
     }
+
     private void typeValueInMultiSearchInput(String value){
         String xpath = "//div[contains(@id,'stickyPortal')]//input";
         waitForComponent(xpath);
