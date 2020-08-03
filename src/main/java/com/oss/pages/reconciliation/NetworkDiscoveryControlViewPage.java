@@ -8,6 +8,7 @@ import org.openqa.selenium.WebDriver;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageContainer.Message;
 import com.oss.framework.alerts.SystemMessageContainer.MessageType;
+import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.components.notifications.Notifications;
 import com.oss.framework.components.notifications.NotificationsInterface;
 import com.oss.framework.prompts.ConfirmationBox;
@@ -76,7 +77,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     @Step("Check system message after starting reconciliation")
     public void checkReconciliationStartedSystemMessage() {
-        SystemMessageContainer systemMessage = SystemMessageContainer.create(driver, wait);
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, wait);
         List<Message> messages = systemMessage.getMessages();
         Assertions.assertThat(messages).hasSize(1);
         Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType())
@@ -112,7 +113,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     @Step("Check system message after deleting CM Domain")
     public void checkDeleteCmDomainSystemMessage() {
-        SystemMessageContainer systemMessage = SystemMessageContainer.create(driver, wait);
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, wait);
         List<Message> messages = systemMessage.getMessages();
         Assertions.assertThat(messages).hasSize(1);
         Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType())

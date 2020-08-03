@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageContainer.Message;
 import com.oss.framework.alerts.SystemMessageContainer.MessageType;
+import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.components.Input;
 import com.oss.framework.components.Input.ComponentType;
 import com.oss.framework.components.contextactions.ActionsContainer;
@@ -77,7 +78,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
 
     @Step("Check system message after device update")
     public void checkUpdateDeviceSystemMessage() {
-        SystemMessageContainer systemMessage = SystemMessageContainer.create(driver, wait);
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, wait);
         List<Message> messages = systemMessage.getMessages();
         Assertions.assertThat(messages).hasSize(1);
         Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType())
