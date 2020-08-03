@@ -24,17 +24,9 @@ import com.oss.pages.BasePage;
  * @author Gabriela Kasza
  */
 public class ProcessWizardPage extends BasePage {
-    private Wizard wizard;
 
     public ProcessWizardPage(WebDriver driver) {
         super(driver);
-    }
-
-    public Wizard getWizard() {
-        if (this.wizard == null) {
-            this.wizard = Wizard.createWizard(this.driver, this.wait);
-        }
-        return wizard;
     }
 
     public String createSimpleNRP() {
@@ -69,7 +61,7 @@ public class ProcessWizardPage extends BasePage {
         componentDefinition.setSingleStringValue(processType);
         Input componentRelease = wizardFirstStep.getComponent("release-combobox-input", Input.ComponentType.COMBOBOX);
         componentRelease.setSingleStringValue("Latest");
-        wizardFirstStep.clickAccept();
+        wizardFirstStep.clickActionById("wizard-submit-button-start-process-wizard");
         //wizardFirstStep.waitToClose();
 
         Wizard wizardSecondStep = Wizard.createByComponentId(driver, wait, "bpm_processes_view_start-process-details-prompt_processCreateFormId");
@@ -77,7 +69,7 @@ public class ProcessWizardPage extends BasePage {
         processNameTextField.setSingleStringValue(processName);
         Input finishedDueDate = wizardSecondStep.getComponent("FINISHED_DUE_DATE", Input.ComponentType.DATE);
         finishedDueDate.setSingleStringValue(LocalDate.now().plusDays(plusDays).toString());
-        wizardSecondStep.clickAccept();
+        wizardSecondStep.clickActionById("wizard-submit-button-bpm_processes_view_start-process-details-prompt_processCreateFormId");
 
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, wait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();

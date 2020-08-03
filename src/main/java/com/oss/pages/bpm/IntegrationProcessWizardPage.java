@@ -31,7 +31,7 @@ public class IntegrationProcessWizardPage extends BasePage {
     public IntegrationProcessWizardPage(WebDriver driver) {
         super(driver);
     }
-    private Wizard integrationWizard = Wizard.createWizard(driver, wait);
+    private Wizard integrationWizard = Wizard.createByComponentId(driver, wait, "ipd_integration_wizard_SetupIntegrationComponentId");
 
     public void defineIntegrationProcess(String processName, String finishDueDate, int row){
         //Wizard integrationWizard = Wizard.createWizard(driver, wait);
@@ -46,7 +46,11 @@ public class IntegrationProcessWizardPage extends BasePage {
         editableList.callActionByLabel("Delete","processNameId",processName);
     }
     public void clickNext(){
-        integrationWizard.clickNext();
+        integrationWizard.clickActionById("wizard-next-button-ipd_integration_wizard_SetupIntegrationComponentId");
+    }
+    public void clickAccept(){
+        integrationWizard.clickActionById("wizard-submit-button-ipd_integration_wizard_SetupIntegrationComponentId");
+
     }
     public void dragAndDrop(String objectName, String targetProcessName){
 

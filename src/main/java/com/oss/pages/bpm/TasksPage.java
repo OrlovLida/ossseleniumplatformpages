@@ -10,9 +10,6 @@ import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
 import com.oss.framework.components.Input;
 import com.oss.framework.components.contextactions.ButtonContainer;
 import com.oss.framework.prompts.ConfirmationBox;
@@ -20,7 +17,6 @@ import com.oss.framework.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tablewidget.TableInterface;
-import com.oss.framework.widgets.tablewidget.TableWidget;
 import com.oss.framework.widgets.tabswidget.OldTabs;
 import com.oss.framework.widgets.tabswidget.TabsInterface;
 import com.oss.pages.BasePage;
@@ -68,7 +64,7 @@ public class TasksPage extends BasePage {
         TabsInterface tabs= OldTabs.create(driver,wait);
         tabs.selectTabByLabel("Attachments");
         ButtonContainer action = ButtonContainer.create(driver, wait);
-        action.callActionByLabel("Attach file");
+        action.callActionById("attachmentManagerBusinessView_topCommonButtons-1");
         AttachFileWizardPage attachFileWizardPage = new AttachFileWizardPage(driver);
         attachFileWizardPage.attachFile(filePath);
         attachFileWizardPage.selectRadioButton("Upload anyway");

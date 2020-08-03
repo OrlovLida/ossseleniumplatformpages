@@ -116,7 +116,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
             TasksPage tasksPage = TasksPage.goToTasksPage(driver, BASIC_URL);
             URL resource = CreateProcessNRPTest.class.getClassLoader().getResource("SeleniumTest.txt");
             String absolutePatch = Paths.get(resource.toURI()).toFile().getAbsolutePath();
-            tasksPage.addFile("NRP-110", "Ready for Integration",absolutePatch);
+            tasksPage.addFile(processNRPCode, "Low Level Planning",absolutePatch);
         }
         catch (URISyntaxException e){
             throw new RuntimeException("Cannot load file",e);
@@ -146,7 +146,8 @@ public class CreateProcessNRPTest extends BaseTestCase {
         integrationWizard.defineIntegrationProcess(processIPName1, "2020-07-01", 1);
         integrationWizard.defineIntegrationProcess(processIPName2, "2020-07-02", 2);
         integrationWizard.clickNext();
-        integrationWizard.dragAndDrop("DOW193-Router-1", processIPName1);
+        //integrationWizard.dragAndDrop("DOW193-Router-1", processIPName1);
+        integrationWizard.clickAccept();
 
     }
 

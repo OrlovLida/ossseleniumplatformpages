@@ -52,8 +52,7 @@ public class DeviceWizardPage extends BasePage {
         DelayUtils.sleep(2000);
         deviceName = getComponentValue("text_name", Input.ComponentType.TEXT_FIELD);
         Assertions.assertThat(getComponentValue("search_location", Input.ComponentType.SEARCH_FIELD)).isNotEmpty();
-        physicalDeviceWizard.clickCreate();
-        physicalDeviceWizard.waitToClose();
+        physicalDeviceWizard.clickActionById("physical_device_common_buttons_app-1");
         return deviceName;
     }
     public void createDevice(String deviceName, String preciseLocation,String deviceModel){
@@ -81,6 +80,6 @@ public class DeviceWizardPage extends BasePage {
     public void cancel() {
         Wizard.createWizard(driver,wait).cancel();
     }
-    public void create(){Wizard.createWizard(driver,wait).clickCreate();}
+    public void create(){Wizard.createWizard(driver,wait).clickActionById("physical_device_common_buttons_app-1");}
 
 }
