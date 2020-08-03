@@ -1,18 +1,21 @@
 package com.oss.pages.reconciliation;
 
+import java.util.List;
+
 import org.assertj.core.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import com.oss.framework.alerts.SystemMessageContainer;
+import com.oss.framework.alerts.SystemMessageContainer.Message;
+import com.oss.framework.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.components.Input;
 import com.oss.framework.components.Input.ComponentType;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.contextactions.ActionsInterface;
 import com.oss.framework.components.notifications.Notifications;
 import com.oss.framework.components.notifications.NotificationsInterface;
-import com.oss.framework.components.systemMessage.SystemMessage;
-import com.oss.framework.components.systemMessage.SystemMessageInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Widget;
 import com.oss.framework.widgets.Wizard;
@@ -74,8 +77,11 @@ public class NetworkInconsistenciesViewPage extends BasePage {
 
     @Step("Check system message after device update")
     public void checkUpdateDeviceSystemMessage() {
-        SystemMessageInterface info = SystemMessage.create(driver, wait);
-        Assertions.assertThat(info.getMessage().equals("Device " + groupDiscrepancyLabel + " has been updated successfully.")).isTrue();
+        SystemMessageContainer systemMessage = SystemMessageContainer.create(driver, wait);
+        List<Message> messages = systemMessage.getMessages();
+        Assertions.assertThat(messages).hasSize(1);
+        Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType())
+                .isEqualTo(MessageType.SUCCESS);
     }
 
     @Step("Select first group of Inconsistencies and apply discrepancies to Live perspective")

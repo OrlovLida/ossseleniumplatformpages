@@ -1,12 +1,15 @@
 package com.oss.pages.reconciliation;
 
+import java.util.List;
+
 import org.assertj.core.api.Assertions;
 import org.openqa.selenium.WebDriver;
 
+import com.oss.framework.alerts.SystemMessageContainer;
+import com.oss.framework.alerts.SystemMessageContainer.Message;
+import com.oss.framework.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.components.notifications.Notifications;
 import com.oss.framework.components.notifications.NotificationsInterface;
-import com.oss.framework.components.systemMessage.SystemMessage;
-import com.oss.framework.components.systemMessage.SystemMessageInterface;
 import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
@@ -72,9 +75,12 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     }
 
     @Step("Check system message after starting reconciliation")
-    public void checkReconciliationStartedSystemMessage(){
-        SystemMessageInterface info = SystemMessage.create(driver, wait);
-        Assertions.assertThat(info.getMessage().equals("Reconciliation started.")).isTrue();
+    public void checkReconciliationStartedSystemMessage() {
+        SystemMessageContainer systemMessage = SystemMessageContainer.create(driver, wait);
+        List<Message> messages = systemMessage.getMessages();
+        Assertions.assertThat(messages).hasSize(1);
+        Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType())
+                .isEqualTo(MessageType.INFO);
     }
 
     @Step("Waiting until reconciliation is over")
@@ -106,8 +112,11 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     @Step("Check system message after deleting CM Domain")
     public void checkDeleteCmDomainSystemMessage() {
-        SystemMessageInterface info = SystemMessage.create(driver, wait);
-        Assertions.assertThat(info.getMessage().equals("Deleting CM Domain started. Please check notifications for updates.")).isTrue();
+        SystemMessageContainer systemMessage = SystemMessageContainer.create(driver, wait);
+        List<Message> messages = systemMessage.getMessages();
+        Assertions.assertThat(messages).hasSize(1);
+        Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType())
+                .isEqualTo(MessageType.INFO);
     }
 
     @Step("Check notification after deleting CM Domain")
