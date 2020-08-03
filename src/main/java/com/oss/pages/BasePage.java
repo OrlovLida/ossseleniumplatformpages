@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.oss.framework.mainheader.UserSettings;
+import com.oss.pages.platform.LoginPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
@@ -18,9 +20,9 @@ public class BasePage {
     protected final WebDriver driver;
     public final WebDriverWait wait;
 
-    protected BasePage(WebDriver driver) {
+    public BasePage(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, 50);
+        this.wait = new WebDriverWait(driver, 45);
         PageFactory.initElements(driver, this);
     }
 
@@ -84,5 +86,10 @@ public class BasePage {
             random += rand.nextInt(9);
         }
         return random;
+    }
+
+   public void changeUser(String user, String password){
+        UserSettings.create(driver,wait).open().logOut();
+        new LoginPage(driver, "url").login(user,password);
     }
 }
