@@ -6,16 +6,21 @@
  */
 package com.oss.bpm;
 
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.regex.Pattern;
 
 import org.assertj.core.api.Assertions;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
+import com.oss.framework.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tablewidget.TableInterface;
@@ -94,8 +99,8 @@ public class CreateProcessNRPTest extends BaseTestCase {
     public void createPhysicalDevice() {
         // DeviceWizardPage deviceWizardPage = DeviceWizardPage.goToDeviceWizardPagePlan(driver,BASIC_URL,"project_id=148835809&perspective=PLAN");
         DeviceWizardPage deviceWizardPage = DeviceWizardPage.goToDeviceWizardPageLive(driver, BASIC_URL);
-        //PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
-        //perspectiveChooser.setPlanPerspective("NRP-103");
+        PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
+        perspectiveChooser.setPlanPerspective(processNRPCode);
         deviceWizardPage.createGenericIPDevice();
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
@@ -107,9 +112,15 @@ public class CreateProcessNRPTest extends BaseTestCase {
 
     @Test(priority = 6)
     public void assignFile() {
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, BASIC_URL);
-        tasksPage.addFile("NRP-110", "Ready for Integration");
-        System.out.println("Test");
+        try {
+            TasksPage tasksPage = TasksPage.goToTasksPage(driver, BASIC_URL);
+            URL resource = CreateProcessNRPTest.class.getClassLoader().getResource("SeleniumTest.txt");
+            String absolutePatch = Paths.get(resource.toURI()).toFile().getAbsolutePath();
+            tasksPage.addFile("NRP-110", "Ready for Integration",absolutePatch);
+        }
+        catch (URISyntaxException e){
+            throw new RuntimeException("Cannot load file",e);
+        }
 
     }
 
@@ -150,6 +161,11 @@ public class CreateProcessNRPTest extends BaseTestCase {
         processIPCode2 = ipTable.getValueCell(rowNumber2, "Code");
         System.out.println(processIPCode1 + processIPCode2);
 
+    }
+    @AfterClass()
+    public void switchToLivePerspective(){
+        PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
+        perspectiveChooser.setLivePerspective();
     }
 
 }
