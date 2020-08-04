@@ -4,6 +4,7 @@ import com.oss.pages.BasePage;
 import com.oss.pages.exportguiwizard.ExportGuiWizardPage;
 import com.oss.pages.platform.LoginPanelPage;
 import com.oss.pages.platform.NotificationWrapperPage;
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -13,6 +14,7 @@ import java.util.List;
 
 public class LanguageServicePage extends BasePage {
 
+    @Step("Open Language Service Page")
     public static LanguageServicePage goToLanguageServicePage(WebDriver driver, String baseURL){
         driver.get(String.format("%s/#/views/languagesservice/views/translations" +
                 "?perspective=LIVE", baseURL));
@@ -64,6 +66,7 @@ public class LanguageServicePage extends BasePage {
         return this;
     }
 
+    @Step("Open Export File Wizard")
     public ExportGuiWizardPage openExportFileWizard(){
         waitForInvisibilityOfLoadbars();
         expandMenu();
@@ -78,6 +81,7 @@ public class LanguageServicePage extends BasePage {
         return new NotificationWrapperPage(driver);
     }
 
+    @Step("Clear Notifications")
     public LanguageServicePage clearNotifications(){
         openNotificationPanel()
                 .clearNotifications();
@@ -111,6 +115,7 @@ public class LanguageServicePage extends BasePage {
         return notificationButton.findElement(By.xpath("./ancestor::*/div[contains(@class,'globalNotification')]")).getAttribute("class").contains("clicked");
     }
 
+    @Step("Type ID of First Service in Search")
     public LanguageServicePage typeIdOfFirstServiceInSearch() {
         waitForVisibility(firstService);
         String idOfFirstElement = firstService.getAttribute("id");

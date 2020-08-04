@@ -107,14 +107,12 @@ public class ScheduleTaskPage extends ExportGuiWizardPage{
     }
 
     private void clickTime(){
-        WebElement clock = driver.findElement(By.xpath(".//i[@class='OSSIcon fa fa-clock-o']"));
-        clock.click();
+        driver.findElement(By.xpath(".//i[@class='OSSIcon fa fa-clock-o']")).click();
         DelayUtils.sleep();
     }
 
     private void clickCalendar(){
-        WebElement calendar = driver.findElement(By.xpath(".//i[@class='OSSIcon fa fa-calendar']"));
-        calendar.click();
+        driver.findElement(By.xpath(".//i[@class='OSSIcon fa fa-calendar']")).click();
         DelayUtils.sleep();
     }
 
