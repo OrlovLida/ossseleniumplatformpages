@@ -71,6 +71,7 @@ public class TasksPage extends BasePage {
         attachFileWizardPage.attachFile(filePath);
         attachFileWizardPage.nextButton();
         attachFileWizardPage.acceptButton();
+        waitForPageToLoad();
     }
     public void selectTab(String tabLabel){
         TabsInterface tabs= OldTabs.create(driver,wait);

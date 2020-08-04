@@ -20,6 +20,7 @@ import org.testng.annotations.Test;
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
+import com.oss.framework.listwidget.EditableList;
 import com.oss.framework.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.OldTable;
@@ -126,7 +127,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
             TasksPage tasksPage = TasksPage.goToTasksPage(driver, BASIC_URL);
             URL resource = CreateProcessNRPTest.class.getClassLoader().getResource("bpm/SeleniumTest.txt");
             String absolutePatch = Paths.get(resource.toURI()).toFile().getAbsolutePath();
-            tasksPage.addFile(processNRPCode, "Low Level Planning",absolutePatch);
+            tasksPage.addFile("NRP-148", "Low Level Planning",absolutePatch);
             SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
             Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType())
                     .isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
@@ -134,6 +135,10 @@ public class CreateProcessNRPTest extends BaseTestCase {
         catch (URISyntaxException e){
             throw new RuntimeException("Cannot load file",e);
         }
+        List<String> attachments = EditableList.createById(driver, webDriverWait, "attachmentManagerBusinessView_commonList").getValues();
+        Assertions.assertThat(attachments.size()).isGreaterThan(0);
+        String allNames = String.join("", attachments);
+        Assertions.assertThat(allNames).contains("SeleniumTest");
 
     }
 
