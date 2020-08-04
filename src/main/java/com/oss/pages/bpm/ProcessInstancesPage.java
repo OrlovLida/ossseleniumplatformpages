@@ -18,6 +18,7 @@ public class ProcessInstancesPage extends BasePage {
     public static ProcessInstancesPage goToProcessInstancesPage(WebDriver driver, String basicURL){
         driver.get(String.format("%s/#/view/bpm/processes" +
                 "?perspective=LIVE", basicURL));
+
         return new ProcessInstancesPage(driver);
     }
     protected ProcessInstancesPage(WebDriver driver) {

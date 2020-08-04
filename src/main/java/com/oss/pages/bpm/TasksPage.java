@@ -6,12 +6,7 @@
  */
 package com.oss.pages.bpm;
 
-import java.util.List;
-
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.oss.framework.components.Input;
 import com.oss.framework.components.contextactions.ButtonContainer;
@@ -20,7 +15,6 @@ import com.oss.framework.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tablewidget.TableInterface;
-import com.oss.framework.widgets.tablewidget.TableWidget;
 import com.oss.framework.widgets.tabswidget.OldTabs;
 import com.oss.framework.widgets.tabswidget.TabsInterface;
 import com.oss.pages.BasePage;
@@ -40,8 +34,9 @@ public class TasksPage extends BasePage {
     }
     public void findTask(String processCode, String taskName){
         TableInterface table = OldTable.createByWindowTitle(driver, wait, "Tasks");
+        waitForPageToLoad();
         table.searchByAttributeWithLabel("Process Code", Input.ComponentType.TEXT_FIELD,processCode);
-        DelayUtils.sleep(1000);
+        waitForPageToLoad();
         table.searchByAttributeWithLabel("Name", Input.ComponentType.TEXT_FIELD,taskName);
 
         //DelayUtils.sleep(1000);
@@ -50,11 +45,13 @@ public class TasksPage extends BasePage {
     }
     public void startTask(String processCode, String taskName){
         findTask(processCode,taskName);
+        waitForPageToLoad();
         actionTask("Start task");
 
     }
     public void completeTask(String processCode, String taskName){
         findTask(processCode,taskName);
+        waitForPageToLoad();
         actionTask("Complete task");
     }
     public void setupIntegration(String processCode){
@@ -63,17 +60,21 @@ public class TasksPage extends BasePage {
         tabs.selectTabByLabel("Form");
         tabs.callActionByLabel("Setup Integration");
     }
-    public void addFile(String processCode, String taskName){
+    public void addFile(String processCode, String taskName, String filePath){
         findTask(processCode,taskName);
         TabsInterface tabs= OldTabs.create(driver,wait);
         tabs.selectTabByLabel("Attachments");
         ButtonContainer action = ButtonContainer.create(driver, wait);
-        action.callActionByLabel("Attach file");
+        action.callActionById("attachmentManagerBusinessView_topCommonButtons-1");
         AttachFileWizardPage attachFileWizardPage = new AttachFileWizardPage(driver);
-        attachFileWizardPage.attachFile("C:\\Users\\Comarch\\Desktop\\SeleniumTest.txt");
+        attachFileWizardPage.selectRadioButton("Upload anyway");
+        attachFileWizardPage.attachFile(filePath);
         attachFileWizardPage.nextButton();
         attachFileWizardPage.acceptButton();
-
+    }
+    public void selectTab(String tabLabel){
+        TabsInterface tabs= OldTabs.create(driver,wait);
+        tabs.selectTabByLabel(tabLabel);
     }
 
     private void actionTask(String actionLabel){

@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.openqa.selenium.WebDriver;
 import com.oss.framework.components.Input;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
 
@@ -27,10 +28,11 @@ public class AttachFileWizardPage extends BasePage {
         input.setSingleStringValue(filePath);
     }
     public void nextButton(){
-        addFileWizard.clickNext();
+        addFileWizard.clickActionById("wizard-next-button-addFileComponentId");
     }
     public void acceptButton(){
-        addFileWizard.clickAccept();
+        addFileWizard.clickActionById("wizard-submit-button-addFileComponentId");
+
     }
     public void deleteFiles(){
         Input input = addFileWizard.getComponent("file", Input.ComponentType.FILE_CHOOSER);
@@ -40,7 +42,12 @@ public class AttachFileWizardPage extends BasePage {
     public List<String> getAttachmentName(){
         Input input = addFileWizard.getComponent("file", Input.ComponentType.FILE_CHOOSER);
         return input.getStringValues();
-
+    }
+    public void selectRadioButton(String label){
+        Input radio = Wizard.createByComponentId(driver, wait, "addFileComponentId")
+                .getComponent("duplicateFilesRadioButtons", Input.ComponentType.RADIO_BUTTON);
+        radio.setSingleStringValue(label);
+        DelayUtils.sleep();
 
     }
 
