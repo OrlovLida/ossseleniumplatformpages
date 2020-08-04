@@ -24,6 +24,7 @@ import com.oss.framework.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tablewidget.TableInterface;
+import com.oss.pages.BasePage;
 import com.oss.pages.bpm.IntegrationProcessWizardPage;
 import com.oss.pages.bpm.ProcessInstancesPage;
 import com.oss.pages.bpm.ProcessWizardPage;
@@ -43,15 +44,13 @@ public class CreateProcessNRPTest extends BaseTestCase {
     private String processIPCode1;
     private String processIPCode2;
     public String perspectiveContext;
+    public String deviceName1 = "Device-Selenium-" + (int) (Math.random() * 1001);
 
     @BeforeClass
     public void openProcessInstancesPage() {
-//        UserSettings userSettings =UserSettings.create(driver,webDriverWait);
-//        userSettings.chooseLanguage("English");
         processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
-//        PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
-//        perspectiveChooser.setPlanPerspective("NRP-103");
-        System.out.println("Test");
+        BasePage basePage = new BasePage(driver);
+        basePage.waitForPageToLoad();
 
     }
 
@@ -101,8 +100,19 @@ public class CreateProcessNRPTest extends BaseTestCase {
         DeviceWizardPage deviceWizardPage = DeviceWizardPage.goToDeviceWizardPageLive(driver, BASIC_URL);
         PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
         perspectiveChooser.setPlanPerspective(processNRPCode);
-        deviceWizardPage.createGenericIPDevice();
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
+
+        deviceWizardPage.setModel("Generic IP Device");
+        BasePage basePage = new BasePage(driver);
+        basePage.waitForPageToLoad();
+        DelayUtils.sleep(2000);
+        deviceWizardPage.setName(deviceName1);
+        deviceWizardPage.setPreciseLocation(" ");
+        deviceWizardPage.setNetworkDomain("Other");
+        if (driver.getPageSource().contains("Hostname")){
+            deviceWizardPage.setHostname(deviceName1);
+        }
+        deviceWizardPage.create();
+            SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
         Assertions.assertThat(messages).hasSize(1);
         Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType())
@@ -114,9 +124,9 @@ public class CreateProcessNRPTest extends BaseTestCase {
     public void assignFile() {
         try {
             TasksPage tasksPage = TasksPage.goToTasksPage(driver, BASIC_URL);
-            URL resource = CreateProcessNRPTest.class.getClassLoader().getResource("SeleniumTest.txt");
+            URL resource = CreateProcessNRPTest.class.getClassLoader().getResource("bpm/SeleniumTest.txt");
             String absolutePatch = Paths.get(resource.toURI()).toFile().getAbsolutePath();
-            tasksPage.addFile("NRP-138", "Low Level Planning",absolutePatch);
+            tasksPage.addFile(processNRPCode, "Low Level Planning",absolutePatch);
             SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
             Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType())
                     .isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
