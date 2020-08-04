@@ -116,7 +116,10 @@ public class CreateProcessNRPTest extends BaseTestCase {
             TasksPage tasksPage = TasksPage.goToTasksPage(driver, BASIC_URL);
             URL resource = CreateProcessNRPTest.class.getClassLoader().getResource("SeleniumTest.txt");
             String absolutePatch = Paths.get(resource.toURI()).toFile().getAbsolutePath();
-            tasksPage.addFile(processNRPCode, "Low Level Planning",absolutePatch);
+            tasksPage.addFile("NRP-138", "Low Level Planning",absolutePatch);
+            SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
+            Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType())
+                    .isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
         }
         catch (URISyntaxException e){
             throw new RuntimeException("Cannot load file",e);
@@ -140,6 +143,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
 
     @Test(priority = 9)
     public void setupIntegration() {
+        DelayUtils.sleep(3000);
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, BASIC_URL);
         tasksPage.setupIntegration(processNRPCode);
         IntegrationProcessWizardPage integrationWizard = new IntegrationProcessWizardPage(driver);
@@ -153,8 +157,10 @@ public class CreateProcessNRPTest extends BaseTestCase {
 
     @Test(priority = 10)
     public void getIPCode() {
+        DelayUtils.sleep(3000);
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, BASIC_URL);
         tasksPage.findTask(processNRPCode, "Ready For Integration");
+        DelayUtils.sleep(3000);
         TableInterface ipTable = OldTable.createByComponentId(driver, webDriverWait, "ip_involved_nrp_group1");
         int rowNumber = ipTable.getRowNumber(processIPName1, "Name");
         processIPCode1 = ipTable.getValueCell(rowNumber, "Code");

@@ -6,10 +6,8 @@
  */
 package com.oss.pages.bpm;
 
-import java.util.List;
-
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+
 import com.oss.framework.components.Input;
 import com.oss.framework.components.contextactions.ButtonContainer;
 import com.oss.framework.prompts.ConfirmationBox;
@@ -66,8 +64,8 @@ public class TasksPage extends BasePage {
         ButtonContainer action = ButtonContainer.create(driver, wait);
         action.callActionById("attachmentManagerBusinessView_topCommonButtons-1");
         AttachFileWizardPage attachFileWizardPage = new AttachFileWizardPage(driver);
-        attachFileWizardPage.attachFile(filePath);
         attachFileWizardPage.selectRadioButton("Upload anyway");
+        attachFileWizardPage.attachFile(filePath);
         attachFileWizardPage.nextButton();
         attachFileWizardPage.acceptButton();
     }
