@@ -33,6 +33,7 @@ public class InventoryViewPage extends BasePage {
         super(driver);
     }
 
+    @Step("Open Inventory View")
     public static InventoryViewPage goToInventoryViewPage(WebDriver driver, String basicURL, String context) {
         driver.get(String.format("%s/#/views/management/views/inventory-view/" + context +
                 "?perspective=LIVE", basicURL));
