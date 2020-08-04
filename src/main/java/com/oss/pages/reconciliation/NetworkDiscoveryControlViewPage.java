@@ -28,6 +28,8 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     private TreeWidget mainTree;
     private String reconciliation = "narComponent_CmDomainActionFullReconciliationId";
+    private String reconciliationTab = "narComponent_networkDiscoveryControlViewIdcmDomainTabsId";
+    private String reconciliationStateTable = "narComponent_networkDiscoveryControlViewIdreconciliationStatesTableId";
 
     public static NetworkDiscoveryControlViewPage goToNetworkDiscoveryControlViewPage(WebDriver driver, String basicURL) {
         driver.get(String.format("%s/#/view/reco/network-repository-view/network-discovery" +
@@ -86,11 +88,11 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     @Step("Waiting until reconciliation is over")
     public void waitForEndOfReco() {
-        TableInterface tableWidget = OldTable.createByClassNameAndOrder(driver, wait, "AppComponentContainer", 6);
+        TableInterface tableWidget = OldTable.createByComponentDataAttributeName(driver, wait, reconciliationTab);
         tableWidget.clickOnKebabMenu();
         tableWidget.clickOnAction("Refresh");
         DelayUtils.sleep(500);
-        TableInterface table = OldTable.createByClassNameAndOrder(driver, wait, "OSSTableWidget TableFullWidth", 2);
+        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, reconciliationStateTable);
         String status = table.getValueCell(0, "Status");
         while (status.equals("IN_PROGRESS") || status.equals("PENDING")) {
             DelayUtils.sleep(5000);
