@@ -20,6 +20,7 @@ import org.testng.annotations.Test;
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
+import com.oss.framework.listwidget.EditableList;
 import com.oss.framework.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.OldTable;
@@ -134,6 +135,10 @@ public class CreateProcessNRPTest extends BaseTestCase {
         catch (URISyntaxException e){
             throw new RuntimeException("Cannot load file",e);
         }
+        List<String> attachments = EditableList.createById(driver, webDriverWait, "attachmentManagerBusinessView_commonList").getValues();
+        Assertions.assertThat(attachments.size()).isGreaterThan(0);
+        String allNames = String.join("", attachments);
+        Assertions.assertThat(allNames).contains("SeleniumTest");
 
     }
 
