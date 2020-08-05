@@ -26,17 +26,17 @@ public class BaseTestCase {
 
     @BeforeClass
     public void openBrowser() {
-        /*System.setProperty("webdriver.chrome.driver", CONFIGURATION.getValue("chromeDriverPath"));
-        ChromeOptions options = new ChromeOptions();*/
-        System.setProperty("webdriver.gecko.driver",CONFIGURATION.getValue("geckoDriverPath"));
-        FirefoxOptions options = new FirefoxOptions();
+        System.setProperty("webdriver.chrome.driver", CONFIGURATION.getValue("chromeDriverPath"));
+        ChromeOptions options = new ChromeOptions();
+        /*System.setProperty("webdriver.gecko.driver",CONFIGURATION.getValue("geckoDriverPath"));
+        FirefoxOptions options = new FirefoxOptions();*/
         options.addArguments("--headless");
         options.addArguments("--window-size=1920,1080");
         //options.addArguments("start-maximized");
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
-        driver = new FirefoxDriver(options);
-      //  driver = new ChromeDriver(options);
+//        driver = new FirefoxDriver(options);
+        driver = new ChromeDriver(options);
         webDriverWait = new WebDriverWait(driver, 50);
         LoginPage loginPage = new LoginPage(driver, BASIC_URL).open();
         this.homePage = loginPage.login();
