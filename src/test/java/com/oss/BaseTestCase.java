@@ -6,6 +6,8 @@ import com.oss.pages.platform.LoginPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.*;
 
@@ -15,7 +17,7 @@ import static com.oss.configuration.Configuration.CONFIGURATION;
 public class BaseTestCase {
 
     public static final String BASIC_URL = System.getProperty("URL");
-//    public static final String BASIC_URL = CONFIGURATION.getValue("baseUrl");
+  //  public static final String BASIC_URL = CONFIGURATION.getValue("baseUrl");
     public static final String MOCK_PATH = CONFIGURATION.getValue("mockPath");
 
     public WebDriver driver;
@@ -24,14 +26,17 @@ public class BaseTestCase {
 
     @BeforeClass
     public void openBrowser() {
-        System.setProperty("webdriver.chrome.driver", CONFIGURATION.getValue("chromeDriverPath"));
-        ChromeOptions options = new ChromeOptions();
+        /*System.setProperty("webdriver.chrome.driver", CONFIGURATION.getValue("chromeDriverPath"));
+        ChromeOptions options = new ChromeOptions();*/
+        System.setProperty("webdriver.gecko.driver",CONFIGURATION.getValue("geckoDriverPath"));
+        FirefoxOptions options = new FirefoxOptions();
         options.addArguments("--headless");
         options.addArguments("--window-size=1920,1080");
         //options.addArguments("start-maximized");
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
-        driver = new ChromeDriver(options);
+        driver = new FirefoxDriver(options);
+      //  driver = new ChromeDriver(options);
         webDriverWait = new WebDriverWait(driver, 50);
         LoginPage loginPage = new LoginPage(driver, BASIC_URL).open();
         this.homePage = loginPage.login();
