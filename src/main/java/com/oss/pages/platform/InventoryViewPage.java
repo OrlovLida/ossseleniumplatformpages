@@ -1,6 +1,7 @@
 package com.oss.pages.platform;
 
 import com.oss.framework.components.AdvancedSearch;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.filterpanel.FilterPanel;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -118,21 +119,18 @@ public class InventoryViewPage extends BasePage {
 
     @Step("Open Filter Panel")
     public FilterPanel openFilterPanel() {
-        waitForPageToLoad();
+        DelayUtils.waitForPageToLoad(driver,wait);
         AdvancedSearch advancedSearch = new AdvancedSearch(driver, wait);
         advancedSearch.openSearchPanel();
         return new FilterPanel(driver);
     }
 
     public String getIdOfFirstObject(){
-        waitForPageToLoad();
+        DelayUtils.waitForPageToLoad(driver,wait);
         return driver.findElement(By.xpath("//div[@class='Row']")).getAttribute("id");
     }
 
     public boolean isOnlyOneObject(String id){
-        if (getTableWidget().howManyRowsOnFirstPage() == 1 && getIdOfFirstObject() == id)
-            return true;
-        else
-            return false;
+        return getTableWidget().howManyRowsOnFirstPage() == 1 && getIdOfFirstObject() == id;
     }
 }
