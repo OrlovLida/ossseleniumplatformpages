@@ -1,5 +1,6 @@
 package com.oss.pages.languageservice;
 
+import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.BasePage;
 import com.oss.pages.exportguiwizard.ExportGuiWizardPage;
 import com.oss.pages.platform.LoginPanelPage;
@@ -42,19 +43,19 @@ public class LanguageServicePage extends BasePage {
 //    private boolean existsElement(List<WebElement> element) {return element.size() != 0;}
 
     private LanguageServicePage expandMenu() {
-        waitForComponent("//div[@id='"+MENU_BUTTON_ID+"']");
+        DelayUtils.waitForComponent(wait,"//div[@id='"+MENU_BUTTON_ID+"']");
         driver.findElement(By.id(MENU_BUTTON_ID)).click();
         return this;
     }
 
     private LoginPanelPage openLoginPanel() {
-        waitForVisibility(loginButton);
+        DelayUtils.waitForVisibility(wait,loginButton);
         loginButton.click();
         return new LoginPanelPage(driver);
     }
 
     private LanguageServicePage closeLoginPanel() {
-        waitForVisibility(loginButton);
+        DelayUtils.waitForVisibility(wait,loginButton);
         loginButton.click();
         return this;
     }
@@ -68,15 +69,15 @@ public class LanguageServicePage extends BasePage {
 
     @Step("Open Export File Wizard")
     public ExportGuiWizardPage openExportFileWizard(){
-        waitForInvisibilityOfLoadbars();
+        DelayUtils.waitForPageToLoad(driver, wait);
         expandMenu();
-        waitForVisibility(exportButton);
+        DelayUtils.waitForVisibility(wait,exportButton);
         exportButton.click();
         return new ExportGuiWizardPage(driver);
     }
 
     private NotificationWrapperPage openNotificationPanel() {
-        waitforclickability(notificationButton);
+        DelayUtils.waitForClickability(wait,notificationButton);
         notificationButton.click();
         return new NotificationWrapperPage(driver);
     }
@@ -90,7 +91,7 @@ public class LanguageServicePage extends BasePage {
     }
 
     private LanguageServicePage closeNotificationPanel(){
-        waitforclickability(notificationButton);
+        DelayUtils.waitForClickability(wait,notificationButton);
         notificationButton.click();
         return this;
     }
@@ -117,7 +118,7 @@ public class LanguageServicePage extends BasePage {
 
     @Step("Type ID of First Service in Search")
     public LanguageServicePage typeIdOfFirstServiceInSearch() {
-        waitForVisibility(firstService);
+        DelayUtils.waitForVisibility(wait,firstService);
         String idOfFirstElement = firstService.getAttribute("id");
         searchField.sendKeys(idOfFirstElement);
         return this;

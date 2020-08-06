@@ -51,7 +51,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     public void openProcessInstancesPage() {
         processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
         BasePage basePage = new BasePage(driver);
-        basePage.waitForPageToLoad();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
     }
 
@@ -104,7 +104,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
 
         deviceWizardPage.setModel("Generic IP Device");
         BasePage basePage = new BasePage(driver);
-        basePage.waitForPageToLoad();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         DelayUtils.sleep(2000);
         deviceWizardPage.setName(deviceName1);
         deviceWizardPage.setPreciseLocation(" ");

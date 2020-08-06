@@ -140,13 +140,13 @@ public class ExportGuiWizardPage extends BasePage {
     return new LanguageServicePage(driver);}
 
     @Step("Go to next step of wizard - Fill Server Data")
-    public FillServerDataPage goToTheFillServerData(){waitForVisibility(serverDataProgressBar);clickOnNext(); return new FillServerDataPage(driver);}
+    public FillServerDataPage goToTheFillServerData(){DelayUtils.waitForVisibility(wait,serverDataProgressBar);clickOnNext(); return new FillServerDataPage(driver);}
 
     @Step("Go to next step of wizard - Schedule Task")
-    public ScheduleTaskPage goToTheScheduleTask(){waitForVisibility(scheduleTasklProgressBar);clickOnNext(); return new ScheduleTaskPage(driver);}
+    public ScheduleTaskPage goToTheScheduleTask(){DelayUtils.waitForVisibility(wait,scheduleTasklProgressBar);clickOnNext(); return new ScheduleTaskPage(driver);}
 
     @Step("Go to next step of wizard - Send File By Email")
-    public SendFileByEmailPage goToSendFileByEmailPage(){waitForVisibility(sendByEmailProgressBar);clickOnNext(); return new SendFileByEmailPage(driver);}
+    public SendFileByEmailPage goToSendFileByEmailPage(){DelayUtils.waitForVisibility(wait,sendByEmailProgressBar);clickOnNext(); return new SendFileByEmailPage(driver);}
 
     @Step("Uncheck the Export to File with Headers checkbox")
     public ExportGuiWizardPage uncheckTheExportToFileWithHeaders(){uncheckTheCheckbox(CHECKBOX_EXPORT_WITH_HEADERS_ID); return this;}

@@ -1,6 +1,8 @@
 package com.oss.pages.exportguiwizard;
 
 import com.oss.framework.data.Data;
+import com.oss.framework.utils.DelayUtils;
+
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 
@@ -40,7 +42,7 @@ public class FillServerDataPage extends ExportGuiWizardPage{
 
     @Step("Choose Protocole Type")
     public FillServerDataPage chooseProtocoleType(String type){
-        waitForComponent("//input[contains (@id,'" + PROTOCOLE_TYPE_ID + "')]");
+        DelayUtils.waitForComponent(wait,"//input[contains (@id,'" + PROTOCOLE_TYPE_ID + "')]");
         setValueOnCombobox(PROTOCOLE_TYPE_ID, type);
         return this;
     }

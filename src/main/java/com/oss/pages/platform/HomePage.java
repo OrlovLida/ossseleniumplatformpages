@@ -1,12 +1,14 @@
 package com.oss.pages.platform;
 
 import com.oss.framework.components.portals.PopupV2;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.languageservice.LanguageServicePage;
 import com.oss.pages.schedulerservice.SchedulerServicePage;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.oss.pages.BasePage;
 import com.oss.pages.physical.DeviceWizardPage;
@@ -36,7 +38,8 @@ public class HomePage extends BasePage {
 
     HomePage(WebDriver driver) {
         super(driver);
-        waitForVisibility(logo);
+        WebDriverWait wait = new WebDriverWait(driver, 45);
+        DelayUtils.waitForVisibility(wait, logo);
     }
 
     public WebElement getLoginButton() {
@@ -44,7 +47,8 @@ public class HomePage extends BasePage {
     }
 
     public String getPageTitle() {
-        waitForVisibility(pageTitle);
+        WebDriverWait wait = new WebDriverWait(driver, 45);
+        DelayUtils.waitForVisibility(wait,pageTitle);
         return pageTitle.getText();
     }
 
@@ -63,7 +67,8 @@ public class HomePage extends BasePage {
     }
 
     public PopupV2 goToCreateBookmarkPopUp() {
-        waitForVisibility(saveBookmarksButton);
+        WebDriverWait wait = new WebDriverWait(driver, 45);
+        DelayUtils.waitForVisibility(wait,saveBookmarksButton);
         saveBookmarksButton.click();
         return new PopupV2(driver);
     }

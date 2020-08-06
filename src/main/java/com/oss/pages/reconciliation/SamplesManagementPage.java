@@ -46,7 +46,7 @@ public class SamplesManagementPage extends BasePage {
 
     @Step("Select samples path")
     public void selectPath() {
-        waitForPageToLoad();
+        DelayUtils.waitForPageToLoad(driver, wait);
         getTreeView().selectTreeRowByOrder(0);
     }
 
@@ -71,7 +71,7 @@ public class SamplesManagementPage extends BasePage {
     public void deleteDirectoryContent() {
         ActionsInterface actionsContainer = ActionsContainer.createFromParent(driver.findElement(By.xpath("//div[@class='OssWindow']//div[@class='context-actions-wrapper']")), driver, wait);
         actionsContainer.callActionById("EDIT", "narComponent_CmSampleActionDeleteContentId");
-        waitForPageToLoad();
+        DelayUtils.waitForPageToLoad(driver, wait);
         Wizard wizard = Wizard.createWizard(driver, wait);
         wizard.clickDelete();
     }
@@ -83,7 +83,7 @@ public class SamplesManagementPage extends BasePage {
         Wizard wizard = Wizard.createWizard(driver, wait);
         Input name = wizard.getComponent("narComponent_CMSamplesManagementViewIdFileNameTextFieldId", ComponentType.TEXT_FIELD);
         name.setSingleStringValue(cmDomainName);
-        waitForPageToLoad();
+        DelayUtils.waitForPageToLoad(driver, wait);
         DelayUtils.sleep(500);
         wizard.clickCreate();
     }

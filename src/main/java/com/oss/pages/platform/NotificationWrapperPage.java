@@ -1,5 +1,6 @@
 package com.oss.pages.platform;
 
+import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.BasePage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -24,7 +25,7 @@ public class NotificationWrapperPage extends BasePage {
     }
 
     public NotificationWrapperPage waitForExportFinish(){
-        waitForComponent("//a[contains (text(), 'Download file')]");
+        DelayUtils.waitForComponent(wait,"//a[contains (text(), 'Download file')]");
         return this;
     }
 

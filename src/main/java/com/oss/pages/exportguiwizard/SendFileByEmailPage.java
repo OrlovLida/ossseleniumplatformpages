@@ -5,6 +5,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import com.oss.framework.utils.DelayUtils;
+
 public class SendFileByEmailPage extends ExportGuiWizardPage{
 
     public SendFileByEmailPage(WebDriver driver){super(driver); getWizard();}
@@ -33,19 +35,19 @@ public class SendFileByEmailPage extends ExportGuiWizardPage{
 
     private WebElement textWrapperWirhText(String text){
         String xpath = "//div[@class='text-wrapper' and contains(text(), '"+text+"')]";
-        waitForComponent(xpath);
+        DelayUtils.waitForComponent(wait,xpath);
         return driver.findElement(By.xpath(xpath));
     }
 
     private void typeValueInMultiSearchInput(String value){
         String xpath = "//div[contains(@id,'stickyPortal')]//input";
-        waitForComponent(xpath);
+        DelayUtils.waitForComponent(wait,xpath);
         driver.findElement(By.xpath(xpath)).sendKeys(value);
     }
 
     private void clickOnMultiSearch(String COMPONENT_ID){
         String componentPath = "//div[contains (@data-attributename,'" + COMPONENT_ID + "')]//div[contains(@class, 'input')]";
-        waitForComponent(componentPath);
+        DelayUtils.waitForComponent(wait,componentPath);
         driver.findElement(By.xpath(componentPath)).click();
     }
 }
