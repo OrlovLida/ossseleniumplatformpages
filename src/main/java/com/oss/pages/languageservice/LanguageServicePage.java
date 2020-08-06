@@ -43,7 +43,7 @@ public class LanguageServicePage extends BasePage {
 //    private boolean existsElement(List<WebElement> element) {return element.size() != 0;}
 
     private LanguageServicePage expandMenu() {
-        DelayUtils.waitForComponent(wait,"//div[@id='"+MENU_BUTTON_ID+"']");
+        DelayUtils.waitForPageToLoad(driver, wait);
         driver.findElement(By.id(MENU_BUTTON_ID)).click();
         return this;
     }

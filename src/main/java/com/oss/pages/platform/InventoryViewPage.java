@@ -1,5 +1,7 @@
 package com.oss.pages.platform;
 
+import com.oss.framework.components.AdvancedSearch;
+import com.oss.pages.filterpanel.FilterPanel;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -112,5 +114,25 @@ public class InventoryViewPage extends BasePage {
         ButtonPanel.create(driver, wait).getButtonIcon("layout").click();
         DropdownList.create(driver, wait).selectOptionWithIconContains("Vertical");
         return this;
+    }
+
+    @Step("Open Filter Panel")
+    public FilterPanel openFilterPanel() {
+        waitForPageToLoad();
+        AdvancedSearch advancedSearch = new AdvancedSearch(driver, wait);
+        advancedSearch.openSearchPanel();
+        return new FilterPanel(driver);
+    }
+
+    public String getIdOfFirstObject(){
+        waitForPageToLoad();
+        return driver.findElement(By.xpath("//div[@class='Row']")).getAttribute("id");
+    }
+
+    public boolean isOnlyOneObject(String id){
+        if (getTableWidget().howManyRowsOnFirstPage() == 1 && getIdOfFirstObject() == id)
+            return true;
+        else
+            return false;
     }
 }
