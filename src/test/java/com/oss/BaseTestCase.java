@@ -3,6 +3,7 @@ package com.oss;
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.LoginPage;
 
+import com.oss.utils.TestListener;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -14,6 +15,7 @@ import org.testng.annotations.*;
 
 import static com.oss.configuration.Configuration.CONFIGURATION;
 
+@Listeners({TestListener.class})
 public class BaseTestCase {
 
     public static final String BASIC_URL = System.getProperty("URL");
