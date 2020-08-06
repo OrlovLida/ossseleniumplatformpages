@@ -28,7 +28,7 @@ public class AttachFileWizardPage extends BasePage {
         input.setSingleStringValue(filePath);
     }
     public void nextButton(){
-        addFileWizard.clickActionById("wizard-next-button-addFileComponentId");
+        Wizard.createByComponentId(driver, wait, "addFileComponentId").clickActionById("wizard-next-button-addFileComponentId");
     }
     public void acceptButton(){
         addFileWizard.clickActionById("wizard-submit-button-addFileComponentId");
