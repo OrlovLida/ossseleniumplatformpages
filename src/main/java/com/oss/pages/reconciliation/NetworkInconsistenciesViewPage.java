@@ -54,25 +54,25 @@ public class NetworkInconsistenciesViewPage extends BasePage {
 
     @Step("Expand two first tree levels of Inconsistencies")
     public void expantTree() {
-        waitForPageToLoad();
+        DelayUtils.waitForPageToLoad(driver, wait);
         Assertions.assertThat(getTreeView().getVisibleTreeRow().size() > 1);
         getTreeView().expandFirstTreeRow();
-        waitForPageToLoad();
+        DelayUtils.waitForPageToLoad(driver, wait);
         getTreeView().expandFirstTreeRow();
-        waitForPageToLoad();
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     @Step("Select first Device and use Physical Device Update Wizard to assign location")
     public void assignLocation() {
         getTreeView().selectTreeRowByOrder(3);
-        waitForPageToLoad();
+        DelayUtils.waitForPageToLoad(driver, wait);
         ActionsInterface actionsContainer = ActionsContainer.createFromParent(driver.findElement(By.xpath("//div[@class='OssWindow']//div[@class='context-actions-wrapper']")), driver, wait);
         actionsContainer.callActionById("EDIT", "UpdateDeviceWizardAction");
-        waitForPageToLoad();
+        DelayUtils.waitForPageToLoad(driver, wait);
         Wizard wizard = Wizard.createWizard(driver, wait);
         Input preciseLocation = wizard.getComponent("search_precise_location", ComponentType.SEARCH_FIELD);
         preciseLocation.setSingleStringValue("a");
-        waitForPageToLoad();
+        DelayUtils.waitForPageToLoad(driver, wait);
         wizard.clickUpdate();
     }
 

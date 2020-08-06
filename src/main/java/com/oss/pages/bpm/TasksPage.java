@@ -34,9 +34,9 @@ public class TasksPage extends BasePage {
     }
     public void findTask(String processCode, String taskName){
         TableInterface table = OldTable.createByWindowTitle(driver, wait, "Tasks");
-        waitForPageToLoad();
+        DelayUtils.waitForPageToLoad(driver, wait);
         table.searchByAttributeWithLabel("Process Code", Input.ComponentType.TEXT_FIELD,processCode);
-        waitForPageToLoad();
+        DelayUtils.waitForPageToLoad(driver, wait);
         table.searchByAttributeWithLabel("Name", Input.ComponentType.TEXT_FIELD,taskName);
 
         //DelayUtils.sleep(1000);
@@ -45,13 +45,13 @@ public class TasksPage extends BasePage {
     }
     public void startTask(String processCode, String taskName){
         findTask(processCode,taskName);
-        waitForPageToLoad();
+        DelayUtils.waitForPageToLoad(driver, wait);
         actionTask("Start task");
 
     }
     public void completeTask(String processCode, String taskName){
         findTask(processCode,taskName);
-        waitForPageToLoad();
+        DelayUtils.waitForPageToLoad(driver, wait);
         actionTask("Complete task");
     }
     public void setupIntegration(String processCode){
@@ -71,7 +71,7 @@ public class TasksPage extends BasePage {
         attachFileWizardPage.attachFile(filePath);
         attachFileWizardPage.nextButton();
         attachFileWizardPage.acceptButton();
-        waitForPageToLoad();
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
     public void selectTab(String tabLabel){
         TabsInterface tabs= OldTabs.create(driver,wait);

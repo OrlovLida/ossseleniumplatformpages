@@ -336,9 +336,9 @@ public class InventoryViewTest extends BaseTestCase {
         //TODO: problem with click Next and then Cancel button
         TableWidget tableWidget = inventoryViewPage.getTableWidget();
 //        tableWidget.takeAction("Create", "Location");
-        inventoryViewPage.waitForComponent("//div[contains(@id,'CREATE')]");
+        DelayUtils.waitForComponent(webDriverWait,"//div[contains(@id,'CREATE')]");
         driver.findElement(By.id("CREATE")).click();
-        inventoryViewPage.waitForComponent("(//a[contains(text(),'Create Location')])[1]");
+        DelayUtils.waitForComponent(webDriverWait,"(//a[contains(text(),'Create Location')])[1]");
         driver.findElement(By.xpath("(//a[contains(text(),'Create Location')])[1]")).click();
         DelayUtils.sleep(600);
         Wizard locationWizard = inventoryViewPage.getWizard();

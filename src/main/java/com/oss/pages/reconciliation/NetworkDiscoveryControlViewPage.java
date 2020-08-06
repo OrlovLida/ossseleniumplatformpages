@@ -42,12 +42,12 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     }
 
     @Step("Open CM Domain Wizard")
-    public void createCmDomain(String cmDomainName, String cmInterfaceName, String domainName) {
-        waitForPageToLoad();
+    public void openCmDomainWizard() {
+        DelayUtils.waitForPageToLoad(driver, wait);
         TabsInterface tabs = TabWindowWidget.create(driver, wait);
         tabs.selectTabByLabel("narComponent_networkDiscoveryControlViewIdcmDomainsTreeTabId");
         tabs.callActionById("CREATE", "narComponent_CmDomainActionCreateId");
-        new CmDomainWizardPage(driver).fillCmDomainWizardAndClose(cmDomainName, cmInterfaceName, domainName);
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public TreeWidget getTreeView() {
@@ -60,10 +60,10 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     @Step("Query and select CM Domain in Network Discovery Control View")
     public void queryAndSelectCmDomain(String cmDomainName) {
-        waitForPageToLoad();
+        DelayUtils.waitForPageToLoad(driver, wait);
         getTreeView()
                 .performSearchWithEnter(cmDomainName);
-        waitForPageToLoad();
+        DelayUtils.waitForPageToLoad(driver, wait);
         getTreeView()
                 .selectTreeRowByText(cmDomainName);
     }
@@ -138,7 +138,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         TabsInterface ndcvTabs = TabWindowWidget.create(driver, wait);
         ndcvTabs.selectTabByLabel("narComponent_networkDiscoveryControlViewIdcmDomainsTreeTabId");
         ndcvTabs.callActionById("NAVIGATION", "narComponent_CmDomainActionShowInconsistenciesId");
-        waitForInvisibilityOfLoadbars();
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     @Step("Move from Network Discovery Control View to CM Samples Management view in context of selected CM Domain")
@@ -146,7 +146,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         TabsInterface ndcvTabs = TabWindowWidget.create(driver, wait);
         ndcvTabs.selectTabByLabel("narComponent_networkDiscoveryControlViewIdcmDomainsTreeTabId");
         ndcvTabs.callActionById("NAVIGATION", "narComponent_CmDomainActionCmSamplesManagementId");
-        waitForPageToLoad();
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
 }

@@ -20,8 +20,6 @@ public class DeviceWizardPage extends BasePage {
         return new DeviceWizardPage(driver);
     }
 
-    private Wizard wizard;
-
     public DeviceWizardPage(WebDriver driver) {
         super(driver);
     }
@@ -35,7 +33,7 @@ public class DeviceWizardPage extends BasePage {
 
     public String getComponentValue(String componentId, Input.ComponentType componentType) {
 
-        //Input input = physicalDeviceWizard.getComponent(componentId, componentType);
+//        Input input = physicalDeviceWizard.getComponent(componentId, componentType);
         Input input =  Wizard.createByComponentId(driver,wait,"physical_device_create_wizard_view")
                 .getComponent(componentId, componentType);
         return input.getStringValue();

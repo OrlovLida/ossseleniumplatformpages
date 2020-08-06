@@ -33,17 +33,17 @@ public class SchedulerServicePage extends BasePage {
     }
 
     private void typeInSearchField(String value){
-        waitForVisibility(searchField);
+        DelayUtils.waitForVisibility(wait,searchField);
         searchField.sendKeys(value);
     }
 
     private boolean isRowContainsTextVisible(String text){
-        waitForVisibility(firstJob);
+        DelayUtils.waitForVisibility(wait,firstJob);
         return driver.findElements(By.xpath(getPathOfRowContainsText(text))).size() > 0;
     }
 
     private void clickOnRowContainsText(String text){
-        waitForComponent(getPathOfRowContainsText(text));
+        DelayUtils.waitForComponent(wait,getPathOfRowContainsText(text));
         driver.findElement(By.xpath(getPathOfRowContainsText(text))).click();
     }
 
@@ -66,10 +66,10 @@ public class SchedulerServicePage extends BasePage {
 
     @Step("Delete created Job")
     public SchedulerServicePage deleteSelectedJob(){
-        waitForVisibility(editContextAction);
+        DelayUtils.waitForVisibility(wait,editContextAction);
         editContextAction.click();
         deleteJobAction.click();
-        waitForVisibility(confirmDeleteButton);
+        DelayUtils.waitForVisibility(wait,confirmDeleteButton);
         confirmDeleteButton.click();
         DelayUtils.sleep(500);
         return this;
@@ -77,10 +77,10 @@ public class SchedulerServicePage extends BasePage {
 
     @Step("Permanently delete created Job")
     public SchedulerServicePage permanentlyRemoveJob(){
-        waitForVisibility(editContextAction);
+        DelayUtils.waitForVisibility(wait,editContextAction);
         editContextAction.click();
         permanentDeleteJobAction.click();
-        waitForVisibility(confirmDeleteButton);
+        DelayUtils.waitForVisibility(wait,confirmDeleteButton);
         confirmDeleteButton.click();
         DelayUtils.sleep(500);
         return this;
@@ -88,7 +88,7 @@ public class SchedulerServicePage extends BasePage {
 
     @Step("Select deleted Job")
     public SchedulerServicePage selectDeletedJob(String text){
-        waitforclickability(driver.findElement(By.xpath("//div[contains(@class, 'Cell Row')]/div[contains(text(),'"+text+"')]")));
+        DelayUtils.waitForClickability(wait,driver.findElement(By.xpath("//div[contains(@class, 'Cell Row')]/div[contains(text(),'"+text+"')]")));
         clickOnRowContainsText(text);
         DelayUtils.sleep(500);
         clickOnRowContainsText(text);

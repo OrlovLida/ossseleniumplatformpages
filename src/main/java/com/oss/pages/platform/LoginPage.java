@@ -4,6 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.BasePage;
 
 import static com.oss.configuration.Configuration.CONFIGURATION;
@@ -28,7 +29,7 @@ public class LoginPage extends BasePage {
 
     public LoginPage open() {
         driver.get(url);
-        waitForVisibility(userInput);
+        DelayUtils.waitForVisibility(wait,userInput);
         return this;
     }
 

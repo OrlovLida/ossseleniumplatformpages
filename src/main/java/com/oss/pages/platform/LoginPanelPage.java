@@ -1,5 +1,6 @@
 package com.oss.pages.platform;
 
+import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.BasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -20,12 +21,12 @@ public class LoginPanelPage extends BasePage {
         languageInput.click();
         driver.findElement(By.xpath("//div[@class='text-wrapper' and contains(text(), 'English')]")).click();
         String confirmButtonPath = "//button[@class='actionButton btn btn-primary']";
-        waitForBy(By.xpath(confirmButtonPath));
+        DelayUtils.waitForBy(wait, By.xpath(confirmButtonPath));
         driver.findElement(By.xpath(confirmButtonPath)).click();
     }
 
     public void changeForAlphaMOde(){
-        waitForVisibility(alphaModeSwitcher);
+        DelayUtils.waitForVisibility(wait,alphaModeSwitcher);
         alphaModeSwitcher.click();
     }
 }

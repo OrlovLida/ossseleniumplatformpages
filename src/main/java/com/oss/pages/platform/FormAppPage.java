@@ -7,6 +7,7 @@ import org.openqa.selenium.support.FindBy;
 
 import java.util.List;
 
+import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.BasePage;
 
 public class FormAppPage extends BasePage {
@@ -25,21 +26,21 @@ public class FormAppPage extends BasePage {
     }
 
     public FormAppPage checkRadio(int number) {
-        waitForVisibility(radios);
+        DelayUtils.waitForVisibility(wait,radios);
         radios.get(number - 1)
                 .click();
         return this;
     }
 
     public FormAppPage setSlideToMin(int slideNumber) {
-        waitForVisibility(slides);
+        DelayUtils.waitForVisibility(wait,slides);
         WebElement slide = slides.get(slideNumber - 1);
         slide.sendKeys(Keys.ARROW_LEFT);
         return this;
     }
 
     public String getValue(int number) {
-        waitForVisibility(inputsForSlides);
+        DelayUtils.waitForVisibility(wait,inputsForSlides);
         int number1 = number - 1;
         return inputsForSlides.get(number1).getAttribute("value");
     }

@@ -6,6 +6,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.oss.framework.components.contextactions.ActionsInterface;
 import com.oss.framework.components.contextactions.ButtonContainer;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Widget;
 import com.oss.framework.widgets.treewidget.TreeWidget;
 import com.oss.pages.BasePage;
@@ -31,16 +32,16 @@ public class DeviceOverviewPage extends BasePage {
 
     @Step("Select object on hierarchy view")
     public void selectTreeRow(String name) {
-        waitForPageToLoad();
+        DelayUtils.waitForPageToLoad(driver, wait);
         getTreeView().selectTreeRow(name);
-        waitForPageToLoad();
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     @Step("Use context action")
     public void useContextAction(String name) {
-        waitForPageToLoad();
+        DelayUtils.waitForPageToLoad(driver, wait);
         ActionsInterface actionsContainer = ButtonContainer.create(driver, wait);
         actionsContainer.callActionByLabel(name);
-        waitForPageToLoad();
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 }

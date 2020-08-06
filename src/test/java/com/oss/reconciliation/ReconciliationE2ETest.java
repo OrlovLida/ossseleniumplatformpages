@@ -6,6 +6,7 @@ import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.pages.reconciliation.CmDomainWizardPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
 import com.oss.pages.reconciliation.NetworkInconsistenciesViewPage;
 import com.oss.pages.reconciliation.SamplesManagementPage;
@@ -24,7 +25,13 @@ public class ReconciliationE2ETest extends BaseTestCase {
 
     @Test(priority = 1)
     public void createCmDomain() {
-        networkDiscoveryControlViewPage.createCmDomain(cmDomainName, "CISCO IOS 12/15", "IP");
+        networkDiscoveryControlViewPage.openCmDomainWizard();
+        CmDomainWizardPage wizard = new CmDomainWizardPage(driver);
+        wizard.setName(cmDomainName);
+        wizard.setInterface("CISCO IOS 12/15");
+        wizard.setDomain("IP");
+        wizard.save();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
     @Test(priority = 2)
