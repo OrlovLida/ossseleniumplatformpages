@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
 import org.assertj.core.api.Assertions;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
@@ -31,10 +32,12 @@ import com.oss.pages.bpm.ProcessInstancesPage;
 import com.oss.pages.bpm.ProcessWizardPage;
 import com.oss.pages.bpm.TasksPage;
 import com.oss.pages.physical.DeviceWizardPage;
+import com.oss.utils.TestListener;
 
 /**
  * @author Gabriela Kasza
  */
+@Listeners({TestListener.class})
 public class CreateProcessNRPTest extends BaseTestCase {
 
     private String processNRPName;
