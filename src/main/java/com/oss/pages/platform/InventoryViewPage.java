@@ -125,12 +125,28 @@ public class InventoryViewPage extends BasePage {
         return new FilterPanel(driver);
     }
 
+    @Step("Clear all tags")
+    public InventoryViewPage clearAllTags(){
+        DelayUtils.waitForPageToLoad(driver,wait);
+        AdvancedSearch advancedSearch = new AdvancedSearch(driver, wait);
+        advancedSearch.clickOnTagByLabel("Clear");
+        return this;
+    }
+
+    public boolean isAnyTagsVisible(){
+        DelayUtils.waitForPageToLoad(driver,wait);
+        AdvancedSearch advancedSearch = new AdvancedSearch(driver, wait);
+        return advancedSearch.howManyTagsIsVisible()==0;
+    }
+
     public String getIdOfFirstObject(){
         DelayUtils.waitForPageToLoad(driver,wait);
         return driver.findElement(By.xpath("//div[@class='Row']")).getAttribute("id");
     }
 
     public boolean isOnlyOneObject(String id){
-        return getTableWidget().howManyRowsOnFirstPage() == 1 && getIdOfFirstObject() == id;
+        DelayUtils.waitForPageToLoad(driver,wait);
+        return getTableWidget().howManyRowsOnFirstPage() == 1 && getIdOfFirstObject().equals(id);
     }
+
 }

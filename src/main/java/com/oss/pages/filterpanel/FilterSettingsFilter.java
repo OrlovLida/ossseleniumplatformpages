@@ -2,6 +2,7 @@ package com.oss.pages.filterpanel;
 
 import com.oss.framework.components.*;
 import com.oss.framework.components.Input.ComponentType;
+import com.oss.framework.utils.DelayUtils;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -44,6 +45,11 @@ public class FilterSettingsFilter extends FilterSettings {
     public FilterPanel applyFilter(){
         driver.findElement(By.xpath(APPLY_BUTTON_XPATH)).click();
         return new FilterPanel(driver);
+    }
+
+    public boolean isFilterFavorite(String filterName){
+        DelayUtils.waitForPageToLoad(driver,wait);
+        return filter(filterName).findElements(By.xpath("./..//i[@class='OSSIcon fa fa-star']")).size()==1;
     }
 
     private void setValueOnSearchField(String value){
