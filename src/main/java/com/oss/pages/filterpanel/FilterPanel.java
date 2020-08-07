@@ -18,7 +18,7 @@ public class FilterPanel extends BasePage {
 
     AdvancedSearch advancedSearch = new AdvancedSearch(driver,wait);
 
-    private final String SELECTED_FILTERS_INFO_XPATH= "//div[@class='selected-filter-info]";
+    private final String SELECTED_FILTERS_INFO_XPATH= "//div[@class='selected-filter-info']";
     private final String SAVE_BUTTON_CLASS_NAME= "save-buttons-dropdown";
     private final String SAVE_AS_A_NEW_FILTER_ID = "save_as_new_filter";
     private final String SAVE_FILTER_ID = "save_filter";
@@ -47,10 +47,10 @@ public class FilterPanel extends BasePage {
     }
 
     @Step("Save existing filter")
-    public FilterPanel saveFilter(String filterName) {
+    public FilterPanel saveFilter() {
         clickOnSaveButton();
-        chooseOptionFromDropDownList(SAVE_AS_A_NEW_FILTER_ID);
-        typeFilterNameAndSave(filterName);
+        chooseOptionFromDropDownList(SAVE_FILTER_ID);
+        DelayUtils.waitForPageToLoad(driver, wait);
         return this;
     }
 
@@ -61,7 +61,13 @@ public class FilterPanel extends BasePage {
         return this;
     }
 
+    @Step("Get value of LocaionId input")
+    public String getValueOfLocationIdInput(){
+        return getValueOfFilterInput("id",TEXT_FIELD);
+    }
+
     public boolean isFilterApplied(String filterName){
+        DelayUtils.waitForPageToLoad(driver,wait);
         return getNameOfSelectedFilter().equals(filterName);
     }
 
@@ -94,7 +100,12 @@ public class FilterPanel extends BasePage {
         advancedSearch.getComponent(componentId,componentType).setSingleStringValue(value);
     }
 
-    private String getValueOofFilterInput(String componentId, Input.ComponentType componentType){
+    private void clearFilterInput(String componentId, Input.ComponentType componentType, String value){
+        advancedSearch.getComponent(componentId,componentType).setSingleStringValue(value);
+    }
+
+    private String getValueOfFilterInput(String componentId, Input.ComponentType componentType){
+        DelayUtils.waitForPageToLoad(driver, wait);
         return advancedSearch.getComponent(componentId,componentType).getStringValue();
     }
 }
