@@ -18,8 +18,7 @@ import static com.oss.configuration.Configuration.CONFIGURATION;
 @Listeners({TestListener.class})
 public class BaseTestCase {
 
-    public static final String BASIC_URL = System.getProperty("URL");
-  //  public static final String BASIC_URL = CONFIGURATION.getValue("baseUrl");
+    public static final String BASIC_URL = CONFIGURATION.getUrl();
     public static final String MOCK_PATH = CONFIGURATION.getValue("mockPath");
 
     public WebDriver driver;
@@ -28,17 +27,12 @@ public class BaseTestCase {
 
     @BeforeClass
     public void openBrowser() {
-        System.setProperty("webdriver.chrome.driver", CONFIGURATION.getValue("chromeDriverPath"));
-        ChromeOptions options = new ChromeOptions();
-        /*System.setProperty("webdriver.gecko.driver",CONFIGURATION.getValue("geckoDriverPath"));
-        FirefoxOptions options = new FirefoxOptions();*/
-        options.addArguments("--headless");
-        options.addArguments("--window-size=1920,1080");
-        //options.addArguments("start-maximized");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
-//        driver = new FirefoxDriver(options);
-        driver = new ChromeDriver(options);
+        if (CONFIGURATION.getValue("driver").equals("chrome")) {
+            startChromeDriver();
+        }
+        else{
+            startFirefoxDriver();
+        }
         webDriverWait = new WebDriverWait(driver, 50);
         LoginPage loginPage = new LoginPage(driver, BASIC_URL).open();
         this.homePage = loginPage.login();
@@ -50,6 +44,38 @@ public class BaseTestCase {
         if(driver != null) {
             driver.quit();
         }
+    }
+
+    private void startChromeDriver(){
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        if (CONFIGURATION.getValue("locally").equals("true")) {
+            System.setProperty("webdriver.chrome.driver", CONFIGURATION.getValue("chromeDriverPath"));
+            options.addArguments("start-maximized");
+        }
+        else {
+            System.setProperty("webdriver.chrome.driver", CONFIGURATION.getValue("chromeDriverLinuxPath"));
+            options.addArguments("--window-size=1920,1080");
+            options.addArguments("--headless");
+        }
+        driver = new ChromeDriver(options);
+    }
+
+    private void startFirefoxDriver(){
+        FirefoxOptions options = new FirefoxOptions();
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        if (CONFIGURATION.getValue("locally").equals("true")) {
+            System.setProperty("webdriver.gecko.driver", CONFIGURATION.getValue("geckoDriverPath"));
+        }
+        else {
+            System.setProperty("webdriver.gecko.driver", CONFIGURATION.getValue("geckoDriverLinuxPath"));
+            options.addArguments("--window-size=1920,1080");
+            options.addArguments("--headless");
+        }
+        driver = new FirefoxDriver(options);
+        driver.manage().window().maximize();
     }
 
 }

@@ -30,12 +30,12 @@ public class SendFileByEmailPage extends ExportGuiWizardPage{
     private void setValueOnMultiSearch(String COMPONENT_ID, String value) {
         clickOnMultiSearch(COMPONENT_ID);
         typeValueInMultiSearchInput(value);
-        textWrapperWirhText(value).click();
+        textWrapperWithText(value).click();
     }
 
-    private WebElement textWrapperWirhText(String text){
+    private WebElement textWrapperWithText(String text){
         String xpath = "//div[@class='text-wrapper' and contains(text(), '"+text+"')]";
-        DelayUtils.waitForComponent(wait,xpath);
+        DelayUtils.waitForPageToLoad(driver, wait);
         return driver.findElement(By.xpath(xpath));
     }
 

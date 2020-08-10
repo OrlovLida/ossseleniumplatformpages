@@ -2,6 +2,8 @@ package com.oss;
 
 
 import com.oss.framework.utils.DelayUtils;
+import com.oss.pages.BasePage;
+import com.oss.pages.filtermanager.EditFilterPage;
 import com.oss.pages.filtermanager.FilterManagerPage;
 import com.oss.pages.filterpanel.FilterPanel;
 import com.oss.pages.filterpanel.FilterSettingsFilter;
@@ -21,6 +23,7 @@ public class FiltersTest extends BaseTestCase{
     private FilterPanel filterPanel;
     private FilterSettingsFilter filterSettingsFilter;
     private FilterManagerPage filterManagerPage;
+    private EditFilterPage editFilterPage;
     private int filtersBefore;
 
     private String FILTER_NAME = "Id_of_first_object";
@@ -30,6 +33,8 @@ public class FiltersTest extends BaseTestCase{
     private String VALUE_FOR_FILTER3 = "3";
     private String VALUE_FOR_FILTER3_AFTER_EDIT = "4";
     private String VALUE_IN_LOCATION_ID_INPUT;
+    private String USER2_LOGIN = "webseleniumtests2";
+    private String USER2_PASSWORD = "webtests";
 
     @BeforeClass
     public void goToInventoryView() {
@@ -38,8 +43,8 @@ public class FiltersTest extends BaseTestCase{
     }
 
     @Test(priority = 1)
-    @Description("Saving new filter")
-    public void createNewFilter() {
+    @Description("Creating 3 new filters and saving them as new filters")
+    public void createNewFilters() {
         String id = inventoryViewPage.getIdOfFirstObject();
         inventoryViewPage
                 .openFilterPanel()
@@ -86,7 +91,6 @@ public class FiltersTest extends BaseTestCase{
                 .selectFilter(FILTER3_NAME)
                 .applyFilter();
         Assert.assertEquals(filterPanel.getValueOfLocationIdInput(), VALUE_FOR_FILTER3_AFTER_EDIT);
-
     }
 
     @Test(priority = 5)
@@ -102,12 +106,13 @@ public class FiltersTest extends BaseTestCase{
         Assert.assertTrue(inventoryViewPage.isOnlyOneObject(VALUE_IN_LOCATION_ID_INPUT));
     }
 
-    @Test(enabled=false)
+    @Test(priority = 6)
     @Description("Checking that 'clear All' button is working properly")
     public void cancelingFilter() {
         inventoryViewPage
                 .clearAllTags();
-        Assert.assertTrue(inventoryViewPage.isAnyTagsVisible());
+        System.out.println(inventoryViewPage.getTableWidget().howManyRowsOnFirstPage());
+        Assert.assertTrue(inventoryViewPage.isAllTagsInvisible() && inventoryViewPage.getTableWidget().howManyRowsOnFirstPage()>1);
     }
 
     @Test(priority = 7)
@@ -118,7 +123,46 @@ public class FiltersTest extends BaseTestCase{
         Assert.assertTrue(filterManagerPage.isFavorite(FILTER2_NAME));
     }
 
-    @Test(priority = 9)
+    @Test(priority = 8)
+    @Description("Creating Folder")
+    public void creatingFolder() {
+        filterManagerPage = FilterManagerPage.goToFilterManagerPage(driver,BASIC_URL)
+                .createFolder("test");
+    }
+
+    @Test (enabled = false) //(priority = 9)
+    @Description("Change Folder for filter")
+    public void changeFolderForFilter() {
+        filterManagerPage = FilterManagerPage.goToFilterManagerPage(driver,BASIC_URL)
+                .expandAllCategories()
+                .editFilter(FILTER3_NAME);
+        editFilterPage = new EditFilterPage(driver);
+        editFilterPage.changeFolderForFilter()
+                .clickAccept();
+    }
+
+    @Test(enabled = false)//(priority = 10)
+    @Description("Sharing an Existing Filter")
+    public void sharingAnExistingFilter(){
+        filterManagerPage = FilterManagerPage.goToFilterManagerPage(driver,BASIC_URL)
+                .expandAllCategories();
+        filterManagerPage.shareFilter(FILTER2_NAME)
+                .typeUserNameInSearch(USER2_LOGIN)
+                .shareForUser(USER2_LOGIN)
+                .closeShareView();
+        filterManagerPage.changeUser(USER2_LOGIN, USER2_PASSWORD);
+    }
+
+    @Test(enabled = false)
+    @Description("Sharing an Existing Folder")
+    public void sharingAnExistingFolder(){
+        filterManagerPage = FilterManagerPage.goToFilterManagerPage(driver,BASIC_URL)
+                .expandAllCategories()
+                //        .clickOnEdit("building")
+                .deleteAllFilters();
+    }
+
+    @Test(priority = 15)
     @Description("Deleting one filter")
     public void removingFilter() {
         filterManagerPage = FilterManagerPage.goToFilterManagerPage(driver,BASIC_URL)
@@ -126,14 +170,6 @@ public class FiltersTest extends BaseTestCase{
                 .deleteFilter(FILTER_NAME);
     }
 
-    @Test(enabled = false)
-    @Description("Creating Folder")
-    public void creatingFolder() {
-        filterManagerPage = FilterManagerPage.goToFilterManagerPage(driver,BASIC_URL)
-                .expandAllCategories()
-                .deleteFilter(FILTER_NAME);
-        DelayUtils.sleep(5000);
-    }
 
     @Test(enabled = false)
     @Description("Opening Saved Filter")
@@ -149,19 +185,11 @@ public class FiltersTest extends BaseTestCase{
     }
 
 
-    @Test(enabled = false)
-    @Description("Sharing an Existing Filter")
-    public void sharingAnExistingFilter(){
-        filterManagerPage = FilterManagerPage.goToFilterManagerPage(driver,BASIC_URL)
-                .expandAllCategories()
-         //        .clickOnEdit("building")
-                .deleteAllFilters();
-    }
-
     @AfterClass
-    public void deleteAllFilters(){
+    public void deleteAllFiltersAndFolders(){
         filterManagerPage = FilterManagerPage.goToFilterManagerPage(driver,BASIC_URL)
-                .deleteAllFilters();
+                .deleteAllFilters()
+                .deleteAllFolders();
 
     }
 }

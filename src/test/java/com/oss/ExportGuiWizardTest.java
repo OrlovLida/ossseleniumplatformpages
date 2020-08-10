@@ -35,7 +35,6 @@ public class ExportGuiWizardTest extends BaseTestCase {
                 .chooseCSV()
                 .uncheckTheExportToFileWithHeaders()
                 .closeTheWizard();
-
         Assert.assertEquals(languageServicePage.howManyNotifications(), 1);
     }
 
