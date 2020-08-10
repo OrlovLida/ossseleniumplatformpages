@@ -108,12 +108,12 @@ public class ScheduleTaskPage extends ExportGuiWizardPage{
 
     private void clickTime(){
         driver.findElement(By.xpath(".//i[@class='OSSIcon fa fa-clock-o']")).click();
-        DelayUtils.sleep();
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     private void clickCalendar(){
         driver.findElement(By.xpath(".//i[@class='OSSIcon fa fa-calendar']")).click();
-        DelayUtils.sleep();
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     private void clickOnDayButton(int dayOfWeek){

@@ -1,5 +1,6 @@
 package com.oss.pages.filtermanager;
 
+import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.BasePage;
@@ -18,13 +19,16 @@ public class FilterManagerPage extends BasePage {
         super(driver);
     }
 
-    @FindBy(id = "new_folder")
-    private WebElement folderCreateButton;
+    @FindBy(xpath = "//div[@data-attributename='_FilterManagerList']")
+    private WebElement filterManagerList;
 
 
     private final String CATEGORY_LIST_XPATH ="//div[contains(@class, 'ExtendedList')]//li[contains(@class, 'categoryListElement')]";
-    private final String ALL_KEBABS_XPATH="//div[@class='contextActions']//div[@id='frameworkObjectButtonsGroup']";
+    private final String ALL_FILTER_KEBABS_XPATH="//div[@class='contextActions']//div[@id='frameworkObjectButtonsGroup']";
+    private final String ALL_FOLDER_KEBABS_XPATH="//div[@class='DropdownList']//div[@id='frameworkObjectButtonsGroup']";
     private final String KEBAB_ID="frameworkObjectButtonsGroup";
+    private final String NEW_FOLDER_ID = "new_folder";
+    private final String COMMON_LIST_APP_ID = "_FilterManagerList";
 
     @Step("Open Filter Manager Page")
     public static FilterManagerPage goToFilterManagerPage(WebDriver driver, String baseURL){
@@ -36,6 +40,12 @@ public class FilterManagerPage extends BasePage {
     public FilterManagerPage deleteAllFilters(){
         expandAllCategories();
         deleteAllFilter();
+        return this;
+    }
+
+    @Step("Delete All Folders")
+    public FilterManagerPage deleteAllFolders(){
+        deleteAllFolder();
         return this;
     }
 
@@ -52,9 +62,23 @@ public class FilterManagerPage extends BasePage {
         return this;
     }
 
+    @Step("Create Folder")
+    public FilterManagerPage createFolder(String name){
+        return openCreateNewFolderWizard().typeNameOfTheFolder(name).clickAccept();
+    }
+
     @Step("Open Create New Folder Wizard")
-    public FilterManagerPage openCreateNewFolderWizard(){
-        folderCreateButton.click();
+    public CreateFolderWizard openCreateNewFolderWizard(){
+        DelayUtils.waitForPageToLoad(driver, wait);
+        ActionsContainer.createFromParent(filterManagerList,driver,wait).callAction(NEW_FOLDER_ID);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return new CreateFolderWizard(driver);
+    }
+
+    @Step("Edit Filter")
+    public FilterManagerPage editFilter(String name){
+        expandKebab(name);
+        getEditButtonByFilterName(name).click();
         return this;
     }
 
@@ -65,6 +89,13 @@ public class FilterManagerPage extends BasePage {
         return this;
     }
 
+    @Step("Open Share Filter Page")
+    public ShareFilterPage shareFilter(String name){
+        expandKebab(name);
+        chooseShare();
+        return new ShareFilterPage(driver);
+    }
+
     private void expandKebab(String name){
         DelayUtils.waitForPageToLoad(driver,wait);
         getFilterByName(name).findElement(By.xpath(".//*[contains(@id, '" + KEBAB_ID + "')]")).click();
@@ -72,8 +103,20 @@ public class FilterManagerPage extends BasePage {
 
     private void deleteAllFilter(){
         DelayUtils.waitForPageToLoad(driver,wait);
-        List<WebElement> kebabs = driver.findElements(By.xpath(ALL_KEBABS_XPATH));
+        List<WebElement> kebabs = driver.findElements(By.xpath(ALL_FILTER_KEBABS_XPATH));
         for (int i=kebabs.size(); i>0; i--){
+            DelayUtils.waitForPageToLoad(driver,wait);
+            kebabs.get(i-1).click();
+            DelayUtils.waitForPageToLoad(driver,wait);
+            chooseDelete();
+            DelayUtils.waitForPageToLoad(driver,wait);
+        }
+    }
+
+    private void deleteAllFolder(){
+        DelayUtils.waitForPageToLoad(driver,wait);
+        List<WebElement> kebabs = driver.findElements(By.xpath(ALL_FOLDER_KEBABS_XPATH));
+        for (int i=kebabs.size(); i>1; i--){
             DelayUtils.waitForPageToLoad(driver,wait);
             kebabs.get(i-1).click();
             DelayUtils.waitForPageToLoad(driver,wait);
@@ -113,10 +156,10 @@ public class FilterManagerPage extends BasePage {
     }
 
     private void chooseShare(){
-        DropdownList.create(driver,wait).selectOptionWithId("share_action ");
+        DropdownList.create(driver,wait).selectOptionWithId("share_action");
     }
 
-    private void chooseDelete(){
+    private void chooseDelete() {
         DropdownList.create(driver,wait).selectOptionWithId("remove_action");
     }
 
@@ -127,8 +170,5 @@ public class FilterManagerPage extends BasePage {
     private void expandKebabByParent(WebElement parent){
         parent.findElement(By.xpath(".//*[@id='" + parent+ "']"));
     }
-    // public void getTextOf
-   // name-0-2
 
-    //share_action
 }

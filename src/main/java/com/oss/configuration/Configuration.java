@@ -22,4 +22,12 @@ public class Configuration {
     public String getValue(String key) {
         return properties.getProperty(key);
     }
+
+    public String getUrl() {
+        if (System.getProperty("URL")==null) {
+            return CONFIGURATION.getValue("baseUrl");
+        }
+        else
+        return System.getProperty("URL");
+    }
 }

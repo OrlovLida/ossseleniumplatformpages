@@ -9,7 +9,6 @@ import org.openqa.selenium.WebElement;
 
 import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.mainheader.ButtonPanel;
-import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Widget;
 import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.propertypanel.PropertiesFilter;
@@ -20,7 +19,6 @@ import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
-//import com.oss.framework.mainheader.ButtonPanel;
 
 public class InventoryViewPage extends BasePage {
 
@@ -130,12 +128,14 @@ public class InventoryViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver,wait);
         AdvancedSearch advancedSearch = new AdvancedSearch(driver, wait);
         advancedSearch.clickOnTagByLabel("Clear");
+        DelayUtils.waitForPageToLoad(driver,wait);
         return this;
     }
 
-    public boolean isAnyTagsVisible(){
+    public boolean isAllTagsInvisible(){
         DelayUtils.waitForPageToLoad(driver,wait);
         AdvancedSearch advancedSearch = new AdvancedSearch(driver, wait);
+ //       System.out.println(advancedSearch.howManyTagsIsVisible());
         return advancedSearch.howManyTagsIsVisible()==0;
     }
 
