@@ -27,7 +27,7 @@ public class BaseTestCase {
 
     @BeforeClass
     public void openBrowser() {
-        if (CONFIGURATION.getValue("driver").equals("chrome")) {
+        if (CONFIGURATION.getDriver().equals("chrome")) {
             startChromeDriver();
         }
         else{

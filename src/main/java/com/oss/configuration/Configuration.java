@@ -30,4 +30,12 @@ public class Configuration {
         else
         return System.getProperty("URL");
     }
+
+    public String getDriver() {
+        if (System.getProperty("driver")==null) {
+            return CONFIGURATION.getValue("driver");
+        }
+        else
+            return System.getProperty("driver");
+    }
 }
