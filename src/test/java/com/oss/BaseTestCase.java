@@ -4,6 +4,7 @@ import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.LoginPage;
 
 import com.oss.utils.TestListener;
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -35,6 +36,7 @@ public class BaseTestCase {
         }
         webDriverWait = new WebDriverWait(driver, 50);
         LoginPage loginPage = new LoginPage(driver, BASIC_URL).open();
+        driver.manage().addCookie(new Cookie("i18nCurrentLocale", "en", BASIC_URL.split("//")[1].split(":")[0], "/",  null, false, false));
         this.homePage = loginPage.login();
     }
 
@@ -53,6 +55,7 @@ public class BaseTestCase {
         if (CONFIGURATION.getValue("locally").equals("true")) {
             System.setProperty("webdriver.chrome.driver", CONFIGURATION.getValue("chromeDriverPath"));
             options.addArguments("start-maximized");
+
         }
         else {
             System.setProperty("webdriver.chrome.driver", CONFIGURATION.getValue("chromeDriverLinuxPath"));
