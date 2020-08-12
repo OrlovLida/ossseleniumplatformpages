@@ -95,6 +95,7 @@ public class ScheduleTaskPage extends ExportGuiWizardPage{
 
     @Step("Set Actual Time By Clicking two times on the clock")
     public ScheduleTaskPage setActualTime(){
+        DelayUtils.waitForPageToLoad(driver, wait);
         clickTime();
         clickTime();
         return this;

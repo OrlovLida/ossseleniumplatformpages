@@ -58,7 +58,7 @@ public class FilterManagerPage extends BasePage {
 
     @Step("Expand all categories")
     public FilterManagerPage expandAllCategories(){
-        expandAllCategorie();
+        expandAllFolders();
         return this;
     }
 
@@ -77,28 +77,61 @@ public class FilterManagerPage extends BasePage {
 
     @Step("Edit Filter")
     public FilterManagerPage editFilter(String name){
-        expandKebab(name);
+        expandFilterKebab(name);
         getEditButtonByFilterName(name).click();
         return this;
     }
 
     @Step("Delete Filter")
     public FilterManagerPage deleteFilter(String name){
-        expandKebab(name);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        expandFilterKebab(name);
         chooseDelete();
         return this;
     }
 
+    @Step("Share Filter for user")
+    public FilterManagerPage shareFilter(String filterName, String userName, String permission){
+        openShareFilter(filterName)
+                .typeUserNameInSearch(userName)
+                .shareForUser(userName, permission)
+                .closeShareView();
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return this;
+    }
+
+    @Step("Share Folder for user")
+    public FilterManagerPage shareFolder(String folderName, String userName){
+        openShareFolder(folderName)
+                .typeUserNameInSearch(userName)
+                .shareForUser(userName, "R")
+                .closeShareView();
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return this;
+    }
+
     @Step("Open Share Filter Page")
-    public ShareFilterPage shareFilter(String name){
-        expandKebab(name);
+    public ShareFilterPage openShareFilter(String name){
+        expandFilterKebab(name);
         chooseShare();
         return new ShareFilterPage(driver);
     }
 
-    private void expandKebab(String name){
+    @Step("Open Share Folder Page")
+    public ShareFilterPage openShareFolder(String folderName){
+        expandFolderKebab(folderName);
+        chooseShare();
+        return new ShareFilterPage(driver);
+    }
+
+    private void expandFilterKebab(String filerName){
         DelayUtils.waitForPageToLoad(driver,wait);
-        getFilterByName(name).findElement(By.xpath(".//*[contains(@id, '" + KEBAB_ID + "')]")).click();
+        getFilterByName(filerName).findElement(By.xpath(".//*[contains(@id, '" + KEBAB_ID + "')]")).click();
+    }
+
+    private void expandFolderKebab(String folderName){
+        DelayUtils.waitForPageToLoad(driver,wait);
+        getFolderByName(folderName).findElement(By.xpath(".//*[contains(@id, '" + KEBAB_ID + "')]")).click();
     }
 
     private void deleteAllFilter(){
@@ -125,12 +158,13 @@ public class FilterManagerPage extends BasePage {
         }
     }
 
-    private void expandCategory(int categoryNumber){
+    public FilterManagerPage expandFolder(String folderName){
         DelayUtils.waitForPageToLoad(driver,wait);
-        driver.findElements(By.xpath(CATEGORY_LIST_XPATH)).get(categoryNumber-1).click();
+        getFolderByName(folderName).click();
+        return this;
     }
 
-    private void expandAllCategorie(){
+    private void expandAllFolders(){
         DelayUtils.waitForPageToLoad(driver,wait);
         List<WebElement> categoryLists = driver.findElements(By.xpath(CATEGORY_LIST_XPATH));
         for (int i=categoryLists.size(); i>0; i--) {
@@ -142,16 +176,42 @@ public class FilterManagerPage extends BasePage {
         return driver.findElement(By.xpath("//div[contains(@id,'name') and text()='"+ name +"']/../../../.."));
     }
 
+    private WebElement getFolderByName(String folderName) {
+        return driver.findElement(By.xpath("//div[contains(@class,'categoryLabel') and text()='" + folderName + "']/../.."));
+    }
+
+    public boolean isFilterVisible(String name){
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return driver.findElements(By.xpath("//div[contains(@id,'name') and text()='"+ name +"']")).size()>0;
+    }
+
+    public boolean isFolderVisible(String folderName){
+        return driver.findElements(By.xpath("//div[contains(@class,'categoryLabel') and text()='" + folderName + "']")).size()>0;
+    }
+
+    public boolean isEditActionVisible(String filterName){
+        return getEditButtonByFilterName(filterName).isDisplayed();
+    }
+
+    public int howManyFilters(){
+        return driver.findElements(By.xpath("//div[contains(@id,'name')]")).size();
+    }
+
+    public int howManyFolders(){
+        return driver.findElements(By.xpath("//div[contains(@class,'categoryLabel')]")).size();
+    }
+
     private WebElement getEditButtonByFilterName(String name){
-        return getFilterByName(name).findElement(By.xpath("//button[contains(@class, 'square')]"));
+        return getFilterByName(name).findElement(By.xpath(".//button[contains(@class, 'square')]"));
     }
 
     private WebElement getFavoriteButtonByFilterName(String name){
-        return getFilterByName(name).findElement(By.xpath("//button[contains(@class, 'favourite')]"));
+        return getFilterByName(name).findElement(By.xpath(".//button[contains(@class, 'favourite')]"));
     }
 
     public boolean isFavorite(String name){
         DelayUtils.waitForPageToLoad(driver, wait);
+        DelayUtils.waitForVisibility(wait, getFilterByName(name));
         return getFavoriteButtonByFilterName(name).findElements(By.xpath(".//i[contains(@class, 'star-o')]")).size()==1;
     }
 
@@ -161,10 +221,6 @@ public class FilterManagerPage extends BasePage {
 
     private void chooseDelete() {
         DropdownList.create(driver,wait).selectOptionWithId("remove_action");
-    }
-
-    private WebElement getFolderByName(String folderName) {
-     return driver.findElement(By.xpath("//div[contains(@class,'categoryLabel') and text()='" + folderName + "']/../.."));
     }
 
     private void expandKebabByParent(WebElement parent){
