@@ -51,12 +51,15 @@ public class ShareFilterPage  extends FilterManagerPage {
     }
 
     @Step("Share for user")
-    public  ShareFilterPage shareForUser(String userName){
+    public  ShareFilterPage shareForUser(String userName, String permission){
         DelayUtils.waitForPageToLoad(driver, wait);
         getLevelElementByName("all users").click();
-        getReadButtonByName(userName).click();
-        DelayUtils.waitForPageToLoad(driver, wait);
-        getWriteButtonByName(userName).click();
+        if(permission.equals("R")) {
+            getReadButtonByName(userName).click();
+        }
+        else if(permission.equals("W")) {
+            getWriteButtonByName(userName).click();
+        }
         DelayUtils.waitForPageToLoad(driver, wait);
         return this;
     }

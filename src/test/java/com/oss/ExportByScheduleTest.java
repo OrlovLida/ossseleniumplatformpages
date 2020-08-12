@@ -82,7 +82,7 @@ public class ExportByScheduleTest extends BaseTestCase{
         Assert.assertEquals(schedulerServicePage.getTextOfJob(TASK_NAME), TASK_NAME);
     }
 
-    @Test(priority = 4, enabled = false)
+    @Test(priority = 4)
     @Description("Monthly Export Using Schedule Export Task")
     public void monthlyExportUsingScheduleExportTask(){
         new ExportGuiWizardPage(driver)
@@ -99,7 +99,7 @@ public class ExportByScheduleTest extends BaseTestCase{
         Assert.assertEquals(schedulerServicePage.getTextOfJob(TASK_NAME), TASK_NAME);
     }
 
-    @Test(priority = 5, enabled = false)
+    @Test(priority = 5)
     @Description("Yearly Export Using Schedule Export Task")
     public void yearlyExportUsingScheduleExportTask(){
         new ExportGuiWizardPage(driver)

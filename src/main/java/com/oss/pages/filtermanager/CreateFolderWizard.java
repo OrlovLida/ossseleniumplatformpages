@@ -1,14 +1,12 @@
 package com.oss.pages.filtermanager;
 
-import com.oss.framework.components.TextField;
 import com.oss.framework.widgets.Wizard;
-import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 
 import static com.oss.framework.components.Input.ComponentType.TEXT_FIELD;
 
-public class CreateFolderWizard extends BasePage {
+public class CreateFolderWizard extends FilterManagerPage {
 
     public CreateFolderWizard(WebDriver driver){
         super(driver);

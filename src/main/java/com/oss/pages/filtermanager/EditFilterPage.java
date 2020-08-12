@@ -3,15 +3,11 @@ package com.oss.pages.filtermanager;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.utils.DragAndDrop;
 import com.oss.framework.widgets.Wizard;
-import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 
-import java.util.List;
 
-public class EditFilterPage  extends BasePage {
+public class EditFilterPage extends FilterManagerPage {
 
     public EditFilterPage(WebDriver driver){
         super(driver);
@@ -24,17 +20,6 @@ public class EditFilterPage  extends BasePage {
 
     private Wizard folderWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
 
-    public void dragAndDrop(String element1, String element2){
-        DelayUtils.waitForPageToLoad(driver,wait);
-        WebElement e2 = driver.findElement(By.xpath(element2));
-        List<WebElement> e3 = driver.findElements(By.xpath(element1));
-        WebElement e1 = e3.get(0);
-        WebElement e4 = e3.get(1);
-
-        DelayUtils.sleep(3000);
-        DragAndDrop.dragAndDrop(e1,e2,driver);
-
-    }
 
     @Step("Change Folder for filer using drag and drop")
     public EditFilterPage changeFolderForFilter(){

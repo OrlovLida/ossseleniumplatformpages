@@ -33,12 +33,12 @@ public class SchedulerServicePage extends BasePage {
     }
 
     private void typeInSearchField(String value){
-        DelayUtils.waitForVisibility(wait,searchField);
+        DelayUtils.waitForVisibility(wait, searchField);
         searchField.sendKeys(value);
     }
 
     private boolean isRowContainsTextVisible(String text){
-        DelayUtils.waitForVisibility(wait,firstJob);
+        DelayUtils.waitForVisibility(wait, firstJob);
         return driver.findElements(By.xpath(getPathOfRowContainsText(text))).size() > 0;
     }
 
@@ -71,7 +71,7 @@ public class SchedulerServicePage extends BasePage {
         deleteJobAction.click();
         DelayUtils.waitForVisibility(wait,confirmDeleteButton);
         confirmDeleteButton.click();
-        DelayUtils.sleep(500);
+        DelayUtils.waitForPageToLoad(driver, wait);
         return this;
     }
 
@@ -82,7 +82,7 @@ public class SchedulerServicePage extends BasePage {
         permanentDeleteJobAction.click();
         DelayUtils.waitForVisibility(wait,confirmDeleteButton);
         confirmDeleteButton.click();
-        DelayUtils.sleep(500);
+        DelayUtils.waitForPageToLoad(driver, wait);
         return this;
     }
 
@@ -90,7 +90,7 @@ public class SchedulerServicePage extends BasePage {
     public SchedulerServicePage selectDeletedJob(String text){
         DelayUtils.waitForClickability(wait,driver.findElement(By.xpath("//div[contains(@class, 'Cell Row')]/div[contains(text(),'"+text+"')]")));
         clickOnRowContainsText(text);
-        DelayUtils.sleep(500);
+        DelayUtils.waitForPageToLoad(driver, wait);
         clickOnRowContainsText(text);
         return this;
     }
