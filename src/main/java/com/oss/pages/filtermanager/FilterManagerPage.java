@@ -188,15 +188,6 @@ public class FilterManagerPage extends BasePage {
         }
     }
 
-    private void collapseAllFolders(){
-        DelayUtils.waitForPageToLoad(driver,wait);
-        List<WebElement> categoryLists = driver.findElements(By.xpath(CATEGORY_LIST_XPATH + "//i[contains (@class, 'chevron-up')]"));
-        for (int i=categoryLists.size(); i>0; i--) {
-            categoryLists.get(i - 1).click();
-            DelayUtils.waitForPageToLoad(driver,wait);
-        }
-    }
-
     private WebElement getFilterByName(String name){
         return driver.findElement(By.xpath("//div[contains(@id,'name') and text()='"+ name +"']/../../../.."));
     }
