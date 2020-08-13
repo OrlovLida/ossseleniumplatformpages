@@ -45,6 +45,7 @@ public class ShareFilterPage  extends FilterManagerPage {
 
     @Step("Close Share View")
     public  FilterManagerPage closeShareView(){
+        DelayUtils.waitForClickability(wait, driver.findElement(By.xpath(QUIT_MODAL_BUTTON_XPATH)));
         driver.findElement(By.xpath(QUIT_MODAL_BUTTON_XPATH)).click();
         DelayUtils.waitForPageToLoad(driver, wait);
         return new FilterManagerPage(driver);
@@ -55,9 +56,11 @@ public class ShareFilterPage  extends FilterManagerPage {
         DelayUtils.waitForPageToLoad(driver, wait);
         getLevelElementByName("all users").click();
         if(permission.equals("R")) {
+            DelayUtils.waitForClickability(wait, getReadButtonByName(userName));
             getReadButtonByName(userName).click();
         }
         else if(permission.equals("W")) {
+            DelayUtils.waitForClickability(wait, getWriteButtonByName(userName));
             getWriteButtonByName(userName).click();
         }
         DelayUtils.waitForPageToLoad(driver, wait);

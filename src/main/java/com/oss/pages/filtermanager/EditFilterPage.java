@@ -30,6 +30,7 @@ public class EditFilterPage extends FilterManagerPage {
 
     @Step("Click on Accept and close the wizard")
     public FilterManagerPage clickAccept(){
+        DelayUtils.waitForPageToLoad(driver,wait);
         folderWizard.clickActionById(ACCEPT_BUTTON_ID);
         return new FilterManagerPage(driver);
     }

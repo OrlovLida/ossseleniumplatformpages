@@ -62,6 +62,12 @@ public class FilterManagerPage extends BasePage {
         return this;
     }
 
+    @Step("Collapse all categories")
+    public FilterManagerPage collapseAllCategories(){
+        collapseAllFolders();
+        return this;
+    }
+
     @Step("Create Folder")
     public FilterManagerPage createFolder(String name){
         return openCreateNewFolderWizard().typeNameOfTheFolder(name).clickAccept();
@@ -166,9 +172,18 @@ public class FilterManagerPage extends BasePage {
 
     private void expandAllFolders(){
         DelayUtils.waitForPageToLoad(driver,wait);
-        List<WebElement> categoryLists = driver.findElements(By.xpath(CATEGORY_LIST_XPATH));
+        List<WebElement> categoryLists = driver.findElements(By.xpath(CATEGORY_LIST_XPATH + "//i[contains (@class, 'chevron-down')]"));
         for (int i=categoryLists.size(); i>0; i--) {
             categoryLists.get(i - 1).click();
+        }
+    }
+
+    private void collapseAllFolders(){
+        DelayUtils.waitForPageToLoad(driver,wait);
+        List<WebElement> categoryLists = driver.findElements(By.xpath(CATEGORY_LIST_XPATH + "//i[contains (@class, 'chevron-up')]"));
+        for (int i=categoryLists.size(); i>0; i--) {
+            categoryLists.get(i - 1).click();
+            DelayUtils.waitForPageToLoad(driver,wait);
         }
     }
 
@@ -190,7 +205,13 @@ public class FilterManagerPage extends BasePage {
     }
 
     public boolean isEditActionVisible(String filterName){
-        return getEditButtonByFilterName(filterName).isDisplayed();
+        return driver.findElements(By.xpath("//div[contains(@id,'name') and text()='"+ filterName +"']/../../../..//button[contains(@class, 'square')]")).size()>0;
+    }
+
+    public boolean isFavorite(String name){
+        DelayUtils.waitForPageToLoad(driver, wait);
+        DelayUtils.waitForVisibility(wait, getFilterByName(name));
+        return getFavoriteButtonByFilterName(name).findElements(By.xpath(".//i[contains(@class, 'star-o')]")).size()==0;
     }
 
     public int howManyFilters(){
@@ -207,12 +228,6 @@ public class FilterManagerPage extends BasePage {
 
     private WebElement getFavoriteButtonByFilterName(String name){
         return getFilterByName(name).findElement(By.xpath(".//button[contains(@class, 'favourite')]"));
-    }
-
-    public boolean isFavorite(String name){
-        DelayUtils.waitForPageToLoad(driver, wait);
-        DelayUtils.waitForVisibility(wait, getFilterByName(name));
-        return getFavoriteButtonByFilterName(name).findElements(By.xpath(".//i[contains(@class, 'star-o')]")).size()==1;
     }
 
     private void chooseShare(){
