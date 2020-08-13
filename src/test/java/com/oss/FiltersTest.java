@@ -35,6 +35,7 @@ public class FiltersTest extends BaseTestCase{
     private String FOLDER_NAME = "test";
     private String USER2_LOGIN = "webseleniumtests2";
     private String USER2_PASSWORD = "webtests";
+    private int i = 0;
 
     @BeforeClass
     public void goToInventoryView() {
@@ -51,6 +52,11 @@ public class FiltersTest extends BaseTestCase{
                 .changeTabToFilters();
         filterSettingsFilter = new FilterSettingsFilter(driver);
         filtersBefore = filterSettingsFilter.howManyFilters();
+        if (filtersBefore>0 && i<1){
+            deleteAllFiltersAndFolders();
+            i++;
+            createNewFilters();
+        }
         filterPanel = new FilterPanel(driver);
         filterPanel.typeValueInLocationIdInput(id)
                 .saveFilterAs(FILTER_NAME)
@@ -148,9 +154,9 @@ public class FiltersTest extends BaseTestCase{
     public void sharingAnExistingFilter(){
         filterManagerPage
                 .expandAllCategories()
-                .shareFilter(FILTER2_NAME, USER2_LOGIN, "W")
+                .shareFilter(FILTER_NAME, USER2_LOGIN, "W")
                 .expandAllCategories()
-                .shareFilter(FILTER_NAME, USER2_LOGIN, "R")
+                .shareFilter(FILTER2_NAME, USER2_LOGIN, "R")
                 .shareFolder(FOLDER_NAME, USER2_LOGIN);
         filterManagerPage.changeUser(USER2_LOGIN, USER2_PASSWORD);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -167,13 +173,13 @@ public class FiltersTest extends BaseTestCase{
     @Test(priority = 12)
     @Description("Checking that Shared filter with Write permission could be edited")
     public void isWritePermissionWorking(){
-        Assert.assertTrue(filterManagerPage.isEditActionVisible(FILTER2_NAME));
+        Assert.assertTrue(filterManagerPage.isEditActionVisible(FILTER_NAME));
     }
 
     @Test(priority = 13)
     @Description("Checking that Shared filter with Read permission could not be edited")
     public void isReadPermissionWorking(){
-        Assert.assertFalse(filterManagerPage.isEditActionVisible(FILTER_NAME));
+        Assert.assertFalse(filterManagerPage.isEditActionVisible(FILTER2_NAME));
     }
 
     @Test(priority = 14)
@@ -210,10 +216,10 @@ public class FiltersTest extends BaseTestCase{
     public void removingFilter() {
         filterManagerPage = FilterManagerPage.goToFilterManagerPage(driver,BASIC_URL)
                 .expandAllCategories()
-                .deleteFilter(FILTER2_NAME);
+                .deleteFilter(FILTER_NAME);
         filterManagerPage.changeUser(CONFIGURATION.getValue("user"), CONFIGURATION.getValue("password"));
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertFalse(filterManagerPage.isFilterVisible(FILTER2_NAME));
+        Assert.assertFalse(filterManagerPage.isFilterVisible(FILTER_NAME));
     }
 
     @Test(priority = 18)
