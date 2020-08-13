@@ -53,19 +53,22 @@ public class FiltersTest extends BaseTestCase{
         filterSettingsFilter = new FilterSettingsFilter(driver);
         filtersBefore = filterSettingsFilter.howManyFilters();
         if (filtersBefore>0 && i<1){
+            System.out.println("There are "+filtersBefore+" old filters. Start removing them.");
             deleteAllFiltersAndFolders();
             i++;
             inventoryViewPage = InventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Location");
             createNewFilters();
         }
-        filterPanel = new FilterPanel(driver);
-        filterPanel.typeValueInLocationIdInput(id)
-                .saveFilterAs(FILTER_NAME)
-                .typeValueInLocationIdInput(VALUE_FOR_FILTER2)
-                .saveFilterAs(FILTER2_NAME)
-                .typeValueInLocationIdInput(VALUE_FOR_FILTER3)
-                .saveFilterAs(FILTER3_NAME);
-        Assert.assertEquals(filterSettingsFilter.howManyFilters() - filtersBefore, 3);
+        else {
+            filterPanel = new FilterPanel(driver);
+            filterPanel.typeValueInLocationIdInput(id)
+                    .saveFilterAs(FILTER_NAME)
+                    .typeValueInLocationIdInput(VALUE_FOR_FILTER2)
+                    .saveFilterAs(FILTER2_NAME)
+                    .typeValueInLocationIdInput(VALUE_FOR_FILTER3)
+                    .saveFilterAs(FILTER3_NAME);
+            Assert.assertEquals(filterSettingsFilter.howManyFilters() - filtersBefore, 3);
+        }
     }
 
     @Test(priority = 2)
