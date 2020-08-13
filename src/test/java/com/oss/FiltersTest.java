@@ -55,6 +55,7 @@ public class FiltersTest extends BaseTestCase{
         if (filtersBefore>0 && i<1){
             deleteAllFiltersAndFolders();
             i++;
+            inventoryViewPage = InventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Location");
             createNewFilters();
         }
         filterPanel = new FilterPanel(driver);
