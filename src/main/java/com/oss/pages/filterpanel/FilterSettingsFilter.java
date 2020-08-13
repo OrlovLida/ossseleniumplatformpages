@@ -19,10 +19,6 @@ public class FilterSettingsFilter extends FilterSettings {
     private final String APPLY_BUTTON_XPATH = "//div[@class='filters-component-container']//a[contains(@class, 'btn-primary btn-md')]";
     private final String PARTIAL_FILTER_XPATH = "//div[@class='filter-label' and text()='";
 
-    public int howManyFilters(){
-        return driver.findElements(By.xpath(FILTERS_XPATH)).size();
-    }
-
     @Step ("Type Filter Name in the Search Field")
     public FilterSettingsFilter findFilterInSearch(String filterName){
         setValueOnSearchField(filterName);
@@ -44,12 +40,28 @@ public class FilterSettingsFilter extends FilterSettings {
     @Step ("Apply Filter")
     public FilterPanel applyFilter(){
         driver.findElement(By.xpath(APPLY_BUTTON_XPATH)).click();
+        DelayUtils.waitForPageToLoad(driver,wait);
         return new FilterPanel(driver);
     }
 
+    @Step ("Checking that filter is visible")
+    public boolean isFilterVisibleInFilterPanel(String filterName){
+        DelayUtils.waitForPageToLoad(driver,wait);
+        return isFilterVisible(filterName);
+    }
+
+    @Step ("Checking that filter is favorite")
     public boolean isFilterFavorite(String filterName){
         DelayUtils.waitForPageToLoad(driver,wait);
         return filter(filterName).findElements(By.xpath("./..//i[@class='OSSIcon fa fa-star']")).size()==1;
+    }
+
+    public int howManyFilters(){
+        return driver.findElements(By.xpath(FILTERS_XPATH)).size();
+    }
+
+    private boolean isFilterVisible(String filterName) {
+        return driver.findElements(By.xpath(PARTIAL_FILTER_XPATH + filterName + "']")).size()>0;
     }
 
     private void setValueOnSearchField(String value){

@@ -16,7 +16,7 @@ public class FilterPanel extends BasePage {
         super(driver);
     }
 
-    AdvancedSearch advancedSearch = new AdvancedSearch(driver,wait);
+    private AdvancedSearch advancedSearch = new AdvancedSearch(driver,wait);
 
     private final String SELECTED_FILTERS_INFO_XPATH= "//div[@class='selected-filter-info']";
     private final String SAVE_BUTTON_CLASS_NAME= "save-buttons-dropdown";
@@ -34,6 +34,14 @@ public class FilterPanel extends BasePage {
     @Step("Type Value in Location.Id Text Field")
     public FilterPanel typeValueInLocationIdInput(String value) {
         DelayUtils.waitForPageToLoad(driver, wait);
+        setValueOnFilterInput("id", TEXT_FIELD, value);
+        return this;
+    }
+
+    @Step("Change Value in Location.Id Text Field")
+    public FilterPanel changeValueInLocationIdInput(String value) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        clearFilterInput("id", TEXT_FIELD);
         setValueOnFilterInput("id", TEXT_FIELD, value);
         return this;
     }
@@ -97,15 +105,17 @@ public class FilterPanel extends BasePage {
     }
 
     private void setValueOnFilterInput(String componentId, Input.ComponentType componentType, String value){
+        advancedSearch.getComponent(componentId,componentType).clearByAction();
         advancedSearch.getComponent(componentId,componentType).setSingleStringValue(value);
     }
 
-    private void clearFilterInput(String componentId, Input.ComponentType componentType, String value){
-        advancedSearch.getComponent(componentId,componentType).setSingleStringValue(value);
+    private void clearFilterInput(String componentId, Input.ComponentType componentType){
+        advancedSearch.getComponent(componentId,componentType).clearByAction();
     }
 
     private String getValueOfFilterInput(String componentId, Input.ComponentType componentType){
         DelayUtils.waitForPageToLoad(driver, wait);
+        AdvancedSearch advancedSearch = new AdvancedSearch(driver,wait);
         return advancedSearch.getComponent(componentId,componentType).getStringValue();
     }
 }

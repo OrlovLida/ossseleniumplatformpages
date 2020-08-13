@@ -13,7 +13,6 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.*;
 
-
 import static com.oss.configuration.Configuration.CONFIGURATION;
 
 @Listeners({TestListener.class})
@@ -40,7 +39,6 @@ public class BaseTestCase {
         this.homePage = loginPage.login();
     }
 
-
     @AfterClass
     public void closeBrowser() {
         if(driver != null) {
@@ -55,7 +53,6 @@ public class BaseTestCase {
         if (CONFIGURATION.getValue("locally").equals("true")) {
             System.setProperty("webdriver.chrome.driver", CONFIGURATION.getValue("chromeDriverPath"));
             options.addArguments("start-maximized");
-
         }
         else {
             System.setProperty("webdriver.chrome.driver", CONFIGURATION.getValue("chromeDriverLinuxPath"));
@@ -69,12 +66,13 @@ public class BaseTestCase {
         FirefoxOptions options = new FirefoxOptions();
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--width=1920");
+        options.addArguments("--height=1080");
         if (CONFIGURATION.getValue("locally").equals("true")) {
             System.setProperty("webdriver.gecko.driver", CONFIGURATION.getValue("geckoDriverPath"));
         }
         else {
             System.setProperty("webdriver.gecko.driver", CONFIGURATION.getValue("geckoDriverLinuxPath"));
-            options.addArguments("--window-size=1920,1080");
             options.addArguments("--headless");
         }
         driver = new FirefoxDriver(options);
