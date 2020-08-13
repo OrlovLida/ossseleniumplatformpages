@@ -92,6 +92,7 @@ public class FilterManagerPage extends BasePage {
     public FilterManagerPage deleteFilter(String name){
         DelayUtils.waitForPageToLoad(driver, wait);
         expandFilterKebab(name);
+        DelayUtils.waitForPageToLoad(driver, wait);
         chooseDelete();
         return this;
     }
@@ -175,6 +176,15 @@ public class FilterManagerPage extends BasePage {
         List<WebElement> categoryLists = driver.findElements(By.xpath(CATEGORY_LIST_XPATH + "//i[contains (@class, 'chevron-down')]"));
         for (int i=categoryLists.size(); i>0; i--) {
             categoryLists.get(i - 1).click();
+        }
+    }
+
+    private void collapseAllFolders(){
+        DelayUtils.waitForPageToLoad(driver,wait);
+        List<WebElement> categoryLists = driver.findElements(By.xpath(CATEGORY_LIST_XPATH + "//i[contains (@class, 'chevron-up')]"));
+        for (int i=categoryLists.size(); i>0; i--) {
+            categoryLists.get(i - 1).click();
+            DelayUtils.waitForPageToLoad(driver,wait);
         }
     }
 
