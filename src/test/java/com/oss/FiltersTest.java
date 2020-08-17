@@ -164,7 +164,8 @@ public class FiltersTest extends BaseTestCase{
                 .shareFolder(FOLDER_NAME, USER2_LOGIN);
         filterManagerPage.changeUser(USER2_LOGIN, USER2_PASSWORD);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        filterManagerPage.expandAllCategories();
+        filterManagerPage.expandAllCategories()
+                .markAsAFavorite(FILTER_NAME);
         Assert.assertTrue(filterManagerPage.isFilterVisible(FILTER_NAME) && filterManagerPage.isFilterVisible(FILTER2_NAME));
     }
 
@@ -207,6 +208,12 @@ public class FiltersTest extends BaseTestCase{
     }
 
     @Test(priority = 16)
+    @Description("Checking that filters marked as a favorite is favorite in Inventory View for a second user")
+    public void isFiltersFavoriteInIV() {
+        Assert.assertTrue(filterSettingsFilter.isFilterFavorite(FILTER_NAME));
+    }
+
+    @Test(priority = 17)
     @Description("Checking that filter have a proper value in Inventory View for a second user")
     public void isFiltersHaveProperValue() {
         filterSettingsFilter
@@ -215,7 +222,7 @@ public class FiltersTest extends BaseTestCase{
         Assert.assertEquals(filterPanel.getValueOfLocationIdInput(), VALUE_FOR_FILTER2);
     }
 
-    @Test(priority = 17)
+    @Test(priority = 18)
     @Description("Deleting shared filter. Checking that is deleted for a first user as well")
     public void removingFilter() {
         filterManagerPage = FilterManagerPage.goToFilterManagerPage(driver,BASIC_URL)
@@ -226,7 +233,7 @@ public class FiltersTest extends BaseTestCase{
         Assert.assertFalse(filterManagerPage.isFilterVisible(FILTER_NAME));
     }
 
-    @Test(priority = 18)
+    @Test(priority = 19)
     @Description("Deleting all filters and folders")
     public void deleteAllFiltersAndFolders(){
         filterManagerPage = FilterManagerPage.goToFilterManagerPage(driver,BASIC_URL)

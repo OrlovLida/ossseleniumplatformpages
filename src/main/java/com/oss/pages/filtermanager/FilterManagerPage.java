@@ -131,6 +131,13 @@ public class FilterManagerPage extends BasePage {
         return new ShareFilterPage(driver);
     }
 
+    @Step("Mark as a favorite")
+    public FilterManagerPage markAsAFavorite(String filterName){
+        DelayUtils.waitForPageToLoad(driver,wait);
+        getFavoriteButtonByFilterName(filterName).click();
+        return this;
+    }
+
     private void expandFilterKebab(String filerName){
         DelayUtils.waitForPageToLoad(driver,wait);
         getFilterByName(filerName).findElement(By.xpath(".//*[contains(@id, '" + KEBAB_ID + "')]")).click();
