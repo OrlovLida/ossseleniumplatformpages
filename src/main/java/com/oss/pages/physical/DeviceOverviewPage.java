@@ -37,6 +37,20 @@ public class DeviceOverviewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
+    @Step("Select object based on parents object on hierarchy view")
+    public void selectTreeRow(String name, int parentTreeItemId, String parentName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getTreeView().selectTreeRow(name, parentTreeItemId, parentName);
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    @Step("Expand object based on parent object on hierarchy view")
+    public void expandTreeRow(int treeItemId, String parentTreeRowName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getTreeView().expandTreeRow(treeItemId, parentTreeRowName);
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
     @Step("Use context action")
     public void useContextAction(String name) {
         DelayUtils.waitForPageToLoad(driver, wait);

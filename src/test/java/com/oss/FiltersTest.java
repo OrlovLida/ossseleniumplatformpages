@@ -5,7 +5,7 @@ import com.oss.pages.filtermanager.EditFilterPage;
 import com.oss.pages.filtermanager.FilterManagerPage;
 import com.oss.pages.filterpanel.FilterPanel;
 import com.oss.pages.filterpanel.FilterSettingsFilter;
-import com.oss.pages.platform.InventoryViewPage;
+import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 import org.testng.Assert;
@@ -18,7 +18,7 @@ import static com.oss.configuration.Configuration.CONFIGURATION;
 @Listeners({TestListener.class})
 public class FiltersTest extends BaseTestCase{
 
-    private InventoryViewPage inventoryViewPage;
+    private NewInventoryViewPage inventoryViewPage;
     private FilterPanel filterPanel;
     private FilterSettingsFilter filterSettingsFilter;
     private FilterManagerPage filterManagerPage;
@@ -39,7 +39,8 @@ public class FiltersTest extends BaseTestCase{
 
     @BeforeClass
     public void goToInventoryView() {
-        inventoryViewPage = InventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Location");
+        inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Location");
+
     }
 
     @Test(priority = 1)

@@ -1,6 +1,6 @@
 package com.oss;
 
-import com.oss.pages.platform.InventoryViewPage;
+import com.oss.pages.platform.NewInventoryViewPage;
 import io.qameta.allure.Description;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -12,11 +12,11 @@ import com.oss.utils.*;
 @Listeners({TestListener.class})
 public class LayoutTest extends BaseTestCase{
 
-    private InventoryViewPage inventoryViewPage;
+    private NewInventoryViewPage inventoryViewPage;
 
     @BeforeClass
     public void goToInventoryView() {
-        inventoryViewPage = InventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Location");
+        inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Location");
     }
 
     @Test(priority = 1)
