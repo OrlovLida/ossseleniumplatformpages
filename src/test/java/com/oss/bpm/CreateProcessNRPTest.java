@@ -175,7 +175,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     public void getIPCode() {
         DelayUtils.sleep(3000);
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, BASIC_URL);
-        tasksPage.findTask(processNRPCode, "Ready For Integration");
+        tasksPage.findTask(processNRPCode, "Ready for Integration");
         DelayUtils.sleep(3000);
         TableInterface ipTable = OldTable.createByComponentId(driver, webDriverWait, "ip_involved_nrp_group1");
         int rowNumber = ipTable.getRowNumber(processIPName1, "Name");
