@@ -57,7 +57,7 @@ public class FiltersTest extends BaseTestCase{
             System.out.println("There are "+filtersBefore+" old filters. Start removing them.");
             deleteAllFiltersAndFolders();
             i++;
-            inventoryViewPage = InventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Location");
+            inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Location");
             createNewFilters();
         }
         else {
@@ -200,7 +200,7 @@ public class FiltersTest extends BaseTestCase{
     @Test(priority = 15)
     @Description("Checking that filters are visible in Inventory View for a second user")
     public void isFiltersVisibleInIV() {
-        inventoryViewPage = InventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Location");
+        inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Location");
         inventoryViewPage
                 .openFilterPanel()
                 .openFilterSettings()
