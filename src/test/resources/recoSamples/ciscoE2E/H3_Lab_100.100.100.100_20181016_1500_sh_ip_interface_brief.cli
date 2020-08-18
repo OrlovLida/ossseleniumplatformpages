@@ -1,0 +1,14 @@
+#show ip interface brief
+Interface                  IP-Address      OK Method Status                Protocol
+Embedded-Service-Engine00 unassigned      YES NVRAM  administratively down down
+GigabitEthernet00         10.10.10.10     YES NVRAM  up                    up
+GigabitEthernet01         10.10.11.10     YES NVRAM  up                    up
+GigabitEthernet01.1       unassigned      YES unset  up                    up
+FastEthernet000          10.10.14.10     YES NVRAM  up                    up
+FastEthernet001          unassigned      YES NVRAM  up                    up
+FastEthernet010          unassigned      YES NVRAM  up                    up
+FastEthernet011          192.168.1.2     YES NVRAM  up                    up
+BVI1                       10.10.13.10     YES NVRAM  up                    up
+Loopback0                  1.1.1.1         YES NVRAM  up                    up
+Loopback67                 2.3.4.5         YES NVRAM  up                    up
+Loopback557                1.2.3.4         YES NVRAM  up                    up

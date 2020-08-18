@@ -1,0 +1,54 @@
+sh inv raw
+NAME: "CISCO1941/K9", DESCR: "CISCO1941/K9 chassis, Hw Serial#: FGL161112T8, Hw Revision: 1.0"
+PID: CISCO1941/K9      , VID: V04 , SN: FGL161112T8
+
+NAME: "C1941 Chassis Slot 0", DESCR: "C1941 Chassis Slot"
+PID:                   , VID:    , SN:
+
+NAME: "C1941 Mother board 2GE, integrated VPN and 2W on Slot 0", DESCR: "C1941 Mother board 2GE, integrated VPN and 2W"
+PID:                   , VID: V04 , SN: FOC16070HHJ
+
+NAME: "DaughterCard Slot 0 on Card 0", DESCR: "C1941 DaughterCard Slot"
+PID:                   , VID:    , SN:
+
+NAME: "Two-Port Fast Ethernet High Speed WAN Interface Card on Slot 0 SubSlot 0", DESCR: "Two-Port Fast Ethernet High Speed WAN Interface Card"
+PID: HWIC-2FE          , VID: V02 , SN: FOC1902A1Z3
+
+NAME: "FastEthernet0/0/0", DESCR: "FastEthernet"
+PID:                   , VID:    , SN:
+
+NAME: "FastEthernet0/0/1", DESCR: "FastEthernet"
+PID:                   , VID:    , SN:
+
+NAME: "DaughterCard Slot 1 on Card 0", DESCR: "C1941 DaughterCard Slot"
+PID:                   , VID:    , SN:
+
+NAME: "Two-Port Fast Ethernet High Speed WAN Interface Card on Slot 0 SubSlot 1", DESCR: "Two-Port Fast Ethernet High Speed WAN Interface Card"
+PID: HWIC-2FE          , VID: V02 , SN: FOC18507F8D
+
+NAME: "FastEthernet0/1/0", DESCR: "FastEthernet"
+PID:                   , VID:    , SN:
+
+NAME: "FastEthernet0/1/1", DESCR: "FastEthernet"
+PID:                   , VID:    , SN:
+
+NAME: "Embedded-Service-Engine0/0", DESCR: "Embedded Service Engine"
+PID:                   , VID:    , SN:
+
+NAME: "GigabitEthernet0/0", DESCR: "CN Gigabit Ethernet"
+PID:                   , VID:    , SN:
+
+NAME: "GigabitEthernet0/1", DESCR: "CN Gigabit Ethernet"
+PID:                   , VID:    , SN:
+
+NAME: "C1941 ISM Slot 0", DESCR: "C1941 ISM Slot"
+PID:                   , VID:    , SN:
+
+NAME: "Container of powerSupply Containers", DESCR: "Container of powerSupply Containers"
+PID:                   , VID:    , SN:
+
+NAME: "Container of Power Supply", DESCR: "Container of Power Supply"
+PID:                   , VID:    , SN:
+
+NAME: "C1941/C2901 AC Power Supply", DESCR: "C1941/C2901 AC Power Supply"
+PID: PWR-1941-2901-AC  , VID:    , SN:
