@@ -20,7 +20,7 @@ import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
 
 
-public class InventoryViewPage extends BasePage {
+public class NewInventoryViewPage extends BasePage {
 
     private final String loadBar = "//div[@class='load-bar']";
 
@@ -29,17 +29,17 @@ public class InventoryViewPage extends BasePage {
     private PropertyPanel propertyPanel;
     private PropertiesFilter propertiesFilter;
     private Wizard wizard;
-    private InventoryViewPage inventoryViewPage;
+    private NewInventoryViewPage inventoryViewPage;
 
-    public InventoryViewPage(WebDriver driver) {
+    public NewInventoryViewPage(WebDriver driver) {
         super(driver);
     }
 
     @Step("Open Inventory View")
-    public static InventoryViewPage goToInventoryViewPage(WebDriver driver, String basicURL, String context) {
+    public static NewInventoryViewPage goToInventoryViewPage(WebDriver driver, String basicURL, String context) {
         driver.get(String.format("%s/#/views/management/views/inventory-view/" + context +
                 "?perspective=LIVE", basicURL));
-        return new InventoryViewPage(driver);
+        return new NewInventoryViewPage(driver);
     }
 
     public TableWidget getTableWidget() {
@@ -101,14 +101,14 @@ public class InventoryViewPage extends BasePage {
     }
 
     @Step("Change layout to Horizontal Orientation")
-    public InventoryViewPage changeLayoutToHorizontal() {
+    public NewInventoryViewPage changeLayoutToHorizontal() {
         ButtonPanel.create(driver, wait).getButtonIcon("layout").click();
         DropdownList.create(driver, wait).selectOptionWithIconContains("Horizontal");
         return this;
     }
 
     @Step("Change layout to Vertical Orientation")
-    public InventoryViewPage changeLayoutToVertical() {
+    public NewInventoryViewPage changeLayoutToVertical() {
         DelayUtils.waitForPageToLoad(driver, wait);
         ButtonPanel.create(driver, wait).getButtonIcon("layout").click();
         DropdownList.create(driver, wait).selectOptionWithIconContains("Vertical");
@@ -124,7 +124,7 @@ public class InventoryViewPage extends BasePage {
     }
 
     @Step("Clear all tags")
-    public InventoryViewPage clearAllTags(){
+    public NewInventoryViewPage clearAllTags(){
         DelayUtils.waitForPageToLoad(driver,wait);
         AdvancedSearch advancedSearch = new AdvancedSearch(driver, wait);
         advancedSearch.clickOnTagByLabel("Clear");

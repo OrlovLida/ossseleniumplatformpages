@@ -20,18 +20,18 @@ import com.oss.framework.widgets.tablewidget.ColumnsManagement;
 import com.oss.framework.widgets.tablewidget.TableWidget;
 import com.oss.framework.widgets.tablewidget.TableWidget.Row;
 import com.oss.framework.widgets.tabswidget.TabsWidget;
-import com.oss.pages.platform.InventoryViewPage;
+import com.oss.pages.platform.NewInventoryViewPage;
 
 public class InventoryViewTest extends BaseTestCase {
 
 /*    private static final String TABLE_WIDGET_URL = String.format("%s/#/views/management/views/inventory-view/Location" +
             "?perspective=LIVE", BASIC_URL);*/
-    private InventoryViewPage inventoryViewPage;
+    private NewInventoryViewPage inventoryViewPage;
 
     @BeforeClass
     public void goToInventoryView() {
 
-        inventoryViewPage = InventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Location");
+        inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Location");
     }
 
     @Test
