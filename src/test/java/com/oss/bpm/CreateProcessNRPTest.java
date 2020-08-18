@@ -72,6 +72,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
 
     @Test(priority = 2)
     public void startHLPTask() {
+        DelayUtils.sleep(3000);
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, BASIC_URL);
         tasksPage.startTask(processNRPCode, "High Level Planning");
 
