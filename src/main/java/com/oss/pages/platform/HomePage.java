@@ -4,9 +4,8 @@ import com.oss.framework.components.portals.PopupV2;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.languageservice.LanguageServicePage;
 import com.oss.pages.schedulerservice.SchedulerServicePage;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import io.qameta.allure.Step;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -36,10 +35,17 @@ public class HomePage extends BasePage {
     //@FindBy (xpath = "//i[contains(@class,'buttonIcon fa fa-floppy-o')]")
     private WebElement saveBookmarksButton;
 
-    HomePage(WebDriver driver) {
+    public HomePage(WebDriver driver) {
         super(driver);
         WebDriverWait wait = new WebDriverWait(driver, 45);
         DelayUtils.waitForVisibility(wait, logo);
+    }
+
+    @Step("Open Home Page")
+    public static HomePage goToHomePage(WebDriver driver, String basicURL){
+        driver.get(String.format("%s/#/" +
+                "?perspective=LIVE", basicURL));
+        return new HomePage(driver);
     }
 
     public WebElement getLoginButton() {
@@ -106,5 +112,26 @@ public class HomePage extends BasePage {
         driver.get(url);
         return new SchedulerServicePage(driver);
     }
+    //temporary
+    String searchObjectTypeTxtXpath = ".//input[(@data-attributename=\"SearchUserViewsByType\")]";
+    private String objectTypeListXpath = "//div[contains(text(),'%s')]/..";
+    //temporary
+
+    @Step("Type object type")
+    public HomePage typeObjectType(String objectType) {
+        DelayUtils.waitByXPath(wait, searchObjectTypeTxtXpath);
+        driver.findElement(By.xpath(searchObjectTypeTxtXpath)).sendKeys(objectType);
+        driver.findElement(By.xpath(searchObjectTypeTxtXpath)).sendKeys(Keys.ENTER);
+        return new HomePage(driver);
+    }
+
+    @Step("Confirm object type")
+    public InventoryViewPage confirmObjectType(String expectedObjectType) {
+        String objectTypeList = String.format(objectTypeListXpath, expectedObjectType);
+        DelayUtils.waitByXPath(wait, objectTypeList);
+        driver.findElement(By.xpath(objectTypeList)).click();
+        return new InventoryViewPage(driver);
+    }
 
 }
+
