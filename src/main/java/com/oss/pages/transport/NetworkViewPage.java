@@ -10,8 +10,12 @@ import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageContainer.Message;
 import com.oss.framework.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.alerts.SystemMessageInterface;
+import com.oss.framework.components.AdvancedSearch;
+import com.oss.framework.components.Input;
 import com.oss.framework.components.contextactions.ActionsInterface;
 import com.oss.framework.components.contextactions.OldActionsContainer;
+import com.oss.framework.prompts.ConfirmationBox;
+import com.oss.framework.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.dockedPanel.DockedPanel;
 import com.oss.framework.widgets.dockedPanel.DockedPanelInterface;
@@ -58,4 +62,23 @@ public class NetworkViewPage extends BasePage {
                 .isEqualTo(MessageType.SUCCESS);
     }
 
+    @Step("Add element quered in advanced search")
+    public void queryElementAndAddItToView(String componentId, Input.ComponentType componentType, String value) {
+        AdvancedSearch advancedSearch = AdvancedSearch.createById(driver, wait, "advancedSearch");
+        advancedSearch.getComponent(componentId, componentType).clearByAction();
+        advancedSearch.getComponent(componentId, componentType).setSingleStringValue(value);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        advancedSearch.getTableWidget().selectFirstRow();
+        DelayUtils.sleep(500);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        advancedSearch.clickAdd();
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    @Step("Click confirmation box button")
+    public void clickConfirmationBoxButtonByLabel(String label) {
+        ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
+        prompt.clickButtonByLabel(label);
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
 }
