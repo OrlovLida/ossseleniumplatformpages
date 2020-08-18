@@ -126,11 +126,11 @@ public class HomePage extends BasePage {
     }
 
     @Step("Confirm object type")
-    public InventoryViewPage confirmObjectType(String expectedObjectType) {
+    public NewInventoryViewPage confirmObjectType(String expectedObjectType) {
         String objectTypeList = String.format(objectTypeListXpath, expectedObjectType);
         DelayUtils.waitByXPath(wait, objectTypeList);
         driver.findElement(By.xpath(objectTypeList)).click();
-        return new InventoryViewPage(driver);
+        return new NewInventoryViewPage(driver);
     }
 
 }
