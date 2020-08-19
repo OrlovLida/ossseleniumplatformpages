@@ -52,13 +52,13 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         return mainTree;
     }
 
-    @Step("Expand two first tree levels of Inconsistencies")
+    @Step("Expand two tree levels of Inconsistencies")
     public void expantTree() {
         DelayUtils.waitForPageToLoad(driver, wait);
         Assertions.assertThat(getTreeView().getVisibleTreeRow().size() > 1);
-        getTreeView().expandFirstTreeRow();
+        getTreeView().expandLastTreeRow();
         DelayUtils.waitForPageToLoad(driver, wait);
-        getTreeView().expandFirstTreeRow();
+        getTreeView().expandLastTreeRow();
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
