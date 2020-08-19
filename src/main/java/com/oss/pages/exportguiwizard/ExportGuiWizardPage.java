@@ -13,9 +13,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class ExportGuiWizardPage extends BasePage {
 
@@ -51,21 +49,11 @@ public class ExportGuiWizardPage extends BasePage {
     }
 
     protected void setValueOnCombobox (String COMBOBOX_ID, String value){
-//        typeValueOnCombobox(COMBOBOX_ID, value);
-//        Actions actions = new Actions(driver);
-//        actions.sendKeys(Keys.ARROW_DOWN).perform();
-//        actions.sendKeys(Keys.ENTER).perform();
-//        DelayUtils.sleep(200);
         getWizard().getComponent(COMBOBOX_ID, ComponentType.COMBOBOX)
                 .setSingleStringValue(value);
     }
 
     protected void setValueContainsOnCombobox (String COMBOBOX_ID, String value){
-//        typeValueOnCombobox(COMBOBOX_ID, value);
-//        Actions actions = new Actions(driver);
-//        actions.sendKeys(Keys.ARROW_DOWN).perform();
-//        actions.sendKeys(Keys.ENTER).perform();
-//        DelayUtils.sleep(200);
         getWizard().getComponent(COMBOBOX_ID, ComponentType.COMBOBOX)
                 .setSingleStringValueContains(value);
     }
@@ -117,10 +105,6 @@ public class ExportGuiWizardPage extends BasePage {
     @Step("Choose XLS File Type")
     public ExportGuiWizardPage chooseXLS(){
         setValueOnCombobox(COMBOBOX_FILE_TYPE_ID, "XLS");
-//        Actions actions = new Actions(driver);
-//        actions.sendKeys(Keys.ARROW_DOWN).perform();
-//        actions.sendKeys(Keys.ARROW_DOWN).perform();
-//        actions.sendKeys(Keys.ENTER).perform();
         return this;
     }
 
@@ -156,13 +140,13 @@ public class ExportGuiWizardPage extends BasePage {
     return new LanguageServicePage(driver);}
 
     @Step("Go to next step of wizard - Fill Server Data")
-    public FillServerDataPage goToTheFillServerData(){waitForVisibility(serverDataProgressBar);clickOnNext(); return new FillServerDataPage(driver);}
+    public FillServerDataPage goToTheFillServerData(){DelayUtils.waitForVisibility(wait,serverDataProgressBar);clickOnNext(); return new FillServerDataPage(driver);}
 
     @Step("Go to next step of wizard - Schedule Task")
-    public ScheduleTaskPage goToTheScheduleTask(){waitForVisibility(scheduleTasklProgressBar);clickOnNext(); return new ScheduleTaskPage(driver);}
+    public ScheduleTaskPage goToTheScheduleTask(){DelayUtils.waitForVisibility(wait,scheduleTasklProgressBar);clickOnNext(); return new ScheduleTaskPage(driver);}
 
     @Step("Go to next step of wizard - Send File By Email")
-    public SendFileByEmailPage goToSendFileByEmailPage(){waitForVisibility(sendByEmailProgressBar);clickOnNext(); return new SendFileByEmailPage(driver);}
+    public SendFileByEmailPage goToSendFileByEmailPage(){DelayUtils.waitForVisibility(wait,sendByEmailProgressBar);clickOnNext(); return new SendFileByEmailPage(driver);}
 
     @Step("Uncheck the Export to File with Headers checkbox")
     public ExportGuiWizardPage uncheckTheExportToFileWithHeaders(){uncheckTheCheckbox(CHECKBOX_EXPORT_WITH_HEADERS_ID); return this;}

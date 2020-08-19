@@ -8,9 +8,12 @@ package com.oss.pages.bpm;
 
 import java.time.LocalDate;
 import java.util.List;
+
 import org.openqa.selenium.WebDriver;
+
 import com.google.common.base.Splitter;
 import com.oss.framework.alerts.SystemMessageContainer;
+import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.components.Input;
 import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.tablewidget.OldTable;
@@ -21,64 +24,64 @@ import com.oss.pages.BasePage;
  * @author Gabriela Kasza
  */
 public class ProcessWizardPage extends BasePage {
-    private Wizard wizard;
 
     public ProcessWizardPage(WebDriver driver) {
         super(driver);
     }
-    public Wizard getWizard() {
-        if(this.wizard == null) {
-            this.wizard = Wizard.createWizard(this.driver, this.wait);
-        }
-        return wizard;
-    }
-    public String createSimpleNRP(){
+
+    public String createSimpleNRP() {
 
         return createProcess("Selenium Test " + Math.random(), (long) 0, "Network Resource Process");
 
     }
-    public String createSimpleDCP(){
+
+    public String createSimpleDCP() {
         return createProcess("Selenium Test " + Math.random(), (long) 0, "Data Correction Process");
     }
-    public String createDCPPlusDays(Long plusDays){
+
+    public String createDCPPlusDays(Long plusDays) {
 
         return createProcess("Selenium Test " + Math.random(), plusDays, "Data Correction Process");
     }
-    public String createNRPPlusDays (Long plusDays){
+
+    public String createNRPPlusDays(Long plusDays) {
 
         return createProcess("Selenium Test " + Math.random(), plusDays, "Network Resource Process");
     }
-    public String createProcess(String processName, Long plusDays, String processType){
+
+    public String createProcess(String processName, Long plusDays, String processType) {
         TableInterface table = OldTable.createByWindowTitle(driver, wait, "Process Instances");
         table.callActionByLabel("Create new process");
-        Wizard wizardFirstStep = Wizard.createWizard(driver, wait);
+        Wizard wizardFirstStep = Wizard.createByComponentId(driver, wait, "start-process-wizard");
         Input componentDomain = wizardFirstStep.getComponent("domain-combobox-input", Input.ComponentType.COMBOBOX);
-        if (!componentDomain.getValue().getStringValue().equals("Inventory Processes")){componentDomain.setSingleStringValue("Inventory Processes");}
-        //componentDomain.setSingleStringValue("Inventory Processes");
+        if (!componentDomain.getValue().getStringValue().equals("Inventory Processes")) {
+            componentDomain.setSingleStringValue("Inventory Processes");
+        }
         Input componentDefinition = wizardFirstStep.getComponent("definition-combobox-input", Input.ComponentType.COMBOBOX);
         componentDefinition.setSingleStringValue(processType);
         Input componentRelease = wizardFirstStep.getComponent("release-combobox-input", Input.ComponentType.COMBOBOX);
         componentRelease.setSingleStringValue("Latest");
-        wizardFirstStep.clickAccept();
+        wizardFirstStep.clickActionById("wizard-submit-button-start-process-wizard");
         //wizardFirstStep.waitToClose();
 
-        Wizard wizardSecondStep = Wizard.createWizard(driver, wait);
-        Input processNameTextField =wizardSecondStep.getComponent("processNameTextFieldId", Input.ComponentType.TEXT_FIELD);
+        Wizard wizardSecondStep = Wizard.createByComponentId(driver, wait, "bpm_processes_view_start-process-details-prompt_processCreateFormId");
+        Input processNameTextField = wizardSecondStep.getComponent("processNameTextFieldId", Input.ComponentType.TEXT_FIELD);
         processNameTextField.setSingleStringValue(processName);
         Input finishedDueDate = wizardSecondStep.getComponent("FINISHED_DUE_DATE", Input.ComponentType.DATE);
         finishedDueDate.setSingleStringValue(LocalDate.now().plusDays(plusDays).toString());
-        wizardSecondStep.clickAccept();
+        wizardSecondStep.clickActionById("wizard-submit-button-bpm_processes_view_start-process-details-prompt_processCreateFormId");
 
-        SystemMessageContainer systemMessageContainer = SystemMessageContainer.create(driver, wait);
-        List<SystemMessageContainer.Message> messages = systemMessageContainer.getMessages();
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, wait);
+        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
         String text = messages.get(0).getText();
         return extractProcessCode(text);
     }
-    private String extractProcessCode(String message){
+
+    private String extractProcessCode(String message) {
         Iterable<String> messageParts = Splitter.on(" ").split(message);
-        for (String part:messageParts) {
-            if(part.startsWith("NRP-") || part.startsWith("DCP-")
-                    ||part.startsWith("IP-") || part.startsWith("DRP-")) {
+        for (String part : messageParts) {
+            if (part.startsWith("NRP-") || part.startsWith("DCP-")
+                    || part.startsWith("IP-") || part.startsWith("DRP-")) {
                 return part;
             }
         }

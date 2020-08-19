@@ -20,18 +20,18 @@ import com.oss.framework.widgets.tablewidget.ColumnsManagement;
 import com.oss.framework.widgets.tablewidget.TableWidget;
 import com.oss.framework.widgets.tablewidget.TableWidget.Row;
 import com.oss.framework.widgets.tabswidget.TabsWidget;
-import com.oss.pages.platform.InventoryViewPage;
+import com.oss.pages.platform.NewInventoryViewPage;
 
 public class InventoryViewTest extends BaseTestCase {
 
 /*    private static final String TABLE_WIDGET_URL = String.format("%s/#/views/management/views/inventory-view/Location" +
             "?perspective=LIVE", BASIC_URL);*/
-    private InventoryViewPage inventoryViewPage;
+    private NewInventoryViewPage inventoryViewPage;
 
     @BeforeClass
     public void goToInventoryView() {
 
-        inventoryViewPage = InventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Location");
+        inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Location");
     }
 
     @Test
@@ -336,9 +336,9 @@ public class InventoryViewTest extends BaseTestCase {
         //TODO: problem with click Next and then Cancel button
         TableWidget tableWidget = inventoryViewPage.getTableWidget();
 //        tableWidget.takeAction("Create", "Location");
-        inventoryViewPage.waitForComponent("//div[contains(@id,'CREATE')]");
+        DelayUtils.waitForComponent(webDriverWait,"//div[contains(@id,'CREATE')]");
         driver.findElement(By.id("CREATE")).click();
-        inventoryViewPage.waitForComponent("(//a[contains(text(),'Create Location')])[1]");
+        DelayUtils.waitForComponent(webDriverWait,"(//a[contains(text(),'Create Location')])[1]");
         driver.findElement(By.xpath("(//a[contains(text(),'Create Location')])[1]")).click();
         DelayUtils.sleep(600);
         Wizard locationWizard = inventoryViewPage.getWizard();

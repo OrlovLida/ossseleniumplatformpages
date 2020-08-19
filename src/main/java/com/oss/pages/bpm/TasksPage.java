@@ -6,21 +6,19 @@
  */
 package com.oss.pages.bpm;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.oss.framework.components.Input;
+import com.oss.framework.components.contextactions.ButtonContainer;
 import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tablewidget.TableInterface;
-import com.oss.framework.widgets.tablewidget.TableWidget;
 import com.oss.framework.widgets.tabswidget.OldTabs;
 import com.oss.framework.widgets.tabswidget.TabsInterface;
 import com.oss.pages.BasePage;
+import com.oss.pages.dms.AttachFileWizardPage;
 
 /**
  * @author Gabriela Kasza
@@ -35,35 +33,57 @@ public class TasksPage extends BasePage {
         super(driver);
     }
     public void findTask(String processCode, String taskName){
-       TableInterface table = OldTable.createByWindowTitle(driver, wait, "Tasks");
-
-        table.searchByAttributeWithLabel("Name", Input.ComponentType.TEXT_FIELD,taskName);
+        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, "bpm_task_view_task-table");
+        DelayUtils.waitForPageToLoad(driver, wait);
         table.searchByAttributeWithLabel("Process Code", Input.ComponentType.TEXT_FIELD,processCode);
-        DelayUtils.sleep(1000);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        table.searchByAttributeWithLabel("Name", Input.ComponentType.TEXT_FIELD,taskName);
+
+        //DelayUtils.sleep(1000);
         table.selectRowByAttributeValueWithLabel("Process Code",processCode);
 
     }
     public void startTask(String processCode, String taskName){
         findTask(processCode,taskName);
+        DelayUtils.waitForPageToLoad(driver, wait);
         actionTask("Start task");
 
     }
     public void completeTask(String processCode, String taskName){
         findTask(processCode,taskName);
+        DelayUtils.waitForPageToLoad(driver, wait);
         actionTask("Complete task");
     }
     public void setupIntegration(String processCode){
         findTask(processCode,"Ready for Integration");
         TabsInterface tabs= OldTabs.create(driver,wait);
-        tabs.selectTabByLabel("Form");
         tabs.callActionByLabel("Setup Integration");
     }
+    public void addFile(String processCode, String taskName, String filePath){
+        findTask(processCode,taskName);
+        TabsInterface tabs= OldTabs.create(driver,wait);
+        DelayUtils.waitForPageToLoad(driver,wait);
+        tabs.selectTabById("3");
+        ButtonContainer action = ButtonContainer.create(driver, wait);
+        action.callActionById("attachmentManagerBusinessView_topCommonButtons-1");
+        AttachFileWizardPage attachFileWizardPage = new AttachFileWizardPage(driver);
+        attachFileWizardPage.selectRadioButton("Upload anyway");
+        attachFileWizardPage.attachFile(filePath);
+        DelayUtils.sleep();
+        attachFileWizardPage.nextButton();
+        attachFileWizardPage.acceptButton();
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+    public void selectTab(String tabLabel){
+        TabsInterface tabs= OldTabs.create(driver,wait);
+        tabs.selectTabByLabel(tabLabel);
+    }
+
     private void actionTask(String actionLabel){
         TabsInterface tabs= OldTabs.create(driver,wait);
         tabs.selectTabByLabel("Form");
         tabs.callActionByLabel(actionLabel);
         ConfirmationBoxInterface prompt= ConfirmationBox.create(driver, wait);
         prompt.clickButtonByLabel("Proceed");
-        wait.until(ExpectedConditions.invisibilityOf(driver.findElement(By.xpath("//div[contains(@class,'OssWindow newPrompt')]"))));
     }
 }

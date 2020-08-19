@@ -7,15 +7,16 @@ import io.qameta.allure.Description;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import com.oss.utils.*;
 
+@Listeners({TestListener.class})
 public class ExportByScheduleTest extends BaseTestCase{
 
     private static final String LANGUAGE_SERVICE_PAGE_URL = String.format("%s/#/views/languagesservice/views/translations" +
             "?perspective=LIVE", BASIC_URL);
-    private static final String SCHEDULER_SERVICE_PAGE_URL = String.format("%s/#/view/scheduler-service-view/main/global" +
-            "?perspective=LIVE", BASIC_URL);
-    private static  String TASK_NAME = "Test_Export123";
+    private static  String TASK_NAME = "!Test_Export123";
 
     private LanguageServicePage languageServicePage;
     private SchedulerServicePage schedulerServicePage;
@@ -31,7 +32,7 @@ public class ExportByScheduleTest extends BaseTestCase{
                 .openExportFileWizard();
     }
 
-    @Test
+    @Test(priority = 1)
     @Description("Single Export using schedule export task")
     public void singleExportUsingScheduleExportTask(){
         new ExportGuiWizardPage(driver)
@@ -42,13 +43,13 @@ public class ExportByScheduleTest extends BaseTestCase{
                 .setActualDate()
                 .setTime("2359")
                 .closeTheWizard();
-        schedulerServicePage = homePage.goToSchedulerServicePage(SCHEDULER_SERVICE_PAGE_URL);
+        schedulerServicePage=SchedulerServicePage.goToSchedulerServicePage(driver, BASIC_URL);
         schedulerServicePage
                 .findJobAndClickOnIt(TASK_NAME);
         Assert.assertEquals(schedulerServicePage.getTextOfJob(TASK_NAME), TASK_NAME);
     }
 
-    @Test
+    @Test(priority = 2)
     @Description("Daily Export using schedule export task")
     public void dailyExportUsingScheduleExportTask(){
         new ExportGuiWizardPage(driver)
@@ -58,13 +59,13 @@ public class ExportByScheduleTest extends BaseTestCase{
                 .chooseDailySchedule()
                 .setActualTime()
                 .closeTheWizard();
-        schedulerServicePage = homePage.goToSchedulerServicePage(SCHEDULER_SERVICE_PAGE_URL);
+        schedulerServicePage=SchedulerServicePage.goToSchedulerServicePage(driver, BASIC_URL);
         schedulerServicePage
                 .findJobAndClickOnIt(TASK_NAME);
         Assert.assertEquals(schedulerServicePage.getTextOfJob(TASK_NAME), TASK_NAME);
     }
 
-    @Test
+    @Test(priority = 3)
     @Description("Weekly Export Using Schedule Export Task")
     public void weeklyExportUsingScheduleExportTask(){
         new ExportGuiWizardPage(driver)
@@ -75,13 +76,13 @@ public class ExportByScheduleTest extends BaseTestCase{
                 .repeatEveryWeekOn(1)
                 .setActualTime()
                 .closeTheWizard();
-        schedulerServicePage = homePage.goToSchedulerServicePage(SCHEDULER_SERVICE_PAGE_URL);
+        schedulerServicePage=SchedulerServicePage.goToSchedulerServicePage(driver, BASIC_URL);
         schedulerServicePage
                 .findJobAndClickOnIt(TASK_NAME);
         Assert.assertEquals(schedulerServicePage.getTextOfJob(TASK_NAME), TASK_NAME);
     }
 
-    @Test
+    @Test(priority = 4)
     @Description("Monthly Export Using Schedule Export Task")
     public void monthlyExportUsingScheduleExportTask(){
         new ExportGuiWizardPage(driver)
@@ -92,13 +93,13 @@ public class ExportByScheduleTest extends BaseTestCase{
                 .repeatEveryDayMonthly("1")
                 .setActualTime()
                 .closeTheWizard();
-        schedulerServicePage = homePage.goToSchedulerServicePage(SCHEDULER_SERVICE_PAGE_URL);
+        schedulerServicePage=SchedulerServicePage.goToSchedulerServicePage(driver, BASIC_URL);
         schedulerServicePage
                 .findJobAndClickOnIt(TASK_NAME);
         Assert.assertEquals(schedulerServicePage.getTextOfJob(TASK_NAME), TASK_NAME);
     }
 
-    @Test
+    @Test(priority = 5)
     @Description("Yearly Export Using Schedule Export Task")
     public void yearlyExportUsingScheduleExportTask(){
         new ExportGuiWizardPage(driver)
@@ -110,7 +111,7 @@ public class ExportByScheduleTest extends BaseTestCase{
                 .repeatEveryDayYearly("1")
                 .setActualTime()
                 .closeTheWizard();
-        schedulerServicePage = homePage.goToSchedulerServicePage(SCHEDULER_SERVICE_PAGE_URL);
+        schedulerServicePage=SchedulerServicePage.goToSchedulerServicePage(driver, BASIC_URL);
         schedulerServicePage
                 .findJobAndClickOnIt(TASK_NAME);
         Assert.assertEquals(schedulerServicePage.getTextOfJob(TASK_NAME), TASK_NAME);

@@ -1,12 +1,13 @@
 package com.oss.pages.platform;
 
 import com.oss.framework.components.portals.PopupV2;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.languageservice.LanguageServicePage;
 import com.oss.pages.schedulerservice.SchedulerServicePage;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import io.qameta.allure.Step;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.oss.pages.BasePage;
 import com.oss.pages.physical.DeviceWizardPage;
@@ -34,9 +35,17 @@ public class HomePage extends BasePage {
     //@FindBy (xpath = "//i[contains(@class,'buttonIcon fa fa-floppy-o')]")
     private WebElement saveBookmarksButton;
 
-    HomePage(WebDriver driver) {
+    public HomePage(WebDriver driver) {
         super(driver);
-        waitForVisibility(logo);
+        WebDriverWait wait = new WebDriverWait(driver, 45);
+        DelayUtils.waitForVisibility(wait, logo);
+    }
+
+    @Step("Open Home Page")
+    public static HomePage goToHomePage(WebDriver driver, String basicURL){
+        driver.get(String.format("%s/#/" +
+                "?perspective=LIVE", basicURL));
+        return new HomePage(driver);
     }
 
     public WebElement getLoginButton() {
@@ -44,7 +53,8 @@ public class HomePage extends BasePage {
     }
 
     public String getPageTitle() {
-        waitForVisibility(pageTitle);
+        WebDriverWait wait = new WebDriverWait(driver, 45);
+        DelayUtils.waitForVisibility(wait,pageTitle);
         return pageTitle.getText();
     }
 
@@ -63,7 +73,8 @@ public class HomePage extends BasePage {
     }
 
     public PopupV2 goToCreateBookmarkPopUp() {
-        waitForVisibility(saveBookmarksButton);
+        WebDriverWait wait = new WebDriverWait(driver, 45);
+        DelayUtils.waitForVisibility(wait,saveBookmarksButton);
         saveBookmarksButton.click();
         return new PopupV2(driver);
     }
@@ -83,9 +94,9 @@ public class HomePage extends BasePage {
         return new LocationWizardPage(driver);
     }
 
-    public InventoryViewPage goToInventoryViewPage(String url) {
+    public NewInventoryViewPage goToInventoryViewPage(String url) {
         driver.get(url);
-        return new InventoryViewPage(driver);
+        return new NewInventoryViewPage(driver);
     }
 
     public HierarchyViewPage goToHierarchyViewPage(String url) {
@@ -101,5 +112,26 @@ public class HomePage extends BasePage {
         driver.get(url);
         return new SchedulerServicePage(driver);
     }
+    //temporary
+    String searchObjectTypeTxtXpath = ".//input[(@data-attributename=\"SearchUserViewsByType\")]";
+    private String objectTypeListXpath = "//div[contains(text(),'%s')]/..";
+    //temporary
+
+    @Step("Type object type")
+    public HomePage typeObjectType(String objectType) {
+        DelayUtils.waitByXPath(wait, searchObjectTypeTxtXpath);
+        driver.findElement(By.xpath(searchObjectTypeTxtXpath)).sendKeys(objectType);
+        driver.findElement(By.xpath(searchObjectTypeTxtXpath)).sendKeys(Keys.ENTER);
+        return new HomePage(driver);
+    }
+
+    @Step("Confirm object type")
+    public NewInventoryViewPage confirmObjectType(String expectedObjectType) {
+        String objectTypeList = String.format(objectTypeListXpath, expectedObjectType);
+        DelayUtils.waitByXPath(wait, objectTypeList);
+        driver.findElement(By.xpath(objectTypeList)).click();
+        return new NewInventoryViewPage(driver);
+    }
 
 }
+

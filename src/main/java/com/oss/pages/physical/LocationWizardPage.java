@@ -4,6 +4,7 @@ import com.oss.framework.components.*;
 import com.oss.framework.utils.LocatingUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 //import org.testng.Assert;
@@ -69,6 +70,15 @@ public class LocationWizardPage extends BasePage {
     public void checkIfSuccess() {
         LocatingUtils.waitUsingXpath("//div[contains(@class,'success')]", wait);
 //        Asserts.assertTrue(driver.findElement(By.xpath("//div[contains(@class,'success')]")).isEnabled());
+    }
+    @Step("Create Location with mandatory fields (Location type, name, address) filled in")
+    public void createLocation(String locationType, String randomLocationName) {
+        setComponentValue("type-input", locationType, Input.ComponentType.COMBOBOX);
+        setComponentValue("name", randomLocationName, Input.ComponentType.TEXT_FIELD);
+        if (getComponentValue("address", Input.ComponentType.SEARCH_FIELD).isEmpty()) {
+            setComponentValue("address", " ", Input.ComponentType.SEARCH_FIELD);
+        }
+        accept();
     }
 
 }

@@ -1,20 +1,22 @@
 package com.oss;
 
-import com.oss.pages.platform.InventoryViewPage;
+import com.oss.pages.platform.NewInventoryViewPage;
 import io.qameta.allure.Description;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import com.oss.utils.*;
 
+
+@Listeners({TestListener.class})
 public class LayoutTest extends BaseTestCase{
 
-    private static final String NEW_INVENTORY_VIEW_URL = String.format("%s/#/views/management/views/inventory-view/Location" +
-            "?perspective=LIVE", BASIC_URL);
-    private InventoryViewPage inventoryViewPage;
+    private NewInventoryViewPage inventoryViewPage;
 
     @BeforeClass
     public void goToInventoryView() {
-        inventoryViewPage = InventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Location");
+        inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Location");
     }
 
     @Test(priority = 1)

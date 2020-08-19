@@ -31,7 +31,7 @@ public class IntegrationProcessWizardPage extends BasePage {
     public IntegrationProcessWizardPage(WebDriver driver) {
         super(driver);
     }
-    private Wizard integrationWizard = Wizard.createWizard(driver, wait);
+    private Wizard integrationWizard = Wizard.createByComponentId(driver, wait, "ipd_integration_wizard_SetupIntegrationComponentId");
 
     public void defineIntegrationProcess(String processName, String finishDueDate, int row){
         //Wizard integrationWizard = Wizard.createWizard(driver, wait);
@@ -46,7 +46,11 @@ public class IntegrationProcessWizardPage extends BasePage {
         editableList.callActionByLabel("Delete","processNameId",processName);
     }
     public void clickNext(){
-        integrationWizard.clickNext();
+        integrationWizard.clickActionById("wizard-next-button-ipd_integration_wizard_SetupIntegrationComponentId");
+    }
+    public void clickAccept(){
+        integrationWizard.clickActionById("wizard-submit-button-ipd_integration_wizard_SetupIntegrationComponentId");
+
     }
     public void dragAndDrop(String objectName, String targetProcessName){
 
@@ -68,7 +72,13 @@ public class IntegrationProcessWizardPage extends BasePage {
         //WebElement source = row.findElement(By.xpath("//*[name()='svg' and @data-icon='grip-vertical']"));
         WebElement source = row.findElement(By.xpath("//div[contains(@class,'dragButton')]//div"));
         Actions action = new Actions(driver);
-       action.dragAndDrop(source,target).build().perform();
+        action.click(source);
+        action.moveToElement(target,5,5);
+        action.perform();
+        DelayUtils.sleep(250);
+        action.release(target);
+        action.perform();
+      // action.dragAndDrop(source,target).build().perform();
        //action.clickAndHold(source).moveToElement(target).release(source).build().perform();
         //dragNdrop.perform();
         DelayUtils.sleep(10000);

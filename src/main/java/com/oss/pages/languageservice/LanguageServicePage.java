@@ -5,6 +5,7 @@ import com.oss.pages.BasePage;
 import com.oss.pages.exportguiwizard.ExportGuiWizardPage;
 import com.oss.pages.platform.LoginPanelPage;
 import com.oss.pages.platform.NotificationWrapperPage;
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -14,6 +15,7 @@ import java.util.List;
 
 public class LanguageServicePage extends BasePage {
 
+    @Step("Open Language Service Page")
     public static LanguageServicePage goToLanguageServicePage(WebDriver driver, String baseURL){
         driver.get(String.format("%s/#/views/languagesservice/views/translations" +
                 "?perspective=LIVE", baseURL));
@@ -41,19 +43,19 @@ public class LanguageServicePage extends BasePage {
 //    private boolean existsElement(List<WebElement> element) {return element.size() != 0;}
 
     private LanguageServicePage expandMenu() {
-        waitForComponent("//div[@id='"+MENU_BUTTON_ID+"']");
+        DelayUtils.waitForPageToLoad(driver, wait);
         driver.findElement(By.id(MENU_BUTTON_ID)).click();
         return this;
     }
 
     private LoginPanelPage openLoginPanel() {
-        waitForVisibility(loginButton);
+        DelayUtils.waitForVisibility(wait,loginButton);
         loginButton.click();
         return new LoginPanelPage(driver);
     }
 
     private LanguageServicePage closeLoginPanel() {
-        waitForVisibility(loginButton);
+        DelayUtils.waitForVisibility(wait,loginButton);
         loginButton.click();
         return this;
     }
@@ -65,20 +67,22 @@ public class LanguageServicePage extends BasePage {
         return this;
     }
 
+    @Step("Open Export File Wizard")
     public ExportGuiWizardPage openExportFileWizard(){
-        DelayUtils.sleep(100);
+        DelayUtils.waitForPageToLoad(driver, wait);
         expandMenu();
-        waitForVisibility(exportButton);
+        DelayUtils.waitForVisibility(wait,exportButton);
         exportButton.click();
         return new ExportGuiWizardPage(driver);
     }
 
     private NotificationWrapperPage openNotificationPanel() {
-        waitforclickability(notificationButton);
+        DelayUtils.waitForClickability(wait,notificationButton);
         notificationButton.click();
         return new NotificationWrapperPage(driver);
     }
 
+    @Step("Clear Notifications")
     public LanguageServicePage clearNotifications(){
         openNotificationPanel()
                 .clearNotifications();
@@ -87,7 +91,7 @@ public class LanguageServicePage extends BasePage {
     }
 
     private LanguageServicePage closeNotificationPanel(){
-        waitforclickability(notificationButton);
+        DelayUtils.waitForClickability(wait,notificationButton);
         notificationButton.click();
         return this;
     }
@@ -112,8 +116,9 @@ public class LanguageServicePage extends BasePage {
         return notificationButton.findElement(By.xpath("./ancestor::*/div[contains(@class,'globalNotification')]")).getAttribute("class").contains("clicked");
     }
 
+    @Step("Type ID of First Service in Search")
     public LanguageServicePage typeIdOfFirstServiceInSearch() {
-        waitForVisibility(firstService);
+        DelayUtils.waitForVisibility(wait,firstService);
         String idOfFirstElement = firstService.getAttribute("id");
         searchField.sendKeys(idOfFirstElement);
         return this;

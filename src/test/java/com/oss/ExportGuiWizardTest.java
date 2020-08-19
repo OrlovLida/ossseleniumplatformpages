@@ -1,16 +1,15 @@
 package com.oss;
 
-import com.oss.framework.widgets.Wizard;
 import com.oss.pages.exportguiwizard.ExportGuiWizardPage;
 import com.oss.pages.languageservice.LanguageServicePage;
 import io.qameta.allure.Description;
 import org.testng.Assert;
 import org.testng.annotations.*;
+import com.oss.utils.*;
 
+
+@Listeners({TestListener.class})
 public class ExportGuiWizardTest extends BaseTestCase {
-
-    private static final String LANGUAGE_SERVICE_PAGE_URL = String.format("%s/#/views/languagesservice/views/translations" +
-            "?perspective=LIVE", BASIC_URL);
 
     private LanguageServicePage languageServicePage;
     private String emailAddress="testExport@mail.com";
@@ -36,7 +35,6 @@ public class ExportGuiWizardTest extends BaseTestCase {
                 .chooseCSV()
                 .uncheckTheExportToFileWithHeaders()
                 .closeTheWizard();
-
         Assert.assertEquals(languageServicePage.howManyNotifications(), 1);
     }
 

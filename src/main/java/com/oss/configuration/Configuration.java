@@ -22,4 +22,20 @@ public class Configuration {
     public String getValue(String key) {
         return properties.getProperty(key);
     }
+
+    public String getUrl() {
+        if (System.getProperty("URL")==null) {
+            return CONFIGURATION.getValue("baseUrl");
+        }
+        else
+        return System.getProperty("URL");
+    }
+
+    public String getDriver() {
+        if (System.getProperty("driver")==null) {
+            return CONFIGURATION.getValue("driver");
+        }
+        else
+            return System.getProperty("driver");
+    }
 }
