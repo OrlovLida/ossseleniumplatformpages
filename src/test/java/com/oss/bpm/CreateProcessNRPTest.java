@@ -97,8 +97,28 @@ public class CreateProcessNRPTest extends BaseTestCase {
         perspectiveContext = split[1];
         Assertions.assertThat(perspectiveContext).contains("PLAN");
     }
-
     @Test(priority = 5)
+    public void assignFile() {
+        try {
+            TasksPage tasksPage = TasksPage.goToTasksPage(driver, BASIC_URL);
+            URL resource = CreateProcessNRPTest.class.getClassLoader().getResource("bpm/SeleniumTest.txt");
+            String absolutePatch = Paths.get(resource.toURI()).toFile().getAbsolutePath();
+            tasksPage.addFile("NRP-214", "Low Level Planning",absolutePatch);
+            SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
+            Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType())
+                    .isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
+        }
+        catch (URISyntaxException e){
+            throw new RuntimeException("Cannot load file",e);
+        }
+        List<String> attachments = EditableList.createById(driver, webDriverWait, "attachmentManagerBusinessView_commonList").getValues();
+        Assertions.assertThat(attachments.size()).isGreaterThan(0);
+        String allNames = String.join("", attachments);
+        Assertions.assertThat(allNames).contains("SeleniumTest");
+
+    }
+
+    @Test(priority = 6)
     public void createPhysicalDevice() {
         // DeviceWizardPage deviceWizardPage = DeviceWizardPage.goToDeviceWizardPagePlan(driver,BASIC_URL,"project_id=148835809&perspective=PLAN");
         DeviceWizardPage deviceWizardPage = DeviceWizardPage.goToDeviceWizardPageLive(driver, BASIC_URL);
@@ -123,26 +143,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
 
     }
 
-    @Test(priority = 6)
-    public void assignFile() {
-        try {
-            TasksPage tasksPage = TasksPage.goToTasksPage(driver, BASIC_URL);
-            URL resource = CreateProcessNRPTest.class.getClassLoader().getResource("bpm/SeleniumTest.txt");
-            String absolutePatch = Paths.get(resource.toURI()).toFile().getAbsolutePath();
-            tasksPage.addFile(processNRPCode, "Low Level Planning",absolutePatch);
-            SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
-            Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType())
-                    .isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
-        }
-        catch (URISyntaxException e){
-            throw new RuntimeException("Cannot load file",e);
-        }
-        List<String> attachments = EditableList.createById(driver, webDriverWait, "attachmentManagerBusinessView_commonList").getValues();
-        Assertions.assertThat(attachments.size()).isGreaterThan(0);
-        String allNames = String.join("", attachments);
-        Assertions.assertThat(allNames).contains("SeleniumTest");
 
-    }
 
     @Test(priority = 7)
     public void completeLLPTask() {

@@ -62,12 +62,14 @@ public class TasksPage extends BasePage {
     public void addFile(String processCode, String taskName, String filePath){
         findTask(processCode,taskName);
         TabsInterface tabs= OldTabs.create(driver,wait);
+        DelayUtils.waitForPageToLoad(driver,wait);
         tabs.selectTabById("3");
         ButtonContainer action = ButtonContainer.create(driver, wait);
         action.callActionById("attachmentManagerBusinessView_topCommonButtons-1");
         AttachFileWizardPage attachFileWizardPage = new AttachFileWizardPage(driver);
         attachFileWizardPage.selectRadioButton("Upload anyway");
         attachFileWizardPage.attachFile(filePath);
+        DelayUtils.sleep();
         attachFileWizardPage.nextButton();
         attachFileWizardPage.acceptButton();
         DelayUtils.waitForPageToLoad(driver, wait);
