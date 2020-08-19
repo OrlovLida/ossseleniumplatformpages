@@ -103,7 +103,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
             TasksPage tasksPage = TasksPage.goToTasksPage(driver, BASIC_URL);
             URL resource = CreateProcessNRPTest.class.getClassLoader().getResource("bpm/SeleniumTest.txt");
             String absolutePatch = Paths.get(resource.toURI()).toFile().getAbsolutePath();
-            tasksPage.addFile("NRP-214", "Low Level Planning",absolutePatch);
+            tasksPage.addFile(processNRPCode, "Low Level Planning",absolutePatch);
             SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
             Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType())
                     .isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
