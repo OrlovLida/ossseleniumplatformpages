@@ -56,12 +56,13 @@ public class TasksPage extends BasePage {
     }
     public void setupIntegration(String processCode){
         findTask(processCode,"Ready for Integration");
-        TabsInterface tabs= OldTabs.create(driver,wait);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        TabsInterface tabs= OldTabs.createById(driver,wait, "bpm_task_view_tabs-container");
         tabs.callActionByLabel("Setup Integration");
     }
     public void addFile(String processCode, String taskName, String filePath){
         findTask(processCode,taskName);
-        TabsInterface tabs= OldTabs.create(driver,wait);
+        TabsInterface tabs= OldTabs.createById(driver,wait, "bpm_task_view_tabs-container");
         DelayUtils.waitForPageToLoad(driver,wait);
         tabs.selectTabById("3");
         ButtonContainer action = ButtonContainer.create(driver, wait);
@@ -75,12 +76,12 @@ public class TasksPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
     public void selectTab(String tabLabel){
-        TabsInterface tabs= OldTabs.create(driver,wait);
+        TabsInterface tabs= OldTabs.createById(driver,wait, "bpm_task_view_tabs-container");
         tabs.selectTabByLabel(tabLabel);
     }
 
     private void actionTask(String actionLabel){
-        TabsInterface tabs= OldTabs.create(driver,wait);
+        TabsInterface tabs= OldTabs.createById(driver,wait, "bpm_task_view_tabs-container");
         tabs.selectTabByLabel("Form");
         tabs.callActionByLabel(actionLabel);
         ConfirmationBoxInterface prompt= ConfirmationBox.create(driver, wait);

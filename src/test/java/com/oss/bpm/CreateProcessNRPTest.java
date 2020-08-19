@@ -111,6 +111,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
         catch (URISyntaxException e){
             throw new RuntimeException("Cannot load file",e);
         }
+        DelayUtils.sleep(2000);
         List<String> attachments = EditableList.createById(driver, webDriverWait, "attachmentManagerBusinessView_commonList").getValues();
         Assertions.assertThat(attachments.size()).isGreaterThan(0);
         String allNames = String.join("", attachments);

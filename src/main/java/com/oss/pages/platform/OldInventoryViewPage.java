@@ -15,7 +15,9 @@ import org.openqa.selenium.WebDriver;
 
 public class OldInventoryViewPage extends BasePage {
 
+    //TODO: remove
     private TableInterface mainTable;
+    //TODO: remove
     private Wizard wizard;
 
     public OldInventoryViewPage(WebDriver driver) {
@@ -27,6 +29,7 @@ public class OldInventoryViewPage extends BasePage {
 
     public TableInterface getTableWidget() {
         if (mainTable == null) {
+            //TODO: remove  Widget.waitForWidget,
             Widget.waitForWidget(wait, OLD_TABLE_WIDGET);
             mainTable = OldTable.createByWindowDataAttributeName(driver, wait, INVENTORY_VIEW);
         }
