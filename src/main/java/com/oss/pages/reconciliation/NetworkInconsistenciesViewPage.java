@@ -6,6 +6,7 @@ import org.assertj.core.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageContainer.Message;
@@ -69,7 +70,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         ActionsInterface actionsContainer = ActionsContainer.createFromParent(driver.findElement(By.xpath("//div[@class='OssWindow']//div[@class='context-actions-wrapper']")), driver, wait);
         actionsContainer.callActionById("EDIT", "UpdateDeviceWizardAction");
         DelayUtils.waitForPageToLoad(driver, wait);
-        Wizard wizard = Wizard.createWizard(driver, wait);
+        Wizard wizard = Wizard.createWizard(driver, new WebDriverWait(driver, 90));
         Input preciseLocation = wizard.getComponent("search_precise_location", ComponentType.SEARCH_FIELD);
         preciseLocation.setSingleStringValue("a");
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -102,7 +103,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
 
     @Step("Check notification about accepting inconsistencies")
     public void checkNotificationAfterApplyInconsistencies() {
-        NotificationsInterface notifications = Notifications.create(driver, wait);
+        NotificationsInterface notifications = Notifications.create(driver, new WebDriverWait(driver, 90));
         Assertions.assertThat(notifications.waitAndGetFinishedNotificationText().equals("Accepting discrepancies related to " + groupDiscrepancyLabel + " finished")).isTrue();
     }
 }

@@ -108,7 +108,7 @@ public class ReconciliationE2ETest extends BaseTestCase {
         networkInconsistenciesViewPage.expantTree();
         networkInconsistenciesViewPage.clearOldNotification();
         networkInconsistenciesViewPage.applyInconsistencies();
-        DelayUtils.sleep(500);
+        DelayUtils.sleep(1000);
         networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies();
     }
 
