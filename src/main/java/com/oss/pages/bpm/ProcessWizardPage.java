@@ -50,7 +50,7 @@ public class ProcessWizardPage extends BasePage {
     }
 
     public String createProcess(String processName, Long plusDays, String processType) {
-        TableInterface table = OldTable.createByWindowTitle(driver, wait, "Process Instances");
+        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, "bpm_processes_view_processes");
         table.callActionByLabel("Create new process");
         Wizard wizardFirstStep = Wizard.createByComponentId(driver, wait, "start-process-wizard");
         Input componentDomain = wizardFirstStep.getComponent("domain-combobox-input", Input.ComponentType.COMBOBOX);
