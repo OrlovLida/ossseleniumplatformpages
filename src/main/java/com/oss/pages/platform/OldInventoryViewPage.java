@@ -17,7 +17,9 @@ import io.qameta.allure.Step;
 
 public class OldInventoryViewPage extends BasePage {
 
+    //TODO: remove
     private TableInterface mainTable;
+    //TODO: remove
     private Wizard wizard;
 
     public OldInventoryViewPage(WebDriver driver) {
@@ -29,6 +31,7 @@ public class OldInventoryViewPage extends BasePage {
 
     public TableInterface getTableWidget() {
         if (mainTable == null) {
+            //TODO: remove  Widget.waitForWidget,
             Widget.waitForWidget(wait, OLD_TABLE_WIDGET);
 //            mainTable = OldTable.createByComponentDataAttributeName(driver, wait, INVENTORY_VIEW); to be replaced after fix of OSSWEB-8398
             mainTable = OldTable.createByOssWindow(driver, wait);
