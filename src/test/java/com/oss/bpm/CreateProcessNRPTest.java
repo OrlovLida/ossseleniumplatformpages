@@ -26,7 +26,6 @@ import com.oss.framework.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tablewidget.TableInterface;
-import com.oss.pages.BasePage;
 import com.oss.pages.bpm.IntegrationProcessWizardPage;
 import com.oss.pages.bpm.ProcessInstancesPage;
 import com.oss.pages.bpm.ProcessWizardPage;
