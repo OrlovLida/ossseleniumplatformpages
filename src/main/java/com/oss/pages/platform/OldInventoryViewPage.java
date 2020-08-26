@@ -1,13 +1,15 @@
 package com.oss.pages.platform;
 
+import org.openqa.selenium.WebDriver;
+
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Widget;
 import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tablewidget.TableInterface;
 import com.oss.pages.BasePage;
+
 import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
 
 /**
  * @author Ewa Frączek
@@ -31,7 +33,8 @@ public class OldInventoryViewPage extends BasePage {
         if (mainTable == null) {
             //TODO: remove  Widget.waitForWidget,
             Widget.waitForWidget(wait, OLD_TABLE_WIDGET);
-            mainTable = OldTable.createByWindowDataAttributeName(driver, wait, INVENTORY_VIEW);
+//            mainTable = OldTable.createByComponentDataAttributeName(driver, wait, INVENTORY_VIEW); to be replaced after fix of OSSWEB-8398
+            mainTable = OldTable.createByOssWindow(driver, wait);
         }
         return mainTable;
     }
@@ -44,10 +47,10 @@ public class OldInventoryViewPage extends BasePage {
     }
 
     @Step("Select row")
-    public void selectRow(String columnName, String value){
-        DelayUtils.waitForPageToLoad(driver,wait);
+    public void selectRow(String columnName, String value) {
+        DelayUtils.waitForPageToLoad(driver, wait);
         getTableWidget().selectRowByAttributeValueWithLabel(columnName, value);
-        DelayUtils.waitForPageToLoad(driver,wait);
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     @Step("Use context action")
