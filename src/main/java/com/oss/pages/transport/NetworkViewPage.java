@@ -13,10 +13,12 @@ import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.components.AdvancedSearch;
 import com.oss.framework.components.Input;
 import com.oss.framework.components.contextactions.ActionsInterface;
+import com.oss.framework.components.contextactions.ButtonContainer;
 import com.oss.framework.components.contextactions.OldActionsContainer;
 import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.dockedPanel.DockedPanel;
 import com.oss.framework.widgets.dockedPanel.DockedPanelInterface;
 import com.oss.framework.widgets.tablewidget.OldTable;
@@ -24,6 +26,10 @@ import com.oss.framework.widgets.tablewidget.TableInterface;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
+
+import static com.oss.framework.components.Input.ComponentType.COMBOBOX;
+import static com.oss.framework.components.Input.ComponentType.SEARCH_FIELD;
+import static com.oss.framework.components.Input.ComponentType.TEXT_FIELD;
 
 public class NetworkViewPage extends BasePage {
 
@@ -42,6 +48,13 @@ public class NetworkViewPage extends BasePage {
     public void selectObjectInViewContent(String name, String value) {
         DelayUtils.waitForPageToLoad(driver, wait);
         TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, "leftPanelTab");
+        table.selectRowByAttributeValueWithLabel(name, value);
+    }
+
+    @Step("Select object in details tab")
+    public void selectObjectInDetailsTab(String name, String value) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, "bottomTabs");
         table.selectRowByAttributeValueWithLabel(name, value);
     }
 
@@ -80,5 +93,64 @@ public class NetworkViewPage extends BasePage {
         ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
         prompt.clickButtonByLabel(label);
         DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    private Wizard physicalDeviceWizard = Wizard.createWizard(driver, wait);
+
+    public void setModel(String model) {
+        Input input = physicalDeviceWizard.getComponent("search_model", SEARCH_FIELD);
+        input.setSingleStringValue(model);
+    }
+
+    public void setName(String name) {
+        Input input = physicalDeviceWizard.getComponent("text_name", TEXT_FIELD);
+        input.setSingleStringValue(name);
+    }
+
+    public void setLocation(String location) {
+        Input input = physicalDeviceWizard.getComponent("search_location", SEARCH_FIELD);
+        input.setSingleStringValue(location);
+    }
+
+    public void setPreciseLocation(String preciseLocation) {
+        Input input = physicalDeviceWizard.getComponent("search_precise_location", SEARCH_FIELD);
+        input.setSingleStringValue(preciseLocation);
+    }
+
+    public void setHostname(String hostname) {
+        Input input = physicalDeviceWizard.getComponent("text_hostname", TEXT_FIELD);
+        input.setSingleStringValue(hostname);
+    }
+
+    public void create() {
+        physicalDeviceWizard.clickActionById("physical_device_common_buttons_app-1");
+    }
+
+    public void selectTrailType(String trailType) {
+        Input input = physicalDeviceWizard.getComponent("trailTypeCombobox", COMBOBOX);
+        input.setSingleStringValue(trailType);
+    }
+
+    public void acceptTrailType() {
+        physicalDeviceWizard.clickActionById("wizard-submit-button-trailTypeWizardWigdet");
+    }
+
+    public void setTrailName(String name) {
+        Input input = physicalDeviceWizard.getComponent("name-uid", TEXT_FIELD);
+        input.setSingleStringValue(name);
+    }
+
+    public void proceed() {
+        physicalDeviceWizard.clickActionById("IP_LINK_BUTTON_APP_ID-1");
+    }
+
+    public void modifyTermination() {
+        ButtonContainer button = ButtonContainer.create(driver, wait);
+        button.callActionById("Modify termination");
+    }
+
+    public void setTrailPort(String port) {
+        Input input = physicalDeviceWizard.getComponent("portId", SEARCH_FIELD);
+        input.setSingleStringValue(port);
     }
 }
