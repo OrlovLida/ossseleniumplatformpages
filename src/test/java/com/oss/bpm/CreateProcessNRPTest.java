@@ -53,6 +53,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     @BeforeClass
     public void openProcessInstancesPage() {
         processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
+        //processInstancesPage.changeUser("gkasza", "gkasza");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
     }
@@ -164,12 +165,13 @@ public class CreateProcessNRPTest extends BaseTestCase {
     public void setupIntegration() {
         DelayUtils.sleep(3000);
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, BASIC_URL);
-        tasksPage.setupIntegration(processNRPCode);
+        tasksPage.setupIntegration("NRP-247");
         IntegrationProcessWizardPage integrationWizard = new IntegrationProcessWizardPage(driver);
         integrationWizard.defineIntegrationProcess(processIPName1, "2020-07-01", 1);
         integrationWizard.defineIntegrationProcess(processIPName2, "2020-07-02", 2);
         integrationWizard.clickNext();
-        //integrationWizard.dragAndDrop("DOW193-Router-1", processIPName1);
+        integrationWizard.dragAndDrop("Device-Selenium-978", processIPName1);
+        integrationWizard.dragAndDrop("Device-Selenium-214", processIPName2);
         integrationWizard.clickAccept();
 
     }

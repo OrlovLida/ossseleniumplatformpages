@@ -28,12 +28,15 @@ public class TasksPage extends BasePage {
         driver.get(String.format("%s/#/view/bpm/tasks", basicURL));
         return new TasksPage(driver);
     }
+    private String TABLE_TASKS = "bpm_task_view_task-table";
+    private String TABS_TASKS_VIEW = "bpm_task_view_tabs-container";
+    private String ATTACH_FILE_BUTTON = "attachmentManagerBusinessView_topCommonButtons-1";
 
     protected TasksPage(WebDriver driver) {
         super(driver);
     }
     public void findTask(String processCode, String taskName){
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, "bpm_task_view_task-table");
+        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, TABLE_TASKS);
         DelayUtils.waitForPageToLoad(driver, wait);
         table.searchByAttributeWithLabel("Process Code", Input.ComponentType.TEXT_FIELD,processCode);
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -57,16 +60,16 @@ public class TasksPage extends BasePage {
     public void setupIntegration(String processCode){
         findTask(processCode,"Ready for Integration");
         DelayUtils.waitForPageToLoad(driver, wait);
-        TabsInterface tabs= OldTabs.createById(driver,wait, "bpm_task_view_tabs-container");
+        TabsInterface tabs= OldTabs.createById(driver,wait, TABS_TASKS_VIEW);
         tabs.callActionByLabel("Setup Integration");
     }
     public void addFile(String processCode, String taskName, String filePath){
         findTask(processCode,taskName);
-        TabsInterface tabs= OldTabs.createById(driver,wait, "bpm_task_view_tabs-container");
+        TabsInterface tabs= OldTabs.createById(driver,wait, TABS_TASKS_VIEW);
         DelayUtils.waitForPageToLoad(driver,wait);
         tabs.selectTabById("3");
         ButtonContainer action = ButtonContainer.create(driver, wait);
-        action.callActionById("attachmentManagerBusinessView_topCommonButtons-1");
+        action.callActionById(ATTACH_FILE_BUTTON);
         AttachFileWizardPage attachFileWizardPage = new AttachFileWizardPage(driver);
         attachFileWizardPage.selectRadioButton("Upload anyway");
         attachFileWizardPage.attachFile(filePath);
@@ -76,12 +79,12 @@ public class TasksPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
     public void selectTab(String tabLabel){
-        TabsInterface tabs= OldTabs.createById(driver,wait, "bpm_task_view_tabs-container");
+        TabsInterface tabs= OldTabs.createById(driver,wait, TABS_TASKS_VIEW);
         tabs.selectTabByLabel(tabLabel);
     }
 
     private void actionTask(String actionLabel){
-        TabsInterface tabs= OldTabs.createById(driver,wait, "bpm_task_view_tabs-container");
+        TabsInterface tabs= OldTabs.createById(driver,wait, TABS_TASKS_VIEW);
         tabs.selectTabByLabel("Form");
         tabs.callActionByLabel(actionLabel);
         ConfirmationBoxInterface prompt= ConfirmationBox.create(driver, wait);

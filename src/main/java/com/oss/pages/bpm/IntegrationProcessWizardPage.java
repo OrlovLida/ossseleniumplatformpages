@@ -6,8 +6,11 @@
  */
 package com.oss.pages.bpm;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import javax.swing.*;
 
@@ -21,6 +24,7 @@ import com.oss.framework.components.Input;
 import com.oss.framework.data.Data;
 import com.oss.framework.listwidget.EditableList;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.utils.DragAndDrop;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
 
@@ -50,41 +54,25 @@ public class IntegrationProcessWizardPage extends BasePage {
     }
     public void clickAccept(){
         integrationWizard.clickActionById("wizard-submit-button-ipd_integration_wizard_SetupIntegrationComponentId");
+        integrationWizard.waitToClose();
+
 
     }
     public void dragAndDrop(String objectName, String targetProcessName){
 
-        DelayUtils.waitByXPath(wait,"//div[text()='"+targetProcessName+"']/preceding::div[contains(@class, 'DropdownList')]");
-        //DelayUtils.waitByXPath(wait,"//div[contains(@class,'DropdownList')]");
-       // WebElement wizardContainer = driver.findElement(By.xpath("//div[contains(@class,'container-fluid')]"));
-        //WebElement targetList = driver.findElement(By.xpath(".//div[text()='"+targetProcessName+"']/../.."));
-        WebElement targetList = driver.findElement(By.xpath("//div[text()='"+targetProcessName+"']/preceding::div[contains(@class, 'DropdownList')]"));
-        WebElement target = targetList.findElement(By.xpath("//div[contains(@class,'droppable-wrapper')]//div//ul"));
+        DelayUtils.waitByXPath(wait,".//div[contains(@class,'DropdownList')]");
+        DelayUtils.waitByXPath(wait, ".//div[text()='"+targetProcessName+"']");
 
-        //WebElement target = targetList.findElement(By.xpath("//ul[contains(@class,'DraggableListRows auto')]"));
-//        WebElement draggableListRows = wizardContainer.findElement(By.xpath("//ul[contains(@class,'DraggableListRows')]"));
-//        List<WebElement> rows = draggableListRows.findElements(By.xpath("*"));
-        //WebElement source = first.get().findElement(By.xpath("//*[name()='svg' and @data-icon='grip-vertical']"));
-       // Optional<WebElement> first = rows.stream().findFirst();
-        //WebElement source = first.get().findElement(By.xpath("//*[name()='svg' and @data-icon='grip-vertical']"));
+        List<WebElement> targetLists = driver.findElements(By.xpath(".//div[@class='DropdownList']"));
+        WebElement dropdownList = targetLists.stream()
+                .filter(target -> target.findElement(By.xpath(".//div[@class='categoryLabel']")).getText().equals(targetProcessName))
+                .findFirst().get();
+
+        WebElement target = dropdownList.findElement(By.xpath("//ul[contains(@class,'DraggableListRows auto')]"));
 
         WebElement row = driver.findElement(By.xpath("//*[contains(text(),'"+objectName+"')]/preceding::li[contains(@class, 'listElement')]"));
-        //WebElement source = row.findElement(By.xpath("//*[name()='svg' and @data-icon='grip-vertical']"));
         WebElement source = row.findElement(By.xpath("//div[contains(@class,'dragButton')]//div"));
-        Actions action = new Actions(driver);
-        action.click(source);
-        action.moveToElement(target,5,5);
-        action.perform();
-        DelayUtils.sleep(250);
-        action.release(target);
-        action.perform();
-      // action.dragAndDrop(source,target).build().perform();
-       //action.clickAndHold(source).moveToElement(target).release(source).build().perform();
-        //dragNdrop.perform();
-        DelayUtils.sleep(10000);
-
-
-        //List<WebElement> draggableListRows2 = wizardContainer.findElements(By.xpath("//div[contains(@class,'draggableBox')]"));
+        DragAndDrop.dragAndDrop(source,target,driver);
 
     }
 
