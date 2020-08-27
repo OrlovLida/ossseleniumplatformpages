@@ -2,19 +2,18 @@ package com.oss.E2E;
 
 import com.oss.pages.physical.DeviceOverviewPage;
 import com.oss.pages.platform.OldInventoryViewPage;
-import com.oss.pages.transport.IPv4AddressAssignmentWizardPage;
+
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.physical.DeviceOverviewPage;
-import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.reconciliation.CmDomainWizardPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
 import com.oss.pages.reconciliation.NetworkInconsistenciesViewPage;
 import com.oss.pages.reconciliation.SamplesManagementPage;
+import com.oss.pages.transport.IPv4AddressAssignmentWizardPage;
 import com.oss.pages.transport.NetworkViewPage;
 
 import static com.oss.framework.components.Input.ComponentType.TEXT_FIELD;
@@ -28,7 +27,7 @@ public class InstalationNewRouter extends BaseTestCase {
 
     @BeforeClass
     public void openNetworkView() {
-        DelayUtils.sleep(10000);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         SideMenu sideMenu = new SideMenu(driver, webDriverWait);
         sideMenu.goToTechnologyByLeftSideMenu("Bookmarks", "SeleniumTests", "LAB Network View");
     }
@@ -36,9 +35,9 @@ public class InstalationNewRouter extends BaseTestCase {
     @Test(priority = 1)
     public void selectLocation() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
-        DelayUtils.sleep(500);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkViewPage.expandDockedPanel("left");
-        DelayUtils.sleep(500);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkViewPage.selectObjectInViewContent("Name", "Poznan-BU1");
     }
 
@@ -46,20 +45,18 @@ public class InstalationNewRouter extends BaseTestCase {
     public void createPhysicalDevice() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.useContextAction("CREATE", "Create Device");
-        DeviceWizardPage wizard = new DeviceWizardPage(driver);
-        wizard.setModel(deviceModel);
+        networkViewPage.setModel(deviceModel);
         DelayUtils.sleep(1000);
-        wizard.setName("H3_Lab");
-        wizard.setHostname("H3_Lab");
-        wizard.create();
+        networkViewPage.setName("H3_Lab");
+        networkViewPage.setHostname("H3_Lab");
+        networkViewPage.create();
         networkViewPage.checkSystemMessage();
     }
 
     @Test(priority = 3)
     public void moveToDeviceOverwiev() {
-        DelayUtils.sleep(500);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
-        DelayUtils.sleep(1000);
         networkViewPage.useContextAction("NAVIGATION", "Device Overview");
     }
 
@@ -74,7 +71,7 @@ public class InstalationNewRouter extends BaseTestCase {
     @Test(priority = 5)
     public void moveToInventoryView() {
         OldInventoryViewPage oldInventoryViewPage = new OldInventoryViewPage(driver);
-        oldInventoryViewPage.selectRow("Name", "GE 1");
+        oldInventoryViewPage.selectRow("Object Type", "Ethernet Interface");
         oldInventoryViewPage.useContextAction("CREATE", "AssignIPv4Host");
     }
 
@@ -85,7 +82,46 @@ public class InstalationNewRouter extends BaseTestCase {
         iPv4AddressAssignmentWizardPage.assignIPAddressSummaryStep();
     }
 
-    @Test(priority = 6)
+    @Test(priority = 7)
+    public void createIpLink(){
+        openNetworkView();
+        NetworkViewPage networkViewPage = new NetworkViewPage(driver);
+        networkViewPage.useContextAction("add_to_view_group", "Device");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkViewPage.queryElementAndAddItToView("name", TEXT_FIELD, "H3_Lab");
+        networkViewPage.expandDockedPanel("left");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkViewPage.selectObjectInViewContent("Name", "H1");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkViewPage.useContextAction("CREATE", "Create Trail");
+        networkViewPage.selectTrailType("IP Link");
+        networkViewPage.acceptTrailType();
+        networkViewPage.setTrailName("SeleniumTest IP Link");
+        networkViewPage.proceed();
+    }
+
+    @Test(priority = 8)
+    public void preciseIpLinkTermination(){
+        NetworkViewPage networkViewPage = new NetworkViewPage(driver);
+        networkViewPage.expandDockedPanel("bottom");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkViewPage.selectObjectInDetailsTab("Type", "Start");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkViewPage.modifyTermination();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkViewPage.setTrailPort("GE 1");
+        networkViewPage.proceed();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkViewPage.selectObjectInDetailsTab("Type", "End");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkViewPage.modifyTermination();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkViewPage.setTrailPort("GE 1");
+        networkViewPage.proceed();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    @Test(priority = 9)
     public void createCmDomain() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         networkDiscoveryControlViewPage.openCmDomainWizard();
@@ -97,7 +133,7 @@ public class InstalationNewRouter extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 7)
+    @Test(priority = 10)
     public void uploadSamples() {
         DelayUtils.sleep(1000);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
@@ -117,7 +153,7 @@ public class InstalationNewRouter extends BaseTestCase {
         samplesManagementPage.uploadSamples("recoSamples/ciscoE2E/H3_Lab_100.100.100.100_20181016_1500_sh_version.cli");
     }
 
-    @Test(priority = 8)
+    @Test(priority = 11)
     public void runReconciliationWithFullSample() {
         NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         DelayUtils.sleep(100);
@@ -127,7 +163,7 @@ public class InstalationNewRouter extends BaseTestCase {
         networkDiscoveryControlViewPage.waitForEndOfReco();
     }
 
-    @Test(priority = 9)
+    @Test(priority = 12)
     public void applyInconsistencies() {
         networkDiscoveryControlViewPage.moveToNivFromNdcv();
         NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
@@ -138,7 +174,7 @@ public class InstalationNewRouter extends BaseTestCase {
         networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies();
     }
 
-    @Test(priority = 10)
+    @Test(priority = 13)
     public void deleteCmDomain() {
         NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
@@ -148,14 +184,27 @@ public class InstalationNewRouter extends BaseTestCase {
         networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(cmDomainName);
     }
 
-    @Test(priority = 11)
-    public void deletePhysicalDevice() {
+    @Test(priority = 14)
+    public void deleteIpLink() {
         openNetworkView();
+        NetworkViewPage networkViewPage = new NetworkViewPage(driver);
+        networkViewPage.useContextAction("add_to_view_group", "Trail");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkViewPage.queryElementAndAddItToView("name", TEXT_FIELD, "SeleniumTest IP Link");
+        networkViewPage.useContextAction("EDIT", "Delete Element");
+        networkViewPage.clickConfirmationBoxButtonByLabel("Yes");
+        networkViewPage.checkSystemMessage();
+    }
+
+    @Test(priority = 15)
+    public void deletePhysicalDevice() {
+//        openNetworkView();
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.useContextAction("add_to_view_group", "Device");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkViewPage.queryElementAndAddItToView("name", TEXT_FIELD, "H3_Lab");
         networkViewPage.useContextAction("EDIT", "Delete Element");
         networkViewPage.clickConfirmationBoxButtonByLabel("Yes");
+        networkViewPage.checkSystemMessage();
     }
 }
