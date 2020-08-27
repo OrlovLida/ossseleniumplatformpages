@@ -31,6 +31,8 @@ public class TasksPage extends BasePage {
     private String TABLE_TASKS = "bpm_task_view_task-table";
     private String TABS_TASKS_VIEW = "bpm_task_view_tabs-container";
     private String ATTACH_FILE_BUTTON = "attachmentManagerBusinessView_topCommonButtons-1";
+    private String FORM_TAB_ID ="0";
+    private String ATTACHMENT_TAB_ID= "3";
 
     protected TasksPage(WebDriver driver) {
         super(driver);
@@ -67,7 +69,7 @@ public class TasksPage extends BasePage {
         findTask(processCode,taskName);
         TabsInterface tabs= OldTabs.createById(driver,wait, TABS_TASKS_VIEW);
         DelayUtils.waitForPageToLoad(driver,wait);
-        tabs.selectTabById("3");
+        tabs.selectTabById(ATTACHMENT_TAB_ID);
         ButtonContainer action = ButtonContainer.create(driver, wait);
         action.callActionById(ATTACH_FILE_BUTTON);
         AttachFileWizardPage attachFileWizardPage = new AttachFileWizardPage(driver);
@@ -85,7 +87,8 @@ public class TasksPage extends BasePage {
 
     private void actionTask(String actionLabel){
         TabsInterface tabs= OldTabs.createById(driver,wait, TABS_TASKS_VIEW);
-        tabs.selectTabByLabel("Form");
+        tabs.selectTabById(FORM_TAB_ID);
+        DelayUtils.waitForPageToLoad(driver,wait);
         tabs.callActionByLabel(actionLabel);
         ConfirmationBoxInterface prompt= ConfirmationBox.create(driver, wait);
         prompt.clickButtonByLabel("Proceed");
