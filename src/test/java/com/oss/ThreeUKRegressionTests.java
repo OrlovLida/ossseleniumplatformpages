@@ -1,10 +1,13 @@
 package com.oss;
+
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tablewidget.TableInterface;
+import com.oss.framework.widgets.tabswidget.TabWindowWidget;
+import com.oss.framework.widgets.tabswidget.TabsInterface;
 import com.oss.pages.physical.LocationWizardPage;
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.LocationOverviewPage;
@@ -74,6 +77,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     }
 
     @Test(enabled = false, groups = {"Physical tests"}) //not ready
+    @Description("The user creates a Site in IV, searches for it in Global Search, removes it in IV and checks if the Site is removed in Global Search")
     public void tS04CreateAndDeleteNewSiteInventoryView() {
     }
 
@@ -142,8 +146,8 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         ConfirmationBoxInterface confirmationBox = ConfirmationBox.create(driver, webDriverWait);
         confirmationBox.clickButtonByLabel("Delete");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        TableInterface locationsTable = OldTable.createByComponentDataAttributeName(driver, webDriverWait, "tableAppLocationsId");
-        Assert.assertTrue(locationsTable.getEmptyTable("OssWindow tabWindow").contains("No data"));
+        TabsInterface locationsTable = TabWindowWidget.create(driver, webDriverWait);
+        Assert.assertTrue(locationsTable.isNoData("tableAppLocationsId"));
     }
 
 }
