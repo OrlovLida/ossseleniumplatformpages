@@ -28,48 +28,63 @@ public class ProcessWizardPage extends BasePage {
     public ProcessWizardPage(WebDriver driver) {
         super(driver);
     }
+    private String TABLE_PROCESSES = "bpm_processes_view_processes";
+    private String PROCESS_WIZARD_STEP_1 = "start-process-wizard";
+    private String PROCESS_WIZARD_STEP_2 ="bpm_processes_view_start-process-details-prompt_processCreateFormId";
+    private String DOMAIN_ATTRIBUTE_ID= "domain-combobox-input";
+    private String DEFINITION_ATTRIBUTE_ID = "definition-combobox-input";
+    private String RELEASE_ATTRIBUTE_ID = "release-combobox-input";
+    private String PROCESS_NAME_ATTRIBUTE_ID = "bpm_processes_view_start-process-details-prompt_processCreateFormId";
+    private String FINISH_DUE_DATE_ID = "FINISHED_DUE_DATE";
+    private String CREATE_PROCESS_BUTTON = "Create new process";
+    private String ACCEPT_BUTTON= "wizard-submit-button-start-process-wizard";
+    private String CREATE_BUTTON = "wizard-submit-button-bpm_processes_view_start-process-details-prompt_processCreateFormId";
+    private String PROCESS_NAME = "Selenium Test " + Math.random();
+    private String INVENTORY_PROCESS = "Inventory Processes";
+    private String LATEST = "Latest";
+    private String NRP = "Network Resource Process";
+    private String DCP = "Data Correction Process";
+
 
     public String createSimpleNRP() {
-
-        return createProcess("Selenium Test " + Math.random(), (long) 0, "Network Resource Process");
-
+        return createProcess(PROCESS_NAME, (long) 0, NRP);
     }
 
     public String createSimpleDCP() {
-        return createProcess("Selenium Test " + Math.random(), (long) 0, "Data Correction Process");
+        return createProcess(PROCESS_NAME, (long) 0,DCP );
     }
 
     public String createDCPPlusDays(Long plusDays) {
 
-        return createProcess("Selenium Test " + Math.random(), plusDays, "Data Correction Process");
+        return createProcess(PROCESS_NAME, plusDays, DCP);
     }
 
     public String createNRPPlusDays(Long plusDays) {
 
-        return createProcess("Selenium Test " + Math.random(), plusDays, "Network Resource Process");
+        return createProcess(PROCESS_NAME, plusDays, NRP);
     }
 
     public String createProcess(String processName, Long plusDays, String processType) {
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, "bpm_processes_view_processes");
-        table.callActionByLabel("Create new process");
-        Wizard wizardFirstStep = Wizard.createByComponentId(driver, wait, "start-process-wizard");
-        Input componentDomain = wizardFirstStep.getComponent("domain-combobox-input", Input.ComponentType.COMBOBOX);
-        if (!componentDomain.getValue().getStringValue().equals("Inventory Processes")) {
-            componentDomain.setSingleStringValue("Inventory Processes");
+        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, TABLE_PROCESSES);
+        table.callActionByLabel(CREATE_PROCESS_BUTTON);
+        Wizard wizardFirstStep = Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_1);
+        Input componentDomain = wizardFirstStep.getComponent(DOMAIN_ATTRIBUTE_ID, Input.ComponentType.COMBOBOX);
+        if (!componentDomain.getValue().getStringValue().equals(INVENTORY_PROCESS)) {
+            componentDomain.setSingleStringValue(INVENTORY_PROCESS);
         }
-        Input componentDefinition = wizardFirstStep.getComponent("definition-combobox-input", Input.ComponentType.COMBOBOX);
+        Input componentDefinition = wizardFirstStep.getComponent(DEFINITION_ATTRIBUTE_ID, Input.ComponentType.COMBOBOX);
         componentDefinition.setSingleStringValue(processType);
-        Input componentRelease = wizardFirstStep.getComponent("release-combobox-input", Input.ComponentType.COMBOBOX);
-        componentRelease.setSingleStringValue("Latest");
-        wizardFirstStep.clickActionById("wizard-submit-button-start-process-wizard");
+        Input componentRelease = wizardFirstStep.getComponent(RELEASE_ATTRIBUTE_ID, Input.ComponentType.COMBOBOX);
+        componentRelease.setSingleStringValue(LATEST);
+        wizardFirstStep.clickActionById(ACCEPT_BUTTON);
         //wizardFirstStep.waitToClose();
 
-        Wizard wizardSecondStep = Wizard.createByComponentId(driver, wait, "bpm_processes_view_start-process-details-prompt_processCreateFormId");
-        Input processNameTextField = wizardSecondStep.getComponent("processNameTextFieldId", Input.ComponentType.TEXT_FIELD);
+        Wizard wizardSecondStep = Wizard.createByComponentId(driver, wait,PROCESS_WIZARD_STEP_2 );
+        Input processNameTextField = wizardSecondStep.getComponent(PROCESS_NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD);
         processNameTextField.setSingleStringValue(processName);
-        Input finishedDueDate = wizardSecondStep.getComponent("FINISHED_DUE_DATE", Input.ComponentType.DATE);
+        Input finishedDueDate = wizardSecondStep.getComponent(FINISH_DUE_DATE_ID, Input.ComponentType.DATE);
         finishedDueDate.setSingleStringValue(LocalDate.now().plusDays(plusDays).toString());
-        wizardSecondStep.clickActionById("wizard-submit-button-bpm_processes_view_start-process-details-prompt_processCreateFormId");
+        wizardSecondStep.clickActionById(CREATE_BUTTON);
 
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, wait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
