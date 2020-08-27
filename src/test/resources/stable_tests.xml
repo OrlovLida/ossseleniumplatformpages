@@ -26,4 +26,9 @@
             <class name="com.oss.reconciliation.ReconciliationE2ETest"/>
         </classes>
     </test>
+    <test name="CreateVRFTest">
+        <classes>
+            <class name="com.oss.transport.CreateVRFTest"/>
+        </classes>
+    </test>
 </suite>
