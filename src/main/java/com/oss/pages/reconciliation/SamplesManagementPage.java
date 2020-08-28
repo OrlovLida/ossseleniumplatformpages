@@ -85,6 +85,6 @@ public class SamplesManagementPage extends BasePage {
         name.setSingleStringValue(cmDomainName);
         DelayUtils.waitForPageToLoad(driver, wait);
         DelayUtils.sleep(500);
-        wizard.clickCreate();
+        wizard.clickActionById("narComponent_CMSamplesManagementViewIdFileActionButtonsId-1");
     }
 }
