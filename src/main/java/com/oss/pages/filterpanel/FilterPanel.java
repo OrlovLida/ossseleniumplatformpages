@@ -1,14 +1,16 @@
 package com.oss.pages.filterpanel;
 
-import com.oss.framework.components.*;
+import com.oss.framework.components.inputs.Button;
+import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.portals.DropdownList;
+import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-import static com.oss.framework.components.Input.ComponentType.TEXT_FIELD;
+import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 
 public class FilterPanel extends BasePage {
 

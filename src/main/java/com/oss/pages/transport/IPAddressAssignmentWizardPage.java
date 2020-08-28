@@ -1,6 +1,6 @@
 package com.oss.pages.transport;
 
-import com.oss.framework.components.Input;
+import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.CommonHierarchyApp;
 import com.oss.framework.widgets.Wizard;

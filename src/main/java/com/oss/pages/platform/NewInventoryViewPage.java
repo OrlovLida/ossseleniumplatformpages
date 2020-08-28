@@ -1,6 +1,6 @@
 package com.oss.pages.platform;
 
-import com.oss.framework.components.AdvancedSearch;
+import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.filterpanel.FilterPanel;
 import org.openqa.selenium.By;
@@ -9,7 +9,6 @@ import org.openqa.selenium.WebElement;
 
 import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.mainheader.ButtonPanel;
-import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Widget;
 import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.propertypanel.PropertiesFilter;

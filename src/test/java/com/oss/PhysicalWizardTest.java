@@ -1,9 +1,9 @@
 package com.oss;
 
-import com.oss.framework.components.Combobox;
-import com.oss.framework.components.Input;
-import com.oss.framework.components.SearchField;
-import com.oss.framework.components.TextField;
+import com.oss.framework.components.inputs.Combobox;
+import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.inputs.SearchField;
+import com.oss.framework.components.inputs.TextField;
 import com.oss.pages.physical.LocationWizardPage;
 import org.testng.annotations.Test;
 

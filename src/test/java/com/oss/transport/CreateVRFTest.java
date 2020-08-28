@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import static com.oss.configuration.Configuration.CONFIGURATION;
 import static com.oss.framework.utils.DelayUtils.HUMAN_REACTION_MS;
 
 /**
@@ -34,7 +35,7 @@ public class CreateVRFTest extends BaseTestCase {
     private static final String VRF_NAME = "vrfNameTest1";
     private static final String ROUTE_DISTINGUISHER = "999:999";
     private static final String DESCRIPTION = "Description1";
-    private static final String DEVICE_NAME = "SeleniumASR9001KSZ";
+    private static final String DEVICE_NAME = "SeleniumASR9001KSZ876";
     private static final String INTERFACE1_NAME = "CLUSTER 0";
     private static final String INTERFACE2_NAME = "MGT LAN 0";
 
@@ -91,8 +92,10 @@ public class CreateVRFTest extends BaseTestCase {
         vrfOverview.clickRemove();
         DelayUtils.waitByXPath(webDriverWait, OK_BUTTON_PATH);
         vrfOverview.clickOk();
+        String url = driver.getCurrentUrl();
+        assertVRFRemove(url);
+        //TODO: KS Zapytać o asercje z przejsciem na glowna strone po usunieciu.
 
-        //TODO: KS Asercja z przejsciem na glowna strone po usunieciu.
     }
 
     private VRFAttributes getVrfAttributesToCreate() {
@@ -193,6 +196,10 @@ public class CreateVRFTest extends BaseTestCase {
         Assertions.assertThat(routeTargetValue).isEqualTo(impExpAttributes.routeTarget);
         String addressFamilyValue = vrfOverview.getAddressFamilyValue(impExpAttributes.addressFamily);
         Assertions.assertThat(addressFamilyValue).isEqualTo(impExpAttributes.addressFamily);
+    }
+
+    private void assertVRFRemove(String url){
+        Assertions.assertThat(url).isEqualTo(CONFIGURATION.getUrl() + "/#/dashboard/predefined/id/transport-dashboard");
     }
 
     private static class VRFAttributes {

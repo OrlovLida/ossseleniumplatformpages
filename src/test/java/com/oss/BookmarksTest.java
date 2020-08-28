@@ -1,9 +1,9 @@
 package com.oss;
 
-import com.oss.framework.components.Button;
-import com.oss.framework.components.Input;
-import com.oss.framework.components.Input.ComponentType;
-import com.oss.framework.components.ComponentFactory;
+import com.oss.framework.components.inputs.Button;
+import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.inputs.Input.ComponentType;
+import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.portals.PopupV2;
 import com.oss.framework.data.Data;
 import com.oss.framework.utils.DelayUtils;

@@ -12,8 +12,8 @@ import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageContainer.Message;
 import com.oss.framework.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.alerts.SystemMessageInterface;
-import com.oss.framework.components.Input;
-import com.oss.framework.components.Input.ComponentType;
+import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.inputs.Input.ComponentType;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.contextactions.ActionsInterface;
 import com.oss.framework.components.notifications.Notifications;
@@ -32,7 +32,6 @@ public class NetworkInconsistenciesViewPage extends BasePage {
 
     private TreeWidget mainTree;
     private String applyButtonId = "narComponent_GroupDiscrepancyActionApplyId";
-    private String groupDiscrepancyLabel = "CiscoSeleniumTest";
 
     public static NetworkInconsistenciesViewPage goToNetworkInconsistenciesViewPage(WebDriver driver, String basicURL) {
         driver.get(String.format("%s/#/view/reco/network-repository-view/discrepancies" +
@@ -102,7 +101,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
     }
 
     @Step("Check notification about accepting inconsistencies")
-    public void checkNotificationAfterApplyInconsistencies() {
+    public void checkNotificationAfterApplyInconsistencies(String groupDiscrepancyLabel) {
         NotificationsInterface notifications = Notifications.create(driver, new WebDriverWait(driver, 90));
         Assertions.assertThat(notifications.waitAndGetFinishedNotificationText().equals("Accepting discrepancies related to " + groupDiscrepancyLabel + " finished")).isTrue();
     }

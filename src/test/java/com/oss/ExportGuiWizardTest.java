@@ -33,7 +33,6 @@ public class ExportGuiWizardTest extends BaseTestCase {
     public void exportCSVFile(){
         new ExportGuiWizardPage(driver)
                 .chooseCSV()
-                .uncheckTheExportToFileWithHeaders()
                 .closeTheWizard();
         Assert.assertEquals(languageServicePage.howManyNotifications(), 1);
     }

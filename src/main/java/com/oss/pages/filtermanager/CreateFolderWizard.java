@@ -4,7 +4,7 @@ import com.oss.framework.widgets.Wizard;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 
-import static com.oss.framework.components.Input.ComponentType.TEXT_FIELD;
+import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 
 public class CreateFolderWizard extends FilterManagerPage {
 

@@ -1,7 +1,9 @@
 package com.oss.pages.filterpanel;
 
-import com.oss.framework.components.*;
-import com.oss.framework.components.Input.ComponentType;
+import com.oss.framework.components.inputs.ComponentFactory;
+import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.inputs.Input.ComponentType;
+import com.oss.framework.components.inputs.SearchField;
 import com.oss.framework.utils.DelayUtils;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;

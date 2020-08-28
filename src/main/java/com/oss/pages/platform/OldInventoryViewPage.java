@@ -1,7 +1,10 @@
 package com.oss.pages.platform;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
+import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Widget;
 import com.oss.framework.widgets.Wizard;
@@ -14,6 +17,7 @@ import io.qameta.allure.Step;
 /**
  * @author Ewa Frączek
  */
+
 
 public class OldInventoryViewPage extends BasePage {
 
@@ -59,4 +63,20 @@ public class OldInventoryViewPage extends BasePage {
         getTableWidget().callAction(groupId, actionId);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
+
+    @Step("Filter object name and select object name row")
+    public OldInventoryViewPage filterObjectName(String objectName, String tableObjects) {
+        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, "table("+tableObjects+")");
+        table.searchByAttributeWithLabel("Name", Input.ComponentType.TEXT_FIELD, objectName);
+        table.selectRowByAttributeValueWithLabel("Name", objectName);
+        return this;
+    }
+
+    @Step("Expand Show on button and select Location Overview from the drop-down list")
+    public LocationOverviewPage expandShowOnLocationOverview() {
+        ActionsContainer actionsContainer = ActionsContainer.createFromParent(driver.findElement(By.xpath(".//div[@class='OssWindow']")), driver, wait);
+        actionsContainer.callAction("NAVIGATION", "OpenLocationOverviewAction");
+        return new LocationOverviewPage(driver);
+    }
+
 }
