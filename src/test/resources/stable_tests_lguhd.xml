@@ -1,0 +1,29 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="RegressionSuiteWeb-LGUHD" thread-count="2" parallel="tests" verbose="1">
+    <test name="ExportTests">
+        <classes>
+            <class name="com.oss.ExportGuiWizardTest"/>
+            <class name="com.oss.ExportByScheduleTest"/>
+        </classes>
+    </test>
+    <test name="LayoutTests">
+        <classes>
+            <class name="com.oss.LayoutTest"/>
+        </classes>
+    </test>
+    <test name="FiltersTests">
+        <classes>
+            <class name="com.oss.FiltersTest"/>
+        </classes>
+    </test>
+    <test name="CreateProcessNRPTest">
+        <classes>
+            <class name="com.oss.bpm.CreateProcessNRPTest"/>
+        </classes>
+    </test>
+    <test name="ReconciliationE2ETest">
+        <classes>
+            <class name="com.oss.reconciliation.ReconciliationE2ETest"/>
+        </classes>
+    </test>
+</suite>
