@@ -97,60 +97,65 @@ public class NetworkViewPage extends BasePage {
 
     private Wizard physicalDeviceWizard = Wizard.createWizard(driver, wait);
 
+    @Step("Set model")
     public void setModel(String model) {
         Input input = physicalDeviceWizard.getComponent("search_model", SEARCH_FIELD);
         input.setSingleStringValue(model);
     }
 
+    @Step("Set name")
     public void setName(String name) {
         Input input = physicalDeviceWizard.getComponent("text_name", TEXT_FIELD);
         input.setSingleStringValue(name);
     }
 
-    public void setLocation(String location) {
-        Input input = physicalDeviceWizard.getComponent("search_location", SEARCH_FIELD);
-        input.setSingleStringValue(location);
-    }
-
-    public void setPreciseLocation(String preciseLocation) {
-        Input input = physicalDeviceWizard.getComponent("search_precise_location", SEARCH_FIELD);
-        input.setSingleStringValue(preciseLocation);
-    }
-
+    @Step("Set hostname")
     public void setHostname(String hostname) {
         Input input = physicalDeviceWizard.getComponent("text_hostname", TEXT_FIELD);
         input.setSingleStringValue(hostname);
     }
 
+    @Step("Create device")
     public void create() {
         physicalDeviceWizard.clickActionById("physical_device_common_buttons_app-1");
     }
 
+    @Step("Select trail type")
     public void selectTrailType(String trailType) {
         Input input = physicalDeviceWizard.getComponent("trailTypeCombobox", COMBOBOX);
         input.setSingleStringValue(trailType);
     }
 
+    @Step("Accept trail type")
     public void acceptTrailType() {
         physicalDeviceWizard.clickActionById("wizard-submit-button-trailTypeWizardWigdet");
     }
 
+    @Step("Set trail name")
     public void setTrailName(String name) {
         Input input = physicalDeviceWizard.getComponent("name-uid", TEXT_FIELD);
         input.setSingleStringValue(name);
     }
 
-    public void proceed() {
+    @Step("Create trail")
+    public void proceedTrailCreation() {
         physicalDeviceWizard.clickActionById("IP_LINK_BUTTON_APP_ID-1");
     }
 
+    @Step("Open modify termination wizard")
     public void modifyTermination() {
         ButtonContainer button = ButtonContainer.create(driver, wait);
         button.callActionById("Modify termination");
     }
 
+    @Step("Set trail termination port")
     public void setTrailPort(String port) {
         Input input = physicalDeviceWizard.getComponent("portId", SEARCH_FIELD);
         input.setSingleStringValue(port);
+    }
+
+    @Step("Accept trail modification")
+    public void proceedTrailTermination(){
+        Wizard.createWizard(driver, wait).proceed();
     }
 }

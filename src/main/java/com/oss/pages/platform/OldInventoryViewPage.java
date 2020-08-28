@@ -1,17 +1,15 @@
 package com.oss.pages.platform;
 
-import com.oss.framework.components.Input;
-import com.oss.framework.components.contextactions.ActionsContainer;
 import org.openqa.selenium.WebDriver;
+
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Widget;
 import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tablewidget.TableInterface;
 import com.oss.pages.BasePage;
-import io.qameta.allure.Step;
-import org.openqa.selenium.By;
 
+import io.qameta.allure.Step;
 
 /**
  * @author Ewa Frączek
