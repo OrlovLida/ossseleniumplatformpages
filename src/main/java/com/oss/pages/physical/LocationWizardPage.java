@@ -7,6 +7,7 @@ import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 //import org.testng.Assert;
 
 public class LocationWizardPage extends BasePage {
@@ -79,6 +80,12 @@ public class LocationWizardPage extends BasePage {
             setComponentValue("address", " ", Input.ComponentType.SEARCH_FIELD);
         }
         accept();
+    }
+
+    @Step("Type description")
+    public LocationWizardPage typeDescription(String description) {
+        setComponentValue("description", description, Input.ComponentType.TEXT_FIELD);
+        return this;
     }
 
 }
