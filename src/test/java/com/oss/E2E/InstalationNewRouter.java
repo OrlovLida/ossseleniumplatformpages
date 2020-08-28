@@ -16,7 +16,7 @@ import com.oss.pages.reconciliation.SamplesManagementPage;
 import com.oss.pages.transport.IPv4AddressAssignmentWizardPage;
 import com.oss.pages.transport.NetworkViewPage;
 
-import static com.oss.framework.components.Input.ComponentType.TEXT_FIELD;
+import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 
 public class InstalationNewRouter extends BaseTestCase {
 

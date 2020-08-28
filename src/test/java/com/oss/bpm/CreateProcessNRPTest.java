@@ -21,7 +21,6 @@ import org.testng.annotations.Test;
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
-import com.oss.framework.components.Input;
 import com.oss.framework.listwidget.EditableList;
 import com.oss.framework.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
@@ -32,7 +31,6 @@ import com.oss.pages.bpm.ProcessInstancesPage;
 import com.oss.pages.bpm.ProcessWizardPage;
 import com.oss.pages.bpm.TasksPage;
 import com.oss.pages.physical.DeviceWizardPage;
-import com.oss.pages.physical.LocationWizardPage;
 import com.oss.utils.TestListener;
 
 /**

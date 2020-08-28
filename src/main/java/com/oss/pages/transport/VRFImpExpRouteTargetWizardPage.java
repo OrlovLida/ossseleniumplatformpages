@@ -6,8 +6,8 @@
  */
 package com.oss.pages.transport;
 
-import com.oss.framework.components.ComponentFactory;
-import com.oss.framework.components.Input;
+import com.oss.framework.components.inputs.ComponentFactory;
+import com.oss.framework.components.inputs.Input;
 import com.oss.framework.data.Data;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;

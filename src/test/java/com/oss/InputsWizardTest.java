@@ -1,7 +1,21 @@
 package com.oss;
 
-import com.oss.framework.components.*;
-import com.oss.framework.components.Input.ComponentType;
+import com.oss.framework.components.inputs.Checkbox;
+import com.oss.framework.components.inputs.Combobox;
+import com.oss.framework.components.inputs.Coordinates;
+import com.oss.framework.components.inputs.Date;
+import com.oss.framework.components.inputs.DateTime;
+import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.inputs.Input.ComponentType;
+import com.oss.framework.components.inputs.MultiCombobox;
+import com.oss.framework.components.inputs.MultiSearchField;
+import com.oss.framework.components.inputs.NumberField;
+import com.oss.framework.components.inputs.PasswordField;
+import com.oss.framework.components.inputs.PhoneField;
+import com.oss.framework.components.inputs.SearchField;
+import com.oss.framework.components.inputs.TextArea;
+import com.oss.framework.components.inputs.TextField;
+import com.oss.framework.components.inputs.Time;
 import com.oss.framework.data.Data;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.InputsWizardPage;

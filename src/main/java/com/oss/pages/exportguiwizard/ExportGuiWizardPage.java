@@ -1,8 +1,8 @@
 package com.oss.pages.exportguiwizard;
 
-import com.oss.framework.components.Input;
-import com.oss.framework.components.Input.ComponentType;
-import com.oss.framework.components.TextField;
+import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.inputs.Input.ComponentType;
+import com.oss.framework.components.inputs.TextField;
 import com.oss.framework.data.Data;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;

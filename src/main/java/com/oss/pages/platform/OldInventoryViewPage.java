@@ -3,7 +3,7 @@ package com.oss.pages.platform;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-import com.oss.framework.components.Input;
+import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Widget;

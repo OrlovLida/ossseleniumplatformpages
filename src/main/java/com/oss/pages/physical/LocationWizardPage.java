@@ -1,13 +1,12 @@
 package com.oss.pages.physical;
 
-import com.oss.framework.components.*;
+import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.LocatingUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
-import org.openqa.selenium.By;
+
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 //import org.testng.Assert;
 
 public class LocationWizardPage extends BasePage {

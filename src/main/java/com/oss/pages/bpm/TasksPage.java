@@ -8,7 +8,7 @@ package com.oss.pages.bpm;
 
 import org.openqa.selenium.WebDriver;
 
-import com.oss.framework.components.Input;
+import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.contextactions.ButtonContainer;
 import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.prompts.ConfirmationBoxInterface;
