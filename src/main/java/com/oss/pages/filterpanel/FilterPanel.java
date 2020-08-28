@@ -1,9 +1,9 @@
 package com.oss.pages.filterpanel;
 
-import com.oss.framework.components.*;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.portals.DropdownList;
+import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
