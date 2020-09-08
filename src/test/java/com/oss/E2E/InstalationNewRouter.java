@@ -33,7 +33,7 @@ public class InstalationNewRouter extends BaseTestCase {
     public void openNetworkView() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         SideMenu sideMenu = new SideMenu(driver, webDriverWait);
-        sideMenu.goToTechnologyByLeftSideMenu("Bookmarks", "SeleniumTests", "LAB Network View");
+        sideMenu.callActionByLabel("LAB Network View","Bookmarks", "SeleniumTests");
     }
 
     @Test(priority = 1)
