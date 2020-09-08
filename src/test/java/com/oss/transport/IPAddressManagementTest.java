@@ -11,7 +11,7 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 @Listeners({ TestListener.class })
-public class IPAccessManagementTest extends BaseTestCase {
+public class IPAddressManagementTest extends BaseTestCase {
 
     private int RolesBefore;
     private IPAddressManagementViewPage ipAddressManagementViewPage;
@@ -29,7 +29,7 @@ public class IPAccessManagementTest extends BaseTestCase {
     @Description("Open Roles")
     public void createRole() {
         ipAddressManagementViewPage.OpenRoleView();
-            DelayUtils.sleep();
+            DelayUtils.sleep(5000);
             RolesBefore = ipAddressManagementViewPage.howManyRoles();
     }
 

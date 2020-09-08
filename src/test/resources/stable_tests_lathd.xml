@@ -5,4 +5,9 @@
             <class name="com.oss.transport.CreateVRFTest"/>
         </classes>
     </test>
+    <test name="IPAddressManagementTest">
+        <classes>
+            <class name="com.oss.transport.IPAddressManagementTest"/>
+        </classes>
+    </test>
 </suite>
