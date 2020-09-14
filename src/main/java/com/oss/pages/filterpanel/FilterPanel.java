@@ -48,11 +48,11 @@ public class FilterPanel extends BasePage {
         return this;
     }
 
-    @Step("Change Value in Location.Name Text Field")
-    public FilterPanel changeValueInLocationNameInput(String value) {
+    @Step("Set value")
+    public FilterPanel setValue(String value, String componentId) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        clearFilterInput("name", TEXT_FIELD);
-        setValueOnFilterInput("name", TEXT_FIELD, value);
+        clearFilterInput(componentId, TEXT_FIELD);
+        setValueOnFilterInput(componentId, TEXT_FIELD, value);
         return this;
     }
 

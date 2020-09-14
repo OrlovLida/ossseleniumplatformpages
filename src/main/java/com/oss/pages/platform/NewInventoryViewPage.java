@@ -103,6 +103,12 @@ public class NewInventoryViewPage extends BasePage {
         return driver.findElements(By.xpath("//div[@class='view-v2-content']/div/div/div[contains(@class,'column')]")).size();
     }
 
+    @Step("Check if table has no data")
+    public boolean checkIfTableIsEmpty(){
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return getTableWidget().checkIfTableIsEmpty();
+    }
+
     @Step("Change layout to Horizontal Orientation")
     public NewInventoryViewPage changeLayoutToHorizontal() {
         ButtonPanel.create(driver, wait).getButtonIcon("layout").click();
