@@ -91,7 +91,7 @@ public class VLANRangeTest extends BaseTestCase {
         DelayUtils.sleep(5000);
 
         filterPanel.changeValueInLocationNameInput("EditVLANRangeSeleniumTest2");
-        DelayUtils.sleep();
+        DelayUtils.sleep(5000);
 
         filterPanel.applyFilter();
         DelayUtils.sleep(5000);

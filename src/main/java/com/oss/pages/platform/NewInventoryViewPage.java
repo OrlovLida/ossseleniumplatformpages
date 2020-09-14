@@ -164,11 +164,11 @@ public class NewInventoryViewPage extends BasePage {
 
     @Step("Delete object")
     public NewInventoryViewPage DeleteObject(){
+        DelayUtils.sleep(10000);
         DelayUtils.waitForPageToLoad(driver,wait);
         Button.createBySelectorAndId(driver, "a", "DeleteVLANRangeContextAction").click();
-        DelayUtils.sleep(5000);
-        DelayUtils.waitByXPath(wait, "//*[text()='OK']");
-        driver.findElement(By.xpath("//*[text()='OK']")).click(); //wizard method contains 'a' as separator which makes it unusable here
+        DelayUtils.sleep(10000);
+        getWizard().clickButtonByLabel("OK");
         DelayUtils.waitForPageToLoad(driver,wait);
         return this;
     }
