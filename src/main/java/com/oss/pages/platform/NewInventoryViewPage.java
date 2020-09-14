@@ -1,5 +1,8 @@
 package com.oss.pages.platform;
 
+import com.oss.framework.components.inputs.Button;
+import com.oss.framework.components.inputs.ComponentFactory;
+import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.filterpanel.FilterPanel;
@@ -132,6 +135,38 @@ public class NewInventoryViewPage extends BasePage {
         return this;
     }
 
+    @Step("Pick first row")
+    public NewInventoryViewPage SelectFirstRow(){
+        DelayUtils.waitForPageToLoad(driver,wait);
+        getTableWidget().selectFirstRow();
+        return this;
+    }
+
+    @Step("Open Edit")
+    public NewInventoryViewPage EditObject(String ActionId){
+        DelayUtils.waitForPageToLoad(driver,wait);
+        getTableWidget().callAction("EDIT", ActionId);
+        return this;
+    }
+
+    @Step("Edit Text Fields")
+    public NewInventoryViewPage EditTextFields(String componentId, Input.ComponentType componentType, String value){
+        DelayUtils.waitForPageToLoad(driver,wait);
+        setValueOnTextType(componentId, componentType, value);
+        return this;
+    }
+
+    @Step("Delete object")
+    public NewInventoryViewPage DeleteObject(){
+        DelayUtils.waitForPageToLoad(driver,wait);
+        Button.createBySelectorAndId(driver, "a", "DeleteVLANRangeContextAction").click();
+        DelayUtils.sleep(5000);
+        DelayUtils.waitByXPath(wait, "//*[text()='OK']");
+        driver.findElement(By.xpath("//*[text()='OK']")).click(); //wizard method contains 'a' as separator which makes it unusable here
+        DelayUtils.waitForPageToLoad(driver,wait);
+        return this;
+    }
+
     public boolean isAllTagsInvisible(){
         DelayUtils.waitForPageToLoad(driver,wait);
         AdvancedSearch advancedSearch = new AdvancedSearch(driver, wait);
@@ -147,6 +182,17 @@ public class NewInventoryViewPage extends BasePage {
     public boolean isOnlyOneObject(String id){
         DelayUtils.waitForPageToLoad(driver,wait);
         return getTableWidget().howManyRowsOnFirstPage() == 1 && getIdOfFirstObject().equals(id);
+    }
+
+    private void setValueOnTextType(String componentId, Input.ComponentType componentType, String value) {
+        DelayUtils.sleep();
+        getWizard().getComponent(componentId, componentType).clearByAction();
+        getWizard().getComponent(componentId, componentType).setSingleStringValue(value);
+    }
+
+    public Input getComponent(String componentId, Input.ComponentType componentType) {
+        Input input = ComponentFactory.create(componentId, componentType, this.driver, this.wait);
+        return input;
     }
 
 }
