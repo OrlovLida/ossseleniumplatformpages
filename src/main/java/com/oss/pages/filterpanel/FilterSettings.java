@@ -16,7 +16,7 @@ public class FilterSettings extends BasePage {
 
     @Step("Change Tab to Filters Tab")
     public FilterSettingsFilter changeTabToFilters(){
-        changeTab("Filters");
+        changeTab("Saved Filters");
         DelayUtils.waitForPageToLoad(driver, wait);
         return new FilterSettingsFilter(driver);
     }
