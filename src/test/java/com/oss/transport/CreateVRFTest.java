@@ -143,7 +143,7 @@ public class CreateVRFTest extends BaseTestCase {
 
     private VRFWizardPage goToVRFWizard() {
         SideMenu sidemenu = new SideMenu(driver, webDriverWait);
-        sidemenu.goToTechnologyByLeftSideMenu(WIZARDS, TRANSPORT, VRF);
+        sidemenu.callActionByLabel(VRF, WIZARDS, TRANSPORT);
         return new VRFWizardPage(driver);
     }
 

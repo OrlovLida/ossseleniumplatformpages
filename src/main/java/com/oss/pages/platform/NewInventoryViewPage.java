@@ -1,5 +1,8 @@
 package com.oss.pages.platform;
 
+import com.oss.framework.components.inputs.Button;
+import com.oss.framework.components.inputs.ComponentFactory;
+import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.filterpanel.FilterPanel;
@@ -100,6 +103,12 @@ public class NewInventoryViewPage extends BasePage {
         return driver.findElements(By.xpath("//div[@class='view-v2-content']/div/div/div[contains(@class,'column')]")).size();
     }
 
+    @Step("Check if table has no data")
+    public boolean checkIfTableIsEmpty(){
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return getTableWidget().checkIfTableIsEmpty();
+    }
+
     @Step("Change layout to Horizontal Orientation")
     public NewInventoryViewPage changeLayoutToHorizontal() {
         ButtonPanel.create(driver, wait).getButtonIcon("layout").click();
@@ -132,6 +141,38 @@ public class NewInventoryViewPage extends BasePage {
         return this;
     }
 
+    @Step("Pick first row")
+    public NewInventoryViewPage SelectFirstRow(){
+        DelayUtils.waitForPageToLoad(driver,wait);
+        getTableWidget().selectFirstRow();
+        return this;
+    }
+
+    @Step("Open Edit")
+    public NewInventoryViewPage EditObject(String ActionId){
+        DelayUtils.waitForPageToLoad(driver,wait);
+        getTableWidget().callAction("EDIT", ActionId);
+        return this;
+    }
+
+    @Step("Edit Text Fields")
+    public NewInventoryViewPage EditTextFields(String componentId, Input.ComponentType componentType, String value){
+        DelayUtils.waitForPageToLoad(driver,wait);
+        setValueOnTextType(componentId, componentType, value);
+        return this;
+    }
+
+    @Step("Delete object")
+    public NewInventoryViewPage DeleteObject(){
+        DelayUtils.sleep(10000);
+        DelayUtils.waitForPageToLoad(driver,wait);
+        Button.createBySelectorAndId(driver, "a", "DeleteVLANRangeContextAction").click();
+        DelayUtils.sleep(10000);
+        getWizard().clickButtonByLabel("OK");
+        DelayUtils.waitForPageToLoad(driver,wait);
+        return this;
+    }
+
     public boolean isAllTagsInvisible(){
         DelayUtils.waitForPageToLoad(driver,wait);
         AdvancedSearch advancedSearch = new AdvancedSearch(driver, wait);
@@ -147,6 +188,17 @@ public class NewInventoryViewPage extends BasePage {
     public boolean isOnlyOneObject(String id){
         DelayUtils.waitForPageToLoad(driver,wait);
         return getTableWidget().howManyRowsOnFirstPage() == 1 && getIdOfFirstObject().equals(id);
+    }
+
+    private void setValueOnTextType(String componentId, Input.ComponentType componentType, String value) {
+        DelayUtils.sleep();
+        getWizard().getComponent(componentId, componentType).clearByAction();
+        getWizard().getComponent(componentId, componentType).setSingleStringValue(value);
+    }
+
+    public Input getComponent(String componentId, Input.ComponentType componentType) {
+        Input input = ComponentFactory.create(componentId, componentType, this.driver, this.wait);
+        return input;
     }
 
 }
