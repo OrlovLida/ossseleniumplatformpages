@@ -24,8 +24,6 @@ import com.oss.pages.platform.NewInventoryViewPage;
 
 public class InventoryViewTest extends BaseTestCase {
 
-/*    private static final String TABLE_WIDGET_URL = String.format("%s/#/views/management/views/inventory-view/Location" +
-            "?perspective=LIVE", BASIC_URL);*/
     private NewInventoryViewPage inventoryViewPage;
 
     @BeforeClass
@@ -46,7 +44,7 @@ public class InventoryViewTest extends BaseTestCase {
 
         //then
         Assertions.assertThat(filterValues.keys()).hasSize(1);
-        Assertions.assertThat(Lists.newArrayList(filterValues.get("Type")).get(0)).startsWith("PoP");
+        Assertions.assertThat(Lists.newArrayList(filterValues.get("Object Type")).get(0)).startsWith("PoP");
     }
 
     @Test
