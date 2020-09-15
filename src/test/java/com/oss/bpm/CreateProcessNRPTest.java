@@ -52,6 +52,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     @BeforeClass
     public void openProcessInstancesPage() {
         ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         processInstancesPage.changeUser("bpm_webselenium", "bpmweb");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
