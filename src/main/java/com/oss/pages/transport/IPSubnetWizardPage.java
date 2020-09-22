@@ -76,8 +76,8 @@ public class IPSubnetWizardPage extends BasePage {
         componentStartIP.setSingleStringValue(startIP);
         Input componentEndIP = selectStep.getComponent(END_IP_COMPONENT_ID, Input.ComponentType.TEXT_FIELD);
         componentEndIP.setSingleStringValue(endIP);
-        Combobox componentOperator = (Combobox) selectStep.getComponent(OPERATOR_COMPONENT_ID, Input.ComponentType.COMBOBOX);
-        componentOperator.setValueWithId(Data.createSingleData(operation), "EQUAL-item");
+        Input componentOperator = selectStep.getComponent(OPERATOR_COMPONENT_ID, Input.ComponentType.COMBOBOX);
+        componentOperator.setSingleStringValue(operation);
         Input componentMaskLength = selectStep.getComponent(MASK_LENGTH_COMPONENT_ID, Input.ComponentType.COMBOBOX);
         componentMaskLength.setSingleStringValue(subnetMask);
     }

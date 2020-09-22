@@ -26,4 +26,9 @@
             <class name="com.oss.reconciliation.ReconciliationE2ETest"/>
         </classes>
     </test>
+    <test name="CreateIPNetwork">
+        <classes>
+            <class name="com.oss.transport.CreateIPNetworkTest"/>
+        </classes>
+    </test>
 </suite>
