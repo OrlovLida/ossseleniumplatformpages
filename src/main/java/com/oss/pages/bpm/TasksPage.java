@@ -9,7 +9,6 @@ package com.oss.pages.bpm;
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.components.contextactions.ButtonContainer;
 import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
@@ -44,7 +43,6 @@ public class TasksPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         table.searchByAttributeWithLabel("Name", Input.ComponentType.TEXT_FIELD,taskName);
         table.refreshUntilNoData(10000, "Reload table");
-        //DelayUtils.sleep(1000);
         table.selectRowByAttributeValueWithLabel("Process Code",processCode);
 
     }
@@ -70,8 +68,7 @@ public class TasksPage extends BasePage {
         TabsInterface tabs= OldTabs.createById(driver,wait, TABS_TASKS_VIEW);
         DelayUtils.waitForPageToLoad(driver,wait);
         tabs.selectTabById(ATTACHMENT_TAB_ID);
-        ButtonContainer action = ButtonContainer.create(driver, wait);
-        action.callActionById(ATTACH_FILE_BUTTON);
+        tabs.callActionById(ATTACH_FILE_BUTTON);
         AttachFileWizardPage attachFileWizardPage = new AttachFileWizardPage(driver);
         attachFileWizardPage.selectRadioButton("Upload anyway");
         attachFileWizardPage.attachFile(filePath);
