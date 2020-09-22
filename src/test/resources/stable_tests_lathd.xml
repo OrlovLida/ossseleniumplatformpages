@@ -10,4 +10,9 @@
             <class name="com.oss.transport.IPAddressManagementTest"/>
         </classes>
     </test>
+    <test name="CreateIPNetwork">
+        <classes>
+            <class name="com.oss.transport.CreateIPNetworkTest"/>
+        </classes>
+    </test>
 </suite>
