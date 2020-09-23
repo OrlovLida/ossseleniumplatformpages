@@ -31,7 +31,6 @@ import com.oss.pages.bpm.ProcessInstancesPage;
 import com.oss.pages.bpm.ProcessWizardPage;
 import com.oss.pages.bpm.TasksPage;
 import com.oss.pages.physical.DeviceWizardPage;
-import com.oss.pages.physical.LocationWizardPage;
 import com.oss.utils.TestListener;
 
 /**
@@ -54,8 +53,8 @@ public class CreateProcessNRPTest extends BaseTestCase {
     public void openProcessInstancesPage() {
         ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        processInstancesPage.changeUser("bpm_webselenium", "bpmweb");
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        processInstancesPage.changeUser("bpm_webselenium", "bpmweb");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
     }
 
@@ -109,7 +108,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     @Test(priority = 4)
     public void completeHLPTask() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, BASIC_URL);
-        tasksPage.completeTask("NRP-336", "High Level Planning");
+        tasksPage.completeTask(processNRPCode, "High Level Planning");
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
         Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);

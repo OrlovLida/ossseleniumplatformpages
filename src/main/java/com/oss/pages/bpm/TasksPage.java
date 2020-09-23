@@ -16,6 +16,7 @@ import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tablewidget.TableInterface;
 import com.oss.framework.widgets.tabswidget.OldTabs;
 import com.oss.framework.widgets.tabswidget.TabsInterface;
+import com.oss.framework.widgets.tabswidget.TabsWidget;
 import com.oss.pages.BasePage;
 import com.oss.pages.dms.AttachFileWizardPage;
 
@@ -65,7 +66,7 @@ public class TasksPage extends BasePage {
     }
     public void addFile(String processCode, String taskName, String filePath){
         findTask(processCode,taskName);
-        TabsInterface tabs= OldTabs.createById(driver,wait, TABS_TASKS_VIEW);
+        TabsInterface tabs= TabsWidget.createById(driver,wait, TABS_TASKS_VIEW);
         DelayUtils.waitForPageToLoad(driver,wait);
         tabs.selectTabById(ATTACHMENT_TAB_ID);
         tabs.callActionById(ATTACH_FILE_BUTTON);
@@ -78,12 +79,12 @@ public class TasksPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
     public void selectTab(String tabLabel){
-        TabsInterface tabs= OldTabs.createById(driver,wait, TABS_TASKS_VIEW);
+        TabsInterface tabs= TabsWidget.createById(driver,wait, TABS_TASKS_VIEW);
         tabs.selectTabByLabel(tabLabel);
     }
 
     private void actionTask(String actionLabel){
-        TabsInterface tabs= OldTabs.createById(driver,wait, TABS_TASKS_VIEW);
+        TabsInterface tabs= TabsWidget.createById(driver,wait, TABS_TASKS_VIEW);
         tabs.selectTabById(FORM_TAB_ID);
         DelayUtils.waitForPageToLoad(driver,wait);
         tabs.callActionByLabel(actionLabel);
