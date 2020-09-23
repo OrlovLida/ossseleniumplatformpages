@@ -34,7 +34,7 @@ public class LocationOverviewPage extends BasePage {
     public LocationOverviewPage selectLocationTab() {
         DelayUtils.waitForPageToLoad(driver, wait);
         TabsInterface tabWindowWidget = TabWindowWidget.create(driver, wait);
-        tabWindowWidget.selectTabByLabel("tabLocationId");
+        tabWindowWidget.selectTabById("tabLocationId");
         return this;
     }
 

@@ -45,7 +45,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     public void openCmDomainWizard() {
         DelayUtils.waitForPageToLoad(driver, wait);
         TabsInterface tabs = TabWindowWidget.create(driver, wait);
-        tabs.selectTabByLabel("narComponent_networkDiscoveryControlViewIdcmDomainsTreeTabId");
+        tabs.selectTabById("narComponent_networkDiscoveryControlViewIdcmDomainsTreeTabId");
         tabs.callActionById("CREATE", "narComponent_CmDomainActionCreateId");
         DelayUtils.waitForPageToLoad(driver, wait);
     }
@@ -71,7 +71,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     @Step("Run full reconciliation for selected CM Domain")
     public void runReconciliation() {
         TabsInterface tabs = TabWindowWidget.create(driver, wait);
-        tabs.selectTabByLabel("narComponent_networkDiscoveryControlViewIdcmDomainsTreeTabId");
+        tabs.selectTabById("narComponent_networkDiscoveryControlViewIdcmDomainsTreeTabId");
         tabs.callActionById(reconciliation);
         ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
         prompt.clickButtonByLabel("Reconcile");
@@ -107,7 +107,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     @Step("Delete selected CM Domain")
     public void deleteCmDomain() {
         TabsInterface tabs = TabWindowWidget.create(driver, wait);
-        tabs.selectTabByLabel("narComponent_networkDiscoveryControlViewIdcmDomainsTreeTabId");
+        tabs.selectTabById("narComponent_networkDiscoveryControlViewIdcmDomainsTreeTabId");
         tabs.callActionById("EDIT", "narComponent_CmDomainActionDeleteCmDomainId");
         ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
         prompt.clickButtonByLabel("Delete");
@@ -136,7 +136,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     @Step("Move from Network Discovery Control View to Network Inconsistencies View in context of selected CM Domain")
     public void moveToNivFromNdcv() {
         TabsInterface ndcvTabs = TabWindowWidget.create(driver, wait);
-        ndcvTabs.selectTabByLabel("narComponent_networkDiscoveryControlViewIdcmDomainsTreeTabId");
+        ndcvTabs.selectTabById("narComponent_networkDiscoveryControlViewIdcmDomainsTreeTabId");
         ndcvTabs.callActionById("NAVIGATION", "narComponent_CmDomainActionShowInconsistenciesId");
         DelayUtils.waitForPageToLoad(driver, wait);
     }
@@ -144,7 +144,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     @Step("Move from Network Discovery Control View to CM Samples Management view in context of selected CM Domain")
     public void moveToSamplesManagement() {
         TabsInterface ndcvTabs = TabWindowWidget.create(driver, wait);
-        ndcvTabs.selectTabByLabel("narComponent_networkDiscoveryControlViewIdcmDomainsTreeTabId");
+        ndcvTabs.selectTabById("narComponent_networkDiscoveryControlViewIdcmDomainsTreeTabId");
         ndcvTabs.callActionById("NAVIGATION", "narComponent_CmDomainActionCmSamplesManagementId");
         DelayUtils.waitForPageToLoad(driver, wait);
     }

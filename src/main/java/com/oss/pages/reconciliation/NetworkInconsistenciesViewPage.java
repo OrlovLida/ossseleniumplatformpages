@@ -89,7 +89,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
     public void applyInconsistencies() {
         getTreeView().selectTreeRowByOrder(2);
         TabsInterface nivTabs = TabWindowWidget.create(driver, wait);
-        nivTabs.selectTabByLabel("narComponent_networkInconsistenciesViewIddiscrepanciesTreeTabId");
+        nivTabs.selectTabById("narComponent_networkInconsistenciesViewIddiscrepanciesTreeTabId");
         nivTabs.callActionById(applyButtonId);
         DelayUtils.sleep(1000);
     }
