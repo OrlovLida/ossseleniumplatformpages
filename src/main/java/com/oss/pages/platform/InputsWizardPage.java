@@ -1,8 +1,8 @@
 package com.oss.pages.platform;
 
 import com.google.common.collect.ImmutableSet;
-import com.oss.framework.components.*;
-import com.oss.framework.components.Input.ComponentType;
+import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.inputs.Input.ComponentType;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;

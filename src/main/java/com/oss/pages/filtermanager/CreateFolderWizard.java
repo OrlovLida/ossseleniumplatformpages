@@ -4,7 +4,7 @@ import com.oss.framework.widgets.Wizard;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 
-import static com.oss.framework.components.Input.ComponentType.TEXT_FIELD;
+import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 
 public class CreateFolderWizard extends FilterManagerPage {
 
@@ -12,9 +12,9 @@ public class CreateFolderWizard extends FilterManagerPage {
         super(driver);
     }
 
-    public String NAME_TEXT_FIELD_ID= "filterManager_wizard_def_name";
-    public String WIZARD_ID = "filter-manager-folder-wizard-view";
-    public String ACCEPT_BUTTON_ID = "wizard-submit-button-filterManager_wizard_folder_widget";
+    private String NAME_TEXT_FIELD_ID= "filterManager_wizard_def_name";
+    private String WIZARD_ID = "filterManager_wizard_folder_widget";
+    private String ACCEPT_BUTTON_ID = "wizard-submit-button-filterManager_wizard_folder_widget";
 
     private Wizard folderWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
 

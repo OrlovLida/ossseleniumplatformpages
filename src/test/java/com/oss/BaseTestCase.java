@@ -23,7 +23,8 @@ public class BaseTestCase {
 
     public WebDriver driver;
     public WebDriverWait webDriverWait;
-    HomePage homePage;
+    protected HomePage homePage;
+
 
     @BeforeClass
     public void openBrowser() {

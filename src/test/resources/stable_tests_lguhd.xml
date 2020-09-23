@@ -1,5 +1,5 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="RegressionSuiteWeb" thread-count="2" parallel="tests" verbose="1">
+<suite name="RegressionSuiteWeb-LGUHD" thread-count="2" parallel="tests" verbose="1">
     <test name="ExportTests">
         <classes>
             <class name="com.oss.ExportGuiWizardTest"/>
@@ -24,11 +24,6 @@
     <test name="ReconciliationE2ETest">
         <classes>
             <class name="com.oss.reconciliation.ReconciliationE2ETest"/>
-        </classes>
-    </test>
-    <test name="CreateVRFTest">
-        <classes>
-            <class name="com.oss.transport.CreateVRFTest"/>
         </classes>
     </test>
     <test name="CreateIPNetwork">

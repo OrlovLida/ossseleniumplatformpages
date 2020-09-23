@@ -9,8 +9,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import com.oss.framework.components.Input;
-import com.oss.framework.components.Input.ComponentType;
+import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.inputs.Input.ComponentType;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.contextactions.ActionsInterface;
 import com.oss.framework.utils.DelayUtils;
@@ -85,6 +85,6 @@ public class SamplesManagementPage extends BasePage {
         name.setSingleStringValue(cmDomainName);
         DelayUtils.waitForPageToLoad(driver, wait);
         DelayUtils.sleep(500);
-        wizard.clickCreate();
+        wizard.clickActionById("narComponent_CMSamplesManagementViewIdFileActionButtonsId-1");
     }
 }

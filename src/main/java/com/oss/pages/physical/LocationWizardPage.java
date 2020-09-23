@@ -1,11 +1,11 @@
 package com.oss.pages.physical;
 
-import com.oss.framework.components.*;
+import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.LocatingUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
-import org.openqa.selenium.By;
+
 import org.openqa.selenium.WebDriver;
 //import org.testng.Assert;
 
@@ -79,6 +79,12 @@ public class LocationWizardPage extends BasePage {
             setComponentValue("address", " ", Input.ComponentType.SEARCH_FIELD);
         }
         accept();
+    }
+
+    @Step("Type description")
+    public LocationWizardPage typeDescription(String description) {
+        setComponentValue("description", description, Input.ComponentType.TEXT_FIELD);
+        return this;
     }
 
 }

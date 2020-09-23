@@ -70,7 +70,7 @@ public class ReconciliationE2ETest extends BaseTestCase {
         networkInconsistenciesViewPage.clearOldNotification();
         networkInconsistenciesViewPage.applyInconsistencies();
         DelayUtils.sleep(500);
-        networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies();
+        networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies("CiscoSeleniumTest");
     }
 
     @Test(priority = 5)
@@ -108,8 +108,8 @@ public class ReconciliationE2ETest extends BaseTestCase {
         networkInconsistenciesViewPage.expantTree();
         networkInconsistenciesViewPage.clearOldNotification();
         networkInconsistenciesViewPage.applyInconsistencies();
-        DelayUtils.sleep(500);
-        networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies();
+        DelayUtils.sleep(1000);
+        networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies("CiscoSeleniumTest");
     }
 
     @Test(priority = 8)

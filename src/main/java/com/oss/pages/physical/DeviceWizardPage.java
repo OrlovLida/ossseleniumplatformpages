@@ -1,12 +1,12 @@
 package com.oss.pages.physical;
 import org.openqa.selenium.WebDriver;
-import com.oss.framework.components.Input;
+import com.oss.framework.components.inputs.Input;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
-import static com.oss.framework.components.Input.ComponentType.DATE_TIME;
-import static com.oss.framework.components.Input.ComponentType.SEARCH_FIELD;
-import static com.oss.framework.components.Input.ComponentType.TEXT_AREA;
-import static com.oss.framework.components.Input.ComponentType.TEXT_FIELD;
+import static com.oss.framework.components.inputs.Input.ComponentType.DATE_TIME;
+import static com.oss.framework.components.inputs.Input.ComponentType.SEARCH_FIELD;
+import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_AREA;
+import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 
 public class DeviceWizardPage extends BasePage {
 

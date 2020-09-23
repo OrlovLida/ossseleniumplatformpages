@@ -2,15 +2,15 @@ package com.oss.pages.reconciliation;
 
 import org.openqa.selenium.WebDriver;
 
-import com.oss.framework.components.Input;
+import com.oss.framework.components.inputs.Input;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
-import static com.oss.framework.components.Input.ComponentType.COMBOBOX;
-import static com.oss.framework.components.Input.ComponentType.SEARCH_FIELD;
-import static com.oss.framework.components.Input.ComponentType.TEXT_FIELD;
+import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
+import static com.oss.framework.components.inputs.Input.ComponentType.SEARCH_FIELD;
+import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 
 public class CmDomainWizardPage extends BasePage {
 

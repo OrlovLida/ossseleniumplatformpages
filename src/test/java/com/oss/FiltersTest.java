@@ -135,7 +135,8 @@ public class FiltersTest extends BaseTestCase{
     @Description("Creating Folder and checking that the created folder is visible in Filter Manager View")
     public void creatingFolder() {
         filterManagerPage = FilterManagerPage.goToFilterManagerPage(driver,BASIC_URL)
-                .createFolder(FOLDER_NAME);
+                .createFolder(FOLDER_NAME)
+                .expandAllCategories();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertTrue(filterManagerPage.isFolderVisible(FOLDER_NAME));
     }
@@ -224,17 +225,23 @@ public class FiltersTest extends BaseTestCase{
     }
 
     @Test(priority = 18)
-    @Description("Deleting shared filter. Checking that is deleted for a first user as well")
-    public void removingFilter() {
+    @Description("Deleting shared filter. Checking that is deleted")
+    public void removingFilterForSecondUser() {
         filterManagerPage = FilterManagerPage.goToFilterManagerPage(driver,BASIC_URL)
                 .expandAllCategories()
                 .deleteFilter(FILTER_NAME);
+        Assert.assertFalse(filterManagerPage.isFilterVisible(FILTER_NAME));
+    }
+
+    @Test(priority = 19)
+    @Description("Checking that is deleted for a first user as well")
+    public void removingFilter() {
         filterManagerPage.changeUser(CONFIGURATION.getValue("user"), CONFIGURATION.getValue("password"));
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertFalse(filterManagerPage.isFilterVisible(FILTER_NAME));
     }
 
-    @Test(priority = 19)
+    @Test(priority = 20)
     @Description("Deleting all filters and folders")
     public void deleteAllFiltersAndFolders(){
         filterManagerPage = FilterManagerPage.goToFilterManagerPage(driver,BASIC_URL)
