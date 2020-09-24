@@ -82,7 +82,7 @@ public class IPAMBaseTest extends BaseTestCase {
 
     public void checkInventoryViewForIPNetwork(String networkName, String description) {
         newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "IPNetwork");
-        newInventoryViewPage.openFilterPanel().setValue(networkName, "name").applyFilter();
+        newInventoryViewPage.openFilterPanel().setValue(Input.ComponentType.TEXT_FIELD, "name", networkName).applyFilter();
         newInventoryViewPage.getTableWidget().selectFirstRow();
         DelayUtils.sleep(100);
         Assert.assertEquals(newInventoryViewPage.getPropertyPanel().getPropertyValue("name"), networkName);

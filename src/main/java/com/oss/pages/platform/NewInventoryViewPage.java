@@ -5,7 +5,7 @@ import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.filterpanel.FilterPanel;
+import com.oss.pages.filterpanel.FilterPanelPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -113,6 +113,7 @@ public class NewInventoryViewPage extends BasePage {
     public NewInventoryViewPage changeLayoutToHorizontal() {
         ButtonPanel.create(driver, wait).getButtonIcon("layout").click();
         DropdownList.create(driver, wait).selectOptionWithIconContains("Horizontal");
+        mainTable = null;
         return this;
     }
 
@@ -121,15 +122,16 @@ public class NewInventoryViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         ButtonPanel.create(driver, wait).getButtonIcon("layout").click();
         DropdownList.create(driver, wait).selectOptionWithIconContains("Vertical");
+        mainTable = null;
         return this;
     }
 
     @Step("Open Filter Panel")
-    public FilterPanel openFilterPanel() {
+    public FilterPanelPage openFilterPanel() {
         DelayUtils.waitForPageToLoad(driver,wait);
         AdvancedSearch advancedSearch = new AdvancedSearch(driver, wait);
         advancedSearch.openSearchPanel();
-        return new FilterPanel(driver);
+        return new FilterPanelPage(driver);
     }
 
     @Step("Clear all tags")
@@ -173,10 +175,51 @@ public class NewInventoryViewPage extends BasePage {
         return this;
     }
 
+    @Step("Change columns order")
+    public NewInventoryViewPage changeColumnsOrder(String columnName, int position){
+        getTableWidget().changeColumnPosition(getTableWidget().getColumnByLabel(columnName), getTableWidget().getColumnHeaders().get(position));
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return this;
+    }
+
+    @Step("Open save widget configuration")
+    public SaveConfigurationWizard openSaveWidgetConfigurationWizard(){
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getTableWidget().clickOnKebabMenu();
+        DropdownList.create(driver, wait).selectOptionWithId("saveNewConfig");
+        return new SaveConfigurationWizard(driver);
+    }
+
+    @Step("Open choose configuration wizard")
+    public ChooseConfigurationWizard openChooseConfigurationWizard(){
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getTableWidget().clickOnKebabMenu();
+        DropdownList.create(driver, wait).selectOptionWithId("chooseConfig");
+        return new ChooseConfigurationWizard(driver);
+    }
+
+    @Step("Open download configuration wizard")
+    public ChooseConfigurationWizard openDownloadConfigurationWizard(){
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getTableWidget().clickOnKebabMenu();
+        DropdownList.create(driver, wait).selectOptionWithId("table_gql_Download");
+        return new ChooseConfigurationWizard(driver);
+    }
+
+    @Step("Open Columns Management")
+    public ColumnsManagementPage openColumnsManagement(){
+        getTableWidget().getColumnsManagement();
+        return new ColumnsManagementPage(driver);
+    }
+
+    @Step("Check first checkbox in table widget")
+    public NewInventoryViewPage checkFirstCheckbox(){
+        return this;
+    }
+
     public boolean isAllTagsInvisible(){
         DelayUtils.waitForPageToLoad(driver,wait);
         AdvancedSearch advancedSearch = new AdvancedSearch(driver, wait);
- //       System.out.println(advancedSearch.howManyTagsIsVisible());
         return advancedSearch.howManyTagsIsVisible()==0;
     }
 

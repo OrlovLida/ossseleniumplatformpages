@@ -2,6 +2,12 @@ package com.oss.pages;
 
 import java.util.Random;
 
+import com.oss.framework.mainheader.PerspectiveChooser;
+import com.oss.framework.mainheader.ToolbarWidget;
+import com.oss.framework.utils.DelayUtils;
+import com.oss.pages.platform.LoginPanelPage;
+import com.oss.pages.platform.NotificationWrapperPage;
+import com.oss.pages.platform.PerspectiveChooserPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -33,4 +39,20 @@ public class BasePage {
         UserSettings.create(driver, wait).open().logOut();
         new LoginPage(driver, "url").login(user, password);
     }
+
+    public LoginPanelPage openLoginPanel(){
+        ToolbarWidget.create(driver, wait).openLoginPanel();
+      return new LoginPanelPage(driver);
+    }
+
+    public NotificationWrapperPage openNotificationPanel(){
+        ToolbarWidget.create(driver, wait).openNotificationPanel();
+        return new NotificationWrapperPage(driver);
+    }
+
+    public PerspectiveChooserPage openPerspectiveChooser(){
+        ToolbarWidget.create(driver, wait).openQueryContextContainer();
+        return new PerspectiveChooserPage(driver);
+    }
+
 }

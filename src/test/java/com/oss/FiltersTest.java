@@ -3,7 +3,7 @@ package com.oss;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.filtermanager.EditFilterPage;
 import com.oss.pages.filtermanager.FilterManagerPage;
-import com.oss.pages.filterpanel.FilterPanel;
+import com.oss.pages.filterpanel.FilterPanelPage;
 import com.oss.pages.filterpanel.FilterSettingsFilter;
 import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.utils.TestListener;
@@ -19,7 +19,7 @@ import static com.oss.configuration.Configuration.CONFIGURATION;
 public class FiltersTest extends BaseTestCase{
 
     private NewInventoryViewPage inventoryViewPage;
-    private FilterPanel filterPanel;
+    private FilterPanelPage filterPanelPage;
     private FilterSettingsFilter filterSettingsFilter;
     private FilterManagerPage filterManagerPage;
     private EditFilterPage editFilterPage;
@@ -61,8 +61,8 @@ public class FiltersTest extends BaseTestCase{
             createNewFilters();
         }
         else {
-            filterPanel = new FilterPanel(driver);
-            filterPanel.typeValueInLocationIdInput(id)
+            filterPanelPage = new FilterPanelPage(driver);
+            filterPanelPage.typeValueInLocationIdInput(id)
                     .saveFilterAs(FILTER_NAME)
                     .typeValueInLocationIdInput(VALUE_FOR_FILTER2)
                     .saveFilterAs(FILTER2_NAME)
@@ -85,13 +85,13 @@ public class FiltersTest extends BaseTestCase{
     public void isFilterApply() {
         filterSettingsFilter.selectFilter(FILTER3_NAME)
                 .applyFilter();
-        Assert.assertTrue(filterPanel.isFilterApplied(FILTER3_NAME));
+        Assert.assertTrue(filterPanelPage.isFilterApplied(FILTER3_NAME));
     }
 
     @Test(priority = 4)
     @Description("Editing an Existing Filter and save them. Checking that the value is change after saving it")
     public void editingAnExistingFilter(){
-        filterPanel
+        filterPanelPage
                 .changeValueInLocationIdInput(VALUE_FOR_FILTER3_AFTER_EDIT)
                 .saveFilter();
         filterSettingsFilter
@@ -100,7 +100,7 @@ public class FiltersTest extends BaseTestCase{
         filterSettingsFilter
                 .selectFilter(FILTER3_NAME)
                 .applyFilter();
-        Assert.assertEquals(filterPanel.getValueOfLocationIdInput(), VALUE_FOR_FILTER3_AFTER_EDIT);
+        Assert.assertEquals(filterPanelPage.getValueOfLocationIdInput(), VALUE_FOR_FILTER3_AFTER_EDIT);
     }
 
     @Test(priority = 5)
@@ -109,8 +109,8 @@ public class FiltersTest extends BaseTestCase{
         filterSettingsFilter
                 .selectFilter(FILTER_NAME)
                 .applyFilter();
-        VALUE_IN_LOCATION_ID_INPUT=filterPanel.getValueOfLocationIdInput();
-            filterPanel
+        VALUE_IN_LOCATION_ID_INPUT= filterPanelPage.getValueOfLocationIdInput();
+            filterPanelPage
                 .applyFilter();
         Assert.assertTrue(inventoryViewPage.isOnlyOneObject(VALUE_IN_LOCATION_ID_INPUT));
     }
@@ -221,7 +221,7 @@ public class FiltersTest extends BaseTestCase{
         filterSettingsFilter
                 .selectFilter(FILTER2_NAME)
                 .applyFilter();
-        Assert.assertEquals(filterPanel.getValueOfLocationIdInput(), VALUE_FOR_FILTER2);
+        Assert.assertEquals(filterPanelPage.getValueOfLocationIdInput(), VALUE_FOR_FILTER2);
     }
 
     @Test(priority = 18)

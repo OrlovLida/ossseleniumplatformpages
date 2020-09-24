@@ -1,5 +1,7 @@
 package com.oss.pages.platform;
 
+import com.oss.framework.components.notifications.Notifications;
+import com.oss.framework.mainheader.ToolbarWidget;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.BasePage;
 import org.openqa.selenium.WebDriver;
@@ -12,15 +14,8 @@ public class NotificationWrapperPage extends BasePage {
 
     public NotificationWrapperPage(WebDriver driver){super(driver);}
 
-    @FindBy(xpath = "//i[contains(@class, 'notificationIcon fa fa-bell-o')]")
-    private WebElement notificationButton;
-    @FindBy(xpath = "//div[@class='notificationContainer']/div")
-    private List<WebElement> notificationsList ;
-    @FindBy(xpath = "//a[@class ='clear-action']")
-    private WebElement clearAllNotifications;
-
     public NotificationWrapperPage clearNotifications(){
-        clearAllNotifications.click();
+        Notifications.create(driver, wait).clearAllNotification();
         return this;
     }
 
@@ -29,7 +24,16 @@ public class NotificationWrapperPage extends BasePage {
         return this;
     }
 
+    public String waitAndGetFinishedNotificationText(){
+        return Notifications.create(driver, wait).waitAndGetFinishedNotificationText();
+    }
+
     public int amountOfNotifications(){
-        return notificationsList.size();
+        return Notifications.create(driver, wait).getAmountOfNotifications();
+    }
+
+    public BasePage close(){
+        ToolbarWidget.create(driver, wait).closeNotificationPanel();
+        return new BasePage(driver);
     }
 }

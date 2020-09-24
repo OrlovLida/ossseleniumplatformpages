@@ -10,11 +10,12 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
+import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 
-public class FilterPanel extends BasePage {
+public class FilterPanelPage extends BasePage {
 
-    public FilterPanel(WebDriver driver){
+    public FilterPanelPage(WebDriver driver){
         super(driver);
     }
 
@@ -34,14 +35,14 @@ public class FilterPanel extends BasePage {
     }
 
     @Step("Type Value in Location.Id Text Field")
-    public FilterPanel typeValueInLocationIdInput(String value) {
+    public FilterPanelPage typeValueInLocationIdInput(String value) {
         DelayUtils.waitForPageToLoad(driver, wait);
         setValueOnFilterInput("id", TEXT_FIELD, value);
         return this;
     }
 
     @Step("Change Value in Location.Id Text Field")
-    public FilterPanel changeValueInLocationIdInput(String value) {
+    public FilterPanelPage changeValueInLocationIdInput(String value) {
         DelayUtils.waitForPageToLoad(driver, wait);
         clearFilterInput("id", TEXT_FIELD);
         setValueOnFilterInput("id", TEXT_FIELD, value);
@@ -49,7 +50,7 @@ public class FilterPanel extends BasePage {
     }
 
     @Step("Change Value in Location.Name Text Field")
-    public FilterPanel changeValueInLocationNameInput(String value) {
+    public FilterPanelPage changeValueInLocationNameInput(String value) {
         DelayUtils.waitForPageToLoad(driver, wait);
         clearFilterInput("name", TEXT_FIELD);
         setValueOnFilterInput("name", TEXT_FIELD, value);
@@ -57,15 +58,23 @@ public class FilterPanel extends BasePage {
     }
 
     @Step("Set value")
-    public FilterPanel setValue(String value, String componentId) {
+    public FilterPanelPage setValue(Input.ComponentType componentType, String componentId, String value) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        clearFilterInput(componentId, TEXT_FIELD);
-        setValueOnFilterInput(componentId, TEXT_FIELD, value);
+        clearFilterInput(componentId, componentType);
+        setValueOnFilterInput(componentId, componentType, value);
+        return this;
+    }
+
+    @Step("Set value on combo with Tags ")
+    public FilterPanelPage setValueOnComboWithTags(String componentId, String searchComponentId, String value) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        advancedSearch.getComponent(componentId, COMBOBOX).click();
+        setValueOnFilterInput(searchComponentId, COMBOBOX, value);
         return this;
     }
 
     @Step("Save filter as a new one")
-    public FilterPanel saveFilterAs(String filterName) {
+    public FilterPanelPage saveFilterAs(String filterName) {
         clickOnSaveButton();
         chooseOptionFromDropDownList(SAVE_AS_A_NEW_FILTER_ID);
         typeFilterNameAndSave(filterName);
@@ -73,7 +82,7 @@ public class FilterPanel extends BasePage {
     }
 
     @Step("Save existing filter")
-    public FilterPanel saveFilter() {
+    public FilterPanelPage saveFilter() {
         clickOnSaveButton();
         chooseOptionFromDropDownList(SAVE_FILTER_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -81,7 +90,7 @@ public class FilterPanel extends BasePage {
     }
 
     @Step ("Apply Filter")
-    public FilterPanel applyFilter(){
+    public FilterPanelPage applyFilter(){
         driver.findElement(By.xpath(APPLY_BUTTON_XPATH)).click();
         DelayUtils.waitForPageToLoad(driver, wait);
         return this;
