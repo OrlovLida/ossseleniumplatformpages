@@ -1,5 +1,6 @@
 package com.oss.transport;
 
+import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.utils.TestListener;
@@ -35,7 +36,7 @@ public class DeleteIPNetworkTest extends IPAMBaseTest {
     @Test (priority = 2)
     public void checkInventoryView() {
         newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "IPNetwork");
-        newInventoryViewPage.openFilterPanel().setValue(networkName, "name").applyFilter();
+        newInventoryViewPage.openFilterPanel().setValue(Input.ComponentType.TEXT_FIELD, "name", networkName).applyFilter();
         Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());
     }
 }

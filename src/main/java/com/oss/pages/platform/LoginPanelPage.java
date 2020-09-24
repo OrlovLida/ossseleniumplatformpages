@@ -1,32 +1,47 @@
 package com.oss.pages.platform;
 
+import com.oss.framework.components.inputs.ComponentFactory;
+import com.oss.framework.components.inputs.Input;
+import com.oss.framework.mainheader.ToolbarWidget;
+import com.oss.framework.mainheader.UserSettings;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.BasePage;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
+
+import static com.oss.framework.components.inputs.Input.ComponentType.SWITCHER;
 
 public class LoginPanelPage extends BasePage {
 
     public LoginPanelPage(WebDriver driver){super(driver);}
 
-    @FindBy(xpath = "//div[@class = 'login-panel']//input")
-    private WebElement languageInput;
-    @FindBy(xpath = "//span[@class='switcher-inner']")
-    private WebElement alphaModeSwitcher;
-
+    private String ALPHA_MODE_SWITCHER_ID = "alpha-mode-switcher";
 
     public void changeLanguageForEnglish(){
-        languageInput.click();
-        driver.findElement(By.xpath("//div[@class='text-wrapper' and contains(text(), 'English')]")).click();
-        String confirmButtonPath = "//button[@class='actionButton btn btn-primary']";
-        DelayUtils.waitForBy(wait, By.xpath(confirmButtonPath));
-        driver.findElement(By.xpath(confirmButtonPath)).click();
+        UserSettings.create(driver, wait).chooseLanguage("English");
     }
 
-    public void changeForAlphaMOde(){
-        DelayUtils.waitForVisibility(wait,alphaModeSwitcher);
-        alphaModeSwitcher.click();
+    public LoginPanelPage changeSwitcherForAlphaMode(){
+        DelayUtils.waitForPageToLoad(driver, wait);
+        DelayUtils.sleep(3000);
+        getAlphaModeSwitcher().setSingleStringValue("true");
+        return new LoginPanelPage(driver);
     }
+
+    public LoginPanelPage changeSwitcherForNormalMode(){
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getAlphaModeSwitcher().setSingleStringValue("false");
+        return new LoginPanelPage(driver);
+    }
+
+    public BasePage closeLoginPanel() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        ToolbarWidget.create(driver, wait).closeLoginPanel();
+       return new BasePage(driver);
+    }
+
+    private Input getAlphaModeSwitcher(){
+        return ComponentFactory.create(ALPHA_MODE_SWITCHER_ID, SWITCHER, driver, wait);
+    }
+
+
 }

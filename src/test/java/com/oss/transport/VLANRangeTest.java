@@ -4,7 +4,7 @@ import com.oss.BaseTestCase;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.filterpanel.FilterPanel;
+import com.oss.pages.filterpanel.FilterPanelPage;
 import com.oss.pages.transport.VLANRangeWizardPage;
 import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.utils.TestListener;
@@ -19,7 +19,7 @@ public class VLANRangeTest extends BaseTestCase {
 
     private VLANRangeWizardPage vLANRangeWizardPage;
     private NewInventoryViewPage newInventoryViewPage;
-    private FilterPanel filterPanel;
+    private FilterPanelPage filterPanel;
 
     //TODO: assertions, redo delays
 
@@ -44,7 +44,7 @@ public class VLANRangeTest extends BaseTestCase {
         newInventoryViewPage = newInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "VLANRange");
         newInventoryViewPage.openFilterPanel();
         DelayUtils.sleep();
-        filterPanel = new FilterPanel(driver);
+        filterPanel = new FilterPanelPage(driver);
         filterPanel.changeValueInLocationNameInput("CreateVLANRangeSeleniumTest1");
         filterPanel.applyFilter();
         newInventoryViewPage.SelectFirstRow();
@@ -58,7 +58,7 @@ public class VLANRangeTest extends BaseTestCase {
         newInventoryViewPage = newInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "VLANRange");
         newInventoryViewPage.openFilterPanel();
         DelayUtils.sleep();
-        filterPanel = new FilterPanel(driver);
+        filterPanel = new FilterPanelPage(driver);
 
         filterPanel.changeValueInLocationNameInput("CreateVLANRangeSeleniumTest1");
 
@@ -87,7 +87,7 @@ public class VLANRangeTest extends BaseTestCase {
         DelayUtils.sleep(5000);
 
         DelayUtils.sleep();
-        filterPanel = new FilterPanel(driver);
+        filterPanel = new FilterPanelPage(driver);
         DelayUtils.sleep(5000);
 
         filterPanel.changeValueInLocationNameInput("EditVLANRangeSeleniumTest2");
