@@ -61,7 +61,7 @@ public class TasksPage extends BasePage {
     public void setupIntegration(String processCode){
         findTask(processCode,"Ready for Integration");
         DelayUtils.waitForPageToLoad(driver, wait);
-        TabsInterface tabs= OldTabs.createById(driver,wait, TABS_TASKS_VIEW);
+        TabsInterface tabs= TabsWidget.createById(driver,wait, TABS_TASKS_VIEW);
         tabs.callActionByLabel("Setup Integration");
     }
     public void addFile(String processCode, String taskName, String filePath){
