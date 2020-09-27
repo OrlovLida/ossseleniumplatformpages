@@ -19,15 +19,6 @@ public class ExportGuiWizardPage extends BasePage {
 
     public ExportGuiWizardPage(WebDriver driver) {super(driver); getWizard(); }
 
-    @FindBy(xpath = "//div[contains (@class, 'simple-progress-bar') and contains(text(), 'E-mail')]")
-    private WebElement sendByEmailProgressBar;
-    @FindBy(xpath = "//div[contains (@class, 'simple-progress-bar') and contains(text(), 'server')]")
-    private WebElement serverDataProgressBar;
-    @FindBy(xpath = "//div[contains (@class, 'simple-progress-bar') and contains(text(), 'Schedule')]")
-    private WebElement scheduleTasklProgressBar;
-    @FindBy(xpath = "//button[text()='Accept']")
-    private WebElement acceptButton;
-
     private final String CHECKBOX_EXPORT_WITH_HEADERS_ID = "exportgui-components-withheadercheckbox";
     private final String CHECKBOX_GENERATE_PDF_ID = "exportgui-components-generatepdfcheckbox";
     private final String CHECKBOX_COMPRESS_FILE_ID = "exportgui-components-compressfilecheckbox";
@@ -58,38 +49,23 @@ public class ExportGuiWizardPage extends BasePage {
                 .setSingleStringValueContains(value);
     }
 
-    private void typeValueOnCombobox(String COMBOBOX_ID, String value) {
-        WebElement combobox = driver.findElement(By.xpath("//div[contains (@data-attributename,'" + COMBOBOX_ID + "')]//input"));
-        combobox.click();
-        combobox.sendKeys(Keys.chord(Keys.CONTROL, "a"));
-        combobox.sendKeys(Keys.DELETE);
-        combobox.sendKeys(value);
-    }
-
     protected void setValueOnTextField (String TEXT_FIELD_ID, Data value){
         TextField textField = (TextField) getComponent(TEXT_FIELD_ID, Input.ComponentType.TEXT_FIELD);
         textField.setValue(value);
     }
 
     protected void checkTheCheckbox(String CHECKBOX_ID){
-        WebElement element = driver.findElement(By.xpath("//label[contains (@for, '"+CHECKBOX_ID+"')]"));
-        if(!isChecked(element))
-            element.click();
+        Input checkBox = getWizard().getComponent(CHECKBOX_ID, ComponentType.CHECKBOX);
+        checkBox.setSingleStringValue("true");
     }
 
     private void uncheckTheCheckbox(String CHECKBOX_ID){
-        WebElement element = driver.findElement(By.xpath("//label[contains (@for, '"+CHECKBOX_ID+"')]"));
-        if(isChecked(element))
-            element.click();
+        Input checkBox = getWizard().getComponent(CHECKBOX_ID, ComponentType.CHECKBOX);
+        checkBox.setSingleStringValue("false");
     }
 
     private Input getComponent(String componentId, Input.ComponentType componentType) {
         return getWizard().getComponent(componentId, componentType);
-    }
-
-    boolean isChecked(WebElement element){
-        String checked = element.findElement(By.xpath("./../input")).getAttribute("value");
-        return (checked.equals("true"));
     }
 
     private void clickOnAccept() {getWizard().clickAccept();}
@@ -97,10 +73,16 @@ public class ExportGuiWizardPage extends BasePage {
     private void clickOnNext() {getWizard().clickNext();}
 
     @Step("Choose CSV File Type")
-    public ExportGuiWizardPage chooseCSV(){setValueOnCombobox(COMBOBOX_FILE_TYPE_ID, "CSV"); return this;}
+    public ExportGuiWizardPage chooseCSV(){
+        setValueOnCombobox(COMBOBOX_FILE_TYPE_ID, "CSV");
+        return this;
+    }
 
     @Step("Choose XLSX File Type")
-    public ExportGuiWizardPage chooseXLSX(){setValueOnCombobox(COMBOBOX_FILE_TYPE_ID, "XLSX"); return this;}
+    public ExportGuiWizardPage chooseXLSX(){
+        setValueOnCombobox(COMBOBOX_FILE_TYPE_ID, "XLSX");
+        return this;
+    }
 
     @Step("Choose XLS File Type")
     public ExportGuiWizardPage chooseXLS(){
@@ -109,55 +91,103 @@ public class ExportGuiWizardPage extends BasePage {
     }
 
     @Step("Choose XML File Type")
-    public ExportGuiWizardPage chooseXML(){setValueOnCombobox(COMBOBOX_FILE_TYPE_ID, "XML"); return this;}
+    public ExportGuiWizardPage chooseXML(){
+        setValueOnCombobox(COMBOBOX_FILE_TYPE_ID, "XML");
+        return this;
+    }
 
     @Step("Choose Export to PDF checkbox")
     public ExportGuiWizardPage chooseExportToPDF(){
-        Input checkBox = getWizard().getComponent(CHECKBOX_GENERATE_PDF_ID, ComponentType.CHECKBOX);
-        //checkTheCheckbox(CHECKBOX_GENERATE_PDF_ID);
-        checkBox.setSingleStringValue("true");
-        return this;}
+        checkTheCheckbox(CHECKBOX_GENERATE_PDF_ID);
+        return this;
+    }
 
     @Step("Choose compressed file checkbox")
-    public ExportGuiWizardPage chooseCompressedFile(){checkTheCheckbox(CHECKBOX_COMPRESS_FILE_ID); return this;}
+    public ExportGuiWizardPage chooseCompressedFile(){
+        checkTheCheckbox(CHECKBOX_COMPRESS_FILE_ID);
+        return this;
+    }
 
     @Step("Choose export to file with headers checkbox")
-    public ExportGuiWizardPage chooseExportToFileWithHeaders(){checkTheCheckbox(CHECKBOX_EXPORT_WITH_HEADERS_ID); return this;}
+    public ExportGuiWizardPage chooseExportToFileWithHeaders(){
+        checkTheCheckbox(CHECKBOX_EXPORT_WITH_HEADERS_ID);
+        return this;
+    }
 
     @Step("Choose send by email checkbox")
-    public ExportGuiWizardPage chooseSendByEmail(){checkTheCheckbox(CHECKBOX_SEND_BY_EMAIL_ID); return this;}
+    public ExportGuiWizardPage chooseSendByEmail(){
+        checkTheCheckbox(CHECKBOX_SEND_BY_EMAIL_ID);
+        return this;
+    }
 
     @Step("Choose schedule export checkbox")
-    public ExportGuiWizardPage chooseScheduleExport(){checkTheCheckbox(CHECKBOX_SCHEDULE_EXPORT_TASK_ID); return this;}
+    public ExportGuiWizardPage chooseScheduleExport(){
+        checkTheCheckbox(CHECKBOX_SCHEDULE_EXPORT_TASK_ID);
+        return this;
+    }
 
     @Step("Choose remote upload checkbox")
-    public ExportGuiWizardPage chooseRemoteUpload(){checkTheCheckbox(CHECKBOX_REMOTE_UPLOAD_ID); return this;}
+    public ExportGuiWizardPage chooseRemoteUpload(){
+        checkTheCheckbox(CHECKBOX_REMOTE_UPLOAD_ID);
+        return this;
+    }
 
-    public ExportGuiWizardPage typeFileName(String FILE_NAME){setValueOnTextField(TEXT_FIELD_FILE_NAME_ID, Data.createSingleData(FILE_NAME)); return this;}
+    public ExportGuiWizardPage typeFileName(String FILE_NAME){
+        setValueOnTextField(TEXT_FIELD_FILE_NAME_ID, Data.createSingleData(FILE_NAME));
+        return this;
+    }
 
     @Step("Close the wizard")
-    public LanguageServicePage closeTheWizard(){DelayUtils.sleep(300);clickOnAccept(); getWizard().waitToClose();
-    return new LanguageServicePage(driver);}
+    public LanguageServicePage closeTheWizard(){
+        DelayUtils.sleep(300);
+        clickOnAccept();
+        getWizard().waitToClose();
+        return new LanguageServicePage(driver);
+    }
 
     @Step("Go to next step of wizard - Fill Server Data")
-    public FillServerDataPage goToTheFillServerData(){DelayUtils.waitForVisibility(wait,serverDataProgressBar);clickOnNext(); return new FillServerDataPage(driver);}
+    public FillServerDataPage goToTheFillServerData(){
+        DelayUtils.waitForPageToLoad(driver, wait);
+        clickOnNext();
+        return new FillServerDataPage(driver);
+    }
 
     @Step("Go to next step of wizard - Schedule Task")
-    public ScheduleTaskPage goToTheScheduleTask(){DelayUtils.waitForVisibility(wait,scheduleTasklProgressBar);clickOnNext(); return new ScheduleTaskPage(driver);}
+    public ScheduleTaskPage goToTheScheduleTask(){
+        DelayUtils.waitForPageToLoad(driver, wait);
+        clickOnNext();
+        return new ScheduleTaskPage(driver);
+    }
 
     @Step("Go to next step of wizard - Send File By Email")
-    public SendFileByEmailPage goToSendFileByEmailPage(){DelayUtils.waitForVisibility(wait,sendByEmailProgressBar);clickOnNext(); return new SendFileByEmailPage(driver);}
+    public SendFileByEmailPage goToSendFileByEmailPage(){
+        DelayUtils.waitForPageToLoad(driver,wait);
+        clickOnNext();
+        return new SendFileByEmailPage(driver);
+    }
 
     @Step("Uncheck the Export to File with Headers checkbox")
-    public ExportGuiWizardPage uncheckTheExportToFileWithHeaders(){uncheckTheCheckbox(CHECKBOX_EXPORT_WITH_HEADERS_ID); return this;}
+    public ExportGuiWizardPage uncheckTheExportToFileWithHeaders(){
+        uncheckTheCheckbox(CHECKBOX_EXPORT_WITH_HEADERS_ID);
+        return this;
+    }
 
     @Step("Change Quote Character on Combobox")
-    public ExportGuiWizardPage changeQuoteCharacter(String value){setValueOnCombobox(COMBOBOX_QUOTE_CHARACTER_ID, value); return this;}
+    public ExportGuiWizardPage changeQuoteCharacter(String value){
+        setValueOnCombobox(COMBOBOX_QUOTE_CHARACTER_ID, value);
+        return this;
+    }
 
     @Step("Change CSV Delimiter on Combobox")
-    public ExportGuiWizardPage changeCSVDelimiter(String value){setValueOnCombobox(COMBOBOX_CSV_DELIMITER_ID, value); return this;}
+    public ExportGuiWizardPage changeCSVDelimiter(String value){
+        setValueOnCombobox(COMBOBOX_CSV_DELIMITER_ID, value);
+        return this;
+    }
 
     @Step("Change Date Mask on Combobox")
-    public ExportGuiWizardPage changeDateMask(String value){setValueContainsOnCombobox(COMBOBOX_DATE_MASK_ID, value); return this;}
+    public ExportGuiWizardPage changeDateMask(String value){
+        setValueContainsOnCombobox(COMBOBOX_DATE_MASK_ID, value);
+        return this;
+    }
 }
 

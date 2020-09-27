@@ -315,7 +315,7 @@ public class InventoryViewTest extends BaseTestCase {
         String secondTabLabel = tabsWidget.getTabLabel(1);
         Assertions.assertThat(activeTabLabel).isNotEqualTo(secondTabLabel);
 
-        tabsWidget.clickOnTab(secondTabLabel);
+        tabsWidget.selectTabByLabel(secondTabLabel);
         String newActiveLabel = tabsWidget.getActiveTabLabel();
         Assertions.assertThat(newActiveLabel).isEqualTo(secondTabLabel);
     }
@@ -356,7 +356,7 @@ public class InventoryViewTest extends BaseTestCase {
         tableWidget.selectFirstRow();
 
         TabsWidget tabsWidget = inventoryViewPage.getTabsWidget();
-        tabsWidget.clickOnTab("Locations");
+        tabsWidget.callActionByLabel("Locations");
 
         DelayUtils.sleep(500);
 //        tabsWidget

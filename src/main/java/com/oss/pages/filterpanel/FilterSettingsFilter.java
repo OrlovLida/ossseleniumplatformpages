@@ -40,10 +40,10 @@ public class FilterSettingsFilter extends FilterSettings {
     }
 
     @Step ("Apply Filter")
-    public FilterPanel applyFilter(){
+    public FilterPanelPage applyFilter(){
         driver.findElement(By.xpath(APPLY_BUTTON_XPATH)).click();
         DelayUtils.waitForPageToLoad(driver,wait);
-        return new FilterPanel(driver);
+        return new FilterPanelPage(driver);
     }
 
     @Step ("Checking that filter is visible")

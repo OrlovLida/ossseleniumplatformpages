@@ -9,7 +9,6 @@ package com.oss.pages.bpm;
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.components.contextactions.ButtonContainer;
 import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
@@ -17,6 +16,7 @@ import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tablewidget.TableInterface;
 import com.oss.framework.widgets.tabswidget.OldTabs;
 import com.oss.framework.widgets.tabswidget.TabsInterface;
+import com.oss.framework.widgets.tabswidget.TabsWidget;
 import com.oss.pages.BasePage;
 import com.oss.pages.dms.AttachFileWizardPage;
 
@@ -44,7 +44,6 @@ public class TasksPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         table.searchByAttributeWithLabel("Name", Input.ComponentType.TEXT_FIELD,taskName);
         table.refreshUntilNoData(10000, "Reload table");
-        //DelayUtils.sleep(1000);
         table.selectRowByAttributeValueWithLabel("Process Code",processCode);
 
     }
@@ -62,16 +61,15 @@ public class TasksPage extends BasePage {
     public void setupIntegration(String processCode){
         findTask(processCode,"Ready for Integration");
         DelayUtils.waitForPageToLoad(driver, wait);
-        TabsInterface tabs= OldTabs.createById(driver,wait, TABS_TASKS_VIEW);
+        TabsInterface tabs= TabsWidget.createById(driver,wait, TABS_TASKS_VIEW);
         tabs.callActionByLabel("Setup Integration");
     }
     public void addFile(String processCode, String taskName, String filePath){
         findTask(processCode,taskName);
-        TabsInterface tabs= OldTabs.createById(driver,wait, TABS_TASKS_VIEW);
+        TabsInterface tabs= TabsWidget.createById(driver,wait, TABS_TASKS_VIEW);
         DelayUtils.waitForPageToLoad(driver,wait);
         tabs.selectTabById(ATTACHMENT_TAB_ID);
-        ButtonContainer action = ButtonContainer.create(driver, wait);
-        action.callActionById(ATTACH_FILE_BUTTON);
+        tabs.callActionById(ATTACH_FILE_BUTTON);
         AttachFileWizardPage attachFileWizardPage = new AttachFileWizardPage(driver);
         attachFileWizardPage.selectRadioButton("Upload anyway");
         attachFileWizardPage.attachFile(filePath);
@@ -81,12 +79,12 @@ public class TasksPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
     public void selectTab(String tabLabel){
-        TabsInterface tabs= OldTabs.createById(driver,wait, TABS_TASKS_VIEW);
+        TabsInterface tabs= TabsWidget.createById(driver,wait, TABS_TASKS_VIEW);
         tabs.selectTabByLabel(tabLabel);
     }
 
     private void actionTask(String actionLabel){
-        TabsInterface tabs= OldTabs.createById(driver,wait, TABS_TASKS_VIEW);
+        TabsInterface tabs= TabsWidget.createById(driver,wait, TABS_TASKS_VIEW);
         tabs.selectTabById(FORM_TAB_ID);
         DelayUtils.waitForPageToLoad(driver,wait);
         tabs.callActionByLabel(actionLabel);
