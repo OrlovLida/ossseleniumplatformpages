@@ -32,17 +32,16 @@ public class NewInventoryViewPage extends BasePage {
     private PropertyPanel propertyPanel;
     private PropertiesFilter propertiesFilter;
     private Wizard wizard;
-    private NewInventoryViewPage inventoryViewPage;
+
+    @Step("Open Inventory View")
+    public static NewInventoryViewPage goToInventoryViewPage(WebDriver driver, String basicURL, String type) {
+        driver.get(String.format("%s/#/views/management/views/inventory-view/" + type +
+                "?perspective=LIVE", basicURL));
+        return new NewInventoryViewPage(driver);
+    }
 
     public NewInventoryViewPage(WebDriver driver) {
         super(driver);
-    }
-
-    @Step("Open Inventory View")
-    public static NewInventoryViewPage goToInventoryViewPage(WebDriver driver, String basicURL, String context) {
-        driver.get(String.format("%s/#/views/management/views/inventory-view/" + context +
-                "?perspective=LIVE", basicURL));
-        return new NewInventoryViewPage(driver);
     }
 
     public TableWidget getTableWidget() {
@@ -177,7 +176,7 @@ public class NewInventoryViewPage extends BasePage {
 
     @Step("Change columns order")
     public NewInventoryViewPage changeColumnsOrder(String columnName, int position){
-        getTableWidget().changeColumnPosition(getTableWidget().getColumnByLabel(columnName), getTableWidget().getColumnHeaders().get(position));
+        getTableWidget().changeColumnsOrder(columnName, position);
         DelayUtils.waitForPageToLoad(driver, wait);
         return this;
     }

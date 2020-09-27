@@ -6,6 +6,7 @@ import com.oss.framework.widgets.treewidget.TreeWidget;
 import com.oss.pages.BasePage;
 import org.openqa.selenium.WebDriver;
 
+@Deprecated
 public class ColumnsManagementPage extends BasePage {
 
     public ColumnsManagementPage (WebDriver driver){ super(driver);

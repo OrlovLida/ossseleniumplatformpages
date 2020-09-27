@@ -17,8 +17,9 @@ import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.propertypanel.PropertiesFilter;
 import com.oss.framework.widgets.propertypanel.PropertyPanel;
 import com.oss.framework.widgets.tablewidget.ColumnsManagement;
+import com.oss.framework.widgets.tablewidget.TableInterface;
+import com.oss.framework.widgets.tablewidget.TableRow;
 import com.oss.framework.widgets.tablewidget.TableWidget;
-import com.oss.framework.widgets.tablewidget.TableWidget.Row;
 import com.oss.framework.widgets.tabswidget.TabsWidget;
 import com.oss.pages.platform.NewInventoryViewPage;
 
@@ -35,11 +36,10 @@ public class InventoryViewTest extends BaseTestCase {
     @Test
     public void searchByType() {
         //given
-        TableWidget tableWidget = inventoryViewPage.getTableWidget();
+        TableInterface tableWidget = inventoryViewPage.getTableWidget();
 
         //when
-        tableWidget.setFilterContains("type", ComponentType.COMBOBOX, "PoP");
-        tableWidget.confirmFilter();
+        tableWidget.searchByAttribute("type", ComponentType.COMBOBOX, "PoP");
         Multimap<String,String> filterValues = tableWidget.getAppliedFilters();
 
         //then
@@ -50,69 +50,21 @@ public class InventoryViewTest extends BaseTestCase {
     @Test
     public void selectFirstRow() {
         //given
-        TableWidget tableWidget = inventoryViewPage.getTableWidget();
+        TableInterface tableWidget = inventoryViewPage.getTableWidget();
 
         //when
-        tableWidget.selectFirstRow();
-        List<Row> selectedRows = tableWidget.getSelectedVisibleRows();
+        tableWidget.selectRow(0);
+        List<TableRow> selectedRows = tableWidget.getSelectedRows();
 
         //then
         Assertions.assertThat(selectedRows).hasSize(1);
         Assertions.assertThat(selectedRows.get(0).getIndex()).isEqualTo(1);
     }
 
-    @Test
-    public void clickOnCreate() {
-        //given
-        TableWidget tableWidget = inventoryViewPage.getTableWidget();
-
-        //when
-        tableWidget.callAction("CREATE", "CreateLocationWizardAction");
-
-        //then
-        //TODO: add assertion
-    }
-
-    @Test
-    public void editRow() {
-        //given
-        TableWidget tableWidget = inventoryViewPage.getTableWidget();
-
-        //when
-        tableWidget.selectFirstRow();
-        tableWidget.callAction("EDIT", "UpdateLocationWizardAction");
-
-        //then
-        //TODO: add assertions
-    }
-
-    @Test
-    public void assignIpAddress() {
-        TableWidget tableWidget = inventoryViewPage.getTableWidget();
-
-        tableWidget.selectFirstRow();
-        tableWidget.callAction("CREATE", "AssignIPv6SubnetToLocation");
-
-        //TODO: add assertions
-
-    }
-
-    @Test
-    public void clickNavigation() {
-        //given
-        TableWidget tableWidget = inventoryViewPage.getTableWidget();
-
-        //when
-        tableWidget.selectFirstRow();
-        tableWidget.callAction("NAVIGATION", "OpenInventoryView");
-
-        //then
-        //TODO: add assertions
-    }
 
     @Test
     public void resizeColumn() {
-        TableWidget tableWidget = inventoryViewPage.getTableWidget();
+        TableInterface tableWidget = inventoryViewPage.getTableWidget();
         int defaultSize = tableWidget.getFirstColumnSize();
         DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
         Assertions.assertThat(defaultSize).isEqualTo(200);
@@ -127,19 +79,19 @@ public class InventoryViewTest extends BaseTestCase {
 
     @Test
     public void removeSecondColumn() {
-        TableWidget tableWidget = inventoryViewPage.getTableWidget();
-        ColumnsManagement columnsManagement = tableWidget.getColumnsManagement();
+        TableInterface tableWidget = inventoryViewPage.getTableWidget();
+        List<String> columnHeaders = tableWidget.getActiveColumnHeaders();
 
         DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
-        String firstHeader = tableWidget.getFirstColumnLabel();
-        String secondHeader = tableWidget.getActiveColumnLabel(1);
-        String thirdHeader = tableWidget.getActiveColumnLabel(2);
+        String firstHeader = columnHeaders.get(0);
+        String secondHeader = columnHeaders.get(1);
+        String thirdHeader = columnHeaders.get(2);
 
-        columnsManagement.toggleColumn(secondHeader);
-        columnsManagement.clickApply();
+        tableWidget.disableColumnByLabel(secondHeader);
 
-        String newFirstHeader = tableWidget.getFirstColumnLabel();
-        String newSecondHeader = tableWidget.getActiveColumnLabel(1);
+        List<String> newColumnHeaders = tableWidget.getActiveColumnHeaders();
+        String newFirstHeader = newColumnHeaders.get(0);
+        String newSecondHeader = newColumnHeaders.get(1);
 
         Assert.assertEquals(firstHeader, newFirstHeader);
         Assert.assertEquals(thirdHeader, newSecondHeader);
@@ -147,20 +99,21 @@ public class InventoryViewTest extends BaseTestCase {
 
     @Test
     public void addFirstUnselectedColumn() {
-        TableWidget tableWidget = inventoryViewPage.getTableWidget();
-        ColumnsManagement columnsManagement = tableWidget.getColumnsManagement();
+        //given
+        TableInterface tableWidget = inventoryViewPage.getTableWidget();
+        List<String> columnHeaders = tableWidget.getActiveColumnHeaders();
+        String firstHeader = columnHeaders.get(2);
 
-        DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
-        String firstUnselectedColumnName = columnsManagement.getFirstUnselectedColumnLabel();
-        Assertions.assertThat(tableWidget.getActiveColumns()).doesNotContain(firstUnselectedColumnName);
+        //when
+        tableWidget.disableColumnByLabel(firstHeader);
+        columnHeaders = tableWidget.getActiveColumnHeaders();
+        Assertions.assertThat(columnHeaders).doesNotContain(firstHeader);
 
-        columnsManagement.toggleColumn(firstUnselectedColumnName);
-        columnsManagement.clickApply();
+        tableWidget.enableColumnByLabel(firstHeader);
 
-        DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
-        tableWidget.scrollHorizontally(1000);
-        List<String> columnLabels = tableWidget.getActiveColumns();
-        Assert.assertEquals(columnLabels.get(columnLabels.size() - 1), firstUnselectedColumnName);
+        //then
+        columnHeaders = tableWidget.getActiveColumnHeaders();
+        Assertions.assertThat(columnHeaders).contains(firstHeader);
     }
 
     @Test

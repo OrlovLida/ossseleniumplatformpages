@@ -1,5 +1,7 @@
 package com.oss.transport;
 
+import java.util.UUID;
+
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.transport.IPNetworkWizardPage;
 import com.oss.utils.TestListener;
@@ -15,7 +17,7 @@ import org.testng.annotations.Test;
 
 @Listeners({ TestListener.class })
 public class EditIPNetworkTest extends IPAMBaseTest {
-    private String networkName = "IPNetworkEdition10SeleniumTest";
+    private String networkName = UUID.randomUUID().toString();
     private String networkNameUpdated = "IPNetworkEdition10SeleniumTestUpdated";
     private String descriptionUpdated = "DescriptionUpdated";
 
