@@ -33,7 +33,7 @@ public class InstalationNewRouter extends BaseTestCase {
     public void openNetworkView() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         SideMenu sideMenu = new SideMenu(driver, webDriverWait);
-        sideMenu.callActionByLabel("LAB Network View","Bookmarks", "SeleniumTests");
+        sideMenu.callActionByLabel("LAB Network View","Favourites", "SeleniumTests");
     }
 
     @Test(priority = 1)
@@ -53,6 +53,7 @@ public class InstalationNewRouter extends BaseTestCase {
         DelayUtils.sleep(1000);
         networkViewPage.setName(deviceName);
         networkViewPage.setHostname(deviceName);
+        DelayUtils.sleep(1000);
         networkViewPage.create();
         networkViewPage.checkSystemMessage();
     }
@@ -68,6 +69,7 @@ public class InstalationNewRouter extends BaseTestCase {
         networkViewPage.selectObjectInViewContent("Name", deviceName);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkViewPage.useContextAction("NAVIGATION", "Device Overview");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
     @Test(priority = 4)
@@ -75,6 +77,7 @@ public class InstalationNewRouter extends BaseTestCase {
         DeviceOverviewPage deviceOverviewPage = new DeviceOverviewPage(driver);
         deviceOverviewPage.expandTreeRow(1, portName);
         deviceOverviewPage.selectTreeRow(portName, 1, portName);
+        DelayUtils.sleep(3000);
         deviceOverviewPage.useContextAction("Inventory View");
     }
 
@@ -96,7 +99,7 @@ public class InstalationNewRouter extends BaseTestCase {
     public void createIpLink() {
         openNetworkView();
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
-        networkViewPage.useContextAction("add_to_view_group", "Device");
+        networkViewPage.useContextAction("add_to_view_group", "Network Element");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkViewPage.queryElementAndAddItToView("name", TEXT_FIELD, deviceName);
         networkViewPage.expandDockedPanel("left");
@@ -172,6 +175,7 @@ public class InstalationNewRouter extends BaseTestCase {
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
         networkDiscoveryControlViewPage.runReconciliation();
         networkDiscoveryControlViewPage.checkReconciliationStartedSystemMessage();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.waitForEndOfReco();
     }
 
