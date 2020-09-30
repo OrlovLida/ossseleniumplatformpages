@@ -5,14 +5,10 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.Input.ComponentType;
-import com.oss.framework.components.contextactions.ActionsContainer;
-import com.oss.framework.components.contextactions.ActionsInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Widget;
 import com.oss.framework.widgets.Wizard;
@@ -23,13 +19,15 @@ import io.qameta.allure.Step;
 
 public class SamplesManagementPage extends BasePage {
 
-    private TreeWidget mainTree;
+    private String samplesManagementWidgetId = "narComponent_CMSamplesManagementViewIdFilesTreeId";
+    private String upload = "narComponent_CmSampleActionUploadId";
+    private String deleteContent = "narComponent_CmSampleActionDeleteContentId";
+    private String createDirectory = "narComponent_CmSampleActionCreateId";
+    private String uploadWizardId = "narComponent_CMSamplesManagementViewIdUploadSamplesFormItemsId";
+    private String createDirectoryWizardId = "narComponent_CMSamplesManagementViewIdFileNameTextFieldId";
+    private String createDirectoryWizardConfirmAction = "narComponent_CMSamplesManagementViewIdFileActionButtonsId";
 
-    public static SamplesManagementPage goToNetworkInconsistenciesViewPage(WebDriver driver, String basicURL) {
-        driver.get(String.format("%s/#/view/reco/network-repository-view/cm-samples-management" +
-                "?perspective=NETWORK", basicURL));
-        return new SamplesManagementPage(driver);
-    }
+    private TreeWidget mainTree;
 
     public SamplesManagementPage(WebDriver driver) {
         super(driver);
@@ -39,7 +37,7 @@ public class SamplesManagementPage extends BasePage {
         if (mainTree == null) {
             Widget.waitForWidget(wait, "TreeView");
             mainTree = TreeWidget.createByClass(driver, "TreeView", wait);
-            wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.className("TreeRow"))));
+            DelayUtils.waitForPageToLoad(driver, wait);
         }
         return mainTree;
     }
@@ -52,14 +50,14 @@ public class SamplesManagementPage extends BasePage {
 
     @Step("Upload samples for CM Domain")
     public void uploadSamples(String path) {
-        ActionsInterface actionsContainer = ActionsContainer.createFromParent(driver.findElement(By.xpath("//div[@class='OssWindow']//div[@class='context-actions-wrapper']")), driver, wait);
-        actionsContainer.callActionById("OTHER", "narComponent_CmSampleActionUploadId");
+        TreeWidget widget = TreeWidget.createByDataAttributeName(driver, wait, samplesManagementWidgetId);
+        widget.callActionById("OTHER", upload);
         URL res = getClass().getClassLoader().getResource(path);
         try {
             File file = Paths.get(res.toURI()).toFile();
             String absolutePath = file.getAbsolutePath();
-            Wizard wizard = Wizard.createByComponentId(driver, wait, "narComponent_CMSamplesManagementViewIdUploadSamplesFormItemsId");
-            Input input = wizard.getComponent("narComponent_CMSamplesManagementViewIdUploadSamplesFormItemsId", ComponentType.FILE_CHOOSER);
+            Wizard wizard = Wizard.createByComponentId(driver, wait, uploadWizardId);
+            Input input = wizard.getComponent(uploadWizardId, ComponentType.FILE_CHOOSER);
             input.setSingleStringValue(absolutePath);
             wizard.clickOK();
         } catch (URISyntaxException e) {
@@ -69,8 +67,8 @@ public class SamplesManagementPage extends BasePage {
 
     @Step("Delete samples for CM Domain")
     public void deleteDirectoryContent() {
-        ActionsInterface actionsContainer = ActionsContainer.createFromParent(driver.findElement(By.xpath("//div[@class='OssWindow']//div[@class='context-actions-wrapper']")), driver, wait);
-        actionsContainer.callActionById("EDIT", "narComponent_CmSampleActionDeleteContentId");
+        TreeWidget widget = TreeWidget.createByDataAttributeName(driver, wait, samplesManagementWidgetId);
+        widget.callActionById("EDIT", deleteContent);
         DelayUtils.waitForPageToLoad(driver, wait);
         Wizard wizard = Wizard.createWizard(driver, wait);
         wizard.clickDelete();
@@ -78,13 +76,13 @@ public class SamplesManagementPage extends BasePage {
 
     @Step("Create samples directory for CM Domain")
     public void createDirectory(String cmDomainName) {
-        ActionsInterface actionsContainer = ActionsContainer.createFromParent(driver.findElement(By.xpath("//div[@class='OssWindow']//div[@class='context-actions-wrapper']")), driver, wait);
-        actionsContainer.callActionById("CREATE", "narComponent_CmSampleActionCreateId");
+        TreeWidget widget = TreeWidget.createByDataAttributeName(driver, wait, samplesManagementWidgetId);
+        widget.callActionById("CREATE", createDirectory);
         Wizard wizard = Wizard.createWizard(driver, wait);
-        Input name = wizard.getComponent("narComponent_CMSamplesManagementViewIdFileNameTextFieldId", ComponentType.TEXT_FIELD);
+        Input name = wizard.getComponent(createDirectoryWizardId, ComponentType.TEXT_FIELD);
         name.setSingleStringValue(cmDomainName);
         DelayUtils.waitForPageToLoad(driver, wait);
         DelayUtils.sleep(500);
-        wizard.clickActionById("narComponent_CMSamplesManagementViewIdFileActionButtonsId-1");
+        wizard.clickActionById(createDirectoryWizardConfirmAction);
     }
 }
