@@ -3,18 +3,15 @@ package com.oss.pages.transport;
 import java.util.List;
 
 import org.assertj.core.api.Assertions;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageContainer.Message;
 import com.oss.framework.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.alerts.SystemMessageInterface;
-import com.oss.framework.components.search.AdvancedSearch;
-import com.oss.framework.components.inputs.Input;
-import com.oss.framework.components.contextactions.ActionsInterface;
 import com.oss.framework.components.contextactions.ButtonContainer;
-import com.oss.framework.components.contextactions.OldActionsContainer;
+import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
@@ -61,8 +58,8 @@ public class NetworkViewPage extends BasePage {
     @Step("Use context action")
     public void useContextAction(String group, String action) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        ActionsInterface actionsContainer = OldActionsContainer.createFromParent(driver, wait, driver.findElement(By.xpath("//div[@class='OssWindow']//div[@class='windowIcons']")));
-        actionsContainer.callAction(group, action);
+        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, "dockedPanel-left");
+        table.callOldAction(group, action);
     }
 
     @Step("Check system message")
@@ -155,7 +152,7 @@ public class NetworkViewPage extends BasePage {
     }
 
     @Step("Accept trail modification")
-    public void proceedTrailTermination(){
+    public void proceedTrailTermination() {
         Wizard.createWizard(driver, wait).proceed();
     }
 }

@@ -3,9 +3,7 @@ package com.oss.pages.reconciliation;
 import java.util.List;
 
 import org.assertj.core.api.Assertions;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.oss.framework.alerts.SystemMessageContainer;
@@ -14,13 +12,13 @@ import com.oss.framework.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.Input.ComponentType;
-import com.oss.framework.components.contextactions.ActionsContainer;
-import com.oss.framework.components.contextactions.ActionsInterface;
 import com.oss.framework.components.notifications.Notifications;
 import com.oss.framework.components.notifications.NotificationsInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Widget;
 import com.oss.framework.widgets.Wizard;
+import com.oss.framework.widgets.tablewidget.OldTable;
+import com.oss.framework.widgets.tablewidget.TableInterface;
 import com.oss.framework.widgets.tabswidget.TabWindowWidget;
 import com.oss.framework.widgets.tabswidget.TabsInterface;
 import com.oss.framework.widgets.treewidget.TreeWidget;
@@ -32,12 +30,9 @@ public class NetworkInconsistenciesViewPage extends BasePage {
 
     private TreeWidget mainTree;
     private String applyButtonId = "narComponent_GroupDiscrepancyActionApplyId";
-
-    public static NetworkInconsistenciesViewPage goToNetworkInconsistenciesViewPage(WebDriver driver, String basicURL) {
-        driver.get(String.format("%s/#/view/reco/network-repository-view/discrepancies" +
-                "?perspective=NETWORK", basicURL));
-        return new NetworkInconsistenciesViewPage(driver);
-    }
+    private String inconsistenciesTable = "narComponent_networkInconsistenciesViewIddiscrepancyDetailsTreeTableId";
+    private String updateDevice = "UpdateDeviceWizardAction";
+    private String nivTree = "narComponent_networkInconsistenciesViewIddiscrepanciesTreeTabId";
 
     public NetworkInconsistenciesViewPage(WebDriver driver) {
         super(driver);
@@ -47,7 +42,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         if (mainTree == null) {
             Widget.waitForWidget(wait, "TreeView");
             mainTree = TreeWidget.createByClass(driver, "TreeView", wait);
-            wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.className("TreeRow"))));
+            DelayUtils.waitForPageToLoad(driver, wait);
         }
         return mainTree;
     }
@@ -66,8 +61,8 @@ public class NetworkInconsistenciesViewPage extends BasePage {
     public void assignLocation() {
         getTreeView().selectTreeRowByOrder(3);
         DelayUtils.waitForPageToLoad(driver, wait);
-        ActionsInterface actionsContainer = ActionsContainer.createFromParent(driver.findElement(By.xpath("//div[@class='OssWindow']//div[@class='context-actions-wrapper']")), driver, wait);
-        actionsContainer.callActionById("EDIT", "UpdateDeviceWizardAction");
+        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, inconsistenciesTable);
+        table.callAction("EDIT", updateDevice);
         DelayUtils.waitForPageToLoad(driver, wait);
         Wizard wizard = Wizard.createWizard(driver, new WebDriverWait(driver, 90));
         Input preciseLocation = wizard.getComponent("search_precise_location", ComponentType.SEARCH_FIELD);
@@ -89,7 +84,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
     public void applyInconsistencies() {
         getTreeView().selectTreeRowByOrder(2);
         TabsInterface nivTabs = TabWindowWidget.create(driver, wait);
-        nivTabs.selectTabById("narComponent_networkInconsistenciesViewIddiscrepanciesTreeTabId");
+        nivTabs.selectTabById(nivTree);
         nivTabs.callActionById(applyButtonId);
         DelayUtils.sleep(1000);
     }
