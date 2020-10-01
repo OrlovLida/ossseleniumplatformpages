@@ -25,7 +25,7 @@ public class SamplesManagementPage extends BasePage {
     private String createDirectory = "narComponent_CmSampleActionCreateId";
     private String uploadWizardId = "narComponent_CMSamplesManagementViewIdUploadSamplesFormItemsId";
     private String createDirectoryWizardId = "narComponent_CMSamplesManagementViewIdFileNameTextFieldId";
-    private String createDirectoryWizardConfirmAction = "narComponent_CMSamplesManagementViewIdFileActionButtonsId";
+    private String createDirectoryWizardConfirmAction = "narComponent_CMSamplesManagementViewIdFileActionButtonsId-1";
 
     private TreeWidget mainTree;
 
@@ -51,7 +51,7 @@ public class SamplesManagementPage extends BasePage {
     @Step("Upload samples for CM Domain")
     public void uploadSamples(String path) {
         TreeWidget widget = TreeWidget.createByDataAttributeName(driver, wait, samplesManagementWidgetId);
-        widget.callActionById("OTHER", upload);
+        widget.callOssWindowActionById("OTHER", upload);
         URL res = getClass().getClassLoader().getResource(path);
         try {
             File file = Paths.get(res.toURI()).toFile();
@@ -68,7 +68,7 @@ public class SamplesManagementPage extends BasePage {
     @Step("Delete samples for CM Domain")
     public void deleteDirectoryContent() {
         TreeWidget widget = TreeWidget.createByDataAttributeName(driver, wait, samplesManagementWidgetId);
-        widget.callActionById("EDIT", deleteContent);
+        widget.callOssWindowActionById("EDIT", deleteContent);
         DelayUtils.waitForPageToLoad(driver, wait);
         Wizard wizard = Wizard.createWizard(driver, wait);
         wizard.clickDelete();
@@ -77,7 +77,7 @@ public class SamplesManagementPage extends BasePage {
     @Step("Create samples directory for CM Domain")
     public void createDirectory(String cmDomainName) {
         TreeWidget widget = TreeWidget.createByDataAttributeName(driver, wait, samplesManagementWidgetId);
-        widget.callActionById("CREATE", createDirectory);
+        widget.callOssWindowActionById("CREATE", createDirectory);
         Wizard wizard = Wizard.createWizard(driver, wait);
         Input name = wizard.getComponent(createDirectoryWizardId, ComponentType.TEXT_FIELD);
         name.setSingleStringValue(cmDomainName);

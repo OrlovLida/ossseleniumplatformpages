@@ -28,7 +28,7 @@ public class ReconciliationE2ETest extends BaseTestCase {
         networkDiscoveryControlViewPage.openCmDomainWizard();
         CmDomainWizardPage wizard = new CmDomainWizardPage(driver);
         wizard.setName(cmDomainName);
-        wizard.setInterface("CISCO IOS 12/15");
+        wizard.setInterface("CISCO IOS 12/15/XE without mediation");
         wizard.setDomain("IP");
         wizard.save();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
