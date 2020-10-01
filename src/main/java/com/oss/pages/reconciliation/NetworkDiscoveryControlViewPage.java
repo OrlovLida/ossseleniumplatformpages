@@ -30,6 +30,11 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     private String reconciliation = "narComponent_CmDomainActionFullReconciliationId";
     private String reconciliationTab = "narComponent_networkDiscoveryControlViewIdcmDomainTabsId";
     private String reconciliationStateTable = "narComponent_networkDiscoveryControlViewIdreconciliationStatesTableId";
+    private String reconciliationTreeTab = "narComponent_networkDiscoveryControlViewIdcmDomainsTreeTabId";
+    private String createCmDomain = "narComponent_CmDomainActionCreateId";
+    private String deleteCmDomain = "narComponent_CmDomainActionDeleteCmDomainId";
+    private String showInconsistencies = "narComponent_CmDomainActionShowInconsistenciesId";
+    private String showSamplesManagement = "narComponent_CmDomainActionCmSamplesManagementId";
 
     public static NetworkDiscoveryControlViewPage goToNetworkDiscoveryControlViewPage(WebDriver driver, String basicURL) {
         driver.get(String.format("%s/#/view/reco/network-repository-view/network-discovery" +
@@ -45,8 +50,8 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     public void openCmDomainWizard() {
         DelayUtils.waitForPageToLoad(driver, wait);
         TabsInterface tabs = TabWindowWidget.create(driver, wait);
-        tabs.selectTabById("narComponent_networkDiscoveryControlViewIdcmDomainsTreeTabId");
-        tabs.callActionById("CREATE", "narComponent_CmDomainActionCreateId");
+        tabs.selectTabById(reconciliationTreeTab);
+        tabs.callActionById("CREATE", createCmDomain);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
@@ -71,7 +76,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     @Step("Run full reconciliation for selected CM Domain")
     public void runReconciliation() {
         TabsInterface tabs = TabWindowWidget.create(driver, wait);
-        tabs.selectTabById("narComponent_networkDiscoveryControlViewIdcmDomainsTreeTabId");
+        tabs.selectTabById(reconciliationTreeTab);
         tabs.callActionById(reconciliation);
         ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
         prompt.clickButtonByLabel("Reconcile");
@@ -107,8 +112,8 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     @Step("Delete selected CM Domain")
     public void deleteCmDomain() {
         TabsInterface tabs = TabWindowWidget.create(driver, wait);
-        tabs.selectTabById("narComponent_networkDiscoveryControlViewIdcmDomainsTreeTabId");
-        tabs.callActionById("EDIT", "narComponent_CmDomainActionDeleteCmDomainId");
+        tabs.selectTabById(reconciliationTreeTab);
+        tabs.callActionById("EDIT", deleteCmDomain);
         ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
         prompt.clickButtonByLabel("Delete");
     }
@@ -136,16 +141,16 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     @Step("Move from Network Discovery Control View to Network Inconsistencies View in context of selected CM Domain")
     public void moveToNivFromNdcv() {
         TabsInterface ndcvTabs = TabWindowWidget.create(driver, wait);
-        ndcvTabs.selectTabById("narComponent_networkDiscoveryControlViewIdcmDomainsTreeTabId");
-        ndcvTabs.callActionById("NAVIGATION", "narComponent_CmDomainActionShowInconsistenciesId");
+        ndcvTabs.selectTabById(reconciliationTreeTab);
+        ndcvTabs.callActionById("NAVIGATION", showInconsistencies);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     @Step("Move from Network Discovery Control View to CM Samples Management view in context of selected CM Domain")
     public void moveToSamplesManagement() {
         TabsInterface ndcvTabs = TabWindowWidget.create(driver, wait);
-        ndcvTabs.selectTabById("narComponent_networkDiscoveryControlViewIdcmDomainsTreeTabId");
-        ndcvTabs.callActionById("NAVIGATION", "narComponent_CmDomainActionCmSamplesManagementId");
+        ndcvTabs.selectTabById(reconciliationTreeTab);
+        ndcvTabs.callActionById("NAVIGATION", showSamplesManagement);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
