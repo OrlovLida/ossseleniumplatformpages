@@ -184,12 +184,12 @@ public class CreateProcessNRPTest extends BaseTestCase {
 
         //when
         perspectiveChooser.setPlanPerspective(processNRPCode);
-        deviceWizardPage.setModel("Generic IP Device");
+        deviceWizardPage.setModel("Generic");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         DelayUtils.sleep(2000);
         deviceWizardPage.setName(deviceName2);
         deviceWizardPage.setPreciseLocation(" ");
-        deviceWizardPage.setNetworkDomain("Other");
+        deviceWizardPage.setNetworkDomain(" ");
         if (driver.getPageSource().contains("Hostname")){
             deviceWizardPage.setHostname(deviceName2);
         }

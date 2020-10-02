@@ -39,8 +39,6 @@ public class IntegrationProcessWizardPage extends BasePage {
     private String DRAG_BUTTON_XPATH = "//div[contains(@class,'dragButton')]//div";
     private String DELETE_LABEL_ACTION = "Delete";
 
-    private Wizard integrationWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
-
     public void defineIntegrationProcess(String processName, String finishDueDate, int row){
         EditableList editableList = EditableList.create(driver, wait);
         editableList.addRow();
@@ -52,9 +50,10 @@ public class IntegrationProcessWizardPage extends BasePage {
         editableList.callActionByLabel(DELETE_LABEL_ACTION,PROCESS_NAME_COLUMN_ID,processName);
     }
     public void clickNext(){
-        integrationWizard.clickActionById(NEXT_BUTTON);
+        Wizard.createByComponentId(driver, wait, WIZARD_ID).clickActionById(NEXT_BUTTON);
     }
     public void clickAccept(){
+         Wizard integrationWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
         integrationWizard.clickActionById(ACCEPT_BUTTON);
         integrationWizard.waitToClose();
     }
