@@ -2,33 +2,21 @@ package com.oss.pages.platform;
 
 import com.oss.framework.mainheader.ButtonPanel;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.Widget;
-import com.oss.framework.widgets.treewidget.TreeWidget;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 
-public class HierarchyViewPage extends BasePage {
+public class ConnectionsViewPage extends BasePage {
 
-    private TreeWidget mainTree;
-
-    public HierarchyViewPage(WebDriver driver) {
+    public ConnectionsViewPage (WebDriver driver) {
         super(driver);
     }
 
-    public TreeWidget getTreeWidget() {
-        if(mainTree == null){
-            Widget.waitForWidget(wait, "TreeWidget");
-            mainTree = TreeWidget.createByClass(driver, "TreeWidget", wait);
-        }
-        return mainTree;
-    }
-
-    @Step("Open Hierarchy View")
-    public static HierarchyViewPage goToHierarchyViewPage(WebDriver driver, String basicURL, String type, String xid) {
-        driver.get(String.format("%s/#/views/management/views/hierarchy-view/" + type + "?" + xid +
-                "&perspective=LIVE" , basicURL));
-        return new HierarchyViewPage(driver);
+    @Step("Open Connections View")
+    public static ConnectionsViewPage goToConnectionsViewPage(WebDriver driver, String basicURL) {
+        driver.get(String.format("%s/#/views/management/views/connectivity-view/" +
+                "?perspective=LIVE" , basicURL));
+        return new ConnectionsViewPage(driver);
     }
 
     @Step("Open save configuration wizard for page")
