@@ -1,5 +1,6 @@
 package com.oss.pages.platform;
 
+import com.oss.framework.components.common.AttributesChooser;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
@@ -175,44 +176,159 @@ public class NewInventoryViewPage extends BasePage {
     }
 
     @Step("Change columns order")
-    public NewInventoryViewPage changeColumnsOrder(String columnName, int position){
-        getTableWidget().changeColumnsOrder(columnName, position);
+    public NewInventoryViewPage changeColumnsOrder(String columnLabel, int position){
+        getTableWidget().changeColumnsOrder(columnLabel, position);
         DelayUtils.waitForPageToLoad(driver, wait);
         return this;
     }
 
-    @Step("Open save widget configuration")
-    public SaveConfigurationWizard openSaveWidgetConfigurationWizard(){
+    @Step("Change columns order")
+    public NewInventoryViewPage changeTabsOrder(String tabLabel, int position){
+        getTabsWidget().changeTabsOrder(tabLabel, position);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return this;
+    }
+
+    @Step("Open save configuration wizard for table widget")
+    public SaveConfigurationWizard openSaveConfigurationForTableWidgetWizard(){
         DelayUtils.waitForPageToLoad(driver, wait);
         getTableWidget().clickOnKebabMenu();
         DropdownList.create(driver, wait).selectOptionWithId("saveNewConfig");
         return new SaveConfigurationWizard(driver);
     }
 
-    @Step("Open choose configuration wizard")
-    public ChooseConfigurationWizard openChooseConfigurationWizard(){
+    @Step("Open save configuration wizard for properties")
+    public SaveConfigurationWizard openSaveConfigurationForPropertiesWizard(){
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getPropertiesFilter().openSaveAsNewConfigurationWizard(wait);
+        return new SaveConfigurationWizard(driver);
+    }
+
+    @Step("Open save configuration wizard for page")
+    public SaveConfigurationWizard openSavePageConfigurationWizard(){
+        DelayUtils.waitForPageToLoad(driver, wait);
+        ButtonPanel.create(driver, wait).getButtonIcon("fa fa-fw fa-floppy-o").click();
+        return new SaveConfigurationWizard(driver);
+    }
+
+    @Step("Open save configuration wizard for tabs widget")
+    public SaveConfigurationWizard openSaveTabsConfigurationWizard(){
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getTabsWidget().openSaveConfigurationWizard();
+        return new SaveConfigurationWizard(driver);
+    }
+
+    @Step("Open choose configuration for table widget wizard")
+    public ChooseConfigurationWizard openChooseConfigurationForTableWidgetWizard(){
         DelayUtils.waitForPageToLoad(driver, wait);
         getTableWidget().clickOnKebabMenu();
         DropdownList.create(driver, wait).selectOptionWithId("chooseConfig");
         return new ChooseConfigurationWizard(driver);
     }
 
-    @Step("Open download configuration wizard")
-    public ChooseConfigurationWizard openDownloadConfigurationWizard(){
+    @Step("Open choose configuration wizard for tabs")
+    public ChooseConfigurationWizard openChooseConfigurationForTabsWizard(){
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getTabsWidget().openChooseConfigurationWizard();
+        return new ChooseConfigurationWizard(driver);
+    }
+
+    @Step("Open choose configuration wizard for properties")
+    public ChooseConfigurationWizard openChooseConfigurationForPropertiesWizard(){
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getPropertiesFilter().openChooseConfigurationWizard(wait);
+        return new ChooseConfigurationWizard(driver);
+    }
+
+    @Step("Open choose configuration wizard for page")
+    public ChooseConfigurationWizard openChooseConfigurationForPageWizard(){
+        DelayUtils.waitForPageToLoad(driver, wait);
+        ButtonPanel.create(driver, wait).getButtonIcon("fa fa-fw fa-cog").click();
+        return new ChooseConfigurationWizard(driver);
+    }
+
+    @Step("Open download configuration wizard for table widget")
+    public ChooseConfigurationWizard openDownloadTableWidgetConfigurationWizard(){
         DelayUtils.waitForPageToLoad(driver, wait);
         getTableWidget().clickOnKebabMenu();
         DropdownList.create(driver, wait).selectOptionWithId("table_gql_Download");
         return new ChooseConfigurationWizard(driver);
     }
 
-    @Step("Open Columns Management")
-    public ColumnsManagementPage openColumnsManagement(){
-        getTableWidget().getColumnsManagement();
-        return new ColumnsManagementPage(driver);
+    @Step("Open download configuration wizard for tabs")
+    public ChooseConfigurationWizard openDownloadConfigurationForTabsWizard(){
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getTabsWidget().openDownloadConfigurationWizard();
+        return new ChooseConfigurationWizard(driver);
+    }
+
+    @Step("Open download configuration wizard for page")
+    public ChooseConfigurationWizard openDownloadConfigurationForPageWizard(){
+        DelayUtils.waitForPageToLoad(driver, wait);
+        ButtonPanel.create(driver, wait).getButtonIcon("fa fa-fw fa-download").click();
+        return new ChooseConfigurationWizard(driver);
+    }
+
+    @Step("Open download configuration wizard for properties")
+    public ChooseConfigurationWizard openDownloadConfigurationForPropertiesWizard(){
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getPropertiesFilter().openDoowloadConfigurationWizard(wait);
+        return new ChooseConfigurationWizard(driver);
+    }
+
+    @Step("Enable Column and apply")
+    public NewInventoryViewPage enableColumnAndApply(String columnLabel){
+        enableColumn(columnLabel).clickApply();
+        return new NewInventoryViewPage(driver);
+    }
+
+    @Step("Enable Column")
+    public AttributesChooser enableColumn(String columnLabel){
+        getTableWidget().getAttributesChooser().enableColumnByLabel(columnLabel);
+        return getTableWidget().getAttributesChooser();
+    }
+
+    @Step("Disable Column and apply")
+    public NewInventoryViewPage disableColumnAndApply(String columnLabel){
+        disableColumn(columnLabel).clickApply();
+        return new NewInventoryViewPage(driver);
+    }
+
+    @Step("Disable Column")
+    public AttributesChooser disableColumn(String columnLabel){
+        getTableWidget().getAttributesChooser().disableColumnByLabel(columnLabel);
+        return getTableWidget().getAttributesChooser();
+    }
+
+    @Step("Enable Widget Tab and apply")
+    public NewInventoryViewPage enableWidgetAndApply(String widgetLabel){
+        getTabsWidget().getWidgetChooser().enableWidgetByLabel(widgetLabel).clickAdd();
+        return new NewInventoryViewPage(driver);
+    }
+
+    @Step("Disable Widget Tab and apply")
+    public NewInventoryViewPage disableWidgetAndApply(String widgetLabel){
+        getTabsWidget().getWidgetChooser().disableWidgetByLabel(widgetLabel).clickAdd();
+        return new NewInventoryViewPage(driver);
     }
 
     @Step("Check first checkbox in table widget")
     public NewInventoryViewPage checkFirstCheckbox(){
+        getTableWidget().selectRow(0);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return this;
+    }
+    
+    public String getTabLabel(int tabPosition){
+        return getTabsWidget().getTabLabel(tabPosition);
+    }
+
+    public boolean isTabVisible(String tabLabel){
+        return getTabsWidget().isTabVisible(tabLabel);
+    }
+
+    public NewInventoryViewPage changeTab(String tabLabel){
+        getTabsWidget().selectTabByLabel(tabLabel);
         return this;
     }
 

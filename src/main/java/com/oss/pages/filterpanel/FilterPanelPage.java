@@ -10,8 +10,7 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
-import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
+import static com.oss.framework.components.inputs.Input.ComponentType.*;
 
 public class FilterPanelPage extends BasePage {
 
@@ -25,7 +24,6 @@ public class FilterPanelPage extends BasePage {
     private final String SAVE_BUTTON_CLASS_NAME= "save-buttons-dropdown";
     private final String SAVE_AS_A_NEW_FILTER_ID = "save_as_new_filter";
     private final String SAVE_FILTER_ID = "save_filter";
-    private final String APPLY_BUTTON_XPATH = "//div[@class='advanced-search_panel']//a[contains(@class, 'btn-primary btn-md')]";
 
 
     @Step("Open Filter Settings by clicking on Manage filters icon")
@@ -91,7 +89,7 @@ public class FilterPanelPage extends BasePage {
 
     @Step ("Apply Filter")
     public FilterPanelPage applyFilter(){
-        driver.findElement(By.xpath(APPLY_BUTTON_XPATH)).click();
+        advancedSearch.clickApply();
         DelayUtils.waitForPageToLoad(driver, wait);
         return this;
     }
