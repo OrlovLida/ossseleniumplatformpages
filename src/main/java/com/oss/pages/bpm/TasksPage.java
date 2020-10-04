@@ -7,6 +7,7 @@
 package com.oss.pages.bpm;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.prompts.ConfirmationBox;
@@ -23,8 +24,10 @@ import com.oss.pages.dms.AttachFileWizardPage;
  * @author Gabriela Kasza
  */
 public class TasksPage extends BasePage {
-    public static TasksPage goToTasksPage(WebDriver driver, String basicURL){
+    public static TasksPage goToTasksPage(WebDriver driver, WebDriverWait wait, String basicURL){
+        DelayUtils.waitForPageToLoad(driver, wait);
         driver.get(String.format("%s/#/view/bpm/tasks", basicURL));
+        DelayUtils.waitForPageToLoad(driver, wait);
         return new TasksPage(driver);
     }
     private String TABLE_TASKS = "bpm_task_view_task-table";
