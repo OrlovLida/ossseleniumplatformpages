@@ -14,7 +14,6 @@ import com.oss.framework.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tablewidget.TableInterface;
-import com.oss.framework.widgets.tabswidget.OldTabs;
 import com.oss.framework.widgets.tabswidget.TabsInterface;
 import com.oss.framework.widgets.tabswidget.TabsWidget;
 import com.oss.pages.BasePage;

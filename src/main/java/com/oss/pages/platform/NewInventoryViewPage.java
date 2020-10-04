@@ -79,7 +79,7 @@ public class NewInventoryViewPage extends BasePage {
     public PropertiesFilter getPropertiesFilter() {
         if (propertiesFilter == null) {
             Widget.waitForWidget(wait, PropertiesFilter.PROPERTIES_FILTER_CLASS);
-            propertiesFilter = PropertiesFilter.create(driver);
+            propertiesFilter = PropertiesFilter.create(driver, wait);
         }
         return propertiesFilter;
     }
