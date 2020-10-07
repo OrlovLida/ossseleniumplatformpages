@@ -22,21 +22,21 @@ public class ConnectionsViewPage extends BasePage {
     @Step("Open save configuration wizard for page")
     public SaveConfigurationWizard openSavePageConfigurationWizard(){
         DelayUtils.waitForPageToLoad(driver, wait);
-        ButtonPanel.create(driver, wait).getButtonIcon("fa fa-fw fa-floppy-o").click();
+        ButtonPanel.create(driver, wait).clickOnIcon("fa fa-fw fa-floppy-o");
         return new SaveConfigurationWizard(driver);
     }
 
     @Step("Open choose configuration wizard for page")
     public ChooseConfigurationWizard openChooseConfigurationForPageWizard(){
         DelayUtils.waitForPageToLoad(driver, wait);
-        ButtonPanel.create(driver, wait).getButtonIcon("fa fa-fw fa-cog").click();
+        ButtonPanel.create(driver, wait).clickOnIcon("fa fa-fw fa-cog");
         return new ChooseConfigurationWizard(driver);
     }
 
     @Step("Open download configuration wizard for page")
     public ChooseConfigurationWizard openDownloadConfigurationForPageWizard(){
         DelayUtils.waitForPageToLoad(driver, wait);
-        ButtonPanel.create(driver, wait).getButtonIcon("fa fa-fw fa-download").click();
+        ButtonPanel.create(driver, wait).clickOnIcon("fa fa-fw fa-download");
         return new ChooseConfigurationWizard(driver);
     }
 }
