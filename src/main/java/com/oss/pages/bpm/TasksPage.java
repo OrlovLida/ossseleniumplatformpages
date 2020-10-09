@@ -33,8 +33,8 @@ public class TasksPage extends BasePage {
     private String TABLE_TASKS = "bpm_task_view_task-table";
     private String TABS_TASKS_VIEW = "bpm_task_view_tabs-container";
     private String ATTACH_FILE_BUTTON = "attachmentManagerBusinessView_topCommonButtons-1";
-    private String FORM_TAB_ID ="0";
-    private String ATTACHMENT_TAB_ID= "3";
+    private String FORM_TAB_ID ="bpm_task_view_form-tab";
+    private String ATTACHMENT_TAB_ID= "bpm_task_view_attachment-tab";
 
     protected TasksPage(WebDriver driver) {
         super(driver);
