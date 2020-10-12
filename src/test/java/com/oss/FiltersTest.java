@@ -16,7 +16,7 @@ import org.testng.annotations.Test;
 import static com.oss.configuration.Configuration.CONFIGURATION;
 
 @Listeners({TestListener.class})
-public class FiltersTest extends BaseTestCase{
+public class FiltersTest extends BaseTestCase {
 
     private NewInventoryViewPage inventoryViewPage;
     private FilterPanelPage filterPanelPage;
@@ -46,21 +46,20 @@ public class FiltersTest extends BaseTestCase{
     @Test(priority = 1)
     @Description("Creating three new filters and saving them as new filters. Checking that all three filters are created")
     public void createNewFilters() {
-        String id = inventoryViewPage.getIdOfFirstObject();
+        String id = inventoryViewPage.getIdOfMainTableObject(0);
         inventoryViewPage
                 .openFilterPanel()
                 .openFilterSettings()
                 .changeTabToFilters();
         filterSettingsFilter = new FilterSettingsFilter(driver);
         filtersBefore = filterSettingsFilter.howManyFilters();
-        if (filtersBefore>0 && i<1){
-            System.out.println("There are "+filtersBefore+" old filters. Start removing them.");
+        if (filtersBefore > 0 && i < 1) {
+            System.out.println("There are " + filtersBefore + " old filters. Start removing them.");
             deleteAllFiltersAndFolders();
             i++;
             inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Location");
             createNewFilters();
-        }
-        else {
+        } else {
             filterPanelPage = new FilterPanelPage(driver);
             filterPanelPage.typeValueInLocationIdInput(id)
                     .saveFilterAs(FILTER_NAME)
@@ -74,7 +73,7 @@ public class FiltersTest extends BaseTestCase{
 
     @Test(priority = 2)
     @Description("Adding filter to favorite, checking that the star icon for that filter is filled")
-    public void addingFilterToFavorite(){
+    public void addingFilterToFavorite() {
         filterSettingsFilter
                 .markAsFavorite(FILTER2_NAME);
         Assert.assertTrue(filterSettingsFilter.isFilterFavorite(FILTER2_NAME));
@@ -90,7 +89,7 @@ public class FiltersTest extends BaseTestCase{
 
     @Test(priority = 4)
     @Description("Editing an Existing Filter and save them. Checking that the value is change after saving it")
-    public void editingAnExistingFilter(){
+    public void editingAnExistingFilter() {
         filterPanelPage
                 .changeValueInLocationIdInput(VALUE_FOR_FILTER3_AFTER_EDIT)
                 .saveFilter();
@@ -109,8 +108,8 @@ public class FiltersTest extends BaseTestCase{
         filterSettingsFilter
                 .selectFilter(FILTER_NAME)
                 .applyFilter();
-        VALUE_IN_LOCATION_ID_INPUT= filterPanelPage.getValueOfLocationIdInput();
-            filterPanelPage
+        VALUE_IN_LOCATION_ID_INPUT = filterPanelPage.getValueOfLocationIdInput();
+        filterPanelPage
                 .applyFilter();
         Assert.assertTrue(inventoryViewPage.isOnlyOneObject(VALUE_IN_LOCATION_ID_INPUT));
     }
@@ -120,13 +119,13 @@ public class FiltersTest extends BaseTestCase{
     public void cancelingFilter() {
         inventoryViewPage
                 .clearAllTags();
-        Assert.assertTrue(inventoryViewPage.isAllTagsInvisible() && inventoryViewPage.getTableWidget().howManyRowsOnFirstPage()>1);
+        Assert.assertTrue(inventoryViewPage.isAllTagsInvisible() && inventoryViewPage.getMainTable().howManyRowsOnFirstPage() > 1);
     }
 
     @Test(priority = 7)
     @Description("Checking that the filter marked as favorite is favorite in Filter Manager")
     public void isFilterFavoriteInFilterManager() {
-        filterManagerPage = FilterManagerPage.goToFilterManagerPage(driver,BASIC_URL)
+        filterManagerPage = FilterManagerPage.goToFilterManagerPage(driver, BASIC_URL)
                 .expandAllCategories();
         Assert.assertTrue(filterManagerPage.isFavorite(FILTER2_NAME));
     }
@@ -134,7 +133,7 @@ public class FiltersTest extends BaseTestCase{
     @Test(priority = 8)
     @Description("Creating Folder and checking that the created folder is visible in Filter Manager View")
     public void creatingFolder() {
-        filterManagerPage = FilterManagerPage.goToFilterManagerPage(driver,BASIC_URL)
+        filterManagerPage = FilterManagerPage.goToFilterManagerPage(driver, BASIC_URL)
                 .createFolder(FOLDER_NAME)
                 .expandAllCategories();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -144,7 +143,7 @@ public class FiltersTest extends BaseTestCase{
     @Test(priority = 9)
     @Description("Change folder for filter. Checking that filter is in proper folder after edit")
     public void changeFolderForFilter() {
-        filterManagerPage = FilterManagerPage.goToFilterManagerPage(driver,BASIC_URL)
+        filterManagerPage = FilterManagerPage.goToFilterManagerPage(driver, BASIC_URL)
                 .expandAllCategories()
                 .editFilter(FILTER3_NAME);
         editFilterPage = new EditFilterPage(driver);
@@ -157,7 +156,7 @@ public class FiltersTest extends BaseTestCase{
 
     @Test(priority = 10)
     @Description("Sharing an existing Filters, Folder and checking that shared filters are visible for second user")
-    public void sharingAnExistingFilter(){
+    public void sharingAnExistingFilter() {
         filterManagerPage
                 .expandAllCategories()
                 .shareFilter(FILTER_NAME, USER2_LOGIN, "W")
@@ -173,25 +172,25 @@ public class FiltersTest extends BaseTestCase{
 
     @Test(priority = 11)
     @Description("Checking that the shared folder is Visible for second user")
-    public void sharingAnExistingFolder(){
+    public void sharingAnExistingFolder() {
         Assert.assertTrue(filterManagerPage.isFolderVisible(FOLDER_NAME));
     }
 
     @Test(priority = 12)
     @Description("Checking that Shared filter with Write permission could be edited")
-    public void isWritePermissionWorking(){
+    public void isWritePermissionWorking() {
         Assert.assertTrue(filterManagerPage.isEditActionVisible(FILTER_NAME));
     }
 
     @Test(priority = 13)
     @Description("Checking that Shared filter with Read permission could not be edited")
-    public void isReadPermissionWorking(){
+    public void isReadPermissionWorking() {
         Assert.assertFalse(filterManagerPage.isEditActionVisible(FILTER2_NAME));
     }
 
     @Test(priority = 14)
     @Description("Checking that filter is shared with folder and is visible for a second user")
-    public void isFilterSharedWithFolder(){
+    public void isFilterSharedWithFolder() {
         filterManagerPage
                 .collapseAllCategories()
                 .expandFolder(FOLDER_NAME);
@@ -227,7 +226,7 @@ public class FiltersTest extends BaseTestCase{
     @Test(priority = 18)
     @Description("Deleting shared filter. Checking that is deleted")
     public void removingFilterForSecondUser() {
-        filterManagerPage = FilterManagerPage.goToFilterManagerPage(driver,BASIC_URL)
+        filterManagerPage = FilterManagerPage.goToFilterManagerPage(driver, BASIC_URL)
                 .expandAllCategories()
                 .deleteFilter(FILTER_NAME);
         Assert.assertFalse(filterManagerPage.isFilterVisible(FILTER_NAME));
@@ -243,11 +242,11 @@ public class FiltersTest extends BaseTestCase{
 
     @Test(priority = 20)
     @Description("Deleting all filters and folders")
-    public void deleteAllFiltersAndFolders(){
-        filterManagerPage = FilterManagerPage.goToFilterManagerPage(driver,BASIC_URL)
+    public void deleteAllFiltersAndFolders() {
+        filterManagerPage = FilterManagerPage.goToFilterManagerPage(driver, BASIC_URL)
                 .expandAllCategories()
                 .deleteAllFilters()
                 .deleteAllFolders();
-        Assert.assertTrue(filterManagerPage.howManyFilters() == 0 && filterManagerPage.howManyFolders()==1);
+        Assert.assertTrue(filterManagerPage.howManyFilters() == 0 && filterManagerPage.howManyFolders() == 1);
     }
 }

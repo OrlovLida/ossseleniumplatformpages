@@ -19,24 +19,31 @@ public class ConnectionsViewPage extends BasePage {
         return new ConnectionsViewPage(driver);
     }
 
-    @Step("Open save configuration wizard for page")
-    public SaveConfigurationWizard openSavePageConfigurationWizard(){
+    @Step("Save configuration for page for user")
+    public ConnectionsViewPage savePageConfigurationForUser(String configurationName){
         DelayUtils.waitForPageToLoad(driver, wait);
-        ButtonPanel.create(driver, wait).clickOnIcon("fa fa-fw fa-floppy-o");
-        return new SaveConfigurationWizard(driver);
+        ButtonPanel.create(driver, wait).openSaveConfigurationWizard().typeName(configurationName).setAsDefaultForMe().save();
+        return this;
     }
 
-    @Step("Open choose configuration wizard for page")
-    public ChooseConfigurationWizard openChooseConfigurationForPageWizard(){
+    @Step("Save configuration for page for group")
+    public ConnectionsViewPage savePageConfigurationForGroup(String configurationName, String groupName){
         DelayUtils.waitForPageToLoad(driver, wait);
-        ButtonPanel.create(driver, wait).clickOnIcon("fa fa-fw fa-cog");
-        return new ChooseConfigurationWizard(driver);
+        ButtonPanel.create(driver, wait).openSaveConfigurationWizard().typeName(configurationName).setAsDefaultForGroup(groupName).save();
+        return this;
     }
 
-    @Step("Open download configuration wizard for page")
-    public ChooseConfigurationWizard openDownloadConfigurationForPageWizard(){
+    @Step("Apply configuration for page")
+    public ConnectionsViewPage applyConfigurationForPage(String configurationName){
         DelayUtils.waitForPageToLoad(driver, wait);
-        ButtonPanel.create(driver, wait).clickOnIcon("fa fa-fw fa-download");
-        return new ChooseConfigurationWizard(driver);
+        ButtonPanel.create(driver, wait).openChooseConfigurationWizard().chooseConfiguration(configurationName).apply();
+        return this;
+    }
+
+    @Step("Download configuration for page")
+    public ConnectionsViewPage downloadConfigurationForPage(String configurationName){
+        DelayUtils.waitForPageToLoad(driver, wait);
+        ButtonPanel.create(driver, wait).openDownloadConfigurationWizard().chooseConfiguration(configurationName).apply();
+        return this;
     }
 }

@@ -47,7 +47,7 @@ public class VLANRangeTest extends BaseTestCase {
         filterPanel = new FilterPanelPage(driver);
         filterPanel.changeValueInLocationNameInput("CreateVLANRangeSeleniumTest1");
         filterPanel.applyFilter();
-        newInventoryViewPage.SelectFirstRow();
+        newInventoryViewPage.selectFirstRow();
         driver.navigate().refresh();
 
     }
@@ -64,14 +64,14 @@ public class VLANRangeTest extends BaseTestCase {
 
         filterPanel.applyFilter();
 
-        newInventoryViewPage.SelectFirstRow();
+        newInventoryViewPage.selectFirstRow();
 
-        newInventoryViewPage.EditObject("EditVLANRangeContextAction");
+        newInventoryViewPage.editObject("EditVLANRangeContextAction");
         DelayUtils.sleep();
 
-        newInventoryViewPage.EditTextFields("VLAN_RANGE_NAME_ATTRIBUTE_ID", Input.ComponentType.TEXT_FIELD, "EditVLANRangeSeleniumTest2")
-                .EditTextFields("VLAN_RANGE_VLAN_ID_RANGE_ATTRIBUTE_ID", Input.ComponentType.TEXT_FIELD, "1, 2, 5-9")
-                .EditTextFields("VLAN_RANGE_DESCRIPTION_ATTRIBUTE_ID", Input.ComponentType.TEXT_AREA, "Description2");
+        newInventoryViewPage.editTextFields("VLAN_RANGE_NAME_ATTRIBUTE_ID", Input.ComponentType.TEXT_FIELD, "EditVLANRangeSeleniumTest2")
+                .editTextFields("VLAN_RANGE_VLAN_ID_RANGE_ATTRIBUTE_ID", Input.ComponentType.TEXT_FIELD, "1, 2, 5-9")
+                .editTextFields("VLAN_RANGE_DESCRIPTION_ATTRIBUTE_ID", Input.ComponentType.TEXT_AREA, "Description2");
 
         Button.createBySelectorAndId(driver, "a", "VLAN_RANGE_BUTTON_PANEL_ID-0").click();
         DelayUtils.sleep();
@@ -96,10 +96,10 @@ public class VLANRangeTest extends BaseTestCase {
         filterPanel.applyFilter();
         DelayUtils.sleep(5000);
 
-        newInventoryViewPage.SelectFirstRow();
+        newInventoryViewPage.selectFirstRow();
         DelayUtils.sleep(5000);
 
-        newInventoryViewPage.DeleteObject();
+        newInventoryViewPage.deleteObject();
 
     }
 

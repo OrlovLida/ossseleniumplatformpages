@@ -115,7 +115,7 @@ public class IPAddressManagementViewPage extends BasePage {
     public IPAddressManagementViewPage OpenEditRole() {
         DelayUtils.sleep(5000);
         commonList = null;
-        getCommonList().getEditButtonByListElementName("CreateRoleSeleniumTest").click();
+        getCommonList().clickOnEditButtonByListElementName("CreateRoleSeleniumTest");
         return this;
     }
 
@@ -130,7 +130,7 @@ public class IPAddressManagementViewPage extends BasePage {
     @Step("Delete EditRoleSeleniumTest2")
     public IPAddressManagementViewPage DeleteRoleName() {
         commonList = null;
-        getCommonList().getDeleteButtonByListElementName("EditRoleSeleniumTest2").click();
+        getCommonList().clickOnDeleteButtonByListElementName("EditRoleSeleniumTest2");
         return this;
     }
 

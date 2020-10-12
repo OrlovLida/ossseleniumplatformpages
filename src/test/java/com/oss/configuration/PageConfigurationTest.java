@@ -22,11 +22,11 @@ public class PageConfigurationTest extends BaseTestCase {
 
     private NewInventoryViewPage newInventoryViewPage;
 
-    private String GROUP_NAME = "SeleniumTests";
-    private String CONFIGURATION_NAME_IV = "IV_User";
-    private String CONFIGURATION_NAME_IV_GROUP = "IV_Group";
-    private String CONFIGURATION_NAME_HV = "HV_User";
-    private String CONFIGURATION_NAME_CV = "CV_User";
+    private static String GROUP_NAME = "SeleniumTests";
+    private static String CONFIGURATION_NAME_IV = "IV_User";
+    private static String CONFIGURATION_NAME_IV_GROUP = "IV_Group";
+    private static String CONFIGURATION_NAME_HV = "HV_User";
+    private static String CONFIGURATION_NAME_CV = "CV_User";
 
 
     @BeforeClass
@@ -41,7 +41,7 @@ public class PageConfigurationTest extends BaseTestCase {
     public void saveConfigurationForIVPage() {
         //when
         newInventoryViewPage.changeLayoutToVertical();
-        newInventoryViewPage.openSavePageConfigurationWizard().typeName(CONFIGURATION_NAME_IV).setAsDefaultForMe().save();
+        newInventoryViewPage.savePageConfigurationForUser(CONFIGURATION_NAME_IV);
 
         //then
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
@@ -58,8 +58,8 @@ public class PageConfigurationTest extends BaseTestCase {
         newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Building");
 
         //when
-        newInventoryViewPage.changeLayoutToVertical();
-        newInventoryViewPage.openSavePageConfigurationWizard().typeName(CONFIGURATION_NAME_IV_GROUP).setAsDefaultForGroup(GROUP_NAME).save();
+        newInventoryViewPage.changeLayoutToHorizontal();
+        newInventoryViewPage.savePageConfigurationForGroup(CONFIGURATION_NAME_IV_GROUP, GROUP_NAME);
 
         //then
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
@@ -73,7 +73,7 @@ public class PageConfigurationTest extends BaseTestCase {
     @Description("Open saved configuration")
     public void isConfigurationSavedProperly() {
         //when
-        newInventoryViewPage.openChooseConfigurationForPageWizard().chooseConfiguration(CONFIGURATION_NAME_IV).apply();
+        newInventoryViewPage.applyConfigurationForPage(CONFIGURATION_NAME_IV);
 
         //then
         Assert.assertEquals(newInventoryViewPage.howManyRows(), 2);
@@ -87,7 +87,7 @@ public class PageConfigurationTest extends BaseTestCase {
         newInventoryViewPage.changeUser("webseleniumtests2", "webtests");
 
         //when
-        newInventoryViewPage.openChooseConfigurationForPageWizard().chooseConfiguration(CONFIGURATION_NAME_IV_GROUP).apply();
+        newInventoryViewPage.applyConfigurationForPage(CONFIGURATION_NAME_IV_GROUP);
 
         //then
         Assert.assertEquals(newInventoryViewPage.howManyRows(), 2);
@@ -99,11 +99,11 @@ public class PageConfigurationTest extends BaseTestCase {
     public void saveConfigurationForHVPage() {
         //given
         newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Location");
-        String idOfFirstObject = newInventoryViewPage.getIdOfFirstObject();
+        String idOfFirstObject = newInventoryViewPage.getIdOfMainTableObject(0);
         HierarchyViewPage hierarchyViewPage = HierarchyViewPage.goToHierarchyViewPage(driver, BASIC_URL, "Location", idOfFirstObject);
 
         //when
-        hierarchyViewPage.openSavePageConfigurationWizard().typeName(CONFIGURATION_NAME_HV).setAsDefaultForMe().save();
+        hierarchyViewPage.savePageConfigurationForUser(CONFIGURATION_NAME_HV);
 
         //then
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
@@ -117,11 +117,11 @@ public class PageConfigurationTest extends BaseTestCase {
     public void saveConfigurationForCVPage() {
         //given
         newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Location");
-        String idOfFirstObject = newInventoryViewPage.getIdOfFirstObject();
+        String idOfFirstObject = newInventoryViewPage.getIdOfMainTableObject(0);
         ConnectionsViewPage connectionsViewPage = ConnectionsViewPage.goToConnectionsViewPage(driver, BASIC_URL);
 
         //when
-        connectionsViewPage.openSavePageConfigurationWizard().typeName(CONFIGURATION_NAME_CV).setAsDefaultForMe().save();
+        connectionsViewPage.savePageConfigurationForUser(CONFIGURATION_NAME_CV);
 
         //then
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);

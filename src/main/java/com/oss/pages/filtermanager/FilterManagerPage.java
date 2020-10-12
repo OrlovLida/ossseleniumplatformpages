@@ -1,102 +1,93 @@
 package com.oss.pages.filtermanager;
 
-import com.oss.framework.components.contextactions.ActionsContainer;
-import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.listwidget.CommonList;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-
-import java.util.List;
-
 
 public class FilterManagerPage extends BasePage {
 
-    public FilterManagerPage(WebDriver driver){
+    public FilterManagerPage(WebDriver driver) {
         super(driver);
-        commonList = CommonList.create(driver, wait, COMMON_LIST_APP_ID);
     }
-
-    @FindBy(xpath = "//div[@class='OssWindow']")
-    private WebElement filterManagerList;
 
     private final String NEW_FOLDER_ID = "new_folder";
     private final String COMMON_LIST_APP_ID = "_FilterManagerList";
-    private CommonList commonList;
+
+    private CommonList getCommonList() {
+        return CommonList.create(driver, wait, COMMON_LIST_APP_ID);
+    }
 
     @Step("Open Filter Manager Page")
-    public static FilterManagerPage goToFilterManagerPage(WebDriver driver, String baseURL){
+    public static FilterManagerPage goToFilterManagerPage(WebDriver driver, String baseURL) {
         driver.get(String.format("%s/#/view/management/views/filter-view" + "?perspective=LIVE", baseURL));
         return new FilterManagerPage(driver);
     }
 
     @Step("Delete All Filters")
-    public FilterManagerPage deleteAllFilters(){
+    public FilterManagerPage deleteAllFilters() {
         expandAllCategories();
-        commonList.deleteAllListElements();
+        getCommonList().deleteAllListElements();
         return this;
     }
 
     @Step("Delete All Folders")
-    public FilterManagerPage deleteAllFolders(){
-        commonList.deleteAllCategories();
+    public FilterManagerPage deleteAllFolders() {
+        getCommonList().deleteAllCategories();
         return this;
     }
 
     @Step("Open Edit Filter Wizard")
-    public FilterManagerPage clickOnEdit(String name){
-        DelayUtils.waitForPageToLoad(driver,wait);
-        commonList.getEditButtonByListElementName(name).click();
+    public FilterManagerPage clickOnEdit(String name) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getCommonList().clickOnEditButtonByListElementName(name);
         return this;
     }
 
     @Step("Expand all categories")
-    public FilterManagerPage expandAllCategories(){
-        commonList.expandAllCategories();
+    public FilterManagerPage expandAllCategories() {
+        getCommonList().expandAllCategories();
         return this;
     }
 
     @Step("Collapse all categories")
-    public FilterManagerPage collapseAllCategories(){
-        commonList.collapseAllCategories();
+    public FilterManagerPage collapseAllCategories() {
+        getCommonList().collapseAllCategories();
         return this;
     }
 
     @Step("Create Folder")
-    public FilterManagerPage createFolder(String name){
+    public FilterManagerPage createFolder(String name) {
         return openCreateNewFolderWizard().typeNameOfTheFolder(name).clickAccept();
     }
 
     @Step("Open Create New Folder Wizard")
-    public CreateFolderWizard openCreateNewFolderWizard(){
+    public CreateFolderWizard openCreateNewFolderWizard() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        ActionsContainer.createFromParent(filterManagerList,driver,wait).callAction(NEW_FOLDER_ID);
+        getCommonList().getActionsContainer().callAction(NEW_FOLDER_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         return new CreateFolderWizard(driver);
     }
 
     @Step("Edit Filter")
-    public FilterManagerPage editFilter(String name){
-        commonList.expandListElementKebab(name);
-        commonList.getEditButtonByListElementName(name).click();
+    public FilterManagerPage editFilter(String name) {
+        getCommonList().expandListElementKebab(name);
+        getCommonList().clickOnEditButtonByListElementName(name);
         return this;
     }
 
     @Step("Delete Filter")
-    public FilterManagerPage deleteFilter(String name){
+    public FilterManagerPage deleteFilter(String name) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        commonList.expandListElementKebab(name);
+        getCommonList().expandListElementKebab(name);
         DelayUtils.waitForPageToLoad(driver, wait);
-        commonList.chooseDelete();
+        getCommonList().chooseDelete();
         return this;
     }
 
     @Step("Share Filter for user")
-    public FilterManagerPage shareFilter(String filterName, String userName, String permission){
+    public FilterManagerPage shareFilter(String filterName, String userName, String permission) {
         openShareFilter(filterName)
                 .typeUserNameInSearch(userName)
                 .shareForUser(userName, permission)
@@ -106,7 +97,7 @@ public class FilterManagerPage extends BasePage {
     }
 
     @Step("Share Folder for user")
-    public FilterManagerPage shareFolder(String folderName, String userName){
+    public FilterManagerPage shareFolder(String folderName, String userName) {
         openShareFolder(folderName)
                 .typeUserNameInSearch(userName)
                 .shareForUser(userName, "R")
@@ -116,60 +107,60 @@ public class FilterManagerPage extends BasePage {
     }
 
     @Step("Open Share Filter Page")
-    public ShareFilterPage openShareFilter(String name){
-        commonList.expandListElementKebab(name);
-        commonList.chooseShare();
+    public ShareFilterPage openShareFilter(String name) {
+        getCommonList().expandListElementKebab(name);
+        getCommonList().chooseShare();
         return new ShareFilterPage(driver);
     }
 
     @Step("Open Share Folder Page")
-    public ShareFilterPage openShareFolder(String folderName){
-        commonList.expandCategoryKebab(folderName);
-        commonList.chooseShare();
+    public ShareFilterPage openShareFolder(String folderName) {
+        getCommonList().expandCategoryKebab(folderName);
+        getCommonList().chooseShare();
         return new ShareFilterPage(driver);
     }
 
     @Step("Mark as a favorite")
-    public FilterManagerPage markAsAFavorite(String filterName){
-        DelayUtils.waitForPageToLoad(driver,wait);
-        commonList.getFavoriteButtonByListElementName(filterName).click();
+    public FilterManagerPage markAsAFavorite(String filterName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getCommonList().clickOnFavoriteButtonByListElementName(filterName);
         return this;
     }
 
     @Step("Expand Folder")
-    public FilterManagerPage expandFolder(String folderName){
-        DelayUtils.waitForPageToLoad(driver,wait);
-        commonList.getCategoryByName(folderName).click();
+    public FilterManagerPage expandFolder(String folderName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getCommonList().clickOnCategoryByName(folderName);
         return this;
     }
 
     @Step("How many Filters")
-    public int howManyFilters(){
-        return commonList.howManyListElements();
+    public int howManyFilters() {
+        return getCommonList().howManyListElements();
     }
 
     @Step("How many Folders")
-    public int howManyFolders(){
-        return commonList.howManyCategories();
+    public int howManyFolders() {
+        return getCommonList().howManyCategories();
     }
 
     @Step("Checking that Filter is Visible")
-    public boolean isFilterVisible(String filterName){
-        return commonList.isListElementVisible(filterName);
+    public boolean isFilterVisible(String filterName) {
+        return getCommonList().isListElementVisible(filterName);
     }
 
     @Step("Checking that Folder is Visible")
-    public boolean isFolderVisible(String folderName){
-        return commonList.isCategoryVisible(folderName);
+    public boolean isFolderVisible(String folderName) {
+        return getCommonList().isCategoryVisible(folderName);
     }
 
     @Step("Checking that Edit Action is Visible")
-    public boolean isEditActionVisible(String filterName){
-        return commonList.isEditActionVisible(filterName);
+    public boolean isEditActionVisible(String filterName) {
+        return getCommonList().isEditActionVisible(filterName);
     }
 
     @Step("Checking that Filter is Favorite")
-    public boolean isFavorite(String name){
-        return commonList.isFavorite(name);
+    public boolean isFavorite(String name) {
+        return getCommonList().isFavorite(name);
     }
 }
