@@ -1,5 +1,7 @@
 package com.oss.pages.transport;
 
+import com.oss.framework.alerts.SystemMessageContainer;
+import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.OldActionsContainer;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.Button;
@@ -24,13 +26,14 @@ public class IPAddressManagementViewPage extends BasePage {
         return new IPAddressManagementViewPage(driver);
     }
 
-    public static IPAddressManagementViewPage goToIPAddressManagementViewPagePlan(WebDriver driver, String basicURL, long perspective) {
-        driver.get(String.format("%s/#/view/transport/ipmgt/ipTree?" + perspective + "perspective=PLAN", basicURL));
+    public static IPAddressManagementViewPage goToIPAddressManagementViewPagePlan(WebDriver driver, String basicURL, long project) {
+        driver.get(String.format("%s/#/view/transport/ipmgt/ipTree?project_id=" + project + "perspective=PLAN", basicURL));
         return new IPAddressManagementViewPage(driver);
     }
 
     public IPAddressManagementViewPage(WebDriver driver) {
         super(driver);
+        DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
     }
 
     private static final String IPADDRESS_MANAGEMENT_VIEW_URL = "%s/#/view/transport/ipmgt/ipTree?";
@@ -137,7 +140,7 @@ public class IPAddressManagementViewPage extends BasePage {
     @Step("Exit Delete Window")
     public IPAddressManagementViewPage ExitDelete() {
         confirmDeletion();
-    return this;
+        return this;
     }
 
     protected Wizard getWizard() {
@@ -238,7 +241,7 @@ public class IPAddressManagementViewPage extends BasePage {
     }
 
     @Step("Use button")
-    public void useButton(String buttonId) {
+    private void useButton(String buttonId) {
         DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
         Button button = Button.create(driver, buttonId, "a");
         button.click();
@@ -249,5 +252,26 @@ public class IPAddressManagementViewPage extends BasePage {
         DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
         ConfirmationBoxInterface confirmationBox = ConfirmationBox.create(driver, wait);
         confirmationBox.clickButtonByLabel("OK");
+    }
+
+    @Step("Close system message")
+    public void closeSystemMessage() {
+        DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, wait);
+        systemMessage.close();
+    }
+
+    public void deleteObject(String name){
+        selectTreeRow(name);
+        useButton("Delete");
+        acceptConfirmationBox();
+        closeSystemMessage();
+    }
+
+    public void deleteIPSubnet(String subnetIpAddress){
+        selectTreeRowContains(subnetIpAddress);
+        useContextAction("__more-group", "Delete");
+        acceptConfirmationBox();
+        closeSystemMessage();
     }
 }
