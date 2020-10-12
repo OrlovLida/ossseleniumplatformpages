@@ -3,7 +3,6 @@ package com.oss.transport;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.Wizard;
 import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.transport.IPAddressManagementViewPage;
 import com.oss.pages.transport.IPNetworkWizardPage;
@@ -83,7 +82,7 @@ public class IPAMBaseTest extends BaseTestCase {
     public void checkInventoryViewForIPNetwork(String networkName, String description) {
         newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "IPNetwork");
         newInventoryViewPage.openFilterPanel().setValue(Input.ComponentType.TEXT_FIELD, "name", networkName).applyFilter();
-        newInventoryViewPage.getTableWidget().selectFirstRow();
+        newInventoryViewPage.getMainTable().selectFirstRow();
         DelayUtils.sleep(100);
         Assert.assertEquals(newInventoryViewPage.getPropertyPanel().getPropertyValue("name"), networkName);
         Assert.assertEquals(newInventoryViewPage.getPropertyPanel().getPropertyValue("description"), description);

@@ -20,10 +20,10 @@ import java.util.List;
 public class TabsConfigurationTest extends BaseTestCase {
     private NewInventoryViewPage newInventoryViewPage;
 
-    private String GROUP_NAME = "SeleniumTests";
-    private String CONFIGURATION_NAME_TABS_WIDGET_BUILDING= "Tabs_Widget_Default";
-    private String CONFIGURATION_NAME_TABS_WIDGET_LOCATION= "Tabs_Widget_Location";
-    private String CONFIGURATION_NAME_TABS_WIDGET_GROUP= "Tabs_Widget_Group";
+    private static String GROUP_NAME = "SeleniumTests";
+    private static String CONFIGURATION_NAME_TABS_WIDGET_BUILDING= "Tabs_Widget_Default";
+    private static String CONFIGURATION_NAME_TABS_WIDGET_LOCATION= "Tabs_Widget_Location";
+    private static String CONFIGURATION_NAME_TABS_WIDGET_GROUP= "Tabs_Widget_Group";
 
 
     @BeforeClass
@@ -37,10 +37,10 @@ public class TabsConfigurationTest extends BaseTestCase {
     @Description("Saving new configuration for tabs widget for type")
     public void saveNewConfigurationForTabsWidgetForType(){
         //when
-        newInventoryViewPage.checkFirstCheckbox();
+        newInventoryViewPage.selectFirstRow();
         newInventoryViewPage.enableWidgetAndApply("Attachments");
         newInventoryViewPage.changeTabsOrder("Devices", 2);
-        newInventoryViewPage.openSaveTabsConfigurationWizard().typeName(CONFIGURATION_NAME_TABS_WIDGET_BUILDING).setForType("Building").setAsDefaultForMe().saveAsNew();
+        newInventoryViewPage.saveConfigurationForTabsForUser(CONFIGURATION_NAME_TABS_WIDGET_BUILDING, "Building");
 
         //then
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
@@ -53,10 +53,10 @@ public class TabsConfigurationTest extends BaseTestCase {
     @Description("Saving new configuration for tabs widget for supertype")
     public void saveNewConfigurationForTabsWidgetForSupertype(){
         //when
-        newInventoryViewPage.checkFirstCheckbox();
+        newInventoryViewPage.selectFirstRow();
         newInventoryViewPage.disableWidgetAndApply("Attachments");
         newInventoryViewPage.changeTabsOrder("Devices", 3);
-        newInventoryViewPage.openSaveTabsConfigurationWizard().typeName(CONFIGURATION_NAME_TABS_WIDGET_LOCATION).setForType("Location").setAsDefaultForMe().saveAsNew();
+        newInventoryViewPage.saveConfigurationForTabsForUser(CONFIGURATION_NAME_TABS_WIDGET_LOCATION, "Location");
 
         //then
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
@@ -69,9 +69,9 @@ public class TabsConfigurationTest extends BaseTestCase {
     @Description("Saving new configuration for tabs widget for groups")
     public void saveNewConfigurationForTabsWidgetForGroup(){
         //when
-        newInventoryViewPage.checkFirstCheckbox();
+        newInventoryViewPage.selectFirstRow();
         newInventoryViewPage.changeTabsOrder("Devices", 4);
-        newInventoryViewPage.openSaveTabsConfigurationWizard().typeName(CONFIGURATION_NAME_TABS_WIDGET_GROUP).setForType("Location").setAsDefaultForGroup(GROUP_NAME).saveAsNew();
+        newInventoryViewPage.saveConfigurationForTabsForGroup(CONFIGURATION_NAME_TABS_WIDGET_GROUP, "Location" ,GROUP_NAME);
 
         //then
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
@@ -84,7 +84,7 @@ public class TabsConfigurationTest extends BaseTestCase {
     @Description("Checking that configuration for tabs widget for type works")
     public void isConfigurationForTabsWidgetForTypeWorks(){
         //when
-        newInventoryViewPage.openChooseConfigurationForTabsWizard().chooseConfiguration(CONFIGURATION_NAME_TABS_WIDGET_BUILDING).apply();
+        newInventoryViewPage.applyConfigurationForTabs(CONFIGURATION_NAME_TABS_WIDGET_BUILDING);
 
         //then
         Assert.assertEquals(newInventoryViewPage.getTabsWidget().getTabLabel(3), "Devices");
@@ -96,7 +96,7 @@ public class TabsConfigurationTest extends BaseTestCase {
     public void isConfigurationForTabsWidgetForSupertypeWorks(){
         //when
         NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Site");
-        newInventoryViewPage.checkFirstCheckbox();
+        newInventoryViewPage.selectFirstRow();
 
         //then
         Assert.assertEquals(newInventoryViewPage.getTabsWidget().getTabLabel(2), "Devices");
@@ -108,7 +108,7 @@ public class TabsConfigurationTest extends BaseTestCase {
     public void isConfigurationForTabsWidgetForSTypeWorksInHierarchyView(){
         //given
         newInventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Site");
-        newInventoryViewPage.checkFirstCheckbox();
+        newInventoryViewPage.selectFirstRow();
         //when
         HierarchyViewPage hierarchyViewPage = newInventoryViewPage.goToHierarchyViewForSelectedObject();
         hierarchyViewPage.selectFirstObject();
@@ -124,7 +124,7 @@ public class TabsConfigurationTest extends BaseTestCase {
         newInventoryViewPage.changeUser("webseleniumtests2","webtests");
         newInventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Location");
         //when
-        newInventoryViewPage.checkFirstCheckbox();
+        newInventoryViewPage.selectFirstRow();
         //then
         Assert.assertEquals(newInventoryViewPage.getTabsWidget().getTabLabel(4), "Devices");
     }

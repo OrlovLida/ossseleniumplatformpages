@@ -30,11 +30,6 @@ public class NewInventoryViewPage extends BasePage {
 
     private final String loadBar = "//div[@class='load-bar']";
 
-    private TableWidget mainTable;
-    private TabsWidget tabsWidget;
-    private PropertyPanel propertyPanel;
-    private PropertiesFilter propertiesFilter;
-    private Wizard wizard;
 
     @Step("Open Inventory View")
     public static NewInventoryViewPage goToInventoryViewPage(WebDriver driver, String basicURL, String type) {
@@ -47,43 +42,28 @@ public class NewInventoryViewPage extends BasePage {
         super(driver);
     }
 
-    public TableWidget getTableWidget() {
-        if (mainTable == null) {
-            Widget.waitForWidget(wait, TableWidget.TABLE_WIDGET_CLASS);
-            mainTable = TableWidget.create(driver, TableWidget.TABLE_WIDGET_CLASS, wait);
-        }
-        return mainTable;
+    public TableWidget getMainTable() {
+        Widget.waitForWidget(wait, TableWidget.TABLE_WIDGET_CLASS);
+        return TableWidget.create(driver, TableWidget.TABLE_WIDGET_CLASS, wait);
     }
 
     public TabsWidget getTabsWidget() {
-        if (tabsWidget == null) {
-            Widget.waitForWidget(wait, TabsWidget.TABS_WIDGET_CLASS);
-            tabsWidget = TabsWidget.create(driver, wait);
-        }
-        return tabsWidget;
+        Widget.waitForWidget(wait, TabsWidget.TABS_WIDGET_CLASS);
+        return TabsWidget.create(driver, wait);
     }
 
     public Wizard getWizard() {
-        if (wizard == null) {
-            wizard = Wizard.createWizard(driver, wait);
-        }
-        return wizard;
+        return Wizard.createWizard(driver, wait);
     }
 
     public PropertyPanel getPropertyPanel() {
-        if (propertyPanel == null) {
-            Widget.waitForWidget(wait, PropertyPanel.PROPERTY_PANEL_CLASS);
-            propertyPanel = PropertyPanel.create(driver);
-        }
-        return propertyPanel;
+        Widget.waitForWidget(wait, PropertyPanel.PROPERTY_PANEL_CLASS);
+        return PropertyPanel.create(driver);
     }
 
     public PropertiesFilter getPropertiesFilter() {
-        if (propertiesFilter == null) {
-            Widget.waitForWidget(wait, PropertiesFilter.PROPERTIES_FILTER_CLASS);
-            propertiesFilter = PropertiesFilter.create(driver, wait);
-        }
-        return propertiesFilter;
+        Widget.waitForWidget(wait, PropertiesFilter.PROPERTIES_FILTER_CLASS);
+        return PropertiesFilter.create(driver, wait);
     }
 
     //TODO: add getMethods for popup and property panel
@@ -108,17 +88,14 @@ public class NewInventoryViewPage extends BasePage {
     @Step("Check if table has no data")
     public boolean checkIfTableIsEmpty() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        return getTableWidget().checkIfTableIsEmpty();
+        return getMainTable().checkIfTableIsEmpty();
     }
 
     @Step("Change layout to Horizontal Orientation")
     public NewInventoryViewPage changeLayoutToHorizontal() {
         if (howManyRows() == 1) {
-            if (ButtonPanel.create(driver, wait).isButtonDisplayed("fa fa-chevron-down")) {
-                ButtonPanel.create(driver, wait).clickOnIcon("layout");
-            }
+            ButtonPanel.create(driver, wait).expandLayoutMenu();
             DropdownList.create(driver, wait).selectOptionWithId("TWO_ROWS");
-            mainTable = null;
         }
         return this;
     }
@@ -127,11 +104,8 @@ public class NewInventoryViewPage extends BasePage {
     public NewInventoryViewPage changeLayoutToVertical() {
         DelayUtils.waitForPageToLoad(driver, wait);
         if (howManyRows() == 2) {
-            if (ButtonPanel.create(driver, wait).isButtonDisplayed("fa fa-chevron-down")) {
-                ButtonPanel.create(driver, wait).clickOnIcon("layout");
-            }
+            ButtonPanel.create(driver, wait).expandLayoutMenu();
             DropdownList.create(driver, wait).selectOptionWithId("TWO_COLUMNS");
-            mainTable = null;
         }
         return this;
     }
@@ -154,28 +128,28 @@ public class NewInventoryViewPage extends BasePage {
     }
 
     @Step("Pick first row")
-    public NewInventoryViewPage SelectFirstRow() {
+    public NewInventoryViewPage selectFirstRow() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getTableWidget().selectFirstRow();
+        getMainTable().selectFirstRow();
         return this;
     }
 
     @Step("Open Edit")
-    public NewInventoryViewPage EditObject(String ActionId) {
+    public NewInventoryViewPage editObject(String ActionId) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getTableWidget().callAction("EDIT", ActionId);
+        getMainTable().callAction("EDIT", ActionId);
         return this;
     }
 
     @Step("Edit Text Fields")
-    public NewInventoryViewPage EditTextFields(String componentId, Input.ComponentType componentType, String value) {
+    public NewInventoryViewPage editTextFields(String componentId, Input.ComponentType componentType, String value) {
         DelayUtils.waitForPageToLoad(driver, wait);
         setValueOnTextType(componentId, componentType, value);
         return this;
     }
 
     @Step("Delete object")
-    public NewInventoryViewPage DeleteObject() {
+    public NewInventoryViewPage deleteObject() {
         DelayUtils.sleep(10000);
         DelayUtils.waitForPageToLoad(driver, wait);
         Button.createBySelectorAndId(driver, "a", "DeleteVLANRangeContextAction").click();
@@ -186,8 +160,8 @@ public class NewInventoryViewPage extends BasePage {
     }
 
     @Step("Change columns order")
-    public NewInventoryViewPage changeColumnsOrder(String columnLabel, int position) {
-        getTableWidget().changeColumnsOrder(columnLabel, position);
+    public NewInventoryViewPage changeColumnsOrderInMainTable(String columnLabel, int position) {
+        getMainTable().changeColumnsOrder(columnLabel, position);
         DelayUtils.waitForPageToLoad(driver, wait);
         return this;
     }
@@ -199,91 +173,116 @@ public class NewInventoryViewPage extends BasePage {
         return this;
     }
 
-    @Step("Open save configuration wizard for table widget")
-    public SaveConfigurationWizard openSaveConfigurationForTableWidgetWizard() {
+    @Step("Save configuration for main table for user")
+    public NewInventoryViewPage saveConfigurationForMainTableForUser(String configurationName) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getTableWidget().clickOnKebabMenu();
-        DropdownList.create(driver, wait).selectOptionWithId("saveNewConfig");
-        return new SaveConfigurationWizard(driver);
+        getMainTable().openSaveConfigurationWizard().typeName(configurationName).setAsDefaultForMe().saveAsNew();
+        return this;
     }
 
-    @Step("Open save configuration wizard for properties")
-    public SaveConfigurationWizard openSaveConfigurationForPropertiesWizard() {
+    @Step("Save configuration for main table for group")
+    public NewInventoryViewPage saveConfigurationForMainTableForGroup(String configurationName, String groupName) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getPropertiesFilter().openSaveAsNewConfigurationWizard();
-        return new SaveConfigurationWizard(driver);
+        getMainTable().openSaveConfigurationWizard().typeName(configurationName).setAsDefaultForGroup(groupName).saveAsNew();
+        return this;
     }
 
-    @Step("Open save configuration wizard for page")
-    public SaveConfigurationWizard openSavePageConfigurationWizard() {
+    @Step("Save configuration for properties for user")
+    public NewInventoryViewPage saveConfigurationForPropertiesForUser(String configurationName, String type) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        ButtonPanel.create(driver, wait).clickOnIcon("fa fa-fw fa-floppy-o");
-        return new SaveConfigurationWizard(driver);
+        getPropertiesFilter().openSaveAsNewConfigurationWizard().typeName(configurationName).setForType(type).setAsDefaultForMe().saveAsNew();
+        return this;
     }
 
-    @Step("Open save configuration wizard for tabs widget")
-    public SaveConfigurationWizard openSaveTabsConfigurationWizard() {
+    @Step("Save configuration for properties for group")
+    public NewInventoryViewPage saveConfigurationForPropertiesForGroup(String configurationName, String type, String groupName) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getTabsWidget().openSaveConfigurationWizard();
-        return new SaveConfigurationWizard(driver);
+        getPropertiesFilter().openSaveAsNewConfigurationWizard().typeName(configurationName).setForType(type).setAsDefaultForGroup(groupName).saveAsNew();
+        return this;
     }
 
-    @Step("Open choose configuration for table widget wizard")
-    public ChooseConfigurationWizard openChooseConfigurationForTableWidgetWizard() {
+    @Step("Save configuration for page for user")
+    public NewInventoryViewPage savePageConfigurationForUser(String configurationName) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getTableWidget().clickOnKebabMenu();
-        DropdownList.create(driver, wait).selectOptionWithId("chooseConfig");
-        return new ChooseConfigurationWizard(driver);
+        ButtonPanel.create(driver, wait).openSaveConfigurationWizard().typeName(configurationName).setAsDefaultForMe().save();
+        return this;
     }
 
-    @Step("Open choose configuration wizard for tabs")
-    public ChooseConfigurationWizard openChooseConfigurationForTabsWizard() {
+    @Step("Save configuration for page for group")
+    public NewInventoryViewPage savePageConfigurationForGroup(String configurationName, String groupName) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getTabsWidget().openChooseConfigurationWizard();
-        return new ChooseConfigurationWizard(driver);
+        ButtonPanel.create(driver, wait).openSaveConfigurationWizard().typeName(configurationName).setAsDefaultForGroup(groupName).save();
+        return this;
     }
 
-    @Step("Open choose configuration wizard for properties")
-    public ChooseConfigurationWizard openChooseConfigurationForPropertiesWizard() {
+    @Step("Save configuration for tabs for user")
+    public NewInventoryViewPage saveConfigurationForTabsForUser(String configurationName, String type) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getPropertiesFilter().openChooseConfigurationWizard();
-        return new ChooseConfigurationWizard(driver);
+        getTabsWidget().openSaveConfigurationWizard().typeName(configurationName).setForType(type).setAsDefaultForMe().saveAsNew();
+        return this;
     }
 
-    @Step("Open choose configuration wizard for page")
-    public ChooseConfigurationWizard openChooseConfigurationForPageWizard() {
+    @Step("Save configuration for tabs for user")
+    public NewInventoryViewPage saveConfigurationForTabsForGroup(String configurationName, String type, String groupName) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        ButtonPanel.create(driver, wait).clickOnIcon("fa fa-fw fa-cog");
-        return new ChooseConfigurationWizard(driver);
+        getTabsWidget().openSaveConfigurationWizard().typeName(configurationName).setForType(type).setAsDefaultForGroup(groupName).saveAsNew();
+        return this;
     }
 
-    @Step("Open download configuration wizard for table widget")
-    public ChooseConfigurationWizard openDownloadTableWidgetConfigurationWizard() {
+    @Step("Apply configuration for main table")
+    public NewInventoryViewPage applyConfigurationForMainTable(String configurationName) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getTableWidget().clickOnKebabMenu();
-        DropdownList.create(driver, wait).selectOptionWithId("table_gql_Download");
-        return new ChooseConfigurationWizard(driver);
+        getMainTable().openChooseConfigurationWizard().chooseConfiguration(configurationName).apply();
+        return this;
     }
 
-    @Step("Open download configuration wizard for tabs")
-    public ChooseConfigurationWizard openDownloadConfigurationForTabsWizard() {
+    @Step("Apply configuration for tabs")
+    public NewInventoryViewPage applyConfigurationForTabs(String configurationName) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getTabsWidget().openDownloadConfigurationWizard();
-        return new ChooseConfigurationWizard(driver);
+        getTabsWidget().openChooseConfigurationWizard().chooseConfiguration(configurationName).apply();
+        return this;
     }
 
-    @Step("Open download configuration wizard for page")
-    public ChooseConfigurationWizard openDownloadConfigurationForPageWizard() {
+    @Step("Apply configuration for properties")
+    public NewInventoryViewPage applyConfigurationForProperties(String configurationName) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        ButtonPanel.create(driver, wait).clickOnIcon("fa fa-fw fa-download");
-        return new ChooseConfigurationWizard(driver);
+        getPropertiesFilter().openChooseConfigurationWizard().chooseConfiguration(configurationName).apply();
+        return this;
     }
 
-    @Step("Open download configuration wizard for properties")
-    public ChooseConfigurationWizard openDownloadConfigurationForPropertiesWizard() {
+    @Step("Apply configuration for page")
+    public NewInventoryViewPage applyConfigurationForPage(String configurationName) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getPropertiesFilter().openDownloadConfigurationWizard();
-        return new ChooseConfigurationWizard(driver);
+        ButtonPanel.create(driver, wait).openChooseConfigurationWizard().chooseConfiguration(configurationName).apply();
+        return this;
+    }
+
+    @Step("Download configuration for main table")
+    public NewInventoryViewPage downloadConfigurationForMainTable(String configurationName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getMainTable().openDownloadConfigurationWizard().chooseConfiguration(configurationName).download();
+        return this;
+    }
+
+    @Step("Download configuration for tabs")
+    public NewInventoryViewPage downloadConfigurationForTabs(String configurationName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getTabsWidget().openDownloadConfigurationWizard().chooseConfiguration(configurationName).download();
+        return this;
+    }
+
+    @Step("Download configuration for page")
+    public NewInventoryViewPage downloadConfigurationForPage(String configurationName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        ButtonPanel.create(driver, wait).openDownloadConfigurationWizard().chooseConfiguration(configurationName).download();
+        return this;
+    }
+
+    @Step("Download configuration for properties")
+    public NewInventoryViewPage downloadConfigurationForProperties(String configurationName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getPropertiesFilter().openDownloadConfigurationWizard().chooseConfiguration(configurationName).download();
+        return this;
     }
 
     @Step("Enable Column and apply")
@@ -294,8 +293,8 @@ public class NewInventoryViewPage extends BasePage {
 
     @Step("Enable Column")
     public AttributesChooser enableColumn(String columnLabel) {
-        getTableWidget().getAttributesChooser().enableColumnByLabel(columnLabel);
-        return getTableWidget().getAttributesChooser();
+        getMainTable().getAttributesChooser().enableAttributesByLabel(columnLabel);
+        return getMainTable().getAttributesChooser();
     }
 
     @Step("Disable Column and apply")
@@ -306,33 +305,26 @@ public class NewInventoryViewPage extends BasePage {
 
     @Step("Disable Column")
     public AttributesChooser disableColumn(String columnLabel) {
-        getTableWidget().getAttributesChooser().disableColumnByLabel(columnLabel);
-        return getTableWidget().getAttributesChooser();
+        getMainTable().getAttributesChooser().disableAttributesByLabel(columnLabel);
+        return getMainTable().getAttributesChooser();
     }
 
     @Step("Enable Widget Tab and apply")
     public NewInventoryViewPage enableWidgetAndApply(String widgetLabel) {
-        getTabsWidget().getWidgetChooser().enableWidgetByLabel(widgetLabel).clickAdd();
+        getTabsWidget().getWidgetChooser().enableWidgetsByLabel(widgetLabel).clickAdd();
         return new NewInventoryViewPage(driver);
     }
 
     @Step("Disable Widget Tab and apply")
     public NewInventoryViewPage disableWidgetAndApply(String widgetLabel) {
-        getTabsWidget().getWidgetChooser().disableWidgetByLabel(widgetLabel).clickAdd();
+        getTabsWidget().getWidgetChooser().disableWidgetsByLabel(widgetLabel).clickAdd();
         return new NewInventoryViewPage(driver);
-    }
-
-    @Step("Check first checkbox in table widget")
-    public NewInventoryViewPage checkFirstCheckbox() {
-        getTableWidget().selectRow(0);
-        DelayUtils.waitForPageToLoad(driver, wait);
-        return this;
     }
 
     @Step("Open Hierarchy View for selected object")
     public HierarchyViewPage goToHierarchyViewForSelectedObject() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getTableWidget().getContextActions().callActionById("NAVIGATION");
+        getMainTable().getContextActions().callActionById("NAVIGATION");
         DropdownList.create(driver, wait).selectOptionWithId("WebManagement_HierarchicalView");
         return new HierarchyViewPage(driver);
     }
@@ -356,14 +348,14 @@ public class NewInventoryViewPage extends BasePage {
         return advancedSearch.howManyTagsIsVisible() == 0;
     }
 
-    public String getIdOfFirstObject() {
+    public String getIdOfMainTableObject(int rowIndex) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        return driver.findElement(By.xpath("//div[@class='Row']")).getAttribute("id");
+        return getMainTable().getAttribute(rowIndex, "id");
     }
 
     public boolean isOnlyOneObject(String id) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        return getTableWidget().howManyRowsOnFirstPage() == 1 && getIdOfFirstObject().equals(id);
+        return getMainTable().howManyRowsOnFirstPage() == 1 && getIdOfMainTableObject(0).equals(id);
     }
 
     private void setValueOnTextType(String componentId, Input.ComponentType componentType, String value) {
@@ -373,8 +365,7 @@ public class NewInventoryViewPage extends BasePage {
     }
 
     public Input getComponent(String componentId, Input.ComponentType componentType) {
-        Input input = ComponentFactory.create(componentId, componentType, this.driver, this.wait);
-        return input;
+        return ComponentFactory.create(componentId, componentType, this.driver, this.wait);
     }
 
 }

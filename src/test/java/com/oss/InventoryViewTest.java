@@ -36,7 +36,7 @@ public class InventoryViewTest extends BaseTestCase {
     @Test
     public void searchByType() {
         //given
-        TableInterface tableWidget = inventoryViewPage.getTableWidget();
+        TableInterface tableWidget = inventoryViewPage.getMainTable();
 
         //when
         tableWidget.searchByAttribute("type", ComponentType.COMBOBOX, "PoP");
@@ -50,7 +50,7 @@ public class InventoryViewTest extends BaseTestCase {
     @Test
     public void selectFirstRow() {
         //given
-        TableInterface tableWidget = inventoryViewPage.getTableWidget();
+        TableInterface tableWidget = inventoryViewPage.getMainTable();
 
         //when
         tableWidget.selectRow(0);
@@ -64,7 +64,7 @@ public class InventoryViewTest extends BaseTestCase {
 
     @Test
     public void resizeColumn() {
-        TableInterface tableWidget = inventoryViewPage.getTableWidget();
+        TableInterface tableWidget = inventoryViewPage.getMainTable();
         int defaultSize = tableWidget.getFirstColumnSize();
         DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
         Assertions.assertThat(defaultSize).isEqualTo(200);
@@ -79,7 +79,7 @@ public class InventoryViewTest extends BaseTestCase {
 
     @Test
     public void removeSecondColumn() {
-        TableInterface tableWidget = inventoryViewPage.getTableWidget();
+        TableInterface tableWidget = inventoryViewPage.getMainTable();
         List<String> columnHeaders = tableWidget.getActiveColumnHeaders();
 
         DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
@@ -100,7 +100,7 @@ public class InventoryViewTest extends BaseTestCase {
     @Test
     public void addFirstUnselectedColumn() {
         //given
-        TableInterface tableWidget = inventoryViewPage.getTableWidget();
+        TableInterface tableWidget = inventoryViewPage.getMainTable();
         List<String> columnHeaders = tableWidget.getActiveColumnHeaders();
         String firstHeader = columnHeaders.get(2);
 
@@ -118,7 +118,7 @@ public class InventoryViewTest extends BaseTestCase {
 
     @Test
     public void expandLabel() {
-        TableWidget tableWidget = inventoryViewPage.getTableWidget();
+        TableWidget tableWidget = inventoryViewPage.getMainTable();
         DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
         String firstRowID = tableWidget.getTableCells().get(0).getText();
         DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
@@ -129,7 +129,7 @@ public class InventoryViewTest extends BaseTestCase {
 
     @Test
     public void changeColumnsOrder() {
-        TableWidget tableWidget = inventoryViewPage.getTableWidget();
+        TableWidget tableWidget = inventoryViewPage.getMainTable();
         ColumnsManagement columnsManagement = tableWidget.getColumnsManagement();
 
         String firstHeader = tableWidget.getFirstColumnLabel();
@@ -146,7 +146,7 @@ public class InventoryViewTest extends BaseTestCase {
 
     @Test
     public void checkDefaultSettingsOfColumnsManagement() {
-        TableWidget tableWidget = inventoryViewPage.getTableWidget();
+        TableWidget tableWidget = inventoryViewPage.getMainTable();
         ColumnsManagement columnsManagement = tableWidget.getColumnsManagement();
 
         DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
@@ -192,7 +192,7 @@ public class InventoryViewTest extends BaseTestCase {
 
     @Test
     public void checkPagination() {
-        TableWidget tableWidget = inventoryViewPage.getTableWidget();
+        TableWidget tableWidget = inventoryViewPage.getMainTable();
         DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
         Assert.assertEquals(tableWidget.isFirstPageActive(), true);
         Assert.assertEquals(tableWidget.isPreviousPageClicable(), false);
@@ -210,7 +210,7 @@ public class InventoryViewTest extends BaseTestCase {
 
     @Test
     public void checkHorizontalScroller() {
-        TableWidget tableWidget = inventoryViewPage.getTableWidget();
+        TableWidget tableWidget = inventoryViewPage.getMainTable();
         DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
         tableWidget.scrollHorizontally(1000);
         List<String> headers = tableWidget.getActiveColumns();
@@ -222,7 +222,7 @@ public class InventoryViewTest extends BaseTestCase {
 
     @Test
     public void checkVerticalScroller() {
-        TableWidget tableWidget = inventoryViewPage.getTableWidget();
+        TableWidget tableWidget = inventoryViewPage.getMainTable();
         DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
         tableWidget.scrollVertically(1000);
         String lastVisibleID = tableWidget.getValueFromNthRow("ID", "last()");
@@ -235,7 +235,7 @@ public class InventoryViewTest extends BaseTestCase {
 
     @Test
     public void findByText() {
-        TableWidget tableWidget = inventoryViewPage.getTableWidget();
+        TableWidget tableWidget = inventoryViewPage.getMainTable();
         DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
         String secondID = tableWidget.getValueFromNthRow("ID", "2");
         tableWidget.typeIntoSearch(secondID);
@@ -247,7 +247,7 @@ public class InventoryViewTest extends BaseTestCase {
 
     @Test
     public void clickExport() {
-        TableWidget tableWidget = inventoryViewPage.getTableWidget();
+        TableWidget tableWidget = inventoryViewPage.getMainTable();
         DelayUtils.sleep(750);
         String numberOfExports = homePage.getNumberOfNotifications();
         tableWidget.clickOnKebabMenu();
@@ -259,7 +259,7 @@ public class InventoryViewTest extends BaseTestCase {
 
     @Test
     public void changeTab() {
-        TableWidget tableWidget = inventoryViewPage.getTableWidget();
+        TableWidget tableWidget = inventoryViewPage.getMainTable();
 
         tableWidget.selectFirstRow();
         TabsWidget tabsWidget = inventoryViewPage.getTabsWidget();
@@ -275,7 +275,7 @@ public class InventoryViewTest extends BaseTestCase {
 
     @Test
     public void clickRefresh() {
-        TableWidget tableWidget = inventoryViewPage.getTableWidget();
+        TableWidget tableWidget = inventoryViewPage.getMainTable();
         DelayUtils.sleep(500);
         tableWidget.clickOnKebabMenu();
         tableWidget.clickOnAction("Refresh");
@@ -285,7 +285,7 @@ public class InventoryViewTest extends BaseTestCase {
     @Test
     public void wizardTest() {
         //TODO: problem with click Next and then Cancel button
-        TableWidget tableWidget = inventoryViewPage.getTableWidget();
+        TableWidget tableWidget = inventoryViewPage.getMainTable();
 //        tableWidget.takeAction("Create", "Location");
         DelayUtils.waitForComponent(webDriverWait,"//div[contains(@id,'CREATE')]");
         driver.findElement(By.id("CREATE")).click();
@@ -305,7 +305,7 @@ public class InventoryViewTest extends BaseTestCase {
     @Test
     public void changeTabAndSelectFirstRow() { //
         //TODO: uwzględnić notatki z AdvancedSearch.java, nie działa dopóki nie bedzei widgetID - wtedy poprawiać
-        TableWidget tableWidget = inventoryViewPage.getTableWidget();
+        TableWidget tableWidget = inventoryViewPage.getMainTable();
         tableWidget.selectFirstRow();
 
         TabsWidget tabsWidget = inventoryViewPage.getTabsWidget();
@@ -320,7 +320,7 @@ public class InventoryViewTest extends BaseTestCase {
 
     @Test
     public void checkDisplayingOfPropertyValue(){
-        TableWidget tableWidget = inventoryViewPage.getTableWidget();
+        TableWidget tableWidget = inventoryViewPage.getMainTable();
         String idNumberFromTableWidget = tableWidget.getValueFromNthRow("ID", "1");
         tableWidget.selectFirstRow();
         PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel();
@@ -330,7 +330,7 @@ public class InventoryViewTest extends BaseTestCase {
 
     @Test
     public void setProperties(){
-        TableWidget tableWidget = inventoryViewPage.getTableWidget();
+        TableWidget tableWidget = inventoryViewPage.getMainTable();
         tableWidget.selectFirstRow();
         PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel();
         PropertiesFilter propertiesFilter = inventoryViewPage.getPropertiesFilter();
@@ -355,7 +355,7 @@ public class InventoryViewTest extends BaseTestCase {
 
     @Test
     public void searchProperty(){
-        TableWidget tableWidget = inventoryViewPage.getTableWidget();
+        TableWidget tableWidget = inventoryViewPage.getMainTable();
         tableWidget.selectFirstRow();
         PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel();
         PropertiesFilter propertiesFilter = inventoryViewPage.getPropertiesFilter();

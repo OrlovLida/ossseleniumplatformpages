@@ -15,13 +15,13 @@ import org.testng.annotations.Test;
 import java.util.List;
 
 @Listeners({TestListener.class})
-public class WidgetConfigurationTest extends BaseTestCase {
+public class TableWidgetConfigurationTest extends BaseTestCase {
 
     private NewInventoryViewPage newInventoryViewPage;
 
-    private String GROUP_NAME= "SeleniumTests";
-    private String CONFIGURATION_NAME_TABLE_WIDGET= "Table_Widget_User";
-    private String CONFIGURATION_NAME_TABLE_WIDGET_GROUP= "Table_Widget_Group";
+    private static String GROUP_NAME= "SeleniumTests";
+    private static String CONFIGURATION_NAME_TABLE_WIDGET= "Table_Widget_User";
+    private static String CONFIGURATION_NAME_TABLE_WIDGET_GROUP= "Table_Widget_Group";
 
     @BeforeClass
     public void goToInventoryView() {
@@ -35,13 +35,13 @@ public class WidgetConfigurationTest extends BaseTestCase {
     @Description("Saving new configuration for table widget for user")
     public void saveNewConfigurationForTableWidgetForUser() {
         //when
-        newInventoryViewPage.enableColumn("Depth").disableColumnByLabel("Name");
+        newInventoryViewPage.enableColumn("Depth").disableAttributesByLabel("Name");
         newInventoryViewPage.changeLayoutToVertical()
-                .changeColumnsOrder("XId", 3)
+                .changeColumnsOrderInMainTable("XId", 3)
                 .openFilterPanel()
                 .setValueOnComboWithTags("type", "type-dropdown-search", "Building")
                 .applyFilter();
-        newInventoryViewPage.openSaveConfigurationForTableWidgetWizard().typeName(CONFIGURATION_NAME_TABLE_WIDGET).setAsDefaultForMe().saveAsNew();
+        newInventoryViewPage.saveConfigurationForMainTableForUser(CONFIGURATION_NAME_TABLE_WIDGET);
 
         //then
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
@@ -58,12 +58,12 @@ public class WidgetConfigurationTest extends BaseTestCase {
     @Description("Saving new configuration for table widget for group")
     public void saveNewConfigurationForTableWidgetForGroup() {
         //when
-        newInventoryViewPage.enableColumn("Height").disableColumnByLabel("Latitude").clickApply();
-        newInventoryViewPage.changeColumnsOrder("XId", 2)
+        newInventoryViewPage.enableColumn("Height").disableAttributesByLabel("Latitude").clickApply();
+        newInventoryViewPage.changeColumnsOrderInMainTable("XId", 2)
                 .openFilterPanel()
                 .setValueOnComboWithTags("type", "type-dropdown-search", "Site")
                 .applyFilter();
-        newInventoryViewPage.openSaveConfigurationForTableWidgetWizard().typeName(CONFIGURATION_NAME_TABLE_WIDGET_GROUP).setAsDefaultForGroup(GROUP_NAME).saveAsNew();
+        newInventoryViewPage.saveConfigurationForMainTableForGroup(CONFIGURATION_NAME_TABLE_WIDGET_GROUP, GROUP_NAME);
         //then
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();

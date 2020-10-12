@@ -22,10 +22,10 @@ public class DetailsConfigurationTest extends BaseTestCase {
 
     private NewInventoryViewPage newInventoryViewPage;
 
-    private String GROUP_NAME= "SeleniumTests";
-    private String CONFIGURATION_NAME_PROPERTIES= "Properties_User_Building";
-    private String CONFIGURATION_NAME_PROPERTIES_SUPERTYPE= "Properties_User_Location";
-    private String CONFIGURATION_NAME_PROPERTIES_GROUP= "Properties_Group";
+    private static String GROUP_NAME= "SeleniumTests";
+    private static String CONFIGURATION_NAME_PROPERTIES= "Properties_User_Building";
+    private static String CONFIGURATION_NAME_PROPERTIES_SUPERTYPE= "Properties_User_Location";
+    private static String CONFIGURATION_NAME_PROPERTIES_GROUP= "Properties_Group";
 
     @BeforeClass
     public void goToInventoryView() {
@@ -38,8 +38,8 @@ public class DetailsConfigurationTest extends BaseTestCase {
     @Description("Saving new configuration for properties for type")
     public void saveNewConfigurationForPropertiesForType(){
         //when
-        newInventoryViewPage.checkFirstCheckbox();
-        newInventoryViewPage.openSaveConfigurationForPropertiesWizard().typeName(CONFIGURATION_NAME_PROPERTIES).setForType("Building").setAsDefaultForMe().saveAsNew();
+        newInventoryViewPage.selectFirstRow();
+        newInventoryViewPage.saveConfigurationForPropertiesForUser(CONFIGURATION_NAME_PROPERTIES, "Building");
 
         //then
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
@@ -52,9 +52,9 @@ public class DetailsConfigurationTest extends BaseTestCase {
     @Description("Saving new configuration for properties for supertype")
     public void saveNewConfigurationForPropertiesForSupertype(){
         //when
-        newInventoryViewPage.checkFirstCheckbox();
+        newInventoryViewPage.selectFirstRow();
         newInventoryViewPage.getPropertyPanel().changeOrder("name", 3);
-        newInventoryViewPage.openSaveConfigurationForPropertiesWizard().typeName(CONFIGURATION_NAME_PROPERTIES_SUPERTYPE).setForType("Location").setAsDefaultForMe().saveAsNew();
+        newInventoryViewPage.saveConfigurationForPropertiesForUser(CONFIGURATION_NAME_PROPERTIES_SUPERTYPE,"Location");
 
         //then
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
@@ -67,9 +67,9 @@ public class DetailsConfigurationTest extends BaseTestCase {
     @Description("Saving new configuration for properties for group")
     public void saveNewConfigurationForPropertiesForGroup(){
         //when
-        newInventoryViewPage.checkFirstCheckbox();
+        newInventoryViewPage.selectFirstRow();
         newInventoryViewPage.getPropertyPanel().changeOrder("name", 4);
-        newInventoryViewPage.openSaveConfigurationForPropertiesWizard().typeName(CONFIGURATION_NAME_PROPERTIES_GROUP).setForType("Location").setAsDefaultForGroup(GROUP_NAME).saveAsNew();
+        newInventoryViewPage.saveConfigurationForPropertiesForGroup(CONFIGURATION_NAME_PROPERTIES_GROUP,"Location", GROUP_NAME);
 
         //then
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
@@ -84,7 +84,7 @@ public class DetailsConfigurationTest extends BaseTestCase {
         //given
         newInventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Building");
         //when
-        newInventoryViewPage.checkFirstCheckbox();
+        newInventoryViewPage.selectFirstRow();
         //then
         Assert.assertEquals(newInventoryViewPage.getPropertyPanel().getPropertyLabels().get(2), "Name");
     }
@@ -95,7 +95,7 @@ public class DetailsConfigurationTest extends BaseTestCase {
         //given
         newInventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Site");
         //when
-        newInventoryViewPage.checkFirstCheckbox();
+        newInventoryViewPage.selectFirstRow();
         //then
         Assert.assertEquals(newInventoryViewPage.getPropertyPanel().getPropertyLabels().get(3), "Name");
     }
@@ -106,7 +106,7 @@ public class DetailsConfigurationTest extends BaseTestCase {
     public void checkingConfigurationForPropertiesForTypeInHierarchyView(){
         //given
         newInventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Building");
-        newInventoryViewPage.checkFirstCheckbox();
+        newInventoryViewPage.selectFirstRow();
         //when
         HierarchyViewPage hierarchyViewPage = newInventoryViewPage.goToHierarchyViewForSelectedObject();
         hierarchyViewPage.selectFirstObject();
@@ -123,7 +123,7 @@ public class DetailsConfigurationTest extends BaseTestCase {
         newInventoryViewPage.changeUser("webseleniumtests2","webtests");
         newInventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Location");
         //when
-        newInventoryViewPage.checkFirstCheckbox();
+        newInventoryViewPage.selectFirstRow();
         //then
         Assert.assertEquals(newInventoryViewPage.getPropertyPanel().getPropertyLabels().get(4), "Name");
     }

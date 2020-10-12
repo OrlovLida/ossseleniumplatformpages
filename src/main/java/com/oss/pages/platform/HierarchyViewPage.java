@@ -19,73 +19,44 @@ public class HierarchyViewPage extends BasePage {
         super(driver);
     }
 
-
-    private TabsWidget topTabsWidget;
-    private TabsWidget bottomTabsWidget;
-    private PropertyPanel topPropertyPanel;
-    private PropertyPanel bottomPropertyPanel;
-    private PropertiesFilter bottomPropertiesFilter;
-    private PropertiesFilter topPropertiesFilter;
-
     private final String TOP_TABS_WIDGET_ID = "HierarchyView_TopDetailTabs_%s";
     private final String BOTTOM_TABS_WIDGET_ID = "HierarchyView_BottomDetailTabs_%s";
     private final String TOP_PROPERTY_PANEL_ID = "HierarchyView_TopDetailTabs_%sHierarchyView_PropertyPanelWidget_%s";
     private final String BOTTOM_PROPERTY_PANEL_ID = "HierarchyView_BottomDetailTabs_%sInventoryView_PropertyPanelWidget_%s";
 
     public TreeWidget getTreeWidget() {
-        if(mainTree == null){
             Widget.waitForWidget(wait, "TreeWidget");
-            mainTree = TreeWidget.createByClass(driver, "TreeWidget", wait);
-        }
-        return mainTree;
+        return TreeWidget.createByClass(driver, "TreeWidget", wait);
     }
 
     public TabsWidget getTopTabsWidget(String type) {
-        if (topTabsWidget == null) {
             Widget.waitForWidget(wait, TabsWidget.TABS_WIDGET_CLASS);
-            topTabsWidget = TabsWidget.createById(driver, wait, String.format(TOP_TABS_WIDGET_ID, type));
-        }
-        return topTabsWidget;
+        return TabsWidget.createById(driver, wait, String.format(TOP_TABS_WIDGET_ID, type));
     }
 
     public TabsWidget getBottomTabsWidget(String type) {
-        if (bottomTabsWidget == null) {
             Widget.waitForWidget(wait, TabsWidget.TABS_WIDGET_CLASS);
-            bottomTabsWidget = TabsWidget.createById(driver, wait, String.format(BOTTOM_TABS_WIDGET_ID, type));
-        }
-        return bottomTabsWidget;
+        return TabsWidget.createById(driver, wait, String.format(BOTTOM_TABS_WIDGET_ID, type));
     }
 
     public PropertyPanel getTopPropertyPanel(String type) {
-        if (topPropertyPanel == null) {
             Widget.waitForWidget(wait, PropertyPanel.PROPERTY_PANEL_CLASS);
-            topPropertyPanel = PropertyPanel.createById(driver, String.format(TOP_PROPERTY_PANEL_ID, type, type));
-        }
-        return topPropertyPanel;
+        return PropertyPanel.createById(driver, String.format(TOP_PROPERTY_PANEL_ID, type, type));
     }
 
     public PropertyPanel getBottomPropertyPanel(String type) {
-        if (bottomPropertyPanel == null) {
             Widget.waitForWidget(wait, PropertyPanel.PROPERTY_PANEL_CLASS);
-            bottomPropertyPanel = PropertyPanel.createById(driver, String.format(BOTTOM_PROPERTY_PANEL_ID, type, type));
-        }
-        return bottomPropertyPanel;
+        return PropertyPanel.createById(driver, String.format(BOTTOM_PROPERTY_PANEL_ID, type, type));
     }
 
     public PropertiesFilter getBottomPropertiesFilter(String type) {
-        if (bottomPropertiesFilter == null) {
             Widget.waitForWidget(wait, PropertiesFilter.PROPERTIES_FILTER_CLASS);
-            bottomPropertiesFilter = PropertiesFilter.createByPropertyPanel(driver, wait, getBottomPropertyPanel(type));
-        }
-        return bottomPropertiesFilter;
+        return PropertiesFilter.createByPropertyPanel(driver, wait, getBottomPropertyPanel(type));
     }
 
     public PropertiesFilter getTopPropertiesFilter(String type) {
-        if (topPropertiesFilter == null) {
             Widget.waitForWidget(wait, PropertiesFilter.PROPERTIES_FILTER_CLASS);
-            topPropertiesFilter = PropertiesFilter.createByPropertyPanel(driver, wait, getTopPropertyPanel(type));
-        }
-        return topPropertiesFilter;
+        return PropertiesFilter.createByPropertyPanel(driver, wait, getTopPropertyPanel(type));
     }
 
     @Step("Open Hierarchy View")
@@ -95,25 +66,32 @@ public class HierarchyViewPage extends BasePage {
         return new HierarchyViewPage(driver);
     }
 
-    @Step("Open save configuration wizard for page")
-    public SaveConfigurationWizard openSavePageConfigurationWizard(){
+    @Step("Save configuration for page for user")
+    public HierarchyViewPage savePageConfigurationForUser(String configurationName){
         DelayUtils.waitForPageToLoad(driver, wait);
-        ButtonPanel.create(driver, wait).clickOnIcon("fa fa-fw fa-floppy-o");
-        return new SaveConfigurationWizard(driver);
+        ButtonPanel.create(driver, wait).openSaveConfigurationWizard().typeName(configurationName).setAsDefaultForMe().save();
+        return this;
     }
 
-    @Step("Open choose configuration wizard for page")
-    public ChooseConfigurationWizard openChooseConfigurationForPageWizard(){
+    @Step("Save configuration for page for group")
+    public HierarchyViewPage savePageConfigurationForGroup(String configurationName, String groupName){
         DelayUtils.waitForPageToLoad(driver, wait);
-        ButtonPanel.create(driver, wait).clickOnIcon("fa fa-fw fa-cog");
-        return new ChooseConfigurationWizard(driver);
+        ButtonPanel.create(driver, wait).openSaveConfigurationWizard().typeName(configurationName).setAsDefaultForGroup(groupName).save();
+        return this;
     }
 
-    @Step("Open download configuration wizard for page")
-    public ChooseConfigurationWizard openDownloadConfigurationForPageWizard(){
+    @Step("Apply configuration for page")
+    public HierarchyViewPage applyConfigurationForPage(String configurationName){
         DelayUtils.waitForPageToLoad(driver, wait);
-        ButtonPanel.create(driver, wait).clickOnIcon("fa fa-fw fa-download");
-        return new ChooseConfigurationWizard(driver);
+        ButtonPanel.create(driver, wait).openChooseConfigurationWizard().chooseConfiguration(configurationName).apply();
+        return this;
+    }
+
+    @Step("Download configuration for page")
+    public HierarchyViewPage downloadConfigurationForPage(String configurationName){
+        DelayUtils.waitForPageToLoad(driver, wait);
+        ButtonPanel.create(driver, wait).openDownloadConfigurationWizard().chooseConfiguration(configurationName).apply();
+        return this;
     }
 
     @Step("Select First Object on Tree Widget")

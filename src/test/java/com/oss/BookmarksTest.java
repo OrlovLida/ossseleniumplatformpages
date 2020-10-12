@@ -24,7 +24,7 @@ public class BookmarksTest extends BaseTestCase {
     public void createBookmark() {
         tableWidget = homePage
                 .goToInventoryViewPage(TABLE_WIDGET_URL)
-                .getTableWidget();
+                .getMainTable();
         //tableWidget.clickOnGearIcon();
         //tableWidget.clickColumnsMgmtChbx("Abbreviation");
         //tableWidget.dragAndDropChbx("ID",-120,0);
