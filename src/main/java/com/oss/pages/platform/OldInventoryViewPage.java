@@ -33,14 +33,19 @@ public class OldInventoryViewPage extends BasePage {
     private static final String INVENTORY_VIEW = "InventoryView";
     private static final String OLD_TABLE_WIDGET = "OSSTableWidget";
 
+//    public TableInterface getTableWidget() {
+//        if (mainTable == null) {
+//            //TODO: remove  Widget.waitForWidget,
+//            Widget.waitForWidget(wait, OLD_TABLE_WIDGET);
+////            mainTable = OldTable.createByComponentDataAttributeName(driver, wait, INVENTORY_VIEW); to be replaced after fix of OSSWEB-8398
+//            mainTable = OldTable.createByOssWindow(driver, wait);
+//        }
+//        return mainTable;
+//    }
+
     public TableInterface getTableWidget() {
-        if (mainTable == null) {
-            //TODO: remove  Widget.waitForWidget,
-            Widget.waitForWidget(wait, OLD_TABLE_WIDGET);
-//            mainTable = OldTable.createByComponentDataAttributeName(driver, wait, INVENTORY_VIEW); to be replaced after fix of OSSWEB-8398
-            mainTable = OldTable.createByOssWindow(driver, wait);
-        }
-        return mainTable;
+        Widget.waitForWidget(wait, OLD_TABLE_WIDGET);
+        return OldTable.createByOssWindow(driver, wait);
     }
 
     public Wizard getWizard() {
