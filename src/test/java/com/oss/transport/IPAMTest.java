@@ -7,6 +7,8 @@ import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.transport.IPAddressManagementViewPage;
 import com.oss.pages.transport.IPNetworkWizardPage;
 import com.oss.pages.transport.IPSubnetWizardPage;
+import com.oss.pages.transport.helper.IPSubnetFilterProperties;
+import com.oss.pages.transport.helper.IPSubnetWizardProperties;
 import com.oss.utils.TestListener;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -87,18 +89,13 @@ public class IPAMTest extends BaseTestCase {
     public void createIPSubnets() {
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
         ipAddressManagementViewPage.useContextAction(CREATE_OPERATION_FOR_NETWORK_GROUP, CREATE_IPV4_SUBNET_ACTION);
-        String[] subnetSelectStepFilterData = {"126000", "12600128", ">=", "24"};
+        IPSubnetFilterProperties subnetFilterProperties = new IPSubnetFilterProperties("126000", "12600128", ">=", "24");
         IPSubnetWizardPage ipSubnetWizardPage = new IPSubnetWizardPage(driver);
-        ipSubnetWizardPage.ipSubnetWizardSelectStep(subnetSelectStepFilterData, 3);
-        Map<String, String> firstIPSubnet = new HashMap<>();
-        firstIPSubnet.put(SUBNET_PROPERTY_SUBNET_TYPE, "Block");
-        firstIPSubnet.put(SUBNET_PROPERTY_ROLE, "Management - Primary");
-        firstIPSubnet.put(SUBNET_PROPERTY_DESCRIPTION, "description");
-        Map<String, String> secondIPSubnet = new HashMap<>();
-        secondIPSubnet.put(SUBNET_PROPERTY_SUBNET_TYPE, "Network");
-        Map<String, String> thirdIPSubnet = new HashMap<>();
-        thirdIPSubnet.put(SUBNET_PROPERTY_SUBNET_TYPE, "Network");
-        ipSubnetWizardPage.ipSubnetWizardPropertiesStep(firstIPSubnet, secondIPSubnet, thirdIPSubnet);
+        ipSubnetWizardPage.ipSubnetWizardSelectStep(subnetFilterProperties, 3);
+        IPSubnetWizardProperties firstIpSubnetWizardProperties = new IPSubnetWizardProperties("Block", "Management - Primary", "description");
+        IPSubnetWizardProperties secondIpSubnetWizardProperties = new IPSubnetWizardProperties("Network");
+        IPSubnetWizardProperties thirdIpSubnetWizardProperties = new IPSubnetWizardProperties("Network");
+        ipSubnetWizardPage.ipSubnetWizardPropertiesStep(firstIpSubnetWizardProperties, secondIpSubnetWizardProperties, thirdIpSubnetWizardProperties);
         ipSubnetWizardPage.ipSubnetWizardSummaryStep();
     }
 

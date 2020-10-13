@@ -7,6 +7,8 @@ import com.oss.framework.widgets.Widget;
 import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.tablewidget.TableWidget;
 import com.oss.pages.BasePage;
+import com.oss.pages.transport.helper.IPSubnetFilterProperties;
+import com.oss.pages.transport.helper.IPSubnetWizardProperties;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 
@@ -27,10 +29,6 @@ public class IPSubnetWizardPage extends BasePage {
     private static final String DESCRIPTION_COMPONENT_ID = "descriptionComponentId";
     private static final String FIND_SUBNETS = "Find Subnets";
     private static final String FIND_NEXT_SUBNET = "Find next Subnet";
-    private static final String SUBNET_TYPE = "Subnet type";
-    private static final String STATUS = "Status";
-    private static final String ROLE = "Role";
-    private static final String DESCRIPTION = "Description";
     private static final String A_BLOCK = "a";
 
     public IPSubnetWizardPage(WebDriver driver) {
@@ -43,10 +41,10 @@ public class IPSubnetWizardPage extends BasePage {
     }
 
     @Step("IP Subnet Wizard select step")
-    private void ipSubnetWizardSelectStep(String [] filterData) {
+    private void ipSubnetWizardSelectStep(IPSubnetFilterProperties ipSubnetFilterProperties) {
         DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
         Wizard selectStep = Wizard.createWizard(driver, wait);
-        fillSubnetWizardSelectStep(selectStep, filterData);
+        fillSubnetWizardSelectStep(selectStep, ipSubnetFilterProperties);
         Button button = Button.create(driver, FIND_NEXT_SUBNET, A_BLOCK);
         button.click();
         DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
@@ -54,10 +52,10 @@ public class IPSubnetWizardPage extends BasePage {
         selectStep.clickNext();
     }
 
-    public void ipSubnetWizardSelectStep(String [] filterData, int amount) {
+    public void ipSubnetWizardSelectStep(IPSubnetFilterProperties ipSubnetFilterProperties, int amount) {
         DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
         Wizard selectStep = Wizard.createWizard(driver, wait);
-        fillSubnetWizardSelectStep(selectStep, filterData);
+        fillSubnetWizardSelectStep(selectStep, ipSubnetFilterProperties);
         Button button = Button.create(driver, FIND_SUBNETS, A_BLOCK);
         button.click();
         DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
@@ -80,27 +78,27 @@ public class IPSubnetWizardPage extends BasePage {
     }
 
     @Step("IP Subnet Wizard properties step")
-    public void ipSubnetWizardPropertiesStep(Map<String, String>... subnets) {
+    public void ipSubnetWizardPropertiesStep(IPSubnetWizardProperties... ipSubnetWizardPropertiesArray) {
         DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
         Wizard propertiesStep = Wizard.createWizard(driver, wait);
-        for (int i = 0; i < subnets.length; i++)
+        for (int i = 0; i < ipSubnetWizardPropertiesArray.length; i++)
         {
             getTableWidget().selectRow(i);
             DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
             Input componentSubnetType = propertiesStep.getComponent(SUBNET_TYPE_COMPONENT_ID, Input.ComponentType.COMBOBOX);
-            componentSubnetType.setSingleStringValue(subnets[i].get(SUBNET_TYPE));
-            if (subnets[i].containsKey(STATUS)) {
+            componentSubnetType.setSingleStringValue(ipSubnetWizardPropertiesArray[i].getSubnetType());
+            if (ipSubnetWizardPropertiesArray[i].getStatus()!=null) {
                 Input componentSubnetStatus = propertiesStep.getComponent(SUBNET_STATUS_COMPONENT_ID, Input.ComponentType.COMBOBOX);
-                componentSubnetStatus.setSingleStringValue(subnets[i].get(STATUS));
+                componentSubnetStatus.setSingleStringValue(ipSubnetWizardPropertiesArray[i].getStatus());
             }
-            if (subnets[i].containsKey(ROLE)) {
+            if (ipSubnetWizardPropertiesArray[i].getRole()!=null) {
                 Input componentRole = propertiesStep.getComponent(ROLE_COMPONENT_ID, Input.ComponentType.SEARCH_FIELD);
-                componentRole.setSingleStringValue(subnets[i].get(ROLE));
+                componentRole.setSingleStringValue(ipSubnetWizardPropertiesArray[i].getRole());
                 DelayUtils.sleep(500);
             }
-            if (subnets[i].containsKey(DESCRIPTION)) {
+            if (ipSubnetWizardPropertiesArray[i].getDescription()!=null) {
                 Input componentRole = propertiesStep.getComponent(DESCRIPTION_COMPONENT_ID, Input.ComponentType.TEXT_FIELD);
-                componentRole.setSingleStringValue(subnets[i].get(DESCRIPTION));
+                componentRole.setSingleStringValue(ipSubnetWizardPropertiesArray[i].getDescription());
             }
             DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
             getTableWidget().unselectTableRow(i);
@@ -116,14 +114,14 @@ public class IPSubnetWizardPage extends BasePage {
         summaryStep.clickAccept();
     }
 
-    private void fillSubnetWizardSelectStep(Wizard selectStep, String [] filterData) {
+    private void fillSubnetWizardSelectStep(Wizard selectStep, IPSubnetFilterProperties ipSubnetFilterProperties) {
         Input componentStartIP = selectStep.getComponent(START_IP_COMPONENT_ID, Input.ComponentType.TEXT_FIELD);
-        componentStartIP.setSingleStringValue(filterData[0]);
+        componentStartIP.setSingleStringValue(ipSubnetFilterProperties.getStartIp());
         Input componentEndIP = selectStep.getComponent(END_IP_COMPONENT_ID, Input.ComponentType.TEXT_FIELD);
-        componentEndIP.setSingleStringValue(filterData[1]);
+        componentEndIP.setSingleStringValue(ipSubnetFilterProperties.getEndIp());
         Input componentOperator = selectStep.getComponent(OPERATOR_COMPONENT_ID, Input.ComponentType.COMBOBOX);
-        componentOperator.setSingleStringValue(filterData[2]);
+        componentOperator.setSingleStringValue(ipSubnetFilterProperties.getOperator());
         Input componentMaskLength = selectStep.getComponent(MASK_LENGTH_COMPONENT_ID, Input.ComponentType.COMBOBOX);
-        componentMaskLength.setSingleStringValue(filterData[3]);
+        componentMaskLength.setSingleStringValue(ipSubnetFilterProperties.getMaskLength());
     }
 }
