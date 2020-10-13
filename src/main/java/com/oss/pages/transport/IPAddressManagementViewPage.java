@@ -22,12 +22,12 @@ import org.openqa.selenium.WebDriver;
 public class IPAddressManagementViewPage extends BasePage {
 
     public static IPAddressManagementViewPage goToIPAddressManagementViewPageLive(WebDriver driver, String basicURL) {
-        driver.get(String.format("%s/#/view/transport/ipmgt/ipTree?" + "perspective=LIVE", basicURL));
+        driver.get(String.format(IPADDRESS_MANAGEMENT_VIEW_URL + PERSPECTIVE, basicURL, LIVE));
         return new IPAddressManagementViewPage(driver);
     }
 
     public static IPAddressManagementViewPage goToIPAddressManagementViewPagePlan(WebDriver driver, String basicURL, long project) {
-        driver.get(String.format("%s/#/view/transport/ipmgt/ipTree?project_id=" + project + "perspective=PLAN", basicURL));
+        driver.get(String.format(IPADDRESS_MANAGEMENT_VIEW_URL +PROJECT_ID + PERSPECTIVE , basicURL, project, PLAN));
         return new IPAddressManagementViewPage(driver);
     }
 
@@ -37,12 +37,22 @@ public class IPAddressManagementViewPage extends BasePage {
     }
 
     private static final String IPADDRESS_MANAGEMENT_VIEW_URL = "%s/#/view/transport/ipmgt/ipTree?";
+    private static final String PROJECT_ID = "project_id=%d";
+    private static final String PERSPECTIVE = "perspective=%s";
+    private static final String LIVE = "LIVE";
+    private static final String PLAN = "PLAN";
     private static final String ROLE_TEXT_FIELD_DATA_ATTRIBUTE = "text-field-uid";
     private static final String XPATH_TO_CONFIRM_DELETION = "//button[@class='actionButton btn btn-primary']";
     private static final String XPATH_TO_ROLES = ".//li[@class = 'listElement']";
     private static final String DELETE_BUTTON = "Delete";
     private static final String OTHER_BUTTON = "__more-group";
+    private static final String ROLE_BUTTON = "Role";
     private static final String OK_BUTTON = "OK";
+    private static final String TREE_VIEW = "TreeView";
+    private static final String TREE_VIEW_COMPONENT = "TreeView";
+    private static final String OSS_WINDOW = "OssWindow";
+    private static final String WINDOW_TOOLBAR = "windowToolbar";
+    private static final String TABS_CONTAINER = "tabsContainer";
     private Wizard wizard;
     private CommonList commonList;
 
@@ -52,31 +62,31 @@ public class IPAddressManagementViewPage extends BasePage {
 
     private TreeWidget getTreeView() {
         if (mainTree == null) {
-            Widget.waitForWidget(wait, "TreeView");
-            mainTree = TreeWidget.createByClass(driver, "TreeView", wait);
-            DelayUtils.waitForVisibility(wait, driver.findElement(By.className("TreeViewComponent")));
+            Widget.waitForWidget(wait, TREE_VIEW);
+            mainTree = TreeWidget.createByClass(driver, TREE_VIEW, wait);
+            DelayUtils.waitForVisibility(wait, driver.findElement(By.className(TREE_VIEW_COMPONENT)));
         }
-        DelayUtils.waitForVisibility(wait, driver.findElement(By.className("TreeViewComponent")));
+        DelayUtils.waitForVisibility(wait, driver.findElement(By.className(TREE_VIEW_COMPONENT)));
         return mainTree;
     }
 
     private OldActionsContainer getActionsInterface() {
         if (actionsContainer == null) {
-            DelayUtils.waitForVisibility(wait, driver.findElement(By.className("OssWindow")));
-            actionsContainer = OldActionsContainer.createFromParent(driver, wait, driver.findElement(By.className("OssWindow")));
-            DelayUtils.waitForVisibility(wait, driver.findElement(By.className("windowToolbar")));
+            DelayUtils.waitForVisibility(wait, driver.findElement(By.className(OSS_WINDOW)));
+            actionsContainer = OldActionsContainer.createFromParent(driver, wait, driver.findElement(By.className(OSS_WINDOW)));
+            DelayUtils.waitForVisibility(wait, driver.findElement(By.className(WINDOW_TOOLBAR)));
         }
-        DelayUtils.waitForVisibility(wait, driver.findElement(By.className("windowToolbar")));
+        DelayUtils.waitForVisibility(wait, driver.findElement(By.className(WINDOW_TOOLBAR)));
         return actionsContainer;
     }
 
     public PropertyPanelInterface getPropertyPanel(){
         if (propertyPanel == null) {
-            DelayUtils.waitForVisibility(wait, driver.findElement(By.className("OssWindow")));
+            DelayUtils.waitForVisibility(wait, driver.findElement(By.className(OSS_WINDOW)));
             propertyPanel = OldPropertyPanel.create(driver, wait);
-            DelayUtils.waitForVisibility(wait, driver.findElement(By.className("tabsContainer")));
+            DelayUtils.waitForVisibility(wait, driver.findElement(By.className(TABS_CONTAINER)));
         }
-        DelayUtils.waitForVisibility(wait, driver.findElement(By.className("tabsContainer")));
+        DelayUtils.waitForVisibility(wait, driver.findElement(By.className(TABS_CONTAINER)));
         return propertyPanel;
     }
 
@@ -162,7 +172,7 @@ public class IPAddressManagementViewPage extends BasePage {
 
     private void clickOnRoleButton(){
         DelayUtils.sleep(5000);
-        Button.createBySelectorAndId(driver, "a", "Role").click();
+        Button.createBySelectorAndId(driver, "a", ROLE_BUTTON).click();
     }
 
     private void clickCreateNewRole(){
