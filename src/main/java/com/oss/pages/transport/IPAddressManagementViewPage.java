@@ -40,6 +40,9 @@ public class IPAddressManagementViewPage extends BasePage {
     private static final String ROLE_TEXT_FIELD_DATA_ATTRIBUTE = "text-field-uid";
     private static final String XPATH_TO_CONFIRM_DELETION = "//button[@class='actionButton btn btn-primary']";
     private static final String XPATH_TO_ROLES = ".//li[@class = 'listElement']";
+    private static final String DELETE_BUTTON = "Delete";
+    private static final String OTHER_BUTTON = "__more-group";
+    private static final String OK_BUTTON = "OK";
     private Wizard wizard;
     private CommonList commonList;
 
@@ -251,7 +254,7 @@ public class IPAddressManagementViewPage extends BasePage {
     public void acceptConfirmationBox() {
         DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
         ConfirmationBoxInterface confirmationBox = ConfirmationBox.create(driver, wait);
-        confirmationBox.clickButtonByLabel("OK");
+        confirmationBox.clickButtonByLabel(OK_BUTTON);
     }
 
     @Step("Close system message")
@@ -263,14 +266,14 @@ public class IPAddressManagementViewPage extends BasePage {
 
     public void deleteObject(String name){
         selectTreeRow(name);
-        useButton("Delete");
+        useButton(DELETE_BUTTON);
         acceptConfirmationBox();
         closeSystemMessage();
     }
 
     public void deleteIPSubnet(String subnetIpAddress){
         selectTreeRowContains(subnetIpAddress);
-        useContextAction("__more-group", "Delete");
+        useContextAction(OTHER_BUTTON, DELETE_BUTTON);
         acceptConfirmationBox();
         closeSystemMessage();
     }
