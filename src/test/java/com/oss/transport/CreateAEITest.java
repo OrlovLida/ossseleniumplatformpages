@@ -123,7 +123,7 @@ public class CreateAEITest extends BaseTestCase {
     }
 
     private AEIWizardPage goToAEIWizardPage() {
-        SideMenu sidemenu = new SideMenu(driver, webDriverWait);
+        SideMenu sidemenu = SideMenu.create(driver, webDriverWait);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         sidemenu.callActionByLabel(AGGREGATED_ETHERNET_INTERFACE, WIZARDS, TRANSPORT);
 
