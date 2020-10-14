@@ -62,16 +62,6 @@ public class NetworkViewPage extends BasePage {
         table.callAction(group, action);
     }
 
-    @Step("Check system message")
-    public void checkSystemMessage() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, wait);
-        List<Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages).hasSize(1);
-        Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType())
-                .isEqualTo(MessageType.SUCCESS);
-    }
-
     @Step("Add element quered in advanced search")
     public void queryElementAndAddItToView(String componentId, Input.ComponentType componentType, String value) {
         AdvancedSearch advancedSearch = AdvancedSearch.createById(driver, wait, "advancedSearch");
