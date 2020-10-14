@@ -1,5 +1,6 @@
 package com.oss.pages.platform;
 
+import com.oss.pages.radio.CellSiteConfigurationPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -82,6 +83,13 @@ public class OldInventoryViewPage extends BasePage {
         ActionsContainer actionsContainer = ActionsContainer.createFromParent(driver.findElement(By.xpath(".//div[@class='OssWindow']")), driver, wait);
         actionsContainer.callAction("NAVIGATION", "OpenLocationOverviewAction");
         return new LocationOverviewPage(driver);
+    }
+
+    @Step("Expand Show on button and select Cell Site Configuration from the drop-down list")
+    public CellSiteConfigurationPage expandShowOnCellSiteConfiguration() {
+        ActionsContainer actionsContainer = ActionsContainer.createFromParent(driver.findElement(By.xpath(".//div[@class='OssWindow']")), driver, wait);
+        actionsContainer.callAction("NAVIGATION", "Cell Site Configuration");
+        return new CellSiteConfigurationPage(driver);
     }
 
 }

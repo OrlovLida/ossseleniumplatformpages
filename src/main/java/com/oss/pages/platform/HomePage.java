@@ -1,7 +1,9 @@
 package com.oss.pages.platform;
 
+import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.portals.PopupV2;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.Wizard;
 import com.oss.pages.languageservice.LanguageServicePage;
 import com.oss.pages.schedulerservice.SchedulerServicePage;
 import io.qameta.allure.Step;
@@ -31,7 +33,7 @@ public class HomePage extends BasePage {
     @FindBy(css = "span.notificationType")
     private WebElement numberOfNotificationsLabel;
 
-    @FindBy (xpath = "//button[@data-original-title='Save bookmark']/i")
+    @FindBy(xpath = "//button[@data-original-title='Save bookmark']/i")
     //@FindBy (xpath = "//i[contains(@class,'buttonIcon fa fa-floppy-o')]")
     private WebElement saveBookmarksButton;
 
@@ -42,7 +44,7 @@ public class HomePage extends BasePage {
     }
 
     @Step("Open Home Page")
-    public static HomePage goToHomePage(WebDriver driver, String basicURL){
+    public static HomePage goToHomePage(WebDriver driver, String basicURL) {
         driver.get(String.format("%s/#/" +
                 "?perspective=LIVE", basicURL));
         return new HomePage(driver);
@@ -54,7 +56,7 @@ public class HomePage extends BasePage {
 
     public String getPageTitle() {
         WebDriverWait wait = new WebDriverWait(driver, 45);
-        DelayUtils.waitForVisibility(wait,pageTitle);
+        DelayUtils.waitForVisibility(wait, pageTitle);
         return pageTitle.getText();
     }
 
@@ -67,29 +69,29 @@ public class HomePage extends BasePage {
         }
     }
 
-    public FormAppPage goToFormPage(String url){
+    public FormAppPage goToFormPage(String url) {
         driver.get(url);
         return new FormAppPage(driver);
     }
 
     public PopupV2 goToCreateBookmarkPopUp() {
         WebDriverWait wait = new WebDriverWait(driver, 45);
-        DelayUtils.waitForVisibility(wait,saveBookmarksButton);
+        DelayUtils.waitForVisibility(wait, saveBookmarksButton);
         saveBookmarksButton.click();
         return new PopupV2(driver);
     }
 
-    public InputsWizardPage goToInputsWizardPage(String url){
+    public InputsWizardPage goToInputsWizardPage(String url) {
         driver.get(url);
         return new InputsWizardPage(driver);
     }
 
-    public DeviceWizardPage goToDeviceWizardPage(String url){
+    public DeviceWizardPage goToDeviceWizardPage(String url) {
         driver.get(url);
         return new DeviceWizardPage(driver);
     }
 
-    public LocationWizardPage goToLocationWizardPage(String url){
+    public LocationWizardPage goToLocationWizardPage(String url) {
         driver.get(url);
         return new LocationWizardPage(driver);
     }
@@ -108,10 +110,13 @@ public class HomePage extends BasePage {
         driver.get(url);
         return new LanguageServicePage(driver);
     }
+
     public SchedulerServicePage goToSchedulerServicePage(String url) {
         driver.get(url);
         return new SchedulerServicePage(driver);
     }
+
+
     //temporary
     String searchObjectTypeTxtXpath = ".//input[(@data-attributename=\"SearchUserViewsByType\")]";
     private String objectTypeListXpath = "//div[contains(text(),'%s')]/..";

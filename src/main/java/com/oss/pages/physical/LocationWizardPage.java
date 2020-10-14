@@ -22,19 +22,21 @@ public class LocationWizardPage extends BasePage {
     public static final String COMBOBOX_ID_USE = "BuildingUseCategory-MasterBuildingUseCategory-Name";
 
 
-    public static LocationWizardPage goToLocationWizardPageLive(WebDriver driver, String basicURL){
-        driver.get(String.format("%s/#/view/location-inventory/wizard/physicallocation/create/select-type?"+"perspective=LIVE",basicURL));
+    public static LocationWizardPage goToLocationWizardPageLive(WebDriver driver, String basicURL) {
+        driver.get(String.format("%s/#/view/location-inventory/wizard/physicallocation/create/select-type?" + "perspective=LIVE", basicURL));
         return new LocationWizardPage(driver);
     }
-    public static LocationWizardPage goToLocationWizardPagePlan(WebDriver driver, String basicURL,String perspective){
-        driver.get(String.format("%s/#/view/location-inventory/wizard/physicallocation/create/select-type?"+ perspective,basicURL));
+
+    public static LocationWizardPage goToLocationWizardPagePlan(WebDriver driver, String basicURL, String perspective) {
+        driver.get(String.format("%s/#/view/location-inventory/wizard/physicallocation/create/select-type?" + perspective, basicURL));
         return new LocationWizardPage(driver);
     }
 
     public LocationWizardPage(WebDriver driver) {
         super(driver);
     }
-    private Wizard locationWizard = Wizard.createWizard(driver,wait);
+
+    private Wizard locationWizard = Wizard.createWizard(driver, wait);
 
 //    private Wizard getWizard() {
 //        if(this.wizard == null) {
@@ -60,9 +62,11 @@ public class LocationWizardPage extends BasePage {
     public void proceed() {
         locationWizard.proceed();
     }
+
     public void accept() {
         locationWizard.clickAccept();
     }
+
     public void next() {
         locationWizard.clickNext();
     }
@@ -71,6 +75,7 @@ public class LocationWizardPage extends BasePage {
         LocatingUtils.waitUsingXpath("//div[contains(@class,'success')]", wait);
 //        Asserts.assertTrue(driver.findElement(By.xpath("//div[contains(@class,'success')]")).isEnabled());
     }
+
     @Step("Create Location with mandatory fields (Location type, name, address) filled in")
     public void createLocation(String locationType, String randomLocationName) {
         setComponentValue("type-input", locationType, Input.ComponentType.COMBOBOX);
