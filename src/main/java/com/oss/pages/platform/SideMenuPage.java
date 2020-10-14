@@ -14,7 +14,7 @@ public class SideMenuPage extends BasePage {
 
     @Step("Choose Create Location from Left Side Menu")
     public LocationWizardPage chooseCreateLocation() {
-        SideMenu sideMenu = new SideMenu(driver, wait);
+        SideMenu sideMenu = SideMenu.create(driver, wait);
         sideMenu.callActionByLabel("Create Location", "Wizards", "Physical Inventory");
         return new LocationWizardPage(driver);
     }

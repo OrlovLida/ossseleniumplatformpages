@@ -59,7 +59,7 @@ public class NetworkViewPage extends BasePage {
     public void useContextAction(String group, String action) {
         DelayUtils.waitForPageToLoad(driver, wait);
         TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, "dockedPanel-left");
-        table.callOldAction(group, action);
+        table.callAction(group, action);
     }
 
     @Step("Check system message")

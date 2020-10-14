@@ -25,16 +25,17 @@ public class LocationOverviewPage extends BasePage {
 
     @Step("Click Create Location")
     public LocationWizardPage clickCreateLocation() {
-        ButtonContainer buttonContainer = ButtonContainer.create(driver, wait);
-        buttonContainer.callActionById("buttonsAppAttributesId-2");
+        DelayUtils.waitForPageToLoad(driver, wait);
+        ButtonContainer buttons = ButtonContainer.create(driver, wait);
+        buttons.callActionById("buttonsAppAttributesId-2");
         return new LocationWizardPage(driver);
     }
 
     @Step("Select Location Tab")
     public LocationOverviewPage selectLocationTab() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        TabsInterface tabWindowWidget = TabWindowWidget.create(driver, wait);
-        tabWindowWidget.selectTabById("tabLocationId");
+        TabsInterface tabs = TabWindowWidget.create(driver, wait);
+        tabs.selectTabById("tabLocationId");
         return this;
     }
 
@@ -48,15 +49,15 @@ public class LocationOverviewPage extends BasePage {
 
     @Step("Click Edit Location icon")
     public LocationWizardPage clickEditLocationIcon() {
-        OldActionsContainer oldActionsContainer = OldActionsContainer.createFromParent(driver, wait, driver.findElement(By.xpath(".//div[@class='OssWindow tabWindow']")));
-        oldActionsContainer.callActionByLabel("Edit Location");
+        OldActionsContainer icons = OldActionsContainer.createFromParent(driver, wait, driver.findElement(By.xpath(".//div[@class='OssWindow tabWindow']")));
+        icons.callActionByLabel("Edit Location");
         return new LocationWizardPage(driver);
     }
 
     @Step("Click Remove Location icon")
     public LocationOverviewPage clickRemoveLocationIcon() {
-        OldActionsContainer oldActionsContainer = OldActionsContainer.createFromParent(driver, wait, driver.findElement(By.xpath(".//div[@class='OssWindow tabWindow']")));
-        oldActionsContainer.callActionByLabel("Remove Location");
+        OldActionsContainer icons = OldActionsContainer.createFromParent(driver, wait, driver.findElement(By.xpath(".//div[@class='OssWindow tabWindow']")));
+        icons.callActionByLabel("Remove Location");
         return this;
     }
 

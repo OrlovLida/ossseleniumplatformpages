@@ -26,4 +26,9 @@
             <class name="com.oss.transport.IPAMTest"/>
         </classes>
     </test>
+    <test name="ThreeUKRegressionTests">
+        <classes>
+            <class name="com.oss.ThreeUKRegressionTests"/>
+        </classes>
+    </test>
 </suite>

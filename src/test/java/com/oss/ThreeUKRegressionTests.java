@@ -1,6 +1,7 @@
 package com.oss;
 
 import com.oss.framework.alerts.SystemMessageContainer;
+import com.oss.framework.components.contextactions.OldActionsContainer;
 import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
@@ -12,6 +13,8 @@ import com.oss.pages.physical.LocationWizardPage;
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.LocationOverviewPage;
 import com.oss.pages.platform.SideMenuPage;
+import com.oss.pages.radio.CellSiteConfigurationPage;
+import com.oss.pages.radio.ENodeBWizardPage;
 import com.oss.utils.RandomGenerator;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
@@ -32,6 +35,9 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     String locationTypeSite = "Site";
     String objectTypeLocation = "Location";
     String description = "Selenium Test";
+
+    String eNodeBModel = "HUAWEI Technology Co.,Ltd eNodeB";
+    String MCCMNCPrimary = "3UK [mcc: 234, mnc: 20]";
 
     @BeforeMethod
     public void goToInventoryView() {
@@ -128,7 +134,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     }
 
     @Test(groups = {"Physical tests"})
-    @Description("The user creates a Site in the created Site in Location Overview and checks if the row is removed in Locations table")
+    @Description("The user creates a Site in the created Site in Location Overview, then deletes the Site and checks if the row is removed in Locations table")
     public void tS07CreateAndRemoveSiteInLocation() {
         String randomLocationNameInLocation = RandomGenerator.generateRandomName();
 
@@ -150,5 +156,81 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         Assert.assertTrue(locationsTable.isNoData("tableAppLocationsId"));
     }
 
+    @Test(groups = {"Radio tests"})
+    @Description("The user creates eNodeB in Cell Site Configuration and checks the message about successful creation")
+    public void tS08CreateENodeB() {
+        String randomENodeBName = RandomGenerator.generateRandomName();
+        String randomENodeBId = RandomGenerator.generateRandomENodeBId();
+
+        new HomePage(driver)
+                .typeObjectType(locationTypeSite)
+                .confirmObjectType(locationTypeSite)
+                .filterObjectName(randomLocationName, "Site")
+                .expandShowOnCellSiteConfiguration()
+                .clickPlusIcon()
+                .selectCreateENodeB()
+                .createENodeB(randomENodeBName, randomENodeBId, eNodeBModel, MCCMNCPrimary);
+        new ENodeBWizardPage(driver)
+                .accept();
+        Assert.assertTrue(SystemMessageContainer.create(driver, webDriverWait)
+                .getMessages().get(0).getText().contains("Created eNodeB"));
+    }
+
+    @Test(groups = {"Radio tests"})
+    @Description("The user creates eNodeB in Cell Site Configuration, then edits the eNodeB and checks if the description is updated in Base Stations table")
+    public void tS09CreateAndEditENodeB() {
+        String randomENodeBName = RandomGenerator.generateRandomName();
+        String randomENodeBId = RandomGenerator.generateRandomENodeBId();
+
+        new HomePage(driver)
+                .typeObjectType(locationTypeSite)
+                .confirmObjectType(locationTypeSite)
+                .filterObjectName(randomLocationName, "Site")
+                .expandShowOnCellSiteConfiguration()
+                .clickPlusIcon()
+                .selectCreateENodeB()
+                .createENodeB(randomENodeBName, randomENodeBId, eNodeBModel, MCCMNCPrimary);
+        new ENodeBWizardPage(driver)
+                .accept();
+        new CellSiteConfigurationPage(driver)
+                .selectBaseStationsTab()
+                .filterObjectName(randomENodeBName)
+                .clickEditENodeBIcon()
+                .typeDescription(description);
+        new ENodeBWizardPage(driver)
+                .accept();
+        TableInterface baseStationsTable = OldTable.createByComponentDataAttributeName(driver, webDriverWait, "BsTableApp");
+        int rowNumber = baseStationsTable.getRowNumber(description, "Description");
+        String rowValue = baseStationsTable.getValueCell(rowNumber, "Description");
+        Assert.assertTrue(rowValue.contains(description));
+    }
+
+    @Test(groups = {"Radio tests"})
+    @Description("The user creates eNodeB in Cell Site Configuration, then deletes the eNodeB and checks if the row is removed in Base Stations table")
+    public void tS10CreateAndRemoveENodeB() {
+        String randomENodeBName = RandomGenerator.generateRandomName();
+        String randomENodeBId = RandomGenerator.generateRandomENodeBId();
+
+        new HomePage(driver)
+                .typeObjectType(locationTypeSite)
+                .confirmObjectType(locationTypeSite)
+                .filterObjectName(randomLocationName, "Site")
+                .expandShowOnCellSiteConfiguration()
+                .clickPlusIcon()
+                .selectCreateENodeB()
+                .createENodeB(randomENodeBName, randomENodeBId, eNodeBModel, MCCMNCPrimary);
+        new ENodeBWizardPage(driver)
+                .accept();
+        new CellSiteConfigurationPage(driver)
+                .selectBaseStationsTab()
+                .filterObjectName(randomENodeBName)
+                .clickRemoveENodeBIcon();
+        ConfirmationBoxInterface confirmationBox = ConfirmationBox.create(driver, webDriverWait);
+        confirmationBox.clickButtonByLabel("Delete");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        TableInterface baseStationsTable = OldTable.createByComponentDataAttributeName(driver, webDriverWait, "BsTableApp");
+        Assert.assertTrue(baseStationsTable.isNoData());
+
+    }
 }
 
