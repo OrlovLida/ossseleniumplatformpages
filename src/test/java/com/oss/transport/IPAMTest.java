@@ -155,41 +155,41 @@ public class IPAMTest extends BaseTestCase {
     }
 
     // bug OSSTPT-30469
-    @Test(priority = 5)
+    @Test(priority = 5, enabled = false)
     public void editIPNetwork() {
-//        ipAddressManagementViewPage.selectTreeRow(name);
-//        ipAddressManagementViewPage.useContextAction(EDIT_OPERATION_FOR_NETWORK_GROUP, EDIT_IP_NETWORK_ACTION);
-//        IPNetworkWizardPage ipNetworkWizardPage = new IPNetworkWizardPage(driver);
-//        ipNetworkWizardPage.editIPNetwork(nameUpdated, descriptionUpdated);
+        ipAddressManagementViewPage.selectTreeRow(name);
+        ipAddressManagementViewPage.useContextAction(EDIT_OPERATION_FOR_NETWORK_GROUP, EDIT_IP_NETWORK_ACTION);
+        IPNetworkWizardPage ipNetworkWizardPage = new IPNetworkWizardPage(driver);
+        ipNetworkWizardPage.editIPNetwork(nameUpdated, descriptionUpdated);
     }
 
     // bug OSSTPT-30469
-    @Test(priority = 6)
+    @Test(priority = 6, enabled = false)
     public void checkIPAMTreeAfterNetworkEdition() {
-//        firstIPSubnetProperties.put(SUBNET_PROPERTY_IDENTIFIER, firstIPSubnetProperties.get(SUBNET_PROPERTY_ADDRESS)+firstIPSubnetProperties.get(SUBNET_PROPERTY_MASK_LENGTH) +"["+nameUpdated+"]");
-//        firstIPSubnetProperties.put(SUBNET_PROPERTY_IP_NETWORK_NAME, nameUpdated);
-//        secondIPSubnetProperties.put(SUBNET_PROPERTY_IDENTIFIER, secondIPSubnetProperties.get(SUBNET_PROPERTY_ADDRESS)+secondIPSubnetProperties.get(SUBNET_PROPERTY_MASK_LENGTH)+ "["+nameUpdated+"]");
-//        secondIPSubnetProperties.put(SUBNET_PROPERTY_IP_NETWORK_NAME, nameUpdated);
-//        thirdIPSubnetProperties.put(SUBNET_PROPERTY_IDENTIFIER, thirdIPSubnetProperties.get(SUBNET_PROPERTY_ADDRESS)+thirdIPSubnetProperties.get(SUBNET_PROPERTY_MASK_LENGTH)+ "["+nameUpdated+"]");
-//        thirdIPSubnetProperties.put(SUBNET_PROPERTY_IP_NETWORK_NAME, nameUpdated);
-//
-//        ipAddressManagementViewPage.selectTreeRow(nameUpdated);
-//        Assert.assertEquals(ipAddressManagementViewPage.getPropertyPanel().getPropertyValue(NETWORK_PROPERTY_NAME), nameUpdated);
-//        Assert.assertEquals(ipAddressManagementViewPage.getPropertyPanel().getPropertyValue(NETWORK_PROPERTY_DESCRIPTION), descriptionUpdated);
-//        ipAddressManagementViewPage.selectTreeRow(nameUpdated);
-//        ipAddressManagementViewPage.expandTreeRow(nameUpdated);
-//        ipAddressManagementViewPage.selectTreeRowContains(firstIPSubnetProperties.get(SUBNET_PROPERTY_ADDRESS));
-//        Assert.assertEquals(ipAddressManagementViewPage.getPropertyPanel().getPropertyValue(SUBNET_PROPERTY_IDENTIFIER), firstIPSubnetProperties.get(SUBNET_PROPERTY_IDENTIFIER));
-//        Assert.assertEquals(ipAddressManagementViewPage.getPropertyPanel().getPropertyValue(SUBNET_PROPERTY_IP_NETWORK_NAME), firstIPSubnetProperties.get(SUBNET_PROPERTY_IP_NETWORK_NAME));
-//        ipAddressManagementViewPage.selectTreeRowContains(firstIPSubnetProperties.get(SUBNET_PROPERTY_ADDRESS));
-//        ipAddressManagementViewPage.expandTreeRowContains(firstIPSubnetProperties.get(SUBNET_PROPERTY_ADDRESS));
-//        ipAddressManagementViewPage.selectTreeRowContains(secondIPSubnetProperties.get(SUBNET_PROPERTY_ADDRESS)+"/"+secondIPSubnetProperties.get(SUBNET_PROPERTY_MASK_LENGTH));
-//        Assert.assertEquals(ipAddressManagementViewPage.getPropertyPanel().getPropertyValue(SUBNET_PROPERTY_IDENTIFIER), secondIPSubnetProperties.get(SUBNET_PROPERTY_IDENTIFIER));
-//        Assert.assertEquals(ipAddressManagementViewPage.getPropertyPanel().getPropertyValue(SUBNET_PROPERTY_IP_NETWORK_NAME), secondIPSubnetProperties.get(SUBNET_PROPERTY_IP_NETWORK_NAME));
-//        ipAddressManagementViewPage.selectTreeRowContains(secondIPSubnetProperties.get(SUBNET_PROPERTY_ADDRESS)+"/"+secondIPSubnetProperties.get(SUBNET_PROPERTY_MASK_LENGTH));
-//        ipAddressManagementViewPage.selectTreeRowContains(thirdIPSubnetProperties.get(SUBNET_PROPERTY_ADDRESS));
-//        Assert.assertEquals(ipAddressManagementViewPage.getPropertyPanel().getPropertyValue(SUBNET_PROPERTY_IDENTIFIER), thirdIPSubnetProperties.get(SUBNET_PROPERTY_IDENTIFIER));
-//        Assert.assertEquals(ipAddressManagementViewPage.getPropertyPanel().getPropertyValue(SUBNET_PROPERTY_IP_NETWORK_NAME), thirdIPSubnetProperties.get(SUBNET_PROPERTY_IP_NETWORK_NAME));
+        firstIPSubnetProperties.put(SUBNET_PROPERTY_IDENTIFIER, firstIPSubnetProperties.get(SUBNET_PROPERTY_ADDRESS)+firstIPSubnetProperties.get(SUBNET_PROPERTY_MASK_LENGTH) +"["+nameUpdated+"]");
+        firstIPSubnetProperties.put(SUBNET_PROPERTY_IP_NETWORK_NAME, nameUpdated);
+        secondIPSubnetProperties.put(SUBNET_PROPERTY_IDENTIFIER, secondIPSubnetProperties.get(SUBNET_PROPERTY_ADDRESS)+secondIPSubnetProperties.get(SUBNET_PROPERTY_MASK_LENGTH)+ "["+nameUpdated+"]");
+        secondIPSubnetProperties.put(SUBNET_PROPERTY_IP_NETWORK_NAME, nameUpdated);
+        thirdIPSubnetProperties.put(SUBNET_PROPERTY_IDENTIFIER, thirdIPSubnetProperties.get(SUBNET_PROPERTY_ADDRESS)+thirdIPSubnetProperties.get(SUBNET_PROPERTY_MASK_LENGTH)+ "["+nameUpdated+"]");
+        thirdIPSubnetProperties.put(SUBNET_PROPERTY_IP_NETWORK_NAME, nameUpdated);
+
+        ipAddressManagementViewPage.selectTreeRow(nameUpdated);
+        Assert.assertEquals(ipAddressManagementViewPage.getPropertyPanel().getPropertyValue(NETWORK_PROPERTY_NAME), nameUpdated);
+        Assert.assertEquals(ipAddressManagementViewPage.getPropertyPanel().getPropertyValue(NETWORK_PROPERTY_DESCRIPTION), descriptionUpdated);
+        ipAddressManagementViewPage.selectTreeRow(nameUpdated);
+        ipAddressManagementViewPage.expandTreeRow(nameUpdated);
+        ipAddressManagementViewPage.selectTreeRowContains(firstIPSubnetProperties.get(SUBNET_PROPERTY_ADDRESS));
+        Assert.assertEquals(ipAddressManagementViewPage.getPropertyPanel().getPropertyValue(SUBNET_PROPERTY_IDENTIFIER), firstIPSubnetProperties.get(SUBNET_PROPERTY_IDENTIFIER));
+        Assert.assertEquals(ipAddressManagementViewPage.getPropertyPanel().getPropertyValue(SUBNET_PROPERTY_IP_NETWORK_NAME), firstIPSubnetProperties.get(SUBNET_PROPERTY_IP_NETWORK_NAME));
+        ipAddressManagementViewPage.selectTreeRowContains(firstIPSubnetProperties.get(SUBNET_PROPERTY_ADDRESS));
+        ipAddressManagementViewPage.expandTreeRowContains(firstIPSubnetProperties.get(SUBNET_PROPERTY_ADDRESS));
+        ipAddressManagementViewPage.selectTreeRowContains(secondIPSubnetProperties.get(SUBNET_PROPERTY_ADDRESS)+"/"+secondIPSubnetProperties.get(SUBNET_PROPERTY_MASK_LENGTH));
+        Assert.assertEquals(ipAddressManagementViewPage.getPropertyPanel().getPropertyValue(SUBNET_PROPERTY_IDENTIFIER), secondIPSubnetProperties.get(SUBNET_PROPERTY_IDENTIFIER));
+        Assert.assertEquals(ipAddressManagementViewPage.getPropertyPanel().getPropertyValue(SUBNET_PROPERTY_IP_NETWORK_NAME), secondIPSubnetProperties.get(SUBNET_PROPERTY_IP_NETWORK_NAME));
+        ipAddressManagementViewPage.selectTreeRowContains(secondIPSubnetProperties.get(SUBNET_PROPERTY_ADDRESS)+"/"+secondIPSubnetProperties.get(SUBNET_PROPERTY_MASK_LENGTH));
+        ipAddressManagementViewPage.selectTreeRowContains(thirdIPSubnetProperties.get(SUBNET_PROPERTY_ADDRESS));
+        Assert.assertEquals(ipAddressManagementViewPage.getPropertyPanel().getPropertyValue(SUBNET_PROPERTY_IDENTIFIER), thirdIPSubnetProperties.get(SUBNET_PROPERTY_IDENTIFIER));
+        Assert.assertEquals(ipAddressManagementViewPage.getPropertyPanel().getPropertyValue(SUBNET_PROPERTY_IP_NETWORK_NAME), thirdIPSubnetProperties.get(SUBNET_PROPERTY_IP_NETWORK_NAME));
     }
 
     // zamienic name na nameUpdated po poprawie buga OSSTPT-30469
@@ -205,13 +205,13 @@ public class IPAMTest extends BaseTestCase {
 
     // bug
     // zamienic name na nameUpdated po poprawie buga OSSTPT-30469
-    @Test (priority = 8)
+    @Test(priority = 8, enabled = false)
     public void checkInventoryViewForIPSubnet() {
-//        newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, IPV4_SUBNET_INVENTORY_TYPE);
-//        newInventoryViewPage.openFilterPanel().setValue(Input.ComponentType.TEXT_FIELD, NETWORK_NAME_FILTER_FOR_SUBNET_INVENTORY_VIEW, name).applyFilter();
-//        checkSubnetAttributesOnNewIV(firstIPSubnetProperties);
-//        checkSubnetAttributesOnNewIV(secondIPSubnetProperties);
-//        checkSubnetAttributesOnNewIV(thirdIPSubnetProperties);
+        newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, IPV4_SUBNET_INVENTORY_TYPE);
+        newInventoryViewPage.openFilterPanel().setValue(Input.ComponentType.TEXT_FIELD, NETWORK_NAME_FILTER_FOR_SUBNET_INVENTORY_VIEW, name).applyFilter();
+        checkSubnetAttributesOnNewIV(firstIPSubnetProperties);
+        checkSubnetAttributesOnNewIV(secondIPSubnetProperties);
+        checkSubnetAttributesOnNewIV(thirdIPSubnetProperties);
     }
 
     private void checkSubnetAttributesOnNewIV(Map<String, String> subnetProperties){
