@@ -151,8 +151,9 @@ public class NetworkViewPage extends BasePage {
         input.setSingleStringValue(port);
     }
 
-    @Step("Accept trail modification")
-    public void proceedTrailTermination() {
+    @Step("Click Proceed")
+    public void clickProceed() {
         Wizard.createWizard(driver, wait).proceed();
     }
+
 }

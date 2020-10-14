@@ -123,14 +123,14 @@ public class InstalationNewRouter extends BaseTestCase {
         networkViewPage.modifyTermination();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkViewPage.setTrailPort(portName);
-        networkViewPage.proceedTrailTermination();
+        networkViewPage.clickProceed();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkViewPage.selectObjectInDetailsTab("Type", "End");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkViewPage.modifyTermination();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkViewPage.setTrailPort(portName);
-        networkViewPage.proceedTrailTermination();
+        networkViewPage.clickProceed();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
