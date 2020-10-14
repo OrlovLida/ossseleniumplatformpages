@@ -33,7 +33,7 @@
     </test>
     <test name="CreateIPNetwork">
         <classes>
-            <class name="com.oss.transport.CreateIPNetworkTest"/>
+            <class name="com.oss.transport.IPAMTest"/>
         </classes>
     </test>
 </suite>
