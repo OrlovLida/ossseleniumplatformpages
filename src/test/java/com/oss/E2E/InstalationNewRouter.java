@@ -40,7 +40,7 @@ public class InstalationNewRouter extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         //when
-        SideMenu sideMenu = new SideMenu(driver, webDriverWait);
+        SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
         sideMenu.callActionByLabel("LAB Network View","Favourites", "SeleniumTests");
     }
 
