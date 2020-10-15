@@ -92,9 +92,14 @@ public class CLIConfigurationWizardPage extends BasePage {
         authPasswordComponent.setSingleStringValue(authPassword);
     }
 
+    @Step("Click Accept button with wait")
+    public void clickAcceptWithWait() {
+        wizard.clickAcceptOldWizard();
+    }
+
     @Step("Click Accept button")
     public void clickAccept() {
-        wizard.clickAcceptOldWizard();
+        wizard.clickAccept();
     }
 
     @Step("Click Next Step button")
