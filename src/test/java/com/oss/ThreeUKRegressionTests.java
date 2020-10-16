@@ -13,6 +13,7 @@ import com.oss.pages.physical.LocationWizardPage;
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.LocationOverviewPage;
 import com.oss.pages.platform.SideMenuPage;
+import com.oss.pages.radio.Cell4GWizardPage;
 import com.oss.pages.radio.CellSiteConfigurationPage;
 import com.oss.pages.radio.ENodeBWizardPage;
 import com.oss.utils.RandomGenerator;
@@ -36,8 +37,14 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     String objectTypeLocation = "Location";
     String description = "Selenium Test";
 
+    String randomENodeBName = RandomGenerator.generateRandomName();
+    String randomENodeBId = RandomGenerator.generateRandomENodeBId();
     String eNodeBModel = "HUAWEI Technology Co.,Ltd eNodeB";
     String MCCMNCPrimary = "3UK [mcc: 234, mnc: 20]";
+
+    String randomCell4GName = RandomGenerator.generateRandomName();
+    String randomCell4GId = RandomGenerator.generateRandomCell4GId();
+    String carrier4G = "L800-B20-5";
 
     @BeforeMethod
     public void goToInventoryView() {
@@ -159,8 +166,6 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     @Test(groups = {"Radio tests"})
     @Description("The user creates eNodeB in Cell Site Configuration and checks the message about successful creation")
     public void tS08CreateENodeB() {
-        String randomENodeBName = RandomGenerator.generateRandomName();
-        String randomENodeBId = RandomGenerator.generateRandomENodeBId();
 
         new HomePage(driver)
                 .typeObjectType(locationTypeSite)
@@ -187,13 +192,13 @@ public class ThreeUKRegressionTests extends BaseTestCase {
                 .confirmObjectType(locationTypeSite)
                 .filterObjectName(randomLocationName, "Site")
                 .expandShowOnCellSiteConfiguration()
+                .selectBaseStationsTab()
                 .clickPlusIcon()
                 .selectCreateENodeB()
                 .createENodeB(randomENodeBName, randomENodeBId, eNodeBModel, MCCMNCPrimary);
         new ENodeBWizardPage(driver)
                 .accept();
         new CellSiteConfigurationPage(driver)
-                .selectBaseStationsTab()
                 .filterObjectName(randomENodeBName)
                 .clickEditENodeBIcon()
                 .typeDescription(description);
@@ -216,13 +221,13 @@ public class ThreeUKRegressionTests extends BaseTestCase {
                 .confirmObjectType(locationTypeSite)
                 .filterObjectName(randomLocationName, "Site")
                 .expandShowOnCellSiteConfiguration()
+                .selectBaseStationsTab()
                 .clickPlusIcon()
                 .selectCreateENodeB()
                 .createENodeB(randomENodeBName, randomENodeBId, eNodeBModel, MCCMNCPrimary);
         new ENodeBWizardPage(driver)
                 .accept();
         new CellSiteConfigurationPage(driver)
-                .selectBaseStationsTab()
                 .filterObjectName(randomENodeBName)
                 .clickRemoveENodeBIcon();
         ConfirmationBoxInterface confirmationBox = ConfirmationBox.create(driver, webDriverWait);
@@ -230,7 +235,27 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         TableInterface baseStationsTable = OldTable.createByComponentDataAttributeName(driver, webDriverWait, "BsTableApp");
         Assert.assertTrue(baseStationsTable.isNoData());
+    }
 
+    @Test(groups = {"Radio tests"})
+    @Description("The user creates Cell 4G in Cell Site Configuration and checks the message about successful creation")
+    public void tS11CreateCell4G() {
+//        String randomLocationName="Milena";
+//        String randomENodeBName="exyahpawml";
+
+        new HomePage(driver)
+                .typeObjectType(locationTypeSite)
+                .confirmObjectType(locationTypeSite)
+                .filterObjectName(randomLocationName, "Site")
+                .expandShowOnCellSiteConfiguration()
+                .selectCellsTab()
+                .clickPlusIcon()
+                .selectCreateCell4G()
+                .createCell4G(randomCell4GName, randomENodeBName, randomCell4GId, carrier4G);
+        new Cell4GWizardPage(driver)
+                .accept();
+        Assert.assertTrue(SystemMessageContainer.create(driver, webDriverWait)
+                .getMessages().get(0).getText().contains("Created Cell 4G"));
     }
 }
 
