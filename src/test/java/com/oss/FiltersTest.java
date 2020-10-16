@@ -199,7 +199,7 @@ public class FiltersTest extends BaseTestCase {
 
     @Test(priority = 15)
     @Description("Checking that filters are visible in Inventory View for a second user")
-    public void isFiltersVisibleInIV() {
+    public void areFiltersVisibleInIV() {
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Location");
         inventoryViewPage
                 .openFilterPanel()
@@ -210,13 +210,13 @@ public class FiltersTest extends BaseTestCase {
 
     @Test(priority = 16)
     @Description("Checking that filters marked as a favorite is favorite in Inventory View for a second user")
-    public void isFiltersFavoriteInIV() {
+    public void areFiltersFavoriteInIV() {
         Assert.assertTrue(filterSettingsFilter.isFilterFavorite(FILTER_NAME));
     }
 
     @Test(priority = 17)
     @Description("Checking that filter have a proper value in Inventory View for a second user")
-    public void isFiltersHaveProperValue() {
+    public void isFilterHaveProperValue() {
         filterSettingsFilter
                 .selectFilter(FILTER2_NAME)
                 .applyFilter();

@@ -1,5 +1,8 @@
 package com.oss.E2E;
 
+import com.oss.framework.alerts.SystemMessageContainer;
+import com.oss.framework.alerts.SystemMessageInterface;
+import org.assertj.core.api.Assertions;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -15,6 +18,8 @@ import com.oss.pages.reconciliation.NetworkInconsistenciesViewPage;
 import com.oss.pages.reconciliation.SamplesManagementPage;
 import com.oss.pages.transport.IPv4AddressAssignmentWizardPage;
 import com.oss.pages.transport.NetworkViewPage;
+
+import java.util.List;
 
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 
@@ -55,17 +60,22 @@ public class InstalationNewRouter extends BaseTestCase {
         networkViewPage.setHostname(deviceName);
         DelayUtils.sleep(1000);
         networkViewPage.create();
-        networkViewPage.checkSystemMessage();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
+        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
+        Assertions.assertThat(messages).hasSize(1);
+        Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType())
+                .isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
     }
 
     @Test(priority = 3)
-    public void moveToDeviceOverwiev() {
+    public void moveToDeviceOverview() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.expandDockedPanel("left");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkViewPage.selectObjectInViewContent("Name", deviceName);
-        DelayUtils.sleep(15000); //naming musi sie przeliczyc, nie widac progresu w konsolce
+        DelayUtils.sleep(15000); //naming has to recalculate, it doesn't show progress in the console
         networkViewPage.selectObjectInViewContent("Name", deviceName);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkViewPage.useContextAction("NAVIGATION", "Device Overview");
@@ -77,7 +87,7 @@ public class InstalationNewRouter extends BaseTestCase {
         DeviceOverviewPage deviceOverviewPage = new DeviceOverviewPage(driver);
         deviceOverviewPage.expandTreeRow(1, portName);
         deviceOverviewPage.selectTreeRow(portName, 1, portName);
-        DelayUtils.sleep(3000);
+        DelayUtils.sleep(5000);
         deviceOverviewPage.useContextAction("Inventory View");
     }
 
@@ -123,14 +133,14 @@ public class InstalationNewRouter extends BaseTestCase {
         networkViewPage.modifyTermination();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkViewPage.setTrailPort(portName);
-        networkViewPage.proceedTrailTermination();
+        networkViewPage.clickProceed();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkViewPage.selectObjectInDetailsTab("Type", "End");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkViewPage.modifyTermination();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkViewPage.setTrailPort(portName);
-        networkViewPage.proceedTrailTermination();
+        networkViewPage.clickProceed();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -207,7 +217,7 @@ public class InstalationNewRouter extends BaseTestCase {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.useContextAction("add_to_view_group", "Trail");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkViewPage.queryElementAndAddItToView("name", TEXT_FIELD, trailName);
+        networkViewPage.queryElementAndAddItToView("label", TEXT_FIELD, trailName);
         networkViewPage.useContextAction("EDIT", "Delete Trail");
         networkViewPage.clickConfirmationBoxButtonByLabel("Proceed");
     }
@@ -220,6 +230,11 @@ public class InstalationNewRouter extends BaseTestCase {
         networkViewPage.selectObjectInViewContent("Name", deviceName);
         networkViewPage.useContextAction("EDIT", "Delete Element");
         networkViewPage.clickConfirmationBoxButtonByLabel("Yes");
-        networkViewPage.checkSystemMessage();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
+        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
+        Assertions.assertThat(messages).hasSize(1);
+        Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType())
+                .isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
     }
 }
