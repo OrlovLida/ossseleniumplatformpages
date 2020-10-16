@@ -2,6 +2,7 @@ package com.oss.pages.radio;
 
 import com.oss.framework.components.contextactions.OldActionsContainer;
 import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tablewidget.TableInterface;
@@ -35,9 +36,17 @@ public class CellSiteConfigurationPage extends BasePage {
     @Step("Select Create eNodeB from the drop-down list")
     public ENodeBWizardPage selectCreateENodeB() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        OldActionsContainer list = OldActionsContainer.createFromXPath(driver, wait, "//div[@class='portal']");
-        list.callActionByLabel("Create eNodeB");
+        DropdownList list = DropdownList.create(driver, wait);
+        list.selectOption("Create eNodeB");
         return new ENodeBWizardPage(driver);
+    }
+
+    @Step("Select Create Cell 4G from the drop-down list")
+    public Cell4GWizardPage selectCreateCell4G() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        DropdownList list = DropdownList.create(driver, wait);
+        list.selectOption("Create Cell 4G");
+        return new Cell4GWizardPage(driver);
     }
 
     @Step("Select Base Stations Tab")
@@ -45,6 +54,14 @@ public class CellSiteConfigurationPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         TabsInterface tabs = TabsWidget.createById(driver, wait, "TableTabsApp");
         tabs.selectTabByLabel("Base Stations");
+        return this;
+    }
+
+    @Step("Select Cells Tab")
+    public CellSiteConfigurationPage selectCellsTab() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        TabsInterface tabs = TabsWidget.createById(driver, wait, "TableTabsApp");
+        tabs.selectTabByLabel("Cells");
         return this;
     }
 
