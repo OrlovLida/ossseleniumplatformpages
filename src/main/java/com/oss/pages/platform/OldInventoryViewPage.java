@@ -78,6 +78,14 @@ public class OldInventoryViewPage extends BasePage {
         return this;
     }
 
+    @Step("Filter object identifier and select object identifier row")
+    public OldInventoryViewPage filterObjectIdentifier(String objectIdentifier, String tableObjects) {
+        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, "table("+tableObjects+")");
+        table.searchByAttributeWithLabel("Identifier", Input.ComponentType.TEXT_FIELD, objectIdentifier);
+        table.selectRowByAttributeValueWithLabel("Identifier", objectIdentifier);
+        return this;
+    }
+
     @Step("Expand Show on button and select Location Overview from the drop-down list")
     public LocationOverviewPage expandShowOnLocationOverview() {
         ActionsContainer actionsContainer = ActionsContainer.createFromParent(driver.findElement(By.xpath(".//div[@class='OssWindow']")), driver, wait);
