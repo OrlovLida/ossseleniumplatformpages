@@ -10,6 +10,7 @@ import org.openqa.selenium.WebDriver;
  */
 
 public class IPNetworkWizardPage extends BasePage {
+    private static final String IPNETWORK_WIZARD_DATA_ATTRIBUTE_NAME = "ADD_IPNETWORK_FORM_ID";
     private static final String ADD_IPNETWORK_NAME_ATTRIBUTE_ID = "ADD_IPNETWORK_NAME_ATTRIBUTE_ID";
     private static final String ADD_IPNETWORK_DESCRIPTION_ATTRIBUTE_ID = "ADD_IPNETWORK_DESCRIPTION_ATTRIBUTE_ID";
 
@@ -18,20 +19,20 @@ public class IPNetworkWizardPage extends BasePage {
     }
 
     public void createIPNetwork(String networkName, String description){
-        Wizard createIPNetwork = Wizard.createWizard(driver, wait);
+        Wizard createIPNetwork = Wizard.createByComponentId(driver, wait, IPNETWORK_WIZARD_DATA_ATTRIBUTE_NAME);
         setNetworkName(createIPNetwork, networkName);
         setDescription(createIPNetwork, description);
         createIPNetwork.clickOK();
     }
 
     public void createIPNetwork(String networkName){
-        Wizard createIPNetwork = Wizard.createWizard(driver, wait);
+        Wizard createIPNetwork = Wizard.createByComponentId(driver, wait, IPNETWORK_WIZARD_DATA_ATTRIBUTE_NAME);
         setNetworkName(createIPNetwork, networkName);
         createIPNetwork.clickOK();
     }
 
     public void editIPNetwork(String networkName, String description){
-        Wizard editIPNetwork = Wizard.createWizard(driver, wait);
+        Wizard editIPNetwork = Wizard.createByComponentId(driver, wait, IPNETWORK_WIZARD_DATA_ATTRIBUTE_NAME);
         setNetworkName(editIPNetwork, networkName);
         setDescription(editIPNetwork, description);
         editIPNetwork.clickOK();
