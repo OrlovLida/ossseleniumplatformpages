@@ -21,7 +21,7 @@
             <class name="com.oss.bpm.CreateProcessNRPTest"/>
         </classes>
     </test>
-    <test name="CreateIPNetwork">
+    <test name="IPAMTest">
         <classes>
             <class name="com.oss.transport.IPAMTest"/>
         </classes>
