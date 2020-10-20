@@ -3,6 +3,7 @@ package com.oss.configuration;
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
+import com.oss.framework.components.portals.SaveConfigurationWizard;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.HierarchyViewPage;
 import com.oss.pages.platform.NewInventoryViewPage;
@@ -16,14 +17,17 @@ import org.testng.annotations.Test;
 
 import java.util.List;
 
+import static com.oss.framework.components.portals.SaveConfigurationWizard.Property.GROUPS;
+import static com.oss.framework.components.portals.SaveConfigurationWizard.Property.TYPE;
+
 @Listeners({TestListener.class})
 public class TabsConfigurationTest extends BaseTestCase {
     private NewInventoryViewPage newInventoryViewPage;
 
-    private static String GROUP_NAME = "SeleniumTests";
-    private static String CONFIGURATION_NAME_TABS_WIDGET_BUILDING= "Tabs_Widget_Default";
-    private static String CONFIGURATION_NAME_TABS_WIDGET_LOCATION= "Tabs_Widget_Location";
-    private static String CONFIGURATION_NAME_TABS_WIDGET_GROUP= "Tabs_Widget_Group";
+    private final static String GROUP_NAME = "SeleniumTests";
+    private final static String CONFIGURATION_NAME_TABS_WIDGET_BUILDING= "Tabs_Widget_Default";
+    private final static String CONFIGURATION_NAME_TABS_WIDGET_LOCATION= "Tabs_Widget_Location";
+    private final static String CONFIGURATION_NAME_TABS_WIDGET_GROUP= "Tabs_Widget_Group";
 
 
     @BeforeClass
@@ -40,7 +44,7 @@ public class TabsConfigurationTest extends BaseTestCase {
         newInventoryViewPage.selectFirstRow();
         newInventoryViewPage.enableWidgetAndApply("Attachments");
         newInventoryViewPage.changeTabsOrder("Devices", 2);
-        newInventoryViewPage.saveConfigurationForTabsForUser(CONFIGURATION_NAME_TABS_WIDGET_BUILDING, "Building");
+        newInventoryViewPage.saveConfigurationForTabs(CONFIGURATION_NAME_TABS_WIDGET_BUILDING, createField(TYPE, "Building"));
 
         //then
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
@@ -56,7 +60,7 @@ public class TabsConfigurationTest extends BaseTestCase {
         newInventoryViewPage.selectFirstRow();
         newInventoryViewPage.disableWidgetAndApply("Attachments");
         newInventoryViewPage.changeTabsOrder("Devices", 3);
-        newInventoryViewPage.saveConfigurationForTabsForUser(CONFIGURATION_NAME_TABS_WIDGET_LOCATION, "Location");
+        newInventoryViewPage.saveConfigurationForTabs(CONFIGURATION_NAME_TABS_WIDGET_LOCATION, createField(TYPE,"Location"));
 
         //then
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
@@ -71,7 +75,7 @@ public class TabsConfigurationTest extends BaseTestCase {
         //when
         newInventoryViewPage.selectFirstRow();
         newInventoryViewPage.changeTabsOrder("Devices", 4);
-        newInventoryViewPage.saveConfigurationForTabsForGroup(CONFIGURATION_NAME_TABS_WIDGET_GROUP, "Location" ,GROUP_NAME);
+        newInventoryViewPage.saveConfigurationForTabs(CONFIGURATION_NAME_TABS_WIDGET_GROUP,  createField(TYPE,"Location"), createField(GROUPS, GROUP_NAME));
 
         //then
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
@@ -127,5 +131,9 @@ public class TabsConfigurationTest extends BaseTestCase {
         newInventoryViewPage.selectFirstRow();
         //then
         Assert.assertEquals(newInventoryViewPage.getTabsWidget().getTabLabel(4), "Devices");
+    }
+
+    private SaveConfigurationWizard.Field createField(SaveConfigurationWizard.Property property, String... values) {
+        return SaveConfigurationWizard.create(driver, webDriverWait).createField(property, values);
     }
 }
