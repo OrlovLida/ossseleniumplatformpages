@@ -1,18 +1,12 @@
 package com.oss.pages.radio;
 
-import com.oss.framework.components.contextactions.OldActionsContainer;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.OldTable;
-import com.oss.framework.widgets.tablewidget.TableInterface;
-import com.oss.framework.widgets.tabswidget.TabsInterface;
-import com.oss.framework.widgets.tabswidget.TabsWidget;
+import com.oss.framework.widgets.treewidget.TreeWidget;
 import com.oss.pages.BasePage;
-import com.oss.pages.physical.LocationWizardPage;
-import com.oss.pages.platform.LocationOverviewPage;
 import io.qameta.allure.Step;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 /**
@@ -21,15 +15,19 @@ import org.openqa.selenium.WebDriver;
 
 public class CellSiteConfigurationPage extends BasePage {
 
+    private static final String TAB_TABLE = "TableTabsApp";
+
     public CellSiteConfigurationPage(WebDriver driver) {
         super(driver);
     }
 
+    private OldTable tabTable = OldTable.createByComponentDataAttributeName(driver, wait, TAB_TABLE);
+    private TreeWidget tree = TreeWidget.createByDataAttributeName(driver, wait, "SiteHierarchyApp");
+
     @Step("Click plus icon")
     public CellSiteConfigurationPage clickPlusIcon() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        OldActionsContainer icons = OldActionsContainer.createFromParent(driver, wait, driver.findElement(By.xpath("//div[@data-attributename='TableTabsApp']")));
-        icons.callActionByLabel("ADD");
+        tabTable.callActionByLabel("ADD");
         return this;
     }
 
@@ -52,38 +50,49 @@ public class CellSiteConfigurationPage extends BasePage {
     @Step("Select Base Stations Tab")
     public CellSiteConfigurationPage selectBaseStationsTab() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        TabsInterface tabs = TabsWidget.createById(driver, wait, "TableTabsApp");
-        tabs.selectTabByLabel("Base Stations");
+        tabTable.selectTabByLabel("Base Stations", TAB_TABLE);
         return this;
     }
 
     @Step("Select Cells Tab")
     public CellSiteConfigurationPage selectCellsTab() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        TabsInterface tabs = TabsWidget.createById(driver, wait, "TableTabsApp");
-        tabs.selectTabByLabel("Cells");
+        tabTable.selectTabByLabel("Cells", TAB_TABLE);
         return this;
     }
 
-    @Step("Filter object name and select object name row")
-    public CellSiteConfigurationPage filterObjectName(String objectName) {
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, "BsTableApp");
-        table.searchByAttributeWithLabel("Name", Input.ComponentType.TEXT_FIELD, objectName);
-        table.selectRowByAttributeValueWithLabel("Name", objectName);
+    @Step("Filter object and select object row")
+    public void filterObject(String columnName, String objectName) {
+        OldTable table = OldTable.createByComponentDataAttributeName(driver, wait, "table(" + TAB_TABLE + ")");
+        table.searchByAttributeWithLabel(columnName, Input.ComponentType.TEXT_FIELD, objectName);
+        table.selectRowByAttributeValueWithLabel(columnName, objectName);
+    }
+
+    @Step("Click Edit icon")
+    public void clickEditIcon() {
+        tabTable.callActionByLabel("Edit");
+    }
+
+    @Step("Click Remove icon")
+    public void clickRemoveIcon() {
+        tabTable.callActionByLabel("Delete");
+    }
+
+    @Step("Expand the tree and select eNodeB")
+    public CellSiteConfigurationPage expandTreeToENodeB(String locationType, String locationName, String eNodeBName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        tree.expandTreeRow(locationType);
+        tree.expandTreeRow(locationName);
+        tree.expandTreeRow("Base Stations");
+        tree.selectTreeRow(eNodeBName);
         return this;
     }
 
-    @Step("Click Edit eNodeB icon")
-    public ENodeBWizardPage clickEditENodeBIcon() {
-        OldActionsContainer icons = OldActionsContainer.createFromParent(driver, wait, driver.findElement(By.xpath("//div[@data-attributename='TableTabsApp']")));
-        icons.callActionByLabel("Edit");
-        return new ENodeBWizardPage(driver);
-    }
-
-    @Step("Click Remove eNodeB icon")
-    public CellSiteConfigurationPage clickRemoveENodeBIcon() {
-        OldActionsContainer icons = OldActionsContainer.createFromParent(driver, wait, driver.findElement(By.xpath("//div[@data-attributename='TableTabsApp']")));
-        icons.callActionByLabel("Delete");
+    @Step("Expand the tree and select location")
+    public CellSiteConfigurationPage expandTreeToLocation(String locationType, String locationName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        tree.expandTreeRow(locationType);
+        tree.selectTreeRow(locationName);
         return this;
     }
 }
