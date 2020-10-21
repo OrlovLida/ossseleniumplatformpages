@@ -13,29 +13,36 @@ public class ENodeBWizardPage extends BasePage {
         super(driver);
     }
 
+    private Wizard eNodeBWizard = Wizard.createByComponentId(driver, wait, "e-node-b-wizard");
+
     public void accept() {
-        Wizard eNodeBWizard = Wizard.createByComponentId(driver, wait, "e-node-b-wizard");
         eNodeBWizard.clickAccept();
+    }
+
+    public void setComponentValue(String componentId, String value, Input.ComponentType componentType) {
+        eNodeBWizard.setComponentValue(componentId, value, componentType);
+    }
+
+    public String getComponentValue(String componentId, Input.ComponentType componentType) {
+        Input value = eNodeBWizard.getComponent(componentId, componentType);
+        return value.getStringValue();
+    }
+
+    public Input getComponent(String componentId, Input.ComponentType componentType) {
+        return eNodeBWizard.getComponent(componentId, componentType);
     }
 
     @Step("Create eNodeB with mandatory fields (Name, eNodeB ID, eNodeB Model, MCC-MNC Primary) filled in")
     public void createENodeB(String eNodeBName, String eNodeBId, String eNodeBModel, String MCCMNCPrimary) {
-        Wizard eNodeBWizard = Wizard.createByComponentId(driver, wait, "e-node-b-wizard");
-        Input nameField = eNodeBWizard.getComponent("name", Input.ComponentType.TEXT_FIELD);
-        nameField.setSingleStringValue(eNodeBName);
-        Input eNodeBIdField = eNodeBWizard.getComponent("eNodeBId", Input.ComponentType.TEXT_FIELD);
-        eNodeBIdField.setSingleStringValue(eNodeBId);
-        Input eNodeBModelField = eNodeBWizard.getComponent("eNodeBModel", Input.ComponentType.COMBOBOX);
-        eNodeBModelField.setSingleStringValue(eNodeBModel);
-        Input MCCMNCPrimaryField = eNodeBWizard.getComponent("primaryMccMnc", Input.ComponentType.COMBOBOX);
-        MCCMNCPrimaryField.setSingleStringValue(MCCMNCPrimary);
+        setComponentValue("name", eNodeBName, Input.ComponentType.TEXT_FIELD);
+        setComponentValue("eNodeBId", eNodeBId, Input.ComponentType.TEXT_FIELD);
+        setComponentValue("eNodeBModel", eNodeBModel, Input.ComponentType.COMBOBOX);
+        setComponentValue("primaryMccMnc", MCCMNCPrimary, Input.ComponentType.COMBOBOX);
     }
 
     @Step("Type description")
     public ENodeBWizardPage typeDescription(String description) {
-        Wizard eNodeBWizard = Wizard.createByComponentId(driver, wait, "e-node-b-wizard");
-        Input descriptionField = eNodeBWizard.getComponent("description", Input.ComponentType.TEXT_FIELD);
-        descriptionField.setSingleStringValue(description);
+        setComponentValue("description", description, Input.ComponentType.TEXT_FIELD);
         return this;
     }
 

@@ -4,16 +4,15 @@ import java.util.Random;
 
 import com.oss.framework.mainheader.PerspectiveChooser;
 import com.oss.framework.mainheader.ToolbarWidget;
+import com.oss.framework.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.platform.LoginPanelPage;
-import com.oss.pages.platform.NotificationWrapperPage;
-import com.oss.pages.platform.PerspectiveChooserPage;
+import com.oss.pages.platform.*;
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.oss.framework.mainheader.UserSettings;
-import com.oss.pages.platform.LoginPage;
 
 public class BasePage {
     protected final WebDriver driver;
@@ -53,6 +52,19 @@ public class BasePage {
     public PerspectiveChooserPage openPerspectiveChooser(){
         ToolbarWidget.create(driver, wait).openQueryContextContainer();
         return new PerspectiveChooserPage(driver);
+    }
+
+    @Step("Type object name in 'Search in OSS objects' field")
+    public GlobalSearchPage searchInGlobalSearch(String value) {
+        ToolbarWidget globalSearchInput = ToolbarWidget.create(driver, wait);
+        globalSearchInput.typeAndEnterInGlobalSearch(value);
+        return new GlobalSearchPage(driver);
+    }
+
+    @Step("Choose option from Left Side Menu")
+    public void chooseFromLeftSideMenu(String actionLabel, String... path) {
+        SideMenu sideMenu = SideMenu.create(driver, wait);
+        sideMenu.callActionByLabel(actionLabel, path);
     }
 
 }

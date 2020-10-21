@@ -46,13 +46,12 @@ public class LocationWizardPage extends BasePage {
 //    }
 
     public void setComponentValue(String componentId, String value, Input.ComponentType componentType) {
-        Input input = locationWizard.getComponent(componentId, componentType);
-        input.setSingleStringValue(value);
+        locationWizard.setComponentValue(componentId, value, componentType);
     }
 
     public String getComponentValue(String componentId, Input.ComponentType componentType) {
-        Input input = locationWizard.getComponent(componentId, componentType);
-        return input.getStringValue();
+        Input value = locationWizard.getComponent(componentId, componentType);
+        return value.getStringValue();
     }
 
     public Input getComponent(String componentId, Input.ComponentType componentType) {
