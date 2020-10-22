@@ -27,7 +27,7 @@ public class CellSiteConfigurationPage extends BasePage {
     @Step("Click plus icon and select {0} from the drop-down list")
     public void clickPlusIconAndSelectOption(String option) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        tabTable.callActionByLabelFromParent("ADD");
+        tabTable.callActionByLabel("ADD");
         DropdownList list = DropdownList.create(driver, wait);
         list.selectOption(option);
     }
@@ -46,12 +46,12 @@ public class CellSiteConfigurationPage extends BasePage {
 
     @Step("Click Edit icon")
     public void clickEditIcon() {
-        tabTable.callActionByLabelFromParent("Edit");
+        tabTable.callActionByLabel("Edit");
     }
 
     @Step("Click Remove icon")
     public void clickRemoveIcon() {
-        tabTable.callActionByLabelFromParent("Delete");
+        tabTable.callActionByLabel("Delete");
     }
 
     @Step("Expand the tree and select eNodeB")
