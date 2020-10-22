@@ -1,11 +1,11 @@
 package com.oss.pages.physical;
 
 import com.oss.framework.components.inputs.Input;
+import com.oss.framework.data.Data;
 import com.oss.framework.utils.LocatingUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
-
 import org.openqa.selenium.WebDriver;
 //import org.testng.Assert;
 
@@ -21,6 +21,9 @@ public class LocationWizardPage extends BasePage {
     public static final String COMBOBOX_ID_IMPORTANCE = "physicalinventory_physical_location_form_importance_category";
     public static final String COMBOBOX_ID_USE = "BuildingUseCategory-MasterBuildingUseCategory-Name";
 
+    private static final String LOCATION_TYPE = "type-input";
+    private static final String LOCATION_NAME = "name";
+    private static final String GEOGRAPHICAL_ADDRESS_SEARCH = "geographicalAddress";
 
     public static LocationWizardPage goToLocationWizardPageLive(WebDriver driver, String basicURL) {
         driver.get(String.format("%s/#/view/location-inventory/wizard/physicallocation/create/select-type?" + "perspective=LIVE", basicURL));
@@ -62,14 +65,6 @@ public class LocationWizardPage extends BasePage {
         locationWizard.proceed();
     }
 
-    public void accept() {
-        locationWizard.clickAccept();
-    }
-
-    public void next() {
-        locationWizard.clickNext();
-    }
-
     public void checkIfSuccess() {
         LocatingUtils.waitUsingXpath("//div[contains(@class,'success')]", wait);
 //        Asserts.assertTrue(driver.findElement(By.xpath("//div[contains(@class,'success')]")).isEnabled());
@@ -91,5 +86,33 @@ public class LocationWizardPage extends BasePage {
         return this;
     }
 
+    @Step("Set Location Type")
+    public void setLocationType(String locationType) {
+        Input locationTypeComponent = locationWizard.getComponent(LOCATION_TYPE, Input.ComponentType.COMBOBOX);
+        locationTypeComponent.setValue(Data.createSingleData(locationType));
+    }
+
+    @Step("Set Location Name")
+    public void setLocationName(String locationName) {
+        Input locationNameComponent = locationWizard.getComponent(LOCATION_NAME, Input.ComponentType.TEXT_FIELD);
+        locationNameComponent.setValue(Data.createSingleData(locationName));
+    }
+
+    @Step("Set Geographical Address")
+    public void setGeographicalAddress(String geographicalAddress) {
+        Input geographicalAddressComponent = locationWizard.getComponent(GEOGRAPHICAL_ADDRESS_SEARCH, Input.ComponentType.SEARCH_FIELD);
+        geographicalAddressComponent.clear();
+        geographicalAddressComponent.setSingleStringValue(geographicalAddress);
+    }
+
+    @Step("Click Next Step button")
+    public void clickNext() {
+        locationWizard.clickNext();
+    }
+
+    @Step("Click Accept button")
+    public void accept() {
+        locationWizard.clickAccept();
+    }
 }
 
