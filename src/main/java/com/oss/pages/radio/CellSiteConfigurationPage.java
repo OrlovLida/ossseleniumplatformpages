@@ -21,78 +21,53 @@ public class CellSiteConfigurationPage extends BasePage {
         super(driver);
     }
 
-    private OldTable tabTable = OldTable.createByComponentDataAttributeName(driver, wait, TAB_TABLE);
-    private TreeWidget tree = TreeWidget.createByDataAttributeName(driver, wait, "SiteHierarchyApp");
+    private final OldTable tabTable = OldTable.createByComponentDataAttributeName(driver, wait, TAB_TABLE);
+    private final TreeWidget tree = TreeWidget.createByDataAttributeName(driver, wait, "SiteHierarchyApp");
 
-    @Step("Click plus icon")
-    public CellSiteConfigurationPage clickPlusIcon() {
+    @Step("Click plus icon and select {0} from the drop-down list")
+    public void clickPlusIconAndSelectOption(String option) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        tabTable.callActionByLabel("ADD");
-        return this;
-    }
-
-    @Step("Select Create eNodeB from the drop-down list")
-    public ENodeBWizardPage selectCreateENodeB() {
-        DelayUtils.waitForPageToLoad(driver, wait);
+        tabTable.callActionByLabelFromParent("ADD");
         DropdownList list = DropdownList.create(driver, wait);
-        list.selectOption("Create eNodeB");
-        return new ENodeBWizardPage(driver);
+        list.selectOption(option);
     }
 
-    @Step("Select Create Cell 4G from the drop-down list")
-    public Cell4GWizardPage selectCreateCell4G() {
+    @Step("Select {0} tab")
+    public void selectTab(String tabName) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        DropdownList list = DropdownList.create(driver, wait);
-        list.selectOption("Create Cell 4G");
-        return new Cell4GWizardPage(driver);
+        tabTable.selectTabByLabel(tabName, TAB_TABLE);
     }
 
-    @Step("Select Base Stations Tab")
-    public CellSiteConfigurationPage selectBaseStationsTab() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        tabTable.selectTabByLabel("Base Stations", TAB_TABLE);
-        return this;
-    }
-
-    @Step("Select Cells Tab")
-    public CellSiteConfigurationPage selectCellsTab() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        tabTable.selectTabByLabel("Cells", TAB_TABLE);
-        return this;
-    }
-
-    @Step("Filter object and select object row")
+    @Step("Filter and select {1) row")
     public void filterObject(String columnName, String objectName) {
-        OldTable table = OldTable.createByComponentDataAttributeName(driver, wait, "table(" + TAB_TABLE + ")");
-        table.searchByAttributeWithLabel(columnName, Input.ComponentType.TEXT_FIELD, objectName);
-        table.selectRowByAttributeValueWithLabel(columnName, objectName);
+        tabTable.searchByAttributeWithLabel(columnName, Input.ComponentType.TEXT_FIELD, objectName);
+        tabTable.selectRowByAttributeValueWithLabel(columnName, objectName);
     }
 
     @Step("Click Edit icon")
     public void clickEditIcon() {
-        tabTable.callActionByLabel("Edit");
+        tabTable.callActionByLabelFromParent("Edit");
     }
 
     @Step("Click Remove icon")
     public void clickRemoveIcon() {
-        tabTable.callActionByLabel("Delete");
+        tabTable.callActionByLabelFromParent("Delete");
     }
 
     @Step("Expand the tree and select eNodeB")
-    public CellSiteConfigurationPage expandTreeToENodeB(String locationType, String locationName, String eNodeBName) {
+    public void expandTreeToENodeB(String locationType, String locationName, String eNodeBName) {
         DelayUtils.waitForPageToLoad(driver, wait);
         tree.expandTreeRow(locationType);
         tree.expandTreeRow(locationName);
         tree.expandTreeRow("Base Stations");
         tree.selectTreeRow(eNodeBName);
-        return this;
     }
 
     @Step("Expand the tree and select location")
-    public CellSiteConfigurationPage expandTreeToLocation(String locationType, String locationName) {
+    public void expandTreeToLocation(String locationType, String locationName) {
         DelayUtils.waitForPageToLoad(driver, wait);
         tree.expandTreeRow(locationType);
         tree.selectTreeRow(locationName);
-        return this;
     }
+
 }
