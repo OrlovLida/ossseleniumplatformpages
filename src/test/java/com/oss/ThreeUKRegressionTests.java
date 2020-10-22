@@ -9,7 +9,7 @@ import com.oss.framework.widgets.tabswidget.TabWindowWidget;
 import com.oss.framework.widgets.tabswidget.TabsInterface;
 import com.oss.pages.physical.LocationWizardPage;
 import com.oss.pages.platform.HomePage;
-import com.oss.pages.platform.LocationOverviewPage;
+import com.oss.pages.physical.LocationOverviewPage;
 import com.oss.pages.platform.OldInventoryViewPage;
 import com.oss.pages.radio.Cell4GWizardPage;
 import com.oss.pages.radio.CellSiteConfigurationPage;
@@ -190,8 +190,8 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         new OldInventoryViewPage(driver)
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .clickPlusIcon()
-                .selectCreateENodeB()
+                .clickPlusIconAndSelectOption("Create eNodeB");
+        new ENodeBWizardPage(driver)
                 .createENodeB(randomENodeBName, randomENodeBId, eNodeBModel, MCCMNCPrimary);
         new ENodeBWizardPage(driver)
                 .accept();
@@ -213,9 +213,10 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         new OldInventoryViewPage(driver)
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .selectBaseStationsTab()
-                .clickPlusIcon()
-                .selectCreateENodeB()
+                .selectTab("Base Stations");
+        new CellSiteConfigurationPage(driver)
+                .clickPlusIconAndSelectOption("Create eNodeB");
+        new ENodeBWizardPage(driver)
                 .createENodeB(randomENodeBName, randomENodeBId, eNodeBModel, MCCMNCPrimary);
         new ENodeBWizardPage(driver)
                 .accept();
@@ -227,8 +228,10 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         new OldInventoryViewPage(driver)
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .expandTreeToLocation(locationTypeSite, randomLocationName)
-                .selectBaseStationsTab()
+                .expandTreeToLocation(locationTypeSite, randomLocationName);
+        new CellSiteConfigurationPage(driver)
+                .selectTab("Base Stations");
+        new CellSiteConfigurationPage(driver)
                 .filterObject("Name", randomENodeBName);
         new CellSiteConfigurationPage(driver)
                 .clickEditIcon();
@@ -244,8 +247,8 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     @Test(groups = {"Radio tests"})
     @Description("The user creates eNodeB in Cell Site Configuration, searches eNodeB name in Global Search and deletes the eNodeB and checks if search result in Global Search is no data")
     public void tS10CreateAndRemoveENodeB() {
-//        String randomENodeBName = RandomGenerator.generateRandomName();
-//        String randomENodeBId = RandomGenerator.generateRandomENodeBId();
+        String randomENodeBName = RandomGenerator.generateRandomName();
+        String randomENodeBId = RandomGenerator.generateRandomENodeBId();
 //        String randomLocationName="Milena";
 
         new HomePage(driver)
@@ -255,9 +258,10 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         new OldInventoryViewPage(driver)
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .selectBaseStationsTab()
-                .clickPlusIcon()
-                .selectCreateENodeB()
+                .selectTab("Base Stations");
+        new CellSiteConfigurationPage(driver)
+                .clickPlusIconAndSelectOption("Create eNodeB");
+        new ENodeBWizardPage(driver)
                 .createENodeB(randomENodeBName, randomENodeBId, eNodeBModel, MCCMNCPrimary);
         new ENodeBWizardPage(driver)
                 .accept();
@@ -276,7 +280,6 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     @Description("The user creates Cell 4G in Cell Site Configuration and checks the message about successful creation")
     public void tS11CreateCell4G() {
 //        String randomLocationName = "Milena";
-//        String randomENodeBName = "Milena";
 
         new HomePage(driver)
                 .typeObjectType(locationTypeSite)
@@ -285,9 +288,10 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         new OldInventoryViewPage(driver)
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .selectCellsTab()
-                .clickPlusIcon()
-                .selectCreateCell4G()
+                .selectTab("Cells");
+        new CellSiteConfigurationPage(driver)
+                .clickPlusIconAndSelectOption("Create Cell 4G");
+        new Cell4GWizardPage(driver)
                 .createCell4G(randomCell4GName, randomENodeBName, randomCell4GId, carrier4G);
         new Cell4GWizardPage(driver)
                 .accept();
@@ -298,9 +302,9 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     @Test(groups = {"Radio tests"})
     @Description("The user creates Cell 4G in Cell Site Configuration, searches Cell 4G in Inventory View and goes to Cell Site Configuration again, then edits the Cell 4G and checks if the description is updated in Cells table")
     public void tS12CreateAndModifyCell4G() {
-//        String randomLocationName = "Milena_ManagedChangeProcess";
-//        String randomENodeBName = "eNodeB_Milena";
-//        String randomCell4GName = "eNodeB_MilenaA51";
+        String randomCell4GName = RandomGenerator.generateRandomName();
+        String randomCell4GId = RandomGenerator.generateRandomCell4GId();
+//        String randomLocationName = "Milena";
 
         new HomePage(driver)
                 .typeObjectType(locationTypeSite)
@@ -309,9 +313,10 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         new OldInventoryViewPage(driver)
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .selectCellsTab()
-                .clickPlusIcon()
-                .selectCreateCell4G()
+                .selectTab("Cells");
+        new CellSiteConfigurationPage(driver)
+                .clickPlusIconAndSelectOption("Create Cell 4G");
+        new Cell4GWizardPage(driver)
                 .createCell4G(randomCell4GName, randomENodeBName, randomCell4GId, carrier4G);
         new Cell4GWizardPage(driver)
                 .accept();
@@ -323,8 +328,10 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         new OldInventoryViewPage(driver)
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .expandTreeToENodeB(locationTypeSite, randomLocationName, randomENodeBName)
-                .selectCellsTab()
+                .expandTreeToENodeB(locationTypeSite, randomLocationName, randomENodeBName);
+        new CellSiteConfigurationPage(driver)
+                .selectTab("Cells");
+        new CellSiteConfigurationPage(driver)
                 .filterObject("Name", randomCell4GName);
         new CellSiteConfigurationPage(driver)
                 .clickEditIcon();
@@ -340,9 +347,9 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     @Test(groups = {"Radio tests"})
     @Description("The user creates Cell 4G in Cell Site Configuration, searches Cell 4G name in Global Search and deletes the Cell 4G and checks if search result in Global Search is no data")
     public void tS13CreateAndRemoveCell4G() {
+        String randomCell4GName = RandomGenerator.generateRandomName();
+        String randomCell4GId = RandomGenerator.generateRandomCell4GId();
 //        String randomLocationName = "Milena";
-//        String randomENodeBName = "MilenaeNodeB";
-//        String randomCell4GName = "MilenaCell";
 
         new HomePage(driver)
                 .typeObjectType(locationTypeSite)
@@ -351,9 +358,10 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         new OldInventoryViewPage(driver)
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .selectCellsTab()
-                .clickPlusIcon()
-                .selectCreateCell4G()
+                .selectTab("Cells");
+        new CellSiteConfigurationPage(driver)
+                .clickPlusIconAndSelectOption("Create Cell 4G");
+        new Cell4GWizardPage(driver)
                 .createCell4G(randomCell4GName, randomENodeBName, randomCell4GId, carrier4G);
         new Cell4GWizardPage(driver)
                 .accept();
