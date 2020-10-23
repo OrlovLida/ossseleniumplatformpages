@@ -65,7 +65,7 @@ public class FilterManagerPage extends BasePage {
     @Step("Open Create New Folder Wizard")
     public CreateFolderWizard openCreateNewFolderWizard() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getCommonList().getActionsContainer().callActionById(NEW_FOLDER_ID);
+        getCommonList().getActionsContainer().callAction(NEW_FOLDER_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         return new CreateFolderWizard(driver);
     }
