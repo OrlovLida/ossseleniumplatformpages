@@ -133,7 +133,7 @@ public class FiltersTest extends BaseTestCase {
     @Test(priority = 8)
     @Description("Creating Folder and checking that the created folder is visible in Filter Manager View")
     public void creatingFolder() {
-        filterManagerPage = FilterManagerPage.goToFilterManagerPage(driver, BASIC_URL)
+        filterManagerPage
                 .createFolder(FOLDER_NAME)
                 .expandAllCategories();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -143,7 +143,7 @@ public class FiltersTest extends BaseTestCase {
     @Test(priority = 9)
     @Description("Change folder for filter. Checking that filter is in proper folder after edit")
     public void changeFolderForFilter() {
-        filterManagerPage = FilterManagerPage.goToFilterManagerPage(driver, BASIC_URL)
+        filterManagerPage
                 .expandAllCategories()
                 .editFilter(FILTER3_NAME);
         editFilterPage = new EditFilterPage(driver);
@@ -243,7 +243,7 @@ public class FiltersTest extends BaseTestCase {
     @Test(priority = 20)
     @Description("Deleting all filters and folders")
     public void deleteAllFiltersAndFolders() {
-        filterManagerPage = FilterManagerPage.goToFilterManagerPage(driver, BASIC_URL)
+        filterManagerPage
                 .expandAllCategories()
                 .deleteAllFilters()
                 .deleteAllFolders();
