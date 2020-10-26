@@ -1,15 +1,18 @@
 package com.oss;
 
 import com.oss.framework.alerts.SystemMessageContainer;
+import com.oss.framework.alerts.SystemMessageInterface;
+import com.oss.framework.listwidget.CommonList;
 import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tabswidget.TabWindowWidget;
 import com.oss.framework.widgets.tabswidget.TabsInterface;
-import com.oss.pages.physical.LocationWizardPage;
-import com.oss.pages.platform.HomePage;
 import com.oss.pages.physical.LocationOverviewPage;
+import com.oss.pages.physical.LocationWizardPage;
+import com.oss.pages.platform.GlobalSearchPage;
+import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.OldInventoryViewPage;
 import com.oss.pages.radio.Cell4GWizardPage;
 import com.oss.pages.radio.CellSiteConfigurationPage;
@@ -47,16 +50,15 @@ public class ThreeUKRegressionTests extends BaseTestCase {
 
     @BeforeMethod
     public void goToHomePage() {
-
-        HomePage homePage = HomePage.goToHomePage(driver, BASIC_URL);
+        HomePage homePage = new HomePage(driver);
+        homePage.goToHomePage(driver, BASIC_URL);
     }
 
     @Test(groups = {"Physical tests"})
     @Description("The user creates a location (Site) from left side menu and checks the message about successful creation")
     public void tS01CreateNewSiteSideMenu() {
 
-        new HomePage(driver)
-                .chooseFromLeftSideMenu("Create Location", "Wizards", "Physical Inventory");
+        homePage.chooseFromLeftSideMenu("Create Location", "Wizards", "Physical Inventory");
         new LocationWizardPage(driver)
                 .createLocation(locationTypeSite, randomLocationName);
         Assert.assertTrue(SystemMessageContainer.create(driver, webDriverWait)
@@ -68,10 +70,10 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     public void tS02BrowseLocationInInventoryView() {
 //        String randomLocationName="Milena";
 
-        new HomePage(driver)
-                .typeObjectType(objectTypeLocation)
-                .confirmObjectType(objectTypeLocation)
+        homePage.setAndSelectObjectType(objectTypeLocation);
+        new OldInventoryViewPage(driver)
                 .filterObject("Name", randomLocationName, "Location");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         OldTable propertiesTable = OldTable.createByComponentDataAttributeName(driver, webDriverWait, "properties(Location)");
         int rowNumber = propertiesTable.getRowNumber(randomLocationName, "Property Value");
         String rowValue = propertiesTable.getValueCell(rowNumber, "Property Value");
@@ -83,10 +85,10 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     public void tS03BrowseSiteInInventoryView() {
 //        String randomLocationName="Milena";
 
-        new HomePage(driver)
-                .typeObjectType(locationTypeSite)
-                .confirmObjectType(locationTypeSite)
+        homePage.setAndSelectObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
                 .filterObject("Name", randomLocationName, "Site");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         OldTable propertiesTable = OldTable.createByComponentDataAttributeName(driver, webDriverWait, "properties(Site)");
         int rowNumber = propertiesTable.getRowNumber(randomLocationName, "Property Value");
         String rowValue = propertiesTable.getValueCell(rowNumber, "Property Value");
@@ -104,17 +106,16 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         String randomLocationNameInLocation = RandomGenerator.generateRandomName();
 //        String randomLocationName="Milena";
 
-        new HomePage(driver)
-                .typeObjectType(locationTypeSite)
-                .confirmObjectType(locationTypeSite)
-                .filterObject("Name", randomLocationName, "Site");
+        homePage.setAndSelectObjectType(locationTypeSite);
         new OldInventoryViewPage(driver)
+                .filterObject("Name", randomLocationName, "Site")
                 .expandShowOnAndChooseView("OpenLocationOverviewAction");
         new LocationOverviewPage(driver)
-                .clickCreateLocation()
+                .clickButton("Create Location");
+        new LocationWizardPage(driver)
                 .createLocation(locationTypeSite, randomLocationNameInLocation);
         new LocationOverviewPage(driver)
-                .selectLocationTab()
+                .selectTab("Locations")
                 .filterObject("Name", randomLocationNameInLocation);
         OldTable locationsTable = OldTable.createByComponentDataAttributeName(driver, webDriverWait, "tableAppLocationsId");
         int rowNumber = locationsTable.getRowNumber(randomLocationNameInLocation, "Name");
@@ -128,22 +129,20 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         String randomLocationNameInLocation = RandomGenerator.generateRandomName();
 //        String randomLocationName="Milena";
 
-        new HomePage(driver)
-                .typeObjectType(locationTypeSite)
-                .confirmObjectType(locationTypeSite)
-                .filterObject("Name", randomLocationName, "Site");
+        homePage.setAndSelectObjectType(locationTypeSite);
         new OldInventoryViewPage(driver)
+                .filterObject("Name", randomLocationName, "Site")
                 .expandShowOnAndChooseView("OpenLocationOverviewAction");
         new LocationOverviewPage(driver)
-                .clickCreateLocation()
+                .clickButton("Create Location");
+        new LocationWizardPage(driver)
                 .createLocation(locationTypeSite, randomLocationNameInLocation);
         new LocationOverviewPage(driver)
-                .selectLocationTab()
-                .filterObject("Name", randomLocationNameInLocation);
-        new LocationOverviewPage(driver)
-                .clickEditLocationIcon()
-                .typeDescription(description);
+                .selectTab("Locations")
+                .filterObject("Name", randomLocationNameInLocation)
+                .clickEditLocationIcon();
         new LocationWizardPage(driver)
+                .setDescription(description)
                 .accept();
         OldTable locationsTable = OldTable.createByComponentDataAttributeName(driver, webDriverWait, "tableAppLocationsId");
         int rowNumber = locationsTable.getRowNumber(description, "Description");
@@ -157,19 +156,17 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         String randomLocationNameInLocation = RandomGenerator.generateRandomName();
 //        String randomLocationName="Milena";
 
-        new HomePage(driver)
-                .typeObjectType(locationTypeSite)
-                .confirmObjectType(locationTypeSite)
-                .filterObject("Name", randomLocationName, "Site");
+        homePage.setAndSelectObjectType(locationTypeSite);
         new OldInventoryViewPage(driver)
+                .filterObject("Name", randomLocationName, "Site")
                 .expandShowOnAndChooseView("OpenLocationOverviewAction");
         new LocationOverviewPage(driver)
-                .clickCreateLocation()
+                .clickButton("Create Location");
+        new LocationWizardPage(driver)
                 .createLocation(locationTypeSite, randomLocationNameInLocation);
         new LocationOverviewPage(driver)
-                .selectLocationTab()
-                .filterObject("Name", randomLocationNameInLocation);
-        new LocationOverviewPage(driver)
+                .selectTab("Locations")
+                .filterObject("Name", randomLocationNameInLocation)
                 .clickRemoveLocationIcon();
         ConfirmationBoxInterface confirmationBox = ConfirmationBox.create(driver, webDriverWait);
         confirmationBox.clickButtonByLabel("Delete");
@@ -183,18 +180,14 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     public void tS08CreateENodeB() {
 //        String randomLocationName="Milena";
 
-        new HomePage(driver)
-                .typeObjectType(locationTypeSite)
-                .confirmObjectType(locationTypeSite)
-                .filterObject("Name", randomLocationName, "Site");
+        homePage.setAndSelectObjectType(locationTypeSite);
         new OldInventoryViewPage(driver)
+                .filterObject("Name", randomLocationName, "Site")
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
                 .clickPlusIconAndSelectOption("Create eNodeB");
         new ENodeBWizardPage(driver)
                 .createENodeB(randomENodeBName, randomENodeBId, eNodeBModel, MCCMNCPrimary);
-        new ENodeBWizardPage(driver)
-                .accept();
         Assert.assertTrue(SystemMessageContainer.create(driver, webDriverWait)
                 .getMessages().get(0).getText().contains("Created eNodeB"));
     }
@@ -206,37 +199,29 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         String randomENodeBId = RandomGenerator.generateRandomENodeBId();
 //        String randomLocationName="Milena";
 
-        new HomePage(driver)
-                .typeObjectType(locationTypeSite)
-                .confirmObjectType(locationTypeSite)
-                .filterObject("Name", randomLocationName, "Site");
+        homePage.setAndSelectObjectType(locationTypeSite);
         new OldInventoryViewPage(driver)
+                .filterObject("Name", randomLocationName, "Site")
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .selectTab("Base Stations");
-        new CellSiteConfigurationPage(driver)
+                .selectTab("Base Stations")
                 .clickPlusIconAndSelectOption("Create eNodeB");
         new ENodeBWizardPage(driver)
                 .createENodeB(randomENodeBName, randomENodeBId, eNodeBModel, MCCMNCPrimary);
-        new ENodeBWizardPage(driver)
-                .accept();
-        new HomePage(driver)
-                .goToHomePage(driver, BASIC_URL)
-                .typeObjectType(objectTypeENodeB)
-                .confirmObjectType(objectTypeENodeB)
-                .filterObject("Name", randomENodeBName, "ENodeB");
+        SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
+        systemMessageItem.waitForMessageDisappear();
+        homePage.goToHomePage(driver, BASIC_URL);
+        homePage.setAndSelectObjectType(objectTypeENodeB);
         new OldInventoryViewPage(driver)
+                .filterObject("Name", randomENodeBName, "ENodeB")
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .expandTreeToLocation(locationTypeSite, randomLocationName);
-        new CellSiteConfigurationPage(driver)
-                .selectTab("Base Stations");
-        new CellSiteConfigurationPage(driver)
-                .filterObject("Name", randomENodeBName);
-        new CellSiteConfigurationPage(driver)
+                .expandTreeToLocation(locationTypeSite, randomLocationName)
+                .selectTab("Base Stations")
+                .filterObject("Name", randomENodeBName)
                 .clickEditIcon();
         new ENodeBWizardPage(driver)
-                .typeDescription(description)
+                .setDescription(description)
                 .accept();
         OldTable baseStationsTable = OldTable.createByComponentDataAttributeName(driver, webDriverWait, "BsTableApp");
         int rowNumber = baseStationsTable.getRowNumber(description, "Description");
@@ -251,50 +236,49 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         String randomENodeBId = RandomGenerator.generateRandomENodeBId();
 //        String randomLocationName="Milena";
 
-        new HomePage(driver)
-                .typeObjectType(locationTypeSite)
-                .confirmObjectType(locationTypeSite)
-                .filterObject("Name", randomLocationName, "Site");
+        homePage.setAndSelectObjectType(locationTypeSite);
         new OldInventoryViewPage(driver)
+                .filterObject("Name", randomLocationName, "Site")
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .selectTab("Base Stations");
-        new CellSiteConfigurationPage(driver)
+                .selectTab("Base Stations")
                 .clickPlusIconAndSelectOption("Create eNodeB");
         new ENodeBWizardPage(driver)
                 .createENodeB(randomENodeBName, randomENodeBId, eNodeBModel, MCCMNCPrimary);
-        new ENodeBWizardPage(driver)
-                .accept();
-        new HomePage(driver)
-                .searchInGlobalSearch(randomENodeBName)
-                .clickThreeDots(randomENodeBName)
-                .deleteObject();
+        SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
+        systemMessageItem.waitForMessageDisappear();
+        homePage.searchInGlobalSearch(randomENodeBName);
+        new GlobalSearchPage(driver)
+                .expandShowOnAndChooseView(randomENodeBName, "Show on", "Cell Site Configuration");
+        new CellSiteConfigurationPage(driver)
+                .expandTreeToLocation(locationTypeSite, randomLocationName)
+                .selectTab("Base Stations")
+                .filterObject("Name", randomENodeBName)
+                .clickRemoveIcon();
         ConfirmationBoxInterface confirmationBox = ConfirmationBox.create(driver, webDriverWait);
         confirmationBox.clickButtonByLabel("Delete");
+        systemMessageItem.waitForMessageDisappear();
+        homePage.searchInGlobalSearch(randomENodeBName);
+        CommonList searchResults = CommonList.create(driver, webDriverWait, "objectsList");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        OldTable baseStationsTable = OldTable.createByComponentDataAttributeName(driver, webDriverWait, "BsTableApp");
-        Assert.assertTrue(baseStationsTable.isNoData());
+        Assert.assertTrue(searchResults.isNoData());
     }
 
     @Test(groups = {"Radio tests"})
     @Description("The user creates Cell 4G in Cell Site Configuration and checks the message about successful creation")
     public void tS11CreateCell4G() {
 //        String randomLocationName = "Milena";
+//        String randomENodeBName = "MilenaeNodeB";
 
-        new HomePage(driver)
-                .typeObjectType(locationTypeSite)
-                .confirmObjectType(locationTypeSite)
-                .filterObject("Name", randomLocationName, "Site");
+        homePage.setAndSelectObjectType(locationTypeSite);
         new OldInventoryViewPage(driver)
+                .filterObject("Name", randomLocationName, "Site")
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .selectTab("Cells");
-        new CellSiteConfigurationPage(driver)
+                .selectTab("Cells")
                 .clickPlusIconAndSelectOption("Create Cell 4G");
         new Cell4GWizardPage(driver)
                 .createCell4G(randomCell4GName, randomENodeBName, randomCell4GId, carrier4G);
-        new Cell4GWizardPage(driver)
-                .accept();
         Assert.assertTrue(SystemMessageContainer.create(driver, webDriverWait)
                 .getMessages().get(0).getText().contains("Created Cell 4G"));
     }
@@ -305,38 +289,31 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         String randomCell4GName = RandomGenerator.generateRandomName();
         String randomCell4GId = RandomGenerator.generateRandomCell4GId();
 //        String randomLocationName = "Milena";
+//        String randomENodeBName = "MilenaeNodeB";
 
-        new HomePage(driver)
-                .typeObjectType(locationTypeSite)
-                .confirmObjectType(locationTypeSite)
-                .filterObject("Name", randomLocationName, "Site");
+        homePage.setAndSelectObjectType(locationTypeSite);
         new OldInventoryViewPage(driver)
+                .filterObject("Name", randomLocationName, "Site")
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .selectTab("Cells");
-        new CellSiteConfigurationPage(driver)
+                .selectTab("Cells")
                 .clickPlusIconAndSelectOption("Create Cell 4G");
         new Cell4GWizardPage(driver)
                 .createCell4G(randomCell4GName, randomENodeBName, randomCell4GId, carrier4G);
-        new Cell4GWizardPage(driver)
-                .accept();
-        new HomePage(driver)
-                .goToHomePage(driver, BASIC_URL)
-                .typeObjectType(objectTypeCell4G)
-                .confirmObjectType(objectTypeCell4G)
-                .filterObject("Cell Name", randomCell4GName, "Cell4G");
+        SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
+        systemMessageItem.waitForMessageDisappear();
+        homePage.goToHomePage(driver, BASIC_URL);
+        homePage.setAndSelectObjectType(objectTypeCell4G);
         new OldInventoryViewPage(driver)
+                .filterObject("Cell Name", randomCell4GName, "Cell4G")
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .expandTreeToENodeB(locationTypeSite, randomLocationName, randomENodeBName);
-        new CellSiteConfigurationPage(driver)
-                .selectTab("Cells");
-        new CellSiteConfigurationPage(driver)
-                .filterObject("Name", randomCell4GName);
-        new CellSiteConfigurationPage(driver)
+                .expandTreeToENodeB(locationTypeSite, randomLocationName, randomENodeBName)
+                .selectTab("Cells")
+                .filterObject("Name", randomCell4GName)
                 .clickEditIcon();
         new Cell4GWizardPage(driver)
-                .typeDescription(description)
+                .setDescription(description)
                 .accept();
         OldTable cellsTable = OldTable.createByComponentDataAttributeName(driver, webDriverWait, "cell4gTable");
         int rowNumber = cellsTable.getRowNumber(description, "Description");
@@ -350,30 +327,38 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         String randomCell4GName = RandomGenerator.generateRandomName();
         String randomCell4GId = RandomGenerator.generateRandomCell4GId();
 //        String randomLocationName = "Milena";
+//        String randomENodeBName = "MilenaeNodeB";
 
-        new HomePage(driver)
-                .typeObjectType(locationTypeSite)
-                .confirmObjectType(locationTypeSite)
-                .filterObject("Name", randomLocationName, "Site");
+        homePage.setAndSelectObjectType(locationTypeSite);
         new OldInventoryViewPage(driver)
+                .filterObject("Name", randomLocationName, "Site")
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .selectTab("Cells");
-        new CellSiteConfigurationPage(driver)
+                .selectTab("Cells")
                 .clickPlusIconAndSelectOption("Create Cell 4G");
         new Cell4GWizardPage(driver)
                 .createCell4G(randomCell4GName, randomENodeBName, randomCell4GId, carrier4G);
-        new Cell4GWizardPage(driver)
-                .accept();
-        new HomePage(driver)
-                .searchInGlobalSearch(randomCell4GName)
-                .clickThreeDots(randomCell4GName)
-                .deleteObject();
+        SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
+        systemMessageItem.waitForMessageDisappear();
+        homePage.searchInGlobalSearch(randomCell4GName);
+        new GlobalSearchPage(driver)
+                .expandShowOnAndChooseView(randomCell4GName, "Show on", "Cell Site Configuration");
+        new CellSiteConfigurationPage(driver)
+                .expandTreeToENodeB(locationTypeSite, randomLocationName, randomENodeBName)
+                .selectTab("Cells")
+                .filterObject("Name", randomCell4GName)
+                .clickRemoveIcon();
         ConfirmationBoxInterface confirmationBox = ConfirmationBox.create(driver, webDriverWait);
         confirmationBox.clickButtonByLabel("Delete");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        OldTable objectsList = OldTable.createByComponentDataAttributeName(driver, webDriverWait, "objectsList");
-        Assert.assertTrue(objectsList.isNoData());
+        systemMessageItem.waitForMessageDisappear();
+        homePage.searchInGlobalSearch(randomCell4GName);
+        CommonList searchResults = CommonList.create(driver, webDriverWait, "objectsList");
+        Assert.assertTrue(searchResults.isNoData());
+    }
+
+    @Test(groups = {"Radio tests"})
+    @Description("The user creates eNodeB in Cell Site Configuration and checks the message about successful creation")
+    public void tS14CreateGNodeB() {
     }
 
 }

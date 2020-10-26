@@ -1,19 +1,16 @@
 package com.oss.pages.platform;
 
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.portals.PopupV2;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.Wizard;
+import com.oss.pages.BasePage;
 import com.oss.pages.languageservice.LanguageServicePage;
+import com.oss.pages.physical.DeviceWizardPage;
+import com.oss.pages.physical.LocationWizardPage;
 import com.oss.pages.schedulerservice.SchedulerServicePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-import com.oss.pages.BasePage;
-import com.oss.pages.physical.DeviceWizardPage;
-import com.oss.pages.physical.LocationWizardPage;
 
 
 public class HomePage extends BasePage {
@@ -43,8 +40,8 @@ public class HomePage extends BasePage {
         DelayUtils.waitForVisibility(wait, logo);
     }
 
-    @Step("Open Home Page")
-    public static HomePage goToHomePage(WebDriver driver, String basicURL) {
+    @Step("Go to Home Page")
+    public HomePage goToHomePage(WebDriver driver, String basicURL) {
         driver.get(String.format("%s/#/" +
                 "?perspective=LIVE", basicURL));
         return new HomePage(driver);
@@ -116,26 +113,16 @@ public class HomePage extends BasePage {
         return new SchedulerServicePage(driver);
     }
 
-
-    //temporary
+    //temporary (OSSWEB-8269)
     String searchObjectTypeTxtXpath = ".//input[(@data-attributename=\"SearchUserViewsByType\")]";
-    private String objectTypeListXpath = "//div[contains(text(),'%s')]/..";
-    //temporary
 
-    @Step("Type object type")
-    public HomePage typeObjectType(String objectType) {
+    @Step("Set object type")
+    public void setAndSelectObjectType(String objectType) {
         DelayUtils.waitByXPath(wait, searchObjectTypeTxtXpath);
         driver.findElement(By.xpath(searchObjectTypeTxtXpath)).sendKeys(objectType);
         driver.findElement(By.xpath(searchObjectTypeTxtXpath)).sendKeys(Keys.ENTER);
-        return new HomePage(driver);
-    }
-
-    @Step("Confirm object type")
-    public OldInventoryViewPage confirmObjectType(String expectedObjectType) {
-        String objectTypeList = String.format(objectTypeListXpath, expectedObjectType);
-        DelayUtils.waitByXPath(wait, objectTypeList);
-        driver.findElement(By.xpath(objectTypeList)).click();
-        return new OldInventoryViewPage(driver);
+        DelayUtils.waitByXPath(wait, "//div[contains(text(), '" + objectType + "')]/..");
+        driver.findElement(By.xpath("//div[contains(text(), '" + objectType + "')]/..")).click();
     }
 
 }

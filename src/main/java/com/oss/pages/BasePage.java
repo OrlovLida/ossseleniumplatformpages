@@ -1,18 +1,15 @@
 package com.oss.pages;
 
-import java.util.Random;
-
-import com.oss.framework.mainheader.PerspectiveChooser;
 import com.oss.framework.mainheader.ToolbarWidget;
+import com.oss.framework.mainheader.UserSettings;
 import com.oss.framework.sidemenu.SideMenu;
-import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.*;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.oss.framework.mainheader.UserSettings;
+import java.util.Random;
 
 public class BasePage {
     protected final WebDriver driver;
@@ -39,17 +36,17 @@ public class BasePage {
         new LoginPage(driver, "url").login(user, password);
     }
 
-    public LoginPanelPage openLoginPanel(){
+    public LoginPanelPage openLoginPanel() {
         ToolbarWidget.create(driver, wait).openLoginPanel();
-      return new LoginPanelPage(driver);
+        return new LoginPanelPage(driver);
     }
 
-    public NotificationWrapperPage openNotificationPanel(){
+    public NotificationWrapperPage openNotificationPanel() {
         ToolbarWidget.create(driver, wait).openNotificationPanel();
         return new NotificationWrapperPage(driver);
     }
 
-    public PerspectiveChooserPage openPerspectiveChooser(){
+    public PerspectiveChooserPage openPerspectiveChooser() {
         ToolbarWidget.create(driver, wait).openQueryContextContainer();
         return new PerspectiveChooserPage(driver);
     }
@@ -61,7 +58,7 @@ public class BasePage {
         return new GlobalSearchPage(driver);
     }
 
-    @Step("Choose option from Left Side Menu")
+    @Step("Choose {actionLabel} from Left Side Menu")
     public void chooseFromLeftSideMenu(String actionLabel, String... path) {
         SideMenu sideMenu = SideMenu.create(driver, wait);
         sideMenu.callActionByLabel(actionLabel, path);

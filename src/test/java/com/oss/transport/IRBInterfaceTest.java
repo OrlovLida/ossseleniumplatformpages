@@ -63,7 +63,8 @@ public class IRBInterfaceTest extends BaseTestCase {
     @Test(priority = 4)
     @Description("Assign IP Host Address")
     public void assignIPHostAddress() {
-        HomePage homePage = HomePage.goToHomePage(driver, BASIC_URL);
+        HomePage homePage = new HomePage(driver);
+        homePage.goToHomePage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver,webDriverWait);
         homePage.goToInventoryViewPage(BASIC_URL + "/#/view/inventory/view/type/IRBInterface?perspective=LIVE");
         DelayUtils.waitForPageToLoad(driver,webDriverWait);
