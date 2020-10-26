@@ -78,11 +78,12 @@ public class OldInventoryViewPage extends BasePage {
         return this;
     }
 
-    @Step("Filter object and select object row")
-    public void filterObject(String columnName, String objectName, String tableObjects) {
+    @Step("Filter and select {objectName} row")
+    public OldInventoryViewPage filterObject(String columnName, String objectName, String tableObjects) {
         OldTable table = OldTable.createByComponentDataAttributeName(driver, wait, "table(" + tableObjects + ")");
         table.searchByAttributeWithLabel(columnName, Input.ComponentType.TEXT_FIELD, objectName);
         table.selectRowByAttributeValueWithLabel(columnName, objectName);
+        return this;
     }
 
     @Step("Expand Show on button and select view from the drop-down list")

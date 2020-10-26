@@ -210,8 +210,8 @@ public class InstallationNewRouterGA_5_17_0 extends BaseTestCase {
 
     @Test(priority = 14)
     public void deleteIpLink() {
-        HomePage.goToHomePage(driver, BASIC_URL);
-        openNetworkView();
+        HomePage homePage = new HomePage(driver);
+        homePage.goToHomePage(driver, BASIC_URL);
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.useContextAction("add_to_view_group", "Trail");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
