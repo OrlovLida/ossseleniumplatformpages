@@ -22,7 +22,7 @@ public class GlobalSearchPage extends BasePage {
         threeDotsList.selectOptionWithId(viewName);
     }
 
-    private CommonList getResultsList() {
+    public CommonList getResultsList() {
         return CommonList.create(driver, wait, OBJECTS_LIST_DATA_ATTRIBUTE_NAME);
     }
 

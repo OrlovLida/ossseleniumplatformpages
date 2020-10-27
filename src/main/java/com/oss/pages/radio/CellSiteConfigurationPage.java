@@ -55,12 +55,12 @@ public class CellSiteConfigurationPage extends BasePage {
     }
 
     @Step("Expand the tree and select eNodeB")
-    public CellSiteConfigurationPage expandTreeToENodeB(String locationType, String locationName, String eNodeBName) {
+    public CellSiteConfigurationPage expandTreeToBaseStation(String locationType, String locationName, String baseStation) {
         DelayUtils.waitForPageToLoad(driver, wait);
         getTree().expandTreeRow(locationType);
         getTree().expandTreeRow(locationName);
         getTree().expandTreeRow("Base Stations");
-        getTree().selectTreeRow(eNodeBName);
+        getTree().selectTreeRow(baseStation);
         return this;
     }
 
@@ -72,7 +72,7 @@ public class CellSiteConfigurationPage extends BasePage {
         return this;
     }
 
-    private OldTable getTabTable() {
+    public OldTable getTabTable() {
         DelayUtils.waitForPageToLoad(driver, wait);
         return OldTable.createByComponentDataAttributeName(driver, wait, TAB_TABLE_DATA_ATTRIBUTE_NAME);
     }

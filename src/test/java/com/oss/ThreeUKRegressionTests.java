@@ -14,9 +14,7 @@ import com.oss.pages.physical.LocationWizardPage;
 import com.oss.pages.platform.GlobalSearchPage;
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.OldInventoryViewPage;
-import com.oss.pages.radio.Cell4GWizardPage;
-import com.oss.pages.radio.CellSiteConfigurationPage;
-import com.oss.pages.radio.ENodeBWizardPage;
+import com.oss.pages.radio.*;
 import com.oss.utils.RandomGenerator;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
@@ -47,6 +45,16 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     String randomCell4GName = RandomGenerator.generateRandomName();
     String randomCell4GId = RandomGenerator.generateRandomCell4GId();
     String carrier4G = "L800-B20-5";
+
+    String objectTypeGNodeB = "gNodeB";
+    String randomGNodeBName = RandomGenerator.generateRandomName();
+    String randomGNodeBId = RandomGenerator.generateRandomGNodeBId();
+    String gNodeBModel = "HUAWEI Technology Co.,Ltd gNodeB";
+
+    String objectTypeCell5G = "Cell 5G";
+    String randomCell5GName = RandomGenerator.generateRandomName();
+    String randomCell5GId = RandomGenerator.generateRandomCell5GId();
+    String carrier5G = "NR3600-n78-140";
 
     @BeforeMethod
     public void goToHomePage() {
@@ -223,9 +231,10 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         new ENodeBWizardPage(driver)
                 .setDescription(description)
                 .accept();
-        OldTable baseStationsTable = OldTable.createByComponentDataAttributeName(driver, webDriverWait, "BsTableApp");
-        int rowNumber = baseStationsTable.getRowNumber(description, "Description");
-        String rowValue = baseStationsTable.getValueCell(rowNumber, "Description");
+        new CellSiteConfigurationPage(driver).getTabTable();
+        OldTable tabTable = new CellSiteConfigurationPage(driver).getTabTable();
+        int rowNumber = tabTable.getRowNumber(description, "Description");
+        String rowValue = tabTable.getValueCell(rowNumber, "Description");
         Assert.assertTrue(rowValue.contains(description));
     }
 
@@ -259,16 +268,16 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         confirmationBox.clickButtonByLabel("Delete");
         systemMessageItem.waitForMessageDisappear();
         homePage.searchInGlobalSearch(randomENodeBName);
-        CommonList searchResults = CommonList.create(driver, webDriverWait, "objectsList");
+        CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertTrue(searchResults.isNoData());
+        Assert.assertTrue(objectsList.isNoData());
     }
 
     @Test(groups = {"Radio tests"})
     @Description("The user creates Cell 4G in Cell Site Configuration and checks the message about successful creation")
     public void tS11CreateCell4G() {
 //        String randomLocationName = "Milena";
-//        String randomENodeBName = "MilenaeNodeB";
+//        String randomENodeBName = "eNodeBSelenium";
 
         homePage.setAndSelectObjectType(locationTypeSite);
         new OldInventoryViewPage(driver)
@@ -289,7 +298,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         String randomCell4GName = RandomGenerator.generateRandomName();
         String randomCell4GId = RandomGenerator.generateRandomCell4GId();
 //        String randomLocationName = "Milena";
-//        String randomENodeBName = "MilenaeNodeB";
+//        String randomENodeBName = "eNodeBSelenium";
 
         homePage.setAndSelectObjectType(locationTypeSite);
         new OldInventoryViewPage(driver)
@@ -308,16 +317,17 @@ public class ThreeUKRegressionTests extends BaseTestCase {
                 .filterObject("Cell Name", randomCell4GName, "Cell4G")
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .expandTreeToENodeB(locationTypeSite, randomLocationName, randomENodeBName)
+                .expandTreeToBaseStation(locationTypeSite, randomLocationName, randomENodeBName)
                 .selectTab("Cells")
                 .filterObject("Name", randomCell4GName)
                 .clickEditIcon();
         new Cell4GWizardPage(driver)
                 .setDescription(description)
                 .accept();
-        OldTable cellsTable = OldTable.createByComponentDataAttributeName(driver, webDriverWait, "cell4gTable");
-        int rowNumber = cellsTable.getRowNumber(description, "Description");
-        String rowValue = cellsTable.getValueCell(rowNumber, "Description");
+        new CellSiteConfigurationPage(driver).getTabTable();
+        OldTable tabTable = new CellSiteConfigurationPage(driver).getTabTable();
+        int rowNumber = tabTable.getRowNumber(description, "Description");
+        String rowValue = tabTable.getValueCell(rowNumber, "Description");
         Assert.assertTrue(rowValue.contains(description));
     }
 
@@ -327,7 +337,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         String randomCell4GName = RandomGenerator.generateRandomName();
         String randomCell4GId = RandomGenerator.generateRandomCell4GId();
 //        String randomLocationName = "Milena";
-//        String randomENodeBName = "MilenaeNodeB";
+//        String randomENodeBName = "eNodeBSelenium";
 
         homePage.setAndSelectObjectType(locationTypeSite);
         new OldInventoryViewPage(driver)
@@ -344,7 +354,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         new GlobalSearchPage(driver)
                 .expandShowOnAndChooseView(randomCell4GName, "Show on", "Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .expandTreeToENodeB(locationTypeSite, randomLocationName, randomENodeBName)
+                .expandTreeToBaseStation(locationTypeSite, randomLocationName, randomENodeBName)
                 .selectTab("Cells")
                 .filterObject("Name", randomCell4GName)
                 .clickRemoveIcon();
@@ -352,13 +362,193 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         confirmationBox.clickButtonByLabel("Delete");
         systemMessageItem.waitForMessageDisappear();
         homePage.searchInGlobalSearch(randomCell4GName);
-        CommonList searchResults = CommonList.create(driver, webDriverWait, "objectsList");
-        Assert.assertTrue(searchResults.isNoData());
+        CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        Assert.assertTrue(objectsList.isNoData());
+    }
+
+    @Test(enabled = false, groups = {"Radio tests"})
+    @Description("The user creates gNodeB in Cell Site Configuration and checks the message about successful creation")
+    public void tS14CreateGNodeB() {
+//        String randomLocationName = "Milena";
+
+        homePage.setAndSelectObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", randomLocationName, "Site")
+                .expandShowOnAndChooseView("Cell Site Configuration");
+        new CellSiteConfigurationPage(driver)
+                .clickPlusIconAndSelectOption("Create gNodeB");
+        new GNodeBWizardPage(driver)
+                .createGNodeB(randomGNodeBName, randomGNodeBId, gNodeBModel, MCCMNCPrimary);
+        Assert.assertTrue(SystemMessageContainer.create(driver, webDriverWait)
+                .getMessages().get(0).getText().contains("Created gNodeB"));
+    }
+
+    @Test(enabled = false, groups = {"Radio tests"})
+    @Description("The user creates gNodeB in Cell Site Configuration, searches gNodeB in Inventory View and goes to Cell Site Configuration again, then edits the gNodeB and checks if the description is updated in Base Stations table")
+    public void tS15CreateAndEditGNodeB() {
+        String randomGNodeBName = RandomGenerator.generateRandomName();
+        String randomGNodeBId = RandomGenerator.generateRandomGNodeBId();
+//        String randomLocationName="Milena";
+
+        homePage.setAndSelectObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", randomLocationName, "Site")
+                .expandShowOnAndChooseView("Cell Site Configuration");
+        new CellSiteConfigurationPage(driver)
+                .selectTab("Base Stations")
+                .clickPlusIconAndSelectOption("Create gNodeB");
+        new GNodeBWizardPage(driver)
+                .createGNodeB(randomGNodeBName, randomGNodeBId, gNodeBModel, MCCMNCPrimary);
+        SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
+        systemMessageItem.waitForMessageDisappear();
+        homePage.goToHomePage(driver, BASIC_URL);
+        homePage.setAndSelectObjectType(objectTypeGNodeB);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", randomGNodeBName, "GNodeB")
+                .expandShowOnAndChooseView("Cell Site Configuration");
+        new CellSiteConfigurationPage(driver)
+                .expandTreeToLocation(locationTypeSite, randomLocationName)
+                .selectTab("Base Stations")
+                .filterObject("Name", randomGNodeBName)
+                .clickEditIcon();
+        new GNodeBWizardPage(driver)
+                .setDescription(description)
+                .accept();
+        new CellSiteConfigurationPage(driver).getTabTable();
+        OldTable tabTable = new CellSiteConfigurationPage(driver).getTabTable();
+        int rowNumber = tabTable.getRowNumber(description, "Description");
+        String rowValue = tabTable.getValueCell(rowNumber, "Description");
+        Assert.assertTrue(rowValue.contains(description));
+    }
+
+    @Test(enabled = false, groups = {"Radio tests"})
+    @Description("The user creates gNodeB in Cell Site Configuration, searches gNodeB name in Global Search and deletes the gNodeB and checks if search result in Global Search is no data")
+    public void tS16CreateAndRemoveGNodeB() {
+        String randomGNodeBName = RandomGenerator.generateRandomName();
+        String randomGNodeBId = RandomGenerator.generateRandomGNodeBId();
+//        String randomLocationName="Milena";
+
+        homePage.setAndSelectObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", randomLocationName, "Site")
+                .expandShowOnAndChooseView("Cell Site Configuration");
+        new CellSiteConfigurationPage(driver)
+                .selectTab("Base Stations")
+                .clickPlusIconAndSelectOption("Create gNodeB");
+        new GNodeBWizardPage(driver)
+                .createGNodeB(randomGNodeBName, randomGNodeBId, gNodeBModel, MCCMNCPrimary);
+        SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
+        systemMessageItem.waitForMessageDisappear();
+        homePage.searchInGlobalSearch(randomGNodeBName);
+        new GlobalSearchPage(driver)
+                .expandShowOnAndChooseView(randomGNodeBName, "Show on", "Cell Site Configuration");
+        new CellSiteConfigurationPage(driver)
+                .expandTreeToLocation(locationTypeSite, randomLocationName)
+                .selectTab("Base Stations")
+                .filterObject("Name", randomGNodeBName)
+                .clickRemoveIcon();
+        ConfirmationBoxInterface confirmationBox = ConfirmationBox.create(driver, webDriverWait);
+        confirmationBox.clickButtonByLabel("Delete");
+        systemMessageItem.waitForMessageDisappear();
+        homePage.searchInGlobalSearch(randomGNodeBName);
+        CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        Assert.assertTrue(objectsList.isNoData());
     }
 
     @Test(groups = {"Radio tests"})
-    @Description("The user creates eNodeB in Cell Site Configuration and checks the message about successful creation")
-    public void tS14CreateGNodeB() {
+    @Description("The user creates Cell 5G in Cell Site Configuration and checks the message about successful creation")
+    public void tS17CreateCell5G() {
+//        String randomLocationName = "Milena";
+        String randomGNodeBName = "gNodeBSelenium";
+
+        homePage.setAndSelectObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", randomLocationName, "Site")
+                .expandShowOnAndChooseView("Cell Site Configuration");
+        new CellSiteConfigurationPage(driver)
+                .selectTab("Cells")
+                .clickPlusIconAndSelectOption("Create Cell 5G");
+        new Cell5GWizardPage(driver)
+                .createCell5G(randomCell5GName, randomGNodeBName, randomCell5GId, carrier5G);
+        Assert.assertTrue(SystemMessageContainer.create(driver, webDriverWait)
+                .getMessages().get(0).getText().contains("Created Cell 5G"));
+    }
+
+    @Test(groups = {"Radio tests"})
+    @Description("The user creates Cell 5G in Cell Site Configuration, searches Cell 5G in Inventory View and goes to Cell Site Configuration again, then edits the Cell 5G and checks if the description is updated in Cells table")
+    public void tS18CreateAndModifyCell5G() {
+        String randomCell5GName = RandomGenerator.generateRandomName();
+        String randomCell5GId = RandomGenerator.generateRandomCell5GId();
+//        String randomLocationName = "Milena";
+        String randomGNodeBName = "gNodeBSelenium";
+
+        homePage.setAndSelectObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", randomLocationName, "Site")
+                .expandShowOnAndChooseView("Cell Site Configuration");
+        new CellSiteConfigurationPage(driver)
+                .selectTab("Cells")
+                .clickPlusIconAndSelectOption("Create Cell 5G");
+        new Cell5GWizardPage(driver)
+                .createCell5G(randomCell5GName, randomGNodeBName, randomCell5GId, carrier5G);
+        SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
+        systemMessageItem.waitForMessageDisappear();
+        homePage.goToHomePage(driver, BASIC_URL);
+        homePage.setAndSelectObjectType(objectTypeCell5G);
+        new OldInventoryViewPage(driver)
+                .filterObject("Cell Name", randomCell5GName, "Cell5G")
+                .expandShowOnAndChooseView("Cell Site Configuration");
+        new CellSiteConfigurationPage(driver)
+                .expandTreeToBaseStation(locationTypeSite, randomLocationName, randomGNodeBName)
+                .selectTab("Cells")
+                .filterObject("Name", randomCell5GName)
+                .clickEditIcon();
+        new Cell4GWizardPage(driver)
+                .setDescription(description)
+                .accept();
+        new CellSiteConfigurationPage(driver).getTabTable();
+        OldTable tabTable = new CellSiteConfigurationPage(driver).getTabTable();
+        int rowNumber = tabTable.getRowNumber(description, "Description");
+        String rowValue = tabTable.getValueCell(rowNumber, "Description");
+        Assert.assertTrue(rowValue.contains(description));
+    }
+
+    @Test(groups = {"Radio tests"})
+    @Description("The user creates Cell 5G in Cell Site Configuration, searches Cell 5G name in Global Search and deletes the Cell 5G and checks if search result in Global Search is no data")
+    public void tS19CreateAndRemoveCell5G() {
+        String randomCell5GName = RandomGenerator.generateRandomName();
+        String randomCell5GId = RandomGenerator.generateRandomCell5GId();
+//        String randomLocationName = "Milena";
+        String randomGNodeBName = "gNodeBSelenium";
+
+        homePage.setAndSelectObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", randomLocationName, "Site")
+                .expandShowOnAndChooseView("Cell Site Configuration");
+        new CellSiteConfigurationPage(driver)
+                .selectTab("Cells")
+                .clickPlusIconAndSelectOption("Create Cell 5G");
+        new Cell5GWizardPage(driver)
+                .createCell5G(randomCell5GName, randomGNodeBName, randomCell5GId, carrier5G);
+        SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
+        systemMessageItem.waitForMessageDisappear();
+        homePage.searchInGlobalSearch(randomCell5GName);
+        new GlobalSearchPage(driver)
+                .expandShowOnAndChooseView(randomCell5GName, "Show on", "Cell Site Configuration");
+        new CellSiteConfigurationPage(driver)
+                .expandTreeToBaseStation(locationTypeSite, randomLocationName, randomGNodeBName)
+                .selectTab("Cells")
+                .filterObject("Name", randomCell5GName)
+                .clickRemoveIcon();
+        ConfirmationBoxInterface confirmationBox = ConfirmationBox.create(driver, webDriverWait);
+        confirmationBox.clickButtonByLabel("Delete");
+        systemMessageItem.waitForMessageDisappear();
+        homePage.searchInGlobalSearch(randomCell5GName);
+        CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        Assert.assertTrue(objectsList.isNoData());
     }
 
 }
