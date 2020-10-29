@@ -264,8 +264,6 @@ public class ThreeUKRegressionTests extends BaseTestCase {
                 .selectTab("Base Stations")
                 .filterObject("Name", randomENodeBName)
                 .clickRemoveIcon();
-        ConfirmationBoxInterface confirmationBox = ConfirmationBox.create(driver, webDriverWait);
-        confirmationBox.clickButtonByLabel("Delete");
         systemMessageItem.waitForMessageDisappear();
         homePage.searchInGlobalSearch(randomENodeBName);
         CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
@@ -358,8 +356,6 @@ public class ThreeUKRegressionTests extends BaseTestCase {
                 .selectTab("Cells")
                 .filterObject("Name", randomCell4GName)
                 .clickRemoveIcon();
-        ConfirmationBoxInterface confirmationBox = ConfirmationBox.create(driver, webDriverWait);
-        confirmationBox.clickButtonByLabel("Delete");
         systemMessageItem.waitForMessageDisappear();
         homePage.searchInGlobalSearch(randomCell4GName);
         CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
@@ -448,8 +444,6 @@ public class ThreeUKRegressionTests extends BaseTestCase {
                 .selectTab("Base Stations")
                 .filterObject("Name", randomGNodeBName)
                 .clickRemoveIcon();
-        ConfirmationBoxInterface confirmationBox = ConfirmationBox.create(driver, webDriverWait);
-        confirmationBox.clickButtonByLabel("Delete");
         systemMessageItem.waitForMessageDisappear();
         homePage.searchInGlobalSearch(randomGNodeBName);
         CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
@@ -542,8 +536,6 @@ public class ThreeUKRegressionTests extends BaseTestCase {
                 .selectTab("Cells")
                 .filterObject("Name", randomCell5GName)
                 .clickRemoveIcon();
-        ConfirmationBoxInterface confirmationBox = ConfirmationBox.create(driver, webDriverWait);
-        confirmationBox.clickButtonByLabel("Delete");
         systemMessageItem.waitForMessageDisappear();
         homePage.searchInGlobalSearch(randomCell5GName);
         CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
