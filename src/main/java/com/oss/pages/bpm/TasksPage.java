@@ -6,6 +6,7 @@
  */
 package com.oss.pages.bpm;
 
+import com.oss.framework.components.inputs.Button;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -92,5 +93,15 @@ public class TasksPage extends BasePage {
         tabs.callActionByLabel(actionLabel);
         ConfirmationBoxInterface prompt= ConfirmationBox.create(driver, wait);
         prompt.clickButtonByLabel("Proceed");
+    }
+
+    public void openIntegrationProcessByClickingOnIdLink() {
+        TableInterface table = OldTable.createByComponentId(driver, wait, "ip_involved_nrp_group1");
+        table.selectLinkInSpecificColumn("Id");
+    }
+
+    public void clickPerformConfigurationButton(){
+        Button button = Button.create(driver,"Perform Configuration","a");
+        button.click();
     }
 }
