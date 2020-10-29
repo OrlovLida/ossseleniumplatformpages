@@ -7,9 +7,7 @@ import com.oss.framework.widgets.Widget;
 import com.oss.framework.widgets.treewidget.TreeWidget;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class DeviceOverviewPage extends BasePage {
 
@@ -23,7 +21,7 @@ public class DeviceOverviewPage extends BasePage {
         if (mainTree == null) {
             Widget.waitForWidget(wait, "TreeView");
             mainTree = TreeWidget.createByClass(driver, "TreeView", wait);
-            wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.className("TreeRow"))));
+            DelayUtils.waitForPageToLoad(driver, wait);
         }
         return mainTree;
     }
