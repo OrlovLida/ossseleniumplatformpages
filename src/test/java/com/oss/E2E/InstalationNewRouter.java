@@ -1,12 +1,8 @@
 package com.oss.E2E;
 
+import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
-import org.assertj.core.api.Assertions;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
-
-import com.oss.BaseTestCase;
 import com.oss.framework.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.physical.DeviceOverviewPage;
@@ -18,6 +14,9 @@ import com.oss.pages.reconciliation.NetworkInconsistenciesViewPage;
 import com.oss.pages.reconciliation.SamplesManagementPage;
 import com.oss.pages.transport.IPv4AddressAssignmentWizardPage;
 import com.oss.pages.transport.NetworkViewPage;
+import org.assertj.core.api.Assertions;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 
 import java.util.List;
 
@@ -38,7 +37,7 @@ public class InstalationNewRouter extends BaseTestCase {
     public void openNetworkView() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
-        sideMenu.callActionByLabel("LAB Network View","Favourites", "SeleniumTests");
+        sideMenu.callActionByLabel("LAB Network View", "Favourites", "SeleniumTests");
     }
 
     @Test(priority = 1)
@@ -212,7 +211,8 @@ public class InstalationNewRouter extends BaseTestCase {
 
     @Test(priority = 14)
     public void deleteIpLink() {
-        HomePage.goToHomePage(driver, BASIC_URL);
+        HomePage homePage = new HomePage(driver);
+        homePage.goToHomePage(driver, BASIC_URL);
         openNetworkView();
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.useContextAction("add_to_view_group", "Trail");

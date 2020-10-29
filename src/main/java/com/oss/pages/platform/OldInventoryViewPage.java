@@ -70,34 +70,26 @@ public class OldInventoryViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    @Step("Filter object name and select object name row")
-    public OldInventoryViewPage filterObjectName(String objectName, String tableObjects) {
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, "table("+tableObjects+")");
-        table.searchByAttributeWithLabel("Name", Input.ComponentType.TEXT_FIELD, objectName);
-        table.selectRowByAttributeValueWithLabel("Name", objectName);
-        return this;
-    }
-
     @Step("Filter object identifier and select object identifier row")
     public OldInventoryViewPage filterObjectIdentifier(String objectIdentifier, String tableObjects) {
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, "table("+tableObjects+")");
+        OldTable table = OldTable.createByComponentDataAttributeName(driver, wait, "table(" + tableObjects + ")");
         table.searchByAttributeWithLabel("Identifier", Input.ComponentType.TEXT_FIELD, objectIdentifier);
         table.selectRowByAttributeValueWithLabel("Identifier", objectIdentifier);
         return this;
     }
 
-    @Step("Expand Show on button and select Location Overview from the drop-down list")
-    public LocationOverviewPage expandShowOnLocationOverview() {
-        ActionsContainer actionsContainer = ActionsContainer.createFromParent(driver.findElement(By.xpath(".//div[@class='OssWindow']")), driver, wait);
-        actionsContainer.callAction("NAVIGATION", "OpenLocationOverviewAction");
-        return new LocationOverviewPage(driver);
+    @Step("Filter and select {objectName} row")
+    public OldInventoryViewPage filterObject(String columnName, String objectName, String tableObjects) {
+        OldTable table = OldTable.createByComponentDataAttributeName(driver, wait, "table(" + tableObjects + ")");
+        table.searchByAttributeWithLabel(columnName, Input.ComponentType.TEXT_FIELD, objectName);
+        table.selectRowByAttributeValueWithLabel(columnName, objectName);
+        return this;
     }
 
-    @Step("Expand Show on button and select Cell Site Configuration from the drop-down list")
-    public CellSiteConfigurationPage expandShowOnCellSiteConfiguration() {
-        ActionsContainer actionsContainer = ActionsContainer.createFromParent(driver.findElement(By.xpath(".//div[@class='OssWindow']")), driver, wait);
-        actionsContainer.callAction("NAVIGATION", "Cell Site Configuration");
-        return new CellSiteConfigurationPage(driver);
+    @Step("Expand Show on button and select view from the drop-down list")
+    public void expandShowOnAndChooseView(String viewName) {
+        OldTable tableContextAction = OldTable.createByOssWindow(driver, wait);
+        tableContextAction.callAction("NAVIGATION", viewName);
     }
 
 }

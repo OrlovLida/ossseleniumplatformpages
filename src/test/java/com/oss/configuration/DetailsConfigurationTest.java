@@ -4,6 +4,8 @@ package com.oss.configuration;
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
+import com.oss.framework.components.portals.SaveConfigurationWizard;
+import com.oss.framework.components.portals.SaveConfigurationWizard.Property;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.HierarchyViewPage;
 import com.oss.pages.platform.NewInventoryViewPage;
@@ -17,15 +19,18 @@ import org.testng.annotations.Test;
 
 import java.util.List;
 
+import static com.oss.framework.components.portals.SaveConfigurationWizard.Property.GROUPS;
+import static com.oss.framework.components.portals.SaveConfigurationWizard.Property.TYPE;
+
 @Listeners({TestListener.class})
 public class DetailsConfigurationTest extends BaseTestCase {
 
     private NewInventoryViewPage newInventoryViewPage;
 
-    private static String GROUP_NAME= "SeleniumTests";
-    private static String CONFIGURATION_NAME_PROPERTIES= "Properties_User_Building";
-    private static String CONFIGURATION_NAME_PROPERTIES_SUPERTYPE= "Properties_User_Location";
-    private static String CONFIGURATION_NAME_PROPERTIES_GROUP= "Properties_Group";
+    private final static String GROUP_NAME= "SeleniumTests";
+    private final static String CONFIGURATION_NAME_PROPERTIES= "Properties_User_Building";
+    private final static String CONFIGURATION_NAME_PROPERTIES_SUPERTYPE= "Properties_User_Location";
+    private final static String CONFIGURATION_NAME_PROPERTIES_GROUP= "Properties_Group";
 
     @BeforeClass
     public void goToInventoryView() {
@@ -39,43 +44,50 @@ public class DetailsConfigurationTest extends BaseTestCase {
     public void saveNewConfigurationForPropertiesForType(){
         //when
         newInventoryViewPage.selectFirstRow();
-        newInventoryViewPage.saveConfigurationForPropertiesForUser(CONFIGURATION_NAME_PROPERTIES, "Building");
+        newInventoryViewPage
+                .saveConfigurationForProperties(
+                        CONFIGURATION_NAME_PROPERTIES,
+                        createField(TYPE, "Building"));
 
         //then
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
-        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages).hasSize(1);
-        Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
+        assertSuccessMessage();
     }
 
     @Test(priority = 2)
     @Description("Saving new configuration for properties for supertype")
     public void saveNewConfigurationForPropertiesForSupertype(){
         //when
-        newInventoryViewPage.selectFirstRow();
-        newInventoryViewPage.getPropertyPanel().changeOrder("name", 3);
-        newInventoryViewPage.saveConfigurationForPropertiesForUser(CONFIGURATION_NAME_PROPERTIES_SUPERTYPE,"Location");
+        newInventoryViewPage
+                .selectFirstRow();
+        newInventoryViewPage
+                .getPropertyPanel()
+                .changePropertyOrder("name", 3);
+        newInventoryViewPage
+                .saveConfigurationForProperties(
+                        CONFIGURATION_NAME_PROPERTIES_SUPERTYPE,
+                        createField(TYPE, "Location"));
 
         //then
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
-        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages).hasSize(1);
-        Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
+        assertSuccessMessage();
     }
 
     @Test(priority = 3)
     @Description("Saving new configuration for properties for group")
     public void saveNewConfigurationForPropertiesForGroup(){
         //when
-        newInventoryViewPage.selectFirstRow();
-        newInventoryViewPage.getPropertyPanel().changeOrder("name", 4);
-        newInventoryViewPage.saveConfigurationForPropertiesForGroup(CONFIGURATION_NAME_PROPERTIES_GROUP,"Location", GROUP_NAME);
+        newInventoryViewPage
+                .selectFirstRow();
+        newInventoryViewPage
+                .getPropertyPanel()
+                .changePropertyOrder("name", 4);
+        newInventoryViewPage
+                .saveConfigurationForProperties(
+                        CONFIGURATION_NAME_PROPERTIES_GROUP,
+                        createField(TYPE, "Location"),
+                        createField(GROUPS, GROUP_NAME));
 
         //then
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
-        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages).hasSize(1);
-        Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
+        assertSuccessMessage();
     }
 
     @Test(priority = 4)
@@ -126,5 +138,17 @@ public class DetailsConfigurationTest extends BaseTestCase {
         newInventoryViewPage.selectFirstRow();
         //then
         Assert.assertEquals(newInventoryViewPage.getPropertyPanel().getPropertyLabels().get(4), "Name");
+    }
+
+    private SaveConfigurationWizard.Field createField(Property property, String... values) {
+        return SaveConfigurationWizard.create(driver, webDriverWait).createField(property, values);
+    }
+
+    private void assertSuccessMessage() {
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
+        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
+        Assertions.assertThat(messages).hasSize(1);
+        Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
+        systemMessage.close();
     }
 }

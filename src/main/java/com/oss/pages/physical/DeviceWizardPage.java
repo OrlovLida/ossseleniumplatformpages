@@ -128,4 +128,8 @@ public class DeviceWizardPage extends BasePage {
         input.setSingleStringValue(description);
     }
 
+    public void setEquipmentType(String equipmentType){
+        Input input = physicalDeviceWizard.getComponent("search_equipment_type", SEARCH_FIELD);
+        input.setSingleStringValue(equipmentType);
+    }
 }

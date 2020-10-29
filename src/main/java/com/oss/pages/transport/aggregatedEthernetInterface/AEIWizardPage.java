@@ -127,7 +127,7 @@ public class AEIWizardPage extends BasePage {
 
     public void searchLocationAndDevice() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        CommonHierarchyApp hierarchyApp = CommonHierarchyApp.createByClass(driver, COMMON_HIERARCHY_APP_CLASS, wait);
+        CommonHierarchyApp hierarchyApp = CommonHierarchyApp.createByClass(driver, wait);
         DelayUtils.waitForPageToLoad(driver, wait);
         hierarchyApp.setFirstObjectInHierarchy(LOCATION);
         DelayUtils.waitForPageToLoad(driver, wait);
