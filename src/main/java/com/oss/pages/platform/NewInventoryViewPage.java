@@ -91,10 +91,12 @@ public class NewInventoryViewPage extends BasePage {
 
     @Step("Change layout to Horizontal Orientation")
     public NewInventoryViewPage changeLayoutToHorizontal() {
+        DelayUtils.waitForPageToLoad(driver, wait);
         if (howManyRows() == 1) {
             ButtonPanel.create(driver, wait).expandLayoutMenu();
             DropdownList.create(driver, wait).selectOptionWithId("TWO_ROWS");
         }
+        DelayUtils.waitForPageToLoad(driver, wait);
         return this;
     }
 
@@ -105,6 +107,7 @@ public class NewInventoryViewPage extends BasePage {
             ButtonPanel.create(driver, wait).expandLayoutMenu();
             DropdownList.create(driver, wait).selectOptionWithId("TWO_COLUMNS");
         }
+        DelayUtils.waitForPageToLoad(driver, wait);
         return this;
     }
 
@@ -270,7 +273,7 @@ public class NewInventoryViewPage extends BasePage {
 
     @Step("Enable Column")
     public AttributesChooser enableColumn(String columnLabel) {
-        getMainTable().getAttributesChooser().enableAttributesByLabel(columnLabel);
+        getMainTable().getAttributesChooser().enableAttributeByLabel(columnLabel);
         return getMainTable().getAttributesChooser();
     }
 
@@ -282,7 +285,7 @@ public class NewInventoryViewPage extends BasePage {
 
     @Step("Disable Column")
     public AttributesChooser disableColumn(String columnLabel) {
-        getMainTable().getAttributesChooser().disableAttributesByLabel(columnLabel);
+        getMainTable().getAttributesChooser().disableAttributeByLabel(columnLabel);
         return getMainTable().getAttributesChooser();
     }
 

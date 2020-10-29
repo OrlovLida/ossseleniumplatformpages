@@ -40,7 +40,6 @@ public class FiltersTest extends BaseTestCase {
     @BeforeClass
     public void goToInventoryView() {
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Location");
-
     }
 
     @Test(priority = 1)
