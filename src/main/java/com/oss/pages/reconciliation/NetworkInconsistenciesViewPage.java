@@ -97,7 +97,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
 
     @Step("Check notification about accepting inconsistencies")
     public void checkNotificationAfterApplyInconsistencies(String groupDiscrepancyLabel) {
-        NotificationsInterface notifications = Notifications.create(driver, new WebDriverWait(driver, 90));
+        NotificationsInterface notifications = Notifications.create(driver, new WebDriverWait(driver, 150));
         Assertions.assertThat(notifications.waitAndGetFinishedNotificationText().equals("Accepting discrepancies related to " + groupDiscrepancyLabel + " finished")).isTrue();
     }
 }
