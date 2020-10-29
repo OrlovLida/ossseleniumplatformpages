@@ -23,7 +23,7 @@ public class DeviceOverviewPage extends BasePage {
         if (mainTree == null) {
             Widget.waitForWidget(wait, "TreeView");
             mainTree = TreeWidget.createByClass(driver, "TreeView", wait);
-            wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.className("TreeRow"))));
+            DelayUtils.waitForPageToLoad(driver, wait);
         }
         return mainTree;
     }

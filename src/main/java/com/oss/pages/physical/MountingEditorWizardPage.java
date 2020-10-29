@@ -28,7 +28,7 @@ public class MountingEditorWizardPage extends BasePage {
         if (mainTable == null) {
             Widget.waitForWidget(wait, "TableWidget");
             mainTable = TableWidget.create(driver, "TableWidget", wait);
-            wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.className("Row"))));
+            DelayUtils.waitForPageToLoad(driver, wait);
         }
         return mainTable;
     }

@@ -25,7 +25,7 @@ public class CardCreateWizardPage extends BasePage {
         modelComponent.setSingleStringValue(model);
     }
 
-    //TODO: change this method after adding data-attributename
+    //TODO: change this method after adding data-attributename, OSSTEST-97786
     @Step("Set Slots")
     public void setSlots(String slots) {
         DelayUtils.waitByXPath(wait, "//span[text()='Slot']/../../../..");
