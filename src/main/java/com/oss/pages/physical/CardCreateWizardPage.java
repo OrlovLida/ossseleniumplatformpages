@@ -16,7 +16,7 @@ import java.sql.Driver;
 
 public class CardCreateWizardPage extends BasePage {
 
-    private Wizard wizard = Wizard.createByComponentId(driver, wait, "wizard");
+    private Wizard wizard = Wizard.createWizard(driver, wait);
     private static final String MODEL_SEARCH = "model";
     //private static final String SLOT = "model";
     //private static final String UPDATE_BUTTON = "change_model_common_buttons_app-1";
@@ -45,7 +45,7 @@ public class CardCreateWizardPage extends BasePage {
     }
 
     public static CardCreateWizardPage goToCardCreateWizardPageLive(WebDriver driver, String basicURL) {
-        driver.get(String.format("%s/#/view/physical-inventory/deviceoverview?perspective=LIVE&id=75530309", basicURL));
+        driver.get(String.format("%s/#/view/physical-inventory/deviceoverview?perspective=LIVE&id=50374212", basicURL));
         return new CardCreateWizardPage(driver);
     }
 
