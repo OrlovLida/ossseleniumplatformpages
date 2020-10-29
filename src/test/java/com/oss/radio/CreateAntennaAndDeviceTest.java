@@ -3,6 +3,8 @@ package com.oss.radio;
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
+import com.oss.framework.prompts.ConfirmationBox;
+import com.oss.framework.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.platform.HomePage;
@@ -33,12 +35,12 @@ public class CreateAntennaAndDeviceTest extends BaseTestCase {
     private String RADIO_UNIT_EQUIPMENT_TYPE = "Remote Radio Head/Unit";
 
     public static void goToCellSiteConfiguration(WebDriver driver, String basicURL) {
-        DelayUtils.sleep(1000);
-        driver.get(format("%s#/view/radio/cellsite/xid?perspective=LIVE&ids=50547875", basicURL));
+        driver.get(format("%s#/view/radio/cellsite/xid?project_id=76086784&perspective=PLAN&ids=75521556", basicURL));
     }
 
     @BeforeClass
-    public void goToCellSiteConf() {
+    public void goToCellSiteConfiguration() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         goToCellSiteConfiguration(driver, BASIC_URL);
         cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);
     }
@@ -47,6 +49,7 @@ public class CreateAntennaAndDeviceTest extends BaseTestCase {
     @Test(priority = 1)
     public void createBaseBandUnit() {
         cellSiteConfigurationPage.expandTreeToLocation("Site", LOCATION_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cellSiteConfigurationPage.selectTab("Devices");
 
         cellSiteConfigurationPage.clickPlusIconAndSelectOption("Create Device");
@@ -64,6 +67,7 @@ public class CreateAntennaAndDeviceTest extends BaseTestCase {
     @Test(priority = 2)
     public void createRadioUnit() {
         for (int i = 0; i < 3; i++) {
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
             cellSiteConfigurationPage.clickPlusIconAndSelectOption("Create Device");
             DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -80,6 +84,7 @@ public class CreateAntennaAndDeviceTest extends BaseTestCase {
     @Test(priority = 3)
     public void createRanAntennaAndArray() {
         for (int i = 0; i < 3; i++) {
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
             cellSiteConfigurationPage.clickPlusIconAndSelectOption("Create RAN Antenna");
             RanAntennaWizardPage ranAntennaWizardPage = new RanAntennaWizardPage(driver);
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -91,6 +96,7 @@ public class CreateAntennaAndDeviceTest extends BaseTestCase {
 
             antennaArrayWizardPage = new AntennaArrayWizardPage(driver);
             antennaArrayWizardPage.clickAccept();
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
             checkPopup();
         }
     }
@@ -98,18 +104,18 @@ public class CreateAntennaAndDeviceTest extends BaseTestCase {
     @Step("Delete created devices")
     @Test(priority = 4)
     public void deleteDevices() {
-        cellSiteConfigurationPage.searchObjectsByName(BBU_NAME);
-        cellSiteConfigurationPage.deleteObjectsByName(BBU_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cellSiteConfigurationPage.filterObject("Name", BBU_NAME);
+        cellSiteConfigurationPage.clickRemoveIcon();
         checkPopup();
 
-        cellSiteConfigurationPage.searchObjectsByName(RADIO_UNIT_NAME);
-        for(int i=0; i<3; i++){
-            cellSiteConfigurationPage.deleteObjectsByName(RADIO_UNIT_NAME);
+        for(int i =0; i<3; i++){
+            cellSiteConfigurationPage.filterObject("Name", RADIO_UNIT_NAME);
+            cellSiteConfigurationPage.clickRemoveIcon();
             checkPopup();
-        }
-        cellSiteConfigurationPage.searchObjectsByName(ANTENNA_NAME);
-        for(int i=0; i<3; i++){
-            cellSiteConfigurationPage.deleteObjectsByName(ANTENNA_NAME);
+
+            cellSiteConfigurationPage.filterObject("Name", ANTENNA_NAME);
+            cellSiteConfigurationPage.clickRemoveIcon();
             checkPopup();
         }
     }

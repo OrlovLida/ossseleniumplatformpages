@@ -44,9 +44,9 @@ public class CellSiteConfigurationPage extends BasePage {
 
     @Step("Filter and select {objectName} row")
     public CellSiteConfigurationPage filterObject(String columnName, String objectName) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        getTabTable().searchByAttributeWithLabel(columnName, TEXT_FIELD, objectName);
-        getTabTable().selectRowByAttributeValueWithLabel(columnName, objectName);
+        OldTable tabTable = OldTable.createByComponentDataAttributeName(driver, wait, TAB_TABLE_DATA_ATTRIBUTE_NAME);
+        tabTable.searchByAttributeWithLabel(columnName, Input.ComponentType.TEXT_FIELD, objectName);
+        tabTable.selectRowByAttributeValueWithLabel(columnName, objectName);
         return this;
     }
 
@@ -56,7 +56,12 @@ public class CellSiteConfigurationPage extends BasePage {
     }
 
     @Step("Click Remove icon")
-    public void clickRemoveIcon() { getTabTable().callActionByLabel("Delete"); }
+    public void clickRemoveIcon() {
+        getTabTable().callActionByLabel("Delete");
+        DelayUtils.waitForPageToLoad(driver, wait);
+        ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
+        prompt.clickButtonByLabel("Delete");
+    }
 
     @Step("Expand the tree and select eNodeB")
     public CellSiteConfigurationPage expandTreeToBaseStation(String locationType, String locationName, String baseStation) {
@@ -87,8 +92,9 @@ public class CellSiteConfigurationPage extends BasePage {
         return OldTable.createByComponentDataAttributeName(driver, wait, TAB_TABLE_DATA_ATTRIBUTE_NAME);
     }
 
-    private TreeWidget getTree() {
+    public TreeWidget getTree() {
         Widget.waitForWidget(wait, TREE_CLASS);
         return TreeWidget.createByClass(driver, TREE_CLASS, wait);
     }
 }
+
