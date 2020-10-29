@@ -83,6 +83,7 @@ public class FilterManagerPage extends BasePage {
         getCommonList().expandListElementKebab(name);
         DelayUtils.waitForPageToLoad(driver, wait);
         getCommonList().chooseDelete();
+        DelayUtils.waitForPageToLoad(driver, wait);
         return this;
     }
 
