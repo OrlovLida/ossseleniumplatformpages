@@ -9,7 +9,7 @@ import org.openqa.selenium.WebDriver;
 
 public class ChangeModelWizardPage extends BasePage {
 
-    private Wizard wizard = Wizard.createByComponentId(driver, wait,"change_model_wizard_view");
+    private Wizard wizard = Wizard.createByComponentId(driver, wait, "change_model_wizard_view");
     private static final String MODEL_SEARCH = "search_model";
     private static final String UPDATE_BUTTON = "change_model_common_buttons_app-1";
 

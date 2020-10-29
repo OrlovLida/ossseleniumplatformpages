@@ -9,7 +9,7 @@ import org.openqa.selenium.WebDriver;
 
 public class ChangeCardModelWizard extends BasePage {
 
-    private Wizard wizard = Wizard.createByComponentId(driver, wait,"card_change_model_wizard_view");
+    private Wizard wizard = Wizard.createByComponentId(driver, wait, "card_change_model_wizard_view");
     private static final String MODEL_SEARCH = "search_box_card_change_model";
 
     public ChangeCardModelWizard(WebDriver driver) {

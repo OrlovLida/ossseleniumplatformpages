@@ -1,25 +1,19 @@
 package com.oss.pages.physical;
 
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.data.Data;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
-import com.sun.xml.internal.bind.v2.TODO;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import java.sql.Driver;
-
 public class CardCreateWizardPage extends BasePage {
 
     private Wizard wizard = Wizard.createWizard(driver, wait);
     private static final String MODEL_SEARCH = "model";
-    //private static final String SLOT = "model";
-    //private static final String UPDATE_BUTTON = "change_model_common_buttons_app-1";
 
     public CardCreateWizardPage(WebDriver driver) {
         super(driver);
@@ -45,7 +39,7 @@ public class CardCreateWizardPage extends BasePage {
     }
 
     public static CardCreateWizardPage goToCardCreateWizardPageLive(WebDriver driver, String basicURL) {
-        driver.get(String.format("%s/#/view/physical-inventory/deviceoverview?perspective=LIVE&id=50374212", basicURL));
+        driver.get(String.format("%s/#/view/physical-inventory/deviceoverview?id=50374212&perspective=LIVE", basicURL));
         return new CardCreateWizardPage(driver);
     }
 
@@ -53,5 +47,4 @@ public class CardCreateWizardPage extends BasePage {
     public void clickAccept() {
         wizard.clickAccept();
     }
-
 }
