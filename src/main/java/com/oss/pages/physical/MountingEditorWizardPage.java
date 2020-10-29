@@ -7,9 +7,7 @@ import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.tablewidget.TableWidget;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class MountingEditorWizardPage extends BasePage {
 
