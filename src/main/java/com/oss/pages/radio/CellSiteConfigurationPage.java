@@ -82,7 +82,7 @@ public class CellSiteConfigurationPage extends BasePage {
         getTree().selectTreeRow(treeRowName);
     }
 
-    private OldTable getTabTable() {
+    public OldTable getTabTable() {
         DelayUtils.waitForPageToLoad(driver, wait);
         return OldTable.createByComponentDataAttributeName(driver, wait, TAB_TABLE_DATA_ATTRIBUTE_NAME);
     }
