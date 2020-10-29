@@ -16,11 +16,6 @@
             <class name="com.oss.FiltersTest"/>
         </classes>
     </test>
-    <test name="ReconciliationE2ETest">
-        <classes>
-            <class name="com.oss.reconciliation.ReconciliationE2ETest"/>
-        </classes>
-    </test>
     <test name="IPAMTest">
         <classes>
             <class name="com.oss.transport.IPAMTest"/>
