@@ -21,7 +21,6 @@ import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD
  */
 
 public class CellSiteConfigurationPage extends BasePage {
-
     private static final String TAB_TABLE_DATA_ATTRIBUTE_NAME = "TableTabsApp";
     private static final String TREE_CLASS = "TreeView";
     private static final String DEVICES_TABLE = "DevicesTableApp";
@@ -57,9 +56,7 @@ public class CellSiteConfigurationPage extends BasePage {
     }
 
     @Step("Click Remove icon")
-    public void clickRemoveIcon() {
-        getTabTable().callActionByLabel("Delete");
-    }
+    public void clickRemoveIcon() { getTabTable().callActionByLabel("Delete"); }
 
     @Step("Expand the tree and select eNodeB")
     public CellSiteConfigurationPage expandTreeToBaseStation(String locationType, String locationName, String baseStation) {
@@ -79,7 +76,13 @@ public class CellSiteConfigurationPage extends BasePage {
         return this;
     }
 
-    public OldTable getTabTable() {
+    @Step("Select tree row")
+    public void selectTreeRow(String treeRowName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getTree().selectTreeRow(treeRowName);
+    }
+
+    private OldTable getTabTable() {
         DelayUtils.waitForPageToLoad(driver, wait);
         return OldTable.createByComponentDataAttributeName(driver, wait, TAB_TABLE_DATA_ATTRIBUTE_NAME);
     }
@@ -88,30 +91,4 @@ public class CellSiteConfigurationPage extends BasePage {
         Widget.waitForWidget(wait, TREE_CLASS);
         return TreeWidget.createByClass(driver, TREE_CLASS, wait);
     }
-    /**
-     * @author Sebastian Kulig
-     */
-    @Step("Search objects with name {name}")
-    public void searchObjectsByName(String name){
-        DelayUtils.waitForPageToLoad(driver, wait);
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, DEVICES_TABLE);
-        table.searchByAttributeWithLabel("Name", TEXT_FIELD, name);
-    }
-
-    @Step("Delete objects with name {name}")
-    public void deleteObjectsByName(String name) {
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, DEVICES_TABLE);
-        DelayUtils.waitForPageToLoad(driver, wait);
-        table.selectRowByAttributeValueWithLabel("Name", name);
-        DelayUtils.waitByXPath(wait, "//a[@data-attributename='Delete']");
-        Button deleteButton = Button.createBySelectorAndId(driver, "a", "Delete");
-        deleteButton.click();
-        DelayUtils.waitForPageToLoad(driver, wait);
-        ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
-        prompt.clickButtonByLabel("Delete");
-        DelayUtils.waitForPageToLoad(driver, wait);
-    }
 }
-
-
-
