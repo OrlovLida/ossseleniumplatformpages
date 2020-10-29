@@ -71,7 +71,7 @@ public class CreationEnodebCell4g extends BaseTestCase {
     public void selectEnodeBFromTree() {
         CellSiteConfigurationPage cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        cellSiteConfigurationPage.expandTreeToENodeB("Site", locationName, eNodeBName);
+        cellSiteConfigurationPage.expandTreeToBaseStation("Site", locationName, eNodeBName);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
