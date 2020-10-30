@@ -10,33 +10,18 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 
-public class ShareFilterPage  extends FilterManagerPage {
+public class ShareFilterPage extends FilterManagerPage {
 
-    public ShareFilterPage(WebDriver driver){
+    public ShareFilterPage(WebDriver driver) {
         super(driver);
     }
 
-    private final String SEARCH_ID = "userSearch";
-    private final String LEVEL_ELEMENT_PARTIAL_XPATH = "//li[contains (@class,  'levelElement')]//*[text() = '";
-    private final String QUIT_MODAL_BUTTON_XPATH = "//a[@class = 'quitModalButton']";
-
-    private WebElement getLevelElementByName(String name){
-        return driver.findElement(By.xpath(LEVEL_ELEMENT_PARTIAL_XPATH + name + "']/../.."));
-    }
-
-    private WebElement getReadButtonByName(String name){
-        return getLevelElementByName(name).findElement(By.xpath(".//button//*[text() = 'R']/../.."));
-    }
-
-    private WebElement getWriteButtonByName(String name){
-        return getLevelElementByName(name).findElement(By.xpath(".//button//*[text() = 'W']/../.."));
-    }
-    private Input getComponent(String componentId, Input.ComponentType componentType) {
-        return ComponentFactory.create(componentId,componentType,driver,wait);
-    }
+    private static final String SEARCH_ID = "userSearch";
+    private static final String LEVEL_ELEMENT_PARTIAL_XPATH = "//li[contains (@class,  'levelElement')]//*[text() = '";
+    private static final String QUIT_MODAL_BUTTON_XPATH = "//a[@class = 'quitModalButton']";
 
     @Step("Type user name in search")
-    public ShareFilterPage typeUserNameInSearch(String userName){
+    public ShareFilterPage typeUserNameInSearch(String userName) {
         SearchField searchField = (SearchField) getComponent(SEARCH_ID, Input.ComponentType.SEARCH_FIELD);
         searchField.typeValue(userName);
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -44,7 +29,7 @@ public class ShareFilterPage  extends FilterManagerPage {
     }
 
     @Step("Close Share View")
-    public  FilterManagerPage closeShareView(){
+    public FilterManagerPage closeShareView() {
         DelayUtils.waitForClickability(wait, driver.findElement(By.xpath(QUIT_MODAL_BUTTON_XPATH)));
         driver.findElement(By.xpath(QUIT_MODAL_BUTTON_XPATH)).click();
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -52,14 +37,13 @@ public class ShareFilterPage  extends FilterManagerPage {
     }
 
     @Step("Share for user")
-    public  ShareFilterPage shareForUser(String userName, String permission){
+    public ShareFilterPage shareForUser(String userName, String permission) {
         DelayUtils.waitForPageToLoad(driver, wait);
         getLevelElementByName("all users").click();
-        if(permission.equals("R")) {
+        if (permission.equals("R")) {
             DelayUtils.waitForClickability(wait, getReadButtonByName(userName));
             getReadButtonByName(userName).click();
-        }
-        else if(permission.equals("W")) {
+        } else if (permission.equals("W")) {
             DelayUtils.waitForClickability(wait, getWriteButtonByName(userName));
             getWriteButtonByName(userName).click();
         }
@@ -67,6 +51,19 @@ public class ShareFilterPage  extends FilterManagerPage {
         return this;
     }
 
+    private WebElement getLevelElementByName(String name) {
+        return driver.findElement(By.xpath(LEVEL_ELEMENT_PARTIAL_XPATH + name + "']/../.."));
+    }
 
+    private WebElement getReadButtonByName(String name) {
+        return getLevelElementByName(name).findElement(By.xpath(".//button//*[text() = 'R']/../.."));
+    }
 
+    private WebElement getWriteButtonByName(String name) {
+        return getLevelElementByName(name).findElement(By.xpath(".//button//*[text() = 'W']/../.."));
+    }
+
+    private Input getComponent(String componentId, Input.ComponentType componentType) {
+        return ComponentFactory.create(componentId, componentType, driver, wait);
+    }
 }

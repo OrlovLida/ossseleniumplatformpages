@@ -19,18 +19,18 @@ public class ExportGuiWizardPage extends BasePage {
 
     public ExportGuiWizardPage(WebDriver driver) {super(driver); getWizard(); }
 
-    private final String CHECKBOX_EXPORT_WITH_HEADERS_ID = "exportgui-components-withheadercheckbox";
-    private final String CHECKBOX_GENERATE_PDF_ID = "exportgui-components-generatepdfcheckbox";
-    private final String CHECKBOX_COMPRESS_FILE_ID = "exportgui-components-compressfilecheckbox";
-    private final String CHECKBOX_SCHEDULE_EXPORT_TASK_ID = "exportgui-components-scheduleexportcheckbox";
-    private final String CHECKBOX_SEND_BY_EMAIL_ID = "exportgui-components-sendbyemailcheckbox";
-    private final String CHECKBOX_REMOTE_UPLOAD_ID = "exportgui-components-remoteuploadcheckbox";
-    private final String COMBOBOX_FILE_TYPE_ID = "exportgui-components-filetypechoose-input";
-    private final String TEXT_FIELD_FILE_NAME_ID = "exportgui-components-filenametxt";
-    private final String COMBOBOX_DATE_MASK_ID = "exportgui-components-dateMaskchoose-input";
-    private final String COMBOBOX_CSV_DELIMITER_ID = "exportgui-components-csvdelimitertxt-input";
-    private final String COMBOBOX_QUOTE_CHARACTER_ID = "exportgui-components-csvquotechartxt-input";
-    private Wizard wizard;
+    private static final String CHECKBOX_EXPORT_WITH_HEADERS_ID = "exportgui-components-withheadercheckbox";
+    private static final String CHECKBOX_GENERATE_PDF_ID = "exportgui-components-generatepdfcheckbox";
+    private static final String CHECKBOX_COMPRESS_FILE_ID = "exportgui-components-compressfilecheckbox";
+    private static final String CHECKBOX_SCHEDULE_EXPORT_TASK_ID = "exportgui-components-scheduleexportcheckbox";
+    private static final String CHECKBOX_SEND_BY_EMAIL_ID = "exportgui-components-sendbyemailcheckbox";
+    private static final String CHECKBOX_REMOTE_UPLOAD_ID = "exportgui-components-remoteuploadcheckbox";
+    private static final String COMBOBOX_FILE_TYPE_ID = "exportgui-components-filetypechoose-input";
+    private static final String TEXT_FIELD_FILE_NAME_ID = "exportgui-components-filenametxt";
+    private static final String COMBOBOX_DATE_MASK_ID = "exportgui-components-dateMaskchoose-input";
+    private static final String COMBOBOX_CSV_DELIMITER_ID = "exportgui-components-csvdelimitertxt-input";
+    private static final String COMBOBOX_QUOTE_CHARACTER_ID = "exportgui-components-csvquotechartxt-input";
+    private static Wizard wizard;
 
     public Wizard getWizard() {
         if (wizard == null) {
@@ -38,39 +38,6 @@ public class ExportGuiWizardPage extends BasePage {
         }
         return wizard;
     }
-
-    protected void setValueOnCombobox (String COMBOBOX_ID, String value){
-        getWizard().getComponent(COMBOBOX_ID, ComponentType.COMBOBOX)
-                .setSingleStringValue(value);
-    }
-
-    protected void setValueContainsOnCombobox (String COMBOBOX_ID, String value){
-        getWizard().getComponent(COMBOBOX_ID, ComponentType.COMBOBOX)
-                .setSingleStringValueContains(value);
-    }
-
-    protected void setValueOnTextField (String TEXT_FIELD_ID, Data value){
-        TextField textField = (TextField) getComponent(TEXT_FIELD_ID, Input.ComponentType.TEXT_FIELD);
-        textField.setValue(value);
-    }
-
-    protected void checkTheCheckbox(String CHECKBOX_ID){
-        Input checkBox = getWizard().getComponent(CHECKBOX_ID, ComponentType.CHECKBOX);
-        checkBox.setSingleStringValue("true");
-    }
-
-    private void uncheckTheCheckbox(String CHECKBOX_ID){
-        Input checkBox = getWizard().getComponent(CHECKBOX_ID, ComponentType.CHECKBOX);
-        checkBox.setSingleStringValue("false");
-    }
-
-    private Input getComponent(String componentId, Input.ComponentType componentType) {
-        return getWizard().getComponent(componentId, componentType);
-    }
-
-    private void clickOnAccept() {getWizard().clickAccept();}
-
-    private void clickOnNext() {getWizard().clickNext();}
 
     @Step("Choose CSV File Type")
     public ExportGuiWizardPage chooseCSV(){
@@ -189,5 +156,39 @@ public class ExportGuiWizardPage extends BasePage {
         setValueContainsOnCombobox(COMBOBOX_DATE_MASK_ID, value);
         return this;
     }
+
+
+    protected void setValueOnCombobox (String COMBOBOX_ID, String value){
+        getWizard().getComponent(COMBOBOX_ID, ComponentType.COMBOBOX)
+                .setSingleStringValue(value);
+    }
+
+    protected void setValueContainsOnCombobox (String COMBOBOX_ID, String value){
+        getWizard().getComponent(COMBOBOX_ID, ComponentType.COMBOBOX)
+                .setSingleStringValueContains(value);
+    }
+
+    protected void setValueOnTextField (String TEXT_FIELD_ID, Data value){
+        TextField textField = (TextField) getComponent(TEXT_FIELD_ID, Input.ComponentType.TEXT_FIELD);
+        textField.setValue(value);
+    }
+
+    protected void checkTheCheckbox(String CHECKBOX_ID){
+        Input checkBox = getWizard().getComponent(CHECKBOX_ID, ComponentType.CHECKBOX);
+        checkBox.setSingleStringValue("true");
+    }
+
+    private void uncheckTheCheckbox(String CHECKBOX_ID){
+        Input checkBox = getWizard().getComponent(CHECKBOX_ID, ComponentType.CHECKBOX);
+        checkBox.setSingleStringValue("false");
+    }
+
+    private Input getComponent(String componentId, Input.ComponentType componentType) {
+        return getWizard().getComponent(componentId, componentType);
+    }
+
+    private void clickOnAccept() {getWizard().clickAccept();}
+
+    private void clickOnNext() {getWizard().clickNext();}
 }
 
