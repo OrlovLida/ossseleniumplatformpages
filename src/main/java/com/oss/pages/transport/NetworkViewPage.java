@@ -34,6 +34,11 @@ public class NetworkViewPage extends BasePage {
         super(driver);
     }
 
+    public static NetworkViewPage goToNetworkViewPageLive(WebDriver driver, String basicURL) {
+        driver.get(String.format("%s/#/view/transport/trail/network?" + "perspective=LIVE", basicURL));
+        return new NetworkViewPage(driver);
+    }
+
     @Step("Expand docked panel")
     public void expandDockedPanel(String position) {
         DelayUtils.waitForPageToLoad(driver, wait);
