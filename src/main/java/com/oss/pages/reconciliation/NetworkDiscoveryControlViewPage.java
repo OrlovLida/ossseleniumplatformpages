@@ -150,6 +150,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     public void moveToSamplesManagement() {
         TabsInterface ndcvTabs = TabWindowWidget.create(driver, wait);
         ndcvTabs.selectTabById(reconciliationTreeTab);
+        DelayUtils.waitForPageToLoad(driver, wait);
         ndcvTabs.callActionById("NAVIGATION", showSamplesManagement);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
