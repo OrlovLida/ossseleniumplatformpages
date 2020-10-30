@@ -1,14 +1,36 @@
 package com.oss.pages.physical;
-import org.openqa.selenium.WebDriver;
+
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
-import static com.oss.framework.components.inputs.Input.ComponentType.DATE_TIME;
-import static com.oss.framework.components.inputs.Input.ComponentType.SEARCH_FIELD;
-import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_AREA;
-import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
+import io.qameta.allure.Step;
+import org.openqa.selenium.WebDriver;
+
+import static com.oss.framework.components.inputs.Input.ComponentType.*;
 
 public class DeviceWizardPage extends BasePage {
+
+    private static final String DEVICE_CREATE_WIZARD_DATA_ATTRIBUTE_NAME = "physical_device_create_wizard_view";
+    private static final String DEVICE_UPDATE_WIZARD_DATA_ATTRIBUTE_NAME = "physical_device_update_wizard_view";
+    private static final String CREATE_BUTTON_DATA_ATTRIBUTE_NAME = "physical_device_common_buttons_app-1";
+    private static final String UPDATE_BUTTON_DATA_ATTRIBUTE_NAME = "physical_device_update_common_buttons_app-1";
+    private static final String DEVICE_EQUIPMENT_TYPE_DATA_ATTRIBUTE_NAME = "search_equipment_type";
+    private static final String DEVICE_MODEL_DATA_ATTRIBUTE_NAME = "search_model";
+    private static final String DEVICE_NAME_DATA_ATTRIBUTE_NAME = "text_name";
+    private static final String DEVICE_NETWORK_FUNCTION_NAME_TYPE_DATA_ATTRIBUTE_NAME = "text_network_function_name";
+    private static final String DEVICE_CHASSIS_ID_DATA_ATTRIBUTE_NAME = "text_chassis_id";
+    private static final String DEVICE_LOCATION_DATA_ATTRIBUTE_NAME = "search_location";
+    private static final String DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME = "search_precise_location";
+    private static final String DEVICE_LOGICAL_LOCATION_DATA_ATTRIBUTE_NAME = "search_logical_location";
+    private static final String DEVICE_NETWORK_DOMAIN_DATA_ATTRIBUTE_NAME = "search_network_domain";
+    private static final String DEVICE_SERIAL_NUMBER_DATA_ATTRIBUTE_NAME = "text_serial_number";
+    private static final String DEVICE_HOSTNAME_DATA_ATTRIBUTE_NAME = "text_hostname";
+    private static final String DEVICE_OSS_DATA_ATTRIBUTE_NAME = "search_oss";
+    private static final String DEVICE_MANUFACTURE_DATE_DATA_ATTRIBUTE_NAME = "date_time_manufacture";
+    private static final String DEVICE_FIRMWARE_VERSION_DATA_ATTRIBUTE_NAME = "text_firmware_licence";
+    private static final String DEVICE_HARDWARE_VERSION_DATA_ATTRIBUTE_NAME = "text_hardware_licence";
+    private static final String DEVICE_DESCRIPTION_DATA_ATTRIBUTE_NAME = "text_description";
+    private static final String DEVICE_IS_OWNED_BY_3RD_PARTY_DATA_ATTRIBUTE_NAME = "checkbox_is_leased";
 
     public static DeviceWizardPage goToDeviceWizardPageLive(WebDriver driver, String basicURL) {
         driver.get(String.format("%s/#/view/physical-inventory/devicewizard?" + "perspective=LIVE", basicURL));
@@ -24,112 +46,134 @@ public class DeviceWizardPage extends BasePage {
         super(driver);
     }
 
-    private Wizard physicalDeviceWizard = Wizard.createByComponentId(driver, wait,"physical_device_create_wizard_view");
-
-    public void setComponentValue(String componentId, String value, Input.ComponentType componentType) {
-        Input input = physicalDeviceWizard.getComponent(componentId, componentType);
-        input.setSingleStringValue(value);
+    @Step("Create Device with mandatory fields (Equipment type, Model, Name, Location, Precise Location) filled in")
+    public void createDevice(String model, String name, String preciseLocation) {
+        setModel(model);
+        setName(name);
+        setPreciseLocationContains(preciseLocation);
+        create();
     }
 
-    public String getComponentValue(String componentId, Input.ComponentType componentType) {
-
-//        Input input = physicalDeviceWizard.getComponent(componentId, componentType);
-        Input input =  Wizard.createByComponentId(driver,wait,"physical_device_create_wizard_view")
-                .getComponent(componentId, componentType);
-        return input.getStringValue();
+    @Step("Set Equipment Type")
+    public void setEquipmentType(String equipmentType) {
+        getCreateDeviceWizard().setComponentValue(DEVICE_EQUIPMENT_TYPE_DATA_ATTRIBUTE_NAME, equipmentType, SEARCH_FIELD);
     }
 
-    public void cancel() {
-        physicalDeviceWizard.cancel();
-    }
-
-    public void create() {
-        Wizard.createByComponentId(driver,wait,"physical_device_create_wizard_view")
-                .clickActionById("physical_device_common_buttons_app-1");
-    }
-
+    @Step("Set Model")
     public void setModel(String model) {
-        Input input = physicalDeviceWizard.getComponent("search_model", SEARCH_FIELD);
-        input.setSingleStringValue(model);
+        getCreateDeviceWizard().setComponentValue(DEVICE_MODEL_DATA_ATTRIBUTE_NAME, model, SEARCH_FIELD);
     }
 
+    @Step("Update Model")
+    public void updateModel(String model) {
+        getUpdateDeviceWizard().setComponentValue(DEVICE_MODEL_DATA_ATTRIBUTE_NAME, model, SEARCH_FIELD);
+    }
+
+    @Step("Set Name")
     public void setName(String name) {
-        Input input = physicalDeviceWizard.getComponent("text_name", TEXT_FIELD);
-        input.setSingleStringValue(name);
+        getCreateDeviceWizard().setComponentValue(DEVICE_NAME_DATA_ATTRIBUTE_NAME, name, TEXT_FIELD);
     }
 
+    @Step("Set Network Function Name")
     public void setNetworkFunctionName(String networkFunctionName) {
-        Input input = physicalDeviceWizard.getComponent("text_network_function_name", TEXT_FIELD);
-        input.setSingleStringValue(networkFunctionName);
+        getCreateDeviceWizard().setComponentValue(DEVICE_NETWORK_FUNCTION_NAME_TYPE_DATA_ATTRIBUTE_NAME, networkFunctionName, TEXT_FIELD);
     }
 
+    @Step("Set Chassis Id")
     public void setChassisId(String chassisId) {
-        Input input = physicalDeviceWizard.getComponent("text_chassis_id", TEXT_FIELD);
-        input.setSingleStringValue(chassisId);
+        getCreateDeviceWizard().setComponentValue(DEVICE_CHASSIS_ID_DATA_ATTRIBUTE_NAME, chassisId, TEXT_FIELD);
     }
 
+    @Step("Set Location")
     public void setLocation(String location) {
-        Input input = physicalDeviceWizard.getComponent("search_location", SEARCH_FIELD);
-        input.setSingleStringValue(location);
+        getCreateDeviceWizard().setComponentValue(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME, location, SEARCH_FIELD);
     }
 
+    @Step("Set Precise Location")
     public void setPreciseLocation(String preciseLocation) {
-        Input input = physicalDeviceWizard.getComponent("search_precise_location", SEARCH_FIELD);
-        input.setSingleStringValue(preciseLocation);
+        getCreateDeviceWizard().setComponentValue(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, preciseLocation, SEARCH_FIELD);
     }
 
+    @Step("Set Precise Location")
+    public void setPreciseLocationContains(String preciseLocation) {
+        if (getCreateDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, Input.ComponentType.SEARCH_FIELD).getStringValue().isEmpty()) {
+            getCreateDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, SEARCH_FIELD).setSingleStringValueContains(preciseLocation);
+        }
+    }
+
+    @Step("Set Logical Location")
     public void setLogicalLocation(String logicalLocation) {
-        Input input = physicalDeviceWizard.getComponent("search_logical_location", SEARCH_FIELD);
-        input.setSingleStringValue(logicalLocation);
+        getCreateDeviceWizard().setComponentValue(DEVICE_LOGICAL_LOCATION_DATA_ATTRIBUTE_NAME, logicalLocation, SEARCH_FIELD);
     }
 
+    @Step("Set Network Domain")
     public void setNetworkDomain(String networkDomain) {
-        Input input = physicalDeviceWizard.getComponent("search_network_domain", SEARCH_FIELD);
-        input.setSingleStringValue(networkDomain);
+        getCreateDeviceWizard().setComponentValue(DEVICE_NETWORK_DOMAIN_DATA_ATTRIBUTE_NAME, networkDomain, SEARCH_FIELD);
     }
 
-    public void setDeviceCategory(String deviceCategory) {
-        Input input = physicalDeviceWizard.getComponent("search_device_category", SEARCH_FIELD);
-        input.setSingleStringValue(deviceCategory);
-    }
-
+    @Step("Set Serial Number")
     public void setSerialNumber(String serialNumber) {
-        Input input = physicalDeviceWizard.getComponent("text_serial_number", TEXT_FIELD);
-        input.setSingleStringValue(serialNumber);
+        getCreateDeviceWizard().setComponentValue(DEVICE_SERIAL_NUMBER_DATA_ATTRIBUTE_NAME, serialNumber, TEXT_FIELD);
     }
 
+    @Step("Set Hostname")
     public void setHostname(String hostname) {
-        Input input = physicalDeviceWizard.getComponent("text_hostname", TEXT_FIELD);
-        input.setSingleStringValue(hostname);
+        getCreateDeviceWizard().setComponentValue(DEVICE_HOSTNAME_DATA_ATTRIBUTE_NAME, hostname, TEXT_FIELD);
     }
 
+    @Step("Set Oss")
     public void setOss(String oss) {
-        Input input = physicalDeviceWizard.getComponent("search_oss", SEARCH_FIELD);
-        input.setSingleStringValue(oss);
+        getCreateDeviceWizard().setComponentValue(DEVICE_OSS_DATA_ATTRIBUTE_NAME, oss, SEARCH_FIELD);
     }
 
+    @Step("Set Manufacture Date")
     public void setManufactureDate(String manufactureDate) {
-        Input input = physicalDeviceWizard.getComponent("date_time_manufacture", DATE_TIME);
-        input.setSingleStringValue(manufactureDate);
+        getCreateDeviceWizard().setComponentValue(DEVICE_MANUFACTURE_DATE_DATA_ATTRIBUTE_NAME, manufactureDate, DATE_TIME);
     }
 
+    @Step("Set Firmware Version")
     public void setFirmwareVersion(String firmwareVersion) {
-        Input input = physicalDeviceWizard.getComponent("text_firmware_licence", TEXT_FIELD);
-        input.setSingleStringValue(firmwareVersion);
+        getCreateDeviceWizard().setComponentValue(DEVICE_FIRMWARE_VERSION_DATA_ATTRIBUTE_NAME, firmwareVersion, TEXT_FIELD);
     }
 
+    @Step("Set Hardware Version")
     public void setHardwareVersion(String hardwareVersion) {
-        Input input = physicalDeviceWizard.getComponent("text_hardware_licence", TEXT_FIELD);
-        input.setSingleStringValue(hardwareVersion);
+        getCreateDeviceWizard().setComponentValue(DEVICE_HARDWARE_VERSION_DATA_ATTRIBUTE_NAME, hardwareVersion, TEXT_FIELD);
     }
 
+    @Step("Set Description")
     public void setDescription(String description) {
-        Input input = physicalDeviceWizard.getComponent("text_description", TEXT_AREA);
-        input.setSingleStringValue(description);
+        getCreateDeviceWizard().setComponentValue(DEVICE_DESCRIPTION_DATA_ATTRIBUTE_NAME, description, TEXT_AREA);
     }
 
-    public void setEquipmentType(String equipmentType){
-        Input input = physicalDeviceWizard.getComponent("search_equipment_type", SEARCH_FIELD);
-        input.setSingleStringValue(equipmentType);
+    @Step("Update Description")
+    public void updateDescription(String description) {
+        Wizard descriptionComponent = getUpdateDeviceWizard();
+        descriptionComponent.getComponent(DEVICE_UPDATE_WIZARD_DATA_ATTRIBUTE_NAME, TEXT_AREA).clear();
+        descriptionComponent.setComponentValue(DEVICE_DESCRIPTION_DATA_ATTRIBUTE_NAME, description, TEXT_AREA);
     }
+
+    @Step("Click Cancel button")
+    public void cancel() {
+        getCreateDeviceWizard().cancel();
+    }
+
+    @Step("Click Create button")
+    public void create() {
+        getCreateDeviceWizard().clickActionById(CREATE_BUTTON_DATA_ATTRIBUTE_NAME);
+    }
+
+    @Step("Click Update button")
+    public void update() {
+        getUpdateDeviceWizard().clickActionById(UPDATE_BUTTON_DATA_ATTRIBUTE_NAME);
+    }
+
+    private Wizard getCreateDeviceWizard() {
+        return Wizard.createByComponentId(driver, wait, DEVICE_CREATE_WIZARD_DATA_ATTRIBUTE_NAME);
+    }
+
+    private Wizard getUpdateDeviceWizard() {
+        return Wizard.createByComponentId(driver, wait, DEVICE_UPDATE_WIZARD_DATA_ATTRIBUTE_NAME);
+    }
+
 }

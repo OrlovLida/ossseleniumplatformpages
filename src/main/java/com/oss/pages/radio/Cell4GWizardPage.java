@@ -8,6 +8,7 @@ import org.openqa.selenium.WebDriver;
 
 public class Cell4GWizardPage extends BasePage {
 
+    private static final String CELL4G_WIZARD_DATA_ATTRIBUTE_NAME = "cell-4g-wizard";
     private static final String CELL4G_NAME_DATA_ATTRIBUTE_NAME = "name";
     private static final String CELL4G_E_NODE_B_ID_DATA_ATTRIBUTE_NAME = "eNodeBId";
     private static final String CELL4G_CELL_ID_DATA_ATTRIBUTE_NAME = "cellId";
@@ -45,11 +46,35 @@ public class Cell4GWizardPage extends BasePage {
 
     @Step("Create Cell4G with mandatory fields (Name, eNodeB, Cell Id, Carrier) filled in")
     public void createCell4G(String cell4GName, String eNodeBName, String cellId, String carrier4G) {
-        getCell4GWizard().setComponentValue(CELL4G_NAME_DATA_ATTRIBUTE_NAME, cell4GName, Input.ComponentType.TEXT_FIELD);
-        getCell4GWizard().setComponentValue(CELL4G_E_NODE_B_ID_DATA_ATTRIBUTE_NAME, eNodeBName, Input.ComponentType.SEARCH_FIELD);
-        getCell4GWizard().setComponentValue(CELL4G_CELL_ID_DATA_ATTRIBUTE_NAME, cellId, Input.ComponentType.TEXT_FIELD);
-        getCell4GWizard().getComponent(CELL4G_CARRIER_DATA_ATTRIBUTE_NAME, Input.ComponentType.COMBOBOX).setSingleStringValueContains(carrier4G);
+        setName(cell4GName);
+        setENodeBName(eNodeBName);
+        setCell4GId(cellId);
+        setCarrier4G(carrier4G);
         accept();
+    }
+
+    @Step("Set name")
+    public Cell4GWizardPage setName(String cell4GName) {
+        getCell4GWizard().setComponentValue(CELL4G_NAME_DATA_ATTRIBUTE_NAME, cell4GName, Input.ComponentType.TEXT_FIELD);
+        return this;
+    }
+
+    @Step("Set eNodeB name")
+    public Cell4GWizardPage setENodeBName(String eNodeBName) {
+        getCell4GWizard().setComponentValue(CELL4G_E_NODE_B_ID_DATA_ATTRIBUTE_NAME, eNodeBName, Input.ComponentType.SEARCH_FIELD);
+        return this;
+    }
+
+    @Step("Set Cell 4G Id")
+    public Cell4GWizardPage setCell4GId(String cellId) {
+        getCell4GWizard().setComponentValue(CELL4G_CELL_ID_DATA_ATTRIBUTE_NAME, cellId, Input.ComponentType.TEXT_FIELD);
+        return this;
+    }
+
+    @Step("Set Carrier 4G")
+    public Cell4GWizardPage setCarrier4G(String carrier4G) {
+        getCell4GWizard().getComponent(CELL4G_CARRIER_DATA_ATTRIBUTE_NAME, Input.ComponentType.COMBOBOX).setSingleStringValueContains(carrier4G);
+        return this;
     }
 
     @Step("Set description")
@@ -59,7 +84,7 @@ public class Cell4GWizardPage extends BasePage {
     }
 
     private Wizard getCell4GWizard() {
-        return Wizard.createByComponentId(driver, wait, "cell-4g-wizard");
+        return Wizard.createByComponentId(driver, wait, CELL4G_WIZARD_DATA_ATTRIBUTE_NAME);
     }
 
 }

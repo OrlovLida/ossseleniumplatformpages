@@ -8,6 +8,7 @@ import org.openqa.selenium.WebDriver;
 
 public class Cell5GWizardPage extends BasePage {
 
+    private static final String CELL5G_WIZARD_DATA_ATTRIBUTE_NAME = "cell-5g-wizard-id";
     private static final String CELL5G_NAME_DATA_ATTRIBUTE_NAME = "name";
     private static final String CELL5G_G_NODE_B_ID_DATA_ATTRIBUTE_NAME = "gNodeBId";
     private static final String CELL5G_CELL_ID_DATA_ATTRIBUTE_NAME = "cellId";
@@ -44,11 +45,35 @@ public class Cell5GWizardPage extends BasePage {
 
     @Step("Create Cell5G with mandatory fields (Name, gNodeB, Cell Id, Carrier) filled in")
     public void createCell5G(String cell5GName, String gNodeBName, String cellId, String carrier5G) {
-        getCell5GWizard().setComponentValue(CELL5G_NAME_DATA_ATTRIBUTE_NAME, cell5GName, Input.ComponentType.TEXT_FIELD);
-        getCell5GWizard().setComponentValue(CELL5G_G_NODE_B_ID_DATA_ATTRIBUTE_NAME, gNodeBName, Input.ComponentType.SEARCH_FIELD);
-        getCell5GWizard().setComponentValue(CELL5G_CELL_ID_DATA_ATTRIBUTE_NAME, cellId, Input.ComponentType.TEXT_FIELD);
-        getCell5GWizard().getComponent(CELL5G_CARRIER_DATA_ATTRIBUTE_NAME, Input.ComponentType.COMBOBOX).setSingleStringValueContains(carrier5G);
+        setName(cell5GName);
+        setGNodeBName(gNodeBName);
+        setCell5GId(cellId);
+        setCarrier5G(carrier5G);
         accept();
+    }
+
+    @Step("Set name")
+    public Cell5GWizardPage setName(String cell5GName) {
+        getCell5GWizard().setComponentValue(CELL5G_NAME_DATA_ATTRIBUTE_NAME, cell5GName, Input.ComponentType.TEXT_FIELD);
+        return this;
+    }
+
+    @Step("Set gNodeB name")
+    public Cell5GWizardPage setGNodeBName(String gNodeBName) {
+        getCell5GWizard().setComponentValue(CELL5G_G_NODE_B_ID_DATA_ATTRIBUTE_NAME, gNodeBName, Input.ComponentType.SEARCH_FIELD);
+        return this;
+    }
+
+    @Step("Set Cell 5G Id")
+    public Cell5GWizardPage setCell5GId(String cellId) {
+        getCell5GWizard().setComponentValue(CELL5G_CELL_ID_DATA_ATTRIBUTE_NAME, cellId, Input.ComponentType.TEXT_FIELD);
+        return this;
+    }
+
+    @Step("Set Carrier 5G")
+    public Cell5GWizardPage setCarrier5G(String carrier5G) {
+        getCell5GWizard().getComponent(CELL5G_CARRIER_DATA_ATTRIBUTE_NAME, Input.ComponentType.COMBOBOX).setSingleStringValueContains(carrier5G);
+        return this;
     }
 
     @Step("Set description")
@@ -58,7 +83,7 @@ public class Cell5GWizardPage extends BasePage {
     }
 
     private Wizard getCell5GWizard() {
-        return Wizard.createByComponentId(driver, wait, "cell-5g-wizard-id");
+        return Wizard.createByComponentId(driver, wait, CELL5G_WIZARD_DATA_ATTRIBUTE_NAME);
     }
 
 }
