@@ -36,6 +36,9 @@ public class CellSiteConfigurationPage extends BasePage {
         list.selectOption(option);
     }
 
+    @Step("Click plus icon by label")
+    public void clickPlusIconByLabel(String label) { getTabTable().callActionByLabel(label); }
+
     @Step("Select {tabName} tab")
     public CellSiteConfigurationPage selectTab(String tabName) {
         getTabTable().selectTabByLabel(tabName, TAB_TABLE_DATA_ATTRIBUTE_NAME);
