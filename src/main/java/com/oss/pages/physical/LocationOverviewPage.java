@@ -25,7 +25,8 @@ public class LocationOverviewPage extends BasePage {
     @Step("Click {buttonName} button")
     public void clickButton(String buttonName) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getButtons().callActionByLabel(buttonName);
+        ButtonContainer.create(driver, wait)
+                .callActionByLabel(buttonName);
     }
 
     @Step("Select {tabName} tab")
@@ -36,36 +37,31 @@ public class LocationOverviewPage extends BasePage {
         return this;
     }
 
-    //TODO: remove createByComponentDataAttributeName after OSSPHY-46774
-    //it works only for Locations (temporary)
     @Step("Filter and select {objectName} row")
     public LocationOverviewPage filterObject(String columnName, String objectName) {
-        OldTable tabTable = OldTable.createByComponentDataAttributeName(driver, wait, "tableAppLocationsId");
-        tabTable.searchByAttributeWithLabel(columnName, Input.ComponentType.TEXT_FIELD, objectName);
-        tabTable.selectRowByAttributeValueWithLabel(columnName, objectName);
+        getTabTable().searchByAttributeWithLabel(columnName, Input.ComponentType.TEXT_FIELD, objectName);
+        getTabTable().selectRowByAttributeValueWithLabel(columnName, objectName);
         return this;
     }
 
+    //TODO: change to OldTable.createByComponentDataAttributeName(driver, wait, "data-attributename"); after OSSPHY-46774
     @Step("Click Edit Location icon")
     public void clickEditLocationIcon() {
-        getTabTable().callActionByLabel("Edit Location");
+        OldActionsContainer.createFromParent(driver, wait, driver.findElement(By.xpath(".//div[@class='OssWindow tabWindow']")))
+                .callActionByLabel("Edit Location");
     }
 
+    //TODO: change to OldTable.createByComponentDataAttributeName(driver, wait, "data-attributename"); after OSSPHY-46774
     @Step("Click Remove Location icon")
     public void clickRemoveLocationIcon() {
-        getTabTable().callActionByLabel("Remove Location");
+        OldActionsContainer.createFromParent(driver, wait, driver.findElement(By.xpath(".//div[@class='OssWindow tabWindow']")))
+                .callActionByLabel("Remove Location");
     }
 
-    private ButtonContainer getButtons() {
+    //TODO: change data-attributename after OSSPHY-46774, it works only for Locations (temporary)
+    public OldTable getTabTable() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        return ButtonContainer.create(driver, wait);
-    }
-
-    //pending the solution of OSSPHY-46774
-    //TODO: change > OldTable.createByComponentDataAttributeName(driver, wait, data-attributename);
-    private OldActionsContainer getTabTable() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        return OldActionsContainer.createFromParent(driver, wait, driver.findElement(By.xpath(".//div[@class='OssWindow tabWindow']")));
+        return OldTable.createByComponentDataAttributeName(driver, wait, "tableAppLocationsId");
     }
 
 }

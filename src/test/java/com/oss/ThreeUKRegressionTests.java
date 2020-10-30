@@ -9,6 +9,7 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tabswidget.TabWindowWidget;
 import com.oss.framework.widgets.tabswidget.TabsInterface;
+import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.physical.LocationOverviewPage;
 import com.oss.pages.physical.LocationWizardPage;
 import com.oss.pages.platform.GlobalSearchPage;
@@ -34,6 +35,10 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     String locationTypeSite = "Site";
     String objectTypeLocation = "Location";
     String description = "Selenium Test";
+
+    String objectTypeDevice = "Physical Device";
+    String randomDeviceName = RandomGenerator.generateRandomName();
+    String deviceModel = "HUAWEI Technology Co.,Ltd BBU5900";
 
     String objectTypeENodeB = "eNodeB";
     String randomENodeBName = RandomGenerator.generateRandomName();
@@ -125,9 +130,10 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         new LocationOverviewPage(driver)
                 .selectTab("Locations")
                 .filterObject("Name", randomLocationNameInLocation);
-        OldTable locationsTable = OldTable.createByComponentDataAttributeName(driver, webDriverWait, "tableAppLocationsId");
-        int rowNumber = locationsTable.getRowNumber(randomLocationNameInLocation, "Name");
-        String rowValue = locationsTable.getValueCell(rowNumber, "Name");
+//        OldTable tabTable = OldTable.createByComponentDataAttributeName(driver, webDriverWait, "tableAppLocationsId");
+        OldTable tabTable = new LocationOverviewPage(driver).getTabTable();
+        int rowNumber = tabTable.getRowNumber(randomLocationNameInLocation, "Name");
+        String rowValue = tabTable.getValueCell(rowNumber, "Name");
         Assert.assertTrue(rowValue.contains(randomLocationNameInLocation));
     }
 
@@ -135,7 +141,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     @Description("The user creates a Site in the created Site in Location Overview, then edits the Site and checks if the description is updated in Locations table")
     public void tS06CreateAndModifySiteInLocation() {
         String randomLocationNameInLocation = RandomGenerator.generateRandomName();
-//        String randomLocationName="Milena";
+//        String randomLocationName = "Milena";
 
         homePage.setAndSelectObjectType(locationTypeSite);
         new OldInventoryViewPage(driver)
@@ -152,9 +158,10 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         new LocationWizardPage(driver)
                 .setDescription(description)
                 .accept();
-        OldTable locationsTable = OldTable.createByComponentDataAttributeName(driver, webDriverWait, "tableAppLocationsId");
-        int rowNumber = locationsTable.getRowNumber(description, "Description");
-        String rowValue = locationsTable.getValueCell(rowNumber, "Description");
+//        OldTable tabTable = OldTable.createByComponentDataAttributeName(driver, webDriverWait, "tableAppLocationsId");
+        OldTable tabTable = new LocationOverviewPage(driver).getTabTable();
+        int rowNumber = tabTable.getRowNumber(description, "Description");
+        String rowValue = tabTable.getValueCell(rowNumber, "Description");
         Assert.assertTrue(rowValue.contains(description));
     }
 
@@ -179,8 +186,8 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         ConfirmationBoxInterface confirmationBox = ConfirmationBox.create(driver, webDriverWait);
         confirmationBox.clickButtonByLabel("Delete");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        TabsInterface locationsTable = TabWindowWidget.create(driver, webDriverWait);
-        Assert.assertTrue(locationsTable.isNoData("tableAppLocationsId"));
+        TabsInterface tabTable = TabWindowWidget.create(driver, webDriverWait);
+        Assert.assertTrue(tabTable.isNoData("tableAppLocationsId"));
     }
 
     @Test(groups = {"Radio tests"})
@@ -454,7 +461,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     @Test(groups = {"Radio tests"})
     @Description("The user creates Cell 5G in Cell Site Configuration and checks the message about successful creation")
     public void tS17CreateCell5G() {
-//        String randomLocationName = "Milena";
+        String randomLocationName = "Milena";
         String randomGNodeBName = "gNodeBSelenium";
 
         homePage.setAndSelectObjectType(locationTypeSite);
@@ -475,7 +482,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     public void tS18CreateAndModifyCell5G() {
         String randomCell5GName = RandomGenerator.generateRandomName();
         String randomCell5GId = RandomGenerator.generateRandomCell5GId();
-//        String randomLocationName = "Milena";
+        String randomLocationName = "Milena";
         String randomGNodeBName = "gNodeBSelenium";
 
         homePage.setAndSelectObjectType(locationTypeSite);
@@ -499,7 +506,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
                 .selectTab("Cells")
                 .filterObject("Name", randomCell5GName)
                 .clickEditIcon();
-        new Cell4GWizardPage(driver)
+        new Cell5GWizardPage(driver)
                 .setDescription(description)
                 .accept();
         new CellSiteConfigurationPage(driver).getTabTable();
@@ -514,7 +521,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     public void tS19CreateAndRemoveCell5G() {
         String randomCell5GName = RandomGenerator.generateRandomName();
         String randomCell5GId = RandomGenerator.generateRandomCell5GId();
-//        String randomLocationName = "Milena";
+        String randomLocationName = "Milena";
         String randomGNodeBName = "gNodeBSelenium";
 
         homePage.setAndSelectObjectType(locationTypeSite);
@@ -538,6 +545,96 @@ public class ThreeUKRegressionTests extends BaseTestCase {
                 .clickRemoveIcon();
         systemMessageItem.waitForMessageDisappear();
         homePage.searchInGlobalSearch(randomCell5GName);
+        CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        Assert.assertTrue(objectsList.isNoData());
+    }
+
+    @Test(groups = {"Radio tests"})
+    @Description("The user creates Base Band Unit in Cell Site Configuration and checks the message about successful creation")
+    public void tS20CreateBBU() {
+//        String randomLocationName = "Milena";
+
+        homePage.setAndSelectObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", randomLocationName, "Site")
+                .expandShowOnAndChooseView("Cell Site Configuration");
+        new CellSiteConfigurationPage(driver)
+                .selectTab("Devices")
+                .clickPlusIconAndSelectOption("Create Device");
+        new DeviceWizardPage(driver)
+                .createDevice(deviceModel, randomDeviceName, randomLocationName);
+        Assert.assertTrue(SystemMessageContainer.create(driver, webDriverWait)
+                .getMessages().get(0).getText().contains("Device has been created successfully"));
+    }
+
+    @Test(groups = {"Radio tests"})
+    @Description("The user creates Base Band Unit in Cell Site Configuration, searches the device in Inventory View and goes to Cell Site Configuration again, then edits the device and checks if the description is updated in Device table")
+    public void tS21CreateAndModifyBBU() {
+        String randomDeviceName = RandomGenerator.generateRandomName();
+//        String randomLocationName = "Milena";
+
+        homePage.setAndSelectObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", randomLocationName, "Site")
+                .expandShowOnAndChooseView("Cell Site Configuration");
+        new CellSiteConfigurationPage(driver)
+                .selectTab("Devices")
+                .clickPlusIconAndSelectOption("Create Device");
+        new DeviceWizardPage(driver)
+                .createDevice(deviceModel, randomDeviceName, randomLocationName);
+        SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
+        systemMessageItem.waitForMessageDisappear();
+        homePage.goToHomePage(driver, BASIC_URL);
+        homePage.setAndSelectObjectType(objectTypeDevice);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", randomDeviceName, "PhysicalElement")
+                .expandShowOnAndChooseView("Cell Site Configuration");
+        new CellSiteConfigurationPage(driver)
+                .expandTreeToLocation(locationTypeSite, randomLocationName)
+                .selectTab("Devices")
+                .filterObject("Name", randomDeviceName)
+                .clickEditIcon();
+        new DeviceWizardPage(driver)
+                .updateDescription(description);
+        new DeviceWizardPage(driver)
+                .update();
+        new CellSiteConfigurationPage(driver).getTabTable();
+        OldTable tabTable = new CellSiteConfigurationPage(driver).getTabTable();
+        int rowNumber = tabTable.getRowNumber(description, "Description");
+        String rowValue = tabTable.getValueCell(rowNumber, "Description");
+        Assert.assertTrue(rowValue.contains(description));
+    }
+
+    @Test(groups = {"Radio tests"})
+    @Description("The user creates Base Band Unit in Cell Site Configuration, searches the device in Inventory View and goes to Cell Site Configuration again, then edits the device and checks if the description is updated in Device table")
+    public void tS22CreateAndRemoveBBU() {
+        String randomDeviceName = RandomGenerator.generateRandomName();
+//        String randomLocationName = "Milena";
+
+        homePage.setAndSelectObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", randomLocationName, "Site")
+                .expandShowOnAndChooseView("Cell Site Configuration");
+        new CellSiteConfigurationPage(driver)
+                .selectTab("Devices")
+                .clickPlusIconAndSelectOption("Create Device");
+        new DeviceWizardPage(driver)
+                .createDevice(deviceModel, randomDeviceName, randomLocationName);
+        SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
+        systemMessageItem.waitForMessageDisappear();
+        homePage.goToHomePage(driver, BASIC_URL);
+        homePage.setAndSelectObjectType(objectTypeDevice);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", randomDeviceName, "PhysicalElement")
+                .expandShowOnAndChooseView("Cell Site Configuration");
+        new CellSiteConfigurationPage(driver)
+                .expandTreeToLocation(locationTypeSite, randomLocationName)
+                .selectTab("Devices")
+                .filterObject("Name", randomDeviceName)
+                .clickRemoveIcon();
+        systemMessageItem.waitForMessageDisappear();
+        homePage.searchInGlobalSearch(randomDeviceName);
         CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertTrue(objectsList.isNoData());

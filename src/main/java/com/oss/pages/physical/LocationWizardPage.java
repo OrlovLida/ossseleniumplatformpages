@@ -1,7 +1,6 @@
 package com.oss.pages.physical;
 
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.data.Data;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
@@ -36,13 +35,11 @@ public class LocationWizardPage extends BasePage {
         super(driver);
     }
 
-    @Step("Create Location with mandatory fields (Location type, name, address) filled in")
+    @Step("Create Location with mandatory fields (Location type, Name, Address) filled in")
     public void createLocation(String locationType, String locationName) {
-        locationWizard.setComponentValue(LOCATION_TYPE_DATA_ATTRIBUTE_NAME, locationType, Input.ComponentType.COMBOBOX);
-        locationWizard.setComponentValue(LOCATION_NAME_DATA_ATTRIBUTE_NAME, locationName, Input.ComponentType.TEXT_FIELD);
-        if (locationWizard.getComponent(LOCATION_ADDRESS_DATA_ATTRIBUTE_NAME, Input.ComponentType.SEARCH_FIELD).getStringValue().isEmpty()) {
-            locationWizard.setComponentValue(LOCATION_ADDRESS_DATA_ATTRIBUTE_NAME, " ", Input.ComponentType.SEARCH_FIELD);
-        }
+        setLocationType(locationType);
+        setLocationName(locationName);
+        setFirstAddress();
         DelayUtils.sleep();
         accept();
     }
@@ -55,14 +52,19 @@ public class LocationWizardPage extends BasePage {
 
     @Step("Set Location Type")
     public void setLocationType(String locationType) {
-        Input locationTypeComponent = locationWizard.getComponent(LOCATION_TYPE_DATA_ATTRIBUTE_NAME, Input.ComponentType.COMBOBOX);
-        locationTypeComponent.setValue(Data.createSingleData(locationType));
+        locationWizard.setComponentValue(LOCATION_TYPE_DATA_ATTRIBUTE_NAME, locationType, Input.ComponentType.COMBOBOX);
     }
 
     @Step("Set Location Name")
     public void setLocationName(String locationName) {
-        Input locationNameComponent = locationWizard.getComponent(LOCATION_NAME_DATA_ATTRIBUTE_NAME, Input.ComponentType.TEXT_FIELD);
-        locationNameComponent.setValue(Data.createSingleData(locationName));
+        locationWizard.setComponentValue(LOCATION_NAME_DATA_ATTRIBUTE_NAME, locationName, Input.ComponentType.TEXT_FIELD);
+    }
+
+    @Step("Set first Address in the drop-down list")
+    public void setFirstAddress() {
+        if (locationWizard.getComponent(LOCATION_ADDRESS_DATA_ATTRIBUTE_NAME, Input.ComponentType.SEARCH_FIELD).getStringValue().isEmpty()) {
+            locationWizard.setComponentValue(LOCATION_ADDRESS_DATA_ATTRIBUTE_NAME, " ", Input.ComponentType.SEARCH_FIELD);
+        }
     }
 
     @Step("Set Geographical Address")

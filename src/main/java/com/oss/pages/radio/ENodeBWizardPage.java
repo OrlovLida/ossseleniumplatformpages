@@ -8,6 +8,7 @@ import org.openqa.selenium.WebDriver;
 
 public class ENodeBWizardPage extends BasePage {
 
+    private static final String E_NODE_B_WIZARD_DATA_ATTRIBUTE_NAME = "e-node-b-wizard";
     private static final String E_NODE_B_NAME_DATA_ATTRIBUTE_NAME = "name";
     private static final String E_NODE_B_ID_DATA_ATTRIBUTE_NAME = "eNodeBId";
     private static final String E_NODE_B_MODEL_DATA_ATTRIBUTE_NAME = "eNodeBModel";
@@ -31,11 +32,35 @@ public class ENodeBWizardPage extends BasePage {
 
     @Step("Create eNodeB with mandatory fields (Name, eNodeB ID, eNodeB Model, MCC-MNC Primary) filled in")
     public void createENodeB(String eNodeBName, String eNodeBId, String eNodeBModel, String MCCMNCPrimary) {
-        getENodeBWizard().setComponentValue(E_NODE_B_NAME_DATA_ATTRIBUTE_NAME, eNodeBName, Input.ComponentType.TEXT_FIELD);
-        getENodeBWizard().setComponentValue(E_NODE_B_ID_DATA_ATTRIBUTE_NAME, eNodeBId, Input.ComponentType.TEXT_FIELD);
-        getENodeBWizard().setComponentValue(E_NODE_B_MODEL_DATA_ATTRIBUTE_NAME, eNodeBModel, Input.ComponentType.COMBOBOX);
-        getENodeBWizard().setComponentValue(E_NODE_B_MCC_MNC_PRIMARY_DATA_ATTRIBUTE_NAME, MCCMNCPrimary, Input.ComponentType.COMBOBOX);
+        setName(eNodeBName);
+        setENodeBId(eNodeBId);
+        setENodeBModel(eNodeBModel);
+        setMccMncPrimary(MCCMNCPrimary);
         accept();
+    }
+
+    @Step("Set name")
+    public ENodeBWizardPage setName(String eNodeBName) {
+        getENodeBWizard().setComponentValue(E_NODE_B_NAME_DATA_ATTRIBUTE_NAME, eNodeBName, Input.ComponentType.TEXT_FIELD);
+        return this;
+    }
+
+    @Step("Set eNodeB Id")
+    public ENodeBWizardPage setENodeBId(String eNodeBId) {
+        getENodeBWizard().setComponentValue(E_NODE_B_ID_DATA_ATTRIBUTE_NAME, eNodeBId, Input.ComponentType.TEXT_FIELD);
+        return this;
+    }
+
+    @Step("Set eNodeB Model")
+    public ENodeBWizardPage setENodeBModel(String eNodeBModel) {
+        getENodeBWizard().setComponentValue(E_NODE_B_MODEL_DATA_ATTRIBUTE_NAME, eNodeBModel, Input.ComponentType.COMBOBOX);
+        return this;
+    }
+
+    @Step("Set MCC-MNC Primary")
+    public ENodeBWizardPage setMccMncPrimary(String MCCMNCPrimary) {
+        getENodeBWizard().setComponentValue(E_NODE_B_MCC_MNC_PRIMARY_DATA_ATTRIBUTE_NAME, MCCMNCPrimary, Input.ComponentType.COMBOBOX);
+        return this;
     }
 
     @Step("Set description")
@@ -45,7 +70,7 @@ public class ENodeBWizardPage extends BasePage {
     }
 
     private Wizard getENodeBWizard() {
-        return Wizard.createByComponentId(driver, wait, "e-node-b-wizard");
+        return Wizard.createByComponentId(driver, wait, E_NODE_B_WIZARD_DATA_ATTRIBUTE_NAME);
     }
 
 }
