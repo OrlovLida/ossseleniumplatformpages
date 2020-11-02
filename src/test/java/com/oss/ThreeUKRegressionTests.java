@@ -554,7 +554,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     @Test(groups = {"Radio tests"})
     @Description("The user creates Base Band Unit in Cell Site Configuration and checks the message about successful creation")
     public void tS20CreateBBU() {
-        String randomLocationName = "Milena";
+//        String randomLocationName = "Milena";
 
         homePage.setAndSelectObjectType(locationTypeSite);
         new OldInventoryViewPage(driver)
@@ -597,7 +597,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
                 .filterObject("Name", randomDeviceName)
                 .clickEditIcon();
         new DeviceWizardPage(driver)
-                .updateDescription(description);
+                .setDescription(description);
         new DeviceWizardPage(driver)
                 .update();
         new CellSiteConfigurationPage(driver).getTabTable();
@@ -687,7 +687,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
                 .filterObject("Name", randomDeviceName)
                 .clickEditIcon();
         new DeviceWizardPage(driver)
-                .updateDescription(description);
+                .setDescription(description);
         new DeviceWizardPage(driver)
                 .update();
         new CellSiteConfigurationPage(driver).getTabTable();
@@ -699,7 +699,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
 
     @Test(groups = {"Radio tests"})
     @Description("The user creates Radio Remote Unit in Cell Site Configuration, searches the device in Inventory View and goes to Cell Site Configuration again, then edits the device and checks if the description is updated in Device table")
-    public void tS25CreateAndRemoveBBU() {
+    public void tS25CreateAndRemoveRRU() {
         String randomDeviceName = RandomGenerator.generateRandomName();
 //        String randomLocationName = "Milena";
 
