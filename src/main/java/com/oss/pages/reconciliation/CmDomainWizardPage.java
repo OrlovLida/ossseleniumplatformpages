@@ -14,11 +14,13 @@ import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD
 
 public class CmDomainWizardPage extends BasePage {
 
+    private String cmDomainWizardId = "Popup";
+
     public CmDomainWizardPage(WebDriver driver) {
         super(driver);
     }
 
-    private Wizard cmDomainWizard = Wizard.createByComponentId(driver, wait, "narComponent_networkDiscoveryControlViewIdcmDomainActionPromptId");
+    private Wizard cmDomainWizard = Wizard.createByComponentId(driver, wait, cmDomainWizardId);
 
     @Step("Set name for CM Domain")
     public void setName(String name) {
@@ -82,13 +84,13 @@ public class CmDomainWizardPage extends BasePage {
 
     @Step("Save CM Domain wizard")
     public void save() {
-        Wizard.createByComponentId(driver, wait, "narComponent_networkDiscoveryControlViewIdcmDomainActionPromptId")
+        Wizard.createByComponentId(driver, wait, cmDomainWizardId)
                 .clickActionById("narComponent_networkDiscoveryControlViewIdCmDomainActionButtonsAppId-1");
     }
 
     @Step("Cancel CM Domain wizard")
     public void cancel() {
-        Wizard.createByComponentId(driver, wait, "narComponent_networkDiscoveryControlViewIdcmDomainActionPromptId")
+        Wizard.createByComponentId(driver, wait, cmDomainWizardId)
                 .clickActionById("narComponent_networkDiscoveryControlViewIdCmDomainActionButtonsAppId-0");
     }
 }
