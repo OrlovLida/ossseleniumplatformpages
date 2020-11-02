@@ -38,7 +38,8 @@ public class ThreeUKRegressionTests extends BaseTestCase {
 
     String objectTypeDevice = "Physical Device";
     String randomDeviceName = RandomGenerator.generateRandomName();
-    String deviceModel = "HUAWEI Technology Co.,Ltd BBU5900";
+    String deviceBBUModel = "HUAWEI Technology Co.,Ltd BBU5900";
+    String deviceRRUModel = "HUAWEI Technology Co.,Ltd RRU5301";
 
     String objectTypeENodeB = "eNodeB";
     String randomENodeBName = RandomGenerator.generateRandomName();
@@ -553,7 +554,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     @Test(groups = {"Radio tests"})
     @Description("The user creates Base Band Unit in Cell Site Configuration and checks the message about successful creation")
     public void tS20CreateBBU() {
-//        String randomLocationName = "Milena";
+        String randomLocationName = "Milena";
 
         homePage.setAndSelectObjectType(locationTypeSite);
         new OldInventoryViewPage(driver)
@@ -563,7 +564,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
                 .selectTab("Devices")
                 .clickPlusIconAndSelectOption("Create Device");
         new DeviceWizardPage(driver)
-                .createDevice(deviceModel, randomDeviceName, randomLocationName);
+                .createDevice(deviceBBUModel, randomDeviceName, randomLocationName);
         Assert.assertTrue(SystemMessageContainer.create(driver, webDriverWait)
                 .getMessages().get(0).getText().contains("Device has been created successfully"));
     }
@@ -582,7 +583,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
                 .selectTab("Devices")
                 .clickPlusIconAndSelectOption("Create Device");
         new DeviceWizardPage(driver)
-                .createDevice(deviceModel, randomDeviceName, randomLocationName);
+                .createDevice(deviceRRUModel, randomDeviceName, randomLocationName);
         SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
         systemMessageItem.waitForMessageDisappear();
         homePage.goToHomePage(driver, BASIC_URL);
@@ -620,7 +621,97 @@ public class ThreeUKRegressionTests extends BaseTestCase {
                 .selectTab("Devices")
                 .clickPlusIconAndSelectOption("Create Device");
         new DeviceWizardPage(driver)
-                .createDevice(deviceModel, randomDeviceName, randomLocationName);
+                .createDevice(deviceBBUModel, randomDeviceName, randomLocationName);
+        SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
+        systemMessageItem.waitForMessageDisappear();
+        homePage.goToHomePage(driver, BASIC_URL);
+        homePage.setAndSelectObjectType(objectTypeDevice);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", randomDeviceName, "PhysicalElement")
+                .expandShowOnAndChooseView("Cell Site Configuration");
+        new CellSiteConfigurationPage(driver)
+                .expandTreeToLocation(locationTypeSite, randomLocationName)
+                .selectTab("Devices")
+                .filterObject("Name", randomDeviceName)
+                .clickRemoveIcon();
+        systemMessageItem.waitForMessageDisappear();
+        homePage.searchInGlobalSearch(randomDeviceName);
+        CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        Assert.assertTrue(objectsList.isNoData());
+    }
+
+    @Test(groups = {"Radio tests"})
+    @Description("The user creates Radio Remote Unit in Cell Site Configuration and checks the message about successful creation")
+    public void tS23CreateRRU() {
+//        String randomLocationName = "Milena";
+
+        homePage.setAndSelectObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", randomLocationName, "Site")
+                .expandShowOnAndChooseView("Cell Site Configuration");
+        new CellSiteConfigurationPage(driver)
+                .selectTab("Devices")
+                .clickPlusIconAndSelectOption("Create Device");
+        new DeviceWizardPage(driver)
+                .createDevice(deviceRRUModel, randomDeviceName, randomLocationName);
+        Assert.assertTrue(SystemMessageContainer.create(driver, webDriverWait)
+                .getMessages().get(0).getText().contains("Device has been created successfully"));
+    }
+
+    @Test(groups = {"Radio tests"})
+    @Description("The user creates Radio Remote Unit in Cell Site Configuration, searches the device in Inventory View and goes to Cell Site Configuration again, then edits the device and checks if the description is updated in Device table")
+    public void tS24CreateAndModifyRRU() {
+        String randomDeviceName = RandomGenerator.generateRandomName();
+//        String randomLocationName = "Milena";
+
+        homePage.setAndSelectObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", randomLocationName, "Site")
+                .expandShowOnAndChooseView("Cell Site Configuration");
+        new CellSiteConfigurationPage(driver)
+                .selectTab("Devices")
+                .clickPlusIconAndSelectOption("Create Device");
+        new DeviceWizardPage(driver)
+                .createDevice(deviceRRUModel, randomDeviceName, randomLocationName);
+        SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
+        systemMessageItem.waitForMessageDisappear();
+        homePage.goToHomePage(driver, BASIC_URL);
+        homePage.setAndSelectObjectType(objectTypeDevice);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", randomDeviceName, "PhysicalElement")
+                .expandShowOnAndChooseView("Cell Site Configuration");
+        new CellSiteConfigurationPage(driver)
+                .expandTreeToLocation(locationTypeSite, randomLocationName)
+                .selectTab("Devices")
+                .filterObject("Name", randomDeviceName)
+                .clickEditIcon();
+        new DeviceWizardPage(driver)
+                .updateDescription(description);
+        new DeviceWizardPage(driver)
+                .update();
+        new CellSiteConfigurationPage(driver).getTabTable();
+        OldTable tabTable = new CellSiteConfigurationPage(driver).getTabTable();
+        int rowNumber = tabTable.getRowNumber(description, "Description");
+        String rowValue = tabTable.getValueCell(rowNumber, "Description");
+        Assert.assertTrue(rowValue.contains(description));
+    }
+
+    @Test(groups = {"Radio tests"})
+    @Description("The user creates Radio Remote Unit in Cell Site Configuration, searches the device in Inventory View and goes to Cell Site Configuration again, then edits the device and checks if the description is updated in Device table")
+    public void tS25CreateAndRemoveBBU() {
+        String randomDeviceName = RandomGenerator.generateRandomName();
+//        String randomLocationName = "Milena";
+
+        homePage.setAndSelectObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", randomLocationName, "Site")
+                .expandShowOnAndChooseView("Cell Site Configuration");
+        new CellSiteConfigurationPage(driver)
+                .selectTab("Devices")
+                .clickPlusIconAndSelectOption("Create Device");
+        new DeviceWizardPage(driver)
+                .createDevice(deviceRRUModel, randomDeviceName, randomLocationName);
         SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
         systemMessageItem.waitForMessageDisappear();
         homePage.goToHomePage(driver, BASIC_URL);
