@@ -142,7 +142,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     @Description("The user creates a Site in the created Site in Location Overview, then edits the Site and checks if the description is updated in Locations table")
     public void tS06CreateAndModifySiteInLocation() {
         String randomLocationNameInLocation = RandomGenerator.generateRandomName();
-        String randomLocationName = "Milena";
+//        String randomLocationName = "Milena";
 
         homePage.setAndSelectObjectType(locationTypeSite);
         new OldInventoryViewPage(driver)
