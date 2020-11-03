@@ -8,17 +8,18 @@ import org.openqa.selenium.WebDriver;
 
 public class GNodeBWizardPage extends BasePage {
 
-    private static final String G_NODE_B_WIZARD_DATA_ATTRIBUTE_NAME = "g-node-b-wizard-id";
+    private static final String G_NODE_B_WIZARD_DATA_ATTRIBUTE_NAME = "gnodeb-wizard-id";
     private static final String G_NODE_B_NAME_DATA_ATTRIBUTE_NAME = "name";
     private static final String G_NODE_B_ID_DATA_ATTRIBUTE_NAME = "gNodeBId";
     private static final String G_NODE_B_MODEL_DATA_ATTRIBUTE_NAME = "gNodeBModel";
-    private static final String G_NODE_B_MCC_MNC_DATA_ATTRIBUTE_NAME = "";
+    private static final String G_NODE_B_MCC_MNC_DATA_ATTRIBUTE_NAME = "mccMnc";
+    private static final String G_NODE_B_SEARCH_MCC_MNC_DATA_ATTRIBUTE_NAME = "mccMnc-dropdown-search";
     private static final String G_NODE_B_ADMINISTRATIVE_STATE_DATA_ATTRIBUTE_NAME = "administrativeState";
-    private static final String G_NODE_B_LOCATION_DATA_ATTRIBUTE_NAME = "";
+    private static final String G_NODE_B_LOCATION_DATA_ATTRIBUTE_NAME = "location_OSF";
     private static final String G_NODE_B_DESCRIPTION_DATA_ATTRIBUTE_NAME = "description";
     private static final String G_NODE_B_HOST_OPERATOR_DATA_ATTRIBUTE_NAME = "hostOperator";
     private static final String G_NODE_B_USER_LABEL_DATA_ATTRIBUTE_NAME = "userLabel";
-    private static final String G_NODE_B_MNS_DATA_ATTRIBUTE_NAME = "";
+    private static final String G_NODE_B_MNS_DATA_ATTRIBUTE_NAME = "NMS_OSF";
 
     public GNodeBWizardPage(WebDriver driver) {
         super(driver);
@@ -58,7 +59,8 @@ public class GNodeBWizardPage extends BasePage {
 
     @Step("Set MCC-MNC Primary")
     public GNodeBWizardPage setMccMncPrimary(String MCCMNCPrimary) {
-        getGNodeBWizard().setComponentValue(G_NODE_B_MCC_MNC_DATA_ATTRIBUTE_NAME, MCCMNCPrimary, Input.ComponentType.COMBOBOX);
+        getGNodeBWizard().getComponent(G_NODE_B_MCC_MNC_DATA_ATTRIBUTE_NAME, Input.ComponentType.COMBOBOX).click();
+        getGNodeBWizard().setComponentValue(G_NODE_B_SEARCH_MCC_MNC_DATA_ATTRIBUTE_NAME, MCCMNCPrimary, Input.ComponentType.COMBOBOX);
         return this;
     }
 

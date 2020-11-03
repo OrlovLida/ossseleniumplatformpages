@@ -13,13 +13,13 @@ public class ENodeBWizardPage extends BasePage {
     private static final String E_NODE_B_ID_DATA_ATTRIBUTE_NAME = "eNodeBId";
     private static final String E_NODE_B_MODEL_DATA_ATTRIBUTE_NAME = "eNodeBModel";
     private static final String E_NODE_B_MCC_MNC_PRIMARY_DATA_ATTRIBUTE_NAME = "primaryMccMnc";
-    private static final String E_NODE_B_MCC_MNC_ADDITIONAL_DATA_ATTRIBUTE_NAME = "";
+    private static final String E_NODE_B_MCC_MNC_ADDITIONAL_DATA_ATTRIBUTE_NAME = "additionalMccMnc";
     private static final String E_NODE_B_ADMINISTRATIVE_STATE_DATA_ATTRIBUTE_NAME = "administrativeState";
-    private static final String E_NODE_B_LOCATION_DATA_ATTRIBUTE_NAME = "";
+    private static final String E_NODE_B_LOCATION_DATA_ATTRIBUTE_NAME = "location_OSF";
     private static final String E_NODE_B_DESCRIPTION_DATA_ATTRIBUTE_NAME = "description";
     private static final String E_NODE_B_HOST_OPERATOR_DATA_ATTRIBUTE_NAME = "hostOperator";
     private static final String E_NODE_B_USER_LABEL_DATA_ATTRIBUTE_NAME = "userLabel";
-    private static final String E_NODE_B_MNS_DATA_ATTRIBUTE_NAME = "";
+    private static final String E_NODE_B_MNS_DATA_ATTRIBUTE_NAME = "NMS_OSF";
 
     public ENodeBWizardPage(WebDriver driver) {
         super(driver);
