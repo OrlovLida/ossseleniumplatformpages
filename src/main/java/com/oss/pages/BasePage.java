@@ -1,7 +1,7 @@
 package com.oss.pages;
 
 import com.oss.framework.mainheader.ToolbarWidget;
-import com.oss.framework.mainheader.UserSettings;
+import com.oss.framework.mainheader.LoginPanel;
 import com.oss.framework.sidemenu.SideMenu;
 import com.oss.pages.platform.*;
 import io.qameta.allure.Step;
@@ -32,7 +32,7 @@ public class BasePage {
     }
 
     public void changeUser(String user, String password) {
-        UserSettings.create(driver, wait).open().logOut();
+        LoginPanel.create(driver, wait).open().logOut();
         new LoginPage(driver, "url").login(user, password);
     }
 

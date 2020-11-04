@@ -15,7 +15,6 @@ public class ExportGuiWizardPage extends BasePage {
 
     public ExportGuiWizardPage(WebDriver driver) {
         super(driver);
-        getWizard();
     }
 
     private static final String CHECKBOX_EXPORT_WITH_HEADERS_ID = "exportgui-components-withheadercheckbox";

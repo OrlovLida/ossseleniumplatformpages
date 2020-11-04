@@ -1,5 +1,6 @@
-package com.oss;
+package com.oss.web;
 
+import com.oss.BaseTestCase;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.filtermanager.EditFilterPage;
 import com.oss.pages.filtermanager.FilterManagerPage;

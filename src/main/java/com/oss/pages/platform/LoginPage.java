@@ -29,7 +29,7 @@ public class LoginPage extends BasePage {
 
     public LoginPage open() {
         driver.get(url);
-        DelayUtils.waitForVisibility(wait,userInput);
+        DelayUtils.waitForVisibility(wait, userInput);
         return this;
     }
 
@@ -40,7 +40,7 @@ public class LoginPage extends BasePage {
         return new HomePage(driver);
     }
 
-    public void login(String user, String password){
+    public void login(String user, String password) {
         userInput.sendKeys(user);
         passwordInput.sendKeys(password);
         loginButton.click();

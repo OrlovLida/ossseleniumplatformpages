@@ -1,7 +1,7 @@
 package com.oss.cmTemplate;
 
 import com.oss.BaseTestCase;
-import com.oss.framework.components.notifications.Notifications;
+import com.oss.framework.mainheader.Notifications;
 import com.oss.framework.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.templateCM.ChangeConfigurationPage;
