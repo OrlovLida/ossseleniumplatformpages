@@ -371,7 +371,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         Assert.assertTrue(objectsList.isNoData());
     }
 
-    @Test(enabled = false, groups = {"Radio tests"})
+    @Test(groups = {"Radio tests"})
     @Description("The user creates gNodeB in Cell Site Configuration and checks the message about successful creation")
     public void tS14CreateGNodeB() {
 //        String randomLocationName = "Milena";
@@ -388,7 +388,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
                 .getMessages().get(0).getText().contains("Created gNodeB"));
     }
 
-    @Test(enabled = false, groups = {"Radio tests"})
+    @Test(groups = {"Radio tests"})
     @Description("The user creates gNodeB in Cell Site Configuration, searches gNodeB in Inventory View and goes to Cell Site Configuration again, then edits the gNodeB and checks if the description is updated in Base Stations table")
     public void tS15CreateAndEditGNodeB() {
         String randomGNodeBName = RandomGenerator.generateRandomName();
@@ -426,7 +426,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         Assert.assertTrue(rowValue.contains(description));
     }
 
-    @Test(enabled = false, groups = {"Radio tests"})
+    @Test(groups = {"Radio tests"})
     @Description("The user creates gNodeB in Cell Site Configuration, searches gNodeB name in Global Search and deletes the gNodeB and checks if search result in Global Search is no data")
     public void tS16CreateAndRemoveGNodeB() {
         String randomGNodeBName = RandomGenerator.generateRandomName();
@@ -462,8 +462,8 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     @Test(groups = {"Radio tests"})
     @Description("The user creates Cell 5G in Cell Site Configuration and checks the message about successful creation")
     public void tS17CreateCell5G() {
-        String randomLocationName = "Milena";
-        String randomGNodeBName = "gNodeBSelenium";
+//        String randomLocationName = "Milena";
+//        String randomGNodeBName = "gNodeBSelenium";
 
         homePage.setAndSelectObjectType(locationTypeSite);
         new OldInventoryViewPage(driver)
@@ -483,8 +483,8 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     public void tS18CreateAndModifyCell5G() {
         String randomCell5GName = RandomGenerator.generateRandomName();
         String randomCell5GId = RandomGenerator.generateRandomCell5GId();
-        String randomLocationName = "Milena";
-        String randomGNodeBName = "gNodeBSelenium";
+//        String randomLocationName = "Milena";
+//        String randomGNodeBName = "gNodeBSelenium";
 
         homePage.setAndSelectObjectType(locationTypeSite);
         new OldInventoryViewPage(driver)
@@ -522,8 +522,8 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     public void tS19CreateAndRemoveCell5G() {
         String randomCell5GName = RandomGenerator.generateRandomName();
         String randomCell5GId = RandomGenerator.generateRandomCell5GId();
-        String randomLocationName = "Milena";
-        String randomGNodeBName = "gNodeBSelenium";
+//        String randomLocationName = "Milena";
+//        String randomGNodeBName = "gNodeBSelenium";
 
         homePage.setAndSelectObjectType(locationTypeSite);
         new OldInventoryViewPage(driver)
