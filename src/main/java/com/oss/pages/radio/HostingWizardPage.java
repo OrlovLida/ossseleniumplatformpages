@@ -1,6 +1,9 @@
 package com.oss.pages.radio;
 
 import com.oss.framework.components.inputs.Input;
+import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOXV2;
+import com.oss.framework.data.Data;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
@@ -27,11 +30,19 @@ public class HostingWizardPage extends BasePage {
         componentUseFirstAvailableID.setSingleStringValue(showOnlyCompatible);
     }
 
-    //TODO: search for the deviceName and use it
-    @Step("Create Hosting Relation")
-    public void createHostingRelationWizard(String deviceName) {
+    @Step("Select Device name")
+    public void selectDevice(String deviceName) {
+        Wizard wizard = Wizard.createByComponentId(driver, wait, "hosting-wizard");
+        Input devicesOnLocation = wizard.getComponent("devicesOnLocation", COMBOBOXV2);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        devicesOnLocation.setValueContains(Data.createSingleData(deviceName));
+    }
 
-        clickAccept();
+    @Step("Select RAN Antenna Array")
+    public void selectArray(String arrayName) {
+        Wizard wizard = Wizard.createByComponentId(driver, wait, "hosting-wizard");
+        Input hosting = wizard.getComponent("hosting", COMBOBOXV2);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        hosting.setValueContains(Data.createSingleData(arrayName));
     }
 }
-
