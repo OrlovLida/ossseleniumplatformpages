@@ -506,6 +506,19 @@ public class CreateProcessNRPTest extends BaseTestCase {
         Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getText())
                 .contains("Task properly completed.");
     }
+    @Test(priority = 27)
+    public void checkProcessStatus(){
+        //given
+        ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
+        DelayUtils.waitForPageToLoad(driver,webDriverWait);
+
+        //when
+        processInstancesPage.selectPredefinedFilter("Show with Completed");
+        String processStatus = processInstancesPage.getProcessStatus(processNRPCode);
+
+        //then
+        Assertions.assertThat(processStatus).isEqualTo("Completed");
+    }
 
     @AfterClass()
     public void switchToLivePerspective(){
