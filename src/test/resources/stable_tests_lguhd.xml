@@ -2,18 +2,18 @@
 <suite name="RegressionSuiteWeb-LGUHD" thread-count="2" parallel="tests" verbose="1">
     <test name="ExportTests">
         <classes>
-            <class name="com.oss.ExportGuiWizardTest"/>
-            <class name="com.oss.ExportByScheduleTest"/>
+            <class name="com.oss.web.ExportGuiWizardTest"/>
+            <class name="com.oss.web.ExportByScheduleTest"/>
         </classes>
     </test>
     <test name="LayoutTests">
         <classes>
-            <class name="com.oss.LayoutTest"/>
+            <class name="com.oss.web.LayoutTest"/>
         </classes>
     </test>
     <test name="FiltersTests">
         <classes>
-            <class name="com.oss.FiltersTest"/>
+            <class name="com.oss.web.FiltersTest"/>
         </classes>
     </test>
     <test name="IPAMTest">

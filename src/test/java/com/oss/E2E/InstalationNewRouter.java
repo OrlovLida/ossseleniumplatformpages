@@ -4,7 +4,7 @@ import com.oss.BaseTestCase;
 import com.oss.bpm.CreateProcessNRPTest;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
-import com.oss.framework.components.notifications.Notifications;
+import com.oss.framework.mainheader.Notifications;
 import com.oss.framework.listwidget.EditableList;
 import com.oss.framework.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;

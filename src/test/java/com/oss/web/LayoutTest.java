@@ -1,5 +1,6 @@
-package com.oss;
+package com.oss.web;
 
+import com.oss.BaseTestCase;
 import com.oss.pages.platform.NewInventoryViewPage;
 import io.qameta.allure.Description;
 import org.testng.Assert;
@@ -10,7 +11,7 @@ import com.oss.utils.*;
 
 
 @Listeners({TestListener.class})
-public class LayoutTest extends BaseTestCase{
+public class LayoutTest extends BaseTestCase {
 
     private NewInventoryViewPage inventoryViewPage;
 
