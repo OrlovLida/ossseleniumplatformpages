@@ -110,7 +110,7 @@ public class FilterPanelPage extends BasePage {
 
     private void clickOnSaveButton() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        Button.createBySelectorAndId(driver, "div", SAVE_BUTTON_CLASS_NAME).click();
+        Button.createByIcon(driver, "fa fa-save", SAVE_BUTTON_CLASS_NAME).click();
     }
 
     private void chooseOptionFromDropDownList(String OptionId) {

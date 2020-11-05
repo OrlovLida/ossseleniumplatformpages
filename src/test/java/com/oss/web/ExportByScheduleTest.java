@@ -1,5 +1,6 @@
-package com.oss;
+package com.oss.web;
 
+import com.oss.BaseTestCase;
 import com.oss.pages.exportguiwizard.ExportGuiWizardPage;
 import com.oss.pages.languageservice.LanguageServicePage;
 import com.oss.pages.schedulerservice.SchedulerServicePage;
@@ -12,7 +13,7 @@ import org.testng.annotations.Test;
 import com.oss.utils.*;
 
 @Listeners({TestListener.class})
-public class ExportByScheduleTest extends BaseTestCase{
+public class ExportByScheduleTest extends BaseTestCase {
 
     private static final String LANGUAGE_SERVICE_PAGE_URL = String.format("%s/#/views/languagesservice/views/translations" +
             "?perspective=LIVE", BASIC_URL);

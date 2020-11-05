@@ -1,14 +1,10 @@
 package com.oss.pages.platform;
 
-import com.oss.framework.components.notifications.Notifications;
+import com.oss.framework.mainheader.Notifications;
 import com.oss.framework.mainheader.ToolbarWidget;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.BasePage;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-
-import java.util.List;
 
 public class NotificationWrapperPage extends BasePage {
 
