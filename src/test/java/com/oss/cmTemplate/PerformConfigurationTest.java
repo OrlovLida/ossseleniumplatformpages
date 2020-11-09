@@ -21,6 +21,7 @@ public class PerformConfigurationTest extends BaseTestCase {
     @BeforeClass
     public void goToPerformConfigurationChange() {
         SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         sideMenu.callActionByLabel("Change Configuration", "Views", "Template CM");
         changeConfigurationPage = new ChangeConfigurationPage(driver);
     }
@@ -28,13 +29,14 @@ public class PerformConfigurationTest extends BaseTestCase {
     @Test(priority = 1)
     @Description("Choose object type, specific device and template")
     public void chooseDeviceAndTemplate() {
-        DelayUtils.sleep(1000);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        Notifications.create(driver, webDriverWait).clearAllNotification();
         changeConfigurationPage.selectObjectType("Router");
-        DelayUtils.sleep(1000);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         changeConfigurationPage.selectObject(DEVICE_NAME);
-        DelayUtils.sleep(1000);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         changeConfigurationPage.selectTemplate(TEMPLATE_NAME);
-        DelayUtils.sleep(1000);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
     @Test(priority = 2)
@@ -42,21 +44,23 @@ public class PerformConfigurationTest extends BaseTestCase {
     public void testParameters() {
         changeConfigurationPage.clickSetParameters();
         setParametersWizardPage = new SetParametersWizardPage(driver);
-
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         String name = setParametersWizardPage.getParameter("$name[NEW_INVENTORY]");
         Assertions.assertThat(name).isEqualTo(DEVICE_NAME);
-
         setParametersWizardPage.setParameter("$InterfaceName[USER]", "GE 0");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        setParametersWizardPage.setParameter("$Password[SYSTEM]", "cisco");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
     @Test(priority = 3)
     @Description("Deploy template")
     public void runTemplate() {
-        DelayUtils.sleep(1000);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         setParametersWizardPage.clickFillParameters();
-        DelayUtils.sleep(1000);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         changeConfigurationPage.deployImmediately();
-        DelayUtils.sleep(1000);
-        Assertions.assertThat(Notifications.create(driver, webDriverWait).waitAndGetFinishedNotificationText().equals("Scripts processing for template " + TEMPLATE_NAME + ": FINISHED")).isTrue();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        Notifications.create(driver, webDriverWait).waitForSpecificNotification(TEMPLATE_NAME, "FINISHED");
     }
 }

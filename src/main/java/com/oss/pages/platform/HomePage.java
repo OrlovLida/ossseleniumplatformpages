@@ -42,8 +42,7 @@ public class HomePage extends BasePage {
 
     @Step("Go to Home Page")
     public HomePage goToHomePage(WebDriver driver, String basicURL) {
-        driver.get(String.format("%s/#/" +
-                "?perspective=LIVE", basicURL));
+        driver.get(String.format("%s/#/", basicURL));
         return new HomePage(driver);
     }
 
