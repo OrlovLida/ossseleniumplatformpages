@@ -275,7 +275,7 @@ public class IPAddressManagementViewPage extends BasePage {
     }
 
     public void deleteObject(String name){
-        selectTreeRow(name);
+        selectTreeRowContains(name);
         useButton(DELETE_BUTTON_DATA_ATTRIBUTE_NAME);
         acceptConfirmationBox();
         closeSystemMessage();

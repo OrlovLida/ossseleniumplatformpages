@@ -273,9 +273,9 @@ public class IPAMTest extends BaseTestCase {
         ipAddressManagementViewPage.deleteIPSubnet(secondIPSubnetProperties.get(SUBNET_PROPERTY_ADDRESS)+"/"+secondIPSubnetProperties.get(SUBNET_PROPERTY_MASK_LENGTH));
         ipAddressManagementViewPage.expandTreeRow(name);
         ipAddressManagementViewPage.expandTreeRowContains(firstIPSubnetProperties.get(SUBNET_PROPERTY_ADDRESS));
-        ipAddressManagementViewPage.deleteIPSubnet(thirdIPSubnetProperties.get(SUBNET_PROPERTY_ADDRESS));
+        ipAddressManagementViewPage.deleteObject(thirdIPSubnetProperties.get(SUBNET_PROPERTY_ADDRESS));
         ipAddressManagementViewPage.expandTreeRow(name);
-        ipAddressManagementViewPage.deleteIPSubnet(firstIPSubnetProperties.get(SUBNET_PROPERTY_ADDRESS));
+        ipAddressManagementViewPage.deleteObject(firstIPSubnetProperties.get(SUBNET_PROPERTY_ADDRESS));
     }
 
     // zamienic name na nameUpdated po poprawie buga OSSTPT-30469
