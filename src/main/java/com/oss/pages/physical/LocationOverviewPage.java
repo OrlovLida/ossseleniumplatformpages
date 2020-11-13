@@ -18,6 +18,9 @@ import org.openqa.selenium.WebDriver;
 
 public class LocationOverviewPage extends BasePage {
 
+    private static final String DEVICES_TABLE_DATA_ATTRIBUTE_NAME = "tableAppDevicesId";
+
+
     public LocationOverviewPage(WebDriver driver) {
         super(driver);
     }
@@ -27,6 +30,13 @@ public class LocationOverviewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         ButtonContainer.create(driver, wait)
                 .callActionByLabel(buttonName);
+    }
+
+    @Step("Click button by label")
+    public void clickButtonFromDeviceTabByLabel(String buttonLabel) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        OldTable table = OldTable.createByComponentDataAttributeName(driver, wait, DEVICES_TABLE_DATA_ATTRIBUTE_NAME);
+        table.callActionByLabel(buttonLabel);
     }
 
     @Step("Select {tabName} tab")
@@ -64,4 +74,12 @@ public class LocationOverviewPage extends BasePage {
         return OldTable.createByComponentDataAttributeName(driver, wait, "tableAppLocationsId");
     }
 
+    private OldTable getTabDevicesTable() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return OldTable.createByComponentDataAttributeName(driver, wait, DEVICES_TABLE_DATA_ATTRIBUTE_NAME);
+    }
+
+    public void selectDeviceFromTableByAttributeValueWithLabel(String attributeLabel, String value) {
+        getTabDevicesTable().selectRowByAttributeValueWithLabel(attributeLabel, value);
+    }
 }

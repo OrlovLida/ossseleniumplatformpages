@@ -72,6 +72,7 @@ public class LocationWizardPage extends BasePage {
         }
     }
 
+    //TODO: Check if it is working after OSSPHY-47031
     @Step("Set Geographical Address")
     public void setGeographicalAddress(String geographicalAddress) {
         locationWizard.setComponentValue(GEOGRAPHICAL_ADDRESS_SEARCH_DATA_ATTRIBUTE_NAME, geographicalAddress, Input.ComponentType.TEXT_FIELD);
@@ -84,6 +85,7 @@ public class LocationWizardPage extends BasePage {
         locationWizard.setComponentValue(NUMBER_OF_LOCATIONS_DATA_ATTRIBUTE_NAME, count, Input.ComponentType.TEXT_FIELD);
     }
 
+    //TODO: Check if it is working after OSSPHY-47031
     @Step("Set model")
     public void setModel(String model) {
         locationWizard.setComponentValue(MODEL_DATA_ATTRIBUTE_NAME, model, Input.ComponentType.TEXT_FIELD);
