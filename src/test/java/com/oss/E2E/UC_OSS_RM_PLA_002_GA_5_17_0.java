@@ -4,8 +4,8 @@ import com.oss.BaseTestCase;
 import com.oss.bpm.CreateProcessNRPTest;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
-import com.oss.framework.listwidget.EditableList;
 import com.oss.framework.mainheader.Notifications;
+import com.oss.framework.listwidget.EditableList;
 import com.oss.framework.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.OldTable;
@@ -38,9 +38,9 @@ import java.util.regex.Pattern;
 
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 
-public class InstalationNewRouter extends BaseTestCase {
-
+public class UC_OSS_RM_PLA_002_GA_5_17_0 extends BaseTestCase {
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
+
     private String deviceModel = "1941";
     private String cmDomainName = "SeleniumE2ETest";
     private String deviceName = "H3_Lab";
@@ -64,7 +64,6 @@ public class InstalationNewRouter extends BaseTestCase {
     @BeforeClass
     public void openProcessInstancesPage() {
         ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
-        DelayUtils.sleep(10000);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -77,13 +76,11 @@ public class InstalationNewRouter extends BaseTestCase {
         Assertions.assertThat(messages).hasSize(1);
         Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
         Assertions.assertThat(messages.get(0).getText()).contains(processNRPCode);
-        DelayUtils.sleep(10000);
     }
 
     @Test(priority = 2)
     public void startHLPTask() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        DelayUtils.sleep(10000);
         tasksPage.startTask(processNRPCode, "High Level Planning");
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
@@ -169,7 +166,7 @@ public class InstalationNewRouter extends BaseTestCase {
     public void createIpLink() {
         openNetworkView();
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
-        networkViewPage.useContextAction("add_to_view_group", "Network Element");
+        networkViewPage.useContextAction("add_to_view_group", "Device");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkViewPage.queryElementAndAddItToView("name", TEXT_FIELD, deviceName);
         networkViewPage.expandDockedPanel("left");
@@ -551,7 +548,6 @@ public class InstalationNewRouter extends BaseTestCase {
     public void deleteIpLink() {
         HomePage homePage = new HomePage(driver);
         homePage.goToHomePage(driver, BASIC_URL);
-        openNetworkView();
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.useContextAction("add_to_view_group", "Trail");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
