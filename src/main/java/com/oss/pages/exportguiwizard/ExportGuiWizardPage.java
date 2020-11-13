@@ -103,7 +103,6 @@ public class ExportGuiWizardPage extends BasePage {
     public LanguageServicePage closeTheWizard() {
         DelayUtils.sleep(300);
         clickOnAccept();
-        getWizard().waitToClose();
         return new LanguageServicePage(driver);
     }
 
