@@ -29,7 +29,8 @@ import io.qameta.allure.Step;
 public class NetworkInconsistenciesViewPage extends BasePage {
 
     private TreeWidget mainTree;
-    private String applyButtonId = "narComponent_GroupDiscrepancyActionApplyId";
+    private String applyGroupButtonId = "narComponent_GroupDiscrepancyActionApplyId";
+    private String applyButtonId = "narComponent_DiscrepancyActionApplyId";
     private String inconsistenciesTable = "narComponent_networkInconsistenciesViewIddiscrepancyDetailsTreeTableId";
     private String updateDevice = "UpdateDeviceWizardAction";
     private String nivTree = "narComponent_networkInconsistenciesViewIddiscrepanciesTreeTabId";
@@ -85,6 +86,14 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         getTreeView().selectTreeRowByOrder(2);
         TabsInterface nivTabs = TabWindowWidget.create(driver, wait);
         nivTabs.selectTabById(nivTree);
+        nivTabs.callActionById(applyGroupButtonId);
+        DelayUtils.sleep(1000);
+    }
+
+    @Step("Apply discrepancies to Live perspective")
+    public void applySelectedInconsistencies() {
+        TabsInterface nivTabs = TabWindowWidget.create(driver, wait);
+        nivTabs.selectTabById(nivTree);
         nivTabs.callActionById(applyButtonId);
         DelayUtils.sleep(1000);
     }
@@ -99,5 +108,14 @@ public class NetworkInconsistenciesViewPage extends BasePage {
     public void checkNotificationAfterApplyInconsistencies(String groupDiscrepancyLabel) {
         NotificationsInterface notifications = Notifications.create(driver, new WebDriverWait(driver, 150));
         Assertions.assertThat(notifications.waitAndGetFinishedNotificationText().equals("Accepting discrepancies related to " + groupDiscrepancyLabel + " finished")).isTrue();
+    }
+
+    @Step("Check inconsistencies operation type for first object")
+    public String checkInconsistenciesOperationType() {
+        getTreeView().selectTreeRowByOrder(3);
+        DelayUtils.sleep(5000);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, inconsistenciesTable);
+        return table.getValueCell(0, "Operation Type");
     }
 }
