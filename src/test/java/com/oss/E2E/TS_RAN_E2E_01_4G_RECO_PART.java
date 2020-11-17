@@ -1,6 +1,5 @@
 package com.oss.E2E;
 
-import org.assertj.core.api.Assertions;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -14,17 +13,16 @@ import com.oss.pages.reconciliation.SamplesManagementPage;
 import com.oss.utils.TestListener;
 
 @Listeners({ TestListener.class })
-public class TP_OSS_RM_RAN_001_RECO_PART extends BaseTestCase {
+public class TS_RAN_E2E_01_4G_RECO_PART extends BaseTestCase {
 
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
-    private String cmDomainName = "Selenium-TP-OSS-RM-RAN-001";
+    private String cmDomainName = "Selenium-TS-RAN-E2E-01-4G";
     private String cmInterface = "Huawei U2000 RAN";
+    private String preciseLocation = "Poznan-BU1";
     private String[] inconsistenciesNames = {
-            "ENODEB-GBM055TST",
-            "PhysicalElement-BTS5900,GBM055TST/0/BBU5900,0",
-            "PhysicalElement-BTS5900,GBM055TST/0/MRRU,60",
-            "PhysicalElement-BTS5900,GBM055TST/0/MRRU,70",
-            "PhysicalElement-BTS5900,GBM055TST/0/MRRU,80"
+            "ENODEB-DXBL0858UAT6-Burj-Dubai_The-Palace-Hotel_West-Wing",
+            "PhysicalElement-eNodeB,DXBL0858UAT6-Burj-Dubai_The-Palace-Hotel_West-Wing/0/BBU3900,0",
+            "PhysicalElement-eNodeB,DXBL0858UAT6-Burj-Dubai_The-Palace-Hotel_West-Wing/0/MRRU,60"
     };
 
     @BeforeClass
@@ -53,9 +51,9 @@ public class TP_OSS_RM_RAN_001_RECO_PART extends BaseTestCase {
         samplesManagementPage.selectPath();
         samplesManagementPage.createDirectory(cmDomainName);
         DelayUtils.sleep(1000);
-        samplesManagementPage.uploadSamples("recoSamples/huaweiRan/TP_OSS_RM_RAN_001/AIM_BTS5900_GBM055.xml");
+        samplesManagementPage.uploadSamples("recoSamples/huaweiRan/TS_RAN_E2E_01_4G/AIM_NodeB_Inventory_DXBL0858UAT6-Burj-Dubai_The-Palace-Hotel_West-Wing_20200414_151916.xml");
         DelayUtils.sleep(1000);
-        samplesManagementPage.uploadSamples("recoSamples/huaweiRan/TP_OSS_RM_RAN_001/SRANNBIExport_XML_Co-MPT BTS_RT_06_17_2020_22_38_11_629_198_19_191_6.xml");
+        samplesManagementPage.uploadSamples("recoSamples/huaweiRan/TS_RAN_E2E_01_4G/SRANNBIExport_XML_DXBL0858UAT6-Burj-Dubai_The-Palace-Hotel_West-Wing_4G.xml");
     }
 
     @Test(priority = 3)
@@ -70,16 +68,18 @@ public class TP_OSS_RM_RAN_001_RECO_PART extends BaseTestCase {
     }
 
     @Test(priority = 4)
-    public void checkOperationTypeAndAcceptDiscrepancies() {
+    public void assignLocationAndApplyInconsistencies() {
         networkDiscoveryControlViewPage.moveToNivFromNdcv();
         NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
         networkInconsistenciesViewPage.expantTree();
         for (String inconsistencieName : inconsistenciesNames) {
-            Assertions.assertThat(networkInconsistenciesViewPage.checkInconsistenciesOperationType().equals("MODIFICATION")).isTrue();
+            networkInconsistenciesViewPage.assignLocation(preciseLocation);
+            networkInconsistenciesViewPage.checkUpdateDeviceSystemMessage();
             networkInconsistenciesViewPage.clearOldNotification();
             networkInconsistenciesViewPage.applySelectedInconsistencies();
             DelayUtils.sleep(5000);
             networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(inconsistencieName);
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
         }
     }
 

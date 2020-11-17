@@ -59,15 +59,15 @@ public class NetworkInconsistenciesViewPage extends BasePage {
     }
 
     @Step("Select first Device and use Physical Device Update Wizard to assign location")
-    public void assignLocation() {
+    public void assignLocation(String preciseLocation) {
         getTreeView().selectTreeRowByOrder(3);
         DelayUtils.waitForPageToLoad(driver, wait);
         TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, inconsistenciesTable);
         table.callAction("EDIT", updateDevice);
         DelayUtils.waitForPageToLoad(driver, wait);
         Wizard wizard = Wizard.createWizard(driver, new WebDriverWait(driver, 90));
-        Input preciseLocation = wizard.getComponent("search_precise_location", ComponentType.SEARCH_FIELD);
-        preciseLocation.setSingleStringValue("a");
+        Input preciseLocationInput = wizard.getComponent("search_precise_location", ComponentType.SEARCH_FIELD);
+        preciseLocationInput.setSingleStringValue(preciseLocation);
         DelayUtils.waitForPageToLoad(driver, wait);
         wizard.clickUpdate();
     }
