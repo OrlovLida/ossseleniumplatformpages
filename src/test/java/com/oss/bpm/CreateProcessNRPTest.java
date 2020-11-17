@@ -245,6 +245,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
         IntegrationProcessWizardPage integrationWizard = new IntegrationProcessWizardPage(driver);
         integrationWizard.defineIntegrationProcess(processIPName1, "2020-07-01", 1);
         integrationWizard.defineIntegrationProcess(processIPName2, "2020-07-02", 2);
+        DelayUtils.sleep();
         integrationWizard.clickNext();
         integrationWizard.dragAndDrop(deviceName1, processIPName1);
         integrationWizard.dragAndDrop(deviceName2, processIPName2);
