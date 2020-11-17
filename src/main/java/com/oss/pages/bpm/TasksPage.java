@@ -25,83 +25,88 @@ import com.oss.pages.dms.AttachFileWizardPage;
  * @author Gabriela Kasza
  */
 public class TasksPage extends BasePage {
-    public static TasksPage goToTasksPage(WebDriver driver, WebDriverWait wait, String basicURL){
+    public static TasksPage goToTasksPage(WebDriver driver, WebDriverWait wait, String basicURL) {
         DelayUtils.waitForPageToLoad(driver, wait);
         driver.get(String.format("%s/#/view/bpm/tasks", basicURL));
         DelayUtils.waitForPageToLoad(driver, wait);
         return new TasksPage(driver);
     }
-    private String TABLE_TASKS = "bpm_task_view_task-table";
-    private String TABS_TASKS_VIEW = "bpm_task_view_tabs-container";
-    private String ATTACH_FILE_BUTTON = "attachmentManagerBusinessView_topCommonButtons-1";
-    private String FORM_TAB_ID ="bpm_task_view_form-tab";
-    private String ATTACHMENT_TAB_ID= "bpm_task_view_attachment-tab";
-
+    
+    private static final String TABLE_TASKS = "bpm_task_view_task-table";
+    private static final String TABS_TASKS_VIEW = "bpm_task_view_tabs-container";
+    private static final String ATTACH_FILE_BUTTON = "attachmentManagerBusinessView_topCommonButtons-1";
+    private static final String FORM_TAB_ID = "bpm_task_view_form-tab";
+    private static final String ATTACHMENT_TAB_ID = "bpm_task_view_attachment-tab";
+    
     protected TasksPage(WebDriver driver) {
         super(driver);
     }
-    public void findTask(String processCode, String taskName){
+    
+    public void findTask(String processCode, String taskName) {
         TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, TABLE_TASKS);
         DelayUtils.waitForPageToLoad(driver, wait);
-        table.searchByAttributeWithLabel("Process Code", Input.ComponentType.TEXT_FIELD,processCode);
+        table.searchByAttributeWithLabel("Process Code", Input.ComponentType.TEXT_FIELD, processCode);
         DelayUtils.waitForPageToLoad(driver, wait);
-        table.searchByAttributeWithLabel("Name", Input.ComponentType.TEXT_FIELD,taskName);
+        table.searchByAttributeWithLabel("Name", Input.ComponentType.TEXT_FIELD, taskName);
         table.doRefreshWhileNoData(10000, "Reload table");
-        table.selectRowByAttributeValueWithLabel("Process Code",processCode);
-
+        table.selectRowByAttributeValueWithLabel("Process Code", processCode);
+        
     }
-    public void startTask(String processCode, String taskName){
-        findTask(processCode,taskName);
+    
+    public void startTask(String processCode, String taskName) {
+        findTask(processCode, taskName);
         DelayUtils.waitForPageToLoad(driver, wait);
         actionTask("Start task");
-
+        
     }
-    public void completeTask(String processCode, String taskName){
-        findTask(processCode,taskName);
+    
+    public void completeTask(String processCode, String taskName) {
+        findTask(processCode, taskName);
         DelayUtils.waitForPageToLoad(driver, wait);
         actionTask("Complete task");
     }
-    public void setupIntegration(String processCode){
-        findTask(processCode,"Ready for Integration");
+    
+    public void setupIntegration(String processCode) {
+        findTask(processCode, "Ready for Integration");
         DelayUtils.waitForPageToLoad(driver, wait);
-        TabsInterface tabs= TabsWidget.createById(driver,wait, TABS_TASKS_VIEW);
+        TabsInterface tabs = TabsWidget.createById(driver, wait, TABS_TASKS_VIEW);
         tabs.callActionByLabel("Setup Integration");
     }
-    public void addFile(String processCode, String taskName, String filePath){
-        findTask(processCode,taskName);
-        TabsInterface tabs= TabsWidget.createById(driver,wait, TABS_TASKS_VIEW);
-        DelayUtils.waitForPageToLoad(driver,wait);
+    
+    public void addFile(String processCode, String taskName, String filePath) {
+        findTask(processCode, taskName);
+        TabsInterface tabs = TabsWidget.createById(driver, wait, TABS_TASKS_VIEW);
+        DelayUtils.waitForPageToLoad(driver, wait);
         tabs.selectTabById(ATTACHMENT_TAB_ID);
         tabs.callActionById(ATTACH_FILE_BUTTON);
         AttachFileWizardPage attachFileWizardPage = new AttachFileWizardPage(driver);
         attachFileWizardPage.selectRadioButton("Upload anyway");
         attachFileWizardPage.attachFile(filePath);
-        DelayUtils.sleep();
-        attachFileWizardPage.nextButton();
-        attachFileWizardPage.acceptButton();
-        DelayUtils.waitForPageToLoad(driver, wait);
+        attachFileWizardPage.skipAndAccept();
+        
     }
-    public void selectTab(String tabLabel){
-        TabsInterface tabs= TabsWidget.createById(driver,wait, TABS_TASKS_VIEW);
+    
+    public void selectTab(String tabLabel) {
+        TabsInterface tabs = TabsWidget.createById(driver, wait, TABS_TASKS_VIEW);
         tabs.selectTabByLabel(tabLabel);
     }
-
-    private void actionTask(String actionLabel){
-        TabsInterface tabs= TabsWidget.createById(driver,wait, TABS_TASKS_VIEW);
+    
+    private void actionTask(String actionLabel) {
+        TabsInterface tabs = TabsWidget.createById(driver, wait, TABS_TASKS_VIEW);
         tabs.selectTabById(FORM_TAB_ID);
-        DelayUtils.waitForPageToLoad(driver,wait);
+        DelayUtils.waitForPageToLoad(driver, wait);
         tabs.callActionByLabel(actionLabel);
-        ConfirmationBoxInterface prompt= ConfirmationBox.create(driver, wait);
+        ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
         prompt.clickButtonByLabel("Proceed");
     }
-
+    
     public void openIntegrationProcessByClickingOnIdLink() {
         TableInterface table = OldTable.createByComponentId(driver, wait, "ip_involved_nrp_group1");
         table.selectLinkInSpecificColumn("Id");
     }
-
-    public void clickPerformConfigurationButton(){
-        Button button = Button.create(driver,"Perform Configuration","a");
+    
+    public void clickPerformConfigurationButton() {
+        Button button = Button.create(driver, "Perform Configuration", "a");
         button.click();
     }
 }
