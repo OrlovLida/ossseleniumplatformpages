@@ -117,7 +117,7 @@ public class ScheduleTaskPage extends ExportGuiWizardPage{
     }
 
     private void clickOnDayButton(int dayOfWeek){
-        List<WebElement> dayButtons = driver.findElements(By.xpath("//button[@class = 'dayButtonContainer']"));
+        List<WebElement> dayButtons = driver.findElements(By.xpath("//button[@class = 'day-button']"));
         dayButtons.get(dayOfWeek-1).click();
     }
 
