@@ -100,7 +100,7 @@ public class InventoryViewTest extends BaseTestCase {
     @Test
     public void addFirstUnselectedColumn() {
         //given
-        TableInterface tableWidget = inventoryViewPage.getMainTable();
+        TableWidget tableWidget = inventoryViewPage.getMainTable();
         List<String> columnHeaders = tableWidget.getActiveColumnHeaders();
         String firstHeader = columnHeaders.get(2);
 
@@ -118,144 +118,55 @@ public class InventoryViewTest extends BaseTestCase {
 
     @Test
     public void expandLabel() {
-        TableWidget tableWidget = inventoryViewPage.getMainTable();
-        DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
-        String firstRowID = tableWidget.getTableCells().get(0).getText();
-        DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
-        tableWidget.resizeFirstColumn(-145);
-        tableWidget.clickOnFirstExpander();
-        Assert.assertEquals(firstRowID, tableWidget.getExpandedText());
+        // TODO: add test for log text box
     }
 
     @Test
     public void changeColumnsOrder() {
-        TableWidget tableWidget = inventoryViewPage.getMainTable();
-        ColumnsManagement columnsManagement = tableWidget.getColumnsManagement();
-
-        String firstHeader = tableWidget.getFirstColumnLabel();
-        String secondHeader = tableWidget.getActiveColumnLabel(1);
-
-        columnsManagement.changeColumnPosition("ID", -120, 0);
-        columnsManagement.clickApply();
-
-        String newFirstHeader = tableWidget.getFirstColumnLabel();
-        String newSecondHeader = tableWidget.getActiveColumnLabel(1);
-        Assert.assertEquals(firstHeader, newSecondHeader);
-        Assert.assertEquals(secondHeader, newFirstHeader);
-    }
-
-    @Test
-    public void checkDefaultSettingsOfColumnsManagement() {
-        TableWidget tableWidget = inventoryViewPage.getMainTable();
-        ColumnsManagement columnsManagement = tableWidget.getColumnsManagement();
-
-        DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
-        String defaultFirstLabel = columnsManagement.getColumnLabels().get(0);
-        String defaultSecondLabel = columnsManagement.getColumnLabels().get(1);
-        boolean defaultModelIDChbxStatus = columnsManagement.isColumnEnable("Model ID");
-        boolean defaultDescriptionChbxStatus = columnsManagement.isColumnEnable("Description");
-        columnsManagement.toggleColumn("Model ID");
-        columnsManagement.toggleColumn("Description");
-        boolean modelIDChbxStatus = columnsManagement.isColumnEnable("Model ID");
-        boolean descriptionChbxStatus = columnsManagement.isColumnEnable("Description");
-        Assert.assertEquals(defaultModelIDChbxStatus, !modelIDChbxStatus);
-        Assert.assertEquals(defaultDescriptionChbxStatus, !descriptionChbxStatus);
-
-        columnsManagement.changeColumnPosition("ID", -120, 0);
-        DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
-        String firstLabel = columnsManagement.getColumnLabels().get(0);
-        String secondLabel = columnsManagement.getColumnLabels().get(1);
-        Assert.assertEquals(firstLabel, defaultSecondLabel);
-        Assert.assertEquals(secondLabel, defaultFirstLabel);
-
-        columnsManagement.clickApply();
-        String firstHeader = tableWidget.getActiveColumnLabel(0);
-        Assert.assertEquals(firstHeader, defaultSecondLabel);
-
-        columnsManagement = tableWidget.getColumnsManagement();
-        columnsManagement.clickDefaultSettings();
-        DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
-        firstHeader = tableWidget.getActiveColumnLabel(0);
-        Assert.assertEquals(firstHeader, defaultFirstLabel);
-
-        columnsManagement=tableWidget.getColumnsManagement();
-        firstLabel = columnsManagement.getColumnLabels().get(0);
-        DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
-        secondLabel = columnsManagement.getColumnLabels().get(1);
-        modelIDChbxStatus = columnsManagement.isColumnEnable("Model ID");
-        descriptionChbxStatus = columnsManagement.isColumnEnable("Description");
-        Assert.assertEquals(firstLabel, defaultFirstLabel);
-        Assert.assertEquals(secondLabel, defaultSecondLabel);
-        Assert.assertEquals(defaultModelIDChbxStatus, modelIDChbxStatus);
-        Assert.assertEquals(defaultDescriptionChbxStatus, descriptionChbxStatus);
+        // TODO: add change columns order test
     }
 
     @Test
     public void checkPagination() {
-        TableWidget tableWidget = inventoryViewPage.getMainTable();
-        DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
-        Assert.assertEquals(tableWidget.isFirstPageActive(), true);
-        Assert.assertEquals(tableWidget.isPreviousPageClicable(), false);
-        if (tableWidget.isMoreThanOnePage()) {
-            tableWidget.clickNextPage();
-            DelayUtils.sleep(500);
-            Assert.assertEquals(tableWidget.getLabelOfActivePageBtn(), "2");
-            tableWidget.clickPreviousPage();
-            DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
-            Assert.assertEquals(tableWidget.isFirstPageActive(), true);
-            tableWidget.clickLastPage();
-        }
-        Assert.assertEquals(tableWidget.isNextPageClicable(), false);
+      //TODO: add pagination test
     }
 
     @Test
     public void checkHorizontalScroller() {
-        TableWidget tableWidget = inventoryViewPage.getMainTable();
-        DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
-        tableWidget.scrollHorizontally(1000);
-        List<String> headers = tableWidget.getActiveColumns();
-        Assert.assertEquals(headers.get(headers.size() - 1), "Calculated Parents");
-        tableWidget.scrollHorizontally(-1000);
-        headers = tableWidget.getActiveColumns();
-        Assert.assertEquals(headers.get(0), "ID");
+//        TableWidget tableWidget = inventoryViewPage.getMainTable();
+//        DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
+//        tableWidget.scrollHorizontally(1000);
+//        List<String> headers = tableWidget.getActiveColumns();
+//        Assert.assertEquals(headers.get(headers.size() - 1), "Calculated Parents");
+//        tableWidget.scrollHorizontally(-1000);
+//        headers = tableWidget.getActiveColumns();
+//        Assert.assertEquals(headers.get(0), "ID");
     }
 
     @Test
     public void checkVerticalScroller() {
-        TableWidget tableWidget = inventoryViewPage.getMainTable();
-        DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
-        tableWidget.scrollVertically(1000);
-        String lastVisibleID = tableWidget.getValueFromNthRow("ID", "last()");
-        String lastIdOnThePage = tableWidget.getValueFromRowWithID("ID", lastVisibleID);
-        Assert.assertEquals(lastVisibleID.equals(lastIdOnThePage), true);
-        tableWidget.scrollVertically(-1000);
-        lastVisibleID = tableWidget.getValueFromNthRow("ID", "last()");
-        Assert.assertEquals(lastVisibleID.equals(lastIdOnThePage), false);
+//        TableWidget tableWidget = inventoryViewPage.getMainTable();
+//        DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
+//        tableWidget.scrollVertically(1000);
+//        String lastVisibleID = tableWidget.getValueFromNthRow("ID", "last()");
+//        String lastIdOnThePage = tableWidget.getValueFromRowWithID("ID", lastVisibleID);
+//        Assert.assertEquals(lastVisibleID.equals(lastIdOnThePage), true);
+//        tableWidget.scrollVertically(-1000);
+//        lastVisibleID = tableWidget.getValueFromNthRow("ID", "last()");
+//        Assert.assertEquals(lastVisibleID.equals(lastIdOnThePage), false);
     }
 
     @Test
     public void findByText() {
         TableWidget tableWidget = inventoryViewPage.getMainTable();
-        DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
-        String secondID = tableWidget.getValueFromNthRow("ID", "2");
+        String secondID = tableWidget.getValueFromNthRow("XId", "2");
         tableWidget.typeIntoSearch(secondID);
-        DelayUtils.sleep(500);
-        String newFirstID = tableWidget.getValueFromNthRow("ID", "1");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        String newFirstID = tableWidget.getValueFromNthRow("XId", "1");
         Assert.assertEquals(secondID, newFirstID);
         Assert.assertEquals(tableWidget.getNumberOfAllRowsInTable(), "1");
     }
 
-    @Test
-    public void clickExport() {
-        TableWidget tableWidget = inventoryViewPage.getMainTable();
-        DelayUtils.sleep(750);
-        String numberOfExports = homePage.getNumberOfNotifications();
-        tableWidget.clickOnKebabMenu();
-        tableWidget.clickOnAction("Export");
-        DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
-        String newNumberOfExports = homePage.getNumberOfNotifications();
-        Assert.assertEquals(Integer.valueOf(newNumberOfExports), Integer.valueOf(1 + Integer.valueOf(numberOfExports)));
-    }
 
     @Test
     public void changeTab() {
@@ -283,45 +194,14 @@ public class InventoryViewTest extends BaseTestCase {
     }
 
     @Test
-    public void wizardTest() {
-        //TODO: problem with click Next and then Cancel button
-        TableWidget tableWidget = inventoryViewPage.getMainTable();
-//        tableWidget.takeAction("Create", "Location");
-        DelayUtils.waitForComponent(webDriverWait,"//div[contains(@id,'CREATE')]");
-        driver.findElement(By.id("CREATE")).click();
-        DelayUtils.waitForComponent(webDriverWait,"(//a[contains(text(),'Create Location')])[1]");
-        driver.findElement(By.xpath("(//a[contains(text(),'Create Location')])[1]")).click();
-        DelayUtils.sleep(600);
-        Wizard locationWizard = inventoryViewPage.getWizard();
-        Input type = locationWizard.getComponent("type", ComponentType.COMBOBOX);
-        type.setSingleStringValue("Building");
-        DelayUtils.sleep(1000);
-        locationWizard.clickNext();
-        DelayUtils.sleep(2000);
-        locationWizard.cancel(); //something is NO YES
-        DelayUtils.sleep(4000);
-    }
-
-    @Test
-    public void changeTabAndSelectFirstRow() { //
-        //TODO: uwzględnić notatki z AdvancedSearch.java, nie działa dopóki nie bedzei widgetID - wtedy poprawiać
-        TableWidget tableWidget = inventoryViewPage.getMainTable();
-        tableWidget.selectFirstRow();
-
-        TabsWidget tabsWidget = inventoryViewPage.getTabsWidget();
-        tabsWidget.callActionByLabel("Locations");
-
-        DelayUtils.sleep(500);
-//        tabsWidget
-//                .getCurrentTabTable()
-//                .clickFirstRow();
-        DelayUtils.sleep(50);
+    public void changeTabAndSelectFirstRow() {
+       //TODO: rewrite this
     }
 
     @Test
     public void checkDisplayingOfPropertyValue(){
         TableWidget tableWidget = inventoryViewPage.getMainTable();
-        String idNumberFromTableWidget = tableWidget.getValueFromNthRow("ID", "1");
+        String idNumberFromTableWidget = tableWidget.getValueFromNthRow("XId", "1");
         tableWidget.selectFirstRow();
         PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel();
         String idNumberFromPropertiesTab = propertyPanel.getPropertyValue("id");
