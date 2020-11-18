@@ -1,15 +1,12 @@
 package com.oss.pages.physical;
 
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
-import static com.oss.framework.components.inputs.Input.ComponentType.DATE_TIME;
-import static com.oss.framework.components.inputs.Input.ComponentType.SEARCH_FIELD;
-import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_AREA;
-import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
+
+import static com.oss.framework.components.inputs.Input.ComponentType.*;
 
 public class DeviceWizardPage extends BasePage {
 
@@ -34,8 +31,6 @@ public class DeviceWizardPage extends BasePage {
     private static final String DEVICE_DESCRIPTION_DATA_ATTRIBUTE_NAME = "text_description";
     private static final String DEVICE_IS_OWNED_BY_3RD_PARTY_DATA_ATTRIBUTE_NAME = "checkbox_is_leased";
 
-    private final Wizard wizard;
-
     public static DeviceWizardPage goToDeviceWizardPageLive(WebDriver driver, String basicURL) {
         driver.get(String.format("%s/#/view/physical-inventory/devicewizard?" + "perspective=LIVE", basicURL));
         return new DeviceWizardPage(driver);
@@ -48,7 +43,6 @@ public class DeviceWizardPage extends BasePage {
 
     public DeviceWizardPage(WebDriver driver) {
         super(driver);
-        wizard = Wizard.createByComponentId(driver, wait, DEVICE_WIZARD_DATA_ATTRIBUTE_NAME);
     }
 
     @Step("Create Device with mandatory fields (Equipment type, Model, Name, Location, Precise Location) filled in")
@@ -61,110 +55,112 @@ public class DeviceWizardPage extends BasePage {
 
     @Step("Set Equipment Type")
     public void setEquipmentType(String equipmentType) {
-        wizard.setComponentValue(DEVICE_EQUIPMENT_TYPE_DATA_ATTRIBUTE_NAME, equipmentType, SEARCH_FIELD);
+        getDeviceWizard().setComponentValue(DEVICE_EQUIPMENT_TYPE_DATA_ATTRIBUTE_NAME, equipmentType, SEARCH_FIELD);
     }
 
     @Step("Set Model")
     public void setModel(String model) {
-        wizard.setComponentValue(DEVICE_MODEL_DATA_ATTRIBUTE_NAME, model, SEARCH_FIELD);
-        DelayUtils.waitForPageToLoad(driver, wait);
+        getDeviceWizard().setComponentValue(DEVICE_MODEL_DATA_ATTRIBUTE_NAME, model, SEARCH_FIELD);
     }
 
     @Step("Set Name")
     public void setName(String name) {
-        wizard.setComponentValue(DEVICE_NAME_DATA_ATTRIBUTE_NAME, name, TEXT_FIELD);
+        getDeviceWizard().setComponentValue(DEVICE_NAME_DATA_ATTRIBUTE_NAME, name, TEXT_FIELD);
     }
 
     @Step("Set Network Function Name")
     public void setNetworkFunctionName(String networkFunctionName) {
-        wizard.setComponentValue(DEVICE_NETWORK_FUNCTION_NAME_TYPE_DATA_ATTRIBUTE_NAME, networkFunctionName, TEXT_FIELD);
+        getDeviceWizard().setComponentValue(DEVICE_NETWORK_FUNCTION_NAME_TYPE_DATA_ATTRIBUTE_NAME, networkFunctionName, TEXT_FIELD);
     }
 
     @Step("Set Chassis Id")
     public void setChassisId(String chassisId) {
-        wizard.setComponentValue(DEVICE_CHASSIS_ID_DATA_ATTRIBUTE_NAME, chassisId, TEXT_FIELD);
+        getDeviceWizard().setComponentValue(DEVICE_CHASSIS_ID_DATA_ATTRIBUTE_NAME, chassisId, TEXT_FIELD);
     }
 
     @Step("Set Location")
     public void setLocation(String location) {
-        wizard.setComponentValue(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME, location, SEARCH_FIELD);
-        DelayUtils.waitForPageToLoad(driver, wait);
+        getDeviceWizard().setComponentValue(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME, location, SEARCH_FIELD);
     }
 
     @Step("Set Precise Location")
     public void setPreciseLocation(String preciseLocation) {
-        wizard.setComponentValue(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, preciseLocation, SEARCH_FIELD);
+        getDeviceWizard().setComponentValue(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, preciseLocation, SEARCH_FIELD);
     }
 
     @Step("Set Precise Location")
     public void setPreciseLocationContains(String preciseLocation) {
-        if (wizard.getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, Input.ComponentType.SEARCH_FIELD).getStringValue().isEmpty()) {
-            wizard.getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, SEARCH_FIELD).setSingleStringValueContains(preciseLocation);
+        if (getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, Input.ComponentType.SEARCH_FIELD).getStringValue().isEmpty()) {
+            getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, SEARCH_FIELD).setSingleStringValueContains(preciseLocation);
         }
     }
 
     @Step("Set Logical Location")
     public void setLogicalLocation(String logicalLocation) {
-        wizard.setComponentValue(DEVICE_LOGICAL_LOCATION_DATA_ATTRIBUTE_NAME, logicalLocation, SEARCH_FIELD);
+        getDeviceWizard().setComponentValue(DEVICE_LOGICAL_LOCATION_DATA_ATTRIBUTE_NAME, logicalLocation, SEARCH_FIELD);
     }
 
     @Step("Set Network Domain")
     public void setNetworkDomain(String networkDomain) {
-        wizard.setComponentValue(DEVICE_NETWORK_DOMAIN_DATA_ATTRIBUTE_NAME, networkDomain, SEARCH_FIELD);
+        getDeviceWizard().setComponentValue(DEVICE_NETWORK_DOMAIN_DATA_ATTRIBUTE_NAME, networkDomain, SEARCH_FIELD);
     }
 
     @Step("Set Serial Number")
     public void setSerialNumber(String serialNumber) {
-        wizard.setComponentValue(DEVICE_SERIAL_NUMBER_DATA_ATTRIBUTE_NAME, serialNumber, TEXT_FIELD);
+        getDeviceWizard().setComponentValue(DEVICE_SERIAL_NUMBER_DATA_ATTRIBUTE_NAME, serialNumber, TEXT_FIELD);
     }
 
     @Step("Set Hostname")
     public void setHostname(String hostname) {
-        wizard.setComponentValue(DEVICE_HOSTNAME_DATA_ATTRIBUTE_NAME, hostname, TEXT_FIELD);
+        getDeviceWizard().setComponentValue(DEVICE_HOSTNAME_DATA_ATTRIBUTE_NAME, hostname, TEXT_FIELD);
     }
 
     @Step("Set Oss")
     public void setOss(String oss) {
-        wizard.setComponentValue(DEVICE_OSS_DATA_ATTRIBUTE_NAME, oss, SEARCH_FIELD);
+        getDeviceWizard().setComponentValue(DEVICE_OSS_DATA_ATTRIBUTE_NAME, oss, SEARCH_FIELD);
     }
 
     @Step("Set Manufacture Date")
     public void setManufactureDate(String manufactureDate) {
-        wizard.setComponentValue(DEVICE_MANUFACTURE_DATE_DATA_ATTRIBUTE_NAME, manufactureDate, DATE_TIME);
+        getDeviceWizard().setComponentValue(DEVICE_MANUFACTURE_DATE_DATA_ATTRIBUTE_NAME, manufactureDate, DATE_TIME);
     }
 
     @Step("Set Firmware Version")
     public void setFirmwareVersion(String firmwareVersion) {
-        wizard.setComponentValue(DEVICE_FIRMWARE_VERSION_DATA_ATTRIBUTE_NAME, firmwareVersion, TEXT_FIELD);
+        getDeviceWizard().setComponentValue(DEVICE_FIRMWARE_VERSION_DATA_ATTRIBUTE_NAME, firmwareVersion, TEXT_FIELD);
     }
 
     @Step("Set Hardware Version")
     public void setHardwareVersion(String hardwareVersion) {
-        wizard.setComponentValue(DEVICE_HARDWARE_VERSION_DATA_ATTRIBUTE_NAME, hardwareVersion, TEXT_FIELD);
+        getDeviceWizard().setComponentValue(DEVICE_HARDWARE_VERSION_DATA_ATTRIBUTE_NAME, hardwareVersion, TEXT_FIELD);
     }
 
     @Step("Set Description")
     public void setDescription(String description) {
-        if (wizard.getComponent(DEVICE_DESCRIPTION_DATA_ATTRIBUTE_NAME, TEXT_AREA).getStringValue().isEmpty()) {
+        if (getDeviceWizard().getComponent(DEVICE_DESCRIPTION_DATA_ATTRIBUTE_NAME, TEXT_AREA).getStringValue().isEmpty()) {
         } else {
-            wizard.getComponent(DEVICE_DESCRIPTION_DATA_ATTRIBUTE_NAME, TEXT_AREA).clear();
+            getDeviceWizard().getComponent(DEVICE_DESCRIPTION_DATA_ATTRIBUTE_NAME, TEXT_AREA).clear();
         }
-        wizard.setComponentValue(DEVICE_DESCRIPTION_DATA_ATTRIBUTE_NAME, description, TEXT_AREA);
+        getDeviceWizard().setComponentValue(DEVICE_DESCRIPTION_DATA_ATTRIBUTE_NAME, description, TEXT_AREA);
     }
 
     @Step("Click Cancel button")
     public void cancel() {
-        wizard.cancel();
+        getDeviceWizard().cancel();
     }
 
     @Step("Click Create button")
     public void create() {
-        wizard.clickActionById(CREATE_BUTTON_DATA_ATTRIBUTE_NAME);
-        DelayUtils.waitForPageToLoad(driver, wait);
+        getDeviceWizard().clickActionById(CREATE_BUTTON_DATA_ATTRIBUTE_NAME);
     }
 
     @Step("Click Update button")
     public void update() {
-        wizard.clickActionById(UPDATE_BUTTON_DATA_ATTRIBUTE_NAME);
+        getDeviceWizard().clickActionById(UPDATE_BUTTON_DATA_ATTRIBUTE_NAME);
     }
+
+    private Wizard getDeviceWizard() {
+        return Wizard.createByComponentId(driver, wait, DEVICE_WIZARD_DATA_ATTRIBUTE_NAME);
+    }
+
 }
