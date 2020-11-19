@@ -3,36 +3,67 @@ package com.oss.E2E;
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
+import com.oss.framework.mainheader.PerspectiveChooser;
+import com.oss.framework.prompts.ConfirmationBox;
+import com.oss.framework.prompts.ConfirmationBoxInterface;
 import com.oss.framework.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.Wizard;
 import com.oss.pages.physical.*;
 import io.qameta.allure.Description;
+import org.aspectj.lang.annotation.DeclareError;
 import org.assertj.core.api.Assertions;
+import org.openqa.selenium.WebDriver;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.util.List;
 
+import static java.lang.String.format;
+
 public class ISPConfiguration extends BaseTestCase {
 
+    String LOCATION_OVERVIEW_URL = "";
     public static final String LOCATION_NAME = "ISPConfiguration_Building";
     public static final String SUBLOCATION_NAME = "ISPConfiguration_Room";
-    public static final String GEOGRAPHICAL_ADDRESS = "Test";
-    String LOCATION_OVERVIEW_URL = "";
+    public static final String GEOGRAPHICAL_ADDRESS = "test";//"Test";
     public static final String PHYSICAL_DEVICE_MODEL = "Alcatel 7360 ISAM FX-8";
     public static final String PHYSICAL_DEVICE_NAME = "ISPPhysicalDevice";
+    public static final String PHYSICAL_DEVICE_MODEL2 = "Cisco Systems Inc. Nexus 7010";
+    public static final String PHYSICAL_DEVICE_NAME2 = "ISPPhysicalDevice2";
     public static final String MODEL_UPDATE = "Alcatel 7302";
     public static final String MOUNTING_EDITOR_MODEL = "Generic 19\" 42U 600x800 (Bottom-Up)";
     public static final String MOUNTING_EDITOR_NAME = "ISPMountingEditor";
+    public static final String COOLING_ZONE_NAME = "ISPCoolingZone";
+    public static final String COOLING_UNIT_MODEL = "Generic Cooling Unit";
+    public static final String COOLING_UNIT_NAME = "ISPCoolingUnit";
+    public static final String COOLING_CAPACITY = "14";
+    public static final String COOLING_CAPACITY2 = "16";
+    public static final String DEVICE_HEAT_EMISSION = "3";
+    public static final String DEVICE_POWER_CONSUMPTION = "4";
+    public static final String POWER_DEVICE_MODEL = "Generic Generic Power Source";
+    public static final String POWER_DEVICE_NAME = "Power Source";
+    public static final String POWER_DEVICE_CAPACITY = "10";
+    public static final String POWER_SUPPLY_UNIT_MODEL = "Generic Power Supply Unit";
+    public static final String POWER_SUPPLY_UNIT_NAME = "Power Supply Unit";
+    public static final String POWER_SUPPLY_UNIT_CAPACITY = "5";
+
+    private void checkPopup() {
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
+        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
+        Assertions.assertThat(messages).hasSize(1);
+        Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType())
+                .isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
+    }
 
     @BeforeClass
     @Description("Open Create Location Wizard")
     public void openCreateLocationWizard() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
         sideMenu.callActionByLabel("Create Location", "Wizards", "Physical Inventory");
-        //CardCreateWizardPage cardCreateWizardPage = new CardCreateWizardPage(driver);
-        //CardCreateWizardPage.goToCardCreateWizardPageLive(driver, BASIC_URL);
     }
 
     @Test(priority = 1)
@@ -50,11 +81,7 @@ public class ISPConfiguration extends BaseTestCase {
         locationWizardPage.clickNext();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         locationWizardPage.accept();
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
-        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages).hasSize(1);
-        Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType())
-                .isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
+        checkPopup();
     }
 
     @Test(priority = 2)
@@ -85,11 +112,7 @@ public class ISPConfiguration extends BaseTestCase {
         sublocationWizardPage.clickNext();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         sublocationWizardPage.Accept();
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
-        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages).hasSize(1);
-        Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType())
-                .isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
+        checkPopup();
     }
 
     @Test(priority = 5)
@@ -107,14 +130,10 @@ public class ISPConfiguration extends BaseTestCase {
         deviceWizardPage.setModel(PHYSICAL_DEVICE_MODEL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.setName(PHYSICAL_DEVICE_NAME);
-        deviceWizardPage.setPreciseLocation(LOCATION_NAME);
+        deviceWizardPage.setPreciseLocation(SUBLOCATION_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.create();
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
-        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages).hasSize(1);
-        Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType())
-                .isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
+        checkPopup();
     }
 
     @Test(priority = 7)
@@ -142,11 +161,7 @@ public class ISPConfiguration extends BaseTestCase {
         changeModelWizardPage.setModel(MODEL_UPDATE);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         changeModelWizardPage.clickUpdate();
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
-        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages).hasSize(1);
-        Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType())
-                .isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
+        checkPopup();
     }
 
     @Test(priority = 10)
@@ -171,11 +186,7 @@ public class ISPConfiguration extends BaseTestCase {
         cardCreateWizardPage.setSlots("LT4");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cardCreateWizardPage.clickAccept();
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
-        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages).hasSize(1);
-        Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType())
-                .isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
+        checkPopup();
     }
 
     @Test(priority = 12)
@@ -195,11 +206,7 @@ public class ISPConfiguration extends BaseTestCase {
         changeCardModelWizard.setModelCard("Alcatel NGLT-A");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         changeCardModelWizard.clickUpdate();
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
-        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages).hasSize(1);
-        Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType())
-                .isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
+        checkPopup();
     }
 
     @Test(priority = 14)
@@ -227,10 +234,287 @@ public class ISPConfiguration extends BaseTestCase {
         mountingEditorWizardPage.clickCheckbox();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         mountingEditorWizardPage.clickAccept();
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
-        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages).hasSize(1);
-        Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType())
-                .isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
+        checkPopup();
+    }
+
+    @Test(priority = 16)
+    @Description("Move to Location Overview and create Cooling Zone")
+    public void createCoolingZone() {
+        //TODO: after debugging two lines below can be deleted
+        PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        //TODO: change first argument below to 'LOCATION_OVERVIEW_URL'
+        driver.get(format("%s#/view/location-inventory/locationoverview?perspective=LIVE&id=81796096", BASIC_URL));
+        LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
+        locationOverviewPage.selectTab("Cooling Zones");
+        locationOverviewPage.clickIconByLabel("Create Cooling Zone");
+        CreateCoolingZoneWizardPage coolingZoneWizard = new CreateCoolingZoneWizardPage(driver);
+        coolingZoneWizard.setName(COOLING_ZONE_NAME);
+        coolingZoneWizard.clickProceed();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        checkPopup();
+    }
+
+    @Test(priority = 17)
+    @Description("Create Cooling Unit")
+    public void createCoolingUnit() {
+        LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
+        locationOverviewPage.selectTab("Devices");
+        locationOverviewPage.clickButton("Create Device");
+        DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
+        deviceWizardPage.setModel(COOLING_UNIT_MODEL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        deviceWizardPage.setName(COOLING_UNIT_NAME);
+        deviceWizardPage.setPreciseLocation(SUBLOCATION_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        deviceWizardPage.setCoolingCapacity(COOLING_CAPACITY);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        deviceWizardPage.create();
+        checkPopup();
+    }
+
+    @Test(priority = 18)
+    @Description("Assign Cooling Unit to Cooling Zone")
+    public void assignCoolingUnitToCoolingZone() {
+        LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
+        locationOverviewPage.selectTab("Devices");
+        locationOverviewPage.filterDevicesObject("Name", COOLING_UNIT_NAME);
+        locationOverviewPage.clickIconByLabel("Cooling Zone Editor");
+        CreateCoolingZoneWizardPage coolingZoneWizard = new CreateCoolingZoneWizardPage(driver);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        coolingZoneWizard.setName(COOLING_ZONE_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        coolingZoneWizard.clickUpdate();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    @Test(priority = 19)
+    @Description("Update physical Device")
+    public void updateDevice() {
+        LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
+        locationOverviewPage.selectTab("Devices");
+        locationOverviewPage.filterDevicesObject("Name", PHYSICAL_DEVICE_NAME);
+        locationOverviewPage.clickIconByLabel("Update Device");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
+        deviceWizardPage.setHeatEmission(DEVICE_HEAT_EMISSION);
+        deviceWizardPage.setPowerConsumption(DEVICE_POWER_CONSUMPTION);
+        deviceWizardPage.update();
+        checkPopup();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    @Test(priority = 20)
+    @Description("Assign Device to Cooling Zone")
+    public void assignDeviceToCoolingZone() {
+        LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
+        locationOverviewPage.selectTab("Devices");
+        locationOverviewPage.filterDevicesObject("Name", PHYSICAL_DEVICE_NAME);
+        locationOverviewPage.clickIconByLabel("Cooling Zone Editor");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        CreateCoolingZoneWizardPage coolingZoneWizardPage = new CreateCoolingZoneWizardPage(driver);
+        coolingZoneWizardPage.selectNameFromList(COOLING_ZONE_NAME);
+        coolingZoneWizardPage.clickUpdate();
+        checkPopup();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    @Test(priority = 21)
+    @Description("Create Physical Device2")
+    public void createPhysicalDevice2() {
+        LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
+        locationOverviewPage.selectTab("Devices");
+        locationOverviewPage.clickButton("Create Device");
+        DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
+        deviceWizardPage.setModel(PHYSICAL_DEVICE_MODEL2);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        deviceWizardPage.setName(PHYSICAL_DEVICE_NAME);
+        deviceWizardPage.setPreciseLocation(SUBLOCATION_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        deviceWizardPage.create();
+        checkPopup();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    @Test(priority = 22)
+    @Description("Assign Physcial Device2 to Cooling Zone")
+    public void assignDevice2ToCoolingZone() {
+        LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
+        locationOverviewPage.selectTab("Devices");
+        locationOverviewPage.filterDevicesObject("Name", PHYSICAL_DEVICE_NAME2);
+        locationOverviewPage.clickIconByLabel("Cooling Zone Editor");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        CreateCoolingZoneWizardPage coolingZoneWizardPage = new CreateCoolingZoneWizardPage(driver);
+        coolingZoneWizardPage.selectNameFromList(COOLING_ZONE_NAME);
+        coolingZoneWizardPage.clickUpdate();
+        checkPopup();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    @Test(priority = 23)
+    @Description("Update Cooling Unit")
+    public void updateCoolingUnit() {
+        LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
+        locationOverviewPage.selectTab("Devices");
+        locationOverviewPage.filterDevicesObject("Name", COOLING_UNIT_NAME);
+        locationOverviewPage.clickIconByLabel("Update Device");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
+        deviceWizardPage.setCoolingCapacity(COOLING_CAPACITY2);
+        deviceWizardPage.update();
+        checkPopup();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    @Test(priority = 24)
+    @Description("Create Power Device")
+    public void createPowerDevice() {
+        LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
+        locationOverviewPage.selectTab("Devices");
+        locationOverviewPage.clickButton("Create Device");
+        DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
+        deviceWizardPage.setModel(POWER_DEVICE_MODEL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        deviceWizardPage.setName(POWER_DEVICE_NAME);
+        deviceWizardPage.setPreciseLocation(SUBLOCATION_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        deviceWizardPage.setPowerCapacity(POWER_DEVICE_CAPACITY);
+        deviceWizardPage.create();
+        checkPopup();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    @Test(priority = 25)
+    @Description("Create Power Supply Unit")
+    public void createPowerSupplyUnit() {
+        LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
+        locationOverviewPage.selectTab("Devices");
+        locationOverviewPage.clickButton("Create Device");
+        DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
+        deviceWizardPage.setModel(POWER_SUPPLY_UNIT_MODEL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        deviceWizardPage.setPreciseLocation(SUBLOCATION_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        deviceWizardPage.setName(POWER_SUPPLY_UNIT_NAME);
+        deviceWizardPage.setPowerCapacity(POWER_SUPPLY_UNIT_CAPACITY);
+        deviceWizardPage.create();
+        checkPopup();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    @Test(priority = 26)
+    @Description("Delete Power Supply Unit")
+    public void deletePowerSupplyUnit() {
+        LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
+        locationOverviewPage.selectTab("Devices");
+        locationOverviewPage.filterObject("Name", POWER_SUPPLY_UNIT_NAME);
+        locationOverviewPage.clickRemoveDevice();
+        checkPopup();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    @Test(priority = 27)
+    @Description("Delete Power Device")
+    public void deletePowerDevice() {
+        LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
+        locationOverviewPage.selectTab("Devices");
+        locationOverviewPage.filterObject("Name", POWER_DEVICE_NAME);
+        locationOverviewPage.clickRemoveDevice();
+        checkPopup();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    @Test(priority = 28)
+    @Description("Delete Physcial Device2")
+    public void deletePhysicalDevice2() {
+        LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
+        locationOverviewPage.selectTab("Devices");
+        locationOverviewPage.filterObject("Name", PHYSICAL_DEVICE_NAME2);
+        locationOverviewPage.clickRemoveDevice();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, webDriverWait);
+        prompt.clickButtonByLabel("Yes");
+        checkPopup();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    @Test(priority = 29)
+    @Description("Delete Physical Device")
+    public void deletePhysicalDevice() {
+        LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
+        locationOverviewPage.selectTab("Devices");
+        locationOverviewPage.filterDevicesObject("Name", PHYSICAL_DEVICE_NAME);
+        locationOverviewPage.clickRemoveDevice();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, webDriverWait);
+        prompt.clickButtonByLabel("Yes");
+        checkPopup();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    @Test(priority = 30)
+    @Description("Delete Cooling Unit")
+    public void deleteCoolingUnit() {
+        LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
+        locationOverviewPage.selectTab("Devices");
+        locationOverviewPage.filterDevicesObject("Name", COOLING_UNIT_NAME);
+        locationOverviewPage.clickRemoveDevice();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, webDriverWait);
+        prompt.clickButtonByLabel("Yes");
+        checkPopup();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    @Test(priority = 31)
+    @Description("Delete Cooling Zone")
+    public void deleteCoolingZone() {
+        LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
+        locationOverviewPage.selectTab("Cooling Zones");
+        locationOverviewPage.filterCoolingObject("Name", COOLING_ZONE_NAME);
+        locationOverviewPage.clickDeleteCoolingZone();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, webDriverWait);
+        prompt.clickButtonByLabel("Delete Cooling Zone");
+        checkPopup();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    @Test(priority = 32)
+    @Description("Delete Rack")
+    public void deleteRack() {
+        LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
+        locationOverviewPage.selectTab("Locations");
+        locationOverviewPage.filterObject("Name", MOUNTING_EDITOR_NAME);
+        locationOverviewPage.clickRemoveLocationIcon();
+        checkPopup();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    @Test(priority = 33)
+    @Description("Delete Room")
+    public void deleteRoom() {
+        LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
+        locationOverviewPage.selectTab("Locations");
+        locationOverviewPage.filterObject("Name", SUBLOCATION_NAME);
+        locationOverviewPage.clickRemoveLocationIcon();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, webDriverWait);
+        prompt.clickButtonByLabel("Delete");
+        checkPopup();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    @Test(priority = 33)
+    @Description("Delete Location")
+    public void deleteLocation() {
+        DeviceOverviewPage deviceOverviewPage = new DeviceOverviewPage(driver);
+        deviceOverviewPage.useContextAction("Remove Location");
+        //TODO: change data-attributename to 'Popup' if after upgrade for RC it is changed to 'Popup'
+        Wizard removalWizard = Wizard.createByComponentId(driver, webDriverWait, "locationdelete");
+        removalWizard.clickButtonByLabel("Delete");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, webDriverWait);
+        prompt.clickButtonByLabel("Delete");
     }
 }

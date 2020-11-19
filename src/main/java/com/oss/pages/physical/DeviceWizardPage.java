@@ -30,6 +30,10 @@ public class DeviceWizardPage extends BasePage {
     private static final String DEVICE_HARDWARE_VERSION_DATA_ATTRIBUTE_NAME = "text_hardware_licence";
     private static final String DEVICE_DESCRIPTION_DATA_ATTRIBUTE_NAME = "text_description";
     private static final String DEVICE_IS_OWNED_BY_3RD_PARTY_DATA_ATTRIBUTE_NAME = "checkbox_is_leased";
+    private static final String DEVICE_COOLING_CAPACITY_DATA_ATTRIBUTE_NAME = "oss.physical-inventory.physicaldevice.type.CoolingUnit.CoolingCapacity";
+    private static final String DEVICE_HEAT_EMISSION_DATA_ATTRIBUTE_NAME = "oss.physical-inventory.physicaldevice.type.MSAN.HeatEmission";
+    private static final String DEVICE_POWER_CONSUMPTION_DATA_ATTRIBUTE_NAME = "oss.physical-inventory.physicaldevice.type.MSAN.PowerConsumption";
+    private static final String DEVICE_POWER_CAPACITY_DATA_ATTRIBUTE_NAME = "oss.physical-inventory.physicaldevice.type.PowerSource.PowerCapacity";
 
     public static DeviceWizardPage goToDeviceWizardPageLive(WebDriver driver, String basicURL) {
         driver.get(String.format("%s/#/view/physical-inventory/devicewizard?" + "perspective=LIVE", basicURL));
@@ -142,6 +146,26 @@ public class DeviceWizardPage extends BasePage {
             getDeviceWizard().getComponent(DEVICE_DESCRIPTION_DATA_ATTRIBUTE_NAME, TEXT_AREA).clear();
         }
         getDeviceWizard().setComponentValue(DEVICE_DESCRIPTION_DATA_ATTRIBUTE_NAME, description, TEXT_AREA);
+    }
+
+    @Step("Set Cooling Capacity")
+    public void setCoolingCapacity(String coolingCapacity) {
+        getDeviceWizard().setComponentValue(DEVICE_COOLING_CAPACITY_DATA_ATTRIBUTE_NAME, coolingCapacity, TEXT_FIELD);
+    }
+
+    @Step("Set Heat Emission")
+    public void setHeatEmission(String heatEmission) {
+        getDeviceWizard().setComponentValue(DEVICE_HEAT_EMISSION_DATA_ATTRIBUTE_NAME, heatEmission, TEXT_FIELD);
+    }
+
+    @Step("Set Power Consumption")
+    public void setPowerConsumption(String powerConsumption) {
+        getDeviceWizard().setComponentValue(DEVICE_POWER_CONSUMPTION_DATA_ATTRIBUTE_NAME, powerConsumption, TEXT_FIELD);
+    }
+
+    @Step("Set Power Capacity")
+    public void setPowerCapacity(String powerCapacity) {
+        getDeviceWizard().setComponentValue(DEVICE_POWER_CAPACITY_DATA_ATTRIBUTE_NAME, powerCapacity, TEXT_FIELD);
     }
 
     @Step("Click Cancel button")
