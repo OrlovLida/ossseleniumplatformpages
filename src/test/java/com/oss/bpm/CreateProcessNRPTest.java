@@ -98,6 +98,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
 
         //when
         perspectiveChooser.setPlanPerspective(processNRPCode);
+        deviceWizardPage.setEquipmentType("Router");
         deviceWizardPage.setModel("Generic");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         DelayUtils.sleep(2000);
@@ -184,6 +185,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
 
         //when
         perspectiveChooser.setPlanPerspective(processNRPCode);
+        deviceWizardPage.setEquipmentType("Router");
         deviceWizardPage.setModel("Generic");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         DelayUtils.sleep(2000);
