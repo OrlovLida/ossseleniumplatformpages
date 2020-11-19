@@ -20,7 +20,7 @@ public class LocationWizardPage extends BasePage {
     private static final String LOCATION_DESCRIPTION_DATA_ATTRIBUTE_NAME = "description";
     private static final String LOCATION_REMARKS_DATA_ATTRIBUTE_NAME = "remarks";
     private static final String LOCATION_IMPORTANT_CATEGORY_DATA_ATTRIBUTE_NAME = "importanceCategory";
-    private static final String GEOGRAPHICAL_ADDRESS_SEARCH_DATA_ATTRIBUTE_NAME = "geoSearch_OSF";
+    private static final String GEOGRAPHICAL_ADDRESS_SEARCH_DATA_ATTRIBUTE_NAME = "geoSearch";
     private static final String NUMBER_OF_LOCATIONS_DATA_ATTRIBUTE_NAME = "locationsCount";
     private static final String MODEL_DATA_ATTRIBUTE_NAME = "masterModel_OSF";
     private static final String STREET_NUMBER_DATA_ATTRIBUTE_NAME = "streetNumber";
@@ -75,7 +75,7 @@ public class LocationWizardPage extends BasePage {
     //TODO: Check if it is working after OSSPHY-47031
     @Step("Set Geographical Address")
     public void setGeographicalAddress(String geographicalAddress) {
-        locationWizard.setComponentValue(GEOGRAPHICAL_ADDRESS_SEARCH_DATA_ATTRIBUTE_NAME, geographicalAddress, Input.ComponentType.TEXT_FIELD);
+        locationWizard.setComponentValue(GEOGRAPHICAL_ADDRESS_SEARCH_DATA_ATTRIBUTE_NAME, geographicalAddress, Input.ComponentType.SEARCH_FIELD);
         DropdownList dropdownList = DropdownList.create(driver, wait);
         dropdownList.selectOption(geographicalAddress);
     }
