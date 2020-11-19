@@ -50,13 +50,16 @@ public class LocationOverviewPage extends BasePage {
         return this;
     }
 
+    //TODO: filterLocationsObject() is a temporary name which will be changed to filterObject() and made generic after OSSPHY-46774
+    //TODO: getLocationsTabTable is a temporary name until OSSPHY-46774 fix comes, it will be changed to getTabTable and made generic
     @Step("Filter and select {objectName} row")
-    public LocationOverviewPage filterObject(String columnName, String objectName) {
-        getTabTable().searchByAttributeWithLabel(columnName, Input.ComponentType.TEXT_FIELD, objectName);
-        getTabTable().selectRowByAttributeValueWithLabel(columnName, objectName);
+    public LocationOverviewPage filterLocationsObject(String columnName, String objectName) {
+        getLocationsTabTable().searchByAttributeWithLabel(columnName, Input.ComponentType.TEXT_FIELD, objectName);
+        getLocationsTabTable().selectRowByAttributeValueWithLabel(columnName, objectName);
         return this;
     }
 
+    //TODO: getCoolingZonesTabTable is a temporary name until OSSPHY-46774 fix comes, it will be changed to getTabTable and made generic
     @Step("Filter and select {objectName} row")
     public LocationOverviewPage filterCoolingObject(String columnName, String objectName) {
         getCoolingZonesTabTable().searchByAttributeWithLabel(columnName, Input.ComponentType.TEXT_FIELD, objectName);
@@ -64,6 +67,7 @@ public class LocationOverviewPage extends BasePage {
         return this;
     }
 
+    //TODO: getDevicesTabTable is a temporary name until OSSPHY-46774 fix comes, it will be changed to getTabTable and made generic
     @Step("Filter and select {objectName} row")
     public LocationOverviewPage filterDevicesObject(String columnName, String objectName) {
         getDevicesTabTable().searchByAttributeWithLabel(columnName, Input.ComponentType.TEXT_FIELD, objectName);
@@ -77,6 +81,7 @@ public class LocationOverviewPage extends BasePage {
         actions.callActionById(id);
     }
 
+    //TODO: change to OldTable.createByComponentDataAttributeName(driver, wait, "data-attributename"); after OSSPHY-46774
     @Step("Click icon by label")
     public void clickIconByLabel(String label) {
         OldActionsContainer.createFromParent(driver, wait, driver.findElement(By.xpath(".//div[@class='OssWindow tabWindow']")))
@@ -111,8 +116,8 @@ public class LocationOverviewPage extends BasePage {
                 .callActionByLabel("Delete Cooling Zone");
     }
 
-    //TODO: change data-attributename after OSSPHY-46774, it works only for Locations (temporary)
-    public OldTable getTabTable() {
+    //TODO: change method name to getTabTable and data-attributename after OSSPHY-46774 (EVERY TEST USING THIS METHOD SHOULD BE UPDATED)
+    public OldTable getLocationsTabTable() {
         DelayUtils.waitForPageToLoad(driver, wait);
         return OldTable.createByComponentDataAttributeName(driver, wait, "tableAppLocationsId");
     }

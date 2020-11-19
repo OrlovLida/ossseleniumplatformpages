@@ -56,6 +56,7 @@ public class ISPConfiguration extends BaseTestCase {
                 .isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
     }
 
+    //TODO: after OSSPHY-46774 change all usages of filter{x}Object() methods to filterObject() in the whole scenario
     @BeforeClass
     @Description("Open Create Location Wizard")
     public void openCreateLocationWizard() {
@@ -407,7 +408,7 @@ public class ISPConfiguration extends BaseTestCase {
     public void deletePowerSupplyUnit() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Devices");
-        locationOverviewPage.filterObject("Name", POWER_SUPPLY_UNIT_NAME);
+        locationOverviewPage.filterDevicesObject("Name", POWER_SUPPLY_UNIT_NAME);
         locationOverviewPage.clickRemoveDevice();
         checkPopup();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -418,7 +419,7 @@ public class ISPConfiguration extends BaseTestCase {
     public void deletePowerDevice() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Devices");
-        locationOverviewPage.filterObject("Name", POWER_DEVICE_NAME);
+        locationOverviewPage.filterDevicesObject("Name", POWER_DEVICE_NAME);
         locationOverviewPage.clickRemoveDevice();
         checkPopup();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -429,7 +430,7 @@ public class ISPConfiguration extends BaseTestCase {
     public void deletePhysicalDevice2() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Devices");
-        locationOverviewPage.filterObject("Name", PHYSICAL_DEVICE_NAME2);
+        locationOverviewPage.filterDevicesObject("Name", PHYSICAL_DEVICE_NAME2);
         locationOverviewPage.clickRemoveDevice();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, webDriverWait);
@@ -485,7 +486,7 @@ public class ISPConfiguration extends BaseTestCase {
     public void deleteRack() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Locations");
-        locationOverviewPage.filterObject("Name", MOUNTING_EDITOR_NAME);
+        locationOverviewPage.filterLocationsObject("Name", MOUNTING_EDITOR_NAME);
         locationOverviewPage.clickRemoveLocationIcon();
         checkPopup();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -496,7 +497,7 @@ public class ISPConfiguration extends BaseTestCase {
     public void deleteRoom() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Locations");
-        locationOverviewPage.filterObject("Name", SUBLOCATION_NAME);
+        locationOverviewPage.filterLocationsObject("Name", SUBLOCATION_NAME);
         locationOverviewPage.clickRemoveLocationIcon();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, webDriverWait);

@@ -130,9 +130,9 @@ public class ThreeUKRegressionTests extends BaseTestCase {
                 .createLocation(locationTypeSite, randomLocationNameInLocation);
         new LocationOverviewPage(driver)
                 .selectTab("Locations")
-                .filterObject("Name", randomLocationNameInLocation);
+                .filterLocationsObject("Name", randomLocationNameInLocation);
 //        OldTable tabTable = OldTable.createByComponentDataAttributeName(driver, webDriverWait, "tableAppLocationsId");
-        OldTable tabTable = new LocationOverviewPage(driver).getTabTable();
+        OldTable tabTable = new LocationOverviewPage(driver).getLocationsTabTable();
         int rowNumber = tabTable.getRowNumber(randomLocationNameInLocation, "Name");
         String rowValue = tabTable.getValueCell(rowNumber, "Name");
         Assert.assertTrue(rowValue.contains(randomLocationNameInLocation));
@@ -154,13 +154,13 @@ public class ThreeUKRegressionTests extends BaseTestCase {
                 .createLocation(locationTypeSite, randomLocationNameInLocation);
         new LocationOverviewPage(driver)
                 .selectTab("Locations")
-                .filterObject("Name", randomLocationNameInLocation)
+                .filterLocationsObject("Name", randomLocationNameInLocation)
                 .clickEditLocationIcon();
         new LocationWizardPage(driver)
                 .setDescription(description)
                 .accept();
 //        OldTable tabTable = OldTable.createByComponentDataAttributeName(driver, webDriverWait, "tableAppLocationsId");
-        OldTable tabTable = new LocationOverviewPage(driver).getTabTable();
+        OldTable tabTable = new LocationOverviewPage(driver).getLocationsTabTable();
         int rowNumber = tabTable.getRowNumber(description, "Description");
         String rowValue = tabTable.getValueCell(rowNumber, "Description");
         Assert.assertTrue(rowValue.contains(description));
@@ -182,7 +182,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
                 .createLocation(locationTypeSite, randomLocationNameInLocation);
         new LocationOverviewPage(driver)
                 .selectTab("Locations")
-                .filterObject("Name", randomLocationNameInLocation)
+                .filterLocationsObject("Name", randomLocationNameInLocation)
                 .clickRemoveLocationIcon();
         ConfirmationBoxInterface confirmationBox = ConfirmationBox.create(driver, webDriverWait);
         confirmationBox.clickButtonByLabel("Delete");
