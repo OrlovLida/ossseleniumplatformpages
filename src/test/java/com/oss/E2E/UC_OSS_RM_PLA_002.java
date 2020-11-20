@@ -1,5 +1,15 @@
 package com.oss.E2E;
 
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.regex.Pattern;
+
+import org.assertj.core.api.Assertions;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
 import com.oss.BaseTestCase;
 import com.oss.bpm.CreateProcessNRPTest;
 import com.oss.framework.alerts.SystemMessageContainer;
@@ -14,6 +24,7 @@ import com.oss.pages.bpm.IntegrationProcessWizardPage;
 import com.oss.pages.bpm.ProcessInstancesPage;
 import com.oss.pages.bpm.ProcessWizardPage;
 import com.oss.pages.bpm.TasksPage;
+import com.oss.pages.filtermanager.ShareFilterPage;
 import com.oss.pages.mediation.CLIConfigurationWizardPage;
 import com.oss.pages.mediation.ViewConnectionConfigurationPage;
 import com.oss.pages.physical.DeviceOverviewPage;
@@ -27,20 +38,12 @@ import com.oss.pages.templateCM.ChangeConfigurationPage;
 import com.oss.pages.templateCM.SetParametersWizardPage;
 import com.oss.pages.transport.IPv4AddressAssignmentWizardPage;
 import com.oss.pages.transport.NetworkViewPage;
-import org.assertj.core.api.Assertions;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
-
-import java.net.URISyntaxException;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.regex.Pattern;
 
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 
 public class UC_OSS_RM_PLA_002 extends BaseTestCase {
-
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
+
     private String deviceModel = "1941";
     private String cmDomainName = "SeleniumE2ETest";
     private String deviceName = "H3_Lab";
@@ -49,6 +52,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     private String interfaceName = "CISCO IOS 12/15/XE without mediation";
     private String processNRPCode;
     private String processIPName = "S.1-" + (int) (Math.random() * 1001);
+    private String serialNumber = "SN-" + (int) (Math.random() * 1001);
     private String processIPCode;
     private ChangeConfigurationPage changeConfigurationPage;
     private SetParametersWizardPage setParametersWizardPage;
@@ -64,7 +68,6 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     @BeforeClass
     public void openProcessInstancesPage() {
         ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
-        DelayUtils.sleep(10000);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -77,13 +80,11 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         Assertions.assertThat(messages).hasSize(1);
         Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
         Assertions.assertThat(messages.get(0).getText()).contains(processNRPCode);
-        DelayUtils.sleep(10000);
     }
 
     @Test(priority = 2)
     public void startHLPTask() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        DelayUtils.sleep(10000);
         tasksPage.startTask(processNRPCode, "High Level Planning");
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
@@ -119,6 +120,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         networkViewPage.setName(deviceName);
         networkViewPage.setHostname(deviceName);
         DelayUtils.sleep(1000);
+        networkViewPage.setSerialNumber(serialNumber);
         networkViewPage.create();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
@@ -169,9 +171,9 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     public void createIpLink() {
         openNetworkView();
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
-        networkViewPage.useContextAction("add_to_view_group", "Network Element");
+        networkViewPage.useContextAction("add_to_view_group", "Device");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkViewPage.queryElementAndAddItToView("name", TEXT_FIELD, deviceName);
+        networkViewPage.queryElementAndAddItToView("serialNumber", TEXT_FIELD, serialNumber);
         networkViewPage.expandDockedPanel("left");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkViewPage.selectObjectInViewContent("Name", "H1");
@@ -181,6 +183,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         networkViewPage.acceptTrailType();
         networkViewPage.setTrailName(trailName);
         networkViewPage.proceedTrailCreation();
+        networkViewPage.hideDockedPanel("left");
     }
 
     @Test(priority = 11)
@@ -205,10 +208,19 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     }
 
     @Test(priority = 12)
+    public void suppressValidationResult() {
+        NetworkViewPage networkViewPage = new NetworkViewPage(driver);
+        networkViewPage.supressValidationResult("INCOMPLETE_ROUTING_STATUS", "Unnecessary in this scenario");
+        networkViewPage.hideDockedPanel("bottom");
+    }
+
+    @Test(priority = 13)
     public void moveMediationConfiguration() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.expandDockedPanel("left");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkViewPage.selectObjectInViewContent("Name", trailName + " (0%)");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkViewPage.selectObjectInViewContent("Name", deviceName);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -218,7 +230,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 13)
+    @Test(priority = 14)
     public void startMediationConfiguration() {
         CLIConfigurationWizardPage cliConfigurationWizardPage = new CLIConfigurationWizardPage(driver);
         cliConfigurationWizardPage.setInputMethod("Search in managed addresses");
@@ -231,7 +243,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 14)
+    @Test(priority = 15)
     public void setCLIParameters() {
         CLIConfigurationWizardPage cliConfigurationWizardPage = new CLIConfigurationWizardPage(driver);
         cliConfigurationWizardPage.setCommandTimeout(commandTimeout);
@@ -244,7 +256,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 15)
+    @Test(priority = 16)
     public void setAuthenticationMethod() {
         CLIConfigurationWizardPage cliConfigurationWizardPage = new CLIConfigurationWizardPage(driver);
         cliConfigurationWizardPage.setAuthMethod("Password Authentication");
@@ -255,7 +267,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 16)
+    @Test(priority = 17)
     public void acceptSummary() {
         CLIConfigurationWizardPage cliConfigurationWizardPage = new CLIConfigurationWizardPage(driver);
         cliConfigurationWizardPage.clickAccept();
@@ -267,7 +279,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
                 .isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
     }
 
-    @Test(priority = 17)
+    @Test(priority = 18)
     public void getURL() {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         systemMessage.clickMessageLink();
@@ -276,7 +288,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 18)
+    @Test(priority = 19)
     public void completeHLPTask() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.completeTask(processNRPCode, "High Level Planning");
@@ -287,7 +299,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
                 .contains("Task properly completed.");
     }
 
-    @Test(priority = 19)
+    @Test(priority = 20)
     public void startLLPTask() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.startTask(processNRPCode, "Low Level Planning");
@@ -303,7 +315,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         Assertions.assertThat(perspectiveContext).contains("PLAN");
     }
 
-    @Test(priority = 20)
+    @Test(priority = 21)
     public void completeLLPTask() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.completeTask(processNRPCode, "Low Level Planning");
@@ -314,7 +326,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
                 .contains("Task properly completed.");
     }
 
-    @Test(priority = 21)
+    @Test(priority = 22)
     public void startRFITask() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.startTask(processNRPCode, "Ready for Integration");
@@ -325,19 +337,18 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
                 .isEqualTo("The task properly assigned.");
     }
 
-    @Test(priority = 22)
+    @Test(priority = 23)
     public void setupIntegration() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.setupIntegration(processNRPCode);
         IntegrationProcessWizardPage integrationWizard = new IntegrationProcessWizardPage(driver);
-        integrationWizard.defineIntegrationProcess(processIPName, "2020-07-01", 1);
+        integrationWizard.defineIntegrationProcess(processIPName, LocalDate.now().plusDays(0).toString(), 1);
         integrationWizard.clickNext();
         integrationWizard.dragAndDrop(deviceName, processIPName);
         integrationWizard.clickAccept();
-        tasksPage.openIntegrationProcessByClickingOnIdLink();
     }
 
-    @Test(priority = 23)
+    @Test(priority = 24)
     public void getIPCode() {
         DelayUtils.sleep(3000);
         TableInterface ipTable = OldTable.createByComponentId(driver, webDriverWait, "ip_involved_nrp_group1");
@@ -346,7 +357,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         System.out.println(processIPCode);
     }
 
-    @Test(priority = 24)
+    @Test(priority = 25)
     public void completeRFITask() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.completeTask(processNRPCode, "Ready for Integration");
@@ -357,7 +368,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
                 .contains("Task properly completed.");
     }
 
-    @Test(priority = 25)
+    @Test(priority = 26)
     public void startSDTaskIP() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.startTask(processIPCode, "Scope definition");
@@ -368,7 +379,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
                 .isEqualTo("The task properly assigned.");
     }
 
-    @Test(priority = 26)
+    @Test(priority = 27)
     public void completeSDTaskIP() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.completeTask(processIPCode, "Scope definition");
@@ -379,33 +390,33 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
                 .contains("Task properly completed.");
     }
 
-    @Test(priority = 27)
+    @Test(priority = 28)
     public void startImplementationTaskIP() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.startTask(processIPCode, "Implementation");
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        DelayUtils.sleep(20000);
-        tasksPage.clickPerformConfigurationButton();
         Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
         Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getText())
                 .isEqualTo("The task properly assigned.");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        Notifications.create(driver, webDriverWait).clearAllNotification();
+        tasksPage.findTask(processIPCode, "Implementation");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        tasksPage.clickPerformConfigurationButton();
     }
 
-    @Test(priority = 28)
+    @Test(priority = 29)
     public void chooseDeviceAndTemplate() {
         changeConfigurationPage = new ChangeConfigurationPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Notifications.create(driver, webDriverWait).clearAllNotification();
         changeConfigurationPage.selectObjectType("Router");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        changeConfigurationPage.selectObject(deviceName);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         changeConfigurationPage.selectTemplate(TEMPLATE_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 29)
+    @Test(priority = 30)
     public void testParameters() {
         changeConfigurationPage.clickSetParameters();
         setParametersWizardPage = new SetParametersWizardPage(driver);
@@ -418,23 +429,27 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 30)
+    @Test(priority = 31)
     public void runTemplate() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         setParametersWizardPage.clickFillParameters();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         changeConfigurationPage.deployImmediately();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        DelayUtils.sleep(3000);
+        ShareFilterPage shareFilterPage = new ShareFilterPage(driver);
+        shareFilterPage.closeShareView();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Notifications.create(driver, webDriverWait).waitForSpecificNotification(TEMPLATE_NAME, "FINISHED");
     }
 
-    @Test(priority = 31)
+    @Test(priority = 32)
     public void assignFile() {
         try {
             TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
             java.net.URL resource = CreateProcessNRPTest.class.getClassLoader().getResource("bpm/SeleniumTest.txt");
             String absolutePatch = Paths.get(resource.toURI()).toFile().getAbsolutePath();
-            tasksPage.addFile(processNRPCode, "Implementation", absolutePatch);
+            tasksPage.addFile(processIPCode, "Implementation", absolutePatch);
             SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
             Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType())
                     .isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
@@ -448,7 +463,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         Assertions.assertThat(allNames).contains("SeleniumTest");
     }
 
-    @Test(priority = 32)
+    @Test(priority = 33)
     public void completeImplementationTaskIP() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.completeTask(processIPCode, "Implementation");
@@ -459,7 +474,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
                 .contains("Task properly completed.");
     }
 
-    @Test(priority = 33)
+    @Test(priority = 34)
     public void startAcceptanceTaskIP() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.startTask(processIPCode, "Acceptance");
@@ -470,7 +485,18 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
                 .isEqualTo("The task properly assigned.");
     }
 
-    @Test(priority = 34)
+    @Test(priority = 35)
+    public void completeAcceptanceTaskIP() {
+        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        tasksPage.completeTask(processIPCode, "Acceptance");
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
+        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
+        Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
+        Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getText())
+                .contains("Task properly completed.");
+    }
+
+    @Test(priority = 36)
     public void createCmDomain() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
@@ -483,7 +509,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 35)
+    @Test(priority = 37)
     public void uploadSamples() {
         DelayUtils.sleep(1000);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
@@ -503,7 +529,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         samplesManagementPage.uploadSamples("recoSamples/ciscoE2E/H3_Lab_100.100.100.100_20181016_1500_sh_version.cli");
     }
 
-    @Test(priority = 36)
+    @Test(priority = 38)
     public void runReconciliationWithFullSample() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
@@ -515,7 +541,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         networkDiscoveryControlViewPage.waitForEndOfReco();
     }
 
-    @Test(priority = 37)
+    @Test(priority = 39)
     public void applyInconsistencies() {
         networkDiscoveryControlViewPage.moveToNivFromNdcv();
         NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
@@ -526,18 +552,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(deviceName);
     }
 
-    @Test(priority = 38)
-    public void completeAcceptanceTaskIP() {
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.completeTask(processIPCode, "Acceptance");
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
-        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
-        Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getText())
-                .contains("Task properly completed.");
-    }
-
-    @Test(priority = 39)
+    @Test(priority = 40)
     public void deleteCmDomain() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
@@ -547,20 +562,22 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(cmDomainName);
     }
 
-    @Test(priority = 40)
+    @Test(priority = 41)
     public void deleteIpLink() {
         HomePage homePage = new HomePage(driver);
         homePage.goToHomePage(driver, BASIC_URL);
-        openNetworkView();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
+        sideMenu.callActionByLabel("LAB Network View", "Favourites", "SeleniumTests");
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.useContextAction("add_to_view_group", "Trail");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkViewPage.queryElementAndAddItToView("label", TEXT_FIELD, trailName);
         networkViewPage.useContextAction("EDIT", "Delete Trail");
-        networkViewPage.clickConfirmationBoxButtonByLabel("Proceed");
+        networkViewPage.delateTrailWizard();
     }
 
-    @Test(priority = 41)
+    @Test(priority = 42)
     public void deletePhysicalDevice() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.expandDockedPanel("left");
@@ -576,7 +593,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
                 .isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
     }
 
-    @Test(priority = 42)
+    @Test(priority = 43)
     public void deleteMediation() {
         ViewConnectionConfigurationPage.goToViewConnectionConfigurationPage(driver, URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);

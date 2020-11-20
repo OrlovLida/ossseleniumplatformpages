@@ -30,7 +30,7 @@ public class ShareFilterPage extends FilterManagerPage {
 
     @Step("Close Share View")
     public FilterManagerPage closeShareView() {
-        DelayUtils.waitForClickability(wait, driver.findElement(By.xpath(QUIT_MODAL_BUTTON_XPATH)));
+        DelayUtils.waitForVisibility(wait, driver.findElement(By.xpath(QUIT_MODAL_BUTTON_XPATH)));
         driver.findElement(By.xpath(QUIT_MODAL_BUTTON_XPATH)).click();
         DelayUtils.waitForPageToLoad(driver, wait);
         return new FilterManagerPage(driver);
