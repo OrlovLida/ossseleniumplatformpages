@@ -15,6 +15,7 @@ import com.oss.framework.widgets.dockedPanel.DockedPanelInterface;
 import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tablewidget.TableInterface;
+import com.oss.framework.widgets.tabswidget.TabsInterface;
 import com.oss.framework.widgets.tabswidget.TabsWidget;
 import com.oss.pages.BasePage;
 import com.oss.pages.physical.DeviceWizardPage;
@@ -28,6 +29,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
 import static com.oss.framework.components.inputs.Input.ComponentType.SEARCH_FIELD;
+import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_AREA;
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 
 public class NetworkViewPage extends BasePage {
@@ -302,6 +304,13 @@ public class NetworkViewPage extends BasePage {
         dockedPanel.expandDockedPanel(position);
     }
 
+    @Step("Hide docked panel")
+    public void hideDockedPanel(String position) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        DockedPanelInterface dockedPanel = DockedPanel.createDockedPanelByPosition(driver, wait, position);
+        dockedPanel.hideDockedPanel(position);
+    }
+
     private void selectTabFromBottomPanel(String tabName) {
         moveToTheBottomPanel();
         TabsWidget tabsWidget = TabsWidget.create(driver, wait);
@@ -382,6 +391,12 @@ public class NetworkViewPage extends BasePage {
         input.setSingleStringValue(hostname);
     }
 
+    @Step("Set serial number")
+    public void setSerialNumber(String serialNumber) {
+        Input input = physicalDeviceWizard.getComponent("text_serial_number", TEXT_FIELD);
+        input.setSingleStringValue(serialNumber);
+    }
+
     @Step("Create device")
     public void create() {
         physicalDeviceWizard.clickActionById("physical_device_common_buttons_app-1");
@@ -432,8 +447,36 @@ public class NetworkViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
+    @Step("Delate trail")
+    public void delateTrailWizard() {
+        clickConfirmationBoxButtonByLabel("Next");
+        waitForPageToLoad();
+        clickConfirmationBoxButtonByLabel("Delete");
+    }
+
     private void waitForPageToLoad() {
         DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    @Step("Suppress incomplete routing")
+    public void supressValidationResult(String validationResultType, String reason) {
+        openValidationResultsTab();
+        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, "bottomTabs");
+        table.selectRowByAttributeValueWithLabel("Type", validationResultType);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        TabsInterface tabsWidget = TabsWidget.createById(driver,wait,"bottomTabs");
+        tabsWidget.callAction("__more-group", "Suppression wizard");
+        DelayUtils.waitForPageToLoad(driver, wait);
+        Input input = physicalDeviceWizard.getComponent("reasonField", TEXT_AREA);
+        input.setSingleStringValue(reason);
+        clickProceed();
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    private void openValidationResultsTab() {
+        expandDetailsPanel();
+        selectTabFromBottomPanel("Validation Results");
+        waitForPageToLoad();
     }
 
 }
