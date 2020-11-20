@@ -30,7 +30,7 @@ public class SetParametersWizardPage extends BasePage {
         }
     }
 
-    private Wizard setParametersWizard = Wizard.createByComponentId(driver, wait, "changeConfigurationParameterPrompt");
+    private Wizard setParametersWizard = Wizard.createByComponentId(driver, wait, "Popup");
 
     public SetParametersWizardPage(WebDriver driver) {
         super(driver);
