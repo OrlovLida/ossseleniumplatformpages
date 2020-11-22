@@ -10,6 +10,7 @@ import com.oss.framework.prompts.ConfirmationBoxInterface;
 import com.oss.framework.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
+import com.oss.framework.widgets.advancedsearch.AdvancedSearchWidget;
 import com.oss.framework.widgets.dockedPanel.DockedPanel;
 import com.oss.framework.widgets.dockedPanel.DockedPanelInterface;
 import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
@@ -362,14 +363,14 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Add element quered in advanced search")
     public void queryElementAndAddItToView(String componentId, Input.ComponentType componentType, String value) {
-        AdvancedSearch advancedSearch = AdvancedSearch.createById(driver, wait, "advancedSearch");
-        advancedSearch.getComponent(componentId, componentType).clearByAction();
-        advancedSearch.getComponent(componentId, componentType).setSingleStringValue(value);
+        AdvancedSearchWidget advancedSearchWidget = AdvancedSearchWidget.createById(driver, wait, "advancedSearch");
+        advancedSearchWidget.getComponent(componentId, componentType).clearByAction();
+        advancedSearchWidget.getComponent(componentId, componentType).setSingleStringValue(value);
         DelayUtils.waitForPageToLoad(driver, wait);
-        advancedSearch.getTableWidget().selectFirstRow();
+        advancedSearchWidget.getTableWidget().selectFirstRow();
         DelayUtils.sleep(500);
         DelayUtils.waitForPageToLoad(driver, wait);
-        advancedSearch.clickAdd();
+        advancedSearchWidget.clickAdd();
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
