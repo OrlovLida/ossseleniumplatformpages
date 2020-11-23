@@ -10,6 +10,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.google.common.collect.Multimap;
+import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.Input.ComponentType;
 import com.oss.framework.utils.DelayUtils;
@@ -186,10 +187,9 @@ public class InventoryViewTest extends BaseTestCase {
 
     @Test
     public void clickRefresh() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         TableWidget tableWidget = inventoryViewPage.getMainTable();
-        DelayUtils.sleep(500);
-        tableWidget.clickOnKebabMenu();
-        tableWidget.clickOnAction("Refresh");
+        tableWidget.callAction(ActionsContainer.KEBAB_GROUP_ID, TableWidget.REFRESH_ACTION_ID);
         Assert.assertTrue(inventoryViewPage.isLoadBarDisplayed());
     }
 

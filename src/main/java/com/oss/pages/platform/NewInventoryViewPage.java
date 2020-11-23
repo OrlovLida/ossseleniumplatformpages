@@ -68,12 +68,9 @@ public class NewInventoryViewPage extends BasePage {
         return getLoadBar().isDisplayed();
     }
 
+    //TODO: create layoutWrapper component
     public int howManyRows() {
         return driver.findElements(By.xpath("//div[@class='view-v2-content']/div/div[@class='row']")).size();
-    }
-
-    public int howManyColumns() {
-        return driver.findElements(By.xpath("//div[@class='view-v2-content']/div/div/div[contains(@class,'column')]")).size();
     }
 
     @Step("Open Inventory View")

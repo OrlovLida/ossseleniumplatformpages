@@ -1,5 +1,6 @@
 package com.oss.pages.languageservice;
 
+import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.TableWidget;
@@ -27,8 +28,8 @@ public class LanguageServicePage extends BasePage {
     @Step("Open Export File Wizard")
     public ExportGuiWizardPage openExportFileWizard() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        expandMenu();
-        DropdownList.create(driver, wait).selectOptionWithId(EXPORT_BUTTON_ID);
+        TableWidget tableWidget = tableWidget();
+        tableWidget.callAction(ActionsContainer.KEBAB_GROUP_ID, TableWidget.EXPORT_ACTION_ID);
         return new ExportGuiWizardPage(driver);
     }
 
@@ -56,15 +57,14 @@ public class LanguageServicePage extends BasePage {
         return this;
     }
 
-    private LanguageServicePage expandMenu() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        TableWidget.create(driver, TableWidget.TABLE_WIDGET_CLASS, wait).clickOnKebabMenu();
-        return this;
-    }
-
     private LanguageServicePage closeNotificationPanel() {
         new NotificationWrapperPage(driver).close();
         return this;
+    }
+
+    private TableWidget tableWidget() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return TableWidget.create(driver, TableWidget.TABLE_WIDGET_CLASS, wait);
     }
 }
 
