@@ -9,11 +9,10 @@ import com.oss.framework.prompts.ConfirmationBoxInterface;
 import com.oss.framework.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
+import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.pages.physical.*;
 import io.qameta.allure.Description;
-import org.aspectj.lang.annotation.DeclareError;
 import org.assertj.core.api.Assertions;
-import org.openqa.selenium.WebDriver;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -47,6 +46,9 @@ public class ISPConfiguration extends BaseTestCase {
     public static final String POWER_SUPPLY_UNIT_MODEL = "Generic Power Supply Unit";
     public static final String POWER_SUPPLY_UNIT_NAME = "Power Supply Unit";
     public static final String POWER_SUPPLY_UNIT_CAPACITY = "5";
+    public static String LOCATION_POWER_CAPACITY = "0";
+    public static String COOLING_ZONE_COOLING_LOAD = "0";
+    public static String COOLING_ZONE_LOAD_RATIO = "0";
 
     private void checkPopup() {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
@@ -241,11 +243,7 @@ public class ISPConfiguration extends BaseTestCase {
     @Test(priority = 16)
     @Description("Move to Location Overview and create Cooling Zone")
     public void createCoolingZone() {
-        //TODO: after debugging two lines below can be deleted
-        PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        //TODO: change first argument below to 'LOCATION_OVERVIEW_URL'
-        driver.get(format("%s#/view/location-inventory/locationoverview?perspective=LIVE&id=81796096", BASIC_URL));
+        driver.get(format(LOCATION_OVERVIEW_URL, BASIC_URL));
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Cooling Zones");
         locationOverviewPage.clickIconByLabel("Create Cooling Zone");
@@ -318,6 +316,11 @@ public class ISPConfiguration extends BaseTestCase {
         coolingZoneWizardPage.clickUpdate();
         checkPopup();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        locationOverviewPage.selectTab("Cooling Zones");
+        OldTable coolingTable = locationOverviewPage.getCoolingZonesTabTable();
+        int rowNumber = coolingTable.getRowNumber(COOLING_ZONE_NAME, "Name");
+        String rowValue = coolingTable.getValueCell(rowNumber, "Cooling Load [kW]");
+        Assertions.assertThat(Integer.parseInt(COOLING_ZONE_COOLING_LOAD)).isNotEqualTo(Integer.parseInt(rowValue));
     }
 
     @Test(priority = 21)
@@ -365,6 +368,11 @@ public class ISPConfiguration extends BaseTestCase {
         deviceWizardPage.update();
         checkPopup();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        locationOverviewPage.selectTab("Cooling Zones");
+        OldTable coolingTable = locationOverviewPage.getCoolingZonesTabTable();
+        int rowNumber = coolingTable.getRowNumber(COOLING_ZONE_NAME, "Name");
+        String rowValue = coolingTable.getValueCell(rowNumber, "Cooling Load Ratio [%]");
+        Assertions.assertThat(Integer.parseInt(COOLING_ZONE_LOAD_RATIO)).isNotEqualTo(Integer.parseInt(rowValue));
     }
 
     @Test(priority = 24)
@@ -383,6 +391,16 @@ public class ISPConfiguration extends BaseTestCase {
         deviceWizardPage.create();
         checkPopup();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        locationOverviewPage.selectTab("Cooling Zones");
+        OldTable powerTable = locationOverviewPage.getCoolingZonesTabTable();
+        int rowNumber = powerTable.getRowNumber(SUBLOCATION_NAME, "Name");
+        String rowValue = powerTable.getValueCell(rowNumber, "Power Capacity [kW]");
+        Assertions.assertThat(Integer.parseInt(LOCATION_POWER_CAPACITY)).isNotEqualTo(Integer.parseInt(rowValue));
+        LOCATION_POWER_CAPACITY = rowValue;
+        rowValue = powerTable.getValueCell(rowNumber, "Power Load [kW]");
+        Assertions.assertThat(Integer.parseInt(rowValue)).isNotEqualTo(0);
+        rowValue = powerTable.getValueCell(rowNumber, "Power Load Ratio [%]");
+        Assertions.assertThat(Integer.parseInt(rowValue)).isNotEqualTo(0);
     }
 
     @Test(priority = 25)
@@ -426,7 +444,7 @@ public class ISPConfiguration extends BaseTestCase {
     }
 
     @Test(priority = 28)
-    @Description("Delete Physcial Device2")
+    @Description("Delete Physical Device2")
     public void deletePhysicalDevice2() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Devices");
@@ -511,8 +529,7 @@ public class ISPConfiguration extends BaseTestCase {
     public void deleteLocation() {
         DeviceOverviewPage deviceOverviewPage = new DeviceOverviewPage(driver);
         deviceOverviewPage.useContextAction("Remove Location");
-        //TODO: change data-attributename to 'Popup' if after upgrade for RC it is changed to 'Popup'
-        Wizard removalWizard = Wizard.createByComponentId(driver, webDriverWait, "locationdelete");
+        Wizard removalWizard = Wizard.createByComponentId(driver, webDriverWait, "Popup");
         removalWizard.clickButtonByLabel("Delete");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, webDriverWait);
