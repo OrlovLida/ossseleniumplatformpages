@@ -36,6 +36,7 @@ import com.oss.pages.reconciliation.NetworkInconsistenciesViewPage;
 import com.oss.pages.reconciliation.SamplesManagementPage;
 import com.oss.pages.templateCM.ChangeConfigurationPage;
 import com.oss.pages.templateCM.SetParametersWizardPage;
+import com.oss.pages.transport.IPAddressManagementViewPage;
 import com.oss.pages.transport.IPv4AddressAssignmentWizardPage;
 import com.oss.pages.transport.NetworkViewPage;
 
@@ -43,6 +44,7 @@ import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD
 
 public class UC_OSS_RM_PLA_002_GA_5_17_0 extends BaseTestCase {
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
+    private IPAddressManagementViewPage ipAddressManagementViewPage;
 
     private String deviceModel = "1941";
     private String cmDomainName = "SeleniumE2ETest";
@@ -62,7 +64,9 @@ public class UC_OSS_RM_PLA_002_GA_5_17_0 extends BaseTestCase {
     private String password = "cisco";
     private String commandTimeout = "20";
     private String connectionTimeout = "20";
-    public String perspectiveContext;
+    private String perspectiveContext;
+    private String ipNetwork = "E2ESeleniumTest";
+
     String URL = "";
 
     @BeforeClass
@@ -196,6 +200,7 @@ public class UC_OSS_RM_PLA_002_GA_5_17_0 extends BaseTestCase {
         networkViewPage.modifyTermination();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkViewPage.setTrailPort(portName);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkViewPage.clickProceed();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkViewPage.selectObjectInDetailsTab("Type", "End");
@@ -203,6 +208,7 @@ public class UC_OSS_RM_PLA_002_GA_5_17_0 extends BaseTestCase {
         networkViewPage.modifyTermination();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkViewPage.setTrailPort(portName);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkViewPage.clickProceed();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
@@ -579,10 +585,12 @@ public class UC_OSS_RM_PLA_002_GA_5_17_0 extends BaseTestCase {
 
     @Test(priority = 42)
     public void deletePhysicalDevice() {
-        NetworkViewPage networkViewPage = new NetworkViewPage(driver);
-        networkViewPage.expandDockedPanel("left");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkViewPage.selectObjectInViewContent("Name", deviceName);
+        DelayUtils.sleep(5000);
+        NetworkViewPage networkViewPage = new NetworkViewPage(driver);
+        networkViewPage.useContextAction("add_to_view_group", "Device");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkViewPage.queryElementAndAddItToView("serialNumber", TEXT_FIELD, serialNumber);
         networkViewPage.useContextAction("EDIT", "Delete Element");
         networkViewPage.clickConfirmationBoxButtonByLabel("Yes");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -604,5 +612,16 @@ public class UC_OSS_RM_PLA_002_GA_5_17_0 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         viewConnectionConfigurationPage.clickDelete();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    @Test(priority = 44)
+    public void deleteIPAddressAssignment() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        ipAddressManagementViewPage = IPAddressManagementViewPage.goToIPAddressManagementPage(driver, BASIC_URL);
+        ipAddressManagementViewPage.searchIpNetwork(ipNetwork);
+        ipAddressManagementViewPage.expandTreeRow(ipNetwork);
+        ipAddressManagementViewPage.expandTreeRowContains("%");
+        ipAddressManagementViewPage.expandTreeRow("10.10.20.11/24");
+        ipAddressManagementViewPage.deleteObject("/24 [");
     }
 }
