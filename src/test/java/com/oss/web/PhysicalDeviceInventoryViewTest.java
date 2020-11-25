@@ -1,4 +1,4 @@
-package com.oss.physical;
+package com.oss.web;
 
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
