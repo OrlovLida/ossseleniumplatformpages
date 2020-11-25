@@ -1,10 +1,13 @@
 package com.oss.pages.transport;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.OldActionsContainer;
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.Button;
+import com.oss.framework.components.inputs.Input;
 import com.oss.framework.listwidget.CommonList;
 import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.prompts.ConfirmationBoxInterface;
@@ -14,10 +17,9 @@ import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
 import com.oss.framework.widgets.propertypanel.PropertyPanelInterface;
 import com.oss.framework.widgets.treewidget.TreeWidget;
-import org.openqa.selenium.By;
 import com.oss.pages.BasePage;
+
 import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
 
 public class IPAddressManagementViewPage extends BasePage {
 
@@ -27,7 +29,7 @@ public class IPAddressManagementViewPage extends BasePage {
     }
 
     public static IPAddressManagementViewPage goToIPAddressManagementViewPagePlan(WebDriver driver, String basicURL, long project) {
-        driver.get(String.format(IPADDRESS_MANAGEMENT_VIEW_URL +PROJECT_ID + PERSPECTIVE , basicURL, project, PLAN));
+        driver.get(String.format(IPADDRESS_MANAGEMENT_VIEW_URL + PROJECT_ID + PERSPECTIVE, basicURL, project, PLAN));
         return new IPAddressManagementViewPage(driver);
     }
 
@@ -80,7 +82,7 @@ public class IPAddressManagementViewPage extends BasePage {
         return actionsContainer;
     }
 
-    public PropertyPanelInterface getPropertyPanel(){
+    public PropertyPanelInterface getPropertyPanel() {
         if (propertyPanel == null) {
             DelayUtils.waitForVisibility(wait, driver.findElement(By.className(OSS_WINDOW_CLASS)));
             propertyPanel = OldPropertyPanel.create(driver, wait);
@@ -91,7 +93,7 @@ public class IPAddressManagementViewPage extends BasePage {
     }
 
     @Step("Open ip Address Management")
-    public static IPAddressManagementViewPage goToIPAddressManagementPage(WebDriver driver, String basicURL){
+    public static IPAddressManagementViewPage goToIPAddressManagementPage(WebDriver driver, String basicURL) {
         driver.get(String.format(IPADDRESS_MANAGEMENT_VIEW_URL, basicURL));
         DelayUtils.sleep(500);
         return new IPAddressManagementViewPage(driver);
@@ -156,6 +158,14 @@ public class IPAddressManagementViewPage extends BasePage {
         return this;
     }
 
+    @Step("Search IP Network")
+    public IPAddressManagementViewPage searchIpNetwork(String value) {
+        getTreeView()
+                .performSearchWithEnter(value);
+        DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
+        return this;
+    }
+
     protected Wizard getWizard() {
         if (wizard == null) {
             wizard = Wizard.createWizard(driver, wait);
@@ -170,12 +180,12 @@ public class IPAddressManagementViewPage extends BasePage {
         return commonList;
     }
 
-    private void clickOnRoleButton(){
+    private void clickOnRoleButton() {
         DelayUtils.sleep(5000);
         Button.createBySelectorAndId(driver, "a", ROLE_BUTTON).click();
     }
 
-    private void clickCreateNewRole(){
+    private void clickCreateNewRole() {
         DelayUtils.sleep();
         Button.createBySelectorAndId(driver, "a", "buttons-uid-0").click();
     }
@@ -198,7 +208,7 @@ public class IPAddressManagementViewPage extends BasePage {
 
     }
 
-    private void setValueOnTextField (String componentId, Input.ComponentType componentType, String value){
+    private void setValueOnTextField(String componentId, Input.ComponentType componentType, String value) {
         DelayUtils.sleep();
         getWizard().getComponent(componentId, componentType).clearByAction();
         getWizard().getComponent(componentId, componentType).setSingleStringValue(value);
@@ -207,7 +217,6 @@ public class IPAddressManagementViewPage extends BasePage {
     public int howManyRoles() {
         return driver.findElements(By.xpath(XPATH_TO_ROLES)).size();
     }
-
 
     @Step("Select first object on hierarchy view")
     public void selectFirstTreeRow() {
@@ -274,14 +283,14 @@ public class IPAddressManagementViewPage extends BasePage {
         systemMessage.close();
     }
 
-    public void deleteObject(String name){
+    public void deleteObject(String name) {
         selectTreeRowContains(name);
         useButton(DELETE_BUTTON_DATA_ATTRIBUTE_NAME);
         acceptConfirmationBox();
         closeSystemMessage();
     }
 
-    public void deleteIPSubnet(String subnetIpAddress){
+    public void deleteIPSubnet(String subnetIpAddress) {
         selectTreeRowContains(subnetIpAddress);
         useContextAction(OTHER_BUTTON_GROUP_ID, DELETE_BUTTON_DATA_ATTRIBUTE_NAME);
         acceptConfirmationBox();

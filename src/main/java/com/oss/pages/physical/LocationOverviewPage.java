@@ -7,10 +7,10 @@ import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.OldTable;
+import com.oss.framework.widgets.tablewidget.TableInterface;
 import com.oss.framework.widgets.tabswidget.TabWindowWidget;
 import com.oss.framework.widgets.tabswidget.TabsInterface;
 import com.oss.pages.BasePage;
-import com.oss.pages.radio.CellSiteConfigurationPage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -22,7 +22,6 @@ import org.openqa.selenium.WebDriver;
 public class LocationOverviewPage extends BasePage {
 
     private static final String DEVICES_TABLE_DATA_ATTRIBUTE_NAME = "tableAppDevicesId";
-
 
     public LocationOverviewPage(WebDriver driver) {
         super(driver);
@@ -72,6 +71,14 @@ public class LocationOverviewPage extends BasePage {
     public LocationOverviewPage filterDevicesObject(String columnName, String objectName) {
         getDevicesTabTable().searchByAttributeWithLabel(columnName, Input.ComponentType.TEXT_FIELD, objectName);
         getDevicesTabTable().selectRowByAttributeValueWithLabel(columnName, objectName);
+        return this;
+    }
+
+    @Step("Filter and select {objectName} row")
+    public LocationOverviewPage filterPowerManagementObject(String columnName, String objectName) {
+        //TODO: getPowerManagementTabTable is a temporary name until OSSPHY-46774 fix comes, it will be changed to getTabTable and made generic
+        getPowerManagementTabTable().searchByAttributeWithLabel(columnName, Input.ComponentType.TEXT_FIELD, objectName);
+        getPowerManagementTabTable().selectRowByAttributeValueWithLabel(columnName, objectName);
         return this;
     }
 
@@ -132,6 +139,12 @@ public class LocationOverviewPage extends BasePage {
     public OldTable getDevicesTabTable() {
         DelayUtils.waitForPageToLoad(driver, wait);
         return OldTable.createByComponentDataAttributeName(driver, wait, "tableAppDevicesId");
+    }
+
+    //TODO: this method is temporary and should be deleted after getTabTable() method works for every tab (EVERY TEST USING THIS METHOD SHOULD BE UPDATED)
+    public OldTable getPowerManagementTabTable() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return OldTable.createByComponentDataAttributeName(driver, wait, "tableAppPowerManagementId");
     }
 
     //TODO: this method is temporary and should be deleted after getTabTable() method works for every tab (EVERY TEST USING THIS METHOD SHOULD BE UPDATED)
