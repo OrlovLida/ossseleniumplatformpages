@@ -1,6 +1,7 @@
 package com.oss.pages.physical;
 
 import com.oss.framework.components.inputs.Input;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
@@ -47,6 +48,19 @@ public class DeviceWizardPage extends BasePage {
 
     public DeviceWizardPage(WebDriver driver) {
         super(driver);
+    }
+
+    @Step("Create Device with mandatory fields (Equipment type, Model, Name, Location, Precise Location) filled in")
+    public void createDeviceOnlyByName(String name) {
+        setEquipmentType(" ");
+        DelayUtils.sleep(250);
+        setModel(" ");
+        DelayUtils.sleep(250);
+        setName(name);
+        DelayUtils.sleep(250);
+        setPreciseLocationContains(" ");
+        DelayUtils.sleep(250);
+        create();
     }
 
     @Step("Create Device with mandatory fields (Equipment type, Model, Name, Location, Precise Location) filled in")
