@@ -5,6 +5,7 @@ import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.gisView.CreateDuctWizardPage;
+import com.oss.pages.gisView.DuctCopyWizardPage;
 import com.oss.pages.gisView.GisViewPage;
 import com.oss.pages.physical.*;
 import io.qameta.allure.Description;
@@ -22,20 +23,26 @@ public class OSPConfiguration extends BaseTestCase {
     private String GEOGRAPHICAL_ADDRESS_MANHOLE = " Jasna 34848, Gliwice";
     private String MANHOLE_MODEL = "SK-1";
     private String MANHOLE_A_NAME = "Manhole A";
-    private String DUCT_MODEL = "DVK 50";
+    private String DUCT_MODEL = "HDPE 100x4,3";
     private String DUCT_TYPE_PRIMARY = "Primary Duct";
+    private String DUCT_TYPE_SUBDUCT = "Subduct";
     private String ODF_MODEL = "Optomer PS-5/12";
     private String ODF_A_NAME = "ODF A";
     private String ODF_C_NAME = "ODF C";
     private String CARD_MODEL = "Optomer KS-24";
     private String PLUGGABLE_MODULE_MODEL = "Generic SC/PC Front/Back";
+
     private LocationOverviewPage locationOverviewPage;
     private DeviceOverviewPage deviceOverviewPage;
+    private DuctCopyWizardPage ductCopyWizardPage;
 
 
     @BeforeClass
     public void openGisViewByLink() {
         gisViewPage = GisViewPage.goToGisViewPage(driver, BASIC_URL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.searchFirstResult("gliwice");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
     @Test(priority = 1, enabled = false)
@@ -46,7 +53,7 @@ public class OSPConfiguration extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         gisViewPage.clickOnMapByCoordinates(2, 4);
         gisViewPage.useContextAction("Draw Single Location", "Building");
-        gisViewPage.clickOnMapByCoordinates(4, 2);
+        gisViewPage.clickOnMapByCoordinates(5, 2);
 
         LocationWizardPage locationWizardPage = new LocationWizardPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -70,8 +77,8 @@ public class OSPConfiguration extends BaseTestCase {
     @Description("Edit name and address of the building")
     public void modifyBuilding() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        gisViewPage.chooseObjectFromList("[Buildings] Building A_002", 4, 2);
-
+        gisViewPage.chooseObjectFromList("[Buildings] Building A_002", 5, 2);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         gisViewPage.useContextAction("Edit", "Edit Location");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         LocationWizardPage locationWizardPage = new LocationWizardPage(driver);
@@ -85,7 +92,7 @@ public class OSPConfiguration extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         gisViewPage.useContextActionById("Move Location");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        gisViewPage.dragAndDropObject(4, 2, 4, 8);
+        gisViewPage.dragAndDropObject(5, 2, 8, 4);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         gisViewPage.useContextActionById("Save Edited Shape");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -95,9 +102,14 @@ public class OSPConfiguration extends BaseTestCase {
     @Test(priority = 3, enabled = false)
     @Description("Create manhole")
     public void createManhole() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.searchFirstResult("gliwice");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+
         gisViewPage.clickOnMapByCoordinates(2, 4);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         gisViewPage.useContextAction("Draw Single Location", "Manhole");
-        gisViewPage.clickOnMapByCoordinates(5, 3);
+        gisViewPage.clickOnMapByCoordinates(8, 2);
         LocationWizardPage locationWizardPage = new LocationWizardPage(driver);
         locationWizardPage.setModel(MANHOLE_MODEL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -105,7 +117,6 @@ public class OSPConfiguration extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         locationWizardPage.clickNext();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-
         locationWizardPage.setGeographicalAddress(GEOGRAPHICAL_ADDRESS_MANHOLE);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         locationWizardPage.clickNext();
@@ -117,12 +128,13 @@ public class OSPConfiguration extends BaseTestCase {
     @Test(priority = 4, enabled = false)
     @Description("Create duct between building A na manhole")
     public void createDuctFromBuildingAToManhole() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         gisViewPage.clickOnMapByCoordinates(2, 4);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         gisViewPage.useContextActionById("Draw New Duct");
-        gisViewPage.clickOnMapByCoordinates(4, 2);
-        gisViewPage.clickOnMapByCoordinates(5, 3);
-        gisViewPage.doubleClickOnMapByCoordinates(5, 3);
+        gisViewPage.clickOnMapByCoordinates(5, 2);
+        gisViewPage.clickOnMapByCoordinates(8, 2);
+        gisViewPage.doubleClickOnMapByCoordinates(8, 2);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         CreateDuctWizardPage createDuctWizardPage = new CreateDuctWizardPage(driver);
         createDuctWizardPage.setModel(DUCT_MODEL);
@@ -139,9 +151,9 @@ public class OSPConfiguration extends BaseTestCase {
         gisViewPage.clickOnMapByCoordinates(2, 4);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         gisViewPage.useContextActionById("Draw New Duct");
-        gisViewPage.clickOnMapByCoordinates(4, 8);
-        gisViewPage.clickOnMapByCoordinates(5, 3);
-        gisViewPage.doubleClickOnMapByCoordinates(5, 3);
+        gisViewPage.clickOnMapByCoordinates(8, 4);
+        gisViewPage.clickOnMapByCoordinates(8, 2);
+        gisViewPage.doubleClickOnMapByCoordinates(8, 2);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         CreateDuctWizardPage createDuctWizardPage = new CreateDuctWizardPage(driver);
         createDuctWizardPage.setModel(DUCT_MODEL);
@@ -155,6 +167,59 @@ public class OSPConfiguration extends BaseTestCase {
     }
 
     @Test(priority = 6)
+    @Description("Create copy of ducts")
+    public void createCopyOfDucts() {
+        gisViewPage.clickOnMapByCoordinates(2, 4);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.clickOnMapByCoordinates(6, 2);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.useContextAction("Edit", "Copy Duct");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        DuctCopyWizardPage ductCopyWizardPage = new DuctCopyWizardPage(driver);
+        ductCopyWizardPage.setNumberOfCopies("1");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        ductCopyWizardPage.create();
+        checkPopup();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.useContextActionById("Refresh");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+
+
+        gisViewPage.clickOnMapByCoordinates(8, 3);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.useContextAction("Edit", "Copy Duct");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        ductCopyWizardPage.setNumberOfCopies("1");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        ductCopyWizardPage.create();
+        checkPopup();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.useContextActionById("Refresh");
+    }
+
+    @Test(priority = 7)
+    @Description("Create duct between Building A and C")
+    public void createDuctFromBuildingAToBuildingC() {
+        gisViewPage.clickOnMapByCoordinates(2, 4);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.useContextActionById("Draw New Duct");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.clickOnMapByCoordinates(5, 2);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.clickOnMapByCoordinates(8, 4);
+        gisViewPage.clickOnMapByCoordinates(8, 4);
+        gisViewPage.doubleClickOnMapByCoordinates(8, 4);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        CreateDuctWizardPage createDuctWizardPage = new CreateDuctWizardPage(driver);
+        createDuctWizardPage.setModel(DUCT_MODEL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        createDuctWizardPage.setType(DUCT_TYPE_SUBDUCT);
+        createDuctWizardPage.create();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        checkPopup();
+    }
+
+    @Test(priority = 8, enabled = false)
     @Description("Create ODF in location")
     public void createODF() {
         // temporary
@@ -177,7 +242,7 @@ public class OSPConfiguration extends BaseTestCase {
         deviceWizardPage.create();
     }
 
-    @Test(priority = 7)
+    @Test(priority = 9, enabled = false)
     @Description("Create pluggable module in device")
     public void createPluggableModule() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -202,7 +267,7 @@ public class OSPConfiguration extends BaseTestCase {
         checkPopup();
     }
 
-    @Test(priority = 8)
+    @Test(priority = 10, enabled = false)
     @Description("Create card in device")
     public void createCard() {
         deviceOverviewPage.selectTreeRow(ODF_A_NAME);
@@ -219,7 +284,7 @@ public class OSPConfiguration extends BaseTestCase {
         checkPopup();
     }
 
-    @Test(priority = 9)
+    @Test(priority = 11, enabled = false)
     @Description("Create copy of device")
     public void createDeviceCopy() {
         deviceOverviewPage.selectTreeRow(ODF_A_NAME);
