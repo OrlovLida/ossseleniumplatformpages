@@ -271,7 +271,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
                 .expandTreeToLocation(locationTypeSite, randomLocationName)
                 .selectTab("Base Stations")
                 .filterObject("Name", randomENodeBName)
-                .clickRemoveIcon();
+                .removeObject();
         systemMessageItem.waitForMessageDisappear();
         homePage.searchInGlobalSearch(randomENodeBName);
         CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
@@ -363,7 +363,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
                 .expandTreeToBaseStation(locationTypeSite, randomLocationName, randomENodeBName)
                 .selectTab("Cells")
                 .filterObject("Name", randomCell4GName)
-                .clickRemoveIcon();
+                .removeObject();
         systemMessageItem.waitForMessageDisappear();
         homePage.searchInGlobalSearch(randomCell4GName);
         CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
@@ -451,7 +451,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
                 .expandTreeToLocation(locationTypeSite, randomLocationName)
                 .selectTab("Base Stations")
                 .filterObject("Name", randomGNodeBName)
-                .clickRemoveIcon();
+                .removeObject();
         systemMessageItem.waitForMessageDisappear();
         homePage.searchInGlobalSearch(randomGNodeBName);
         CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
@@ -543,7 +543,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
                 .expandTreeToBaseStation(locationTypeSite, randomLocationName, randomGNodeBName)
                 .selectTab("Cells")
                 .filterObject("Name", randomCell5GName)
-                .clickRemoveIcon();
+                .removeObject();
         systemMessageItem.waitForMessageDisappear();
         homePage.searchInGlobalSearch(randomCell5GName);
         CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
@@ -633,7 +633,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
                 .expandTreeToLocation(locationTypeSite, randomLocationName)
                 .selectTab("Devices")
                 .filterObject("Name", randomDeviceName)
-                .clickRemoveIcon();
+                .removeObject();
         systemMessageItem.waitForMessageDisappear();
         homePage.searchInGlobalSearch(randomDeviceName);
         CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
@@ -723,7 +723,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
                 .expandTreeToLocation(locationTypeSite, randomLocationName)
                 .selectTab("Devices")
                 .filterObject("Name", randomDeviceName)
-                .clickRemoveIcon();
+                .removeObject();
         systemMessageItem.waitForMessageDisappear();
         homePage.searchInGlobalSearch(randomDeviceName);
         CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
