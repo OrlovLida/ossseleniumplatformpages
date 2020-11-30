@@ -1,5 +1,12 @@
 package com.oss.radio;
 
+import java.util.List;
+
+import org.assertj.core.api.Assertions;
+import org.openqa.selenium.WebDriver;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
@@ -7,13 +14,8 @@ import com.oss.framework.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.radio.CellSiteConfigurationPage;
 import com.oss.pages.radio.HostingWizardPage;
-import io.qameta.allure.Description;
-import org.assertj.core.api.Assertions;
-import org.openqa.selenium.WebDriver;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
 
-import java.util.List;
+import io.qameta.allure.Description;
 
 import static java.lang.String.format;
 
@@ -112,7 +114,7 @@ public class HostingRelationCreationTest extends BaseTestCase {
     public void deleteHostingRelationCell4GRANAntennaArray() {
         cellSiteConfigurationPage.selectTab("Hosting");
         cellSiteConfigurationPage.filterObject("Hosting Resource", antennaArrayName);
-        cellSiteConfigurationPage.clickRemoveIcon();
+        cellSiteConfigurationPage.removeObject();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         checkPopup();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -123,7 +125,7 @@ public class HostingRelationCreationTest extends BaseTestCase {
     public void deleteHostingRelationCell4GRRU() {
         cellSiteConfigurationPage.selectTab("Hosting");
         cellSiteConfigurationPage.filterObject("Hosting Resource", nameOfRRU);
-        cellSiteConfigurationPage.clickRemoveIcon();
+        cellSiteConfigurationPage.removeObject();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         checkPopup();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -135,7 +137,7 @@ public class HostingRelationCreationTest extends BaseTestCase {
         cellSiteConfigurationPage.selectTreeRow(eNodeBName);
         cellSiteConfigurationPage.selectTab("Hosting");
         cellSiteConfigurationPage.filterObject("Hosting Resource", nameOfBBU);
-        cellSiteConfigurationPage.clickRemoveIcon();
+        cellSiteConfigurationPage.removeObject();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         checkPopup();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);

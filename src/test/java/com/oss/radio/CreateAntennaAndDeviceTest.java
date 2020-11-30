@@ -1,23 +1,22 @@
 package com.oss.radio;
 
-import com.oss.BaseTestCase;
-import com.oss.framework.alerts.SystemMessageContainer;
-import com.oss.framework.alerts.SystemMessageInterface;
-import com.oss.framework.prompts.ConfirmationBox;
-import com.oss.framework.prompts.ConfirmationBoxInterface;
-import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.physical.DeviceWizardPage;
-import com.oss.pages.platform.HomePage;
-import com.oss.pages.radio.AntennaArrayWizardPage;
-import com.oss.pages.radio.CellSiteConfigurationPage;
-import com.oss.pages.radio.RanAntennaWizardPage;
-import io.qameta.allure.Step;
+import java.util.List;
+
 import org.assertj.core.api.Assertions;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import java.util.List;
+import com.oss.BaseTestCase;
+import com.oss.framework.alerts.SystemMessageContainer;
+import com.oss.framework.alerts.SystemMessageInterface;
+import com.oss.framework.utils.DelayUtils;
+import com.oss.pages.physical.DeviceWizardPage;
+import com.oss.pages.radio.AntennaArrayWizardPage;
+import com.oss.pages.radio.CellSiteConfigurationPage;
+import com.oss.pages.radio.RanAntennaWizardPage;
+
+import io.qameta.allure.Step;
 
 import static java.lang.String.format;
 
@@ -35,7 +34,7 @@ public class CreateAntennaAndDeviceTest extends BaseTestCase {
     private String RADIO_UNIT_EQUIPMENT_TYPE = "Remote Radio Head/Unit";
 
     public static void goToCellSiteConfiguration(WebDriver driver, String basicURL) {
-        driver.get(format("%s#/view/radio/cellsite/xid?project_id=76086784&perspective=PLAN&ids=75521556", basicURL));
+        driver.get(format("%s#/view/radio/cellsite/xid?ids=75521556&perspective=LIVE", basicURL));
     }
 
     @BeforeClass
@@ -106,16 +105,16 @@ public class CreateAntennaAndDeviceTest extends BaseTestCase {
     public void deleteDevices() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cellSiteConfigurationPage.filterObject("Name", BBU_NAME);
-        cellSiteConfigurationPage.clickRemoveIcon();
+        cellSiteConfigurationPage.removeObject();
         checkPopup();
 
-        for(int i =0; i<3; i++){
+        for (int i = 0; i < 3; i++) {
             cellSiteConfigurationPage.filterObject("Name", RADIO_UNIT_NAME);
-            cellSiteConfigurationPage.clickRemoveIcon();
+            cellSiteConfigurationPage.removeObject();
             checkPopup();
 
             cellSiteConfigurationPage.filterObject("Name", ANTENNA_NAME);
-            cellSiteConfigurationPage.clickRemoveIcon();
+            cellSiteConfigurationPage.removeObject();
             checkPopup();
         }
     }

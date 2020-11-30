@@ -1,5 +1,9 @@
 package com.oss.E2E;
 
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.mainheader.PerspectiveChooser;
@@ -10,11 +14,8 @@ import com.oss.pages.radio.Cell4GBulkWizardPage;
 import com.oss.pages.radio.CellSiteConfigurationPage;
 import com.oss.pages.radio.ENodeBWizardPage;
 import com.oss.pages.transport.NetworkViewPage;
-import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
-import io.qameta.allure.Description;
-import org.testng.annotations.Test;
 
+import io.qameta.allure.Description;
 
 public class CreationEnodebCell4g extends BaseTestCase {
 
@@ -25,7 +26,7 @@ public class CreationEnodebCell4g extends BaseTestCase {
     private String MCCMNCPrimary = "DU [mcc: 424, mnc: 03]";
     private String carrier = "L800-B20-5 (6175)";
     private String useAvailableID = "true";
-    private String cellNames[] = new String[] {"cell10", "cell20", "cell30"};
+    private String cellNames[] = new String[] { "cell10", "cell20", "cell30" };
     private String amountOfCells = Integer.toString(cellNames.length);
 
     @BeforeClass
@@ -34,7 +35,7 @@ public class CreationEnodebCell4g extends BaseTestCase {
         PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
-        sideMenu.callActionByLabel("LAB Network View","Favourites", "SeleniumTests");
+        sideMenu.callActionByLabel("LAB Network View", "Favourites", "SeleniumTests");
     }
 
     @Test(priority = 1)
@@ -92,9 +93,9 @@ public class CreationEnodebCell4g extends BaseTestCase {
     public void deleteCell4G() {
         CellSiteConfigurationPage cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);
         cellSiteConfigurationPage.selectTab("Cells 4G");
-        for(String cellName : cellNames) {
+        for (String cellName : cellNames) {
             cellSiteConfigurationPage.filterObject("Name", cellName);
-            cellSiteConfigurationPage.clickRemoveIcon();
+            cellSiteConfigurationPage.removeObject();
             Wizard deletionWizard = Wizard.createWizard(driver, webDriverWait);
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             deletionWizard.clickDelete();
@@ -110,7 +111,7 @@ public class CreationEnodebCell4g extends BaseTestCase {
         CellSiteConfigurationPage cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);
         cellSiteConfigurationPage.selectTreeRow(locationName);
         cellSiteConfigurationPage.selectTab("Base Stations").filterObject("Name", eNodeBName);
-        cellSiteConfigurationPage.clickRemoveIcon();
+        cellSiteConfigurationPage.removeObject();
         Wizard deletionWizard = Wizard.createWizard(driver, webDriverWait);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deletionWizard.clickDelete();
