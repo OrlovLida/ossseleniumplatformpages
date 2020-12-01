@@ -38,9 +38,9 @@ public class Radio5gRepository {
         return client.createGNodeBDU(buildGNodeBDU(name, locationId)).getId();
     }
 
-    public void createCell5g(String name, Integer cellId, Long gNodeBId, String mcc, String mnc) {
+    public void createCell5g(String name, Integer cellId, Long gNodeBId, String mcc, String mnc, String carrier) {
         Radio5gClient client = Radio5gClient.getInstance(env);
-        client.createCell5G(buildCell5g(name, cellId, mcc, mnc), gNodeBId);
+        client.createCell5G(buildCell5g(name, cellId, mcc, mnc, carrier), gNodeBId);
     }
 
     private GnodeBDTO buildGNodeB(String name, Long locationId, String mcc, String mnc) {
@@ -71,10 +71,11 @@ public class Radio5gRepository {
                 .build();
     }
 
-    private Cell5gDTO buildCell5g(String cellName, Integer cellId, String mcc, String mnc) {
+    private Cell5gDTO buildCell5g(String cellName, Integer cellId, String mcc, String mnc, String carrier) {
         return Cell5gDTO.builder()
                 .name(cellName)
                 .cellId(cellId)
+                .carrier(carrier)
                 .addMccMncs(getHni(mcc, mnc))
                 .build();
     }

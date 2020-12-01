@@ -19,9 +19,9 @@ public class Radio4gRepository {
         return eNodeB.getId();
     }
 
-    public void createCell4g(String cellName, Integer cellId, Long eNodeBId, String mcc, String mnc) {
+    public void createCell4g(String cellName, Integer cellId, Long eNodeBId, String mcc, String mnc, String carrier) {
         Radio4gClient client = Radio4gClient.getInstance(env);
-        client.createCell4G(buildCell4g(cellName, cellId, mcc, mnc), eNodeBId);
+        client.createCell4G(buildCell4g(cellName, cellId, mcc, mnc, carrier), eNodeBId);
     }
 
     private EnodeBDTO buildENodeB(String name, Long locationId, String mcc, String mnc) {
@@ -42,10 +42,11 @@ public class Radio4gRepository {
                 .build();
     }
 
-    private Cell4gDTO buildCell4g(String name, Integer cellId, String mcc, String mnc) {
+    private Cell4gDTO buildCell4g(String name, Integer cellId, String mcc, String mnc, String carrier) {
         return Cell4gDTO.builder()
                 .name(name)
                 .cellId(cellId)
+                .carrier(carrier)
                 .addMccMncs(getHni(mcc, mnc))
                 .build();
     }

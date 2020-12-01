@@ -42,7 +42,6 @@ public class ThreeUKRegressionTests extends BaseTestCase {
 
     private Environment env = Environment.getInstance();
 
-    //API
     String locationId;
     String locationName;
     Long addressId;
@@ -76,7 +75,6 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     String cell5GNameForCreate1 = RandomGenerator.generateRandomName();
     String cell5GIdForCreate2 = RandomGenerator.generateRandomCell5GId();
     String cell5GNameForCreate2 = RandomGenerator.generateRandomName();
-
     String objectTypeLocation = "Location";
     String objectTypeDevice = "Physical Device";
     String objectTypeENodeB = "eNodeB";
@@ -140,7 +138,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
 
     private void createCell4G(String cell4GNameForCreate, String cell4GIdForCreate) {
         Radio4gRepository radio4gRepository = new Radio4gRepository(env);
-        radio4gRepository.createCell4g(cell4GNameForCreate, Integer.valueOf(cell4GIdForCreate), eNodeBId, MCC, MNC);
+        radio4gRepository.createCell4g(cell4GNameForCreate, Integer.valueOf(cell4GIdForCreate), eNodeBId, MCC, MNC, carrier4G);
     }
 
     private void createGNodeB(String gNodeBNameForCreate) {
@@ -150,7 +148,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
 
     private void createCell5G(String cell5GNameForCreate, String cell5GIdForCreate) {
         Radio5gRepository radio5gRepository = new Radio5gRepository(env);
-        radio5gRepository.createCell5g(cell5GNameForCreate, Integer.valueOf(cell5GIdForCreate), gNodeBId, MCC, MNC);
+        radio5gRepository.createCell5g(cell5GNameForCreate, Integer.valueOf(cell5GIdForCreate), gNodeBId, MCC, MNC, carrier5G);
     }
 
     @BeforeMethod
@@ -293,12 +291,12 @@ public class ThreeUKRegressionTests extends BaseTestCase {
 
         homePage.setAndSelectObjectType(objectTypeENodeB);
         new OldInventoryViewPage(driver)
-                .filterObject("Name", eNodeBNameForCreate1, "ENodeB")
+                .filterObject("Name", eNodeBNameForCreate2, "ENodeB")
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
                 .expandTreeToLocation(locationTypeSite, locationName)
                 .selectTab("Base Stations")
-                .filterObject("Name", eNodeBNameForCreate1)
+                .filterObject("Name", eNodeBNameForCreate2)
                 .clickEditIcon();
         new ENodeBWizardPage(driver)
                 .setDescription(description)
@@ -314,17 +312,17 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     @Description("The user deletes an eNodeB in Cell Site Configuration and checks if search result in Global Search is no data")
     public void tS10RemoveENodeB() {
 
-        homePage.searchInGlobalSearch(eNodeBNameForCreate2);
+        homePage.searchInGlobalSearch(eNodeBNameForCreate1);
         new GlobalSearchPage(driver)
-                .expandShowOnAndChooseView(eNodeBNameForCreate2, "Show on", "Cell Site Configuration");
+                .expandShowOnAndChooseView(eNodeBNameForCreate1, "NAVIGATION", "Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
                 .expandTreeToLocation(locationTypeSite, locationName)
                 .selectTab("Base Stations")
-                .filterObject("Name", eNodeBNameForCreate2)
+                .filterObject("Name", eNodeBNameForCreate1)
                 .removeObject();
         SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
         systemMessageItem.waitForMessageDisappear();
-        homePage.searchInGlobalSearch(eNodeBNameForCreate2);
+        homePage.searchInGlobalSearch(eNodeBNameForCreate1);
         CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertTrue(objectsList.isNoData());
@@ -344,7 +342,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
                 .selectTab("Cells")
                 .clickPlusIconAndSelectOption("Create Cell 4G");
         new Cell4GWizardPage(driver)
-                .createCell4G(randomCell4GName, eNodeBNameForCreate1, randomCell4GId, carrier4G);
+                .createCell4G(randomCell4GName, eNodeBNameForCreate2, randomCell4GId, carrier4G);
         Assert.assertTrue(SystemMessageContainer.create(driver, webDriverWait)
                 .getMessages().get(0).getText().contains("Created Cell 4G"));
     }
@@ -355,12 +353,12 @@ public class ThreeUKRegressionTests extends BaseTestCase {
 
         homePage.setAndSelectObjectType(objectTypeCell4G);
         new OldInventoryViewPage(driver)
-                .filterObject("Cell Name", cell4GNameForCreate1, "Cell4G")
+                .filterObject("Cell Name", cell4GNameForCreate2, "Cell4G")
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .expandTreeToBaseStation(locationTypeSite, locationName, eNodeBNameForCreate1)
+                .expandTreeToBaseStation(locationTypeSite, locationName, eNodeBNameForCreate2)
                 .selectTab("Cells")
-                .filterObject("Name", cell4GNameForCreate1)
+                .filterObject("Name", cell4GNameForCreate2)
                 .clickEditIcon();
         new Cell4GWizardPage(driver)
                 .setDescription(description)
@@ -376,17 +374,17 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     @Description("The user deletes a Cell 4G in Cell Site Configuration and checks if search result in Global Search is no data")
     public void tS13RemoveCell4G() {
 
-        homePage.searchInGlobalSearch(cell4GNameForCreate2);
+        homePage.searchInGlobalSearch(cell4GNameForCreate1);
         new GlobalSearchPage(driver)
-                .expandShowOnAndChooseView(cell4GNameForCreate2, "Show on", "Cell Site Configuration");
+                .expandShowOnAndChooseView(cell4GNameForCreate1, "NAVIGATION", "Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .expandTreeToBaseStation(locationTypeSite, locationName, eNodeBNameForCreate1)
+                .expandTreeToBaseStation(locationTypeSite, locationName, eNodeBNameForCreate2)
                 .selectTab("Cells")
-                .filterObject("Name", cell4GNameForCreate2)
+                .filterObject("Name", cell4GNameForCreate1)
                 .removeObject();
         SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
         systemMessageItem.waitForMessageDisappear();
-        homePage.searchInGlobalSearch(cell4GNameForCreate2);
+        homePage.searchInGlobalSearch(cell4GNameForCreate1);
         CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertTrue(objectsList.isNoData());
@@ -416,12 +414,12 @@ public class ThreeUKRegressionTests extends BaseTestCase {
 
         homePage.setAndSelectObjectType(objectTypeLogicalFunction);
         new OldInventoryViewPage(driver)
-                .filterObject("Name", gNodeBNameForCreate1, "GNodeB")
+                .filterObject("Name", gNodeBNameForCreate2, "LogicalFunction")
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
                 .expandTreeToLocation(locationTypeSite, locationName)
                 .selectTab("Base Stations")
-                .filterObject("Name", gNodeBNameForCreate1)
+                .filterObject("Name", gNodeBNameForCreate2)
                 .clickEditIcon();
         new GNodeBWizardPage(driver)
                 .setDescription(description)
@@ -437,17 +435,17 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     @Description("The user deletes an gNodeB in Cell Site Configuration and checks if search result in Global Search is no data")
     public void tS16RemoveGNodeB() {
 
-        homePage.searchInGlobalSearch(gNodeBNameForCreate2);
+        homePage.searchInGlobalSearch(gNodeBNameForCreate1);
         new GlobalSearchPage(driver)
-                .expandShowOnAndChooseView(gNodeBNameForCreate2, "Show on", "Cell Site Configuration");
+                .expandShowOnAndChooseView(gNodeBNameForCreate1, "NAVIGATION", "Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
                 .expandTreeToLocation(locationTypeSite, locationName)
                 .selectTab("Base Stations")
-                .filterObject("Name", gNodeBNameForCreate2)
+                .filterObject("Name", gNodeBNameForCreate1)
                 .removeObject();
         SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
         systemMessageItem.waitForMessageDisappear();
-        homePage.searchInGlobalSearch(gNodeBNameForCreate2);
+        homePage.searchInGlobalSearch(gNodeBNameForCreate1);
         CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertTrue(objectsList.isNoData());
@@ -467,7 +465,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
                 .selectTab("Cells")
                 .clickPlusIconAndSelectOption("Create Cell 5G");
         new Cell5GWizardPage(driver)
-                .createCell5G(randomCell5GName, gNodeBNameForCreate1, randomCell5GId, carrier5G);
+                .createCell5G(randomCell5GName, gNodeBNameForCreate2, randomCell5GId, carrier5G);
         Assert.assertTrue(SystemMessageContainer.create(driver, webDriverWait)
                 .getMessages().get(0).getText().contains("Created Cell 5G"));
     }
@@ -478,12 +476,12 @@ public class ThreeUKRegressionTests extends BaseTestCase {
 
         homePage.setAndSelectObjectType(objectTypeCell5G);
         new OldInventoryViewPage(driver)
-                .filterObject("Cell Name", cell5GNameForCreate1, "Cell5G")
+                .filterObject("Cell Name", cell5GNameForCreate2, "Cell5G")
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .expandTreeToBaseStation(locationTypeSite, locationName, gNodeBNameForCreate1)
+                .expandTreeToBaseStation(locationTypeSite, locationName, gNodeBNameForCreate2)
                 .selectTab("Cells")
-                .filterObject("Name", cell5GNameForCreate1)
+                .filterObject("Name", cell5GNameForCreate2)
                 .clickEditIcon();
         new Cell5GWizardPage(driver)
                 .setDescription(description)
@@ -499,17 +497,17 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     @Description("The user deletes an Cell 5G in Cell Site Configuration and checks if search result in Global Search is no data")
     public void tS19RemoveCell5G() {
 
-        homePage.searchInGlobalSearch(cell5GNameForCreate2);
+        homePage.searchInGlobalSearch(cell5GNameForCreate1);
         new GlobalSearchPage(driver)
-                .expandShowOnAndChooseView(cell5GNameForCreate2, "Show on", "Cell Site Configuration");
+                .expandShowOnAndChooseView(cell5GNameForCreate1, "NAVIGATION", "Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .expandTreeToBaseStation(locationTypeSite, locationName, gNodeBNameForCreate1)
+                .expandTreeToBaseStation(locationTypeSite, locationName, gNodeBNameForCreate2)
                 .selectTab("Cells")
-                .filterObject("Name", cell5GNameForCreate2)
+                .filterObject("Name", cell5GNameForCreate1)
                 .removeObject();
         SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
         systemMessageItem.waitForMessageDisappear();
-        homePage.searchInGlobalSearch(cell5GNameForCreate2);
+        homePage.searchInGlobalSearch(cell5GNameForCreate1);
         CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertTrue(objectsList.isNoData());
