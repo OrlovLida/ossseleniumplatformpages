@@ -28,7 +28,7 @@ import com.oss.pages.reconciliation.SamplesManagementPage;
 import com.oss.utils.TestListener;
 
 @Listeners({ TestListener.class })
-public class TS_RAN_E2E_01_4G_RECO_PART extends BaseTestCase {
+public class TS_RAN_E2E_01_4G extends BaseTestCase {
 
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
     private CellSiteConfigurationPage cellSiteConfigurationPage;
@@ -222,13 +222,22 @@ public class TS_RAN_E2E_01_4G_RECO_PART extends BaseTestCase {
         connectionWizardPage.setName(CPRI_NAME);
         connectionWizardPage.clickNext();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        //TODO check after OSSPHY-47410
+//        connectionWizardPage.selectConnectionTermination(1);
+//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+//        connectionWizardPage.terminateCardComponent("No Card/Component");
+//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+//        connectionWizardPage.terminatePort("CPRI 1");
+//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+//        connectionWizardPage.terminateTerminationPort("CPRI 1");
+//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         connectionWizardPage.selectConnectionTermination(2);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         connectionWizardPage.terminateCardComponent("No Card/Component");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        connectionWizardPage.terminatePort("Array 1");
+        connectionWizardPage.terminatePort("CPRI 1");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        connectionWizardPage.terminateTerminationPort("-");
+        connectionWizardPage.terminateTerminationPort("CPRI 1");
         connectionWizardPage.clickAccept();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
