@@ -10,6 +10,7 @@ import com.oss.pages.gisView.CreateDuctWizardPage;
 import com.oss.pages.gisView.DuctCopyWizardPage;
 import com.oss.pages.gisView.GisViewPage;
 import com.oss.pages.physical.*;
+import com.oss.pages.radio.CableWizardPage;
 import io.qameta.allure.Description;
 import org.assertj.core.api.Assertions;
 import org.testng.annotations.BeforeClass;
@@ -368,8 +369,8 @@ public class OSPConfiguration extends BaseTestCase {
         gisViewPage.clickOnMapByCoordinates(4, 8);  // to sa kordy building C
         DelayUtils.sleep(200);
         gisViewPage.clickOnMapByCoordinates(4, 8);
-        CreateCableWizardPage createCableWizardPage = new CreateCableWizardPage(driver);
-        createCableWizardPage.setCableModel(CABLE_MODEL);
+        CableWizardPage cableWizardPage = new CableWizardPage(driver);
+        cableWizardPage.setModel(CABLE_MODEL);
         DelayUtils.sleep(5000);
         //createCableWizardPage.clickAccept();
         /*gisViewPage.clickOnMapByCoordinates(2, 4);
