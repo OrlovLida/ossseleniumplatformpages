@@ -15,6 +15,7 @@ import com.google.common.base.Splitter;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.components.inputs.Input;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tablewidget.TableInterface;
@@ -74,6 +75,7 @@ public class ProcessWizardPage extends BasePage {
         }
         Input componentDefinition = wizardFirstStep.getComponent(DEFINITION_ATTRIBUTE_ID, Input.ComponentType.COMBOBOX);
         componentDefinition.setSingleStringValue(processType);
+        DelayUtils.sleep(2000);
         Input componentRelease = wizardFirstStep.getComponent(RELEASE_ATTRIBUTE_ID, Input.ComponentType.COMBOBOX);
         componentRelease.setSingleStringValue(LATEST);
         wizardFirstStep.clickActionById(ACCEPT_BUTTON);
