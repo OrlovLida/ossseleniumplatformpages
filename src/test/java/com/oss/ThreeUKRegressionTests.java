@@ -412,9 +412,9 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     @Description("The user edits an gNodeB in Cell Site Configuration and checks if the description is updated in Base Stations table")
     public void tS15ModifyGNodeB() {
 
-        homePage.setAndSelectObjectType(objectTypeLogicalFunction);
+        homePage.setAndSelectObjectType(locationTypeSite);
         new OldInventoryViewPage(driver)
-                .filterObject("Name", gNodeBNameForCreate2, "LogicalFunction")
+                .filterObject("Name", locationName, "Site")
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
                 .expandTreeToLocation(locationTypeSite, locationName)
