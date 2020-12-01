@@ -72,6 +72,20 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         wizard.clickUpdate();
     }
 
+    @Step("Select first Device and use assign location option")
+    public void assignRanLocation(String location) {
+        getTreeView().selectTreeRowByOrder(3);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, inconsistenciesTable);
+        table.callAction("Assign Location");
+        DelayUtils.waitForPageToLoad(driver, wait);
+        Wizard wizard = Wizard.createByComponentId(driver, wait, "Popup");
+        Input locationInput = wizard.getComponent("location", ComponentType.SEARCH_FIELD);
+        locationInput.setSingleStringValue(location);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        wizard.clickAccept();
+    }
+
     @Step("Check system message after device update")
     public void checkUpdateDeviceSystemMessage() {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, wait);
