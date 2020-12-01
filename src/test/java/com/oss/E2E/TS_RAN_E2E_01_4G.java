@@ -28,7 +28,7 @@ import com.oss.pages.reconciliation.SamplesManagementPage;
 import com.oss.utils.TestListener;
 
 @Listeners({ TestListener.class })
-public class TS_RAN_E2E_01_4G_RECO_PART extends BaseTestCase {
+public class TS_RAN_E2E_01_4G extends BaseTestCase {
 
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
     private CellSiteConfigurationPage cellSiteConfigurationPage;
