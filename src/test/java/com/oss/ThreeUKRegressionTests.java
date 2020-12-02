@@ -40,12 +40,12 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     private Environment env = Environment.getInstance();
 
     String locationId;
-    String locationName = "SiteSeleniumTestsNowaTestAPI";
+    String locationName = "SiteSeleniumTests";
     Long addressId;
     String countryId;
-    String countryName = "CountrySeleniumTestsNowaTestAPI";
-    String postalCodeName = "PostalCodeSeleniumTestsNowaTestAPI";
-    String cityName = "CitySeleniumTestsNowaTestAPI";
+    String countryName = "CountrySeleniumTests";
+    String postalCodeName = "PostalCodeSeleniumTests";
+    String cityName = "CitySeleniumTests";
     String subLocationSiteName = RandomGenerator.generateRandomName();
     String MCC = "234";
     String MNC = "20";
