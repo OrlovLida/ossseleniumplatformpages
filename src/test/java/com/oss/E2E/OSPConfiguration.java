@@ -3,9 +3,8 @@ package com.oss.E2E;
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
-import com.oss.framework.prompts.ConfirmationBox;
-import com.oss.framework.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.Wizard;
 import com.oss.pages.gisView.CreateDuctWizardPage;
 import com.oss.pages.gisView.DuctCopyWizardPage;
 import com.oss.pages.gisView.GisViewPage;
@@ -309,93 +308,43 @@ public class OSPConfiguration extends BaseTestCase {
     @Test(priority = 10, enabled = false)
     @Description("Create Cable Between Two Buildings")
     public void createCableFromBuildingAToBuildingC() {
-        /* =============== Tworzenie Building A ========== */
-        /*DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        gisViewPage.searchFirstResult("gliwice");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        gisViewPage.clickOnMapByCoordinates(2, 4);
-        gisViewPage.useContextAction("Draw Single Location", "Building");
-        gisViewPage.clickOnMapByCoordinates(4, 2);
-
-        LocationWizardPage locationWizardPage = new LocationWizardPage(driver);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        locationWizardPage.setLocationName(BUILDING_A_NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        locationWizardPage.clickNext();
-
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        locationWizardPage.setGeographicalAddress(GEOGRAPHICAL_ADDRESS_BUILDING);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        locationWizardPage.clickNext();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-
-        locationWizardPage.setNumberOfLocations("2");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        locationWizardPage.accept();
-        checkPopup();
-        *//* =============================================== *//*
-        *//* =============== Tworzenie Building C ========== *//*
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        gisViewPage.searchFirstResult("gliwice");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        gisViewPage.clickOnMapByCoordinates(2, 4);
-        gisViewPage.useContextAction("Draw Single Location", "Building");
-        gisViewPage.clickOnMapByCoordinates(4, 8);
-
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        locationWizardPage.setLocationName(BUILDING_C_NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        locationWizardPage.clickNext();
-
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        locationWizardPage.setGeographicalAddress(GEOGRAPHICAL_ADDRESS_BUILDING);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        locationWizardPage.clickNext();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-
-        locationWizardPage.setNumberOfLocations("2");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        locationWizardPage.accept();
-        checkPopup();*/
-        /* =============================================== */
-
         gisViewPage.searchFirstResult("gliwice");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         gisViewPage.clickOnMapByCoordinates(2, 4);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         gisViewPage.useContextActionById("Draw New Cable");
-        gisViewPage.clickOnMapByCoordinates(4, 2);  // to sa kordy building A
+        gisViewPage.clickOnMapByCoordinates(5, 2);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        gisViewPage.clickOnMapByCoordinates(4, 8);  // to sa kordy building C
-        DelayUtils.sleep(200);
-        gisViewPage.clickOnMapByCoordinates(4, 8);
+        gisViewPage.clickOnMapByCoordinates(8, 4);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.clickOnMapByCoordinates(8, 4);
         CableWizardPage cableWizardPage = new CableWizardPage(driver);
         cableWizardPage.setModel(CABLE_MODEL);
-        DelayUtils.sleep(5000);
-        //createCableWizardPage.clickAccept();
-        /*gisViewPage.clickOnMapByCoordinates(2, 4);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        DelayUtils.sleep(2000);
-        gisViewPage.clickOnMapByCoordinates(3,4);
-        DelayUtils.sleep(2000);
-        gisViewPage.useContextActionById("Draw New Duct");
-        gisViewPage.clickOnMapByCoordinates(4, 2);
-        gisViewPage.clickOnMapByCoordinates(5, 3);
-        gisViewPage.doubleClickOnMapByCoordinates(5, 3);
+        cableWizardPage.setName(CABLE_NAME);
+        cableWizardPage.accept();
+        checkPopup();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        CreateDuctWizardPage createDuctWizardPage = new CreateDuctWizardPage(driver);
-        createDuctWizardPage.setModel(DUCT_MODEL);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        createDuctWizardPage.setType(DUCT_TYPE_PRIMARY);
-        createDuctWizardPage.create();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        checkPopup();*/
     }
 
-    /*@Test(priority = 11, enabled = false)
+    @Test(priority = 11, enabled = true)
     @Description("Route Cable over Primary Ducts")
     public void routeCableOverPrimaryDucts() {
-
+        gisViewPage.searchFirstResult(CABLE_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.useContextAction("Edit", "Routing");
+        CableRoutingViewPage cableRoutingViewPage = new CableRoutingViewPage(driver);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cableRoutingViewPage.clickInsertLocation();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cableRoutingViewPage.insertLocationToRouting(MANHOLE_A_NAME);
+        cableRoutingViewPage.clickAddLocationToRouting();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cableRoutingViewPage.clickSave();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cableRoutingViewPage.clickClose();
+        checkPopup();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
     @Test(priority = 12, enabled = false)
@@ -407,23 +356,41 @@ public class OSPConfiguration extends BaseTestCase {
         gisViewPage.clickOnMapByCoordinates(2, 4);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         gisViewPage.useContextActionById("Draw New Cable");
-        gisViewPage.clickOnMapByCoordinates(4, 2);  // to sa kordy building A
+        gisViewPage.clickOnMapByCoordinates(5, 2);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        gisViewPage.clickOnMapByCoordinates(4, 8);  // to sa kordy building C
-        DelayUtils.sleep(200);
-        gisViewPage.clickOnMapByCoordinates(4, 8);
-        CreateCableWizardPage createCableWizardPage = new CreateCableWizardPage(driver);
-        createCableWizardPage.setCableModel(CABLE_MODEL);
-        DelayUtils.sleep(5000);
+        gisViewPage.clickOnMapByCoordinates(8, 4);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.clickOnMapByCoordinates(8, 4);
+        CableWizardPage cableWizardPage = new CableWizardPage(driver);
+        cableWizardPage.setModel(CABLE_MODEL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cableWizardPage.setName(CABLE_NAME2);
+        cableWizardPage.accept();
+        checkPopup();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 13, enabled = false)
+    @Test(priority = 13, enabled = true)
     @Description("Route second Cable over Subduct")
     public void routeCable2OverSubduct() {
+        gisViewPage.searchFirstResult(CABLE_NAME2);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.useContextAction("Edit", "Routing");
+        CableRoutingViewPage cableRoutingViewPage = new CableRoutingViewPage(driver);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cableRoutingViewPage.clickInsertLocation();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cableRoutingViewPage.insertLocationToRouting(MANHOLE_A_NAME);
+        cableRoutingViewPage.clickAddLocationToRouting();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cableRoutingViewPage.clickSave();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cableRoutingViewPage.clickClose();
+        checkPopup();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
 
-    }*/
-
-    /*@Test(priority = 14)
+    @Test(priority = 14)
     @Description("Create ODF devices on Building A")
     public void createODFDeviceOnBuildingA() {
         gisViewPage.searchFirstResult(BUILDING_A_NAME);
@@ -551,21 +518,17 @@ public class OSPConfiguration extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         mediaTerminationPage.setDeviceStart(ODF_A_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        //mediaTerminationPage.setCardStart(CARD_NAME);
-        //DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        //mediaTerminationPage.setPortStart("1");
-        //DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        mediaTerminationPage.setPortStart("1");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         mediaTerminationPage.setDeviceEnd(ODF_C_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        //mediaTerminationPage.setCardStart(CARD_NAME);
-        //DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        //mediaTerminationPage.setPortStart("1");
-        //DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        mediaTerminationPage.clickUpdateCable();
-        ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, webDriverWait);
-        prompt.clickButtonByLabel("Finish");
+        mediaTerminationPage.setPortEnd("2");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-    }*/
+        mediaTerminationPage.clickUpdateCable();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        mediaTerminationPage.clickFinish();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
 
     @Test(priority = 21)
     @Description("Create Patchcord on Building A")
@@ -577,13 +540,204 @@ public class OSPConfiguration extends BaseTestCase {
         gisViewPage.useContextAction("Show on", "Patchcord wizard");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         PatchcordWizardPage patchcordWizardPage = new PatchcordWizardPage(driver);
-        //patchcordWizardPage.getPatchcordConnectorsTableStart().selectRowByAttributeValueWithLabel("Port", "1");
+        patchcordWizardPage.getPatchcordConnectorsTableStart().selectRowByAttributeValueWithLabel("Port", "1");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         patchcordWizardPage.setDeviceTerminationB(ODF_A_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         patchcordWizardPage.getPatchcordConnectorsTableEnd().selectRowByAttributeValueWithLabel("Port", "2");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        DelayUtils.sleep(2000);
+        patchcordWizardPage.clickCreateSingleMediumPatchcord();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        patchcordWizardPage.clickProceed();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        patchcordWizardPage.clickUpdatePatchcords();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        patchcordWizardPage.clickFinish();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    @Test(priority = 22)
+    @Description("Delete Patchcord on building A")
+    public void deletePatchcordOnBuildingA() {
+        PatchcordWizardPage patchcordWizardPage = new PatchcordWizardPage(driver);
+        patchcordWizardPage.selectFirstPatchcord();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        patchcordWizardPage.clickRemovePatchcord();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        patchcordWizardPage.clickUpdatePatchcords();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        patchcordWizardPage.clickFinish();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        DelayUtils.sleep(200);
+        patchcordWizardPage.clickClose();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    @Test(priority = 22)
+    @Description("Delete Media Termination from Cable")
+    public void deleteMediaTerminationFromCable() {
+        gisViewPage.searchFirstResult(CABLE_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.useContextAction("Edit", "Media Termination");
+        MediaTerminationPage mediaTerminationPage = new MediaTerminationPage(driver);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        mediaTerminationPage.setFirstLocation();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        mediaTerminationPage.getMediaTable().callActionByLabel("Detach start");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        mediaTerminationPage.getMediaTable().callActionByLabel("Detach end");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        mediaTerminationPage.clickUpdateCable();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        mediaTerminationPage.clickFinish();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    @Test(priority = 23)
+    @Description("Delete Pluggable Module from ODF device on Building C")
+    public void deletePluggableModuleFromODFOnBuildingC() {
+        gisViewPage.searchFirstResult(ODF_C_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.useContextAction("Show on", "Device Overview");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        DeviceOverviewPage deviceOverviewPage = new DeviceOverviewPage(driver);
+        deviceOverviewPage.selectTreeRow(PLUGGABLE_MODULE_MODEL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        deviceOverviewPage.useContextAction("Delete Element");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        deviceOverviewPage.clickYes();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        checkPopup();
+    }
+
+    @Test(priority = 24)
+    @Description("Delete Card from ODF device on Building C")
+    public void deleteCardFromODFOnBuildingC() {
+        DeviceOverviewPage deviceOverviewPage = new DeviceOverviewPage(driver);
+        deviceOverviewPage.selectTreeRow(CARD_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        deviceOverviewPage.useContextAction("Delete Element");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        deviceOverviewPage.clickYes();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        checkPopup();
+    }
+
+    @Test(priority = 25)
+    @Description("Delete ODF device on Building C")
+    public void deleteODFOnBuildingC() {
+        DeviceOverviewPage deviceOverviewPage = new DeviceOverviewPage(driver);
+        deviceOverviewPage.selectTreeRow(ODF_C_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        deviceOverviewPage.useContextAction("Delete Element");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        deviceOverviewPage.clickYes();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        checkPopup();
+    }
+
+    @Test(priority = 26)
+    @Description("Delete Pluggable Module from ODF device on Building A")
+    public void deletePluggableModuleFromODFOnBuildingA() {
+        gisViewPage = GisViewPage.goToGisViewPage(driver, BASIC_URL);
+        gisViewPage.searchFirstResult(ODF_A_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.useContextAction("Show on", "Device Overview");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        DeviceOverviewPage deviceOverviewPage = new DeviceOverviewPage(driver);
+        deviceOverviewPage.selectTreeRow(PLUGGABLE_MODULE_MODEL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        deviceOverviewPage.useContextAction("Delete Element");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        deviceOverviewPage.clickYes();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        checkPopup();
+    }
+
+    @Test(priority = 27)
+    @Description("Delete Card from ODF device on Building A")
+    public void deleteCardFromODFOnBuildingA() {
+        DeviceOverviewPage deviceOverviewPage = new DeviceOverviewPage(driver);
+        deviceOverviewPage.selectTreeRow(CARD_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        deviceOverviewPage.useContextAction("Delete Element");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        deviceOverviewPage.clickYes();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        checkPopup();
+    }
+
+    @Test(priority = 28)
+    @Description("Delete ODF device on Building A")
+    public void deleteODFOnBuildingA() {
+        DeviceOverviewPage deviceOverviewPage = new DeviceOverviewPage(driver);
+        deviceOverviewPage.selectTreeRow(ODF_A_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        deviceOverviewPage.useContextAction("Delete Element");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        deviceOverviewPage.clickYes();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        checkPopup();
+    }
+
+    @Test(priority = 29)
+    @Description("Delete Cable Routing")
+    public void deleteCableRouting() {
+        gisViewPage = GisViewPage.goToGisViewPage(driver, BASIC_URL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.searchFirstResult(CABLE_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.useContextAction("Edit", "Routing");
+        CableRoutingViewPage cableRoutingViewPage = new CableRoutingViewPage(driver);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cableRoutingViewPage.clickRemoveLocation(MANHOLE_A_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cableRoutingViewPage.clickSave();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cableRoutingViewPage.clickClose();
+        checkPopup();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    @Test(priority = 30)
+    @Description("Delete Cable2 Routing")
+    public void deleteCable2Routing() {
+        gisViewPage.searchFirstResult(CABLE_NAME2);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.useContextAction("Edit", "Routing");
+        CableRoutingViewPage cableRoutingViewPage = new CableRoutingViewPage(driver);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cableRoutingViewPage.clickRemoveLocation(MANHOLE_A_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cableRoutingViewPage.clickSave();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cableRoutingViewPage.clickClose();
+        checkPopup();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    @Test(priority = 31)
+    @Description("Delete Cable2")
+    public void deleteCable2() {
+        gisViewPage.searchFirstResult(CABLE_NAME2);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.useContextActionById("Remove Connections");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.clickDelete();
+        checkPopup();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    @Test(priority = 32)
+    @Description("Delete Cable")
+    public void deleteCable() {
+        gisViewPage.searchFirstResult(CABLE_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.useContextActionById("Remove Connections");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.clickDelete();
+        checkPopup();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
     public void checkPopup() {

@@ -3,6 +3,7 @@ package com.oss.pages.gisView;
 
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.gisMap.GisMap;
 import com.oss.framework.widgets.gisMap.GisMapInterface;
 import com.oss.framework.widgets.treewidget.TreeWidget;
@@ -61,6 +62,9 @@ public class GisViewPage extends BasePage {
         GisMapInterface gisMap = GisMap.create(driver, wait);
         gisMap.dragAndDropObject(xSource, ySource, xDestination, yDestination);
     }
+
+    public void clickDelete() { getWizard().clickButtonByLabel("Remove"); }
+
 //TODO Change on creating button by id when data-attributename will be added
     public void enableLayerInTree(String layer) {
         Button layersTreeButton = Button.createByIcon(driver, "fa fa-fw fa-bars", "");
@@ -68,4 +72,6 @@ public class GisViewPage extends BasePage {
         TreeWidget tree = TreeWidget.createByClass(driver, "tree-component", wait);
         tree.setValueOnCheckboxByNodeLabel(layer, true);
     }
+
+    public Wizard getWizard() { return Wizard.createByComponentId(driver, wait, "Popup"); }
 }
