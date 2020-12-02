@@ -28,28 +28,30 @@ public class Configuration {
     public String getUrl() {
         if (System.getProperty("URL") == null) {
             return CONFIGURATION.getValue("baseUrl");
-        } else
-            return System.getProperty("URL");
+        }
+        return System.getProperty("URL");
     }
 
     public String getDriver() {
         if (System.getProperty("driver") == null) {
             return CONFIGURATION.getValue("driver");
-        } else
-            return System.getProperty("driver");
+        }
+        return System.getProperty("driver");
     }
 
     public String getApplicationIp() {
         String env = System.getProperty("env");
         if (Strings.isNullOrEmpty(env)) {
-            return properties.getProperty("application.ip");
+            String ip = getUrl().split(":")[1].replace("//", "");
+            return ip;
         }
         System.out.println("ENV: " + env);
         return env;
     }
 
     public String getApplicationPort() {
-        return properties.getProperty("application.port");
+        String port = getUrl().split(":")[2];
+        return port;
     }
 
 }
