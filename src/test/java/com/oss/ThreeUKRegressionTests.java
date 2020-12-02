@@ -30,9 +30,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * @author Milena Miętkiewicz
  */
@@ -43,22 +40,13 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     private Environment env = Environment.getInstance();
 
     String locationId;
-    String locationName;
+    String locationName = "SiteSeleniumTestsNowaTestAPI";
     Long addressId;
     String countryId;
-    String countryName;
-    String postalCodeName;
-    String cityName;
-    String existingLocationId = "40569322";
-    String locationNameForCreate = "SiteSeleniumTests";
-    String subLocationSiteNameForCreate1 = RandomGenerator.generateRandomName();
-    String subLocationSiteNameForCreate2 = RandomGenerator.generateRandomName();
-    String existingCountryId = "41317546";
-    String countryNameForCreate = "CountrySeleniumTests";
-    String existingPostalCodeId = "41317548";
-    String postalCodeNameForCreate = "PostalCodeSeleniumTests";
-    String existingCityId = "41317550";
-    String cityNameForCreate = "CitySeleniumTests";
+    String countryName = "CountrySeleniumTestsNowaTestAPI";
+    String postalCodeName = "PostalCodeSeleniumTestsNowaTestAPI";
+    String cityName = "CitySeleniumTestsNowaTestAPI";
+    String subLocationSiteName = RandomGenerator.generateRandomName();
     String MCC = "234";
     String MNC = "20";
     Long eNodeBId;
@@ -78,7 +66,6 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     String objectTypeLocation = "Location";
     String objectTypeDevice = "Physical Device";
     String objectTypeENodeB = "eNodeB";
-    String objectTypeLogicalFunction = "Logical Function";
     String objectTypeCell4G = "Cell 4G";
     String objectTypeCell5G = "Cell 5G";
     String locationTypeSite = "Site";
@@ -95,8 +82,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     public void createTestData() {
         getOrCreateAddressItemsAndAddress();
         getOrCreatePhysicalLocation();
-        createSubLocation(subLocationSiteNameForCreate1);
-        createSubLocation(subLocationSiteNameForCreate2);
+        createSubLocation();
         createENodeB(eNodeBNameForCreate1);
         createENodeB(eNodeBNameForCreate2);
         createCell4G(cell4GNameForCreate1, cell4GIdForCreate1);
@@ -110,25 +96,20 @@ public class ThreeUKRegressionTests extends BaseTestCase {
 
     private void getOrCreateAddressItemsAndAddress() {
         AddressRepository addressRepository = new AddressRepository(env);
-        List<String> countryDetailsList = Arrays.asList(addressRepository.getOrCreateCountry(existingCountryId, countryNameForCreate));
-        countryName = countryDetailsList.get(0);
-        countryId = countryDetailsList.get(1);
-        postalCodeName = addressRepository.getOrCreatePostalCode(existingPostalCodeId, countryId, postalCodeNameForCreate);
-        cityName = addressRepository.getOrCreateCity(existingCityId, countryId, cityNameForCreate);
+        countryId = addressRepository.getOrCreateCountry(countryName);
+        addressRepository.getOrCreatePostalCode(countryId, postalCodeName);
+        addressRepository.getOrCreateCity(countryId, cityName);
         addressId = addressRepository.updateOrCreateAddress(countryName, countryId, postalCodeName, cityName);
     }
 
     private void getOrCreatePhysicalLocation() {
         LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);
-        List<String> locationDetailsList = Arrays.asList(locationInventoryRepository.getOrCreateLocation(existingLocationId, locationNameForCreate, locationTypeSite, addressId));
-        locationName = locationDetailsList.get(0);
-        locationId = locationDetailsList.get(1);
+        locationId = locationInventoryRepository.getOrCreateLocation(locationName, locationTypeSite, addressId);
     }
 
-    private void createSubLocation(String subLocationSiteNameForCreate) {
+    private void createSubLocation() {
         LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);
-        locationInventoryRepository.createSubLocation(locationTypeSite, subLocationSiteNameForCreate, addressId, Long.valueOf(locationId), locationTypeSite);
-
+        locationInventoryRepository.createSubLocation(locationTypeSite, subLocationSiteName, addressId, Long.valueOf(locationId), locationTypeSite);
     }
 
     private void createENodeB(String eNodeBNameForCreate) {
@@ -236,7 +217,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
                 .expandShowOnAndChooseView("OpenLocationOverviewAction");
         new LocationOverviewPage(driver)
                 .selectTab("Locations")
-                .filterLocationsObject("Name", subLocationSiteNameForCreate1)
+                .filterLocationsObject("Name", subLocationSiteName)
                 .clickEditLocationIcon();
         new LocationWizardPage(driver)
                 .setDescription(description)
@@ -258,7 +239,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
                 .expandShowOnAndChooseView("OpenLocationOverviewAction");
         new LocationOverviewPage(driver)
                 .selectTab("Locations")
-                .filterLocationsObject("Name", subLocationSiteNameForCreate2)
+                .filterLocationsObject("Name", subLocationSiteName)
                 .clickRemoveLocationIcon();
         ConfirmationBoxInterface confirmationBox = ConfirmationBox.create(driver, webDriverWait);
         confirmationBox.clickButtonByLabel("Delete");

@@ -2,6 +2,7 @@ package com.oss.repositories;
 
 import com.comarch.oss.addressinventory.api.dto.AddressDTO;
 import com.comarch.oss.addressinventory.api.dto.AddressItemDTO;
+import com.comarch.oss.addressinventory.api.dto.AddressItemSearchResultDTO;
 import com.comarch.oss.addressinventory.api.dto.GeographicalAddressDTO;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.oss.services.AddressClient;
@@ -31,46 +32,47 @@ public class AddressRepository {
         return addressId;
     }
 
-    public String[] getOrCreateCountry(String existingCountryId, String countryNameForCreate) {
+    public String getOrCreateCountry(String countryName) {
         AddressClient client = new AddressClient(env);
-        List<String> countryNames = client.getCountryNames(existingCountryId);
-        if (!countryNames.isEmpty()) {
-            String countryName = countryNames.get(0);
-            return new String[]{countryName, existingCountryId};
+        AddressItemSearchResultDTO addressItemSearchResultDTO = client.getCountriesUrlList(countryName);
+        List<String> countryUrls = addressItemSearchResultDTO.getFoundItemsUris();
+        if (!countryUrls.isEmpty()) {
+            String countryId = countryUrls.get(0).toString().substring(52, 60);
+            return countryId;
         } else {
             List<AddressItemDTO> list = new ArrayList<>();
-            list.add(buildCountry(countryNameForCreate));
+            list.add(buildCountry(countryName));
             String countryId = client.createCountry(list);
-            return new String[] {countryNameForCreate, countryId};
+            return countryId;
         }
     }
 
-    public String getOrCreatePostalCode(String existingPostalCodeId, String countryId, String postalCodeNameForCreate) {
+    public void getOrCreatePostalCode(String countryId, String postalCodeName) {
         AddressClient client = new AddressClient(env);
-        List<String> postalCodeNames = client.getPostalCodeNames(existingPostalCodeId);
+        List<String> postalCodeNames = client.getPostalCodeUrlList(postalCodeName);
         if (!postalCodeNames.isEmpty()) {
-            String postalCodeName = postalCodeNames.get(0);
-            return postalCodeName;
         } else {
             List<AddressItemDTO> list = new ArrayList<>();
-            list.add(buildPostalCode(postalCodeNameForCreate, countryId));
+            list.add(buildPostalCode(postalCodeName, countryId));
             client.createPostalCode(list);
-            return postalCodeNameForCreate;
         }
     }
 
-    public String getOrCreateCity(String existingCityId, String countryId, String cityNameForCreate) {
+    public void getOrCreateCity(String countryId, String cityName) {
         AddressClient client = new AddressClient(env);
-        List<String> cityNames = client.getCityNames(existingCityId);
+        List<String> cityNames = client.getCityUrlList(cityName);
         if (!cityNames.isEmpty()) {
-            String cityName = cityNames.get(0);
-            return cityName;
         } else {
             List<AddressItemDTO> list = new ArrayList<>();
-            list.add(buildCity(cityNameForCreate, countryId));
+            list.add(buildCity(cityName, countryId));
             client.createCity(list);
-            return cityNameForCreate;
         }
+    }
+
+    private GeographicalAddressDTO buildAddress(String countryName, String countryId, String postalCodeName, String cityName) {
+        return GeographicalAddressDTO.builder()
+                .addressItems(getAddressItemNames(countryName, countryId, postalCodeName, cityName))
+                .build();
     }
 
     private List<AddressItemDTO> getAddressItemNames(String countryName, String countryId, String postalCodeName, String cityName) {
@@ -79,12 +81,6 @@ public class AddressRepository {
         list.add(buildPostalCode(postalCodeName, countryId));
         list.add(buildCity(cityName, countryId));
         return list;
-    }
-
-    private GeographicalAddressDTO buildAddress(String countryName, String countryId, String postalCodeName, String cityName) {
-        return GeographicalAddressDTO.builder()
-                .addressItems(getAddressItemNames(countryName, countryId, postalCodeName, cityName))
-                .build();
     }
 
     private AddressItemDTO buildCountry(String countryName) {

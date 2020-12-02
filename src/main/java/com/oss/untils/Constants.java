@@ -14,7 +14,8 @@ public class Constants {
     public static final String GENERATE_CONTROLLER_ID = "generateControllerId";
     public static final String GENERATE_BASE_STATION_ID = "generateBaseStationId";
     public static final String GENERATE_CELL_ID = "generateCellId";
-    public static final String IDS = "ids";
+    public static final String RSQL = "rsql";
+    public static final String NAME_PARAM = "Name";
 
     //models
     public static final String BSC_MODEL = "Generic BSC";

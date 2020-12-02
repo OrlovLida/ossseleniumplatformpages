@@ -16,7 +16,7 @@ import java.util.List;
 public class LocationInventoryClient {
 
     private static final String PHYSICAL_LOCATIONS_API_PATH = "/physicallocations";
-    public static final String PHYSICAL_LOCATIONS_IDS_API_PATH = "/physicallocations/{ids}";
+
     private static LocationInventoryClient instance;
     private final Environment ENV;
 
@@ -45,15 +45,15 @@ public class LocationInventoryClient {
                 .as(ResourceDTO.class);
     }
 
-    public List<String> getPhysicalLocationName(String existingLocationId) {
+    public List<Integer> getPhysicalLocationIds(String locationName) {
         com.jayway.restassured.response.Response response = ENV.getLocationInventoryCoreRequestSpecification()
                 .given()
-                .pathParam(Constants.IDS, (existingLocationId))
                 .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
+                .queryParam(Constants.NAME_PARAM, locationName)
                 .when()
-                .get(LocationInventoryClient.PHYSICAL_LOCATIONS_IDS_API_PATH);
-        List<String> nameList = response.jsonPath().getList("name");
-        return nameList;
+                .get(LocationInventoryClient.PHYSICAL_LOCATIONS_API_PATH);
+        List<Integer> idsList = response.jsonPath().getList("searchResult.id");
+        return idsList;
     }
 
 }

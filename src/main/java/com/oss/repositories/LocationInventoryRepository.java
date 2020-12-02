@@ -21,16 +21,16 @@ public class LocationInventoryRepository {
         this.env = env;
     }
 
-    public String[] getOrCreateLocation(String existingLocationId, String locationNameForCreate, String locationType, Long addressId) {
+    public String getOrCreateLocation(String locationName, String locationType, Long addressId) {
         LocationInventoryClient client = new LocationInventoryClient(env);
-        List<String> locationNames = client.getPhysicalLocationName(existingLocationId);
-        if (!locationNames.isEmpty()) {
-            String locationName = locationNames.get(0);
-            return new String[]{locationName, existingLocationId};
+        List<Integer> locationIds = client.getPhysicalLocationIds(locationName);
+        if (!locationIds.isEmpty()) {
+            String locationId = locationIds.get(0).toString();
+            return locationId;
         } else {
-            ResourceDTO resourceDTO = client.createPhysicalLocation(buildLocation(locationType, locationNameForCreate, addressId));
+            ResourceDTO resourceDTO = client.createPhysicalLocation(buildLocation(locationType, locationName, addressId));
             String locationId = resourceDTO.getUri().toString().substring(69, 77);
-            return new String[]{locationNameForCreate, locationId};
+            return locationId;
         }
     }
 

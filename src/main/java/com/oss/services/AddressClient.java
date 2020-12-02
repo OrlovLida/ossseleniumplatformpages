@@ -2,6 +2,7 @@ package com.oss.services;
 
 import com.comarch.oss.addressinventory.api.dto.AddressDTO;
 import com.comarch.oss.addressinventory.api.dto.AddressItemDTO;
+import com.comarch.oss.addressinventory.api.dto.AddressItemSearchResultDTO;
 import com.comarch.oss.addressinventory.api.dto.GeographicalAddressDTO;
 import com.jayway.restassured.http.ContentType;
 import com.oss.untils.Constants;
@@ -18,7 +19,6 @@ public class AddressClient {
 
     private static final String GEOGRAPHICAL_ADDRESS_API_PATH = "/geographicaladdress";
     private static final String ADDRESS_ITEM_API_PATH = "/addressitem";
-    private static final String ADDRESS_ITEM_IDS_API_PATH = "/addressitem/{ids}";
     private static AddressClient instance;
     private final Environment ENV;
 
@@ -81,37 +81,43 @@ public class AddressClient {
                 .statusCode(Response.Status.OK.getStatusCode()).assertThat();
     }
 
-    public List<String> getCountryNames(String existingCountryId) {
-        com.jayway.restassured.response.Response response = ENV.getAddressCoreRequestSpecification()
+    public AddressItemSearchResultDTO getCountriesUrlList(String countryName) {
+        return ENV.getAddressCoreRequestSpecification()
                 .given()
-                .pathParam(Constants.IDS, (existingCountryId))
                 .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
+                .queryParam(Constants.RSQL, "name=='" + countryName + "'")
                 .when()
-                .get(AddressClient.ADDRESS_ITEM_IDS_API_PATH);
-        List<String> nameList = response.jsonPath().getList("addressItem.name");
-        return nameList;
+                .get(AddressClient.ADDRESS_ITEM_API_PATH)
+                .then()
+                .log()
+                .status()
+                .log()
+                .body()
+                .statusCode(Response.Status.OK.getStatusCode()).assertThat()
+                .extract()
+                .as(AddressItemSearchResultDTO.class);
     }
 
-    public List<String> getPostalCodeNames(String existingPostalCodeId) {
+    public List<String> getPostalCodeUrlList(String postalCodeName) {
         com.jayway.restassured.response.Response response = ENV.getAddressCoreRequestSpecification()
                 .given()
-                .pathParam(Constants.IDS, (existingPostalCodeId))
                 .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
+                .queryParam(Constants.RSQL, "name=='" + postalCodeName + "'")
                 .when()
-                .get(AddressClient.ADDRESS_ITEM_IDS_API_PATH);
-        List<String> nameList = response.jsonPath().getList("addressItem.name");
-        return nameList;
+                .get(AddressClient.ADDRESS_ITEM_API_PATH);
+        List<String> postalCodeUrlList = response.jsonPath().getList("foundItemsUris");
+        return postalCodeUrlList;
     }
 
-    public List<String> getCityNames(String existingCityId) {
+    public List<String> getCityUrlList(String cityName) {
         com.jayway.restassured.response.Response response = ENV.getAddressCoreRequestSpecification()
                 .given()
-                .pathParam(Constants.IDS, (existingCityId))
                 .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
+                .queryParam(Constants.RSQL, "name=='" + cityName + "'")
                 .when()
-                .get(AddressClient.ADDRESS_ITEM_IDS_API_PATH);
-        List<String> nameList = response.jsonPath().getList("addressItem.name");
-        return nameList;
+                .get(AddressClient.ADDRESS_ITEM_API_PATH);
+        List<String> cityUrlList = response.jsonPath().getList("foundItemsUris");
+        return cityUrlList;
     }
 
 }
