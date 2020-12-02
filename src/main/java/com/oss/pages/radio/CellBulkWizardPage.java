@@ -30,8 +30,8 @@ public class CellBulkWizardPage extends BasePage {
     }
 
     @Step("Create Cells in Bulk Wizard")
-    public void createCellBulkWizard(String type, int amountOfCells, String carrier, boolean useAvailableID, String[] cellNames) {
-        Wizard cellBulkWizard = Wizard.createByComponentId(driver, wait, "cell-" + type.toLowerCase() + "-bulk-wizard");
+    public void createCellBulkWizard(int amountOfCells, String carrier, boolean useAvailableID, String[] cellNames) {
+        Wizard cellBulkWizard = Wizard.createByComponentId(driver, wait, "Popup");
         Input cellIdField = cellBulkWizard.getComponent("amountCells", Input.ComponentType.TEXT_FIELD);
         cellIdField.setSingleStringValue(String.valueOf(amountOfCells));
         Input carrierField = cellBulkWizard.getComponent("carrier-input", Input.ComponentType.COMBOBOX);
