@@ -53,6 +53,7 @@ public class CellSiteConfigurationPage extends BasePage {
     public CellSiteConfigurationPage filterObject(String columnName, String objectName) {
         OldTable tabTable = OldTable.createByComponentDataAttributeName(driver, wait, TAB_TABLE_DATA_ATTRIBUTE_NAME);
         tabTable.searchByAttributeWithLabel(columnName, Input.ComponentType.TEXT_FIELD, objectName);
+        DelayUtils.waitForPageToLoad(driver, wait);
         tabTable.selectRowByAttributeValueWithLabel(columnName, objectName);
         return this;
     }
