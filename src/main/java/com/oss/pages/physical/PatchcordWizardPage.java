@@ -1,6 +1,8 @@
 package com.oss.pages.physical;
 
 import com.oss.framework.components.inputs.Input;
+import com.oss.framework.prompts.ConfirmationBox;
+import com.oss.framework.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.tablewidget.OldTable;
@@ -21,6 +23,12 @@ public class PatchcordWizardPage extends BasePage {
     public void clickUpdatePatchcords() {
         getCommonButtonsWidget().clickButtonByLabel("Update patchcords");
     }
+
+    @Step("Click Finish")
+    public void clickFinish() { getWizard().clickButtonByLabel("Finish"); }
+
+    @Step("Click Close")
+    public void clickClose() { getCommonButtonsWidget().clickButtonByLabel("Close"); }
 
     @Step("Select Device for Termination A")
     public void setDeviceTerminationA(String deviceName) {
@@ -110,4 +118,6 @@ public class PatchcordWizardPage extends BasePage {
     public TableInterface getPatchcordTable() {
         return OldTable.createByComponentDataAttributeName(driver, wait, "patchcordterminationconnectorstable_table");
     }
+
+    public Wizard getWizard() { return Wizard.createByComponentId(driver, wait, "Popup"); }
 }
