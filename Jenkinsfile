@@ -44,7 +44,7 @@ pipeline {
                 script {
                     if (BRANCH_NAME == "master") {
                         configFileProvider([configFile(fileId: '4bcc5ae5-ad71-4c46-a4d7-7f48e45e341c', variable: 'MAVEN_SETTINGS')]) {
-                            sh 'mvn -T 6 clean install -U -f $WORKSPACE/pom.xml -s $MAVEN_SETTINGS -P legacy'
+                            sh 'mvn -T 6 clean install -DskipTests -U -f $WORKSPACE/pom.xml -s $MAVEN_SETTINGS -P legacy'
                         }
                     } else {
                         configFileProvider([configFile(fileId: '4bcc5ae5-ad71-4c46-a4d7-7f48e45e341c', variable: 'MAVEN_SETTINGS')]) {
