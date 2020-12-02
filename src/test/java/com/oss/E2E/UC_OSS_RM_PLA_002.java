@@ -182,7 +182,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkViewPage.selectObjectInViewContent("Name", "H1");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkViewPage.useContextAction("CREATE", "Create Trail");
+        networkViewPage.useContextAction("CREATE", "Connect");
         networkViewPage.selectTrailType("IP Link");
         networkViewPage.acceptTrailType();
         networkViewPage.setTrailName(trailName);

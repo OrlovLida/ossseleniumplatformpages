@@ -3,11 +3,14 @@ package com.oss.E2E;
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
+import com.oss.framework.prompts.ConfirmationBox;
+import com.oss.framework.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.gisView.CreateDuctWizardPage;
 import com.oss.pages.gisView.DuctCopyWizardPage;
 import com.oss.pages.gisView.GisViewPage;
 import com.oss.pages.physical.*;
+import com.oss.pages.radio.CableWizardPage;
 import io.qameta.allure.Description;
 import org.assertj.core.api.Assertions;
 import org.testng.annotations.BeforeClass;
@@ -17,8 +20,8 @@ import java.util.List;
 
 public class OSPConfiguration extends BaseTestCase {
     private GisViewPage gisViewPage;
-    private String BUILDING_A_NAME = "Building A";
-    private String BUILDING_C_NAME = "Building C";
+    private String BUILDING_A_NAME = "bsBuilding A";
+    private String BUILDING_C_NAME = "bsBuilding C";
     private String GEOGRAPHICAL_ADDRESS_BUILDING = " Jasna 1, Gliwice";
     private String GEOGRAPHICAL_ADDRESS_MANHOLE = " Jasna 34848, Gliwice";
     private String MANHOLE_MODEL = "SK-1";
@@ -30,19 +33,19 @@ public class OSPConfiguration extends BaseTestCase {
     private String ODF_A_NAME = "ODF A";
     private String ODF_C_NAME = "ODF C";
     private String CARD_MODEL = "Optomer KS-24";
+    private String CARD_NAME = "KS-24";
     private String PLUGGABLE_MODULE_MODEL = "Generic SC/PC Front/Back";
+    private String CABLE_MODEL = "1/4\"\" SCF 14-50J 4.0m";
+    private String CABLE_NAME = "SeleniumCable";
+    private String CABLE_NAME2 = "SeleniumCable2";
 
     private LocationOverviewPage locationOverviewPage;
     private DeviceOverviewPage deviceOverviewPage;
     private DuctCopyWizardPage ductCopyWizardPage;
 
-
     @BeforeClass
     public void openGisViewByLink() {
         gisViewPage = GisViewPage.goToGisViewPage(driver, BASIC_URL);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        gisViewPage.searchFirstResult("gliwice");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
     @Test(priority = 1, enabled = false)
@@ -117,6 +120,7 @@ public class OSPConfiguration extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         locationWizardPage.clickNext();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+
         locationWizardPage.setGeographicalAddress(GEOGRAPHICAL_ADDRESS_MANHOLE);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         locationWizardPage.clickNext();
@@ -300,6 +304,286 @@ public class OSPConfiguration extends BaseTestCase {
         createCopyOfDeviceWizardPage.create();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         checkPopup();
+    }
+
+    @Test(priority = 10, enabled = false)
+    @Description("Create Cable Between Two Buildings")
+    public void createCableFromBuildingAToBuildingC() {
+        /* =============== Tworzenie Building A ========== */
+        /*DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.searchFirstResult("gliwice");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.clickOnMapByCoordinates(2, 4);
+        gisViewPage.useContextAction("Draw Single Location", "Building");
+        gisViewPage.clickOnMapByCoordinates(4, 2);
+
+        LocationWizardPage locationWizardPage = new LocationWizardPage(driver);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        locationWizardPage.setLocationName(BUILDING_A_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        locationWizardPage.clickNext();
+
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        locationWizardPage.setGeographicalAddress(GEOGRAPHICAL_ADDRESS_BUILDING);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        locationWizardPage.clickNext();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+
+        locationWizardPage.setNumberOfLocations("2");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        locationWizardPage.accept();
+        checkPopup();
+        *//* =============================================== *//*
+        *//* =============== Tworzenie Building C ========== *//*
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.searchFirstResult("gliwice");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.clickOnMapByCoordinates(2, 4);
+        gisViewPage.useContextAction("Draw Single Location", "Building");
+        gisViewPage.clickOnMapByCoordinates(4, 8);
+
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        locationWizardPage.setLocationName(BUILDING_C_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        locationWizardPage.clickNext();
+
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        locationWizardPage.setGeographicalAddress(GEOGRAPHICAL_ADDRESS_BUILDING);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        locationWizardPage.clickNext();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+
+        locationWizardPage.setNumberOfLocations("2");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        locationWizardPage.accept();
+        checkPopup();*/
+        /* =============================================== */
+
+        gisViewPage.searchFirstResult("gliwice");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.clickOnMapByCoordinates(2, 4);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.useContextActionById("Draw New Cable");
+        gisViewPage.clickOnMapByCoordinates(4, 2);  // to sa kordy building A
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.clickOnMapByCoordinates(4, 8);  // to sa kordy building C
+        DelayUtils.sleep(200);
+        gisViewPage.clickOnMapByCoordinates(4, 8);
+        CableWizardPage cableWizardPage = new CableWizardPage(driver);
+        cableWizardPage.setModel(CABLE_MODEL);
+        DelayUtils.sleep(5000);
+        //createCableWizardPage.clickAccept();
+        /*gisViewPage.clickOnMapByCoordinates(2, 4);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        DelayUtils.sleep(2000);
+        gisViewPage.clickOnMapByCoordinates(3,4);
+        DelayUtils.sleep(2000);
+        gisViewPage.useContextActionById("Draw New Duct");
+        gisViewPage.clickOnMapByCoordinates(4, 2);
+        gisViewPage.clickOnMapByCoordinates(5, 3);
+        gisViewPage.doubleClickOnMapByCoordinates(5, 3);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        CreateDuctWizardPage createDuctWizardPage = new CreateDuctWizardPage(driver);
+        createDuctWizardPage.setModel(DUCT_MODEL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        createDuctWizardPage.setType(DUCT_TYPE_PRIMARY);
+        createDuctWizardPage.create();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        checkPopup();*/
+    }
+
+    /*@Test(priority = 11, enabled = false)
+    @Description("Route Cable over Primary Ducts")
+    public void routeCableOverPrimaryDucts() {
+
+    }
+
+    @Test(priority = 12, enabled = false)
+    @Description("Create second Cable between Building A and Building C")
+    public void createCable2FromBuildingAToBuildingC() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.searchFirstResult("gliwice");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.clickOnMapByCoordinates(2, 4);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.useContextActionById("Draw New Cable");
+        gisViewPage.clickOnMapByCoordinates(4, 2);  // to sa kordy building A
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.clickOnMapByCoordinates(4, 8);  // to sa kordy building C
+        DelayUtils.sleep(200);
+        gisViewPage.clickOnMapByCoordinates(4, 8);
+        CreateCableWizardPage createCableWizardPage = new CreateCableWizardPage(driver);
+        createCableWizardPage.setCableModel(CABLE_MODEL);
+        DelayUtils.sleep(5000);
+    }
+
+    @Test(priority = 13, enabled = false)
+    @Description("Route second Cable over Subduct")
+    public void routeCable2OverSubduct() {
+
+    }*/
+
+    /*@Test(priority = 14)
+    @Description("Create ODF devices on Building A")
+    public void createODFDeviceOnBuildingA() {
+        gisViewPage.searchFirstResult(BUILDING_A_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.useContextAction("Create", "Create Device");
+        DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        deviceWizardPage.setModel(ODF_MODEL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        deviceWizardPage.setName(ODF_A_NAME);
+        deviceWizardPage.create();
+        checkPopup();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    @Test(priority = 15)
+    @Description("Create ODF devices on Building C")
+    public void createODFDeviceOnBuildingC() {
+        gisViewPage.searchFirstResult(BUILDING_C_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.useContextAction("Create", "Create Device");
+        DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        deviceWizardPage.setModel(ODF_MODEL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        deviceWizardPage.setName(ODF_C_NAME);
+        deviceWizardPage.create();
+        checkPopup();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    @Test(priority = 16)
+    @Description("Add Card to ODF on Building A")
+    public void addCardToODFOnBuildingA() {
+        gisViewPage.searchFirstResult(ODF_A_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.useContextAction("Show on", "Device Overview");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        DeviceOverviewPage deviceOverviewPage = new DeviceOverviewPage(driver);
+        deviceOverviewPage.selectTreeRow(ODF_A_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        deviceOverviewPage.useContextAction("Create Card");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        CardCreateWizardPage cardCreateWizardPage = new CardCreateWizardPage(driver);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cardCreateWizardPage.setModel(CARD_MODEL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cardCreateWizardPage.setSlots("1");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cardCreateWizardPage.clickAccept();
+        checkPopup();
+    }
+
+    @Test(priority = 17)
+    @Description("Add Pluggable Module to ODF on Building A")
+    public void addPluggableModuleToODFOnBuildingA() {
+        DeviceOverviewPage deviceOverviewPage = new DeviceOverviewPage(driver);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        deviceOverviewPage.useContextAction("Create Pluggable Module");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        CreatePluggableModuleWizardPage createPluggableModuleWizardPage = new CreatePluggableModuleWizardPage(driver);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        createPluggableModuleWizardPage.setModel(PLUGGABLE_MODULE_MODEL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        createPluggableModuleWizardPage.setPort("1");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        createPluggableModuleWizardPage.accept();
+        checkPopup();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    @Test(priority = 18)
+    @Description("Add Card to ODF on Building C")
+    public void addCardToODFOnBuildingC() {
+        gisViewPage = GisViewPage.goToGisViewPage(driver, BASIC_URL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.searchFirstResult(ODF_C_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.useContextAction("Show on", "Device Overview");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        DeviceOverviewPage deviceOverviewPage = new DeviceOverviewPage(driver);
+        deviceOverviewPage.selectTreeRow(ODF_C_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        deviceOverviewPage.useContextAction("Create Card");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        CardCreateWizardPage cardCreateWizardPage = new CardCreateWizardPage(driver);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cardCreateWizardPage.setModel(CARD_MODEL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cardCreateWizardPage.setSlots("1");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cardCreateWizardPage.clickAccept();
+        checkPopup();
+    }
+
+    @Test(priority = 19)
+    @Description("Add Pluggable Module to ODF on Building C")
+    public void addPluggableModuleToODFOnBuildingC() {
+        DeviceOverviewPage deviceOverviewPage = new DeviceOverviewPage(driver);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        deviceOverviewPage.useContextAction("Create Pluggable Module");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        CreatePluggableModuleWizardPage createPluggableModuleWizardPage = new CreatePluggableModuleWizardPage(driver);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        createPluggableModuleWizardPage.setModel(PLUGGABLE_MODULE_MODEL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        createPluggableModuleWizardPage.setPort("1");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        createPluggableModuleWizardPage.accept();
+        checkPopup();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    @Test(priority = 20)
+    @Description("Add Termination to Cable")
+    public void addTerminationToCable() {
+        gisViewPage = GisViewPage.goToGisViewPage(driver, BASIC_URL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.searchFirstResult(CABLE_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.useContextAction("Edit", "Media Termination");
+        MediaTerminationPage mediaTerminationPage = new MediaTerminationPage(driver);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        mediaTerminationPage.setFirstLocation();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        mediaTerminationPage.setDeviceStart(ODF_A_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        //mediaTerminationPage.setCardStart(CARD_NAME);
+        //DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        //mediaTerminationPage.setPortStart("1");
+        //DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        mediaTerminationPage.setDeviceEnd(ODF_C_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        //mediaTerminationPage.setCardStart(CARD_NAME);
+        //DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        //mediaTerminationPage.setPortStart("1");
+        //DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        mediaTerminationPage.clickUpdateCable();
+        ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, webDriverWait);
+        prompt.clickButtonByLabel("Finish");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }*/
+
+    @Test(priority = 21)
+    @Description("Create Patchcord on Building A")
+    public void createPatchcordOnBuildingA() {
+        gisViewPage = GisViewPage.goToGisViewPage(driver, BASIC_URL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.searchFirstResult(BUILDING_A_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.useContextAction("Show on", "Patchcord wizard");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        PatchcordWizardPage patchcordWizardPage = new PatchcordWizardPage(driver);
+        //patchcordWizardPage.getPatchcordConnectorsTableStart().selectRowByAttributeValueWithLabel("Port", "1");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        patchcordWizardPage.setDeviceTerminationB(ODF_A_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        patchcordWizardPage.getPatchcordConnectorsTableEnd().selectRowByAttributeValueWithLabel("Port", "2");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        DelayUtils.sleep(2000);
     }
 
     public void checkPopup() {

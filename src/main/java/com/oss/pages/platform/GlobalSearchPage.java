@@ -18,7 +18,7 @@ public class GlobalSearchPage extends BasePage {
     public void expandShowOnAndChooseView(String objectName, String option, String viewName) {
         getResultsList().expandListElementKebab(objectName);
         DropdownList threeDotsList = DropdownList.create(driver, wait);
-        threeDotsList.selectOption(option);
+        threeDotsList.selectOptionWithId(option);
         threeDotsList.selectOptionWithId(viewName);
     }
 

@@ -38,7 +38,7 @@ import com.oss.utils.TestListener;
  */
 @Listeners({TestListener.class})
 public class CreateProcessNRPTest extends BaseTestCase {
-
+    
     private String processNRPName;
     private String processIPName1 = "S.1-" + (int) (Math.random() * 1001);
     private String processIPName2 = "S.2-" + (int) (Math.random() * 1001);
@@ -48,104 +48,106 @@ public class CreateProcessNRPTest extends BaseTestCase {
     public String perspectiveContext;
     public String deviceName1 = "Device-Selenium-" + (int) (Math.random() * 1001);
     public String deviceName2 = "Device-Selenium-" + (int) (Math.random() * 1001);
-
+    
     @BeforeClass
     public void openProcessInstancesPage() {
         ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
+        DelayUtils.sleep(3000);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         processInstancesPage.changeUser("bpm_webselenium", "bpmweb");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
-
+    
     @Test(priority = 1)
     public void createProcessNRP() {
-        //given
+        // given
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
-
-        //when
+        
+        // when
         processNRPCode = processWizardPage.createSimpleNRP();
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-
-        //then
+        
+        // then
         Assertions.assertThat(messages).hasSize(1);
         Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
         Assertions.assertThat(messages.get(0).getText()).contains(processNRPCode);
     }
-
+    
     @Test(priority = 2)
     public void startHLPTask() {
-        //given
+        // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-
-        //when
+        
+        // when
         tasksPage.startTask(processNRPCode, "High Level Planning");
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-
-        //then
+        
+        // then
         Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
         Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getText())
                 .isEqualTo("The task properly assigned.");
     }
-
+    
     @Test(priority = 3)
     public void createFirstPhysicalDevice() {
-        // DeviceWizardPage deviceWizardPage = DeviceWizardPage.goToDeviceWizardPagePlan(driver,BASIC_URL,"project_id=148835809&perspective=PLAN");
-        //given
+        
+        // given
         DeviceWizardPage deviceWizardPage = DeviceWizardPage.goToDeviceWizardPageLive(driver, BASIC_URL);
         PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
-
-        //when
+        
+        // when
         perspectiveChooser.setPlanPerspective(processNRPCode);
-        deviceWizardPage.setEquipmentType("Router");
+        deviceWizardPage.setEquipmentType("Connection Panel");
         deviceWizardPage.setModel("Generic");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        DelayUtils.sleep(2000);
-        deviceWizardPage.setName(deviceName1);
-        deviceWizardPage.setPreciseLocation(" ");
+        deviceWizardPage.setName(deviceName2);
         deviceWizardPage.setNetworkDomain(" ");
-        if (driver.getPageSource().contains("Hostname")){
-            deviceWizardPage.setHostname(deviceName1);
+        if (driver.getPageSource().contains("Hostname")) {
+            deviceWizardPage.setHostname(deviceName2);
         }
-        deviceWizardPage.create();
+        deviceWizardPage.next();
+        deviceWizardPage.setPreciseLocation(" ");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        deviceWizardPage.accept();
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-
-        //then
+        
+        // then
         Assertions.assertThat(messages).hasSize(1);
         Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType())
                 .isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
     }
-
+    
     @Test(priority = 4)
     public void completeHLPTask() {
-        //given
+        // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-
-        //when
+        
+        // when
         tasksPage.completeTask(processNRPCode, "High Level Planning");
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-
-        //then
+        
+        // then
         Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
         Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getText())
                 .contains("Task properly completed.");
     }
-
+    
     @Test(priority = 5)
     public void startLLPTask() {
-        //given
+        // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-
-        //when
+        
+        // when
         tasksPage.startTask(processNRPCode, "Low Level Planning");
-        DelayUtils.waitForPageToLoad(driver,webDriverWait);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-
-        //then
+        
+        // then
         Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
         Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getText())
                 .isEqualTo("The task properly assigned.");
@@ -154,20 +156,21 @@ public class CreateProcessNRPTest extends BaseTestCase {
         perspectiveContext = split[1];
         Assertions.assertThat(perspectiveContext).contains("PLAN");
     }
-
+    
     @Test(priority = 6)
     public void assignFile() {
         try {
             TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
             URL resource = CreateProcessNRPTest.class.getClassLoader().getResource("bpm/SeleniumTest.txt");
             String absolutePatch = Paths.get(resource.toURI()).toFile().getAbsolutePath();
-            tasksPage.addFile(processNRPCode, "Low Level Planning",absolutePatch);
+            tasksPage.addFile(processNRPCode, "Low Level Planning", absolutePatch);
             SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
-            Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType())
+            Assertions
+                    .assertThat(
+                            systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType())
                     .isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
-        }
-        catch (URISyntaxException e){
-            throw new RuntimeException("Cannot load file",e);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("Cannot load file", e);
         }
         DelayUtils.sleep(2000);
         List<String> attachments = EditableList.createById(driver, webDriverWait, "attachmentManagerBusinessView_commonList").getValues();
@@ -175,74 +178,76 @@ public class CreateProcessNRPTest extends BaseTestCase {
         String allNames = String.join("", attachments);
         Assertions.assertThat(allNames).contains("SeleniumTest");
     }
-
+    
     @Test(priority = 7)
     public void createSecondPhysicalDevice() {
-        // DeviceWizardPage deviceWizardPage = DeviceWizardPage.goToDeviceWizardPagePlan(driver,BASIC_URL,"project_id=148835809&perspective=PLAN");
-        //given
+        // DeviceWizardPage deviceWizardPage =
+        // DeviceWizardPage.goToDeviceWizardPagePlan(driver,BASIC_URL,"project_id=148835809&perspective=PLAN");
+        // given
         DeviceWizardPage deviceWizardPage = DeviceWizardPage.goToDeviceWizardPageLive(driver, BASIC_URL);
         PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
-
-        //when
+        
+        // when
         perspectiveChooser.setPlanPerspective(processNRPCode);
-        deviceWizardPage.setEquipmentType("Router");
+        deviceWizardPage.setEquipmentType("Connection Panel");
         deviceWizardPage.setModel("Generic");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        DelayUtils.sleep(2000);
         deviceWizardPage.setName(deviceName2);
-        deviceWizardPage.setPreciseLocation(" ");
         deviceWizardPage.setNetworkDomain(" ");
-        if (driver.getPageSource().contains("Hostname")){
+        if (driver.getPageSource().contains("Hostname")) {
             deviceWizardPage.setHostname(deviceName2);
         }
-        deviceWizardPage.create();
-            SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
+        deviceWizardPage.next();
+        deviceWizardPage.setPreciseLocation(" ");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        deviceWizardPage.accept();
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-
-        //then
+        
+        // then
         Assertions.assertThat(messages).hasSize(1);
         Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType())
                 .isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
     }
-
+    
     @Test(priority = 8)
     public void completeLLPTask() {
-        //given
+        // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-
-        //when
+        
+        // when
         tasksPage.completeTask(processNRPCode, "Low Level Planning");
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-
-        //then
+        
+        // then
         Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
         Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getText())
                 .contains("Task properly completed.");
     }
-
+    
     @Test(priority = 9)
     public void startRFITask() {
-        //given
+        // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-
-        //when
+        
+        // when
         tasksPage.startTask(processNRPCode, "Ready for Integration");
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-
-        //then
+        
+        // then
         Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
         Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getText())
                 .isEqualTo("The task properly assigned.");
     }
-
+    
     @Test(priority = 10)
     public void setupIntegration() {
-        //given
+        // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-
-        //when
+        
+        // when
         tasksPage.setupIntegration(processNRPCode);
         IntegrationProcessWizardPage integrationWizard = new IntegrationProcessWizardPage(driver);
         integrationWizard.defineIntegrationProcess(processIPName1, "2020-07-01", 1);
@@ -253,14 +258,14 @@ public class CreateProcessNRPTest extends BaseTestCase {
         integrationWizard.dragAndDrop(deviceName2, processIPName2);
         integrationWizard.clickAccept();
     }
-
+    
     @Test(priority = 11)
     public void getIPCode() {
-
-        //given
+        
+        // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-
-        //when
+        
+        // when
         tasksPage.findTask(processNRPCode, "Ready for Integration");
         DelayUtils.sleep(3000);
         TableInterface ipTable = OldTable.createByComponentId(driver, webDriverWait, "ip_involved_nrp_group1");
@@ -270,263 +275,265 @@ public class CreateProcessNRPTest extends BaseTestCase {
         processIPCode2 = ipTable.getValueCell(rowNumber2, "Code");
         System.out.println(processIPCode1 + processIPCode2);
     }
-
+    
     @Test(priority = 12)
-    public void completeRFITask(){
-        //given
+    public void completeRFITask() {
+        // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-
-        //when
+        
+        // when
         tasksPage.completeTask(processNRPCode, "Ready for Integration");
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-
-        //then
+        
+        // then
         Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
         Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getText())
                 .contains("Task properly completed.");
     }
-
-    @Test (priority = 13)
-    public void startSDTaskIP1(){
-        //given
-        TasksPage tasksPage =TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-
-        //when
+    
+    @Test(priority = 13)
+    public void startSDTaskIP1() {
+        // given
+        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        
+        // when
         tasksPage.startTask(processIPCode1, "Scope definition");
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-
-        //then
+        
+        // then
         Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
         Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getText())
                 .isEqualTo("The task properly assigned.");
     }
-
-    @Test (priority = 14)
-    public void completeSDTaskIP1(){
-        //given
-        TasksPage tasksPage =TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-
-        //when
-        tasksPage.completeTask(processIPCode1,"Scope definition");
+    
+    @Test(priority = 14)
+    public void completeSDTaskIP1() {
+        // given
+        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        
+        // when
+        tasksPage.completeTask(processIPCode1, "Scope definition");
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-
-        //then
+        
+        // then
         Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
         Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getText())
                 .contains("Task properly completed.");
     }
-
-    @Test (priority = 15)
-    public void startImplementationTaskIP1(){
-        //given
-        TasksPage tasksPage =TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-
-        //when
-        tasksPage.startTask(processIPCode1,"Implementation");
+    
+    @Test(priority = 15)
+    public void startImplementationTaskIP1() {
+        // given
+        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        
+        // when
+        tasksPage.startTask(processIPCode1, "Implementation");
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-
-        //then
+        
+        // then
         Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
         Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getText())
                 .isEqualTo("The task properly assigned.");
     }
-
+    
     @Test(priority = 16)
-    public void completeImplementationTaskIP1(){
-        //given
-        TasksPage tasksPage =TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-
-        //when
-        tasksPage.completeTask(processIPCode1,"Implementation");
+    public void completeImplementationTaskIP1() {
+        // given
+        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        
+        // when
+        tasksPage.completeTask(processIPCode1, "Implementation");
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-
-        //then
+        
+        // then
         Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
         Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getText())
                 .contains("Task properly completed.");
     }
-    @Test (priority = 17)
-    public void startAcceptanceTaskIP1(){
-        //given
-        TasksPage tasksPage =TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-
-        //when
-        tasksPage.startTask(processIPCode1,"Acceptance");
+    
+    @Test(priority = 17)
+    public void startAcceptanceTaskIP1() {
+        // given
+        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        
+        // when
+        tasksPage.startTask(processIPCode1, "Acceptance");
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-
-        //then
+        
+        // then
         Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
         Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getText())
                 .isEqualTo("The task properly assigned.");
     }
-
-    @Test (priority = 18)
-    public void completeAcceptanceTaskIP1(){
-        //given
-        TasksPage tasksPage =TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-
-        //when
-        tasksPage.completeTask(processIPCode1,"Acceptance");
+    
+    @Test(priority = 18)
+    public void completeAcceptanceTaskIP1() {
+        // given
+        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        
+        // when
+        tasksPage.completeTask(processIPCode1, "Acceptance");
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-
-        //then
+        
+        // then
         Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
         Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getText())
                 .contains("Task properly completed.");
     }
-
-    @Test (priority = 19)
-    public void startSDTaskIP2(){
-        //given
-        TasksPage tasksPage =TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-
-        //when
+    
+    @Test(priority = 19)
+    public void startSDTaskIP2() {
+        // given
+        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        
+        // when
         tasksPage.startTask(processIPCode2, "Scope definition");
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-
-        //then
+        
+        // then
         Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
         Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getText())
                 .isEqualTo("The task properly assigned.");
     }
-
-    @Test (priority = 20)
-    public void completeSDTaskIP2(){
-        //given
-        TasksPage tasksPage =TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-
-        //when
-        tasksPage.completeTask(processIPCode2,"Scope definition");
+    
+    @Test(priority = 20)
+    public void completeSDTaskIP2() {
+        // given
+        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        
+        // when
+        tasksPage.completeTask(processIPCode2, "Scope definition");
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-
-        //then
+        
+        // then
         Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
         Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getText())
                 .contains("Task properly completed.");
     }
-
-    @Test (priority = 21)
-    public void startImplementationTaskIP2(){
-        //given
-        TasksPage tasksPage =TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.startTask(processIPCode2,"Implementation");
-
-        //when
+    
+    @Test(priority = 21)
+    public void startImplementationTaskIP2() {
+        // given
+        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        tasksPage.startTask(processIPCode2, "Implementation");
+        
+        // when
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-
-        //then
+        
+        // then
         Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
         Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getText())
                 .isEqualTo("The task properly assigned.");
     }
-
-    @Test (priority = 22)
-    public void completeImplementationTaskIP2(){
-        //given
-        TasksPage tasksPage =TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-
-        //when
-        tasksPage.completeTask(processIPCode2,"Implementation");
+    
+    @Test(priority = 22)
+    public void completeImplementationTaskIP2() {
+        // given
+        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        
+        // when
+        tasksPage.completeTask(processIPCode2, "Implementation");
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-
-        //then
+        
+        // then
         Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
         Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getText())
                 .contains("Task properly completed.");
     }
-
-    @Test (priority = 23)
-    public void startAcceptanceTaskIP2(){
-        //given
-        TasksPage tasksPage =TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-
-        //when
-        tasksPage.startTask(processIPCode2,"Acceptance");
+    
+    @Test(priority = 23)
+    public void startAcceptanceTaskIP2() {
+        // given
+        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        
+        // when
+        tasksPage.startTask(processIPCode2, "Acceptance");
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-
-        //then
+        
+        // then
         Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
         Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getText())
                 .isEqualTo("The task properly assigned.");
     }
-
-    @Test (priority = 24)
-    public void completeAcceptanceTaskIP2(){
-        //given
-        TasksPage tasksPage =TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-
-        //when
-        tasksPage.completeTask(processIPCode2,"Acceptance");
+    
+    @Test(priority = 24)
+    public void completeAcceptanceTaskIP2() {
+        // given
+        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        
+        // when
+        tasksPage.completeTask(processIPCode2, "Acceptance");
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-
-        //then
+        
+        // then
         Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
         Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getText())
                 .contains("Task properly completed.");
     }
-
-    @Test (priority = 25)
-    public void startVerificationTask(){
-        //given
-        TasksPage tasksPage =TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-
-        //when
-        tasksPage.startTask(processNRPCode,"Verification");
+    
+    @Test(priority = 25)
+    public void startVerificationTask() {
+        // given
+        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        
+        // when
+        tasksPage.startTask(processNRPCode, "Verification");
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-
-        //then
+        
+        // then
         Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
         Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getText())
                 .isEqualTo("The task properly assigned.");
     }
-
+    
     @Test(priority = 26)
-    public void completeVerificationTask(){
-        //given
-        TasksPage tasksPage =TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-
-        //when
-        tasksPage.completeTask(processNRPCode,"Verification");
+    public void completeVerificationTask() {
+        // given
+        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        
+        // when
+        tasksPage.completeTask(processNRPCode, "Verification");
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-
-        //then
+        
+        // then
         Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
         Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getText())
                 .contains("Task properly completed.");
     }
+    
     @Test(priority = 27)
-    public void checkProcessStatus(){
-        //given
+    public void checkProcessStatus() {
+        // given
         ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
-        DelayUtils.waitForPageToLoad(driver,webDriverWait);
-
-        //when
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        
+        // when
         processInstancesPage.selectPredefinedFilter("Show with Completed");
         String processStatus = processInstancesPage.getProcessStatus(processNRPCode);
-
-        //then
+        
+        // then
         Assertions.assertThat(processStatus).isEqualTo("Completed");
     }
-
+    
     @AfterClass()
-    public void switchToLivePerspective(){
+    public void switchToLivePerspective() {
         PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
         perspectiveChooser.setLivePerspective();
     }
-
+    
 }
