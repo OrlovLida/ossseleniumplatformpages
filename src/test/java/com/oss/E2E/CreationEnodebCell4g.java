@@ -83,7 +83,7 @@ public class CreationEnodebCell4g extends BaseTestCase {
         cellSiteConfigurationPage.selectTab("Cells 4G");
         cellSiteConfigurationPage.clickPlusIconAndSelectOption("Cell 4G Bulk Wizard");
         CellBulkWizardPage cellBulkWizardPage = new CellBulkWizardPage(driver);
-        cellBulkWizardPage.createCellBulkWizard("4G", amountOfCells, carrier, useAvailableID, cellNames);
+        cellBulkWizardPage.createCellBulkWizard(amountOfCells, carrier, useAvailableID, cellNames);
         Assert.assertTrue(SystemMessageContainer.create(driver, webDriverWait)
                 .getMessages().get(0).getText().contains("Cells 4G created success"));
     }
