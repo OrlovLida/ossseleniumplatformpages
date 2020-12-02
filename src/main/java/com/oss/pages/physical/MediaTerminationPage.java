@@ -1,6 +1,8 @@
 package com.oss.pages.physical;
 
 import com.oss.framework.components.inputs.Input;
+import com.oss.framework.prompts.ConfirmationBox;
+import com.oss.framework.prompts.ConfirmationBoxInterface;
 import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tablewidget.TableInterface;
@@ -20,6 +22,9 @@ public class MediaTerminationPage extends BasePage {
     public void clickUpdateCable() {
         getCommonButtonsWidget().clickButtonByLabel("Update cable");
     }
+
+    @Step("Click Finish")
+    public void clickFinish() { getWizard().clickButtonByLabel("Finish"); }
 
     @Step("Selects first location from Media Table")
     public void setFirstLocation() { getMediaTable().selectFirstRow(); }
@@ -72,4 +77,6 @@ public class MediaTerminationPage extends BasePage {
     public TableInterface getMediaTable() {
         return OldTable.createByComponentDataAttributeName(driver, wait, "cableterminationconnectorstable_table");
     }
+
+    public Wizard getWizard() { return Wizard.createByComponentId(driver, wait, "Popup"); }
 }
