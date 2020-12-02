@@ -89,35 +89,31 @@ public class AddressClient {
                 .when()
                 .get(AddressClient.ADDRESS_ITEM_API_PATH)
                 .then()
-                .log()
-                .status()
-                .log()
-                .body()
                 .statusCode(Response.Status.OK.getStatusCode()).assertThat()
                 .extract()
                 .as(AddressItemSearchResultDTO.class);
     }
 
-    public List<String> getPostalCodeUrlList(String postalCodeName) {
-        com.jayway.restassured.response.Response response = ENV.getAddressCoreRequestSpecification()
+    public void getPostalCodeUrlList(String postalCodeName) {
+        ENV.getAddressCoreRequestSpecification()
                 .given()
                 .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
                 .queryParam(Constants.RSQL, "name=='" + postalCodeName + "'")
                 .when()
-                .get(AddressClient.ADDRESS_ITEM_API_PATH);
-        List<String> postalCodeUrlList = response.jsonPath().getList("foundItemsUris");
-        return postalCodeUrlList;
+                .get(AddressClient.ADDRESS_ITEM_API_PATH)
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode()).assertThat();
     }
 
-    public List<String> getCityUrlList(String cityName) {
-        com.jayway.restassured.response.Response response = ENV.getAddressCoreRequestSpecification()
+    public void getCityUrlList(String cityName) {
+        ENV.getAddressCoreRequestSpecification()
                 .given()
                 .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
                 .queryParam(Constants.RSQL, "name=='" + cityName + "'")
                 .when()
-                .get(AddressClient.ADDRESS_ITEM_API_PATH);
-        List<String> cityUrlList = response.jsonPath().getList("foundItemsUris");
-        return cityUrlList;
+                .get(AddressClient.ADDRESS_ITEM_API_PATH)
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode()).assertThat();
     }
 
 }

@@ -49,8 +49,9 @@ public class AddressRepository {
 
     public void getOrCreatePostalCode(String countryId, String postalCodeName) {
         AddressClient client = new AddressClient(env);
-        List<String> postalCodeNames = client.getPostalCodeUrlList(postalCodeName);
-        if (!postalCodeNames.isEmpty()) {
+        AddressItemSearchResultDTO addressItemSearchResultDTO = client.getCountriesUrlList(postalCodeName);
+        List<String> postalCodeUrls = addressItemSearchResultDTO.getFoundItemsUris();
+        if (!postalCodeUrls.isEmpty()) {
         } else {
             List<AddressItemDTO> list = new ArrayList<>();
             list.add(buildPostalCode(postalCodeName, countryId));
@@ -60,8 +61,9 @@ public class AddressRepository {
 
     public void getOrCreateCity(String countryId, String cityName) {
         AddressClient client = new AddressClient(env);
-        List<String> cityNames = client.getCityUrlList(cityName);
-        if (!cityNames.isEmpty()) {
+        AddressItemSearchResultDTO addressItemSearchResultDTO = client.getCountriesUrlList(cityName);
+        List<String> cityUrls = addressItemSearchResultDTO.getFoundItemsUris();
+        if (!cityUrls.isEmpty()) {
         } else {
             List<AddressItemDTO> list = new ArrayList<>();
             list.add(buildCity(cityName, countryId));
