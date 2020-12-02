@@ -10,7 +10,7 @@ import com.oss.framework.mainheader.PerspectiveChooser;
 import com.oss.framework.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
-import com.oss.pages.radio.Cell4GBulkWizardPage;
+import com.oss.pages.radio.CellBulkWizardPage;
 import com.oss.pages.radio.CellSiteConfigurationPage;
 import com.oss.pages.radio.ENodeBWizardPage;
 import com.oss.pages.transport.NetworkViewPage;
@@ -25,9 +25,9 @@ public class CreationEnodebCell4g extends BaseTestCase {
     private String eNodeBName = "SeleniumTestsEnodeB" + (int) (Math.random() * 10);
     private String MCCMNCPrimary = "DU [mcc: 424, mnc: 03]";
     private String carrier = "L800-B20-5 (6175)";
-    private String useAvailableID = "true";
+    private boolean useAvailableID = true;
     private String cellNames[] = new String[] { "cell10", "cell20", "cell30" };
-    private String amountOfCells = Integer.toString(cellNames.length);
+    private int amountOfCells = cellNames.length;
 
     @BeforeClass
     @Description("Open Lab Network View")
@@ -82,8 +82,8 @@ public class CreationEnodebCell4g extends BaseTestCase {
         CellSiteConfigurationPage cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);
         cellSiteConfigurationPage.selectTab("Cells 4G");
         cellSiteConfigurationPage.clickPlusIconAndSelectOption("Cell 4G Bulk Wizard");
-        Cell4GBulkWizardPage cell4GBulkWizardPage = new Cell4GBulkWizardPage(driver);
-        cell4GBulkWizardPage.createCell4GBulkWizard(amountOfCells, carrier, useAvailableID, cellNames);
+        CellBulkWizardPage cellBulkWizardPage = new CellBulkWizardPage(driver);
+        cellBulkWizardPage.createCellBulkWizard("4G", amountOfCells, carrier, useAvailableID, cellNames);
         Assert.assertTrue(SystemMessageContainer.create(driver, webDriverWait)
                 .getMessages().get(0).getText().contains("Cells 4G created success"));
     }
