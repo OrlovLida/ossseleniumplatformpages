@@ -20,8 +20,10 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tablewidget.TableInterface;
 import com.oss.pages.bpm.IntegrationProcessWizardPage;
+import com.oss.pages.bpm.ProcessInstancesPage;
 import com.oss.pages.bpm.ProcessWizardPage;
 import com.oss.pages.bpm.TasksPage;
+import com.oss.pages.platform.HomePage;
 import com.oss.pages.radio.AntennaArrayWizardPage;
 import com.oss.pages.radio.CellBulkWizardPage;
 import com.oss.pages.radio.CellSiteConfigurationPage;
@@ -59,7 +61,8 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
 
     @BeforeClass
     public void openNetworkDiscoveryControlView() {
-        openCellSiteConfigurationView();
+        ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);
     }
 
@@ -87,6 +90,7 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
 
     @Test(priority = 3)
     public void create5Gnode() {
+        openCellSiteConfigurationView();
         cellSiteConfigurationPage.clickPlusIconAndSelectOption("Create gNodeB");
         new GNodeBWizardPage(driver)
                 .createGNodeB(GNODEB_NAME, randomGNodeBId, GNODEB_MODEL, "DU [mcc: 424, mnc: 03]");
@@ -361,9 +365,9 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
     }
 
     private void openCellSiteConfigurationView() {
-//        HomePage homePage = new HomePage(driver);
-//        homePage.goToHomePage(driver, BASIC_URL);
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        HomePage homePage = new HomePage(driver);
+        homePage.goToHomePage(driver, BASIC_URL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
         sideMenu.callActionByLabel("Cell Site Configuration", "Favourites", "SeleniumTests");
     }
