@@ -14,15 +14,13 @@ public class CableRoutingViewPage extends BasePage {
 
     @Step("Click Insert Location button")
     public void clickInsertLocation() {
-
-//        getCableRoutingView().callButtonByLabel("Insert Location");
+        getCableRoutingView().callButtonByLabel("Insert Location");
     }
 
 
     @Step("Click Remove Location {locationName} ")
     public void clickRemoveLocation(String locationName) {
-
-//        getCableRoutingView().callButtonByLabel("Remove Location " + locationName);
+        getCableRoutingView().callButtonByLabel("Remove Location " + locationName);
     }
 
     @Step("Insert Location to routing")
