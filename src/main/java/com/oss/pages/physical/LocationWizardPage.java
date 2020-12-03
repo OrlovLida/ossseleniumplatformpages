@@ -1,7 +1,7 @@
 package com.oss.pages.physical;
 
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.components.portals.DropdownList;
+import com.oss.framework.data.Data;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
@@ -20,10 +20,10 @@ public class LocationWizardPage extends BasePage {
     private static final String LOCATION_DESCRIPTION_DATA_ATTRIBUTE_NAME = "description";
     private static final String LOCATION_REMARKS_DATA_ATTRIBUTE_NAME = "remarks";
     private static final String LOCATION_IMPORTANT_CATEGORY_DATA_ATTRIBUTE_NAME = "importanceCategory";
-    private static final String GEOGRAPHICAL_ADDRESS_SEARCH_DATA_ATTRIBUTE_NAME = "geoSearch";
+    private static final String GEOGRAPHICAL_ADDRESS_SEARCH_DATA_ATTRIBUTE_NAME = "geoSearch_OSF";
     private static final String NUMBER_OF_LOCATIONS_DATA_ATTRIBUTE_NAME = "locationsCount";
     private static final String MODEL_DATA_ATTRIBUTE_NAME = "masterModel_OSF";
-    private static final String STREET_NUMBER_DATA_ATTRIBUTE_NAME = "streetNumber";
+    private static final String STREET_NUMBER_DATA_ATTRIBUTE_NAME = "Street_OSF";
 
 
     public static LocationWizardPage goToLocationWizardPageLive(WebDriver driver, String basicURL) {
@@ -72,12 +72,9 @@ public class LocationWizardPage extends BasePage {
         }
     }
 
-    //TODO: Check if it is working after OSSPHY-47031
     @Step("Set Geographical Address")
     public void setGeographicalAddress(String geographicalAddress) {
-        locationWizard.setComponentValue(GEOGRAPHICAL_ADDRESS_SEARCH_DATA_ATTRIBUTE_NAME, geographicalAddress, Input.ComponentType.SEARCH_FIELD);
-        DropdownList dropdownList = DropdownList.create(driver, wait);
-        dropdownList.selectOption(geographicalAddress);
+        locationWizard.getComponent(GEOGRAPHICAL_ADDRESS_SEARCH_DATA_ATTRIBUTE_NAME, Input.ComponentType.SEARCH_FIELD).setValueContains(Data.createSingleData(geographicalAddress));
     }
 
     @Step("Set number of locations to create")
@@ -85,12 +82,9 @@ public class LocationWizardPage extends BasePage {
         locationWizard.setComponentValue(NUMBER_OF_LOCATIONS_DATA_ATTRIBUTE_NAME, count, Input.ComponentType.TEXT_FIELD);
     }
 
-    //TODO: Check if it is working after OSSPHY-47031
     @Step("Set model")
     public void setModel(String model) {
-        locationWizard.setComponentValue(MODEL_DATA_ATTRIBUTE_NAME, model, Input.ComponentType.TEXT_FIELD);
-        DropdownList dropdownList = DropdownList.create(driver, wait);
-        dropdownList.selectOption(model);
+        locationWizard.getComponent(MODEL_DATA_ATTRIBUTE_NAME, Input.ComponentType.SEARCH_FIELD).setValueContains(Data.createSingleData(model));
     }
 
     @Step("Set street number")
