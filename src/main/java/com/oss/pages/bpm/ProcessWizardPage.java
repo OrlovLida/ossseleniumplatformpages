@@ -6,11 +6,6 @@
  */
 package com.oss.pages.bpm;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import org.openqa.selenium.WebDriver;
-
 import com.google.common.base.Splitter;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
@@ -20,6 +15,10 @@ import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tablewidget.TableInterface;
 import com.oss.pages.BasePage;
+import org.openqa.selenium.WebDriver;
+
+import java.time.LocalDate;
+import java.util.List;
 
 /**
  * @author Gabriela Kasza
@@ -29,16 +28,17 @@ public class ProcessWizardPage extends BasePage {
     public ProcessWizardPage(WebDriver driver) {
         super(driver);
     }
+
     private String TABLE_PROCESSES = "bpm_processes_view_processes";
     private String PROCESS_WIZARD_STEP_1 = "start-process-wizard";
-    private String PROCESS_WIZARD_STEP_2 ="bpm_processes_view_start-process-details-prompt_processCreateFormId";
-    private String DOMAIN_ATTRIBUTE_ID= "domain-combobox-input";
+    private String PROCESS_WIZARD_STEP_2 = "bpm_processes_view_start-process-details-prompt_processCreateFormId";
+    private String DOMAIN_ATTRIBUTE_ID = "domain-combobox-input";
     private String DEFINITION_ATTRIBUTE_ID = "definition-combobox-input";
     private String RELEASE_ATTRIBUTE_ID = "release-combobox-input";
     private String PROCESS_NAME_ATTRIBUTE_ID = "bpm_processes_view_start-process-details-prompt_processCreateFormId";
     private String FINISH_DUE_DATE_ID = "FINISHED_DUE_DATE";
     private String CREATE_PROCESS_BUTTON = "Create new process";
-    private String ACCEPT_BUTTON= "wizard-submit-button-start-process-wizard";
+    private String ACCEPT_BUTTON = "wizard-submit-button-start-process-wizard";
     private String CREATE_BUTTON = "wizard-submit-button-bpm_processes_view_start-process-details-prompt_processCreateFormId";
     private String PROCESS_NAME = "Selenium Test " + Math.random();
     private String INVENTORY_PROCESS = "Inventory Processes";
@@ -52,7 +52,7 @@ public class ProcessWizardPage extends BasePage {
     }
 
     public String createSimpleDCP() {
-        return createProcess(PROCESS_NAME, (long) 0,DCP );
+        return createProcess(PROCESS_NAME, (long) 0, DCP);
     }
 
     public String createDCPPlusDays(Long plusDays) {
@@ -81,7 +81,7 @@ public class ProcessWizardPage extends BasePage {
         wizardFirstStep.clickActionById(ACCEPT_BUTTON);
         //wizardFirstStep.waitToClose();
 
-        Wizard wizardSecondStep = Wizard.createByComponentId(driver, wait,PROCESS_WIZARD_STEP_2 );
+        Wizard wizardSecondStep = Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2);
         Input processNameTextField = wizardSecondStep.getComponent(PROCESS_NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD);
         processNameTextField.setSingleStringValue(processName);
         Input finishedDueDate = wizardSecondStep.getComponent(FINISH_DUE_DATE_ID, Input.ComponentType.DATE);
