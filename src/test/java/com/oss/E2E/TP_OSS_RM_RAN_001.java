@@ -45,8 +45,8 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
     private String radioUnitEquipmentType = "Remote Radio Head/Unit";
     private String carrier = "L800-B20-5 (6175)";
     private String cellNames[] = new String[]{"cell10", "cell20", "cell30"};
-    private String useAvailableID = "true";
-    private String amountOfCells = Integer.toString(cellNames.length);
+    private boolean useAvailableID = true;
+    private int amountOfCells = cellNames.length;
     public String perspectiveContext;
     public String pci = "2";
     public String rsi = "2";
@@ -129,9 +129,9 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
         cellSiteConfigurationPage.selectTab("Cells 4G");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cellSiteConfigurationPage.clickPlusIconAndSelectOption("Cell 4G Bulk Wizard");
-        Cell4GBulkWizardPage cell4GBulkWizardPage = new Cell4GBulkWizardPage(driver);
+        CellBulkWizardPage cell4GBulkWizardPage = new CellBulkWizardPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        cell4GBulkWizardPage.createCell4GBulkWizard(amountOfCells, carrier, useAvailableID, cellNames);
+        cell4GBulkWizardPage.createCellBulkWizard(amountOfCells, carrier, useAvailableID, cellNames);
         Assert.assertTrue(SystemMessageContainer.create(driver, webDriverWait)
                 .getMessages().get(0).getText().contains("Cells 4G created success"));
     }
