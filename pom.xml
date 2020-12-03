@@ -26,7 +26,7 @@
         <locationinventory.version>1.32.43.Final</locationinventory.version>
         <physicalinventory.version>1.32.13.Final</physicalinventory.version>
         <addressinventory.version>1.16.22.Final</addressinventory.version>
-        <radio.version>4.0.0-SNAPSHOT</radio.version>
+        <radio.version>3.11.7.Final</radio.version>
         <resourcecatalog.version>2.5.2.Final</resourcecatalog.version>
     </properties>
 
