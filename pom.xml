@@ -28,7 +28,7 @@
         <addressinventory.version>1.16.22.Final</addressinventory.version>
         <radio.version>3.11.7.Final</radio.version>
         <resourcecatalog.version>2.5.2.Final</resourcecatalog.version>
-        <seleniumframework.version>0.2.0.Final</seleniumframework.version>
+        <seleniumframework.version>0.3.0.Final</seleniumframework.version>
     </properties>
 
     <dependencies>
