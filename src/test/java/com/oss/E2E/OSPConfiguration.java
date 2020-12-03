@@ -102,7 +102,7 @@ public class OSPConfiguration extends BaseTestCase {
         checkPopup();
     }
 
-    @Test(priority = 3, enabled = false)
+    @Test(priority = 3)
     @Description("Create manhole")
     public void createManhole() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -112,7 +112,7 @@ public class OSPConfiguration extends BaseTestCase {
         gisViewPage.clickOnMapByCoordinates(2, 4);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         gisViewPage.useContextAction("Draw Single Location", "Manhole");
-        gisViewPage.clickOnMapByCoordinates(8, 2);
+        gisViewPage.clickOnMapByCoordinates(8, 3);//2
         LocationWizardPage locationWizardPage = new LocationWizardPage(driver);
         locationWizardPage.setModel(MANHOLE_MODEL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
