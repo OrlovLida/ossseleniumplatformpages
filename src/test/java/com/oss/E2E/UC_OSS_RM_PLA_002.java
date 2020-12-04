@@ -351,7 +351,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         IntegrationProcessWizardPage integrationWizard = new IntegrationProcessWizardPage(driver);
         integrationWizard.defineIntegrationProcess(processIPName, LocalDate.now().plusDays(0).toString(), 1);
         integrationWizard.clickNext();
-        integrationWizard.dragAndDrop(deviceName, processIPName);
+        integrationWizard.dragAndDrop(deviceName, processNRPCode,processIPName);
         integrationWizard.clickAccept();
     }
 
