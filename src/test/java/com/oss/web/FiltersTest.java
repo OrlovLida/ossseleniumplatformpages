@@ -243,7 +243,7 @@ public class FiltersTest extends BaseTestCase {
     @Test(priority = 20)
     @Description("Deleting all filters and folders")
     public void deleteAllFiltersAndFolders() {
-        filterManagerPage
+        filterManagerPage = FilterManagerPage.goToFilterManagerPage(driver, BASIC_URL)
                 .expandAllCategories()
                 .deleteAllFilters()
                 .deleteAllFolders();
