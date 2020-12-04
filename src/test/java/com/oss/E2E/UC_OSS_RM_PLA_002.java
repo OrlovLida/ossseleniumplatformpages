@@ -1,15 +1,5 @@
 package com.oss.E2E;
 
-import java.net.URISyntaxException;
-import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.regex.Pattern;
-
-import org.assertj.core.api.Assertions;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
-
 import com.oss.BaseTestCase;
 import com.oss.bpm.CreateProcessNRPTest;
 import com.oss.framework.alerts.SystemMessageContainer;
@@ -29,6 +19,7 @@ import com.oss.pages.mediation.CLIConfigurationWizardPage;
 import com.oss.pages.mediation.ViewConnectionConfigurationPage;
 import com.oss.pages.physical.DeviceOverviewPage;
 import com.oss.pages.platform.HomePage;
+import com.oss.pages.platform.LogManagerPage;
 import com.oss.pages.platform.OldInventoryViewPage;
 import com.oss.pages.reconciliation.CmDomainWizardPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
@@ -39,6 +30,15 @@ import com.oss.pages.templateCM.SetParametersWizardPage;
 import com.oss.pages.transport.IPAddressManagementViewPage;
 import com.oss.pages.transport.IPv4AddressAssignmentWizardPage;
 import com.oss.pages.transport.NetworkViewPage;
+import org.assertj.core.api.Assertions;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.regex.Pattern;
 
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 
@@ -66,6 +66,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     private String connectionTimeout = "20";
     private String perspectiveContext;
     private String ipNetwork = "E2ESeleniumTest";
+    private static String TEMPLATE_EXECUTION_NOTIFICATION = "Scripts execution for template E2E_Test_Loopback_v2";
 
     String URL = "";
 
@@ -431,7 +432,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         Assertions.assertThat(name).isEqualTo(deviceName);
         setParametersWizardPage.setParameter("$InterfaceName[USER]", "GE 0");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        setParametersWizardPage.setParameter("$Password[SYSTEM]", "cisco");
+        setParametersWizardPage.setParameter("$Password[SYSTEM]", "oss");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -446,7 +447,11 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         ShareFilterPage shareFilterPage = new ShareFilterPage(driver);
         shareFilterPage.closeShareView();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Notifications.create(driver, webDriverWait).waitForSpecificNotification(TEMPLATE_NAME, "FINISHED");
+
+        Notifications.create(driver, webDriverWait).openDetailsForSpecificNotification(TEMPLATE_EXECUTION_NOTIFICATION, "FINISHED");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        LogManagerPage logManagerPage = new LogManagerPage(driver);
+        Assertions.assertThat(logManagerPage.getStatus()).isEqualTo("UPLOAD_SUCCESS");
     }
 
     @Test(priority = 32)

@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import com.oss.pages.platform.LogManagerPage;
 import org.assertj.core.api.Assertions;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -66,6 +67,7 @@ public class UC_OSS_RM_PLA_002_GA_5_17_0 extends BaseTestCase {
     private String connectionTimeout = "20";
     private String perspectiveContext;
     private String ipNetwork = "E2ESeleniumTest";
+    private static String TEMPLATE_EXECUTION_NOTIFICATION = "Scripts execution for template E2E_Test_Loopback_v2";
 
     String URL = "";
 
@@ -431,7 +433,7 @@ public class UC_OSS_RM_PLA_002_GA_5_17_0 extends BaseTestCase {
         Assertions.assertThat(name).isEqualTo(deviceName);
         setParametersWizardPage.setParameter("$InterfaceName[USER]", "GE 0");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        setParametersWizardPage.setParameter("$Password[SYSTEM]", "cisco");
+        setParametersWizardPage.setParameter("$Password[SYSTEM]", "oss");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -446,7 +448,11 @@ public class UC_OSS_RM_PLA_002_GA_5_17_0 extends BaseTestCase {
         ShareFilterPage shareFilterPage = new ShareFilterPage(driver);
         shareFilterPage.closeShareView();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Notifications.create(driver, webDriverWait).waitForSpecificNotification(TEMPLATE_NAME, "FINISHED");
+
+        Notifications.create(driver, webDriverWait).openDetailsForSpecificNotification(TEMPLATE_EXECUTION_NOTIFICATION, "FINISHED");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        LogManagerPage logManagerPage = new LogManagerPage(driver);
+        Assertions.assertThat(logManagerPage.getStatus()).isEqualTo("UPLOAD_SUCCESS");
     }
 
     @Test(priority = 32)
