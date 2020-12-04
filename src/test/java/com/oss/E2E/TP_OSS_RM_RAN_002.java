@@ -58,7 +58,6 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
     private String processIPCode;
     private String processIPName = "TP_OSS_RM_RAN_002_" + (int) (Math.random() * 1001);
 
-
     @BeforeClass
     public void openNetworkDiscoveryControlView() {
         ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
@@ -105,7 +104,7 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
         cellSiteConfigurationPage.selectTab("Cells 5G");
         cellSiteConfigurationPage.clickPlusIconAndSelectOption("Cell 5G Bulk Wizard");
         CellBulkWizardPage cellBulkWizardPage = new CellBulkWizardPage(driver);
-        cellBulkWizardPage.createCellBulkWizard(3, CELL5G_CARRIER, true, CELL5G_NAMES);
+        cellBulkWizardPage.createCellBulkWizardWithDefaultValues(3, CELL5G_CARRIER, CELL5G_NAMES);
         Assert.assertTrue(SystemMessageContainer.create(driver, webDriverWait)
                 .getMessages().get(0).getText().contains("Cells 5G created success"));
     }
