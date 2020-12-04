@@ -97,7 +97,7 @@ public class ExportGuiWizardTest extends BaseTestCase {
     public void exportToFileWithChangedDataMask() {
         new ExportGuiWizardPage(driver)
                 .chooseCSV()
-                .changeDateMask("Basic ISO Date")
+                .changeDateMask("Basic")
                 .closeTheWizard();
         Assert.assertEquals(languageServicePage.howManyNotifications(), 1);
     }
@@ -107,7 +107,7 @@ public class ExportGuiWizardTest extends BaseTestCase {
     public void exportToFileWithChangedFormat() {
         new ExportGuiWizardPage(driver)
                 .chooseCSV()
-                .changeQuoteCharacter("Single Quote")
+                .changeQuoteCharacter("Single")
                 .changeCSVDelimiter("Comma")
                 .closeTheWizard();
         Assert.assertEquals(languageServicePage.howManyNotifications(), 1);

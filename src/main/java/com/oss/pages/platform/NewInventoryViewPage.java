@@ -233,6 +233,33 @@ public class NewInventoryViewPage extends BasePage {
         ButtonPanel.create(driver, wait).openChooseConfigurationWizard().chooseConfiguration(configurationName).apply();
         return this;
     }
+    @Step("Delete configuration for page")
+    public NewInventoryViewPage deletePageConfiguration(String configurationName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        ButtonPanel.create(driver, wait).openChooseConfigurationWizard().deleteConfiguration(configurationName).cancel();
+        return this;
+    }
+
+    @Step("Delete configuration for main table")
+    public NewInventoryViewPage deleteConfigurationForMainTable(String configurationName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getMainTable().openChooseConfigurationWizard().deleteConfiguration(configurationName).cancel();
+        return this;
+    }
+
+    @Step("Delete configuration for tabs")
+    public NewInventoryViewPage deleteConfigurationForTabs(String configurationName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getTabsWidget().openChooseConfigurationWizard().deleteConfiguration(configurationName).cancel();
+        return this;
+    }
+
+    @Step("Delete configuration for properties")
+    public NewInventoryViewPage deleteConfigurationForProperties(String configurationName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getPropertiesFilter().openChooseConfigurationWizard().deleteConfiguration(configurationName).cancel();
+        return this;
+    }
 
     @Step("Download configuration for main table")
     public NewInventoryViewPage downloadConfigurationForMainTable(String configurationName) {
