@@ -1,5 +1,13 @@
 package com.oss.E2E;
 
+import java.util.List;
+import java.util.regex.Pattern;
+
+import org.assertj.core.api.Assertions;
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
@@ -12,16 +20,16 @@ import com.oss.pages.bpm.TasksPage;
 import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.OldInventoryViewPage;
-import com.oss.pages.radio.*;
+import com.oss.pages.radio.AntennaArrayWizardPage;
+import com.oss.pages.radio.CellBulkWizardPage;
+import com.oss.pages.radio.CellSiteConfigurationPage;
+import com.oss.pages.radio.ENodeBWizardPage;
+import com.oss.pages.radio.EditCell4GWizardPage;
+import com.oss.pages.radio.HostingWizardPage;
+import com.oss.pages.radio.RanAntennaWizardPage;
+
 import io.qameta.allure.Description;
 import io.qameta.allure.Step;
-import org.assertj.core.api.Assertions;
-import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
-
-import java.util.List;
-import java.util.regex.Pattern;
 
 public class TP_OSS_RM_RAN_001 extends BaseTestCase {
 
@@ -29,23 +37,22 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
     private String locationName = "XYZ_SeleniumTests"; //czy mamy jakies wymagania co do lokacji
     private String eNodeBName = "GBM055TST";
     private String eNodeBid = "1" + (int) (Math.random() * 10);
-    private String eNodeBModel= "HUAWEI Technology Co.,Ltd BTS5900";
+    private String eNodeBModel = "HUAWEI Technology Co.,Ltd BTS5900";
     private String MCCMNCPrimary = "DU [mcc: 424, mnc: 03]";
 
     private String baseBandUnitModel = "HUAWEI Technology Co.,Ltd BBU5900";
     private String bbuName = "BTS5900,GBM055TST/0/BBU5900,0";
     private String radioUnitModel = "HUAWEI Technology Co.,Ltd RRU5301";//HUAWEI Technology Co.,Ltd RRU5301
-    private String radioUnitNames[] = {"BTS5900,GBM055TST/0/MRRU,60",
+    private String radioUnitNames[] = { "BTS5900,GBM055TST/0/MRRU,60",
             "BTS5900,GBM055TST/0/MRRU,70",
-            "BTS5900,GBM055TST/0/MRRU,80"};
+            "BTS5900,GBM055TST/0/MRRU,80" };
 
     private String ranAntennaModel = "HUAWEI Technology Co.,Ltd APE4518R14V06";
-    private String[] antennaNames = {"SeleniumTestAntenna1","SeleniumTestAntenna2","SeleniumTestAntenna3"};
+    private String[] antennaNames = { "SeleniumTestAntenna1", "SeleniumTestAntenna2", "SeleniumTestAntenna3" };
     private String bbuEquipmentType = "Base Band Unit";
     private String radioUnitEquipmentType = "Remote Radio Head/Unit";
     private String carrier = "L800-B20-5 (6175)";
-    private String cellNames[] = new String[]{"cell10", "cell20", "cell30"};
-    private boolean useAvailableID = true;
+    private String cellNames[] = new String[] { "cell10", "cell20", "cell30" };
     private int amountOfCells = cellNames.length;
     public String perspectiveContext;
     public String pci = "2";
@@ -58,13 +65,12 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
     private String cell4GName = "cell4";
     private String showOnlyCompatible = "false";
 
- //   private String nameOfRRU = "SeleniumTestRadioUnit";
- //   private String antennaArrayName = "APE4518R14V06_Lr1";
+    //   private String nameOfRRU = "SeleniumTestRadioUnit";
+    //   private String antennaArrayName = "APE4518R14V06_Lr1";
 
     private CellSiteConfigurationPage cellSiteConfigurationPage;
     private AntennaArrayWizardPage antennaArrayWizardPage;
     private TasksPage tasksPage;
-
 
     @BeforeClass
     public void goToBPM() {
@@ -103,7 +109,7 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
         OldInventoryViewPage oldInventoryViewPage = new OldInventoryViewPage(driver);
         oldInventoryViewPage.filterObject("Name", locationName, "Site");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        oldInventoryViewPage.expandShowOnAndChooseView( "Cell Site Configuration");
+        oldInventoryViewPage.expandShowOnAndChooseView("Cell Site Configuration");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -115,7 +121,7 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
         cellSiteConfigurationPage.clickPlusIconAndSelectOption("Create eNodeB");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         ENodeBWizardPage eNodeBWizard = new ENodeBWizardPage(driver);
-        eNodeBWizard.createENodeB(eNodeBName , eNodeBid, eNodeBModel, MCCMNCPrimary);
+        eNodeBWizard.createENodeB(eNodeBName, eNodeBid, eNodeBModel, MCCMNCPrimary);
         Assert.assertTrue(SystemMessageContainer.create(driver, webDriverWait)
                 .getMessages().get(0).getText().contains("Created eNodeB"));
     }
@@ -124,14 +130,14 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
     @Description("Create Cell4G with Bulk Wizard")
     public void createCell4GBulk() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        cellSiteConfigurationPage.expandTreeToBaseStation("Site",locationName , eNodeBName);
+        cellSiteConfigurationPage.expandTreeToBaseStation("Site", locationName, eNodeBName);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cellSiteConfigurationPage.selectTab("Cells 4G");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cellSiteConfigurationPage.clickPlusIconAndSelectOption("Cell 4G Bulk Wizard");
         CellBulkWizardPage cell4GBulkWizardPage = new CellBulkWizardPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        cell4GBulkWizardPage.createCellBulkWizard(amountOfCells, carrier, useAvailableID, cellNames);
+        cell4GBulkWizardPage.createCellBulkWizard(amountOfCells, carrier, cellNames);
         Assert.assertTrue(SystemMessageContainer.create(driver, webDriverWait)
                 .getMessages().get(0).getText().contains("Cells 4G created success"));
     }
@@ -248,7 +254,7 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
     @Description("Create hosting relation between Cell 4G and RRU")
     public void hostCell4GOnRRU() {
 
-        for(int i = 0; i<3; i++) {
+        for (int i = 0; i < 3; i++) {
             cellSiteConfigurationPage.selectTreeRow(cellNames[i]);
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             cellSiteConfigurationPage.selectTab(hostingTabName);
@@ -266,7 +272,7 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
     @Test(priority = 11)
     @Description("Create hosting relation between Cell 4G and RAN Antenna Array")
     public void hostCell4GOnRANAntennaArray() {
-        for(int i = 0; i<3; i++) {
+        for (int i = 0; i < 3; i++) {
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             cellSiteConfigurationPage.selectTreeRow(cellNames[i]);
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -280,7 +286,7 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
     }
 
     @Test(priority = 12)
-    public void finishHLP(){
+    public void finishHLP() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.completeTask(processNRPCode, "High Level Planning");
@@ -309,7 +315,7 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
     }
 
     @Test(priority = 14)
-    public void validateProjectPlan(){
+    public void validateProjectPlan() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         tasksPage.findTask(processNRPCode, "Low Level Planning");
@@ -323,7 +329,7 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
     }
 
     @Test(priority = 15)
-    public void lowLevelLogicalDesign(){
+    public void lowLevelLogicalDesign() {
         HomePage homePage = new HomePage(driver);
         homePage.goToHomePage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -333,13 +339,13 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
         OldInventoryViewPage oldInventoryViewPage = new OldInventoryViewPage(driver);
         oldInventoryViewPage.filterObject("Name", locationName, "Site");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        oldInventoryViewPage.expandShowOnAndChooseView( "Cell Site Configuration");
+        oldInventoryViewPage.expandShowOnAndChooseView("Cell Site Configuration");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         CellSiteConfigurationPage cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);
         cellSiteConfigurationPage.expandTreeToBaseStation("Site", locationName, eNodeBName);
 
-        for(int i = 0; i < 3; i++){
+        for (int i = 0; i < 3; i++) {
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             cellSiteConfigurationPage.selectRowByAttributeValueWithLabel("Name", cellNames[i]);
         }
@@ -354,11 +360,11 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         editCell4GWizardPage.setReferencePowerBulk(referencePower);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        editCell4GWizardPage.setTAC( 1, tac);//
+        editCell4GWizardPage.setTAC(1, tac);//
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        editCell4GWizardPage.setTAC( 2, tac);
+        editCell4GWizardPage.setTAC(2, tac);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        editCell4GWizardPage.setTAC( 3, tac);
+        editCell4GWizardPage.setTAC(3, tac);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         editCell4GWizardPage.setPaOutputBulk(paOutput);//
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -374,7 +380,7 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
     }
 
     @Test(priority = 16)
-    public void finishLowLevelPlanningTask(){ //object names cannot be the same, otherwise validation will fail
+    public void finishLowLevelPlanningTask() { //object names cannot be the same, otherwise validation will fail
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
         perspectiveChooser.setCurrentTask();
@@ -392,7 +398,7 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
     }
 
     @Test(priority = 17)
-    public void integrationProject(){
+    public void integrationProject() {
         tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         tasksPage.startTask(processNRPCode, "Integrate");
@@ -425,9 +431,6 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
         //transition to verify
     }
 
-
-
-
     private void checkPopup() {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
@@ -436,7 +439,7 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
                 .isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
     }
 
-    private void checkTaskAssignmentPopup(){
+    private void checkTaskAssignmentPopup() {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
         Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
@@ -444,7 +447,7 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
                 .isEqualTo("The task properly assigned.");
     }
 
-    private void checkTaskCompletedPopup(){
+    private void checkTaskCompletedPopup() {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
         Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
