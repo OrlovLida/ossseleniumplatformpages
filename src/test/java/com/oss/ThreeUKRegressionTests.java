@@ -1,5 +1,11 @@
 package com.oss;
 
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Test;
+
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.listwidget.CommonList;
@@ -11,11 +17,16 @@ import com.oss.framework.widgets.tabswidget.TabWindowWidget;
 import com.oss.framework.widgets.tabswidget.TabsInterface;
 import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.physical.LocationOverviewPage;
+import com.oss.pages.physical.LocationOverviewPage.TabName;
 import com.oss.pages.physical.LocationWizardPage;
 import com.oss.pages.platform.GlobalSearchPage;
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.OldInventoryViewPage;
-import com.oss.pages.radio.*;
+import com.oss.pages.radio.Cell4GWizardPage;
+import com.oss.pages.radio.Cell5GWizardPage;
+import com.oss.pages.radio.CellSiteConfigurationPage;
+import com.oss.pages.radio.ENodeBWizardPage;
+import com.oss.pages.radio.GNodeBWizardPage;
 import com.oss.repositories.AddressRepository;
 import com.oss.repositories.LocationInventoryRepository;
 import com.oss.repositories.Radio4gRepository;
@@ -23,18 +34,14 @@ import com.oss.repositories.Radio5gRepository;
 import com.oss.untils.Environment;
 import com.oss.utils.RandomGenerator;
 import com.oss.utils.TestListener;
+
 import io.qameta.allure.Description;
-import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Listeners;
-import org.testng.annotations.Test;
 
 /**
  * @author Milena Miętkiewicz
  */
 
-@Listeners({TestListener.class})
+@Listeners({ TestListener.class })
 public class ThreeUKRegressionTests extends BaseTestCase {
 
     private Environment env = Environment.getInstance();
@@ -138,7 +145,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         homePage.goToHomePage(driver, BASIC_URL);
     }
 
-    @Test(groups = {"Physical tests"})
+    @Test(groups = { "Physical tests" })
     @Description("The user creates a location (Site) from left side menu and checks the message about successful creation")
     public void tS01CreateNewSiteSideMenu() {
         String randomLocationName = RandomGenerator.generateRandomName();
@@ -150,7 +157,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
                 .getMessages().get(0).getText().contains("Location has been created successfully"));
     }
 
-    @Test(groups = {"Physical tests"})
+    @Test(groups = { "Physical tests" })
     @Description("The user filters a Site in Inventory View for Location and checks if properties table contains Site name")
     public void tS02BrowseLocationInInventoryView() {
 
@@ -164,7 +171,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         Assert.assertTrue(rowValue.contains(locationName));
     }
 
-    @Test(groups = {"Physical tests"})
+    @Test(groups = { "Physical tests" })
     @Description("The user filters a Site in Inventory View for Sites and checks if properties table contains Site name")
     public void tS03BrowseSiteInInventoryView() {
 
@@ -178,13 +185,13 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         Assert.assertTrue(rowValue.contains(locationName));
     }
 
-    @Test(enabled = false, groups = {"Physical tests"})
+    @Test(enabled = false, groups = { "Physical tests" })
     @Description("The user creates a Site in Inventory View, searches for it in Global Search, removes it in IV and checks if the Site is removed in Global Search")
     public void tS04CreateAndDeleteNewSiteInventoryView() {
         String randomLocationName = RandomGenerator.generateRandomName();
     }
 
-    @Test(groups = {"Physical tests"})
+    @Test(groups = { "Physical tests" })
     @Description("The user creates a sublocation Site in Location Overview and checks if a new row is displayed in Locations table")
     public void tS05CreateSubLocationSite() {
         String randomSubLocationName = RandomGenerator.generateRandomName();
@@ -199,15 +206,12 @@ public class ThreeUKRegressionTests extends BaseTestCase {
                 .createLocation(locationTypeSite, randomSubLocationName);
         new LocationOverviewPage(driver)
                 .selectTab("Locations")
-                .filterLocationsObject("Name", randomSubLocationName);
-//        OldTable tabTable = OldTable.createByComponentDataAttributeName(driver, webDriverWait, "tableAppLocationsId");
-        OldTable tabTable = new LocationOverviewPage(driver).getLocationsTabTable();
-        int rowNumber = tabTable.getRowNumber(randomSubLocationName, "Name");
-        String rowValue = tabTable.getValueCell(rowNumber, "Name");
-        Assert.assertTrue(rowValue.contains(randomSubLocationName));
+                .filterObjectInSpecificTab(TabName.LOCATIONS, "Name", randomSubLocationName);
+        int rowNumber = new LocationOverviewPage(driver).getRowNumber(TabName.LOCATIONS, "Name", randomSubLocationName);
+        Assert.assertTrue(new LocationOverviewPage(driver).getValueByRowNumber(TabName.LOCATIONS, "Name", rowNumber).contains(randomSubLocationName));
     }
 
-    @Test(groups = {"Physical tests"})
+    @Test(groups = { "Physical tests" })
     @Description("The user edits a sublocation Site and checks if the description is updated in Locations table")
     public void tS06ModifySubLocationSite() {
 
@@ -217,19 +221,16 @@ public class ThreeUKRegressionTests extends BaseTestCase {
                 .expandShowOnAndChooseView("OpenLocationOverviewAction");
         new LocationOverviewPage(driver)
                 .selectTab("Locations")
-                .filterLocationsObject("Name", subLocationSiteName)
-                .clickEditLocationIcon();
+                .filterObjectInSpecificTab(TabName.LOCATIONS, "Name", subLocationSiteName)
+                .clickButtonByLabelInSpecificTab(TabName.LOCATIONS, "Edit Location");
         new LocationWizardPage(driver)
                 .setDescription(description)
                 .accept();
-//        OldTable tabTable = OldTable.createByComponentDataAttributeName(driver, webDriverWait, "tableAppLocationsId");
-        OldTable tabTable = new LocationOverviewPage(driver).getLocationsTabTable();
-        int rowNumber = tabTable.getRowNumber(description, "Description");
-        String rowValue = tabTable.getValueCell(rowNumber, "Description");
-        Assert.assertTrue(rowValue.contains(description));
+        int rowNumber = new LocationOverviewPage(driver).getRowNumber(TabName.LOCATIONS, "Description", description);
+        Assert.assertTrue(new LocationOverviewPage(driver).getValueByRowNumber(TabName.LOCATIONS, "Description", rowNumber).contains(description));
     }
 
-    @Test(groups = {"Physical tests"})
+    @Test(groups = { "Physical tests" })
     @Description("The user deletes a sublocation Site and checks if the row is removed in Locations table")
     public void tS07RemoveSubLocationSite() {
 
@@ -239,8 +240,8 @@ public class ThreeUKRegressionTests extends BaseTestCase {
                 .expandShowOnAndChooseView("OpenLocationOverviewAction");
         new LocationOverviewPage(driver)
                 .selectTab("Locations")
-                .filterLocationsObject("Name", subLocationSiteName)
-                .clickRemoveLocationIcon();
+                .filterObjectInSpecificTab(TabName.LOCATIONS, "Name", subLocationSiteName)
+                .clickButtonByLabelInSpecificTab(TabName.LOCATIONS, "Remove Location");
         ConfirmationBoxInterface confirmationBox = ConfirmationBox.create(driver, webDriverWait);
         confirmationBox.clickButtonByLabel("Delete");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -248,7 +249,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         Assert.assertTrue(tabTable.isNoData("tableAppLocationsId"));
     }
 
-    @Test(groups = {"Radio tests"})
+    @Test(groups = { "Radio tests" })
     @Description("The user creates an eNodeB in Cell Site Configuration and checks the message about successful creation")
     public void tS08CreateENodeB() {
         String randomENodeBName = RandomGenerator.generateRandomName();
@@ -266,7 +267,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
                 .getMessages().get(0).getText().contains("Created eNodeB"));
     }
 
-    @Test(groups = {"Radio tests"})
+    @Test(groups = { "Radio tests" })
     @Description("The user edits an eNodeB in Cell Site Configuration and checks if the description is updated in Base Stations table")
     public void tS09ModifyENodeB() {
 
@@ -289,7 +290,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         Assert.assertTrue(rowValue.contains(description));
     }
 
-    @Test(groups = {"Radio tests"})
+    @Test(groups = { "Radio tests" })
     @Description("The user deletes an eNodeB in Cell Site Configuration and checks if search result in Global Search is no data")
     public void tS10RemoveENodeB() {
 
@@ -309,7 +310,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         Assert.assertTrue(objectsList.isNoData());
     }
 
-    @Test(groups = {"Radio tests"})
+    @Test(groups = { "Radio tests" })
     @Description("The user creates a Cell 4G in Cell Site Configuration and checks the message about successful creation")
     public void tS11CreateCell4G() {
         String randomCell4GName = RandomGenerator.generateRandomName();
@@ -328,7 +329,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
                 .getMessages().get(0).getText().contains("Created Cell 4G"));
     }
 
-    @Test(groups = {"Radio tests"})
+    @Test(groups = { "Radio tests" })
     @Description("The user edits a Cell 4G in Cell Site Configuration and checks if the description is updated in Cells table")
     public void tS12ModifyCell4G() {
 
@@ -351,7 +352,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         Assert.assertTrue(rowValue.contains(description));
     }
 
-    @Test(groups = {"Radio tests"})
+    @Test(groups = { "Radio tests" })
     @Description("The user deletes a Cell 4G in Cell Site Configuration and checks if search result in Global Search is no data")
     public void tS13RemoveCell4G() {
 
@@ -371,7 +372,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         Assert.assertTrue(objectsList.isNoData());
     }
 
-    @Test(groups = {"Radio tests"})
+    @Test(groups = { "Radio tests" })
     @Description("The user creates an gNodeB in Cell Site Configuration and checks the message about successful creation")
     public void tS14CreateGNodeB() {
         String randomGNodeBName = RandomGenerator.generateRandomName();
@@ -389,7 +390,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
                 .getMessages().get(0).getText().contains("Created gNodeB"));
     }
 
-    @Test(groups = {"Radio tests"})
+    @Test(groups = { "Radio tests" })
     @Description("The user edits an gNodeB in Cell Site Configuration and checks if the description is updated in Base Stations table")
     public void tS15ModifyGNodeB() {
 
@@ -412,7 +413,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         Assert.assertTrue(rowValue.contains(description));
     }
 
-    @Test(groups = {"Radio tests"})
+    @Test(groups = { "Radio tests" })
     @Description("The user deletes an gNodeB in Cell Site Configuration and checks if search result in Global Search is no data")
     public void tS16RemoveGNodeB() {
 
@@ -432,7 +433,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         Assert.assertTrue(objectsList.isNoData());
     }
 
-    @Test(groups = {"Radio tests"})
+    @Test(groups = { "Radio tests" })
     @Description("The user creates a Cell 5G in Cell Site Configuration and checks the message about successful creation")
     public void tS17CreateCell5G() {
         String randomCell5GName = RandomGenerator.generateRandomName();
@@ -451,7 +452,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
                 .getMessages().get(0).getText().contains("Created Cell 5G"));
     }
 
-    @Test(groups = {"Radio tests"})
+    @Test(groups = { "Radio tests" })
     @Description("The user edits a Cell 5G in Cell Site Configuration and checks if the description is updated in Cells table")
     public void tS18ModifyCell5G() {
 
@@ -474,7 +475,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         Assert.assertTrue(rowValue.contains(description));
     }
 
-    @Test(groups = {"Radio tests"})
+    @Test(groups = { "Radio tests" })
     @Description("The user deletes an Cell 5G in Cell Site Configuration and checks if search result in Global Search is no data")
     public void tS19RemoveCell5G() {
 
@@ -494,7 +495,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         Assert.assertTrue(objectsList.isNoData());
     }
 
-    @Test(groups = {"Radio tests"})
+    @Test(groups = { "Radio tests" })
     @Description("The user creates Base Band Unit in Cell Site Configuration and checks the message about successful creation")
     public void tS20CreateBBU() {
         String randomDeviceName = RandomGenerator.generateRandomName();
@@ -512,7 +513,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
                 .getMessages().get(0).getText().contains("Device has been created successfully"));
     }
 
-    @Test(groups = {"Radio tests"})
+    @Test(groups = { "Radio tests" })
     @Description("The user creates Base Band Unit in Cell Site Configuration, searches the device in Inventory View and goes to Cell Site Configuration again, then edits the device and checks if the description is updated in Device table")
     public void tS21CreateAndModifyBBU() {
         String randomDeviceName = RandomGenerator.generateRandomName();
@@ -549,7 +550,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         Assert.assertTrue(rowValue.contains(description));
     }
 
-    @Test(groups = {"Radio tests"})
+    @Test(groups = { "Radio tests" })
     @Description("The user creates Base Band Unit in Cell Site Configuration, searches the device in Inventory View and goes to Cell Site Configuration again, then edits the device and checks if the description is updated in Device table")
     public void tS22CreateAndRemoveBBU() {
         String randomDeviceName = RandomGenerator.generateRandomName();
@@ -582,7 +583,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         Assert.assertTrue(objectsList.isNoData());
     }
 
-    @Test(groups = {"Radio tests"})
+    @Test(groups = { "Radio tests" })
     @Description("The user creates Radio Remote Unit in Cell Site Configuration and checks the message about successful creation")
     public void tS23CreateRRU() {
         String randomDeviceName = RandomGenerator.generateRandomName();
@@ -600,7 +601,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
                 .getMessages().get(0).getText().contains("Device has been created successfully"));
     }
 
-    @Test(groups = {"Radio tests"})
+    @Test(groups = { "Radio tests" })
     @Description("The user creates Radio Remote Unit in Cell Site Configuration, searches the device in Inventory View and goes to Cell Site Configuration again, then edits the device and checks if the description is updated in Device table")
     public void tS24CreateAndModifyRRU() {
         String randomDeviceName = RandomGenerator.generateRandomName();
@@ -637,7 +638,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         Assert.assertTrue(rowValue.contains(description));
     }
 
-    @Test(groups = {"Radio tests"})
+    @Test(groups = { "Radio tests" })
     @Description("The user creates Radio Remote Unit in Cell Site Configuration, searches the device in Inventory View and goes to Cell Site Configuration again, then edits the device and checks if the description is updated in Device table")
     public void tS25CreateAndRemoveRRU() {
         String randomDeviceName = RandomGenerator.generateRandomName();
