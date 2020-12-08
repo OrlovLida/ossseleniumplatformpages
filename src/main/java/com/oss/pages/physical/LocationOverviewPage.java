@@ -37,29 +37,29 @@ public class LocationOverviewPage extends BasePage {
                 .callActionByLabel(buttonName);
     }
 
-    @Step("Click button by label")
+    @Step("Click {actionLabel} in specific tab")
     public void clickButtonByLabelInSpecificTab(TabName tabName, String actionLabel) {
         getTabTable(tabName).callActionByLabel(actionLabel);
     }
 
-    @Step("Filter and select {objectName} row")
+    @Step("Filter and select object with {columnName} {objectName}")
     public LocationOverviewPage filterObjectInSpecificTab(TabName tabName, String columnName, String objectName) {
         getTabTable(tabName).searchByAttributeWithLabel(columnName, Input.ComponentType.TEXT_FIELD, objectName);
         getTabTable(tabName).selectRowByAttributeValueWithLabel(columnName, objectName);
         return this;
     }
 
-    @Step("Select object")
+    @Step("Select object with {attributeLabel} {value}")
     public void selectObjectInSpecificTab(TabName tabName, String attributeLabel, String value) {
         getTabTable(tabName).selectRowByAttributeValueWithLabel(attributeLabel, value);
     }
 
-    @Step("Get row number for specific value in column")
+    @Step("Get row number for object with {attributeLabel} {value}")
     public int getRowNumber(TabName tabName, String attributeLabel, String value) {
         return getTabTable(tabName).getRowNumber(value, attributeLabel);
     }
 
-    @Step("Get value for specific row number in column")
+    @Step("Get {attributeLabel} value for row number {rowNumber}")
     public String getValueByRowNumber(TabName tabName, String attributeLabel, int rowNumber) {
         return getTabTable(tabName).getValueCell(rowNumber, attributeLabel);
     }
