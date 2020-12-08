@@ -135,7 +135,7 @@ public class ExportGuiWizardPage extends BasePage {
 
     @Step("Change Quote Character on Combobox")
     public ExportGuiWizardPage changeQuoteCharacter(String value) {
-        setValueOnCombobox(COMBOBOX_QUOTE_CHARACTER_ID, value);
+        setValueContainsOnCombobox(COMBOBOX_QUOTE_CHARACTER_ID, value);
         return this;
     }
 

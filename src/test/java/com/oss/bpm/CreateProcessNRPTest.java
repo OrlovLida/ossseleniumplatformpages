@@ -102,10 +102,10 @@ public class CreateProcessNRPTest extends BaseTestCase {
         deviceWizardPage.setEquipmentType("Connection Panel");
         deviceWizardPage.setModel("Generic");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        deviceWizardPage.setName(deviceName2);
+        deviceWizardPage.setName(deviceName1);
         deviceWizardPage.setNetworkDomain(" ");
         if (driver.getPageSource().contains("Hostname")) {
-            deviceWizardPage.setHostname(deviceName2);
+            deviceWizardPage.setHostname(deviceName1);
         }
         deviceWizardPage.next();
         deviceWizardPage.setPreciseLocation(" ");
@@ -254,8 +254,8 @@ public class CreateProcessNRPTest extends BaseTestCase {
         integrationWizard.defineIntegrationProcess(processIPName2, "2020-07-02", 2);
         DelayUtils.sleep();
         integrationWizard.clickNext();
-        integrationWizard.dragAndDrop(deviceName1, processIPName1);
-        integrationWizard.dragAndDrop(deviceName2, processIPName2);
+        integrationWizard.dragAndDrop(deviceName1, processNRPCode, processIPName1);
+        integrationWizard.dragAndDrop(deviceName2, processNRPCode, processIPName2);
         integrationWizard.clickAccept();
     }
     

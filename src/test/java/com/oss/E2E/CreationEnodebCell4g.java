@@ -25,7 +25,6 @@ public class CreationEnodebCell4g extends BaseTestCase {
     private String eNodeBName = "SeleniumTestsEnodeB" + (int) (Math.random() * 10);
     private String MCCMNCPrimary = "DU [mcc: 424, mnc: 03]";
     private String carrier = "L800-B20-5 (6175)";
-    private boolean useAvailableID = true;
     private String cellNames[] = new String[] { "cell10", "cell20", "cell30" };
     private int amountOfCells = cellNames.length;
 
@@ -83,7 +82,7 @@ public class CreationEnodebCell4g extends BaseTestCase {
         cellSiteConfigurationPage.selectTab("Cells 4G");
         cellSiteConfigurationPage.clickPlusIconAndSelectOption("Cell 4G Bulk Wizard");
         CellBulkWizardPage cellBulkWizardPage = new CellBulkWizardPage(driver);
-        cellBulkWizardPage.createCellBulkWizard(amountOfCells, carrier, useAvailableID, cellNames);
+        cellBulkWizardPage.createCellBulkWizard(amountOfCells, carrier, cellNames);
         Assert.assertTrue(SystemMessageContainer.create(driver, webDriverWait)
                 .getMessages().get(0).getText().contains("Cells 4G created success"));
     }

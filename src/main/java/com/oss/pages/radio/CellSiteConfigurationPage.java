@@ -1,7 +1,5 @@
 package com.oss.pages.radio;
 
-import org.openqa.selenium.WebDriver;
-
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.prompts.ConfirmationBox;
@@ -11,10 +9,11 @@ import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.treewidget.TreeWidget;
 import com.oss.pages.BasePage;
-
 import io.qameta.allure.Step;
+import org.openqa.selenium.WebDriver;
 
 import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
+
 
 /**
  * @author Milena Miętkiewicz
@@ -126,5 +125,10 @@ public class CellSiteConfigurationPage extends BasePage {
 
     public TreeWidget getTree() {
         return TreeWidget.createByDataAttributeName(driver, wait, TREE_DATA_ATTRIBUTE_NAME);
+    }
+
+    public void selectRowByAttributeValueWithLabel(String attribute, String label) {
+        OldTable tabTable = OldTable.createByComponentDataAttributeName(driver, wait, TAB_TABLE_DATA_ATTRIBUTE_NAME);
+        tabTable.selectRowByAttributeValueWithLabel(attribute, label);
     }
 }
