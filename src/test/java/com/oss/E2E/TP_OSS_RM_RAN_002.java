@@ -188,7 +188,8 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
         IntegrationProcessWizardPage integrationWizard = new IntegrationProcessWizardPage(driver);
         integrationWizard.defineIntegrationProcess(processIPName, LocalDate.now().plusDays(0).toString(), 1);
         integrationWizard.clickNext();
-        integrationWizard.dragAndDrop(GNODEB_NAME, processIPName);
+        //TODO dostosować do nowej wersji drag and drop
+//        integrationWizard.dragAndDrop(GNODEB_NAME, processIPName);
         integrationWizard.clickAccept();
     }
 
