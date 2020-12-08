@@ -1,5 +1,11 @@
 package com.oss.E2E;
 
+import java.util.List;
+
+import org.assertj.core.api.Assertions;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
@@ -8,14 +14,20 @@ import com.oss.pages.gisView.CreateDuctWizardPage;
 import com.oss.pages.gisView.DuctCopyWizardPage;
 import com.oss.pages.gisView.GisViewPage;
 import com.oss.pages.gisView.RoutingWizardPage;
-import com.oss.pages.physical.*;
+import com.oss.pages.physical.CableRoutingViewPage;
+import com.oss.pages.physical.CardCreateWizardPage;
+import com.oss.pages.physical.CreateCopyOfDeviceWizardPage;
+import com.oss.pages.physical.CreatePluggableModuleWizardPage;
+import com.oss.pages.physical.DeviceOverviewPage;
+import com.oss.pages.physical.DeviceWizardPage;
+import com.oss.pages.physical.LocationOverviewPage;
+import com.oss.pages.physical.LocationOverviewPage.TabName;
+import com.oss.pages.physical.LocationWizardPage;
+import com.oss.pages.physical.MediaTerminationPage;
+import com.oss.pages.physical.PatchcordWizardPage;
 import com.oss.pages.radio.CableWizardPage;
-import io.qameta.allure.Description;
-import org.assertj.core.api.Assertions;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
 
-import java.util.List;
+import io.qameta.allure.Description;
 
 public class OSPConfiguration extends BaseTestCase {
     private GisViewPage gisViewPage;
@@ -188,7 +200,6 @@ public class OSPConfiguration extends BaseTestCase {
         gisViewPage.useContextActionById("Refresh");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
-
         gisViewPage.clickOnMapByCoordinates(8, 3);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         gisViewPage.useContextAction("Edit", "Copy Duct");
@@ -236,7 +247,6 @@ public class OSPConfiguration extends BaseTestCase {
         RoutingWizardPage routingWizardPage = new RoutingWizardPage(driver);
         routingWizardPage.InsertPhysicalLocation(MANHOLE_A_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-
 
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         routingWizardPage.selectDuctForSegment(0);
@@ -302,9 +312,9 @@ public class OSPConfiguration extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         locationOverviewPage.selectTab("Devices");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        locationOverviewPage.clickButtonFromDeviceTabByLabel("Refresh");
-        locationOverviewPage.selectDeviceFromTableByAttributeValueWithLabel("Name", ODF_A_NAME);
-        locationOverviewPage.clickButtonFromDeviceTabByLabel("Device Overview");
+        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.DEVICES, "Refresh");
+        locationOverviewPage.selectObjectInSpecificTab(TabName.DEVICES, "Name", ODF_A_NAME);
+        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.DEVICES, "Device Overview");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         deviceOverviewPage = new DeviceOverviewPage(driver);
