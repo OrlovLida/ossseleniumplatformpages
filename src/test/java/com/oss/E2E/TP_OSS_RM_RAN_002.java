@@ -3,7 +3,7 @@ package com.oss.E2E;
 import java.time.LocalDate;
 import java.util.regex.Pattern;
 
-import org.assertj.core.api.Assertions;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -11,6 +11,7 @@ import org.testng.annotations.Test;
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageContainer.Message;
+import com.oss.framework.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.OldTable;
@@ -164,7 +165,7 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
         String currentUrl = driver.getCurrentUrl();
         String[] split = currentUrl.split(Pattern.quote("?"));
         perspectiveContext = split[1];
-        Assertions.assertThat(perspectiveContext).contains("PLAN");
+        Assert.assertTrue(perspectiveContext.contains("PLAN"));
     }
 
     @Test(priority = 9)
@@ -313,24 +314,22 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
     }
 
     private void checkMessageType() {
-        Assertions.assertThat(getFirstMessage().getMessageType())
-                .isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
+        Assert.assertEquals(MessageType.SUCCESS, (getFirstMessage().getMessageType()));
     }
 
     private void checkMessageContainsText(String message) {
-        Assertions.assertThat(getFirstMessage().getText())
-                .contains(message);
+        Assert.assertTrue((getFirstMessage().getText())
+                .contains(message));
     }
 
     private void checkMessageText(String message) {
-        Assertions.assertThat(getFirstMessage().getText())
-                .isEqualTo(message);
+        Assert.assertEquals(message, (getFirstMessage().getText()));
     }
 
     private void checkMessageSize(int size) {
-        Assertions.assertThat(SystemMessageContainer.create(driver, webDriverWait)
-                .getMessages())
-                .hasSize(size);
+        Assert.assertEquals((SystemMessageContainer.create(driver, webDriverWait)
+                .getMessages()
+                .size()), size);
     }
 
     private Message getFirstMessage() {
@@ -348,5 +347,4 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
         checkMessageType();
         checkMessageContainsText("Task properly completed.");
     }
-
 }
