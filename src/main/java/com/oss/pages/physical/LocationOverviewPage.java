@@ -4,6 +4,8 @@ import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.contextactions.ButtonContainer;
 import com.oss.framework.components.inputs.Input;
+import com.oss.framework.prompts.ConfirmationBox;
+import com.oss.framework.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tabswidget.TabWindowWidget;
@@ -62,6 +64,12 @@ public class LocationOverviewPage extends BasePage {
     @Step("Get {attributeLabel} value for row number {rowNumber}")
     public String getValueByRowNumber(TabName tabName, String attributeLabel, int rowNumber) {
         return getTabTable(tabName).getValueCell(rowNumber, attributeLabel);
+    }
+
+    @Step("Click {label} in confirmation box")
+    public void clickButtonInConfirmationBox(String label) {
+        ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
+        prompt.clickButtonByLabel(label);
     }
 
     public OldTable getTabTable(TabName tabName) {
