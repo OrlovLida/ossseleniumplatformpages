@@ -29,11 +29,13 @@ import io.qameta.allure.Step;
 public class NetworkInconsistenciesViewPage extends BasePage {
 
     private TreeWidget mainTree;
-    private String applyGroupButtonId = "narComponent_GroupDiscrepancyActionApplyId";
-    private String applyButtonId = "narComponent_DiscrepancyActionApplyId";
-    private String inconsistenciesTable = "narComponent_networkInconsistenciesViewIddiscrepancyDetailsTreeTableId";
-    private String updateDevice = "UpdateDeviceWizardAction";
-    private String nivTree = "narComponent_networkInconsistenciesViewIddiscrepanciesTreeTabId";
+    private String APPLY_GROUP_BUTTON_ID = "narComponent_GroupDiscrepancyActionApplyId";
+    private String APPLY_BUTTON_ID = "narComponent_DiscrepancyActionApplyId";
+    private String INCONSITENCIES_TABLE_ID = "narComponent_networkInconsistenciesViewIddiscrepancyDetailsTreeTableId";
+    private String CHANGE_LOCATION_ACTION_ID = "DeviceChangeLocationAction";
+    private String NIV_TREE = "narComponent_networkInconsistenciesViewIddiscrepanciesTreeTabId";
+    private String PRECISE_LOCATION_ID = "precise_location";
+    private String ACCEPT_CHANGE_LOCATION_BUTTON_ID = "wizard-submit-button-change-location-wizard";
 
     public NetworkInconsistenciesViewPage(WebDriver driver) {
         super(driver);
@@ -62,21 +64,20 @@ public class NetworkInconsistenciesViewPage extends BasePage {
     public void assignLocation(String preciseLocation) {
         getTreeView().selectTreeRowByOrder(3);
         DelayUtils.waitForPageToLoad(driver, wait);
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, inconsistenciesTable);
-        table.callAction("EDIT", updateDevice);
+        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, INCONSITENCIES_TABLE_ID);
+        table.callAction("EDIT", CHANGE_LOCATION_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         Wizard wizard = Wizard.createWizard(driver, new WebDriverWait(driver, 90));
-        Input preciseLocationInput = wizard.getComponent("search_precise_location", ComponentType.SEARCH_FIELD);
-        preciseLocationInput.setSingleStringValue(preciseLocation);
+        wizard.setComponentValue(PRECISE_LOCATION_ID, preciseLocation, ComponentType.SEARCH_FIELD);
         DelayUtils.waitForPageToLoad(driver, wait);
-        wizard.clickUpdate();
+        wizard.clickActionById(ACCEPT_CHANGE_LOCATION_BUTTON_ID);
     }
 
     @Step("Select first Device and use assign location option")
     public void assignRanLocation(String location) {
         getTreeView().selectTreeRowByOrder(3);
         DelayUtils.waitForPageToLoad(driver, wait);
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, inconsistenciesTable);
+        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, INCONSITENCIES_TABLE_ID);
         table.callAction("Assign Location");
         DelayUtils.waitForPageToLoad(driver, wait);
         Wizard wizard = Wizard.createByComponentId(driver, wait, "Popup");
@@ -99,16 +100,16 @@ public class NetworkInconsistenciesViewPage extends BasePage {
     public void applyInconsistencies() {
         getTreeView().selectTreeRowByOrder(2);
         TabsInterface nivTabs = TabWindowWidget.create(driver, wait);
-        nivTabs.selectTabById(nivTree);
-        nivTabs.callActionById(applyGroupButtonId);
+        nivTabs.selectTabById(NIV_TREE);
+        nivTabs.callActionById(APPLY_GROUP_BUTTON_ID);
         DelayUtils.sleep(1000);
     }
 
     @Step("Apply discrepancies to Live perspective")
     public void applySelectedInconsistencies() {
         TabsInterface nivTabs = TabWindowWidget.create(driver, wait);
-        nivTabs.selectTabById(nivTree);
-        nivTabs.callActionById(applyButtonId);
+        nivTabs.selectTabById(NIV_TREE);
+        nivTabs.callActionById(APPLY_BUTTON_ID);
         DelayUtils.sleep(1000);
     }
 
@@ -129,7 +130,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         getTreeView().selectTreeRowByOrder(3);
         DelayUtils.sleep(5000);
         DelayUtils.waitForPageToLoad(driver, wait);
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, inconsistenciesTable);
+        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, INCONSITENCIES_TABLE_ID);
         return table.getValueCell(0, "Operation Type");
     }
 }
