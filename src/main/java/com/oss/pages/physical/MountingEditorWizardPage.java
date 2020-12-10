@@ -1,13 +1,16 @@
 package com.oss.pages.physical;
 
+import org.openqa.selenium.WebDriver;
+
 import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.inputs.Input.ComponentType;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Widget;
 import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.tablewidget.TableWidget;
 import com.oss.pages.BasePage;
+
 import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
 
 public class MountingEditorWizardPage extends BasePage {
 
@@ -15,7 +18,7 @@ public class MountingEditorWizardPage extends BasePage {
     private static final String PRECISE_LOCATION = "precise-location-id";
     private static final String MODEL = "model-id";
 
-    private Wizard wizard = Wizard.createByComponentId(driver, wait, "mounting-editor-modal-id");
+    private Wizard wizard = Wizard.createByComponentId(driver, wait, "Popup");
     private TableWidget mainTable;
 
     public MountingEditorWizardPage(WebDriver driver) {
@@ -33,29 +36,23 @@ public class MountingEditorWizardPage extends BasePage {
 
     @Step("Set Name")
     public void setName(String name) {
-        Input ipAddressComponent = wizard.getComponent(NAME, Input.ComponentType.TEXT_FIELD);
-        ipAddressComponent.clear();
-        ipAddressComponent.setSingleStringValue(name);
+        wizard.setComponentValue(NAME, name, ComponentType.TEXT_FIELD);
     }
 
     @Step("Set Precise Location")
     public void setPreciseLocation(String preciseLocation) {
-        Input ipAddressComponent = wizard.getComponent(PRECISE_LOCATION, Input.ComponentType.SEARCH_FIELD);
-        ipAddressComponent.clear();
-        ipAddressComponent.setSingleStringValue(preciseLocation);
+        wizard.setComponentValue(PRECISE_LOCATION, preciseLocation, Input.ComponentType.SEARCH_FIELD);
     }
 
     @Step("Set Name")
     public void setModel(String model) {
-        Input ipAddressComponent = wizard.getComponent(MODEL, Input.ComponentType.SEARCH_FIELD);
-        ipAddressComponent.clear();
-        ipAddressComponent.setSingleStringValue(model);
+        wizard.setComponentValue(MODEL, model, Input.ComponentType.SEARCH_FIELD);
     }
 
     @Step("Select second row in devices to mount table")
     public void clickCheckbox() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getTable().selectRow(1);
+        getTable().selectAllRows();
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
