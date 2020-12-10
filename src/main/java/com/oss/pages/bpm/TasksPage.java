@@ -38,7 +38,7 @@ public class TasksPage extends BasePage {
     private static final String FORM_TAB_ID = "bpm_task_view_form-tab";
     private static final String ATTACHMENT_TAB_ID = "bpm_task_view_attachment-tab";
 
-    protected TasksPage(WebDriver driver) {
+    public TasksPage(WebDriver driver) {
         super(driver);
     }
 
