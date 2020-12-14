@@ -3,24 +3,18 @@ package com.oss;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.mainheader.PerspectiveChooser;
-import com.oss.framework.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.pages.bpm.PlanViewWizardPage;
 import com.oss.pages.bpm.ProcessInstancesPage;
 import com.oss.pages.bpm.ProcessWizardPage;
 import com.oss.pages.bpm.TasksPage;
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.OldInventoryViewPage;
-import com.oss.pages.platform.PerspectiveChooserPage;
 import com.oss.pages.radio.CellSiteConfigurationPage;
 import com.oss.pages.radio.EditCell4GWizardPage;
 import org.assertj.core.api.Assertions;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.interactions.Actions;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import org.testng.asserts.Assertion;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -70,7 +64,7 @@ public class BPMandCellconfigurationTest extends BaseTestCase {
     public void findLocation(){
         HomePage homePage = new HomePage(driver);
         homePage.goToHomePage(driver, BASIC_URL);
-        homePage.setAndSelectObjectType("Site");
+        homePage.setOldObjectType("Site");
 
         OldInventoryViewPage oldInventoryViewPage = new OldInventoryViewPage(driver);
         oldInventoryViewPage.filterObject("Name", LOCATION_NAME, "Site");
@@ -122,7 +116,7 @@ public class BPMandCellconfigurationTest extends BaseTestCase {
     public void lowLevelLogicalDesign(){
         HomePage homePage = new HomePage(driver);
         homePage.goToHomePage(driver, BASIC_URL);
-        homePage.setAndSelectObjectType("Site");
+        homePage.setOldObjectType("Site");
 
         OldInventoryViewPage oldInventoryViewPage = new OldInventoryViewPage(driver);
         oldInventoryViewPage.filterObject("Name", LOCATION_NAME, "Site");
