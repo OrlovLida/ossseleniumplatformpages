@@ -69,7 +69,7 @@ public class ReconciliationE2ETest extends BaseTestCase {
         networkInconsistenciesViewPage.checkUpdateDeviceSystemMessage();
         networkInconsistenciesViewPage.clearOldNotification();
         networkInconsistenciesViewPage.applyInconsistencies();
-        DelayUtils.sleep(500);
+        DelayUtils.sleep(5000);
         networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies("CiscoSeleniumTest");
     }
 
