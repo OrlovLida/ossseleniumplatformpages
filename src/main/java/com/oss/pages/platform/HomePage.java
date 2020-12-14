@@ -113,7 +113,7 @@ public class HomePage extends BasePage {
     }
 
     //temporary (OSSWEB-8269)
-    String searchObjectTypeTxtXpath = ".//input[(@data-attributename=\"SearchUserViewsByType\")]";
+    String searchObjectTypeTxtXpath = ".//div[(@data-attributename='SearchUserViewsByType')]//input";
 
     @Step("Set object type")
     public void setAndSelectObjectType(String objectType) {
