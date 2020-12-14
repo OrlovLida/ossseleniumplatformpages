@@ -56,9 +56,16 @@ public class DeviceOverviewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
+    //TODO merge with clickButtonInConfirmationBox()
     @Step("Click Yes in Removal Wizard")
     public void clickYes() {
         Wizard removalWizard = Wizard.createByComponentId(driver, wait, "Popup");
         removalWizard.clickButtonByLabel("Yes");
+    }
+
+    @Step("Click {label} in Confirmation box")
+    public void clickButtonInConfirmationBox(String label) {
+        Wizard removalWizard = Wizard.createByComponentId(driver, wait, "Popup");
+        removalWizard.clickButtonByLabel(label);
     }
 }
