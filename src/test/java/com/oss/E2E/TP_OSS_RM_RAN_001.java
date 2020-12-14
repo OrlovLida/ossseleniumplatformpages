@@ -103,7 +103,7 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
         HomePage homePage = new HomePage(driver);
         homePage.goToHomePage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        homePage.setAndSelectObjectType("Site");
+        homePage.setOldObjectType("Site");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         OldInventoryViewPage oldInventoryViewPage = new OldInventoryViewPage(driver);
@@ -333,7 +333,7 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
         HomePage homePage = new HomePage(driver);
         homePage.goToHomePage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        homePage.setAndSelectObjectType("Site");
+        homePage.setOldObjectType("Site");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         OldInventoryViewPage oldInventoryViewPage = new OldInventoryViewPage(driver);

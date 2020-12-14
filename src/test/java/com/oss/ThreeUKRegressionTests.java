@@ -161,7 +161,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     @Description("The user filters a Site in Inventory View for Location and checks if properties table contains Site name")
     public void tS02BrowseLocationInInventoryView() {
 
-        homePage.setAndSelectObjectType(objectTypeLocation);
+        homePage.setOldObjectType(objectTypeLocation);
         new OldInventoryViewPage(driver)
                 .filterObject("Name", locationName, "Location");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -175,7 +175,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     @Description("The user filters a Site in Inventory View for Sites and checks if properties table contains Site name")
     public void tS03BrowseSiteInInventoryView() {
 
-        homePage.setAndSelectObjectType(locationTypeSite);
+        homePage.setOldObjectType(locationTypeSite);
         new OldInventoryViewPage(driver)
                 .filterObject("Name", locationName, "Site");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -196,7 +196,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     public void tS05CreateSubLocationSite() {
         String randomSubLocationName = RandomGenerator.generateRandomName();
 
-        homePage.setAndSelectObjectType(locationTypeSite);
+        homePage.setOldObjectType(locationTypeSite);
         new OldInventoryViewPage(driver)
                 .filterObject("Name", locationName, "Site")
                 .expandShowOnAndChooseView("OpenLocationOverviewAction");
@@ -215,7 +215,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     @Description("The user edits a sublocation Site and checks if the description is updated in Locations table")
     public void tS06ModifySubLocationSite() {
 
-        homePage.setAndSelectObjectType(locationTypeSite);
+        homePage.setOldObjectType(locationTypeSite);
         new OldInventoryViewPage(driver)
                 .filterObject("Name", locationName, "Site")
                 .expandShowOnAndChooseView("OpenLocationOverviewAction");
@@ -234,7 +234,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     @Description("The user deletes a sublocation Site and checks if the row is removed in Locations table")
     public void tS07RemoveSubLocationSite() {
 
-        homePage.setAndSelectObjectType(locationTypeSite);
+        homePage.setOldObjectType(locationTypeSite);
         new OldInventoryViewPage(driver)
                 .filterObject("Name", locationName, "Site")
                 .expandShowOnAndChooseView("OpenLocationOverviewAction");
@@ -255,7 +255,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         String randomENodeBName = RandomGenerator.generateRandomName();
         String randomENodeBId = RandomGenerator.generateRandomENodeBId();
 
-        homePage.setAndSelectObjectType(locationTypeSite);
+        homePage.setOldObjectType(locationTypeSite);
         new OldInventoryViewPage(driver)
                 .filterObject("Name", locationName, "Site")
                 .expandShowOnAndChooseView("Cell Site Configuration");
@@ -271,7 +271,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     @Description("The user edits an eNodeB in Cell Site Configuration and checks if the description is updated in Base Stations table")
     public void tS09ModifyENodeB() {
 
-        homePage.setAndSelectObjectType(objectTypeENodeB);
+        homePage.setOldObjectType(objectTypeENodeB);
         new OldInventoryViewPage(driver)
                 .filterObject("Name", eNodeBNameForCreate2, "ENodeB")
                 .expandShowOnAndChooseView("Cell Site Configuration");
@@ -316,7 +316,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         String randomCell4GName = RandomGenerator.generateRandomName();
         String randomCell4GId = RandomGenerator.generateRandomCell4GId();
 
-        homePage.setAndSelectObjectType(locationTypeSite);
+        homePage.setOldObjectType(locationTypeSite);
         new OldInventoryViewPage(driver)
                 .filterObject("Name", locationName, "Site")
                 .expandShowOnAndChooseView("Cell Site Configuration");
@@ -333,7 +333,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     @Description("The user edits a Cell 4G in Cell Site Configuration and checks if the description is updated in Cells table")
     public void tS12ModifyCell4G() {
 
-        homePage.setAndSelectObjectType(objectTypeCell4G);
+        homePage.setOldObjectType(objectTypeCell4G);
         new OldInventoryViewPage(driver)
                 .filterObject("Cell Name", cell4GNameForCreate2, "Cell4G")
                 .expandShowOnAndChooseView("Cell Site Configuration");
@@ -378,7 +378,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         String randomGNodeBName = RandomGenerator.generateRandomName();
         String randomGNodeBId = RandomGenerator.generateRandomGNodeBId();
 
-        homePage.setAndSelectObjectType(locationTypeSite);
+        homePage.setOldObjectType(locationTypeSite);
         new OldInventoryViewPage(driver)
                 .filterObject("Name", locationName, "Site")
                 .expandShowOnAndChooseView("Cell Site Configuration");
@@ -394,7 +394,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     @Description("The user edits an gNodeB in Cell Site Configuration and checks if the description is updated in Base Stations table")
     public void tS15ModifyGNodeB() {
 
-        homePage.setAndSelectObjectType(locationTypeSite);
+        homePage.setOldObjectType(locationTypeSite);
         new OldInventoryViewPage(driver)
                 .filterObject("Name", locationName, "Site")
                 .expandShowOnAndChooseView("Cell Site Configuration");
@@ -439,7 +439,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         String randomCell5GName = RandomGenerator.generateRandomName();
         String randomCell5GId = RandomGenerator.generateRandomCell5GId();
 
-        homePage.setAndSelectObjectType(locationTypeSite);
+        homePage.setOldObjectType(locationTypeSite);
         new OldInventoryViewPage(driver)
                 .filterObject("Name", locationName, "Site")
                 .expandShowOnAndChooseView("Cell Site Configuration");
@@ -456,7 +456,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     @Description("The user edits a Cell 5G in Cell Site Configuration and checks if the description is updated in Cells table")
     public void tS18ModifyCell5G() {
 
-        homePage.setAndSelectObjectType(objectTypeCell5G);
+        homePage.setOldObjectType(objectTypeCell5G);
         new OldInventoryViewPage(driver)
                 .filterObject("Cell Name", cell5GNameForCreate2, "Cell5G")
                 .expandShowOnAndChooseView("Cell Site Configuration");
@@ -500,7 +500,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     public void tS20CreateBBU() {
         String randomDeviceName = RandomGenerator.generateRandomName();
 
-        homePage.setAndSelectObjectType(locationTypeSite);
+        homePage.setOldObjectType(locationTypeSite);
         new OldInventoryViewPage(driver)
                 .filterObject("Name", locationName, "Site")
                 .expandShowOnAndChooseView("Cell Site Configuration");
@@ -518,7 +518,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     public void tS21CreateAndModifyBBU() {
         String randomDeviceName = RandomGenerator.generateRandomName();
 
-        homePage.setAndSelectObjectType(locationTypeSite);
+        homePage.setOldObjectType(locationTypeSite);
         new OldInventoryViewPage(driver)
                 .filterObject("Name", locationName, "Site")
                 .expandShowOnAndChooseView("Cell Site Configuration");
@@ -530,7 +530,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
         systemMessageItem.waitForMessageDisappear();
         homePage.goToHomePage(driver, BASIC_URL);
-        homePage.setAndSelectObjectType(objectTypeDevice);
+        homePage.setOldObjectType(objectTypeDevice);
         new OldInventoryViewPage(driver)
                 .filterObject("Name", randomDeviceName, "PhysicalElement")
                 .expandShowOnAndChooseView("Cell Site Configuration");
@@ -555,7 +555,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     public void tS22CreateAndRemoveBBU() {
         String randomDeviceName = RandomGenerator.generateRandomName();
 
-        homePage.setAndSelectObjectType(locationTypeSite);
+        homePage.setOldObjectType(locationTypeSite);
         new OldInventoryViewPage(driver)
                 .filterObject("Name", locationName, "Site")
                 .expandShowOnAndChooseView("Cell Site Configuration");
@@ -567,7 +567,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
         systemMessageItem.waitForMessageDisappear();
         homePage.goToHomePage(driver, BASIC_URL);
-        homePage.setAndSelectObjectType(objectTypeDevice);
+        homePage.setOldObjectType(objectTypeDevice);
         new OldInventoryViewPage(driver)
                 .filterObject("Name", randomDeviceName, "PhysicalElement")
                 .expandShowOnAndChooseView("Cell Site Configuration");
@@ -588,7 +588,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     public void tS23CreateRRU() {
         String randomDeviceName = RandomGenerator.generateRandomName();
 
-        homePage.setAndSelectObjectType(locationTypeSite);
+        homePage.setOldObjectType(locationTypeSite);
         new OldInventoryViewPage(driver)
                 .filterObject("Name", locationName, "Site")
                 .expandShowOnAndChooseView("Cell Site Configuration");
@@ -606,7 +606,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     public void tS24CreateAndModifyRRU() {
         String randomDeviceName = RandomGenerator.generateRandomName();
 
-        homePage.setAndSelectObjectType(locationTypeSite);
+        homePage.setOldObjectType(locationTypeSite);
         new OldInventoryViewPage(driver)
                 .filterObject("Name", locationName, "Site")
                 .expandShowOnAndChooseView("Cell Site Configuration");
@@ -618,7 +618,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
         systemMessageItem.waitForMessageDisappear();
         homePage.goToHomePage(driver, BASIC_URL);
-        homePage.setAndSelectObjectType(objectTypeDevice);
+        homePage.setOldObjectType(objectTypeDevice);
         new OldInventoryViewPage(driver)
                 .filterObject("Name", randomDeviceName, "PhysicalElement")
                 .expandShowOnAndChooseView("Cell Site Configuration");
@@ -643,7 +643,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     public void tS25CreateAndRemoveRRU() {
         String randomDeviceName = RandomGenerator.generateRandomName();
 
-        homePage.setAndSelectObjectType(locationTypeSite);
+        homePage.setOldObjectType(locationTypeSite);
         new OldInventoryViewPage(driver)
                 .filterObject("Name", locationName, "Site")
                 .expandShowOnAndChooseView("Cell Site Configuration");
@@ -655,7 +655,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
         systemMessageItem.waitForMessageDisappear();
         homePage.goToHomePage(driver, BASIC_URL);
-        homePage.setAndSelectObjectType(objectTypeDevice);
+        homePage.setOldObjectType(objectTypeDevice);
         new OldInventoryViewPage(driver)
                 .filterObject("Name", randomDeviceName, "PhysicalElement")
                 .expandShowOnAndChooseView("Cell Site Configuration");

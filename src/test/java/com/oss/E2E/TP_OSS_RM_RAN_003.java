@@ -51,7 +51,7 @@ public class TP_OSS_RM_RAN_003 extends BaseTestCase {
         HomePage homePage = new HomePage(driver);
         homePage.goToHomePage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        homePage.setAndSelectObjectType("Site");
+        homePage.setOldObjectType("Site");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         OldInventoryViewPage oldInventoryViewPage = new OldInventoryViewPage(driver);
