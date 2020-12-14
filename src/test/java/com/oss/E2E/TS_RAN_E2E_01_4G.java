@@ -11,6 +11,7 @@ import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageContainer.Message;
 import com.oss.framework.alerts.SystemMessageInterface;
+import com.oss.framework.mainheader.PerspectiveChooser;
 import com.oss.framework.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.HomePage;
@@ -57,6 +58,7 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);
         newInventoryViewPage = new NewInventoryViewPage(driver);
+        PerspectiveChooser.create(driver, webDriverWait).setNetworkPerspective();
     }
 
     @Test(priority = 1)
@@ -65,7 +67,9 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
         CmDomainWizardPage wizard = new CmDomainWizardPage(driver);
         wizard.setName(cmDomainName);
         wizard.setInterface(cmInterface);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         wizard.setDomain("RAN");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         wizard.save();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
@@ -129,6 +133,7 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
         networkDiscoveryControlViewPage.deleteCmDomain();
         networkDiscoveryControlViewPage.checkDeleteCmDomainSystemMessage();
         networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(cmDomainName);
+        PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
     }
 
     @Test(priority = 6)
