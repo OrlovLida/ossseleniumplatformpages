@@ -76,7 +76,6 @@ public class CreateMediationConnectionTest extends BaseTestCase {
         CLIConfigurationWizardPage cliConfigurationWizardPage = new CLIConfigurationWizardPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cliConfigurationWizardPage.clickAccept();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
         Assertions.assertThat(messages).hasSize(1);
