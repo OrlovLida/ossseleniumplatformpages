@@ -31,10 +31,12 @@ public class NetworkInconsistenciesViewPage extends BasePage {
     private TreeWidget mainTree;
     private String APPLY_GROUP_BUTTON_ID = "narComponent_GroupDiscrepancyActionApplyId";
     private String APPLY_BUTTON_ID = "narComponent_DiscrepancyActionApplyId";
-    private String INCONSITENCIES_TABLE_ID = "narComponent_networkInconsistenciesViewIddiscrepancyDetailsTreeTableId";
+    private String PHYSICAL_INCONSITENCIES_TABLE_ID = "narComponent_networkInconsistenciesViewIddiscrepancyDetailsTreeTableId";
+    private String RAN_INCONSITENCIES_TABLE_ID = "radioAppId";
     private String CHANGE_LOCATION_ACTION_ID = "DeviceChangeLocationAction";
     private String NIV_TREE = "narComponent_networkInconsistenciesViewIddiscrepanciesTreeTabId";
     private String PRECISE_LOCATION_ID = "precise_location";
+    private String PHYSICAL_LOCATION_ID = "physical_location";
     private String ACCEPT_CHANGE_LOCATION_BUTTON_ID = "wizard-submit-button-change-location-wizard";
 
     public NetworkInconsistenciesViewPage(WebDriver driver) {
@@ -61,28 +63,30 @@ public class NetworkInconsistenciesViewPage extends BasePage {
     }
 
     @Step("Select first Device and use Physical Device Update Wizard to assign location")
-    public void assignLocation(String preciseLocation) {
-        getTreeView().selectTreeRowByOrder(3);
+    public void assignLocation(String inconsistencyName, String preciseLocation) {
+        mainTree.selectTreeRow(inconsistencyName);
         DelayUtils.waitForPageToLoad(driver, wait);
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, INCONSITENCIES_TABLE_ID);
+        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, PHYSICAL_INCONSITENCIES_TABLE_ID);
         table.callAction("EDIT", CHANGE_LOCATION_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         Wizard wizard = Wizard.createWizard(driver, new WebDriverWait(driver, 90));
+        wizard.setComponentValue(PHYSICAL_LOCATION_ID, preciseLocation, ComponentType.SEARCH_FIELD);
+        DelayUtils.waitForPageToLoad(driver, wait);
         wizard.setComponentValue(PRECISE_LOCATION_ID, preciseLocation, ComponentType.SEARCH_FIELD);
         DelayUtils.waitForPageToLoad(driver, wait);
         wizard.clickActionById(ACCEPT_CHANGE_LOCATION_BUTTON_ID);
     }
 
     @Step("Select first Device and use assign location option")
-    public void assignRanLocation(String location) {
-        getTreeView().selectTreeRowByOrder(3);
+    public void assignRanLocation(String inconsistencyName, String location) {
+        mainTree.selectTreeRow(inconsistencyName);
         DelayUtils.waitForPageToLoad(driver, wait);
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, INCONSITENCIES_TABLE_ID);
+        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, RAN_INCONSITENCIES_TABLE_ID);
         table.callAction("Assign Location");
         DelayUtils.waitForPageToLoad(driver, wait);
         Wizard wizard = Wizard.createByComponentId(driver, wait, "Popup");
-        Input locationInput = wizard.getComponent("location", ComponentType.SEARCH_FIELD);
-        locationInput.setSingleStringValue(location);
+        Input locationField = wizard.getComponent("location_OSF", ComponentType.SEARCH_FIELD);
+        locationField.setSingleStringValueContains(location);
         DelayUtils.waitForPageToLoad(driver, wait);
         wizard.clickAccept();
     }
@@ -130,7 +134,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         getTreeView().selectTreeRowByOrder(3);
         DelayUtils.sleep(5000);
         DelayUtils.waitForPageToLoad(driver, wait);
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, INCONSITENCIES_TABLE_ID);
+        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, PHYSICAL_INCONSITENCIES_TABLE_ID);
         return table.getValueCell(0, "Operation Type");
     }
 }
