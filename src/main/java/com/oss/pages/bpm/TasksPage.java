@@ -31,17 +31,20 @@ public class TasksPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         return new TasksPage(driver);
     }
-
+    
     private static final String TABLE_TASKS = "bpm_task_view_task-table";
     private static final String TABS_TASKS_VIEW = "bpm_task_view_tabs-container";
     private static final String ATTACH_FILE_BUTTON = "attachmentManagerBusinessView_topCommonButtons-1";
     private static final String FORM_TAB_ID = "bpm_task_view_form-tab";
     private static final String ATTACHMENT_TAB_ID = "bpm_task_view_attachment-tab";
-
+    private static final String ASSIGN_TASK_ICON_ID = "form.toolbar.assignTask";
+    private static final String COMPLETE_TASK_ICON_ID = "form.toolbar.closeTask";
+    private static final String SETUP_INTEGRATION_ICON_ID = "form.toolbar.setupIntegrationButton";
+    
     public TasksPage(WebDriver driver) {
         super(driver);
     }
-
+    
     public void findTask(String processCode, String taskName) {
         TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, TABLE_TASKS);
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -50,66 +53,66 @@ public class TasksPage extends BasePage {
         table.searchByAttributeWithLabel("Name", Input.ComponentType.TEXT_FIELD, taskName);
         table.doRefreshWhileNoData(10000, "Reload table");
         table.selectRowByAttributeValueWithLabel("Process Code", processCode);
-
+        
     }
-
+    
     public void startTask(String processCode, String taskName) {
         findTask(processCode, taskName);
         DelayUtils.waitForPageToLoad(driver, wait);
-        actionTask("Start task");
-
+        actionTask(ASSIGN_TASK_ICON_ID);
+        
     }
-
+    
     public void completeTask(String processCode, String taskName) {
         findTask(processCode, taskName);
         DelayUtils.waitForPageToLoad(driver, wait);
-        actionTask("Complete task");
+        actionTask(COMPLETE_TASK_ICON_ID);
     }
-
+    
     public void setupIntegration(String processCode) {
         findTask(processCode, "Ready for Integration");
         DelayUtils.waitForPageToLoad(driver, wait);
-        TabsInterface tabs = TabsWidget.createById(driver, wait, TABS_TASKS_VIEW);
-        tabs.callActionByLabel("Setup Integration");
+        getTab().callActionById(SETUP_INTEGRATION_ICON_ID);
     }
-
+    
     public void addFile(String processCode, String taskName, String filePath) {
         findTask(processCode, taskName);
-        TabsInterface tabs = TabsWidget.createById(driver, wait, TABS_TASKS_VIEW);
-        DelayUtils.waitForPageToLoad(driver, wait);
-        tabs.selectTabById(ATTACHMENT_TAB_ID);
-        tabs.callActionById(ATTACH_FILE_BUTTON);
+        selectTab(ATTACHMENT_TAB_ID);
+        getTab().callActionById(ATTACH_FILE_BUTTON);
         AttachFileWizardPage attachFileWizardPage = new AttachFileWizardPage(driver);
         attachFileWizardPage.selectRadioButton("Upload anyway");
         attachFileWizardPage.attachFile(filePath);
         attachFileWizardPage.skipAndAccept();
-
+        
     }
-
-    public void selectTab(String tabLabel) {
-        TabsInterface tabs = TabsWidget.createById(driver, wait, TABS_TASKS_VIEW);
-        tabs.selectTabByLabel(tabLabel);
+    
+    public void selectTab(String tabId) {
+        getTab().selectTabById(tabId);
     }
-
-    private void actionTask(String actionLabel) {
-        TabsInterface tabs = TabsWidget.createById(driver, wait, TABS_TASKS_VIEW);
-        tabs.selectTabById(FORM_TAB_ID);
+    
+    private TabsInterface getTab() {
+        return TabsWidget.createById(driver, wait, TABS_TASKS_VIEW);
+        
+    }
+    
+    private void actionTask(String actionId) {
+        selectTab(FORM_TAB_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
-        tabs.callActionByLabel(actionLabel);
+        getTab().callActionById(actionId);
         ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
         prompt.clickButtonByLabel("Proceed");
     }
-
+    
     public void openIntegrationProcessByClickingOnIdLink() {
         TableInterface table = OldTable.createByComponentId(driver, wait, "ip_involved_nrp_group1");
         table.selectLinkInSpecificColumn("Id");
     }
-
+    
     public void clickPerformConfigurationButton() {
         Button button = Button.create(driver, "Perform Configuration", "a");
         button.click();
     }
-
+    
     public void clickPlanViewButton() {
         Button button = Button.create(driver, "Plan View", "a");
         button.click();
