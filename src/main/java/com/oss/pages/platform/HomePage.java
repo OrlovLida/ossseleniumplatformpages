@@ -1,7 +1,12 @@
 package com.oss.pages.platform;
 
+import com.oss.framework.components.inputs.ComponentFactory;
+import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.inputs.SearchField;
 import com.oss.framework.components.portals.PopupV2;
+import com.oss.framework.data.Data;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
 import com.oss.pages.languageservice.LanguageServicePage;
 import com.oss.pages.physical.DeviceWizardPage;
@@ -14,6 +19,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 
 public class HomePage extends BasePage {
+
+    private static final String OLD_OBJECT_TYPE_DATA_ATTRIBUTE_NAME = "SearchUserViewsByType";
+    private static final String NEW_OBJECT_TYPE_DATA_ATTRIBUTE_NAME = "SearchGraphqlTypes";
 
     @FindBy(className = "oss-header-logo")
     private WebElement logo;
@@ -112,16 +120,22 @@ public class HomePage extends BasePage {
         return new SchedulerServicePage(driver);
     }
 
-    //temporary (OSSWEB-8269)
-    String searchObjectTypeTxtXpath = ".//input[(@data-attributename=\"SearchUserViewsByType\")]";
+    @Step("Set and select {object type}")
+    public void setOldObjectType(String objectType) {
+        SearchField searchField = (SearchField) getComponent(OLD_OBJECT_TYPE_DATA_ATTRIBUTE_NAME, Input.ComponentType.SEARCH_FIELD);
+        searchField.typeValue(objectType);
+        searchField.chooseFirstResult(Data.createFindFirst(objectType));
+    }
 
-    @Step("Set object type")
-    public void setAndSelectObjectType(String objectType) {
-        DelayUtils.waitByXPath(wait, searchObjectTypeTxtXpath);
-        driver.findElement(By.xpath(searchObjectTypeTxtXpath)).sendKeys(objectType);
-        driver.findElement(By.xpath(searchObjectTypeTxtXpath)).sendKeys(Keys.ENTER);
-        DelayUtils.waitByXPath(wait, "//div[contains(text(), '" + objectType + "')]/..");
-        driver.findElement(By.xpath("//div[contains(text(), '" + objectType + "')]/..")).click();
+    @Step("Set and select {object type}")
+    public void setNewObjectType(String objectType) {
+        SearchField searchField = (SearchField) getComponent(NEW_OBJECT_TYPE_DATA_ATTRIBUTE_NAME, Input.ComponentType.SEARCH_FIELD);
+        searchField.typeValue(objectType);
+        searchField.chooseFirstResult(Data.createFindFirst(objectType));
+    }
+
+    private Input getComponent(String componentId, Input.ComponentType componentType) {
+        return ComponentFactory.create(componentId, componentType, driver, wait);
     }
 
 }

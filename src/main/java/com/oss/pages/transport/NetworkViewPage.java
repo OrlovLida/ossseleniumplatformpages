@@ -398,6 +398,7 @@ public class NetworkViewPage extends BasePage {
         input.setSingleStringValue(serialNumber);
     }
 
+    @Deprecated
     @Step("Create device")
     public void create() {
         physicalDeviceWizard.clickActionById("physical_device_common_buttons_app-1");

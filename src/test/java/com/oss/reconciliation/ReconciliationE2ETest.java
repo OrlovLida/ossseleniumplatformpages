@@ -65,11 +65,11 @@ public class ReconciliationE2ETest extends BaseTestCase {
         networkDiscoveryControlViewPage.moveToNivFromNdcv();
         NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
         networkInconsistenciesViewPage.expantTree();
-        networkInconsistenciesViewPage.assignLocation("a");
+        networkInconsistenciesViewPage.assignLocation("CiscoSeleniumTest", "a");
         networkInconsistenciesViewPage.checkUpdateDeviceSystemMessage();
         networkInconsistenciesViewPage.clearOldNotification();
         networkInconsistenciesViewPage.applyInconsistencies();
-        DelayUtils.sleep(500);
+        DelayUtils.sleep(5000);
         networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies("CiscoSeleniumTest");
     }
 

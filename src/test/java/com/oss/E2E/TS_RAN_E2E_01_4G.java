@@ -11,6 +11,7 @@ import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageContainer.Message;
 import com.oss.framework.alerts.SystemMessageInterface;
+import com.oss.framework.mainheader.PerspectiveChooser;
 import com.oss.framework.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.HomePage;
@@ -46,7 +47,6 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
     private String RAN_ANTENNA_MODEL = "Generic 3-Array Antenna";
     private String cmDomainName = "Selenium-TS-RAN-E2E-01-4G";
     private String cmInterface = "Huawei U2000 RAN";
-    private String preciseLocation = "Poznan-BU1";
     private String[] inconsistenciesNames = {
             "PhysicalElement-" + BBU_NAME,
             "PhysicalElement-" + RRU_NAME };
@@ -57,6 +57,7 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);
         newInventoryViewPage = new NewInventoryViewPage(driver);
+        PerspectiveChooser.create(driver, webDriverWait).setNetworkPerspective();
     }
 
     @Test(priority = 1)
@@ -65,7 +66,9 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
         CmDomainWizardPage wizard = new CmDomainWizardPage(driver);
         wizard.setName(cmDomainName);
         wizard.setInterface(cmInterface);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         wizard.setDomain("RAN");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         wizard.save();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
@@ -98,19 +101,12 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
 
     @Test(priority = 4)
     public void assignLocationAndApplyInconsistencies() {
-// TODO po poprawce OSSRC-30730 sprawdzić czy wymagana jest perspektywa NETWORK
         networkDiscoveryControlViewPage.moveToNivFromNdcv();
         NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
         networkInconsistenciesViewPage.expantTree();
-        networkInconsistenciesViewPage.assignRanLocation(preciseLocation);
-        networkInconsistenciesViewPage.checkUpdateDeviceSystemMessage();//TODO sprawdzić po poprawie OSSRC-30730
-        networkInconsistenciesViewPage.clearOldNotification();
-        networkInconsistenciesViewPage.applySelectedInconsistencies();
-        DelayUtils.sleep(5000);
-        networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(inconsistenciesRanName);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         for (String inconsistencieName : inconsistenciesNames) {
-            networkInconsistenciesViewPage.assignLocation(preciseLocation);
+            networkInconsistenciesViewPage.assignLocation(inconsistencieName, LOCATION_NAME);
             networkInconsistenciesViewPage.checkUpdateDeviceSystemMessage();
             networkInconsistenciesViewPage.clearOldNotification();
             networkInconsistenciesViewPage.applySelectedInconsistencies();
@@ -118,6 +114,12 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
             networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(inconsistencieName);
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
         }
+        networkInconsistenciesViewPage.assignRanLocation(inconsistenciesRanName, LOCATION_NAME);
+        networkInconsistenciesViewPage.checkUpdateDeviceSystemMessage();
+        networkInconsistenciesViewPage.clearOldNotification();
+        networkInconsistenciesViewPage.applySelectedInconsistencies();
+        DelayUtils.sleep(5000);
+        networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(inconsistenciesRanName);
     }
 
     @Test(priority = 5)
@@ -129,6 +131,7 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
         networkDiscoveryControlViewPage.deleteCmDomain();
         networkDiscoveryControlViewPage.checkDeleteCmDomainSystemMessage();
         networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(cmDomainName);
+        PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
     }
 
     @Test(priority = 6)
