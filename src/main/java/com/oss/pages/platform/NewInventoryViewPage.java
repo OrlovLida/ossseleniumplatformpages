@@ -7,7 +7,9 @@ import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.portals.SaveConfigurationWizard.Field;
 import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.pages.filterpanel.FilterPanelPage;
+import javafx.scene.control.Tab;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -106,6 +108,11 @@ public class NewInventoryViewPage extends BasePage {
         }
         DelayUtils.waitForPageToLoad(driver, wait);
         return this;
+    }
+
+    @Step("Expand Show on button and select view from the drop-down list")
+    public void callButtonByIDAndChooseAction(String id, String actionName) {
+        getMainTable().getContextActions().callActionById(id, actionName);
     }
 
     @Step("Open Filter Panel")
