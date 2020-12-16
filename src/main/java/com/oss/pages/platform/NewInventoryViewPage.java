@@ -110,9 +110,9 @@ public class NewInventoryViewPage extends BasePage {
         return this;
     }
 
-    @Step("Expand Show on button and select view from the drop-down list")
-    public void callButtonByIDAndChooseAction(String id, String actionName) {
-        getMainTable().getContextActions().callActionById(id, actionName);
+    @Step("Expand button by group name and select action from the drop-down list")
+    public void callButtonByGroupAndChooseAction(String groupLabel, String actionLabel) {
+        getMainTable().callAction(groupLabel, actionLabel);
     }
 
     @Step("Open Filter Panel")
