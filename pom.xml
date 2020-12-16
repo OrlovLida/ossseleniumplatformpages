@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.comarch.oss.web.tests.platform</groupId>
     <artifactId>OSSSeleniumPlatformPages</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.2.0-SNAPSHOT</version>
+
+    <scm>
+        <connection>scm:git:ssh://git@makumba-vm-1.krakow.comarch/ossseleniumtests/ossseleniumplatformpages.git</connection>
+        <developerConnection>scm:git:ssh://git@makumba-vm-1.krakow.comarch/ossseleniumtests/ossseleniumplatformpages.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -14,6 +18,15 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <aspectj.version>1.8.10</aspectj.version>
         <suite>3ukhd</suite>
+
+        <restassured.version>2.9.0</restassured.version>
+        <rs.version>2.1.1</rs.version>
+        <locationinventory.version>1.32.43.Final</locationinventory.version>
+        <physicalinventory.version>1.32.13.Final</physicalinventory.version>
+        <addressinventory.version>1.16.22.Final</addressinventory.version>
+        <radio.version>3.11.7.Final</radio.version>
+        <resourcecatalog.version>2.5.2.Final</resourcecatalog.version>
+        <seleniumframework.version>0.4.0-SNAPSHOT</seleniumframework.version>
     </properties>
 
     <dependencies>
@@ -53,11 +66,57 @@
         <artifactId>jaxb-api</artifactId>
         <version>2.3.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.jayway.restassured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>${restassured.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>javax.ws.rs-api</artifactId>
+            <version>${rs.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>com.comarch.oss.tests.webframework</groupId>
             <artifactId>OSSSeleniumTestFramework</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
+            <version>${seleniumframework.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.comarch.oss.physicalinventory</groupId>
+            <artifactId>physical-inventory-api</artifactId>
+            <version>${physicalinventory.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.comarch.oss.locationinventory</groupId>
+            <artifactId>location-inventory-api</artifactId>
+            <version>${locationinventory.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.comarch.oss.addressinventory</groupId>
+            <artifactId>address-api</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-core</artifactId>
+                </exclusion>
+            </exclusions>
+            <version>${addressinventory.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.comarch.oss.radio</groupId>
+            <artifactId>radio-api-4g</artifactId>
+            <version>${radio.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.comarch.oss.radio</groupId>
+            <artifactId>radio-api-5g</artifactId>
+            <version>${radio.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.comarch.oss.resourcecatalog</groupId>
+            <artifactId>resource-catalog-api</artifactId>
+            <version>${resourcecatalog.version}</version>
         </dependency>
     </dependencies>
 

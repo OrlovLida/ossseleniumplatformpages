@@ -43,7 +43,7 @@ public abstract class IPAddressAssignmentWizardPage extends BasePage {
     @Step("Assign IP Address Assignment Step")
     public void assignIPAddressAssignmentStep(String firstObjectInHierarchy, String ... nextObjectsInHierarchy){
         DelayUtils.waitForPageToLoad(driver, wait);
-        CommonHierarchyApp commonHierarchyApp = CommonHierarchyApp.createByClass(driver, COMMON_HIERARCHY_APP, wait);
+        CommonHierarchyApp commonHierarchyApp = CommonHierarchyApp.createByClass(driver, wait);
         commonHierarchyApp.setFirstObjectInHierarchy(firstObjectInHierarchy);
         for(String nextObject:nextObjectsInHierarchy){
             commonHierarchyApp.setNextObjectInHierarchy(nextObject);

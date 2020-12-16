@@ -2,18 +2,18 @@
 <suite name="RegressionSuiteWeb-3UKHD" thread-count="2" parallel="tests" verbose="1">
     <test name="ExportTests">
         <classes>
-            <class name="com.oss.ExportGuiWizardTest"/>
-            <class name="com.oss.ExportByScheduleTest"/>
+            <class name="com.oss.web.ExportGuiWizardTest"/>
+            <class name="com.oss.web.ExportByScheduleTest"/>
         </classes>
     </test>
     <test name="LayoutTests">
         <classes>
-            <class name="com.oss.LayoutTest"/>
+            <class name="com.oss.web.LayoutTest"/>
         </classes>
     </test>
     <test name="FiltersTests">
         <classes>
-            <class name="com.oss.FiltersTest"/>
+            <class name="com.oss.web.FiltersTest"/>
         </classes>
     </test>
     <test name="CreateProcessNRPTest">
@@ -21,9 +21,14 @@
             <class name="com.oss.bpm.CreateProcessNRPTest"/>
         </classes>
     </test>
-    <test name="CreateIPNetwork">
+    <test name="IPAMTest">
         <classes>
             <class name="com.oss.transport.IPAMTest"/>
+        </classes>
+    </test>
+    <test name="ThreeUKRegressionTests">
+        <classes>
+            <class name="com.oss.ThreeUKRegressionTests"/>
         </classes>
     </test>
 </suite>

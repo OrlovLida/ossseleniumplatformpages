@@ -12,8 +12,8 @@ import com.oss.framework.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.Input.ComponentType;
-import com.oss.framework.components.notifications.Notifications;
-import com.oss.framework.components.notifications.NotificationsInterface;
+import com.oss.framework.mainheader.Notifications;
+import com.oss.framework.mainheader.NotificationsInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Widget;
 import com.oss.framework.widgets.Wizard;
@@ -29,10 +29,15 @@ import io.qameta.allure.Step;
 public class NetworkInconsistenciesViewPage extends BasePage {
 
     private TreeWidget mainTree;
-    private String applyButtonId = "narComponent_GroupDiscrepancyActionApplyId";
-    private String inconsistenciesTable = "narComponent_networkInconsistenciesViewIddiscrepancyDetailsTreeTableId";
-    private String updateDevice = "UpdateDeviceWizardAction";
-    private String nivTree = "narComponent_networkInconsistenciesViewIddiscrepanciesTreeTabId";
+    private String APPLY_GROUP_BUTTON_ID = "narComponent_GroupDiscrepancyActionApplyId";
+    private String APPLY_BUTTON_ID = "narComponent_DiscrepancyActionApplyId";
+    private String PHYSICAL_INCONSITENCIES_TABLE_ID = "narComponent_networkInconsistenciesViewIddiscrepancyDetailsTreeTableId";
+    private String RAN_INCONSITENCIES_TABLE_ID = "radioAppId";
+    private String CHANGE_LOCATION_ACTION_ID = "DeviceChangeLocationAction";
+    private String NIV_TREE = "narComponent_networkInconsistenciesViewIddiscrepanciesTreeTabId";
+    private String PRECISE_LOCATION_ID = "precise_location";
+    private String PHYSICAL_LOCATION_ID = "physical_location";
+    private String ACCEPT_CHANGE_LOCATION_BUTTON_ID = "wizard-submit-button-change-location-wizard";
 
     public NetworkInconsistenciesViewPage(WebDriver driver) {
         super(driver);
@@ -58,17 +63,32 @@ public class NetworkInconsistenciesViewPage extends BasePage {
     }
 
     @Step("Select first Device and use Physical Device Update Wizard to assign location")
-    public void assignLocation() {
-        getTreeView().selectTreeRowByOrder(3);
+    public void assignLocation(String inconsistencyName, String preciseLocation) {
+        mainTree.selectTreeRow(inconsistencyName);
         DelayUtils.waitForPageToLoad(driver, wait);
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, inconsistenciesTable);
-        table.callAction("EDIT", updateDevice);
+        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, PHYSICAL_INCONSITENCIES_TABLE_ID);
+        table.callAction("EDIT", CHANGE_LOCATION_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         Wizard wizard = Wizard.createWizard(driver, new WebDriverWait(driver, 90));
-        Input preciseLocation = wizard.getComponent("search_precise_location", ComponentType.SEARCH_FIELD);
-        preciseLocation.setSingleStringValue("a");
+        wizard.setComponentValue(PHYSICAL_LOCATION_ID, preciseLocation, ComponentType.SEARCH_FIELD);
         DelayUtils.waitForPageToLoad(driver, wait);
-        wizard.clickUpdate();
+        wizard.setComponentValue(PRECISE_LOCATION_ID, preciseLocation, ComponentType.SEARCH_FIELD);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        wizard.clickActionById(ACCEPT_CHANGE_LOCATION_BUTTON_ID);
+    }
+
+    @Step("Select first Device and use assign location option")
+    public void assignRanLocation(String inconsistencyName, String location) {
+        mainTree.selectTreeRow(inconsistencyName);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, RAN_INCONSITENCIES_TABLE_ID);
+        table.callAction("Assign Location");
+        DelayUtils.waitForPageToLoad(driver, wait);
+        Wizard wizard = Wizard.createByComponentId(driver, wait, "Popup");
+        Input locationField = wizard.getComponent("location_OSF", ComponentType.SEARCH_FIELD);
+        locationField.setSingleStringValueContains(location);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        wizard.clickAccept();
     }
 
     @Step("Check system message after device update")
@@ -84,8 +104,16 @@ public class NetworkInconsistenciesViewPage extends BasePage {
     public void applyInconsistencies() {
         getTreeView().selectTreeRowByOrder(2);
         TabsInterface nivTabs = TabWindowWidget.create(driver, wait);
-        nivTabs.selectTabById(nivTree);
-        nivTabs.callActionById(applyButtonId);
+        nivTabs.selectTabById(NIV_TREE);
+        nivTabs.callActionById(APPLY_GROUP_BUTTON_ID);
+        DelayUtils.sleep(1000);
+    }
+
+    @Step("Apply discrepancies to Live perspective")
+    public void applySelectedInconsistencies() {
+        TabsInterface nivTabs = TabWindowWidget.create(driver, wait);
+        nivTabs.selectTabById(NIV_TREE);
+        nivTabs.callActionById(APPLY_BUTTON_ID);
         DelayUtils.sleep(1000);
     }
 
@@ -97,7 +125,16 @@ public class NetworkInconsistenciesViewPage extends BasePage {
 
     @Step("Check notification about accepting inconsistencies")
     public void checkNotificationAfterApplyInconsistencies(String groupDiscrepancyLabel) {
-        NotificationsInterface notifications = Notifications.create(driver, new WebDriverWait(driver, 90));
+        NotificationsInterface notifications = Notifications.create(driver, new WebDriverWait(driver, 150));
         Assertions.assertThat(notifications.waitAndGetFinishedNotificationText().equals("Accepting discrepancies related to " + groupDiscrepancyLabel + " finished")).isTrue();
+    }
+
+    @Step("Check inconsistencies operation type for first object")
+    public String checkInconsistenciesOperationType() {
+        getTreeView().selectTreeRowByOrder(3);
+        DelayUtils.sleep(5000);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, PHYSICAL_INCONSITENCIES_TABLE_ID);
+        return table.getValueCell(0, "Operation Type");
     }
 }

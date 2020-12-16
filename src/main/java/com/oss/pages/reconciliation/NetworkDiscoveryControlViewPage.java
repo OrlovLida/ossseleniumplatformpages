@@ -9,8 +9,8 @@ import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageContainer.Message;
 import com.oss.framework.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.alerts.SystemMessageInterface;
-import com.oss.framework.components.notifications.Notifications;
-import com.oss.framework.components.notifications.NotificationsInterface;
+import com.oss.framework.mainheader.Notifications;
+import com.oss.framework.mainheader.NotificationsInterface;
 import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
@@ -150,6 +150,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     public void moveToSamplesManagement() {
         TabsInterface ndcvTabs = TabWindowWidget.create(driver, wait);
         ndcvTabs.selectTabById(reconciliationTreeTab);
+        DelayUtils.waitForPageToLoad(driver, wait);
         ndcvTabs.callActionById("NAVIGATION", showSamplesManagement);
         DelayUtils.waitForPageToLoad(driver, wait);
     }

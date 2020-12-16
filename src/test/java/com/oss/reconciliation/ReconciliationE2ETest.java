@@ -65,11 +65,11 @@ public class ReconciliationE2ETest extends BaseTestCase {
         networkDiscoveryControlViewPage.moveToNivFromNdcv();
         NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
         networkInconsistenciesViewPage.expantTree();
-        networkInconsistenciesViewPage.assignLocation();
+        networkInconsistenciesViewPage.assignLocation("CiscoSeleniumTest", "a");
         networkInconsistenciesViewPage.checkUpdateDeviceSystemMessage();
         networkInconsistenciesViewPage.clearOldNotification();
         networkInconsistenciesViewPage.applyInconsistencies();
-        DelayUtils.sleep(500);
+        DelayUtils.sleep(5000);
         networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies("CiscoSeleniumTest");
     }
 
@@ -82,8 +82,6 @@ public class ReconciliationE2ETest extends BaseTestCase {
         samplesManagementPage.selectPath();
         samplesManagementPage.deleteDirectoryContent();
         DelayUtils.sleep(2000);
-        samplesManagementPage.selectPath();
-        samplesManagementPage.selectPath();
         samplesManagementPage.uploadSamples("recoSamples/ciscoIOS/empty/Selenium1_10.252.255.201_20170707_1324_running-config");
         DelayUtils.sleep(1000);
         samplesManagementPage.uploadSamples("recoSamples/ciscoIOS/empty/Selenium1_10.252.255.201_20170707_1324_sh_inventory_raw");

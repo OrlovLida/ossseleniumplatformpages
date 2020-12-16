@@ -1,20 +1,27 @@
 package com.oss.pages.platform;
 
+import com.oss.framework.components.inputs.ComponentFactory;
+import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.inputs.SearchField;
 import com.oss.framework.components.portals.PopupV2;
+import com.oss.framework.data.Data;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.Wizard;
+import com.oss.pages.BasePage;
 import com.oss.pages.languageservice.LanguageServicePage;
+import com.oss.pages.physical.DeviceWizardPage;
+import com.oss.pages.physical.LocationWizardPage;
 import com.oss.pages.schedulerservice.SchedulerServicePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.oss.pages.BasePage;
-import com.oss.pages.physical.DeviceWizardPage;
-import com.oss.pages.physical.LocationWizardPage;
-
 
 public class HomePage extends BasePage {
+
+    private static final String OLD_OBJECT_TYPE_DATA_ATTRIBUTE_NAME = "SearchUserViewsByType";
+    private static final String NEW_OBJECT_TYPE_DATA_ATTRIBUTE_NAME = "SearchGraphqlTypes";
 
     @FindBy(className = "oss-header-logo")
     private WebElement logo;
@@ -31,7 +38,7 @@ public class HomePage extends BasePage {
     @FindBy(css = "span.notificationType")
     private WebElement numberOfNotificationsLabel;
 
-    @FindBy (xpath = "//button[@data-original-title='Save bookmark']/i")
+    @FindBy(xpath = "//button[@data-original-title='Save bookmark']/i")
     //@FindBy (xpath = "//i[contains(@class,'buttonIcon fa fa-floppy-o')]")
     private WebElement saveBookmarksButton;
 
@@ -41,10 +48,9 @@ public class HomePage extends BasePage {
         DelayUtils.waitForVisibility(wait, logo);
     }
 
-    @Step("Open Home Page")
-    public static HomePage goToHomePage(WebDriver driver, String basicURL){
-        driver.get(String.format("%s/#/" +
-                "?perspective=LIVE", basicURL));
+    @Step("Go to Home Page")
+    public HomePage goToHomePage(WebDriver driver, String basicURL) {
+        driver.get(String.format("%s/#/", basicURL));
         return new HomePage(driver);
     }
 
@@ -54,7 +60,7 @@ public class HomePage extends BasePage {
 
     public String getPageTitle() {
         WebDriverWait wait = new WebDriverWait(driver, 45);
-        DelayUtils.waitForVisibility(wait,pageTitle);
+        DelayUtils.waitForVisibility(wait, pageTitle);
         return pageTitle.getText();
     }
 
@@ -67,29 +73,29 @@ public class HomePage extends BasePage {
         }
     }
 
-    public FormAppPage goToFormPage(String url){
+    public FormAppPage goToFormPage(String url) {
         driver.get(url);
         return new FormAppPage(driver);
     }
 
     public PopupV2 goToCreateBookmarkPopUp() {
         WebDriverWait wait = new WebDriverWait(driver, 45);
-        DelayUtils.waitForVisibility(wait,saveBookmarksButton);
+        DelayUtils.waitForVisibility(wait, saveBookmarksButton);
         saveBookmarksButton.click();
         return new PopupV2(driver);
     }
 
-    public InputsWizardPage goToInputsWizardPage(String url){
+    public InputsWizardPage goToInputsWizardPage(String url) {
         driver.get(url);
         return new InputsWizardPage(driver);
     }
 
-    public DeviceWizardPage goToDeviceWizardPage(String url){
+    public DeviceWizardPage goToDeviceWizardPage(String url) {
         driver.get(url);
         return new DeviceWizardPage(driver);
     }
 
-    public LocationWizardPage goToLocationWizardPage(String url){
+    public LocationWizardPage goToLocationWizardPage(String url) {
         driver.get(url);
         return new LocationWizardPage(driver);
     }
@@ -108,29 +114,28 @@ public class HomePage extends BasePage {
         driver.get(url);
         return new LanguageServicePage(driver);
     }
+
     public SchedulerServicePage goToSchedulerServicePage(String url) {
         driver.get(url);
         return new SchedulerServicePage(driver);
     }
-    //temporary
-    String searchObjectTypeTxtXpath = ".//input[(@data-attributename=\"SearchUserViewsByType\")]";
-    private String objectTypeListXpath = "//div[contains(text(),'%s')]/..";
-    //temporary
 
-    @Step("Type object type")
-    public HomePage typeObjectType(String objectType) {
-        DelayUtils.waitByXPath(wait, searchObjectTypeTxtXpath);
-        driver.findElement(By.xpath(searchObjectTypeTxtXpath)).sendKeys(objectType);
-        driver.findElement(By.xpath(searchObjectTypeTxtXpath)).sendKeys(Keys.ENTER);
-        return new HomePage(driver);
+    @Step("Set and select {object type}")
+    public void setOldObjectType(String objectType) {
+        SearchField searchField = (SearchField) getComponent(OLD_OBJECT_TYPE_DATA_ATTRIBUTE_NAME, Input.ComponentType.SEARCH_FIELD);
+        searchField.typeValue(objectType);
+        searchField.chooseFirstResult(Data.createFindFirst(objectType));
     }
 
-    @Step("Confirm object type")
-    public OldInventoryViewPage confirmObjectType(String expectedObjectType) {
-        String objectTypeList = String.format(objectTypeListXpath, expectedObjectType);
-        DelayUtils.waitByXPath(wait, objectTypeList);
-        driver.findElement(By.xpath(objectTypeList)).click();
-        return new OldInventoryViewPage(driver);
+    @Step("Set and select {object type}")
+    public void setNewObjectType(String objectType) {
+        SearchField searchField = (SearchField) getComponent(NEW_OBJECT_TYPE_DATA_ATTRIBUTE_NAME, Input.ComponentType.SEARCH_FIELD);
+        searchField.typeValue(objectType);
+        searchField.chooseFirstResult(Data.createFindFirst(objectType));
+    }
+
+    private Input getComponent(String componentId, Input.ComponentType componentType) {
+        return ComponentFactory.create(componentId, componentType, driver, wait);
     }
 
 }

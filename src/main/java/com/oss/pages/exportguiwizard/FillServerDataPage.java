@@ -10,11 +10,11 @@ public class FillServerDataPage extends ExportGuiWizardPage{
 
     public FillServerDataPage(WebDriver driver){super(driver);getWizard();}
 
-    private String PROTOCOLE_TYPE_ID = "exportgui-components-protocoletypechoose";
-    private String SERVER_ADDRESS_ID = "exportgui-components-serveraddresstext";
-    private String REMOTE_DIRECTORY_PATH_ID = "exportgui-components-directorypathtext";
-    private String USER_NAME_ID = "exportgui-components-remoteusernametext";
-    private String PASSWORD_ID = "exportgui-components-remotepasswordtext";
+    private static final String PROTOCOLE_TYPE_ID = "exportgui-components-protocoletypechoose";
+    private static final String SERVER_ADDRESS_ID = "exportgui-components-serveraddresstext";
+    private static final String REMOTE_DIRECTORY_PATH_ID = "exportgui-components-directorypathtext";
+    private static final String USER_NAME_ID = "exportgui-components-remoteusernametext";
+    private static final String PASSWORD_ID = "exportgui-components-remotepasswordtext";
 
     @Step("Type Server Address")
     public FillServerDataPage typeServerAddress(String serverAddress) {
@@ -42,7 +42,7 @@ public class FillServerDataPage extends ExportGuiWizardPage{
 
     @Step("Choose Protocole Type")
     public FillServerDataPage chooseProtocoleType(String type){
-        DelayUtils.waitForComponent(wait,"//input[contains (@id,'" + PROTOCOLE_TYPE_ID + "')]");
+        DelayUtils.waitForPageToLoad(driver, wait);
         setValueOnCombobox(PROTOCOLE_TYPE_ID, type);
         return this;
     }

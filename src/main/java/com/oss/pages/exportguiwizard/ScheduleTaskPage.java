@@ -13,17 +13,17 @@ public class ScheduleTaskPage extends ExportGuiWizardPage{
 
     public ScheduleTaskPage(WebDriver driver){super(driver);}
 
-    private String TASK_NAME_ID = "exportgui-components-scheduledtasknametxt";
-    private String TYPE_OF_SCHEDULE_ID = "exportgui-components-scheduledcronexprtxt";
-    private String DATA_SINGLE_ID = "dateSingle ";
-    private String TIME_SINGLE_ID = "timeSingle";
-    private String OCCURRENCE_INPUT_DAILY_SINGLE_ID = "occurrenceInputDaily";
-    private String TIME_INPUT_ID = "timeInput";
-    private String COMBO_MONTH_ID = "comboMonthYearly";
-    private String COMBO_DAY_ID = "comboDay";
-    private String COMBO_DAY_MONTH_ID = "comboDayMonthly";
-    private String COMBO_DAY_YEAR_ID = "comboDayYearly";
-    private String DAY_BUTTON_CONTAINER_ID= "dayButtonContainer";
+    private static final String TASK_NAME_ID = "exportgui-components-scheduledtasknametxt";
+    private static final String TYPE_OF_SCHEDULE_ID = "exportgui-components-scheduledcronexprtxt";
+    private static final String DATA_SINGLE_ID = "dateSingle ";
+    private static final String TIME_SINGLE_ID = "timeSingle";
+    private static final String OCCURRENCE_INPUT_DAILY_SINGLE_ID = "occurrenceInputDaily";
+    private static final String TIME_INPUT_ID = "timeInput";
+    private static final String COMBO_MONTH_ID = "comboMonthYearly";
+    private static final String COMBO_DAY_ID = "comboDay";
+    private static final String COMBO_DAY_MONTH_ID = "comboDayMonthly";
+    private static final String COMBO_DAY_YEAR_ID = "comboDayYearly";
+    private static final String DAY_BUTTON_CONTAINER_ID= "dayButtonContainer";
 
     @Step("Choose XLS File Type")
     public ScheduleTaskPage typeTaskName(String taskName){
@@ -117,7 +117,7 @@ public class ScheduleTaskPage extends ExportGuiWizardPage{
     }
 
     private void clickOnDayButton(int dayOfWeek){
-        List<WebElement> dayButtons = driver.findElements(By.xpath("//button[@class = 'dayButtonContainer']"));
+        List<WebElement> dayButtons = driver.findElements(By.xpath("//button[@class = 'day-button']"));
         dayButtons.get(dayOfWeek-1).click();
     }
 

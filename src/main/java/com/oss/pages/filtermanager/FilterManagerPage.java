@@ -12,12 +12,8 @@ public class FilterManagerPage extends BasePage {
         super(driver);
     }
 
-    private final String NEW_FOLDER_ID = "new_folder";
-    private final String COMMON_LIST_APP_ID = "_FilterManagerList";
-
-    private CommonList getCommonList() {
-        return CommonList.create(driver, wait, COMMON_LIST_APP_ID);
-    }
+    private static final String NEW_FOLDER_ID = "new_folder";
+    private static final String COMMON_LIST_APP_ID = "_FilterManagerList";
 
     @Step("Open Filter Manager Page")
     public static FilterManagerPage goToFilterManagerPage(WebDriver driver, String baseURL) {
@@ -83,6 +79,7 @@ public class FilterManagerPage extends BasePage {
         getCommonList().expandListElementKebab(name);
         DelayUtils.waitForPageToLoad(driver, wait);
         getCommonList().chooseDelete();
+        DelayUtils.waitForPageToLoad(driver, wait);
         return this;
     }
 
@@ -107,14 +104,14 @@ public class FilterManagerPage extends BasePage {
     }
 
     @Step("Open Share Filter Page")
-    public ShareFilterPage openShareFilter(String name) {
+    private ShareFilterPage openShareFilter(String name) {
         getCommonList().expandListElementKebab(name);
         getCommonList().chooseShare();
         return new ShareFilterPage(driver);
     }
 
     @Step("Open Share Folder Page")
-    public ShareFilterPage openShareFolder(String folderName) {
+    private ShareFilterPage openShareFolder(String folderName) {
         getCommonList().expandCategoryKebab(folderName);
         getCommonList().chooseShare();
         return new ShareFilterPage(driver);
@@ -162,5 +159,9 @@ public class FilterManagerPage extends BasePage {
     @Step("Checking that Filter is Favorite")
     public boolean isFavorite(String name) {
         return getCommonList().isFavorite(name);
+    }
+
+    private CommonList getCommonList() {
+        return CommonList.create(driver, wait, COMMON_LIST_APP_ID);
     }
 }

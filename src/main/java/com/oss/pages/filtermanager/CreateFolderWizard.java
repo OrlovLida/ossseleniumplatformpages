@@ -12,9 +12,9 @@ public class CreateFolderWizard extends FilterManagerPage {
         super(driver);
     }
 
-    private String NAME_TEXT_FIELD_ID= "filterManager_wizard_def_name";
-    private String WIZARD_ID = "filterManager_wizard_folder_widget";
-    private String ACCEPT_BUTTON_ID = "wizard-submit-button-filterManager_wizard_folder_widget";
+    private static final String NAME_TEXT_FIELD_ID= "filterManager_wizard_def_name";
+    private static final String WIZARD_ID = "filterManager_wizard_folder_widget";
+    private static final String ACCEPT_BUTTON_ID = "wizard-submit-button-filterManager_wizard_folder_widget";
 
     private Wizard folderWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
 

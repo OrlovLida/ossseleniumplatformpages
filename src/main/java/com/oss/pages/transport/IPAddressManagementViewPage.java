@@ -1,10 +1,14 @@
 package com.oss.pages.transport;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriver;
+
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.OldActionsContainer;
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.Button;
+import com.oss.framework.components.inputs.Input;
 import com.oss.framework.listwidget.CommonList;
 import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.prompts.ConfirmationBoxInterface;
@@ -14,28 +18,13 @@ import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
 import com.oss.framework.widgets.propertypanel.PropertyPanelInterface;
 import com.oss.framework.widgets.treewidget.TreeWidget;
-import org.openqa.selenium.By;
 import com.oss.pages.BasePage;
+
 import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
+
+import java.util.Arrays;
 
 public class IPAddressManagementViewPage extends BasePage {
-
-    public static IPAddressManagementViewPage goToIPAddressManagementViewPageLive(WebDriver driver, String basicURL) {
-        driver.get(String.format(IPADDRESS_MANAGEMENT_VIEW_URL + PERSPECTIVE, basicURL, LIVE));
-        return new IPAddressManagementViewPage(driver);
-    }
-
-    public static IPAddressManagementViewPage goToIPAddressManagementViewPagePlan(WebDriver driver, String basicURL, long project) {
-        driver.get(String.format(IPADDRESS_MANAGEMENT_VIEW_URL +PROJECT_ID + PERSPECTIVE , basicURL, project, PLAN));
-        return new IPAddressManagementViewPage(driver);
-    }
-
-    public IPAddressManagementViewPage(WebDriver driver) {
-        super(driver);
-        DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
-    }
-
     private static final String IPADDRESS_MANAGEMENT_VIEW_URL = "%s/#/view/transport/ipmgt/ipTree?";
     private static final String PROJECT_ID = "project_id=%d";
     private static final String PERSPECTIVE = "perspective=%s";
@@ -44,15 +33,28 @@ public class IPAddressManagementViewPage extends BasePage {
     private static final String ROLE_TEXT_FIELD_DATA_ATTRIBUTE = "text-field-uid";
     private static final String XPATH_TO_CONFIRM_DELETION = "//button[@class='actionButton btn btn-primary']";
     private static final String XPATH_TO_ROLES = ".//li[@class = 'listElement']";
-    private static final String DELETE_BUTTON = "Delete";
-    private static final String OTHER_BUTTON = "__more-group";
+
+    private static final String CREATE_IP_NETWORK_ACTION = "Create IP Network";
+    private static final String EDIT_IP_NETWORK_ACTION = "Edit IP Network";
+    private static final String CREATE_IPV4_SUBNET_ACTION = "Create IPv4 Subnet";
+    private static final String EDIT_IPV4_SUBNET_ACTION = "Edit IPv4 Subnet";
+    private static final String CREATE_OPERATION_FOR_NETWORK_GROUP = "CreateOperationsForNetwork";
+    private static final String EDIT_OPERATION_FOR_NETWORK_GROUP = "EditOperationsForNetwork";
+    private static final String EDIT_OPERATION_GROUP = "Edit";
+    private static final String CHANGE_SUBNET_TYPE_TO_BLOCK = "Change Subnet Type to Block";
+    private static final String EDIT_OPERATION_FOR_IPV4_SUBNET_NETWORK_GROUP = "EditOperationsForIPv4SubnetNetwork";
+    private static final String DELETE_BUTTON_DATA_ATTRIBUTE_NAME = "Delete";
+    private static final String SPLIT_IPV4_SUBNET_BUTTON_DATA_ATTRIBUTE_NAME = "Split IPv4 Subnet";
+    private static final String MERGE_IPV4_SUBNET_BUTTON_DATA_ATTRIBUTE_NAME = "Merge IPv4 Subnet";
+    private static final String OTHER_BUTTON_GROUP_ID = "__more-group";
     private static final String ROLE_BUTTON = "Role";
-    private static final String OK_BUTTON = "OK";
-    private static final String TREE_VIEW = "TreeView";
-    private static final String TREE_VIEW_COMPONENT = "TreeView";
-    private static final String OSS_WINDOW = "OssWindow";
-    private static final String WINDOW_TOOLBAR = "windowToolbar";
-    private static final String TABS_CONTAINER = "tabsContainer";
+
+    private static final String OK_BUTTON_LABEL = "OK";
+    private static final String TREE_VIEW_CLASS = "TreeView";
+    private static final String TREE_VIEW_COMPONENT_CLASS = "TreeView";
+    private static final String OSS_WINDOW_CLASS = "OssWindow";
+    private static final String WINDOW_TOOLBAR_CLASS = "windowToolbar";
+    private static final String TABS_CONTAINER_CLASS = "tabsContainer";
     private Wizard wizard;
     private CommonList commonList;
 
@@ -60,38 +62,53 @@ public class IPAddressManagementViewPage extends BasePage {
     private OldActionsContainer actionsContainer;
     private PropertyPanelInterface propertyPanel;
 
+    public static IPAddressManagementViewPage goToIPAddressManagementViewPageLive(WebDriver driver, String basicURL) {
+        driver.get(String.format(IPADDRESS_MANAGEMENT_VIEW_URL + PERSPECTIVE, basicURL, LIVE));
+        return new IPAddressManagementViewPage(driver);
+    }
+
+    public static IPAddressManagementViewPage goToIPAddressManagementViewPagePlan(WebDriver driver, String basicURL, long project) {
+        driver.get(String.format(IPADDRESS_MANAGEMENT_VIEW_URL + PROJECT_ID + PERSPECTIVE, basicURL, project, PLAN));
+        return new IPAddressManagementViewPage(driver);
+    }
+
+    public IPAddressManagementViewPage(WebDriver driver) {
+        super(driver);
+        waitForPageToLoad();
+    }
+
     private TreeWidget getTreeView() {
         if (mainTree == null) {
-            Widget.waitForWidget(wait, TREE_VIEW);
-            mainTree = TreeWidget.createByClass(driver, TREE_VIEW, wait);
-            DelayUtils.waitForVisibility(wait, driver.findElement(By.className(TREE_VIEW_COMPONENT)));
+            Widget.waitForWidget(wait, TREE_VIEW_CLASS);
+            mainTree = TreeWidget.createByClass(driver, TREE_VIEW_CLASS, wait);
+            DelayUtils.waitForVisibility(wait, driver.findElement(By.className(TREE_VIEW_COMPONENT_CLASS)));
         }
-        DelayUtils.waitForVisibility(wait, driver.findElement(By.className(TREE_VIEW_COMPONENT)));
+        DelayUtils.waitForVisibility(wait, driver.findElement(By.className(TREE_VIEW_COMPONENT_CLASS)));
         return mainTree;
     }
 
     private OldActionsContainer getActionsInterface() {
         if (actionsContainer == null) {
-            DelayUtils.waitForVisibility(wait, driver.findElement(By.className(OSS_WINDOW)));
-            actionsContainer = OldActionsContainer.createFromParent(driver, wait, driver.findElement(By.className(OSS_WINDOW)));
-            DelayUtils.waitForVisibility(wait, driver.findElement(By.className(WINDOW_TOOLBAR)));
+            DelayUtils.waitForVisibility(wait, driver.findElement(By.className(OSS_WINDOW_CLASS)));
+            actionsContainer = OldActionsContainer.createFromParent(driver, wait, driver.findElement(By.className(OSS_WINDOW_CLASS)));
+            DelayUtils.waitForVisibility(wait, driver.findElement(By.className(WINDOW_TOOLBAR_CLASS)));
         }
-        DelayUtils.waitForVisibility(wait, driver.findElement(By.className(WINDOW_TOOLBAR)));
+        DelayUtils.waitForVisibility(wait, driver.findElement(By.className(WINDOW_TOOLBAR_CLASS)));
         return actionsContainer;
     }
 
-    public PropertyPanelInterface getPropertyPanel(){
+    public PropertyPanelInterface getPropertyPanel() {
         if (propertyPanel == null) {
-            DelayUtils.waitForVisibility(wait, driver.findElement(By.className(OSS_WINDOW)));
+            DelayUtils.waitForVisibility(wait, driver.findElement(By.className(OSS_WINDOW_CLASS)));
             propertyPanel = OldPropertyPanel.create(driver, wait);
-            DelayUtils.waitForVisibility(wait, driver.findElement(By.className(TABS_CONTAINER)));
+            DelayUtils.waitForVisibility(wait, driver.findElement(By.className(TABS_CONTAINER_CLASS)));
         }
-        DelayUtils.waitForVisibility(wait, driver.findElement(By.className(TABS_CONTAINER)));
+        DelayUtils.waitForVisibility(wait, driver.findElement(By.className(TABS_CONTAINER_CLASS)));
         return propertyPanel;
     }
 
     @Step("Open ip Address Management")
-    public static IPAddressManagementViewPage goToIPAddressManagementPage(WebDriver driver, String basicURL){
+    public static IPAddressManagementViewPage goToIPAddressManagementPage(WebDriver driver, String basicURL) {
         driver.get(String.format(IPADDRESS_MANAGEMENT_VIEW_URL, basicURL));
         DelayUtils.sleep(500);
         return new IPAddressManagementViewPage(driver);
@@ -156,6 +173,14 @@ public class IPAddressManagementViewPage extends BasePage {
         return this;
     }
 
+    @Step("Search IP Network")
+    public IPAddressManagementViewPage searchIpNetwork(String value) {
+        getTreeView()
+                .performSearchWithEnter(value);
+        waitForPageToLoad();
+        return this;
+    }
+
     protected Wizard getWizard() {
         if (wizard == null) {
             wizard = Wizard.createWizard(driver, wait);
@@ -170,12 +195,12 @@ public class IPAddressManagementViewPage extends BasePage {
         return commonList;
     }
 
-    private void clickOnRoleButton(){
+    private void clickOnRoleButton() {
         DelayUtils.sleep(5000);
         Button.createBySelectorAndId(driver, "a", ROLE_BUTTON).click();
     }
 
-    private void clickCreateNewRole(){
+    private void clickCreateNewRole() {
         DelayUtils.sleep();
         Button.createBySelectorAndId(driver, "a", "buttons-uid-0").click();
     }
@@ -198,7 +223,7 @@ public class IPAddressManagementViewPage extends BasePage {
 
     }
 
-    private void setValueOnTextField (String componentId, Input.ComponentType componentType, String value){
+    private void setValueOnTextField(String componentId, Input.ComponentType componentType, String value) {
         DelayUtils.sleep();
         getWizard().getComponent(componentId, componentType).clearByAction();
         getWizard().getComponent(componentId, componentType).setSingleStringValue(value);
@@ -208,83 +233,123 @@ public class IPAddressManagementViewPage extends BasePage {
         return driver.findElements(By.xpath(XPATH_TO_ROLES)).size();
     }
 
-
     @Step("Select first object on hierarchy view")
     public void selectFirstTreeRow() {
-        DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
+        waitForPageToLoad();
         getTreeView().selectFirstTreeRow();
     }
 
     @Step("Select object on hierarchy view")
     public void selectTreeRow(String name) {
-        DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
+        waitForPageToLoad();
         getTreeView().selectTreeRow(name);
     }
 
     @Step("Select object contains name on hierarchy view")
     public void selectTreeRowContains(String name) {
-        DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
+        waitForPageToLoad();
         getTreeView().selectTreeRowContains(name);
     }
 
     @Step("Expand object on hierarchy view")
-    public void expandTreeRow(String name) {
-        DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
+    public void expandTreeRow(String name){
+        waitForPageToLoad();
         getTreeView().expandTreeRow(name);
-        DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
+        waitForPageToLoad();
     }
 
     @Step("Expand object on hierarchy view")
     public void expandTreeRowContains(String name) {
-        DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
+        waitForPageToLoad();
         getTreeView().expandTreeRowContains(name);
-        DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
+        waitForPageToLoad();
+    }
+
+    @Step("Use context action")
+    public void useContextAction(String actionDataAttributeName) {
+        waitForPageToLoad();
+        getActionsInterface().callActionById(actionDataAttributeName);
     }
 
     @Step("Use context action")
     public void useContextAction(String groupId, String actionDataAttributeName) {
-        DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
+        waitForPageToLoad();
         getActionsInterface().callActionById(groupId, actionDataAttributeName);
     }
 
     @Step("Use context action")
     public void useContextAction(String groupId, String innerGroupDataAttributeName, String actionDataAttributeName) {
-        DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
+        waitForPageToLoad();
         getActionsInterface().callActionById(groupId, innerGroupDataAttributeName, actionDataAttributeName);
-    }
-
-    @Step("Use button")
-    private void useButton(String buttonId) {
-        DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
-        Button button = Button.create(driver, buttonId, "a");
-        button.click();
     }
 
     @Step("Accept confirmation box")
     public void acceptConfirmationBox() {
-        DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
+        waitForPageToLoad();
         ConfirmationBoxInterface confirmationBox = ConfirmationBox.create(driver, wait);
-        confirmationBox.clickButtonByLabel(OK_BUTTON);
+        confirmationBox.clickButtonByLabel(OK_BUTTON_LABEL);
     }
 
     @Step("Close system message")
     public void closeSystemMessage() {
-        DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
+        waitForPageToLoad();
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, wait);
         systemMessage.close();
     }
 
-    public void deleteObject(String name){
-        selectTreeRow(name);
-        useButton(DELETE_BUTTON);
+    public void createIPNetwork(String networkName, String description) {
+        useContextAction(CREATE_OPERATION_FOR_NETWORK_GROUP, CREATE_IP_NETWORK_ACTION);
+        IPNetworkWizardPage ipNetworkWizardPage = new IPNetworkWizardPage(driver);
+        ipNetworkWizardPage.createIPNetwork(networkName, description);
+        closeSystemMessage();
+    }
+
+    public void editIPNetwork(String networkName, String networkNameUpdated, String description) {
+        selectTreeRow(networkName);
+        useContextAction(EDIT_OPERATION_FOR_NETWORK_GROUP, EDIT_IP_NETWORK_ACTION);
+        IPNetworkWizardPage ipNetworkWizardPage = new IPNetworkWizardPage(driver);
+        ipNetworkWizardPage.editIPNetwork(networkNameUpdated, description);
+    }
+
+    public IPSubnetWizardPage createIPv4Subnet() {
+        useContextAction(CREATE_OPERATION_FOR_NETWORK_GROUP, CREATE_IPV4_SUBNET_ACTION);
+        return new IPSubnetWizardPage(driver);
+    }
+
+    public void changeIPSubnetTypeToBlock(String rowName) {
+        selectTreeRowContains(rowName);
+        useContextAction(OTHER_BUTTON_GROUP_ID, EDIT_OPERATION_GROUP, CHANGE_SUBNET_TYPE_TO_BLOCK);
+        acceptConfirmationBox();
+    }
+
+    public void editIPv4Subnet(String rowName, String role, String description) {
+        selectTreeRowContains(rowName);
+        useContextAction(OTHER_BUTTON_GROUP_ID, EDIT_OPERATION_GROUP, EDIT_IPV4_SUBNET_ACTION);
+        EditIPSubnetWizardPage editIPSubnetWizardPage = new EditIPSubnetWizardPage(driver);
+        editIPSubnetWizardPage.editIPSubnet(role, description);
+    }
+
+    public IPSubnetWizardPage splitIPv4Subnet(String rowName) {
+        selectTreeRowContains(rowName);
+        useContextAction(SPLIT_IPV4_SUBNET_BUTTON_DATA_ATTRIBUTE_NAME);
+        return new IPSubnetWizardPage(driver);
+    }
+
+    public IPSubnetWizardPage mergeIPv4Subnet(String ... rowName) {
+        Arrays.stream(rowName).forEach(this::selectTreeRowContains);
+        useContextAction(MERGE_IPV4_SUBNET_BUTTON_DATA_ATTRIBUTE_NAME);
+        return new IPSubnetWizardPage(driver);
+    }
+
+    public void deleteObject(String name) {
+        waitForPageToLoad();
+        selectTreeRowContains(name);
+        useContextAction(DELETE_BUTTON_DATA_ATTRIBUTE_NAME);
         acceptConfirmationBox();
         closeSystemMessage();
     }
 
-    public void deleteIPSubnet(String subnetIpAddress){
-        selectTreeRowContains(subnetIpAddress);
-        useContextAction(OTHER_BUTTON, DELETE_BUTTON);
-        acceptConfirmationBox();
-        closeSystemMessage();
+    private void waitForPageToLoad(){
+        DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
     }
 }

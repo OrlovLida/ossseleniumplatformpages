@@ -17,6 +17,26 @@ public class RandomGenerator {
         return buffer.toString();
     }
 
+    public static String generateRandomENodeBId() {
+        int min = 0;
+        int max = 1048575; // id enodeb </= 1 048 575
+        Random random = new Random();
+        int randomNumber = random.nextInt((max - min) + 1) + min;
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(randomNumber);
+        return buffer.toString();
+    }
+
+    public static String generateRandomCell4GId() {
+        int min = 0;
+        int max = 255; // id cell4g </= 255
+        Random random = new Random();
+        int randomNumber = random.nextInt((max - min) + 1) + min;
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(randomNumber);
+        return buffer.toString();
+    }
+
     public static String generateRandomGNodeBId() {
         int min = 0;
         int max = 999999999; // id gnodeb </= 4 294 967 295
