@@ -268,7 +268,7 @@ public class IPAddressManagementViewPage extends BasePage {
     @Step("Use context action")
     public void useContextAction(String actionDataAttributeName) {
         waitForPageToLoad();
-        getActionsInterface().callActionByDataAttributeName(actionDataAttributeName);
+        getActionsInterface().callActionById(actionDataAttributeName);
     }
 
     @Step("Use context action")
