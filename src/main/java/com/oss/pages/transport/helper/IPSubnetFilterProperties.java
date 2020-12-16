@@ -13,6 +13,11 @@ public class IPSubnetFilterProperties {
         this.maskLength = maskLength;
     }
 
+    public IPSubnetFilterProperties(String startIp, String endIp){
+        this.startIp = startIp;
+        this.endIp = endIp;
+    }
+
     public String getStartIp() {
         return startIp;
     }

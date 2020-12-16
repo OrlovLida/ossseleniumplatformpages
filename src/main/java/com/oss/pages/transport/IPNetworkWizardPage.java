@@ -19,20 +19,20 @@ public class IPNetworkWizardPage extends BasePage {
     }
 
     public void createIPNetwork(String networkName, String description){
-        Wizard createIPNetwork = Wizard.createByComponentId(driver, wait, IPNETWORK_WIZARD_DATA_ATTRIBUTE_NAME);
+        Wizard createIPNetwork = createWizard();
         setNetworkName(createIPNetwork, networkName);
         setDescription(createIPNetwork, description);
         createIPNetwork.clickOK();
     }
 
     public void createIPNetwork(String networkName){
-        Wizard createIPNetwork = Wizard.createByComponentId(driver, wait, IPNETWORK_WIZARD_DATA_ATTRIBUTE_NAME);
+        Wizard createIPNetwork = createWizard();
         setNetworkName(createIPNetwork, networkName);
         createIPNetwork.clickOK();
     }
 
     public void editIPNetwork(String networkName, String description){
-        Wizard editIPNetwork = Wizard.createByComponentId(driver, wait, IPNETWORK_WIZARD_DATA_ATTRIBUTE_NAME);
+        Wizard editIPNetwork = createWizard();
         setNetworkName(editIPNetwork, networkName);
         setDescription(editIPNetwork, description);
         editIPNetwork.clickOK();
@@ -48,5 +48,9 @@ public class IPNetworkWizardPage extends BasePage {
         Input componentDescription = createIPNetwork.getComponent(ADD_IPNETWORK_DESCRIPTION_ATTRIBUTE_ID, Input.ComponentType.TEXT_AREA);
         componentDescription.clear();
         componentDescription.setSingleStringValue(description);
+    }
+
+    private Wizard createWizard(){
+        return Wizard.createByComponentId(driver, wait, IPNETWORK_WIZARD_DATA_ATTRIBUTE_NAME);
     }
 }

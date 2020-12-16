@@ -23,6 +23,11 @@ public class IPSubnetWizardProperties {
         this.description = description;
     }
 
+    public IPSubnetWizardProperties(String subnetType, String role){
+        this.subnetType = subnetType;
+        this.role = role;
+    }
+
     public String getSubnetType() {
         return subnetType;
     }
