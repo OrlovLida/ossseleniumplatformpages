@@ -17,8 +17,15 @@ public class EditIPSubnetWizardPage extends BasePage {
     }
 
     public void editIPSubnet(String maskLength, String role, String description){
-        Wizard editIPSubnet = Wizard.createByComponentId(driver, wait, EDIT_IPSUBNET_WIZARD_DATA_ATTRIBUTE_NAME);
+        Wizard editIPSubnet = createWizard();
         setSubnetMask(editIPSubnet, maskLength);
+        setRole(editIPSubnet, role);
+        setDescription(editIPSubnet, description);
+        editIPSubnet.clickOK();
+    }
+
+    public void editIPSubnet(String role, String description){
+        Wizard editIPSubnet = createWizard();
         setRole(editIPSubnet, role);
         setDescription(editIPSubnet, description);
         editIPSubnet.clickOK();
@@ -46,5 +53,9 @@ public class EditIPSubnetWizardPage extends BasePage {
         Input componentDescription = editIPSubnet.getComponent(DESCRIPTION_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD);
         componentDescription.clear();
         componentDescription.setSingleStringValue(description);
+    }
+
+    private Wizard createWizard(){
+        return Wizard.createByComponentId(driver, wait, EDIT_IPSUBNET_WIZARD_DATA_ATTRIBUTE_NAME);
     }
 }
