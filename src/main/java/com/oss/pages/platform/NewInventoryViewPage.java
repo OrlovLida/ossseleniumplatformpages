@@ -1,21 +1,18 @@
 package com.oss.pages.platform;
 
-import com.oss.framework.components.common.AttributesChooser;
-import com.oss.framework.components.inputs.Button;
-import com.oss.framework.components.inputs.ComponentFactory;
-import com.oss.framework.components.inputs.Input;
-import com.oss.framework.components.portals.SaveConfigurationWizard.Field;
-import com.oss.framework.components.search.AdvancedSearch;
-import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.tablewidget.OldTable;
-import com.oss.pages.filterpanel.FilterPanelPage;
-import javafx.scene.control.Tab;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import com.oss.framework.components.common.AttributesChooser;
+import com.oss.framework.components.inputs.Button;
+import com.oss.framework.components.inputs.ComponentFactory;
+import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.portals.DropdownList;
+import com.oss.framework.components.portals.SaveConfigurationWizard.Field;
+import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.mainheader.ButtonPanel;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Widget;
 import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.propertypanel.PropertiesFilter;
@@ -23,9 +20,9 @@ import com.oss.framework.widgets.propertypanel.PropertyPanel;
 import com.oss.framework.widgets.tablewidget.TableWidget;
 import com.oss.framework.widgets.tabswidget.TabsWidget;
 import com.oss.pages.BasePage;
+import com.oss.pages.filterpanel.FilterPanelPage;
 
 import io.qameta.allure.Step;
-
 
 public class NewInventoryViewPage extends BasePage {
 
@@ -110,9 +107,10 @@ public class NewInventoryViewPage extends BasePage {
         return this;
     }
 
-    @Step("Expand button {groupLabel} and select {actionLabel} from the drop-down list")
-    public void callButtonByGroupAndChooseAction(String groupLabel, String actionLabel) {
-        getMainTable().callAction(groupLabel, actionLabel);
+    @Step("Call {actionId} action from {groupId} group")
+    public NewInventoryViewPage callAction(String groupId, String actionId) {
+        getMainTable().callAction(groupId, actionId);
+        return this;
     }
 
     @Step("Open Filter Panel")

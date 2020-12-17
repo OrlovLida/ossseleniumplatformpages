@@ -217,7 +217,7 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         newInventoryViewPage.openFilterPanel().changeValueInLocationNameInput(LOCATION_NAME).applyFilter();
         newInventoryViewPage.selectFirstRow();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        newInventoryViewPage.callButtonByGroupAndChooseAction("CREATE", "AdvanceCableCreateLocationWizardAction");
+        newInventoryViewPage.callAction("CREATE", "AdvanceCableCreateLocationWizardAction");
         /*newInventoryViewPage.getWizard()
                 .setComponentValue(END_LOCATION_DATA_ATTRIBUTENAME, LOCATION_NAME, Input.ComponentType.SEARCH_FIELD);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -245,7 +245,7 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
     @Description("Create Antenna Trail Between RRU and RAN Antenna")
     public void createAntennaTrailBetweenRRUAndRANAntenna() {
         NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver);
-        newInventoryViewPage.callButtonByGroupAndChooseAction("NAVIGATION", "Cell Site Configuration");
+        newInventoryViewPage.callAction("NAVIGATION", "Cell Site Configuration");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         CellSiteConfigurationPage cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);
         cellSiteConfigurationPage.selectTreeRow("All Resources");
