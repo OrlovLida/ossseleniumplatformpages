@@ -40,7 +40,7 @@ public class IntegrationProcessWizardPage extends BasePage {
     }
     
     public void deleteIntegrationProcess(String processName) {
-        EditableList editableList = EditableList.create(driver, wait);
+        EditableList editableList = EditableList.creates(driver, wait);
         editableList.callActionByLabel(DELETE_LABEL_ACTION, PROCESS_NAME_COLUMN_ID, processName);
     }
     
