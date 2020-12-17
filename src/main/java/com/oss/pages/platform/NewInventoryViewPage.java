@@ -110,7 +110,7 @@ public class NewInventoryViewPage extends BasePage {
         return this;
     }
 
-    @Step("Expand button by group name and select action from the drop-down list")
+    @Step("Expand button {groupLabel} and select {actionLabel} from the drop-down list")
     public void callButtonByGroupAndChooseAction(String groupLabel, String actionLabel) {
         getMainTable().callAction(groupLabel, actionLabel);
     }
