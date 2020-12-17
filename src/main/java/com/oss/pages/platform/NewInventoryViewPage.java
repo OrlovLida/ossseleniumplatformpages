@@ -121,6 +121,19 @@ public class NewInventoryViewPage extends BasePage {
         return new FilterPanelPage(driver);
     }
 
+    @Step("Set value in Filter Panel")
+    public FilterPanelPage setFilterPanel(String componentId, String value) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        openFilterPanel().setValue(Input.ComponentType.TEXT_FIELD, componentId, value).applyFilter();
+        return new FilterPanelPage(driver);
+    }
+
+    @Step("Call {actionId} action from {groupId} group")
+    public NewInventoryViewPage callAction(String groupId, String actionId) {
+        getMainTable().callAction(groupId, actionId);
+        return this;
+    }
+
     @Step("Clear all tags")
     public NewInventoryViewPage clearAllTags() {
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -238,6 +251,7 @@ public class NewInventoryViewPage extends BasePage {
         ButtonPanel.create(driver, wait).openChooseConfigurationWizard().chooseConfiguration(configurationName).apply();
         return this;
     }
+
     @Step("Delete configuration for page")
     public NewInventoryViewPage deletePageConfiguration(String configurationName) {
         DelayUtils.waitForPageToLoad(driver, wait);
