@@ -32,8 +32,7 @@ public class CellSiteConfigurationPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         getTabTable().callActionByLabel("ADD");
         DelayUtils.waitForPageToLoad(driver, wait);
-        DropdownList.create(driver, wait)
-                .selectOption(option);
+        DropdownList.create(driver, wait).selectOption(option);
     }
 
     @Step("Click plus icon by label")
@@ -50,11 +49,16 @@ public class CellSiteConfigurationPage extends BasePage {
 
     @Step("Filter and select {objectName} row")
     public CellSiteConfigurationPage filterObject(String columnName, String objectName) {
-        OldTable tabTable = OldTable.createByComponentDataAttributeName(driver, wait, TAB_TABLE_DATA_ATTRIBUTE_NAME);
-        tabTable.searchByAttributeWithLabel(columnName, Input.ComponentType.TEXT_FIELD, objectName);
-        DelayUtils.waitForPageToLoad(driver, wait);
-        tabTable.selectRowByAttributeValueWithLabel(columnName, objectName);
+        getTabTable().searchByAttributeWithLabel(columnName, Input.ComponentType.TEXT_FIELD, objectName);
+        selectRowByAttributeValueWithLabel(columnName, objectName);
         return this;
+    }
+
+    @Step("Select {label} row")
+    public void selectRowByAttributeValueWithLabel(String attribute, String label) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getTabTable().selectRowByAttributeValueWithLabel(attribute, label);
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     @Step("Click Edit icon")
@@ -112,23 +116,12 @@ public class CellSiteConfigurationPage extends BasePage {
         wizard.clickAccept();
     }
 
-    public OldTable getTabTable() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        return OldTable.createByComponentDataAttributeName(driver, wait, TAB_TABLE_DATA_ATTRIBUTE_NAME);
-    }
-
-    public void selectResource(String name) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        getTabTable().selectRowByAttributeValueWithLabel("Name", name);
-        DelayUtils.waitForPageToLoad(driver, wait);
-    }
-
     public TreeWidget getTree() {
         return TreeWidget.createByDataAttributeName(driver, wait, TREE_DATA_ATTRIBUTE_NAME);
     }
 
-    public void selectRowByAttributeValueWithLabel(String attribute, String label) {
-        OldTable tabTable = OldTable.createByComponentDataAttributeName(driver, wait, TAB_TABLE_DATA_ATTRIBUTE_NAME);
-        tabTable.selectRowByAttributeValueWithLabel(attribute, label);
+    public OldTable getTabTable() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return OldTable.createByComponentDataAttributeName(driver, wait, TAB_TABLE_DATA_ATTRIBUTE_NAME);
     }
 }

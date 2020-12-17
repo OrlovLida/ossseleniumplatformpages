@@ -191,8 +191,8 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
     public void createAntennaTrail() {
         openCellSiteConfigurationView();
         cellSiteConfigurationPage.selectTreeRow("All Resources");
-        cellSiteConfigurationPage.selectResource(ANTENNA_NAME);
-        cellSiteConfigurationPage.selectResource(RRU_NAME);
+        cellSiteConfigurationPage.selectRowByAttributeValueWithLabel("Name", ANTENNA_NAME);
+        cellSiteConfigurationPage.selectRowByAttributeValueWithLabel("Name", RRU_NAME);
         cellSiteConfigurationPage.useTableContextActionById("Create Trail");
         cellSiteConfigurationPage.selectTrailType("Antenna Trail");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -216,8 +216,8 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
         cellSiteConfigurationPage.selectTreeRow("All Resources");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cellSiteConfigurationPage.selectTreeRow("All Resources");
-        cellSiteConfigurationPage.selectResource(BBU_NAME);
-        cellSiteConfigurationPage.selectResource(RRU_NAME);
+        cellSiteConfigurationPage.selectRowByAttributeValueWithLabel("Name", BBU_NAME);
+        cellSiteConfigurationPage.selectRowByAttributeValueWithLabel("Name", RRU_NAME);
         cellSiteConfigurationPage.useTableContextActionById("Create Trail");
         cellSiteConfigurationPage.selectTrailType("CPRI Trail");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
