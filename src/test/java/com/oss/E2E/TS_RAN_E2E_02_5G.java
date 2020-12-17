@@ -249,8 +249,8 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         CellSiteConfigurationPage cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);
         cellSiteConfigurationPage.selectTreeRow("All Resources");
-        cellSiteConfigurationPage.selectResource(RECO_RRU_NAME1);
-        cellSiteConfigurationPage.selectResource(RAN_ANTENNA_NAME);
+        cellSiteConfigurationPage.selectRowByAttributeValueWithLabel("Name", RECO_RRU_NAME1);
+        cellSiteConfigurationPage.selectRowByAttributeValueWithLabel("Name", RAN_ANTENNA_NAME);
         cellSiteConfigurationPage.useTableContextActionById(CREATE_TRAIL_DATA_ATTRIBUTENAME);
         cellSiteConfigurationPage.selectTrailType("Antenna Trail");
         ConnectionWizardPage connectionWizardPage = new ConnectionWizardPage(driver);
@@ -358,11 +358,11 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         cellSiteConfigurationPage.selectTab("Devices");
         ///////////////////////*/
 
-        cellSiteConfigurationPage.selectResource(RECO_RRU_NAME1);
-        cellSiteConfigurationPage.selectResource(RECO_RRU_NAME2);
+        cellSiteConfigurationPage.selectRowByAttributeValueWithLabel("Name", RECO_RRU_NAME1);
+        cellSiteConfigurationPage.selectRowByAttributeValueWithLabel("Name", RECO_RRU_NAME2);
         //cellSiteConfigurationPage.selectResource(RECO_BBU_NAME);
-        cellSiteConfigurationPage.selectResource(RECO_SWITCH_NAME1);
-        cellSiteConfigurationPage.selectResource(RECO_SWITCH_NAME2);
+        cellSiteConfigurationPage.selectRowByAttributeValueWithLabel("Name", RECO_SWITCH_NAME1);
+        cellSiteConfigurationPage.selectRowByAttributeValueWithLabel("Name", RECO_SWITCH_NAME2);
         cellSiteConfigurationPage.removeObject();
         checkPopup();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
