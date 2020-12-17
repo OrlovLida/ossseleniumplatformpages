@@ -1,17 +1,13 @@
 package com.oss.pages.radio;
 
-import org.openqa.selenium.WebDriver;
-
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.listwidget.EditableList;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
-
 import io.qameta.allure.Step;
+import org.openqa.selenium.WebDriver;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.CHECKBOX;
-import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
-import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
+import static com.oss.framework.components.inputs.Input.ComponentType.*;
 
 public class CellBulkWizardPage extends BasePage {
     private static final String USE_FIRST_AVAILABLE_ID = "useFirstAvailableId";
@@ -30,6 +26,8 @@ public class CellBulkWizardPage extends BasePage {
     private static final String PCI = "pci-NUMBER_FIELD";
     private static final String RSI = "rootSequenceIndex-NUMBER_FIELD";
     private static final String NAME = "name-TEXT_FIELD";
+    private static final String COLUMN_LOCAL_CELL_ID = "localCellId";
+    private static final String LOCAL_CELL_ID = "localCellId-NUMBER_FIELD";
     private final Wizard wizard;
 
     public CellBulkWizardPage(WebDriver driver) {
@@ -62,8 +60,8 @@ public class CellBulkWizardPage extends BasePage {
         clickAccept();
     }
 
-    @Step("Create Cells in Bulk Wizard with default values")
-    public void createCellBulkWizardWithDefaultValues(int amountOfCells, String carrier, String[] cellNames) {
+    @Step("Create Cells 5G in Bulk Wizard with default values")
+    public void createCell5GBulkWizardWithDefaultValues(int amountOfCells, String carrier, String[] cellNames, int[] localCellsId) {
         setCellsAmount(String.valueOf(amountOfCells));
         setCarrier(carrier);
         setSameLocation();
@@ -79,6 +77,30 @@ public class CellBulkWizardPage extends BasePage {
         for (String cellName : cellNames) {
             EditableList list = EditableList.create(driver, wait);
             list.setValue(cellName, COLUMN_NAME, rowNumber, NAME, Input.ComponentType.TEXT_FIELD);
+            list.setValue(String.valueOf(localCellsId[rowNumber]), COLUMN_LOCAL_CELL_ID, rowNumber, LOCAL_CELL_ID, TEXT_FIELD);
+            list.setValue("5", COLUMN_PCI, rowNumber, PCI, Input.ComponentType.TEXT_FIELD);
+            list.setValue("10", COLUMN_RSI, rowNumber, RSI, Input.ComponentType.TEXT_FIELD);
+            rowNumber++;
+        }
+        clickAccept();
+    }
+
+    @Step("Create Cells 4G in Bulk Wizard with default values")
+    public void createCell4GBulkWizardWithDefaultValues(int amountOfCells, String carrier, String[] cellNames, int[] localCellsId) {
+        setCellsAmount(String.valueOf(amountOfCells));
+        setCarrier(carrier);
+        setSameLocation();
+        setBandwidthUl("10");
+        setBandwidthDl("10");
+        setTac("11000");
+        setMimo("1Tx1Rx");
+        clickNext();
+        setFirstAvailableId();
+        int rowNumber = 1;
+        for (String cellName : cellNames) {
+            EditableList list = EditableList.create(driver, wait);
+            list.setValue(cellName, COLUMN_NAME, rowNumber, NAME, Input.ComponentType.TEXT_FIELD);
+            list.setValue(String.valueOf(localCellsId[rowNumber]), COLUMN_LOCAL_CELL_ID, rowNumber, LOCAL_CELL_ID, TEXT_FIELD);
             list.setValue("5", COLUMN_PCI, rowNumber, PCI, Input.ComponentType.TEXT_FIELD);
             list.setValue("10", COLUMN_RSI, rowNumber, RSI, Input.ComponentType.TEXT_FIELD);
             rowNumber++;
