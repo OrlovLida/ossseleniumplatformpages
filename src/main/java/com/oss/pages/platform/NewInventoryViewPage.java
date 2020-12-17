@@ -107,12 +107,6 @@ public class NewInventoryViewPage extends BasePage {
         return this;
     }
 
-    @Step("Call {actionId} action from {groupId} group")
-    public NewInventoryViewPage callAction(String groupId, String actionId) {
-        getMainTable().callAction(groupId, actionId);
-        return this;
-    }
-
     @Step("Open Filter Panel")
     public FilterPanelPage openFilterPanel() {
         DelayUtils.waitForPageToLoad(driver, wait);
