@@ -112,6 +112,7 @@ public class NewInventoryViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         AdvancedSearch advancedSearch = new AdvancedSearch(driver, wait);
         advancedSearch.openSearchPanel();
+        DelayUtils.waitForPageToLoad(driver, wait);
         return new FilterPanelPage(driver);
     }
 
@@ -144,13 +145,6 @@ public class NewInventoryViewPage extends BasePage {
         return this;
     }
 
-    @Step("Open Edit")
-    public NewInventoryViewPage editObject(String ActionId) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        getMainTable().callAction("EDIT", ActionId);
-        return this;
-    }
-
     @Step("Edit Text Fields")
     public NewInventoryViewPage editTextFields(String componentId, Input.ComponentType componentType, String value) {
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -160,10 +154,9 @@ public class NewInventoryViewPage extends BasePage {
 
     @Step("Delete object")
     public NewInventoryViewPage deleteObject() {
-        DelayUtils.sleep(10000);
         DelayUtils.waitForPageToLoad(driver, wait);
         Button.createBySelectorAndId(driver, "a", "DeleteVLANRangeContextAction").click();
-        DelayUtils.sleep(10000);
+        DelayUtils.waitForPageToLoad(driver, wait);
         getWizard().clickButtonByLabel("OK");
         DelayUtils.waitForPageToLoad(driver, wait);
         return this;
