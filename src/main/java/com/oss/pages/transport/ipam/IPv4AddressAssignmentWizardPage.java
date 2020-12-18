@@ -1,4 +1,4 @@
-package com.oss.pages.transport;
+package com.oss.pages.transport.ipam;
 import org.openqa.selenium.WebDriver;
 
 /**

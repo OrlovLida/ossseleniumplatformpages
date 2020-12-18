@@ -1,7 +1,6 @@
-package com.oss.pages.transport;
+package com.oss.pages.transport.ipam;
 
 import com.oss.framework.components.inputs.Button;
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Widget;
 import com.oss.framework.widgets.Wizard;

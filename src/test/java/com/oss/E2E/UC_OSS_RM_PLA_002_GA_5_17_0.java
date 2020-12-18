@@ -37,8 +37,8 @@ import com.oss.pages.reconciliation.NetworkInconsistenciesViewPage;
 import com.oss.pages.reconciliation.SamplesManagementPage;
 import com.oss.pages.templateCM.ChangeConfigurationPage;
 import com.oss.pages.templateCM.SetParametersWizardPage;
-import com.oss.pages.transport.IPAddressManagementViewPage;
-import com.oss.pages.transport.IPv4AddressAssignmentWizardPage;
+import com.oss.pages.transport.ipam.IPAddressManagementViewPage;
+import com.oss.pages.transport.ipam.IPv4AddressAssignmentWizardPage;
 import com.oss.pages.transport.NetworkViewPage;
 
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;

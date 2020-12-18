@@ -4,11 +4,13 @@ import com.oss.BaseTestCase;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.NewInventoryViewPage;
-import com.oss.pages.transport.IPAddressManagementViewPage;
-import com.oss.pages.transport.IPSubnetWizardPage;
+import com.oss.pages.transport.ipam.IPAddressManagementViewPage;
+import com.oss.pages.transport.ipam.IPSubnetWizardPage;
 import com.oss.pages.transport.helper.IPSubnetFilterProperties;
 import com.oss.pages.transport.helper.IPSubnetWizardProperties;
+import com.oss.pages.transport.ipam.RoleViewPage;
 import com.oss.utils.TestListener;
+import io.qameta.allure.Description;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
@@ -39,6 +41,9 @@ public class IPAMTest extends BaseTestCase {
     private static final String NETWORK_PROPERTY_DESCRIPTION = "Description";
     private static final String NETWORK_INVENTORY_PROPERTY_NAME = "name";
     private static final String NETWORK_INVENTORY_PROPERTY_DESCRIPTION = "description";
+
+    private static final String ROLE_NAME = "IPAMSeleniumTest1";
+    private static final String ROLE_NAME_UPDATED = "IPAMSeleniumTestUpdated1";
 
     private static final String SUBNET_PROPERTY_IDENTIFIER = "Identifier";
     private static final String SUBNET_PROPERTY_ADDRESS = "Address";
@@ -80,24 +85,39 @@ public class IPAMTest extends BaseTestCase {
     }
 
     @Test(priority = 1)
-    public void createIPNetwork() {
-        ipAddressManagementViewPage.selectFirstTreeRow();
-        ipAddressManagementViewPage.createIPNetwork(name, description);
+    @Description("Create Role")
+    public void createRole() {
+        RoleViewPage roleViewPage = ipAddressManagementViewPage.openRoleView();
+        roleViewPage.createRole(ROLE_NAME);
+        Assert.assertTrue(ipAddressManagementViewPage.isSystemMessageSuccess());
+        Assert.assertTrue(roleViewPage.doesRoleNameExist(ROLE_NAME));
+        roleViewPage.exitRoleView();
     }
 
     @Test(priority = 2)
+    @Description("Create IP Network")
+    public void createIPNetwork() {
+        ipAddressManagementViewPage.selectFirstTreeRow();
+        ipAddressManagementViewPage.createIPNetwork(name, description);
+        DelayUtils.sleep(100);
+        Assert.assertTrue(ipAddressManagementViewPage.isSystemMessageSuccess());
+    }
+
+    @Test(priority = 3)
+    @Description("Check IPAM Tree after Network Creation")
     public void checkIPAMTreeAfterNetworkCreation() {
         ipAddressManagementViewPage.selectTreeRow(name);
         Assert.assertEquals(ipAddressManagementViewPage.getPropertyPanel().getPropertyValue(NETWORK_PROPERTY_NAME), name);
         Assert.assertEquals(ipAddressManagementViewPage.getPropertyPanel().getPropertyValue(NETWORK_PROPERTY_DESCRIPTION), description);
     }
 
-    @Test(priority = 3)
+    @Test(priority = 4)
+    @Description("Create IP Subnets")
     public void createIPSubnets() {
         IPSubnetWizardPage ipSubnetWizardPage = ipAddressManagementViewPage.createIPv4Subnet();
         IPSubnetFilterProperties subnetFilterProperties = new IPSubnetFilterProperties(FILTER_SUBNETS_START_IP, FILTER_SUBNETS_END_IP_FOR_CREATION, OPERATOR_HIGHER_OR_EQUAL, HIGHEST_IP_SUBNET_MASK);
         ipSubnetWizardPage.ipSubnetWizardSelectStep(subnetFilterProperties, AMOUNT_OF_SUBNETS_SELECTED_DURING_SUBNET_CREATION);
-        IPSubnetWizardProperties firstIpSubnetWizardProperties = new IPSubnetWizardProperties(BLOCK_SUBNET_TYPE, MANAGEMENT_PRIMARY_ROLE, SUBNET_DESCRIPTION);
+        IPSubnetWizardProperties firstIpSubnetWizardProperties = new IPSubnetWizardProperties(BLOCK_SUBNET_TYPE, ROLE_NAME, SUBNET_DESCRIPTION);
         IPSubnetWizardProperties secondIpSubnetWizardProperties = new IPSubnetWizardProperties(NETWORK_SUBNET_TYPE);
         IPSubnetWizardProperties thirdIpSubnetWizardProperties = new IPSubnetWizardProperties(NETWORK_SUBNET_TYPE);
         ipSubnetWizardPage.ipSubnetWizardPropertiesStep(firstIpSubnetWizardProperties, secondIpSubnetWizardProperties, thirdIpSubnetWizardProperties);
@@ -106,7 +126,8 @@ public class IPAMTest extends BaseTestCase {
         putInitialSubnetsProperties();
     }
 
-    @Test(priority = 4)
+    @Test(priority = 5)
+    @Description("Check IPAM tree after Subnets creation")
     public void checkIPAMTreeAfterSubnetsCreation() {
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
         ipAddressManagementViewPage.selectTreeRow(name);
@@ -119,15 +140,39 @@ public class IPAMTest extends BaseTestCase {
         checkSubnetAttributesOnIPAMTree(thirdIPSubnetProperties);
     }
 
-    // bug OSSTPT-30469
-    @Test(priority = 5, enabled = false)
-    public void editIPNetwork() {
-        ipAddressManagementViewPage.editIPNetwork(name, nameUpdated, descriptionUpdated);
-        updateSubnetsPropertiesAfterIPNetworkEdition();
+    @Test(priority = 6)
+    @Description("Edit Role")
+    public void editRole() {
+        RoleViewPage roleViewPage = ipAddressManagementViewPage.openRoleView();
+        roleViewPage.editRole(ROLE_NAME, ROLE_NAME_UPDATED);
+        Assert.assertTrue(ipAddressManagementViewPage.isSystemMessageSuccess());
+        Assert.assertTrue(roleViewPage.doesRoleNameExist(ROLE_NAME_UPDATED));
+        Assert.assertFalse(roleViewPage.doesRoleNameExist(ROLE_NAME));
+        roleViewPage.exitRoleView();
+
+        updateSubnetPropertiesAfterRoleEdition();
+    }
+
+    @Test(priority = 7)
+    @Description("Check IPAM Tree after role edition")
+    public void checkIpamTreeAfterRoleEdition() {
+        ipAddressManagementViewPage.selectTreeRowContains(getSubnetAddressAndMask(firstIPSubnetProperties));
+        Assert.assertEquals(ipAddressManagementViewPage.getPropertyPanel().getPropertyValue(SUBNET_PROPERTY_ROLE), firstIPSubnetProperties.get(SUBNET_PROPERTY_ROLE));
+        ipAddressManagementViewPage.selectTreeRowContains(getSubnetAddressAndMask(firstIPSubnetProperties));
     }
 
     // bug OSSTPT-30469
-    @Test(priority = 6, enabled = false)
+    @Test(priority = 8, enabled = false)
+    @Description("Edit IP Network")
+    public void editIPNetwork() {
+        ipAddressManagementViewPage.editIPNetwork(name, nameUpdated, descriptionUpdated);
+        updateSubnetsPropertiesAfterIPNetworkEdition();
+        Assert.assertTrue(ipAddressManagementViewPage.isSystemMessageSuccess());
+    }
+
+    // bug OSSTPT-30469
+    @Test(priority = 9, enabled = false)
+    @Description("Check IPAM Tree after IP Network Edition")
     public void checkIPAMTreeAfterNetworkEdition() {
         ipAddressManagementViewPage.selectTreeRow(nameUpdated);
         Assert.assertEquals(ipAddressManagementViewPage.getPropertyPanel().getPropertyValue(NETWORK_PROPERTY_NAME), nameUpdated);
@@ -141,7 +186,8 @@ public class IPAMTest extends BaseTestCase {
         checkSubnetAttributesOnIPAMTree(thirdIPSubnetProperties);
     }
 
-    @Test(priority = 7)
+    @Test(priority = 10)
+    @Description("Split IP Subnet")
     public void splitIPSubnet() {
         IPSubnetWizardPage ipSubnetWizardPage = ipAddressManagementViewPage.splitIPv4Subnet(getSubnetAddressAndMask(secondIPSubnetProperties));
         IPSubnetFilterProperties subnetFilterProperties = new IPSubnetFilterProperties(FILTER_SUBNETS_START_IP, FILTER_SUBNETS_END_IP_FOR_SPLIT);
@@ -154,7 +200,8 @@ public class IPAMTest extends BaseTestCase {
         updateSubnetsAfterIPSubnetsSplit();
     }
 
-    @Test(priority = 8)
+    @Test(priority = 11)
+    @Description("Check IPAM Tree after Subnet Split")
     public void checkIPAMTreeAfterSubnetSplit() {
         checkSubnetAttributesOnIPAMTree(secondIPSubnetProperties);
         checkSubnetAttributesOnIPAMTree(fourthIPSubnetProperties);
@@ -162,8 +209,9 @@ public class IPAMTest extends BaseTestCase {
         checkSubnetAttributesOnIPAMTree(fifthIPSubnetProperties);
     }
 
-    @Test(priority = 9)
-    public void mergeIPSubnet() {
+    @Test(priority = 12)
+    @Description("Merge IP Subnets")
+    public void mergeIPSubnets() {
         IPSubnetWizardPage ipSubnetWizardPage = ipAddressManagementViewPage
                 .mergeIPv4Subnet(getSubnetAddressAndMask(secondIPSubnetProperties),
                         getSubnetAddressAndMask(fourthIPSubnetProperties), getSubnetAddressAndMask(fifthIPSubnetProperties));
@@ -175,7 +223,8 @@ public class IPAMTest extends BaseTestCase {
         updateSubnetsAfterIPSubnetsMerge();
     }
 
-    @Test(priority = 10)
+    @Test(priority = 13)
+    @Description("Check IPAM Tree after Subnets Merge")
     public void checkIPAMTreeAfterSubnetMerge() {
         ipAddressManagementViewPage.expandTreeRow(name);
         ipAddressManagementViewPage.selectTreeRow(name);
@@ -184,9 +233,11 @@ public class IPAMTest extends BaseTestCase {
         checkSubnetAttributesOnIPAMTree(secondIPSubnetProperties);
     }
 
-    @Test(priority = 11) // bug OSSTPT-31077
-    public void editIPSubnet() {
+    @Test(priority = 14) // bug OSSTPT-31077
+    @Description("Edit IP Subnets")
+    public void editIPSubnets() {
         ipAddressManagementViewPage.changeIPSubnetTypeToBlock(getSubnetAddressAndMask(thirdIPSubnetProperties));
+        Assert.assertTrue(ipAddressManagementViewPage.isSystemMessageSuccess());
 //        ipAddressManagementViewPage.selectTreeRow(name);
 //        ipAddressManagementViewPage.selectTreeRow(name);
 //        ipAddressManagementViewPage.expandTreeRow(name);
@@ -195,7 +246,8 @@ public class IPAMTest extends BaseTestCase {
         updateSubnetsPropertiesAfterIPSubnetsEdition();
     }
 
-    @Test(priority = 12) // bug OSSTPT-31077
+    @Test(priority = 15) // bug OSSTPT-31077
+    @Description("Check IPAM Tree after Subnets Edition")
     public void checkIPAMTreeAfterSubnetEdition() {
         ipAddressManagementViewPage.selectTreeRow(name);
         ipAddressManagementViewPage.selectTreeRow(name);
@@ -206,7 +258,8 @@ public class IPAMTest extends BaseTestCase {
     }
 
     // zamienic name na nameUpdated po poprawie buga OSSTPT-30469
-    @Test (priority = 13)
+    @Test (priority = 16)
+    @Description("Check New Inventory View for IP Network")
     public void checkInventoryViewForIPNetwork() {
         newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, NETWORK_INVENTORY_TYPE);
         newInventoryViewPage.openFilterPanel().setValue(Input.ComponentType.TEXT_FIELD, NETWORK_INVENTORY_PROPERTY_NAME, name).applyFilter();
@@ -218,8 +271,9 @@ public class IPAMTest extends BaseTestCase {
 
     // bug OSSTPT-31074
     // zamienic name na nameUpdated po poprawie buga OSSTPT-30469
-    @Test(priority = 14, enabled = false)
-    public void checkInventoryViewForIPSubnet() {
+    @Test(priority = 17, enabled = false)
+    @Description("Check New Inventory View for IP Subnets")
+    public void checkInventoryViewForIPSubnets() {
         newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, IPV4_SUBNET_INVENTORY_TYPE);
         newInventoryViewPage.openFilterPanel().setValue(Input.ComponentType.TEXT_FIELD, NETWORK_NAME_FILTER_FOR_SUBNET_INVENTORY_VIEW, name).applyFilter();
         checkSubnetAttributesOnNewIV(firstIPSubnetProperties);
@@ -228,21 +282,37 @@ public class IPAMTest extends BaseTestCase {
     }
 
     // zamienic name na nameUpdated po poprawie buga OSSTPT-30469
-    @Test(priority = 15)
+    @Test(priority = 18)
+    @Description("Delete IP Subnets")
     public void deleteIPSubnets() {
         ipAddressManagementViewPage = IPAddressManagementViewPage.goToIPAddressManagementViewPageLive(driver, BASIC_URL);
         ipAddressManagementViewPage.expandTreeRow(name);
         ipAddressManagementViewPage.deleteObject(getSubnetAddressAndMask(firstIPSubnetProperties));
+        Assert.assertTrue(ipAddressManagementViewPage.isSystemMessageSuccess());
         ipAddressManagementViewPage.expandTreeRow(name);
         ipAddressManagementViewPage.deleteObject(getSubnetAddressAndMask(thirdIPSubnetProperties));
+        Assert.assertTrue(ipAddressManagementViewPage.isSystemMessageSuccess());
         ipAddressManagementViewPage.expandTreeRow(name);
         ipAddressManagementViewPage.deleteObject(getSubnetAddressAndMask(secondIPSubnetProperties));
+        Assert.assertTrue(ipAddressManagementViewPage.isSystemMessageSuccess());
     }
 
     // zamienic name na nameUpdated po poprawie buga OSSTPT-30469
-    @Test(priority = 16)
+    @Test(priority = 19)
+    @Description("Delete IP Network")
     public void deleteIPNetwork() {
         ipAddressManagementViewPage.deleteObject(name);
+        Assert.assertTrue(ipAddressManagementViewPage.isSystemMessageSuccess());
+    }
+
+    @Test(priority = 20)
+    @Description("Delete Role")
+    public void deleteRole() {
+        RoleViewPage roleViewPage = ipAddressManagementViewPage.openRoleView();
+        roleViewPage.deleteRole(ROLE_NAME_UPDATED);
+        Assert.assertTrue(ipAddressManagementViewPage.isSystemMessageSuccess());
+        Assert.assertFalse(roleViewPage.doesRoleNameExist(ROLE_NAME_UPDATED));
+        roleViewPage.exitRoleView();
     }
 
     private void putInitialSubnetsProperties(){
@@ -253,7 +323,7 @@ public class IPAMTest extends BaseTestCase {
         firstIPSubnetProperties.put(SUBNET_PROPERTY_IP_NETWORK_NAME, name);
         firstIPSubnetProperties.put(SUBNET_PROPERTY_MASK_LENGTH, "24");
         firstIPSubnetProperties.put(SUBNET_PROPERTY_SUBNET_TYPE, "BLOCK");
-        firstIPSubnetProperties.put(SUBNET_PROPERTY_ROLE, MANAGEMENT_PRIMARY_ROLE);
+        firstIPSubnetProperties.put(SUBNET_PROPERTY_ROLE, ROLE_NAME);
         firstIPSubnetProperties.put(SUBNET_PROPERTY_PERCENT_FREE, "0%");
         firstIPSubnetProperties.put(SUBNET_PROPERTY_CHILD_COUNT, "2");
         firstIPSubnetProperties.put(SUBNET_PROPERTY_DESCRIPTION, SUBNET_DESCRIPTION);
@@ -277,6 +347,10 @@ public class IPAMTest extends BaseTestCase {
         thirdIPSubnetProperties.put(SUBNET_PROPERTY_SUBNET_TYPE, "NETWORK");
         thirdIPSubnetProperties.put(SUBNET_PROPERTY_PERCENT_FREE, "100%");
         thirdIPSubnetProperties.put(SUBNET_PROPERTY_CHILD_COUNT, "0");
+    }
+
+    private void updateSubnetPropertiesAfterRoleEdition(){
+        firstIPSubnetProperties.put(SUBNET_PROPERTY_ROLE, ROLE_NAME_UPDATED);
     }
 
     private void updateSubnetsPropertiesAfterIPNetworkEdition(){
