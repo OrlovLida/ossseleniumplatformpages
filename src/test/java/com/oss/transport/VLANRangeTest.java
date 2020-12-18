@@ -66,7 +66,7 @@ public class VLANRangeTest extends BaseTestCase {
 
         newInventoryViewPage.selectFirstRow();
 
-        newInventoryViewPage.editObject("EditVLANRangeContextAction");
+        newInventoryViewPage.callAction("EDIT","EditVLANRangeContextAction");
         DelayUtils.sleep();
 
         newInventoryViewPage.editTextFields("VLAN_RANGE_NAME_ATTRIBUTE_ID", Input.ComponentType.TEXT_FIELD, "EditVLANRangeSeleniumTest2")
