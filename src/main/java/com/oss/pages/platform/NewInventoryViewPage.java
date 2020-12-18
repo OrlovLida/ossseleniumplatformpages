@@ -1,19 +1,18 @@
 package com.oss.pages.platform;
 
-import com.oss.framework.components.common.AttributesChooser;
-import com.oss.framework.components.inputs.Button;
-import com.oss.framework.components.inputs.ComponentFactory;
-import com.oss.framework.components.inputs.Input;
-import com.oss.framework.components.portals.SaveConfigurationWizard.Field;
-import com.oss.framework.components.search.AdvancedSearch;
-import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.filterpanel.FilterPanelPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import com.oss.framework.components.common.AttributesChooser;
+import com.oss.framework.components.inputs.Button;
+import com.oss.framework.components.inputs.ComponentFactory;
+import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.portals.DropdownList;
+import com.oss.framework.components.portals.SaveConfigurationWizard.Field;
+import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.mainheader.ButtonPanel;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Widget;
 import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.propertypanel.PropertiesFilter;
@@ -21,9 +20,9 @@ import com.oss.framework.widgets.propertypanel.PropertyPanel;
 import com.oss.framework.widgets.tablewidget.TableWidget;
 import com.oss.framework.widgets.tabswidget.TabsWidget;
 import com.oss.pages.BasePage;
+import com.oss.pages.filterpanel.FilterPanelPage;
 
 import io.qameta.allure.Step;
-
 
 public class NewInventoryViewPage extends BasePage {
 
@@ -114,6 +113,19 @@ public class NewInventoryViewPage extends BasePage {
         AdvancedSearch advancedSearch = new AdvancedSearch(driver, wait);
         advancedSearch.openSearchPanel();
         return new FilterPanelPage(driver);
+    }
+
+    @Step("Set value in Filter Panel")
+    public FilterPanelPage setFilterPanel(String componentId, String value) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        openFilterPanel().setValue(Input.ComponentType.TEXT_FIELD, componentId, value).applyFilter();
+        return new FilterPanelPage(driver);
+    }
+
+    @Step("Call {actionId} action from {groupId} group")
+    public NewInventoryViewPage callAction(String groupId, String actionId) {
+        getMainTable().callAction(groupId, actionId);
+        return this;
     }
 
     @Step("Clear all tags")
@@ -233,6 +245,7 @@ public class NewInventoryViewPage extends BasePage {
         ButtonPanel.create(driver, wait).openChooseConfigurationWizard().chooseConfiguration(configurationName).apply();
         return this;
     }
+
     @Step("Delete configuration for page")
     public NewInventoryViewPage deletePageConfiguration(String configurationName) {
         DelayUtils.waitForPageToLoad(driver, wait);
