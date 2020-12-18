@@ -1,4 +1,4 @@
-package com.oss.pages.transport;
+package com.oss.pages.transport.ipam;
 
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.widgets.Wizard;

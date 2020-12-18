@@ -1,24 +1,21 @@
-package com.oss.pages.transport;
+package com.oss.pages.transport.ipam;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.OldActionsContainer;
-import com.oss.framework.components.inputs.Button;
-import com.oss.framework.components.inputs.Input;
-import com.oss.framework.listwidget.CommonList;
 import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Widget;
-import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
 import com.oss.framework.widgets.propertypanel.PropertyPanelInterface;
 import com.oss.framework.widgets.treewidget.TreeWidget;
 import com.oss.pages.BasePage;
+
+import static com.oss.framework.alerts.SystemMessageContainer.MessageType.SUCCESS;
 
 import io.qameta.allure.Step;
 
@@ -30,9 +27,6 @@ public class IPAddressManagementViewPage extends BasePage {
     private static final String PERSPECTIVE = "perspective=%s";
     private static final String LIVE = "LIVE";
     private static final String PLAN = "PLAN";
-    private static final String ROLE_TEXT_FIELD_DATA_ATTRIBUTE = "text-field-uid";
-    private static final String XPATH_TO_CONFIRM_DELETION = "//button[@class='actionButton btn btn-primary']";
-    private static final String XPATH_TO_ROLES = ".//li[@class = 'listElement']";
 
     private static final String CREATE_IP_NETWORK_ACTION = "Create IP Network";
     private static final String EDIT_IP_NETWORK_ACTION = "Edit IP Network";
@@ -47,7 +41,7 @@ public class IPAddressManagementViewPage extends BasePage {
     private static final String SPLIT_IPV4_SUBNET_BUTTON_DATA_ATTRIBUTE_NAME = "Split IPv4 Subnet";
     private static final String MERGE_IPV4_SUBNET_BUTTON_DATA_ATTRIBUTE_NAME = "Merge IPv4 Subnet";
     private static final String OTHER_BUTTON_GROUP_ID = "__more-group";
-    private static final String ROLE_BUTTON = "Role";
+    private static final String ROLE_ACTION_DATA_ATTRIBUTE_NAME = "Role";
 
     private static final String OK_BUTTON_LABEL = "OK";
     private static final String TREE_VIEW_CLASS = "TreeView";
@@ -55,8 +49,6 @@ public class IPAddressManagementViewPage extends BasePage {
     private static final String OSS_WINDOW_CLASS = "OssWindow";
     private static final String WINDOW_TOOLBAR_CLASS = "windowToolbar";
     private static final String TABS_CONTAINER_CLASS = "tabsContainer";
-    private Wizard wizard;
-    private CommonList commonList;
 
     private TreeWidget mainTree;
     private OldActionsContainer actionsContainer;
@@ -114,65 +106,6 @@ public class IPAddressManagementViewPage extends BasePage {
         return new IPAddressManagementViewPage(driver);
     }
 
-    @Step("Open Roles by clicking on Role button")
-    public IPAddressManagementViewPage OpenRoleView() {
-        clickOnRoleButton();
-        return this;
-    }
-
-    @Step("Open new Roles by clicking on Create new role button")
-    public IPAddressManagementViewPage OpenCreateNewRole() {
-        clickCreateNewRole();
-        return this;
-    }
-
-    @Step("Setting Role name")
-    public IPAddressManagementViewPage SetNewRoleName() {
-        setValueOnTextField(ROLE_TEXT_FIELD_DATA_ATTRIBUTE, Input.ComponentType.TEXT_FIELD, "CreateRoleSeleniumTest");
-        return this;
-    }
-
-    @Step("Finish by clicking OK button")
-    public IPAddressManagementViewPage AcceptRole() {
-        clickAcceptNewRole();
-        return this;
-    }
-
-    @Step("Exit Wizard")
-    public IPAddressManagementViewPage ExitWizard() {
-        clickOk();
-        return this;
-    }
-
-    @Step("Click on Edit button next to EditRoleSeleniumTest2 role")
-    public IPAddressManagementViewPage OpenEditRole() {
-        DelayUtils.sleep(5000);
-        commonList = null;
-        getCommonList().clickOnEditButtonByListElementName("CreateRoleSeleniumTest");
-        return this;
-    }
-
-    @Step("Clear text field and rename")
-    public IPAddressManagementViewPage SetEditedRoleName() {
-        DelayUtils.sleep();
-        setValueOnTextField(ROLE_TEXT_FIELD_DATA_ATTRIBUTE, Input.ComponentType.TEXT_FIELD, "EditRoleSeleniumTest2");
-        clickAcceptNewRole();
-        return this;
-    }
-
-    @Step("Delete EditRoleSeleniumTest2")
-    public IPAddressManagementViewPage DeleteRoleName() {
-        commonList = null;
-        getCommonList().clickOnDeleteButtonByListElementName("EditRoleSeleniumTest2");
-        return this;
-    }
-
-    @Step("Exit Delete Window")
-    public IPAddressManagementViewPage ExitDelete() {
-        confirmDeletion();
-        return this;
-    }
-
     @Step("Search IP Network")
     public IPAddressManagementViewPage searchIpNetwork(String value) {
         getTreeView()
@@ -181,56 +114,12 @@ public class IPAddressManagementViewPage extends BasePage {
         return this;
     }
 
-    protected Wizard getWizard() {
-        if (wizard == null) {
-            wizard = Wizard.createWizard(driver, wait);
-        }
-        return wizard;
-    }
-
-    protected CommonList getCommonList() {
-        if (commonList == null) {
-            commonList = CommonList.create(driver, wait, "role-list-uid");
-        }
-        return commonList;
-    }
-
-    private void clickOnRoleButton() {
-        DelayUtils.sleep(5000);
-        Button.createBySelectorAndId(driver, "a", ROLE_BUTTON).click();
-    }
-
-    private void clickCreateNewRole() {
-        DelayUtils.sleep();
-        Button.createBySelectorAndId(driver, "a", "buttons-uid-0").click();
-    }
-
-    private void clickAcceptNewRole() {
-        wizard = null;
-        getWizard().clickActionById("wizard-submit-button-window-uid");
-    }
-
-    private void clickOk() {
-        DelayUtils.sleep();
-        wizard = null;
-        getWizard().clickActionById("buttons-uid-1");
-
-    }
-
-    private void confirmDeletion() {
-        DelayUtils.sleep();
-        driver.findElement(By.xpath(XPATH_TO_CONFIRM_DELETION)).click();
-
-    }
-
-    private void setValueOnTextField(String componentId, Input.ComponentType componentType, String value) {
-        DelayUtils.sleep();
-        getWizard().getComponent(componentId, componentType).clearByAction();
-        getWizard().getComponent(componentId, componentType).setSingleStringValue(value);
-    }
-
-    public int howManyRoles() {
-        return driver.findElements(By.xpath(XPATH_TO_ROLES)).size();
+    @Step("Open Roles by clicking on Role button")
+    public RoleViewPage openRoleView() {
+        waitForPageToLoad();
+        useContextAction(ROLE_ACTION_DATA_ATTRIBUTE_NAME);
+        waitForPageToLoad();
+        return new RoleViewPage(driver);
     }
 
     @Step("Select first object on hierarchy view")
@@ -239,26 +128,26 @@ public class IPAddressManagementViewPage extends BasePage {
         getTreeView().selectFirstTreeRow();
     }
 
-    @Step("Select object on hierarchy view")
+    @Step("Select object with name: {name} on hierarchy view")
     public void selectTreeRow(String name) {
         waitForPageToLoad();
         getTreeView().selectTreeRow(name);
     }
 
-    @Step("Select object contains name on hierarchy view")
+    @Step("Select object contains name {name} on hierarchy view")
     public void selectTreeRowContains(String name) {
         waitForPageToLoad();
         getTreeView().selectTreeRowContains(name);
     }
 
-    @Step("Expand object on hierarchy view")
+    @Step("Expand object with name: {name} on hierarchy view")
     public void expandTreeRow(String name){
         waitForPageToLoad();
         getTreeView().expandTreeRow(name);
         waitForPageToLoad();
     }
 
-    @Step("Expand object on hierarchy view")
+    @Step("Expand object with name: {name} on hierarchy view")
     public void expandTreeRowContains(String name) {
         waitForPageToLoad();
         getTreeView().expandTreeRowContains(name);
@@ -283,27 +172,23 @@ public class IPAddressManagementViewPage extends BasePage {
         getActionsInterface().callActionById(groupId, innerGroupDataAttributeName, actionDataAttributeName);
     }
 
-    @Step("Accept confirmation box")
-    public void acceptConfirmationBox() {
-        waitForPageToLoad();
-        ConfirmationBoxInterface confirmationBox = ConfirmationBox.create(driver, wait);
-        confirmationBox.clickButtonByLabel(OK_BUTTON_LABEL);
-    }
-
-    @Step("Close system message")
-    public void closeSystemMessage() {
-        waitForPageToLoad();
+    @Step("Check if system message type is SUCCESS")
+    public boolean isSystemMessageSuccess() {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, wait);
+        SystemMessageContainer.MessageType systemMessageType = systemMessage.getFirstMessage()
+                .orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType();
         systemMessage.close();
+        return systemMessageType.equals(SUCCESS);
     }
 
+    @Step("Create IP Network with name: {networkName} and description {description}")
     public void createIPNetwork(String networkName, String description) {
         useContextAction(CREATE_OPERATION_FOR_NETWORK_GROUP, CREATE_IP_NETWORK_ACTION);
         IPNetworkWizardPage ipNetworkWizardPage = new IPNetworkWizardPage(driver);
         ipNetworkWizardPage.createIPNetwork(networkName, description);
-        closeSystemMessage();
     }
 
+    @Step("Edit IP Network with name: {networkName} to network with name: {networkNameUpdated} and description: {description}")
     public void editIPNetwork(String networkName, String networkNameUpdated, String description) {
         selectTreeRow(networkName);
         useContextAction(EDIT_OPERATION_FOR_NETWORK_GROUP, EDIT_IP_NETWORK_ACTION);
@@ -311,17 +196,20 @@ public class IPAddressManagementViewPage extends BasePage {
         ipNetworkWizardPage.editIPNetwork(networkNameUpdated, description);
     }
 
+    @Step("Create IPv4 Subnet")
     public IPSubnetWizardPage createIPv4Subnet() {
         useContextAction(CREATE_OPERATION_FOR_NETWORK_GROUP, CREATE_IPV4_SUBNET_ACTION);
         return new IPSubnetWizardPage(driver);
     }
 
+    @Step("Change IP Subnet: {rowName} type to Block")
     public void changeIPSubnetTypeToBlock(String rowName) {
         selectTreeRowContains(rowName);
         useContextAction(OTHER_BUTTON_GROUP_ID, EDIT_OPERATION_GROUP, CHANGE_SUBNET_TYPE_TO_BLOCK);
         acceptConfirmationBox();
     }
 
+    @Step("Edit IPv4 Subnet: {rowName} role to {role} and description to {description}")
     public void editIPv4Subnet(String rowName, String role, String description) {
         selectTreeRowContains(rowName);
         useContextAction(OTHER_BUTTON_GROUP_ID, EDIT_OPERATION_GROUP, EDIT_IPV4_SUBNET_ACTION);
@@ -329,24 +217,32 @@ public class IPAddressManagementViewPage extends BasePage {
         editIPSubnetWizardPage.editIPSubnet(role, description);
     }
 
+    @Step("Split IPv4 Subnet: {rowName}")
     public IPSubnetWizardPage splitIPv4Subnet(String rowName) {
         selectTreeRowContains(rowName);
         useContextAction(SPLIT_IPV4_SUBNET_BUTTON_DATA_ATTRIBUTE_NAME);
         return new IPSubnetWizardPage(driver);
     }
 
+    @Step("Merge IPv4 Subnets")
     public IPSubnetWizardPage mergeIPv4Subnet(String ... rowName) {
         Arrays.stream(rowName).forEach(this::selectTreeRowContains);
         useContextAction(MERGE_IPV4_SUBNET_BUTTON_DATA_ATTRIBUTE_NAME);
         return new IPSubnetWizardPage(driver);
     }
 
+    @Step("Delete objects with: {name}")
     public void deleteObject(String name) {
         waitForPageToLoad();
         selectTreeRowContains(name);
         useContextAction(DELETE_BUTTON_DATA_ATTRIBUTE_NAME);
         acceptConfirmationBox();
-        closeSystemMessage();
+    }
+
+    private void acceptConfirmationBox() {
+        waitForPageToLoad();
+        ConfirmationBoxInterface confirmationBox = ConfirmationBox.create(driver, wait);
+        confirmationBox.clickButtonByLabel(OK_BUTTON_LABEL);
     }
 
     private void waitForPageToLoad(){
