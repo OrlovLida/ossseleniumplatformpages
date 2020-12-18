@@ -13,19 +13,19 @@ import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD
 
 public class CmDomainWizardPage extends BasePage {
 
-    private String CM_DOMAIN_WIZARD_ID = "Popup";
-    private String NAME_ID = "narComponent_networkDiscoveryControlViewIdnameTextFieldId";
-    private String CM_INTERFACE_ID = "narComponent_networkDiscoveryControlViewIdinterfaceSearchBoxId";
-    private String DOMAIN_ID = "narComponent_networkDiscoveryControlViewIddomainSearchBoxId";
-    private String MEDIATOR_NAME_ID = "narComponent_networkDiscoveryControlViewIdmediatorNameComboboxId";
-    private String MEDIATION_KEY_ID = "narComponent_networkDiscoveryControlViewIdconnectionAgentInstanceSearchBoxId";
-    private String BASED_ON_ID = "narComponent_networkDiscoveryControlViewIdbasedOnComboboxId";
-    private String STOP_ON_ID = "narComponent_networkDiscoveryControlViewIdstopOnComboboxId";
-    private String SAVE_PERSPECTIVE_ID = "narComponent_networkDiscoveryControlViewIdsavePerspectiveComboboxId";
-    private String HISTORICAL_SNAPSHOT_ID = "narComponent_networkDiscoveryControlViewIdmaxHistoricalNumberFieldId";
-    private String NETWORK_MODIFICATION_ID = "narComponent_networkDiscoveryControlViewIdmaxFutureNumberFieldId";
-    private String SAVE_ID = "narComponent_networkDiscoveryControlViewIdCmDomainActionButtonsAppId-1";
-    private String CANCEL_ID = "narComponent_networkDiscoveryControlViewIdCmDomainActionButtonsAppId-0";
+    private static final String CM_DOMAIN_WIZARD_ID = "Popup";
+    private static final String NAME_ID = "narComponent_networkDiscoveryControlViewIdnameTextFieldId";
+    private static final String CM_INTERFACE_ID = "narComponent_networkDiscoveryControlViewIdinterfaceSearchBoxId";
+    private static final String DOMAIN_ID = "narComponent_networkDiscoveryControlViewIddomainSearchBoxId";
+    private static final String MEDIATOR_NAME_ID = "narComponent_networkDiscoveryControlViewIdmediatorNameComboboxId";
+    private static final String MEDIATION_KEY_ID = "narComponent_networkDiscoveryControlViewIdconnectionAgentInstanceSearchBoxId";
+    private static final String BASED_ON_ID = "narComponent_networkDiscoveryControlViewIdbasedOnComboboxId";
+    private static final String STOP_ON_ID = "narComponent_networkDiscoveryControlViewIdstopOnComboboxId";
+    private static final String SAVE_PERSPECTIVE_ID = "narComponent_networkDiscoveryControlViewIdsavePerspectiveComboboxId";
+    private static final String HISTORICAL_SNAPSHOT_ID = "narComponent_networkDiscoveryControlViewIdmaxHistoricalNumberFieldId";
+    private static final String NETWORK_MODIFICATION_ID = "narComponent_networkDiscoveryControlViewIdmaxFutureNumberFieldId";
+    private static final String SAVE_ID = "narComponent_networkDiscoveryControlViewIdCmDomainActionButtonsAppId-1";
+    private static final String CANCEL_ID = "narComponent_networkDiscoveryControlViewIdCmDomainActionButtonsAppId-0";
 
     public CmDomainWizardPage(WebDriver driver) {
         super(driver);

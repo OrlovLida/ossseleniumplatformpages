@@ -19,13 +19,13 @@ import io.qameta.allure.Step;
 
 public class SamplesManagementPage extends BasePage {
 
-    private String samplesManagementWidgetId = "narComponent_CMSamplesManagementViewIdFilesTreeId";
-    private String upload = "narComponent_CmSampleActionUploadId";
-    private String deleteContent = "narComponent_CmSampleActionDeleteContentId";
-    private String createDirectory = "narComponent_CmSampleActionCreateId";
-    private String uploadWizardId = "narComponent_CMSamplesManagementViewIdUploadSamplesFormItemsId";
-    private String createDirectoryWizardId = "narComponent_CMSamplesManagementViewIdFileNameTextFieldId";
-    private String createDirectoryWizardConfirmAction = "narComponent_CMSamplesManagementViewIdFileActionButtonsId-1";
+    private static final String samplesManagementWidgetId = "narComponent_CMSamplesManagementViewIdFilesTreeId";
+    private static final String upload = "narComponent_CmSampleActionUploadId";
+    private static final String deleteContent = "narComponent_CmSampleActionDeleteContentId";
+    private static final String createDirectory = "narComponent_CmSampleActionCreateId";
+    private static final String uploadWizardId = "narComponent_CMSamplesManagementViewIdUploadSamplesFormItemsId";
+    private static final String createDirectoryWizardId = "narComponent_CMSamplesManagementViewIdFileNameTextFieldId";
+    private static final String createDirectoryWizardConfirmAction = "narComponent_CMSamplesManagementViewIdFileActionButtonsId-1";
 
     private TreeWidget mainTree;
 

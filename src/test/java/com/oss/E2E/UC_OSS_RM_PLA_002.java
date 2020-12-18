@@ -36,6 +36,7 @@ import com.oss.pages.platform.LogManagerPage;
 import com.oss.pages.platform.OldInventoryViewPage;
 import com.oss.pages.reconciliation.CmDomainWizardPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
+import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage.ErrorLevel;
 import com.oss.pages.reconciliation.NetworkInconsistenciesViewPage;
 import com.oss.pages.reconciliation.SamplesManagementPage;
 import com.oss.pages.templateCM.ChangeConfigurationPage;
@@ -48,30 +49,29 @@ import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD
 
 public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
-    private IPAddressManagementViewPage ipAddressManagementViewPage;
+    private ChangeConfigurationPage changeConfigurationPage;
+    private SetParametersWizardPage setParametersWizardPage;
 
-    private String deviceModel = "1941";
-    private String LOCATION_NAME = "Poznan-BU1";
-    private String cmDomainName = "SeleniumE2ETest";
-    private String deviceName = "H3_Lab";
-    private String portName = "GE 1";
-    private String trailName = "SeleniumTest IP Link";
-    private String interfaceName = "CISCO IOS 12/15/XE without mediation";
-    private String processNRPCode;
+    private static final String deviceModel = "1941";
+    private static final String LOCATION_NAME = "Poznan-BU1";
+    private static final String cmDomainName = "SeleniumE2ETest";
+    private static final String deviceName = "H3_Lab";
+    private static final String portName = "GE 1";
+    private static final String trailName = "SeleniumTest IP Link";
+    private static final String interfaceName = "CISCO IOS 12/15/XE without mediation";
+    private static final String TEMPLATE_NAME = "E2E_Test_Loopback_v2";
+    private static final String address = "10.10.20.11";
+    private static final String port = "22";
+    private static final String password = "cisco";
+    private static final String commandTimeout = "20";
+    private static final String connectionTimeout = "20";
+    private static final String ipNetwork = "E2ESeleniumTest";
+    private static final String TEMPLATE_EXECUTION_NOTIFICATION = "Scripts execution for template E2E_Test_Loopback_v2";
+
     private String processIPName = "S.1-" + (int) (Math.random() * 1001);
     private String serialNumber = "SN-" + (int) (Math.random() * 1001);
     private String processIPCode;
-    private ChangeConfigurationPage changeConfigurationPage;
-    private SetParametersWizardPage setParametersWizardPage;
-    private static String TEMPLATE_NAME = "E2E_Test_Loopback_v2";
-    private String address = "10.10.20.11";
-    private String port = "22";
-    private String password = "cisco";
-    private String commandTimeout = "20";
-    private String connectionTimeout = "20";
-    private String perspectiveContext;
-    private String ipNetwork = "E2ESeleniumTest";
-    private static String TEMPLATE_EXECUTION_NOTIFICATION = "Scripts execution for template E2E_Test_Loopback_v2";
+    private String processNRPCode;
 
     String URL = "";
 
@@ -313,7 +313,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         checkTaskAssignment();
         String currentUrl = driver.getCurrentUrl();
         String[] split = currentUrl.split(Pattern.quote("?"));
-        perspectiveContext = split[1];
+        String perspectiveContext = split[1];
         Assert.assertTrue(perspectiveContext.contains("PLAN"));
     }
 
@@ -508,6 +508,11 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         networkDiscoveryControlViewPage.checkReconciliationStartedSystemMessage();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.waitForEndOfReco();
+        networkDiscoveryControlViewPage.selectLatestReconciliationState();
+        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(ErrorLevel.STARTUP_FATAL));
+        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(ErrorLevel.FATAL));
+        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(ErrorLevel.ERROR));
+        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(ErrorLevel.WARNING));
     }
 
     @Test(priority = 39)
@@ -577,7 +582,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     @Test(priority = 44)
     public void deleteIPAddressAssignment() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        ipAddressManagementViewPage = IPAddressManagementViewPage.goToIPAddressManagementPage(driver, BASIC_URL);
+        IPAddressManagementViewPage ipAddressManagementViewPage = IPAddressManagementViewPage.goToIPAddressManagementPage(driver, BASIC_URL);
         ipAddressManagementViewPage.searchIpNetwork(ipNetwork);
         ipAddressManagementViewPage.expandTreeRow(ipNetwork);
         ipAddressManagementViewPage.expandTreeRowContains("%");

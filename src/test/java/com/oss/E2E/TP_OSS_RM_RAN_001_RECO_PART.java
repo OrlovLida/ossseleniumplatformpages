@@ -1,6 +1,7 @@
 package com.oss.E2E;
 
 import org.assertj.core.api.Assertions;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -9,6 +10,7 @@ import com.oss.BaseTestCase;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.reconciliation.CmDomainWizardPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
+import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage.ErrorLevel;
 import com.oss.pages.reconciliation.NetworkInconsistenciesViewPage;
 import com.oss.pages.reconciliation.SamplesManagementPage;
 import com.oss.utils.TestListener;
@@ -17,9 +19,9 @@ import com.oss.utils.TestListener;
 public class TP_OSS_RM_RAN_001_RECO_PART extends BaseTestCase {
 
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
-    private String cmDomainName = "Selenium-TP-OSS-RM-RAN-001";
-    private String cmInterface = "Huawei U2000 RAN";
-    private String[] inconsistenciesNames = {
+    private static final String cmDomainName = "Selenium-TP-OSS-RM-RAN-001";
+    private static final String cmInterface = "Huawei U2000 RAN";
+    private static final String[] inconsistenciesNames = {
             "ENODEB-GBM055TST",
             "PhysicalElement-BTS5900,GBM055TST/0/BBU5900,0",
             "PhysicalElement-BTS5900,GBM055TST/0/MRRU,60",
@@ -67,6 +69,11 @@ public class TP_OSS_RM_RAN_001_RECO_PART extends BaseTestCase {
         networkDiscoveryControlViewPage.runReconciliation();
         networkDiscoveryControlViewPage.checkReconciliationStartedSystemMessage();
         networkDiscoveryControlViewPage.waitForEndOfReco();
+        networkDiscoveryControlViewPage.selectLatestReconciliationState();
+        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(ErrorLevel.STARTUP_FATAL));
+        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(ErrorLevel.FATAL));
+        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(ErrorLevel.ERROR));
+        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(ErrorLevel.WARNING));
     }
 
     @Test(priority = 4)
