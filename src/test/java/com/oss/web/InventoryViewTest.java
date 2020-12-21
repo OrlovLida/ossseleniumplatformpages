@@ -33,12 +33,8 @@ public class InventoryViewTest extends BaseTestCase {
 
     @Test
     public void searchByType() {
-        //given
-        TableInterface tableWidget = inventoryViewPage.getMainTable();
-
         //when
-        tableWidget.searchByAttribute("type", ComponentType.COMBOBOX, "PoP");
-        Multimap<String,String> filterValues = tableWidget.getAppliedFilters();
+        Multimap<String,String> filterValues = inventoryViewPage.searchByAttributeValue("type", "PoP", ComponentType.COMBOBOX);
 
         //then
         Assertions.assertThat(filterValues.keys()).hasSize(1);
@@ -47,12 +43,9 @@ public class InventoryViewTest extends BaseTestCase {
 
     @Test
     public void selectFirstRow() {
-        //given
-        TableInterface tableWidget = inventoryViewPage.getMainTable();
-
         //when
-        tableWidget.selectRow(0);
-        List<TableRow> selectedRows = tableWidget.getSelectedRows();
+        inventoryViewPage.selectObjectByRowId(0);
+        List<TableRow> selectedRows = inventoryViewPage.getSelectedRows();
 
         //then
         Assertions.assertThat(selectedRows).hasSize(1);
@@ -62,7 +55,7 @@ public class InventoryViewTest extends BaseTestCase {
 
     @Test
     public void resizeColumn() {
-        TableInterface tableWidget = inventoryViewPage.getMainTable();
+        TableWidget tableWidget = inventoryViewPage.getMainTable();
         int defaultSize = tableWidget.getFirstColumnSize();
         DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
         Assertions.assertThat(defaultSize).isEqualTo(200);
@@ -77,17 +70,16 @@ public class InventoryViewTest extends BaseTestCase {
 
     @Test
     public void removeSecondColumn() {
-        TableInterface tableWidget = inventoryViewPage.getMainTable();
-        List<String> columnHeaders = tableWidget.getActiveColumnHeaders();
+        List<String> columnHeaders = inventoryViewPage.getActiveColumnsHeaders();
 
         DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
         String firstHeader = columnHeaders.get(0);
         String secondHeader = columnHeaders.get(1);
         String thirdHeader = columnHeaders.get(2);
 
-        tableWidget.disableColumnByLabel(secondHeader);
+        inventoryViewPage.removeColumn(secondHeader);
 
-        List<String> newColumnHeaders = tableWidget.getActiveColumnHeaders();
+        List<String> newColumnHeaders = inventoryViewPage.getActiveColumnsHeaders();
         String newFirstHeader = newColumnHeaders.get(0);
         String newSecondHeader = newColumnHeaders.get(1);
 
@@ -98,19 +90,18 @@ public class InventoryViewTest extends BaseTestCase {
     @Test
     public void addFirstUnselectedColumn() {
         //given
-        TableWidget tableWidget = inventoryViewPage.getMainTable();
-        List<String> columnHeaders = tableWidget.getActiveColumnHeaders();
+        List<String> columnHeaders = inventoryViewPage.getActiveColumnsHeaders();
         String firstHeader = columnHeaders.get(2);
 
         //when
-        tableWidget.disableColumnByLabel(firstHeader);
-        columnHeaders = tableWidget.getActiveColumnHeaders();
+        inventoryViewPage.removeColumn(firstHeader);
+        columnHeaders = inventoryViewPage.getActiveColumnsHeaders();
         Assertions.assertThat(columnHeaders).doesNotContain(firstHeader);
 
-        tableWidget.enableColumnByLabel(firstHeader);
+        inventoryViewPage.enableColumnAndApply(firstHeader);
 
         //then
-        columnHeaders = tableWidget.getActiveColumnHeaders();
+        columnHeaders = inventoryViewPage.getActiveColumnsHeaders();
         Assertions.assertThat(columnHeaders).contains(firstHeader);
     }
 
@@ -156,13 +147,11 @@ public class InventoryViewTest extends BaseTestCase {
 
     @Test
     public void findByText() {
-        TableWidget tableWidget = inventoryViewPage.getMainTable();
-        String secondID = tableWidget.getValueFromNthRow("XId", 2);
-        tableWidget.typeIntoSearch(secondID);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        String newFirstID = tableWidget.getValueFromNthRow("XId", 1);
+        String secondID = inventoryViewPage.getAttributeValue("XId", 2);
+        inventoryViewPage.searchObject(secondID);
+        String newFirstID = inventoryViewPage.getAttributeValue("XId", 1);
         Assert.assertEquals(secondID, newFirstID);
-        Assert.assertEquals(tableWidget.getRowsNumber(), 1);
+        Assert.assertEquals(inventoryViewPage.getRowsNumber(), 1);
     }
 
 

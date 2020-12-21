@@ -46,7 +46,6 @@ public class PhysicalDeviceInventoryViewTest extends BaseTestCase {
 
         int rows = physicalDeviceTable.getRowsNumber();
         String nameValue = physicalDeviceTable.getValueFromNthRow("Name", 1);
-        System.out.println("");
 
     }
 
