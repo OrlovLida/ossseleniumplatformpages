@@ -27,7 +27,6 @@ public class InventoryViewTest extends BaseTestCase {
 
     @BeforeClass
     public void goToInventoryView() {
-
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Location");
     }
 
@@ -157,40 +156,23 @@ public class InventoryViewTest extends BaseTestCase {
 
     @Test
     public void changeTab() {
-        TableWidget tableWidget = inventoryViewPage.getMainTable();
+        inventoryViewPage.selectObjectByRowId(0);
 
-        tableWidget.selectFirstRow();
-        TabsWidget tabsWidget = inventoryViewPage.getTabsWidget();
-
-        String activeTabLabel = tabsWidget.getActiveTabLabel();
-        String secondTabLabel = tabsWidget.getTabLabel(1);
+        String activeTabLabel = inventoryViewPage.getActiveTabLabel();
+        String secondTabLabel = inventoryViewPage.getTabLabel(1);
         Assertions.assertThat(activeTabLabel).isNotEqualTo(secondTabLabel);
 
-        tabsWidget.selectTabByLabel(secondTabLabel);
-        String newActiveLabel = tabsWidget.getActiveTabLabel();
+        inventoryViewPage.selectTabByLabel(secondTabLabel);
+        String newActiveLabel = inventoryViewPage.getActiveTabLabel();
         Assertions.assertThat(newActiveLabel).isEqualTo(secondTabLabel);
     }
 
     @Test
-    public void clickRefresh() {
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        TableWidget tableWidget = inventoryViewPage.getMainTable();
-        tableWidget.callAction(ActionsContainer.KEBAB_GROUP_ID, TableWidget.REFRESH_ACTION_ID);
-        Assert.assertTrue(inventoryViewPage.isLoadBarDisplayed());
-    }
-
-    @Test
-    public void changeTabAndSelectFirstRow() {
-       //TODO: rewrite this
-    }
-
-    @Test
     public void checkDisplayingOfPropertyValue(){
-        TableWidget tableWidget = inventoryViewPage.getMainTable();
-        String idNumberFromTableWidget = tableWidget.getValueFromNthRow("XId", 1);
-        tableWidget.selectFirstRow();
-        PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel();
+        PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel(0, "InventoryView_DetailsTab_LocationInventoryView_PropertyPanelWidget_Building");
+
         String idNumberFromPropertiesTab = propertyPanel.getPropertyValue("id");
+        String idNumberFromTableWidget = inventoryViewPage.getAttributeValue("XId", 1);
         Assert.assertEquals(idNumberFromTableWidget, idNumberFromPropertiesTab);
     }
 

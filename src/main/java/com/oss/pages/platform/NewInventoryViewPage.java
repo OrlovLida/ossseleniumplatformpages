@@ -66,6 +66,12 @@ public class NewInventoryViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
+    @Step("Pick first row")
+    public NewInventoryViewPage selectFirstRow() {
+        selectObjectByRowId(0);
+        return this;
+    }
+
     public void selectObjectByRowId(int rowId) {
         TableWidget mainTable = getMainTable();
         mainTable.selectRow(rowId);
@@ -166,13 +172,6 @@ public class NewInventoryViewPage extends BasePage {
         return this;
     }
 
-    @Step("Pick first row")
-    public NewInventoryViewPage selectFirstRow() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        getMainTable().selectFirstRow();
-        return this;
-    }
-
     @Step("Edit Text Fields")
     public NewInventoryViewPage editTextFields(String componentId, Input.ComponentType componentType, String value) {
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -205,8 +204,17 @@ public class NewInventoryViewPage extends BasePage {
     //Details operations
 
     public TabsWidget getTabsWidget() {
+        if(getSelectedRows().size() == 0) {
+            throw new RuntimeException("Only single selection is supported");
+        }
+
         Widget.waitForWidget(wait, TabsWidget.TABS_WIDGET_CLASS);
         return TabsWidget.create(driver, wait);
+    }
+
+    public PropertyPanel getPropertyPanel(int rowId, String propertyPanelId) {
+        selectObjectByRowId(rowId);
+        return (PropertyPanel) getTabsWidget().getWidget(propertyPanelId, WidgetType.PROPERTY_PANEL);
     }
 
     public String getActiveTabLabel() {
@@ -241,14 +249,10 @@ public class NewInventoryViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    private void selectTabByLabel(String detailLabel) {
+    public void selectTabByLabel(String detailLabel) {
         TabsWidget tabsWidget = getTabsWidget();
-
-        String activeTabLabel = tabsWidget.getActiveTabLabel();
-        String secondTabLabel = tabsWidget.getTabLabel(1);
-
-        tabsWidget.selectTabByLabel(secondTabLabel);
-        String newActiveLabel = tabsWidget.getActiveTabLabel();
+        tabsWidget.selectTabByLabel(detailLabel);
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
 
