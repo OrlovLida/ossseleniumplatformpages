@@ -22,6 +22,7 @@ import com.oss.pages.bpm.TasksPage;
 import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.transport.IRBInterfaceWizardPage;
 import com.oss.pages.transport.ipam.IPAddressManagementViewPage;
+import com.oss.pages.transport.ipam.IPv4AddressAssignmentWizardPage;
 import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
@@ -98,8 +99,8 @@ public class IRBInterfaceTest extends BaseTestCase {
         newInventoryViewPage.selectFirstRow();
         waitForPageToLoad();
         newInventoryViewPage.callAction("CREATE", "AssignIPv4Host_TP");
-        IRBInterfaceWizardPage irbInterfaceWizardPage = new IRBInterfaceWizardPage(driver);
-        irbInterfaceWizardPage.assignIPtoIRBInterface(IP_ADDRESS, IP_SUBNET);
+        IPv4AddressAssignmentWizardPage iPv4AddressAssignmentWizardPage = new IPv4AddressAssignmentWizardPage(driver);
+        iPv4AddressAssignmentWizardPage.assignIPtoIRBInterface(IP_ADDRESS, IP_SUBNET);
         waitForPageToLoad();
     }
 
@@ -116,7 +117,7 @@ public class IRBInterfaceTest extends BaseTestCase {
         newInventoryViewPage.callAction("KEBAB", "refreshButton");
         waitForPageToLoad();
         Assert.assertEquals(MTU_VALUE, newInventoryViewPage.getMainTable().getCellValue(0, "MTU"));
-        Assert.assertEquals(DESCRIPTION, newInventoryViewPage.getMainTable().getCellValue(0,"Description"));
+        Assert.assertEquals(DESCRIPTION, newInventoryViewPage.getMainTable().getCellValue(0, "Description"));
     }
 
     @Test(priority = 7)
