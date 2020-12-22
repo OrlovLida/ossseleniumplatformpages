@@ -44,6 +44,11 @@ public class NewInventoryViewPage extends BasePage {
         return new NewInventoryViewPage(driver, wait);
     }
 
+    public static NewInventoryViewPage getInventoryViewPage(WebDriver driver, WebDriverWait wait) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return new NewInventoryViewPage(driver, wait);
+    }
+
     @Deprecated
     public NewInventoryViewPage(WebDriver driver) {
         super(driver);
@@ -322,9 +327,9 @@ public class NewInventoryViewPage extends BasePage {
     }
 
     @Step("Save configuration for properties")
-    public NewInventoryViewPage saveConfigurationForProperties(String configurationName, Field... fields) {
+    public NewInventoryViewPage saveConfigurationForProperties(int rowId, String widgetId, String configurationName, Field... fields) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getPropertiesFilter().openSaveAsNewConfigurationWizard().saveAsNew(configurationName, fields);
+        getPropertyPanel(rowId, widgetId).openSaveAsNewConfigurationWizard().saveAsNew(configurationName, fields);
         return this;
     }
 

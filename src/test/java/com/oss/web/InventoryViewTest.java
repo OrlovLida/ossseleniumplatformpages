@@ -23,6 +23,8 @@ import com.oss.pages.platform.NewInventoryViewPage;
 
 public class InventoryViewTest extends BaseTestCase {
 
+    private final static String PROPERTY_PANEL_ID = "InventoryView_DetailsTab_LocationInventoryView_PropertyPanelWidget_Building";
+
     private NewInventoryViewPage inventoryViewPage;
 
     @BeforeClass
@@ -169,52 +171,31 @@ public class InventoryViewTest extends BaseTestCase {
 
     @Test
     public void checkDisplayingOfPropertyValue(){
-        PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel(0, "InventoryView_DetailsTab_LocationInventoryView_PropertyPanelWidget_Building");
+        PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel(0, PROPERTY_PANEL_ID);
 
         String idNumberFromPropertiesTab = propertyPanel.getPropertyValue("id");
         String idNumberFromTableWidget = inventoryViewPage.getAttributeValue("XId", 0);
         Assert.assertEquals(idNumberFromTableWidget, idNumberFromPropertiesTab);
     }
     @Test
-    public void setProperties(){
-        TableWidget tableWidget = inventoryViewPage.getMainTable();
-        tableWidget.selectFirstRow();
-        PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel();
-        PropertiesFilter propertiesFilter = inventoryViewPage.getPropertiesFilter();
-        String defaultFirstPropertyLabel = propertyPanel.getNthPropertyLabel(1);
-        String defaultSecondPropertyLabel = propertyPanel.getNthPropertyLabel(2);
-        propertiesFilter.clickOnFilterIcon();
-        boolean defaultChbxStatusForFirstLabel = propertiesFilter.isCheckboxChecked(defaultFirstPropertyLabel);
-        propertiesFilter.clickCheckbox(defaultFirstPropertyLabel);
-        boolean chbxStatusForFirstLabel = propertiesFilter.isCheckboxChecked(defaultFirstPropertyLabel);
-        Assert.assertEquals(defaultChbxStatusForFirstLabel, !chbxStatusForFirstLabel);
-        propertiesFilter.clickOnSave();
-        String firstLabel = propertyPanel.getNthPropertyLabel(1);
-        Assert.assertEquals(firstLabel, defaultSecondPropertyLabel);
-        propertiesFilter.clickOnFilterIcon();
-        propertiesFilter.clickCheckbox(defaultFirstPropertyLabel);
-        chbxStatusForFirstLabel = propertiesFilter.isCheckboxChecked(defaultFirstPropertyLabel);
-        Assert.assertEquals(defaultChbxStatusForFirstLabel, chbxStatusForFirstLabel);
-        propertiesFilter.clickOnSave();
-        firstLabel = propertyPanel.getNthPropertyLabel(1);
-        Assert.assertEquals(firstLabel, defaultFirstPropertyLabel);
+    public void propertyPanelAttributesChooserCheck(){
+        PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel(0, PROPERTY_PANEL_ID);
+        List<String> labels = propertyPanel.getPropertyLabels();
+        String firstProperty = labels.get(0);
+
+        propertyPanel.disableAttributeByLabel(firstProperty);
+
+        List<String> labelsAfterDisable = propertyPanel.getPropertyLabels();
+        Assertions.assertThat(labelsAfterDisable).doesNotContain(firstProperty);
+
+        propertyPanel.enableAttributeByLabel(firstProperty);
+
+        List<String> labelsAfterEnable = propertyPanel.getPropertyLabels();
+        Assertions.assertThat(labelsAfterEnable).contains(firstProperty);
     }
 
     @Test
     public void searchProperty(){
-        TableWidget tableWidget = inventoryViewPage.getMainTable();
-        tableWidget.selectFirstRow();
-        PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel();
-        PropertiesFilter propertiesFilter = inventoryViewPage.getPropertiesFilter();
-        String defaultFirstPropertyLabel = propertyPanel.getNthPropertyLabel(1);
-        String defaultSecondPropertyLabel = propertyPanel.getNthPropertyLabel(2);
-        propertiesFilter.clickOnFilterIcon();
-        String defaultFirstPropertyLabelOnPopup = propertiesFilter.getNthPropertyChbxLabelFromPopup(1);
-        String defaultSecondPropertyLabelOnPopup = propertiesFilter.getNthPropertyChbxLabelFromPopup(2);
-        Assert.assertEquals(defaultFirstPropertyLabel,defaultFirstPropertyLabelOnPopup);
-        Assert.assertEquals(defaultSecondPropertyLabel,defaultSecondPropertyLabelOnPopup);
-        propertiesFilter.typeIntoSearch(defaultSecondPropertyLabelOnPopup);
-        String firstPropertyLabelOnPopup = propertiesFilter.getNthPropertyChbxLabelFromPopup(1);
-        Assert.assertEquals(firstPropertyLabelOnPopup, defaultSecondPropertyLabelOnPopup);
+       //TODO:
     }
 }
