@@ -163,6 +163,7 @@ public class NewInventoryViewPage extends BasePage {
         getMainTable().callAction(groupId, actionId);
         return this;
     }
+
     @Step("Clear all tags")
     public NewInventoryViewPage clearAllTags() {
         DelayUtils.waitForPageToLoad(driver, wait);
