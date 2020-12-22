@@ -6,7 +6,6 @@ import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
-import com.oss.pages.platform.NewInventoryViewPage;
 
 import io.qameta.allure.Step;
 
@@ -14,8 +13,6 @@ public class IRBInterfaceWizardPage extends BasePage {
 
     private static final String IRB_DEVICE_ID = "irb-main-device";
     private static final String IRB_VLANID_ID = "irb-main-vlanid";
-    private static final String IPADDRESS_ID = "uid-ipaddress";
-    private static final String IPSUBNET_ID = "uid-ip-subnet";
     private static final String IRB_MTU_ID = "irb-main-mtu";
     private static final String IRB_DESCRIPTION_ID = "irb-main-description";
     private static final String WIZARD_ID = "Popup";
@@ -29,19 +26,6 @@ public class IRBInterfaceWizardPage extends BasePage {
         getWizard().setComponentValue(IRB_DEVICE_ID, device, Input.ComponentType.SEARCH_FIELD);
         waitForPageToLoad();
         getWizard().setComponentValue(IRB_VLANID_ID, vlanId, Input.ComponentType.TEXT_FIELD);
-        waitForPageToLoad();
-        getWizard().clickAccept();
-        return this;
-    }
-
-    @Step("Assign IP address {ipAddress} and Subnet {subnet} to IRB Interface")
-    public IRBInterfaceWizardPage assignIPtoIRBInterface(String ipAddress, String subnet) {
-        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver);
-        waitForPageToLoad();
-        newInventoryViewPage.editTextFields(IPADDRESS_ID, Input.ComponentType.TEXT_FIELD, ipAddress);
-        newInventoryViewPage.editTextFields(IPSUBNET_ID, Input.ComponentType.SEARCH_FIELD, subnet);
-        waitForPageToLoad();
-        getWizard().clickButtonByLabel("Next Step");
         waitForPageToLoad();
         getWizard().clickAccept();
         return this;

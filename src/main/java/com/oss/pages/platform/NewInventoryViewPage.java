@@ -1,7 +1,5 @@
 package com.oss.pages.platform;
 
-import io.qameta.allure.Step;
-
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -12,7 +10,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.google.common.collect.Multimap;
 import com.oss.framework.components.common.AttributesChooser;
 import com.oss.framework.components.inputs.Button;
-import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.Input.ComponentType;
 import com.oss.framework.components.portals.DropdownList;
@@ -30,6 +27,8 @@ import com.oss.framework.widgets.tablewidget.TableWidget;
 import com.oss.framework.widgets.tabswidget.TabsWidget;
 import com.oss.pages.BasePage;
 import com.oss.pages.filterpanel.FilterPanelPage;
+
+import io.qameta.allure.Step;
 
 public class NewInventoryViewPage extends BasePage {
 
@@ -110,10 +109,10 @@ public class NewInventoryViewPage extends BasePage {
         return getMainTable().getRowsNumber();
     }
 
-    public Multimap<String,String> searchByAttributeValue(String attributeId, String attributeValue, ComponentType componentType) {
+    public Multimap<String, String> searchByAttributeValue(String attributeId, String attributeValue, ComponentType componentType) {
         TableWidget mainTable = getMainTable();
         mainTable.searchByAttribute(attributeId, componentType, attributeValue);
-        Multimap<String,String> filterValues = mainTable.getAppliedFilters();
+        Multimap<String, String> filterValues = mainTable.getAppliedFilters();
         DelayUtils.waitForPageToLoad(driver, wait);
         return filterValues;
     }
@@ -173,13 +172,6 @@ public class NewInventoryViewPage extends BasePage {
         return this;
     }
 
-    @Step("Edit Text Fields")
-    public NewInventoryViewPage editTextFields(String componentId, Input.ComponentType componentType, String value) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        setValueOnTextType(componentId, componentType, value);
-        return this;
-    }
-
     @Step("Change columns order")
     public NewInventoryViewPage changeColumnsOrderInMainTable(String columnLabel, int position) {
         getMainTable().changeColumnsOrder(columnLabel, position);
@@ -201,11 +193,10 @@ public class NewInventoryViewPage extends BasePage {
         return this;
     }
 
-
     //Details operations
 
     public TabsWidget getTabsWidget() {
-        if(getSelectedRows().size() == 0) {
+        if (getSelectedRows().size() == 0) {
             throw new RuntimeException("Only single selection is supported");
         }
 
@@ -256,7 +247,6 @@ public class NewInventoryViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-
     public void selectDetail(int rowId, String detailTab, String widgetId, int detailRowId) {
         selectObjectByRowId(rowId);
         selectTabByLabel(detailTab);
@@ -264,7 +254,6 @@ public class NewInventoryViewPage extends BasePage {
         tableWidget.selectRow(detailRowId);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
-
 
     public String getDetailAttributeValue() {
         return null;
@@ -434,7 +423,6 @@ public class NewInventoryViewPage extends BasePage {
         return this;
     }
 
-
     @Step("Disable Column and apply")
     public NewInventoryViewPage disableColumnAndApply(String columnLabel) {
         disableColumn(columnLabel).clickApply();
@@ -490,16 +478,6 @@ public class NewInventoryViewPage extends BasePage {
     public boolean isOnlyOneObject(String id) {
         DelayUtils.waitForPageToLoad(driver, wait);
         return getMainTable().howManyRowsOnFirstPage() == 1 && getIdOfMainTableObject(0).equals(id);
-    }
-
-    public Input getComponent(String componentId, Input.ComponentType componentType) {
-        return ComponentFactory.create(componentId, componentType, this.driver, this.wait);
-    }
-
-    private void setValueOnTextType(String componentId, Input.ComponentType componentType, String value) {
-        DelayUtils.sleep();
-        getWizard().getComponent(componentId, componentType).clearByAction();
-        getWizard().getComponent(componentId, componentType).setSingleStringValue(value);
     }
 
 }
