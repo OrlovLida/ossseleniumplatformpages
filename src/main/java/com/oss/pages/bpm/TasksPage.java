@@ -40,6 +40,7 @@ public class TasksPage extends BasePage {
     private static final String ASSIGN_TASK_ICON_ID = "form.toolbar.assignTask";
     private static final String COMPLETE_TASK_ICON_ID = "form.toolbar.closeTask";
     private static final String SETUP_INTEGRATION_ICON_ID = "form.toolbar.setupIntegrationButton";
+    private static final String IP_TABLE = "form.specific.ip_involved_nrp_group.ip_involved_nrp_table";
     
     public TasksPage(WebDriver driver) {
         super(driver);
@@ -96,6 +97,10 @@ public class TasksPage extends BasePage {
         
     }
     
+    private TableInterface getIPTable() {
+        return OldTable.createByComponentDataAttributeName(driver, wait, IP_TABLE);
+    }
+    
     private void actionTask(String actionId) {
         selectTab(FORM_TAB_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -124,10 +129,31 @@ public class TasksPage extends BasePage {
         table.selectPredefinedFilter("Show with Completed");
         
     }
+    
     public String getIPCodeByProcessName(String processIPName) {
-        TableInterface ipTable = OldTable.createByComponentDataAttributeName(driver, wait,
-                "form.specific.ip_involved_nrp_group.ip_involved_nrp_table");
+        TableInterface ipTable = getIPTable();
         int rowNumber = ipTable.getRowNumber(processIPName, "Name");
         return ipTable.getCellValue(rowNumber, "Code");
+    }
+    
+    public void completeNRP( String processCode) {
+        completeTask(processCode,"High Level Planning");
+        startTask(processCode, "Low Level Planning");
+        completeTask(processCode, "Low Level Planning");
+        startTask(processCode, "Ready for Integration");
+        completeTask(processCode, "Ready for Integration");
+        showCompletedTasks();
+        findTask(processCode, "Ready for Integration");
+        DelayUtils.sleep(3000);
+        TableInterface ipTable = getIPTable();
+        String ipCode = ipTable.getCellValue(0, "Code");
+        startTask(ipCode, "Scope definition");
+        completeTask(ipCode, "Scope definition");
+        startTask(ipCode, "Implementation");
+        completeTask(ipCode, "Implementation");
+        startTask(ipCode, "Acceptance");
+        completeTask(ipCode, "Acceptance");
+        startTask(processCode, "Verification");
+        completeTask(processCode, "Verification");
     }
 }
