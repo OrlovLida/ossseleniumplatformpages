@@ -1,15 +1,21 @@
 package com.oss.pages.transport.ipam;
 
+import java.util.Arrays;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.OldActionsContainer;
+import com.oss.framework.components.inputs.Button;
+import com.oss.framework.components.inputs.Input;
+import com.oss.framework.listwidget.CommonList;
 import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Widget;
+import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
 import com.oss.framework.widgets.propertypanel.PropertyPanelInterface;
 import com.oss.framework.widgets.treewidget.TreeWidget;
@@ -37,6 +43,7 @@ public class IPAddressManagementViewPage extends BasePage {
     private static final String EDIT_OPERATION_GROUP = "Edit";
     private static final String CHANGE_SUBNET_TYPE_TO_BLOCK = "Change Subnet Type to Block";
     private static final String EDIT_OPERATION_FOR_IPV4_SUBNET_NETWORK_GROUP = "EditOperationsForIPv4SubnetNetwork";
+    //    private static final String DELETE_BUTTON_DATA_ATTRIBUTE_NAME = "DeleteHostAddressAssignmentContextAction";
     private static final String DELETE_BUTTON_DATA_ATTRIBUTE_NAME = "Delete";
     private static final String SPLIT_IPV4_SUBNET_BUTTON_DATA_ATTRIBUTE_NAME = "Split IPv4 Subnet";
     private static final String MERGE_IPV4_SUBNET_BUTTON_DATA_ATTRIBUTE_NAME = "Merge IPv4 Subnet";
@@ -49,7 +56,9 @@ public class IPAddressManagementViewPage extends BasePage {
     private static final String OSS_WINDOW_CLASS = "OssWindow";
     private static final String WINDOW_TOOLBAR_CLASS = "windowToolbar";
     private static final String TABS_CONTAINER_CLASS = "tabsContainer";
+    private static final String WIZARD_ID = "Popup";
 
+    private CommonList commonList;
     private TreeWidget mainTree;
     private OldActionsContainer actionsContainer;
     private PropertyPanelInterface propertyPanel;
@@ -68,6 +77,8 @@ public class IPAddressManagementViewPage extends BasePage {
         super(driver);
         waitForPageToLoad();
     }
+
+    private Wizard wizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
 
     private TreeWidget getTreeView() {
         if (mainTree == null) {
@@ -235,6 +246,7 @@ public class IPAddressManagementViewPage extends BasePage {
     public void deleteObject(String name) {
         waitForPageToLoad();
         selectTreeRowContains(name);
+        waitForPageToLoad();
         useContextAction(DELETE_BUTTON_DATA_ATTRIBUTE_NAME);
         acceptConfirmationBox();
     }
@@ -245,7 +257,7 @@ public class IPAddressManagementViewPage extends BasePage {
         confirmationBox.clickButtonByLabel(OK_BUTTON_LABEL);
     }
 
-    private void waitForPageToLoad(){
+    private void waitForPageToLoad() {
         DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
     }
 }
