@@ -24,8 +24,6 @@ import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.listwidget.EditableList;
 import com.oss.framework.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.tablewidget.OldTable;
-import com.oss.framework.widgets.tablewidget.TableInterface;
 import com.oss.pages.bpm.IntegrationProcessWizardPage;
 import com.oss.pages.bpm.ProcessInstancesPage;
 import com.oss.pages.bpm.ProcessWizardPage;
@@ -56,6 +54,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         processInstancesPage.changeUser("bpm_webselenium", "bpmweb");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        
     }
     
     @Test(priority = 1)
@@ -268,11 +267,8 @@ public class CreateProcessNRPTest extends BaseTestCase {
         // when
         tasksPage.findTask(processNRPCode, "Ready for Integration");
         DelayUtils.sleep(3000);
-        TableInterface ipTable = OldTable.createByComponentId(driver, webDriverWait, "ip_involved_nrp_group1");
-        int rowNumber = ipTable.getRowNumber(processIPName1, "Name");
-        processIPCode1 = ipTable.getValueCell(rowNumber, "Code");
-        int rowNumber2 = ipTable.getRowNumber(processIPName2, "Name");
-        processIPCode2 = ipTable.getValueCell(rowNumber2, "Code");
+        processIPCode1 = tasksPage.getIPCodeByProcessName(processIPName1);
+        processIPCode2 = tasksPage.getIPCodeByProcessName(processIPName2);
         System.out.println(processIPCode1 + processIPCode2);
     }
     

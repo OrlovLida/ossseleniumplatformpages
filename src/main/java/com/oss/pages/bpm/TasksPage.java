@@ -60,13 +60,14 @@ public class TasksPage extends BasePage {
         findTask(processCode, taskName);
         DelayUtils.waitForPageToLoad(driver, wait);
         actionTask(ASSIGN_TASK_ICON_ID);
-        
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
     
     public void completeTask(String processCode, String taskName) {
         findTask(processCode, taskName);
         DelayUtils.waitForPageToLoad(driver, wait);
         actionTask(COMPLETE_TASK_ICON_ID);
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
     
     public void setupIntegration(String processCode) {
@@ -116,5 +117,17 @@ public class TasksPage extends BasePage {
     public void clickPlanViewButton() {
         Button button = Button.create(driver, "Plan View", "a");
         button.click();
+    }
+    
+    public void showCompletedTasks() {
+        OldTable table = OldTable.createByComponentDataAttributeName(driver, wait, TABLE_TASKS);
+        table.selectPredefinedFilter("Show with Completed");
+        
+    }
+    public String getIPCodeByProcessName(String processIPName) {
+        TableInterface ipTable = OldTable.createByComponentDataAttributeName(driver, wait,
+                "form.specific.ip_involved_nrp_group.ip_involved_nrp_table");
+        int rowNumber = ipTable.getRowNumber(processIPName, "Name");
+        return ipTable.getValueCell(rowNumber, "Code");
     }
 }
