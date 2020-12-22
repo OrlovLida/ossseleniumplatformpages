@@ -167,7 +167,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         OldTable propertiesTable = OldTable.createByComponentDataAttributeName(driver, webDriverWait, "properties(Location)");
         int rowNumber = propertiesTable.getRowNumber(locationName, "Property Value");
-        String rowValue = propertiesTable.getValueCell(rowNumber, "Property Value");
+        String rowValue = propertiesTable.getCellValue(rowNumber, "Property Value");
         Assert.assertTrue(rowValue.contains(locationName));
     }
 
@@ -181,7 +181,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         OldTable propertiesTable = OldTable.createByComponentDataAttributeName(driver, webDriverWait, "properties(Site)");
         int rowNumber = propertiesTable.getRowNumber(locationName, "Property Value");
-        String rowValue = propertiesTable.getValueCell(rowNumber, "Property Value");
+        String rowValue = propertiesTable.getCellValue(rowNumber, "Property Value");
         Assert.assertTrue(rowValue.contains(locationName));
     }
 
@@ -286,7 +286,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         new CellSiteConfigurationPage(driver).getTabTable();
         OldTable tabTable = new CellSiteConfigurationPage(driver).getTabTable();
         int rowNumber = tabTable.getRowNumber(description, "Description");
-        String rowValue = tabTable.getValueCell(rowNumber, "Description");
+        String rowValue = tabTable.getCellValue(rowNumber, "Description");
         Assert.assertTrue(rowValue.contains(description));
     }
 
@@ -328,7 +328,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         new CellSiteConfigurationPage(driver).getTabTable();
         OldTable tabTable = new CellSiteConfigurationPage(driver).getTabTable();
         int rowNumber = tabTable.getRowNumber(description, "Description");
-        String rowValue = tabTable.getValueCell(rowNumber, "Description");
+        String rowValue = tabTable.getCellValue(rowNumber, "Description");
         Assert.assertTrue(rowValue.contains(description));
     }
 
@@ -369,7 +369,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         new CellSiteConfigurationPage(driver).getTabTable();
         OldTable tabTable = new CellSiteConfigurationPage(driver).getTabTable();
         int rowNumber = tabTable.getRowNumber(description, "Description");
-        String rowValue = tabTable.getValueCell(rowNumber, "Description");
+        String rowValue = tabTable.getCellValue(rowNumber, "Description");
         Assert.assertTrue(rowValue.contains(description));
     }
 
@@ -411,7 +411,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         new CellSiteConfigurationPage(driver).getTabTable();
         OldTable tabTable = new CellSiteConfigurationPage(driver).getTabTable();
         int rowNumber = tabTable.getRowNumber(description, "Description");
-        String rowValue = tabTable.getValueCell(rowNumber, "Description");
+        String rowValue = tabTable.getCellValue(rowNumber, "Description");
         Assert.assertTrue(rowValue.contains(description));
     }
 
@@ -466,7 +466,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         new CellSiteConfigurationPage(driver).getTabTable();
         OldTable tabTable = new CellSiteConfigurationPage(driver).getTabTable();
         int rowNumber = tabTable.getRowNumber(description, "Description");
-        String rowValue = tabTable.getValueCell(rowNumber, "Description");
+        String rowValue = tabTable.getCellValue(rowNumber, "Description");
         Assert.assertTrue(rowValue.contains(description));
     }
 
@@ -521,7 +521,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         new CellSiteConfigurationPage(driver).getTabTable();
         OldTable tabTable = new CellSiteConfigurationPage(driver).getTabTable();
         int rowNumber = tabTable.getRowNumber(description, "Description");
-        String rowValue = tabTable.getValueCell(rowNumber, "Description");
+        String rowValue = tabTable.getCellValue(rowNumber, "Description");
         Assert.assertTrue(rowValue.contains(description));
     }
 

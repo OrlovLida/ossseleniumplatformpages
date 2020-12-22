@@ -120,7 +120,7 @@ public class NewInventoryViewPage extends BasePage {
 
     public String getAttributeValue(String attributeLabel, int rowId) {
         TableWidget mainTable = getMainTable();
-        return mainTable.getValueFromNthRow(attributeLabel, rowId);
+        return mainTable.getCellValue(rowId, attributeLabel);
     }
 
     public void callActionByLabel(int rowId, String groupLabel, String actionLabel) {

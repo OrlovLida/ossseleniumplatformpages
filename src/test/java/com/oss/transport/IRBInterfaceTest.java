@@ -115,8 +115,8 @@ public class IRBInterfaceTest extends BaseTestCase {
         DelayUtils.sleep(3000);
         newInventoryViewPage.callAction("KEBAB", "refreshButton");
         waitForPageToLoad();
-        Assert.assertEquals(MTU_VALUE, newInventoryViewPage.getMainTable().getValueFromNthRow("MTU", 1));
-        Assert.assertEquals(DESCRIPTION, newInventoryViewPage.getMainTable().getValueFromNthRow("Description", 1));
+        Assert.assertEquals(MTU_VALUE, newInventoryViewPage.getMainTable().getCellValue(0, "MTU"));
+        Assert.assertEquals(DESCRIPTION, newInventoryViewPage.getMainTable().getCellValue(0,"Description"));
     }
 
     @Test(priority = 7)
@@ -173,7 +173,7 @@ public class IRBInterfaceTest extends BaseTestCase {
     @Description("Get IP Code")
     public void getIPCode() {
         TableInterface ipTable = OldTable.createByComponentId(driver, webDriverWait, "form.specific.ip_involved_nrp_group.ip_involved_nrp_table");
-        processIPCode = ipTable.getValueCell(0, "Code");
+        processIPCode = ipTable.getCellValue(0, "Code");
         System.out.println(processIPCode);
     }
 

@@ -128,6 +128,6 @@ public class TasksPage extends BasePage {
         TableInterface ipTable = OldTable.createByComponentDataAttributeName(driver, wait,
                 "form.specific.ip_involved_nrp_group.ip_involved_nrp_table");
         int rowNumber = ipTable.getRowNumber(processIPName, "Name");
-        return ipTable.getValueCell(rowNumber, "Code");
+        return ipTable.getCellValue(rowNumber, "Code");
     }
 }

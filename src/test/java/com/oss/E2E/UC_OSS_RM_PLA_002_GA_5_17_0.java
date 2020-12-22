@@ -360,7 +360,7 @@ public class UC_OSS_RM_PLA_002_GA_5_17_0 extends BaseTestCase {
         DelayUtils.sleep(3000);
         TableInterface ipTable = OldTable.createByComponentId(driver, webDriverWait, "ip_involved_nrp_group1");
         int rowNumber = ipTable.getRowNumber(processIPName, "Name");
-        processIPCode = ipTable.getValueCell(rowNumber, "Code");
+        processIPCode = ipTable.getCellValue(rowNumber, "Code");
         System.out.println(processIPCode);
     }
 

@@ -135,6 +135,6 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         DelayUtils.sleep(5000);
         DelayUtils.waitForPageToLoad(driver, wait);
         TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, PHYSICAL_INCONSITENCIES_TABLE_ID);
-        return table.getValueCell(0, "Operation Type");
+        return table.getCellValue(0, "Operation Type");
     }
 }
