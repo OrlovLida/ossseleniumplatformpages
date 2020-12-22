@@ -1,14 +1,13 @@
 package com.oss.pages.transport.ipam;
+
 import org.openqa.selenium.WebDriver;
 
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
-import com.oss.pages.platform.NewInventoryViewPage;
-import com.oss.pages.transport.IRBInterfaceWizardPage;
 
 import io.qameta.allure.Step;
 
+import static com.oss.framework.components.inputs.Input.ComponentType.CHECKBOX;
 import static com.oss.framework.components.inputs.Input.ComponentType.SEARCH_FIELD;
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 
@@ -26,22 +25,26 @@ public class IPv4AddressAssignmentWizardPage extends IPAddressAssignmentWizardPa
     private static final String IPSUBNET_ID = "uid-ip-subnet";
     private static final String NEXT_ID = "hostWizardApp-next";
     private static final String ACCEPT_ID = "hostWizardApp-finish";
+    private static final String IS_PRIMARY_ID = "uid-is-primary";
 
-    public static IPv4AddressAssignmentWizardPage goToIPv4AddressAssignmentWizardPageLive(WebDriver driver, String basicURL){
-        driver.get(String.format(IPV4ADDRESS_ASSIGNMENT_WIZARD_URL+PERSPECTIVE_LIVE, basicURL));
+    public static IPv4AddressAssignmentWizardPage goToIPv4AddressAssignmentWizardPageLive(WebDriver driver, String basicURL) {
+        driver.get(String.format(IPV4ADDRESS_ASSIGNMENT_WIZARD_URL + PERSPECTIVE_LIVE, basicURL));
         return new IPv4AddressAssignmentWizardPage(driver);
     }
 
-    public static IPv4AddressAssignmentWizardPage goToIPv4AddressAssignmentWizardPagePlan(WebDriver driver, String basicURL, int projectId){
-        driver.get(String.format(IPV4ADDRESS_ASSIGNMENT_WIZARD_URL+PROJECT_ID+PERSPECTIVE_PLAN, basicURL, projectId));
+    public static IPv4AddressAssignmentWizardPage goToIPv4AddressAssignmentWizardPagePlan(WebDriver driver, String basicURL, int projectId) {
+        driver.get(String.format(IPV4ADDRESS_ASSIGNMENT_WIZARD_URL + PROJECT_ID + PERSPECTIVE_PLAN, basicURL, projectId));
         return new IPv4AddressAssignmentWizardPage(driver);
     }
 
     @Step("Assign IP address {ipAddress} and Subnet {subnet} to IRB Interface")
-    public void assignIPtoIRBInterface(String ipAddress, String subnet) {
+    public void assignIPtoIRBInterface(String ipAddress, String subnet, boolean isPrimary) {
         waitForPageToLoad();
         getWizard().setComponentValue(IPADDRESS_ID, ipAddress, TEXT_FIELD);
+        waitForPageToLoad();
         getWizard().setComponentValue(IPSUBNET_ID, subnet, SEARCH_FIELD);
+        waitForPageToLoad();
+        getWizard().setComponentValue(IS_PRIMARY_ID, String.valueOf(isPrimary), CHECKBOX);
         waitForPageToLoad();
         getWizard().clickActionById(NEXT_ID);
         waitForPageToLoad();
