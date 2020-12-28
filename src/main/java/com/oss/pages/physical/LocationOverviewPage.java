@@ -63,7 +63,7 @@ public class LocationOverviewPage extends BasePage {
 
     @Step("Get {attributeLabel} value for row number {rowNumber}")
     public String getValueByRowNumber(TabName tabName, String attributeLabel, int rowNumber) {
-        return getTabTable(tabName).getValueCell(rowNumber, attributeLabel);
+        return getTabTable(tabName).getCellValue(rowNumber, attributeLabel);
     }
 
     @Step("Click {label} in confirmation box")

@@ -100,13 +100,13 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         tableWidget.clickOnAction("Refresh");
         DelayUtils.sleep(500);
         TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, RECONCILIATION_STATE_TABLE_ID);
-        String status = table.getValueCell(0, "Status");
+        String status = table.getCellValue(0, "Status");
         while (status.equals("IN_PROGRESS") || status.equals("PENDING")) {
             DelayUtils.sleep(5000);
             tableWidget.clickOnKebabMenu();
             tableWidget.clickOnAction("Refresh");
             DelayUtils.sleep(1000);
-            status = table.getValueCell(0, "Status");
+            status = table.getCellValue(0, "Status");
         }
         Assertions.assertThat(status.equals("SUCCESS"));
     }
@@ -192,7 +192,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     private void printIssues(String type, int issuesNumber) {
         for (int i = 0; i < issuesNumber; i++) {
-            System.out.println("[" + type + "] " + getIssuesTable().getValueCell(i, "Reason"));
+            System.out.println("[" + type + "] " + getIssuesTable().getCellValue(i, "Reason"));
         }
     }
 

@@ -101,7 +101,7 @@ public class GisViewPage extends BasePage {
 
     public String getCellValue(int row, String label) {
         TableInterface table = OldTable.createByComponentId(driver, wait, "gis_view_tabs");
-        return table.getValueCell(row, label);
+        return table.getCellValue(row, label);
     }
 
     public Wizard getWizard() {

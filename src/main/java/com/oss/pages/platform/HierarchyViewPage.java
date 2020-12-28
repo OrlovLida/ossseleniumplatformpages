@@ -48,14 +48,16 @@ public class HierarchyViewPage extends BasePage {
         return PropertyPanel.createById(driver, String.format(BOTTOM_PROPERTY_PANEL_ID, type, type));
     }
 
+    @Deprecated
     public PropertiesFilter getBottomPropertiesFilter(String type) {
         Widget.waitForWidget(wait, PropertiesFilter.PROPERTIES_FILTER_CLASS);
-        return PropertiesFilter.createByPropertyPanel(driver, wait, getBottomPropertyPanel(type));
+        return PropertiesFilter.create(driver, wait);
     }
 
+    @Deprecated
     public PropertiesFilter getTopPropertiesFilter(String type) {
         Widget.waitForWidget(wait, PropertiesFilter.PROPERTIES_FILTER_CLASS);
-        return PropertiesFilter.createByPropertyPanel(driver, wait, getTopPropertyPanel(type));
+        return PropertiesFilter.create(driver, wait);
     }
 
     @Step("Open Hierarchy View")

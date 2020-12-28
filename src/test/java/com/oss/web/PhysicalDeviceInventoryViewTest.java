@@ -45,18 +45,17 @@ public class PhysicalDeviceInventoryViewTest extends BaseTestCase {
         DelayUtils.sleep(3000);
 
         int rows = physicalDeviceTable.getRowsNumber();
-        String nameValue = physicalDeviceTable.getValueFromNthRow("Name", 1);
-        System.out.println("");
+        String nameValue = physicalDeviceTable.getCellValue(0,"Name");
 
     }
 
     @Test
     public void fullTextSearchTest() {
         TableWidget tableWidget = inventoryViewPage.getMainTable();
-        String secondID = tableWidget.getValueFromNthRow("XId", 2);
+        String secondID = tableWidget.getCellValue(1,"XId");
         tableWidget.typeIntoSearch(secondID);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        String newFirstID = tableWidget.getValueFromNthRow("XId", 1);
+        String newFirstID = tableWidget.getCellValue(0,"XId");
         Assert.assertEquals(secondID, newFirstID);
         Assert.assertEquals(tableWidget.getRowsNumber(), 1);
     }
