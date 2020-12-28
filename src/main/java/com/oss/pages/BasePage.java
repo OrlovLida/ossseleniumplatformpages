@@ -41,6 +41,10 @@ public class BasePage {
         return new LoginPanelPage(driver);
     }
 
+    public void closeLoginPanel() {
+        ToolbarWidget.create(driver, wait).closeLoginPanel();
+    }
+
     public NotificationWrapperPage openNotificationPanel() {
         ToolbarWidget.create(driver, wait).openNotificationPanel();
         return new NotificationWrapperPage(driver);

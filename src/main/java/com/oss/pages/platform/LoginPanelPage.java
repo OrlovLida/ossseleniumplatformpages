@@ -2,7 +2,6 @@ package com.oss.pages.platform;
 
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.mainheader.ToolbarWidget;
 import com.oss.framework.mainheader.LoginPanel;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.BasePage;
@@ -35,15 +34,7 @@ public class LoginPanelPage extends BasePage {
         return new LoginPanelPage(driver);
     }
 
-    public BasePage closeLoginPanel() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        ToolbarWidget.create(driver, wait).closeLoginPanel();
-        return new BasePage(driver);
-    }
-
     private Input getAlphaModeSwitcher() {
         return ComponentFactory.create(ALPHA_MODE_SWITCHER_ID, SWITCHER, driver, wait);
     }
-
-
 }
