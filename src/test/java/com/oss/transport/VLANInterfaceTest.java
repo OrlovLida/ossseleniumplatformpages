@@ -123,7 +123,7 @@ public class VLANInterfaceTest extends BaseTestCase {
     }
 
     @Test(priority = 7)
-    @Description("Start High Level Planning Task")
+    @Description("Finish rest of NRP and IP Tasks")
     public void finishProcessesTasks() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.completeNRP(processNRPCode);
