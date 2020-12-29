@@ -1,8 +1,5 @@
 package com.oss.transport;
 
-import java.time.LocalDate;
-import java.util.regex.Pattern;
-
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
@@ -12,11 +9,9 @@ import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageContainer.Message;
 import com.oss.framework.alerts.SystemMessageContainer.MessageType;
+import com.oss.framework.components.inputs.Input.ComponentType;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
-import com.oss.framework.widgets.tablewidget.OldTable;
-import com.oss.framework.widgets.tablewidget.TableInterface;
-import com.oss.pages.bpm.IntegrationProcessWizardPage;
 import com.oss.pages.bpm.ProcessWizardPage;
 import com.oss.pages.bpm.TasksPage;
 import com.oss.pages.platform.NewInventoryViewPage;
@@ -32,9 +27,6 @@ public class IRBInterfaceTest extends BaseTestCase {
 
     private NewInventoryViewPage newInventoryViewPage;
     private String processNRPCode;
-    private String processIPCode;
-    private String perspectiveContext;
-    private String processIPName = "IRBInterfaceSeleniumTest-" + (int) (Math.random() * 1001);
 
     private static final String IRB_INTERFACE_ID = "117";
     private static final String MTU_VALUE = "1000";
@@ -87,8 +79,7 @@ public class IRBInterfaceTest extends BaseTestCase {
         homePage.goToHomePage(driver, BASIC_URL);
         homePage.setNewObjectType("IRB Interface");
         waitForPageToLoad();
-//        newInventoryViewPage.setFilterPanel("shortIdentifier", IRB_INTERFACE_DEVICE_NAME);
-        newInventoryViewPage.setFilterPanel("name", IRB_INTERFACE_ID);
+        newInventoryViewPage.searchObject(IRB_INTERFACE_DEVICE_NAME);
         waitForPageToLoad();
         Assert.assertFalse(newInventoryViewPage.checkIfTableIsEmpty());
     }
@@ -121,120 +112,13 @@ public class IRBInterfaceTest extends BaseTestCase {
     }
 
     @Test(priority = 7)
-    @Description("Complete High Level Planning Task")
-    public void completeHLPTask() {
+    @Description("Finish rest of NRP and IP Tasks")
+    public void finishProcessesTasks() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.completeTask(processNRPCode, "High Level Planning");
-        checkTaskCompleted();
+        tasksPage.completeNRP(processNRPCode);
     }
 
     @Test(priority = 8)
-    @Description("Start Low Level Planning Task")
-    public void startLLPTask() {
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.startTask(processNRPCode, "Low Level Planning");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        checkTaskAssignment();
-        String currentUrl = driver.getCurrentUrl();
-        String[] split = currentUrl.split(Pattern.quote("?"));
-        perspectiveContext = split[1];
-        Assert.assertTrue(perspectiveContext.contains("PLAN"));
-    }
-
-    @Test(priority = 9)
-    @Description("Complete Low Level Planning Task")
-    public void completeLLPTask() {
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.completeTask(processNRPCode, "Low Level Planning");
-        checkTaskCompleted();
-    }
-
-    @Test(priority = 10)
-    @Description("Start Ready for Integration Task")
-    public void startRFITask() {
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.startTask(processNRPCode, "Ready for Integration");
-        checkTaskAssignment();
-    }
-
-    @Test(priority = 11)
-    @Description("Setup Integration")
-    public void setupIntegration() {
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.setupIntegration(processNRPCode);
-        IntegrationProcessWizardPage integrationWizard = new IntegrationProcessWizardPage(driver);
-        integrationWizard.defineIntegrationProcess(processIPName, LocalDate.now().plusDays(0).toString(), 1);
-        waitForPageToLoad();
-        integrationWizard.clickNext();
-        waitForPageToLoad();
-        integrationWizard.clickAccept();
-    }
-
-    @Test(priority = 12)
-    @Description("Get IP Code")
-    public void getIPCode() {
-        TableInterface ipTable = OldTable.createByComponentId(driver, webDriverWait, "form.specific.ip_involved_nrp_group.ip_involved_nrp_table");
-        processIPCode = ipTable.getCellValue(0, "Code");
-        System.out.println(processIPCode);
-    }
-
-    @Test(priority = 13)
-    @Description("Complete Ready for Integration Task")
-    public void completeRFITask() {
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.completeTask(processNRPCode, "Ready for Integration");
-        checkTaskCompleted();
-    }
-
-    @Test(priority = 14)
-    @Description("Start Scope definition Task")
-    public void startSDTaskIP() {
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.startTask(processIPCode, "Scope definition");
-        checkTaskAssignment();
-    }
-
-    @Test(priority = 15)
-    @Description("Complete Scope definition Task")
-    public void completeSDTaskIP() {
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.completeTask(processIPCode, "Scope definition");
-        checkTaskCompleted();
-    }
-
-    @Test(priority = 16)
-    @Description("Start Implementation Task")
-    public void startImplementationTaskIP() {
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.startTask(processIPCode, "Implementation");
-        checkTaskAssignment();
-    }
-
-    @Test(priority = 17)
-    @Description("Complete Implementation Task")
-    public void completeImplementationTaskIP() {
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.completeTask(processIPCode, "Implementation");
-        checkTaskCompleted();
-    }
-
-    @Test(priority = 18)
-    @Description("Start Acceptance Task")
-    public void startAcceptanceTaskIP() {
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.startTask(processIPCode, "Acceptance");
-        checkTaskAssignment();
-    }
-
-    @Test(priority = 19)
-    @Description("Complete Acceptance Task")
-    public void completeAcceptanceTaskIP() {
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.completeTask(processIPCode, "Acceptance");
-        checkTaskCompleted();
-    }
-
-    @Test(priority = 20)
     @Description("Delete IP Address")
     public void deleteIPAddressAssignment() {
         homePage.goToHomePage(driver, BASIC_URL);
@@ -247,15 +131,13 @@ public class IRBInterfaceTest extends BaseTestCase {
         ipAddressManagementViewPage.deleteObject("/24 [");
     }
 
-    @Test(priority = 21)
+    @Test(priority = 9)
     @Description("Delete IRB Interface")
     public void deleteIRBInterface() {
         homePage.goToHomePage(driver, BASIC_URL);
         homePage.setNewObjectType("IRB Interface");
         waitForPageToLoad();
-//        newInventoryViewPage.setFilterPanel("shortIdentifier", IRB_INTERFACE_DEVICE_NAME);
-//        newInventoryViewPage.setFilterPanel("name", IRB_INTERFACE_ID);
-        newInventoryViewPage.setFilterPanel("description", DESCRIPTION);
+        newInventoryViewPage.searchByAttributeValue("description", DESCRIPTION, ComponentType.TEXT_FIELD);
         waitForPageToLoad();
         newInventoryViewPage.selectFirstRow();
         newInventoryViewPage.callAction("EDIT", "DeleteIRBInterfaceContextAction");
@@ -294,11 +176,6 @@ public class IRBInterfaceTest extends BaseTestCase {
     private void checkTaskAssignment() {
         checkMessageType();
         checkMessageText("The task properly assigned.");
-    }
-
-    private void checkTaskCompleted() {
-        checkMessageType();
-        checkMessageContainsText("Task properly completed.");
     }
 
     private void waitForPageToLoad() {
