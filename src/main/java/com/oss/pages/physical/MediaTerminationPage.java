@@ -1,8 +1,6 @@
 package com.oss.pages.physical;
 
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.prompts.ConfirmationBox;
-import com.oss.framework.prompts.ConfirmationBoxInterface;
 import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tablewidget.TableInterface;
@@ -16,7 +14,9 @@ public class MediaTerminationPage extends BasePage {
     private static final String CARD_FIELD_DATA_ATTRIBUTENAME = "card";
     private static final String PORT_FIELD_DATA_ATTRIBUTENAME = "port";
 
-    public MediaTerminationPage(WebDriver driver) { super(driver); }
+    public MediaTerminationPage(WebDriver driver) {
+        super(driver);
+    }
 
     @Step("Click Update cable")
     public void clickUpdateCable() {
@@ -24,10 +24,14 @@ public class MediaTerminationPage extends BasePage {
     }
 
     @Step("Click Finish")
-    public void clickFinish() { getWizard().clickButtonByLabel("Finish"); }
+    public void clickFinish() {
+        getWizard().clickButtonByLabel("Finish");
+    }
 
     @Step("Selects first location from Media Table")
-    public void setFirstLocation() { getMediaTable().selectFirstRow(); }
+    public void setFirstLocation() {
+        getMediaTable().selectFirstRow();
+    }
 
     @Step("Select Device for Start Termination")
     public void setDeviceStart(String deviceName) {
@@ -51,12 +55,12 @@ public class MediaTerminationPage extends BasePage {
 
     @Step("Select Port for Start Termination")
     public void setPortStart(String portName) {
-        getStartTerminationWidget().setComponentValue(CARD_FIELD_DATA_ATTRIBUTENAME, portName, Input.ComponentType.SEARCH_FIELD);
+        getStartTerminationWidget().setComponentValue(PORT_FIELD_DATA_ATTRIBUTENAME, portName, Input.ComponentType.SEARCH_FIELD);
     }
 
     @Step("Select Port for End Termination")
     public void setPortEnd(String portName) {
-        getEndTerminationWidget().setComponentValue(CARD_FIELD_DATA_ATTRIBUTENAME, portName, Input.ComponentType.SEARCH_FIELD);
+        getEndTerminationWidget().setComponentValue(PORT_FIELD_DATA_ATTRIBUTENAME, portName, Input.ComponentType.SEARCH_FIELD);
     }
 
     //TODO: temporary method createWizardByClassArrayIndex due to OSSWEB-9886
@@ -78,5 +82,7 @@ public class MediaTerminationPage extends BasePage {
         return OldTable.createByComponentDataAttributeName(driver, wait, "cableterminationconnectorstable_table");
     }
 
-    public Wizard getWizard() { return Wizard.createByComponentId(driver, wait, "Popup"); }
+    public Wizard getWizard() {
+        return Wizard.createByComponentId(driver, wait, "Popup");
+    }
 }
