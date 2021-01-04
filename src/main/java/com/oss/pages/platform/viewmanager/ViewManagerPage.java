@@ -1,13 +1,11 @@
 package com.oss.pages.platform.viewmanager;
 
-import com.oss.framework.components.inputs.Button;
-import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.components.portals.CreateCategoryPopup;
 import com.oss.pages.BasePage;
-import io.qameta.allure.Step;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class ViewManagerPage extends BasePage {
 
@@ -18,8 +16,9 @@ public class ViewManagerPage extends BasePage {
         super(driver);
     }
 
-    @Step("Click Add Category button")
-    public void clickSetParameters() {
-        DelayUtils.waitForPageToLoad(driver, wait);
+    public CreateCategoryPopup goToCreateCategoryPopup() {
+        WebDriverWait wait = new WebDriverWait(driver, 45);
+        return new CreateCategoryPopup(driver, wait);
     }
+
 }

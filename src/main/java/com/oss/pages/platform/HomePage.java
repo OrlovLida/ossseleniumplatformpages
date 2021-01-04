@@ -82,7 +82,7 @@ public class HomePage extends BasePage {
         WebDriverWait wait = new WebDriverWait(driver, 45);
         DelayUtils.waitForVisibility(wait, saveBookmarksButton);
         saveBookmarksButton.click();
-        return new PopupV2(driver);
+        return new PopupV2(driver, wait);
     }
 
     public InputsWizardPage goToInputsWizardPage(String url) {

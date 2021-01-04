@@ -15,7 +15,7 @@ public class LoginPanelPage extends BasePage {
         super(driver);
     }
 
-    private String ALPHA_MODE_SWITCHER_ID = "alpha-mode-switcher";
+    private static final String ALPHA_MODE_SWITCHER_ID = "alpha-mode-switcher";
 
     public void changeLanguageForEnglish() {
         LoginPanel.create(driver, wait).chooseLanguage("English");
@@ -23,7 +23,7 @@ public class LoginPanelPage extends BasePage {
 
     public LoginPanelPage changeSwitcherForAlphaMode() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        DelayUtils.sleep(3000);
+        DelayUtils.sleep(200);
         getAlphaModeSwitcher().setSingleStringValue("true");
         return new LoginPanelPage(driver);
     }

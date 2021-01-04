@@ -1,9 +1,12 @@
 package com.oss.viewmanager;
 
 import com.oss.BaseTestCase;
+import com.oss.framework.components.portals.CreateCategoryPopup;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.viewmanager.ViewManagerPage;
 import com.oss.utils.TestListener;
+import org.openqa.selenium.By;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -22,10 +25,16 @@ public class ViewManagerTest extends BaseTestCase {
 
     @Test
     public void addNewCategoryToViewManagerTest(){
-        DelayUtils.sleep(1500);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         viewManagerPage.addCategoryButton.click();
-        DelayUtils.sleep(1500);
+        DelayUtils.sleep(200);
+        CreateCategoryPopup popup = viewManagerPage.goToCreateCategoryPopup();
+        popup.setNameValue("Test Category");
+        popup.setDescriptionValue("Test Category Description");
+        popup.clickOnFirstIcon();
+        popup.clickOnSaveButton();
+
+        Assert.assertTrue(driver.findElement(By.xpath("//*[text()='Test Category']")).isDisplayed());
+        Assert.assertTrue(driver.findElement(By.xpath("//*[text()='Test Category Description']")).isDisplayed());
     }
-
-
 }
