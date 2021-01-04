@@ -1,18 +1,13 @@
 package com.oss.pages.physical;
 
-import org.openqa.selenium.WebDriver;
-
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
-
 import io.qameta.allure.Step;
+import org.openqa.selenium.WebDriver;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.DATE_TIME;
-import static com.oss.framework.components.inputs.Input.ComponentType.SEARCH_FIELD;
-import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_AREA;
-import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
+import static com.oss.framework.components.inputs.Input.ComponentType.*;
 
 public class DeviceWizardPage extends BasePage {
 
@@ -221,7 +216,7 @@ public class DeviceWizardPage extends BasePage {
     //TODO change name of method to nextCreateWizard
     @Step("Click Next button in Create Device Wizard")
     public void next() {
-        getDeviceWizard().clickActionById(NEXT_BUTTON_CREATE_WIZARD_DATA_ATTRIBUTE_NAME);
+        getDeviceWizard().clickNext();
     }
 
     @Step("Click Next button in Update Device Wizard")
@@ -232,7 +227,7 @@ public class DeviceWizardPage extends BasePage {
     //TODO change name of method to acceptCreateWizard
     @Step("Click Accept button in Create Device Wizard")
     public void accept() {
-        getDeviceWizard().clickActionById(ACCEPT_BUTTON_DATA_ATTRIBUTE_NAME);
+        getDeviceWizard().clickAccept();
     }
 
     @Step("Click Accept button in Update Device Wizard")
