@@ -137,7 +137,7 @@ public class IRBInterfaceTest extends BaseTestCase {
         homePage.goToHomePage(driver, BASIC_URL);
         homePage.setNewObjectType("IRB Interface");
         waitForPageToLoad();
-        newInventoryViewPage.searchByAttributeValue("description", DESCRIPTION, ComponentType.TEXT_FIELD);
+        newInventoryViewPage.searchObject(IRB_INTERFACE_DEVICE_NAME);
         waitForPageToLoad();
         newInventoryViewPage.selectFirstRow();
         newInventoryViewPage.callAction("EDIT", "DeleteIRBInterfaceContextAction");
