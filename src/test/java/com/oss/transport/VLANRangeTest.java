@@ -1,5 +1,12 @@
 package com.oss.transport;
 
+import java.util.List;
+
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Test;
+
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
@@ -7,24 +14,15 @@ import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.TableWidget;
-import com.oss.pages.filterpanel.FilterPanelPage;
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.transport.VLANRangeWizardPage;
 import com.oss.utils.TestListener;
+
 import io.qameta.allure.Description;
-import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Listeners;
-import org.testng.annotations.Test;
 
-import java.util.List;
-
-
-@Listeners({TestListener.class})
+@Listeners({ TestListener.class })
 public class VLANRangeTest extends BaseTestCase {
-
-    private FilterPanelPage filterPanel;
 
     private static final String VLAN_NAME_1 = "VLANRangeSeleniumTest";
     private static final String VLAN_NAME_2 = "VLANRangeSeleniumTest2";
@@ -42,16 +40,17 @@ public class VLANRangeTest extends BaseTestCase {
     }
 
     @BeforeClass
-    public void openVLANRangeWizardPage() {
-        PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
+    public void openWebConsole() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        homePage.chooseFromLeftSideMenu("VLAN Range", "Wizards", "Transport");
+        PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
     @Test(priority = 1)
     @Description("Set fields and create VLAN Range")
-    public void setFieldsAndCreateVLANRange() {
+    public void createVLANRange() {
+        homePage.chooseFromLeftSideMenu("VLAN Range", "Wizards", "Transport");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         VLANRangeWizardPage vLANRangeWizardPage = new VLANRangeWizardPage(driver);
         vLANRangeWizardPage.setName(VLAN_NAME_1)
                 .setRange(VLAN_RANGE_1)
@@ -72,7 +71,6 @@ public class VLANRangeTest extends BaseTestCase {
                 .applyFilter();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertFalse(newInventoryViewPage.checkIfTableIsEmpty());
-
     }
 
     @Test(priority = 3)
@@ -115,7 +113,7 @@ public class VLANRangeTest extends BaseTestCase {
         checkPopup();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         newInventoryViewPage.getMainTable()
-            .callAction(ActionsContainer.KEBAB_GROUP_ID, TableWidget.REFRESH_ACTION_ID);
+                .callAction(ActionsContainer.KEBAB_GROUP_ID, TableWidget.REFRESH_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());
     }
