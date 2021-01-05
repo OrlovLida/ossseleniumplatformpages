@@ -19,7 +19,7 @@ public class RoutingWizardPage extends BasePage {
         super(driver);
     }
 
-    public void InsertPhysicalLocation(String location) {
+    public void insertPhysicalLocation(String location) {
         DelayUtils.waitForPageToLoad(driver, wait);
         //TODO Change on Button after OSSWEB-9926
         driver.findElement(By.xpath("//a/button[@class='squareButton btn btn-sm btn-default']")).click();

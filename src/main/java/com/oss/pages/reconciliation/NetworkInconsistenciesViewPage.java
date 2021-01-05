@@ -62,7 +62,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    @Step("Select first Device and use Physical Device Update Wizard to assign location")
+    @Step("Select {inconsistencyName} and use Physical Device Update Wizard to assign location")
     public void assignLocation(String inconsistencyName, String preciseLocation) {
         mainTree.selectTreeRow(inconsistencyName);
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -77,7 +77,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         wizard.clickActionById(ACCEPT_CHANGE_LOCATION_BUTTON_ID);
     }
 
-    @Step("Select first Device and use assign location option")
+    @Step("Select {inconsistencyName} and use assign location option")
     public void assignRanLocation(String inconsistencyName, String location) {
         mainTree.selectTreeRow(inconsistencyName);
         DelayUtils.waitForPageToLoad(driver, wait);

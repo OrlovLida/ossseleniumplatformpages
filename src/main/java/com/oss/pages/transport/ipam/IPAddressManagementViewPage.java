@@ -8,24 +8,18 @@ import org.openqa.selenium.WebDriver;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.OldActionsContainer;
-import com.oss.framework.components.inputs.Button;
-import com.oss.framework.components.inputs.Input;
-import com.oss.framework.listwidget.CommonList;
 import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Widget;
-import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
 import com.oss.framework.widgets.propertypanel.PropertyPanelInterface;
 import com.oss.framework.widgets.treewidget.TreeWidget;
 import com.oss.pages.BasePage;
 
-import static com.oss.framework.alerts.SystemMessageContainer.MessageType.SUCCESS;
-
 import io.qameta.allure.Step;
 
-import java.util.Arrays;
+import static com.oss.framework.alerts.SystemMessageContainer.MessageType.SUCCESS;
 
 public class IPAddressManagementViewPage extends BasePage {
     private static final String IPADDRESS_MANAGEMENT_VIEW_URL = "%s/#/view/transport/ipmgt/ipTree?";
@@ -56,9 +50,7 @@ public class IPAddressManagementViewPage extends BasePage {
     private static final String OSS_WINDOW_CLASS = "OssWindow";
     private static final String WINDOW_TOOLBAR_CLASS = "windowToolbar";
     private static final String TABS_CONTAINER_CLASS = "tabsContainer";
-    private static final String WIZARD_ID = "Popup";
 
-    private CommonList commonList;
     private TreeWidget mainTree;
     private OldActionsContainer actionsContainer;
     private PropertyPanelInterface propertyPanel;
@@ -77,8 +69,6 @@ public class IPAddressManagementViewPage extends BasePage {
         super(driver);
         waitForPageToLoad();
     }
-
-    private Wizard wizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
 
     private TreeWidget getTreeView() {
         if (mainTree == null) {
@@ -152,7 +142,7 @@ public class IPAddressManagementViewPage extends BasePage {
     }
 
     @Step("Expand object with name: {name} on hierarchy view")
-    public void expandTreeRow(String name){
+    public void expandTreeRow(String name) {
         waitForPageToLoad();
         getTreeView().expandTreeRow(name);
         waitForPageToLoad();
@@ -236,7 +226,7 @@ public class IPAddressManagementViewPage extends BasePage {
     }
 
     @Step("Merge IPv4 Subnets")
-    public IPSubnetWizardPage mergeIPv4Subnet(String ... rowName) {
+    public IPSubnetWizardPage mergeIPv4Subnet(String... rowName) {
         Arrays.stream(rowName).forEach(this::selectTreeRowContains);
         useContextAction(MERGE_IPV4_SUBNET_BUTTON_DATA_ATTRIBUTE_NAME);
         return new IPSubnetWizardPage(driver);

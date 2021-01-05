@@ -9,13 +9,12 @@ import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageContainer.Message;
 import com.oss.framework.alerts.SystemMessageContainer.MessageType;
-import com.oss.framework.components.inputs.Input.ComponentType;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.bpm.ProcessWizardPage;
 import com.oss.pages.bpm.TasksPage;
 import com.oss.pages.platform.NewInventoryViewPage;
-import com.oss.pages.transport.IRBInterfaceWizardPage;
+import com.oss.pages.transport.VLANInterfaceWizardPage;
 import com.oss.pages.transport.ipam.IPAddressManagementViewPage;
 import com.oss.pages.transport.ipam.IPv4AddressAssignmentWizardPage;
 import com.oss.utils.TestListener;
@@ -23,18 +22,21 @@ import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 
 @Listeners({ TestListener.class })
-public class IRBInterfaceTest extends BaseTestCase {
+public class VLANInterfaceTest extends BaseTestCase {
 
     private NewInventoryViewPage newInventoryViewPage;
     private String processNRPCode;
 
-    private static final String IRB_INTERFACE_ID = "117";
-    private static final String MTU_VALUE = "1000";
-    private static final String DESCRIPTION = "IRBInterfaceSeleniumTest" + (int) (Math.random() * 1001);
-    private static final String IRB_INTERFACE_DEVICE_NAME = "IRBInterfaceSeleniumTest";
-    private static final String IP_SUBNET = "10.10.20.0/24 [E2ESeleniumTest]";
-    private static final String IP_NETWORK = "E2ESeleniumTest";
-    private static final String IP_ADDRESS = "10.10.20.2";
+    private static final String VLAN_INTERFACE_TYPE = "Subinterface";
+    private static final String VLAN_SUBINTERFACE_ID = "100";
+    private static final String LOCATION = "VLANInterfaceSeleniumTest";
+    private static final String IP_SUBNET = "126.0.0.0/24 [VLANInterfaceSeleniumTest]";
+    private static final String IP_NETWORK = "VLANInterfaceSeleniumTest";
+    private static final String IP_ADDRESS = "126.0.0.1";
+    private static final String EDIT_VLAN_INTERFACE_ACTION_ID = "EditVLANInterfaceContextAction";
+    private static final String DELETE_VLAN_INTERFACE_ACTION_ID = "DeleteVLANInterfaceContextAction";
+    private static final String MTU_VALUE = "1432";
+    private static final String DESCRIPTION = "VLANInterfaceSeleniumTest" + (int) (Math.random() * 1001);
 
     @BeforeClass
     public void openWebConsole() {
@@ -63,23 +65,32 @@ public class IRBInterfaceTest extends BaseTestCase {
     }
 
     @Test(priority = 3)
-    @Description("Create new IRB Interface")
-    public void createNewIRBInterface() {
+    @Description("Create new VLAN Interface")
+    public void createNewVLANInterface() {
         homePage.goToHomePage(driver, BASIC_URL);
         waitForPageToLoad();
-        homePage.chooseFromLeftSideMenu("IRB Interface", "Wizards", "Transport");
-        IRBInterfaceWizardPage irbInterfaceWizardPage = new IRBInterfaceWizardPage(driver);
+        homePage.chooseFromLeftSideMenu("VLAN Interface", "Wizards", "Transport");
+        VLANInterfaceWizardPage vlanInterfaceWizardPage = new VLANInterfaceWizardPage(driver);
         waitForPageToLoad();
-        irbInterfaceWizardPage.createIRBInterface(IRB_INTERFACE_DEVICE_NAME, IRB_INTERFACE_ID);
+        vlanInterfaceWizardPage.setType(VLAN_INTERFACE_TYPE);
+        waitForPageToLoad();
+        vlanInterfaceWizardPage.setSubinterfaceId(VLAN_SUBINTERFACE_ID);
+        waitForPageToLoad();
+        vlanInterfaceWizardPage.clickNext();
+        waitForPageToLoad();
+        vlanInterfaceWizardPage.setLocation(LOCATION);
+        waitForPageToLoad();
+        vlanInterfaceWizardPage.clickAccept();
+        waitForPageToLoad();
     }
 
     @Test(priority = 4)
-    @Description("Checks if IRB Interface is visible in New Inventory View")
-    public void checkIRBInterface() {
+    @Description("Check new VLAN Interface")
+    public void checkVLANInterface() {
         homePage.goToHomePage(driver, BASIC_URL);
-        homePage.setNewObjectType("IRB Interface");
+        homePage.setNewObjectType("VLAN Interface");
         waitForPageToLoad();
-        newInventoryViewPage.searchObject(IRB_INTERFACE_DEVICE_NAME);
+        newInventoryViewPage.searchObject(LOCATION);
         waitForPageToLoad();
         Assert.assertFalse(newInventoryViewPage.checkIfTableIsEmpty());
     }
@@ -91,18 +102,18 @@ public class IRBInterfaceTest extends BaseTestCase {
         waitForPageToLoad();
         newInventoryViewPage.callAction("CREATE", "AssignIPv4Host_TP");
         IPv4AddressAssignmentWizardPage iPv4AddressAssignmentWizardPage = new IPv4AddressAssignmentWizardPage(driver);
-        iPv4AddressAssignmentWizardPage.assignIPtoIRBInterface(IP_ADDRESS, IP_SUBNET, true);
+        iPv4AddressAssignmentWizardPage.assignIPtoIRBInterface(IP_ADDRESS, IP_SUBNET, false);
         waitForPageToLoad();
     }
 
     @Test(priority = 6)
-    @Description("Edit IRB Interface")
-    public void editIRBInterface() {
+    @Description("Edit VLAN Interface")
+    public void editVLANInterface() {
         newInventoryViewPage.selectFirstRow();
         waitForPageToLoad();
-        newInventoryViewPage.callAction("EDIT", "EditIRBInterfaceContextAction");
-        IRBInterfaceWizardPage irbInterfaceWizardPage = new IRBInterfaceWizardPage(driver);
-        irbInterfaceWizardPage.editIRBInterface(MTU_VALUE, DESCRIPTION);
+        newInventoryViewPage.callAction("EDIT", EDIT_VLAN_INTERFACE_ACTION_ID);
+        VLANInterfaceWizardPage vlanInterfaceWizardPage = new VLANInterfaceWizardPage(driver);
+        vlanInterfaceWizardPage.editVLANInterface(MTU_VALUE, DESCRIPTION);
         waitForPageToLoad();
         DelayUtils.sleep(3000);
         newInventoryViewPage.callAction("KEBAB", "refreshButton");
@@ -132,15 +143,15 @@ public class IRBInterfaceTest extends BaseTestCase {
     }
 
     @Test(priority = 9)
-    @Description("Delete IRB Interface")
-    public void deleteIRBInterface() {
+    @Description("Delete VLAN Interface")
+    public void deleteVLANInterface() {
         homePage.goToHomePage(driver, BASIC_URL);
-        homePage.setNewObjectType("IRB Interface");
+        homePage.setNewObjectType("VLAN Interface");
         waitForPageToLoad();
-        newInventoryViewPage.searchByAttributeValue("description", DESCRIPTION, ComponentType.TEXT_FIELD);
+        newInventoryViewPage.searchObject(LOCATION);
         waitForPageToLoad();
         newInventoryViewPage.selectFirstRow();
-        newInventoryViewPage.callAction("EDIT", "DeleteIRBInterfaceContextAction");
+        newInventoryViewPage.callAction("EDIT", DELETE_VLAN_INTERFACE_ACTION_ID);
         waitForPageToLoad();
         Wizard.createWizard(driver, webDriverWait).clickButtonByLabel("OK");
         checkMessageType();
@@ -181,4 +192,5 @@ public class IRBInterfaceTest extends BaseTestCase {
     private void waitForPageToLoad() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
+
 }

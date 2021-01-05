@@ -1,22 +1,23 @@
 package com.oss.pages.mediation;
 
+import org.openqa.selenium.WebDriver;
+
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tablewidget.TableInterface;
 import com.oss.pages.BasePage;
+
 import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
 
 public class ViewConnectionConfigurationPage extends BasePage {
 
-    private final String DELETE_BUTTON = "ConfirmationBox_confirmation-box_action_button";
-
-    private final Wizard wizard;
+    private static final String DELETE_BUTTON = "ConfirmationBox_confirmation-box_action_button";
+    private static final String TABLE_ID = "object-table-id";
+    private static final String WIZARD_ID = "Popup";
 
     public ViewConnectionConfigurationPage(WebDriver driver) {
         super(driver);
-        wizard = Wizard.createWizard(driver, wait);
     }
 
     @Step("Open view for Connection Configuration")
@@ -25,22 +26,26 @@ public class ViewConnectionConfigurationPage extends BasePage {
         return new ViewConnectionConfigurationPage(driver);
     }
 
-    @Step("Use context action")
+    @Step("Use context action {action}")
     public void useContextAction(String action) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, "object-table-id");
+        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, TABLE_ID);
         table.callActionByLabel(action);
     }
 
-    @Step("Select mediation")
+    @Step("Select mediation with name {name} and value {value}")
     public void selectRow(String name, String value) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, "object-table-id");
+        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, TABLE_ID);
         table.selectRowByAttributeValueWithLabel(name, value);
     }
 
     @Step("Click Delete button")
     public void clickDelete() {
-        wizard.clickActionById(DELETE_BUTTON);
+        getWizard().clickActionById(DELETE_BUTTON);
+    }
+
+    private Wizard getWizard() {
+        return Wizard.createByComponentId(driver, wait, WIZARD_ID);
     }
 }
