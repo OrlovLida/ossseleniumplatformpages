@@ -40,6 +40,8 @@ public class InventoryViewTest extends BaseTestCase {
         //then
         Assertions.assertThat(filterValues.keys()).hasSize(1);
         Assertions.assertThat(Lists.newArrayList(filterValues.get("Object Type")).get(0)).startsWith("PoP");
+
+        inventoryViewPage.clearFilters();
     }
 
     @Test
@@ -51,8 +53,11 @@ public class InventoryViewTest extends BaseTestCase {
         //then
         Assertions.assertThat(selectedRows).hasSize(1);
         Assertions.assertThat(selectedRows.get(0).getIndex()).isEqualTo(1);
-    }
 
+        inventoryViewPage.unselectObjectByRowId(0);
+        selectedRows = inventoryViewPage.getSelectedRows();
+        Assertions.assertThat(selectedRows).hasSize(0);
+    }
 
     @Test
     public void resizeColumn() {
@@ -148,11 +153,14 @@ public class InventoryViewTest extends BaseTestCase {
 
     @Test
     public void findByText() {
-        String secondID = inventoryViewPage.getAttributeValue("XId", 2);
+        String secondID = inventoryViewPage.getAttributeValue("XId", 1);
         inventoryViewPage.searchObject(secondID);
-        String newFirstID = inventoryViewPage.getAttributeValue("XId", 1);
+        String newFirstID = inventoryViewPage.getAttributeValue("XId", 0);
         Assert.assertEquals(secondID, newFirstID);
         Assert.assertEquals(inventoryViewPage.getRowsNumber(), 1);
+
+        inventoryViewPage.clearFilters();
+        System.out.println("asd");
     }
 
 
@@ -167,6 +175,8 @@ public class InventoryViewTest extends BaseTestCase {
         inventoryViewPage.selectTabByLabel(secondTabLabel);
         String newActiveLabel = inventoryViewPage.getActiveTabLabel();
         Assertions.assertThat(newActiveLabel).isEqualTo(secondTabLabel);
+
+        inventoryViewPage.unselectObjectByRowId(0);
     }
 
     @Test

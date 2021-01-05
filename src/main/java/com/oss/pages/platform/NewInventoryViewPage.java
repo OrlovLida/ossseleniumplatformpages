@@ -29,6 +29,7 @@ import com.oss.pages.BasePage;
 import com.oss.pages.filterpanel.FilterPanelPage;
 
 import io.qameta.allure.Step;
+import javafx.scene.control.Tab;
 
 public class NewInventoryViewPage extends BasePage {
 
@@ -82,6 +83,12 @@ public class NewInventoryViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
+    public void unselectObjectByRowId(int rowId) {
+        TableWidget mainTable = getMainTable();
+        mainTable.unselectTableRow(0);
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
     public void removeColumn(String columnLabel) {
         TableWidget mainTable = getMainTable();
         mainTable.disableColumnByLabel(columnLabel);
@@ -120,6 +127,13 @@ public class NewInventoryViewPage extends BasePage {
         Multimap<String, String> filterValues = mainTable.getAppliedFilters();
         DelayUtils.waitForPageToLoad(driver, wait);
         return filterValues;
+    }
+
+    @Step("Clear all filters")
+    public void clearFilters() {
+        TableWidget mainTable = getMainTable();
+        mainTable.clearAllFilters();
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public String getAttributeValue(String attributeLabel, int rowId) {
@@ -169,6 +183,7 @@ public class NewInventoryViewPage extends BasePage {
     }
 
     @Step("Clear all tags")
+    @Deprecated
     public NewInventoryViewPage clearAllTags() {
         DelayUtils.waitForPageToLoad(driver, wait);
         AdvancedSearch advancedSearch = new AdvancedSearch(driver, wait);
