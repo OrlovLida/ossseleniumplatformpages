@@ -25,11 +25,11 @@ import io.qameta.allure.Description;
 public class VLANRangeTest extends BaseTestCase {
 
     private static final String VLAN_NAME_1 = "VLANRangeSeleniumTest";
-    private static final String VLAN_NAME_2 = "VLANRangeSeleniumTest2";
+    private static final String VLAN_NAME_2 = "VLANRangeSeleniumTestModified";
     private static final String VLAN_RANGE_1 = "1, 3, 5-10";
     private static final String VLAN_RANGE_2 = "1, 3, 5-9";
-    private static final String VLAN_DESCRIPTION_1 = "Description1";
-    private static final String VLAN_DESCRIPTION_2 = "Description2";
+    private static final String VLAN_DESCRIPTION_1 = "DescriptionBefore";
+    private static final String VLAN_DESCRIPTION_2 = "DescriptionAfter";
 
     private void checkPopup() {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
@@ -97,7 +97,7 @@ public class VLANRangeTest extends BaseTestCase {
         homePage.setNewObjectType("VLAN Range");
         NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver);
         newInventoryViewPage.openFilterPanel()
-                .changeValueInLocationNameInput(VLAN_NAME_1)
+                .changeValueInLocationNameInput(VLAN_NAME_2)
                 .applyFilter();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertEquals(VLAN_NAME_2, newInventoryViewPage.getMainTable().getCellValue(0, "Name"));
