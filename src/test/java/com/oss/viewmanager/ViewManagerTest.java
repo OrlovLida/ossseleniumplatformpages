@@ -34,17 +34,12 @@ public class ViewManagerTest extends BaseTestCase {
         popup.clickOnFirstIcon();
         popup.clickOnSaveButton();
 
-        System.out.println(driver.findElement(By.xpath("//*[text()='Test Category']")).getLocation());
-        System.out.println(driver.findElement(By.xpath("//*[text()='Test Category']")).getTagName());
-
-        viewManagerPage.searchForCategory();
-
         Assert.assertTrue(driver.findElement(By.xpath("//*[text()='Test Category']")).isDisplayed());
         Assert.assertTrue(driver.findElement(By.xpath("//*[text()='Test Category Description']")).isDisplayed());
     }
 
     @Test(priority = 2)
     public void addApplicationInCategory(){
-
+        viewManagerPage.searchForCategory();
     }
 }

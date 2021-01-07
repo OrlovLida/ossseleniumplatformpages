@@ -13,7 +13,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class ViewManagerPage extends BasePage {
 
-    private final static String SEARCH_TEST_ID = "search_a6wklerx9";
+    private final static String SEARCH_TEST_ID = "search";
 
     @FindBy(className = "views-manager__bar__add-category")
     public WebElement addCategoryButton;
@@ -29,7 +29,8 @@ public class ViewManagerPage extends BasePage {
 
     @Step("Search specific category by name")
     public void searchForCategory(){
-        Input searchField = ComponentFactory.create(SEARCH_TEST_ID, Input.ComponentType.SEARCH_FIELD, driver, wait);
+        SearchField searchField = (SearchField) ComponentFactory.create(SEARCH_TEST_ID, Input.ComponentType.SEARCH_FIELD, driver, wait);
+        searchField.typeValue("Test Category");
 
         System.out.println(searchField.getLabel());
     }
