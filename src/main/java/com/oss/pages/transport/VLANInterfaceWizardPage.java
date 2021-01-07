@@ -4,6 +4,7 @@ import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.inputs.Input.ComponentType;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.CommonHierarchyApp;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
 
@@ -36,10 +37,10 @@ public class VLANInterfaceWizardPage extends BasePage {
         getWizard().setComponentValue(SUBINTERFACE_ID, subinterfaceId, NUMBER_FIELD);
     }
 
-    //TODO correct
-    @Step("Set Location to {location}")
-    public void setLocation(String location) {
-
+    @Step("Set interface to {paths}")
+    public void setInterface(String... paths) {
+        CommonHierarchyApp commonHierarchyApp = CommonHierarchyApp.createByClass(driver,wait);
+        commonHierarchyApp.navigateToPath(paths);
     }
 
     @Step("Next")

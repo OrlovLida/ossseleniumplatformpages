@@ -53,7 +53,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     private ChangeConfigurationPage changeConfigurationPage;
     private SetParametersWizardPage setParametersWizardPage;
 
-    private static final String deviceModel = "Cisco Systems Inc. CISCO1941/K9";
+    private static final String deviceModel = "CISCO1941/K9";
     private static final String LOCATION_NAME = "Poznan-BU1";
     private static final String cmDomainName = "SeleniumE2ETest";
     private static final String deviceName = "H3_Lab";
@@ -78,6 +78,8 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
 
     @BeforeClass
     public void openProcessInstancesPage() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        homePage.chooseFromLeftSideMenu("Process Instances", "Views", "Business Process Management");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
