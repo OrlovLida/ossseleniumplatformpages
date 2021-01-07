@@ -23,7 +23,7 @@ public class ViewManagerTest extends BaseTestCase {
         viewManagerPage.closeLoginPanel();
     }
 
-    @Test(priority = 1)
+    @Test
     public void addNewCategoryToViewManagerTest(){
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         viewManagerPage.addCategoryButton.click();
@@ -34,12 +34,20 @@ public class ViewManagerTest extends BaseTestCase {
         popup.clickOnFirstIcon();
         popup.clickOnSaveButton();
 
+        DelayUtils.sleep(1000);
+
         Assert.assertTrue(driver.findElement(By.xpath("//*[text()='Test Category']")).isDisplayed());
         Assert.assertTrue(driver.findElement(By.xpath("//*[text()='Test Category Description']")).isDisplayed());
     }
 
-    @Test(priority = 2)
-    public void addApplicationInCategory(){
-        viewManagerPage.searchForCategory();
+    @Test
+    public void deleteCategory(){
+
+        viewManagerPage.searchForCategory("Test Category");
+        viewManagerPage.deleteFirstCategory();
+
+        DelayUtils.sleep(1000);
+
+        Assert.assertFalse(driver.findElements(By.xpath("//*[text()='Test Category']")).size()>0);
     }
 }
