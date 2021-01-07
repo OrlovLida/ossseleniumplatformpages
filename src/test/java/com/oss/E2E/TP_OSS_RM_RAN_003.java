@@ -19,12 +19,12 @@ import java.util.Random;
 public class TP_OSS_RM_RAN_003 extends BaseTestCase {
 
     private String processDCPCode;
-    private String locationName = "XYZ";
-    private String eNodeBName = "TP_OSS_RM_RAN_003_ENODEB";
-    private String cellNames[] = new String[]{"TP_OSS_RM_RAN_003_CELL4G_1", "TP_OSS_RM_RAN_003_CELL4G_2", "TP_OSS_RM_RAN_003_CELL4G_3"};
-    Random r = new Random();
-    private String pci = Integer.toString(r.nextInt(503));
-    private String rsi = Integer.toString(r.nextInt(503));
+    private Random r = new Random();
+    private static final String locationName = "XYZ";
+    private static final String eNodeBName = "TP_OSS_RM_RAN_003_ENODEB";
+    private static final String[] cellNames = new String[]{"TP_OSS_RM_RAN_003_CELL4G_1", "TP_OSS_RM_RAN_003_CELL4G_2", "TP_OSS_RM_RAN_003_CELL4G_3"};
+    private final String pci = Integer.toString(r.nextInt(503));
+    private final String rsi = Integer.toString(r.nextInt(503));
 
     @Test(priority = 1)
     public void createNewProcess() {

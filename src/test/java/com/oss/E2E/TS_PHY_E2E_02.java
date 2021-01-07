@@ -1,5 +1,11 @@
 package com.oss.E2E;
 
+import java.util.List;
+
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
@@ -8,46 +14,44 @@ import com.oss.pages.gisView.CreateDuctWizardPage;
 import com.oss.pages.gisView.DuctCopyWizardPage;
 import com.oss.pages.gisView.GisViewPage;
 import com.oss.pages.gisView.RoutingWizardPage;
-import com.oss.pages.physical.*;
+import com.oss.pages.physical.CableRoutingViewPage;
+import com.oss.pages.physical.CardCreateWizardPage;
+import com.oss.pages.physical.CreatePluggableModuleWizardPage;
+import com.oss.pages.physical.DeviceOverviewPage;
+import com.oss.pages.physical.DeviceWizardPage;
+import com.oss.pages.physical.LocationWizardPage;
+import com.oss.pages.physical.MediaTerminationPage;
+import com.oss.pages.physical.PatchcordWizardPage;
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.radio.CableWizardPage;
-import io.qameta.allure.Description;
-import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
 
-import java.util.List;
+import io.qameta.allure.Description;
 
 public class TS_PHY_E2E_02 extends BaseTestCase {
 
-    private String BUILDING_A_NAME = "TS_PHY_E2E_02_Building_A";
-    private String BUILDING_A_2_NAME = "TS_PHY_E2E_02_Building_A_002";
-    private String BUILDING_C_NAME = "TS_PHY_E2E_02_Building_C";
-    private String GEOGRAPHICAL_ADDRESS_BUILDING = "fixedAccessIntegrationTestStreet 87649, fixedAccessIntegrationTestCity";
-    private String GEOGRAPHICAL_ADDRESS_MANHOLE = "fixedAccessIntegrationTestStreet 659921, fixedAccessIntegrationTestCity";
-    private String MANHOLE_MODEL = "SK-1";
-    private String MANHOLE_A_NAME = "TS_PHY_E2E_02_Manhole_A";
-    private String DUCT_MODEL = "HDPE 100x4,3";
-    private String DUCT_MODEL2 = "HDPE 320x2,9";
-    private String DUCT_TYPE_PRIMARY = "Primary Duct";
-    private String DUCT_TYPE_SUBDUCT = "Subduct";
-    private String ODF_MODEL = "PS-5/24";
-    private String ODF_A_NAME = "TS_PHY_E2E_02_ODF_A";
-    private String ODF_C_NAME = "TS_PHY_E2E_02_ODF_C";
-    private String CARD_MODEL = "Optomer KS-24";
-    private String CARD_NAME = "KS-24";
-    private String PLUGGABLE_MODULE_MODEL = "Generic SC/PC Front/Back";
-
-    private String CABLE_MODEL = "1/4\"\" SCF 14-50J 4.0m";
-    private String CABLE_FROM_A_TO_C_NAME = "TS_PHY_E2E_02_cable_A_TO_C";
-    private String CABLE_FROM_A_TO_C_2_NAME = "TS_PHY_E2E_02_cable_A_TO_C_2";
-
-
-    private String DUCT_FROM_A_TO_MANHOLE_NAME = "TS_PHY_E2E_02_duct_A_TO_MANHOLE";
-    private String DUCT_FROM_C_TO_MANHOLE_NAME = "TS_PHY_E2E_02_duct_C_TO_MANHOLE";
-    private String DUCT_FROM_A_TO_C_NAME = "TS_PHY_E2E_02_duct_A_TO_C";
-
-    private String CENTRAL_LOCATION = "TS_PHY_E2E_02_CENTRAL_LOCATION";
+    private static final String BUILDING_A_NAME = "TS_PHY_E2E_02_Building_A";
+    private static final String BUILDING_A_2_NAME = "TS_PHY_E2E_02_Building_A_002";
+    private static final String BUILDING_C_NAME = "TS_PHY_E2E_02_Building_C";
+    private static final String GEOGRAPHICAL_ADDRESS_BUILDING = "fixedAccessIntegrationTestStreet 87649, fixedAccessIntegrationTestCity";
+    private static final String GEOGRAPHICAL_ADDRESS_MANHOLE = "fixedAccessIntegrationTestStreet 659921, fixedAccessIntegrationTestCity";
+    private static final String MANHOLE_MODEL = "SK-1";
+    private static final String MANHOLE_A_NAME = "TS_PHY_E2E_02_Manhole_A";
+    private static final String DUCT_MODEL = "HDPE 100x4,3";
+    private static final String DUCT_MODEL2 = "HDPE 320x2,9";
+    private static final String DUCT_TYPE_PRIMARY = "Primary Duct";
+    private static final String DUCT_TYPE_SUBDUCT = "Subduct";
+    private static final String ODF_MODEL = "PS-5/24";
+    private static final String ODF_A_NAME = "TS_PHY_E2E_02_ODF_A";
+    private static final String ODF_C_NAME = "TS_PHY_E2E_02_ODF_C";
+    private static final String CARD_MODEL = "Optomer KS-24";
+    private static final String PLUGGABLE_MODULE_MODEL = "Generic SC/PC Front/Back";
+    private static final String CABLE_MODEL = "1/4\"\" SCF 14-50J 4.0m";
+    private static final String CABLE_FROM_A_TO_C_NAME = "TS_PHY_E2E_02_cable_A_TO_C";
+    private static final String CABLE_FROM_A_TO_C_2_NAME = "TS_PHY_E2E_02_cable_A_TO_C_2";
+    private static final String DUCT_FROM_A_TO_MANHOLE_NAME = "TS_PHY_E2E_02_duct_A_TO_MANHOLE";
+    private static final String DUCT_FROM_C_TO_MANHOLE_NAME = "TS_PHY_E2E_02_duct_C_TO_MANHOLE";
+    private static final String DUCT_FROM_A_TO_C_NAME = "TS_PHY_E2E_02_duct_A_TO_C";
+    private static final String CENTRAL_LOCATION = "TS_PHY_E2E_02_CENTRAL_LOCATION";
 
     private GisViewPage gisViewPage;
     private LocationWizardPage locationWizardPage;
