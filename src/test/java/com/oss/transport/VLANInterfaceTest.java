@@ -29,7 +29,7 @@ public class VLANInterfaceTest extends BaseTestCase {
 
     private static final String VLAN_INTERFACE_TYPE = "Subinterface";
     private static final String VLAN_SUBINTERFACE_ID = "100";
-    private static final String LOCATION = "VLANInterfaceSeleniumTest";
+    private static final String DEVICE = "VLANInterfaceSeleniumTest";
     private static final String IP_SUBNET = "126.0.0.0/24 [VLANInterfaceSeleniumTest]";
     private static final String IP_NETWORK = "VLANInterfaceSeleniumTest";
     private static final String IP_ADDRESS = "126.0.0.1";
@@ -78,7 +78,7 @@ public class VLANInterfaceTest extends BaseTestCase {
         waitForPageToLoad();
         vlanInterfaceWizardPage.clickNext();
         waitForPageToLoad();
-        vlanInterfaceWizardPage.setLocation(LOCATION);
+        vlanInterfaceWizardPage.setInterface(DEVICE, DEVICE, "EthernetInterface");
         waitForPageToLoad();
         vlanInterfaceWizardPage.clickAccept();
         waitForPageToLoad();
@@ -90,7 +90,7 @@ public class VLANInterfaceTest extends BaseTestCase {
         homePage.goToHomePage(driver, BASIC_URL);
         homePage.setNewObjectType("VLAN Interface");
         waitForPageToLoad();
-        newInventoryViewPage.searchObject(LOCATION);
+        newInventoryViewPage.searchObject(DEVICE);
         waitForPageToLoad();
         Assert.assertFalse(newInventoryViewPage.checkIfTableIsEmpty());
     }
@@ -102,7 +102,7 @@ public class VLANInterfaceTest extends BaseTestCase {
         waitForPageToLoad();
         newInventoryViewPage.callAction("CREATE", "AssignIPv4Host_TP");
         IPv4AddressAssignmentWizardPage iPv4AddressAssignmentWizardPage = new IPv4AddressAssignmentWizardPage(driver);
-        iPv4AddressAssignmentWizardPage.assignIPtoIRBInterface(IP_ADDRESS, IP_SUBNET, false);
+        iPv4AddressAssignmentWizardPage.assignIPtoIRBInterface("126001", IP_SUBNET, false);
         waitForPageToLoad();
     }
 
@@ -148,7 +148,7 @@ public class VLANInterfaceTest extends BaseTestCase {
         homePage.goToHomePage(driver, BASIC_URL);
         homePage.setNewObjectType("VLAN Interface");
         waitForPageToLoad();
-        newInventoryViewPage.searchObject(LOCATION);
+        newInventoryViewPage.searchObject(DEVICE);
         waitForPageToLoad();
         newInventoryViewPage.selectFirstRow();
         newInventoryViewPage.callAction("EDIT", DELETE_VLAN_INTERFACE_ACTION_ID);
