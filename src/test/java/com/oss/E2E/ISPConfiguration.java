@@ -32,7 +32,7 @@ public class ISPConfiguration extends BaseTestCase {
     String LOCATION_OVERVIEW_URL = "";
     private static final String LOCATION_NAME = "ISPConfiguration_Building";
     private static final String SUBLOCATION_NAME = "ISPConfiguration_Room";
-    private static final String GEOGRAPHICAL_ADDRESS = "test";
+    private static final String GEOGRAPHICAL_ADDRESS = "1";
     private static final String PHYSICAL_DEVICE_MODEL = "7360 ISAM FX-8";
     private static final String PHYSICAL_DEVICE_NAME = "ISPPhysicalDevice";
     private static final String PHYSICAL_DEVICE_MODEL2 = "Nexus 7010";
