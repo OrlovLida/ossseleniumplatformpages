@@ -23,7 +23,6 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tablewidget.TableInterface;
 import com.oss.pages.bpm.IntegrationProcessWizardPage;
-import com.oss.pages.bpm.ProcessInstancesPage;
 import com.oss.pages.bpm.ProcessWizardPage;
 import com.oss.pages.bpm.TasksPage;
 import com.oss.pages.filtermanager.ShareFilterPage;
@@ -41,9 +40,11 @@ import com.oss.pages.reconciliation.NetworkInconsistenciesViewPage;
 import com.oss.pages.reconciliation.SamplesManagementPage;
 import com.oss.pages.templateCM.ChangeConfigurationPage;
 import com.oss.pages.templateCM.SetParametersWizardPage;
+import com.oss.pages.transport.NetworkViewPage;
 import com.oss.pages.transport.ipam.IPAddressManagementViewPage;
 import com.oss.pages.transport.ipam.IPv4AddressAssignmentWizardPage;
-import com.oss.pages.transport.NetworkViewPage;
+
+import io.qameta.allure.Description;
 
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 
@@ -52,7 +53,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     private ChangeConfigurationPage changeConfigurationPage;
     private SetParametersWizardPage setParametersWizardPage;
 
-    private static final String deviceModel = "1941";
+    private static final String deviceModel = "CISCO1941/K9";
     private static final String LOCATION_NAME = "Poznan-BU1";
     private static final String cmDomainName = "SeleniumE2ETest";
     private static final String deviceName = "H3_Lab";
@@ -77,11 +78,13 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
 
     @BeforeClass
     public void openProcessInstancesPage() {
-        ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        homePage.chooseFromLeftSideMenu("Process Instances", "Views", "Business Process Management");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
     @Test(priority = 1)
+    @Description("Create NRP Process")
     public void createProcessNRP() {
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
         processNRPCode = processWizardPage.createSimpleNRP();
@@ -91,11 +94,10 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     }
 
     @Test(priority = 2)
+    @Description("Start High Level Planning Task")
     public void startHLPTask() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.startTask(processNRPCode, "High Level Planning");
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
-        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
         checkTaskAssignment();
     }
 
@@ -465,6 +467,20 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     }
 
     @Test(priority = 36)
+    public void startVerificationTaskNRP() {
+        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        tasksPage.startTask(processNRPCode, "Verification");
+        checkTaskAssignment();
+    }
+
+    @Test(priority = 37)
+    public void completeVerificationTaskNRP() {
+        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        tasksPage.completeTask(processNRPCode, "Verification");
+        checkTaskCompleted();
+    }
+
+    @Test(priority = 38)
     public void createCmDomain() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
@@ -477,7 +493,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 37)
+    @Test(priority = 39)
     public void uploadSamples() {
         DelayUtils.sleep(1000);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
@@ -497,7 +513,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         samplesManagementPage.uploadSamples("recoSamples/ciscoE2E/H3_Lab_100.100.100.100_20181016_1500_sh_version.cli");
     }
 
-    @Test(priority = 38)
+    @Test(priority = 40)
     public void runReconciliationWithFullSample() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage =
@@ -515,7 +531,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(ErrorLevel.WARNING));
     }
 
-    @Test(priority = 39)
+    @Test(priority = 41)
     public void applyInconsistencies() {
         networkDiscoveryControlViewPage.moveToNivFromNdcv();
         NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
@@ -526,7 +542,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(deviceName);
     }
 
-    @Test(priority = 40)
+    @Test(priority = 42)
     public void deleteCmDomain() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
@@ -536,7 +552,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(cmDomainName);
     }
 
-    @Test(priority = 41)
+    @Test(priority = 43)
     public void deleteIpLink() {
         HomePage homePage = new HomePage(driver);
         homePage.goToHomePage(driver, BASIC_URL);
@@ -551,7 +567,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         networkViewPage.delateTrailWizard();
     }
 
-    @Test(priority = 42)
+    @Test(priority = 44)
     public void deletePhysicalDevice() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         DelayUtils.sleep(5000);
@@ -566,7 +582,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         checkMessageType();
     }
 
-    @Test(priority = 43)
+    @Test(priority = 45)
     public void deleteMediation() {
         ViewConnectionConfigurationPage.goToViewConnectionConfigurationPage(driver, URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -579,7 +595,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 44)
+    @Test(priority = 46)
     public void deleteIPAddressAssignment() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         IPAddressManagementViewPage ipAddressManagementViewPage = IPAddressManagementViewPage.goToIPAddressManagementPage(driver, BASIC_URL);
