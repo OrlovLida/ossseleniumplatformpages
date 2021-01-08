@@ -29,6 +29,7 @@ import com.oss.pages.BasePage;
 import com.oss.pages.filterpanel.FilterPanelPage;
 
 import io.qameta.allure.Step;
+import javafx.scene.control.Tab;
 
 public class NewInventoryViewPage extends BasePage {
 
@@ -39,6 +40,11 @@ public class NewInventoryViewPage extends BasePage {
         driver.get(String.format("%s/#/views/management/views/inventory-view/" + type +
                 "?perspective=LIVE", basicURL));
         WebDriverWait wait = new WebDriverWait(driver, 45);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return new NewInventoryViewPage(driver, wait);
+    }
+
+    public static NewInventoryViewPage getInventoryViewPage(WebDriver driver, WebDriverWait wait) {
         DelayUtils.waitForPageToLoad(driver, wait);
         return new NewInventoryViewPage(driver, wait);
     }
@@ -74,6 +80,12 @@ public class NewInventoryViewPage extends BasePage {
     public void selectObjectByRowId(int rowId) {
         TableWidget mainTable = getMainTable();
         mainTable.selectRow(rowId);
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    public void unselectObjectByRowId(int rowId) {
+        TableWidget mainTable = getMainTable();
+        mainTable.unselectTableRow(0);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
@@ -115,6 +127,13 @@ public class NewInventoryViewPage extends BasePage {
         Multimap<String, String> filterValues = mainTable.getAppliedFilters();
         DelayUtils.waitForPageToLoad(driver, wait);
         return filterValues;
+    }
+
+    @Step("Clear all filters")
+    public void clearFilters() {
+        TableWidget mainTable = getMainTable();
+        mainTable.clearAllFilters();
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public String getAttributeValue(String attributeLabel, int rowId) {
@@ -164,6 +183,7 @@ public class NewInventoryViewPage extends BasePage {
     }
 
     @Step("Clear all tags")
+    @Deprecated
     public NewInventoryViewPage clearAllTags() {
         DelayUtils.waitForPageToLoad(driver, wait);
         AdvancedSearch advancedSearch = new AdvancedSearch(driver, wait);
@@ -312,9 +332,9 @@ public class NewInventoryViewPage extends BasePage {
     }
 
     @Step("Save configuration for properties")
-    public NewInventoryViewPage saveConfigurationForProperties(String configurationName, Field... fields) {
+    public NewInventoryViewPage saveConfigurationForProperties(int rowId, String widgetId, String configurationName, Field... fields) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getPropertiesFilter().openSaveAsNewConfigurationWizard().saveAsNew(configurationName, fields);
+        getPropertyPanel(rowId, widgetId).openSaveAsNewConfigurationWizard().saveAsNew(configurationName, fields);
         return this;
     }
 
