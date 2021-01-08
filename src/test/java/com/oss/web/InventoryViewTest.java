@@ -160,7 +160,6 @@ public class InventoryViewTest extends BaseTestCase {
         Assert.assertEquals(inventoryViewPage.getRowsNumber(), 1);
 
         inventoryViewPage.clearFilters();
-        System.out.println("asd");
     }
 
 
@@ -186,6 +185,8 @@ public class InventoryViewTest extends BaseTestCase {
         String idNumberFromPropertiesTab = propertyPanel.getPropertyValue("id");
         String idNumberFromTableWidget = inventoryViewPage.getAttributeValue("XId", 0);
         Assert.assertEquals(idNumberFromTableWidget, idNumberFromPropertiesTab);
+
+        inventoryViewPage.unselectObjectByRowId(0);
     }
     @Test
     public void propertyPanelAttributesChooserCheck(){
@@ -202,6 +203,8 @@ public class InventoryViewTest extends BaseTestCase {
 
         List<String> labelsAfterEnable = propertyPanel.getPropertyLabels();
         Assertions.assertThat(labelsAfterEnable).contains(firstProperty);
+
+        inventoryViewPage.unselectObjectByRowId(0);
     }
 
     @Test
