@@ -27,7 +27,7 @@ public class Radio4gRepository {
     private EnodeBDTO buildENodeB(String name, Long locationId, String mcc, String mnc) {
         return EnodeBDTO.builder()
                 .name(name)
-                .modelIdentifier(Constants.E_NODE_B_MODEL)
+                .modelIdentifier(Constants.GenericENODEB_MODEL)
                 .addMccMncs(getMccMnc(mcc, mnc))
                 .enodeBId(-1)
                 .locationId(locationId)

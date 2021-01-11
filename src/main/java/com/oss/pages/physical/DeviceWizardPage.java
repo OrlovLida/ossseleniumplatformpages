@@ -59,12 +59,21 @@ public class DeviceWizardPage extends BasePage {
         create();
     }
 
-    @Step("Create Device with mandatory fields (Equipment type, Model, Name, Location, Precise Location) filled in")
-    public void createDevice(String model, String name, String preciseLocation) {
+    @Step("Create Device with mandatory fields (Equipment type, Model, Name, Location, Physical Location, Precise Location) filled in")
+    public void createDevice(String model, String name, String location) {
+        DelayUtils.waitForPageToLoad(driver, wait);
         setModel(model);
+        DelayUtils.waitForPageToLoad(driver, wait);
         setName(name);
-        setPreciseLocationContains(preciseLocation);
-        create();
+        next();
+        DelayUtils.waitForPageToLoad(driver, wait);
+        setLocationContains(location);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        setPhysicalLocationContains(location);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        setPreciseLocationContains(location);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        accept();
     }
 
     @Step("Set Equipment Type")
@@ -75,7 +84,6 @@ public class DeviceWizardPage extends BasePage {
     @Step("Set Model")
     public void setModel(String model) {
         getDeviceWizard().getComponent(DEVICE_MODEL_DATA_ATTRIBUTE_NAME, SEARCH_FIELD).setSingleStringValueContains(model);
-
     }
 
     @Step("Set Name")
@@ -95,20 +103,18 @@ public class DeviceWizardPage extends BasePage {
 
     @Step("Set Location")
     public void setLocation(String location) {
-        getDeviceWizard().setComponentValue(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME, location, SEARCH_FIELD);
-    }
-
-    @Step("Set Precise Location")
-    public void setPreciseLocation(String preciseLocation) {
-        getDeviceWizard().setComponentValue(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, preciseLocation, SEARCH_FIELD);
-    }
-
-    @Step("Set Precise Location")
-    public void setPreciseLocationContains(String preciseLocation) {
-        if (getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, Input.ComponentType.SEARCH_FIELD)
+        if (getDeviceWizard().getComponent(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME, SEARCH_FIELD)
                 .getStringValue().isEmpty()) {
-            getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, SEARCH_FIELD)
-                    .setSingleStringValueContains(preciseLocation);
+            getDeviceWizard().setComponentValue(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME, location, SEARCH_FIELD);
+        }
+    }
+
+    @Step("Set Location")
+    public void setLocationContains(String location) {
+        if (getDeviceWizard().getComponent(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME, SEARCH_FIELD)
+                .getStringValue().isEmpty()) {
+            getDeviceWizard().getComponent(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME, SEARCH_FIELD)
+                    .setSingleStringValueContains(location);
         }
     }
 
@@ -117,6 +123,21 @@ public class DeviceWizardPage extends BasePage {
         if (getDeviceWizard().getComponent(DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, Input.ComponentType.SEARCH_FIELD)
                 .getStringValue().isEmpty()) {
             getDeviceWizard().getComponent(DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, SEARCH_FIELD)
+                    .setSingleStringValueContains(preciseLocation);
+        }
+    }
+
+    @Step("Set Precise Location")
+    public void setPreciseLocation(String preciseLocation) {
+        if (getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, SEARCH_FIELD).getStringValue().isEmpty())
+            getDeviceWizard().setComponentValue(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, preciseLocation, SEARCH_FIELD);
+    }
+
+    @Step("Set Precise Location")
+    public void setPreciseLocationContains(String preciseLocation) {
+        if (getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, Input.ComponentType.SEARCH_FIELD)
+                .getStringValue().isEmpty()) {
+            getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, SEARCH_FIELD)
                     .setSingleStringValueContains(preciseLocation);
         }
     }
