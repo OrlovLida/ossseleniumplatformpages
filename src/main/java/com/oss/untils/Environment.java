@@ -34,6 +34,7 @@ public class Environment {
     private static final String PHYSICAL_INVENTORY_CORE = "physical-inventory-core";
     private static final String ADDRESS_CORE = "address-core";
     private static final String ANTENNA_ARRAY_CORE = "antenna-array-core";
+    private static final String RESOURCE_CATALOG_CORE = "resource-catalog-core";
 
     private static final String KEYCLOAK_PASS_PROP = "keycloak.pass";
     private static final String KEYCLOAK_USERNAME_PROP = "keycloak.username";
@@ -145,25 +146,17 @@ public class Environment {
         return service;
     }
 
-    public RequestSpecification getLocationInventoryCoreRequestSpecification() {
-        return getRequestSpecificationByName(LOCATION_INVENTORY_CORE);
-    }
+    public RequestSpecification getLocationInventoryCoreRequestSpecification() { return getRequestSpecificationByName(LOCATION_INVENTORY_CORE); }
 
-    public RequestSpecification getPhysicalInventoryCoreRequestSpecification() {
-        return getRequestSpecificationByName(PHYSICAL_INVENTORY_CORE);
-    }
+    public RequestSpecification getPhysicalInventoryCoreRequestSpecification() { return getRequestSpecificationByName(PHYSICAL_INVENTORY_CORE); }
 
-    public RequestSpecification getAddressCoreRequestSpecification() {
-        return getRequestSpecificationByName(ADDRESS_CORE);
-    }
+    public RequestSpecification getAddressCoreRequestSpecification() { return getRequestSpecificationByName(ADDRESS_CORE); }
 
     public RequestSpecification getAntennaSpecification() {
         return getRequestSpecificationByName(ANTENNA_ARRAY_CORE);
     }
 
-    public RequestSpecification getRadioConnectionSpecification() {
-        return getRequestSpecificationByName(RADIO_CONNECTION);
-    }
+    public RequestSpecification getRadioConnectionSpecification() { return getRequestSpecificationByName(RADIO_CONNECTION); }
 
     public RequestSpecification getRadioCoreSpecification() {
         return getRequestSpecificationByName(RADIO_CORE);
@@ -181,6 +174,7 @@ public class Environment {
         return getRequestSpecificationByName(RADIO_CORE_5G);
     }
 
+    public RequestSpecification getResourceCatalogSpecification() { return getRequestSpecificationByName(RESOURCE_CATALOG_CORE); }
 
     public RequestSpecification getRequestSpecificationByName(String pName) {
         RequestSpecification findApplicationBasePath = findApplicationBasePath(pName);

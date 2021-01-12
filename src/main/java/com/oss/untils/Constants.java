@@ -18,17 +18,20 @@ public class Constants {
     public static final String NAME_PARAM = "Name";
 
     //models
-    public static final String BSC_MODEL = "Generic BSC";
-    public static final String RNC_MODEL = "Generic RNC";
-    public static final String BBU_MODEL = "BBU3900";
-    public static final String RRU_MODEL = "RRU5501";
-    public static final String ANTENNA_MODEL = "AQU4518R9";
-    public static final String BTS_MODEL = "Generic BTS";
-    public static final String NODE_B_MODEL = "Generic NodeB";
-    public static final String E_NODE_B_MODEL = "Generic ENodeB";
-    public static final String G_NODE_B_MODEL = "Generic GNodeB";
-    public static final String G_NODE_B_CUUP_MODEL = "Generic GNodeBCUUP";
-    public static final String G_NODE_B_DU_MODEL = "Generic GNodeBDU";
+    //Generic
+    public static final String GenericBSC_MODEL = "Generic BSC";
+    public static final String GenericRNCMODEL = "Generic RNC";
+    public static final String GenericBTS_MODEL = "Generic BTS";
+    public static final String GenericNODEB_MODEL = "Generic NodeB";
+    public static final String GenericENODEB_MODEL = "Generic ENodeB";
+    public static final String GenericGNODEB_MODEL = "Generic GNodeB";
+    public static final String GenericGNODEBCUUP_MODEL = "Generic GNodeBCUUP";
+    public static final String GenericGNODEBDU_MODEL = "Generic GNodeBDU";
+    //Huawei
+    public static final String BBU3900_MODEL = "BBU3900";
+    public static final String BBU5900_MODEL = "BBU5900";
+    public static final String RRU5501_MODEL = "RRU5501";
+    public static final String AQU4518R9ANTENNA_MODEL = "AQU4518R9";
 
     //types
     public static final String ADDRESS_TYPE = "Address";
