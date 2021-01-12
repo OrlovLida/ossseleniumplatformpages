@@ -29,7 +29,8 @@ public class VLANInterfaceTest extends BaseTestCase {
 
     private static final String VLAN_INTERFACE_TYPE = "Subinterface";
     private static final String VLAN_SUBINTERFACE_ID = "100";
-    private static final String DEVICE = "VLANInterfaceSeleniumTest";
+    private static final String DEVICE = "VLANInterfaceTest";
+    private static final String LOCATION = "VLANInterfaceSeleniumTest";
     private static final String IP_SUBNET = "126.0.0.0/24 [VLANInterfaceSeleniumTest]";
     private static final String IP_NETWORK = "VLANInterfaceSeleniumTest";
     private static final String IP_ADDRESS = "126.0.0.1";
@@ -78,7 +79,7 @@ public class VLANInterfaceTest extends BaseTestCase {
         waitForPageToLoad();
         vlanInterfaceWizardPage.clickNext();
         waitForPageToLoad();
-        vlanInterfaceWizardPage.setInterface(DEVICE, DEVICE, "EthernetInterface");
+        vlanInterfaceWizardPage.setInterface(LOCATION, DEVICE, "EthernetInterface", LOCATION + "-Router-3\\GE 0");
         waitForPageToLoad();
         vlanInterfaceWizardPage.clickAccept();
         waitForPageToLoad();
