@@ -4,7 +4,6 @@ import com.comarch.oss.physicalinventory.api.dto.AttributeDTO;
 import com.comarch.oss.physicalinventory.api.dto.PhysicalDeviceDTO;
 import com.comarch.oss.physicalinventory.api.dto.ResourceDTO;
 import com.oss.services.PhysicalInventoryClient;
-import com.oss.untils.Constants;
 import com.oss.untils.Environment;
 
 public class PhysicalInventoryRepository {
@@ -15,25 +14,25 @@ public class PhysicalInventoryRepository {
         this.env = env;
     }
 
-    public String createDevice(String locationType, Long locationId, Long deviceModelId, String deviceName) {
+    public String createDevice(String locationType, Long locationId, Long deviceModelId, String deviceName, String deviceModelType) {
         PhysicalInventoryClient client = new PhysicalInventoryClient(env);
-        ResourceDTO resourceDTO = client.createDevice(buildDevice(locationType, locationId, deviceModelId, deviceName));
-        String deviceId = resourceDTO.getUri().toString().substring(59,67);
+        ResourceDTO resourceDTO = client.createDevice(buildDevice(locationType, locationId, deviceModelId, deviceName, deviceModelType));
+        String deviceId = resourceDTO.getUri().toString().substring(59, 67);
         return deviceId;
     }
 
-    private PhysicalDeviceDTO buildDevice(String locationType, Long locationId, Long deviceModelId, String deviceName) {
+    private PhysicalDeviceDTO buildDevice(String locationType, Long locationId, Long deviceModelId, String deviceName, String deviceModelType) {
         return PhysicalDeviceDTO.builder()
-                .deviceModel(getDeviceModelId(deviceModelId))
+                .deviceModel(getDeviceModelId(deviceModelId, deviceModelType))
                 .location(getLocation(locationId, locationType))
                 .name(deviceName)
                 .build();
     }
 
-    private com.comarch.oss.physicalinventory.api.dto.AttributeDTO getDeviceModelId(Long id) {
+    private com.comarch.oss.physicalinventory.api.dto.AttributeDTO getDeviceModelId(Long id, String deviceModelType) {
         return AttributeDTO.builder()
                 .id(id)
-                .type(Constants.DEVICE_MODEL_TYPE)
+                .type(deviceModelType)
                 .build();
     }
 

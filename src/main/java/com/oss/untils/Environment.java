@@ -162,9 +162,7 @@ public class Environment {
         return getRequestSpecificationByName(RADIO_CORE);
     }
 
-    public RequestSpecification getRadioCore3GSpecification() {
-        return getRequestSpecificationByName(RADIO_CORE_3G);
-    }
+    public RequestSpecification getRadioCore3GSpecification() { return getRequestSpecificationByName(RADIO_CORE_3G); }
 
     public RequestSpecification getRadioCore4GSpecification() {
         return getRequestSpecificationByName(RADIO_CORE_4G);

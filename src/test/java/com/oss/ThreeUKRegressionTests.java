@@ -1,5 +1,6 @@
 package com.oss;
 
+import com.oss.pages.radio.*;
 import com.oss.repositories.*;
 import com.oss.services.ResourceCatalogClient;
 import com.oss.untils.Constants;
@@ -25,11 +26,6 @@ import com.oss.pages.physical.LocationWizardPage;
 import com.oss.pages.platform.GlobalSearchPage;
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.OldInventoryViewPage;
-import com.oss.pages.radio.Cell4GWizardPage;
-import com.oss.pages.radio.Cell5GWizardPage;
-import com.oss.pages.radio.CellSiteConfigurationPage;
-import com.oss.pages.radio.ENodeBWizardPage;
-import com.oss.pages.radio.GNodeBWizardPage;
 import com.oss.untils.Environment;
 import com.oss.utils.RandomGenerator;
 import com.oss.utils.TestListener;
@@ -69,25 +65,46 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     String cell5GNameForCreate1 = RandomGenerator.generateRandomName();
     String cell5GIdForCreate2 = RandomGenerator.generateRandomCell5GId();
     String cell5GNameForCreate2 = RandomGenerator.generateRandomName();
+    Long rncId;
+    String rncNameForCreate1 = RandomGenerator.generateRandomName();
+    String rncNameForCreate2 = RandomGenerator.generateRandomName();
+    Long nodeBId;
+    String nodeBNameForCreate1 = RandomGenerator.generateRandomName();
+    String nodeBNameForCreate2 = RandomGenerator.generateRandomName();
+    String cell3GIdForCreate1 = RandomGenerator.generateRandomCell3GId();
+    String cell3GNameForCreate1 = RandomGenerator.generateRandomName();
+    String cell3GIdForCreate2 = RandomGenerator.generateRandomCell3GId();
+    String cell3GNameForCreate2 = RandomGenerator.generateRandomName();
     Long deviceModelId;
-    String RRUDeviceNameForCreate1 = RandomGenerator.generateRandomName();
-    String RRUDeviceNameForCreate2 = RandomGenerator.generateRandomName();
-    String BBUDeviceNameForCreate1 = RandomGenerator.generateRandomName();
-    String BBUDeviceNameForCreate2 = RandomGenerator.generateRandomName();
+    String rruDeviceNameForCreate1 = RandomGenerator.generateRandomName();
+    String rruDeviceNameForCreate2 = RandomGenerator.generateRandomName();
+    String bbuDeviceNameForCreate1 = RandomGenerator.generateRandomName();
+    String bbuDeviceNameForCreate2 = RandomGenerator.generateRandomName();
+    String antennaAHP4517R7v06NameForCreate1 = RandomGenerator.generateRandomName();
+    String antennaAHP4517R7v06NameForCreate2 = RandomGenerator.generateRandomName();
+    String aauAAU5614NameForCreate1 = RandomGenerator.generateRandomName();
+    String aauAAU5614NameForCreate2 = RandomGenerator.generateRandomName();
     String objectTypeLocation = "Location";
     String objectTypeDevice = "Physical Device";
+    String objectTypeNodeB = "NodeB";
     String objectTypeENodeB = "eNodeB";
+    String objectTypeCell3G = "Cell 3G";
     String objectTypeCell4G = "Cell 4G";
     String objectTypeCell5G = "Cell 5G";
     String locationTypeSite = "Site";
+    String objectTypeRANAntenna = "RAN Antenna";
     String deviceBBUModel = "HUAWEI Technology Co.,Ltd BBU5900";
     String deviceRRUModel = "HUAWEI Technology Co.,Ltd RRU5301";
+    String ranAntennaModel = "HUAWEI Technology Co.,Ltd AHP4517R7v06";
+    String aauModel = "HUAWEI Technology Co.,Ltd AAU5614";
+    String nodeBModel = "HUAWEI Technology Co.,Ltd NodeB";
     String eNodeBModel = "HUAWEI Technology Co.,Ltd eNodeB";
     String gNodeBModel = "HUAWEI Technology Co.,Ltd gNodeB";
     String description = "Selenium Test";
-    String MCCMNCPrimary = "3UK [mcc: 234, mnc: 20]";
+    String mccMncPrimary = "3UK [mcc: 234, mnc: 20]";
     String carrier4G = "L800-B20-5";
     String carrier5G = "NR3600-n78-140";
+    String carrier3G = "3GSeleniumCarrier";
 
     @BeforeClass
     public void createTestData() {
@@ -102,10 +119,18 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         createGNodeB(gNodeBNameForCreate2);
         createCell5G(cell5GNameForCreate1, cell5GIdForCreate1);
         createCell5G(cell5GNameForCreate2, cell5GIdForCreate2);
-        createDevice(Constants.RRU5501_MODEL, RRUDeviceNameForCreate1);
-        createDevice(Constants.RRU5501_MODEL, RRUDeviceNameForCreate2);
-        createDevice(Constants.BBU5900_MODEL, BBUDeviceNameForCreate1);
-        createDevice(Constants.BBU5900_MODEL, BBUDeviceNameForCreate2);
+        createNodeB(nodeBNameForCreate1, rncNameForCreate1);
+        createNodeB(nodeBNameForCreate2, rncNameForCreate2);
+        createCell3G(cell3GNameForCreate1, cell3GIdForCreate1);
+        createCell3G(cell3GNameForCreate2, cell3GIdForCreate2);
+        createDevice(Constants.RRU5501_MODEL, rruDeviceNameForCreate1, Constants.DEVICE_MODEL_TYPE);
+        createDevice(Constants.RRU5501_MODEL, rruDeviceNameForCreate2, Constants.DEVICE_MODEL_TYPE);
+        createDevice(Constants.BBU5900_MODEL, bbuDeviceNameForCreate1, Constants.DEVICE_MODEL_TYPE);
+        createDevice(Constants.BBU5900_MODEL, bbuDeviceNameForCreate2, Constants.DEVICE_MODEL_TYPE);
+        createDevice(Constants.AHP4517R7v06ANTENNA_MODEL, antennaAHP4517R7v06NameForCreate1, Constants.ANTENNA_MODEL_TYPE);
+        createDevice(Constants.AHP4517R7v06ANTENNA_MODEL, antennaAHP4517R7v06NameForCreate2, Constants.ANTENNA_MODEL_TYPE);
+        createDevice(Constants.AAU5614ANTENNA_MODEL, aauAAU5614NameForCreate1, Constants.ANTENNA_MODEL_TYPE);
+        createDevice(Constants.AAU5614ANTENNA_MODEL, aauAAU5614NameForCreate2, Constants.ANTENNA_MODEL_TYPE);
     }
 
     private void getOrCreateAddressItemsAndAddress() {
@@ -128,7 +153,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
 
     private void createENodeB(String eNodeBNameForCreate) {
         Radio4gRepository radio4gRepository = new Radio4gRepository(env);
-        eNodeBId = radio4gRepository.createENodeB(eNodeBNameForCreate, Long.valueOf(locationId), MCC, MNC);
+        eNodeBId = radio4gRepository.createENodeB(eNodeBNameForCreate, Long.valueOf(locationId), MCC, MNC, Constants.HUAWEI_ENODEB_MODEL);
     }
 
     private void createCell4G(String cell4GNameForCreate, String cell4GIdForCreate) {
@@ -138,7 +163,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
 
     private void createGNodeB(String gNodeBNameForCreate) {
         Radio5gRepository radio5gRepository = new Radio5gRepository(env);
-        gNodeBId = radio5gRepository.createGNodeB(gNodeBNameForCreate, Long.valueOf(locationId), MCC, MNC);
+        gNodeBId = radio5gRepository.createGNodeB(gNodeBNameForCreate, Long.valueOf(locationId), MCC, MNC, Constants.HUAWEI_GNODEB_MODEL);
     }
 
     private void createCell5G(String cell5GNameForCreate, String cell5GIdForCreate) {
@@ -146,11 +171,22 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         radio5gRepository.createCell5g(cell5GNameForCreate, Integer.valueOf(cell5GIdForCreate), gNodeBId, MCC, MNC, carrier5G);
     }
 
-    private void createDevice(String deviceModel, String deviceName) {
+    private void createNodeB(String nodeBNameForCreate, String rncNameForCreate) {
+        Radio3gRepository radio3gRepository = new Radio3gRepository(env);
+        rncId = radio3gRepository.createRnc(rncNameForCreate, Long.valueOf(locationId), MCC, MNC);
+        nodeBId = radio3gRepository.createNodeB(nodeBNameForCreate, Long.valueOf(locationId), rncId, Constants.HUAWEI_NODEB_MODEL);
+    }
+
+    private void createCell3G(String cell3GNameForCreate, String cell3GIdForCreate) {
+        Radio3gRepository radio3gRepository = new Radio3gRepository(env);
+        radio3gRepository.createCell3g(cell3GNameForCreate, Integer.valueOf(cell3GIdForCreate), nodeBId, MCC, MNC, carrier3G);
+    }
+
+    private void createDevice(String deviceModel, String deviceName, String deviceModelType) {
         ResourceCatalogClient resourceCatalogClient = new ResourceCatalogClient(env);
         deviceModelId = resourceCatalogClient.getModelIds(deviceModel);
         PhysicalInventoryRepository physicalInventoryRepository = new PhysicalInventoryRepository(env);
-        physicalInventoryRepository.createDevice(locationTypeSite, Long.valueOf(locationId), deviceModelId, deviceName);
+        physicalInventoryRepository.createDevice(locationTypeSite, Long.valueOf(locationId), deviceModelId, deviceName, deviceModelType);
     }
 
     @BeforeMethod
@@ -276,7 +312,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         new CellSiteConfigurationPage(driver)
                 .clickPlusIconAndSelectOption("Create eNodeB");
         new ENodeBWizardPage(driver)
-                .createENodeB(randomENodeBName, randomENodeBId, eNodeBModel, MCCMNCPrimary);
+                .createENodeB(randomENodeBName, randomENodeBId, eNodeBModel, mccMncPrimary);
         Assert.assertTrue(SystemMessageContainer.create(driver, webDriverWait)
                 .getMessages().get(0).getText().contains("Created eNodeB"));
     }
@@ -359,7 +395,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
         new CellSiteConfigurationPage(driver)
                 .clickPlusIconAndSelectOption("Create gNodeB");
         new GNodeBWizardPage(driver)
-                .createGNodeB(randomGNodeBName, randomGNodeBId, gNodeBModel, MCCMNCPrimary);
+                .createGNodeB(randomGNodeBName, randomGNodeBId, gNodeBModel, mccMncPrimary);
         Assert.assertTrue(SystemMessageContainer.create(driver, webDriverWait)
                 .getMessages().get(0).getText().contains("Created gNodeB"));
     }
@@ -430,6 +466,89 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     }
 
     @Test(groups = {"Radio tests"})
+    @Description("The user creates a NodeB in Cell Site Configuration and checks the message about successful creation")
+    public void tSRAN10CreateNodeB() {
+        String randomNodeBName = RandomGenerator.generateRandomName();
+        String randomNodeBId = RandomGenerator.generateRandomENodeBId();
+
+        homePage.setOldObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", locationName, "Site")
+                .expandShowOnAndChooseView("Cell Site Configuration");
+        new CellSiteConfigurationPage(driver)
+                .clickPlusIconAndSelectOption("Create NodeB");
+        new NodeBWizardPage(driver)
+                .createNodeB(randomNodeBName, randomNodeBId, nodeBModel, rncNameForCreate1);
+        Assert.assertTrue(SystemMessageContainer.create(driver, webDriverWait)
+                .getMessages().get(0).getText().contains("NodeB was created"));
+    }
+
+    @Test(groups = {"Radio tests"})
+    @Description("The user searches NodeB in Inventory View, then edits the NodeB in Cell Site Configuration and checks if the description is updated in Base Stations table")
+    public void tSRAN11ModifyNodeB() {
+
+        homePage.setOldObjectType(objectTypeNodeB);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", nodeBNameForCreate2, "NodeB")
+                .expandShowOnAndChooseView("Cell Site Configuration");
+        new CellSiteConfigurationPage(driver)
+                .expandTreeToLocation(locationTypeSite, locationName)
+                .selectTab("Base Stations")
+                .filterObject("Name", nodeBNameForCreate2)
+                .clickEditIcon();
+        new NodeBWizardPage(driver)
+                .setDescription(description)
+                .accept();
+        new CellSiteConfigurationPage(driver).getTabTable();
+        OldTable tabTable = new CellSiteConfigurationPage(driver).getTabTable();
+        int rowNumber = tabTable.getRowNumber(description, "Description");
+        String rowValue = tabTable.getCellValue(rowNumber, "Description");
+        Assert.assertTrue(rowValue.contains(description));
+    }
+
+    @Test(groups = {"Radio tests"})
+    @Description("The user creates a Cell 3G in Cell Site Configuration and checks the message about successful creation")
+    public void tSRAN12CreateCell3G() {
+        String randomCell3GName = RandomGenerator.generateRandomName();
+        String randomCell3GId = RandomGenerator.generateRandomCell3GId();
+
+        homePage.setOldObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", locationName, "Site")
+                .expandShowOnAndChooseView("Cell Site Configuration");
+        new CellSiteConfigurationPage(driver)
+                .selectTab("Cells")
+                .clickPlusIconAndSelectOption("Create Cell 3G");
+        new Cell3GWizardPage(driver)
+                .createCell3G(randomCell3GName, nodeBNameForCreate2, randomCell3GId, carrier3G);
+        Assert.assertTrue(SystemMessageContainer.create(driver, webDriverWait)
+                .getMessages().get(0).getText().contains("Cell 3G was created"));
+    }
+
+    @Test(groups = {"Radio tests"})
+    @Description("The user searches Cell 3G in Inventory View, then edits a Cell 3G in Cell Site Configuration and checks if the description is updated in Cells table")
+    public void tSRAN13ModifyCell3G() {
+
+        homePage.setOldObjectType(objectTypeCell3G);
+        new OldInventoryViewPage(driver)
+                .filterObject("Cell Name", cell3GNameForCreate2, "Cell3G")
+                .expandShowOnAndChooseView("Cell Site Configuration");
+        new CellSiteConfigurationPage(driver)
+                .expandTreeToBaseStation(locationTypeSite, locationName, nodeBNameForCreate2)
+                .selectTab("Cells")
+                .filterObject("Name", cell3GNameForCreate2)
+                .clickEditIcon();
+        new Cell3GWizardPage(driver)
+                .setDescription(description)
+                .accept();
+        new CellSiteConfigurationPage(driver).getTabTable();
+        OldTable tabTable = new CellSiteConfigurationPage(driver).getTabTable();
+        int rowNumber = tabTable.getRowNumber(description, "Description");
+        String rowValue = tabTable.getCellValue(rowNumber, "Description");
+        Assert.assertTrue(rowValue.contains(description));
+    }
+
+    @Test(groups = {"Radio tests"})
     @Description("The user creates Radio Remote Unit in Cell Site Configuration and checks the message about successful creation")
     public void tSRAN14CreateRRU() {
         String randomDeviceName = RandomGenerator.generateRandomName();
@@ -453,12 +572,12 @@ public class ThreeUKRegressionTests extends BaseTestCase {
 
         homePage.setOldObjectType(objectTypeDevice);
         new OldInventoryViewPage(driver)
-                .filterObject("Name", RRUDeviceNameForCreate1, "PhysicalElement")
+                .filterObject("Name", rruDeviceNameForCreate1, "PhysicalElement")
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
                 .expandTreeToLocation(locationTypeSite, locationName)
                 .selectTab("Devices")
-                .filterObject("Name", RRUDeviceNameForCreate1)
+                .filterObject("Name", rruDeviceNameForCreate1)
                 .clickEditIcon();
         new DeviceWizardPage(driver)
                 .setDescription(description);
@@ -497,12 +616,12 @@ public class ThreeUKRegressionTests extends BaseTestCase {
 
         homePage.setOldObjectType(objectTypeDevice);
         new OldInventoryViewPage(driver)
-                .filterObject("Name", BBUDeviceNameForCreate1, "PhysicalElement")
+                .filterObject("Name", bbuDeviceNameForCreate1, "PhysicalElement")
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
                 .expandTreeToLocation(locationTypeSite, locationName)
                 .selectTab("Devices")
-                .filterObject("Name", BBUDeviceNameForCreate1)
+                .filterObject("Name", bbuDeviceNameForCreate1)
                 .clickEditIcon();
         new DeviceWizardPage(driver)
                 .setDescription(description);
@@ -510,6 +629,94 @@ public class ThreeUKRegressionTests extends BaseTestCase {
                 .nextUpdateWizard();
         new DeviceWizardPage(driver)
                 .acceptUpdateWizard();
+        new CellSiteConfigurationPage(driver).getTabTable();
+        OldTable tabTable = new CellSiteConfigurationPage(driver).getTabTable();
+        int rowNumber = tabTable.getRowNumber(description, "Description");
+        String rowValue = tabTable.getCellValue(rowNumber, "Description");
+        Assert.assertTrue(rowValue.contains(description));
+    }
+
+    @Test(groups = {"Radio tests"})
+    @Description("The user creates RAN Antenna device in Cell Site Configuration and checks the message about successful creation")
+    public void tSRAN19CreateRANAntennaWithArrays() {
+        String randomRANAntennaName = RandomGenerator.generateRandomName();
+
+        homePage.setOldObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", locationName, "Site")
+                .expandShowOnAndChooseView("Cell Site Configuration");
+        new CellSiteConfigurationPage(driver)
+                .selectTab("Devices")
+                .clickPlusIconAndSelectOption("Create RAN Antenna");
+        new RanAntennaWizardPage(driver)
+                .createRANAntenna(ranAntennaModel, randomRANAntennaName, locationName);
+        new AntennaArrayWizardPage(driver)
+                .clickAccept();
+        Assert.assertTrue(SystemMessageContainer.create(driver, webDriverWait)
+                .getMessages().get(0).getText().contains("Edited Antenna Array"));
+    }
+
+    @Test(groups = {"Radio tests"})
+    @Description("The user searches RAN Antenna in Inventory View, then edits the antenna in Cell Site Configuration and checks if the description is updated in Device table")
+    public void tSRAN20ModifyRANAntenna() {
+
+        homePage.setOldObjectType(objectTypeRANAntenna);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name (Antenna)", antennaAHP4517R7v06NameForCreate1, "RANAntenna")
+                .expandShowOnAndChooseView("Cell Site Configuration");
+        new CellSiteConfigurationPage(driver)
+                .expandTreeToLocation(locationTypeSite, locationName)
+                .selectTab("Devices")
+                .filterObject("Name", antennaAHP4517R7v06NameForCreate1)
+                .clickEditIcon();
+        new RanAntennaWizardPage(driver)
+                .setDescription(description);
+        new RanAntennaWizardPage(driver)
+                .clickAccept();
+        new CellSiteConfigurationPage(driver).getTabTable();
+        OldTable tabTable = new CellSiteConfigurationPage(driver).getTabTable();
+        int rowNumber = tabTable.getRowNumber(description, "Description");
+        String rowValue = tabTable.getCellValue(rowNumber, "Description");
+        Assert.assertTrue(rowValue.contains(description));
+    }
+
+    @Test(groups = {"Radio tests"})
+    @Description("The user creates Active Antenna Unit device in Cell Site Configuration and checks the message about successful creation")
+    public void tSRAN22CreateAAUWithArrays() {
+        String randomRANAntennaName = RandomGenerator.generateRandomName();
+
+        homePage.setOldObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", locationName, "Site")
+                .expandShowOnAndChooseView("Cell Site Configuration");
+        new CellSiteConfigurationPage(driver)
+                .selectTab("Devices")
+                .clickPlusIconAndSelectOption("Create RAN Antenna");
+        new RanAntennaWizardPage(driver)
+                .createRANAntenna(aauModel, randomRANAntennaName, locationName);
+        new AntennaArrayWizardPage(driver)
+                .clickAccept();
+        Assert.assertTrue(SystemMessageContainer.create(driver, webDriverWait)
+                .getMessages().get(0).getText().contains("Edited Antenna Array"));
+    }
+
+    @Test(groups = {"Radio tests"})
+    @Description("The user searches Active Antenna Unit in Inventory View, then edits the antenna in Cell Site Configuration and checks if the description is updated in Device table")
+    public void tSRAN23ModifyAAU() {
+
+        homePage.setOldObjectType(objectTypeRANAntenna);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name (Antenna)", aauAAU5614NameForCreate1, "RANAntenna")
+                .expandShowOnAndChooseView("Cell Site Configuration");
+        new CellSiteConfigurationPage(driver)
+                .expandTreeToLocation(locationTypeSite, locationName)
+                .selectTab("Devices")
+                .filterObject("Name", aauAAU5614NameForCreate1)
+                .clickEditIcon();
+        new RanAntennaWizardPage(driver)
+                .setDescription(description);
+        new RanAntennaWizardPage(driver)
+                .clickAccept();
         new CellSiteConfigurationPage(driver).getTabTable();
         OldTable tabTable = new CellSiteConfigurationPage(driver).getTabTable();
         int rowNumber = tabTable.getRowNumber(description, "Description");
@@ -540,8 +747,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     @Description("The user searches Cell 4G in Global Search, then deletes the Cell 4G in Cell Site Configuration and checks if search result in Global Search is no data")
     public void tSRAN44RemoveCell4G() {
 
-        homePage.searchInGlobalSearch(cell4GNameForCreate1);
-        new GlobalSearchPage(driver)
+        homePage.searchInGlobalSearch(cell4GNameForCreate1)
                 .expandShowOnAndChooseView(cell4GNameForCreate1, "NAVIGATION", "Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
                 .expandTreeToBaseStation(locationTypeSite, locationName, eNodeBNameForCreate2)
@@ -560,8 +766,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     @Description("The user searches gNodeB in Global Search, then deletes the gNodeB in Cell Site Configuration and checks if search result in Global Search is no data")
     public void tSRAN45RemoveGNodeB() {
 
-        homePage.searchInGlobalSearch(gNodeBNameForCreate1);
-        new GlobalSearchPage(driver)
+        homePage.searchInGlobalSearch(gNodeBNameForCreate1)
                 .expandShowOnAndChooseView(gNodeBNameForCreate1, "NAVIGATION", "Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
                 .expandTreeToLocation(locationTypeSite, locationName)
@@ -580,8 +785,7 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     @Description("The user searches Cell 5G in Global Search, then deletes the Cell 5G in Cell Site Configuration and checks if search result in Global Search is no data")
     public void tSRAN46RemoveCell5G() {
 
-        homePage.searchInGlobalSearch(cell5GNameForCreate1);
-        new GlobalSearchPage(driver)
+        homePage.searchInGlobalSearch(cell5GNameForCreate1)
                 .expandShowOnAndChooseView(cell5GNameForCreate1, "NAVIGATION", "Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
                 .expandTreeToBaseStation(locationTypeSite, locationName, gNodeBNameForCreate2)
@@ -597,20 +801,57 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     }
 
     @Test(groups = {"Radio tests"})
-    @Description("The user searches Radio Remote Head in Global Search, then removes the RRU device in Cell Site Configuration checks if the description is updated in Device table")
-    public void tSRAN49RemoveRRU() {
+    @Description("The user searches NodeB in Global Search, then deletes the NodeB in Cell Site Configuration and checks if search result in Global Search is no data")
+    public void tSRAN47RemoveNodeB() {
 
-        homePage.searchInGlobalSearch(RRUDeviceNameForCreate2);
-        new GlobalSearchPage(driver)
-                .expandShowOnAndChooseView(RRUDeviceNameForCreate2, "NAVIGATION", "Cell Site Configuration");
+        homePage.searchInGlobalSearch(nodeBNameForCreate1)
+                .expandShowOnAndChooseView(nodeBNameForCreate1, "NAVIGATION", "Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
                 .expandTreeToLocation(locationTypeSite, locationName)
-                .selectTab("Devices")
-                .filterObject("Name", RRUDeviceNameForCreate2)
+                .selectTab("Base Stations")
+                .filterObject("Name", nodeBNameForCreate1)
                 .removeObject();
         SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
         systemMessageItem.waitForMessageDisappear();
-        homePage.searchInGlobalSearch(RRUDeviceNameForCreate2);
+        homePage.searchInGlobalSearch(nodeBNameForCreate1);
+        CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        Assert.assertTrue(objectsList.isNoData());
+    }
+
+    @Test(groups = {"Radio tests"})
+    @Description("The user searches Cell 3G in Global Search, then deletes the Cell 3G in Cell Site Configuration and checks if search result in Global Search is no data")
+    public void tSRAN48RemoveCell3G() {
+
+        homePage.searchInGlobalSearch(cell3GNameForCreate1)
+                .expandShowOnAndChooseView(cell3GNameForCreate1, "NAVIGATION", "Cell Site Configuration");
+        new CellSiteConfigurationPage(driver)
+                .expandTreeToBaseStation(locationTypeSite, locationName, nodeBNameForCreate2)
+                .selectTab("Cells")
+                .filterObject("Name", cell3GNameForCreate1)
+                .removeObject();
+        SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
+        systemMessageItem.waitForMessageDisappear();
+        homePage.searchInGlobalSearch(cell3GNameForCreate1);
+        CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        Assert.assertTrue(objectsList.isNoData());
+    }
+
+    @Test(groups = {"Radio tests"})
+    @Description("The user searches Radio Remote Head in Global Search, then removes the RRU device in Cell Site Configuration checks if the description is updated in Device table")
+    public void tSRAN49RemoveRRU() {
+
+        homePage.searchInGlobalSearch(rruDeviceNameForCreate2)
+                .expandShowOnAndChooseView(rruDeviceNameForCreate2, "NAVIGATION", "Cell Site Configuration");
+        new CellSiteConfigurationPage(driver)
+                .expandTreeToLocation(locationTypeSite, locationName)
+                .selectTab("Devices")
+                .filterObject("Name", rruDeviceNameForCreate2)
+                .removeObject();
+        SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
+        systemMessageItem.waitForMessageDisappear();
+        homePage.searchInGlobalSearch(rruDeviceNameForCreate2);
         CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertTrue(objectsList.isNoData());
@@ -620,17 +861,54 @@ public class ThreeUKRegressionTests extends BaseTestCase {
     @Description("The user searches Base Band Unit in Global Search, then removes the BBU device in Cell Site Configuration checks if the description is updated in Device table")
     public void tSRAN50RemoveBBU() {
 
-        homePage.searchInGlobalSearch(BBUDeviceNameForCreate2);
-        new GlobalSearchPage(driver)
-                .expandShowOnAndChooseView(BBUDeviceNameForCreate2, "NAVIGATION", "Cell Site Configuration");
+        homePage.searchInGlobalSearch(bbuDeviceNameForCreate2)
+                .expandShowOnAndChooseView(bbuDeviceNameForCreate2, "NAVIGATION", "Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
                 .expandTreeToLocation(locationTypeSite, locationName)
                 .selectTab("Devices")
-                .filterObject("Name", BBUDeviceNameForCreate2)
+                .filterObject("Name", bbuDeviceNameForCreate2)
                 .removeObject();
         SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
         systemMessageItem.waitForMessageDisappear();
-        homePage.searchInGlobalSearch(BBUDeviceNameForCreate2);
+        homePage.searchInGlobalSearch(bbuDeviceNameForCreate2);
+        CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        Assert.assertTrue(objectsList.isNoData());
+    }
+
+    @Test(groups = {"Radio tests"})
+    @Description("The user searches Active Antenna Unit in Global Search, then removes the AAU device in Cell Site Configuration checks if the description is updated in Device table")
+    public void tSRAN51RemoveRANAntennaWithArrays() {
+
+        homePage.searchInGlobalSearch(antennaAHP4517R7v06NameForCreate2)
+                .expandShowOnAndChooseView(antennaAHP4517R7v06NameForCreate2, "NAVIGATION", "Cell Site Configuration");
+        new CellSiteConfigurationPage(driver)
+                .expandTreeToLocation(locationTypeSite, locationName)
+                .selectTab("Devices")
+                .filterObject("Name", antennaAHP4517R7v06NameForCreate2)
+                .removeObject();
+        SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
+        systemMessageItem.waitForMessageDisappear();
+        homePage.searchInGlobalSearch(antennaAHP4517R7v06NameForCreate2);
+        CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        Assert.assertTrue(objectsList.isNoData());
+    }
+
+    @Test(groups = {"Radio tests"})
+    @Description("The user searches Active Antenna Unit in Global Search, then removes the AAU device in Cell Site Configuration checks if the description is updated in Device table")
+    public void tSRAN52RemoveAAU() {
+
+        homePage.searchInGlobalSearch(aauAAU5614NameForCreate2)
+                .expandShowOnAndChooseView(aauAAU5614NameForCreate2, "NAVIGATION", "Cell Site Configuration");
+        new CellSiteConfigurationPage(driver)
+                .expandTreeToLocation(locationTypeSite, locationName)
+                .selectTab("Devices")
+                .filterObject("Name", aauAAU5614NameForCreate2)
+                .removeObject();
+        SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
+        systemMessageItem.waitForMessageDisappear();
+        homePage.searchInGlobalSearch(aauAAU5614NameForCreate2);
         CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertTrue(objectsList.isNoData());

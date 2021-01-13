@@ -54,7 +54,7 @@ public class DeviceWizardPage extends BasePage {
         DelayUtils.sleep(250);
         setName(name);
         DelayUtils.sleep(250);
-        setPreciseLocationContains(" ");
+        setPreciseLocation(" ");
         DelayUtils.sleep(250);
         create();
     }
@@ -67,11 +67,7 @@ public class DeviceWizardPage extends BasePage {
         setName(name);
         next();
         DelayUtils.waitForPageToLoad(driver, wait);
-        setLocationContains(location);
-        DelayUtils.waitForPageToLoad(driver, wait);
-        setPhysicalLocationContains(location);
-        DelayUtils.waitForPageToLoad(driver, wait);
-        setPreciseLocationContains(location);
+        setPreciseLocation(location);
         DelayUtils.waitForPageToLoad(driver, wait);
         accept();
     }
@@ -81,7 +77,7 @@ public class DeviceWizardPage extends BasePage {
         getDeviceWizard().setComponentValue(DEVICE_EQUIPMENT_TYPE_DATA_ATTRIBUTE_NAME, equipmentType, SEARCH_FIELD);
     }
 
-    @Step("Set Model")
+    @Step("Set Model using contains")
     public void setModel(String model) {
         getDeviceWizard().getComponent(DEVICE_MODEL_DATA_ATTRIBUTE_NAME, SEARCH_FIELD).setSingleStringValueContains(model);
     }
@@ -101,16 +97,8 @@ public class DeviceWizardPage extends BasePage {
         getDeviceWizard().setComponentValue(DEVICE_CHASSIS_ID_DATA_ATTRIBUTE_NAME, chassisId, TEXT_FIELD);
     }
 
-    @Step("Set Location")
+    @Step("Set Location using contains")
     public void setLocation(String location) {
-        if (getDeviceWizard().getComponent(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME, SEARCH_FIELD)
-                .getStringValue().isEmpty()) {
-            getDeviceWizard().setComponentValue(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME, location, SEARCH_FIELD);
-        }
-    }
-
-    @Step("Set Location")
-    public void setLocationContains(String location) {
         if (getDeviceWizard().getComponent(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME, SEARCH_FIELD)
                 .getStringValue().isEmpty()) {
             getDeviceWizard().getComponent(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME, SEARCH_FIELD)
@@ -118,8 +106,8 @@ public class DeviceWizardPage extends BasePage {
         }
     }
 
-    @Step("Set Physical Location")
-    public void setPhysicalLocationContains(String preciseLocation) {
+    @Step("Set Physical Location using contains")
+    public void setPhysicalLocation(String preciseLocation) {
         if (getDeviceWizard().getComponent(DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, Input.ComponentType.SEARCH_FIELD)
                 .getStringValue().isEmpty()) {
             getDeviceWizard().getComponent(DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, SEARCH_FIELD)
@@ -127,14 +115,8 @@ public class DeviceWizardPage extends BasePage {
         }
     }
 
-    @Step("Set Precise Location")
+    @Step("Set Precise Location using contains")
     public void setPreciseLocation(String preciseLocation) {
-        if (getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, SEARCH_FIELD).getStringValue().isEmpty())
-            getDeviceWizard().setComponentValue(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, preciseLocation, SEARCH_FIELD);
-    }
-
-    @Step("Set Precise Location")
-    public void setPreciseLocationContains(String preciseLocation) {
         if (getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, Input.ComponentType.SEARCH_FIELD)
                 .getStringValue().isEmpty()) {
             getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, SEARCH_FIELD)
@@ -184,10 +166,6 @@ public class DeviceWizardPage extends BasePage {
 
     @Step("Set Description")
     public void setDescription(String description) {
-        if (getDeviceWizard().getComponent(DEVICE_DESCRIPTION_DATA_ATTRIBUTE_NAME, TEXT_AREA).getStringValue().isEmpty()) {
-        } else {
-            getDeviceWizard().getComponent(DEVICE_DESCRIPTION_DATA_ATTRIBUTE_NAME, TEXT_AREA).clear();
-        }
         getDeviceWizard().setComponentValue(DEVICE_DESCRIPTION_DATA_ATTRIBUTE_NAME, description, TEXT_AREA);
     }
 

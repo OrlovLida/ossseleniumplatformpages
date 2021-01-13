@@ -23,9 +23,9 @@ public class Radio5gRepository {
         this.env = env;
     }
 
-    public Long createGNodeB(String name, Long locationId, String mcc, String mnc) {
+    public Long createGNodeB(String name, Long locationId, String mcc, String mnc, String gNodeBModel) {
         Radio5gClient client = Radio5gClient.getInstance(env);
-        return client.createGNodeB(buildGNodeB(name, locationId, mcc, mnc)).getId();
+        return client.createGNodeB(buildGNodeB(name, locationId, mcc, mnc, gNodeBModel)).getId();
     }
 
     public Long createGNodeBCUUP(String name, Long locationId) {
@@ -43,10 +43,10 @@ public class Radio5gRepository {
         client.createCell5G(buildCell5g(name, cellId, mcc, mnc, carrier), gNodeBId);
     }
 
-    private GnodeBDTO buildGNodeB(String name, Long locationId, String mcc, String mnc) {
+    private GnodeBDTO buildGNodeB(String name, Long locationId, String mcc, String mnc, String gNodeBModel) {
         return GnodeBDTO.builder()
                 .name(name)
-                .modelIdentifier(Constants.GenericGNODEB_MODEL)
+                .modelIdentifier(gNodeBModel)
                 .gnodeBId(-1L)
                 .addMccMncs(getHni(mcc, mnc))
                 .locationId(locationId)
@@ -56,7 +56,7 @@ public class Radio5gRepository {
     private GnodeBCUUPDTO buildGNodeBCUUP(String name, Long locationId) {
         return GnodeBCUUPDTO.builder()
                 .name(name)
-                .modelIdentifier(Constants.GenericGNODEBCUUP_MODEL)
+                .modelIdentifier(Constants.GENERIC_GNODEBCUUP_MODEL)
                 .gnodeBId(-1L)
                 .locationId(locationId)
                 .build();
@@ -65,7 +65,7 @@ public class Radio5gRepository {
     private GnodeBDUDTO buildGNodeBDU(String name, Long locationId) {
         return GnodeBDUDTO.builder()
                 .name(name)
-                .modelIdentifier(Constants.GenericGNODEBDU_MODEL)
+                .modelIdentifier(Constants.GENERIC_GNODEBDU_MODEL)
                 .gnodeBId(-1L)
                 .locationId(locationId)
                 .build();
