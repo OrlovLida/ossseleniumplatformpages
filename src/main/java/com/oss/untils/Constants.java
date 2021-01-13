@@ -19,19 +19,24 @@ public class Constants {
 
     //models
     //Generic
-    public static final String GenericBSC_MODEL = "Generic BSC";
-    public static final String GenericRNCMODEL = "Generic RNC";
-    public static final String GenericBTS_MODEL = "Generic BTS";
-    public static final String GenericNODEB_MODEL = "Generic NodeB";
-    public static final String GenericENODEB_MODEL = "Generic ENodeB";
-    public static final String GenericGNODEB_MODEL = "Generic GNodeB";
-    public static final String GenericGNODEBCUUP_MODEL = "Generic GNodeBCUUP";
-    public static final String GenericGNODEBDU_MODEL = "Generic GNodeBDU";
+    public static final String GENERIC_BSC_MODEL = "Generic BSC";
+    public static final String GENERIC_RNCMODEL = "Generic RNC";
+    public static final String GENERIC_BTS_MODEL = "Generic BTS";
+    public static final String GENERIC_NODEB_MODEL = "Generic NodeB";
+    public static final String GENERIC_ENODEB_MODEL = "Generic ENodeB";
+    public static final String GENERIC_GNODEB_MODEL = "Generic GNodeB";
+    public static final String GENERIC_GNODEBCUUP_MODEL = "Generic GNodeBCUUP";
+    public static final String GENERIC_GNODEBDU_MODEL = "Generic GNodeBDU";
     //Huawei
+    public static final String HUAWEI_NODEB_MODEL = "HUAWEI Technology Co.,Ltd NodeB";
+    public static final String HUAWEI_ENODEB_MODEL = "HUAWEI Technology Co.,Ltd eNodeB";
+    public static final String HUAWEI_GNODEB_MODEL = "HUAWEI Technology Co.,Ltd gNodeB";
     public static final String BBU3900_MODEL = "BBU3900";
     public static final String BBU5900_MODEL = "BBU5900";
     public static final String RRU5501_MODEL = "RRU5501";
-    public static final String AQU4518R9ANTENNA_MODEL = "AQU4518R9";
+    public static final String AAU5614ANTENNA_MODEL = "AAU5614";
+    public static final String AHP4517R7v06ANTENNA_MODEL = "AHP4517R7v06";
+
 
     //types
     public static final String ADDRESS_TYPE = "Address";

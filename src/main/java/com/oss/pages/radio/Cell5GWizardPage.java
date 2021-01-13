@@ -70,7 +70,7 @@ public class Cell5GWizardPage extends BasePage {
         return this;
     }
 
-    @Step("Set Carrier 5G")
+    @Step("Set Carrier 5G using contains")
     public Cell5GWizardPage setCarrier5G(String carrier5G) {
         getCell5GWizard().getComponent(CELL5G_CARRIER_DATA_ATTRIBUTE_NAME, Input.ComponentType.COMBOBOX).setSingleStringValueContains(carrier5G);
         return this;
