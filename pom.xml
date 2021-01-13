@@ -24,9 +24,9 @@
         <locationinventory.version>1.33.14.Final</locationinventory.version>
         <physicalinventory.version>1.32.13.Final</physicalinventory.version>
         <addressinventory.version>1.17.1.Final</addressinventory.version>
-        <radio.version>3.11.7.Final</radio.version>
+        <radio.version>4.0.0-SNAPSHOT</radio.version>
         <resourcecatalog.version>2.5.5.Final</resourcecatalog.version>
-        <seleniumframework.version>0.4.0.Final</seleniumframework.version>
+        <seleniumframework.version>0.5.0-SNAPSHOT</seleniumframework.version>
     </properties>
 
     <dependencies>
