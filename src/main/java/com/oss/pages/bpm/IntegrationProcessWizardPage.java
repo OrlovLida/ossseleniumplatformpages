@@ -8,10 +8,10 @@ package com.oss.pages.bpm;
 
 import org.openqa.selenium.WebDriver;
 
-import com.oss.framework.components.common.DraggableElement;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.list.DropdownList;
 import com.oss.framework.listwidget.EditableList;
+import com.oss.framework.utils.DragAndDrop;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
 
@@ -58,7 +58,7 @@ public class IntegrationProcessWizardPage extends BasePage {
         DropdownList sourceList = DropdownList.create(driver, wait, sourceProcessName);
         DropdownList targetList = DropdownList.create(driver, wait, targetProcessName);
         
-        DraggableElement element = sourceList.getDraggableElement(objectName);
+        DragAndDrop.DraggableElement element = sourceList.getDraggableElement(objectName);
         targetList.drop(element);
         
     }
