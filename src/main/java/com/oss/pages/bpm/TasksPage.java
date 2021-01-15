@@ -34,9 +34,9 @@ public class TasksPage extends BasePage {
     
     private static final String TABLE_TASKS = "bpm_task_view_task-table";
     private static final String TABS_TASKS_VIEW = "bpm_task_view_tabs-container";
-    private static final String ATTACH_FILE_BUTTON = "attachmentManagerBusinessView_topCommonButtons-1";
+    private static final String ATTACH_FILE_BUTTON = "addAttachmentAction";
     private static final String FORM_TAB_ID = "bpm_task_view_form-tab";
-    private static final String ATTACHMENT_TAB_ID = "bpm_task_view_attachment-tab";
+    private static final String ATTACHMENT_TAB_ID = "bpm_task_view_tasks-attachment-tab";
     private static final String ASSIGN_TASK_ICON_ID = "form.toolbar.assignTask";
     private static final String COMPLETE_TASK_ICON_ID = "form.toolbar.closeTask";
     private static final String SETUP_INTEGRATION_ICON_ID = "form.toolbar.setupIntegrationButton";
