@@ -331,6 +331,12 @@ public class NewInventoryViewPage extends BasePage {
         return this;
     }
 
+    @Step("Change Properties order")
+    public NewInventoryViewPage changePropertiesOrder(int rowId, String widgetId, String propertyLabel, int position) {
+        getPropertyPanel(rowId, widgetId).changePropertyOrder(propertyLabel, position);
+        return this;
+    }
+
     @Step("Save configuration for properties")
     public NewInventoryViewPage saveConfigurationForProperties(int rowId, String widgetId, String configurationName, Field... fields) {
         DelayUtils.waitForPageToLoad(driver, wait);

@@ -33,7 +33,7 @@ public class DetailsConfigurationTest extends BaseTestCase {
     private final static String CONFIGURATION_NAME_PROPERTIES_SUPERTYPE= "Properties_User_Location";
     private final static String CONFIGURATION_NAME_PROPERTIES_GROUP= "Properties_Group";
 
-    private static final String PROPERTY_PANEL_ID = "";
+    private static final String PROPERTY_PANEL_ID = "InventoryView_DetailsTab_BuildingInventoryView_PropertyPanelWidget_Building";
 
     @BeforeClass
     public void goToInventoryView() {
@@ -56,11 +56,9 @@ public class DetailsConfigurationTest extends BaseTestCase {
     @Description("Saving new configuration for properties for supertype")
     public void saveNewConfigurationForPropertiesForSupertype(){
         //when
-        PropertyPanel propertyPanel = newInventoryViewPage.getPropertyPanel(0, PROPERTY_PANEL_ID);
-        propertyPanel.changePropertyOrder("name", 3);
-//        propertyPanel.openSaveAsNewConfigurationWizard()
-//        propertyPanel.saveConfigurationForProperties(CONFIGURATION_NAME_PROPERTIES_SUPERTYPE,
-//                        createField(TYPE, "Location"));
+        newInventoryViewPage.changePropertiesOrder(0, PROPERTY_PANEL_ID, "name", 3);
+        newInventoryViewPage.saveConfigurationForProperties(0, PROPERTY_PANEL_ID,
+                CONFIGURATION_NAME_PROPERTIES_SUPERTYPE, createField(TYPE, "Location"));
 
         //then
         assertSuccessMessage();
@@ -70,16 +68,12 @@ public class DetailsConfigurationTest extends BaseTestCase {
     @Description("Saving new configuration for properties for group")
     public void saveNewConfigurationForPropertiesForGroup(){
         //when
+        newInventoryViewPage.changePropertiesOrder(0, PROPERTY_PANEL_ID, "name", 4);
         newInventoryViewPage
-                .selectFirstRow();
-        newInventoryViewPage
-                .getPropertyPanel()
-                .changePropertyOrder("name", 4);
-//        newInventoryViewPage
-//                .saveConfigurationForProperties(
-//                        CONFIGURATION_NAME_PROPERTIES_GROUP,
-//                        createField(TYPE, "Location"),
-//                        createField(GROUPS, GROUP_NAME));
+                .saveConfigurationForProperties(0, PROPERTY_PANEL_ID,
+                        CONFIGURATION_NAME_PROPERTIES_GROUP,
+                        createField(TYPE, "Location"),
+                        createField(GROUPS, GROUP_NAME));
 
         //then
         assertSuccessMessage();
@@ -93,7 +87,7 @@ public class DetailsConfigurationTest extends BaseTestCase {
         //when
         newInventoryViewPage.selectFirstRow();
         //then
-        Assert.assertEquals(newInventoryViewPage.getPropertyPanel().getPropertyLabels().get(2), "Name");
+        Assert.assertEquals(newInventoryViewPage.getPropertyPanel().getPropertyLabels().get(3), "Name");
     }
 
     @Test(priority = 5)
@@ -104,7 +98,7 @@ public class DetailsConfigurationTest extends BaseTestCase {
         //when
         newInventoryViewPage.selectFirstRow();
         //then
-        Assert.assertEquals(newInventoryViewPage.getPropertyPanel().getPropertyLabels().get(3), "Name");
+        Assert.assertEquals(newInventoryViewPage.getPropertyPanel().getPropertyLabels().get(4), "Name");
     }
 
 
@@ -119,7 +113,7 @@ public class DetailsConfigurationTest extends BaseTestCase {
         hierarchyViewPage.selectFirstObject();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         //then
-        Assert.assertEquals(hierarchyViewPage.getBottomPropertyPanel("Building").getPropertyLabels().get(2), "Name");
+        Assert.assertEquals(hierarchyViewPage.getBottomPropertyPanel("Building").getPropertyLabels().get(3), "Name");
     }
 
 
