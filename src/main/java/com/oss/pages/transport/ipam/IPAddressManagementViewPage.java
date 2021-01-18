@@ -248,6 +248,7 @@ public class IPAddressManagementViewPage extends BasePage {
     @Step("Assign IP Subnet")
     public void assignIPSubnet(String rowName, String assignmentType, String assignmentName, String role) {
         selectTreeRowContains(rowName);
+        waitForPageToLoad();
         useContextAction(ASSIGN_OPERATION_FOR_IPV4_SUBNET_WITHOUT_ASSIGNMENT, ASSIGN_OPERATION_ACTION, ASSIGN_IPV4_SUBNET_ACTION);
         AssignIPSubnetWizardPage assignIPSubnetWizardPage = new AssignIPSubnetWizardPage(driver);
         assignIPSubnetWizardPage.assignIPSubnet(assignmentType, assignmentName, role);
