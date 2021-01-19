@@ -97,7 +97,7 @@ public class CreateMediationConnectionTest extends BaseTestCase {
         ViewConnectionConfigurationPage viewConnectionConfigurationPage = new ViewConnectionConfigurationPage(driver);
         viewConnectionConfigurationPage.selectRow("Address", address);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        viewConnectionConfigurationPage.useContextAction("Delete object");
+        viewConnectionConfigurationPage.useContextAction("Delete");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         viewConnectionConfigurationPage.clickDelete();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);

@@ -1,5 +1,6 @@
 package com.oss.E2E;
 
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -9,6 +10,7 @@ import com.oss.framework.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.reconciliation.CmDomainWizardPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
+import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage.ErrorLevel;
 import com.oss.pages.reconciliation.NetworkInconsistenciesViewPage;
 import com.oss.pages.reconciliation.SamplesManagementPage;
 import com.oss.utils.TestListener;
@@ -17,20 +19,20 @@ import com.oss.utils.TestListener;
 public class TS_RAN_E2E_02_5G_RECO_PART extends BaseTestCase {
 
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
-    private String GNODEB_NAME = "DXNNR0599UAT6-Expo-Multilateral-Buildings-Mobility-District";
-    private String PHYSICAL_ELEMENT_1 = "BTS5900,DXNNR0599UAT6-Expo-Multilateral-Buildings-Mobility-District/0/MPMU,100";
-    private String PHYSICAL_ELEMENT_2 = "BTS5900,DXNNR0599UAT6-Expo-Multilateral-Buildings-Mobility-District/0/MPMU,200";
-    private String PHYSICAL_ELEMENT_3 = "BTS5900,DXNNR0599UAT6-Expo-Multilateral-Buildings-Mobility-District/0/RHUB,60";
-    private String PHYSICAL_ELEMENT_4 = "BTS5900,DXNNR0599UAT6-Expo-Multilateral-Buildings-Mobility-District/0/RHUB,70";
-    private String CM_DOMAIN_NAME = "Selenium-TS-RAN-E2E-02-5G";
-    private String CM_INTERFACE_NAME = "Huawei U2000 RAN";
-    private String LOCATION = "Poznan-BU1";
-    private String[] RAN_INCONSISTENCIES_NAMES = {
+    private static final String GNODEB_NAME = "DXNNR0599UAT6-Expo-Multilateral-Buildings-Mobility-District";
+    private static final String PHYSICAL_ELEMENT_1 = "BTS5900,DXNNR0599UAT6-Expo-Multilateral-Buildings-Mobility-District/0/MPMU,100";
+    private static final String PHYSICAL_ELEMENT_2 = "BTS5900,DXNNR0599UAT6-Expo-Multilateral-Buildings-Mobility-District/0/MPMU,200";
+    private static final String PHYSICAL_ELEMENT_3 = "BTS5900,DXNNR0599UAT6-Expo-Multilateral-Buildings-Mobility-District/0/RHUB,60";
+    private static final String PHYSICAL_ELEMENT_4 = "BTS5900,DXNNR0599UAT6-Expo-Multilateral-Buildings-Mobility-District/0/RHUB,70";
+    private static final String CM_DOMAIN_NAME = "Selenium-TS-RAN-E2E-02-5G";
+    private static final String CM_INTERFACE_NAME = "Huawei U2000 RAN";
+    private static final String LOCATION = "Poznan-BU1";
+    private static final String[] RAN_INCONSISTENCIES_NAMES = {
             "GNODEB-" + GNODEB_NAME,
             "GNODEBDU-" + GNODEB_NAME,
             "GNODEBCUUP-" + GNODEB_NAME
     };
-    private String[] PHYSICAL_INCONSISTENCIES_NAMES = {
+    private static final String[] PHYSICAL_INCONSISTENCIES_NAMES = {
             "PhysicalElement-" + PHYSICAL_ELEMENT_1,
             "PhysicalElement-" + PHYSICAL_ELEMENT_2,
             "PhysicalElement-" + PHYSICAL_ELEMENT_3,
@@ -80,6 +82,11 @@ public class TS_RAN_E2E_02_5G_RECO_PART extends BaseTestCase {
         networkDiscoveryControlViewPage.runReconciliation();
         networkDiscoveryControlViewPage.checkReconciliationStartedSystemMessage();
         networkDiscoveryControlViewPage.waitForEndOfReco();
+        networkDiscoveryControlViewPage.selectLatestReconciliationState();
+        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(ErrorLevel.STARTUP_FATAL));
+        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(ErrorLevel.FATAL));
+        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(ErrorLevel.ERROR));
+        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(ErrorLevel.WARNING));
     }
 
     @Test(priority = 4)

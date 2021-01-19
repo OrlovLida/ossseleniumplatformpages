@@ -48,16 +48,6 @@ public class HierarchyViewPage extends BasePage {
         return PropertyPanel.createById(driver, String.format(BOTTOM_PROPERTY_PANEL_ID, type, type));
     }
 
-    public PropertiesFilter getBottomPropertiesFilter(String type) {
-        Widget.waitForWidget(wait, PropertiesFilter.PROPERTIES_FILTER_CLASS);
-        return PropertiesFilter.createByPropertyPanel(driver, wait, getBottomPropertyPanel(type));
-    }
-
-    public PropertiesFilter getTopPropertiesFilter(String type) {
-        Widget.waitForWidget(wait, PropertiesFilter.PROPERTIES_FILTER_CLASS);
-        return PropertiesFilter.createByPropertyPanel(driver, wait, getTopPropertyPanel(type));
-    }
-
     @Step("Open Hierarchy View")
     public static HierarchyViewPage goToHierarchyViewPage(WebDriver driver, String basicURL, String type, String xid) {
         driver.get(String.format("%s/#/views/management/views/hierarchy-view/" + type + "?" + xid +

@@ -23,46 +23,45 @@ import com.oss.pages.platform.NewInventoryViewPage;
 
 public class InventoryViewTest extends BaseTestCase {
 
+    private final static String PROPERTY_PANEL_ID = "InventoryView_DetailsTab_LocationInventoryView_PropertyPanelWidget_Building";
+
     private NewInventoryViewPage inventoryViewPage;
 
     @BeforeClass
     public void goToInventoryView() {
-
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Location");
     }
 
     @Test
     public void searchByType() {
-        //given
-        TableInterface tableWidget = inventoryViewPage.getMainTable();
-
         //when
-        tableWidget.searchByAttribute("type", ComponentType.COMBOBOX, "PoP");
-        Multimap<String,String> filterValues = tableWidget.getAppliedFilters();
+        Multimap<String,String> filterValues = inventoryViewPage.searchByAttributeValue("type", "PoP", ComponentType.COMBOBOX);
 
         //then
         Assertions.assertThat(filterValues.keys()).hasSize(1);
         Assertions.assertThat(Lists.newArrayList(filterValues.get("Object Type")).get(0)).startsWith("PoP");
+
+        inventoryViewPage.clearFilters();
     }
 
     @Test
     public void selectFirstRow() {
-        //given
-        TableInterface tableWidget = inventoryViewPage.getMainTable();
-
         //when
-        tableWidget.selectRow(0);
-        List<TableRow> selectedRows = tableWidget.getSelectedRows();
+        inventoryViewPage.selectObjectByRowId(0);
+        List<TableRow> selectedRows = inventoryViewPage.getSelectedRows();
 
         //then
         Assertions.assertThat(selectedRows).hasSize(1);
         Assertions.assertThat(selectedRows.get(0).getIndex()).isEqualTo(1);
-    }
 
+        inventoryViewPage.unselectObjectByRowId(0);
+        selectedRows = inventoryViewPage.getSelectedRows();
+        Assertions.assertThat(selectedRows).hasSize(0);
+    }
 
     @Test
     public void resizeColumn() {
-        TableInterface tableWidget = inventoryViewPage.getMainTable();
+        TableWidget tableWidget = inventoryViewPage.getMainTable();
         int defaultSize = tableWidget.getFirstColumnSize();
         DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
         Assertions.assertThat(defaultSize).isEqualTo(200);
@@ -77,17 +76,16 @@ public class InventoryViewTest extends BaseTestCase {
 
     @Test
     public void removeSecondColumn() {
-        TableInterface tableWidget = inventoryViewPage.getMainTable();
-        List<String> columnHeaders = tableWidget.getActiveColumnHeaders();
+        List<String> columnHeaders = inventoryViewPage.getActiveColumnsHeaders();
 
         DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
         String firstHeader = columnHeaders.get(0);
         String secondHeader = columnHeaders.get(1);
         String thirdHeader = columnHeaders.get(2);
 
-        tableWidget.disableColumnByLabel(secondHeader);
+        inventoryViewPage.removeColumn(secondHeader);
 
-        List<String> newColumnHeaders = tableWidget.getActiveColumnHeaders();
+        List<String> newColumnHeaders = inventoryViewPage.getActiveColumnsHeaders();
         String newFirstHeader = newColumnHeaders.get(0);
         String newSecondHeader = newColumnHeaders.get(1);
 
@@ -98,19 +96,18 @@ public class InventoryViewTest extends BaseTestCase {
     @Test
     public void addFirstUnselectedColumn() {
         //given
-        TableWidget tableWidget = inventoryViewPage.getMainTable();
-        List<String> columnHeaders = tableWidget.getActiveColumnHeaders();
+        List<String> columnHeaders = inventoryViewPage.getActiveColumnsHeaders();
         String firstHeader = columnHeaders.get(2);
 
         //when
-        tableWidget.disableColumnByLabel(firstHeader);
-        columnHeaders = tableWidget.getActiveColumnHeaders();
+        inventoryViewPage.removeColumn(firstHeader);
+        columnHeaders = inventoryViewPage.getActiveColumnsHeaders();
         Assertions.assertThat(columnHeaders).doesNotContain(firstHeader);
 
-        tableWidget.enableColumnByLabel(firstHeader);
+        inventoryViewPage.enableColumnAndApply(firstHeader);
 
         //then
-        columnHeaders = tableWidget.getActiveColumnHeaders();
+        columnHeaders = inventoryViewPage.getActiveColumnsHeaders();
         Assertions.assertThat(columnHeaders).contains(firstHeader);
     }
 
@@ -156,95 +153,62 @@ public class InventoryViewTest extends BaseTestCase {
 
     @Test
     public void findByText() {
-        TableWidget tableWidget = inventoryViewPage.getMainTable();
-        String secondID = tableWidget.getValueFromNthRow("XId", 2);
-        tableWidget.typeIntoSearch(secondID);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        String newFirstID = tableWidget.getValueFromNthRow("XId", 1);
+        String secondID = inventoryViewPage.getAttributeValue("XId", 1);
+        inventoryViewPage.searchObject(secondID);
+        String newFirstID = inventoryViewPage.getAttributeValue("XId", 0);
         Assert.assertEquals(secondID, newFirstID);
-        Assert.assertEquals(tableWidget.getRowsNumber(), 1);
+        Assert.assertEquals(inventoryViewPage.getRowsNumber(), 1);
+
+        inventoryViewPage.clearFilters();
     }
 
 
     @Test
     public void changeTab() {
-        TableWidget tableWidget = inventoryViewPage.getMainTable();
+        inventoryViewPage.selectObjectByRowId(0);
 
-        tableWidget.selectFirstRow();
-        TabsWidget tabsWidget = inventoryViewPage.getTabsWidget();
-
-        String activeTabLabel = tabsWidget.getActiveTabLabel();
-        String secondTabLabel = tabsWidget.getTabLabel(1);
+        String activeTabLabel = inventoryViewPage.getActiveTabLabel();
+        String secondTabLabel = inventoryViewPage.getTabLabel(1);
         Assertions.assertThat(activeTabLabel).isNotEqualTo(secondTabLabel);
 
-        tabsWidget.selectTabByLabel(secondTabLabel);
-        String newActiveLabel = tabsWidget.getActiveTabLabel();
+        inventoryViewPage.selectTabByLabel(secondTabLabel);
+        String newActiveLabel = inventoryViewPage.getActiveTabLabel();
         Assertions.assertThat(newActiveLabel).isEqualTo(secondTabLabel);
-    }
 
-    @Test
-    public void clickRefresh() {
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        TableWidget tableWidget = inventoryViewPage.getMainTable();
-        tableWidget.callAction(ActionsContainer.KEBAB_GROUP_ID, TableWidget.REFRESH_ACTION_ID);
-        Assert.assertTrue(inventoryViewPage.isLoadBarDisplayed());
-    }
-
-    @Test
-    public void changeTabAndSelectFirstRow() {
-       //TODO: rewrite this
+        inventoryViewPage.unselectObjectByRowId(0);
     }
 
     @Test
     public void checkDisplayingOfPropertyValue(){
-        TableWidget tableWidget = inventoryViewPage.getMainTable();
-        String idNumberFromTableWidget = tableWidget.getValueFromNthRow("XId", 1);
-        tableWidget.selectFirstRow();
-        PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel();
-        String idNumberFromPropertiesTab = propertyPanel.getPropertyValue("id");
-        Assert.assertEquals(idNumberFromTableWidget, idNumberFromPropertiesTab);
-    }
+        PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel(0, PROPERTY_PANEL_ID);
 
+        String idNumberFromPropertiesTab = propertyPanel.getPropertyValue("id");
+        String idNumberFromTableWidget = inventoryViewPage.getAttributeValue("XId", 0);
+        Assert.assertEquals(idNumberFromTableWidget, idNumberFromPropertiesTab);
+
+        inventoryViewPage.unselectObjectByRowId(0);
+    }
     @Test
-    public void setProperties(){
-        TableWidget tableWidget = inventoryViewPage.getMainTable();
-        tableWidget.selectFirstRow();
-        PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel();
-        PropertiesFilter propertiesFilter = inventoryViewPage.getPropertiesFilter();
-        String defaultFirstPropertyLabel = propertyPanel.getNthPropertyLabel(1);
-        String defaultSecondPropertyLabel = propertyPanel.getNthPropertyLabel(2);
-        propertiesFilter.clickOnFilterIcon();
-        boolean defaultChbxStatusForFirstLabel = propertiesFilter.isCheckboxChecked(defaultFirstPropertyLabel);
-        propertiesFilter.clickCheckbox(defaultFirstPropertyLabel);
-        boolean chbxStatusForFirstLabel = propertiesFilter.isCheckboxChecked(defaultFirstPropertyLabel);
-        Assert.assertEquals(defaultChbxStatusForFirstLabel, !chbxStatusForFirstLabel);
-        propertiesFilter.clickOnSave();
-        String firstLabel = propertyPanel.getNthPropertyLabel(1);
-        Assert.assertEquals(firstLabel, defaultSecondPropertyLabel);
-        propertiesFilter.clickOnFilterIcon();
-        propertiesFilter.clickCheckbox(defaultFirstPropertyLabel);
-        chbxStatusForFirstLabel = propertiesFilter.isCheckboxChecked(defaultFirstPropertyLabel);
-        Assert.assertEquals(defaultChbxStatusForFirstLabel, chbxStatusForFirstLabel);
-        propertiesFilter.clickOnSave();
-        firstLabel = propertyPanel.getNthPropertyLabel(1);
-        Assert.assertEquals(firstLabel, defaultFirstPropertyLabel);
+    public void propertyPanelAttributesChooserCheck(){
+        PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel(0, PROPERTY_PANEL_ID);
+        List<String> labels = propertyPanel.getPropertyLabels();
+        String firstProperty = labels.get(0);
+
+        propertyPanel.disableAttributeByLabel(firstProperty);
+
+        List<String> labelsAfterDisable = propertyPanel.getPropertyLabels();
+        Assertions.assertThat(labelsAfterDisable).doesNotContain(firstProperty);
+
+        propertyPanel.enableAttributeByLabel(firstProperty);
+
+        List<String> labelsAfterEnable = propertyPanel.getPropertyLabels();
+        Assertions.assertThat(labelsAfterEnable).contains(firstProperty);
+
+        inventoryViewPage.unselectObjectByRowId(0);
     }
 
     @Test
     public void searchProperty(){
-        TableWidget tableWidget = inventoryViewPage.getMainTable();
-        tableWidget.selectFirstRow();
-        PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel();
-        PropertiesFilter propertiesFilter = inventoryViewPage.getPropertiesFilter();
-        String defaultFirstPropertyLabel = propertyPanel.getNthPropertyLabel(1);
-        String defaultSecondPropertyLabel = propertyPanel.getNthPropertyLabel(2);
-        propertiesFilter.clickOnFilterIcon();
-        String defaultFirstPropertyLabelOnPopup = propertiesFilter.getNthPropertyChbxLabelFromPopup(1);
-        String defaultSecondPropertyLabelOnPopup = propertiesFilter.getNthPropertyChbxLabelFromPopup(2);
-        Assert.assertEquals(defaultFirstPropertyLabel,defaultFirstPropertyLabelOnPopup);
-        Assert.assertEquals(defaultSecondPropertyLabel,defaultSecondPropertyLabelOnPopup);
-        propertiesFilter.typeIntoSearch(defaultSecondPropertyLabelOnPopup);
-        String firstPropertyLabelOnPopup = propertiesFilter.getNthPropertyChbxLabelFromPopup(1);
-        Assert.assertEquals(firstPropertyLabelOnPopup, defaultSecondPropertyLabelOnPopup);
+       //TODO:
     }
 }

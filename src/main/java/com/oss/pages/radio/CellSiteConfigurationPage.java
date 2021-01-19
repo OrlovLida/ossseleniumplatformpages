@@ -9,6 +9,7 @@ import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.treewidget.TreeWidget;
 import com.oss.pages.BasePage;
+import com.oss.pages.physical.LocationOverviewPage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 
@@ -29,15 +30,9 @@ public class CellSiteConfigurationPage extends BasePage {
 
     @Step("Click plus icon and select {option} from the drop-down list")
     public void clickPlusIconAndSelectOption(String option) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        getTabTable().callActionByLabel("ADD");
+        useTableContextActionByLabel("ADD");
         DelayUtils.waitForPageToLoad(driver, wait);
         DropdownList.create(driver, wait).selectOption(option);
-    }
-
-    @Step("Click plus icon by label")
-    public void clickPlusIconByLabel(String label) {
-        getTabTable().callActionByLabel(label);
     }
 
     @Step("Select {tabName} tab")
@@ -55,10 +50,11 @@ public class CellSiteConfigurationPage extends BasePage {
     }
 
     @Step("Select {label} row")
-    public void selectRowByAttributeValueWithLabel(String attribute, String label) {
+    public CellSiteConfigurationPage selectRowByAttributeValueWithLabel(String attribute, String label) {
         DelayUtils.waitForPageToLoad(driver, wait);
         getTabTable().selectRowByAttributeValueWithLabel(attribute, label);
         DelayUtils.waitForPageToLoad(driver, wait);
+        return this;
     }
 
     @Step("Click Edit icon")
@@ -92,6 +88,17 @@ public class CellSiteConfigurationPage extends BasePage {
         return this;
     }
 
+    @Step("Expand the tree and select Cell")
+    public CellSiteConfigurationPage expandTreeToCell(String locationType, String locationName, String baseStationName, String cellName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getTree().expandTreeRow(locationType);
+        getTree().expandTreeRow(locationName);
+        getTree().expandTreeRow("Base Stations");
+        getTree().expandTreeRow(baseStationName);
+        getTree().selectTreeRow(cellName);
+        return this;
+    }
+
     @Step("Select tree row")
     public void selectTreeRow(String treeRowName) {
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -108,12 +115,37 @@ public class CellSiteConfigurationPage extends BasePage {
         getTabTable().callAction(id);
     }
 
+    @Step("Use table context action")
+    public void useTableContextActionByLabel(String actionLabel) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getTabTable().callActionByLabel(actionLabel);
+    }
+
     @Step("Select trail type")
     public void selectTrailType(String trailType) {
         Wizard wizard = Wizard.createByComponentId(driver, wait, "Popup");
         Input input = wizard.getComponent("trailType", COMBOBOX);
         input.setSingleStringValue(trailType);
         wizard.clickAccept();
+    }
+
+    @Step("Get row number for object with {attributeLabel} {value}")
+    public int getRowNumber(String attributeLabel, String value) {
+        return getTabTable().getRowNumber(value, attributeLabel);
+    }
+
+    @Step("Get {attributeLabel} value for row number {rowNumber}")
+    public String getValueByRowNumber(String attributeLabel, int rowNumber) {
+        return getTabTable().getCellValue(rowNumber, attributeLabel);
+    }
+
+    @Step("Get row count in a table")
+    public int getRowCount(String attributeLabel) {
+        return getTabTable().getNumberOfRowsInTable(attributeLabel);
+    }
+
+    public boolean hasNoData() {
+        return getTabTable().hasNoData();
     }
 
     public TreeWidget getTree() {
