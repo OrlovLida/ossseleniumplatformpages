@@ -53,7 +53,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
     }
 
     @Step("Expand two tree levels of Inconsistencies")
-    public void expantTree() {
+    public void expandTree() {
         DelayUtils.waitForPageToLoad(driver, wait);
         Assertions.assertThat(getTreeView().getVisibleTreeRow().size() > 1);
         getTreeView().expandLastTreeRow();
@@ -105,6 +105,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         getTreeView().selectTreeRowByOrder(2);
         TabsInterface nivTabs = TabWindowWidget.create(driver, wait);
         nivTabs.selectTabById(NIV_TREE);
+        DelayUtils.sleep(1000);
         nivTabs.callActionById(APPLY_GROUP_BUTTON_ID);
         DelayUtils.sleep(1000);
     }
@@ -113,6 +114,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
     public void applySelectedInconsistencies() {
         TabsInterface nivTabs = TabWindowWidget.create(driver, wait);
         nivTabs.selectTabById(NIV_TREE);
+        DelayUtils.sleep(1000);
         nivTabs.callActionById(APPLY_BUTTON_ID);
         DelayUtils.sleep(1000);
     }

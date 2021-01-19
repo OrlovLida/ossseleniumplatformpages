@@ -109,7 +109,7 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
     public void assignLocationAndApplyInconsistencies() {
         networkDiscoveryControlViewPage.moveToNivFromNdcv();
         NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
-        networkInconsistenciesViewPage.expantTree();
+        networkInconsistenciesViewPage.expandTree();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         for (String inconsistencieName : inconsistenciesNames) {
             networkInconsistenciesViewPage.assignLocation(inconsistencieName, LOCATION_NAME);
@@ -171,7 +171,7 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cellSiteConfigurationPage.clickPlusIconAndSelectOption("Host on Antenna Array");
         HostingWizardPage wizard = new HostingWizardPage(driver);
-        wizard.selectArray(ANTENNA_NAME + "/3-Array Antenna_Array 1");
+        wizard.setHostingContains(ANTENNA_NAME + "/3-Array Antenna_Array 1");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         wizard.clickAccept();
         checkPopup();

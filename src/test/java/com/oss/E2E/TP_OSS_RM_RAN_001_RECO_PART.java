@@ -80,7 +80,7 @@ public class TP_OSS_RM_RAN_001_RECO_PART extends BaseTestCase {
     public void checkOperationTypeAndAcceptDiscrepancies() {
         networkDiscoveryControlViewPage.moveToNivFromNdcv();
         NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
-        networkInconsistenciesViewPage.expantTree();
+        networkInconsistenciesViewPage.expandTree();
         for (String inconsistencieName : inconsistenciesNames) {
             Assertions.assertThat(networkInconsistenciesViewPage.checkInconsistenciesOperationType().equals("MODIFICATION")).isTrue();
             networkInconsistenciesViewPage.clearOldNotification();
