@@ -36,12 +36,13 @@ public class Constants {
     public static final String RRU5501_MODEL = "RRU5501";
     public static final String AAU5614ANTENNA_MODEL = "AAU5614";
     public static final String AHP4517R7v06ANTENNA_MODEL = "AHP4517R7v06";
-
+    public static final String UBBPg3_CARD_MODEL = "UBBPg3";
 
     //types
     public static final String ADDRESS_TYPE = "Address";
     public static final String PHYSICAL_ELEMENT = "PhysicalElement";
     public static final String DEVICE_MODEL_TYPE = "DeviceModel";
+    public static final String CARD_MODEL_TYPE = "CardModel";
     public static final String ANTENNA_TYPE = "RANAntenna";
     public static final String ANTENNA_MODEL_TYPE = "RANAntennaModel";
     public static final String LOCATION_TYPE = "Location";

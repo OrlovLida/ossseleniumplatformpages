@@ -18,7 +18,6 @@ public class NodeBWizardPage extends BasePage {
     private static final String NODE_B_USER_LABEL_DATA_ATTRIBUTE_NAME = "userLabel";
     private static final String NODE_B_NMS_DATA_ATTRIBUTE_NAME = "NMS";
 
-
     public NodeBWizardPage(WebDriver driver) {
         super(driver);
     }
