@@ -53,7 +53,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
     }
 
     @Step("Expand two tree levels of Inconsistencies")
-    public void expantTree() {
+    public void expandTree() {
         DelayUtils.waitForPageToLoad(driver, wait);
         Assertions.assertThat(getTreeView().getVisibleTreeRow().size() > 1);
         getTreeView().expandLastTreeRow();

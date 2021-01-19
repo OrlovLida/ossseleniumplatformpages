@@ -132,7 +132,7 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
     public void assignLocationAndApplyInconsistencies() {
         networkDiscoveryControlViewPage.moveToNivFromNdcv();
         NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
-        networkInconsistenciesViewPage.expantTree();
+        networkInconsistenciesViewPage.expandTree();
         for (String inconsistencieName : PHYSICAL_INCONSISTENCIES_NAMES) {
             networkInconsistenciesViewPage.assignLocation(inconsistencieName, LOCATION_NAME);
             networkInconsistenciesViewPage.checkUpdateDeviceSystemMessage();
