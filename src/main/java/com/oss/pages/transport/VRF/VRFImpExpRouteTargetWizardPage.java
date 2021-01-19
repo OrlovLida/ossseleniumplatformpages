@@ -4,13 +4,14 @@
  * duplication or redistribution of this software is allowed only according to
  * separate agreement prepared in written between Comarch and authorized party.
  */
-package com.oss.pages.transport;
+package com.oss.pages.transport.VRF;
 
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.data.Data;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 
 /**
@@ -28,17 +29,20 @@ public class VRFImpExpRouteTargetWizardPage extends BasePage {
         wizard = Wizard.createWizard(driver, wait);
     }
 
+    @Step("Set Route Target value to {routeTarget}")
     public void selectRouteTarget(String routeTarget) {
         Input routeTargetComponent = wizard.getComponent(IMP_EXP_WIZARD_VIEW_ID, Input.ComponentType.SEARCH_FIELD);
         routeTargetComponent.clear();
         routeTargetComponent.setSingleStringValue(routeTarget);
     }
 
+    @Step("Set Address family value to {addressFamily}")
     public void setAddressFamily(String addressFamily) {
         Input addressFamilyComponent = ComponentFactory.create(ADDRESS_FAMILY_FIELD_ID, Input.ComponentType.COMBOBOX, driver, wait);
         addressFamilyComponent.setValue(Data.createSingleData(addressFamily));
     }
 
+    @Step("Click accept button")
     public VRFOverviewPage clickAccept() {
         wizard.clickAcceptOldWizard();
         return new VRFOverviewPage(driver);
