@@ -207,7 +207,7 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cellSiteConfigurationPage.clickPlusIconAndSelectOption("Host on Antenna Array");
         HostingWizardPage wizard = new HostingWizardPage(driver);
-        wizard.selectArray(RAN_ANTENNA_ARRAY_NAME);
+        wizard.setHostingContains(RAN_ANTENNA_ARRAY_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         wizard.clickAccept();
         checkPopup();

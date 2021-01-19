@@ -34,6 +34,33 @@ public class LocationInventoryRepository {
         }
     }
 
+    public String createLocation(String locationName, String locationType, Long addressId) {
+        LocationInventoryClient client = new LocationInventoryClient(env);
+        ResourceDTO resourceDTO = client.createPhysicalLocation(buildLocation(locationType, locationName, addressId));
+        String locationId = resourceDTO.getUri().toString().substring(69, 77);
+        return locationId;
+    }
+
+    public String getOrCreateLocationV2(String locationName, String locationType, Long addressId) {
+        LocationInventoryClient client = new LocationInventoryClient(env);
+        List<Integer> locationIds = client.getPhysicalLocationIds(locationName);
+        if (!locationIds.isEmpty()) {
+            String locationId = locationIds.get(0).toString();
+            return locationId;
+        } else {
+            ResourceDTO resourceDTO = client.createPhysicalLocation(buildLocation(locationType, locationName, addressId));
+            String locationId = resourceDTO.getUri().toString().substring(68, 76);
+            return locationId;
+        }
+    }
+
+    public String createLocationV2(String locationName, String locationType, Long addressId) {
+        LocationInventoryClient client = new LocationInventoryClient(env);
+        ResourceDTO resourceDTO = client.createPhysicalLocation(buildLocation(locationType, locationName, addressId));
+        String locationId = resourceDTO.getUri().toString().substring(68, 76);
+        return locationId;
+    }
+
     public void createSubLocation(String locationType, String subLocationSiteNameForCreate, Long addressId, Long parentId, String parentLocationType) {
         LocationInventoryClient client = new LocationInventoryClient(env);
         client.createPhysicalLocation(buildLocationWithParent(locationType, subLocationSiteNameForCreate, addressId, parentId, parentLocationType));

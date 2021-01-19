@@ -204,11 +204,10 @@ public class IPAMTest extends BaseTestCase {
     @Description("Check IPAM Tree after role edition")
     public void checkIpamTreeAfterRoleEdition() {
         ipAddressManagementViewPage.selectTreeRowContains(getSubnetAddressAndMask(firstIPSubnetProperties));
-        Assert.assertEquals(ipAddressManagementViewPage.getPropertyPanel().getPropertyValue(SUBNET_PROPERTY_ROLE), firstIPSubnetProperties.get(SUBNET_PROPERTY_ROLE));
+        Assert.assertEquals(ipAddressManagementViewPage.getPropertyValue(SUBNET_PROPERTY_ROLE), firstIPSubnetProperties.get(SUBNET_PROPERTY_ROLE));
         ipAddressManagementViewPage.selectTreeRowContains(getSubnetAddressAndMask(firstIPSubnetProperties));
-        ipAddressManagementViewPage.expandTreeRowContains(getSubnetAddressAndMask(firstIPSubnetProperties));
         ipAddressManagementViewPage.selectTreeRowContains(getSubnetAddressAndMask(secondIPSubnetProperties));
-        Assert.assertEquals(ipAddressManagementViewPage.getPropertyPanel().getPropertyValue(SUBNET_PROPERTY_ROLE), secondIPSubnetProperties.get(SUBNET_PROPERTY_ROLE));
+        Assert.assertEquals(ipAddressManagementViewPage.getPropertyValue(SUBNET_PROPERTY_ROLE), secondIPSubnetProperties.get(SUBNET_PROPERTY_ROLE));
         ipAddressManagementViewPage.selectTreeRowContains(getSubnetAddressAndMask(secondIPSubnetProperties));
     }
 
@@ -226,8 +225,8 @@ public class IPAMTest extends BaseTestCase {
     @Description("Check IPAM Tree after IP Network Edition")
     public void checkIPAMTreeAfterNetworkEdition() {
         ipAddressManagementViewPage.selectTreeRow(NETWORK_NAME_UPDATED);
-        Assert.assertEquals(ipAddressManagementViewPage.getPropertyPanel().getPropertyValue(NETWORK_PROPERTY_NAME), NETWORK_NAME_UPDATED);
-        Assert.assertEquals(ipAddressManagementViewPage.getPropertyPanel().getPropertyValue(NETWORK_PROPERTY_DESCRIPTION), NETWORK_DESCRIPTION_UPDATED);
+        Assert.assertEquals(ipAddressManagementViewPage.getPropertyValue(NETWORK_PROPERTY_NAME), NETWORK_NAME_UPDATED);
+        Assert.assertEquals(ipAddressManagementViewPage.getPropertyValue(NETWORK_PROPERTY_DESCRIPTION), NETWORK_DESCRIPTION_UPDATED);
 
         ipAddressManagementViewPage.selectTreeRow(NETWORK_NAME_UPDATED);
         ipAddressManagementViewPage.expandTreeRow(NETWORK_NAME_UPDATED);
@@ -288,6 +287,7 @@ public class IPAMTest extends BaseTestCase {
     @Test(priority = 17) // bug OSSTPT-31077
     @Description("Edit IP Subnets")
     public void editIPSubnets() {
+        ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
         ipAddressManagementViewPage.changeIPSubnetTypeToBlock(getSubnetAddressAndMask(thirdIPSubnetProperties));
         Assert.assertTrue(ipAddressManagementViewPage.isSystemMessageSuccess());
 //        ipAddressManagementViewPage.selectTreeRow(NETWORK_NAME);
@@ -369,14 +369,13 @@ public class IPAMTest extends BaseTestCase {
         ipAddressManagementViewPage.expandTreeRow(NETWORK_NAME);
         ipAddressManagementViewPage.expandTreeRowContains(getSubnetAddressAndMask(firstIPSubnetProperties));
         ipAddressManagementViewPage.deleteIPv4SubnetAssignment(getSubnetAddressAndMask(secondIPSubnetProperties));
-        ipAddressManagementViewPage.selectTreeRowContains(getSubnetAddressAndMask(secondIPSubnetProperties));
-        ipAddressManagementViewPage.selectTreeRowContains(getSubnetAddressAndMask(secondIPSubnetProperties));
     }
 
     // zamienic NETWORK_NAME na NETWORK_NAME_UPDATED po poprawie buga OSSTPT-30469
     @Test(priority = 24)
     @Description("Delete IP Subnets")
     public void deleteIPSubnets() {
+        ipAddressManagementViewPage.expandTreeRow(NETWORK_NAME);
         ipAddressManagementViewPage.deleteIPv4SubnetTypeOfBlock(getSubnetAddressAndMask(firstIPSubnetProperties));
         Assert.assertTrue(ipAddressManagementViewPage.isSystemMessageSuccess());
         ipAddressManagementViewPage.expandTreeRow(NETWORK_NAME);
@@ -505,7 +504,7 @@ public class IPAMTest extends BaseTestCase {
         ipAddressManagementViewPage.selectTreeRowContains(subnetProperties.get(SUBNET_PROPERTY_ADDRESS)+"/"+subnetProperties.get(SUBNET_PROPERTY_MASK_LENGTH));
         Set<String> keySet = subnetProperties.keySet();
         for(String key: keySet){
-            Assert.assertEquals(ipAddressManagementViewPage.getPropertyPanel().getPropertyValue(key), subnetProperties.get(key));
+            Assert.assertEquals(ipAddressManagementViewPage.getPropertyValue(key), subnetProperties.get(key));
         }
         ipAddressManagementViewPage.selectTreeRowContains(subnetProperties.get(SUBNET_PROPERTY_ADDRESS)+"/"+subnetProperties.get(SUBNET_PROPERTY_MASK_LENGTH));
     }

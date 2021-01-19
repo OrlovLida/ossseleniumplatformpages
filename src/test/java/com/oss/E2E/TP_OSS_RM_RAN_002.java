@@ -118,11 +118,11 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
         cellSiteConfigurationPage.selectTreeRow(GNODEB_NAME);
         cellSiteConfigurationPage.selectTab("Hosting");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        cellSiteConfigurationPage.clickPlusIconByLabel("Host on Device");
+        cellSiteConfigurationPage.useTableContextActionByLabel("Host on Device");
         HostingWizardPage hostOnDeviceWizard = new HostingWizardPage(driver);
         hostOnDeviceWizard.onlyCompatible("false");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        hostOnDeviceWizard.selectDevice(BBU_NAME);
+        hostOnDeviceWizard.setDevice(BBU_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hostOnDeviceWizard.clickAccept();
         checkMessageType();
@@ -134,7 +134,7 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
             cellSiteConfigurationPage.selectTab("Hosting");
             cellSiteConfigurationPage.clickPlusIconAndSelectOption("Host on Antenna Array");
             HostingWizardPage hostOnAntennaWizard = new HostingWizardPage(driver);
-            hostOnAntennaWizard.selectArray(ANTENNA_NAMES[i]);
+            hostOnAntennaWizard.setHostingContains(ANTENNA_NAMES[i]);
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             hostOnAntennaWizard.clickAccept();
             checkMessageType();

@@ -10,6 +10,7 @@ import com.oss.pages.templateCM.SetParametersWizardPage;
 import io.qameta.allure.Description;
 import org.assertj.core.api.Assertions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.asserts.Assertion;
@@ -66,7 +67,7 @@ public class PerformConfigurationTest extends BaseTestCase {
         changeConfigurationPage.deployImmediately();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
-        Notifications.create(driver, webDriverWait).openDetailsForSpecificNotification(TEMPLATE_EXECUTION_NOTIFICATION, "FINISHED");
+        Notifications.create(driver, new WebDriverWait(driver, 180)).openDetailsForSpecificNotification(TEMPLATE_EXECUTION_NOTIFICATION, "FINISHED");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         LogManagerPage logManagerPage = new LogManagerPage(driver);
         Assertions.assertThat(logManagerPage.getStatus()).isEqualTo("UPLOAD_SUCCESS");

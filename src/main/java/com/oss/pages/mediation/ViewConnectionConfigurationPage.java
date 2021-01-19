@@ -1,5 +1,6 @@
 package com.oss.pages.mediation;
 
+import com.oss.framework.components.inputs.Button;
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.utils.DelayUtils;
@@ -29,8 +30,10 @@ public class ViewConnectionConfigurationPage extends BasePage {
     @Step("Use context action {action}")
     public void useContextAction(String action) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, TABLE_ID);
-        table.callActionByLabel(action);
+        Button.create(driver, action, "a").click();
+        //TODO use this version when OSSWEB-10596 will be ready
+       /* TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, TABLE_ID);
+        table.callActionByLabel(action);*/
     }
 
     @Step("Select mediation with name {name} and value {value}")
