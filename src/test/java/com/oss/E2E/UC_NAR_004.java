@@ -2,6 +2,10 @@ package com.oss.E2E;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.Wizard;
+import com.oss.pages.platform.GlobalSearchPage;
+import com.oss.pages.platform.NewInventoryViewPage;
+import com.oss.pages.platform.OldInventoryViewPage;
 import com.oss.pages.reconciliation.CmDomainWizardPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
 import com.oss.pages.reconciliation.NetworkInconsistenciesViewPage;
@@ -19,15 +23,15 @@ public class UC_NAR_004 extends BaseTestCase {
     private static final String CM_DOMAIN_NAME = "KRK-SSE8-45";
     private static final String INTERFACE_NAME = "CISCO IOS 12/15/XE without mediation";
     private static final String DOMAIN = "IP";
-
-    //Reconciliation started. - to jest ten system message hehe
+    private static final String EQUIPMENT_TYPE = "Physical Device";
+    private static final String ROUTER_NAME = "KRK-SSE8-45";
 
     @BeforeClass
     public void openNetworkDiscoveryControlView() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
     }
 
-    @Test(priority = 1)
+   /* @Test(priority = 1)
     public void createCmDomain() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         networkDiscoveryControlViewPage.openCmDomainWizard();
@@ -63,10 +67,10 @@ public class UC_NAR_004 extends BaseTestCase {
         networkDiscoveryControlViewPage.checkReconciliationStartedSystemMessage();
         networkDiscoveryControlViewPage.waitForEndOfReco();
         networkDiscoveryControlViewPage.selectLatestReconciliationState();
-        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.ErrorLevel.STARTUP_FATAL));
-        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.ErrorLevel.FATAL));
-        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.ErrorLevel.ERROR));
-        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.ErrorLevel.WARNING));
+        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.STARTUP_FATAL));
+        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.FATAL));
+        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.ERROR));
+        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.WARNING));
     }
 
     @Test(priority = 4)
@@ -109,10 +113,10 @@ public class UC_NAR_004 extends BaseTestCase {
         networkDiscoveryControlViewPage.checkReconciliationStartedSystemMessage();
         networkDiscoveryControlViewPage.waitForEndOfReco();
         networkDiscoveryControlViewPage.selectLatestReconciliationState();
-        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.ErrorLevel.STARTUP_FATAL));
-        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.ErrorLevel.FATAL));
-        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.ErrorLevel.ERROR));
-        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.ErrorLevel.WARNING));
+        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.STARTUP_FATAL));
+        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.FATAL));
+        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.ERROR));
+        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.WARNING));
     }
 
     @Test(priority = 7)
@@ -134,11 +138,20 @@ public class UC_NAR_004 extends BaseTestCase {
         networkDiscoveryControlViewPage.deleteCmDomain();
         networkDiscoveryControlViewPage.checkDeleteCmDomainSystemMessage();
         networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(CM_DOMAIN_NAME);
-    }
+    }*/
 
     @Test(priority = 9)
     public void deleteDevices() {
-
+        homePage.goToHomePage(driver, BASIC_URL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        homePage.setNewObjectType(EQUIPMENT_TYPE);
+        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        newInventoryViewPage.openFilterPanel().changeValueInLocationNameInput(ROUTER_NAME).applyFilter();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        newInventoryViewPage.selectFirstRow().callAction("EDIT", "DeleteDeviceWizardAction");
+        //Wizard.createWizard(driver, webDriverWait).clickDelete();
+        DelayUtils.sleep(10000);
     }
 
 }
