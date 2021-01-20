@@ -122,7 +122,13 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Click Start editing trail button")
     public void startEditingSelectedTrail() {
-        Button button = Button.create(driver, "Start editing trail");
+        Button button = Button.create(driver, "Start editing connection");
+        button.click();
+    }
+
+    @Step("Click Stop editing trail button")
+    public void stopEditingTrail() {
+        Button button = Button.create(driver, "Stop editing connection");
         button.click();
     }
 

@@ -32,10 +32,10 @@ public class IPPathTest extends BaseTestCase {
     private static final String IP_PATH_NAME_1 = "IPPathSeleniumTest";
     private static final String CAPACITY_VALUE_1 = "100";
     private static final String IP_PATH_NAME_2 = "ModifiedIPPathSeleniumTest";
-    private static final String IP_PATH_FOR_ROUTING = "IPPathSeleniumTest_FOR_ROUTING";
+    private static final String TRAIL_FOR_ROUTING = "SeleniumIPLinkForRouting";
     private static final String CAPACITY_VALUE_2 = "110";
-    private static final String DEVICE_1 = "IPPathSeleniumTest_DEVICE_1";
-    private static final String DEVICE_2 = "IPPathSeleniumTest_DEVICE_2";
+    private static final String DEVICE_1 = "SeleniumTestDevice_IPPath_1";
+    private static final String DEVICE_2 = "SeleniumTestDevice_IPPath_2";
 
     @BeforeClass
     public void openWebConsole() {
@@ -73,22 +73,17 @@ public class IPPathTest extends BaseTestCase {
 
         networkViewPage.useContextAction("add_to_view_group", "Connection");
         waitForPageToLoad();
-        networkViewPage.queryElementAndAddItToView("name", TEXT_FIELD, IP_PATH_FOR_ROUTING);
-        waitForPageToLoad();
-
-        networkViewPage.useContextAction("add_to_view_group", "Device");
-        waitForPageToLoad();
-        networkViewPage.queryElementAndAddItToView("name", TEXT_FIELD, DEVICE_1);
-        waitForPageToLoad();
-
-        networkViewPage.useContextAction("add_to_view_group", "Device");
-        waitForPageToLoad();
-        networkViewPage.queryElementAndAddItToView("name", TEXT_FIELD, DEVICE_2);
+        networkViewPage.queryElementAndAddItToView("name", TEXT_FIELD, TRAIL_FOR_ROUTING);
         waitForPageToLoad();
 
         networkViewPage.expandDockedPanel("left");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
+        networkViewPage.unselectObject(TRAIL_FOR_ROUTING);
+        waitForPageToLoad();
         networkViewPage.selectObjectInViewContent("Name", DEVICE_1);
+        waitForPageToLoad();
+        networkViewPage.selectObjectInViewContent("Name", DEVICE_2);
+        waitForPageToLoad();
 
         networkViewPage.useContextAction("CREATE", "Create Connection");
         waitForPageToLoad();
@@ -120,12 +115,15 @@ public class IPPathTest extends BaseTestCase {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.startEditingSelectedTrail();
         networkViewPage.unselectObject(IP_PATH_NAME_2);
-        networkViewPage.selectObject(IP_PATH_FOR_ROUTING);
+        networkViewPage.selectObject(TRAIL_FOR_ROUTING);
         RoutingWizardPage routingWizard = networkViewPage.addSelectedObjectsToRouting();
         routingWizard.proceed();
-        networkViewPage.unselectObject(IP_PATH_FOR_ROUTING);
+        waitForPageToLoad();
+        networkViewPage.stopEditingTrail();
+        waitForPageToLoad();
+        networkViewPage.unselectObject(TRAIL_FOR_ROUTING);
         networkViewPage.selectObject(IP_PATH_NAME_2);
-        Assert.assertTrue(networkViewPage.isObjectInRouting1stLevel(IP_PATH_FOR_ROUTING));
+        Assert.assertTrue(networkViewPage.isObjectInRouting1stLevel(TRAIL_FOR_ROUTING));
     }
 
     @Test(priority = 6)
