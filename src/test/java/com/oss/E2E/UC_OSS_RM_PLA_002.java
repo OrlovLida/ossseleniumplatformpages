@@ -35,7 +35,7 @@ import com.oss.pages.platform.LogManagerPage;
 import com.oss.pages.platform.OldInventoryViewPage;
 import com.oss.pages.reconciliation.CmDomainWizardPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
-import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage.ErrorLevel;
+import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage.IssueLevel;
 import com.oss.pages.reconciliation.NetworkInconsistenciesViewPage;
 import com.oss.pages.reconciliation.SamplesManagementPage;
 import com.oss.pages.templateCM.ChangeConfigurationPage;
@@ -525,10 +525,10 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.waitForEndOfReco();
         networkDiscoveryControlViewPage.selectLatestReconciliationState();
-        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(ErrorLevel.STARTUP_FATAL));
-        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(ErrorLevel.FATAL));
-        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(ErrorLevel.ERROR));
-        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(ErrorLevel.WARNING));
+        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(IssueLevel.STARTUP_FATAL));
+        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(IssueLevel.FATAL));
+        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(IssueLevel.ERROR));
+        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(IssueLevel.WARNING));
     }
 
     @Test(priority = 41)
