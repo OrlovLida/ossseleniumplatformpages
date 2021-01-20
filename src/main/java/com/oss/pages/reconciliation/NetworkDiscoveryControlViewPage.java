@@ -158,9 +158,9 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     }
 
     @Step("Check if there are Issues with type {type}")
-    public boolean checkIssues(ErrorLevel errorType) {
+    public boolean checkIssues(IssueLevel errorType) {
         String type = String.valueOf(errorType);
-        getIssuesTable().searchByAttributeWithLabel("Error Level", ComponentType.TEXT_FIELD, type);
+        getIssuesTable().searchByAttributeWithLabel("Issue Level", ComponentType.TEXT_FIELD, type);
         if (getIssuesTable().hasNoData()) {
             return true;
         } else {
@@ -200,7 +200,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         return OldTable.createByComponentDataAttributeName(driver, wait, ISSUES_TABLE_ID);
     }
 
-    public enum ErrorLevel {
+    public enum IssueLevel {
         INFO,
         WARNING,
         ERROR,
