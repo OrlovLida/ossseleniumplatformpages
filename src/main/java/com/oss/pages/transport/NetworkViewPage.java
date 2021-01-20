@@ -420,7 +420,7 @@ public class NetworkViewPage extends BasePage {
     @Step("Open modify termination wizard")
     public void modifyTermination() {
         ButtonContainer button = ButtonContainer.create(driver, wait);
-        button.callActionById("Modify termination");
+        button.callActionById("Modify Termination");
     }
 
     @Step("Set trail termination port")
