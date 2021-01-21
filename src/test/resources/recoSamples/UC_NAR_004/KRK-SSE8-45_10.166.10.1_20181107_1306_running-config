@@ -1,0 +1,3137 @@
+show running-config
+Building configuration...
+
+Current configuration : 92292 bytes
+!
+! Last configuration change at 16:24:33 GMT-3 Wed Oct 31 2018 by tasa\morenok
+! NVRAM config last updated at 16:43:17 GMT-3 Mon Oct 22 2018 by tasa\dabovea
+!
+version 12.2
+no service pad
+service timestamps debug datetime localtime
+service timestamps log datetime localtime
+service password-encryption
+service counters max age 5
+!
+hostname KRK-SSE8-45
+
+!
+boot-start-marker
+boot system flash disk1:6500s72033-advipservicesk9-mz.122-33.SRE9a.bin
+boot system flash disk1:s72033-adventerprisek9-mz.122-33.SRD4.bin
+boot-end-marker
+!
+mls ipv6 vrf
+vrf definition NAC
+ rd 22927:3300
+ !
+ address-family ipv4
+ route-target export 22927:3301
+ route-target import 22927:2001
+ route-target import 22927:1103
+ route-target import 22927:2701
+ route-target import 22927:4101
+ route-target import 22927:1401
+ route-target import 22927:901
+ route-target import 22927:3303
+ route-target import 22927:3301
+ route-target import 22927:3205
+ exit-address-family
+ !
+ address-family ipv6
+ route-target export 22927:3307
+ route-target import 22927:3307
+ route-target import 22927:3308
+ route-target import 22927:3208
+ exit-address-family
+!
+logging snmp-authfail
+logging buffered 32000
+enable secret level 2 5 $1$sCDV$sIEOa7xe/udesF9sSpvGX0
+enable secret 5 $1$eNE.$E341idks3gJbf5ihH7U.n/
+!
+aaa new-model
+!
+!
+aaa group server tacacs+ TACACS-ACS
+ server 172.18.74.21
+!
+aaa authentication login default group tacacs+ local
+aaa authentication enable default group tacacs+ enable
+aaa authorization console
+aaa authorization config-commands
+aaa authorization exec default group tacacs+ local 
+aaa authorization commands 0 default group tacacs+ local if-authenticated 
+aaa authorization commands 1 default group tacacs+ local if-authenticated 
+aaa authorization commands 15 default group tacacs+ local if-authenticated 
+aaa accounting delay-start
+aaa accounting update newinfo
+aaa accounting exec default start-stop group tacacs+
+aaa accounting commands 0 default start-stop group tacacs+
+aaa accounting commands 1 default start-stop group tacacs+
+aaa accounting commands 15 default start-stop group tacacs+
+!
+!
+!
+!
+!
+aaa session-id common
+clock timezone GMT-3 -3
+ip subnet-zero
+no ip source-route
+ip vrf NGN
+ rd 22927:2
+ route-target export 22927:2
+ route-target import 22927:2
+ route-target import 65014:725
+ route-target import 65014:875
+!
+ip vrf VOIP-IAD
+ rd 22927:4810
+ export map RM-IAD
+ route-target import 22927:4804
+ route-target import 22927:4805
+ route-target import 22927:4806
+!
+ip vrf gid1
+ rd 22927:2400
+ route-target export 22927:2401
+ route-target import 22927:2402
+!
+ip vrf gim1
+ rd 22927:6750
+ route-target export 22927:6751
+ route-target import 22927:6751
+!
+!
+!
+ip multicast-routing 
+no ip domain lookup
+ip host SCNQN01 200.63.140.244
+ip host SCNQN02 200.63.140.243
+!
+!
+ipv6 unicast-routing
+!
+!
+vtp domain mrse-solutions
+vtp mode transparent
+mls ip multicast flow-stat-timer 9
+no mls flow ip
+no mls flow ipv6
+mls qos
+no mls acl tcam share-global
+mls cef error action freeze
+multilink bundle-name authenticated
+mpls ldp loop-detection
+mpls ip ttl-expiration pop 1
+no mpls ip propagate-ttl forwarded
+mpls label protocol ldp
+!
+!
+!
+!
+spanning-tree mode rapid-pvst
+no spanning-tree optimize bpdu transmission
+spanning-tree extend system-id
+spanning-tree vlan 480,559-561,2425,2427-2429,2434,2773,3262 priority 24576
+spanning-tree vlan 3268-3269,3327,3333-3334,3855-3856 priority 24576
+diagnostic bootup level minimal
+diagnostic cns publish cisco.cns.device.diag_results
+diagnostic cns subscribe cisco.cns.device.diag_commands
+no diagnostic mode bootup failure
+username mrse secret 5 $1$3Eqw$TytwgoHwkJ1CrnBmk1zE21
+username Admin_METRO privilege 15 secret 5 $1$N1ve$hnoS6tBr6gr9Mn.vKfI1W0
+!
+redundancy
+ main-cpu
+  auto-sync startup-config
+  auto-sync running-config
+ mode sso
+!
+vlan internal allocation policy ascending
+vlan access-log ratelimit 2000
+!
+vlan 147
+ name CITIBANK
+!
+vlan 228
+ name CNEA
+!
+vlan 384
+ name LLAO-LLAO-RESORTS
+!
+vlan 403
+ name MOVISTAR-VPN
+!
+vlan 734
+ name PODER-JUDICIAL-RIO-NEGRO
+!
+vlan 764
+ name HEDI
+!
+vlan 816
+ name MOVISTAR-3G-10
+!
+vlan 817
+ name AMX-ARGENTINA
+!
+vlan 983
+ name BUNBLAUSKIS
+!
+ip ftp username METRO
+ip ftp password 7 09581E0214561B13
+ip tftp source-interface Loopback5
+ip ssh time-out 30
+ip ssh authentication-retries 5
+ip ssh version 2
+!
+!
+class-map match-all COOP-EL-BOLSON
+  match any 
+class-map match-all EPUYEN
+  match any 
+class-map match-all CIUDAD-GLOBAL-JUNIN-ANDES
+  match any 
+class-map match-all EL-BOLSON
+  match any 
+class-map match-all BROADBANTECH-ESQUEL
+  match any 
+class-map match-all SHOP-LAS-TERRAZAS
+  match any 
+class-map match-all COOP-SAN-MARTIN-3
+  match any 
+class-map match-all COOP-SAN-MARTIN-1
+  match any 
+class-map match-all WIRELESS-NET
+  match any 
+!
+policy-map EPUYEN-IN
+  class EPUYEN
+    police cir 130000000 bc 31250000 be 31250000 conform-action transmit exceed-action drop violate-action drop
+policy-map setvoip
+  class class-default
+   set dscp cs5
+policy-map WIRELESS-NET-IN
+  class WIRELESS-NET
+    police cir 500000000 bc 31250000 be 31250000 conform-action transmit exceed-action drop violate-action drop
+policy-map SHOP-LAS-TERRAZAS-OUT
+  class SHOP-LAS-TERRAZAS
+    police cir 50000000 conform-action transmit exceed-action drop violate-action drop
+policy-map CIUDAD-GLOBAL-JUNIN-ANDES-OUT
+  class CIUDAD-GLOBAL-JUNIN-ANDES
+    police cir 120000000 conform-action transmit exceed-action drop violate-action drop
+policy-map EL-BOLSON-IN
+  class EL-BOLSON
+    police cir 1200000000 bc 31250000 be 31250000 conform-action transmit exceed-action drop violate-action drop
+policy-map EL-BOLSON-OUT
+  class EL-BOLSON
+    police cir 1200000000 bc 31250000 be 31250000 conform-action transmit exceed-action drop violate-action drop
+policy-map CIUDAD-GLOBAL-JUNIN-ANDES-IN
+  class CIUDAD-GLOBAL-JUNIN-ANDES
+    police cir 120000000 conform-action transmit exceed-action drop violate-action drop
+policy-map COOP-SAN-MARTIN-1-IN
+  class COOP-SAN-MARTIN-1
+    police cir 110000000
+policy-map COOP-SAN-MARTIN-3-OUT
+  class COOP-SAN-MARTIN-3
+    police cir 80000000
+policy-map BROADBANTECH-ESQUEL-OUT
+  class BROADBANTECH-ESQUEL
+    police cir 76000000
+policy-map COOP-SAN-MARTIN-3-IN
+  class COOP-SAN-MARTIN-3
+    police cir 80000000
+policy-map SHOP-LAS-TERRAZAS-IN
+  class SHOP-LAS-TERRAZAS
+    police cir 50000000 conform-action transmit exceed-action drop violate-action drop
+policy-map COOP-SAN-MARTIN-1-OUT
+  class COOP-SAN-MARTIN-1
+    police cir 110000000
+policy-map EL-BOLSON-OU
+policy-map EPUYEN-OUT
+  class EPUYEN
+    police cir 130000000 bc 31250000 be 31250000 conform-action transmit exceed-action drop violate-action drop
+policy-map WIRELESS-NET-OUT
+  class WIRELESS-NET
+    police cir 500000000 bc 31250000 be 31250000 conform-action transmit exceed-action drop violate-action drop
+policy-map BROADBANTECH-ESQUEL-IN
+  class BROADBANTECH-ESQUEL
+    police cir 76000000
+!
+pseudowire-class PSEUDOWIRE-DSLAM
+ encapsulation mpls
+!
+! 
+!
+!
+!
+!
+!
+interface Loopback1
+ description Lpbk Area STUB Red METRO
+ ip address 200.63.140.251 255.255.255.255
+!
+interface Loopback2
+ description description Lpbk **VRF NAC **
+ vrf forwarding NAC
+ ip address 200.51.240.56 255.255.255.255
+ load-interval 30
+!
+interface Loopback5
+ ip vrf forwarding gim1
+ ip address 172.18.227.49 255.255.255.255
+!
+interface Loopback184
+ description Lpbk para Def Gw DSLAMs
+ ip vrf forwarding gid1
+ ip address 172.18.184.1 255.255.255.255
+!
+interface Loopback1002
+ description Lpbk Redes IAD
+ ip vrf forwarding VOIP-IAD
+ ip address 10.62.128.1 255.255.128.0
+!
+interface Port-channel1
+ no ip address
+ load-interval 30
+ shutdown
+!
+interface Port-channel250
+ description Conexion con Coop. EL BOLSON x SDH DWDM_199290_234274_ ** IP-Transit **
+ vrf forwarding NAC
+ bandwidth 1200000
+ ip address 200.63.152.241 255.255.255.252
+ ip ospf network point-to-point
+ ip ospf cost 10
+ logging event link-status
+ load-interval 30
+ service-policy input EL-BOLSON-IN
+ service-policy output EL-BOLSON-OUT
+!
+interface Port-channel255
+ description Conexion con  CIUDAD GLOBAL JUNIN ANDES ** IP-Transit **
+ vrf forwarding NAC
+ ip address 200.63.152.17 255.255.255.252
+ load-interval 30
+ shutdown
+ service-policy input CIUDAD-GLOBAL-JUNIN-ANDES-IN
+ service-policy output CIUDAD-GLOBAL-JUNIN-ANDES-OUT
+!
+interface Port-channel400
+ no ip address
+ logging event link-status
+ load-interval 30
+ speed nonegotiate
+!
+interface TenGigabitEthernet1/1
+ description Conexion a SCNQN02 Te0/7/0/2 - Id. Red: 152013
+ mtu 9216
+ ip address 200.63.140.178 255.255.255.254
+ ip mtu 9202
+ ip pim query-interval 1
+ ip pim sparse-mode
+ ip ospf network point-to-point
+ ip ospf cost 25
+ logging event link-status
+ load-interval 30
+ wrr-queue bandwidth 0 0 13 20 20 15 2 
+ priority-queue queue-limit 35 
+ wrr-queue queue-limit 0 0 10 18 18 13 2 
+ wrr-queue threshold 3 100 1 1 1 1 1 1 1 
+ wrr-queue threshold 4 100 1 1 1 1 1 1 1 
+ wrr-queue threshold 5 100 1 1 1 1 1 1 1 
+ wrr-queue random-detect min-threshold 3 40 1 1 1 1 1 1 1 
+ wrr-queue random-detect min-threshold 4 60 1 1 1 1 1 1 1 
+ wrr-queue random-detect min-threshold 5 70 80 1 1 1 1 1 1 
+ wrr-queue random-detect max-threshold 3 70 1 1 1 1 1 1 1 
+ wrr-queue random-detect max-threshold 4 80 1 1 1 1 1 1 1 
+ wrr-queue random-detect max-threshold 5 80 90 1 1 1 1 1 1 
+ wrr-queue random-detect 4 
+ wrr-queue random-detect 5 
+ wrr-queue cos-map 3 1 0 
+ wrr-queue cos-map 4 1 1 
+ wrr-queue cos-map 5 1 2 
+ wrr-queue cos-map 5 2 3 
+ wrr-queue cos-map 6 1 4 
+ wrr-queue cos-map 7 1 6 7 
+ mpls ip
+ storm-control broadcast level 10.00
+ storm-control multicast level 10.00
+ hold-queue 4096 in
+!
+interface TenGigabitEthernet1/2
+ description Conexion a TX DIBCH_01 - 101/17 -
+ mtu 9216
+ no ip address
+ logging event link-status
+ load-interval 30
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface TenGigabitEthernet1/2.2747
+ description Trafico internet dslam RN-LPO01_GB_IS [tunel a SCNQN02 Te0/5/0/10.2747 - Bkp EBRPB04 13/0/0]
+ encapsulation dot1Q 2747
+ xconnect 200.63.140.243 2747 encapsulation mpls
+  backup peer 200.63.137.2 12012 pw-class PSEUDOWIRE-DSLAM
+  backup delay 30 180
+  mtu 9086
+!
+interface TenGigabitEthernet1/2.3530
+ description Trafico VOIP dslam RN-LPO01_GB_IS [VRF VOIP-IAD]
+ encapsulation dot1Q 3530
+ ip vrf forwarding VOIP-IAD
+ ip unnumbered Loopback1002
+ ip helper-address 172.19.0.19
+ no cdp enable
+ arp timeout 10
+ service-policy input setvoip
+!
+interface TenGigabitEthernet1/2.3804
+ description Trafico gestion dslam RN-LPO01_GB_IS [VRF gid1]
+ encapsulation dot1Q 3804
+ ip vrf forwarding gid1
+ ip unnumbered Loopback184
+ no cdp enable
+!
+interface TenGigabitEthernet1/3
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface TenGigabitEthernet1/4
+ description Conexion a TX TBCH01 Slot 15 port 17
+ mtu 9216
+ no ip address
+ logging event link-status
+ load-interval 30
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface TenGigabitEthernet1/4.2429
+ description Trafico internet dslam RN-NHU01_GB_H56 [tunel a SCNQN02 Te0/7/0/3.2429 - Bkp EBRPB04 12/0/0]
+ encapsulation dot1Q 2429
+ xconnect 200.63.140.243 2429 encapsulation mpls
+  backup peer 200.63.137.2 9423 pw-class PSEUDOWIRE-DSLAM
+  backup delay 30 180
+  mtu 9086
+!
+interface TenGigabitEthernet1/4.2437
+ description Trafico internet dslam RN-ALQ05_GB_H56 [tunel a SCNQN01 Te0/5/0/5.2437 - Bkp EBRPB04 12/0/0]
+ encapsulation dot1Q 2437
+ xconnect 200.63.140.244 2437 encapsulation mpls
+  backup peer 200.63.137.2 9448 pw-class PSEUDOWIRE-DSLAM
+  backup delay 30 180
+  mtu 9086
+!
+interface TenGigabitEthernet1/4.2443
+ description Trafico internet dslam RN-ALQ06_GB_H56 [tunel a SCNQN02 Te0/5/0/8.2443 - Bkp EBRPB04 15/0/1]
+ encapsulation dot1Q 2443
+ xconnect 200.63.140.243 2443 encapsulation mpls
+  backup peer 200.63.137.2 9455 pw-class PSEUDOWIRE-DSLAM
+  backup delay 30 180
+  mtu 9086
+!
+interface TenGigabitEthernet1/4.3253
+ description Gestion Modems G.SHDSL dslam RN-ALQ06_GB_H56 [tunel a SCNQN01 Gi0/7/1/19.3253]
+ encapsulation dot1Q 3253
+ xconnect 200.63.140.244 3253 encapsulation mpls
+  mtu 9086
+!
+interface TenGigabitEthernet1/4.3269
+ description Gestion Modems G.SHDSL dslam RN-NHU01_GB_H56 [tunel a SCNQN01 Gi0/7/1/19.3269]
+ encapsulation dot1Q 3269
+ xconnect 200.63.140.244 3269 encapsulation mpls
+  mtu 9086
+!
+interface TenGigabitEthernet1/4.3310
+ description Trafico Empresas dslam RN-ALQ06_GB_H56 [tunel a SCNQN01 Gi0/7/1/19.3310]
+ encapsulation dot1Q 3310
+ xconnect 200.63.140.244 3310 encapsulation mpls
+  mtu 9086
+!
+interface TenGigabitEthernet1/4.3334
+ description Trafico Empresas dslam RN-NHU01_GB_H56 [tunel a SCNQN01 Gi0/7/1/19.3334]
+ encapsulation dot1Q 3334
+ xconnect 200.63.140.244 3334 encapsulation mpls
+  mtu 9086
+!
+interface TenGigabitEthernet1/4.3441
+ description Trafico VOIP dslam RN-NHU01_GB_IS [VRF VOIP-IAD]
+ encapsulation dot1Q 3441
+ ip vrf forwarding VOIP-IAD
+ ip unnumbered Loopback1002
+ ip helper-address 172.19.0.19
+ no cdp enable
+ arp timeout 10
+ service-policy input setvoip
+!
+interface TenGigabitEthernet1/4.3443
+ description Trafico VOIP dslam RN-ALQ05_GB_H56 [VRF VOIP-IAD]
+ encapsulation dot1Q 3443
+ ip vrf forwarding VOIP-IAD
+ ip unnumbered Loopback1002
+ ip helper-address 172.19.0.19
+ arp timeout 10
+!
+interface TenGigabitEthernet1/4.3446
+ description Trafico VOIP dslam RN-ALQ06_GB_H56 [VRF VOIP-IAD]
+ encapsulation dot1Q 3446
+ ip vrf forwarding VOIP-IAD
+ ip unnumbered Loopback1002
+ ip helper-address 172.19.0.19
+ no cdp enable
+ arp timeout 10
+!
+interface TenGigabitEthernet1/4.3856
+ description Trafico gestion dslam RN-NHU01_GB_H56 [VRF gid1]
+ encapsulation dot1Q 3856
+ ip vrf forwarding gid1
+ ip unnumbered Loopback184
+ no cdp enable
+!
+interface GigabitEthernet2/1
+ no ip address
+ logging event link-status
+ shutdown
+ speed 100
+ duplex full
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet2/2
+ description Conexion a PODER JUDICIAL DE RIO NEGRO (J O Connor 20, Bariloche - 100Mb) x Metrob (2)
+ switchport
+ switchport access vlan 734
+ switchport mode dot1q-tunnel
+ mtu 9216
+ logging event link-status
+ load-interval 30
+ speed 100
+ duplex full
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ l2protocol-tunnel shutdown-threshold cdp 10
+ l2protocol-tunnel shutdown-threshold stp 10
+ l2protocol-tunnel shutdown-threshold vtp 10
+ l2protocol-tunnel cdp
+ l2protocol-tunnel stp
+ l2protocol-tunnel vtp
+ no cdp enable
+ spanning-tree bpdufilter enable
+ spanning-tree bpduguard enable
+ spanning-tree guard root
+!
+interface GigabitEthernet2/3
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet2/4
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet2/5
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet2/6
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet2/7
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet2/8
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet2/9
+ mtu 9216
+ no ip address
+ logging event link-status
+ load-interval 30
+ shutdown
+ speed 100
+ duplex full
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet2/10
+ no ip address
+ logging event link-status
+ load-interval 30
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet2/11
+ mtu 9216
+ no ip address
+ logging event link-status
+ load-interval 30
+ shutdown
+ speed 100
+ duplex full
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet2/12
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet2/13
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet2/14
+ description Conexion a MOVISTAR VPN (Frei 353 - Bariloche - 12Mb) x (10)  - L2L vpn -
+ switchport
+ switchport access vlan 403
+ switchport mode dot1q-tunnel
+ mtu 9216
+ logging event link-status
+ load-interval 30
+ speed 100
+ duplex full
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ l2protocol-tunnel shutdown-threshold cdp 10
+ l2protocol-tunnel shutdown-threshold stp 10
+ l2protocol-tunnel shutdown-threshold vtp 10
+ l2protocol-tunnel cdp
+ l2protocol-tunnel stp
+ l2protocol-tunnel vtp
+ no cdp enable
+ spanning-tree bpdufilter enable
+ spanning-tree bpduguard enable
+ spanning-tree guard root
+!
+interface GigabitEthernet2/15
+ description Conexion a MOVISTAR VPN (Frei 353 - Bariloche - 12Mb) x (9)  - L2L vpn -
+ switchport
+ switchport access vlan 403
+ switchport mode dot1q-tunnel
+ mtu 9216
+ logging event link-status
+ load-interval 30
+ speed 100
+ duplex full
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ l2protocol-tunnel shutdown-threshold cdp 10
+ l2protocol-tunnel shutdown-threshold stp 10
+ l2protocol-tunnel shutdown-threshold vtp 10
+ l2protocol-tunnel cdp
+ l2protocol-tunnel stp
+ l2protocol-tunnel vtp
+ no cdp enable
+ spanning-tree bpdufilter enable
+ spanning-tree bpduguard enable
+ spanning-tree guard root
+!
+interface GigabitEthernet2/16
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet2/17
+ description Conexion a MOVISTAR 3G  (Antunez - Melipal - RB ARRN0045) - 100Mb) x SDH  (91)
+ switchport
+ switchport access vlan 816
+ switchport mode dot1q-tunnel
+ mtu 9216
+ logging event link-status
+ load-interval 30
+ speed 100
+ duplex full
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ l2protocol-tunnel shutdown-threshold cdp 10
+ l2protocol-tunnel shutdown-threshold stp 10
+ l2protocol-tunnel shutdown-threshold vtp 10
+ l2protocol-tunnel cdp
+ l2protocol-tunnel stp
+ l2protocol-tunnel vtp
+ no cdp enable
+ spanning-tree bpdufilter enable
+ spanning-tree bpduguard enable
+ spanning-tree guard root
+!
+interface GigabitEthernet2/18
+ description Conexion a MOVISTAR 3G  (Av Bustillo, ruta 237 km 8 - Huemul - RB ARRN0059) - 100Mb) x SDH  (92)
+ switchport
+ switchport access vlan 816
+ switchport mode dot1q-tunnel
+ mtu 9216
+ logging event link-status
+ load-interval 30
+ speed 100
+ duplex full
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ l2protocol-tunnel shutdown-threshold cdp 10
+ l2protocol-tunnel shutdown-threshold stp 10
+ l2protocol-tunnel shutdown-threshold vtp 10
+ l2protocol-tunnel cdp
+ l2protocol-tunnel stp
+ l2protocol-tunnel vtp
+ no cdp enable
+ spanning-tree bpdufilter enable
+ spanning-tree bpduguard enable
+ spanning-tree guard root
+!
+interface GigabitEthernet2/19
+ description SHOPPING_LAS_TERRAZAS_16712012_423555 ** IP-Transit **
+ vrf forwarding NAC
+ bandwidth 50000
+ ip address 200.63.152.1 255.255.255.252
+ logging event link-status
+ load-interval 30
+ speed 100
+ duplex full
+ no cdp enable
+ service-policy input SHOP-LAS-TERRAZAS-IN
+ service-policy output SHOP-LAS-TERRAZAS-OUT
+!
+interface GigabitEthernet2/20
+ description Conexion con CIUDAD GLOBAL J DE ANDES x SDH - ** IP-Transit **
+ bandwidth 60000
+ no ip address
+ logging event link-status
+ load-interval 30
+ shutdown
+ speed 100
+ duplex full
+ no cdp enable
+ lacp port-priority 10000
+ channel-group 255 mode on
+!
+interface GigabitEthernet2/21
+ description Conexion a CITIBANK (Mitre 694 - Bariloche- 2Mb) x SDH
+ switchport
+ switchport access vlan 147
+ switchport mode dot1q-tunnel
+ mtu 9216
+ logging event link-status
+ load-interval 30
+ shutdown
+ speed 100
+ duplex full
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ l2protocol-tunnel shutdown-threshold cdp 10
+ l2protocol-tunnel shutdown-threshold stp 10
+ l2protocol-tunnel shutdown-threshold vtp 10
+ l2protocol-tunnel cdp
+ l2protocol-tunnel stp
+ l2protocol-tunnel vtp
+ spanning-tree bpdufilter enable
+ spanning-tree bpduguard enable
+ spanning-tree guard root
+!
+interface GigabitEthernet2/22
+ description Conexion a CITIBANK (Mitre 694 - Bariloche - Mpls) x SDH
+ switchport
+ switchport access vlan 147
+ switchport mode dot1q-tunnel
+ mtu 9216
+ logging event link-status
+ load-interval 30
+ shutdown
+ speed 100
+ duplex full
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ l2protocol-tunnel shutdown-threshold cdp 10
+ l2protocol-tunnel shutdown-threshold stp 10
+ l2protocol-tunnel shutdown-threshold vtp 10
+ l2protocol-tunnel cdp
+ l2protocol-tunnel stp
+ l2protocol-tunnel vtp
+ spanning-tree bpdufilter enable
+ spanning-tree bpduguard enable
+ spanning-tree guard root
+!
+interface GigabitEthernet2/23
+ description Conexion a MOVISTAR 3G  (Quetrihue SA (Suc Piedra Buena 5152 - RB ARRN0212) x SDH
+ switchport
+ switchport access vlan 816
+ switchport mode dot1q-tunnel
+ mtu 9216
+ logging event link-status
+ load-interval 30
+ speed 100
+ duplex full
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ l2protocol-tunnel shutdown-threshold cdp 10
+ l2protocol-tunnel shutdown-threshold stp 10
+ l2protocol-tunnel shutdown-threshold vtp 10
+ l2protocol-tunnel cdp
+ l2protocol-tunnel stp
+ l2protocol-tunnel vtp
+ no cdp enable
+ spanning-tree bpdufilter enable
+ spanning-tree bpduguard enable
+ spanning-tree guard root
+!
+interface GigabitEthernet2/24
+ description Conexion a BUNBLAUSKIS SEBASTIAN (Ruta 40 y entrada a Lago Puelo) x SDH
+ switchport
+ switchport access vlan 983
+ switchport mode dot1q-tunnel
+ mtu 9216
+ logging event link-status
+ load-interval 30
+ shutdown
+ speed 100
+ duplex full
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ l2protocol-tunnel shutdown-threshold cdp 10
+ l2protocol-tunnel shutdown-threshold stp 10
+ l2protocol-tunnel shutdown-threshold vtp 10
+ l2protocol-tunnel cdp
+ l2protocol-tunnel stp
+ l2protocol-tunnel vtp
+ spanning-tree bpdufilter enable
+ spanning-tree bpduguard enable
+ spanning-tree guard root
+!
+interface GigabitEthernet2/25
+ description Conexion con BROADBANTECH ESQUEL x SDH ** IP-Transit ** 
+ vrf forwarding NAC
+ bandwidth 76000
+ ip address 200.63.154.109 255.255.255.252
+ logging event link-status
+ load-interval 30
+ speed 100
+ duplex full
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+ service-policy input BROADBANTECH-ESQUEL-IN
+ service-policy output BROADBANTECH-ESQUEL-OUT
+!
+interface GigabitEthernet2/26
+ description Conexion a FRONTERA SIEMENS  BCH_24 7/7 - Transporte Enlaces de MOVISTAR - x Jumper
+ switchport
+ switchport access vlan 816
+ switchport mode dot1q-tunnel
+ mtu 9216
+ logging event link-status
+ load-interval 30
+ speed 100
+ duplex full
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ l2protocol-tunnel shutdown-threshold cdp 10
+ l2protocol-tunnel shutdown-threshold stp 10
+ l2protocol-tunnel shutdown-threshold vtp 10
+ l2protocol-tunnel cdp
+ l2protocol-tunnel stp
+ l2protocol-tunnel vtp
+ no cdp enable
+ spanning-tree bpdufilter enable
+ spanning-tree bpduguard enable
+ spanning-tree guard root
+!
+interface GigabitEthernet2/27
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet2/28
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet2/29
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet2/30
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet2/31
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet2/32
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet2/33
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet2/34
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet2/35
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet2/36
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet2/37
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet2/38
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet2/39
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet2/40
+ description Conexion a MOVISTAR 3G  (Av 12 de Octubre 2421 - Bariloche - RB ARRN0180) x SDH
+ switchport
+ switchport access vlan 816
+ switchport mode dot1q-tunnel
+ mtu 9216
+ logging event link-status
+ load-interval 30
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ l2protocol-tunnel shutdown-threshold cdp 10
+ l2protocol-tunnel shutdown-threshold stp 10
+ l2protocol-tunnel shutdown-threshold vtp 10
+ l2protocol-tunnel cdp
+ l2protocol-tunnel stp
+ l2protocol-tunnel vtp
+ spanning-tree bpdufilter enable
+ spanning-tree bpduguard enable
+ spanning-tree guard root
+!
+interface GigabitEthernet2/41
+ description Conexion con Coop. SAN MARTIN DE LOS ANDES *3*_199260_346094_ ** IP-Transit **
+ vrf forwarding NAC
+ bandwidth 80000
+ ip address 200.63.144.245 255.255.255.252
+ ip access-group DENY-SNMP in
+ logging event link-status
+ load-interval 30
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+ spanning-tree bpdufilter enable
+ service-policy input COOP-SAN-MARTIN-3-IN
+ service-policy output COOP-SAN-MARTIN-3-OUT
+!
+interface GigabitEthernet2/42
+ description Conexion a MOVISTAR 3G  (Juez Fernandez 429 - El Bolson - (RB ARRN0024) - 100Mb) x SDH  (84)
+ switchport
+ switchport access vlan 816
+ switchport mode dot1q-tunnel
+ mtu 9216
+ logging event link-status
+ load-interval 30
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ l2protocol-tunnel shutdown-threshold cdp 10
+ l2protocol-tunnel shutdown-threshold stp 10
+ l2protocol-tunnel shutdown-threshold vtp 10
+ l2protocol-tunnel cdp
+ l2protocol-tunnel stp
+ l2protocol-tunnel vtp
+ no cdp enable
+ spanning-tree bpdufilter enable
+ spanning-tree bpduguard enable
+ spanning-tree guard root
+!
+interface GigabitEthernet2/43
+ description FRONTERA SIEMENS 7025 BCH_26 4/5  - Transporte MOVISTAR x Jumper
+ switchport
+ switchport access vlan 816
+ switchport mode dot1q-tunnel
+ mtu 9216
+ logging event link-status
+ load-interval 30
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ l2protocol-tunnel shutdown-threshold cdp 10
+ l2protocol-tunnel shutdown-threshold stp 10
+ l2protocol-tunnel shutdown-threshold vtp 10
+ l2protocol-tunnel cdp
+ l2protocol-tunnel stp
+ l2protocol-tunnel vtp
+ no cdp enable
+ spanning-tree bpdufilter enable
+ spanning-tree bpduguard enable
+ spanning-tree guard root
+!
+interface GigabitEthernet2/44
+ no ip address
+ shutdown
+!
+interface GigabitEthernet2/45
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet2/46
+ description Conexion a COOP SAN MARTIN DE LOS ANDES *1* ** IP-Transit **
+ vrf forwarding NAC
+ bandwidth 110000
+ ip address 200.51.216.221 255.255.255.252
+ load-interval 30
+ speed 100
+ duplex full
+ no cdp enable
+ service-policy input COOP-SAN-MARTIN-1-IN
+ service-policy output COOP-SAN-MARTIN-1-OUT
+!
+interface GigabitEthernet2/47
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet2/48
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet3/1
+ description Conexion al CENQN01 4/1 para MOVISTAR (TRONCALES DEDICADOS PARA EL SERVICIO VoIP MVS)
+ switchport
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 403
+ switchport mode trunk
+ mtu 9216
+ logging event link-status
+ logging event trunk-status
+ load-interval 30
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+!
+interface GigabitEthernet3/2
+ no ip address
+ no logging event link-status
+ shutdown
+!
+interface GigabitEthernet3/3
+ description Conexion a FRONTERAS MOVISTAR (Bariloche TIPO 2 - 1Gb) x SDH
+ switchport
+ switchport access vlan 816
+ switchport mode dot1q-tunnel
+ mtu 9216
+ logging event link-status
+ load-interval 30
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+ spanning-tree bpdufilter enable
+ spanning-tree bpduguard enable
+ spanning-tree guard root
+!
+interface GigabitEthernet3/4
+ description Conexion a FRONTERA SDH 7070 BCH_19 306/9 - Transporte Enlaces Ethernet de MOVISTAR -
+ switchport
+ switchport access vlan 816
+ switchport mode dot1q-tunnel
+ mtu 9216
+ logging event link-status
+ load-interval 30
+ speed nonegotiate
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ l2protocol-tunnel shutdown-threshold cdp 10
+ l2protocol-tunnel shutdown-threshold stp 10
+ l2protocol-tunnel shutdown-threshold vtp 10
+ l2protocol-tunnel cdp
+ l2protocol-tunnel stp
+ l2protocol-tunnel vtp
+ no cdp enable
+ spanning-tree bpdufilter enable
+ spanning-tree bpduguard enable
+ spanning-tree guard root
+!
+interface GigabitEthernet3/5
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet3/6
+ description Conexion con Coop. EL BOLSON * 1 * x SDH DWDM_199290_234274_ IPTRANSIT
+ no ip address
+ logging event link-status
+ load-interval 30
+ channel-group 250 mode active
+!
+interface GigabitEthernet3/7
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet3/8
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet3/9
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet3/10
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet3/11
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet3/12
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet3/13
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet3/14
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet3/15
+ description Conexion a Dslam RN-BRC20_GB_IS 
+ mtu 9216
+ no ip address
+ logging event link-status
+ load-interval 30
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet3/15.2773
+ description Trafico internet dslam RN-BRC20_GB_IS [tunel a SCNQN02 TenGigE0/6/0/3.2773 - Bkp EBRPB04 15/0/0]
+ encapsulation dot1Q 2773
+ xconnect 200.63.140.243 2773 encapsulation mpls
+  backup peer 200.63.137.2 9437 pw-class PSEUDOWIRE-DSLAM
+  backup delay 30 180
+  mtu 9086
+!
+interface GigabitEthernet3/15.3579
+ description Trafico VOIP dslam RN-BRC20_GB_IS [VRF VOIP-IAD]
+ encapsulation dot1Q 3579
+ ip vrf forwarding VOIP-IAD
+ ip unnumbered Loopback1002
+ ip helper-address 172.19.0.19
+ no cdp enable
+ arp timeout 10
+ service-policy input setvoip
+!
+interface GigabitEthernet3/16
+ description Conexion a Dslam CH-TRV01_GB_IS y CH-TRV02_GB_IS
+ mtu 9216
+ no ip address
+ logging event link-status
+ load-interval 30
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet3/16.2428
+ description Trafico internet dslam CH-TRV01_GB_IS [tunel a SCNQN02 Te 0/5/0/0.2428 -- Bkp EBRPB04 12/0/1]
+ encapsulation dot1Q 2428
+ xconnect 200.63.140.243 2428 encapsulation mpls
+  backup peer 200.63.137.2 9432 pw-class PSEUDOWIRE-DSLAM
+  backup delay 20 180
+  mtu 9086
+!
+interface GigabitEthernet3/16.2456
+ description Trafico internet dslam CH-TRV02_GB_IS [tunel a SCNQN01 Te0/5/0/3.2456 - Bkp EBRPB04 14/0/0]
+ encapsulation dot1Q 2456
+ xconnect 200.63.140.244 2456 encapsulation mpls
+  backup peer 200.63.137.2 12002 pw-class PSEUDOWIRE-DSLAM
+  backup delay 30 180
+  mtu 9086
+!
+interface GigabitEthernet3/16.3268
+ description Gestion Modems G.SHDSL dslam CH-TRV01_GB_IS [tunel a SCNQN01 Gi0/7/1/19.3268]
+ encapsulation dot1Q 3268
+ xconnect 200.63.140.244 3268 encapsulation mpls
+  mtu 9086
+!
+interface GigabitEthernet3/16.3333
+ description Trafico Empresas dslam CH-TRV01_GB_IS [tunel a SCNQN01 Gi0/7/1/19.3333]
+ encapsulation dot1Q 3333
+ xconnect 200.63.140.244 3333 encapsulation mpls
+  mtu 9086
+!
+interface GigabitEthernet3/16.3440
+ description Trafico VOIP dslam CH-TRV01_GB_IS [VRF VOIP-IAD]
+ encapsulation dot1Q 3440
+ ip vrf forwarding VOIP-IAD
+ ip unnumbered Loopback1002
+ ip helper-address 172.19.0.19
+ no cdp enable
+ arp timeout 10
+!
+interface GigabitEthernet3/16.3449
+ description Trafico VOIP dslam CH-TRV02_GB_IS [VRF VOIP-IAD]
+ encapsulation dot1Q 3449
+ ip vrf forwarding VOIP-IAD
+ ip unnumbered Loopback1002
+ ip helper-address 172.19.0.19
+ no cdp enable
+ arp timeout 10
+ service-policy input setvoip
+!
+interface GigabitEthernet3/16.3855
+ description Trafico gestion dslam CH-TRV01_GB_IS [VRF gid1]
+ encapsulation dot1Q 3855
+ ip vrf forwarding gid1
+ ip unnumbered Loopback184
+ no cdp enable
+!
+interface GigabitEthernet3/16.3868
+ description Trafico gestion dslam CH-TRV02_GB_IS [VRF gid1]
+ encapsulation dot1Q 3868
+ ip vrf forwarding gid1
+ ip unnumbered Loopback184
+ no cdp enable
+!
+interface GigabitEthernet3/17
+ description Conexion a Dslam RN-BRC19_GB_IS 
+ mtu 9216
+ no ip address
+ logging event link-status
+ load-interval 30
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet3/17.2425
+ description Trafico internet dslam RN-BRC19_GB_IS [tunel a SCNQN02 Te0/6/0/3.2425 -- Bkp EBRPB04 14/0/1]
+ encapsulation dot1Q 2425
+ xconnect 200.63.140.243 2425 encapsulation mpls
+  backup peer 200.63.137.2 9364 pw-class PSEUDOWIRE-DSLAM
+  backup delay 0 180
+  mtu 9086
+!
+interface GigabitEthernet3/17.3438
+ description Trafico VOIP dslam RN-BRC19_GB_IS [VRF VOIP-IAD]
+ encapsulation dot1Q 3438
+ ip vrf forwarding VOIP-IAD
+ ip unnumbered Loopback1002
+ ip helper-address 172.19.0.19
+ no cdp enable
+ arp timeout 10
+ service-policy input setvoip
+!
+interface GigabitEthernet3/18
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet3/19
+ description Conexion a Dslam RN-BRC18_GB_IS 
+ mtu 9216
+ no ip address
+ logging event link-status
+ load-interval 30
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet3/19.2421
+ description Trafico internet dslam RN-BRC18_GB_IS [tunel a SCNQN02 Te0/5/0/0.2421 - Bkp EBRPB04 15/0/1]
+ encapsulation dot1Q 2421
+ xconnect 200.63.140.244 2421 encapsulation mpls
+  backup peer 200.63.137.2 9398 pw-class PSEUDOWIRE-DSLAM
+  backup delay 30 180
+  mtu 9086
+!
+interface GigabitEthernet3/19.3434
+ description Trafico VOIP dslam RN-BRC18_GB_IS [VRF VOIP-IAD]
+ encapsulation dot1Q 3434
+ ip vrf forwarding VOIP-IAD
+ ip unnumbered Loopback1002
+ ip helper-address 172.19.0.19
+ no cdp enable
+ arp timeout 10
+ service-policy input setvoip
+!
+interface GigabitEthernet3/20
+ description Conexion a Dslam RN-CDS01_GB_IS 
+ mtu 9216
+ no ip address
+ logging event link-status
+ load-interval 30
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet3/20.2422
+ description Trafico internet dslam RN-CDS01_GB_IS [tunel a SCNQN02 Te0/7/0/3.2422 -- Bkp EBRPB04 14/0/1]
+ encapsulation dot1Q 2422
+ xconnect 200.63.140.243 2422 encapsulation mpls
+  backup peer 200.63.137.2 9412 pw-class PSEUDOWIRE-DSLAM
+  backup delay 0 180
+  mtu 9086
+!
+interface GigabitEthernet3/20.3433
+ description Trafico VOIP dslam RN-CDS01_GB_IS [VRF VOIP-IAD]
+ encapsulation dot1Q 3433
+ ip vrf forwarding VOIP-IAD
+ ip unnumbered Loopback1002
+ ip helper-address 172.19.0.19
+ no cdp enable
+ arp timeout 10
+ service-policy input setvoip
+!
+interface GigabitEthernet3/20.3831
+ description Trafico gestion dslam RN-CDS01_GB_IS [VRF gid1]
+ encapsulation dot1Q 3831
+ ip vrf forwarding gid1
+ ip unnumbered Loopback184
+ no cdp enable
+!
+interface GigabitEthernet3/21
+ no ip address
+ logging event link-status
+ load-interval 30
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet3/21.2419
+ no cdp enable
+!
+interface GigabitEthernet3/21.2420
+ no cdp enable
+!
+interface GigabitEthernet3/21.3828
+!
+interface GigabitEthernet3/21.3829
+!
+interface GigabitEthernet3/22
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet3/23
+ description Conexion a Dslam RN-BRC16_GB_IS 
+ mtu 9216
+ no ip address
+ logging event link-status
+ load-interval 30
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet3/23.2416
+ description Trafico internet dslam RN-BRC16_GB_IS [tunel a SCNQN01 Te 0/7/0/3.2416 - Bkp EBRPB04 14/0/0]
+ encapsulation dot1Q 2416
+ xconnect 200.63.140.244 2416 encapsulation mpls
+  backup peer 200.63.137.2 9363 pw-class PSEUDOWIRE-DSLAM
+  backup delay 30 180
+  mtu 9086
+!
+interface GigabitEthernet3/23.3432
+ description Trafico VOIP dslam RN-BRC16_GB_IS [VRF VOIP-IAD]
+ encapsulation dot1Q 3432
+ ip vrf forwarding VOIP-IAD
+ ip unnumbered Loopback1002
+ ip helper-address 172.19.0.19
+ no cdp enable
+ arp timeout 10
+ service-policy input setvoip
+!
+interface GigabitEthernet3/24
+ description Conexion a Dslam RN-BRC15_GB_IS 
+ mtu 9216
+ no ip address
+ logging event link-status
+ load-interval 30
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet3/24.2415
+ description Trafico internet dslam RN-BRC15_GB_IS [tunel a SCNQN02 Te0/6/0/3.2415 - Bkp EBRPB04 13/0/1]
+ encapsulation dot1Q 2415
+ xconnect 200.63.140.243 2415 encapsulation mpls
+  backup peer 200.63.137.2 9362 pw-class PSEUDOWIRE-DSLAM
+  backup delay 30 180
+  mtu 9086
+!
+interface GigabitEthernet3/24.3431
+ description Trafico VOIP dslam RN-BRC15_GB_IS [VRF VOIP-IAD]
+ encapsulation dot1Q 3431
+ ip vrf forwarding VOIP-IAD
+ ip unnumbered Loopback1002
+ ip helper-address 172.19.0.19
+ no cdp enable
+ arp timeout 10
+ service-policy input setvoip
+!
+interface TenGigabitEthernet4/1
+ description Conexion a TX SDH SIEMENS - BCH_15 - 305/1 -
+ mtu 9216
+ no ip address
+ logging event link-status
+ load-interval 30
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+ hold-queue 4096 in
+!
+interface TenGigabitEthernet4/1.2300
+ description Trafico internet dslam RN-CET02_GB_IS [tunel a SCNQN02 Te0/6/0/3.2300 - Bkp EBRPB04 12/0/1]
+ encapsulation dot1Q 2300
+ xconnect 200.63.140.243 2300 encapsulation mpls
+  backup peer 200.63.137.2 9336 pw-class PSEUDOWIRE-DSLAM
+  backup delay 30 180
+  mtu 9086
+!
+interface TenGigabitEthernet4/1.2302
+ description Trafico internet dslam RN-HUE02_GB_IS [tunel a SCNQN01 Te0/6/0/3.2302 - Bkp EBRPB04 14/0/0]
+ encapsulation dot1Q 2302
+ xconnect 200.63.140.244 2302 encapsulation mpls
+  backup peer 200.63.137.2 9347 pw-class PSEUDOWIRE-DSLAM
+  backup delay 30 180
+  mtu 9086
+!
+interface TenGigabitEthernet4/1.2400
+ description Trafico internet dslam RN-CET03_GB_IS [tunel a SCNQN01 Te0/5/0/0.2400 - Bkp EBRPB04 13/0/0]
+ encapsulation dot1Q 2400
+ xconnect 200.63.140.244 2400 encapsulation mpls
+  backup peer 200.63.137.2 9337 pw-class PSEUDOWIRE-DSLAM
+  backup delay 30 180
+  mtu 9086
+!
+interface TenGigabitEthernet4/1.2402
+ description Trafico internet dslam RN-LLA02_GB_IS [tunel a SCNQN01 Te 0/5/0/1.2402 - Bkp EBRPB04 14/0/1]
+ encapsulation dot1Q 2402
+ xconnect 200.63.140.244 2402 encapsulation mpls
+  backup peer 200.63.137.2 9348 pw-class PSEUDOWIRE-DSLAM
+  backup delay 30 180
+  mtu 9086
+!
+interface TenGigabitEthernet4/1.2411
+ description Trafico internet dslam RN-HUE03_GB_IS [tunel a SCNQN01 Te0/6/0/3.2411 - Bkp EBRPB04 14/0/1]
+ encapsulation dot1Q 2411
+ xconnect 200.63.140.244 2411 encapsulation mpls
+  backup peer 200.63.137.2 9380 pw-class PSEUDOWIRE-DSLAM
+  backup delay 30 180
+  mtu 9086
+!
+interface TenGigabitEthernet4/1.2418
+ description Trafico internet dslam RN-CET04_GB_IS [tunel a SCNQN02 Te0/6/0/3.2418 -- Bkp EBRPB04 15/0/0]
+ encapsulation dot1Q 2418
+ xconnect 200.63.140.243 2418 encapsulation mpls
+  backup peer 200.63.137.2 9365 pw-class PSEUDOWIRE-DSLAM
+  backup delay 0 180
+  mtu 9086
+!
+interface TenGigabitEthernet4/1.3274
+ description Gestion Modems G.SHDSL dslam RN-CET03_GB_IS [tunel a SCNQN01 Gi0/7/1/19.3274]
+ encapsulation dot1Q 3274
+ xconnect 200.63.140.244 3274 encapsulation mpls
+  mtu 9086
+!
+interface TenGigabitEthernet4/1.3275
+ description Gestion Modems G.SHDSL dslam RN-HUE03_GB_IS [tunel a SCNQN01 Gi0/7/1/19.3275]
+ encapsulation dot1Q 3275
+ xconnect 200.63.140.244 3275 encapsulation mpls
+  mtu 9086
+!
+interface TenGigabitEthernet4/1.3276
+ description Gestion Modems G.SHDSL dslam RN-LLA02_GB_IS [tunel a SCNQN01 Gi0/7/1/19.3276]
+ encapsulation dot1Q 3276
+ xconnect 200.63.140.244 3276 encapsulation mpls
+  mtu 9086
+!
+interface TenGigabitEthernet4/1.3319
+ description Trafico Empresas dslam RN-CET03_GB_IS [tunel a SCNQN01 Gi0/7/1/19.3319]
+ encapsulation dot1Q 3319
+ xconnect 200.63.140.244 3319 encapsulation mpls
+  mtu 9086
+!
+interface TenGigabitEthernet4/1.3320
+ description Trafico Empresas dslam RN-HUE03_GB_IS [tunel a SCNQN01 Gi0/7/1/19.3320]
+ encapsulation dot1Q 3320
+ xconnect 200.63.140.244 3320 encapsulation mpls
+  mtu 9086
+!
+interface TenGigabitEthernet4/1.3321
+ description Trafico Empresas dslam RN-LLA02_GB_IS [tunel a SCNQN01 Gi0/7/1/19.3321]
+ encapsulation dot1Q 3321
+ xconnect 200.63.140.244 3321 encapsulation mpls
+  mtu 9086
+!
+interface TenGigabitEthernet4/1.3421
+ description Trafico VOIP dslam RN-CET04_GB_IS [VRF VOIP-IAD]
+ encapsulation dot1Q 3421
+ ip vrf forwarding VOIP-IAD
+ ip unnumbered Loopback1002
+ ip helper-address 172.19.0.19
+ no cdp enable
+ arp timeout 10
+ service-policy input setvoip
+!
+interface TenGigabitEthernet4/1.3425
+ description Trafico VOIP dslam RN-HUE02_GB_IS [VRF VOIP-IAD]
+ encapsulation dot1Q 3425
+ ip vrf forwarding VOIP-IAD
+ ip unnumbered Loopback1002
+ ip helper-address 172.19.0.19
+ no cdp enable
+ arp timeout 10
+ service-policy input setvoip
+!
+interface TenGigabitEthernet4/1.3426
+ description Trafico VOIP dslam RN-HUE03_GB_IS [VRF VOIP-IAD]
+ encapsulation dot1Q 3426
+ ip vrf forwarding VOIP-IAD
+ ip unnumbered Loopback1002
+ ip helper-address 172.19.0.19
+ no cdp enable
+ arp timeout 10
+ service-policy input setvoip
+!
+interface TenGigabitEthernet4/1.3427
+ description Trafico VOIP dslam RN-LLA02_GB_IS [VRF VOIP-IAD]
+ encapsulation dot1Q 3427
+ ip vrf forwarding VOIP-IAD
+ ip unnumbered Loopback1002
+ ip helper-address 172.19.0.19
+ no cdp enable
+ arp timeout 10
+ service-policy input setvoip
+!
+interface TenGigabitEthernet4/1.3520
+ description Trafico VOIP dslam RN-CET02_GB_IS [VRF VOIP-IAD]
+ encapsulation dot1Q 3520
+ ip vrf forwarding VOIP-IAD
+ ip unnumbered Loopback1002
+ ip helper-address 172.19.0.19
+ no cdp enable
+ arp timeout 10
+ service-policy input setvoip
+!
+interface TenGigabitEthernet4/1.3521
+ description Trafico VOIP dslam RN-CET03_GB_IS [VRF VOIP-IAD]
+ encapsulation dot1Q 3521
+ ip vrf forwarding VOIP-IAD
+ ip unnumbered Loopback1002
+ ip helper-address 172.19.0.19
+ no cdp enable
+ arp timeout 10
+ service-policy input setvoip
+!
+interface TenGigabitEthernet4/1.3805
+ description Trafico gestion dslam RN-LLA02_GB_IS [VRF gid1]
+ encapsulation dot1Q 3805
+ ip vrf forwarding gid1
+ ip unnumbered Loopback184
+ no cdp enable
+!
+interface TenGigabitEthernet4/2
+ description Conexion a TX SDH SIEMENS - BCH_25 12/1 -
+ mtu 9216
+ no ip address
+ logging event link-status
+ load-interval 30
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+ hold-queue 4096 in
+!
+interface TenGigabitEthernet4/2.2048
+!
+interface TenGigabitEthernet4/2.2049
+!
+interface TenGigabitEthernet4/2.2399
+ description Trafico internet dslam RN-IJC01-GB_H56 [tunel a SCNQN02 TenGigE0/5/0/0.2399 - Bkp EBRPB04 13/0/1]
+ encapsulation dot1Q 2399
+ xconnect 200.63.140.244 2399 encapsulation mpls
+  backup peer 200.63.137.2 12018 pw-class PSEUDOWIRE-DSLAM
+  backup delay 30 180
+  mtu 9086
+!
+interface TenGigabitEthernet4/2.2410
+ description Trafico internet dslam NQ-VLA02_GB_IS [tunel a SCNQN01 Te 0/5/0/0.2410 -- Bkp EBRPB04 14/0/1]
+ encapsulation dot1Q 2410
+ xconnect 200.63.140.244 2410 encapsulation mpls
+  backup peer 200.63.137.2 9356 pw-class PSEUDOWIRE-DSLAM
+  backup delay 0 180
+  mtu 9086
+!
+interface TenGigabitEthernet4/2.2419
+ description Trafico internet dslam NQ-VLA03_GB_H56 [tunel a SCNQN02 Te 0/5/0/0.2419 -- Bkp EBRPB04 12/0/0]
+ encapsulation dot1Q 2419
+ xconnect 200.63.140.243 2419 encapsulation mpls
+  backup peer 200.63.137.2 9391 pw-class PSEUDOWIRE-DSLAM
+  backup delay 30 180
+  mtu 9086
+!
+interface TenGigabitEthernet4/2.2439
+ description Trafico internet dslam RN-CCT03_GB_IS [tunel a SCNQN01 Te0/5/0/2.2439 - Bkp EBRPB04 14/0/1]
+ encapsulation dot1Q 2439
+ xconnect 200.63.140.244 2439 encapsulation mpls
+  backup peer 200.63.137.2 9450 pw-class PSEUDOWIRE-DSLAM
+  backup delay 30 180
+  mtu 9086
+!
+interface TenGigabitEthernet4/2.2443
+!
+interface TenGigabitEthernet4/2.2776
+ description Trafico internet dslam RN-NHU02_GB_IS [tunel a SCNQN01 Te0/6/0/3.2776 - Bkp EBRPB04 14/0/0]
+ encapsulation dot1Q 2776
+ xconnect 200.63.140.244 2776 encapsulation mpls
+  backup peer 200.63.137.2 9453 pw-class PSEUDOWIRE-DSLAM
+  backup delay 30 180
+  mtu 9086
+!
+interface TenGigabitEthernet4/2.3273
+ description Gestion Modems G.SHDSL dslam NQ-VLA02_GB_IS [tunel a SCNQN01 Gi0/7/1/19.3273]
+ encapsulation dot1Q 3273
+ xconnect 200.63.140.244 3273 encapsulation mpls
+  mtu 9086
+!
+interface TenGigabitEthernet4/2.3315
+ description Trafico Empresas dslam NQ-VLA02_GB_IS [tunel a SCNQN01 Gi0/7/1/19.3315]
+ encapsulation dot1Q 3315
+ xconnect 200.63.140.244 3315 encapsulation mpls
+  mtu 9086
+!
+interface TenGigabitEthernet4/2.3406
+!
+interface TenGigabitEthernet4/2.3407
+!
+interface TenGigabitEthernet4/2.3408
+!
+interface TenGigabitEthernet4/2.3409
+!
+interface TenGigabitEthernet4/2.3428
+ description Trafico VOIP dslam NQ-VLA03_GB_H56 [VRF VOIP-IAD]
+ encapsulation dot1Q 3428
+ ip vrf forwarding VOIP-IAD
+ ip unnumbered Loopback1002
+ ip helper-address 172.19.0.19
+ arp timeout 10
+!
+interface TenGigabitEthernet4/2.3430
+ description Trafico VOIP dslam NQ-VLA02_GB_IS [VRF VOIP-IAD]
+ encapsulation dot1Q 3430
+ ip vrf forwarding VOIP-IAD
+ ip unnumbered Loopback1002
+ ip helper-address 172.19.0.19
+ arp timeout 10
+!
+interface TenGigabitEthernet4/2.3444
+ description Trafico VOIP dslam RN-CCT03_GB_IS [VRF VOIP-IAD]
+ encapsulation dot1Q 3444
+ ip vrf forwarding VOIP-IAD
+ ip unnumbered Loopback1002
+ ip helper-address 172.19.0.19
+ no cdp enable
+ arp timeout 10
+ service-policy input setvoip
+!
+interface TenGigabitEthernet4/2.3447
+ description Trafico VOIP dslam RN-NHU02_GB_IS [VRF VOIP-IAD]
+ encapsulation dot1Q 3447
+ ip vrf forwarding VOIP-IAD
+ ip unnumbered Loopback1002
+ ip helper-address 172.19.0.19
+ no cdp enable
+ arp timeout 10
+ service-policy input setvoip
+!
+interface TenGigabitEthernet4/2.3450
+!
+interface TenGigabitEthernet4/2.3451
+!
+interface TenGigabitEthernet4/2.3580
+ description Trafico VOIP dslam RN-IJC01-GB_H56 [VRF VOIP-IAD]
+ encapsulation dot1Q 3580
+ ip vrf forwarding VOIP-IAD
+ ip unnumbered Loopback1002
+ ip helper-address 172.19.0.19
+ no cdp enable
+ arp timeout 10
+ service-policy input setvoip
+!
+interface TenGigabitEthernet4/2.3802
+!
+interface TenGigabitEthernet4/2.3803
+!
+interface TenGigabitEthernet4/2.3809
+ description Trafico gestion dslam NQ-VLA02_GB_IS [VRF gid1]
+ encapsulation dot1Q 3809
+ ip vrf forwarding gid1
+ ip unnumbered Loopback184
+ no cdp enable
+!
+interface TenGigabitEthernet4/2.3864
+ description Trafico gestion dslam RN-CCT03_GB_IS [VRF gid1]
+ encapsulation dot1Q 3864
+ ip vrf forwarding gid1
+ ip unnumbered Loopback184
+ no cdp enable
+!
+interface TenGigabitEthernet4/2.3866
+ description Trafico gestion dslam RN-NHU02_GB_IS [VRF gid1]
+ encapsulation dot1Q 3866
+ ip vrf forwarding gid1
+ ip unnumbered Loopback184
+ no cdp enable
+!
+interface TenGigabitEthernet4/3
+ description Conexion a SCNQN02 Te0/5/0/2 - Id. Red: 1683644
+ mtu 9216
+ ip address 200.63.140.150 255.255.255.254
+ ip mtu 9202
+ ip pim query-interval 1
+ ip pim sparse-mode
+ ip ospf network point-to-point
+ ip ospf cost 10
+ logging event link-status
+ load-interval 30
+ wrr-queue bandwidth 0 0 13 20 20 15 2 
+ priority-queue queue-limit 35 
+ wrr-queue queue-limit 0 0 10 18 18 13 2 
+ wrr-queue threshold 3 100 1 1 1 1 1 1 1 
+ wrr-queue threshold 4 100 1 1 1 1 1 1 1 
+ wrr-queue threshold 5 100 1 1 1 1 1 1 1 
+ wrr-queue random-detect min-threshold 3 40 1 1 1 1 1 1 1 
+ wrr-queue random-detect min-threshold 4 60 1 1 1 1 1 1 1 
+ wrr-queue random-detect min-threshold 5 70 80 1 1 1 1 1 1 
+ wrr-queue random-detect max-threshold 3 70 1 1 1 1 1 1 1 
+ wrr-queue random-detect max-threshold 4 80 1 1 1 1 1 1 1 
+ wrr-queue random-detect max-threshold 5 80 90 1 1 1 1 1 1 
+ wrr-queue random-detect 4 
+ wrr-queue random-detect 5 
+ wrr-queue cos-map 3 1 0 
+ wrr-queue cos-map 4 1 1 
+ wrr-queue cos-map 5 1 2 
+ wrr-queue cos-map 5 2 3 
+ wrr-queue cos-map 6 1 4 
+ wrr-queue cos-map 7 1 6 7 
+ mpls ip
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ hold-queue 4096 in
+!
+interface TenGigabitEthernet4/4
+ description Conexion a SCNQN01 Te0/7/0/2 - Id. Red: 152012
+ mtu 9216
+ ip address 200.63.140.176 255.255.255.254
+ ip mtu 9202
+ ip pim query-interval 1
+ ip pim sparse-mode
+ ip ospf network point-to-point
+ ip ospf cost 10
+ logging event link-status
+ load-interval 30
+ wrr-queue bandwidth 0 0 13 20 20 15 2 
+ priority-queue queue-limit 35 
+ wrr-queue queue-limit 0 0 10 18 18 13 2 
+ wrr-queue threshold 3 100 1 1 1 1 1 1 1 
+ wrr-queue threshold 4 100 1 1 1 1 1 1 1 
+ wrr-queue threshold 5 100 1 1 1 1 1 1 1 
+ wrr-queue random-detect min-threshold 3 40 1 1 1 1 1 1 1 
+ wrr-queue random-detect min-threshold 4 60 1 1 1 1 1 1 1 
+ wrr-queue random-detect min-threshold 5 70 80 1 1 1 1 1 1 
+ wrr-queue random-detect max-threshold 3 70 1 1 1 1 1 1 1 
+ wrr-queue random-detect max-threshold 4 80 1 1 1 1 1 1 1 
+ wrr-queue random-detect max-threshold 5 80 90 1 1 1 1 1 1 
+ wrr-queue random-detect 4 
+ wrr-queue random-detect 5 
+ wrr-queue cos-map 3 1 0 
+ wrr-queue cos-map 4 1 1 
+ wrr-queue cos-map 5 1 2 
+ wrr-queue cos-map 5 2 3 
+ wrr-queue cos-map 6 1 4 
+ wrr-queue cos-map 7 1 6 7 
+ mpls ip
+ storm-control broadcast level 10.00
+ storm-control multicast level 10.00
+ hold-queue 4096 in
+!
+interface GigabitEthernet5/1
+ no ip address
+ logging event link-status
+ shutdown
+!
+interface GigabitEthernet5/2
+ description Conexion a Eth router EER Bariloche
+ ip address 172.28.158.60 255.255.255.192
+ logging event link-status
+ media-type rj45
+ speed 10
+ no cdp enable
+!
+interface GigabitEthernet6/1
+ no ip address
+ logging event link-status
+!
+interface GigabitEthernet6/2
+ description Conexion a Eth router EER Bariloche
+ ip address 172.28.158.105 255.255.255.192
+ logging event link-status
+ media-type rj45
+ speed 10
+!
+interface GigabitEthernet7/1
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet7/2
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet7/3
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet7/4
+ description Conexion a Dslam RN-BRC13_GB_IS 
+ mtu 9216
+ no ip address
+ logging event link-status
+ load-interval 30
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet7/4.2413
+ description Trafico internet dslam RN-BRC13_GB_IS [tunel a SCNQN01 Gi0/6/1/6.2413 - Bkp EBRPB04 13/0/0]
+ encapsulation dot1Q 2413
+ xconnect 200.63.140.244 2413 encapsulation mpls
+  backup peer 200.63.137.2 9361 pw-class PSEUDOWIRE-DSLAM
+  backup delay 30 180
+  mtu 9086
+!
+interface GigabitEthernet7/4.3519
+ description Trafico VOIP dslam RN-BRC13_GB_IS [VRF VOIP-IAD]
+ encapsulation dot1Q 3519
+ ip vrf forwarding VOIP-IAD
+ ip unnumbered Loopback1002
+ ip helper-address 172.19.0.19
+ no cdp enable
+ arp timeout 10
+ service-policy input setvoip
+!
+interface GigabitEthernet7/5
+ description Conexion a FRONTERA-DATA (CORE-BAR01 Giga 0/3)
+ switchport
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 147,228,384,734,764,983
+ switchport mode trunk
+ mtu 9216
+ logging event link-status
+ load-interval 30
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+ spanning-tree bpdufilter enable
+!
+interface GigabitEthernet7/6
+ no ip address
+!
+interface GigabitEthernet7/7
+ description Conexion a Dslam RN-BRC12_GB_IS 
+ mtu 9216
+ no ip address
+ logging event link-status
+ load-interval 30
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet7/7.2412
+ description Trafico internet dslam RN-BRC12_GB_IS [tunel a SCNQN01 Te0/5/0/1.2412 -- Bkp EBRPB04 15/0/0]
+ encapsulation dot1Q 2412
+ xconnect 200.63.140.244 2412 encapsulation mpls
+  backup peer 200.63.137.2 9333 pw-class PSEUDOWIRE-DSLAM
+  backup delay 0 180
+  mtu 9086
+!
+interface GigabitEthernet7/7.3518
+ description Trafico VOIP dslam RN-BRC12_GB_IS [VRF VOIP-IAD]
+ encapsulation dot1Q 3518
+ ip vrf forwarding VOIP-IAD
+ ip unnumbered Loopback1002
+ ip helper-address 172.19.0.19
+ no cdp enable
+ arp timeout 10
+ service-policy input setvoip
+!
+interface GigabitEthernet7/8
+ mtu 9216
+ no ip address
+ logging event link-status
+ load-interval 30
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet7/9
+ description Conexion a Dslam RN-BRC10_GB_IS y RN-BRC11_GB_IS 
+ mtu 9216
+ no ip address
+ logging event link-status
+ load-interval 30
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet7/9.2408
+ description Trafico internet dslam RN-BRC10_GB_IS [tunel a SCNQN01 TenGigE0/5/0/0.2408 - Bkp EBRPB04 14/0/0]
+ encapsulation dot1Q 2408
+ xconnect 200.63.140.244 2408 encapsulation mpls
+  backup peer 200.63.137.2 9331 pw-class PSEUDOWIRE-DSLAM
+  backup delay 30 180
+  mtu 9086
+!
+interface GigabitEthernet7/9.2409
+ description Trafico internet dslam RN-BRC11_GB_IS  [tunel a SCNQN01 Te0/5/0/1.2409 -- Bkp EBRPB04 14/0/1]
+ encapsulation dot1Q 2409
+ xconnect 200.63.140.244 2409 encapsulation mpls
+  backup peer 200.63.137.2 9332 pw-class PSEUDOWIRE-DSLAM
+  backup delay 0 180
+  mtu 9086
+!
+interface GigabitEthernet7/9.3516
+ description Trafico VOIP dslam RN-BRC10_GB_IS [VRF VOIP-IAD]
+ encapsulation dot1Q 3516
+ ip vrf forwarding VOIP-IAD
+ ip unnumbered Loopback1002
+ ip helper-address 172.19.0.19
+ arp timeout 10
+!
+interface GigabitEthernet7/9.3517
+ description Trafico VOIP dslam RN-BRC11_GB_IS  [VRF VOIP-IAD]
+ encapsulation dot1Q 3517
+ ip vrf forwarding VOIP-IAD
+ ip unnumbered Loopback1002
+ ip helper-address 172.19.0.19
+ no cdp enable
+ arp timeout 10
+ service-policy input setvoip
+!
+interface GigabitEthernet7/10
+ no ip address
+ logging event link-status
+ load-interval 30
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet7/11
+ no ip address
+ logging event link-status
+ load-interval 30
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet7/11.2402
+ no cdp enable
+!
+interface GigabitEthernet7/11.3276
+ no cdp enable
+!
+interface GigabitEthernet7/11.3321
+ no cdp enable
+!
+interface GigabitEthernet7/11.3427
+!
+interface GigabitEthernet7/12
+ no ip address
+ shutdown
+!
+interface GigabitEthernet7/13
+ no ip address
+!
+interface GigabitEthernet7/14
+ description Conexion a Dslam RN-BRC08_GB_HW y RN-BRC09_GB_HW
+ mtu 9216
+ no ip address
+ logging event link-status
+ load-interval 30
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet7/14.2406
+ description Trafico internet dslam RN-BRC08_GB_HW [tunel a SCNQN02 Te0/5/0/7.2406 - Bkp EBRPB04 13/0/0]
+ encapsulation dot1Q 2406
+ xconnect 200.63.140.243 2406 encapsulation mpls
+  backup peer 200.63.137.2 9329 pw-class PSEUDOWIRE-DSLAM
+  backup delay 30 180
+  mtu 9086
+!
+interface GigabitEthernet7/14.2407
+ description Trafico internet dslam RN-BRC09_GB_HW [tunel a SCNQN02 Te 0/5/0/1.2407 - Bkp EBRPB04 13/0/1]
+ encapsulation dot1Q 2407
+ xconnect 200.63.140.244 2407 encapsulation mpls
+  backup peer 200.63.137.2 9330 pw-class PSEUDOWIRE-DSLAM
+  backup delay 30 180
+  mtu 9086
+!
+interface GigabitEthernet7/14.3414
+ description Trafico VOIP dslam RN-BRC08_GB_HW [VRF VOIP-IAD]
+ encapsulation dot1Q 3414
+ ip vrf forwarding VOIP-IAD
+ ip unnumbered Loopback1002
+ ip helper-address 172.19.0.19
+ no cdp enable
+ arp timeout 10
+!
+interface GigabitEthernet7/14.3415
+ description Trafico VOIP dslam RN-BRC09_GB_HW [VRF VOIP-IAD]
+ encapsulation dot1Q 3415
+ ip vrf forwarding VOIP-IAD
+ ip unnumbered Loopback1002
+ ip helper-address 172.19.0.19
+ arp timeout 10
+!
+interface GigabitEthernet7/15
+ description Conexion a Dslam RN-BRC06_GB_HW y RN-BRC07_GB_HW
+ mtu 9216
+ no ip address
+ logging event link-status
+ load-interval 30
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet7/15.2404
+ description Trafico internet dslam RN-BRC06_GB_HW [tunel a SCNQN02 Te0/5/0/1.2404 - Bkp EBRPB04 12/0/0]
+ encapsulation dot1Q 2404
+ xconnect 200.63.140.243 2404 encapsulation mpls
+  backup peer 200.63.137.2 9327 pw-class PSEUDOWIRE-DSLAM
+  backup delay 30 180
+  mtu 9086
+!
+interface GigabitEthernet7/15.2405
+ description Trafico internet dslam RN-BRC07_GB_HW [tunel a SCNQN02 Te0/7/0/3.2405 - Bkp EBRPB04 12/0/1]
+ encapsulation dot1Q 2405
+ xconnect 200.63.140.243 2405 encapsulation mpls
+  backup peer 200.63.137.2 9328 pw-class PSEUDOWIRE-DSLAM
+  backup delay 30 180
+  mtu 9086
+!
+interface GigabitEthernet7/15.3413
+ description Trafico VOIP dslam RN-BRC07_GB_HW [VRF VOIP-IAD]
+ encapsulation dot1Q 3413
+ ip vrf forwarding VOIP-IAD
+ ip unnumbered Loopback1002
+ ip helper-address 172.19.0.19
+ no cdp enable
+ arp timeout 10
+!
+interface GigabitEthernet7/15.3512
+ description Trafico VOIP dslam RN-BRC06_GB_HW [VRF VOIP-IAD]
+ encapsulation dot1Q 3512
+ ip vrf forwarding VOIP-IAD
+ ip unnumbered Loopback1002
+ ip helper-address 172.19.0.19
+ no cdp enable
+ arp timeout 10
+!
+interface GigabitEthernet7/16
+ description Conexion a Dslam RN-BRC04_GB_IS y RN-BRC05_GB_IS
+ mtu 9216
+ no ip address
+ logging event link-status
+ load-interval 30
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet7/16.2301
+ description Trafico internet dslam RN-BRC04_GB_IS [tunel a SCNQN02 Te0/5/0/0.2301 -- Bkp EBRPB04 15/0/0]
+ encapsulation dot1Q 2301
+ xconnect 200.63.140.243 2301 encapsulation mpls
+  backup peer 200.63.137.2 9325 pw-class PSEUDOWIRE-DSLAM
+  backup delay 0 180
+  mtu 9086
+!
+interface GigabitEthernet7/16.2403
+ description Trafico internet dslam RN-BRC05_GB_IS [tunel a SCNQN02 Te0/6/0/3.2403 -- Bkp EBRPB04 15/0/0]
+ encapsulation dot1Q 2403
+ xconnect 200.63.140.243 2403 encapsulation mpls
+  backup peer 200.63.137.2 9326 pw-class PSEUDOWIRE-DSLAM
+  backup delay 0 180
+  mtu 9086
+!
+interface GigabitEthernet7/16.3411
+ description Trafico VOIP dslam RN-BRC05_GB_IS [VRF VOIP-IAD]
+ encapsulation dot1Q 3411
+ ip vrf forwarding VOIP-IAD
+ ip unnumbered Loopback1002
+ ip helper-address 172.19.0.19
+ arp timeout 10
+!
+interface GigabitEthernet7/16.3510
+ description Trafico VOIP dslam RN-BRC04_GB_IS [VRF VOIP-IAD]
+ encapsulation dot1Q 3510
+ ip vrf forwarding VOIP-IAD
+ ip unnumbered Loopback1002
+ ip helper-address 172.19.0.19
+ no cdp enable
+ arp timeout 10
+!
+interface GigabitEthernet8/1
+ description Conexion al CENQN01 7/2 para MOVISTAR (TRONCALES DEDICADOS PARA EL SERVICIO VoIP MVS)
+ switchport
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 403
+ switchport mode trunk
+ mtu 9216
+ logging event link-status
+ logging event trunk-status
+ load-interval 30
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+!
+interface GigabitEthernet8/2
+ description Conexion con Coop. EL BOLSON * 2 * x SDH DWDM_199290_234274_ IPTRANSIT
+ no ip address
+ logging event link-status
+ load-interval 30
+ channel-group 250 mode active
+!
+interface GigabitEthernet8/3
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet8/4
+ description Conexion a FRONTERA SIEMENS 7025 BCH_27 1/3  - Transporte MOVISTAR x Jumper
+ switchport
+ switchport access vlan 816
+ switchport mode dot1q-tunnel
+ mtu 9216
+ logging event link-status
+ load-interval 30
+ speed nonegotiate
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+ spanning-tree bpdufilter enable
+ spanning-tree bpduguard enable
+ spanning-tree guard root
+!
+interface GigabitEthernet8/5
+ description Conexion con COOPERATIVA EPUYEN_201292_256884_ ** IP-Transit **
+ vrf forwarding NAC
+ bandwidth 130000
+ ip address 200.63.156.153 255.255.255.252
+ logging event link-status
+ load-interval 30
+ no cdp enable
+ service-policy input EPUYEN-IN
+ service-policy output EPUYEN-OUT
+!
+interface GigabitEthernet8/6
+ description Conexion con WIRELESS NET x SDH_15913640_410315_ ** IP-Transit **
+ vrf forwarding NAC
+ bandwidth 500000
+ ip address 200.51.216.193 255.255.255.252
+ logging event link-status
+ load-interval 30
+ speed nonegotiate
+ ipv6 address 2800:380:F0:3C::A/127
+ flowcontrol receive on
+ flowcontrol send on
+ no cdp enable
+!
+interface GigabitEthernet8/7
+ no ip address
+ logging event link-status
+ load-interval 30
+ shutdown
+ speed nonegotiate
+ no cdp enable
+!
+interface GigabitEthernet8/8
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet8/9
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet8/10
+ no ip address
+ shutdown
+!
+interface GigabitEthernet8/11
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet8/12
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet8/13
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet8/14
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet8/15
+ description Conexion a Dslam RN-ALQ07_GB_H56 
+ mtu 9216
+ no ip address
+ logging event link-status
+ load-interval 30
+ storm-control broadcast level 10.00
+ storm-control multicast level 10.00
+ no cdp enable
+!
+interface GigabitEthernet8/15.2457
+ description Trafico internet dslam RN-ALQ07_GB_H56 [tunel a SCNQN02 Te0/7/0/3.2457 - Bkp EBRPB04 13/0/0]
+ encapsulation dot1Q 2457
+ xconnect 200.63.140.243 2457 encapsulation mpls
+  backup peer 200.63.137.2 12028 pw-class PSEUDOWIRE-DSLAM
+  backup delay 30 180
+  mtu 9086
+!
+interface GigabitEthernet8/15.3404
+ description Conexion de trafico NGN a RN-ALQ07-GV
+ encapsulation dot1Q 3404
+ ip vrf forwarding NGN
+ ip address 172.18.248.166 255.255.255.252
+!
+interface GigabitEthernet8/15.3405
+ description Conexion de senalizacion NGN a RN-ALQ07-GV
+ encapsulation dot1Q 3405
+ ip vrf forwarding NGN
+ ip address 172.18.248.162 255.255.255.252
+!
+interface GigabitEthernet8/15.3445
+ description Trafico VOIP dslam RN-ALQ07_GB_H56 [VRF VOIP-IAD]
+ encapsulation dot1Q 3445
+ ip vrf forwarding VOIP-IAD
+ ip unnumbered Loopback1002
+ ip helper-address 172.19.0.19
+ no cdp enable
+ arp timeout 10
+ service-policy input setvoip
+!
+interface GigabitEthernet8/15.3806
+ description Gestion POTS NQ-ALQ07-GV
+ encapsulation dot1Q 3806
+ ip address 172.29.201.109 255.255.255.252
+!
+interface GigabitEthernet8/15.3807
+ description Trafico gestion dslam RN-ALQ07_GB_H56 [VRF gid1]
+ encapsulation dot1Q 3807
+ ip vrf forwarding gid1
+ ip unnumbered Loopback184
+ no cdp enable
+!
+interface GigabitEthernet8/16
+ description prueba de conectividad DSLAM NQ-CBN01-GV y NQ-CMP01-GV (originalmente al puerto 4/2)
+ mtu 9216
+ no ip address
+ logging event link-status
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet8/16.2048
+ description Trafico internet dslam NQ-CMP01-GV [tunel a SCNQN01 Te 0/5/0/1.2048 - Bkp EBRPB04 14/0/0]
+ encapsulation dot1Q 2048
+ xconnect 200.63.140.244 2048 encapsulation mpls
+  backup peer 200.63.137.2 12009 pw-class PSEUDOWIRE-DSLAM
+  backup delay 30 180
+  mtu 9086
+!
+interface GigabitEthernet8/16.2049
+ description Trafico internet dslam NQ-CBN01-GV [tunel a SCNQN02 TenGigE0/5/0/1.2049 - Bkp EBRPB04 15/0/1]
+ encapsulation dot1Q 2049
+ xconnect 200.63.140.243 2049 encapsulation mpls
+  backup peer 200.63.137.2 9411 pw-class PSEUDOWIRE-DSLAM
+  backup delay 30 180
+  mtu 9086
+!
+interface GigabitEthernet8/16.3406
+ description Conexion de trafico NGN a NQ-CMP01-GV
+ encapsulation dot1Q 3406
+ ip vrf forwarding NGN
+ ip address 172.18.62.46 255.255.255.252
+!
+interface GigabitEthernet8/16.3407
+ description Conexion de senalizacion NGN a NQ-CMP01-GV
+ encapsulation dot1Q 3407
+ ip vrf forwarding NGN
+ ip address 172.18.62.42 255.255.255.252
+!
+interface GigabitEthernet8/16.3408
+ description Conexion de trafico NGN a NQ-CBN01-GV
+ encapsulation dot1Q 3408
+ ip vrf forwarding NGN
+ ip address 172.18.62.38 255.255.255.252
+!
+interface GigabitEthernet8/16.3409
+ description Conexion de senalizacion NGN a NQ-CBN01-GV
+ encapsulation dot1Q 3409
+ ip vrf forwarding NGN
+ ip address 172.18.62.34 255.255.255.252
+!
+interface GigabitEthernet8/16.3450
+ description Trafico VOIP dslam NQ-CBN01-GV [VRF VOIP-IAD]
+ encapsulation dot1Q 3450
+ ip vrf forwarding VOIP-IAD
+ ip unnumbered Loopback1002
+ ip helper-address 172.19.0.19
+ no cdp enable
+ arp timeout 10
+ service-policy input setvoip
+!
+interface GigabitEthernet8/16.3451
+ description Trafico VOIP dslam NQ-CMP01-GV [VRF VOIP-IAD]
+ encapsulation dot1Q 3451
+ ip vrf forwarding VOIP-IAD
+ ip unnumbered Loopback1002
+ ip helper-address 172.19.0.19
+ no cdp enable
+ arp timeout 10
+ service-policy input setvoip
+!
+interface GigabitEthernet8/16.3802
+ description Trafico gestion dslam NQ-CBN01-GV [VRF gid1]
+ encapsulation dot1Q 3802
+ ip vrf forwarding gid1
+ ip unnumbered Loopback184
+ no cdp enable
+!
+interface GigabitEthernet8/16.3803
+ description Trafico gestion dslam NQ-CMP01-GV [VRF gid1]
+ encapsulation dot1Q 3803
+ ip vrf forwarding gid1
+ ip unnumbered Loopback184
+ no cdp enable
+!
+interface GigabitEthernet8/17
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet8/18
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet8/19
+ no ip address
+ logging event link-status
+ shutdown
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet8/20
+ description Conexion a Dslam RN-DHP01_GB_IS 
+ mtu 9216
+ no ip address
+ logging event link-status
+ load-interval 30
+ speed nonegotiate
+ storm-control broadcast level 10.00
+ storm-control multicast level 10.00
+ no cdp enable
+!
+interface GigabitEthernet8/20.2424
+ description Trafico internet dslam RN-DHP01_GB_IS [tunel a SCNQN01 Te0/5/0/0.2424 - Bkp EBRPB04 15/0/0]
+ encapsulation dot1Q 2424
+ xconnect 200.63.140.244 2424 encapsulation mpls
+  backup peer 200.63.137.2 9413 pw-class PSEUDOWIRE-DSLAM
+  backup delay 30 180
+  mtu 9086
+!
+interface GigabitEthernet8/20.3262
+ description Gestion Modems G.SHDSL dslam RN-DHP01_GB_IS [tunel a SCNQN01 Gi0/7/1/19.3262]
+ encapsulation dot1Q 3262
+ xconnect 200.63.140.244 3262 encapsulation mpls
+  mtu 9086
+!
+interface GigabitEthernet8/20.3327
+ description Trafico Empresas dslam RN-DHP01_GB_IS [tunel a SCNQN01 Gi0/7/1/19.3327]
+ encapsulation dot1Q 3327
+ xconnect 200.63.140.244 3327 encapsulation mpls
+  mtu 9086
+!
+interface GigabitEthernet8/20.3436
+ description Trafico VOIP dslam RN-DHP01_GB_IS [VRF VOIP-IAD]
+ encapsulation dot1Q 3436
+ ip vrf forwarding VOIP-IAD
+ ip unnumbered Loopback1002
+ ip helper-address 172.19.0.19
+ no cdp enable
+ arp timeout 10
+ service-policy input setvoip
+!
+interface GigabitEthernet8/20.3838
+ description Trafico gestion dslam RN-DHP01_GB_IS [VRF gid1]
+ encapsulation dot1Q 3838
+ ip vrf forwarding gid1
+ ip unnumbered Loopback184
+ no cdp enable
+!
+interface GigabitEthernet8/21
+ description Conexion a Dslam RN-BRC24_GB_IS 
+ mtu 9216
+ no ip address
+ logging event link-status
+ load-interval 30
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet8/21.2295
+ description Trafico internet dslam RN-BRC24_GB_IS [tunel a SCNQN02 Te 0/5/0/0.2295 - Bkp EBRPB04 12/0/1]
+ encapsulation dot1Q 2295
+ xconnect 200.63.140.243 2295 encapsulation mpls
+  backup peer 200.63.137.2 12004 pw-class PSEUDOWIRE-DSLAM
+  backup delay 30 180
+  mtu 9086
+!
+interface GigabitEthernet8/21.3429
+ description Trafico VOIP dslam RN-BRC24_GB_IS [VRF VOIP-IAD]
+ encapsulation dot1Q 3429
+ ip vrf forwarding VOIP-IAD
+ ip unnumbered Loopback1002
+ ip helper-address 172.19.0.19
+ no cdp enable
+ arp timeout 10
+ service-policy input setvoip
+!
+interface GigabitEthernet8/22
+ description Conexion a Dslam RN-BRC23_GB_IS 
+ mtu 9216
+ no ip address
+ logging event link-status
+ load-interval 30
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet8/22.2297
+ description Trafico internet dslam RN-BRC23_GB_IS [tunel a SCNQN01 TenGigE0/5/0/0.2297 - Bkp EBRPB04 12/0/1]
+ encapsulation dot1Q 2297
+ xconnect 200.63.140.244 2297 encapsulation mpls
+  backup peer 200.63.137.2 9471 pw-class PSEUDOWIRE-DSLAM
+  backup delay 30 180
+  mtu 9086
+!
+interface GigabitEthernet8/22.3277
+ description Gestion Modems G.SHDSL dslam RN-BRC23_GB_IS [tunel a SCNQN01 Gi0/7/1/19.3277]
+ encapsulation dot1Q 3277
+ xconnect 200.63.140.244 3277 encapsulation mpls
+  mtu 9086
+!
+interface GigabitEthernet8/22.3337
+ description Trafico Empresas dslam RN-BRC23_GB_IS [tunel a SCNQN01 Gi0/7/1/19.3337]
+ encapsulation dot1Q 3337
+ xconnect 200.63.140.244 3337 encapsulation mpls
+  mtu 9086
+!
+interface GigabitEthernet8/22.3420
+ description Trafico VOIP dslam RN-BRC23_GB_IS [VRF VOIP-IAD]
+ encapsulation dot1Q 3420
+ ip vrf forwarding VOIP-IAD
+ ip unnumbered Loopback1002
+ ip helper-address 172.19.0.19
+ no cdp enable
+ arp timeout 10
+ service-policy input setvoip
+!
+interface GigabitEthernet8/23
+ description Conexion a Dslam RN-BRC22_GB_IS 
+ mtu 9216
+ no ip address
+ logging event link-status
+ load-interval 30
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet8/23.2780
+ description Trafico internet dslam RN-BRC22_GB_IS [tunel a SCNQN02 Te0/5/0/7.2780 - Bkp EBRPB04 12/0/1]
+ encapsulation dot1Q 2780
+ xconnect 200.63.140.243 2780 encapsulation mpls
+  backup peer 200.63.137.2 9464 pw-class PSEUDOWIRE-DSLAM
+  backup delay 30 180
+  mtu 9086
+!
+interface GigabitEthernet8/23.3448
+ description Trafico VOIP dslam RN-BRC22_GB_IS [VRF VOIP-IAD]
+ encapsulation dot1Q 3448
+ ip vrf forwarding VOIP-IAD
+ ip unnumbered Loopback1002
+ ip helper-address 172.19.0.19
+ no cdp enable
+ arp timeout 10
+ service-policy input setvoip
+!
+interface GigabitEthernet8/24
+ description Conexion a Dslam RN-BRC21_GB_IS 
+ mtu 9216
+ no ip address
+ logging event link-status
+ load-interval 30
+ storm-control broadcast level 5.00
+ storm-control multicast level 5.00
+ no cdp enable
+!
+interface GigabitEthernet8/24.2434
+ description Trafico internet dslam RN-BRC21_GB_IS [tunel a SCNQN01 TenGigE0/5/0/0.2434 - Bkp EBRPB04 15/0/1]
+ encapsulation dot1Q 2434
+ xconnect 200.63.140.244 2434 encapsulation mpls
+  backup peer 200.63.137.2 9438 pw-class PSEUDOWIRE-DSLAM
+  backup delay 30 180
+  mtu 9086
+!
+interface GigabitEthernet8/24.3442
+ description Trafico VOIP dslam RN-BRC21_GB_IS [VRF VOIP-IAD]
+ encapsulation dot1Q 3442
+ ip vrf forwarding VOIP-IAD
+ ip unnumbered Loopback1002
+ ip helper-address 172.19.0.19
+ no cdp enable
+ arp timeout 10
+ service-policy input setvoip
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router ospf 50 vrf NAC
+ log-adjacency-changes
+ redistribute bgp 22927 subnets route-map ONLY-DEFAULT
+ network 200.63.152.240 0.0.0.3 area 0
+ default-information originate
+ distribute-list ONLY-DEFAULT out
+ distribute-list COOP-EL-BOLSON in
+!
+router ospf 100
+ router-id 200.63.140.251
+ log-adjacency-changes
+ passive-interface Loopback1
+ network 200.63.140.128 0.0.0.127 area 13
+!
+router ospf 80 vrf NAC
+ log-adjacency-changes
+ redistribute bgp 22927 subnets route-map ONLY-DEFAULT
+ network 200.63.156.152 0.0.0.3 area 0
+ default-information originate
+ distribute-list ONLY-DEFAULT out
+ distribute-list COOP-EPUYEN in
+!
+router bgp 22927
+ no bgp default ipv4-unicast
+ bgp log-neighbor-changes
+ neighbor 200.51.240.1 remote-as 22927
+ neighbor 200.51.240.1 description RRBRR02
+ neighbor 200.51.240.1 update-source Loopback1
+ neighbor 200.51.240.2 remote-as 22927
+ neighbor 200.51.240.2 description RRCUY02
+ neighbor 200.51.240.2 update-source Loopback1
+ neighbor 200.51.240.9 remote-as 22927
+ neighbor 200.51.240.9 description RRCUY03
+ neighbor 200.51.240.9 update-source Loopback1
+ neighbor 200.51.240.39 remote-as 22927
+ neighbor 200.51.240.39 description RRBRR03
+ neighbor 200.51.240.39 update-source Loopback1
+ !
+ address-family ipv4
+  no synchronization
+  default-metric 40000
+  no auto-summary
+ exit-address-family
+ !
+ address-family vpnv4
+  neighbor 200.51.240.1 activate
+  neighbor 200.51.240.1 send-community extended
+  neighbor 200.51.240.1 next-hop-self
+  neighbor 200.51.240.2 activate
+  neighbor 200.51.240.2 send-community extended
+  neighbor 200.51.240.2 next-hop-self
+  neighbor 200.51.240.9 activate
+  neighbor 200.51.240.9 send-community extended
+  neighbor 200.51.240.9 next-hop-self
+  neighbor 200.51.240.39 activate
+  neighbor 200.51.240.39 send-community extended
+  neighbor 200.51.240.39 next-hop-self
+ exit-address-family
+ !
+ address-family vpnv6
+  neighbor 200.51.240.1 activate
+  neighbor 200.51.240.1 send-community both
+  neighbor 200.51.240.1 next-hop-self
+  neighbor 200.51.240.2 activate
+  neighbor 200.51.240.2 send-community both
+  neighbor 200.51.240.2 next-hop-self
+  neighbor 200.51.240.9 activate
+  neighbor 200.51.240.9 send-community both
+  neighbor 200.51.240.9 next-hop-self
+  neighbor 200.51.240.39 activate
+  neighbor 200.51.240.39 send-community both
+  neighbor 200.51.240.39 next-hop-self
+ exit-address-family
+ !
+ address-family ipv4 vrf NAC
+  no synchronization
+  redistribute static route-map REDIS-STATIC
+  redistribute ospf 50 vrf NAC match internal external 1 external 2 route-map REDIS-OSPF-TO-BGP
+  redistribute ospf 80 vrf NAC metric 500 match internal external 1 external 2 route-map REDIS-OSPF-BGP-COOP-EPUYEN
+  neighbor 179.40.34.18 remote-as 65100
+  neighbor 179.40.34.18 description DIVILINK-SAN-MARTIN
+  neighbor 179.40.34.18 ebgp-multihop 2
+  neighbor 179.40.34.18 update-source GigabitEthernet2/46
+  neighbor 179.40.34.18 activate
+  neighbor 179.40.34.18 next-hop-self
+  neighbor 179.40.34.18 soft-reconfiguration inbound
+  neighbor 179.40.34.18 prefix-list COOP-SAN-MARTIN out
+  neighbor 200.51.216.194 remote-as 23456
+  neighbor 200.51.216.194 description WIRELESSNET
+  neighbor 200.51.216.194 activate
+  neighbor 200.51.216.194 next-hop-self
+  neighbor 200.51.216.194 soft-reconfiguration inbound
+  neighbor 200.51.216.194 prefix-list BARRA-24 in
+  neighbor 200.51.216.194 prefix-list BARRA-24+def out
+  neighbor 200.51.216.194 maximum-prefix 60 80 restart 5
+  neighbor 200.51.216.194 filter-list 25 in
+  neighbor 200.51.216.222 remote-as 27818
+  neighbor 200.51.216.222 description COOP-SMD-ANDES
+  neighbor 200.51.216.222 activate
+  neighbor 200.51.216.222 next-hop-self
+  neighbor 200.51.216.222 weight 50000
+  neighbor 200.51.216.222 soft-reconfiguration inbound
+  neighbor 200.51.216.222 distribute-list ONLY-DEFAULT out
+  neighbor 200.51.216.222 maximum-prefix 50 80 restart 5
+  neighbor 200.63.144.246 remote-as 27818
+  neighbor 200.63.144.246 description COOP-SMD-ANDES-3
+  neighbor 200.63.144.246 activate
+  neighbor 200.63.144.246 next-hop-self
+  neighbor 200.63.144.246 weight 50000
+  neighbor 200.63.144.246 soft-reconfiguration inbound
+  neighbor 200.63.144.246 distribute-list ONLY-DEFAULT out
+  neighbor 200.63.144.246 maximum-prefix 50 80 restart 5
+  neighbor 200.63.152.18 remote-as 23456
+  neighbor 200.63.152.18 description CIUDAD-GLOBA-JUNIN-DE-LOS-ANDES
+  neighbor 200.63.152.18 activate
+  neighbor 200.63.152.18 next-hop-self
+  neighbor 200.63.152.18 weight 50000
+  neighbor 200.63.152.18 soft-reconfiguration inbound
+  neighbor 200.63.152.18 prefix-list BARRA-24 in
+  neighbor 200.63.152.18 distribute-list ONLY-DEFAULT out
+  neighbor 200.63.152.18 filter-list 15 in
+  neighbor 200.63.154.110 remote-as 22080
+  neighbor 200.63.154.110 description BROADBANTECH - ESQUEL
+  neighbor 200.63.154.110 activate
+  neighbor 200.63.154.110 next-hop-self
+  neighbor 200.63.154.110 soft-reconfiguration inbound
+  neighbor 200.63.154.110 prefix-list BARRA-24 in
+  neighbor 200.63.154.110 distribute-list ONLY-DEFAULT out
+  neighbor 200.63.154.110 maximum-prefix 60 80 restart 5
+  neighbor 200.63.154.110 filter-list 10 in
+  maximum-paths ibgp 8 import 4
+ exit-address-family
+ !
+ address-family ipv6 vrf NAC
+  no synchronization
+  maximum-paths ibgp 4
+  neighbor 2800:380:F0:3C::B remote-as 23456
+  neighbor 2800:380:F0:3C::B description WIRELESSNET
+  neighbor 2800:380:F0:3C::B activate
+  neighbor 2800:380:F0:3C::B next-hop-self
+  neighbor 2800:380:F0:3C::B soft-reconfiguration inbound
+  neighbor 2800:380:F0:3C::B prefix-list 25 in
+  neighbor 2800:380:F0:3C::B prefix-list BARRA-64+def out
+  neighbor 2800:380:F0:3C::B maximum-prefix 250 30 restart 5
+ exit-address-family
+ !
+ address-family ipv4 vrf NGN
+  no synchronization
+  redistribute connected
+ exit-address-family
+ !
+ address-family ipv4 vrf VOIP-IAD
+  no synchronization
+  redistribute connected route-map rm-conn-bgp-VOIP-IAD
+ exit-address-family
+ !
+ address-family ipv4 vrf gid1
+  no synchronization
+  redistribute static
+ exit-address-family
+ !
+ address-family ipv4 vrf gim1
+  no synchronization
+  redistribute connected
+ exit-address-family
+!
+ip classless
+ip route 0.0.0.0 0.0.0.0 172.28.158.65
+ip route 10.206.19.0 255.255.255.128 172.28.158.65
+ip route 10.206.93.0 255.255.255.128 172.28.158.65
+ip route 172.18.6.24 255.255.255.254 172.28.158.65
+ip route 172.18.6.25 255.255.255.255 172.28.158.65
+ip route 172.18.74.0 255.255.255.0 172.28.158.65
+ip route 192.168.92.0 255.255.255.0 172.28.158.65
+ip route 192.168.165.0 255.255.255.0 172.28.158.65
+ip route vrf gid1 172.18.184.23 255.255.255.255 GigabitEthernet8/16.3802 172.18.184.23
+ip route vrf gid1 172.18.184.42 255.255.255.255 GigabitEthernet8/16.3803 172.18.184.42
+ip route vrf gid1 172.18.184.71 255.255.255.255 GigabitEthernet3/16.3868 172.18.184.71
+ip route vrf gid1 172.18.184.74 255.255.255.255 TenGigabitEthernet1/2.3804 172.18.184.74
+ip route vrf gid1 172.18.184.127 255.255.255.255 TenGigabitEthernet4/1.3805 172.18.184.127
+ip route vrf gid1 172.18.184.182 255.255.255.255 GigabitEthernet3/21.3828 172.18.184.182
+ip route vrf gid1 172.18.184.185 255.255.255.255 GigabitEthernet3/21.3829 172.18.184.185
+ip route vrf gid1 172.18.184.225 255.255.255.255 TenGigabitEthernet4/2.3809 172.18.184.225
+ip route vrf gid1 172.18.185.55 255.255.255.255 GigabitEthernet3/20.3831 172.18.185.55
+ip route vrf gid1 172.18.185.109 255.255.255.255 GigabitEthernet8/20.3838 172.18.185.109
+ip route vrf gid1 172.18.187.111 255.255.255.255 GigabitEthernet3/16.3855 172.18.187.111
+ip route vrf gid1 172.18.187.123 255.255.255.255 TenGigabitEthernet1/4.3856 172.18.187.123
+ip route vrf gid1 172.18.187.234 255.255.255.255 TenGigabitEthernet4/2.3864 172.18.187.234
+ip route vrf gid1 172.18.187.248 255.255.255.255 TenGigabitEthernet4/2.3866 172.18.187.248
+ip route vrf gid1 172.18.187.252 255.255.255.255 GigabitEthernet8/15.3807 172.18.187.252
+ip route vrf NAC 179.40.34.4 255.255.255.252 GigabitEthernet2/46 200.51.216.222 tag 1
+ip route vrf NAC 179.40.34.16 255.255.255.252 GigabitEthernet2/46 200.51.216.222 tag 1
+ip route vrf NAC 179.40.34.28 255.255.255.252 GigabitEthernet2/46 200.51.216.222 tag 1
+ip route vrf NAC 179.40.46.96 255.255.255.224 GigabitEthernet8/5 200.63.156.154 tag 1
+ip route vrf NAC 179.40.81.0 255.255.255.192 GigabitEthernet8/6 200.51.216.194 tag 1
+ip route vrf NAC 201.251.104.0 255.255.255.224 GigabitEthernet8/5 200.63.156.154 tag 1
+ip route vrf NAC 201.251.170.32 255.255.255.224 GigabitEthernet2/19 200.63.152.2 tag 1
+!
+ip as-path access-list 10 permit ^22080_
+ip as-path access-list 15 permit ^23456_
+ip as-path access-list 20 permit ^(_265701)+$
+ip as-path access-list 20 permit ^(_265701)+(_263757)+$
+ip as-path access-list 25 permit ^(_23456)+$
+ip as-path access-list 25 permit ^(_23456)+(_23456)+$
+no ip http server
+no ip http secure-server
+ip pim ssm range iptv_core
+ip ospf name-lookup
+!
+ip access-list standard ACL-IAD
+ permit 10.32.0.0 0.31.255.255
+ permit 10.64.0.0 0.31.255.255
+ permit 10.24.0.0 0.7.255.255
+ip access-list standard ACL-VOIP-L0
+ permit 172.19.0.0 0.0.0.127
+ permit 172.19.0.64 0.0.0.63
+ip access-list standard COOP-EL-BOLSON
+ permit 201.251.197.40
+ permit 186.38.21.0 0.0.0.255
+ permit 186.38.22.0 0.0.0.255
+ permit 186.38.41.0 0.0.0.255
+ permit 201.251.3.128 0.0.0.127
+ permit 201.251.133.0 0.0.0.255
+ permit 201.251.134.0 0.0.0.255
+ip access-list standard COOP-EL-BOLSON-PREF
+ permit 201.251.133.0 0.0.0.255
+ permit 201.251.134.0 0.0.0.255
+ permit 186.38.41.0 0.0.0.255
+ permit 201.251.3.128 0.0.0.127
+ip access-list standard COOP-EPUYEN
+ permit 201.251.104.0 0.0.0.31
+ip access-list standard ONLY-DEFAULT
+ permit 0.0.0.0
+ip access-list standard iptv_core
+ permit 239.232.0.0 0.0.15.255
+!
+ip access-list extended DENY-SNMP
+ deny   udp any any eq snmp
+ permit ip any any
+!
+!
+ip prefix-list BARRA-24 description Deniega default y permite desde /24
+ip prefix-list BARRA-24 seq 5 deny 0.0.0.0/0
+ip prefix-list BARRA-24 seq 10 permit 0.0.0.0/0 le 24
+!
+ip prefix-list BARRA-24+def description permite default y barras mayores a /24
+ip prefix-list BARRA-24+def seq 10 permit 0.0.0.0/0 le 24
+!
+ip prefix-list BARRA-25 description Deniega default y permite desde /25
+ip prefix-list BARRA-25 seq 5 deny 0.0.0.0/0
+ip prefix-list BARRA-25 seq 10 permit 0.0.0.0/0 le 25
+!
+ip prefix-list COOP-SAN-MARTIN seq 5 permit 201.220.168.0/24
+ip prefix-list COOP-SAN-MARTIN seq 10 permit 201.220.169.0/24
+ip prefix-list COOP-SAN-MARTIN seq 15 permit 201.220.170.0/24
+ip prefix-list COOP-SAN-MARTIN seq 20 permit 201.220.171.0/24
+ip prefix-list COOP-SAN-MARTIN seq 25 permit 201.220.172.0/24
+ip prefix-list COOP-SAN-MARTIN seq 30 permit 201.220.173.0/24
+logging trap notifications
+logging origin-id hostname
+logging host 172.18.74.40 vrf gim1
+logging host 172.18.74.224 vrf gim1
+logging host 172.18.74.112 vrf gim1
+logging host 10.206.19.54 vrf gim1
+logging host 10.166.74.33 vrf gim1
+logging host 10.166.10.132 vrf gim1
+access-list 30 permit any
+access-list 98 permit 172.18.6.24 0.0.0.1
+access-list 98 permit 10.166.0.64 0.0.0.63
+access-list 98 permit 10.166.1.64 0.0.0.63
+access-list 99 permit 192.168.92.0 0.0.1.255
+access-list 99 permit 172.18.74.0 0.0.0.255
+access-list 99 permit 10.166.74.0 0.0.0.255
+access-list 1300 permit 200.51.254.228
+access-list 1300 permit 172.18.6.24 0.0.0.1
+access-list 1300 permit 172.18.46.12 0.0.0.1
+access-list 1300 permit 172.18.74.0 0.0.0.255
+access-list 1300 permit 172.18.81.0 0.0.0.255
+access-list 1300 permit 192.168.92.0 0.0.1.255
+access-list 101 permit tcp 172.18.74.0 0.0.0.255 any eq 22
+access-list 101 permit tcp 172.18.81.0 0.0.0.255 any eq 22
+access-list 101 permit tcp 172.18.227.0 0.0.0.255 any eq 22
+access-list 101 permit tcp 192.168.92.0 0.0.1.255 any eq 22
+access-list 101 permit tcp 192.168.92.0 0.0.1.255 any eq telnet
+access-list 101 permit tcp 200.63.130.0 0.0.1.255 any eq 22
+access-list 101 permit tcp 200.63.132.0 0.0.3.255 any eq 22
+access-list 101 permit tcp 200.63.136.0 0.0.7.255 any eq 22
+access-list 101 permit tcp 200.63.144.0 0.0.3.255 any eq 22
+access-list 101 permit tcp 192.168.165.0 0.0.0.255 any eq 22
+access-list 101 permit tcp 200.51.240.0 0.0.1.255 any eq 22
+access-list 101 permit tcp 10.166.92.0 0.0.0.255 any eq 22
+access-list 101 permit tcp 10.166.74.0 0.0.0.255 any eq 22
+access-list 101 permit tcp 10.166.13.224 0.0.0.31 any eq 22
+access-list 101 permit tcp 10.206.19.0 0.0.0.63 any eq 22
+access-list 101 permit tcp 10.206.93.0 0.0.0.127 any eq 22
+!
+!
+ipv6 prefix-list BARRA-64+def description dafault barras mayores a /64
+ipv6 prefix-list BARRA-64+def seq 5 permit ::/0 le 64
+route-map REDIS-OSPF-TO-BGP permit 5
+ match ip address COOP-EL-BOLSON-PREF
+ set local-preference 150
+!
+route-map REDIS-OSPF-TO-BGP permit 10
+ match ip address COOP-EL-BOLSON
+!
+route-map REDIS-OSPF-TO-BGP-COOP-EPUYEN permit 10
+ match ip address COOP-EPUYEN
+ set local-preference 200
+!
+route-map rm-conn-bgp-VOIP-IAD permit 10
+ match ip address ACL-IAD
+!
+route-map rm-conn-bgp-VOIP-IAD permit 20
+ match ip address ACL-VOIP-L0
+!
+route-map REDIS-RIP-TO-BGP permit 10
+ match ip address COOP-EL-BOLSON
+ set local-preference 100
+!
+route-map ONLY-DEFAULT permit 10
+ match ip address ONLY-DEFAULT
+!
+route-map REDIS-STATIC permit 10
+ match tag 1
+!
+route-map RM-IAD permit 10
+ match ip address ACL-IAD
+ set extcommunity rt  22927:4803
+!
+route-map RM-IAD permit 20
+ match ip address ACL-VOIP-L0
+ set extcommunity rt  22927:4806
+!
+snmp-server view tcamBlock iso included
+snmp-server view tcamBlock cseTcamUsageTable excluded
+snmp-server community MRSE-IAV view tcamBlock RO 99
+snmp-server community L0rS1mbA-2S16reS-L RO 99
+snmp-server community ip0rS1mbAt RO 98
+snmp-server host 192.168.92.87 version 2c public  envmon
+snmp ifmib ifindex persist
+!
+tftp-server slavedisk1:6500s72033-advipservicesk9-mz.122-33.SRE9a.bin
+tacacs-server host 172.18.74.21
+tacacs-server key 7 04762E322C04
+mpls ldp router-id Loopback1 force
+radius-server host 172.18.74.21 auth-port 1645 acct-port 1646 key 7 12342023312E
+radius-server retransmit 2
+radius-server timeout 6
+!
+control-plane
+!
+banner login ^C
+                    #                 ###### 
+         ###########     ##          ##     #              ##
+        ##   ###        ##          ##
+        #   ##   ##    ##   ##   ######  ##  ###  ####    ##   ##     #####
+           ##  ##  #  ##  ##  #   ##   ##  #    ##   ##  ##  ##  # ##   ##
+          ##  ## ##  ##  ## ##   ##   ##   #   ##   ##  ##  ##    ##   ##
+         ##   # #   ##   # #    ##   ##   #   ##   ##  ##  #     ##   ##
+        ##    #    ##    #     ##    #   #   ##   ##  ##   #     ##  ##
+       ##      ###  ###   ### ##      ##    ##   ##   #     ###   ## ###
+      #                      #
+  ==========================================================================
+  AVISO: ha accedido a un sistema propiedad de TELEFONICA.
+  Necesita tener autorizacion antes de usarlo, estando usted estrictamente 
+  Limitado al uso indicado en dicha autorizacion.
+  El acceso no autorizado a este sistema o el uso indebido del mismo esta 
+  prohibido y es contrario a la Politica Corporativa de Seguridad y a la 
+  legislacion vigente. El Uso que realice de este sistema sera Monitorizado.
+ ===========================================================================
+^C
+banner motd ^C
+
+ ##############################################################################
+ #                                                                            #
+ #       Equipo      : CEBRL01                                                #
+ #  ========================================================================  #
+ #       Nombre_Edif : BARILOCHE                                              #
+ #       Direccion   : Elflein 554                                            #
+ #       Localidad   : BARILOCHE                                              #
+ #       Provincia   : RIO NEGRO                                              #
+ #  ========================================================================  #
+ #       Piso        : x                                                      #
+ #       Sala        : Sala Tx                                                #
+ #       Contacto    : MetroEthernet@telefonica.com                           #
+ #       Telefono    : +54-11-4333-4082                                       #
+ #                                                                            #
+ ##############################################################################
+ 
+^C
+alias exec cpu sh proc cpu | i CPU
+alias exec mem sh proc mem | i Total
+alias exec top sh proc cpu | i [0-9]\.[0-9][1-9]%|CPU
+alias exec int sh ip int br
+alias exec is sh int summ | e 0     0    0    0|-    -     -    -   -
+!
+line con 0
+line vty 0 4
+ session-timeout 10  output
+ access-class 101 in
+ exec-timeout 50 0
+ logging synchronous
+ transport input ssh
+line vty 5 15
+ access-class 101 in
+ exec-timeout 50 0
+ transport input ssh
+!
+exception core-file CORE-DUMP-CEBRL01
+exception protocol ftp
+exception region-size 65536
+exception dump 192.168.92.184
+ntp clock-period 17180043
+ntp source Loopback5
+ntp update-calendar
+ntp server vrf gim1 172.18.227.3
+mac-address-table limit vlan 147 maximum 200 action limit
+mac-address-table limit vlan 228 maximum 200 action limit
+mac-address-table limit vlan 384 maximum 200 action limit
+mac-address-table limit vlan 403 maximum 200 action limit
+mac-address-table limit vlan 734 maximum 200 action limit
+mac-address-table limit vlan 764 maximum 200 action limit
+mac-address-table limit vlan 816 maximum 200 action limit
+mac-address-table limit vlan 983 maximum 200 action limit
+!
+end
+
+CEBRL01#
