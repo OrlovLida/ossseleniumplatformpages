@@ -1,20 +1,23 @@
 package com.oss.E2E;
 
 import com.oss.BaseTestCase;
+import com.oss.framework.alerts.SystemMessageContainer;
+import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
-import com.oss.pages.platform.GlobalSearchPage;
 import com.oss.pages.platform.NewInventoryViewPage;
-import com.oss.pages.platform.OldInventoryViewPage;
 import com.oss.pages.reconciliation.CmDomainWizardPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
 import com.oss.pages.reconciliation.NetworkInconsistenciesViewPage;
 import com.oss.pages.reconciliation.SamplesManagementPage;
 import com.oss.utils.TestListener;
+import org.assertj.core.api.Assertions;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+
+import java.util.List;
 
 @Listeners({ TestListener.class })
 public class UC_NAR_004 extends BaseTestCase {
@@ -25,6 +28,14 @@ public class UC_NAR_004 extends BaseTestCase {
     private static final String DOMAIN = "IP";
     private static final String EQUIPMENT_TYPE = "Physical Device";
     private static final String ROUTER_NAME = "KRK-SSE8-45";
+
+    private void checkPopup() {
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
+        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
+        Assertions.assertThat(messages).hasSize(1);
+        Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType())
+                .isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
+    }
 
     @BeforeClass
     public void openNetworkDiscoveryControlView() {
@@ -83,7 +94,6 @@ public class UC_NAR_004 extends BaseTestCase {
         networkInconsistenciesViewPage.clearOldNotification();
         Assert.assertTrue(networkInconsistenciesViewPage.checkInconsistenciesOperationType().contentEquals("CREATION"));
         networkInconsistenciesViewPage.applyInconsistencies();
-        //DelayUtils.sleep(5000);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(CM_DOMAIN_NAME);
     }
@@ -107,7 +117,7 @@ public class UC_NAR_004 extends BaseTestCase {
     @Test(priority = 6)
     public void runReconciliationWithEmptySample() {
         openNetworkDiscoveryControlView();
-        DelayUtils.sleep(100);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.runReconciliation();
         networkDiscoveryControlViewPage.checkReconciliationStartedSystemMessage();
@@ -150,8 +160,7 @@ public class UC_NAR_004 extends BaseTestCase {
         newInventoryViewPage.openFilterPanel().changeValueInLocationNameInput(ROUTER_NAME).applyFilter();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         newInventoryViewPage.selectFirstRow().callAction("EDIT", "DeleteDeviceWizardAction");
-        //Wizard.createWizard(driver, webDriverWait).clickDelete();
-        DelayUtils.sleep(10000);
+        Wizard.createWizard(driver, webDriverWait).clickButtonByLabel("Yes");
+        checkPopup();
     }
-
 }
