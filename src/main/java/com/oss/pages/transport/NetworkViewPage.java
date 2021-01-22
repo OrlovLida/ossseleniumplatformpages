@@ -453,8 +453,6 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Delate trail")
     public void delateTrailWizard() {
-        clickConfirmationBoxButtonByLabel("Next");
-        waitForPageToLoad();
         clickConfirmationBoxButtonByLabel("Delete");
     }
 
