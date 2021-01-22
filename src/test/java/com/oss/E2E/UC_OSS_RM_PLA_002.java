@@ -35,7 +35,7 @@ import com.oss.pages.platform.LogManagerPage;
 import com.oss.pages.platform.OldInventoryViewPage;
 import com.oss.pages.reconciliation.CmDomainWizardPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
-import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage.ErrorLevel;
+import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage.IssueLevel;
 import com.oss.pages.reconciliation.NetworkInconsistenciesViewPage;
 import com.oss.pages.reconciliation.SamplesManagementPage;
 import com.oss.pages.templateCM.ChangeConfigurationPage;
@@ -191,7 +191,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkViewPage.selectObjectInViewContent("Name", "H1");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkViewPage.useContextAction("CREATE", "Connect");
+        networkViewPage.useContextAction("CREATE", "Create Connection");
         networkViewPage.selectTrailType("IP Link");
         networkViewPage.acceptTrailType();
         networkViewPage.setTrailName(trailName);
@@ -525,10 +525,10 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.waitForEndOfReco();
         networkDiscoveryControlViewPage.selectLatestReconciliationState();
-        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(ErrorLevel.STARTUP_FATAL));
-        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(ErrorLevel.FATAL));
-        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(ErrorLevel.ERROR));
-        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(ErrorLevel.WARNING));
+        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(IssueLevel.STARTUP_FATAL));
+        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(IssueLevel.FATAL));
+        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(IssueLevel.ERROR));
+        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(IssueLevel.WARNING));
     }
 
     @Test(priority = 41)
@@ -560,10 +560,10 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
         sideMenu.callActionByLabel("LAB Network View", "Favourites", "SeleniumTests");
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
-        networkViewPage.useContextAction("add_to_view_group", "Trail");
+        networkViewPage.useContextAction("add_to_view_group", "Connection");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkViewPage.queryElementAndAddItToView("label", TEXT_FIELD, trailName);
-        networkViewPage.useContextAction("EDIT", "Delete Trail");
+        networkViewPage.useContextAction("EDIT", "Delete Connection");
         networkViewPage.delateTrailWizard();
     }
 
@@ -589,7 +589,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         ViewConnectionConfigurationPage viewConnectionConfigurationPage = new ViewConnectionConfigurationPage(driver);
         viewConnectionConfigurationPage.selectRow("Address", address);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        viewConnectionConfigurationPage.useContextAction("Delete object");
+        viewConnectionConfigurationPage.useContextAction("Delete");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         viewConnectionConfigurationPage.clickDelete();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
