@@ -11,7 +11,6 @@ import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
 import com.oss.pages.reconciliation.NetworkInconsistenciesViewPage;
 import com.oss.pages.reconciliation.SamplesManagementPage;
 import com.oss.utils.TestListener;
-import org.assertj.core.api.Assertions;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
@@ -42,7 +41,7 @@ public class UC_NAR_004 extends BaseTestCase {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
     }
 
-   /* @Test(priority = 1)
+    @Test(priority = 1)
     public void createCmDomain() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         networkDiscoveryControlViewPage.openCmDomainWizard();
@@ -148,7 +147,7 @@ public class UC_NAR_004 extends BaseTestCase {
         networkDiscoveryControlViewPage.deleteCmDomain();
         networkDiscoveryControlViewPage.checkDeleteCmDomainSystemMessage();
         networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(CM_DOMAIN_NAME);
-    }*/
+    }
 
     @Test(priority = 9)
     public void deleteDevices() {
