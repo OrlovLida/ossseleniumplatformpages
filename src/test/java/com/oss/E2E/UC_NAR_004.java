@@ -32,9 +32,9 @@ public class UC_NAR_004 extends BaseTestCase {
     private void checkPopup() {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages).hasSize(1);
-        Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType())
-                .isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
+        Assert.assertNotNull(messages);
+        Assert.assertEquals(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType(),
+                SystemMessageContainer.MessageType.SUCCESS);
     }
 
     @BeforeClass
