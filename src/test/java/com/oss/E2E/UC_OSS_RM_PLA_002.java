@@ -560,10 +560,10 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
         sideMenu.callActionByLabel("LAB Network View", "Favourites", "SeleniumTests");
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
-        networkViewPage.useContextAction("add_to_view_group", "Trail");
+        networkViewPage.useContextAction("add_to_view_group", "Connection");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkViewPage.queryElementAndAddItToView("label", TEXT_FIELD, trailName);
-        networkViewPage.useContextAction("EDIT", "Delete Trail");
+        networkViewPage.useContextAction("EDIT", "Delete Connection");
         networkViewPage.delateTrailWizard();
     }
 
