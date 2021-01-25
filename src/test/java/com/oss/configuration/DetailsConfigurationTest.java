@@ -20,6 +20,7 @@ import org.testng.annotations.Test;
 
 import java.util.List;
 
+import static com.oss.framework.components.portals.SaveConfigurationWizard.Property.DEFAULT_VIEW_FOR;
 import static com.oss.framework.components.portals.SaveConfigurationWizard.Property.GROUPS;
 import static com.oss.framework.components.portals.SaveConfigurationWizard.Property.TYPE;
 
@@ -45,23 +46,45 @@ public class DetailsConfigurationTest extends BaseTestCase {
     @Test(priority = 1)
     @Description("Saving new configuration for properties for type")
     public void saveNewConfigurationForPropertiesForType(){
+        //given
+        newInventoryViewPage.selectObjectByRowId(0);
+        List<String> labels = newInventoryViewPage.getPropertyPanel().getPropertyLabels();
+        int namesPosition = labels.indexOf("Name");
+        int namesNewPosition = namesPosition == 0 ? 1:0;
+
         //when
+        newInventoryViewPage.changePropertiesOrder(0, PROPERTY_PANEL_ID, "name", namesNewPosition);
         newInventoryViewPage.saveConfigurationForProperties(0, PROPERTY_PANEL_ID,
-                        CONFIGURATION_NAME_PROPERTIES, createField(TYPE, "Building"));
+                        CONFIGURATION_NAME_PROPERTIES, createField(DEFAULT_VIEW_FOR, "Me"), createField(TYPE, "Building"));
         //then
         assertSuccessMessage();
+        newInventoryViewPage.changeUser("webseleniumtests2","webtests");
+        newInventoryViewPage.selectObjectByRowId(0);
+        labels = newInventoryViewPage.getPropertyPanel().getPropertyLabels();
+        int positionOfName = labels.indexOf("Name");
+        Assertions.assertThat(namesPosition).isEqualTo(positionOfName);
+
+        newInventoryViewPage.changeUser("webseleniumtests","webtests");
+        newInventoryViewPage.selectObjectByRowId(0);
+        labels = newInventoryViewPage.getPropertyPanel().getPropertyLabels();
+        positionOfName = labels.indexOf("Name");
+        Assertions.assertThat(namesNewPosition).isEqualTo(positionOfName);
     }
 
     @Test(priority = 2)
     @Description("Saving new configuration for properties for supertype")
     public void saveNewConfigurationForPropertiesForSupertype(){
         //when
+
+
         newInventoryViewPage.changePropertiesOrder(0, PROPERTY_PANEL_ID, "name", 3);
         newInventoryViewPage.saveConfigurationForProperties(0, PROPERTY_PANEL_ID,
-                CONFIGURATION_NAME_PROPERTIES_SUPERTYPE, createField(TYPE, "Location"));
+                CONFIGURATION_NAME_PROPERTIES_SUPERTYPE, createField(TYPE, "Location"), createField(DEFAULT_VIEW_FOR, "Me"));
 
         //then
         assertSuccessMessage();
+        List<String> labels = newInventoryViewPage.getPropertyPanel().getPropertyLabels();
+        System.out.println("asd");
     }
 
     @Test(priority = 3)
