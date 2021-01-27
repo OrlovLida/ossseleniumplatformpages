@@ -42,9 +42,9 @@ public class TS_PHY_INV_22 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         sublocationWizardPage.setSublocationName(sublocationName);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        sublocationWizardPage.clickNext();
+        sublocationWizardPage.setPreciseLocation(locationName);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        sublocationWizardPage.setQuantity("1");
+        sublocationWizardPage.clickNext();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         sublocationWizardPage.accept();
         checkPopup("Sublocation created successfully");
