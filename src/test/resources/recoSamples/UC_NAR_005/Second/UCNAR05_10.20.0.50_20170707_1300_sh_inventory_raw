@@ -1,9 +1,9 @@
 show inventory raw
 NAME: "CISCO7609", DESCR: "Cisco Systems Cisco 7600 9-slot Chassis System"
-PID: CISCO7609         , VID: V01, SN: SERIAL_NUMBER_BEFORE
+PID: CISCO7609         , VID: V01, SN: SERIAL_NUMBER_AFTER
 
 NAME: "Backplane", DESCR: "Cisco Systems Cisco 7600 9-slot backplane"
-PID:                   , VID:    , SN: SERIAL_NUMBER_BEFORE        
+PID:                   , VID:    , SN: SERIAL_NUMBER_AFTER        
 
 NAME: "Container of VTT 1", DESCR: "Container of VTT"
 PID:                   , VID:    , SN:            
