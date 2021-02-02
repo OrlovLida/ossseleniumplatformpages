@@ -33,13 +33,13 @@ public class OldInventoryViewPage extends BasePage {
     }
 
     @Step("Get table widget for upper table")
-    public TableInterface getTableWidget() {
+    public OldTable getTableWidget() {
         waitForPageToLoad();
         return OldTable.createForOldInventoryView(driver, wait);
     }
 
     @Step("Get table widget for table by testId {tableTestId}")
-    public TableInterface getTableWidget(String tableTestId) {
+    public OldTable getTableWidget(String tableTestId) {
         waitForPageToLoad();
         return OldTable.createByComponentDataAttributeName(driver, wait, tableTestId);
     }
@@ -127,7 +127,7 @@ public class OldInventoryViewPage extends BasePage {
     }
 
     @Step("Navigate to bottom tab {tabId} and get table widget for table {tableTestId}")
-    public TableInterface getTableWidgetForTab(String tabId, String tableTestId) {
+    public OldTable getTableWidgetForTab(String tabId, String tableTestId) {
         navigateToBottomTabById(tabId);
         waitForPageToLoad();
         return getTableWidget(tableTestId);
@@ -137,6 +137,10 @@ public class OldInventoryViewPage extends BasePage {
     public void navigateToBottomTabById(String tabId) {
         TabsInterface tabsInterface = TabWindowWidget.create(driver, wait);
         tabsInterface.selectTabById(tabId);
+    }
+
+    public void getNumberOfRowsInTable(String tableTestId, String anyLabelExistingInTable){
+        OldTable.createByComponentDataAttributeName(driver, wait, tableTestId);
     }
 
     private void navigateToBottomTabByLabel(String tabLabel) {
