@@ -1,0 +1,1263 @@
+show inventory raw
+NAME: "CISCO7609", DESCR: "Cisco Systems Cisco 7600 9-slot Chassis System"
+PID: CISCO7609         , VID: V01, SN: TEST
+
+NAME: "Backplane", DESCR: "Cisco Systems Cisco 7600 9-slot backplane"
+PID:                   , VID:    , SN: TEST        
+
+NAME: "Container of VTT 1", DESCR: "Container of VTT"
+PID:                   , VID:    , SN:            
+
+NAME: "WS-C6K-VTT 1", DESCR: "VTT FRU 1"
+PID: WS-C6K-VTT        , VID:    , SN: NWG121800NV2
+
+NAME: "VTT 1 OK Sensor", DESCR: "VTT FRU 1 OK Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "VTT 1 outlet temperature Sensor", DESCR: "VTT FRU 1 outlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Container of VTT 2", DESCR: "Container of VTT"
+PID:                   , VID:    , SN:            
+
+NAME: "WS-C6K-VTT 2", DESCR: "VTT FRU 2"
+PID: WS-C6K-VTT        , VID:    , SN: NWG121800RT
+
+NAME: "VTT 2 OK Sensor", DESCR: "VTT FRU 2 OK Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "VTT 2 outlet temperature Sensor", DESCR: "VTT FRU 2 outlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Container of VTT 3", DESCR: "Container of VTT"
+PID:                   , VID:    , SN:            
+
+NAME: "WS-C6K-VTT 3", DESCR: "VTT FRU 3"
+PID: WS-C6K-VTT        , VID:    , SN: NWG121800RW
+
+NAME: "VTT 3 OK Sensor", DESCR: "VTT FRU 3 OK Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "VTT 3 outlet temperature Sensor", DESCR: "VTT FRU 3 outlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Container of Clock 1", DESCR: "Container of Clock"
+PID:                   , VID:    , SN:            
+
+NAME: "CLK-7600 1", DESCR: "OSR-7600 Clock FRU 1"
+PID: CLK-7600          , VID:    , SN: NWG121700Z0
+
+NAME: "Clock 1 OK Sensor", DESCR: "OSR-7600 Clock FRU 1 OK Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Clock 1 In Using Sensor", DESCR: "OSR-7600 Clock FRU 1 In Using Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Container of Clock 2", DESCR: "Container of Clock"
+PID:                   , VID:    , SN:            
+
+NAME: "CLK-7600 2", DESCR: "OSR-7600 Clock FRU 2"
+PID: CLK-7600          , VID:    , SN: NWG121700Z0
+
+NAME: "Clock 2 OK Sensor", DESCR: "OSR-7600 Clock FRU 2 OK Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Clock 2 In Using Sensor", DESCR: "OSR-7600 Clock FRU 2 In Using Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Sensor for counting number of OK VTTs", DESCR: "Sensor for counting number of OK VTTs"
+PID:                   , VID:    , SN:            
+
+NAME: "Sensor for counting number of OK Clocks", DESCR: "Sensor for counting number of OK Clocks"
+PID:                   , VID:    , SN:            
+
+NAME: "fan-tray 1 fan-fail Sensor", DESCR: "fan-tray 1 fan-fail Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "fan-tray 2 fan-fail Sensor", DESCR: "fan-tray 2 fan-fail Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Physical Slot 1", DESCR: "Cisco Systems Cisco 7600 9-slot Physical Slot"
+PID:                   , VID:    , SN:            
+
+NAME: "module 1", DESCR: "WS-X6748-GE-TX CEF720 48 port 10/100/1000mb Ethernet Rev. 3.0"
+PID: WS-X6748-GE-TX    , VID: V03, SN: SAL1227W7DH
+
+NAME: "Switching Engine Container 1", DESCR: "Switching Engine Container"
+PID:                   , VID:    , SN:            
+
+NAME: "switching engine sub-module of 1", DESCR: "WS-F6700-DFC3BXL Distributed Forwarding Card 3 Rev. 5.3"
+PID: WS-F6700-DFC3BXL  , VID: V03, SN: SAL1223T82M
+
+NAME: "module 1 EARL outlet temperature Sensor", DESCR: "module 1 EARL outlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "module 1 EARL inlet temperature Sensor", DESCR: "module 1 EARL inlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "CPU of Sub-Module 1 DFC Card", DESCR: "CPU of Distributed Forwarding Card"
+PID:                   , VID:    , SN:            
+
+NAME: "power output-fail 1 ", DESCR: "module 1 power-output-fail Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "switch insufficient-cooling 1 ", DESCR: "module 1 insufficient cooling Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature outlet 1 ", DESCR: "module 1 outlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature inlet 1 ", DESCR: "module 1 inlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/1", DESCR: "10/100/1000BaseT Gi1/1"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/2", DESCR: "10/100/1000BaseT Gi1/2"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/3", DESCR: "10/100/1000BaseT Gi1/3"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/4", DESCR: "10/100/1000BaseT Gi1/4"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/5", DESCR: "10/100/1000BaseT Gi1/5"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/6", DESCR: "10/100/1000BaseT Gi1/6"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/7", DESCR: "10/100/1000BaseT Gi1/7"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/8", DESCR: "10/100/1000BaseT Gi1/8"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/9", DESCR: "10/100/1000BaseT Gi1/9"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/10", DESCR: "10/100/1000BaseT Gi1/10"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/11", DESCR: "10/100/1000BaseT Gi1/11"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/12", DESCR: "10/100/1000BaseT Gi1/12"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/13", DESCR: "10/100/1000BaseT Gi1/13"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/14", DESCR: "10/100/1000BaseT Gi1/14"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/15", DESCR: "10/100/1000BaseT Gi1/15"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/16", DESCR: "10/100/1000BaseT Gi1/16"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/17", DESCR: "10/100/1000BaseT Gi1/17"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/18", DESCR: "10/100/1000BaseT Gi1/18"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/19", DESCR: "10/100/1000BaseT Gi1/19"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/20", DESCR: "10/100/1000BaseT Gi1/20"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/21", DESCR: "10/100/1000BaseT Gi1/21"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/22", DESCR: "10/100/1000BaseT Gi1/22"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/23", DESCR: "10/100/1000BaseT Gi1/23"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/24", DESCR: "10/100/1000BaseT Gi1/24"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/25", DESCR: "10/100/1000BaseT Gi1/25"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/26", DESCR: "10/100/1000BaseT Gi1/26"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/27", DESCR: "10/100/1000BaseT Gi1/27"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/28", DESCR: "10/100/1000BaseT Gi1/28"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/29", DESCR: "10/100/1000BaseT Gi1/29"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/30", DESCR: "10/100/1000BaseT Gi1/30"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/31", DESCR: "10/100/1000BaseT Gi1/31"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/32", DESCR: "10/100/1000BaseT Gi1/32"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/33", DESCR: "10/100/1000BaseT Gi1/33"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/34", DESCR: "10/100/1000BaseT Gi1/34"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/35", DESCR: "10/100/1000BaseT Gi1/35"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/36", DESCR: "10/100/1000BaseT Gi1/36"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/37", DESCR: "10/100/1000BaseT Gi1/37"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/38", DESCR: "10/100/1000BaseT Gi1/38"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/39", DESCR: "10/100/1000BaseT Gi1/39"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/40", DESCR: "10/100/1000BaseT Gi1/40"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/41", DESCR: "10/100/1000BaseT Gi1/41"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/42", DESCR: "10/100/1000BaseT Gi1/42"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/43", DESCR: "10/100/1000BaseT Gi1/43"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/44", DESCR: "10/100/1000BaseT Gi1/44"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/45", DESCR: "10/100/1000BaseT Gi1/45"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/46", DESCR: "10/100/1000BaseT Gi1/46"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/47", DESCR: "10/100/1000BaseT Gi1/47"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi1/48", DESCR: "10/100/1000BaseT Gi1/48"
+PID:                   , VID:    , SN:            
+
+NAME: "Physical Slot 2", DESCR: "Cisco Systems Cisco 7600 9-slot Physical Slot"
+PID:                   , VID:    , SN:            
+
+NAME: "Physical Slot 3", DESCR: "Cisco Systems Cisco 7600 9-slot Physical Slot"
+PID:                   , VID:    , SN:            
+
+NAME: "Physical Slot 4", DESCR: "Cisco Systems Cisco 7600 9-slot Physical Slot"
+PID:                   , VID:    , SN:            
+
+NAME: "module 4", DESCR: "7600-ES20-10G3CXL ESM20G Rev. 1.1"
+PID: 7600-ES20-10G3CXL , VID: V02, SN: JAE11528GC0
+
+NAME: "Link Daughter Card Container 4", DESCR: "Daughter Card Container"
+PID:                   , VID:    , SN:            
+
+NAME: "LINK sub-module of 4", DESCR: "7600-ES20-2X10G Link Daugher Card Rev. 1.0"
+PID: 7600-ES20-2X10G   , VID:    , SN: JAE115077LY
+
+NAME: "subslot 4/0 transceiver container 0", DESCR: "subslot 4/0 transceiver container 0"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 4/0 transceiver 0", DESCR: "OC192 + 10GBASE-L"
+PID: XFP-10GLR-OC192SR   , VID: C  , SN: ECL114104HY     
+
+NAME: "subslot 4/0 transceiver 0 Temperature Sensor", DESCR: "subslot 4/0 transceiver 0 Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 4/0 transceiver 0 Bias Current Sensor", DESCR: "subslot 4/0 transceiver 0 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 4/0 transceiver 0 Tx Power Sensor", DESCR: "subslot 4/0 transceiver 0 Tx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 4/0 transceiver 0 Rx Power Sensor", DESCR: "subslot 4/0 transceiver 0 Rx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "TenGigabitEthernet4/0/0", DESCR: "TenGigEther SPA"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 4/0 transceiver container 1", DESCR: "subslot 4/0 transceiver container 1"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 4/0 transceiver 1", DESCR: "OC192 + 10GBASE-L"
+PID: XFP-10GLR-OC192SR   , VID: C  , SN: ECL114104GA     
+
+NAME: "subslot 4/0 transceiver 1 Temperature Sensor", DESCR: "subslot 4/0 transceiver 1 Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 4/0 transceiver 1 Bias Current Sensor", DESCR: "subslot 4/0 transceiver 1 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 4/0 transceiver 1 Tx Power Sensor", DESCR: "subslot 4/0 transceiver 1 Tx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 4/0 transceiver 1 Rx Power Sensor", DESCR: "subslot 4/0 transceiver 1 Rx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "TenGigabitEthernet4/0/1", DESCR: "TenGigEther SPA"
+PID:                   , VID:    , SN:            
+
+NAME: "module 4 Link Daughterboard temperature Sensor 0", DESCR: "module 4 Link Daughterboard temperature Sensor 0"
+PID:                   , VID:    , SN:            
+
+NAME: "module 4 Link Daughterboard temperature Sensor 1", DESCR: "module 4 Link Daughterboard temperature Sensor 1"
+PID:                   , VID:    , SN:            
+
+NAME: "module 4 Link Daughterboard voltage Sensor 0", DESCR: "module 4 Link Daughterboard voltage Sensor 0"
+PID:                   , VID:    , SN:            
+
+NAME: "module 4 Link Daughterboard voltage Sensor 1", DESCR: "module 4 Link Daughterboard voltage Sensor 1"
+PID:                   , VID:    , SN:            
+
+NAME: "module 4 Link Daughterboard voltage Sensor 2", DESCR: "module 4 Link Daughterboard voltage Sensor 2"
+PID:                   , VID:    , SN:            
+
+NAME: "module 4 Link Daughterboard voltage Sensor 3", DESCR: "module 4 Link Daughterboard voltage Sensor 3"
+PID:                   , VID:    , SN:            
+
+NAME: "module 4 Link Daughterboard voltage Sensor 4", DESCR: "module 4 Link Daughterboard voltage Sensor 4"
+PID:                   , VID:    , SN:            
+
+NAME: "module 4 Link Daughterboard voltage Sensor 5", DESCR: "module 4 Link Daughterboard voltage Sensor 5"
+PID:                   , VID:    , SN:            
+
+NAME: "module 4 Link Daughterboard voltage Sensor 6", DESCR: "module 4 Link Daughterboard voltage Sensor 6"
+PID:                   , VID:    , SN:            
+
+NAME: "module 4 Link Daughterboard voltage Sensor 7", DESCR: "module 4 Link Daughterboard voltage Sensor 7"
+PID:                   , VID:    , SN:            
+
+NAME: "CPU Daughter Card Container 4", DESCR: "Daughter Card Container"
+PID:                   , VID:    , SN:            
+
+NAME: "CPU sub-module of 4", DESCR: "7600-ES20-PROC FRU type (0x6005, 0x6A5(1701)) Rev. 1.1"
+PID: 7600-ES20-PROC    , VID:    , SN: JAE11528DWA
+
+NAME: "Switching Engine Container 4", DESCR: "Switching Engine Container"
+PID:                   , VID:    , SN:            
+
+NAME: "switching engine sub-module of 4", DESCR: "7600-ES20-D3CXL ESM20G Distributed Forwarding Card Rev. 1.0"
+PID: 7600-ES20-D3CXL   , VID:    , SN: JAE11506YU6
+
+NAME: "module 4 EARL outlet temperature Sensor", DESCR: "module 4 EARL outlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "module 4 EARL inlet temperature Sensor", DESCR: "module 4 EARL inlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "CPU of Sub-Module 4 DFC Card", DESCR: "CPU of Distributed Forwarding Card"
+PID:                   , VID:    , SN:            
+
+NAME: "power output-fail 4 ", DESCR: "module 4 power-output-fail Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "switch insufficient-cooling 4 ", DESCR: "module 4 insufficient cooling Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature outlet 4 ", DESCR: "module 4 outlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature inlet 4 ", DESCR: "module 4 inlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature device-1 4 ", DESCR: "module 4 device-1 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature device-2 4 ", DESCR: "module 4 device-2 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Physical Slot 5", DESCR: "Cisco Systems Cisco 7600 9-slot Physical Slot"
+PID:                   , VID:    , SN:            
+
+NAME: "module 5", DESCR: "RSP720-3CXL-GE 2 ports Route Switch Processor 720 Rev. 5.11"
+PID: RSP720-3CXL-GE    , VID: V05, SN: JAE11484O95
+
+NAME: "MSFC Container 5", DESCR: "MSFC Container"
+PID:                   , VID:    , SN:            
+
+NAME: "msfc sub-module of 5", DESCR: "7600-MSFC4 C7600 MSFC4 Daughterboard Rev. 1.5"
+PID: 7600-MSFC4        , VID: 000, SN: JAE114747RW
+
+NAME: "module 5 RP outlet temperature Sensor", DESCR: "module 5 RP outlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "module 5 RP inlet temperature Sensor", DESCR: "module 5 RP inlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "CPU of Routing Processor 5", DESCR: "CPU of Routing Processor"
+PID:                   , VID:    , SN:            
+
+NAME: "Switching Engine Container 5", DESCR: "Switching Engine Container"
+PID:                   , VID:    , SN:            
+
+NAME: "switching engine sub-module of 5", DESCR: "7600-PFC3CXL Policy Feature Card 3 Rev. 1.1"
+PID: 7600-PFC3CXL      , VID: 000, SN: JAE11463ENC
+
+NAME: "module 5 EARL outlet temperature Sensor", DESCR: "module 5 EARL outlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "module 5 EARL inlet temperature Sensor", DESCR: "module 5 EARL inlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "power output-fail 5 ", DESCR: "Supervisor module 5 power-output-fail Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "switch insufficient-cooling 5 ", DESCR: "Supervisor module 5 insufficient cooling Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "switch fanUpgrade-required 5 ", DESCR: "Supervisor module 5 fan-upgrade required Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature outlet 5 ", DESCR: "Supervisor module 5 outlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature inlet 5 ", DESCR: "Supervisor module 5 inlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature device-1 5 ", DESCR: "Supervisor module 5 device-1 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature device-2 5 ", DESCR: "Supervisor module 5 device-2 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "module 5 asic 1 temperature Sensor", DESCR: "Supervisor module 5 asic 1 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "module 5 asic 2 temperature Sensor", DESCR: "Supervisor module 5 asic 2 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "module 5 asic 3 temperature Sensor", DESCR: "Supervisor module 5 asic 3 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "module 5 asic 4 temperature Sensor", DESCR: "Supervisor module 5 asic 4 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "module 5 asic 5 temperature Sensor", DESCR: "Supervisor module 5 asic 5 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "module 5 asic 6 temperature Sensor", DESCR: "Supervisor module 5 asic 6 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "CPU of Switching Processor 5", DESCR: "CPU of Switching Processor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi5/1", DESCR: "Transceiver Port Gi5/1"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi5/1", DESCR: "Transceiver Port Container Gi5/1"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi5/2", DESCR: "Transceiver Port Gi5/2"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi5/2", DESCR: "Transceiver Port Container Gi5/2"
+PID:                   , VID:    , SN:            
+
+NAME: "10/100/1000BaseT Gi5/2", DESCR: "10/100/1000BaseT Gi5/2"
+PID:                   , VID:    , SN:            
+
+NAME: "Physical Slot 6", DESCR: "Cisco Systems Cisco 7600 9-slot Physical Slot"
+PID:                   , VID:    , SN:            
+
+NAME: "module 6", DESCR: "RSP720-3CXL-GE 2 ports Route Switch Processor 720 Rev. 5.14"
+PID: RSP720-3CXL-GE    , VID: V05, SN: JAE1351RM5H
+
+NAME: "MSFC Container 6", DESCR: "MSFC Container"
+PID:                   , VID:    , SN:            
+
+NAME: "msfc sub-module of 6", DESCR: "7600-MSFC4 C7600 MSFC4 Daughterboard Rev. 5.0"
+PID: 7600-MSFC4        , VID: 000, SN: SAL16010CNA
+
+NAME: "module 6 RP outlet temperature Sensor", DESCR: "module 6 RP outlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "module 6 RP inlet temperature Sensor", DESCR: "module 6 RP inlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "CPU of Routing Processor 6", DESCR: "CPU of Routing Processor"
+PID:                   , VID:    , SN:            
+
+NAME: "Switching Engine Container 6", DESCR: "Switching Engine Container"
+PID:                   , VID:    , SN:            
+
+NAME: "switching engine sub-module of 6", DESCR: "7600-PFC3CXL Policy Feature Card 3 Rev. 1.2"
+PID: 7600-PFC3CXL      , VID: 000, SN: JAE1351R3N3
+
+NAME: "module 6 EARL outlet temperature Sensor", DESCR: "module 6 EARL outlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "module 6 EARL inlet temperature Sensor", DESCR: "module 6 EARL inlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "power output-fail 6 ", DESCR: "Supervisor module 6 power-output-fail Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "switch insufficient-cooling 6 ", DESCR: "Supervisor module 6 insufficient cooling Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "switch fanUpgrade-required 6 ", DESCR: "Supervisor module 6 fan-upgrade required Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature outlet 6 ", DESCR: "Supervisor module 6 outlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature inlet 6 ", DESCR: "Supervisor module 6 inlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature device-1 6 ", DESCR: "Supervisor module 6 device-1 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature device-2 6 ", DESCR: "Supervisor module 6 device-2 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "module 6 asic 1 temperature Sensor", DESCR: "Supervisor module 6 asic 1 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "module 6 asic 2 temperature Sensor", DESCR: "Supervisor module 6 asic 2 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "module 6 asic 3 temperature Sensor", DESCR: "Supervisor module 6 asic 3 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "module 6 asic 4 temperature Sensor", DESCR: "Supervisor module 6 asic 4 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "module 6 asic 5 temperature Sensor", DESCR: "Supervisor module 6 asic 5 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "module 6 asic 6 temperature Sensor", DESCR: "Supervisor module 6 asic 6 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "CPU of Switching Processor 6", DESCR: "CPU of Switching Processor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi6/1", DESCR: "Transceiver Port Gi6/1"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi6/1", DESCR: "Transceiver Port Container Gi6/1"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi6/2", DESCR: "Transceiver Port Gi6/2"
+PID:                   , VID:    , SN:            
+
+NAME: "Gigabit Transceiver Container Gi6/2", DESCR: "Gigabit Transceiver Container Gi6/2"
+PID:                   , VID:    , SN:            
+
+NAME: "10/100/1000BaseT Gi6/2", DESCR: "10/100/1000BaseT"
+PID:                   , VID:    , SN:            
+
+NAME: "Physical Slot 7", DESCR: "Cisco Systems Cisco 7600 9-slot Physical Slot"
+PID:                   , VID:    , SN:            
+
+NAME: "module 7", DESCR: "WS-X6748-SFP CEF720 48 port 1000mb SFP Rev. 1.12"
+PID: WS-X6748-SFP      , VID: V03, SN: SAL1226VA6D
+
+NAME: "Switching Engine Container 7", DESCR: "Switching Engine Container"
+PID:                   , VID:    , SN:            
+
+NAME: "switching engine sub-module of 7", DESCR: "WS-F6700-DFC3CXL Distributed Forwarding Card 3 Rev. 1.1"
+PID: WS-F6700-DFC3CXL  , VID: V01, SN: SAL1226V2ZB
+
+NAME: "module 7 EARL outlet temperature Sensor", DESCR: "module 7 EARL outlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "module 7 EARL inlet temperature Sensor", DESCR: "module 7 EARL inlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "CPU of Sub-Module 7 DFC Card", DESCR: "CPU of Distributed Forwarding Card"
+PID:                   , VID:    , SN:            
+
+NAME: "power output-fail 7 ", DESCR: "module 7 power-output-fail Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "switch insufficient-cooling 7 ", DESCR: "module 7 insufficient cooling Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature outlet 7 ", DESCR: "module 7 outlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature inlet 7 ", DESCR: "module 7 inlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature device-1 7 ", DESCR: "module 7 device-1 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature device-2 7 ", DESCR: "module 7 device-2 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Physical Slot 8", DESCR: "Cisco Systems Cisco 7600 9-slot Physical Slot"
+PID:                   , VID:    , SN:            
+
+NAME: "module 8", DESCR: "7600-ES20-GE3CXL ESM20G Rev. 1.2"
+PID: 7600-ES20-GE3CXL  , VID: V03, SN: JAE1225LZ1A
+
+NAME: "Link Daughter Card Container 8", DESCR: "Daughter Card Container"
+PID:                   , VID:    , SN:            
+
+NAME: "LINK sub-module of 8", DESCR: "7600-ES20-20GE Link Daugher Card Rev. 1.1"
+PID: 7600-ES20-20GE    , VID:    , SN: JAE1224LDPY
+
+NAME: "subslot 8/0 transceiver container 0", DESCR: "subslot 8/0 transceiver container 0"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 0", DESCR: "GE LX"
+PID: SFP-GE-L            , VID: A   , SN: FNS121513YE     
+
+NAME: "subslot 8/0 transceiver 0 Temperature Sensor", DESCR: "subslot 8/0 transceiver 0 Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 0 Supply Voltage Sensor", DESCR: "subslot 8/0 transceiver 0 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 0 Bias Current Sensor", DESCR: "subslot 8/0 transceiver 0 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 0 Tx Power Sensor", DESCR: "subslot 8/0 transceiver 0 Tx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 0 Rx Power Sensor", DESCR: "subslot 8/0 transceiver 0 Rx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "GigabitEthernet8/0/0", DESCR: "GigEther SPA"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver container 1", DESCR: "subslot 8/0 transceiver container 1"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 1", DESCR: "GE LX"
+PID: SFP-GE-L            , VID: A   , SN: FNS121513XB     
+
+NAME: "subslot 8/0 transceiver 1 Temperature Sensor", DESCR: "subslot 8/0 transceiver 1 Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 1 Supply Voltage Sensor", DESCR: "subslot 8/0 transceiver 1 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 1 Bias Current Sensor", DESCR: "subslot 8/0 transceiver 1 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 1 Tx Power Sensor", DESCR: "subslot 8/0 transceiver 1 Tx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 1 Rx Power Sensor", DESCR: "subslot 8/0 transceiver 1 Rx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "GigabitEthernet8/0/1", DESCR: "GigEther SPA"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver container 2", DESCR: "subslot 8/0 transceiver container 2"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 2", DESCR: "GE LX"
+PID: SFP-GE-L            , VID: A   , SN: FNS121513WJ     
+
+NAME: "subslot 8/0 transceiver 2 Temperature Sensor", DESCR: "subslot 8/0 transceiver 2 Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 2 Supply Voltage Sensor", DESCR: "subslot 8/0 transceiver 2 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 2 Bias Current Sensor", DESCR: "subslot 8/0 transceiver 2 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 2 Tx Power Sensor", DESCR: "subslot 8/0 transceiver 2 Tx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 2 Rx Power Sensor", DESCR: "subslot 8/0 transceiver 2 Rx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "GigabitEthernet8/0/2", DESCR: "GigEther SPA"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver container 3", DESCR: "subslot 8/0 transceiver container 3"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 3", DESCR: "GE LX"
+PID: SFP-GE-L            , VID: A   , SN: FNS121513US     
+
+NAME: "subslot 8/0 transceiver 3 Temperature Sensor", DESCR: "subslot 8/0 transceiver 3 Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 3 Supply Voltage Sensor", DESCR: "subslot 8/0 transceiver 3 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 3 Bias Current Sensor", DESCR: "subslot 8/0 transceiver 3 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 3 Tx Power Sensor", DESCR: "subslot 8/0 transceiver 3 Tx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 3 Rx Power Sensor", DESCR: "subslot 8/0 transceiver 3 Rx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "GigabitEthernet8/0/3", DESCR: "GigEther SPA"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver container 4", DESCR: "subslot 8/0 transceiver container 4"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 4", DESCR: "GE LX"
+PID: SFP-GE-L            , VID: A   , SN: FNS121513VR     
+
+NAME: "subslot 8/0 transceiver 4 Temperature Sensor", DESCR: "subslot 8/0 transceiver 4 Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 4 Supply Voltage Sensor", DESCR: "subslot 8/0 transceiver 4 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 4 Bias Current Sensor", DESCR: "subslot 8/0 transceiver 4 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 4 Tx Power Sensor", DESCR: "subslot 8/0 transceiver 4 Tx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 4 Rx Power Sensor", DESCR: "subslot 8/0 transceiver 4 Rx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "GigabitEthernet8/0/4", DESCR: "GigEther SPA"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver container 5", DESCR: "subslot 8/0 transceiver container 5"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 5", DESCR: "GE LX"
+PID: SFP-GE-L            , VID: A   , SN: FNS121513VH     
+
+NAME: "subslot 8/0 transceiver 5 Temperature Sensor", DESCR: "subslot 8/0 transceiver 5 Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 5 Supply Voltage Sensor", DESCR: "subslot 8/0 transceiver 5 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 5 Bias Current Sensor", DESCR: "subslot 8/0 transceiver 5 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 5 Tx Power Sensor", DESCR: "subslot 8/0 transceiver 5 Tx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 5 Rx Power Sensor", DESCR: "subslot 8/0 transceiver 5 Rx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "GigabitEthernet8/0/5", DESCR: "GigEther SPA"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver container 6", DESCR: "subslot 8/0 transceiver container 6"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 6", DESCR: "GE LX"
+PID: SFP-GE-L            , VID: A   , SN: FNS121513XM     
+
+NAME: "subslot 8/0 transceiver 6 Temperature Sensor", DESCR: "subslot 8/0 transceiver 6 Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 6 Supply Voltage Sensor", DESCR: "subslot 8/0 transceiver 6 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 6 Bias Current Sensor", DESCR: "subslot 8/0 transceiver 6 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 6 Tx Power Sensor", DESCR: "subslot 8/0 transceiver 6 Tx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 6 Rx Power Sensor", DESCR: "subslot 8/0 transceiver 6 Rx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "GigabitEthernet8/0/6", DESCR: "GigEther SPA"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver container 7", DESCR: "subslot 8/0 transceiver container 7"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 7", DESCR: "GE LX"
+PID: SFP-GE-L            , VID: A   , SN: FNS121513Y5     
+
+NAME: "subslot 8/0 transceiver 7 Temperature Sensor", DESCR: "subslot 8/0 transceiver 7 Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 7 Supply Voltage Sensor", DESCR: "subslot 8/0 transceiver 7 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 7 Bias Current Sensor", DESCR: "subslot 8/0 transceiver 7 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 7 Tx Power Sensor", DESCR: "subslot 8/0 transceiver 7 Tx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 7 Rx Power Sensor", DESCR: "subslot 8/0 transceiver 7 Rx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "GigabitEthernet8/0/7", DESCR: "GigEther SPA"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver container 8", DESCR: "subslot 8/0 transceiver container 8"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 8", DESCR: "GE LX"
+PID: SFP-GE-L            , VID: A   , SN: FNS121513W3     
+
+NAME: "subslot 8/0 transceiver 8 Temperature Sensor", DESCR: "subslot 8/0 transceiver 8 Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 8 Supply Voltage Sensor", DESCR: "subslot 8/0 transceiver 8 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 8 Bias Current Sensor", DESCR: "subslot 8/0 transceiver 8 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 8 Tx Power Sensor", DESCR: "subslot 8/0 transceiver 8 Tx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 8 Rx Power Sensor", DESCR: "subslot 8/0 transceiver 8 Rx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "GigabitEthernet8/0/8", DESCR: "GigEther SPA"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver container 9", DESCR: "subslot 8/0 transceiver container 9"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 9", DESCR: "GE LX"
+PID: SFP-GE-L            , VID: A   , SN: FNS121513XR     
+
+NAME: "subslot 8/0 transceiver 9 Temperature Sensor", DESCR: "subslot 8/0 transceiver 9 Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 9 Supply Voltage Sensor", DESCR: "subslot 8/0 transceiver 9 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 9 Bias Current Sensor", DESCR: "subslot 8/0 transceiver 9 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 9 Tx Power Sensor", DESCR: "subslot 8/0 transceiver 9 Tx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 9 Rx Power Sensor", DESCR: "subslot 8/0 transceiver 9 Rx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "GigabitEthernet8/0/9", DESCR: "GigEther SPA"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver container 10", DESCR: "subslot 8/0 transceiver container 10"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 10", DESCR: "GE LX"
+PID: SFP-GE-L            , VID: A   , SN: FNS121513VM     
+
+NAME: "subslot 8/0 transceiver 10 Temperature Sensor", DESCR: "subslot 8/0 transceiver 10 Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 10 Supply Voltage Sensor", DESCR: "subslot 8/0 transceiver 10 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 10 Bias Current Sensor", DESCR: "subslot 8/0 transceiver 10 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 10 Tx Power Sensor", DESCR: "subslot 8/0 transceiver 10 Tx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 10 Rx Power Sensor", DESCR: "subslot 8/0 transceiver 10 Rx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "GigabitEthernet8/0/10", DESCR: "GigEther SPA"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver container 11", DESCR: "subslot 8/0 transceiver container 11"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 11", DESCR: "GE LX"
+PID: SFP-GE-L            , VID: A   , SN: FNS121513X6     
+
+NAME: "subslot 8/0 transceiver 11 Temperature Sensor", DESCR: "subslot 8/0 transceiver 11 Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 11 Supply Voltage Sensor", DESCR: "subslot 8/0 transceiver 11 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 11 Bias Current Sensor", DESCR: "subslot 8/0 transceiver 11 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 11 Tx Power Sensor", DESCR: "subslot 8/0 transceiver 11 Tx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 11 Rx Power Sensor", DESCR: "subslot 8/0 transceiver 11 Rx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "GigabitEthernet8/0/11", DESCR: "GigEther SPA"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver container 12", DESCR: "subslot 8/0 transceiver container 12"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 12", DESCR: "GE LX"
+PID: SFP-GE-L            , VID: A   , SN: FNS121513UW     
+
+NAME: "subslot 8/0 transceiver 12 Temperature Sensor", DESCR: "subslot 8/0 transceiver 12 Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 12 Supply Voltage Sensor", DESCR: "subslot 8/0 transceiver 12 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 12 Bias Current Sensor", DESCR: "subslot 8/0 transceiver 12 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 12 Tx Power Sensor", DESCR: "subslot 8/0 transceiver 12 Tx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 12 Rx Power Sensor", DESCR: "subslot 8/0 transceiver 12 Rx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "GigabitEthernet8/0/12", DESCR: "GigEther SPA"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver container 13", DESCR: "subslot 8/0 transceiver container 13"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 13", DESCR: "GE LX"
+PID: SFP-GE-L            , VID: A   , SN: FNS121513UL     
+
+NAME: "subslot 8/0 transceiver 13 Temperature Sensor", DESCR: "subslot 8/0 transceiver 13 Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 13 Supply Voltage Sensor", DESCR: "subslot 8/0 transceiver 13 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 13 Bias Current Sensor", DESCR: "subslot 8/0 transceiver 13 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 13 Tx Power Sensor", DESCR: "subslot 8/0 transceiver 13 Tx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 13 Rx Power Sensor", DESCR: "subslot 8/0 transceiver 13 Rx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "GigabitEthernet8/0/13", DESCR: "GigEther SPA"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver container 14", DESCR: "subslot 8/0 transceiver container 14"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 14", DESCR: "GE LX"
+PID: SFP-GE-L            , VID: A   , SN: FNS121513YP     
+
+NAME: "subslot 8/0 transceiver 14 Temperature Sensor", DESCR: "subslot 8/0 transceiver 14 Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 14 Supply Voltage Sensor", DESCR: "subslot 8/0 transceiver 14 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 14 Bias Current Sensor", DESCR: "subslot 8/0 transceiver 14 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 14 Tx Power Sensor", DESCR: "subslot 8/0 transceiver 14 Tx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 14 Rx Power Sensor", DESCR: "subslot 8/0 transceiver 14 Rx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "GigabitEthernet8/0/14", DESCR: "GigEther SPA"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver container 15", DESCR: "subslot 8/0 transceiver container 15"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 15", DESCR: "GE LX"
+PID: SFP-GE-L            , VID: A   , SN: FNS121513VV     
+
+NAME: "subslot 8/0 transceiver 15 Temperature Sensor", DESCR: "subslot 8/0 transceiver 15 Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 15 Supply Voltage Sensor", DESCR: "subslot 8/0 transceiver 15 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 15 Bias Current Sensor", DESCR: "subslot 8/0 transceiver 15 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 15 Tx Power Sensor", DESCR: "subslot 8/0 transceiver 15 Tx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 15 Rx Power Sensor", DESCR: "subslot 8/0 transceiver 15 Rx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "GigabitEthernet8/0/15", DESCR: "GigEther SPA"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver container 16", DESCR: "subslot 8/0 transceiver container 16"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 16", DESCR: "GE LX"
+PID: SFP-GE-L            , VID: A   , SN: FNS121513XF     
+
+NAME: "subslot 8/0 transceiver 16 Temperature Sensor", DESCR: "subslot 8/0 transceiver 16 Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 16 Supply Voltage Sensor", DESCR: "subslot 8/0 transceiver 16 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 16 Bias Current Sensor", DESCR: "subslot 8/0 transceiver 16 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 16 Tx Power Sensor", DESCR: "subslot 8/0 transceiver 16 Tx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 16 Rx Power Sensor", DESCR: "subslot 8/0 transceiver 16 Rx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "GigabitEthernet8/0/16", DESCR: "GigEther SPA"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver container 17", DESCR: "subslot 8/0 transceiver container 17"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 17", DESCR: "GE LX"
+PID: SFP-GE-L            , VID: A   , SN: FNS121513XJ     
+
+NAME: "subslot 8/0 transceiver 17 Temperature Sensor", DESCR: "subslot 8/0 transceiver 17 Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 17 Supply Voltage Sensor", DESCR: "subslot 8/0 transceiver 17 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 17 Bias Current Sensor", DESCR: "subslot 8/0 transceiver 17 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 17 Tx Power Sensor", DESCR: "subslot 8/0 transceiver 17 Tx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 17 Rx Power Sensor", DESCR: "subslot 8/0 transceiver 17 Rx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "GigabitEthernet8/0/17", DESCR: "GigEther SPA"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver container 18", DESCR: "subslot 8/0 transceiver container 18"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 18", DESCR: "GE LX"
+PID: SFP-GE-L            , VID: A   , SN: FNS121513WU     
+
+NAME: "subslot 8/0 transceiver 18 Temperature Sensor", DESCR: "subslot 8/0 transceiver 18 Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 18 Supply Voltage Sensor", DESCR: "subslot 8/0 transceiver 18 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 18 Bias Current Sensor", DESCR: "subslot 8/0 transceiver 18 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 18 Tx Power Sensor", DESCR: "subslot 8/0 transceiver 18 Tx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 18 Rx Power Sensor", DESCR: "subslot 8/0 transceiver 18 Rx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "GigabitEthernet8/0/18", DESCR: "GigEther SPA"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver container 19", DESCR: "subslot 8/0 transceiver container 19"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 19", DESCR: "GE LX"
+PID: SFP-GE-L            , VID: A   , SN: FNS121513T2     
+
+NAME: "subslot 8/0 transceiver 19 Temperature Sensor", DESCR: "subslot 8/0 transceiver 19 Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 19 Supply Voltage Sensor", DESCR: "subslot 8/0 transceiver 19 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 19 Bias Current Sensor", DESCR: "subslot 8/0 transceiver 19 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 19 Tx Power Sensor", DESCR: "subslot 8/0 transceiver 19 Tx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "subslot 8/0 transceiver 19 Rx Power Sensor", DESCR: "subslot 8/0 transceiver 19 Rx Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "GigabitEthernet8/0/19", DESCR: "GigEther SPA"
+PID:                   , VID:    , SN:            
+
+NAME: "module 8 Link Daughterboard temperature Sensor 0", DESCR: "module 8 Link Daughterboard temperature Sensor 0"
+PID:                   , VID:    , SN:            
+
+NAME: "module 8 Link Daughterboard temperature Sensor 1", DESCR: "module 8 Link Daughterboard temperature Sensor 1"
+PID:                   , VID:    , SN:            
+
+NAME: "module 8 Link Daughterboard voltage Sensor 0", DESCR: "module 8 Link Daughterboard voltage Sensor 0"
+PID:                   , VID:    , SN:            
+
+NAME: "module 8 Link Daughterboard voltage Sensor 1", DESCR: "module 8 Link Daughterboard voltage Sensor 1"
+PID:                   , VID:    , SN:            
+
+NAME: "module 8 Link Daughterboard voltage Sensor 2", DESCR: "module 8 Link Daughterboard voltage Sensor 2"
+PID:                   , VID:    , SN:            
+
+NAME: "module 8 Link Daughterboard voltage Sensor 3", DESCR: "module 8 Link Daughterboard voltage Sensor 3"
+PID:                   , VID:    , SN:            
+
+NAME: "CPU Daughter Card Container 8", DESCR: "Daughter Card Container"
+PID:                   , VID:    , SN:            
+
+NAME: "CPU sub-module of 8", DESCR: "7600-ES20-PROC FRU type (0x6005, 0x6A5(1701)) Rev. 1.2"
+PID: 7600-ES20-PROC    , VID:    , SN: JAE1224LQU1
+
+NAME: "Switching Engine Container 8", DESCR: "Switching Engine Container"
+PID:                   , VID:    , SN:            
+
+NAME: "switching engine sub-module of 8", DESCR: "7600-ES20-D3CXL ESM20G Distributed Forwarding Card Rev. 1.0"
+PID: 7600-ES20-D3CXL   , VID:    , SN: JAE1222JV82
+
+NAME: "module 8 EARL outlet temperature Sensor", DESCR: "module 8 EARL outlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "module 8 EARL inlet temperature Sensor", DESCR: "module 8 EARL inlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "CPU of Sub-Module 8 DFC Card", DESCR: "CPU of Distributed Forwarding Card"
+PID:                   , VID:    , SN:            
+
+NAME: "power output-fail 8 ", DESCR: "module 8 power-output-fail Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "switch insufficient-cooling 8 ", DESCR: "module 8 insufficient cooling Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature outlet 8 ", DESCR: "module 8 outlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature inlet 8 ", DESCR: "module 8 inlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature device-1 8 ", DESCR: "module 8 device-1 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature device-2 8 ", DESCR: "module 8 device-2 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Physical Slot 9", DESCR: "Cisco Systems Cisco 7600 9-slot Physical Slot"
+PID:                   , VID:    , SN:            
+
+NAME: "module 9", DESCR: "WS-X6748-SFP CEF720 48 port 1000mb SFP Rev. 1.12"
+PID: WS-X6748-SFP      , VID: V03, SN: SAL1226VA5W
+
+NAME: "Switching Engine Container 9", DESCR: "Switching Engine Container"
+PID:                   , VID:    , SN:            
+
+NAME: "switching engine sub-module of 9", DESCR: "WS-F6700-DFC3CXL Distributed Forwarding Card 3 Rev. 1.1"
+PID: WS-F6700-DFC3CXL  , VID: V01, SN: SAL1226UXHG
+
+NAME: "module 9 EARL outlet temperature Sensor", DESCR: "module 9 EARL outlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "module 9 EARL inlet temperature Sensor", DESCR: "module 9 EARL inlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "CPU of Sub-Module 9 DFC Card", DESCR: "CPU of Distributed Forwarding Card"
+PID:                   , VID:    , SN:            
+
+NAME: "power output-fail 9 ", DESCR: "module 9 power-output-fail Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "switch insufficient-cooling 9 ", DESCR: "module 9 insufficient cooling Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature outlet 9 ", DESCR: "module 9 outlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature inlet 9 ", DESCR: "module 9 inlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature device-1 9 ", DESCR: "module 9 device-1 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature device-2 9 ", DESCR: "module 9 device-2 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Container of Fan FRU 1", DESCR: "Container of Fan FRU"
+PID:                   , VID:    , SN:            
+
+NAME: "FAN-MOD-09 1", DESCR: "Vertical 9-slot Fan FRU 1"
+PID: FAN-MOD-09        , VID: V01, SN: DCH12092654
+
+NAME: "Container of Fan FRU 2", DESCR: "Container of Fan FRU"
+PID:                   , VID:    , SN:            
+
+NAME: "FAN-MOD-09 2", DESCR: "Vertical 9-slot Fan FRU 2"
+PID: FAN-MOD-09        , VID: V01, SN: DCH12092709
+
+NAME: "Container of Container of Power Supply", DESCR: "Container of Container of Power Supply"
+PID:                   , VID:    , SN:            
+
+NAME: "Container of Power Supply 1", DESCR: "Container of Power Supply"
+PID:                   , VID:    , SN:            
+
+NAME: "PS 1 PWR-6000-DC", DESCR: "DC power supply, 6000 watt 1"
+PID: PWR-6000-DC       , VID: V01, SN: AZS12080GK7
+
+NAME: "power-supply 1 fan-fail Sensor", DESCR: "power-supply 1 fan-fail Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "power-supply 1 power-output-fail Sensor", DESCR: "power-supply 1 power-output-fail Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "power-supply 1 incompatible with fan Sensor", DESCR: "power-supply 1 incompatible with fan Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "power-supply 1 power-input 1 Sensor", DESCR: "power-supply 1 power-input 1 Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "power-supply 1 power-input 2 Sensor", DESCR: "power-supply 1 power-input 2 Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "power-supply 1 power-input 3 Sensor", DESCR: "power-supply 1 power-input 3 Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "power-supply 1 power-input 4 Sensor", DESCR: "power-supply 1 power-input 4 Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Container of Power Supply 2", DESCR: "Container of Power Supply"
+PID:                   , VID:    , SN:            
+
+NAME: "PS 2 PWR-6000-DC", DESCR: "DC power supply, 6000 watt 2"
+PID: PWR-6000-DC       , VID: V01, SN: AZS12080GK3
+
+NAME: "power-supply 2 fan-fail Sensor", DESCR: "power-supply 2 fan-fail Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "power-supply 2 power-output-fail Sensor", DESCR: "power-supply 2 power-output-fail Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "power-supply 2 incompatible with fan Sensor", DESCR: "power-supply 2 incompatible with fan Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "power-supply 2 power-input 1 Sensor", DESCR: "power-supply 2 power-input 1 Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "power-supply 2 power-input 2 Sensor", DESCR: "power-supply 2 power-input 2 Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "power-supply 2 power-input 3 Sensor", DESCR: "power-supply 2 power-input 3 Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "power-supply 2 power-input 4 Sensor", DESCR: "power-supply 2 power-input 4 Sensor"
+PID:                   , VID:    , SN:            
+
+
+UCNAR05#
