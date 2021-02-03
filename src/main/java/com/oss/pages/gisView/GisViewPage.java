@@ -2,6 +2,7 @@ package com.oss.pages.gisView;
 
 
 import com.oss.framework.components.inputs.Button;
+import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.dockedPanel.DockedPanel;
@@ -38,16 +39,17 @@ public class GisViewPage extends BasePage {
         gisMap.searchResult(value);
     }
 
-    public void useContextAction(String group, String label) {
-        GisMapInterface gisMap = GisMap.create(driver, wait);
-        gisMap.callActionByLabel(group, label);
+    public void chooseOptionFromDropDownList(String buttonId, String optionId) {
+        Button.createById(driver, buttonId).click();
+        DelayUtils.waitForPageToLoad(driver, wait);
+        DropdownList.create(driver, wait).selectOptionWithId(optionId);
     }
 
-    public void useContextActionById(String actionId) {
+    public void useContextActionByLabel(String actionLabel) {
         DelayUtils.waitForPageToLoad(driver, wait);
         GisMapInterface gisMap = GisMap.create(driver, wait);
         DelayUtils.waitForPageToLoad(driver, wait);
-        gisMap.callActionById(actionId);
+        gisMap.callActionByLabel(actionLabel);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
