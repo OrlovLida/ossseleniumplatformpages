@@ -71,7 +71,8 @@ public class TP_OSS_RM_RAN_004_All_Steps_Except_9 extends BaseTestCase {
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             cellSiteConfigurationPage.clickPlusIconAndSelectOption("Host on Device");
             HostingWizardPage wizard = new HostingWizardPage(driver);
-            wizard.selectDevice(radioUnitNames[i]);
+            //TODO: check below method
+            //wizard.selectDevice(radioUnitNames[i]);
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             wizard.clickAccept();
             checkPopup("Hosting Create Success");
@@ -86,7 +87,8 @@ public class TP_OSS_RM_RAN_004_All_Steps_Except_9 extends BaseTestCase {
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             cellSiteConfigurationPage.clickPlusIconAndSelectOption("Host on Antenna Array");
             HostingWizardPage wizard = new HostingWizardPage(driver);
-            wizard.selectArray(antennaNames[i] + "/APE4518R14V06_Ly1");
+            //TODO: check below method
+            //wizard.selectArray(antennaNames[i] + "/APE4518R14V06_Ly1");
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             wizard.clickAccept();
             checkPopup("Hosting Create Success");
@@ -286,13 +288,5 @@ public class TP_OSS_RM_RAN_004_All_Steps_Except_9 extends BaseTestCase {
         editCell4GWizardPage.setPaOutputBulk(PA_OUTPUT);//
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         editCell4GWizardPage.accept();
-        //jakis popup?
-
-        //resource signal power
-        //bandwidth DL i UL
-        //Pb
-        //local cell id
-        //mimo
-        //pa
     }
 }
