@@ -3,6 +3,7 @@ package com.oss.E2E;
 import java.util.List;
 
 import org.assertj.core.api.Assertions;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -24,6 +25,7 @@ import com.oss.pages.radio.HostingWizardPage;
 import com.oss.pages.radio.RanAntennaWizardPage;
 import com.oss.pages.reconciliation.CmDomainWizardPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
+import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage.IssueLevel;
 import com.oss.pages.reconciliation.NetworkInconsistenciesViewPage;
 import com.oss.pages.reconciliation.SamplesManagementPage;
 import com.oss.utils.TestListener;
@@ -34,23 +36,22 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
     private CellSiteConfigurationPage cellSiteConfigurationPage;
     private NewInventoryViewPage newInventoryViewPage;
-    private AntennaArrayWizardPage antennaArrayWizardPage;
-    private String LOCATION_NAME = "Poznan-BU1";
-    private String ANTENNA_NAME = "TS-RAN-E2E-01-4G-ANTENNA";
-    private String ANTENNA_TRAIL_NAME = "TS-RAN-E2E-01-4G-ANTENNA-TRAIL";
-    private String CABLE_NAME = "TS-RAN-E2E-01-4G-CABLE";
-    private String CPRI_NAME = "TS-RAN-E2E-01-4G-CPRI";
-    private String ENODEB_NAME = "DXBL0858UAT6-Burj-Dubai_The-Palace-Hotel_West-Wing";
-    private String BBU_NAME = "eNodeB,DXBL0858UAT6-Burj-Dubai_The-Palace-Hotel_West-Wing/0/BBU3900,0";
-    private String RRU_NAME = "eNodeB,DXBL0858UAT6-Burj-Dubai_The-Palace-Hotel_West-Wing/0/MRRU,60";
-    private String CELL4G_NAME = "DXBL0858UAT61";
-    private String RAN_ANTENNA_MODEL = "Generic 3-Array Antenna";
-    private String cmDomainName = "Selenium-TS-RAN-E2E-01-4G";
-    private String cmInterface = "Huawei U2000 RAN";
-    private String[] inconsistenciesNames = {
+    private static final String LOCATION_NAME = "Poznan-BU1";
+    private static final String ANTENNA_NAME = "TS-RAN-E2E-01-4G-ANTENNA";
+    private static final String ANTENNA_TRAIL_NAME = "TS-RAN-E2E-01-4G-ANTENNA-TRAIL";
+    private static final String CABLE_NAME = "TS-RAN-E2E-01-4G-CABLE";
+    private static final String CPRI_NAME = "TS-RAN-E2E-01-4G-CPRI";
+    private static final String ENODEB_NAME = "DXBL0858UAT6-Burj-Dubai_The-Palace-Hotel_West-Wing";
+    private static final String BBU_NAME = "eNodeB,DXBL0858UAT6-Burj-Dubai_The-Palace-Hotel_West-Wing/0/BBU3900,0";
+    private static final String RRU_NAME = "eNodeB,DXBL0858UAT6-Burj-Dubai_The-Palace-Hotel_West-Wing/0/MRRU,60";
+    private static final String CELL4G_NAME = "DXBL0858UAT61";
+    private static final String RAN_ANTENNA_MODEL = "Generic 3-Array Antenna";
+    private static final String cmDomainName = "Selenium-TS-RAN-E2E-01-4G";
+    private static final String cmInterface = "Huawei U2000 RAN";
+    private static final String[] inconsistenciesNames = {
             "PhysicalElement-" + BBU_NAME,
             "PhysicalElement-" + RRU_NAME };
-    private String inconsistenciesRanName = "ENODEB-" + ENODEB_NAME;
+    private static final String inconsistenciesRanName = "ENODEB-" + ENODEB_NAME;
 
     @BeforeClass
     public void openNetworkDiscoveryControlView() {
@@ -97,13 +98,18 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
         networkDiscoveryControlViewPage.runReconciliation();
         networkDiscoveryControlViewPage.checkReconciliationStartedSystemMessage();
         networkDiscoveryControlViewPage.waitForEndOfReco();
+        networkDiscoveryControlViewPage.selectLatestReconciliationState();
+        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(IssueLevel.STARTUP_FATAL));
+        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(IssueLevel.FATAL));
+        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(IssueLevel.ERROR));
+        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(IssueLevel.WARNING));
     }
 
     @Test(priority = 4)
     public void assignLocationAndApplyInconsistencies() {
         networkDiscoveryControlViewPage.moveToNivFromNdcv();
         NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
-        networkInconsistenciesViewPage.expantTree();
+        networkInconsistenciesViewPage.expandTree();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         for (String inconsistencieName : inconsistenciesNames) {
             networkInconsistenciesViewPage.assignLocation(inconsistencieName, LOCATION_NAME);
@@ -149,7 +155,7 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
         ranAntennaWizardPage.setPreciseLocation(LOCATION_NAME);
         ranAntennaWizardPage.clickAccept();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        antennaArrayWizardPage = new AntennaArrayWizardPage(driver);
+        AntennaArrayWizardPage antennaArrayWizardPage = new AntennaArrayWizardPage(driver);
         antennaArrayWizardPage.clickAccept();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         checkPopup();
@@ -165,7 +171,7 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cellSiteConfigurationPage.clickPlusIconAndSelectOption("Host on Antenna Array");
         HostingWizardPage wizard = new HostingWizardPage(driver);
-        wizard.selectArray(ANTENNA_NAME + "/3-Array Antenna_Array 1");
+        wizard.setHostingContains(ANTENNA_NAME + "/3-Array Antenna_Array 1");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         wizard.clickAccept();
         checkPopup();
@@ -191,8 +197,8 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
     public void createAntennaTrail() {
         openCellSiteConfigurationView();
         cellSiteConfigurationPage.selectTreeRow("All Resources");
-        cellSiteConfigurationPage.selectResource(ANTENNA_NAME);
-        cellSiteConfigurationPage.selectResource(RRU_NAME);
+        cellSiteConfigurationPage.selectRowByAttributeValueWithLabel("Name", ANTENNA_NAME);
+        cellSiteConfigurationPage.selectRowByAttributeValueWithLabel("Name", RRU_NAME);
         cellSiteConfigurationPage.useTableContextActionById("Create Trail");
         cellSiteConfigurationPage.selectTrailType("Antenna Trail");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -216,8 +222,8 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
         cellSiteConfigurationPage.selectTreeRow("All Resources");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cellSiteConfigurationPage.selectTreeRow("All Resources");
-        cellSiteConfigurationPage.selectResource(BBU_NAME);
-        cellSiteConfigurationPage.selectResource(RRU_NAME);
+        cellSiteConfigurationPage.selectRowByAttributeValueWithLabel("Name", BBU_NAME);
+        cellSiteConfigurationPage.selectRowByAttributeValueWithLabel("Name", RRU_NAME);
         cellSiteConfigurationPage.useTableContextActionById("Create Trail");
         cellSiteConfigurationPage.selectTrailType("CPRI Trail");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);

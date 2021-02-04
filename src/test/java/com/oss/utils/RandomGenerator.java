@@ -57,6 +57,26 @@ public class RandomGenerator {
         return buffer.toString();
     }
 
+    public static String generateRandomNodeBId() {
+        int min = 0;
+        int max = 999999999; // id nodeb </= 1 073 741 824
+        Random random = new Random();
+        int randomNumber = random.nextInt((max - min) + 1) + min;
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(randomNumber);
+        return buffer.toString();
+    }
+
+    public static String generateRandomCell3GId() {
+        int min = 0;
+        int max = 65535; // id cell4g </= 65535
+        Random random = new Random();
+        int randomNumber = random.nextInt((max - min) + 1) + min;
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(randomNumber);
+        return buffer.toString();
+    }
+
     public static String generateRandomCarrierLinkChannel() {
         int min = 0;
         int max = 262143; // DownLink carrier 4G&5G </= 3 279 165

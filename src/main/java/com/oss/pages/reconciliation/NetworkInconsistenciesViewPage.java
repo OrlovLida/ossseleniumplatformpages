@@ -29,15 +29,15 @@ import io.qameta.allure.Step;
 public class NetworkInconsistenciesViewPage extends BasePage {
 
     private TreeWidget mainTree;
-    private String APPLY_GROUP_BUTTON_ID = "narComponent_GroupDiscrepancyActionApplyId";
-    private String APPLY_BUTTON_ID = "narComponent_DiscrepancyActionApplyId";
-    private String PHYSICAL_INCONSITENCIES_TABLE_ID = "narComponent_networkInconsistenciesViewIddiscrepancyDetailsTreeTableId";
-    private String RAN_INCONSITENCIES_TABLE_ID = "radioAppId";
-    private String CHANGE_LOCATION_ACTION_ID = "DeviceChangeLocationAction";
-    private String NIV_TREE = "narComponent_networkInconsistenciesViewIddiscrepanciesTreeTabId";
-    private String PRECISE_LOCATION_ID = "precise_location";
-    private String PHYSICAL_LOCATION_ID = "physical_location";
-    private String ACCEPT_CHANGE_LOCATION_BUTTON_ID = "wizard-submit-button-change-location-wizard";
+    private static final String APPLY_GROUP_BUTTON_ID = "narComponent_GroupDiscrepancyActionApplyId";
+    private static final String APPLY_BUTTON_ID = "narComponent_DiscrepancyActionApplyId";
+    private static final String PHYSICAL_INCONSITENCIES_TABLE_ID = "narComponent_networkInconsistenciesViewIddiscrepancyDetailsTreeTableId";
+    private static final String RAN_INCONSITENCIES_TABLE_ID = "radioAppId";
+    private static final String CHANGE_LOCATION_ACTION_ID = "DeviceChangeLocationAction";
+    private static final String NIV_TREE = "narComponent_networkInconsistenciesViewIddiscrepanciesTreeTabId";
+    private static final String PRECISE_LOCATION_ID = "precise_location";
+    private static final String PHYSICAL_LOCATION_ID = "physical_location";
+    private static final String ACCEPT_CHANGE_LOCATION_BUTTON_ID = "wizard-submit-button-change-location-wizard";
 
     public NetworkInconsistenciesViewPage(WebDriver driver) {
         super(driver);
@@ -53,7 +53,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
     }
 
     @Step("Expand two tree levels of Inconsistencies")
-    public void expantTree() {
+    public void expandTree() {
         DelayUtils.waitForPageToLoad(driver, wait);
         Assertions.assertThat(getTreeView().getVisibleTreeRow().size() > 1);
         getTreeView().expandLastTreeRow();
@@ -62,7 +62,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    @Step("Select first Device and use Physical Device Update Wizard to assign location")
+    @Step("Select {inconsistencyName} and use Physical Device Update Wizard to assign location")
     public void assignLocation(String inconsistencyName, String preciseLocation) {
         mainTree.selectTreeRow(inconsistencyName);
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -77,7 +77,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         wizard.clickActionById(ACCEPT_CHANGE_LOCATION_BUTTON_ID);
     }
 
-    @Step("Select first Device and use assign location option")
+    @Step("Select {inconsistencyName} and use assign location option")
     public void assignRanLocation(String inconsistencyName, String location) {
         mainTree.selectTreeRow(inconsistencyName);
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -105,6 +105,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         getTreeView().selectTreeRowByOrder(2);
         TabsInterface nivTabs = TabWindowWidget.create(driver, wait);
         nivTabs.selectTabById(NIV_TREE);
+        DelayUtils.sleep(1000);
         nivTabs.callActionById(APPLY_GROUP_BUTTON_ID);
         DelayUtils.sleep(1000);
     }
@@ -113,6 +114,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
     public void applySelectedInconsistencies() {
         TabsInterface nivTabs = TabWindowWidget.create(driver, wait);
         nivTabs.selectTabById(NIV_TREE);
+        DelayUtils.sleep(1000);
         nivTabs.callActionById(APPLY_BUTTON_ID);
         DelayUtils.sleep(1000);
     }
@@ -135,6 +137,6 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         DelayUtils.sleep(5000);
         DelayUtils.waitForPageToLoad(driver, wait);
         TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, PHYSICAL_INCONSITENCIES_TABLE_ID);
-        return table.getValueCell(0, "Operation Type");
+        return table.getCellValue(0, "Operation Type");
     }
 }

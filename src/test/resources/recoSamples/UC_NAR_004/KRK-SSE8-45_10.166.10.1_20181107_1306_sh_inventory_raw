@@ -1,0 +1,2076 @@
+show inventory raw
+NAME: "WS-C6509", DESCR: "Cisco Systems Catalyst 6500 9-slot Chassis System"
+PID: WS-C6509          , VID:    , SN: SMG0736A048
+
+NAME: "Backplane", DESCR: "Cisco Systems Catalyst 6500 9-slot backplane"
+PID:                   , VID:    , SN:            
+
+NAME: "Container of VTT 1", DESCR: "Container of VTT"
+PID:                   , VID:    , SN:            
+
+NAME: "WS-C6K-VTT 1", DESCR: "VTT FRU 1"
+PID: WS-C6K-VTT        , VID:    , SN: SMT0729A893
+
+NAME: "VTT 1 OK Sensor", DESCR: "VTT FRU 1 OK Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "VTT 1 outlet temperature Sensor", DESCR: "VTT FRU 1 outlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Container of VTT 2", DESCR: "Container of VTT"
+PID:                   , VID:    , SN:            
+
+NAME: "WS-C6K-VTT 2", DESCR: "VTT FRU 2"
+PID: WS-C6K-VTT        , VID:    , SN: SMT0729B095
+
+NAME: "VTT 2 OK Sensor", DESCR: "VTT FRU 2 OK Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "VTT 2 outlet temperature Sensor", DESCR: "VTT FRU 2 outlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Container of VTT 3", DESCR: "Container of VTT"
+PID:                   , VID:    , SN:            
+
+NAME: "WS-C6K-VTT 3", DESCR: "VTT FRU 3"
+PID: WS-C6K-VTT        , VID:    , SN: SMT0729A891
+
+NAME: "VTT 3 OK Sensor", DESCR: "VTT FRU 3 OK Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "VTT 3 outlet temperature Sensor", DESCR: "VTT FRU 3 outlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Container of Clock 1", DESCR: "Container of Clock"
+PID:                   , VID:    , SN:            
+
+NAME: "WS-C6000-CL 1", DESCR: "C6K Clock FRU 1"
+PID: WS-C6000-CL       , VID:    , SN: SMT0728B161
+
+NAME: "Clock 1 OK Sensor", DESCR: "C6K Clock FRU 1 OK Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Clock 1 In Using Sensor", DESCR: "C6K Clock FRU 1 In Using Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Container of Clock 2", DESCR: "Container of Clock"
+PID:                   , VID:    , SN:            
+
+NAME: "WS-C6000-CL 2", DESCR: "C6K Clock FRU 2"
+PID: WS-C6000-CL       , VID:    , SN: SMT0728C569
+
+NAME: "Clock 2 OK Sensor", DESCR: "C6K Clock FRU 2 OK Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Clock 2 In Using Sensor", DESCR: "C6K Clock FRU 2 In Using Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Sensor for counting number of OK VTTs", DESCR: "Sensor for counting number of OK VTTs"
+PID:                   , VID:    , SN:            
+
+NAME: "Sensor for counting number of OK Clocks", DESCR: "Sensor for counting number of OK Clocks"
+PID:                   , VID:    , SN:            
+
+NAME: "PS 1 Absent High Power Usage Sensor", DESCR: "PS 1 Absent High Power Usage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "fan-tray 1 fan-fail Sensor", DESCR: "fan-tray 1 fan-fail Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Physical Slot 1", DESCR: "Cisco Systems Catalyst 6500 9-slot Physical Slot"
+PID:                   , VID:    , SN:            
+
+NAME: "module 1", DESCR: "WS-X6704-10GE CEF720 4 port 10-Gigabit Ethernet Rev. 3.2"
+PID: WS-X6704-10GE     , VID: V04, SN: SAL1642Q95X
+
+NAME: "Switching Engine Container 1", DESCR: "Switching Engine Container"
+PID:                   , VID:    , SN:            
+
+NAME: "switching engine sub-module of 1", DESCR: "WS-F6700-DFC3CXL Distributed Forwarding Card 3 Rev. 1.7"
+PID: WS-F6700-DFC3CXL  , VID: V03, SN: SAL1640NVPQ
+
+NAME: "module 1 EARL outlet temperature Sensor", DESCR: "module 1 EARL outlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "module 1 EARL inlet temperature Sensor", DESCR: "module 1 EARL inlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "CPU of Sub-Module 1 DFC Card", DESCR: "CPU of Distributed Forwarding Card"
+PID:                   , VID:    , SN:            
+
+NAME: "power output-fail 1 ", DESCR: "module 1 power-output-fail Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "switch insufficient-cooling 1 ", DESCR: "module 1 insufficient cooling Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature outlet 1 ", DESCR: "module 1 outlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature inlet 1 ", DESCR: "module 1 inlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Te1/1", DESCR: "Transceiver Port Te1/1"
+PID:                   , VID:    , SN:            
+
+NAME: "10-Gigabit Transceiver Port Container Te1/1", DESCR: "10-Gigabit Transceiver Port Container Te1/1"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Te1/1", DESCR: "Transceiver 10Gbase-LR Te1/1"
+PID: XENPAK-10GB-LR+   , VID: V01 , SN: ONT163400JA
+
+NAME: "Te1/1 Module Temperature Sensor", DESCR: "TenGigabitEthernet1/1 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Te1/1 Supply Voltage Sensor", DESCR: "TenGigabitEthernet1/1 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Te1/1 Bias Current Sensor", DESCR: "TenGigabitEthernet1/1 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Te1/1 Transmit Power Sensor", DESCR: "TenGigabitEthernet1/1 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Te1/1 Receive Power Sensor", DESCR: "TenGigabitEthernet1/1 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Te1/2", DESCR: "Transceiver Port Te1/2"
+PID:                   , VID:    , SN:            
+
+NAME: "10-Gigabit Transceiver Port Container Te1/2", DESCR: "10-Gigabit Transceiver Port Container Te1/2"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Te1/2", DESCR: "Transceiver 10Gbase-LR Te1/2"
+PID: XENPAK-10GB-LR+   , VID: V05 , SN: FNS17410SQ1
+
+NAME: "Te1/2 Module Temperature Sensor", DESCR: "TenGigabitEthernet1/2 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Te1/2 Supply Voltage Sensor", DESCR: "TenGigabitEthernet1/2 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Te1/2 Bias Current Sensor", DESCR: "TenGigabitEthernet1/2 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Te1/2 Transmit Power Sensor", DESCR: "TenGigabitEthernet1/2 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Te1/2 Receive Power Sensor", DESCR: "TenGigabitEthernet1/2 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Te1/3", DESCR: "Transceiver Port Te1/3"
+PID:                   , VID:    , SN:            
+
+NAME: "10-Gigabit Transceiver Port Container Te1/3", DESCR: "10-Gigabit Transceiver Port Container Te1/3"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Te1/3", DESCR: "Transceiver 10Gbase-LR Te1/3"
+PID: XENPAK-10GB-LR+   , VID: V01 , SN: ONT163404BX
+
+NAME: "Te1/3 Module Temperature Sensor", DESCR: "TenGigabitEthernet1/3 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Te1/3 Supply Voltage Sensor", DESCR: "TenGigabitEthernet1/3 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Te1/3 Bias Current Sensor", DESCR: "TenGigabitEthernet1/3 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Te1/3 Transmit Power Sensor", DESCR: "TenGigabitEthernet1/3 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Te1/3 Receive Power Sensor", DESCR: "TenGigabitEthernet1/3 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Te1/4", DESCR: "Transceiver Port Te1/4"
+PID:                   , VID:    , SN:            
+
+NAME: "10-Gigabit Transceiver Port Container Te1/4", DESCR: "10-Gigabit Transceiver Port Container Te1/4"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Te1/4", DESCR: "Transceiver 10Gbase-LR Te1/4"
+PID: XENPAK-10GB-LR+   , VID: V01 , SN: IFT124202CU
+
+NAME: "Te1/4 Module Temperature Sensor", DESCR: "TenGigabitEthernet1/4 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Te1/4 Supply Voltage Sensor", DESCR: "TenGigabitEthernet1/4 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Te1/4 Bias Current Sensor", DESCR: "TenGigabitEthernet1/4 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Te1/4 Transmit Power Sensor", DESCR: "TenGigabitEthernet1/4 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Te1/4 Receive Power Sensor", DESCR: "TenGigabitEthernet1/4 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Physical Slot 2", DESCR: "Cisco Systems Catalyst 6500 9-slot Physical Slot"
+PID:                   , VID:    , SN:            
+
+NAME: "module 2", DESCR: "WS-X6748-GE-TX CEF720 48 port 10/100/1000mb Ethernet Rev. 2.5"
+PID: WS-X6748-GE-TX    , VID: V02, SN: SAL1106G51J
+
+NAME: "Switching Engine Container 2", DESCR: "Switching Engine Container"
+PID:                   , VID:    , SN:            
+
+NAME: "switching engine sub-module of 2", DESCR: "WS-F6700-CFC Centralized Forwarding Card Rev. 3.0"
+PID: WS-F6700-CFC      , VID: V02, SN: SAD1037015X
+
+NAME: "CPU of Sub-Module 2 CFC Card", DESCR: "CPU of Centralized Forwarding Card"
+PID:                   , VID:    , SN:            
+
+NAME: "power output-fail 2 ", DESCR: "module 2 power-output-fail Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "switch insufficient-cooling 2 ", DESCR: "module 2 insufficient cooling Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature outlet 2 ", DESCR: "module 2 outlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature inlet 2 ", DESCR: "module 2 inlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/1", DESCR: "10/100/1000BaseT Gi2/1"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/2", DESCR: "10/100/1000BaseT Gi2/2"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/3", DESCR: "10/100/1000BaseT Gi2/3"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/4", DESCR: "10/100/1000BaseT Gi2/4"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/5", DESCR: "10/100/1000BaseT Gi2/5"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/6", DESCR: "10/100/1000BaseT Gi2/6"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/7", DESCR: "10/100/1000BaseT Gi2/7"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/8", DESCR: "10/100/1000BaseT Gi2/8"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/9", DESCR: "10/100/1000BaseT Gi2/9"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/10", DESCR: "10/100/1000BaseT Gi2/10"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/11", DESCR: "10/100/1000BaseT Gi2/11"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/12", DESCR: "10/100/1000BaseT Gi2/12"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/13", DESCR: "10/100/1000BaseT Gi2/13"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/14", DESCR: "10/100/1000BaseT Gi2/14"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/15", DESCR: "10/100/1000BaseT Gi2/15"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/16", DESCR: "10/100/1000BaseT Gi2/16"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/17", DESCR: "10/100/1000BaseT Gi2/17"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/18", DESCR: "10/100/1000BaseT Gi2/18"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/19", DESCR: "10/100/1000BaseT Gi2/19"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/20", DESCR: "10/100/1000BaseT Gi2/20"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/21", DESCR: "10/100/1000BaseT Gi2/21"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/22", DESCR: "10/100/1000BaseT Gi2/22"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/23", DESCR: "10/100/1000BaseT Gi2/23"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/24", DESCR: "10/100/1000BaseT Gi2/24"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/25", DESCR: "10/100/1000BaseT Gi2/25"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/26", DESCR: "10/100/1000BaseT Gi2/26"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/27", DESCR: "10/100/1000BaseT Gi2/27"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/28", DESCR: "10/100/1000BaseT Gi2/28"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/29", DESCR: "10/100/1000BaseT Gi2/29"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/30", DESCR: "10/100/1000BaseT Gi2/30"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/31", DESCR: "10/100/1000BaseT Gi2/31"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/32", DESCR: "10/100/1000BaseT Gi2/32"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/33", DESCR: "10/100/1000BaseT Gi2/33"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/34", DESCR: "10/100/1000BaseT Gi2/34"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/35", DESCR: "10/100/1000BaseT Gi2/35"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/36", DESCR: "10/100/1000BaseT Gi2/36"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/37", DESCR: "10/100/1000BaseT Gi2/37"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/38", DESCR: "10/100/1000BaseT Gi2/38"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/39", DESCR: "10/100/1000BaseT Gi2/39"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/40", DESCR: "10/100/1000BaseT Gi2/40"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/41", DESCR: "10/100/1000BaseT Gi2/41"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/42", DESCR: "10/100/1000BaseT Gi2/42"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/43", DESCR: "10/100/1000BaseT Gi2/43"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/44", DESCR: "10/100/1000BaseT Gi2/44"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/45", DESCR: "10/100/1000BaseT Gi2/45"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/46", DESCR: "10/100/1000BaseT Gi2/46"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/47", DESCR: "10/100/1000BaseT Gi2/47"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi2/48", DESCR: "10/100/1000BaseT Gi2/48"
+PID:                   , VID:    , SN:            
+
+NAME: "Physical Slot 3", DESCR: "Cisco Systems Catalyst 6500 9-slot Physical Slot"
+PID:                   , VID:    , SN:            
+
+NAME: "module 3", DESCR: "WS-X6724-SFP CEF720 24 port 1000mb SFP Rev. 3.0"
+PID: WS-X6724-SFP      , VID: V03, SN: JAF1150BBQG
+
+NAME: "Switching Engine Container 3", DESCR: "Switching Engine Container"
+PID:                   , VID:    , SN:            
+
+NAME: "switching engine sub-module of 3", DESCR: "WS-F6700-DFC3BXL Distributed Forwarding Card 3 Rev. 5.3"
+PID: WS-F6700-DFC3BXL  , VID: V03, SN: JAF1150ATHM
+
+NAME: "module 3 EARL outlet temperature Sensor", DESCR: "module 3 EARL outlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "module 3 EARL inlet temperature Sensor", DESCR: "module 3 EARL inlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "CPU of Sub-Module 3 DFC Card", DESCR: "CPU of Distributed Forwarding Card"
+PID:                   , VID:    , SN:            
+
+NAME: "power output-fail 3 ", DESCR: "module 3 power-output-fail Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "switch insufficient-cooling 3 ", DESCR: "module 3 insufficient cooling Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature outlet 3 ", DESCR: "module 3 outlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature inlet 3 ", DESCR: "module 3 inlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature device-1 3 ", DESCR: "module 3 device-1 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature device-2 3 ", DESCR: "module 3 device-2 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/1", DESCR: "Transceiver Port Gi3/1"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi3/1", DESCR: "Transceiver Port Container Gi3/1"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi3/1", DESCR: "Transceiver 1000BaseLH Gi3/1"
+PID:                   , VID: 0000, SN: FNS10510ZMB     
+
+NAME: "Gi3/1 Module Temperature Sensor", DESCR: "GigabitEthernet3/1 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/1 Supply Voltage Sensor", DESCR: "GigabitEthernet3/1 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/1 Bias Current Sensor", DESCR: "GigabitEthernet3/1 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/1 Transmit Power Sensor", DESCR: "GigabitEthernet3/1 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/1 Receive Power Sensor", DESCR: "GigabitEthernet3/1 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/2", DESCR: "Transceiver Port Gi3/2"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi3/2", DESCR: "Transceiver Port Container Gi3/2"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi3/2", DESCR: "Transceiver 1000BaseLH Gi3/2"
+PID:                   , VID: 0000, SN: FNS10510ZYP     
+
+NAME: "Gi3/2 Module Temperature Sensor", DESCR: "GigabitEthernet3/2 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/2 Supply Voltage Sensor", DESCR: "GigabitEthernet3/2 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/2 Bias Current Sensor", DESCR: "GigabitEthernet3/2 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/2 Transmit Power Sensor", DESCR: "GigabitEthernet3/2 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/2 Receive Power Sensor", DESCR: "GigabitEthernet3/2 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/3", DESCR: "Transceiver Port Gi3/3"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi3/3", DESCR: "Transceiver Port Container Gi3/3"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi3/3", DESCR: "Transceiver 1000BaseLH Gi3/3"
+PID:                   , VID: 0000, SN: FNS10510UMB     
+
+NAME: "Gi3/3 Module Temperature Sensor", DESCR: "GigabitEthernet3/3 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/3 Supply Voltage Sensor", DESCR: "GigabitEthernet3/3 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/3 Bias Current Sensor", DESCR: "GigabitEthernet3/3 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/3 Transmit Power Sensor", DESCR: "GigabitEthernet3/3 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/3 Receive Power Sensor", DESCR: "GigabitEthernet3/3 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/4", DESCR: "Transceiver Port Gi3/4"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi3/4", DESCR: "Transceiver Port Container Gi3/4"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi3/4", DESCR: "Transceiver 1000BaseLH Gi3/4"
+PID:                   , VID: A   , SN: FNS1009D1D2     
+
+NAME: "Gi3/4 Module Temperature Sensor", DESCR: "GigabitEthernet3/4 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/4 Supply Voltage Sensor", DESCR: "GigabitEthernet3/4 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/4 Bias Current Sensor", DESCR: "GigabitEthernet3/4 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/4 Transmit Power Sensor", DESCR: "GigabitEthernet3/4 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/4 Receive Power Sensor", DESCR: "GigabitEthernet3/4 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/5", DESCR: "Transceiver Port Gi3/5"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi3/5", DESCR: "Transceiver Port Container Gi3/5"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi3/5", DESCR: "Transceiver 1000BaseLH Gi3/5"
+PID:                   , VID: A   , SN: FNS1008H3JV     
+
+NAME: "Gi3/5 Module Temperature Sensor", DESCR: "GigabitEthernet3/5 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/5 Supply Voltage Sensor", DESCR: "GigabitEthernet3/5 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/5 Bias Current Sensor", DESCR: "GigabitEthernet3/5 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/5 Transmit Power Sensor", DESCR: "GigabitEthernet3/5 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/5 Receive Power Sensor", DESCR: "GigabitEthernet3/5 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/6", DESCR: "Transceiver Port Gi3/6"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi3/6", DESCR: "Transceiver Port Container Gi3/6"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi3/6", DESCR: "Transceiver 1000BaseLH Gi3/6"
+PID:                   , VID: 0000, SN: FNS10510ZY9     
+
+NAME: "Gi3/6 Module Temperature Sensor", DESCR: "GigabitEthernet3/6 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/6 Supply Voltage Sensor", DESCR: "GigabitEthernet3/6 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/6 Bias Current Sensor", DESCR: "GigabitEthernet3/6 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/6 Transmit Power Sensor", DESCR: "GigabitEthernet3/6 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/6 Receive Power Sensor", DESCR: "GigabitEthernet3/6 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/7", DESCR: "Transceiver Port Gi3/7"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi3/7", DESCR: "Transceiver Port Container Gi3/7"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi3/7", DESCR: "Transceiver 1000BaseLH Gi3/7"
+PID:                   , VID: 0000, SN: FNS10510ZYM     
+
+NAME: "Gi3/7 Module Temperature Sensor", DESCR: "GigabitEthernet3/7 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/7 Supply Voltage Sensor", DESCR: "GigabitEthernet3/7 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/7 Bias Current Sensor", DESCR: "GigabitEthernet3/7 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/7 Transmit Power Sensor", DESCR: "GigabitEthernet3/7 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/7 Receive Power Sensor", DESCR: "GigabitEthernet3/7 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/8", DESCR: "Transceiver Port Gi3/8"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi3/8", DESCR: "Transceiver Port Container Gi3/8"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi3/8", DESCR: "Transceiver 1000BaseLH Gi3/8"
+PID:                   , VID: 0000, SN: FNS10510ZNE     
+
+NAME: "Gi3/8 Module Temperature Sensor", DESCR: "GigabitEthernet3/8 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/8 Supply Voltage Sensor", DESCR: "GigabitEthernet3/8 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/8 Bias Current Sensor", DESCR: "GigabitEthernet3/8 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/8 Transmit Power Sensor", DESCR: "GigabitEthernet3/8 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/8 Receive Power Sensor", DESCR: "GigabitEthernet3/8 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/9", DESCR: "Transceiver Port Gi3/9"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi3/9", DESCR: "Transceiver Port Container Gi3/9"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi3/9", DESCR: "Transceiver 1000BaseLH Gi3/9"
+PID:                   , VID: 0000, SN: FNS10510ZN3     
+
+NAME: "Gi3/9 Module Temperature Sensor", DESCR: "GigabitEthernet3/9 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/9 Supply Voltage Sensor", DESCR: "GigabitEthernet3/9 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/9 Bias Current Sensor", DESCR: "GigabitEthernet3/9 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/9 Transmit Power Sensor", DESCR: "GigabitEthernet3/9 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/9 Receive Power Sensor", DESCR: "GigabitEthernet3/9 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/10", DESCR: "Transceiver Port Gi3/10"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi3/10", DESCR: "Transceiver Port Container Gi3/10"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi3/10", DESCR: "Transceiver 1000BaseLH Gi3/10"
+PID:                   , VID: 0000, SN: FNS1051104Q     
+
+NAME: "Gi3/10 Module Temperature Sensor", DESCR: "GigabitEthernet3/10 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/10 Supply Voltage Sensor", DESCR: "GigabitEthernet3/10 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/10 Bias Current Sensor", DESCR: "GigabitEthernet3/10 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/10 Transmit Power Sensor", DESCR: "GigabitEthernet3/10 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/10 Receive Power Sensor", DESCR: "GigabitEthernet3/10 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/11", DESCR: "Transceiver Port Gi3/11"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi3/11", DESCR: "Transceiver Port Container Gi3/11"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi3/11", DESCR: "Transceiver 1000BaseLH Gi3/11"
+PID:                   , VID: 0000, SN: FNS10511040     
+
+NAME: "Gi3/11 Module Temperature Sensor", DESCR: "GigabitEthernet3/11 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/11 Supply Voltage Sensor", DESCR: "GigabitEthernet3/11 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/11 Bias Current Sensor", DESCR: "GigabitEthernet3/11 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/11 Transmit Power Sensor", DESCR: "GigabitEthernet3/11 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/11 Receive Power Sensor", DESCR: "GigabitEthernet3/11 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/12", DESCR: "Transceiver Port Gi3/12"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi3/12", DESCR: "Transceiver Port Container Gi3/12"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi3/12", DESCR: "Transceiver 1000BaseLH Gi3/12"
+PID:                   , VID: 0000, SN: FNS10510ZM7     
+
+NAME: "Gi3/12 Module Temperature Sensor", DESCR: "GigabitEthernet3/12 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/12 Supply Voltage Sensor", DESCR: "GigabitEthernet3/12 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/12 Bias Current Sensor", DESCR: "GigabitEthernet3/12 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/12 Transmit Power Sensor", DESCR: "GigabitEthernet3/12 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/12 Receive Power Sensor", DESCR: "GigabitEthernet3/12 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/13", DESCR: "Transceiver Port Gi3/13"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi3/13", DESCR: "Transceiver Port Container Gi3/13"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi3/13", DESCR: "Transceiver 1000BaseLH Gi3/13"
+PID:                   , VID: 0000, SN: FNS10510ZMA     
+
+NAME: "Gi3/13 Module Temperature Sensor", DESCR: "GigabitEthernet3/13 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/13 Supply Voltage Sensor", DESCR: "GigabitEthernet3/13 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/13 Bias Current Sensor", DESCR: "GigabitEthernet3/13 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/13 Transmit Power Sensor", DESCR: "GigabitEthernet3/13 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/13 Receive Power Sensor", DESCR: "GigabitEthernet3/13 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/14", DESCR: "Transceiver Port Gi3/14"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi3/14", DESCR: "Transceiver Port Container Gi3/14"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi3/14", DESCR: "Transceiver 1000BaseLH Gi3/14"
+PID:                   , VID: 0000, SN: FNS10510ZYA     
+
+NAME: "Gi3/14 Module Temperature Sensor", DESCR: "GigabitEthernet3/14 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/14 Supply Voltage Sensor", DESCR: "GigabitEthernet3/14 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/14 Bias Current Sensor", DESCR: "GigabitEthernet3/14 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/14 Transmit Power Sensor", DESCR: "GigabitEthernet3/14 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/14 Receive Power Sensor", DESCR: "GigabitEthernet3/14 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/15", DESCR: "Transceiver Port Gi3/15"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi3/15", DESCR: "Transceiver Port Container Gi3/15"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi3/15", DESCR: "Transceiver 1000BaseLH Gi3/15"
+PID:                   , VID: 0000, SN: FNS10510ZNA     
+
+NAME: "Gi3/15 Module Temperature Sensor", DESCR: "GigabitEthernet3/15 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/15 Supply Voltage Sensor", DESCR: "GigabitEthernet3/15 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/15 Bias Current Sensor", DESCR: "GigabitEthernet3/15 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/15 Transmit Power Sensor", DESCR: "GigabitEthernet3/15 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/15 Receive Power Sensor", DESCR: "GigabitEthernet3/15 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/16", DESCR: "Transceiver Port Gi3/16"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi3/16", DESCR: "Transceiver Port Container Gi3/16"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi3/16", DESCR: "Transceiver 1000BaseLH Gi3/16"
+PID:                   , VID: 0000, SN: FNS10510ZMT     
+
+NAME: "Gi3/16 Module Temperature Sensor", DESCR: "GigabitEthernet3/16 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/16 Supply Voltage Sensor", DESCR: "GigabitEthernet3/16 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/16 Bias Current Sensor", DESCR: "GigabitEthernet3/16 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/16 Transmit Power Sensor", DESCR: "GigabitEthernet3/16 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/16 Receive Power Sensor", DESCR: "GigabitEthernet3/16 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/17", DESCR: "Transceiver Port Gi3/17"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi3/17", DESCR: "Transceiver Port Container Gi3/17"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi3/17", DESCR: "Transceiver 1000BaseLH Gi3/17"
+PID:                   , VID: 0000, SN: FNS114102SJ     
+
+NAME: "Gi3/17 Module Temperature Sensor", DESCR: "GigabitEthernet3/17 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/17 Supply Voltage Sensor", DESCR: "GigabitEthernet3/17 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/17 Bias Current Sensor", DESCR: "GigabitEthernet3/17 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/17 Transmit Power Sensor", DESCR: "GigabitEthernet3/17 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/17 Receive Power Sensor", DESCR: "GigabitEthernet3/17 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/18", DESCR: "Transceiver Port Gi3/18"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi3/18", DESCR: "Transceiver Port Container Gi3/18"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi3/18", DESCR: "Transceiver 1000BaseLH Gi3/18"
+PID:                   , VID: 0000, SN: FNS11410483     
+
+NAME: "Gi3/18 Module Temperature Sensor", DESCR: "GigabitEthernet3/18 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/18 Supply Voltage Sensor", DESCR: "GigabitEthernet3/18 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/18 Bias Current Sensor", DESCR: "GigabitEthernet3/18 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/18 Transmit Power Sensor", DESCR: "GigabitEthernet3/18 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/18 Receive Power Sensor", DESCR: "GigabitEthernet3/18 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/19", DESCR: "Transceiver Port Gi3/19"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi3/19", DESCR: "Transceiver Port Container Gi3/19"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi3/19", DESCR: "Transceiver 1000BaseLH Gi3/19"
+PID:                   , VID: 0000, SN: FNS114102NS     
+
+NAME: "Gi3/19 Module Temperature Sensor", DESCR: "GigabitEthernet3/19 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/19 Supply Voltage Sensor", DESCR: "GigabitEthernet3/19 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/19 Bias Current Sensor", DESCR: "GigabitEthernet3/19 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/19 Transmit Power Sensor", DESCR: "GigabitEthernet3/19 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/19 Receive Power Sensor", DESCR: "GigabitEthernet3/19 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/20", DESCR: "Transceiver Port Gi3/20"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi3/20", DESCR: "Transceiver Port Container Gi3/20"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi3/20", DESCR: "Transceiver 1000BaseLH Gi3/20"
+PID:                   , VID: 0000, SN: FNS114102TB     
+
+NAME: "Gi3/20 Module Temperature Sensor", DESCR: "GigabitEthernet3/20 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/20 Supply Voltage Sensor", DESCR: "GigabitEthernet3/20 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/20 Bias Current Sensor", DESCR: "GigabitEthernet3/20 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/20 Transmit Power Sensor", DESCR: "GigabitEthernet3/20 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/20 Receive Power Sensor", DESCR: "GigabitEthernet3/20 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/21", DESCR: "Transceiver Port Gi3/21"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi3/21", DESCR: "Transceiver Port Container Gi3/21"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi3/21", DESCR: "Transceiver 1000BaseLH Gi3/21"
+PID:                   , VID: 0000, SN: FNS1141048H     
+
+NAME: "Gi3/21 Module Temperature Sensor", DESCR: "GigabitEthernet3/21 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/21 Supply Voltage Sensor", DESCR: "GigabitEthernet3/21 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/21 Bias Current Sensor", DESCR: "GigabitEthernet3/21 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/21 Transmit Power Sensor", DESCR: "GigabitEthernet3/21 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/21 Receive Power Sensor", DESCR: "GigabitEthernet3/21 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/22", DESCR: "Transceiver Port Gi3/22"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi3/22", DESCR: "Transceiver Port Container Gi3/22"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi3/22", DESCR: "Transceiver 1000BaseLH Gi3/22"
+PID:                   , VID: 0000, SN: FNS1141048J     
+
+NAME: "Gi3/22 Module Temperature Sensor", DESCR: "GigabitEthernet3/22 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/22 Supply Voltage Sensor", DESCR: "GigabitEthernet3/22 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/22 Bias Current Sensor", DESCR: "GigabitEthernet3/22 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/22 Transmit Power Sensor", DESCR: "GigabitEthernet3/22 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/22 Receive Power Sensor", DESCR: "GigabitEthernet3/22 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/23", DESCR: "Transceiver Port Gi3/23"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi3/23", DESCR: "Transceiver Port Container Gi3/23"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi3/23", DESCR: "Transceiver 1000BaseLH Gi3/23"
+PID:                   , VID: 0000, SN: FNS1141047Z     
+
+NAME: "Gi3/23 Module Temperature Sensor", DESCR: "GigabitEthernet3/23 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/23 Supply Voltage Sensor", DESCR: "GigabitEthernet3/23 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/23 Bias Current Sensor", DESCR: "GigabitEthernet3/23 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/23 Transmit Power Sensor", DESCR: "GigabitEthernet3/23 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/23 Receive Power Sensor", DESCR: "GigabitEthernet3/23 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/24", DESCR: "Transceiver Port Gi3/24"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi3/24", DESCR: "Transceiver Port Container Gi3/24"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi3/24", DESCR: "Transceiver 1000BaseLH Gi3/24"
+PID:                   , VID: 0000, SN: FNS1141048F     
+
+NAME: "Gi3/24 Module Temperature Sensor", DESCR: "GigabitEthernet3/24 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/24 Supply Voltage Sensor", DESCR: "GigabitEthernet3/24 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/24 Bias Current Sensor", DESCR: "GigabitEthernet3/24 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/24 Transmit Power Sensor", DESCR: "GigabitEthernet3/24 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi3/24 Receive Power Sensor", DESCR: "GigabitEthernet3/24 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Physical Slot 4", DESCR: "Cisco Systems Catalyst 6500 9-slot Physical Slot"
+PID:                   , VID:    , SN:            
+
+NAME: "module 4", DESCR: "WS-X6704-10GE CEF720 4 port 10-Gigabit Ethernet Rev. 2.7"
+PID: WS-X6704-10GE     , VID: V02, SN: JAF1232AKLN
+
+NAME: "Switching Engine Container 4", DESCR: "Switching Engine Container"
+PID:                   , VID:    , SN:            
+
+NAME: "switching engine sub-module of 4", DESCR: "WS-F6700-DFC3BXL Distributed Forwarding Card 3 Rev. 5.4"
+PID: WS-F6700-DFC3BXL  , VID: V04, SN: JAF1226ADDD
+
+NAME: "module 4 EARL outlet temperature Sensor", DESCR: "module 4 EARL outlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "module 4 EARL inlet temperature Sensor", DESCR: "module 4 EARL inlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "CPU of Sub-Module 4 DFC Card", DESCR: "CPU of Distributed Forwarding Card"
+PID:                   , VID:    , SN:            
+
+NAME: "power output-fail 4 ", DESCR: "module 4 power-output-fail Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "switch insufficient-cooling 4 ", DESCR: "module 4 insufficient cooling Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature outlet 4 ", DESCR: "module 4 outlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature inlet 4 ", DESCR: "module 4 inlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Te4/1", DESCR: "Transceiver Port Te4/1"
+PID:                   , VID:    , SN:            
+
+NAME: "10-Gigabit Transceiver Port Container Te4/1", DESCR: "10-Gigabit Transceiver Port Container Te4/1"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Te4/1", DESCR: "Transceiver 10Gbase-LR Te4/1"
+PID: XENPAK-10GB-LR+   , VID: V01 , SN: ONT123200VE
+
+NAME: "Te4/1 Module Temperature Sensor", DESCR: "TenGigabitEthernet4/1 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Te4/1 Supply Voltage Sensor", DESCR: "TenGigabitEthernet4/1 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Te4/1 Bias Current Sensor", DESCR: "TenGigabitEthernet4/1 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Te4/1 Transmit Power Sensor", DESCR: "TenGigabitEthernet4/1 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Te4/1 Receive Power Sensor", DESCR: "TenGigabitEthernet4/1 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Te4/2", DESCR: "Transceiver Port Te4/2"
+PID:                   , VID:    , SN:            
+
+NAME: "10-Gigabit Transceiver Port Container Te4/2", DESCR: "10-Gigabit Transceiver Port Container Te4/2"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Te4/2", DESCR: "Transceiver 10Gbase-LR Te4/2"
+PID: XENPAK-10GB-LR+   , VID: V01 , SN: FNS1343015N
+
+NAME: "Te4/2 Module Temperature Sensor", DESCR: "TenGigabitEthernet4/2 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Te4/2 Supply Voltage Sensor", DESCR: "TenGigabitEthernet4/2 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Te4/2 Bias Current Sensor", DESCR: "TenGigabitEthernet4/2 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Te4/2 Transmit Power Sensor", DESCR: "TenGigabitEthernet4/2 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Te4/2 Receive Power Sensor", DESCR: "TenGigabitEthernet4/2 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Te4/3", DESCR: "Transceiver Port Te4/3"
+PID:                   , VID:    , SN:            
+
+NAME: "10-Gigabit Transceiver Port Container Te4/3", DESCR: "10-Gigabit Transceiver Port Container Te4/3"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Te4/3", DESCR: "Transceiver 10Gbase-LR Te4/3"
+PID: XENPAK-10GB-LR+   , VID: V01 , SN: ONT163404Y5
+
+NAME: "Te4/3 Module Temperature Sensor", DESCR: "TenGigabitEthernet4/3 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Te4/3 Supply Voltage Sensor", DESCR: "TenGigabitEthernet4/3 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Te4/3 Bias Current Sensor", DESCR: "TenGigabitEthernet4/3 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Te4/3 Transmit Power Sensor", DESCR: "TenGigabitEthernet4/3 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Te4/3 Receive Power Sensor", DESCR: "TenGigabitEthernet4/3 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Te4/4", DESCR: "Transceiver Port Te4/4"
+PID:                   , VID:    , SN:            
+
+NAME: "10-Gigabit Transceiver Port Container Te4/4", DESCR: "10-Gigabit Transceiver Port Container Te4/4"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Te4/4", DESCR: "Transceiver 10Gbase-LR Te4/4"
+PID: XENPAK-10GB-LR+   , VID: V01 , SN: IFT124201PD
+
+NAME: "Te4/4 Module Temperature Sensor", DESCR: "TenGigabitEthernet4/4 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Te4/4 Supply Voltage Sensor", DESCR: "TenGigabitEthernet4/4 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Te4/4 Bias Current Sensor", DESCR: "TenGigabitEthernet4/4 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Te4/4 Transmit Power Sensor", DESCR: "TenGigabitEthernet4/4 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Te4/4 Receive Power Sensor", DESCR: "TenGigabitEthernet4/4 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Physical Slot 5", DESCR: "Cisco Systems Catalyst 6500 9-slot Physical Slot"
+PID:                   , VID:    , SN:            
+
+NAME: "module 5", DESCR: "WS-SUP720-BASE 2 ports Supervisor Engine 720 Rev. 3.3"
+PID: WS-SUP720-BASE    , VID:    , SN: SAD09070DNK
+
+NAME: "MSFC Container 5", DESCR: "MSFC Container"
+PID:                   , VID:    , SN:            
+
+NAME: "msfc sub-module of 5", DESCR: "WS-SUP720 MSFC3 Daughterboard Rev. 3.2"
+PID: WS-SUP720         , VID:    , SN: SAL1251DJ4X
+
+NAME: "module 5 RP outlet temperature Sensor", DESCR: "module 5 RP outlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "module 5 RP inlet temperature Sensor", DESCR: "module 5 RP inlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "CPU of Routing Processor 5", DESCR: "CPU of Routing Processor"
+PID:                   , VID:    , SN:            
+
+NAME: "Switching Engine Container 5", DESCR: "Switching Engine Container"
+PID:                   , VID:    , SN:            
+
+NAME: "switching engine sub-module of 5", DESCR: "WS-F6K-PFC3BXL Policy Feature Card 3 Rev. 1.9"
+PID: WS-F6K-PFC3BXL    , VID: V02, SN: SAL1252DUXT
+
+NAME: "module 5 EARL outlet temperature Sensor", DESCR: "module 5 EARL outlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "module 5 EARL inlet temperature Sensor", DESCR: "module 5 EARL inlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "power output-fail 5 ", DESCR: "Supervisor module 5 power-output-fail Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "switch insufficient-cooling 5 ", DESCR: "Supervisor module 5 insufficient cooling Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "switch fanUpgrade-required 5 ", DESCR: "Supervisor module 5 fan-upgrade required Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature outlet 5 ", DESCR: "Supervisor module 5 outlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature inlet 5 ", DESCR: "Supervisor module 5 inlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature device-1 5 ", DESCR: "Supervisor module 5 device-1 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature device-2 5 ", DESCR: "Supervisor module 5 device-2 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "module 5 asic 1 temperature Sensor", DESCR: "Supervisor module 5 asic 1 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "module 5 asic 2 temperature Sensor", DESCR: "Supervisor module 5 asic 2 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "module 5 asic 3 temperature Sensor", DESCR: "Supervisor module 5 asic 3 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "module 5 asic 4 temperature Sensor", DESCR: "Supervisor module 5 asic 4 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "module 5 asic 5 temperature Sensor", DESCR: "Supervisor module 5 asic 5 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "module 5 asic 6 temperature Sensor", DESCR: "Supervisor module 5 asic 6 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "CPU of Switching Processor 5", DESCR: "CPU of Switching Processor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi5/1", DESCR: "Transceiver Port Gi5/1"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi5/1", DESCR: "Transceiver Port Container Gi5/1"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi5/2", DESCR: "Transceiver Port Gi5/2"
+PID:                   , VID:    , SN:            
+
+NAME: "Gigabit Transceiver Container Gi5/2", DESCR: "Gigabit Transceiver Container Gi5/2"
+PID:                   , VID:    , SN:            
+
+NAME: "10/100/1000BaseT Gi5/2", DESCR: ""
+PID:                   , VID:    , SN:            
+
+NAME: "Physical Slot 6", DESCR: "Cisco Systems Catalyst 6500 9-slot Physical Slot"
+PID:                   , VID:    , SN:            
+
+NAME: "module 6", DESCR: "WS-SUP720-BASE 2 ports Supervisor Engine 720 Rev. 3.3"
+PID: WS-SUP720-BASE    , VID:    , SN: SAD09070DNK
+
+NAME: "MSFC Container 6", DESCR: "MSFC Container"
+PID:                   , VID:    , SN:            
+
+NAME: "msfc sub-module of 6", DESCR: "WS-SUP720 MSFC3 Daughterboard Rev. 2.5"
+PID: WS-SUP720         , VID:    , SN: SAD09070ER8
+
+NAME: "module 6 RP outlet temperature Sensor", DESCR: "module 6 RP outlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "module 6 RP inlet temperature Sensor", DESCR: "module 6 RP inlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "CPU of Routing Processor 6", DESCR: "CPU of Routing Processor"
+PID:                   , VID:    , SN:            
+
+NAME: "Switching Engine Container 6", DESCR: "Switching Engine Container"
+PID:                   , VID:    , SN:            
+
+NAME: "switching engine sub-module of 6", DESCR: "WS-F6K-PFC3BXL Policy Feature Card 3 Rev. 1.8"
+PID: WS-F6K-PFC3BXL    , VID: V01, SN: SAL1214KU9A
+
+NAME: "module 6 EARL outlet temperature Sensor", DESCR: "module 6 EARL outlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "module 6 EARL inlet temperature Sensor", DESCR: "module 6 EARL inlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "power output-fail 6 ", DESCR: "Supervisor module 6 power-output-fail Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "switch insufficient-cooling 6 ", DESCR: "Supervisor module 6 insufficient cooling Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "switch fanUpgrade-required 6 ", DESCR: "Supervisor module 6 fan-upgrade required Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature outlet 6 ", DESCR: "Supervisor module 6 outlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature inlet 6 ", DESCR: "Supervisor module 6 inlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature device-1 6 ", DESCR: "Supervisor module 6 device-1 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature device-2 6 ", DESCR: "Supervisor module 6 device-2 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "module 6 asic 1 temperature Sensor", DESCR: "Supervisor module 6 asic 1 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "module 6 asic 2 temperature Sensor", DESCR: "Supervisor module 6 asic 2 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "module 6 asic 3 temperature Sensor", DESCR: "Supervisor module 6 asic 3 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "module 6 asic 4 temperature Sensor", DESCR: "Supervisor module 6 asic 4 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "module 6 asic 5 temperature Sensor", DESCR: "Supervisor module 6 asic 5 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "module 6 asic 6 temperature Sensor", DESCR: "Supervisor module 6 asic 6 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "CPU of Switching Processor 6", DESCR: "CPU of Switching Processor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi6/1", DESCR: "Transceiver Port Gi6/1"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi6/1", DESCR: "Transceiver Port Container Gi6/1"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi6/2", DESCR: "Transceiver Port Gi6/2"
+PID:                   , VID:    , SN:            
+
+NAME: "Gigabit Transceiver Container Gi6/2", DESCR: "Gigabit Transceiver Container Gi6/2"
+PID:                   , VID:    , SN:            
+
+NAME: "10/100/1000BaseT Gi6/2", DESCR: ""
+PID:                   , VID:    , SN:            
+
+NAME: "Physical Slot 7", DESCR: "Cisco Systems Catalyst 6500 9-slot Physical Slot"
+PID:                   , VID:    , SN:            
+
+NAME: "module 7", DESCR: "WS-X6516A-GBIC SFM-capable 16 port 1000mb GBIC Rev. 4.2"
+PID: WS-X6516A-GBIC    , VID:    , SN: SAL09104Z88
+
+NAME: "power output-fail 7 ", DESCR: "module 7 power-output-fail Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "switch insufficient-cooling 7 ", DESCR: "module 7 insufficient cooling Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature outlet 7 ", DESCR: "module 7 outlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature inlet 7 ", DESCR: "module 7 inlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi7/1", DESCR: "Transceiver Port Gi7/1"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi7/1", DESCR: "Transceiver Port Container Gi7/1"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi7/1", DESCR: "Transceiver 1000BaseLH Gi7/1"
+PID:                   , VID: 0000, SN: AGS094303JX     
+
+NAME: "Gi7/2", DESCR: "Transceiver Port Gi7/2"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi7/2", DESCR: "Transceiver Port Container Gi7/2"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi7/2", DESCR: "Transceiver 1000BaseLH Gi7/2"
+PID:                   , VID: 0000, SN: AGT1103F2CP     
+
+NAME: "Gi7/3", DESCR: "Transceiver Port Gi7/3"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi7/3", DESCR: "Transceiver Port Container Gi7/3"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi7/3", DESCR: "Transceiver 1000BaseLH Gi7/3"
+PID:                   , VID: 0000, SN: AGT1103F2CW     
+
+NAME: "Gi7/4", DESCR: "Transceiver Port Gi7/4"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi7/4", DESCR: "Transceiver Port Container Gi7/4"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi7/4", DESCR: "Transceiver 1000BaseLH Gi7/4"
+PID:                   , VID: 0000, SN: AGT1103F0LG     
+
+NAME: "Gi7/5", DESCR: "Transceiver Port Gi7/5"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi7/5", DESCR: "Transceiver Port Container Gi7/5"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi7/5", DESCR: "Transceiver 1000BaseLH Gi7/5"
+PID:                   , VID: 0000, SN: AGT1104F0B7     
+
+NAME: "Gi7/6", DESCR: "Transceiver Port Gi7/6"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi7/6", DESCR: "Transceiver Port Container Gi7/6"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi7/6", DESCR: "Transceiver 1000BaseLH Gi7/6"
+PID:                   , VID: 0000, SN: AGT1103F0ME     
+
+NAME: "Gi7/7", DESCR: "Transceiver Port Gi7/7"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi7/7", DESCR: "Transceiver Port Container Gi7/7"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi7/7", DESCR: "Transceiver 1000BaseLH Gi7/7"
+PID:                   , VID:     , SN: JUT090304CZ     
+
+NAME: "Gi7/8", DESCR: "Transceiver Port Gi7/8"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi7/8", DESCR: "Transceiver Port Container Gi7/8"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi7/8", DESCR: "Transceiver 1000BaseLH Gi7/8"
+PID:                   , VID:     , SN: JUT090300S2     
+
+NAME: "Gi7/9", DESCR: "Transceiver Port Gi7/9"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi7/9", DESCR: "Transceiver Port Container Gi7/9"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi7/9", DESCR: "Transceiver 1000BaseLH Gi7/9"
+PID:                   , VID:     , SN: JUT090300DV     
+
+NAME: "Gi7/10", DESCR: "Transceiver Port Gi7/10"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi7/10", DESCR: "Transceiver Port Container Gi7/10"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi7/10", DESCR: "Transceiver 1000BaseLH Gi7/10"
+PID:                   , VID: 0000, SN: AGS094303J5     
+
+NAME: "Gi7/11", DESCR: "Transceiver Port Gi7/11"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi7/11", DESCR: "Transceiver Port Container Gi7/11"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi7/11", DESCR: "Transceiver 1000BaseLH Gi7/11"
+PID:                   , VID: 0000, SN: AGS094303L1     
+
+NAME: "Gi7/12", DESCR: "Transceiver Port Gi7/12"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi7/12", DESCR: "Transceiver Port Container Gi7/12"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi7/12", DESCR: "Transceiver 1000BaseLH Gi7/12"
+PID:                   , VID: 0000, SN: AGS094303HE     
+
+NAME: "Gi7/13", DESCR: "Transceiver Port Gi7/13"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi7/13", DESCR: "Transceiver Port Container Gi7/13"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi7/13", DESCR: "Transceiver 1000BaseLH Gi7/13"
+PID:                   , VID: 0000, SN: AGS094303KU     
+
+NAME: "Gi7/14", DESCR: "Transceiver Port Gi7/14"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi7/14", DESCR: "Transceiver Port Container Gi7/14"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi7/14", DESCR: "Transceiver 1000BaseLH Gi7/14"
+PID:                   , VID: 0000, SN: AGS094303K2     
+
+NAME: "Gi7/15", DESCR: "Transceiver Port Gi7/15"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi7/15", DESCR: "Transceiver Port Container Gi7/15"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi7/15", DESCR: "Transceiver 1000BaseLH Gi7/15"
+PID:                   , VID: 0000, SN: AGS094303JT     
+
+NAME: "Gi7/16", DESCR: "Transceiver Port Gi7/16"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi7/16", DESCR: "Transceiver Port Container Gi7/16"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi7/16", DESCR: "Transceiver 1000BaseLH Gi7/16"
+PID:                   , VID: 0000, SN: AGS094303JA     
+
+NAME: "Physical Slot 8", DESCR: "Cisco Systems Catalyst 6500 9-slot Physical Slot"
+PID:                   , VID:    , SN:            
+
+NAME: "module 8", DESCR: "WS-X6724-SFP CEF720 24 port 1000mb SFP Rev. 3.2"
+PID: WS-X6724-SFP      , VID: V04, SN: JAF1239BJBQ
+
+NAME: "Switching Engine Container 8", DESCR: "Switching Engine Container"
+PID:                   , VID:    , SN:            
+
+NAME: "switching engine sub-module of 8", DESCR: "WS-F6700-DFC3BXL Distributed Forwarding Card 3 Rev. 5.4"
+PID: WS-F6700-DFC3BXL  , VID: V04, SN: JAF1237BNHF
+
+NAME: "module 8 EARL outlet temperature Sensor", DESCR: "module 8 EARL outlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "module 8 EARL inlet temperature Sensor", DESCR: "module 8 EARL inlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "CPU of Sub-Module 8 DFC Card", DESCR: "CPU of Distributed Forwarding Card"
+PID:                   , VID:    , SN:            
+
+NAME: "power output-fail 8 ", DESCR: "module 8 power-output-fail Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "switch insufficient-cooling 8 ", DESCR: "module 8 insufficient cooling Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature outlet 8 ", DESCR: "module 8 outlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature inlet 8 ", DESCR: "module 8 inlet temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature device-1 8 ", DESCR: "module 8 device-1 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "temperature device-2 8 ", DESCR: "module 8 device-2 temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/1", DESCR: "Transceiver Port Gi8/1"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi8/1", DESCR: "Transceiver Port Container Gi8/1"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi8/1", DESCR: "Transceiver 1000BaseLH Gi8/1"
+PID:                   , VID: A000, SN: FNS12400AHX     
+
+NAME: "Gi8/1 Module Temperature Sensor", DESCR: "GigabitEthernet8/1 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/1 Supply Voltage Sensor", DESCR: "GigabitEthernet8/1 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/1 Bias Current Sensor", DESCR: "GigabitEthernet8/1 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/1 Transmit Power Sensor", DESCR: "GigabitEthernet8/1 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/1 Receive Power Sensor", DESCR: "GigabitEthernet8/1 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/2", DESCR: "Transceiver Port Gi8/2"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi8/2", DESCR: "Transceiver Port Container Gi8/2"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi8/2", DESCR: "Transceiver 1000BaseLH Gi8/2"
+PID:                   , VID: A000, SN: FNS124007KP     
+
+NAME: "Gi8/2 Module Temperature Sensor", DESCR: "GigabitEthernet8/2 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/2 Supply Voltage Sensor", DESCR: "GigabitEthernet8/2 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/2 Bias Current Sensor", DESCR: "GigabitEthernet8/2 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/2 Transmit Power Sensor", DESCR: "GigabitEthernet8/2 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/2 Receive Power Sensor", DESCR: "GigabitEthernet8/2 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/3", DESCR: "Transceiver Port Gi8/3"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi8/3", DESCR: "Transceiver Port Container Gi8/3"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi8/3", DESCR: "Transceiver 1000BaseLH Gi8/3"
+PID:                   , VID: A000, SN: FNS124007M2     
+
+NAME: "Gi8/3 Module Temperature Sensor", DESCR: "GigabitEthernet8/3 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/3 Supply Voltage Sensor", DESCR: "GigabitEthernet8/3 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/3 Bias Current Sensor", DESCR: "GigabitEthernet8/3 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/3 Transmit Power Sensor", DESCR: "GigabitEthernet8/3 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/3 Receive Power Sensor", DESCR: "GigabitEthernet8/3 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/4", DESCR: "Transceiver Port Gi8/4"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi8/4", DESCR: "Transceiver Port Container Gi8/4"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi8/4", DESCR: "Transceiver 1000BaseLH Gi8/4"
+PID:                   , VID: 001 , SN: AGA1711U830     
+
+NAME: "Gi8/4 Module Temperature Sensor", DESCR: "GigabitEthernet8/4 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/4 Supply Voltage Sensor", DESCR: "GigabitEthernet8/4 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/4 Bias Current Sensor", DESCR: "GigabitEthernet8/4 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/4 Transmit Power Sensor", DESCR: "GigabitEthernet8/4 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/4 Receive Power Sensor", DESCR: "GigabitEthernet8/4 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/5", DESCR: "Transceiver Port Gi8/5"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi8/5", DESCR: "Transceiver Port Container Gi8/5"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi8/5", DESCR: "Transceiver 1000BaseLH Gi8/5"
+PID:                   , VID: A   , SN: FNS17130JS3     
+
+NAME: "Gi8/5 Module Temperature Sensor", DESCR: "GigabitEthernet8/5 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/5 Supply Voltage Sensor", DESCR: "GigabitEthernet8/5 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/5 Bias Current Sensor", DESCR: "GigabitEthernet8/5 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/5 Transmit Power Sensor", DESCR: "GigabitEthernet8/5 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/5 Receive Power Sensor", DESCR: "GigabitEthernet8/5 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/6", DESCR: "Transceiver Port Gi8/6"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi8/6", DESCR: "Transceiver Port Container Gi8/6"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi8/6", DESCR: "Transceiver 1000BaseLH Gi8/6"
+PID:                   , VID: A   , SN: FNS17130FM4     
+
+NAME: "Gi8/6 Module Temperature Sensor", DESCR: "GigabitEthernet8/6 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/6 Supply Voltage Sensor", DESCR: "GigabitEthernet8/6 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/6 Bias Current Sensor", DESCR: "GigabitEthernet8/6 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/6 Transmit Power Sensor", DESCR: "GigabitEthernet8/6 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/6 Receive Power Sensor", DESCR: "GigabitEthernet8/6 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/7", DESCR: "Transceiver Port Gi8/7"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi8/7", DESCR: "Transceiver Port Container Gi8/7"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi8/7", DESCR: "Transceiver 1000BaseLH Gi8/7"
+PID:                   , VID: A   , SN: FNS17130JRV     
+
+NAME: "Gi8/7 Module Temperature Sensor", DESCR: "GigabitEthernet8/7 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/7 Supply Voltage Sensor", DESCR: "GigabitEthernet8/7 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/7 Bias Current Sensor", DESCR: "GigabitEthernet8/7 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/7 Transmit Power Sensor", DESCR: "GigabitEthernet8/7 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/7 Receive Power Sensor", DESCR: "GigabitEthernet8/7 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/8", DESCR: "Transceiver Port Gi8/8"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi8/8", DESCR: "Transceiver Port Container Gi8/8"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi8/8", DESCR: "Transceiver 1000BaseLH Gi8/8"
+PID:                   , VID: A   , SN: FNS17130HDY     
+
+NAME: "Gi8/8 Module Temperature Sensor", DESCR: "GigabitEthernet8/8 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/8 Supply Voltage Sensor", DESCR: "GigabitEthernet8/8 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/8 Bias Current Sensor", DESCR: "GigabitEthernet8/8 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/8 Transmit Power Sensor", DESCR: "GigabitEthernet8/8 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/8 Receive Power Sensor", DESCR: "GigabitEthernet8/8 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/9", DESCR: "Transceiver Port Gi8/9"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi8/9", DESCR: "Transceiver Port Container Gi8/9"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi8/9", DESCR: "Transceiver 1000BaseLH Gi8/9"
+PID:                   , VID: A   , SN: FNS17130HKG     
+
+NAME: "Gi8/9 Module Temperature Sensor", DESCR: "GigabitEthernet8/9 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/9 Supply Voltage Sensor", DESCR: "GigabitEthernet8/9 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/9 Bias Current Sensor", DESCR: "GigabitEthernet8/9 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/9 Transmit Power Sensor", DESCR: "GigabitEthernet8/9 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/9 Receive Power Sensor", DESCR: "GigabitEthernet8/9 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/10", DESCR: "Transceiver Port Gi8/10"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi8/10", DESCR: "Transceiver Port Container Gi8/10"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi8/10", DESCR: "Transceiver 1000BaseLH Gi8/10"
+PID:                   , VID: A   , SN: FNS17120EKW     
+
+NAME: "Gi8/10 Module Temperature Sensor", DESCR: "GigabitEthernet8/10 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/10 Supply Voltage Sensor", DESCR: "GigabitEthernet8/10 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/10 Bias Current Sensor", DESCR: "GigabitEthernet8/10 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/10 Transmit Power Sensor", DESCR: "GigabitEthernet8/10 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/10 Receive Power Sensor", DESCR: "GigabitEthernet8/10 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/11", DESCR: "Transceiver Port Gi8/11"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi8/11", DESCR: "Transceiver Port Container Gi8/11"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi8/11", DESCR: "Transceiver 1000BaseLH Gi8/11"
+PID:                   , VID: A   , SN: FNS17130HHQ     
+
+NAME: "Gi8/11 Module Temperature Sensor", DESCR: "GigabitEthernet8/11 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/11 Supply Voltage Sensor", DESCR: "GigabitEthernet8/11 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/11 Bias Current Sensor", DESCR: "GigabitEthernet8/11 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/11 Transmit Power Sensor", DESCR: "GigabitEthernet8/11 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/11 Receive Power Sensor", DESCR: "GigabitEthernet8/11 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/12", DESCR: "Transceiver Port Gi8/12"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi8/12", DESCR: "Transceiver Port Container Gi8/12"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi8/12", DESCR: "Transceiver 1000BaseLH Gi8/12"
+PID:                   , VID: A   , SN: FNS17130GMX     
+
+NAME: "Gi8/12 Module Temperature Sensor", DESCR: "GigabitEthernet8/12 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/12 Supply Voltage Sensor", DESCR: "GigabitEthernet8/12 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/12 Bias Current Sensor", DESCR: "GigabitEthernet8/12 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/12 Transmit Power Sensor", DESCR: "GigabitEthernet8/12 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/12 Receive Power Sensor", DESCR: "GigabitEthernet8/12 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/13", DESCR: "Transceiver Port Gi8/13"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi8/13", DESCR: "Transceiver Port Container Gi8/13"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/14", DESCR: "Transceiver Port Gi8/14"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi8/14", DESCR: "Transceiver Port Container Gi8/14"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/15", DESCR: "Transceiver Port Gi8/15"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi8/15", DESCR: "Transceiver Port Container Gi8/15"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/16", DESCR: "Transceiver Port Gi8/16"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi8/16", DESCR: "Transceiver Port Container Gi8/16"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi8/16", DESCR: "Transceiver 1000BaseLH Gi8/16"
+PID:                   , VID: A000, SN: FNS12400AM2     
+
+NAME: "Gi8/16 Module Temperature Sensor", DESCR: "GigabitEthernet8/16 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/16 Supply Voltage Sensor", DESCR: "GigabitEthernet8/16 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/16 Bias Current Sensor", DESCR: "GigabitEthernet8/16 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/16 Transmit Power Sensor", DESCR: "GigabitEthernet8/16 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/16 Receive Power Sensor", DESCR: "GigabitEthernet8/16 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/17", DESCR: "Transceiver Port Gi8/17"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi8/17", DESCR: "Transceiver Port Container Gi8/17"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi8/17", DESCR: "Transceiver 1000BaseLH Gi8/17"
+PID:                   , VID: A000, SN: FNS12400AL7     
+
+NAME: "Gi8/17 Module Temperature Sensor", DESCR: "GigabitEthernet8/17 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/17 Supply Voltage Sensor", DESCR: "GigabitEthernet8/17 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/17 Bias Current Sensor", DESCR: "GigabitEthernet8/17 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/17 Transmit Power Sensor", DESCR: "GigabitEthernet8/17 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/17 Receive Power Sensor", DESCR: "GigabitEthernet8/17 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/18", DESCR: "Transceiver Port Gi8/18"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi8/18", DESCR: "Transceiver Port Container Gi8/18"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi8/18", DESCR: "Transceiver 1000BaseLH Gi8/18"
+PID:                   , VID: A000, SN: FNS12400AKS     
+
+NAME: "Gi8/18 Module Temperature Sensor", DESCR: "GigabitEthernet8/18 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/18 Supply Voltage Sensor", DESCR: "GigabitEthernet8/18 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/18 Bias Current Sensor", DESCR: "GigabitEthernet8/18 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/18 Transmit Power Sensor", DESCR: "GigabitEthernet8/18 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/18 Receive Power Sensor", DESCR: "GigabitEthernet8/18 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/19", DESCR: "Transceiver Port Gi8/19"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi8/19", DESCR: "Transceiver Port Container Gi8/19"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi8/19", DESCR: "Transceiver 1000BaseLH Gi8/19"
+PID:                   , VID: A000, SN: FNS12400ALG     
+
+NAME: "Gi8/19 Module Temperature Sensor", DESCR: "GigabitEthernet8/19 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/19 Supply Voltage Sensor", DESCR: "GigabitEthernet8/19 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/19 Bias Current Sensor", DESCR: "GigabitEthernet8/19 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/19 Transmit Power Sensor", DESCR: "GigabitEthernet8/19 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/19 Receive Power Sensor", DESCR: "GigabitEthernet8/19 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/20", DESCR: "Transceiver Port Gi8/20"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi8/20", DESCR: "Transceiver Port Container Gi8/20"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi8/20", DESCR: "Transceiver 1000BaseLH Gi8/20"
+PID:                   , VID: A000, SN: FNS1240071K     
+
+NAME: "Gi8/20 Module Temperature Sensor", DESCR: "GigabitEthernet8/20 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/20 Supply Voltage Sensor", DESCR: "GigabitEthernet8/20 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/20 Bias Current Sensor", DESCR: "GigabitEthernet8/20 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/20 Transmit Power Sensor", DESCR: "GigabitEthernet8/20 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/20 Receive Power Sensor", DESCR: "GigabitEthernet8/20 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/21", DESCR: "Transceiver Port Gi8/21"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi8/21", DESCR: "Transceiver Port Container Gi8/21"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi8/21", DESCR: "Transceiver 1000BaseLH Gi8/21"
+PID:                   , VID: A000, SN: FNS124007MB     
+
+NAME: "Gi8/21 Module Temperature Sensor", DESCR: "GigabitEthernet8/21 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/21 Supply Voltage Sensor", DESCR: "GigabitEthernet8/21 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/21 Bias Current Sensor", DESCR: "GigabitEthernet8/21 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/21 Transmit Power Sensor", DESCR: "GigabitEthernet8/21 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/21 Receive Power Sensor", DESCR: "GigabitEthernet8/21 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/22", DESCR: "Transceiver Port Gi8/22"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi8/22", DESCR: "Transceiver Port Container Gi8/22"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi8/22", DESCR: "Transceiver 1000BaseLH Gi8/22"
+PID:                   , VID: A000, SN: FNS124006Z6     
+
+NAME: "Gi8/22 Module Temperature Sensor", DESCR: "GigabitEthernet8/22 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/22 Supply Voltage Sensor", DESCR: "GigabitEthernet8/22 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/22 Bias Current Sensor", DESCR: "GigabitEthernet8/22 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/22 Transmit Power Sensor", DESCR: "GigabitEthernet8/22 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/22 Receive Power Sensor", DESCR: "GigabitEthernet8/22 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/23", DESCR: "Transceiver Port Gi8/23"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi8/23", DESCR: "Transceiver Port Container Gi8/23"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi8/23", DESCR: "Transceiver 1000BaseLH Gi8/23"
+PID:                   , VID: A000, SN: FNS12400AML     
+
+NAME: "Gi8/23 Module Temperature Sensor", DESCR: "GigabitEthernet8/23 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/23 Supply Voltage Sensor", DESCR: "GigabitEthernet8/23 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/23 Bias Current Sensor", DESCR: "GigabitEthernet8/23 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/23 Transmit Power Sensor", DESCR: "GigabitEthernet8/23 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/23 Receive Power Sensor", DESCR: "GigabitEthernet8/23 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/24", DESCR: "Transceiver Port Gi8/24"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Port Container Gi8/24", DESCR: "Transceiver Port Container Gi8/24"
+PID:                   , VID:    , SN:            
+
+NAME: "Transceiver Gi8/24", DESCR: "Transceiver 1000BaseLH Gi8/24"
+PID:                   , VID: A000, SN: FNS124006ZN     
+
+NAME: "Gi8/24 Module Temperature Sensor", DESCR: "GigabitEthernet8/24 Module Temperature Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/24 Supply Voltage Sensor", DESCR: "GigabitEthernet8/24 Supply Voltage Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/24 Bias Current Sensor", DESCR: "GigabitEthernet8/24 Bias Current Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/24 Transmit Power Sensor", DESCR: "GigabitEthernet8/24 Transmit Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Gi8/24 Receive Power Sensor", DESCR: "GigabitEthernet8/24 Receive Power Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Physical Slot 9", DESCR: "Cisco Systems Catalyst 6500 9-slot Physical Slot"
+PID:                   , VID:    , SN:            
+
+NAME: "Container of Fan FRU 1", DESCR: "Container of Fan FRU"
+PID:                   , VID:    , SN:            
+
+NAME: "fan-tray 1", DESCR: "Chassis fan-tray 1"
+PID:                   , VID:    , SN:            
+
+NAME: "Container of Container of Power Supply", DESCR: "Container of Container of Power Supply"
+PID:                   , VID:    , SN:            
+
+NAME: "Container of Power Supply 1", DESCR: "Container of Power Supply"
+PID:                   , VID:    , SN:            
+
+NAME: "PS 1 PWR-4000-DC", DESCR: "DC power supply, 4000 watt 1"
+PID: PWR-4000-DC       , VID: V01, SN: QCS0949207F
+
+NAME: "power-supply 1 fan-fail Sensor", DESCR: "power-supply 1 fan-fail Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "power-supply 1 power-output-fail Sensor", DESCR: "power-supply 1 power-output-fail Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "power-supply 1 incompatible with fan Sensor", DESCR: "power-supply 1 incompatible with fan Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "power-supply 1 power-input Sensor", DESCR: "power-supply 1 power-input Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "Container of Power Supply 2", DESCR: "Container of Power Supply"
+PID:                   , VID:    , SN:            
+
+NAME: "PS 2 PWR-4000-DC", DESCR: "DC power supply, 4000 watt 2"
+PID: PWR-4000-DC       , VID: V02, SN: QCS10352074
+
+NAME: "power-supply 2 fan-fail Sensor", DESCR: "power-supply 2 fan-fail Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "power-supply 2 power-output-fail Sensor", DESCR: "power-supply 2 power-output-fail Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "power-supply 2 incompatible with fan Sensor", DESCR: "power-supply 2 incompatible with fan Sensor"
+PID:                   , VID:    , SN:            
+
+NAME: "power-supply 2 power-input Sensor", DESCR: "power-supply 2 power-input Sensor"
+PID:                   , VID:    , SN:            
+
+
+CEBRL01#

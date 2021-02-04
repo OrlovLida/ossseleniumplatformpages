@@ -32,7 +32,7 @@ public class ISPConfiguration extends BaseTestCase {
     String LOCATION_OVERVIEW_URL = "";
     private static final String LOCATION_NAME = "ISPConfiguration_Building";
     private static final String SUBLOCATION_NAME = "ISPConfiguration_Room";
-    private static final String GEOGRAPHICAL_ADDRESS = "test";
+    private static final String GEOGRAPHICAL_ADDRESS = "1";
     private static final String PHYSICAL_DEVICE_MODEL = "7360 ISAM FX-8";
     private static final String PHYSICAL_DEVICE_NAME = "ISPPhysicalDevice";
     private static final String PHYSICAL_DEVICE_MODEL2 = "Nexus 7010";
@@ -329,7 +329,7 @@ public class ISPConfiguration extends BaseTestCase {
         locationOverviewPage.selectTab("Cooling Zones");
         TableInterface coolingTable = locationOverviewPage.getTabTable(TabName.COOLING_ZONES);
         int rowNumber = coolingTable.getRowNumber(COOLING_ZONE_NAME, "Name");
-        String rowValue = coolingTable.getValueCell(rowNumber, "Cooling Load [kW]");
+        String rowValue = coolingTable.getCellValue(rowNumber, "Cooling Load [kW]");
         Assert.assertNotEquals(COOLING_ZONE_COOLING_LOAD, rowValue);
 
     }
@@ -385,7 +385,7 @@ public class ISPConfiguration extends BaseTestCase {
         locationOverviewPage.selectTab("Cooling Zones");
         TableInterface coolingTable = locationOverviewPage.getTabTable(TabName.COOLING_ZONES);
         int rowNumber = coolingTable.getRowNumber(COOLING_ZONE_NAME, "Name");
-        String rowValue = coolingTable.getValueCell(rowNumber, "Cooling Load Ratio [%]");
+        String rowValue = coolingTable.getCellValue(rowNumber, "Cooling Load Ratio [%]");
         Assert.assertNotEquals(COOLING_ZONE_LOAD_RATIO, rowValue);
     }
 
@@ -411,12 +411,12 @@ public class ISPConfiguration extends BaseTestCase {
         locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.POWER_MANAGEMENT, "Refresh");
         TableInterface powerManagementTable = locationOverviewPage.getTabTable(TabName.POWER_MANAGEMENT);
         int rowNumber = powerManagementTable.getRowNumber(SUBLOCATION_NAME + " 001", "Name");
-        String rowValue = powerManagementTable.getValueCell(rowNumber, "Power Capacity [kW]");
+        String rowValue = powerManagementTable.getCellValue(rowNumber, "Power Capacity [kW]");
         Assert.assertNotEquals(LOCATION_POWER_CAPACITY, rowValue);
         LOCATION_POWER_CAPACITY = rowValue;
-        rowValue = powerManagementTable.getValueCell(rowNumber, "Power Load [kW]");
+        rowValue = powerManagementTable.getCellValue(rowNumber, "Power Load [kW]");
         Assert.assertNotEquals(rowValue, "0");
-        rowValue = powerManagementTable.getValueCell(rowNumber, "Power Load Ratio [%]");
+        rowValue = powerManagementTable.getCellValue(rowNumber, "Power Load Ratio [%]");
         Assert.assertNotEquals(rowValue, "0");
     }
 

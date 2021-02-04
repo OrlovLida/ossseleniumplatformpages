@@ -9,6 +9,8 @@ import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageContainer.Message;
 import com.oss.framework.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.alerts.SystemMessageInterface;
+import com.oss.framework.components.contextactions.ActionsContainer;
+import com.oss.framework.components.inputs.Input.ComponentType;
 import com.oss.framework.mainheader.Notifications;
 import com.oss.framework.mainheader.NotificationsInterface;
 import com.oss.framework.prompts.ConfirmationBox;
@@ -27,14 +29,16 @@ import io.qameta.allure.Step;
 public class NetworkDiscoveryControlViewPage extends BasePage {
 
     private TreeWidget mainTree;
-    private String reconciliation = "narComponent_CmDomainActionFullReconciliationId";
-    private String reconciliationTab = "narComponent_networkDiscoveryControlViewIdcmDomainTabsId";
-    private String reconciliationStateTable = "narComponent_networkDiscoveryControlViewIdreconciliationStatesTableId";
-    private String reconciliationTreeTab = "narComponent_networkDiscoveryControlViewIdcmDomainsTreeTabId";
-    private String createCmDomain = "narComponent_CmDomainActionCreateId";
-    private String deleteCmDomain = "narComponent_CmDomainActionDeleteCmDomainId";
-    private String showInconsistencies = "narComponent_CmDomainActionShowInconsistenciesId";
-    private String showSamplesManagement = "narComponent_CmDomainActionCmSamplesManagementId";
+    private static final String RECONCILIATION_ACTION_ID = "narComponent_CmDomainActionFullReconciliationId";
+    private static final String RECONCILIATION_TAB_ID = "narComponent_networkDiscoveryControlViewIdcmDomainTabsId";
+    private static final String RECONCILIATION_STATE_TABLE_ID = "narComponent_networkDiscoveryControlViewIdreconciliationStatesTableId";
+    private static final String RECONCILIATION_TREE_TAB_ID = "narComponent_networkDiscoveryControlViewIdcmDomainsTreeTabId";
+    private static final String CREATE_CM_DOMAIN_ACTION_ID = "narComponent_CmDomainActionCreateId";
+    private static final String DELETE_CM_DOMAIN_ACTION_ID = "narComponent_CmDomainActionDeleteCmDomainId";
+    private static final String SHOW_INCONCISTENCIES_ACTION_ID = "narComponent_CmDomainActionShowInconsistenciesId";
+    private static final String SHOW_SAMPLES_MANAGEMENT_ACTION_ID = "narComponent_CmDomainActionCmSamplesManagementId";
+    private static final String ISSUES_TABLE_ID = "narComponent_networkDiscoveryControlViewIdissuesTableId";
+    private static final String RECO_STATE_REFRESH_BUTTON_ID = "tableRefreshButton";
 
     public static NetworkDiscoveryControlViewPage goToNetworkDiscoveryControlViewPage(WebDriver driver, String basicURL) {
         driver.get(String.format("%s/#/view/reco/network-repository-view/network-discovery" +
@@ -50,9 +54,16 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     public void openCmDomainWizard() {
         DelayUtils.waitForPageToLoad(driver, wait);
         TabsInterface tabs = TabWindowWidget.create(driver, wait);
-        tabs.selectTabById(reconciliationTreeTab);
-        tabs.callActionById("CREATE", createCmDomain);
+        tabs.selectTabById(RECONCILIATION_TREE_TAB_ID);
+        tabs.callActionById(ActionsContainer.CREATE_GROUP_ID, CREATE_CM_DOMAIN_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    @Step("Create CM Domain with Name: {name}, CM Interface: {cmInterface}, Domain: {domain}")
+    public void createCMDomain(String name, String cmInterface, String domain) {
+        openCmDomainWizard();
+        CmDomainWizardPage wizard = new CmDomainWizardPage(driver);
+        wizard.fillCmDomainWizard(name, cmInterface, domain);
     }
 
     public TreeWidget getTreeView() {
@@ -76,8 +87,8 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     @Step("Run full reconciliation for selected CM Domain")
     public void runReconciliation() {
         TabsInterface tabs = TabWindowWidget.create(driver, wait);
-        tabs.selectTabById(reconciliationTreeTab);
-        tabs.callActionById(reconciliation);
+        tabs.selectTabById(RECONCILIATION_TREE_TAB_ID);
+        tabs.callActionById(RECONCILIATION_ACTION_ID);
         ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
         prompt.clickButtonByLabel("Reconcile");
     }
@@ -93,18 +104,16 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     @Step("Waiting until reconciliation is over")
     public void waitForEndOfReco() {
-        TableInterface tableWidget = OldTable.createByComponentDataAttributeName(driver, wait, reconciliationTab);
-        tableWidget.clickOnKebabMenu();
-        tableWidget.clickOnAction("Refresh");
+        TableInterface tableWidget = OldTable.createByComponentDataAttributeName(driver, wait, RECONCILIATION_TAB_ID);
+        tableWidget.callAction(ActionsContainer.KEBAB_GROUP_ID, RECO_STATE_REFRESH_BUTTON_ID);
         DelayUtils.sleep(500);
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, reconciliationStateTable);
-        String status = table.getValueCell(0, "Status");
+        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, RECONCILIATION_STATE_TABLE_ID);
+        String status = table.getCellValue(0, "Status");
         while (status.equals("IN_PROGRESS") || status.equals("PENDING")) {
             DelayUtils.sleep(5000);
-            tableWidget.clickOnKebabMenu();
-            tableWidget.clickOnAction("Refresh");
+            tableWidget.callAction(ActionsContainer.KEBAB_GROUP_ID, RECO_STATE_REFRESH_BUTTON_ID);
             DelayUtils.sleep(1000);
-            status = table.getValueCell(0, "Status");
+            status = table.getCellValue(0, "Status");
         }
         Assertions.assertThat(status.equals("SUCCESS"));
     }
@@ -112,8 +121,8 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     @Step("Delete selected CM Domain")
     public void deleteCmDomain() {
         TabsInterface tabs = TabWindowWidget.create(driver, wait);
-        tabs.selectTabById(reconciliationTreeTab);
-        tabs.callActionById("EDIT", deleteCmDomain);
+        tabs.selectTabById(RECONCILIATION_TREE_TAB_ID);
+        tabs.callActionById(ActionsContainer.EDIT_GROUP_ID, DELETE_CM_DOMAIN_ACTION_ID);
         ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
         prompt.clickButtonByLabel("Delete");
     }
@@ -141,18 +150,68 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     @Step("Move from Network Discovery Control View to Network Inconsistencies View in context of selected CM Domain")
     public void moveToNivFromNdcv() {
         TabsInterface ndcvTabs = TabWindowWidget.create(driver, wait);
-        ndcvTabs.selectTabById(reconciliationTreeTab);
-        ndcvTabs.callActionById("NAVIGATION", showInconsistencies);
+        ndcvTabs.selectTabById(RECONCILIATION_TREE_TAB_ID);
+        ndcvTabs.callActionById(ActionsContainer.SHOW_ON_GROUP_ID, SHOW_INCONCISTENCIES_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     @Step("Move from Network Discovery Control View to CM Samples Management view in context of selected CM Domain")
     public void moveToSamplesManagement() {
         TabsInterface ndcvTabs = TabWindowWidget.create(driver, wait);
-        ndcvTabs.selectTabById(reconciliationTreeTab);
+        ndcvTabs.selectTabById(RECONCILIATION_TREE_TAB_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
-        ndcvTabs.callActionById("NAVIGATION", showSamplesManagement);
+        ndcvTabs.callActionById(ActionsContainer.SHOW_ON_GROUP_ID, SHOW_SAMPLES_MANAGEMENT_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
+    @Step("Check if there are Issues with type {type}")
+    public boolean checkIssues(IssueLevel errorType) {
+        String type = String.valueOf(errorType);
+        getIssuesTable().searchByAttributeWithLabel("Issue Level", ComponentType.TEXT_FIELD, type);
+        if (getIssuesTable().hasNoData()) {
+            return true;
+        } else {
+            logIssues(type);
+            return false;
+        }
+    }
+
+    @Step("Select latest reconciliation state")
+    public void selectLatestReconciliationState() {
+        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, RECONCILIATION_STATE_TABLE_ID);
+        table.selectRow(0);
+    }
+
+    private void logIssues(String type) {
+        int issuesNumber = getIssuesTable().getTableObjectsCount();
+        Assertions.assertThat(issuesNumber).isGreaterThan(0);
+        if (issuesNumber <= 10) {
+            printIssues(type, issuesNumber);
+        } else if (issuesNumber <= 100) {
+            getIssuesTable().changeItemsPerPageValue(100);
+            printIssues(type, issuesNumber);
+        } else {
+            System.out.println("There are over 100 issues with type = " + type + ". Printing only latest 100:");
+            getIssuesTable().changeItemsPerPageValue(100);
+            printIssues(type, 100);
+        }
+    }
+
+    private void printIssues(String type, int issuesNumber) {
+        for (int i = 0; i < issuesNumber; i++) {
+            System.out.println("[" + type + "] " + getIssuesTable().getCellValue(i, "Reason"));
+        }
+    }
+
+    private OldTable getIssuesTable() {
+        return OldTable.createByComponentDataAttributeName(driver, wait, ISSUES_TABLE_ID);
+    }
+
+    public enum IssueLevel {
+        INFO,
+        WARNING,
+        ERROR,
+        FATAL,
+        STARTUP_FATAL
+    }
 }

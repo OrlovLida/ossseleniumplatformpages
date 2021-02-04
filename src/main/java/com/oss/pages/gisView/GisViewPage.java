@@ -2,6 +2,7 @@ package com.oss.pages.gisView;
 
 
 import com.oss.framework.components.inputs.Button;
+import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.dockedPanel.DockedPanel;
@@ -18,7 +19,7 @@ import org.openqa.selenium.WebDriver;
 public class GisViewPage extends BasePage {
     private static final String GIS_VIEW_TABS_DATA_ATTRIBUTE_NAME = "gis_view_tabs";
 
-    protected GisViewPage(WebDriver driver) {
+    public GisViewPage(WebDriver driver) {
         super(driver);
     }
 
@@ -33,16 +34,22 @@ public class GisViewPage extends BasePage {
         gisMap.searchFirstResult(value);
     }
 
-    public void useContextAction(String group, String label) {
+    public void searchResult(String value) {
         GisMapInterface gisMap = GisMap.create(driver, wait);
-        gisMap.callActionByLabel(group, label);
+        gisMap.searchResult(value);
     }
 
-    public void useContextActionById(String actionId) {
+    public void chooseOptionFromDropDownList(String buttonId, String optionId) {
+        Button.createById(driver, buttonId).click();
+        DelayUtils.waitForPageToLoad(driver, wait);
+        DropdownList.create(driver, wait).selectOptionWithId(optionId);
+    }
+
+    public void useContextActionByLabel(String actionLabel) {
         DelayUtils.waitForPageToLoad(driver, wait);
         GisMapInterface gisMap = GisMap.create(driver, wait);
         DelayUtils.waitForPageToLoad(driver, wait);
-        gisMap.callActionById(actionId);
+        gisMap.callActionByLabel(actionLabel);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
@@ -69,8 +76,8 @@ public class GisViewPage extends BasePage {
         gisMap.dragAndDropObject(xSource, ySource, xDestination, yDestination);
     }
 
-    public void clickDelete() {
-        getWizard().clickButtonByLabel("Remove");
+    public void clickButtonInPopupByLabel(String label) {
+        getWizard().clickButtonByLabel(label);
     }
 
     //TODO Change on creating button by id when data-attributename will be added
@@ -79,6 +86,7 @@ public class GisViewPage extends BasePage {
         layersTreeButton.click();
         TreeWidget tree = TreeWidget.createByClass(driver, "tree-component", wait);
         tree.setValueOnCheckboxByNodeLabel(layer, true);
+        layersTreeButton.click();
     }
 
     public void expandDockedPanel(String position) {
@@ -101,7 +109,7 @@ public class GisViewPage extends BasePage {
 
     public String getCellValue(int row, String label) {
         TableInterface table = OldTable.createByComponentId(driver, wait, "gis_view_tabs");
-        return table.getValueCell(row, label);
+        return table.getCellValue(row, label);
     }
 
     public Wizard getWizard() {

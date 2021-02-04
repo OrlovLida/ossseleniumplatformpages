@@ -1,6 +1,8 @@
 package com.oss.pages.physical;
 
 import com.oss.framework.components.inputs.Input;
+import com.oss.framework.listwidget.CommonList;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tablewidget.TableInterface;
@@ -9,6 +11,7 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 
 public class CableRoutingViewPage extends BasePage {
+    private static final String ROUTING_TABLE_DATA_ATTRIBUTE_NAME = "routing-list";
 
     public CableRoutingViewPage(WebDriver driver) { super(driver); }
 
@@ -33,6 +36,15 @@ public class CableRoutingViewPage extends BasePage {
     public void clickAddLocationToRouting() {
         Wizard.createByComponentId(driver, wait, "Popup")
                 .clickButtonByLabel("Add location to routing");
+    }
+
+    @Step("Choose segment")
+    public void selectSegment(int row) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        CommonList commonList = CommonList.create(driver, wait, ROUTING_TABLE_DATA_ATTRIBUTE_NAME);
+        commonList.expandAllCategories();
+        DelayUtils.waitForPageToLoad(driver, wait);
+        commonList.selectRow(row);
     }
 
     @Step("Click Save")

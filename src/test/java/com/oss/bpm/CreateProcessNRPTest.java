@@ -11,6 +11,7 @@ import java.net.URL;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.assertj.core.api.Assertions;
 import org.testng.annotations.AfterClass;
@@ -21,11 +22,9 @@ import org.testng.annotations.Test;
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
-import com.oss.framework.listwidget.EditableList;
 import com.oss.framework.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.tablewidget.OldTable;
-import com.oss.framework.widgets.tablewidget.TableInterface;
+import com.oss.framework.widgets.treetablewidget.OldTreeTableWidget;
 import com.oss.pages.bpm.IntegrationProcessWizardPage;
 import com.oss.pages.bpm.ProcessInstancesPage;
 import com.oss.pages.bpm.ProcessWizardPage;
@@ -56,6 +55,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         processInstancesPage.changeUser("bpm_webselenium", "bpmweb");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        
     }
     
     @Test(priority = 1)
@@ -173,10 +173,14 @@ public class CreateProcessNRPTest extends BaseTestCase {
             throw new RuntimeException("Cannot load file", e);
         }
         DelayUtils.sleep(2000);
-        List<String> attachments = EditableList.createById(driver, webDriverWait, "attachmentManagerBusinessView_commonList").getValues();
-        Assertions.assertThat(attachments.size()).isGreaterThan(0);
-        String allNames = String.join("", attachments);
-        Assertions.assertThat(allNames).contains("SeleniumTest");
+        
+        OldTreeTableWidget treeTable =
+                OldTreeTableWidget.create(driver, webDriverWait, "attachmentManagerBusinessView_commonTreeTable_BPMTask");
+        List<String> allNodes = treeTable.getAllVisibleNodes("Attachments and directories");
+        List<String> files = allNodes.stream().filter(node -> !node.equals("HOME")).collect(Collectors.toList());
+        Assertions.assertThat(files.get(0)).contains("SeleniumTest");
+        Assertions.assertThat(files.size()).isGreaterThan(0);
+        
     }
     
     @Test(priority = 7)
@@ -268,11 +272,8 @@ public class CreateProcessNRPTest extends BaseTestCase {
         // when
         tasksPage.findTask(processNRPCode, "Ready for Integration");
         DelayUtils.sleep(3000);
-        TableInterface ipTable = OldTable.createByComponentId(driver, webDriverWait, "ip_involved_nrp_group1");
-        int rowNumber = ipTable.getRowNumber(processIPName1, "Name");
-        processIPCode1 = ipTable.getValueCell(rowNumber, "Code");
-        int rowNumber2 = ipTable.getRowNumber(processIPName2, "Name");
-        processIPCode2 = ipTable.getValueCell(rowNumber2, "Code");
+        processIPCode1 = tasksPage.getIPCodeByProcessName(processIPName1);
+        processIPCode2 = tasksPage.getIPCodeByProcessName(processIPName2);
         System.out.println(processIPCode1 + processIPCode2);
     }
     

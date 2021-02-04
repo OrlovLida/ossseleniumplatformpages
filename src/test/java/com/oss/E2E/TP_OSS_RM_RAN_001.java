@@ -239,11 +239,11 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cellSiteConfigurationPage.selectTab(hostingTabName);
 
-        cellSiteConfigurationPage.clickPlusIconByLabel("Host on Device");
+        cellSiteConfigurationPage.useTableContextActionByLabel("Host on Device");
         HostingWizardPage wizard = new HostingWizardPage(driver);
         wizard.onlyCompatible("false");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        wizard.selectDevice(bbuName);
+        wizard.setDevice(bbuName);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         wizard.clickAccept();
         checkPopup();
@@ -261,7 +261,7 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             cellSiteConfigurationPage.clickPlusIconAndSelectOption("Host on Device");
             HostingWizardPage wizard = new HostingWizardPage(driver);
-            wizard.selectDevice(radioUnitNames[i]);
+            wizard.setDevice(radioUnitNames[i]);
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             wizard.clickAccept();
             checkPopup();
@@ -278,7 +278,7 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             cellSiteConfigurationPage.clickPlusIconAndSelectOption("Host on Antenna Array");
             HostingWizardPage wizard = new HostingWizardPage(driver);
-            wizard.selectArray(antennaNames[i]);                                                //to nie są w sumie anteny tylko arraye
+            wizard.setHostingContains(antennaNames[i]);                                                //to nie są w sumie anteny tylko arraye
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             wizard.clickAccept();
             checkPopup();

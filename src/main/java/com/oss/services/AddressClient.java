@@ -55,8 +55,32 @@ public class AddressClient {
                 .when()
                 .post(ADDRESS_ITEM_API_PATH);
         List<String> addressItemsUrlLinks = response.jsonPath().get();
-        String countryId = addressItemsUrlLinks.get(0).toString().substring(52, 60);
+        String countryId = addressItemsUrlLinks.get(0).substring(52, 60);
         return countryId;
+    }
+
+    public String createCountryV2(List<AddressItemDTO> country) {
+        com.jayway.restassured.response.Response response = ENV.getAddressCoreRequestSpecification()
+                .given()
+                .contentType(ContentType.JSON)
+                .body(country)
+                .when()
+                .post(ADDRESS_ITEM_API_PATH);
+        List<String> addressItemsUrlLinks = response.jsonPath().get();
+        String countryId = addressItemsUrlLinks.get(0).substring(51, 59);
+        return countryId;
+    }
+
+    public String createRegion(List<AddressItemDTO> region) {
+        com.jayway.restassured.response.Response response = ENV.getAddressCoreRequestSpecification()
+                .given()
+                .contentType(ContentType.JSON)
+                .body(region)
+                .when()
+                .post(ADDRESS_ITEM_API_PATH);
+        List<String> addressItemsUrlLinks = response.jsonPath().get();
+        String regionId = addressItemsUrlLinks.get(0).substring(51, 59);
+        return regionId;
     }
 
     public void createPostalCode(List<AddressItemDTO> postalCode) {
@@ -86,6 +110,19 @@ public class AddressClient {
                 .given()
                 .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
                 .queryParam(Constants.RSQL, "name=='" + countryName + "'")
+                .when()
+                .get(AddressClient.ADDRESS_ITEM_API_PATH)
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode()).assertThat()
+                .extract()
+                .as(AddressItemSearchResultDTO.class);
+    }
+
+    public AddressItemSearchResultDTO getRegionsUrlList(String regionName) {
+        return ENV.getAddressCoreRequestSpecification()
+                .given()
+                .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
+                .queryParam(Constants.RSQL, "name=='" + regionName + "'")
                 .when()
                 .get(AddressClient.ADDRESS_ITEM_API_PATH)
                 .then()

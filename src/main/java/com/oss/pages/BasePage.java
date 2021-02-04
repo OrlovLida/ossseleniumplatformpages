@@ -13,12 +13,17 @@ import java.util.Random;
 
 public class BasePage {
     protected final WebDriver driver;
-    public final WebDriverWait wait;
+    protected final WebDriverWait wait;
 
     public BasePage(WebDriver driver) {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, 45);
         PageFactory.initElements(driver, this);
+    }
+
+    public BasePage(WebDriver driver, WebDriverWait wait){
+        this.driver = driver;
+        this.wait = wait;
     }
 
     protected String randomInteger(int length) {

@@ -1,6 +1,7 @@
 package com.oss.pages.templateCM;
 
-import com.oss.framework.components.contextactions.OldActionsContainer;
+import org.openqa.selenium.WebDriver;
+
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
@@ -10,23 +11,24 @@ import com.oss.framework.widgets.tablewidget.TableInterface;
 import com.oss.framework.widgets.tabswidget.TabWindowWidget;
 import com.oss.framework.widgets.tabswidget.TabsInterface;
 import com.oss.pages.BasePage;
+
 import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
 
 import static java.lang.String.format;
 
-
 public class ChangeConfigurationPage extends BasePage {
 
-    private String SET_PARAMETERS_BUTTON = "Set parameters";
-    private String INVENTORY_OBJECTS_TAB_ID = "deviceSelectionWindowTabId";
-    private String OBJECT_TYPE_INPUT_ID = "objectTypeValue";
-    private String DEVICE_SELECT_TABLE = "DeviceSelectionApp";
-    private String TEMPLATE_SELECT_TABLE = "TemplatesTableApp";
-    private String EXECUTE_BUTTON = "SingleImmediateExecutionPropertiesSubmitButton-0";
-    private String RETRY_COMBOBOX = "retryComboBox-input";
-    private Wizard wizard = Wizard.createWizard(driver, wait);
+    private final static String SET_PARAMETERS_BUTTON = "Set parameters";
+    private final static String INVENTORY_OBJECTS_TAB_ID = "deviceSelectionWindowTabId";
+    private final static String EXECUTE_ID = "dropdownButtonAction";
+    private final static String IMMEDIATELY_ID = "executeImmediateButtonAction";
+    private final static String OBJECT_TYPE_INPUT_ID = "objectTypeValue";
+    private final static String DEVICE_SELECT_TABLE = "DeviceSelectionApp";
+    private final static String TEMPLATE_SELECT_TABLE = "TemplatesTableApp";
+    private final static String EXECUTE_BUTTON = "SingleImmediateExecutionPropertiesSubmitButton-0";
+    private final static String RETRY_COMBOBOX = "retryComboBox-input";
 
+    private Wizard wizard = Wizard.createWizard(driver, wait);
 
     public static ChangeConfigurationPage goToChangeConfigurationPage(WebDriver driver, String basicURL) {
         driver.get(format("%s/#/view/cm/template-filler-view/view-change?perspective=LIVE", basicURL));
@@ -76,8 +78,8 @@ public class ChangeConfigurationPage extends BasePage {
     @Step("Deploy template immediately")
     public void deployImmediately() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        //TODO change when data-attributename will be added
-        OldActionsContainer executeButton = OldActionsContainer.createFromXPath(driver, wait, "//ul[@class = 'nav groupList']");
-        executeButton.callAction("dropdownButtonAction", "Immediately");
+        Button.createBySelectorAndId(driver, "button", EXECUTE_ID).click();
+        Button.createBySelectorAndId(driver, "a", IMMEDIATELY_ID).click();
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 }

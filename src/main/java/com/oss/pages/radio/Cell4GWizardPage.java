@@ -71,7 +71,7 @@ public class Cell4GWizardPage extends BasePage {
         return this;
     }
 
-    @Step("Set Carrier 4G")
+    @Step("Set Carrier 4G using contains")
     public Cell4GWizardPage setCarrier4G(String carrier4G) {
         getCell4GWizard().getComponent(CELL4G_CARRIER_DATA_ATTRIBUTE_NAME, Input.ComponentType.COMBOBOX).setSingleStringValueContains(carrier4G);
         return this;

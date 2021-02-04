@@ -20,7 +20,7 @@ public class LogManagerPage extends BasePage {
         Button.createById(driver, CM_LOGS_BUTTON).click();
         DelayUtils.waitForPageToLoad(driver, wait);
         TableInterface statusTable = OldTable.createByComponentDataAttributeName(driver, wait, LOGS_TABLE_DATA_ATTRIBUTE_NAME);
-        String status = statusTable.getValueCell(0, "Status");
+        String status = statusTable.getCellValue(0, "Status");
         return status;
     }
 }

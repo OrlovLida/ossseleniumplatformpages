@@ -9,6 +9,7 @@ import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.treewidget.TreeWidget;
 import com.oss.pages.BasePage;
+import com.oss.pages.physical.LocationOverviewPage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 
@@ -29,16 +30,9 @@ public class CellSiteConfigurationPage extends BasePage {
 
     @Step("Click plus icon and select {option} from the drop-down list")
     public void clickPlusIconAndSelectOption(String option) {
+        useTableContextActionByLabel("ADD");
         DelayUtils.waitForPageToLoad(driver, wait);
-        getTabTable().callActionByLabel("ADD");
-        DelayUtils.waitForPageToLoad(driver, wait);
-        DropdownList.create(driver, wait)
-                .selectOption(option);
-    }
-
-    @Step("Click plus icon by label")
-    public void clickPlusIconByLabel(String label) {
-        getTabTable().callActionByLabel(label);
+        DropdownList.create(driver, wait).selectOption(option);
     }
 
     @Step("Select {tabName} tab")
@@ -50,10 +44,16 @@ public class CellSiteConfigurationPage extends BasePage {
 
     @Step("Filter and select {objectName} row")
     public CellSiteConfigurationPage filterObject(String columnName, String objectName) {
-        OldTable tabTable = OldTable.createByComponentDataAttributeName(driver, wait, TAB_TABLE_DATA_ATTRIBUTE_NAME);
-        tabTable.searchByAttributeWithLabel(columnName, Input.ComponentType.TEXT_FIELD, objectName);
+        getTabTable().searchByAttributeWithLabel(columnName, Input.ComponentType.TEXT_FIELD, objectName);
+        selectRowByAttributeValueWithLabel(columnName, objectName);
+        return this;
+    }
+
+    @Step("Select {label} row")
+    public CellSiteConfigurationPage selectRowByAttributeValueWithLabel(String attribute, String label) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        tabTable.selectRowByAttributeValueWithLabel(columnName, objectName);
+        getTabTable().selectRowByAttributeValueWithLabel(attribute, label);
+        DelayUtils.waitForPageToLoad(driver, wait);
         return this;
     }
 
@@ -88,6 +88,17 @@ public class CellSiteConfigurationPage extends BasePage {
         return this;
     }
 
+    @Step("Expand the tree and select Cell")
+    public CellSiteConfigurationPage expandTreeToCell(String locationType, String locationName, String baseStationName, String cellName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getTree().expandTreeRow(locationType);
+        getTree().expandTreeRow(locationName);
+        getTree().expandTreeRow("Base Stations");
+        getTree().expandTreeRow(baseStationName);
+        getTree().selectTreeRow(cellName);
+        return this;
+    }
+
     @Step("Select tree row")
     public void selectTreeRow(String treeRowName) {
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -104,6 +115,12 @@ public class CellSiteConfigurationPage extends BasePage {
         getTabTable().callAction(id);
     }
 
+    @Step("Use table context action")
+    public void useTableContextActionByLabel(String actionLabel) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getTabTable().callActionByLabel(actionLabel);
+    }
+
     @Step("Select trail type")
     public void selectTrailType(String trailType) {
         Wizard wizard = Wizard.createByComponentId(driver, wait, "Popup");
@@ -112,23 +129,31 @@ public class CellSiteConfigurationPage extends BasePage {
         wizard.clickAccept();
     }
 
-    public OldTable getTabTable() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        return OldTable.createByComponentDataAttributeName(driver, wait, TAB_TABLE_DATA_ATTRIBUTE_NAME);
+    @Step("Get row number for object with {attributeLabel} {value}")
+    public int getRowNumber(String attributeLabel, String value) {
+        return getTabTable().getRowNumber(value, attributeLabel);
     }
 
-    public void selectResource(String name) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        getTabTable().selectRowByAttributeValueWithLabel("Name", name);
-        DelayUtils.waitForPageToLoad(driver, wait);
+    @Step("Get {attributeLabel} value for row number {rowNumber}")
+    public String getValueByRowNumber(String attributeLabel, int rowNumber) {
+        return getTabTable().getCellValue(rowNumber, attributeLabel);
+    }
+
+    @Step("Get row count in a table")
+    public int getRowCount(String attributeLabel) {
+        return getTabTable().getNumberOfRowsInTable(attributeLabel);
+    }
+
+    public boolean hasNoData() {
+        return getTabTable().hasNoData();
     }
 
     public TreeWidget getTree() {
         return TreeWidget.createByDataAttributeName(driver, wait, TREE_DATA_ATTRIBUTE_NAME);
     }
 
-    public void selectRowByAttributeValueWithLabel(String attribute, String label) {
-        OldTable tabTable = OldTable.createByComponentDataAttributeName(driver, wait, TAB_TABLE_DATA_ATTRIBUTE_NAME);
-        tabTable.selectRowByAttributeValueWithLabel(attribute, label);
+    public OldTable getTabTable() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return OldTable.createByComponentDataAttributeName(driver, wait, TAB_TABLE_DATA_ATTRIBUTE_NAME);
     }
 }
