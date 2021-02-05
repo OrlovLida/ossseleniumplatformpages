@@ -6,11 +6,6 @@
  */
 package com.oss.pages.bpm;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import org.openqa.selenium.WebDriver;
-
 import com.google.common.base.Splitter;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
@@ -20,6 +15,10 @@ import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tablewidget.TableInterface;
 import com.oss.pages.BasePage;
+import org.openqa.selenium.WebDriver;
+
+import java.time.LocalDate;
+import java.util.List;
 
 /**
  * @author Gabriela Kasza
