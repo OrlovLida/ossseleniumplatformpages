@@ -171,7 +171,7 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         openHomePage();
         new HomePage(driver).setOldObjectType("Location");
         new OldInventoryViewPage(driver)
-                .filterObject("Name", LOCATION_NAME, "Location")
+                .filterObject("Name", LOCATION_NAME)
                 .expandShowOnAndChooseView("Cell Site Configuration");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
