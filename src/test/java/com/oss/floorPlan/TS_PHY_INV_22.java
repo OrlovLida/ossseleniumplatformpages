@@ -136,7 +136,7 @@ public class TS_PHY_INV_22 extends BaseTestCase {
 
     private void openLocationOverview() {
         OldInventoryViewPage oldInventoryViewPage = new OldInventoryViewPage(driver);
-        oldInventoryViewPage.filterObject("Name", locationName, "Building");
+        oldInventoryViewPage.filterObject("Name", locationName);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         oldInventoryViewPage.expandShowOnAndChooseView("OpenLocationOverviewAction");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);

@@ -133,7 +133,7 @@ public class TP_OSS_RM_RAN_004_All_Steps_Except_9 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         OldInventoryViewPage oldInventoryViewPage = new OldInventoryViewPage(driver);
-        oldInventoryViewPage.filterObject("Name", LOCATION_NAME, "Site");
+        oldInventoryViewPage.filterObject("Name", LOCATION_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         oldInventoryViewPage.expandShowOnAndChooseView("Cell Site Configuration");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -256,7 +256,7 @@ public class TP_OSS_RM_RAN_004_All_Steps_Except_9 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         OldInventoryViewPage oldInventoryViewPage = new OldInventoryViewPage(driver);
-        oldInventoryViewPage.filterObject("Name", LOCATION_NAME, "Site");
+        oldInventoryViewPage.filterObject("Name", LOCATION_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         oldInventoryViewPage.expandShowOnAndChooseView("Cell Site Configuration");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
