@@ -75,9 +75,9 @@ public class VSIOverviewPage extends BasePage {
     }
 
     @Step("Click add route target button")
-    public VSIRouteTargetAssignmentPage clickAddRouteTargetButton() {
-        Button addRouteTargetButton = Button.createBySelectorAndId(driver, "a", ADD_ROUTE_TARGET_BUTTON_DATA_ATTRIBUTENAME);
-        addRouteTargetButton.click();
+    public VSIRouteTargetAssignmentPage addRouteTarget() {
+        OldTable routeTargetTable = getTableWidget(BOTTOM_ROUTE_TARGET_TABLE_DATA_ATTRIBUTENAME);
+        routeTargetTable.callAction(ADD_ROUTE_TARGET_BUTTON_DATA_ATTRIBUTENAME);
         return new VSIRouteTargetAssignmentPage(driver);
     }
 
@@ -126,13 +126,13 @@ public class VSIOverviewPage extends BasePage {
 
     @Step("Get names of all assigned interfaces")
     public List<String> getAssignedInterfaces(){
-        OldTable table = OldTable.createByComponentId(driver, wait, BOTTOM_INTERFACES_TABLE_DATA_ATTRIBUTENAME);
+        OldTable table = getTableWidget(BOTTOM_INTERFACES_TABLE_DATA_ATTRIBUTENAME);
         return getListOfElementsInColumn(table, BOTTOM_TABLE_INTERFACE_NAME_LABEL);
     }
 
     @Step("Get values of all assigned Route Targets")
     public List<String> getAssignedRouteTargets(){
-        OldTable table = OldTable.createByComponentId(driver, wait, BOTTOM_ROUTE_TARGET_TABLE_DATA_ATTRIBUTENAME);
+        OldTable table = getTableWidget(BOTTOM_ROUTE_TARGET_TABLE_DATA_ATTRIBUTENAME);
         return getListOfElementsInColumn(table, BOTTOM_TABLE_ROUTE_TARGET_LABEL);
     }
 
@@ -148,19 +148,19 @@ public class VSIOverviewPage extends BasePage {
     @Step("Select first Route Target, click remove and confirm removal")
     public void removeFirstRouteTarget(){
         selectFirstRouteTarget();
-        clickRemoveRouteTarget();
+        OldTable routeTargetTable = getTableWidget(BOTTOM_ROUTE_TARGET_TABLE_DATA_ATTRIBUTENAME);
+        routeTargetTable.callAction(REMOVE_ROUTE_TARGET_BUTTON_DATA_ATTRIBUTENAME);
+        DelayUtils.waitForPageToLoad(driver, wait);
         confirmRouteTargetRemoval();
+    }
+
+    private OldTable getTableWidget(String tableId){
+        return OldTable.createByComponentDataAttributeName(driver, wait, tableId);
     }
 
     private void selectFirstRouteTarget(){
         OldTable table = OldTable.createByComponentId(driver, wait, BOTTOM_ROUTE_TARGET_TABLE_DATA_ATTRIBUTENAME);
         table.selectRow(0);
-        DelayUtils.waitForPageToLoad(driver, wait);
-    }
-
-    private void clickRemoveRouteTarget() {
-        Button removeButton = Button.createBySelectorAndId(driver, "a", REMOVE_ROUTE_TARGET_BUTTON_DATA_ATTRIBUTENAME);
-        removeButton.click();
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
