@@ -1,11 +1,5 @@
 package com.oss.E2E;
 
-import java.util.List;
-
-import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
-
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
@@ -14,18 +8,16 @@ import com.oss.pages.gisView.CreateDuctWizardPage;
 import com.oss.pages.gisView.DuctCopyWizardPage;
 import com.oss.pages.gisView.GisViewPage;
 import com.oss.pages.gisView.RoutingWizardPage;
-import com.oss.pages.physical.CableRoutingViewPage;
-import com.oss.pages.physical.CardCreateWizardPage;
-import com.oss.pages.physical.CreatePluggableModuleWizardPage;
-import com.oss.pages.physical.DeviceOverviewPage;
-import com.oss.pages.physical.DeviceWizardPage;
-import com.oss.pages.physical.LocationWizardPage;
-import com.oss.pages.physical.MediaTerminationPage;
-import com.oss.pages.physical.PatchcordWizardPage;
+import com.oss.pages.physical.*;
+import com.oss.pages.platform.HierarchyViewPage;
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.radio.CableWizardPage;
-
 import io.qameta.allure.Description;
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
+import java.util.List;
 
 public class TS_PHY_E2E_02 extends BaseTestCase {
 
@@ -56,6 +48,11 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
     private GisViewPage gisViewPage;
     private LocationWizardPage locationWizardPage;
 
+    private static final String DRAW_SINGLE_LOCATION_DATA_ATTRIBUTENAME = "activate-location-draw-mode";
+    private static final String SHOW_ON_DATA_ATTRIBUTENAME = "viewLinksDropdown-NAVIGATION";
+    private static final String CREATE_DATA_ATTRIBUTENAME = "viewLinksDropdown-CREATE";
+    private static final String EDIT_DATA_ATTRIBUTENAME = "viewLinksDropdown-EDIT";
+
     @BeforeClass
     public void openGisView() {
         openGIS();
@@ -69,7 +66,7 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         gisViewPage.clickOnMapByCoordinates(2, 4);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        gisViewPage.useContextAction("Draw Single Location", "Building");
+        gisViewPage.chooseOptionFromDropDownList(DRAW_SINGLE_LOCATION_DATA_ATTRIBUTENAME, "createShape_single_BUILDING");
         gisViewPage.clickOnMapByCoordinates(4, 2);
 
         locationWizardPage = new LocationWizardPage(driver);
@@ -91,12 +88,12 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
     }
 
     @Test(priority = 2)
-    @Description("Edit names and address of the buildings")
-    public void modifyBuilding() {
+    @Description("Change street number")
+    public void changeStreetNumber() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         gisViewPage.chooseObjectFromList("[Buildings] " + BUILDING_A_2_NAME, 4, 2);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        gisViewPage.useContextAction("Edit", "Edit Location");
+        gisViewPage.chooseOptionFromDropDownList(EDIT_DATA_ATTRIBUTENAME, "Edit Location");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         locationWizardPage.setLocationName(BUILDING_C_NAME);
@@ -107,19 +104,27 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         locationWizardPage.accept();
         checkPopupType();
+    }
 
+    @Test(priority = 3)
+    @Description("Change location of building C")
+    public void dragAndDropBuildingC() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        gisViewPage.useContextActionById("Move Location");
+        gisViewPage.useContextActionByLabel("Move Location");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         gisViewPage.dragAndDropObject(4, 2, 8, 4);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        gisViewPage.useContextActionById("Save Edited Shape");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        gisViewPage.useContextActionByLabel("Save Edited Shape");
         checkPopupType();
+    }
 
+    @Test(priority = 4)
+    @Description("Rename building A")
+    public void renameBuildingA() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         gisViewPage.clickOnMapByCoordinates(4, 2);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        gisViewPage.useContextAction("Edit", "Edit Location");
+        gisViewPage.chooseOptionFromDropDownList(EDIT_DATA_ATTRIBUTENAME, "Edit Location");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         locationWizardPage.setLocationName(BUILDING_A_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -129,7 +134,7 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
         checkPopupType();
     }
 
-    @Test(priority = 3)
+    @Test(priority = 5)
     @Description("Create manhole")
     public void createManhole() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -138,7 +143,7 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
 
         gisViewPage.clickOnMapByCoordinates(2, 4);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        gisViewPage.useContextAction("Draw Single Location", "Manhole");
+        gisViewPage.chooseOptionFromDropDownList(DRAW_SINGLE_LOCATION_DATA_ATTRIBUTENAME, "createShape_single_MANHOLE");
         gisViewPage.clickOnMapByCoordinates(8, 2);
 
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -157,13 +162,13 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
         checkMessageText("Location has been created successfully");
     }
 
-    @Test(priority = 4)
+    @Test(priority = 6)
     @Description("Create duct between building A na manhole")
     public void createDuctFromBuildingAToManhole() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         gisViewPage.clickOnMapByCoordinates(2, 4);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        gisViewPage.useContextActionById("Draw New Duct");
+        gisViewPage.useContextActionByLabel("Draw New Duct");
         gisViewPage.clickOnMapByCoordinates(4, 2);
         gisViewPage.clickOnMapByCoordinates(8, 2);
         gisViewPage.doubleClickOnMapByCoordinates(8, 2);
@@ -180,12 +185,12 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
         checkMessageText("Duct has been created");
     }
 
-    @Test(priority = 5)
+    @Test(priority = 7)
     @Description("Create duct between building C and manhole")
     public void createDuctFromBuildingCToManhole() {
         gisViewPage.clickOnMapByCoordinates(2, 4);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        gisViewPage.useContextActionById("Draw New Duct");
+        gisViewPage.useContextActionByLabel("Draw New Duct");
         gisViewPage.clickOnMapByCoordinates(8, 4);
         gisViewPage.clickOnMapByCoordinates(8, 2);
         gisViewPage.doubleClickOnMapByCoordinates(8, 2);
@@ -205,12 +210,12 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 6)
+    @Test(priority = 8)
     @Description("Create duct between Building A and C")
     public void createDuctFromBuildingAToBuildingC() {
         gisViewPage.clickOnMapByCoordinates(2, 4);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        gisViewPage.useContextActionById("Draw New Duct");
+        gisViewPage.useContextActionByLabel("Draw New Duct");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         gisViewPage.clickOnMapByCoordinates(4, 2);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -230,7 +235,7 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
         checkMessageText("Duct has been created");
     }
 
-    @Test(priority = 7)
+    @Test(priority = 9)
     @Description("Create routing through manhole")
     public void createSubductRouting() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -238,7 +243,7 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         gisViewPage.clickOnMapByCoordinates(6, 3);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        gisViewPage.useContextAction("Edit", "Routing");
+        gisViewPage.chooseOptionFromDropDownList(EDIT_DATA_ATTRIBUTENAME, "Routing");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         RoutingWizardPage routingWizardPage = new RoutingWizardPage(driver);
         routingWizardPage.insertPhysicalLocation(MANHOLE_A_NAME);
@@ -254,18 +259,18 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 8)
+    @Test(priority = 10)
     @Description("Check duct utilization %")
     public void checkDuctUtilizationValue() {
         checkDuctUtilization(DUCT_FROM_A_TO_C_NAME, "119.71");
     }
 
-    @Test(priority = 9)
+    @Test(priority = 11)
     @Description("Change model of duct")
     public void changePrimaryDuctModel() {
         gisViewPage.searchResult(DUCT_FROM_C_TO_MANHOLE_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        gisViewPage.useContextAction("Edit", "Edit Duct");
+        gisViewPage.chooseOptionFromDropDownList(EDIT_DATA_ATTRIBUTENAME, "Edit Duct");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         CreateDuctWizardPage createDuctWizardPage = new CreateDuctWizardPage(driver);
@@ -276,7 +281,7 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
 
         gisViewPage.searchResult(DUCT_FROM_A_TO_MANHOLE_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        gisViewPage.useContextAction("Edit", "Edit Duct");
+        gisViewPage.chooseOptionFromDropDownList(EDIT_DATA_ATTRIBUTENAME, "Edit Duct");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         createDuctWizardPage.setModel(DUCT_MODEL2);
@@ -285,13 +290,13 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 10)
+    @Test(priority = 12)
     @Description("Check duct utilization %")
     public void checkDuctUtilizationAfterModelChange() {
         checkDuctUtilization(DUCT_FROM_A_TO_C_NAME, "10.13");
     }
 
-    @Test(priority = 11)
+    @Test(priority = 13)
     @Description("Create copy of ducts")
     public void createCopyOfDucts() {
         gisViewPage.searchResult(CENTRAL_LOCATION);
@@ -300,7 +305,7 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         gisViewPage.clickOnMapByCoordinates(6, 2);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        gisViewPage.useContextAction("Edit", "Copy Duct");
+        gisViewPage.chooseOptionFromDropDownList(EDIT_DATA_ATTRIBUTENAME, "Copy Duct");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         DuctCopyWizardPage ductCopyWizardPage = new DuctCopyWizardPage(driver);
@@ -310,12 +315,12 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
         checkMessageText("Duct has been copied");
 
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        gisViewPage.useContextActionById("Refresh");
+        gisViewPage.useContextActionByLabel("Refresh");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         gisViewPage.clickOnMapByCoordinates(8, 3);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        gisViewPage.useContextAction("Edit", "Copy Duct");
+        gisViewPage.chooseOptionFromDropDownList(EDIT_DATA_ATTRIBUTENAME, "Copy Duct");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         ductCopyWizardPage.setNumberOfCopies("1");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -323,18 +328,18 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
         checkMessageText("Duct has been copied");
 
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        gisViewPage.useContextActionById("Refresh");
+        gisViewPage.useContextActionByLabel("Refresh");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 12)
+    @Test(priority = 14)
     @Description("Create Cable Between Two Buildings")
     public void createCableFromBuildingAToBuildingC() {
         gisViewPage.searchResult(CENTRAL_LOCATION);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         gisViewPage.clickOnMapByCoordinates(2, 4);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        gisViewPage.useContextActionById("Draw New Cable");
+        gisViewPage.useContextActionByLabel("Draw New Cable");
         gisViewPage.clickOnMapByCoordinates(4, 2);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         gisViewPage.clickOnMapByCoordinates(8, 4);
@@ -349,12 +354,13 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 13)
+
+    @Test(priority = 15)
     @Description("Route Cable over Primary Ducts")
     public void routeCableOverPrimaryDucts() {
         gisViewPage.searchResult(CABLE_FROM_A_TO_C_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        gisViewPage.useContextAction("Edit", "Routing");
+        gisViewPage.chooseOptionFromDropDownList(EDIT_DATA_ATTRIBUTENAME, "Routing");
 
         CableRoutingViewPage cableRoutingViewPage = new CableRoutingViewPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -374,7 +380,7 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 14)
+    @Test(priority = 16)
     @Description("Create second Cable between Building A and Building C")
     public void createCable2FromBuildingAToBuildingC() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -382,7 +388,7 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         gisViewPage.clickOnMapByCoordinates(2, 4);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        gisViewPage.useContextActionById("Draw New Cable");
+        gisViewPage.useContextActionByLabel("Draw New Cable");
         gisViewPage.clickOnMapByCoordinates(4, 2);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         gisViewPage.clickOnMapByCoordinates(8, 4);
@@ -398,13 +404,13 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 15)
+    @Test(priority = 17)
     @Description("Route second Cable over Subduct")
     public void routeCable2OverSubduct() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         gisViewPage.searchResult(CABLE_FROM_A_TO_C_2_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        gisViewPage.useContextAction("Edit", "Routing");
+        gisViewPage.chooseOptionFromDropDownList(EDIT_DATA_ATTRIBUTENAME, "Routing");
 
         CableRoutingViewPage cableRoutingViewPage = new CableRoutingViewPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -425,44 +431,44 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 16)
+    @Test(priority = 18)
     @Description("Create ODF devices on Building A")
     public void createODFDeviceOnBuildingA() {
         createODF(BUILDING_A_NAME, ODF_MODEL, ODF_A_NAME);
     }
 
-    @Test(priority = 17)
+    @Test(priority = 19)
     @Description("Add Card to ODF on Building A")
     public void addCardToODFOnBuildingA() {
         addCardToODF(ODF_A_NAME, CARD_MODEL);
     }
 
-    @Test(priority = 18)
+    @Test(priority = 20)
     @Description("Add Pluggable Module to ODF on Building A")
     public void addPluggableModuleToODFOnBuildingA() {
         addPluggableModule(PLUGGABLE_MODULE_MODEL);
     }
 
-    @Test(priority = 19)
+    @Test(priority = 21)
     @Description("Create ODF devices on Building C")
     public void createODFDeviceOnBuildingC() {
         openGIS();
         createODF(BUILDING_C_NAME, ODF_MODEL, ODF_C_NAME);
     }
 
-    @Test(priority = 20)
+    @Test(priority = 22)
     @Description("Add Card to ODF on Building C")
     public void addCardToODFOnBuildingC() {
         addCardToODF(ODF_C_NAME, CARD_MODEL);
     }
 
-    @Test(priority = 21)
+    @Test(priority = 23)
     @Description("Add Pluggable Module to ODF on Building C")
     public void addPluggableModuleToODFOnBuildingC() {
         addPluggableModule(PLUGGABLE_MODULE_MODEL);
     }
 
-    @Test(priority = 22)
+    @Test(priority = 24)
     @Description("Add Termination to cable")
     public void addTerminationToCable() {
         openGIS();
@@ -470,12 +476,13 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         gisViewPage.searchResult(CABLE_FROM_A_TO_C_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        gisViewPage.useContextAction("Edit", "Media Termination");
+        gisViewPage.chooseOptionFromDropDownList(EDIT_DATA_ATTRIBUTENAME, "Media Termination");
 
         MediaTerminationPage mediaTerminationPage = new MediaTerminationPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         mediaTerminationPage.setFirstLocation();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+
         mediaTerminationPage.setDeviceStart(ODF_C_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         mediaTerminationPage.setPortStart("1");
@@ -491,13 +498,13 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 23)
+    @Test(priority = 25)
     @Description("Create patchcord on building A")
     public void createPatchcordOnBuildingA() {
         gisViewPage.searchResult(BUILDING_A_NAME);
 
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        gisViewPage.useContextAction("Show on", "Patchcord wizard");
+        gisViewPage.chooseOptionFromDropDownList(SHOW_ON_DATA_ATTRIBUTENAME, "Patchcord wizard");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         PatchcordWizardPage patchcordWizardPage = new PatchcordWizardPage(driver);
@@ -519,91 +526,92 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 24)
+    @Test(priority = 26)
     @Description("Delete second cable between building A and C")
     public void deleteCableFromAToC2() {
         deleteCable(CABLE_FROM_A_TO_C_2_NAME);
     }
 
-    @Test(priority = 25)
+    @Test(priority = 27)
     @Description("Delete cable between building A and C")
     public void deleteCableFromAToC() {
         deleteCable(CABLE_FROM_A_TO_C_NAME);
     }
 
-    @Test(priority = 26)
+    @Test(priority = 28)
     @Description("Delete duct between building A and C")
     public void deleteDuctFrom_A_TO_C() {
         deleteDuct(DUCT_FROM_A_TO_C_NAME);
     }
 
-    @Test(priority = 27)
+    @Test(priority = 29)
     @Description("Delete duct between building A and manhole")
     public void deleteDuctFrom_A_TO_Manhole() {
         deleteDuct(DUCT_FROM_A_TO_MANHOLE_NAME);
     }
 
-    @Test(priority = 28)
+    @Test(priority = 30)
     @Description("Delete duct between building C and manhole")
     public void deleteDuctFrom_C_TO_Manhole() {
         deleteDuct(DUCT_FROM_C_TO_MANHOLE_NAME);
     }
 
-    @Test(priority = 29)
+    @Test(priority = 31)
     @Description("Remove copy of ducts")
     public void deleteCopies() {
         deleteCopy(6, 2);
         deleteCopy(8, 3);
     }
 
-    @Test(priority = 30)
+    @Test(priority = 32)
     @Description("Delete ODF device on Building C")
     public void deleteODFOnBuildingC() {
         gisViewPage.searchResult(ODF_C_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        gisViewPage.useContextAction("Show on", "Device Overview");
-        DeviceOverviewPage deviceOverviewPage = new DeviceOverviewPage(driver);
-        deviceOverviewPage.selectTreeRow(ODF_C_NAME);
+        gisViewPage.chooseOptionFromDropDownList(SHOW_ON_DATA_ATTRIBUTENAME, "Hierarchy View");
+
+        HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        deviceOverviewPage.useContextAction("Delete Element");
+        hierarchyViewPage.selectFirstObject();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        deviceOverviewPage.clickYes();
+        hierarchyViewPage.useTreeContextAction("EDIT", "DeleteDeviceWizardAction");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        hierarchyViewPage.clickButtonInConfirmationBox("Yes");
         checkPopupType();
     }
 
-    @Test(priority = 31)
+    @Test(priority = 33)
     @Description("Delete ODF device on Building A")
     public void deleteODFOnBuildingA() {
         openGisView();
         gisViewPage.searchResult(ODF_A_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        gisViewPage.useContextAction("Show on", "Device Overview");
+        gisViewPage.chooseOptionFromDropDownList(SHOW_ON_DATA_ATTRIBUTENAME, "Hierarchy View");
 
-        DeviceOverviewPage deviceOverviewPage = new DeviceOverviewPage(driver);
-        deviceOverviewPage.selectTreeRow(ODF_A_NAME);
+        HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        deviceOverviewPage.useContextAction("Delete Element");
+        hierarchyViewPage.selectFirstObject();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        deviceOverviewPage.clickYes();
+        hierarchyViewPage.useTreeContextAction("EDIT", "DeleteDeviceWizardAction");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        hierarchyViewPage.clickButtonInConfirmationBox("Yes");
         checkPopupType();
     }
 
-    @Test(priority = 32)
+    @Test(priority = 34)
     @Description("Delete building A")
     public void deleteBuildingA() {
         openGisView();
         deleteLocation(BUILDING_A_NAME);
     }
 
-    @Test(priority = 33)
+    @Test(priority = 35)
     @Description("Delete building C")
     public void deleteBuildingC() {
         deleteLocation(BUILDING_C_NAME);
     }
 
-    @Test(priority = 34)
+    @Test(priority = 36)
     @Description("Delete manhole")
     public void deleteManhole() {
         deleteLocation(MANHOLE_A_NAME);
@@ -619,7 +627,7 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
     private void createODF(String buildingName, String model, String ODF_name) {
         gisViewPage.searchResult(buildingName);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        gisViewPage.useContextAction("Create", "Create Device");
+        gisViewPage.chooseOptionFromDropDownList(CREATE_DATA_ATTRIBUTENAME, "Create Device");
         DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.setModel(model);
@@ -638,12 +646,13 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         gisViewPage.searchResult(ODF_name);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        gisViewPage.useContextAction("Show on", "Device Overview");
+        gisViewPage.chooseOptionFromDropDownList(SHOW_ON_DATA_ATTRIBUTENAME, "Hierarchy View");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        DeviceOverviewPage deviceOverviewPage = new DeviceOverviewPage(driver);
-        deviceOverviewPage.selectTreeRow(ODF_name);
+
+        HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
+        hierarchyViewPage.selectFirstObject();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        deviceOverviewPage.useContextAction("Create Card");
+        hierarchyViewPage.useTreeContextAction("CREATE", "CreateCardOnDeviceAction");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         CardCreateWizardPage cardCreateWizardPage = new CardCreateWizardPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -656,9 +665,8 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
     }
 
     private void addPluggableModule(String pluggableModuleModel) {
-        DeviceOverviewPage deviceOverviewPage = new DeviceOverviewPage(driver);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        deviceOverviewPage.useContextAction("Create Pluggable Module");
+        HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
+        hierarchyViewPage.useTreeContextAction("CREATE", "CreatePluggableModuleOnDeviceApp");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         CreatePluggableModuleWizardPage createPluggableModuleWizardPage = new CreatePluggableModuleWizardPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -688,7 +696,7 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         gisViewPage.expandDockedPanel("bottom");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        gisViewPage.selectTab("6");//Routing
+        gisViewPage.selectTab("6");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         String utilization = gisViewPage.getCellValue(0, "Utilization [%]");
         gisViewPage.hideDockedPanel("bottom");
@@ -699,7 +707,7 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
     private void deleteLocation(String elementName) {
         gisViewPage.searchResult(elementName);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        gisViewPage.useContextAction("Edit", "Remove location");
+        gisViewPage.chooseOptionFromDropDownList(EDIT_DATA_ATTRIBUTENAME, "Remove location");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         gisViewPage.clickButtonInPopupByLabel("Delete");
         checkMessageText("Location removed successfully");
@@ -708,16 +716,16 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
     private void deleteCable(String elementName) {
         gisViewPage.searchResult(elementName);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        gisViewPage.useContextAction("Edit", "Delete");
+        gisViewPage.chooseOptionFromDropDownList(EDIT_DATA_ATTRIBUTENAME, "Remove Connections");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         gisViewPage.clickButtonInPopupByLabel("Remove");
-        checkMessageText("Cables deleted successfully.");
+        checkMessageText("Connection removed successfully.");
     }
 
     private void deleteDuct(String ductName) {
         gisViewPage.searchResult(ductName);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        gisViewPage.useContextActionById("Remove Duct(s)");
+        gisViewPage.chooseOptionFromDropDownList(EDIT_DATA_ATTRIBUTENAME, "Remove Duct(s)");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         gisViewPage.clickButtonInPopupByLabel("Yes");
         checkMessageText("Duct(s) has been removed successfully");
@@ -731,7 +739,7 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         gisViewPage.clickOnMapByCoordinates(x, y);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        gisViewPage.useContextActionById("Remove Duct(s)");
+        gisViewPage.chooseOptionFromDropDownList(EDIT_DATA_ATTRIBUTENAME, "Remove Duct(s)");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         gisViewPage.clickButtonInPopupByLabel("Yes");
         checkMessageText("Duct(s) has been removed successfully");

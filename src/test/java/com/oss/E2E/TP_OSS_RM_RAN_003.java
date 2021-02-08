@@ -55,7 +55,7 @@ public class TP_OSS_RM_RAN_003 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         OldInventoryViewPage oldInventoryViewPage = new OldInventoryViewPage(driver);
-        oldInventoryViewPage.filterObject("Name", locationName, "Site");
+        oldInventoryViewPage.filterObject("Name", locationName);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         oldInventoryViewPage.expandShowOnAndChooseView("Cell Site Configuration");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);

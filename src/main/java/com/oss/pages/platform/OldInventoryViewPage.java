@@ -1,5 +1,9 @@
 package com.oss.pages.platform;
 
+import java.util.Map;
+
+import org.openqa.selenium.WebDriver;
+
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
@@ -9,9 +13,8 @@ import com.oss.framework.widgets.tablewidget.TableInterface;
 import com.oss.framework.widgets.tabswidget.TabWindowWidget;
 import com.oss.framework.widgets.tabswidget.TabsInterface;
 import com.oss.pages.BasePage;
+
 import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
-import java.util.Map;
 
 /**
  * @author Ewa Frączek
@@ -33,13 +36,13 @@ public class OldInventoryViewPage extends BasePage {
     }
 
     @Step("Get table widget for upper table")
-    public TableInterface getTableWidget() {
+    public OldTable getTableWidget() {
         waitForPageToLoad();
         return OldTable.createForOldInventoryView(driver, wait);
     }
 
     @Step("Get table widget for table by testId {tableTestId}")
-    public TableInterface getTableWidget(String tableTestId) {
+    public OldTable getTableWidget(String tableTestId) {
         waitForPageToLoad();
         return OldTable.createByComponentDataAttributeName(driver, wait, tableTestId);
     }
@@ -66,16 +69,6 @@ public class OldInventoryViewPage extends BasePage {
     @Step("Select row at index {index} in table {tableTestId}")
     public void selectRowInTableAtIndex(String tableTestId, int index) {
         getTableWidget(tableTestId).selectRow(index);
-    }
-
-    @Step("Filter and select {objectName} row")
-    @Deprecated
-    public OldInventoryViewPage filterObject(String columnName, String objectName, String tableObjects) {
-        waitForPageToLoad();
-        OldTable table = OldTable.createByComponentDataAttributeName(driver, wait, "table(" + tableObjects + ")");
-        table.searchByAttributeWithLabel(columnName, Input.ComponentType.TEXT_FIELD, objectName);
-        table.selectRowByAttributeValueWithLabel(columnName, objectName);
-        return this;
     }
 
     @Step("Filter and select {objectName} row in upper table")
@@ -127,7 +120,7 @@ public class OldInventoryViewPage extends BasePage {
     }
 
     @Step("Navigate to bottom tab {tabId} and get table widget for table {tableTestId}")
-    public TableInterface getTableWidgetForTab(String tabId, String tableTestId) {
+    public OldTable getTableWidgetForTab(String tabId, String tableTestId) {
         navigateToBottomTabById(tabId);
         waitForPageToLoad();
         return getTableWidget(tableTestId);
@@ -137,6 +130,10 @@ public class OldInventoryViewPage extends BasePage {
     public void navigateToBottomTabById(String tabId) {
         TabsInterface tabsInterface = TabWindowWidget.create(driver, wait);
         tabsInterface.selectTabById(tabId);
+    }
+
+    public void getNumberOfRowsInTable(String tableTestId, String anyLabelExistingInTable) {
+        OldTable.createByComponentDataAttributeName(driver, wait, tableTestId);
     }
 
     private void navigateToBottomTabByLabel(String tabLabel) {

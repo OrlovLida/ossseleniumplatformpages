@@ -1,5 +1,9 @@
 package com.oss.E2E;
 
+import com.oss.pages.platform.HierarchyViewPage;
+import com.oss.pages.platform.HomePage;
+import com.oss.untils.Environment;
+import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -32,7 +36,7 @@ public class ISPConfiguration extends BaseTestCase {
     String LOCATION_OVERVIEW_URL = "";
     private static final String LOCATION_NAME = "ISPConfiguration_Building";
     private static final String SUBLOCATION_NAME = "ISPConfiguration_Room";
-    private static final String GEOGRAPHICAL_ADDRESS = "1";
+    private static final String GEOGRAPHICAL_ADDRESS = "fixedAccessIntegrationTestStreet 91336, fixedAccessIntegrationTestCity";
     private static final String PHYSICAL_DEVICE_MODEL = "7360 ISAM FX-8";
     private static final String PHYSICAL_DEVICE_NAME = "ISPPhysicalDevice";
     private static final String PHYSICAL_DEVICE_MODEL2 = "Nexus 7010";
@@ -147,7 +151,7 @@ public class ISPConfiguration extends BaseTestCase {
 
     @Test(priority = 7)
     @Description("Show device in Device Overview")
-    public void showDeviceOverviewFromPopup() {
+    public void showHierarchyViewFromPopup() {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         systemMessage.clickMessageLink();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -156,10 +160,10 @@ public class ISPConfiguration extends BaseTestCase {
     @Test(priority = 8)
     @Description("Open Change Model Wizard")
     public void openChangeModelWizard() {
-        DeviceOverviewPage deviceOverviewPage = new DeviceOverviewPage(driver);
-        deviceOverviewPage.selectTreeRow(PHYSICAL_DEVICE_NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        deviceOverviewPage.useContextAction("Change Model");
+        //TODO: POPRAWIONE JUZ
+        HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
+        hierarchyViewPage.selectFirstObject();
+        hierarchyViewPage.getTreeWidget().callActionById("EDIT", "DeviceChangeModelAction");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -177,10 +181,9 @@ public class ISPConfiguration extends BaseTestCase {
     @Test(priority = 10)
     @Description("Open Create Card Wizard")
     public void openCreateCardWizard() {
-        DeviceOverviewPage deviceOverviewPage = new DeviceOverviewPage(driver);
-        deviceOverviewPage.selectTreeRow(PHYSICAL_DEVICE_NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        deviceOverviewPage.useContextAction("Create Card");
+        //TODO: poprawione juz
+        HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
+        hierarchyViewPage.getTreeWidget().callActionById("CREATE", "CreateCardOnDeviceAction");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -202,10 +205,22 @@ public class ISPConfiguration extends BaseTestCase {
     @Test(priority = 12)
     @Description("Open Change Card Model Wizard")
     public void openChangeCardWizard() {
-        DeviceOverviewPage deviceOverviewPage = new DeviceOverviewPage(driver);
+        /*DeviceOverviewPage deviceOverviewPage = new DeviceOverviewPage(driver);
         deviceOverviewPage.selectTreeRow("NELT-B");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceOverviewPage.useContextAction("Change model");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);*/
+
+        //TODO: poprawic
+        HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
+        hierarchyViewPage.getTreeWidget().expandTreeRow(PHYSICAL_DEVICE_NAME);
+        hierarchyViewPage.getTreeWidget().expandTreeRow("Chassis");
+        hierarchyViewPage.getTreeWidget().expandTreeRow("Chassis"); //has to be duplicated because of tree structure
+        hierarchyViewPage.getTreeWidget().expandTreeRow("slots");
+        hierarchyViewPage.getTreeWidget().expandTreeRow("LT4");
+        hierarchyViewPage.getTreeWidget().expandTreeRow("Cards");
+        hierarchyViewPage.getTreeWidget().selectTreeRow("NELT-B");
+        hierarchyViewPage.getTreeWidget().callActionById("Edit", "CardChangeModelAction");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -219,7 +234,7 @@ public class ISPConfiguration extends BaseTestCase {
         checkPopup();
     }
 
-    @Test(priority = 14)
+    /*@Test(priority = 14)
     @Description("Open Mounting Editor Wizard")
     public void openMountingEditorWizard() {
         DeviceOverviewPage deviceOverviewPage = new DeviceOverviewPage(driver);
@@ -639,5 +654,5 @@ public class ISPConfiguration extends BaseTestCase {
         DeviceOverviewPage deviceOverviewPage = new DeviceOverviewPage(driver);
         deviceOverviewPage.useContextAction("Remove Location");
         deviceOverviewPage.clickButtonInConfirmationBox("Delete");
-    }
+    }*/
 }
