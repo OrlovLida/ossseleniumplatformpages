@@ -17,10 +17,10 @@ import java.util.*;
 /**
  * @author Kamil Jacko
  */
-public class CreateAEITest extends BaseTestCase {
+public class AEITest extends BaseTestCase {
 
-    private static final String PRE_CREATED_LOCATION = "Warszawa-BU150";
-    private static final String PRE_CREATED_DEVICE = "SeleniumOSSKJ";
+    private static final String PRE_CREATED_LOCATION = "Gliwice-BU1";
+    private static final String PRE_CREATED_DEVICE = "ipdevice13";
 
     private static final String INTERFACE1_NAME = "CLUSTER 0";
     private static final String INTERFACE2_NAME = "MGT LAN 0";
@@ -88,7 +88,6 @@ public class CreateAEITest extends BaseTestCase {
         aeiAttributes.minimumBandwidth = "34";
         aeiAttributes.mtu = "56";
         aeiAttributes.macAddress = "00:0A:E6:3E:FD:E1";
-        aeiAttributes.administrativeState = "Disabled";
         aeiAttributes.encapsulation = "ETH";
 
         return aeiAttributes;
@@ -106,7 +105,6 @@ public class CreateAEITest extends BaseTestCase {
         aeiAttributes.minimumBandwidth = "5";
         aeiAttributes.mtu = "19";
         aeiAttributes.macAddress = "00:0A:E6:3E:FD:E2";
-        aeiAttributes.administrativeState = "Enabled";
         aeiAttributes.encapsulation = "ETH";
 
         return aeiAttributes;
@@ -152,7 +150,6 @@ public class CreateAEITest extends BaseTestCase {
         aeiWizard.setMinimumBandwidth(aeiAttributes.minimumBandwidth);
         aeiWizard.setMTU(aeiAttributes.mtu);
         aeiWizard.setMACAddress(aeiAttributes.macAddress);
-        aeiWizard.setAdministrativeState(aeiAttributes.administrativeState);
     }
 
     private void assertAEIAttributes(AEIAttributes aeiAttributes) {
@@ -166,7 +163,6 @@ public class CreateAEITest extends BaseTestCase {
         String minimumBandwidthValue = propertyNamesToValues.get("Minimum Bandwidth [mbps]");
         String MTUValue = propertyNamesToValues.get("MTU");
         String MACAddressValue = propertyNamesToValues.get("MAC address");
-        String administrativeState = propertyNamesToValues.get("Administrative State");
         String encapsulation = propertyNamesToValues.get("Encapsulation");
 
         Assert.assertEquals(numberValue, aeiAttributes.number);
@@ -179,7 +175,6 @@ public class CreateAEITest extends BaseTestCase {
         Assert.assertEquals(minimumBandwidthValue, aeiAttributes.minimumBandwidth);
         Assert.assertEquals(MTUValue, aeiAttributes.mtu);
         Assert.assertEquals(MACAddressValue, aeiAttributes.macAddress);
-        Assert.assertEquals(administrativeState, aeiAttributes.administrativeState);
         Assert.assertEquals(encapsulation, aeiAttributes.encapsulation);
     }
 
@@ -222,7 +217,6 @@ public class CreateAEITest extends BaseTestCase {
         private String minimumBandwidth;
         private String mtu;
         private String macAddress;
-        private String administrativeState;
         private String encapsulation;
     }
 }
