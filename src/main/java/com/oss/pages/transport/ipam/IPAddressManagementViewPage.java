@@ -45,7 +45,7 @@ public class IPAddressManagementViewPage extends BasePage {
     private static final String ASSIGN_IPV4_SUBNET_ACTION = "AssignSubnetContextAction_8";
     private static final String EDIT_ROLE_OF_SUBNET_ASSIGNMENT_ACTION = "EditRoleOfSubnetAssignmentContextAction_12";
     private static final String DELETE_IPV4_SUBNET_ASSIGNMENT_ACTION = "RemoveSubnetAssignmentContextAction_11";
-    private static final String DELETE_ACTION = "Delete";
+    private static final String DELETE_ACTION = "DeleteHostAddressAssignmentContextAction";
     private static final String DELETE_IP_NETWORK_ACTION = "DeleteIPNetworkContextAction";
     private static final String DELETE_IPV4_SUBNET_TYPE_OF_BLOCK_ACTION = "DeleteIPv4SubnetBlockContextAction";
     private static final String DELETE_IPV4_SUBNET_TYPE_OF_NETWORK_ACTION = "DeleteIPv4SubnetNetworkContextAction";
