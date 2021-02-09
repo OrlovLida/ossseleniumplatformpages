@@ -20,6 +20,7 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import java.util.List;
+import java.util.Map;
 
 import static com.oss.framework.components.portals.SaveConfigurationWizard.Property.DEFAULT_VIEW_FOR;
 import static com.oss.framework.components.portals.SaveConfigurationWizard.Property.GROUPS;
@@ -58,26 +59,31 @@ public class DetailsConfigurationTest extends BaseTestCase {
 
         //when
         List<String> labels = newInventoryViewPage.getPropertyPanel(0, PROPERTY_PANEL_ID).getPropertyLabels();
+
         int namesPosition = labels.indexOf(NAME_LABEL);
         int namesNewPosition = namesPosition == 0 ? 1 : 0;
 
-        newInventoryViewPage.changePropertiesOrder(0, PROPERTY_PANEL_ID, Constants.COMMON_NAME_ATTRIBUTE, namesNewPosition);
-        newInventoryViewPage.saveConfigurationForProperties(0, PROPERTY_PANEL_ID,
-                CONFIGURATION_NAME_PROPERTIES_SUPERTYPE, createField(TYPE, Constants.LOCATION_TYPE),
-                createField(DEFAULT_VIEW_FOR, SaveConfigurationWizard.DEFAULT_ME_VALUE));
-
-        labels = newInventoryViewPage.getPropertyPanel().getPropertyLabels();
-        int identifierPosition = labels.indexOf(NAME_LABEL);
+        int identifierPosition = labels.indexOf(IDENTIFIER_LABEL);
         int identifierNewPosition = identifierPosition == labels.size() ? labels.size() - 1 : labels.size();
 
-        newInventoryViewPage.changePropertiesOrder(0, PROPERTY_PANEL_ID, Constants.COMMON_NAME_IDENTIFIER, namesNewPosition);
+        newInventoryViewPage.changePropertiesOrder(0, PROPERTY_PANEL_ID, Constants.COMMON_NAME_ATTRIBUTE, namesNewPosition);
+        newInventoryViewPage.changePropertiesOrder(0, PROPERTY_PANEL_ID, Constants.COMMON_IDENTIFIER_ATTRIBUTE, identifierNewPosition);
         newInventoryViewPage.saveConfigurationForProperties(0, PROPERTY_PANEL_ID,
-                CONFIGURATION_NAME_PROPERTIES, createField(DEFAULT_VIEW_FOR, "Me"), createField(TYPE, Constants.BUILDING_TYPE));
+                CONFIGURATION_NAME_PROPERTIES, createField(DEFAULT_VIEW_FOR, SaveConfigurationWizard.DEFAULT_ME_VALUE), createField(TYPE, Constants.BUILDING_TYPE));
 
         //then
         assertSuccessMessage();
-//        List<String> labels = newInventoryViewPage.getPropertyPanel().getPropertyLabels();
-        System.out.println("asd");
+
+        assertAttributePosition(namesNewPosition, identifierNewPosition, Constants.BUILDING_TYPE);
+        assertAttributePosition(namesNewPosition, identifierNewPosition, Constants.SITE_TYPE);
+    }
+
+
+    private void assertAttributePosition(int namePosition, int identifierPosition, String type) {
+        newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, type);
+        List<String> labels = newInventoryViewPage.getPropertyPanel(0, PROPERTY_PANEL_ID).getPropertyLabels();
+        Assertions.assertThat(labels.indexOf(NAME_LABEL)).isEqualTo(namePosition);
+        Assertions.assertThat(labels.indexOf(IDENTIFIER_LABEL)).isEqualTo(identifierPosition);
     }
 
     @Test(priority = 2)
