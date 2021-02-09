@@ -4,7 +4,7 @@ import com.oss.framework.components.portals.SaveConfigurationWizard.Field;
 import com.oss.framework.mainheader.ButtonPanel;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Widget;
-import com.oss.framework.widgets.propertypanel.PropertiesFilter;
+import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.propertypanel.PropertyPanel;
 import com.oss.framework.widgets.tabswidget.TabsWidget;
 import com.oss.framework.widgets.treewidget.TreeWidget;
@@ -87,5 +87,35 @@ public class HierarchyViewPage extends BasePage {
     public HierarchyViewPage selectFirstObject() {
         getTreeWidget().selectNode();
         return this;
+    }
+
+    @Step("Use tree context action")
+    public void useTreeContextAction(String groupId, String actionId) {
+        getTreeWidget().callActionById(groupId, actionId);
+    }
+
+    @Step("Click {label} in Confirmation box")
+    public void clickButtonInConfirmationBox(String label) {
+        Wizard wizard = Wizard.createByComponentId(driver, wait, "Popup");
+        wizard.clickButtonByLabel(label);
+    }
+
+    @Step("Search tree row by text - {text}")
+    public void searchTreeRowByText(String text) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getTreeWidget().performSearch(text);
+    }
+
+    @Step("Expand tree row by label - {label}")
+    public void expandTreeRowContains(String label) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getTreeWidget().expandNodeWithLabel(label);
+    }
+
+    @Step("Select tree row by position - {position}")
+    public void selectTreeRowByPosition(int position) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getTreeWidget()
+                .selectNodeByPosition(position);
     }
 }

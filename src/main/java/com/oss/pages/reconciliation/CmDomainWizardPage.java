@@ -33,6 +33,14 @@ public class CmDomainWizardPage extends BasePage {
 
     private Wizard cmDomainWizard = Wizard.createByComponentId(driver, wait, CM_DOMAIN_WIZARD_ID);
 
+    @Step("Fill CM Domain wizard with Name: {name}, CM Interface: {cmInterface}, Domain: {domain}")
+    public void fillCmDomainWizard(String name, String cmInterface, String domain) {
+        setName(name);
+        setInterface(cmInterface);
+        setDomain(domain);
+        save();
+    }
+
     @Step("Set name for CM Domain")
     public void setName(String name) {
         cmDomainWizard.setComponentValue(NAME_ID, name, TEXT_FIELD);
