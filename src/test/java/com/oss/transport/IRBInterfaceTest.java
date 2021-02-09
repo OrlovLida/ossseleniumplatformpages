@@ -89,7 +89,7 @@ public class IRBInterfaceTest extends BaseTestCase {
     public void assignIPHostAddress() {
         newInventoryViewPage.selectFirstRow();
         waitForPageToLoad();
-        newInventoryViewPage.callAction("CREATE", "AssignIPv4Host_TP");
+        newInventoryViewPage.callAction("CREATE", "AssignIPv4Host");
         IPv4AddressAssignmentWizardPage iPv4AddressAssignmentWizardPage = new IPv4AddressAssignmentWizardPage(driver);
         iPv4AddressAssignmentWizardPage.assignIPtoIRBInterface(IP_ADDRESS, IP_SUBNET, true);
         waitForPageToLoad();
