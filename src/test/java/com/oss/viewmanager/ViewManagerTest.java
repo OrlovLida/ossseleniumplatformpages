@@ -34,20 +34,26 @@ public class ViewManagerTest extends BaseTestCase {
         popup.clickOnFirstIcon();
         popup.clickOnSaveButton();
 
-        DelayUtils.sleep(1000);
+        DelayUtils.sleep(2000);
 
+        viewManagerPage.searchForCategory("Test Category");
         Assert.assertTrue(driver.findElement(By.xpath("//*[text()='Test Category']")).isDisplayed());
         Assert.assertTrue(driver.findElement(By.xpath("//*[text()='Test Category Description']")).isDisplayed());
     }
 
     @Test
-    public void deleteCategory(){
+    public void changeApplicationsNameAndDescription(){
 
+    }
+
+    @Test
+    public void deleteCategory(){
+        viewManagerPage.clearSearchField();
         viewManagerPage.searchForCategory("Test Category");
         viewManagerPage.deleteFirstCategory();
-
-        DelayUtils.sleep(1000);
+        DelayUtils.sleep(5000);
 
         Assert.assertFalse(driver.findElements(By.xpath("//*[text()='Test Category']")).size()>0);
+        viewManagerPage.clearSearchField();
     }
 }

@@ -23,8 +23,7 @@ public class ViewManagerPage extends BasePage {
     private static final String CREATE_SUBCATEGORY_BUTTON_ID = "createSubcategoryButton0";
     private static final String DELETE_CATEGORY_BUTTON_ID = "deleteCategoryButton0";
     private static final String EDIT_CATEGORY_BUTTON_ID = "editCategoryButton0";
-    private static final String THREE_DOTS_FIRST_BUTTON_FULL_XPATH = "/html/body/div[3]/div/div/main/div[2]/div/div[1]/div/div/div/div/div/div/div/div/div[1]/" +
-            "div/div/div[2]/div/div[1]/div/div/div/div/span/div/div/div/div[2]/div/div[2]/div[1]/div/div";
+    private static final String THREE_DOTS_FIRST_BUTTON_FULL_XPATH = "//*[@id=\"frameworkObjectButtonsGroup\"]";
     private static final String DELETE_BUTTON_IN_POPUP_XPATH = "//*[@class='CommonButton btn btn-danger btn-md']";
 
     @FindBy(className = "views-manager__bar__add-category")
@@ -48,18 +47,23 @@ public class ViewManagerPage extends BasePage {
         searchField.typeValue(categoryName);
 
         DelayUtils.sleep(1000);
+    }
 
-        threeDotsFirstButton.click();
+    public void clearSearchField(){
+        SearchField searchField = (SearchField) ComponentFactory.create(SEARCH_TEST_ID, Input.ComponentType.SEARCH_FIELD, driver, wait);
+        searchField.clear();
+
         DelayUtils.sleep(1000);
     }
 
     public void deleteFirstCategory(){
+        threeDotsFirstButton.click();
         ActionsDropdownList actionsDropdownList = new ActionsDropdownList(driver);
         actionsDropdownList.clickOnActionById(DELETE_CATEGORY_BUTTON_ID);
         DelayUtils.sleep(1000);
 
         WebElement deleteButton = driver.findElement(By.xpath(DELETE_BUTTON_IN_POPUP_XPATH));
         deleteButton.click();
-        DelayUtils.sleep(1000);
+        DelayUtils.sleep(2000);
     }
 }
