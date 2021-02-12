@@ -12,8 +12,12 @@ public class LocationWizardPage extends BasePage {
 
     private static final String LOCATION_TYPE_DATA_ATTRIBUTE_NAME = "type-input";
     private static final String LOCATION_PARENT_LOCATION_DATA_ATTRIBUTE_NAME = "parentLocation";
+    private static final String LOCATION_DIRECT_PHYSICAL_LOCATION_DATA_ATTRIBUTE_NAME = "physicalLocation";
+    private static final String LOGICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME = "logicalLocationType-input";
     private static final String LOCATION_NAME_DATA_ATTRIBUTE_NAME = "name";
     private static final String LOCATION_ABBREVIATION_DATA_ATTRIBUTE_NAME = "abbreviation";
+    private static final String LOCATION_ADDRESS_DATA_ATTRIBUTE_NAME = "address";
+    private static final String LOCATION_STEP_ADDRESS_SEARCH_DATA_ATTRIBUTE_NAME = "geoSearch";
     private static final String LOCATION_LATITUDE_DATA_ATTRIBUTE_NAME = "latitude";
     private static final String LOCATION_LONGITUDE_DATA_ATTRIBUTE_NAME = "longitude";
     private static final String LOCATION_DESCRIPTION_DATA_ATTRIBUTE_NAME = "description";
@@ -53,6 +57,40 @@ public class LocationWizardPage extends BasePage {
         accept();
     }
 
+    @Step("Create Location in Step Wizard with mandatory fields (Location type, Name, Address) filled in")
+    public void createLocationStepWizard(String locationType, String locationName) {
+        setLocationType(locationType);
+        setLocationName(locationName);
+        clickNext();
+        setGeographicalAddress("a");
+        DelayUtils.sleep(13000);
+        clickNext();
+        DelayUtils.sleep(10000);
+        accept();
+    }
+
+    @Step("Create Location in Popup Wizard with mandatory fields (Location type, Name, Address) filled in")
+    public void createLocationPopupWizard(String locationType, String locationName) {
+        Wizard popupWizard = Wizard.createByComponentId(driver, wait, "Popup");
+        popupWizard.setComponentValue(LOCATION_TYPE_DATA_ATTRIBUTE_NAME, locationType, Input.ComponentType.COMBOBOX);
+        popupWizard.setComponentValue(LOCATION_NAME_DATA_ATTRIBUTE_NAME, locationName, Input.ComponentType.TEXT_FIELD);
+        popupWizard.clickNext();
+        DelayUtils.sleep(10000);
+        popupWizard.clickNext();
+        DelayUtils.sleep(10000);
+        popupWizard.clickAccept();
+    }
+
+    @Step("Create PoP on chosen Location with chosen Direct Physical Location")
+    public void createPoP(String directPhysicalLocation) {
+        Wizard popupWizard = Wizard.createByComponentId(driver, wait, "Popup");
+        setDirectPhysicalLocation(directPhysicalLocation);
+        DelayUtils.sleep(3000);
+        popupWizard.clickNext();
+        DelayUtils.sleep();
+        popupWizard.clickAccept();
+    }
+
     @Step("Set description")
     public LocationWizardPage setDescription(String description) {
         locationWizard.setComponentValue(LOCATION_DESCRIPTION_DATA_ATTRIBUTE_NAME, description, Input.ComponentType.TEXT_FIELD);
@@ -72,6 +110,18 @@ public class LocationWizardPage extends BasePage {
     @Step("Set geographical address")
     public void setGeographicalAddress(String geographicalAddress) {
         locationWizard.getComponent(GEOGRAPHICAL_ADDRESS_SEARCH_DATA_ATTRIBUTE_NAME, Input.ComponentType.SEARCH_FIELD).setValueContains(Data.createSingleData(geographicalAddress));
+    }
+
+    @Step("Set first Address in the drop-down list")
+    public void setFirstAddress() {
+        if (locationWizard.getComponent(LOCATION_ADDRESS_DATA_ATTRIBUTE_NAME, Input.ComponentType.SEARCH_FIELD).getStringValue().isEmpty()) {
+            locationWizard.setComponentValue(LOCATION_ADDRESS_DATA_ATTRIBUTE_NAME, " ", Input.ComponentType.SEARCH_FIELD);
+        }
+    }
+
+    @Step("Set Direct Physical Location")
+    public void setDirectPhysicalLocation(String directPhysicalLocation) {
+        locationWizard.getComponent(LOCATION_DIRECT_PHYSICAL_LOCATION_DATA_ATTRIBUTE_NAME, Input.ComponentType.SEARCH_FIELD).setValueContains(Data.createSingleData(directPhysicalLocation));
     }
 
     @Step("Set any geographical address")
@@ -97,6 +147,13 @@ public class LocationWizardPage extends BasePage {
     @Step("Set unilateral flag")
     public void setUnilateralFlag(String checkbox) {
         locationWizard.setComponentValue(LOCATION_UNILATERAL_FLAG_DATA_ATTRIBUTE_NAME, checkbox, Input.ComponentType.CHECKBOX);
+    }
+
+    @Step("Set Location Type if empty")
+    public void setTypeIfEmpty(String type) {
+        if (locationWizard.getComponent(LOGICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, Input.ComponentType.COMBOBOX).getValue() == null) {
+            locationWizard.setComponentValue(LOGICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, type, Input.ComponentType.COMBOBOX);
+        }
     }
 
     @Step("Click Next Step button")
