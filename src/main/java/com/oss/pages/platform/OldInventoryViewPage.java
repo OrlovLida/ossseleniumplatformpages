@@ -26,6 +26,8 @@ public class OldInventoryViewPage extends BasePage {
     private static final String CONFIRM_REMOVAL_BUTTON_ID = "ConfirmationBox_deleteAppId_action_button";
     private static final String SHOW_ON_GROUP_ID = "NAVIGATION";
     private static final String EDIT_GROUP_ID = "EDIT";
+    private static final String OTHER_GROUP_ID = "OTHER";
+    private static final String CREATE_GROUP_ID = "CREATE";
 
     public OldInventoryViewPage(WebDriver driver) {
         super(driver);
@@ -89,6 +91,12 @@ public class OldInventoryViewPage extends BasePage {
     public void expandEditAndChooseAction(String actionId) {
         useContextAction(EDIT_GROUP_ID, actionId);
     }
+
+    @Step("Expand other group and select action {actionId} from the drop-down list")
+    public void expandOtherAndChooseAction(String actionId) { useContextAction(OTHER_GROUP_ID, actionId); }
+
+    @Step("Expand create group and select action {actionId} from the drop-down list")
+    public void expandCreateAndChooseAction(String actionId) { useContextAction(CREATE_GROUP_ID, actionId); }
 
     @Step("Click group {group} and action {action} on upper table")
     public void useContextAction(String group, String action) {
