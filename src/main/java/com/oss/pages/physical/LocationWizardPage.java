@@ -173,4 +173,5 @@ public class LocationWizardPage extends BasePage {
         locationWizard.clickAccept();
     }
 
+    private Wizard locationWizard = Wizard.createWizard(driver, wait);
 }

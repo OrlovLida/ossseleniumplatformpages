@@ -1,8 +1,7 @@
-package com.oss.pages.platform.OldInventoryView;
+package com.oss.pages.platform;
 
 import java.util.Map;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.inputs.Button;
