@@ -1,6 +1,5 @@
 package com.oss.pages.mediation;
 
-import com.oss.framework.components.inputs.Button;
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.utils.DelayUtils;
@@ -16,6 +15,7 @@ public class ViewConnectionConfigurationPage extends BasePage {
     private static final String DELETE_BUTTON = "ConfirmationBox_confirmation-box_action_button";
     private static final String TABLE_ID = "object-table-id";
     private static final String WIZARD_ID = "Popup";
+    public static final String DELETE_BUTTON_ID = "Delete Connection Configuration";
 
     public ViewConnectionConfigurationPage(WebDriver driver) {
         super(driver);
@@ -28,12 +28,10 @@ public class ViewConnectionConfigurationPage extends BasePage {
     }
 
     @Step("Use context action {action}")
-    public void useContextAction(String action) {
+    public void useContextAction(String group, String action) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        Button.create(driver, action, "a").click();
-        //TODO use this version when OSSWEB-10596 will be ready
-       /* TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, TABLE_ID);
-        table.callActionByLabel(action);*/
+        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, TABLE_ID);
+        table.callAction(group, action);
     }
 
     @Step("Select mediation with name {name} and value {value}")
