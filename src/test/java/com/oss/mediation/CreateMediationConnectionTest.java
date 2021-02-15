@@ -1,18 +1,21 @@
 package com.oss.mediation;
 
-import com.oss.BaseTestCase;
-import com.oss.framework.alerts.SystemMessageContainer;
-import com.oss.framework.alerts.SystemMessageInterface;
-import com.oss.framework.sidemenu.SideMenu;
-import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.mediation.CLIConfigurationWizardPage;
-import com.oss.pages.mediation.ViewConnectionConfigurationPage;
-import io.qameta.allure.Description;
+import java.util.List;
+
 import org.assertj.core.api.Assertions;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import java.util.List;
+import com.oss.BaseTestCase;
+import com.oss.framework.alerts.SystemMessageContainer;
+import com.oss.framework.alerts.SystemMessageInterface;
+import com.oss.framework.components.contextactions.ActionsContainer;
+import com.oss.framework.sidemenu.SideMenu;
+import com.oss.framework.utils.DelayUtils;
+import com.oss.pages.mediation.CLIConfigurationWizardPage;
+import com.oss.pages.mediation.ViewConnectionConfigurationPage;
+
+import io.qameta.allure.Description;
 
 public class CreateMediationConnectionTest extends BaseTestCase {
 
@@ -97,7 +100,7 @@ public class CreateMediationConnectionTest extends BaseTestCase {
         ViewConnectionConfigurationPage viewConnectionConfigurationPage = new ViewConnectionConfigurationPage(driver);
         viewConnectionConfigurationPage.selectRow("Address", address);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        viewConnectionConfigurationPage.useContextAction("Delete");
+        viewConnectionConfigurationPage.useContextAction(ActionsContainer.EDIT_GROUP_ID, ViewConnectionConfigurationPage.DELETE_BUTTON_ID);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         viewConnectionConfigurationPage.clickDelete();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
