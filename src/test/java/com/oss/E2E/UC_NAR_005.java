@@ -122,7 +122,6 @@ public class UC_NAR_005 extends BaseTestCase {
     @Test(priority = 6)
     @Description("Open New Inventory View and Check value of Serial Number")
     public void openNewInventoryViewAndCheckSerialNumber() {
-        //TODO dodać szukanie w global searchu i dopiero stamtąd do new inventory view
         homePage.goToHomePage(driver, BASIC_URL);
         homePage.setNewObjectType("Router");
         waitForPageToLoad();
@@ -130,7 +129,7 @@ public class UC_NAR_005 extends BaseTestCase {
         newInventoryViewPage.searchObject(DEVICE_NAME);
         waitForPageToLoad();
         Assert.assertFalse(newInventoryViewPage.checkIfTableIsEmpty());
-        Assert.assertEquals(SERIAL_NUMBER_BEFORE, newInventoryViewPage.getMainTable().getCellValue(0, "Description"));
+        Assert.assertEquals(SERIAL_NUMBER_BEFORE, newInventoryViewPage.getMainTable().getCellValue(0, "Serial Number"));
     }
 
     @Test(priority = 7)
@@ -144,9 +143,13 @@ public class UC_NAR_005 extends BaseTestCase {
         newInventoryViewPage.callAction(ActionsContainer.OTHER_GROUP_ID, "run-narrow-reconciliation");
         DelayUtils.sleep(3000);
         Assertions.assertThat(notifications.waitAndGetFinishedNotificationText().equals("Narrow reconciliation for GMOCs IPDevice finished")).isTrue();
-        newInventoryViewPage.callAction(ActionsContainer.KEBAB_GROUP_ID, "refreshButton");
+        //TODO change after fix of OSSWEB-11003
+        //        newInventoryViewPage.callAction(ActionsContainer.KEBAB_GROUP_ID, "refreshButton");
+        newInventoryViewPage.unselectObjectByRowId(0);
         waitForPageToLoad();
-        Assert.assertEquals(SERIAL_NUMBER_AFTER, newInventoryViewPage.getMainTable().getCellValue(0, "Description"));
+        newInventoryViewPage.selectFirstRow();
+        waitForPageToLoad();
+        Assert.assertEquals(SERIAL_NUMBER_AFTER, newInventoryViewPage.getMainTable().getCellValue(0, "Serial Number"));
     }
 
     @Test(priority = 8)
@@ -156,7 +159,7 @@ public class UC_NAR_005 extends BaseTestCase {
         newInventoryViewPage.selectFirstRow();
         newInventoryViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, "DeleteDeviceWizardAction");
         waitForPageToLoad();
-        Wizard.createWizard(driver, webDriverWait).clickButtonByLabel("OK");
+        Wizard.createWizard(driver, webDriverWait).clickActionById("ConfirmationBox_object_delete_wizard_confirmation_box_action_button");
         checkMessageType();
         newInventoryViewPage.callAction(ActionsContainer.KEBAB_GROUP_ID, "refreshButton");
         Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());
