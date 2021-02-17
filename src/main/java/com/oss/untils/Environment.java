@@ -35,6 +35,7 @@ public class Environment {
     private static final String ADDRESS_CORE = "address-core";
     private static final String ANTENNA_ARRAY_CORE = "antenna-array-core";
     private static final String RESOURCE_CATALOG_CORE = "resource-catalog-core";
+    private static final String LOGICAL_FUNCTION_CORE = "logical-function-core";
 
     private static final String KEYCLOAK_PASS_PROP = "keycloak.pass";
     private static final String KEYCLOAK_USERNAME_PROP = "keycloak.username";
@@ -173,6 +174,10 @@ public class Environment {
     }
 
     public RequestSpecification getResourceCatalogSpecification() { return getRequestSpecificationByName(RESOURCE_CATALOG_CORE); }
+
+    public RequestSpecification getLogicalFunctionSpecification() {
+        return getRequestSpecificationByName(LOGICAL_FUNCTION_CORE);
+    }
 
     public RequestSpecification getRequestSpecificationByName(String pName) {
         RequestSpecification findApplicationBasePath = findApplicationBasePath(pName);

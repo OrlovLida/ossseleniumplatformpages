@@ -128,6 +128,16 @@
             <artifactId>resource-catalog-api</artifactId>
             <version>${resourcecatalog.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.comarch.oss.logical.inventory</groupId>
+            <artifactId>logical-inventory-api</artifactId>
+            <version>4.1.1.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>com.comarch.oss.resourcecatalog</groupId>
+            <artifactId>tmf-catalog-api</artifactId>
+            <version>4.0.8.Final</version>
+        </dependency>
     </dependencies>
 
     <profiles>
