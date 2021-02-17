@@ -104,7 +104,7 @@ public class VSITest extends BaseTestCase {
     public void assignCreatedRouteTarget(){
         VSIOverviewPage vsiOverview = new VSIOverviewPage(driver);
         vsiOverview.openBottomRouteTargetsTab();
-        VSIRouteTargetAssignmentPage routeTargetWizard = vsiOverview.clickAddRouteTargetButton();
+        VSIRouteTargetAssignmentPage routeTargetWizard = vsiOverview.addRouteTarget();
         routeTargetWizard.setRouteTarget(ROUTE_TARGET_TO_CREATE);
         routeTargetWizard.setImportRole();
         VSIOverviewPage vsiOverviewAfterRouteTargetAssignment = routeTargetWizard.clickAccept();

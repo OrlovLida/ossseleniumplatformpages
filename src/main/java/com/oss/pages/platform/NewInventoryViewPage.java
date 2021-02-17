@@ -29,7 +29,6 @@ import com.oss.pages.BasePage;
 import com.oss.pages.filterpanel.FilterPanelPage;
 
 import io.qameta.allure.Step;
-import javafx.scene.control.Tab;
 
 public class NewInventoryViewPage extends BasePage {
 
@@ -331,11 +330,23 @@ public class NewInventoryViewPage extends BasePage {
         return this;
     }
 
+    @Step("Change Properties order")
+    public NewInventoryViewPage changePropertiesOrder(int rowId, String widgetId, String propertyLabel, int position) {
+        getPropertyPanel(rowId, widgetId).changePropertyOrder(propertyLabel, position);
+        return this;
+    }
+
     @Step("Save configuration for properties")
     public NewInventoryViewPage saveConfigurationForProperties(int rowId, String widgetId, String configurationName, Field... fields) {
         DelayUtils.waitForPageToLoad(driver, wait);
         getPropertyPanel(rowId, widgetId).openSaveAsNewConfigurationWizard().saveAsNew(configurationName, fields);
         return this;
+    }
+
+    @Step("Delete properties configuration")
+    public void deletePropertiesConfiguration(int rowId, String widgetId, String configurationName) {
+        getPropertyPanel(rowId, widgetId).openChooseConfigurationWizard().deleteConfiguration(configurationName);
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     @Step("Save configuration for page")
@@ -402,16 +413,17 @@ public class NewInventoryViewPage extends BasePage {
     }
 
     @Step("Delete configuration for tabs")
-    public NewInventoryViewPage deleteConfigurationForTabs(String configurationName) {
+    public NewInventoryViewPage deleteConfigurationForTabs(int rowId, String tabsId, String configurationName) {
         DelayUtils.waitForPageToLoad(driver, wait);
+        selectObjectByRowId(rowId);
         getTabsWidget().openChooseConfigurationWizard().deleteConfiguration(configurationName).cancel();
         return this;
     }
 
     @Step("Delete configuration for properties")
-    public NewInventoryViewPage deleteConfigurationForProperties(String configurationName) {
+    public NewInventoryViewPage deleteConfigurationForProperties(int rowId, String propertyPanelId, String configurationName) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getPropertiesFilter().openChooseConfigurationWizard().deleteConfiguration(configurationName).cancel();
+        getPropertyPanel(rowId, propertyPanelId).openChooseConfigurationWizard().deleteConfiguration(configurationName).cancel();
         return this;
     }
 

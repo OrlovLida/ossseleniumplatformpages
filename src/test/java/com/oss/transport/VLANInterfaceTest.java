@@ -101,7 +101,7 @@ public class VLANInterfaceTest extends BaseTestCase {
     public void assignIPHostAddress() {
         newInventoryViewPage.selectFirstRow();
         waitForPageToLoad();
-        newInventoryViewPage.callAction("CREATE", "AssignIPv4Host_TP");
+        newInventoryViewPage.callAction("CREATE", "AssignIPv4Host");
         IPv4AddressAssignmentWizardPage iPv4AddressAssignmentWizardPage = new IPv4AddressAssignmentWizardPage(driver);
         iPv4AddressAssignmentWizardPage.assignIPtoIRBInterface("126001", IP_SUBNET, false);
         waitForPageToLoad();

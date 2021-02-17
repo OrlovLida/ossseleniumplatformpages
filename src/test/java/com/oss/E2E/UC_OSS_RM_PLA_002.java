@@ -16,6 +16,7 @@ import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageContainer.Message;
 import com.oss.framework.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.alerts.SystemMessageInterface;
+import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.listwidget.EditableList;
 import com.oss.framework.mainheader.Notifications;
 import com.oss.framework.sidemenu.SideMenu;
@@ -589,7 +590,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         ViewConnectionConfigurationPage viewConnectionConfigurationPage = new ViewConnectionConfigurationPage(driver);
         viewConnectionConfigurationPage.selectRow("Address", address);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        viewConnectionConfigurationPage.useContextAction("Delete");
+        viewConnectionConfigurationPage.useContextAction(ActionsContainer.EDIT_GROUP_ID, ViewConnectionConfigurationPage.DELETE_BUTTON_ID);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         viewConnectionConfigurationPage.clickDelete();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);

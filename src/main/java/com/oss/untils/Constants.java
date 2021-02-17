@@ -46,6 +46,8 @@ public class Constants {
     public static final String ANTENNA_TYPE = "RANAntenna";
     public static final String ANTENNA_MODEL_TYPE = "RANAntennaModel";
     public static final String LOCATION_TYPE = "Location";
+    public static final String BUILDING_TYPE = "Building";
+    public static final String SITE_TYPE = "Site";
     public static final String CONTROLLER_TYPE = "controller";
     public static final String BSC_TYPE = "BSC";
     public static final String RNC_TYPE = "RNC";
@@ -64,5 +66,9 @@ public class Constants {
     public static final String TECH_3G = "3G";
     public static final String TECH_4G = "4G";
     public static final String TECH_5G = "5G";
+
+    //common attributes like name, identifier, description etc. Specific type's attributes should be added in the types section.
+    public static final String COMMON_NAME_ATTRIBUTE = "name";
+    public static final String COMMON_IDENTIFIER_ATTRIBUTE = "identifier";
 
 }

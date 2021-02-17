@@ -18,8 +18,8 @@ import java.util.Map;
  */
 public class LoopbackInterfaceTest extends BaseTestCase {
 
-    private static final String PRE_CREATED_LOCATION_NAME = "Warszawa-BU150";
-    private static final String PRE_CREATED_DEVICE_NAME = "SeleniumOSSKJ";
+    private static final String PRE_CREATED_LOCATION_NAME = "Gliwice-BU1";
+    private static final String PRE_CREATED_DEVICE_NAME = "ipdevice13";
 
     private static final String NUMBER = "101";
     private static final String NUMBER2 = "102";

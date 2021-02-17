@@ -107,30 +107,35 @@ public class VRFOverviewPage extends BasePage {
     @Step("Click add Route Target button")
     public VRFImpExpRouteTargetWizardPage clickAddRouteTargetButton() {
         openRouteTargetTab();
-        Button addRouteTargetButton = Button.createBySelectorAndId(driver, "a", ADD_ROUTE_TARGET_BUTTON_DATA_ATTRIBUTENAME);
-        addRouteTargetButton.click();
+        OldTable routeTargetTabTable = getTableWidget(BOTTOM_ROUTE_TARGET_TABLE_ID);
+        routeTargetTabTable.callAction(ADD_ROUTE_TARGET_BUTTON_DATA_ATTRIBUTENAME);
         return new VRFImpExpRouteTargetWizardPage(driver);
     }
+
 
     @Step("Get all assigned interfaces names")
     public List<String> getAssignedInterfaces() {
         openInterfaceAssignmentTab();
-        OldTable interfacesTable = OldTable.createByComponentDataAttributeName(driver, wait, INTERFACES_TABLE_ID);
+        OldTable interfacesTable = getTableWidget(INTERFACES_TABLE_ID);
         return getAllElementsInColumn(interfacesTable, BOTTOM_INTERFACES_TAB_INTERFACE_NAME_COLUMN_LABEL);
     }
 
     @Step("Get all assigned Route Targets values")
     public List<String> getAssignedRouteTargets() {
         openRouteTargetTab();
-        OldTable routeTargetTabTable = OldTable.createByComponentDataAttributeName(driver, wait, BOTTOM_ROUTE_TARGET_TABLE_ID);
+        OldTable routeTargetTabTable = getTableWidget(BOTTOM_ROUTE_TARGET_TABLE_ID);
         return getAllElementsInColumn(routeTargetTabTable, ROUTE_TARGET_LABEL);
     }
 
     @Step("Get all assigned Route Targets address families")
     public List<String> getAssignedAddressFamilies() {
         openRouteTargetTab();
-        OldTable routeTargetTabTable = OldTable.createByComponentDataAttributeName(driver, wait, BOTTOM_ROUTE_TARGET_TABLE_ID);
+        OldTable routeTargetTabTable = getTableWidget(BOTTOM_ROUTE_TARGET_TABLE_ID);
         return getAllElementsInColumn(routeTargetTabTable, ADDRESS_FAMILY_LABEL);
+    }
+
+    private OldTable getTableWidget(String tableId){
+        return OldTable.createByComponentDataAttributeName(driver, wait, tableId);
     }
 
     private List<String> getAllElementsInColumn(OldTable table, String columnName){
