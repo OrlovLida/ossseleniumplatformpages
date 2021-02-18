@@ -26,6 +26,7 @@
         <addressinventory.version>1.17.1.Final</addressinventory.version>
         <radio.version>4.0.2.Final</radio.version>
         <resourcecatalog.version>2.5.5.Final</resourcecatalog.version>
+        <planning.version>6.9.2.Final</planning.version>
         <seleniumframework.version>0.6.0-SNAPSHOT</seleniumframework.version>
     </properties>
 
