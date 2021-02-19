@@ -1,5 +1,7 @@
 package com.oss.pages.platform;
 
+import org.openqa.selenium.WebDriver;
+
 import com.oss.framework.components.portals.SaveConfigurationWizard.Field;
 import com.oss.framework.mainheader.ButtonPanel;
 import com.oss.framework.utils.DelayUtils;
@@ -9,8 +11,8 @@ import com.oss.framework.widgets.propertypanel.PropertyPanel;
 import com.oss.framework.widgets.tabswidget.TabsWidget;
 import com.oss.framework.widgets.treewidget.TreeWidget;
 import com.oss.pages.BasePage;
+
 import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
 
 public class HierarchyViewPage extends BasePage {
 
@@ -18,6 +20,7 @@ public class HierarchyViewPage extends BasePage {
     private static final String BOTTOM_TABS_WIDGET_ID = "HierarchyView_BottomDetailTabs_%s";
     private static final String TOP_PROPERTY_PANEL_ID = "HierarchyView_TopDetailTabs_%sHierarchyView_PropertyPanelWidget_%s";
     private static final String BOTTOM_PROPERTY_PANEL_ID = "HierarchyView_BottomDetailTabs_%sInventoryView_PropertyPanelWidget_%s";
+    private static final String HIERARCHY_VIEW_TREE_WIDGET_ID = "HierarchyViewTreeWidgetId";
 
     public HierarchyViewPage(WebDriver driver) {
         super(driver);
@@ -25,7 +28,7 @@ public class HierarchyViewPage extends BasePage {
 
     public TreeWidget getTreeWidget() {
         Widget.waitForWidget(wait, "TreeWidget");
-        return TreeWidget.createByClass(driver, "TreeWidget", wait);
+        return TreeWidget.createByDataAttributeName(driver, wait, HIERARCHY_VIEW_TREE_WIDGET_ID);
     }
 
     public TabsWidget getTopTabsWidget(String type) {
