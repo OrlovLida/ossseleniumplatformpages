@@ -14,6 +14,7 @@ public class Constants {
     public static final String GENERATE_CONTROLLER_ID = "generateControllerId";
     public static final String GENERATE_BASE_STATION_ID = "generateBaseStationId";
     public static final String GENERATE_CELL_ID = "generateCellId";
+    public static final String SHOULD_CREATE_MISSING_ADDRESS_ITEMS ="shouldCreateMissingAddressItems";
     public static final String RSQL = "rsql";
     public static final String NAME_PARAM = "Name";
 
@@ -33,6 +34,7 @@ public class Constants {
     public static final String HUAWEI_GNODEB_MODEL = "HUAWEI Technology Co.,Ltd gNodeB";
     public static final String BBU3900_MODEL = "BBU3900";
     public static final String BBU5900_MODEL = "BBU5900";
+    public static final String RRU5301_MODEL = "RRU5301";
     public static final String RRU5501_MODEL = "RRU5501";
     public static final String AAU5614ANTENNA_MODEL = "AAU5614";
     public static final String AHP4517R7v06ANTENNA_MODEL = "AHP4517R7v06";
