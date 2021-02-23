@@ -1,6 +1,7 @@
 package com.oss.ThreeUKProject;
 
 import com.oss.BaseTestCase;
+import com.oss.configuration.Configuration;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.listwidget.CommonList;
@@ -43,8 +44,12 @@ public class PhysicalRegressionTests extends BaseTestCase {
     private static final String locationName = "SiteSeleniumTests";
     private static Long addressId;
     private static String countryId;
+    private static String cityId;
+    private static String regionId;
     private static final String countryName = "CountrySeleniumTests";
     private static final String postalCodeName = "PostalCodeSeleniumTests";
+    private static final String regionName = "RegionSeleniumTests";
+    private static final String districtName = "DistrictSeleniumTests";
     private static final String cityName = "CitySeleniumTests";
     private static final String subLocationSiteName = RandomGenerator.generateRandomName();
     private static final String objectTypeLocation = "Location";
@@ -54,18 +59,12 @@ public class PhysicalRegressionTests extends BaseTestCase {
 
     @BeforeClass
     public void createTestData() {
-        getOrCreateAddressItemsAndAddress();
+//        getOrCreateAddress();
         getOrCreatePhysicalLocation();
         createSubLocation();
     }
 
-    private void getOrCreateAddressItemsAndAddress() {
-        AddressRepository addressRepository = new AddressRepository(env);
-        countryId = addressRepository.getOrCreateCountry(countryName);
-        addressRepository.getOrCreatePostalCode(countryId, postalCodeName);
-        addressRepository.getOrCreateCity(countryId, cityName);
-        addressId = addressRepository.updateOrCreateAddress(countryName, countryId, postalCodeName, cityName);
-    }
+
 
     private void getOrCreatePhysicalLocation() {
         LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);

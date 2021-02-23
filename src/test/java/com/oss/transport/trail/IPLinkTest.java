@@ -25,7 +25,7 @@ import com.oss.untils.Environment;
 import io.qameta.allure.Description;
 
 public class IPLinkTest extends BaseTestCase {
-    
+
     private static final String IP_LINK_NAME = "ipLinkSeleniumTest";
     private static final String IP_LINK_DESCRIPTION = "ipLinkSeleniumTestDescription";
     private static final IPLinkWizardAttributesStepPage.CapacityUnit IP_LINK_CAPACITY_UNIT =
@@ -41,7 +41,7 @@ public class IPLinkTest extends BaseTestCase {
     private static final boolean IP_LINK_MPLS_ACTIVE = true;
     private static final boolean IP_LINK_MPLS_TE_ACTIVE = true;
     private static final boolean IP_LINK_MPLS_TP_ACTIVE = true;
-    
+
     private static final String UPDATED_IP_LINK_NAME = "UpdatedIpLinkSeleniumTest";
     private static final String UPDATED_IP_LINK_DESCRIPTION = "UpdatedipLinkSeleniumTestDescription";
     private static final IPLinkWizardAttributesStepPage.CapacityUnit UPDATED_IP_LINK_CAPACITY_UNIT =
@@ -57,14 +57,14 @@ public class IPLinkTest extends BaseTestCase {
     private static final boolean UPDATED_IP_LINK_MPLS_ACTIVE = true;
     private static final boolean UPDATED_IP_LINK_MPLS_TE_ACTIVE = true;
     private static final boolean UPDATED_IP_LINK_MPLS_TP_ACTIVE = true;
-    
+
     private static final String IP_LINK_EMPTY_ATTRIBUTES_CAPACITY_VALUE = "0";
     private static final IPLinkWizardAttributesStepPage.CapacityUnit IP_LINK_EMPTY_ATTRIBUTES_CAPACITY_UNIT =
             IPLinkWizardAttributesStepPage.CapacityUnit.bps;
-    
+
     private static final String IP_ADDRESS_PARTS_SEPARATOR = "\\.";
     private static final String EMPTY_STRING = "";
-    
+
     private static final String DEVICE_MODEL = "SeleniumTransportIPDeviceModel-ASR9001";
     private static final String DEVICE_TYPE = "IP Device";
     private static final String LOCATION_NAME = "SeleniumTestTransportLocation";
@@ -73,21 +73,22 @@ public class IPLinkTest extends BaseTestCase {
     private static final String REGION_NAME = "SeleniumTestTransportRegion";
     private static final String DISTRICT_NAME = "SeleniumTestTransportDistrict";
     private static final String CITY_NAME = "SeleniumTestTransportCity";
+    private static final String POSTAL_CODE_NAME = "SeleniumTestTransportPostalCode";
     private static final String DEVICE_1_NAME = "device1";
     private static final String DEVICE_2_NAME = "device2";
     private static final String PORT_NAME = "CLUSTER 0";
     private static final String ETHERNET_INTERFACE_NAME = "ETH";
-    
+
     private static final String IP_LINK_TYPE = "IP Link";
-    
+
     private static final String ETHERNET_LINK_EXPECTED_SPEED = "Unknown";
-    
+
     private static final String TYPE_COLUMN = "Type";
     private static final String START_TYPE = "Start";
     private static final String END_TYPE = "End";
-    
+
     private NetworkViewPage networkView;
-    
+
     @BeforeClass
     @Description("Open network view in live perspective")
     public void init() {
@@ -95,31 +96,27 @@ public class IPLinkTest extends BaseTestCase {
         networkView.openNetworkView();
         PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
     }
-    
+
     @Test(priority = 1)
     @Description("Create IP Device model if does not exist")
     public void createIpDeviceModel() {
         ModelsRepository modelsRepository = new ModelsRepository(Environment.getInstance());
         modelsRepository.getOrCreateDeviceModel(DEVICE_MODEL, "IPDeviceModel");
     }
-    
+
     @Test(priority = 2)
     @Description("Create Location if does not exist")
     public void createLocation() {
         Long addressId = prepareAddress();
         LocationInventoryRepository locationRepository = new LocationInventoryRepository(Environment.getInstance());
-        locationRepository.getOrCreateLocationV2(LOCATION_NAME, LOCATION_TYPE, addressId);
+        locationRepository.getOrCreateLocation(LOCATION_NAME, LOCATION_TYPE, addressId);
     }
-    
+
     private Long prepareAddress() {
         AddressRepository addressRepository = new AddressRepository(Environment.getInstance());
-        String countryId = addressRepository.getOrCreateCountryV2(COUNTRY_NAME);
-        String regionId = addressRepository.getOrCreateRegion(countryId, REGION_NAME);
-        String cityId = addressRepository.getOrCreateCityV2(regionId, CITY_NAME);
-        addressRepository.getOrCreateDistrict(cityId, DISTRICT_NAME);
-        return addressRepository.updateOrCreateAddress(COUNTRY_NAME, countryId, CITY_NAME, cityId, REGION_NAME, regionId, DISTRICT_NAME);
+        return addressRepository.updateOrCreateAddress(COUNTRY_NAME, POSTAL_CODE_NAME, REGION_NAME, CITY_NAME, DISTRICT_NAME);
     }
-    
+
     @Test(priority = 3)
     @Description("Create IP Devices by wizard")
     public void createIpDevices() {
@@ -128,13 +125,13 @@ public class IPLinkTest extends BaseTestCase {
         networkView.isObjectInViewContent(DEVICE_1_NAME);
         networkView.isObjectInViewContent(DEVICE_2_NAME);
     }
-    
+
     private void createIpDevice(String deviceName) {
         DeviceWizardPage deviceWizard = networkView.openCreateDeviceWizard();
         deviceWizard.createDevice(DEVICE_MODEL, deviceName, LOCATION_NAME);
         networkView.unselectObject(deviceName);
     }
-    
+
     @Test(priority = 4)
     @Description("Create IP Link with associated ethernet link")
     public void createIPLinkWithEthernetLink() {
@@ -145,27 +142,27 @@ public class IPLinkTest extends BaseTestCase {
         assertElementWithSameName(1, attributesToCreate);
         assertElementWithSameName(2, attributesToCreate);
     }
-    
+
     private void createIPLinkWithAttributesAndTermination(IPLinkAttributes attributes) {
         selectDevices();
         IPLinkWizardAttributesStepPage ipLinkWizard = openCreateIPLinkWizard();
         fillAttributes(ipLinkWizard, attributes);
-        
+
         IPLinkTerminationStepPage terminationStep = ipLinkWizard.next();
         fillTermination(terminationStep, TerminationStepPage.TerminationType.Start);
         fillTermination(terminationStep, TerminationStepPage.TerminationType.End);
-        
+
         terminationStep.setCreateAssociatedEthernetLink(true);
-        
+
         terminationStep.accept();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
-    
+
     private IPLinkWizardAttributesStepPage openCreateIPLinkWizard() {
         networkView.openCreateTrailWizardV2(IPLinkWizardAttributesStepPage.TRAIL_TYPE);
         return IPLinkWizardAttributesStepPage.getAttributesStepPage(driver);
     }
-    
+
     private IPLinkAttributes prepareIPLinkAttributesToCreate() {
         IPLinkAttributes attributes = new IPLinkAttributes();
         attributes.name = IP_LINK_NAME;
@@ -183,26 +180,26 @@ public class IPLinkTest extends BaseTestCase {
         attributes.mplsTpActive = IP_LINK_MPLS_TP_ACTIVE;
         return attributes;
     }
-    
+
     private void selectDevices() {
         networkView.selectObject(DEVICE_1_NAME);
         networkView.selectObject(DEVICE_2_NAME);
     }
-    
+
     private void fillTermination(TerminationStepPage terminationStep, TerminationStepPage.TerminationType terminationType) {
         terminationStep.chooseTerminationType(terminationType);
         terminationStep.setNonexistentCard();
         terminationStep.setPort(PORT_NAME);
         terminationStep.setTerminationPoint(ETHERNET_INTERFACE_NAME);
     }
-    
+
     private void assertElementWithSameName(int elementIndex, IPLinkAttributes attributesToCreate) {
         networkView.clickOnObject(IP_LINK_NAME, elementIndex);
         String type = networkView.getAttributeValue("Type");
         assertElementWithGivenType(attributesToCreate, type);
         networkView.clickOnObject(IP_LINK_NAME, elementIndex);
     }
-    
+
     private void assertElementWithGivenType(IPLinkAttributes attributesToCreate, String type) {
         if (type.equals(IP_LINK_TYPE)) {
             assertCreatedIPLink(attributesToCreate);
@@ -210,22 +207,22 @@ public class IPLinkTest extends BaseTestCase {
             assertEthernetLinkAttributes(attributesToCreate);
         }
     }
-    
+
     private void assertCreatedIPLink(IPLinkAttributes attributesToCreate) {
         assertIPLinkAttributes(attributesToCreate);
         networkView.isObjectInRouting1stLevel(IP_LINK_NAME);
     }
-    
+
     private void assertEthernetLinkAttributes(IPLinkAttributes expected) {
         String actualName = networkView.getAttributeValue("Name");
         String actualDescription = networkView.getAttributeValue("Description");
         String actualSpeed = networkView.getAttributeValue("Speed");
-        
+
         Assert.assertEquals(actualName, expected.name);
         Assert.assertEquals(actualDescription, expected.description);
         Assert.assertEquals(actualSpeed, ETHERNET_LINK_EXPECTED_SPEED);
     }
-    
+
     @Test(priority = 5)
     @Description("Create IP Link with empty optional attributes")
     public void createIPLinkWithEmptyOptionalAttributes() {
@@ -234,13 +231,13 @@ public class IPLinkTest extends BaseTestCase {
         assertIPLinkAttributes(expectedAttributes);
         networkView.unselectObject(IP_LINK_TYPE);
     }
-    
+
     private void createEmptyIPLink() {
         IPLinkWizardAttributesStepPage ipLinkWizard = openCreateIPLinkWizard();
         ipLinkWizard.accept();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
-    
+
     private IPLinkAttributes prepareEmptyIPLinkExpectedAttributes() {
         IPLinkAttributes attributes = new IPLinkAttributes();
         attributes.name = EMPTY_STRING;
@@ -257,7 +254,7 @@ public class IPLinkTest extends BaseTestCase {
         attributes.mplsTpActive = false;
         return attributes;
     }
-    
+
     @Test(priority = 6)
     @Description("Update empty IP Link with new attributes")
     public void updateIPLinkWithNewAttributes() {
@@ -266,7 +263,7 @@ public class IPLinkTest extends BaseTestCase {
         assertIPLinkAttributes(attributesToUpdate);
         networkView.unselectObject(UPDATED_IP_LINK_NAME);
     }
-    
+
     private IPLinkAttributes prepareIPLinkAttributesToUpdate() {
         IPLinkAttributes attributes = new IPLinkAttributes();
         attributes.name = UPDATED_IP_LINK_NAME;
@@ -284,7 +281,7 @@ public class IPLinkTest extends BaseTestCase {
         attributes.mplsTpActive = UPDATED_IP_LINK_MPLS_TP_ACTIVE;
         return attributes;
     }
-    
+
     private void updateIPLinkWithAttributes(IPLinkAttributes attributesToUpdate) {
         networkView.selectObject(IP_LINK_TYPE);
         networkView.openUpdateTrailWizardV2();
@@ -293,7 +290,7 @@ public class IPLinkTest extends BaseTestCase {
         ipLinkWizard.accept();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
-    
+
     private void fillAttributes(IPLinkWizardAttributesStepPage ipLinkWizard, IPLinkAttributes attributes) {
         ipLinkWizard.setName(attributes.name);
         ipLinkWizard.setDescription(attributes.description);
@@ -309,7 +306,7 @@ public class IPLinkTest extends BaseTestCase {
         ipLinkWizard.setMplsTeActive(attributes.mplsTeActive);
         ipLinkWizard.setMplsTpActive(attributes.mplsTpActive);
     }
-    
+
     private void assertIPLinkAttributes(IPLinkAttributes expected) {
         String actualName = networkView.getAttributeValue("Name");
         String actualDescription = networkView.getAttributeValue("Description");
@@ -323,7 +320,7 @@ public class IPLinkTest extends BaseTestCase {
         String actualMplsActive = networkView.getAttributeValue("MPLS active");
         String actualMplsTeActive = networkView.getAttributeValue("MPLS-TE active");
         String actualMplsTpActive = networkView.getAttributeValue("MPLS-TP active");
-        
+
         Assert.assertEquals(actualName, expected.name);
         Assert.assertEquals(actualDescription, expected.description);
         Assert.assertEquals(actualCapacity, expectedCapacity);
@@ -336,11 +333,11 @@ public class IPLinkTest extends BaseTestCase {
         Assert.assertEquals(actualMplsTeActive, expected.mplsTeActive);
         Assert.assertEquals(actualMplsTpActive, expected.mplsTpActive);
     }
-    
+
     private String prepareCapacityWithUnit(String capacityValue, IPLinkWizardAttributesStepPage.CapacityUnit capacityUnit) {
         return String.join(" ", capacityValue, capacityUnit.toString());
     }
-    
+
     @Test(priority = 7)
     @Description("Add IP Device and Location to IP Link routing")
     public void addIpDeviceAndLocationToRouting() {
@@ -359,7 +356,7 @@ public class IPLinkTest extends BaseTestCase {
         Assert.assertTrue(networkView.isObjectInRoutingElements(LOCATION_NAME));
         networkView.unselectObject(UPDATED_IP_LINK_NAME);
     }
-    
+
     @Test(priority = 8)
     @Description("Add Location to IP Link terminations")
     public void addLocationToTerminations() {
@@ -373,7 +370,7 @@ public class IPLinkTest extends BaseTestCase {
         Assert.assertTrue(networkView.isObjectInTerminations(LOCATION_NAME));
         networkView.unselectObject(UPDATED_IP_LINK_NAME);
     }
-    
+
     @Test(priority = 9)
     @Description("Add IP Device to IP Link terminations")
     public void addIpDeviceToTerminations() {
@@ -387,7 +384,7 @@ public class IPLinkTest extends BaseTestCase {
         Assert.assertTrue(networkView.isObjectInTerminations(DEVICE_2_NAME));
         networkView.unselectObject(DEVICE_2_NAME);
     }
-    
+
     @Test(priority = 10)
     @Description("Remove IP Link terminations")
     public void removeTerminations() {
@@ -398,7 +395,7 @@ public class IPLinkTest extends BaseTestCase {
         Assert.assertFalse(networkView.isObjectInTerminations(DEVICE_2_NAME));
         Assert.assertFalse(networkView.isObjectInTerminations(LOCATION_NAME));
     }
-    
+
     @Test(priority = 11)
     @Description("Remove IP Link element routing segments")
     public void removeElementRoutingSegments() {
@@ -409,7 +406,7 @@ public class IPLinkTest extends BaseTestCase {
         Assert.assertFalse(networkView.isObjectInRoutingElements(DEVICE_1_NAME));
         Assert.assertFalse(networkView.isObjectInRoutingElements(LOCATION_NAME));
     }
-    
+
     @Test(priority = 12)
     @Description("Remove created IP Links and Ethernet Link")
     public void deleteCreatedTrails() {
@@ -420,22 +417,22 @@ public class IPLinkTest extends BaseTestCase {
         Assert.assertFalse(networkView.isObjectInViewContent(IP_LINK_NAME));
         Assert.assertFalse(networkView.isObjectInViewContent(UPDATED_IP_LINK_NAME));
     }
-    
+
     @Test(priority = 13)
     @Description("Remove created devices")
     public void deleteDevices() {
         deleteDevice(DEVICE_1_NAME);
         deleteDevice(DEVICE_2_NAME);
     }
-    
+
     private void deleteDevice(String deviceName) {
         networkView.selectObject(deviceName);
         networkView.deleteSelectedElement();
         Assert.assertFalse(networkView.isObjectInViewContent(deviceName));
     }
-    
+
     private static class IPLinkAttributes {
-        
+
         private String name;
         private String description;
         private IPLinkWizardAttributesStepPage.CapacityUnit capacityUnit;
@@ -449,6 +446,6 @@ public class IPLinkTest extends BaseTestCase {
         private boolean mplsActive = false;
         private boolean mplsTeActive = false;
         private boolean mplsTpActive = false;
-        
+
     }
 }
