@@ -6,6 +6,7 @@ import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.listwidget.CommonList;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.GlobalSearchPage;
+import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.OldInventoryViewPage;
 import com.oss.pages.radio.Cell5GWizardPage;
 import com.oss.pages.radio.CellSiteConfigurationPage;
@@ -23,6 +24,7 @@ import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
@@ -108,6 +110,12 @@ public class Technology5GTests extends BaseTestCase {
         cardModelId = resourceCatalogClient.getModelIds(cardModel);
         PhysicalInventoryRepository physicalInventoryRepository = new PhysicalInventoryRepository(env);
         physicalInventoryRepository.createDeviceWithCard(locationTypeSite, Long.valueOf(locationId), deviceModelId, deviceName, deviceModelType, slotName, cardModelId, cardModelType);
+    }
+
+    @BeforeMethod
+    public void goToHomePage() {
+        HomePage homePage = new HomePage(driver);
+        homePage.goToHomePage(driver, BASIC_URL);
     }
 
     @Test
