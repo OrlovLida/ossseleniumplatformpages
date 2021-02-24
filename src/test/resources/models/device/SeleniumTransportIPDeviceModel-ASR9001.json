@@ -1,0 +1,590 @@
+{
+  "type": "IPDeviceModel",
+  "simpleAttributes": {
+    "Name": "SeleniumTransportIPDeviceModel-ASR9001"
+  },
+  "referenceAttributes": {
+    "MasterEquipmentType": {
+      "type": "EquipmentType",
+      "name": "Router"
+    },
+    "MasterManufacturer": {
+      "type": "Manufacturer",
+      "name": "Cisco Systems Inc."
+    }
+  },
+  "ports": [
+    {
+      "instanceName": "SFP+ 0",
+      "simpleAttributes": {
+        "Name": "SeleniumTransportTest2PortModel1"
+      },
+      "referenceAttributes": {
+        "MasterEquipmentType": {
+          "type": "EquipmentType",
+          "name": "Router"
+        },
+        "MasterManufacturer": {
+          "type": "Manufacturer",
+          "name": "Cisco Systems Inc."
+        }
+      },
+      "terminationPoints": {
+        "connectors": [],
+        "dsrNodes": [
+          {
+            "name": "DSR",
+            "businessKey": "DSRNode-DSR-1",
+            "supportedLayers": "DSR_10G_Ethernet",
+            "serverTerminationPoints": []
+          }
+        ],
+        "ethernetInterfaces": [
+          {
+            "name": "ETH",
+            "businessKey": "EthernetInterface-ETHERNET-1",
+            "direction": "BI",
+            "serverTerminationPoints": [
+              "DSRNode-DSR-1"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "instanceName": "SFP+ 1",
+      "simpleAttributes": {
+        "Name": "SeleniumTransportTest2PortModel1"
+      },
+      "referenceAttributes": {
+        "MasterEquipmentType": {
+          "type": "EquipmentType",
+          "name": "Router"
+        },
+        "MasterManufacturer": {
+          "type": "Manufacturer",
+          "name": "Cisco Systems Inc."
+        }
+      },
+      "terminationPoints": {
+        "connectors": [],
+        "dsrNodes": [
+          {
+            "name": "DSR",
+            "businessKey": "DSRNode-DSR-1",
+            "supportedLayers": "DSR_10G_Ethernet",
+            "serverTerminationPoints": []
+          }
+        ],
+        "ethernetInterfaces": [
+          {
+            "name": "ETH",
+            "businessKey": "EthernetInterface-ETHERNET-1",
+            "direction": "BI",
+            "serverTerminationPoints": [
+              "DSRNode-DSR-1"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "instanceName": "SFP+ 2",
+      "simpleAttributes": {
+        "Name": "SeleniumTransportTest2PortModel1"
+      },
+      "referenceAttributes": {
+        "MasterEquipmentType": {
+          "type": "EquipmentType",
+          "name": "Router"
+        },
+        "MasterManufacturer": {
+          "type": "Manufacturer",
+          "name": "Cisco Systems Inc."
+        }
+      },
+      "terminationPoints": {
+        "connectors": [],
+        "dsrNodes": [
+          {
+            "name": "DSR",
+            "businessKey": "DSRNode-DSR-1",
+            "supportedLayers": "DSR_10G_Ethernet",
+            "serverTerminationPoints": []
+          }
+        ],
+        "ethernetInterfaces": [
+          {
+            "name": "ETH",
+            "businessKey": "EthernetInterface-ETHERNET-1",
+            "direction": "BI",
+            "serverTerminationPoints": [
+              "DSRNode-DSR-1"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "instanceName": "SFP+ 3",
+      "simpleAttributes": {
+        "Name": "SeleniumTransportTest2PortModel1"
+      },
+      "referenceAttributes": {
+        "MasterEquipmentType": {
+          "type": "EquipmentType",
+          "name": "Router"
+        },
+        "MasterManufacturer": {
+          "type": "Manufacturer",
+          "name": "Cisco Systems Inc."
+        }
+      },
+      "terminationPoints": {
+        "connectors": [],
+        "dsrNodes": [
+          {
+            "name": "DSR",
+            "businessKey": "DSRNode-DSR-1",
+            "supportedLayers": "DSR_10G_Ethernet",
+            "serverTerminationPoints": []
+          }
+        ],
+        "ethernetInterfaces": [
+          {
+            "name": "ETH",
+            "businessKey": "EthernetInterface-ETHERNET-1",
+            "direction": "BI",
+            "serverTerminationPoints": [
+              "DSRNode-DSR-1"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "instanceName": "CLUSTER 0",
+      "simpleAttributes": {
+        "Name": "SeleniumTransportTest2PortModel2"
+      },
+      "referenceAttributes": {
+        "MasterEquipmentType": {
+          "type": "EquipmentType",
+          "name": "Router"
+        },
+        "MasterManufacturer": {
+          "type": "Manufacturer",
+          "name": "Cisco Systems Inc."
+        }
+      },
+      "terminationPoints": {
+        "connectors": [],
+        "dsrNodes": [
+          {
+            "name": "DSR",
+            "businessKey": "DSRNode-DSR-1",
+            "supportedLayers": "DSR_1G_Ethernet",
+            "serverTerminationPoints": []
+          }
+        ],
+        "ethernetInterfaces": [
+          {
+            "name": "ETH",
+            "businessKey": "EthernetInterface-ETHERNET-1",
+            "direction": "BI",
+            "serverTerminationPoints": [
+              "DSRNode-DSR-1"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "instanceName": "CLUSTER 1",
+      "simpleAttributes": {
+        "Name": "SeleniumTransportTest2PortModel2"
+      },
+      "referenceAttributes": {
+        "MasterEquipmentType": {
+          "type": "EquipmentType",
+          "name": "Router"
+        },
+        "MasterManufacturer": {
+          "type": "Manufacturer",
+          "name": "Cisco Systems Inc."
+        }
+      },
+      "terminationPoints": {
+        "connectors": [],
+        "dsrNodes": [
+          {
+            "name": "DSR",
+            "businessKey": "DSRNode-DSR-1",
+            "supportedLayers": "DSR_1G_Ethernet",
+            "serverTerminationPoints": []
+          }
+        ],
+        "ethernetInterfaces": [
+          {
+            "name": "ETH",
+            "businessKey": "EthernetInterface-ETHERNET-1",
+            "direction": "BI",
+            "serverTerminationPoints": [
+              "DSRNode-DSR-1"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "instanceName": "MGT LAN 0",
+      "simpleAttributes": {
+        "Name": "SeleniumTransportTest2PortModel3"
+      },
+      "referenceAttributes": {
+        "MasterEquipmentType": {
+          "type": "EquipmentType",
+          "name": "Router"
+        },
+        "MasterManufacturer": {
+          "type": "Manufacturer",
+          "name": "Cisco Systems Inc."
+        }
+      },
+      "terminationPoints": {
+        "connectors": [],
+        "dsrNodes": [],
+        "ethernetInterfaces": []
+      }
+    },
+    {
+      "instanceName": "MGT LAN 1",
+      "simpleAttributes": {
+        "Name": "SeleniumTransportTest2PortModel3"
+      },
+      "referenceAttributes": {
+        "MasterEquipmentType": {
+          "type": "EquipmentType",
+          "name": "Router"
+        },
+        "MasterManufacturer": {
+          "type": "Manufacturer",
+          "name": "Cisco Systems Inc."
+        }
+      },
+      "terminationPoints": {
+        "connectors": [],
+        "dsrNodes": [],
+        "ethernetInterfaces": []
+      }
+    },
+    {
+      "instanceName": "SYNC 0",
+      "simpleAttributes": {
+        "Name": "SeleniumTransportTest2PortModel4"
+      },
+      "referenceAttributes": {
+        "MasterEquipmentType": {
+          "type": "EquipmentType",
+          "name": "Router"
+        },
+        "MasterManufacturer": {
+          "type": "Manufacturer",
+          "name": "Cisco Systems Inc."
+        }
+      },
+      "terminationPoints": {
+        "connectors": [
+          {
+            "direction": "BI",
+            "signalDirection": "RxTx",
+            "name": "CONNECTOR",
+            "businessKey": "Connector-INFRASTRUCTURE-RxTx",
+            "connectorType": "Generic/RJ45"
+          }
+        ],
+        "dsrNodes": [
+          {
+            "name": "DSR",
+            "businessKey": "DSRNode-DSR-1",
+            "supportedLayers": "DSR_10M_Ethernet",
+            "serverTerminationPoints": [
+              "Connector-INFRASTRUCTURE-RxTx"
+            ]
+          }
+        ],
+        "ethernetInterfaces": [
+          {
+            "name": "ETH",
+            "businessKey": "EthernetInterface-ETHERNET-1",
+            "direction": "BI",
+            "serverTerminationPoints": [
+              "DSRNode-DSR-1"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "instanceName": "SYNC 1",
+      "simpleAttributes": {
+        "Name": "SeleniumTransportTest2PortModel4"
+      },
+      "referenceAttributes": {
+        "MasterEquipmentType": {
+          "type": "EquipmentType",
+          "name": "Router"
+        },
+        "MasterManufacturer": {
+          "type": "Manufacturer",
+          "name": "Cisco Systems Inc."
+        }
+      },
+      "terminationPoints": {
+        "connectors": [
+          {
+            "direction": "BI",
+            "signalDirection": "RxTx",
+            "name": "CONNECTOR",
+            "businessKey": "Connector-INFRASTRUCTURE-RxTx",
+            "connectorType": "Generic/RJ45"
+          }
+        ],
+        "dsrNodes": [
+          {
+            "name": "DSR",
+            "businessKey": "DSRNode-DSR-1",
+            "supportedLayers": "DSR_10M_Ethernet",
+            "terminationType": "TTP",
+            "serverTerminationPoints": [
+              "Connector-INFRASTRUCTURE-RxTx"
+            ]
+          }
+        ],
+        "ethernetInterfaces": [
+          {
+            "name": "ETH",
+            "businessKey": "EthernetInterface-ETHERNET-1",
+            "direction": "BI",
+            "serverTerminationPoints": [
+              "DSRNode-DSR-1"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "instanceName": "USB",
+      "simpleAttributes": {
+        "Name": "SeleniumTransportTest2PortModel5"
+      },
+      "referenceAttributes": {
+        "MasterEquipmentType": {
+          "type": "EquipmentType",
+          "name": "Router"
+        },
+        "MasterManufacturer": {
+          "type": "Manufacturer",
+          "name": "Cisco Systems Inc."
+        }
+      },
+      "terminationPoints": {
+        "connectors": [
+          {
+            "direction": "BI",
+            "signalDirection": "InOut",
+            "name": "CONNECTOR",
+            "businessKey": "Connector-INFRASTRUCTURE-InOut",
+            "connectorType": "Generic/standard-A plug"
+          }
+        ],
+        "dsrNodes": [],
+        "ethernetInterfaces": []
+      }
+    },
+    {
+      "instanceName": "AUX",
+      "simpleAttributes": {
+        "Name": "SeleniumTransportTest2PortModel6"
+      },
+      "referenceAttributes": {
+        "MasterEquipmentType": {
+          "type": "EquipmentType",
+          "name": "Router"
+        },
+        "MasterManufacturer": {
+          "type": "Manufacturer",
+          "name": "Cisco Systems Inc."
+        }
+      },
+      "terminationPoints": {
+        "connectors": [
+          {
+            "direction": "BI",
+            "signalDirection": "RxTx",
+            "name": "CONNECTOR",
+            "businessKey": "Connector-INFRASTRUCTURE-RxTx",
+            "connectorType": "Generic/RJ45"
+          }
+        ],
+        "dsrNodes": [],
+        "ethernetInterfaces": []
+      }
+    },
+    {
+      "instanceName": "TOD",
+      "simpleAttributes": {
+        "Name": "SeleniumTransportTest2PortModel7"
+      },
+      "referenceAttributes": {
+        "MasterEquipmentType": {
+          "type": "EquipmentType",
+          "name": "Router"
+        },
+        "MasterManufacturer": {
+          "type": "Manufacturer",
+          "name": "Cisco Systems Inc."
+        }
+      },
+      "terminationPoints": {
+        "connectors": [
+          {
+            "direction": "BI",
+            "signalDirection": "RxTx",
+            "name": "CONNECTOR",
+            "businessKey": "Connector-INFRASTRUCTURE-RxTx",
+            "connectorType": "Generic/RJ45"
+          }
+        ],
+        "dsrNodes": [],
+        "ethernetInterfaces": []
+      }
+    },
+    {
+      "instanceName": "CONSOLE",
+      "simpleAttributes": {
+        "Name": "SeleniumTransportTest2PortModel8"
+      },
+      "referenceAttributes": {
+        "MasterEquipmentType": {
+          "type": "EquipmentType",
+          "name": "Router"
+        },
+        "MasterManufacturer": {
+          "type": "Manufacturer",
+          "name": "Cisco Systems Inc."
+        }
+      },
+      "terminationPoints": {
+        "connectors": [],
+        "dsrNodes": [],
+        "ethernetInterfaces": []
+      }
+    },
+    {
+      "instanceName": "10MHz",
+      "simpleAttributes": {
+        "Name": "SeleniumTransportTest2PortModel9"
+      },
+      "referenceAttributes": {
+        "MasterEquipmentType": {
+          "type": "EquipmentType",
+          "name": "Router"
+        },
+        "MasterManufacturer": {
+          "type": "Manufacturer",
+          "name": "Cisco Systems Inc."
+        }
+      },
+      "terminationPoints": {
+        "connectors": [
+          {
+            "direction": "BI",
+            "signalDirection": "RxTx",
+            "name": "CONNECTOR",
+            "businessKey": "Connector-INFRASTRUCTURE-RxTx",
+            "connectorType": "Generic/SMB"
+          }
+        ],
+        "dsrNodes": [],
+        "ethernetInterfaces": []
+      }
+    },
+    {
+      "instanceName": "1PPS",
+      "simpleAttributes": {
+        "Name": "SeleniumTransportTest2PortModel10"
+      },
+      "referenceAttributes": {
+        "MasterEquipmentType": {
+          "type": "EquipmentType",
+          "name": "Router"
+        },
+        "MasterManufacturer": {
+          "type": "Manufacturer",
+          "name": "Cisco Systems Inc."
+        }
+      },
+      "terminationPoints": {
+        "connectors": [
+          {
+            "direction": "BI",
+            "signalDirection": "RxTx",
+            "name": "CONNECTOR",
+            "businessKey": "Connector-INFRASTRUCTURE-RxTx",
+            "connectorType": "Generic/SMB"
+          }
+        ],
+        "dsrNodes": [],
+        "ethernetInterfaces": []
+      }
+    },
+    {
+      "instanceName": "IEEE 1588",
+      "simpleAttributes": {
+        "Name": "SeleniumTransportTest2PortModel11"
+      },
+      "referenceAttributes": {
+        "MasterEquipmentType": {
+          "type": "EquipmentType",
+          "name": "Router"
+        },
+        "MasterManufacturer": {
+          "type": "Manufacturer",
+          "name": "Cisco Systems Inc."
+        }
+      },
+      "terminationPoints": {
+        "connectors": [
+          {
+            "direction": "BI",
+            "signalDirection": "RxTx",
+            "name": "CONNECTOR",
+            "businessKey": "Connector-INFRASTRUCTURE-RxTx",
+            "connectorType": "Generic/RJ45"
+          }
+        ],
+        "dsrNodes": [
+          {
+            "name": "DSR",
+            "businessKey": "DSRNode-DSR-1",
+            "supportedLayers": "DSR_100M_Ethernet, DSR_10M_Ethernet",
+            "terminationType": "TTP",
+            "serverTerminationPoints": [
+              "Connector-INFRASTRUCTURE-RxTx"
+            ]
+          }
+        ],
+        "ethernetInterfaces": [
+          {
+            "name": "ETH",
+            "businessKey": "EthernetInterface-ETHERNET-1",
+            "serverTerminationPoints": [
+              "DSRNode-DSR-1"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -45,7 +45,7 @@ public class LocationInventoryClient {
                 .as(ResourceDTO.class);
     }
 
-    public List<Integer> getPhysicalLocationIds(String locationName) {
+    public List<Integer> getPhysicalLocationByName(String locationName) {
         com.jayway.restassured.response.Response response = ENV.getLocationInventoryCoreRequestSpecification()
                 .given()
                 .queryParam(Constants.PERSPECTIVE, Constants.LIVE)

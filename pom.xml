@@ -21,12 +21,13 @@
 
         <restassured.version>2.9.0</restassured.version>
         <rs.version>2.1.1</rs.version>
-        <locationinventory.version>1.33.14.Final</locationinventory.version>
-        <physicalinventory.version>1.32.33.Final</physicalinventory.version>
-        <addressinventory.version>1.17.1.Final</addressinventory.version>
-        <radio.version>4.0.2.Final</radio.version>
-        <resourcecatalog.version>2.5.5.Final</resourcecatalog.version>
-        <seleniumframework.version>0.5.0.Final</seleniumframework.version>
+        <locationinventory.version>1.33.27.Final</locationinventory.version>
+        <physicalinventory.version>1.33.5.Final</physicalinventory.version>
+        <addressinventory.version>1.17.19.Final</addressinventory.version>
+        <radio.version>5.0.0-SNAPSHOT</radio.version>
+        <resourcecatalog.version>2.5.7.Final</resourcecatalog.version>
+        <planning.version>6.9.2.Final</planning.version>
+        <seleniumframework.version>0.6.0-SNAPSHOT</seleniumframework.version>
     </properties>
 
     <dependencies>
@@ -127,6 +128,16 @@
             <groupId>com.comarch.oss.resourcecatalog</groupId>
             <artifactId>resource-catalog-api</artifactId>
             <version>${resourcecatalog.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.comarch.oss.logical.inventory</groupId>
+            <artifactId>logical-inventory-api</artifactId>
+            <version>4.1.1.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>com.comarch.oss.resourcecatalog</groupId>
+            <artifactId>tmf-catalog-api</artifactId>
+            <version>4.0.8.Final</version>
         </dependency>
     </dependencies>
 

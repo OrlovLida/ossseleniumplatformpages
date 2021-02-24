@@ -6,6 +6,12 @@
  */
 package com.oss.pages.bpm;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.prompts.ConfirmationBox;
@@ -15,10 +21,9 @@ import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tablewidget.TableInterface;
 import com.oss.framework.widgets.tabswidget.TabsInterface;
 import com.oss.framework.widgets.tabswidget.TabsWidget;
+import com.oss.framework.widgets.treetablewidget.OldTreeTableWidget;
 import com.oss.pages.BasePage;
 import com.oss.pages.dms.AttachFileWizardPage;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  * @author Gabriela Kasza
@@ -136,6 +141,15 @@ public class TasksPage extends BasePage {
     }
 
     public void completeNRP(String processCode) {
+        String ipCode = proceedNRPToImplementationTask(processCode);
+        completeTask(ipCode, "Implementation");
+        startTask(ipCode, "Acceptance");
+        completeTask(ipCode, "Acceptance");
+        startTask(processCode, "Verification");
+        completeTask(processCode, "Verification");
+    }
+
+    public String proceedNRPToImplementationTask(String processCode) {
         completeTask(processCode, "High Level Planning");
         startTask(processCode, "Low Level Planning");
         completeTask(processCode, "Low Level Planning");
@@ -149,10 +163,13 @@ public class TasksPage extends BasePage {
         startTask(ipCode, "Scope definition");
         completeTask(ipCode, "Scope definition");
         startTask(ipCode, "Implementation");
-        completeTask(ipCode, "Implementation");
-        startTask(ipCode, "Acceptance");
-        completeTask(ipCode, "Acceptance");
-        startTask(processCode, "Verification");
-        completeTask(processCode, "Verification");
+        return ipCode;
+    }
+
+    public List<String> getListOfAttachments(){
+        OldTreeTableWidget treeTable =
+                OldTreeTableWidget.create(driver, wait, "attachmentManagerBusinessView_commonTreeTable_BPMTask");
+        List<String> allNodes = treeTable.getAllVisibleNodes("Attachments and directories");
+        return allNodes.stream().filter(node -> !node.equals("HOME")).collect(Collectors.toList());
     }
 }

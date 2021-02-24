@@ -28,6 +28,7 @@ import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.transport.trail.RoutingWizardPage;
 import com.oss.pages.transport.trail.TerminationWizardPage;
 import com.oss.pages.transport.trail.TrailWizardPage;
+import com.oss.pages.transport.trail.v2.TerminationStepPage;
 
 import io.qameta.allure.Step;
 
@@ -57,6 +58,17 @@ public class NetworkViewPage extends BasePage {
         return new NetworkViewPage(driver);
     }
 
+    @Step("Open new Trail create wizard")
+    public void openCreateTrailWizardV2(String trailType) {
+        openWizardPage(trailType);
+    }
+
+    @Step("Open new Trail update wizard")
+    public void openUpdateTrailWizardV2() {
+        useContextAction("EDIT", "Attributes and terminations");
+        waitForPageToLoad();
+    }
+
     @Step("Open Trail create wizard")
     public <T extends TrailWizardPage> T openCreateTrailWizard(Class<T> trailWizardPageClass) {
         T trailWizardPage;
@@ -70,7 +82,7 @@ public class NetworkViewPage extends BasePage {
     }
 
     private void openWizardPage(String trailType) {
-        useContextAction("CREATE", "Create Trail");
+        useContextAction("CREATE", "Create Connection");
         selectTrailType(trailType);
         clickButton("Accept");
         waitForPageToLoad();
@@ -78,7 +90,8 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Select trail type")
     public void selectTrailType(String trailType) {
-        physicalDeviceWizard.setComponentValue("trailTypeCombobox", trailType, COMBOBOX);
+        Wizard popup = Wizard.createByComponentId(driver, wait, "Popup");
+        popup.setComponentValue("trailTypeCombobox", trailType, COMBOBOX);
     }
 
     @Step("Open Trail update wizard")
@@ -112,6 +125,13 @@ public class NetworkViewPage extends BasePage {
         waitForPageToLoad();
     }
 
+    @Step
+    public void deleteSelectedConnections() {
+        useContextAction("EDIT", "Delete Connection");
+        waitForPageToLoad();
+        clickButton("Delete");
+    }
+
     @Step("Delete selected elements by context action")
     public void deleteSelectedElement() {
         useContextAction("EDIT", "Delete Element");
@@ -137,6 +157,13 @@ public class NetworkViewPage extends BasePage {
         useContextAction("add_to_group", "Routing");
         waitForPageToLoad();
         return new RoutingWizardPage(driver);
+    }
+
+    @Step("Add selected objects to Termination V2")
+    public TerminationStepPage addSelectedObjectsToTerminationV2() {
+        useContextAction("add_to_group", "Termination");
+        waitForPageToLoad();
+        return new TerminationStepPage(driver);
     }
 
     @Step("Add selected objects to Termination")
@@ -169,14 +196,14 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Select object in View content")
     public void selectObject(String partialName) {
-        //TODO: OSSTPT-30835 - select object only when it's not selected
+        // TODO: OSSTPT-30835 - select object only when it's not selected
         expandViewContentPanel();
         clickOnObjectInViewContentByPartialName(partialName);
     }
 
     @Step("Unselect object in View content")
     public void unselectObject(String partialName) {
-        //TODO: OSSTPT-30835 - unselect object only when it's selected
+        // TODO: OSSTPT-30835 - unselect object only when it's selected
         expandViewContentPanel();
         clickOnObjectInViewContentByPartialName(partialName);
     }
@@ -184,6 +211,14 @@ public class NetworkViewPage extends BasePage {
     private void clickOnObjectInViewContentByPartialName(String partialName) {
         String xpath = getXPathForObjectInViewContentByPartialName(partialName);
         driver.findElement(By.xpath(xpath)).click();
+        waitForPageToLoad();
+    }
+
+    @Step("Click on object in View content by partial name: {partialName} and index {index}")
+    public void clickOnObject(String partialName, int index) {
+        expandViewContentPanel();
+        OldTable oldTable = OldTable.createByComponentDataAttributeName(driver, wait, "leftPanelTab");
+        oldTable.selectRowByPartialNameAndIndex(partialName, index);
         waitForPageToLoad();
     }
 
@@ -341,11 +376,16 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Remove terminations")
     public void removeSelectedTerminations() {
-        Button button = Button.createBySelectorAndId(driver, "a", "Delete termination");
-        button.click();
+        useContextAction("Delete termination");
         waitForPageToLoad();
         clickButton("Delete");
         waitForPageToLoad();
+    }
+
+    public void useContextAction(String action) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, "dockedPanel-left");
+        table.callAction(action);
     }
 
     @Step("Delete Routing Element")
@@ -411,16 +451,6 @@ public class NetworkViewPage extends BasePage {
     @Step("Accept trail type")
     public void acceptTrailType() {
         physicalDeviceWizard.clickActionById("wizard-submit-button-trailTypeWizardWigdet");
-    }
-
-    @Step("Set trail name")
-    public void setTrailName(String name) {
-        physicalDeviceWizard.setComponentValue("name-uid", name, TEXT_FIELD);
-    }
-
-    @Step("Create trail")
-    public void proceedTrailCreation() {
-        physicalDeviceWizard.clickActionById("IP_LINK_BUTTON_APP_ID-1");
     }
 
     @Step("Open modify termination wizard")
