@@ -10,6 +10,7 @@ import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.OldInventoryViewPage;
 import com.oss.pages.radio.Cell3GWizardPage;
 import com.oss.pages.radio.CellSiteConfigurationPage;
+import com.oss.pages.radio.HostingWizardPage;
 import com.oss.pages.radio.NodeBWizardPage;
 import com.oss.repositories.AddressRepository;
 import com.oss.repositories.LocationInventoryRepository;
@@ -194,6 +195,150 @@ public class Technology3GTests extends BaseTestCase {
                 .setDescription(description)
                 .accept();
         Assert.assertTrue(new CellSiteConfigurationPage(driver).getValueByRowNumber("Description", 0).contains(description));
+    }
+
+    @Test
+    @Description("The user creates Host Relation between Cell 3G and RRU, BBU and BBU card in Cell Site Configuration and checks if new rows are displayed in Hosting table")
+    public void tSRAN37CreateHostRelationBetweenCell3GAndRRUBBUCard() {
+
+        homePage.setOldObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", locationName)
+                .expandShowOnAndChooseView("Cell Site Configuration");
+        new CellSiteConfigurationPage(driver)
+                .expandTreeToCell(locationTypeSite, locationName, nodeBNameForEdit, cell3GNameForEdit)
+                .selectTab("Hosting")
+                .clickPlusIconAndSelectOption("Host on Device");
+        new HostingWizardPage(driver)
+                .setDevice(rruDeviceNameForEdit);
+        DelayUtils.sleep(2000);
+        new HostingWizardPage(driver)
+                .setDevice(bbuDeviceNameForEdit);
+        DelayUtils.sleep(2000);
+        new HostingWizardPage(driver)
+                .setHosting("[" + bbuDeviceNameForEdit + "][Chassis] " + Constants.UBBPg3_CARD_MODEL + "");
+        DelayUtils.sleep(2000);
+        new HostingWizardPage(driver).clickAccept();
+        SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
+        systemMessageItem.waitForMessageDisappear();
+        Assert.assertEquals(new CellSiteConfigurationPage(driver).getRowCount("Hosting Resource"), 3);
+    }
+
+    //TODO add HR creation by API
+    @Test
+    @Description("The user removes Host Relation between Cell 3G and RRU, BBU and BBU card in Cell Site Configuration and checks if new rows are disappeared in Hosting table")
+    public void tSRAN38RemoveHostRelationBetweenCell3GAndRRUBBUCard() {
+
+        homePage.setOldObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", locationName)
+                .expandShowOnAndChooseView("Cell Site Configuration");
+        new CellSiteConfigurationPage(driver)
+                .expandTreeToCell(locationTypeSite, locationName, nodeBNameForEdit, cell3GNameForEdit)
+                .selectTab("Hosting")
+                .selectRowByAttributeValueWithLabel("Hosting Component", Constants.UBBPg3_CARD_MODEL)
+                .removeObject();
+        new CellSiteConfigurationPage(driver)
+                .selectRowByAttributeValueWithLabel("Hosting Resource", bbuDeviceNameForEdit)
+                .removeObject();
+        new CellSiteConfigurationPage(driver)
+                .selectRowByAttributeValueWithLabel("Hosting Resource", rruDeviceNameForEdit)
+                .removeObject();
+        SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
+        systemMessageItem.waitForMessageDisappear();
+        Assert.assertTrue(new CellSiteConfigurationPage(driver).hasNoData());
+    }
+
+    @Test
+    @Description("The user creates Host Relation between NodeB and RRU, BBU and BBU card in Cell Site Configuration and checks if new rows are displayed in Hosting table")
+    public void tSRAN39CreateHostRelationBetweenNodeBAndRRUBBUCard() {
+
+        homePage.setOldObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", locationName)
+                .expandShowOnAndChooseView("Cell Site Configuration");
+        new CellSiteConfigurationPage(driver)
+                .expandTreeToBaseStation(locationTypeSite, locationName, nodeBNameForEdit)
+                .selectTab("Hosting")
+                .useTableContextActionByLabel("Host on Device");
+        new HostingWizardPage(driver)
+                .setDevice(rruDeviceNameForEdit);
+        DelayUtils.sleep(2000);
+        new HostingWizardPage(driver)
+                .setDevice(bbuDeviceNameForEdit);
+        DelayUtils.sleep(2000);
+        new HostingWizardPage(driver)
+                .setHosting("[" + bbuDeviceNameForEdit + "][Chassis] " + Constants.UBBPg3_CARD_MODEL + "");
+        DelayUtils.sleep(2000);
+        new HostingWizardPage(driver).clickAccept();
+        SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
+        systemMessageItem.waitForMessageDisappear();
+        Assert.assertEquals(new CellSiteConfigurationPage(driver).getRowCount("Hosting Resource"), 3);
+    }
+
+    //TODO add HR creation by API
+    @Test
+    @Description("The user removes Host Relation between NodeB and RRU, BBU and BBU card in Cell Site Configuration and checks if new rows are disappeared in Hosting table")
+    public void tSRAN40RemoveHostRelationBetweenNodeBAndRRUBBUCard() {
+
+        homePage.setOldObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", locationName)
+                .expandShowOnAndChooseView("Cell Site Configuration");
+        new CellSiteConfigurationPage(driver)
+                .expandTreeToBaseStation(locationTypeSite, locationName, nodeBNameForEdit)
+                .selectTab("Hosting")
+                .selectRowByAttributeValueWithLabel("Hosting Component", Constants.UBBPg3_CARD_MODEL)
+                .removeObject();
+        new CellSiteConfigurationPage(driver)
+                .selectRowByAttributeValueWithLabel("Hosting Resource", bbuDeviceNameForEdit)
+                .removeObject();
+        new CellSiteConfigurationPage(driver)
+                .selectRowByAttributeValueWithLabel("Hosting Resource", rruDeviceNameForEdit)
+                .removeObject();
+        SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
+        systemMessageItem.waitForMessageDisappear();
+        Assert.assertTrue(new CellSiteConfigurationPage(driver).hasNoData());
+    }
+
+    @Test
+    @Description("The user creates Host Relation between Cell 3G and RAN Antenna Array in Cell Site Configuration and checks if new row is displayed in Hosting table")
+    public void tSRAN41CreateHostRelationBetweenCell3GAndRANAntennaArray() {
+
+        homePage.setOldObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", locationName)
+                .expandShowOnAndChooseView("Cell Site Configuration");
+        new CellSiteConfigurationPage(driver)
+                .expandTreeToCell(locationTypeSite, locationName, nodeBNameForEdit, cell3GNameForEdit)
+                .selectTab("Hosting")
+                .clickPlusIconAndSelectOption("Host on Antenna Array");
+        new HostingWizardPage(driver)
+                .setHostingContains("" + antennaAHP4517R7v06NameForEdit + "/" + Constants.AHP4517R7v06ANTENNA_MODEL + "_Lr1");
+        DelayUtils.sleep(2000);
+        new HostingWizardPage(driver).clickAccept();
+        SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
+        systemMessageItem.waitForMessageDisappear();
+        Assert.assertTrue(new CellSiteConfigurationPage(driver).getValueByRowNumber("Hosting Resource", 0).contains("" + Constants.AHP4517R7v06ANTENNA_MODEL + "_Lr1"));
+    }
+
+    //TODO add HR creation by API
+    @Test
+    @Description("The user creates Host Relation between Cell 3G and RAN Antenna Array in Cell Site Configuration and checks if new row is displayed in Hosting table")
+    public void tSRAN42RemoveHostRelationBetweenCell3GAndRANAntennaArray() {
+
+        homePage.setOldObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", locationName)
+                .expandShowOnAndChooseView("Cell Site Configuration");
+        new CellSiteConfigurationPage(driver)
+                .expandTreeToCell(locationTypeSite, locationName, nodeBNameForEdit, cell3GNameForEdit)
+                .selectTab("Hosting")
+                .selectRowByAttributeValueWithLabel("Hosting Resource", "" + Constants.AHP4517R7v06ANTENNA_MODEL + "_Lr1")
+                .removeObject();
+        SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
+        systemMessageItem.waitForMessageDisappear();
+        Assert.assertTrue(new CellSiteConfigurationPage(driver).hasNoData());
     }
 
     @Test
