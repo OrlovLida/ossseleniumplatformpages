@@ -53,7 +53,7 @@ public class NewInventoryViewPage extends BasePage {
         super(driver);
     }
 
-    private NewInventoryViewPage(WebDriver driver, WebDriverWait wait) {
+    protected NewInventoryViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
     }
 
@@ -64,10 +64,11 @@ public class NewInventoryViewPage extends BasePage {
         return TableWidget.create(driver, TableWidget.TABLE_WIDGET_CLASS, wait);
     }
 
-    public void searchObject(String text) {
+    public NewInventoryViewPage searchObject(String text) {
         TableWidget mainTable = getMainTable();
         mainTable.typeIntoSearch(text);
         DelayUtils.waitForPageToLoad(driver, wait);
+        return this;
     }
 
     @Step("Pick first row")
