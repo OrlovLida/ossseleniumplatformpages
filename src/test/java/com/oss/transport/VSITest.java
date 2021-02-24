@@ -25,7 +25,6 @@ import java.util.List;
 public class VSITest extends BaseTestCase {
 
     private static final String PRE_CREATED_DEVICE_NAME = "ipdevice13";
-    private static final String PRE_CREATED_AEI_NAME = "AEI";
     private static final String PRE_CREATED_AEI_INTERFACE_NAME = "LAG-213";
 
     private static final String ROUTE_TARGET_TO_CREATE = "1233:123";
@@ -34,8 +33,6 @@ public class VSITest extends BaseTestCase {
     private static final String INTERFACE_NAME_AT_CREATION_2 = "CLUSTER 1";
     private static final String INTERFACE_NAME_AT_UPDATE_1 = "SYNC 1";
     private static final String INTERFACE_NAME_AT_UPDATE_2 = "MGT LAN 0";
-    private static final String AEI_INTERFACE_NAME_1 = "SFP+ 3";
-    private static final String AEI_INTERFACE_NAME_2 = "SFP+ 0";
 
     private static final String ETHERNET_INTERFACE_LABEL = "Ethernet Interface";
     private static final String AEI_LABEL = "AEI";
@@ -187,12 +184,12 @@ public class VSITest extends BaseTestCase {
 
     private void fulfillSecondStepAtCreate(VSIWizardPage wizardPage, VSIAttributes vsiAttributes) {
         wizardPage.navigateThroughSecondPhase(vsiAttributes.device, ETHERNET_INTERFACE_LABEL, INTERFACE_NAME_AT_CREATION_1, INTERFACE_NAME_AT_CREATION_2);
-        wizardPage.navigateThroughSecondPhase(vsiAttributes.device, AEI_LABEL, PRE_CREATED_AEI_NAME);
+        wizardPage.navigateThroughSecondPhase(vsiAttributes.device, AEI_LABEL, PRE_CREATED_AEI_INTERFACE_NAME);
     }
 
     private void fulfillSecondStepAtUpdate(VSIWizardPage wizardPage, VSIAttributes vsiAttributes){
         wizardPage.navigateThroughSecondPhase(vsiAttributes.device, ETHERNET_INTERFACE_LABEL, INTERFACE_NAME_AT_UPDATE_1, INTERFACE_NAME_AT_UPDATE_2);
-        wizardPage.navigateThroughSecondPhase(vsiAttributes.device, AEI_LABEL, PRE_CREATED_AEI_NAME);
+        wizardPage.navigateThroughSecondPhase(vsiAttributes.device, AEI_LABEL, PRE_CREATED_AEI_INTERFACE_NAME);
     }
 
     private void fillVsiAttributes(VSIWizardPage wizardPage, VSIAttributes vsiAttributes){
