@@ -2,6 +2,7 @@ package com.oss.pages.platform;
 
 import java.util.Map;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.inputs.Button;
@@ -15,6 +16,7 @@ import com.oss.framework.widgets.tabswidget.TabsInterface;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
+import org.openqa.selenium.WebElement;
 
 /**
  * @author Ewa Frączek
@@ -28,6 +30,7 @@ public class OldInventoryViewPage extends BasePage {
     private static final String EDIT_GROUP_ID = "EDIT";
     private static final String OTHER_GROUP_ID = "OTHER";
     private static final String CREATE_GROUP_ID = "CREATE";
+    private static final String MORE_BUTTON_PATH = "//button[@class='btn btn-default dropdown-toggle' and .//div[contains(., 'More')]]";
 
     public OldInventoryViewPage(WebDriver driver) {
         super(driver);
@@ -148,6 +151,11 @@ public class OldInventoryViewPage extends BasePage {
         waitForPageToLoad();
         TabsInterface tabsInterface = TabWindowWidget.create(driver, wait);
         tabsInterface.selectTabByLabel(tabLabel);
+    }
+
+    public void clickMoreInTabsPanel() {
+        WebElement moreButton = driver.findElement(By.xpath(MORE_BUTTON_PATH));
+        moreButton.click();
     }
 
     private void waitForPageToLoad() {
