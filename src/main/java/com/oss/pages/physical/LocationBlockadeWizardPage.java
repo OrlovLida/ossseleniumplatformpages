@@ -29,12 +29,11 @@ public class LocationBlockadeWizardPage extends BasePage {
     public void enableLocationBlockade(String Reason) {
         changeSwitcher("true");
         DelayUtils.sleep(1000);
-        getBlockLocationWizard().getComponent(BLOCKADE_REASON_DATA_ATTRIBUTE_NAME, Input.ComponentType.COMBOBOX).setValueContains(Data.createSingleData(Reason));
+        getBlockLocationWizard().getComponent(BLOCKADE_REASON_DATA_ATTRIBUTE_NAME,
+                Input.ComponentType.COMBOBOX).setValueContains(Data.createSingleData(Reason));
         DelayUtils.sleep(1000);
         accept();
     }
-
-    private Wizard blockadeWizard = Wizard.createWizard(driver, wait);
 
     @Step("Click Accept button")
     public void accept() {
@@ -45,7 +44,6 @@ public class LocationBlockadeWizardPage extends BasePage {
         getIsBlockedSwitcher().setSingleStringValue(value);
     }
 
-    //private Wizard popupWizard = Wizard.createByComponentId(driver, wait, "Popup");
     public Wizard getBlockLocationWizard() {
         return Wizard.createWizardByHeaderText(driver, wait, "Block location");
     }
