@@ -63,29 +63,45 @@ public class LocationWizardPage extends BasePage {
         setLocationName(locationName);
         clickNext();
         setGeographicalAddress("a");
-        DelayUtils.sleep(13000);
+        DelayUtils.sleep(1300);
         clickNext();
-        DelayUtils.sleep(10000);
+        DelayUtils.sleep(1000);
         accept();
     }
+
+    @Step("Create Location with mandatory fields (Location type, Name, Address) filled in in any wizard")
+    public void createLocationAnyWizard(String locationType, String locationName) {
+        if (locationWizard.isStepsPresent()){createLocationStepWizard(locationType, locationName);}
+        else {createLocation(locationType, locationName);}
+    }
+
 
     @Step("Create Location in Popup Wizard with mandatory fields (Location type, Name, Address) filled in")
     public void createLocationPopupWizard(String locationType, String locationName) {
         Wizard popupWizard = Wizard.createByComponentId(driver, wait, "Popup");
-        popupWizard.setComponentValue(LOCATION_TYPE_DATA_ATTRIBUTE_NAME, locationType, Input.ComponentType.COMBOBOX);
-        popupWizard.setComponentValue(LOCATION_NAME_DATA_ATTRIBUTE_NAME, locationName, Input.ComponentType.TEXT_FIELD);
-        popupWizard.clickNext();
-        DelayUtils.sleep(10000);
-        popupWizard.clickNext();
-        DelayUtils.sleep(10000);
-        popupWizard.clickAccept();
+        if (popupWizard.isStepsPresent()) {
+            popupWizard.setComponentValue(LOCATION_TYPE_DATA_ATTRIBUTE_NAME, locationType, Input.ComponentType.COMBOBOX);
+            popupWizard.setComponentValue(LOCATION_NAME_DATA_ATTRIBUTE_NAME, locationName, Input.ComponentType.TEXT_FIELD);
+            popupWizard.clickNext();
+            DelayUtils.sleep(1000);
+            popupWizard.clickNext();
+            DelayUtils.sleep(1000);
+            popupWizard.clickAccept();
+        }
+        else {
+            popupWizard.setComponentValue(LOCATION_TYPE_DATA_ATTRIBUTE_NAME, locationType, Input.ComponentType.COMBOBOX);
+            popupWizard.setComponentValue(LOCATION_NAME_DATA_ATTRIBUTE_NAME, locationName, Input.ComponentType.TEXT_FIELD);
+            DelayUtils.sleep(1000);
+            popupWizard.clickAccept();
+        }
     }
 
     @Step("Create PoP on chosen Location with chosen Direct Physical Location")
     public void createPoP(String directPhysicalLocation) {
         Wizard popupWizard = Wizard.createByComponentId(driver, wait, "Popup");
+        DelayUtils.sleep(1000);
         setDirectPhysicalLocation(directPhysicalLocation);
-        DelayUtils.sleep(3000);
+        DelayUtils.sleep(2000);
         popupWizard.clickNext();
         DelayUtils.sleep();
         popupWizard.clickAccept();
