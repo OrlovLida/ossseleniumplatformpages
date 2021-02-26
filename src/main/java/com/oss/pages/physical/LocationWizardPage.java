@@ -66,15 +66,18 @@ public class LocationWizardPage extends BasePage {
 
     @Step("Create Location with mandatory fields (Location type, Name, Address) filled in in any wizard")
     public void createLocationAnyWizard(String locationType, String locationName) {
-        if (locationWizard.isStepsPresent()){createLocationStepWizard(locationType, locationName);}
-        else {createLocation(locationType, locationName);}
+        if (locationWizard.numberOfSteps() > 1) {
+            createLocationStepWizard(locationType, locationName);
+        } else {
+            createLocation(locationType, locationName);
+        }
     }
 
 
     @Step("Create Location in Popup Wizard with mandatory fields (Location type, Name, Address) filled in")
     public void createLocationPopupWizard(String locationType, String locationName) {
         Wizard popupWizard = Wizard.createByComponentId(driver, wait, "Popup");
-        if (popupWizard.isStepsPresent()) {
+        if (popupWizard.numberOfSteps() > 1) {
             popupWizard.setComponentValue(LOCATION_TYPE_DATA_ATTRIBUTE_NAME, locationType, Input.ComponentType.COMBOBOX);
             popupWizard.setComponentValue(LOCATION_NAME_DATA_ATTRIBUTE_NAME, locationName, Input.ComponentType.TEXT_FIELD);
             popupWizard.clickNext();
@@ -82,8 +85,7 @@ public class LocationWizardPage extends BasePage {
             popupWizard.clickNext();
             DelayUtils.sleep(1000);
             popupWizard.clickAccept();
-        }
-        else {
+        } else {
             popupWizard.setComponentValue(LOCATION_TYPE_DATA_ATTRIBUTE_NAME, locationType, Input.ComponentType.COMBOBOX);
             popupWizard.setComponentValue(LOCATION_NAME_DATA_ATTRIBUTE_NAME, locationName, Input.ComponentType.TEXT_FIELD);
             DelayUtils.sleep(1000);

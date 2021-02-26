@@ -1,4 +1,4 @@
-package com.oss.E2E;
+package com.oss.physical;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
