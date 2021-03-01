@@ -55,6 +55,7 @@ public class CreateVRFTest extends BaseTestCase {
 
         VRFWizardPage vrfWizard = goToVRFWizard();
         fillVRFWizardToCreate(vrfAttributes, vrfWizard);
+        DelayUtils.sleep(5000);
         VRFOverviewPage vrfOverview = vrfWizard.clickAccept();
 
         assertVRFAttributes(vrfAttributes, vrfOverview);
