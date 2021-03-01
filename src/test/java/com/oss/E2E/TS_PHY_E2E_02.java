@@ -24,8 +24,8 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
     private static final String BUILDING_A_NAME = "TS_PHY_E2E_02_Building_A";
     private static final String BUILDING_A_2_NAME = "TS_PHY_E2E_02_Building_A_002";
     private static final String BUILDING_C_NAME = "TS_PHY_E2E_02_Building_C";
-    private static final String GEOGRAPHICAL_ADDRESS_BUILDING = "fixedAccessIntegrationTestStreet 87649, fixedAccessIntegrationTestCity";
-    private static final String GEOGRAPHICAL_ADDRESS_MANHOLE = "fixedAccessIntegrationTestStreet 659921, fixedAccessIntegrationTestCity";
+    private static final String GEOGRAPHICAL_ADDRESS_BUILDING = "Kukułcza 81598, Gliwice";
+    private static final String GEOGRAPHICAL_ADDRESS_MANHOLE = "Ul. Saurona 1, Barad Dur";
     private static final String MANHOLE_MODEL = "SK-1";
     private static final String MANHOLE_A_NAME = "TS_PHY_E2E_02_Manhole_A";
     private static final String DUCT_MODEL = "HDPE 100x4,3";
