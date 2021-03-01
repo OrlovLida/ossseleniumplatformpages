@@ -43,7 +43,7 @@ import com.oss.pages.transport.ipam.IPAddressAssignmentWizardPage;
 import com.oss.pages.transport.ipam.IPAddressManagementViewPage;
 import com.oss.pages.transport.ipam.helper.IPAddressAssignmentWizardProperties;
 
-import io.qameta.allure.Description;
+import io.qameta.allure.Step;
 
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 
@@ -78,7 +78,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     }
 
     @Test(priority = 1)
-    @Description("Create and start NRP Process")
+    @Step("Create and start NRP Process")
     public void createProcessNRP() {
         homePage.chooseFromLeftSideMenu("Process Instances", "Views", "Business Process Management");
         waitForPageToLoad();
@@ -93,7 +93,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     }
 
     @Test(priority = 2)
-    @Description("Open Network View")
+    @Step("Open Network View")
     public void openNetworkView() {
         HomePage homePage = new HomePage(driver);
         homePage.goToHomePage(driver, BASIC_URL);
@@ -103,7 +103,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     }
 
     @Test(priority = 3)
-    @Description("Select Location")
+    @Step("Select Location")
     public void selectLocation() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         waitForPageToLoad();
@@ -113,7 +113,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     }
 
     @Test(priority = 4)
-    @Description("Create Physical Device")
+    @Step("Create Physical Device")
     public void createPhysicalDevice() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.useContextAction(ActionsContainer.CREATE_GROUP_ID, NetworkViewPage.CREATE_DEVICE_ACTION);
@@ -138,7 +138,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     }
 
     @Test(priority = 5)
-    @Description("Open Hierarchy View with newly created device")
+    @Step("Open Hierarchy View with newly created device")
     public void moveToHierarchyView() {
         waitForPageToLoad();
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
@@ -153,7 +153,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     }
 
     @Test(priority = 6)
-    @Description("Select Ethernet Interface in Hierarchy View and open it in New Inventory View")
+    @Step("Select Ethernet Interface in Hierarchy View and open it in New Inventory View")
     public void selectEthernetInterface() {
         HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
         waitForPageToLoad();
@@ -175,7 +175,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     }
 
     @Test(priority = 7)
-    @Description("Select Ethernet Interface in New Inventory View and Assign IP V4 Address")
+    @Step("Select Ethernet Interface in New Inventory View and Assign IP V4 Address")
     public void assignIpV4Address() {
         NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.selectFirstRow();
@@ -189,7 +189,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     }
 
     @Test(priority = 8)
-    @Description("Open Network View and create IP Link")
+    @Step("Open Network View and create IP Link")
     public void createIpLink() {
         openNetworkView();
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
@@ -233,7 +233,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     }
 
     @Test(priority = 9)
-    @Description("Suppress validation result about incomplete routing")
+    @Step("Suppress validation result about incomplete routing")
     public void suppressValidationResult() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.expandDockedPanel("bottom");
@@ -243,7 +243,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     }
 
     @Test(priority = 10)
-    @Description("Create Mediation Configuration")
+    @Step("Create Mediation Configuration")
     public void createMediationConfiguration() {
         waitForPageToLoad();
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
@@ -290,7 +290,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     }
 
     @Test(priority = 11)
-    @Description("Go through NRP task to IP Implementation task and click Perform Configuration")
+    @Step("Go through NRP task to IP Implementation task and click Perform Configuration")
     public void startImplementationTaskIP() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         processIPCode = tasksPage.proceedNRPToImplementationTask(processNRPCode);
@@ -303,7 +303,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     }
 
     @Test(priority = 12)
-    @Description("Perform Configuration change using prepared CM Template")
+    @Step("Perform Configuration change using prepared CM Template")
     public void performConfigurationChange() {
         ChangeConfigurationPage changeConfigurationPage = new ChangeConfigurationPage(driver);
         waitForPageToLoad();
@@ -337,7 +337,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     }
 
     @Test(priority = 13)
-    @Description("Assign File to Process")
+    @Step("Assign File to Process")
     public void assignFile() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         try {
@@ -356,7 +356,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     }
 
     @Test(priority = 14)
-    @Description("Complete IP and NRP process")
+    @Step("Complete IP and NRP process")
     public void completeIpAndNrp() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.completeTask(processIPCode, TasksPage.IMPLEMENTATION_TASK);
@@ -372,7 +372,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     }
 
     @Test(priority = 15)
-    @Description("Go to Network Discovery Control View and create CM Domain")
+    @Step("Go to Network Discovery Control View and create CM Domain")
     public void createCmDomain() {
         waitForPageToLoad();
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
@@ -386,7 +386,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     }
 
     @Test(priority = 16)
-    @Description("Upload reconciliation samples")
+    @Step("Upload reconciliation samples")
     public void uploadSamples() {
         DelayUtils.sleep(1000);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
@@ -401,7 +401,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     }
 
     @Test(priority = 17)
-    @Description("Run reconciliation and check if it ended without errors")
+    @Step("Run reconciliation and check if it ended without errors")
     public void runReconciliation() {
         waitForPageToLoad();
         NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
@@ -419,7 +419,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     }
 
     @Test(priority = 18)
-    @Description("Apply inconsistencies from Network to Live")
+    @Step("Apply inconsistencies from Network to Live")
     public void applyInconsistencies() {
         networkDiscoveryControlViewPage.moveToNivFromNdcv();
         NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
@@ -431,7 +431,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     }
 
     @Test(priority = 19)
-    @Description("Delete CM Domain")
+    @Step("Delete CM Domain")
     public void deleteCmDomain() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
@@ -442,7 +442,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     }
 
     @Test(priority = 20)
-    @Description("Delete IP Link")
+    @Step("Delete IP Link")
     public void deleteIpLink() {
         HomePage homePage = new HomePage(driver);
         homePage.goToHomePage(driver, BASIC_URL);
@@ -457,7 +457,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     }
 
     @Test(priority = 21)
-    @Description("Delete Physical Device")
+    @Step("Delete Physical Device")
     public void deletePhysicalDevice() {
         waitForPageToLoad();
         DelayUtils.sleep(5000);
@@ -472,7 +472,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     }
 
     @Test(priority = 22)
-    @Description("Delete Mediation Connection")
+    @Step("Delete Mediation Connection")
     public void deleteMediation() {
         ViewConnectionConfigurationPage.goToViewConnectionConfigurationPage(driver, URL);
         waitForPageToLoad();
@@ -486,7 +486,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     }
 
     @Test(priority = 23)
-    @Description("Delete IP Address Assignment")
+    @Step("Delete IP Address Assignment")
     public void deleteIPAddressAssignment() {
         waitForPageToLoad();
         IPAddressManagementViewPage ipAddressManagementViewPage = IPAddressManagementViewPage.goToIPAddressManagementPage(driver, BASIC_URL);
