@@ -19,7 +19,6 @@ import com.oss.pages.physical.CardCreateWizardPage;
 import com.oss.pages.physical.ChangeCardModelWizard;
 import com.oss.pages.physical.ChangeModelWizardPage;
 import com.oss.pages.physical.CreateCoolingZoneWizardPage;
-import com.oss.pages.physical.DeviceOverviewPage;
 import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.physical.LocationOverviewPage;
 import com.oss.pages.physical.LocationOverviewPage.TabName;
@@ -36,7 +35,7 @@ public class ISPConfiguration extends BaseTestCase {
     String LOCATION_OVERVIEW_URL = "";
     private static final String LOCATION_NAME = "ISPConfiguration_Building";
     private static final String SUBLOCATION_NAME = "ISPConfiguration_Room";
-    private static final String GEOGRAPHICAL_ADDRESS = "fixedAccessIntegrationTestStreet 91336, fixedAccessIntegrationTestCity";
+    private static final String GEOGRAPHICAL_ADDRESS = "Kukułcza 81598, Gliwice";
     private static final String PHYSICAL_DEVICE_MODEL = "7360 ISAM FX-8";
     private static final String PHYSICAL_DEVICE_NAME = "ISPPhysicalDevice";
     private static final String PHYSICAL_DEVICE_MODEL2 = "Nexus 7010";
@@ -105,8 +104,8 @@ public class ISPConfiguration extends BaseTestCase {
     @Test(priority = 3)
     @Description("Open Create Sublocation Wizard")
     public void openSublocationWizard() {
-        DeviceOverviewPage deviceOverviewPage = new DeviceOverviewPage(driver);
-        deviceOverviewPage.useContextAction("Create Sublocation");
+        LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
+        locationOverviewPage.clickButton("Create Sublocation");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -129,8 +128,8 @@ public class ISPConfiguration extends BaseTestCase {
     @Test(priority = 5)
     @Description("Open Create Device Wizard")
     public void openDeviceWizard() {
-        DeviceOverviewPage deviceOverviewPage = new DeviceOverviewPage(driver);
-        deviceOverviewPage.useContextAction("Create Device");
+        LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
+        locationOverviewPage.clickButton("Create Device");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -160,7 +159,6 @@ public class ISPConfiguration extends BaseTestCase {
     @Test(priority = 8)
     @Description("Open Change Model Wizard")
     public void openChangeModelWizard() {
-        //TODO: POPRAWIONE JUZ
         HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
         hierarchyViewPage.selectFirstObject();
         hierarchyViewPage.getTreeWidget().callActionById("EDIT", "DeviceChangeModelAction");
@@ -181,7 +179,7 @@ public class ISPConfiguration extends BaseTestCase {
     @Test(priority = 10)
     @Description("Open Create Card Wizard")
     public void openCreateCardWizard() {
-        //TODO: poprawione juz
+        //TODO: leci błąd na HV po poprzednim kroku
         HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
         hierarchyViewPage.getTreeWidget().callActionById("CREATE", "CreateCardOnDeviceAction");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -234,14 +232,14 @@ public class ISPConfiguration extends BaseTestCase {
         checkPopup();
     }
 
-    /*@Test(priority = 14)
+    @Test(priority = 14)
     @Description("Open Mounting Editor Wizard")
     public void openMountingEditorWizard() {
-        DeviceOverviewPage deviceOverviewPage = new DeviceOverviewPage(driver);
-        deviceOverviewPage.selectTreeRow(PHYSICAL_DEVICE_NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        deviceOverviewPage.useContextAction("Mounting Editor");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+//        DeviceOverviewPage deviceOverviewPage = new DeviceOverviewPage(driver);
+//        deviceOverviewPage.selectTreeRow(PHYSICAL_DEVICE_NAME);
+//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+//        deviceOverviewPage.useContextAction("Mounting Editor");
+//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
     @Test(priority = 15)
@@ -651,8 +649,12 @@ public class ISPConfiguration extends BaseTestCase {
     @Test(priority = 39)
     @Description("Delete Location")
     public void deleteLocation() {
-        DeviceOverviewPage deviceOverviewPage = new DeviceOverviewPage(driver);
-        deviceOverviewPage.useContextAction("Remove Location");
-        deviceOverviewPage.clickButtonInConfirmationBox("Delete");
-    }*/
+        LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
+        locationOverviewPage.clickButton("Remove Location");
+        locationOverviewPage.clickButtonInConfirmationBox("Delete");
+
+//        DeviceOverviewPage deviceOverviewPage = new DeviceOverviewPage(driver);
+//        deviceOverviewPage.useContextAction("Remove Location");
+//        deviceOverviewPage.clickButtonInConfirmationBox("Delete");
+    }
 }
