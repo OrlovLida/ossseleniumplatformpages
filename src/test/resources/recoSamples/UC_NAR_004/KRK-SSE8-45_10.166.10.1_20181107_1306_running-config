@@ -24,27 +24,6 @@ boot-end-marker
 mls ipv6 vrf
 vrf definition NAC
  rd 22927:3300
- !
- address-family ipv4
- route-target export 22927:3301
- route-target import 22927:2001
- route-target import 22927:1103
- route-target import 22927:2701
- route-target import 22927:4101
- route-target import 22927:1401
- route-target import 22927:901
- route-target import 22927:3303
- route-target import 22927:3301
- route-target import 22927:3205
- exit-address-family
- !
- address-family ipv6
- route-target export 22927:3307
- route-target import 22927:3307
- route-target import 22927:3308
- route-target import 22927:3208
- exit-address-family
-!
 logging snmp-authfail
 logging buffered 32000
 enable secret level 2 5 $1$sCDV$sIEOa7xe/udesF9sSpvGX0
@@ -80,28 +59,12 @@ clock timezone GMT-3 -3
 ip subnet-zero
 no ip source-route
 ip vrf NGN
- rd 22927:2
- route-target export 22927:2
- route-target import 22927:2
- route-target import 65014:725
- route-target import 65014:875
 !
 ip vrf VOIP-IAD
- rd 22927:4810
- export map RM-IAD
- route-target import 22927:4804
- route-target import 22927:4805
- route-target import 22927:4806
 !
 ip vrf gid1
- rd 22927:2400
- route-target export 22927:2401
- route-target import 22927:2402
 !
 ip vrf gim1
- rd 22927:6750
- route-target export 22927:6751
- route-target import 22927:6751
 !
 !
 !
