@@ -394,12 +394,6 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         DelayUtils.sleep(1000);
         samplesManagementPage.uploadSamples("recoSamples/ciscoE2E/H3_Lab_100.100.100.100_20181016_1500_sh_inventory_raw.cli");
         DelayUtils.sleep(1000);
-        samplesManagementPage.uploadSamples("recoSamples/ciscoE2E/H3_Lab_100.100.100.100_20181016_1500_sh_ip_interface_brief.cli");
-        DelayUtils.sleep(1000);
-        samplesManagementPage.uploadSamples("recoSamples/ciscoE2E/H3_Lab_100.100.100.100_20181016_1500_sh_lldp_neighbors_detail.cli");
-        DelayUtils.sleep(1000);
-        samplesManagementPage.uploadSamples("recoSamples/ciscoE2E/H3_Lab_100.100.100.100_20181016_1500_sh_running_config.cli");
-        DelayUtils.sleep(1000);
         samplesManagementPage.uploadSamples("recoSamples/ciscoE2E/H3_Lab_100.100.100.100_20181016_1500_sh_version.cli");
     }
 
