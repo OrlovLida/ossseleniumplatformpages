@@ -21,16 +21,17 @@ import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
 
-@Listeners({ TestListener.class })
+@Listeners({TestListener.class})
 public class VLANRangeTest extends BaseTestCase {
-
+    
     private static final String VLAN_NAME_1 = "VLANRangeSeleniumTest";
     private static final String VLAN_NAME_2 = "VLANRangeSeleniumTestModified";
     private static final String VLAN_RANGE_1 = "1, 3, 5-10";
     private static final String VLAN_RANGE_2 = "1, 3, 5-9";
     private static final String VLAN_DESCRIPTION_1 = "DescriptionBefore";
     private static final String VLAN_DESCRIPTION_2 = "DescriptionAfter";
-
+    private static final String VLAN_OBJECT_TYPE = "VLANRange";
+    
     private void checkPopup() {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
@@ -38,14 +39,14 @@ public class VLANRangeTest extends BaseTestCase {
         Assert.assertEquals(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType(),
                 SystemMessageContainer.MessageType.SUCCESS);
     }
-
+    
     @BeforeClass
     public void openWebConsole() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
-
+    
     @Test(priority = 1)
     @Description("Set fields and create VLAN Range")
     public void createVLANRange() {
@@ -58,25 +59,25 @@ public class VLANRangeTest extends BaseTestCase {
                 .save();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
-
+    
     @Test(priority = 2)
     @Description("Check if VLAN Range is created")
     public void checkIfVLANRangeIsCreated() {
         HomePage homePage = new HomePage(driver)
                 .goToHomePage(driver, BASIC_URL);
         homePage.setNewObjectType("VLAN Range");
-        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver);
+        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait, VLAN_OBJECT_TYPE);
         newInventoryViewPage.openFilterPanel()
                 .changeValueInLocationNameInput(VLAN_NAME_1)
                 .applyFilter();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertFalse(newInventoryViewPage.checkIfTableIsEmpty());
     }
-
+    
     @Test(priority = 3)
     @Description("Edit VLAN Range")
     public void editVLANRange() {
-        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver);
+        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait, VLAN_OBJECT_TYPE);
         newInventoryViewPage.selectFirstRow();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         newInventoryViewPage.callAction("EDIT", "EditVLANRangeContextAction");
@@ -88,14 +89,14 @@ public class VLANRangeTest extends BaseTestCase {
                 .save();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
-
+    
     @Test(priority = 4)
     @Description("Check if VLAN Range is edited correctly")
     public void checkIfVLANRangeIsEditedCorrectly() {
         HomePage homePage = new HomePage(driver)
                 .goToHomePage(driver, BASIC_URL);
         homePage.setNewObjectType("VLAN Range");
-        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver);
+        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait, VLAN_OBJECT_TYPE);
         newInventoryViewPage.openFilterPanel()
                 .changeValueInLocationNameInput(VLAN_NAME_2)
                 .applyFilter();
@@ -103,11 +104,11 @@ public class VLANRangeTest extends BaseTestCase {
         Assert.assertEquals(VLAN_NAME_2, newInventoryViewPage.getMainTable().getCellValue(0, "Name"));
         Assert.assertEquals(VLAN_DESCRIPTION_2, newInventoryViewPage.getMainTable().getCellValue(0, "Description"));
     }
-
+    
     @Test(priority = 5)
     @Description("Delete VLAN Range")
     public void deleteVLANRange() {
-        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver);
+        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait, VLAN_OBJECT_TYPE);
         newInventoryViewPage.selectFirstRow();
         newInventoryViewPage.deleteObject();
         checkPopup();
@@ -117,5 +118,5 @@ public class VLANRangeTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());
     }
-
+    
 }

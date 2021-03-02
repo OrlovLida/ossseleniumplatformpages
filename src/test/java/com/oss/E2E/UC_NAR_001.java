@@ -141,7 +141,7 @@ public class UC_NAR_001 extends BaseTestCase {
     @Test(priority = 7)
     @Description("Run Narrow Reco from context action menu in New Inventory View")
     public void runNarrowReco() {
-        NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait)
+        NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait, "Router")
                 .selectFirstRow()
                 .callAction("OTHER", "run-narrow-reconciliation");
         checkRecoStartedMessage();
@@ -150,7 +150,7 @@ public class UC_NAR_001 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         driver.navigate().refresh();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait)
+        NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait, "Router")
                 .selectFirstRow()
                 .callAction("NAVIGATION", "open-network-inconsistencies-view");
     }
@@ -187,7 +187,7 @@ public class UC_NAR_001 extends BaseTestCase {
         homePage.goToHomePage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         homePage.setNewObjectType(EQUIPMENT_TYPE);
-        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver);
+        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver,webDriverWait,"Router");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         newInventoryViewPage.openFilterPanel().changeValueInLocationNameInput(ROUTER_NAME).applyFilter();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);

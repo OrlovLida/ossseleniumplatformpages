@@ -125,7 +125,7 @@ public class UC_NAR_005 extends BaseTestCase {
         homePage.goToHomePage(driver, BASIC_URL);
         homePage.setNewObjectType("Router");
         waitForPageToLoad();
-        NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
+        NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait,"Router");
         newInventoryViewPage.searchObject(DEVICE_NAME);
         waitForPageToLoad();
         Assert.assertFalse(newInventoryViewPage.checkIfTableIsEmpty());
@@ -135,7 +135,7 @@ public class UC_NAR_005 extends BaseTestCase {
     @Test(priority = 7)
     @Description("Run narrow reconciliation and after its finish check value of Serial Number")
     public void runNarrowReconciliation() {
-        NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
+        NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait, "Router");
         newInventoryViewPage.selectFirstRow();
         waitForPageToLoad();
         NotificationsInterface notifications = Notifications.create(driver, webDriverWait);
@@ -155,7 +155,7 @@ public class UC_NAR_005 extends BaseTestCase {
     @Test(priority = 8)
     @Description("Delete device")
     public void deleteDevice() {
-        NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
+        NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait, "Router");
         newInventoryViewPage.selectFirstRow();
         newInventoryViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, "DeleteDeviceWizardAction");
         waitForPageToLoad();

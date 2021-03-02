@@ -251,7 +251,7 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
     @Test(priority = 10)
     @Description("Create Antenna Trail Between RRU and RAN Antenna")
     public void createAntennaTrailBetweenRRUAndRANAntenna() {
-        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver);
+        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver,webDriverWait,"Location");
         newInventoryViewPage.callAction("NAVIGATION", "Cell Site Configuration");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         CellSiteConfigurationPage cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);

@@ -23,7 +23,7 @@ public class BookmarksTest extends BaseTestCase {
     @Test
     public void createBookmark() {
         tableWidget = homePage
-                .goToInventoryViewPage(TABLE_WIDGET_URL)
+                .goToInventoryViewPage(TABLE_WIDGET_URL, "Location")
                 .getMainTable();
         //tableWidget.clickOnGearIcon();
         //tableWidget.clickColumnsMgmtChbx("Abbreviation");
@@ -33,19 +33,11 @@ public class BookmarksTest extends BaseTestCase {
         PopupV2 popupV2 = homePage.goToCreateBookmarkPopUp();
 
         //TODO fix new WebDriver, create Page for bookmarks, try to use wizard class
-        Input nameField = ComponentFactory
-                .create("viewName", ComponentType.TEXT_FIELD, this.driver, new WebDriverWait(this.driver, 800));
-        nameField.setValue(Data.createSingleData("Selenium Bookmark"));
-        Assertions.assertThat(nameField.getStringValue()).isEqualTo("Selenium Bookmark");
-        Input categoryField = ComponentFactory
-                .create("viewCategory", ComponentType.TEXT_FIELD, this.driver, new WebDriverWait(this.driver, 800));
-        categoryField.setValue(Data.createSingleData("OSSMFC"));
+        popupV2.setComponentValue("viewName","Selenium Bookmark",ComponentType.TEXT_FIELD);
+        Assertions.assertThat(popupV2.getComponent("viewName",ComponentType.TEXT_FIELD).getStringValue()).isEqualTo("Selenium Bookmark");
+        popupV2.setComponentValue("viewCategory","OSSMFC",ComponentType.COMBOBOX);
+        Assertions.assertThat(popupV2.getComponent("viewCategory",ComponentType.COMBOBOX).getStringValue()).isEqualTo("OSSMFC");
+        popupV2.clickButtonByLabel( "Save");
 
-        DelayUtils.sleep(2000);
-        System.out.println(categoryField.getStringValue());
-
-        Assertions.assertThat(categoryField.getStringValue()).isEqualTo("OSSMFC");
-        Button saveBookmarkButton = Button.create(driver, "Save", "a");
-        saveBookmarkButton.click();
     }
 }

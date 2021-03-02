@@ -189,7 +189,7 @@ public class IPLinkTest extends BaseTestCase {
         homePage.goToHomePage(driver, BASIC_URL);
         homePage.setNewObjectType("Trail");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver);
+        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait, "Trail");
         newInventoryViewPage.searchObject(newIpLinkName);
 
         DelayUtils.waitForPageToLoad(driver, webDriverWait);

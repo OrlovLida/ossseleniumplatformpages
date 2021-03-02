@@ -38,12 +38,13 @@ public class VLANInterfaceTest extends BaseTestCase {
     private static final String DELETE_VLAN_INTERFACE_ACTION_ID = "DeleteVLANInterfaceContextAction";
     private static final String MTU_VALUE = "1432";
     private static final String DESCRIPTION = "VLANInterfaceSeleniumTest" + (int) (Math.random() * 1001);
+    private static final String OBJECT_TYPE = "VLANInterface_TP";
 
     @BeforeClass
     public void openWebConsole() {
         waitForPageToLoad();
         homePage.chooseFromLeftSideMenu("Process Instances", "Views", "Business Process Management");
-        newInventoryViewPage = new NewInventoryViewPage(driver);
+        newInventoryViewPage = new NewInventoryViewPage(driver,webDriverWait,OBJECT_TYPE);
         waitForPageToLoad();
     }
 
