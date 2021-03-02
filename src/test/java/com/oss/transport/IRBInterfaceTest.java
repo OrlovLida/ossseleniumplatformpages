@@ -35,13 +35,12 @@ public class IRBInterfaceTest extends BaseTestCase {
     private static final String IP_SUBNET = "10.10.20.0/24 [E2ESeleniumTest]";
     private static final String IP_NETWORK = "E2ESeleniumTest";
     private static final String IP_ADDRESS = "10.10.20.2";
-    private static final String OBJECT_TYPE = "IRBInterface_TP";
 
     @BeforeClass
     public void openWebConsole() {
         waitForPageToLoad();
         homePage.chooseFromLeftSideMenu("Process Instances", "Views", "Business Process Management");
-        newInventoryViewPage = new NewInventoryViewPage(driver,webDriverWait,OBJECT_TYPE);
+        newInventoryViewPage = new NewInventoryViewPage(driver,webDriverWait);
         waitForPageToLoad();
     }
 
@@ -79,7 +78,7 @@ public class IRBInterfaceTest extends BaseTestCase {
     public void checkIRBInterface() {
         homePage.goToHomePage(driver, BASIC_URL);
         homePage.setNewObjectType("IRB Interface");
-        waitForPageToLoad();
+       // waitForPageToLoad();
         newInventoryViewPage.searchObject(IRB_INTERFACE_DEVICE_NAME);
         waitForPageToLoad();
         Assert.assertFalse(newInventoryViewPage.checkIfTableIsEmpty());

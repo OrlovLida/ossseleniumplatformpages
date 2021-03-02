@@ -29,7 +29,7 @@ import io.qameta.allure.Description;
 
 public class TS_RAN_E2E_02_5G extends BaseTestCase {
     private final String LOCATION_NAME = "Poznan-BU1";
-
+    
     private static final String RECO_GNODEB_NAME = "DXNNR0599UAT6-Expo-Multilateral-Buildings-Mobility-District";
     private static final String RECO_GNODEB_TYPE = "GNodeB";
     private static final String RECO_GNODEBCUUP_TYPE = "GNodeBCUUP";
@@ -39,37 +39,37 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
     private static final String CABLE_MODEL = "Jumper";
     private static final String RECO_RRU_NAME1 = "BTS5900,DXNNR0599UAT6-Expo-Multilateral-Buildings-Mobility-District/0/MPMU,200";
     private static final String RECO_RRU_NAME2 = "BTS5900,DXNNR0599UAT6-Expo-Multilateral-Buildings-Mobility-District/0/MPMU,100";
-    //TODO: change BBU name to whatever name we get after RECO can generate its own BBU device
+    // TODO: change BBU name to whatever name we get after RECO can generate its own BBU device
     private static final String RECO_BBU_NAME = "temporary_TS_RAN_E2E_02_BBU";
     private static final String RECO_SWITCH_NAME1 = "BTS5900,DXNNR0599UAT6-Expo-Multilateral-Buildings-Mobility-District/0/RHUB,70";
     private static final String RECO_SWITCH_NAME2 = "BTS5900,DXNNR0599UAT6-Expo-Multilateral-Buildings-Mobility-District/0/RHUB,60";
     private static final String RAN_ANTENNA_NAME = "TS_RAN_E2E_02_RANAntenna";
     private static final String RAN_ANTENNA_MODEL = "Generic 3-Array Antenna";
     private static final String RAN_ANTENNA_ARRAY_NAME = "TS_RAN_E2E_02_RANAntenna/3-Array Antenna_Array 1/Freq(0-80000)";
-
+    
     private static final String ANTENNA_TRAIL_NAME = "TS_RAN_E2E_02_AntennaTrail";
     private static final String CPRI_TRAIL_NAME = "TS_RAN_E2E_02_CPRI_Trail";
-
+    
     private static final String CABLE_MODEL_DATA_ATTRIBUTENAME = "model";
     private static final String CABLE_NAME_DATA_ATTRIBUTENAME = "name";
     private static final String CREATE_TRAIL_DATA_ATTRIBUTENAME = "Create Trail";
     private static final String END_LOCATION_DATA_ATTRIBUTENAME = "endTermination";
-
+    
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
     private String CM_DOMAIN_NAME = "Selenium-TS-RAN-E2E-02-5G";
     private String CM_INTERFACE_NAME = "Huawei U2000 RAN";
     private String[] RAN_INCONSISTENCIES_NAMES = {
-            "GNODEB-" + RECO_GNODEB_NAME,
-            "GNODEBDU-" + RECO_GNODEB_NAME,
-            "GNODEBCUUP-" + RECO_GNODEB_NAME
+    "GNODEB-" + RECO_GNODEB_NAME,
+    "GNODEBDU-" + RECO_GNODEB_NAME,
+    "GNODEBCUUP-" + RECO_GNODEB_NAME
     };
     private String[] PHYSICAL_INCONSISTENCIES_NAMES = {
-            "PhysicalElement-" + RECO_RRU_NAME2,
-            "PhysicalElement-" + RECO_RRU_NAME1,
-            "PhysicalElement-" + RECO_SWITCH_NAME2,
-            "PhysicalElement-" + RECO_SWITCH_NAME1,
+    "PhysicalElement-" + RECO_RRU_NAME2,
+    "PhysicalElement-" + RECO_RRU_NAME1,
+    "PhysicalElement-" + RECO_SWITCH_NAME2,
+    "PhysicalElement-" + RECO_SWITCH_NAME1,
     };
-
+    
     private void checkPopup() {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
@@ -77,18 +77,18 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         Assert.assertEquals(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType(),
                 SystemMessageContainer.MessageType.SUCCESS);
     }
-
+    
     public void openHomePage() {
         HomePage homePage = new HomePage(driver);
         homePage.goToHomePage(driver, BASIC_URL);
     }
-
+    
     @BeforeClass
     public void openNetworkDiscoveryControlView() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         PerspectiveChooser.create(driver, webDriverWait).setNetworkPerspective();
     }
-
+    
     @Test(priority = 1)
     public void createCmDomain() {
         networkDiscoveryControlViewPage.openCmDomainWizard();
@@ -101,7 +101,7 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         wizard.save();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
-
+    
     @Test(priority = 2)
     public void uploadSamples() {
         DelayUtils.sleep(1000);
@@ -112,11 +112,13 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         samplesManagementPage.selectPath();
         samplesManagementPage.createDirectory(CM_DOMAIN_NAME);
         DelayUtils.sleep(1000);
-        samplesManagementPage.uploadSamples("recoSamples/huaweiRan/TS_RAN_E2E_02_5G/Inventory_DXNNR0599UAT6-Expo-Multilateral-Buildings-Mobility-District_20200414_151757.xml");
+        samplesManagementPage.uploadSamples(
+                "recoSamples/huaweiRan/TS_RAN_E2E_02_5G/Inventory_DXNNR0599UAT6-Expo-Multilateral-Buildings-Mobility-District_20200414_151757.xml");
         DelayUtils.sleep(1000);
-        samplesManagementPage.uploadSamples("recoSamples/huaweiRan/TS_RAN_E2E_02_5G/SRANNBIExport_XML_DXNNR0599UAT6_Co-MPT BTS_RT_04_09_2020_14_20_24_322_10_17_4_8.xml");
+        samplesManagementPage.uploadSamples(
+                "recoSamples/huaweiRan/TS_RAN_E2E_02_5G/SRANNBIExport_XML_DXNNR0599UAT6_Co-MPT BTS_RT_04_09_2020_14_20_24_322_10_17_4_8.xml");
     }
-
+    
     @Test(priority = 3)
     public void runReconciliationWithFullSample() {
         openNetworkDiscoveryControlView();
@@ -127,13 +129,13 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         networkDiscoveryControlViewPage.checkReconciliationStartedSystemMessage();
         networkDiscoveryControlViewPage.waitForEndOfReco();
     }
-
+    
     @Test(priority = 4)
     public void assignLocationAndApplyInconsistencies() {
         networkDiscoveryControlViewPage.moveToNivFromNdcv();
         NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
         networkInconsistenciesViewPage.expandTree();
-        for (String inconsistencieName : PHYSICAL_INCONSISTENCIES_NAMES) {
+        for (String inconsistencieName: PHYSICAL_INCONSISTENCIES_NAMES) {
             networkInconsistenciesViewPage.assignLocation(inconsistencieName, LOCATION_NAME);
             networkInconsistenciesViewPage.checkUpdateDeviceSystemMessage();
             networkInconsistenciesViewPage.clearOldNotification();
@@ -142,7 +144,7 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
             networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(inconsistencieName);
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
         }
-        for (String inconsistencieName : RAN_INCONSISTENCIES_NAMES) {
+        for (String inconsistencieName: RAN_INCONSISTENCIES_NAMES) {
             networkInconsistenciesViewPage.assignRanLocation(inconsistencieName, LOCATION_NAME);
             networkInconsistenciesViewPage.checkUpdateDeviceSystemMessage();
             networkInconsistenciesViewPage.clearOldNotification();
@@ -152,7 +154,7 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
         }
     }
-
+    
     @Test(priority = 5)
     public void deleteCmDomain() {
         openNetworkDiscoveryControlView();
@@ -164,7 +166,7 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(CM_DOMAIN_NAME);
         PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
     }
-
+    
     @Test(priority = 6)
     @Description("Open Cell Site Configuration for Location")
     public void openCellSiteConfigurationForLocation() {
@@ -175,7 +177,7 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
                 .expandShowOnAndChooseView("Cell Site Configuration");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
-
+    
     @Test(priority = 7)
     @Description("Create RAN Antenna")
     public void createRANAntenna() {
@@ -195,7 +197,7 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         checkPopup();
     }
-
+    
     @Test(priority = 8)
     @Description("Create Hosting between Cell5G and RAN Antenna")
     public void createHostingBetweenCell5GAndRANAntenna() {
@@ -213,7 +215,7 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         checkPopup();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
-
+    
     @Test(priority = 9)
     @Description("Create Cable between RRU and RAN Antenna")
     public void createCableBetweenRRUAndRANAntenna() {
@@ -247,11 +249,11 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         checkPopup();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
-
+    
     @Test(priority = 10)
     @Description("Create Antenna Trail Between RRU and RAN Antenna")
     public void createAntennaTrailBetweenRRUAndRANAntenna() {
-        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver,webDriverWait,"Location");
+        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.callAction("NAVIGATION", "Cell Site Configuration");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         CellSiteConfigurationPage cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);
@@ -271,7 +273,7 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         checkPopup();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
-
+    
     /*//TODO: wait for OSSPHY-47340
     @Test(priority = 11)
     @Description("Create CPRI Trail between RRU and BBU")
@@ -292,7 +294,7 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         checkPopup();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }*/
-
+    
     @Test(priority = 12)
     @Description("Delete CPRI Trail between RRU and BBU")
     public void deleteCPRITrailBetweenRRUAndBBU() {
@@ -300,12 +302,12 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         cellSiteConfigurationPage.selectTreeRow(LOCATION_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cellSiteConfigurationPage.selectTab("Trails");
-       /* cellSiteConfigurationPage.filterObject("Name", CPRI_TRAIL_NAME);
+        /* cellSiteConfigurationPage.filterObject("Name", CPRI_TRAIL_NAME);
         cellSiteConfigurationPage.removeObject();
         checkPopup();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);*/
     }
-
+    
     @Test(priority = 13)
     @Description("Delete Antenna Trail between RRU and RAN Antenna")
     public void deleteAntennaTrailBetweenRRUAndRANAntenna() {
@@ -316,7 +318,7 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         checkPopup();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
-
+    
     @Test(priority = 14)
     @Description("Delete Cable between RRU and RAN Antenna")
     public void deleteCableBetweenRRUAndRANAntenna() {
@@ -327,7 +329,7 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         checkPopup();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
-
+    
     @Test(priority = 15)
     @Description("Delete Hosting between Cell 5G and RAN Antenna")
     public void deleteHostingBetweenCell5GAndRANAntenna() {
@@ -342,7 +344,7 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         checkPopup();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
-
+    
     @Test(priority = 16)
     @Description("Delete RAN Antenna")
     public void deleteRANAntenna() {
@@ -354,7 +356,7 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         checkPopup();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
-
+    
     @Test(priority = 17)
     @Description("Delete Reco devices")
     public void deleteRecoDevices() {
@@ -364,17 +366,17 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         cellSiteConfigurationPage.selectTreeRow(LOCATION_NAME);
         cellSiteConfigurationPage.selectTab("Devices");
         ///////////////////////*/
-
+        
         cellSiteConfigurationPage.selectRowByAttributeValueWithLabel("Name", RECO_RRU_NAME1);
         cellSiteConfigurationPage.selectRowByAttributeValueWithLabel("Name", RECO_RRU_NAME2);
-        //cellSiteConfigurationPage.selectResource(RECO_BBU_NAME);
+        // cellSiteConfigurationPage.selectResource(RECO_BBU_NAME);
         cellSiteConfigurationPage.selectRowByAttributeValueWithLabel("Name", RECO_SWITCH_NAME1);
         cellSiteConfigurationPage.selectRowByAttributeValueWithLabel("Name", RECO_SWITCH_NAME2);
         cellSiteConfigurationPage.removeObject();
         checkPopup();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
-
+    
     /*@Test(priority = 18)
     @Description("Delete Reco Cell 5G")
     public void deleteRecoCell5G() {
@@ -385,7 +387,7 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         checkPopup();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }*/
-
+    
     @Test(priority = 19)
     @Description("Delete Reco gNodeBs")
     public void deleteRecoGNodeB() {

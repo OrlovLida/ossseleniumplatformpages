@@ -23,7 +23,7 @@ public class BookmarksTest extends BaseTestCase {
     @Test
     public void createBookmark() {
         tableWidget = homePage
-                .goToInventoryViewPage(TABLE_WIDGET_URL, "Location")
+                .goToInventoryViewPage(TABLE_WIDGET_URL)
                 .getMainTable();
         //tableWidget.clickOnGearIcon();
         //tableWidget.clickColumnsMgmtChbx("Abbreviation");

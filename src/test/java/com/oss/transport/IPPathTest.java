@@ -134,7 +134,7 @@ public class IPPathTest extends BaseTestCase {
         popupAlert.popupAccept();
         homePage.setNewObjectType("Trail");
         waitForPageToLoad();
-        NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait,"Trail");
+        NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.searchObject(IP_PATH_NAME_2);
         waitForPageToLoad();
         Assert.assertFalse(newInventoryViewPage.checkIfTableIsEmpty());
@@ -155,7 +155,7 @@ public class IPPathTest extends BaseTestCase {
         homePage.goToHomePage(driver, BASIC_URL);
         homePage.setNewObjectType("Trail");
         waitForPageToLoad();
-        NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait,"Trail");
+        NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.searchObject(IP_PATH_NAME_2);
         waitForPageToLoad();
         newInventoryViewPage.selectFirstRow();

@@ -21,12 +21,12 @@ import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
 
-@Listeners({ TestListener.class })
+@Listeners({TestListener.class})
 public class VLANInterfaceTest extends BaseTestCase {
-
+    
     private NewInventoryViewPage newInventoryViewPage;
     private String processNRPCode;
-
+    
     private static final String VLAN_INTERFACE_TYPE = "Subinterface";
     private static final String VLAN_SUBINTERFACE_ID = "100";
     private static final String DEVICE = "VLANInterfaceTest";
@@ -38,16 +38,15 @@ public class VLANInterfaceTest extends BaseTestCase {
     private static final String DELETE_VLAN_INTERFACE_ACTION_ID = "DeleteVLANInterfaceContextAction";
     private static final String MTU_VALUE = "1432";
     private static final String DESCRIPTION = "VLANInterfaceSeleniumTest" + (int) (Math.random() * 1001);
-    private static final String OBJECT_TYPE = "VLANInterface_TP";
-
+    
     @BeforeClass
     public void openWebConsole() {
         waitForPageToLoad();
         homePage.chooseFromLeftSideMenu("Process Instances", "Views", "Business Process Management");
-        newInventoryViewPage = new NewInventoryViewPage(driver,webDriverWait,OBJECT_TYPE);
+        newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
         waitForPageToLoad();
     }
-
+    
     @Test(priority = 1)
     @Description("Create NRP Process")
     public void createProcessNRP() {
@@ -57,7 +56,7 @@ public class VLANInterfaceTest extends BaseTestCase {
         checkMessageType();
         checkMessageContainsText(processNRPCode);
     }
-
+    
     @Test(priority = 2)
     @Description("Start High Level Planning Task")
     public void startHLPTask() {
@@ -65,7 +64,7 @@ public class VLANInterfaceTest extends BaseTestCase {
         tasksPage.startTask(processNRPCode, "High Level Planning");
         checkTaskAssignment();
     }
-
+    
     @Test(priority = 3)
     @Description("Create new VLAN Interface")
     public void createNewVLANInterface() {
@@ -85,7 +84,7 @@ public class VLANInterfaceTest extends BaseTestCase {
         vlanInterfaceWizardPage.clickAccept();
         waitForPageToLoad();
     }
-
+    
     @Test(priority = 4)
     @Description("Check new VLAN Interface")
     public void checkVLANInterface() {
@@ -96,7 +95,7 @@ public class VLANInterfaceTest extends BaseTestCase {
         waitForPageToLoad();
         Assert.assertFalse(newInventoryViewPage.checkIfTableIsEmpty());
     }
-
+    
     @Test(priority = 5)
     @Description("Assign IP Host Address")
     public void assignIPHostAddress() {
@@ -107,7 +106,7 @@ public class VLANInterfaceTest extends BaseTestCase {
         iPv4AddressAssignmentWizardPage.assignIPtoIRBInterface("126001", IP_SUBNET, false);
         waitForPageToLoad();
     }
-
+    
     @Test(priority = 6)
     @Description("Edit VLAN Interface")
     public void editVLANInterface() {
@@ -123,27 +122,28 @@ public class VLANInterfaceTest extends BaseTestCase {
         Assert.assertEquals(MTU_VALUE, newInventoryViewPage.getMainTable().getCellValue(0, "MTU"));
         Assert.assertEquals(DESCRIPTION, newInventoryViewPage.getMainTable().getCellValue(0, "Description"));
     }
-
+    
     @Test(priority = 7)
     @Description("Finish rest of NRP and IP Tasks")
     public void finishProcessesTasks() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.completeNRP(processNRPCode);
     }
-
+    
     @Test(priority = 8)
     @Description("Delete IP Address")
     public void deleteIPAddressAssignment() {
         homePage.goToHomePage(driver, BASIC_URL);
         homePage.chooseFromLeftSideMenu("IP Address management", "Views", "Transport");
-        IPAddressManagementViewPage ipAddressManagementViewPage = IPAddressManagementViewPage.goToIPAddressManagementPage(driver, BASIC_URL);
+        IPAddressManagementViewPage ipAddressManagementViewPage =
+                IPAddressManagementViewPage.goToIPAddressManagementPage(driver, BASIC_URL);
         ipAddressManagementViewPage.searchIpNetwork(IP_NETWORK);
         ipAddressManagementViewPage.expandTreeRow(IP_NETWORK);
         ipAddressManagementViewPage.expandTreeRowContains("%");
         ipAddressManagementViewPage.expandTreeRow(IP_ADDRESS + "/24");
         ipAddressManagementViewPage.deleteObject("/24 [");
     }
-
+    
     @Test(priority = 9)
     @Description("Delete VLAN Interface")
     public void deleteVLANInterface() {
@@ -160,39 +160,39 @@ public class VLANInterfaceTest extends BaseTestCase {
         newInventoryViewPage.callAction("KEBAB", "refreshButton");
         Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());
     }
-
+    
     private void checkMessageType() {
         Assert.assertEquals(MessageType.SUCCESS, (getFirstMessage().getMessageType()));
     }
-
+    
     private void checkMessageContainsText(String message) {
         Assert.assertTrue((getFirstMessage().getText())
                 .contains(message));
     }
-
+    
     private void checkMessageText(String message) {
         Assert.assertEquals(message, (getFirstMessage().getText()));
     }
-
+    
     private void checkMessageSize(int size) {
         Assert.assertEquals((SystemMessageContainer.create(driver, webDriverWait)
                 .getMessages()
                 .size()), size);
     }
-
+    
     private Message getFirstMessage() {
         return SystemMessageContainer.create(driver, webDriverWait)
                 .getFirstMessage()
                 .orElseThrow(() -> new RuntimeException("The list is empty"));
     }
-
+    
     private void checkTaskAssignment() {
         checkMessageType();
         checkMessageText("The task properly assigned.");
     }
-
+    
     private void waitForPageToLoad() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
-
+    
 }

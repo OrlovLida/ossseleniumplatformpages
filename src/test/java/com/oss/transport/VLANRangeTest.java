@@ -30,7 +30,6 @@ public class VLANRangeTest extends BaseTestCase {
     private static final String VLAN_RANGE_2 = "1, 3, 5-9";
     private static final String VLAN_DESCRIPTION_1 = "DescriptionBefore";
     private static final String VLAN_DESCRIPTION_2 = "DescriptionAfter";
-    private static final String VLAN_OBJECT_TYPE = "VLANRange";
     
     private void checkPopup() {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
@@ -66,7 +65,7 @@ public class VLANRangeTest extends BaseTestCase {
         HomePage homePage = new HomePage(driver)
                 .goToHomePage(driver, BASIC_URL);
         homePage.setNewObjectType("VLAN Range");
-        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait, VLAN_OBJECT_TYPE);
+        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.openFilterPanel()
                 .changeValueInLocationNameInput(VLAN_NAME_1)
                 .applyFilter();
@@ -77,7 +76,7 @@ public class VLANRangeTest extends BaseTestCase {
     @Test(priority = 3)
     @Description("Edit VLAN Range")
     public void editVLANRange() {
-        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait, VLAN_OBJECT_TYPE);
+        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.selectFirstRow();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         newInventoryViewPage.callAction("EDIT", "EditVLANRangeContextAction");
@@ -96,7 +95,7 @@ public class VLANRangeTest extends BaseTestCase {
         HomePage homePage = new HomePage(driver)
                 .goToHomePage(driver, BASIC_URL);
         homePage.setNewObjectType("VLAN Range");
-        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait, VLAN_OBJECT_TYPE);
+        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.openFilterPanel()
                 .changeValueInLocationNameInput(VLAN_NAME_2)
                 .applyFilter();
@@ -108,7 +107,7 @@ public class VLANRangeTest extends BaseTestCase {
     @Test(priority = 5)
     @Description("Delete VLAN Range")
     public void deleteVLANRange() {
-        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait, VLAN_OBJECT_TYPE);
+        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.selectFirstRow();
         newInventoryViewPage.deleteObject();
         checkPopup();

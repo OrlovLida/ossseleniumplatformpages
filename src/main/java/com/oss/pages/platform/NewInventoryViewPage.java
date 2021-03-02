@@ -34,29 +34,22 @@ public class NewInventoryViewPage extends BasePage {
     
     private static final String LOAD_BAR = "//div[@class='load-bar']";
     
-    protected String objectType;
-    
     @Step("Open Inventory View")
     public static NewInventoryViewPage goToInventoryViewPage(WebDriver driver, String basicURL, String type) {
         driver.get(String.format("%s/#/views/management/views/inventory-view/" + type +
                 "?perspective=LIVE", basicURL));
         WebDriverWait wait = new WebDriverWait(driver, 45);
         DelayUtils.waitForPageToLoad(driver, wait);
-        return new NewInventoryViewPage(driver, wait, type);
+        return new NewInventoryViewPage(driver, wait);
     }
     
-    public static NewInventoryViewPage getInventoryViewPage(WebDriver driver, WebDriverWait wait, String type) {
+    public static NewInventoryViewPage getInventoryViewPage(WebDriver driver, WebDriverWait wait) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        return new NewInventoryViewPage(driver, wait, type);
+        return new NewInventoryViewPage(driver, wait);
     }
     
-    protected NewInventoryViewPage(WebDriver driver, WebDriverWait wait) {
+    public NewInventoryViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
-    }
-    
-    public NewInventoryViewPage(WebDriver driver, WebDriverWait wait, String objectType) {
-        super(driver, wait);
-        this.objectType = objectType;
     }
     
     // Main table operations
@@ -64,7 +57,7 @@ public class NewInventoryViewPage extends BasePage {
     public TableWidget getMainTable() {
         Widget.waitForWidget(wait, TableWidget.TABLE_WIDGET_CLASS);
         // return TableWidget.create(driver, TableWidget.TABLE_WIDGET_CLASS, wait);
-        return TableWidget.createById(driver, "InventoryView_MainWidget_" + objectType, wait);
+        return TableWidget.createById(driver, "InventoryView_MainWidget_" + getTypeBasedOnUrl(driver.getCurrentUrl()), wait);
     }
     
     public NewInventoryViewPage searchObject(String text) {
@@ -514,6 +507,17 @@ public class NewInventoryViewPage extends BasePage {
     public boolean isOnlyOneObject(String id) {
         DelayUtils.waitForPageToLoad(driver, wait);
         return getMainTable().howManyRowsOnFirstPage() == 1 && getIdOfMainTableObject(0).equals(id);
+    }
+    
+    private static String getTypeBasedOnUrl(String url) {
+        String normalizedUrl = url.replace('?', '/');
+        String[] urlParts = normalizedUrl.split("/");
+        for (int i = 0; i < (urlParts.length - 1); i++) {
+            if (urlParts[i].equals("inventory-view")) {
+                return urlParts[i + 1];
+            }
+        }
+        throw new IllegalStateException("Current page does not corresponds with Old Inventory View");
     }
     
 }

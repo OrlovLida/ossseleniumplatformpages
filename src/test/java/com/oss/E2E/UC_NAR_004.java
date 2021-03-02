@@ -97,7 +97,7 @@ public class UC_NAR_004 extends BaseTestCase {
         globalSearchPage.filterObjectType(EQUIPMENT_TYPE);
         globalSearchPage.expandShowOnAndChooseView(ROUTER_NAME, "NAVIGATION", "OpenInventoryView");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait,"Router");
+        NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
         Assert.assertFalse(newInventoryViewPage.checkIfTableIsEmpty());
     }
 

@@ -99,9 +99,9 @@ public class HomePage extends BasePage {
         return new LocationWizardPage(driver);
     }
     
-    public NewInventoryViewPage goToInventoryViewPage(String url, String objectType) {
+    public NewInventoryViewPage goToInventoryViewPage(String url) {
         driver.get(url);
-        return new NewInventoryViewPage(driver, wait, objectType);
+        return new NewInventoryViewPage(driver, wait);
     }
     
     public HierarchyViewPage goToHierarchyViewPage(String url) {
