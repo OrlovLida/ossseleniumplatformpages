@@ -97,7 +97,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
 
     @Step("Select first group of Inconsistencies and apply discrepancies to Live perspective")
     public void applyInconsistencies() {
-        getTreeView().selectTreeRowByOrder(2);
+        selectTreeObjectByRowOrder(2);
         TabsInterface nivTabs = TabWindowWidget.create(driver, wait);
         nivTabs.selectTabById(NIV_TREE);
         DelayUtils.sleep(1000);
@@ -128,10 +128,13 @@ public class NetworkInconsistenciesViewPage extends BasePage {
 
     @Step("Check inconsistencies operation type for first object")
     public String checkInconsistenciesOperationType() {
-        getTreeView().selectTreeRowByOrder(3);
-        DelayUtils.sleep(5000);
         DelayUtils.waitForPageToLoad(driver, wait);
         TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, PHYSICAL_INCONSITENCIES_TABLE_ID);
         return table.getCellValue(0, "Operation Type");
+    }
+
+    @Step("Select object on inconsistencies tree")
+    public void selectTreeObjectByRowOrder(int number) {
+        getTreeView().selectTreeRowByOrder(number);
     }
 }

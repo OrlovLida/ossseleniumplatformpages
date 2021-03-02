@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.google.common.collect.Multimap;
 import com.oss.framework.components.common.AttributesChooser;
+import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.Input.ComponentType;
@@ -211,6 +212,11 @@ public class NewInventoryViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         getMainTable().openSaveConfigurationWizard().saveAsNew(configurationName, fields);
         return this;
+    }
+
+    @Step("Refresh main table")
+    public void refreshMainTable() {
+        callAction(ActionsContainer.KEBAB_GROUP_ID, TableWidget.REFRESH_ACTION_ID);
     }
 
     //Details operations

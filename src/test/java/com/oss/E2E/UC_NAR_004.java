@@ -6,6 +6,7 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
+import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.GlobalSearchPage;
@@ -84,6 +85,8 @@ public class UC_NAR_004 extends BaseTestCase {
         NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkInconsistenciesViewPage.expandTree();
+        networkInconsistenciesViewPage.selectTreeObjectByRowOrder(3);
+        DelayUtils.sleep(5000);
         Assert.assertTrue(networkInconsistenciesViewPage.checkInconsistenciesOperationType().contentEquals("CREATION"));
     }
 
@@ -95,7 +98,7 @@ public class UC_NAR_004 extends BaseTestCase {
         GlobalSearchPage globalSearchPage = new GlobalSearchPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         globalSearchPage.filterObjectType(EQUIPMENT_TYPE);
-        globalSearchPage.expandShowOnAndChooseView(ROUTER_NAME, "NAVIGATION", "OpenInventoryView");
+        globalSearchPage.expandShowOnAndChooseView(ROUTER_NAME, ActionsContainer.SHOW_ON_GROUP_ID, "OpenInventoryView");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
         Assert.assertFalse(newInventoryViewPage.checkIfTableIsEmpty());

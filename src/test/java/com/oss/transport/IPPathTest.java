@@ -10,6 +10,7 @@ import com.oss.framework.alerts.PopupAlert;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageContainer.Message;
 import com.oss.framework.alerts.SystemMessageContainer.MessageType;
+import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.bpm.ProcessWizardPage;
@@ -85,7 +86,7 @@ public class IPPathTest extends BaseTestCase {
         networkViewPage.selectObjectInViewContent("Name", DEVICE_2);
         waitForPageToLoad();
 
-        networkViewPage.useContextAction("CREATE", "Create Connection");
+        networkViewPage.useContextAction(ActionsContainer.CREATE_GROUP_ID, "Create Connection");
         waitForPageToLoad();
         networkViewPage.selectTrailType("IP Path");
         networkViewPage.acceptTrailType();
@@ -100,7 +101,7 @@ public class IPPathTest extends BaseTestCase {
     @Description("Edit IP Path")
     public void edit() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
-        networkViewPage.useContextAction("EDIT", "Attributes and terminations");
+        networkViewPage.useContextAction(ActionsContainer.EDIT_GROUP_ID, "Attributes and terminations");
         IPPathWizardPage ipPathWizardPage = IPPathWizardPage.getIPPathWizardPage(driver, webDriverWait);
         ipPathWizardPage.setName(IP_PATH_NAME_2);
         ipPathWizardPage.setCapacityValue(CAPACITY_VALUE_2);
@@ -159,11 +160,11 @@ public class IPPathTest extends BaseTestCase {
         newInventoryViewPage.searchObject(IP_PATH_NAME_2);
         waitForPageToLoad();
         newInventoryViewPage.selectFirstRow();
-        newInventoryViewPage.callAction("EDIT", "DeleteTrailWizardActionId");
+        newInventoryViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, "DeleteTrailWizardActionId");
         waitForPageToLoad();
         Wizard.createWizard(driver, webDriverWait).clickButtonByLabel("Delete");
         checkMessageType();
-        newInventoryViewPage.callAction("KEBAB", "refreshButton");
+        newInventoryViewPage.refreshMainTable();
         Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());
     }
 
