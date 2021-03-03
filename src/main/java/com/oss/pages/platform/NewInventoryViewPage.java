@@ -522,7 +522,7 @@ public class NewInventoryViewPage extends BasePage {
                 return urlParts[i + 1];
             }
         }
-        throw new IllegalStateException("Current page does not corresponds with Old Inventory View");
+        throw new IllegalStateException("Current page does not corresponds with New Inventory View");
     }
 
 }
