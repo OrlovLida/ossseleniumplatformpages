@@ -46,7 +46,7 @@ public class RanAntennaWizardPage extends BasePage {
 
     @Step("Set model")
     public void setModel(String model) {
-        getRanAntennaWizard().setComponentValue(RAN_ANTENNA_MODEL_DATA_ATTRIBUTE_NAME, model, COMBOBOX);
+        getRanAntennaWizard().getComponent(RAN_ANTENNA_MODEL_DATA_ATTRIBUTE_NAME, COMBOBOX).setSingleStringValueContains(model);
     }
 
     @Step("Set location")
