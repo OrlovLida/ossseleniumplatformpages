@@ -4,14 +4,11 @@ import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.google.common.collect.Multimap;
 import com.oss.framework.components.common.AttributesChooser;
 import com.oss.framework.components.contextactions.ActionsContainer;
-import com.oss.framework.components.inputs.Button;
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.Input.ComponentType;
 import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.components.portals.SaveConfigurationWizard.Field;
@@ -32,8 +29,6 @@ import com.oss.pages.filterpanel.FilterPanelPage;
 import io.qameta.allure.Step;
 
 public class NewInventoryViewPage extends BasePage {
-
-    private static final String LOAD_BAR = "//div[@class='load-bar']";
 
     @Step("Open Inventory View")
     public static NewInventoryViewPage goToInventoryViewPage(WebDriver driver, String basicURL, String type) {
@@ -164,18 +159,15 @@ public class NewInventoryViewPage extends BasePage {
         return new FilterPanelPage(driver);
     }
 
-    @Step("Set value in Filter Panel")
-    @Deprecated
-    public FilterPanelPage setFilterPanel(String componentId, String value) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        openFilterPanel().setValue(Input.ComponentType.TEXT_FIELD, componentId, value).applyFilter();
-        return new FilterPanelPage(driver);
-    }
-
     @Step("Call {actionId} action from {groupId} group")
     public NewInventoryViewPage callAction(String groupId, String actionId) {
         getMainTable().callAction(groupId, actionId);
         return this;
+    }
+
+    @Step("Call context action by ID : {actionId}")
+    public void callActionById(String actionId) {
+        getMainTable().callAction(actionId);
     }
 
     @Step("Clear all tags")
@@ -282,16 +274,6 @@ public class NewInventoryViewPage extends BasePage {
 
     // TODO: add getMethods for popup and property panel
 
-    // TODO: wrap WebElement
-    @Deprecated
-    public WebElement getLoadBar() {
-        return this.driver.findElement(By.xpath(LOAD_BAR));
-    }
-
-    public boolean isLoadBarDisplayed() {
-        return getLoadBar().isDisplayed();
-    }
-
     // View's operations
 
     @Step("Change layout to Horizontal Orientation")
@@ -317,17 +299,6 @@ public class NewInventoryViewPage extends BasePage {
             ButtonPanel.create(driver, wait).expandLayoutMenu();
             DropdownList.create(driver, wait).selectOptionWithId("TWO_COLUMNS");
         }
-        DelayUtils.waitForPageToLoad(driver, wait);
-        return this;
-    }
-
-    @Step("Delete object")
-    @Deprecated
-    public NewInventoryViewPage deleteObject() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        Button.createBySelectorAndId(driver, "a", "DeleteVLANRangeContextAction").click();
-        DelayUtils.waitForPageToLoad(driver, wait);
-        getWizard().clickButtonByLabel("OK");
         DelayUtils.waitForPageToLoad(driver, wait);
         return this;
     }
@@ -484,8 +455,7 @@ public class NewInventoryViewPage extends BasePage {
     @Step("Open Hierarchy View for selected object")
     public HierarchyViewPage goToHierarchyViewForSelectedObject() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getMainTable().getContextActions().callActionById("NAVIGATION");
-        DropdownList.create(driver, wait).selectOptionWithId("WebManagement_HierarchicalView");
+        callAction(ActionsContainer.SHOW_ON_GROUP_ID, "WebManagement_HierarchicalView");
         return new HierarchyViewPage(driver);
     }
 
