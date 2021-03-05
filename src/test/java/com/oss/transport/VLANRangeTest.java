@@ -68,6 +68,7 @@ public class VLANRangeTest extends BaseTestCase {
         NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.searchObject(VLAN_NAME_1);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        newInventoryViewPage.doRefreshWhileNoData();
         Assert.assertFalse(newInventoryViewPage.checkIfTableIsEmpty());
     }
 

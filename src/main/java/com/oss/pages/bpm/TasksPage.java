@@ -56,7 +56,7 @@ public class TasksPage extends BasePage {
         table.searchByAttributeWithLabel("Process Code", Input.ComponentType.TEXT_FIELD, processCode);
         DelayUtils.waitForPageToLoad(driver, wait);
         table.searchByAttributeWithLabel("Name", Input.ComponentType.TEXT_FIELD, taskName);
-        table.doRefreshWhileNoData(10000, "Reload table");
+        table.doRefreshWhileNoData(10000, "refreshTable");
         table.selectRowByAttributeValueWithLabel("Process Code", processCode);
 
     }
