@@ -172,17 +172,17 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         hierarchyViewPage.useTreeContextAction(ActionsContainer.SHOW_ON_GROUP_ID, "OpenInventoryView");
     }
 
-//    @Test(priority = 7)
-//    @Description("Select Ethernet Interface in New Inventory View and Assign IP V4 Address")
-//    public void assignIpV4Address() {
-//        NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
-//        newInventoryViewPage.selectFirstRow();
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        newInventoryViewPage.callAction("CREATE", "AssignIPv4Host");
-//        IPv4AddressAssignmentWizardPage iPv4AddressAssignmentWizardPage = new IPv4AddressAssignmentWizardPage(driver);
-//        iPv4AddressAssignmentWizardPage.assignIPAddressMainStep(ADDRESS, "10.10.20.0/24 [" + IP_NETWORK + "]", "false");
-//        iPv4AddressAssignmentWizardPage.assignIPAddressSummaryStep();
-//    }
+    @Test(priority = 7)
+    @Description("Select Ethernet Interface in New Inventory View and Assign IP V4 Address")
+    public void assignIpV4Address() {
+        NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
+        newInventoryViewPage.selectFirstRow();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        newInventoryViewPage.callAction("CREATE", "AssignIPv4Host");
+        IPv4AddressAssignmentWizardPage iPv4AddressAssignmentWizardPage = new IPv4AddressAssignmentWizardPage(driver);
+        iPv4AddressAssignmentWizardPage.assignIPAddressMainStep(ADDRESS, "10.10.20.0/24 [" + IP_NETWORK + "]", "false");
+        iPv4AddressAssignmentWizardPage.assignIPAddressSummaryStep();
+    }
 
     @Test(priority = 8)
     @Description("Open Network View and create IP Link")
@@ -237,54 +237,54 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         networkViewPage.hideDockedPanel("bottom");
     }
 
-//    @Test(priority = 10)
-//    @Description("Create Mediation Configuration")
-//    public void createMediationConfiguration() {
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        NetworkViewPage networkViewPage = new NetworkViewPage(driver);
-//        networkViewPage.expandDockedPanel("left");
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        networkViewPage.selectObjectInViewContent("Name", TRAIL_NAME + " (0%)");
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        networkViewPage.selectObjectInViewContent("Name", DEVICE_NAME);
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        networkViewPage.useContextAction("CREATE", "Create Mediation Configuration-null");
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        networkViewPage.clickProceed();
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        CLIConfigurationWizardPage cliConfigurationWizardPage = new CLIConfigurationWizardPage(driver);
-//        cliConfigurationWizardPage.setInputMethod("Search in managed addresses");
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        cliConfigurationWizardPage.setIPHostAddress(ADDRESS);
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        cliConfigurationWizardPage.setPort(PORT);
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        cliConfigurationWizardPage.clickNextStep();
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        cliConfigurationWizardPage.setCommandTimeout(COMMAND_TIMEOUT);
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        cliConfigurationWizardPage.setConnectionSetupTimeout(CONNECTION_TIMEOUT);
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        cliConfigurationWizardPage.setCLIProtocol("SSH");
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        cliConfigurationWizardPage.clickNextStep();
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        cliConfigurationWizardPage.setAuthMethod("Password Authentication");
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        cliConfigurationWizardPage.setAuthPassword(PASSWORD);
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        cliConfigurationWizardPage.clickNextStep();
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        cliConfigurationWizardPage.clickAccept();
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        checkMessageSize();
-//        checkMessageType();
-//        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
-//        systemMessage.clickMessageLink();
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        URL = driver.getCurrentUrl();
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//    }
+    @Test(priority = 10)
+    @Description("Create Mediation Configuration")
+    public void createMediationConfiguration() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        NetworkViewPage networkViewPage = new NetworkViewPage(driver);
+        networkViewPage.expandDockedPanel("left");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkViewPage.selectObjectInViewContent("Name", TRAIL_NAME + " (0%)");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkViewPage.selectObjectInViewContent("Name", DEVICE_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkViewPage.useContextAction("CREATE", "Create Mediation Configuration-null");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkViewPage.clickProceed();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        CLIConfigurationWizardPage cliConfigurationWizardPage = new CLIConfigurationWizardPage(driver);
+        cliConfigurationWizardPage.setInputMethod("Search in managed addresses");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cliConfigurationWizardPage.setIPHostAddress(ADDRESS);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cliConfigurationWizardPage.setPort(PORT);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cliConfigurationWizardPage.clickNextStep();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cliConfigurationWizardPage.setCommandTimeout(COMMAND_TIMEOUT);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cliConfigurationWizardPage.setConnectionSetupTimeout(CONNECTION_TIMEOUT);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cliConfigurationWizardPage.setCLIProtocol("SSH");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cliConfigurationWizardPage.clickNextStep();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cliConfigurationWizardPage.setAuthMethod("Password Authentication");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cliConfigurationWizardPage.setAuthPassword(PASSWORD);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cliConfigurationWizardPage.clickNextStep();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cliConfigurationWizardPage.clickAccept();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        checkMessageSize();
+        checkMessageType();
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
+        systemMessage.clickMessageLink();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        URL = driver.getCurrentUrl();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
 
     @Test(priority = 11)
     @Description("Go through NRP task to IP Implementation task and click Perform Configuration")
@@ -470,31 +470,31 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         checkMessageType();
     }
 
-//    @Test(priority = 22)
-//    @Description("Delete Mediation Connection")
-//    public void deleteMediation() {
-//        ViewConnectionConfigurationPage.goToViewConnectionConfigurationPage(driver, URL);
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        ViewConnectionConfigurationPage viewConnectionConfigurationPage = new ViewConnectionConfigurationPage(driver);
-//        viewConnectionConfigurationPage.selectRow("Address", ADDRESS);
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        viewConnectionConfigurationPage.useContextAction(ActionsContainer.EDIT_GROUP_ID, ViewConnectionConfigurationPage.DELETE_BUTTON_ID);
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        viewConnectionConfigurationPage.clickDelete();
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//    }
-//
-//    @Test(priority = 23)
-//    @Description("Delete IP Address Assignment")
-//    public void deleteIPAddressAssignment() {
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        IPAddressManagementViewPage ipAddressManagementViewPage = IPAddressManagementViewPage.goToIPAddressManagementPage(driver, BASIC_URL);
-//        ipAddressManagementViewPage.searchIpNetwork(IP_NETWORK);
-//        ipAddressManagementViewPage.expandTreeRow(IP_NETWORK);
-//        ipAddressManagementViewPage.expandTreeRowContains("%");
-//        ipAddressManagementViewPage.expandTreeRow(ADDRESS + "/24");
-//        ipAddressManagementViewPage.deleteObject("/24 [");
-//    }
+    @Test(priority = 22)
+    @Description("Delete Mediation Connection")
+    public void deleteMediation() {
+        ViewConnectionConfigurationPage.goToViewConnectionConfigurationPage(driver, URL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        ViewConnectionConfigurationPage viewConnectionConfigurationPage = new ViewConnectionConfigurationPage(driver);
+        viewConnectionConfigurationPage.selectRow("Address", ADDRESS);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        viewConnectionConfigurationPage.useContextAction(ActionsContainer.EDIT_GROUP_ID, ViewConnectionConfigurationPage.DELETE_BUTTON_ID);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        viewConnectionConfigurationPage.clickDelete();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    @Test(priority = 23)
+    @Description("Delete IP Address Assignment")
+    public void deleteIPAddressAssignment() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        IPAddressManagementViewPage ipAddressManagementViewPage = IPAddressManagementViewPage.goToIPAddressManagementPage(driver, BASIC_URL);
+        ipAddressManagementViewPage.searchIpNetwork(IP_NETWORK);
+        ipAddressManagementViewPage.expandTreeRow(IP_NETWORK);
+        ipAddressManagementViewPage.expandTreeRowContains("%");
+        ipAddressManagementViewPage.expandTreeRow(ADDRESS + "/24");
+        ipAddressManagementViewPage.deleteObject("/24 [");
+    }
 
     private void checkMessageType() {
         Assert.assertEquals(MessageType.SUCCESS, (getFirstMessage().getMessageType()));
