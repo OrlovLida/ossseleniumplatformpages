@@ -6,12 +6,13 @@
  */
 package com.oss.pages.bpm;
 
+import org.openqa.selenium.WebDriver;
+
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tablewidget.TableInterface;
 import com.oss.pages.BasePage;
-import org.openqa.selenium.WebDriver;
 
 /**
  * @author Gabriela Kasza
@@ -55,7 +56,7 @@ public class ProcessInstancesPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         table.searchByAttributeWithLabel("Code", Input.ComponentType.TEXT_FIELD, processCode);
         DelayUtils.waitForPageToLoad(driver, wait);
-        table.doRefreshWhileNoData(10000, "Reload table");
+        table.doRefreshWhileNoData(10000, "refresh-table");
         table.selectRowByAttributeValueWithLabel("Code", processCode);
     }
 

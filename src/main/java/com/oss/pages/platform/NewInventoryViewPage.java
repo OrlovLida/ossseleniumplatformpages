@@ -146,7 +146,7 @@ public class NewInventoryViewPage extends BasePage {
     @Step("Check if table has no data")
     public boolean checkIfTableIsEmpty() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        return getMainTable().checkIfTableIsEmpty();
+        return getMainTable().hasNoData();
     }
 
     @Step("Open Filter Panel")
@@ -204,6 +204,11 @@ public class NewInventoryViewPage extends BasePage {
     @Step("Refresh main table")
     public void refreshMainTable() {
         callAction(ActionsContainer.KEBAB_GROUP_ID, TableWidget.REFRESH_ACTION_ID);
+    }
+
+    @Step("Refresh main table unit there is no data")
+    public void doRefreshWhileNoData() {
+        getMainTable().doRefreshWhileNoData(10000, TableWidget.REFRESH_ACTION_ID);
     }
 
     //Details operations
