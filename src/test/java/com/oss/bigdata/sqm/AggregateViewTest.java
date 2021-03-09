@@ -40,7 +40,7 @@ public class AggregateViewTest extends BaseTestCase {
     public void addAggregate(){
         aggregatePage.clickAddNewAggregate();
         WebDriverWait wait = new WebDriverWait(driver, 45);
-        AggregateStepWizardPage aggregateStepWizard = new AggregateStepWizardPage(driver, wait);;
+        AggregateStepWizardPage aggregateStepWizard = new AggregateStepWizardPage(driver, wait);
         aggregateStepWizard.getBasicInformationStep().fillBasicInformationStep(aggregateName, ETL_PROCESS_NAME);
         aggregateStepWizard.clickNextStep();
         aggregateStepWizard.getProcessSettingsStep().fillProcessSettingsStep("Skip", "DefaultStoragePolicy");
