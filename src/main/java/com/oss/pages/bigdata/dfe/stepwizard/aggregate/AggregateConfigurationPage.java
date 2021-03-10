@@ -1,6 +1,5 @@
 package com.oss.pages.bigdata.dfe.stepwizard.aggregate;
 
-import com.oss.framework.components.dfe.aggegatesmanager.AggregateSingleConfiguration;
 import com.oss.framework.data.Data;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.dfe.aggregatesmanager.AggregatesManagerWidget;
@@ -17,7 +16,7 @@ public class AggregateConfigurationPage extends BasePage {
         super(driver, wait);
     }
 
-    private void addNewAggregateConfiguration(AggregatesManagerWidget aggregatesManager){
+    public void addNewAggregateConfiguration(AggregatesManagerWidget aggregatesManager){
         aggregatesManager.clickAdd();
     }
 
@@ -29,9 +28,9 @@ public class AggregateConfigurationPage extends BasePage {
         AggregatesManagerWidget aggregatesManager = AggregatesManagerWidget.create(driver, wait);
         addNewAggregateConfiguration(aggregatesManager);
 
-        List<AggregateSingleConfiguration> configs = aggregatesManager.getAggregateConfigurations();
+        List<AggregatesManagerWidget.AggregateSingleConfiguration> configs = aggregatesManager.getAggregateConfigurations();
         if(!configs.isEmpty()){
-            AggregateSingleConfiguration configuration = configs.get(0);
+            AggregatesManagerWidget.AggregateSingleConfiguration configuration = configs.get(0);
             configuration.expand();
             configuration.getNameInput().setValue(Data.createSingleData(configName));
             configuration.getBaseTableNameInput().setValue(Data.createSingleData(baseTableName));
