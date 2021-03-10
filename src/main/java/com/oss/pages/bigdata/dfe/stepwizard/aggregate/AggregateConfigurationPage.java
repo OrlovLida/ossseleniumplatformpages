@@ -32,9 +32,9 @@ public class AggregateConfigurationPage extends BasePage {
         if(!configs.isEmpty()){
             AggregatesManagerWidget.AggregateSingleConfiguration configuration = configs.get(0);
             configuration.expand();
-            configuration.getNameInput().setValue(Data.createSingleData(configName));
-            configuration.getBaseTableNameInput().setValue(Data.createSingleData(baseTableName));
-            configuration.getDimensionsInput().setSingleStringValue(selectedDimension);
+            configuration.setName(configName);
+            configuration.setBaseTableName(baseTableName);
+            configuration.setDimensions(selectedDimension);
         }
     }
 }
