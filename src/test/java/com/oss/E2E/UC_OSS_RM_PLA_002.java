@@ -155,19 +155,19 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     public void selectEthernetInterface() {
         HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        hierarchyViewPage.expandTreeRowContains(DEVICE_NAME);
+        hierarchyViewPage.expandTreeNode(DEVICE_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        hierarchyViewPage.expandTreeRowContains("Ports");
+        hierarchyViewPage.expandTreeNode("Ports");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        hierarchyViewPage.expandTreeRowContains(PORT_NAME);
+        hierarchyViewPage.expandTreeNode(PORT_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        hierarchyViewPage.expandTreeRowContains("Termination Points");
+        hierarchyViewPage.expandTreeNode("Termination Points");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        hierarchyViewPage.expandTreeRowContains("EthernetInterface_TP");
+        hierarchyViewPage.expandTreeNode("EthernetInterface_TP");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        hierarchyViewPage.searchTreeRowByText(PORT_NAME);
+        hierarchyViewPage.performSearch(PORT_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        hierarchyViewPage.selectTreeRowByPosition(7);
+        hierarchyViewPage.selectNodeByPosition(7);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hierarchyViewPage.useTreeContextAction(ActionsContainer.SHOW_ON_GROUP_ID, "OpenInventoryView");
     }
