@@ -12,12 +12,8 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class AggregatePage extends BasePage {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(AggregatePage.class);
 
     private final String ADD_NEW_AGGREGATE_LABEL = "Add New Aggregate";
     private final String EDIT_AGGREGATE_LABEL = "Edit Aggregate";
@@ -35,9 +31,6 @@ public class AggregatePage extends BasePage {
 
     @Step("I Open Aggregates View")
     public static AggregatePage goToAggregatePage(WebDriver driver, String basicURL){
-        LOGGER.info("Hello world");
-        LOGGER.warn("Hello world");
-        LOGGER.error("Hello world");
         driver.get(String.format("%s/#/view/sqm/aggregates", basicURL));
         WebDriverWait wait = new WebDriverWait(driver, 45);
         DelayUtils.waitForPageToLoad(driver, wait);
