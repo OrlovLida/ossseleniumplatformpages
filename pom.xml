@@ -21,13 +21,13 @@
 
         <restassured.version>2.9.0</restassured.version>
         <rs.version>2.1.1</rs.version>
-        <locationinventory.version>1.33.27.Final</locationinventory.version>
-        <physicalinventory.version>1.33.5.Final</physicalinventory.version>
-        <addressinventory.version>1.17.19.Final</addressinventory.version>
-        <radio.version>5.0.0-SNAPSHOT</radio.version>
+        <locationinventory.version>1.32.69.Final</locationinventory.version>
+        <physicalinventory.version>1.32.38.Final</physicalinventory.version>
+        <addressinventory.version>1.16.38.Final</addressinventory.version>
+        <radio.version>4.0.3.Final</radio.version>
         <resourcecatalog.version>2.5.7.Final</resourcecatalog.version>
-        <planning.version>6.9.2.Final</planning.version>
-        <seleniumframework.version>0.6.0-SNAPSHOT</seleniumframework.version>
+        <planning.version>6.9.3.Final</planning.version>
+        <seleniumframework.version>0.5.2.Final</seleniumframework.version>
     </properties>
 
     <dependencies>
