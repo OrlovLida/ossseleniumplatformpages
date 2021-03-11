@@ -27,24 +27,24 @@ public class BasicInformationPage extends BasePage {
         this.wizard = wizard;
     }
 
-    private void fillName(String name){
+    public void fillName(String name){
         DelayUtils.waitForPageToLoad(driver, wait);
         fillTextField(name, NAME_INPUT_ID);
     }
 
-    private void fillDescription(String description){
+    public void fillDescription(String description){
         DelayUtils.waitForPageToLoad(driver, wait);
         TextArea descriptionInput = (TextArea) wizard.getComponent(DESCRIPTION_INPUT_ID, Input.ComponentType.TEXT_AREA);
         descriptionInput.setValue(Data.createSingleData(description));
     }
 
-    private void fillETLProcess(String etlProcess){
+    public void fillETLProcess(String etlProcess){
         DelayUtils.waitForPageToLoad(driver, wait);
         Combobox etlProcessInput = (Combobox) wizard.getComponent(ETL_PROCESS_INPUT_ID, Input.ComponentType.COMBOBOX);
         etlProcessInput.setValue(Data.createSingleData(etlProcess));
     }
 
-    private void fillIsActive(Boolean isActive){
+    public void fillIsActive(Boolean isActive){
         DelayUtils.waitForPageToLoad(driver, wait);
         Switcher isActiveInput = (Switcher) wizard.getComponent(IS_ACTIVE_INPUT_ID, Input.ComponentType.SWITCHER);
         isActiveInput.setValue(Data.createSingleData(isActive.toString()));

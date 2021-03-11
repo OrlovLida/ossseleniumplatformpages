@@ -26,6 +26,7 @@ public abstract class StepWizardPage extends BasePage {
     @Step("I click Next Step")
     public void clickNextStep(){
         DelayUtils.waitForPageToLoad(driver, wait);
+        DelayUtils.sleep();
         Button.create(driver, "Next Step").click();
     }
 
