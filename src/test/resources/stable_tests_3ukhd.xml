@@ -26,9 +26,29 @@
             <class name="com.oss.transport.IPAMTest"/>
         </classes>
     </test>
-    <test name="ThreeUKRegressionTests">
+    <test name="ThreeUK - PhysicalRegressionTests">
         <classes>
-            <class name="com.oss.ThreeUKRegressionTests"/>
+            <class name="com.oss.ThreeUKProject.PhysicalRegressionTests"/>
+        </classes>
+    </test>
+    <test name="Radio - RadioDevicesTests">
+        <classes>
+            <class name="com.oss.radio.RadioDevicesTests"/>
+        </classes>
+    </test>
+    <test name="Radio - Technology3G">
+        <classes>
+            <class name="com.oss.radio.Technology3GTests"/>
+        </classes>
+    </test>
+    <test name="Radio - Technology4GTests">
+        <classes>
+            <class name="com.oss.radio.Technology4GTests"/>
+        </classes>
+    </test>
+    <test name="Radio - Technology5GTests">
+        <classes>
+            <class name="com.oss.radio.Technology5GTests"/>
         </classes>
     </test>
 </suite>

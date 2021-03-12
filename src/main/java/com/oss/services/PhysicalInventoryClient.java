@@ -10,18 +10,18 @@ import javax.ws.rs.core.Response;
 public class PhysicalInventoryClient {
 
     private static final String DEVICES_API_PATH = "/devices";
-    private static LocationInventoryClient instance;
+    private static PhysicalInventoryClient instance;
     private final Environment ENV;
 
     public PhysicalInventoryClient(Environment environment) {
         ENV = environment;
     }
 
-    public static LocationInventoryClient getInstance(Environment pEnvironment) {
+    public static PhysicalInventoryClient getInstance(Environment pEnvironment) {
         if (instance != null) {
             return instance;
         }
-        instance = new LocationInventoryClient(pEnvironment);
+        instance = new PhysicalInventoryClient(pEnvironment);
         return instance;
     }
 

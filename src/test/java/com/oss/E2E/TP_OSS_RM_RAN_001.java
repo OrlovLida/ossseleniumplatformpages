@@ -1,40 +1,36 @@
 package com.oss.E2E;
 
-import java.util.List;
-import java.util.regex.Pattern;
-
-import org.assertj.core.api.Assertions;
-import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
-
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.mainheader.PerspectiveChooser;
+import com.oss.framework.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.PlanViewWizardPage;
-import com.oss.pages.bpm.ProcessInstancesPage;
 import com.oss.pages.bpm.ProcessWizardPage;
 import com.oss.pages.bpm.TasksPage;
 import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.OldInventoryViewPage;
-import com.oss.pages.radio.AntennaArrayWizardPage;
-import com.oss.pages.radio.CellBulkWizardPage;
-import com.oss.pages.radio.CellSiteConfigurationPage;
-import com.oss.pages.radio.ENodeBWizardPage;
-import com.oss.pages.radio.EditCell4GWizardPage;
-import com.oss.pages.radio.HostingWizardPage;
-import com.oss.pages.radio.RanAntennaWizardPage;
-
+import com.oss.pages.radio.*;
+import com.oss.pages.reconciliation.CmDomainWizardPage;
+import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
+import com.oss.pages.reconciliation.NetworkInconsistenciesViewPage;
+import com.oss.pages.reconciliation.SamplesManagementPage;
 import io.qameta.allure.Description;
 import io.qameta.allure.Step;
+import org.assertj.core.api.Assertions;
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
+import java.util.List;
+import java.util.regex.Pattern;
 
 public class TP_OSS_RM_RAN_001 extends BaseTestCase {
 
     private String processNRPCode;
-    private String locationName = "XYZ_SeleniumTests"; //czy mamy jakies wymagania co do lokacji
+    private String locationName = "XYZ_SeleniumTests";
     private String eNodeBName = "GBM055TST";
     private String eNodeBid = "1" + (int) (Math.random() * 10);
     private String eNodeBModel = "HUAWEI Technology Co.,Ltd BTS5900";
@@ -42,17 +38,17 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
 
     private String baseBandUnitModel = "HUAWEI Technology Co.,Ltd BBU5900";
     private String bbuName = "BTS5900,GBM055TST/0/BBU5900,0";
-    private String radioUnitModel = "HUAWEI Technology Co.,Ltd RRU5301";//HUAWEI Technology Co.,Ltd RRU5301
-    private String radioUnitNames[] = { "BTS5900,GBM055TST/0/MRRU,60",
+    private String radioUnitModel = "HUAWEI Technology Co.,Ltd RRU5301";
+    private String radioUnitNames[] = {"BTS5900,GBM055TST/0/MRRU,60",
             "BTS5900,GBM055TST/0/MRRU,70",
-            "BTS5900,GBM055TST/0/MRRU,80" };
+            "BTS5900,GBM055TST/0/MRRU,80"};
 
     private String ranAntennaModel = "HUAWEI Technology Co.,Ltd APE4518R14V06";
-    private String[] antennaNames = { "SeleniumTestAntenna1", "SeleniumTestAntenna2", "SeleniumTestAntenna3" };
+    private String[] antennaNames = {"TP_OSS_RM_RAN_001_ANTENNA_1", "TP_OSS_RM_RAN_001_ANTENNA_2", "TP_OSS_RM_RAN_001_ANTENNA_3"};
     private String bbuEquipmentType = "Base Band Unit";
     private String radioUnitEquipmentType = "Remote Radio Head/Unit";
     private String carrier = "L800-B20-5 (6175)";
-    private String cellNames[] = new String[] { "cell10", "cell20", "cell30" };
+    private String cellNames[] = new String[]{"TP_OSS_RM_RAN_001_CELL10", "TP_OSS_RM_RAN_001_CELL20", "TP_OSS_RM_RAN_001_CELL30"};
     private int amountOfCells = cellNames.length;
     public String perspectiveContext;
     public String pci = "2";
@@ -62,26 +58,36 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
     public String paOutput = "2";
 
     private String hostingTabName = "Hosting";
-    private String cell4GName = "cell4";
-    private String showOnlyCompatible = "false";
-
-    //   private String nameOfRRU = "SeleniumTestRadioUnit";
-    //   private String antennaArrayName = "APE4518R14V06_Lr1";
 
     private CellSiteConfigurationPage cellSiteConfigurationPage;
     private AntennaArrayWizardPage antennaArrayWizardPage;
     private TasksPage tasksPage;
 
+    private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
+    private String cmDomainName = "Selenium-TP-OSS-RM-RAN-001";
+    private String cmInterface = "Huawei U2000 RAN";
+    private String[] inconsistenciesNames = {
+            "ENODEB-GBM055TST",
+            "PhysicalElement-BTS5900,GBM055TST/0/BBU5900,0",
+            "PhysicalElement-BTS5900,GBM055TST/0/MRRU,60",
+            "PhysicalElement-BTS5900,GBM055TST/0/MRRU,70",
+            "PhysicalElement-BTS5900,GBM055TST/0/MRRU,80"
+    };
+
     @BeforeClass
     public void goToBPM() {
-        ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
+        HomePage homePage = new HomePage(driver);
+        homePage.goToHomePage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
+        sideMenu.callActionByLabel("Process Instances", "Views", "Business Process Management");
     }
 
     @Test(priority = 1)
     public void createProcessNRP() {
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
         processNRPCode = processWizardPage.createSimpleNRP();
+
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
         Assertions.assertThat(messages).hasSize(1);
@@ -94,23 +100,13 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         tasksPage.startTask(processNRPCode, "High Level Planning");
-        checkTaskAssignmentPopup();
+        checkPopupText("The task properly assigned.");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
     @Test(priority = 3)
     public void findLocation() {
-        HomePage homePage = new HomePage(driver);
-        homePage.goToHomePage(driver, BASIC_URL);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        homePage.setOldObjectType("Site");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-
-        OldInventoryViewPage oldInventoryViewPage = new OldInventoryViewPage(driver);
-        oldInventoryViewPage.filterObject("Name", locationName, "Site");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        oldInventoryViewPage.expandShowOnAndChooseView("Cell Site Configuration");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        openCellSiteConfiguration();
     }
 
     @Test(priority = 4)
@@ -138,8 +134,7 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
         CellBulkWizardPage cell4GBulkWizardPage = new CellBulkWizardPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cell4GBulkWizardPage.createCellBulkWizard(amountOfCells, carrier, cellNames);
-        Assert.assertTrue(SystemMessageContainer.create(driver, webDriverWait)
-                .getMessages().get(0).getText().contains("Cells 4G created success"));
+        checkPopupText("Cells 4G created success");
     }
 
     @Step("Create Base Band Unit")
@@ -203,33 +198,6 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
         }
     }
-/* USUWANIE NA KONIEC
-    @Step("Delete created devices")
-    @Test(priority = 10)
-    public void deleteDevices() {
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        cellSiteConfigurationPage.filterObject("Name", BBU_NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        cellSiteConfigurationPage.clickRemoveIcon();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        checkPopup();
-
-        for (int i = 0; i < 3; i++) {
-            cellSiteConfigurationPage.filterObject("Name", RADIO_UNIT_NAME);
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            cellSiteConfigurationPage.clickRemoveIcon();
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            checkPopup();
-
-            cellSiteConfigurationPage.filterObject("Name", ANTENNA_NAME);
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            cellSiteConfigurationPage.clickRemoveIcon();
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            checkPopup();
-        }
-    }
-
- */
 
     @Test(priority = 9)
     @Description("Create hosting relation between eNodeB and BBU")
@@ -239,11 +207,11 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cellSiteConfigurationPage.selectTab(hostingTabName);
 
-        cellSiteConfigurationPage.clickPlusIconByLabel("Host on Device");
+        cellSiteConfigurationPage.useTableContextActionByLabel("Host on Device");
         HostingWizardPage wizard = new HostingWizardPage(driver);
         wizard.onlyCompatible("false");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        wizard.selectDevice(bbuName);
+        wizard.setDevice(bbuName);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         wizard.clickAccept();
         checkPopup();
@@ -253,7 +221,6 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
     @Test(priority = 10)
     @Description("Create hosting relation between Cell 4G and RRU")
     public void hostCell4GOnRRU() {
-
         for (int i = 0; i < 3; i++) {
             cellSiteConfigurationPage.selectTreeRow(cellNames[i]);
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -261,7 +228,7 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             cellSiteConfigurationPage.clickPlusIconAndSelectOption("Host on Device");
             HostingWizardPage wizard = new HostingWizardPage(driver);
-            wizard.selectDevice(radioUnitNames[i]);
+            wizard.setDevice(radioUnitNames[i]);
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             wizard.clickAccept();
             checkPopup();
@@ -278,36 +245,32 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             cellSiteConfigurationPage.clickPlusIconAndSelectOption("Host on Antenna Array");
             HostingWizardPage wizard = new HostingWizardPage(driver);
-            wizard.selectArray(antennaNames[i]);                                                //to nie są w sumie anteny tylko arraye
+            wizard.setHostingContains(antennaNames[i]);
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             wizard.clickAccept();
             checkPopup();
         }
     }
 
-    @Test(priority = 12)
+    @Test(priority = 12, enabled = false)
+    @Description("Finish HLP")
     public void finishHLP() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        openTasksView();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         tasksPage.completeTask(processNRPCode, "High Level Planning");
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
-        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
-        Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getText())
-                .contains("Task properly completed.");
+        checkPopupText("Task properly completed.");
     }
 
     @Test(priority = 13)
+    @Description("Start Low Level Planning")
     public void startLLP() {
-        tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        openTasksView();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         tasksPage.startTask(processNRPCode, "Low Level Planning");
+        checkPopupText("The task properly assigned.");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
-        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
-        Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getText())
-                .isEqualTo("The task properly assigned.");
         String currentUrl = driver.getCurrentUrl();
         String[] split = currentUrl.split(Pattern.quote("?"));
         perspectiveContext = split[1];
@@ -315,8 +278,9 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
     }
 
     @Test(priority = 14)
+    @Description("Check validation results")
     public void validateProjectPlan() {
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        openTasksView();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         tasksPage.findTask(processNRPCode, "Low Level Planning");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -329,6 +293,7 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
     }
 
     @Test(priority = 15)
+    @Description("Complete cells configuration")
     public void lowLevelLogicalDesign() {
         HomePage homePage = new HomePage(driver);
         homePage.goToHomePage(driver, BASIC_URL);
@@ -337,7 +302,7 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         OldInventoryViewPage oldInventoryViewPage = new OldInventoryViewPage(driver);
-        oldInventoryViewPage.filterObject("Name", locationName, "Site");
+        oldInventoryViewPage.filterObject("Name", locationName);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         oldInventoryViewPage.expandShowOnAndChooseView("Cell Site Configuration");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -354,81 +319,209 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
         cellSiteConfigurationPage.clickEditIcon();
         EditCell4GWizardPage editCell4GWizardPage = new EditCell4GWizardPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        editCell4GWizardPage.setPCIBulk(pci);//
+        editCell4GWizardPage.setPCIBulk(pci);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        editCell4GWizardPage.setRSIBulk(rsi);//
+        editCell4GWizardPage.setRSIBulk(rsi);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         editCell4GWizardPage.setReferencePowerBulk(referencePower);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        editCell4GWizardPage.setTAC(1, tac);//
+        editCell4GWizardPage.setTAC(1, tac);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         editCell4GWizardPage.setTAC(2, tac);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         editCell4GWizardPage.setTAC(3, tac);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        editCell4GWizardPage.setPaOutputBulk(paOutput);//
+        editCell4GWizardPage.setPaOutputBulk(paOutput);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         editCell4GWizardPage.accept();
-        //jakis popup?
-
-        //resource signal power
-        //bandwidth DL i UL
-        //Pb
-        //local cell id
-        //mimo
-        //pa
+        //TODO check popup
     }
 
     @Test(priority = 16)
-    public void finishLowLevelPlanningTask() { //object names cannot be the same, otherwise validation will fail
+    @Description("Finish Low Level Planning")
+    public void finishLowLevelPlanningTask() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
         perspectiveChooser.setCurrentTask();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         tasksPage.completeTask(processNRPCode, "Low Level Planning");
-        checkTaskCompletedPopup();
+        checkPopupText("Task properly completed.");
 
         tasksPage.startTask(processNRPCode, "Ready for Integration");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        checkTaskAssignmentPopup();
+        checkPopupText("The task properly assigned.");
 
         tasksPage.completeTask(processNRPCode, "Ready for Integration");
-        checkTaskCompletedPopup();
-
+        checkPopupText("Task properly completed.");
     }
 
     @Test(priority = 17)
-    public void integrationProject() {
-        tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+    @Description("Finish NRP")
+    public void completeProcessNRP() {
+        openTasksView();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         tasksPage.startTask(processNRPCode, "Integrate");
-        checkTaskAssignmentPopup();
+        checkPopupText("The task properly assigned.");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        tasksPage.completeTask(processNRPCode, "Integrate"); //Scope definition
-        checkTaskCompletedPopup();
+        tasksPage.completeTask(processNRPCode, "Integrate");
+        checkPopupText("Task properly completed.");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
-        tasksPage.startTask(processNRPCode, "Implement"); //Implementation
-        checkTaskAssignmentPopup();
+        tasksPage.startTask(processNRPCode, "Implement");
+        checkPopupText("The task properly assigned.");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         tasksPage.completeTask(processNRPCode, "Implement");
-        checkTaskCompletedPopup();
+        checkPopupText("Task properly completed.");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
-        tasksPage.startTask(processNRPCode, "Accept");//Acceptance
-        checkTaskAssignmentPopup();
+        tasksPage.startTask(processNRPCode, "Accept");
+        checkPopupText("The task properly assigned.");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         tasksPage.completeTask(processNRPCode, "Accept");
-        checkTaskCompletedPopup();
+        checkPopupText("Task properly completed.");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
-        tasksPage.startTask(processNRPCode, "Acceptance"); //Accepted
+        tasksPage.startTask(processNRPCode, "Acceptance");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         tasksPage.completeTask(processNRPCode, "Acceptance");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        DelayUtils.sleep(80000);
 
-        //transition to verify
+        tasksPage.startTask(processNRPCode, "Verification");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        tasksPage.completeTask(processNRPCode, "Verification");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    @Test(priority = 18)
+    @Description("Create CM domain")
+    public void createCmDomain() {
+        openNetworkDiscoveryControlView();
+
+        networkDiscoveryControlViewPage.openCmDomainWizard();
+        CmDomainWizardPage wizard = new CmDomainWizardPage(driver);
+        wizard.setName(cmDomainName);
+        wizard.setInterface(cmInterface);
+        wizard.setDomain("RAN");
+        wizard.save();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    @Test(priority = 19)
+    @Description("Upload samples")
+    public void uploadSamples() {
+        DelayUtils.sleep(1000);
+        networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkDiscoveryControlViewPage.moveToSamplesManagement();
+        SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
+        samplesManagementPage.selectPath();
+        samplesManagementPage.createDirectory(cmDomainName);
+        DelayUtils.sleep(1000);
+        samplesManagementPage.uploadSamples("recoSamples/huaweiRan/TP_OSS_RM_RAN_001/AIM_BTS5900_GBM055.xml");
+        DelayUtils.sleep(1000);
+        samplesManagementPage.uploadSamples("recoSamples/huaweiRan/TP_OSS_RM_RAN_001/SRANNBIExport_XML_Co-MPT BTS_RT_06_17_2020_22_38_11_629_198_19_191_6.xml");
+    }
+
+    @Test(priority = 20)
+    @Description("Run reconciliation with full sample")
+    public void runReconciliationWithFullSample() {
+        openNetworkDiscoveryControlView();
+        DelayUtils.sleep(100);
+        networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkDiscoveryControlViewPage.runReconciliation();
+        networkDiscoveryControlViewPage.checkReconciliationStartedSystemMessage();
+        networkDiscoveryControlViewPage.waitForEndOfReco();
+    }
+
+    @Test(priority = 21)
+    @Description("Check operation type and accept discrepancies")
+    public void checkOperationTypeAndAcceptDiscrepancies() {
+        networkDiscoveryControlViewPage.moveToNivFromNdcv();
+        NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
+        networkInconsistenciesViewPage.expandTree();
+        for (String inconsistencieName : inconsistenciesNames) {
+            Assertions.assertThat(networkInconsistenciesViewPage.checkInconsistenciesOperationType().equals("MODIFICATION")).isTrue();
+            networkInconsistenciesViewPage.clearOldNotification();
+            networkInconsistenciesViewPage.applySelectedInconsistencies();
+            DelayUtils.sleep(5000);
+            networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(inconsistencieName);
+        }
+    }
+
+    @Test(priority = 22)
+    @Description("Delete CM Domain")
+    public void deleteCmDomain() {
+        openNetworkDiscoveryControlView();
+        networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkDiscoveryControlViewPage.clearOldNotifications();
+        networkDiscoveryControlViewPage.deleteCmDomain();
+        networkDiscoveryControlViewPage.checkDeleteCmDomainSystemMessage();
+        networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(cmDomainName);
+    }
+
+    @Test(priority = 23)
+    @Description("Delete antennas, BBU, RRU")
+    public void deleteDevices() {
+        openCellSiteConfiguration();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cellSiteConfigurationPage.filterObject("Name", bbuName);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cellSiteConfigurationPage.removeObject();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        checkPopup();
+
+        for (int i = 0; i < 3; i++) {
+            cellSiteConfigurationPage.filterObject("Name", radioUnitNames[i]);
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            cellSiteConfigurationPage.removeObject();
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            checkPopup();
+
+            cellSiteConfigurationPage.filterObject("Name", antennaNames[i]);
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            cellSiteConfigurationPage.removeObject();
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            checkPopup();
+        }
+    }
+
+    @Test(priority = 24)
+    @Description("Delete eNodeB")
+    public void deleteNodeB() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cellSiteConfigurationPage.expandTreeToLocation("Site", locationName);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cellSiteConfigurationPage.selectRowByAttributeValueWithLabel("Name", eNodeBName);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cellSiteConfigurationPage.removeObject();
+    }
+
+    public void openNetworkDiscoveryControlView() {
+        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
+    }
+
+    public void openCellSiteConfiguration() {
+        HomePage homePage = new HomePage(driver);
+        homePage.goToHomePage(driver, BASIC_URL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        homePage.setOldObjectType("Site");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+
+        OldInventoryViewPage oldInventoryViewPage = new OldInventoryViewPage(driver);
+        oldInventoryViewPage.filterObject("Name", locationName);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        oldInventoryViewPage.expandShowOnAndChooseView("Cell Site Configuration");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    public void openTasksView() {
+        HomePage homePage = new HomePage(driver);
+        homePage.goToHomePage(driver, BASIC_URL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
+        sideMenu.callActionByLabel("Tasks", "Views", "Business Process Management");
     }
 
     private void checkPopup() {
@@ -439,20 +532,11 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
                 .isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
     }
 
-    private void checkTaskAssignmentPopup() {
+    private void checkPopupText(String text) {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
         Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
         Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getText())
-                .isEqualTo("The task properly assigned.");
+                .isEqualTo(text);
     }
-
-    private void checkTaskCompletedPopup() {
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
-        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
-        Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getText())
-                .contains("Task properly completed.");
-    }
-
 }

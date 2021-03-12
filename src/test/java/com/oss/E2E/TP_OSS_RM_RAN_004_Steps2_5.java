@@ -19,23 +19,23 @@ import java.util.List;
 
 public class TP_OSS_RM_RAN_004_Steps2_5 extends BaseTestCase {
 
-    private String locationName = "XYZ_SeleniumTests";
-    private String eNodeBName = "TP_OSS_RM_RAN_004_eNodeB";
-    private int amountOfCells = 3;
-    private String carrierL1800 = "L1800 (1392)";
-    private String carrierL2100 = "L2100 (10562)";
-    private String[] cellNamesL1800 = {"TP_OSS_RM_RAN_004_L1800_cell_1", "TP_OSS_RM_RAN_004_L1800_cell_2", "TP_OSS_RM_RAN_004_L1800_cell_3"};
-    private String[] cellNamesL2100 = {"TP_OSS_RM_RAN_004_L2100_cell_1", "TP_OSS_RM_RAN_004_L2100_cell_2", "TP_OSS_RM_RAN_004_L2100_cell_3"};
+    private static final String locationName = "XYZ_SeleniumTests";
+    private static final String eNodeBName = "TP_OSS_RM_RAN_004_eNodeB";
+    private static final int amountOfCells = 3;
+    private static final String carrierL1800 = "L1800 (1392)";
+    private static final String carrierL2100 = "L2100 (10562)";
+    private static final String[] cellNamesL1800 = {"TP_OSS_RM_RAN_004_L1800_cell_1", "TP_OSS_RM_RAN_004_L1800_cell_2", "TP_OSS_RM_RAN_004_L1800_cell_3"};
+    private static final String[] cellNamesL2100 = {"TP_OSS_RM_RAN_004_L2100_cell_1", "TP_OSS_RM_RAN_004_L2100_cell_2", "TP_OSS_RM_RAN_004_L2100_cell_3"};
 
-    private String radioUnitEquipmentType = "Remote Radio Head/Unit";
-    private String radioUnitModel = "HUAWEI Technology Co.,Ltd RRU5301";
-    private String radioUnitNames[] = {"TP_OSS_RM_RAN_004_RRU_1",
+    private static final String radioUnitEquipmentType = "Remote Radio Head/Unit";
+    private static final String radioUnitModel = "HUAWEI Technology Co.,Ltd RRU5301";
+    private static final String radioUnitNames[] = {"TP_OSS_RM_RAN_004_RRU_1",
             "TP_OSS_RM_RAN_004_RRU_2",
             "TP_OSS_RM_RAN_004_RRU_3"};
 
-    private String[] antennaNames = {"TP_OSS_RM_RAN_004_Antenna_1", "TP_OSS_RM_RAN_004_Antenna_2", "TP_OSS_RM_RAN_004_Antenna_3"};
-    private int[] localCellsId1800 = {1, 2, 3};
-    private int[] localCellsId2100 = {4, 5, 6};
+    private static final String[] antennaNames = {"TP_OSS_RM_RAN_004_Antenna_1", "TP_OSS_RM_RAN_004_Antenna_2", "TP_OSS_RM_RAN_004_Antenna_3"};
+    private static final int[] localCellsId1800 = {1, 2, 3};
+    private static final int[] localCellsId2100 = {4, 5, 6};
 
     private CellSiteConfigurationPage cellSiteConfigurationPage;
 
@@ -49,7 +49,7 @@ public class TP_OSS_RM_RAN_004_Steps2_5 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         OldInventoryViewPage oldInventoryViewPage = new OldInventoryViewPage(driver);
-        oldInventoryViewPage.filterObject("Name", locationName, "Site");
+        oldInventoryViewPage.filterObject("Name", locationName);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         oldInventoryViewPage.expandShowOnAndChooseView("Cell Site Configuration");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -144,7 +144,7 @@ public class TP_OSS_RM_RAN_004_Steps2_5 extends BaseTestCase {
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             cellSiteConfigurationPage.clickPlusIconAndSelectOption("Host on Device");
             HostingWizardPage wizard = new HostingWizardPage(driver);
-            wizard.selectDevice(radioUnitNames[i]);
+            wizard.setDevice(radioUnitNames[i]);
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             wizard.clickAccept();
             checkPopup("Hosting Create Success");
@@ -159,7 +159,7 @@ public class TP_OSS_RM_RAN_004_Steps2_5 extends BaseTestCase {
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             cellSiteConfigurationPage.clickPlusIconAndSelectOption("Host on Antenna Array");
             HostingWizardPage wizard = new HostingWizardPage(driver);
-            wizard.selectArray(antennaNames[i] + "/APE4518R14V06_Ly1");
+            wizard.setHostingContains(antennaNames[i] + "/APE4518R14V06_Ly1");
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             wizard.clickAccept();
             checkPopup("Hosting Create Success");

@@ -1,16 +1,18 @@
 package com.oss.pages.platform;
 
+import org.openqa.selenium.WebDriver;
+
 import com.oss.framework.components.portals.SaveConfigurationWizard.Field;
 import com.oss.framework.mainheader.ButtonPanel;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Widget;
-import com.oss.framework.widgets.propertypanel.PropertiesFilter;
+import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.propertypanel.PropertyPanel;
 import com.oss.framework.widgets.tabswidget.TabsWidget;
 import com.oss.framework.widgets.treewidget.TreeWidget;
 import com.oss.pages.BasePage;
+
 import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
 
 public class HierarchyViewPage extends BasePage {
 
@@ -18,6 +20,7 @@ public class HierarchyViewPage extends BasePage {
     private static final String BOTTOM_TABS_WIDGET_ID = "HierarchyView_BottomDetailTabs_%s";
     private static final String TOP_PROPERTY_PANEL_ID = "HierarchyView_TopDetailTabs_%sHierarchyView_PropertyPanelWidget_%s";
     private static final String BOTTOM_PROPERTY_PANEL_ID = "HierarchyView_BottomDetailTabs_%sInventoryView_PropertyPanelWidget_%s";
+    private static final String HIERARCHY_VIEW_TREE_WIDGET_ID = "HierarchyViewTreeWidgetId";
 
     public HierarchyViewPage(WebDriver driver) {
         super(driver);
@@ -25,7 +28,7 @@ public class HierarchyViewPage extends BasePage {
 
     public TreeWidget getTreeWidget() {
         Widget.waitForWidget(wait, "TreeWidget");
-        return TreeWidget.createByClass(driver, "TreeWidget", wait);
+        return TreeWidget.createByDataAttributeName(driver, wait, HIERARCHY_VIEW_TREE_WIDGET_ID);
     }
 
     public TabsWidget getTopTabsWidget(String type) {
@@ -46,18 +49,6 @@ public class HierarchyViewPage extends BasePage {
     public PropertyPanel getBottomPropertyPanel(String type) {
         Widget.waitForWidget(wait, PropertyPanel.PROPERTY_PANEL_CLASS);
         return PropertyPanel.createById(driver, String.format(BOTTOM_PROPERTY_PANEL_ID, type, type));
-    }
-
-    @Deprecated
-    public PropertiesFilter getBottomPropertiesFilter(String type) {
-        Widget.waitForWidget(wait, PropertiesFilter.PROPERTIES_FILTER_CLASS);
-        return PropertiesFilter.create(driver, wait);
-    }
-
-    @Deprecated
-    public PropertiesFilter getTopPropertiesFilter(String type) {
-        Widget.waitForWidget(wait, PropertiesFilter.PROPERTIES_FILTER_CLASS);
-        return PropertiesFilter.create(driver, wait);
     }
 
     @Step("Open Hierarchy View")
@@ -99,5 +90,48 @@ public class HierarchyViewPage extends BasePage {
     public HierarchyViewPage selectFirstObject() {
         getTreeWidget().selectNode();
         return this;
+    }
+
+    @Step("Use tree context action")
+    public void useTreeContextAction(String groupId, String actionId) {
+        getTreeWidget().callActionById(groupId, actionId);
+    }
+
+    @Step("Click {label} in Confirmation box")
+    public void clickButtonInConfirmationBox(String label) {
+        Wizard wizard = Wizard.createByComponentId(driver, wait, "Popup");
+        wizard.clickButtonByLabel(label);
+    }
+
+    @Step("Search in Hierarchy View for {text}")
+    public void performSearch(String text) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getTreeWidget().performSearch(text);
+    }
+
+    @Step("Expand tree node by label - {label}")
+    public void expandTreeNode(String label) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getTreeWidget().expandNodeWithLabel(label);
+    }
+
+    @Step("Expand first collapsed tree node")
+    public void expandFirstCollapsedTreeNode() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getTreeWidget().expandNode();
+    }
+
+    @Step("Select tree node by position - {position}")
+    public void selectNodeByPosition(int position) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getTreeWidget()
+                .selectNodeByPosition(position);
+    }
+
+    @Step("Select tree node by label - {label}")
+    public void selectNodeByLabel(String label) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getTreeWidget()
+                .selectNodeByLabel(label);
     }
 }

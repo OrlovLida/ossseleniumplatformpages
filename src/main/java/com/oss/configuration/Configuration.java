@@ -50,8 +50,7 @@ public class Configuration {
     }
 
     public String getApplicationPort() {
-        String port = getUrl().split(":")[2];
-        return port;
+        return CONFIGURATION.getValue("port");
     }
 
 }

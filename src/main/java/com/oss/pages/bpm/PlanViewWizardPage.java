@@ -8,20 +8,20 @@ import com.oss.pages.BasePage;
 import org.openqa.selenium.WebDriver;
 
 public class PlanViewWizardPage extends BasePage {
-    private String LEFT_SIDE_TAB_DATA_ATTRIBUTE_NAME =  "plaPlanView_leftSideTabs";
     private String VALIDATION_TABLE_DATA_ATTRIBUTE_NAME = "plaPlanView_validationTable";
+
     public PlanViewWizardPage(WebDriver driver) {
         super(driver);
     }
 
-    public void selectTab(String label){
+    public void selectTab(String label) {
         DelayUtils.waitForPageToLoad(driver, wait);
         TabsInterface tab = TabWindowWidget.create(driver, wait);
         tab.selectTabByLabel(label);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    public boolean validationErrorsPresent(){
+    public boolean validationErrorsPresent() {
         DelayUtils.waitForPageToLoad(driver, wait);
         OldTable oldTable = OldTable.createByComponentDataAttributeName(driver, wait, VALIDATION_TABLE_DATA_ATTRIBUTE_NAME);
         return oldTable.hasNoData();

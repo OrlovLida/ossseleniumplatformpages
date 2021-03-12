@@ -1,8 +1,5 @@
 package com.oss.E2E;
 
-import java.time.LocalDate;
-import java.util.regex.Pattern;
-
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
@@ -14,10 +11,6 @@ import com.oss.framework.alerts.SystemMessageContainer.Message;
 import com.oss.framework.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.tablewidget.OldTable;
-import com.oss.framework.widgets.tablewidget.TableInterface;
-import com.oss.pages.bpm.IntegrationProcessWizardPage;
-import com.oss.pages.bpm.ProcessInstancesPage;
 import com.oss.pages.bpm.ProcessWizardPage;
 import com.oss.pages.bpm.TasksPage;
 import com.oss.pages.platform.HomePage;
@@ -30,40 +23,38 @@ import com.oss.pages.radio.RanAntennaWizardPage;
 import com.oss.utils.RandomGenerator;
 import com.oss.utils.TestListener;
 
+import io.qameta.allure.Description;
+
 @Listeners({ TestListener.class })
 public class TP_OSS_RM_RAN_002 extends BaseTestCase {
 
     private String processNRPCode;
     private CellSiteConfigurationPage cellSiteConfigurationPage;
-    private AntennaArrayWizardPage antennaArrayWizardPage;
-    private String LOCATION_NAME = "Poznan-BU1";
-    private String ANTENNA_NAME_0 = "TP_OSS_RM_RAN_002_ANTENNA_0";
-    private String ANTENNA_NAME_1 = "TP_OSS_RM_RAN_002_ANTENNA_1";
-    private String ANTENNA_NAME_2 = "TP_OSS_RM_RAN_002_ANTENNA_2";
-    private String[] ANTENNA_NAMES = { ANTENNA_NAME_0, ANTENNA_NAME_1, ANTENNA_NAME_2 };
-    private String RAN_ANTENNA_MODEL = "HUAWEI Technology Co.,Ltd AAU5614";
-    private String GNODEB_NAME = "TP_OSS_RM_RAN_002_GNODEB";
-    private String BBU_NAME = "TP_OSS_RM_RAN_002_BBU";
-    private String GNODEB_MODEL = "HUAWEI Technology Co.,Ltd gNodeB";
-    private String randomGNodeBId = RandomGenerator.generateRandomGNodeBId();
-    private String CELL5G_NAME_0 = "TP_OSS_RM_RAN_002_CELL5G_0";
-    private String CELL5G_NAME_1 = "TP_OSS_RM_RAN_002_CELL5G_1";
-    private String CELL5G_NAME_2 = "TP_OSS_RM_RAN_002_CELL5G_2";
-    private String[] CELL5G_NAMES = { CELL5G_NAME_0, CELL5G_NAME_1, CELL5G_NAME_2 };
-    private String CELL5G_CARRIER = "NR3600-n78 (64200)";
-    private String perspectiveContext;
-    private String processIPCode;
-    private String processIPName = "TP_OSS_RM_RAN_002_" + (int) (Math.random() * 1001);
-    private int[] LOCAL_CELLS_ID = {7,8,9};
+    private static final String LOCATION_NAME = "Poznan-BU1";
+    private static final String ANTENNA_NAME_0 = "TP_OSS_RM_RAN_002_ANTENNA_0";
+    private static final String ANTENNA_NAME_1 = "TP_OSS_RM_RAN_002_ANTENNA_1";
+    private static final String ANTENNA_NAME_2 = "TP_OSS_RM_RAN_002_ANTENNA_2";
+    private static final String[] ANTENNA_NAMES = { ANTENNA_NAME_0, ANTENNA_NAME_1, ANTENNA_NAME_2 };
+    private static final String RAN_ANTENNA_MODEL = "HUAWEI Technology Co.,Ltd AAU5614";
+    private static final String GNODEB_NAME = "TP_OSS_RM_RAN_002_GNODEB";
+    private static final String BBU_NAME = "TP_OSS_RM_RAN_002_BBU";
+    private static final String GNODEB_MODEL = "HUAWEI Technology Co.,Ltd gNodeB";
+    private static final String randomGNodeBId = RandomGenerator.generateRandomGNodeBId();
+    private static final String CELL5G_NAME_0 = "TP_OSS_RM_RAN_002_CELL5G_0";
+    private static final String CELL5G_NAME_1 = "TP_OSS_RM_RAN_002_CELL5G_1";
+    private static final String CELL5G_NAME_2 = "TP_OSS_RM_RAN_002_CELL5G_2";
+    private static final String[] CELL5G_NAMES = { CELL5G_NAME_0, CELL5G_NAME_1, CELL5G_NAME_2 };
+    private static final String CELL5G_CARRIER = "NR3600-n78 (64200)";
+    private static final int[] LOCAL_CELLS_ID = { 7, 8, 9 };
 
     @BeforeClass
     public void openNetworkDiscoveryControlView() {
-        ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);
     }
 
     @Test(priority = 1)
+    @Description("Create NRP Process")
     public void createProcessNRP() {
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
         processNRPCode = processWizardPage.createSimpleNRP();
@@ -73,6 +64,7 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
     }
 
     @Test(priority = 2)
+    @Description("Start High Level Planning Task")
     public void startHLPTask() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.startTask(processNRPCode, "High Level Planning");
@@ -114,7 +106,7 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
             ranAntennaWizardPage.setPreciseLocation(LOCATION_NAME);
             ranAntennaWizardPage.clickAccept();
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            antennaArrayWizardPage = new AntennaArrayWizardPage(driver);
+            AntennaArrayWizardPage antennaArrayWizardPage = new AntennaArrayWizardPage(driver);
             antennaArrayWizardPage.clickAccept();
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             checkMessageType();
@@ -126,11 +118,11 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
         cellSiteConfigurationPage.selectTreeRow(GNODEB_NAME);
         cellSiteConfigurationPage.selectTab("Hosting");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        cellSiteConfigurationPage.clickPlusIconByLabel("Host on Device");
+        cellSiteConfigurationPage.useTableContextActionByLabel("Host on Device");
         HostingWizardPage hostOnDeviceWizard = new HostingWizardPage(driver);
         hostOnDeviceWizard.onlyCompatible("false");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        hostOnDeviceWizard.selectDevice(BBU_NAME);
+        hostOnDeviceWizard.setDevice(BBU_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hostOnDeviceWizard.clickAccept();
         checkMessageType();
@@ -142,7 +134,7 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
             cellSiteConfigurationPage.selectTab("Hosting");
             cellSiteConfigurationPage.clickPlusIconAndSelectOption("Host on Antenna Array");
             HostingWizardPage hostOnAntennaWizard = new HostingWizardPage(driver);
-            hostOnAntennaWizard.selectArray(ANTENNA_NAMES[i]);
+            hostOnAntennaWizard.setHostingContains(ANTENNA_NAMES[i]);
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             hostOnAntennaWizard.clickAccept();
             checkMessageType();
@@ -151,109 +143,13 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
     }
 
     @Test(priority = 7)
-    public void completeHLPTask() {
+    @Description("Finish rest of NRP and IP Tasks")
+    public void finishProcessesTasks() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.completeTask(processNRPCode, "High Level Planning");
-        checkTaskCompleted();
+        tasksPage.completeNRP(processNRPCode);
     }
 
     @Test(priority = 8)
-    public void startLLPTask() {
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.startTask(processNRPCode, "Low Level Planning");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        checkTaskAssignment();
-        String currentUrl = driver.getCurrentUrl();
-        String[] split = currentUrl.split(Pattern.quote("?"));
-        perspectiveContext = split[1];
-        Assert.assertTrue(perspectiveContext.contains("PLAN"));
-    }
-
-    @Test(priority = 9)
-    public void completeLLPTask() {
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.completeTask(processNRPCode, "Low Level Planning");
-        checkTaskCompleted();
-    }
-
-    @Test(priority = 10)
-    public void startRFITask() {
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.startTask(processNRPCode, "Ready for Integration");
-        checkTaskAssignment();
-    }
-
-    @Test(priority = 11)
-    public void setupIntegration() {
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.setupIntegration(processNRPCode);
-        IntegrationProcessWizardPage integrationWizard = new IntegrationProcessWizardPage(driver);
-        integrationWizard.defineIntegrationProcess(processIPName, LocalDate.now().plusDays(0).toString(), 1);
-        integrationWizard.clickNext();
-        //TODO dostosować do nowej wersji drag and drop
-//        integrationWizard.dragAndDrop(GNODEB_NAME, processIPName);
-        integrationWizard.clickAccept();
-    }
-
-    @Test(priority = 12)
-    public void getIPCode() {
-        DelayUtils.sleep(3000);
-        TableInterface ipTable = OldTable.createByComponentId(driver, webDriverWait, "ip_involved_nrp_group1");
-        int rowNumber = ipTable.getRowNumber(processIPName, "Name");
-        processIPCode = ipTable.getCellValue(rowNumber, "Code");
-        System.out.println(processIPCode);
-    }
-
-    @Test(priority = 13)
-    public void completeRFITask() {
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.completeTask(processNRPCode, "Ready for Integration");
-        checkTaskCompleted();
-    }
-
-    @Test(priority = 14)
-    public void startSDTaskIP() {
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.startTask(processIPCode, "Scope definition");
-        checkTaskAssignment();
-    }
-
-    @Test(priority = 15)
-    public void completeSDTaskIP() {
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.completeTask(processIPCode, "Scope definition");
-        checkTaskCompleted();
-    }
-
-    @Test(priority = 16)
-    public void startImplementationTaskIP() {
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.startTask(processIPCode, "Implementation");
-        checkTaskAssignment();
-    }
-
-    @Test(priority = 17)
-    public void completeImplementationTaskIP() {
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.completeTask(processIPCode, "Implementation");
-        checkTaskCompleted();
-    }
-
-    @Test(priority = 18)
-    public void startAcceptanceTaskIP() {
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.startTask(processIPCode, "Acceptance");
-        checkTaskAssignment();
-    }
-
-    @Test(priority = 19)
-    public void completeAcceptanceTaskIP() {
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.completeTask(processIPCode, "Acceptance");
-        checkTaskCompleted();
-    }
-
-    @Test(priority = 20)
     public void deleteHostingRelation() {
         cellSiteConfigurationPage.selectTreeRow(LOCATION_NAME);
         cellSiteConfigurationPage.selectTab("Hosting");
@@ -275,7 +171,7 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
         }
     }
 
-    @Test(priority = 21)
+    @Test(priority = 9)
     public void deleteRanAntenna() {
         for (String ranAntenna : ANTENNA_NAMES) {
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -286,7 +182,7 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
         }
     }
 
-    @Test(priority = 22)
+    @Test(priority = 10)
     public void delete5Gcells() {
         cellSiteConfigurationPage.selectTreeRow(GNODEB_NAME);
         for (String cell : CELL5G_NAMES) {
@@ -297,7 +193,7 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
         }
     }
 
-    @Test(priority = 23)
+    @Test(priority = 11)
     public void delete5Gnode() {
         cellSiteConfigurationPage.selectTreeRow(LOCATION_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -342,10 +238,5 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
     private void checkTaskAssignment() {
         checkMessageType();
         checkMessageText("The task properly assigned.");
-    }
-
-    private void checkTaskCompleted() {
-        checkMessageType();
-        checkMessageContainsText("Task properly completed.");
     }
 }

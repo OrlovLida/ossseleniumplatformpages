@@ -4,13 +4,11 @@ import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.google.common.collect.Multimap;
 import com.oss.framework.components.common.AttributesChooser;
-import com.oss.framework.components.inputs.Button;
-import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.Input.ComponentType;
 import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.components.portals.SaveConfigurationWizard.Field;
@@ -32,8 +30,6 @@ import io.qameta.allure.Step;
 
 public class NewInventoryViewPage extends BasePage {
 
-    private static final String LOAD_BAR = "//div[@class='load-bar']";
-
     @Step("Open Inventory View")
     public static NewInventoryViewPage goToInventoryViewPage(WebDriver driver, String basicURL, String type) {
         driver.get(String.format("%s/#/views/management/views/inventory-view/" + type +
@@ -43,26 +39,27 @@ public class NewInventoryViewPage extends BasePage {
         return new NewInventoryViewPage(driver, wait);
     }
 
-    @Deprecated
-    public NewInventoryViewPage(WebDriver driver) {
-        super(driver);
+    public static NewInventoryViewPage getInventoryViewPage(WebDriver driver, WebDriverWait wait) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return new NewInventoryViewPage(driver, wait);
     }
 
-    private NewInventoryViewPage(WebDriver driver, WebDriverWait wait) {
+    public NewInventoryViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
     }
 
-    //Main table operations
+    // Main table operations
 
     public TableWidget getMainTable() {
         Widget.waitForWidget(wait, TableWidget.TABLE_WIDGET_CLASS);
-        return TableWidget.create(driver, TableWidget.TABLE_WIDGET_CLASS, wait);
+        return TableWidget.createById(driver, "InventoryView_MainWidget_" + getTypeBasedOnUrl(driver.getCurrentUrl()), wait);
     }
 
-    public void searchObject(String text) {
+    public NewInventoryViewPage searchObject(String text) {
         TableWidget mainTable = getMainTable();
         mainTable.typeIntoSearch(text);
         DelayUtils.waitForPageToLoad(driver, wait);
+        return this;
     }
 
     @Step("Pick first row")
@@ -74,6 +71,12 @@ public class NewInventoryViewPage extends BasePage {
     public void selectObjectByRowId(int rowId) {
         TableWidget mainTable = getMainTable();
         mainTable.selectRow(rowId);
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    public void unselectObjectByRowId(int rowId) {
+        TableWidget mainTable = getMainTable();
+        mainTable.unselectTableRow(0);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
@@ -117,6 +120,13 @@ public class NewInventoryViewPage extends BasePage {
         return filterValues;
     }
 
+    @Step("Clear all filters")
+    public void clearFilters() {
+        TableWidget mainTable = getMainTable();
+        mainTable.clearAllFilters();
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
     public String getAttributeValue(String attributeLabel, int rowId) {
         TableWidget mainTable = getMainTable();
         return mainTable.getCellValue(rowId, attributeLabel);
@@ -136,7 +146,7 @@ public class NewInventoryViewPage extends BasePage {
     @Step("Check if table has no data")
     public boolean checkIfTableIsEmpty() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        return getMainTable().checkIfTableIsEmpty();
+        return getMainTable().hasNoData();
     }
 
     @Step("Open Filter Panel")
@@ -149,21 +159,19 @@ public class NewInventoryViewPage extends BasePage {
         return new FilterPanelPage(driver);
     }
 
-    @Step("Set value in Filter Panel")
-    @Deprecated
-    public FilterPanelPage setFilterPanel(String componentId, String value) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        openFilterPanel().setValue(Input.ComponentType.TEXT_FIELD, componentId, value).applyFilter();
-        return new FilterPanelPage(driver);
-    }
-
     @Step("Call {actionId} action from {groupId} group")
     public NewInventoryViewPage callAction(String groupId, String actionId) {
         getMainTable().callAction(groupId, actionId);
         return this;
     }
 
+    @Step("Call context action by ID : {actionId}")
+    public void callActionById(String actionId) {
+        getMainTable().callAction(actionId);
+    }
+
     @Step("Clear all tags")
+    @Deprecated
     public NewInventoryViewPage clearAllTags() {
         DelayUtils.waitForPageToLoad(driver, wait);
         AdvancedSearch advancedSearch = new AdvancedSearch(driver, wait);
@@ -191,6 +199,16 @@ public class NewInventoryViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         getMainTable().openSaveConfigurationWizard().saveAsNew(configurationName, fields);
         return this;
+    }
+
+    @Step("Refresh main table")
+    public void refreshMainTable() {
+        callAction(ActionsContainer.KEBAB_GROUP_ID, TableWidget.REFRESH_ACTION_ID);
+    }
+
+    @Step("Refresh main table unit there is no data")
+    public void doRefreshWhileNoData() {
+        getMainTable().doRefreshWhileNoData(10000, TableWidget.REFRESH_ACTION_ID);
     }
 
     //Details operations
@@ -259,19 +277,9 @@ public class NewInventoryViewPage extends BasePage {
         return null;
     }
 
-    //TODO: add getMethods for popup and property panel
+    // TODO: add getMethods for popup and property panel
 
-    //TODO: wrap WebElement
-    @Deprecated
-    public WebElement getLoadBar() {
-        return this.driver.findElement(By.xpath(LOAD_BAR));
-    }
-
-    public boolean isLoadBarDisplayed() {
-        return getLoadBar().isDisplayed();
-    }
-
-    //View's operations
+    // View's operations
 
     @Step("Change layout to Horizontal Orientation")
     public NewInventoryViewPage changeLayoutToHorizontal() {
@@ -284,7 +292,7 @@ public class NewInventoryViewPage extends BasePage {
         return this;
     }
 
-    //TODO: create layoutWrapper component
+    // TODO: create layoutWrapper component
     public int howManyRows() {
         return driver.findElements(By.xpath("//div[@class='view-v2-content']/div/div[@class='row']")).size();
     }
@@ -300,22 +308,23 @@ public class NewInventoryViewPage extends BasePage {
         return this;
     }
 
-    @Step("Delete object")
-    @Deprecated
-    public NewInventoryViewPage deleteObject() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        Button.createBySelectorAndId(driver, "a", "DeleteVLANRangeContextAction").click();
-        DelayUtils.waitForPageToLoad(driver, wait);
-        getWizard().clickButtonByLabel("OK");
-        DelayUtils.waitForPageToLoad(driver, wait);
+    @Step("Change Properties order")
+    public NewInventoryViewPage changePropertiesOrder(int rowId, String widgetId, String propertyLabel, int position) {
+        getPropertyPanel(rowId, widgetId).changePropertyOrder(propertyLabel, position);
         return this;
     }
 
     @Step("Save configuration for properties")
-    public NewInventoryViewPage saveConfigurationForProperties(String configurationName, Field... fields) {
+    public NewInventoryViewPage saveConfigurationForProperties(int rowId, String widgetId, String configurationName, Field... fields) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getPropertiesFilter().openSaveAsNewConfigurationWizard().saveAsNew(configurationName, fields);
+        getPropertyPanel(rowId, widgetId).openSaveAsNewConfigurationWizard().saveAsNew(configurationName, fields);
         return this;
+    }
+
+    @Step("Delete properties configuration")
+    public void deletePropertiesConfiguration(int rowId, String widgetId, String configurationName) {
+        getPropertyPanel(rowId, widgetId).openChooseConfigurationWizard().deleteConfiguration(configurationName);
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     @Step("Save configuration for page")
@@ -382,16 +391,17 @@ public class NewInventoryViewPage extends BasePage {
     }
 
     @Step("Delete configuration for tabs")
-    public NewInventoryViewPage deleteConfigurationForTabs(String configurationName) {
+    public NewInventoryViewPage deleteConfigurationForTabs(int rowId, String tabsId, String configurationName) {
         DelayUtils.waitForPageToLoad(driver, wait);
+        selectObjectByRowId(rowId);
         getTabsWidget().openChooseConfigurationWizard().deleteConfiguration(configurationName).cancel();
         return this;
     }
 
     @Step("Delete configuration for properties")
-    public NewInventoryViewPage deleteConfigurationForProperties(String configurationName) {
+    public NewInventoryViewPage deleteConfigurationForProperties(int rowId, String propertyPanelId, String configurationName) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getPropertiesFilter().openChooseConfigurationWizard().deleteConfiguration(configurationName).cancel();
+        getPropertyPanel(rowId, propertyPanelId).openChooseConfigurationWizard().deleteConfiguration(configurationName).cancel();
         return this;
     }
 
@@ -450,8 +460,7 @@ public class NewInventoryViewPage extends BasePage {
     @Step("Open Hierarchy View for selected object")
     public HierarchyViewPage goToHierarchyViewForSelectedObject() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getMainTable().getContextActions().callActionById("NAVIGATION");
-        DropdownList.create(driver, wait).selectOptionWithId("WebManagement_HierarchicalView");
+        callAction(ActionsContainer.SHOW_ON_GROUP_ID, "WebManagement_HierarchicalView");
         return new HierarchyViewPage(driver);
     }
 
@@ -478,6 +487,17 @@ public class NewInventoryViewPage extends BasePage {
     public boolean isOnlyOneObject(String id) {
         DelayUtils.waitForPageToLoad(driver, wait);
         return getMainTable().howManyRowsOnFirstPage() == 1 && getIdOfMainTableObject(0).equals(id);
+    }
+
+    private static String getTypeBasedOnUrl(String url) {
+        String normalizedUrl = url.replace('?', '/');
+        String[] urlParts = normalizedUrl.split("/");
+        for (int i = 0; i < (urlParts.length - 1); i++) {
+            if (urlParts[i].equals("inventory-view")) {
+                return urlParts[i + 1];
+            }
+        }
+        throw new IllegalStateException("Current page does not corresponds with New Inventory View");
     }
 
 }

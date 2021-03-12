@@ -15,7 +15,8 @@ public class IRBInterfaceWizardPage extends BasePage {
     private static final String IRB_VLANID_ID = "irb-main-vlanid";
     private static final String IRB_MTU_ID = "irb-main-mtu";
     private static final String IRB_DESCRIPTION_ID = "irb-main-description";
-    private static final String WIZARD_ID = "Popup";
+    private static final String WIZARD_ID = "irbInterfaceWizard";
+    private static final String EDIT_WIZARD_ID = "irbInterfaceEditWizard";
 
     public IRBInterfaceWizardPage(WebDriver driver) {
         super(driver);
@@ -34,11 +35,11 @@ public class IRBInterfaceWizardPage extends BasePage {
     @Step("Edit IRB Interface and set MTU {mtu} and description {description}")
     public IRBInterfaceWizardPage editIRBInterface(String mtu, String description) {
         waitForPageToLoad();
-        getWizard().setComponentValue(IRB_MTU_ID, mtu, Input.ComponentType.TEXT_FIELD);
+        getEditWizard().setComponentValue(IRB_MTU_ID, mtu, Input.ComponentType.TEXT_FIELD);
         waitForPageToLoad();
-        getWizard().setComponentValue(IRB_DESCRIPTION_ID, description, Input.ComponentType.TEXT_FIELD);
+        getEditWizard().setComponentValue(IRB_DESCRIPTION_ID, description, Input.ComponentType.TEXT_FIELD);
         waitForPageToLoad();
-        getWizard().clickAccept();
+        getEditWizard().clickAccept();
         return this;
     }
 
@@ -48,5 +49,9 @@ public class IRBInterfaceWizardPage extends BasePage {
 
     private Wizard getWizard() {
         return Wizard.createByComponentId(driver, wait, WIZARD_ID);
+    }
+
+    private Wizard getEditWizard() {
+        return Wizard.createByComponentId(driver, wait, EDIT_WIZARD_ID);
     }
 }

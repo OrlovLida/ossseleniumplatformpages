@@ -2,7 +2,7 @@ properties([
         [$class: 'GitLabConnectionProperty', gitLabConnection: 'GitlabMakumba'],
         disableConcurrentBuilds()
 ])
-String cron_string = BRANCH_NAME == "master" ? "0 22 * * *" : ""
+String cron_string = BRANCH_NAME == "master" ? "5 22 * * *" : ""
 
 def sendEmail(){
     script {
@@ -24,6 +24,7 @@ def sendEmail(){
 pipeline {
     agent any
     triggers {
+        gitlab(triggerOnPush: true)
         cron(cron_string)
     }
     options {

@@ -1,18 +1,13 @@
 package com.oss.pages.physical;
 
-import org.openqa.selenium.WebDriver;
-
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
-
 import io.qameta.allure.Step;
+import org.openqa.selenium.WebDriver;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.DATE_TIME;
-import static com.oss.framework.components.inputs.Input.ComponentType.SEARCH_FIELD;
-import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_AREA;
-import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
+import static com.oss.framework.components.inputs.Input.ComponentType.*;
 
 public class DeviceWizardPage extends BasePage {
 
@@ -59,17 +54,22 @@ public class DeviceWizardPage extends BasePage {
         DelayUtils.sleep(250);
         setName(name);
         DelayUtils.sleep(250);
-        setPreciseLocationContains(" ");
+        setPreciseLocation(" ");
         DelayUtils.sleep(250);
         create();
     }
 
-    @Step("Create Device with mandatory fields (Equipment type, Model, Name, Location, Precise Location) filled in")
-    public void createDevice(String model, String name, String preciseLocation) {
+    @Step("Create Device with mandatory fields (Equipment type, Model, Name, Location, Physical Location, Precise Location) filled in")
+    public void createDevice(String model, String name, String location) {
+        DelayUtils.waitForPageToLoad(driver, wait);
         setModel(model);
+        DelayUtils.waitForPageToLoad(driver, wait);
         setName(name);
-        setPreciseLocationContains(preciseLocation);
-        create();
+        next();
+        DelayUtils.waitForPageToLoad(driver, wait);
+        setPreciseLocation(location);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        accept();
     }
 
     @Step("Set Equipment Type")
@@ -77,10 +77,9 @@ public class DeviceWizardPage extends BasePage {
         getDeviceWizard().setComponentValue(DEVICE_EQUIPMENT_TYPE_DATA_ATTRIBUTE_NAME, equipmentType, SEARCH_FIELD);
     }
 
-    @Step("Set Model")
+    @Step("Set Model using contains")
     public void setModel(String model) {
         getDeviceWizard().getComponent(DEVICE_MODEL_DATA_ATTRIBUTE_NAME, SEARCH_FIELD).setSingleStringValueContains(model);
-
     }
 
     @Step("Set Name")
@@ -98,30 +97,29 @@ public class DeviceWizardPage extends BasePage {
         getDeviceWizard().setComponentValue(DEVICE_CHASSIS_ID_DATA_ATTRIBUTE_NAME, chassisId, TEXT_FIELD);
     }
 
-    @Step("Set Location")
+    @Step("Set Location using contains")
     public void setLocation(String location) {
-        getDeviceWizard().setComponentValue(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME, location, SEARCH_FIELD);
-    }
-
-    @Step("Set Precise Location")
-    public void setPreciseLocation(String preciseLocation) {
-        getDeviceWizard().setComponentValue(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, preciseLocation, SEARCH_FIELD);
-    }
-
-    @Step("Set Precise Location")
-    public void setPreciseLocationContains(String preciseLocation) {
-        if (getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, Input.ComponentType.SEARCH_FIELD)
+        if (getDeviceWizard().getComponent(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME, SEARCH_FIELD)
                 .getStringValue().isEmpty()) {
-            getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, SEARCH_FIELD)
+            getDeviceWizard().getComponent(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME, SEARCH_FIELD)
+                    .setSingleStringValueContains(location);
+        }
+    }
+
+    @Step("Set Physical Location using contains")
+    public void setPhysicalLocation(String preciseLocation) {
+        if (getDeviceWizard().getComponent(DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, Input.ComponentType.SEARCH_FIELD)
+                .getStringValue().isEmpty()) {
+            getDeviceWizard().getComponent(DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, SEARCH_FIELD)
                     .setSingleStringValueContains(preciseLocation);
         }
     }
 
-    @Step("Set Physical Location")
-    public void setPhysicalLocationContains(String preciseLocation) {
-        if (getDeviceWizard().getComponent(DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, Input.ComponentType.SEARCH_FIELD)
+    @Step("Set Precise Location using contains")
+    public void setPreciseLocation(String preciseLocation) {
+        if (getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, Input.ComponentType.SEARCH_FIELD)
                 .getStringValue().isEmpty()) {
-            getDeviceWizard().getComponent(DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, SEARCH_FIELD)
+            getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, SEARCH_FIELD)
                     .setSingleStringValueContains(preciseLocation);
         }
     }
@@ -168,10 +166,6 @@ public class DeviceWizardPage extends BasePage {
 
     @Step("Set Description")
     public void setDescription(String description) {
-        if (getDeviceWizard().getComponent(DEVICE_DESCRIPTION_DATA_ATTRIBUTE_NAME, TEXT_AREA).getStringValue().isEmpty()) {
-        } else {
-            getDeviceWizard().getComponent(DEVICE_DESCRIPTION_DATA_ATTRIBUTE_NAME, TEXT_AREA).clear();
-        }
         getDeviceWizard().setComponentValue(DEVICE_DESCRIPTION_DATA_ATTRIBUTE_NAME, description, TEXT_AREA);
     }
 
@@ -221,7 +215,7 @@ public class DeviceWizardPage extends BasePage {
     //TODO change name of method to nextCreateWizard
     @Step("Click Next button in Create Device Wizard")
     public void next() {
-        getDeviceWizard().clickActionById(NEXT_BUTTON_CREATE_WIZARD_DATA_ATTRIBUTE_NAME);
+        getDeviceWizard().clickNext();
     }
 
     @Step("Click Next button in Update Device Wizard")
@@ -232,7 +226,7 @@ public class DeviceWizardPage extends BasePage {
     //TODO change name of method to acceptCreateWizard
     @Step("Click Accept button in Create Device Wizard")
     public void accept() {
-        getDeviceWizard().clickActionById(ACCEPT_BUTTON_DATA_ATTRIBUTE_NAME);
+        getDeviceWizard().clickAccept();
     }
 
     @Step("Click Accept button in Update Device Wizard")

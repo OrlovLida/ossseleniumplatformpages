@@ -1,0 +1,34 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="RegressionSuiteWeb-INVESTGA" thread-count="2" parallel="tests" verbose="1">
+    <test name="CreateVRFTest">
+        <classes>
+            <class name="com.oss.transport.CreateVRFTest"/>
+        </classes>
+    </test>
+    <test name="IPAMTest">
+        <classes>
+            <class name="com.oss.transport.IPAMTest"/>
+        </classes>
+    </test>
+    <test name="AEITest">
+        <classes>
+            <class name="com.oss.transport.AEITest"/>
+        </classes>
+    </test>
+    <test name="VSITest">
+        <classes>
+            <class name="com.oss.transport.VSITest"/>
+        </classes>
+    </test>
+    <test name="TrafficClassTest">
+        <classes>
+            <class name="com.oss.transport.TrafficClassTest"/>
+        </classes>
+    </test>
+    <test name="LoopbackInterfaceTest">
+        <classes>
+            <class name="com.oss.transport.LoopbackInterfaceTest"/>
+        </classes>
+    </test>
+
+</suite>

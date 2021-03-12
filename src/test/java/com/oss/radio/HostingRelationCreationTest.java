@@ -65,11 +65,11 @@ public class HostingRelationCreationTest extends BaseTestCase {
     @Description("Create hosting relation between eNodeB and BBU")
     public void hostENodeBOnBBU() {
         cellSiteConfigurationPage.selectTab(hostingTabName);
-        cellSiteConfigurationPage.clickPlusIconByLabel("Host on Device");
+        cellSiteConfigurationPage.useTableContextActionByLabel("Host on Device");
         HostingWizardPage wizard = new HostingWizardPage(driver);
         wizard.onlyCompatible(showOnlyCompatible);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        wizard.selectDevice(nameOfBBU);
+        wizard.setDevice(nameOfBBU);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         wizard.clickAccept();
         checkPopup();
@@ -90,7 +90,7 @@ public class HostingRelationCreationTest extends BaseTestCase {
     public void hostCell4GOnRRU() {
         cellSiteConfigurationPage.clickPlusIconAndSelectOption("Host on Device");
         HostingWizardPage wizard = new HostingWizardPage(driver);
-        wizard.selectDevice(nameOfRRU);
+        wizard.setDevice(nameOfRRU);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         wizard.clickAccept();
         checkPopup();
@@ -102,7 +102,7 @@ public class HostingRelationCreationTest extends BaseTestCase {
     public void hostCell4GOnRANAntennaArray() {
         cellSiteConfigurationPage.clickPlusIconAndSelectOption("Host on Antenna Array");
         HostingWizardPage wizard = new HostingWizardPage(driver);
-        wizard.selectArray(antennaArrayName);
+        wizard.setHostingContains(antennaArrayName);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         wizard.clickAccept();
         checkPopup();
