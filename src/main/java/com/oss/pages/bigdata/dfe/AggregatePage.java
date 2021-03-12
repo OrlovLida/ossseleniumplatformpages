@@ -1,6 +1,5 @@
 package com.oss.pages.bigdata.dfe;
 
-import com.oss.framework.components.contextactions.OldActionsContainer;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.SearchField;
@@ -9,7 +8,6 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -22,11 +20,13 @@ public class AggregatePage extends BasePage {
     private final String TABLE_ID = "aggregates-tableAppId";
     private final String NAME_COLUMN_LABEL = "Name";
     private final String DELETE_LABEL = "Delete";
-    private final OldTable aggregatesTable;
 
     private AggregatePage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
-        this.aggregatesTable = OldTable.createByComponentDataAttributeName(driver, wait, TABLE_ID);
+    }
+
+    private OldTable getTable(WebDriver driver, WebDriverWait wait) {
+        return OldTable.createByComponentDataAttributeName(driver, wait, TABLE_ID);
     }
 
     @Step("I Open Aggregates View")
@@ -44,25 +44,22 @@ public class AggregatePage extends BasePage {
     }
 
     public int getNumberOfRowsInTable(){
-        return aggregatesTable.getNumberOfRowsInTable(NAME_COLUMN_LABEL);
+        return getTable(driver, wait).getNumberOfRowsInTable(NAME_COLUMN_LABEL);
     }
 
     @Step("I click add new Aggregate")
     public void clickAddNewAggregate(){
-        OldActionsContainer contextActions = OldActionsContainer.createFromParent(driver, wait, driver.findElement(By.className("OssWindow")));
-        contextActions.callActionByLabel(ADD_NEW_AGGREGATE_LABEL);
+        getTable(driver, wait).callActionByLabel(ADD_NEW_AGGREGATE_LABEL);
     }
 
     @Step("I click edit Aggregate")
     public void clickEditAggregate(){
-        OldActionsContainer contextActions = OldActionsContainer.createFromParent(driver, wait, driver.findElement(By.className("OssWindow")));
-        contextActions.callActionByLabel(EDIT_AGGREGATE_LABEL);
+        getTable(driver, wait).callActionByLabel(EDIT_AGGREGATE_LABEL);
     }
 
     @Step("I click delete Aggregate")
     public void clickDeleteAggregate(){
-        OldActionsContainer contextActions = OldActionsContainer.createFromParent(driver, wait, driver.findElement(By.className("OssWindow")));
-        contextActions.callActionByLabel(DELETE_AGGREGATE_LABEL);
+        getTable(driver, wait).callActionByLabel(DELETE_AGGREGATE_LABEL);
     }
 
     @Step("I check if Aggregate: {aggregateName} exists into the table")
@@ -74,7 +71,7 @@ public class AggregatePage extends BasePage {
 
     @Step("I select found Aggegate")
     public void selectFoundAggregate(){
-        aggregatesTable.selectRow(0);
+        getTable(driver, wait).selectRow(0);
     }
 
     @Step("I confirm the removal of Aggregate")
