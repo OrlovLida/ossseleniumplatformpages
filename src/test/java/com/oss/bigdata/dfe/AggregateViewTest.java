@@ -29,7 +29,7 @@ public class AggregateViewTest extends BaseTestCase {
 
     @BeforeClass
     public void goToAggregateView(){
-        aggregatePage = AggregatePage.goToAggregatePage(driver, BASIC_URL);
+        aggregatePage = AggregatePage.goToPage(driver, BASIC_URL);
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy_MM_dd");
         String date = simpleDateFormat.format(new Date());
