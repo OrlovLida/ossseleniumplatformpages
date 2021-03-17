@@ -103,22 +103,35 @@ public class HierarchyViewPage extends BasePage {
         wizard.clickButtonByLabel(label);
     }
 
-    @Step("Search tree row by text - {text}")
-    public void searchTreeRowByText(String text) {
+    @Step("Search in Hierarchy View for {text}")
+    public void performSearch(String text) {
         DelayUtils.waitForPageToLoad(driver, wait);
         getTreeWidget().performSearch(text);
     }
 
-    @Step("Expand tree row by label - {label}")
-    public void expandTreeRowContains(String label) {
+    @Step("Expand tree node by label - {label}")
+    public void expandTreeNode(String label) {
         DelayUtils.waitForPageToLoad(driver, wait);
         getTreeWidget().expandNodeWithLabel(label);
     }
 
-    @Step("Select tree row by position - {position}")
-    public void selectTreeRowByPosition(int position) {
+    @Step("Expand first collapsed tree node")
+    public void expandFirstCollapsedTreeNode() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getTreeWidget().expandNode();
+    }
+
+    @Step("Select tree node by position - {position}")
+    public void selectNodeByPosition(int position) {
         DelayUtils.waitForPageToLoad(driver, wait);
         getTreeWidget()
                 .selectNodeByPosition(position);
+    }
+
+    @Step("Select tree node by label - {label}")
+    public void selectNodeByLabel(String label) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getTreeWidget()
+                .selectNodeByLabel(label);
     }
 }

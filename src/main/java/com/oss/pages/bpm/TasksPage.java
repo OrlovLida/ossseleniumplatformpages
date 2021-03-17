@@ -6,6 +6,9 @@
  */
 package com.oss.pages.bpm;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -18,6 +21,7 @@ import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tablewidget.TableInterface;
 import com.oss.framework.widgets.tabswidget.TabsInterface;
 import com.oss.framework.widgets.tabswidget.TabsWidget;
+import com.oss.framework.widgets.treetablewidget.OldTreeTableWidget;
 import com.oss.pages.BasePage;
 import com.oss.pages.dms.AttachFileWizardPage;
 
@@ -52,7 +56,7 @@ public class TasksPage extends BasePage {
         table.searchByAttributeWithLabel("Process Code", Input.ComponentType.TEXT_FIELD, processCode);
         DelayUtils.waitForPageToLoad(driver, wait);
         table.searchByAttributeWithLabel("Name", Input.ComponentType.TEXT_FIELD, taskName);
-        table.doRefreshWhileNoData(10000, "Reload table");
+        table.doRefreshWhileNoData(10000, "refreshTable");
         table.selectRowByAttributeValueWithLabel("Process Code", processCode);
 
     }
@@ -160,5 +164,12 @@ public class TasksPage extends BasePage {
         completeTask(ipCode, "Scope definition");
         startTask(ipCode, "Implementation");
         return ipCode;
+    }
+
+    public List<String> getListOfAttachments(){
+        OldTreeTableWidget treeTable =
+                OldTreeTableWidget.create(driver, wait, "attachmentManagerBusinessView_commonTreeTable_BPMTask");
+        List<String> allNodes = treeTable.getAllVisibleNodes("Attachments and directories");
+        return allNodes.stream().filter(node -> !node.equals("HOME")).collect(Collectors.toList());
     }
 }

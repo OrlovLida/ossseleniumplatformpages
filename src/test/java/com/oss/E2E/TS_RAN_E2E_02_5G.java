@@ -39,7 +39,7 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
     private static final String CABLE_MODEL = "Jumper";
     private static final String RECO_RRU_NAME1 = "BTS5900,DXNNR0599UAT6-Expo-Multilateral-Buildings-Mobility-District/0/MPMU,200";
     private static final String RECO_RRU_NAME2 = "BTS5900,DXNNR0599UAT6-Expo-Multilateral-Buildings-Mobility-District/0/MPMU,100";
-    //TODO: change BBU name to whatever name we get after RECO can generate its own BBU device
+    // TODO: change BBU name to whatever name we get after RECO can generate its own BBU device
     private static final String RECO_BBU_NAME = "temporary_TS_RAN_E2E_02_BBU";
     private static final String RECO_SWITCH_NAME1 = "BTS5900,DXNNR0599UAT6-Expo-Multilateral-Buildings-Mobility-District/0/RHUB,70";
     private static final String RECO_SWITCH_NAME2 = "BTS5900,DXNNR0599UAT6-Expo-Multilateral-Buildings-Mobility-District/0/RHUB,60";
@@ -112,9 +112,11 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         samplesManagementPage.selectPath();
         samplesManagementPage.createDirectory(CM_DOMAIN_NAME);
         DelayUtils.sleep(1000);
-        samplesManagementPage.uploadSamples("recoSamples/huaweiRan/TS_RAN_E2E_02_5G/Inventory_DXNNR0599UAT6-Expo-Multilateral-Buildings-Mobility-District_20200414_151757.xml");
+        samplesManagementPage.uploadSamples(
+                "recoSamples/huaweiRan/TS_RAN_E2E_02_5G/Inventory_DXNNR0599UAT6-Expo-Multilateral-Buildings-Mobility-District_20200414_151757.xml");
         DelayUtils.sleep(1000);
-        samplesManagementPage.uploadSamples("recoSamples/huaweiRan/TS_RAN_E2E_02_5G/SRANNBIExport_XML_DXNNR0599UAT6_Co-MPT BTS_RT_04_09_2020_14_20_24_322_10_17_4_8.xml");
+        samplesManagementPage.uploadSamples(
+                "recoSamples/huaweiRan/TS_RAN_E2E_02_5G/SRANNBIExport_XML_DXNNR0599UAT6_Co-MPT BTS_RT_04_09_2020_14_20_24_322_10_17_4_8.xml");
     }
 
     @Test(priority = 3)
@@ -221,7 +223,7 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         homePage.goToHomePage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Location");
-        newInventoryViewPage.openFilterPanel().changeValueInLocationNameInput(LOCATION_NAME).applyFilter();
+        newInventoryViewPage.searchObject(LOCATION_NAME);
         newInventoryViewPage.selectFirstRow();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         newInventoryViewPage.callAction("CREATE", "AdvanceCableCreateLocationWizardAction");
@@ -251,7 +253,7 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
     @Test(priority = 10)
     @Description("Create Antenna Trail Between RRU and RAN Antenna")
     public void createAntennaTrailBetweenRRUAndRANAntenna() {
-        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver);
+        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.callAction("NAVIGATION", "Cell Site Configuration");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         CellSiteConfigurationPage cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);
@@ -271,7 +273,7 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         checkPopup();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
-
+    
     /*//TODO: wait for OSSPHY-47340
     @Test(priority = 11)
     @Description("Create CPRI Trail between RRU and BBU")
@@ -300,7 +302,7 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         cellSiteConfigurationPage.selectTreeRow(LOCATION_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cellSiteConfigurationPage.selectTab("Trails");
-       /* cellSiteConfigurationPage.filterObject("Name", CPRI_TRAIL_NAME);
+        /* cellSiteConfigurationPage.filterObject("Name", CPRI_TRAIL_NAME);
         cellSiteConfigurationPage.removeObject();
         checkPopup();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);*/
@@ -367,14 +369,14 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
 
         cellSiteConfigurationPage.selectRowByAttributeValueWithLabel("Name", RECO_RRU_NAME1);
         cellSiteConfigurationPage.selectRowByAttributeValueWithLabel("Name", RECO_RRU_NAME2);
-        //cellSiteConfigurationPage.selectResource(RECO_BBU_NAME);
+        // cellSiteConfigurationPage.selectResource(RECO_BBU_NAME);
         cellSiteConfigurationPage.selectRowByAttributeValueWithLabel("Name", RECO_SWITCH_NAME1);
         cellSiteConfigurationPage.selectRowByAttributeValueWithLabel("Name", RECO_SWITCH_NAME2);
         cellSiteConfigurationPage.removeObject();
         checkPopup();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
-
+    
     /*@Test(priority = 18)
     @Description("Delete Reco Cell 5G")
     public void deleteRecoCell5G() {

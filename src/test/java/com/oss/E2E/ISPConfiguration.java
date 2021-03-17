@@ -1,9 +1,5 @@
 package com.oss.E2E;
 
-import com.oss.pages.platform.HierarchyViewPage;
-import com.oss.pages.platform.HomePage;
-import com.oss.untils.Environment;
-import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -12,6 +8,7 @@ import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.alerts.SystemMessageInterface;
+import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.TableInterface;
@@ -19,13 +16,13 @@ import com.oss.pages.physical.CardCreateWizardPage;
 import com.oss.pages.physical.ChangeCardModelWizard;
 import com.oss.pages.physical.ChangeModelWizardPage;
 import com.oss.pages.physical.CreateCoolingZoneWizardPage;
-import com.oss.pages.physical.DeviceOverviewPage;
 import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.physical.LocationOverviewPage;
 import com.oss.pages.physical.LocationOverviewPage.TabName;
 import com.oss.pages.physical.LocationWizardPage;
 import com.oss.pages.physical.MountingEditorWizardPage;
 import com.oss.pages.physical.SublocationWizardPage;
+import com.oss.pages.platform.HierarchyViewPage;
 
 import io.qameta.allure.Description;
 
@@ -33,10 +30,10 @@ import static java.lang.String.format;
 
 public class ISPConfiguration extends BaseTestCase {
 
-    String LOCATION_OVERVIEW_URL = "";
+    private String LOCATION_OVERVIEW_URL = "";
     private static final String LOCATION_NAME = "ISPConfiguration_Building";
     private static final String SUBLOCATION_NAME = "ISPConfiguration_Room";
-    private static final String GEOGRAPHICAL_ADDRESS = "fixedAccessIntegrationTestStreet 91336, fixedAccessIntegrationTestCity";
+    private static final String GEOGRAPHICAL_ADDRESS = "Kukułcza 81598, Gliwice";
     private static final String PHYSICAL_DEVICE_MODEL = "7360 ISAM FX-8";
     private static final String PHYSICAL_DEVICE_NAME = "ISPPhysicalDevice";
     private static final String PHYSICAL_DEVICE_MODEL2 = "Nexus 7010";
@@ -57,9 +54,9 @@ public class ISPConfiguration extends BaseTestCase {
     private static final String POWER_SUPPLY_UNIT_MODEL = "Generic Power Supply Unit";
     private static final String POWER_SUPPLY_UNIT_NAME = "Power Supply Unit";
     private static final String POWER_SUPPLY_UNIT_CAPACITY = "5";
+    private static final String COOLING_ZONE_COOLING_LOAD = "0.00";
+    private static final String COOLING_ZONE_LOAD_RATIO = "0.00";
     private static String LOCATION_POWER_CAPACITY = "0.00";
-    private static String COOLING_ZONE_COOLING_LOAD = "0.00";
-    private static String COOLING_ZONE_LOAD_RATIO = "0.00";
 
     private void checkPopup() {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
@@ -105,8 +102,8 @@ public class ISPConfiguration extends BaseTestCase {
     @Test(priority = 3)
     @Description("Open Create Sublocation Wizard")
     public void openSublocationWizard() {
-        DeviceOverviewPage deviceOverviewPage = new DeviceOverviewPage(driver);
-        deviceOverviewPage.useContextAction("Create Sublocation");
+        LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
+        locationOverviewPage.clickButton("Create Sublocation");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -129,8 +126,8 @@ public class ISPConfiguration extends BaseTestCase {
     @Test(priority = 5)
     @Description("Open Create Device Wizard")
     public void openDeviceWizard() {
-        DeviceOverviewPage deviceOverviewPage = new DeviceOverviewPage(driver);
-        deviceOverviewPage.useContextAction("Create Device");
+        LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
+        locationOverviewPage.clickButton("Create Device");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -160,7 +157,6 @@ public class ISPConfiguration extends BaseTestCase {
     @Test(priority = 8)
     @Description("Open Change Model Wizard")
     public void openChangeModelWizard() {
-        //TODO: POPRAWIONE JUZ
         HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
         hierarchyViewPage.selectFirstObject();
         hierarchyViewPage.getTreeWidget().callActionById("EDIT", "DeviceChangeModelAction");
@@ -181,7 +177,7 @@ public class ISPConfiguration extends BaseTestCase {
     @Test(priority = 10)
     @Description("Open Create Card Wizard")
     public void openCreateCardWizard() {
-        //TODO: poprawione juz
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
         hierarchyViewPage.getTreeWidget().callActionById("CREATE", "CreateCardOnDeviceAction");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -205,22 +201,21 @@ public class ISPConfiguration extends BaseTestCase {
     @Test(priority = 12)
     @Description("Open Change Card Model Wizard")
     public void openChangeCardWizard() {
-        /*DeviceOverviewPage deviceOverviewPage = new DeviceOverviewPage(driver);
-        deviceOverviewPage.selectTreeRow("NELT-B");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        deviceOverviewPage.useContextAction("Change model");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);*/
-
-        //TODO: poprawic
         HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
-        hierarchyViewPage.getTreeWidget().expandTreeRow(PHYSICAL_DEVICE_NAME);
-        hierarchyViewPage.getTreeWidget().expandTreeRow("Chassis");
-        hierarchyViewPage.getTreeWidget().expandTreeRow("Chassis"); //has to be duplicated because of tree structure
-        hierarchyViewPage.getTreeWidget().expandTreeRow("slots");
-        hierarchyViewPage.getTreeWidget().expandTreeRow("LT4");
-        hierarchyViewPage.getTreeWidget().expandTreeRow("Cards");
-        hierarchyViewPage.getTreeWidget().selectTreeRow("NELT-B");
-        hierarchyViewPage.getTreeWidget().callActionById("Edit", "CardChangeModelAction");
+        hierarchyViewPage.expandTreeNode(PHYSICAL_DEVICE_NAME);
+        hierarchyViewPage.expandTreeNode("Chassis");
+        hierarchyViewPage.expandFirstCollapsedTreeNode();
+        hierarchyViewPage.expandTreeNode("Slots");
+        hierarchyViewPage.expandTreeNode("LT3");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        hierarchyViewPage.expandTreeNode("Cards");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        hierarchyViewPage.performSearch("NELT-B");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        hierarchyViewPage.selectNodeByLabel("NELT-B");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        hierarchyViewPage.useTreeContextAction(ActionsContainer.EDIT_GROUP_ID, "CardChangeModelAction");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -234,13 +229,13 @@ public class ISPConfiguration extends BaseTestCase {
         checkPopup();
     }
 
-    /*@Test(priority = 14)
+    @Test(priority = 14)
     @Description("Open Mounting Editor Wizard")
     public void openMountingEditorWizard() {
-        DeviceOverviewPage deviceOverviewPage = new DeviceOverviewPage(driver);
-        deviceOverviewPage.selectTreeRow(PHYSICAL_DEVICE_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        deviceOverviewPage.useContextAction("Mounting Editor");
+        HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
+        hierarchyViewPage.selectNodeByLabel(PHYSICAL_DEVICE_NAME);
+        hierarchyViewPage.useTreeContextAction(ActionsContainer.SHOW_ON_GROUP_ID, "MountingEditorForPhysicalElementAction");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -355,7 +350,9 @@ public class ISPConfiguration extends BaseTestCase {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Devices");
         locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.DEVICES, "Create Device");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.setModel(PHYSICAL_DEVICE_MODEL2);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.setName(PHYSICAL_DEVICE_NAME2);
@@ -651,8 +648,8 @@ public class ISPConfiguration extends BaseTestCase {
     @Test(priority = 39)
     @Description("Delete Location")
     public void deleteLocation() {
-        DeviceOverviewPage deviceOverviewPage = new DeviceOverviewPage(driver);
-        deviceOverviewPage.useContextAction("Remove Location");
-        deviceOverviewPage.clickButtonInConfirmationBox("Delete");
-    }*/
+        LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
+        locationOverviewPage.clickButton("Remove Location");
+        locationOverviewPage.clickButtonInConfirmationBox("Delete");
+    }
 }

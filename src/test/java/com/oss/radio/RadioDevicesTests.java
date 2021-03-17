@@ -128,12 +128,12 @@ public class RadioDevicesTests extends BaseTestCase {
 
         homePage.setOldObjectType(objectTypeDevice);
         new OldInventoryViewPage(driver)
-                .filterObject("Name", rruDeviceNameForDelete)
+                .filterObject("Name", rruDeviceNameForEdit)
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
                 .expandTreeToLocation(locationTypeSite, locationName)
                 .selectTab("Devices")
-                .filterObject("Name", rruDeviceNameForDelete)
+                .filterObject("Name", rruDeviceNameForEdit)
                 .clickEditIcon();
         new DeviceWizardPage(driver)
                 .setDescription(description);
@@ -168,12 +168,12 @@ public class RadioDevicesTests extends BaseTestCase {
 
         homePage.setOldObjectType(objectTypeDevice);
         new OldInventoryViewPage(driver)
-                .filterObject("Name", bbuDeviceNameForDelete)
+                .filterObject("Name", bbuDeviceNameForEdit)
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
                 .expandTreeToLocation(locationTypeSite, locationName)
                 .selectTab("Devices")
-                .filterObject("Name", bbuDeviceNameForDelete)
+                .filterObject("Name", bbuDeviceNameForEdit)
                 .clickEditIcon();
         new DeviceWizardPage(driver)
                 .setDescription(description);
@@ -212,12 +212,12 @@ public class RadioDevicesTests extends BaseTestCase {
 
         homePage.setOldObjectType(objectTypeRANAntenna);
         new OldInventoryViewPage(driver)
-                .filterObject("Name (Antenna)", antennaAHP4517R7v06NameForDelete)
+                .filterObject("Name (Antenna)", antennaAHP4517R7v06NameForEdit)
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
                 .expandTreeToLocation(locationTypeSite, locationName)
                 .selectTab("Devices")
-                .filterObject("Name", antennaAHP4517R7v06NameForDelete)
+                .filterObject("Name", antennaAHP4517R7v06NameForEdit)
                 .clickEditIcon();
         new RanAntennaWizardPage(driver)
                 .setDescription(description);
@@ -254,12 +254,12 @@ public class RadioDevicesTests extends BaseTestCase {
 
         homePage.setOldObjectType(objectTypeRANAntenna);
         new OldInventoryViewPage(driver)
-                .filterObject("Name (Antenna)", aauAAU5614NameForDelete)
+                .filterObject("Name (Antenna)", aauAAU5614NameForEdit)
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
                 .expandTreeToLocation(locationTypeSite, locationName)
                 .selectTab("Devices")
-                .filterObject("Name", aauAAU5614NameForDelete)
+                .filterObject("Name", aauAAU5614NameForEdit)
                 .clickEditIcon();
         new RanAntennaWizardPage(driver)
                 .setDescription(description);
@@ -272,16 +272,16 @@ public class RadioDevicesTests extends BaseTestCase {
     @Description("The user searches Radio Remote Head in Global Search, then removes the RRU device in Cell Site Configuration checks if the description is updated in Device table")
     public void tSRAN49RemoveRRU() {
 
-        homePage.searchInGlobalSearch(rruDeviceNameForEdit)
-                .expandShowOnAndChooseView(rruDeviceNameForEdit, "NAVIGATION", "Cell Site Configuration");
+        homePage.searchInGlobalSearch(rruDeviceNameForDelete)
+                .expandShowOnAndChooseView(rruDeviceNameForDelete, "NAVIGATION", "Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
                 .expandTreeToLocation(locationTypeSite, locationName)
                 .selectTab("Devices")
-                .filterObject("Name", rruDeviceNameForEdit)
+                .filterObject("Name", rruDeviceNameForDelete)
                 .removeObject();
         SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
         systemMessageItem.waitForMessageDisappear();
-        homePage.searchInGlobalSearch(rruDeviceNameForEdit);
+        homePage.searchInGlobalSearch(rruDeviceNameForDelete);
         CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertTrue(objectsList.isNoData());
@@ -291,16 +291,16 @@ public class RadioDevicesTests extends BaseTestCase {
     @Description("The user searches Base Band Unit in Global Search, then removes the BBU device in Cell Site Configuration checks if the description is updated in Device table")
     public void tSRAN50RemoveBBU() {
 
-        homePage.searchInGlobalSearch(bbuDeviceNameForEdit)
-                .expandShowOnAndChooseView(bbuDeviceNameForEdit, "NAVIGATION", "Cell Site Configuration");
+        homePage.searchInGlobalSearch(bbuDeviceNameForDelete)
+                .expandShowOnAndChooseView(bbuDeviceNameForDelete, "NAVIGATION", "Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
                 .expandTreeToLocation(locationTypeSite, locationName)
                 .selectTab("Devices")
-                .filterObject("Name", bbuDeviceNameForEdit)
+                .filterObject("Name", bbuDeviceNameForDelete)
                 .removeObject();
         SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
         systemMessageItem.waitForMessageDisappear();
-        homePage.searchInGlobalSearch(bbuDeviceNameForEdit);
+        homePage.searchInGlobalSearch(bbuDeviceNameForDelete);
         CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertTrue(objectsList.isNoData());
@@ -310,16 +310,16 @@ public class RadioDevicesTests extends BaseTestCase {
     @Description("The user searches Active Antenna Unit in Global Search, then removes the AAU device in Cell Site Configuration checks if the description is updated in Device table")
     public void tSRAN51RemoveRANAntennaWithArrays() {
 
-        homePage.searchInGlobalSearch(antennaAHP4517R7v06NameForEdit)
-                .expandShowOnAndChooseView(antennaAHP4517R7v06NameForEdit, "NAVIGATION", "Cell Site Configuration");
+        homePage.searchInGlobalSearch(antennaAHP4517R7v06NameForDelete)
+                .expandShowOnAndChooseView(antennaAHP4517R7v06NameForDelete, "NAVIGATION", "Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
                 .expandTreeToLocation(locationTypeSite, locationName)
                 .selectTab("Devices")
-                .filterObject("Name", antennaAHP4517R7v06NameForEdit)
+                .filterObject("Name", antennaAHP4517R7v06NameForDelete)
                 .removeObject();
         SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
         systemMessageItem.waitForMessageDisappear();
-        homePage.searchInGlobalSearch(antennaAHP4517R7v06NameForEdit);
+        homePage.searchInGlobalSearch(antennaAHP4517R7v06NameForDelete);
         CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertTrue(objectsList.isNoData());
@@ -329,16 +329,16 @@ public class RadioDevicesTests extends BaseTestCase {
     @Description("The user searches Active Antenna Unit in Global Search, then removes the AAU device in Cell Site Configuration checks if the description is updated in Device table")
     public void tSRAN52RemoveAAU() {
 
-        homePage.searchInGlobalSearch(aauAAU5614NameForEdit)
-                .expandShowOnAndChooseView(aauAAU5614NameForEdit, "NAVIGATION", "Cell Site Configuration");
+        homePage.searchInGlobalSearch(aauAAU5614NameForDelete)
+                .expandShowOnAndChooseView(aauAAU5614NameForDelete, "NAVIGATION", "Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
                 .expandTreeToLocation(locationTypeSite, locationName)
                 .selectTab("Devices")
-                .filterObject("Name", aauAAU5614NameForEdit)
+                .filterObject("Name", aauAAU5614NameForDelete)
                 .removeObject();
         SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
         systemMessageItem.waitForMessageDisappear();
-        homePage.searchInGlobalSearch(aauAAU5614NameForEdit);
+        homePage.searchInGlobalSearch(aauAAU5614NameForDelete);
         CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertTrue(objectsList.isNoData());

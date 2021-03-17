@@ -78,7 +78,7 @@ public class UC_NAR_005 extends BaseTestCase {
     @Description("Run reconciliation and after its finish check warnings and errors")
     public void runReconciliationWithFullSample() {
         openNetworkDiscoveryControlView();
-        DelayUtils.sleep(100);
+        waitForPageToLoad();
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.runReconciliation();
         networkDiscoveryControlViewPage.checkReconciliationStartedSystemMessage();
@@ -143,11 +143,7 @@ public class UC_NAR_005 extends BaseTestCase {
         newInventoryViewPage.callAction(ActionsContainer.OTHER_GROUP_ID, "run-narrow-reconciliation");
         DelayUtils.sleep(3000);
         Assertions.assertThat(notifications.waitAndGetFinishedNotificationText().equals("Narrow reconciliation for GMOCs IPDevice finished")).isTrue();
-        //TODO change after fix of OSSWEB-11003
-        //        newInventoryViewPage.callAction(ActionsContainer.KEBAB_GROUP_ID, "refreshButton");
-        newInventoryViewPage.unselectObjectByRowId(0);
-        waitForPageToLoad();
-        newInventoryViewPage.selectFirstRow();
+        newInventoryViewPage.refreshMainTable();
         waitForPageToLoad();
         Assert.assertEquals(SERIAL_NUMBER_AFTER, newInventoryViewPage.getMainTable().getCellValue(0, "Serial Number"));
     }
@@ -161,7 +157,7 @@ public class UC_NAR_005 extends BaseTestCase {
         waitForPageToLoad();
         Wizard.createWizard(driver, webDriverWait).clickActionById("ConfirmationBox_object_delete_wizard_confirmation_box_action_button");
         checkMessageType();
-        newInventoryViewPage.callAction(ActionsContainer.KEBAB_GROUP_ID, "refreshButton");
+        newInventoryViewPage.refreshMainTable();
         Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());
     }
 

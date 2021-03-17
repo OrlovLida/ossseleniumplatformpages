@@ -4,6 +4,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.util.List;
 
+import org.assertj.core.api.Assertions;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -15,7 +16,6 @@ import com.oss.framework.alerts.SystemMessageContainer.Message;
 import com.oss.framework.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.ActionsContainer;
-import com.oss.framework.listwidget.EditableList;
 import com.oss.framework.mainheader.Notifications;
 import com.oss.framework.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
@@ -155,19 +155,19 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     public void selectEthernetInterface() {
         HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        hierarchyViewPage.expandTreeRowContains(DEVICE_NAME);
+        hierarchyViewPage.expandTreeNode(DEVICE_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        hierarchyViewPage.expandTreeRowContains("Ports");
+        hierarchyViewPage.expandTreeNode("Ports");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        hierarchyViewPage.expandTreeRowContains(PORT_NAME);
+        hierarchyViewPage.expandTreeNode(PORT_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        hierarchyViewPage.expandTreeRowContains("Termination Points");
+        hierarchyViewPage.expandTreeNode("Termination Points");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        hierarchyViewPage.expandTreeRowContains("EthernetInterface_TP");
+        hierarchyViewPage.expandTreeNode("EthernetInterface_TP");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        hierarchyViewPage.searchTreeRowByText(PORT_NAME);
+        hierarchyViewPage.performSearch(PORT_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        hierarchyViewPage.selectTreeRowByPosition(7);
+        hierarchyViewPage.selectNodeByPosition(7);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hierarchyViewPage.useTreeContextAction(ActionsContainer.SHOW_ON_GROUP_ID, "OpenInventoryView");
     }
@@ -313,9 +313,9 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         String name = setParametersWizardPage.getParameter("$name[NEW_INVENTORY]");
         Assert.assertEquals(DEVICE_NAME, name);
-        setParametersWizardPage.setParameter("$InterfaceName[USER]", "GE 0");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         setParametersWizardPage.setParameter("$Password[SYSTEM]", "oss");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        setParametersWizardPage.setParameter("$InterfaceName[USER]", "GE 0");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         setParametersWizardPage.clickFillParameters();
@@ -336,8 +336,8 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     @Test(priority = 13)
     @Description("Assign File to Process")
     public void assignFile() {
+        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         try {
-            TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
             java.net.URL resource = CreateProcessNRPTest.class.getClassLoader().getResource("bpm/SeleniumTest.txt");
             assert resource != null;
             String absolutePatch = Paths.get(resource.toURI()).toFile().getAbsolutePath();
@@ -347,10 +347,9 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
             throw new RuntimeException("Cannot load file", e);
         }
         DelayUtils.sleep(2000);
-        List<String> attachments = EditableList.createById(driver, webDriverWait, "attachmentManagerBusinessView_commonList").getValues();
-        Assert.assertTrue(attachments.size() > 0);
-        String allNames = String.join("", attachments);
-        Assert.assertTrue(allNames.contains("SeleniumTest"));
+        List<String> files = tasksPage.getListOfAttachments();
+        Assertions.assertThat(files.get(0)).contains("SeleniumTest");
+        Assertions.assertThat(files.size()).isGreaterThan(0);
     }
 
     @Test(priority = 14)
@@ -394,12 +393,6 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         samplesManagementPage.createDirectory(CM_DOMAIN_NAME);
         DelayUtils.sleep(1000);
         samplesManagementPage.uploadSamples("recoSamples/ciscoE2E/H3_Lab_100.100.100.100_20181016_1500_sh_inventory_raw.cli");
-        DelayUtils.sleep(1000);
-        samplesManagementPage.uploadSamples("recoSamples/ciscoE2E/H3_Lab_100.100.100.100_20181016_1500_sh_ip_interface_brief.cli");
-        DelayUtils.sleep(1000);
-        samplesManagementPage.uploadSamples("recoSamples/ciscoE2E/H3_Lab_100.100.100.100_20181016_1500_sh_lldp_neighbors_detail.cli");
-        DelayUtils.sleep(1000);
-        samplesManagementPage.uploadSamples("recoSamples/ciscoE2E/H3_Lab_100.100.100.100_20181016_1500_sh_running_config.cli");
         DelayUtils.sleep(1000);
         samplesManagementPage.uploadSamples("recoSamples/ciscoE2E/H3_Lab_100.100.100.100_20181016_1500_sh_version.cli");
     }

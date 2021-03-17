@@ -41,17 +41,14 @@ public class PhysicalRegressionTests extends BaseTestCase {
     private Environment env = Environment.getInstance();
 
     private static String locationId;
-    private static final String locationName = "SiteSeleniumTests";
+    private static final String locationName = "LocationSeleniumTests" + (int) (Math.random() * 10000);
     private static Long addressId;
-    private static String countryId;
-    private static String cityId;
-    private static String regionId;
     private static final String countryName = "CountrySeleniumTests";
     private static final String postalCodeName = "PostalCodeSeleniumTests";
     private static final String regionName = "RegionSeleniumTests";
     private static final String districtName = "DistrictSeleniumTests";
     private static final String cityName = "CitySeleniumTests";
-    private static final String subLocationSiteName = RandomGenerator.generateRandomName();
+    private static final String subLocationSiteName = "SubLocationSeleniumTests" + (int) (Math.random() * 10000);
     private static final String objectTypeLocation = "Location";
     private static final String locationTypeSite = "Site";
     private static final String description = "Selenium Test";
@@ -59,16 +56,19 @@ public class PhysicalRegressionTests extends BaseTestCase {
 
     @BeforeClass
     public void createTestData() {
-//        getOrCreateAddress();
-        getOrCreatePhysicalLocation();
+        getOrCreateAddress();
+        createPhysicalLocation();
         createSubLocation();
     }
 
+    private void getOrCreateAddress() {
+        AddressRepository addressRepository = new AddressRepository(env);
+        addressId = addressRepository.updateOrCreateAddress(countryName, postalCodeName, regionName, cityName, districtName);
+    }
 
-
-    private void getOrCreatePhysicalLocation() {
+    private void createPhysicalLocation() {
         LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);
-        locationId = locationInventoryRepository.getOrCreateLocation(locationName, locationTypeSite, addressId);
+        locationId = locationInventoryRepository.createLocation(locationName, locationTypeSite, addressId);
     }
 
     private void createSubLocation() {

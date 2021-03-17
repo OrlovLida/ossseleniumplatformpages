@@ -53,11 +53,12 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
             "PhysicalElement-" + RRU_NAME };
     private static final String inconsistenciesRanName = "ENODEB-" + ENODEB_NAME;
 
+
     @BeforeClass
     public void openNetworkDiscoveryControlView() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);
-        newInventoryViewPage = new NewInventoryViewPage(driver);
+        newInventoryViewPage = new NewInventoryViewPage(driver,webDriverWait);
         PerspectiveChooser.create(driver, webDriverWait).setNetworkPerspective();
     }
 
