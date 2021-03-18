@@ -1,4 +1,4 @@
-package com.oss.pages.transport.helper;
+package com.oss.pages.transport.ipam.helper;
 
 public class IPSubnetFilterProperties {
     private String startIp;
