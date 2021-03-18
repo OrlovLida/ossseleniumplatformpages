@@ -1,12 +1,10 @@
 package com.oss.pages.platform.viewmanager;
 
-import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.SearchField;
 import com.oss.framework.components.portals.ActionsDropdownList;
-import com.oss.framework.components.portals.CreateCategoryPopup;
-import com.oss.framework.components.portals.PopupV2;
+import com.oss.framework.components.portals.CategoryPopup;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
@@ -25,6 +23,8 @@ public class ViewManagerPage extends BasePage {
     private static final String EDIT_CATEGORY_BUTTON_ID = "editCategoryButton0";
     private static final String THREE_DOTS_FIRST_BUTTON_FULL_XPATH = "//*[@id=\"frameworkObjectButtonsGroup\"]";
     private static final String DELETE_BUTTON_IN_POPUP_XPATH = "//*[@class='CommonButton btn btn-danger btn-md']";
+    private static final String EDIT_CATEGORY_POPUP_XPATH = "//*[@class='popupContainer']";
+
 
     @FindBy(className = "views-manager__bar__add-category")
     public WebElement addCategoryButton;
@@ -36,9 +36,14 @@ public class ViewManagerPage extends BasePage {
         super(driver);
     }
 
-    public CreateCategoryPopup goToCreateCategoryPopup() {
+    public CategoryPopup goToCreateCategoryPopup() {
         WebDriverWait wait = new WebDriverWait(driver, 45);
-        return new CreateCategoryPopup(driver, wait);
+        return new CategoryPopup(driver, wait);
+    }
+
+    public CategoryPopup goToEditCategoryPopup() {
+        WebDriverWait wait = new WebDriverWait(driver, 45);
+        return new CategoryPopup(driver, wait);
     }
 
     @Step("Search specific category by name")
@@ -54,6 +59,12 @@ public class ViewManagerPage extends BasePage {
         searchField.clear();
 
         DelayUtils.sleep(1000);
+    }
+
+    public void enterEditionOfCategory(){
+        threeDotsFirstButton.click();
+        ActionsDropdownList actionsDropdownList = new ActionsDropdownList(driver);
+        actionsDropdownList.clickOnActionById(EDIT_CATEGORY_BUTTON_ID);
     }
 
     public void deleteFirstCategory(){

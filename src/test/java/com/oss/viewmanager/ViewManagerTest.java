@@ -1,7 +1,7 @@
 package com.oss.viewmanager;
 
 import com.oss.BaseTestCase;
-import com.oss.framework.components.portals.CreateCategoryPopup;
+import com.oss.framework.components.portals.CategoryPopup;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.viewmanager.ViewManagerPage;
 import com.oss.utils.TestListener;
@@ -28,11 +28,11 @@ public class ViewManagerTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         viewManagerPage.addCategoryButton.click();
         DelayUtils.sleep(200);
-        CreateCategoryPopup popup = viewManagerPage.goToCreateCategoryPopup();
-        popup.setNameValue("Test Category");
-        popup.setDescriptionValue("Test Category Description");
-        popup.clickOnFirstIcon();
-        popup.clickOnSaveButton();
+        CategoryPopup createCategoryPopup = viewManagerPage.goToCreateCategoryPopup();
+        createCategoryPopup.setNameValue("Test Category");
+        createCategoryPopup.setDescriptionValue("Test Category Description");
+        createCategoryPopup.clickOnFirstIcon();
+        createCategoryPopup.clickOnSaveButton();
 
         DelayUtils.sleep(2000);
 
@@ -42,18 +42,33 @@ public class ViewManagerTest extends BaseTestCase {
     }
 
     @Test
-    public void changeApplicationsNameAndDescription(){
+    public void changeCategoryNameAndDescription(){
+        viewManagerPage.enterEditionOfCategory();
+        DelayUtils.sleep(1000);
+        CategoryPopup editCategoryPopup = viewManagerPage.goToEditCategoryPopup();
+        editCategoryPopup.deleteNameValue();
+        editCategoryPopup.setNameValue("Name after edition");
+        editCategoryPopup.deleteDescriptionValue();
+        editCategoryPopup.setDescriptionValue("Description after edition");
 
+        editCategoryPopup.clickOnSaveButton();
+        viewManagerPage.clearSearchField();
+
+        DelayUtils.sleep(2000);
+
+        viewManagerPage.searchForCategory("Name after edition");
+        Assert.assertTrue(driver.findElement(By.xpath("//*[text()='Name after edition']")).isDisplayed());
+        Assert.assertTrue(driver.findElement(By.xpath("//*[text()='Description after edition']")).isDisplayed());
     }
 
     @Test
     public void deleteCategory(){
         viewManagerPage.clearSearchField();
-        viewManagerPage.searchForCategory("Test Category");
+        viewManagerPage.searchForCategory("Name after edition");
         viewManagerPage.deleteFirstCategory();
         DelayUtils.sleep(5000);
 
-        Assert.assertFalse(driver.findElements(By.xpath("//*[text()='Test Category']")).size()>0);
+        Assert.assertFalse(driver.findElements(By.xpath("//*[text()='Name after edition']")).size()>0);
         viewManagerPage.clearSearchField();
     }
 }
