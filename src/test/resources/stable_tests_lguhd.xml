@@ -16,9 +16,4 @@
             <class name="com.oss.web.FiltersTest"/>
         </classes>
     </test>
-    <test name="IPAMTest">
-        <classes>
-            <class name="com.oss.transport.IPAMTest"/>
-        </classes>
-    </test>
 </suite>
