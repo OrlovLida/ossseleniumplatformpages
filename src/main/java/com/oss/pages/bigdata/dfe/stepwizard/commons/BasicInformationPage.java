@@ -20,7 +20,7 @@ public class BasicInformationPage extends BaseStepPage {
     }
 
     public void fillName(String name){
-        DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
+        DelayUtils.waitForPageToLoad(driver, wait);
         fillTextField(name, NAME_INPUT_ID);
     }
 

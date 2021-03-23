@@ -487,6 +487,6 @@ public class IPAddressManagementViewPage extends BasePage {
     }
 
     private void waitForPageToLoad() {
-        DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 }
