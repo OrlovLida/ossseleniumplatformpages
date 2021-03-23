@@ -21,7 +21,7 @@ abstract public class BaseDfePage extends BasePage implements BaseDfePageInterfa
 
     public static void openDfePage(WebDriver driver, String basicURL, WebDriverWait wait, String viewName){
         driver.get(String.format("%s/#/view/dfe/%s", basicURL, viewName));
-        DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public void searchFeed(String searchText){

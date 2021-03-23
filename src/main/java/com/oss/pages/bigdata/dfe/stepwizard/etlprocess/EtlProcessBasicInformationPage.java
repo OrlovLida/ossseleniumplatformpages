@@ -17,7 +17,7 @@ public class EtlProcessBasicInformationPage extends BasicInformationPage {
     }
 
     public void fillCategory(String category){
-        DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
+        DelayUtils.waitForPageToLoad(driver, wait);
         MultiSearchField categoryInput = (MultiSearchField) getWizard(driver, wait).getComponent(CATEGORY_INPUT_ID, Input.ComponentType.MULTI_SEARCH_FIELD);
         categoryInput.setValue(Data.createSingleData(category));
     }

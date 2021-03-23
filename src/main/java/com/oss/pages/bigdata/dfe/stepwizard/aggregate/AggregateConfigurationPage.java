@@ -21,7 +21,7 @@ public class AggregateConfigurationPage extends BasePage {
 
     @Step("I fill Aggregates Configuration Step Aggregate")
     public void fillAggregatesConfigurationStepAggregate(String configName, String baseTableName, String selectedDimension){
-        DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
+        DelayUtils.waitForPageToLoad(driver, wait);
 
         AggregatesManagerWidget aggregatesManager = AggregatesManagerWidget.create(driver, wait);
         addNewAggregateConfiguration(aggregatesManager);

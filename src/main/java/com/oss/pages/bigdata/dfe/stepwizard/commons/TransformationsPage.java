@@ -21,7 +21,7 @@ public class TransformationsPage extends BasePage {
 
     @Step("I fill transformations Step Aggregate with {transformationName}")
     public void fillTransformationsStep(String transformationName){
-        DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
+        DelayUtils.waitForPageToLoad(driver, wait);
         addNewTransformation(transformationName);
     }
 }

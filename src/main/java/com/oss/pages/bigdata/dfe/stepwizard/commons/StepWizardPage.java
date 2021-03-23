@@ -15,13 +15,13 @@ public abstract class StepWizardPage extends BasePage implements StepWizardInter
 
     @Step("I click Cancel")
     public void clickCancel(){
-        DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
+        DelayUtils.waitForPageToLoad(driver, wait);
         Button.create(driver, "Cancel").click();
     }
 
     @Step("I click Next Step")
     public void clickNextStep(){
-        DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
+        DelayUtils.waitForPageToLoad(driver, wait);
         DelayUtils.sleep();
         Button.create(driver, "Next Step").click();
     }

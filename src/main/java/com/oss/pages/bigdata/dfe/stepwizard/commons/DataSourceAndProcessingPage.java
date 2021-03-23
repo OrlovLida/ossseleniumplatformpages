@@ -16,7 +16,7 @@ public class DataSourceAndProcessingPage extends BaseStepPage {
     }
 
     public void fillFeed(String feedName){
-        DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
+        DelayUtils.waitForPageToLoad(driver, wait);
         Combobox feedInput = (Combobox) getWizard(driver, wait).getComponent(FEED_INPUT_ID, Input.ComponentType.COMBOBOX);
         feedInput.setValue(Data.createSingleData(feedName));
     }
