@@ -5,11 +5,6 @@
             <class name="com.oss.transport.CreateVRFTest"/>
         </classes>
     </test>
-    <test name="IPAMTest">
-        <classes>
-            <class name="com.oss.transport.IPAMTest"/>
-        </classes>
-    </test>
     <test name="AEITest">
         <classes>
             <class name="com.oss.transport.AEITest"/>
