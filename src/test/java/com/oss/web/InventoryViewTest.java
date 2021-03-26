@@ -52,7 +52,7 @@ public class InventoryViewTest extends BaseTestCase {
 
         //then
         Assertions.assertThat(selectedRows).hasSize(1);
-        Assertions.assertThat(selectedRows.get(0).getIndex()).isEqualTo(1);
+        Assertions.assertThat(selectedRows.get(0).getIndex()).isEqualTo(0);
 
         inventoryViewPage.unselectObjectByRowId(0);
         selectedRows = inventoryViewPage.getSelectedRows();
@@ -123,7 +123,7 @@ public class InventoryViewTest extends BaseTestCase {
 
     @Test
     public void checkPagination() {
-      //TODO: add pagination test
+
     }
 
     @Test
