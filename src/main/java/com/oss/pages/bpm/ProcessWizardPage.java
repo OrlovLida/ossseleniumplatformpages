@@ -16,12 +16,13 @@ import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tablewidget.TableInterface;
 import com.oss.pages.BasePage;
-import com.sun.org.glassfish.gmbal.Description;
 
 import org.openqa.selenium.WebDriver;
 
 import java.time.LocalDate;
 import java.util.List;
+
+import io.qameta.allure.Description;
 
 /**
  * @author Gabriela Kasza
