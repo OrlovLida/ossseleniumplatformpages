@@ -159,9 +159,14 @@ public class ProcessWizardPage extends BasePage {
                     Input.ComponentType.TEXT_FIELD);
         }
         if (milestone.getRelatedTask().isPresent()) {
-            predefineMilestoneRow.setEditableAttributeValue(milestone.getRelatedTask().get(), "relatedTaskIdentifier",
-                    "relatedTaskIdentifier-COMBOBOX",
-                    Input.ComponentType.COMBOBOX);
+            if (milestone.getRelatedTask().get().equals("")){
+                predefineMilestoneRow.clearValue("relatedTaskIdentifier","relatedTaskIdentifier-COMBOBOX", Input.ComponentType.COMBOBOX);
+            }
+            else {
+                predefineMilestoneRow.setEditableAttributeValue(milestone.getRelatedTask().get(), "relatedTaskIdentifier",
+                        "relatedTaskIdentifier-COMBOBOX",
+                        Input.ComponentType.COMBOBOX);
+            }
         }
         if (milestone.getIsActive().isPresent()) {
             predefineMilestoneRow.setEditableAttributeValue(milestone.getIsActive().get(), "active", "active-CHECKBOX",
@@ -173,6 +178,7 @@ public class ProcessWizardPage extends BasePage {
                     "isManualCompletion-CHECKBOX",
                     Input.ComponentType.CHECKBOX);
         }
+
     }
     
     private Wizard definedBasicProcess(String processName, String processType, Long plusDays) {
