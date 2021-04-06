@@ -16,12 +16,13 @@ import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tablewidget.TableInterface;
 import com.oss.pages.BasePage;
-import com.sun.org.glassfish.gmbal.Description;
 
 import org.openqa.selenium.WebDriver;
 
 import java.time.LocalDate;
 import java.util.List;
+
+import io.qameta.allure.Description;
 
 /**
  * @author Gabriela Kasza
@@ -159,9 +160,14 @@ public class ProcessWizardPage extends BasePage {
                     Input.ComponentType.TEXT_FIELD);
         }
         if (milestone.getRelatedTask().isPresent()) {
-            predefineMilestoneRow.setEditableAttributeValue(milestone.getRelatedTask().get(), "relatedTaskIdentifier",
-                    "relatedTaskIdentifier-COMBOBOX",
-                    Input.ComponentType.COMBOBOX);
+            if (milestone.getRelatedTask().get().equals("")){
+                predefineMilestoneRow.clearValue("relatedTaskIdentifier","relatedTaskIdentifier-COMBOBOX", Input.ComponentType.COMBOBOX);
+            }
+            else {
+                predefineMilestoneRow.setEditableAttributeValue(milestone.getRelatedTask().get(), "relatedTaskIdentifier",
+                        "relatedTaskIdentifier-COMBOBOX",
+                        Input.ComponentType.COMBOBOX);
+            }
         }
         if (milestone.getIsActive().isPresent()) {
             predefineMilestoneRow.setEditableAttributeValue(milestone.getIsActive().get(), "active", "active-CHECKBOX",
@@ -173,6 +179,7 @@ public class ProcessWizardPage extends BasePage {
                     "isManualCompletion-CHECKBOX",
                     Input.ComponentType.CHECKBOX);
         }
+
     }
     
     private Wizard definedBasicProcess(String processName, String processType, Long plusDays) {

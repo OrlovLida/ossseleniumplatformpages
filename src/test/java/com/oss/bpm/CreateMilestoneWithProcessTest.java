@@ -40,9 +40,9 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
     public void openProcessInstancesPage() {
         processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
         DelayUtils.sleep(3000);
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        processInstancesPage.changeUser("bpm_webselenium", "bpmweb");
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        processInstancesPage.changeUser("bpm_webselenium", "bpmweb");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         
     }
     @Description("For Basic  Milestone User ")
@@ -82,8 +82,9 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
                 .setLeadTime("10")
                 .setDescription("Update 1")
                 .setIsManualCompletion("false")
+                .setRelatedTask("")
                 .build();
-        processWizardPage.editPredefinedMilestone(milestone1,1);
+        processWizardPage.editPredefinedMilestone(milestone1,0);
         processWizardPage.clickAcceptButton();
 
     }
