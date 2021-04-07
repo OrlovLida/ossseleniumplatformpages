@@ -4,6 +4,8 @@ import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.util.List;
 
+import com.oss.pages.transport.ipam.IPAddressAssignmentWizardPage;
+import com.oss.pages.transport.ipam.helper.IPAddressAssignmentWizardProperties;
 import org.assertj.core.api.Assertions;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -39,7 +41,6 @@ import com.oss.pages.templateCM.ChangeConfigurationPage;
 import com.oss.pages.templateCM.SetParametersWizardPage;
 import com.oss.pages.transport.NetworkViewPage;
 import com.oss.pages.transport.ipam.IPAddressManagementViewPage;
-import com.oss.pages.transport.ipam.IPv4AddressAssignmentWizardPage;
 
 import io.qameta.allure.Description;
 
@@ -179,9 +180,11 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         newInventoryViewPage.selectFirstRow();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         newInventoryViewPage.callAction("CREATE", "AssignIPv4Host");
-        IPv4AddressAssignmentWizardPage iPv4AddressAssignmentWizardPage = new IPv4AddressAssignmentWizardPage(driver);
-        iPv4AddressAssignmentWizardPage.assignIPAddressMainStep(ADDRESS, "10.10.20.0/24 [" + IP_NETWORK + "]", "false");
-        iPv4AddressAssignmentWizardPage.assignIPAddressSummaryStep();
+        IPAddressAssignmentWizardPage ipAddressAssignmentWizardPage = new IPAddressAssignmentWizardPage(driver);
+        IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties = IPAddressAssignmentWizardProperties.builder()
+                .address(ADDRESS).subnet("10.10.20.0/24 [" + IP_NETWORK + "]").isPrimary("false").build();
+        ipAddressAssignmentWizardPage.assignMoToIPAddress(ipAddressAssignmentWizardProperties);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
     @Test(priority = 8)
@@ -493,7 +496,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         ipAddressManagementViewPage.expandTreeRow(IP_NETWORK);
         ipAddressManagementViewPage.expandTreeRowContains("%");
         ipAddressManagementViewPage.expandTreeRow(ADDRESS + "/24");
-        ipAddressManagementViewPage.deleteObject("/24 [");
+        ipAddressManagementViewPage.deleteHostAssignment("/24 [");
     }
 
     private void checkMessageType() {
