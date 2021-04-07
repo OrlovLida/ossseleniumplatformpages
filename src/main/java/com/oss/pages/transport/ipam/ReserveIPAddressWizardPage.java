@@ -19,7 +19,7 @@ public class ReserveIPAddressWizardPage extends BasePage {
     }
 
     public void reserveIPAddress(String ipAddress, String description){
-        DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
+        DelayUtils.waitForPageToLoad(driver, wait);
         Wizard reserveIPAddressWizard = Wizard.createWizard(driver, wait);
         Input componentIPAddress = reserveIPAddressWizard.getComponent(HOST_RESERVE_IP_ADDRESS_FIELD_UID, Input.ComponentType.SEARCH_FIELD);
         componentIPAddress.setSingleStringValue(ipAddress);
@@ -29,7 +29,7 @@ public class ReserveIPAddressWizardPage extends BasePage {
     }
 
     public void reserveIPAddress(String ipAddress){
-        DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
+        DelayUtils.waitForPageToLoad(driver, wait);
         Wizard reserveIPAddressWizard = Wizard.createWizard(driver, wait);
         Input componentIPAddress = reserveIPAddressWizard.getComponent(HOST_RESERVE_IP_ADDRESS_FIELD_UID, Input.ComponentType.SEARCH_FIELD);
         componentIPAddress.setSingleStringValue(ipAddress);
@@ -37,7 +37,7 @@ public class ReserveIPAddressWizardPage extends BasePage {
     }
 
     public void reserveIPAddress(){
-        DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
+        DelayUtils.waitForPageToLoad(driver, wait);
         Wizard reserveIPAddressWizard = Wizard.createWizard(driver, wait);
         reserveIPAddressWizard.clickOK();
     }

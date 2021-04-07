@@ -1,0 +1,13 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="ServicesGuiSQM-CRUD" thread-count="2" parallel="tests" verbose="1">
+    <test name="EtlDataCollectionsTest">
+        <classes>
+            <class name="com.oss.bigdata.dfe.EtlDataCollectionsTest"/>
+        </classes>
+    </test>
+    <test name="AggregateViewTest">
+        <classes>
+            <class name="com.oss.bigdata.dfe.AggregateViewTest"/>
+        </classes>
+    </test>
+</suite>

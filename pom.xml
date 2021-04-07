@@ -4,7 +4,7 @@
 
     <groupId>com.comarch.oss.web.tests.platform</groupId>
     <artifactId>OSSSeleniumPlatformPages</artifactId>
-    <version>0.3.2-SNAPSHOT</version>
+    <version>0.4.1-SNAPSHOT</version>
 
     <scm>
         <connection>scm:git:ssh://git@makumba-vm-1.krakow.comarch/ossseleniumtests/ossseleniumplatformpages.git</connection>
@@ -27,7 +27,7 @@
         <radio.version>5.0.0-SNAPSHOT</radio.version>
         <resourcecatalog.version>2.5.7.Final</resourcecatalog.version>
         <planning.version>6.9.2.Final</planning.version>
-        <seleniumframework.version>0.6.0-SNAPSHOT</seleniumframework.version>
+        <seleniumframework.version>0.6.1-SNAPSHOT</seleniumframework.version>
     </properties>
 
     <dependencies>

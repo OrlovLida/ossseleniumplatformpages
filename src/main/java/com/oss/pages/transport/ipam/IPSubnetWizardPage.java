@@ -6,8 +6,8 @@ import com.oss.framework.widgets.Widget;
 import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.tablewidget.TableWidget;
 import com.oss.pages.BasePage;
-import com.oss.pages.transport.helper.IPSubnetFilterProperties;
-import com.oss.pages.transport.helper.IPSubnetWizardProperties;
+import com.oss.pages.transport.ipam.helper.IPSubnetFilterProperties;
+import com.oss.pages.transport.ipam.helper.IPSubnetWizardProperties;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import static com.oss.framework.components.inputs.Input.ComponentType.*;
@@ -131,7 +131,7 @@ public class IPSubnetWizardPage extends BasePage {
     }
 
     private void waitForPageToLoad(){
-        DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     private Wizard createWizard(){

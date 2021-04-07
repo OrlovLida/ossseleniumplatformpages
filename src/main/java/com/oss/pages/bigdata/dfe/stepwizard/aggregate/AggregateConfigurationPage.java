@@ -1,6 +1,5 @@
 package com.oss.pages.bigdata.dfe.stepwizard.aggregate;
 
-import com.oss.framework.data.Data;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.dfe.aggregatesmanager.AggregatesManagerWidget;
 import com.oss.pages.BasePage;
@@ -19,7 +18,6 @@ public class AggregateConfigurationPage extends BasePage {
     public void addNewAggregateConfiguration(AggregatesManagerWidget aggregatesManager){
         aggregatesManager.clickAdd();
     }
-
 
     @Step("I fill Aggregates Configuration Step Aggregate")
     public void fillAggregatesConfigurationStepAggregate(String configName, String baseTableName, String selectedDimension){

@@ -1,11 +1,12 @@
 package com.oss.pages.exportguiwizard;
 
-import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import com.oss.framework.utils.DelayUtils;
+
+import io.qameta.allure.Step;
 
 public class SendFileByEmailPage extends ExportGuiWizardPage {
 
@@ -43,13 +44,13 @@ public class SendFileByEmailPage extends ExportGuiWizardPage {
 
     private void typeValueInMultiSearchInput(String value) {
         String xpath = "//div[contains(@id,'stickyPortal')]//input";
-        DelayUtils.waitForComponent(wait, xpath);
+        DelayUtils.waitByXPath(wait, xpath);
         driver.findElement(By.xpath(xpath)).sendKeys(value);
     }
 
     private void clickOnMultiSearch(String COMPONENT_ID) {
         String componentPath = "//div[contains (@data-attributename,'" + COMPONENT_ID + "')]//div[contains(@class, 'input')]";
-        DelayUtils.waitForComponent(wait, componentPath);
+        DelayUtils.waitByXPath(wait, componentPath);
         driver.findElement(By.xpath(componentPath)).click();
     }
 }

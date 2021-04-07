@@ -158,6 +158,7 @@ public class ExportGuiWizardPage extends BasePage {
     }
 
     protected void setValueContainsOnCombobox(String COMBOBOX_ID, String value) {
+        getWizard().getComponent(COMBOBOX_ID, ComponentType.COMBOBOX).clear();
         getWizard().getComponent(COMBOBOX_ID, ComponentType.COMBOBOX)
                 .setSingleStringValueContains(value);
     }

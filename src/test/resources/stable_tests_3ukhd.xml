@@ -21,11 +21,6 @@
             <class name="com.oss.bpm.CreateProcessNRPTest"/>
         </classes>
     </test>
-    <test name="IPAMTest">
-        <classes>
-            <class name="com.oss.transport.IPAMTest"/>
-        </classes>
-    </test>
     <test name="ThreeUK - PhysicalRegressionTests">
         <classes>
             <class name="com.oss.ThreeUKProject.PhysicalRegressionTests"/>
