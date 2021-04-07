@@ -36,7 +36,8 @@ public class IRBInterfaceTest extends BaseTestCase {
     private static final String IP_SUBNET = "10.10.20.0/24 [E2ESeleniumTest]";
     private static final String IP_NETWORK = "E2ESeleniumTest";
     private static final String IP_ADDRESS = "10.10.20.2";
-    
+    private static final String IRB_INTERFACE_SEARCH_NIV = "IRB Interface";
+
     @BeforeClass
     public void openWebConsole() {
         waitForPageToLoad();
@@ -78,7 +79,7 @@ public class IRBInterfaceTest extends BaseTestCase {
     @Description("Checks if IRB Interface is visible in New Inventory View")
     public void checkIRBInterface() {
         homePage.goToHomePage(driver, BASIC_URL);
-        homePage.setNewObjectType("IRB Interface");
+        homePage.setNewObjectType(IRB_INTERFACE_SEARCH_NIV);
         waitForPageToLoad();
         newInventoryViewPage.searchObject(IRB_INTERFACE_DEVICE_NAME);
         waitForPageToLoad();
@@ -139,7 +140,7 @@ public class IRBInterfaceTest extends BaseTestCase {
     @Description("Delete IRB Interface")
     public void deleteIRBInterface() {
         homePage.goToHomePage(driver, BASIC_URL);
-        homePage.setNewObjectType("IRB Interface");
+        homePage.setNewObjectType(IRB_INTERFACE_SEARCH_NIV);
         waitForPageToLoad();
         newInventoryViewPage.searchObject(IRB_INTERFACE_DEVICE_NAME);
         waitForPageToLoad();
