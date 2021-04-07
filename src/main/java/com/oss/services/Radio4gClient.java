@@ -12,6 +12,8 @@ public class Radio4gClient {
 
     private static final String E_NODE_API_PATH = "/enodeb";
     private static final String CELL_API_PATH = "/enodeb/%s/cell";
+    private static final String HOST_RELATION_E_NODE_API_PATH = "/enodeb/%s/hostrelation";
+    private static final String HOST_RELATION_CELL_API_PATH = "/enodeb/%1$s/cell/%2$s/hostrelation";
 
     private static Radio4gClient instance;
     private final Environment env;
@@ -58,4 +60,32 @@ public class Radio4gClient {
                 .as(CellResponseIdDTO.class);
     }
 
+    public void createHRENodeB(HostRelationDTO hRENodeB, Long eNodeId) {
+        String eNodeBHRPath = String.format(HOST_RELATION_E_NODE_API_PATH, eNodeId);
+        env.getRadioCore4GSpecification()
+                .given()
+                .contentType(ContentType.JSON)
+                .body(hRENodeB)
+                .when()
+                .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
+                .queryParam(Constants.ID, eNodeId)
+                .post(eNodeBHRPath)
+                .then()
+                .statusCode(Response.Status.NO_CONTENT.getStatusCode()).assertThat();
+    }
+
+    public void createHRCell(HostRelationDTO hRENodeB, Long eNodeId, Long cellId) {
+        String cellHRPath = String.format(HOST_RELATION_CELL_API_PATH, eNodeId, cellId);
+        env.getRadioCore4GSpecification()
+                .given()
+                .contentType(ContentType.JSON)
+                .body(hRENodeB)
+                .when()
+                .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
+                .queryParam(Constants.ID, eNodeId)
+                .queryParam(Constants.CELL_ID, cellId)
+                .post(cellHRPath)
+                .then()
+                .statusCode(Response.Status.NO_CONTENT.getStatusCode()).assertThat();
+    }
 }

@@ -2,7 +2,6 @@ package com.oss.repositories;
 
 import com.comarch.oss.radio.api.dto.*;
 import com.oss.services.Radio4gClient;
-import com.oss.untils.Constants;
 import com.oss.untils.Environment;
 
 public class Radio4gRepository {
@@ -19,9 +18,26 @@ public class Radio4gRepository {
         return eNodeB.getId();
     }
 
-    public void createCell4g(String cellName, Integer cellId, Long eNodeBId, String mcc, String mnc, String carrier) {
+    public Long createCell4g(String cellName, Integer cellId, Long eNodeBId, String mcc, String mnc, String carrier) {
         Radio4gClient client = Radio4gClient.getInstance(env);
-        client.createCell4G(buildCell4g(cellName, cellId, mcc, mnc, carrier), eNodeBId);
+        CellResponseIdDTO cell = client.createCell4G(buildCell4g(cellName, cellId, mcc, mnc, carrier), eNodeBId);
+        return  cell.getId();
+    }
+
+    public void createHRENodeB(Long hostingResourceId, Long eNodeBId) {
+        Radio4gClient client = Radio4gClient.getInstance(env);
+        client.createHRENodeB(buildHR(hostingResourceId), eNodeBId);
+    }
+
+    public void createHRCell(Long hostingResourceId, Long eNodeBId, Long cellId) {
+        Radio4gClient client = Radio4gClient.getInstance(env);
+        client.createHRCell(buildHR(hostingResourceId), eNodeBId, cellId);
+    }
+
+    public HostRelationDTO buildHR(Long hostingResourceId) {
+        return HostRelationDTO.builder()
+                .hostingResource(getHostingResource(hostingResourceId))
+                .build();
     }
 
     private EnodeBDTO buildENodeB(String name, Long locationId, String mcc, String mnc, String eNodeBModel) {
@@ -58,4 +74,9 @@ public class Radio4gRepository {
                 .build();
     }
 
+    private HostingResourceDTO getHostingResource(Long hostingResourceId) {
+        return HostingResourceDTO.builder()
+                .hostingResourceId(hostingResourceId)
+                .build();
+    }
 }

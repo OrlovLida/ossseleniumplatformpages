@@ -46,14 +46,15 @@ public class Technology4GTests extends BaseTestCase {
     private static final String eNodeBNameForEdit = "eNodeBForEditSeleniumTests" + (int) (Math.random() * 10000);
     private static final String cell4GId1 = RandomGenerator.generateRandomCell4GId();
     private static final String cell4GNameForDelete = "Cell4GForDeleteSeleniumTests" + (int) (Math.random() * 10000);
+    private static Long cellId;
     private static final String cell4GId2 = RandomGenerator.generateRandomCell4GId();
     private static final String cell4GNameForEdit = "Cell4GForEditSeleniumTests" + (int) (Math.random() * 10000);
     private static Long deviceModelId;
     private static Long cardModelId;
+    private static String deviceId;
     private static final String rruDeviceNameForEdit = "RRUForHostRelationSeleniumTests" + (int) (Math.random() * 10000);
     private static final String bbuDeviceNameForEdit = "BBUWithCardForHostRelationSeleniumTests" + (int) (Math.random() * 10000);
     private static final String antennaAHP4517R7v06NameForEdit = "RANAntennaForHostRelationSeleniumTests" + (int) (Math.random() * 10000);
-    private static final String aauAAU5614NameForEdit = "AAUForHostRelationSeleniumTests" + (int) (Math.random() * 10000);
     private static final String objectTypeENodeB = "eNodeB";
     private static final String objectTypeCell4G = "Cell 4G";
     private static final String locationTypeSite = "Site";
@@ -72,10 +73,17 @@ public class Technology4GTests extends BaseTestCase {
         createCell4G(cell4GNameForDelete, cell4GId1);
         createCell4G(cell4GNameForEdit, cell4GId2);
         createDevice(Constants.RRU5501_MODEL, rruDeviceNameForEdit, Constants.DEVICE_MODEL_TYPE);
+        createHRToDevice(); //eNB-RRU, Cell-RRU
+        //eNB-RRU port
+        //Cell-RRU port
         createDeviceWithCard(Constants.BBU5900_MODEL, bbuDeviceNameForEdit, Constants.DEVICE_MODEL_TYPE, Constants.UBBPg3_CARD_MODEL,
                 "0", Constants.CARD_MODEL_TYPE);
+        createHRToDevice(); //eNB-BBU, Cell-BBU
+        //eNB-BBU card
+        //Cell-BBU card
         createDevice(Constants.AHP4517R7v06ANTENNA_MODEL, antennaAHP4517R7v06NameForEdit, Constants.ANTENNA_MODEL_TYPE);
-        createDevice(Constants.AAU5614ANTENNA_MODEL, aauAAU5614NameForEdit, Constants.ANTENNA_MODEL_TYPE);
+        //Cell-Antenna Array
+
     }
 
     private void getOrCreateAddress() {
@@ -95,14 +103,14 @@ public class Technology4GTests extends BaseTestCase {
 
     private void createCell4G(String cell4GNameForCreate, String cell4GIdForCreate) {
         Radio4gRepository radio4gRepository = new Radio4gRepository(env);
-        radio4gRepository.createCell4g(cell4GNameForCreate, Integer.valueOf(cell4GIdForCreate), eNodeBId, MCC, MNC, carrier4G);
+        cellId = radio4gRepository.createCell4g(cell4GNameForCreate, Integer.valueOf(cell4GIdForCreate), eNodeBId, MCC, MNC, carrier4G);
     }
 
     private void createDevice(String deviceModel, String deviceName, String deviceModelType) {
         ResourceCatalogClient resourceCatalogClient = new ResourceCatalogClient(env);
         deviceModelId = resourceCatalogClient.getModelIds(deviceModel);
         PhysicalInventoryRepository physicalInventoryRepository = new PhysicalInventoryRepository(env);
-        physicalInventoryRepository.createDevice(locationTypeSite, Long.valueOf(locationId), deviceModelId, deviceName, deviceModelType);
+        deviceId = physicalInventoryRepository.createDevice(locationTypeSite, Long.valueOf(locationId), deviceModelId, deviceName, deviceModelType);
     }
 
     private void createDeviceWithCard(String deviceModel, String deviceName, String deviceModelType, String cardModel, String slotName, String cardModelType) {
@@ -110,7 +118,13 @@ public class Technology4GTests extends BaseTestCase {
         deviceModelId = resourceCatalogClient.getModelIds(deviceModel);
         cardModelId = resourceCatalogClient.getModelIds(cardModel);
         PhysicalInventoryRepository physicalInventoryRepository = new PhysicalInventoryRepository(env);
-        physicalInventoryRepository.createDeviceWithCard(locationTypeSite, Long.valueOf(locationId), deviceModelId, deviceName, deviceModelType, slotName, cardModelId, cardModelType);
+        deviceId = physicalInventoryRepository.createDeviceWithCard(locationTypeSite, Long.valueOf(locationId), deviceModelId, deviceName, deviceModelType, slotName, cardModelId, cardModelType);
+    }
+
+    private void createHRToDevice() {
+        Radio4gRepository radio4gRepository = new Radio4gRepository(env);
+        radio4gRepository.createHRENodeB(Long.valueOf(deviceId), eNodeBId);
+        radio4gRepository.createHRCell(Long.valueOf(deviceId), eNodeBId, cellId);
     }
 
     @BeforeMethod
