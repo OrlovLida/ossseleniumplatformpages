@@ -3,6 +3,7 @@ package com.oss.pages.transport.ipam;
 import java.util.Arrays;
 
 import com.oss.framework.widgets.Wizard;
+import com.oss.pages.transport.ipam.helper.IPAddressAssignmentWizardProperties;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -22,70 +23,9 @@ import io.qameta.allure.Step;
 
 import static com.oss.framework.alerts.SystemMessageContainer.MessageType.SUCCESS;
 import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
-import static com.oss.framework.components.inputs.Input.ComponentType.SEARCH_FIELD;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.*;
 
 public class IPAddressManagementViewPage extends BasePage {
-    private static final String IPADDRESS_MANAGEMENT_VIEW_URL = "%s/#/view/transport/ipmgt/ipTree?";
-    private static final String PERSPECTIVE = "perspective=%s";
-    private static final String LIVE = "LIVE";
-
-    private static final String CREATE_OPERATIONS_FOR_NETWORK_GROUP = "CreateOperationsForNetwork";
-    private static final String CREATE_OPERATIONS_FOR_IPV4_SUBNET_NETWORK_GROUP = "CreateOperationsForIPv4SubnetNetwork";
-    private static final String CREATE_OPERATIONS_FOR_IPV6_SUBNET_NETWORK_GROUP = "CreateOperationsForIPv6SubnetNetwork";
-    private static final String EDIT_OPERATION_FOR_NETWORK_GROUP = "EditOperationsForNetwork";
-    private static final String EDIT_OPERATION_FOR_IPV4_SUBNET_NETWORK_GROUP = "EditOperationsForIPv4SubnetNetwork";
-    private static final String EDIT_OPERATION_FOR_IPV6_SUBNET_NETWORK_GROUP = "EditOperationsForIPv6SubnetNetwork";
-    private static final String EDIT_OPERATION_FOR_IPV4_HOST_ADDRESS_GROUP = "EditOperationsForIPv4HostAddress";
-    private static final String EDIT_OPERATION_FOR_IPV6_HOST_ADDRESS_GROUP = "EditOperationsForIPv6HostAddress";
-    private static final String ASSIGN_OPERATION_FOR_IPV4_SUBNET_WITH_ASSIGNMENT = "AssignOperationsForIPv4SubnetWithAssignment";
-    private static final String ASSIGN_OPERATION_FOR_IPV6_SUBNET_WITH_ASSIGNMENT = "AssignOperationsForIPv6SubnetWithAssignment";
-    private static final String ASSIGN_OPERATION_FOR_IPV4_SUBNET_WITHOUT_ASSIGNMENT = "AssignOperationFotIPv4SubnetWithoutAssignment";
-    private static final String ASSIGN_OPERATION_FOR_IPV6_SUBNET_WITHOUT_ASSIGNMENT = "AssignOperationFotIPv6SubnetWithoutAssignment";
-    private static final String CREATE_OPERATION_ACTION = "Create";
-    private static final String EDIT_OPERATION_ACTION = "Edit";
-    private static final String ASSIGN_OPERATION_ACTION = "Assign";
-    private static final String CREATE_IP_NETWORK_ACTION = "CreateIPNetworkContextAction_1";
-    private static final String EDIT_IP_NETWORK_ACTION = "EditIPNetworkContextAction";
-    private static final String CREATE_IPV4_SUBNET_ACTION = "CreateIPv4SubnetContextAction_2";
-    private static final String CREATE_IPV6_SUBNET_ACTION = "CreateIPv6SubnetContextAction_3";
-    private static final String EDIT_IPV4_SUBNET_ACTION = "EditIPv4SubnetContextAction_30";
-    private static final String EDIT_IPV6_SUBNET_ACTION = "EditIPv6SubnetContextAction_35";
-    private static final String CHANGE_IPV4_SUBNET_TYPE_TO_BLOCK_ACTION = "ChangeIPv4SubnetTypeToBlockContextAction_32";
-    private static final String CHANGE_IPV6_SUBNET_TYPE_TO_BLOCK_ACTION = "ChangeIPv6SubnetTypeToBlockContextAction_37";
-    private static final String ASSIGN_IPV4_SUBNET_ACTION = "AssignSubnetContextAction_7";
-    private static final String ASSIGN_IPV6_SUBNET_ACTION = "AssignSubnetContextAction_20";
-    private static final String EDIT_ROLE_OF_IPV4_SUBNET_ASSIGNMENT_ACTION = "EditRoleOfSubnetAssignmentContextAction_13";
-    private static final String EDIT_ROLE_OF_IPV6_SUBNET_ASSIGNMENT_ACTION = "EditRoleOfSubnetAssignmentContextAction_26";
-    private static final String RESERVE_IPV4_ADDRESS_ACTION = "ReserveIPv4HostAddress";
-    private static final String RESERVE_IPV6_ADDRESS_ACTION = "ReserveIPv6HostAddress";
-    private static final String RESERVE_LOOPBACK_IPV4_ADDRESS_ACTION = "ReserveLoopbackIPv4HostAddress";
-    private static final String RESERVE_LOOPBACK_IPV6_ADDRESS_ACTION = "ReserveLoopbackIPv6HostAddress";
-    private static final String CHANGE_IPV4_HOST_ADDRESS_MASK_ACTION = "ChangeIPv4HostAddressMaskContextAction";
-    private static final String CHANGE_IPV6_HOST_ADDRESS_MASK_ACTION = "ChangeIPv6HostAddressMaskContextAction";
-    private static final String DELETE_IPV4_SUBNET_ASSIGNMENT_ACTION = "RemoveSubnetAssignmentContextAction_12";
-    private static final String DELETE_IPV6_SUBNET_ASSIGNMENT_ACTION = "RemoveSubnetAssignmentContextAction_25";
-    private static final String DELETE_ACTION = "DeleteHostAddressAssignmentContextAction";
-    private static final String DELETE_IP_NETWORK_ACTION = "DeleteIPNetworkContextAction";
-    private static final String DELETE_IPV4_SUBNET_TYPE_OF_BLOCK_ACTION = "DeleteIPv4SubnetBlockContextAction";
-    private static final String DELETE_IPV4_SUBNET_TYPE_OF_NETWORK_ACTION = "DeleteIPv4SubnetNetworkContextAction";
-    private static final String DELETE_IPV6_SUBNET_TYPE_OF_BLOCK_ACTION = "DeleteIPv6SubnetBlockContextAction";
-    private static final String DELETE_IPV6_SUBNET_TYPE_OF_NETWORK_ACTION = "DeleteIPv6SubnetNetworkContextAction";
-    private static final String DELETE_HOST_ADDRESS_ACTION = "DeleteHostAddressContextAction";
-    private static final String SPLIT_IPV4_SUBNET_ACTION = "SplitIPv4SubnetContextAction";
-    private static final String SPLIT_IPV6_SUBNET_ACTION = "SplitIPv6SubnetContextAction";
-    private static final String MERGE_IPV4_SUBNET_ACTION = "MergeIPv4SubnetContextAction";
-    private static final String MERGE_IPV6_SUBNET_ACTION = "MergeIPv6SubnetContextAction";
-    private static final String ROLE_ACTION = "Role";
-
-    private static final String OK_BUTTON_LABEL = "OK";
-    private static final String TREE_VIEW_CLASS = "TreeView";
-    private static final String TREE_VIEW_COMPONENT_CLASS = "TreeView";
-    private static final String OSS_WINDOW_CLASS = "OssWindow";
-    private static final String WINDOW_TOOLBAR_CLASS = "windowToolbar";
-    private static final String TABS_CONTAINER_CLASS = "tabsContainer";
-    private static final String NEW_ROLE_DATA_ATTRIBUTE_NAME = "new-role-uid";
-    private static final String MASK_DATA_ATTRIBUTE_NAME = "mask-uid";
-    private static final String POPUP_WIZARD_DATA_ATTRIBUTE_NAME = "Popup";
 
     private TreeWidget mainTree;
     private OldActionsContainer actionsContainer;
@@ -225,6 +165,7 @@ public class IPAddressManagementViewPage extends BasePage {
         useContextAction(CREATE_OPERATIONS_FOR_NETWORK_GROUP, CREATE_OPERATION_ACTION, CREATE_IP_NETWORK_ACTION);
         IPNetworkWizardPage ipNetworkWizardPage = new IPNetworkWizardPage(driver);
         ipNetworkWizardPage.createIPNetwork(networkName, description);
+        waitForPageToLoad();
     }
 
     @Step("Edit IP Network with name: {networkName} to network with name: {networkNameUpdated} and description: {description}")
@@ -233,6 +174,7 @@ public class IPAddressManagementViewPage extends BasePage {
         useContextAction(EDIT_OPERATION_FOR_NETWORK_GROUP, EDIT_OPERATION_ACTION, EDIT_IP_NETWORK_ACTION);
         IPNetworkWizardPage ipNetworkWizardPage = new IPNetworkWizardPage(driver);
         ipNetworkWizardPage.editIPNetwork(networkNameUpdated, description);
+        waitForPageToLoad();
     }
 
     @Step("Create IPv4 Subnet")
@@ -262,22 +204,22 @@ public class IPAddressManagementViewPage extends BasePage {
     }
 
     @Step("Edit IPv4 Subnet: {rowName} role to {role} and description to {description}")
-    public void editIPv4Subnet(String rowName, String mask, String role, String description) {
+    public void editIPv4Subnet(String rowName, String role, String description) {
         selectTreeRowContains(rowName);
         useContextAction(EDIT_OPERATION_FOR_IPV4_SUBNET_NETWORK_GROUP, EDIT_OPERATION_ACTION, EDIT_IPV4_SUBNET_ACTION);
-        editIPSubnet(mask, role, description);
+        editIPSubnet(role, description);
     }
 
     @Step("Edit IPv6 Subnet: {rowName} role to {role} and description to {description}")
-    public void editIPv6Subnet(String rowName, String mask, String role, String description) {
+    public void editIPv6Subnet(String rowName, String role, String description) {
         selectTreeRowContains(rowName);
         useContextAction(EDIT_OPERATION_FOR_IPV6_SUBNET_NETWORK_GROUP, EDIT_OPERATION_ACTION, EDIT_IPV6_SUBNET_ACTION);
-        editIPSubnet(mask, role, description);
+        editIPSubnet(role, description);
     }
 
-    private void editIPSubnet(String mask, String role, String description){
+    private void editIPSubnet(String role, String description){
         EditIPSubnetWizardPage editIPSubnetWizardPage = new EditIPSubnetWizardPage(driver);
-        editIPSubnetWizardPage.editIPSubnet(mask, role, description);
+        editIPSubnetWizardPage.editIPSubnet(role, description);
     }
 
     @Step("Split IPv4 Subnet: {rowName}")
@@ -336,17 +278,17 @@ public class IPAddressManagementViewPage extends BasePage {
         editRoleForIPSubnetAssignment(newRoleName);
     }
 
-    private void editRoleForIPSubnetAssignment(String newRoleName){
-        Wizard editIPSubnetAssignmentRole = Wizard.createByComponentId(driver, wait, POPUP_WIZARD_DATA_ATTRIBUTE_NAME);
-        editIPSubnetAssignmentRole.setComponentValue(NEW_ROLE_DATA_ATTRIBUTE_NAME, newRoleName, COMBOBOX);
-        editIPSubnetAssignmentRole.clickOK();
-    }
-
     @Step("Edit role for IPv6 Subnet assignment {rowName} to: {newRoleName}")
     public void editRoleForIPv6SubnetAssignment(String rowName, String newRoleName) {
         selectTreeRowContains(rowName);
         useContextAction(ASSIGN_OPERATION_FOR_IPV6_SUBNET_WITH_ASSIGNMENT, ASSIGN_OPERATION_ACTION, EDIT_ROLE_OF_IPV6_SUBNET_ASSIGNMENT_ACTION);
         editRoleForIPSubnetAssignment(newRoleName);
+    }
+
+    private void editRoleForIPSubnetAssignment(String newRoleName){
+        Wizard editIPSubnetAssignmentRole = Wizard.createByComponentId(driver, wait, POPUP_WIZARD_DATA_ATTRIBUTE_NAME);
+        editIPSubnetAssignmentRole.setComponentValue(NEW_ROLE_DATA_ATTRIBUTE_NAME, newRoleName, COMBOBOX);
+        editIPSubnetAssignmentRole.clickOK();
     }
 
     @Step("Reserve IPv4 Host Address {rowName}")
@@ -386,6 +328,33 @@ public class IPAddressManagementViewPage extends BasePage {
         reserveIPAddressWizardPage.reserveIPAddress(address, description);
     }
 
+    @Step("Assign IPv4 Host Address from subnet {rowName} context")
+    public IPAddressAssignmentWizardPage assignIPv4HostAddressFromSubnetContext(String rowName) {
+        return assignIPHost(rowName, ASSIGN_OPERATION_FOR_IPV4_SUBNET_WITHOUT_ASSIGNMENT, ASSIGN_IPV4_ADDRESS_ACTION_FROM_SUBNET_CONTEXT);
+    }
+
+    @Step("Assign IPv6 Host Address from subnet {rowName} context")
+    public IPAddressAssignmentWizardPage assignIPv6HostAddressFromSubnetContext(String rowName) {
+        return assignIPHost(rowName, ASSIGN_OPERATION_FOR_IPV6_SUBNET_WITHOUT_ASSIGNMENT, ASSIGN_IPV6_ADDRESS_ACTION_FROM_SUBNET_CONTEXT);
+    }
+
+    @Step("Assign Loopback IPv4 Host Address from subnet {rowName} context")
+    public IPAddressAssignmentWizardPage assignLoopbackIPv4HostAddressFromSubnetContext(String rowName) {
+        return assignIPHost(rowName, ASSIGN_OPERATION_FOR_IPV4_SUBNET_WITHOUT_ASSIGNMENT, ASSIGN_LOOPBACK_IPV4_ADDRESS_ACTION_FROM_SUBNET_CONTEXT);
+    }
+
+    @Step("Assign Loopback IPv6 Host Address from host {rowName} context")
+    public IPAddressAssignmentWizardPage assignLoopbackIPv6HostAddressFromHostContext(String rowName) {
+        return assignIPHost(rowName, ASSIGN_OPERATION_FOR_IPV6_HOST_ADDRESS, ASSIGN_LOOPBACK_IPV6_ADDRESS_ACTION_FROM_HOST_CONTEXT);
+    }
+
+    private IPAddressAssignmentWizardPage assignIPHost(String rowName, String contextActionGroup, String contextAction){
+        selectTreeRowContains(rowName);
+        waitForPageToLoad();
+        useContextAction(contextActionGroup, ASSIGN_OPERATION_ACTION, contextAction);
+        return new IPAddressAssignmentWizardPage(driver);
+    }
+
     @Step("Change IPv4 Host {rowName} Mask")
     public void changeIPv4HostMask(String rowName, String mask) {
         selectTreeRowContains(rowName);
@@ -408,11 +377,29 @@ public class IPAddressManagementViewPage extends BasePage {
         changeIPHostAddressMaskWizard.clickOK();
     }
 
-    @Step("Delete objects with: {name}")
-    public void deleteObject(String name) {
+    @Step("Edit IPv4 Host Assignment {rowName}")
+    public void editIPv4HostAssignment(String rowName, IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties) {
+        selectTreeRowContains(rowName);
+        waitForPageToLoad();
+        useContextAction(EDIT_OPERATION_FOR_IPV4_HOST_ASSIGNMENT_GROUP, EDIT_OPERATION_ACTION, EDIT_IPV4_HOST_ASSIGNMENT_ACTION);
+        EditIPAddressPropertiesWizardPage editIPAddressPropertiesWizardPage = new EditIPAddressPropertiesWizardPage(driver);
+        editIPAddressPropertiesWizardPage.editIPAddressProperties(ipAddressAssignmentWizardProperties);
+    }
+
+    @Step("Edit IPv6 Host Assignment {rowName}")
+    public void editIPv6HostAssignment(String rowName, IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties) {
+        selectTreeRowContains(rowName);
+        waitForPageToLoad();
+        useContextAction(EDIT_OPERATION_FOR_IPV6_HOST_ASSIGNMENT_GROUP, EDIT_OPERATION_ACTION, EDIT_IPV6_HOST_ASSIGNMENT_ACTION);
+        EditIPAddressPropertiesWizardPage editIPAddressPropertiesWizardPage = new EditIPAddressPropertiesWizardPage(driver);
+        editIPAddressPropertiesWizardPage.editIPAddressProperties(ipAddressAssignmentWizardProperties);
+    }
+
+    @Step("Delete host assignment with: {name}")
+    public void deleteHostAssignment(String name) {
         waitForPageToLoad();
         selectTreeRowContains(name);
-        useContextAction(DELETE_ACTION);
+        useContextAction(DELETE_HOST_ASSIGNMENT_ACTION);
         acceptConfirmationBox();
     }
 

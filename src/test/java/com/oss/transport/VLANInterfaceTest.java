@@ -1,5 +1,7 @@
 package com.oss.transport;
 
+import com.oss.pages.transport.ipam.IPAddressAssignmentWizardPage;
+import com.oss.pages.transport.ipam.helper.IPAddressAssignmentWizardProperties;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
@@ -17,7 +19,6 @@ import com.oss.pages.bpm.TasksPage;
 import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.transport.VLANInterfaceWizardPage;
 import com.oss.pages.transport.ipam.IPAddressManagementViewPage;
-import com.oss.pages.transport.ipam.IPv4AddressAssignmentWizardPage;
 import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
@@ -103,8 +104,10 @@ public class VLANInterfaceTest extends BaseTestCase {
         newInventoryViewPage.selectFirstRow();
         waitForPageToLoad();
         newInventoryViewPage.callAction(ActionsContainer.CREATE_GROUP_ID, "AssignIPv4Host");
-        IPv4AddressAssignmentWizardPage iPv4AddressAssignmentWizardPage = new IPv4AddressAssignmentWizardPage(driver);
-        iPv4AddressAssignmentWizardPage.assignIPtoIRBInterface("126001", IP_SUBNET, false);
+        IPAddressAssignmentWizardPage ipAddressAssignmentWizardPage = new IPAddressAssignmentWizardPage(driver);
+        IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties = IPAddressAssignmentWizardProperties.builder()
+                .address("126001").subnet(IP_SUBNET).isPrimary("false").build();
+        ipAddressAssignmentWizardPage.assignMoToIPAddress(ipAddressAssignmentWizardProperties);
         waitForPageToLoad();
     }
     
@@ -142,7 +145,7 @@ public class VLANInterfaceTest extends BaseTestCase {
         ipAddressManagementViewPage.expandTreeRow(IP_NETWORK);
         ipAddressManagementViewPage.expandTreeRowContains("%");
         ipAddressManagementViewPage.expandTreeRow(IP_ADDRESS + "/24");
-        ipAddressManagementViewPage.deleteObject("/24 [");
+        ipAddressManagementViewPage.deleteHostAssignment("/24 [");
     }
     
     @Test(priority = 9)
