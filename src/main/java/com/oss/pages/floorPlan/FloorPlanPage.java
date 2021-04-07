@@ -1,5 +1,16 @@
 package com.oss.pages.floorPlan;
 
+import java.io.File;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Paths;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.floorPlan.FloorPlanTab;
 import com.oss.framework.floorPlan.FloorPlanTable;
@@ -7,14 +18,8 @@ import com.oss.framework.floorPlan.FloorPlanTree;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.BasePage;
 import com.oss.pages.platform.HomePage;
-import io.qameta.allure.Step;
-import org.openqa.selenium.*;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import java.io.File;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Paths;
+import io.qameta.allure.Step;
 
 public class FloorPlanPage extends BasePage {
     private static final String LOCATIONS_TREE_ID = "cell_floorPlanConfTree";
@@ -32,7 +37,7 @@ public class FloorPlanPage extends BasePage {
     }
 
     @Step("Expand summary")
-    public void expandSummary(String name){
+    public void expandSummary(String name) {
         getTree(SUMMARY_TABLE_ID).expandNodeByName(name);
     }
 
@@ -53,7 +58,7 @@ public class FloorPlanPage extends BasePage {
             DelayUtils.waitForPageToLoad(driver, wait);
             //TODO change to button when OSSWEB-10577 will be ready
             driver.findElement(By.xpath(".//button[contains(@class, FileUploader-buttonBrowse)]/span[text()='Upload']/parent::button")).click();
-            DelayUtils.waitForComponent(wait, "//div[contains(@class,  'FileUploader-responseMessage')]/span[text() = 'Upload succeeded']");
+            DelayUtils.waitByXPath(wait, "//div[contains(@class,  'FileUploader-responseMessage')]/span[text() = 'Upload succeeded']");
         } catch (URISyntaxException e) {
             throw new RuntimeException("Cant load file", e);
         }
@@ -71,6 +76,7 @@ public class FloorPlanPage extends BasePage {
         int rowNr = floorPlanTable.getRowNr(layerName);
         floorPlanTable.checkNthRowAndNthColumn(rowNr, 2);
     }
+
     @Step("Show label - {labelName}")
     public void showLabels(String labelName) {
         FloorPlanTable floorPlanTable = FloorPlanTable.createById(driver, wait, LAYERS_TABLE_ID);
@@ -94,11 +100,11 @@ public class FloorPlanPage extends BasePage {
         driver.findElement(By.xpath(".//button[contains(@class, Export-buttonExport)]/span[text()='Export']/parent::button")).click();
         DelayUtils.waitForElementDisappear(wait, driver.findElement(By.xpath(".//div[@class='preloader']")));
         export.click();
-        DelayUtils.waitForComponent(wait, "//span[text() = 'Export succeeded']");
+        DelayUtils.waitByXPath(wait, "//span[text() = 'Export succeeded']");
     }
 
     @Step("Go back to Home Page")
-    public HomePage goToHomePage(WebDriver driver, String basicURL){
+    public HomePage goToHomePage(WebDriver driver, String basicURL) {
         driver.get(String.format("%s/#/", basicURL));
         return new HomePage(driver);
     }
