@@ -1,5 +1,12 @@
 package com.oss.E2E;
 
+import java.util.List;
+
+import org.assertj.core.api.Assertions;
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
@@ -9,23 +16,18 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.PlanViewWizardPage;
 import com.oss.pages.bpm.ProcessWizardPage;
 import com.oss.pages.bpm.TasksPage;
-import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.OldInventoryViewPage;
-import com.oss.pages.radio.*;
+import com.oss.pages.radio.AntennaArrayWizardPage;
+import com.oss.pages.radio.CellSiteConfigurationPage;
+import com.oss.pages.radio.EditCell4GWizardPage;
 import com.oss.pages.reconciliation.CmDomainWizardPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
 import com.oss.pages.reconciliation.NetworkInconsistenciesViewPage;
 import com.oss.pages.reconciliation.SamplesManagementPage;
+
 import io.qameta.allure.Description;
 import io.qameta.allure.Step;
-import org.assertj.core.api.Assertions;
-import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
-
-import java.util.List;
-import java.util.regex.Pattern;
 
 public class TP_OSS_RM_RAN_001 extends BaseTestCase {
 
@@ -34,21 +36,21 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
     private String eNodeBName = "GBM055TST";
     private String eNodeBid = "1" + (int) (Math.random() * 10);
     private String eNodeBModel = "HUAWEI Technology Co.,Ltd BTS5900";
-    private String MCCMNCPrimary = "DU [mcc: 424, mnc: 03]";
+    private String MCCMNCPrimary = "DU03 [mcc: 424, mnc: 03]";
 
     private String baseBandUnitModel = "HUAWEI Technology Co.,Ltd BBU5900";
     private String bbuName = "BTS5900,GBM055TST/0/BBU5900,0";
     private String radioUnitModel = "HUAWEI Technology Co.,Ltd RRU5301";
-    private String radioUnitNames[] = {"BTS5900,GBM055TST/0/MRRU,60",
+    private String radioUnitNames[] = { "BTS5900,GBM055TST/0/MRRU,60",
             "BTS5900,GBM055TST/0/MRRU,70",
-            "BTS5900,GBM055TST/0/MRRU,80"};
+            "BTS5900,GBM055TST/0/MRRU,80" };
 
     private String ranAntennaModel = "HUAWEI Technology Co.,Ltd APE4518R14V06";
-    private String[] antennaNames = {"TP_OSS_RM_RAN_001_ANTENNA_1", "TP_OSS_RM_RAN_001_ANTENNA_2", "TP_OSS_RM_RAN_001_ANTENNA_3"};
+    private String[] antennaNames = { "TP_OSS_RM_RAN_001_ANTENNA_1", "TP_OSS_RM_RAN_001_ANTENNA_2", "TP_OSS_RM_RAN_001_ANTENNA_3" };
     private String bbuEquipmentType = "Base Band Unit";
     private String radioUnitEquipmentType = "Remote Radio Head/Unit";
     private String carrier = "L800-B20-5 (6175)";
-    private String cellNames[] = new String[]{"TP_OSS_RM_RAN_001_CELL10", "TP_OSS_RM_RAN_001_CELL20", "TP_OSS_RM_RAN_001_CELL30"};
+    private String cellNames[] = new String[] { "TP_OSS_RM_RAN_001_CELL10", "TP_OSS_RM_RAN_001_CELL20", "TP_OSS_RM_RAN_001_CELL30" };
     private int amountOfCells = cellNames.length;
     public String perspectiveContext;
     public String pci = "2";
@@ -114,10 +116,7 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
     public void createENodeB() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);
-        cellSiteConfigurationPage.clickPlusIconAndSelectOption("Create eNodeB");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        ENodeBWizardPage eNodeBWizard = new ENodeBWizardPage(driver);
-        eNodeBWizard.createENodeB(eNodeBName, eNodeBid, eNodeBModel, MCCMNCPrimary);
+        cellSiteConfigurationPage.createENodeB(eNodeBName, eNodeBid, eNodeBModel, MCCMNCPrimary);
         Assert.assertTrue(SystemMessageContainer.create(driver, webDriverWait)
                 .getMessages().get(0).getText().contains("Created eNodeB"));
     }
@@ -127,13 +126,7 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
     public void createCell4GBulk() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cellSiteConfigurationPage.expandTreeToBaseStation("Site", locationName, eNodeBName);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        cellSiteConfigurationPage.selectTab("Cells 4G");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        cellSiteConfigurationPage.clickPlusIconAndSelectOption("Cell 4G Bulk Wizard");
-        CellBulkWizardPage cell4GBulkWizardPage = new CellBulkWizardPage(driver);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        cell4GBulkWizardPage.createCellBulkWizard(amountOfCells, carrier, cellNames);
+        cellSiteConfigurationPage.createCell4GBulk(amountOfCells, carrier, cellNames);
         checkPopupText("Cells 4G created success");
     }
 
@@ -142,18 +135,7 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
     public void createBaseBandUnit() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cellSiteConfigurationPage.selectTreeRow(locationName);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        cellSiteConfigurationPage.selectTab("Devices");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        cellSiteConfigurationPage.clickPlusIconAndSelectOption("Create Device");
-        DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        deviceWizardPage.setEquipmentType(bbuEquipmentType);
-        deviceWizardPage.setModel(baseBandUnitModel);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        deviceWizardPage.setName(bbuName);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        deviceWizardPage.create();
+        cellSiteConfigurationPage.createBaseBandUnit(bbuEquipmentType, baseBandUnitModel, bbuName, locationName);
         checkPopup();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
@@ -162,16 +144,7 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
     @Test(priority = 7)
     public void createRadioUnit() {
         for (int i = 0; i < 3; i++) {
-            cellSiteConfigurationPage.clickPlusIconAndSelectOption("Create Device");
-            DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            deviceWizardPage.setEquipmentType(radioUnitEquipmentType);
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            deviceWizardPage.setModel(radioUnitModel);
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            deviceWizardPage.setName(radioUnitNames[i]);
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            deviceWizardPage.create();
+            cellSiteConfigurationPage.createRadioUnit(radioUnitEquipmentType, radioUnitModel, radioUnitNames[i], locationName);
             checkPopup();
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
         }
@@ -181,20 +154,8 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
     @Test(priority = 8)
     public void createRanAntennaAndArray() {
         for (int i = 0; i < 3; i++) {
-            cellSiteConfigurationPage.clickPlusIconAndSelectOption("Create RAN Antenna");
-            RanAntennaWizardPage ranAntennaWizardPage = new RanAntennaWizardPage(driver);
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            ranAntennaWizardPage.setName(antennaNames[i]);
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            ranAntennaWizardPage.setModel(ranAntennaModel);
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            ranAntennaWizardPage.setPreciseLocation(locationName);
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            ranAntennaWizardPage.clickAccept();
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            antennaArrayWizardPage = new AntennaArrayWizardPage(driver);
-            antennaArrayWizardPage.clickAccept();
-            checkPopup();
+            cellSiteConfigurationPage.createRanAntennaAndArray(antennaNames[i], ranAntennaModel, locationName);
+//            checkPopup(); OSSRAN-5528
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
         }
     }
@@ -202,18 +163,11 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
     @Test(priority = 9)
     @Description("Create hosting relation between eNodeB and BBU")
     public void hostENodeBOnBBU() {
+        //TODO OSSPHY-49316 trzeba się upewnić że odpowiedni device wybiera
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cellSiteConfigurationPage.selectTreeRow(eNodeBName);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        cellSiteConfigurationPage.selectTab(hostingTabName);
-
-        cellSiteConfigurationPage.useTableContextActionByLabel("Host on Device");
-        HostingWizardPage wizard = new HostingWizardPage(driver);
-        wizard.onlyCompatible("false");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        wizard.setDevice(bbuName);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        wizard.clickAccept();
+        cellSiteConfigurationPage.createHostingOnDevice(bbuName, false);
         checkPopup();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
@@ -224,13 +178,7 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
         for (int i = 0; i < 3; i++) {
             cellSiteConfigurationPage.selectTreeRow(cellNames[i]);
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            cellSiteConfigurationPage.selectTab(hostingTabName);
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            cellSiteConfigurationPage.clickPlusIconAndSelectOption("Host on Device");
-            HostingWizardPage wizard = new HostingWizardPage(driver);
-            wizard.setDevice(radioUnitNames[i]);
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            wizard.clickAccept();
+            cellSiteConfigurationPage.createHostingOnDevice(radioUnitNames[i]);//TODO OSSPHY-49316 trzeba się upewnić że odpowiedni device wybiera
             checkPopup();
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
         }
@@ -243,20 +191,16 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             cellSiteConfigurationPage.selectTreeRow(cellNames[i]);
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            cellSiteConfigurationPage.clickPlusIconAndSelectOption("Host on Antenna Array");
-            HostingWizardPage wizard = new HostingWizardPage(driver);
-            wizard.setHostingContains(antennaNames[i]);
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            wizard.clickAccept();
+            cellSiteConfigurationPage.createHostingOnAntennaArray(antennaNames[i]);//TODO OSSPHY-49316 trzeba się upewnić że odpowiedni device wybiera
             checkPopup();
         }
     }
 
-    @Test(priority = 12, enabled = false)
+    @Test(priority = 12)
     @Description("Finish HLP")
     public void finishHLP() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        openTasksView();
+        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         tasksPage.completeTask(processNRPCode, "High Level Planning");
         checkPopupText("Task properly completed.");
@@ -265,22 +209,17 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
     @Test(priority = 13)
     @Description("Start Low Level Planning")
     public void startLLP() {
-        openTasksView();
+        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         tasksPage.startTask(processNRPCode, "Low Level Planning");
         checkPopupText("The task properly assigned.");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-
-        String currentUrl = driver.getCurrentUrl();
-        String[] split = currentUrl.split(Pattern.quote("?"));
-        perspectiveContext = split[1];
-        Assertions.assertThat(perspectiveContext).contains("PLAN");
     }
 
     @Test(priority = 14)
     @Description("Check validation results")
     public void validateProjectPlan() {
-        openTasksView();
+        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         tasksPage.findTask(processNRPCode, "Low Level Planning");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -334,16 +273,18 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
         editCell4GWizardPage.setPaOutputBulk(paOutput);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         editCell4GWizardPage.accept();
-        //TODO check popup
+        //TODO check popup, tac był poza zasięgiem
     }
 
     @Test(priority = 16)
     @Description("Finish Low Level Planning")
     public void finishLowLevelPlanningTask() {
+        //TODO dalej sa validacje, jest screen
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
         perspectiveChooser.setCurrentTask();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.completeTask(processNRPCode, "Low Level Planning");
         checkPopupText("Task properly completed.");
 
@@ -358,7 +299,7 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
     @Test(priority = 17)
     @Description("Finish NRP")
     public void completeProcessNRP() {
-        openTasksView();
+        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         tasksPage.startTask(processNRPCode, "Integrate");
         checkPopupText("The task properly assigned.");
