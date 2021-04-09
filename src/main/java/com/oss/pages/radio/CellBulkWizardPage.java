@@ -1,13 +1,18 @@
 package com.oss.pages.radio;
 
-import com.oss.framework.components.inputs.Input;
-import com.oss.framework.listwidget.EditableList;
-import com.oss.framework.widgets.Wizard;
-import com.oss.pages.BasePage;
-import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.*;
+import com.oss.framework.components.inputs.Input;
+import com.oss.framework.listwidget.EditableList;
+import com.oss.framework.listwidget.EditableList.Row;
+import com.oss.framework.widgets.Wizard;
+import com.oss.pages.BasePage;
+
+import io.qameta.allure.Step;
+
+import static com.oss.framework.components.inputs.Input.ComponentType.CHECKBOX;
+import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
+import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 
 public class CellBulkWizardPage extends BasePage {
     private static final String USE_FIRST_AVAILABLE_ID = "useFirstAvailableId";
@@ -54,7 +59,7 @@ public class CellBulkWizardPage extends BasePage {
         int rowNumber = 1;
         for (String cellName : cellNames) {
             EditableList list = EditableList.create(driver, wait);
-            list.setValue(cellName, COLUMN_NAME, rowNumber, NAME, Input.ComponentType.TEXT_FIELD);
+            list.setValueByRowIndex(rowNumber - 1, cellName, COLUMN_NAME, NAME, Input.ComponentType.TEXT_FIELD);
             rowNumber++;
         }
         clickAccept();
@@ -75,11 +80,11 @@ public class CellBulkWizardPage extends BasePage {
         setFirstAvailableId();
         int rowNumber = 1;
         for (String cellName : cellNames) {
-            EditableList list = EditableList.create(driver, wait);
-            list.setValue(cellName, COLUMN_NAME, rowNumber, NAME, Input.ComponentType.TEXT_FIELD);
-            list.setValue(String.valueOf(localCellsId[rowNumber]), COLUMN_LOCAL_CELL_ID, rowNumber, LOCAL_CELL_ID, TEXT_FIELD);
-            list.setValue("5", COLUMN_PCI, rowNumber, PCI, Input.ComponentType.TEXT_FIELD);
-            list.setValue("10", COLUMN_RSI, rowNumber, RSI, Input.ComponentType.TEXT_FIELD);
+            Row row = EditableList.create(driver, wait).selectRow(rowNumber - 1);
+            row.setEditableAttributeValue(cellName, COLUMN_NAME, NAME, Input.ComponentType.TEXT_FIELD);
+            row.setEditableAttributeValue(String.valueOf(localCellsId[rowNumber - 1]), COLUMN_LOCAL_CELL_ID, LOCAL_CELL_ID, TEXT_FIELD);
+            row.setEditableAttributeValue("5", COLUMN_PCI, PCI, Input.ComponentType.TEXT_FIELD);
+            row.setEditableAttributeValue("10", COLUMN_RSI, RSI, Input.ComponentType.TEXT_FIELD);
             rowNumber++;
         }
         clickAccept();
@@ -98,11 +103,11 @@ public class CellBulkWizardPage extends BasePage {
         setFirstAvailableId();
         int rowNumber = 1;
         for (String cellName : cellNames) {
-            EditableList list = EditableList.create(driver, wait);
-            list.setValue(cellName, COLUMN_NAME, rowNumber, NAME, Input.ComponentType.TEXT_FIELD);
-            list.setValue(String.valueOf(localCellsId[rowNumber]), COLUMN_LOCAL_CELL_ID, rowNumber, LOCAL_CELL_ID, TEXT_FIELD);
-            list.setValue("5", COLUMN_PCI, rowNumber, PCI, Input.ComponentType.TEXT_FIELD);
-            list.setValue("10", COLUMN_RSI, rowNumber, RSI, Input.ComponentType.TEXT_FIELD);
+            Row row = EditableList.create(driver, wait).selectRow(rowNumber - 1);
+            row.setEditableAttributeValue(cellName, COLUMN_NAME, NAME, Input.ComponentType.TEXT_FIELD);
+            row.setEditableAttributeValue(String.valueOf(localCellsId[rowNumber]), COLUMN_LOCAL_CELL_ID, LOCAL_CELL_ID, TEXT_FIELD);
+            row.setEditableAttributeValue("5", COLUMN_PCI, PCI, Input.ComponentType.TEXT_FIELD);
+            row.setEditableAttributeValue("10", COLUMN_RSI, RSI, Input.ComponentType.TEXT_FIELD);
             rowNumber++;
         }
         clickAccept();

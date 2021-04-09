@@ -1,14 +1,15 @@
 package com.oss.pages.radio;
 
+import org.openqa.selenium.WebDriver;
+
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.listwidget.EditableList;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
-import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
+import io.qameta.allure.Step;
+
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 
 public class EditCell4GWizardPage extends BasePage {
@@ -46,7 +47,7 @@ public class EditCell4GWizardPage extends BasePage {
     @Step("Set RSI")
     public void setTAC(int rowNumber, String tac) {
         EditableList list = EditableList.create(driver, wait);
-        list.setValue(tac, TAC_COLUMN_ID, rowNumber, TAC_NUMBER_FIELD_DATA_ATTRIBUTE_NAME, Input.ComponentType.TEXT_FIELD);
+        list.setValueByRowIndex(rowNumber, tac, TAC_COLUMN_ID, TAC_NUMBER_FIELD_DATA_ATTRIBUTE_NAME, Input.ComponentType.TEXT_FIELD);
     }
 
     @Step("Set Pa Output")
@@ -55,7 +56,7 @@ public class EditCell4GWizardPage extends BasePage {
     }
 
     @Step("Click Accept button")
-    public void accept(){
+    public void accept() {
         Button.createById(driver, ACCEPT_BUTTON_DATA_ATTRIBUTE_NAME).click();
     }
 }
