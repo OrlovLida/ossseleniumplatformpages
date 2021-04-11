@@ -4,8 +4,6 @@ import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.util.List;
 
-import com.oss.pages.transport.ipam.IPAddressAssignmentWizardPage;
-import com.oss.pages.transport.ipam.helper.IPAddressAssignmentWizardProperties;
 import org.assertj.core.api.Assertions;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -40,7 +38,9 @@ import com.oss.pages.reconciliation.SamplesManagementPage;
 import com.oss.pages.templateCM.ChangeConfigurationPage;
 import com.oss.pages.templateCM.SetParametersWizardPage;
 import com.oss.pages.transport.NetworkViewPage;
+import com.oss.pages.transport.ipam.IPAddressAssignmentWizardPage;
 import com.oss.pages.transport.ipam.IPAddressManagementViewPage;
+import com.oss.pages.transport.ipam.helper.IPAddressAssignmentWizardProperties;
 
 import io.qameta.allure.Description;
 
@@ -87,7 +87,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         checkMessageType();
         checkMessageContainsText(processNRPCode);
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.startTask(processNRPCode, "High Level Planning");
+        tasksPage.startTask(processNRPCode, TasksPage.HIGH_LEVEL_PLANNING_TASK);
         checkTaskAssignment();
     }
 
@@ -296,7 +296,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         processIPCode = tasksPage.proceedNRPToImplementationTask(processNRPCode);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Notifications.create(driver, webDriverWait).clearAllNotification();
-        tasksPage.findTask(processIPCode, "Implementation");
+        tasksPage.findTask(processIPCode, TasksPage.IMPLEMENTATION_TASK);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         DelayUtils.sleep(2000);
         tasksPage.clickPerformConfigurationButton();
@@ -344,7 +344,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
             java.net.URL resource = CreateProcessNRPTest.class.getClassLoader().getResource("bpm/SeleniumTest.txt");
             assert resource != null;
             String absolutePatch = Paths.get(resource.toURI()).toFile().getAbsolutePath();
-            tasksPage.addFile(processIPCode, "Implementation", absolutePatch);
+            tasksPage.addFile(processIPCode, TasksPage.IMPLEMENTATION_TASK, absolutePatch);
             checkMessageType();
         } catch (URISyntaxException e) {
             throw new RuntimeException("Cannot load file", e);
@@ -359,15 +359,15 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     @Description("Complete IP and NRP process")
     public void completeIpAndNrp() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.completeTask(processIPCode, "Implementation");
+        tasksPage.completeTask(processIPCode, TasksPage.IMPLEMENTATION_TASK);
         checkTaskCompleted();
-        tasksPage.startTask(processIPCode, "Acceptance");
+        tasksPage.startTask(processIPCode, TasksPage.ACCEPTANCE_TASK);
         checkTaskAssignment();
-        tasksPage.completeTask(processIPCode, "Acceptance");
+        tasksPage.completeTask(processIPCode, TasksPage.ACCEPTANCE_TASK);
         checkTaskCompleted();
-        tasksPage.startTask(processNRPCode, "Verification");
+        tasksPage.startTask(processNRPCode, TasksPage.VERIFICATION_TASK);
         checkTaskAssignment();
-        tasksPage.completeTask(processNRPCode, "Verification");
+        tasksPage.completeTask(processNRPCode, TasksPage.VERIFICATION_TASK);
         checkTaskCompleted();
     }
 

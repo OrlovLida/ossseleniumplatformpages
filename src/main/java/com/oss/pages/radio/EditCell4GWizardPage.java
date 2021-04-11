@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.listwidget.EditableList;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
 
@@ -18,6 +19,7 @@ public class EditCell4GWizardPage extends BasePage {
     private static final String RSI_DATA_ATTRIBUTE_NAME = "rootSequenceIndex";
     private static final String RS_POWER_DATA_ATTRIBUTE_NAME = "rsPower";
     private static final String PA_OUTPUT_DATA_ATTRIBUTE_NAME = "paOutput";
+    private static final String PA_INPUT_DATA_ATTRIBUTE_NAME = "pa-input";
     private static final String TAC_NUMBER_FIELD_DATA_ATTRIBUTE_NAME = "tac-NUMBER_FIELD";
     private static final String TAC_COLUMN_ID = "tac";
     private static final String ACCEPT_BUTTON_DATA_ATTRIBUTE_NAME = "wizard-submit-button-cell-bulk-wizard-4g";
@@ -55,8 +57,36 @@ public class EditCell4GWizardPage extends BasePage {
         wizard.setComponentValue(PA_OUTPUT_DATA_ATTRIBUTE_NAME, pa, TEXT_FIELD);
     }
 
+    @Step("Set Pa Input")
+    public void setPaInputBulk(String pa) {
+        wizard.setComponentValue(PA_INPUT_DATA_ATTRIBUTE_NAME, pa, TEXT_FIELD);
+    }
+
     @Step("Click Accept button")
     public void accept() {
         Button.createById(driver, ACCEPT_BUTTON_DATA_ATTRIBUTE_NAME).click();
+    }
+
+    @Step("Edit Cells in bulk")
+    public void editCellsBulk(int cellsNumber, String pci, String rsi, String referencePower, String[] tac, String paOutput) {
+        waitForPageToLoad();
+        setPCIBulk(pci);
+        waitForPageToLoad();
+        setRSIBulk(rsi);
+        waitForPageToLoad();
+        setReferencePowerBulk(referencePower);
+        waitForPageToLoad();
+        for (int i = 0; i < cellsNumber; i++) {
+            waitForPageToLoad();
+            setTAC(i + 1, tac[i]);
+            waitForPageToLoad();
+        }
+        setPaInputBulk(paOutput);
+        waitForPageToLoad();
+        accept();
+    }
+
+    private void waitForPageToLoad() {
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 }

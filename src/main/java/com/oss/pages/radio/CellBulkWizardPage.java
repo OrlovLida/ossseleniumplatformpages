@@ -56,11 +56,11 @@ public class CellBulkWizardPage extends BasePage {
         setCarrier(carrier);
         clickNext();
         setFirstAvailableId();
-        int rowNumber = 1;
+        int rowNumber = amountOfCells;
         for (String cellName : cellNames) {
             EditableList list = EditableList.create(driver, wait);
-            list.setValueByRowIndex(rowNumber - 1, cellName, COLUMN_NAME, NAME, Input.ComponentType.TEXT_FIELD);
-            rowNumber++;
+            list.setValueByRowIndex(rowNumber, cellName, COLUMN_NAME, NAME, Input.ComponentType.TEXT_FIELD);
+            rowNumber--;
         }
         clickAccept();
     }
