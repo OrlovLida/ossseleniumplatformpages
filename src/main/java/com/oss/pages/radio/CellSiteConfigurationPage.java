@@ -284,7 +284,7 @@ public class CellSiteConfigurationPage extends BasePage {
     public void createHostingOnDevice(String deviceName) {
         selectTab(HOSTING_TAB_LABEL);
         waitForPageToLoad();
-        useTableContextActionByLabel(HOST_ON_DEVICE_ACTION_LABEL);
+        clickPlusIconAndSelectOption(HOST_ON_DEVICE_ACTION_LABEL);
         HostingWizardPage hostOnDeviceWizard = new HostingWizardPage(driver);
         waitForPageToLoad();
         hostOnDeviceWizard.setDevice(deviceName);
@@ -300,6 +300,11 @@ public class CellSiteConfigurationPage extends BasePage {
         hostOnAntennaWizard.setHostingContains(antennaName);
         waitForPageToLoad();
         hostOnAntennaWizard.clickAccept();
+    }
+
+    public void editCellsInBulk(int cellsNumber, String pci, String rsi, String referencePower, String[] tac, String paOutput) {
+        clickEditIcon();
+        new EditCell4GWizardPage(driver).editCellsBulk(cellsNumber, pci, rsi, referencePower, tac, paOutput);
     }
 
     private void waitForPageToLoad() {

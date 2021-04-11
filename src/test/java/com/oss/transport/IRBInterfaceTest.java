@@ -1,7 +1,5 @@
 package com.oss.transport;
 
-import com.oss.pages.transport.ipam.IPAddressAssignmentWizardPage;
-import com.oss.pages.transport.ipam.helper.IPAddressAssignmentWizardProperties;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
@@ -18,17 +16,19 @@ import com.oss.pages.bpm.ProcessWizardPage;
 import com.oss.pages.bpm.TasksPage;
 import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.transport.IRBInterfaceWizardPage;
+import com.oss.pages.transport.ipam.IPAddressAssignmentWizardPage;
 import com.oss.pages.transport.ipam.IPAddressManagementViewPage;
+import com.oss.pages.transport.ipam.helper.IPAddressAssignmentWizardProperties;
 import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
 
-@Listeners({TestListener.class})
+@Listeners({ TestListener.class })
 public class IRBInterfaceTest extends BaseTestCase {
-    
+
     private NewInventoryViewPage newInventoryViewPage;
     private String processNRPCode;
-    
+
     private static final String IRB_INTERFACE_ID = "117";
     private static final String MTU_VALUE = "1000";
     private static final String DESCRIPTION = "IRBInterfaceSeleniumTest" + (int) (Math.random() * 1001);
@@ -45,7 +45,7 @@ public class IRBInterfaceTest extends BaseTestCase {
         newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
         waitForPageToLoad();
     }
-    
+
     @Test(priority = 1)
     @Description("Create NRP Process")
     public void createProcessNRP() {
@@ -55,15 +55,15 @@ public class IRBInterfaceTest extends BaseTestCase {
         checkMessageType();
         checkMessageContainsText(processNRPCode);
     }
-    
+
     @Test(priority = 2)
     @Description("Start High Level Planning Task")
     public void startHLPTask() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.startTask(processNRPCode, "High Level Planning");
+        tasksPage.startTask(processNRPCode, TasksPage.HIGH_LEVEL_PLANNING_TASK);
         checkTaskAssignment();
     }
-    
+
     @Test(priority = 3)
     @Description("Create new IRB Interface")
     public void createNewIRBInterface() {
@@ -74,7 +74,7 @@ public class IRBInterfaceTest extends BaseTestCase {
         waitForPageToLoad();
         irbInterfaceWizardPage.createIRBInterface(IRB_INTERFACE_DEVICE_NAME, IRB_INTERFACE_ID);
     }
-    
+
     @Test(priority = 4)
     @Description("Checks if IRB Interface is visible in New Inventory View")
     public void checkIRBInterface() {
@@ -85,7 +85,7 @@ public class IRBInterfaceTest extends BaseTestCase {
         waitForPageToLoad();
         Assert.assertFalse(newInventoryViewPage.checkIfTableIsEmpty());
     }
-    
+
     @Test(priority = 5)
     @Description("Assign IP Host Address")
     public void assignIPHostAddress() {
@@ -98,7 +98,7 @@ public class IRBInterfaceTest extends BaseTestCase {
         ipAddressAssignmentWizardPage.assignMoToIPAddress(ipAddressAssignmentWizardProperties);
         waitForPageToLoad();
     }
-    
+
     @Test(priority = 6)
     @Description("Edit IRB Interface")
     public void editIRBInterface() {
@@ -114,14 +114,14 @@ public class IRBInterfaceTest extends BaseTestCase {
         Assert.assertEquals(MTU_VALUE, newInventoryViewPage.getMainTable().getCellValue(0, "MTU"));
         Assert.assertEquals(DESCRIPTION, newInventoryViewPage.getMainTable().getCellValue(0, "Description"));
     }
-    
+
     @Test(priority = 7)
     @Description("Finish rest of NRP and IP Tasks")
     public void finishProcessesTasks() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.completeNRP(processNRPCode);
     }
-    
+
     @Test(priority = 8)
     @Description("Delete IP Address")
     public void deleteIPAddressAssignment() {
@@ -135,7 +135,7 @@ public class IRBInterfaceTest extends BaseTestCase {
         ipAddressManagementViewPage.expandTreeRow(IP_ADDRESS + "/24");
         ipAddressManagementViewPage.deleteHostAssignment("/24 [");
     }
-    
+
     @Test(priority = 9)
     @Description("Delete IRB Interface")
     public void deleteIRBInterface() {
@@ -152,37 +152,37 @@ public class IRBInterfaceTest extends BaseTestCase {
         newInventoryViewPage.refreshMainTable();
         Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());
     }
-    
+
     private void checkMessageType() {
         Assert.assertEquals(MessageType.SUCCESS, (getFirstMessage().getMessageType()));
     }
-    
+
     private void checkMessageContainsText(String message) {
         Assert.assertTrue((getFirstMessage().getText())
                 .contains(message));
     }
-    
+
     private void checkMessageText(String message) {
         Assert.assertEquals(message, (getFirstMessage().getText()));
     }
-    
+
     private void checkMessageSize(int size) {
         Assert.assertEquals((SystemMessageContainer.create(driver, webDriverWait)
                 .getMessages()
                 .size()), size);
     }
-    
+
     private Message getFirstMessage() {
         return SystemMessageContainer.create(driver, webDriverWait)
                 .getFirstMessage()
                 .orElseThrow(() -> new RuntimeException("The list is empty"));
     }
-    
+
     private void checkTaskAssignment() {
         checkMessageType();
         checkMessageText("The task properly assigned.");
     }
-    
+
     private void waitForPageToLoad() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
