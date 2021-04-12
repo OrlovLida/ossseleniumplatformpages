@@ -5,8 +5,12 @@ import com.oss.framework.utils.DelayUtils;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class EtlDataCollectionsPage extends BaseDfePage {
+
+    private static final Logger log = LoggerFactory.getLogger(EtlDataCollectionsPage.class);
 
     private static final String TABLE_ID = "data-collection-listAppId";
 
@@ -50,7 +54,11 @@ public class EtlDataCollectionsPage extends BaseDfePage {
     public Boolean etlProcessExistsIntoTable(String feedName){
         searchFeed(feedName);
         DelayUtils.waitForPageToLoad(driver, wait);
-        return getNumberOfRowsInTable(NAME_COLUMN_LABEL) == 1;
+
+        int numberOfRowsInTable = getNumberOfRowsInTable(NAME_COLUMN_LABEL);
+        log.trace("Found rows count: {}. Filtered by {}", numberOfRowsInTable, feedName);
+
+        return numberOfRowsInTable == 1;
     }
 
     @Step("I select found ETL Process")
