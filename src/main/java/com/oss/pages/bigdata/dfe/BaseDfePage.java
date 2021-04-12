@@ -8,8 +8,12 @@ import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.pages.BasePage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 abstract public class BaseDfePage extends BasePage implements BaseDfePageInterface {
+
+    private static final Logger log = LoggerFactory.getLogger(BaseDfePage.class);
 
     public BaseDfePage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -20,14 +24,17 @@ abstract public class BaseDfePage extends BasePage implements BaseDfePageInterfa
     }
 
     public static void openDfePage(WebDriver driver, String basicURL, WebDriverWait wait, String viewName){
-        driver.get(String.format("%s/#/view/dfe/%s", basicURL, viewName));
+        String pageUrl = String.format("%s/#/view/dfe/%s", basicURL, viewName);
+        driver.get(pageUrl);
         DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Opening page: {}", pageUrl);
     }
 
     public void searchFeed(String searchText){
         SearchField search = (SearchField) ComponentFactory.create(getSearchId(), Input.ComponentType.SEARCH_FIELD, driver, wait);
         search.clear();
         search.typeValue(searchText);
+        log.debug("Searching feed {}", searchText);
     }
 
     public int getNumberOfRowsInTable(String columnLabel){
@@ -48,6 +55,7 @@ abstract public class BaseDfePage extends BasePage implements BaseDfePageInterfa
 
     protected void clickContextAction(String actionLabel) {
         getTable(driver, wait).callActionByLabel(actionLabel);
+        log.debug("Clicking context action: {}", actionLabel);
     }
 
 
