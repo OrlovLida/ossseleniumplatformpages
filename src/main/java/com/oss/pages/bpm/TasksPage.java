@@ -29,13 +29,14 @@ import com.oss.pages.dms.AttachFileWizardPage;
  * @author Gabriela Kasza
  */
 public class TasksPage extends BasePage {
-    public static TasksPage goToTasksPage(WebDriver driver, WebDriverWait wait, String basicURL) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        driver.get(String.format("%s/#/view/bpm/tasks", basicURL));
-        DelayUtils.waitForPageToLoad(driver, wait);
-        return new TasksPage(driver);
-    }
 
+    public static final String READY_FOR_INTEGRATION_TASK = "Ready for Integration";
+    public static final String IMPLEMENTATION_TASK = "Implementation";
+    public static final String SCOPE_DEFINITION_TASK = "Scope definition";
+    public static final String ACCEPTANCE_TASK = "Acceptance";
+    public static final String VERIFICATION_TASK = "Verification";
+    public static final String LOW_LEVEL_PLANNING_TASK = "Low Level Planning";
+    public static final String HIGH_LEVEL_PLANNING_TASK = "High Level Planning";
     private static final String TABLE_TASKS = "bpm_task_view_task-table";
     private static final String TABS_TASKS_VIEW = "bpm_task_view_tabs-container";
     private static final String ATTACH_FILE_BUTTON = "addAttachmentAction";
@@ -50,6 +51,13 @@ public class TasksPage extends BasePage {
         super(driver);
     }
 
+    public static TasksPage goToTasksPage(WebDriver driver, WebDriverWait wait, String basicURL) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        driver.get(String.format("%s/#/view/bpm/tasks", basicURL));
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return new TasksPage(driver);
+    }
+
     public void findTask(String processCode, String taskName) {
         TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, TABLE_TASKS);
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -58,7 +66,6 @@ public class TasksPage extends BasePage {
         table.searchByAttributeWithLabel("Name", Input.ComponentType.TEXT_FIELD, taskName);
         table.doRefreshWhileNoData(10000, "refreshTable");
         table.selectRowByAttributeValueWithLabel("Process Code", processCode);
-
     }
 
     public void startTask(String processCode, String taskName) {
@@ -76,7 +83,7 @@ public class TasksPage extends BasePage {
     }
 
     public void setupIntegration(String processCode) {
-        findTask(processCode, "Ready for Integration");
+        findTask(processCode, READY_FOR_INTEGRATION_TASK);
         DelayUtils.waitForPageToLoad(driver, wait);
         getTab().callActionById(SETUP_INTEGRATION_ICON_ID);
     }
@@ -142,31 +149,31 @@ public class TasksPage extends BasePage {
 
     public void completeNRP(String processCode) {
         String ipCode = proceedNRPToImplementationTask(processCode);
-        completeTask(ipCode, "Implementation");
-        startTask(ipCode, "Acceptance");
-        completeTask(ipCode, "Acceptance");
-        startTask(processCode, "Verification");
-        completeTask(processCode, "Verification");
+        completeTask(ipCode, IMPLEMENTATION_TASK);
+        startTask(ipCode, ACCEPTANCE_TASK);
+        completeTask(ipCode, ACCEPTANCE_TASK);
+        startTask(processCode, VERIFICATION_TASK);
+        completeTask(processCode, VERIFICATION_TASK);
     }
 
     public String proceedNRPToImplementationTask(String processCode) {
-        completeTask(processCode, "High Level Planning");
-        startTask(processCode, "Low Level Planning");
-        completeTask(processCode, "Low Level Planning");
-        startTask(processCode, "Ready for Integration");
-        completeTask(processCode, "Ready for Integration");
+        completeTask(processCode, HIGH_LEVEL_PLANNING_TASK);
+        startTask(processCode, LOW_LEVEL_PLANNING_TASK);
+        completeTask(processCode, LOW_LEVEL_PLANNING_TASK);
+        startTask(processCode, READY_FOR_INTEGRATION_TASK);
+        completeTask(processCode, READY_FOR_INTEGRATION_TASK);
         showCompletedTasks();
-        findTask(processCode, "Ready for Integration");
+        findTask(processCode, READY_FOR_INTEGRATION_TASK);
         DelayUtils.sleep(3000);
         TableInterface ipTable = getIPTable();
         String ipCode = ipTable.getCellValue(0, "Code");
-        startTask(ipCode, "Scope definition");
-        completeTask(ipCode, "Scope definition");
-        startTask(ipCode, "Implementation");
+        startTask(ipCode, SCOPE_DEFINITION_TASK);
+        completeTask(ipCode, SCOPE_DEFINITION_TASK);
+        startTask(ipCode, IMPLEMENTATION_TASK);
         return ipCode;
     }
 
-    public List<String> getListOfAttachments(){
+    public List<String> getListOfAttachments() {
         OldTreeTableWidget treeTable =
                 OldTreeTableWidget.create(driver, wait, "attachmentManagerBusinessView_commonTreeTable_BPMTask");
         List<String> allNodes = treeTable.getAllVisibleNodes("Attachments and directories");
