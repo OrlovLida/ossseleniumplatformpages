@@ -2,14 +2,17 @@ package com.oss.configuration;
 
 import org.assertj.core.util.Strings;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Paths;
 import java.util.Properties;
 
 public class Configuration {
 
 
     public static final Configuration CONFIGURATION = new Configuration();
+    private static final String DEFAULT_DOWNLOAD_DIR = Paths.get(System.getProperty("user.dir") + File.separator + "target" + File.separator + "downloadFiles").toString();
     private final Properties properties = new Properties();
 
     public Configuration() {
@@ -37,6 +40,13 @@ public class Configuration {
             return CONFIGURATION.getValue("driver");
         }
         return System.getProperty("driver");
+    }
+
+    public String getDownloadDir() {
+        if (CONFIGURATION.getValue("downloadDir") == null) {
+            return DEFAULT_DOWNLOAD_DIR;
+        }
+        return CONFIGURATION.getValue("downloadDir");
     }
 
     public String getApplicationIp() {
