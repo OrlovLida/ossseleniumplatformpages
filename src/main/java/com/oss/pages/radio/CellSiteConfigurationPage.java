@@ -63,6 +63,7 @@ public class CellSiteConfigurationPage extends BasePage {
 
     @Step("Filter and select {objectName} row")
     public CellSiteConfigurationPage filterObject(String columnName, String objectName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
         getTabTable().searchByAttributeWithLabel(columnName, Input.ComponentType.TEXT_FIELD, objectName);
         selectRowByAttributeValueWithLabel(columnName, objectName);
         return this;
@@ -163,6 +164,7 @@ public class CellSiteConfigurationPage extends BasePage {
     }
 
     public boolean hasNoData() {
+        DelayUtils.waitForPageToLoad(driver, wait);
         return getTabTable().hasNoData();
     }
 
