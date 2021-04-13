@@ -21,22 +21,54 @@ public class Radio4gRepository {
     public Long createCell4g(String cellName, Integer cellId, Long eNodeBId, String mcc, String mnc, String carrier) {
         Radio4gClient client = Radio4gClient.getInstance(env);
         CellResponseIdDTO cell = client.createCell4G(buildCell4g(cellName, cellId, mcc, mnc, carrier), eNodeBId);
-        return  cell.getId();
+        return cell.getId();
     }
 
-    public void createHRENodeB(Long hostingResourceId, Long eNodeBId) {
+    public void createHRENodeBDevice(Long hostingResourceId, Long eNodeBId) {
         Radio4gClient client = Radio4gClient.getInstance(env);
-        client.createHRENodeB(buildHR(hostingResourceId), eNodeBId);
+        client.createHRENodeB(buildDeviceHR(hostingResourceId), eNodeBId);
     }
 
-    public void createHRCell(Long hostingResourceId, Long eNodeBId, Long cellId) {
+    public void createHRCellDevice(Long hostingResourceId, Long eNodeBId, Long cellId) {
         Radio4gClient client = Radio4gClient.getInstance(env);
-        client.createHRCell(buildHR(hostingResourceId), eNodeBId, cellId);
+        client.createHRCell(buildDeviceHR(hostingResourceId), eNodeBId, cellId);
     }
 
-    public HostRelationDTO buildHR(Long hostingResourceId) {
+    public void createHRENodeBDevicePort(Long hostingResourceId, Long eNodeBId, String portName) {
+        Radio4gClient client = Radio4gClient.getInstance(env);
+        client.createHRENodeB(buildDevicePortHR(hostingResourceId, portName), eNodeBId);
+    }
+
+    public void createHRCellDevicePort(Long hostingResourceId, Long eNodeBId, Long cellId, String portName) {
+        Radio4gClient client = Radio4gClient.getInstance(env);
+        client.createHRCell(buildDevicePortHR(hostingResourceId, portName), eNodeBId, cellId);
+    }
+
+    public void createHRENodeBDeviceCard(Long hostingResourceId, Long eNodeBId, String slotName, String cardName) {
+        Radio4gClient client = Radio4gClient.getInstance(env);
+        client.createHRENodeB(buildDeviceCardHR(hostingResourceId, slotName, cardName), eNodeBId);
+    }
+
+    public void createHRCellDeviceCard(Long hostingResourceId, Long eNodeBId, Long cellId, String slotName, String cardName) {
+        Radio4gClient client = Radio4gClient.getInstance(env);
+        client.createHRCell(buildDeviceCardHR(hostingResourceId, slotName, cardName), eNodeBId, cellId);
+    }
+
+    private HostRelationDTO buildDeviceHR(Long hostingResourceId) {
         return HostRelationDTO.builder()
                 .hostingResource(getHostingResource(hostingResourceId))
+                .build();
+    }
+
+    private HostRelationDTO buildDevicePortHR(Long hostingResourceId, String portName) {
+        return HostRelationDTO.builder()
+                .hostingResource(getHostingResourcePort(hostingResourceId, portName))
+                .build();
+    }
+
+    private HostRelationDTO buildDeviceCardHR(Long hostingResourceId, String slotName, String cardName) {
+        return HostRelationDTO.builder()
+                .hostingResource(getHostingResourceCard(hostingResourceId, slotName, cardName))
                 .build();
     }
 
@@ -79,4 +111,32 @@ public class Radio4gRepository {
                 .hostingResourceId(hostingResourceId)
                 .build();
     }
+
+    private HostingResourceDTO getHostingResourcePort(Long hostingResourceId, String portName) {
+        return HostingResourceDTO.builder()
+                .hostingResourceId(hostingResourceId)
+                .hostingPort(getPort(portName))
+                .build();
+    }
+
+    private HostingResourceDTO getHostingResourceCard(Long hostingResourceId, String slotName, String cardName) {
+        return HostingResourceDTO.builder()
+                .hostingResourceId(hostingResourceId)
+                .hostingCard(getCard(slotName, cardName))
+                .build();
+    }
+
+    private PortIdentificationDTO getPort(String portName) {
+        return PortIdentificationDTO.builder()
+                .name(portName)
+                .build();
+    }
+
+    private CardIdentificationDTO getCard(String slotName, String cardName) {
+        return CardIdentificationDTO.builder()
+                .slotName(slotName)
+                .name(cardName)
+                .build();
+    }
+
 }

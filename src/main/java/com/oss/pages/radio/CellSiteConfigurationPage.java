@@ -44,6 +44,7 @@ public class CellSiteConfigurationPage extends BasePage {
 
     @Step("Filter and select {objectName} row")
     public CellSiteConfigurationPage filterObject(String columnName, String objectName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
         getTabTable().searchByAttributeWithLabel(columnName, Input.ComponentType.TEXT_FIELD, objectName);
         selectRowByAttributeValueWithLabel(columnName, objectName);
         return this;
@@ -64,6 +65,7 @@ public class CellSiteConfigurationPage extends BasePage {
 
     @Step("Remove object")
     public void removeObject() {
+        DelayUtils.waitForPageToLoad(driver, wait);
         getTabTable().callActionByLabel("Delete");
         DelayUtils.waitForPageToLoad(driver, wait);
         ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
@@ -144,8 +146,9 @@ public class CellSiteConfigurationPage extends BasePage {
         return getTabTable().getNumberOfRowsInTable(attributeLabel);
     }
 
-    public boolean hasNoData() {
-        return getTabTable().hasNoData();
+    public boolean hasNoData(String tableId) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return OldTable.createByComponentDataAttributeName(driver, wait, tableId).hasNoData();
     }
 
     public TreeWidget getTree() {

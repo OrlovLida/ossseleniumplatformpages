@@ -14,18 +14,18 @@ public class PhysicalInventoryRepository {
         this.env = env;
     }
 
-    public String createDevice(String locationType, Long locationId, Long deviceModelId, String deviceName, String deviceModelType) {
+    public Long createDevice(String locationType, Long locationId, Long deviceModelId, String deviceName, String deviceModelType) {
         PhysicalInventoryClient client = new PhysicalInventoryClient(env);
         ResourceDTO resourceDTO = client.createDevice(buildDevice(locationType, locationId, deviceModelId, deviceName, deviceModelType));
-        String deviceId = resourceDTO.getUri().toString().substring(59, 67);
-        return deviceId;
+        String deviceId = resourceDTO.getUri().toString();
+        return Long.valueOf(deviceId.substring(deviceId.lastIndexOf("/") + 1, deviceId.indexOf("?")));
     }
 
-    public String createDeviceWithCard(String locationType, Long locationId, Long deviceModelId, String deviceName, String deviceModelType, String slotName, Long cardModelId, String cardModelType) {
+    public Long createDeviceWithCard(String locationType, Long locationId, Long deviceModelId, String deviceName, String deviceModelType, String slotName, Long cardModelId, String cardModelType) {
         PhysicalInventoryClient client = new PhysicalInventoryClient(env);
         ResourceDTO resourceDTO = client.createDevice(buildDeviceWithCard(locationType, locationId, deviceModelId, deviceName, deviceModelType, slotName, cardModelId, cardModelType));
-        String deviceId = resourceDTO.getUri().toString().substring(59, 67);
-        return deviceId;
+        String deviceId = resourceDTO.getUri().toString();
+        return Long.valueOf(deviceId.substring(deviceId.lastIndexOf("/") + 1, deviceId.indexOf("?")));
     }
 
     private PhysicalDeviceDTO buildDevice(String locationType, Long locationId, Long deviceModelId, String deviceName, String deviceModelType) {
