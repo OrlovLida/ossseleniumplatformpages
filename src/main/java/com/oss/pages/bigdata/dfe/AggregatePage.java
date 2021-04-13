@@ -5,8 +5,12 @@ import com.oss.framework.utils.DelayUtils;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AggregatePage extends BaseDfePage {
+
+    private static final Logger log = LoggerFactory.getLogger(AggregatePage.class);
 
     private static final String TABLE_ID = "aggregates-tableAppId";
 
@@ -49,7 +53,9 @@ public class AggregatePage extends BaseDfePage {
     public Boolean aggregateExistsIntoTable(String aggregateName){
         searchFeed(aggregateName);
         DelayUtils.waitForPageToLoad(driver, wait);
-        return getNumberOfRowsInTable(NAME_COLUMN_LABEL) == 1;
+        int numberOfRowsInTable = getNumberOfRowsInTable(NAME_COLUMN_LABEL);
+        log.trace("Found rows count: {}. Filtered by {}", numberOfRowsInTable, aggregateName);
+        return numberOfRowsInTable == 1;
     }
 
     @Step("I select found Aggegate")
