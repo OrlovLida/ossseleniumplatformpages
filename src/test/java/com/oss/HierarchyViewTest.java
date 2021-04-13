@@ -4,11 +4,16 @@ import com.oss.framework.widgets.treewidget.InlineMenu;
 import com.oss.framework.widgets.treewidget.TreeWidget;
 import com.oss.pages.platform.HierarchyViewPage;
 import org.assertj.core.api.Assertions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
-import org.testng.annotations.*;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 public class HierarchyViewTest extends BaseTestCase {
+
+    private static final Logger log = LoggerFactory.getLogger(HierarchyViewTest.class);
 
     private static final String TREE_WIDGET_URL = String.format("%s/#/views/management/views/hierarchy-view/PhysicalDevice?perspective=LIVE",BASIC_URL);
     private HierarchyViewPage hierarchyViewPage;
@@ -41,10 +46,10 @@ public class HierarchyViewTest extends BaseTestCase {
         TreeWidget treeWidget = hierarchyViewPage
                 .getTreeWidget();
         int primaryExpNodesCount = treeWidget.getNodesWithExpandState("expanded").size();
-        System.out.println(primaryExpNodesCount);
+        log.info("" + primaryExpNodesCount);
         treeWidget.selectExpandAllIcon();
         int expRootWithExpDescendantsCount = (treeWidget.getDescendantNodesWithExpandState("expanded").size())+1;
-        System.out.println(expRootWithExpDescendantsCount);
+        log.info("" + expRootWithExpDescendantsCount);
         int finalExpNodesCount = treeWidget.getNodesWithExpandState("expanded").size();
         Assertions.assertThat(primaryExpNodesCount).isEqualTo(finalExpNodesCount-expRootWithExpDescendantsCount);
     }

@@ -1,6 +1,8 @@
 package com.oss.configuration;
 
 import org.assertj.core.util.Strings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,6 +10,7 @@ import java.util.Properties;
 
 public class Configuration {
 
+    private static final Logger log = LoggerFactory.getLogger(Configuration.class);
 
     public static final Configuration CONFIGURATION = new Configuration();
     private final Properties properties = new Properties();
@@ -45,7 +48,7 @@ public class Configuration {
             String ip = getUrl().split(":")[1].replace("//", "");
             return ip;
         }
-        System.out.println("ENV: " + env);
+        log.info("ENV: " + env);
         return env;
     }
 

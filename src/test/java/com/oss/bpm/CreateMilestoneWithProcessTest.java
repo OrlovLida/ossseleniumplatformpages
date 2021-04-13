@@ -6,31 +6,30 @@
  */
 package com.oss.bpm;
 
-import java.io.Console;
-import java.time.LocalDate;
-
-import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Listeners;
-import org.testng.annotations.Test;
-
 import com.oss.BaseTestCase;
-import com.oss.framework.listwidget.CommonList;
-import com.oss.framework.listwidget.EditableList;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.Milestone;
 import com.oss.pages.bpm.ProcessInstancesPage;
 import com.oss.pages.bpm.ProcessWizardPage;
 import com.oss.utils.TestListener;
-
 import io.qameta.allure.Description;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Test;
+
+import java.time.LocalDate;
 
 /**
  * @author Gabriela Kasza
  */
 @Listeners({TestListener.class})
 public class CreateMilestoneWithProcessTest extends BaseTestCase {
-    
+
+    private static final Logger log = LoggerFactory.getLogger(CreateMilestoneWithProcessTest.class);
+
     private String processName = "Selenium Test.Milestone-" + (int) (Math.random() * 1001);
     private String MilestoneName1 ="Milestone 1."+(int) (Math.random() * 1001);
     private String MilestoneName2 ="Milestone 2."+(int) (Math.random() * 1001);
@@ -68,7 +67,7 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
 
 
         processWizardPage.clickAcceptButton();
-        System.out.println(milestone1.getName().get() + milestone2.getName().get());
+        log.info(milestone1.getName().get() + milestone2.getName().get());
 
 
 
