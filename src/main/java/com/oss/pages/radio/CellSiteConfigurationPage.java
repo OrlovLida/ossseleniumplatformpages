@@ -172,7 +172,7 @@ public class CellSiteConfigurationPage extends BasePage {
 
     public OldTable getTabTable() {
         waitForPageToLoad();
-        return OldTable.createByComponentDataAttributeName(driver, wait, TAB_TABLE_DATA_ATTRIBUTE_NAME);
+        return OldTable.createTableForActiveTab(driver, wait);
     }
 
     @Step("Create eNodeB with following attributes: Name = {eNodeBName}, ID = {eNodeBid}, Model = {eNodeBModel}, MCCMNC = {MCCMNCPrimary}")

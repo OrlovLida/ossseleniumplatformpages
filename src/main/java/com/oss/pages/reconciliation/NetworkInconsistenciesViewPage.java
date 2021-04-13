@@ -22,6 +22,7 @@ import com.oss.framework.widgets.tabswidget.TabWindowWidget;
 import com.oss.framework.widgets.tabswidget.TabsInterface;
 import com.oss.framework.widgets.treewidget.TreeWidget;
 import com.oss.pages.BasePage;
+import com.oss.pages.physical.DeviceWizardPage;
 
 import io.qameta.allure.Step;
 
@@ -33,8 +34,6 @@ public class NetworkInconsistenciesViewPage extends BasePage {
     private static final String RAN_INCONSITENCIES_TABLE_ID = "radioAppId";
     private static final String CHANGE_LOCATION_ACTION_ID = "DeviceChangeLocationAction";
     private static final String NIV_TREE = "narComponent_networkInconsistenciesViewIddiscrepanciesTreeTabId";
-    private static final String PRECISE_LOCATION_ID = "precise_location";
-    private static final String PHYSICAL_LOCATION_ID = "physical_location";
     private static final String ACCEPT_CHANGE_LOCATION_BUTTON_ID = "wizard-submit-button-change-location-wizard";
     private static final String TREE_ID = "narComponent_networkInconsistenciesViewIddiscrepanciesTreeId";
 
@@ -65,9 +64,9 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         table.callAction("EDIT", CHANGE_LOCATION_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         Wizard wizard = Wizard.createWizard(driver, new WebDriverWait(driver, 90));
-        wizard.setComponentValue(PHYSICAL_LOCATION_ID, preciseLocation, ComponentType.SEARCH_FIELD);
+        wizard.setComponentValue(DeviceWizardPage.DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, preciseLocation, ComponentType.SEARCH_FIELD);
         DelayUtils.waitForPageToLoad(driver, wait);
-        wizard.setComponentValue(PRECISE_LOCATION_ID, preciseLocation, ComponentType.SEARCH_FIELD);
+        wizard.setComponentValue(DeviceWizardPage.DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, preciseLocation, ComponentType.SEARCH_FIELD);
         DelayUtils.waitForPageToLoad(driver, wait);
         wizard.clickActionById(ACCEPT_CHANGE_LOCATION_BUTTON_ID);
     }

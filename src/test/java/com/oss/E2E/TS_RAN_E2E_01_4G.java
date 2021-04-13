@@ -188,7 +188,7 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
         cableWizard.setEndLocation(LOCATION_NAME);
         cableWizard.setStartDevice(RRU_NAME);
         cableWizard.setEndDevice(ANTENNA_NAME);
-        cableWizard.setModel("Feeder");
+        cableWizard.setModel("Virtual feeder");//TODO sprawdzic czy moze byc
         cableWizard.setName(CABLE_NAME);
         cableWizard.accept();
         checkPopup();
@@ -198,6 +198,7 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
     public void createAntennaTrail() {
         openCellSiteConfigurationView();
         cellSiteConfigurationPage.selectTreeRow("All Resources");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cellSiteConfigurationPage.selectRowByAttributeValueWithLabel("Name", ANTENNA_NAME);
         cellSiteConfigurationPage.selectRowByAttributeValueWithLabel("Name", RRU_NAME);
         cellSiteConfigurationPage.useTableContextActionById("Create Trail");
@@ -345,7 +346,7 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cellSiteConfigurationPage.selectTreeRow(LOCATION_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        cellSiteConfigurationPage.selectTab("Devices");
+        cellSiteConfigurationPage.selectTab("Base Stations");//TODO upewnic sie czy dobry
         cellSiteConfigurationPage.filterObject("Name", ENODEB_NAME);
         cellSiteConfigurationPage.removeObject();
         checkPopup();
