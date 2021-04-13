@@ -163,9 +163,9 @@ public class CellSiteConfigurationPage extends BasePage {
         return getTabTable().getNumberOfRowsInTable(attributeLabel);
     }
 
-    public boolean hasNoData(String tableId) {
+    public boolean hasNoData() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        return OldTable.createByComponentDataAttributeName(driver, wait, tableId).hasNoData();
+        return getTabTable().hasNoData();
     }
 
     public TreeWidget getTree() {

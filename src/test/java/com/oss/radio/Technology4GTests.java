@@ -227,7 +227,7 @@ public class Technology4GTests extends BaseTestCase {
                 .removeObject();
         SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
         systemMessageItem.waitForMessageDisappear();
-        Assert.assertTrue(new CellSiteConfigurationPage(driver).hasNoData("HostingTableApp"));
+        Assert.assertTrue(new CellSiteConfigurationPage(driver).hasNoData());
     }
 
     @Test
@@ -284,7 +284,7 @@ public class Technology4GTests extends BaseTestCase {
                 .removeObject();
         SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
         systemMessageItem.waitForMessageDisappear();
-        Assert.assertTrue(new CellSiteConfigurationPage(driver).hasNoData("HostingTableApp"));
+        Assert.assertTrue(new CellSiteConfigurationPage(driver).hasNoData());
     }
 
     @Test
@@ -323,7 +323,7 @@ public class Technology4GTests extends BaseTestCase {
                 .removeObject();
         SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
         systemMessageItem.waitForMessageDisappear();
-        Assert.assertTrue(new CellSiteConfigurationPage(driver).hasNoData("HostingTableApp"));
+        Assert.assertTrue(new CellSiteConfigurationPage(driver).hasNoData());
     }
 
     @Test
