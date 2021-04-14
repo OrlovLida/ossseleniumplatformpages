@@ -45,6 +45,8 @@ public class IPAddressAssignmentWizardPage extends BasePage {
 
     public void assignMoToIPAddress(IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties){
         assignIPAddressMainStep(ipAddressAssignmentWizardProperties);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getWizard().clickNext();
         assignIPAddressSummaryStep();
     }
 
@@ -110,7 +112,7 @@ public class IPAddressAssignmentWizardPage extends BasePage {
 
     private void fillManualModeFields(Wizard wizard, IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties){
         ipAddressAssignmentWizardProperties.getSubnet()
-                .ifPresent(subnet -> wizard.setComponentValue(IP_SUBNET_COMPONENT_ID, subnet, SEARCH_FIELD));
+                .ifPresent(subnet -> wizard.getComponent(IP_SUBNET_COMPONENT_ID,SEARCH_FIELD).setSingleStringValueContains(subnet));
         ipAddressAssignmentWizardProperties.getAddress()
                 .ifPresent(address -> wizard.setComponentValue(IP_ADDRESS_MANUAL_MODE_COMPONENT_ID, address, TEXT_FIELD));
     }

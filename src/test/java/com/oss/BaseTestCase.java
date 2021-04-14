@@ -2,7 +2,6 @@ package com.oss;
 
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.LoginPage;
-
 import com.oss.utils.TestListener;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
@@ -11,7 +10,12 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.oss.configuration.Configuration.CONFIGURATION;
 
@@ -51,6 +55,14 @@ public class BaseTestCase {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
+
+        Map<String, Object> prefs = new HashMap<>();
+        prefs.put("download.prompt_for_download", false);
+        prefs.put("download.directory_upgrade", true);
+        prefs.put("profile.default_content_settings.popups", 0);
+        prefs.put("download.default_directory", CONFIGURATION.getDownloadDir());
+        options.setExperimentalOption("prefs", prefs);
+
         if (CONFIGURATION.getValue("locally").equals("true")) {
             System.setProperty("webdriver.chrome.driver", CONFIGURATION.getValue("chromeDriverPath"));
             options.addArguments("start-maximized");

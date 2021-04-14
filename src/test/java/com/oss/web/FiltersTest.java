@@ -9,6 +9,8 @@ import com.oss.pages.filterpanel.FilterSettingsFilter;
 import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
@@ -18,6 +20,8 @@ import static com.oss.configuration.Configuration.CONFIGURATION;
 
 @Listeners({TestListener.class})
 public class FiltersTest extends BaseTestCase {
+
+    private static final Logger log = LoggerFactory.getLogger(FiltersTest.class);
 
     private NewInventoryViewPage inventoryViewPage;
     private FilterPanelPage filterPanelPage;
@@ -54,7 +58,7 @@ public class FiltersTest extends BaseTestCase {
         filterSettingsFilter = new FilterSettingsFilter(driver);
         filtersBefore = filterSettingsFilter.howManyFilters();
         if (filtersBefore > 0 && i < 1) {
-            System.out.println("There are " + filtersBefore + " old filters. Start removing them.");
+            log.info("There are " + filtersBefore + " old filters. Start removing them.");
             deleteAllFiltersAndFolders();
             i++;
             inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Location");
