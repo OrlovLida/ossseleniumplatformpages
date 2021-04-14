@@ -22,12 +22,12 @@
         <restassured.version>2.9.0</restassured.version>
         <rs.version>2.1.1</rs.version>
         <locationinventory.version>1.34.10.Final</locationinventory.version>
-        <physicalinventory.version>2.0.4.Final</physicalinventory.version>
+        <physicalinventory.version>2.1.2.Final</physicalinventory.version>
         <addressinventory.version>1.17.30.Final</addressinventory.version>
-        <radio.version>4.1.0.Final</radio.version>
+        <radio.version>5.0.0-SNAPSHOT</radio.version>
         <resourcecatalog.version>2.5.7.Final</resourcecatalog.version>
         <planning.version>6.9.2.Final</planning.version>
-        <seleniumframework.version>0.7.0.Final</seleniumframework.version>
+        <seleniumframework.version>0.7.1-SNAPSHOT</seleniumframework.version>
         <log4j2.version>2.8.2</log4j2.version>
     </properties>
 
