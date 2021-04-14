@@ -286,7 +286,7 @@ public class IPAddressManagementViewPage extends BasePage {
     }
 
     private void editRoleForIPSubnetAssignment(String newRoleName){
-        Wizard editIPSubnetAssignmentRole = Wizard.createByComponentId(driver, wait, POPUP_WIZARD_DATA_ATTRIBUTE_NAME);
+        Wizard editIPSubnetAssignmentRole = Wizard.createPopupWizard(driver, wait);
         editIPSubnetAssignmentRole.setComponentValue(NEW_ROLE_DATA_ATTRIBUTE_NAME, newRoleName, COMBOBOX);
         editIPSubnetAssignmentRole.clickOK();
     }
@@ -372,7 +372,7 @@ public class IPAddressManagementViewPage extends BasePage {
     }
 
     private void changeIPHostMask(String mask){
-        Wizard changeIPHostAddressMaskWizard = Wizard.createByComponentId(driver, wait, POPUP_WIZARD_DATA_ATTRIBUTE_NAME);
+        Wizard changeIPHostAddressMaskWizard = Wizard.createPopupWizard(driver, wait);
         changeIPHostAddressMaskWizard.setComponentValue(MASK_DATA_ATTRIBUTE_NAME, mask, COMBOBOX);
         changeIPHostAddressMaskWizard.clickOK();
     }

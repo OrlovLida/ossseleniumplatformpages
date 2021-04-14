@@ -75,8 +75,6 @@ public class IPAMTreeConstants {
     public static final String TABS_CONTAINER_CLASS = "tabsContainer";
     public static final String NEW_ROLE_DATA_ATTRIBUTE_NAME = "new-role-uid";
     public static final String MASK_DATA_ATTRIBUTE_NAME = "mask-uid";
-    public static final String POPUP_WIZARD_DATA_ATTRIBUTE_NAME = "Popup";
-
 
     public static final String NETWORK_PROPERTY_NAME = "Name";
     public static final String NETWORK_PROPERTY_DESCRIPTION = "Description";

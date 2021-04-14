@@ -37,7 +37,7 @@ public class CellBulkWizardPage extends BasePage {
 
     public CellBulkWizardPage(WebDriver driver) {
         super(driver);
-        wizard = Wizard.createByComponentId(driver, wait, "Popup");
+        wizard = Wizard.createPopupWizard(driver, wait);
     }
 
     @Step("Click Accept button")
