@@ -4,6 +4,8 @@ import com.oss.BaseTestCase;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
@@ -13,35 +15,38 @@ import static com.oss.utils.AttachmentsManager.saveScreenshotPNG;
 import static com.oss.utils.AttachmentsManager.saveTextLog;
 
 public class TestListener extends BaseTestCase implements ITestListener {
+
+    private static final Logger log = LoggerFactory.getLogger(TestListener.class);
+
     private static String getTestMethodName(ITestResult iTestResult) {
         return iTestResult.getMethod().getConstructorOrMethod().getName();
     }
 
     @Override
     public void onStart(ITestContext iTestContext) {
-        System.out.println("I am in onStart method " + iTestContext.getName());
+        log.info("I am in onStart method " + iTestContext.getName());
         iTestContext.setAttribute("WebDriver", this.driver);
     }
 
     @Override
     public void onFinish(ITestContext iTestContext) {
-        System.out.println("I am in onFinish method " + iTestContext.getName());
+        log.info("I am in onFinish method " + iTestContext.getName());
 
     }
 
     @Override
     public void onTestStart(ITestResult iTestResult) {
-        System.out.println("I am in onTestStart method " + getTestMethodName(iTestResult) + " start");
+        log.info("I am in onTestStart method " + getTestMethodName(iTestResult) + " start");
     }
 
     @Override
     public void onTestSuccess(ITestResult iTestResult) {
-        System.out.println("I am in onTestSuccess method " + getTestMethodName(iTestResult) + " succeed");
+        log.info("I am in onTestSuccess method " + getTestMethodName(iTestResult) + " succeed");
     }
 
     @Override
     public void onTestFailure(ITestResult iTestResult) {
-        System.out.println("I am in onTestFailure method " + getTestMethodName(iTestResult) + " failed");
+        log.info("I am in onTestFailure method " + getTestMethodName(iTestResult) + " failed");
 
         //Get driver from BaseTest and assign to local webdriver variable.
         Object testClass = iTestResult.getInstance();
@@ -49,7 +54,7 @@ public class TestListener extends BaseTestCase implements ITestListener {
 
         //Allure ScreenShotRobot and SaveTestLog
         if (driver instanceof WebDriver) {
-            System.out.println("Screenshot captured for test case:" + getTestMethodName(iTestResult));
+            log.info("Screenshot captured for test case:" + getTestMethodName(iTestResult));
             saveScreenshotPNG(driver);
             attachConsoleLogs(driver);
         }
@@ -64,11 +69,11 @@ public class TestListener extends BaseTestCase implements ITestListener {
 
     @Override
     public void onTestSkipped(ITestResult iTestResult) {
-        System.out.println("I am in onTestSkipped method " + getTestMethodName(iTestResult) + " skipped");
+        log.info("I am in onTestSkipped method " + getTestMethodName(iTestResult) + " skipped");
     }
 
     @Override
     public void onTestFailedButWithinSuccessPercentage(ITestResult iTestResult) {
-        System.out.println("Test failed but it is in defined success ratio " + getTestMethodName(iTestResult));
+        log.info("Test failed but it is in defined success ratio " + getTestMethodName(iTestResult));
     }
 }

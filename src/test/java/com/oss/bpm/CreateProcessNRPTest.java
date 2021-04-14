@@ -6,18 +6,6 @@
  */
 package com.oss.bpm;
 
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.regex.Pattern;
-
-import org.assertj.core.api.Assertions;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Listeners;
-import org.testng.annotations.Test;
-
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
@@ -29,12 +17,27 @@ import com.oss.pages.bpm.ProcessWizardPage;
 import com.oss.pages.bpm.TasksPage;
 import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.utils.TestListener;
+import org.assertj.core.api.Assertions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Test;
+
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * @author Gabriela Kasza
  */
 @Listeners({ TestListener.class })
 public class CreateProcessNRPTest extends BaseTestCase {
+
+    private static final Logger log = LoggerFactory.getLogger(CreateProcessNRPTest.class);
 
     private String processNRPName;
     private String processIPName1 = "S.1-" + (int) (Math.random() * 1001);
@@ -268,7 +271,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
         DelayUtils.sleep(3000);
         processIPCode1 = tasksPage.getIPCodeByProcessName(processIPName1);
         processIPCode2 = tasksPage.getIPCodeByProcessName(processIPName2);
-        System.out.println(processIPCode1 + processIPCode2);
+        log.info(processIPCode1 + processIPCode2);
     }
 
     @Test(priority = 12)

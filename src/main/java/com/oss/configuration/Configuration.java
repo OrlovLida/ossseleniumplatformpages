@@ -1,6 +1,8 @@
 package com.oss.configuration;
 
 import org.assertj.core.util.Strings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,6 +12,7 @@ import java.util.Properties;
 
 public class Configuration {
 
+    private static final Logger log = LoggerFactory.getLogger(Configuration.class);
 
     public static final Configuration CONFIGURATION = new Configuration();
     private static final String DEFAULT_DOWNLOAD_DIR = Paths.get(System.getProperty("user.dir") + File.separator + "target" + File.separator + "downloadFiles").toString();
@@ -55,7 +58,7 @@ public class Configuration {
             String ip = getUrl().split(":")[1].replace("//", "");
             return ip;
         }
-        System.out.println("ENV: " + env);
+        log.info("ENV: " + env);
         return env;
     }
 
