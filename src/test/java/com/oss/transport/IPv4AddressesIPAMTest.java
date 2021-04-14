@@ -58,8 +58,8 @@ public class IPv4AddressesIPAMTest extends BaseTestCase{
     private static final String FILTER_SUBNETS_END_IP_FOR_CREATION = "12600128";
     private static final String FILTER_SUBNETS_END_IP_FOR_SPLIT = "126000";
     private static final String OPERATOR_HIGHER_OR_EQUAL = ">=";
-    private static final String HIGHEST_IP_SUBNET_MASK = "24";
-    private static final String LOWER_IP_SUBNET_MASK = "25";
+    private static final String LOWEST_IP_SUBNET_MASK = "24";
+    private static final String HIGHER_IP_SUBNET_MASK = "25";
     private static final String ASSIGNMENT_LOCATION_NAME = "IPAMSeleniumTest";
     private static final String ASSIGNMENT_DEVICE_NAME = "IPAMSeleniumTest";
     private static final String ASSIGNMENT_INTERFACE_NAME = "IPAMSeleniumTestFirstInterface";
@@ -153,7 +153,6 @@ public class IPv4AddressesIPAMTest extends BaseTestCase{
 //        perspectiveChooser.setPlanPerspective(processNRPCode);
         RoleViewPage roleViewPage = ipAddressManagementViewPage.openRoleView();
         roleViewPage.createRole(ROLE_NAME);
-        Assert.assertTrue(ipAddressManagementViewPage.isSystemMessageSuccess());
         Assert.assertTrue(roleViewPage.doesRoleNameExist(ROLE_NAME));
         roleViewPage.exitRoleView();
     }
@@ -162,7 +161,6 @@ public class IPv4AddressesIPAMTest extends BaseTestCase{
     @Description("Create IP Network")
     public void createIPNetwork() {
         ipAddressManagementViewPage.createIPNetwork(NETWORK_NAME, DESCRIPTION);
-        Assert.assertTrue(ipAddressManagementViewPage.isSystemMessageSuccess());
 
         ipAddressManagementViewPage.selectTreeRow(NETWORK_NAME);
         Assert.assertEquals(ipAddressManagementViewPage.getPropertyValue(NETWORK_PROPERTY_NAME), NETWORK_NAME);
@@ -173,7 +171,7 @@ public class IPv4AddressesIPAMTest extends BaseTestCase{
     @Description("Create IPv4 Subnets")
     public void createIPv4Subnets() {
         IPSubnetWizardPage ipSubnetWizardPage = ipAddressManagementViewPage.createIPv4Subnet();
-        IPSubnetFilterProperties subnetFilterProperties = new IPSubnetFilterProperties(FILTER_SUBNETS_START_IP, FILTER_SUBNETS_END_IP_FOR_CREATION, OPERATOR_HIGHER_OR_EQUAL, HIGHEST_IP_SUBNET_MASK);
+        IPSubnetFilterProperties subnetFilterProperties = new IPSubnetFilterProperties(FILTER_SUBNETS_START_IP, FILTER_SUBNETS_END_IP_FOR_CREATION, OPERATOR_HIGHER_OR_EQUAL, LOWEST_IP_SUBNET_MASK);
         ipSubnetWizardPage.ipSubnetWizardSelectStep(subnetFilterProperties, AMOUNT_OF_SUBNETS_SELECTED_DURING_SUBNET_CREATION);
         IPSubnetWizardProperties firstIpSubnetWizardProperties = new IPSubnetWizardProperties(BLOCK_SUBNET_TYPE);
         IPSubnetWizardProperties secondIpSubnetWizardProperties = new IPSubnetWizardProperties(NETWORK_SUBNET_TYPE, ROLE_NAME, DESCRIPTION);
@@ -210,13 +208,11 @@ public class IPv4AddressesIPAMTest extends BaseTestCase{
     public void reserveIPv4Hosts() {
         ipAddressManagementViewPage
                 .reserveIPv4HostAddress(getAddressAndMask(secondIPSubnetProperties), HOST_ADDRESS, DESCRIPTION);
-        Assert.assertTrue(ipAddressManagementViewPage.isSystemMessageSuccess());
         updatePropertiesAfterIPv4HostsReservation();
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
         checkAttributesOnIPAMTree(hostAddressProperties, getAddressAndMask(hostAddressProperties));
         ipAddressManagementViewPage
                 .reserveLoopbackIPv4HostAddress(getAddressAndMask(secondIPSubnetProperties), LOOPBACK_HOST_ADDRESS, DESCRIPTION);
-        Assert.assertTrue(ipAddressManagementViewPage.isSystemMessageSuccess());
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
         checkAttributesOnIPAMTree(loopbackHostAddressProperties, getAddressAndMask(loopbackHostAddressProperties));
         checkAttributesOnIPAMTree(secondIPSubnetProperties, getAddressAndMask(secondIPSubnetProperties));
@@ -260,7 +256,6 @@ public class IPv4AddressesIPAMTest extends BaseTestCase{
     public void editRole() {
         RoleViewPage roleViewPage = ipAddressManagementViewPage.openRoleView();
         roleViewPage.editRole(ROLE_NAME, ROLE_NAME_UPDATED);
-        Assert.assertTrue(ipAddressManagementViewPage.isSystemMessageSuccess());
         Assert.assertTrue(roleViewPage.doesRoleNameExist(ROLE_NAME_UPDATED));
         Assert.assertFalse(roleViewPage.doesRoleNameExist(ROLE_NAME));
         roleViewPage.exitRoleView();
@@ -280,7 +275,6 @@ public class IPv4AddressesIPAMTest extends BaseTestCase{
     @Description("Edit IP Network")
     public void editIPNetwork() {
         ipAddressManagementViewPage.editIPNetwork(NETWORK_NAME, NETWORK_NAME_UPDATED, DESCRIPTION_UPDATED);
-        Assert.assertTrue(ipAddressManagementViewPage.isSystemMessageSuccess());
         updatePropertiesAfterIPNetworkEdition();
 
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
@@ -349,7 +343,6 @@ public class IPv4AddressesIPAMTest extends BaseTestCase{
     @Description("Edit IPv4 Subnets")
     public void editIPv4Subnets() {
         ipAddressManagementViewPage.changeIPv4SubnetTypeToBlock(getAddressAndMask(thirdIPSubnetProperties));
-        Assert.assertTrue(ipAddressManagementViewPage.isSystemMessageSuccess());
         ipAddressManagementViewPage.selectTreeRow(NETWORK_NAME_UPDATED);
         ipAddressManagementViewPage.selectTreeRow(NETWORK_NAME_UPDATED);
         ipAddressManagementViewPage.expandTreeRow(NETWORK_NAME_UPDATED);
@@ -550,34 +543,34 @@ public class IPv4AddressesIPAMTest extends BaseTestCase{
     }
 
     private void updatePropertiesAfterIPv4SubnetsCreation(){
-        firstIPSubnetProperties.put(SUBNET_PROPERTY_IDENTIFIER, SUBNETS_ADDRESS+"/"+HIGHEST_IP_SUBNET_MASK+" ["+ NETWORK_NAME +"]");
+        firstIPSubnetProperties.put(SUBNET_PROPERTY_IDENTIFIER, SUBNETS_ADDRESS+"/"+ LOWEST_IP_SUBNET_MASK +" ["+ NETWORK_NAME +"]");
         firstIPSubnetProperties.put(SUBNET_PROPERTY_ADDRESS, SUBNETS_ADDRESS);
         firstIPSubnetProperties.put(SUBNET_PROPERTY_HIGHEST_IP_ADDRESS, "126.0.0.254");
         firstIPSubnetProperties.put(SUBNET_PROPERTY_BROADCAST_IP_ADDRESS, "126.0.0.255");
         firstIPSubnetProperties.put(SUBNET_PROPERTY_IP_NETWORK_NAME, NETWORK_NAME);
-        firstIPSubnetProperties.put(SUBNET_PROPERTY_MASK_LENGTH, HIGHEST_IP_SUBNET_MASK);
+        firstIPSubnetProperties.put(SUBNET_PROPERTY_MASK_LENGTH, LOWEST_IP_SUBNET_MASK);
         firstIPSubnetProperties.put(SUBNET_PROPERTY_SUBNET_TYPE, BLOCK_TYPE);
         firstIPSubnetProperties.put(SUBNET_PROPERTY_PERCENT_FREE, "0%");
         firstIPSubnetProperties.put(SUBNET_PROPERTY_CHILD_COUNT, "2");
 
-        secondIPSubnetProperties.put(SUBNET_PROPERTY_IDENTIFIER, SUBNETS_ADDRESS+"/"+LOWER_IP_SUBNET_MASK+" ["+ NETWORK_NAME +"]");
+        secondIPSubnetProperties.put(SUBNET_PROPERTY_IDENTIFIER, SUBNETS_ADDRESS+"/"+ HIGHER_IP_SUBNET_MASK +" ["+ NETWORK_NAME +"]");
         secondIPSubnetProperties.put(SUBNET_PROPERTY_ADDRESS, SUBNETS_ADDRESS);
         secondIPSubnetProperties.put(SUBNET_PROPERTY_HIGHEST_IP_ADDRESS, "126.0.0.126");
         secondIPSubnetProperties.put(SUBNET_PROPERTY_BROADCAST_IP_ADDRESS, "126.0.0.127");
         secondIPSubnetProperties.put(SUBNET_PROPERTY_IP_NETWORK_NAME, NETWORK_NAME);
-        secondIPSubnetProperties.put(SUBNET_PROPERTY_MASK_LENGTH, LOWER_IP_SUBNET_MASK);
+        secondIPSubnetProperties.put(SUBNET_PROPERTY_MASK_LENGTH, HIGHER_IP_SUBNET_MASK);
         secondIPSubnetProperties.put(SUBNET_PROPERTY_SUBNET_TYPE, NETWORK_TYPE);
         secondIPSubnetProperties.put(SUBNET_PROPERTY_PERCENT_FREE, "100%");
         secondIPSubnetProperties.put(SUBNET_PROPERTY_CHILD_COUNT, "0");
         secondIPSubnetProperties.put(SUBNET_PROPERTY_ROLE, ROLE_NAME);
         secondIPSubnetProperties.put(SUBNET_PROPERTY_DESCRIPTION, DESCRIPTION);
 
-        thirdIPSubnetProperties.put(SUBNET_PROPERTY_IDENTIFIER, "126.0.0.128/"+LOWER_IP_SUBNET_MASK+" ["+ NETWORK_NAME +"]");
+        thirdIPSubnetProperties.put(SUBNET_PROPERTY_IDENTIFIER, "126.0.0.128/"+ HIGHER_IP_SUBNET_MASK +" ["+ NETWORK_NAME +"]");
         thirdIPSubnetProperties.put(SUBNET_PROPERTY_ADDRESS, "126.0.0.128");
         thirdIPSubnetProperties.put(SUBNET_PROPERTY_HIGHEST_IP_ADDRESS, "126.0.0.254");
         thirdIPSubnetProperties.put(SUBNET_PROPERTY_BROADCAST_IP_ADDRESS, "126.0.0.255");
         thirdIPSubnetProperties.put(SUBNET_PROPERTY_IP_NETWORK_NAME, NETWORK_NAME);
-        thirdIPSubnetProperties.put(SUBNET_PROPERTY_MASK_LENGTH, LOWER_IP_SUBNET_MASK);
+        thirdIPSubnetProperties.put(SUBNET_PROPERTY_MASK_LENGTH, HIGHER_IP_SUBNET_MASK);
         thirdIPSubnetProperties.put(SUBNET_PROPERTY_SUBNET_TYPE, NETWORK_TYPE);
         thirdIPSubnetProperties.put(SUBNET_PROPERTY_PERCENT_FREE, "100%");
         thirdIPSubnetProperties.put(SUBNET_PROPERTY_CHILD_COUNT, "0");
@@ -599,8 +592,8 @@ public class IPv4AddressesIPAMTest extends BaseTestCase{
         loopbackHostAddressProperties.put(HOST_PROPERTY_DESCRIPTION, DESCRIPTION);
         loopbackHostAddressProperties.put(HOST_PROPERTY_STATUS, RESERVED_STATUS);
         hostAddressProperties.put(HOST_PROPERTY_ADDRESS, HOST_ADDRESS);
-        hostAddressProperties.put(HOST_PROPERTY_IDENTIFIER, HOST_ADDRESS+"/"+LOWER_IP_SUBNET_MASK+" ["+NETWORK_NAME+"]");
-        hostAddressProperties.put(HOST_PROPERTY_MASK, LOWER_IP_SUBNET_MASK);
+        hostAddressProperties.put(HOST_PROPERTY_IDENTIFIER, HOST_ADDRESS+"/"+ HIGHER_IP_SUBNET_MASK +" ["+NETWORK_NAME+"]");
+        hostAddressProperties.put(HOST_PROPERTY_MASK, HIGHER_IP_SUBNET_MASK);
         hostAddressProperties.put(HOST_PROPERTY_IP_NETWORK_NAME, NETWORK_NAME);
         hostAddressProperties.put(HOST_PROPERTY_DESCRIPTION, DESCRIPTION);
         hostAddressProperties.put(HOST_PROPERTY_STATUS, RESERVED_STATUS);
@@ -628,7 +621,7 @@ public class IPv4AddressesIPAMTest extends BaseTestCase{
         loopbackHostAssignmentProperties.put(HOST_ASSIGNMENT_PROPERTY_ASSIGNED_TO, ASSIGNMENT_INTERFACE_IDENTIFIER);
         loopbackHostAssignmentProperties.put(HOST_ASSIGNMENT_PROPERTY_IS_OBSOLETE, FALSE_STRING);
 
-        hostAssignmentProperties.put(HOST_ASSIGNMENT_PROPERTY_IDENTIFIER, HOST_ADDRESS+"/"+LOWER_IP_SUBNET_MASK+" ["+NETWORK_NAME+"]");
+        hostAssignmentProperties.put(HOST_ASSIGNMENT_PROPERTY_IDENTIFIER, HOST_ADDRESS+"/"+ HIGHER_IP_SUBNET_MASK +" ["+NETWORK_NAME+"]");
         hostAssignmentProperties.put(HOST_ASSIGNMENT_PROPERTY_IS_PRIMARY, FALSE_STRING);
         hostAssignmentProperties.put(HOST_ASSIGNMENT_PROPERTY_IS_IN_NAT, FALSE_STRING);
         hostAssignmentProperties.put(HOST_ASSIGNMENT_PROPERTY_ROLE, STANDARD_ROLE);
@@ -657,13 +650,13 @@ public class IPv4AddressesIPAMTest extends BaseTestCase{
         secondIPSubnetProperties.put(SUBNET_PROPERTY_IP_NETWORK_NAME, NETWORK_NAME_UPDATED);
         thirdIPSubnetProperties.put(SUBNET_PROPERTY_IDENTIFIER, thirdIPSubnetProperties.get(SUBNET_PROPERTY_ADDRESS)+"/"+thirdIPSubnetProperties.get(SUBNET_PROPERTY_MASK_LENGTH)+ " ["+ NETWORK_NAME_UPDATED +"]");
         thirdIPSubnetProperties.put(SUBNET_PROPERTY_IP_NETWORK_NAME, NETWORK_NAME_UPDATED);
-        hostAddressProperties.put(HOST_PROPERTY_IDENTIFIER, HOST_ADDRESS+"/"+LOWER_IP_SUBNET_MASK+" ["+NETWORK_NAME_UPDATED+"]");
+        hostAddressProperties.put(HOST_PROPERTY_IDENTIFIER, HOST_ADDRESS+"/"+ HIGHER_IP_SUBNET_MASK +" ["+NETWORK_NAME_UPDATED+"]");
         hostAddressProperties.put(HOST_PROPERTY_IP_NETWORK_NAME, NETWORK_NAME_UPDATED);
         loopbackHostAddressProperties.put(HOST_PROPERTY_IDENTIFIER, LOOPBACK_HOST_ADDRESS+"/"+LOOPBACK_IPV4_HOST_MASK+" ["+NETWORK_NAME_UPDATED+"]");
         loopbackHostAddressProperties.put(HOST_PROPERTY_IP_NETWORK_NAME, NETWORK_NAME_UPDATED);
         secondLoopbackHostAddressProperties.put(HOST_PROPERTY_IDENTIFIER, SECOND_LOOPBACK_HOST_ADDRESS+"/"+LOOPBACK_IPV4_HOST_MASK+" ["+NETWORK_NAME_UPDATED+"]");
         secondLoopbackHostAddressProperties.put(HOST_PROPERTY_IP_NETWORK_NAME, NETWORK_NAME_UPDATED);
-        hostAssignmentProperties.put(HOST_PROPERTY_IDENTIFIER, HOST_ADDRESS+"/"+LOWER_IP_SUBNET_MASK+" ["+NETWORK_NAME_UPDATED+"]");
+        hostAssignmentProperties.put(HOST_PROPERTY_IDENTIFIER, HOST_ADDRESS+"/"+ HIGHER_IP_SUBNET_MASK +" ["+NETWORK_NAME_UPDATED+"]");
         loopbackHostAssignmentProperties.put(HOST_PROPERTY_IDENTIFIER, LOOPBACK_HOST_ADDRESS+"/"+LOOPBACK_IPV4_HOST_MASK+" ["+NETWORK_NAME_UPDATED+"]");
         secondLoopbackHostAssignmentProperties.put(HOST_PROPERTY_IDENTIFIER, SECOND_LOOPBACK_HOST_ADDRESS+"/"+LOOPBACK_IPV4_HOST_MASK+" ["+NETWORK_NAME_UPDATED+"]");
     }
