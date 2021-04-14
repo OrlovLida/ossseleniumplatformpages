@@ -1,12 +1,12 @@
 package com.oss.pages.bigdata.kqiview;
 
-import com.oss.framework.components.dpe.kpitoolbarpanel.ExportPanel;
-import com.oss.framework.components.dpe.kpitoolbarpanel.ExportPanel.ExportType;
-import com.oss.framework.components.dpe.kpitoolbarpanel.FiltersPanel;
-import com.oss.framework.components.dpe.kpitoolbarpanel.LayoutPanel.LayoutType;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.dpe.kpichartwidget.KpiChartWidget;
+import com.oss.framework.widgets.dpe.toolbarpanel.ExportPanel;
+import com.oss.framework.widgets.dpe.toolbarpanel.ExportPanel.ExportType;
+import com.oss.framework.widgets.dpe.toolbarpanel.FiltersPanel;
 import com.oss.framework.widgets.dpe.toolbarpanel.KpiToolbarPanel;
+import com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType;
 import com.oss.framework.widgets.dpe.treewidget.KpiTreeWidget;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Attachment;
