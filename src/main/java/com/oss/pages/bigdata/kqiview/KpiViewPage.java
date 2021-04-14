@@ -1,9 +1,13 @@
 package com.oss.pages.bigdata.kqiview;
 
+import com.oss.framework.components.dpe.kpitoolbarpanel.ExportPanel;
+import com.oss.framework.components.dpe.kpitoolbarpanel.ExportPanel.ExportType;
+import com.oss.framework.components.dpe.kpitoolbarpanel.FiltersPanel;
+import com.oss.framework.components.dpe.kpitoolbarpanel.LayoutPanel.LayoutType;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.dpe.kpichartwidget.KpiChartWidget;
 import com.oss.framework.widgets.dpe.toolbarpanel.KpiToolbarPanel;
-import com.oss.framework.widgets.dpe.treewidget.TreeWidget;
+import com.oss.framework.widgets.dpe.treewidget.KpiTreeWidget;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
@@ -19,7 +23,6 @@ import java.io.IOException;
 import java.util.List;
 
 import static com.oss.configuration.Configuration.CONFIGURATION;
-import static com.oss.framework.widgets.dpe.toolbarpanel.KpiToolbarPanel.ExportType;
 
 public class KpiViewPage extends BasePage {
 
@@ -46,7 +49,7 @@ public class KpiViewPage extends BasePage {
 
     private void selectTreeNodes(List<String> nodesToExpand, List<String> nodesToSelect, String componentId) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        TreeWidget indicatorsTree = TreeWidget.create(driver, wait, componentId);
+        KpiTreeWidget indicatorsTree = KpiTreeWidget.create(driver, wait, componentId);
         indicatorsTree.selectNodes(nodesToExpand, nodesToSelect);
         log.debug("Expanded nodes: {}", nodesToExpand);
         log.debug("Selecting: {}", nodesToSelect);
@@ -56,10 +59,12 @@ public class KpiViewPage extends BasePage {
     public void setFilters(List<String> enabledFilters){
         DelayUtils.waitForPageToLoad(driver, wait);
         KpiToolbarPanel toolbar = KpiToolbarPanel.create(driver, wait);
-        toolbar.openFilters();
-        toolbar.clearFilters();
-        toolbar.turnOnFilters(enabledFilters);
-        toolbar.clickConfirm();
+        FiltersPanel filtersPanel = toolbar.getFiltersPanel();
+        filtersPanel.openFilters();
+        filtersPanel.clearFilters();
+        filtersPanel.turnOnFilters(enabledFilters);
+        filtersPanel.clickConfirm();
+
         log.info("Selected filters: {}", enabledFilters);
     }
 
@@ -97,14 +102,15 @@ public class KpiViewPage extends BasePage {
     @Step("I export chart")
     public void exportChart() {
         KpiToolbarPanel toolbar = KpiToolbarPanel.create(driver, wait);
+        ExportPanel exportPanel = toolbar.getExportPanel();
         log.info("Exporting chart to JPG");
-        toolbar.exportKpiToFile(ExportType.JPG);
+        exportPanel.exportKpiToFile(ExportType.JPG);
         log.info("Exporting chart to PNG");
-        toolbar.exportKpiToFile(ExportType.PNG);
+        exportPanel.exportKpiToFile(ExportType.PNG);
         log.info("Exporting chart to PDF");
-        toolbar.exportKpiToFile(ExportType.PDF);
+        exportPanel.exportKpiToFile(ExportType.PDF);
         log.info("Exporting chart to XLSX");
-        toolbar.exportKpiToFile(ExportType.XLSX);
+        exportPanel.exportKpiToFile(ExportType.XLSX);
     }
 
     @Step("Attach exported chart to report")
@@ -132,7 +138,7 @@ public class KpiViewPage extends BasePage {
     @Step("I change layout")
     public void changeLayout(){
         KpiToolbarPanel toolbar = KpiToolbarPanel.create(driver, wait);
-        toolbar.changeLayout(KpiToolbarPanel.LayoutType.LAYOUT_2x2);
+        toolbar.getLayoutPanel().changeLayout(LayoutType.LAYOUT_2x2);
 
     }
 
