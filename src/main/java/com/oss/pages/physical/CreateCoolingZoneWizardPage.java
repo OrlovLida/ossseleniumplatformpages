@@ -15,7 +15,7 @@ public class CreateCoolingZoneWizardPage extends BasePage {
         super(driver);
     }
 
-    private Wizard wizard = Wizard.createByComponentId(driver, wait, "Popup");
+    private Wizard wizard = Wizard.createPopupWizard(driver, wait);
     private static final String SET_COOLING_ZONE_NAME = "cooling_zone_name_id";
     private static final String SELECT_COOLING_ZONE_NAME = "cooling_zone_uid";
 

@@ -78,7 +78,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, RAN_INCONSITENCIES_TABLE_ID);
         table.callAction("Assign Location");
         DelayUtils.waitForPageToLoad(driver, wait);
-        Wizard wizard = Wizard.createByComponentId(driver, wait, "Popup");
+        Wizard wizard = Wizard.createPopupWizard(driver, wait);
         Input locationField = wizard.getComponent("location_OSF", ComponentType.SEARCH_FIELD);
         locationField.setSingleStringValueContains(location);
         DelayUtils.waitForPageToLoad(driver, wait);

@@ -7,7 +7,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
+import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.contextactions.ButtonContainer;
+import com.oss.framework.components.contextactions.OldActionsContainer;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.prompts.ConfirmationBox;
@@ -39,6 +41,26 @@ import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD
 
 public class NetworkViewPage extends BasePage {
 
+    private static final String ATTRIBUTES_AND_TERMINATIONS_ACTION = "Attributes and terminations";
+    private static final String CREATE_CONNECTION_ACTION = "Create Connection";
+    private static final String CREATE_DEVICE_ACTION = "Create Device";
+    private static final String DELETE_TRAIL_ACTION = "Delete Trail";
+    private static final String DELETE_ELEMENT_ACTION = "Delete Element";
+    private static final String DELETE_CONNECTION_ACTION = "Delete Connection";
+    private static final String DELETE_TERMINATION_ACTION = "Delete termination";
+    private static final String START_EDITING_CONNECTION_ACTION = "Start editing connection";
+    private static final String STOP_EDITING_CONNECTION_ACTION = "Stop editing connection";
+    private static final String TERMINATION_ACTION = "Termination";
+    private static final String ROUTING = "Routing";
+    private static final String ACCEPT_BUTTON = "Accept";
+    private static final String DELETE_BUTTON = "Delete";
+    private static final String ADD_TO_GROUP_ACTION = "add_to_group";
+    private static final String TRAIL_TYPE_COMBOBOX_ID = "trailTypeCombobox";
+    private static final String DOCKED_PANEL_LEFT_ID = "dockedPanel-left";
+    private static final String LEFT_PANEL_TAB_ID = "leftPanelTab";
+    private static final String VALIDATION_RESULT_ID = "Validation Results";
+    private static final String ROUTING_TABLE_APP_ID = "routing-table-app";
+
     private Wizard physicalDeviceWizard = Wizard.createWizard(driver, wait);
 
     public NetworkViewPage(WebDriver driver) {
@@ -53,11 +75,6 @@ public class NetworkViewPage extends BasePage {
         waitForPageToLoad();
     }
 
-    public static NetworkViewPage goToNetworkViewPageLive(WebDriver driver, String basicURL) {
-        driver.get(String.format("%s/#/view/transport/trail/network?" + "perspective=LIVE", basicURL));
-        return new NetworkViewPage(driver);
-    }
-
     @Step("Open new Trail create wizard")
     public void openCreateTrailWizardV2(String trailType) {
         openWizardPage(trailType);
@@ -65,7 +82,7 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Open new Trail update wizard")
     public void openUpdateTrailWizardV2() {
-        useContextAction("EDIT", "Attributes and terminations");
+        useContextAction(ActionsContainer.EDIT_GROUP_ID, ATTRIBUTES_AND_TERMINATIONS_ACTION);
         waitForPageToLoad();
     }
 
@@ -82,21 +99,21 @@ public class NetworkViewPage extends BasePage {
     }
 
     private void openWizardPage(String trailType) {
-        useContextAction("CREATE", "Create Connection");
+        useContextAction(ActionsContainer.CREATE_GROUP_ID, CREATE_CONNECTION_ACTION);
         selectTrailType(trailType);
-        clickButton("Accept");
+        clickButton(ACCEPT_BUTTON);
         waitForPageToLoad();
     }
 
     @Step("Select trail type")
     public void selectTrailType(String trailType) {
-        Wizard popup = Wizard.createByComponentId(driver, wait, "Popup");
-        popup.setComponentValue("trailTypeCombobox", trailType, COMBOBOX);
+        Wizard popup = Wizard.createPopupWizard(driver, wait);
+        popup.setComponentValue(TRAIL_TYPE_COMBOBOX_ID, trailType, COMBOBOX);
     }
 
     @Step("Open Trail update wizard")
     public <T extends TrailWizardPage> T openUpdateTrailWizard(Class<T> trailWizardPageClass) {
-        useContextAction("EDIT", "Attributes and terminations");
+        useContextAction(ActionsContainer.EDIT_GROUP_ID, ATTRIBUTES_AND_TERMINATIONS_ACTION);
         waitForPageToLoad();
         try {
             return getWizardPage(trailWizardPageClass);
@@ -112,14 +129,14 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Create Device by context action")
     public DeviceWizardPage openCreateDeviceWizard() {
-        useContextAction("CREATE", "Create Device");
+        useContextAction(ActionsContainer.CREATE_GROUP_ID, CREATE_DEVICE_ACTION);
         waitForPageToLoad();
         return new DeviceWizardPage(driver);
     }
 
     @Step("Delete selected trails by context action")
     public void deleteSelectedTrails() {
-        useContextAction("EDIT", "Delete Trail");
+        useContextAction(ActionsContainer.EDIT_GROUP_ID, DELETE_TRAIL_ACTION);
         waitForPageToLoad();
         clickButton("Proceed");
         waitForPageToLoad();
@@ -127,14 +144,14 @@ public class NetworkViewPage extends BasePage {
 
     @Step
     public void deleteSelectedConnections() {
-        useContextAction("EDIT", "Delete Connection");
+        useContextAction(ActionsContainer.EDIT_GROUP_ID, DELETE_CONNECTION_ACTION);
         waitForPageToLoad();
-        clickButton("Delete");
+        clickButton(DELETE_BUTTON);
     }
 
     @Step("Delete selected elements by context action")
     public void deleteSelectedElement() {
-        useContextAction("EDIT", "Delete Element");
+        useContextAction(ActionsContainer.EDIT_GROUP_ID, DELETE_ELEMENT_ACTION);
         waitForPageToLoad();
         clickButton("Yes");
         waitForPageToLoad();
@@ -142,33 +159,33 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Click Start editing trail button")
     public void startEditingSelectedTrail() {
-        Button button = Button.create(driver, "Start editing connection");
+        Button button = Button.create(driver, START_EDITING_CONNECTION_ACTION);
         button.click();
     }
 
     @Step("Click Stop editing trail button")
     public void stopEditingTrail() {
-        Button button = Button.create(driver, "Stop editing connection");
+        Button button = Button.create(driver, STOP_EDITING_CONNECTION_ACTION);
         button.click();
     }
 
     @Step("Add selected objects to Routing")
     public RoutingWizardPage addSelectedObjectsToRouting() {
-        useContextAction("add_to_group", "Routing");
+        useContextAction(ADD_TO_GROUP_ACTION, ROUTING);
         waitForPageToLoad();
         return new RoutingWizardPage(driver);
     }
 
     @Step("Add selected objects to Termination V2")
     public TerminationStepPage addSelectedObjectsToTerminationV2() {
-        useContextAction("add_to_group", "Termination");
+        useContextAction(ADD_TO_GROUP_ACTION, TERMINATION_ACTION);
         waitForPageToLoad();
         return new TerminationStepPage(driver);
     }
 
     @Step("Add selected objects to Termination")
     public TerminationWizardPage addSelectedObjectsToTermination() {
-        useContextAction("add_to_group", "Termination");
+        useContextAction(ADD_TO_GROUP_ACTION, TERMINATION_ACTION);
         waitForPageToLoad();
         return new TerminationWizardPage(driver);
     }
@@ -176,14 +193,14 @@ public class NetworkViewPage extends BasePage {
     @Step("Use context action")
     public void useContextAction(String group, String action) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, "dockedPanel-left");
+        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, DOCKED_PANEL_LEFT_ID);
         table.callAction(group, action);
     }
 
     @Step("Select object in view content")
     public void selectObjectInViewContent(String name, String value) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, "leftPanelTab");
+        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, LEFT_PANEL_TAB_ID);
         table.selectRowByAttributeValueWithLabel(name, value);
     }
 
@@ -217,7 +234,7 @@ public class NetworkViewPage extends BasePage {
     @Step("Click on object in View content by partial name: {partialName} and index {index}")
     public void clickOnObject(String partialName, int index) {
         expandViewContentPanel();
-        OldTable oldTable = OldTable.createByComponentDataAttributeName(driver, wait, "leftPanelTab");
+        OldTable oldTable = OldTable.createByComponentDataAttributeName(driver, wait, LEFT_PANEL_TAB_ID);
         oldTable.selectRowByPartialNameAndIndex(partialName, index);
         waitForPageToLoad();
     }
@@ -269,12 +286,12 @@ public class NetworkViewPage extends BasePage {
     @Step("Select Routing element in details panel")
     public void selectRoutingElement(String column, String value) {
         openRoutingElementsTab();
-        selectObjectInBottomPanel("routing-table-app", column, value);
+        selectObjectInBottomPanel(ROUTING_TABLE_APP_ID, column, value);
         waitForPageToLoad();
     }
 
-    private void selectObjectInBottomPanel(String attribute, String column, String value) {
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, attribute);
+    private void selectObjectInBottomPanel(String tableId, String column, String value) {
+        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, tableId);
         table.selectRowByAttributeValueWithLabel(column, value);
     }
 
@@ -316,7 +333,7 @@ public class NetworkViewPage extends BasePage {
 
     private void openRoutingTab() {
         expandDetailsPanel();
-        selectTabFromBottomPanel("Routing");
+        selectTabFromBottomPanel(ROUTING);
         waitForPageToLoad();
     }
 
@@ -376,15 +393,15 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Remove terminations")
     public void removeSelectedTerminations() {
-        useContextAction("Delete termination");
+        useContextAction(DELETE_TERMINATION_ACTION);
         waitForPageToLoad();
-        clickButton("Delete");
+        clickButton(DELETE_BUTTON);
         waitForPageToLoad();
     }
 
     public void useContextAction(String action) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, "dockedPanel-left");
+        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, DOCKED_PANEL_LEFT_ID);
         table.callAction(action);
     }
 
@@ -400,7 +417,7 @@ public class NetworkViewPage extends BasePage {
         Button button = Button.createBySelectorAndId(driver, "a", "Remove from routing");
         button.click();
         waitForPageToLoad();
-        clickButton("Delete");
+        clickButton(DELETE_BUTTON);
         waitForPageToLoad();
     }
 
@@ -483,7 +500,7 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Delate trail")
     public void delateTrailWizard() {
-        clickConfirmationBoxButtonByLabel("Delete");
+        clickConfirmationBoxButtonByLabel(DELETE_BUTTON);
     }
 
     private void waitForPageToLoad() {
@@ -506,7 +523,7 @@ public class NetworkViewPage extends BasePage {
 
     private void openValidationResultsTab() {
         expandDetailsPanel();
-        selectTabFromBottomPanel("Validation Results");
+        selectTabFromBottomPanel(VALIDATION_RESULT_ID);
         waitForPageToLoad();
     }
 

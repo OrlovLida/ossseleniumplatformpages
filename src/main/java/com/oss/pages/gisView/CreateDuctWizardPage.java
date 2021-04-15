@@ -9,7 +9,6 @@ import static com.oss.framework.components.inputs.Input.ComponentType.*;
 
 public class CreateDuctWizardPage extends BasePage {
     private static final String NAME_DATA_ATTRIBUTE_NAME = "Name_uid";
-    private static final String DUCT_CREATE_WIZARD_DATA_ATTRIBUTE_NAME = "Popup";
     private static final String MODEL_DATA_ATTRIBUTE_NAME = "DuctModel_uid";
     private static final String DUCT_TYPE_DATA_ATTRIBUTE_NAME = "DuctType_uid";
     private static final String CREATE_BUTTON_DATA_ATTRIBUTE_NAME = "PromptButtonId-0";
@@ -37,6 +36,6 @@ public class CreateDuctWizardPage extends BasePage {
     }
 
     private Wizard getCreateDuctWizard() {
-        return Wizard.createByComponentId(driver, wait, DUCT_CREATE_WIZARD_DATA_ATTRIBUTE_NAME);
+        return Wizard.createPopupWizard(driver, wait);
     }
 }

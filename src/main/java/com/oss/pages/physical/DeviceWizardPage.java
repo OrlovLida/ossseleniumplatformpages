@@ -11,7 +11,6 @@ import static com.oss.framework.components.inputs.Input.ComponentType.*;
 
 public class DeviceWizardPage extends BasePage {
 
-    private static final String DEVICE_WIZARD_DATA_ATTRIBUTE_NAME = "Popup";
     private static final String CREATE_BUTTON_DATA_ATTRIBUTE_NAME = "physical_device_common_buttons_app-1";
     private static final String UPDATE_BUTTON_DATA_ATTRIBUTE_NAME = "physical_device_update_common_buttons_app-1";
     private static final String NEXT_BUTTON_CREATE_WIZARD_DATA_ATTRIBUTE_NAME = "wizard-next-button-device_create_wizard_view";
@@ -235,7 +234,7 @@ public class DeviceWizardPage extends BasePage {
     }
 
     private Wizard getDeviceWizard() {
-        return Wizard.createByComponentId(driver, wait, DEVICE_WIZARD_DATA_ATTRIBUTE_NAME);
+        return Wizard.createPopupWizard(driver, wait);
     }
 
     private String getEquipmentType() {

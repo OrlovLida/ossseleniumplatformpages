@@ -31,7 +31,6 @@ public class CellSiteConfigurationPage extends BasePage {
     private static final String EDIT_LABEL = "Edit";
     private static final String DELETE_LABEL = "Delete";
     private static final String BASE_STATION_ROW = "Base Stations";
-    private static final String POPUP_ID = "Popup";
     private static final String CREATE_ENODEB_ACTION = "Create eNodeB";
     private static final String CREATE_GNODEB_ACTION = "Create gNodeB";
     private static final String TYPE_4G = "4G";
@@ -143,7 +142,7 @@ public class CellSiteConfigurationPage extends BasePage {
 
     @Step("Select trail type")
     public void selectTrailType(String trailType) {
-        Wizard wizard = Wizard.createByComponentId(driver, wait, POPUP_ID);
+        Wizard wizard = Wizard.createPopupWizard(driver, wait);
         wizard.setComponentValue(TRAIL_TYPE_ID, trailType, COMBOBOX);
         wizard.clickAccept();
     }
