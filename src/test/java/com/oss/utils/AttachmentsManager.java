@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.Timestamp;
 
+import static com.oss.configuration.Configuration.CONFIGURATION;
+
 public class AttachmentsManager {
 
     private static final Logger log = LoggerFactory.getLogger(AttachmentsManager.class);
@@ -35,21 +37,26 @@ public class AttachmentsManager {
 
     @Attachment(value="Console Logs")
     public static String attachConsoleLogs(WebDriver webDriver) {
-        LogEntries logEntries = webDriver.manage().logs().get(LogType.BROWSER);
-        StringBuilder builder = new StringBuilder();
-        builder.append("JS console logs:\n");
-        for (LogEntry entry : logEntries) {
-            Timestamp ts = new Timestamp(entry.getTimestamp());
-            builder.append(ts.toLocalDateTime());
-            builder.append(" ");
-            builder.append(entry.getLevel());
-            builder.append(" ");
-            builder.append(entry.getMessage());
+        if(CONFIGURATION.getDriver().equals("gecko")){
+            log.debug("Gecko driver doesn't support capturing browser logs");
+            return "";
+        } else {
+            LogEntries logEntries = webDriver.manage().logs().get(LogType.BROWSER);
+            StringBuilder builder = new StringBuilder();
+            builder.append("JS console logs:\n");
+            for (LogEntry entry : logEntries) {
+                Timestamp ts = new Timestamp(entry.getTimestamp());
+                builder.append(ts.toLocalDateTime());
+                builder.append(" ");
+                builder.append(entry.getLevel());
+                builder.append(" ");
+                builder.append(entry.getMessage());
+                builder.append("\n");
+            }
             builder.append("\n");
+            log.debug(builder.toString());
+            return builder.toString();
         }
-        builder.append("\n");
-        log.debug(builder.toString());
-        return builder.toString();
     }
 
 }
