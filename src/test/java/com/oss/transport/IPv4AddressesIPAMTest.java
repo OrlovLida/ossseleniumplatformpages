@@ -100,8 +100,8 @@ public class IPv4AddressesIPAMTest extends BaseTestCase {
     private static final String ASSIGNMENT_INTERFACE_NAME = "IPAMSeleniumTestFirstInterface";
     private static final String ASSIGNMENT_LOCATION_IDENTIFIER = "IPAMSeleniumTest-BU2"; //"IPSWICH-BU1"; //"Cracow-BU2";
     private static final String ASSIGNMENT_DEVICE_IDENTIFIER = "-Router-7"; //"IPSWICH-BU1"; //"Cracow-BU2";
-    private static final String ASSIGNMENT_INTERFACE_IDENTIFIER = "4514883"; //"IPSWICH-BU1"; //"Cracow-BU2";
-    private static final String ASSIGNMENT_SECOND_INTERFACE_IDENTIFIER = "4514884"; //"IPSWICH-BU1"; //"Cracow-BU2";
+    private static final String ASSIGNMENT_INTERFACE_IDENTIFIER = "-Router-7\\CLUSTER 0"; //"IPSWICH-BU1"; //"Cracow-BU2";
+    private static final String ASSIGNMENT_SECOND_INTERFACE_IDENTIFIER = "-Router-7\\CLUSTER 1"; //"IPSWICH-BU1"; //"Cracow-BU2";
     private static final String HOST_ADDRESS = "126.0.0.1";
     private static final String LOOPBACK_HOST_ADDRESS = "126.0.0.0";
     private static final String SECOND_LOOPBACK_HOST_ADDRESS = "126.0.0.2";
