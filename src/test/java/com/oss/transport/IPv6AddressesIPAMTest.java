@@ -96,8 +96,8 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
     private static final String ASSIGNMENT_INTERFACE_NAME = "IPAMSeleniumTestFirstInterface";
     private static final String ASSIGNMENT_LOCATION_IDENTIFIER = "IPAMSeleniumTest-BU2"; //"IPSWICH-BU1"; //"Cracow-BU2";
     private static final String ASSIGNMENT_DEVICE_IDENTIFIER = "-Router-7"; //"IPSWICH-BU1"; //"Cracow-BU2";
-    private static final String ASSIGNMENT_INTERFACE_IDENTIFIER = "4514883"; //"IPSWICH-BU1"; //"Cracow-BU2";
-    private static final String ASSIGNMENT_SECOND_INTERFACE_IDENTIFIER = "4514884"; //"IPSWICH-BU1"; //"Cracow-BU2";
+    private static final String ASSIGNMENT_INTERFACE_IDENTIFIER = "-Router-7\\CLUSTER 0"; //"IPSWICH-BU1"; //"Cracow-BU2";
+    private static final String ASSIGNMENT_SECOND_INTERFACE_IDENTIFIER = "-Router-7\\CLUSTER 1"; //"IPSWICH-BU1"; //"Cracow-BU2";
     private static final String IPV6_HOST_ADDRESS = "::126:1";
     private static final String LOOPBACK_IPV6_HOST_ADDRESS = "::126:0";
     private static final String SECOND_LOOPBACK_IPV6_HOST_ADDRESS = "::126:2";
@@ -610,8 +610,8 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
         loopbackIPv6HostAddressProperties.put(HOST_PROPERTY_DESCRIPTION, DESCRIPTION);
         loopbackIPv6HostAddressProperties.put(HOST_PROPERTY_STATUS, RESERVED_STATUS);
         ipv6HostAddressProperties.put(HOST_PROPERTY_ADDRESS, IPV6_HOST_ADDRESS);
-        ipv6HostAddressProperties.put(HOST_PROPERTY_IDENTIFIER, IPV6_HOST_ADDRESS+"/"+ LOWEST_IPV6_SUBNET_MASK +" ["+NETWORK_NAME+"]");
-        ipv6HostAddressProperties.put(HOST_PROPERTY_MASK, LOWEST_IPV6_SUBNET_MASK);
+        ipv6HostAddressProperties.put(HOST_PROPERTY_IDENTIFIER, IPV6_HOST_ADDRESS+"/"+ HIGHER_IPV6_SUBNET_MASK +" ["+NETWORK_NAME+"]");
+        ipv6HostAddressProperties.put(HOST_PROPERTY_MASK, HIGHER_IPV6_SUBNET_MASK);
         ipv6HostAddressProperties.put(HOST_PROPERTY_IP_NETWORK_NAME, NETWORK_NAME);
         ipv6HostAddressProperties.put(HOST_PROPERTY_DESCRIPTION, DESCRIPTION);
         ipv6HostAddressProperties.put(HOST_PROPERTY_STATUS, RESERVED_STATUS);
@@ -640,7 +640,7 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
         loopbackIPv6HostAssignmentProperties.put(HOST_ASSIGNMENT_PROPERTY_ASSIGNED_TO, ASSIGNMENT_INTERFACE_IDENTIFIER);
         loopbackIPv6HostAssignmentProperties.put(HOST_ASSIGNMENT_PROPERTY_IS_OBSOLETE, FALSE_STRING);
 
-        ipv6HostAssignmentProperties.put(HOST_ASSIGNMENT_PROPERTY_IDENTIFIER, IPV6_HOST_ADDRESS+"/"+ LOWEST_IPV6_SUBNET_MASK +" ["+NETWORK_NAME+"]");
+        ipv6HostAssignmentProperties.put(HOST_ASSIGNMENT_PROPERTY_IDENTIFIER, IPV6_HOST_ADDRESS+"/"+ HIGHER_IPV6_SUBNET_MASK +" ["+NETWORK_NAME+"]");
         ipv6HostAssignmentProperties.put(HOST_ASSIGNMENT_PROPERTY_IS_PRIMARY, FALSE_STRING);
         ipv6HostAssignmentProperties.put(HOST_ASSIGNMENT_PROPERTY_IS_IN_NAT, FALSE_STRING);
         ipv6HostAssignmentProperties.put(HOST_ASSIGNMENT_PROPERTY_ROLE, STANDARD_ROLE);
