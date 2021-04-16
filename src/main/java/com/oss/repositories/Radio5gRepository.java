@@ -1,9 +1,3 @@
-/* @(#) $$Id$$
- *
- * Copyright (c) 2000-2020 Comarch SA All Rights Reserved. Any usage,
- * duplication or redistribution of this software is allowed only according to
- * separate agreement prepared in written between Comarch and authorized party.
- */
 package com.oss.repositories;
 
 import com.comarch.oss.radio.api.dto.*;
@@ -44,7 +38,7 @@ public class Radio5gRepository {
         return cell.getId();
     }
 
-    public void createHRENodeBDevice(Long hostingResourceId, Long gNodeBId) {
+    public void createHRGNodeBDevice(Long hostingResourceId, Long gNodeBId) {
         Radio5gClient client = Radio5gClient.getInstance(env);
         client.createHRGNodeB(buildDeviceHR(hostingResourceId), gNodeBId);
     }
@@ -54,7 +48,7 @@ public class Radio5gRepository {
         client.createHRCell(buildDeviceHR(hostingResourceId), gNodeBId, cellId);
     }
 
-    public void createHRENodeBDevicePort(Long hostingResourceId, Long gNodeBId, String portName) {
+    public void createHRGNodeBDevicePort(Long hostingResourceId, Long gNodeBId, String portName) {
         Radio5gClient client = Radio5gClient.getInstance(env);
         client.createHRGNodeB(buildDevicePortHR(hostingResourceId, portName), gNodeBId);
     }
@@ -64,7 +58,7 @@ public class Radio5gRepository {
         client.createHRCell(buildDevicePortHR(hostingResourceId, portName), gNodeBId, cellId);
     }
 
-    public void createHRENodeBDeviceCard(Long hostingResourceId, Long gNodeBId, String slotName, String cardName) {
+    public void createHRGNodeBDeviceCard(Long hostingResourceId, Long gNodeBId, String slotName, String cardName) {
         Radio5gClient client = Radio5gClient.getInstance(env);
         client.createHRGNodeB(buildDeviceCardHR(hostingResourceId, slotName, cardName), gNodeBId);
     }

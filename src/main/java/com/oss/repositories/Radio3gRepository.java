@@ -29,7 +29,7 @@ public class Radio3gRepository {
         return cell.getId();
     }
 
-    public void createHRENodeBDevice(Long hostingResourceId, Long nodeBId) {
+    public void createHRNodeBDevice(Long hostingResourceId, Long nodeBId) {
         Radio3gClient client = Radio3gClient.getInstance(env);
         client.createHRNodeB(buildDeviceHR(hostingResourceId), nodeBId);
     }
@@ -39,7 +39,7 @@ public class Radio3gRepository {
         client.createHRCell(buildDeviceHR(hostingResourceId), nodeBId, cellId);
     }
 
-    public void createHRENodeBDevicePort(Long hostingResourceId, Long nodeBId, String portName) {
+    public void createHRNodeBDevicePort(Long hostingResourceId, Long nodeBId, String portName) {
         Radio3gClient client = Radio3gClient.getInstance(env);
         client.createHRNodeB(buildDevicePortHR(hostingResourceId, portName), nodeBId);
     }
@@ -49,7 +49,7 @@ public class Radio3gRepository {
         client.createHRCell(buildDevicePortHR(hostingResourceId, portName), nodeBId, cellId);
     }
 
-    public void createHRENodeBDeviceCard(Long hostingResourceId, Long nodeBId, String slotName, String cardName) {
+    public void createHRNodeBDeviceCard(Long hostingResourceId, Long nodeBId, String slotName, String cardName) {
         Radio3gClient client = Radio3gClient.getInstance(env);
         client.createHRNodeB(buildDeviceCardHR(hostingResourceId, slotName, cardName), nodeBId);
     }

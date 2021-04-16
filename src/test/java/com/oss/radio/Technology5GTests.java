@@ -42,25 +42,26 @@ public class Technology5GTests extends BaseTestCase {
     private static Long gNodeBId;
     private static final String gNodeBNameForDelete = "gNodeBForDeleteSeleniumTests" + (int) (Math.random() * 10000);
     private static final String gNodeBNameForEdit = "gNodeBForEditSeleniumTests" + (int) (Math.random() * 10000);
+    private static final String gNodeBNameForRemoveHR = "gNodeBForRemoveHRSeleniumTests" + (int) (Math.random() * 10000);
+    private static Long cellId;
     private static final String cell5GId1 = RandomGenerator.generateRandomCell5GId();
     private static final String cell5GNameForDelete = "Cell5GForDeleteSeleniumTests" + (int) (Math.random() * 10000);
-    private static final String cell5GId3 = RandomGenerator.generateRandomCell4GId();
-    private static final String cell5GNameForDelete2 = "Cell5GForDeleteSeleniumTests" + (int) (Math.random() * 10000);
-    private static Long cellId;
     private static final String cell5GId2 = RandomGenerator.generateRandomCell5GId();
-    private static final String cell5GNameForEdit = "Cell5GForDeleteSeleniumTests" + (int) (Math.random() * 10000);
+    private static final String cell5GNameForEdit = "Cell5GForEditSeleniumTests" + (int) (Math.random() * 10000);
+    private static final String cell5GId3 = RandomGenerator.generateRandomCell5GId();
+    private static final String cell5GNameForRemoveHRDevice = "Cell5GForRemoveHRDeviceSeleniumTests" + (int) (Math.random() * 10000);
+    private static final String cell5GId4 = RandomGenerator.generateRandomCell5GId();
+    private static final String cell5GNameForRemoveHRArray = "Cell5GForRemoveHRArraySeleniumTests" + (int) (Math.random() * 10000);
     private static Long deviceModelId;
     private static Long cardModelId;
     private static Long deviceId;
-    private static String arrayId;
     private static final String rruDeviceNameForEdit = "RRUForHostRelationSeleniumTests" + (int) (Math.random() * 10000);
     private static final String bbuDeviceNameForEdit = "BBUWithCardForHostRelationSeleniumTests" + (int) (Math.random() * 10000);
-    private static final String antennaAHP4517R7v06NameForEdit = "RANAntennaForHostRelationSeleniumTests" + (int) (Math.random() * 10000);
     private static final String aauAAU5614NameForEdit = "AAUForHostRelationSeleniumTests" + (int) (Math.random() * 10000);
     private static final String objectTypeCell5G = "Cell 5G";
     private static final String locationTypeSite = "Site";
     private static final String description = "Selenium Test";
-    private static final String carrier5G = "NR3600-n78-140";
+    private static final String carrier5G = "100 MHz - NR-ARFCN 642000";
     private static final String mccMncPrimary = "3UK [mcc: 234, mnc: 20]";
     private static final String MCC = "234";
     private static final String MNC = "20";
@@ -71,20 +72,21 @@ public class Technology5GTests extends BaseTestCase {
         getOrCreateAddress();
         createPhysicalLocation();
         createGNodeB(gNodeBNameForDelete);
-        createCell5G(cell5GNameForDelete2, cell5GId3);
         createGNodeB(gNodeBNameForEdit);
         createCell5G(cell5GNameForDelete, cell5GId1);
         createCell5G(cell5GNameForEdit, cell5GId2);
+        createGNodeB(gNodeBNameForRemoveHR);
+        createCell5G(cell5GNameForRemoveHRDevice, cell5GId3);
         createDevice(Constants.RRU5501_MODEL, rruDeviceNameForEdit, Constants.DEVICE_MODEL_TYPE);
-        createHRToDevice(); //eNB-RRU, Cell-RRU
-        createHRToPort(RRUAPort);//eNB-RRU port, Cell-RRU port
+        createHRToDevice(); //gNB-RRU, Cell-RRU
+        createHRToPort(RRUAPort);//gNB-RRU port, Cell-RRU port
         createDeviceWithCard(Constants.BBU5900_MODEL, bbuDeviceNameForEdit, Constants.DEVICE_MODEL_TYPE, Constants.UBBPg3_CARD_MODEL,
                 "0", Constants.CARD_MODEL_TYPE);
-        createHRToDevice(); //eNB-BBU, Cell-BBU
-        createHRToCard("0", "UBBPg3");//eNB-BBU card, Cell-BBU card
-        createDevice(Constants.AHP4517R7v06ANTENNA_MODEL, antennaAHP4517R7v06NameForEdit, Constants.ANTENNA_MODEL_TYPE);
+        createHRToDevice(); //gNB-BBU, Cell-BBU
+        createHRToCard("0", "UBBPg3");//gNB-BBU card, Cell-BBU card
         createDevice(Constants.AAU5614ANTENNA_MODEL, aauAAU5614NameForEdit, Constants.ANTENNA_MODEL_TYPE);
-        //createHRToArray(Constants.AHP4517R7v06ANTENNA_MODEL + "_Lr1");//Cell-Antenna Array //BUG OSSRC-32272
+        createHRToDevice(); //gNB-AAU, Cell-AAU
+        createCell5G(cell5GNameForRemoveHRArray, cell5GId4);
     }
 
     @BeforeMethod
@@ -177,7 +179,7 @@ public class Technology5GTests extends BaseTestCase {
                 .filterObject("Name", locationName)
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .expandTreeToCell(locationTypeSite, locationName, gNodeBNameForDelete, cell5GNameForDelete2)
+                .expandTreeToCell(locationTypeSite, locationName, gNodeBNameForEdit, cell5GNameForEdit)
                 .selectTab("Hosting")
                 .clickPlusIconAndSelectOption("Host on Device");
         new HostingWizardPage(driver)
@@ -207,8 +209,10 @@ public class Technology5GTests extends BaseTestCase {
                 .filterObject("Name", locationName)
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .expandTreeToCell(locationTypeSite, locationName, gNodeBNameForEdit, cell5GNameForEdit)
+                .expandTreeToCell(locationTypeSite, locationName, gNodeBNameForRemoveHR, cell5GNameForRemoveHRDevice)
                 .selectTab("Hosting")
+                .clearColumnFilter("Hosting Component")
+                .clearColumnFilter("Hosting Resource")
                 .selectRowByAttributeValueWithLabel("Hosting Component", Constants.UBBPg3_CARD_MODEL)
                 .removeObject();
         new CellSiteConfigurationPage(driver)
@@ -234,7 +238,7 @@ public class Technology5GTests extends BaseTestCase {
                 .filterObject("Name", locationName)
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .expandTreeToBaseStation(locationTypeSite, locationName, gNodeBNameForDelete)
+                .expandTreeToBaseStation(locationTypeSite, locationName, gNodeBNameForEdit)
                 .selectTab("Hosting")
                 .useTableContextActionByLabel("Host on Device");
         new HostingWizardPage(driver)
@@ -267,8 +271,10 @@ public class Technology5GTests extends BaseTestCase {
                 .filterObject("Name", locationName)
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .expandTreeToBaseStation(locationTypeSite, locationName, gNodeBNameForEdit)
+                .expandTreeToBaseStation(locationTypeSite, locationName, gNodeBNameForRemoveHR)
                 .selectTab("Hosting")
+                .clearColumnFilter("Hosting Component")
+                .clearColumnFilter("Hosting Resource")
                 .selectRowByAttributeValueWithLabel("Hosting Component", Constants.UBBPg3_CARD_MODEL)
                 .removeObject();
         new CellSiteConfigurationPage(driver)
@@ -297,7 +303,7 @@ public class Technology5GTests extends BaseTestCase {
                 .filterObject("Name", locationName)
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .expandTreeToCell(locationTypeSite, locationName, gNodeBNameForEdit, cell5GNameForDelete2)
+                .expandTreeToCell(locationTypeSite, locationName, gNodeBNameForEdit, cell5GNameForEdit)
                 .selectTab("Hosting")
                 .clickPlusIconAndSelectOption("Host on Device");
         new HostingWizardPage(driver)
@@ -306,10 +312,11 @@ public class Technology5GTests extends BaseTestCase {
         new HostingWizardPage(driver).clickAccept();
         SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
         systemMessageItem.waitForMessageDisappear();
+        new CellSiteConfigurationPage(driver)
+                .filterObject("Hosting Resource","" + aauAAU5614NameForEdit);
         Assert.assertTrue(new CellSiteConfigurationPage(driver).getValueByRowNumber("Hosting Resource", 0).contains(aauAAU5614NameForEdit));
     }
 
-    //TODO add HR creation by API
     @Test
     @Description("The user creates Host Relation between Cell 5G and AAU in Cell Site Configuration and checks if new row is displayed in Hosting table")
     public void tSRAN36RemoveHostRelationBetweenCell5GAndAAU() {
@@ -319,8 +326,10 @@ public class Technology5GTests extends BaseTestCase {
                 .filterObject("Name", locationName)
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .expandTreeToCell(locationTypeSite, locationName, gNodeBNameForEdit, cell5GNameForEdit)
+                .expandTreeToCell(locationTypeSite, locationName, gNodeBNameForRemoveHR, cell5GNameForRemoveHRArray)
                 .selectTab("Hosting")
+                .clearColumnFilter("Hosting Component")
+                .clearColumnFilter("Hosting Resource")
                 .selectRowByAttributeValueWithLabel("Hosting Resource", aauAAU5614NameForEdit)
                 .removeObject();
         SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
@@ -403,27 +412,19 @@ public class Technology5GTests extends BaseTestCase {
 
     private void createHRToDevice() {
         Radio5gRepository radio5gRepository = new Radio5gRepository(env);
-        radio5gRepository.createHRENodeBDevice(Long.valueOf(deviceId), gNodeBId);
+        radio5gRepository.createHRGNodeBDevice(Long.valueOf(deviceId), gNodeBId);
         radio5gRepository.createHRCellDevice(Long.valueOf(deviceId), gNodeBId, cellId);
-    }
-
-    private void createHRToArray(String arrayName) {
-        Radio5gRepository radio5gRepository = new Radio5gRepository(env);
-        PhysicalInventoryClient physicalInventoryClient = new PhysicalInventoryClient(env);
-        arrayId = physicalInventoryClient.getAntennaArrayId(deviceId, arrayName);
-        radio5gRepository.createHRENodeBDevice(Long.valueOf(arrayId), gNodeBId);
-        radio5gRepository.createHRCellDevice(Long.valueOf(arrayId), gNodeBId, cellId);
     }
 
     private void createHRToPort(String portName) {
         Radio5gRepository radio5gRepository = new Radio5gRepository(env);
-        radio5gRepository.createHRENodeBDevicePort(Long.valueOf(deviceId), gNodeBId, portName);
+        radio5gRepository.createHRGNodeBDevicePort(Long.valueOf(deviceId), gNodeBId, portName);
         radio5gRepository.createHRCellDevicePort(Long.valueOf(deviceId), gNodeBId, cellId, portName);
     }
 
     private void createHRToCard(String slotName, String cardName) {
         Radio5gRepository radio5gRepository = new Radio5gRepository(env);
-        radio5gRepository.createHRENodeBDeviceCard(Long.valueOf(deviceId), gNodeBId, slotName, cardName);
+        radio5gRepository.createHRGNodeBDeviceCard(Long.valueOf(deviceId), gNodeBId, slotName, cardName);
         radio5gRepository.createHRCellDeviceCard(Long.valueOf(deviceId), gNodeBId, cellId, slotName, cardName);
     }
 

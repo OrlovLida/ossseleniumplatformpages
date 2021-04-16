@@ -29,16 +29,13 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
-import java.io.IOException;
-import java.util.Optional;
-
 @Listeners({TestListener.class})
 public class Technology4GTests extends BaseTestCase {
 
     private Environment env = Environment.getInstance();
 
     private static String locationId;
-    private static final String locationName = "LocationSeleniumTests" + (int) (Math.random() * 10000);
+    private static final String locationName = "LocationSeleniumTests4G" + (int) (Math.random() * 10000);
     private static Long addressId;
     private static final String countryName = "CountrySeleniumTests";
     private static final String postalCodeName = "PostalCodeSeleniumTests";
@@ -48,13 +45,16 @@ public class Technology4GTests extends BaseTestCase {
     private static Long eNodeBId;
     private static final String eNodeBNameForDelete = "eNodeBForDeleteSeleniumTests" + (int) (Math.random() * 10000);
     private static final String eNodeBNameForEdit = "eNodeBForEditSeleniumTests" + (int) (Math.random() * 10000);
+    private static final String eNodeBNameForRemoveHR = "eNodeBForRemoveHRSeleniumTests" + (int) (Math.random() * 10000);
+    private static Long cellId;
     private static final String cell4GId1 = RandomGenerator.generateRandomCell4GId();
     private static final String cell4GNameForDelete = "Cell4GForDeleteSeleniumTests" + (int) (Math.random() * 10000);
-    private static final String cell4GId3 = RandomGenerator.generateRandomCell4GId();
-    private static final String cell4GNameForDelete2 = "Cell4GForDeleteSeleniumTests" + (int) (Math.random() * 10000);
-    private static Long cellId;
     private static final String cell4GId2 = RandomGenerator.generateRandomCell4GId();
     private static final String cell4GNameForEdit = "Cell4GForEditSeleniumTests" + (int) (Math.random() * 10000);
+    private static final String cell4GId3 = RandomGenerator.generateRandomCell4GId();
+    private static final String cell4GNameForRemoveHRDevice = "Cell4GForRemoveHRDeviceSeleniumTests" + (int) (Math.random() * 10000);
+    private static final String cell4GId4 = RandomGenerator.generateRandomCell4GId();
+    private static final String cell4GNameForRemoveHRArray = "Cell4GForRemoveHRArraySeleniumTests" + (int) (Math.random() * 10000);
     private static Long deviceModelId;
     private static Long cardModelId;
     private static Long deviceId;
@@ -77,10 +77,11 @@ public class Technology4GTests extends BaseTestCase {
         getOrCreateAddress();
         createPhysicalLocation();
         createENodeB(eNodeBNameForDelete);
-        createCell4G(cell4GNameForDelete2, cell4GId3);
         createENodeB(eNodeBNameForEdit);
         createCell4G(cell4GNameForDelete, cell4GId1);
         createCell4G(cell4GNameForEdit, cell4GId2);
+        createENodeB(eNodeBNameForRemoveHR);
+        createCell4G(cell4GNameForRemoveHRDevice, cell4GId3);
         createDevice(Constants.RRU5501_MODEL, rruDeviceNameForEdit, Constants.DEVICE_MODEL_TYPE);
         createHRToDevice(); //eNB-RRU, Cell-RRU
         createHRToPort(RRUAPort);//eNB-RRU port, Cell-RRU port
@@ -88,8 +89,10 @@ public class Technology4GTests extends BaseTestCase {
                 "0", Constants.CARD_MODEL_TYPE);
         createHRToDevice(); //eNB-BBU, Cell-BBU
         createHRToCard("0", "UBBPg3");//eNB-BBU card, Cell-BBU card
+        createCell4G(cell4GNameForRemoveHRArray, cell4GId4);
         createDevice(Constants.AHP4517R7v06ANTENNA_MODEL, antennaAHP4517R7v06NameForEdit, Constants.ANTENNA_MODEL_TYPE);
-        //createHRToArray(Constants.AHP4517R7v06ANTENNA_MODEL + "_Lr1");//Cell-Antenna Array //BUG OSSRC-32272
+        DelayUtils.sleep(5000);
+        createHRToArray(Constants.AHP4517R7v06ANTENNA_MODEL + "_Lr1");//Cell-Antenna Array
     }
 
     @BeforeMethod
@@ -182,7 +185,7 @@ public class Technology4GTests extends BaseTestCase {
                 .filterObject("Name", locationName)
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .expandTreeToCell(locationTypeSite, locationName, eNodeBNameForDelete, cell4GNameForDelete2)
+                .expandTreeToCell(locationTypeSite, locationName, eNodeBNameForEdit, cell4GNameForEdit)
                 .selectTab("Hosting")
                 .clickPlusIconAndSelectOption("Host on Device");
         new HostingWizardPage(driver)
@@ -212,8 +215,10 @@ public class Technology4GTests extends BaseTestCase {
                 .filterObject("Name", locationName)
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .expandTreeToCell(locationTypeSite, locationName, eNodeBNameForEdit, cell4GNameForEdit)
+                .expandTreeToCell(locationTypeSite, locationName, eNodeBNameForRemoveHR, cell4GNameForRemoveHRDevice)
                 .selectTab("Hosting")
+                .clearColumnFilter("Hosting Component")
+                .clearColumnFilter("Hosting Resource")
                 .selectRowByAttributeValueWithLabel("Hosting Component", Constants.UBBPg3_CARD_MODEL)
                 .removeObject();
         new CellSiteConfigurationPage(driver)
@@ -239,7 +244,7 @@ public class Technology4GTests extends BaseTestCase {
                 .filterObject("Name", locationName)
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .expandTreeToBaseStation(locationTypeSite, locationName, eNodeBNameForDelete)
+                .expandTreeToBaseStation(locationTypeSite, locationName, eNodeBNameForEdit)
                 .selectTab("Hosting")
                 .useTableContextActionByLabel("Host on Device");
         new HostingWizardPage(driver)
@@ -269,8 +274,10 @@ public class Technology4GTests extends BaseTestCase {
                 .filterObject("Name", locationName)
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .expandTreeToBaseStation(locationTypeSite, locationName, eNodeBNameForEdit)
+                .expandTreeToBaseStation(locationTypeSite, locationName, eNodeBNameForRemoveHR)
                 .selectTab("Hosting")
+                .clearColumnFilter("Hosting Component")
+                .clearColumnFilter("Hosting Resource")
                 .selectRowByAttributeValueWithLabel("Hosting Component", Constants.UBBPg3_CARD_MODEL)
                 .removeObject();
         new CellSiteConfigurationPage(driver)
@@ -296,7 +303,7 @@ public class Technology4GTests extends BaseTestCase {
                 .filterObject("Name", locationName)
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .expandTreeToCell(locationTypeSite, locationName, eNodeBNameForDelete, cell4GNameForDelete2)
+                .expandTreeToCell(locationTypeSite, locationName, eNodeBNameForEdit, cell4GNameForEdit)
                 .selectTab("Hosting")
                 .clickPlusIconAndSelectOption("Host on Antenna Array");
         new HostingWizardPage(driver)
@@ -305,6 +312,8 @@ public class Technology4GTests extends BaseTestCase {
         new HostingWizardPage(driver).clickAccept();
         SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
         systemMessageItem.waitForMessageDisappear();
+        new CellSiteConfigurationPage(driver)
+                .filterObject("Hosting Resource","" + Constants.AHP4517R7v06ANTENNA_MODEL + "_Lr1");
         Assert.assertTrue(new CellSiteConfigurationPage(driver).getValueByRowNumber("Hosting Resource", 0).contains("" + Constants.AHP4517R7v06ANTENNA_MODEL + "_Lr1"));
     }
 
@@ -317,8 +326,10 @@ public class Technology4GTests extends BaseTestCase {
                 .filterObject("Name", locationName)
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .expandTreeToCell(locationTypeSite, locationName, eNodeBNameForEdit, cell4GNameForEdit)
+                .expandTreeToCell(locationTypeSite, locationName, eNodeBNameForRemoveHR, cell4GNameForRemoveHRArray)
                 .selectTab("Hosting")
+                .clearColumnFilter("Hosting Component")
+                .clearColumnFilter("Hosting Resource")
                 .selectRowByAttributeValueWithLabel("Hosting Resource", "" + Constants.AHP4517R7v06ANTENNA_MODEL + "_Lr1")
                 .removeObject();
         SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
@@ -409,7 +420,6 @@ public class Technology4GTests extends BaseTestCase {
         Radio4gRepository radio4gRepository = new Radio4gRepository(env);
         PhysicalInventoryClient physicalInventoryClient = new PhysicalInventoryClient(env);
         arrayId = physicalInventoryClient.getAntennaArrayId(deviceId, arrayName);
-        radio4gRepository.createHRENodeBDevice(Long.valueOf(arrayId), eNodeBId);
         radio4gRepository.createHRCellDevice(Long.valueOf(arrayId), eNodeBId, cellId);
     }
 
