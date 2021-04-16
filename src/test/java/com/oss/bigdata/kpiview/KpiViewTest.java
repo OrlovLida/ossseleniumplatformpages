@@ -4,8 +4,10 @@ import com.oss.BaseTestCase;
 import com.oss.pages.bigdata.kqiview.KpiViewPage;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
@@ -25,20 +27,23 @@ public class KpiViewTest extends BaseTestCase {
         kpiViewPage = KpiViewPage.goToPage(driver, BASIC_URL);
     }
 
+    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect"})
     @Test(priority = 1)
     @Description("I verify if KPI View works properly")
-    public void verifyIfKpiViewWorksProperly(){
-        kpiViewSetup();
+    public void verifyIfKpiViewWorksProperly(String indicatorNodesToExpand, String indicatorNodesToSelect, String dimensionNodesToExpand, String dimensionNodesToSelect){
+        kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect);
 
+        //TODO move mouse over point
         kpiViewPage.exportChart();
         kpiViewPage.attachExportedChartToReport();
         attachConsoleLogs(driver);
     }
 
+    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect"})
     @Test(priority = 2)
     @Description("I verify panels resize tool")
-    public void verifyPanelsResizeTool(){
-        kpiViewSetup();
+    public void verifyPanelsResizeTool(String indicatorNodesToExpand, String indicatorNodesToSelect, String dimensionNodesToExpand, String dimensionNodesToSelect){
+        kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect);
 
         kpiViewPage.changeLayout();
         saveScreenshotPNG(driver);
@@ -50,16 +55,32 @@ public class KpiViewTest extends BaseTestCase {
         attachConsoleLogs(driver);
     }
 
-    private void kpiViewSetup() {
+    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect"})
+    @Test(priority = 3)
+    @Description("I verify a number of ranges and line")
+    public void verifyNumberOfRangesAndLine(String indicatorNodesToExpand, String indicatorNodesToSelect, String dimensionNodesToExpand, String dimensionNodesToSelect){
+        kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect);
+
+        kpiViewPage.setTopNOptions("d1");
+        Assert.assertTrue(kpiViewPage.shouldSeeBoxesAndCurvesDisplayed(1,1));
+
+        kpiViewPage.setTopNOptions("d2");
+        Assert.assertTrue(kpiViewPage.shouldSeeBoxesAndCurvesDisplayed(2,2));
+
+        kpiViewPage.setTopNOptions("t:SMOKE#DimHierSelenium", "3");
+        Assert.assertTrue(kpiViewPage.shouldSeeBoxesAndCurvesDisplayed(6,5));
+    }
+
+    private void kpiViewSetup(String indicatorNodesToExpand, String indicatorNodesToSelect, String dimensionNodesToExpand, String dimensionNodesToSelect) {
         kpiViewPage.setFilters(Collections.singletonList("Selenium Tests"));
 
-        List<String> indicatorNodesToExpand = Arrays.asList("DFE Tests,DFE Product Tests,Selenium Tests".split(","));
-        List<String> indicatorNodesToSelect = Arrays.asList("CPU_NICE_USAGE,CPU_TOTAL_USAGE".split(","));
-        kpiViewPage.selectIndicator(indicatorNodesToExpand, indicatorNodesToSelect);
+        List<String> indicatorNodesToExpandList = Arrays.asList(indicatorNodesToExpand.split(","));
+        List<String> indicatorNodesToSelectList = Arrays.asList(indicatorNodesToSelect.split(","));
+        kpiViewPage.selectIndicator(indicatorNodesToExpandList, indicatorNodesToSelectList);
 
-        List<String> dimensionNodesToExpand = Arrays.asList("t:SMOKE#D_HOST".split(","));
-        List<String> dimensionNodesToSelect = Arrays.asList("192.168.128.172,192.168.128.173".split(","));
-        kpiViewPage.selectDimension(dimensionNodesToExpand, dimensionNodesToSelect);
+        List<String> dimensionNodesToExpandList = Arrays.asList(dimensionNodesToExpand.split(","));
+        List<String> dimensionNodesToSelectList = Arrays.asList(dimensionNodesToSelect.split(","));
+        kpiViewPage.selectDimension(dimensionNodesToExpandList, dimensionNodesToSelectList);
 
         kpiViewPage.applyChanges();
         kpiViewPage.seeChartIsDisplayed();

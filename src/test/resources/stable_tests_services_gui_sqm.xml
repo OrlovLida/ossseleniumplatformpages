@@ -10,9 +10,4 @@
             <class name="com.oss.bigdata.dfe.AggregateViewTest"/>
         </classes>
     </test>
-    <test name="KpiViewTest">
-        <classes>
-            <class name="com.oss.bigdata.kpiview.KpiViewTest"/>
-        </classes>
-    </test>
 </suite>
