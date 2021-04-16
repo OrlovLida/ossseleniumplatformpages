@@ -42,16 +42,20 @@ public class Technology3GTests extends BaseTestCase {
     private static Long rncId;
     private static final String rncNameForDelete = "RNCForDeleteSeleniumTests" + (int) (Math.random() * 10000);
     private static final String rncNameForEdit = "RNCForEditSeleniumTests" + (int) (Math.random() * 10000);
+    private static final String rncNameForRemoveHR = "RNCForRemoveHRSeleniumTests" + (int) (Math.random() * 10000);
     private static Long nodeBId;
     private static final String nodeBNameForDelete = "NodeBForDeleteSeleniumTests" + (int) (Math.random() * 10000);
     private static final String nodeBNameForEdit = "NodeBForEditSeleniumTests" + (int) (Math.random() * 10000);
+    private static final String nodeBNameForRemoveHR = "NodeBForRemoveHRSeleniumTests" + (int) (Math.random() * 10000);
+    private static Long cellId;
     private static final String cell3GId1 = RandomGenerator.generateRandomCell3GId();
     private static final String cell3GNameForDelete = "Cell3GForDeleteSeleniumTests" + (int) (Math.random() * 10000);
-    private static final String cell3GId3 = RandomGenerator.generateRandomCell4GId();
-    private static final String cell3GNameForDelete2 = "Cell3GForDeleteSeleniumTests" + (int) (Math.random() * 10000);
-    private static Long cellId;
     private static final String cell3GId2 = RandomGenerator.generateRandomCell3GId();
-    private static final String cell3GNameForEdit = "NodeBForEditSeleniumTests" + (int) (Math.random() * 10000);
+    private static final String cell3GNameForEdit = "Cell3GForEditSeleniumTests" + (int) (Math.random() * 10000);
+    private static final String cell3GId3 = RandomGenerator.generateRandomCell3GId();
+    private static final String cell3GNameForRemoveHRDevice = "Cell3GForRemoveHRDeviceSeleniumTests" + (int) (Math.random() * 10000);
+    private static final String cell3GId4 = RandomGenerator.generateRandomCell3GId();
+    private static final String cell3GNameForRemoveHRArray = "Cell3GForRemoveHRArraySeleniumTests" + (int) (Math.random() * 10000);
     private static Long deviceModelId;
     private static Long cardModelId;
     private static Long deviceId;
@@ -63,7 +67,7 @@ public class Technology3GTests extends BaseTestCase {
     private static final String objectTypeCell3G = "Cell 3G";
     private static final String locationTypeSite = "Site";
     private static final String description = "Selenium Test";
-    private static final String carrier3G = "3GSeleniumCarrier";
+    private static final String carrier3G = "10564";
     private static final String MCC = "234";
     private static final String MNC = "20";
     private static final String RRUAPort = "A T01/R01";
@@ -73,19 +77,22 @@ public class Technology3GTests extends BaseTestCase {
         getOrCreateAddress();
         createPhysicalLocation();
         createNodeB(nodeBNameForDelete, rncNameForDelete);
-        createCell3G(cell3GNameForDelete2, cell3GId3);
         createNodeB(nodeBNameForEdit, rncNameForEdit);
         createCell3G(cell3GNameForDelete, cell3GId1);
         createCell3G(cell3GNameForEdit, cell3GId2);
+        createNodeB(nodeBNameForRemoveHR, rncNameForRemoveHR);
+        createCell3G(cell3GNameForRemoveHRDevice, cell3GId3);
         createDevice(Constants.RRU5501_MODEL, rruDeviceNameForEdit, Constants.DEVICE_MODEL_TYPE);
-        createHRToDevice(); //eNB-RRU, Cell-RRU
-        createHRToPort(RRUAPort);//eNB-RRU port, Cell-RRU port
+        createHRToDevice(); //NB-RRU, Cell-RRU
+        createHRToPort(RRUAPort);//NB-RRU port, Cell-RRU port
         createDeviceWithCard(Constants.BBU5900_MODEL, bbuDeviceNameForEdit, Constants.DEVICE_MODEL_TYPE, Constants.UBBPg3_CARD_MODEL,
                 "0", Constants.CARD_MODEL_TYPE);
-        createHRToDevice(); //eNB-BBU, Cell-BBU
-        createHRToCard("0", "UBBPg3");//eNB-BBU card, Cell-BBU card
+        createHRToDevice(); //NB-BBU, Cell-BBU
+        createHRToCard("0", "UBBPg3");//NB-BBU card, Cell-BBU card
+        createCell3G(cell3GNameForRemoveHRArray, cell3GId4);
         createDevice(Constants.AHP4517R7v06ANTENNA_MODEL, antennaAHP4517R7v06NameForEdit, Constants.ANTENNA_MODEL_TYPE);
-        //createHRToArray(Constants.AHP4517R7v06ANTENNA_MODEL + "_Lr1");//Cell-Antenna Array //BUG OSSRC-32272
+        DelayUtils.sleep(5000);
+        createHRToArray(Constants.AHP4517R7v06ANTENNA_MODEL + "_Lr1");//Cell-Antenna Array
     }
 
     @BeforeMethod
@@ -178,7 +185,7 @@ public class Technology3GTests extends BaseTestCase {
                 .filterObject("Name", locationName)
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .expandTreeToCell(locationTypeSite, locationName, nodeBNameForDelete, cell3GNameForDelete2)
+                .expandTreeToCell(locationTypeSite, locationName, nodeBNameForEdit, cell3GNameForEdit)
                 .selectTab("Hosting")
                 .clickPlusIconAndSelectOption("Host on Device");
         new HostingWizardPage(driver)
@@ -199,7 +206,6 @@ public class Technology3GTests extends BaseTestCase {
         Assert.assertEquals(new CellSiteConfigurationPage(driver).getRowCount("Hosting Resource"), 4);
     }
 
-    //TODO add HR creation by API
     @Test
     @Description("The user removes Host Relation between Cell 3G and RRU, RRU port, BBU and BBU card in Cell Site Configuration and checks if new rows are disappeared in Hosting table")
     public void tSRAN38RemoveHostRelationBetweenCell3GAndRRUBBUCard() {
@@ -209,8 +215,10 @@ public class Technology3GTests extends BaseTestCase {
                 .filterObject("Name", locationName)
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .expandTreeToCell(locationTypeSite, locationName, nodeBNameForEdit, cell3GNameForEdit)
+                .expandTreeToCell(locationTypeSite, locationName, nodeBNameForRemoveHR, cell3GNameForRemoveHRDevice)
                 .selectTab("Hosting")
+                .clearColumnFilter("Hosting Component")
+                .clearColumnFilter("Hosting Resource")
                 .selectRowByAttributeValueWithLabel("Hosting Component", Constants.UBBPg3_CARD_MODEL)
                 .removeObject();
         new CellSiteConfigurationPage(driver)
@@ -236,7 +244,7 @@ public class Technology3GTests extends BaseTestCase {
                 .filterObject("Name", locationName)
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .expandTreeToBaseStation(locationTypeSite, locationName, nodeBNameForDelete)
+                .expandTreeToBaseStation(locationTypeSite, locationName, nodeBNameForEdit)
                 .selectTab("Hosting")
                 .useTableContextActionByLabel("Host on Device");
         new HostingWizardPage(driver)
@@ -266,8 +274,10 @@ public class Technology3GTests extends BaseTestCase {
                 .filterObject("Name", locationName)
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .expandTreeToBaseStation(locationTypeSite, locationName, nodeBNameForEdit)
+                .expandTreeToBaseStation(locationTypeSite, locationName, nodeBNameForRemoveHR)
                 .selectTab("Hosting")
+                .clearColumnFilter("Hosting Component")
+                .clearColumnFilter("Hosting Resource")
                 .selectRowByAttributeValueWithLabel("Hosting Component", Constants.UBBPg3_CARD_MODEL)
                 .removeObject();
         new CellSiteConfigurationPage(driver)
@@ -293,7 +303,7 @@ public class Technology3GTests extends BaseTestCase {
                 .filterObject("Name", locationName)
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .expandTreeToCell(locationTypeSite, locationName, nodeBNameForEdit, cell3GNameForDelete2)
+                .expandTreeToCell(locationTypeSite, locationName, nodeBNameForEdit, cell3GNameForEdit)
                 .selectTab("Hosting")
                 .clickPlusIconAndSelectOption("Host on Antenna Array");
         new HostingWizardPage(driver)
@@ -302,6 +312,8 @@ public class Technology3GTests extends BaseTestCase {
         new HostingWizardPage(driver).clickAccept();
         SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
         systemMessageItem.waitForMessageDisappear();
+        new CellSiteConfigurationPage(driver)
+                .filterObject("Hosting Resource","" + Constants.AHP4517R7v06ANTENNA_MODEL + "_Lr1");
         Assert.assertTrue(new CellSiteConfigurationPage(driver).getValueByRowNumber("Hosting Resource", 0).contains("" + Constants.AHP4517R7v06ANTENNA_MODEL + "_Lr1"));
     }
 
@@ -314,8 +326,10 @@ public class Technology3GTests extends BaseTestCase {
                 .filterObject("Name", locationName)
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .expandTreeToCell(locationTypeSite, locationName, nodeBNameForEdit, cell3GNameForEdit)
+                .expandTreeToCell(locationTypeSite, locationName, nodeBNameForRemoveHR, cell3GNameForRemoveHRArray)
                 .selectTab("Hosting")
+                .clearColumnFilter("Hosting Component")
+                .clearColumnFilter("Hosting Resource")
                 .selectRowByAttributeValueWithLabel("Hosting Resource", "" + Constants.AHP4517R7v06ANTENNA_MODEL + "_Lr1")
                 .removeObject();
         SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
@@ -399,7 +413,7 @@ public class Technology3GTests extends BaseTestCase {
 
     private void createHRToDevice() {
         Radio3gRepository radio3gRepository = new Radio3gRepository(env);
-        radio3gRepository.createHRENodeBDevice(Long.valueOf(deviceId), nodeBId);
+        radio3gRepository.createHRNodeBDevice(Long.valueOf(deviceId), nodeBId);
         radio3gRepository.createHRCellDevice(Long.valueOf(deviceId), nodeBId, cellId);
     }
 
@@ -407,19 +421,18 @@ public class Technology3GTests extends BaseTestCase {
         Radio3gRepository radio3gRepository = new Radio3gRepository(env);
         PhysicalInventoryClient physicalInventoryClient = new PhysicalInventoryClient(env);
         arrayId = physicalInventoryClient.getAntennaArrayId(deviceId, arrayName);
-        radio3gRepository.createHRENodeBDevice(Long.valueOf(arrayId), nodeBId);
         radio3gRepository.createHRCellDevice(Long.valueOf(arrayId), nodeBId, cellId);
     }
 
     private void createHRToPort(String portName) {
         Radio3gRepository radio3gRepository = new Radio3gRepository(env);
-        radio3gRepository.createHRENodeBDevicePort(Long.valueOf(deviceId), nodeBId, portName);
+        radio3gRepository.createHRNodeBDevicePort(Long.valueOf(deviceId), nodeBId, portName);
         radio3gRepository.createHRCellDevicePort(Long.valueOf(deviceId), nodeBId, cellId, portName);
     }
 
     private void createHRToCard(String slotName, String cardName) {
         Radio3gRepository radio3gRepository = new Radio3gRepository(env);
-        radio3gRepository.createHRENodeBDeviceCard(Long.valueOf(deviceId), nodeBId, slotName, cardName);
+        radio3gRepository.createHRNodeBDeviceCard(Long.valueOf(deviceId), nodeBId, slotName, cardName);
         radio3gRepository.createHRCellDeviceCard(Long.valueOf(deviceId), nodeBId, cellId, slotName, cardName);
     }
 

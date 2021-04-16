@@ -68,6 +68,13 @@ public class CellSiteConfigurationPage extends BasePage {
         return this;
     }
 
+    @Step("Clear {columnName}")
+    public CellSiteConfigurationPage clearColumnFilter(String columnName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getTabTable().clearColumnValue(columnName);
+        return this;
+    }
+
     @Step("Select {label} row")
     public CellSiteConfigurationPage selectRowByAttributeValueWithLabel(String attribute, String label) {
         waitForPageToLoad();
