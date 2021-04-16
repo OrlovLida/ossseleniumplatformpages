@@ -119,5 +119,5 @@ public class PatchcordWizardPage extends BasePage {
         return OldTable.createByComponentDataAttributeName(driver, wait, "patchcordterminationconnectorstable_table");
     }
 
-    public Wizard getWizard() { return Wizard.createByComponentId(driver, wait, "Popup"); }
+    public Wizard getWizard() { return Wizard.createPopupWizard(driver, wait); }
 }

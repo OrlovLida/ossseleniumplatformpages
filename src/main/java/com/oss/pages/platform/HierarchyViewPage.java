@@ -99,7 +99,7 @@ public class HierarchyViewPage extends BasePage {
 
     @Step("Click {label} in Confirmation box")
     public void clickButtonInConfirmationBox(String label) {
-        Wizard wizard = Wizard.createByComponentId(driver, wait, "Popup");
+        Wizard wizard = Wizard.createPopupWizard(driver, wait);
         wizard.clickButtonByLabel(label);
     }
 

@@ -18,7 +18,7 @@ public class ConnectionWizardPage extends BasePage {
         super(driver);
     }
 
-    private Wizard wizard = Wizard.createByComponentId(driver, wait, "Popup");
+    private Wizard wizard = Wizard.createPopupWizard(driver, wait);
 
     @Step("Set name")
     public void setName(String name) {

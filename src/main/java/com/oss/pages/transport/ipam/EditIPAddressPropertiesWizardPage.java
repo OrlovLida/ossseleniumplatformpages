@@ -7,7 +7,6 @@ import com.oss.pages.transport.ipam.helper.IPAddressAssignmentWizardProperties;
 import org.openqa.selenium.WebDriver;
 
 public class EditIPAddressPropertiesWizardPage extends BasePage {
-    private static final String EDIT_IP_ADDRESS_WIZARD_DATA_ATTRIBUTE_NAME = "Popup";
     private static final String IS_PRIMARY_COMPONENT_ID = "isPrimaryFieldUid";
     private static final String IS_IN_NAT_COMPONENT_ID = "isInNatFieldUid";
     private static final String ROLE_COMPONENT_ID = "addressUsageFieldUid";
@@ -27,6 +26,6 @@ public class EditIPAddressPropertiesWizardPage extends BasePage {
     }
 
     private Wizard createWizard(){
-        return Wizard.createByComponentId(driver, wait, EDIT_IP_ADDRESS_WIZARD_DATA_ATTRIBUTE_NAME);
+        return Wizard.createPopupWizard(driver, wait);
     }
 }

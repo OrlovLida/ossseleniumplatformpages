@@ -13,7 +13,6 @@ import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD
 
 public class IPPathWizardPage extends BasePage {
 
-    private static final String IP_PATH_WIZARD_ID = "Popup";
     private static final String NAME_ID = "name-uid";
     private static final String CAPACITY_VALUE_ID = "capacity-value-uid";
     private static final String PROCEED_ID = "IP_PATH_BUTTON_APP_ID-1";
@@ -27,7 +26,7 @@ public class IPPathWizardPage extends BasePage {
         super(driver, wait);
     }
 
-    private Wizard wizard = Wizard.createByComponentId(driver, wait, IP_PATH_WIZARD_ID);
+    private Wizard wizard = Wizard.createPopupWizard(driver, wait);
 
     @Step("Set name for IP Path to {name}")
     public void setName(String name) {

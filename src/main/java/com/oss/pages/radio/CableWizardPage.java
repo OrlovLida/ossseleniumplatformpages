@@ -17,7 +17,7 @@ public class CableWizardPage extends BasePage {
         super(driver);
     }
 
-    private Wizard wizard = Wizard.createByComponentId(driver, wait, "Popup");
+    private Wizard wizard = Wizard.createPopupWizard(driver, wait);
 
     @Step("Set model")
     public void setModel(String model) {
