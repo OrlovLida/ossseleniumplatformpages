@@ -7,6 +7,7 @@ import com.oss.framework.widgets.dpe.toolbarpanel.ExportPanel.ExportType;
 import com.oss.framework.widgets.dpe.toolbarpanel.FiltersPanel;
 import com.oss.framework.widgets.dpe.toolbarpanel.KpiToolbarPanel;
 import com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType;
+import com.oss.framework.widgets.dpe.toolbarpanel.TopNPanel;
 import com.oss.framework.widgets.dpe.treewidget.KpiTreeWidget;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Attachment;
@@ -139,7 +140,6 @@ public class KpiViewPage extends BasePage {
     public void changeLayout(){
         KpiToolbarPanel toolbar = KpiToolbarPanel.create(driver, wait);
         toolbar.getLayoutPanel().changeLayout(LayoutType.LAYOUT_2x2);
-
     }
 
     @Step("I maximize chart")
@@ -159,6 +159,31 @@ public class KpiViewPage extends BasePage {
             return true;
         }
         return false;
+    }
+
+    @Step("I set TopN options with dimension: {dimension}")
+    public void setTopNOptions(String dimension){
+        TopNPanel topNPanel = KpiToolbarPanel.create(driver, wait).getTopNPanel();
+        topNPanel.openTopNPanel();
+        topNPanel.setTopNDimension(dimension);
+        topNPanel.clickPerform();
+    }
+
+    @Step("I should see {expectedColumnsCount} columns and {expectedLinesCount} lines displayed")
+    public boolean shouldSeeBoxesAndCurvesDisplayed(int expectedColumnsCount, int expectedLinesCount){
+        KpiChartWidget kpiChartWidget = KpiChartWidget.create(driver, wait);
+        int columnsCount = kpiChartWidget.countColumns();
+        int linesCount = kpiChartWidget.countLines();
+        return columnsCount == expectedColumnsCount && linesCount == expectedLinesCount;
+    }
+
+    @Step("I set TopN options with dimension: {dimension} and {nthLevel} level")
+    public void setTopNOptions(String dimension, String nthLevel){
+        TopNPanel topNPanel = KpiToolbarPanel.create(driver, wait).getTopNPanel();
+        topNPanel.openTopNPanel();
+        topNPanel.setTopNDimension(dimension);
+        topNPanel.setNthLevel(nthLevel);
+        topNPanel.clickPerform();
     }
 
 }

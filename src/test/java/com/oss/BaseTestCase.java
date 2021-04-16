@@ -1,5 +1,6 @@
 package com.oss;
 
+import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.LoginPage;
 import com.oss.utils.TestListener;
@@ -47,6 +48,7 @@ public class BaseTestCase {
     @AfterClass
     public void closeBrowser() {
         if(driver != null) {
+            DelayUtils.sleep(3);
             driver.quit();
         }
     }
