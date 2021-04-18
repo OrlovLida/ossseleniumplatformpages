@@ -45,11 +45,11 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
 
     @BeforeClass
     public void openNetworkDiscoveryControlView() {
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);
         SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
         sideMenu.callActionByLabel("Process Instances", "Views", "Business Process Management");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
     }
 
     @Test(priority = 1)
@@ -57,7 +57,7 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
     public void createProcessNRP() {
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
         processNRPCode = processWizardPage.createSimpleNRP();
-        checkMessageSize(1);
+        checkMessageSize();
         checkMessageType();
         checkMessageContainsText(processNRPCode);
     }
@@ -90,7 +90,7 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
     @Description("Create three ran antenna")
     public void createRanAntenna() {
         cellSiteConfigurationPage.selectTreeRow(LOCATION_NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         for (String ranAntenna : ANTENNA_NAMES) {
             cellSiteConfigurationPage.selectTab("Devices");
             cellSiteConfigurationPage.createRanAntennaAndArray(ranAntenna, RAN_ANTENNA_MODEL, LOCATION_NAME);
@@ -104,12 +104,12 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
         cellSiteConfigurationPage.selectTreeRow(GNODEB_NAME);
         cellSiteConfigurationPage.createHostingOnDevice(BBU_NAME, false);
         checkMessageType();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         for (int i = 0; i < CELL5G_NAMES.length; i++) {
             cellSiteConfigurationPage.selectTreeRow(CELL5G_NAMES[i]);
             cellSiteConfigurationPage.createHostingOnAntennaArray(ANTENNA_NAMES[i]);
             checkMessageType();
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            waitForPageToLoad();
         }
     }
 
@@ -124,22 +124,25 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
     @Description("Delete hosting relations")
     public void deleteHostingRelation() {
         openCellSiteConfigurationView();
-        cellSiteConfigurationPage.selectTreeRow(LOCATION_NAME);
+        cellSiteConfigurationPage.expandTreeToBaseStation("Site", LOCATION_NAME, GNODEB_NAME);
         cellSiteConfigurationPage.selectTab("Hosting");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         cellSiteConfigurationPage.filterObject("Hosted Resource", GNODEB_NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         cellSiteConfigurationPage.removeObject();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         checkMessageType();
+        waitForPageToLoad();
+        cellSiteConfigurationPage.getTree().expandTreeRow(GNODEB_NAME);
         for (String cell : CELL5G_NAMES) {
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            waitForPageToLoad();
+            cellSiteConfigurationPage.selectTreeRow(cell);
             cellSiteConfigurationPage.selectTab("Hosting");
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            waitForPageToLoad();
             cellSiteConfigurationPage.filterObject("Hosted Resource", cell);
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            waitForPageToLoad();
             cellSiteConfigurationPage.removeObject();
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            waitForPageToLoad();
             checkMessageType();
         }
     }
@@ -147,8 +150,9 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
     @Test(priority = 9)
     @Description("Delete ran antennas")
     public void deleteRanAntenna() {
+        cellSiteConfigurationPage.selectTreeRow(LOCATION_NAME);
         for (String ranAntenna : ANTENNA_NAMES) {
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            waitForPageToLoad();
             cellSiteConfigurationPage.selectTab("Devices");
             cellSiteConfigurationPage.filterObject("Name", ranAntenna);
             cellSiteConfigurationPage.removeObject();
@@ -159,7 +163,7 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
     @Test(priority = 10)
     @Description("Delete cells 5G")
     public void delete5Gcells() {
-        cellSiteConfigurationPage.selectTreeRow(GNODEB_NAME);
+        cellSiteConfigurationPage.selectTreeRow(LOCATION_NAME);
         for (String cell : CELL5G_NAMES) {
             cellSiteConfigurationPage.selectTab("Cells 5G");
             cellSiteConfigurationPage.filterObject("Name", cell);
@@ -172,7 +176,8 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
     @Description("Delete gNodeB")
     public void delete5Gnode() {
         cellSiteConfigurationPage.selectTreeRow(LOCATION_NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cellSiteConfigurationPage.selectTab("Base Stations");
+        waitForPageToLoad();
         cellSiteConfigurationPage.filterObject("Name", GNODEB_NAME);
         cellSiteConfigurationPage.removeObject();
         checkMessageType();
@@ -181,7 +186,7 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
     private void openCellSiteConfigurationView() {
         HomePage homePage = new HomePage(driver);
         homePage.goToHomePage(driver, BASIC_URL);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
         sideMenu.callActionByLabel("Cell Site Configuration", "Favourites", "SeleniumTests");
     }
@@ -195,14 +200,14 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
                 .contains(message));
     }
 
-    private void checkMessageText(String message) {
-        Assert.assertEquals(message, (getFirstMessage().getText()));
+    private void checkMessageText() {
+        Assert.assertEquals("The task properly assigned.", (getFirstMessage().getText()));
     }
 
-    private void checkMessageSize(int size) {
+    private void checkMessageSize() {
         Assert.assertEquals((SystemMessageContainer.create(driver, webDriverWait)
                 .getMessages()
-                .size()), size);
+                .size()), 1);
     }
 
     private Message getFirstMessage() {
@@ -213,6 +218,11 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
 
     private void checkTaskAssignment() {
         checkMessageType();
-        checkMessageText("The task properly assigned.");
+        checkMessageText();
     }
+
+    private void waitForPageToLoad() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
 }
