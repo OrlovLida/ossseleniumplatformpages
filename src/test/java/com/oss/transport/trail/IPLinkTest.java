@@ -9,7 +9,9 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import com.oss.BaseTestCase;
+import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.mainheader.PerspectiveChooser;
+import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.transport.NetworkViewPage;
@@ -159,7 +161,7 @@ public class IPLinkTest extends BaseTestCase {
     }
 
     private IPLinkWizardAttributesStepPage openCreateIPLinkWizard() {
-        networkView.openCreateTrailWizardV2(IPLinkWizardAttributesStepPage.TRAIL_TYPE);
+        networkView.openWizardPage(IPLinkWizardAttributesStepPage.TRAIL_TYPE);
         return IPLinkWizardAttributesStepPage.getAttributesStepPage(driver);
     }
 
@@ -284,7 +286,7 @@ public class IPLinkTest extends BaseTestCase {
 
     private void updateIPLinkWithAttributes(IPLinkAttributes attributesToUpdate) {
         networkView.selectObject(IP_LINK_TYPE);
-        networkView.openUpdateTrailWizardV2();
+        networkView.useContextAction(ActionsContainer.EDIT_GROUP_ID, NetworkViewPage.ATTRIBUTES_AND_TERMINATIONS_ACTION);
         IPLinkWizardAttributesStepPage ipLinkWizard = IPLinkWizardAttributesStepPage.getAttributesStepPage(driver);
         fillAttributes(ipLinkWizard, attributesToUpdate);
         ipLinkWizard.accept();
@@ -413,7 +415,7 @@ public class IPLinkTest extends BaseTestCase {
         networkView.clickOnObject(IP_LINK_NAME, 1);
         networkView.clickOnObject(IP_LINK_NAME, 2);
         networkView.selectObject(UPDATED_IP_LINK_NAME);
-        networkView.deleteSelectedConnections();
+        networkView.useContextActionAndClickConfirmation(ActionsContainer.EDIT_GROUP_ID, NetworkViewPage.DELETE_CONNECTION_ID, ConfirmationBox.DELETE);
         Assert.assertFalse(networkView.isObjectInViewContent(IP_LINK_NAME));
         Assert.assertFalse(networkView.isObjectInViewContent(UPDATED_IP_LINK_NAME));
     }
@@ -427,7 +429,7 @@ public class IPLinkTest extends BaseTestCase {
 
     private void deleteDevice(String deviceName) {
         networkView.selectObject(deviceName);
-        networkView.deleteSelectedElement();
+        networkView.useContextActionAndClickConfirmation(ActionsContainer.EDIT_GROUP_ID, NetworkViewPage.DELETE_ELEMENT_ACTION, ConfirmationBox.YES);
         Assert.assertFalse(networkView.isObjectInViewContent(deviceName));
     }
 

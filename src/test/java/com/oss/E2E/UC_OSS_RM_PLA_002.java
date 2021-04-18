@@ -17,6 +17,7 @@ import com.oss.framework.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.mainheader.Notifications;
+import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.ProcessWizardPage;
@@ -72,15 +73,15 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     String URL = "";
 
     @BeforeClass
-    public void openProcessInstancesPage() {
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        homePage.chooseFromLeftSideMenu("Process Instances", "Views", "Business Process Management");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    public void openConsole() {
+        waitForPageToLoad();
     }
 
     @Test(priority = 1)
     @Description("Create and start NRP Process")
     public void createProcessNRP() {
+        homePage.chooseFromLeftSideMenu("Process Instances", "Views", "Business Process Management");
+        waitForPageToLoad();
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
         processNRPCode = processWizardPage.createSimpleNRP();
         checkMessageSize();
@@ -96,7 +97,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     public void openNetworkView() {
         HomePage homePage = new HomePage(driver);
         homePage.goToHomePage(driver, BASIC_URL);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
         sideMenu.callActionByLabel("LAB Network View", "Favourites", "SeleniumTests");
     }
@@ -105,9 +106,9 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     @Description("Select Location")
     public void selectLocation() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         networkViewPage.expandDockedPanel("left");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         networkViewPage.selectObjectInViewContent("Name", LOCATION_NAME);
     }
 
@@ -115,23 +116,23 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     @Description("Create Physical Device")
     public void createPhysicalDevice() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
-        networkViewPage.useContextAction("CREATE", "Create Device-null");
+        networkViewPage.useContextAction(ActionsContainer.CREATE_GROUP_ID, NetworkViewPage.CREATE_DEVICE_ACTION);
         DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         deviceWizardPage.setModel(DEVICE_MODEL);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         DelayUtils.sleep(1000);
         deviceWizardPage.setName(DEVICE_NAME);
         deviceWizardPage.setHostname(DEVICE_NAME);
         DelayUtils.sleep(1000);
         deviceWizardPage.setSerialNumber(serialNumber);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         deviceWizardPage.next();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         deviceWizardPage.setPreciseLocation(LOCATION_NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         deviceWizardPage.accept();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         checkMessageSize();
         checkMessageType();
     }
@@ -139,37 +140,37 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     @Test(priority = 5)
     @Description("Open Hierarchy View with newly created device")
     public void moveToHierarchyView() {
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.expandDockedPanel("left");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         networkViewPage.selectObjectInViewContent("Name", DEVICE_NAME);
         DelayUtils.sleep(5000); // naming has to recalculate, it doesn't show progress in the console
         networkViewPage.selectObjectInViewContent("Name", DEVICE_NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkViewPage.useContextAction(ActionsContainer.SHOW_ON_GROUP_ID, "Hierarchy View-null");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
+        networkViewPage.useContextAction(ActionsContainer.SHOW_ON_GROUP_ID, NetworkViewPage.HIERARCHY_VIEW_ACTION);
+        waitForPageToLoad();
     }
 
     @Test(priority = 6)
     @Description("Select Ethernet Interface in Hierarchy View and open it in New Inventory View")
     public void selectEthernetInterface() {
         HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         hierarchyViewPage.expandTreeNode(DEVICE_NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         hierarchyViewPage.expandTreeNode("Ports");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         hierarchyViewPage.expandTreeNode(PORT_NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         hierarchyViewPage.expandTreeNode("Termination Points");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         hierarchyViewPage.expandTreeNode("EthernetInterface_TP");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         hierarchyViewPage.performSearch(PORT_NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         hierarchyViewPage.selectNodeByPosition(7);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         hierarchyViewPage.useTreeContextAction(ActionsContainer.SHOW_ON_GROUP_ID, "OpenInventoryView");
     }
 
@@ -178,13 +179,13 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     public void assignIpV4Address() {
         NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.selectFirstRow();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        newInventoryViewPage.callAction("CREATE", "AssignIPv4Host");
+        waitForPageToLoad();
+        newInventoryViewPage.callAction(ActionsContainer.CREATE_GROUP_ID, "AssignIPv4Host");
         IPAddressAssignmentWizardPage ipAddressAssignmentWizardPage = new IPAddressAssignmentWizardPage(driver);
         IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties = IPAddressAssignmentWizardProperties.builder()
                 .address(ADDRESS).subnet("10.10.20.0/24 [" + IP_NETWORK + "]").isPrimary("false").build();
         ipAddressAssignmentWizardPage.assignMoToIPAddress(ipAddressAssignmentWizardProperties);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
     }
 
     @Test(priority = 8)
@@ -192,41 +193,42 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     public void createIpLink() {
         openNetworkView();
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
-        networkViewPage.useContextAction("add_to_view_group", "Device-null");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkViewPage.useContextAction(NetworkViewPage.ADD_TO_VIEW_ACTION, NetworkViewPage.DEVICE_ACTION);
+        waitForPageToLoad();
         networkViewPage.queryElementAndAddItToView("serialNumber", TEXT_FIELD, serialNumber);
         networkViewPage.expandDockedPanel("left");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         networkViewPage.selectObjectInViewContent("Name", "H1");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkViewPage.useContextAction("CREATE", "Create Connection-null");
+        waitForPageToLoad();
+        networkViewPage.useContextAction(ActionsContainer.CREATE_GROUP_ID, NetworkViewPage.CREATE_CONNECTION_ID);
         networkViewPage.selectTrailType("IP Link");
         networkViewPage.acceptTrailType();
         ConnectionWizardPage connectionWizardPage = new ConnectionWizardPage(driver);
         connectionWizardPage.setName(TRAIL_NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         connectionWizardPage.clickNext();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         connectionWizardPage.selectConnectionTermination(1);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         connectionWizardPage.terminateCardComponent("No Card/Component");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         connectionWizardPage.terminatePort(PORT_NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         connectionWizardPage.terminateTerminationPort(PORT_NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         connectionWizardPage.selectConnectionTermination(2);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         connectionWizardPage.terminateCardComponent("No Card/Component");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         connectionWizardPage.terminatePort(PORT_NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         connectionWizardPage.terminateTerminationPort(PORT_NAME);
+        waitForPageToLoad();
         connectionWizardPage.clickAccept();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         networkViewPage.expandDockedPanel("left");
         networkViewPage.selectObjectInViewContent("Name", TRAIL_NAME + " (0%)");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         networkViewPage.hideDockedPanel("left");
     }
 
@@ -235,7 +237,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     public void suppressValidationResult() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.expandDockedPanel("bottom");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         networkViewPage.supressValidationResult("INCOMPLETE_ROUTING_STATUS", "Unnecessary in this scenario");
         networkViewPage.hideDockedPanel("bottom");
     }
@@ -243,50 +245,48 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     @Test(priority = 10)
     @Description("Create Mediation Configuration")
     public void createMediationConfiguration() {
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.expandDockedPanel("left");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         networkViewPage.selectObjectInViewContent("Name", TRAIL_NAME + " (0%)");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         networkViewPage.selectObjectInViewContent("Name", DEVICE_NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkViewPage.useContextAction("CREATE", "Create Mediation Configuration-null");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkViewPage.clickProceed();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
+        networkViewPage.useContextActionAndClickConfirmation(ActionsContainer.CREATE_GROUP_ID, NetworkViewPage.CREATE_MEDIATION_CONFIGURATION_ID, ConfirmationBox.PROCEED);
+        waitForPageToLoad();
         CLIConfigurationWizardPage cliConfigurationWizardPage = new CLIConfigurationWizardPage(driver);
         cliConfigurationWizardPage.setInputMethod("Search in managed addresses");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         cliConfigurationWizardPage.setIPHostAddress(ADDRESS);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         cliConfigurationWizardPage.setPort(PORT);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         cliConfigurationWizardPage.clickNextStep();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         cliConfigurationWizardPage.setCommandTimeout(COMMAND_TIMEOUT);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         cliConfigurationWizardPage.setConnectionSetupTimeout(CONNECTION_TIMEOUT);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         cliConfigurationWizardPage.setCLIProtocol("SSH");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         cliConfigurationWizardPage.clickNextStep();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         cliConfigurationWizardPage.setAuthMethod("Password Authentication");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         cliConfigurationWizardPage.setAuthPassword(PASSWORD);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         cliConfigurationWizardPage.clickNextStep();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         cliConfigurationWizardPage.clickAccept();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         checkMessageSize();
         checkMessageType();
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         systemMessage.clickMessageLink();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         URL = driver.getCurrentUrl();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
     }
 
     @Test(priority = 11)
@@ -294,10 +294,10 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     public void startImplementationTaskIP() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         processIPCode = tasksPage.proceedNRPToImplementationTask(processNRPCode);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         Notifications.create(driver, webDriverWait).clearAllNotification();
         tasksPage.findTask(processIPCode, TasksPage.IMPLEMENTATION_TASK);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         DelayUtils.sleep(2000);
         tasksPage.clickPerformConfigurationButton();
     }
@@ -306,32 +306,32 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     @Description("Perform Configuration change using prepared CM Template")
     public void performConfigurationChange() {
         ChangeConfigurationPage changeConfigurationPage = new ChangeConfigurationPage(driver);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         changeConfigurationPage.selectObjectType("Router");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         changeConfigurationPage.selectTemplate(TEMPLATE_NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         changeConfigurationPage.clickSetParameters();
         SetParametersWizardPage setParametersWizardPage = new SetParametersWizardPage(driver);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         String name = setParametersWizardPage.getParameter("$name[NEW_INVENTORY]");
         Assert.assertEquals(DEVICE_NAME, name);
         setParametersWizardPage.setParameter("$Password[SYSTEM]", "oss");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         setParametersWizardPage.setParameter("$InterfaceName[USER]", "GE 0");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
+        waitForPageToLoad();
         setParametersWizardPage.clickFillParameters();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         changeConfigurationPage.deployImmediately();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         DelayUtils.sleep(3000);
         ShareFilterPage shareFilterPage = new ShareFilterPage(driver);
         shareFilterPage.closeShareView();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
 
         Notifications.create(driver, webDriverWait).openDetailsForSpecificNotification(TEMPLATE_NAME, TEMPLATE_EXECUTION_NOTIFICATION);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         LogManagerPage logManagerPage = new LogManagerPage(driver);
         Assert.assertEquals(logManagerPage.getStatus(), "UPLOAD_SUCCESS");
     }
@@ -374,7 +374,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     @Test(priority = 15)
     @Description("Go to Network Discovery Control View and create CM Domain")
     public void createCmDomain() {
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         networkDiscoveryControlViewPage.openCmDomainWizard();
         CmDomainWizardPage wizard = new CmDomainWizardPage(driver);
@@ -382,7 +382,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         wizard.setInterface(INTERFACE_NAME);
         wizard.setDomain("IP");
         wizard.save();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
     }
 
     @Test(priority = 16)
@@ -403,13 +403,13 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     @Test(priority = 17)
     @Description("Run reconciliation and check if it ended without errors")
     public void runReconciliation() {
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         DelayUtils.sleep(100);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.runReconciliation();
         networkDiscoveryControlViewPage.checkReconciliationStartedSystemMessage();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         networkDiscoveryControlViewPage.waitForEndOfReco();
         networkDiscoveryControlViewPage.selectLatestReconciliationState();
         Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(IssueLevel.STARTUP_FATAL));
@@ -446,51 +446,49 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     public void deleteIpLink() {
         HomePage homePage = new HomePage(driver);
         homePage.goToHomePage(driver, BASIC_URL);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
         sideMenu.callActionByLabel("LAB Network View", "Favourites", "SeleniumTests");
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
-        networkViewPage.useContextAction("add_to_view_group", "Connection-null");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkViewPage.useContextAction(NetworkViewPage.ADD_TO_VIEW_ACTION, NetworkViewPage.CONNECTION_ACTION);
+        waitForPageToLoad();
         networkViewPage.queryElementAndAddItToView("label", TEXT_FIELD, TRAIL_NAME);
-        networkViewPage.useContextAction("EDIT", "Delete Connection-null");
-        networkViewPage.delateTrailWizard();
+        networkViewPage.useContextActionAndClickConfirmation(ActionsContainer.EDIT_GROUP_ID, NetworkViewPage.DELETE_CONNECTION_ID, ConfirmationBox.DELETE);
     }
 
     @Test(priority = 21)
     @Description("Delete Physical Device")
     public void deletePhysicalDevice() {
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         DelayUtils.sleep(5000);
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
-        networkViewPage.useContextAction("add_to_view_group", "Device-null");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkViewPage.useContextAction(NetworkViewPage.ADD_TO_VIEW_ACTION, NetworkViewPage.DEVICE_ACTION);
+        waitForPageToLoad();
         networkViewPage.queryElementAndAddItToView("name", TEXT_FIELD, DEVICE_NAME);
-        networkViewPage.useContextAction("EDIT", "Delete Element-null");
-        networkViewPage.clickConfirmationBoxButtonByLabel("Yes");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkViewPage.useContextActionAndClickConfirmation(ActionsContainer.EDIT_GROUP_ID, NetworkViewPage.DELETE_ELEMENT_ACTION, ConfirmationBox.YES);
         checkMessageSize();
         checkMessageType();
+        waitForPageToLoad();
     }
 
     @Test(priority = 22)
     @Description("Delete Mediation Connection")
     public void deleteMediation() {
         ViewConnectionConfigurationPage.goToViewConnectionConfigurationPage(driver, URL);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         ViewConnectionConfigurationPage viewConnectionConfigurationPage = new ViewConnectionConfigurationPage(driver);
         viewConnectionConfigurationPage.selectRow("Address", ADDRESS);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         viewConnectionConfigurationPage.useContextAction(ActionsContainer.EDIT_GROUP_ID, ViewConnectionConfigurationPage.DELETE_BUTTON_ID);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         viewConnectionConfigurationPage.clickDelete();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
     }
 
     @Test(priority = 23)
     @Description("Delete IP Address Assignment")
     public void deleteIPAddressAssignment() {
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         IPAddressManagementViewPage ipAddressManagementViewPage = IPAddressManagementViewPage.goToIPAddressManagementPage(driver, BASIC_URL);
         ipAddressManagementViewPage.searchIpNetwork(IP_NETWORK);
         ipAddressManagementViewPage.expandTreeRow(IP_NETWORK);
@@ -532,5 +530,9 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     private void checkTaskCompleted() {
         checkMessageType();
         checkMessageContainsText("Task properly completed.");
+    }
+
+    private void waitForPageToLoad() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 }
