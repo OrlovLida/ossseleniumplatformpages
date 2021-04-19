@@ -35,7 +35,8 @@ public class Environment {
     private static final String RESOURCE_CATALOG_CORE = "resource-catalog-core";
     private static final String PLANNING_CORE = "planning-core";
     private static final String LOGICAL_FUNCTION_CORE = "logical-function-core";
-    
+    private static final String TP_SERVICE = "tp-service";
+    private static final String CONNECTIVITY_CORE = "physical-connectivity-core";
     private static final String KEYCLOAK_PASS_PROP = "keycloak.pass";
     private static final String KEYCLOAK_USERNAME_PROP = "keycloak.username";
     private static final String DISCOVERY_PORT_PROP = "discovery.port";
@@ -184,17 +185,17 @@ public class Environment {
         return getRequestSpecificationByName(RADIO_CORE_5G);
     }
     
-    public RequestSpecification getResourceCatalogSpecification() {
-        return getRequestSpecificationByName(RESOURCE_CATALOG_CORE);
-    }
+    public RequestSpecification getResourceCatalogSpecification() { return getRequestSpecificationByName(RESOURCE_CATALOG_CORE); }
     
     public RequestSpecification getPlanningCoreSpecification() {
         return getRequestSpecificationByName(PLANNING_CORE);
     }
     
-    public RequestSpecification getLogicalFunctionSpecification() {
-        return getRequestSpecificationByName(LOGICAL_FUNCTION_CORE);
-    }
+    public RequestSpecification getLogicalFunctionSpecification() { return getRequestSpecificationByName(LOGICAL_FUNCTION_CORE); }
+
+    public RequestSpecification getTPServiceSpecification() { return getRequestSpecificationByName(TP_SERVICE); }
+
+    public RequestSpecification getPhysicalConnectivityCoreSpecification() { return getRequestSpecificationByName(CONNECTIVITY_CORE); }
 
     public RequestSpecification getRequestSpecificationByName(String pName) {
         RequestSpecification findApplicationBasePath = findApplicationBasePath(pName);
