@@ -6,7 +6,7 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tabswidget.TabWindowWidget;
 import com.oss.framework.widgets.tabswidget.TabsInterface;
 import com.oss.pages.BasePage;
-import com.oss.pages.platform.OldInventoryViewPage;
+import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 

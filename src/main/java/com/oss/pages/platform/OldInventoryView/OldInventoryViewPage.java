@@ -1,4 +1,4 @@
-package com.oss.pages.platform;
+package com.oss.pages.platform.OldInventoryView;
 
 import java.util.Map;
 
@@ -18,7 +18,9 @@ import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebElement;
 
+import static com.oss.framework.components.contextactions.ActionsContainer.*;
 import static com.oss.framework.widgets.tablewidget.OldTable.createByComponentDataAttributeName;
+import static com.oss.pages.platform.OldInventoryView.helper.OldInventoryViewConstants.*;
 
 /**
  * @author Ewa Frączek
@@ -26,13 +28,7 @@ import static com.oss.framework.widgets.tablewidget.OldTable.createByComponentDa
  */
 public class OldInventoryViewPage extends BasePage {
 
-    private static final String PROPERTIES_TAB_LABEL = "Properties";
     private static final String CONFIRM_REMOVAL_BUTTON_ID = "ConfirmationBox_deleteAppId_action_button";
-    private static final String SHOW_ON_GROUP_ID = "NAVIGATION";
-    private static final String EDIT_GROUP_ID = "EDIT";
-    private static final String OTHER_GROUP_ID = "OTHER";
-    private static final String CREATE_GROUP_ID = "CREATE";
-    private static final String MORE_BUTTON_PATH = "//button[@class='btn btn-default dropdown-toggle' and .//div[contains(., 'More')]]";
 
     public OldInventoryViewPage(WebDriver driver) {
         super(driver);
@@ -149,7 +145,13 @@ public class OldInventoryViewPage extends BasePage {
         OldTable.createByComponentDataAttributeName(driver, wait, tableTestId);
     }
 
-    private void navigateToBottomTabByLabel(String tabLabel) {
+    @Step("Click group {group} and action {actionId} in current tab")
+    public void useContextActionInCurrentTab(String group, String actionId) {
+        TabsInterface tab = TabWindowWidget.create(driver, wait);
+        tab.callActionById(group, actionId);
+    }
+
+    public void navigateToBottomTabByLabel(String tabLabel) {
         waitForPageToLoad();
         TabsInterface tabsInterface = TabWindowWidget.create(driver, wait);
         tabsInterface.selectTabByLabel(tabLabel);
