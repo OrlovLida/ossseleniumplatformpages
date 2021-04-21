@@ -226,8 +226,8 @@ public class ProcessWizardPage extends BasePage {
     private String extractProcessCode(String message) {
         Iterable<String> messageParts = Splitter.on(" ").split(message);
         for (String part: messageParts) {
-            if (part.startsWith("NRP-") || part.startsWith("DCP-")
-                    || part.startsWith("IP-") || part.startsWith("DRP-")) {
+            if (part.startsWith("(NRP-") || part.startsWith("(DCP-")
+                    || part.startsWith("(IP-") || part.startsWith("(DRP-")) {
                 return part;
             }
         }
