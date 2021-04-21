@@ -8,8 +8,12 @@ import com.oss.pages.bigdata.dfe.stepwizard.commons.BaseStepPage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AggregateProcessSettingsPage extends BaseStepPage {
+
+    private static final Logger log = LoggerFactory.getLogger(AggregateProcessSettingsPage.class);
 
     final private String ON_FAILURE_INPUT_ID = "failure-input";
     final private String STORAGE_POLICY_INPUT_ID = "storagePolicy-input";
@@ -22,18 +26,21 @@ public class AggregateProcessSettingsPage extends BaseStepPage {
         DelayUtils.waitForPageToLoad(driver, wait);
         Combobox onFailureInput = (Combobox) getWizard(driver, wait).getComponent(ON_FAILURE_INPUT_ID, Input.ComponentType.COMBOBOX);
         onFailureInput.setValue(Data.createSingleData(onFailure));
+        log.debug("Setting on failure: {}", onFailure);
     }
 
     private void fillStoragePolicy(String storagePolicy){
         DelayUtils.waitForPageToLoad(driver, wait);
         Combobox storagePolicyInput = (Combobox) getWizard(driver, wait).getComponent(STORAGE_POLICY_INPUT_ID, Input.ComponentType.COMBOBOX);
         storagePolicyInput.setValue(Data.createSingleData(storagePolicy));
+        log.debug("Setting storage policy: {}", storagePolicy);
     }
 
     @Step("I fill Process Settings Step with onFailure: {onFailure} and storage policy: {storagePolicy}")
     public void fillProcessSettingsStep(String onFailure, String storagePolicy){
         fillOnFailure(onFailure);
         fillStoragePolicy(storagePolicy);
+        log.info("Filled Process Settings Step");
     }
 
 }

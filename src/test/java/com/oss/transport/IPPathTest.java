@@ -59,7 +59,7 @@ public class IPPathTest extends BaseTestCase {
     @Description("Start High Level Planning Task")
     public void startHLPTask() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.startTask(processNRPCode, "High Level Planning");
+        tasksPage.startTask(processNRPCode, TasksPage.HIGH_LEVEL_PLANNING_TASK);
         checkTaskAssignment();
     }
 

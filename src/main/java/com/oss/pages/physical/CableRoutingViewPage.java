@@ -28,13 +28,13 @@ public class CableRoutingViewPage extends BasePage {
 
     @Step("Insert Location to routing")
     public void insertLocationToRouting(String locationName) {
-        Wizard.createByComponentId(driver, wait, "Popup")
+        Wizard.createPopupWizard(driver, wait)
                 .setComponentValue("physicalconnectivity_cableRoutingFormLocation", locationName, Input.ComponentType.SEARCH_FIELD);
     }
 
     @Step("Click Add location to routing")
     public void clickAddLocationToRouting() {
-        Wizard.createByComponentId(driver, wait, "Popup")
+        Wizard.createPopupWizard(driver, wait)
                 .clickButtonByLabel("Add location to routing");
     }
 
@@ -54,7 +54,7 @@ public class CableRoutingViewPage extends BasePage {
 
     @Step("Click close")
     public void clickClose() {
-        Wizard.createByComponentId(driver, wait, "Popup").clickButtonByLabel("Close");
+        Wizard.createPopupWizard(driver, wait).clickButtonByLabel("Close");
     }
 
     public Wizard getCableRoutingView() {

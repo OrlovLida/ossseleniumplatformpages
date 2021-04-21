@@ -7,7 +7,6 @@ import com.oss.pages.BasePage;
 import org.openqa.selenium.WebDriver;
 
 public class DuctCopyWizardPage extends BasePage {
-    private static final String DUCT_COPY_WIZARD_DATA_ATTRIBUTE_NAME = "Popup";
     private static final String INPUT_NR_OF_COPIES_DATA_ATTRIBUTE_NAME = "numberOfCopies";
     private static final String COPY_DUCT_BUTTON_DATA_ATTRIBUTE_NAME = "PromptCopyDuctButtonId-0";
 
@@ -24,6 +23,6 @@ public class DuctCopyWizardPage extends BasePage {
     }
 
     private Wizard getCreateDuctWizard() {
-        return Wizard.createByComponentId(driver, wait, DUCT_COPY_WIZARD_DATA_ATTRIBUTE_NAME);
+        return Wizard.createPopupWizard(driver, wait);
     }
 }

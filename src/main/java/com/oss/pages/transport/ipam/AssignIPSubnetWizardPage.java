@@ -9,7 +9,6 @@ import org.openqa.selenium.WebDriver;
 import static com.oss.framework.components.inputs.Input.ComponentType.*;
 
 public class AssignIPSubnetWizardPage extends BasePage {
-    private static final String ASSIGN_IPSUBNET_WIZARD_DATA_ATTRIBUTE_NAME = "Popup";
     private static final String ASSIGNMENT_TYPE_ATTRIBUTE_ID = "createAssignmentTypeComponentId";
     private static final String ASSIGNMENT_ATTRIBUTE_ID = "createSubnetAssignmentAdvancedSearchComponentId";
     private static final String ROLE_ATTRIBUTE_ID = "createRoleComponentId";
@@ -28,6 +27,6 @@ public class AssignIPSubnetWizardPage extends BasePage {
     }
 
     private Wizard createWizard(){
-        return Wizard.createByComponentId(driver, wait, ASSIGN_IPSUBNET_WIZARD_DATA_ATTRIBUTE_NAME);
+        return Wizard.createPopupWizard(driver, wait);
     }
 }

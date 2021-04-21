@@ -83,6 +83,6 @@ public class MediaTerminationPage extends BasePage {
     }
 
     public Wizard getWizard() {
-        return Wizard.createByComponentId(driver, wait, "Popup");
+        return Wizard.createPopupWizard(driver, wait);
     }
 }

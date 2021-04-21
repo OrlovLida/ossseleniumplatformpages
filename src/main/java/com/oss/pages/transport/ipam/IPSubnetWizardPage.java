@@ -131,7 +131,7 @@ public class IPSubnetWizardPage extends BasePage {
     }
 
     private void waitForPageToLoad(){
-        DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     private Wizard createWizard(){

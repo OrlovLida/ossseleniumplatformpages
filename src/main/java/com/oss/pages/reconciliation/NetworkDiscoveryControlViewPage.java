@@ -1,10 +1,5 @@
 package com.oss.pages.reconciliation;
 
-import java.util.List;
-
-import org.assertj.core.api.Assertions;
-import org.openqa.selenium.WebDriver;
-
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageContainer.Message;
 import com.oss.framework.alerts.SystemMessageContainer.MessageType;
@@ -23,10 +18,17 @@ import com.oss.framework.widgets.tabswidget.TabWindowWidget;
 import com.oss.framework.widgets.tabswidget.TabsInterface;
 import com.oss.framework.widgets.treewidget.TreeWidget;
 import com.oss.pages.BasePage;
-
 import io.qameta.allure.Step;
+import org.assertj.core.api.Assertions;
+import org.openqa.selenium.WebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 public class NetworkDiscoveryControlViewPage extends BasePage {
+
+    private static final Logger log = LoggerFactory.getLogger(NetworkDiscoveryControlViewPage.class);
 
     private TreeWidget mainTree;
     private static final String RECONCILIATION_ACTION_ID = "narComponent_CmDomainActionFullReconciliationId";
@@ -191,7 +193,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
             getIssuesTable().changeItemsPerPageValue(100);
             printIssues(type, issuesNumber);
         } else {
-            System.out.println("There are over 100 issues with type = " + type + ". Printing only latest 100:");
+            log.info("There are over 100 issues with type = " + type + ". Printing only latest 100:");
             getIssuesTable().changeItemsPerPageValue(100);
             printIssues(type, 100);
         }
@@ -199,7 +201,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     private void printIssues(String type, int issuesNumber) {
         for (int i = 0; i < issuesNumber; i++) {
-            System.out.println("[" + type + "] " + getIssuesTable().getCellValue(i, "Reason"));
+            log.info("[" + type + "] " + getIssuesTable().getCellValue(i, "Reason"));
         }
     }
 

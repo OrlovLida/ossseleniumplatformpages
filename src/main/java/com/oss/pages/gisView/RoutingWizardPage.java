@@ -10,7 +10,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public class RoutingWizardPage extends BasePage {
-    private static final String WIZARD_DATA_ATTRIBUTE_NAME = "Popup";
     private static final String START_LOCATION_INPUT_DATA_ATTRIBUTE_NAME = "StartLocation_uid";
     private static final String OK_BUTTON_DATA_ATTRIBUTE_NAME = "RoutingButtonsId-0";
     private static final String ROUTING_TABLE_DATA_ATTRIBUTE_NAME = "DuctRoutingListId";
@@ -24,7 +23,7 @@ public class RoutingWizardPage extends BasePage {
         //TODO Change on Button after OSSWEB-9926
         driver.findElement(By.xpath("//a/button[@class='squareButton btn btn-sm btn-default']")).click();
         DelayUtils.waitForPageToLoad(driver, wait);
-        Wizard wizard = Wizard.createByComponentId(driver, wait, WIZARD_DATA_ATTRIBUTE_NAME);
+        Wizard wizard = Wizard.createPopupWizard(driver, wait);
         wizard.setComponentValue(START_LOCATION_INPUT_DATA_ATTRIBUTE_NAME, location, Input.ComponentType.SEARCH_FIELD);
         DelayUtils.waitForPageToLoad(driver, wait);
         wizard.clickOK();

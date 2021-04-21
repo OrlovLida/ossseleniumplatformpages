@@ -16,6 +16,7 @@ import com.oss.repositories.AddressRepository;
 import com.oss.repositories.LocationInventoryRepository;
 import com.oss.repositories.PhysicalInventoryRepository;
 import com.oss.repositories.Radio4gRepository;
+import com.oss.services.PhysicalInventoryClient;
 import com.oss.services.ResourceCatalogClient;
 import com.oss.untils.Constants;
 import com.oss.untils.Environment;
@@ -34,7 +35,7 @@ public class Technology4GTests extends BaseTestCase {
     private Environment env = Environment.getInstance();
 
     private static String locationId;
-    private static final String locationName = "LocationSeleniumTests" + (int) (Math.random() * 10000);
+    private static final String locationName = "LocationSeleniumTests4G" + (int) (Math.random() * 10000);
     private static Long addressId;
     private static final String countryName = "CountrySeleniumTests";
     private static final String postalCodeName = "PostalCodeSeleniumTests";
@@ -44,16 +45,23 @@ public class Technology4GTests extends BaseTestCase {
     private static Long eNodeBId;
     private static final String eNodeBNameForDelete = "eNodeBForDeleteSeleniumTests" + (int) (Math.random() * 10000);
     private static final String eNodeBNameForEdit = "eNodeBForEditSeleniumTests" + (int) (Math.random() * 10000);
+    private static final String eNodeBNameForRemoveHR = "eNodeBForRemoveHRSeleniumTests" + (int) (Math.random() * 10000);
+    private static Long cellId;
     private static final String cell4GId1 = RandomGenerator.generateRandomCell4GId();
     private static final String cell4GNameForDelete = "Cell4GForDeleteSeleniumTests" + (int) (Math.random() * 10000);
     private static final String cell4GId2 = RandomGenerator.generateRandomCell4GId();
     private static final String cell4GNameForEdit = "Cell4GForEditSeleniumTests" + (int) (Math.random() * 10000);
+    private static final String cell4GId3 = RandomGenerator.generateRandomCell4GId();
+    private static final String cell4GNameForRemoveHRDevice = "Cell4GForRemoveHRDeviceSeleniumTests" + (int) (Math.random() * 10000);
+    private static final String cell4GId4 = RandomGenerator.generateRandomCell4GId();
+    private static final String cell4GNameForRemoveHRArray = "Cell4GForRemoveHRArraySeleniumTests" + (int) (Math.random() * 10000);
     private static Long deviceModelId;
     private static Long cardModelId;
+    private static Long deviceId;
+    private static String arrayId;
     private static final String rruDeviceNameForEdit = "RRUForHostRelationSeleniumTests" + (int) (Math.random() * 10000);
     private static final String bbuDeviceNameForEdit = "BBUWithCardForHostRelationSeleniumTests" + (int) (Math.random() * 10000);
     private static final String antennaAHP4517R7v06NameForEdit = "RANAntennaForHostRelationSeleniumTests" + (int) (Math.random() * 10000);
-    private static final String aauAAU5614NameForEdit = "AAUForHostRelationSeleniumTests" + (int) (Math.random() * 10000);
     private static final String objectTypeENodeB = "eNodeB";
     private static final String objectTypeCell4G = "Cell 4G";
     private static final String locationTypeSite = "Site";
@@ -62,6 +70,7 @@ public class Technology4GTests extends BaseTestCase {
     private static final String mccMncPrimary = "3UK [mcc: 234, mnc: 20]";
     private static final String MCC = "234";
     private static final String MNC = "20";
+    private static final String RRUAPort = "A T01/R01";
 
     @BeforeClass
     public void createTestData() {
@@ -71,46 +80,19 @@ public class Technology4GTests extends BaseTestCase {
         createENodeB(eNodeBNameForEdit);
         createCell4G(cell4GNameForDelete, cell4GId1);
         createCell4G(cell4GNameForEdit, cell4GId2);
+        createENodeB(eNodeBNameForRemoveHR);
+        createCell4G(cell4GNameForRemoveHRDevice, cell4GId3);
         createDevice(Constants.RRU5501_MODEL, rruDeviceNameForEdit, Constants.DEVICE_MODEL_TYPE);
+        createHRToDevice(); //eNB-RRU, Cell-RRU
+        createHRToPort(RRUAPort);//eNB-RRU port, Cell-RRU port
         createDeviceWithCard(Constants.BBU5900_MODEL, bbuDeviceNameForEdit, Constants.DEVICE_MODEL_TYPE, Constants.UBBPg3_CARD_MODEL,
                 "0", Constants.CARD_MODEL_TYPE);
+        createHRToDevice(); //eNB-BBU, Cell-BBU
+        createHRToCard("0", "UBBPg3");//eNB-BBU card, Cell-BBU card
+        createCell4G(cell4GNameForRemoveHRArray, cell4GId4);
         createDevice(Constants.AHP4517R7v06ANTENNA_MODEL, antennaAHP4517R7v06NameForEdit, Constants.ANTENNA_MODEL_TYPE);
-        createDevice(Constants.AAU5614ANTENNA_MODEL, aauAAU5614NameForEdit, Constants.ANTENNA_MODEL_TYPE);
-    }
-
-    private void getOrCreateAddress() {
-        AddressRepository addressRepository = new AddressRepository(env);
-        addressId = addressRepository.updateOrCreateAddress(countryName, postalCodeName, regionName, cityName, districtName);
-    }
-
-    private void createPhysicalLocation() {
-        LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);
-        locationId = locationInventoryRepository.createLocation(locationName, locationTypeSite, addressId);
-    }
-
-    private void createENodeB(String eNodeBNameForCreate) {
-        Radio4gRepository radio4gRepository = new Radio4gRepository(env);
-        eNodeBId = radio4gRepository.createENodeB(eNodeBNameForCreate, Long.valueOf(locationId), MCC, MNC, Constants.HUAWEI_ENODEB_MODEL);
-    }
-
-    private void createCell4G(String cell4GNameForCreate, String cell4GIdForCreate) {
-        Radio4gRepository radio4gRepository = new Radio4gRepository(env);
-        radio4gRepository.createCell4g(cell4GNameForCreate, Integer.valueOf(cell4GIdForCreate), eNodeBId, MCC, MNC, carrier4G);
-    }
-
-    private void createDevice(String deviceModel, String deviceName, String deviceModelType) {
-        ResourceCatalogClient resourceCatalogClient = new ResourceCatalogClient(env);
-        deviceModelId = resourceCatalogClient.getModelIds(deviceModel);
-        PhysicalInventoryRepository physicalInventoryRepository = new PhysicalInventoryRepository(env);
-        physicalInventoryRepository.createDevice(locationTypeSite, Long.valueOf(locationId), deviceModelId, deviceName, deviceModelType);
-    }
-
-    private void createDeviceWithCard(String deviceModel, String deviceName, String deviceModelType, String cardModel, String slotName, String cardModelType) {
-        ResourceCatalogClient resourceCatalogClient = new ResourceCatalogClient(env);
-        deviceModelId = resourceCatalogClient.getModelIds(deviceModel);
-        cardModelId = resourceCatalogClient.getModelIds(cardModel);
-        PhysicalInventoryRepository physicalInventoryRepository = new PhysicalInventoryRepository(env);
-        physicalInventoryRepository.createDeviceWithCard(locationTypeSite, Long.valueOf(locationId), deviceModelId, deviceName, deviceModelType, slotName, cardModelId, cardModelType);
+        DelayUtils.sleep(5000);
+        createHRToArray(Constants.AHP4517R7v06ANTENNA_MODEL + "_Lr1");//Cell-Antenna Array
     }
 
     @BeforeMethod
@@ -195,7 +177,7 @@ public class Technology4GTests extends BaseTestCase {
     }
 
     @Test
-    @Description("The user creates Host Relation between Cell 4G and RRU, BBU and BBU card in Cell Site Configuration and checks if new rows are displayed in Hosting table")
+    @Description("The user creates Host Relation between Cell 4G and RRU, RRU port, BBU and BBU card in Cell Site Configuration and checks if new rows are displayed in Hosting table")
     public void tSRAN25CreateHostRelationBetweenCell4GAndRRUBBUCard() {
 
         homePage.setOldObjectType(locationTypeSite);
@@ -210,6 +192,9 @@ public class Technology4GTests extends BaseTestCase {
                 .setDevice(rruDeviceNameForEdit);
         DelayUtils.sleep(2000);
         new HostingWizardPage(driver)
+                .setHosting("[" + rruDeviceNameForEdit + "] " + RRUAPort + "");
+        DelayUtils.sleep(2000);
+        new HostingWizardPage(driver)
                 .setDevice(bbuDeviceNameForEdit);
         DelayUtils.sleep(2000);
         new HostingWizardPage(driver)
@@ -218,12 +203,11 @@ public class Technology4GTests extends BaseTestCase {
         new HostingWizardPage(driver).clickAccept();
         SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
         systemMessageItem.waitForMessageDisappear();
-        Assert.assertEquals(new CellSiteConfigurationPage(driver).getRowCount("Hosting Resource"), 3);
+        Assert.assertEquals(new CellSiteConfigurationPage(driver).getRowCount("Hosting Resource"), 4);
     }
 
-    //TODO add HR creation by API
     @Test
-    @Description("The user removes Host Relation between Cell 4G and RRU, BBU and BBU card in Cell Site Configuration and checks if new rows are disappeared in Hosting table")
+    @Description("The user removes Host Relation between Cell 4G and RRU, RRU port, BBU and BBU card in Cell Site Configuration and checks if new rows are disappeared in Hosting table")
     public void tSRAN26RemoveHostRelationBetweenCell4GAndRRUBBUCard() {
 
         homePage.setOldObjectType(locationTypeSite);
@@ -231,12 +215,17 @@ public class Technology4GTests extends BaseTestCase {
                 .filterObject("Name", locationName)
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .expandTreeToCell(locationTypeSite, locationName, eNodeBNameForEdit, cell4GNameForEdit)
+                .expandTreeToCell(locationTypeSite, locationName, eNodeBNameForRemoveHR, cell4GNameForRemoveHRDevice)
                 .selectTab("Hosting")
+                .clearColumnFilter("Hosting Component")
+                .clearColumnFilter("Hosting Resource")
                 .selectRowByAttributeValueWithLabel("Hosting Component", Constants.UBBPg3_CARD_MODEL)
                 .removeObject();
         new CellSiteConfigurationPage(driver)
                 .selectRowByAttributeValueWithLabel("Hosting Resource", bbuDeviceNameForEdit)
+                .removeObject();
+        new CellSiteConfigurationPage(driver)
+                .selectRowByAttributeValueWithLabel("Hosting Component", RRUAPort)
                 .removeObject();
         new CellSiteConfigurationPage(driver)
                 .selectRowByAttributeValueWithLabel("Hosting Resource", rruDeviceNameForEdit)
@@ -247,7 +236,7 @@ public class Technology4GTests extends BaseTestCase {
     }
 
     @Test
-    @Description("The user creates Host Relation between eNodeB and RRU, BBU and BBU card in Cell Site Configuration and checks if new rows are displayed in Hosting table")
+    @Description("The user creates Host Relation between eNodeB and RRU, RRU port, BBU and BBU card in Cell Site Configuration and checks if new rows are displayed in Hosting table")
     public void tSRAN27CreateHostRelationBetweenENodeBAndRRUBBUCard() {
 
         homePage.setOldObjectType(locationTypeSite);
@@ -262,6 +251,9 @@ public class Technology4GTests extends BaseTestCase {
                 .setDevice(rruDeviceNameForEdit);
         DelayUtils.sleep(2000);
         new HostingWizardPage(driver)
+                .setHosting("[" + rruDeviceNameForEdit + "] " + RRUAPort + "");
+        DelayUtils.sleep(2000);
+        new HostingWizardPage(driver)
                 .setDevice(bbuDeviceNameForEdit);
         DelayUtils.sleep(2000);
         new HostingWizardPage(driver)
@@ -270,12 +262,11 @@ public class Technology4GTests extends BaseTestCase {
         new HostingWizardPage(driver).clickAccept();
         SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
         systemMessageItem.waitForMessageDisappear();
-        Assert.assertEquals(new CellSiteConfigurationPage(driver).getRowCount("Hosting Resource"), 3);
+        Assert.assertEquals(new CellSiteConfigurationPage(driver).getRowCount("Hosting Resource"), 4);
     }
 
-    //TODO add HR creation by API
     @Test
-    @Description("The user removes Host Relation between eNodeB and RRU, BBU and BBU card in Cell Site Configuration and checks if new rows are disappeared in Hosting table")
+    @Description("The user removes Host Relation between eNodeB and RRU, RRU port, BBU and BBU card in Cell Site Configuration and checks if new rows are disappeared in Hosting table")
     public void tSRAN28RemoveHostRelationBetweenENodeBAndRRUBBUCard() {
 
         homePage.setOldObjectType(locationTypeSite);
@@ -283,12 +274,17 @@ public class Technology4GTests extends BaseTestCase {
                 .filterObject("Name", locationName)
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .expandTreeToBaseStation(locationTypeSite, locationName, eNodeBNameForEdit)
+                .expandTreeToBaseStation(locationTypeSite, locationName, eNodeBNameForRemoveHR)
                 .selectTab("Hosting")
+                .clearColumnFilter("Hosting Component")
+                .clearColumnFilter("Hosting Resource")
                 .selectRowByAttributeValueWithLabel("Hosting Component", Constants.UBBPg3_CARD_MODEL)
                 .removeObject();
         new CellSiteConfigurationPage(driver)
                 .selectRowByAttributeValueWithLabel("Hosting Resource", bbuDeviceNameForEdit)
+                .removeObject();
+        new CellSiteConfigurationPage(driver)
+                .selectRowByAttributeValueWithLabel("Hosting Component", RRUAPort)
                 .removeObject();
         new CellSiteConfigurationPage(driver)
                 .selectRowByAttributeValueWithLabel("Hosting Resource", rruDeviceNameForEdit)
@@ -316,10 +312,11 @@ public class Technology4GTests extends BaseTestCase {
         new HostingWizardPage(driver).clickAccept();
         SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
         systemMessageItem.waitForMessageDisappear();
+        new CellSiteConfigurationPage(driver)
+                .filterObject("Hosting Resource","" + Constants.AHP4517R7v06ANTENNA_MODEL + "_Lr1");
         Assert.assertTrue(new CellSiteConfigurationPage(driver).getValueByRowNumber("Hosting Resource", 0).contains("" + Constants.AHP4517R7v06ANTENNA_MODEL + "_Lr1"));
     }
 
-    //TODO add HR creation by API
     @Test
     @Description("The user creates Host Relation between Cell 4G and RAN Antenna Array in Cell Site Configuration and checks if new row is displayed in Hosting table")
     public void tSRAN30RemoveHostRelationBetweenCell4GAndRANAntennaArray() {
@@ -329,8 +326,10 @@ public class Technology4GTests extends BaseTestCase {
                 .filterObject("Name", locationName)
                 .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .expandTreeToCell(locationTypeSite, locationName, eNodeBNameForEdit, cell4GNameForEdit)
+                .expandTreeToCell(locationTypeSite, locationName, eNodeBNameForRemoveHR, cell4GNameForRemoveHRArray)
                 .selectTab("Hosting")
+                .clearColumnFilter("Hosting Component")
+                .clearColumnFilter("Hosting Resource")
                 .selectRowByAttributeValueWithLabel("Hosting Resource", "" + Constants.AHP4517R7v06ANTENNA_MODEL + "_Lr1")
                 .removeObject();
         SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
@@ -374,6 +373,66 @@ public class Technology4GTests extends BaseTestCase {
         CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertTrue(objectsList.isNoData());
+    }
+
+    private void getOrCreateAddress() {
+        AddressRepository addressRepository = new AddressRepository(env);
+        addressId = addressRepository.updateOrCreateAddress(countryName, postalCodeName, regionName, cityName, districtName);
+    }
+
+    private void createPhysicalLocation() {
+        LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);
+        locationId = locationInventoryRepository.createLocation(locationName, locationTypeSite, addressId);
+    }
+
+    private void createENodeB(String eNodeBNameForCreate) {
+        Radio4gRepository radio4gRepository = new Radio4gRepository(env);
+        eNodeBId = radio4gRepository.createENodeB(eNodeBNameForCreate, Long.valueOf(locationId), MCC, MNC, Constants.HUAWEI_ENODEB_MODEL);
+    }
+
+    private void createCell4G(String cell4GNameForCreate, String cell4GIdForCreate) {
+        Radio4gRepository radio4gRepository = new Radio4gRepository(env);
+        cellId = radio4gRepository.createCell4g(cell4GNameForCreate, Integer.valueOf(cell4GIdForCreate), eNodeBId, MCC, MNC, carrier4G);
+    }
+
+    private void createDevice(String deviceModel, String deviceName, String deviceModelType) {
+        ResourceCatalogClient resourceCatalogClient = new ResourceCatalogClient(env);
+        deviceModelId = resourceCatalogClient.getModelIds(deviceModel);
+        PhysicalInventoryRepository physicalInventoryRepository = new PhysicalInventoryRepository(env);
+        deviceId = physicalInventoryRepository.createDevice(locationTypeSite, Long.valueOf(locationId), deviceModelId, deviceName, deviceModelType);
+    }
+
+    private void createDeviceWithCard(String deviceModel, String deviceName, String deviceModelType, String cardModel, String slotName, String cardModelType) {
+        ResourceCatalogClient resourceCatalogClient = new ResourceCatalogClient(env);
+        deviceModelId = resourceCatalogClient.getModelIds(deviceModel);
+        cardModelId = resourceCatalogClient.getModelIds(cardModel);
+        PhysicalInventoryRepository physicalInventoryRepository = new PhysicalInventoryRepository(env);
+        deviceId = physicalInventoryRepository.createDeviceWithCard(locationTypeSite, Long.valueOf(locationId), deviceModelId, deviceName, deviceModelType, slotName, cardModelId, cardModelType);
+    }
+
+    private void createHRToDevice() {
+        Radio4gRepository radio4gRepository = new Radio4gRepository(env);
+        radio4gRepository.createHRENodeBDevice(Long.valueOf(deviceId), eNodeBId);
+        radio4gRepository.createHRCellDevice(Long.valueOf(deviceId), eNodeBId, cellId);
+    }
+
+    private void createHRToArray(String arrayName) {
+        Radio4gRepository radio4gRepository = new Radio4gRepository(env);
+        PhysicalInventoryClient physicalInventoryClient = new PhysicalInventoryClient(env);
+        arrayId = physicalInventoryClient.getAntennaArrayId(deviceId, arrayName);
+        radio4gRepository.createHRCellDevice(Long.valueOf(arrayId), eNodeBId, cellId);
+    }
+
+    private void createHRToPort(String portName) {
+        Radio4gRepository radio4gRepository = new Radio4gRepository(env);
+        radio4gRepository.createHRENodeBDevicePort(Long.valueOf(deviceId), eNodeBId, portName);
+        radio4gRepository.createHRCellDevicePort(Long.valueOf(deviceId), eNodeBId, cellId, portName);
+    }
+
+    private void createHRToCard(String slotName, String cardName) {
+        Radio4gRepository radio4gRepository = new Radio4gRepository(env);
+        radio4gRepository.createHRENodeBDeviceCard(Long.valueOf(deviceId), eNodeBId, slotName, cardName);
+        radio4gRepository.createHRCellDeviceCard(Long.valueOf(deviceId), eNodeBId, cellId, slotName, cardName);
     }
 
 }
