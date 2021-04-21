@@ -44,8 +44,8 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
 
     private static final String NETWORK_NAME = "IPv6IPAMSeleniumTest1";
     private static final String NETWORK_NAME_UPDATED = "IPv6IPAMSeleniumTestUpdated1";
-    private static final String ROLE_NAME = "IPv6IPAMSeleniumTest1";
-    private static final String ROLE_NAME_UPDATED = "IPv6IPAMSeleniumTestUpdated1";
+    private static final String ROLE_NAME = "IPv6IPAMSeleniumTest2";
+    private static final String ROLE_NAME_UPDATED = "IPv6IPAMSeleniumTestUpdated2";
     private static final String STANDARD_ROLE = "Standard";
     private static final String MANAGEMENT_SECONDARY_ROLE = "Management - Secondary";
     private static final int AMOUNT_OF_SUBNETS_SELECTED_DURING_SUBNET_CREATION = 3;
