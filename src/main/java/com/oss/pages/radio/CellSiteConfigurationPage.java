@@ -31,6 +31,7 @@ public class CellSiteConfigurationPage extends BasePage {
     private static final String EDIT_LABEL = "Edit";
     private static final String DELETE_LABEL = "Delete";
     private static final String BASE_STATION_ROW = "Base Stations";
+    private static final String DEVICES_ROW = "Devices";
     private static final String CREATE_ENODEB_ACTION = "Create eNodeB";
     private static final String CREATE_GNODEB_ACTION = "Create gNodeB";
     private static final String TYPE_4G = "4G";
@@ -122,6 +123,16 @@ public class CellSiteConfigurationPage extends BasePage {
         getTree().expandTreeRow(BASE_STATION_ROW);
         getTree().expandTreeRow(baseStationName);
         getTree().selectTreeRow(cellName);
+        return this;
+    }
+
+    @Step("Expand the tree and select device")
+    public CellSiteConfigurationPage expandTreeToDevice(String locationType, String locationName, String deviceName) {
+        waitForPageToLoad();
+        getTree().expandTreeRow(locationType);
+        getTree().expandTreeRow(locationName);
+        getTree().expandTreeRow(DEVICES_ROW);
+        getTree().selectTreeRow(deviceName);
         return this;
     }
 
