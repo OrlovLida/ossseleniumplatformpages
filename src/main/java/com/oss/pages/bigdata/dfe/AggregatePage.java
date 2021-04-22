@@ -51,6 +51,7 @@ public class AggregatePage extends BaseDfePage {
 
     @Step("I check if Aggregate: {aggregateName} exists into the table")
     public Boolean aggregateExistsIntoTable(String aggregateName){
+        DelayUtils.sleep(2000);
         searchFeed(aggregateName);
         DelayUtils.waitForPageToLoad(driver, wait);
         int numberOfRowsInTable = getNumberOfRowsInTable(NAME_COLUMN_LABEL);
