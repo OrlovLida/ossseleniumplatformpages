@@ -68,6 +68,8 @@ public class TP_OSS_RM_RAN_003 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cellSiteConfigurationPage.selectTab("Cells 4G");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cellSiteConfigurationPage.clearColumnFilter("Name");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         for (int i = 0; i < 3; i++) {
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
