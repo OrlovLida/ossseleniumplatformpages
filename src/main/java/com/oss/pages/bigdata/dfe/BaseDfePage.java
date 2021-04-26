@@ -5,6 +5,7 @@ import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.SearchField;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.OldTable;
+import com.oss.framework.widgets.tabswidget.TabWindowWidget;
 import com.oss.pages.BasePage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -23,6 +24,9 @@ abstract public class BaseDfePage extends BasePage implements BaseDfePageInterfa
         return OldTable.createByComponentDataAttributeName(driver, wait, getTableId());
     }
 
+//    public TabWindowWidget getTab(WebDriver driver, WebDriverWait wait) {
+//        return TabWindowWidget.selectTabById(driver, wait, getTabEntriesLabel());
+//    }
     public static void openDfePage(WebDriver driver, String basicURL, WebDriverWait wait, String viewName){
         String pageUrl = String.format("%s/#/view/dfe/%s", basicURL, viewName);
         driver.get(pageUrl);

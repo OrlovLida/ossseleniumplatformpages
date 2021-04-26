@@ -37,4 +37,10 @@ public abstract class StepWizardPage extends BasePage implements StepWizardInter
         log.info("Finishing Step Wizard by clicking 'Accept'");
     }
 
+    @Step("I click Save")          //AP - dodane dla dict
+    public void clickSave(){
+        getWizard(driver, wait).clickSave();
+        log.info("Finishing by clicking 'Save'");
+    }
+
 }
