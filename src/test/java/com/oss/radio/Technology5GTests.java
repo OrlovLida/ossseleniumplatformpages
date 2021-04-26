@@ -201,8 +201,8 @@ public class Technology5GTests extends BaseTestCase {
     }
 
     @Test
-    @Description("The user removes Host Relation between Cell 5G and RRU, RRU port BBU and BBU card in Cell Site Configuration and checks if new rows are disappeared in Hosting table")
-    public void tSRAN32RemoveHostRelationBetweenCell5GAndRRUBBUCard() {
+    @Description("The user removes Host Relation between Cell 5G and RRU, RRU port BBU and BBU card, AAU in Cell Site Configuration and checks if new rows are disappeared in Hosting table")
+    public void tSRAN32_36RemoveHostRelationBetweenCell5GAndRRUBBUCardAAU() {
 
         homePage.setOldObjectType(locationTypeSite);
         new OldInventoryViewPage(driver)
@@ -223,6 +223,9 @@ public class Technology5GTests extends BaseTestCase {
                 .removeObject();
         new CellSiteConfigurationPage(driver)
                 .selectRowByAttributeValueWithLabel("Hosting Resource", rruDeviceNameForEdit)
+                .removeObject();
+        new CellSiteConfigurationPage(driver)
+                .selectRowByAttributeValueWithLabel("Hosting Resource", aauAAU5614NameForEdit)
                 .removeObject();
         SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
         systemMessageItem.waitForMessageDisappear();
@@ -315,26 +318,6 @@ public class Technology5GTests extends BaseTestCase {
         new CellSiteConfigurationPage(driver)
                 .filterObject("Hosting Resource","" + aauAAU5614NameForEdit);
         Assert.assertTrue(new CellSiteConfigurationPage(driver).getValueByRowNumber("Hosting Resource", 0).contains(aauAAU5614NameForEdit));
-    }
-
-    @Test
-    @Description("The user creates Host Relation between Cell 5G and AAU in Cell Site Configuration and checks if new row is displayed in Hosting table")
-    public void tSRAN36RemoveHostRelationBetweenCell5GAndAAU() {
-
-        homePage.setOldObjectType(locationTypeSite);
-        new OldInventoryViewPage(driver)
-                .filterObject("Name", locationName)
-                .expandShowOnAndChooseView("Cell Site Configuration");
-        new CellSiteConfigurationPage(driver)
-                .expandTreeToCell(locationTypeSite, locationName, gNodeBNameForRemoveHR, cell5GNameForRemoveHRArray)
-                .selectTab("Hosting")
-                .clearColumnFilter("Hosting Component")
-                .clearColumnFilter("Hosting Resource")
-                .selectRowByAttributeValueWithLabel("Hosting Resource", aauAAU5614NameForEdit)
-                .removeObject();
-        SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
-        systemMessageItem.waitForMessageDisappear();
-        Assert.assertTrue(new CellSiteConfigurationPage(driver).hasNoData());
     }
 
     @Test
