@@ -21,12 +21,7 @@ public class DictionaryViewTest extends BaseTestCase {
 
     private final static String DICTIONARY_DESCRIPTION = "Dictionary Selenium Test";
     private final static String ENTRIES_TAB = "Entries";
-
-
-//    private final static String ETL_PROCESS_NAME = "t:CRUD#ETLforAggr";
-//    private final static String AGGREGATE_CONFIGURATION_DIMENSION_NAME = "t:SMOKE#D_HOST (HOST_NM)";
-//    private final static String AGGREGATE_CONFIGURATION_NAME = "Selenium_Aggregate_Test";
-//    private final static String AGGREGATE_CONFIGURATION_TABLE_PREFIX = "Selenium_Aggregate_Test";
+    
 
     @BeforeClass
     public void goToDictionaryView(){
@@ -66,15 +61,16 @@ public class DictionaryViewTest extends BaseTestCase {
             DictionaryPage dictionaryStepWizard = new DictionaryPage(driver, wait);
             dictionaryStepWizard.getAddNewEntryStep().fillAddNewEntry(ENTRIES_TAB, ENTRIES_TAB);
           dictionaryStepWizard.clickSave();
-            dictionaryPage.clickDeleteEntry();
-            dictionaryPage.confirmDelete();
-//            dictionaryPage.selectFoundDictionary();
-            dictionaryPage.clickDeleteDictionary(); // powtórne zaznaczenie + skasowanie nie działa
-            dictionaryPage.confirmDelete();
-//            Boolean dictionaryIsCreated = dictionaryPage.dictionaryExistsIntoTable(updatedDictionaryName);
-//
-//            Assert.assertTrue(dictionaryIsCreated);
 
+//            dictionaryPage.clickDeleteEntry();
+//            dictionaryPage.confirmDelete();
+//            dictionaryPage.selectFoundDictionary();
+//            dictionaryPage.clickDeleteDictionary(); // powtórne zaznaczenie + skasowanie nie działa
+//            dictionaryPage.confirmDelete();
+            Boolean entryIsCreated = dictionaryPage.entryExistsIntoTable(ENTRIES_TAB);
+
+            Assert.assertTrue(entryIsCreated);
+            dictionaryPage.selectFoundDictionary();
         } else {
             Assert.fail();
         }
@@ -100,19 +96,19 @@ public class DictionaryViewTest extends BaseTestCase {
 //        }
 //    }
 
-//    @Test(priority = 3)   // nie działa - bug
-//    @Description("Delete Dictionary")
-//    public void deleteDictionary(){
-//        Boolean dictionaryExists = dictionaryPage.dictionaryExistsIntoTable(dictionaryName);
-//        if(dictionaryExists){
-//            dictionaryPage.selectFoundDictionary();
-//            dictionaryPage.clickDeleteDictionary();
-//            dictionaryPage.confirmDelete();
-//            Boolean dictionaryDeleted = !dictionaryPage.dictionaryExistsIntoTable(dictionaryName);
-//
-//            Assert.assertTrue(dictionaryDeleted);
-//        } else {
-//            Assert.fail();
-//        }
-//    }
+    @Test(priority = 3)   // nie działa - bug
+    @Description("Delete Dictionary")
+    public void deleteDictionary(){
+        Boolean dictionaryExists = dictionaryPage.dictionaryExistsIntoTable(dictionaryName);
+        if(dictionaryExists){
+            dictionaryPage.selectFoundDictionary();
+            dictionaryPage.clickDeleteDictionary();
+            dictionaryPage.confirmDelete();
+            Boolean dictionaryDeleted = !dictionaryPage.dictionaryExistsIntoTable(dictionaryName);
+
+            Assert.assertTrue(dictionaryDeleted);
+        } else {
+            Assert.fail();
+        }
+    }
 }

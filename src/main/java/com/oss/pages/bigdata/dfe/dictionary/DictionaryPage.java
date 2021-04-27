@@ -24,6 +24,7 @@ public class DictionaryPage extends BaseDfePage {
     private static final Logger log = LoggerFactory.getLogger(DictionaryPage.class);
     private OldActionsContainer actionsContainer;
     private CommonList commonList;
+    private EditableList editableList;
 
     private static final String TABLE_ID = "dictionariesAppId";
     private static final String ENTRIES_TAB_ID = "tab_tabsEntriesId";
@@ -107,6 +108,16 @@ public class DictionaryPage extends BaseDfePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
+    @Step("I check if Entry: {entryName} exists into the table")
+    public Boolean entryExistsIntoTable(String entryName){
+        DelayUtils.waitForPageToLoad(driver, wait);
+        String textInTable = getEditableList().selectRow(0).selectCell("columnData editable keyId").getText();         if (textInTable == entryName) {return true;}
+        if (textInTable.equals(entryName)) {return true;}
+        else {return false;}
+
+
+    }
+
 //AP  klikanie po dolnych tabach - akcje kontekstowe
     public OldTable getTableNew(WebDriver driver, WebDriverWait wait) {
         return OldTable.createByComponentDataAttributeName(driver, wait, "dictionariesTabsId");
@@ -120,11 +131,18 @@ public class DictionaryPage extends BaseDfePage {
         return actionsContainer;
     }
 
-    private CommonList getCommonList(){
-        DelayUtils.waitForVisibility(wait, driver.findElement(By.xpath("//div[@class='flexRow last']")));
-        commonList = CommonList.create(driver, wait, "dictionaryTabsId");
+//    private CommonList getCommonList(){
+//        DelayUtils.waitForVisibility(wait, driver.findElement(By.xpath("//div[@class='flexRow last']")));
+//        commonList = CommonList.create(driver, wait, "dictionaryTabsId");
+//
+//        return commonList;
+//    }
 
-        return commonList;
+    private EditableList getEditableList(){
+        DelayUtils.waitForVisibility(wait, driver.findElement(By.xpath("//div[@class='flexRow last']")));
+        editableList = EditableList.create(driver, wait);
+
+        return editableList;
     }
 
     protected void clickContextActionNew(String actionLabel) {
@@ -132,10 +150,10 @@ public class DictionaryPage extends BaseDfePage {
         log.debug("Clicking context action: {}", actionLabel);
     }
 
-    protected void clickEditableListAction(String editableListActionLabel){
-        getCommonList().clickOnDeleteButtonByListElementName(editableListActionLabel);
-        log.debug("Clicking context action: {}", editableListActionLabel);
-    }
+//    protected void clickEditableListAction(String editableListActionLabel){
+//        getCommonList().clickOnDeleteButtonByListElementName(editableListActionLabel);
+//        log.debug("Clicking context action: {}", editableListActionLabel);
+//    }
 
     public String getEntryLabel() {
         return ADD_NEW_ENTRY_LABEL;
@@ -163,8 +181,8 @@ public class DictionaryPage extends BaseDfePage {
     @Step("I click add new Entry")
     public void clickAddNewEntry(){ clickContextActionNew(getEntryLabel()); }
 
-    @Step("I click delete Entry")
-    public void clickDeleteEntry(){ clickEditableListAction(getDeleteEntryLabel()); }
+//    @Step("I click delete Entry")
+//    public void clickDeleteEntry(){ clickEditableListAction(getDeleteEntryLabel()); }
 
     @Override
     public String getTableId() {
