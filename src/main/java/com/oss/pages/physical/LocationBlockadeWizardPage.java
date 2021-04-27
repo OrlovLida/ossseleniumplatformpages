@@ -12,6 +12,8 @@ import com.oss.pages.platform.LoginPanelPage;
 import io.qameta.allure.Step;
 import org.assertj.core.api.Assertions;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import static com.oss.framework.components.inputs.Input.ComponentType.*;
 
 public class LocationBlockadeWizardPage extends BasePage {
@@ -28,10 +30,10 @@ public class LocationBlockadeWizardPage extends BasePage {
     @Step("Enable Blockade")
     public void enableLocationBlockade(String Reason) {
         changeSwitcher("true");
-        DelayUtils.sleep(1000);
+        DelayUtils.waitForPageToLoad(driver, wait);
         getBlockLocationWizard().getComponent(BLOCKADE_REASON_DATA_ATTRIBUTE_NAME,
                 Input.ComponentType.COMBOBOX).setValueContains(Data.createSingleData(Reason));
-        DelayUtils.sleep(1000);
+        DelayUtils.waitForPageToLoad(driver, wait);
         accept();
     }
 

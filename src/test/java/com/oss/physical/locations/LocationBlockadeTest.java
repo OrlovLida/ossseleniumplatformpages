@@ -167,8 +167,7 @@ public class LocationBlockadeTest extends BaseTestCase {
     @Test(priority = 13)
     @Description("Open IV for Building")
     public void openBuildingIV() {
-        OldTable oldTable = OldTable.createByOssWindow(driver, webDriverWait);
-        oldTable.selectLinkInSpecificColumn("Location");
+        oldInventoryViewPage.clickLinkInColumn("Location");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         oldInventoryViewPage.selectRow("Name", BUILDING_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -181,7 +180,6 @@ public class LocationBlockadeTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         ConfirmationBox.create(driver, webDriverWait).clickButtonByLabel("Delete");
         checkMessageText("Location has been removed.");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
 }

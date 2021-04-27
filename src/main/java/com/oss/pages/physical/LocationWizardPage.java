@@ -59,7 +59,7 @@ public class LocationWizardPage extends BasePage {
         accept();
     }
 
-    @Step("Create Location in Step Wizard with mandatory fields {Location type and Name} filled in")
+    @Step("Create Location in Step Wizard with mandatory fields - Location Type: {locationType} and Name: {locationName}.")
     public void createLocationStepWizard(String locationType, String locationName) {
         setLocationType(locationType);
         setLocationName(locationName);
@@ -71,7 +71,7 @@ public class LocationWizardPage extends BasePage {
         accept();
     }
 
-    @Step("Create Location with mandatory fields {Location type and Name} filled in in any wizard")
+    @Step("Create Location with mandatory fields - Location Type: {locationType} and Name: {locationName} in any wizard")
     public void createLocationInAnyWizard(String locationType, String locationName) {
         if (locationWizard.numberOfSteps() > 1) {
             createLocationStepWizard(locationType, locationName);
@@ -80,7 +80,7 @@ public class LocationWizardPage extends BasePage {
         }
     }
 
-    @Step("Create PoP on chosen Location in {directPhysicalLocation}")
+    @Step("Create PoP on chosen Location in Direct Physical Location: {directPhysicalLocation}.")
     public void createPoP(String directPhysicalLocation) {
         setDirectPhysicalLocation(directPhysicalLocation);
         DelayUtils.waitForPageToLoad(driver, wait);

@@ -15,7 +15,6 @@ import com.oss.framework.widgets.tabswidget.TabsInterface;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
-import org.openqa.selenium.WebElement;
 
 import static com.oss.framework.components.contextactions.ActionsContainer.*;
 import static com.oss.framework.widgets.tablewidget.OldTable.createByComponentDataAttributeName;
@@ -154,6 +153,12 @@ public class OldInventoryViewPage extends BasePage {
         waitForPageToLoad();
         TabsInterface tabsInterface = TabWindowWidget.create(driver, wait);
         tabsInterface.selectTabByLabel(tabLabel);
+    }
+
+    @Step("Click link in {columnName}")
+    public void clickLinkInColumn(String columnName) {
+        OldTable oldTable = OldTable.createByOssWindow(driver, wait);
+        oldTable.selectLinkInSpecificColumn(columnName);
     }
 
     private void waitForPageToLoad() {
