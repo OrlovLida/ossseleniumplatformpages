@@ -1,23 +1,24 @@
-package com.oss.pages.bigdata.dfe.stepwizard.commons;
+package com.oss.pages.bigdata.dfe.dictionary;
 
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.TextField;
 import com.oss.framework.data.Data;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.pages.bigdata.dfe.stepwizard.commons.BaseStepPage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CreateEntriesPage extends BaseStepPage{
+public class EntryPopupPage extends BaseStepPage {
 
-    private static final Logger log = LoggerFactory.getLogger(CreateEntriesPage.class);
+    private static final Logger log = LoggerFactory.getLogger(EntryPopupPage.class);
 
-    final private String KEY_INPUT_ID = "Key";
-    final private String VALUE_INPUT_ID = "Value";
-    
-    public CreateEntriesPage(WebDriver driver, WebDriverWait wait, String wizardId) {
+    final private String KEY_INPUT_ID = "name";
+    final private String VALUE_INPUT_ID = "value";
+
+    public EntryPopupPage(WebDriver driver, WebDriverWait wait, String wizardId) {
         super(driver, wait, wizardId);
     }
 
