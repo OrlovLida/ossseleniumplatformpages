@@ -1,4 +1,4 @@
-package com.oss.pages.platform;
+package com.oss.pages.platform.OldInventoryView;
 
 import java.util.Map;
 
@@ -154,11 +154,6 @@ public class OldInventoryViewPage extends BasePage {
         waitForPageToLoad();
         TabsInterface tabsInterface = TabWindowWidget.create(driver, wait);
         tabsInterface.selectTabByLabel(tabLabel);
-    }
-
-    public void clickMoreInTabsPanel() {
-        WebElement moreButton = driver.findElement(By.xpath(MORE_BUTTON_PATH));
-        moreButton.click();
     }
 
     private void waitForPageToLoad() {

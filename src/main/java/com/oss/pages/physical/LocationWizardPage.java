@@ -52,7 +52,7 @@ public class LocationWizardPage extends BasePage {
         setLocationName(locationName);
         DelayUtils.waitForPageToLoad(driver, wait);
         clickNext();
-        setAnyGeographicalAddress();
+        setGeographicalAddress("");
         DelayUtils.waitForPageToLoad(driver, wait);
         clickNext();
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -82,8 +82,7 @@ public class LocationWizardPage extends BasePage {
 
     @Step("Create PoP on chosen Location in {directPhysicalLocation}")
     public void createPoP(String directPhysicalLocation) {
-        locationWizard.getComponent(LOCATION_DIRECT_PHYSICAL_LOCATION_DATA_ATTRIBUTE_NAME,
-                Input.ComponentType.SEARCH_FIELD).setValueContains(Data.createSingleData(directPhysicalLocation));
+        setDirectPhysicalLocation(directPhysicalLocation);
         DelayUtils.waitForPageToLoad(driver, wait);
         locationWizard.clickNext();
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -129,12 +128,6 @@ public class LocationWizardPage extends BasePage {
                 Input.ComponentType.SEARCH_FIELD).setValueContains(Data.createSingleData(directPhysicalLocation));
     }
 
-    @Step("Set any geographical address")
-    public void setAnyGeographicalAddress() {
-        locationWizard.getComponent(GEOGRAPHICAL_ADDRESS_SEARCH_DATA_ATTRIBUTE_NAME, Input.ComponentType.SEARCH_FIELD)
-                .setSingleStringValueContains("");
-    }
-
     @Step("Set number of locations to create")
     public void setNumberOfLocations(String count) {
         locationWizard.setComponentValue(NUMBER_OF_LOCATIONS_DATA_ATTRIBUTE_NAME, count, Input.ComponentType.TEXT_FIELD);
@@ -173,5 +166,4 @@ public class LocationWizardPage extends BasePage {
         locationWizard.clickAccept();
     }
 
-    private Wizard locationWizard = Wizard.createWizard(driver, wait);
 }

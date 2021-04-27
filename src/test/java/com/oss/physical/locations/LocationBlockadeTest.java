@@ -1,8 +1,9 @@
-package com.oss.physical;
+package com.oss.physical.locations;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
+import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.OldTable;
@@ -80,7 +81,7 @@ public class LocationBlockadeTest extends BaseTestCase {
         new LocationOverviewPage(driver).clickButton("Inventory View");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         new NewInventoryViewPage(driver, webDriverWait).selectFirstRow()
-                .callAction("NAVIGATION", IV_BUILDING_ACTION_ID);
+                .callAction(ActionsContainer.SHOW_ON_GROUP_ID, IV_BUILDING_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -134,7 +135,7 @@ public class LocationBlockadeTest extends BaseTestCase {
     public void openCHPfromAllLocationsTab() {
         oldInventoryViewPage.navigateToBottomTabById(BUILDING_ALL_LOCATIONS_TAB);
         oldInventoryViewPage.selectRow(BUILDING_ALL_LOCATIONS_TABLE, "Object Type","Characteristic Point");
-        oldInventoryViewPage.useContextActionInCurrentTab("NAVIGATION", IV_CHP_ACTION_ID);
+        oldInventoryViewPage.useContextActionInCurrentTab(ActionsContainer.SHOW_ON_GROUP_ID, IV_CHP_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -151,7 +152,7 @@ public class LocationBlockadeTest extends BaseTestCase {
     public void openPoPfromAllLocationsTab() {
         oldInventoryViewPage.navigateToBottomTabByLabel("Locations in Location");
         oldInventoryViewPage.selectRow(CHP_DETAIL_LOCATIONS_TABLE, "Object Type", "PoP");
-        oldInventoryViewPage.useContextActionInCurrentTab("NAVIGATION",IV_POP_ACTION_ID);
+        oldInventoryViewPage.useContextActionInCurrentTab(ActionsContainer.SHOW_ON_GROUP_ID,IV_POP_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
