@@ -454,10 +454,12 @@ public class IPv4AddressesIPAMTest extends BaseTestCase {
     }
 
     @Test(priority = 21)
-    @Description("Check New Inventory View for IPv6 Host Assignments")
-    public void checkInventoryViewForIPv6HostAssignments() {
+    @Description("Check New Inventory View for IPv4 Host Assignments")
+    public void checkInventoryViewForIPv4HostAssignments() {
         newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, IP_HOST_ASSIGNMENT_INVENTORY_TYPE);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         newInventoryViewPage.searchByAttributeValue(INVENTORY_PROPERTY_IDENTIFIER, loopbackHostAssignmentProperties.get(HOST_ASSIGNMENT_PROPERTY_IDENTIFIER), TEXT_FIELD);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         PropertyPanel propertyPanelForFirstRow = newInventoryViewPage.getPropertyPanel(FIRST_INVENTORY_VIEW_ROW_ID, HOST_ASSIGNMENT_INVENTORY_PROPERTY_PANEL_ID);
         checkAttributesOnNewIV(propertyPanelForFirstRow, loopbackHostAssignmentProperties, inventoryViewPropertyNamesForHostAssignments);
         Assert.assertEquals(propertyPanelForFirstRow.getPropertyValue(INVENTORY_PROPERTY_INTERFACE), ASSIGNMENT_INTERFACE_NAME);

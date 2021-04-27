@@ -452,7 +452,9 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
     @Description("Check New Inventory View for IPv6 Host Assignments")
     public void checkInventoryViewForIPv6HostAssignments() {
         newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, IP_HOST_ASSIGNMENT_INVENTORY_TYPE);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         newInventoryViewPage.searchByAttributeValue(INVENTORY_PROPERTY_IDENTIFIER, loopbackIPv6HostAssignmentProperties.get(HOST_ASSIGNMENT_PROPERTY_IDENTIFIER), TEXT_FIELD);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         PropertyPanel propertyPanelForFirstRow = newInventoryViewPage.getPropertyPanel(FIRST_INVENTORY_VIEW_ROW_ID, HOST_ASSIGNMENT_INVENTORY_PROPERTY_PANEL_ID);
         checkAttributesOnNewIV(propertyPanelForFirstRow, loopbackIPv6HostAssignmentProperties, inventoryViewPropertyNamesForHostAssignments);
         Assert.assertEquals(propertyPanelForFirstRow.getPropertyValue(INVENTORY_PROPERTY_INTERFACE), ASSIGNMENT_INTERFACE_NAME);
