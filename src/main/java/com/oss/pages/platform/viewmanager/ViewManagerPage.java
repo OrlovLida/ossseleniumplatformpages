@@ -21,6 +21,7 @@ public class ViewManagerPage extends BasePage {
     private static final String CREATE_SUBCATEGORY_BUTTON_ID = "createSubcategoryButton0";
     private static final String DELETE_CATEGORY_BUTTON_ID = "deleteCategoryButton0";
     private static final String EDIT_CATEGORY_BUTTON_ID = "editCategoryButton0";
+    private static final String DRAG_CATEGORY_BUTTON_ID = "dragCategoryButton0"; //d
     private static final String THREE_DOTS_FIRST_BUTTON_FULL_XPATH = "//*[@id=\"frameworkObjectButtonsGroup\"]";
     private static final String DELETE_BUTTON_IN_POPUP_XPATH = "//*[@class='CommonButton btn btn-danger btn-md']";
     private static final String EDIT_CATEGORY_POPUP_XPATH = "//*[@class='popupContainer']";
@@ -31,6 +32,9 @@ public class ViewManagerPage extends BasePage {
 
     @FindBy(xpath = THREE_DOTS_FIRST_BUTTON_FULL_XPATH)
     public WebElement threeDotsFirstButton;
+
+    @FindBy(xpath = DRAG_CATEGORY_BUTTON_ID)
+    public WebElement dragButton;
 
     public ViewManagerPage(WebDriver driver) {
         super(driver);
@@ -52,6 +56,10 @@ public class ViewManagerPage extends BasePage {
         searchField.typeValue(categoryName);
 
         DelayUtils.sleep(1000);
+    }
+
+    public void dragCategory(){
+        dragButton.click();
     }
 
     public void clearSearchField(){
