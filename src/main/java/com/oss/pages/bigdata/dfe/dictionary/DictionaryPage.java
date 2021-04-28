@@ -38,7 +38,7 @@ public class DictionaryPage extends BaseDfePage {
 
     private final String NAME_COLUMN_LABEL = "Name"; // do spr
     private final String DELETE_LABEL = "Delete";  // do spr
-    private final String DELETE_ENTRIES_LABEL = "Entries";  // do spr
+    private final String DELETE_ENTRIES_LABEL = "DELETE";  // do spr
 
 
     final private String DICTIONARY_POPUP = "Popup";
@@ -47,8 +47,8 @@ public class DictionaryPage extends BaseDfePage {
 
     public DictionaryPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
-        addNewDictionaryStep = new DictionaryPopupPage(driver,wait,getWizardId());
-        addNewEntryStep = new EntryPopupPage(driver,wait,"commonForm");
+        addNewDictionaryStep = new DictionaryPopupPage(driver,wait);
+        addNewEntryStep = new EntryPopupPage(driver,wait);
     }
 
     public DictionaryPopupPage getAddNewDictionaryStep() {return addNewDictionaryStep;}
@@ -111,7 +111,7 @@ public class DictionaryPage extends BaseDfePage {
     @Step("I check if Entry: {entryName} exists into the table")
     public Boolean entryExistsIntoTable(String entryName){
         DelayUtils.waitForPageToLoad(driver, wait);
-        String textInTable = getEditableList().selectRow(0).selectCell("columnData editable keyId").getText();         if (textInTable == entryName) {return true;}
+        String textInTable = getEditableList().selectRow(0).selectCell("1_keyId").getText();
         if (textInTable.equals(entryName)) {return true;}
         else {return false;}
 
@@ -150,10 +150,10 @@ public class DictionaryPage extends BaseDfePage {
         log.debug("Clicking context action: {}", actionLabel);
     }
 
-//    protected void clickEditableListAction(String editableListActionLabel){
-//        getCommonList().clickOnDeleteButtonByListElementName(editableListActionLabel);
-//        log.debug("Clicking context action: {}", editableListActionLabel);
-//    }
+    protected void clickEditableListAction(String editableListActionLabel){
+        getEditableList().selectRow(0).callActionIcon(editableListActionLabel);
+        log.debug("Clicking context action: {}", editableListActionLabel);
+    }
 
     public String getEntryLabel() {
         return ADD_NEW_ENTRY_LABEL;
@@ -168,21 +168,23 @@ public class DictionaryPage extends BaseDfePage {
 //        return Wizard.createByComponentId(driver, wait, getWizardId());
 //    }
 
-    Wizard getWizard(WebDriver driver, WebDriverWait wait) {
-        return Wizard.createPopupWizard(driver, wait);
-    }
+//    Wizard getWizard(WebDriver driver, WebDriverWait wait) {
+//        return Wizard.createPopupWizard(driver, wait);
+//    }
 
-    @Step("I click Save")
-    public void clickSave(){
-        getWizard(driver, wait).clickSave();
-        log.info("Finishing by clicking 'Save'");
-    }
+//    @Step("I click Save")
+//    public void clickSave(){
+//        getWizard(driver, wait).clickSave();
+//        log.info("Finishing by clicking 'Save'");
+//    }
 
     @Step("I click add new Entry")
     public void clickAddNewEntry(){ clickContextActionNew(getEntryLabel()); }
 
-//    @Step("I click delete Entry")
-//    public void clickDeleteEntry(){ clickEditableListAction(getDeleteEntryLabel()); }
+    @Step("I click delete Entry")
+    public void clickDeleteEntry(){
+        DelayUtils.waitForPageToLoad(driver, wait);
+        clickEditableListAction(getDeleteEntryLabel()); }
 
     @Override
     public String getTableId() {

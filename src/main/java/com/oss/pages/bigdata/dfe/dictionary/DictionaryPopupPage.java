@@ -1,14 +1,14 @@
 package com.oss.pages.bigdata.dfe.dictionary;
 
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bigdata.dfe.stepwizard.commons.BaseStepPage;
+import com.oss.pages.bigdata.dfe.BasePopupPage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DictionaryPopupPage extends BaseStepPage {
+public class DictionaryPopupPage extends BasePopupPage {
 
     private static final Logger log = LoggerFactory.getLogger(DictionaryPopupPage.class);
 
@@ -16,8 +16,8 @@ public class DictionaryPopupPage extends BaseStepPage {
     final private String DESCRIPTION_INPUT_ID = "description";
 
 
-    public DictionaryPopupPage(WebDriver driver, WebDriverWait wait, String wizardId) {
-        super(driver, wait, wizardId);
+    public DictionaryPopupPage(WebDriver driver, WebDriverWait wait) {
+        super(driver, wait);
     }
 
     public void fillName(String name){

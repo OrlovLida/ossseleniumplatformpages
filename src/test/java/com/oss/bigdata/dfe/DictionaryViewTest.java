@@ -21,7 +21,10 @@ public class DictionaryViewTest extends BaseTestCase {
 
     private final static String DICTIONARY_DESCRIPTION = "Dictionary Selenium Test";
     private final static String ENTRIES_TAB = "Entries";
-    
+    private final static String ENTRIES_KEY = "Test Key";
+    private final static String ENTRIES_VALUE = "Test Value";
+
+
 
     @BeforeClass
     public void goToDictionaryView(){
@@ -36,11 +39,10 @@ public class DictionaryViewTest extends BaseTestCase {
     @Test(priority = 1)
     @Description("Add new Dictionary")
     public void addDictionary(){
+
         dictionaryPage.clickAddNewDictionary();
-        WebDriverWait wait = new WebDriverWait(driver, 45);
-        DictionaryPage dictionaryStepWizard = new DictionaryPage(driver, wait);
-        dictionaryStepWizard.getAddNewDictionaryStep().fillAddNewDictionary(dictionaryName, DICTIONARY_DESCRIPTION);
-        dictionaryStepWizard.clickSave();
+        dictionaryPage.getAddNewDictionaryStep().fillAddNewDictionary(dictionaryName, DICTIONARY_DESCRIPTION);
+        dictionaryPage.getAddNewEntryStep().clickSave();
         Boolean dictionaryIsCreated = dictionaryPage.dictionaryExistsIntoTable(dictionaryName);
 
         Assert.assertTrue(dictionaryIsCreated);
@@ -55,21 +57,13 @@ public class DictionaryViewTest extends BaseTestCase {
             dictionaryPage.selectFoundDictionary();
             dictionaryPage.selectTab(ENTRIES_TAB);
             dictionaryPage.clickAddNewEntry();
-
-
-            WebDriverWait wait = new WebDriverWait(driver, 45);
-            DictionaryPage dictionaryStepWizard = new DictionaryPage(driver, wait);
-            dictionaryStepWizard.getAddNewEntryStep().fillAddNewEntry(ENTRIES_TAB, ENTRIES_TAB);
-          dictionaryStepWizard.clickSave();
-
-//            dictionaryPage.clickDeleteEntry();
-//            dictionaryPage.confirmDelete();
-//            dictionaryPage.selectFoundDictionary();
-//            dictionaryPage.clickDeleteDictionary(); // powtórne zaznaczenie + skasowanie nie działa
-//            dictionaryPage.confirmDelete();
-            Boolean entryIsCreated = dictionaryPage.entryExistsIntoTable(ENTRIES_TAB);
-
+            dictionaryPage.getAddNewEntryStep().fillAddNewEntry(ENTRIES_KEY, ENTRIES_VALUE);
+            dictionaryPage.getAddNewEntryStep().clickSave();
+            Boolean entryIsCreated = dictionaryPage.entryExistsIntoTable(ENTRIES_KEY);
             Assert.assertTrue(entryIsCreated);
+            dictionaryPage.clickDeleteEntry();
+            dictionaryPage.confirmDelete();
+
             dictionaryPage.selectFoundDictionary();
         } else {
             Assert.fail();
@@ -96,7 +90,7 @@ public class DictionaryViewTest extends BaseTestCase {
 //        }
 //    }
 
-    @Test(priority = 3)   // nie działa - bug
+    @Test(priority = 3)
     @Description("Delete Dictionary")
     public void deleteDictionary(){
         Boolean dictionaryExists = dictionaryPage.dictionaryExistsIntoTable(dictionaryName);

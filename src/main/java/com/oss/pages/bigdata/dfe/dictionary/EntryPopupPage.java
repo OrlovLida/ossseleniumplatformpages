@@ -1,32 +1,26 @@
 package com.oss.pages.bigdata.dfe.dictionary;
 
-import com.oss.framework.components.inputs.Input;
-import com.oss.framework.components.inputs.TextField;
-import com.oss.framework.data.Data;
+
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bigdata.dfe.stepwizard.commons.BaseStepPage;
+import com.oss.pages.bigdata.dfe.BasePopupPage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class EntryPopupPage extends BaseStepPage {
+public class EntryPopupPage extends BasePopupPage {
 
     private static final Logger log = LoggerFactory.getLogger(EntryPopupPage.class);
 
     final private String KEY_INPUT_ID = "name";
     final private String VALUE_INPUT_ID = "value";
 
-    public EntryPopupPage(WebDriver driver, WebDriverWait wait, String wizardId) {
-        super(driver, wait, wizardId);
+    public EntryPopupPage(WebDriver driver, WebDriverWait wait) {
+        super(driver, wait);
     }
 
 
-    protected void fillTextField(String value, String componentId) {
-        TextField input =  (TextField) getWizard(driver, wait).getComponent(componentId, Input.ComponentType.TEXT_FIELD);
-        input.setValue(Data.createSingleData(value));
-    }
     public void fillKey(String key){
         DelayUtils.waitForPageToLoad(driver, wait);
         fillTextField(key, KEY_INPUT_ID);
@@ -45,4 +39,5 @@ public class EntryPopupPage extends BaseStepPage {
        fillValue(value);
         log.info("Filled Add New Entry");
     }
+
 }
