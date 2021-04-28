@@ -15,8 +15,8 @@ public class IPAMTreeConstants {
     public static final String EDIT_OPERATION_FOR_IPV6_HOST_ADDRESS_GROUP = "EditOperationsForIPv6HostAddress";
     public static final String EDIT_OPERATION_FOR_IPV4_HOST_ASSIGNMENT_GROUP = "EditOperationsForIPv4HostAddressAssignment";
     public static final String EDIT_OPERATION_FOR_IPV6_HOST_ASSIGNMENT_GROUP = "EditOperationsForIPv6HostAddressAssignment";
-    public static final String ASSIGN_OPERATION_FOR_IPV4_SUBNET_WITH_ASSIGNMENT = "AssignOperationsForIPv4SubnetWithAssignment";
-    public static final String ASSIGN_OPERATION_FOR_IPV6_SUBNET_WITH_ASSIGNMENT = "AssignOperationsForIPv6SubnetWithAssignment";
+    public static final String ASSIGN_OPERATION_FOR_IPV4_SUBNET_WITH_ASSIGNMENT = "AssignOperationForIPv4SubnetWithAssignment";
+    public static final String ASSIGN_OPERATION_FOR_IPV6_SUBNET_WITH_ASSIGNMENT = "AssignOperationForIPv6SubnetWithAssignment";
     public static final String ASSIGN_OPERATION_FOR_IPV4_SUBNET_WITHOUT_ASSIGNMENT = "AssignOperationFotIPv4SubnetWithoutAssignment";
     public static final String ASSIGN_OPERATION_FOR_IPV6_SUBNET_WITHOUT_ASSIGNMENT = "AssignOperationFotIPv6SubnetWithoutAssignment";
     public static final String ASSIGN_OPERATION_FOR_IPV4_HOST_ADDRESS = "AssignOperationsForIPv4HostAddress";

@@ -48,6 +48,7 @@ public class PhysicalInventoryClient {
                 .when()
                 .get(devicePath)
                 .then()
+                .log().body()
                 .extract()
                 .as(PhysicalDeviceDTO.class);
     }

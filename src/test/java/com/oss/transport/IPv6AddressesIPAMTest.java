@@ -84,11 +84,11 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
     private static final String IP_HOST_INVENTORY_TYPE = "IPHostAddress";
     private static final String IP_SUBNET_ASSIGNMENT_INVENTORY_TYPE = "IPSubnetAssignment";
     private static final String IP_HOST_ASSIGNMENT_INVENTORY_TYPE = "IPHostAssignment";
-    private static final String NETWORK_INVENTORY_PROPERTY_PANEL_ID = "InventoryView_DetailsTab_IPNetworkPropertyPanelWidget_IPNetwork";
-    private static final String SUBNET_INVENTORY_PROPERTY_PANEL_ID = "InventoryView_DetailsTab_IPSubnetPropertyPanelWidget_IPSubnet";
-    private static final String SUBNET_ASSIGNMENT_INVENTORY_PROPERTY_PANEL_ID = "InventoryView_DetailsTab_IPSubnetAssignmentPropertyPanelWidget_IPSubnetAssignment";
-    private static final String HOST_INVENTORY_PROPERTY_PANEL_ID = "InventoryView_DetailsTab_IPHostAddressPropertyPanelWidget_IPHostAddress";
-    private static final String HOST_ASSIGNMENT_INVENTORY_PROPERTY_PANEL_ID = "InventoryView_DetailsTab_IPHostAssignmentPropertyPanelWidget_IPHostAssignment";
+    private static final String NETWORK_INVENTORY_PROPERTY_PANEL_ID = "PropertyPanelWidget_IPNetwork";
+    private static final String SUBNET_INVENTORY_PROPERTY_PANEL_ID = "PropertyPanelWidget_IPSubnet";
+    private static final String SUBNET_ASSIGNMENT_INVENTORY_PROPERTY_PANEL_ID = "PropertyPanelWidget_IPSubnetAssignment";
+    private static final String HOST_INVENTORY_PROPERTY_PANEL_ID = "PropertyPanelWidget_IPHostAddress";
+    private static final String HOST_ASSIGNMENT_INVENTORY_PROPERTY_PANEL_ID = "PropertyPanelWidget_IPHostAssignment";
     private static final int FIRST_INVENTORY_VIEW_ROW_ID = 0;
 
     private static final String INVENTORY_PROPERTY_NAME = "name";
@@ -452,7 +452,9 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
     @Description("Check New Inventory View for IPv6 Host Assignments")
     public void checkInventoryViewForIPv6HostAssignments() {
         newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, IP_HOST_ASSIGNMENT_INVENTORY_TYPE);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         newInventoryViewPage.searchByAttributeValue(INVENTORY_PROPERTY_IDENTIFIER, loopbackIPv6HostAssignmentProperties.get(HOST_ASSIGNMENT_PROPERTY_IDENTIFIER), TEXT_FIELD);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         PropertyPanel propertyPanelForFirstRow = newInventoryViewPage.getPropertyPanel(FIRST_INVENTORY_VIEW_ROW_ID, HOST_ASSIGNMENT_INVENTORY_PROPERTY_PANEL_ID);
         checkAttributesOnNewIV(propertyPanelForFirstRow, loopbackIPv6HostAssignmentProperties, inventoryViewPropertyNamesForHostAssignments);
         Assert.assertEquals(propertyPanelForFirstRow.getPropertyValue(INVENTORY_PROPERTY_INTERFACE), ASSIGNMENT_INTERFACE_NAME);

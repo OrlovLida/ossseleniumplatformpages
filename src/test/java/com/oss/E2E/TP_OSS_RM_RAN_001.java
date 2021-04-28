@@ -17,7 +17,7 @@ import com.oss.pages.bpm.PlanViewWizardPage;
 import com.oss.pages.bpm.ProcessWizardPage;
 import com.oss.pages.bpm.TasksPage;
 import com.oss.pages.platform.HomePage;
-import com.oss.pages.platform.OldInventoryViewPage;
+import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
 import com.oss.pages.radio.CellSiteConfigurationPage;
 import com.oss.pages.reconciliation.CmDomainWizardPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;

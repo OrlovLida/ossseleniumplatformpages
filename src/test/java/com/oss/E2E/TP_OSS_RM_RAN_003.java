@@ -7,7 +7,7 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.ProcessWizardPage;
 import com.oss.pages.bpm.TasksPage;
 import com.oss.pages.platform.HomePage;
-import com.oss.pages.platform.OldInventoryViewPage;
+import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
 import com.oss.pages.radio.CellSiteConfigurationPage;
 import com.oss.pages.radio.EditCell4GWizardPage;
 import org.testng.Assert;
@@ -67,6 +67,8 @@ public class TP_OSS_RM_RAN_003 extends BaseTestCase {
         cellSiteConfigurationPage.expandTreeToBaseStation("Site", locationName, eNodeBName);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cellSiteConfigurationPage.selectTab("Cells 4G");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cellSiteConfigurationPage.clearColumnFilter("Name");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         for (int i = 0; i < 3; i++) {
