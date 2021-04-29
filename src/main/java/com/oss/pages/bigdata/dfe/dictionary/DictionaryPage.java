@@ -1,12 +1,9 @@
 package com.oss.pages.bigdata.dfe.dictionary;
 
 import com.oss.framework.components.contextactions.OldActionsContainer;
-import com.oss.framework.listwidget.CommonList;
 import com.oss.framework.listwidget.EditableList;
 import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.Wizard;
-import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tabswidget.TabWindowWidget;
 import com.oss.framework.widgets.tabswidget.TabsInterface;
 import com.oss.pages.bigdata.dfe.BaseDfePage;
@@ -23,12 +20,9 @@ public class DictionaryPage extends BaseDfePage {
 
     private static final Logger log = LoggerFactory.getLogger(DictionaryPage.class);
     private OldActionsContainer actionsContainer;
-    private CommonList commonList;
     private EditableList editableList;
 
     private static final String TABLE_ID = "dictionariesAppId";
-    private static final String ENTRIES_TAB_ID = "tab_tabsEntriesId";
-
 
     private final String ADD_NEW_DICTIONARY_LABEL = "Add New Dictionary";
     private final String EDIT_DICTIONARY_LABEL = "Edit Dictionary";
@@ -36,12 +30,10 @@ public class DictionaryPage extends BaseDfePage {
     private final String SEARCH_INPUT_ID = "dictionariesSearchAppId";
     private final String ADD_NEW_ENTRY_LABEL = "Add New Entry";
 
-    private final String NAME_COLUMN_LABEL = "Name"; // do spr
-    private final String DELETE_LABEL = "Delete";  // do spr
-    private final String DELETE_ENTRIES_LABEL = "DELETE";  // do spr
+    private final String NAME_COLUMN_LABEL = "Name";
+    private final String DELETE_LABEL = "Delete";
+    private final String DELETE_ENTRIES_LABEL = "DELETE";
 
-
-    final private String DICTIONARY_POPUP = "Popup";
     final private DictionaryPopupPage addNewDictionaryStep;
     final private EntryPopupPage addNewEntryStep;
 
@@ -55,10 +47,6 @@ public class DictionaryPage extends BaseDfePage {
 
     public EntryPopupPage getAddNewEntryStep() {return addNewEntryStep;}
 
-    
-    public String getWizardId() {
-        return DICTIONARY_POPUP;
-    }
 
     @Step("I Open Dictionaries View")
     public static DictionaryPage goToPage(WebDriver driver, String basicURL){
@@ -118,25 +106,12 @@ public class DictionaryPage extends BaseDfePage {
 
     }
 
-//AP  klikanie po dolnych tabach - akcje kontekstowe
-    public OldTable getTableNew(WebDriver driver, WebDriverWait wait) {
-        return OldTable.createByComponentDataAttributeName(driver, wait, "dictionariesTabsId");
-    }
-
     private OldActionsContainer getActionsInterface() {
-//        if (actionsContainer == null) {
             DelayUtils.waitForVisibility(wait, driver.findElement(By.xpath("//div[@class='OssWindow tabWindow']")));
             actionsContainer = OldActionsContainer.createFromParent(driver, wait, driver.findElement(By.xpath("//div[@class='OssWindow tabWindow']")));
-//        }
         return actionsContainer;
     }
 
-//    private CommonList getCommonList(){
-//        DelayUtils.waitForVisibility(wait, driver.findElement(By.xpath("//div[@class='flexRow last']")));
-//        commonList = CommonList.create(driver, wait, "dictionaryTabsId");
-//
-//        return commonList;
-//    }
 
     private EditableList getEditableList(){
         DelayUtils.waitForVisibility(wait, driver.findElement(By.xpath("//div[@class='flexRow last']")));
@@ -161,22 +136,6 @@ public class DictionaryPage extends BaseDfePage {
 
     public String getDeleteEntryLabel() { return DELETE_ENTRIES_LABEL; }
 
-//    @Step("I click add new Entry")
-//    public void clickAddNewDictionaryTest(){ clickContextAction(getContextActionAddLabel()); }
-
-//    Wizard getWizard(WebDriver driver, WebDriverWait wait) {
-//        return Wizard.createByComponentId(driver, wait, getWizardId());
-//    }
-
-//    Wizard getWizard(WebDriver driver, WebDriverWait wait) {
-//        return Wizard.createPopupWizard(driver, wait);
-//    }
-
-//    @Step("I click Save")
-//    public void clickSave(){
-//        getWizard(driver, wait).clickSave();
-//        log.info("Finishing by clicking 'Save'");
-//    }
 
     @Step("I click add new Entry")
     public void clickAddNewEntry(){ clickContextActionNew(getEntryLabel()); }
