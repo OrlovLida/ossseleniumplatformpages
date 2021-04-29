@@ -10,4 +10,9 @@
             <class name="com.oss.bigdata.dfe.AggregateViewTest"/>
         </classes>
     </test>
+    <test name="DictionaryViewTest">
+        <classes>
+            <class name="com.oss.bigdata.dfe.DictionaryViewTest"/>
+        </classes>
+    </test>
 </suite>
