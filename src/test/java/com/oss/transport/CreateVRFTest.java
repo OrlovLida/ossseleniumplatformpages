@@ -34,7 +34,7 @@ public class CreateVRFTest extends BaseTestCase {
     private static final String VRF_NAME = "vrfNameTest2";
     private static final String ROUTE_DISTINGUISHER = "999:999";
     private static final String DESCRIPTION = "Description1";
-    private static final String DEVICE_NAME = "ipdevice13";
+    private static final String DEVICE_NAME = "SeleniumTestDeviceVRF";
     private static final String INTERFACE1_NAME = "CLUSTER 0";
     private static final String INTERFACE2_NAME = "MGT LAN 0";
 
