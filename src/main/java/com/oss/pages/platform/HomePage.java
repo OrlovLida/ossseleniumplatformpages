@@ -43,12 +43,11 @@ public class HomePage extends BasePage {
     
     public HomePage(WebDriver driver) {
         super(driver);
-        WebDriverWait wait = new WebDriverWait(driver, 45);
-        DelayUtils.waitForVisibility(wait, logo);
     }
     
     @Step("Go to Home Page")
     public HomePage goToHomePage(WebDriver driver, String basicURL) {
+        DelayUtils.waitForPageToLoad(driver, wait);
         driver.get(String.format("%s/#/", basicURL));
         return new HomePage(driver);
     }

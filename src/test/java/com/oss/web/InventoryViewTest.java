@@ -12,6 +12,7 @@ import com.google.common.collect.Multimap;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.Input.ComponentType;
+import com.oss.framework.mainheader.LoginPanel;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.propertypanel.PropertiesFilter;
 import com.oss.framework.widgets.propertypanel.PropertyPanel;
@@ -30,12 +31,14 @@ public class InventoryViewTest extends BaseTestCase {
     @BeforeClass
     public void goToInventoryView() {
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Location");
+        LoginPanel loginPanel = LoginPanel.create(driver, webDriverWait);
+        loginPanel.switchToAlphaMode();
     }
 
     @Test
     public void searchByType() {
         //when
-        Multimap<String,String> filterValues = inventoryViewPage.searchByAttributeValue("type", "PoP", ComponentType.COMBOBOX);
+        Multimap<String,String> filterValues = inventoryViewPage.searchByAttributeValue("type", "PoP", ComponentType.COMBOBOXV2);
 
         //then
         Assertions.assertThat(filterValues.keys()).hasSize(1);
