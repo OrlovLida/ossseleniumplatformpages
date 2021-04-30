@@ -37,4 +37,5 @@ public abstract class StepWizardPage extends BasePage implements StepWizardInter
         log.info("Finishing Step Wizard by clicking 'Accept'");
     }
 
+
 }
