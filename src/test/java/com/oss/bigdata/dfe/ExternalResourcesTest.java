@@ -35,7 +35,7 @@ public class ExternalResourcesTest extends BaseTestCase {
         updatedExternalResourceName = externalResourceName + "_updated";
     }
 
-    @Test(priority = 1, testName = "Add new External Resource")
+    @Test(priority = 1, testName = "Add new External Resource", suiteName = "Add new External Resource")
     @Description("Add new External Resource")
     public void addExternalResource() {
         externalResource.clickAddNewExternalResource();
