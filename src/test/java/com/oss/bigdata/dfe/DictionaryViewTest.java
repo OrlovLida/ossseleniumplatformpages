@@ -43,7 +43,7 @@ public class DictionaryViewTest extends BaseTestCase {
     public void addDictionary(){
         dictionaryPage.clickAddNewDictionary();
         dictionaryPage.getDictionaryPopup().fillDictionaryPopup(dictionaryName, DICTIONARY_DESCRIPTION);
-        dictionaryPage.getEntryPopup().clickSave();
+        dictionaryPage.getDictionaryPopup().clickSave();
         Boolean dictionaryIsCreated = dictionaryPage.dictionaryExistsIntoTable(dictionaryName);
 
         Assert.assertTrue(dictionaryIsCreated);
