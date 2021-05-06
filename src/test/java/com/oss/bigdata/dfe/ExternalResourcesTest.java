@@ -21,7 +21,6 @@ public class ExternalResourcesTest extends BaseTestCase {
     private final static String CONNECTION_URL = "jdbc:";
     private final static Logger log = LoggerFactory.getLogger(ExternalResourcesTest.class);
 
-
     private ExternalResourcesPage externalResource;
     private String externalResourceName;
     private String updatedExternalResourceName;
@@ -36,7 +35,7 @@ public class ExternalResourcesTest extends BaseTestCase {
         updatedExternalResourceName = externalResourceName + "_updated";
     }
 
-    @Test(priority = 1)
+    @Test(priority = 1, testName = "Add new External Resource")
     @Description("Add new External Resource")
     public void addExternalResource() {
         externalResource.clickAddNewExternalResource();
@@ -47,7 +46,7 @@ public class ExternalResourcesTest extends BaseTestCase {
         Assert.assertTrue(externalResourceIsCreated);
     }
 
-    @Test(priority = 2, enabled = false)
+    @Test(priority = 2, testName = "Edit External Resource", enabled = false)
     @Description("Edit External Resource")
     public void editExternalResource() {
         Boolean externalResourceExists = externalResource.externalResourceExistsIntoTable(externalResourceName);
@@ -66,7 +65,7 @@ public class ExternalResourcesTest extends BaseTestCase {
         }
     }
 
-    @Test(priority = 3)
+    @Test(priority = 3, testName = "Delete External Resource")
     @Description("Delete External Resource")
     public void deleteExternalResource() {
         Boolean externalResourceExists = externalResource.externalResourceExistsIntoTable(externalResourceName);
