@@ -48,7 +48,7 @@ public class BaseTestCase {
     @AfterClass
     public void closeBrowser() {
         if(driver != null) {
-            DelayUtils.sleep(3);
+            DelayUtils.sleep(5000);
             driver.quit();
         }
     }

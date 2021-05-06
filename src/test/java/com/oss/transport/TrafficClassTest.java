@@ -5,7 +5,7 @@ import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.platform.OldInventoryViewPage;
+import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
 import com.oss.pages.transport.traffic.classs.TrafficClassWizardPage;
 import io.qameta.allure.Step;
 import org.testng.Assert;
@@ -23,7 +23,7 @@ public class TrafficClassTest extends BaseTestCase {
     private static final String TRAFFIC_CLASS = "Traffic Class";
 
     private static final String PRE_CREATED_LOCATION = "Gliwice-BU1";
-    private static final String PRE_CREATED_DEVICE = "ipdevice13";
+    private static final String PRE_CREATED_DEVICE = "SeleniumTestDeviceTC";
     private static final String INTERFACE_CREATE = "MGT LAN 0";
     private static final String INTERFACE_UPDATE = "SFP+ 0";
 

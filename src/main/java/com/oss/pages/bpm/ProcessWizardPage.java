@@ -6,6 +6,7 @@
  */
 package com.oss.pages.bpm;
 
+import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
@@ -224,7 +225,7 @@ public class ProcessWizardPage extends BasePage {
     }
     
     private String extractProcessCode(String message) {
-        Iterable<String> messageParts = Splitter.on(" ").split(message);
+        Iterable<String> messageParts= Splitter.on(CharMatcher.anyOf("() ")).split(message);
         for (String part: messageParts) {
             if (part.startsWith("NRP-") || part.startsWith("DCP-")
                     || part.startsWith("IP-") || part.startsWith("DRP-")) {

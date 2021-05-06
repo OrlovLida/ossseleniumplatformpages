@@ -75,125 +75,119 @@ public class IPAddressAssignmentWizardPage extends BasePage {
     @Step("Assign IP Address Main Step")
     private void assignIPAddressMainStep(IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties){
         DelayUtils.waitForPageToLoad(driver, wait);
-        Wizard mainStep = getWizard();
         if(ipAddressAssignmentWizardProperties.getWizardMode().isPresent()){
             String mode = ipAddressAssignmentWizardProperties.getWizardMode().get();
-            if(!mainStep.getComponent(MODE_COMPONENT_ID, COMBOBOX).getStringValue().equals(mode)){
-                mainStep.setComponentValue(MODE_COMPONENT_ID, mode, COMBOBOX);
+            if(!getWizard().getComponent(MODE_COMPONENT_ID, COMBOBOX).getStringValue().equals(mode)){
+                getWizard().setComponentValue(MODE_COMPONENT_ID, mode, COMBOBOX);
                 DelayUtils.waitForPageToLoad(driver, wait);
             }
             switch (mode){
                 case MANUAL_MODE:
-                    fillManualModeFields(mainStep, ipAddressAssignmentWizardProperties);
+                    fillManualModeFields(ipAddressAssignmentWizardProperties);
                     break;
                 case AUTOMATIC_MODE:
-                    fillAutomaticModeFields(mainStep, ipAddressAssignmentWizardProperties);
+                    fillAutomaticModeFields(ipAddressAssignmentWizardProperties);
                     break;
                 case RESERVED_MODE:
-                    fillReservedModeFields(mainStep, ipAddressAssignmentWizardProperties);
+                    fillReservedModeFields(ipAddressAssignmentWizardProperties);
                     break;
             }
         } else {
-            fillManualModeFields(mainStep, ipAddressAssignmentWizardProperties);
+            fillManualModeFields(ipAddressAssignmentWizardProperties);
         }
-        fillOptionalFieldsInMainStep(mainStep, ipAddressAssignmentWizardProperties);
+        fillOptionalFieldsInMainStep(ipAddressAssignmentWizardProperties);
         DelayUtils.waitForPageToLoad(driver, wait);
-        mainStep.clickNext();
+        getWizard().clickNext();
     }
 
     @Step("Assign IP Address Main Step")
     private void assignIPAddressMainStepWithoutMode(IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties){
         DelayUtils.waitForPageToLoad(driver, wait);
-        Wizard mainStep = getWizard();
-        fillOptionalFieldsInMainStep(mainStep, ipAddressAssignmentWizardProperties);
+        fillOptionalFieldsInMainStep(ipAddressAssignmentWizardProperties);
         DelayUtils.waitForPageToLoad(driver, wait);
-        mainStep.clickNext();
+        getWizard().clickNext();
     }
 
-    private void fillManualModeFields(Wizard wizard, IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties){
+    private void fillManualModeFields(IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties){
         ipAddressAssignmentWizardProperties.getSubnet()
-                .ifPresent(subnet -> wizard.getComponent(IP_SUBNET_COMPONENT_ID,SEARCH_FIELD).setSingleStringValueContains(subnet));
+                .ifPresent(subnet -> getWizard().getComponent(IP_SUBNET_COMPONENT_ID,SEARCH_FIELD).setSingleStringValueContains(subnet));
         ipAddressAssignmentWizardProperties.getAddress()
-                .ifPresent(address -> wizard.setComponentValue(IP_ADDRESS_MANUAL_MODE_COMPONENT_ID, address, TEXT_FIELD));
+                .ifPresent(address -> getWizard().setComponentValue(IP_ADDRESS_MANUAL_MODE_COMPONENT_ID, address, TEXT_FIELD));
     }
 
-    private void fillAutomaticModeFields(Wizard wizard, IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties){
+    private void fillAutomaticModeFields(IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties){
         ipAddressAssignmentWizardProperties.getAddress()
-                .ifPresent(address -> wizard.setComponentValue(IP_ADDRESS_AUTOMATIC_MODE_COMPONENT_ID, address, TEXT_FIELD));
+                .ifPresent(address -> getWizard().setComponentValue(IP_ADDRESS_AUTOMATIC_MODE_COMPONENT_ID, address, TEXT_FIELD));
         ipAddressAssignmentWizardProperties.getMask()
-                .ifPresent(mask -> wizard.setComponentValue(MASK_COMPONENT_ID, mask, TEXT_FIELD));
+                .ifPresent(mask -> getWizard().setComponentValue(MASK_COMPONENT_ID, mask, TEXT_FIELD));
         ipAddressAssignmentWizardProperties.getIpNetwork()
-                .ifPresent(network -> wizard.setComponentValue(IP_NETWORK_COMPONENT_ID, network, SEARCH_FIELD));
+                .ifPresent(network -> getWizard().setComponentValue(IP_NETWORK_COMPONENT_ID, network, SEARCH_FIELD));
     }
 
-    private void fillReservedModeFields(Wizard wizard, IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties){
+    private void fillReservedModeFields(IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties){
         ipAddressAssignmentWizardProperties.getAddress()
-                .ifPresent(address -> wizard.getComponent(IP_ADDRESS_RESERVED_MODE_COMPONENT_ID, SEARCH_FIELD).setValueContains(Data.createFindFirst(address)));
+                .ifPresent(address -> getWizard().getComponent(IP_ADDRESS_RESERVED_MODE_COMPONENT_ID, SEARCH_FIELD).setValueContains(Data.createFindFirst(address)));
     }
 
-    private void fillOptionalFieldsInMainStep(Wizard wizard, IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties){
+    private void fillOptionalFieldsInMainStep(IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties){
         ipAddressAssignmentWizardProperties.isPrimary()
-                .ifPresent(isPrimary -> wizard.setComponentValue(IS_PRIMARY_COMPONENT_ID, isPrimary, CHECKBOX));
+                .ifPresent(isPrimary -> getWizard().setComponentValue(IS_PRIMARY_COMPONENT_ID, isPrimary, CHECKBOX));
         ipAddressAssignmentWizardProperties.isInNAT()
-                .ifPresent(isInNAT -> wizard.setComponentValue(IS_IN_NAT_COMPONENT_ID, isInNAT, CHECKBOX));
+                .ifPresent(isInNAT -> getWizard().setComponentValue(IS_IN_NAT_COMPONENT_ID, isInNAT, CHECKBOX));
         ipAddressAssignmentWizardProperties.getRole()
-                .ifPresent(role -> wizard.setComponentValue(ROLE_COMPONENT_ID, role, SEARCH_FIELD));
+                .ifPresent(role -> getWizard().setComponentValue(ROLE_COMPONENT_ID, role, SEARCH_FIELD));
         ipAddressAssignmentWizardProperties.getDescription()
-                .ifPresent(description -> wizard.setComponentValue(DESCRIPTION_COMPONENT_ID, description, TEXT_AREA));
+                .ifPresent(description -> getWizard().setComponentValue(DESCRIPTION_COMPONENT_ID, description, TEXT_AREA));
     }
 
     @Step("Assign IP Address Assignment Step")
     private void assignIPAddressAssignmentStep(IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties){
         DelayUtils.waitForPageToLoad(driver, wait);
-        Wizard assignmentStep = getWizard();
         String assignmentType = ipAddressAssignmentWizardProperties.getAssignmentType().
                 orElseThrow(() -> new RuntimeException("Assignment Type is not set"));
         String assignmentName = ipAddressAssignmentWizardProperties.getAssignmentName().
                 orElseThrow(() -> new RuntimeException("Assignment Name is not set"));
-        assignmentStep.setComponentValue(ASSIGNMENT_TYPE_COMPONENT_ID, assignmentType, COMBOBOX);
+        getWizard().setComponentValue(ASSIGNMENT_TYPE_COMPONENT_ID, assignmentType, COMBOBOX);
         DelayUtils.waitForPageToLoad(driver, wait);
         switch (assignmentType){
             case INTERFACE:
-                assignmentStep.getComponent(SEARCH_INTERFACE_COMPONENT_ID, SEARCH_FIELD).setValueContains(Data.createFindFirst(assignmentName));
+                getWizard().getComponent(SEARCH_INTERFACE_COMPONENT_ID, SEARCH_FIELD).setValueContains(Data.createFindFirst(assignmentName));
                 break;
             case PHYSICAL_DEVICE:
-                assignmentStep.getComponent(SEARCH_PHYSICAL_DEVICE_COMPONENT_ID, SEARCH_FIELD).setValueContains(Data.createFindFirst(assignmentName));
+                getWizard().getComponent(SEARCH_PHYSICAL_DEVICE_COMPONENT_ID, SEARCH_FIELD).setValueContains(Data.createFindFirst(assignmentName));
                 break;
             case CARD:
-                assignmentStep.getComponent(SEARCH_CARD_COMPONENT_ID, SEARCH_FIELD).setValueContains(Data.createFindFirst(assignmentName));
+                getWizard().getComponent(SEARCH_CARD_COMPONENT_ID, SEARCH_FIELD).setValueContains(Data.createFindFirst(assignmentName));
                 break;
             case LOGICAL_FUNCTION:
-                assignmentStep.getComponent(SEARCH_LOGICAL_FUNCTION_COMPONENT_ID, SEARCH_FIELD).setValueContains(Data.createFindFirst(assignmentName));
+                getWizard().getComponent(SEARCH_LOGICAL_FUNCTION_COMPONENT_ID, SEARCH_FIELD).setValueContains(Data.createFindFirst(assignmentName));
                 break;
         }
         DelayUtils.waitForPageToLoad(driver, wait);
-        assignmentStep.clickNext();
+        getWizard().clickNext();
     }
 
     @Step("Assign IP Address Opposite assignment Step")
     private void assignIPAddressOppositeAssignmentStep(IPAddressAssignmentWizardProperties oppositeIpAddressAssignmentWizardProperties){
         DelayUtils.waitForPageToLoad(driver, wait);
-        Wizard oppositeAssignmentStep = getWizard();
         oppositeIpAddressAssignmentWizardProperties.getAddress()
-                .ifPresent(address -> oppositeAssignmentStep.setComponentValue(IP_ADDRESS_OPPOSTE_ASSIGNMENT_STEP_COMPONENT_ID, address, SEARCH_FIELD));
+                .ifPresent(address -> getWizard().setComponentValue(IP_ADDRESS_OPPOSTE_ASSIGNMENT_STEP_COMPONENT_ID, address, SEARCH_FIELD));
         oppositeIpAddressAssignmentWizardProperties.isPrimary()
-                .ifPresent(isPrimary -> oppositeAssignmentStep.setComponentValue(IS_PRIMARY_OPPOSTE_ASSIGNMENT_STEP_COMPONENT_ID, isPrimary, CHECKBOX));
+                .ifPresent(isPrimary -> getWizard().setComponentValue(IS_PRIMARY_OPPOSTE_ASSIGNMENT_STEP_COMPONENT_ID, isPrimary, CHECKBOX));
         oppositeIpAddressAssignmentWizardProperties.isInNAT()
-                .ifPresent(isInNAT -> oppositeAssignmentStep.setComponentValue(IS_IN_NAT_OPPOSTE_ASSIGNMENT_STEP_COMPONENT_ID, isInNAT, CHECKBOX));
+                .ifPresent(isInNAT -> getWizard().setComponentValue(IS_IN_NAT_OPPOSTE_ASSIGNMENT_STEP_COMPONENT_ID, isInNAT, CHECKBOX));
         oppositeIpAddressAssignmentWizardProperties.getRole()
-                .ifPresent(role -> oppositeAssignmentStep.setComponentValue(ROLE_OPPOSTE_ASSIGNMENT_STEP_COMPONENT_ID, role, SEARCH_FIELD));
+                .ifPresent(role -> getWizard().setComponentValue(ROLE_OPPOSTE_ASSIGNMENT_STEP_COMPONENT_ID, role, SEARCH_FIELD));
         oppositeIpAddressAssignmentWizardProperties.getDescription()
-                .ifPresent(description -> oppositeAssignmentStep.setComponentValue(DESCRIPTION_OPPOSTE_ASSIGNMENT_STEP_COMPONENT_ID, description, TEXT_AREA));
+                .ifPresent(description -> getWizard().setComponentValue(DESCRIPTION_OPPOSTE_ASSIGNMENT_STEP_COMPONENT_ID, description, TEXT_AREA));
         DelayUtils.waitForPageToLoad(driver, wait);
-        oppositeAssignmentStep.clickNext();
+        getWizard().clickNext();
     }
 
     @Step("Assign IP Address Summary Step")
     private void assignIPAddressSummaryStep(){
-        Wizard summaryStep = Wizard.createWizard(driver, wait);
         DelayUtils.waitForPageToLoad(driver, wait);
-        summaryStep.clickAccept();
-        summaryStep.waitToClose();
+        getWizard().clickAccept();
     }
 
     private Wizard getWizard() {

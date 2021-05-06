@@ -1,26 +1,18 @@
 package com.oss.ThreeUKProject;
 
 import com.oss.BaseTestCase;
-import com.oss.configuration.Configuration;
 import com.oss.framework.alerts.SystemMessageContainer;
-import com.oss.framework.alerts.SystemMessageInterface;
-import com.oss.framework.listwidget.CommonList;
 import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tabswidget.TabWindowWidget;
 import com.oss.framework.widgets.tabswidget.TabsInterface;
-import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.physical.LocationOverviewPage;
 import com.oss.pages.physical.LocationOverviewPage.TabName;
 import com.oss.pages.physical.LocationWizardPage;
-import com.oss.pages.platform.GlobalSearchPage;
 import com.oss.pages.platform.HomePage;
-import com.oss.pages.platform.OldInventoryViewPage;
-import com.oss.pages.radio.*;
+import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
 import com.oss.repositories.*;
-import com.oss.services.ResourceCatalogClient;
-import com.oss.untils.Constants;
 import com.oss.untils.Environment;
 import com.oss.utils.RandomGenerator;
 import com.oss.utils.TestListener;

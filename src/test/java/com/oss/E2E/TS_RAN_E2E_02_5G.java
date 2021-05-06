@@ -13,7 +13,7 @@ import com.oss.framework.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.NewInventoryViewPage;
-import com.oss.pages.platform.OldInventoryViewPage;
+import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
 import com.oss.pages.radio.AntennaArrayWizardPage;
 import com.oss.pages.radio.CableWizardPage;
 import com.oss.pages.radio.CellSiteConfigurationPage;
