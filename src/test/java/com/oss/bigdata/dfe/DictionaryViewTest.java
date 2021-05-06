@@ -2,7 +2,6 @@ package com.oss.bigdata.dfe;
 
 import com.oss.BaseTestCase;
 import com.oss.pages.bigdata.dfe.dictionary.DictionaryPage;
-import com.oss.pages.bigdata.dfe.dictionary.DictionaryPopupPage;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 import org.slf4j.Logger;
@@ -29,7 +28,7 @@ public class DictionaryViewTest extends BaseTestCase {
     private String updatedDictionaryName;
 
     @BeforeClass
-    public void goToDictionaryView(){
+    public void goToDictionaryView() {
         dictionaryPage = DictionaryPage.goToPage(driver, BASIC_URL);
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy_MM_dd");
@@ -38,22 +37,22 @@ public class DictionaryViewTest extends BaseTestCase {
         updatedDictionaryName = dictionaryName + "_updated";
     }
 
-    @Test(priority = 1)
+    @Test(priority = 1, testName = "Add new Dictionary")
     @Description("Add new Dictionary")
-    public void addDictionary(){
+    public void addDictionary() {
         dictionaryPage.clickAddNewDictionary();
         dictionaryPage.getDictionaryPopup().fillDictionaryPopup(dictionaryName, DICTIONARY_DESCRIPTION);
-        dictionaryPage.getEntryPopup().clickSave();
+        dictionaryPage.getDictionaryPopup().clickSave();
         Boolean dictionaryIsCreated = dictionaryPage.dictionaryExistsIntoTable(dictionaryName);
 
         Assert.assertTrue(dictionaryIsCreated);
     }
 
-    @Test(priority = 2)
+    @Test(priority = 2, testName = "Create Entries")
     @Description("Create Entries")
-    public void createEntries(){
+    public void createEntries() {
         Boolean dictionaryExists = dictionaryPage.dictionaryExistsIntoTable(dictionaryName);
-        if(dictionaryExists){
+        if (dictionaryExists) {
             dictionaryPage.selectFoundDictionary();
             dictionaryPage.selectTab(ENTRIES_TAB);
             dictionaryPage.clickAddNewEntry();
@@ -68,11 +67,11 @@ public class DictionaryViewTest extends BaseTestCase {
         }
     }
 
-    @Test(priority = 3)
+    @Test(priority = 3, testName = "Delete Entries")
     @Description("Delete Entries")
-    public void deleteEntries(){
+    public void deleteEntries() {
         Boolean entryExists = dictionaryPage.entryExistsIntoTable(ENTRIES_KEY);
-        if(entryExists){
+        if (entryExists) {
             dictionaryPage.clickDeleteEntry();
             dictionaryPage.confirmDelete();
             Boolean entryDeleted = dictionaryPage.entryDeletedFromTable();
@@ -86,11 +85,11 @@ public class DictionaryViewTest extends BaseTestCase {
         }
     }
 
-    @Test(priority = 4, enabled = false)
+    @Test(priority = 4, testName = "Edit Dictionary", enabled = false)
     @Description("Edit Dictionary")
-    public void editDictionary(){
+    public void editDictionary() {
         Boolean dictionaryExists = dictionaryPage.dictionaryExistsIntoTable(dictionaryName);
-        if(dictionaryExists){
+        if (dictionaryExists) {
             dictionaryPage.selectFoundDictionary();
             dictionaryPage.clickEditDictionary();
             dictionaryPage.getDictionaryPopup().fillName(updatedDictionaryName);
@@ -105,11 +104,11 @@ public class DictionaryViewTest extends BaseTestCase {
         }
     }
 
-    @Test(priority = 5)
+    @Test(priority = 5, testName = "Delete Dictionary")
     @Description("Delete Dictionary")
-    public void deleteDictionary(){
+    public void deleteDictionary() {
         Boolean dictionaryExists = dictionaryPage.dictionaryExistsIntoTable(dictionaryName);
-        if(dictionaryExists){
+        if (dictionaryExists) {
             dictionaryPage.selectFoundDictionary();
             dictionaryPage.clickDeleteDictionary();
             dictionaryPage.confirmDelete();

@@ -15,4 +15,9 @@
             <class name="com.oss.bigdata.dfe.DictionaryViewTest"/>
         </classes>
     </test>
+    <test name="ExternalResourcesTest">
+        <classes>
+            <class name="com.oss.bigdata.dfe.ExternalResourcesTest"/>
+        </classes>
+    </test>
 </suite>

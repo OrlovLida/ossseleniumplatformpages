@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 public class DictionaryPage extends BaseDfePage {
 
     private static final Logger log = LoggerFactory.getLogger(DictionaryPage.class);
-    private OldActionsContainer actionsContainer;
 
     private static final String TABLE_ID = "dictionariesAppId";
     private static final String KEY_CELL_ID = "1_keyId";
@@ -85,7 +84,7 @@ public class DictionaryPage extends BaseDfePage {
         getTable(driver, wait).selectRow(0);
     }
 
-    @Step("I confirm the removal of Dictionary")
+    @Step("I confirm the removal")
     public void confirmDelete() {
         ConfirmationBox confirmationBox = ConfirmationBox.create(driver, wait);
         confirmationBox.clickButtonByLabel(DELETE_LABEL);

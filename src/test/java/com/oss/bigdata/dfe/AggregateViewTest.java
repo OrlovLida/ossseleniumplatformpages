@@ -32,7 +32,7 @@ public class AggregateViewTest extends BaseTestCase {
 
 
     @BeforeClass
-    public void goToAggregateView(){
+    public void goToAggregateView() {
         aggregatePage = AggregatePage.goToPage(driver, BASIC_URL);
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy_MM_dd");
@@ -41,9 +41,9 @@ public class AggregateViewTest extends BaseTestCase {
         updatedAggregateName = aggregateName + "_updated";
     }
 
-    @Test(priority = 1)
+    @Test(priority = 1, testName = "Add new Aggregate")
     @Description("Add new Aggregate")
-    public void addAggregate(){
+    public void addAggregate() {
         aggregatePage.clickAddNewAggregate();
         WebDriverWait wait = new WebDriverWait(driver, 45);
         AggregateStepWizardPage aggregateStepWizard = new AggregateStepWizardPage(driver, wait);
@@ -62,11 +62,11 @@ public class AggregateViewTest extends BaseTestCase {
         Assert.assertTrue(aggregateIsCreated);
     }
 
-    @Test(priority = 2)
+    @Test(priority = 2, testName = "Edit Aggregate")
     @Description("Edit Aggregate")
-    public void editAggregate(){
+    public void editAggregate() {
         Boolean aggregateExists = aggregatePage.aggregateExistsIntoTable(aggregateName);
-        if(aggregateExists){
+        if (aggregateExists) {
             aggregatePage.selectFoundAggregate();
             aggregatePage.clickEditAggregate();
 
@@ -88,7 +88,7 @@ public class AggregateViewTest extends BaseTestCase {
         }
     }
 
-    @Test(priority = 3)
+    @Test(priority = 3, testName = "Delete Aggregate")
     @Description("Delete Aggregate")
     public void deleteAggregate(){
         boolean aggregateExists = aggregatePage.aggregateExistsIntoTable(updatedAggregateName);
