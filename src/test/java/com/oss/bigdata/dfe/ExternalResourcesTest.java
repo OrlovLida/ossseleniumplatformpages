@@ -46,7 +46,7 @@ public class ExternalResourcesTest extends BaseTestCase {
         Assert.assertTrue(externalResourceIsCreated);
     }
 
-    @Test(priority = 2, testName = "Edit External Resource", enabled = false)
+    @Test(priority = 2, testName = "Edit External Resource", description = "Edit External Resource", enabled = false)
     @Description("Edit External Resource")
     public void editExternalResource() {
         Boolean externalResourceExists = externalResource.externalResourceExistsIntoTable(externalResourceName);

@@ -41,7 +41,7 @@ public class AggregateViewTest extends BaseTestCase {
         updatedAggregateName = aggregateName + "_updated";
     }
 
-    @Test(priority = 1, testName = "Add new Aggregate")
+    @Test(priority = 1, testName = "Add new Aggregate", description = "Add new Aggregate")
     @Description("Add new Aggregate")
     public void addAggregate() {
         aggregatePage.clickAddNewAggregate();
@@ -62,7 +62,7 @@ public class AggregateViewTest extends BaseTestCase {
         Assert.assertTrue(aggregateIsCreated);
     }
 
-    @Test(priority = 2, testName = "Edit Aggregate")
+    @Test(priority = 2, testName = "Edit Aggregate", description = "Edit Aggregate")
     @Description("Edit Aggregate")
     public void editAggregate() {
         Boolean aggregateExists = aggregatePage.aggregateExistsIntoTable(aggregateName);
@@ -88,7 +88,7 @@ public class AggregateViewTest extends BaseTestCase {
         }
     }
 
-    @Test(priority = 3, testName = "Delete Aggregate")
+    @Test(priority = 3, testName = "Delete Aggregate", description = "Delete Aggregate")
     @Description("Delete Aggregate")
     public void deleteAggregate(){
         boolean aggregateExists = aggregatePage.aggregateExistsIntoTable(updatedAggregateName);
