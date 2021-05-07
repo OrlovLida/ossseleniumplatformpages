@@ -35,7 +35,7 @@ public class ExternalResourcesTest extends BaseTestCase {
         updatedExternalResourceName = externalResourceName + "_updated";
     }
 
-    @Test(priority = 1, testName = "Add new External Resource", suiteName = "Add new External Resource")
+    @Test(priority = 1, testName = "Add new External Resource", description = "Add new External Resource")
     @Description("Add new External Resource")
     public void addExternalResource() {
         externalResource.clickAddNewExternalResource();
@@ -65,7 +65,7 @@ public class ExternalResourcesTest extends BaseTestCase {
         }
     }
 
-    @Test(priority = 3, testName = "Delete External Resource")
+    @Test(priority = 3, testName = "Delete External Resource", description = "Delete External Resource")
     @Description("Delete External Resource")
     public void deleteExternalResource() {
         Boolean externalResourceExists = externalResource.externalResourceExistsIntoTable(externalResourceName);
