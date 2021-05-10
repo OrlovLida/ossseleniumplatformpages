@@ -1,6 +1,5 @@
 package com.oss.pages.bigdata.dfe.dictionary;
 
-import com.oss.framework.components.contextactions.OldActionsContainer;
 import com.oss.framework.listwidget.EditableList;
 import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
@@ -111,17 +110,8 @@ public class DictionaryPage extends BaseDfePage {
         return getEditableList().isNoData();
     }
 
-    private TabsInterface getActionsInterface() {
-        return TabWindowWidget.create(driver, wait);
-    }
-
     private EditableList getEditableList() {
         return EditableList.create(driver, wait);
-    }
-
-    protected void clickContextActionNew(String actionLabel) {
-        getActionsInterface().callActionByLabel(actionLabel);
-        log.debug("Clicking context action: {}", actionLabel);
     }
 
     protected void clickEditableListAction(String editableListActionLabel) {
@@ -131,7 +121,7 @@ public class DictionaryPage extends BaseDfePage {
 
     @Step("I click add new Entry")
     public void clickAddNewEntry() {
-        clickContextActionNew(ADD_NEW_ENTRY_LABEL);
+        clickTabsContextAction(ADD_NEW_ENTRY_LABEL);
     }
 
     @Step("I click delete Entry")

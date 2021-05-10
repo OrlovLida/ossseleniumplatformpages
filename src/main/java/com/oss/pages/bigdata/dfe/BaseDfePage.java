@@ -5,7 +5,9 @@ import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.SearchField;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.OldTable;
+import com.oss.framework.widgets.tabswidget.TabWindowWidget;
 import com.oss.pages.BasePage;
+import com.oss.pages.bigdata.dfe.dictionary.DictionaryPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
@@ -58,6 +60,8 @@ abstract public class BaseDfePage extends BasePage implements BaseDfePageInterfa
         log.debug("Clicking context action: {}", actionLabel);
     }
 
-
-
+    protected void clickTabsContextAction(String actionLabel) {
+        TabWindowWidget.create(driver, wait).callActionByLabel(actionLabel);
+        log.debug("Clicking context action: {}", actionLabel);
+    }
 }
