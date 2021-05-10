@@ -6,6 +6,11 @@
  */
 package com.oss.pages.bpm;
 
+import java.time.LocalDate;
+import java.util.List;
+
+import org.openqa.selenium.WebDriver;
+
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
 import com.oss.framework.alerts.SystemMessageContainer;
@@ -17,11 +22,6 @@ import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tablewidget.TableInterface;
 import com.oss.pages.BasePage;
-
-import org.openqa.selenium.WebDriver;
-
-import java.time.LocalDate;
-import java.util.List;
 
 import io.qameta.allure.Description;
 
@@ -52,8 +52,16 @@ public class ProcessWizardPage extends BasePage {
     private final static String LATEST = "Latest";
     private final static String NRP = "Network Resource Process";
     private final static String DCP = "Data Correction Process";
-    public final static String PREDEFINED_MILESTONE_LIST = "editMilestonesComponentId";
-    public final static String ADD_MILESTONE_LIST = "addMilestonesComponentId";
+    private final static String PREDEFINED_MILESTONE_LIST = "editMilestonesComponentId";
+    private final static String ADD_MILESTONE_LIST = "addMilestonesComponentId";
+    
+    private final static String BPM_MILESTONE_NAME = "name";
+    private final static String BPM_MILESTONE_DESCRIPTION = "description";
+    private final static String BPM_MILESTONE_LEAD_TIME = "leadTime";
+    private final static String BPM_MILESTONE_DUE_DATE = "dueDate";
+    private final static String BPM_MILESTONE_RELATED_TASK = "relatedTaskIdentifier";
+    private final static String BPM_MILESTONE_IS_ACTIVE = "active";
+    private final static String BPM_MILESTONE_IS_MANUAL_COMPLETION = "isManualCompletion";
     
     public String createSimpleNRP() {
         return createProcess(PROCESS_NAME, (long) 0, NRP);
@@ -77,7 +85,7 @@ public class ProcessWizardPage extends BasePage {
         TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, TABLE_PROCESSES);
         table.callAction("create", "start-process");
         definedBasicProcess(processName, processType, plusDays).clickActionById(CREATE_BUTTON);
-
+        
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, wait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
         String text = messages.get(0).getText();
@@ -109,78 +117,99 @@ public class ProcessWizardPage extends BasePage {
         processWizard.clickActionById(NEXT_BUTTON);
     }
     
-    public void addMilestoneRow(Milestone milestone) {
+    public Milestone addMilestoneRow(Milestone milestone) {
         EditableList addMilestoneList = EditableList.createById(driver, wait, ADD_MILESTONE_LIST);
         EditableList.Row row = addMilestoneList.addRow();
-        row.setEditableAttributeValue(milestone.getName().get(), "name", "name-TEXT_FIELD", Input.ComponentType.TEXT_FIELD);
+        row.setEditableAttributeValue(milestone.getName().get(), BPM_MILESTONE_NAME, "name-TEXT_FIELD", Input.ComponentType.TEXT_FIELD);
         
         if (milestone.getDueDate().isPresent()) {
-            row.setEditableAttributeValue(milestone.getDueDate().get(), "dueDate", "dueDate-DATE", Input.ComponentType.DATE);
+            row.setEditableAttributeValue(milestone.getDueDate().get(), BPM_MILESTONE_DUE_DATE, "dueDate-DATE", Input.ComponentType.DATE);
             
         }
         if (milestone.getLeadTime().isPresent()) {
-            row.setEditableAttributeValue(milestone.getLeadTime().get(), "leadTime", "leadTime-NUMBER_FIELD",
+            row.setEditableAttributeValue(milestone.getLeadTime().get(), BPM_MILESTONE_LEAD_TIME, "leadTime-NUMBER_FIELD",
                     Input.ComponentType.NUMBER_FIELD);
             
         }
         if (milestone.getDescription().isPresent()) {
-            row.setEditableAttributeValue(milestone.getDescription().get(), "description", "description-TEXT_FIELD",
+            row.setEditableAttributeValue(milestone.getDescription().get(), BPM_MILESTONE_DESCRIPTION, "description-TEXT_FIELD",
                     Input.ComponentType.TEXT_FIELD);
         }
         if (milestone.getRelatedTask().isPresent()) {
-            row.setEditableAttributeValue(milestone.getRelatedTask().get(), "relatedTaskIdentifier", "relatedTaskIdentifier-COMBOBOX",
+            row.setEditableAttributeValue(milestone.getRelatedTask().get(), BPM_MILESTONE_RELATED_TASK, "relatedTaskIdentifier-COMBOBOX",
                     Input.ComponentType.COMBOBOX);
         }
         if (milestone.getIsActive().isPresent()) {
-            row.setEditableAttributeValue(milestone.getIsActive().get(), "active", "active-CHECKBOX", Input.ComponentType.CHECKBOX);
+            row.setEditableAttributeValue(milestone.getIsActive().get(), BPM_MILESTONE_IS_ACTIVE, "active-CHECKBOX", Input.ComponentType.CHECKBOX);
             
         }
         if (milestone.getIsManualCompletion().isPresent()) {
-            row.setEditableAttributeValue(milestone.getIsManualCompletion().get(), "isManualCompletion", "isManualCompletion-CHECKBOX",
+            row.setEditableAttributeValue(milestone.getIsManualCompletion().get(), BPM_MILESTONE_IS_MANUAL_COMPLETION, "isManualCompletion-CHECKBOX",
                     Input.ComponentType.CHECKBOX);
         }
+        return getMilestoneFromRow(addMilestoneList, addMilestoneList.getVisibleRows().size() - 1);
     }
     
-    public void editPredefinedMilestone(Milestone milestone, int row) {
+    public Milestone editPredefinedMilestone(Milestone milestone, int row) {
         EditableList predefinedMilestoneList = getPredefinedList();
-        EditableList.Row predefineMilestoneRow = predefinedMilestoneList.getVisibleRows().get(row);
+        EditableList.Row predefineMilestoneRow = predefinedMilestoneList.selectRow(row - 1);
+        
         if (milestone.getName().isPresent()) {
-            predefineMilestoneRow.setEditableAttributeValue(milestone.getName().get(), "name", "name-TEXT_FIELD",
+            predefineMilestoneRow.setEditableAttributeValue(milestone.getName().get(), BPM_MILESTONE_NAME, "name-TEXT_FIELD",
                     Input.ComponentType.TEXT_FIELD);
         }
+        
         if (milestone.getDueDate().isPresent()) {
-            predefineMilestoneRow.setEditableAttributeValue(milestone.getDueDate().get(), "dueDate", "dueDate-DATE",
+            predefineMilestoneRow.setEditableAttributeValue(milestone.getDueDate().get(), BPM_MILESTONE_DUE_DATE, "dueDate-DATE",
                     Input.ComponentType.DATE);
         }
         if (milestone.getLeadTime().isPresent()) {
-            predefineMilestoneRow.setEditableAttributeValue(milestone.getLeadTime().get(), "leadTime", "leadTime-NUMBER_FIELD",
+            predefineMilestoneRow.setEditableAttributeValue(milestone.getLeadTime().get(), BPM_MILESTONE_LEAD_TIME, "leadTime-NUMBER_FIELD",
                     Input.ComponentType.NUMBER_FIELD);
         }
         if (milestone.getDescription().isPresent()) {
-            predefineMilestoneRow.setEditableAttributeValue(milestone.getDescription().get(), "description", "description-TEXT_FIELD",
+            predefineMilestoneRow.setEditableAttributeValue(milestone.getDescription().get(), BPM_MILESTONE_DESCRIPTION, "description-TEXT_FIELD",
                     Input.ComponentType.TEXT_FIELD);
         }
         if (milestone.getRelatedTask().isPresent()) {
-            if (milestone.getRelatedTask().get().equals("")){
-                predefineMilestoneRow.clearValue("relatedTaskIdentifier","relatedTaskIdentifier-COMBOBOX", Input.ComponentType.COMBOBOX);
-            }
-            else {
-                predefineMilestoneRow.setEditableAttributeValue(milestone.getRelatedTask().get(), "relatedTaskIdentifier",
+            if (milestone.getRelatedTask().get().equals("")) {
+                predefineMilestoneRow.clearValue(BPM_MILESTONE_RELATED_TASK, "relatedTaskIdentifier-COMBOBOX", Input.ComponentType.COMBOBOX);
+            } else {
+                predefineMilestoneRow.setEditableAttributeValue(milestone.getRelatedTask().get(), BPM_MILESTONE_RELATED_TASK,
                         "relatedTaskIdentifier-COMBOBOX",
                         Input.ComponentType.COMBOBOX);
             }
         }
         if (milestone.getIsActive().isPresent()) {
-            predefineMilestoneRow.setEditableAttributeValue(milestone.getIsActive().get(), "active", "active-CHECKBOX",
+            predefineMilestoneRow.setEditableAttributeValue(milestone.getIsActive().get(), BPM_MILESTONE_IS_ACTIVE, "active-CHECKBOX",
                     Input.ComponentType.CHECKBOX);
             
         }
         if (milestone.getIsManualCompletion().isPresent()) {
-            predefineMilestoneRow.setEditableAttributeValue(milestone.getIsManualCompletion().get(), "isManualCompletion",
+            predefineMilestoneRow.setEditableAttributeValue(milestone.getIsManualCompletion().get(), BPM_MILESTONE_IS_MANUAL_COMPLETION,
                     "isManualCompletion-CHECKBOX",
                     Input.ComponentType.CHECKBOX);
         }
-
+        return getMilestoneFromRow(predefinedMilestoneList, row - 1);
+        
+    }
+    
+    private Milestone getMilestoneFromRow(EditableList list, int row) {
+        String name = list.selectRow(row).getAttributeValue(BPM_MILESTONE_NAME);
+        String dueDate = list.selectRow(row).getAttributeValue(BPM_MILESTONE_DUE_DATE);
+        String leadTime = list.selectRow(row).getAttributeValue(BPM_MILESTONE_LEAD_TIME);
+        String description = list.selectRow(row).getAttributeValue(BPM_MILESTONE_DESCRIPTION);
+        String relatedTask = list.selectRow(row).getAttributeValue(BPM_MILESTONE_RELATED_TASK);
+        String isActive = list.selectRow(row).getAttributeValue(BPM_MILESTONE_IS_ACTIVE);
+        String isManualCompletion = list.selectRow(row).getAttributeValue(BPM_MILESTONE_IS_MANUAL_COMPLETION);
+        return Milestone.builder().setName(name)
+                .setDueDate(dueDate)
+                .setLeadTime(leadTime)
+                .setDescription(description)
+                .setRelatedTask(relatedTask)
+                .setIsActive(isActive)
+                .setIsManualCompletion(isManualCompletion)
+                .build();
     }
     
     private Wizard definedBasicProcess(String processName, String processType, Long plusDays) {
@@ -201,19 +230,16 @@ public class ProcessWizardPage extends BasePage {
         Wizard wizardSecondStep = Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2);
         Input processNameTextField = wizardSecondStep.getComponent(PROCESS_NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD);
         processNameTextField.setSingleStringValue(processName);
-        if (driver.getPageSource().contains("Finished Due Date")) {
+        if (driver.getPageSource().contains("FINISHED_DUE_DATE")) {
             Input finishedDueDate = wizardSecondStep.getComponent(FINISH_DUE_DATE_ID, Input.ComponentType.DATE);
             finishedDueDate.setSingleStringValue(LocalDate.now().plusDays(plusDays).toString());
         }
         return Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2);
     }
     
-    public String clickAcceptButton() {
+    public void clickAcceptButton() {
         Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2).clickActionById(CREATE_BUTTON);
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, wait);
-        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        String text = messages.get(0).getText();
-        return extractProcessCode(text);
+        
     }
     
     public void clickCancelButton() {
@@ -225,7 +251,7 @@ public class ProcessWizardPage extends BasePage {
     }
     
     private String extractProcessCode(String message) {
-        Iterable<String> messageParts= Splitter.on(CharMatcher.anyOf("() ")).split(message);
+        Iterable<String> messageParts = Splitter.on(CharMatcher.anyOf("() ")).split(message);
         for (String part: messageParts) {
             if (part.startsWith("NRP-") || part.startsWith("DCP-")
                     || part.startsWith("IP-") || part.startsWith("DRP-")) {
