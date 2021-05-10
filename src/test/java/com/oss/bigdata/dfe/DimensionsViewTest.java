@@ -37,7 +37,7 @@ public class DimensionsViewTest extends BaseTestCase {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy_MM_dd");
         String date = simpleDateFormat.format(new Date());
-        dimensionName = "Selenium_" + date + "_AggrTest";
+        dimensionName = "Selenium_" + date + "_DimTest";
         updatedDimensionName = dimensionName + "_updated";
     }
 
@@ -59,9 +59,32 @@ public class DimensionsViewTest extends BaseTestCase {
         Boolean dimensionIsCreated = dimensionsPage.dimensionExistsIntoTable(dimensionName);
 
         if(!dimensionIsCreated){
-            log.info("Cannot find created dimension configuration");
+            log.info("Cannot find created dimension");
         }
         Assert.assertTrue(dimensionIsCreated);
     }
+    @Test(priority = 2, testName = "Edit Dimension", enabled = false)
+    @Description("Edit Dimension")
+    public void editDimension() {
+        Boolean dimensionExists = dimensionsPage.dimensionExistsIntoTable(dimensionName);
+        if (dimensionExists) {
+            dimensionsPage.selectFoundDimension();
+            dimensionsPage.clickEditDimension();
+            WebDriverWait wait = new WebDriverWait(driver, 45);
+            DimensionsStepWizardPage dimensionStepWizard = new DimensionsStepWizardPage(driver, wait);
+            dimensionStepWizard.getBasicInformationStep().fillName(updatedDimensionName);
+            dimensionStepWizard.clickNextStep();
+            dimensionStepWizard.clickNextStep();
+            dimensionStepWizard.clickNextStep();
+            dimensionStepWizard.clickNextStep();
+            dimensionStepWizard.clickAccept();
+            Boolean dimensionIsCreated = dimensionsPage.dimensionExistsIntoTable(updatedDimensionName);
 
+            Assert.assertTrue(dimensionIsCreated);
+
+        } else {
+            log.error("Dimension with name: {} doesn't exist", updatedDimensionName);
+            Assert.fail();
+        }
+    }
 }

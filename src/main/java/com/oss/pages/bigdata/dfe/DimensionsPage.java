@@ -57,6 +57,11 @@ public class DimensionsPage extends BaseDfePage {
         return numberOfRowsInTable == 1;
     }
 
+    @Step("I select found Dimension")
+    public void selectFoundDimension() {
+        getTable(driver, wait).selectRow(0);
+    }
+
     @Override
     public String getTableId() {
         return TABLE_ID;
