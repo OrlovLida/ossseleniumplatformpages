@@ -41,7 +41,7 @@ public class DimensionsViewTest extends BaseTestCase {
         updatedDimensionName = dimensionName + "_updated";
     }
 
-    @Test(priority = 1, testName = "Add new Dimension")
+    @Test(priority = 1, testName = "Add new Dimension", description = "Add new Dimension")
     @Description("Add new Dimension")
     public void addDimension() {
         dimensionsPage.clickAddNewDimension();
@@ -53,24 +53,25 @@ public class DimensionsViewTest extends BaseTestCase {
         dimensionStepWizard.clickNextStep();
         dimensionStepWizard.getTransformationsStep().fillTransformationsStep(TRANSFORMATION_TYPE_NAME);
         dimensionStepWizard.clickNextStep();
-        dimensionStepWizard.getDimensionColumnMappingStep().fillDimensionColumnMappingStep("STIME","Primary Key");
+        dimensionStepWizard.getDimensionColumnMappingStep().fillDimensionColumnMappingStep("STIME", "Primary Key");
         dimensionStepWizard.clickNextStep();
         dimensionStepWizard.clickAccept();
         Boolean dimensionIsCreated = dimensionsPage.dimensionExistsIntoTable(dimensionName);
 
-        if(!dimensionIsCreated){
+        if (!dimensionIsCreated) {
             log.info("Cannot find created dimension");
         }
         Assert.assertTrue(dimensionIsCreated);
     }
-    @Test(priority = 2, testName = "Edit Dimension", enabled = false)
+
+    @Test(priority = 2, testName = "Edit Dimension", description = "Edit Dimension", enabled = false)
     @Description("Edit Dimension")
     public void editDimension() {
         Boolean dimensionExists = dimensionsPage.dimensionExistsIntoTable(dimensionName);
         if (dimensionExists) {
             dimensionsPage.selectFoundDimension();
             dimensionsPage.clickEditDimension();
-            WebDriverWait wait = new WebDriverWait(driver, 45);
+            WebDriverWait wait = new WebDriverWait(driver, 65);
             DimensionsStepWizardPage dimensionStepWizard = new DimensionsStepWizardPage(driver, wait);
             dimensionStepWizard.getBasicInformationStep().fillName(updatedDimensionName);
             dimensionStepWizard.clickNextStep();
@@ -84,6 +85,23 @@ public class DimensionsViewTest extends BaseTestCase {
 
         } else {
             log.error("Dimension with name: {} doesn't exist", updatedDimensionName);
+            Assert.fail();
+        }
+    }
+
+    @Test(priority = 3, testName = "Delete Dimension", description = "Delete Dimension")
+    @Description("Delete Dimension")
+    public void deleteDimension() {
+        Boolean dimensionExists = dimensionsPage.dimensionExistsIntoTable(dimensionName);
+        if (dimensionExists) {
+            dimensionsPage.selectFoundDimension();
+            dimensionsPage.clickDeleteDimension();
+            dimensionsPage.confirmDelete();
+            Boolean dimensionDeleted = !dimensionsPage.dimensionExistsIntoTable(dimensionName);
+
+            Assert.assertTrue(dimensionDeleted);
+        } else {
+            log.error("Dimension with name: {} was not deleted", dimensionName);
             Assert.fail();
         }
     }

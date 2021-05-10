@@ -1,5 +1,6 @@
 package com.oss.pages.bigdata.dfe;
 
+import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
@@ -19,6 +20,7 @@ public class DimensionsPage extends BaseDfePage {
     private final String SEARCH_INPUT_ID = "dimension-listSearchAppId";
 
     private final String NAME_COLUMN_LABEL = "Name";
+    private final String DELETE_LABEL = "Delete";
 
     private DimensionsPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -60,6 +62,12 @@ public class DimensionsPage extends BaseDfePage {
     @Step("I select found Dimension")
     public void selectFoundDimension() {
         getTable(driver, wait).selectRow(0);
+    }
+
+    @Step("I confirm the removal")
+    public void confirmDelete() {
+        ConfirmationBox confirmationBox = ConfirmationBox.create(driver, wait);
+        confirmationBox.clickButtonByLabel(DELETE_LABEL);
     }
 
     @Override
