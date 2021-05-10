@@ -10,16 +10,12 @@ import org.testng.annotations.Test;
 
 import com.google.common.collect.Multimap;
 import com.oss.BaseTestCase;
-import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.Input.ComponentType;
 import com.oss.framework.mainheader.LoginPanel;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.propertypanel.PropertiesFilter;
 import com.oss.framework.widgets.propertypanel.PropertyPanel;
-import com.oss.framework.widgets.tablewidget.TableInterface;
 import com.oss.framework.widgets.tablewidget.TableRow;
 import com.oss.framework.widgets.tablewidget.TableWidget;
-import com.oss.framework.widgets.tabswidget.TabsWidget;
 import com.oss.pages.platform.NewInventoryViewPage;
 
 public class InventoryViewTest extends BaseTestCase {
