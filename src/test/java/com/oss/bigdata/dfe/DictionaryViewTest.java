@@ -37,7 +37,7 @@ public class DictionaryViewTest extends BaseTestCase {
         updatedDictionaryName = dictionaryName + "_updated";
     }
 
-    @Test(priority = 1, testName = "Add new Dictionary")
+    @Test(priority = 1, testName = "Add new Dictionary", description = "Add new Dictionary")
     @Description("Add new Dictionary")
     public void addDictionary() {
         dictionaryPage.clickAddNewDictionary();
@@ -48,7 +48,7 @@ public class DictionaryViewTest extends BaseTestCase {
         Assert.assertTrue(dictionaryIsCreated);
     }
 
-    @Test(priority = 2, testName = "Create Entries")
+    @Test(priority = 2, testName = "Create Entries", description = "Create Entries")
     @Description("Create Entries")
     public void createEntries() {
         Boolean dictionaryExists = dictionaryPage.dictionaryExistsIntoTable(dictionaryName);
@@ -67,7 +67,7 @@ public class DictionaryViewTest extends BaseTestCase {
         }
     }
 
-    @Test(priority = 3, testName = "Delete Entries")
+    @Test(priority = 3, testName = "Delete Entries", description = "Delete Entries")
     @Description("Delete Entries")
     public void deleteEntries() {
         Boolean entryExists = dictionaryPage.entryExistsIntoTable(ENTRIES_KEY);
@@ -85,7 +85,7 @@ public class DictionaryViewTest extends BaseTestCase {
         }
     }
 
-    @Test(priority = 4, testName = "Edit Dictionary", enabled = false)
+    @Test(priority = 4, testName = "Edit Dictionary", description = "Edit Dictionary", enabled = false)
     @Description("Edit Dictionary")
     public void editDictionary() {
         Boolean dictionaryExists = dictionaryPage.dictionaryExistsIntoTable(dictionaryName);
@@ -104,7 +104,7 @@ public class DictionaryViewTest extends BaseTestCase {
         }
     }
 
-    @Test(priority = 5, testName = "Delete Dictionary")
+    @Test(priority = 5, testName = "Delete Dictionary", description = "Delete Dictionary")
     @Description("Delete Dictionary")
     public void deleteDictionary() {
         Boolean dictionaryExists = dictionaryPage.dictionaryExistsIntoTable(dictionaryName);
