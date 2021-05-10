@@ -67,7 +67,7 @@ public class IRBInterfaceTest extends BaseTestCase {
     @Test(priority = 3)
     @Description("Create new IRB Interface")
     public void createNewIRBInterface() {
-        homePage.goToHomePage(driver, BASIC_URL);
+        homePage.goToHomePageWithContext(driver);
         waitForPageToLoad();
         homePage.chooseFromLeftSideMenu("IRB Interface", "Wizards", "Transport");
         IRBInterfaceWizardPage irbInterfaceWizardPage = new IRBInterfaceWizardPage(driver);
@@ -78,7 +78,7 @@ public class IRBInterfaceTest extends BaseTestCase {
     @Test(priority = 4)
     @Description("Checks if IRB Interface is visible in New Inventory View")
     public void checkIRBInterface() {
-        homePage.goToHomePage(driver, BASIC_URL);
+        homePage.goToHomePageWithContext(driver);
         homePage.setNewObjectType(IRB_INTERFACE_SEARCH_NIV);
         waitForPageToLoad();
         newInventoryViewPage.searchObject(IRB_INTERFACE_DEVICE_NAME);

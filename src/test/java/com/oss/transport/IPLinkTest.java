@@ -186,7 +186,7 @@ public class IPLinkTest extends BaseTestCase {
     @Description("Checks if IP Link was created correctly")
     public void checkIPLink() {
         HomePage homePage = new HomePage(driver);
-        homePage.goToHomePage(driver, BASIC_URL);
+        homePage.goToHomePageWithContext(driver);
         homePage.setNewObjectType("Trail");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
@@ -227,7 +227,7 @@ public class IPLinkTest extends BaseTestCase {
     private void openView(String actionLabel, String... path) {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         homePage = new HomePage(driver);
-        homePage.goToHomePage(driver, BASIC_URL);
+        homePage.goToHomePageWithContext(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         homePage.chooseFromLeftSideMenu(actionLabel, path);
     }
