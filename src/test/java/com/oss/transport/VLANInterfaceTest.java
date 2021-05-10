@@ -71,7 +71,7 @@ public class VLANInterfaceTest extends BaseTestCase {
     @Test(priority = 3)
     @Description("Create new VLAN Interface")
     public void createNewVLANInterface() {
-        homePage.goToHomePage(driver, BASIC_URL);
+        homePage.goToHomePageWithContext(driver);
         waitForPageToLoad();
         homePage.chooseFromLeftSideMenu("VLAN Interface", "Wizards", "Transport");
         VLANInterfaceWizardPage vlanInterfaceWizardPage = new VLANInterfaceWizardPage(driver);
@@ -91,7 +91,7 @@ public class VLANInterfaceTest extends BaseTestCase {
     @Test(priority = 4)
     @Description("Check new VLAN Interface")
     public void checkVLANInterface() {
-        homePage.goToHomePage(driver, BASIC_URL);
+        homePage.goToHomePageWithContext(driver);
         homePage.setNewObjectType(VLAN_INTERFACE_SEARCH_NIV);
         waitForPageToLoad();
         newInventoryViewPage.searchObject(DEVICE);

@@ -66,7 +66,7 @@ public class IPPathTest extends BaseTestCase {
     @Test(priority = 3)
     @Description("Create new IP Path")
     public void createNew() {
-        homePage.goToHomePage(driver, BASIC_URL);
+        homePage.goToHomePageWithContext(driver);
         waitForPageToLoad();
         homePage.chooseFromLeftSideMenu("Network View", "Views", "Transport");
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
