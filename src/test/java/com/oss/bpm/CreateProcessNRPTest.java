@@ -108,6 +108,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
         if (driver.getPageSource().contains("Hostname")) {
             deviceWizardPage.setHostname(deviceName1);
         }
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.next();
         deviceWizardPage.setPreciseLocation(" ");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -198,6 +199,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
         if (driver.getPageSource().contains("Hostname")) {
             deviceWizardPage.setHostname(deviceName2);
         }
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.next();
         deviceWizardPage.setPreciseLocation(" ");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
