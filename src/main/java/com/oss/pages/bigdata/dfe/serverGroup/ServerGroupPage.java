@@ -1,6 +1,9 @@
 package com.oss.pages.bigdata.dfe.serverGroup;
 
+import com.oss.framework.listwidget.EditableList;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.tabswidget.TabWindowWidget;
+import com.oss.framework.widgets.tabswidget.TabsInterface;
 import com.oss.pages.bigdata.dfe.BaseDfePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
@@ -15,13 +18,17 @@ public class ServerGroupPage extends BaseDfePage {
     private static final String TABLE_ID = "server-groupAppId";
     private final String SEARCH_INPUT_ID = "server-groupSearchAppId";
     private final String NAME_COLUMN_LABEL = "Name";
+    private final String SERVER_NAME_COLUMN_LABEL = "serverName";
     private final String ADD_NEW_SERVER_GROUP_LABEL = "Add New Server Group";
     private final String EDIT_SERVER_GROUP_LABEL = "Edit Server Group";
+    private final String ADD_NEW_SERVER_LABEL = "Add New Server";
+    private final AddNewServerPopupPage addNewServerPopup;
 
 
     public ServerGroupPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
         serverGroupPopup = new ServerGroupPopupPage(driver, wait);
+        addNewServerPopup = new AddNewServerPopupPage(driver, wait);
     }
 
     private final ServerGroupPopupPage serverGroupPopup;
@@ -52,6 +59,53 @@ public class ServerGroupPage extends BaseDfePage {
     @Step("I click edit Server Group")
     public void clickEditServerGroup() {
         clickContextActionEdit();
+    }
+
+    @Step("I select found Server Group")
+    public void selectFoundServerGroup() {
+        getTable(driver, wait).selectRow(0);
+    }
+
+    @Step("I click Add New Server")
+    public void clickAddNewServer() {
+        clickContextActionNew(ADD_NEW_SERVER_LABEL);
+    }
+
+    private TabsInterface getActionsInterface() {
+        return TabWindowWidget.create(driver, wait);
+    }
+
+    protected void clickContextActionNew(String actionLabel) {
+        getActionsInterface().callActionByLabel(actionLabel);
+        log.debug("Clicking context action: {}", actionLabel);
+    }
+
+    public AddNewServerPopupPage getAddNewServerPopup() {
+        return addNewServerPopup;
+    }
+
+    @Step("I click delete Server Group")
+    public void clickDeleteServerGroup() {
+        clickContextActionDelete();
+    }
+
+    @Step("I click {label} Tab")
+    public void selectTab(String label) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        TabsInterface tab = TabWindowWidget.create(driver, wait);
+        tab.selectTabByLabel(label);
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    @Step("I check if Server: {serverName} exists into the table")
+    public Boolean ServerExistsIntoTable(String serverName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        String textInTable = getEditableList().selectRow(0)
+        return textInTable.equals(serverName);
+    }
+
+    private EditableList getEditableList() {
+        return EditableList.create(driver, wait);
     }
 
 
