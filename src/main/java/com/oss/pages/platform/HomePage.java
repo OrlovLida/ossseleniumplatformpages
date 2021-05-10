@@ -24,7 +24,7 @@ import io.qameta.allure.Step;
 
 public class HomePage extends BasePage {
 
-    private static final Logger log = LoggerFactory.getLogger(BasePage.class);
+    private static final Logger log = LoggerFactory.getLogger(HomePage.class);
     private static final String OLD_OBJECT_TYPE_DATA_ATTRIBUTE_NAME = "SearchUserViewsByType";
     private static final String NEW_OBJECT_TYPE_DATA_ATTRIBUTE_NAME = "SearchGraphqlTypes";
 
