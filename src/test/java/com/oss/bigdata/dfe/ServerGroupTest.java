@@ -58,9 +58,9 @@ public class ServerGroupTest extends BaseTestCase {
             serverGroupPage.getAddNewServerPopup().fillAddNewServerPopup(SERVERS_SERVER_NAME, SERVERS_SERVER_ADDRESS,
                     SERVERS_USER_NAME, SERVERS_PASSWORD, SERVERS_DIRECTORY);
             serverGroupPage.getAddNewServerPopup().clickSave();
-            Boolean isServerAdded = serverGroupPage.ServerExistsIntoTable(SERVERS_SERVER_NAME);
+            String serverName = serverGroupPage.getServerName();
 
-            Assert.assertTrue(isServerAdded);
+            Assert.assertEquals(serverName, SERVERS_SERVER_NAME);
         } else {
             log.error("Server group with name: {} doesn't exist, an not add server", serverGroupName);
             Assert.fail();

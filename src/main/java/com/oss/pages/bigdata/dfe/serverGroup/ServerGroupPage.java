@@ -1,7 +1,7 @@
 package com.oss.pages.bigdata.dfe.serverGroup;
 
-import com.oss.framework.listwidget.EditableList;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tabswidget.TabWindowWidget;
 import com.oss.framework.widgets.tabswidget.TabsInterface;
 import com.oss.pages.bigdata.dfe.BaseDfePage;
@@ -16,10 +16,12 @@ public class ServerGroupPage extends BaseDfePage {
 
     private static final Logger log = LoggerFactory.getLogger(ServerGroupPage.class);
     private static final String TABLE_ID = "server-groupAppId";
+    private static final String SERVERS_TABLE_ID = "server-group/tabs/serversAppId";
     private final String SEARCH_INPUT_ID = "server-groupSearchAppId";
     private final String NAME_COLUMN_LABEL = "Name";
-    private final String SERVER_NAME_COLUMN_LABEL = "serverName";
+    private final String SERVER_NAME_COLUMN_LABEL = "Server Name";
     private final String ADD_NEW_SERVER_GROUP_LABEL = "Add New Server Group";
+    private final String EDIT_SERVER_LABEL = "Edit Server";
     private final String EDIT_SERVER_GROUP_LABEL = "Edit Server Group";
     private final String ADD_NEW_SERVER_LABEL = "Add New Server";
     private final AddNewServerPopupPage addNewServerPopup;
@@ -71,6 +73,15 @@ public class ServerGroupPage extends BaseDfePage {
         clickContextActionNew(ADD_NEW_SERVER_LABEL);
     }
 
+    @Step("I select server")
+    public void selectServer() {
+        OldTable.createByComponentDataAttributeName(driver, wait, SERVERS_TABLE_ID).selectRow(0);
+    }
+
+    public String getServerName() {
+        return OldTable.createByComponentDataAttributeName(driver, wait, SERVERS_TABLE_ID).getCellValue(0,"Server Name");
+    }
+
     private TabsInterface getActionsInterface() {
         return TabWindowWidget.create(driver, wait);
     }
@@ -95,17 +106,6 @@ public class ServerGroupPage extends BaseDfePage {
         TabsInterface tab = TabWindowWidget.create(driver, wait);
         tab.selectTabByLabel(label);
         DelayUtils.waitForPageToLoad(driver, wait);
-    }
-
-    @Step("I check if Server: {serverName} exists into the table")
-    public Boolean ServerExistsIntoTable(String serverName) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        String textInTable = getEditableList().selectRow(0)
-        return textInTable.equals(serverName);
-    }
-
-    private EditableList getEditableList() {
-        return EditableList.create(driver, wait);
     }
 
 
