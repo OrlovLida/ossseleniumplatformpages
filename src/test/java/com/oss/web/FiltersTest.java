@@ -172,6 +172,8 @@ public class FiltersTest extends BaseTestCase {
         filterManagerPage.expandAllCategories()
                 .markAsAFavorite(FILTER_NAME);
         Assert.assertTrue(filterManagerPage.isFilterVisible(FILTER_NAME) && filterManagerPage.isFilterVisible(FILTER2_NAME));
+        Assert.assertTrue(filterManagerPage.isFavorite(FILTER_NAME));
+
     }
 
     @Test(priority = 11)
