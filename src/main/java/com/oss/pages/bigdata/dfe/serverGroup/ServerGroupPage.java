@@ -76,7 +76,7 @@ public class ServerGroupPage extends BaseDfePage {
 
     @Step("I click Add New Server")
     public void clickAddNewServer() {
-        clickContextActionNew(ADD_NEW_SERVER_LABEL);
+        clickTabsContextAction(ADD_NEW_SERVER_LABEL);
     }
 
     public String getServerName() {
@@ -101,12 +101,12 @@ public class ServerGroupPage extends BaseDfePage {
 
     @Step("I click Edit Server")
     public void clickEditServer() {
-        clickContextActionNew(EDIT_SERVER_LABEL);
+        clickTabsContextAction(EDIT_SERVER_LABEL);
     }
 
     @Step("I click Delete Server")
     public void clickDeleteServer() {
-        clickContextActionNew(DELETE_SERVER_LABEL);
+        clickTabsContextAction(DELETE_SERVER_LABEL);
     }
 
     @Step("I confirm the removal")
@@ -125,15 +125,6 @@ public class ServerGroupPage extends BaseDfePage {
     @Step("I click edit Server Group")
     public void clickEditServerGroup() {
         clickContextActionEdit();
-    }
-
-    private TabsInterface getActionsInterface() {
-        return TabWindowWidget.create(driver, wait);
-    }
-
-    protected void clickContextActionNew(String actionLabel) {
-        getActionsInterface().callActionByLabel(actionLabel);
-        log.debug("Clicking context action: {}", actionLabel);
     }
 
     public ServerPopupPage ServerPopup() {
