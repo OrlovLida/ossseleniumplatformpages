@@ -1,4 +1,4 @@
-package com.oss.radio;
+package com.oss.ThreeUKProject;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
@@ -29,7 +29,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
-//BEFORE RUN TESTS CHECK IF USED CARRIER, MCC, MNC, MODELS (FOR API, GUI) EXIST ON THE ENV
 @Listeners({TestListener.class})
 public class Technology4GTests extends BaseTestCase {
 
@@ -63,6 +62,8 @@ public class Technology4GTests extends BaseTestCase {
     private static final String rruDeviceNameForEdit = "RRUForHostRelationSeleniumTests" + (int) (Math.random() * 10000);
     private static final String bbuDeviceNameForEdit = "BBUWithCardForHostRelationSeleniumTests" + (int) (Math.random() * 10000);
     private static final String antennaAHP4517R7v06NameForEdit = "RANAntennaForHostRelationSeleniumTests" + (int) (Math.random() * 10000);
+    private static final String objectTypeENodeB = "eNodeB";
+    private static final String objectTypeCell4G = "Cell 4G";
     private static final String locationTypeSite = "Site";
     private static final String description = "Selenium Test";
     private static final String carrier4G = "L800-B20-5";
@@ -106,21 +107,27 @@ public class Technology4GTests extends BaseTestCase {
         String randomENodeBName = "eNodeBForCreateSeleniumTests" + (int) (Math.random() * 10000);
         String randomENodeBId = RandomGenerator.generateRandomENodeBId();
 
+        homePage.setOldObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", locationName)
+                .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .goToCellSiteConfiguration(driver, BASIC_URL, locationId)
                 .clickPlusIconAndSelectOption("Create eNodeB");
         new ENodeBWizardPage(driver)
-                .createENodeB(randomENodeBName, randomENodeBId, Constants.GENERIC_ENODEB_MODEL, mccMncPrimary);
+                .createENodeB(randomENodeBName, randomENodeBId, Constants.HUAWEI_ENODEB_MODEL, mccMncPrimary);
         Assert.assertTrue(SystemMessageContainer.create(driver, webDriverWait)
                 .getMessages().get(0).getText().contains("Created eNodeB"));
     }
 
     @Test
-    @Description("The user edits the eNodeB in Cell Site Configuration and checks if the description is updated in Base Stations table")
+    @Description("The user searches eNodeB in Inventory View, then edits the eNodeB in Cell Site Configuration and checks if the description is updated in Base Stations table")
     public void tSRAN03ModifyENodeB() {
 
+        homePage.setOldObjectType(objectTypeENodeB);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", eNodeBNameForEdit)
+                .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .goToCellSiteConfiguration(driver, BASIC_URL, locationId)
                 .expandTreeToLocation(locationTypeSite, locationName)
                 .selectTab("Base Stations")
                 .filterObject("Name", eNodeBNameForEdit)
@@ -137,8 +144,11 @@ public class Technology4GTests extends BaseTestCase {
         String randomCell4GName = "Cell4GForCreateSeleniumTests" + (int) (Math.random() * 10000);
         String randomCell4GId = RandomGenerator.generateRandomCell4GId();
 
+        homePage.setOldObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", locationName)
+                .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .goToCellSiteConfiguration(driver, BASIC_URL, locationId)
                 .selectTab("Cells")
                 .clickPlusIconAndSelectOption("Create Cell 4G");
         new Cell4GWizardPage(driver)
@@ -148,11 +158,14 @@ public class Technology4GTests extends BaseTestCase {
     }
 
     @Test
-    @Description("The user edits a Cell 4G in Cell Site Configuration and checks if the description is updated in Cells table")
+    @Description("The user searches Cell 4G in Inventory View, then edits a Cell 4G in Cell Site Configuration and checks if the description is updated in Cells table")
     public void tSRAN05ModifyCell4G() {
 
+        homePage.setOldObjectType(objectTypeCell4G);
+        new OldInventoryViewPage(driver)
+                .filterObject("Cell Name", cell4GNameForEdit)
+                .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .goToCellSiteConfiguration(driver, BASIC_URL, locationId)
                 .expandTreeToBaseStation(locationTypeSite, locationName, eNodeBNameForEdit)
                 .selectTab("Cells")
                 .filterObject("Name", cell4GNameForEdit)
@@ -167,8 +180,11 @@ public class Technology4GTests extends BaseTestCase {
     @Description("The user creates Host Relation between Cell 4G and RRU, RRU port, BBU and BBU card in Cell Site Configuration and checks if new rows are displayed in Hosting table")
     public void tSRAN25CreateHostRelationBetweenCell4GAndRRUBBUCard() {
 
+        homePage.setOldObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", locationName)
+                .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .goToCellSiteConfiguration(driver, BASIC_URL, locationId)
                 .expandTreeToCell(locationTypeSite, locationName, eNodeBNameForEdit, cell4GNameForEdit)
                 .selectTab("Hosting")
                 .clickPlusIconAndSelectOption("Host on Device");
@@ -194,8 +210,11 @@ public class Technology4GTests extends BaseTestCase {
     @Description("The user removes Host Relation between Cell 4G and RRU, RRU port, BBU and BBU card in Cell Site Configuration and checks if new rows are disappeared in Hosting table")
     public void tSRAN26RemoveHostRelationBetweenCell4GAndRRUBBUCard() {
 
+        homePage.setOldObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", locationName)
+                .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .goToCellSiteConfiguration(driver, BASIC_URL, locationId)
                 .expandTreeToCell(locationTypeSite, locationName, eNodeBNameForRemoveHR, cell4GNameForRemoveHRDevice)
                 .selectTab("Hosting")
                 .clearColumnFilter("Hosting Component")
@@ -220,14 +239,14 @@ public class Technology4GTests extends BaseTestCase {
     @Description("The user creates Host Relation between eNodeB and RRU, RRU port, BBU and BBU card in Cell Site Configuration and checks if new rows are displayed in Hosting table")
     public void tSRAN27CreateHostRelationBetweenENodeBAndRRUBBUCard() {
 
+        homePage.setOldObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", locationName)
+                .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .goToCellSiteConfiguration(driver, BASIC_URL, locationId)
                 .expandTreeToBaseStation(locationTypeSite, locationName, eNodeBNameForEdit)
                 .selectTab("Hosting")
                 .useTableContextActionByLabel("Host on Device");
-        new HostingWizardPage(driver)
-                .onlyCompatible("false");
-        DelayUtils.sleep(2000);
         new HostingWizardPage(driver)
                 .setDevice(rruDeviceNameForEdit);
         DelayUtils.sleep(2000);
@@ -250,8 +269,11 @@ public class Technology4GTests extends BaseTestCase {
     @Description("The user removes Host Relation between eNodeB and RRU, RRU port, BBU and BBU card in Cell Site Configuration and checks if new rows are disappeared in Hosting table")
     public void tSRAN28RemoveHostRelationBetweenENodeBAndRRUBBUCard() {
 
+        homePage.setOldObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", locationName)
+                .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .goToCellSiteConfiguration(driver, BASIC_URL, locationId)
                 .expandTreeToBaseStation(locationTypeSite, locationName, eNodeBNameForRemoveHR)
                 .selectTab("Hosting")
                 .clearColumnFilter("Hosting Component")
@@ -276,8 +298,11 @@ public class Technology4GTests extends BaseTestCase {
     @Description("The user creates Host Relation between Cell 4G and RAN Antenna Array in Cell Site Configuration and checks if new row is displayed in Hosting table")
     public void tSRAN29CreateHostRelationBetweenCell4GAndRANAntennaArray() {
 
+        homePage.setOldObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", locationName)
+                .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .goToCellSiteConfiguration(driver, BASIC_URL, locationId)
                 .expandTreeToCell(locationTypeSite, locationName, eNodeBNameForEdit, cell4GNameForEdit)
                 .selectTab("Hosting")
                 .clickPlusIconAndSelectOption("Host on Antenna Array");
@@ -296,8 +321,11 @@ public class Technology4GTests extends BaseTestCase {
     @Description("The user creates Host Relation between Cell 4G and RAN Antenna Array in Cell Site Configuration and checks if new row is displayed in Hosting table")
     public void tSRAN30RemoveHostRelationBetweenCell4GAndRANAntennaArray() {
 
+        homePage.setOldObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", locationName)
+                .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .goToCellSiteConfiguration(driver, BASIC_URL, locationId)
                 .expandTreeToCell(locationTypeSite, locationName, eNodeBNameForRemoveHR, cell4GNameForRemoveHRArray)
                 .selectTab("Hosting")
                 .clearColumnFilter("Hosting Component")
@@ -310,37 +338,41 @@ public class Technology4GTests extends BaseTestCase {
     }
 
     @Test
-    @Description("The user deletes the eNodeB in Cell Site Configuration and checks if row is disappeared in Base Stations table")
+    @Description("The user searches eNodeB in Global Search, then deletes the eNodeB in Cell Site Configuration and checks if search result in Global Search is no data")
     public void tSRAN43RemoveENodeB() {
 
+        homePage.searchInGlobalSearch(eNodeBNameForDelete)
+                .expandShowOnAndChooseView(eNodeBNameForDelete, "NAVIGATION", "Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .goToCellSiteConfiguration(driver, BASIC_URL, locationId)
                 .expandTreeToLocation(locationTypeSite, locationName)
                 .selectTab("Base Stations")
                 .filterObject("Name", eNodeBNameForDelete)
                 .removeObject();
         SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
         systemMessageItem.waitForMessageDisappear();
-        new CellSiteConfigurationPage(driver)
-                .filterObject("Name", eNodeBNameForDelete);
-        Assert.assertTrue(new CellSiteConfigurationPage(driver).hasNoData());
+        homePage.searchInGlobalSearch(eNodeBNameForDelete);
+        CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        Assert.assertTrue(objectsList.isNoData());
     }
 
     @Test
-    @Description("The user deletes the Cell 4G in Cell Site Configuration and checks if row is disappeared in Cells table")
+    @Description("The user searches Cell 4G in Global Search, then deletes the Cell 4G in Cell Site Configuration and checks if search result in Global Search is no data")
     public void tSRAN44RemoveCell4G() {
 
+        homePage.searchInGlobalSearch(cell4GNameForDelete)
+                .expandShowOnAndChooseView(cell4GNameForDelete, "NAVIGATION", "Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .goToCellSiteConfiguration(driver, BASIC_URL, locationId)
                 .expandTreeToBaseStation(locationTypeSite, locationName, eNodeBNameForEdit)
                 .selectTab("Cells")
                 .filterObject("Name", cell4GNameForDelete)
                 .removeObject();
         SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
         systemMessageItem.waitForMessageDisappear();
-        new CellSiteConfigurationPage(driver)
-                .filterObject("Name", cell4GNameForDelete);
-        Assert.assertTrue(new CellSiteConfigurationPage(driver).hasNoData());
+        homePage.searchInGlobalSearch(cell4GNameForDelete);
+        CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        Assert.assertTrue(objectsList.isNoData());
     }
 
     private void getOrCreateAddress() {
@@ -355,7 +387,7 @@ public class Technology4GTests extends BaseTestCase {
 
     private void createENodeB(String eNodeBNameForCreate) {
         Radio4gRepository radio4gRepository = new Radio4gRepository(env);
-        eNodeBId = radio4gRepository.createENodeB(eNodeBNameForCreate, Long.valueOf(locationId), MCC, MNC, Constants.GENERIC_ENODEB_MODEL);
+        eNodeBId = radio4gRepository.createENodeB(eNodeBNameForCreate, Long.valueOf(locationId), MCC, MNC, Constants.HUAWEI_ENODEB_MODEL);
     }
 
     private void createCell4G(String cell4GNameForCreate, String cell4GIdForCreate) {

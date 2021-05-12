@@ -1,4 +1,4 @@
-package com.oss.radio;
+package com.oss.ThreeUKProject;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
@@ -20,15 +20,12 @@ import com.oss.untils.Environment;
 import com.oss.utils.RandomGenerator;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
-
-//BEFORE RUN TESTS CHECK IF USED CARRIER, MCC, MNC, MODELS (FOR API, GUI) EXIST ON THE ENV
 @Listeners({TestListener.class})
 public class Technology3GTests extends BaseTestCase {
 
@@ -66,6 +63,8 @@ public class Technology3GTests extends BaseTestCase {
     private static final String rruDeviceNameForEdit = "RRUForHostRelationSeleniumTests" + (int) (Math.random() * 10000);
     private static final String bbuDeviceNameForEdit = "BBUWithCardForHostRelationSeleniumTests" + (int) (Math.random() * 10000);
     private static final String antennaAHP4517R7v06NameForEdit = "RANAntennaForHostRelationSeleniumTests" + (int) (Math.random() * 10000);
+    private static final String objectTypeNodeB = "NodeB";
+    private static final String objectTypeCell3G = "Cell 3G";
     private static final String locationTypeSite = "Site";
     private static final String description = "Selenium Test";
     private static final String carrier3G = "10564";
@@ -108,21 +107,27 @@ public class Technology3GTests extends BaseTestCase {
         String randomNodeBName = "NodeBForCreateSeleniumTests" + (int) (Math.random() * 10000);
         String randomNodeBId = RandomGenerator.generateRandomENodeBId();
 
+        homePage.setOldObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", locationName)
+                .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .goToCellSiteConfiguration(driver, BASIC_URL, locationId)
                 .clickPlusIconAndSelectOption("Create NodeB");
         new NodeBWizardPage(driver)
-                .createNodeB(randomNodeBName, randomNodeBId, Constants.GENERIC_NODEB_MODEL, rncNameForDelete);
+                .createNodeB(randomNodeBName, randomNodeBId, Constants.HUAWEI_NODEB_MODEL, rncNameForDelete);
         Assert.assertTrue(SystemMessageContainer.create(driver, webDriverWait)
                 .getMessages().get(0).getText().contains("NodeB was created"));
     }
 
     @Test
-    @Description("The user edits the NodeB in Cell Site Configuration and checks if the description is updated in Base Stations table")
+    @Description("The user searches NodeB in Inventory View, then edits the NodeB in Cell Site Configuration and checks if the description is updated in Base Stations table")
     public void tSRAN11ModifyNodeB() {
 
+        homePage.setOldObjectType(objectTypeNodeB);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", nodeBNameForEdit)
+                .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .goToCellSiteConfiguration(driver, BASIC_URL, locationId)
                 .expandTreeToLocation(locationTypeSite, locationName)
                 .selectTab("Base Stations")
                 .filterObject("Name", nodeBNameForEdit)
@@ -139,8 +144,11 @@ public class Technology3GTests extends BaseTestCase {
         String randomCell3GName = "Cell3GForCreateSeleniumTests" + (int) (Math.random() * 10000);
         String randomCell3GId = RandomGenerator.generateRandomCell3GId();
 
+        homePage.setOldObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", locationName)
+                .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .goToCellSiteConfiguration(driver, BASIC_URL, locationId)
                 .selectTab("Cells")
                 .clickPlusIconAndSelectOption("Create Cell 3G");
         new Cell3GWizardPage(driver)
@@ -150,11 +158,14 @@ public class Technology3GTests extends BaseTestCase {
     }
 
     @Test
-    @Description("The user edits a Cell 3G in Cell Site Configuration and checks if the description is updated in Cells table")
+    @Description("The user searches Cell 3G in Inventory View, then edits a Cell 3G in Cell Site Configuration and checks if the description is updated in Cells table")
     public void tSRAN13ModifyCell3G() {
 
+        homePage.setOldObjectType(objectTypeCell3G);
+        new OldInventoryViewPage(driver)
+                .filterObject("Cell Name", cell3GNameForEdit)
+                .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .goToCellSiteConfiguration(driver, BASIC_URL, locationId)
                 .expandTreeToBaseStation(locationTypeSite, locationName, nodeBNameForEdit)
                 .selectTab("Cells")
                 .filterObject("Name", cell3GNameForEdit)
@@ -169,8 +180,11 @@ public class Technology3GTests extends BaseTestCase {
     @Description("The user creates Host Relation between Cell 3G and RRU, RRU port BBU and BBU card in Cell Site Configuration and checks if new rows are displayed in Hosting table")
     public void tSRAN37CreateHostRelationBetweenCell3GAndRRUBBUCard() {
 
+        homePage.setOldObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", locationName)
+                .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .goToCellSiteConfiguration(driver, BASIC_URL, locationId)
                 .expandTreeToCell(locationTypeSite, locationName, nodeBNameForEdit, cell3GNameForEdit)
                 .selectTab("Hosting")
                 .clickPlusIconAndSelectOption("Host on Device");
@@ -196,8 +210,11 @@ public class Technology3GTests extends BaseTestCase {
     @Description("The user removes Host Relation between Cell 3G and RRU, RRU port, BBU and BBU card in Cell Site Configuration and checks if new rows are disappeared in Hosting table")
     public void tSRAN38RemoveHostRelationBetweenCell3GAndRRUBBUCard() {
 
+        homePage.setOldObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", locationName)
+                .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .goToCellSiteConfiguration(driver, BASIC_URL, locationId)
                 .expandTreeToCell(locationTypeSite, locationName, nodeBNameForRemoveHR, cell3GNameForRemoveHRDevice)
                 .selectTab("Hosting")
                 .clearColumnFilter("Hosting Component")
@@ -222,14 +239,14 @@ public class Technology3GTests extends BaseTestCase {
     @Description("The user creates Host Relation between NodeB and RRU, RRU port BBU and BBU card in Cell Site Configuration and checks if new rows are displayed in Hosting table")
     public void tSRAN39CreateHostRelationBetweenNodeBAndRRUBBUCard() {
 
+        homePage.setOldObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", locationName)
+                .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .goToCellSiteConfiguration(driver, BASIC_URL, locationId)
                 .expandTreeToBaseStation(locationTypeSite, locationName, nodeBNameForEdit)
                 .selectTab("Hosting")
                 .useTableContextActionByLabel("Host on Device");
-        new HostingWizardPage(driver)
-                .onlyCompatible("false");
-        DelayUtils.sleep(2000);
         new HostingWizardPage(driver)
                 .setDevice(rruDeviceNameForEdit);
         DelayUtils.sleep(2000);
@@ -252,8 +269,11 @@ public class Technology3GTests extends BaseTestCase {
     @Description("The user removes Host Relation between NodeB and RRU, RRU port, BBU and BBU card in Cell Site Configuration and checks if new rows are disappeared in Hosting table")
     public void tSRAN40RemoveHostRelationBetweenNodeBAndRRUBBUCard() {
 
+        homePage.setOldObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", locationName)
+                .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .goToCellSiteConfiguration(driver, BASIC_URL, locationId)
                 .expandTreeToBaseStation(locationTypeSite, locationName, nodeBNameForRemoveHR)
                 .selectTab("Hosting")
                 .clearColumnFilter("Hosting Component")
@@ -278,8 +298,11 @@ public class Technology3GTests extends BaseTestCase {
     @Description("The user creates Host Relation between Cell 3G and RAN Antenna Array in Cell Site Configuration and checks if new row is displayed in Hosting table")
     public void tSRAN41CreateHostRelationBetweenCell3GAndRANAntennaArray() {
 
+        homePage.setOldObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", locationName)
+                .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .goToCellSiteConfiguration(driver, BASIC_URL, locationId)
                 .expandTreeToCell(locationTypeSite, locationName, nodeBNameForEdit, cell3GNameForEdit)
                 .selectTab("Hosting")
                 .clickPlusIconAndSelectOption("Host on Antenna Array");
@@ -298,8 +321,11 @@ public class Technology3GTests extends BaseTestCase {
     @Description("The user creates Host Relation between Cell 3G and RAN Antenna Array in Cell Site Configuration and checks if new row is displayed in Hosting table")
     public void tSRAN42RemoveHostRelationBetweenCell3GAndRANAntennaArray() {
 
+        homePage.setOldObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", locationName)
+                .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .goToCellSiteConfiguration(driver, BASIC_URL, locationId)
                 .expandTreeToCell(locationTypeSite, locationName, nodeBNameForRemoveHR, cell3GNameForRemoveHRArray)
                 .selectTab("Hosting")
                 .clearColumnFilter("Hosting Component")
@@ -312,37 +338,41 @@ public class Technology3GTests extends BaseTestCase {
     }
 
     @Test
-    @Description("The user deletes the NodeB in Cell Site Configuration and checks if row is disappeared in Base Stations table")
+    @Description("The user searches NodeB in Global Search, then deletes the NodeB in Cell Site Configuration and checks if search result in Global Search is no data")
     public void tSRAN47RemoveNodeB() {
 
+        homePage.searchInGlobalSearch(nodeBNameForDelete)
+                .expandShowOnAndChooseView(nodeBNameForDelete, "NAVIGATION", "Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .goToCellSiteConfiguration(driver, BASIC_URL, locationId)
                 .expandTreeToLocation(locationTypeSite, locationName)
                 .selectTab("Base Stations")
                 .filterObject("Name", nodeBNameForDelete)
                 .removeObject();
         SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
         systemMessageItem.waitForMessageDisappear();
-        new CellSiteConfigurationPage(driver)
-                .filterObject("Name", nodeBNameForDelete);
-        Assert.assertTrue(new CellSiteConfigurationPage(driver).hasNoData());
+        homePage.searchInGlobalSearch(nodeBNameForDelete);
+        CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        Assert.assertTrue(objectsList.isNoData());
     }
 
     @Test
-    @Description("The user deletes the Cell 3G in Cell Site Configuration and checks if row is disappeared in Cells table")
+    @Description("The user searches Cell 3G in Global Search, then deletes the Cell 3G in Cell Site Configuration and checks if search result in Global Search is no data")
     public void tSRAN48RemoveCell3G() {
 
+        homePage.searchInGlobalSearch(cell3GNameForDelete)
+                .expandShowOnAndChooseView(cell3GNameForDelete, "NAVIGATION", "Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .goToCellSiteConfiguration(driver, BASIC_URL, locationId)
                 .expandTreeToBaseStation(locationTypeSite, locationName, nodeBNameForEdit)
                 .selectTab("Cells")
                 .filterObject("Name", cell3GNameForDelete)
                 .removeObject();
         SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
         systemMessageItem.waitForMessageDisappear();
-        new CellSiteConfigurationPage(driver)
-                .filterObject("Name", cell3GNameForDelete);
-        Assert.assertTrue(new CellSiteConfigurationPage(driver).hasNoData());
+        homePage.searchInGlobalSearch(cell3GNameForDelete);
+        CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        Assert.assertTrue(objectsList.isNoData());
     }
 
     private void getOrCreateAddress() {
@@ -358,7 +388,7 @@ public class Technology3GTests extends BaseTestCase {
     private void createNodeB(String nodeBNameForCreate, String rncNameForCreate) {
         Radio3gRepository radio3gRepository = new Radio3gRepository(env);
         rncId = radio3gRepository.createRnc(rncNameForCreate, Long.valueOf(locationId), MCC, MNC);
-        nodeBId = radio3gRepository.createNodeB(nodeBNameForCreate, Long.valueOf(locationId), rncId, Constants.GENERIC_NODEB_MODEL);
+        nodeBId = radio3gRepository.createNodeB(nodeBNameForCreate, Long.valueOf(locationId), rncId, Constants.HUAWEI_NODEB_MODEL);
     }
 
     private void createCell3G(String cell3GNameForCreate, String cell3GIdForCreate) {
