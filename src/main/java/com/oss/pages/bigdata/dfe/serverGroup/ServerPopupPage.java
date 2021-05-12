@@ -9,7 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AddNewServerPopupPage extends BasePopupPage {
+public class ServerPopupPage extends BasePopupPage {
 
     private static final Logger log = LoggerFactory.getLogger(EntryPopupPage.class);
     private final String SERVER_NAME_LABEL = "serverName";
@@ -18,7 +18,7 @@ public class AddNewServerPopupPage extends BasePopupPage {
     private final String PASSWORD_LABEL = "password";
     private final String DIRECTORY_LABEL = "directory";
 
-    public AddNewServerPopupPage(WebDriver driver, WebDriverWait wait) {
+    public ServerPopupPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
     }
 
@@ -65,7 +65,6 @@ public class AddNewServerPopupPage extends BasePopupPage {
         fillUserName(userName);
         fillPassword(password);
         fillDirectory(directory);
-        log.info("Filled Add New Serwer Popup fields");
+        log.info("Filled Add New Server Popup fields");
     }
-
 }

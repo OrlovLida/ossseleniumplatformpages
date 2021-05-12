@@ -15,8 +15,6 @@ import org.slf4j.LoggerFactory;
 public class ServerGroupPopupPage extends BasePopupPage {
 
     private static final Logger log = LoggerFactory.getLogger(ServerGroupPopupPage.class);
-
-
     private final String SERVER_GROUP_NAME_INPUT_ID = "name";
     private final String PROTOCOL_INPUT_ID = "protocol-input";
 
@@ -25,17 +23,16 @@ public class ServerGroupPopupPage extends BasePopupPage {
     }
 
     public void fillName(String name) {
-        DelayUtils.waitForPageToLoad(driver,wait);
+        DelayUtils.waitForPageToLoad(driver, wait);
         fillTextField(name, SERVER_GROUP_NAME_INPUT_ID);
         log.debug("Setting name with: {}", name);
     }
 
-    public void fillProtocol(String protocol){
+    public void fillProtocol(String protocol) {
         DelayUtils.waitForPageToLoad(driver, wait);
         Combobox protocolInput = (Combobox) Wizard.createPopupWizard(driver, wait).getComponent(PROTOCOL_INPUT_ID, Input.ComponentType.COMBOBOX);
         protocolInput.setValue(Data.createSingleData(protocol));
         log.debug("Setting protocol type with: {}", protocol);
-
     }
 
     @Step("Fill Add New Server Group popup fields with name: {name} and protocol {protocol}")
@@ -44,8 +41,5 @@ public class ServerGroupPopupPage extends BasePopupPage {
         fillProtocol(protocol);
         log.info("Filled Server Group Popup fields");
     }
-
-
-
 }
 
