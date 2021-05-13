@@ -1,4 +1,4 @@
-package com.oss.radio;
+package com.oss.ThreeUKProject;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
@@ -26,7 +26,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
-//BEFORE RUN TESTS CHECK IF USED CARRIER, MCC, MNC, MODELS (FOR API, GUI) EXIST ON THE ENV
 @Listeners({TestListener.class})
 public class Technology5GTests extends BaseTestCase {
 
@@ -59,6 +58,7 @@ public class Technology5GTests extends BaseTestCase {
     private static final String rruDeviceNameForEdit = "RRUForHostRelationSeleniumTests" + (int) (Math.random() * 10000);
     private static final String bbuDeviceNameForEdit = "BBUWithCardForHostRelationSeleniumTests" + (int) (Math.random() * 10000);
     private static final String aauAAU5614NameForEdit = "AAUForHostRelationSeleniumTests" + (int) (Math.random() * 10000);
+    private static final String objectTypeCell5G = "Cell 5G";
     private static final String locationTypeSite = "Site";
     private static final String description = "Selenium Test";
     private static final String carrier5G = "100 MHz - NR-ARFCN 642000";
@@ -101,21 +101,27 @@ public class Technology5GTests extends BaseTestCase {
         String randomGNodeBName = "gNodeBForCreateSeleniumTests" + (int) (Math.random() * 10000);
         String randomGNodeBId = RandomGenerator.generateRandomGNodeBId();
 
+        homePage.setOldObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", locationName)
+                .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .goToCellSiteConfiguration(driver, BASIC_URL, locationId)
                 .clickPlusIconAndSelectOption("Create gNodeB");
         new GNodeBWizardPage(driver)
-                .createGNodeB(randomGNodeBName, randomGNodeBId, Constants.GENERIC_GNODEB_MODEL, mccMncPrimary);
+                .createGNodeB(randomGNodeBName, randomGNodeBId, Constants.HUAWEI_GNODEB_MODEL, mccMncPrimary);
         Assert.assertTrue(SystemMessageContainer.create(driver, webDriverWait)
                 .getMessages().get(0).getText().contains("Created gNodeB"));
     }
 
     @Test
-    @Description("The user edits the gNodeB in Cell Site Configuration and checks if the description is updated in Base Stations table")
+    @Description("The user searches Site in Inventory View, then edits the gNodeB in Cell Site Configuration and checks if the description is updated in Base Stations table")
     public void tSRAN07ModifyGNodeB() {
 
+        homePage.setOldObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", locationName)
+                .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .goToCellSiteConfiguration(driver, BASIC_URL, locationId)
                 .expandTreeToLocation(locationTypeSite, locationName)
                 .selectTab("Base Stations")
                 .filterObject("Name", gNodeBNameForEdit)
@@ -132,8 +138,11 @@ public class Technology5GTests extends BaseTestCase {
         String randomCell5GName = "Cell5GForCreateSeleniumTests" + (int) (Math.random() * 10000);
         String randomCell5GId = RandomGenerator.generateRandomCell5GId();
 
+        homePage.setOldObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", locationName)
+                .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .goToCellSiteConfiguration(driver, BASIC_URL, locationId)
                 .selectTab("Cells")
                 .clickPlusIconAndSelectOption("Create Cell 5G");
         new Cell5GWizardPage(driver)
@@ -143,11 +152,14 @@ public class Technology5GTests extends BaseTestCase {
     }
 
     @Test
-    @Description("The user edits a Cell 5G in Cell Site Configuration and checks if the description is updated in Cells table")
+    @Description("The user searches Cell 5G in Inventory View, then edits a Cell 5G in Cell Site Configuration and checks if the description is updated in Cells table")
     public void tSRAN09ModifyCell5G() {
 
+        homePage.setOldObjectType(objectTypeCell5G);
+        new OldInventoryViewPage(driver)
+                .filterObject("Cell Name", cell5GNameForEdit)
+                .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .goToCellSiteConfiguration(driver, BASIC_URL, locationId)
                 .expandTreeToBaseStation(locationTypeSite, locationName, gNodeBNameForEdit)
                 .selectTab("Cells")
                 .filterObject("Name", cell5GNameForEdit)
@@ -162,8 +174,11 @@ public class Technology5GTests extends BaseTestCase {
     @Description("The user creates Host Relation between Cell 5G and RRU, RRU port, BBU and BBU card in Cell Site Configuration and checks if new rows are displayed in Hosting table")
     public void tSRAN31CreateHostRelationBetweenCell5GAndRRUBBUCard() {
 
+        homePage.setOldObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", locationName)
+                .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .goToCellSiteConfiguration(driver, BASIC_URL, locationId)
                 .expandTreeToCell(locationTypeSite, locationName, gNodeBNameForEdit, cell5GNameForEdit)
                 .selectTab("Hosting")
                 .clickPlusIconAndSelectOption("Host on Device");
@@ -189,8 +204,11 @@ public class Technology5GTests extends BaseTestCase {
     @Description("The user removes Host Relation between Cell 5G and RRU, RRU port BBU and BBU card, AAU in Cell Site Configuration and checks if new rows are disappeared in Hosting table")
     public void tSRAN32_36RemoveHostRelationBetweenCell5GAndRRUBBUCardAAU() {
 
+        homePage.setOldObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", locationName)
+                .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .goToCellSiteConfiguration(driver, BASIC_URL, locationId)
                 .expandTreeToCell(locationTypeSite, locationName, gNodeBNameForRemoveHR, cell5GNameForRemoveHRDevice)
                 .selectTab("Hosting")
                 .clearColumnFilter("Hosting Component")
@@ -218,14 +236,14 @@ public class Technology5GTests extends BaseTestCase {
     @Description("The user creates Host Relation between gNodeB and AAU, RRU, RRU port, BBU and BBU card in Cell Site Configuration and checks if new rows are displayed in Hosting table")
     public void tSRAN33CreateHostRelationBetweenGNodeBAndAAURRUBBUCard() {
 
+        homePage.setOldObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", locationName)
+                .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .goToCellSiteConfiguration(driver, BASIC_URL, locationId)
                 .expandTreeToBaseStation(locationTypeSite, locationName, gNodeBNameForEdit)
                 .selectTab("Hosting")
                 .useTableContextActionByLabel("Host on Device");
-        new HostingWizardPage(driver)
-                .onlyCompatible("false");
-        DelayUtils.sleep(2000);
         new HostingWizardPage(driver)
                 .setDevice(aauAAU5614NameForEdit);
         DelayUtils.sleep(2000);
@@ -251,8 +269,11 @@ public class Technology5GTests extends BaseTestCase {
     @Description("The user removes Host Relation between gNodeB and AAU, RRU, RRU port, BBU and BBU card in Cell Site Configuration and checks if new rows are disappeared in Hosting table")
     public void tSRAN34RemoveHostRelationBetweenGNodeBAndAAURRUBBUCard() {
 
+        homePage.setOldObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", locationName)
+                .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .goToCellSiteConfiguration(driver, BASIC_URL, locationId)
                 .expandTreeToBaseStation(locationTypeSite, locationName, gNodeBNameForRemoveHR)
                 .selectTab("Hosting")
                 .clearColumnFilter("Hosting Component")
@@ -280,8 +301,11 @@ public class Technology5GTests extends BaseTestCase {
     @Description("The user creates Host Relation between Cell 5G and AAU in Cell Site Configuration and checks if new row is displayed in Hosting table")
     public void tSRAN35CreateHostRelationBetweenCell5GAndAAU() {
 
+        homePage.setOldObjectType(locationTypeSite);
+        new OldInventoryViewPage(driver)
+                .filterObject("Name", locationName)
+                .expandShowOnAndChooseView("Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .goToCellSiteConfiguration(driver, BASIC_URL, locationId)
                 .expandTreeToCell(locationTypeSite, locationName, gNodeBNameForEdit, cell5GNameForEdit)
                 .selectTab("Hosting")
                 .clickPlusIconAndSelectOption("Host on Device");
@@ -292,42 +316,46 @@ public class Technology5GTests extends BaseTestCase {
         SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
         systemMessageItem.waitForMessageDisappear();
         new CellSiteConfigurationPage(driver)
-                .filterObject("Hosting Resource", "" + aauAAU5614NameForEdit);
+                .filterObject("Hosting Resource","" + aauAAU5614NameForEdit);
         Assert.assertTrue(new CellSiteConfigurationPage(driver).getValueByRowNumber("Hosting Resource", 0).contains(aauAAU5614NameForEdit));
     }
 
     @Test
-    @Description("The user deletes the gNodeB in Cell Site Configuration and checks if row is disappeared in Base Stations table")
+    @Description("The user searches gNodeB in Global Search, then deletes the gNodeB in Cell Site Configuration and checks if search result in Global Search is no data")
     public void tSRAN45RemoveGNodeB() {
 
+        homePage.searchInGlobalSearch(gNodeBNameForDelete)
+                .expandShowOnAndChooseView(gNodeBNameForDelete, "NAVIGATION", "Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .goToCellSiteConfiguration(driver, BASIC_URL, locationId)
                 .expandTreeToLocation(locationTypeSite, locationName)
                 .selectTab("Base Stations")
                 .filterObject("Name", gNodeBNameForDelete)
                 .removeObject();
         SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
         systemMessageItem.waitForMessageDisappear();
-        new CellSiteConfigurationPage(driver)
-                .filterObject("Name", gNodeBNameForDelete);
-        Assert.assertTrue(new CellSiteConfigurationPage(driver).hasNoData());
+        homePage.searchInGlobalSearch(gNodeBNameForDelete);
+        CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        Assert.assertTrue(objectsList.isNoData());
     }
 
     @Test
-    @Description("The user deletes the Cell 5G in Cell Site Configuration and checks if row is disappeared in Cells table")
+    @Description("The user searches Cell 5G in Global Search, then deletes the Cell 5G in Cell Site Configuration and checks if search result in Global Search is no data")
     public void tSRAN46RemoveCell5G() {
 
+        homePage.searchInGlobalSearch(cell5GNameForDelete)
+                .expandShowOnAndChooseView(cell5GNameForDelete, "NAVIGATION", "Cell Site Configuration");
         new CellSiteConfigurationPage(driver)
-                .goToCellSiteConfiguration(driver, BASIC_URL, locationId)
                 .expandTreeToBaseStation(locationTypeSite, locationName, gNodeBNameForEdit)
                 .selectTab("Cells")
                 .filterObject("Name", cell5GNameForDelete)
                 .removeObject();
         SystemMessageInterface systemMessageItem = SystemMessageContainer.create(driver, webDriverWait);
         systemMessageItem.waitForMessageDisappear();
-        new CellSiteConfigurationPage(driver)
-                .filterObject("Name", cell5GNameForDelete);
-        Assert.assertTrue(new CellSiteConfigurationPage(driver).hasNoData());
+        homePage.searchInGlobalSearch(cell5GNameForDelete);
+        CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        Assert.assertTrue(objectsList.isNoData());
     }
 
     private void getOrCreateAddress() {
@@ -342,7 +370,7 @@ public class Technology5GTests extends BaseTestCase {
 
     private void createGNodeB(String gNodeBNameForCreate) {
         Radio5gRepository radio5gRepository = new Radio5gRepository(env);
-        gNodeBId = radio5gRepository.createGNodeB(gNodeBNameForCreate, Long.valueOf(locationId), MCC, MNC, Constants.GENERIC_GNODEB_MODEL);
+        gNodeBId = radio5gRepository.createGNodeB(gNodeBNameForCreate, Long.valueOf(locationId), MCC, MNC, Constants.HUAWEI_GNODEB_MODEL);
     }
 
     private void createCell5G(String cell5GNameForCreate, String cell5GIdForCreate) {

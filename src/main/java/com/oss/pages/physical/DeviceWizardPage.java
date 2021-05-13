@@ -64,6 +64,7 @@ public class DeviceWizardPage extends BasePage {
         setModel(model);
         DelayUtils.waitForPageToLoad(driver, wait);
         setName(name);
+        DelayUtils.waitForPageToLoad(driver, wait);
         next();
         DelayUtils.waitForPageToLoad(driver, wait);
         setPreciseLocation(location);
