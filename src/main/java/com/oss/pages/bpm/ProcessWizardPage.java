@@ -92,19 +92,6 @@ public class ProcessWizardPage extends BasePage {
         return extractProcessCode(text);
     }
     
-    @Description("Create Process with defined Milestones in Process Definition")
-    public String createProcessWithMilestones(String processName, Long plusDays, String processType) {
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, TABLE_PROCESSES);
-        table.callAction("create", "start-process");
-        Wizard processWizard = definedBasicProcess(processName, processType, plusDays);
-        processWizard.clickActionById(NEXT_BUTTON);
-        processWizard.clickActionById(CREATE_BUTTON);
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, wait);
-        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        String text = messages.get(0).getText();
-        return extractProcessCode(text);
-    }
-    
     @Description("Define new Milestone in Process (go to Milestone Step)")
     public void definedMilestoneInProcess(String processName, Long plusDays, String processType) {
         TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, TABLE_PROCESSES);
@@ -151,7 +138,7 @@ public class ProcessWizardPage extends BasePage {
     }
     
     public Milestone editPredefinedMilestone(Milestone milestone, int row) {
-        EditableList predefinedMilestoneList = getPredefinedList();
+        EditableList predefinedMilestoneList = getMilestonePredefinedList();
         EditableList.Row predefineMilestoneRow = predefinedMilestoneList.selectRow(row - 1);
         
         if (milestone.getName().isPresent()) {
@@ -246,7 +233,7 @@ public class ProcessWizardPage extends BasePage {
         Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2).clickActionById(CANCEL_BUTTON);
     }
     
-    public EditableList getPredefinedList() {
+    public EditableList getMilestonePredefinedList() {
         return EditableList.createById(driver, wait, PREDEFINED_MILESTONE_LIST);
     }
     

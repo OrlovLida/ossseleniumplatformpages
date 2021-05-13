@@ -35,7 +35,7 @@ public class EditMilestoneWizardPage extends BasePage {
     private final static String BPM_MILESTONE_RELATED_TASK = "relatedObject";
     private final static String BPM_MILESTONE_IS_MANUAL_COMPLETION = "isManualCompletion";
     
-    public Milestone editMilestone(Milestone milestone) {
+    public Milestone editMilestone(Milestone milestone) throws RuntimeException {
         
         TableWidget milestoneTable = TableWidget.createById(driver, MILESTONE_TABLE, wait);
         milestoneTable.callAction(EDIT_MILESTONE_BUTTON);
@@ -44,6 +44,8 @@ public class EditMilestoneWizardPage extends BasePage {
         EditableList.Row editMilestoneRow = milestoneList.getVisibleRows().get(0);
         DelayUtils.sleep(2000);
         if (milestone.getName().isPresent()) {
+            if (!editMilestoneRow.isEditableAttribute(BPM_MILESTONE_NAME))
+            {throw new RuntimeException("Name is not editable. You need Admin permission"); }
             editMilestoneRow.setEditableAttributeValue(milestone.getName().get(), BPM_MILESTONE_NAME, "name-TEXT_FIELD",
                     Input.ComponentType.TEXT_FIELD);
         }
@@ -75,6 +77,12 @@ public class EditMilestoneWizardPage extends BasePage {
                     Input.ComponentType.CHECKBOX);
         }
         Milestone editedMilestone = getMilestoneFromRow(milestoneList, 0);
+        if (driver.getPageSource().contains("milestones-edit_delay-reason")) {
+            {
+                editWizard.setComponentValue("milestones-edit_delay-reason", "Selenium Test - Delay reason",
+                        Input.ComponentType.TEXT_FIELD);
+            }
+        }
         editWizard.clickActionById(ACCEPT_BUTTON);
         return editedMilestone;
     }

@@ -272,7 +272,7 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
         processWizardPage.definedMilestoneInProcess("Milestone Process", 0L, "GK Milestones");
-        boolean isEditable = processWizardPage.getPredefinedList().selectRow(0).isEditableAttribute("name");
+        boolean isEditable = processWizardPage.getMilestonePredefinedList().selectRow(0).isEditableAttribute("name");
         processWizardPage.clickCancelButton();
         Assert.assertFalse(isEditable);
         
