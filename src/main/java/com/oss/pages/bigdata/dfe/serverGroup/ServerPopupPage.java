@@ -2,7 +2,6 @@ package com.oss.pages.bigdata.dfe.serverGroup;
 
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bigdata.dfe.BasePopupPage;
-import com.oss.pages.bigdata.dfe.dictionary.EntryPopupPage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -11,7 +10,7 @@ import org.slf4j.LoggerFactory;
 
 public class ServerPopupPage extends BasePopupPage {
 
-    private static final Logger log = LoggerFactory.getLogger(EntryPopupPage.class);
+    private static final Logger log = LoggerFactory.getLogger(ServerPopupPage.class);
     private final String SERVER_NAME_LABEL = "serverName";
     private final String SERVER_ADDRESS_LABEL = "serverAddress";
     private final String USER_NAME_LABEL = "username";
