@@ -94,8 +94,7 @@ public class NewInventoryViewPage extends BasePage {
 
     @Step("Enable Column")
     public AttributesChooser enableColumn(String columnLabel) {
-        getMainTable().getAttributesChooser().enableAttributeByLabel(columnLabel);
-        return getMainTable().getAttributesChooser();
+        return getMainTable().getAttributesChooser().enableAttributeByLabel(columnLabel);
     }
 
     public List<String> getActiveColumnsHeaders() {
@@ -127,9 +126,9 @@ public class NewInventoryViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    public String getAttributeValue(String attributeLabel, int rowId) {
+    public String getAttributeValue(String columnId, int rowId) {
         TableWidget mainTable = getMainTable();
-        return mainTable.getCellValue(rowId, attributeLabel);
+        return mainTable.getCellValue(rowId, columnId);
     }
 
     public void callActionByLabel(int rowId, String groupLabel, String actionLabel) {
@@ -481,7 +480,7 @@ public class NewInventoryViewPage extends BasePage {
 
     public String getIdOfMainTableObject(int rowIndex) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        return getMainTable().getAttribute(rowIndex, "id");
+        return getMainTable().getCellValue(rowIndex, "id");
     }
 
     public boolean isOnlyOneObject(String id) {

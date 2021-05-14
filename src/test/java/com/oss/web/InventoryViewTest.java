@@ -96,7 +96,7 @@ public class InventoryViewTest extends BaseTestCase {
     public void addFirstUnselectedColumn() {
         //given
         List<String> columnHeaders = inventoryViewPage.getActiveColumnsHeaders();
-        String firstHeader = columnHeaders.get(2);
+        String firstHeader = columnHeaders.get(0);
 
         //when
         inventoryViewPage.removeColumn(firstHeader);
@@ -111,56 +111,15 @@ public class InventoryViewTest extends BaseTestCase {
     }
 
     @Test
-    public void expandLabel() {
-        // TODO: add test for log text box
-    }
-
-    @Test
-    public void changeColumnsOrder() {
-        // TODO: add change columns order test
-    }
-
-    @Test
-    public void checkPagination() {
-
-    }
-
-    @Test
-    public void checkHorizontalScroller() {
-//        TableWidget tableWidget = inventoryViewPage.getMainTable();
-//        DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
-//        tableWidget.scrollHorizontally(1000);
-//        List<String> headers = tableWidget.getActiveColumns();
-//        Assert.assertEquals(headers.get(headers.size() - 1), "Calculated Parents");
-//        tableWidget.scrollHorizontally(-1000);
-//        headers = tableWidget.getActiveColumns();
-//        Assert.assertEquals(headers.get(0), "ID");
-    }
-
-    @Test
-    public void checkVerticalScroller() {
-//        TableWidget tableWidget = inventoryViewPage.getMainTable();
-//        DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
-//        tableWidget.scrollVertically(1000);
-//        String lastVisibleID = tableWidget.getValueFromNthRow("ID", "last()");
-//        String lastIdOnThePage = tableWidget.getValueFromRowWithID("ID", lastVisibleID);
-//        Assert.assertEquals(lastVisibleID.equals(lastIdOnThePage), true);
-//        tableWidget.scrollVertically(-1000);
-//        lastVisibleID = tableWidget.getValueFromNthRow("ID", "last()");
-//        Assert.assertEquals(lastVisibleID.equals(lastIdOnThePage), false);
-    }
-
-    @Test
     public void findByText() {
-        String secondID = inventoryViewPage.getAttributeValue("XId", 1);
+        String secondID = inventoryViewPage.getAttributeValue("id", 1);
         inventoryViewPage.searchObject(secondID);
-        String newFirstID = inventoryViewPage.getAttributeValue("XId", 0);
+        String newFirstID = inventoryViewPage.getAttributeValue("id", 0);
         Assert.assertEquals(secondID, newFirstID);
         Assert.assertEquals(inventoryViewPage.getRowsNumber(), 1);
 
         inventoryViewPage.clearFilters();
     }
-
 
     @Test
     public void changeTab() {
@@ -204,10 +163,5 @@ public class InventoryViewTest extends BaseTestCase {
         Assertions.assertThat(labelsAfterEnable).contains(firstProperty);
 
         inventoryViewPage.unselectObjectByRowId(0);
-    }
-
-    @Test
-    public void searchProperty(){
-       //TODO:
     }
 }
