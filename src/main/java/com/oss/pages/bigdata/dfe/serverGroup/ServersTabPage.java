@@ -25,7 +25,8 @@ public class ServersTabPage extends BaseDfePage {
     }
 
     public OldTable createServersTable() {
-        return OldTable.createByComponentDataAttributeName(driver, wait, getTableId());
+        return OldTable
+                .createByComponentDataAttributeName(driver, wait, getTableId());
     }
 
     @Step("I select server")
@@ -40,6 +41,7 @@ public class ServersTabPage extends BaseDfePage {
 
     @Step("I check if server is created")
     public Boolean isServerCreated(String serverName) {
+
         return getServerName(0).equals(serverName);
     }
 
@@ -48,6 +50,7 @@ public class ServersTabPage extends BaseDfePage {
         Boolean serverExist = createServersTable()
                 .getNumberOfRowsInTable(SERVER_NAME_COLUMN_LABEL) >= 1;
         log.info("In server table exist at least one server: {}", serverExist);
+
         return serverExist;
     }
 
@@ -61,6 +64,7 @@ public class ServersTabPage extends BaseDfePage {
         String serverName = createServersTable()
                 .getCellValue(rowInTheTable, SERVER_NAME_COLUMN_LABEL);
         log.info("Checked server name for row {}: {}", rowInTheTable, serverName);
+
         return serverName;
     }
 
@@ -74,6 +78,7 @@ public class ServersTabPage extends BaseDfePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         Boolean serverDeleted = createServersTable().hasNoData();
         log.info("Server is deleted: {}", serverDeleted);
+
         return serverDeleted;
     }
 
