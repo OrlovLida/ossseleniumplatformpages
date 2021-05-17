@@ -52,7 +52,7 @@ public class LanguageServicePage extends BasePage {
     @Step("Type ID of First Service in Search")
     public LanguageServicePage typeIdOfFirstServiceInSearch() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        String idOfFirstElement = TableWidget.create(driver, TableWidget.TABLE_WIDGET_CLASS, wait).getCellValue(0, "id");
+        String idOfFirstElement = TableWidget.create(driver, TableWidget.TABLE_WIDGET_CLASS, wait).getCellValue(0, "code");
         TableWidget.create(driver, TableWidget.TABLE_WIDGET_CLASS, wait).typeIntoSearch(idOfFirstElement);
         return this;
     }

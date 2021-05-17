@@ -122,6 +122,24 @@ public class InventoryViewTest extends BaseTestCase {
     }
 
     @Test
+    public void changeColumnsOrder() {
+        List<String> columnHeaders = inventoryViewPage.getActiveColumnsHeaders();
+
+        String firstHeader = columnHeaders.get(0);
+        String secondHeader = columnHeaders.get(1);
+        String thirdHeader = columnHeaders.get(2);
+
+        inventoryViewPage.changeColumnsOrderInMainTable(firstHeader, 2);
+
+        List<String> newHeaders = inventoryViewPage.getActiveColumnsHeaders();
+
+        Assertions.assertThat(newHeaders.indexOf(firstHeader)).isEqualTo(2);
+        Assertions.assertThat(newHeaders.indexOf(secondHeader)).isEqualTo(0);
+        Assertions.assertThat(newHeaders.indexOf(thirdHeader)).isEqualTo(1);
+
+    }
+
+    @Test
     public void changeTab() {
         inventoryViewPage.selectObjectByRowId(0);
 

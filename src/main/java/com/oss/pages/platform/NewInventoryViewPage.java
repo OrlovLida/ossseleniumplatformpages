@@ -52,7 +52,7 @@ public class NewInventoryViewPage extends BasePage {
 
     public TableWidget getMainTable() {
         Widget.waitForWidget(wait, TableWidget.TABLE_WIDGET_CLASS);
-        return TableWidget.createById(driver, "InventoryView_MainWidget_" + getTypeBasedOnUrl(driver.getCurrentUrl()), wait);
+        return TableWidget.createById(driver, "MainTableWidget", wait);
     }
 
     public NewInventoryViewPage searchObject(String text) {
