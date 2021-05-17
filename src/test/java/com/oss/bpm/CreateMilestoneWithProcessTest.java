@@ -50,7 +50,8 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         String processName = "Selenium Test.Milestone-" + (int) (Math.random() * 1001);
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
-        processWizardPage.definedMilestoneInProcess(processName, 10L, "GK Milestones");
+        ProcessWizardPage.MilestoneStepWizard milestoneStep =
+                processWizardPage.definedMilestoneInProcess(processName, 10L, "GK Milestones");
         Milestone milestone1 = Milestone.builder()
                 .setLeadTime("0")
                 .setDueDate(LocalDate.now().plusDays(5).toString())
@@ -67,9 +68,9 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
         Milestone milestonePredefined = Milestone.builder()
                 .setIsActive("true")
                 .build();
-        processWizardPage.addMilestoneRow(milestone1);
-        processWizardPage.addMilestoneRow(milestone2);
-        Milestone milestonePredefined_1 = processWizardPage.editPredefinedMilestone(milestonePredefined, 1);
+        milestoneStep.addMilestoneRow(milestone1);
+        milestoneStep.addMilestoneRow(milestone2);
+        Milestone milestonePredefined_1 = milestoneStep.editPredefinedMilestone(milestonePredefined, 1);
         
         String namePredefinedMilestone = milestonePredefined_1.getName().orElseThrow(() -> new RuntimeException("Missing name"));
         String nameMilestone1 = milestone1.getName().orElseThrow(() -> new RuntimeException("Missing name"));
@@ -122,7 +123,8 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         String processName = "Selenium Test.Milestone-" + (int) (Math.random() * 1001);
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
-        processWizardPage.definedMilestoneInProcess(processName, 10L, "GK Milestones");
+        ProcessWizardPage.MilestoneStepWizard milestoneStepWizard =
+                processWizardPage.definedMilestoneInProcess(processName, 10L, "GK Milestones");
         
         Milestone milestone1 = Milestone.builder()
                 .setDueDate(LocalDate.now().toString())
@@ -149,10 +151,10 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
                 .setRelatedTask("")
                 .build();
         
-        Milestone milestone1_updated = processWizardPage.editPredefinedMilestone(milestone1, 1);
-        Milestone milestone2_updated = processWizardPage.editPredefinedMilestone(milestone2, 2);
-        Milestone milestone3_updated = processWizardPage.editPredefinedMilestone(milestone3, 3);
-        processWizardPage.clickAcceptButton();
+        Milestone milestone1_updated = milestoneStepWizard.editPredefinedMilestone(milestone1, 1);
+        Milestone milestone2_updated = milestoneStepWizard.editPredefinedMilestone(milestone2, 2);
+        Milestone milestone3_updated = milestoneStepWizard.editPredefinedMilestone(milestone3, 3);
+        milestoneStepWizard.clickAcceptButton();
         
         processInstancesPage.selectMilestoneTab("Name", processName);
         String nameMilestone1 = milestone1_updated.getName().orElseThrow(() -> new RuntimeException("Missing name"));
@@ -208,7 +210,8 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
         String processName = "Selenium Test.Milestone-" + (int) (Math.random() * 1001);
-        processWizardPage.definedMilestoneInProcess(processName, 10L, "Data Correction Process");
+        ProcessWizardPage.MilestoneStepWizard milestoneStepWizard =
+                processWizardPage.definedMilestoneInProcess(processName, 10L, "Data Correction Process");
         Milestone milestone1 = Milestone.builder()
                 .setLeadTime("10")
                 .setDescription("Milestone 1 - Selenium Test")
@@ -224,11 +227,11 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
                 .setIsActive("false")
                 .build();
         
-        processWizardPage.addMilestoneRow(milestone1);
-        processWizardPage.addMilestoneRow(milestone2);
+        milestoneStepWizard.addMilestoneRow(milestone1);
+        milestoneStepWizard.addMilestoneRow(milestone2);
         processWizardPage.clickAcceptButton();
-
-        processInstancesPage.selectMilestoneTab("Name",processName);
+        
+        processInstancesPage.selectMilestoneTab("Name", processName);
         
         String nameMilestone1 = milestone1.getName().orElseThrow(() -> new RuntimeException("Missing Name"));
         String nameMilestone2 = milestone2.getName().orElseThrow(() -> new RuntimeException("Missing Name"));
@@ -271,8 +274,9 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
         ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
-        processWizardPage.definedMilestoneInProcess("Milestone Process", 0L, "GK Milestones");
-        boolean isEditable = processWizardPage.getMilestonePredefinedList().selectRow(0).isEditableAttribute("name");
+        ProcessWizardPage.MilestoneStepWizard milestoneStepWizard =
+                processWizardPage.definedMilestoneInProcess("Milestone Process", 0L, "GK Milestones");
+        boolean isEditable = milestoneStepWizard.getMilestonePredefinedList().selectRow(0).isEditableAttribute("name");
         processWizardPage.clickCancelButton();
         Assert.assertFalse(isEditable);
         

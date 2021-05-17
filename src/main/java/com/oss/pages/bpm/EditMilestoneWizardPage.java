@@ -24,6 +24,7 @@ public class EditMilestoneWizardPage extends BasePage {
     }
     
     private final static String ACCEPT_BUTTON = "wizard-submit-button-milestones-edit_wizard-app";
+    private final static String CANCEL_BUTTON = "wizard-cancel-button-milestones-edit_wizard-app";
     private final static String EDIT_MILESTONE_LIST = "milestones-edit_wizard-editable-list";
     private final static String MILESTONE_TABLE = "bpm_milestones_view_milestonesTableWidget";
     private final static String EDIT_MILESTONE_BUTTON = "editMilestonesContextAction";
@@ -86,7 +87,12 @@ public class EditMilestoneWizardPage extends BasePage {
         editWizard.clickActionById(ACCEPT_BUTTON);
         return editedMilestone;
     }
-    
+
+    public void cancel(){
+        Wizard editWizard = Wizard.createByComponentId(driver, wait, "Popup");
+        editWizard.clickActionById(CANCEL_BUTTON);
+    }
+
     private Milestone getMilestoneFromRow(EditableList list, int row) {
         String name = list.selectRow(row).getAttributeValue(BPM_MILESTONE_NAME);
         String dueDate = list.selectRow(row).getAttributeValue(BPM_MILESTONE_DUE_DATE);

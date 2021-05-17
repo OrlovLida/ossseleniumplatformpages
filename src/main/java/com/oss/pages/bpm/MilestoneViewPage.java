@@ -30,21 +30,20 @@ public class MilestoneViewPage extends BasePage {
         return new MilestoneViewPage(driver);
     }
     
-    public void selectMilestone(String name, String processCode) {
+    public void selectMilestone(String name) {
         TableWidget milestoneTable = TableWidget.createById(driver, MILESTONE_TABLE, wait);
         milestoneTable.searchByAttribute("name", Input.ComponentType.TEXT_FIELD,name);
-        milestoneTable.searchByAttribute("relatedProcessCode", Input.ComponentType.TEXT_FIELD,processCode);
         DelayUtils.waitForPageToLoad(driver,wait);
         milestoneTable.selectRow(0);
     }
 
     public String getValuePropertyPanel(String attributeNameId, int row){
+        DelayUtils.waitForPageToLoad(driver,wait);
         TableWidget milestoneTable = TableWidget.createById(driver, MILESTONE_TABLE, wait);
         milestoneTable.selectRow(row);
-        PropertyPanel propertyPanel = PropertyPanel.createById(driver, wait, "PropertyPanelWidget_BpmMilestone");
+        DelayUtils.waitForPageToLoad(driver,wait);
+        PropertyPanel propertyPanel = PropertyPanel.createById(driver, wait, "PropertyPanelWidget");
         return propertyPanel.getPropertyValue(attributeNameId);
-//        TableWidget milestoneTable = TableWidget.createById(driver, MILESTONE_TABLE, wait);
-//        return milestoneTable.getCellValue(row,attributeNameLabel);
     }
 
     public int getRowNumber(String value, String attributeNameLabel){
