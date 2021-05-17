@@ -44,7 +44,7 @@ public class EtlDataCollectionsTest extends BaseTestCase {
         tableName = "selenium_" + date;
     }
 
-    @Test(priority = 1)
+    @Test(priority = 1, testName = "Add new ETL Process", description = "Add new ETL Process")
     @Description("Add new ETL Process")
     public void addEtlProcess(){
         etlDataCollectionsPage.clickAddNewEtlProcess();
@@ -71,7 +71,7 @@ public class EtlDataCollectionsTest extends BaseTestCase {
 
     }
 
-    @Test(priority = 2)
+    @Test(priority = 2, testName = "Edit ETL Process", description = "Edit ETL Process")
     @Description("Edit ETL Process")
     public void editEtlProcess(){
         Boolean etlProcessExists = etlDataCollectionsPage.etlProcessExistsIntoTable(etlProcessName);
@@ -100,7 +100,7 @@ public class EtlDataCollectionsTest extends BaseTestCase {
         }
     }
 
-    @Test(priority = 3)
+    @Test(priority = 3, testName = "Delete ETL Process", description = "Delete ETL Process")
     @Description("Delete ETL Process")
     public void deleteEtlProcess(){
         boolean aggregateExists = etlDataCollectionsPage.etlProcessExistsIntoTable(updatedEtlProcessName);

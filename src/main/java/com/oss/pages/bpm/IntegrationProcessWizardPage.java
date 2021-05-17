@@ -24,6 +24,7 @@ public class IntegrationProcessWizardPage extends BasePage {
     }
 
     private final static String WIZARD_ID = "ipd_integration_wizard_SetupIntegrationComponentId";
+    private final static String IP_LIST = "IntegrationProcessWizardComponentId";
     private final static String PROCESS_NAME_COLUMN_ID = "processNameId";
     private final static String PROCESS_NAME_ATTRIBUTE_ID = "processNameId-TEXT_FIELD";
     private final static String FINISH_DUE_DATE_COLUMN_ID = "FINISHED_DUE_DATE";
@@ -33,7 +34,7 @@ public class IntegrationProcessWizardPage extends BasePage {
     private final static String DELETE_LABEL_ACTION = "Delete";
 
     public void defineIntegrationProcess(String processName, String finishDueDate, int row) {
-        EditableList editableList = EditableList.create(driver, wait);
+        EditableList editableList = EditableList.createById(driver, wait, IP_LIST);
         editableList.addRow();
         editableList.setValueByRowIndex(row, processName, PROCESS_NAME_COLUMN_ID, PROCESS_NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD);
         editableList.setValueByRowIndex(row, finishDueDate, FINISH_DUE_DATE_COLUMN_ID, FINISH_DUE_DATE_ATTRIBUTE_ID, Input.ComponentType.DATE);

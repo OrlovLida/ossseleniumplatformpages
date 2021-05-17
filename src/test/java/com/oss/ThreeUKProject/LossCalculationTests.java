@@ -1,4 +1,4 @@
-package com.oss.radio;
+package com.oss.ThreeUKProject;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.utils.DelayUtils;
@@ -63,7 +63,7 @@ public class LossCalculationTests extends BaseTestCase {
     private static String connector1Id;
     private static String connector2Id;
     private static final String locationTypeSite = "Site";
-    private static final String carrier4G = "L800-B20-5";
+    private static final String carrier4G = "L1800-B3-15";
     private static final String MCC = "234";
     private static final String MNC = "20";
     private static String arrayId;
@@ -117,9 +117,9 @@ public class LossCalculationTests extends BaseTestCase {
         createCable(combinerId, rru80Id, "Port3", "A T01/R01", "+", "Rx/Tx",
                 Constants.LCF1250J_2m_CABLE, Constants.RFS_MANUFACTURER, 2);
         createMultipleSegmentCable(mhaId, combinerId, "BTS0", "Port4", "Rx/Tx", "+",
-                Constants.LCF1250J_2m_CABLE, Constants.RFS_MANUFACTURER, 2, Constants.LCF1250J12_CABLE, 30, Constants.LCF1250J_3m_CABLE, 3);
+                Constants.LCF1250J_2m_CABLE, Constants.RFS_MANUFACTURER, 2, Constants.LCF1250J12_CABLE, 1, Constants.LCF1250J_3m_CABLE, 3);
         createMultipleSegmentCable(mhaId, combinerId, "BTS1", "Port4", "Rx/Tx", "-",
-                Constants.LCF1250J_2m_CABLE, Constants.RFS_MANUFACTURER, 2, Constants.LCF1250J12_CABLE, 30, Constants.LCF1250J_3m_CABLE, 3);
+                Constants.LCF1250J_2m_CABLE, Constants.RFS_MANUFACTURER, 2, Constants.LCF1250J12_CABLE, 1, Constants.LCF1250J_3m_CABLE, 3);
     }
 
     @BeforeMethod
@@ -129,7 +129,7 @@ public class LossCalculationTests extends BaseTestCase {
     }
 
     @Test
-    @Description("The user goes to Cell Site Configuration, clicks Calculate Losses button in Rigging Losses tab and checks loss value and status for Route 1 CellA51")
+    @Description("The user goes to Cell Site Configuration, clicks Calculate Losses button in Rigging Losses tab and checks if loss value is 2.04 and status is complete for Route 1 CellA51")
     public void tSRAN74CalculateLosses() {
 
         homePage.setOldObjectType(locationTypeSite);
@@ -142,8 +142,8 @@ public class LossCalculationTests extends BaseTestCase {
                 .selectRowByAttributeValueWithLabel("Type", "Cell4G") //change to name OSSWEB-12088
                 .useTableContextActionByLabel("Calculate Losses");
         DelayUtils.sleep(3000);
-        Assert.assertTrue(new CellSiteConfigurationPage(driver).getValueByRowNumber("Status", 1).contains("Incomplete")); //to change after adding model MHA to RF
-        Assert.assertTrue(new CellSiteConfigurationPage(driver).getValueByRowNumber("Loss", 1).contains("103.049")); //to change after adding model MHA to RF
+        Assert.assertTrue(new CellSiteConfigurationPage(driver).getValueByRowNumber("Status", 1).contains("Complete")); //to change after adding model MHA to RF
+        Assert.assertTrue(new CellSiteConfigurationPage(driver).getValueByRowNumber("Loss", 1).contains("2.04")); //to change after adding model MHA to RF
     }
 
 

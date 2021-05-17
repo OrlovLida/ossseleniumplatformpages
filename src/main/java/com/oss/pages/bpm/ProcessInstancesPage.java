@@ -56,26 +56,39 @@ public class ProcessInstancesPage extends BasePage {
         return processTable.getCellValue(index, "Name");
     }
     
-    public void findProcess(String processCode) {
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, PROCESS_VIEW);
+    public String getProcessCode(String processName) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        table.searchByAttributeWithLabel("Code", Input.ComponentType.TEXT_FIELD, processCode);
-        DelayUtils.waitForPageToLoad(driver, wait);
-        table.doRefreshWhileNoData(10000, "refresh-table");
-        table.selectRowByAttributeValueWithLabel("Code", processCode);
+        OldTable processTable = OldTable.createByComponentDataAttributeName(driver, wait, PROCESS_VIEW);
+        processTable.searchByAttributeWithLabel("Name", Input.ComponentType.TEXT_FIELD, processName);
+        processTable.doRefreshWhileNoData(1000, "refresh-table");
+        int index = processTable.getRowNumber(processName, "Name");
+        return processTable.getCellValue(index, "Code");
     }
     
+    public void findProcess(String processCode) {
+        findProcess("Code",processCode);
+    }
+
+    private void findProcess(String attributeName, String value){
+        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, PROCESS_VIEW);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        table.searchByAttributeWithLabel(attributeName, Input.ComponentType.TEXT_FIELD, value);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        table.doRefreshWhileNoData(10000, "refresh-table");
+        table.selectRowByAttributeValueWithLabel(attributeName, value);
+    }
+
     public String getMilestoneValue(String milestoneName, String attributeName) {
         
         CommonList milestoneList = CommonList.create(driver, wait, MILESTONE_LIST);
         return milestoneList.getRow("Name", milestoneName).getValue(attributeName);
-        
     }
     
-    public void selectMilestoneTab(String code) {
-        findProcess(code);
-        TabsWidget milestoneTab = TabsWidget.createById(driver, wait,PROCESS_TABS );
+    public void selectMilestoneTab(String processAttributeName, String value) {
+        findProcess(processAttributeName,value);
+        TabsWidget milestoneTab = TabsWidget.createById(driver, wait, PROCESS_TABS);
         milestoneTab.selectTabById(MILESTONE_TAB);
     }
+
     
 }

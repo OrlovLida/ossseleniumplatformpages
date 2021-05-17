@@ -20,7 +20,7 @@ import java.util.*;
 public class AEITest extends BaseTestCase {
 
     private static final String PRE_CREATED_LOCATION = "Gliwice-BU1";
-    private static final String PRE_CREATED_DEVICE = "ipdevice13";
+    private static final String PRE_CREATED_DEVICE = "SeleniumTestDeviceAEI";
 
     private static final String INTERFACE1_NAME = "CLUSTER 0";
     private static final String INTERFACE2_NAME = "MGT LAN 0";

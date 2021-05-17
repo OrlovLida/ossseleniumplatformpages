@@ -8,12 +8,6 @@ package com.oss.pages.bpm;
 
 import java.util.Optional;
 
-import org.openqa.selenium.WebDriver;
-
-import com.oss.framework.components.inputs.Input;
-import com.oss.framework.listwidget.EditableList;
-import com.oss.pages.BasePage;
-
 /**
  * @author Gabriela Kasza
  */
@@ -110,6 +104,17 @@ public class Milestone {
         
         public Builder setIsManualCompletion(String isManualCompletion) {
             this.isManualCompletion = isManualCompletion;
+            return this;
+        }
+        
+        public Builder form(Milestone milestone) {
+            this.name = milestone.name;
+            this.dueDate = milestone.dueDate;
+            this.leadTime = milestone.leadTime;
+            this.description = milestone.description;
+            this.relatedTask = milestone.relatedTask;
+            this.isActive = milestone.isActive;
+            this.isManualCompletion = milestone.isManualCompletion;
             return this;
         }
         

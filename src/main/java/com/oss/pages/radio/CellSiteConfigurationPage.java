@@ -47,6 +47,11 @@ public class CellSiteConfigurationPage extends BasePage {
         super(driver);
     }
 
+    public CellSiteConfigurationPage goToCellSiteConfiguration(WebDriver driver, String basicURL, String locationId) {
+        driver.get(String.format("%s/#/view/radio/cellsite/xid?perspective=LIVE&withRemoved=true&ids=" + locationId + "", basicURL));
+        return new CellSiteConfigurationPage(driver);
+    }
+
     @Step("Click plus icon and select {option} from the drop-down list")
     public void clickPlusIconAndSelectOption(String option) {
         useTableContextActionByLabel(ADD_LABEL);
