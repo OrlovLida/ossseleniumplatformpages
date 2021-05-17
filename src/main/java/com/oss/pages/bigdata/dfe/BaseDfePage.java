@@ -75,8 +75,7 @@ abstract public class BaseDfePage extends BasePage implements BaseDfePageInterfa
         return numberOfRowsInTable == 1;
     }
 
-    @Step("I click {label} Tab")
-    public void selectTab(String label) {
+    protected void selectTab(String label) {
         DelayUtils.waitForPageToLoad(driver, wait);
         TabsInterface tab = TabWindowWidget.create(driver, wait);
         tab.selectTabByLabel(label);

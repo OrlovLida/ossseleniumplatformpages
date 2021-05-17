@@ -2,15 +2,14 @@ package com.oss.pages.bigdata.dfe.serverGroup;
 
 
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.tablewidget.OldTable;
-import com.oss.pages.bigdata.dfe.BaseDfePage;
+import com.oss.pages.bigdata.dfe.BaseTabPage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ServersTabPage extends BaseDfePage {
+public class ServersTabPage extends BaseTabPage {
 
     private static final Logger log = LoggerFactory.getLogger(ServersTabPage.class);
     private final String SERVERS_TABLE_ID = "server-group/tabs/serversAppId";
@@ -24,19 +23,14 @@ public class ServersTabPage extends BaseDfePage {
         super(driver, wait);
     }
 
-    public OldTable createServersTable() {
-        return OldTable
-                .createByComponentDataAttributeName(driver, wait, getTableId());
-    }
-
     @Step("I select server")
     public void selectServer() {
-        createServersTable().selectRow(0);
+        selectTabTableRow(0);
     }
 
     @Step("I click Add New Server")
     public void clickAddNewServer() {
-        clickTabsContextAction(getContextActionAddLabel());
+        clickTabsContextActionAdd();
     }
 
     @Step("I check if server is created")
@@ -47,7 +41,7 @@ public class ServersTabPage extends BaseDfePage {
 
     @Step("Check if any server exist in servers table")
     public Boolean isAnyServerExist() {
-        Boolean serverExist = createServersTable()
+        Boolean serverExist = createTabTable()
                 .getNumberOfRowsInTable(SERVER_NAME_COLUMN_LABEL) >= 1;
         log.info("In server table exist at least one server: {}", serverExist);
 
@@ -56,12 +50,12 @@ public class ServersTabPage extends BaseDfePage {
 
     @Step("I click Edit Server")
     public void clickEditServer() {
-        clickTabsContextAction(getContextActionEditLabel());
+        clickTabsContextActionEdit();
     }
 
     @Step("I check if server with name {serverName} exists in row {rowInTheTable}")
     public String getServerName(int rowInTheTable) {
-        String serverName = createServersTable()
+        String serverName = createTabTable()
                 .getCellValue(rowInTheTable, SERVER_NAME_COLUMN_LABEL);
         log.info("Checked server name for row {}: {}", rowInTheTable, serverName);
 
@@ -70,13 +64,13 @@ public class ServersTabPage extends BaseDfePage {
 
     @Step("I click Delete Server")
     public void clickDeleteServer() {
-        clickTabsContextAction(getContextActionDeleteLabel());
+        clickTabsContextActionDelete();
     }
 
-    @Step("I check id server is deleted")
+    @Step("I check if server is deleted")
     public Boolean isServerDeleted() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        Boolean serverDeleted = createServersTable().hasNoData();
+        Boolean serverDeleted = createTabTable().hasNoData();
         log.info("Server is deleted: {}", serverDeleted);
 
         return serverDeleted;

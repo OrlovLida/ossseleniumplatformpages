@@ -19,14 +19,12 @@ public class ServerGroupTest extends BaseTestCase {
 
     private final static Logger log = LoggerFactory.getLogger(ServerGroupTest.class);
     private final static String PROTOCOL_TYPE = "SFTP";
-    private final static String SERVERS_TAB = "Servers";
     private final static String SERVERS_SERVER_NAME = "Selenium Test Server";
     private final static String SERVERS_SERVER_ADDRESS = "Selenium.Test.Address";
     private final static String SERVERS_USER_NAME = "Selenium Test Name";
     private final static String SERVERS_PASSWORD = "Password";
     private final static String SERVERS_DIRECTORY = "/test";
-    private final String SERVER_GROUP_NAME_COLUMN_LABEL = "Name";
-    private final String CONFIRM_DELETE_LABEL = "Delete";
+
 
     private ServerGroupPage serverGroupPage;
     private String serverGroupName;
@@ -42,13 +40,13 @@ public class ServerGroupTest extends BaseTestCase {
         updatedServerGroupName = serverGroupName + "_updated";
     }
 
-    @Test(priority = 1, testName = "Add new server group", description = "dd new server group")
+    @Test(priority = 1, testName = "Add new server group", description = "Add new server group")
     @Description("Add new server group")
     public void addServerGroup() {
         serverGroupPage.clickAddNewServerGroup();
         serverGroupPage.getServerGroupPopup().fillServerGroupPopup(serverGroupName, PROTOCOL_TYPE);
         serverGroupPage.getServerGroupPopup().clickSave();
-        Boolean serverGroupIsCreated = serverGroupPage.existIntoTable(serverGroupName, SERVER_GROUP_NAME_COLUMN_LABEL);
+        Boolean serverGroupIsCreated = serverGroupPage.serverGroupExistIntoTable(serverGroupName);
 
         Assert.assertTrue(serverGroupIsCreated);
     }
@@ -56,10 +54,10 @@ public class ServerGroupTest extends BaseTestCase {
     @Test(priority = 2, testName = "Add new server", description = "Add new server")
     @Description("Add new server")
     public void addServer() {
-        Boolean serverGroupExists = serverGroupPage.existIntoTable(serverGroupName, SERVER_GROUP_NAME_COLUMN_LABEL);
+        Boolean serverGroupExists = serverGroupPage.serverGroupExistIntoTable(serverGroupName);
         if (serverGroupExists) {
             serverGroupPage.selectFoundServerGroup();
-            serverGroupPage.selectTab(SERVERS_TAB);
+            serverGroupPage.selectServersTab();
             serverGroupPage.getServersTab().clickAddNewServer();
             serverGroupPage.getServerPopup().fillAddNewServerPopup(SERVERS_SERVER_NAME, SERVERS_SERVER_ADDRESS,
                     SERVERS_USER_NAME, SERVERS_PASSWORD, SERVERS_DIRECTORY);
@@ -76,10 +74,10 @@ public class ServerGroupTest extends BaseTestCase {
     @Test(priority = 3, testName = "Edit server", description = "Edit server", enabled = false)
     @Description("Edit server")
     public void editServer() {
-        Boolean serverGroupExists = serverGroupPage.existIntoTable(serverGroupName, SERVER_GROUP_NAME_COLUMN_LABEL);
+        Boolean serverGroupExists = serverGroupPage.serverGroupExistIntoTable(serverGroupName);
         if (serverGroupExists) {
             serverGroupPage.selectFoundServerGroup();
-            serverGroupPage.selectTab(SERVERS_TAB);
+            serverGroupPage.selectServersTab();
             serverGroupPage.getServersTab().selectServer();
             if (serverGroupPage.getServersTab().isServerCreated(SERVERS_SERVER_NAME)) {
                 serverGroupPage.getServersTab().clickEditServer();
@@ -103,14 +101,14 @@ public class ServerGroupTest extends BaseTestCase {
     @Test(priority = 4, testName = "Delete server", description = "Delete server")
     @Description("Delete server")
     public void deleteServer() {
-        Boolean serverGroupExists = serverGroupPage.existIntoTable(serverGroupName, SERVER_GROUP_NAME_COLUMN_LABEL);
+        Boolean serverGroupExists = serverGroupPage.serverGroupExistIntoTable(serverGroupName);
         if (serverGroupExists) {
             serverGroupPage.selectFoundServerGroup();
-            serverGroupPage.selectTab(SERVERS_TAB);
+            serverGroupPage.selectServersTab();
             if (serverGroupPage.getServersTab().isAnyServerExist()) {
                 serverGroupPage.getServersTab().selectServer();
                 serverGroupPage.getServersTab().clickDeleteServer();
-                serverGroupPage.confirmDelete(CONFIRM_DELETE_LABEL);
+                serverGroupPage.clickConfirmDelete();
                 Boolean serverDeleted = serverGroupPage.getServersTab().isServerDeleted();
 
                 Assert.assertTrue(serverDeleted);
@@ -127,13 +125,13 @@ public class ServerGroupTest extends BaseTestCase {
     @Test(priority = 5, testName = "Edit server group", description = "Edit server group", enabled = false)
     @Description("Edit server group")
     public void editServerGroup() {
-        Boolean serverGroupExists = serverGroupPage.existIntoTable(serverGroupName, SERVER_GROUP_NAME_COLUMN_LABEL);
+        Boolean serverGroupExists = serverGroupPage.serverGroupExistIntoTable(serverGroupName);
         if (serverGroupExists) {
             serverGroupPage.selectFoundServerGroup();
             serverGroupPage.clickEditServerGroup();
             serverGroupPage.getServerGroupPopup().fillName(updatedServerGroupName);
             serverGroupPage.getServerGroupPopup().clickSave();
-            Boolean serverGroupIsEdited = serverGroupPage.existIntoTable(updatedServerGroupName, SERVER_GROUP_NAME_COLUMN_LABEL);
+            Boolean serverGroupIsEdited = serverGroupPage.serverGroupExistIntoTable(updatedServerGroupName);
 
             Assert.assertTrue(serverGroupIsEdited);
         } else {
@@ -145,12 +143,12 @@ public class ServerGroupTest extends BaseTestCase {
     @Test(priority = 6, testName = "Delete server group", description = "Delete server group")
     @Description("Delete server group")
     public void deleteServerGroup() {
-        Boolean serverGroupExists = serverGroupPage.existIntoTable(serverGroupName, SERVER_GROUP_NAME_COLUMN_LABEL);
+        Boolean serverGroupExists = serverGroupPage.serverGroupExistIntoTable(serverGroupName);
         if (serverGroupExists) {
             serverGroupPage.selectFoundServerGroup();
             serverGroupPage.clickDeleteServerGroup();
-            serverGroupPage.confirmDelete(CONFIRM_DELETE_LABEL);
-            Boolean serverGroupIsDeleted = !serverGroupPage.existIntoTable(serverGroupName, SERVER_GROUP_NAME_COLUMN_LABEL);
+            serverGroupPage.clickConfirmDelete();
+            Boolean serverGroupIsDeleted = !serverGroupPage.serverGroupExistIntoTable(serverGroupName);
 
             Assert.assertTrue(serverGroupIsDeleted);
         } else {
