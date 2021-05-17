@@ -30,6 +30,7 @@ import com.oss.utils.TestListener;
 @Listeners({TestListener.class})
 public class EditMilestoneTest extends BaseTestCase {
     private static final Logger log = LoggerFactory.getLogger(EditMilestoneTest.class);
+    private final static String EDIT_MILESTONE_BUTTON = "editMilestonesContextAction";
     
     private String description = "Milestone Update " + (Math.random() * 1001);
     private String milestoneName = "Milestone Update " + (Math.random() * 1001);
@@ -39,7 +40,7 @@ public class EditMilestoneTest extends BaseTestCase {
     public void createMilestone() {
         ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        processInstancesPage.changeUser("bpm_webselenium", "bpmweb");
+        //processInstancesPage.changeUser("bpm_webselenium", "bpmweb");
         String processName = "Selenium Test.Milestone-" + (int) (Math.random() * 1001);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
@@ -64,6 +65,7 @@ public class EditMilestoneTest extends BaseTestCase {
         // when
         milestoneViewPage.selectMilestone(milestoneName);
         String modifyDate = milestoneViewPage.getValuePropertyPanel("modifyDate", 0);
+        milestoneViewPage.callAction(EDIT_MILESTONE_BUTTON);
         EditMilestoneWizardPage editWizard = new EditMilestoneWizardPage(driver);
         Milestone updated_description = Milestone.builder().setDescription(description).build();
         // then
@@ -83,6 +85,7 @@ public class EditMilestoneTest extends BaseTestCase {
         // when
         milestoneViewPage.selectMilestone(milestoneName);
         String modifyDate = milestoneViewPage.getValuePropertyPanel("modifyDate", 0);
+        milestoneViewPage.callAction(EDIT_MILESTONE_BUTTON);
         EditMilestoneWizardPage editWizard = new EditMilestoneWizardPage(driver);
         Milestone updated_leadTime = Milestone.builder().setLeadTime(leadTime).build();
         // then
@@ -99,6 +102,7 @@ public class EditMilestoneTest extends BaseTestCase {
         MilestoneViewPage milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         milestoneViewPage.selectMilestone(milestoneName);
+        milestoneViewPage.callAction(EDIT_MILESTONE_BUTTON);
         EditMilestoneWizardPage editWizard = new EditMilestoneWizardPage(driver);
         Milestone setProcess = Milestone.builder().setRelatedTask("").build();
         editWizard.editMilestone(setProcess);
@@ -116,6 +120,7 @@ public class EditMilestoneTest extends BaseTestCase {
         milestoneViewPage.selectMilestone(milestoneName);
         String modifyDate = milestoneViewPage.getValuePropertyPanel("modifyDate", 0);
         String dueDate = milestoneViewPage.getValuePropertyPanel("dueDate", 0);
+        milestoneViewPage.callAction(EDIT_MILESTONE_BUTTON);
         EditMilestoneWizardPage editWizard = new EditMilestoneWizardPage(driver);
         Milestone updated_dueDate = Milestone.builder().setDueDate(LocalDate.parse(dueDate).minusDays(10).toString()).build();
         // then
@@ -135,6 +140,7 @@ public class EditMilestoneTest extends BaseTestCase {
         milestoneViewPage.selectMilestone(milestoneName);
         String modifyDate = milestoneViewPage.getValuePropertyPanel("modifyDate", 0);
         String dueDate = milestoneViewPage.getValuePropertyPanel("dueDate", 0);
+        milestoneViewPage.callAction(EDIT_MILESTONE_BUTTON);
         EditMilestoneWizardPage editWizard = new EditMilestoneWizardPage(driver);
         Milestone updated_dueDate = Milestone.builder().setDueDate(LocalDate.parse(dueDate).plusDays(10).toString()).build();
         // then
@@ -153,6 +159,7 @@ public class EditMilestoneTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         // when
         milestoneViewPage.selectMilestone(milestoneName);
+        milestoneViewPage.callAction(EDIT_MILESTONE_BUTTON);
         EditMilestoneWizardPage editWizard = new EditMilestoneWizardPage(driver);
         Milestone updated_name = Milestone.builder().setName("Edit Name").build();
         // then
@@ -170,6 +177,7 @@ public class EditMilestoneTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         milestoneViewPage.selectMilestone(milestoneName);
         String modifyDate = milestoneViewPage.getValuePropertyPanel("modifyDate", 0);
+        milestoneViewPage.callAction(EDIT_MILESTONE_BUTTON);
         EditMilestoneWizardPage editWizard = new EditMilestoneWizardPage(driver);
         Milestone aTrue = Milestone.builder().setIsManualCompletion("true").build();
         editWizard.editMilestone(aTrue);
@@ -189,6 +197,7 @@ public class EditMilestoneTest extends BaseTestCase {
         String modifyDate = milestoneViewPage.getValuePropertyPanel("modifyDate", 0);
         String modifyUser = milestoneViewPage.getValuePropertyPanel("modifierUser.name", 0);
         // when
+        milestoneViewPage.callAction(EDIT_MILESTONE_BUTTON);
         EditMilestoneWizardPage editWizard = new EditMilestoneWizardPage(driver);
         Milestone updated_name = Milestone.builder().setName("Milestone U." + (int) (Math.random() * 1001)).build();
         editWizard.editMilestone(updated_name);

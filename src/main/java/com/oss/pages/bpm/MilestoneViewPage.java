@@ -23,6 +23,7 @@ public class MilestoneViewPage extends BasePage {
     }
 
     private final static String MILESTONE_TABLE = "bpm_milestones_view_milestonesTableWidget";
+    private final static String EDIT_MILESTONE_BUTTON = "editMilestonesContextAction";
 
     public static MilestoneViewPage goToMilestoneViewPage(WebDriver driver, String basicURL) {
         driver.get(String.format("%s/#/views/bpm/milestones" +
@@ -49,5 +50,10 @@ public class MilestoneViewPage extends BasePage {
     public int getRowNumber(String value, String attributeNameLabel){
         TableWidget milestoneTable = TableWidget.createById(driver, MILESTONE_TABLE, wait);
         return milestoneTable.getRowNumber(value,attributeNameLabel);
+    }
+
+    public void callAction(String actionId){
+        TableWidget milestoneTable = TableWidget.createById(driver, MILESTONE_TABLE, wait);
+        milestoneTable.callAction(actionId);
     }
 }

@@ -12,7 +12,6 @@ import com.oss.framework.components.inputs.Input;
 import com.oss.framework.listwidget.EditableList;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
-import com.oss.framework.widgets.tablewidget.TableWidget;
 import com.oss.pages.BasePage;
 
 /**
@@ -37,16 +36,14 @@ public class EditMilestoneWizardPage extends BasePage {
     private final static String BPM_MILESTONE_IS_MANUAL_COMPLETION = "isManualCompletion";
     
     public Milestone editMilestone(Milestone milestone) throws RuntimeException {
-        
-        TableWidget milestoneTable = TableWidget.createById(driver, MILESTONE_TABLE, wait);
-        milestoneTable.callAction(EDIT_MILESTONE_BUTTON);
         Wizard editWizard = Wizard.createByComponentId(driver, wait, "Popup");
         EditableList milestoneList = EditableList.createById(driver, wait, EDIT_MILESTONE_LIST);
         EditableList.Row editMilestoneRow = milestoneList.getVisibleRows().get(0);
         DelayUtils.sleep(2000);
         if (milestone.getName().isPresent()) {
-            if (!editMilestoneRow.isEditableAttribute(BPM_MILESTONE_NAME))
-            {throw new RuntimeException("Name is not editable. You need Admin permission"); }
+            if (!editMilestoneRow.isEditableAttribute(BPM_MILESTONE_NAME)) {
+                throw new RuntimeException("Name is not editable. You need Admin permission");
+            }
             editMilestoneRow.setEditableAttributeValue(milestone.getName().get(), BPM_MILESTONE_NAME, "name-TEXT_FIELD",
                     Input.ComponentType.TEXT_FIELD);
         }
@@ -87,12 +84,12 @@ public class EditMilestoneWizardPage extends BasePage {
         editWizard.clickActionById(ACCEPT_BUTTON);
         return editedMilestone;
     }
-
-    public void cancel(){
+    
+    public void cancel() {
         Wizard editWizard = Wizard.createByComponentId(driver, wait, "Popup");
         editWizard.clickActionById(CANCEL_BUTTON);
     }
-
+    
     private Milestone getMilestoneFromRow(EditableList list, int row) {
         String name = list.selectRow(row).getAttributeValue(BPM_MILESTONE_NAME);
         String dueDate = list.selectRow(row).getAttributeValue(BPM_MILESTONE_DUE_DATE);
