@@ -292,40 +292,40 @@ public class IPAddressManagementViewPage extends BasePage {
     }
 
     @Step("Reserve IPv4 Host Address {rowName}")
-    public void reserveIPv4HostAddress(String rowName, String address, String description) {
+    public void reserveIPv4HostAddress(String rowName, String description) {
         selectTreeRowContains(rowName);
         waitForPageToLoad();
         useContextAction(CREATE_OPERATIONS_FOR_IPV4_SUBNET_NETWORK_GROUP, CREATE_OPERATION_ACTION, RESERVE_IPV4_ADDRESS_ACTION);
-        reserveIPHost(address, description);
+        reserveIPHost(description);
     }
 
     @Step("Reserve IPv6 Host Address {rowName}")
-    public void reserveIPv6HostAddress(String rowName, String address, String description) {
+    public void reserveIPv6HostAddress(String rowName, String description) {
         selectTreeRowContains(rowName);
         waitForPageToLoad();
         useContextAction(CREATE_OPERATIONS_FOR_IPV6_SUBNET_NETWORK_GROUP, CREATE_OPERATION_ACTION, RESERVE_IPV6_ADDRESS_ACTION);
-        reserveIPHost(address, description);
+        reserveIPHost(description);
     }
 
     @Step("Reserve Loopback IPv4 Host Address {rowName}")
-    public void reserveLoopbackIPv4HostAddress(String rowName, String address, String description) {
+    public void reserveLoopbackIPv4HostAddress(String rowName, String description) {
         selectTreeRowContains(rowName);
         waitForPageToLoad();
         useContextAction(CREATE_OPERATIONS_FOR_IPV4_SUBNET_NETWORK_GROUP, CREATE_OPERATION_ACTION, RESERVE_LOOPBACK_IPV4_ADDRESS_ACTION);
-        reserveIPHost(address, description);
+        reserveIPHost(description);
     }
 
     @Step("Reserve Loopback IPv6 Host Address {rowName}")
-    public void reserveLoopbackIPv6HostAddress(String rowName, String address, String description) {
+    public void reserveLoopbackIPv6HostAddress(String rowName, String description) {
         selectTreeRowContains(rowName);
         waitForPageToLoad();
         useContextAction(CREATE_OPERATIONS_FOR_IPV6_SUBNET_NETWORK_GROUP, CREATE_OPERATION_ACTION, RESERVE_LOOPBACK_IPV6_ADDRESS_ACTION);
-        reserveIPHost(address, description);
+        reserveIPHost(description);
     }
 
-    private void reserveIPHost(String address, String description){
+    private void reserveIPHost(String description){
         ReserveIPAddressWizardPage reserveIPAddressWizardPage = new ReserveIPAddressWizardPage(driver);
-        reserveIPAddressWizardPage.reserveIPAddress(address, description);
+        reserveIPAddressWizardPage.reserveIPAddress(description);
     }
 
     @Step("Assign IPv4 Host Address from subnet {rowName} context")
