@@ -39,7 +39,7 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
     private static final String CELL5G_NAME_1 = "TP_OSS_RM_RAN_002_CELL5G_1";
     private static final String CELL5G_NAME_2 = "TP_OSS_RM_RAN_002_CELL5G_2";
     private static final String[] CELL5G_NAMES = { CELL5G_NAME_0, CELL5G_NAME_1, CELL5G_NAME_2 };
-    private static final String CELL5G_CARRIER = "NR3600-n78-140 (64200)";
+    private static final String CELL5G_CARRIER = "NR3600-n78-140 (642000)";
     private static final String MCCMNC_PRIMARY = "DU03 [mcc: 424, mnc: 03]";
     private static final int[] LOCAL_CELLS_ID = { 7, 8, 9 };
 
