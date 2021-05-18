@@ -163,7 +163,8 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
     @Test(priority = 10)
     @Description("Delete cells 5G")
     public void delete5Gcells() {
-        cellSiteConfigurationPage.selectTreeRow(LOCATION_NAME);
+        cellSiteConfigurationPage.selectTreeRow(GNODEB_NAME);
+        waitForPageToLoad();
         for (String cell : CELL5G_NAMES) {
             cellSiteConfigurationPage.selectTab("Cells 5G");
             cellSiteConfigurationPage.filterObject("Name", cell);
@@ -176,6 +177,7 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
     @Description("Delete gNodeB")
     public void delete5Gnode() {
         cellSiteConfigurationPage.selectTreeRow(LOCATION_NAME);
+        waitForPageToLoad();
         cellSiteConfigurationPage.selectTab("Base Stations");
         waitForPageToLoad();
         cellSiteConfigurationPage.filterObject("Name", GNODEB_NAME);
