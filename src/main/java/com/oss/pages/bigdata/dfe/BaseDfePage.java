@@ -9,7 +9,6 @@ import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tabswidget.TabWindowWidget;
 import com.oss.framework.widgets.tabswidget.TabsInterface;
 import com.oss.pages.BasePage;
-import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
@@ -82,7 +81,6 @@ abstract public class BaseDfePage extends BasePage implements BaseDfePageInterfa
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    @Step("I confirm the removal")
     public void confirmDelete(String deleteLabel) {
         ConfirmationBox confirmationBox = ConfirmationBox.create(driver, wait);
         confirmationBox.clickButtonByLabel(deleteLabel);
