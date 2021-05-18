@@ -22,7 +22,7 @@ public class SchedulerServicePage extends BasePage {
     private WebElement firstJob;
     @FindBy(id = "EDIT")
     private WebElement editContextAction;
-    @FindBy(id = "schedulerServiceDeleteJobAct")
+    @FindBy(id = "schedulerServiceRetireJobAct")
     private WebElement deleteJobAction;
     @FindBy(id = "schedulerServicePermanentlyDeleteJobAct")
     private WebElement permanentDeleteJobAction;
