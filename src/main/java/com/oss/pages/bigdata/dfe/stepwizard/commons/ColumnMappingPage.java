@@ -13,12 +13,18 @@ public class ColumnMappingPage extends BaseStepPage {
     private static final Logger log = LoggerFactory.getLogger(ColumnMappingPage.class);
     private static final String COLUMN_ROLE_INPUT_ID = "columnRole-COMBOBOX-input";
     private static final String LINKAGE_TO_DIMENSION_TABLE_INPUT_ID = "linkageToDimensionTable-COMBOBOX-input";
-    private static final String COLUMN_DATA_ID = "columnData";
+    private static final String COLUMN_DATA_ID = "columnName";
     private static final String COLUMN_ROLE_ID = "columnRole";
     private static final String LINKAGE_TO_DIMENSION_TABLE_ID = "linkageToDimensionTable";
 
     public ColumnMappingPage(WebDriver driver, WebDriverWait wait, String wizardId) {
         super(driver, wait, wizardId);
+    }
+
+    public EditableList.Row getTableRow(String columnNameValue) {
+        EditableList columnMappingList = EditableList.create(driver, wait);
+        EditableList.Row row = columnMappingList.selectRowByAttributeValue(COLUMN_DATA_ID, columnNameValue);
+        return row;
     }
 
     @Step("I fill Column Mapping Step. I set column role: {columnRole} and linkage to dimension table: {linkageToDimensionTable} for column: {columnNameValue}")
@@ -44,4 +50,11 @@ public class ColumnMappingPage extends BaseStepPage {
         log.info("Filled Column Mapping Step");
     }
 
+    public String getColumnRoleInputId() {
+        return COLUMN_ROLE_INPUT_ID;
+    }
+
+    public String getColumnRoleId() {
+        return COLUMN_ROLE_ID;
+    }
 }

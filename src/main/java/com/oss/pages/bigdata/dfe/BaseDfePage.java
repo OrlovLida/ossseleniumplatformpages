@@ -64,4 +64,13 @@ abstract public class BaseDfePage extends BasePage implements BaseDfePageInterfa
         TabWindowWidget.create(driver, wait).callActionByLabel(actionLabel);
         log.debug("Clicking context action: {}", actionLabel);
     }
+
+    protected Boolean feedExistIntoTable(String name, String columnLabel) {
+        searchFeed(name);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        int numberOfRowsInTable = getNumberOfRowsInTable(columnLabel);
+        log.trace("Found rows count: {}. Filtered by {}", numberOfRowsInTable, name);
+        return numberOfRowsInTable == 1;
+    }
+
 }

@@ -51,12 +51,7 @@ public class DimensionsPage extends BaseDfePage {
 
     @Step("I check if Dimension: {dimensionName} exists into the table")
     public Boolean dimensionExistsIntoTable(String dimensionName) {
-        DelayUtils.sleep(2000);
-        searchFeed(dimensionName);
-        DelayUtils.waitForPageToLoad(driver, wait);
-        int numberOfRowsInTable = getNumberOfRowsInTable(NAME_COLUMN_LABEL);
-        log.trace("Found rows count: {}. Filtered by {}", numberOfRowsInTable, dimensionName);
-        return numberOfRowsInTable == 1;
+        return feedExistIntoTable(dimensionName, NAME_COLUMN_LABEL);
     }
 
     @Step("I select found Dimension")
