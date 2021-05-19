@@ -15,7 +15,7 @@ public class EtlProcessStepWizardPage extends StepWizardPage {
     final private EtlProcessBasicInformationPage basicInformationStep;
     final private DataSourceAndProcessingPage dataSourceAndProcessingStep;
     final private TransformationsPage transformationsStep;
-    final private ColumnMappingPage columnMappingStep;
+    final private EtlProcessColumnMappingPage columnMappingStep;
     final private StoragePage storageStep;
 
     public EtlProcessStepWizardPage(WebDriver driver, WebDriverWait wait) {
@@ -23,7 +23,7 @@ public class EtlProcessStepWizardPage extends StepWizardPage {
         basicInformationStep = new EtlProcessBasicInformationPage(driver, wait, getWizardId());
         dataSourceAndProcessingStep = new DataSourceAndProcessingPage(driver, wait, getWizardId());
         transformationsStep = new TransformationsPage(driver, wait);
-        columnMappingStep = new ColumnMappingPage(driver, wait, getWizardId());
+        columnMappingStep = new EtlProcessColumnMappingPage(driver, wait, getWizardId());
         storageStep = new StoragePage(driver, wait, getWizardId());
     }
 
@@ -44,7 +44,7 @@ public class EtlProcessStepWizardPage extends StepWizardPage {
         return transformationsStep;
     }
 
-    public ColumnMappingPage getColumnMappingStep() {
+    public EtlProcessColumnMappingPage getColumnMappingStep() {
         return columnMappingStep;
     }
 
