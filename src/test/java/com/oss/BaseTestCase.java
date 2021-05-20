@@ -40,7 +40,7 @@ public class BaseTestCase {
         }
         webDriverWait = new WebDriverWait(driver, 50);
         LoginPage loginPage = new LoginPage(driver, BASIC_URL).open();
-        driver.manage().addCookie(new Cookie("i18nCurrentLocale", "en", BASIC_URL.split("//")[1].split(":")[0], "/", null, false, false));
+//        driver.manage().addCookie(new Cookie("i18nCurrentLocale", "en", BASIC_URL.split("//")[1].split(":")[0], "/", null, false, false));
         this.homePage = loginPage.login();
     }
 
