@@ -20,4 +20,9 @@
             <class name="com.oss.bigdata.dfe.ExternalResourcesTest"/>
         </classes>
     </test>
+    <test name="DimensionsViewTest">
+        <classes>
+            <class name="com.oss.bigdata.dfe.DimensionsViewTest"/>
+        </classes>
+    </test>
 </suite>
