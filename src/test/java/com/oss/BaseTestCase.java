@@ -35,25 +35,24 @@ public class BaseTestCase {
     public void openBrowser() {
         if (CONFIGURATION.getDriver().equals("chrome")) {
             startChromeDriver();
-        }
-        else{
+        } else {
             startFirefoxDriver();
         }
         webDriverWait = new WebDriverWait(driver, 50);
         LoginPage loginPage = new LoginPage(driver, BASIC_URL).open();
-        driver.manage().addCookie(new Cookie("i18nCurrentLocale", "en", BASIC_URL.split("//")[1].split(":")[0], "/",  null, false, false));
+        driver.manage().addCookie(new Cookie("i18nCurrentLocale", "en", BASIC_URL.split("//")[1].split(":")[0], "/", null, false, false));
         this.homePage = loginPage.login();
     }
 
     @AfterClass
     public void closeBrowser() {
-        if(driver != null) {
+        if (driver != null) {
             DelayUtils.sleep(5000);
             driver.quit();
         }
     }
 
-    private void startChromeDriver(){
+    private void startChromeDriver() {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
@@ -68,8 +67,11 @@ public class BaseTestCase {
         if (CONFIGURATION.getValue("locally").equals("true")) {
             System.setProperty("webdriver.chrome.driver", CONFIGURATION.getValue("chromeDriverPath"));
             options.addArguments("start-maximized");
-        }
-        else {
+        } else if (CONFIGURATION.getValue("webRunner").equals("true")) {
+            System.setProperty("webdriver.chrome.driver", CONFIGURATION.getValue("chromeDriverWebRunner"));
+            options.addArguments("--window-size=1920,1080");
+            options.addArguments("--headless");
+        } else {
             System.setProperty("webdriver.chrome.driver", CONFIGURATION.getValue("chromeDriverLinuxPath"));
             options.addArguments("--window-size=1920,1080");
             options.addArguments("--headless");
@@ -77,7 +79,7 @@ public class BaseTestCase {
         driver = new ChromeDriver(options);
     }
 
-    private void startFirefoxDriver(){
+    private void startFirefoxDriver() {
         FirefoxOptions options = new FirefoxOptions();
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
@@ -85,8 +87,7 @@ public class BaseTestCase {
         options.addArguments("--height=1080");
         if (CONFIGURATION.getValue("locally").equals("true")) {
             System.setProperty("webdriver.gecko.driver", CONFIGURATION.getValue("geckoDriverPath"));
-        }
-        else {
+        } else {
             System.setProperty("webdriver.gecko.driver", CONFIGURATION.getValue("geckoDriverLinuxPath"));
             options.addArguments("--headless");
         }
