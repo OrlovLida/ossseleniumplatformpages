@@ -18,6 +18,8 @@ public class DictionaryPage extends BaseDfePage {
 
     private static final String TABLE_ID = "dictionariesAppId";
     private static final String KEY_CELL_ID = "1_keyId";
+    private static final String ENTRIES_TAB = "Entries";
+
 
     private final String ADD_NEW_DICTIONARY_LABEL = "Add New Dictionary";
     private final String EDIT_DICTIONARY_LABEL = "Edit Dictionary";
@@ -85,16 +87,12 @@ public class DictionaryPage extends BaseDfePage {
 
     @Step("I confirm the removal")
     public void confirmDelete() {
-        ConfirmationBox confirmationBox = ConfirmationBox.create(driver, wait);
-        confirmationBox.clickButtonByLabel(DELETE_LABEL);
+        confirmDelete(DELETE_LABEL);
     }
 
-    @Step("I click {label} Tab")
-    public void selectTab(String label) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        TabsInterface tab = TabWindowWidget.create(driver, wait);
-        tab.selectTabByLabel(label);
-        DelayUtils.waitForPageToLoad(driver, wait);
+    @Step("I click Entries Tab")
+    public void selectEntriesTab() {
+        selectTab(ENTRIES_TAB);
     }
 
     @Step("I check if Entry: {entryName} exists into the table")

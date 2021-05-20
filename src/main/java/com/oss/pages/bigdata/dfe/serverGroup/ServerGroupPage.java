@@ -72,7 +72,7 @@ public class ServerGroupPage extends BaseDfePage {
         clickContextActionDelete();
     }
 
-    @Step("I click {label} Tab")
+    @Step("I click Servers Tab")
     public void selectServersTab() {
         selectTab(SERVERS_TAB);
     }

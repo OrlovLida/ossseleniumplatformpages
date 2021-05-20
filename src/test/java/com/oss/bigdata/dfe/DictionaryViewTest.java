@@ -18,7 +18,6 @@ import java.util.Date;
 public class DictionaryViewTest extends BaseTestCase {
 
     private final static String DICTIONARY_DESCRIPTION = "Dictionary Selenium Test";
-    private final static String ENTRIES_TAB = "Entries";
     private final static String ENTRIES_KEY = "Test Key";
     private final static String ENTRIES_VALUE = "Test Value";
     private final static Logger log = LoggerFactory.getLogger(DictionaryViewTest.class);
@@ -54,7 +53,7 @@ public class DictionaryViewTest extends BaseTestCase {
         Boolean dictionaryExists = dictionaryPage.dictionaryExistsIntoTable(dictionaryName);
         if (dictionaryExists) {
             dictionaryPage.selectFoundDictionary();
-            dictionaryPage.selectTab(ENTRIES_TAB);
+            dictionaryPage.selectEntriesTab();
             dictionaryPage.clickAddNewEntry();
             dictionaryPage.getEntryPopup().fillEntryPopup(ENTRIES_KEY, ENTRIES_VALUE);
             dictionaryPage.getEntryPopup().clickSave();
