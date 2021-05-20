@@ -40,7 +40,7 @@ public class BaseTestCase {
         }
         webDriverWait = new WebDriverWait(driver, 50);
         LoginPage loginPage = new LoginPage(driver, BASIC_URL).open();
-//        driver.manage().addCookie(new Cookie("i18nCurrentLocale", "en", BASIC_URL.split("//")[1].split(":")[0], "/", null, false, false));
+        addCookies(driver);
         this.homePage = loginPage.login();
     }
 
@@ -49,6 +49,16 @@ public class BaseTestCase {
         if (driver != null) {
             DelayUtils.sleep(5000);
             driver.quit();
+        }
+    }
+
+    private Cookie createCookie() {
+        return new Cookie("i18nCurrentLocale", "en", BASIC_URL.split("//")[1].split(":")[0], "/", null, false, false);
+    }
+
+    private void addCookies(WebDriver driver) {
+        if (CONFIGURATION.getValue("webRunner").equals("false")) {
+            driver.manage().addCookie(this.createCookie());
         }
     }
 
