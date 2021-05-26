@@ -2,16 +2,19 @@ package com.oss.bigdata.dfe;
 
 import com.oss.BaseTestCase;
 import com.oss.pages.bigdata.dfe.KQIs.KQIsPage;
+import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@Listeners({TestListener.class})
 public class KQIsTest extends BaseTestCase {
 
     private final static Logger log = LoggerFactory.getLogger(KQIsTest.class);
