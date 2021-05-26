@@ -33,15 +33,15 @@ public class KQIWizardPage extends BaseStepPage {
 
     public void fillValueType(String valueType) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        Combobox kQIValueTypeInput = (Combobox) getWizard(driver, wait).getComponent(VALUE_TYPE_ID, Input.ComponentType.COMBOBOX);
-        kQIValueTypeInput.setValue(Data.createSingleData(valueType));
+        Combobox kqiValueTypeInput = (Combobox) getWizard(driver, wait).getComponent(VALUE_TYPE_ID, Input.ComponentType.COMBOBOX);
+        kqiValueTypeInput.setValue(Data.createSingleData(valueType));
         log.debug("Setting value type to: {}", valueType);
     }
 
     public void fillUnitType(String unitType) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        Combobox kQIUnitTypeInput = (Combobox) getWizard(driver, wait).getComponent(UNIT_TYPE_ID, Input.ComponentType.COMBOBOX);
-        kQIUnitTypeInput.setValue(Data.createSingleData(unitType));
+        Combobox kqiUnitTypeInput = (Combobox) getWizard(driver, wait).getComponent(UNIT_TYPE_ID, Input.ComponentType.COMBOBOX);
+        kqiUnitTypeInput.setValue(Data.createSingleData(unitType));
         log.debug("Setting unit type to: {}", unitType);
     }
 
