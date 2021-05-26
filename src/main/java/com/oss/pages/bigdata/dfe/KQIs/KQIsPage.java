@@ -11,6 +11,8 @@ public class KQIsPage extends BaseDfePage {
     private final String KQI_WIZARD_ID = "kqiWizardWindow";
     private final String KQI_NAME_COLUMN_LABEL = "Name";
     private final String SEARCH_INPUT_ID = "kqi-listSearchAppId";
+    private final String EDIT_KQI_LABEL = "Edit KQI";
+    private final String DELETE_KQI_LABEL = "Delete KQI";
 
     private final KQIWizardPage kqiWizardPage;
 
@@ -40,6 +42,16 @@ public class KQIsPage extends BaseDfePage {
         return feedExistIntoTable(name, KQI_NAME_COLUMN_LABEL);
     }
 
+    @Step("I select found KQI")
+    public void selectFoundKQI() {
+        getTable(driver, wait).selectRow(0);
+    }
+
+    @Step("I click Edit KQI")
+    public void clickEditKQI() {
+        clickContextActionEdit();
+    }
+
     @Override
     public String getTableId() {
         return TABLE_ID;
@@ -52,12 +64,12 @@ public class KQIsPage extends BaseDfePage {
 
     @Override
     public String getContextActionEditLabel() {
-        return null;
+        return EDIT_KQI_LABEL;
     }
 
     @Override
     public String getContextActionDeleteLabel() {
-        return null;
+        return DELETE_KQI_LABEL;
     }
 
     @Override

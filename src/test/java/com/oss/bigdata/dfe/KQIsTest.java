@@ -45,4 +45,22 @@ public class KQIsTest extends BaseTestCase {
         Assert.assertTrue(kqiIsCreated);
     }
 
+    @Test(priority = 2, testName = "Edit KQI", description = "Edit KQI")
+    @Description("Edit KQI")
+    public void editKQI() {
+        Boolean kqiExists = kqIsPage.kqiExistIntoTable(kQIsName);
+        if (kqiExists) {
+            kqIsPage.selectFoundKQI();
+            kqIsPage.clickEditKQI();
+            kqIsPage.getKqiWizardPage().fillName(updatedKQIsName);
+            kqIsPage.getKqiWizardPage().clickAccept();
+            Boolean kqiIsEdited = kqIsPage.kqiExistIntoTable(updatedKQIsName);
+
+            Assert.assertTrue(kqiIsEdited);
+        } else {
+            log.error("KQI with name: {} doesn't exist", kQIsName);
+            Assert.fail();
+        }
+    }
+
 }
