@@ -20,7 +20,6 @@ public class DictionaryPage extends BaseDfePage {
     private static final String KEY_CELL_ID = "1_keyId";
     private static final String ENTRIES_TAB = "Entries";
 
-
     private final String ADD_NEW_DICTIONARY_LABEL = "Add New Dictionary";
     private final String EDIT_DICTIONARY_LABEL = "Edit Dictionary";
     private final String DELETE_DICTIONARY_LABEL = "Delete Dictionary";
@@ -128,7 +127,6 @@ public class DictionaryPage extends BaseDfePage {
         clickEditableListAction(DELETE_ENTRIES_LABEL);
     }
 
-
     @Override
     public String getTableId() {
         return TABLE_ID;
@@ -153,6 +151,4 @@ public class DictionaryPage extends BaseDfePage {
     public String getSearchId() {
         return SEARCH_INPUT_ID;
     }
-
-
 }

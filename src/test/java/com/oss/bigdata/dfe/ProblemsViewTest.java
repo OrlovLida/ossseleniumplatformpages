@@ -60,7 +60,6 @@ public class ProblemsViewTest extends BaseTestCase {
             Boolean dictionaryIsCreated = problemsPage.problemExistsIntoTable(updatedProblemName);
 
             Assert.assertTrue(dictionaryIsCreated);
-
         } else {
             log.error("Problem with name: {} doesn't exist", updatedProblemName);
             Assert.fail();
@@ -83,6 +82,5 @@ public class ProblemsViewTest extends BaseTestCase {
             Assert.fail();
         }
     }
-
 }
 

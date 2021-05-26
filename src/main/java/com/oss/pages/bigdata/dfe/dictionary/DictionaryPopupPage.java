@@ -22,5 +22,4 @@ public class DictionaryPopupPage extends BasePopupPage {
         fillDescription(description);
         log.info("Filled Dictionary Popup fields");
     }
-
 }
