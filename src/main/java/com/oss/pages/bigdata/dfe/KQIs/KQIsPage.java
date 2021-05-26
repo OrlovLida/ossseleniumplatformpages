@@ -13,6 +13,7 @@ public class KQIsPage extends BaseDfePage {
     private final String SEARCH_INPUT_ID = "kqi-listSearchAppId";
     private final String EDIT_KQI_LABEL = "Edit KQI";
     private final String DELETE_KQI_LABEL = "Delete KQI";
+    private final String CONFIRM_DELETE_LABEL = "Delete";
 
     private final KQIWizardPage kqiWizardPage;
 
@@ -50,6 +51,16 @@ public class KQIsPage extends BaseDfePage {
     @Step("I click Edit KQI")
     public void clickEditKQI() {
         clickContextActionEdit();
+    }
+
+    @Step("I click Delete KQI")
+    public void clickDeleteKQI() {
+        clickContextActionDelete();
+    }
+
+    @Step("I confirm the removal")
+    public void clickConfirmDelete() {
+        confirmDelete(CONFIRM_DELETE_LABEL);
     }
 
     @Override

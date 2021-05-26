@@ -30,4 +30,14 @@
             <class name="com.oss.bigdata.dfe.ProblemsViewTest"/>
         </classes>
     </test>
+    <test name="ServerGroupTest">
+        <classes>
+            <class name="com.oss.bigdata.dfe.ServerGroupTest"/>
+        </classes>
+    </test>
+    <test name="KQIsTest">
+        <classes>
+            <class name="com.oss.bigdata.dfe.KQIsTest"/>
+        </classes>
+    </test>
 </suite>

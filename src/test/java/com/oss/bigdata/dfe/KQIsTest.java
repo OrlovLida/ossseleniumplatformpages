@@ -19,14 +19,14 @@ public class KQIsTest extends BaseTestCase {
     private final String UNIT_TYPE = "Minutes";
     private final String FORMULA = "$[COUNT(t:SMOKE#ETLforKqis.ATTEMPTS_LONG)]";
 
-    private KQIsPage kqIsPage;
+    private KQIsPage kqisPage;
     private String kQIsName;
     private String updatedKQIsName;
 
 
     @BeforeClass
     public void goToKQIsView() {
-        kqIsPage = KQIsPage.goToPage(driver, BASIC_URL);
+        kqisPage = KQIsPage.goToPage(driver, BASIC_URL);
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy_MM_dd");
         String date = simpleDateFormat.format(new Date());
@@ -37,10 +37,10 @@ public class KQIsTest extends BaseTestCase {
     @Test(priority = 1, testName = "Add new KQI", description = "Add new KQI")
     @Description("Add new KQI")
     public void addKQI() {
-        kqIsPage.clickAddNewKQI();
-        kqIsPage.getKqiWizardPage().fillKQIWizard(kQIsName, VALUE_TYPE, UNIT_TYPE, FORMULA);
-        kqIsPage.getKqiWizardPage().clickAccept();
-        Boolean kqiIsCreated = kqIsPage.kqiExistIntoTable(kQIsName);
+        kqisPage.clickAddNewKQI();
+        kqisPage.getKqiWizardPage().fillKQIWizard(kQIsName, VALUE_TYPE, UNIT_TYPE, FORMULA);
+        kqisPage.getKqiWizardPage().clickAccept();
+        Boolean kqiIsCreated = kqisPage.kqiExistIntoTable(kQIsName);
 
         Assert.assertTrue(kqiIsCreated);
     }
@@ -48,13 +48,13 @@ public class KQIsTest extends BaseTestCase {
     @Test(priority = 2, testName = "Edit KQI", description = "Edit KQI")
     @Description("Edit KQI")
     public void editKQI() {
-        Boolean kqiExists = kqIsPage.kqiExistIntoTable(kQIsName);
+        Boolean kqiExists = kqisPage.kqiExistIntoTable(kQIsName);
         if (kqiExists) {
-            kqIsPage.selectFoundKQI();
-            kqIsPage.clickEditKQI();
-            kqIsPage.getKqiWizardPage().fillName(updatedKQIsName);
-            kqIsPage.getKqiWizardPage().clickAccept();
-            Boolean kqiIsEdited = kqIsPage.kqiExistIntoTable(updatedKQIsName);
+            kqisPage.selectFoundKQI();
+            kqisPage.clickEditKQI();
+            kqisPage.getKqiWizardPage().fillName(updatedKQIsName);
+            kqisPage.getKqiWizardPage().clickAccept();
+            Boolean kqiIsEdited = kqisPage.kqiExistIntoTable(updatedKQIsName);
 
             Assert.assertTrue(kqiIsEdited);
         } else {
@@ -63,4 +63,20 @@ public class KQIsTest extends BaseTestCase {
         }
     }
 
+    @Test(priority = 3, testName = "Delete KQI", description = "Delete KQI")
+    @Description("Delete KQI")
+    public void deleteKQI() {
+        Boolean kqiExists = kqisPage.kqiExistIntoTable(kQIsName);
+        if (kqiExists) {
+            kqisPage.selectFoundKQI();
+            kqisPage.clickDeleteKQI();
+            kqisPage.clickConfirmDelete();
+            Boolean kqiIsDeleted = !kqisPage.kqiExistIntoTable(kQIsName);
+
+            Assert.assertTrue(kqiIsDeleted);
+        } else {
+            log.error("KQI with name: {} doesn't exist, can not perform delete action", kQIsName);
+            Assert.fail();
+        }
+    }
 }
