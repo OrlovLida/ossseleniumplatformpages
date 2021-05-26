@@ -20,7 +20,7 @@ public class KQIsTest extends BaseTestCase {
     private final String FORMULA = "$[COUNT(t:SMOKE#ETLforKqis.ATTEMPTS_LONG)]";
 
     private KQIsPage kqisPage;
-    private String kQIsName;
+    private String kqisName;
     private String updatedKQIsName;
 
 
@@ -30,17 +30,17 @@ public class KQIsTest extends BaseTestCase {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy_MM_dd");
         String date = simpleDateFormat.format(new Date());
-        kQIsName = "Selenium_" + date + "_kqiTest";
-        updatedKQIsName = kQIsName + "_updated";
+        kqisName = "Selenium_" + date + "_kqiTest";
+        updatedKQIsName = kqisName + "_updated";
     }
 
     @Test(priority = 1, testName = "Add new KQI", description = "Add new KQI")
     @Description("Add new KQI")
     public void addKQI() {
         kqisPage.clickAddNewKQI();
-        kqisPage.getKqiWizardPage().fillKQIWizard(kQIsName, VALUE_TYPE, UNIT_TYPE, FORMULA);
+        kqisPage.getKqiWizardPage().fillKQIWizard(kqisName, VALUE_TYPE, UNIT_TYPE, FORMULA);
         kqisPage.getKqiWizardPage().clickAccept();
-        Boolean kqiIsCreated = kqisPage.kqiExistIntoTable(kQIsName);
+        Boolean kqiIsCreated = kqisPage.kqiExistIntoTable(kqisName);
 
         Assert.assertTrue(kqiIsCreated);
     }
@@ -48,7 +48,7 @@ public class KQIsTest extends BaseTestCase {
     @Test(priority = 2, testName = "Edit KQI", description = "Edit KQI")
     @Description("Edit KQI")
     public void editKQI() {
-        Boolean kqiExists = kqisPage.kqiExistIntoTable(kQIsName);
+        Boolean kqiExists = kqisPage.kqiExistIntoTable(kqisName);
         if (kqiExists) {
             kqisPage.selectFoundKQI();
             kqisPage.clickEditKQI();
@@ -58,7 +58,7 @@ public class KQIsTest extends BaseTestCase {
 
             Assert.assertTrue(kqiIsEdited);
         } else {
-            log.error("KQI with name: {} doesn't exist", kQIsName);
+            log.error("KQI with name: {} doesn't exist", kqisName);
             Assert.fail();
         }
     }
@@ -66,16 +66,16 @@ public class KQIsTest extends BaseTestCase {
     @Test(priority = 3, testName = "Delete KQI", description = "Delete KQI")
     @Description("Delete KQI")
     public void deleteKQI() {
-        Boolean kqiExists = kqisPage.kqiExistIntoTable(kQIsName);
+        Boolean kqiExists = kqisPage.kqiExistIntoTable(kqisName);
         if (kqiExists) {
             kqisPage.selectFoundKQI();
             kqisPage.clickDeleteKQI();
             kqisPage.clickConfirmDelete();
-            Boolean kqiIsDeleted = !kqisPage.kqiExistIntoTable(kQIsName);
+            Boolean kqiIsDeleted = !kqisPage.kqiExistIntoTable(kqisName);
 
             Assert.assertTrue(kqiIsDeleted);
         } else {
-            log.error("KQI with name: {} doesn't exist, can not perform delete action", kQIsName);
+            log.error("KQI with name: {} doesn't exist, cannot perform delete action", kqisName);
             Assert.fail();
         }
     }
