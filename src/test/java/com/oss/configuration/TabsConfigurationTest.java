@@ -125,7 +125,7 @@ public class TabsConfigurationTest extends BaseTestCase {
     @Description("")
     public void checkingConfigurationForTabsForGroup(){
         //given
-        newInventoryViewPage.changeUser("webseleniumtests2","webtests");
+        newInventoryViewPage.changeUser("webseleniumtests","Webtests123!");
         newInventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Location");
         //when
         newInventoryViewPage.selectFirstRow();

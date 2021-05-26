@@ -34,8 +34,8 @@ public class FiltersTest extends BaseTestCase {
     private String VALUE_FOR_FILTER3_AFTER_EDIT = "4";
     private String VALUE_IN_LOCATION_ID_INPUT;
     private String FOLDER_NAME = "test";
-    private String USER2_LOGIN = "webseleniumtests2";
-    private String USER2_PASSWORD = "webtests";
+    private String USER2_LOGIN = "webseleniumtests";
+    private String USER2_PASSWORD = "Webtests123!";
     private int i = 0;
 
     @BeforeClass
