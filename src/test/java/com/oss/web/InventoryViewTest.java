@@ -210,7 +210,7 @@ public class InventoryViewTest extends BaseTestCase {
         PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel(0, PROPERTY_PANEL_ID);
         propertyPanel.fullTextSearch(name);
         Assert.assertTrue(propertyPanel.getPropertyLabels().contains("Name"));
-        for (String attribute : propertyPanel.getPropertyAttributeId()) {
+        for (String attribute : propertyPanel.getVisibleAttributes()) {
             Assert.assertTrue(propertyPanel.getPropertyValue(attribute).contains(name));
         }
     }
