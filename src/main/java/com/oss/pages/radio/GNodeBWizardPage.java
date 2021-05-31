@@ -1,10 +1,12 @@
 package com.oss.pages.radio;
 
+import org.openqa.selenium.WebDriver;
+
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
+
 import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
 
 public class GNodeBWizardPage extends BasePage {
 
@@ -33,8 +35,8 @@ public class GNodeBWizardPage extends BasePage {
     @Step("Create gNodeB with mandatory fields (Name, gNodeB ID, gNodeB Model, MCC-MNC Primary) filled in")
     public void createGNodeB(String gNodeBName, String gNodeBId, String gNodeBModel, String MCCMNCPrimary) {
         setName(gNodeBName);
-        setENodeBId(gNodeBId);
-        setENodeBModel(gNodeBModel);
+        setId(gNodeBId);
+        setModel(gNodeBModel);
         setMccMncPrimary(MCCMNCPrimary);
         accept();
     }
@@ -46,22 +48,19 @@ public class GNodeBWizardPage extends BasePage {
     }
 
     @Step("Set gNodeB Id")
-    public GNodeBWizardPage setENodeBId(String gNodeBId) {
+    public void setId(String gNodeBId) {
         getGNodeBWizard().setComponentValue(G_NODE_B_ID_DATA_ATTRIBUTE_NAME, gNodeBId, Input.ComponentType.TEXT_FIELD);
-        return this;
     }
 
     @Step("Set gNodeB Model")
-    public GNodeBWizardPage setENodeBModel(String gNodeBModel) {
+    public void setModel(String gNodeBModel) {
         getGNodeBWizard().setComponentValue(G_NODE_B_MODEL_DATA_ATTRIBUTE_NAME, gNodeBModel, Input.ComponentType.COMBOBOX);
-        return this;
     }
 
     @Step("Set MCC-MNC Primary")
-    public GNodeBWizardPage setMccMncPrimary(String MCCMNCPrimary) {
+    public void setMccMncPrimary(String MCCMNCPrimary) {
         getGNodeBWizard().getComponent(G_NODE_B_MCC_MNC_DATA_ATTRIBUTE_NAME, Input.ComponentType.COMBOBOX).click();
         getGNodeBWizard().setComponentValue(G_NODE_B_SEARCH_MCC_MNC_DATA_ATTRIBUTE_NAME, MCCMNCPrimary, Input.ComponentType.COMBOBOX);
-        return this;
     }
 
     @Step("Set description")

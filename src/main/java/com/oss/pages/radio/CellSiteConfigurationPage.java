@@ -34,6 +34,7 @@ public class CellSiteConfigurationPage extends BasePage {
     private static final String DEVICES_ROW = "Devices";
     private static final String CREATE_ENODEB_ACTION = "Create eNodeB";
     private static final String CREATE_GNODEB_ACTION = "Create gNodeB";
+    private static final String CREATE_GNODEB_DU_ACTION = "Create gNodeB DU";
     private static final String TYPE_4G = "4G";
     private static final String TYPE_5G = "5G";
     private static final String DEVICES_TAB = "Devices";
@@ -207,11 +208,18 @@ public class CellSiteConfigurationPage extends BasePage {
         eNodeBWizard.createENodeB(eNodeBName, eNodeBid, eNodeBModel, MCCMNCPrimary);
     }
 
-    @Step("Create GNodeB with following attributes: Name = {gNodeBName}, ID = {gNodeBId}, Model = {gNodeBModel}, MCCMNC = {MCCMNCPrimary}")
+    @Step("Create gNodeB with following attributes: Name = {gNodeBName}, ID = {gNodeBId}, Model = {gNodeBModel}, MCCMNC = {MCCMNCPrimary}")
     public void createGNodeB(String gNodeBName, String gNodeBId, String gNodeBModel, String MCCMNCPrimary) {
         clickPlusIconAndSelectOption(CREATE_GNODEB_ACTION);
         new GNodeBWizardPage(driver)
                 .createGNodeB(gNodeBName, gNodeBId, gNodeBModel, MCCMNCPrimary);
+    }
+
+    @Step("Create gNodeB DU with following attributes: Name = {gNodeBName}, ID = {gNodeBId}, Model = {gNodeBModel}, Controller = {controller}")
+    public void createGNodeBDU(String gNodeBName, String gNodeBId, String gNodeBModel, String controller) {
+        clickPlusIconAndSelectOption(CREATE_GNODEB_DU_ACTION);
+        new GNodeBDUWizardPage(driver)
+                .createGNodeBDU(gNodeBName, gNodeBId, gNodeBModel, controller);
     }
 
     @Step("Create {amountOfCells} Cells 4G by bulk wizard with Carrier = {carrier}")
