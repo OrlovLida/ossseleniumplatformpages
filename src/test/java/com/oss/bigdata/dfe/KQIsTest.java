@@ -20,7 +20,7 @@ public class KQIsTest extends BaseTestCase {
     private final static Logger log = LoggerFactory.getLogger(KQIsTest.class);
     private final String VALUE_TYPE = "Number";
     private final String UNIT_TYPE = "Minutes";
-    private final String FORMULA = "$[COUNT(t:SMOKE#ETLforKqis.ATTEMPTS_LONG)]";
+    private final String FORMULA = "$[M:COUNT(t:SMOKE#ETLforKqis.ATTEMPTS_LONG)]";
 
     private KQIsPage kqisPage;
     private String kqisName;
