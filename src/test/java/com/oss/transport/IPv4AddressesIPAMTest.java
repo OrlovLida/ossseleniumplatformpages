@@ -513,13 +513,11 @@ public class IPv4AddressesIPAMTest extends BaseTestCase {
         ipAddressManagementViewPage.selectTreeRowContains(getAddressAndMask(firstIPSubnetProperties));
         ipAddressManagementViewPage.selectTreeRowContains(getAddressAndMask(firstIPSubnetProperties));
         ipAddressManagementViewPage.deleteIPv4SubnetTypeOfBlock(getAddressAndMask(firstIPSubnetProperties));
-        Assert.assertTrue(ipAddressManagementViewPage.isSystemMessageSuccess());
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
         ipAddressManagementViewPage.selectTreeRow(NETWORK_NAME_UPDATED);
         ipAddressManagementViewPage.selectTreeRow(NETWORK_NAME_UPDATED);
         ipAddressManagementViewPage.expandTreeRow(NETWORK_NAME_UPDATED);
         ipAddressManagementViewPage.deleteIPv4SubnetTypeOfBlock(getAddressAndMask(thirdIPSubnetProperties));
-        Assert.assertTrue(ipAddressManagementViewPage.isSystemMessageSuccess());
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
         ipAddressManagementViewPage.selectTreeRow(NETWORK_NAME_UPDATED);
         ipAddressManagementViewPage.selectTreeRow(NETWORK_NAME_UPDATED);
@@ -532,7 +530,6 @@ public class IPv4AddressesIPAMTest extends BaseTestCase {
     public void deleteIPNetwork() {
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
         ipAddressManagementViewPage.deleteIPNetwork(NETWORK_NAME_UPDATED);
-        Assert.assertTrue(ipAddressManagementViewPage.isSystemMessageSuccess());
     }
 
     @Test(priority = 27)
@@ -540,7 +537,6 @@ public class IPv4AddressesIPAMTest extends BaseTestCase {
     public void deleteRole() {
         RoleViewPage roleViewPage = ipAddressManagementViewPage.openRoleView();
         roleViewPage.deleteRole(ROLE_NAME_UPDATED);
-        Assert.assertTrue(ipAddressManagementViewPage.isSystemMessageSuccess());
         Assert.assertFalse(roleViewPage.doesRoleNameExist(ROLE_NAME_UPDATED));
         roleViewPage.exitRoleView();
     }
