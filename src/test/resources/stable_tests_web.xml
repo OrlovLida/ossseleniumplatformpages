@@ -1,5 +1,5 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="RegressionSuiteWeb-3UKHD" thread-count="2" parallel="tests" verbose="1">
+<suite name="RegressionSuiteWeb-WEB" thread-count="2" parallel="tests" verbose="1">
     <test name="ExportTests">
         <classes>
             <class name="com.oss.web.ExportGuiWizardTest"/>
@@ -16,19 +16,9 @@
             <class name="com.oss.web.FiltersTest"/>
         </classes>
     </test>
-    <test name="CreateProcessNRPTest">
-        <classes>
-            <class name="com.oss.bpm.CreateProcessNRPTest"/>
-        </classes>
-    </test>
     <test name="InventoryViewTest">
         <classes>
             <class name="com.oss.web.InventoryViewTest"/>
-        </classes>
-    </test>
-    <test name="PhysicalDeviceInventoryViewTest">
-        <classes>
-            <class name="com.oss.web.PhysicalDeviceInventoryViewTest"/>
         </classes>
     </test>
 </suite>

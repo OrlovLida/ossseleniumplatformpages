@@ -40,7 +40,7 @@ public class EditMilestoneTest extends BaseTestCase {
     public void createMilestone() {
         ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        //processInstancesPage.changeUser("bpm_webselenium", "bpmweb");
+        processInstancesPage.changeUser("bpm_webselenium", "bpmweb");
         String processName = "Selenium Test.Milestone-" + (int) (Math.random() * 1001);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
