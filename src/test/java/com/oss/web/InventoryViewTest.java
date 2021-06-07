@@ -206,10 +206,10 @@ public class InventoryViewTest extends BaseTestCase {
     @Test
     public void searchProperty() {
         inventoryViewPage.selectObjectByRowId(0);
-        String name = inventoryViewPage.getAttributeValue("Name", 0);
+        String name = inventoryViewPage.getAttributeValue("Identifier", 0);
         PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel(0, PROPERTY_PANEL_ID);
         propertyPanel.fullTextSearch(name);
-        Assert.assertTrue(propertyPanel.getPropertyLabels().contains("Name"));
+        Assert.assertTrue(propertyPanel.getPropertyLabels().contains("Identifier"));
         for (String attribute : propertyPanel.getVisibleAttributes()) {
             Assert.assertTrue(propertyPanel.getPropertyValue(attribute).contains(name));
         }
