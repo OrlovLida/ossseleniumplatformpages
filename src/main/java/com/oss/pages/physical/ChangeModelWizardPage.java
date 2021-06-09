@@ -10,7 +10,7 @@ import io.qameta.allure.Step;
 
 public class ChangeModelWizardPage extends BasePage {
 
-    private Wizard wizard = Wizard.createByComponentId(driver, wait, "Popup");
+    private Wizard wizard = Wizard.createPopupWizard(driver, wait);
     private static final String MODEL_SEARCH = "search_model";
 
     public ChangeModelWizardPage(WebDriver driver) {

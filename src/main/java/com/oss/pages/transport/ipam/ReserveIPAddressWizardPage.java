@@ -1,10 +1,12 @@
 package com.oss.pages.transport.ipam;
 
-import com.oss.framework.components.inputs.Input;
+import com.oss.framework.data.Data;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
 import org.openqa.selenium.WebDriver;
+
+import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 
 /**
  * @author Ewa Frączek
@@ -18,27 +20,12 @@ public class ReserveIPAddressWizardPage extends BasePage {
         super(driver);
     }
 
-    public void reserveIPAddress(String ipAddress, String description){
-        DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
+    public void reserveIPAddress(String description){
+        DelayUtils.waitForPageToLoad(driver, wait);
         Wizard reserveIPAddressWizard = Wizard.createWizard(driver, wait);
-        Input componentIPAddress = reserveIPAddressWizard.getComponent(HOST_RESERVE_IP_ADDRESS_FIELD_UID, Input.ComponentType.SEARCH_FIELD);
-        componentIPAddress.setSingleStringValue(ipAddress);
-        Input componentDescription = reserveIPAddressWizard.getComponent(HOST_RESERVE_DESCRIPTION_FIELD_UID, Input.ComponentType.TEXT_FIELD);
-        componentDescription.setSingleStringValue(description);
-        reserveIPAddressWizard.clickOK();
-    }
-
-    public void reserveIPAddress(String ipAddress){
-        DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
-        Wizard reserveIPAddressWizard = Wizard.createWizard(driver, wait);
-        Input componentIPAddress = reserveIPAddressWizard.getComponent(HOST_RESERVE_IP_ADDRESS_FIELD_UID, Input.ComponentType.SEARCH_FIELD);
-        componentIPAddress.setSingleStringValue(ipAddress);
-        reserveIPAddressWizard.clickOK();
-    }
-
-    public void reserveIPAddress(){
-        DelayUtils.waitForPageToLoadWithoutAppPreloader(driver, wait);
-        Wizard reserveIPAddressWizard = Wizard.createWizard(driver, wait);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        reserveIPAddressWizard.getComponent(HOST_RESERVE_DESCRIPTION_FIELD_UID, TEXT_FIELD).setValueContains(Data.createFindFirst(description));
+        DelayUtils.waitForPageToLoad(driver, wait);
         reserveIPAddressWizard.clickOK();
     }
 }

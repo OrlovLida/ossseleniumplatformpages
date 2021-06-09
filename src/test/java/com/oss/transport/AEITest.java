@@ -6,7 +6,7 @@ import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.OldTable;
-import com.oss.pages.platform.OldInventoryViewPage;
+import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
 import com.oss.pages.transport.aei.AEIWizardPage;
 import io.qameta.allure.Step;
 import org.testng.Assert;
@@ -20,7 +20,7 @@ import java.util.*;
 public class AEITest extends BaseTestCase {
 
     private static final String PRE_CREATED_LOCATION = "Gliwice-BU1";
-    private static final String PRE_CREATED_DEVICE = "ipdevice13";
+    private static final String PRE_CREATED_DEVICE = "SeleniumTestDeviceAEI";
 
     private static final String INTERFACE1_NAME = "CLUSTER 0";
     private static final String INTERFACE2_NAME = "MGT LAN 0";

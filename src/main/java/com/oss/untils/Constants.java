@@ -9,6 +9,8 @@ public class Constants {
     }
 
     //params
+    public static final String ID = "id";
+    public static final String CELL_ID = "cell_id";
     public static final String PERSPECTIVE = "perspective";
     public static final String LIVE = "LIVE";
     public static final String GENERATE_CONTROLLER_ID = "generateControllerId";
@@ -17,6 +19,8 @@ public class Constants {
     public static final String SHOULD_CREATE_MISSING_ADDRESS_ITEMS ="shouldCreateMissingAddressItems";
     public static final String RSQL = "rsql";
     public static final String NAME_PARAM = "Name";
+    public static final String PORT_ID = "portId";
+    public static final String DEVICE_ID = "deviceId";
 
     //models
     //Generic
@@ -38,7 +42,15 @@ public class Constants {
     public static final String RRU5501_MODEL = "RRU5501";
     public static final String AAU5614ANTENNA_MODEL = "AAU5614";
     public static final String AHP4517R7v06ANTENNA_MODEL = "AHP4517R7v06";
+    public static final String AQU4518R22v07ANTENNA_MODEL = "AQU4518R22v07";
     public static final String UBBPg3_CARD_MODEL = "UBBPg3";
+    public static final String ACOMT2H10v06COMBINER_MODEL = "ACOMT2H10v06";
+    public static final String ATADU2022v07MHA_MODEL = "ATADU2022v07";
+    //RFS
+    public static final String RFS_MANUFACTURER = "RFS";
+    public static String LCF1250J_2m_CABLE = "1/2\"\" LCF 12-50J 2.0m";
+    public static String LCF1250J_3m_CABLE = "1/2\"\" LCF 12-50J 3.0m";
+    public static String LCF1250J12_CABLE = "LCF 12-50J 1/2\"\"";
 
     //types
     public static final String ADDRESS_TYPE = "Address";

@@ -23,9 +23,58 @@ public class Radio3gRepository {
         return client.createNodeB(buildNodeB(name, locationId, rncId, nodeBModel)).getId();
     }
 
-    public void createCell3g(String name, Integer cellId, Long nodeBId, String mcc, String mnc, String carrier) {
+    public Long createCell3g(String name, Integer cellId, Long nodeBId, String mcc, String mnc, String carrier) {
         Radio3gClient client = Radio3gClient.getInstance(env);
-        client.createCell3G(buildCell3g(name, cellId, mcc, mnc, carrier), nodeBId);
+        CellResponseIdDTO cell = client.createCell3G(buildCell3g(name, cellId, mcc, mnc, carrier), nodeBId);
+        return cell.getId();
+    }
+
+    public void createHRNodeBDevice(Long hostingResourceId, Long nodeBId) {
+        Radio3gClient client = Radio3gClient.getInstance(env);
+        client.createHRNodeB(buildDeviceHR(hostingResourceId), nodeBId);
+    }
+
+    public void createHRCellDevice(Long hostingResourceId, Long nodeBId, Long cellId) {
+        Radio3gClient client = Radio3gClient.getInstance(env);
+        client.createHRCell(buildDeviceHR(hostingResourceId), nodeBId, cellId);
+    }
+
+    public void createHRNodeBDevicePort(Long hostingResourceId, Long nodeBId, String portName) {
+        Radio3gClient client = Radio3gClient.getInstance(env);
+        client.createHRNodeB(buildDevicePortHR(hostingResourceId, portName), nodeBId);
+    }
+
+    public void createHRCellDevicePort(Long hostingResourceId, Long nodeBId, Long cellId, String portName) {
+        Radio3gClient client = Radio3gClient.getInstance(env);
+        client.createHRCell(buildDevicePortHR(hostingResourceId, portName), nodeBId, cellId);
+    }
+
+    public void createHRNodeBDeviceCard(Long hostingResourceId, Long nodeBId, String slotName, String cardName) {
+        Radio3gClient client = Radio3gClient.getInstance(env);
+        client.createHRNodeB(buildDeviceCardHR(hostingResourceId, slotName, cardName), nodeBId);
+    }
+
+    public void createHRCellDeviceCard(Long hostingResourceId, Long nodeBId, Long cellId, String slotName, String cardName) {
+        Radio3gClient client = Radio3gClient.getInstance(env);
+        client.createHRCell(buildDeviceCardHR(hostingResourceId, slotName, cardName), nodeBId, cellId);
+    }
+
+    private HostRelationDTO buildDeviceHR(Long hostingResourceId) {
+        return HostRelationDTO.builder()
+                .hostingResource(getHostingResource(hostingResourceId))
+                .build();
+    }
+
+    private HostRelationDTO buildDevicePortHR(Long hostingResourceId, String portName) {
+        return HostRelationDTO.builder()
+                .hostingResource(getHostingResourcePort(hostingResourceId, portName))
+                .build();
+    }
+
+    private HostRelationDTO buildDeviceCardHR(Long hostingResourceId, String slotName, String cardName) {
+        return HostRelationDTO.builder()
+                .hostingResource(getHostingResourceCard(hostingResourceId, slotName, cardName))
+                .build();
     }
 
     private RNCDTO buildRnc(String name, Long locationId, String mcc, String mnc) {
@@ -69,6 +118,39 @@ public class Radio3gRepository {
         return HniDTO.builder()
                 .mcc(mcc)
                 .mnc(mnc)
+                .build();
+    }
+
+    private HostingResourceDTO getHostingResource(Long hostingResourceId) {
+        return HostingResourceDTO.builder()
+                .hostingResourceId(hostingResourceId)
+                .build();
+    }
+
+    private HostingResourceDTO getHostingResourcePort(Long hostingResourceId, String portName) {
+        return HostingResourceDTO.builder()
+                .hostingResourceId(hostingResourceId)
+                .hostingPort(getPort(portName))
+                .build();
+    }
+
+    private HostingResourceDTO getHostingResourceCard(Long hostingResourceId, String slotName, String cardName) {
+        return HostingResourceDTO.builder()
+                .hostingResourceId(hostingResourceId)
+                .hostingCard(getCard(slotName, cardName))
+                .build();
+    }
+
+    private PortIdentificationDTO getPort(String portName) {
+        return PortIdentificationDTO.builder()
+                .name(portName)
+                .build();
+    }
+
+    private CardIdentificationDTO getCard(String slotName, String cardName) {
+        return CardIdentificationDTO.builder()
+                .slotName(slotName)
+                .name(cardName)
                 .build();
     }
 }

@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class VSITest extends BaseTestCase {
 
-    private static final String PRE_CREATED_DEVICE_NAME = "ipdevice13";
+    private static final String PRE_CREATED_DEVICE_NAME = "SeleniumTestDeviceVSI";
     private static final String PRE_CREATED_AEI_INTERFACE_NAME = "LAG-213";
 
     private static final String ROUTE_TARGET_TO_CREATE = "1233:123";

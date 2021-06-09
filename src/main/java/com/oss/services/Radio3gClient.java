@@ -12,6 +12,8 @@ public class Radio3gClient {
     private static final String NODE_API_PATH = "/nodeb";
     private static final String RNC_API_PATH = "/rnc";
     private static final String CELL_API_PATH = "/nodeb/%s/cell";
+    private static final String HOST_RELATION_NODE_API_PATH = "/nodeb/%s/hostrelation";
+    private static final String HOST_RELATION_CELL_API_PATH = "/nodeb/%1$s/cell/%2$s/hostrelation";
 
     private static Radio3gClient instance;
     private final Environment env;
@@ -71,5 +73,34 @@ public class Radio3gClient {
                 .statusCode(Response.Status.OK.getStatusCode())
                 .extract()
                 .as(CellResponseIdDTO.class);
+    }
+
+    public void createHRNodeB(HostRelationDTO hRENodeB, Long nodeId) {
+        String nodeBHRPath = String.format(HOST_RELATION_NODE_API_PATH, nodeId);
+        env.getRadioCore3GSpecification()
+                .given()
+                .contentType(ContentType.JSON)
+                .body(hRENodeB)
+                .when()
+                .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
+                .queryParam(Constants.ID, nodeId)
+                .post(nodeBHRPath)
+                .then()
+                .statusCode(Response.Status.NO_CONTENT.getStatusCode()).assertThat();
+    }
+
+    public void createHRCell(HostRelationDTO hRNodeB, Long nodeId, Long cellId) {
+        String cellHRPath = String.format(HOST_RELATION_CELL_API_PATH, nodeId, cellId);
+        env.getRadioCore3GSpecification()
+                .given()
+                .contentType(ContentType.JSON)
+                .body(hRNodeB)
+                .when()
+                .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
+                .queryParam(Constants.ID, nodeId)
+                .queryParam(Constants.CELL_ID, cellId)
+                .post(cellHRPath)
+                .then()
+                .statusCode(Response.Status.NO_CONTENT.getStatusCode()).assertThat();
     }
 }

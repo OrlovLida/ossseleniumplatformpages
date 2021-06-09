@@ -14,7 +14,6 @@ public class ViewConnectionConfigurationPage extends BasePage {
 
     private static final String DELETE_BUTTON = "ConfirmationBox_confirmation-box_action_button";
     private static final String TABLE_ID = "object-table-id";
-    private static final String WIZARD_ID = "Popup";
     public static final String DELETE_BUTTON_ID = "Delete Connection Configuration";
 
     public ViewConnectionConfigurationPage(WebDriver driver) {
@@ -47,6 +46,6 @@ public class ViewConnectionConfigurationPage extends BasePage {
     }
 
     private Wizard getWizard() {
-        return Wizard.createByComponentId(driver, wait, WIZARD_ID);
+        return Wizard.createPopupWizard(driver, wait);
     }
 }

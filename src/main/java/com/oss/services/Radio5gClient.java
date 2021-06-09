@@ -15,6 +15,8 @@ public class Radio5gClient {
     private static final String G_NODE_CU_UP_API_PATH = "/gnodeb/cu/up";
     private static final String G_NODE_DU_API_PATH = "/gnodeb/du";
     private static final String CELL_API_PATH = "/gnodeb/%s/cell";
+    private static final String HOST_RELATION_G_NODE_API_PATH = "/gnodeb/%s/hostrelation";
+    private static final String HOST_RELATION_CELL_API_PATH = "/gnodeb/%1$s/cell/%2$s/hostrelation";
 
     private static Radio5gClient instance;
     private final Environment ENV;
@@ -93,4 +95,32 @@ public class Radio5gClient {
                 .as(CellResponseIdDTO.class);
     }
 
+    public void createHRGNodeB(HostRelationDTO hRENodeB, Long gNodeId) {
+        String gNodeBHRPath = String.format(HOST_RELATION_G_NODE_API_PATH, gNodeId);
+        ENV.getRadioCore5GSpecification()
+                .given()
+                .contentType(ContentType.JSON)
+                .body(hRENodeB)
+                .when()
+                .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
+                .queryParam(Constants.ID, gNodeId)
+                .post(gNodeBHRPath)
+                .then()
+                .statusCode(Response.Status.NO_CONTENT.getStatusCode()).assertThat();
+    }
+
+    public void createHRCell(HostRelationDTO hRGNodeB, Long gNodeId, Long cellId) {
+        String cellHRPath = String.format(HOST_RELATION_CELL_API_PATH, gNodeId, cellId);
+        ENV.getRadioCore5GSpecification()
+                .given()
+                .contentType(ContentType.JSON)
+                .body(hRGNodeB)
+                .when()
+                .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
+                .queryParam(Constants.ID, gNodeId)
+                .queryParam(Constants.CELL_ID, cellId)
+                .post(cellHRPath)
+                .then()
+                .statusCode(Response.Status.NO_CONTENT.getStatusCode()).assertThat();
+    }
 }

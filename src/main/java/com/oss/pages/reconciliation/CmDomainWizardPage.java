@@ -13,7 +13,6 @@ import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD
 
 public class CmDomainWizardPage extends BasePage {
 
-    private static final String CM_DOMAIN_WIZARD_ID = "Popup";
     private static final String NAME_ID = "narComponent_networkDiscoveryControlViewIdnameTextFieldId";
     private static final String CM_INTERFACE_ID = "narComponent_networkDiscoveryControlViewIdinterfaceSearchBoxId";
     private static final String DOMAIN_ID = "narComponent_networkDiscoveryControlViewIddomainSearchBoxId";
@@ -31,7 +30,7 @@ public class CmDomainWizardPage extends BasePage {
         super(driver);
     }
 
-    private Wizard cmDomainWizard = Wizard.createByComponentId(driver, wait, CM_DOMAIN_WIZARD_ID);
+    private Wizard cmDomainWizard = Wizard.createPopupWizard(driver, wait);
 
     @Step("Fill CM Domain wizard with Name: {name}, CM Interface: {cmInterface}, Domain: {domain}")
     public void fillCmDomainWizard(String name, String cmInterface, String domain) {

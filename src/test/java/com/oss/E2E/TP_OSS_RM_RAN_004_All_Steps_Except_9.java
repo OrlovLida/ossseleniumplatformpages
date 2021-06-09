@@ -1,5 +1,12 @@
 package com.oss.E2E;
 
+import java.util.List;
+import java.util.regex.Pattern;
+
+import org.assertj.core.api.Assertions;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
@@ -10,19 +17,14 @@ import com.oss.pages.bpm.ProcessWizardPage;
 import com.oss.pages.bpm.TasksPage;
 import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.platform.HomePage;
-import com.oss.pages.platform.OldInventoryViewPage;
+import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
 import com.oss.pages.radio.CellBulkWizardPage;
 import com.oss.pages.radio.CellSiteConfigurationPage;
 import com.oss.pages.radio.EditCell4GWizardPage;
 import com.oss.pages.radio.HostingWizardPage;
+
 import io.qameta.allure.Description;
 import io.qameta.allure.Step;
-import org.assertj.core.api.Assertions;
-import org.testng.Assert;
-import org.testng.annotations.Test;
-
-import java.util.List;
-import java.util.regex.Pattern;
 
 public class TP_OSS_RM_RAN_004_All_Steps_Except_9 extends BaseTestCase {
 
@@ -30,14 +32,14 @@ public class TP_OSS_RM_RAN_004_All_Steps_Except_9 extends BaseTestCase {
     private static final String ENODEB_NAME = "TP_OSS_RM_RAN_004_eNodeB";
     private static final String CARRIER_L1800 = "L1800 (1392)";
     private static final String CARRIER_L2100 = "L2100 (10562)";
-    private static final String[] CELL_NAMES_L1800 = {"TP_OSS_RM_RAN_004_L1800_cell_1", "TP_OSS_RM_RAN_004_L1800_cell_2", "TP_OSS_RM_RAN_004_L1800_cell_3"};
-    private static final String[] CELL_NAMES_L2100 = {"TP_OSS_RM_RAN_004_L2100_cell_1", "TP_OSS_RM_RAN_004_L2100_cell_2", "TP_OSS_RM_RAN_004_L2100_cell_3"};
+    private static final String[] CELL_NAMES_L1800 = { "TP_OSS_RM_RAN_004_L1800_cell_1", "TP_OSS_RM_RAN_004_L1800_cell_2", "TP_OSS_RM_RAN_004_L1800_cell_3" };
+    private static final String[] CELL_NAMES_L2100 = { "TP_OSS_RM_RAN_004_L2100_cell_1", "TP_OSS_RM_RAN_004_L2100_cell_2", "TP_OSS_RM_RAN_004_L2100_cell_3" };
 
     private static final String RADIO_UNIT_EQUIPMENT_TYPE = "Remote Radio Head/Unit";
     private static final String RADIO_UNIT_MODEL = "HUAWEI Technology Co.,Ltd RRU5301";
-    private static final String RADIO_UNIT_NAMES[] = {"TP_OSS_RM_RAN_004_RRU_1", "TP_OSS_RM_RAN_004_RRU_2", "TP_OSS_RM_RAN_004_RRU_3"};
+    private static final String RADIO_UNIT_NAMES[] = { "TP_OSS_RM_RAN_004_RRU_1", "TP_OSS_RM_RAN_004_RRU_2", "TP_OSS_RM_RAN_004_RRU_3" };
 
-    private static final String[] ANTENNA_NAMES = {"TP_OSS_RM_RAN_004_Antenna_1", "TP_OSS_RM_RAN_004_Antenna_2", "TP_OSS_RM_RAN_004_Antenna_3"};
+    private static final String[] ANTENNA_NAMES = { "TP_OSS_RM_RAN_004_Antenna_1", "TP_OSS_RM_RAN_004_Antenna_2", "TP_OSS_RM_RAN_004_Antenna_3" };
 
     private static final String PCI = "2";              // change to public???
     private static final String RSI = "2";              // change to public???
@@ -48,12 +50,11 @@ public class TP_OSS_RM_RAN_004_All_Steps_Except_9 extends BaseTestCase {
     private String perspectiveContext;                  // change to public???
 
     private int amountOfCells = 3;
-    private int[] localCellsId1800 = {1, 2, 3};
-    private int[] localCellsId2100 = {4, 5, 6};
+    private int[] localCellsId1800 = { 1, 2, 3 };
+    private int[] localCellsId2100 = { 4, 5, 6 };
 
     private TasksPage tasksPage;
     private CellSiteConfigurationPage cellSiteConfigurationPage;
-
 
     private void checkPopup(String text) {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
@@ -119,7 +120,7 @@ public class TP_OSS_RM_RAN_004_All_Steps_Except_9 extends BaseTestCase {
     public void startHLP() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        tasksPage.startTask(processNRPCode, "High Level Planning");
+        tasksPage.startTask(processNRPCode, TasksPage.HIGH_LEVEL_PLANNING_TASK);
         checkPopup("The task properly assigned.");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
@@ -215,14 +216,14 @@ public class TP_OSS_RM_RAN_004_All_Steps_Except_9 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        tasksPage.completeTask(processNRPCode, "High Level Planning");
+        tasksPage.completeTask(processNRPCode, TasksPage.HIGH_LEVEL_PLANNING_TASK);
         checkPopup("Task properly completed.");
     }
 
     @Test(priority = 13)
     public void startLLP() {
         tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.startTask(processNRPCode, "Low Level Planning");
+        tasksPage.startTask(processNRPCode, TasksPage.LOW_LEVEL_PLANNING_TASK);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         checkPopup("The task properly assigned.");
@@ -237,7 +238,7 @@ public class TP_OSS_RM_RAN_004_All_Steps_Except_9 extends BaseTestCase {
     public void validateProjectPlan() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        tasksPage.findTask(processNRPCode, "Low Level Planning");
+        tasksPage.findTask(processNRPCode, TasksPage.LOW_LEVEL_PLANNING_TASK);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         tasksPage.clickPlanViewButton();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);

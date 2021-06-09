@@ -1,6 +1,7 @@
 package com.oss.viewmanager;
 
 import com.oss.BaseTestCase;
+import com.oss.framework.components.portals.AddApplicationPopup;
 import com.oss.framework.components.portals.CategoryPopup;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.viewmanager.ViewManagerPage;
@@ -23,7 +24,7 @@ public class ViewManagerTest extends BaseTestCase {
         viewManagerPage.closeLoginPanel();
     }
 
-    @Test
+    @Test(priority = 1)
     public void addNewCategoryToViewManagerTest(){
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         viewManagerPage.addCategoryButton.click();
@@ -31,7 +32,7 @@ public class ViewManagerTest extends BaseTestCase {
         CategoryPopup createCategoryPopup = viewManagerPage.goToCreateCategoryPopup();
         createCategoryPopup.setNameValue("Test Category");
         createCategoryPopup.setDescriptionValue("Test Category Description");
-        createCategoryPopup.clickOnFirstIcon();
+        createCategoryPopup.clickOnAdministrationPanelIcon();
         createCategoryPopup.clickOnSaveButton();
 
         DelayUtils.sleep(2000);
@@ -41,7 +42,7 @@ public class ViewManagerTest extends BaseTestCase {
         Assert.assertTrue(driver.findElement(By.xpath("//*[text()='Test Category Description']")).isDisplayed());
     }
 
-    @Test
+    @Test(priority = 2)
     public void changeCategoryNameAndDescription(){
         viewManagerPage.enterEditionOfCategory();
         DelayUtils.sleep(1000);
@@ -61,7 +62,27 @@ public class ViewManagerTest extends BaseTestCase {
         Assert.assertTrue(driver.findElement(By.xpath("//*[text()='Description after edition']")).isDisplayed());
     }
 
-    @Test
+    @Test(priority = 3)
+    public void addSecondApplicationInCategory(){
+        viewManagerPage.clearSearchField();
+        DelayUtils.sleep(200);
+        viewManagerPage.searchForCategory("Name after edition");
+        viewManagerPage.enterAddApplicationButton();
+        DelayUtils.sleep(1000);
+        AddApplicationPopup addApplicationPopup = viewManagerPage.goToAddApplicationPopup();
+        addApplicationPopup.setApplication("Views:GIS View");
+        addApplicationPopup.setApplicationName("GIS");
+        addApplicationPopup.setDescription("GIS Description");
+        addApplicationPopup.clickSaveButton();
+
+        DelayUtils.sleep(1000);
+
+        viewManagerPage.rolloutFirstCategory();
+        DelayUtils.sleep(700);
+        Assert.assertTrue(driver.findElement(By.xpath("//*[text()='GIS']")).isDisplayed());
+    }
+
+    @Test(priority = 4)
     public void deleteCategory(){
         viewManagerPage.clearSearchField();
         viewManagerPage.searchForCategory("Name after edition");

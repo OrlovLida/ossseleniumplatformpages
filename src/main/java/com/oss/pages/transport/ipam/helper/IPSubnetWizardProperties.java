@@ -1,4 +1,4 @@
-package com.oss.pages.transport.helper;
+package com.oss.pages.transport.ipam.helper;
 
 public class IPSubnetWizardProperties {
     private String subnetType;

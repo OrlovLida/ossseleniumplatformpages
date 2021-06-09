@@ -6,6 +6,8 @@ import com.oss.pages.bigdata.dfe.stepwizard.aggregate.AggregateStepWizardPage;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
@@ -16,6 +18,8 @@ import java.util.Date;
 
 @Listeners({TestListener.class})
 public class AggregateViewTest extends BaseTestCase {
+
+    private static final Logger log = LoggerFactory.getLogger(AggregateViewTest.class);
 
     private AggregatePage aggregatePage;
     private String aggregateName;
@@ -28,8 +32,8 @@ public class AggregateViewTest extends BaseTestCase {
 
 
     @BeforeClass
-    public void goToAggregateView(){
-        aggregatePage = AggregatePage.goToAggregatePage(driver, BASIC_URL);
+    public void goToAggregateView() {
+        aggregatePage = AggregatePage.goToPage(driver, BASIC_URL);
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy_MM_dd");
         String date = simpleDateFormat.format(new Date());
@@ -37,9 +41,9 @@ public class AggregateViewTest extends BaseTestCase {
         updatedAggregateName = aggregateName + "_updated";
     }
 
-    @Test(priority = 1)
+    @Test(priority = 1, testName = "Add new Aggregate", description = "Add new Aggregate")
     @Description("Add new Aggregate")
-    public void addAggregate(){
+    public void addAggregate() {
         aggregatePage.clickAddNewAggregate();
         WebDriverWait wait = new WebDriverWait(driver, 45);
         AggregateStepWizardPage aggregateStepWizard = new AggregateStepWizardPage(driver, wait);
@@ -52,14 +56,17 @@ public class AggregateViewTest extends BaseTestCase {
         aggregateStepWizard.clickAccept();
         Boolean aggregateIsCreated = aggregatePage.aggregateExistsIntoTable(aggregateName);
 
+        if(!aggregateIsCreated){
+            log.info("Cannot find created aggregate configuration");
+        }
         Assert.assertTrue(aggregateIsCreated);
     }
 
-    @Test(priority = 2)
+    @Test(priority = 2, testName = "Edit Aggregate", description = "Edit Aggregate")
     @Description("Edit Aggregate")
-    public void editAggregate(){
+    public void editAggregate() {
         Boolean aggregateExists = aggregatePage.aggregateExistsIntoTable(aggregateName);
-        if(aggregateExists){
+        if (aggregateExists) {
             aggregatePage.selectFoundAggregate();
             aggregatePage.clickEditAggregate();
 
@@ -71,25 +78,30 @@ public class AggregateViewTest extends BaseTestCase {
             aggregateStepWizard.clickAccept();
 
             Boolean aggregateIsEdited = aggregatePage.aggregateExistsIntoTable(updatedAggregateName);
+            if(!aggregateIsEdited){
+                log.info("Cannot find existing edited aggregate {}", updatedAggregateName);
+            }
             Assert.assertTrue(aggregateIsEdited);
         } else {
-            Assert.fail();
+            log.info("Cannot find existing aggregate {}", aggregateName);
+            Assert.fail("Cannot find existing aggregate " + aggregateName);
         }
     }
 
-    @Test(priority = 3)
+    @Test(priority = 3, testName = "Delete Aggregate", description = "Delete Aggregate")
     @Description("Delete Aggregate")
     public void deleteAggregate(){
-        Boolean aggregateExists = aggregatePage.aggregateExistsIntoTable(updatedAggregateName);
+        boolean aggregateExists = aggregatePage.aggregateExistsIntoTable(updatedAggregateName);
         if(aggregateExists){
             aggregatePage.selectFoundAggregate();
             aggregatePage.clickDeleteAggregate();
             aggregatePage.confirmDelete();
-            Boolean aggregateDeleted = !aggregatePage.aggregateExistsIntoTable(updatedAggregateName);
+            boolean aggregateDeleted = !aggregatePage.aggregateExistsIntoTable(updatedAggregateName);
 
             Assert.assertTrue(aggregateDeleted);
         } else {
-            Assert.fail();
+            log.info("Cannot find existing aggregate {}", updatedAggregateName);
+            Assert.fail("Cannot find existing aggregate " + updatedAggregateName);
         }
     }
 

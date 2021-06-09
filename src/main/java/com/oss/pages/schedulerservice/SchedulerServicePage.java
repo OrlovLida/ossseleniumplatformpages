@@ -1,16 +1,20 @@
 package com.oss.pages.schedulerservice;
 
-import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.BasePage;
-import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import com.oss.framework.utils.DelayUtils;
+import com.oss.pages.BasePage;
+
+import io.qameta.allure.Step;
+
 public class SchedulerServicePage extends BasePage {
 
-    public SchedulerServicePage(WebDriver driver){super(driver);}
+    public SchedulerServicePage(WebDriver driver) {
+        super(driver);
+    }
 
     @FindBy(xpath = "//div[@data-attributename ='search']//input")
     private WebElement searchField;
@@ -18,7 +22,7 @@ public class SchedulerServicePage extends BasePage {
     private WebElement firstJob;
     @FindBy(id = "EDIT")
     private WebElement editContextAction;
-    @FindBy(id = "schedulerServiceDeleteJobAct")
+    @FindBy(id = "schedulerServiceRetireJobAct")
     private WebElement deleteJobAction;
     @FindBy(id = "schedulerServicePermanentlyDeleteJobAct")
     private WebElement permanentDeleteJobAction;
@@ -32,32 +36,32 @@ public class SchedulerServicePage extends BasePage {
         return new SchedulerServicePage(driver);
     }
 
-    private void typeInSearchField(String value){
+    private void typeInSearchField(String value) {
         DelayUtils.waitForVisibility(wait, searchField);
         searchField.sendKeys(value);
     }
 
-    private boolean isRowContainsTextVisible(String text){
+    private boolean isRowContainsTextVisible(String text) {
         DelayUtils.waitForVisibility(wait, firstJob);
         return driver.findElements(By.xpath(getPathOfRowContainsText(text))).size() > 0;
     }
 
-    private void clickOnRowContainsText(String text){
-        DelayUtils.waitForComponent(wait,getPathOfRowContainsText(text));
+    private void clickOnRowContainsText(String text) {
+        DelayUtils.waitByXPath(wait, getPathOfRowContainsText(text));
         driver.findElement(By.xpath(getPathOfRowContainsText(text))).click();
     }
 
-    private String getPathOfRowContainsText(String text){
-        return "//div[contains(@class, 'Cell Row')]/div[contains(text(),'"+text+"')]";
+    private String getPathOfRowContainsText(String text) {
+        return "//div[contains(@class, 'Cell Row')]/div[contains(text(),'" + text + "')]";
     }
 
-    public String getTextOfJob(String text){
+    public String getTextOfJob(String text) {
         return driver.findElement(By.xpath(getPathOfRowContainsText(text))).getText();
     }
 
     @Step("Find created Job and click on it")
-    public SchedulerServicePage findJobAndClickOnIt(String name){
-        if(!isRowContainsTextVisible(name)) {
+    public SchedulerServicePage findJobAndClickOnIt(String name) {
+        if (!isRowContainsTextVisible(name)) {
             typeInSearchField(name);
         }
         clickOnRowContainsText(name);
@@ -65,30 +69,30 @@ public class SchedulerServicePage extends BasePage {
     }
 
     @Step("Delete created Job")
-    public SchedulerServicePage deleteSelectedJob(){
-        DelayUtils.waitForVisibility(wait,editContextAction);
+    public SchedulerServicePage deleteSelectedJob() {
+        DelayUtils.waitForVisibility(wait, editContextAction);
         editContextAction.click();
         deleteJobAction.click();
-        DelayUtils.waitForVisibility(wait,confirmDeleteButton);
+        DelayUtils.waitForVisibility(wait, confirmDeleteButton);
         confirmDeleteButton.click();
         DelayUtils.waitForPageToLoad(driver, wait);
         return this;
     }
 
     @Step("Permanently delete created Job")
-    public SchedulerServicePage permanentlyRemoveJob(){
-        DelayUtils.waitForVisibility(wait,editContextAction);
+    public SchedulerServicePage permanentlyRemoveJob() {
+        DelayUtils.waitForVisibility(wait, editContextAction);
         editContextAction.click();
         permanentDeleteJobAction.click();
-        DelayUtils.waitForVisibility(wait,confirmDeleteButton);
+        DelayUtils.waitForVisibility(wait, confirmDeleteButton);
         confirmDeleteButton.click();
         DelayUtils.waitForPageToLoad(driver, wait);
         return this;
     }
 
     @Step("Select deleted Job")
-    public SchedulerServicePage selectDeletedJob(String text){
-        DelayUtils.waitForClickability(wait,driver.findElement(By.xpath("//div[contains(@class, 'Cell Row')]/div[contains(text(),'"+text+"')]")));
+    public SchedulerServicePage selectDeletedJob(String text) {
+        DelayUtils.waitForClickability(wait, driver.findElement(By.xpath("//div[contains(@class, 'Cell Row')]/div[contains(text(),'" + text + "')]")));
         clickOnRowContainsText(text);
         DelayUtils.waitForPageToLoad(driver, wait);
         clickOnRowContainsText(text);

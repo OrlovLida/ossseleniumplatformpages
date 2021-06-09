@@ -6,7 +6,7 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.CommonHierarchyApp;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
-import com.oss.pages.platform.OldInventoryViewPage;
+import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 

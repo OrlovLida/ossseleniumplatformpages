@@ -9,7 +9,7 @@ import com.oss.pages.floorPlan.FloorPlanPage;
 import com.oss.pages.physical.LocationOverviewPage;
 import com.oss.pages.physical.SublocationWizardPage;
 import com.oss.pages.platform.HomePage;
-import com.oss.pages.platform.OldInventoryViewPage;
+import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
 import io.qameta.allure.Description;
 import org.testng.Assert;
 import org.testng.annotations.Test;

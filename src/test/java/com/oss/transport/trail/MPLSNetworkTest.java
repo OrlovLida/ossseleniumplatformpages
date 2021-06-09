@@ -7,6 +7,8 @@
 package com.oss.transport.trail;
 
 import com.oss.BaseTestCase;
+import com.oss.framework.components.contextactions.ActionsContainer;
+import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.transport.NetworkViewPage;
 import com.oss.pages.transport.trail.IPLinkWizardPage;
@@ -178,7 +180,7 @@ public class MPLSNetworkTest extends BaseTestCase {
     public void deleteTrails() {
         networkView.selectObject(MPLS_NETWORK_2);
         networkView.selectObject(IP_LINK);
-        networkView.deleteSelectedTrails();
+        networkView.useContextActionAndClickConfirmation(ActionsContainer.EDIT_GROUP_ID, NetworkViewPage.DELETE_TRAIL_ACTION, ConfirmationBox.PROCEED);
         Assertions.assertThat(networkView.isObjectInViewContent(MPLS_NETWORK)).isFalse();
         Assertions.assertThat(networkView.isObjectInViewContent(MPLS_NETWORK_2)).isFalse();
         Assertions.assertThat(networkView.isObjectInViewContent(IP_LINK)).isFalse();
@@ -187,7 +189,7 @@ public class MPLSNetworkTest extends BaseTestCase {
     @Test(priority = 15)
     public void deleteDevice() {
         networkView.selectObject(DEVICE);
-        networkView.deleteSelectedElement();
+        networkView.useContextActionAndClickConfirmation(ActionsContainer.EDIT_GROUP_ID, NetworkViewPage.DELETE_ELEMENT_ACTION, ConfirmationBox.YES);
         Assertions.assertThat(networkView.isObjectInViewContent(DEVICE)).isFalse();
     }
 

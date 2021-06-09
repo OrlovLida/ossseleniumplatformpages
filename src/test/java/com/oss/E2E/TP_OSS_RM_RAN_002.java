@@ -14,12 +14,7 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.ProcessWizardPage;
 import com.oss.pages.bpm.TasksPage;
 import com.oss.pages.platform.HomePage;
-import com.oss.pages.radio.AntennaArrayWizardPage;
-import com.oss.pages.radio.CellBulkWizardPage;
 import com.oss.pages.radio.CellSiteConfigurationPage;
-import com.oss.pages.radio.GNodeBWizardPage;
-import com.oss.pages.radio.HostingWizardPage;
-import com.oss.pages.radio.RanAntennaWizardPage;
 import com.oss.utils.RandomGenerator;
 import com.oss.utils.TestListener;
 
@@ -31,26 +26,34 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
     private String processNRPCode;
     private CellSiteConfigurationPage cellSiteConfigurationPage;
     private static final String LOCATION_NAME = "Poznan-BU1";
+    private static final String SITE = "Site";
     private static final String ANTENNA_NAME_0 = "TP_OSS_RM_RAN_002_ANTENNA_0";
     private static final String ANTENNA_NAME_1 = "TP_OSS_RM_RAN_002_ANTENNA_1";
     private static final String ANTENNA_NAME_2 = "TP_OSS_RM_RAN_002_ANTENNA_2";
     private static final String[] ANTENNA_NAMES = { ANTENNA_NAME_0, ANTENNA_NAME_1, ANTENNA_NAME_2 };
     private static final String RAN_ANTENNA_MODEL = "HUAWEI Technology Co.,Ltd AAU5614";
     private static final String GNODEB_NAME = "TP_OSS_RM_RAN_002_GNODEB";
+    private static final String GNODEB_DU_NAME = "TP_OSS_RM_RAN_002_GNODEB_DU";
     private static final String BBU_NAME = "TP_OSS_RM_RAN_002_BBU";
     private static final String GNODEB_MODEL = "HUAWEI Technology Co.,Ltd gNodeB";
+    private static final String GNODEB_DU_MODEL = "HUAWEI Technology Co.,Ltd gNodeB DU";
     private static final String randomGNodeBId = RandomGenerator.generateRandomGNodeBId();
+    private static final String randomGNodeBDUId = RandomGenerator.generateRandomGNodeBId();
     private static final String CELL5G_NAME_0 = "TP_OSS_RM_RAN_002_CELL5G_0";
     private static final String CELL5G_NAME_1 = "TP_OSS_RM_RAN_002_CELL5G_1";
     private static final String CELL5G_NAME_2 = "TP_OSS_RM_RAN_002_CELL5G_2";
     private static final String[] CELL5G_NAMES = { CELL5G_NAME_0, CELL5G_NAME_1, CELL5G_NAME_2 };
-    private static final String CELL5G_CARRIER = "NR3600-n78 (64200)";
+    private static final String CELL5G_CARRIER = "NR3600-n78-140 (642000)";
+    private static final String MCCMNC_PRIMARY = "DU03 [mcc: 424, mnc: 03]";
     private static final int[] LOCAL_CELLS_ID = { 7, 8, 9 };
 
     @BeforeClass
     public void openNetworkDiscoveryControlView() {
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);
+        SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
+        sideMenu.callActionByLabel("Process Instances", "Views", "Business Process Management");
+        waitForPageToLoad();
     }
 
     @Test(priority = 1)
@@ -58,7 +61,7 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
     public void createProcessNRP() {
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
         processNRPCode = processWizardPage.createSimpleNRP();
-        checkMessageSize(1);
+        checkMessageSize();
         checkMessageType();
         checkMessageContainsText(processNRPCode);
     }
@@ -67,114 +70,100 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
     @Description("Start High Level Planning Task")
     public void startHLPTask() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.startTask(processNRPCode, "High Level Planning");
+        tasksPage.startTask(processNRPCode, TasksPage.HIGH_LEVEL_PLANNING_TASK);
         checkTaskAssignment();
     }
 
     @Test(priority = 3)
+    @Description("Create gNodeB")
     public void create5Gnode() {
         openCellSiteConfigurationView();
-        cellSiteConfigurationPage.clickPlusIconAndSelectOption("Create gNodeB");
-        new GNodeBWizardPage(driver)
-                .createGNodeB(GNODEB_NAME, randomGNodeBId, GNODEB_MODEL, "DU [mcc: 424, mnc: 03]");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cellSiteConfigurationPage.createGNodeB(GNODEB_NAME, randomGNodeBId, GNODEB_MODEL, MCCMNC_PRIMARY);
         checkMessageContainsText("Created gNodeB");
     }
 
     @Test(priority = 4)
-    public void create5Gcells() {
-        cellSiteConfigurationPage.expandTreeToBaseStation("Site", LOCATION_NAME, GNODEB_NAME);
-        cellSiteConfigurationPage.selectTab("Cells 5G");
-        cellSiteConfigurationPage.clickPlusIconAndSelectOption("Cell 5G Bulk Wizard");
-        CellBulkWizardPage cellBulkWizardPage = new CellBulkWizardPage(driver);
-        cellBulkWizardPage.createCell5GBulkWizardWithDefaultValues(3, CELL5G_CARRIER, CELL5G_NAMES, LOCAL_CELLS_ID);
-        checkMessageContainsText("Cells 5G created success");
+    @Description("Create gNodeB DU")
+    public void create5GnodeDU() {
+        cellSiteConfigurationPage.createGNodeBDU(GNODEB_DU_NAME, randomGNodeBDUId, GNODEB_DU_MODEL, GNODEB_NAME);
+        checkMessageContainsText("Created gNodeB");
     }
 
     @Test(priority = 5)
-    public void createRanAntenna() {
-        cellSiteConfigurationPage.selectTreeRow(LOCATION_NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        for (String ranAntenna : ANTENNA_NAMES) {
-            cellSiteConfigurationPage.selectTab("Devices");
-            cellSiteConfigurationPage.clickPlusIconAndSelectOption("Create RAN Antenna");
-            RanAntennaWizardPage ranAntennaWizardPage = new RanAntennaWizardPage(driver);
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            ranAntennaWizardPage.setName(ranAntenna);
-            ranAntennaWizardPage.setModel(RAN_ANTENNA_MODEL);
-            DelayUtils.sleep(1000);
-            ranAntennaWizardPage.setPreciseLocation(LOCATION_NAME);
-            ranAntennaWizardPage.clickAccept();
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            AntennaArrayWizardPage antennaArrayWizardPage = new AntennaArrayWizardPage(driver);
-            antennaArrayWizardPage.clickAccept();
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            checkMessageType();
-        }
+    @Description("Create three cells 5G")
+    public void create5Gcells() {
+        cellSiteConfigurationPage.expandTreeToBaseStation("Site", LOCATION_NAME, GNODEB_NAME);
+        cellSiteConfigurationPage.createCell5GBulk(3, CELL5G_CARRIER, CELL5G_NAMES, LOCAL_CELLS_ID);
+        checkMessageContainsText("Cells 5G created success");
     }
 
     @Test(priority = 6)
-    public void createHostingRelation() {
-        cellSiteConfigurationPage.selectTreeRow(GNODEB_NAME);
-        cellSiteConfigurationPage.selectTab("Hosting");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        cellSiteConfigurationPage.useTableContextActionByLabel("Host on Device");
-        HostingWizardPage hostOnDeviceWizard = new HostingWizardPage(driver);
-        hostOnDeviceWizard.onlyCompatible("false");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        hostOnDeviceWizard.setDevice(BBU_NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        hostOnDeviceWizard.clickAccept();
-        checkMessageType();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-
-        cellSiteConfigurationPage.getTree().expandTreeRow(GNODEB_NAME);
-        for (int i = 0; i < CELL5G_NAMES.length; i++) {
-            cellSiteConfigurationPage.selectTreeRow(CELL5G_NAMES[i]);
-            cellSiteConfigurationPage.selectTab("Hosting");
-            cellSiteConfigurationPage.clickPlusIconAndSelectOption("Host on Antenna Array");
-            HostingWizardPage hostOnAntennaWizard = new HostingWizardPage(driver);
-            hostOnAntennaWizard.setHostingContains(ANTENNA_NAMES[i]);
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            hostOnAntennaWizard.clickAccept();
+    @Description("Create three ran antenna")
+    public void createRanAntenna() {
+        cellSiteConfigurationPage.selectTreeRow(LOCATION_NAME);
+        waitForPageToLoad();
+        for (String ranAntenna : ANTENNA_NAMES) {
+            cellSiteConfigurationPage.selectTab("Devices");
+            cellSiteConfigurationPage.createRanAntennaAndArray(ranAntenna, RAN_ANTENNA_MODEL, LOCATION_NAME);
             checkMessageType();
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
         }
     }
 
     @Test(priority = 7)
+    @Description("Create hosting on BBU and hostings on antenna arrays")
+    public void createHostingRelation() {
+        cellSiteConfigurationPage.selectTreeRow(GNODEB_NAME);
+        cellSiteConfigurationPage.createHostingOnDevice(BBU_NAME, false);
+        checkMessageType();
+        waitForPageToLoad();
+        for (int i = 0; i < CELL5G_NAMES.length; i++) {
+            cellSiteConfigurationPage.selectTreeRow(CELL5G_NAMES[i]);
+            cellSiteConfigurationPage.createHostingOnAntennaArray(ANTENNA_NAMES[i]);
+            checkMessageType();
+            waitForPageToLoad();
+        }
+    }
+
+    @Test(priority = 8)
     @Description("Finish rest of NRP and IP Tasks")
     public void finishProcessesTasks() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.completeNRP(processNRPCode);
     }
 
-    @Test(priority = 8)
+    @Test(priority = 9)
+    @Description("Delete hosting relations")
     public void deleteHostingRelation() {
-        cellSiteConfigurationPage.selectTreeRow(LOCATION_NAME);
+        openCellSiteConfigurationView();
+        cellSiteConfigurationPage.expandTreeToBaseStation("Site", LOCATION_NAME, GNODEB_NAME);
         cellSiteConfigurationPage.selectTab("Hosting");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         cellSiteConfigurationPage.filterObject("Hosted Resource", GNODEB_NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         cellSiteConfigurationPage.removeObject();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         checkMessageType();
+        waitForPageToLoad();
+        cellSiteConfigurationPage.getTree().expandTreeRow(GNODEB_NAME);
         for (String cell : CELL5G_NAMES) {
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            waitForPageToLoad();
+            cellSiteConfigurationPage.selectTreeRow(cell);
             cellSiteConfigurationPage.selectTab("Hosting");
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            waitForPageToLoad();
             cellSiteConfigurationPage.filterObject("Hosted Resource", cell);
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            waitForPageToLoad();
             cellSiteConfigurationPage.removeObject();
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            waitForPageToLoad();
             checkMessageType();
         }
     }
 
-    @Test(priority = 9)
+    @Test(priority = 10)
+    @Description("Delete ran antennas")
     public void deleteRanAntenna() {
+        cellSiteConfigurationPage.selectTreeRow(LOCATION_NAME);
         for (String ranAntenna : ANTENNA_NAMES) {
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            waitForPageToLoad();
             cellSiteConfigurationPage.selectTab("Devices");
             cellSiteConfigurationPage.filterObject("Name", ranAntenna);
             cellSiteConfigurationPage.removeObject();
@@ -182,9 +171,11 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
         }
     }
 
-    @Test(priority = 10)
+    @Test(priority = 11)
+    @Description("Delete cells 5G")
     public void delete5Gcells() {
         cellSiteConfigurationPage.selectTreeRow(GNODEB_NAME);
+        waitForPageToLoad();
         for (String cell : CELL5G_NAMES) {
             cellSiteConfigurationPage.selectTab("Cells 5G");
             cellSiteConfigurationPage.filterObject("Name", cell);
@@ -193,10 +184,27 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
         }
     }
 
-    @Test(priority = 11)
-    public void delete5Gnode() {
+    @Test(priority = 12)
+    @Description("Delete gNodeB DU")
+    public void delete5GnodeDU() {
         cellSiteConfigurationPage.selectTreeRow(LOCATION_NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
+        cellSiteConfigurationPage.selectTab("Base Stations");
+        waitForPageToLoad();
+        cellSiteConfigurationPage.filterObject("Name", GNODEB_DU_NAME);
+        cellSiteConfigurationPage.removeObject();
+        checkMessageType();
+    }
+
+    @Test(priority = 13)
+    @Description("Delete gNodeB")
+    public void delete5Gnode() {
+        openCellSiteConfigurationView();
+        cellSiteConfigurationPage.expandTreeToLocation(SITE, LOCATION_NAME);
+        cellSiteConfigurationPage.selectTreeRow(LOCATION_NAME);
+        waitForPageToLoad();
+        cellSiteConfigurationPage.selectTab("Base Stations");
+        waitForPageToLoad();
         cellSiteConfigurationPage.filterObject("Name", GNODEB_NAME);
         cellSiteConfigurationPage.removeObject();
         checkMessageType();
@@ -205,7 +213,7 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
     private void openCellSiteConfigurationView() {
         HomePage homePage = new HomePage(driver);
         homePage.goToHomePage(driver, BASIC_URL);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
         sideMenu.callActionByLabel("Cell Site Configuration", "Favourites", "SeleniumTests");
     }
@@ -219,14 +227,14 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
                 .contains(message));
     }
 
-    private void checkMessageText(String message) {
-        Assert.assertEquals(message, (getFirstMessage().getText()));
+    private void checkMessageText() {
+        Assert.assertEquals("The task properly assigned.", (getFirstMessage().getText()));
     }
 
-    private void checkMessageSize(int size) {
+    private void checkMessageSize() {
         Assert.assertEquals((SystemMessageContainer.create(driver, webDriverWait)
                 .getMessages()
-                .size()), size);
+                .size()), 1);
     }
 
     private Message getFirstMessage() {
@@ -237,6 +245,11 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
 
     private void checkTaskAssignment() {
         checkMessageType();
-        checkMessageText("The task properly assigned.");
+        checkMessageText();
     }
+
+    private void waitForPageToLoad() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
 }

@@ -5,8 +5,9 @@ import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.platform.OldInventoryViewPage;
+import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
 import com.oss.pages.transport.loopbackInterface.LoopbackInterfaceWizardPage;
+import io.qameta.allure.Step;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -19,7 +20,7 @@ import java.util.Map;
 public class LoopbackInterfaceTest extends BaseTestCase {
 
     private static final String PRE_CREATED_LOCATION_NAME = "Gliwice-BU1";
-    private static final String PRE_CREATED_DEVICE_NAME = "ipdevice13";
+    private static final String PRE_CREATED_DEVICE_NAME = "SeleniumTestDeviceLI";
 
     private static final String NUMBER = "101";
     private static final String NUMBER2 = "102";
@@ -36,6 +37,7 @@ public class LoopbackInterfaceTest extends BaseTestCase {
     private Map<String, String> propertyNamesToValues;
 
     @Test(priority = 1)
+    @Step("Create Loopback Interface")
     public void create() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         LoopbackInterfaceAttributes loopbackAttributes = getLoopbackAttributesToCreate();
@@ -49,6 +51,7 @@ public class LoopbackInterfaceTest extends BaseTestCase {
     }
 
     @Test(priority = 2)
+    @Step("Update Loopback Interface")
     public void update() {
         LoopbackInterfaceAttributes loopbackAttributes = getLoopbackAttributesToUpdate();
 
@@ -62,6 +65,7 @@ public class LoopbackInterfaceTest extends BaseTestCase {
     }
 
     @Test(priority = 3)
+    @Step("Clear Loopback Interface attributes")
     public void clearAttributes() {
         LoopbackInterfaceAttributes loopbackAttributes = getLoopbackAttributesEmpty();
 
@@ -75,6 +79,7 @@ public class LoopbackInterfaceTest extends BaseTestCase {
     }
 
     @Test(priority = 4)
+    @Step("Remove Loopback Interface")
     public void remove() {
         OldInventoryViewPage inventoryView = new OldInventoryViewPage(driver);
 

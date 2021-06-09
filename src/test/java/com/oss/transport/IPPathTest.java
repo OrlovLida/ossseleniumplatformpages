@@ -59,14 +59,14 @@ public class IPPathTest extends BaseTestCase {
     @Description("Start High Level Planning Task")
     public void startHLPTask() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.startTask(processNRPCode, "High Level Planning");
+        tasksPage.startTask(processNRPCode, TasksPage.HIGH_LEVEL_PLANNING_TASK);
         checkTaskAssignment();
     }
 
     @Test(priority = 3)
     @Description("Create new IP Path")
     public void createNew() {
-        homePage.goToHomePage(driver, BASIC_URL);
+        homePage.goToHomePageWithContext(driver);
         waitForPageToLoad();
         homePage.chooseFromLeftSideMenu("Network View", "Views", "Transport");
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);

@@ -4,6 +4,7 @@ import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.SearchField;
 import com.oss.framework.components.portals.ActionsDropdownList;
+import com.oss.framework.components.portals.AddApplicationPopup;
 import com.oss.framework.components.portals.CategoryPopup;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.BasePage;
@@ -25,7 +26,7 @@ public class ViewManagerPage extends BasePage {
     private static final String THREE_DOTS_FIRST_BUTTON_FULL_XPATH = "//*[@id=\"frameworkObjectButtonsGroup\"]";
     private static final String DELETE_BUTTON_IN_POPUP_XPATH = "//*[@class='CommonButton btn btn-danger btn-md']";
     private static final String EDIT_CATEGORY_POPUP_XPATH = "//*[@class='popupContainer']";
-
+    private static final String CATEGORY_ROLLOUT_BUTTON_XPATH = "//div[@class='categories__buttons__rollout']/i[@class='fa fa-chevron-down']";
 
     @FindBy(className = "views-manager__bar__add-category")
     public WebElement addCategoryButton;
@@ -48,6 +49,11 @@ public class ViewManagerPage extends BasePage {
     public CategoryPopup goToEditCategoryPopup() {
         WebDriverWait wait = new WebDriverWait(driver, 45);
         return new CategoryPopup(driver, wait);
+    }
+
+    public AddApplicationPopup goToAddApplicationPopup() {
+        WebDriverWait wait = new WebDriverWait(driver, 45);
+        return new AddApplicationPopup(driver, wait);
     }
 
     @Step("Search specific category by name")
@@ -75,6 +81,12 @@ public class ViewManagerPage extends BasePage {
         actionsDropdownList.clickOnActionById(EDIT_CATEGORY_BUTTON_ID);
     }
 
+    public void enterAddApplicationButton(){
+        threeDotsFirstButton.click();
+        ActionsDropdownList actionsDropdownList = new ActionsDropdownList(driver);
+        actionsDropdownList.clickOnActionById(ADD_APPLICATION_BUTTON_ID);
+    }
+
     public void deleteFirstCategory(){
         threeDotsFirstButton.click();
         ActionsDropdownList actionsDropdownList = new ActionsDropdownList(driver);
@@ -84,5 +96,9 @@ public class ViewManagerPage extends BasePage {
         WebElement deleteButton = driver.findElement(By.xpath(DELETE_BUTTON_IN_POPUP_XPATH));
         deleteButton.click();
         DelayUtils.sleep(2000);
+    }
+
+    public void rolloutFirstCategory(){
+        driver.findElement(By.xpath(CATEGORY_ROLLOUT_BUTTON_XPATH)).click();
     }
 }
