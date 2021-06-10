@@ -4,7 +4,7 @@ import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.SearchField;
 import com.oss.framework.components.portals.ActionsDropdownList;
-import com.oss.framework.components.portals.AddApplicationPopup;
+import com.oss.framework.components.portals.ApplicationPopup;
 import com.oss.framework.components.portals.CategoryPopup;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.BasePage;
@@ -22,11 +22,13 @@ public class ViewManagerPage extends BasePage {
     private static final String CREATE_SUBCATEGORY_BUTTON_ID = "createSubcategoryButton0";
     private static final String DELETE_CATEGORY_BUTTON_ID = "deleteCategoryButton0";
     private static final String EDIT_CATEGORY_BUTTON_ID = "editCategoryButton0";
-    private static final String DRAG_CATEGORY_BUTTON_ID = "dragCategoryButton0"; //d
+    private static final String DRAG_CATEGORY_BUTTON_ID = "dragCategoryButton0";
+    private static final String EDIT_APPLICATION_BUTTON_XPATH = "//a[@id='editButton0']";
     private static final String THREE_DOTS_FIRST_BUTTON_FULL_XPATH = "//*[@id=\"frameworkObjectButtonsGroup\"]";
     private static final String DELETE_BUTTON_IN_POPUP_XPATH = "//*[@class='CommonButton btn btn-danger btn-md']";
     private static final String EDIT_CATEGORY_POPUP_XPATH = "//*[@class='popupContainer']";
     private static final String CATEGORY_ROLLOUT_BUTTON_XPATH = "//div[@class='categories__buttons__rollout']/i[@class='fa fa-chevron-down']";
+    private static final String FIRST_APPLICATION_THREE_DOTS_BUTTON_XPATH = "(//div[1]/div[@id=\"frameworkObjectButtonsGroup\"])[2]";
 
     @FindBy(className = "views-manager__bar__add-category")
     public WebElement addCategoryButton;
@@ -51,9 +53,9 @@ public class ViewManagerPage extends BasePage {
         return new CategoryPopup(driver, wait);
     }
 
-    public AddApplicationPopup goToAddApplicationPopup() {
+    public ApplicationPopup goToApplicationPopup() {
         WebDriverWait wait = new WebDriverWait(driver, 45);
-        return new AddApplicationPopup(driver, wait);
+        return new ApplicationPopup(driver, wait);
     }
 
     @Step("Search specific category by name")
@@ -85,6 +87,14 @@ public class ViewManagerPage extends BasePage {
         threeDotsFirstButton.click();
         ActionsDropdownList actionsDropdownList = new ActionsDropdownList(driver);
         actionsDropdownList.clickOnActionById(ADD_APPLICATION_BUTTON_ID);
+    }
+
+    public void clickButtonsGroupOnFirstApplication(){
+        driver.findElement(By.xpath(FIRST_APPLICATION_THREE_DOTS_BUTTON_XPATH)).click();
+    }
+
+    public void clickEditButton(){
+        driver.findElement(By.xpath(EDIT_APPLICATION_BUTTON_XPATH)).click();
     }
 
     public void deleteFirstCategory(){

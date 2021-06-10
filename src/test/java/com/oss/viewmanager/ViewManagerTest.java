@@ -1,7 +1,7 @@
 package com.oss.viewmanager;
 
 import com.oss.BaseTestCase;
-import com.oss.framework.components.portals.AddApplicationPopup;
+import com.oss.framework.components.portals.ApplicationPopup;
 import com.oss.framework.components.portals.CategoryPopup;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.viewmanager.ViewManagerPage;
@@ -35,7 +35,7 @@ public class ViewManagerTest extends BaseTestCase {
         createCategoryPopup.clickOnAdministrationPanelIcon();
         createCategoryPopup.clickOnSaveButton();
 
-        DelayUtils.sleep(2000);
+        DelayUtils.sleep(1500);
 
         viewManagerPage.searchForCategory("Test Category");
         Assert.assertTrue(driver.findElement(By.xpath("//*[text()='Test Category']")).isDisplayed());
@@ -63,13 +63,10 @@ public class ViewManagerTest extends BaseTestCase {
     }
 
     @Test(priority = 3)
-    public void addSecondApplicationInCategory(){
-        viewManagerPage.clearSearchField();
-        DelayUtils.sleep(200);
-        viewManagerPage.searchForCategory("Name after edition");
+    public void addApplicationInCategory(){
         viewManagerPage.enterAddApplicationButton();
         DelayUtils.sleep(1000);
-        AddApplicationPopup addApplicationPopup = viewManagerPage.goToAddApplicationPopup();
+        ApplicationPopup addApplicationPopup = viewManagerPage.goToApplicationPopup();
         addApplicationPopup.setApplication("Views:GIS View");
         addApplicationPopup.setApplicationName("GIS");
         addApplicationPopup.setDescription("GIS Description");
@@ -83,6 +80,24 @@ public class ViewManagerTest extends BaseTestCase {
     }
 
     @Test(priority = 4)
+    public void editApplication(){
+        DelayUtils.sleep(200);
+        viewManagerPage.clickButtonsGroupOnFirstApplication();
+        DelayUtils.sleep(300);
+        viewManagerPage.clickEditButton();
+        ApplicationPopup editApplicationPopup = viewManagerPage.goToApplicationPopup();
+        editApplicationPopup.setApplication("Create Sublocation");
+        editApplicationPopup.setApplicationName("Sublocation");
+        editApplicationPopup.setDescription("Sublocation Creation");
+        editApplicationPopup.clickSaveButton();
+
+        DelayUtils.sleep(1000);
+        Assert.assertTrue(driver.findElement(By.xpath("//*[text()='Sublocation']")).isDisplayed());
+        String url = driver.findElement(By.xpath("//*[@id=\"row0-267120\"]//a")).getAttribute("href");
+        Assert.assertTrue(url.contains("sublocation/create"));
+    }
+
+    @Test(priority = 5)
     public void deleteCategory(){
         viewManagerPage.clearSearchField();
         viewManagerPage.searchForCategory("Name after edition");
@@ -92,4 +107,5 @@ public class ViewManagerTest extends BaseTestCase {
         Assert.assertFalse(driver.findElements(By.xpath("//*[text()='Name after edition']")).size()>0);
         viewManagerPage.clearSearchField();
     }
+
 }
