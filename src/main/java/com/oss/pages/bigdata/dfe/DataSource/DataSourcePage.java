@@ -18,6 +18,7 @@ public class DataSourcePage extends BaseDfePage {
     private final String DATA_SOURCE_NAME_COLUMN = "Name";
     private final String EDIT_DS_LABEL = "Edit";
     private final String DELETE_DS_LABEL = "Delete";
+    private final String CONFIRM_DELETE_LABEL = "Delete";
 
     public DataSourcePage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -54,6 +55,16 @@ public class DataSourcePage extends BaseDfePage {
     @Step("I click Edit Data Source")
     public void clickEditDS() {
         clickContextActionEdit();
+    }
+
+    @Step("I click Delete Data Source")
+    public void clickDeleteDS() {
+        clickContextActionDelete();
+    }
+
+    @Step("I confirm the removal")
+    public void clickConfirmDelete() {
+        confirmDelete(CONFIRM_DELETE_LABEL);
     }
 
     @Override

@@ -80,4 +80,21 @@ public class DataSourceFromQueryTest extends BaseTestCase {
             Assert.fail();
         }
     }
+
+    @Test(priority = 3, testName = "Delete Data Source", description = "Delete Data Source")
+    @Description("Delete Data Source")
+    public void deleteDataSourceFromQuery() {
+        Boolean dataSourceExists = dataSourcePage.dataSourceExistIntoTable(dataSourceName);
+        if (dataSourceExists) {
+            dataSourcePage.selectFoundDataSource();
+            dataSourcePage.clickDeleteDS();
+            dataSourcePage.clickConfirmDelete();
+            Boolean dataSourceIsDeleted = !dataSourcePage.dataSourceExistIntoTable(dataSourceName);
+
+            Assert.assertTrue(dataSourceIsDeleted);
+        } else {
+            log.error("Data Source with name {} doesn't exist, cannot perform delete action", dataSourceName);
+            Assert.fail();
+        }
+    }
 }

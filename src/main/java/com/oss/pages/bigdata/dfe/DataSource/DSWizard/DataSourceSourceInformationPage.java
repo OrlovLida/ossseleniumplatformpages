@@ -31,6 +31,7 @@ public class DataSourceSourceInformationPage extends BaseStepPage {
         log.debug("Setting database with: {}", database);
     }
 
+    // TODO podmienić fragment kodu jak framework dorzuci data-attributename, żeby nie używać xpath w page'ach
     @Step("I fill Data Source query")
     public void fillQuery(String query) {
         DelayUtils.waitForPageToLoad(driver, wait);
