@@ -125,10 +125,8 @@ public class IRBInterfaceTest extends BaseTestCase {
     @Test(priority = 8)
     @Description("Delete IP Address")
     public void deleteIPAddressAssignment() {
-        homePage.goToHomePage(driver, BASIC_URL);
-        homePage.chooseFromLeftSideMenu("IP Address management", "Views", "Transport");
         IPAddressManagementViewPage ipAddressManagementViewPage =
-                IPAddressManagementViewPage.goToIPAddressManagementPage(driver, BASIC_URL);
+                IPAddressManagementViewPage.goToIPAddressManagementViewPageLive(driver, BASIC_URL);
         ipAddressManagementViewPage.searchIpNetwork(IP_NETWORK);
         ipAddressManagementViewPage.expandTreeRow(IP_NETWORK);
         ipAddressManagementViewPage.expandTreeRowContains("%");

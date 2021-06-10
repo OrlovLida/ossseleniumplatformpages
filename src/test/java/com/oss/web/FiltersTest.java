@@ -44,7 +44,7 @@ public class FiltersTest extends BaseTestCase {
 
     @BeforeClass
     public void goToInventoryView() {
-        inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Location");
+    inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Location");
     }
 
     @Test(priority = 1)
@@ -137,6 +137,7 @@ public class FiltersTest extends BaseTestCase {
     @Test(priority = 8)
     @Description("Creating Folder and checking that the created folder is visible in Filter Manager View")
     public void creatingFolder() {
+        filterManagerPage = FilterManagerPage.goToFilterManagerPage(driver, BASIC_URL);
         filterManagerPage
                 .createFolder(FOLDER_NAME)
                 .expandAllCategories();
@@ -161,6 +162,7 @@ public class FiltersTest extends BaseTestCase {
     @Test(priority = 10)
     @Description("Sharing an existing Filters, Folder and checking that shared filters are visible for second user")
     public void sharingAnExistingFilter() {
+        filterManagerPage = FilterManagerPage.goToFilterManagerPage(driver, BASIC_URL);
         filterManagerPage
                 .expandAllCategories()
                 .shareFilter(FILTER_NAME, USER2_LOGIN, "W")
@@ -172,6 +174,8 @@ public class FiltersTest extends BaseTestCase {
         filterManagerPage.expandAllCategories()
                 .markAsAFavorite(FILTER_NAME);
         Assert.assertTrue(filterManagerPage.isFilterVisible(FILTER_NAME) && filterManagerPage.isFilterVisible(FILTER2_NAME));
+        Assert.assertTrue(filterManagerPage.isFavorite(FILTER_NAME));
+
     }
 
     @Test(priority = 11)
@@ -241,6 +245,8 @@ public class FiltersTest extends BaseTestCase {
     public void removingFilter() {
         filterManagerPage.changeUser(CONFIGURATION.getValue("user"), CONFIGURATION.getValue("password"));
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        filterManagerPage.expandAllCategories();
+        DelayUtils.waitForPageToLoad(driver,webDriverWait);
         Assert.assertFalse(filterManagerPage.isFilterVisible(FILTER_NAME));
     }
 
@@ -251,6 +257,7 @@ public class FiltersTest extends BaseTestCase {
                 .expandAllCategories()
                 .deleteAllFilters()
                 .deleteAllFolders();
-        Assert.assertTrue(filterManagerPage.howManyFilters() == 0 && filterManagerPage.howManyFolders() == 1);
+        Assert.assertEquals(filterManagerPage.howManyFilters(), 0);
+        Assert.assertEquals(filterManagerPage.howManyFolders(), 1);
     }
 }

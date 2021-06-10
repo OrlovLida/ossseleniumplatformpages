@@ -507,19 +507,16 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
         ipAddressManagementViewPage.selectTreeRowContains(getAddressAndMask(firstIPv6SubnetProperties));
         ipAddressManagementViewPage.selectTreeRowContains(getAddressAndMask(firstIPv6SubnetProperties));
         ipAddressManagementViewPage.deleteIPv6SubnetTypeOfBlock(getAddressAndMask(firstIPv6SubnetProperties));
-        Assert.assertTrue(ipAddressManagementViewPage.isSystemMessageSuccess());
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
         ipAddressManagementViewPage.selectTreeRow(NETWORK_NAME_UPDATED);
         ipAddressManagementViewPage.selectTreeRow(NETWORK_NAME_UPDATED);
         ipAddressManagementViewPage.expandTreeRow(NETWORK_NAME_UPDATED);
         ipAddressManagementViewPage.deleteIPv6SubnetTypeOfBlock(getAddressAndMask(thirdIPv6SubnetProperties));
-        Assert.assertTrue(ipAddressManagementViewPage.isSystemMessageSuccess());
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
         ipAddressManagementViewPage.selectTreeRow(NETWORK_NAME_UPDATED);
         ipAddressManagementViewPage.selectTreeRow(NETWORK_NAME_UPDATED);
         ipAddressManagementViewPage.expandTreeRow(NETWORK_NAME_UPDATED);
         ipAddressManagementViewPage.deleteIPv6SubnetTypeOfNetwork(getAddressAndMask(secondIPv6SubnetProperties));
-        Assert.assertTrue(ipAddressManagementViewPage.isSystemMessageSuccess());
     }
 
     @Test(priority = 26)
@@ -527,7 +524,6 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
     public void deleteIPNetwork() {
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
         ipAddressManagementViewPage.deleteIPNetwork(NETWORK_NAME_UPDATED);
-        Assert.assertTrue(ipAddressManagementViewPage.isSystemMessageSuccess());
     }
 
     @Test(priority = 27)
@@ -535,7 +531,6 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
     public void deleteRole() {
         RoleViewPage roleViewPage = ipAddressManagementViewPage.openRoleView();
         roleViewPage.deleteRole(ROLE_NAME_UPDATED);
-        Assert.assertTrue(ipAddressManagementViewPage.isSystemMessageSuccess());
         Assert.assertFalse(roleViewPage.doesRoleNameExist(ROLE_NAME_UPDATED));
         roleViewPage.exitRoleView();
     }

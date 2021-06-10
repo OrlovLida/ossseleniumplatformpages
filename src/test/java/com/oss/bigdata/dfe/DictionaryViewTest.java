@@ -99,7 +99,7 @@ public class DictionaryViewTest extends BaseTestCase {
             Assert.assertTrue(dictionaryIsCreated);
 
         } else {
-            log.error("Dictionary with name: {} doesn't exist", dictionaryName);
+            log.error("Dictionary with name: {} doesn't exist", updatedDictionaryName);
             Assert.fail();
         }
     }

@@ -30,6 +30,8 @@ import io.qameta.allure.Step;
 
 public class NewInventoryViewPage extends BasePage {
 
+    private static final String TABLE_ID = "MainTableWidget";
+
     @Step("Open Inventory View")
     public static NewInventoryViewPage goToInventoryViewPage(WebDriver driver, String basicURL, String type) {
         driver.get(String.format("%s/#/views/management/views/inventory-view/" + type +
@@ -52,7 +54,7 @@ public class NewInventoryViewPage extends BasePage {
 
     public TableWidget getMainTable() {
         Widget.waitForWidget(wait, TableWidget.TABLE_WIDGET_CLASS);
-        return TableWidget.createById(driver, "MainTableWidget", wait);
+        return TableWidget.createById(driver, TABLE_ID, wait);
     }
 
     public NewInventoryViewPage searchObject(String text) {
@@ -210,7 +212,7 @@ public class NewInventoryViewPage extends BasePage {
         getMainTable().doRefreshWhileNoData(10000, TableWidget.REFRESH_ACTION_ID);
     }
 
-    //Details operations
+    // Details operations
 
     public TabsWidget getTabsWidget() {
         if (getSelectedRows().size() == 0) {
@@ -486,17 +488,6 @@ public class NewInventoryViewPage extends BasePage {
     public boolean isOnlyOneObject(String id) {
         DelayUtils.waitForPageToLoad(driver, wait);
         return getMainTable().howManyRowsOnFirstPage() == 1 && getIdOfMainTableObject(0).equals(id);
-    }
-
-    private static String getTypeBasedOnUrl(String url) {
-        String normalizedUrl = url.replace('?', '/');
-        String[] urlParts = normalizedUrl.split("/");
-        for (int i = 0; i < (urlParts.length - 1); i++) {
-            if (urlParts[i].equals("inventory-view")) {
-                return urlParts[i + 1];
-            }
-        }
-        throw new IllegalStateException("Current page does not corresponds with New Inventory View");
     }
 
 }

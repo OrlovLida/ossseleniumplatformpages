@@ -20,7 +20,7 @@ import com.oss.pages.platform.NewInventoryViewPage;
 
 public class InventoryViewTest extends BaseTestCase {
 
-    private final static String PROPERTY_PANEL_ID = "InventoryView_DetailsTab_LocationInventoryView_PropertyPanelWidget_Building";
+    private final static String PROPERTY_PANEL_ID = "PropertyPanelWidget";
 
     private NewInventoryViewPage inventoryViewPage;
 
@@ -33,10 +33,10 @@ public class InventoryViewTest extends BaseTestCase {
 
     @Test
     public void searchByType() {
-        //when
-        Multimap<String,String> filterValues = inventoryViewPage.searchByAttributeValue("type", "PoP", ComponentType.COMBOBOXV2);
+        // when
+        Multimap<String, String> filterValues = inventoryViewPage.searchByAttributeValue("type", "PoP", ComponentType.TEXT_FIELD);
 
-        //then
+        // then
         Assertions.assertThat(filterValues.keys()).hasSize(1);
         Assertions.assertThat(Lists.newArrayList(filterValues.get("Object Type")).get(0)).startsWith("PoP");
 
@@ -45,11 +45,11 @@ public class InventoryViewTest extends BaseTestCase {
 
     @Test
     public void selectFirstRow() {
-        //when
+        // when
         inventoryViewPage.selectObjectByRowId(0);
         List<TableRow> selectedRows = inventoryViewPage.getSelectedRows();
 
-        //then
+        // then
         Assertions.assertThat(selectedRows).hasSize(1);
         Assertions.assertThat(selectedRows.get(0).getIndex()).isEqualTo(0);
 
@@ -94,7 +94,7 @@ public class InventoryViewTest extends BaseTestCase {
 
     @Test
     public void addFirstUnselectedColumn() {
-        //given
+        // given
         List<String> columnHeaders = inventoryViewPage.getActiveColumnsHeaders();
         String firstHeader = columnHeaders.get(0);
 
@@ -105,7 +105,7 @@ public class InventoryViewTest extends BaseTestCase {
 
         inventoryViewPage.enableColumnAndApply(firstHeader);
 
-        //then
+        // then
         columnHeaders = inventoryViewPage.getActiveColumnsHeaders();
         Assertions.assertThat(columnHeaders).contains(firstHeader);
     }
@@ -155,7 +155,7 @@ public class InventoryViewTest extends BaseTestCase {
     }
 
     @Test
-    public void checkDisplayingOfPropertyValue(){
+    public void checkDisplayingOfPropertyValue() {
         PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel(0, PROPERTY_PANEL_ID);
 
         String idNumberFromPropertiesTab = propertyPanel.getPropertyValue("id");
@@ -165,7 +165,7 @@ public class InventoryViewTest extends BaseTestCase {
         inventoryViewPage.unselectObjectByRowId(0);
     }
     @Test
-    public void propertyPanelAttributesChooserCheck(){
+    public void propertyPanelAttributesChooserCheck() {
         PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel(0, PROPERTY_PANEL_ID);
         List<String> labels = propertyPanel.getPropertyLabels();
         String firstProperty = labels.get(0);
@@ -181,5 +181,17 @@ public class InventoryViewTest extends BaseTestCase {
         Assertions.assertThat(labelsAfterEnable).contains(firstProperty);
 
         inventoryViewPage.unselectObjectByRowId(0);
+    }
+
+    @Test
+    public void searchProperty() {
+        inventoryViewPage.selectObjectByRowId(0);
+        String name = inventoryViewPage.getAttributeValue("Identifier", 0);
+        PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel(0, PROPERTY_PANEL_ID);
+        propertyPanel.fullTextSearch(name);
+        Assert.assertTrue(propertyPanel.getPropertyLabels().contains("Identifier"));
+        for (String attribute : propertyPanel.getVisibleAttributes()) {
+            Assert.assertTrue(propertyPanel.getPropertyValue(attribute).contains(name));
+        }
     }
 }

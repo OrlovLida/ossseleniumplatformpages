@@ -26,20 +26,24 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
     private String processNRPCode;
     private CellSiteConfigurationPage cellSiteConfigurationPage;
     private static final String LOCATION_NAME = "Poznan-BU1";
+    private static final String SITE = "Site";
     private static final String ANTENNA_NAME_0 = "TP_OSS_RM_RAN_002_ANTENNA_0";
     private static final String ANTENNA_NAME_1 = "TP_OSS_RM_RAN_002_ANTENNA_1";
     private static final String ANTENNA_NAME_2 = "TP_OSS_RM_RAN_002_ANTENNA_2";
     private static final String[] ANTENNA_NAMES = { ANTENNA_NAME_0, ANTENNA_NAME_1, ANTENNA_NAME_2 };
     private static final String RAN_ANTENNA_MODEL = "HUAWEI Technology Co.,Ltd AAU5614";
     private static final String GNODEB_NAME = "TP_OSS_RM_RAN_002_GNODEB";
+    private static final String GNODEB_DU_NAME = "TP_OSS_RM_RAN_002_GNODEB_DU";
     private static final String BBU_NAME = "TP_OSS_RM_RAN_002_BBU";
     private static final String GNODEB_MODEL = "HUAWEI Technology Co.,Ltd gNodeB";
+    private static final String GNODEB_DU_MODEL = "HUAWEI Technology Co.,Ltd gNodeB DU";
     private static final String randomGNodeBId = RandomGenerator.generateRandomGNodeBId();
+    private static final String randomGNodeBDUId = RandomGenerator.generateRandomGNodeBId();
     private static final String CELL5G_NAME_0 = "TP_OSS_RM_RAN_002_CELL5G_0";
     private static final String CELL5G_NAME_1 = "TP_OSS_RM_RAN_002_CELL5G_1";
     private static final String CELL5G_NAME_2 = "TP_OSS_RM_RAN_002_CELL5G_2";
     private static final String[] CELL5G_NAMES = { CELL5G_NAME_0, CELL5G_NAME_1, CELL5G_NAME_2 };
-    private static final String CELL5G_CARRIER = "NR3600-n78-140 (64200)";
+    private static final String CELL5G_CARRIER = "NR3600-n78-140 (642000)";
     private static final String MCCMNC_PRIMARY = "DU03 [mcc: 424, mnc: 03]";
     private static final int[] LOCAL_CELLS_ID = { 7, 8, 9 };
 
@@ -79,6 +83,13 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
     }
 
     @Test(priority = 4)
+    @Description("Create gNodeB DU")
+    public void create5GnodeDU() {
+        cellSiteConfigurationPage.createGNodeBDU(GNODEB_DU_NAME, randomGNodeBDUId, GNODEB_DU_MODEL, GNODEB_NAME);
+        checkMessageContainsText("Created gNodeB");
+    }
+
+    @Test(priority = 5)
     @Description("Create three cells 5G")
     public void create5Gcells() {
         cellSiteConfigurationPage.expandTreeToBaseStation("Site", LOCATION_NAME, GNODEB_NAME);
@@ -86,7 +97,7 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
         checkMessageContainsText("Cells 5G created success");
     }
 
-    @Test(priority = 5)
+    @Test(priority = 6)
     @Description("Create three ran antenna")
     public void createRanAntenna() {
         cellSiteConfigurationPage.selectTreeRow(LOCATION_NAME);
@@ -98,7 +109,7 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
         }
     }
 
-    @Test(priority = 6)
+    @Test(priority = 7)
     @Description("Create hosting on BBU and hostings on antenna arrays")
     public void createHostingRelation() {
         cellSiteConfigurationPage.selectTreeRow(GNODEB_NAME);
@@ -113,14 +124,14 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
         }
     }
 
-    @Test(priority = 7)
+    @Test(priority = 8)
     @Description("Finish rest of NRP and IP Tasks")
     public void finishProcessesTasks() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.completeNRP(processNRPCode);
     }
 
-    @Test(priority = 8)
+    @Test(priority = 9)
     @Description("Delete hosting relations")
     public void deleteHostingRelation() {
         openCellSiteConfigurationView();
@@ -147,7 +158,7 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
         }
     }
 
-    @Test(priority = 9)
+    @Test(priority = 10)
     @Description("Delete ran antennas")
     public void deleteRanAntenna() {
         cellSiteConfigurationPage.selectTreeRow(LOCATION_NAME);
@@ -160,10 +171,11 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
         }
     }
 
-    @Test(priority = 10)
+    @Test(priority = 11)
     @Description("Delete cells 5G")
     public void delete5Gcells() {
-        cellSiteConfigurationPage.selectTreeRow(LOCATION_NAME);
+        cellSiteConfigurationPage.selectTreeRow(GNODEB_NAME);
+        waitForPageToLoad();
         for (String cell : CELL5G_NAMES) {
             cellSiteConfigurationPage.selectTab("Cells 5G");
             cellSiteConfigurationPage.filterObject("Name", cell);
@@ -172,10 +184,25 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
         }
     }
 
-    @Test(priority = 11)
+    @Test(priority = 12)
+    @Description("Delete gNodeB DU")
+    public void delete5GnodeDU() {
+        cellSiteConfigurationPage.selectTreeRow(LOCATION_NAME);
+        waitForPageToLoad();
+        cellSiteConfigurationPage.selectTab("Base Stations");
+        waitForPageToLoad();
+        cellSiteConfigurationPage.filterObject("Name", GNODEB_DU_NAME);
+        cellSiteConfigurationPage.removeObject();
+        checkMessageType();
+    }
+
+    @Test(priority = 13)
     @Description("Delete gNodeB")
     public void delete5Gnode() {
+        openCellSiteConfigurationView();
+        cellSiteConfigurationPage.expandTreeToLocation(SITE, LOCATION_NAME);
         cellSiteConfigurationPage.selectTreeRow(LOCATION_NAME);
+        waitForPageToLoad();
         cellSiteConfigurationPage.selectTab("Base Stations");
         waitForPageToLoad();
         cellSiteConfigurationPage.filterObject("Name", GNODEB_NAME);
