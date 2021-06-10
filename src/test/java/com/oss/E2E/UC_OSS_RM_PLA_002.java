@@ -16,6 +16,7 @@ import com.oss.framework.alerts.SystemMessageContainer.Message;
 import com.oss.framework.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.ActionsContainer;
+import com.oss.framework.mainheader.LoginPanel;
 import com.oss.framework.mainheader.Notifications;
 import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.sidemenu.SideMenu;
