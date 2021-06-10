@@ -16,6 +16,8 @@ public class DataSourcePage extends BaseDfePage {
     private final String ADD_NEW_DS_LABEL = "ADD";
     private final String CREATE_DS_QUERY = "OPEN_MODAL_QUERY";
     private final String DATA_SOURCE_NAME_COLUMN = "Name";
+    private final String EDIT_DS_LABEL = "Edit";
+    private final String DELETE_DS_LABEL = "Delete";
 
     public DataSourcePage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -44,6 +46,16 @@ public class DataSourcePage extends BaseDfePage {
         return feedExistIntoTable(name, DATA_SOURCE_NAME_COLUMN);
     }
 
+    @Step("I select found Data Source")
+    public void selectFoundDataSource() {
+        getTable(driver, wait).selectRow(0);
+    }
+
+    @Step("I click Edit Data Source")
+    public void clickEditDS() {
+        clickContextActionEdit();
+    }
+
     @Override
     public String getTableId() {
         return TABLE_ID;
@@ -56,12 +68,12 @@ public class DataSourcePage extends BaseDfePage {
 
     @Override
     public String getContextActionEditLabel() {
-        return null;
+        return EDIT_DS_LABEL;
     }
 
     @Override
     public String getContextActionDeleteLabel() {
-        return null;
+        return DELETE_DS_LABEL;
     }
 
     @Override

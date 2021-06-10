@@ -40,7 +40,7 @@ public class DataSourceFromQueryTest extends BaseTestCase {
         updatedDataSourceName = dataSourceName + "_updated";
     }
 
-    @Test
+    @Test(priority = 1, testName = "Add new Data Source from query result", description = "Add new Data Source from query result")
     @Description("Add new Data Source from query result")
     public void addDataSourceFromQuery() {
         dataSourcePage.clickAddNewDS();
@@ -56,5 +56,28 @@ public class DataSourceFromQueryTest extends BaseTestCase {
         Boolean dataSourceIsCreated = dataSourcePage.dataSourceExistIntoTable(dataSourceName);
 
         Assert.assertTrue(dataSourceIsCreated);
+    }
+
+    @Test(priority = 2, testName = "Edit Data Source", description = "Edit Data Source")
+    @Description("Edit Data Source")
+    public void editDataSourceFromQuery() {
+        Boolean dataSourceExists = dataSourcePage.dataSourceExistIntoTable(dataSourceName);
+        if (dataSourceExists) {
+            dataSourcePage.selectFoundDataSource();
+            dataSourcePage.clickEditDS();
+            DataSourceStepWizardPage dsStepWizard = new DataSourceStepWizardPage(driver, webDriverWait);
+            dsStepWizard.getBasicInfoStep().fillBasicInformationStep(updatedDataSourceName);
+            dsStepWizard.clickNextStep();
+            dsStepWizard.getSourceInfoStep();
+            dsStepWizard.clickNextStep();
+            dsStepWizard.getSpecificInfoStep();
+            dsStepWizard.clickAccept();
+            Boolean dataSourceIsEdited = dataSourcePage.dataSourceExistIntoTable(updatedDataSourceName);
+
+            Assert.assertTrue(dataSourceIsEdited);
+        } else {
+            log.error("Data Source with name: {} doesn't exist", dataSourceName);
+            Assert.fail();
+        }
     }
 }
