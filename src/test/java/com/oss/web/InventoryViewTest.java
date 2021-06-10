@@ -159,7 +159,7 @@ public class InventoryViewTest extends BaseTestCase {
         PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel(0, PROPERTY_PANEL_ID);
 
         String idNumberFromPropertiesTab = propertyPanel.getPropertyValue("id");
-        String idNumberFromTableWidget = inventoryViewPage.getAttributeValue("XId", 0);
+        String idNumberFromTableWidget = inventoryViewPage.getAttributeValue("id", 0);
         Assert.assertEquals(idNumberFromTableWidget, idNumberFromPropertiesTab);
 
         inventoryViewPage.unselectObjectByRowId(0);
