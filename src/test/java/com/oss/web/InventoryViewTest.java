@@ -27,8 +27,6 @@ public class InventoryViewTest extends BaseTestCase {
     @BeforeClass
     public void goToInventoryView() {
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Location");
-        LoginPanel loginPanel = LoginPanel.create(driver, webDriverWait);
-        loginPanel.switchToAlphaMode();
     }
 
     @Test
@@ -158,8 +156,8 @@ public class InventoryViewTest extends BaseTestCase {
     public void checkDisplayingOfPropertyValue() {
         PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel(0, PROPERTY_PANEL_ID);
 
-        String idNumberFromPropertiesTab = propertyPanel.getPropertyValue("id");
-        String idNumberFromTableWidget = inventoryViewPage.getAttributeValue("id", 0);
+        String idNumberFromPropertiesTab = propertyPanel.getPropertyValue("identifier");
+        String idNumberFromTableWidget = inventoryViewPage.getAttributeValue("identifier", 0);
         Assert.assertEquals(idNumberFromTableWidget, idNumberFromPropertiesTab);
 
         inventoryViewPage.unselectObjectByRowId(0);
@@ -186,7 +184,7 @@ public class InventoryViewTest extends BaseTestCase {
     @Test
     public void searchProperty() {
         inventoryViewPage.selectObjectByRowId(0);
-        String name = inventoryViewPage.getAttributeValue("Identifier", 0);
+        String name = inventoryViewPage.getAttributeValue("identifier", 0);
         PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel(0, PROPERTY_PANEL_ID);
         propertyPanel.fullTextSearch(name);
         Assert.assertTrue(propertyPanel.getPropertyLabels().contains("Identifier"));
