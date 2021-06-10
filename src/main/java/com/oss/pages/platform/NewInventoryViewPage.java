@@ -14,6 +14,7 @@ import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.components.portals.SaveConfigurationWizard.Field;
 import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.mainheader.ButtonPanel;
+import com.oss.framework.utils.CSSUtils;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Widget;
 import com.oss.framework.widgets.Widget.WidgetType;
@@ -53,7 +54,8 @@ public class NewInventoryViewPage extends BasePage {
     // Main table operations
 
     public TableWidget getMainTable() {
-        Widget.waitForWidget(wait, TableWidget.TABLE_WIDGET_CLASS);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        DelayUtils.waitByXPath(wait,"//div[@" + CSSUtils.TEST_ID + "='" + TABLE_ID + "']" );
         return TableWidget.createById(driver, TABLE_ID, wait);
     }
 

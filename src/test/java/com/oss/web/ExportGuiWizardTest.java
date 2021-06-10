@@ -20,9 +20,6 @@ public class ExportGuiWizardTest extends BaseTestCase {
     @BeforeClass
     public void prepareTests() {
         this.languageServicePage = LanguageServicePage.goToLanguageServicePage(driver, BASIC_URL);
-        LoginPanel loginPanel = LoginPanel.create(driver, webDriverWait);
-        loginPanel.switchToAlphaMode();
-
         languageServicePage
                 .typeIdOfFirstServiceInSearch();
     }
