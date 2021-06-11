@@ -98,9 +98,21 @@ public class ViewManagerTest extends BaseTestCase {
     }
 
     @Test(priority = 5)
+    public void addSecondApplication(){
+        viewManagerPage.enterAddApplicationButton();
+        DelayUtils.sleep(200);
+        ApplicationPopup addApplicationPopup = viewManagerPage.goToApplicationPopup();
+        addApplicationPopup.setApplication("Views:GIS View");
+        addApplicationPopup.setApplicationName("GIS");
+        addApplicationPopup.setDescription("GIS Description");
+        addApplicationPopup.clickSaveButton();
+
+        DelayUtils.sleep(4000);
+        Assert.assertTrue(driver.findElement(By.xpath("//*[text()='GIS']")).isDisplayed());
+    }
+
+    @Test(priority = 6)
     public void deleteCategory(){
-        viewManagerPage.clearSearchField();
-        viewManagerPage.searchForCategory("Name after edition");
         viewManagerPage.deleteFirstCategory();
         DelayUtils.sleep(5000);
 
