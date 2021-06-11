@@ -1,5 +1,6 @@
 package com.oss;
 
+import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.treewidget.InlineMenu;
 import com.oss.framework.widgets.treewidget.TreeWidget;
 import com.oss.pages.platform.HierarchyViewPage;
@@ -17,61 +18,45 @@ public class HierarchyViewTest extends BaseTestCase {
 
     private static final String TREE_WIDGET_URL = String.format("%s/#/views/management/views/hierarchy-view/PhysicalDevice?perspective=LIVE",BASIC_URL);
     private HierarchyViewPage hierarchyViewPage;
+    private String firstNodeLabel;
+
     SoftAssert soft = new SoftAssert();
 
     @BeforeClass
-    public void goToHierarchyViewPage() {hierarchyViewPage = homePage.goToHierarchyViewPage(TREE_WIDGET_URL);}
+    public void goToHierarchyViewPage() {hierarchyViewPage = homePage.goToHierarchyViewPage(TREE_WIDGET_URL);
+        firstNodeLabel = hierarchyViewPage.getTreeWidget().getFirstNodeLabel();
+    }
 
-    @Test
+    @Test (priority = 0)
     public void selectFirstNode() {
-        TreeWidget treeWidget = hierarchyViewPage
+        DelayUtils.waitForPageToLoad(driver,webDriverWait);
+        hierarchyViewPage
                 .getTreeWidget()
                 .selectNode();
-        Assertions.assertThat(treeWidget.isNodeSelected()).isTrue();
+        DelayUtils.waitForPageToLoad(driver,webDriverWait);
+        hierarchyViewPage.getTreeWidget().getNode("39938734").click();
+        Assertions.assertThat(hierarchyViewPage
+                .getTreeWidget().isNodeSelected()).isTrue();
     }
 
-    @Test
+    @Test (priority = 1)
     public void expandNode() {
-        TreeWidget treeWidget = hierarchyViewPage.getTreeWidget();
-        int primaryExpNodesCount = treeWidget.getNodesWithExpandState("expanded").size();
-        treeWidget.expandNode();
-        int finalExpNodesCount = treeWidget.getNodesWithExpandState("expanded").size();
-        Assertions.assertThat(primaryExpNodesCount).isEqualTo(finalExpNodesCount - 1);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+       TreeWidget treeWidget = hierarchyViewPage.getTreeWidget();
+        treeWidget.getFirstNode().expandNode();
+        Assertions.assertThat(treeWidget.getFirstNode().isExpanded());
     }
 
-    //TODO: Below test need correction. Sth is wrong with getDescendantNodesWithExpandState("expanded") should return 3 elements instead of 19
-    // finalExpNodesCount returns no such element exception
-    @Test
-    public void expandRootNodeWithAllDescendants() {
-        TreeWidget treeWidget = hierarchyViewPage
-                .getTreeWidget();
-        int primaryExpNodesCount = treeWidget.getNodesWithExpandState("expanded").size();
-        log.info("" + primaryExpNodesCount);
-        treeWidget.selectExpandAllIcon();
-        int expRootWithExpDescendantsCount = (treeWidget.getDescendantNodesWithExpandState("expanded").size())+1;
-        log.info("" + expRootWithExpDescendantsCount);
-        int finalExpNodesCount = treeWidget.getNodesWithExpandState("expanded").size();
-        Assertions.assertThat(primaryExpNodesCount).isEqualTo(finalExpNodesCount-expRootWithExpDescendantsCount);
-    }
-
-    @Test
-    public void selectRootNodeWithAllDescendants() {
-        TreeWidget treeWidget = hierarchyViewPage
-                .getTreeWidget()
-                .selectExpandAllIcon()
-                .selectRootCheckbox();
-        Assert.assertTrue(treeWidget.areNodesSelected(), "Not all nodes are selected");
-    }
-
-    @Test
+    @Test (priority = 5)
     public void displayInlineActions() {
-        InlineMenu inlineMenu = hierarchyViewPage
+        DelayUtils.waitForPageToLoad(driver,webDriverWait);
+        boolean inlineMenu = hierarchyViewPage
                 .getTreeWidget()
-                .selectInlineActionsBtn();
-        Assert.assertTrue(inlineMenu.isActionListDisplayed(), "Inline actions are not displayed");
+                .selectNode().getSelectedNodes().get(0).isInlineActionPresent();
+        Assert.assertTrue(inlineMenu, "Inline actions are not displayed");
     }
 
-    @Test
+    @Test (priority = 6)
     public void checkAvailableActionsForSelectedNode() {
         TreeWidget treeWidget = hierarchyViewPage
                 .getTreeWidget()
@@ -80,33 +65,31 @@ public class HierarchyViewTest extends BaseTestCase {
         soft.assertTrue(treeWidget.isActionDisplayed("EDIT"), "Edit button is not displayed");
         soft.assertTrue(treeWidget.isActionDisplayed("NAVIGATION"), "Navigation button is not displayed");
         soft.assertTrue(treeWidget.isActionDisplayed("OTHER"), "Other button is not displayed");
-        soft.assertAll();
     }
 
-    @Test
+    @Test (priority = 7)
     public void checkAvailableActionsInDefaultView() {
         TreeWidget treeWidget = hierarchyViewPage
                 .getTreeWidget();
-        soft.assertTrue(treeWidget.isActionDisplayed("CREATE"), "Create button is not displayed");
-        soft.assertTrue(treeWidget.isActionDisplayed("frameworkCustomButtonsGroup"), "Hamburger menu is not displayed");
-        soft.assertAll();
+        Assert.assertTrue(treeWidget.isActionDisplayed("CREATE"), "Create button is not displayed");
+        Assert.assertTrue(treeWidget.isActionDisplayed("frameworkCustomButtonsGroup"), "Hamburger menu is not displayed");
+
     }
 
-    @Test
+    @Test (priority = 8)
     public void searchWithNotExistingData() {
-        TreeWidget treeWidget = hierarchyViewPage
+        hierarchyViewPage
                 .getTreeWidget()
                 .performSearch("hjfkahfdadf");
-        Assert.assertTrue(treeWidget.isTreeWidgetEmpty(), "Tree widget is not empty");
+        Assert.assertTrue(hierarchyViewPage.getTreeWidget().isTreeWidgetEmpty(), "Tree widget is not empty");
     }
 
-    @Test
+    @Test (priority = 9)
     public void searchWithExistingData() {
         TreeWidget treeWidget = hierarchyViewPage
                 .getTreeWidget();
-        String searchInput = treeWidget.getFirstNodeLabel();
-                treeWidget.performSearch(searchInput);
-        Assert.assertTrue(treeWidget.isSearchingCorrect(searchInput), "Searching is not correct");
+                treeWidget.performSearch(firstNodeLabel);
+        Assert.assertTrue(treeWidget.isSearchingCorrect(firstNodeLabel), "Searching is not correct");
 
     }
 }

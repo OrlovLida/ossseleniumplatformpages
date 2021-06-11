@@ -20,7 +20,7 @@ public class HierarchyViewPage extends BasePage {
     private static final String BOTTOM_TABS_WIDGET_ID = "HierarchyView_BottomDetailTabs_%s";
     private static final String TOP_PROPERTY_PANEL_ID = "HierarchyView_TopDetailTabs_%sHierarchyView_PropertyPanelWidget_%s";
     private static final String BOTTOM_PROPERTY_PANEL_ID = "HierarchyView_BottomDetailTabs_%sInventoryView_PropertyPanelWidget_%s";
-    private static final String HIERARCHY_VIEW_TREE_WIDGET_ID = "HierarchyViewTreeWidgetId";
+    private static final String HIERARCHY_VIEW_TREE_WIDGET_ID = "HierarchyTreeWidget";
 
     public HierarchyViewPage(WebDriver driver) {
         super(driver);
