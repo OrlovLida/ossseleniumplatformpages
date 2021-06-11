@@ -91,9 +91,9 @@ public class ViewManagerTest extends BaseTestCase {
         editApplicationPopup.setDescription("Sublocation Creation");
         editApplicationPopup.clickSaveButton();
 
-        DelayUtils.sleep(1000);
+        DelayUtils.sleep(4000);
         Assert.assertTrue(driver.findElement(By.xpath("//*[text()='Sublocation']")).isDisplayed());
-        String url = driver.findElement(By.xpath("//*[@id=\"row0-267120\"]//a")).getAttribute("href");
+        String url = driver.findElement(By.xpath("//*[text()='Sublocation']")).getAttribute("href");
         Assert.assertTrue(url.contains("sublocation/create"));
     }
 
