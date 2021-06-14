@@ -2,6 +2,7 @@ package com.oss.bigdata.dfe;
 
 import com.oss.BaseTestCase;
 import com.oss.pages.bigdata.dfe.serverGroup.ServerGroupPage;
+import com.oss.pages.bigdata.utils.ConstantsDfe;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 import org.slf4j.Logger;
@@ -10,9 +11,6 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @Listeners({TestListener.class})
 public class ServerGroupTest extends BaseTestCase {
@@ -25,7 +23,6 @@ public class ServerGroupTest extends BaseTestCase {
     private final static String SERVERS_PASSWORD = "Password";
     private final static String SERVERS_DIRECTORY = "/test";
 
-
     private ServerGroupPage serverGroupPage;
     private String serverGroupName;
     private String updatedServerGroupName;
@@ -34,9 +31,7 @@ public class ServerGroupTest extends BaseTestCase {
     public void goToServerGroupView() {
         serverGroupPage = ServerGroupPage.goToPage(driver, BASIC_URL);
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy_MM_dd");
-        String date = simpleDateFormat.format(new Date());
-        serverGroupName = "Selenium_" + date + "_ServTest";
+        serverGroupName = ConstantsDfe.createName() + "_ServTest";
         updatedServerGroupName = serverGroupName + "_updated";
     }
 

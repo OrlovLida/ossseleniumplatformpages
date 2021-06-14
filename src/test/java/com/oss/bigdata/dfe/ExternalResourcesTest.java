@@ -2,6 +2,7 @@ package com.oss.bigdata.dfe;
 
 import com.oss.BaseTestCase;
 import com.oss.pages.bigdata.dfe.externalresource.ExternalResourcesPage;
+import com.oss.pages.bigdata.utils.ConstantsDfe;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 import org.slf4j.Logger;
@@ -10,9 +11,6 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @Listeners({TestListener.class})
 public class ExternalResourcesTest extends BaseTestCase {
@@ -29,9 +27,7 @@ public class ExternalResourcesTest extends BaseTestCase {
     public void goToExternalResourceView() {
         externalResource = ExternalResourcesPage.goToPage(driver, BASIC_URL);
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy_MM_dd");
-        String date = simpleDateFormat.format(new Date());
-        externalResourceName = "Selenium_" + date + "_ExtResourceTest";
+        externalResourceName = ConstantsDfe.createName() + "_ExtResourceTest";
         updatedExternalResourceName = externalResourceName + "_updated";
     }
 
@@ -46,7 +42,7 @@ public class ExternalResourcesTest extends BaseTestCase {
         Assert.assertTrue(externalResourceIsCreated);
     }
 
-    @Test(priority = 2, testName = "Edit External Resource", description = "Edit External Resource", enabled = false)
+    @Test(priority = 2, testName = "Edit External Resource", description = "Edit External Resource")
     @Description("Edit External Resource")
     public void editExternalResource() {
         Boolean externalResourceExists = externalResource.externalResourceExistsIntoTable(externalResourceName);

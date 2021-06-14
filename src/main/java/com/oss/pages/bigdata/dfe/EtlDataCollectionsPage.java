@@ -68,8 +68,7 @@ public class EtlDataCollectionsPage extends BaseDfePage {
 
     @Step("I confirm the removal of ETL Process")
     public void confirmDelete(){
-        ConfirmationBox confirmationBox = ConfirmationBox.create(driver, wait);
-        confirmationBox.clickButtonByLabel(DELETE_LABEL);
+        confirmDelete(DELETE_LABEL);
     }
 
     @Override
