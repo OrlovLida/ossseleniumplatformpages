@@ -61,7 +61,7 @@ public class ServerGroupTest extends BaseTestCase {
 
             Assert.assertTrue(serverCreated);
         } else {
-            log.error("Server group with name: {} doesn't exist, can not add server", serverGroupName);
+            log.error("Server group with name: {} doesn't exist, cannot add server", serverGroupName);
             Assert.fail();
         }
     }
@@ -147,7 +147,7 @@ public class ServerGroupTest extends BaseTestCase {
 
             Assert.assertTrue(serverGroupIsDeleted);
         } else {
-            log.error("Server group with name: {} doesn't exist, can not perform delete action", serverGroupName);
+            log.error("Server group with name: {} doesn't exist, cannot perform delete action", serverGroupName);
             Assert.fail();
         }
     }
