@@ -25,4 +25,9 @@
             <class name="com.oss.bigdata.dfe.DimensionsViewTest"/>
         </classes>
     </test>
+    <test name="ProblemsViewTest">
+        <classes>
+            <class name="com.oss.bigdata.dfe.ProblemsViewTest"/>
+        </classes>
+    </test>
 </suite>
