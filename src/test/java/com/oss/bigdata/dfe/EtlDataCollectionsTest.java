@@ -3,6 +3,7 @@ package com.oss.bigdata.dfe;
 import com.oss.BaseTestCase;
 import com.oss.pages.bigdata.dfe.EtlDataCollectionsPage;
 import com.oss.pages.bigdata.dfe.stepwizard.etlprocess.EtlProcessStepWizardPage;
+import com.oss.pages.bigdata.utils.ConstantsDfe;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -12,9 +13,6 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @Listeners({TestListener.class})
 public class EtlDataCollectionsTest extends BaseTestCase {
@@ -37,11 +35,9 @@ public class EtlDataCollectionsTest extends BaseTestCase {
     public void goToEtlDataCollectionsView(){
         etlDataCollectionsPage = EtlDataCollectionsPage.goToPage(driver, BASIC_URL);
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy_MM_dd");
-        String date = simpleDateFormat.format(new Date());
-        etlProcessName = "Selenium_" + date + "_EtlTest";
+        etlProcessName = ConstantsDfe.createName() + "_EtlTest";
         updatedEtlProcessName = etlProcessName + "_updated";
-        tableName = "selenium_" + date;
+        tableName = ConstantsDfe.createName();
     }
 
     @Test(priority = 1, testName = "Add new ETL Process", description = "Add new ETL Process")

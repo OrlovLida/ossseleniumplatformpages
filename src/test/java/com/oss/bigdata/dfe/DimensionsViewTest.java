@@ -3,6 +3,7 @@ package com.oss.bigdata.dfe;
 import com.oss.BaseTestCase;
 import com.oss.pages.bigdata.dfe.DimensionsPage;
 import com.oss.pages.bigdata.dfe.stepwizard.dimension.DimensionsStepWizardPage;
+import com.oss.pages.bigdata.utils.ConstantsDfe;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -13,17 +14,14 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 @Listeners({TestListener.class})
 public class DimensionsViewTest extends BaseTestCase {
 
     private static final Logger log = LoggerFactory.getLogger(DimensionsViewTest.class);
 
-    private static final String DATA_SOURCE_NAME = "Selenium_2020_09_29_DsQuery";
+    private static final String DATA_SOURCE_NAME = "t:CRUD#DSforDim";
     private static final String TRANSFORMATION_TYPE_NAME = "SQL Transformation";
-    private static final String COLUMN_NAME = "STIME";
+    private static final String COLUMN_NAME = "HOST_NM";
     private static final String COLUMN_ROLE = "Primary Key";
 
     private DimensionsPage dimensionsPage;
@@ -34,9 +32,7 @@ public class DimensionsViewTest extends BaseTestCase {
     public void goToDimensionsView() {
         dimensionsPage = DimensionsPage.goToPage(driver, BASIC_URL);
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy_MM_dd");
-        String date = simpleDateFormat.format(new Date());
-        dimensionName = "Selenium_" + date + "_DimTest";
+        dimensionName = ConstantsDfe.createName() + "_DimTest";
         updatedDimensionName = dimensionName + "_updated";
     }
 
@@ -99,16 +95,16 @@ public class DimensionsViewTest extends BaseTestCase {
     @Test(priority = 3, testName = "Delete Dimension", description = "Delete Dimension")
     @Description("Delete Dimension")
     public void deleteDimension() {
-        Boolean dimensionExists = dimensionsPage.dimensionExistsIntoTable(dimensionName);
+        Boolean dimensionExists = dimensionsPage.dimensionExistsIntoTable(updatedDimensionName);
         if (dimensionExists) {
             dimensionsPage.selectFoundDimension();
             dimensionsPage.clickDeleteDimension();
             dimensionsPage.confirmDelete();
-            Boolean dimensionDeleted = !dimensionsPage.dimensionExistsIntoTable(dimensionName);
+            Boolean dimensionDeleted = !dimensionsPage.dimensionExistsIntoTable(updatedDimensionName);
 
             Assert.assertTrue(dimensionDeleted);
         } else {
-            log.error("Dimension with name: {} was not deleted", dimensionName);
+            log.error("Dimension with name: {} was not deleted", updatedDimensionName);
             Assert.fail();
         }
     }

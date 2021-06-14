@@ -2,6 +2,7 @@ package com.oss.bigdata.dfe;
 
 import com.oss.BaseTestCase;
 import com.oss.pages.bigdata.dfe.problems.ProblemsPage;
+import com.oss.pages.bigdata.utils.ConstantsDfe;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 import org.slf4j.Logger;
@@ -10,9 +11,6 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @Listeners({TestListener.class})
 public class ProblemsViewTest extends BaseTestCase {
@@ -28,9 +26,7 @@ public class ProblemsViewTest extends BaseTestCase {
     public void goToProblemsView() {
         problemsPage = ProblemsPage.goToPage(driver, BASIC_URL);
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy_MM_dd");
-        String date = simpleDateFormat.format(new Date());
-        problemName = "Selenium_" + date + "_ProbTest";
+        problemName = ConstantsDfe.createName() + "_ProbTest";
         updatedProblemName = problemName + "_updated";
     }
 
@@ -83,4 +79,3 @@ public class ProblemsViewTest extends BaseTestCase {
         }
     }
 }
-

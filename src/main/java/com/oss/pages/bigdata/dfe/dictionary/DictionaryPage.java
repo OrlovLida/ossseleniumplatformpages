@@ -72,6 +72,7 @@ public class DictionaryPage extends BaseDfePage {
 
     @Step("I check if Dictionary: {dictionaryName} exists into the table")
     public Boolean dictionaryExistsIntoTable(String dictionaryName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
         searchFeed(dictionaryName);
         DelayUtils.waitForPageToLoad(driver, wait);
         int numberOfRowsInTable = getNumberOfRowsInTable(NAME_COLUMN_LABEL);

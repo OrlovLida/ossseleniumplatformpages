@@ -3,6 +3,7 @@ package com.oss.bigdata.dfe;
 import com.oss.BaseTestCase;
 import com.oss.pages.bigdata.dfe.AggregatePage;
 import com.oss.pages.bigdata.dfe.stepwizard.aggregate.AggregateStepWizardPage;
+import com.oss.pages.bigdata.utils.ConstantsDfe;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -12,9 +13,6 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @Listeners({TestListener.class})
 public class AggregateViewTest extends BaseTestCase {
@@ -35,9 +33,7 @@ public class AggregateViewTest extends BaseTestCase {
     public void goToAggregateView() {
         aggregatePage = AggregatePage.goToPage(driver, BASIC_URL);
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy_MM_dd");
-        String date = simpleDateFormat.format(new Date());
-        aggregateName = "Selenium_" + date + "_AggrTest";
+        aggregateName = ConstantsDfe.createName() + "_AggrTest";
         updatedAggregateName = aggregateName + "_updated";
     }
 

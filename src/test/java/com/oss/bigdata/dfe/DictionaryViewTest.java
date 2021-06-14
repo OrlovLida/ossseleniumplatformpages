@@ -2,6 +2,7 @@ package com.oss.bigdata.dfe;
 
 import com.oss.BaseTestCase;
 import com.oss.pages.bigdata.dfe.dictionary.DictionaryPage;
+import com.oss.pages.bigdata.utils.ConstantsDfe;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 import org.slf4j.Logger;
@@ -10,9 +11,6 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @Listeners({TestListener.class})
 public class DictionaryViewTest extends BaseTestCase {
@@ -30,9 +28,7 @@ public class DictionaryViewTest extends BaseTestCase {
     public void goToDictionaryView() {
         dictionaryPage = DictionaryPage.goToPage(driver, BASIC_URL);
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy_MM_dd");
-        String date = simpleDateFormat.format(new Date());
-        dictionaryName = "Selenium_" + date + "_DictTest";
+        dictionaryName = ConstantsDfe.createName() + "_DictTest";
         updatedDictionaryName = dictionaryName + "_updated";
     }
 
@@ -84,7 +80,7 @@ public class DictionaryViewTest extends BaseTestCase {
         }
     }
 
-    @Test(priority = 4, testName = "Edit Dictionary", description = "Edit Dictionary", enabled = false)
+    @Test(priority = 4, testName = "Edit Dictionary", description = "Edit Dictionary")
     @Description("Edit Dictionary")
     public void editDictionary() {
         Boolean dictionaryExists = dictionaryPage.dictionaryExistsIntoTable(dictionaryName);
@@ -106,16 +102,16 @@ public class DictionaryViewTest extends BaseTestCase {
     @Test(priority = 5, testName = "Delete Dictionary", description = "Delete Dictionary")
     @Description("Delete Dictionary")
     public void deleteDictionary() {
-        Boolean dictionaryExists = dictionaryPage.dictionaryExistsIntoTable(dictionaryName);
+        Boolean dictionaryExists = dictionaryPage.dictionaryExistsIntoTable(updatedDictionaryName);
         if (dictionaryExists) {
             dictionaryPage.selectFoundDictionary();
             dictionaryPage.clickDeleteDictionary();
             dictionaryPage.confirmDelete();
-            Boolean dictionaryDeleted = !dictionaryPage.dictionaryExistsIntoTable(dictionaryName);
+            Boolean dictionaryDeleted = !dictionaryPage.dictionaryExistsIntoTable(updatedDictionaryName);
 
             Assert.assertTrue(dictionaryDeleted);
         } else {
-            log.error("Dictionary with name: {} was not deleted", dictionaryName);
+            log.error("Dictionary with name: {} was not deleted", updatedDictionaryName);
             Assert.fail();
         }
     }
