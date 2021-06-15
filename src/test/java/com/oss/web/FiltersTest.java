@@ -10,7 +10,6 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
-import com.oss.framework.components.list.DropdownList;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.filtermanager.EditFilterPage;
 import com.oss.pages.filtermanager.FilterManagerPage;
@@ -155,9 +154,8 @@ public class FiltersTest extends BaseTestCase {
                 .expandAllCategories()
                 .editFilter(FILTER3_NAME);
         editFilterPage = new EditFilterPage(driver);
-        editFilterPage.changeFolderForFilter(FOLDER_NAME);
-       Assert.assertTrue(DropdownList.create(driver,webDriverWait,"Enabled folders").sizeDropdownList()>0);
-        editFilterPage.clickAccept()
+        editFilterPage.changeFolderForFilter(FOLDER_NAME)
+                .clickAccept()
                 .collapseAllCategories()
                 .expandFolder(FOLDER_NAME);
         Assert.assertTrue(filterManagerPage.isFolderVisible(FOLDER_NAME) && filterManagerPage.isFilterVisible(FILTER3_NAME));
