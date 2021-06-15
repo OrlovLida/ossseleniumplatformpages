@@ -7,6 +7,7 @@ import com.oss.framework.components.portals.ActionsDropdownList;
 import com.oss.framework.components.portals.ApplicationPopup;
 import com.oss.framework.components.portals.CategoryPopup;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.utils.DragAndDrop;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
@@ -14,6 +15,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.List;
 
 public class ViewManagerPage extends BasePage {
 
@@ -29,6 +32,9 @@ public class ViewManagerPage extends BasePage {
     private static final String EDIT_CATEGORY_POPUP_XPATH = "//*[@class='popupContainer']";
     private static final String CATEGORY_ROLLOUT_BUTTON_XPATH = "//div[@class='categories__buttons__rollout']/i[@class='fa fa-chevron-down']";
     private static final String FIRST_APPLICATION_THREE_DOTS_BUTTON_XPATH = "(//div[1]/div[@id=\"frameworkObjectButtonsGroup\"])[2]";
+    private static final String FIRST_APPLICATION_DRAG_AND_DROP_BUTTON_XPATH = "(//div[1]/div[@class='draggableBox draggableItemNonActive']/div[@class='btn-drag tile-drag'])[1]";
+    private static final String SECOND_APPLICATION_DRAG_AND_DROP_BUTTON_XPATH = "(//div[2]/div[@class='draggableBox draggableItemNonActive']/div[@class='btn-drag tile-drag'])[1]";
+    private static final String APPLICATIONS_LINKS_XPATH = "//div[@class='category-box__content']/a[@class='category-box__content__link']";
 
     @FindBy(className = "views-manager__bar__add-category")
     public WebElement addCategoryButton;
@@ -58,16 +64,17 @@ public class ViewManagerPage extends BasePage {
         return new ApplicationPopup(driver, wait);
     }
 
+    public WebElement getLinkToApplication(int numberOfApplication){
+        List<WebElement> applicationLinks = driver.findElements(By.xpath(APPLICATIONS_LINKS_XPATH));
+        return applicationLinks.get(numberOfApplication);
+    }
+
     @Step("Search specific category by name")
     public void searchForCategory(String categoryName){
         SearchField searchField = (SearchField) ComponentFactory.create(SEARCH_TEST_ID, Input.ComponentType.SEARCH_FIELD, driver, wait);
         searchField.typeValue(categoryName);
 
         DelayUtils.sleep(1000);
-    }
-
-    public void dragCategory(){
-        dragButton.click();
     }
 
     public void clearSearchField(){
@@ -106,6 +113,10 @@ public class ViewManagerPage extends BasePage {
         WebElement deleteButton = driver.findElement(By.xpath(DELETE_BUTTON_IN_POPUP_XPATH));
         deleteButton.click();
         DelayUtils.sleep(2000);
+    }
+
+    public void dragAndDropFirstAppInPlaceOfSecond(){
+        DragAndDrop.dragAndDrop(FIRST_APPLICATION_DRAG_AND_DROP_BUTTON_XPATH, SECOND_APPLICATION_DRAG_AND_DROP_BUTTON_XPATH,driver);
     }
 
     public void rolloutFirstCategory(){

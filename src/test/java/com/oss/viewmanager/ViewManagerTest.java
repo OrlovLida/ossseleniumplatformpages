@@ -7,6 +7,7 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.viewmanager.ViewManagerPage;
 import com.oss.utils.TestListener;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
@@ -18,14 +19,14 @@ public class ViewManagerTest extends BaseTestCase {
     private ViewManagerPage viewManagerPage;
 
     @BeforeClass
-    public void goToViewManager(){
+    public void goToViewManager() {
         viewManagerPage = new ViewManagerPage(driver);
         viewManagerPage.openLoginPanel().changeSwitcherForAlphaMode();
         viewManagerPage.closeLoginPanel();
     }
 
     @Test(priority = 1)
-    public void addNewCategoryToViewManagerTest(){
+    public void addNewCategoryToViewManagerTest() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         viewManagerPage.addCategoryButton.click();
         DelayUtils.sleep(200);
@@ -43,7 +44,7 @@ public class ViewManagerTest extends BaseTestCase {
     }
 
     @Test(priority = 2)
-    public void changeCategoryNameAndDescription(){
+    public void changeCategoryNameAndDescription() {
         viewManagerPage.enterEditionOfCategory();
         DelayUtils.sleep(1000);
         CategoryPopup editCategoryPopup = viewManagerPage.goToEditCategoryPopup();
@@ -63,7 +64,7 @@ public class ViewManagerTest extends BaseTestCase {
     }
 
     @Test(priority = 3)
-    public void addApplicationInCategory(){
+    public void addApplicationInCategory() {
         viewManagerPage.enterAddApplicationButton();
         DelayUtils.sleep(1000);
         ApplicationPopup addApplicationPopup = viewManagerPage.goToApplicationPopup();
@@ -75,12 +76,12 @@ public class ViewManagerTest extends BaseTestCase {
         DelayUtils.sleep(1000);
 
         viewManagerPage.rolloutFirstCategory();
-        DelayUtils.sleep(700);
+        DelayUtils.sleep(1500);
         Assert.assertTrue(driver.findElement(By.xpath("//*[text()='GIS']")).isDisplayed());
     }
 
     @Test(priority = 4)
-    public void editApplication(){
+    public void editApplication() {
         DelayUtils.sleep(200);
         viewManagerPage.clickButtonsGroupOnFirstApplication();
         DelayUtils.sleep(300);
@@ -98,7 +99,7 @@ public class ViewManagerTest extends BaseTestCase {
     }
 
     @Test(priority = 5)
-    public void addSecondApplication(){
+    public void addSecondApplication() {
         viewManagerPage.enterAddApplicationButton();
         DelayUtils.sleep(200);
         ApplicationPopup addApplicationPopup = viewManagerPage.goToApplicationPopup();
@@ -112,12 +113,27 @@ public class ViewManagerTest extends BaseTestCase {
     }
 
     @Test(priority = 6)
-    public void deleteCategory(){
+    public void changePlaceOfFirstAndSecondApplication() {
+        viewManagerPage.dragAndDropFirstAppInPlaceOfSecond();
+
+        DelayUtils.sleep(1000);
+
+        WebElement firstApplication = viewManagerPage.getLinkToApplication(1);
+        WebElement secondApplication = viewManagerPage.getLinkToApplication(0);
+
+        String gisUrl = firstApplication.getAttribute("href");
+        String sublocationWizardUrl = secondApplication.getAttribute("href");
+
+        Assert.assertTrue(gisUrl.contains("gis-view"));
+        Assert.assertTrue(sublocationWizardUrl.contains("sublocation/create"));
+    }
+
+    @Test(priority = 7)
+    public void deleteCategory() {
         viewManagerPage.deleteFirstCategory();
         DelayUtils.sleep(5000);
 
-        Assert.assertFalse(driver.findElements(By.xpath("//*[text()='Name after edition']")).size()>0);
+        Assert.assertFalse(driver.findElements(By.xpath("//*[text()='Name after edition']")).size() > 0);
         viewManagerPage.clearSearchField();
     }
-
 }
