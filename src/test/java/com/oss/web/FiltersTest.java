@@ -152,7 +152,7 @@ public class FiltersTest extends BaseTestCase {
                 .expandAllCategories()
                 .editFilter(FILTER3_NAME);
         editFilterPage = new EditFilterPage(driver);
-        editFilterPage.changeFolderForFilter()
+        editFilterPage.changeFolderForFilter(FOLDER_NAME)
                 .clickAccept()
                 .collapseAllCategories()
                 .expandFolder(FOLDER_NAME);

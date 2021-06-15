@@ -1,5 +1,6 @@
 package com.oss.pages.filtermanager;
 
+import com.oss.framework.components.list.DropdownList;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.utils.DragAndDrop;
 import com.oss.framework.widgets.Wizard;
@@ -22,9 +23,14 @@ public class EditFilterPage extends FilterManagerPage {
 
 
     @Step("Change Folder for filer using drag and drop")
-    public EditFilterPage changeFolderForFilter() {
+    public EditFilterPage changeFolderForFilter(String folderName) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        DragAndDrop.dragAndDrop(TO_TAKE_XPATH, TO_DROP_XPATH, driver);
+        DropdownList available_folders = DropdownList.create(driver, wait, "Available folders");
+        DropdownList enabled_folders = DropdownList.create(driver, wait, "Enabled folders");
+        DragAndDrop.DraggableElement source = available_folders.getDraggableElement(folderName);
+        enabled_folders.drop(source);
+
+ //     DragAndDrop.dragAndDrop(TO_TAKE_XPATH, TO_DROP_XPATH, driver);
         return this;
     }
 
