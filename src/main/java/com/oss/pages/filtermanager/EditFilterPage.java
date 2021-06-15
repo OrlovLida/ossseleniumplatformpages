@@ -5,8 +5,8 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.utils.DragAndDrop;
 import com.oss.framework.widgets.Wizard;
 import io.qameta.allure.Step;
+import org.assertj.core.api.Assertions;
 import org.openqa.selenium.WebDriver;
-import org.testng.Assert;
 
 
 public class EditFilterPage extends FilterManagerPage {
@@ -30,7 +30,8 @@ public class EditFilterPage extends FilterManagerPage {
         DropdownList enabled_folders = DropdownList.create(driver, wait, "Enabled folders");
         DragAndDrop.DraggableElement source = available_folders.getDraggableElement(folderName);
         enabled_folders.drop(source);
-        Assert.assertTrue(enabled_folders.sizeDropdownList()>0);
+        Assertions.assertThat(enabled_folders.sizeDropdownList()>0);
+
  //     DragAndDrop.dragAndDrop(TO_TAKE_XPATH, TO_DROP_XPATH, driver);
         return this;
     }
