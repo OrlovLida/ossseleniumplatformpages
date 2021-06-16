@@ -36,6 +36,9 @@ public class ViewManagerPage extends BasePage {
     private static final String SECOND_APPLICATION_DRAG_AND_DROP_BUTTON_XPATH = "(//div[2]/div[@class='draggableBox draggableItemNonActive']/div[@class='btn-drag tile-drag'])[1]";
     private static final String APPLICATIONS_LINKS_XPATH = "//div[@class='category-box__content']/a[@class='category-box__content__link']";
     private static final String SUBCATEGORIES_GROUP_BUTTONS_XPATH = "//div[@class='subcategories__buttons']//div[@id='frameworkObjectButtonsGroup']";
+    private static final String MAIN_CATEGORIES_NAMES_XPATH = "//div[@class='draggableBox draggableItemNonActive']/div[@class='categories']";
+    private static final String FIRST_CATEGORY_DRAG_AND_DROP_BUTTON_XPATH = "(//div[@class='draggableBox draggableItemNonActive']/div[@class='btn-drag'])[1]";
+    private static final String SECOND_CATEGORY_DRAG_AND_DROP_BUTTON_XPATH = "(//div[@class='draggableBox draggableItemNonActive']/div[@class='btn-drag'])[2]";
 
     @FindBy(className = "views-manager__bar__add-category")
     public WebElement addCategoryButton;
@@ -135,6 +138,10 @@ public class ViewManagerPage extends BasePage {
 
     public void dragAndDropFirstAppInPlaceOfSecond(){
         DragAndDrop.dragAndDrop(FIRST_APPLICATION_DRAG_AND_DROP_BUTTON_XPATH, SECOND_APPLICATION_DRAG_AND_DROP_BUTTON_XPATH,driver);
+    }
+
+    public void dragAndDropFirstCategoryInPlaceOfSecond(){
+        DragAndDrop.dragAndDrop(FIRST_CATEGORY_DRAG_AND_DROP_BUTTON_XPATH, SECOND_CATEGORY_DRAG_AND_DROP_BUTTON_XPATH, driver);
     }
 
     public void rolloutFirstCategory(){

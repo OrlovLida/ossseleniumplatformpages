@@ -137,7 +137,6 @@ public class ViewManagerTest extends BaseTestCase {
         subcategoryPopup.clickOnSaveButton();
 
         DelayUtils.sleep(1500);
-
         Assert.assertTrue(driver.findElement(By.xpath("//*[text()='Test Subcategory']")).isDisplayed());
     }
 
@@ -156,6 +155,11 @@ public class ViewManagerTest extends BaseTestCase {
     }
 
     @Test(priority = 9)
+    public void changePlacesOfTwoMainCategories(){
+        viewManagerPage.dragAndDropFirstCategoryInPlaceOfSecond();
+    }
+
+    @Test(priority = 10)
     public void deleteCategory() {
         viewManagerPage.deleteFirstCategory();
         DelayUtils.sleep(3000);
