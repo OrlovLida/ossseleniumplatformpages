@@ -59,7 +59,7 @@ public class ThresholdPage extends BaseDfePage {
         getTable(driver, wait).selectRow(0);
     }
 
-    @Step("I confirm the removal")
+    @Step("I confirm the removal of Threshold")
     public void confirmDelete() {
         confirmDelete(DELETE_LABEL);
     }
@@ -88,5 +88,4 @@ public class ThresholdPage extends BaseDfePage {
     public String getSearchId() {
         return SEARCH_INPUT_ID;
     }
-
 }
