@@ -65,7 +65,7 @@ public class ViewManagerTest extends BaseTestCase {
 
     @Test(priority = 3)
     public void addApplicationInCategory() {
-        viewManagerPage.enterAddApplicationButton();
+        viewManagerPage.enterAddApplicationButtonInFirstMainCategory();
         DelayUtils.sleep(1000);
         ApplicationPopup addApplicationPopup = viewManagerPage.goToApplicationPopup();
         addApplicationPopup.setApplication("Views:GIS View");
@@ -100,7 +100,7 @@ public class ViewManagerTest extends BaseTestCase {
 
     @Test(priority = 5)
     public void addSecondApplication() {
-        viewManagerPage.enterAddApplicationButton();
+        viewManagerPage.enterAddApplicationButtonInFirstMainCategory();
         DelayUtils.sleep(200);
         ApplicationPopup addApplicationPopup = viewManagerPage.goToApplicationPopup();
         addApplicationPopup.setApplication("Views:GIS View");
@@ -118,20 +118,47 @@ public class ViewManagerTest extends BaseTestCase {
 
         DelayUtils.sleep(1000);
 
-        WebElement firstApplication = viewManagerPage.getLinkToApplication(1);
-        WebElement secondApplication = viewManagerPage.getLinkToApplication(0);
+        WebElement firstApplication = viewManagerPage.getApplication(0);
+        WebElement secondApplication = viewManagerPage.getApplication(1);
 
-        String gisUrl = firstApplication.getAttribute("href");
-        String sublocationWizardUrl = secondApplication.getAttribute("href");
+        String gisUrl = secondApplication.getAttribute("href");
+        String sublocationWizardUrl = firstApplication.getAttribute("href");
 
         Assert.assertTrue(gisUrl.contains("gis-view"));
         Assert.assertTrue(sublocationWizardUrl.contains("sublocation/create"));
     }
 
     @Test(priority = 7)
+    public void addSubcategory(){
+        viewManagerPage.enterCreateSubcategory();
+        CategoryPopup subcategoryPopup = viewManagerPage.goToCreateCategoryPopup();
+        subcategoryPopup.setNameValue("Test Subcategory");
+        subcategoryPopup.setDescriptionValue("Test Subcategory Description");
+        subcategoryPopup.clickOnSaveButton();
+
+        DelayUtils.sleep(1500);
+
+        Assert.assertTrue(driver.findElement(By.xpath("//*[text()='Test Subcategory']")).isDisplayed());
+    }
+
+    @Test(priority = 8)
+    public void addApplicationToSubcategory(){
+        viewManagerPage.enterAddApplicationButtonInFirstSubcategory();
+        DelayUtils.sleep(200);
+        ApplicationPopup addApplicationPopup = viewManagerPage.goToApplicationPopup();
+        addApplicationPopup.setApplication("Create Cable");
+        addApplicationPopup.setApplicationName("Create Cable");
+        addApplicationPopup.setDescription("Create Cable Wizard");
+        addApplicationPopup.clickSaveButton();
+
+        DelayUtils.sleep(2000);
+        Assert.assertTrue(driver.findElement(By.xpath("//*[text()='Create Cable']")).isDisplayed());
+    }
+
+    @Test(priority = 9)
     public void deleteCategory() {
         viewManagerPage.deleteFirstCategory();
-        DelayUtils.sleep(5000);
+        DelayUtils.sleep(3000);
 
         Assert.assertFalse(driver.findElements(By.xpath("//*[text()='Name after edition']")).size() > 0);
         viewManagerPage.clearSearchField();

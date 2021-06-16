@@ -35,6 +35,7 @@ public class ViewManagerPage extends BasePage {
     private static final String FIRST_APPLICATION_DRAG_AND_DROP_BUTTON_XPATH = "(//div[1]/div[@class='draggableBox draggableItemNonActive']/div[@class='btn-drag tile-drag'])[1]";
     private static final String SECOND_APPLICATION_DRAG_AND_DROP_BUTTON_XPATH = "(//div[2]/div[@class='draggableBox draggableItemNonActive']/div[@class='btn-drag tile-drag'])[1]";
     private static final String APPLICATIONS_LINKS_XPATH = "//div[@class='category-box__content']/a[@class='category-box__content__link']";
+    private static final String SUBCATEGORIES_GROUP_BUTTONS_XPATH = "//div[@class='subcategories__buttons']//div[@id='frameworkObjectButtonsGroup']";
 
     @FindBy(className = "views-manager__bar__add-category")
     public WebElement addCategoryButton;
@@ -64,9 +65,14 @@ public class ViewManagerPage extends BasePage {
         return new ApplicationPopup(driver, wait);
     }
 
-    public WebElement getLinkToApplication(int numberOfApplication){
+    public WebElement getApplication(int numberOfApplication){
         List<WebElement> applicationLinks = driver.findElements(By.xpath(APPLICATIONS_LINKS_XPATH));
         return applicationLinks.get(numberOfApplication);
+    }
+
+    public WebElement getSubcategoryGroupButton(int numberOfButton){
+        List<WebElement> applicationLinks = driver.findElements(By.xpath(SUBCATEGORIES_GROUP_BUTTONS_XPATH));
+        return applicationLinks.get(numberOfButton);
     }
 
     @Step("Search specific category by name")
@@ -90,10 +96,22 @@ public class ViewManagerPage extends BasePage {
         actionsDropdownList.clickOnActionById(EDIT_CATEGORY_BUTTON_ID);
     }
 
-    public void enterAddApplicationButton(){
+    public void enterAddApplicationButtonInFirstMainCategory(){
         threeDotsFirstButton.click();
         ActionsDropdownList actionsDropdownList = new ActionsDropdownList(driver);
         actionsDropdownList.clickOnActionById(ADD_APPLICATION_BUTTON_ID);
+    }
+
+    public void enterAddApplicationButtonInFirstSubcategory(){
+        getSubcategoryGroupButton(0).click();
+        ActionsDropdownList actionsDropdownList = new ActionsDropdownList(driver);
+        actionsDropdownList.clickOnActionById(ADD_APPLICATION_BUTTON_ID);
+    }
+
+    public void enterCreateSubcategory(){
+        threeDotsFirstButton.click();
+        ActionsDropdownList actionsDropdownList = new ActionsDropdownList(driver);
+        actionsDropdownList.clickOnActionById(CREATE_SUBCATEGORY_BUTTON_ID);
     }
 
     public void clickButtonsGroupOnFirstApplication(){
