@@ -2,12 +2,12 @@ package com.oss.pages.bigdata.dfe.thresholds;
 
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.contextactions.ButtonContainer;
-import com.oss.framework.components.inputs.*;
+import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.inputs.TextArea;
 import com.oss.framework.data.Data;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.treewidget.TreeWidget;
 import com.oss.pages.bigdata.dfe.stepwizard.commons.BaseStepPage;
-import com.oss.pages.bigdata.dfe.stepwizard.commons.StepWizardPage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;

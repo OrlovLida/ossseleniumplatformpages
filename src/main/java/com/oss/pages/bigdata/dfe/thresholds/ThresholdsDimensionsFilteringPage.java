@@ -3,7 +3,6 @@ package com.oss.pages.bigdata.dfe.thresholds;
 import com.oss.framework.components.contextactions.ButtonContainer;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bigdata.dfe.stepwizard.commons.BaseStepPage;
-import com.oss.pages.bigdata.dfe.stepwizard.commons.StepWizardPage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -22,7 +21,6 @@ public class ThresholdsDimensionsFilteringPage extends BaseStepPage {
     public ThresholdsDimensionsFilteringPage(WebDriver driver, WebDriverWait wait, String wizardId) {
         super(driver, wait, wizardId);
     }
-
 
     public void fillDimensionCombobox(String dimension) {
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -61,5 +59,4 @@ public class ThresholdsDimensionsFilteringPage extends BaseStepPage {
         fillFilteringTypeCombobox(filteringType);
         log.info("Filled Dimension Filtering Step");
     }
-
 }
