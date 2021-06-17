@@ -31,7 +31,7 @@ public class InventoryViewTest extends BaseTestCase {
     @Test(priority = 1)
     public void searchByType() {
         // when
-        Multimap<String, String> filterValues = inventoryViewPage.searchByAttributeValue("type", "PoP", ComponentType.COMBOBOX);
+        Multimap<String, String> filterValues = inventoryViewPage.searchByAttributeValue("type", "PoP", ComponentType.MULTI_COMBOBOX);
 
         // then
         Assertions.assertThat(filterValues.keys()).hasSize(1);
