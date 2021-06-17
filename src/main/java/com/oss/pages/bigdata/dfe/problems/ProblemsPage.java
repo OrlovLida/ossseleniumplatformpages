@@ -1,5 +1,6 @@
 package com.oss.pages.bigdata.dfe.problems;
 
+import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bigdata.dfe.BaseDfePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
@@ -52,11 +53,13 @@ public class ProblemsPage extends BaseDfePage {
 
     @Step("I check if Problem: {problemName} exists into the table")
     public Boolean problemExistsIntoTable(String problemName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
         return feedExistIntoTable(problemName, NAME_COLUMN_LABEL);
     }
 
     @Step("I select found Problem")
     public void selectFoundProblem() {
+        DelayUtils.waitForPageToLoad(driver, wait);
         getTable(driver, wait).selectRow(0);
     }
 
