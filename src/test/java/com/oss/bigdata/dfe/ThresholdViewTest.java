@@ -4,6 +4,7 @@ import com.oss.BaseTestCase;
 import com.oss.pages.bigdata.dfe.ThresholdPage;
 import com.oss.pages.bigdata.dfe.thresholds.ThresholdStepWizardPage;
 import com.oss.pages.bigdata.dfe.thresholds.ThresholdsConfigurationPage;
+import com.oss.pages.bigdata.utils.ConstantsDfe;
 import io.qameta.allure.Description;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
@@ -41,9 +42,7 @@ public class ThresholdViewTest extends BaseTestCase {
     public void goToThresholdsView() {
         thresholdPage = ThresholdPage.goToPage(driver, BASIC_URL);
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy_MM_dd");
-        String date = simpleDateFormat.format(new Date());
-        thresholdName = "Selenium_" + date + "_ThreshTest";
+        thresholdName = ConstantsDfe.createName() + "_ThreshTest";
         updatedThresholdName = thresholdName + "_updated";
     }
 
@@ -65,7 +64,7 @@ public class ThresholdViewTest extends BaseTestCase {
         Boolean thresholdIsCreated = thresholdPage.thresholdExistsIntoTable(thresholdName);
 
         if (!thresholdIsCreated) {
-            log.info("Cannot find created threshold configuration ");
+            log.error("Cannot find created threshold configuration ");
         }
         Assert.assertTrue(thresholdIsCreated);
     }
