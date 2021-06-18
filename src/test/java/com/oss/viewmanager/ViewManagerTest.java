@@ -156,11 +156,31 @@ public class ViewManagerTest extends BaseTestCase {
 
     @Test(priority = 9)
     public void changePlacesOfTwoMainCategories(){
+        viewManagerPage.clearSearchField();
+        String firstCategory = viewManagerPage.getCategoryName(0);
+
         viewManagerPage.dragAndDropFirstCategoryInPlaceOfSecond();
+
+        String secondCategory = viewManagerPage.getCategoryName(1);
+        Assert.assertEquals(firstCategory, secondCategory);
     }
 
     @Test(priority = 10)
+    public void dragOutApplicationOutOfSubcategory(){
+        viewManagerPage.dragAndDropFirstAppToSubcategory();
+        DelayUtils.sleep(1000);
+
+        WebElement firstApplication = viewManagerPage.getApplication(0);
+        String subLocationWizardUrl = firstApplication.getAttribute("href");
+
+        Assert.assertTrue(subLocationWizardUrl.contains("sublocation/create"));
+    }
+
+    @Test(priority = 11)
     public void deleteCategory() {
+        viewManagerPage.searchForCategory("Name after edition");
+        DelayUtils.sleep(1000);
+
         viewManagerPage.deleteFirstCategory();
         DelayUtils.sleep(3000);
 

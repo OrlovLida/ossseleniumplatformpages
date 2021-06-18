@@ -39,6 +39,7 @@ public class ViewManagerPage extends BasePage {
     private static final String MAIN_CATEGORIES_NAMES_XPATH = "//div[@class='draggableBox draggableItemNonActive']/div[@class='categories']";
     private static final String FIRST_CATEGORY_DRAG_AND_DROP_BUTTON_XPATH = "(//div[@class='draggableBox draggableItemNonActive']/div[@class='btn-drag'])[1]";
     private static final String SECOND_CATEGORY_DRAG_AND_DROP_BUTTON_XPATH = "(//div[@class='draggableBox draggableItemNonActive']/div[@class='btn-drag'])[2]";
+    private static final String FIRST_APP_FROM_SUBCATEGORY_DRAG_BUTTON_XPATH = "(//div[@class='btn-drag tile-drag'])[3]";
 
     @FindBy(className = "views-manager__bar__add-category")
     public WebElement addCategoryButton;
@@ -71,6 +72,11 @@ public class ViewManagerPage extends BasePage {
     public WebElement getApplication(int numberOfApplication){
         List<WebElement> applicationLinks = driver.findElements(By.xpath(APPLICATIONS_LINKS_XPATH));
         return applicationLinks.get(numberOfApplication);
+    }
+
+    public String getCategoryName(int numberOfCategory){
+        List<WebElement> categoriesLinks = driver.findElements(By.xpath(MAIN_CATEGORIES_NAMES_XPATH));
+        return categoriesLinks.get(numberOfCategory).getText();
     }
 
     public WebElement getSubcategoryGroupButton(int numberOfButton){
@@ -142,6 +148,10 @@ public class ViewManagerPage extends BasePage {
 
     public void dragAndDropFirstCategoryInPlaceOfSecond(){
         DragAndDrop.dragAndDrop(FIRST_CATEGORY_DRAG_AND_DROP_BUTTON_XPATH, SECOND_CATEGORY_DRAG_AND_DROP_BUTTON_XPATH, driver);
+    }
+
+    public void dragAndDropFirstAppToSubcategory(){
+        DragAndDrop.dragAndDrop(FIRST_APPLICATION_DRAG_AND_DROP_BUTTON_XPATH, FIRST_APP_FROM_SUBCATEGORY_DRAG_BUTTON_XPATH, driver);
     }
 
     public void rolloutFirstCategory(){
