@@ -40,4 +40,9 @@
             <class name="com.oss.bigdata.dfe.KQIsTest"/>
         </classes>
     </test>
+    <test name="ThresholdViewTest">
+        <classes>
+            <class name="com.oss.bigdata.dfe.ThresholdViewTest"/>
+        </classes>
+    </test>
 </suite>
