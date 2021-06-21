@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 
 public class DataSourcePage extends BaseDfePage {
 
-    private static final Logger log = LoggerFactory.getLogger(DataSourcePage.class);
     private static final String TABLE_ID = "datasource/datasource-listAppId";
     private final String SEARCH_INPUT_ID = "datasource/datasource-listSearchAppId";
     private final String ADD_NEW_DS_LABEL = "ADD";
