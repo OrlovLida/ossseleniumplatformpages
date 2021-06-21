@@ -3,6 +3,7 @@ package com.oss.bigdata.dfe;
 import com.oss.BaseTestCase;
 import com.oss.pages.bigdata.dfe.DataSource.DSWizard.DataSourceStepWizardPage;
 import com.oss.pages.bigdata.dfe.DataSource.DataSourcePage;
+import com.oss.pages.bigdata.utils.ConstantsDfe;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 import org.slf4j.Logger;
@@ -34,9 +35,7 @@ public class DataSourceFromQueryTest extends BaseTestCase {
     public void goToDataSourceView() {
         dataSourcePage = DataSourcePage.goToPage(driver, BASIC_URL);
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy_MM_dd");
-        String date = simpleDateFormat.format(new Date());
-        dataSourceName = "Selenium_" + date + "_DSTest";
+        dataSourceName = "Selenium_" + ConstantsDfe.createName() + "_DSTest";
         updatedDataSourceName = dataSourceName + "_updated";
     }
 

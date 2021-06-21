@@ -66,7 +66,7 @@ public class ServerGroupTest extends BaseTestCase {
         }
     }
 
-    @Test(priority = 3, testName = "Edit server", description = "Edit server", enabled = false)
+    @Test(priority = 3, testName = "Edit server", description = "Edit server")
     @Description("Edit server")
     public void editServer() {
         Boolean serverGroupExists = serverGroupPage.serverGroupExistIntoTable(serverGroupName);
@@ -117,7 +117,7 @@ public class ServerGroupTest extends BaseTestCase {
         }
     }
 
-    @Test(priority = 5, testName = "Edit server group", description = "Edit server group", enabled = false)
+    @Test(priority = 5, testName = "Edit server group", description = "Edit server group")
     @Description("Edit server group")
     public void editServerGroup() {
         Boolean serverGroupExists = serverGroupPage.serverGroupExistIntoTable(serverGroupName);
