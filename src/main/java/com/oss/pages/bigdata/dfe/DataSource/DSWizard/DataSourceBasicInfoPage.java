@@ -2,6 +2,8 @@ package com.oss.pages.bigdata.dfe.DataSource.DSWizard;
 
 
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.Wizard;
+import com.oss.pages.BasePage;
 import com.oss.pages.bigdata.dfe.stepwizard.commons.BaseStepPage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
@@ -9,18 +11,22 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DataSourceBasicInfoPage extends BaseStepPage {
+import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
+
+public class DataSourceBasicInfoPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(DataSourceBasicInfoPage.class);
     private final String NAME_INPUT_ID = "dataSourcesNameId";
 
-    public DataSourceBasicInfoPage(WebDriver driver, WebDriverWait wait, String wizardId) {
-        super(driver, wait, wizardId);
+    private final Wizard basicInfoWizard;
+
+    public DataSourceBasicInfoPage(WebDriver driver, WebDriverWait wait) {
+        super(driver, wait);
+        basicInfoWizard = Wizard.createWizard(driver, wait);
     }
 
     public void fillName(String name) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        fillTextField(name, NAME_INPUT_ID);
+        basicInfoWizard.setComponentValue(NAME_INPUT_ID, name, TEXT_FIELD);
         log.debug("Setting name with: {}", name);
     }
 

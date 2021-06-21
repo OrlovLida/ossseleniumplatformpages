@@ -2,6 +2,7 @@ package com.oss.pages.bigdata.dfe.DataSource.DSWizard;
 
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
+import com.oss.pages.BasePage;
 import com.oss.pages.bigdata.dfe.stepwizard.commons.BaseStepPage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
@@ -12,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 
-public class DataSourceSpecificInfoPage extends BaseStepPage {
+public class DataSourceSpecificInfoPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(DataSourceSpecificInfoPage.class);
     private final String OFFSET_INPUT_ID = "dataSourceOffsetId-input";
@@ -21,8 +22,8 @@ public class DataSourceSpecificInfoPage extends BaseStepPage {
 
     private final Wizard specificInfoWizard;
 
-    public DataSourceSpecificInfoPage(WebDriver driver, WebDriverWait wait, String wizardId) {
-        super(driver, wait, wizardId);
+    public DataSourceSpecificInfoPage(WebDriver driver, WebDriverWait wait) {
+        super(driver, wait);
         specificInfoWizard = Wizard.createWizard(driver, wait);
     }
 

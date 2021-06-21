@@ -6,6 +6,7 @@ import com.oss.framework.components.inputs.ScriptComponent;
 import com.oss.framework.data.Data;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
+import com.oss.pages.BasePage;
 import com.oss.pages.bigdata.dfe.stepwizard.commons.BaseStepPage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
@@ -19,7 +20,7 @@ import org.slf4j.LoggerFactory;
 import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
 import static com.oss.framework.components.inputs.Input.ComponentType.SCRIPT_COMPONENT;
 
-public class DataSourceSourceInformationPage extends BaseStepPage {
+public class DataSourceSourceInformationPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(DataSourceSourceInformationPage.class);
     private final String DATABASE_INPUT_ID = "dataSourceDatabaseId-input";
@@ -27,8 +28,8 @@ public class DataSourceSourceInformationPage extends BaseStepPage {
 
     private final Wizard sourceInformationWizard;
 
-    public DataSourceSourceInformationPage(WebDriver driver, WebDriverWait wait, String wizardId) {
-        super(driver, wait, wizardId);
+    public DataSourceSourceInformationPage(WebDriver driver, WebDriverWait wait) {
+        super(driver, wait);
         sourceInformationWizard = Wizard.createWizard(driver, wait);
     }
 
@@ -43,8 +44,6 @@ public class DataSourceSourceInformationPage extends BaseStepPage {
     public void fillQuery(String query) {
         DelayUtils.waitForPageToLoad(driver, wait);
         sourceInformationWizard.setComponentValue(QUERY_INPUT_ID, query, SCRIPT_COMPONENT);
-//        ScriptComponent queryInput = (ScriptComponent) getWizard(driver,wait).getComponent(QUERY_INPUT_ID, Input.ComponentType.SCRIPT_COMPONENT);
-//        queryInput.setValue(Data.createSingleData(query));
         log.debug("Setting query field with {}", query);
     }
 }
