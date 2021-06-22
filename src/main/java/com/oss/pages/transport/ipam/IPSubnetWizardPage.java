@@ -47,6 +47,7 @@ public class IPSubnetWizardPage extends BasePage {
         button.click();
         waitForPageToLoad();
         getTableWidget().selectFirstRow();
+        waitForPageToLoad();
         selectStep.clickNext();
     }
 
@@ -60,6 +61,7 @@ public class IPSubnetWizardPage extends BasePage {
         waitForPageToLoad();
         for (int i = 0; i < amount; i++)
             getTableWidget().selectRow(i);
+        waitForPageToLoad();
         selectStep.clickNext();
         waitForPageToLoad();
     }
