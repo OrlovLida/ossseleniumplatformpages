@@ -102,7 +102,7 @@ public class SpcCrudTest extends BaseTestCase {
         TableWidget mainTable = SpcNewInventoryViewPage.create(driver, webDriverWait)
                                     .searchObject(UPDATED_SPC_TEXT)
                                     .getMainTable();
-        assertThat(mainTable.checkIfTableIsEmpty()).isTrue();
+        assertThat(mainTable.hasNoData()).isTrue();
     }
 
     private void checkSpc(String name) {

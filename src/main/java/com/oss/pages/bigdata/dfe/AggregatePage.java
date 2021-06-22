@@ -66,8 +66,7 @@ public class AggregatePage extends BaseDfePage {
 
     @Step("I confirm the removal of Aggregate")
     public void confirmDelete(){
-        ConfirmationBox confirmationBox = ConfirmationBox.create(driver, wait);
-        confirmationBox.clickButtonByLabel(DELETE_LABEL);
+        confirmDelete(DELETE_LABEL);
     }
 
     @Override
