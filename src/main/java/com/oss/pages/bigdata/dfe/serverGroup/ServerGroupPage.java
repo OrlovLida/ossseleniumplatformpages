@@ -16,27 +16,9 @@ public class ServerGroupPage extends BaseDfePage {
     private final static String SERVERS_TAB = "Servers";
     private final String CONFIRM_DELETE_LABEL = "Delete";
 
-    private final ServerPopupPage serverPopup;
-    private final ServerGroupPopupPage serverGroupPopup;
-    private final ServersTabPage serversTab;
 
     public ServerGroupPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
-        serverGroupPopup = new ServerGroupPopupPage(driver, wait);
-        serverPopup = new ServerPopupPage(driver, wait);
-        serversTab = new ServersTabPage(driver, wait);
-    }
-
-    public ServerGroupPopupPage getServerGroupPopup() {
-        return serverGroupPopup;
-    }
-
-    public ServerPopupPage getServerPopup() {
-        return serverPopup;
-    }
-
-    public ServersTabPage getServersTab() {
-        return serversTab;
     }
 
     @Step("I Open Server Group View")
