@@ -1,12 +1,8 @@
 package com.oss.pages.bigdata.dfe.serverGroup;
 
-import com.oss.framework.components.inputs.Combobox;
-import com.oss.framework.components.inputs.Input;
-import com.oss.framework.data.Data;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
-import com.oss.pages.bigdata.dfe.BasePopupPage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -35,7 +31,7 @@ public class ServerGroupPopupPage extends BasePage {
     }
 
     public void fillProtocol(String protocol) {
-        serverGroupPopupWizard.setComponentValue(PROTOCOL_INPUT_ID,protocol, COMBOBOX);
+        serverGroupPopupWizard.setComponentValue(PROTOCOL_INPUT_ID, protocol, COMBOBOX);
         log.debug("Setting protocol type with: {}", protocol);
     }
 

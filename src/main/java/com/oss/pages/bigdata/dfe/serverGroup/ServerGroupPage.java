@@ -16,7 +16,6 @@ public class ServerGroupPage extends BaseDfePage {
     private final static String SERVERS_TAB = "Servers";
     private final String CONFIRM_DELETE_LABEL = "Delete";
 
-
     public ServerGroupPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
     }

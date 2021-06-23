@@ -3,7 +3,6 @@ package com.oss.pages.bigdata.dfe.serverGroup;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
-import com.oss.pages.bigdata.dfe.BasePopupPage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -49,7 +48,7 @@ public class ServerPopupPage extends BasePage {
     }
 
     public void fillDirectory(String directory) {
-        serverWizard.setComponentValue(DIRECTORY_LABEL,directory, TEXT_FIELD);
+        serverWizard.setComponentValue(DIRECTORY_LABEL, directory, TEXT_FIELD);
         log.debug("Setting Directory with {}", directory);
     }
 
