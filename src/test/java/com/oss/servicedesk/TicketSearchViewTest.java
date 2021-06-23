@@ -1,7 +1,7 @@
 package com.oss.servicedesk;
 
 import com.oss.BaseTestCase;
-import com.oss.pages.servicedesk.TicketSearchPage;
+import com.oss.pages.servicedesk.ticket.TicketSearchPage;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 import org.testng.annotations.BeforeClass;

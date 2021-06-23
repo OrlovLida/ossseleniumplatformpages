@@ -1,10 +1,12 @@
-package com.oss.pages.servicedesk;
+package com.oss.pages.servicedesk.ticket;
 
-import static com.oss.pages.servicedesk.TicketDetailsPage.DETAILS_PAGE_URL_PATTERN;
+import static com.oss.pages.servicedesk.URLConstants.VIEWS_URL_PATTERN;
+import static com.oss.pages.servicedesk.ticket.TicketDetailsPage.DETAILS_PAGE_URL_PATTERN;
 
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.TableWidget;
+import com.oss.pages.servicedesk.BaseSDPage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -18,7 +20,6 @@ public class TicketSearchPage extends BaseSDPage {
     private static final Logger LOGGER = LoggerFactory.getLogger(TicketSearchPage.class);
     private static final String TABLE_WIDGET_ID = "ticket-search-graphql-table";
 
-    private static final String TICKET_SEARCH_URL_PATTERN = "%s/#/views/service-desk/%s";
     private static final String TICKET_SEARCH = "ticket-search";
 
     private TicketSearchPage(WebDriver driver, WebDriverWait wait) {
@@ -28,13 +29,13 @@ public class TicketSearchPage extends BaseSDPage {
     @Step("I Open Ticket Search View")
     public static TicketSearchPage goToPage(WebDriver driver, String basicURL) {
         WebDriverWait wait = new WebDriverWait(driver, 45);
-        BaseSDPage.openPage(driver, String.format(TICKET_SEARCH_URL_PATTERN, basicURL, TICKET_SEARCH), wait);
+        BaseSDPage.openPage(driver, String.format(VIEWS_URL_PATTERN, basicURL, TICKET_SEARCH), wait);
         return new TicketSearchPage(driver, wait);
     }
 
     @Step("I check if ticket with text attribute {attributeName} set to {attributeValue} exists in the table")
     public Boolean checkIfTicketExists(String attributeName, String attributeValue) {
-        DelayUtils.sleep(2000);
+        DelayUtils.waitForPageToLoad(driver, wait);
         TableWidget table = getTicketTable();
         table.searchByAttribute(attributeName, Input.ComponentType.TEXT_FIELD, attributeValue);
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -43,12 +44,13 @@ public class TicketSearchPage extends BaseSDPage {
     }
 
     @Step("I open details view for {rowIndex} ticket in Ticket table")
-    public void openTicketDetailsView(String rowIndex, String basicURL) {
+    public TicketDetailsPage openTicketDetailsView(String rowIndex, String basicURL) {
         // TODO: for now we cannot just click link - not implemented in framework
         // (see TableWidget#selectLinkInSpecificColumn)
-        String ticketId = getTicketTable().getAttribute(Integer.parseInt(rowIndex), ID_ATTRIBUTE);
+        String ticketId = getTicketTable().getCellValue(Integer.parseInt(rowIndex), ID_ATTRIBUTE);
         LOGGER.info("Opening ticket details for ticket with id: {}", ticketId);
         BaseSDPage.openPage(driver, String.format(DETAILS_PAGE_URL_PATTERN, basicURL, ticketId), wait);
+        return new TicketDetailsPage(driver);
     }
 
     public String getAssigneeForNthTicketInTable(int n) {
@@ -56,11 +58,12 @@ public class TicketSearchPage extends BaseSDPage {
     }
 
     public String geIdForNthTicketInTable(int n) {
+        DelayUtils.waitForPageToLoad(driver, wait);
         return getAttributeFromTable(n, ID_ATTRIBUTE);
     }
 
     private String getAttributeFromTable(int index, String attributeName) {
-        String attributeValue = getTicketTable().getAttribute(index, attributeName);
+        String attributeValue = getTicketTable().getCellValue(index, attributeName);
         LOGGER.info("Got value for {} attribute: {}", attributeName, attributeValue);
         return attributeValue;
     }
