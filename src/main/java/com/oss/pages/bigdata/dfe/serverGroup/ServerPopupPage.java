@@ -24,7 +24,7 @@ public class ServerPopupPage extends BasePage {
 
     public ServerPopupPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
-        serverWizard = Wizard.createPopupWizard(driver, wait);
+        serverWizard = Wizard.createWizard(driver, wait);
     }
 
     public void fillServerName(String serverName) {

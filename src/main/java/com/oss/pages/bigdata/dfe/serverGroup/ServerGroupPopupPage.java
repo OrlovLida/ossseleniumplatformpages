@@ -22,7 +22,7 @@ public class ServerGroupPopupPage extends BasePage {
 
     public ServerGroupPopupPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
-        serverGroupPopupWizard = Wizard.createPopupWizard(driver, wait);
+        serverGroupPopupWizard = Wizard.createWizard(driver, wait);
     }
 
     public void fillName(String name) {
