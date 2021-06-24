@@ -136,7 +136,7 @@ public class ViewManagerTest extends BaseTestCase {
         subcategoryPopup.setDescriptionValue("Test Subcategory Description");
         subcategoryPopup.clickOnSaveButton();
 
-        DelayUtils.sleep(1500);
+        DelayUtils.sleep(2000);
         Assert.assertTrue(driver.findElement(By.xpath("//*[text()='Test Subcategory']")).isDisplayed());
     }
 
@@ -167,6 +167,7 @@ public class ViewManagerTest extends BaseTestCase {
 
     @Test(priority = 10)
     public void dragOutApplicationOutOfSubcategory(){
+        viewManagerPage.searchForCategory("Name after edition");
         viewManagerPage.dragAndDropFirstAppToSubcategory();
         DelayUtils.sleep(1000);
 
@@ -177,8 +178,26 @@ public class ViewManagerTest extends BaseTestCase {
     }
 
     @Test(priority = 11)
+    public void changePlaceOfTwoSubcategories(){
+        viewManagerPage.enterCreateSubcategory();
+        CategoryPopup subcategoryPopup = viewManagerPage.goToCreateCategoryPopup();
+        subcategoryPopup.setNameValue("Second Subcategory");
+        subcategoryPopup.setDescriptionValue("Second Subcategory Description");
+        subcategoryPopup.clickOnSaveButton();
+        DelayUtils.sleep(1000);
+
+        String firstSubcategoryName = viewManagerPage.getSubcategoryName(0);
+
+        viewManagerPage.dragAndDropFirstSubcategoryToPlaceOfSecondSubcategory();
+        DelayUtils.sleep(1500);
+
+        String secondSubcategoryName = viewManagerPage.getSubcategoryName(1);
+
+        Assert.assertEquals(secondSubcategoryName, firstSubcategoryName);
+    }
+
+    @Test(priority = 12)
     public void deleteCategory() {
-        viewManagerPage.searchForCategory("Name after edition");
         DelayUtils.sleep(1000);
 
         viewManagerPage.deleteFirstCategory();
