@@ -1,10 +1,7 @@
 package com.oss.pages.bigdata.dfe.dictionary;
 
 import com.oss.framework.listwidget.EditableList;
-import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.tabswidget.TabWindowWidget;
-import com.oss.framework.widgets.tabswidget.TabsInterface;
 import com.oss.pages.bigdata.dfe.BaseDfePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
@@ -30,21 +27,8 @@ public class DictionaryPage extends BaseDfePage {
     private final String DELETE_LABEL = "Delete";
     private final String DELETE_ENTRIES_LABEL = "DELETE";
 
-    private final DictionaryPopupPage dictionaryPopup;
-    private final EntryPopupPage entryPopup;
-
     public DictionaryPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
-        dictionaryPopup = new DictionaryPopupPage(driver, wait);
-        entryPopup = new EntryPopupPage(driver, wait);
-    }
-
-    public DictionaryPopupPage getDictionaryPopup() {
-        return dictionaryPopup;
-    }
-
-    public EntryPopupPage getEntryPopup() {
-        return entryPopup;
     }
 
     @Step("I Open Dictionaries View")
