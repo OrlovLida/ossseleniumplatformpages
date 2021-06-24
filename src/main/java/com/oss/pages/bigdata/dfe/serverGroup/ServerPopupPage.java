@@ -1,6 +1,5 @@
 package com.oss.pages.bigdata.dfe.serverGroup;
 
-import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
@@ -70,7 +69,6 @@ public class ServerPopupPage extends BasePage {
 
     @Step("I click Save")
     public void clickSave() {
-        DelayUtils.waitForPageToLoad(driver, wait);
         serverWizard.clickSave();
         log.info("Finishing by clicking 'Save'");
     }
