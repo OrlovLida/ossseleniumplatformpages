@@ -17,15 +17,9 @@ public class ProblemsPage extends BaseDfePage {
     private final String NAME_COLUMN_LABEL = "Name";
     private final String DELETE_LABEL = "Delete";
 
-    private final ProblemsPopupPage problemsPopupPage;
 
     public ProblemsPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
-        problemsPopupPage = new ProblemsPopupPage(driver, wait);
-    }
-
-    public ProblemsPopupPage getProblemsPopup() {
-        return problemsPopupPage;
     }
 
     @Step("I Open Problems View")
