@@ -35,6 +35,7 @@ public class DeviceWizardPage extends BasePage {
     private static final String DEVICE_HARDWARE_VERSION_DATA_ATTRIBUTE_NAME = "hardwareVersion";
     private static final String DEVICE_DESCRIPTION_DATA_ATTRIBUTE_NAME = "description";
     private static final String DEVICE_IS_OWNED_BY_3RD_PARTY_DATA_ATTRIBUTE_NAME = "checkbox_is_leased";
+    private static final String DEVICE_WIZARD = "wizard";
 
     public static DeviceWizardPage goToDeviceWizardPageLive(WebDriver driver, String basicURL) {
         driver.get(String.format("%s/#/view/physical-inventory/wizard/device/create?" + "perspective=LIVE", basicURL));
@@ -235,7 +236,7 @@ public class DeviceWizardPage extends BasePage {
     }
 
     private Wizard getDeviceWizard() {
-        return Wizard.createPopupWizard(driver, wait);
+        return Wizard.createByComponentId(driver, wait, DEVICE_WIZARD);
     }
 
     private String getEquipmentType() {
