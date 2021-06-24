@@ -1,9 +1,7 @@
 package com.oss.pages.bigdata.dfe.externalresource;
 
-import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bigdata.dfe.BaseDfePage;
-import com.oss.pages.bigdata.dfe.dictionary.DictionaryPage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -23,15 +21,8 @@ public class ExternalResourcesPage extends BaseDfePage {
     private final String NAME_COLUMN_LABEL = "Name";
     private final String DELETE_LABEL = "Delete";
 
-    private final ExternalResourcesPopupPage externalResourcePopup;
-
     public ExternalResourcesPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
-        externalResourcePopup = new ExternalResourcesPopupPage(driver, wait);
-    }
-
-    public ExternalResourcesPopupPage getExternalResourcePopup() {
-        return externalResourcePopup;
     }
 
     @Step("I Open External Resources View")

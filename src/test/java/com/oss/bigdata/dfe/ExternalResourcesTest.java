@@ -2,6 +2,7 @@ package com.oss.bigdata.dfe;
 
 import com.oss.BaseTestCase;
 import com.oss.pages.bigdata.dfe.externalresource.ExternalResourcesPage;
+import com.oss.pages.bigdata.dfe.externalresource.ExternalResourcesPopupPage;
 import com.oss.pages.bigdata.utils.ConstantsDfe;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
@@ -35,8 +36,9 @@ public class ExternalResourcesTest extends BaseTestCase {
     @Description("Add new External Resource")
     public void addExternalResource() {
         externalResource.clickAddNewExternalResource();
-        externalResource.getExternalResourcePopup().fillExternalResourcesPopup(externalResourceName, EXTERNAL_RESOURCE_TYPE, CONNECTION_URL);
-        externalResource.getExternalResourcePopup().clickSave();
+        ExternalResourcesPopupPage externalResourceWizard = new ExternalResourcesPopupPage(driver, webDriverWait);
+        externalResourceWizard.fillExternalResourcesPopup(externalResourceName, EXTERNAL_RESOURCE_TYPE, CONNECTION_URL);
+        externalResourceWizard.clickSave();
         Boolean externalResourceIsCreated = externalResource.externalResourceExistsIntoTable(externalResourceName);
 
         Assert.assertTrue(externalResourceIsCreated);
@@ -49,12 +51,12 @@ public class ExternalResourcesTest extends BaseTestCase {
         if (externalResourceExists) {
             externalResource.selectFoundExternalResource();
             externalResource.clickEditExternalResource();
-            externalResource.getExternalResourcePopup().fillName(updatedExternalResourceName);
-            externalResource.getExternalResourcePopup().clickSave();
+            ExternalResourcesPopupPage externalResourceWizard = new ExternalResourcesPopupPage(driver, webDriverWait);
+            externalResourceWizard.fillName(updatedExternalResourceName);
+            externalResourceWizard.clickSave();
             Boolean externalResourceIsCreated = externalResource.externalResourceExistsIntoTable(updatedExternalResourceName);
 
             Assert.assertTrue(externalResourceIsCreated);
-
         } else {
             log.error("External Resource with name: {} doesn't exist", externalResourceName);
             Assert.fail();
