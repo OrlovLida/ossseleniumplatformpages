@@ -56,6 +56,14 @@ public class KpiViewPage extends BasePage {
         log.debug("Selecting: {}", nodesToSelect);
     }
 
+    private void selectUnfoldedTreeNodes(List<String> nodesToSelect, String componentId) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        KpiTreeWidget indicatorsTree = KpiTreeWidget.create(driver, wait, componentId);
+        indicatorsTree.selectExpandedObjects(nodesToSelect);
+//        log.debug("Expanded nodes: {}", nodesToExpand);
+        log.debug("Selecting: {}", nodesToSelect);
+    }
+
     @Step("I set filters: {enabledFilters}")
     public void setFilters(List<String> enabledFilters){
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -79,6 +87,12 @@ public class KpiViewPage extends BasePage {
     public void selectDimension(List<String> nodesToExpand, List<String> nodesToSelect){
         log.info("Select dimension nodes: " + nodesToSelect);
         selectTreeNodes(nodesToExpand, nodesToSelect, DIMENSIONS_TREE_ID);
+    }
+
+    @Step("I select unfolded dimension")
+    public void selectUnfoldedDimension(List<String> nodesToSelect){
+        log.info("Select dimension nodes: " + nodesToSelect);
+        selectUnfoldedTreeNodes(nodesToSelect, DIMENSIONS_TREE_ID);
     }
 
     @Step("I apply changes")
