@@ -17,9 +17,9 @@ public class TicketSearchPage extends BaseSDPage {
 
     public static final String ID_ATTRIBUTE = "id";
     public static final String ASSIGNEE_ATTRIBUTE = "assignee";
+
     private static final Logger LOGGER = LoggerFactory.getLogger(TicketSearchPage.class);
     private static final String TABLE_WIDGET_ID = "ticket-search-graphql-table";
-
     private static final String TICKET_SEARCH = "ticket-search";
 
     private TicketSearchPage(WebDriver driver, WebDriverWait wait) {
@@ -45,7 +45,7 @@ public class TicketSearchPage extends BaseSDPage {
 
     @Step("I open details view for {rowIndex} ticket in Ticket table")
     public TicketDetailsPage openTicketDetailsView(String rowIndex, String basicURL) {
-        // TODO: for now we cannot just click link - not implemented in framework
+        // TODO: for now we cannot just click link - not implemented yet
         // (see TableWidget#selectLinkInSpecificColumn)
         String ticketId = getTicketTable().getCellValue(Integer.parseInt(rowIndex), ID_ATTRIBUTE);
         LOGGER.info("Opening ticket details for ticket with id: {}", ticketId);

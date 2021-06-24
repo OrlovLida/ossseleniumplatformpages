@@ -19,7 +19,6 @@ public class TicketDetailsPage extends BasePage {
     @Step("I open edit ticket wizard")
     public WizardPage openEditTicketWizard(WebDriver driver) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        DelayUtils.sleep(2000);
         clickContextAction(EDIT_DETAILS_LABEL);
         return new WizardPage(driver, wait);
     }
