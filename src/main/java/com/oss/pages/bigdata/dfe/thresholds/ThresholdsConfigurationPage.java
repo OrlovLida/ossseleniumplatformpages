@@ -2,23 +2,22 @@ package com.oss.pages.bigdata.dfe.thresholds;
 
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.contextactions.ButtonContainer;
-import com.oss.framework.components.inputs.Input;
-import com.oss.framework.components.inputs.TextArea;
-import com.oss.framework.data.Data;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.treewidget.TreeWidget;
-import com.oss.pages.bigdata.dfe.stepwizard.commons.BaseStepPage;
+import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ThresholdsConfigurationPage extends BaseStepPage {
+import static com.oss.framework.components.inputs.Input.ComponentType.*;
+
+public class ThresholdsConfigurationPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(ThresholdsConfigurationPage.class);
 
-    private final String THRESHOLD_STEP_WIZARD_ID = "thresholdWizardWindowId";
     private final String NAME_INPUT_ID = "conditionGroupNameId";
     private final String ACTIVE_COMBOBOX_ID = "conditionGroupActiveId";
     private final String AGGREGATION_COMBOBOX_ID = "conditionGroupTimeGrainId";
@@ -29,32 +28,37 @@ public class ThresholdsConfigurationPage extends BaseStepPage {
     private final String FORMULA_AREA_ID = "simpleConditionFormulaId";
     private final String PROBLEM_NAME_FIELD_ID = "conditionGroupProblemId";
 
-    public ThresholdsConfigurationPage(WebDriver driver, WebDriverWait wait, String wizardId) {
-        super(driver, wait, wizardId);
+    private final Wizard configurationWizard;
+
+    public ThresholdsConfigurationPage(WebDriver driver, WebDriverWait wait) {
+        super(driver, wait);
+        configurationWizard = Wizard.createWizard(driver, wait);
     }
 
     public void fillName(String name) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        fillTextField(name, NAME_INPUT_ID);
+        configurationWizard.setComponentValue(NAME_INPUT_ID, name, TEXT_FIELD);
         log.debug("Setting name with: {}", name);
     }
 
     public void fillActiveCombobox(String notificationStatus) {
-        fillCombobox(notificationStatus, ACTIVE_COMBOBOX_ID);
+        configurationWizard.setComponentValue(ACTIVE_COMBOBOX_ID, notificationStatus, COMBOBOX);
+        log.debug("Setting notification status with: {}", notificationStatus);
     }
 
     public void fillProblemNameSearchField(String problemName) {
-        fillSearchField(problemName, PROBLEM_NAME_FIELD_ID);
+        configurationWizard.setComponentValue(PROBLEM_NAME_FIELD_ID, problemName, SEARCH_FIELD);
+        log.debug("Setting problem name with: {}", problemName);
     }
 
     public void fillAggregationCombobox(String aggregationPeriod) {
-        fillCombobox(aggregationPeriod, AGGREGATION_COMBOBOX_ID);
+        configurationWizard.setComponentValue(AGGREGATION_COMBOBOX_ID, aggregationPeriod, COMBOBOX);
         log.debug("Setting aggregation period with: {}", aggregationPeriod);
     }
 
     public void fillDebugCombobox(String debugMode) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        fillCombobox(debugMode, DEBUG_COMBOBOX_ID);
+        configurationWizard.setComponentValue(DEBUG_COMBOBOX_ID, debugMode, COMBOBOX);
         log.debug("Setting debug mode: {}", debugMode);
     }
 
@@ -67,33 +71,33 @@ public class ThresholdsConfigurationPage extends BaseStepPage {
 
     public void fillConditionTypeCombobox(String conditionType) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        fillCombobox(conditionType, CONDITION_COMBOBOX_ID);
+        configurationWizard.setComponentValue(CONDITION_COMBOBOX_ID, conditionType, COMBOBOX);
         log.debug("Setting condition type with: {}", conditionType);
     }
 
     public void fillFormula(String formula) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        TextArea formulaInput = (TextArea) getWizard(driver, wait).getComponent(FORMULA_AREA_ID, Input.ComponentType.TEXT_AREA);
-        formulaInput.setValue(Data.createSingleData(formula));
+        configurationWizard.setComponentValue(FORMULA_AREA_ID, formula, TEXT_AREA);
         log.debug("Setting description with: {}", formula);
     }
 
     public void fillSeverityCombobox(String severity) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        fillCombobox(severity, SEVERITY_COMBOBOX_ID);
+        configurationWizard.setComponentValue(SEVERITY_COMBOBOX_ID, severity, COMBOBOX);
         log.debug("Setting severity for simple condition with: {}", severity);
     }
 
     public void fillElseSeverityCombobox(String severity) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        fillCombobox(severity, ELSE_SEVERITY_COMBOBOX_ID);
+        configurationWizard.setComponentValue(ELSE_SEVERITY_COMBOBOX_ID, severity, COMBOBOX);
         log.debug("Setting severity for else condition with: {}", severity);
     }
 
     public void clickAddNewFilter() {
         DelayUtils.waitForPageToLoad(driver, wait);
         DelayUtils.sleep();
-        ButtonContainer.create(driver, wait).callActionByLabel("Add New Filter");
+        ButtonContainer.create(driver, wait).callActionById("dimensionButtonAddId");
+        log.debug("Clicking add new filter button");
     }
 
     @Step("I fill Threshold Configuration Step")
@@ -121,10 +125,5 @@ public class ThresholdsConfigurationPage extends BaseStepPage {
         fillConditionTypeCombobox(elseConditionType);
         fillElseSeverityCombobox(elseSeverity);
         log.info("Filled Basic Information Step - Else Condition");
-    }
-
-    @Override
-    public String getWizardId() {
-        return THRESHOLD_STEP_WIZARD_ID;
     }
 }

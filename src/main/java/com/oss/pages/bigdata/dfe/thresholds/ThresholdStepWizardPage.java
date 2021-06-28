@@ -1,22 +1,27 @@
 package com.oss.pages.bigdata.dfe.thresholds;
 
-import com.oss.framework.components.inputs.Button;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bigdata.dfe.stepwizard.commons.StepWizardPage;
+import com.oss.framework.widgets.Wizard;
+import com.oss.pages.BasePage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class ThresholdStepWizardPage extends StepWizardPage {
+public class ThresholdStepWizardPage extends BasePage {
 
-    private final String THRESHOLD_STEP_WIZARD_ID = "thresholdWizardWindowId";
+    private static final Logger log = LoggerFactory.getLogger(ThresholdStepWizardPage.class);
+
     private final ThresholdsConfigurationPage thresholdsConfigurationStep;
     private final ThresholdsDimensionsFilteringPage thresholdsDimensionsFilteringStep;
+    private final Wizard thresholdsWizard;
 
     public ThresholdStepWizardPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
 
-        thresholdsConfigurationStep = new ThresholdsConfigurationPage(driver, wait, getWizardId());
-        thresholdsDimensionsFilteringStep = new ThresholdsDimensionsFilteringPage(driver, wait, getWizardId());
+        thresholdsWizard = Wizard.createWizard(driver, wait);
+        thresholdsConfigurationStep = new ThresholdsConfigurationPage(driver, wait);
+        thresholdsDimensionsFilteringStep = new ThresholdsDimensionsFilteringPage(driver, wait);
     }
 
     public ThresholdsConfigurationPage getThresholdsConfigurationStep() {
@@ -29,18 +34,13 @@ public class ThresholdStepWizardPage extends StepWizardPage {
 
     public void clickNext() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        DelayUtils.sleep();
-        Button.create(driver, "Next").click();
+        thresholdsWizard.clickNext();
+        log.info("I click Next Step");
     }
 
     public void clickAccept() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        DelayUtils.sleep();
-        Button.create(driver, "Accept").click();
-    }
-
-    @Override
-    public String getWizardId() {
-        return THRESHOLD_STEP_WIZARD_ID;
+        thresholdsWizard.clickAccept();
+        log.info("I click Accept");
     }
 }
