@@ -3,7 +3,7 @@
 
     <test name="Creation of data for tests">
         <classes>
-            <class name="com.oss.fixedaccess.servicequalification.ServiceQualificationViewTests">
+            <class name="com.oss.fixedaccess.servicequalification.ServiceQualificationViewSimpleCasesTests">
                 <methods>
                     <include name="createDataForTests"/>
                 </methods>
@@ -13,7 +13,7 @@
 
     <test name="Check data in table and property panel for all access technologies in SQ View - HappyPath">
         <classes>
-            <class name="com.oss.fixedaccess.servicequalification.ServiceQualificationViewTests">
+            <class name="com.oss.fixedaccess.servicequalification.ServiceQualificationViewSimpleCasesTests">
                 <methods>
                     <include name="checkDataInTableAndPropertyPanelForAllAccessTechnologiesInSQViewHappyPathTest"/>
                 </methods>
@@ -23,7 +23,7 @@
 
     <test name="Check error for required download speed grater than max download speed for all access technologies">
         <classes>
-            <class name="com.oss.fixedaccess.servicequalification.ServiceQualificationViewTests">
+            <class name="com.oss.fixedaccess.servicequalification.ServiceQualificationViewSimpleCasesTests">
                 <methods>
                     <include
                             name="checkErrorForRequiredDownloadSpeedGraterThanMaxDownloadSpeedForAllAccessTechnologiesTest"/>
@@ -34,7 +34,7 @@
 
     <test name="Deletion of data for tests">
         <classes>
-            <class name="com.oss.fixedaccess.servicequalification.ServiceQualificationViewTests">
+            <class name="com.oss.fixedaccess.servicequalification.ServiceQualificationViewSimpleCasesTests">
                 <methods>
                     <include name="deleteDataForTests"/>
                 </methods>
