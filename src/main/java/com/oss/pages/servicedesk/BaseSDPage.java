@@ -11,11 +11,11 @@ public abstract class BaseSDPage extends BasePage {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseSDPage.class);
 
-    protected BaseSDPage(WebDriver driver, WebDriverWait wait) {
-        super(driver, wait);
+    protected BaseSDPage(WebDriver driver) {
+        super(driver, new WebDriverWait(driver, 45));
     }
 
-    public static void openPage(WebDriver driver, String url, WebDriverWait wait) {
+    public void openPage(WebDriver driver, String url) {
         driver.get(url);
         DelayUtils.waitForPageToLoad(driver, wait);
         LOGGER.info("Opening page: {}", url);

@@ -20,7 +20,7 @@ public class TicketDetailsPage extends BasePage {
     public WizardPage openEditTicketWizard(WebDriver driver) {
         DelayUtils.waitForPageToLoad(driver, wait);
         clickContextAction(EDIT_DETAILS_LABEL);
-        return new WizardPage(driver, wait);
+        return new WizardPage(driver);
     }
 
     private void clickContextAction(String contextActionLabel) {

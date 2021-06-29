@@ -1,21 +1,18 @@
 package com.oss.pages.servicedesk.ticket.wizard;
 
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.components.inputs.SearchField;
-import com.oss.framework.data.Data;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.servicedesk.BaseSDPage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class WizardPage extends BaseSDPage {
 
     private final MOStep moStep;
 
-    public WizardPage(WebDriver driver, WebDriverWait wait) {
-        super(driver, wait);
+    public WizardPage(WebDriver driver) {
+        super(driver);
         this.moStep = new MOStep(wait);
     }
 
@@ -37,8 +34,7 @@ public class WizardPage extends BaseSDPage {
 
     @Step("I insert {value} to search component with id {componentId}")
     public void insertValueToSearchComponent(String text, String componentId) {
-        SearchField searchField = (SearchField) getWizard().getComponent(componentId, Input.ComponentType.SEARCH_FIELD);
-        searchField.setValue(Data.createSingleData(text));
+        getWizard().setComponentValue(componentId, text, Input.ComponentType.SEARCH_FIELD);
     }
 
     private Wizard getWizard() {

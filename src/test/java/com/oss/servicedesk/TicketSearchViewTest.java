@@ -15,7 +15,8 @@ public class TicketSearchViewTest extends BaseTestCase {
 
     @BeforeClass
     public void goToTicketSearchView() {
-        ticketSearchPage = TicketSearchPage.goToPage(driver, BASIC_URL);
+        ticketSearchPage = new TicketSearchPage(driver);
+        ticketSearchPage.goToPage(driver, BASIC_URL);
     }
 
     @Test(priority = 1, testName = "Open Ticket Details", description = "Open Ticket Details")

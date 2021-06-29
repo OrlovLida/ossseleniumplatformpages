@@ -22,15 +22,14 @@ public class TicketSearchPage extends BaseSDPage {
     private static final String TABLE_WIDGET_ID = "ticket-search-graphql-table";
     private static final String TICKET_SEARCH = "ticket-search";
 
-    private TicketSearchPage(WebDriver driver, WebDriverWait wait) {
-        super(driver, wait);
+    public TicketSearchPage(WebDriver driver) {
+        super(driver);
     }
 
     @Step("I Open Ticket Search View")
-    public static TicketSearchPage goToPage(WebDriver driver, String basicURL) {
-        WebDriverWait wait = new WebDriverWait(driver, 45);
-        BaseSDPage.openPage(driver, String.format(VIEWS_URL_PATTERN, basicURL, TICKET_SEARCH), wait);
-        return new TicketSearchPage(driver, wait);
+    public TicketSearchPage goToPage(WebDriver driver, String basicURL) {
+        openPage(driver, String.format(VIEWS_URL_PATTERN, basicURL, TICKET_SEARCH));
+        return new TicketSearchPage(driver);
     }
 
     @Step("I check if ticket with text attribute {attributeName} set to {attributeValue} exists in the table")
@@ -49,7 +48,7 @@ public class TicketSearchPage extends BaseSDPage {
         // (see TableWidget#selectLinkInSpecificColumn)
         String ticketId = getTicketTable().getCellValue(Integer.parseInt(rowIndex), ID_ATTRIBUTE);
         LOGGER.info("Opening ticket details for ticket with id: {}", ticketId);
-        BaseSDPage.openPage(driver, String.format(DETAILS_PAGE_URL_PATTERN, basicURL, ticketId), wait);
+        openPage(driver, String.format(DETAILS_PAGE_URL_PATTERN, basicURL, ticketId));
         return new TicketDetailsPage(driver);
     }
 
