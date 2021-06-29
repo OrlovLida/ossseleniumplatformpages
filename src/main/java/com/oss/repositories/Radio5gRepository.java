@@ -100,7 +100,7 @@ public class Radio5gRepository {
         return GnodeBCUUPDTO.builder()
                 .name(name)
                 .modelIdentifier(Constants.GENERIC_GNODEBCUUP_MODEL)
-                .gnodeBId(-1L)
+                .gnodeBCUUPId(-1L)
                 .locationId(locationId)
                 .build();
     }
@@ -109,7 +109,7 @@ public class Radio5gRepository {
         return GnodeBDUDTO.builder()
                 .name(name)
                 .modelIdentifier(Constants.GENERIC_GNODEBDU_MODEL)
-                .gnodeBId(-1L)
+                .gnodeBDUId(-1L)
                 .locationId(locationId)
                 .build();
     }
