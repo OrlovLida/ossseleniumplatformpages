@@ -12,8 +12,8 @@ public class DimensionColumnMappingPage extends com.oss.pages.bigdata.dfe.stepwi
 
     private static final Logger log = LoggerFactory.getLogger(DimensionColumnMappingPage.class);
 
-    public DimensionColumnMappingPage(WebDriver driver, WebDriverWait wait, String wizardId) {
-        super(driver, wait, wizardId);
+    public DimensionColumnMappingPage(WebDriver driver, WebDriverWait wait) {
+        super(driver, wait);
     }
 
     @Step("I fill Column Mapping Step. I set column role: {columnRole}")

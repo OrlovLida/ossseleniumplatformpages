@@ -1,7 +1,5 @@
 package com.oss.pages.bigdata.dfe;
 
-import com.oss.framework.prompts.ConfirmationBox;
-import com.oss.framework.utils.DelayUtils;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -88,5 +86,4 @@ public class DimensionsPage extends BaseDfePage {
     public String getSearchId() {
         return SEARCH_INPUT_ID;
     }
-
 }

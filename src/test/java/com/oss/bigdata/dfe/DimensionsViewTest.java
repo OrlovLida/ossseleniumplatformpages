@@ -2,11 +2,14 @@ package com.oss.bigdata.dfe;
 
 import com.oss.BaseTestCase;
 import com.oss.pages.bigdata.dfe.DimensionsPage;
-import com.oss.pages.bigdata.dfe.stepwizard.dimension.DimensionsStepWizardPage;
+import com.oss.pages.bigdata.dfe.stepwizard.commons.BasicInformationPage;
+import com.oss.pages.bigdata.dfe.stepwizard.commons.DataSourceAndProcessingPage;
+import com.oss.pages.bigdata.dfe.stepwizard.commons.StoragePage;
+import com.oss.pages.bigdata.dfe.stepwizard.commons.TransformationsPage;
+import com.oss.pages.bigdata.dfe.stepwizard.dimension.DimensionColumnMappingPage;
 import com.oss.pages.bigdata.utils.ConstantsDfe;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -50,17 +53,25 @@ public class DimensionsViewTest extends BaseTestCase {
     }
 
     private void handleAddDimensionWizard() {
-        WebDriverWait wait = new WebDriverWait(driver, 45);
-        DimensionsStepWizardPage dimensionStepWizard = new DimensionsStepWizardPage(driver, wait);
-        dimensionStepWizard.getBasicInformationStep().fillBasicInformationStep(dimensionName);
-        dimensionStepWizard.clickNextStep();
-        dimensionStepWizard.getDataSourceAndProcessingStep().fillFeed(DATA_SOURCE_NAME);
-        dimensionStepWizard.clickNextStep();
-        dimensionStepWizard.getTransformationsStep().fillTransformationsStep(TRANSFORMATION_TYPE_NAME);
-        dimensionStepWizard.clickNextStep();
-        dimensionStepWizard.getColumnMappingStep().fillDimensionColumnMappingStep(COLUMN_NAME, COLUMN_ROLE);
-        dimensionStepWizard.clickNextStep();
-        dimensionStepWizard.clickAccept();
+
+        BasicInformationPage dimensionBasicInfoWizard = new BasicInformationPage(driver, webDriverWait);
+        dimensionBasicInfoWizard.fillName(dimensionName);
+        dimensionBasicInfoWizard.clickNextStep();
+
+        DataSourceAndProcessingPage dimensionDsAndProcessingWizard = new DataSourceAndProcessingPage(driver, webDriverWait);
+        dimensionDsAndProcessingWizard.fillFeed(DATA_SOURCE_NAME);
+        dimensionDsAndProcessingWizard.clickNextStep();
+
+        TransformationsPage dimTransformationWizard = new TransformationsPage(driver, webDriverWait);
+        dimTransformationWizard.fillTransformationsStep(TRANSFORMATION_TYPE_NAME);
+        dimTransformationWizard.clickNextStep();
+
+        DimensionColumnMappingPage dimColMapWizard = new DimensionColumnMappingPage(driver, webDriverWait);
+        dimColMapWizard.fillDimensionColumnMappingStep(COLUMN_NAME, COLUMN_ROLE);
+        dimColMapWizard.clickNextStep();
+
+        StoragePage dimStoragePage = new StoragePage(driver, webDriverWait);
+        dimStoragePage.clickAccept();
     }
 
     @Test(priority = 2, testName = "Edit Dimension", description = "Edit Dimension")
@@ -82,14 +93,21 @@ public class DimensionsViewTest extends BaseTestCase {
     }
 
     private void handleEditDimensionWizard() {
-        WebDriverWait wait = new WebDriverWait(driver, 65);
-        DimensionsStepWizardPage dimensionStepWizard = new DimensionsStepWizardPage(driver, wait);
-        dimensionStepWizard.getBasicInformationStep().fillName(updatedDimensionName);
-        dimensionStepWizard.clickNextStep();
-        dimensionStepWizard.clickNextStep();
-        dimensionStepWizard.clickNextStep();
-        dimensionStepWizard.clickNextStep();
-        dimensionStepWizard.clickAccept();
+        BasicInformationPage dimensionBasicInfoWizard = new BasicInformationPage(driver, webDriverWait);
+        dimensionBasicInfoWizard.fillName(updatedDimensionName);
+        dimensionBasicInfoWizard.clickNextStep();
+
+        DataSourceAndProcessingPage dimensionDsAndProcessingWizard = new DataSourceAndProcessingPage(driver, webDriverWait);
+        dimensionDsAndProcessingWizard.clickNextStep();
+
+        TransformationsPage dimTransformationWizard = new TransformationsPage(driver, webDriverWait);
+        dimTransformationWizard.clickNextStep();
+
+        DimensionColumnMappingPage dimColMapWizard = new DimensionColumnMappingPage(driver, webDriverWait);
+        dimColMapWizard.clickNextStep();
+
+        StoragePage dimStorageWizard = new StoragePage(driver, webDriverWait);
+        dimStorageWizard.clickAccept();
     }
 
     @Test(priority = 3, testName = "Delete Dimension", description = "Delete Dimension")
