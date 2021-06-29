@@ -28,6 +28,35 @@ public class PhysicalInventoryRepository {
         return Long.valueOf(deviceId.substring(deviceId.lastIndexOf("/") + 1, deviceId.indexOf("?")));
     }
 
+    public void deleteDevice(Long deviceId){
+        PhysicalInventoryClient client = new PhysicalInventoryClient(env);
+        client.removeDevice(deviceId);
+    }
+
+    public void addPortToDevice(Long deviceId, Long portModelId, String cardModelType, String portName){
+        PhysicalInventoryClient client = new PhysicalInventoryClient(env);
+        ResourceDTO r = client.addPortToDevice(deviceId, buildAddPortToDevice(portModelId, cardModelType, portName));
+    }
+
+    public void addPluggableModuleToDevice(Long portId, Long pluggableModelId, String pluggableModelType){
+        PhysicalInventoryClient client = new PhysicalInventoryClient(env);
+        ResourceDTO pluggableModuleDTO = client.addPluggableModuleToPort(portId, buildAddPluggableModuleToPort(pluggableModelId, portId, pluggableModelType));
+    }
+
+    private PluggableModuleDTO buildAddPluggableModuleToPort(Long pluggableModelId, Long portId, String pluggalbeModuleType){
+        return PluggableModuleDTO.builder()
+                .portId(portId)
+                .model(getPluggableModuleModelId(pluggableModelId, pluggalbeModuleType))
+                .build();
+    }
+
+    private PortDTO buildAddPortToDevice(Long portModelId, String portModelType, String portName){
+        return PortDTO.builder()
+                .portModel(getPortModelId(portModelId, portModelType))
+                .name(portName)
+                .build();
+    }
+
     private PhysicalDeviceDTO buildDevice(String locationType, Long locationId, Long deviceModelId, String deviceName, String deviceModelType) {
         return PhysicalDeviceDTO.builder()
                 .deviceModel(getDeviceModelId(deviceModelId, deviceModelType))
@@ -79,4 +108,19 @@ public class PhysicalInventoryRepository {
                 .type(cardModelType)
                 .build();
     }
+
+    private com.comarch.oss.physicalinventory.api.dto.AttributeDTO getPortModelId(Long portModelId, String portModelType) {
+        return AttributeDTO.builder()
+                .id(portModelId)
+                .type(portModelType)
+                .build();
+    }
+
+    private AttributeDTO getPluggableModuleModelId(Long pluggalbeModuleModelId, String pluggableModuleType) {
+        return AttributeDTO.builder()
+                .id(pluggalbeModuleModelId)
+                .type(pluggableModuleType)
+                .build();
+    }
+
 }

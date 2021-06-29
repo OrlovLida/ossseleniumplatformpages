@@ -1,12 +1,21 @@
 package com.oss.repositories;
 
-import com.comarch.oss.physicalconnectivitycable.api.dto.*;
+import com.comarch.oss.physicalconnectivitycable.api.dto.CableModelDTO;
+import com.comarch.oss.physicalconnectivitycable.api.dto.CableSyncDTO;
+import com.comarch.oss.physicalconnectivitycable.api.dto.CableSyncResultDTO;
+import com.comarch.oss.physicalconnectivitycable.api.dto.MediumPersistenceDTO;
+import com.comarch.oss.physicalconnectivitycable.api.dto.MultipleSegmentDTO;
+import com.comarch.oss.physicalconnectivitycable.api.dto.MultipleSegmentResultDTO;
+import com.comarch.oss.physicalconnectivitycable.api.dto.PhysicalTerminationPersistenceDTO;
+import com.comarch.oss.physicalconnectivitycable.api.dto.SegmentDTO;
+import com.comarch.oss.physicalconnectivitycable.api.dto.TotalLengthWrapperDTO;
 import com.oss.services.PhysicalConnectivityClient;
 import com.oss.untils.Environment;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 
 public class PhysicalConnectivityRepository {
 
@@ -16,9 +25,16 @@ public class PhysicalConnectivityRepository {
         this.env = env;
     }
 
-    public void createCable(Long terminationDeviceId1, Long terminationDeviceId2, Long terminationId1, Long terminationId2, String modelName, String manufacturerName, int length) {
+    public Long createCable(Long terminationDeviceId1, Long terminationDeviceId2, Long terminationId1, Long terminationId2, String modelName, String manufacturerName, int length) {
         PhysicalConnectivityClient client = PhysicalConnectivityClient.getInstance(env);
-        CableSyncResultDTO cable = client.createCable(buildCable(terminationDeviceId1, terminationDeviceId2, terminationId1, terminationId2, modelName, manufacturerName, length));
+        CableSyncResultDTO cable = client.createCable(buildCable(terminationDeviceId1, terminationDeviceId2, terminationId1, terminationId2, modelName, manufacturerName, length, Long.valueOf(1), Long.valueOf(1)));
+        return cable.getCreatedCables().get(0).getId();
+    }
+
+    public Long createCableWithSpecificMediumAndBundleNumber(Long terminationDeviceId1, Long terminationDeviceId2, Long terminationId1, Long terminationId2, String modelName, String manufacturerName, int length, Long mediumNumber, Long bundleNumber) {
+        PhysicalConnectivityClient client = PhysicalConnectivityClient.getInstance(env);
+        CableSyncResultDTO cable = client.createCable(buildCable(terminationDeviceId1, terminationDeviceId2, terminationId1, terminationId2, modelName, manufacturerName, length, mediumNumber, bundleNumber));
+        return cable.getCreatedCables().get(0).getId();
     }
 
     public void createMultipleSegmentCable(Long terminationId1, Long terminationId2, String modelName1, String manufacturerName, int length1, String modelName2, int length2, String modelName3, int length3) {
@@ -27,13 +43,18 @@ public class PhysicalConnectivityRepository {
                 manufacturerName, length1, modelName2, length2, modelName3, length3));
     }
 
-    private CableSyncDTO buildCable(Long terminationDeviceId1, Long terminationDeviceId2, Long terminationId1, Long terminationId2, String modelName, String manufacturerName, int length) {
+    public void removeCable(Long cableId) {
+        PhysicalConnectivityClient client = PhysicalConnectivityClient.getInstance(env);
+        client.removeCable(cableId);
+    }
+
+    private CableSyncDTO buildCable(Long terminationDeviceId1, Long terminationDeviceId2, Long terminationId1, Long terminationId2, String modelName, String manufacturerName, int length, Long mediumNumber, Long bundleNumber) {
         return CableSyncDTO.builder()
                 .startTermination(getTermination(terminationDeviceId1, "Device"))
                 .endTermination(getTermination(terminationDeviceId2, "Device"))
                 .model(getModel(modelName, manufacturerName))
                 .totalLength(getLength(length))
-                .mediums(Collections.singleton(getMediums(terminationId1, terminationId2, Long.valueOf(1), Long.valueOf(1))))
+                .mediums(Collections.singleton(getMediums(terminationId1, terminationId2, mediumNumber, bundleNumber)))
                 .build();
     }
 

@@ -9,6 +9,8 @@ import com.oss.untils.Environment;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
+import static java.net.HttpURLConnection.HTTP_NO_CONTENT;
+
 /**
  * @author Milena Miętkiewicz
  */
@@ -54,6 +56,20 @@ public class LocationInventoryClient {
                 .get(LocationInventoryClient.PHYSICAL_LOCATIONS_API_PATH);
         List<Integer> idsList = response.jsonPath().getList("searchResult.id");
         return idsList;
+    }
+
+    public com.jayway.restassured.response.Response removeLocation(Long locationId, String locationType) {
+        return ENV.getLocationInventoryCoreRequestSpecification()
+                .when()
+                .delete(PHYSICAL_LOCATIONS_API_PATH + "/" + locationType + "/" + locationId)
+                .then()
+                .log()
+                .status()
+                .log()
+                .body()
+                .statusCode(HTTP_NO_CONTENT)
+                .extract()
+                .response();
     }
 
 }

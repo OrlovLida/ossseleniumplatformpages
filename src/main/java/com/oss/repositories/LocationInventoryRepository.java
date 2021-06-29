@@ -38,6 +38,11 @@ public class LocationInventoryRepository {
         return locationId.substring(locationId.lastIndexOf("/") + 1, locationId.indexOf("?"));
     }
 
+    public void deleteLocation(Long locationId, String locationType) {
+        LocationInventoryClient client = new LocationInventoryClient(env);
+        client.removeLocation(locationId, locationType);
+    }
+
     public void createSubLocation(String locationType, String subLocationSiteNameForCreate, Long addressId, Long parentId, String parentLocationType) {
         LocationInventoryClient client = new LocationInventoryClient(env);
         client.createPhysicalLocation(buildLocationWithParent(locationType, subLocationSiteNameForCreate, addressId, parentId, parentLocationType));
