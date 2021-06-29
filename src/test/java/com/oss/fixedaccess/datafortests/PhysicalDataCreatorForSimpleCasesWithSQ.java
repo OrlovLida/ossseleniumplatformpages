@@ -242,10 +242,10 @@ public class PhysicalDataCreatorForSimpleCasesWithSQ {
 
     public void deleteAllDataForSimplePhysicalDataForSQTests(Long distributionAreaId, Long cableOutletCPODF, Long cableCPODFSplitter, Long cableSplitterCOODF, Long cableCOODFAN, Long accessNodeId, Long centralOfficeODFId, Long splitterId, Long installationODFId, Long opticalOutletId, Long installationBuildingId, Long centralOfficeBuildingId, Long centralOfficeAddressId, Long installationAddressId) {
         distributionAreaRepository.removeDistributionArea(distributionAreaId);
-        physicalConnectivityRepository.removeCabale(cableOutletCPODF);
-        physicalConnectivityRepository.removeCabale(cableCPODFSplitter);
-        physicalConnectivityRepository.removeCabale(cableSplitterCOODF);
-        physicalConnectivityRepository.removeCabale(cableCOODFAN);
+        physicalConnectivityRepository.removeCable(cableOutletCPODF);
+        physicalConnectivityRepository.removeCable(cableCPODFSplitter);
+        physicalConnectivityRepository.removeCable(cableSplitterCOODF);
+        physicalConnectivityRepository.removeCable(cableCOODFAN);
         physicalInventoryRepository.deleteDevice(accessNodeId);
         physicalInventoryRepository.deleteDevice(centralOfficeODFId);
         physicalInventoryRepository.deleteDevice(splitterId);
@@ -280,7 +280,7 @@ public class PhysicalDataCreatorForSimpleCasesWithSQ {
     }
 
     private void addPluggableModuleToPort(Long portId, Long pluggableModuleModelId, String pluggableModlueModelType) {
-        physicalInventoryRepository.addPlugableModuleToDevice(portId, pluggableModuleModelId, pluggableModlueModelType);
+        physicalInventoryRepository.addPluggableModuleToDevice(portId, pluggableModuleModelId, pluggableModlueModelType);
     }
 
     private Long createCable(Long firstTerminationDeviceId, Long secondTerminationDeviceId, Long firstTermination, Long secondTermination, String cableModelName, String manufacturerName, int length, Long mediumNumber, Long bundleNumber) {
