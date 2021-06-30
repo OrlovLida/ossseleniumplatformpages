@@ -2,7 +2,6 @@ package com.oss.pages.fixedaccess.servicequalification;
 
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.search.AdvancedSearch;
-import com.oss.framework.data.Data;
 import com.oss.framework.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
@@ -57,10 +56,9 @@ public class ServiceQualificationWizard extends BasePage {
 
     @Step("Set address or DA for query")
     public ServiceQualificationWizard setAddressOrDA(String queryParameter) {
-        Input queryInput = getServiceQualificationWizard().getComponent(SEARCH_FIELD_FOR_QUERY, SEARCH_FIELD);
-        queryInput.clear();
-        queryInput.clearByAction();
-        queryInput.setValueContains(Data.createFindFirst(queryParameter));
+        Input input = getServiceQualificationWizard().getComponent(SEARCH_FIELD_FOR_QUERY, SEARCH_FIELD);
+        input.clear();
+        input.setSingleStringValueContains(queryParameter);
         return this;
     }
 
@@ -126,7 +124,6 @@ public class ServiceQualificationWizard extends BasePage {
 
     @Step("Click Accept button")
     public ServiceQualificationView clickAccept() {
-        DelayUtils.sleep(2000);
         getServiceQualificationWizard().clickAccept();
         return new ServiceQualificationView(driver);
     }

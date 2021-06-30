@@ -12,6 +12,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+
 public class ServiceQualificationViewSimpleCasesTests extends BaseTestCase {
 
 
@@ -79,8 +80,11 @@ public class ServiceQualificationViewSimpleCasesTests extends BaseTestCase {
 
         getPerspectiveChooser().setLivePerspective();
         serviceQualificationWizard.openServiceQualificationWizard()
-                .setQueryOption(INSTALLATION_ADDRESS_QUERY_OPTION)
-                .setAddressOrDA(installationAddressName)
+                .setQueryOption(INSTALLATION_ADDRESS_QUERY_OPTION);
+
+        useProperMethodForSearchDAfrAddress(installationAddressName, installationAddressId);
+
+        serviceQualificationWizard
                 .setProvideAlternative("true")
                 .setProvideResource("false")
                 .setProvideServiceNode("false")
