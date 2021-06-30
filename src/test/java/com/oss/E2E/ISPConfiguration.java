@@ -350,9 +350,7 @@ public class ISPConfiguration extends BaseTestCase {
         locationOverviewPage.selectTab("Cooling Zones");
         TableInterface coolingTable = locationOverviewPage.getTabTable(TabName.COOLING_ZONES);
         int rowNumber = coolingTable.getRowNumber(COOLING_ZONE_NAME, "Name");
-        System.out.println("ROW NUMBER=" + rowNumber);
         String rowValue = coolingTable.getCellValue(rowNumber, "Cooling Load [kW]");
-        System.out.println("ROW VALUE=" + rowValue);
         Assert.assertNotEquals(COOLING_ZONE_COOLING_LOAD, rowValue);
     }
 
