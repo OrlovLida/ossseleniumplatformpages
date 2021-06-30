@@ -40,4 +40,14 @@
             <class name="com.oss.bigdata.dfe.KQIsTest"/>
         </classes>
     </test>
+    <test name="ThresholdViewTest">
+        <classes>
+            <class name="com.oss.bigdata.dfe.ThresholdViewTest"/>
+        </classes>
+    </test>
+    <test name="DataSourceFromQueryTest">
+        <classes>
+            <class name="com.oss.bigdata.dfe.DataSourceFromQueryTest"/>
+        </classes>
+    </test>
 </suite>

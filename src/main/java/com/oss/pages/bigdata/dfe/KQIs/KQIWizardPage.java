@@ -1,18 +1,16 @@
 package com.oss.pages.bigdata.dfe.KQIs;
 
-import com.oss.framework.components.inputs.Combobox;
-import com.oss.framework.components.inputs.Input;
-import com.oss.framework.components.inputs.TextArea;
-import com.oss.framework.data.Data;
-import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bigdata.dfe.stepwizard.commons.BaseStepPage;
+import com.oss.framework.widgets.Wizard;
+import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class KQIWizardPage extends BaseStepPage {
+import static com.oss.framework.components.inputs.Input.ComponentType.*;
+
+public class KQIWizardPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(KQIWizardPage.class);
 
@@ -20,35 +18,30 @@ public class KQIWizardPage extends BaseStepPage {
     private final String VALUE_TYPE_ID = "kqiValueType-input";
     private final String UNIT_TYPE_ID = "kqiUnitId-input";
     private final String FORMULA_ID = "kqiFormulaId";
+    private final Wizard kqiWizard;
 
-    public KQIWizardPage(WebDriver driver, WebDriverWait wait, String wizardId) {
-        super(driver, wait, wizardId);
+    public KQIWizardPage(WebDriver driver, WebDriverWait wait) {
+        super(driver, wait);
+        kqiWizard = Wizard.createWizard(driver, wait);
     }
 
     public void fillName(String name) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        fillTextField(name, KPI_NAME_INPUT_ID);
+        kqiWizard.setComponentValue(KPI_NAME_INPUT_ID, name, TEXT_FIELD);
         log.debug("Setting name with: {}", name);
     }
 
     public void fillValueType(String valueType) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        Combobox kqiValueTypeInput = (Combobox) getWizard(driver, wait).getComponent(VALUE_TYPE_ID, Input.ComponentType.COMBOBOX);
-        kqiValueTypeInput.setValue(Data.createSingleData(valueType));
+        kqiWizard.setComponentValue(VALUE_TYPE_ID, valueType, COMBOBOX);
         log.debug("Setting value type to: {}", valueType);
     }
 
     public void fillUnitType(String unitType) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        Combobox kqiUnitTypeInput = (Combobox) getWizard(driver, wait).getComponent(UNIT_TYPE_ID, Input.ComponentType.COMBOBOX);
-        kqiUnitTypeInput.setValue(Data.createSingleData(unitType));
+        kqiWizard.setComponentValue(UNIT_TYPE_ID, unitType, COMBOBOX);
         log.debug("Setting unit type to: {}", unitType);
     }
 
     public void fillFormula(String formula) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        TextArea input = (TextArea) getWizard(driver, wait).getComponent(FORMULA_ID, Input.ComponentType.TEXT_AREA);
-        input.setValue(Data.createSingleData(formula));
+        kqiWizard.setComponentValue(FORMULA_ID, formula, TEXT_AREA);
         log.debug("Setting formula with: {}", formula);
     }
 
@@ -66,7 +59,7 @@ public class KQIWizardPage extends BaseStepPage {
 
     @Step("I click Accept")
     public void clickAccept() {
-        getWizard(driver, wait).clickAccept();
+        kqiWizard.clickAccept();
         log.info("Finishing Step Wizard by clicking 'Accept'");
     }
 }

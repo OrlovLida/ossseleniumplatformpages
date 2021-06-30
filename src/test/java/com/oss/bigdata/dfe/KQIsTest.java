@@ -1,6 +1,7 @@
 package com.oss.bigdata.dfe;
 
 import com.oss.BaseTestCase;
+import com.oss.pages.bigdata.dfe.KQIs.KQIWizardPage;
 import com.oss.pages.bigdata.dfe.KQIs.KQIsPage;
 import com.oss.pages.bigdata.utils.ConstantsDfe;
 import com.oss.utils.TestListener;
@@ -36,8 +37,9 @@ public class KQIsTest extends BaseTestCase {
     @Description("Add new KQI")
     public void addKQI() {
         kqisPage.clickAddNewKQI();
-        kqisPage.getKqiWizardPage().fillKQIWizard(kqisName, VALUE_TYPE, UNIT_TYPE, FORMULA);
-        kqisPage.getKqiWizardPage().clickAccept();
+        KQIWizardPage kqiWizard = new KQIWizardPage(driver, webDriverWait);
+        kqiWizard.fillKQIWizard(kqisName, VALUE_TYPE, UNIT_TYPE, FORMULA);
+        kqiWizard.clickAccept();
         Boolean kqiIsCreated = kqisPage.kqiExistIntoTable(kqisName);
 
         Assert.assertTrue(kqiIsCreated);
@@ -50,8 +52,9 @@ public class KQIsTest extends BaseTestCase {
         if (kqiExists) {
             kqisPage.selectFoundKQI();
             kqisPage.clickEditKQI();
-            kqisPage.getKqiWizardPage().fillName(updatedKQIsName);
-            kqisPage.getKqiWizardPage().clickAccept();
+            KQIWizardPage kqiWizard = new KQIWizardPage(driver, webDriverWait);
+            kqiWizard.fillName(updatedKQIsName);
+            kqiWizard.clickAccept();
             Boolean kqiIsEdited = kqisPage.kqiExistIntoTable(updatedKQIsName);
 
             Assert.assertTrue(kqiIsEdited);

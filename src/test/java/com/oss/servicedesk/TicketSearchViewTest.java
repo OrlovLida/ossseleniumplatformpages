@@ -1,7 +1,7 @@
 package com.oss.servicedesk;
 
 import com.oss.BaseTestCase;
-import com.oss.pages.servicedesk.TicketSearchPage;
+import com.oss.pages.servicedesk.ticket.TicketSearchPage;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 import org.testng.annotations.BeforeClass;
@@ -15,7 +15,8 @@ public class TicketSearchViewTest extends BaseTestCase {
 
     @BeforeClass
     public void goToTicketSearchView() {
-        ticketSearchPage = TicketSearchPage.goToPage(driver, BASIC_URL);
+        ticketSearchPage = new TicketSearchPage(driver);
+        ticketSearchPage.goToPage(driver, BASIC_URL);
     }
 
     @Test(priority = 1, testName = "Open Ticket Details", description = "Open Ticket Details")
