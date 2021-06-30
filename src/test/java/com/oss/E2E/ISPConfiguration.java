@@ -61,6 +61,8 @@ public class ISPConfiguration extends BaseTestCase {
     private void checkPopup() {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         Assert.assertEquals(MessageType.SUCCESS, (systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType()));
+        systemMessage.close();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
     @BeforeClass
@@ -313,7 +315,7 @@ public class ISPConfiguration extends BaseTestCase {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Devices");
         locationOverviewPage.filterObjectInSpecificTab(TabName.DEVICES, "Name", PHYSICAL_DEVICE_NAME);
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.DEVICES, "Update Device");
+        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.DEVICES, "Edit Device");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
         deviceWizardPage.setHeatEmission(DEVICE_HEAT_EMISSION);
@@ -339,9 +341,10 @@ public class ISPConfiguration extends BaseTestCase {
         locationOverviewPage.selectTab("Cooling Zones");
         TableInterface coolingTable = locationOverviewPage.getTabTable(TabName.COOLING_ZONES);
         int rowNumber = coolingTable.getRowNumber(COOLING_ZONE_NAME, "Name");
+        System.out.println("ROW NUMBER=" + rowNumber);
         String rowValue = coolingTable.getCellValue(rowNumber, "Cooling Load [kW]");
+        System.out.println("ROW VALUE=" + rowValue);
         Assert.assertNotEquals(COOLING_ZONE_COOLING_LOAD, rowValue);
-
     }
 
     @Test(priority = 21)
@@ -386,7 +389,7 @@ public class ISPConfiguration extends BaseTestCase {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Devices");
         locationOverviewPage.filterObjectInSpecificTab(TabName.DEVICES, "Name", COOLING_UNIT_NAME);
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.DEVICES, "Update Device");
+        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.DEVICES, "Edit Device");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
         deviceWizardPage.setCoolingCapacity(COOLING_CAPACITY2);
@@ -508,7 +511,7 @@ public class ISPConfiguration extends BaseTestCase {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Devices");
         locationOverviewPage.filterObjectInSpecificTab(TabName.DEVICES, "Name", PHYSICAL_DEVICE_NAME);
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.DEVICES, "Update Device");
+        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.DEVICES, "Edit Device");
         DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.nextUpdateWizard();
