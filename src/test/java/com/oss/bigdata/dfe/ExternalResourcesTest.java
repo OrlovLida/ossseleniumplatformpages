@@ -2,6 +2,8 @@ package com.oss.bigdata.dfe;
 
 import com.oss.BaseTestCase;
 import com.oss.pages.bigdata.dfe.externalresource.ExternalResourcesPage;
+import com.oss.pages.bigdata.dfe.externalresource.ExternalResourcesPopupPage;
+import com.oss.pages.bigdata.utils.ConstantsDfe;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 import org.slf4j.Logger;
@@ -10,9 +12,6 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @Listeners({TestListener.class})
 public class ExternalResourcesTest extends BaseTestCase {
@@ -29,9 +28,7 @@ public class ExternalResourcesTest extends BaseTestCase {
     public void goToExternalResourceView() {
         externalResource = ExternalResourcesPage.goToPage(driver, BASIC_URL);
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy_MM_dd");
-        String date = simpleDateFormat.format(new Date());
-        externalResourceName = "Selenium_" + date + "_ExtResourceTest";
+        externalResourceName = ConstantsDfe.createName() + "_ExtResourceTest";
         updatedExternalResourceName = externalResourceName + "_updated";
     }
 
@@ -39,26 +36,27 @@ public class ExternalResourcesTest extends BaseTestCase {
     @Description("Add new External Resource")
     public void addExternalResource() {
         externalResource.clickAddNewExternalResource();
-        externalResource.getExternalResourcePopup().fillExternalResourcesPopup(externalResourceName, EXTERNAL_RESOURCE_TYPE, CONNECTION_URL);
-        externalResource.getExternalResourcePopup().clickSave();
+        ExternalResourcesPopupPage externalResourceWizard = new ExternalResourcesPopupPage(driver, webDriverWait);
+        externalResourceWizard.fillExternalResourcesPopup(externalResourceName, EXTERNAL_RESOURCE_TYPE, CONNECTION_URL);
+        externalResourceWizard.clickSave();
         Boolean externalResourceIsCreated = externalResource.externalResourceExistsIntoTable(externalResourceName);
 
         Assert.assertTrue(externalResourceIsCreated);
     }
 
-    @Test(priority = 2, testName = "Edit External Resource", description = "Edit External Resource", enabled = false)
+    @Test(priority = 2, testName = "Edit External Resource", description = "Edit External Resource")
     @Description("Edit External Resource")
     public void editExternalResource() {
         Boolean externalResourceExists = externalResource.externalResourceExistsIntoTable(externalResourceName);
         if (externalResourceExists) {
             externalResource.selectFoundExternalResource();
             externalResource.clickEditExternalResource();
-            externalResource.getExternalResourcePopup().fillName(updatedExternalResourceName);
-            externalResource.getExternalResourcePopup().clickSave();
+            ExternalResourcesPopupPage externalResourceWizard = new ExternalResourcesPopupPage(driver, webDriverWait);
+            externalResourceWizard.fillName(updatedExternalResourceName);
+            externalResourceWizard.clickSave();
             Boolean externalResourceIsCreated = externalResource.externalResourceExistsIntoTable(updatedExternalResourceName);
 
             Assert.assertTrue(externalResourceIsCreated);
-
         } else {
             log.error("External Resource with name: {} doesn't exist", externalResourceName);
             Assert.fail();

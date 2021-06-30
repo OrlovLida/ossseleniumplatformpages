@@ -2,6 +2,7 @@ package com.oss.bigdata.dfe;
 
 import com.oss.BaseTestCase;
 import com.oss.pages.bigdata.dfe.serverGroup.ServerGroupPage;
+import com.oss.pages.bigdata.utils.ConstantsDfe;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 import org.slf4j.Logger;
@@ -10,9 +11,6 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @Listeners({TestListener.class})
 public class ServerGroupTest extends BaseTestCase {
@@ -25,7 +23,6 @@ public class ServerGroupTest extends BaseTestCase {
     private final static String SERVERS_PASSWORD = "Password";
     private final static String SERVERS_DIRECTORY = "/test";
 
-
     private ServerGroupPage serverGroupPage;
     private String serverGroupName;
     private String updatedServerGroupName;
@@ -34,9 +31,7 @@ public class ServerGroupTest extends BaseTestCase {
     public void goToServerGroupView() {
         serverGroupPage = ServerGroupPage.goToPage(driver, BASIC_URL);
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy_MM_dd");
-        String date = simpleDateFormat.format(new Date());
-        serverGroupName = "Selenium_" + date + "_ServTest";
+        serverGroupName = ConstantsDfe.createName() + "_ServTest";
         updatedServerGroupName = serverGroupName + "_updated";
     }
 
@@ -66,12 +61,12 @@ public class ServerGroupTest extends BaseTestCase {
 
             Assert.assertTrue(serverCreated);
         } else {
-            log.error("Server group with name: {} doesn't exist, can not add server", serverGroupName);
+            log.error("Server group with name: {} doesn't exist, cannot add server", serverGroupName);
             Assert.fail();
         }
     }
 
-    @Test(priority = 3, testName = "Edit server", description = "Edit server", enabled = false)
+    @Test(priority = 3, testName = "Edit server", description = "Edit server")
     @Description("Edit server")
     public void editServer() {
         Boolean serverGroupExists = serverGroupPage.serverGroupExistIntoTable(serverGroupName);
@@ -122,7 +117,7 @@ public class ServerGroupTest extends BaseTestCase {
         }
     }
 
-    @Test(priority = 5, testName = "Edit server group", description = "Edit server group", enabled = false)
+    @Test(priority = 5, testName = "Edit server group", description = "Edit server group")
     @Description("Edit server group")
     public void editServerGroup() {
         Boolean serverGroupExists = serverGroupPage.serverGroupExistIntoTable(serverGroupName);
@@ -152,7 +147,7 @@ public class ServerGroupTest extends BaseTestCase {
 
             Assert.assertTrue(serverGroupIsDeleted);
         } else {
-            log.error("Server group with name: {} doesn't exist, can not perform delete action", serverGroupName);
+            log.error("Server group with name: {} doesn't exist, cannot perform delete action", serverGroupName);
             Assert.fail();
         }
     }

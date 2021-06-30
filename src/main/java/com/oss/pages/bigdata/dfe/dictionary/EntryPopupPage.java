@@ -1,34 +1,36 @@
 package com.oss.pages.bigdata.dfe.dictionary;
 
 
-import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bigdata.dfe.BasePopupPage;
+import com.oss.framework.widgets.Wizard;
+import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class EntryPopupPage extends BasePopupPage {
+import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
+
+public class EntryPopupPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(EntryPopupPage.class);
 
     private final String KEY_INPUT_ID = "name";
     private final String VALUE_INPUT_ID = "value";
+    private final Wizard entryWizard;
 
     public EntryPopupPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
+        entryWizard = Wizard.createWizard(driver, wait);
     }
 
     public void fillKey(String key) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        fillTextField(key, KEY_INPUT_ID);
+        entryWizard.setComponentValue(KEY_INPUT_ID, key, TEXT_FIELD);
         log.debug("Setting name with: {}", key);
     }
 
     public void fillValue(String value) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        fillTextField(value, VALUE_INPUT_ID);
+        entryWizard.setComponentValue(VALUE_INPUT_ID, value, TEXT_FIELD);
         log.debug("Setting description with: {}", value);
     }
 
@@ -39,4 +41,9 @@ public class EntryPopupPage extends BasePopupPage {
         log.info("Filled Entry Popup fields");
     }
 
+    @Step("I click Save")
+    public void clickSave() {
+        entryWizard.clickSave();
+        log.info("Finishing by clicking 'Save'");
+    }
 }
