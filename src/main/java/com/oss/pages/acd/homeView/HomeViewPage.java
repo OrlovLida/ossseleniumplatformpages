@@ -51,7 +51,7 @@ public class HomeViewPage extends BasePage {
 
     @Step("Waiting for column chart presence")
     public void seeColumnChartIsDisplayed() {
-        log.info("Waiting for chart presence");
+        log.info("Waiting for column chart presence");
         DelayUtils.waitForPageToLoad(driver, wait);
         ChartWidget.create(driver, wait, columnChartViewId).waitForPresenceAndVisibility(columnChartViewId);
     }
@@ -64,7 +64,7 @@ public class HomeViewPage extends BasePage {
 
     @Step("Waiting for pie chart presence")
     public void seePieChartIsDisplayed() {
-        log.info("Waiting for chart presence");
+        log.info("Waiting for pie chart presence");
         DelayUtils.waitForPageToLoad(driver, wait);
         ChartWidget.create(driver, wait, pieChartViewId).waitForPresenceAndVisibility(pieChartViewId);
     }
