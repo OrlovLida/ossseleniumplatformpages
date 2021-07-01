@@ -106,17 +106,15 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     @Step("Waiting until reconciliation is over")
     public void waitForEndOfReco() {
-        TableInterface tableWidget = OldTable.createByComponentDataAttributeName(driver, wait, RECONCILIATION_TAB_ID);
         DelayUtils.sleep(500);
-        tableWidget.callAction(ActionsContainer.KEBAB_GROUP_ID, RECO_STATE_REFRESH_BUTTON_ID);
+        OldTable.createByComponentDataAttributeName(driver, wait, RECONCILIATION_TAB_ID).callAction(ActionsContainer.KEBAB_GROUP_ID, RECO_STATE_REFRESH_BUTTON_ID);
         DelayUtils.sleep(500);
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, RECONCILIATION_STATE_TABLE_ID);
-        String status = table.getCellValue(0, "Status");
+        String status = OldTable.createByComponentDataAttributeName(driver, wait, RECONCILIATION_STATE_TABLE_ID).getCellValue(0, "Status");
         while (status.equals("IN_PROGRESS") || status.equals("PENDING")) {
             DelayUtils.sleep(5000);
-            tableWidget.callAction(ActionsContainer.KEBAB_GROUP_ID, RECO_STATE_REFRESH_BUTTON_ID);
+            OldTable.createByComponentDataAttributeName(driver, wait, RECONCILIATION_TAB_ID).callAction(ActionsContainer.KEBAB_GROUP_ID, RECO_STATE_REFRESH_BUTTON_ID);
             DelayUtils.sleep(1000);
-            status = table.getCellValue(0, "Status");
+            status = OldTable.createByComponentDataAttributeName(driver, wait, RECONCILIATION_STATE_TABLE_ID).getCellValue(0, "Status");
         }
         Assertions.assertThat(status.equals("SUCCESS"));
     }
