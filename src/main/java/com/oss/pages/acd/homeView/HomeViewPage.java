@@ -49,7 +49,7 @@ public class HomeViewPage extends BasePage {
         return new HomeViewPage(driver, wait);
     }
 
-    @Step("I see column chart is displayed")
+    @Step("Waiting for column chart presence")
     public void seeColumnChartIsDisplayed() {
         log.info("Waiting for chart presence");
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -62,7 +62,7 @@ public class HomeViewPage extends BasePage {
         button.click();
     }
 
-    @Step("I see pie chart is displayed")
+    @Step("Waiting for pie chart presence")
     public void seePieChartIsDisplayed() {
         log.info("Waiting for chart presence");
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -99,11 +99,11 @@ public class HomeViewPage extends BasePage {
 
         timePeriod.chooseOption(TimePeriodChooser.TimePeriodChooserOption.LAST);
 
-        timePeriod.setLastPeriod(2, 0, 0);
+        timePeriod.setLastPeriod(1, 12, 30);
         DelayUtils.sleep();
     }
 
-    @Step("Check data in scenario table {issueType}")
+    @Step("Check data in scenario table {issueType} is empty")
     public Boolean checkDataInScenarioTable() {
         DelayUtils.waitForPageToLoad(driver, wait);
 
@@ -122,10 +122,9 @@ public class HomeViewPage extends BasePage {
         issueIdSearch.clear();
     }
 
-    @Step("Clear multiSearch")
+    @Step("Clear time period chooser")
     public void clearTimePeriod(String widgetId) {
         TimePeriodChooser timePeriod = TimePeriodChooser.create(driver, wait, widgetId);
         timePeriod.clickClearValue();
-
     }
 }

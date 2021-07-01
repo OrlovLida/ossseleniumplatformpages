@@ -21,9 +21,7 @@ public class HomeViewTest extends BaseTestCase {
 
     @BeforeClass
     public void goToHomeView() {
-
         homeViewPage = HomeViewPage.goToPage(driver, BASIC_URL);
-
     }
 
     @Test(priority = 1, testName = "Check column chart", description = "Check column chart")
@@ -32,40 +30,40 @@ public class HomeViewTest extends BaseTestCase {
         homeViewPage.seeColumnChartIsDisplayed();
     }
 
-    @Test(priority = 2, testName = "Check column chart should be refreshed", description = "Check column chart should be refreshed")
-    @Description("Check column chart should be refreshed")
+    @Test(priority = 2, testName = "Check if column chart is refreshed", description = "Check if column chart is refreshed")
+    @Description("Check if column chart is refreshed")
     public void refreshColumnChart() {
         homeViewPage.refreshColumnChart();
         homeViewPage.seeColumnChartIsDisplayed();
     }
 
-    @Test(priority = 3, testName = "Check pie char", description = "Check pie char")
-    @Description("Check pie char")
+    @Test(priority = 3, testName = "Check pie chart", description = "Check pie chart")
+    @Description("Check pie chart")
     public void checkPieChart() {
         homeViewPage.seePieChartIsDisplayed();
     }
 
-    @Test(priority = 4, testName = "Check pie chart should be refreshed", description = "Check pie chart should be refreshed")
-    @Description("Check pie chart should be refreshed")
+    @Test(priority = 4, testName = "Check if pie chart is refreshed", description = "Check if pie chart is refreshed")
+    @Description("Check if pie chart is refreshed")
     public void refreshPieChart() {
         homeViewPage.refreshPieChart();
         homeViewPage.seePieChartIsDisplayed();
     }
 
-    @Test(priority = 5, testName = "Check is situation exist", description = "Check is situation exist")
-    @Description("Check is situation exist")
+    @Test(priority = 5, testName = "Check if situation exist", description = "Check if situation exist")
+    @Description("Check if situation exist")
     public void situationCheck() {
         checkScenarioTableWithFilters("Situation");
     }
 
-    @Test(priority = 6, testName = "Check is violation exist", description = "Check is violation exist")
-    @Description("Check is Anomaly exist")
+    @Test(priority = 6, testName = "Check if Anomaly exist", description = "Check if Anomaly exist")
+    @Description("Check if Anomaly exist")
     public void anomalyCheck() {
         checkScenarioTableWithFilters("Anomaly");
     }
 
-    @Test(priority = 7, testName = "Check is problem exist", description = "Check is problem exist")
-    @Description("Check is problem exist")
+    @Test(priority = 7, testName = "Check if problem exist", description = "Check if problem exist")
+    @Description("Check if problem exist")
     public void problemCheck() {
         checkScenarioTableWithFilters("Problem");
     }
