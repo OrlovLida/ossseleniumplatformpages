@@ -94,7 +94,7 @@ public class HomeViewPage extends BasePage {
     }
 
     @Step("Set value in time period chooser")
-    public void setValueInTimePeriodChooser(String widgetId, Integer days, Integer hours, Integer minutes) {
+    public void setValueInTimePeriodChooser(String widgetId, int days, int hours, int minutes) {
         TimePeriodChooser timePeriod = TimePeriodChooser.create(driver, wait, widgetId);
 
         timePeriod.chooseOption(TimePeriodChooser.TimePeriodChooserOption.LAST);
