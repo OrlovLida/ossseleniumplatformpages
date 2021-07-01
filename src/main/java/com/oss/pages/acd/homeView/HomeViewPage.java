@@ -94,12 +94,12 @@ public class HomeViewPage extends BasePage {
     }
 
     @Step("Set value in time period chooser")
-    public void setValueInTimePeriodChooser(String widgetId) {
+    public void setValueInTimePeriodChooser(String widgetId, Integer days, Integer hours, Integer minutes) {
         TimePeriodChooser timePeriod = TimePeriodChooser.create(driver, wait, widgetId);
 
         timePeriod.chooseOption(TimePeriodChooser.TimePeriodChooserOption.LAST);
 
-        timePeriod.setLastPeriod(1, 12, 30);
+        timePeriod.setLastPeriod(days, hours, minutes);
         DelayUtils.sleep();
     }
 
