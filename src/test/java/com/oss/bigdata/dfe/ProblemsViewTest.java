@@ -2,6 +2,7 @@ package com.oss.bigdata.dfe;
 
 import com.oss.BaseTestCase;
 import com.oss.pages.bigdata.dfe.problems.ProblemsPage;
+import com.oss.pages.bigdata.dfe.problems.ProblemsPopupPage;
 import com.oss.pages.bigdata.utils.ConstantsDfe;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
@@ -34,8 +35,9 @@ public class ProblemsViewTest extends BaseTestCase {
     @Description("Add new Problem")
     public void addProblem() {
         problemsPage.clickAddNewProblem();
-        problemsPage.getProblemsPopup().fillProblemsPopup(problemName, PROBLEM_DESCRIPTION);
-        problemsPage.getProblemsPopup().clickSave();
+        ProblemsPopupPage problemsWizard = new ProblemsPopupPage(driver, webDriverWait);
+        problemsWizard.fillProblemsPopup(problemName, PROBLEM_DESCRIPTION);
+        problemsWizard.clickSave();
         Boolean problemIsCreated = problemsPage.problemExistsIntoTable(problemName);
 
         if (!problemIsCreated) {
@@ -51,8 +53,9 @@ public class ProblemsViewTest extends BaseTestCase {
         if (problemExists) {
             problemsPage.selectFoundProblem();
             problemsPage.clickEditProblem();
-            problemsPage.getProblemsPopup().fillName(updatedProblemName);
-            problemsPage.getProblemsPopup().clickSave();
+            ProblemsPopupPage problemsWizard = new ProblemsPopupPage(driver, webDriverWait);
+            problemsWizard.fillName(updatedProblemName);
+            problemsWizard.clickSave();
             Boolean dictionaryIsCreated = problemsPage.problemExistsIntoTable(updatedProblemName);
 
             Assert.assertTrue(dictionaryIsCreated);

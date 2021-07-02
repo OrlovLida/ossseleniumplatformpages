@@ -2,6 +2,8 @@ package com.oss.bigdata.dfe;
 
 import com.oss.BaseTestCase;
 import com.oss.pages.bigdata.dfe.dictionary.DictionaryPage;
+import com.oss.pages.bigdata.dfe.dictionary.DictionaryPopupPage;
+import com.oss.pages.bigdata.dfe.dictionary.EntryPopupPage;
 import com.oss.pages.bigdata.utils.ConstantsDfe;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
@@ -36,8 +38,9 @@ public class DictionaryViewTest extends BaseTestCase {
     @Description("Add new Dictionary")
     public void addDictionary() {
         dictionaryPage.clickAddNewDictionary();
-        dictionaryPage.getDictionaryPopup().fillDictionaryPopup(dictionaryName, DICTIONARY_DESCRIPTION);
-        dictionaryPage.getDictionaryPopup().clickSave();
+        DictionaryPopupPage dictionaryWizard = new DictionaryPopupPage(driver, webDriverWait);
+        dictionaryWizard.fillDictionaryPopup(dictionaryName, DICTIONARY_DESCRIPTION);
+        dictionaryWizard.clickSave();
         Boolean dictionaryIsCreated = dictionaryPage.dictionaryExistsIntoTable(dictionaryName);
 
         Assert.assertTrue(dictionaryIsCreated);
@@ -51,8 +54,9 @@ public class DictionaryViewTest extends BaseTestCase {
             dictionaryPage.selectFoundDictionary();
             dictionaryPage.selectEntriesTab();
             dictionaryPage.clickAddNewEntry();
-            dictionaryPage.getEntryPopup().fillEntryPopup(ENTRIES_KEY, ENTRIES_VALUE);
-            dictionaryPage.getEntryPopup().clickSave();
+            EntryPopupPage entryWizard = new EntryPopupPage(driver, webDriverWait);
+            entryWizard.fillEntryPopup(ENTRIES_KEY, ENTRIES_VALUE);
+            entryWizard.clickSave();
             Boolean entryIsCreated = dictionaryPage.entryExistsIntoTable(ENTRIES_KEY);
 
             Assert.assertTrue(entryIsCreated);
@@ -65,17 +69,25 @@ public class DictionaryViewTest extends BaseTestCase {
     @Test(priority = 3, testName = "Delete Entries", description = "Delete Entries")
     @Description("Delete Entries")
     public void deleteEntries() {
-        Boolean entryExists = dictionaryPage.entryExistsIntoTable(ENTRIES_KEY);
-        if (entryExists) {
-            dictionaryPage.clickDeleteEntry();
-            dictionaryPage.confirmDelete();
-            Boolean entryDeleted = dictionaryPage.entryDeletedFromTable();
-
-            Assert.assertTrue(entryDeleted);
-
+        Boolean dictionaryExists = dictionaryPage.dictionaryExistsIntoTable(dictionaryName);
+        if (dictionaryExists) {
             dictionaryPage.selectFoundDictionary();
+            dictionaryPage.selectEntriesTab();
+            Boolean entryExists = dictionaryPage.entryExistsIntoTable(ENTRIES_KEY);
+            if (entryExists) {
+                dictionaryPage.clickDeleteEntry();
+                dictionaryPage.confirmDelete();
+                Boolean entryDeleted = dictionaryPage.entryDeletedFromTable();
+
+                Assert.assertTrue(entryDeleted);
+
+                dictionaryPage.selectFoundDictionary();
+            } else {
+                log.error("Entry with key: {} was not deleted", ENTRIES_KEY);
+                Assert.fail();
+            }
         } else {
-            log.error("Entry with key: {} was not deleted", ENTRIES_KEY);
+            log.error("Dictionary with name: {} doesn't exist", dictionaryName);
             Assert.fail();
         }
     }
@@ -87,12 +99,12 @@ public class DictionaryViewTest extends BaseTestCase {
         if (dictionaryExists) {
             dictionaryPage.selectFoundDictionary();
             dictionaryPage.clickEditDictionary();
-            dictionaryPage.getDictionaryPopup().fillName(updatedDictionaryName);
-            dictionaryPage.getDictionaryPopup().clickSave();
+            DictionaryPopupPage dictionaryWizard = new DictionaryPopupPage(driver, webDriverWait);
+            dictionaryWizard.fillName(updatedDictionaryName);
+            dictionaryWizard.clickSave();
             Boolean dictionaryIsCreated = dictionaryPage.dictionaryExistsIntoTable(updatedDictionaryName);
 
             Assert.assertTrue(dictionaryIsCreated);
-
         } else {
             log.error("Dictionary with name: {} doesn't exist", updatedDictionaryName);
             Assert.fail();

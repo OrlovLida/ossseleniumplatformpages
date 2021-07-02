@@ -15,15 +15,8 @@ public class KQIsPage extends BaseDfePage {
     private final String DELETE_KQI_LABEL = "Delete KQI";
     private final String CONFIRM_DELETE_LABEL = "Delete";
 
-    private final KQIWizardPage kqiWizardPage;
-
     public KQIsPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
-        kqiWizardPage = new KQIWizardPage(driver, wait, KQI_WIZARD_ID);
-    }
-
-    public KQIWizardPage getKqiWizardPage() {
-        return kqiWizardPage;
     }
 
     @Step("I open KQIs View")
