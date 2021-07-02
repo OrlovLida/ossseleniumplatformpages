@@ -25,17 +25,17 @@ public class DataSourceSpecificInfoPage extends BasePage {
         specificInfoWizard = Wizard.createWizard(driver, wait);
     }
 
-    public void fillOffset(String offset) {
+    private void fillOffset(String offset) {
         specificInfoWizard.setComponentValue(OFFSET_INPUT_ID, offset, COMBOBOX);
         log.debug("Setting offset with: {}", offset);
     }
 
-    public void fillIntervalUnit(String unit) {
+    private void fillIntervalUnit(String unit) {
         specificInfoWizard.setComponentValue(INTERVAL_UNIT_INPUT_ID, unit, COMBOBOX);
         log.debug("Setting interval unit with: {}", unit);
     }
 
-    public void fillIntervalAmount(String intervalAmount) {
+    private void fillIntervalAmount(String intervalAmount) {
         specificInfoWizard.setComponentValue(INTERVAL_AMOUNT_INPUT_ID, intervalAmount, TEXT_FIELD);
         log.debug("Setting interval amount with: {}", intervalAmount);
     }

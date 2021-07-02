@@ -26,7 +26,6 @@ public class AggregateProcessSettingsPage extends BasePage {
 
     private void fillOnFailure(String onFailure) {
         processSettingsWizard.setComponentValue(ON_FAILURE_INPUT_ID, onFailure, COMBOBOX);
-        //  DelayUtils.waitForPageToLoad(driver, wait);
         log.debug("Setting on failure: {}", onFailure);
     }
 
@@ -48,5 +47,4 @@ public class AggregateProcessSettingsPage extends BasePage {
         processSettingsWizard.clickNextStep();
         log.info("I click Next Step");
     }
-
 }

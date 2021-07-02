@@ -22,11 +22,6 @@ public class AggregateConfigurationPage extends BasePage {
         aggrConfWizard = Wizard.createWizard(driver, wait);
     }
 
-    public void addNewAggregateConfiguration(AggregatesManagerWidget aggregatesManager) {
-        aggregatesManager.clickAdd();
-        log.debug("Adding new aggregate configuration");
-    }
-
     @Step("I fill Aggregates Configuration Step Aggregate")
     public void fillAggregatesConfigurationStepAggregate(String configName, String baseTableName, String selectedDimension) {
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -54,5 +49,10 @@ public class AggregateConfigurationPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         aggrConfWizard.clickAcceptOldWizard();
         log.info("Finishing Step Wizard by clicking 'Accept'");
+    }
+
+    private void addNewAggregateConfiguration(AggregatesManagerWidget aggregatesManager) {
+        aggregatesManager.clickAdd();
+        log.debug("Adding new aggregate configuration");
     }
 }

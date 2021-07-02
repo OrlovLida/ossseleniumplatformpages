@@ -1,6 +1,5 @@
 package com.oss.pages.bigdata.dfe.DataSource.DSWizard;
 
-
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
