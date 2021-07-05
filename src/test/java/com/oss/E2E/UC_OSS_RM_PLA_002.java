@@ -4,7 +4,6 @@ import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.util.List;
 
-import org.assertj.core.api.Assertions;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -16,7 +15,6 @@ import com.oss.framework.alerts.SystemMessageContainer.Message;
 import com.oss.framework.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.ActionsContainer;
-import com.oss.framework.mainheader.LoginPanel;
 import com.oss.framework.mainheader.Notifications;
 import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.sidemenu.SideMenu;
@@ -86,7 +84,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
         processNRPCode = processWizardPage.createSimpleNRP();
         checkMessageSize();
-        checkMessageType();
+        checkMessageType(MessageType.SUCCESS);
         checkMessageContainsText(processNRPCode);
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.startTask(processNRPCode, TasksPage.HIGH_LEVEL_PLANNING_TASK);
@@ -135,7 +133,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         deviceWizardPage.accept();
         waitForPageToLoad();
         checkMessageSize();
-        checkMessageType();
+        checkMessageType(MessageType.SUCCESS);
     }
 
     @Test(priority = 5)
@@ -282,7 +280,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         cliConfigurationWizardPage.clickAccept();
         waitForPageToLoad();
         checkMessageSize();
-        checkMessageType();
+        checkMessageType(MessageType.SUCCESS);
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         systemMessage.clickMessageLink();
         waitForPageToLoad();
@@ -346,14 +344,13 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
             assert resource != null;
             String absolutePatch = Paths.get(resource.toURI()).toFile().getAbsolutePath();
             tasksPage.addFile(processIPCode, TasksPage.IMPLEMENTATION_TASK, absolutePatch);
-            checkMessageType();
+            checkMessageType(MessageType.SUCCESS);
         } catch (URISyntaxException e) {
             throw new RuntimeException("Cannot load file", e);
         }
         DelayUtils.sleep(2000);
         List<String> files = tasksPage.getListOfAttachments();
-        Assertions.assertThat(files.get(0)).contains("SeleniumTest");
-        Assertions.assertThat(files.size()).isGreaterThan(0);
+        Assert.assertTrue((files.get(0)).contains("SeleniumTest"));
     }
 
     @Test(priority = 14)
@@ -409,9 +406,9 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         DelayUtils.sleep(100);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.runReconciliation();
-        networkDiscoveryControlViewPage.checkReconciliationStartedSystemMessage();
+        checkMessageType(MessageType.INFO);
         waitForPageToLoad();
-        networkDiscoveryControlViewPage.waitForEndOfReco();
+        Assert.assertEquals(networkDiscoveryControlViewPage.waitForEndOfReco(), "SUCCESS");
         networkDiscoveryControlViewPage.selectLatestReconciliationState();
         Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(IssueLevel.STARTUP_FATAL));
         Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(IssueLevel.FATAL));
@@ -438,8 +435,8 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.clearOldNotifications();
         networkDiscoveryControlViewPage.deleteCmDomain();
-        networkDiscoveryControlViewPage.checkDeleteCmDomainSystemMessage();
-        networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(CM_DOMAIN_NAME);
+        checkMessageType(MessageType.INFO);
+        Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
     }
 
     @Test(priority = 20)
@@ -468,7 +465,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         networkViewPage.queryElementAndAddItToView("name", TEXT_FIELD, DEVICE_NAME);
         networkViewPage.useContextActionAndClickConfirmation(ActionsContainer.EDIT_GROUP_ID, NetworkViewPage.DELETE_ELEMENT_ACTION, ConfirmationBox.YES);
         checkMessageSize();
-        checkMessageType();
+        checkMessageType(MessageType.SUCCESS);
         waitForPageToLoad();
     }
 
@@ -498,8 +495,8 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         ipAddressManagementViewPage.deleteHostAssignment("/24 [");
     }
 
-    private void checkMessageType() {
-        Assert.assertEquals(MessageType.SUCCESS, (getFirstMessage().getMessageType()));
+    private void checkMessageType(MessageType messageType) {
+        Assert.assertEquals((getFirstMessage().getMessageType()), messageType);
     }
 
     private void checkMessageContainsText(String message) {
@@ -524,12 +521,12 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     }
 
     private void checkTaskAssignment() {
-        checkMessageType();
+        checkMessageType(MessageType.SUCCESS);
         checkMessageText();
     }
 
     private void checkTaskCompleted() {
-        checkMessageType();
+        checkMessageType(MessageType.SUCCESS);
         checkMessageContainsText("Task properly completed.");
     }
 

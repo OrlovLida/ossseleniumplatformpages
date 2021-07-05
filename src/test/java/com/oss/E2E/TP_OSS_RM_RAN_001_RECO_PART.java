@@ -1,12 +1,16 @@
 package com.oss.E2E;
 
-import org.assertj.core.api.Assertions;
+import java.util.List;
+
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
+import com.oss.framework.alerts.SystemMessageContainer;
+import com.oss.framework.alerts.SystemMessageContainer.MessageType;
+import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.reconciliation.CmDomainWizardPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
@@ -67,8 +71,8 @@ public class TP_OSS_RM_RAN_001_RECO_PART extends BaseTestCase {
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.runReconciliation();
-        networkDiscoveryControlViewPage.checkReconciliationStartedSystemMessage();
-        networkDiscoveryControlViewPage.waitForEndOfReco();
+        checkPopupMessageType();
+        Assert.assertEquals(networkDiscoveryControlViewPage.waitForEndOfReco(), "SUCCESS");
         networkDiscoveryControlViewPage.selectLatestReconciliationState();
         Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(IssueLevel.STARTUP_FATAL));
         Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(IssueLevel.FATAL));
@@ -82,7 +86,7 @@ public class TP_OSS_RM_RAN_001_RECO_PART extends BaseTestCase {
         NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
         networkInconsistenciesViewPage.expandTree();
         for (String inconsistencieName : inconsistenciesNames) {
-            Assertions.assertThat(networkInconsistenciesViewPage.checkInconsistenciesOperationType().equals("MODIFICATION")).isTrue();
+            Assert.assertEquals(networkInconsistenciesViewPage.checkInconsistenciesOperationType(), "MODIFICATION");
             networkInconsistenciesViewPage.clearOldNotification();
             networkInconsistenciesViewPage.applySelectedInconsistencies();
             DelayUtils.sleep(5000);
@@ -97,7 +101,15 @@ public class TP_OSS_RM_RAN_001_RECO_PART extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.clearOldNotifications();
         networkDiscoveryControlViewPage.deleteCmDomain();
-        networkDiscoveryControlViewPage.checkDeleteCmDomainSystemMessage();
-        networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(cmDomainName);
+        checkPopupMessageType();
+        Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + cmDomainName + " finished");
+    }
+
+    private void checkPopupMessageType() {
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
+        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
+        Assert.assertNotNull(messages);
+        Assert.assertEquals(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType(),
+                MessageType.INFO);
     }
 }

@@ -8,6 +8,7 @@ import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
+import com.oss.framework.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
@@ -56,26 +57,26 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
     private static final String END_LOCATION_DATA_ATTRIBUTENAME = "endTermination";
 
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
-    private String CM_DOMAIN_NAME = "Selenium-TS-RAN-E2E-02-5G";
-    private String CM_INTERFACE_NAME = "Huawei U2000 RAN";
-    private String[] RAN_INCONSISTENCIES_NAMES = {
+    private static final String CM_DOMAIN_NAME = "Selenium-TS-RAN-E2E-02-5G";
+    private static final String CM_INTERFACE_NAME = "Huawei U2000 RAN";
+    private static final String[] RAN_INCONSISTENCIES_NAMES = {
             "GNODEB-" + RECO_GNODEB_NAME,
             "GNODEBDU-" + RECO_GNODEB_NAME,
             "GNODEBCUUP-" + RECO_GNODEB_NAME
     };
-    private String[] PHYSICAL_INCONSISTENCIES_NAMES = {
+    private static final String[] PHYSICAL_INCONSISTENCIES_NAMES = {
             "PhysicalElement-" + RECO_RRU_NAME2,
             "PhysicalElement-" + RECO_RRU_NAME1,
             "PhysicalElement-" + RECO_SWITCH_NAME2,
             "PhysicalElement-" + RECO_SWITCH_NAME1,
     };
 
-    private void checkPopup() {
+    private void checkPopupMessageType(MessageType messageType) {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
         Assert.assertNotNull(messages);
         Assert.assertEquals(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType(),
-                SystemMessageContainer.MessageType.SUCCESS);
+                messageType);
     }
 
     public void openHomePage() {
@@ -126,8 +127,8 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.runReconciliation();
-        networkDiscoveryControlViewPage.checkReconciliationStartedSystemMessage();
-        networkDiscoveryControlViewPage.waitForEndOfReco();
+        checkPopupMessageType(MessageType.SUCCESS);
+        Assert.assertEquals(networkDiscoveryControlViewPage.waitForEndOfReco(), "SUCCESS");
     }
 
     @Test(priority = 4)
@@ -162,8 +163,8 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.clearOldNotifications();
         networkDiscoveryControlViewPage.deleteCmDomain();
-        networkDiscoveryControlViewPage.checkDeleteCmDomainSystemMessage();
-        networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(CM_DOMAIN_NAME);
+        checkPopupMessageType(MessageType.INFO);
+        Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
         PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
     }
 
@@ -195,7 +196,7 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         AntennaArrayWizardPage antennaArrayWizardPage = new AntennaArrayWizardPage(driver);
         antennaArrayWizardPage.clickAccept();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        checkPopup();
+        checkPopupMessageType(MessageType.SUCCESS);
     }
 
     @Test(priority = 8)
@@ -212,7 +213,7 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         wizard.setHostingContains(RAN_ANTENNA_ARRAY_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         wizard.clickAccept();
-        checkPopup();
+        checkPopupMessageType(MessageType.SUCCESS);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -246,7 +247,7 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         cableWizardPage.setName(CABLE_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cableWizardPage.accept();
-        checkPopup();
+        checkPopupMessageType(MessageType.SUCCESS);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -270,7 +271,7 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         connectionWizardPage.selectConnectionTermination(1);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         connectionWizardPage.clickAccept();
-        checkPopup();
+        checkPopupMessageType(MessageType.SUCCESS);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
     
@@ -315,7 +316,7 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cellSiteConfigurationPage.filterObject("Name", ANTENNA_TRAIL_NAME);
         cellSiteConfigurationPage.removeObject();
-        checkPopup();
+        checkPopupMessageType(MessageType.SUCCESS);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -326,7 +327,7 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cellSiteConfigurationPage.filterObject("Name", CABLE_NAME);
         cellSiteConfigurationPage.removeObject();
-        checkPopup();
+        checkPopupMessageType(MessageType.SUCCESS);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -341,7 +342,7 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         cellSiteConfigurationPage.selectTab("Hosting");
         cellSiteConfigurationPage.filterObject("Hosted Resource", RECO_CELL5G_NAME);
         cellSiteConfigurationPage.removeObject();
-        checkPopup();
+        checkPopupMessageType(MessageType.SUCCESS);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -353,7 +354,7 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         cellSiteConfigurationPage.selectTab("Devices");
         cellSiteConfigurationPage.filterObject("Name", RAN_ANTENNA_NAME);
         cellSiteConfigurationPage.removeObject();
-        checkPopup();
+        checkPopupMessageType(MessageType.SUCCESS);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -373,7 +374,7 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         cellSiteConfigurationPage.selectRowByAttributeValueWithLabel("Name", RECO_SWITCH_NAME1);
         cellSiteConfigurationPage.selectRowByAttributeValueWithLabel("Name", RECO_SWITCH_NAME2);
         cellSiteConfigurationPage.removeObject();
-        checkPopup();
+        checkPopupMessageType(MessageType.SUCCESS);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
     
@@ -395,15 +396,15 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         cellSiteConfigurationPage.selectTab("Base Stations");
         cellSiteConfigurationPage.filterObject("Type", RECO_GNODEBCUUP_TYPE);
         cellSiteConfigurationPage.removeObject();
-        checkPopup();
+        checkPopupMessageType(MessageType.SUCCESS);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cellSiteConfigurationPage.filterObject("Type", RECO_GNODEBDU_TYPE);
         cellSiteConfigurationPage.removeObject();
-        checkPopup();
+        checkPopupMessageType(MessageType.SUCCESS);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cellSiteConfigurationPage.filterObject("Type", RECO_GNODEB_TYPE);
         cellSiteConfigurationPage.removeObject();
-        checkPopup();
+        checkPopupMessageType(MessageType.SUCCESS);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 }
