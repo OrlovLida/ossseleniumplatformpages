@@ -102,6 +102,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         DelayUtils.sleep(1000);
         nivTabs.callActionById(APPLY_GROUP_BUTTON_ID);
         DelayUtils.sleep(1000);
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     @Step("Apply discrepancies to Live perspective")
@@ -111,6 +112,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         DelayUtils.sleep(1000);
         nivTabs.callActionById(APPLY_BUTTON_ID);
         DelayUtils.sleep(1000);
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     @Step("Clear old notifications")

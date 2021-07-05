@@ -1,14 +1,16 @@
 package com.oss.pages.bigdata.dfe.serverGroup;
 
-import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bigdata.dfe.BasePopupPage;
+import com.oss.framework.widgets.Wizard;
+import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ServerPopupPage extends BasePopupPage {
+import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
+
+public class ServerPopupPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(ServerPopupPage.class);
     private final String SERVER_NAME_LABEL = "serverName";
@@ -17,37 +19,35 @@ public class ServerPopupPage extends BasePopupPage {
     private final String PASSWORD_LABEL = "password";
     private final String DIRECTORY_LABEL = "directory";
 
+    private final Wizard serverWizard;
+
     public ServerPopupPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
+        serverWizard = Wizard.createWizard(driver, wait);
     }
 
     public void fillServerName(String serverName) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        fillTextField(serverName, SERVER_NAME_LABEL);
+        serverWizard.setComponentValue(SERVER_NAME_LABEL, serverName, TEXT_FIELD);
         log.debug("Setting Server Name with {}", serverName);
     }
 
     public void fillServerAddress(String serverAddress) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        fillTextField(serverAddress, SERVER_ADDRESS_LABEL);
+        serverWizard.setComponentValue(SERVER_ADDRESS_LABEL, serverAddress, TEXT_FIELD);
         log.debug("Setting Server Address with {}", serverAddress);
     }
 
     public void fillUserName(String userName) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        fillTextField(userName, USER_NAME_LABEL);
+        serverWizard.setComponentValue(USER_NAME_LABEL, userName, TEXT_FIELD);
         log.debug("Setting User Name with {}", userName);
     }
 
     public void fillPassword(String password) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        fillTextField(password, PASSWORD_LABEL);
+        serverWizard.setComponentValue(PASSWORD_LABEL, password, TEXT_FIELD);
         log.debug("Setting Password with {}", password);
     }
 
     public void fillDirectory(String directory) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        fillTextField(directory, DIRECTORY_LABEL);
+        serverWizard.setComponentValue(DIRECTORY_LABEL, directory, TEXT_FIELD);
         log.debug("Setting Directory with {}", directory);
     }
 
@@ -65,5 +65,11 @@ public class ServerPopupPage extends BasePopupPage {
         fillPassword(password);
         fillDirectory(directory);
         log.info("Filled Add New Server Popup fields");
+    }
+
+    @Step("I click Save")
+    public void clickSave() {
+        serverWizard.clickSave();
+        log.info("Finishing by clicking 'Save'");
     }
 }

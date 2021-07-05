@@ -1,6 +1,6 @@
 package com.oss.E2E;
 
-import org.assertj.core.api.Assertions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
@@ -81,8 +81,8 @@ public class UC_NAR_005 extends BaseTestCase {
         waitForPageToLoad();
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.runReconciliation();
-        networkDiscoveryControlViewPage.checkReconciliationStartedSystemMessage();
-        networkDiscoveryControlViewPage.waitForEndOfReco();
+        checkMessageType(MessageType.INFO);
+        Assert.assertEquals(networkDiscoveryControlViewPage.waitForEndOfReco(), "SUCCESS");
         networkDiscoveryControlViewPage.selectLatestReconciliationState();
         Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(IssueLevel.STARTUP_FATAL));
         Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(IssueLevel.FATAL));
@@ -129,7 +129,7 @@ public class UC_NAR_005 extends BaseTestCase {
         newInventoryViewPage.searchObject(DEVICE_NAME);
         waitForPageToLoad();
         Assert.assertFalse(newInventoryViewPage.checkIfTableIsEmpty());
-        Assert.assertEquals(SERIAL_NUMBER_BEFORE, newInventoryViewPage.getMainTable().getCellValue(0, "Serial Number"));
+        Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "Serial Number"), SERIAL_NUMBER_BEFORE);
     }
 
     @Test(priority = 7)
@@ -142,10 +142,10 @@ public class UC_NAR_005 extends BaseTestCase {
         notifications.clearAllNotification();
         newInventoryViewPage.callAction(ActionsContainer.OTHER_GROUP_ID, "run-narrow-reconciliation");
         DelayUtils.sleep(3000);
-        Assertions.assertThat(notifications.waitAndGetFinishedNotificationText().equals("Narrow reconciliation for GMOCs IPDevice finished")).isTrue();
+        Assert.assertEquals(notifications.waitAndGetFinishedNotificationText(), "Narrow reconciliation for GMOCs IPDevice finished");
         newInventoryViewPage.refreshMainTable();
         waitForPageToLoad();
-        Assert.assertEquals(SERIAL_NUMBER_AFTER, newInventoryViewPage.getMainTable().getCellValue(0, "Serial Number"));
+        Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "Serial Number"), SERIAL_NUMBER_AFTER);
     }
 
     @Test(priority = 8)
@@ -155,8 +155,8 @@ public class UC_NAR_005 extends BaseTestCase {
         newInventoryViewPage.selectFirstRow();
         newInventoryViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, "DeleteDeviceWizardAction");
         waitForPageToLoad();
-        Wizard.createWizard(driver, webDriverWait).clickActionById("ConfirmationBox_object_delete_wizard_confirmation_box_action_button");
-        checkMessageType();
+        Wizard.createWizard(driver, new WebDriverWait(driver, 90)).clickActionById("ConfirmationBox_object_delete_wizard_confirmation_box_action_button");
+        checkMessageType(MessageType.SUCCESS);
         newInventoryViewPage.refreshMainTable();
         Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());
     }
@@ -168,16 +168,16 @@ public class UC_NAR_005 extends BaseTestCase {
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.clearOldNotifications();
         networkDiscoveryControlViewPage.deleteCmDomain();
-        networkDiscoveryControlViewPage.checkDeleteCmDomainSystemMessage();
-        networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(CM_DOMAIN_NAME);
+        checkMessageType(MessageType.INFO);
+        Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
     }
 
     private void waitForPageToLoad() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    private void checkMessageType() {
-        Assert.assertEquals(MessageType.SUCCESS, (getFirstMessage().getMessageType()));
+    private void checkMessageType(MessageType messageType) {
+        Assert.assertEquals((getFirstMessage().getMessageType()), messageType);
     }
 
     private Message getFirstMessage() {
