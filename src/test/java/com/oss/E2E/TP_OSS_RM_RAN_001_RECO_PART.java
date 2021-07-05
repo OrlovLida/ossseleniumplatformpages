@@ -90,7 +90,7 @@ public class TP_OSS_RM_RAN_001_RECO_PART extends BaseTestCase {
             networkInconsistenciesViewPage.clearOldNotification();
             networkInconsistenciesViewPage.applySelectedInconsistencies();
             DelayUtils.sleep(5000);
-            networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(inconsistencieName);
+            Assert.assertEquals(networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(), "Accepting discrepancies related to " + inconsistencieName + " finished");
         }
     }
 

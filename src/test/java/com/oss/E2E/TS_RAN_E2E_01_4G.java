@@ -112,19 +112,19 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         for (String inconsistencieName : inconsistenciesNames) {
             networkInconsistenciesViewPage.assignLocation(inconsistencieName, LOCATION_NAME);
-            networkInconsistenciesViewPage.checkUpdateDeviceSystemMessage();
+            checkPopupMessageType(MessageType.SUCCESS);
             networkInconsistenciesViewPage.clearOldNotification();
             networkInconsistenciesViewPage.applySelectedInconsistencies();
             DelayUtils.sleep(5000);
-            networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(inconsistencieName);
+            Assert.assertEquals(networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(), "Accepting discrepancies related to " + inconsistencieName + " finished");
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
         }
         networkInconsistenciesViewPage.assignRanLocation(inconsistenciesRanName, LOCATION_NAME);
-        networkInconsistenciesViewPage.checkUpdateDeviceSystemMessage();
+        checkPopupMessageType(MessageType.SUCCESS);
         networkInconsistenciesViewPage.clearOldNotification();
         networkInconsistenciesViewPage.applySelectedInconsistencies();
         DelayUtils.sleep(5000);
-        networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(inconsistenciesRanName);
+        Assert.assertEquals(networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(), "Accepting discrepancies related to " + inconsistenciesRanName + " finished");
     }
 
     @Test(priority = 5)

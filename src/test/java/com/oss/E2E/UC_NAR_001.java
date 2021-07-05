@@ -95,11 +95,11 @@ public class UC_NAR_001 extends BaseTestCase {
         NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
         networkInconsistenciesViewPage.expandTree();
         networkInconsistenciesViewPage.assignLocation(ROUTER_NAME, "a");
-        networkInconsistenciesViewPage.checkUpdateDeviceSystemMessage();
+        checkPopupMessageType(MessageType.SUCCESS);
         networkInconsistenciesViewPage.clearOldNotification();
         networkInconsistenciesViewPage.applyInconsistencies();
         DelayUtils.sleep(5000);
-        networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(ROUTER_NAME);
+        Assert.assertEquals(networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(), "Accepting discrepancies related to " + ROUTER_NAME + " finished");
     }
 
     @Test(priority = 5)
@@ -158,7 +158,7 @@ public class UC_NAR_001 extends BaseTestCase {
         networkInconsistenciesViewPage.clearOldNotification();
         networkInconsistenciesViewPage.applyInconsistencies();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(ROUTER_NAME);
+        Assert.assertEquals(networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(), "Accepting discrepancies related to " + ROUTER_NAME + " finished");
     }
 
     @Test(priority = 9)

@@ -1,6 +1,5 @@
 package com.oss.pages.reconciliation;
 
-import org.assertj.core.api.Assertions;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
@@ -38,8 +37,6 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     private static final String SHOW_SAMPLES_MANAGEMENT_ACTION_ID = "narComponent_CmDomainActionCmSamplesManagementId";
     private static final String ISSUES_TABLE_ID = "narComponent_networkDiscoveryControlViewIdissuesTableId";
     private static final String RECO_STATE_REFRESH_BUTTON_ID = "tableRefreshButton";
-    private static final String OVER_100_ISSUES_LOG = "There are over 100 issues with type = '%s'. Printing only latest 100:";
-    private static final String TYPE_LOG = "['%s'] ";
     private static final String STATUS = "Status";
 
     public static NetworkDiscoveryControlViewPage goToNetworkDiscoveryControlViewPage(WebDriver driver, String basicURL) {
@@ -172,14 +169,13 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     private void logIssues(String type) {
         int issuesNumber = getIssuesTable().getTableObjectsCount();
-        Assertions.assertThat(issuesNumber).isGreaterThan(0);
         if (issuesNumber <= 10) {
             printIssues(type, issuesNumber);
         } else if (issuesNumber <= 100) {
             getIssuesTable().changeItemsPerPageValue(100);
             printIssues(type, issuesNumber);
         } else {
-            log.info(String.format(OVER_100_ISSUES_LOG, type));
+            log.info("There are over 100 issues with type = '{}'. Printing only latest 100:", type);
             getIssuesTable().changeItemsPerPageValue(100);
             printIssues(type, 100);
         }
@@ -187,7 +183,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     private void printIssues(String type, int issuesNumber) {
         for (int i = 0; i < issuesNumber; i++) {
-            log.info(String.format(TYPE_LOG, type) + getIssuesTable().getCellValue(i, "Reason"));
+            log.info("[{}] {}", type, getIssuesTable().getCellValue(i, "Reason"));
         }
     }
 

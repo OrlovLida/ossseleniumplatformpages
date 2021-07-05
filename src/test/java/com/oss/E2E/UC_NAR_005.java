@@ -97,11 +97,11 @@ public class UC_NAR_005 extends BaseTestCase {
         NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
         networkInconsistenciesViewPage.expandTree();
         networkInconsistenciesViewPage.assignLocation(DEVICE_NAME, "a");
-        networkInconsistenciesViewPage.checkUpdateDeviceSystemMessage();
+        checkMessageType(MessageType.SUCCESS);
         networkInconsistenciesViewPage.clearOldNotification();
         networkInconsistenciesViewPage.applyInconsistencies();
         DelayUtils.sleep(5000);
-        networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(DEVICE_NAME);
+        Assert.assertEquals(networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(), "Accepting discrepancies related to " + DEVICE_NAME + " finished");
     }
 
     @Test(priority = 5)
