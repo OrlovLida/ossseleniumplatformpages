@@ -2,13 +2,13 @@ package com.oss.E2E;
 
 import java.util.List;
 
-import org.assertj.core.api.Assertions;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
+import com.oss.framework.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.mainheader.PerspectiveChooser;
 import com.oss.framework.sidemenu.SideMenu;
@@ -81,9 +81,9 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
         processNRPCode = processWizardPage.createSimpleNRP();
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages).hasSize(1);
-        Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
-        Assertions.assertThat(messages.get(0).getText()).contains(processNRPCode);
+        Assert.assertEquals(messages.size(), 1);
+        checkPopupMessageType(MessageType.SUCCESS);
+        Assert.assertTrue(messages.get(0).getText().contains(processNRPCode));
     }
 
     @Test(priority = 2)
@@ -125,7 +125,7 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
         waitForPageToLoad();
         cellSiteConfigurationPage.selectTreeRow(LOCATION_NAME);
         cellSiteConfigurationPage.createBaseBandUnit(BBU_EQUIPMENT_TYPE, BASE_BAND_UNIT_MODEL, BBU_NAME, LOCATION_NAME);
-        checkPopup();
+        checkPopupMessageType(SystemMessageContainer.MessageType.SUCCESS);
         waitForPageToLoad();
     }
 
@@ -134,7 +134,7 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
     public void createRadioUnit() {
         for (int i = 0; i < 3; i++) {
             cellSiteConfigurationPage.createRadioUnit(RADIO_UNIT_EQUIPMENT_TYPE, RADIO_UNIT_MODEL, RADIO_UNIT_NAMES[i], LOCATION_NAME);
-            checkPopup();
+            checkPopupMessageType(SystemMessageContainer.MessageType.SUCCESS);
             waitForPageToLoad();
         }
     }
@@ -144,7 +144,7 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
     public void createRanAntennaAndArray() {
         for (int i = 0; i < 3; i++) {
             cellSiteConfigurationPage.createRanAntennaAndArray(ANTENNA_NAMES[i], RAN_ANTENNA_MODEL, LOCATION_NAME);
-//            checkPopup(); OSSRAN-5528
+//            checkPopupMessageType(SystemMessageContainer.MessageType.SUCCESS); OSSRAN-5528
             waitForPageToLoad();
         }
     }
@@ -157,7 +157,7 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
         cellSiteConfigurationPage.selectTreeRow(ENODEB_NAME);
         waitForPageToLoad();
         cellSiteConfigurationPage.createHostingOnDevice(BBU_NAME, false);
-        checkPopup();
+        checkPopupMessageType(SystemMessageContainer.MessageType.SUCCESS);
         waitForPageToLoad();
     }
 
@@ -168,7 +168,7 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
             cellSiteConfigurationPage.selectTreeRow(CELL_NAMES[i]);
             waitForPageToLoad();
             cellSiteConfigurationPage.createHostingOnDevice(RADIO_UNIT_NAMES[i]);//TODO OSSPHY-49316 trzeba się upewnić że odpowiedni device wybiera
-            checkPopup();
+            checkPopupMessageType(SystemMessageContainer.MessageType.SUCCESS);
             waitForPageToLoad();
         }
     }
@@ -181,7 +181,7 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
             cellSiteConfigurationPage.selectTreeRow(CELL_NAMES[i]);
             waitForPageToLoad();
             cellSiteConfigurationPage.createHostingOnAntennaArray(ANTENNA_NAMES[i]);//TODO OSSPHY-49316 trzeba się upewnić że odpowiedni device wybiera
-            checkPopup();
+            checkPopupMessageType(SystemMessageContainer.MessageType.SUCCESS);
         }
     }
 
@@ -216,7 +216,7 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
         waitForPageToLoad();
         PlanViewWizardPage planViewWizardPage = new PlanViewWizardPage(driver);
         planViewWizardPage.selectTab("Validation Results");
-        Assertions.assertThat(planViewWizardPage.validationErrorsPresent());
+        Assert.assertTrue(planViewWizardPage.validationErrorsPresent());
     }
 
     @Test(priority = 15)
@@ -329,8 +329,8 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         waitForPageToLoad();
         networkDiscoveryControlViewPage.runReconciliation();
-        networkDiscoveryControlViewPage.checkReconciliationStartedSystemMessage();
-        networkDiscoveryControlViewPage.waitForEndOfReco();
+        checkPopupMessageType(MessageType.INFO);
+        Assert.assertEquals(networkDiscoveryControlViewPage.waitForEndOfReco(), "SUCCESS");
     }
 
     @Test(priority = 21)
@@ -340,7 +340,7 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
         NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
         networkInconsistenciesViewPage.expandTree();
         for (String inconsistencieName : INCONSISTENCIES_NAMES) {
-            Assertions.assertThat(networkInconsistenciesViewPage.checkInconsistenciesOperationType().equals("MODIFICATION")).isTrue();
+            Assert.assertEquals(networkInconsistenciesViewPage.checkInconsistenciesOperationType(), "MODIFICATION");
             networkInconsistenciesViewPage.clearOldNotification();
             networkInconsistenciesViewPage.applySelectedInconsistencies();
             DelayUtils.sleep(5000);
@@ -356,8 +356,8 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
         waitForPageToLoad();
         networkDiscoveryControlViewPage.clearOldNotifications();
         networkDiscoveryControlViewPage.deleteCmDomain();
-        networkDiscoveryControlViewPage.checkDeleteCmDomainSystemMessage();
-        networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(CM_DOMAIN_NAME);
+        checkPopupMessageType(MessageType.INFO);
+        Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
     }
 
     @Test(priority = 23)
@@ -369,20 +369,20 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
         waitForPageToLoad();
         cellSiteConfigurationPage.removeObject();
         waitForPageToLoad();
-        checkPopup();
+        checkPopupMessageType(SystemMessageContainer.MessageType.SUCCESS);
 
         for (int i = 0; i < 3; i++) {
             cellSiteConfigurationPage.filterObject(NAME, RADIO_UNIT_NAMES[i]);
             waitForPageToLoad();
             cellSiteConfigurationPage.removeObject();
             waitForPageToLoad();
-            checkPopup();
+            checkPopupMessageType(SystemMessageContainer.MessageType.SUCCESS);
 
             cellSiteConfigurationPage.filterObject(NAME, ANTENNA_NAMES[i]);
             waitForPageToLoad();
             cellSiteConfigurationPage.removeObject();
             waitForPageToLoad();
-            checkPopup();
+            checkPopupMessageType(SystemMessageContainer.MessageType.SUCCESS);
         }
     }
 
@@ -414,20 +414,19 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    private void checkPopup() {
+    private void checkPopupMessageType(MessageType messageType) {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages).hasSize(1);
-        Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType())
-                .isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
+        Assert.assertNotNull(messages);
+        Assert.assertEquals(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType(),
+                messageType);
     }
 
     private void checkPopupText(String text) {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
-        Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getText())
-                .isEqualTo(text);
+        Assert.assertEquals(messages.get(0).getMessageType(), SystemMessageContainer.MessageType.SUCCESS);
+        Assert.assertEquals(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getText(), text);
     }
 
     private void waitForPageToLoad() {

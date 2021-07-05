@@ -2,7 +2,6 @@ package com.oss.E2E;
 
 import java.util.List;
 
-import org.assertj.core.api.Assertions;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
@@ -10,7 +9,7 @@ import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
-import com.oss.framework.alerts.SystemMessageContainer.Message;
+import com.oss.framework.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.mainheader.PerspectiveChooser;
 import com.oss.framework.sidemenu.SideMenu;
@@ -53,12 +52,11 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
             "PhysicalElement-" + RRU_NAME };
     private static final String inconsistenciesRanName = "ENODEB-" + ENODEB_NAME;
 
-
     @BeforeClass
     public void openNetworkDiscoveryControlView() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);
-        newInventoryViewPage = new NewInventoryViewPage(driver,webDriverWait);
+        newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
         PerspectiveChooser.create(driver, webDriverWait).setNetworkPerspective();
     }
 
@@ -97,8 +95,8 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.runReconciliation();
-        networkDiscoveryControlViewPage.checkReconciliationStartedSystemMessage();
-        networkDiscoveryControlViewPage.waitForEndOfReco();
+        checkPopupMessageType(MessageType.INFO);
+        Assert.assertEquals(networkDiscoveryControlViewPage.waitForEndOfReco(), "SUCCESS");
         networkDiscoveryControlViewPage.selectLatestReconciliationState();
         Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(IssueLevel.STARTUP_FATAL));
         Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(IssueLevel.FATAL));
@@ -136,8 +134,8 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.clearOldNotifications();
         networkDiscoveryControlViewPage.deleteCmDomain();
-        networkDiscoveryControlViewPage.checkDeleteCmDomainSystemMessage();
-        networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(cmDomainName);
+        checkPopupMessageType(MessageType.INFO);
+        Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + cmDomainName + " finished");
         PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
     }
 
@@ -159,7 +157,7 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
         AntennaArrayWizardPage antennaArrayWizardPage = new AntennaArrayWizardPage(driver);
         antennaArrayWizardPage.clickAccept();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        checkPopup();
+        checkPopupMessageType(MessageType.SUCCESS);
     }
 
     @Test(priority = 7)
@@ -175,7 +173,7 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
         wizard.setHostingContains(ANTENNA_NAME + "/3-Array Antenna_Array 1");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         wizard.clickAccept();
-        checkPopup();
+        checkPopupMessageType(MessageType.SUCCESS);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -191,7 +189,7 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
         cableWizard.setModel("Virtual feeder");//TODO sprawdzic czy moze byc
         cableWizard.setName(CABLE_NAME);
         cableWizard.accept();
-        checkPopup();
+        checkPopupMessageType(MessageType.SUCCESS);
     }
 
     @Test(priority = 9)
@@ -261,7 +259,7 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cellSiteConfigurationPage.filterObject("Name", CPRI_NAME);
         cellSiteConfigurationPage.removeObject();
-        checkPopup();
+        checkPopupMessageType(MessageType.SUCCESS);
     }
 
     @Test(priority = 12)
@@ -274,7 +272,7 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cellSiteConfigurationPage.filterObject("Name", ANTENNA_TRAIL_NAME);
         cellSiteConfigurationPage.removeObject();
-        checkPopup();
+        checkPopupMessageType(MessageType.SUCCESS);
     }
 
     @Test(priority = 13)
@@ -287,7 +285,7 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cellSiteConfigurationPage.filterObject("Name", CABLE_NAME);
         cellSiteConfigurationPage.removeObject();
-        checkPopup();
+        checkPopupMessageType(MessageType.SUCCESS);
     }
 
     @Test(priority = 14)
@@ -301,7 +299,7 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cellSiteConfigurationPage.removeObject();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        checkPopup();
+        checkPopupMessageType(MessageType.SUCCESS);
     }
 
     @Test(priority = 15)
@@ -313,7 +311,7 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
         cellSiteConfigurationPage.selectTab("Devices");
         cellSiteConfigurationPage.filterObject("Name", ANTENNA_NAME);
         cellSiteConfigurationPage.removeObject();
-        checkPopup();
+        checkPopupMessageType(MessageType.SUCCESS);
     }
 
     @Test(priority = 16)
@@ -325,7 +323,7 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
         cellSiteConfigurationPage.selectTab("Devices");
         cellSiteConfigurationPage.filterObject("Name", RRU_NAME);
         cellSiteConfigurationPage.removeObject();
-        checkPopup();
+        checkPopupMessageType(MessageType.SUCCESS);
     }
 
     @Test(priority = 17)
@@ -337,7 +335,7 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
         cellSiteConfigurationPage.selectTab("Devices");
         cellSiteConfigurationPage.filterObject("Name", BBU_NAME);
         cellSiteConfigurationPage.removeObject();
-        checkPopup();
+        checkPopupMessageType(MessageType.SUCCESS);
     }
 
     @Test(priority = 18)
@@ -349,7 +347,7 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
         cellSiteConfigurationPage.selectTab("Base Stations");//TODO upewnic sie czy dobry
         cellSiteConfigurationPage.filterObject("Name", ENODEB_NAME);
         cellSiteConfigurationPage.removeObject();
-        checkPopup();
+        checkPopupMessageType(MessageType.SUCCESS);
     }
 
     private void openCellSiteConfigurationView() {
@@ -367,11 +365,11 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    private void checkPopup() {
+    private void checkPopupMessageType(MessageType messageType) {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
-        List<Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages).hasSize(1);
-        Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType())
-                .isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
+        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
+        Assert.assertNotNull(messages);
+        Assert.assertEquals(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType(),
+                messageType);
     }
 }
