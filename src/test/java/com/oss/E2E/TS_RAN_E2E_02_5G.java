@@ -138,20 +138,20 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         networkInconsistenciesViewPage.expandTree();
         for (String inconsistencieName : PHYSICAL_INCONSISTENCIES_NAMES) {
             networkInconsistenciesViewPage.assignLocation(inconsistencieName, LOCATION_NAME);
-            networkInconsistenciesViewPage.checkUpdateDeviceSystemMessage();
+            checkPopupMessageType(MessageType.SUCCESS);
             networkInconsistenciesViewPage.clearOldNotification();
             networkInconsistenciesViewPage.applySelectedInconsistencies();
             DelayUtils.sleep(5000);
-            networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(inconsistencieName);
+            Assert.assertEquals(networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(), "Accepting discrepancies related to " + inconsistencieName + " finished");
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
         }
         for (String inconsistencieName : RAN_INCONSISTENCIES_NAMES) {
             networkInconsistenciesViewPage.assignRanLocation(inconsistencieName, LOCATION_NAME);
-            networkInconsistenciesViewPage.checkUpdateDeviceSystemMessage();
+            checkPopupMessageType(MessageType.SUCCESS);
             networkInconsistenciesViewPage.clearOldNotification();
             networkInconsistenciesViewPage.applySelectedInconsistencies();
             DelayUtils.sleep(5000);
-            networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(inconsistencieName);
+            Assert.assertEquals(networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(), "Accepting discrepancies related to " + inconsistencieName + " finished");
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
         }
     }

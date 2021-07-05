@@ -64,7 +64,7 @@ public class ReconciliationE2ETest extends BaseTestCase {
         DelayUtils.sleep(100);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
         networkDiscoveryControlViewPage.runReconciliation();
-        checkPopupMessageType();
+        checkPopupMessageType(MessageType.INFO);
         Assert.assertEquals(networkDiscoveryControlViewPage.waitForEndOfReco(), "SUCCESS");
         networkDiscoveryControlViewPage.selectLatestReconciliationState();
         Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(IssueLevel.STARTUP_FATAL));
@@ -79,11 +79,12 @@ public class ReconciliationE2ETest extends BaseTestCase {
         NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
         networkInconsistenciesViewPage.expandTree();
         networkInconsistenciesViewPage.assignLocation("CiscoSeleniumTest", "a");
-        networkInconsistenciesViewPage.checkUpdateDeviceSystemMessage();
+        checkPopupMessageType(MessageType.SUCCESS);
         networkInconsistenciesViewPage.clearOldNotification();
         networkInconsistenciesViewPage.applyInconsistencies();
         DelayUtils.sleep(5000);
-        networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies("CiscoSeleniumTest");
+        Assert.assertEquals(networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(), "Accepting discrepancies related to CiscoSeleniumTest finished");
+
     }
 
     @Test(priority = 5)
@@ -108,7 +109,7 @@ public class ReconciliationE2ETest extends BaseTestCase {
         DelayUtils.sleep(100);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
         networkDiscoveryControlViewPage.runReconciliation();
-        checkPopupMessageType();
+        checkPopupMessageType(MessageType.INFO);
         Assert.assertEquals(networkDiscoveryControlViewPage.waitForEndOfReco(), "SUCCESS");
         networkDiscoveryControlViewPage.selectLatestReconciliationState();
         Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(IssueLevel.STARTUP_FATAL));
@@ -125,7 +126,7 @@ public class ReconciliationE2ETest extends BaseTestCase {
         networkInconsistenciesViewPage.clearOldNotification();
         networkInconsistenciesViewPage.applyInconsistencies();
         DelayUtils.sleep(1000);
-        networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies("CiscoSeleniumTest");
+        Assert.assertEquals(networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(), "Accepting discrepancies related to CiscoSeleniumTest finished");
     }
 
     @Test(priority = 8)
@@ -134,15 +135,15 @@ public class ReconciliationE2ETest extends BaseTestCase {
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
         networkDiscoveryControlViewPage.clearOldNotifications();
         networkDiscoveryControlViewPage.deleteCmDomain();
-        checkPopupMessageType();
+        checkPopupMessageType(MessageType.INFO);
         Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + cmDomainName + " finished");
     }
 
-    private void checkPopupMessageType() {
+    private void checkPopupMessageType(MessageType messageType) {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<Message> messages = systemMessage.getMessages();
         Assert.assertNotNull(messages);
         Assert.assertEquals(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType(),
-                MessageType.INFO);
+                messageType);
     }
 }
