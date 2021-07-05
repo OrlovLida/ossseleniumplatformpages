@@ -1,5 +1,6 @@
 package com.oss.pages.bigdata.kqiview;
 
+import com.oss.framework.components.inputs.Button;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.dpe.kpichartwidget.KpiChartWidget;
 import com.oss.framework.widgets.dpe.toolbarpanel.ExportPanel;
@@ -24,6 +25,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static com.oss.configuration.Configuration.CONFIGURATION;
+import static com.oss.framework.logging.LoggerMessages.MOVE_MOUSE_OVER;
 
 public class KpiViewPage extends BasePage {
 
@@ -31,6 +33,7 @@ public class KpiViewPage extends BasePage {
 
     private static final String INDICATORS_TREE_ID = "_Indicators";
     private static final String DIMENSIONS_TREE_ID = "_Dimensions";
+    private static final String CHART_TYPE_BUTTON_ID = "chart-type-button";
 
     public KpiViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -102,6 +105,11 @@ public class KpiViewPage extends BasePage {
         toolbar.clickApply();
     }
 
+//    @Step("I see chart is displayed")
+//    public void seeChartIsDisplayed(){
+//        log.info("Waiting for chart presence");
+//        KpiChartWidget.create(driver, wait).waitForPresenceAndVisibility();
+//    }
     @Step("I see chart is displayed")
     public void seeChartIsDisplayed(){
         log.info("Waiting for chart presence");
@@ -191,6 +199,13 @@ public class KpiViewPage extends BasePage {
         return columnsCount == expectedColumnsCount && linesCount == expectedLinesCount;
     }
 
+    @Step("I should see {expectedLinesCount} lines displayed")
+    public boolean shouldSeeCurvesDisplayed(int expectedLinesCount){
+        KpiChartWidget kpiChartWidget = KpiChartWidget.create(driver, wait);
+        int linesCount = kpiChartWidget.countLines();
+        return linesCount == expectedLinesCount;
+    }
+
     @Step("I set TopN options with dimension: {dimension} and {nthLevel} level")
     public void setTopNOptions(String dimension, String nthLevel){
         TopNPanel topNPanel = KpiToolbarPanel.create(driver, wait).getTopNPanel();
@@ -198,6 +213,65 @@ public class KpiViewPage extends BasePage {
         topNPanel.setTopNDimension(dimension);
         topNPanel.setNthLevel(nthLevel);
         topNPanel.clickPerform();
+    }
+
+    // DO WYWALENIA Z FRAMEWORKA - PRZENIES NA PAGE - choc nie, bo xpath
+    @Step("I click legend")
+    public void clickLegend(){
+        KpiChartWidget.create(driver, wait).clickDataSeriesLegend();
+    }
+
+    // do wywalenia - jak wejdzie id to jedna metoda zapieta na id buttona
+    @Step("I click chart type - area")
+    public void clickAreaChartType(){
+        KpiChartWidget.create(driver, wait).clickChartActions();
+        Button chartTypeButton = Button.createById(driver, CHART_TYPE_BUTTON_ID);
+        chartTypeButton.click();
+        KpiChartWidget.create(driver, wait).clickAreaChartButton();
+    }
+
+    @Step("I click chart type - bar")
+    public void clickBarChartType(){
+//        KpiChartWidget.create(driver, wait).clickChartActions();
+//        Button chartTypeButton = Button.createById(driver, CHART_TYPE_BUTTON_ID);
+//        chartTypeButton.click();
+        KpiChartWidget.create(driver, wait).clickBarChartButton();
+    }
+
+    @Step("I click chart type - line")
+    public void clickLineChartType(){
+//        KpiChartWidget.create(driver, wait).clickChartActions();
+//        Button chartTypeButton = Button.createById(driver, CHART_TYPE_BUTTON_ID);
+//        chartTypeButton.click();
+        KpiChartWidget.create(driver, wait).clickLineChartButton();
+    }
+
+    @Step("I should see {expectedLineWidth} width line displayed")
+    public boolean shouldSeeDataSeriesLineWidth(String expectedLineWidth){
+        KpiChartWidget kpiChartWidget = KpiChartWidget.create(driver, wait);
+        String lineWidth = kpiChartWidget.dataSeriesLineWidth();
+        return lineWidth.equals(expectedLineWidth);
+    }
+
+    @Step("I should not see any lines on chart displayed")
+    public boolean shouldNotSeeHiddenLine(String expectedLineVisibility){
+        KpiChartWidget kpiChartWidget = KpiChartWidget.create(driver, wait);
+        String lineVisibility = kpiChartWidget.dataSeriesVisibility();
+        return lineVisibility.equals(expectedLineVisibility);
+    }
+
+    @Step("I should area chart displayed")
+    public boolean shouldSeeAreaChart(String expectedFillOpacity){
+        KpiChartWidget kpiChartWidget = KpiChartWidget.create(driver, wait);
+        String fillOpacity = kpiChartWidget.dataSeriesFillOpacity();
+        return fillOpacity.equals(expectedFillOpacity);
+    }
+
+    @Step("I should area chart displayed")
+    public boolean shouldSeeBarChart(String expectedFillOpacity){
+        KpiChartWidget kpiChartWidget = KpiChartWidget.create(driver, wait);
+        String fillOpacity = kpiChartWidget.barDataSeriesFillOpacity();
+        return fillOpacity.equals(expectedFillOpacity);
     }
 
 }
