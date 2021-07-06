@@ -27,8 +27,9 @@ public class TicketSearchPage extends BaseSDPage {
     }
 
     @Step("I Open Ticket Search View")
-    public TicketSearchPage goToPage(WebDriver driver, String basicURL) {
-        openPage(driver, String.format(VIEWS_URL_PATTERN, basicURL, TICKET_SEARCH));
+    public static TicketSearchPage goToPage(WebDriver driver, String basicURL) {
+        WebDriverWait wait = new WebDriverWait(driver, 45);
+        openSDPage(driver, basicURL, wait, TICKET_SEARCH);
         return new TicketSearchPage(driver);
     }
 
@@ -58,6 +59,7 @@ public class TicketSearchPage extends BaseSDPage {
 
     public String geIdForNthTicketInTable(int n) {
         DelayUtils.waitForPageToLoad(driver, wait);
+        // DelayUtils.sleep(10000);
         return getAttributeFromTable(n, ID_ATTRIBUTE);
     }
 
@@ -68,6 +70,7 @@ public class TicketSearchPage extends BaseSDPage {
     }
 
     private TableWidget getTicketTable() {
+        DelayUtils.waitForPageToLoad(driver, wait);
         return getTable(driver, wait, TABLE_WIDGET_ID);
     }
 
