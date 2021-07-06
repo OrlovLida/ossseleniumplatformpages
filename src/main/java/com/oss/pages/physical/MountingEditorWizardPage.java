@@ -29,7 +29,7 @@ public class MountingEditorWizardPage extends BasePage {
     public TableWidget getTable() {
         if (mainTable == null) {
             Widget.waitForWidget(wait, "TableWidget");
-            mainTable = TableWidget.create(driver, "TableWidget", wait);
+            mainTable = TableWidget.createById(driver, WIZARD_ID, wait);
             DelayUtils.waitForPageToLoad(driver, wait);
         }
         return mainTable;
