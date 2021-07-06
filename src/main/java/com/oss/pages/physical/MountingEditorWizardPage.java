@@ -17,8 +17,9 @@ public class MountingEditorWizardPage extends BasePage {
     private static final String NAME = "name-id";
     private static final String PRECISE_LOCATION = "precise-location-id";
     private static final String MODEL = "model-id";
+    private static final String WIZARD_ID = "mounting-editor-modal-id";
 
-    private Wizard wizard = Wizard.createPopupWizard(driver, wait);
+    private Wizard wizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
     private TableWidget mainTable;
 
     public MountingEditorWizardPage(WebDriver driver) {
