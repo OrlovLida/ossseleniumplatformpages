@@ -1,5 +1,6 @@
 package com.oss.pages.bigdata.dfe.DataSource.DSWizard;
 
+import com.oss.framework.components.inputs.Button;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
@@ -38,5 +39,11 @@ public class DataSourceSourceInformationPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         sourceInformationWizard.setComponentValue(QUERY_INPUT_ID, query, SCRIPT_COMPONENT);
         log.debug("Setting query field with {}", query);
+    }
+
+    @Step("I click select file")
+    public void clickSelectFile() {
+        Button selectFile = Button.create(driver, "Select files");
+        selectFile.click();
     }
 }
