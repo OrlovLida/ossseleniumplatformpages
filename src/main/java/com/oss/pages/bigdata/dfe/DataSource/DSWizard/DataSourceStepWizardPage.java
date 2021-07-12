@@ -19,6 +19,7 @@ public class DataSourceStepWizardPage extends BasePage {
     private final String WIZARD_ID = "dataSourcesWizardId";
 
     private final Wizard wizard;
+    private final String WIZARD_ID = "dataSourcesWizardId";
 
     public DataSourceStepWizardPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);

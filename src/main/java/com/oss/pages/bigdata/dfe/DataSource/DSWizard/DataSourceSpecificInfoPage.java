@@ -8,8 +8,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
-import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
+import static com.oss.framework.components.inputs.Input.ComponentType.*;
 
 public class DataSourceSpecificInfoPage extends BasePage {
 
@@ -18,6 +17,9 @@ public class DataSourceSpecificInfoPage extends BasePage {
     private final String INTERVAL_UNIT_INPUT_ID = "dataSourceIntervalUnitId-input";
     private final String INTERVAL_AMOUNT_INPUT_ID = "dataSourceIntervalAmountId";
     private final String WIZARD_ID = "dataSourcesWizardId";
+    private final String SERVER_GROUP_INPUT_ID = "dataSourceServerGroupNameId";
+    private final String BASE_INTERVAL_ID = "dataSourceBaseIntervalId";
+
 
     private final Wizard specificInfoWizard;
 
@@ -46,6 +48,23 @@ public class DataSourceSpecificInfoPage extends BasePage {
         fillOffset(offset);
         fillIntervalUnit(unit);
         fillIntervalAmount(intervalAmount);
+        log.info("Filled Specific Information Wizard Page");
+    }
+
+    public void fillServerGroup(String serverGroupName) {
+        specificInfoWizard.setComponentValue(SERVER_GROUP_INPUT_ID, serverGroupName, SEARCH_FIELD);
+        log.debug("Setting Server Group name with: {}", serverGroupName);
+    }
+
+    public void fillBaseInterval(String interval) {
+        specificInfoWizard.setComponentValue(BASE_INTERVAL_ID, interval, TEXT_FIELD);
+        log.debug("Setting Base Interval with: {}", interval);
+    }
+
+    @Step("I fill Specific Information for CSV DS with Server Group name: {serverGroupName}, Base Interval: {interval}")
+    public void fillSpecyficInfoForCSV(String serverGroupName, String interval) {
+        fillServerGroup(serverGroupName);
+        fillBaseInterval(interval);
         log.info("Filled Specific Information Wizard Page");
     }
 
