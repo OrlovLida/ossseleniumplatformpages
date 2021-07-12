@@ -17,12 +17,13 @@ public class DataSourceSpecificInfoPage extends BasePage {
     private final String OFFSET_INPUT_ID = "dataSourceOffsetId-input";
     private final String INTERVAL_UNIT_INPUT_ID = "dataSourceIntervalUnitId-input";
     private final String INTERVAL_AMOUNT_INPUT_ID = "dataSourceIntervalAmountId";
+    private final String WIZARD_ID = "dataSourcesWizardId";
 
     private final Wizard specificInfoWizard;
 
     public DataSourceSpecificInfoPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
-        specificInfoWizard = Wizard.createWizard(driver, wait);
+        specificInfoWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
     }
 
     private void fillOffset(String offset) {

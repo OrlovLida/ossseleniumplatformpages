@@ -17,12 +17,13 @@ public class DataSourceSourceInformationPage extends BasePage {
     private static final Logger log = LoggerFactory.getLogger(DataSourceSourceInformationPage.class);
     private final String DATABASE_INPUT_ID = "dataSourceDatabaseId-input";
     private final String QUERY_INPUT_ID = "script-component";
+    private final String WIZARD_ID = "dataSourcesWizardId";
 
     private final Wizard sourceInformationWizard;
 
     public DataSourceSourceInformationPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
-        sourceInformationWizard = Wizard.createWizard(driver, wait);
+        sourceInformationWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
     }
 
     @Step("I fill Database with: {database}")

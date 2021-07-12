@@ -14,12 +14,13 @@ public class DataSourceBasicInfoPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(DataSourceBasicInfoPage.class);
     private final String NAME_INPUT_ID = "dataSourcesNameId";
+    private final String WIZARD_ID = "dataSourcesWizardId";
 
     private final Wizard basicInfoWizard;
 
     public DataSourceBasicInfoPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
-        basicInfoWizard = Wizard.createWizard(driver, wait);
+        basicInfoWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
     }
 
     public void fillName(String name) {

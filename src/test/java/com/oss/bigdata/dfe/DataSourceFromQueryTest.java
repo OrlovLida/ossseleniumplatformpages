@@ -33,7 +33,7 @@ public class DataSourceFromQueryTest extends BaseTestCase {
     public void goToDataSourceView() {
         dataSourcePage = DataSourcePage.goToPage(driver, BASIC_URL);
 
-        dataSourceName = "Selenium_" + ConstantsDfe.createName() + "_DSTest";
+        dataSourceName = ConstantsDfe.createName() + "_DSTest";
         updatedDataSourceName = dataSourceName + "_updated";
     }
 
