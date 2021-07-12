@@ -42,7 +42,7 @@ public class DataSourceStepWizardPage extends BasePage {
     }
 
     @Step("I click Next Step")
-    public void clickNextStep() {
+    public void clickNext() {
         DelayUtils.waitForPageToLoad(driver, wait);
         wizard.clickNext();
         log.info("I click Next Step");
