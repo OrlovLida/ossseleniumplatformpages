@@ -19,13 +19,13 @@ import io.qameta.allure.Step;
 
 public class SamplesManagementPage extends BasePage {
 
-    private static final String samplesManagementWidgetId = "narComponent_CMSamplesManagementViewIdFilesTreeId";
-    private static final String upload = "narComponent_CmSampleActionUploadId";
-    private static final String deleteContent = "narComponent_CmSampleActionDeleteContentId";
-    private static final String createDirectory = "narComponent_CmSampleActionCreateId";
-    private static final String uploadWizardId = "narComponent_CMSamplesManagementViewIdUploadSamplesFormItemsId";
-    private static final String createDirectoryWizardId = "narComponent_CMSamplesManagementViewIdFileNameTextFieldId";
-    private static final String createDirectoryWizardConfirmAction = "narComponent_CMSamplesManagementViewIdFileActionButtonsId-1";
+    private static final String SAMPLES_MANAGEMENT_WIDGET_ID = "narComponent_CMSamplesManagementViewIdFilesTreeId";
+    private static final String UPLOAD_ID = "narComponent_CmSampleActionUploadId";
+    private static final String DELETE_CONTENT_ID = "narComponent_CmSampleActionDeleteContentId";
+    private static final String CREATE_DIRECTORY = "narComponent_CmSampleActionCreateId";
+    private static final String UPLOAD_WIZARD_ID = "narComponent_CMSamplesManagementViewIdUploadSamplesPromptId";
+    private static final String CREATE_DIRECTORY_WIZARD_ID = "narComponent_CMSamplesManagementViewIdFileNameTextFieldId";
+    private static final String CREATE_DIRECTORY_WIZARD_CONFIRM_ACTION = "narComponent_CMSamplesManagementViewIdFileActionButtonsId-1";
 
     private TreeWidget mainTree;
 
@@ -49,26 +49,27 @@ public class SamplesManagementPage extends BasePage {
     }
 
     @Step("Upload samples for CM Domain")
-    public void uploadSamples(String path) {
-        TreeWidget widget = TreeWidget.createByDataAttributeName(driver, wait, samplesManagementWidgetId);
-        widget.callOssWindowActionById("OTHER", upload);
+    public void uploadSamples(String path) throws URISyntaxException {
+        TreeWidget widget = TreeWidget.createByDataAttributeName(driver, wait, SAMPLES_MANAGEMENT_WIDGET_ID);
+        widget.callOssWindowActionById("OTHER", UPLOAD_ID);
         URL res = getClass().getClassLoader().getResource(path);
         try {
+            assert res != null;
             File file = Paths.get(res.toURI()).toFile();
             String absolutePath = file.getAbsolutePath();
-            Wizard wizard = Wizard.createByComponentId(driver, wait, uploadWizardId);
-            Input input = wizard.getComponent(uploadWizardId, ComponentType.FILE_CHOOSER);
+            Wizard wizard = Wizard.createByComponentId(driver, wait, UPLOAD_WIZARD_ID);
+            Input input = wizard.getComponent(UPLOAD_WIZARD_ID, ComponentType.FILE_CHOOSER);
             input.setSingleStringValue(absolutePath);
             wizard.clickOK();
         } catch (URISyntaxException e) {
-            throw new RuntimeException("Cant load file", e);
+            throw new URISyntaxException("Cant load file", e.getReason());
         }
     }
 
     @Step("Delete samples for CM Domain")
     public void deleteDirectoryContent() {
-        TreeWidget widget = TreeWidget.createByDataAttributeName(driver, wait, samplesManagementWidgetId);
-        widget.callOssWindowActionById("EDIT", deleteContent);
+        TreeWidget widget = TreeWidget.createByDataAttributeName(driver, wait, SAMPLES_MANAGEMENT_WIDGET_ID);
+        widget.callOssWindowActionById("EDIT", DELETE_CONTENT_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         Wizard wizard = Wizard.createWizard(driver, wait);
         wizard.clickDelete();
@@ -76,13 +77,13 @@ public class SamplesManagementPage extends BasePage {
 
     @Step("Create samples directory for CM Domain")
     public void createDirectory(String cmDomainName) {
-        TreeWidget widget = TreeWidget.createByDataAttributeName(driver, wait, samplesManagementWidgetId);
-        widget.callOssWindowActionById("CREATE", createDirectory);
+        TreeWidget widget = TreeWidget.createByDataAttributeName(driver, wait, SAMPLES_MANAGEMENT_WIDGET_ID);
+        widget.callOssWindowActionById("CREATE", CREATE_DIRECTORY);
         Wizard wizard = Wizard.createWizard(driver, wait);
-        Input name = wizard.getComponent(createDirectoryWizardId, ComponentType.TEXT_FIELD);
+        Input name = wizard.getComponent(CREATE_DIRECTORY_WIZARD_ID, ComponentType.TEXT_FIELD);
         name.setSingleStringValue(cmDomainName);
         DelayUtils.waitForPageToLoad(driver, wait);
         DelayUtils.sleep(500);
-        wizard.clickActionById(createDirectoryWizardConfirmAction);
+        wizard.clickActionById(CREATE_DIRECTORY_WIZARD_CONFIRM_ACTION);
     }
 }

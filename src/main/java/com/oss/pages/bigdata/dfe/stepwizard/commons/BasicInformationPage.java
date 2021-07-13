@@ -1,52 +1,49 @@
 package com.oss.pages.bigdata.dfe.stepwizard.commons;
 
-import com.oss.framework.components.inputs.Input;
-import com.oss.framework.components.inputs.Switcher;
-import com.oss.framework.components.inputs.TextArea;
-import com.oss.framework.data.Data;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.Wizard;
+import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class BasicInformationPage extends BaseStepPage {
+import static com.oss.framework.components.inputs.Input.ComponentType.*;
+
+public class BasicInformationPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(BasicInformationPage.class);
 
-    final private String NAME_INPUT_ID = "name";
-    final private String DESCRIPTION_INPUT_ID = "description";
-    final private String IS_ACTIVE_INPUT_ID = "active";
+    private static final String CATEGORY_INPUT_ID = "category";
+    private final String NAME_INPUT_ID = "name";
+    private final String PROCESS_ID = "factId";
+    private final Wizard basicInfoWizard;
 
-    public BasicInformationPage(WebDriver driver, WebDriverWait wait, String wizardId) {
-        super(driver, wait, wizardId);
+    public BasicInformationPage(WebDriver driver, WebDriverWait wait) {
+        super(driver, wait);
+        basicInfoWizard = Wizard.createWizard(driver, wait);
     }
 
-    public void fillName(String name){
-        DelayUtils.waitForPageToLoad(driver, wait);
-        fillTextField(name, NAME_INPUT_ID);
+    public void fillCategory(String category) {
+        basicInfoWizard.setComponentValue(CATEGORY_INPUT_ID, category, MULTI_SEARCH_FIELD);
+        log.debug("Setting category with: {}", category);
+    }
+
+    public void fillName(String name) {
+        basicInfoWizard.setComponentValue(NAME_INPUT_ID, name, TEXT_FIELD);
         log.debug("Setting name with: {}", name);
     }
 
-    public void fillDescription(String description){
+    public void fillProcess(String process) {
+        basicInfoWizard.setComponentValue(PROCESS_ID, process, COMBOBOX);
+        log.debug("Setting process with: {}", process);
+    }
+
+    @Step("I click Next Step")
+    public void clickNextStep() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        TextArea descriptionInput = (TextArea) getWizard(driver, wait).getComponent(DESCRIPTION_INPUT_ID, Input.ComponentType.TEXT_AREA);
-        descriptionInput.setValue(Data.createSingleData(description));
-        log.debug("Setting description with: {}", description);
+        basicInfoWizard.clickNextStep();
+        log.info("I click Next Step");
     }
-
-    public void fillIsActive(Boolean isActive){
-        DelayUtils.waitForPageToLoad(driver, wait);
-        Switcher isActiveInput = (Switcher) getWizard(driver, wait).getComponent(IS_ACTIVE_INPUT_ID, Input.ComponentType.SWITCHER);
-        isActiveInput.setValue(Data.createSingleData(isActive.toString()));
-        log.debug("Setting isActive: {}", isActive);
-    }
-
-    @Step("I fill Basic Information Step with name: {name}")
-    public void fillBasicInformationStep(String name){
-        fillName(name);
-        log.info("Filled Basic Information Step");
-    }
-
 }

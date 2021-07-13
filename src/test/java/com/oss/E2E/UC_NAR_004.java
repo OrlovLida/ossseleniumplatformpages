@@ -1,11 +1,18 @@
 package com.oss.E2E;
 
+import java.net.URISyntaxException;
+import java.util.List;
+
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
+import com.oss.framework.alerts.SystemMessageContainer;
+import com.oss.framework.alerts.SystemMessageContainer.Message;
+import com.oss.framework.alerts.SystemMessageContainer.MessageType;
+import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
@@ -49,7 +56,7 @@ public class UC_NAR_004 extends BaseTestCase {
 
     @Test(priority = 2)
     @Description("Upload reconciliation samples")
-    public void uploadSamples() {
+    public void uploadSamples() throws URISyntaxException {
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.moveToSamplesManagement();
         SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
@@ -70,8 +77,8 @@ public class UC_NAR_004 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.runReconciliation();
-        networkDiscoveryControlViewPage.checkReconciliationStartedSystemMessage();
-        networkDiscoveryControlViewPage.waitForEndOfReco();
+        checkPopupMessageType();
+        Assert.assertEquals(networkDiscoveryControlViewPage.waitForEndOfReco(), "SUCCESS");
         networkDiscoveryControlViewPage.selectLatestReconciliationState();
         Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.STARTUP_FATAL));
         Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.FATAL));
@@ -106,7 +113,7 @@ public class UC_NAR_004 extends BaseTestCase {
 
     @Test(priority = 6)
     @Description("Delete old reconciliation samples and upload empty samples")
-    public void deleteOldSamplesAndPutNewOne() {
+    public void deleteOldSamplesAndPutNewOne() throws URISyntaxException {
         openNetworkDiscoveryControlView();
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.moveToSamplesManagement();
@@ -128,8 +135,8 @@ public class UC_NAR_004 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.runReconciliation();
-        networkDiscoveryControlViewPage.checkReconciliationStartedSystemMessage();
-        networkDiscoveryControlViewPage.waitForEndOfReco();
+        checkPopupMessageType();
+        Assert.assertEquals(networkDiscoveryControlViewPage.waitForEndOfReco(), "SUCCESS");
         networkDiscoveryControlViewPage.selectLatestReconciliationState();
         Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.STARTUP_FATAL));
         Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.FATAL));
@@ -144,7 +151,15 @@ public class UC_NAR_004 extends BaseTestCase {
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.clearOldNotifications();
         networkDiscoveryControlViewPage.deleteCmDomain();
-        networkDiscoveryControlViewPage.checkDeleteCmDomainSystemMessage();
-        networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(CM_DOMAIN_NAME);
+        checkPopupMessageType();
+        Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
+    }
+
+    private void checkPopupMessageType() {
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
+        List<Message> messages = systemMessage.getMessages();
+        Assert.assertNotNull(messages);
+        Assert.assertEquals(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType(),
+                MessageType.INFO);
     }
 }

@@ -1,18 +1,10 @@
 package com.oss.pages.bigdata.dfe.DataSource.DSWizard;
 
-import com.oss.framework.components.inputs.Combobox;
-import com.oss.framework.components.inputs.Input;
-import com.oss.framework.components.inputs.ScriptComponent;
-import com.oss.framework.data.Data;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
-import com.oss.pages.bigdata.dfe.stepwizard.commons.BaseStepPage;
 import io.qameta.allure.Step;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

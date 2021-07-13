@@ -1,9 +1,10 @@
 package com.oss.pages.reconciliation;
 
-import com.oss.framework.alerts.SystemMessageContainer;
-import com.oss.framework.alerts.SystemMessageContainer.Message;
-import com.oss.framework.alerts.SystemMessageContainer.MessageType;
-import com.oss.framework.alerts.SystemMessageInterface;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.WebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.Input.ComponentType;
 import com.oss.framework.mainheader.Notifications;
@@ -18,13 +19,8 @@ import com.oss.framework.widgets.tabswidget.TabWindowWidget;
 import com.oss.framework.widgets.tabswidget.TabsInterface;
 import com.oss.framework.widgets.treewidget.TreeWidget;
 import com.oss.pages.BasePage;
-import io.qameta.allure.Step;
-import org.assertj.core.api.Assertions;
-import org.openqa.selenium.WebDriver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.List;
+import io.qameta.allure.Step;
 
 public class NetworkDiscoveryControlViewPage extends BasePage {
 
@@ -41,6 +37,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     private static final String SHOW_SAMPLES_MANAGEMENT_ACTION_ID = "narComponent_CmDomainActionCmSamplesManagementId";
     private static final String ISSUES_TABLE_ID = "narComponent_networkDiscoveryControlViewIdissuesTableId";
     private static final String RECO_STATE_REFRESH_BUTTON_ID = "tableRefreshButton";
+    private static final String STATUS = "Status";
 
     public static NetworkDiscoveryControlViewPage goToNetworkDiscoveryControlViewPage(WebDriver driver, String basicURL) {
         driver.get(String.format("%s/#/view/reco/network-repository-view/network-discovery" +
@@ -95,30 +92,24 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         prompt.clickButtonByLabel("Reconcile");
     }
 
-    @Step("Check system message after starting reconciliation")
-    public void checkReconciliationStartedSystemMessage() {
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, wait);
-        List<Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages).hasSize(1);
-        Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType())
-                .isEqualTo(MessageType.INFO);
-    }
-
     @Step("Waiting until reconciliation is over")
-    public void waitForEndOfReco() {
-        TableInterface tableWidget = OldTable.createByComponentDataAttributeName(driver, wait, RECONCILIATION_TAB_ID);
+    public String waitForEndOfReco() {
         DelayUtils.sleep(500);
-        tableWidget.callAction(ActionsContainer.KEBAB_GROUP_ID, RECO_STATE_REFRESH_BUTTON_ID);
+        OldTable.createByComponentDataAttributeName(driver, wait, RECONCILIATION_TAB_ID).callAction(ActionsContainer.KEBAB_GROUP_ID, RECO_STATE_REFRESH_BUTTON_ID);
         DelayUtils.sleep(500);
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, RECONCILIATION_STATE_TABLE_ID);
-        String status = table.getCellValue(0, "Status");
+        String status = OldTable.createByComponentDataAttributeName(driver, wait, RECONCILIATION_STATE_TABLE_ID).getCellValue(0, STATUS);
         while (status.equals("IN_PROGRESS") || status.equals("PENDING")) {
             DelayUtils.sleep(5000);
-            tableWidget.callAction(ActionsContainer.KEBAB_GROUP_ID, RECO_STATE_REFRESH_BUTTON_ID);
+            OldTable.createByComponentDataAttributeName(driver, wait, RECONCILIATION_TAB_ID).callAction(ActionsContainer.KEBAB_GROUP_ID, RECO_STATE_REFRESH_BUTTON_ID);
             DelayUtils.sleep(1000);
-            status = table.getCellValue(0, "Status");
+            try {
+                status = OldTable.createByComponentDataAttributeName(driver, wait, RECONCILIATION_STATE_TABLE_ID).getCellValue(0, STATUS);
+            } catch (StaleElementReferenceException e) {
+                DelayUtils.sleep(1000);
+                status = OldTable.createByComponentDataAttributeName(driver, wait, RECONCILIATION_STATE_TABLE_ID).getCellValue(0, STATUS);
+            }
         }
-        Assertions.assertThat(status.equals("SUCCESS"));
+        return status;
     }
 
     @Step("Delete selected CM Domain")
@@ -130,18 +121,9 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         prompt.clickButtonByLabel("Delete");
     }
 
-    @Step("Check system message after deleting CM Domain")
-    public void checkDeleteCmDomainSystemMessage() {
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, wait);
-        List<Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages).hasSize(1);
-        Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType())
-                .isEqualTo(MessageType.INFO);
-    }
-
     @Step("Check notification after deleting CM Domain")
-    public void checkDeleteCmDomainNotification(String cmDomainName) {
-        Assertions.assertThat(Notifications.create(driver, wait).waitAndGetFinishedNotificationText().equals("Deleting CM Domain: " + cmDomainName + " finished")).isTrue();
+    public String checkDeleteCmDomainNotification() {
+        return Notifications.create(driver, wait).waitAndGetFinishedNotificationText();
     }
 
     @Step("Clear old notifications")
@@ -187,14 +169,13 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     private void logIssues(String type) {
         int issuesNumber = getIssuesTable().getTableObjectsCount();
-        Assertions.assertThat(issuesNumber).isGreaterThan(0);
         if (issuesNumber <= 10) {
             printIssues(type, issuesNumber);
         } else if (issuesNumber <= 100) {
             getIssuesTable().changeItemsPerPageValue(100);
             printIssues(type, issuesNumber);
         } else {
-            log.info("There are over 100 issues with type = " + type + ". Printing only latest 100:");
+            log.info("There are over 100 issues with type = '{}'. Printing only latest 100:", type);
             getIssuesTable().changeItemsPerPageValue(100);
             printIssues(type, 100);
         }
@@ -202,7 +183,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     private void printIssues(String type, int issuesNumber) {
         for (int i = 0; i < issuesNumber; i++) {
-            log.info("[" + type + "] " + getIssuesTable().getCellValue(i, "Reason"));
+            log.info("[{}] {}", type, getIssuesTable().getCellValue(i, "Reason"));
         }
     }
 

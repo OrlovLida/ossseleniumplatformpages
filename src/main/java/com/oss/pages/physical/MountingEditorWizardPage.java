@@ -4,10 +4,9 @@ import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.Input.ComponentType;
+import com.oss.framework.components.table.TableComponent;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.Widget;
 import com.oss.framework.widgets.Wizard;
-import com.oss.framework.widgets.tablewidget.TableWidget;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
@@ -17,21 +16,16 @@ public class MountingEditorWizardPage extends BasePage {
     private static final String NAME = "name-id";
     private static final String PRECISE_LOCATION = "precise-location-id";
     private static final String MODEL = "model-id";
+    private static final String WIZARD_ID = "mounting-editor-modal-id";
 
-    private Wizard wizard = Wizard.createPopupWizard(driver, wait);
-    private TableWidget mainTable;
+    private Wizard wizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
 
     public MountingEditorWizardPage(WebDriver driver) {
         super(driver);
     }
 
-    public TableWidget getTable() {
-        if (mainTable == null) {
-            Widget.waitForWidget(wait, "TableWidget");
-            mainTable = TableWidget.create(driver, "TableWidget", wait);
-            DelayUtils.waitForPageToLoad(driver, wait);
-        }
-        return mainTable;
+    public TableComponent getTable() {
+        return TableComponent.create(driver, wait, WIZARD_ID);
     }
 
     @Step("Set Name")
@@ -52,7 +46,7 @@ public class MountingEditorWizardPage extends BasePage {
     @Step("Select second row in devices to mount table")
     public void clickCheckbox() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getTable().selectAllRows();
+        getTable().selectAll();
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
