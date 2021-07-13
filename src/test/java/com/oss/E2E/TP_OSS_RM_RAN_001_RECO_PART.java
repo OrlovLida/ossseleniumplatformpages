@@ -1,5 +1,6 @@
 package com.oss.E2E;
 
+import java.net.URISyntaxException;
 import java.util.List;
 
 import org.testng.Assert;
@@ -50,7 +51,7 @@ public class TP_OSS_RM_RAN_001_RECO_PART extends BaseTestCase {
     }
 
     @Test(priority = 2)
-    public void uploadSamples() {
+    public void uploadSamples() throws URISyntaxException {
         DelayUtils.sleep(1000);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);

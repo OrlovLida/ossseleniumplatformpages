@@ -1,5 +1,7 @@
 package com.oss.E2E;
 
+import java.net.URISyntaxException;
+
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -61,7 +63,7 @@ public class UC_NAR_005 extends BaseTestCase {
 
     @Test(priority = 2)
     @Description("Upload reconciliation samples")
-    public void uploadSamples() {
+    public void uploadSamples() throws URISyntaxException {
         DelayUtils.sleep(1000);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.moveToSamplesManagement();
@@ -106,7 +108,7 @@ public class UC_NAR_005 extends BaseTestCase {
 
     @Test(priority = 5)
     @Description("Delete old reconciliation samples and upload a new ones")
-    public void deleteOldSamplesAndPutNewOne() {
+    public void deleteOldSamplesAndPutNewOne() throws URISyntaxException {
         openNetworkDiscoveryControlView();
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.moveToSamplesManagement();
