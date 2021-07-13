@@ -385,7 +385,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
 
     @Test(priority = 16)
     @Step("Upload reconciliation samples")
-    public void uploadSamples() {
+    public void uploadSamples() throws URISyntaxException {
         DelayUtils.sleep(1000);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.moveToSamplesManagement();

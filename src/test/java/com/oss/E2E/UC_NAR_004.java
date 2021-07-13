@@ -1,5 +1,6 @@
 package com.oss.E2E;
 
+import java.net.URISyntaxException;
 import java.util.List;
 
 import org.testng.Assert;
@@ -55,7 +56,7 @@ public class UC_NAR_004 extends BaseTestCase {
 
     @Test(priority = 2)
     @Description("Upload reconciliation samples")
-    public void uploadSamples() {
+    public void uploadSamples() throws URISyntaxException {
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.moveToSamplesManagement();
         SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
@@ -112,7 +113,7 @@ public class UC_NAR_004 extends BaseTestCase {
 
     @Test(priority = 6)
     @Description("Delete old reconciliation samples and upload empty samples")
-    public void deleteOldSamplesAndPutNewOne() {
+    public void deleteOldSamplesAndPutNewOne() throws URISyntaxException {
         openNetworkDiscoveryControlView();
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.moveToSamplesManagement();
