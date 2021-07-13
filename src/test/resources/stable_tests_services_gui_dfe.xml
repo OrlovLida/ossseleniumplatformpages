@@ -50,4 +50,9 @@
             <class name="com.oss.bigdata.dfe.DataSourceFromQueryTest"/>
         </classes>
     </test>
+    <test name="DaraSourceFromCSVTest">
+        <classes>
+            <class name="com.oss.bigdata.dfe.DataSourceFromCSVTest"></class>
+        </classes>
+    </test>
 </suite>
