@@ -3,7 +3,9 @@ package com.oss.web;
 import com.google.common.collect.Multimap;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.inputs.Input;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.TableWidget;
+import com.oss.pages.filtermanager.FilterManagerPage;
 import com.oss.pages.platform.NewInventoryViewPage;
 import org.assertj.core.api.Assertions;
 import org.testng.Assert;
@@ -52,6 +54,10 @@ public class AdvancedSearchCompact extends BaseTestCase {
         return getValuesFromTableByKey(columnId).stream().allMatch(containsValue(val));
     }
 
+    private String getSimpleValueFromTable() {
+        return tableWidget.getCellValue(DEFAULT_ROW_INDEX, SIMPLE_ATTRIBUTE);
+    }
+
     @Test
     public void filterBySearchInput() {
         String attributeValue = tableWidget.getCellValue(DEFAULT_ROW_INDEX, SIMPLE_ATTRIBUTE);
@@ -87,7 +93,7 @@ public class AdvancedSearchCompact extends BaseTestCase {
 
     @Test
     public void filterBySimpleAttribute() {
-        String attributeValue = tableWidget.getCellValue(DEFAULT_ROW_INDEX, SIMPLE_ATTRIBUTE);
+        String attributeValue = getSimpleValueFromTable();
         Multimap<String, String> filters = inventoryViewPage.searchByAttributeValue(SIMPLE_ATTRIBUTE, attributeValue, Input.ComponentType.TEXT_FIELD);
 
         Assertions.assertThat(filters.keys()).hasSize(1);
@@ -132,5 +138,25 @@ public class AdvancedSearchCompact extends BaseTestCase {
         inventoryViewPage.toggleVisibilitySearchAttribute("actors");
         List<String> filtersSecond = inventoryViewPage.getMainTable().getAllVisibleFilters();
         Assert.assertTrue(filtersSecond.contains("actors"));
+    }
+
+    @Test
+    public void createAndUseFilter() {
+        final String FILTER_NAME = "WEB_TEST_FILTER";
+
+        String attributeValue = getSimpleValueFromTable();
+        inventoryViewPage.searchByAttributeValue(SIMPLE_ATTRIBUTE, attributeValue, Input.ComponentType.TEXT_FIELD);
+
+        tableWidget.saveAsNewFilter(FILTER_NAME);
+        inventoryViewPage.clearFilter(SIMPLE_ATTRIBUTE);
+
+        tableWidget.choseSavedFiltersByLabel(FILTER_NAME);
+        DelayUtils.sleep(500);
+
+        Assert.assertTrue(checkIfCellContainsValue(SIMPLE_ATTRIBUTE, attributeValue));
+
+        inventoryViewPage.clearFilters();
+        FilterManagerPage.goToFilterManagerPage(driver, BASIC_URL).expandAllCategories().deleteAllFilters();
+        goToInventoryView();
     }
 }
