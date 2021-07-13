@@ -26,4 +26,5 @@ public class TicketDetailsPage extends BasePage {
     private void clickContextAction(String contextActionLabel) {
         TabWindowWidget.create(driver, wait).callActionByLabel(contextActionLabel);
     }
+
 }
