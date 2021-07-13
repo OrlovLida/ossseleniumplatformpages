@@ -55,8 +55,7 @@ public class TP_OSS_RM_RAN_003 extends BaseTestCase {
 
     @Test(priority = 3)
     public void findLocation() {
-        HomePage homePage = new HomePage(driver);
-        homePage.goToHomePage(driver, BASIC_URL);
+        openView("Legacy Inventory Dashboard", "Resource Inventory");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         homePage.setOldObjectType(SITE);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
