@@ -102,7 +102,7 @@ public class IndicatorsViewTest extends BaseTestCase {
             kpiViewPage.chooseLatestOptionInTimePeriodChooser();
             kpiViewPage.applyChanges();
             kpiViewPage.clickLegend();
-            Assert.assertTrue(kpiViewPage.shouldSeePointsDisplayed(1));
+            Assert.assertTrue(kpiViewPage.shouldSeePointsDisplayed(2));
         } catch (Exception e) {
             log.error(e.getMessage());
             Assert.fail();
