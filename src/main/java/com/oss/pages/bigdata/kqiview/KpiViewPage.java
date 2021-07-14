@@ -225,8 +225,7 @@ public class KpiViewPage extends BasePage {
     public void clickAreaChartType() {
         DelayUtils.waitForPageToLoad(driver, wait);
         KpiChartWidget.create(driver, wait).clickChartActions();
-        Button chartTypeButton = Button.createById(driver, CHART_TYPE_BUTTON_ID);
-        chartTypeButton.click();
+        Button.createById(driver, CHART_TYPE_BUTTON_ID).click();
         KpiChartWidget.create(driver, wait).clickAreaChartButton();
     }
 
