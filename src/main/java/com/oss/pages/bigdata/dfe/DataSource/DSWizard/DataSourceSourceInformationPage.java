@@ -48,10 +48,10 @@ public class DataSourceSourceInformationPage extends BasePage {
         log.debug("Setting query field with {}", query);
     }
 
-    @Step("I upload a DS file")
+    @Step("I upload a Data Source file")
     public void uploadCSVFile(String path) {
-        URL res = getClass().getClassLoader().getResource(path);
         try {
+            URL res = getClass().getClassLoader().getResource(path);
             File file = Paths.get(res.toURI()).toFile();
             String absolutePath = file.getAbsolutePath();
             Wizard wizard = Wizard.createByComponentId(driver, wait, UPLOAD_WIZARD);
@@ -66,6 +66,6 @@ public class DataSourceSourceInformationPage extends BasePage {
     public void selectDSType(String dsType) {
         DelayUtils.waitForPageToLoad(driver, wait);
         sourceInformationWizard.setComponentValue(DS_TYPE_INPUT_ID, dsType, COMBOBOX);
-        log.debug("Setting DS Type with: {}", dsType);
+        log.debug("Setting Data Source Type with: {}", dsType);
     }
 }

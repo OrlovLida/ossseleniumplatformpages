@@ -51,21 +51,20 @@ public class DataSourceSpecificInfoPage extends BasePage {
         log.info("Filled Specific Information Wizard Page");
     }
 
-    public void fillServerGroup(String serverGroupName) {
-        specificInfoWizard.setComponentValue(SERVER_GROUP_INPUT_ID, serverGroupName, SEARCH_FIELD);
-        log.debug("Setting Server Group name with: {}", serverGroupName);
-    }
-
-    public void fillBaseInterval(String interval) {
-        specificInfoWizard.setComponentValue(BASE_INTERVAL_ID, interval, TEXT_FIELD);
-        log.debug("Setting Base Interval with: {}", interval);
-    }
-
-    @Step("I fill Specific Information for CSV DS with Server Group name: {serverGroupName}, Base Interval: {interval}")
-    public void fillSpecyficInfoForCSV(String serverGroupName, String interval) {
+    @Step("I fill Specific Information for CSV Data Source with Server Group name: {serverGroupName}, Base Interval: {interval}")
+    public void fillSpecificInfoForCSV(String serverGroupName, String interval) {
         fillServerGroup(serverGroupName);
         fillBaseInterval(interval);
         log.info("Filled Specific Information Wizard Page");
     }
 
+    private void fillServerGroup(String serverGroupName) {
+        specificInfoWizard.setComponentValue(SERVER_GROUP_INPUT_ID, serverGroupName, SEARCH_FIELD);
+        log.debug("Setting Server Group name with: {}", serverGroupName);
+    }
+
+    private void fillBaseInterval(String interval) {
+        specificInfoWizard.setComponentValue(BASE_INTERVAL_ID, interval, TEXT_FIELD);
+        log.debug("Setting Base Interval with: {}", interval);
+    }
 }

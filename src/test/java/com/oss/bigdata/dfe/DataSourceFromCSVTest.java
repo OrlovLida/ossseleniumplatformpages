@@ -27,7 +27,6 @@ public class DataSourceFromCSVTest extends BaseTestCase {
     @BeforeClass
     public void goToDataSourceView() {
         dataSourcePage = DataSourcePage.goToPage(driver, BASIC_URL);
-
         dataSourceName = ConstantsDfe.createName() + "_DSFromCSVTest";
         dataSourceName_updated = dataSourceName + "_updated";
     }
@@ -43,7 +42,7 @@ public class DataSourceFromCSVTest extends BaseTestCase {
         dsStepWizard.getSourceInfoStep().uploadCSVFile("DataSourceCSV/CPU_USAGE_INFO_RAW-MAP.xlsx");
         dsStepWizard.getSourceInfoStep().selectDSType(DS_TYPE);
         dsStepWizard.clickNext();
-        dsStepWizard.getSpecificInfoStep().fillSpecyficInfoForCSV(SERVER_GROUP_NAME, INTERVAL);
+        dsStepWizard.getSpecificInfoStep().fillSpecificInfoForCSV(SERVER_GROUP_NAME, INTERVAL);
         dsStepWizard.clickAccept();
         Boolean dataSourceIsCreated = dataSourcePage.dataSourceExistIntoTable(dataSourceName);
 
