@@ -32,14 +32,28 @@ public class WizardPage extends BaseSDPage {
         getWizard().clickAccept();
     }
 
-    @Step("I insert {value} to search component with id {componentId}")
-    public void insertValueToSearchComponent(String text, String componentId) {
-        getWizard().setComponentValue(componentId, text, Input.ComponentType.SEARCH_FIELD);
+    @Step("I insert {value} to multi combo box component with id {componentId}")
+    public void insertValueToMultiComboBoxComponent(String text, String componentId) {
+        insertValueToComponent(componentId, text, Input.ComponentType.MULTI_COMBOBOX);
+    }
+
+    @Step("I insert {value} to combo box component with id {componentId}")
+    public void insertValueToComboBoxComponent(String text, String componentId) {
+        insertValueToComponent(componentId, text, Input.ComponentType.COMBOBOX);
     }
 
     @Step("I insert {value} to search component with id {componentId}")
+    public void insertValueToSearchComponent(String text, String componentId) {
+        insertValueToComponent(componentId, text, Input.ComponentType.SEARCH_FIELD);
+    }
+
+    @Step("I insert {value} to text component with id {componentId}")
     public void insertValueToTextComponent(String text, String componentId) {
-        getWizard().setComponentValue(componentId, text, Input.ComponentType.TEXT_FIELD);
+        insertValueToComponent(text, componentId, Input.ComponentType.TEXT_FIELD);
+    }
+
+    private void insertValueToComponent(String text, String componentId, Input.ComponentType componentType) {
+        getWizard().setComponentValue(componentId, text, componentType);
     }
 
     private Wizard getWizard() {
