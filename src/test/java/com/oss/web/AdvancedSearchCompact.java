@@ -9,6 +9,7 @@ import com.oss.pages.filtermanager.FilterManagerPage;
 import com.oss.pages.platform.NewInventoryViewPage;
 import org.assertj.core.api.Assertions;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -24,6 +25,7 @@ public class AdvancedSearchCompact extends BaseTestCase {
     private final static String COMBO_ATTRIBUTE_LABEL = "gsLifecycleState";
     private final static String OSF_ATTRIBUTE_LABEL = "director_OSF";
     private final static int DEFAULT_ROW_INDEX = 1;
+    private final static String FILTER_NAME = "WEB_TEST_FILTER";
 
     private NewInventoryViewPage inventoryViewPage;
     private TableWidget tableWidget;
@@ -33,6 +35,11 @@ public class AdvancedSearchCompact extends BaseTestCase {
         String TYPE = "Movie";
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TYPE);
         tableWidget = inventoryViewPage.getMainTable();
+    }
+
+    @AfterClass
+    public void clear() {
+        FilterManagerPage.goToFilterManagerPage(driver, BASIC_URL).expandAllCategories().deleteAllFilters();
     }
 
     private Predicate<String> containsValue(String val) {
@@ -58,16 +65,17 @@ public class AdvancedSearchCompact extends BaseTestCase {
         return tableWidget.getCellValue(DEFAULT_ROW_INDEX, SIMPLE_ATTRIBUTE);
     }
 
-    @Test
+    @Test(priority = 1)
     public void filterBySearchInput() {
         String attributeValue = tableWidget.getCellValue(DEFAULT_ROW_INDEX, SIMPLE_ATTRIBUTE);
         tableWidget.typeIntoSearch(attributeValue);
 
+        DelayUtils.sleep(500);
         Assert.assertTrue(checkIfCellContainsValue(SIMPLE_ATTRIBUTE, attributeValue));
         tableWidget.typeIntoSearch("");
     }
 
-    @Test
+    @Test(priority = 2)
     public void clearTags() {
         Multimap<String, String> filterFirst = inventoryViewPage.searchByAttributeValue(
                 SIMPLE_ATTRIBUTE,
@@ -91,7 +99,7 @@ public class AdvancedSearchCompact extends BaseTestCase {
         Assert.assertEquals(inventoryViewPage.countOfVisibleTags(), 0);
     }
 
-    @Test
+    @Test(priority = 3)
     public void filterBySimpleAttribute() {
         String attributeValue = getSimpleValueFromTable();
         Multimap<String, String> filters = inventoryViewPage.searchByAttributeValue(SIMPLE_ATTRIBUTE, attributeValue, Input.ComponentType.TEXT_FIELD);
@@ -103,7 +111,7 @@ public class AdvancedSearchCompact extends BaseTestCase {
         inventoryViewPage.clearFilters();
     }
 
-    @Test
+    @Test(priority = 4)
     public void filterByCombo() {
         String attributeValue = tableWidget.getCellValue(DEFAULT_ROW_INDEX, COMBO_ATTRIBUTE_LABEL);
         Multimap<String, String> filters = inventoryViewPage.searchByAttributeValue(COMBO_ATTRIBUTE, attributeValue, Input.ComponentType.MULTI_COMBOBOX);
@@ -115,11 +123,11 @@ public class AdvancedSearchCompact extends BaseTestCase {
         inventoryViewPage.clearFilters();
     }
 
-    @Test
+    @Test(priority = 5)
     public void filterByOSF() {
-        String attributeValue = "36";
+        String attributeValue = "241";
         inventoryViewPage.enableColumnAndApply("DM_Director.id", "DM_Movie.director");
-        Multimap<String, String> filters = inventoryViewPage.searchByAttributeValue(OSF_ATTRIBUTE_LABEL, "36", Input.ComponentType.OBJECT_SEARCH_FIELD);
+        Multimap<String, String> filters = inventoryViewPage.searchByAttributeValue(OSF_ATTRIBUTE_LABEL, attributeValue, Input.ComponentType.OBJECT_SEARCH_FIELD);
 
         Assertions.assertThat(filters.keys()).hasSize(1);
         Assertions.assertThat(filters.get("DM_Movie.director")).containsExactly(attributeValue);
@@ -128,7 +136,7 @@ public class AdvancedSearchCompact extends BaseTestCase {
         inventoryViewPage.clearFilters();
     }
 
-    @Test
+    @Test(priority = 6)
     public void toggleVisibilitySearchAttribute() {
         inventoryViewPage.toggleVisibilitySearchAttribute("actors");
         List<String> filters = inventoryViewPage.getMainTable().getAllVisibleFilters();
@@ -140,10 +148,8 @@ public class AdvancedSearchCompact extends BaseTestCase {
         Assert.assertTrue(filtersSecond.contains("actors"));
     }
 
-    @Test
+    @Test(priority = 7)
     public void createAndUseFilter() {
-        final String FILTER_NAME = "WEB_TEST_FILTER";
-
         String attributeValue = getSimpleValueFromTable();
         inventoryViewPage.searchByAttributeValue(SIMPLE_ATTRIBUTE, attributeValue, Input.ComponentType.TEXT_FIELD);
 
@@ -156,7 +162,15 @@ public class AdvancedSearchCompact extends BaseTestCase {
         Assert.assertTrue(checkIfCellContainsValue(SIMPLE_ATTRIBUTE, attributeValue));
 
         inventoryViewPage.clearFilters();
-        FilterManagerPage.goToFilterManagerPage(driver, BASIC_URL).expandAllCategories().deleteAllFilters();
-        goToInventoryView();
+    }
+
+    @Test(priority = 8)
+    public void markFilterAsFavByLabel() {
+        tableWidget.markFilterAsFavByLabel(FILTER_NAME);
+        tableWidget.setQuickFilter(FILTER_NAME);
+
+        Assert.assertEquals(inventoryViewPage.countOfVisibleTags(), 1);
+
+        inventoryViewPage.clearFilters();
     }
 }

@@ -25,48 +25,10 @@ public class InventoryViewTest extends BaseTestCase {
 
     @BeforeClass
     public void goToInventoryView() {
-        inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Location");
+        inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Movie");
     }
 
     @Test(priority = 1)
-    public void searchByType() {
-        // when
-        Multimap<String, String> filterValues = inventoryViewPage.searchByAttributeValue("type", "PoP", ComponentType.MULTI_COMBOBOX);
-
-        // then
-        Assertions.assertThat(filterValues.keys()).hasSize(1);
-        Assertions.assertThat(Lists.newArrayList(filterValues.get("Object Type")).get(0)).startsWith("PoP");
-
-        inventoryViewPage.clearFilters();
-    }
-
-    @Test(priority = 2)
-    public void selectFirstRow() {
-        // when
-        inventoryViewPage.selectObjectByRowId(0);
-        List<TableRow> selectedRows = inventoryViewPage.getSelectedRows();
-
-        // then
-        Assertions.assertThat(selectedRows).hasSize(1);
-        Assertions.assertThat(selectedRows.get(0).getIndex()).isEqualTo(0);
-
-        inventoryViewPage.unselectObjectByRowId(0);
-        selectedRows = inventoryViewPage.getSelectedRows();
-        Assertions.assertThat(selectedRows).hasSize(0);
-    }
-
-    @Test(priority = 3)
-    public void findByText() {
-        String secondID = inventoryViewPage.getAttributeValue("id", 1);
-        inventoryViewPage.searchObject(secondID);
-        String newFirstID = inventoryViewPage.getAttributeValue("id", 0);
-        Assert.assertEquals(secondID, newFirstID);
-        Assert.assertEquals(inventoryViewPage.getRowsNumber(), 1);
-
-        inventoryViewPage.clearFilters();
-    }
-
-    @Test(priority = 4)
     public void checkDisplayingOfPropertyValue() {
         PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel(0, PROPERTY_PANEL_ID);
 
@@ -77,7 +39,7 @@ public class InventoryViewTest extends BaseTestCase {
         inventoryViewPage.unselectObjectByRowId(0);
     }
 
-    @Test(priority = 5)
+    @Test(priority = 2)
     public void propertyPanelAttributesChooserCheck() {
         PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel(0, PROPERTY_PANEL_ID);
         List<String> labels = propertyPanel.getPropertyLabels();
@@ -96,7 +58,7 @@ public class InventoryViewTest extends BaseTestCase {
         inventoryViewPage.unselectObjectByRowId(0);
     }
 
-    @Test(priority = 6)
+    @Test(priority = 3)
     public void searchProperty() {
         inventoryViewPage.selectObjectByRowId(0);
         String name = inventoryViewPage.getAttributeValue("identifier", 0);
@@ -110,62 +72,7 @@ public class InventoryViewTest extends BaseTestCase {
         inventoryViewPage.unselectObjectByRowId(0);
     }
 
-    @Test(priority = 7)
-    public void resizeColumn() {
-        TableWidget tableWidget = inventoryViewPage.getMainTable();
-        int defaultSize = tableWidget.getFirstColumnSize();
-        DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
-        Assertions.assertThat(defaultSize).isEqualTo(200);
-
-        int offset = 400;
-        tableWidget.resizeFirstColumn(offset);
-        DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
-
-        int newSize = tableWidget.getFirstColumnSize();
-        Assertions.assertThat(defaultSize + offset).isEqualTo(newSize);
-
-        tableWidget.resizeFirstColumn(-offset);
-        newSize = tableWidget.getFirstColumnSize();
-        Assertions.assertThat(defaultSize).isEqualTo(newSize);
-    }
-
-    @Test(priority = 9)
-    public void addFirstUnselectedColumn() {
-        // given
-        List<String> columnHeaders = inventoryViewPage.getActiveColumnsHeaders();
-        String firstHeader = columnHeaders.get(1);
-
-        //when
-        inventoryViewPage.removeColumn(firstHeader);
-        columnHeaders = inventoryViewPage.getActiveColumnsHeaders();
-        Assertions.assertThat(columnHeaders).doesNotContain(firstHeader);
-
-        inventoryViewPage.enableColumnAndApply(firstHeader);
-
-        // then
-        columnHeaders = inventoryViewPage.getActiveColumnsHeaders();
-        Assertions.assertThat(columnHeaders).contains(firstHeader);
-    }
-
-    @Test(priority = 10)
-    public void changeColumnsOrder() {
-        List<String> columnHeaders = inventoryViewPage.getActiveColumnsHeaders();
-
-        String firstHeader = columnHeaders.get(0);
-        String secondHeader = columnHeaders.get(1);
-        String thirdHeader = columnHeaders.get(2);
-
-        inventoryViewPage.changeColumnsOrderInMainTable(firstHeader, 2);
-
-        List<String> newHeaders = inventoryViewPage.getActiveColumnsHeaders();
-
-        Assertions.assertThat(newHeaders.indexOf(firstHeader)).isEqualTo(2);
-        Assertions.assertThat(newHeaders.indexOf(secondHeader)).isEqualTo(0);
-        Assertions.assertThat(newHeaders.indexOf(thirdHeader)).isEqualTo(1);
-
-    }
-
-    @Test(priority = 11)
+    @Test(priority = 4)
     public void changeTab() {
         inventoryViewPage.selectObjectByRowId(0);
 
