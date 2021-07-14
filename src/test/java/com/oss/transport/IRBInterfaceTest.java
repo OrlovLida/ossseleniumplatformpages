@@ -92,7 +92,7 @@ public class IRBInterfaceTest extends BaseTestCase {
     public void assignIPHostAddress() {
         newInventoryViewPage.selectFirstRow();
         waitForPageToLoad();
-        newInventoryViewPage.callAction(ActionsContainer.CREATE_GROUP_ID, "AssignIPv4Host");
+        newInventoryViewPage.callAction(ActionsContainer.ASSIGN_GROUP_ID, "AssignIPv4Host");
         IPAddressAssignmentWizardPage ipAddressAssignmentWizardPage = new IPAddressAssignmentWizardPage(driver);
         IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties = IPAddressAssignmentWizardProperties.builder()
                 .address(IP_ADDRESS).subnet(IP_SUBNET).isPrimary("true").build();

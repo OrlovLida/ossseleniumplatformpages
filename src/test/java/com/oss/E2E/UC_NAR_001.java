@@ -1,5 +1,6 @@
 package com.oss.E2E;
 
+import java.net.URISyntaxException;
 import java.util.List;
 
 import org.testng.Assert;
@@ -60,7 +61,7 @@ public class UC_NAR_001 extends BaseTestCase {
 
     @Test(priority = 2)
     @Description("Upload basic samples")
-    public void uploadBasicSamples() {
+    public void uploadBasicSamples() throws URISyntaxException {
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.moveToSamplesManagement();
         SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
@@ -95,16 +96,16 @@ public class UC_NAR_001 extends BaseTestCase {
         NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
         networkInconsistenciesViewPage.expandTree();
         networkInconsistenciesViewPage.assignLocation(ROUTER_NAME, "a");
-        networkInconsistenciesViewPage.checkUpdateDeviceSystemMessage();
+        checkPopupMessageType(MessageType.SUCCESS);
         networkInconsistenciesViewPage.clearOldNotification();
         networkInconsistenciesViewPage.applyInconsistencies();
         DelayUtils.sleep(5000);
-        networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(ROUTER_NAME);
+        Assert.assertEquals(networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(), "Accepting discrepancies related to " + ROUTER_NAME + " finished");
     }
 
     @Test(priority = 5)
     @Description("Open Network Discovery Control View and replace old samples")
-    public void replaceOldSamples() {
+    public void replaceOldSamples() throws URISyntaxException {
         openNetworkDiscoveryControlView();
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.moveToSamplesManagement();
@@ -158,7 +159,7 @@ public class UC_NAR_001 extends BaseTestCase {
         networkInconsistenciesViewPage.clearOldNotification();
         networkInconsistenciesViewPage.applyInconsistencies();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(ROUTER_NAME);
+        Assert.assertEquals(networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(), "Accepting discrepancies related to " + ROUTER_NAME + " finished");
     }
 
     @Test(priority = 9)

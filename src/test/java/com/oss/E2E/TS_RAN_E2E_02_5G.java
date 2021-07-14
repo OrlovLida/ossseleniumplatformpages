@@ -1,5 +1,6 @@
 package com.oss.E2E;
 
+import java.net.URISyntaxException;
 import java.util.List;
 
 import org.testng.Assert;
@@ -104,7 +105,7 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
     }
 
     @Test(priority = 2)
-    public void uploadSamples() {
+    public void uploadSamples() throws URISyntaxException {
         DelayUtils.sleep(1000);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -138,20 +139,20 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         networkInconsistenciesViewPage.expandTree();
         for (String inconsistencieName : PHYSICAL_INCONSISTENCIES_NAMES) {
             networkInconsistenciesViewPage.assignLocation(inconsistencieName, LOCATION_NAME);
-            networkInconsistenciesViewPage.checkUpdateDeviceSystemMessage();
+            checkPopupMessageType(MessageType.SUCCESS);
             networkInconsistenciesViewPage.clearOldNotification();
             networkInconsistenciesViewPage.applySelectedInconsistencies();
             DelayUtils.sleep(5000);
-            networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(inconsistencieName);
+            Assert.assertEquals(networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(), "Accepting discrepancies related to " + inconsistencieName + " finished");
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
         }
         for (String inconsistencieName : RAN_INCONSISTENCIES_NAMES) {
             networkInconsistenciesViewPage.assignRanLocation(inconsistencieName, LOCATION_NAME);
-            networkInconsistenciesViewPage.checkUpdateDeviceSystemMessage();
+            checkPopupMessageType(MessageType.SUCCESS);
             networkInconsistenciesViewPage.clearOldNotification();
             networkInconsistenciesViewPage.applySelectedInconsistencies();
             DelayUtils.sleep(5000);
-            networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(inconsistencieName);
+            Assert.assertEquals(networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(), "Accepting discrepancies related to " + inconsistencieName + " finished");
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
         }
     }

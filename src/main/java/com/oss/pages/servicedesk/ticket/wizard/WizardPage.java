@@ -37,6 +37,11 @@ public class WizardPage extends BaseSDPage {
         getWizard().setComponentValue(componentId, text, Input.ComponentType.SEARCH_FIELD);
     }
 
+    @Step("I insert {value} to search component with id {componentId}")
+    public void insertValueToTextComponent(String text, String componentId) {
+        getWizard().setComponentValue(componentId, text, Input.ComponentType.TEXT_FIELD);
+    }
+
     private Wizard getWizard() {
         return Wizard.createWizard(driver, wait);
     }

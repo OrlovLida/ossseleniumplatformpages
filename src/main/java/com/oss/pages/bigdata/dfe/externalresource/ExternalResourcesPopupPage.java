@@ -21,9 +21,9 @@ public class ExternalResourcesPopupPage extends BasePage {
 
     private final Wizard externalResourcesWizard;
 
-    public ExternalResourcesPopupPage(WebDriver driver, WebDriverWait wait) {
+    public ExternalResourcesPopupPage(WebDriver driver, WebDriverWait wait, String WIZARD_ID) {
         super(driver, wait);
-        externalResourcesWizard = Wizard.createWizard(driver, wait);
+        externalResourcesWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
     }
 
     public void fillName(String name) {

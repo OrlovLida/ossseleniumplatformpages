@@ -1,5 +1,6 @@
 package com.oss.E2E;
 
+import java.net.URISyntaxException;
 import java.util.List;
 
 import org.testng.Assert;
@@ -65,7 +66,7 @@ public class TS_RAN_E2E_02_5G_RECO_PART extends BaseTestCase {
     }
 
     @Test(priority = 2)
-    public void uploadSamples() {
+    public void uploadSamples() throws URISyntaxException {
         DelayUtils.sleep(1000);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -86,7 +87,7 @@ public class TS_RAN_E2E_02_5G_RECO_PART extends BaseTestCase {
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.runReconciliation();
-        checkPopupMessageType();
+        checkPopupMessageType(MessageType.INFO);
         Assert.assertEquals(networkDiscoveryControlViewPage.waitForEndOfReco(), "SUCCESS");
         networkDiscoveryControlViewPage.selectLatestReconciliationState();
         Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(IssueLevel.STARTUP_FATAL));
@@ -102,20 +103,20 @@ public class TS_RAN_E2E_02_5G_RECO_PART extends BaseTestCase {
         networkInconsistenciesViewPage.expandTree();
         for (String inconsistencieName : PHYSICAL_INCONSISTENCIES_NAMES) {
             networkInconsistenciesViewPage.assignLocation(inconsistencieName, LOCATION);
-            networkInconsistenciesViewPage.checkUpdateDeviceSystemMessage();
+            checkPopupMessageType(MessageType.SUCCESS);
             networkInconsistenciesViewPage.clearOldNotification();
             networkInconsistenciesViewPage.applySelectedInconsistencies();
             DelayUtils.sleep(5000);
-            networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(inconsistencieName);
+            Assert.assertEquals(networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(), "Accepting discrepancies related to " + inconsistencieName + " finished");
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
         }
         for (String inconsistencieName : RAN_INCONSISTENCIES_NAMES) {
             networkInconsistenciesViewPage.assignRanLocation(inconsistencieName, LOCATION);
-            networkInconsistenciesViewPage.checkUpdateDeviceSystemMessage();
+            checkPopupMessageType(MessageType.SUCCESS);
             networkInconsistenciesViewPage.clearOldNotification();
             networkInconsistenciesViewPage.applySelectedInconsistencies();
             DelayUtils.sleep(5000);
-            networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(inconsistencieName);
+            Assert.assertEquals(networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(), "Accepting discrepancies related to " + inconsistencieName + " finished");
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
         }
     }
@@ -127,16 +128,16 @@ public class TS_RAN_E2E_02_5G_RECO_PART extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.clearOldNotifications();
         networkDiscoveryControlViewPage.deleteCmDomain();
-        checkPopupMessageType();
+        checkPopupMessageType(MessageType.INFO);
         Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
         PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
     }
 
-    private void checkPopupMessageType() {
+    private void checkPopupMessageType(MessageType messageType) {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<Message> messages = systemMessage.getMessages();
         Assert.assertNotNull(messages);
         Assert.assertEquals(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType(),
-                MessageType.INFO);
+                messageType);
     }
 }

@@ -18,6 +18,8 @@ public class ProblemsViewTest extends BaseTestCase {
 
     private static final Logger log = LoggerFactory.getLogger(ProblemsViewTest.class);
     private static final String PROBLEM_DESCRIPTION = "Problem Selenium Test";
+    private static final String ADD_WIZARD = "add-prompt-id";
+    private static final String EDIT_WIZARD = "edit-prompt-id";
 
     private ProblemsPage problemsPage;
     private String problemName;
@@ -35,7 +37,7 @@ public class ProblemsViewTest extends BaseTestCase {
     @Description("Add new Problem")
     public void addProblem() {
         problemsPage.clickAddNewProblem();
-        ProblemsPopupPage problemsWizard = new ProblemsPopupPage(driver, webDriverWait);
+        ProblemsPopupPage problemsWizard = new ProblemsPopupPage(driver, webDriverWait, ADD_WIZARD);
         problemsWizard.fillProblemsPopup(problemName, PROBLEM_DESCRIPTION);
         problemsWizard.clickSave();
         Boolean problemIsCreated = problemsPage.problemExistsIntoTable(problemName);
@@ -53,7 +55,7 @@ public class ProblemsViewTest extends BaseTestCase {
         if (problemExists) {
             problemsPage.selectFoundProblem();
             problemsPage.clickEditProblem();
-            ProblemsPopupPage problemsWizard = new ProblemsPopupPage(driver, webDriverWait);
+            ProblemsPopupPage problemsWizard = new ProblemsPopupPage(driver, webDriverWait, EDIT_WIZARD);
             problemsWizard.fillName(updatedProblemName);
             problemsWizard.clickSave();
             Boolean dictionaryIsCreated = problemsPage.problemExistsIntoTable(updatedProblemName);

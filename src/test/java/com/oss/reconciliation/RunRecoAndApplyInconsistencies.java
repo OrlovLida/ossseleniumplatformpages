@@ -1,5 +1,6 @@
 package com.oss.reconciliation;
 
+import java.net.URISyntaxException;
 import java.util.List;
 
 import org.testng.Assert;
@@ -43,7 +44,7 @@ public class RunRecoAndApplyInconsistencies extends BaseTestCase {
     }
 
     @Test(priority = 2)
-    public void uploadSamples() {
+    public void uploadSamples() throws URISyntaxException {
         DelayUtils.sleep(1000);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -84,11 +85,11 @@ public class RunRecoAndApplyInconsistencies extends BaseTestCase {
         networkInconsistenciesViewPage.clearOldNotification();
         networkInconsistenciesViewPage.applyInconsistencies();
         DelayUtils.sleep(5000);
-        networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies("CiscoSeleniumTest");
+        Assert.assertEquals(networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(), "Accepting discrepancies related to CiscoSeleniumTest finished");
     }
 
     @Test(priority = 5)
-    public void deleteOldSamplesAndPutNewOne() {
+    public void deleteOldSamplesAndPutNewOne() throws URISyntaxException {
         openNetworkDiscoveryControlView();
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -129,7 +130,7 @@ public class RunRecoAndApplyInconsistencies extends BaseTestCase {
         networkInconsistenciesViewPage.clearOldNotification();
         networkInconsistenciesViewPage.applyInconsistencies();
         DelayUtils.sleep(5000);
-        networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies("CiscoSeleniumTest");
+        Assert.assertEquals(networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(), "Accepting discrepancies related to CiscoSeleniumTest finished");
     }
 
     @Test(priority = 8)

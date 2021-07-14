@@ -1,5 +1,6 @@
 package com.oss.E2E;
 
+import java.net.URISyntaxException;
 import java.util.List;
 
 import org.testng.Assert;
@@ -74,7 +75,7 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
     }
 
     @Test(priority = 2)
-    public void uploadSamples() {
+    public void uploadSamples() throws URISyntaxException {
         DelayUtils.sleep(1000);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -112,19 +113,19 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         for (String inconsistencieName : inconsistenciesNames) {
             networkInconsistenciesViewPage.assignLocation(inconsistencieName, LOCATION_NAME);
-            networkInconsistenciesViewPage.checkUpdateDeviceSystemMessage();
+            checkPopupMessageType(MessageType.SUCCESS);
             networkInconsistenciesViewPage.clearOldNotification();
             networkInconsistenciesViewPage.applySelectedInconsistencies();
             DelayUtils.sleep(5000);
-            networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(inconsistencieName);
+            Assert.assertEquals(networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(), "Accepting discrepancies related to " + inconsistencieName + " finished");
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
         }
         networkInconsistenciesViewPage.assignRanLocation(inconsistenciesRanName, LOCATION_NAME);
-        networkInconsistenciesViewPage.checkUpdateDeviceSystemMessage();
+        checkPopupMessageType(MessageType.SUCCESS);
         networkInconsistenciesViewPage.clearOldNotification();
         networkInconsistenciesViewPage.applySelectedInconsistencies();
         DelayUtils.sleep(5000);
-        networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(inconsistenciesRanName);
+        Assert.assertEquals(networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(), "Accepting discrepancies related to " + inconsistenciesRanName + " finished");
     }
 
     @Test(priority = 5)
