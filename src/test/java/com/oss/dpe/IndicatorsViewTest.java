@@ -32,7 +32,7 @@ public class IndicatorsViewTest extends BaseTestCase {
     private KpiViewPage kpiViewPage;
 
     @BeforeMethod
-    public void goToKpiView(){
+    public void goToKpiView() {
         kpiViewPage = KpiViewPage.goToPage(driver, BASIC_URL);
     }
 
@@ -43,8 +43,8 @@ public class IndicatorsViewTest extends BaseTestCase {
             @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
             @Optional("DBTIME") String indicatorNodesToSelect,
             @Optional("DC Type: ETL_DC") String dimensionNodesToSelect
-    ){
-        try{
+    ) {
+        try {
             kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToSelect);
             Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
             kpiViewPage.clickLegend();
@@ -54,7 +54,7 @@ public class IndicatorsViewTest extends BaseTestCase {
             kpiViewPage.clickLegend();
             Assert.assertTrue(kpiViewPage.shouldSeeDataSeriesLineWidth(NORMAL_DATA_SERIES_WIDTH));
             kpiViewPage.exportChart();
-        } catch(Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             Assert.fail();
         }
@@ -67,10 +67,10 @@ public class IndicatorsViewTest extends BaseTestCase {
             @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
             @Optional("DBTIME,AQ_TIME") String indicatorNodesToSelect,
             @Optional("DC Type: ETL_DC") String dimensionNodesToSelect
-    ){
-        try{
+    ) {
+        try {
             kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToSelect);
-//            Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(2)); // BRAK DANYCH 12 07 2021
+            Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(2));
             kpiViewPage.clickAreaChartType();
             Assert.assertTrue(kpiViewPage.shouldSeeAreaChart(AREA_CHART_FILL_OPACITY));
             kpiViewPage.clickBarChartType();
@@ -79,7 +79,7 @@ public class IndicatorsViewTest extends BaseTestCase {
             Assert.assertTrue(kpiViewPage.shouldSeeAreaChart(LINE_CHART_FILL_OPACITY));
             kpiViewPage.chooseDataSeriesColor();
             Assert.assertTrue(kpiViewPage.shouldSeeColorChart("rgb(150, 65, 54)"));
-        } catch(Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             Assert.fail();
         }
@@ -92,8 +92,8 @@ public class IndicatorsViewTest extends BaseTestCase {
             @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
             @Optional("DBTIME,AQ_TIME") String indicatorNodesToSelect,
             @Optional("DC Type: ETL_DC") String dimensionNodesToSelect
-    ){
-        try{
+    ) {
+        try {
             kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToSelect);
             kpiViewPage.setValueInTimePeriodChooser(1, 2, 3);
             kpiViewPage.applyChanges();
@@ -103,7 +103,7 @@ public class IndicatorsViewTest extends BaseTestCase {
             kpiViewPage.applyChanges();
             kpiViewPage.clickLegend();
             Assert.assertTrue(kpiViewPage.shouldSeePointsDisplayed(1));
-        } catch(Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             Assert.fail();
         }

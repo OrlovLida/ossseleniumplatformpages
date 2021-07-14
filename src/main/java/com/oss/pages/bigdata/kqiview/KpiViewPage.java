@@ -63,7 +63,6 @@ public class KpiViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         KpiTreeWidget indicatorsTree = KpiTreeWidget.create(driver, wait, componentId);
         indicatorsTree.selectExpandedObjects(nodesToSelect);
-//        log.debug("Expanded nodes: {}", nodesToExpand);
         log.debug("Selecting: {}", nodesToSelect);
     }
 
@@ -105,11 +104,6 @@ public class KpiViewPage extends BasePage {
         toolbar.clickApply();
     }
 
-    //    @Step("I see chart is displayed")
-//    public void seeChartIsDisplayed(){
-//        log.info("Waiting for chart presence");
-//        KpiChartWidget.create(driver, wait).waitForPresenceAndVisibility();
-//    }
     @Step("I see chart is displayed")
     public void seeChartIsDisplayed() {
         log.info("Waiting for chart presence");
@@ -222,37 +216,27 @@ public class KpiViewPage extends BasePage {
         topNPanel.clickPerform();
     }
 
-    // DO WYWALENIA Z FRAMEWORKA - PRZENIES NA PAGE - choc nie, bo xpath
     @Step("I click legend")
     public void clickLegend() {
         KpiChartWidget.create(driver, wait).clickDataSeriesLegend();
     }
 
-    // do wywalenia - jak wejdzie id to jedna metoda zapieta na id buttona
     @Step("I click chart type - area")
     public void clickAreaChartType() {
         DelayUtils.waitForPageToLoad(driver, wait);
         KpiChartWidget.create(driver, wait).clickChartActions();
-//        DelayUtils.waitForPageToLoad(driver, wait);
         Button chartTypeButton = Button.createById(driver, CHART_TYPE_BUTTON_ID);
-//        DelayUtils.waitForPageToLoad(driver, wait);
         chartTypeButton.click();
         KpiChartWidget.create(driver, wait).clickAreaChartButton();
     }
 
     @Step("I click chart type - bar")
     public void clickBarChartType() {
-//        KpiChartWidget.create(driver, wait).clickChartActions();
-//        Button chartTypeButton = Button.createById(driver, CHART_TYPE_BUTTON_ID);
-//        chartTypeButton.click();
         KpiChartWidget.create(driver, wait).clickBarChartButton();
     }
 
     @Step("I click chart type - line")
     public void clickLineChartType() {
-//        KpiChartWidget.create(driver, wait).clickChartActions();
-//        Button chartTypeButton = Button.createById(driver, CHART_TYPE_BUTTON_ID);
-//        chartTypeButton.click();
         KpiChartWidget.create(driver, wait).clickLineChartButton();
     }
 
