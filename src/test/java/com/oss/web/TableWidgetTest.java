@@ -3,20 +3,24 @@ package com.oss.web;
 import com.oss.BaseTestCase;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.TableRow;
+import com.oss.framework.widgets.tablewidget.TableWidget;
 import com.oss.pages.platform.NewInventoryViewPage;
 import org.assertj.core.api.Assertions;
+import org.openqa.selenium.WebElement;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.util.List;
 
-public class TableWidget extends BaseTestCase {
+public class TableWidgetTest extends BaseTestCase {
     private NewInventoryViewPage inventoryViewPage;
+    private TableWidget tableWidget;
 
     @BeforeClass
     public void goToInventoryView() {
         String TYPE = "Movie";
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TYPE);
+        tableWidget = inventoryViewPage.getMainTable();
     }
 
     @Test(priority = 1)
@@ -86,5 +90,59 @@ public class TableWidget extends BaseTestCase {
         Assertions.assertThat(newHeaders.indexOf(firstHeader)).isEqualTo(2);
         Assertions.assertThat(newHeaders.indexOf(secondHeader)).isEqualTo(0);
         Assertions.assertThat(newHeaders.indexOf(thirdHeader)).isEqualTo(1);
+    }
+
+    @Test(priority = 5)
+    public void paginationInitialStatus() {
+
+        WebElement nextBtn =  tableWidget.getPagination().getNextPageBtn();
+        WebElement prevBtn =  tableWidget.getPagination().getPrevPageBtn();
+        WebElement firstPageBtn =  tableWidget.getPagination().getFirstPageBtn();
+
+        String nextBtnClass = nextBtn.getAttribute("class");
+        String prevBtnClass = prevBtn.getAttribute("class");
+        String firstBtnClass = firstPageBtn.getAttribute("class");
+
+        Assertions.assertThat(nextBtnClass).doesNotContain("disabled");
+        Assertions.assertThat(prevBtnClass).contains("disabled");
+        Assertions.assertThat(firstBtnClass).contains("disabled");
+    }
+
+    @Test(priority = 6)
+    public void checkNextPage() {
+        tableWidget.getPagination().goOnNextPage();
+
+        DelayUtils.sleep(2000);
+
+        WebElement prevBtn =  tableWidget.getPagination().getPrevPageBtn();
+        WebElement firstPageBtn =  tableWidget.getPagination().getFirstPageBtn();
+
+        String prevBtnClass = prevBtn.getAttribute("class");
+        String firstBtnClass = firstPageBtn.getAttribute("class");
+
+        Assertions.assertThat(prevBtnClass).doesNotContain("disabled");
+        Assertions.assertThat(firstBtnClass).doesNotContain("disabled");
+        Assertions.assertThat( tableWidget.getPagination().getBottomRageOfRows()).isEqualTo( tableWidget.getPagination().getStep() + 1);
+        Assertions.assertThat( tableWidget.getPagination().getTopRageOfRows()).isEqualTo( tableWidget.getPagination().getStep() * 2);
+    }
+
+    @Test(priority = 7)
+    public void checkPrevPage() {
+        tableWidget.getPagination().goOnNextPage();
+        DelayUtils.sleep(2000);
+        tableWidget.getPagination().goOnPrevPage();
+        DelayUtils.sleep(2000);
+
+        Assertions.assertThat( tableWidget.getPagination().getBottomRageOfRows()).isEqualTo( tableWidget.getPagination().getStep() + 1);
+        Assertions.assertThat( tableWidget.getPagination().getTopRageOfRows()).isEqualTo( tableWidget.getPagination().getStep() * 2);
+    }
+
+    @Test(priority = 8)
+    public void checkFirstPage() {
+        tableWidget.getPagination().goOnFirstPage();
+        DelayUtils.sleep(2000);
+
+        Assertions.assertThat( tableWidget.getPagination().getBottomRageOfRows()).isEqualTo(1);
+        Assertions.assertThat( tableWidget.getPagination().getTopRageOfRows()).isEqualTo( tableWidget.getPagination().getStep());
     }
 }
