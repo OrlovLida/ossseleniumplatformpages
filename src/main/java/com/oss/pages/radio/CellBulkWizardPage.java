@@ -33,11 +33,12 @@ public class CellBulkWizardPage extends BasePage {
     private static final String NAME = "name-TEXT_FIELD";
     private static final String COLUMN_LOCAL_CELL_ID = "localCellId";
     private static final String LOCAL_CELL_ID = "localCellId-NUMBER_FIELD";
+    private static final String WIZARD_ID = "cell-4g-bulk-wizard";
     private final Wizard wizard;
 
     public CellBulkWizardPage(WebDriver driver) {
         super(driver);
-        wizard = Wizard.createPopupWizard(driver, wait);
+        wizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
     }
 
     @Step("Click Accept button")

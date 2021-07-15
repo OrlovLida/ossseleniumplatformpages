@@ -93,8 +93,7 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
         waitForPageToLoad();
         cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);
         cellSiteConfigurationPage.createENodeB(ENODEB_NAME, ENODEB_ID, ENODEB_MODEL, MCCMNC_PRIMARY);
-        Assert.assertTrue(SystemMessageContainer.create(driver, webDriverWait)
-                .getMessages().get(0).getText().contains("Created eNodeB"));
+        checkMessageText("ENodeB was created");
     }
 
     @Test(priority = 5)
