@@ -1,6 +1,7 @@
 package com.oss.pages.transport;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -60,7 +61,7 @@ public class NetworkViewPage extends BasePage {
     private static final String ADD_TO_GROUP_ACTION = "add_to_group";
     private static final String TRAIL_TYPE_COMBOBOX_ID = "trailTypeCombobox";
     private static final String DOCKED_PANEL_LEFT_ID = "dockedPanel-left";
-    private static final String LEFT_PANEL_TAB_ID = "leftPanelTab";
+    private static final String LEFT_PANEL_TAB_ID = "LeftPanelWidget";
     private static final String VALIDATION_RESULT_ID = "Validation Results";
     private static final String ROUTING_TABLE_APP_ID = "routing-table-app";
 
@@ -179,7 +180,8 @@ public class NetworkViewPage extends BasePage {
         popup.setComponentValue(TRAIL_TYPE_COMBOBOX_ID, trailType, COMBOBOX);
     }
 
-    private <T extends TrailWizardPage> T getWizardPage(Class<T> trailWizardPage) throws Exception {
+    private <T extends TrailWizardPage> T getWizardPage(Class<T> trailWizardPage) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException {
         Constructor<T> constructor = trailWizardPage.getConstructor(WebDriver.class);
         return constructor.newInstance(driver);
     }
