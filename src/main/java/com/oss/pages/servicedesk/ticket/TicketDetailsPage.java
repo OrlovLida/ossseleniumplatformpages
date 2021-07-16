@@ -1,13 +1,13 @@
 package com.oss.pages.servicedesk.ticket;
 
 import com.oss.framework.components.inputs.Button;
+import com.oss.framework.components.inputs.Combobox;
 import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.data.Data;
 import com.oss.framework.listwidget.CommonList;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tabswidget.TabWindowWidget;
 import com.oss.pages.BasePage;
-import com.oss.pages.servicedesk.ticket.wizard.StatusComboBox;
 import com.oss.pages.servicedesk.ticket.wizard.WizardPage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
@@ -62,7 +62,7 @@ public class TicketDetailsPage extends BasePage {
     }
 
     public void changeStatus(String statusName) {
-        StatusComboBox statusComboBox = StatusComboBox.create(driver, wait);
+        Combobox statusComboBox = Combobox.createServiceDeskStatusComboBox(driver, wait);
         statusComboBox.setValue(Data.createSingleData(statusName));
     }
 }

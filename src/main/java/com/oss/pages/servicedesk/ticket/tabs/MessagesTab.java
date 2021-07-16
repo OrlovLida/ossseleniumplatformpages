@@ -3,7 +3,7 @@ package com.oss.pages.servicedesk.ticket.tabs;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.data.Data;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.hmtleditor.HTMLEditor;
+import com.oss.framework.components.inputs.HTMLEditor;
 import com.oss.pages.BasePage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -25,7 +25,6 @@ public class MessagesTab extends BasePage {
 
     public void clickCreateCommentButton() {
         Button button = Button.create(driver, CREATE_BUTTON_LABEL, "a");
-        button.scrollToButton(driver);
         button.click();
     }
 

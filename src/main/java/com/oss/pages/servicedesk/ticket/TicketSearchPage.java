@@ -54,6 +54,11 @@ public class TicketSearchPage extends BaseSDPage {
         openPage(driver, String.format(DETAILS_PAGE_URL_PATTERN, basicURL, ticketId));
         return new TicketDetailsPage(driver);
     }
+    public TicketDetailsPage openTicketDetailsView2(String ticketId, String basicURL) {
+        openPage(driver, String.format(DETAILS_PAGE_URL_PATTERN, basicURL, ticketId));
+        return new TicketDetailsPage(driver);
+    }
+
 
     public String getAssigneeForNthTicketInTable(int n) {
         return getAttributeFromTable(n, ASSIGNEE_ATTRIBUTE);
