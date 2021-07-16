@@ -1,6 +1,8 @@
 package com.oss.web;
 
 import com.oss.BaseTestCase;
+import com.oss.framework.components.contextactions.ActionsContainer;
+import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.TableRow;
 import com.oss.framework.widgets.tablewidget.TableWidget;
@@ -10,11 +12,25 @@ import org.openqa.selenium.WebElement;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TableWidgetTest extends BaseTestCase {
     private NewInventoryViewPage inventoryViewPage;
     private TableWidget tableWidget;
+
+    private ArrayList<String> getValuesFromTableByKey(String key) {
+        ArrayList<String> attributeValues = new ArrayList<>();
+
+        int rowsNumber = tableWidget.getRowsNumber();
+        for (int i = 0; i < rowsNumber; i++) {
+            attributeValues.add(tableWidget.getCellValue(i, key));
+        }
+
+        return attributeValues;
+    }
 
     @BeforeClass
     public void goToInventoryView() {
@@ -58,6 +74,23 @@ public class TableWidgetTest extends BaseTestCase {
     }
 
     @Test(priority = 3)
+    public void changeColumnsOrder() {
+        List<String> columnHeaders = inventoryViewPage.getActiveColumnsHeaders();
+
+        String firstHeader = columnHeaders.get(0);
+        String secondHeader = columnHeaders.get(1);
+        String thirdHeader = columnHeaders.get(2);
+
+        inventoryViewPage.changeColumnsOrderInMainTable(firstHeader, 2);
+
+        List<String> newHeaders = inventoryViewPage.getActiveColumnsHeaders();
+
+        Assertions.assertThat(newHeaders.indexOf(firstHeader)).isEqualTo(2);
+        Assertions.assertThat(newHeaders.indexOf(secondHeader)).isEqualTo(0);
+        Assertions.assertThat(newHeaders.indexOf(thirdHeader)).isEqualTo(1);
+    }
+
+    @Test(priority = 4)
     public void addFirstUnselectedColumn() {
         // given
         List<String> columnHeaders = inventoryViewPage.getActiveColumnsHeaders();
@@ -75,55 +108,43 @@ public class TableWidgetTest extends BaseTestCase {
         Assertions.assertThat(columnHeaders).contains(firstHeader);
     }
 
-    @Test(priority = 4)
-    public void changeColumnsOrder() {
-        List<String> columnHeaders = inventoryViewPage.getActiveColumnsHeaders();
-
-        String firstHeader = columnHeaders.get(0);
-        String secondHeader = columnHeaders.get(1);
-        String thirdHeader = columnHeaders.get(2);
-
-        inventoryViewPage.changeColumnsOrderInMainTable(firstHeader, 2);
-
-        List<String> newHeaders = inventoryViewPage.getActiveColumnsHeaders();
-
-        Assertions.assertThat(newHeaders.indexOf(firstHeader)).isEqualTo(2);
-        Assertions.assertThat(newHeaders.indexOf(secondHeader)).isEqualTo(0);
-        Assertions.assertThat(newHeaders.indexOf(thirdHeader)).isEqualTo(1);
-    }
-
     @Test(priority = 5)
     public void paginationInitialStatus() {
+        String cssAttribute = "class";
+        String classDisabled = "disabled";
 
-        WebElement nextBtn =  tableWidget.getPagination().getNextPageBtn();
-        WebElement prevBtn =  tableWidget.getPagination().getPrevPageBtn();
-        WebElement firstPageBtn =  tableWidget.getPagination().getFirstPageBtn();
+        WebElement nextBtn = tableWidget.getPagination().getNextPageBtn();
+        WebElement prevBtn = tableWidget.getPagination().getPrevPageBtn();
+        WebElement firstPageBtn = tableWidget.getPagination().getFirstPageBtn();
 
-        String nextBtnClass = nextBtn.getAttribute("class");
-        String prevBtnClass = prevBtn.getAttribute("class");
-        String firstBtnClass = firstPageBtn.getAttribute("class");
+        String nextBtnClass = nextBtn.getAttribute(cssAttribute);
+        String prevBtnClass = prevBtn.getAttribute(cssAttribute);
+        String firstBtnClass = firstPageBtn.getAttribute(cssAttribute);
 
-        Assertions.assertThat(nextBtnClass).doesNotContain("disabled");
-        Assertions.assertThat(prevBtnClass).contains("disabled");
-        Assertions.assertThat(firstBtnClass).contains("disabled");
+        Assertions.assertThat(nextBtnClass).doesNotContain(classDisabled);
+        Assertions.assertThat(prevBtnClass).contains(classDisabled);
+        Assertions.assertThat(firstBtnClass).contains(classDisabled);
     }
 
     @Test(priority = 6)
     public void checkNextPage() {
+        String cssAttribute = "class";
+        String classDisabled = "disabled";
+
         tableWidget.getPagination().goOnNextPage();
 
         DelayUtils.sleep(2000);
 
-        WebElement prevBtn =  tableWidget.getPagination().getPrevPageBtn();
-        WebElement firstPageBtn =  tableWidget.getPagination().getFirstPageBtn();
+        WebElement prevBtn = tableWidget.getPagination().getPrevPageBtn();
+        WebElement firstPageBtn = tableWidget.getPagination().getFirstPageBtn();
 
-        String prevBtnClass = prevBtn.getAttribute("class");
-        String firstBtnClass = firstPageBtn.getAttribute("class");
+        String prevBtnClass = prevBtn.getAttribute(cssAttribute);
+        String firstBtnClass = firstPageBtn.getAttribute(cssAttribute);
 
-        Assertions.assertThat(prevBtnClass).doesNotContain("disabled");
-        Assertions.assertThat(firstBtnClass).doesNotContain("disabled");
-        Assertions.assertThat( tableWidget.getPagination().getBottomRageOfRows()).isEqualTo( tableWidget.getPagination().getStep() + 1);
-        Assertions.assertThat( tableWidget.getPagination().getTopRageOfRows()).isEqualTo( tableWidget.getPagination().getStep() * 2);
+        Assertions.assertThat(prevBtnClass).doesNotContain(classDisabled);
+        Assertions.assertThat(firstBtnClass).doesNotContain(classDisabled);
+        Assertions.assertThat(tableWidget.getPagination().getBottomRageOfRows()).isEqualTo(tableWidget.getPagination().getStep() + 1);
+        Assertions.assertThat(tableWidget.getPagination().getTopRageOfRows()).isEqualTo(tableWidget.getPagination().getStep() * 2);
     }
 
     @Test(priority = 7)
@@ -133,8 +154,8 @@ public class TableWidgetTest extends BaseTestCase {
         tableWidget.getPagination().goOnPrevPage();
         DelayUtils.sleep(2000);
 
-        Assertions.assertThat( tableWidget.getPagination().getBottomRageOfRows()).isEqualTo( tableWidget.getPagination().getStep() + 1);
-        Assertions.assertThat( tableWidget.getPagination().getTopRageOfRows()).isEqualTo( tableWidget.getPagination().getStep() * 2);
+        Assertions.assertThat(tableWidget.getPagination().getBottomRageOfRows()).isEqualTo(tableWidget.getPagination().getStep() + 1);
+        Assertions.assertThat(tableWidget.getPagination().getTopRageOfRows()).isEqualTo(tableWidget.getPagination().getStep() * 2);
     }
 
     @Test(priority = 8)
@@ -142,7 +163,62 @@ public class TableWidgetTest extends BaseTestCase {
         tableWidget.getPagination().goOnFirstPage();
         DelayUtils.sleep(2000);
 
-        Assertions.assertThat( tableWidget.getPagination().getBottomRageOfRows()).isEqualTo(1);
-        Assertions.assertThat( tableWidget.getPagination().getTopRageOfRows()).isEqualTo( tableWidget.getPagination().getStep());
+        Assertions.assertThat(tableWidget.getPagination().getBottomRageOfRows()).isEqualTo(1);
+        Assertions.assertThat(tableWidget.getPagination().getTopRageOfRows()).isEqualTo(tableWidget.getPagination().getStep());
+    }
+
+    @Test(priority = 9)
+    public void checkSortingByASC() {
+        String columnId = "id";
+        String attributeId = "plot";
+        String attributeValue = "depression";
+
+        inventoryViewPage.searchByAttributeValue(attributeId, attributeValue, Input.ComponentType.TEXT_FIELD);
+        DelayUtils.sleep(1000);
+        List<String> sortedValues = getValuesFromTableByKey(columnId).stream().sorted().collect(Collectors.toList());
+
+        tableWidget.sortColumnByASC(columnId);
+        DelayUtils.sleep(1000);
+
+        List<String> valuesAfterActions = getValuesFromTableByKey(columnId);
+
+        Assertions.assertThat(sortedValues).isEqualTo(valuesAfterActions);
+        inventoryViewPage.clearFilters();
+    }
+
+    @Test(priority = 10)
+    public void checkSortingByDESC() {
+        String columnId = "id";
+        String attributeId = "plot";
+        String attributeValue = "depression";
+
+        inventoryViewPage.searchByAttributeValue(attributeId, attributeValue, Input.ComponentType.TEXT_FIELD);
+        DelayUtils.sleep(1000);
+
+        List<String> sortedValues = getValuesFromTableByKey(columnId);
+        sortedValues.sort(Collections.reverseOrder());
+
+        tableWidget.sortColumnByDESC(columnId);
+        DelayUtils.sleep(1000);
+
+        List<String> valuesAfterActions = getValuesFromTableByKey(columnId);
+
+        Assertions.assertThat(sortedValues).isEqualTo(valuesAfterActions);
+        tableWidget.turnOffSortingForColumn(columnId);
+        inventoryViewPage.clearFilters();
+    }
+
+    @Test(priority = 11)
+    public void checkRefreshActions() {
+        String refreshActionId = "refreshButton";
+
+        tableWidget.getPagination().goOnNextPage();
+        DelayUtils.sleep(1000);
+
+        tableWidget.callAction(ActionsContainer.KEBAB_GROUP_ID, refreshActionId);
+        DelayUtils.sleep(1000);
+
+        Assertions.assertThat(tableWidget.getPagination().getBottomRageOfRows()).isEqualTo(1);
+        Assertions.assertThat(tableWidget.getPagination().getTopRageOfRows()).isEqualTo(tableWidget.getPagination().getStep());
     }
 }
