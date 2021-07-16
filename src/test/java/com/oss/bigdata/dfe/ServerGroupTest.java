@@ -25,6 +25,8 @@ public class ServerGroupTest extends BaseTestCase {
     private final static String SERVERS_USER_NAME = "Selenium Test Name";
     private final static String SERVERS_PASSWORD = "Password";
     private final static String SERVERS_DIRECTORY = "/test";
+    private final String ADD_WIZARD_ID = "add-prompt-id";
+    private final String EDIT_WIZARD_ID = "edit-prompt-id";
 
     private ServerGroupPage serverGroupPage;
     private String serverGroupName;
@@ -42,7 +44,7 @@ public class ServerGroupTest extends BaseTestCase {
     @Description("Add new server group")
     public void addServerGroup() {
         serverGroupPage.clickAddNewServerGroup();
-        ServerGroupPopupPage serverGroupPopupWizard = new ServerGroupPopupPage(driver, webDriverWait);
+        ServerGroupPopupPage serverGroupPopupWizard = new ServerGroupPopupPage(driver, webDriverWait, ADD_WIZARD_ID);
         serverGroupPopupWizard.fillServerGroupPopup(serverGroupName, PROTOCOL_TYPE);
         serverGroupPopupWizard.clickSave();
         Boolean serverGroupIsCreated = serverGroupPage.serverGroupExistIntoTable(serverGroupName);
@@ -59,7 +61,7 @@ public class ServerGroupTest extends BaseTestCase {
             serverGroupPage.selectServersTab();
             ServersTabPage serversTabPage = new ServersTabPage(driver, webDriverWait);
             serversTabPage.clickAddNewServer();
-            ServerPopupPage serverPopupWizard = new ServerPopupPage(driver, webDriverWait);
+            ServerPopupPage serverPopupWizard = new ServerPopupPage(driver, webDriverWait, ADD_WIZARD_ID);
             serverPopupWizard.fillAddNewServerPopup(SERVERS_SERVER_NAME, SERVERS_SERVER_ADDRESS,
                     SERVERS_USER_NAME, SERVERS_PASSWORD, SERVERS_DIRECTORY);
             serverPopupWizard.clickSave();
@@ -83,7 +85,7 @@ public class ServerGroupTest extends BaseTestCase {
             serversTabPage.selectServer();
             if (serversTabPage.isServerCreated(SERVERS_SERVER_NAME)) {
                 serversTabPage.clickEditServer();
-                ServerPopupPage serverPopupWizard = new ServerPopupPage(driver, webDriverWait);
+                ServerPopupPage serverPopupWizard = new ServerPopupPage(driver, webDriverWait, EDIT_WIZARD_ID);
                 serverPopupWizard.fillServerName(updatedServerGroupName);
                 serverPopupWizard.clickSave();
                 serversTabPage.selectServer();
@@ -133,7 +135,7 @@ public class ServerGroupTest extends BaseTestCase {
         if (serverGroupExists) {
             serverGroupPage.selectFoundServerGroup();
             serverGroupPage.clickEditServerGroup();
-            ServerGroupPopupPage serverGroupPopupWizard = new ServerGroupPopupPage(driver, webDriverWait);
+            ServerGroupPopupPage serverGroupPopupWizard = new ServerGroupPopupPage(driver, webDriverWait, EDIT_WIZARD_ID);
             serverGroupPopupWizard.fillName(updatedServerGroupName);
             serverGroupPopupWizard.clickSave();
             Boolean serverGroupIsEdited = serverGroupPage.serverGroupExistIntoTable(updatedServerGroupName);

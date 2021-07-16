@@ -20,9 +20,9 @@ public class ServerGroupPopupPage extends BasePage {
 
     private final Wizard serverGroupPopupWizard;
 
-    public ServerGroupPopupPage(WebDriver driver, WebDriverWait wait) {
+    public ServerGroupPopupPage(WebDriver driver, WebDriverWait wait, String WIZARD_ID) {
         super(driver, wait);
-        serverGroupPopupWizard = Wizard.createWizard(driver, wait);
+        serverGroupPopupWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
     }
 
     public void fillName(String name) {
