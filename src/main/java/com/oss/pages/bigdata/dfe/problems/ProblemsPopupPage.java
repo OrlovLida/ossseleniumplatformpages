@@ -18,9 +18,9 @@ public class ProblemsPopupPage extends BasePage {
 
     private final Wizard problemsWizard;
 
-    public ProblemsPopupPage(WebDriver driver, WebDriverWait wait) {
+    public ProblemsPopupPage(WebDriver driver, WebDriverWait wait, String WIZARD_TEST_ID) {
         super(driver, wait);
-        problemsWizard = Wizard.createWizard(driver, wait);
+        problemsWizard = Wizard.createByComponentId(driver,wait, WIZARD_TEST_ID);
     }
 
     public void fillName(String name) {

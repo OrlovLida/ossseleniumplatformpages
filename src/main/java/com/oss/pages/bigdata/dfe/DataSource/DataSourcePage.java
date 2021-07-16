@@ -5,8 +5,6 @@ import com.oss.pages.bigdata.dfe.BaseDfePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class DataSourcePage extends BaseDfePage {
 
@@ -14,6 +12,8 @@ public class DataSourcePage extends BaseDfePage {
     private final String SEARCH_INPUT_ID = "datasource/datasource-listSearchAppId";
     private final String ADD_NEW_DS_LABEL = "ADD";
     private final String CREATE_DS_QUERY = "OPEN_MODAL_QUERY";
+    private final String CREATE_DS_CSV = "OPEN_MODAL_CSV";
+    private final String CREATE_DS_KAFKA = "OPEN_MODAL_KAFKA";
     private final String DATA_SOURCE_NAME_COLUMN = "Name";
     private final String EDIT_DS_LABEL = "Edit";
     private final String DELETE_DS_LABEL = "Delete";
@@ -39,6 +39,16 @@ public class DataSourcePage extends BaseDfePage {
     @Step("I select Create Data Source - Query Result")
     public void selectDSFromQuery() {
         DropdownList.create(driver, wait).selectOptionWithId(CREATE_DS_QUERY);
+    }
+
+    @Step("I select Create Data Source - CSV File")
+    public void selectDSFromCSV() {
+        DropdownList.create(driver, wait).selectOptionWithId(CREATE_DS_CSV);
+    }
+
+    @Step("I select Create Data Source - Kafka")
+    public void selectDSFromKafka() {
+        DropdownList.create(driver, wait).selectOptionWithId(CREATE_DS_KAFKA);
     }
 
     @Step("I check if data source: {name} exists into table")

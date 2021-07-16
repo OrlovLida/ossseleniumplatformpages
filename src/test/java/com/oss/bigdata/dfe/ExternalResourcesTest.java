@@ -19,6 +19,8 @@ public class ExternalResourcesTest extends BaseTestCase {
     private final static String EXTERNAL_RESOURCE_TYPE = "Database";
     private final static String CONNECTION_URL = "jdbc:";
     private final static Logger log = LoggerFactory.getLogger(ExternalResourcesTest.class);
+    private final static String ADD_WIZARD_ID = "add-prompt-id";
+    private final static String EDIT_WIZARD_ID = "edit-prompt-id";
 
     private ExternalResourcesPage externalResource;
     private String externalResourceName;
@@ -36,7 +38,7 @@ public class ExternalResourcesTest extends BaseTestCase {
     @Description("Add new External Resource")
     public void addExternalResource() {
         externalResource.clickAddNewExternalResource();
-        ExternalResourcesPopupPage externalResourceWizard = new ExternalResourcesPopupPage(driver, webDriverWait);
+        ExternalResourcesPopupPage externalResourceWizard = new ExternalResourcesPopupPage(driver, webDriverWait, ADD_WIZARD_ID);
         externalResourceWizard.fillExternalResourcesPopup(externalResourceName, EXTERNAL_RESOURCE_TYPE, CONNECTION_URL);
         externalResourceWizard.clickSave();
         Boolean externalResourceIsCreated = externalResource.externalResourceExistsIntoTable(externalResourceName);
@@ -51,7 +53,7 @@ public class ExternalResourcesTest extends BaseTestCase {
         if (externalResourceExists) {
             externalResource.selectFoundExternalResource();
             externalResource.clickEditExternalResource();
-            ExternalResourcesPopupPage externalResourceWizard = new ExternalResourcesPopupPage(driver, webDriverWait);
+            ExternalResourcesPopupPage externalResourceWizard = new ExternalResourcesPopupPage(driver, webDriverWait, EDIT_WIZARD_ID);
             externalResourceWizard.fillName(updatedExternalResourceName);
             externalResourceWizard.clickSave();
             Boolean externalResourceIsCreated = externalResource.externalResourceExistsIntoTable(updatedExternalResourceName);
