@@ -31,6 +31,5 @@ public class MessagesTab extends BasePage {
     public void enterCommentMessage(String message) {
         HtmlEditor htmlEditor = HtmlEditor.create(driver, wait, COMMENT_EDITOR_ID);
         htmlEditor.setValue(Data.createSingleData(message));
-        System.out.println(htmlEditor.getValue().getStringValue());
     }
 }
