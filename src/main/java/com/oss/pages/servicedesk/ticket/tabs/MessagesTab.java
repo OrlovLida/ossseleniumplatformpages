@@ -3,7 +3,7 @@ package com.oss.pages.servicedesk.ticket.tabs;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.data.Data;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.components.inputs.HTMLEditor;
+import com.oss.framework.components.inputs.HtmlEditor;
 import com.oss.pages.BasePage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -29,7 +29,8 @@ public class MessagesTab extends BasePage {
     }
 
     public void enterCommentMessage(String message) {
-        HTMLEditor htmlEditor = HTMLEditor.create(driver, wait, COMMENT_EDITOR_ID);
+        HtmlEditor htmlEditor = HtmlEditor.create(driver, wait, COMMENT_EDITOR_ID);
         htmlEditor.setValue(Data.createSingleData(message));
+        System.out.println(htmlEditor.getValue().getStringValue());
     }
 }
