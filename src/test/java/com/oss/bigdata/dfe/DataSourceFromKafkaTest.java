@@ -1,6 +1,7 @@
 package com.oss.bigdata.dfe;
 
 import com.oss.BaseTestCase;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bigdata.dfe.DataSource.DSWizard.DataSourceStepWizardPage;
 import com.oss.pages.bigdata.dfe.DataSource.DataSourcePage;
 import com.oss.pages.bigdata.utils.ConstantsDfe;
@@ -59,6 +60,7 @@ public class DataSourceFromKafkaTest extends BaseTestCase {
             dsStepWizard.clickNext();
             dsStepWizard.clickNext();
             dsStepWizard.clickAccept();
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
             Boolean dataSourceIsCreated = dataSourcePage.dataSourceExistIntoTable(dataSourceName_updated);
 
             Assert.assertTrue(dataSourceIsCreated);

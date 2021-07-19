@@ -1,6 +1,7 @@
 package com.oss.bigdata.dfe;
 
 import com.oss.BaseTestCase;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bigdata.dfe.EtlDataCollectionsPage;
 import com.oss.pages.bigdata.dfe.stepwizard.commons.BasicInformationPage;
 import com.oss.pages.bigdata.dfe.stepwizard.commons.DataSourceAndProcessingPage;
@@ -54,6 +55,7 @@ public class EtlDataCollectionsTest extends BaseTestCase {
 
         DataSourceAndProcessingPage dsAndProcessingWizard = new DataSourceAndProcessingPage(driver, webDriverWait);
         dsAndProcessingWizard.fillFeed(DATASOURCE_NAME);
+        DelayUtils.sleep(5000);
         dsAndProcessingWizard.clickNextStep();
 
         TransformationsPage transformationStep = new TransformationsPage(driver, webDriverWait);
@@ -67,6 +69,7 @@ public class EtlDataCollectionsTest extends BaseTestCase {
         StoragePage storageStep = new StoragePage(driver, webDriverWait);
         storageStep.fillStorageStep(tableName);
         storageStep.clickAccept();
+        DelayUtils.sleep(5000);
 
         boolean etlProcessIsCreated = etlDataCollectionsPage.etlProcessExistsIntoTable(etlProcessName);
         if (!etlProcessIsCreated) {
@@ -98,6 +101,7 @@ public class EtlDataCollectionsTest extends BaseTestCase {
             columnMappingStep.clickNextStep();
 
             StoragePage storageStep = new StoragePage(driver, webDriverWait);
+            DelayUtils.sleep(5000);
             storageStep.clickAccept();
 
             boolean etlProcessIsEdited = etlDataCollectionsPage.etlProcessExistsIntoTable(updatedEtlProcessName);
