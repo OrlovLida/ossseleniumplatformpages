@@ -21,6 +21,7 @@ public class ServerGroupTest extends BaseTestCase {
     private final static Logger log = LoggerFactory.getLogger(ServerGroupTest.class);
     private final static String PROTOCOL_TYPE = "SFTP";
     private final static String SERVERS_SERVER_NAME = "Selenium Test Server";
+    private final static String SERVERS_SERVER_NAME_UPDATED = SERVERS_SERVER_NAME + "-updated";
     private final static String SERVERS_SERVER_ADDRESS = "Selenium.Test.Address";
     private final static String SERVERS_USER_NAME = "Selenium Test Name";
     private final static String SERVERS_PASSWORD = "Password";
@@ -86,11 +87,11 @@ public class ServerGroupTest extends BaseTestCase {
             if (serversTabPage.isServerCreated(SERVERS_SERVER_NAME)) {
                 serversTabPage.clickEditServer();
                 ServerPopupPage serverPopupWizard = new ServerPopupPage(driver, webDriverWait, EDIT_WIZARD_ID);
-                serverPopupWizard.fillServerName(updatedServerGroupName);
+                serverPopupWizard.fillServerName(SERVERS_SERVER_NAME_UPDATED);
                 serverPopupWizard.clickSave();
                 serversTabPage.selectServer();
                 String editedServerName = serversTabPage.getServerName(0);
-                Boolean isServerNameEdited = editedServerName.equals(updatedServerGroupName);
+                boolean isServerNameEdited = editedServerName.equals(SERVERS_SERVER_NAME_UPDATED);
 
                 Assert.assertTrue(isServerNameEdited);
             } else {
@@ -155,7 +156,7 @@ public class ServerGroupTest extends BaseTestCase {
             serverGroupPage.selectFoundServerGroup();
             serverGroupPage.clickDeleteServerGroup();
             serverGroupPage.clickConfirmDelete();
-            Boolean serverGroupIsDeleted = !serverGroupPage.serverGroupExistIntoTable(serverGroupName);
+            boolean serverGroupIsDeleted = !serverGroupPage.serverGroupExistIntoTable(serverGroupName);
 
             Assert.assertTrue(serverGroupIsDeleted);
         } else {
