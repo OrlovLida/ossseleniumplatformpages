@@ -1,35 +1,35 @@
 package com.oss.pages.bigdata.dfe.dictionary;
 
-import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bigdata.dfe.BasePopupPage;
+import com.oss.framework.widgets.Wizard;
+import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DictionaryPopupPage extends BasePopupPage {
+import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
+
+public class DictionaryPopupPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(DictionaryPopupPage.class);
-
     private final String NAME_INPUT_ID = "name";
     private final String DESCRIPTION_INPUT_ID = "description";
+    private final Wizard dictionaryWizard;
 
-
-    public DictionaryPopupPage(WebDriver driver, WebDriverWait wait) {
+    public DictionaryPopupPage(WebDriver driver, WebDriverWait wait, String WIZARD_ID) {
         super(driver, wait);
+        dictionaryWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
     }
 
     public void fillName(String name) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        fillTextField(name, NAME_INPUT_ID);
+        dictionaryWizard.setComponentValue(NAME_INPUT_ID, name, TEXT_FIELD);
         log.debug("Setting name with: {}", name);
     }
 
     public void fillDescription(String description) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        fillTextField(description, DESCRIPTION_INPUT_ID);
-        log.debug("Setting description with: {}", description);
+        dictionaryWizard.setComponentValue(DESCRIPTION_INPUT_ID, description, TEXT_FIELD);
+        log.debug("Setting name with: {}", description);
     }
 
     @Step("I fill Dictionary Popup fields with name: {name} and description: {description}")
@@ -39,4 +39,9 @@ public class DictionaryPopupPage extends BasePopupPage {
         log.info("Filled Dictionary Popup fields");
     }
 
+    @Step("I click Save")
+    public void clickSave() {
+        dictionaryWizard.clickSave();
+        log.info("Finishing by clicking 'Save'");
+    }
 }

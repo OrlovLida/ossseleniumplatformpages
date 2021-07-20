@@ -1,18 +1,17 @@
 package com.oss.pages.bigdata.dfe.externalresource;
 
-import com.oss.framework.components.inputs.Combobox;
-import com.oss.framework.components.inputs.Input;
-import com.oss.framework.data.Data;
-import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
-import com.oss.pages.bigdata.dfe.BasePopupPage;
+import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ExternalResourcesPopupPage extends BasePopupPage {
+import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
+import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
+
+public class ExternalResourcesPopupPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(ExternalResourcesPopupPage.class);
 
@@ -20,26 +19,25 @@ public class ExternalResourcesPopupPage extends BasePopupPage {
     private final String TYPE_INPUT_ID = "type";
     private final String CONNECTION_INPUT_ID = "connection";
 
-    public ExternalResourcesPopupPage(WebDriver driver, WebDriverWait wait) {
+    private final Wizard externalResourcesWizard;
+
+    public ExternalResourcesPopupPage(WebDriver driver, WebDriverWait wait, String WIZARD_ID) {
         super(driver, wait);
+        externalResourcesWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
     }
 
     public void fillName(String name) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        fillTextField(name, NAME_INPUT_ID);
+        externalResourcesWizard.setComponentValue(NAME_INPUT_ID, name, TEXT_FIELD);
         log.debug("Setting name with: {}", name);
     }
 
     public void fillType(String type) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        Combobox typeInput = (Combobox) Wizard.createPopupWizard(driver, wait).getComponent(TYPE_INPUT_ID, Input.ComponentType.COMBOBOX);
-        typeInput.setValue(Data.createSingleData(type));
+        externalResourcesWizard.setComponentValue(TYPE_INPUT_ID, type, COMBOBOX);
         log.debug("Setting External Resource Type with: {}", type);
     }
 
     public void fillConnectionUrl(String connection) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        fillTextField(connection, CONNECTION_INPUT_ID);
+        externalResourcesWizard.setComponentValue(CONNECTION_INPUT_ID, connection, TEXT_FIELD);
         log.debug("Setting Connection Url with: {}", connection);
     }
 
@@ -51,4 +49,8 @@ public class ExternalResourcesPopupPage extends BasePopupPage {
         log.info("Filled External Resources Popup fields");
     }
 
+    @Step("I click Save")
+    public void clickSave() {
+        externalResourcesWizard.clickSave();
+    }
 }

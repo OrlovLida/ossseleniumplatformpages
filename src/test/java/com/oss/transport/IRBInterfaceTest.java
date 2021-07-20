@@ -10,6 +10,7 @@ import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageContainer.Message;
 import com.oss.framework.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.components.contextactions.ActionsContainer;
+import com.oss.framework.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.bpm.ProcessWizardPage;
@@ -91,7 +92,7 @@ public class IRBInterfaceTest extends BaseTestCase {
     public void assignIPHostAddress() {
         newInventoryViewPage.selectFirstRow();
         waitForPageToLoad();
-        newInventoryViewPage.callAction(ActionsContainer.CREATE_GROUP_ID, "AssignIPv4Host");
+        newInventoryViewPage.callAction(ActionsContainer.ASSIGN_GROUP_ID, "AssignIPv4Host");
         IPAddressAssignmentWizardPage ipAddressAssignmentWizardPage = new IPAddressAssignmentWizardPage(driver);
         IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties = IPAddressAssignmentWizardProperties.builder()
                 .address(IP_ADDRESS).subnet(IP_SUBNET).isPrimary("true").build();
@@ -138,6 +139,7 @@ public class IRBInterfaceTest extends BaseTestCase {
     @Description("Delete IRB Interface")
     public void deleteIRBInterface() {
         homePage.goToHomePage(driver, BASIC_URL);
+        PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
         homePage.setNewObjectType(IRB_INTERFACE_SEARCH_NIV);
         waitForPageToLoad();
         newInventoryViewPage.searchObject(IRB_INTERFACE_DEVICE_NAME);

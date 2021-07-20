@@ -10,6 +10,7 @@ import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageContainer.Message;
 import com.oss.framework.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.components.contextactions.ActionsContainer;
+import com.oss.framework.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.bpm.ProcessWizardPage;
@@ -104,7 +105,7 @@ public class VLANInterfaceTest extends BaseTestCase {
     public void assignIPHostAddress() {
         newInventoryViewPage.selectFirstRow();
         waitForPageToLoad();
-        newInventoryViewPage.callAction(ActionsContainer.CREATE_GROUP_ID, "AssignIPv4Host");
+        newInventoryViewPage.callAction(ActionsContainer.ASSIGN_GROUP_ID, "AssignIPv4Host");
         IPAddressAssignmentWizardPage ipAddressAssignmentWizardPage = new IPAddressAssignmentWizardPage(driver);
         IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties = IPAddressAssignmentWizardProperties.builder()
                 .address("126001").subnet(IP_SUBNET).isPrimary("false").build();
@@ -138,10 +139,8 @@ public class VLANInterfaceTest extends BaseTestCase {
     @Test(priority = 8)
     @Description("Delete IP Address")
     public void deleteIPAddressAssignment() {
-        homePage.goToHomePage(driver, BASIC_URL);
-        homePage.chooseFromLeftSideMenu("IP Address management", "Views", "Transport");
         IPAddressManagementViewPage ipAddressManagementViewPage =
-                IPAddressManagementViewPage.goToIPAddressManagementPage(driver, BASIC_URL);
+                IPAddressManagementViewPage.goToIPAddressManagementViewPageLive(driver, BASIC_URL);
         ipAddressManagementViewPage.searchIpNetwork(IP_NETWORK);
         ipAddressManagementViewPage.expandTreeRow(IP_NETWORK);
         ipAddressManagementViewPage.expandTreeRowContains("%");
@@ -153,6 +152,7 @@ public class VLANInterfaceTest extends BaseTestCase {
     @Description("Delete VLAN Interface")
     public void deleteVLANInterface() {
         homePage.goToHomePage(driver, BASIC_URL);
+        PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
         homePage.setNewObjectType(VLAN_INTERFACE_SEARCH_NIV);
         waitForPageToLoad();
         newInventoryViewPage.searchObject(DEVICE);

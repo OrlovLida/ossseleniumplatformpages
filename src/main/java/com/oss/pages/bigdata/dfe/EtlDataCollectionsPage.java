@@ -1,6 +1,5 @@
 package com.oss.pages.bigdata.dfe;
 
-import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
@@ -28,10 +27,10 @@ public class EtlDataCollectionsPage extends BaseDfePage {
     }
 
     @Step("I Open ETL Data Collections View")
-    public static EtlDataCollectionsPage goToPage(WebDriver driver, String basicURL){
+    public static EtlDataCollectionsPage goToPage(WebDriver driver, String basicURL) {
         WebDriverWait wait = new WebDriverWait(driver, 45);
 
-        BaseDfePage.openDfePage(driver, basicURL, wait,"etl-data-collection");
+        BaseDfePage.openDfePage(driver, basicURL, wait, "etl-data-collection");
         return new EtlDataCollectionsPage(driver, wait);
     }
 
@@ -41,17 +40,17 @@ public class EtlDataCollectionsPage extends BaseDfePage {
     }
 
     @Step("I click edit ETL Process")
-    public void clickEditEtlProcess(){
+    public void clickEditEtlProcess() {
         clickContextActionEdit();
     }
 
     @Step("I click delete ETL Process")
-    public void clickDeleteEtlProcess(){
+    public void clickDeleteEtlProcess() {
         clickContextActionDelete();
     }
 
     @Step("I check if ETL Process: {feedName} exists into the table")
-    public Boolean etlProcessExistsIntoTable(String feedName){
+    public Boolean etlProcessExistsIntoTable(String feedName) {
         searchFeed(feedName);
         DelayUtils.waitForPageToLoad(driver, wait);
 
@@ -62,14 +61,13 @@ public class EtlDataCollectionsPage extends BaseDfePage {
     }
 
     @Step("I select found ETL Process")
-    public void selectFoundEtlProcess(){
+    public void selectFoundEtlProcess() {
         getTable(driver, wait).selectRow(0);
     }
 
     @Step("I confirm the removal of ETL Process")
-    public void confirmDelete(){
-        ConfirmationBox confirmationBox = ConfirmationBox.create(driver, wait);
-        confirmationBox.clickButtonByLabel(DELETE_LABEL);
+    public void confirmDelete() {
+        confirmDelete(DELETE_LABEL);
     }
 
     @Override
