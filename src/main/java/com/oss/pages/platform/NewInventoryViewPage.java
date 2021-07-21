@@ -137,8 +137,8 @@ public class NewInventoryViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    public void toggleVisibilitySearchAttribute(String attributeLabel) {
-        getMainTable().toggleVisibilitySearchAttribute(attributeLabel);
+    public void toggleVisibilitySearchAttributes(List<String> attributeIds) {
+        getMainTable().toggleVisibilitySearchAttributes(attributeIds);
     }
 
     public List<String> getAllVisibleFilters() {

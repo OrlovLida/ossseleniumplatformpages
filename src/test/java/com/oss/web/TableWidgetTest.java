@@ -8,7 +8,6 @@ import com.oss.framework.widgets.tablewidget.TableRow;
 import com.oss.framework.widgets.tablewidget.TableWidget;
 import com.oss.pages.platform.NewInventoryViewPage;
 import org.assertj.core.api.Assertions;
-import org.openqa.selenium.WebElement;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -110,39 +109,19 @@ public class TableWidgetTest extends BaseTestCase {
 
     @Test(priority = 5)
     public void paginationInitialStatus() {
-        String cssAttribute = "class";
-        String classDisabled = "disabled";
-
-        WebElement nextBtn = tableWidget.getPagination().getNextPageBtn();
-        WebElement prevBtn = tableWidget.getPagination().getPrevPageBtn();
-        WebElement firstPageBtn = tableWidget.getPagination().getFirstPageBtn();
-
-        String nextBtnClass = nextBtn.getAttribute(cssAttribute);
-        String prevBtnClass = prevBtn.getAttribute(cssAttribute);
-        String firstBtnClass = firstPageBtn.getAttribute(cssAttribute);
-
-        Assertions.assertThat(nextBtnClass).doesNotContain(classDisabled);
-        Assertions.assertThat(prevBtnClass).contains(classDisabled);
-        Assertions.assertThat(firstBtnClass).contains(classDisabled);
+        Assertions.assertThat(tableWidget.getPagination().isFirstPageBtnEnabled()).isFalse();
+        Assertions.assertThat(tableWidget.getPagination().isPrevPageBtnEnabled()).isFalse();
+        Assertions.assertThat(tableWidget.getPagination().isNextPageBtnEnabled()).isTrue();
     }
 
     @Test(priority = 6)
     public void checkNextPage() {
-        String cssAttribute = "class";
-        String classDisabled = "disabled";
-
         tableWidget.getPagination().goOnNextPage();
 
         DelayUtils.sleep(2000);
 
-        WebElement prevBtn = tableWidget.getPagination().getPrevPageBtn();
-        WebElement firstPageBtn = tableWidget.getPagination().getFirstPageBtn();
-
-        String prevBtnClass = prevBtn.getAttribute(cssAttribute);
-        String firstBtnClass = firstPageBtn.getAttribute(cssAttribute);
-
-        Assertions.assertThat(prevBtnClass).doesNotContain(classDisabled);
-        Assertions.assertThat(firstBtnClass).doesNotContain(classDisabled);
+        Assertions.assertThat(tableWidget.getPagination().isPrevPageBtnEnabled()).isTrue();
+        Assertions.assertThat(tableWidget.getPagination().isFirstPageBtnEnabled()).isTrue();
         Assertions.assertThat(tableWidget.getPagination().getBottomRageOfRows()).isEqualTo(tableWidget.getPagination().getStep() + 1);
         Assertions.assertThat(tableWidget.getPagination().getTopRageOfRows()).isEqualTo(tableWidget.getPagination().getStep() * 2);
     }

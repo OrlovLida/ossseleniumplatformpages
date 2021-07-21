@@ -24,7 +24,7 @@ public class AdvancedSearchCompact extends BaseTestCase {
     private final static String COMBO_ATTRIBUTE = "LifecycleState.lifecycleState";
     private final static String COMBO_ATTRIBUTE_LABEL = "gsLifecycleState";
     private final static String OSF_ATTRIBUTE_LABEL = "director_OSF";
-    private final static int DEFAULT_ROW_INDEX = 1;
+    private final static int DEFAULT_ROW_INDEX = 0;
     private final static String FILTER_NAME = "WEB_TEST_FILTER";
 
     private NewInventoryViewPage inventoryViewPage;
@@ -138,12 +138,14 @@ public class AdvancedSearchCompact extends BaseTestCase {
 
     @Test(priority = 6)
     public void toggleVisibilitySearchAttribute() {
-        inventoryViewPage.toggleVisibilitySearchAttribute("actors");
+        List<String> attributes = new ArrayList<>();
+        attributes.add("actors");
+        inventoryViewPage.toggleVisibilitySearchAttributes(attributes);
         List<String> filters = inventoryViewPage.getMainTable().getAllVisibleFilters();
 
         Assert.assertFalse(filters.contains("actors"));
 
-        inventoryViewPage.toggleVisibilitySearchAttribute("actors");
+        inventoryViewPage.toggleVisibilitySearchAttributes(attributes);
         List<String> filtersSecond = inventoryViewPage.getMainTable().getAllVisibleFilters();
         Assert.assertTrue(filtersSecond.contains("actors"));
     }
