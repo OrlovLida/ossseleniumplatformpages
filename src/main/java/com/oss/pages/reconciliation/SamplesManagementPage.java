@@ -50,7 +50,7 @@ public class SamplesManagementPage extends BasePage {
 
     @Step("Upload samples for CM Domain")
     public void uploadSamples(String path) throws URISyntaxException {
-        TreeWidget widget = TreeWidget.createByDataAttributeName(driver, wait, SAMPLES_MANAGEMENT_WIDGET_ID);
+        TreeWidget widget = TreeWidget.createById(driver, wait, SAMPLES_MANAGEMENT_WIDGET_ID);
         widget.callOssWindowActionById("OTHER", UPLOAD_ID);
         URL res = getClass().getClassLoader().getResource(path);
         try {
@@ -68,7 +68,7 @@ public class SamplesManagementPage extends BasePage {
 
     @Step("Delete samples for CM Domain")
     public void deleteDirectoryContent() {
-        TreeWidget widget = TreeWidget.createByDataAttributeName(driver, wait, SAMPLES_MANAGEMENT_WIDGET_ID);
+        TreeWidget widget = TreeWidget.createById(driver, wait, SAMPLES_MANAGEMENT_WIDGET_ID);
         widget.callOssWindowActionById("EDIT", DELETE_CONTENT_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         Wizard wizard = Wizard.createWizard(driver, wait);
@@ -77,7 +77,7 @@ public class SamplesManagementPage extends BasePage {
 
     @Step("Create samples directory for CM Domain")
     public void createDirectory(String cmDomainName) {
-        TreeWidget widget = TreeWidget.createByDataAttributeName(driver, wait, SAMPLES_MANAGEMENT_WIDGET_ID);
+        TreeWidget widget = TreeWidget.createById(driver, wait, SAMPLES_MANAGEMENT_WIDGET_ID);
         widget.callOssWindowActionById("CREATE", CREATE_DIRECTORY);
         Wizard wizard = Wizard.createWizard(driver, wait);
         Input name = wizard.getComponent(CREATE_DIRECTORY_WIZARD_ID, ComponentType.TEXT_FIELD);

@@ -192,7 +192,7 @@ public class CellSiteConfigurationPage extends BasePage {
     }
 
     public TreeWidget getTree() {
-        return TreeWidget.createByDataAttributeName(driver, wait, TREE_DATA_ATTRIBUTE_NAME);
+        return TreeWidget.createById(driver, wait, TREE_DATA_ATTRIBUTE_NAME);
     }
 
     public OldTable getTabTable() {

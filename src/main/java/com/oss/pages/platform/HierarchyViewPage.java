@@ -1,10 +1,12 @@
 package com.oss.pages.platform;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.oss.framework.components.portals.SaveConfigurationWizard.Field;
 import com.oss.framework.mainheader.ButtonPanel;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.TreeWidgetV2.TreeWidgetV2;
 import com.oss.framework.widgets.Widget;
 import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.propertypanel.PropertyPanel;
@@ -22,13 +24,25 @@ public class HierarchyViewPage extends BasePage {
     private static final String BOTTOM_PROPERTY_PANEL_ID = "HierarchyView_BottomDetailTabs_%sInventoryView_PropertyPanelWidget_%s";
     private static final String HIERARCHY_VIEW_TREE_WIDGET_ID = "HierarchyTreeWidget";
 
+    public static HierarchyViewPage openHierarchyViewPage(WebDriver driver, String basicURL, String type) {
+        driver.get(String.format("%s/#/views/management/views/hierarchy-view/" + type +
+                "?perspective=LIVE", basicURL));
+        WebDriverWait wait = new WebDriverWait(driver, 45);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return new HierarchyViewPage(driver, wait);
+    }
+
     public HierarchyViewPage(WebDriver driver) {
         super(driver);
     }
 
-    public TreeWidget getTreeWidget() {
-        Widget.waitForWidget(wait, "TreeWidget");
-        return TreeWidget.createByDataAttributeName(driver, wait, HIERARCHY_VIEW_TREE_WIDGET_ID);
+    private HierarchyViewPage(WebDriver driver, WebDriverWait wait) {
+        super(driver, wait);
+    }
+
+    public TreeWidgetV2 getTreeWidget() {
+//        Widget.waitForWidget(wait, "TreeWidget");
+        return TreeWidgetV2.create(driver, wait, HIERARCHY_VIEW_TREE_WIDGET_ID);
     }
 
     public TabsWidget getTopTabsWidget(String type) {
@@ -88,7 +102,7 @@ public class HierarchyViewPage extends BasePage {
 
     @Step("Select First Object on Tree Widget")
     public HierarchyViewPage selectFirstObject() {
-        getTreeWidget().selectNode();
+        getTreeWidget().selectFirstNode();
         return this;
     }
 

@@ -39,7 +39,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
 
     public TreeWidget getTreeView() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        return TreeWidget.createByDataAttributeName(driver, wait, TREE_ID);
+        return TreeWidget.createById(driver, wait, TREE_ID);
     }
 
     @Step("Expand two tree levels of Inconsistencies")
