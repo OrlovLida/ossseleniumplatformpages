@@ -22,17 +22,18 @@ public class CellBulkWizardPage extends BasePage {
     private static final String COLUMN_RSI = "rootSequenceIndex";
     private static final String CELLS_AMOUNT = "amountCells";
     private static final String CARRIER = "carrier-input";
-    private static final String BANDWIDTH_UL = "bandwidthUl";
-    private static final String BANDWIDTH_DL = "bandwidthDl";
+    private static final String BANDWIDTH_UL = "bandwidth_ul";
+    private static final String BANDWIDTH_DL = "bandwidth_dl";
     private static final String TX_POWER = "txPower";
     private static final String TAC = "tac";
-    private static final String MIMO = "mimoMode";
+    private static final String MIMO = "mimo_mode";
     private static final String TX_DIRECTION = "txDirection";
     private static final String PCI = "pci-NUMBER_FIELD";
     private static final String RSI = "rootSequenceIndex-NUMBER_FIELD";
     private static final String NAME = "name-TEXT_FIELD";
     private static final String COLUMN_LOCAL_CELL_ID = "localCellId";
     private static final String LOCAL_CELL_ID = "localCellId-NUMBER_FIELD";
+    private static final String CELL_TOTAL_TX_POWER_ID = "cellTotalTxPower";
     private static final String WIZARD_ID = "cell-4g-bulk-wizard";
     private final Wizard wizard;
 
@@ -52,15 +53,21 @@ public class CellBulkWizardPage extends BasePage {
     }
 
     @Step("Create Cells in Bulk Wizard")
-    public void createCellBulkWizard(int amountOfCells, String carrier, String[] cellNames) {
+    public void createCellBulkWizard(int amountOfCells, String carrier, String[] cellNames, int[] localCellsId) {
         setCellsAmount(String.valueOf(amountOfCells));
         setCarrier(carrier);
+        setSameLocation();
+        setBandwidthUl("10");
+        setBandwidthDl("10");
+        setMimo("2Tx2Rx");
+        setTotalTxPower("25");
         clickNext();
         setFirstAvailableId();
         int rowNumber = amountOfCells;
         for (String cellName : cellNames) {
-            EditableList list = EditableList.create(driver, wait);
-            list.setValueByRowIndex(rowNumber, cellName, COLUMN_NAME, NAME, Input.ComponentType.TEXT_FIELD);
+            Row row = EditableList.create(driver, wait).selectRow(rowNumber - 1);
+            row.setEditableAttributeValue(cellName, COLUMN_NAME, NAME, Input.ComponentType.TEXT_FIELD);
+            row.setEditableAttributeValue(String.valueOf(localCellsId[rowNumber - 1]), COLUMN_LOCAL_CELL_ID, LOCAL_CELL_ID, TEXT_FIELD);
             rowNumber--;
         }
         clickAccept();
@@ -137,6 +144,11 @@ public class CellBulkWizardPage extends BasePage {
     @Step("Set TX Power")
     public void setTxPower(String txPower) {
         wizard.setComponentValue(TX_POWER, txPower, TEXT_FIELD);
+    }
+
+    @Step("Set Total TX Power")
+    public void setTotalTxPower(String txPower) {
+        wizard.setComponentValue(CELL_TOTAL_TX_POWER_ID, txPower, TEXT_FIELD);
     }
 
     @Step("Set TAC")
