@@ -84,7 +84,7 @@ public class TasksPage extends BasePage {
         return OldTable.createByComponentDataAttributeName(driver, wait, TABLE_TASKS);
     }
 
-    public String getProcessCodeByUsernameAndTaskName(String username, String taskName) {
+    public String startTaskByUsernameAndTaskName(String username, String taskName) {
         OldTable table = getOldTable();
         table.searchByAttributeWithLabel(ASSIGNEE, Input.ComponentType.TEXT_FIELD, username);
         DelayUtils.waitForPageToLoad(driver, wait);

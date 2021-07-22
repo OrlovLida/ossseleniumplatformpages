@@ -30,11 +30,11 @@ public class CancelUnfinishedTasksTest extends BaseTestCase {
         String[] tasks = { TasksPage.HIGH_LEVEL_PLANNING_TASK, TasksPage.LOW_LEVEL_PLANNING_TASK, TasksPage.CORRECT_DATA_TASK };
         for (String taskName : tasks) {
             log.debug("Started canceling {} tasks", taskName);
-            String processCode = tasksPage.getProcessCodeByUsernameAndTaskName(USERNAME, taskName);
+            String processCode = tasksPage.startTaskByUsernameAndTaskName(USERNAME, taskName);
             while (!processCode.equals("There is no task for specified values")) {
                 log.debug("Cancel task with Process Code = {}", processCode);
                 cancelProcess(processCode, taskName);
-                processCode = tasksPage.getProcessCodeByUsernameAndTaskName(USERNAME, taskName);
+                processCode = tasksPage.startTaskByUsernameAndTaskName(USERNAME, taskName);
             }
             log.debug("Finished canceling {} tasks", taskName);
         }
