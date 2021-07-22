@@ -20,7 +20,7 @@ import com.oss.pages.radio.CellSiteConfigurationPage;
 import io.qameta.allure.Description;
 import io.qameta.allure.Step;
 
-public class TP_OSS_RM_RAN_001 extends BaseTestCase {
+public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
 
     private static final String LOCATION_NAME = "XYZ_SeleniumTests";
     private static final String ENODEB_NAME = "GBM055TST";
@@ -33,17 +33,16 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
     private static final String[] RADIO_UNIT_NAMES = { "BTS5900,GBM055TST/0/MRRU,60", "BTS5900,GBM055TST/0/MRRU,70", "BTS5900,GBM055TST/0/MRRU,80" };
     private static final String RAN_ANTENNA_MODEL = "HUAWEI Technology Co.,Ltd APE4518R14V06";
     private static final String[] ANTENNA_NAMES = { "TP_OSS_RM_RAN_001_ANTENNA_1", "TP_OSS_RM_RAN_001_ANTENNA_2", "TP_OSS_RM_RAN_001_ANTENNA_3" };
-    //    private static final String[] ANTENNA_NAMES = { "KPTEST_001_ANTENNA_1", "KPTEST_001_ANTENNA_2", "KPTEST_001_ANTENNA_3" };
     private static final String BBU_EQUIPMENT_TYPE = "Base Band Unit";
     private static final String RADIO_UNIT_EQUIPMENT_TYPE = "Remote Radio Head/Unit";
     private static final String CARRIER = "L800-B20-5 (6175)";
     private static final String[] CELL_NAMES = new String[] { "TP_OSS_RM_RAN_001_CELL10", "TP_OSS_RM_RAN_001_CELL20", "TP_OSS_RM_RAN_001_CELL30" };
-    //    private static final String[] CELL_NAMES = new String[] { "KPTEST_001_CELL10", "KPTEST_001_CELL20", "KPTEST_001_CELL30" };
     private static final int AMOUNT_OF_CELLS = CELL_NAMES.length;
     private static final String PCI = "2";
     private static final String RSI = "2";
     private static final String REFERENCE_POWER = "0";
     private static final String[] TAC = { "2", "2", "2" };
+    private static final int[] LOCAL_CELLS_ID = { 1, 2, 3 };
     private static final String PA_INPUT = "2";
     private static final String TASK_COMPLETED = "Task properly completed.";
     private static final String TASK_ASSIGNED = "The task properly assigned.";
@@ -101,7 +100,7 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
     public void createCell4GBulk() {
         waitForPageToLoad();
         cellSiteConfigurationPage.expandTreeToBaseStation(SITE, LOCATION_NAME, ENODEB_NAME);
-        cellSiteConfigurationPage.createCell4GBulk(AMOUNT_OF_CELLS, CARRIER, CELL_NAMES);
+        cellSiteConfigurationPage.createCell4GBulk(AMOUNT_OF_CELLS, CARRIER, CELL_NAMES, LOCAL_CELLS_ID);
         checkMessageType();
         checkMessageText("Cells 4G created success");
     }
@@ -131,7 +130,7 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
     public void createRanAntennaAndArray() {
         for (int i = 0; i < 3; i++) {
             cellSiteConfigurationPage.createRanAntennaAndArray(ANTENNA_NAMES[i], RAN_ANTENNA_MODEL, LOCATION_NAME);
-            checkMessageType();// TODO sprawdzic OSSRAN-5528
+            checkMessageType();
             waitForPageToLoad();
         }
     }
@@ -139,11 +138,10 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
     @Test(priority = 9)
     @Description("Create hosting relation between eNodeB and BBU")
     public void hostENodeBOnBBU() {
-        //TODO OSSPHY-49316 trzeba się upewnić że odpowiedni device wybiera
         waitForPageToLoad();
         cellSiteConfigurationPage.selectTreeRow(ENODEB_NAME);
         waitForPageToLoad();
-        cellSiteConfigurationPage.createHostingOnDevice(BBU_NAME, false);
+        cellSiteConfigurationPage.createHostingOnDevice(BBU_NAME, true);
         checkMessageType();
         waitForPageToLoad();
     }
@@ -154,7 +152,7 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
         for (int i = 0; i < 3; i++) {
             cellSiteConfigurationPage.selectTreeRow(CELL_NAMES[i]);
             waitForPageToLoad();
-            cellSiteConfigurationPage.createHostingOnDevice(RADIO_UNIT_NAMES[i]);//TODO OSSPHY-49316 trzeba się upewnić że odpowiedni device wybiera
+            cellSiteConfigurationPage.createHostingOnDevice(RADIO_UNIT_NAMES[i]);
             checkMessageType();
             waitForPageToLoad();
         }
@@ -167,7 +165,7 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
             waitForPageToLoad();
             cellSiteConfigurationPage.selectTreeRow(CELL_NAMES[i]);
             waitForPageToLoad();
-            cellSiteConfigurationPage.createHostingOnAntennaArray(ANTENNA_NAMES[i]);//TODO OSSPHY-49316 trzeba się upewnić że odpowiedni device wybiera
+            cellSiteConfigurationPage.createHostingOnAntennaArray(ANTENNA_NAMES[i]);
             checkMessageType();
         }
     }
@@ -221,13 +219,11 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
         }
         waitForPageToLoad();
         cellSiteConfigurationPage.editCellsInBulk(AMOUNT_OF_CELLS, PCI, RSI, REFERENCE_POWER, TAC, PA_INPUT);
-        //TODO check popup, tac był poza zasięgiem
     }
 
     @Test(priority = 16)
     @Description("Finish Low Level Planning")
     public void finishLowLevelPlanningTask() {
-        //TODO dalej sa validacje, jest screen
         waitForPageToLoad();
         PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
         perspectiveChooser.setCurrentTask();
@@ -333,7 +329,7 @@ public class TP_OSS_RM_RAN_001 extends BaseTestCase {
         waitForPageToLoad();
         homePage.chooseFromLeftSideMenu("Legacy Inventory Dashboard", "Resource Inventory ");
         waitForPageToLoad();
-        homePage.setOldObjectType(SITE);//TODO zmienic na nowe menu i na nowy IV
+        homePage.setOldObjectType(SITE);
         waitForPageToLoad();
         OldInventoryViewPage oldInventoryViewPage = new OldInventoryViewPage(driver);
         oldInventoryViewPage.filterObject(NAME, LOCATION_NAME);

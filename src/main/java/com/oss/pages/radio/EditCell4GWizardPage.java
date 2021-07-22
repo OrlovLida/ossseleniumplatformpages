@@ -17,7 +17,7 @@ public class EditCell4GWizardPage extends BasePage {
 
     private static final String PCI_DATA_ATTRIBUTE_NAME = "pci";
     private static final String RSI_DATA_ATTRIBUTE_NAME = "rootSequenceIndex";
-    private static final String RS_POWER_DATA_ATTRIBUTE_NAME = "rsPower";
+    private static final String RS_POWER_DATA_ATTRIBUTE_NAME = "referenceSignalPower";
     private static final String PA_OUTPUT_DATA_ATTRIBUTE_NAME = "paOutput";
     private static final String PA_INPUT_DATA_ATTRIBUTE_NAME = "pa-input";
     private static final String TAC_NUMBER_FIELD_DATA_ATTRIBUTE_NAME = "tac-NUMBER_FIELD";

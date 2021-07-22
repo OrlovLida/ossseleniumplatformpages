@@ -70,7 +70,8 @@ public class TasksPage extends BasePage {
     }
 
     public void findTask(String processCode, String taskName) {
-        TableInterface table = getOldTable();
+        OldTable table = getOldTable();
+        table.clearColumnValue(ASSIGNEE);
         table.searchByAttributeWithLabel(PROCESS_CODE, Input.ComponentType.TEXT_FIELD, processCode);
         DelayUtils.waitForPageToLoad(driver, wait);
         table.searchByAttributeWithLabel(NAME, Input.ComponentType.TEXT_FIELD, taskName);
