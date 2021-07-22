@@ -125,6 +125,9 @@ public class UC_NAR_005 extends BaseTestCase {
     @Description("Open New Inventory View and Check value of Serial Number")
     public void openNewInventoryViewAndCheckSerialNumber() {
         homePage.goToHomePage(driver, BASIC_URL);
+        waitForPageToLoad();
+        homePage.chooseFromLeftSideMenu("Legacy Inventory Dashboard", "Resource Inventory ");
+        waitForPageToLoad();
         homePage.setNewObjectType("Router");
         waitForPageToLoad();
         NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);

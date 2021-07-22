@@ -31,7 +31,6 @@ public class CellSiteConfigurationPage extends BasePage {
     private static final String EDIT_LABEL = "Edit";
     private static final String DELETE_LABEL = "Delete";
     private static final String BASE_STATION_ROW = "Base Stations";
-    private static final String DEVICES_ROW = "Devices";
     private static final String CREATE_ENODEB_ACTION = "Create eNodeB";
     private static final String CREATE_GNODEB_ACTION = "Create gNodeB";
     private static final String CREATE_GNODEB_DU_ACTION = "Create gNodeB DU";
@@ -49,7 +48,7 @@ public class CellSiteConfigurationPage extends BasePage {
     }
 
     public CellSiteConfigurationPage goToCellSiteConfiguration(WebDriver driver, String basicURL, String locationId) {
-        driver.get(String.format("%s/#/view/radio/cellsite/xid?perspective=LIVE&withRemoved=true&ids=" + locationId + "", basicURL));
+        driver.get(String.format("%s/#/view/radio/cellsite/xid?perspective=LIVE&withRemoved=true&ids=%s", basicURL, locationId));
         return new CellSiteConfigurationPage(driver);
     }
 
@@ -132,16 +131,6 @@ public class CellSiteConfigurationPage extends BasePage {
         return this;
     }
 
-    @Step("Expand the tree and select device")
-    public CellSiteConfigurationPage expandTreeToDevice(String locationType, String locationName, String deviceName) {
-        waitForPageToLoad();
-        getTree().expandTreeRow(locationType);
-        getTree().expandTreeRow(locationName);
-        getTree().expandTreeRow(DEVICES_ROW);
-        getTree().selectTreeRow(deviceName);
-        return this;
-    }
-
     @Step("Select tree row")
     public void selectTreeRow(String treeRowName) {
         waitForPageToLoad();
@@ -171,11 +160,6 @@ public class CellSiteConfigurationPage extends BasePage {
         wizard.clickAccept();
     }
 
-    @Step("Get row number for object with {attributeLabel} {value}")
-    public int getRowNumber(String attributeLabel, String value) {
-        return getTabTable().getRowNumber(value, attributeLabel);
-    }
-
     @Step("Get {attributeLabel} value for row number {rowNumber}")
     public String getValueByRowNumber(String attributeLabel, int rowNumber) {
         return getTabTable().getCellValue(rowNumber, attributeLabel);
@@ -200,19 +184,19 @@ public class CellSiteConfigurationPage extends BasePage {
         return OldTable.createTableForActiveTab(driver, wait);
     }
 
-    @Step("Create eNodeB with following attributes: Name = {eNodeBName}, ID = {eNodeBid}, Model = {eNodeBModel}, MCCMNC = {MCCMNCPrimary}")
-    public void createENodeB(String eNodeBName, String eNodeBid, String eNodeBModel, String MCCMNCPrimary) {
+    @Step("Create eNodeB with following attributes: Name = {eNodeBName}, ID = {eNodeBid}, Model = {eNodeBModel}, MCCMNC = {mccmncPrimary}")
+    public void createENodeB(String eNodeBName, String eNodeBid, String eNodeBModel, String mccmncPrimary) {
         clickPlusIconAndSelectOption(CREATE_ENODEB_ACTION);
         waitForPageToLoad();
         ENodeBWizardPage eNodeBWizard = new ENodeBWizardPage(driver);
-        eNodeBWizard.createENodeB(eNodeBName, eNodeBid, eNodeBModel, MCCMNCPrimary);
+        eNodeBWizard.createENodeB(eNodeBName, eNodeBid, eNodeBModel, mccmncPrimary);
     }
 
-    @Step("Create gNodeB with following attributes: Name = {gNodeBName}, ID = {gNodeBId}, Model = {gNodeBModel}, MCCMNC = {MCCMNCPrimary}")
-    public void createGNodeB(String gNodeBName, String gNodeBId, String gNodeBModel, String MCCMNCPrimary) {
+    @Step("Create gNodeB with following attributes: Name = {gNodeBName}, ID = {gNodeBId}, Model = {gNodeBModel}, MCCMNC = {mccmncPrimary}")
+    public void createGNodeB(String gNodeBName, String gNodeBId, String gNodeBModel, String mccmncPrimary) {
         clickPlusIconAndSelectOption(CREATE_GNODEB_ACTION);
         new GNodeBWizardPage(driver)
-                .createGNodeB(gNodeBName, gNodeBId, gNodeBModel, MCCMNCPrimary);
+                .createGNodeB(gNodeBName, gNodeBId, gNodeBModel, mccmncPrimary);
     }
 
     @Step("Create gNodeB DU with following attributes: Name = {gNodeBName}, ID = {gNodeBId}, Model = {gNodeBModel}, Controller = {controller}")
@@ -223,8 +207,8 @@ public class CellSiteConfigurationPage extends BasePage {
     }
 
     @Step("Create {amountOfCells} Cells 4G by bulk wizard with Carrier = {carrier}")
-    public void createCell4GBulk(int amountOfCells, String carrier, String[] cellNames) {
-        openCellBulkWizard(TYPE_4G).createCellBulkWizard(amountOfCells, carrier, cellNames);
+    public void createCell4GBulk(int amountOfCells, String carrier, String[] cellNames, int[] cellsID) {
+        openCellBulkWizard(TYPE_4G).createCellBulkWizard(amountOfCells, carrier, cellNames, cellsID);
     }
 
     @Step("Create {amountOfCells} Cells 5G by bulk wizard with Carrier = {carrier}")

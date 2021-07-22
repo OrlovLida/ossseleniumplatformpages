@@ -55,7 +55,7 @@ public class NewInventoryViewPage extends BasePage {
 
     public TableWidget getMainTable() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        DelayUtils.waitByXPath(wait,"//div[@" + CSSUtils.TEST_ID + "='" + TABLE_ID + "']" );
+        DelayUtils.waitByXPath(wait, "//div[@" + CSSUtils.TEST_ID + "='" + TABLE_ID + "']");
         return TableWidget.createById(driver, TABLE_ID, wait);
     }
 
@@ -91,14 +91,14 @@ public class NewInventoryViewPage extends BasePage {
     }
 
     @Step("Enable Column and apply")
-    public NewInventoryViewPage enableColumnAndApply(String columnLabel) {
-        enableColumn(columnLabel).clickApply();
+    public NewInventoryViewPage enableColumnAndApply(String columnLabel, String... path) {
+        enableColumn(columnLabel, path).clickApply();
         return this;
     }
 
     @Step("Enable Column")
-    public AttributesChooser enableColumn(String columnLabel) {
-        return getMainTable().getAttributesChooser().enableAttributeByLabel(columnLabel);
+    public AttributesChooser enableColumn(String columnLabel, String... path) {
+        return getMainTable().getAttributesChooser().enableAttributeByLabel(columnLabel, path);
     }
 
     public List<String> getActiveColumnsHeaders() {
@@ -128,6 +128,21 @@ public class NewInventoryViewPage extends BasePage {
         TableWidget mainTable = getMainTable();
         mainTable.clearAllFilters();
         DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    @Step("Clear all filters")
+    public void clearFilter(String filterName) {
+        TableWidget mainTable = getMainTable();
+        mainTable.clearFilter(filterName);
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    public void toggleVisibilitySearchAttributes(List<String> attributeIds) {
+        getMainTable().toggleVisibilitySearchAttributes(attributeIds);
+    }
+
+    public List<String> getAllVisibleFilters() {
+        return getMainTable().getAllVisibleFilters();
     }
 
     public String getAttributeValue(String columnId, int rowId) {
@@ -480,6 +495,12 @@ public class NewInventoryViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         AdvancedSearch advancedSearch = new AdvancedSearch(driver, wait);
         return advancedSearch.howManyTagsIsVisible() == 0;
+    }
+
+    public int countOfVisibleTags() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        AdvancedSearch advancedSearch = new AdvancedSearch(driver, wait);
+        return advancedSearch.howManyTagsIsVisible();
     }
 
     public String getIdOfMainTableObject(int rowIndex) {
