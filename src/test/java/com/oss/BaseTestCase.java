@@ -103,7 +103,6 @@ public class BaseTestCase {
 
     private void startChromeDriver() {
         ChromeOptions options = getAdditionalOptions();
-        options.setBinary("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe");
         setWebDriver(options);
         driver = new ChromeDriver(options);
     }
