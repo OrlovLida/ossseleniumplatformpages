@@ -1,86 +1,69 @@
 package com.oss;
 
-import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.TreeWidgetV2.TreeWidgetV2;
-import com.oss.framework.widgets.treewidget.TreeWidget;
-import com.oss.pages.platform.HierarchyViewPage;
+import java.util.List;
+
 import org.assertj.core.api.Assertions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import org.testng.asserts.SoftAssert;
+
+import com.oss.framework.components.contextactions.ActionsContainer;
+import com.oss.framework.components.tree.TreeComponent.Node;
+import com.oss.framework.utils.DelayUtils;
+import com.oss.pages.platform.HierarchyViewPage;
 
 public class HierarchyViewTest extends BaseTestCase {
-
-    private static final Logger log = LoggerFactory.getLogger(HierarchyViewTest.class);
-
     private HierarchyViewPage hierarchyViewPage;
-
-    SoftAssert soft = new SoftAssert();
 
     @BeforeClass
     public void goToHierarchyViewPage() {
         hierarchyViewPage = HierarchyViewPage.openHierarchyViewPage(driver, BASIC_URL, "PhysicalDevice");
     }
 
-    @Test (priority = 0)
+    @Test (priority = 1)
     public void selectFirstNode() {
-        hierarchyViewPage.getTreeWidget().selectFirstNode();
+        hierarchyViewPage.selectFirstNode();
+
         Assertions.assertThat(hierarchyViewPage
-                .getTreeWidget().getFirstNode().isToggled()).isTrue();
+                .getFirstNode().isToggled()).isTrue();
     }
 
-    @Test (priority = 1)
+    @Test (priority = 2)
     public void expandNode() {
-        TreeWidgetV2 treeWidget = hierarchyViewPage.getTreeWidget();
-        treeWidget.getFirstNode().expandNode();
-        Assertions.assertThat(treeWidget.getFirstNode().isExpanded());
+        hierarchyViewPage.getFirstNode().expandNode();
+        Assertions.assertThat(hierarchyViewPage.getFirstNode().isExpanded()).isTrue();
+    }
+
+    @Test (priority = 3)
+    public void searchWithNotExistingData() {
+        hierarchyViewPage.searchObject("hjakserzxaseer");
+        List<Node> nodes = hierarchyViewPage.getMainTree().getVisibleNodes();
+
+        Assertions.assertThat(nodes).hasSize(0);
+
+        hierarchyViewPage.clearFiltersOnMainTree();
+    }
+
+    @Test (priority = 4)
+    public void searchWithExistingData() {
+        Node node = hierarchyViewPage.getFirstNode();
+        String label = node.getLabel();
+
+        hierarchyViewPage.searchObject(label);
+        List<Node> nodes = hierarchyViewPage.getMainTree().getVisibleNodes();
+
+        Assertions.assertThat(nodes).hasSize(1);
+        Assertions.assertThat(nodes.get(0).getLabel()).isEqualTo(label);
+
+        hierarchyViewPage.clearFiltersOnMainTree();
+
     }
 
     @Test (priority = 5)
-    public void displayInlineActions() {
+    public void showOnHierarchyView() {
         DelayUtils.waitForPageToLoad(driver,webDriverWait);
-//        boolean inlineMenu = hierarchyViewPage
-//                .getTreeWidget()
-//                .selectFirstNode().getSelectedNodes().get(0);
-//        Assert.assertTrue(inlineMenu, "Inline actions are not displayed");
-    }
+        hierarchyViewPage.getFirstNode().callAction(ActionsContainer.SHOW_ON_GROUP_ID, HierarchyViewPage.OPEN_HIERARCHY_VIEW_CONTEXT_ACTION_ID);
 
-    @Test (priority = 6)
-    public void checkAvailableActionsForSelectedNode() {
-        TreeWidgetV2 treeWidget = hierarchyViewPage.getTreeWidget();
-        treeWidget.selectFirstNode();
-        soft.assertTrue(treeWidget.isActionDisplayed("CREATE"), "Create button is not displayed");
-        soft.assertTrue(treeWidget.isActionDisplayed("EDIT"), "Edit button is not displayed");
-        soft.assertTrue(treeWidget.isActionDisplayed("NAVIGATION"), "Navigation button is not displayed");
-        soft.assertTrue(treeWidget.isActionDisplayed("OTHER"), "Other button is not displayed");
-    }
-
-    @Test (priority = 7)
-    public void checkAvailableActionsInDefaultView() {
-        TreeWidgetV2 treeWidget = hierarchyViewPage
-                .getTreeWidget();
-        Assert.assertTrue(treeWidget.isActionDisplayed("CREATE"), "Create button is not displayed");
-        Assert.assertTrue(treeWidget.isActionDisplayed("frameworkCustomButtonsGroup"), "Hamburger menu is not displayed");
-
-    }
-
-    @Test (priority = 8)
-    public void searchWithNotExistingData() {
-        TreeWidgetV2 treeWidgetV2 = hierarchyViewPage
-                .getTreeWidget();
-        treeWidgetV2.performSearch("hjfkahfdadf");
-        Assert.assertTrue(hierarchyViewPage.getTreeWidget().isTreeWidgetEmpty(), "Tree widget is not empty");
-    }
-
-    @Test (priority = 9)
-    public void searchWithExistingData() {
-//        TreeWidget treeWidget = hierarchyViewPage
-//                .getTreeWidget();
-//                treeWidget.performSearch(firstNodeLabel);
-//        Assert.assertTrue(treeWidget.isSearchingCorrect(firstNodeLabel), "Searching is not correct");
-
+        List<Node> nodes = hierarchyViewPage.getMainTree().getVisibleNodes();
+        Assertions.assertThat(nodes).hasSize(1);
     }
 }
