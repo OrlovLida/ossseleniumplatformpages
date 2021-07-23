@@ -1,6 +1,7 @@
 package com.oss.web;
 
 import com.oss.BaseTestCase;
+import com.oss.framework.components.common.AttributesChooser;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
@@ -199,5 +200,18 @@ public class TableWidgetTest extends BaseTestCase {
 
         Assertions.assertThat(tableWidget.getPagination().getBottomRageOfRows()).isEqualTo(1);
         Assertions.assertThat(tableWidget.getPagination().getTopRageOfRows()).isEqualTo(tableWidget.getPagination().getStep());
+    }
+
+    @Test(priority = 12)
+    public void addColumnByPath() {
+        String path = "director.type";
+
+        AttributesChooser attributesChooser = tableWidget.getAttributesChooser();
+        attributesChooser.toggleAttributeByPath(path);
+        attributesChooser.clickApply();
+
+        List<String> ids = tableWidget.getActiveColumnIds();
+        Assertions.assertThat(ids).contains(path);
+        System.out.println("asd");
     }
 }
