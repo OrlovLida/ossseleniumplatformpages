@@ -50,6 +50,7 @@ public class DataSourceStepWizardPage extends BasePage {
 
     @Step("I click Accept")
     public void clickAccept() {
+        DelayUtils.waitForPageToLoad(driver, wait);
         wizard.clickAccept();
         log.info("Finishing Step Wizard by clicking 'Accept'");
     }

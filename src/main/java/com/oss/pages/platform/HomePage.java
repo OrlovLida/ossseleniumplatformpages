@@ -144,7 +144,7 @@ public class HomePage extends BasePage {
 
     private String getCurrentPerspective() {
         String href = logo.getAttribute("href");
-        log.info("Open link: " + href);
+        log.info("Open link: {}", href);
         return href;
     }
 

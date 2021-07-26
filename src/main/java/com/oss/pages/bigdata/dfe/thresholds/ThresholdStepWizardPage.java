@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 public class ThresholdStepWizardPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(ThresholdStepWizardPage.class);
+    private static final String THRESHOLD_WIZARD_ID = "thresholdWizardWindowId";
 
     private final ThresholdsConfigurationPage thresholdsConfigurationStep;
     private final ThresholdsDimensionsFilteringPage thresholdsDimensionsFilteringStep;
@@ -19,7 +20,7 @@ public class ThresholdStepWizardPage extends BasePage {
     public ThresholdStepWizardPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
 
-        thresholdsWizard = Wizard.createWizard(driver, wait);
+        thresholdsWizard = Wizard.createByComponentId(driver, wait, THRESHOLD_WIZARD_ID);
         thresholdsConfigurationStep = new ThresholdsConfigurationPage(driver, wait);
         thresholdsDimensionsFilteringStep = new ThresholdsDimensionsFilteringPage(driver, wait);
     }

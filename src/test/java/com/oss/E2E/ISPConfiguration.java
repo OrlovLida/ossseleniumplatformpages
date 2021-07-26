@@ -85,7 +85,7 @@ public class ISPConfiguration extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        homePage.chooseFromLeftSideMenu("Create Location", "Wizards", "Physical Inventory");
+        homePage.chooseFromLeftSideMenu("Create Physical Location", "Infrastructure management", "Locations");
     }
 
     @Test(priority = 1)
@@ -177,7 +177,7 @@ public class ISPConfiguration extends BaseTestCase {
         HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
         hierarchyViewPage.selectFirstObject();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        hierarchyViewPage.getTreeWidget().callActionById("EDIT", "DeviceChangeModelAction");
+        hierarchyViewPage.getMainTree().callActionById("EDIT", "DeviceChangeModelAction");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -197,7 +197,7 @@ public class ISPConfiguration extends BaseTestCase {
     public void openCreateCardWizard() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
-        hierarchyViewPage.getTreeWidget().callActionById("CREATE", "CreateCardOnDeviceAction");
+        hierarchyViewPage.getMainTree().callActionById("CREATE", "CreateCardOnDeviceAction");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 

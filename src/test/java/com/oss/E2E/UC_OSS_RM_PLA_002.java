@@ -64,6 +64,14 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     private static final String CONNECTION_TIMEOUT = "20";
     private static final String IP_NETWORK = "E2ESeleniumTest";
     private static final String TEMPLATE_EXECUTION_NOTIFICATION = "Script execution finished";
+    private static final String BUSINESS_PROCESS_MANAGEMENT = "Business Process Management";
+    private static final String BPM_AND_PLANNING = "BPM and Planning";
+    private static final String PROCESS_INSTANCES = "Process Instances";
+    private static final String BOOKMARKS = "Bookmarks";
+    private static final String FAVOURITES = "Favourites";
+    private static final String LAB_NETWORK_VIEW = "LAB Network View";
+    private static final String NAME = "Name";
+    private static final String LEFT = "left";
 
     private String serialNumber = "SN-" + (int) (Math.random() * 1001);
     private String processIPCode;
@@ -79,7 +87,8 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     @Test(priority = 1)
     @Step("Create and start NRP Process")
     public void createProcessNRP() {
-        homePage.chooseFromLeftSideMenu("Process Instances", "Views", "Business Process Management");
+        waitForPageToLoad();
+        homePage.chooseFromLeftSideMenu(PROCESS_INSTANCES, BPM_AND_PLANNING, BUSINESS_PROCESS_MANAGEMENT);
         waitForPageToLoad();
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
         processNRPCode = processWizardPage.createSimpleNRP();
@@ -98,7 +107,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         homePage.goToHomePage(driver, BASIC_URL);
         waitForPageToLoad();
         SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
-        sideMenu.callActionByLabel("LAB Network View", "Favourites", "SeleniumTests");
+        sideMenu.callActionByLabel(LAB_NETWORK_VIEW, FAVOURITES, BOOKMARKS);
     }
 
     @Test(priority = 3)
@@ -106,9 +115,9 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     public void selectLocation() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         waitForPageToLoad();
-        networkViewPage.expandDockedPanel("left");
+        networkViewPage.expandDockedPanel(LEFT);
         waitForPageToLoad();
-        networkViewPage.selectObjectInViewContent("Name", LOCATION_NAME);
+        networkViewPage.selectObjectInViewContent(NAME, LOCATION_NAME);
     }
 
     @Test(priority = 4)
@@ -141,13 +150,13 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     public void moveToHierarchyView() {
         waitForPageToLoad();
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
-        networkViewPage.expandDockedPanel("left");
+        networkViewPage.expandDockedPanel(LEFT);
         waitForPageToLoad();
-        networkViewPage.selectObjectInViewContent("Name", DEVICE_NAME);
+        networkViewPage.selectObjectInViewContent(NAME, DEVICE_NAME);
         DelayUtils.sleep(5000); // naming has to recalculate, it doesn't show progress in the console
-        networkViewPage.selectObjectInViewContent("Name", DEVICE_NAME);
+        networkViewPage.selectObjectInViewContent(NAME, DEVICE_NAME);
         waitForPageToLoad();
-        networkViewPage.useContextAction(ActionsContainer.SHOW_ON_GROUP_ID, NetworkViewPage.HIERARCHY_VIEW_ACTION);
+        networkViewPage.useContextAction(ActionsContainer.SHOW_ON_GROUP_ID, NetworkViewPage.HIERARCHY_VIEW_ACTION);//TODO w more jeśli okno za małe
         waitForPageToLoad();
     }
 
@@ -166,9 +175,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         waitForPageToLoad();
         hierarchyViewPage.expandTreeNode("EthernetInterface_TP");
         waitForPageToLoad();
-        hierarchyViewPage.performSearch(PORT_NAME);
-        waitForPageToLoad();
-        hierarchyViewPage.selectNodeByPosition(7);
+        hierarchyViewPage.selectNodeByLabel(PORT_NAME);//TODO zaznaczenie po nazwie - nazwa dopiero po chwili sie pokazala (po zaznaczeniu) wczesniej byl widoczny ID - sprawdzic
         waitForPageToLoad();
         hierarchyViewPage.useTreeContextAction(ActionsContainer.SHOW_ON_GROUP_ID, "OpenInventoryView");
     }
@@ -195,9 +202,9 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         networkViewPage.useContextAction(NetworkViewPage.ADD_TO_VIEW_ACTION, NetworkViewPage.DEVICE_ACTION);
         waitForPageToLoad();
         networkViewPage.queryElementAndAddItToView("serialNumber", TEXT_FIELD, serialNumber);
-        networkViewPage.expandDockedPanel("left");
+        networkViewPage.expandDockedPanel(LEFT);
         waitForPageToLoad();
-        networkViewPage.selectObjectInViewContent("Name", "H1");
+        networkViewPage.selectObjectInViewContent(NAME, "H1");
         waitForPageToLoad();
         networkViewPage.useContextAction(ActionsContainer.CREATE_GROUP_ID, NetworkViewPage.CREATE_CONNECTION_ID);
         networkViewPage.selectTrailType("IP Link");
@@ -225,10 +232,10 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         waitForPageToLoad();
         connectionWizardPage.clickAccept();
         waitForPageToLoad();
-        networkViewPage.expandDockedPanel("left");
-        networkViewPage.selectObjectInViewContent("Name", TRAIL_NAME + " (0%)");
+        networkViewPage.expandDockedPanel(LEFT);
+        networkViewPage.selectObjectInViewContent(NAME, TRAIL_NAME + " (0%)");
         waitForPageToLoad();
-        networkViewPage.hideDockedPanel("left");
+        networkViewPage.hideDockedPanel(LEFT);
     }
 
     @Test(priority = 9)
@@ -246,11 +253,11 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     public void createMediationConfiguration() {
         waitForPageToLoad();
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
-        networkViewPage.expandDockedPanel("left");
+        networkViewPage.expandDockedPanel(LEFT);
         waitForPageToLoad();
-        networkViewPage.selectObjectInViewContent("Name", TRAIL_NAME + " (0%)");
+        networkViewPage.selectObjectInViewContent(NAME, TRAIL_NAME + " (0%)");
         waitForPageToLoad();
-        networkViewPage.selectObjectInViewContent("Name", DEVICE_NAME);
+        networkViewPage.selectObjectInViewContent(NAME, DEVICE_NAME);
         waitForPageToLoad();
         networkViewPage.useContextActionAndClickConfirmation(ActionsContainer.CREATE_GROUP_ID, NetworkViewPage.CREATE_MEDIATION_CONFIGURATION_ID, ConfirmationBox.PROCEED);
         waitForPageToLoad();
@@ -314,7 +321,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         SetParametersWizardPage setParametersWizardPage = new SetParametersWizardPage(driver);
         waitForPageToLoad();
         String name = setParametersWizardPage.getParameter("$name[NEW_INVENTORY]");
-        Assert.assertEquals(DEVICE_NAME, name);
+        Assert.assertEquals(name, DEVICE_NAME);
         setParametersWizardPage.setParameter("$Password[SYSTEM]", "oss");
         waitForPageToLoad();
         setParametersWizardPage.setParameter("$InterfaceName[USER]", "GE 0");
@@ -446,7 +453,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         homePage.goToHomePage(driver, BASIC_URL);
         waitForPageToLoad();
         SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
-        sideMenu.callActionByLabel("LAB Network View", "Favourites", "SeleniumTests");
+        sideMenu.callActionByLabel(LAB_NETWORK_VIEW, FAVOURITES, BOOKMARKS);
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.useContextAction(NetworkViewPage.ADD_TO_VIEW_ACTION, NetworkViewPage.CONNECTION_ACTION);
         waitForPageToLoad();
@@ -505,7 +512,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     }
 
     private void checkMessageText() {
-        Assert.assertEquals("The task properly assigned.", (getFirstMessage().getText()));
+        Assert.assertEquals((getFirstMessage().getText()), "The task properly assigned.");
     }
 
     private void checkMessageSize() {

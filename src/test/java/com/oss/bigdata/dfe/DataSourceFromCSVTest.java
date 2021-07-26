@@ -13,72 +13,66 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
-
 @Listeners({TestListener.class})
-public class DataSourceFromQueryTest extends BaseTestCase {
+public class DataSourceFromCSVTest extends BaseTestCase {
 
-    private static final Logger log = LoggerFactory.getLogger(DataSourceFromQueryTest.class);
-
+    private static final Logger log = LoggerFactory.getLogger(DataSourceFromCSVTest.class);
     private DataSourcePage dataSourcePage;
     private String dataSourceName;
-    private String updatedDataSourceName;
-
-    private static final String DATABASE = "DFE Data-Model DB";
-    private final String QUERY = "SELECT SYSDATE stime, CASE WHEN aa = 1 THEN 'D1_01' WHEN aa = 2 THEN 'D1_02' WHEN aa = 3 THEN 'D1_01' WHEN aa = 4 THEN 'D1_02' ELSE 'D1_01' END d1, CASE WHEN aa = 1 THEN 'D2_01' WHEN aa = 2 THEN 'D2_02' WHEN aa = 3 THEN 'D2_02' WHEN aa = 4 THEN 'D2_01' ELSE 'D2_01' END d2, CASE WHEN aa = 1 THEN 'D3_01_01_01' WHEN aa = 2 THEN 'D3_01_02_01' WHEN aa = 3 THEN 'D3_01_03_01' WHEN aa = 4 THEN 'D3_02_01_01' WHEN aa = 5 THEN 'D3_02_02_01' WHEN aa = 6 THEN 'D3_02_03_01' WHEN aa = 7 THEN 'D3_03_01_01' WHEN aa = 8 THEN 'D3_03_02_01' WHEN aa = 9 THEN 'D3_03_03_01' END d3, t.attempts, round(dbms_random.value(0, 100) * t.attempts / 100, 2) success FROM (SELECT level aa, round(dbms_random.value(0, 100), 2) attempts FROM dual CONNECT BY level < 10 ) t";
-    private final String OFFSET = "No offset";
-    private final String UNIT = "Minute";
-    private final String INTERVAL_AMOUNT = "1";
+    private String dataSourceName_updated;
+    private final String DS_TYPE = "ServerGroup";
+    private final String SERVER_GROUP_NAME = "t:GENERAL#Test Server Group";
+    private final String INTERVAL = "60";
 
     @BeforeClass
     public void goToDataSourceView() {
         dataSourcePage = DataSourcePage.goToPage(driver, BASIC_URL);
-
-        dataSourceName = ConstantsDfe.createName() + "_DSTest";
-        updatedDataSourceName = dataSourceName + "_updated";
+        dataSourceName = ConstantsDfe.createName() + "_DSFromCSVTest";
+        dataSourceName_updated = dataSourceName + "_updated";
     }
 
-    @Test(priority = 1, testName = "Add new Data Source from query result", description = "Add new Data Source from query result")
-    @Description("Add new Data Source from query result")
-    public void addDataSourceFromQuery() {
+    @Test(priority = 1, testName = "Add new Data Source from CSV", description = "Add new Data Source from CSV")
+    @Description("Add new Data Source from CSV")
+    public void addDataSourceFromCSV() {
         dataSourcePage.clickAddNewDS();
-        dataSourcePage.selectDSFromQuery();
+        dataSourcePage.selectDSFromCSV();
         DataSourceStepWizardPage dsStepWizard = new DataSourceStepWizardPage(driver, webDriverWait);
         dsStepWizard.getBasicInfoStep().fillBasicInformationStep(dataSourceName);
         dsStepWizard.clickNext();
-        dsStepWizard.getSourceInfoStep().fillDatabase(DATABASE);
-        dsStepWizard.getSourceInfoStep().fillQuery(QUERY);
+        dsStepWizard.getSourceInfoStep().uploadCSVFile("DataSourceCSV/CPU_USAGE_INFO_RAW-MAP.xlsx");
+        dsStepWizard.getSourceInfoStep().selectDSType(DS_TYPE);
         dsStepWizard.clickNext();
-        dsStepWizard.getSpecificInfoStep().fillSpecificInfo(OFFSET, UNIT, INTERVAL_AMOUNT);
+        dsStepWizard.getSpecificInfoStep().fillSpecificInfoForCSV(SERVER_GROUP_NAME, INTERVAL);
         dsStepWizard.clickAccept();
         Boolean dataSourceIsCreated = dataSourcePage.dataSourceExistIntoTable(dataSourceName);
 
         Assert.assertTrue(dataSourceIsCreated);
     }
 
-    @Test(priority = 2, testName = "Edit Data Source", description = "Edit Data Source")
-    @Description("Edit Data Source")
-    public void editDataSourceFromQuery() {
+    @Test(priority = 2, testName = "Edit Data Source from CSV", description = "Edit Data Source from CSV")
+    @Description("Edit Data Source from CSV")
+    public void editDSFromCSV() {
         Boolean dataSourceExists = dataSourcePage.dataSourceExistIntoTable(dataSourceName);
         if (dataSourceExists) {
             dataSourcePage.selectFoundDataSource();
             dataSourcePage.clickEditDS();
             DataSourceStepWizardPage dsStepWizard = new DataSourceStepWizardPage(driver, webDriverWait);
-            dsStepWizard.getBasicInfoStep().fillBasicInformationStep(updatedDataSourceName);
+            dsStepWizard.getBasicInfoStep().fillBasicInformationStep(dataSourceName_updated);
             dsStepWizard.clickNext();
             dsStepWizard.clickNext();
             dsStepWizard.clickAccept();
-            Boolean dataSourceIsEdited = dataSourcePage.dataSourceExistIntoTable(updatedDataSourceName);
+            Boolean dataSourceIsCreated = dataSourcePage.dataSourceExistIntoTable(dataSourceName_updated);
 
-            Assert.assertTrue(dataSourceIsEdited);
+            Assert.assertTrue(dataSourceIsCreated);
         } else {
             log.error("Data Source with name: {} doesn't exist", dataSourceName);
             Assert.fail();
         }
     }
 
-    @Test(priority = 3, testName = "Delete Data Source", description = "Delete Data Source")
-    @Description("Delete Data Source")
-    public void deleteDataSourceFromQuery() {
+    @Test(priority = 3, testName = "Delete Data Source from CSV", description = "Delete Data Source from CSV")
+    @Description("Delete Data Source from CSV")
+    public void deleteDsFromCSV() {
         Boolean dataSourceExists = dataSourcePage.dataSourceExistIntoTable(dataSourceName);
         if (dataSourceExists) {
             dataSourcePage.selectFoundDataSource();

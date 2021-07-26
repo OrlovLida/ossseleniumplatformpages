@@ -11,9 +11,13 @@ import java.util.stream.Collectors;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.inputs.Button;
+import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.inputs.Input.ComponentType;
 import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
@@ -30,6 +34,7 @@ import com.oss.pages.dms.AttachFileWizardPage;
  */
 public class TasksPage extends BasePage {
 
+    private static final Logger log = LoggerFactory.getLogger(TasksPage.class);
     public static final String READY_FOR_INTEGRATION_TASK = "Ready for Integration";
     public static final String IMPLEMENTATION_TASK = "Implementation";
     public static final String SCOPE_DEFINITION_TASK = "Scope definition";
@@ -37,6 +42,8 @@ public class TasksPage extends BasePage {
     public static final String VERIFICATION_TASK = "Verification";
     public static final String LOW_LEVEL_PLANNING_TASK = "Low Level Planning";
     public static final String HIGH_LEVEL_PLANNING_TASK = "High Level Planning";
+    public static final String CORRECT_DATA_TASK = "Correct data";
+    public static final String UPDATE_REQUIREMENTS_TASK = "Update Requirements";
     private static final String TABLE_TASKS = "bpm_task_view_task-table";
     private static final String TABS_TASKS_VIEW = "bpm_task_view_tabs-container";
     private static final String ATTACH_FILE_BUTTON = "addAttachmentAction";
@@ -46,6 +53,10 @@ public class TasksPage extends BasePage {
     private static final String COMPLETE_TASK_ICON_ID = "form.toolbar.closeTask";
     private static final String SETUP_INTEGRATION_ICON_ID = "form.toolbar.setupIntegrationButton";
     private static final String IP_TABLE = "form.specific.ip_involved_nrp_group.ip_involved_nrp_table";
+    private static final String TRANSITION_COMBOBOX_ID = "transitionComboBox";
+    private static final String PROCESS_CODE = "Process Code";
+    private static final String NAME = "Name";
+    private static final String ASSIGNEE = "Assignee";
 
     public TasksPage(WebDriver driver) {
         super(driver);
@@ -59,13 +70,53 @@ public class TasksPage extends BasePage {
     }
 
     public void findTask(String processCode, String taskName) {
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, TABLE_TASKS);
+        OldTable table = getOldTable();
+        table.clearColumnValue(ASSIGNEE);
+        table.searchByAttributeWithLabel(PROCESS_CODE, Input.ComponentType.TEXT_FIELD, processCode);
         DelayUtils.waitForPageToLoad(driver, wait);
-        table.searchByAttributeWithLabel("Process Code", Input.ComponentType.TEXT_FIELD, processCode);
-        DelayUtils.waitForPageToLoad(driver, wait);
-        table.searchByAttributeWithLabel("Name", Input.ComponentType.TEXT_FIELD, taskName);
+        table.searchByAttributeWithLabel(NAME, Input.ComponentType.TEXT_FIELD, taskName);
         table.doRefreshWhileNoData(10000, "refreshTable");
-        table.selectRowByAttributeValueWithLabel("Process Code", processCode);
+        table.selectRowByAttributeValueWithLabel(PROCESS_CODE, processCode);
+    }
+
+    private OldTable getOldTable() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return OldTable.createByComponentDataAttributeName(driver, wait, TABLE_TASKS);
+    }
+
+    public String startTaskByUsernameAndTaskName(String username, String taskName) {
+        OldTable table = getOldTable();
+        table.searchByAttributeWithLabel(ASSIGNEE, Input.ComponentType.TEXT_FIELD, username);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        table.searchByAttributeWithLabel(NAME, Input.ComponentType.TEXT_FIELD, taskName);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        if (table.hasNoData()) {
+            return "There is no task for specified values";
+        } else {
+            return getProcessCodeAndStartItIfNotStarted(username, taskName);
+        }
+    }
+
+    private String getProcessCodeAndStartItIfNotStarted(String username, String taskName) {
+        OldTable table = getOldTable();
+        String processCode = table.getCellValue(0, PROCESS_CODE);
+        log.debug("Process Code = {}", processCode);
+        String assigne = table.getCellValue(0, ASSIGNEE);
+        log.debug("Assignee = {}", assigne);
+        if (!assigne.equals(username)) {
+            startTask(processCode, taskName);
+        }
+        return processCode;
+    }
+
+    public void changeTransitionAndCompleteTask(String processCode, String taskName, String transition) {
+        findTask(processCode, taskName);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        Input input = ComponentFactory.create(TRANSITION_COMBOBOX_ID, ComponentType.BPM_COMBOBOX, driver, wait);
+        input.setSingleStringValue(transition);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        actionTask(COMPLETE_TASK_ICON_ID);
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public void startTask(String processCode, String taskName) {
@@ -120,11 +171,6 @@ public class TasksPage extends BasePage {
         prompt.clickButtonByLabel("Proceed");
     }
 
-    public void openIntegrationProcessByClickingOnIdLink() {
-        TableInterface table = OldTable.createByComponentId(driver, wait, "ip_involved_nrp_group1");
-        table.selectLinkInSpecificColumn("Id");
-    }
-
     public void clickPerformConfigurationButton() {
         Button button = Button.create(driver, "Perform Configuration", "a");
         button.click();
@@ -136,14 +182,12 @@ public class TasksPage extends BasePage {
     }
 
     public void showCompletedTasks() {
-        OldTable table = OldTable.createByComponentDataAttributeName(driver, wait, TABLE_TASKS);
-        table.selectPredefinedFilter("Show with Completed");
-
+        getOldTable().selectPredefinedFilter("Show with Completed");
     }
 
     public String getIPCodeByProcessName(String processIPName) {
         TableInterface ipTable = getIPTable();
-        int rowNumber = ipTable.getRowNumber(processIPName, "Name");
+        int rowNumber = ipTable.getRowNumber(processIPName, NAME);
         return ipTable.getCellValue(rowNumber, "Code");
     }
 
@@ -178,5 +222,15 @@ public class TasksPage extends BasePage {
                 OldTreeTableWidget.create(driver, wait, "attachmentManagerBusinessView_commonTreeTable_BPMTask");
         List<String> allNodes = treeTable.getAllVisibleNodes("Attachments and directories");
         return allNodes.stream().filter(node -> !node.equals("HOME")).collect(Collectors.toList());
+    }
+
+    public void clearFilter() {
+        OldTable table = getOldTable();
+        table.clearColumnValue(PROCESS_CODE);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        table.clearColumnValue(NAME);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        table.clearColumnValue(ASSIGNEE);
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 }
