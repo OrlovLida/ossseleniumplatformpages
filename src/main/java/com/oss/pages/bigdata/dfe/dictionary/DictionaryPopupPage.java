@@ -17,9 +17,9 @@ public class DictionaryPopupPage extends BasePage {
     private final String DESCRIPTION_INPUT_ID = "description";
     private final Wizard dictionaryWizard;
 
-    public DictionaryPopupPage(WebDriver driver, WebDriverWait wait) {
+    public DictionaryPopupPage(WebDriver driver, WebDriverWait wait, String WIZARD_ID) {
         super(driver, wait);
-        dictionaryWizard = Wizard.createWizard(driver, wait);
+        dictionaryWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
     }
 
     public void fillName(String name) {

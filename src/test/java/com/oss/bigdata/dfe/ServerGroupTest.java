@@ -2,6 +2,9 @@ package com.oss.bigdata.dfe;
 
 import com.oss.BaseTestCase;
 import com.oss.pages.bigdata.dfe.serverGroup.ServerGroupPage;
+import com.oss.pages.bigdata.dfe.serverGroup.ServerGroupPopupPage;
+import com.oss.pages.bigdata.dfe.serverGroup.ServerPopupPage;
+import com.oss.pages.bigdata.dfe.serverGroup.ServersTabPage;
 import com.oss.pages.bigdata.utils.ConstantsDfe;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
@@ -18,10 +21,13 @@ public class ServerGroupTest extends BaseTestCase {
     private final static Logger log = LoggerFactory.getLogger(ServerGroupTest.class);
     private final static String PROTOCOL_TYPE = "SFTP";
     private final static String SERVERS_SERVER_NAME = "Selenium Test Server";
+    private final static String SERVERS_SERVER_NAME_UPDATED = SERVERS_SERVER_NAME + "-updated";
     private final static String SERVERS_SERVER_ADDRESS = "Selenium.Test.Address";
     private final static String SERVERS_USER_NAME = "Selenium Test Name";
     private final static String SERVERS_PASSWORD = "Password";
     private final static String SERVERS_DIRECTORY = "/test";
+    private final String ADD_WIZARD_ID = "add-prompt-id";
+    private final String EDIT_WIZARD_ID = "edit-prompt-id";
 
     private ServerGroupPage serverGroupPage;
     private String serverGroupName;
@@ -39,8 +45,9 @@ public class ServerGroupTest extends BaseTestCase {
     @Description("Add new server group")
     public void addServerGroup() {
         serverGroupPage.clickAddNewServerGroup();
-        serverGroupPage.getServerGroupPopup().fillServerGroupPopup(serverGroupName, PROTOCOL_TYPE);
-        serverGroupPage.getServerGroupPopup().clickSave();
+        ServerGroupPopupPage serverGroupPopupWizard = new ServerGroupPopupPage(driver, webDriverWait, ADD_WIZARD_ID);
+        serverGroupPopupWizard.fillServerGroupPopup(serverGroupName, PROTOCOL_TYPE);
+        serverGroupPopupWizard.clickSave();
         Boolean serverGroupIsCreated = serverGroupPage.serverGroupExistIntoTable(serverGroupName);
 
         Assert.assertTrue(serverGroupIsCreated);
@@ -53,11 +60,13 @@ public class ServerGroupTest extends BaseTestCase {
         if (serverGroupExists) {
             serverGroupPage.selectFoundServerGroup();
             serverGroupPage.selectServersTab();
-            serverGroupPage.getServersTab().clickAddNewServer();
-            serverGroupPage.getServerPopup().fillAddNewServerPopup(SERVERS_SERVER_NAME, SERVERS_SERVER_ADDRESS,
+            ServersTabPage serversTabPage = new ServersTabPage(driver, webDriverWait);
+            serversTabPage.clickAddNewServer();
+            ServerPopupPage serverPopupWizard = new ServerPopupPage(driver, webDriverWait, ADD_WIZARD_ID);
+            serverPopupWizard.fillAddNewServerPopup(SERVERS_SERVER_NAME, SERVERS_SERVER_ADDRESS,
                     SERVERS_USER_NAME, SERVERS_PASSWORD, SERVERS_DIRECTORY);
-            serverGroupPage.getServerPopup().clickSave();
-            Boolean serverCreated = serverGroupPage.getServersTab().isServerCreated(SERVERS_SERVER_NAME);
+            serverPopupWizard.clickSave();
+            Boolean serverCreated = serversTabPage.isServerCreated(SERVERS_SERVER_NAME);
 
             Assert.assertTrue(serverCreated);
         } else {
@@ -73,14 +82,16 @@ public class ServerGroupTest extends BaseTestCase {
         if (serverGroupExists) {
             serverGroupPage.selectFoundServerGroup();
             serverGroupPage.selectServersTab();
-            serverGroupPage.getServersTab().selectServer();
-            if (serverGroupPage.getServersTab().isServerCreated(SERVERS_SERVER_NAME)) {
-                serverGroupPage.getServersTab().clickEditServer();
-                serverGroupPage.getServerPopup().fillServerName(updatedServerGroupName);
-                serverGroupPage.getServerPopup().clickSave();
-                serverGroupPage.getServersTab().selectServer();
-                String editedServerName = serverGroupPage.getServersTab().getServerName(0);
-                Boolean isServerNameEdited = editedServerName.equals(updatedServerGroupName);
+            ServersTabPage serversTabPage = new ServersTabPage(driver, webDriverWait);
+            serversTabPage.selectServer();
+            if (serversTabPage.isServerCreated(SERVERS_SERVER_NAME)) {
+                serversTabPage.clickEditServer();
+                ServerPopupPage serverPopupWizard = new ServerPopupPage(driver, webDriverWait, EDIT_WIZARD_ID);
+                serverPopupWizard.fillServerName(SERVERS_SERVER_NAME_UPDATED);
+                serverPopupWizard.clickSave();
+                serversTabPage.selectServer();
+                String editedServerName = serversTabPage.getServerName(0);
+                boolean isServerNameEdited = editedServerName.equals(SERVERS_SERVER_NAME_UPDATED);
 
                 Assert.assertTrue(isServerNameEdited);
             } else {
@@ -100,11 +111,12 @@ public class ServerGroupTest extends BaseTestCase {
         if (serverGroupExists) {
             serverGroupPage.selectFoundServerGroup();
             serverGroupPage.selectServersTab();
-            if (serverGroupPage.getServersTab().isAnyServerExist()) {
-                serverGroupPage.getServersTab().selectServer();
-                serverGroupPage.getServersTab().clickDeleteServer();
+            ServersTabPage serversTabPage = new ServersTabPage(driver, webDriverWait);
+            if (serversTabPage.isAnyServerExist()) {
+                serversTabPage.selectServer();
+                serversTabPage.clickDeleteServer();
                 serverGroupPage.clickConfirmDelete();
-                Boolean serverDeleted = serverGroupPage.getServersTab().isServerDeleted();
+                Boolean serverDeleted = serversTabPage.isServerDeleted();
 
                 Assert.assertTrue(serverDeleted);
             } else {
@@ -124,8 +136,9 @@ public class ServerGroupTest extends BaseTestCase {
         if (serverGroupExists) {
             serverGroupPage.selectFoundServerGroup();
             serverGroupPage.clickEditServerGroup();
-            serverGroupPage.getServerGroupPopup().fillName(updatedServerGroupName);
-            serverGroupPage.getServerGroupPopup().clickSave();
+            ServerGroupPopupPage serverGroupPopupWizard = new ServerGroupPopupPage(driver, webDriverWait, EDIT_WIZARD_ID);
+            serverGroupPopupWizard.fillName(updatedServerGroupName);
+            serverGroupPopupWizard.clickSave();
             Boolean serverGroupIsEdited = serverGroupPage.serverGroupExistIntoTable(updatedServerGroupName);
 
             Assert.assertTrue(serverGroupIsEdited);
@@ -143,7 +156,7 @@ public class ServerGroupTest extends BaseTestCase {
             serverGroupPage.selectFoundServerGroup();
             serverGroupPage.clickDeleteServerGroup();
             serverGroupPage.clickConfirmDelete();
-            Boolean serverGroupIsDeleted = !serverGroupPage.serverGroupExistIntoTable(serverGroupName);
+            boolean serverGroupIsDeleted = !serverGroupPage.serverGroupExistIntoTable(serverGroupName);
 
             Assert.assertTrue(serverGroupIsDeleted);
         } else {

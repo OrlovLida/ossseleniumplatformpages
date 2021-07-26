@@ -1,10 +1,7 @@
 package com.oss.pages.bigdata.dfe.DataSource.DSWizard;
 
-
-import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
-import com.oss.pages.bigdata.dfe.stepwizard.commons.BaseStepPage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -17,12 +14,13 @@ public class DataSourceBasicInfoPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(DataSourceBasicInfoPage.class);
     private final String NAME_INPUT_ID = "dataSourcesNameId";
+    private final String WIZARD_ID = "dataSourcesWizardId";
 
     private final Wizard basicInfoWizard;
 
     public DataSourceBasicInfoPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
-        basicInfoWizard = Wizard.createWizard(driver, wait);
+        basicInfoWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
     }
 
     public void fillName(String name) {

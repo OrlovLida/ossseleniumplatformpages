@@ -20,6 +20,9 @@ public class DictionaryViewTest extends BaseTestCase {
     private final static String DICTIONARY_DESCRIPTION = "Dictionary Selenium Test";
     private final static String ENTRIES_KEY = "Test Key";
     private final static String ENTRIES_VALUE = "Test Value";
+    private final static String ADD_WIZARD_TEST_ID = "add-prompt-id";
+    private final static String EDIT_WIZARD_TEST_ID = "edit-prompt-id";
+
     private final static Logger log = LoggerFactory.getLogger(DictionaryViewTest.class);
 
     private DictionaryPage dictionaryPage;
@@ -38,7 +41,7 @@ public class DictionaryViewTest extends BaseTestCase {
     @Description("Add new Dictionary")
     public void addDictionary() {
         dictionaryPage.clickAddNewDictionary();
-        DictionaryPopupPage dictionaryWizard = new DictionaryPopupPage(driver, webDriverWait);
+        DictionaryPopupPage dictionaryWizard = new DictionaryPopupPage(driver, webDriverWait, ADD_WIZARD_TEST_ID);
         dictionaryWizard.fillDictionaryPopup(dictionaryName, DICTIONARY_DESCRIPTION);
         dictionaryWizard.clickSave();
         Boolean dictionaryIsCreated = dictionaryPage.dictionaryExistsIntoTable(dictionaryName);
@@ -54,7 +57,7 @@ public class DictionaryViewTest extends BaseTestCase {
             dictionaryPage.selectFoundDictionary();
             dictionaryPage.selectEntriesTab();
             dictionaryPage.clickAddNewEntry();
-            EntryPopupPage entryWizard = new EntryPopupPage(driver, webDriverWait);
+            EntryPopupPage entryWizard = new EntryPopupPage(driver, webDriverWait, ADD_WIZARD_TEST_ID);
             entryWizard.fillEntryPopup(ENTRIES_KEY, ENTRIES_VALUE);
             entryWizard.clickSave();
             Boolean entryIsCreated = dictionaryPage.entryExistsIntoTable(ENTRIES_KEY);
@@ -99,7 +102,7 @@ public class DictionaryViewTest extends BaseTestCase {
         if (dictionaryExists) {
             dictionaryPage.selectFoundDictionary();
             dictionaryPage.clickEditDictionary();
-            DictionaryPopupPage dictionaryWizard = new DictionaryPopupPage(driver, webDriverWait);
+            DictionaryPopupPage dictionaryWizard = new DictionaryPopupPage(driver, webDriverWait, EDIT_WIZARD_TEST_ID);
             dictionaryWizard.fillName(updatedDictionaryName);
             dictionaryWizard.clickSave();
             Boolean dictionaryIsCreated = dictionaryPage.dictionaryExistsIntoTable(updatedDictionaryName);

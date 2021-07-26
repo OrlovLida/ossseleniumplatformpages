@@ -50,4 +50,14 @@
             <class name="com.oss.bigdata.dfe.DataSourceFromQueryTest"/>
         </classes>
     </test>
+    <test name="DataSourceFromCSVTest">
+        <classes>
+            <class name="com.oss.bigdata.dfe.DataSourceFromCSVTest"/>
+        </classes>
+    </test>
+    <test name="DataSourceFromKafkaTest">
+        <classes>
+            <class name="com.oss.bigdata.dfe.DataSourceFromKafkaTest"/>
+        </classes>
+    </test>
 </suite>
