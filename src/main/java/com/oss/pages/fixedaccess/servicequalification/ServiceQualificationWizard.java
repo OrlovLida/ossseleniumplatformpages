@@ -31,7 +31,7 @@ public class ServiceQualificationWizard extends BasePage {
     private static final String COMMON_ADVANCED_SEARCH_WIDGET = "common-advancedsearchwidget";
     private static final String ADVANCED_SEARCH_ID = "advancedSearch";
     private static final String SERVICE_QUALIFICATION = "Service Qualification";
-    private static final String WIZARDS = "Wizards";
+    private static final String NETWORK_DOMAINS = "Network domains";
     private static final String FIXED_ACCESS = "Fixed Access";
 
     public ServiceQualificationWizard(WebDriver driver) {
@@ -42,15 +42,15 @@ public class ServiceQualificationWizard extends BasePage {
     public ServiceQualificationWizard openServiceQualificationWizard() {
         waitForPageToLoad();
         SideMenu sideMenu = SideMenu.create(driver, wait);
-        sideMenu.callActionByLabel(SERVICE_QUALIFICATION, WIZARDS, FIXED_ACCESS);
+        sideMenu.callActionByLabel(SERVICE_QUALIFICATION, NETWORK_DOMAINS, FIXED_ACCESS);
         waitForPageToLoad();
         return this;
     }
 
     @Step("Set query option for SQ (Address or DA as input)")
     public ServiceQualificationWizard setQueryOption(String option) {
-        DelayUtils.sleep(2000);
         getServiceQualificationWizard().setComponentValue(RADIO_BUTTONS_FOR_QUERY_OPTION, option, RADIO_BUTTON);
+        DelayUtils.sleep(2000);
         return this;
     }
 

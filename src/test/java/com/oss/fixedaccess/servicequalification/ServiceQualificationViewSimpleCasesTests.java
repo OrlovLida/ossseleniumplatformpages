@@ -82,7 +82,7 @@ public class ServiceQualificationViewSimpleCasesTests extends BaseTestCase {
         serviceQualificationWizard.openServiceQualificationWizard()
                 .setQueryOption(INSTALLATION_ADDRESS_QUERY_OPTION);
 
-        useProperMethodForSearchDAfrAddress(installationAddressName, installationAddressId);
+        useProperMethodForSearchDAorAddress(installationAddressName, installationAddressId);
 
         serviceQualificationWizard
                 .setProvideAlternative("true")
@@ -99,7 +99,7 @@ public class ServiceQualificationViewSimpleCasesTests extends BaseTestCase {
         serviceQualificationView.clickButtonChangeParameters()
                 .setQueryOption(DA_QUERY_OPTION);
 
-        useProperMethodForSearchDAfrAddress(distributionAreaName, Long.valueOf(distributionAreaId));
+        useProperMethodForSearchDAorAddress(distributionAreaName, Long.valueOf(distributionAreaId));
 
         serviceQualificationWizard.clickAccept();
 
@@ -117,7 +117,7 @@ public class ServiceQualificationViewSimpleCasesTests extends BaseTestCase {
         serviceQualificationWizard.openServiceQualificationWizard()
                 .setQueryOption(INSTALLATION_ADDRESS_QUERY_OPTION);
 
-        useProperMethodForSearchDAfrAddress(installationAddressName, installationAddressId);
+        useProperMethodForSearchDAorAddress(installationAddressName, installationAddressId);
 
         serviceQualificationWizard
                 .setProvideAlternative("true")
@@ -137,7 +137,7 @@ public class ServiceQualificationViewSimpleCasesTests extends BaseTestCase {
         serviceQualificationView.clickButtonChangeParameters()
                 .setQueryOption(DA_QUERY_OPTION);
 
-        useProperMethodForSearchDAfrAddress(distributionAreaName, Long.valueOf(distributionAreaId));
+        useProperMethodForSearchDAorAddress(distributionAreaName, Long.valueOf(distributionAreaId));
 
         serviceQualificationWizard.clickAccept();
 
@@ -153,7 +153,7 @@ public class ServiceQualificationViewSimpleCasesTests extends BaseTestCase {
         physicalDataCreatorForSimpleCasesWithSQ.deleteAllDataForSimplePhysicalDataForSQTests(Long.valueOf(distributionAreaId), cableOutletCPODF, cableCPODFSplitter, cableSplitterCOODF, cableCOODFAN, accessNodeId, centralOfficeODFId, splitterId, installationODFId, opticalOutletId, installationBuildingId, centralOfficeBuildingId, centralOfficeAddressId, installationAddressId);
     }
 
-    private void useProperMethodForSearchDAfrAddress(String addressOrDaName, Long xId) {
+    private void useProperMethodForSearchDAorAddress(String addressOrDaName, Long xId) {
         if (addressOrDaName.equals("")) {
             serviceQualificationWizard.openAdvancedSearchWindow()
                     .setXidInAdvancedSearchFilter(xId)
