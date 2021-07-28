@@ -1,11 +1,17 @@
 package com.oss.pages.bigdata.dfe.KQIs;
 
+import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
 import com.oss.pages.bigdata.dfe.BaseDfePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class KQIsPage extends BaseDfePage {
+
+    private static final Logger log = LoggerFactory.getLogger(KQIsPage.class);
+
     private final String ADD_NEW_KQI_LABEL = "Add New KQI";
     private final String TABLE_ID = "kqi-listAppId";
     private final String KQI_WIZARD_ID = "kqiWizardWindow";
@@ -14,6 +20,9 @@ public class KQIsPage extends BaseDfePage {
     private final String EDIT_KQI_LABEL = "Edit KQI";
     private final String DELETE_KQI_LABEL = "Delete KQI";
     private final String CONFIRM_DELETE_LABEL = "Delete";
+    private final String DETAILS_TAB = "Details";
+    private final String PARAMETERS_TAB = "Parameters";
+    private final String PROPERTY_PANEL_DETAILS_TAB_ID = "detailsId";
 
     public KQIsPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -54,6 +63,24 @@ public class KQIsPage extends BaseDfePage {
     @Step("I confirm the removal")
     public void clickConfirmDelete() {
         confirmDelete(CONFIRM_DELETE_LABEL);
+    }
+
+    @Step("I click Details Tab")
+    public void selectDetailsTab() {
+        selectTab(DETAILS_TAB);
+    }
+
+    @Step("Check label and value in details tab")
+    public String checkValueForPropertyInDetails(String propertyName) {
+        String propertyValue = OldPropertyPanel.create(driver, wait).getPropertyValue(propertyName);
+        log.info("Value of: {} is: {}", propertyName, propertyValue);
+
+        return propertyValue;
+    }
+
+    @Step("I click Parameters Tab")
+    public void selectParametersTab() {
+        selectTab(PARAMETERS_TAB);
     }
 
     @Override
