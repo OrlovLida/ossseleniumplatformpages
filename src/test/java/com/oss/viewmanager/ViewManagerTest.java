@@ -21,7 +21,6 @@ public class ViewManagerTest extends BaseTestCase {
     @BeforeClass
     public void goToViewManager() {
         viewManagerPage = new ViewManagerPage(driver);
-        viewManagerPage.openLoginPanel().changeSwitcherForAlphaMode();
         viewManagerPage.closeLoginPanel();
     }
 
@@ -197,6 +196,18 @@ public class ViewManagerTest extends BaseTestCase {
     }
 
     @Test(priority = 12)
+    public void addQueryParamToApplication(){
+        DelayUtils.sleep(200);
+        viewManagerPage.clickButtonsGroupOnFirstApplication();
+        DelayUtils.sleep(300);
+        viewManagerPage.clickEditButton();
+        ApplicationPopup editApplicationPopup = viewManagerPage.goToApplicationPopup();
+
+
+    }
+
+
+    @Test(priority = 13)
     public void deleteCategory() {
         DelayUtils.sleep(1000);
 
