@@ -19,9 +19,9 @@ public class EntryPopupPage extends BasePage {
     private final String VALUE_INPUT_ID = "value";
     private final Wizard entryWizard;
 
-    public EntryPopupPage(WebDriver driver, WebDriverWait wait) {
+    public EntryPopupPage(WebDriver driver, WebDriverWait wait, String WIZARD_ID) {
         super(driver, wait);
-        entryWizard = Wizard.createWizard(driver, wait);
+        entryWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
     }
 
     public void fillKey(String key) {

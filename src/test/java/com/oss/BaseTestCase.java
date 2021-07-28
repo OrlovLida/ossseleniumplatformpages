@@ -59,7 +59,7 @@ public class BaseTestCase {
     private void addCookies(WebDriver driver) {
         boolean isWebRunner = Boolean.parseBoolean(CONFIGURATION.getValue("webRunner"));
 
-        if (isWebRunner) {
+        if (!isWebRunner) {
             driver.manage().addCookie(createCookie());
         }
     }

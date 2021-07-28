@@ -1,15 +1,10 @@
 package com.oss.pages.reconciliation;
 
-import java.util.List;
-
-import org.assertj.core.api.Assertions;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.oss.framework.alerts.SystemMessageContainer;
-import com.oss.framework.alerts.SystemMessageContainer.Message;
-import com.oss.framework.alerts.SystemMessageContainer.MessageType;
-import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.Input.ComponentType;
 import com.oss.framework.mainheader.Notifications;
@@ -28,6 +23,7 @@ import io.qameta.allure.Step;
 
 public class NetworkInconsistenciesViewPage extends BasePage {
 
+    private static final Logger log = LoggerFactory.getLogger(NetworkInconsistenciesViewPage.class);
     private static final String APPLY_GROUP_BUTTON_ID = "narComponent_GroupDiscrepancyActionApplyId";
     private static final String APPLY_BUTTON_ID = "narComponent_DiscrepancyActionApplyId";
     private static final String PHYSICAL_INCONSITENCIES_TABLE_ID = "narComponent_networkInconsistenciesViewIddiscrepancyDetailsTreeTableId";
@@ -49,7 +45,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
     @Step("Expand two tree levels of Inconsistencies")
     public void expandTree() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        Assertions.assertThat(getTreeView().getVisibleTreeRow().size() > 1);
+        log.debug("Visible three rows number {}.", getTreeView().getVisibleTreeRow().size());
         getTreeView().expandLastTreeRow();
         DelayUtils.waitForPageToLoad(driver, wait);
         getTreeView().expandLastTreeRow();
@@ -85,15 +81,6 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         wizard.clickAccept();
     }
 
-    @Step("Check system message after device update")
-    public void checkUpdateDeviceSystemMessage() {
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, wait);
-        List<Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages).hasSize(1);
-        Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType())
-                .isEqualTo(MessageType.SUCCESS);
-    }
-
     @Step("Select first group of Inconsistencies and apply discrepancies to Live perspective")
     public void applyInconsistencies() {
         selectTreeObjectByRowOrder(2);
@@ -122,9 +109,9 @@ public class NetworkInconsistenciesViewPage extends BasePage {
     }
 
     @Step("Check notification about accepting inconsistencies")
-    public void checkNotificationAfterApplyInconsistencies(String groupDiscrepancyLabel) {
+    public String checkNotificationAfterApplyInconsistencies() {
         NotificationsInterface notifications = Notifications.create(driver, new WebDriverWait(driver, 150));
-        Assertions.assertThat(notifications.waitAndGetFinishedNotificationText().equals("Accepting discrepancies related to " + groupDiscrepancyLabel + " finished")).isTrue();
+        return notifications.waitAndGetFinishedNotificationText();
     }
 
     @Step("Check inconsistencies operation type for first object")

@@ -16,12 +16,14 @@ public class DataSourceStepWizardPage extends BasePage {
     private final DataSourceBasicInfoPage basicInfoStep;
     private final DataSourceSourceInformationPage sourceInfoStep;
     private final DataSourceSpecificInfoPage specificInfoStep;
+    private final String WIZARD_ID = "dataSourcesWizardId";
+
     private final Wizard wizard;
 
     public DataSourceStepWizardPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
 
-        wizard = Wizard.createWizard(driver, wait);
+        wizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
         basicInfoStep = new DataSourceBasicInfoPage(driver, wait);
         sourceInfoStep = new DataSourceSourceInformationPage(driver, wait);
         specificInfoStep = new DataSourceSpecificInfoPage(driver, wait);
@@ -40,7 +42,7 @@ public class DataSourceStepWizardPage extends BasePage {
     }
 
     @Step("I click Next Step")
-    public void clickNextStep() {
+    public void clickNext() {
         DelayUtils.waitForPageToLoad(driver, wait);
         wizard.clickNext();
         log.info("I click Next Step");
@@ -48,6 +50,7 @@ public class DataSourceStepWizardPage extends BasePage {
 
     @Step("I click Accept")
     public void clickAccept() {
+        DelayUtils.waitForPageToLoad(driver, wait);
         wizard.clickAccept();
         log.info("Finishing Step Wizard by clicking 'Accept'");
     }

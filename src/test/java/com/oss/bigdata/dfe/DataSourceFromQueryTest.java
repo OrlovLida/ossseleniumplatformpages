@@ -33,7 +33,7 @@ public class DataSourceFromQueryTest extends BaseTestCase {
     public void goToDataSourceView() {
         dataSourcePage = DataSourcePage.goToPage(driver, BASIC_URL);
 
-        dataSourceName = "Selenium_" + ConstantsDfe.createName() + "_DSTest";
+        dataSourceName = ConstantsDfe.createName() + "_DSTest";
         updatedDataSourceName = dataSourceName + "_updated";
     }
 
@@ -44,10 +44,10 @@ public class DataSourceFromQueryTest extends BaseTestCase {
         dataSourcePage.selectDSFromQuery();
         DataSourceStepWizardPage dsStepWizard = new DataSourceStepWizardPage(driver, webDriverWait);
         dsStepWizard.getBasicInfoStep().fillBasicInformationStep(dataSourceName);
-        dsStepWizard.clickNextStep();
+        dsStepWizard.clickNext();
         dsStepWizard.getSourceInfoStep().fillDatabase(DATABASE);
         dsStepWizard.getSourceInfoStep().fillQuery(QUERY);
-        dsStepWizard.clickNextStep();
+        dsStepWizard.clickNext();
         dsStepWizard.getSpecificInfoStep().fillSpecificInfo(OFFSET, UNIT, INTERVAL_AMOUNT);
         dsStepWizard.clickAccept();
         Boolean dataSourceIsCreated = dataSourcePage.dataSourceExistIntoTable(dataSourceName);
@@ -64,10 +64,8 @@ public class DataSourceFromQueryTest extends BaseTestCase {
             dataSourcePage.clickEditDS();
             DataSourceStepWizardPage dsStepWizard = new DataSourceStepWizardPage(driver, webDriverWait);
             dsStepWizard.getBasicInfoStep().fillBasicInformationStep(updatedDataSourceName);
-            dsStepWizard.clickNextStep();
-            dsStepWizard.getSourceInfoStep();
-            dsStepWizard.clickNextStep();
-            dsStepWizard.getSpecificInfoStep();
+            dsStepWizard.clickNext();
+            dsStepWizard.clickNext();
             dsStepWizard.clickAccept();
             Boolean dataSourceIsEdited = dataSourcePage.dataSourceExistIntoTable(updatedDataSourceName);
 
@@ -86,7 +84,7 @@ public class DataSourceFromQueryTest extends BaseTestCase {
             dataSourcePage.selectFoundDataSource();
             dataSourcePage.clickDeleteDS();
             dataSourcePage.clickConfirmDelete();
-            Boolean dataSourceIsDeleted = !dataSourcePage.dataSourceExistIntoTable(dataSourceName);
+            boolean dataSourceIsDeleted = !dataSourcePage.dataSourceExistIntoTable(dataSourceName);
 
             Assert.assertTrue(dataSourceIsDeleted);
         } else {

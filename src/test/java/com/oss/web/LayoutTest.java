@@ -17,7 +17,7 @@ public class LayoutTest extends BaseTestCase {
 
     @BeforeClass
     public void goToInventoryView() {
-        inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Location");
+        inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Movie");
     }
 
     @Test(priority = 1)
