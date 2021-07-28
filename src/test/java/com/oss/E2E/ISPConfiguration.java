@@ -58,7 +58,7 @@ public class ISPConfiguration extends BaseTestCase {
     private static final String COOLING_ZONE_COOLING_LOAD = "0.00";
     private static final String COOLING_ZONE_LOAD_RATIO = "0.00";
     private static final String DELETE_DEVICE = "Delete Device";
-    private static final String UPDATE_DEVICE = "Update Device";
+    private static final String UPDATE_DEVICE = "UpdateDeviceWizardAction";
     private static final String NAME = "Name";
     private static String LOCATION_POWER_CAPACITY = "0.00";
 
@@ -331,7 +331,7 @@ public class ISPConfiguration extends BaseTestCase {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Devices");
         locationOverviewPage.filterObjectInSpecificTab(TabName.DEVICES, NAME, PHYSICAL_DEVICE_NAME);
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.DEVICES, UPDATE_DEVICE);
+        locationOverviewPage.clickActionById(TabName.DEVICES, UPDATE_DEVICE);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
         deviceWizardPage.setHeatEmission(DEVICE_HEAT_EMISSION);
@@ -401,7 +401,7 @@ public class ISPConfiguration extends BaseTestCase {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Devices");
         locationOverviewPage.filterObjectInSpecificTab(TabName.DEVICES, NAME, COOLING_UNIT_NAME);
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.DEVICES, UPDATE_DEVICE);
+        locationOverviewPage.clickActionById(TabName.DEVICES, UPDATE_DEVICE);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
         deviceWizardPage.setCoolingCapacity(COOLING_CAPACITY2);
@@ -517,7 +517,7 @@ public class ISPConfiguration extends BaseTestCase {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Devices");
         locationOverviewPage.filterObjectInSpecificTab(TabName.DEVICES, NAME, PHYSICAL_DEVICE_NAME);
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.DEVICES, UPDATE_DEVICE);
+        locationOverviewPage.clickActionById(TabName.DEVICES, UPDATE_DEVICE);
         DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.nextUpdateWizard();

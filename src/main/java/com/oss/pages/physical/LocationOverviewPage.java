@@ -47,6 +47,11 @@ public class LocationOverviewPage extends BasePage {
         getTabTable(tabName).callActionByLabel(actionLabel);
     }
 
+    @Step("Click {actionLabel} in specific tab")
+    public void clickActionById(TabName tabName, String actionId) {
+        getTabTable(tabName).callAction(actionId);
+    }
+
     @Step("Click refresh in specific tab")
     public void clickRefreshInSpecificTab(TabName tabName) {
         getTabTable(tabName).callAction(OldActionsContainer.KEBAB_GROUP_ID, REFRESH_BUTTON_ID);
