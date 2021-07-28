@@ -13,9 +13,5 @@ import java.nio.file.Paths;
 public class EditMilestoneDefinitionPage extends BasePage {
 
     public EditMilestoneDefinitionPage(WebDriver driver) {super(driver);}
-
-    public void byleco (){
-
-    }
-
+    
 }
