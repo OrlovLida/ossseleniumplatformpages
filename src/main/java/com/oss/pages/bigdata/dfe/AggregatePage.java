@@ -2,6 +2,7 @@ package com.oss.pages.bigdata.dfe;
 
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.OldTable;
+import com.oss.framework.widgets.tabswidget.TabWindowWidget;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -29,6 +30,7 @@ public class AggregatePage extends BaseDfePage {
     private final String TABLE_TAB_ID = "executionHistoryId";
     private final String COLUMN_REQUEST_GENERATION_TIME_LABEL = "Request Generation Time";
     private final String COLUMN_STATUS_LABEL = "Status";
+    private final String REFRESH_LABEL = "Refresh";
 
     private AggregatePage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -80,6 +82,12 @@ public class AggregatePage extends BaseDfePage {
     @Step("I click Execution History Tab")
     public void selectExecutionHistoryTab() {
         selectTab(EXECUTION_HISTORY_TAB);
+    }
+
+    @Step("I click Refresh Table Tab")
+    public void clickRefreshTabTable() {
+        TabWindowWidget.create(driver, wait).callActionByLabel(REFRESH_LABEL);
+        log.debug("Click context action: {}", REFRESH_LABEL);
     }
 
     @Step("I check if IfRuns are not empty")

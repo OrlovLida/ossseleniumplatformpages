@@ -31,6 +31,7 @@ public class AggregatesSmokeTest extends BaseTestCase {
         if (aggregateExists) {
             aggregatePage.selectFoundAggregate();
             aggregatePage.selectExecutionHistoryTab();
+            aggregatePage.clickRefreshTabTable();
 
             boolean ifRunsExists = aggregatePage.ifRunsNotEmpty();
             Assert.assertTrue(ifRunsExists);
