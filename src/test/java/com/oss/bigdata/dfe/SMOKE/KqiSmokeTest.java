@@ -43,4 +43,18 @@ public class KqiSmokeTest extends BaseTestCase {
         }
     }
 
+    @Test(priority = 2, testName = "Check KQI Parameters Tab", description = "Check if Parameters Table is not empty")
+    @Description("Check if Parameters Table is not empty")
+    public void checkKqiParametersTab() {
+        boolean kqiExists = kqIsPage.kqiExistIntoTable(KQI_NAME);
+        if (kqiExists) {
+            kqIsPage.selectFoundKQI();
+            kqIsPage.selectParametersTab();
+
+            Assert.assertTrue(kqIsPage.parametersTableHasData());
+        } else {
+            log.info("Cannot find existing KQI {}", KQI_NAME);
+            Assert.fail("Cannot find existing KQI " + KQI_NAME);
+        }
+    }
 }

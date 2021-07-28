@@ -1,6 +1,7 @@
 package com.oss.pages.bigdata.dfe.KQIs;
 
 import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
+import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.pages.bigdata.dfe.BaseDfePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
@@ -22,7 +23,7 @@ public class KQIsPage extends BaseDfePage {
     private final String CONFIRM_DELETE_LABEL = "Delete";
     private final String DETAILS_TAB = "Details";
     private final String PARAMETERS_TAB = "Parameters";
-    private final String PROPERTY_PANEL_DETAILS_TAB_ID = "detailsId";
+    private final String PARAMETERS_TABLE_ID = "kqi/tabs/parametersAppId";
 
     public KQIsPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -82,6 +83,14 @@ public class KQIsPage extends BaseDfePage {
     public void selectParametersTab() {
         selectTab(PARAMETERS_TAB);
     }
+
+    @Step("I check if Parameters Table is not empty")
+    public boolean parametersTableHasData() {
+        return OldTable
+                .createByComponentId(driver, wait, PARAMETERS_TABLE_ID)
+                .getNumberOfRowsInTable("Name") > 0;
+    }
+
 
     @Override
     public String getTableId() {
