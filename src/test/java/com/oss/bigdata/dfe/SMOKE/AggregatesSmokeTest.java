@@ -3,6 +3,7 @@ package com.oss.bigdata.dfe.SMOKE;
 import com.oss.BaseTestCase;
 import com.oss.pages.bigdata.dfe.AggregatePage;
 import com.oss.utils.TestListener;
+import io.qameta.allure.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -23,12 +24,14 @@ public class AggregatesSmokeTest extends BaseTestCase {
         aggregatePage = AggregatePage.goToPage(driver, BASIC_URL);
     }
 
-    @Test
+    @Test(priority = 1, testName = "Check if Aggregate is working", description = "Check if Aggregate is working")
+    @Description("Check if Aggregate is working")
     public void checkIfAggregateIsWorking() {
         boolean aggregateExists = aggregatePage.aggregateExistsIntoTable(AGGREGATE_NAME);
         if (aggregateExists) {
             aggregatePage.selectFoundAggregate();
             aggregatePage.selectExecutionHistoryTab();
+            aggregatePage.clickRefreshTabTable();
 
             boolean ifRunsExists = aggregatePage.ifRunsNotEmpty();
             Assert.assertTrue(ifRunsExists);
