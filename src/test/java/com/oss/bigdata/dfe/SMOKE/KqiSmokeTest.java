@@ -36,7 +36,6 @@ public class KqiSmokeTest extends BaseTestCase {
 
             Assert.assertEquals(kqIsPage.checkValueForPropertyInDetails(NAME_PROPERTY), KQI_NAME);
             Assert.assertEquals(kqIsPage.checkValueForPropertyInDetails(FORMULA_PROPERTY), FORMULA_SMOKE_KQI);
-
         } else {
             log.info("Cannot find existing KQI {}", KQI_NAME);
             Assert.fail("Cannot find existing KQI " + KQI_NAME);

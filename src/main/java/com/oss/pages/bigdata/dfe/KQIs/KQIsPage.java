@@ -91,7 +91,6 @@ public class KQIsPage extends BaseDfePage {
                 .getNumberOfRowsInTable("Name") > 0;
     }
 
-
     @Override
     public String getTableId() {
         return TABLE_ID;
