@@ -147,9 +147,27 @@ public class IndicatorsViewTest extends BaseTestCase {
             kpiViewPage.enableLastSampleTime();
             Assert.assertTrue(kpiViewPage.shouldSeeLastSampleTime(1));
             kpiViewPage.applyChanges();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            Assert.fail();
+        }
+    }
+
+    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToSelect"})
+    @Test(priority = 6, testName = "Enabling Compare with other period option", description = "Enabling Compare with other period option")
+    @Description("I verify if Compare with other period option works properly")
+    public void verifyIfCompareWithOtherPeriodWorksProperly(
+            @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
+            @Optional("AQ_TIME") String indicatorNodesToSelect,
+            @Optional("DC Type: ETL_DC") String dimensionNodesToSelect
+    ) {
+        try {
+            kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToSelect);
+            Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
             kpiViewPage.enableCompareWithOtherPeriod();
             kpiViewPage.applyChanges();
             Assert.assertTrue(kpiViewPage.shouldSeeOtherPeriod());
+            Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(2));
         } catch (Exception e) {
             log.error(e.getMessage());
             Assert.fail();
