@@ -85,7 +85,7 @@ public class ISPConfiguration extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        homePage.chooseFromLeftSideMenu("Create Physical Location", "Infrastructure management", "Locations");
+        homePage.chooseFromLeftSideMenu("Create Physical Location", "Infrastructure management", "Create Infrastructure");
     }
 
     @Test(priority = 1)
