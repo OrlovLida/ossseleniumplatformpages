@@ -46,7 +46,7 @@ public class KpiViewPage extends BasePage {
     private static final String CHART_COLOR_BUTTON_ID = "chart-color-button";
     private static final String FULL_SCREEN_BUTTON_ID = "full-screen-button";
 
-    private static final String OPTIONS_BUTTON_ID = "options-menu-button"; // do usuniecia - wyprostowac z optionspanel
+    private static final String OPTIONS_BUTTON_ID = "options-menu-button";
 
     public KpiViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
