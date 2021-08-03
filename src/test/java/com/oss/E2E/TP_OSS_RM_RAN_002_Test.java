@@ -9,7 +9,6 @@ import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageContainer.Message;
 import com.oss.framework.alerts.SystemMessageContainer.MessageType;
-import com.oss.framework.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.ProcessWizardPage;
 import com.oss.pages.bpm.TasksPage;
@@ -21,7 +20,7 @@ import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 
 @Listeners({ TestListener.class })
-public class TP_OSS_RM_RAN_002 extends BaseTestCase {
+public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
 
     private String processNRPCode;
     private CellSiteConfigurationPage cellSiteConfigurationPage;
@@ -46,13 +45,15 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
     private static final String CELL5G_CARRIER = "NR3600-n78-140 (642000)";
     private static final String MCCMNC_PRIMARY = "DU03 [mcc: 424, mnc: 03]";
     private static final int[] LOCAL_CELLS_ID = { 7, 8, 9 };
+    private static final String BUSINESS_PROCESS_MANAGEMENT = "Business Process Management";
+    private static final String BPM_AND_PLANNING = "BPM and Planning";
+    private static final String PROCESS_INSTANCES = "Process Instances";
 
     @BeforeClass
     public void openNetworkDiscoveryControlView() {
         waitForPageToLoad();
         cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);
-        SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
-        sideMenu.callActionByLabel("Process Instances", "Views", "Business Process Management");
+        homePage.chooseFromLeftSideMenu(PROCESS_INSTANCES, BPM_AND_PLANNING, BUSINESS_PROCESS_MANAGEMENT);
         waitForPageToLoad();
     }
 
@@ -86,7 +87,7 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
     @Description("Create gNodeB DU")
     public void create5GnodeDU() {
         cellSiteConfigurationPage.createGNodeBDU(GNODEB_DU_NAME, randomGNodeBDUId, GNODEB_DU_MODEL, GNODEB_NAME);
-        checkMessageContainsText("Created gNodeB");
+        checkMessageContainsText("Created gNodeBDU");
     }
 
     @Test(priority = 5)
@@ -116,6 +117,7 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
         cellSiteConfigurationPage.createHostingOnDevice(BBU_NAME, false);
         checkMessageType();
         waitForPageToLoad();
+        //TODO hosting na gnodebDU
         for (int i = 0; i < CELL5G_NAMES.length; i++) {
             cellSiteConfigurationPage.selectTreeRow(CELL5G_NAMES[i]);
             cellSiteConfigurationPage.createHostingOnAntennaArray(ANTENNA_NAMES[i]);
@@ -214,12 +216,11 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
         HomePage homePage = new HomePage(driver);
         homePage.goToHomePage(driver, BASIC_URL);
         waitForPageToLoad();
-        SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
-        sideMenu.callActionByLabel("Cell Site Configuration", "Favourites", "SeleniumTests");
+        homePage.chooseFromLeftSideMenu("Cell Site Configuration", "Favourites", "Bookmarks");
     }
 
     private void checkMessageType() {
-        Assert.assertEquals(MessageType.SUCCESS, (getFirstMessage().getMessageType()));
+        Assert.assertEquals((getFirstMessage().getMessageType()), MessageType.SUCCESS);
     }
 
     private void checkMessageContainsText(String message) {
@@ -228,7 +229,7 @@ public class TP_OSS_RM_RAN_002 extends BaseTestCase {
     }
 
     private void checkMessageText() {
-        Assert.assertEquals("The task properly assigned.", (getFirstMessage().getText()));
+        Assert.assertEquals((getFirstMessage().getText()), "The task properly assigned.");
     }
 
     private void checkMessageSize() {

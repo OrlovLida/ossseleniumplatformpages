@@ -208,21 +208,30 @@ public class CellSiteConfigurationPage extends BasePage {
 
     @Step("Create {amountOfCells} Cells 4G by bulk wizard with Carrier = {carrier}")
     public void createCell4GBulk(int amountOfCells, String carrier, String[] cellNames, int[] cellsID) {
-        openCellBulkWizard(TYPE_4G).createCellBulkWizard(amountOfCells, carrier, cellNames, cellsID);
+        openCell4GBulkWizard().createCellBulkWizard(amountOfCells, carrier, cellNames, cellsID);
     }
 
     @Step("Create {amountOfCells} Cells 5G by bulk wizard with Carrier = {carrier}")
     public void createCell5GBulk(int amountOfCells, String carrier, String[] cellNames, int[] cellsID) {
-        openCellBulkWizard(TYPE_5G).createCell5GBulkWizardWithDefaultValues(amountOfCells, carrier, cellNames, cellsID);
+        openCell5GBulkWizard().createCell5GBulkWizardWithDefaultValues(amountOfCells, carrier, cellNames, cellsID);
     }
 
-    private CellBulkWizardPage openCellBulkWizard(String type) {
+    private Cell5GBulkWizardPage openCell5GBulkWizard() {
         waitForPageToLoad();
-        selectTab(String.format(CELL_TAB_NAME, type));
+        selectTab(String.format(CELL_TAB_NAME, CellSiteConfigurationPage.TYPE_5G));
         waitForPageToLoad();
-        clickPlusIconAndSelectOption(String.format(CREATE_CELL_BULK_ACTION, type));
+        clickPlusIconAndSelectOption(String.format(CREATE_CELL_BULK_ACTION, CellSiteConfigurationPage.TYPE_5G));
         waitForPageToLoad();
-        return new CellBulkWizardPage(driver);
+        return new Cell5GBulkWizardPage(driver);
+    }
+
+    private Cell4GBulkWizardPage openCell4GBulkWizard() {
+        waitForPageToLoad();
+        selectTab(String.format(CELL_TAB_NAME, CellSiteConfigurationPage.TYPE_4G));
+        waitForPageToLoad();
+        clickPlusIconAndSelectOption(String.format(CREATE_CELL_BULK_ACTION, CellSiteConfigurationPage.TYPE_4G));
+        waitForPageToLoad();
+        return new Cell4GBulkWizardPage(driver);
     }
 
     @Step("Create Base Band Unit with following attributes: Type = {bbuEquipmentType}, Name = {bbuName}, Model = {baseBandUnitModel}, Location = {locationName}")
