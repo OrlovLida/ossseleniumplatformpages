@@ -14,11 +14,13 @@ import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD
 
 public class ConnectionWizardPage extends BasePage {
 
+    private static final String WIZARD_ID = "trailWizardId";
+
     public ConnectionWizardPage(WebDriver driver) {
         super(driver);
     }
 
-    private Wizard wizard = Wizard.createPopupWizard(driver, wait);
+    private Wizard wizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
 
     @Step("Set name")
     public void setName(String name) {
@@ -36,7 +38,7 @@ public class ConnectionWizardPage extends BasePage {
         wizard.clickAccept();
     }
 
-    @Step("")
+    @Step("Select connection termination by position")
     public void selectConnectionTermination(int position) {
         TreeWidget tree = TreeWidget.createByClass(driver, "tree-component", wait);
         tree.selectNodeByPosition(position);

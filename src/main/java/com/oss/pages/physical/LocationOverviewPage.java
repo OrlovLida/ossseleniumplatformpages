@@ -69,11 +69,6 @@ public class LocationOverviewPage extends BasePage {
         getTabTable(tabName).selectRowByAttributeValueWithLabel(attributeLabel, value);
     }
 
-    @Step("Get row number for object with {attributeLabel} {value}")
-    public int getRowNumber(TabName tabName, String attributeLabel, String value) {
-        return getTabTable(tabName).getRowNumber(value, attributeLabel);
-    }
-
     @Step("Get {attributeLabel} value for row number {rowNumber}")
     public String getValueByRowNumber(TabName tabName, String attributeLabel, int rowNumber) {
         return getTabTable(tabName).getCellValue(rowNumber, attributeLabel);

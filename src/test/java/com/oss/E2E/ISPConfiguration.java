@@ -85,7 +85,7 @@ public class ISPConfiguration extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        homePage.chooseFromLeftSideMenu("Create Physical Location", "Infrastructure management", "Locations");
+        homePage.chooseFromLeftSideMenu("Create Physical Location", "Infrastructure management", "Create Infrastructure");
     }
 
     @Test(priority = 1)
@@ -228,7 +228,7 @@ public class ISPConfiguration extends BaseTestCase {
         hierarchyViewPage.expandTreeNode("Slots");
         hierarchyViewPage.expandTreeNode("LT3");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        hierarchyViewPage.expandTreeNode("Cards");
+        hierarchyViewPage.expandTreeNode("Card");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hierarchyViewPage.selectNodeByLabel("NELT-B");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);

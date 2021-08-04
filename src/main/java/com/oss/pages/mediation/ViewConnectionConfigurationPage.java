@@ -15,15 +15,16 @@ public class ViewConnectionConfigurationPage extends BasePage {
     private static final String DELETE_BUTTON = "ConfirmationBox_confirmation-box_action_button";
     private static final String TABLE_ID = "object-table-id";
     public static final String DELETE_BUTTON_ID = "Delete Connection Configuration";
+    public static final String CONFIRMATION_PROMT = "confirmation-prompt";
 
     public ViewConnectionConfigurationPage(WebDriver driver) {
         super(driver);
     }
 
     @Step("Open view for Connection Configuration")
-    public static ViewConnectionConfigurationPage goToViewConnectionConfigurationPage(WebDriver driver, String basicURL) {
+    public static void goToViewConnectionConfigurationPage(WebDriver driver, String basicURL) {
         driver.get(String.format("%s/#/view/mediation-repository-view/object-viewer?" + "perspective=LIVE", basicURL));
-        return new ViewConnectionConfigurationPage(driver);
+        new ViewConnectionConfigurationPage(driver);
     }
 
     @Step("Use context action {action}")
@@ -46,6 +47,6 @@ public class ViewConnectionConfigurationPage extends BasePage {
     }
 
     private Wizard getWizard() {
-        return Wizard.createPopupWizard(driver, wait);
+        return Wizard.createByComponentId(driver, wait, CONFIRMATION_PROMT);
     }
 }

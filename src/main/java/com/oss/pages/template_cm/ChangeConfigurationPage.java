@@ -1,4 +1,4 @@
-package com.oss.pages.templateCM;
+package com.oss.pages.template_cm;
 
 import org.openqa.selenium.WebDriver;
 
@@ -14,26 +14,18 @@ import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
-import static java.lang.String.format;
-
 public class ChangeConfigurationPage extends BasePage {
 
-    private final static String SET_PARAMETERS_BUTTON = "Set parameters";
-    private final static String INVENTORY_OBJECTS_TAB_ID = "deviceSelectionWindowTabId";
-    private final static String EXECUTE_ID = "dropdownButtonAction";
-    private final static String IMMEDIATELY_ID = "executeImmediateButtonAction";
-    private final static String OBJECT_TYPE_INPUT_ID = "objectTypeValue";
-    private final static String DEVICE_SELECT_TABLE = "DeviceSelectionApp";
-    private final static String TEMPLATE_SELECT_TABLE = "TemplatesTableApp";
-    private final static String EXECUTE_BUTTON = "SingleImmediateExecutionPropertiesSubmitButton-0";
-    private final static String RETRY_COMBOBOX = "retryComboBox-input";
+    private static final String SET_PARAMETERS_BUTTON = "Set parameters";
+    private static final String INVENTORY_OBJECTS_TAB_ID = "deviceSelectionWindowTabId";
+    private static final String EXECUTE_ID = "dropdownButtonAction";
+    private static final String IMMEDIATELY_ID = "executeImmediateButtonAction";
+    private static final String OBJECT_TYPE_INPUT_ID = "objectTypeValue";
+    private static final String DEVICE_SELECT_TABLE = "DeviceSelectionApp";
+    private static final String TEMPLATE_SELECT_TABLE = "TemplatesTableApp";
+    private static final String NAME = "Name";
 
     private Wizard wizard = Wizard.createWizard(driver, wait);
-
-    public static ChangeConfigurationPage goToChangeConfigurationPage(WebDriver driver, String basicURL) {
-        driver.get(format("%s/#/view/cm/template-filler-view/view-change?perspective=LIVE", basicURL));
-        return new ChangeConfigurationPage(driver);
-    }
 
     public ChangeConfigurationPage(WebDriver driver) {
         super(driver);
@@ -56,16 +48,16 @@ public class ChangeConfigurationPage extends BasePage {
     public void selectObject(String value) {
         DelayUtils.waitForPageToLoad(driver, wait);
         TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, DEVICE_SELECT_TABLE);
-        table.searchByAttributeWithLabel("Name", Input.ComponentType.TEXT_FIELD, value);
-        table.selectRowByAttributeValueWithLabel("Name", value);
+        table.searchByAttributeWithLabel(NAME, Input.ComponentType.TEXT_FIELD, value);
+        table.selectRowByAttributeValueWithLabel(NAME, value);
     }
 
     @Step("Query template with configuration")
     public void selectTemplate(String value) {
         DelayUtils.waitForPageToLoad(driver, wait);
         TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, TEMPLATE_SELECT_TABLE);
-        table.searchByAttributeWithLabel("Name", Input.ComponentType.TEXT_FIELD, value);
-        table.selectRowByAttributeValueWithLabel("Name", value);
+        table.searchByAttributeWithLabel(NAME, Input.ComponentType.TEXT_FIELD, value);
+        table.selectRowByAttributeValueWithLabel(NAME, value);
     }
 
     @Step("Click set parameters button")

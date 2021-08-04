@@ -1,35 +1,32 @@
 package com.oss.pages.mediation;
 
+import org.openqa.selenium.WebDriver;
+
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.data.Data;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
+
 import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
 
 public class CLIConfigurationWizardPage extends BasePage {
 
-    private static final String IP_HOST_ADDRESS_FIELD = "managedAddressId";
-    private static final String ADDRESS = "address";
-    private static final String PORT = "port";
-    private static final String COMMAND_TIMEOUT_FIELD = "commandTimeout";
-    private static final String CONNECTION_SETUP_TIMEOUT = "connectionSetupTimeout";
-    private static final String AUTH_PASSWORD = "cli-auth-password";
-    private static final String INPUT_METHOD = "ip-input";
-    private static final String CLI_PROTOCOL = "CLIProtocol";
-    private static final String AUTH_METHOD = "CLIAuthMethod";
+    private static final String IP_HOST_ADDRESS_FIELD = "connection-configuration-managed-address";
+    private static final String ADDRESS = "connection-configuration-manual-address";
+    private static final String PORT = "connection-configuration-port";
+    private static final String COMMAND_TIMEOUT_FIELD = "command-timeout";
+    private static final String CONNECTION_SETUP_TIMEOUT = "connection-setup-timeout";
+    private static final String AUTH_PASSWORD = "cli-password";
+    private static final String INPUT_METHOD = "address-radio-button";
+    private static final String CLI_PROTOCOL = "cli-protocol";
+    private static final String AUTH_METHOD = "authentication-method-radio-button";
+    private static final String WIZARD_ID = "cli-window-id";
 
     private final Wizard wizard;
 
     public CLIConfigurationWizardPage(WebDriver driver) {
         super(driver);
-        wizard = Wizard.createWizard(driver, wait);
-    }
-
-    @Step("Open wizard for CLI Configuration")
-    public static CLIConfigurationWizardPage goToCLIConfigurationWizardPage(WebDriver driver, String basicURL) {
-        driver.get(String.format("%s/#/view/mediation-repository-view/cli-configuration/create?" + "perspective=LIVE", basicURL));
-        return new CLIConfigurationWizardPage(driver);
+        wizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
     }
 
     @Step("Set input method in connection parameters")
@@ -90,11 +87,6 @@ public class CLIConfigurationWizardPage extends BasePage {
         Input authPasswordComponent = wizard.getComponent(AUTH_PASSWORD, Input.ComponentType.TEXT_FIELD);
         authPasswordComponent.clear();
         authPasswordComponent.setSingleStringValue(authPassword);
-    }
-
-    @Step("Click Accept button with wait")
-    public void clickAcceptWithWait() {
-        wizard.clickAcceptOldWizard();
     }
 
     @Step("Click Accept button")

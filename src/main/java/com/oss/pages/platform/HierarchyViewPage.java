@@ -11,15 +11,14 @@ import com.oss.framework.widgets.TreeWidgetV2.TreeWidgetV2;
 import com.oss.framework.widgets.Widget;
 import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.propertypanel.PropertyPanel;
-import com.oss.framework.widgets.tablewidget.TableWidget;
 import com.oss.framework.widgets.tabswidget.TabsWidget;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
 public class HierarchyViewPage extends BasePage {
-    public static final String OPEN_HIERARCHY_VIEW_CONTEXT_ACTION_ID = "OpenHierarchyViewContext";
 
+    public static final String OPEN_HIERARCHY_VIEW_CONTEXT_ACTION_ID = "OpenHierarchyViewContext";
     private static final String BOTTOM_TABS_WIDGET_ID = "HierarchyView_BottomDetailTabs_%s";
     private static final String TOP_PROPERTY_PANEL_ID = "HierarchyView_TopDetailTabs_%sHierarchyView_PropertyPanelWidget_%s";
     private static final String HIERARCHY_VIEW_TREE_WIDGET_ID = "HierarchyTreeWidget";
@@ -36,6 +35,7 @@ public class HierarchyViewPage extends BasePage {
     public HierarchyViewPage(WebDriver driver) {
         super(driver);
     }
+
     private HierarchyViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
     }
@@ -60,7 +60,7 @@ public class HierarchyViewPage extends BasePage {
 
     public void clearFiltersOnMainTree(String filterName) {
         TreeWidgetV2 treeWidgetV2 = getMainTree();
-        treeWidgetV2.clearFilter(filterName);;
+        treeWidgetV2.clearFilter(filterName);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
@@ -128,5 +128,12 @@ public class HierarchyViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         getMainTree()
                 .selectNodeByLabel(label);
+    }
+
+    @Step("Select tree node by labels - {labels}")
+    public void selectNodeByLabelsPath(String labels) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getMainTree()
+                .getNodeByLabelsPath(labels).toggleNode();
     }
 }
