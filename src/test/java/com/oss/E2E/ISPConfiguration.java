@@ -228,7 +228,7 @@ public class ISPConfiguration extends BaseTestCase {
         hierarchyViewPage.expandTreeNode("Slots");
         hierarchyViewPage.expandTreeNode("LT3");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        hierarchyViewPage.expandTreeNode("Cards");
+        hierarchyViewPage.expandTreeNode("Card");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hierarchyViewPage.selectNodeByLabel("NELT-B");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
