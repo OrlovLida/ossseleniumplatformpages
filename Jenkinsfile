@@ -7,11 +7,10 @@ String cron_string = BRANCH_NAME == "master" ? "5 22 * * *" : ""
 def sendEmail(){
     script {
         if(BRANCH_NAME == "master"){
-        def emailReportRecipients = 'Piotr.Kubik@comarch.pl, '
             step([
                 $class                  : 'Mailer',
                 notifyEveryUnstableBuild: true,
-                recipients              : emailReportRecipients + emailextrecipients([
+                recipients              : mailextrecipients([
                         [$class: 'CulpritsRecipientProvider'],
                         [$class: 'RequesterRecipientProvider']
                 ]),
