@@ -1,15 +1,27 @@
 package com.oss.pages.transport.ipam;
 
+import org.openqa.selenium.WebDriver;
+
 import com.oss.framework.data.Data;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
 import com.oss.pages.transport.ipam.helper.IPAddressAssignmentWizardProperties;
-import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.*;
-import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.*;
+import io.qameta.allure.Step;
+
+import static com.oss.framework.components.inputs.Input.ComponentType.CHECKBOX;
+import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
+import static com.oss.framework.components.inputs.Input.ComponentType.SEARCH_FIELD;
+import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_AREA;
+import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.AUTOMATIC_MODE;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.CARD;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.INTERFACE;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.LOGICAL_FUNCTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.MANUAL_MODE;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.PHYSICAL_DEVICE;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.RESERVED_MODE;
 
 /**
  * @author Ewa Frączek
@@ -43,21 +55,21 @@ public class IPAddressAssignmentWizardPage extends BasePage {
         super(driver);
     }
 
-    public void assignMoToIPAddress(IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties){
+    public void assignMoToIPAddress(IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties) {
         assignIPAddressMainStep(ipAddressAssignmentWizardProperties);
         DelayUtils.waitForPageToLoad(driver, wait);
         getWizard().clickNext();
         assignIPAddressSummaryStep();
     }
 
-    public void assignIPAddress(IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties){
+    public void assignIPAddress(IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties) {
         assignIPAddressMainStep(ipAddressAssignmentWizardProperties);
         assignIPAddressAssignmentStep(ipAddressAssignmentWizardProperties);
         assignIPAddressSummaryStep();
     }
 
     public void assignIPAddress(IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties,
-                                     IPAddressAssignmentWizardProperties oppositeSideIpAddressAssignmentWizardProperties){
+                                IPAddressAssignmentWizardProperties oppositeSideIpAddressAssignmentWizardProperties) {
         assignIPAddressMainStep(ipAddressAssignmentWizardProperties);
         assignIPAddressAssignmentStep(ipAddressAssignmentWizardProperties);
         assignIPAddressOppositeAssignmentStep(oppositeSideIpAddressAssignmentWizardProperties);
@@ -65,7 +77,7 @@ public class IPAddressAssignmentWizardPage extends BasePage {
     }
 
     public void assignIPAddressFromIPAddressContext(IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties,
-                                IPAddressAssignmentWizardProperties oppositeSideIpAddressAssignmentWizardProperties){
+                                                    IPAddressAssignmentWizardProperties oppositeSideIpAddressAssignmentWizardProperties) {
         assignIPAddressMainStepWithoutMode(ipAddressAssignmentWizardProperties);
         assignIPAddressAssignmentStep(ipAddressAssignmentWizardProperties);
         assignIPAddressOppositeAssignmentStep(oppositeSideIpAddressAssignmentWizardProperties);
@@ -73,15 +85,15 @@ public class IPAddressAssignmentWizardPage extends BasePage {
     }
 
     @Step("Assign IP Address Main Step")
-    private void assignIPAddressMainStep(IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties){
+    private void assignIPAddressMainStep(IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        if(ipAddressAssignmentWizardProperties.getWizardMode().isPresent()){
+        if (ipAddressAssignmentWizardProperties.getWizardMode().isPresent()) {
             String mode = ipAddressAssignmentWizardProperties.getWizardMode().get();
-            if(!getWizard().getComponent(MODE_COMPONENT_ID, COMBOBOX).getStringValue().equals(mode)){
+            if (!getWizard().getComponent(MODE_COMPONENT_ID, COMBOBOX).getStringValue().equals(mode)) {
                 getWizard().setComponentValue(MODE_COMPONENT_ID, mode, COMBOBOX);
                 DelayUtils.waitForPageToLoad(driver, wait);
             }
-            switch (mode){
+            switch (mode) {
                 case MANUAL_MODE:
                     fillManualModeFields(ipAddressAssignmentWizardProperties);
                     break;
@@ -101,21 +113,22 @@ public class IPAddressAssignmentWizardPage extends BasePage {
     }
 
     @Step("Assign IP Address Main Step")
-    private void assignIPAddressMainStepWithoutMode(IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties){
+    private void assignIPAddressMainStepWithoutMode(IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties) {
         DelayUtils.waitForPageToLoad(driver, wait);
         fillOptionalFieldsInMainStep(ipAddressAssignmentWizardProperties);
         DelayUtils.waitForPageToLoad(driver, wait);
         getWizard().clickNext();
     }
 
-    private void fillManualModeFields(IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties){
+    private void fillManualModeFields(IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties) {
         ipAddressAssignmentWizardProperties.getSubnet()
-                .ifPresent(subnet -> getWizard().getComponent(IP_SUBNET_COMPONENT_ID,SEARCH_FIELD).setSingleStringValueContains(subnet));
+                .ifPresent(subnet -> getWizard().getComponent(IP_SUBNET_COMPONENT_ID, SEARCH_FIELD).setSingleStringValueContains(subnet));
+        DelayUtils.waitForPageToLoad(driver, wait);
         ipAddressAssignmentWizardProperties.getAddress()
-                .ifPresent(address -> getWizard().setComponentValue(IP_ADDRESS_MANUAL_MODE_COMPONENT_ID, address, TEXT_FIELD));
+                .ifPresent(address -> getWizard().setComponentValue(IP_ADDRESS_MANUAL_MODE_COMPONENT_ID, address, SEARCH_FIELD));
     }
 
-    private void fillAutomaticModeFields(IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties){
+    private void fillAutomaticModeFields(IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties) {
         ipAddressAssignmentWizardProperties.getAddress()
                 .ifPresent(address -> getWizard().setComponentValue(IP_ADDRESS_AUTOMATIC_MODE_COMPONENT_ID, address, TEXT_FIELD));
         ipAddressAssignmentWizardProperties.getMask()
@@ -124,12 +137,12 @@ public class IPAddressAssignmentWizardPage extends BasePage {
                 .ifPresent(network -> getWizard().setComponentValue(IP_NETWORK_COMPONENT_ID, network, SEARCH_FIELD));
     }
 
-    private void fillReservedModeFields(IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties){
+    private void fillReservedModeFields(IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties) {
         ipAddressAssignmentWizardProperties.getAddress()
                 .ifPresent(address -> getWizard().getComponent(IP_ADDRESS_RESERVED_MODE_COMPONENT_ID, SEARCH_FIELD).setValueContains(Data.createFindFirst(address)));
     }
 
-    private void fillOptionalFieldsInMainStep(IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties){
+    private void fillOptionalFieldsInMainStep(IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties) {
         ipAddressAssignmentWizardProperties.isPrimary()
                 .ifPresent(isPrimary -> getWizard().setComponentValue(IS_PRIMARY_COMPONENT_ID, isPrimary, CHECKBOX));
         ipAddressAssignmentWizardProperties.isInNAT()
@@ -141,7 +154,7 @@ public class IPAddressAssignmentWizardPage extends BasePage {
     }
 
     @Step("Assign IP Address Assignment Step")
-    private void assignIPAddressAssignmentStep(IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties){
+    private void assignIPAddressAssignmentStep(IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties) {
         DelayUtils.waitForPageToLoad(driver, wait);
         String assignmentType = ipAddressAssignmentWizardProperties.getAssignmentType().
                 orElseThrow(() -> new RuntimeException("Assignment Type is not set"));
@@ -149,7 +162,7 @@ public class IPAddressAssignmentWizardPage extends BasePage {
                 orElseThrow(() -> new RuntimeException("Assignment Name is not set"));
         getWizard().setComponentValue(ASSIGNMENT_TYPE_COMPONENT_ID, assignmentType, COMBOBOX);
         DelayUtils.waitForPageToLoad(driver, wait);
-        switch (assignmentType){
+        switch (assignmentType) {
             case INTERFACE:
                 getWizard().getComponent(SEARCH_INTERFACE_COMPONENT_ID, SEARCH_FIELD).setValueContains(Data.createFindFirst(assignmentName));
                 break;
@@ -168,7 +181,7 @@ public class IPAddressAssignmentWizardPage extends BasePage {
     }
 
     @Step("Assign IP Address Opposite assignment Step")
-    private void assignIPAddressOppositeAssignmentStep(IPAddressAssignmentWizardProperties oppositeIpAddressAssignmentWizardProperties){
+    private void assignIPAddressOppositeAssignmentStep(IPAddressAssignmentWizardProperties oppositeIpAddressAssignmentWizardProperties) {
         DelayUtils.waitForPageToLoad(driver, wait);
         oppositeIpAddressAssignmentWizardProperties.getAddress()
                 .ifPresent(address -> getWizard().setComponentValue(IP_ADDRESS_OPPOSTE_ASSIGNMENT_STEP_COMPONENT_ID, address, SEARCH_FIELD));
@@ -185,7 +198,7 @@ public class IPAddressAssignmentWizardPage extends BasePage {
     }
 
     @Step("Assign IP Address Summary Step")
-    private void assignIPAddressSummaryStep(){
+    private void assignIPAddressSummaryStep() {
         DelayUtils.waitForPageToLoad(driver, wait);
         getWizard().clickAccept();
     }
