@@ -11,7 +11,7 @@ def sendEmail(){
             step([
                 $class                  : 'Mailer',
                 notifyEveryUnstableBuild: true,
-                recipients              : emailReportRecipients + mailextrecipients([
+                recipients              : emailReportRecipients + emailextrecipients([
                         [$class: 'CulpritsRecipientProvider'],
                         [$class: 'RequesterRecipientProvider']
                 ]),
