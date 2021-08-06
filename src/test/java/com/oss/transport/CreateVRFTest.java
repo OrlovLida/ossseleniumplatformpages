@@ -27,9 +27,9 @@ import static com.oss.configuration.Configuration.CONFIGURATION;
  */
 public class CreateVRFTest extends BaseTestCase {
 
-    private static final String WIZARDS = "Wizards";
-    private static final String TRANSPORT = "Transport";
-    private static final String VRF = "VRF";
+    private static final String WIZARDS = "Network domains";
+    private static final String TRANSPORT = "Transport & IP";
+    private static final String VRF = "Create VRF";
 
     private static final String VRF_NAME = "vrfNameTest2";
     private static final String ROUTE_DISTINGUISHER = "999:999";

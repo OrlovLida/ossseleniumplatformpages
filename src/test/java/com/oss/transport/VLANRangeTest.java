@@ -49,7 +49,7 @@ public class VLANRangeTest extends BaseTestCase {
     @Test(priority = 1)
     @Description("Set fields and create VLAN Range")
     public void createVLANRange() {
-        homePage.chooseFromLeftSideMenu("VLAN Range", "Wizards", "Transport");
+        homePage.chooseFromLeftSideMenu("Create VLAN Range", "Network domains", "Transport & IP");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         VLANRangeWizardPage vLANRangeWizardPage = new VLANRangeWizardPage(driver);
         vLANRangeWizardPage.setName(VLAN_NAME_1)

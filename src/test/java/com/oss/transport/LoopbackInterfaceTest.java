@@ -112,7 +112,7 @@ public class LoopbackInterfaceTest extends BaseTestCase {
 
     private LoopbackInterfaceWizardPage goToLoopbackWizard() {
         SideMenu sidemenu = SideMenu.create(driver, webDriverWait);
-        sidemenu.callActionByLabel("Loopback Interface", "Wizards", "Transport");
+        sidemenu.callActionByLabel("Create Loopback Interface", "Network domains", "Transport & IP");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         return new LoopbackInterfaceWizardPage(driver);
     }

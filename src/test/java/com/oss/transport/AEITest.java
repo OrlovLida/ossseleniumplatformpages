@@ -113,7 +113,7 @@ public class AEITest extends BaseTestCase {
     private AEIWizardPage goToAEIWizardPage() {
         SideMenu sidemenu = SideMenu.create(driver, webDriverWait);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        sidemenu.callActionByLabel("Aggregated Ethernet Interface", "Wizards", "Transport");
+        sidemenu.callActionByLabel("Create Aggregated Ethernet Interface", "Network domains", "Transport & IP");
 
         return new AEIWizardPage(driver);
     }
