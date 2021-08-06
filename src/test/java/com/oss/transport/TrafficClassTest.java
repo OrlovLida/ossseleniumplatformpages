@@ -18,9 +18,9 @@ import java.util.Map;
  */
 public class TrafficClassTest extends BaseTestCase {
 
-    private static final String WIZARDS = "Wizards";
-    private static final String TRANSPORT = "Transport";
-    private static final String TRAFFIC_CLASS = "Traffic Class";
+    private static final String WIZARDS = "Network domains";
+    private static final String TRANSPORT = "Transport & IP";
+    private static final String TRAFFIC_CLASS = "Create Traffic Class";
 
     private static final String PRE_CREATED_LOCATION = "Gliwice-BU1";
     private static final String PRE_CREATED_DEVICE = "SeleniumTestDeviceTC";

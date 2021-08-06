@@ -42,7 +42,7 @@ public class IRBInterfaceTest extends BaseTestCase {
     @BeforeClass
     public void openWebConsole() {
         waitForPageToLoad();
-        homePage.chooseFromLeftSideMenu("Process Instances", "Views", "Business Process Management");
+        homePage.chooseFromLeftSideMenu("Process Instances", "BPM and Planning", "Business Process Management");
         newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
         waitForPageToLoad();
     }
@@ -70,7 +70,7 @@ public class IRBInterfaceTest extends BaseTestCase {
     public void createNewIRBInterface() {
         homePage.goToHomePageWithContext(driver);
         waitForPageToLoad();
-        homePage.chooseFromLeftSideMenu("IRB Interface", "Wizards", "Transport");
+        homePage.chooseFromLeftSideMenu("Create IRB Interface", "Network domains", "Transport & IP");
         IRBInterfaceWizardPage irbInterfaceWizardPage = new IRBInterfaceWizardPage(driver);
         waitForPageToLoad();
         irbInterfaceWizardPage.createIRBInterface(IRB_INTERFACE_DEVICE_NAME, IRB_INTERFACE_ID);
