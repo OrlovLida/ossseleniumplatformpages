@@ -37,35 +37,81 @@ public class HomeViewTest extends BaseTestCase {
         homeViewPage.seeColumnChartIsDisplayed();
     }
 
-    @Test(priority = 3, testName = "Check pie chart", description = "Check pie chart")
+    @Test(priority = 3, testName = "Check if column chart is maximized", description = "Check if column chart is maximized")
+    @Description("Check if column chart is maximized")
+    public void maximizeColumnChart() {
+        homeViewPage.maximizeColumnChart("ColumnChartWindowId");
+        homeViewPage.seeColumnChartIsDisplayed();
+    }
+
+    @Test(priority = 4, testName = "Check if column chart is minimized", description = "Check if column chart is minimized")
+    @Description("Check if column chart is minimized")
+    public void minimizeColumnChart() {
+        homeViewPage.minimizeColumnChart("ColumnChartWindowId");
+        homeViewPage.seeColumnChartIsDisplayed();
+    }
+
+    @Test(priority = 5, testName = "Check pie chart", description = "Check pie chart")
     @Description("Check pie chart")
     public void checkPieChart() {
         homeViewPage.seePieChartIsDisplayed();
     }
 
-    @Test(priority = 4, testName = "Check if pie chart is refreshed", description = "Check if pie chart is refreshed")
+    @Test(priority = 6, testName = "Check if pie chart is maximized", description = "Check if pie chart is maximized")
+    @Description("Check if pie chart is maximized")
+    public void maximizePieChart() {
+        homeViewPage.maximizePieChart("PieChartTableWindowId");
+        homeViewPage.seePieChartIsDisplayed();
+    }
+
+    @Test(priority = 7, testName = "Check if pie chart is refreshed", description = "Check if pie chart is refreshed")
     @Description("Check if pie chart is refreshed")
     public void refreshPieChart() {
         homeViewPage.refreshPieChart();
         homeViewPage.seePieChartIsDisplayed();
     }
 
-    @Test(priority = 5, testName = "Check if situation exist", description = "Check if situation exist")
-    @Description("Check if situation exist")
+    @Test(priority = 8, testName = "Check if pie chart is minimized", description = "Check if pie chart is minimized")
+    @Description("Check if pie chart is minimized")
+    public void minimizePieChart() {
+        homeViewPage.minimizePieChart("PieChartTableWindowId");
+        homeViewPage.seePieChartIsDisplayed();
+    }
+
+    @Test(priority = 9, testName = "Check if issues table is maximized", description = "Check if issues table is maximized")
+    @Description("Check if issues table is maximized")
+    public void maximizeIssuesTable() {
+        homeViewPage.maximizeIssuesTable("IssueTableWindowId");
+    }
+
+    @Test(priority = 10, testName = "Check if Situations exist", description = "Check if Situations exist")
+    @Description("Check if Situations exist")
     public void situationCheck() {
         checkScenarioTableWithFilters("Situation");
     }
 
-    @Test(priority = 6, testName = "Check if Anomaly exist", description = "Check if Anomaly exist")
-    @Description("Check if Anomaly exist")
+    @Test(priority = 11, testName = "Check if Anomalies exist", description = "Check if Anomalies exist")
+    @Description("Check if Anomalies exist")
     public void anomalyCheck() {
         checkScenarioTableWithFilters("Anomaly");
     }
 
-    @Test(priority = 7, testName = "Check if problem exist", description = "Check if problem exist")
-    @Description("Check if problem exist")
+    @Test(priority = 12, testName = "Check if Problems exist", description = "Check if Problems exist")
+    @Description("Check if Problems exist")
     public void problemCheck() {
         checkScenarioTableWithFilters("Problem");
+    }
+
+    @Test(priority = 13, testName = "Check if issues table is minimized", description = "Check if issues table is minimized")
+    @Description("Check if issues table is minimized")
+    public void minimizeIssuesTable() {
+        homeViewPage.minimizeIssuesTable("IssueTableWindowId");
+    }
+
+    @Test(priority = 14, testName = "Check if issues table is refreshed", description = "Check if issues table is refreshed")
+    @Description("Check if issues table is refreshed")
+    public void refreshIssuesTable() {
+        homeViewPage.refreshIssuesTable();
     }
 
     private void checkScenarioTableWithFilters(String issueType) {

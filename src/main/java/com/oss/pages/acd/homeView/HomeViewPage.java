@@ -6,6 +6,7 @@ import com.oss.framework.components.inputs.Input;
 import com.oss.framework.data.Data;
 import com.oss.framework.utils.CSSUtils;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.view.Card;
 import com.oss.framework.widgets.chartwidget.ChartWidget;
 import com.oss.framework.widgets.serviceDeskAdvancedSearch.ServiceDeskAdvancedSearch;
 import com.oss.framework.widgets.tablewidget.OldTable;
@@ -26,6 +27,7 @@ public class HomeViewPage extends BasePage {
     private final String pieChartRefreshButtonId = "pieChartRefreshButtonId-0";
     private final String homeIssueTableWindowId = "IssueTableWindowId";
     private final String homeIssueTableId = "issueTableId";
+    private final String issuesTableRefreshButtonId = "issueTableButtonsId-0";
 
     private final OldTable table;
     private final ServiceDeskAdvancedSearch advancedSearch;
@@ -126,5 +128,47 @@ public class HomeViewPage extends BasePage {
     public void clearTimePeriod(String widgetId) {
         TimePeriodChooser timePeriod = TimePeriodChooser.create(driver, wait, widgetId);
         timePeriod.clickClearValue();
+    }
+
+    @Step("Maximize column chart")
+    public void maximizeColumnChart(String windowId) {
+        Card card = Card.createCard(driver, wait, windowId);
+        card.maximizeCard(driver, wait);
+    }
+
+    @Step("Minimize column chart")
+    public void minimizeColumnChart(String windowId) {
+        Card card = Card.createCard(driver, wait, windowId);
+        card.minimizeCard(driver, wait);
+    }
+
+    @Step("Maximize pie chart")
+    public void maximizePieChart(String windowId) {
+        Card card = Card.createCard(driver, wait, windowId);
+        card.maximizeCard(driver, wait);
+    }
+
+    @Step("Minimize pie chart")
+    public void minimizePieChart(String windowId) {
+        Card card = Card.createCard(driver, wait, windowId);
+        card.minimizeCard(driver, wait);
+    }
+
+    @Step("Maximize issues table")
+    public void maximizeIssuesTable(String windowId) {
+        Card card = Card.createCard(driver, wait, windowId);
+        card.maximizeCard(driver, wait);
+    }
+
+    @Step("Minimize issues table")
+    public void minimizeIssuesTable(String windowId) {
+        Card card = Card.createCard(driver, wait, windowId);
+        card.minimizeCard(driver, wait);
+    }
+
+    @Step("Refresh Issues table")
+    public void refreshIssuesTable() {
+        Button button = Button.createByXpath(issuesTableRefreshButtonId, "li", CSSUtils.DATA_WIDGET_ID, driver);
+        button.click();
     }
 }
