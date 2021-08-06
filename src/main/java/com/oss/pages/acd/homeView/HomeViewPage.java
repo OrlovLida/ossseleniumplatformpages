@@ -130,38 +130,14 @@ public class HomeViewPage extends BasePage {
         timePeriod.clickClearValue();
     }
 
-    @Step("Maximize column chart")
-    public void maximizeColumnChart(String windowId) {
+    @Step("Maximize window")
+    public void maximizeWindow(String windowId) {
         Card card = Card.createCard(driver, wait, windowId);
         card.maximizeCard(driver, wait);
     }
 
-    @Step("Minimize column chart")
-    public void minimizeColumnChart(String windowId) {
-        Card card = Card.createCard(driver, wait, windowId);
-        card.minimizeCard(driver, wait);
-    }
-
-    @Step("Maximize pie chart")
-    public void maximizePieChart(String windowId) {
-        Card card = Card.createCard(driver, wait, windowId);
-        card.maximizeCard(driver, wait);
-    }
-
-    @Step("Minimize pie chart")
-    public void minimizePieChart(String windowId) {
-        Card card = Card.createCard(driver, wait, windowId);
-        card.minimizeCard(driver, wait);
-    }
-
-    @Step("Maximize issues table")
-    public void maximizeIssuesTable(String windowId) {
-        Card card = Card.createCard(driver, wait, windowId);
-        card.maximizeCard(driver, wait);
-    }
-
-    @Step("Minimize issues table")
-    public void minimizeIssuesTable(String windowId) {
+    @Step("Minimize window")
+    public void minimizeWindow(String windowId) {
         Card card = Card.createCard(driver, wait, windowId);
         card.minimizeCard(driver, wait);
     }
