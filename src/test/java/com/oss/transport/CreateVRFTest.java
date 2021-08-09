@@ -144,8 +144,10 @@ public class CreateVRFTest extends BaseTestCase {
 
     private VRFWizardPage goToVRFWizard() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        SideMenu sidemenu = SideMenu.create(driver, webDriverWait);
-        sidemenu.callActionByLabel(VRF, WIZARDS, TRANSPORT);
+        //SideMenu sidemenu = SideMenu.create(driver, webDriverWait);
+        //sidemenu.callActionByLabel(VRF, WIZARDS, TRANSPORT);
+        driver.get("https://10.132.118.207:25081/#/view/transport/tpt/vrf?perspective=LIVE");
+
         return new VRFWizardPage(driver);
     }
 

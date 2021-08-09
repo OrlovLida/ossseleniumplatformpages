@@ -47,8 +47,9 @@ public class VSITest extends BaseTestCase {
     @Step("Create Route Target")
     public void createRouteTarget(){
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
-        sideMenu.callActionByLabel("Create Route Target", WIZARDS, TRANSPORT);
+        //SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
+        //sideMenu.callActionByLabel("Create Route Target", WIZARDS, TRANSPORT);
+        driver.get("https://10.132.118.207:25081/#/view/transport/tpt/vpn/routetarget?perspective=LIVE");
 
         RouteTargetWizardPage routeTargetWizard = new RouteTargetWizardPage(driver);
         routeTargetWizard.setRouteTarget(ROUTE_TARGET_TO_CREATE);
@@ -166,8 +167,10 @@ public class VSITest extends BaseTestCase {
 
     private VSIWizardPage goToVSIWizardPage(){
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
-        sideMenu.callActionByLabel(VSI, WIZARDS, TRANSPORT);
+        //SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
+        //sideMenu.callActionByLabel(VSI, WIZARDS, TRANSPORT);
+        driver.get("https://10.132.118.207:25081/#/view/transport/ip/mpls/vsi?perspective=LIVE");
+
         return new VSIWizardPage(driver);
     }
 
