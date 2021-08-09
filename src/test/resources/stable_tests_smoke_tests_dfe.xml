@@ -1,0 +1,13 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="smoke_tests_dfe" thread-count="2" parallel="tests" verbose="1">
+    <test name="AggregatesSmokeTest">
+        <classes>
+            <class name="com.oss.bigdata.dfe.SMOKE.AggregatesSmokeTest"/>
+        </classes>
+    </test>
+    <test name="KQISmokeTest">
+        <classes>
+            <class name="com.oss.bigdata.dfe.SMOKE.KqiSmokeTest"/>
+        </classes>
+    </test>
+</suite>

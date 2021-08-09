@@ -44,7 +44,7 @@ public class LocationWizardPage extends BasePage {
         super(driver);
     }
 
-    private Wizard locationWizard = Wizard.createByComponentId(driver, wait, "wizard");
+    private Wizard locationWizard = Wizard.createByComponentId(driver, wait, "optional");
 
     @Step("Create location with mandatory fields (location type, name, geographical address) filled in")
     public void createLocation(String locationType, String locationName) {

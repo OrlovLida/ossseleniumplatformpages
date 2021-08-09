@@ -18,7 +18,7 @@ import com.oss.pages.bpm.TasksPage;
 import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
-import com.oss.pages.radio.CellBulkWizardPage;
+import com.oss.pages.radio.Cell4GBulkWizardPage;
 import com.oss.pages.radio.CellSiteConfigurationPage;
 import com.oss.pages.radio.EditCell4GWizardPage;
 import com.oss.pages.radio.HostingWizardPage;
@@ -99,7 +99,7 @@ public class TP_OSS_RM_RAN_004_All_Steps_Except_9 extends BaseTestCase {
     private void createCellBulk(int amountOfCells, String carrier, String[] cellNames, int[] localCellsId) {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cellSiteConfigurationPage.clickPlusIconAndSelectOption("Cell 4G Bulk Wizard");
-        CellBulkWizardPage cell4GBulkWizardPage = new CellBulkWizardPage(driver);
+        Cell4GBulkWizardPage cell4GBulkWizardPage = new Cell4GBulkWizardPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cell4GBulkWizardPage.createCell4GBulkWizardWithDefaultValues(amountOfCells, carrier, cellNames, localCellsId);
         checkPopup("Cells 4G created success");

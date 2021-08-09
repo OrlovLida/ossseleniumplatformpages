@@ -55,7 +55,6 @@ public class NewInventoryViewPage extends BasePage {
 
     public TableWidget getMainTable() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        DelayUtils.waitByXPath(wait, "//div[@" + CSSUtils.TEST_ID + "='" + TABLE_ID + "']");
         return TableWidget.createById(driver, TABLE_ID, wait);
     }
 

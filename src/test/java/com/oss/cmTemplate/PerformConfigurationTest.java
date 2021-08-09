@@ -1,27 +1,27 @@
 package com.oss.cmTemplate;
 
+import org.assertj.core.api.Assertions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
 import com.oss.BaseTestCase;
 import com.oss.framework.mainheader.Notifications;
 import com.oss.framework.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.LogManagerPage;
-import com.oss.pages.templateCM.ChangeConfigurationPage;
-import com.oss.pages.templateCM.SetParametersWizardPage;
+import com.oss.pages.template_cm.ChangeConfigurationPage;
+import com.oss.pages.template_cm.SetParametersWizardPage;
+
 import io.qameta.allure.Description;
-import org.assertj.core.api.Assertions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
-import org.testng.asserts.Assertion;
 
 public class PerformConfigurationTest extends BaseTestCase {
 
-    private ChangeConfigurationPage changeConfigurationPage;
-    private SetParametersWizardPage setParametersWizardPage;
-    private static String DEVICE_NAME = "SeleniumTemplateTestDevice";
-    private static String TEMPLATE_NAME = "E2E_Test_Loopback_v2";
-    private static String TEMPLATE_EXECUTION_NOTIFICATION = "Scripts execution for template E2E_Test_Loopback_v2";
+    private static ChangeConfigurationPage changeConfigurationPage;
+    private static SetParametersWizardPage setParametersWizardPage;
+    private static final String DEVICE_NAME = "SeleniumTemplateTestDevice";
+    private static final String TEMPLATE_NAME = "E2E_Test_Loopback_v2";
+    private static final String TEMPLATE_EXECUTION_NOTIFICATION = "Scripts execution for template E2E_Test_Loopback_v2";
 
     @BeforeClass
     public void goToPerformConfigurationChange() {
@@ -50,11 +50,11 @@ public class PerformConfigurationTest extends BaseTestCase {
         changeConfigurationPage.clickSetParameters();
         setParametersWizardPage = new SetParametersWizardPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        String name = setParametersWizardPage.getParameter("$name[NEW_INVENTORY]");
+        String name = setParametersWizardPage.getName();
         Assertions.assertThat(name).isEqualTo(DEVICE_NAME);
-        setParametersWizardPage.setParameter("$InterfaceName[USER]", "GE 0");
+        setParametersWizardPage.setInterfaceName("GE 0");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        setParametersWizardPage.setParameter("$Password[SYSTEM]", "oss");
+        setParametersWizardPage.setPassword("oss");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 

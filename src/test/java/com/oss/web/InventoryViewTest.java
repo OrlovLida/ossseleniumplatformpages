@@ -1,20 +1,10 @@
 package com.oss.web;
 
-import java.util.List;
-
 import org.assertj.core.api.Assertions;
-import org.assertj.core.util.Lists;
-import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import com.google.common.collect.Multimap;
 import com.oss.BaseTestCase;
-import com.oss.framework.components.inputs.Input.ComponentType;
-import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.propertypanel.PropertyPanel;
-import com.oss.framework.widgets.tablewidget.TableRow;
-import com.oss.framework.widgets.tablewidget.TableWidget;
 import com.oss.pages.platform.NewInventoryViewPage;
 
 public class InventoryViewTest extends BaseTestCase {

@@ -47,6 +47,11 @@ public class LocationOverviewPage extends BasePage {
         getTabTable(tabName).callActionByLabel(actionLabel);
     }
 
+    @Step("Click {actionLabel} in specific tab")
+    public void clickActionById(TabName tabName, String actionId) {
+        getTabTable(tabName).callAction(actionId);
+    }
+
     @Step("Click refresh in specific tab")
     public void clickRefreshInSpecificTab(TabName tabName) {
         getTabTable(tabName).callAction(OldActionsContainer.KEBAB_GROUP_ID, REFRESH_BUTTON_ID);
@@ -62,11 +67,6 @@ public class LocationOverviewPage extends BasePage {
     @Step("Select object with {attributeLabel} {value}")
     public void selectObjectInSpecificTab(TabName tabName, String attributeLabel, String value) {
         getTabTable(tabName).selectRowByAttributeValueWithLabel(attributeLabel, value);
-    }
-
-    @Step("Get row number for object with {attributeLabel} {value}")
-    public int getRowNumber(TabName tabName, String attributeLabel, String value) {
-        return getTabTable(tabName).getRowNumber(value, attributeLabel);
     }
 
     @Step("Get {attributeLabel} value for row number {rowNumber}")

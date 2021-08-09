@@ -35,8 +35,8 @@ import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage.IssueLevel;
 import com.oss.pages.reconciliation.NetworkInconsistenciesViewPage;
 import com.oss.pages.reconciliation.SamplesManagementPage;
-import com.oss.pages.templateCM.ChangeConfigurationPage;
-import com.oss.pages.templateCM.SetParametersWizardPage;
+import com.oss.pages.template_cm.ChangeConfigurationPage;
+import com.oss.pages.template_cm.SetParametersWizardPage;
 import com.oss.pages.transport.NetworkViewPage;
 import com.oss.pages.transport.ipam.IPAddressAssignmentWizardPage;
 import com.oss.pages.transport.ipam.IPAddressManagementViewPage;
@@ -46,7 +46,7 @@ import io.qameta.allure.Step;
 
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 
-public class UC_OSS_RM_PLA_002 extends BaseTestCase {
+public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
 
     private static final String DEVICE_MODEL = "CISCO1941/K9";
@@ -57,7 +57,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     private static final String TRAIL_NAME = "SeleniumTest IP Link";
     private static final String INTERFACE_NAME = "CISCO IOS 12/15/XE without mediation";
     private static final String TEMPLATE_NAME = "E2E_Test_Loopback_v2";
-    private static final String ADDRESS = "10.10.20.11";
+    private static final String ADDRESS = "10.10.20.171";
     private static final String PORT = "22";
     private static final String PASSWORD = "cisco";
     private static final String COMMAND_TIMEOUT = "20";
@@ -156,7 +156,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         DelayUtils.sleep(5000); // naming has to recalculate, it doesn't show progress in the console
         networkViewPage.selectObjectInViewContent(NAME, DEVICE_NAME);
         waitForPageToLoad();
-        networkViewPage.useContextAction(ActionsContainer.SHOW_ON_GROUP_ID, NetworkViewPage.HIERARCHY_VIEW_ACTION);//TODO w more jeśli okno za małe
+        networkViewPage.useContextAction(ActionsContainer.SHOW_ON_GROUP_ID, NetworkViewPage.HIERARCHY_VIEW_ACTION);
         waitForPageToLoad();
     }
 
@@ -175,7 +175,9 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         waitForPageToLoad();
         hierarchyViewPage.expandTreeNode("EthernetInterface_TP");
         waitForPageToLoad();
-        hierarchyViewPage.selectNodeByLabel(PORT_NAME);//TODO zaznaczenie po nazwie - nazwa dopiero po chwili sie pokazala (po zaznaczeniu) wczesniej byl widoczny ID - sprawdzic
+        DelayUtils.sleep(5000);
+        String labelpath = DEVICE_NAME + ".Ports." + PORT_NAME + ".Termination Points.EthernetInterface_TP." + PORT_NAME;
+        hierarchyViewPage.selectNodeByLabelsPath(labelpath);
         waitForPageToLoad();
         hierarchyViewPage.useTreeContextAction(ActionsContainer.SHOW_ON_GROUP_ID, "OpenInventoryView");
     }
@@ -186,7 +188,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.selectFirstRow();
         waitForPageToLoad();
-        newInventoryViewPage.callAction(ActionsContainer.CREATE_GROUP_ID, "AssignIPv4Host");
+        newInventoryViewPage.callAction(ActionsContainer.ASSIGN_GROUP_ID, "AssignIPv4Host");
         IPAddressAssignmentWizardPage ipAddressAssignmentWizardPage = new IPAddressAssignmentWizardPage(driver);
         IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties = IPAddressAssignmentWizardProperties.builder()
                 .address(ADDRESS).subnet("10.10.20.0/24 [" + IP_NETWORK + "]").isPrimary("false").build();
@@ -230,12 +232,10 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         waitForPageToLoad();
         connectionWizardPage.terminateTerminationPort(PORT_NAME);
         waitForPageToLoad();
+        connectionWizardPage.clickNext();
+        waitForPageToLoad();
         connectionWizardPage.clickAccept();
         waitForPageToLoad();
-        networkViewPage.expandDockedPanel(LEFT);
-        networkViewPage.selectObjectInViewContent(NAME, TRAIL_NAME + " (0%)");
-        waitForPageToLoad();
-        networkViewPage.hideDockedPanel(LEFT);
     }
 
     @Test(priority = 9)
@@ -244,7 +244,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.expandDockedPanel("bottom");
         waitForPageToLoad();
-        networkViewPage.supressValidationResult("INCOMPLETE_ROUTING_STATUS", "Unnecessary in this scenario");
+        networkViewPage.supressValidationResult("Unnecessary in this scenario");
         networkViewPage.hideDockedPanel("bottom");
     }
 
@@ -268,21 +268,15 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         waitForPageToLoad();
         cliConfigurationWizardPage.setPort(PORT);
         waitForPageToLoad();
-        cliConfigurationWizardPage.clickNextStep();
-        waitForPageToLoad();
         cliConfigurationWizardPage.setCommandTimeout(COMMAND_TIMEOUT);
         waitForPageToLoad();
         cliConfigurationWizardPage.setConnectionSetupTimeout(CONNECTION_TIMEOUT);
         waitForPageToLoad();
         cliConfigurationWizardPage.setCLIProtocol("SSH");
         waitForPageToLoad();
-        cliConfigurationWizardPage.clickNextStep();
-        waitForPageToLoad();
         cliConfigurationWizardPage.setAuthMethod("Password Authentication");
         waitForPageToLoad();
         cliConfigurationWizardPage.setAuthPassword(PASSWORD);
-        waitForPageToLoad();
-        cliConfigurationWizardPage.clickNextStep();
         waitForPageToLoad();
         cliConfigurationWizardPage.clickAccept();
         waitForPageToLoad();
@@ -292,6 +286,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         systemMessage.clickMessageLink();
         waitForPageToLoad();
         URL = driver.getCurrentUrl();
+        systemMessage.close();
         waitForPageToLoad();
     }
 
@@ -304,7 +299,6 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         Notifications.create(driver, webDriverWait).clearAllNotification();
         tasksPage.findTask(processIPCode, TasksPage.IMPLEMENTATION_TASK);
         waitForPageToLoad();
-        DelayUtils.sleep(2000);
         tasksPage.clickPerformConfigurationButton();
     }
 
@@ -320,18 +314,16 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         changeConfigurationPage.clickSetParameters();
         SetParametersWizardPage setParametersWizardPage = new SetParametersWizardPage(driver);
         waitForPageToLoad();
-        String name = setParametersWizardPage.getParameter("$name[NEW_INVENTORY]");
+        String name = setParametersWizardPage.getName();
         Assert.assertEquals(name, DEVICE_NAME);
-        setParametersWizardPage.setParameter("$Password[SYSTEM]", "oss");
+        setParametersWizardPage.setPassword("oss");
         waitForPageToLoad();
-        setParametersWizardPage.setParameter("$InterfaceName[USER]", "GE 0");
-        waitForPageToLoad();
+        setParametersWizardPage.setInterfaceName("GE 0");
         waitForPageToLoad();
         setParametersWizardPage.clickFillParameters();
         waitForPageToLoad();
         changeConfigurationPage.deployImmediately();
         waitForPageToLoad();
-        DelayUtils.sleep(3000);
         ShareFilterPage shareFilterPage = new ShareFilterPage(driver);
         shareFilterPage.closeShareView();
         waitForPageToLoad();
@@ -431,7 +423,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         networkInconsistenciesViewPage.expandTree();
         networkInconsistenciesViewPage.clearOldNotification();
         networkInconsistenciesViewPage.applyInconsistencies();
-        DelayUtils.sleep(5000);
+        DelayUtils.sleep(1000);
         Assert.assertEquals(networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(), "Accepting discrepancies related to " + DEVICE_NAME + " finished");
     }
 
@@ -462,21 +454,6 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
     }
 
     @Test(priority = 21)
-    @Step("Delete Physical Device")
-    public void deletePhysicalDevice() {
-        waitForPageToLoad();
-        DelayUtils.sleep(5000);
-        NetworkViewPage networkViewPage = new NetworkViewPage(driver);
-        networkViewPage.useContextAction(NetworkViewPage.ADD_TO_VIEW_ACTION, NetworkViewPage.DEVICE_ACTION);
-        waitForPageToLoad();
-        networkViewPage.queryElementAndAddItToView("name", TEXT_FIELD, DEVICE_NAME);
-        networkViewPage.useContextActionAndClickConfirmation(ActionsContainer.EDIT_GROUP_ID, NetworkViewPage.DELETE_ELEMENT_ACTION, ConfirmationBox.YES);
-        checkMessageSize();
-        checkMessageType(MessageType.SUCCESS);
-        waitForPageToLoad();
-    }
-
-    @Test(priority = 22)
     @Step("Delete Mediation Connection")
     public void deleteMediation() {
         ViewConnectionConfigurationPage.goToViewConnectionConfigurationPage(driver, URL);
@@ -490,7 +467,7 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    @Test(priority = 23)
+    @Test(priority = 22)
     @Step("Delete IP Address Assignment")
     public void deleteIPAddressAssignment() {
         waitForPageToLoad();
@@ -498,8 +475,29 @@ public class UC_OSS_RM_PLA_002 extends BaseTestCase {
         ipAddressManagementViewPage.searchIpNetwork(IP_NETWORK);
         ipAddressManagementViewPage.expandTreeRow(IP_NETWORK);
         ipAddressManagementViewPage.expandTreeRowContains("%");
-        ipAddressManagementViewPage.expandTreeRow(ADDRESS + "/24");
-        ipAddressManagementViewPage.deleteHostAssignment("/24 [");
+        ipAddressManagementViewPage.deleteIPHost(ADDRESS + "/24");
+        ipAddressManagementViewPage.selectTreeRowContains("10.10.20.0/24");
+        ipAddressManagementViewPage.selectTreeRowContains("10.10.20.0/24");
+        ipAddressManagementViewPage.deleteIPHost("10.10.20.1/24");
+    }
+
+    @Test(priority = 23)
+    @Step("Delete Physical Device")
+    public void deletePhysicalDevice() {
+        HomePage homePage = new HomePage(driver);
+        homePage.goToHomePage(driver, BASIC_URL);
+        waitForPageToLoad();
+        SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
+        sideMenu.callActionByLabel(LAB_NETWORK_VIEW, FAVOURITES, BOOKMARKS);
+        NetworkViewPage networkViewPage = new NetworkViewPage(driver);
+        waitForPageToLoad();
+        networkViewPage.useContextAction(NetworkViewPage.ADD_TO_VIEW_ACTION, NetworkViewPage.DEVICE_ACTION);
+        waitForPageToLoad();
+        networkViewPage.queryElementAndAddItToView("name", TEXT_FIELD, DEVICE_NAME);
+        networkViewPage.useContextActionAndClickConfirmation(ActionsContainer.EDIT_GROUP_ID, NetworkViewPage.DELETE_DEVICE_ACTION, ConfirmationBox.YES);
+        checkMessageSize();
+        checkMessageType(MessageType.SUCCESS);
+        waitForPageToLoad();
     }
 
     private void checkMessageType(MessageType messageType) {

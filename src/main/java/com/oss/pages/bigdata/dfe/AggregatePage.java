@@ -1,12 +1,17 @@
 package com.oss.pages.bigdata.dfe;
 
-import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.tablewidget.OldTable;
+import com.oss.framework.widgets.tabswidget.TabWindowWidget;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 public class AggregatePage extends BaseDfePage {
 
@@ -21,13 +26,18 @@ public class AggregatePage extends BaseDfePage {
 
     private final String NAME_COLUMN_LABEL = "Name";
     private final String DELETE_LABEL = "Delete";
+    private final String EXECUTION_HISTORY_TAB = "Execution History";
+    private final String TABLE_TAB_ID = "executionHistoryId";
+    private final String COLUMN_REQUEST_GENERATION_TIME_LABEL = "Request Generation Time";
+    private final String COLUMN_STATUS_LABEL = "Status";
+    private final String REFRESH_LABEL = "Refresh";
 
     private AggregatePage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
     }
 
     @Step("I Open Aggregates View")
-    public static AggregatePage goToPage(WebDriver driver, String basicURL){
+    public static AggregatePage goToPage(WebDriver driver, String basicURL) {
         WebDriverWait wait = new WebDriverWait(driver, 45);
 
         BaseDfePage.openDfePage(driver, basicURL, wait, "aggregates");
@@ -50,7 +60,7 @@ public class AggregatePage extends BaseDfePage {
     }
 
     @Step("I check if Aggregate: {aggregateName} exists into the table")
-    public Boolean aggregateExistsIntoTable(String aggregateName){
+    public Boolean aggregateExistsIntoTable(String aggregateName) {
         DelayUtils.sleep(2000);
         searchFeed(aggregateName);
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -59,14 +69,62 @@ public class AggregatePage extends BaseDfePage {
         return numberOfRowsInTable == 1;
     }
 
-    @Step("I select found Aggegate")
-    public void selectFoundAggregate(){
+    @Step("I select found Aggregate")
+    public void selectFoundAggregate() {
         getTable(driver, wait).selectRow(0);
     }
 
     @Step("I confirm the removal of Aggregate")
-    public void confirmDelete(){
+    public void confirmDelete() {
         confirmDelete(DELETE_LABEL);
+    }
+
+    @Step("I click Execution History Tab")
+    public void selectExecutionHistoryTab() {
+        selectTab(EXECUTION_HISTORY_TAB);
+    }
+
+    @Step("I click Refresh Table Tab")
+    public void clickRefreshTabTable() {
+        TabWindowWidget.create(driver, wait).callActionByLabel(REFRESH_LABEL);
+        log.debug("Click context action: {}", REFRESH_LABEL);
+    }
+
+    @Step("I check if IfRuns are not empty")
+    public Boolean ifRunsNotEmpty() {
+        boolean ifRunsExists = OldTable
+                .createByComponentId(driver, wait, TABLE_TAB_ID)
+                .getNumberOfRowsInTable(COLUMN_REQUEST_GENERATION_TIME_LABEL) >= 1;
+        log.info("In if Runs exist at least one row: {}", ifRunsExists);
+
+        return ifRunsExists;
+    }
+
+    @Step("I check Last Request Generation Time")
+    public LocalDateTime lastIfRunTime() {
+        String lastRequestGeneration = OldTable
+                .createByComponentId(driver, wait, TABLE_TAB_ID)
+                .getCellValue(0, COLUMN_REQUEST_GENERATION_TIME_LABEL);
+
+        LocalDateTime lastRequestGenerationTime = LocalDateTime.parse(lastRequestGeneration, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        log.info("Last Generation Time is: {}", lastRequestGenerationTime);
+
+        return lastRequestGenerationTime;
+    }
+
+    @Step("I check if Last Request Generation Time is fresh - up to 60 min old")
+    public boolean IsIfRunsFresh() {
+        return ChronoUnit.MINUTES.between(lastIfRunTime(), LocalDateTime.now()) < 60;
+    }
+
+    @Step("I check Status of Aggregate from Execution History tab")
+    public String checkStatus() {
+        String actualStatus = OldTable
+                .createByComponentId(driver, wait, TABLE_TAB_ID)
+                .getCellValue(0, COLUMN_STATUS_LABEL);
+        log.info("Status of last aggregate log is {}", actualStatus);
+
+        return actualStatus;
     }
 
     @Override
