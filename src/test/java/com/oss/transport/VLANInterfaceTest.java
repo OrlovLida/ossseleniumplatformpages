@@ -94,7 +94,7 @@ public class VLANInterfaceTest extends BaseTestCase {
     @Description("Check new VLAN Interface")
     public void checkVLANInterface() {
         homePage.goToHomePageWithContext(driver);
-        homePage.chooseFromLeftSideMenu("Legacy Inventory Dashboard", "Resource Inventory");
+        driver.get("https://10.132.118.207:25081/#/dashboard/predefined/id/startDashboard?perspective=LIVE");
         homePage.setNewObjectType(VLAN_INTERFACE_SEARCH_NIV);
         waitForPageToLoad();
         newInventoryViewPage.searchObject(DEVICE);
@@ -155,7 +155,7 @@ public class VLANInterfaceTest extends BaseTestCase {
     public void deleteVLANInterface() {
         homePage.goToHomePage(driver, BASIC_URL);
         PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
-        homePage.chooseFromLeftSideMenu("Legacy Inventory Dashboard", "Resource Inventory");
+        driver.get("https://10.132.118.207:25081/#/dashboard/predefined/id/startDashboard?perspective=LIVE");
         homePage.setNewObjectType(VLAN_INTERFACE_SEARCH_NIV);
         waitForPageToLoad();
         newInventoryViewPage.searchObject(DEVICE);
