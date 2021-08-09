@@ -3,7 +3,6 @@
     <test name="HomeViewTest">
         <classes>
             <class name="com.oss.acd.HomeViewTest"/>
-            
         </classes>
     </test>
 </suite>
