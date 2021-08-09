@@ -94,7 +94,7 @@ public class TrafficClassTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         //SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
         //sideMenu.callActionByLabel(TRAFFIC_CLASS, WIZARDS, TRANSPORT);
-        driver.get("https://10.132.118.207:25081/#/view/transport/ip/ethernet/traffic-class?perspective=LIVE");
+        driver.get("http://10.132.118.207:25080/#/view/transport/ip/ethernet/traffic-class?perspective=LIVE");
 
         return new TrafficClassWizardPage(driver);
     }

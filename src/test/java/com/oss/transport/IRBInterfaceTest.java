@@ -71,7 +71,7 @@ public class IRBInterfaceTest extends BaseTestCase {
         homePage.goToHomePageWithContext(driver);
         waitForPageToLoad();
         //homePage.chooseFromLeftSideMenu("Create IRB Interface", "Network domains", "Transport & IP");
-        driver.get("10.132.118.207:25081/#/view/transport/ip/ethernet/irb-interface?");
+        driver.get("http://10.132.118.207:25080/#/view/transport/ip/ethernet/irb-interface?");
         driver.navigate().refresh();
         IRBInterfaceWizardPage irbInterfaceWizardPage = new IRBInterfaceWizardPage(driver);
         waitForPageToLoad();
@@ -82,7 +82,8 @@ public class IRBInterfaceTest extends BaseTestCase {
     @Description("Checks if IRB Interface is visible in New Inventory View")
     public void checkIRBInterface() {
         homePage.goToHomePageWithContext(driver);
-        driver.get("https://10.132.118.207:25081/#/dashboard/predefined/id/startDashboard?perspective=LIVE");
+        driver.get("https://10.132.118.207:25081/#/dashboard/predefined/id/startDashboard?");
+        driver.navigate().refresh();
         homePage.setNewObjectType(IRB_INTERFACE_SEARCH_NIV);
         waitForPageToLoad();
         newInventoryViewPage.searchObject(IRB_INTERFACE_DEVICE_NAME);
@@ -143,7 +144,7 @@ public class IRBInterfaceTest extends BaseTestCase {
     public void deleteIRBInterface() {
         homePage.goToHomePage(driver, BASIC_URL);
         PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
-        driver.get("https://10.132.118.207:25081/#/dashboard/predefined/id/startDashboard?perspective=LIVE");
+        driver.get("http://10.132.118.207:25080/#/dashboard/predefined/id/startDashboard?perspective=LIVE");
         homePage.setNewObjectType(IRB_INTERFACE_SEARCH_NIV);
         waitForPageToLoad();
         newInventoryViewPage.searchObject(IRB_INTERFACE_DEVICE_NAME);

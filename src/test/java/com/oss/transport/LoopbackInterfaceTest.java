@@ -114,7 +114,7 @@ public class LoopbackInterfaceTest extends BaseTestCase {
         //SideMenu sidemenu = SideMenu.create(driver, webDriverWait);
         //sidemenu.callActionByLabel("Create Loopback Interface", "Network domains", "Transport & IP");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        driver.get("https://10.132.118.207:25081/#/view/transport/ip/ethernet/loopback-interface?perspective=LIVE");
+        driver.get("http://10.132.118.207:25080/#/view/transport/ip/ethernet/loopback-interface?perspective=LIVE");
 
         return new LoopbackInterfaceWizardPage(driver);
     }
