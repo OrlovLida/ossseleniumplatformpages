@@ -26,6 +26,12 @@ import java.io.IOException;
 import java.util.List;
 
 import static com.oss.configuration.Configuration.CONFIGURATION;
+import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.AggregationMethodOption.SUM;
+import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.MiscellaneousOption.DATA_COMPLETENESS;
+import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.MiscellaneousOption.LAST_SAMPLE_TIME;
+import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.TimePeriodChooserOption.LATEST;
+import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.TimePeriodChooserOption.SMART;
+import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.YAxisOption.MANUAL;
 
 public class KpiViewPage extends BasePage {
 
@@ -34,6 +40,13 @@ public class KpiViewPage extends BasePage {
     private static final String INDICATORS_TREE_ID = "_Indicators";
     private static final String DIMENSIONS_TREE_ID = "_Dimensions";
     private static final String CHART_TYPE_BUTTON_ID = "chart-type-button";
+    private static final String AREA_CHART_BUTTON_ID = "dropdown-list-button_area";
+    private static final String BAR_CHART_BUTTON_ID = "dropdown-list-button_bar";
+    private static final String LINE_CHART_BUTTON_ID = "dropdown-list-button_line";
+    private static final String CHART_COLOR_BUTTON_ID = "chart-color-button";
+    private static final String FULL_SCREEN_BUTTON_ID = "full-screen-button";
+
+    private static final String OPTIONS_BUTTON_ID = "options-menu-button";
 
     public KpiViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -203,7 +216,7 @@ public class KpiViewPage extends BasePage {
     @Step("I should see {expectedPointsCount} highlighted points displayed")
     public boolean shouldSeePointsDisplayed(int expectedPointsCount) {
         KpiChartWidget kpiChartWidget = KpiChartWidget.create(driver, wait);
-        int pointsCount = (kpiChartWidget.countHighlightedPoints()) / 2;
+        int pointsCount = (kpiChartWidget.countVisiblePoints()) / 2;
         return pointsCount == expectedPointsCount;
     }
 
@@ -218,6 +231,7 @@ public class KpiViewPage extends BasePage {
 
     @Step("I click legend")
     public void clickLegend() {
+        log.info("Clicking first element from legend");
         KpiChartWidget.create(driver, wait).clickDataSeriesLegend();
     }
 
@@ -226,22 +240,26 @@ public class KpiViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         KpiChartWidget.create(driver, wait).clickChartActions();
         Button.createById(driver, CHART_TYPE_BUTTON_ID).click();
-        KpiChartWidget.create(driver, wait).clickAreaChartButton();
+        Button.createById(driver, AREA_CHART_BUTTON_ID).click();
+        log.info("Changing chart type to area");
     }
 
     @Step("I click chart type - bar")
     public void clickBarChartType() {
-        KpiChartWidget.create(driver, wait).clickBarChartButton();
+        log.info("Changing chart type to bar chart");
+        Button.createById(driver, BAR_CHART_BUTTON_ID).click();
     }
 
     @Step("I click chart type - line")
     public void clickLineChartType() {
-        KpiChartWidget.create(driver, wait).clickLineChartButton();
+        log.info("Changing chart type to line chart");
+        Button.createById(driver, LINE_CHART_BUTTON_ID).click();
     }
 
     @Step("I pick data series color")
     public void chooseDataSeriesColor() {
-        KpiChartWidget.create(driver, wait).clickChartColorButton();
+        log.info("Changing first data series color");
+        Button.createById(driver, CHART_COLOR_BUTTON_ID).click();
         KpiChartWidget.create(driver, wait).pickDataSeriesColorButton();
     }
 
@@ -282,6 +300,7 @@ public class KpiViewPage extends BasePage {
 
     @Step("Set value in time period chooser")
     public void setValueInTimePeriodChooser(int days, int hours, int minutes) {
+        log.info("Setting value for last option in time period chooser: {} days, {} hours, {} minutes", days, hours, minutes);
         DelayUtils.waitForPageToLoad(driver, wait);
         OptionsPanel optionsPanel = OptionsPanel.create(driver, wait);
         optionsPanel.chooseTimePeriod();
@@ -290,18 +309,97 @@ public class KpiViewPage extends BasePage {
 
     @Step("Set SMART option in time period chooser")
     public void chooseSmartOptionInTimePeriodChooser() {
+        log.info("Setting smart option in time period chooser");
         DelayUtils.waitForPageToLoad(driver, wait);
         OptionsPanel optionsPanel = OptionsPanel.create(driver, wait);
         optionsPanel.chooseTimePeriod();
-        optionsPanel.chooseTimePeriodOption(OptionsPanel.TimePeriodChooserOption.SMART);
+        optionsPanel.chooseTimePeriodOption(SMART);
     }
 
     @Step("Set LATEST option in time period chooser")
     public void chooseLatestOptionInTimePeriodChooser() {
+        log.info("Setting latest option in time period chooser");
         DelayUtils.waitForPageToLoad(driver, wait);
         OptionsPanel optionsPanel = OptionsPanel.create(driver, wait);
         optionsPanel.chooseTimePeriod();
-        optionsPanel.chooseTimePeriodOption(OptionsPanel.TimePeriodChooserOption.LATEST);
+        optionsPanel.chooseTimePeriodOption(LATEST);
+    }
+
+    // do zmiany nazwy
+    @Step("I should see 2 visible Y axis and 1 hidden Y axis")
+    public boolean shouldSeeVisibleYaxis(int expectedVisibleYAxisNumber) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        KpiChartWidget kpiChartWidget = KpiChartWidget.create(driver, wait);
+        int visibleYaxisNumber = kpiChartWidget.countVisibleYAxis();
+        return visibleYaxisNumber == expectedVisibleYAxisNumber;
+    }
+
+    @Step("Set SUM aggregation method")
+    public void chooseSumAggregationMethod() {
+        log.info("Setting sum option in aggregation method");
+        DelayUtils.waitForPageToLoad(driver, wait);
+        OptionsPanel optionsPanel = OptionsPanel.create(driver, wait);
+        optionsPanel.chooseAggregationMethod();
+        optionsPanel.chooseAggregationMethodOption(SUM);
+    }
+
+    @Step("Set Y axis manual option")
+    public void chooseManualYaxis() {
+        log.info("Setting manual Y axis");
+        DelayUtils.waitForPageToLoad(driver, wait);
+        OptionsPanel optionsPanel = OptionsPanel.create(driver, wait);
+        optionsPanel.chooseYAxisOption();
+        optionsPanel.setYAxisOption(MANUAL);
+    }
+
+    @Step("I enable Data Completeness option")
+    public void enableDataCompleteness() {
+        log.info("Enabling Data Completeness visibility");
+        DelayUtils.waitForPageToLoad(driver, wait);
+        OptionsPanel optionsPanel = OptionsPanel.create(driver, wait);
+        optionsPanel.chooseMiscellaneousOption();
+        optionsPanel.setMiscellaneousOption(DATA_COMPLETENESS);
+    }
+
+    @Step("I enable Last Sample Time option")
+    public void enableLastSampleTime() {
+        log.info("Enabling Last Sample Time visibility");
+        DelayUtils.waitForPageToLoad(driver, wait);
+        OptionsPanel optionsPanel = OptionsPanel.create(driver, wait);
+        optionsPanel.chooseMiscellaneousOption();
+        optionsPanel.setMiscellaneousOption(LAST_SAMPLE_TIME);
+    }
+
+    @Step("I should see last sample time below chart")
+    public boolean shouldSeeLastSampleTime(int expectedVisibleLastSampleTimeNumber) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        KpiChartWidget kpiChartWidget = KpiChartWidget.create(driver, wait);
+        int visibleLastSampleTimeNumber = kpiChartWidget.countVisibleLastSampleTime();
+        return visibleLastSampleTimeNumber == expectedVisibleLastSampleTimeNumber;
+    }
+
+    @Step("I should see data completeness displayed in the legend")
+    public boolean shouldSeeDataCompleteness() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        KpiChartWidget kpiChartWidget = KpiChartWidget.create(driver, wait);
+        int visibleLastSampleTimeNumber = kpiChartWidget.countVisibleDataCompleteness();
+        return visibleLastSampleTimeNumber > 0;
+    }
+
+    @Step("I enable Compare with Other Period option")
+    public void enableCompareWithOtherPeriod() {
+        log.info("Enabling Compare with Other Period option");
+        DelayUtils.waitForPageToLoad(driver, wait);
+        OptionsPanel optionsPanel = OptionsPanel.create(driver, wait);
+        optionsPanel.setOtherPeriodOption();
+    }
+
+    @Step("I should see other period displayed in the legend")
+    public boolean shouldSeeOtherPeriod() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        KpiChartWidget kpiChartWidget = KpiChartWidget.create(driver, wait);
+        int visibleOtherPeriodNumber = kpiChartWidget.countVisibleOtherPeriod();
+        return visibleOtherPeriodNumber > 0;
     }
 
 }

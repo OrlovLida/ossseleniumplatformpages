@@ -27,45 +27,47 @@ public class HomeViewTest extends BaseTestCase {
     @Test(priority = 1, testName = "Check column chart", description = "Check column chart")
     @Description("Check column chart")
     public void checkColumnChart() {
+        homeViewPage.maximizeWindow("ColumnChartWindowId");
         homeViewPage.seeColumnChartIsDisplayed();
-    }
-
-    @Test(priority = 2, testName = "Check if column chart is refreshed", description = "Check if column chart is refreshed")
-    @Description("Check if column chart is refreshed")
-    public void refreshColumnChart() {
         homeViewPage.refreshColumnChart();
         homeViewPage.seeColumnChartIsDisplayed();
+        homeViewPage.minimizeWindow("ColumnChartWindowId");
     }
 
-    @Test(priority = 3, testName = "Check pie chart", description = "Check pie chart")
+    @Test(priority = 2, testName = "Check pie chart", description = "Check pie chart")
     @Description("Check pie chart")
     public void checkPieChart() {
+        homeViewPage.maximizeWindow("PieChartTableWindowId");
         homeViewPage.seePieChartIsDisplayed();
-    }
-
-    @Test(priority = 4, testName = "Check if pie chart is refreshed", description = "Check if pie chart is refreshed")
-    @Description("Check if pie chart is refreshed")
-    public void refreshPieChart() {
         homeViewPage.refreshPieChart();
         homeViewPage.seePieChartIsDisplayed();
+        homeViewPage.minimizeWindow("PieChartTableWindowId");
     }
 
-    @Test(priority = 5, testName = "Check if situation exist", description = "Check if situation exist")
-    @Description("Check if situation exist")
+    @Test(priority = 3, testName = "Check if Situations exist", description = "Check if Situations exist")
+    @Description("Check if Situations exist")
     public void situationCheck() {
+        homeViewPage.maximizeWindow("IssueTableWindowId");
         checkScenarioTableWithFilters("Situation");
     }
 
-    @Test(priority = 6, testName = "Check if Anomaly exist", description = "Check if Anomaly exist")
-    @Description("Check if Anomaly exist")
+    @Test(priority = 4, testName = "Check if Anomalies exist", description = "Check if Anomalies exist")
+    @Description("Check if Anomalies exist")
     public void anomalyCheck() {
         checkScenarioTableWithFilters("Anomaly");
     }
 
-    @Test(priority = 7, testName = "Check if problem exist", description = "Check if problem exist")
-    @Description("Check if problem exist")
+    @Test(priority = 5, testName = "Check if Problems exist", description = "Check if Problems exist")
+    @Description("Check if Problems exist")
     public void problemCheck() {
         checkScenarioTableWithFilters("Problem");
+    }
+
+    @Test(priority = 6, testName = "Check if issues table is refreshed and minimize window", description = "Check if issues table is refreshed and minimize window")
+    @Description("Check if issues table is refreshed and minimize window")
+    public void refreshIssuesTable() {
+        homeViewPage.refreshIssuesTable();
+        homeViewPage.minimizeWindow("IssueTableWindowId");
     }
 
     private void checkScenarioTableWithFilters(String issueType) {

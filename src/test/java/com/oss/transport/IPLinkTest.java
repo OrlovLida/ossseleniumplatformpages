@@ -9,13 +9,14 @@ import org.testng.annotations.Test;
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
-import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.contextactions.ActionsContainer;
+import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.Wizard;
 import com.oss.pages.bpm.ProcessWizardPage;
 import com.oss.pages.bpm.TasksPage;
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.NewInventoryViewPage;
+import com.oss.pages.radio.ConnectionWizardPage;
 import com.oss.pages.transport.NetworkViewPage;
 import com.oss.pages.transport.trail.RoutingWizardPage;
 import com.oss.utils.TestListener;
@@ -26,25 +27,20 @@ import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD
 
 @Listeners({ TestListener.class })
 public class IPLinkTest extends BaseTestCase {
-    private String processNRPCode;
-    private String ipLinkName = "IPLink_Selenium";
-    private String newIpLinkName = "IPLink_Selenium2";
-    private String ethernetLinkName = "EthernetLink_Selenium";
+    private static final String IP_LINK_NAME = "IPLink_Selenium";
+    private static final String NEW_IP_LINK_NAME = "IPLink_Selenium2";
+    private static final String ETHERNET_LINK_NAME = "EthernetLink_Selenium";
+    private static final String BUSINESS_PROCESS_MANAGEMENT = "Business Process Management";
+    private static final String BPM_AND_PLANNING = "BPM and Planning";
+    private static final String PROCESS_INSTANCES = "Process Instances";
     private NetworkViewPage networkViewPage;
-    private Wizard wizard;
-
-    public Wizard getWizard() {
-        if (wizard == null) {
-            wizard = Wizard.createWizard(driver, webDriverWait);
-        }
-        return wizard;
-    }
+    private String processNRPCode;
 
     @Test(priority = 1)
     @Description("Create NRP process")
     public void createProcessNRP() {
-        openView("Process Instances", "Views", "Business Process Management");
-        ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
+        homePage.chooseFromLeftSideMenu(PROCESS_INSTANCES, BPM_AND_PLANNING, BUSINESS_PROCESS_MANAGEMENT);
+        ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);//add wait
         processNRPCode = processWizardPage.createSimpleNRP();
         checkPopup(processNRPCode);
     }
@@ -63,15 +59,15 @@ public class IPLinkTest extends BaseTestCase {
     @Description("Create IP Link")
     public void createIPLink() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        openView("IP LINK Test", "Favourites");
+        openView();
         networkViewPage = new NetworkViewPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkViewPage.useContextAction("add_to_view_group", "Network Element");
+        networkViewPage.useContextAction(NetworkViewPage.ADD_TO_VIEW_ACTION, NetworkViewPage.DEVICE_ACTION);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkViewPage.queryElementAndAddItToView("name", TEXT_FIELD, "SeleniumIPLinkTests");
 
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkViewPage.useContextAction("add_to_view_group", "Network Element");
+        networkViewPage.useContextAction(NetworkViewPage.ADD_TO_VIEW_ACTION, NetworkViewPage.DEVICE_ACTION);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkViewPage.queryElementAndAddItToView("name", TEXT_FIELD, "SeleniumIPLinkTests2");
 
@@ -80,18 +76,19 @@ public class IPLinkTest extends BaseTestCase {
         networkViewPage.selectObjectInViewContent("Name", "SeleniumIPLinkTests");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
-        networkViewPage.useContextAction("CREATE", "Create Connection");
+        networkViewPage.useContextAction(ActionsContainer.CREATE_GROUP_ID, NetworkViewPage.CREATE_CONNECTION_ID);
+        networkViewPage.selectTrailType("IP Link");
+        networkViewPage.acceptTrailType();
+        ConnectionWizardPage connectionWizardPage = new ConnectionWizardPage(driver);
+        connectionWizardPage.setName(IP_LINK_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        getWizard().setComponentValue("trailTypeCombobox", "IP Link", Input.ComponentType.COMBOBOX);
-        getWizard().clickAccept();
+        connectionWizardPage.setCapacityUnit("Mbps");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-
-        wizard = null;
-        getWizard().setComponentValue("name-uid", ipLinkName, Input.ComponentType.TEXT_FIELD);
-        getWizard().setComponentValue("capacity-unit-uid", "Mbps", Input.ComponentType.COMBOBOX);
-        getWizard().setComponentValue("capacity-value-uid", "100", Input.ComponentType.TEXT_FIELD);
-        getWizard().clickButtonByLabel("Proceed");
-        wizard = null;
+        connectionWizardPage.setCapacityValue("100");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        connectionWizardPage.clickNext();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        connectionWizardPage.clickAccept();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -101,25 +98,9 @@ public class IPLinkTest extends BaseTestCase {
         networkViewPage.expandDockedPanel("left");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkViewPage.selectObjectInViewContent("Name", "IPLink_Selenium");
-
         networkViewPage.expandDockedPanel("bottom");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkViewPage.selectObjectInDetailsTab("Type", "Start");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkViewPage.modifyTermination();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkViewPage.setTrailPort("GE 0");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkViewPage.clickProceed();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkViewPage.selectObjectInDetailsTab("Type", "End");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkViewPage.modifyTermination();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkViewPage.setTrailPort("GE 0");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkViewPage.clickProceed();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        updateTermination("Start");
+        updateTermination("End");
     }
 
     @Test(priority = 5)
@@ -131,18 +112,18 @@ public class IPLinkTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkViewPage.selectObjectInViewContent("Name", "SeleniumIPLinkTests2");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-
-        networkViewPage.useContextAction("CREATE", "Create Connection");
+        networkViewPage.useContextAction(ActionsContainer.CREATE_GROUP_ID, NetworkViewPage.CREATE_CONNECTION_ID);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        getWizard().setComponentValue("trailTypeCombobox", "Ethernet Link", Input.ComponentType.COMBOBOX);
-        getWizard().clickAccept();
+        networkViewPage.selectTrailType("Ethernet Link");
+        networkViewPage.acceptTrailType();
+        ConnectionWizardPage connectionWizardPage = new ConnectionWizardPage(driver);
+        connectionWizardPage.setName(ETHERNET_LINK_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-
-        wizard = null;
-        getWizard().setComponentValue("oss.transport.trail.type.Ethernet Link.Name", ethernetLinkName, Input.ComponentType.TEXT_FIELD);
-        getWizard().setComponentValue("oss.transport.trail.type.Ethernet Link.Speed-input", "100M", Input.ComponentType.COMBOBOX);
-        getWizard().clickButtonByLabel("Proceed");
-        wizard = null;
+        connectionWizardPage.setEthernetLinkSpeed("100M");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        connectionWizardPage.clickNext();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        connectionWizardPage.clickAccept();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
     }
@@ -152,9 +133,8 @@ public class IPLinkTest extends BaseTestCase {
     public void addRouting() {
         networkViewPage.expandDockedPanel("left");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkViewPage.selectObjectInViewContent("Name", "IPLink_Selenium");
+        networkViewPage.selectObjectInViewContent("Name", "IPLink_Selenium (0%)");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-
         networkViewPage.startEditingSelectedTrail();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkViewPage.selectObjectInViewContent("Name", "SeleniumIPLinkTests");
@@ -163,23 +143,25 @@ public class IPLinkTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkViewPage.selectObjectInViewContent("Name", "EthernetLink_Selenium (0%)");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-
         RoutingWizardPage routingWizardPage = networkViewPage.addSelectedObjectsToRouting();
         routingWizardPage.proceed();
-        Assert.assertTrue(networkViewPage.isObjectInRouting1stLevel(ethernetLinkName));
+        Assert.assertTrue(networkViewPage.isObjectInRouting1stLevel(ETHERNET_LINK_NAME));
     }
 
     @Test(priority = 7)
     @Description("Edit IP Link attributes")
     public void editIPLink() {
-        networkViewPage.useContextAction("EDIT", "Attributes and terminations");
+        networkViewPage.useContextAction(ActionsContainer.EDIT_GROUP_ID, NetworkViewPage.ATTRIBUTES_AND_TERMINATIONS_ACTION);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-
-        getWizard().setComponentValue("name-uid", newIpLinkName, Input.ComponentType.TEXT_FIELD);
-        getWizard().setComponentValue("capacity-value-uid", "110", Input.ComponentType.TEXT_FIELD);
-        getWizard().clickButtonByLabel("Proceed");
+        ConnectionWizardPage connectionWizardPage = new ConnectionWizardPage(driver);
+        connectionWizardPage.setName(NEW_IP_LINK_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        wizard = null;
+        connectionWizardPage.setCapacityValue("110");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        connectionWizardPage.clickNext();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        connectionWizardPage.clickAccept();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
     @Test(priority = 8)
@@ -187,11 +169,13 @@ public class IPLinkTest extends BaseTestCase {
     public void checkIPLink() {
         HomePage homePage = new HomePage(driver);
         homePage.goToHomePageWithContext(driver);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        homePage.chooseFromLeftSideMenu("Legacy Inventory Dashboard", "Resource Inventory ");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         homePage.setNewObjectType("Trail");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
-        newInventoryViewPage.searchObject(newIpLinkName);
-
+        newInventoryViewPage.searchObject(NEW_IP_LINK_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertFalse(newInventoryViewPage.checkIfTableIsEmpty());
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -210,26 +194,20 @@ public class IPLinkTest extends BaseTestCase {
     public void deleteIPLink() {
         NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Trail");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        newInventoryViewPage.searchObject(newIpLinkName);
+        newInventoryViewPage.searchObject(NEW_IP_LINK_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         newInventoryViewPage.selectFirstRow();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        newInventoryViewPage.callAction("EDIT", "DeleteTrailWizardActionId");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-
-        getWizard().clickButtonByLabel("Next");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        getWizard().clickButtonByLabel("Delete");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkViewPage.useContextActionAndClickConfirmation(ActionsContainer.EDIT_GROUP_ID, NetworkViewPage.DELETE_CONNECTION_ID, ConfirmationBox.DELETE);
         checkPopupStatus();
     }
 
-    private void openView(String actionLabel, String... path) {
+    private void openView() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         homePage = new HomePage(driver);
         homePage.goToHomePageWithContext(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        homePage.chooseFromLeftSideMenu(actionLabel, path);
+        homePage.chooseFromLeftSideMenu("Network View", "Resource Inventory ");
     }
 
     private void checkPopupStatus() {
@@ -244,5 +222,21 @@ public class IPLinkTest extends BaseTestCase {
         Assert.assertEquals(messages.size(), 1);
         Assert.assertEquals(messages.get(0).getMessageType(), SystemMessageContainer.MessageType.SUCCESS);
         Assert.assertTrue((messages.get(0).getText()).contains(text));
+    }
+
+    private void updateTermination(String type) {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkViewPage.selectObjectInDetailsTab("Type", type);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkViewPage.modifyTermination();
+        ConnectionWizardPage connectionWizardPage = new ConnectionWizardPage(driver);
+        connectionWizardPage.terminateCardComponent("No Card/Component");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        connectionWizardPage.terminatePort("GE 0");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        connectionWizardPage.terminateTerminationPort("GE 0");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        connectionWizardPage.clickAccept();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 }
