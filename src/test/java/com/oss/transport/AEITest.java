@@ -111,9 +111,10 @@ public class AEITest extends BaseTestCase {
     }
 
     private AEIWizardPage goToAEIWizardPage() {
-        SideMenu sidemenu = SideMenu.create(driver, webDriverWait);
+        //SideMenu sidemenu = SideMenu.create(driver, webDriverWait);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        sidemenu.callActionByLabel("Create Aggregated Ethernet Interface", "Network domains", "Transport & IP");
+        //sidemenu.callActionByLabel("Create Aggregated Ethernet Interface", "Network domains", "Transport & IP");
+        driver.get("https://10.132.118.207:25081/#/view/transport/ip/ethernet/aei?perspective=LIVE");
 
         return new AEIWizardPage(driver);
     }
