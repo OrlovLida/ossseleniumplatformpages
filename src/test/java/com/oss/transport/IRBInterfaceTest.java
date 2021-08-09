@@ -82,7 +82,7 @@ public class IRBInterfaceTest extends BaseTestCase {
     @Description("Checks if IRB Interface is visible in New Inventory View")
     public void checkIRBInterface() {
         homePage.goToHomePageWithContext(driver);
-        driver.get("https://10.132.118.207:25081/#/dashboard/predefined/id/startDashboard?");
+        driver.get("http://10.132.118.207:25080/#/dashboard/predefined/id/startDashboard?");
         driver.navigate().refresh();
         homePage.setNewObjectType(IRB_INTERFACE_SEARCH_NIV);
         waitForPageToLoad();
