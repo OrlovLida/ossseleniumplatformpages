@@ -82,7 +82,7 @@ public class IRBInterfaceTest extends BaseTestCase {
     @Description("Checks if IRB Interface is visible in New Inventory View")
     public void checkIRBInterface() {
         homePage.goToHomePageWithContext(driver);
-        homePage.chooseFromLeftSideMenu("Legacy Inventory Dashboard", "Resource Inventory");
+        driver.get("https://10.132.118.207:25081/#/dashboard/predefined/id/startDashboard?perspective=LIVE");
         homePage.setNewObjectType(IRB_INTERFACE_SEARCH_NIV);
         waitForPageToLoad();
         newInventoryViewPage.searchObject(IRB_INTERFACE_DEVICE_NAME);
@@ -143,7 +143,7 @@ public class IRBInterfaceTest extends BaseTestCase {
     public void deleteIRBInterface() {
         homePage.goToHomePage(driver, BASIC_URL);
         PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
-        homePage.chooseFromLeftSideMenu("Legacy Inventory Dashboard", "Resource Inventory");
+        driver.get("https://10.132.118.207:25081/#/dashboard/predefined/id/startDashboard?perspective=LIVE");
         homePage.setNewObjectType(IRB_INTERFACE_SEARCH_NIV);
         waitForPageToLoad();
         newInventoryViewPage.searchObject(IRB_INTERFACE_DEVICE_NAME);

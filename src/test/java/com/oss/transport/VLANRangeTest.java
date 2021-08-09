@@ -65,7 +65,7 @@ public class VLANRangeTest extends BaseTestCase {
     public void checkIfVLANRangeIsCreated() {
         HomePage homePage = new HomePage(driver)
                 .goToHomePage(driver, BASIC_URL);
-        homePage.chooseFromLeftSideMenu("Legacy Inventory Dashboard", "Resource Inventory");
+        driver.get("https://10.132.118.207:25081/#/dashboard/predefined/id/startDashboard?perspective=LIVE");
         homePage.setNewObjectType("VLAN Range");
         NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.searchObject(VLAN_NAME_1);
@@ -95,7 +95,7 @@ public class VLANRangeTest extends BaseTestCase {
     public void checkIfVLANRangeIsEditedCorrectly() {
         HomePage homePage = new HomePage(driver)
                 .goToHomePage(driver, BASIC_URL);
-        homePage.chooseFromLeftSideMenu("Legacy Inventory Dashboard", "Resource Inventory");
+        driver.get("https://10.132.118.207:25081/#/dashboard/predefined/id/startDashboard?perspective=LIVE");
         homePage.setNewObjectType("VLAN Range");
         NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.searchObject(VLAN_NAME_2);
