@@ -3,6 +3,7 @@ package com.oss.transport;
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
+import com.oss.framework.mainheader.PerspectiveChooser;
 import com.oss.framework.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
@@ -94,7 +95,9 @@ public class TrafficClassTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         //SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
         //sideMenu.callActionByLabel(TRAFFIC_CLASS, WIZARDS, TRANSPORT);
-        driver.get("http://10.132.118.207:25080/#/view/transport/ip/ethernet/traffic-class?perspective=LIVE");
+        driver.get(String.format("%s/#/view/transport/ip/ethernet/traffic-class?perspective=LIVE", BASIC_URL));
+        PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
+        perspectiveChooser.setCurrentTask();
 
         return new TrafficClassWizardPage(driver);
     }

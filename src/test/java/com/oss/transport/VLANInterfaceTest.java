@@ -75,8 +75,9 @@ public class VLANInterfaceTest extends BaseTestCase {
         homePage.goToHomePageWithContext(driver);
         waitForPageToLoad();
         //homePage.chooseFromLeftSideMenu("Create VLAN Interface", "Network domains", "Transport & IP");
-        driver.get("http://10.132.118.207:25080/#/view/transport/ip/ethernet/vlan-interface?");
-        driver.navigate().refresh();
+        driver.get(String.format("%s/#/view/transport/ip/ethernet/vlan-interface", BASIC_URL));
+        PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
+        perspectiveChooser.setCurrentTask();
         VLANInterfaceWizardPage vlanInterfaceWizardPage = new VLANInterfaceWizardPage(driver);
         waitForPageToLoad();
         vlanInterfaceWizardPage.setType(VLAN_INTERFACE_TYPE);
@@ -95,8 +96,9 @@ public class VLANInterfaceTest extends BaseTestCase {
     @Description("Check new VLAN Interface")
     public void checkVLANInterface() {
         homePage.goToHomePageWithContext(driver);
-        driver.get("http://10.132.118.207:25080/#/dashboard/predefined/id/startDashboard?");
-        driver.navigate().refresh();
+        driver.get(String.format("%s/#/dashboard/predefined/id/startDashboard", BASIC_URL));
+        PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
+        perspectiveChooser.setCurrentTask();
         homePage.setNewObjectType(VLAN_INTERFACE_SEARCH_NIV);
         waitForPageToLoad();
         newInventoryViewPage.searchObject(DEVICE);
@@ -157,7 +159,9 @@ public class VLANInterfaceTest extends BaseTestCase {
     public void deleteVLANInterface() {
         homePage.goToHomePage(driver, BASIC_URL);
         PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
-        driver.get("http://10.132.118.207:25080/#/dashboard/predefined/id/startDashboard?perspective=LIVE");
+        driver.get(String.format("%s/#/dashboard/predefined/id/startDashboard", BASIC_URL));
+        PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
+        perspectiveChooser.setCurrentTask();
         homePage.setNewObjectType(VLAN_INTERFACE_SEARCH_NIV);
         waitForPageToLoad();
         newInventoryViewPage.searchObject(DEVICE);

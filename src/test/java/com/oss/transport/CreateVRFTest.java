@@ -7,6 +7,7 @@
 package com.oss.transport;
 
 import com.oss.BaseTestCase;
+import com.oss.framework.mainheader.PerspectiveChooser;
 import com.oss.framework.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.transport.VRF.VRFImpExpRouteTargetWizardPage;
@@ -146,7 +147,9 @@ public class CreateVRFTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         //SideMenu sidemenu = SideMenu.create(driver, webDriverWait);
         //sidemenu.callActionByLabel(VRF, WIZARDS, TRANSPORT);
-        driver.get("http://10.132.118.207:25080/#/view/transport/tpt/vrf?perspective=LIVE");
+        driver.get(String.format("%s/#/view/transport/tpt/vrf?perspective=LIVE", BASIC_URL));
+        PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
+        perspectiveChooser.setCurrentTask();
 
         return new VRFWizardPage(driver);
     }
