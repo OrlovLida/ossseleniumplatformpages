@@ -44,7 +44,7 @@ public class VLANPoolTest extends BaseTestCase {
     @Test(priority = 1)
     @Description("Set fields and create VLAN Pool")
     public void createVLANPool() {
-        driver.get("https://10.132.118.207:25081/#/dashboard/predefined/id/startDashboard?perspective=LIVE");
+        homePage.chooseFromLeftSideMenu("Legacy Inventory Dashboard", "Resource Inventory ");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         homePage.setOldObjectType("VLAN Pool");
