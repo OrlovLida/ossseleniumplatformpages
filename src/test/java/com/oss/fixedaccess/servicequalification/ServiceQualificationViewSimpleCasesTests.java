@@ -41,7 +41,7 @@ public class ServiceQualificationViewSimpleCasesTests extends BaseTestCase {
     private ServiceQualificationView serviceQualificationView;
     private PhysicalDataCreatorForSimpleCasesWithSQ physicalDataCreatorForSimpleCasesWithSQ;
     private SoftAssert softAssert;
-    private Environment env = Environment.getInstance();
+    private final Environment env = Environment.getInstance();
 
     @BeforeClass
     @Description("Init classes")
@@ -75,8 +75,9 @@ public class ServiceQualificationViewSimpleCasesTests extends BaseTestCase {
     }
 
     @Test()
-    @Description("Test for check for all Access technologies, that data in table and in property panel are correct. /n This test doesn't check resources for each access technology. Test run for DA name and installation address name.")
-    public void checkDataInTableAndPropertyPanelForAllAccessTechnologiesInSQViewHappyPathTest() {
+    @Description("Test for check for all Access technologies, that data in table and in property panel are correct. " +
+            "/n This test doesn't check resources for each access technology. Test run for installation address name.")
+    public void checkDataInTableAndPropertyPanelForAllAccessTechnologiesInSQViewHappyPathTestForAddressName() {
 
         getPerspectiveChooser().setLivePerspective();
         serviceQualificationWizard.openServiceQualificationWizard()
@@ -94,24 +95,45 @@ public class ServiceQualificationViewSimpleCasesTests extends BaseTestCase {
         String expectedCoverage = "True";
         String expectedDistributionAreaId = String.valueOf(distributionAreaId);
 
-        checkDataInTableAndPropertyPanelForAllAccessTechnologies(AccessTechnologiesEnum.values(), expectedDistributionAreaId, expectedAvailability, expectedCoverage, distributionAreaName, TECHNICAL_STANDARD);
-
-        serviceQualificationView.clickButtonChangeParameters()
-                .setQueryOption(DA_QUERY_OPTION);
-
-        useProperMethodForSearchDAorAddress(distributionAreaName, Long.valueOf(distributionAreaId));
-
-        serviceQualificationWizard.clickAccept();
-
-        checkDataInTableAndPropertyPanelForAllAccessTechnologies(AccessTechnologiesEnum.values(), expectedDistributionAreaId, expectedAvailability, expectedCoverage, distributionAreaName, TECHNICAL_STANDARD);
+        checkDataInTableAndPropertyPanelForAllAccessTechnologies(AccessTechnologiesEnum.values(), expectedDistributionAreaId,
+        expectedAvailability, expectedCoverage, distributionAreaName, TECHNICAL_STANDARD);
 
         softAssert.assertAll();
 
     }
 
     @Test()
-    @Description("Test for check for all Access technologies, that error code {REQUIRED_DOWNLOAD_SPEED_ERROR_MESSAGE} appear when download speed is grater than max. Test run for DA name and installation address name.")
-    public void checkErrorForRequiredDownloadSpeedGraterThanMaxDownloadSpeedForAllAccessTechnologiesTest() {
+    @Description("Test for check for all Access technologies, that data in table and in property panel are correct. " +
+            "/n This test doesn't check resources for each access technology. Test run for DA name.")
+    public void checkDataInTableAndPropertyPanelForAllAccessTechnologiesInSQViewHappyPathTestForDAName() {
+
+        getPerspectiveChooser().setLivePerspective();
+        serviceQualificationWizard.openServiceQualificationWizard()
+                .setQueryOption(DA_QUERY_OPTION);
+
+        useProperMethodForSearchDAorAddress(distributionAreaName, Long.valueOf(distributionAreaId));
+
+        serviceQualificationWizard
+                .setProvideAlternative("true")
+                .setProvideResource("false")
+                .setProvideServiceNode("false")
+                .clickAccept();
+
+        String expectedAvailability = "True";
+        String expectedCoverage = "True";
+        String expectedDistributionAreaId = String.valueOf(distributionAreaId);
+
+        checkDataInTableAndPropertyPanelForAllAccessTechnologies(AccessTechnologiesEnum.values(), expectedDistributionAreaId,
+        expectedAvailability, expectedCoverage, distributionAreaName, TECHNICAL_STANDARD);
+
+        softAssert.assertAll();
+
+    }
+
+    @Test()
+    @Description("Test for check for all Access technologies, that error code {REQUIRED_DOWNLOAD_SPEED_ERROR_MESSAGE} " +
+            "appear when download speed is grater than max. Test run for installation address name.")
+    public void checkErrorForRequiredDownloadSpeedGraterThanMaxDownloadSpeedForAllAccessTechnologiesTestForAddressName() {
 
         getPerspectiveChooser().setLivePerspective();
         serviceQualificationWizard.openServiceQualificationWizard()
@@ -130,16 +152,37 @@ public class ServiceQualificationViewSimpleCasesTests extends BaseTestCase {
         String expectedAvailability = "False";
         String availabilityColumnName = "Availability";
 
-        serviceQualificationView.deleteParticularDataSetFromColectionWithAllDataSetsFromTable(availabilityColumnName);
+        serviceQualificationView.deleteParticularDataSetFromCollectionWithAllDataSetsFromTable(availabilityColumnName);
 
         checkProblemDescriptionAndAvailabilityForAllAccessTechnologies(AccessTechnologiesEnum.values(), REQUIRED_DOWNLOAD_SPEED_ERROR_MESSAGE, expectedAvailability);
 
+        softAssert.assertAll();
+
+    }
+
+    @Test()
+    @Description("Test for check for all Access technologies, that error code {REQUIRED_DOWNLOAD_SPEED_ERROR_MESSAGE} " +
+            "appear when download speed is grater than max. Test run for DA name .")
+    public void checkErrorForRequiredDownloadSpeedGraterThanMaxDownloadSpeedForAllAccessTechnologiesTestForDAName() {
+
+        getPerspectiveChooser().setLivePerspective();
         serviceQualificationView.clickButtonChangeParameters()
                 .setQueryOption(DA_QUERY_OPTION);
 
         useProperMethodForSearchDAorAddress(distributionAreaName, Long.valueOf(distributionAreaId));
 
-        serviceQualificationWizard.clickAccept();
+        serviceQualificationWizard
+                .setProvideAlternative("true")
+                .setProvideResource("false")
+                .setProvideServiceNode("false")
+                .setRequiredDownloadSpeed("100000")
+                .setRequiredUploadSpeed("100000")
+                .clickAccept();
+
+        String expectedAvailability = "False";
+        String availabilityColumnName = "Availability";
+
+        serviceQualificationView.deleteParticularDataSetFromCollectionWithAllDataSetsFromTable(availabilityColumnName);
 
         checkProblemDescriptionAndAvailabilityForAllAccessTechnologies(AccessTechnologiesEnum.values(), REQUIRED_DOWNLOAD_SPEED_ERROR_MESSAGE, expectedAvailability);
 
@@ -150,7 +193,10 @@ public class ServiceQualificationViewSimpleCasesTests extends BaseTestCase {
     @Test()
     @Description("Delete whole data structure for tests")
     public void deleteDataForTests() {
-        physicalDataCreatorForSimpleCasesWithSQ.deleteAllDataForSimplePhysicalDataForSQTests(Long.valueOf(distributionAreaId), cableOutletCPODF, cableCPODFSplitter, cableSplitterCOODF, cableCOODFAN, accessNodeId, centralOfficeODFId, splitterId, installationODFId, opticalOutletId, installationBuildingId, centralOfficeBuildingId, centralOfficeAddressId, installationAddressId);
+        physicalDataCreatorForSimpleCasesWithSQ.deleteAllDataForSimplePhysicalDataForSQTests(Long.valueOf(distributionAreaId),
+        cableOutletCPODF, cableCPODFSplitter, cableSplitterCOODF, cableCOODFAN, accessNodeId, centralOfficeODFId,
+        splitterId, installationODFId, opticalOutletId, installationBuildingId, centralOfficeBuildingId,
+        centralOfficeAddressId, installationAddressId);
     }
 
     private void useProperMethodForSearchDAorAddress(String addressOrDaName, Long xId) {
@@ -164,7 +210,8 @@ public class ServiceQualificationViewSimpleCasesTests extends BaseTestCase {
         }
     }
 
-    private void checkDataInPropertyPanelForParticularAccessTechnology(String expectedCovergae, String expectedDistributionAreaName, String expectedDistributionAreaId, String expectedPrimaryTechnology, String expectedTechnicalStandard, String expectedMediumType) {
+    private void checkDataInPropertyPanelForParticularAccessTechnology(String expectedCovergae, String expectedDistributionAreaName,
+        String expectedDistributionAreaId, String expectedPrimaryTechnology, String expectedTechnicalStandard, String expectedMediumType) {
         String coverageFromPropertyPanel = serviceQualificationView.getValueFromPropertyPanelInSQView("Coverage");
         String distributionAreaNameFromPropertyPanel = serviceQualificationView.getValueFromPropertyPanelInSQView("Distribution Area");
         String distributionAreaIdFromPropertyPanel = serviceQualificationView.getValueFromPropertyPanelInSQView("Distribution Area Id:");
@@ -179,7 +226,8 @@ public class ServiceQualificationViewSimpleCasesTests extends BaseTestCase {
         softAssert.assertEquals(mediumTypeFromPropertyPanel, expectedMediumType);
     }
 
-    private void checkDataInTableForParticularAccessTechnology(AccessTechnologiesEnum accessTechnologiesEnum, String expectedDownloadSpeed, String expectedUploadSpeed, String expectedDistributionAreaId, String expectedAvailability) {
+    private void checkDataInTableForParticularAccessTechnology(AccessTechnologiesEnum accessTechnologiesEnum, String expectedDownloadSpeed,
+        String expectedUploadSpeed, String expectedDistributionAreaId, String expectedAvailability) {
         String downloadSpeedFromTable = serviceQualificationView.getDownloadSpeedFromTable(accessTechnologiesEnum.getName());
         String uploadSpeedFromTable = serviceQualificationView.getUploadSpeedFromTable(accessTechnologiesEnum.getName());
         String distributionAreaIdFromTable = serviceQualificationView.getDistributionAreaIdFromTable(accessTechnologiesEnum.getName());
@@ -199,19 +247,23 @@ public class ServiceQualificationViewSimpleCasesTests extends BaseTestCase {
         softAssert.assertEquals(problemDescription, problemDescriptionError);
     }
 
-    private void checkProblemDescriptionAndAvailabilityForAllAccessTechnologies(AccessTechnologiesEnum[] accessTechnologiesEnum, String problemDescriptionError, String expectedAvailability) {
-        for (AccessTechnologiesEnum i : accessTechnologiesEnum) {
-            selectParticularRowInTableForColumnServiceConnectionOptionsWithValue(i.getName());
+    private void checkProblemDescriptionAndAvailabilityForAllAccessTechnologies(AccessTechnologiesEnum[] accessTechnologiesEnum,
+        String problemDescriptionError, String expectedAvailability) {
+        for (AccessTechnologiesEnum accessTechnology : accessTechnologiesEnum) {
+            selectParticularRowInTableForColumnServiceConnectionOptionsWithValue(accessTechnology.getName());
             checkProblemDescriptionForParticularAccessTechnology(problemDescriptionError);
-            checkAvailabilityFromTableForParticularAccessTechnology(i, expectedAvailability);
+            checkAvailabilityFromTableForParticularAccessTechnology(accessTechnology, expectedAvailability);
         }
     }
 
-    private void checkDataInTableAndPropertyPanelForAllAccessTechnologies(AccessTechnologiesEnum[] accessTechnologiesEnum, String expectedDistributionAreaId, String expectedAvailability, String expectedCoverage, String distributionAreaName, String technicalStandard) {
-        for (AccessTechnologiesEnum i : accessTechnologiesEnum) {
-            selectParticularRowInTableForColumnServiceConnectionOptionsWithValue(i.getName());
-            checkDataInTableForParticularAccessTechnology(i, i.getDownloadSpeed(), i.getUploadSpeed(), expectedDistributionAreaId, expectedAvailability);
-            checkDataInPropertyPanelForParticularAccessTechnology(expectedCoverage, distributionAreaName, expectedDistributionAreaId, i.getName(), technicalStandard, i.getSupportedMediumType());
+    private void checkDataInTableAndPropertyPanelForAllAccessTechnologies(AccessTechnologiesEnum[] accessTechnologiesEnum, String expectedDistributionAreaId,
+        String expectedAvailability, String expectedCoverage, String distributionAreaName, String technicalStandard) {
+        for (AccessTechnologiesEnum accessTechnology : accessTechnologiesEnum) {
+            selectParticularRowInTableForColumnServiceConnectionOptionsWithValue(accessTechnology.getName());
+            checkDataInTableForParticularAccessTechnology(accessTechnology, accessTechnology.getDownloadSpeed(), accessTechnology.getUploadSpeed(),
+            expectedDistributionAreaId, expectedAvailability);
+            checkDataInPropertyPanelForParticularAccessTechnology(expectedCoverage, distributionAreaName, expectedDistributionAreaId, accessTechnology.getName(),
+            technicalStandard, accessTechnology.getSupportedMediumType());
         }
     }
 

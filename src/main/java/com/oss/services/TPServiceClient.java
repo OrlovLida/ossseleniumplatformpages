@@ -40,10 +40,20 @@ public class TPServiceClient {
     }
 
     public String getConnectorId(Long deviceId, String portId, String connectorName) {
-        return Arrays.stream(getDeviceConnectors(deviceId, portId)).filter(e -> (e.getName().equals(connectorName))).map(e -> e.getId()).findAny().get().toString();
+        return Arrays.stream(getDeviceConnectors(deviceId, portId))
+               .filter(e -> (e.getName()
+               .equals(connectorName)))
+               .map(e -> e.getId())
+               .findAny()
+               .get()
+               .toString();
     }
 
     public Long getAccessInterfaceId(Long deviceId, String portId, String layerName) {
-        return Arrays.stream(getDeviceConnectors(deviceId, portId)).filter(e -> (e.getLayer().equals(layerName))).map(e -> e.getId()).findAny().get();
+        return Arrays.stream(getDeviceConnectors(deviceId, portId))
+               .filter(e -> (e.getLayer().equals(layerName)))
+               .map(e -> e.getId())
+               .findAny()
+               .get();
     }
 }

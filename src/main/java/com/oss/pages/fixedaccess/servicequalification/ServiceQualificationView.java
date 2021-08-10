@@ -24,7 +24,7 @@ public class ServiceQualificationView extends BasePage {
     private static final String AVAILABILITY_COLUMN_LABEL = "Availability";
     private static final String DISTRIBUTION_AREA_COLUMN_LABEL = "Distribution Area";
 
-    private Map<String, Map<String, String>> allValuesInTable = new HashMap<>();
+    private final Map<String, Map<String, String>> allValuesInTable = new HashMap<>();
 
     public ServiceQualificationView(WebDriver driver) {
         super(driver);
@@ -32,7 +32,7 @@ public class ServiceQualificationView extends BasePage {
 
     @Step("Click Button \"Change Parameters\"")
     public ServiceQualificationWizard clickButtonChangeParameters() {
-        getOldActionsContainer().callActionById(CHANGE_PARAMETERS_BUTTON_ID);
+        OldActionsContainer.createForMainWindow(driver, wait).callActionById(CHANGE_PARAMETERS_BUTTON_ID);
         return new ServiceQualificationWizard(driver);
     }
 
@@ -84,17 +84,17 @@ public class ServiceQualificationView extends BasePage {
         return descriptionText;
     }
 
-    public void deleteParticularDataSetFromColectionWithAllDataSetsFromTable(String columnName) {
+    public void deleteParticularDataSetFromCollectionWithAllDataSetsFromTable(String columnName) {
         allValuesInTable.remove(columnName);
     }
 
     private OldTable getOldTable() {
-        waitForPageToLoad();
+        DelayUtils.waitForPageToLoad(driver, wait);
         return OldTable.createByComponentDataAttributeName(driver, wait, SERVICE_QUALIFICATION_VIEW_TABLE_ID);
     }
 
     private OldPropertyPanel getOldPropertyPanel() {
-        waitForPageToLoad();
+        DelayUtils.waitForPageToLoad(driver, wait);
         return OldPropertyPanel.create(driver, wait);
     }
 
@@ -111,14 +111,6 @@ public class ServiceQualificationView extends BasePage {
 
     private String getValueFromCell(int rowNumber, String columnHeaderName) {
         return getOldTable().getCellValue(rowNumber, columnHeaderName);
-    }
-
-    private OldActionsContainer getOldActionsContainer() {
-        return OldActionsContainer.createForMainWindow(driver, wait);
-    }
-
-    private void waitForPageToLoad() {
-        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
 }

@@ -8,7 +8,7 @@ import java.util.Collections;
 
 public class PhysicalInventoryRepository {
 
-    private Environment env;
+    private final Environment env;
 
     public PhysicalInventoryRepository(Environment env) {
         this.env = env;
@@ -35,18 +35,18 @@ public class PhysicalInventoryRepository {
 
     public void addPortToDevice(Long deviceId, Long portModelId, String cardModelType, String portName){
         PhysicalInventoryClient client = new PhysicalInventoryClient(env);
-        ResourceDTO r = client.addPortToDevice(deviceId, buildAddPortToDevice(portModelId, cardModelType, portName));
+        client.addPortToDevice(deviceId, buildAddPortToDevice(portModelId, cardModelType, portName));
     }
 
     public void addPluggableModuleToDevice(Long portId, Long pluggableModelId, String pluggableModelType){
         PhysicalInventoryClient client = new PhysicalInventoryClient(env);
-        ResourceDTO pluggableModuleDTO = client.addPluggableModuleToPort(portId, buildAddPluggableModuleToPort(pluggableModelId, portId, pluggableModelType));
+        client.addPluggableModuleToPort(portId, buildAddPluggableModuleToPort(pluggableModelId, portId, pluggableModelType));
     }
 
-    private PluggableModuleDTO buildAddPluggableModuleToPort(Long pluggableModelId, Long portId, String pluggalbeModuleType){
+    private PluggableModuleDTO buildAddPluggableModuleToPort(Long pluggableModelId, Long portId, String pluggableModuleType){
         return PluggableModuleDTO.builder()
                 .portId(portId)
-                .model(getPluggableModuleModelId(pluggableModelId, pluggalbeModuleType))
+                .model(getPluggableModuleModelId(pluggableModelId, pluggableModuleType))
                 .build();
     }
 
@@ -74,14 +74,14 @@ public class PhysicalInventoryRepository {
                 .build();
     }
 
-    private com.comarch.oss.physicalinventory.api.dto.AttributeDTO getDeviceModelId(Long id, String deviceModelType) {
+    private AttributeDTO getDeviceModelId(Long id, String deviceModelType) {
         return AttributeDTO.builder()
                 .id(id)
                 .type(deviceModelType)
                 .build();
     }
 
-    private com.comarch.oss.physicalinventory.api.dto.AttributeDTO getLocation(Long id, String locationType) {
+    private AttributeDTO getLocation(Long id, String locationType) {
         return AttributeDTO.builder()
                 .id(id)
                 .type(locationType)
@@ -102,14 +102,14 @@ public class PhysicalInventoryRepository {
                 .build();
     }
 
-    private com.comarch.oss.physicalinventory.api.dto.AttributeDTO getCardModelId(Long id, String cardModelType) {
+    private AttributeDTO getCardModelId(Long id, String cardModelType) {
         return AttributeDTO.builder()
                 .id(id)
                 .type(cardModelType)
                 .build();
     }
 
-    private com.comarch.oss.physicalinventory.api.dto.AttributeDTO getPortModelId(Long portModelId, String portModelType) {
+    private AttributeDTO getPortModelId(Long portModelId, String portModelType) {
         return AttributeDTO.builder()
                 .id(portModelId)
                 .type(portModelType)

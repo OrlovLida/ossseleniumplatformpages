@@ -54,8 +54,7 @@ public class LocationInventoryClient {
                 .queryParam(Constants.NAME_PARAM, locationName)
                 .when()
                 .get(LocationInventoryClient.PHYSICAL_LOCATIONS_API_PATH);
-        List<Integer> idsList = response.jsonPath().getList("searchResult.id");
-        return idsList;
+        return response.jsonPath().getList("searchResult.id");
     }
 
     public com.jayway.restassured.response.Response removeLocation(Long locationId, String locationType) {

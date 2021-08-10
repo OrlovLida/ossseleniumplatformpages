@@ -32,16 +32,12 @@ public class PhysicalDataCreatorForSimpleCasesWithSQ {
     private static final String CO_ODF_NAME = "COODFSeleniumSQView";
     private static final String TECHNICAL_STANDARD = "FTTH";
     private static final boolean COVERAGE_FLAG = true;
-    private static final String MSAN_MODEL_NAME = "MA5600T";
-    private static final String MSAN_GPON_CARD_MODEL_NAME = "H802GPFD";
     private static final String MSAN_BLACKBOX_MODEL = "7302 ISAM (blackbox)";
     private static final String SPLITTER_MODEL_NAME = "SPL1x16/1316";
     private static final String OUTLET_MODEL_NAME = "Optical outlet";
-    private static final String INSTALLATION_ODF_MODEL_NAME = "PSP-32";
     private static final String ODF_MODEL_NAME = "PSU-300/432";
     private static final String ODF_CARD_MODEL_NAME = "MPK-12";
     private static final String SC_PC_FRONT_BACK_PLUGGABLE_MODULE = "SC/PC Front/Back";
-    private static final String GPON_PLUGGABLE_MODULE = "RTXM167-522 GPON Tx 1490 Rx 1310 SC/PC";
     private static final String PHYSICAL_DEVICE_MODEL_TYPE_NAME = "DeviceModel";
     private static final String PORT_MODEL_TYPE_NAME = "EquipmentInterfaceType";
     private static final String CARD_MODEL_TYPE_NAME = "CardModel";
@@ -70,10 +66,10 @@ public class PhysicalDataCreatorForSimpleCasesWithSQ {
     private Long cableCPODFSplitter;
     private Long cableSplitterCOODF;
     private Long cableCOODFAN;
-    private List installationMediumsList;
-    private List installationDevicesList;
-    private List accessInterfacesList;
-    private Environment env;
+    private List<Long> installationMediumsList;
+    private List<Long> installationDevicesList;
+    private List<Long> accessInterfacesList;
+    private final Environment env;
     private PhysicalInventoryClient physicalInventoryClient;
     private AddressRepository addressRepository;
     private LocationInventoryRepository locationInventoryRepository;
@@ -173,11 +169,13 @@ public class PhysicalDataCreatorForSimpleCasesWithSQ {
         installationBuildingId = Long.parseLong(createBuilding(INSTALLATION_LOCATION_NAME, LOCATION_TYPE_SITE, installationAddressId));
         centralOfficeBuildingId = Long.parseLong(createBuilding(CENTRAL_OFFICE_LOCATION_NAME, LOCATION_TYPE_SITE, centralOfficeAddressId));
 
-        opticalOutletId = createDevice(LOCATION_TYPE_SITE, installationBuildingId, getModelId(OUTLET_MODEL_NAME), OPTICAL_OUTLET_NAME, PHYSICAL_DEVICE_MODEL_TYPE_NAME);
+        opticalOutletId = createDevice(LOCATION_TYPE_SITE, installationBuildingId, getModelId(OUTLET_MODEL_NAME),
+        OPTICAL_OUTLET_NAME, PHYSICAL_DEVICE_MODEL_TYPE_NAME);
         String installationOutletPortId = getPortIdInTextFormat(opticalOutletId, "Port");
         Long outletConnectorFrontId = getConnectorId(opticalOutletId, installationOutletPortId, "Front");
 
-        installationODFId = createDeviceWithCard(LOCATION_TYPE_SITE, installationBuildingId, getModelId(ODF_MODEL_NAME), CP_ODF_NAME, PHYSICAL_DEVICE_MODEL_TYPE_NAME, "1", getModelId(ODF_CARD_MODEL_NAME), CARD_MODEL_TYPE_NAME);
+        installationODFId = createDeviceWithCard(LOCATION_TYPE_SITE, installationBuildingId, getModelId(ODF_MODEL_NAME),
+        CP_ODF_NAME, PHYSICAL_DEVICE_MODEL_TYPE_NAME, "1", getModelId(ODF_CARD_MODEL_NAME), CARD_MODEL_TYPE_NAME);
         Long installationODFPortId = getPortIdUnderChassisAndCard(installationODFId, "1", "Chassis", "MPK-12");
         addPluggableModuleToPort(installationODFPortId, getModelId(SC_PC_FRONT_BACK_PLUGGABLE_MODULE), PLUGGABLE_MODULE_MODEL_TYPE_NAME);
         Long installationODFConnectorFrontId = getConnectorId(installationODFId, String.valueOf(installationODFPortId), "Front");
@@ -189,7 +187,8 @@ public class PhysicalDataCreatorForSimpleCasesWithSQ {
         Long splitterConnectorInPortOneId = getConnectorId(splitterId, installationSplitterPortOneId, "");
         Long splitterConnectorInPortInId = getConnectorId(splitterId, installationSplitterPortInId, "IN");
 
-        centralOfficeODFId = createDeviceWithCard(LOCATION_TYPE_SITE, centralOfficeBuildingId, getModelId(ODF_MODEL_NAME), CO_ODF_NAME, PHYSICAL_DEVICE_MODEL_TYPE_NAME, "1", getModelId(ODF_CARD_MODEL_NAME), CARD_MODEL_TYPE_NAME);
+        centralOfficeODFId = createDeviceWithCard(LOCATION_TYPE_SITE, centralOfficeBuildingId, getModelId(ODF_MODEL_NAME), CO_ODF_NAME,
+        PHYSICAL_DEVICE_MODEL_TYPE_NAME, "1", getModelId(ODF_CARD_MODEL_NAME), CARD_MODEL_TYPE_NAME);
         Long centralOfficeODFPortId = getPortIdUnderChassisAndCard(centralOfficeODFId, "1", "Chassis", "MPK-12");
         addPluggableModuleToPort(centralOfficeODFPortId, getModelId(SC_PC_FRONT_BACK_PLUGGABLE_MODULE), PLUGGABLE_MODULE_MODEL_TYPE_NAME);
         Long centralOfficeODFConnectorFrontId = getConnectorId(centralOfficeODFId, String.valueOf(centralOfficeODFPortId), "Front");
@@ -208,10 +207,14 @@ public class PhysicalDataCreatorForSimpleCasesWithSQ {
         Long mediumNumber = 1L;
         Long bundleNumber = 0L;
 
-        cableOutletCPODF = createCable(opticalOutletId, installationODFId, outletConnectorFrontId, installationODFConnectorBackId, CABLE_MODEL_NAME, CABLE_MANUFACTURER_NAME, cableLength, mediumNumber, bundleNumber);
-        cableCPODFSplitter = createCable(installationODFId, splitterId, installationODFConnectorFrontId, splitterConnectorInPortOneId, CABLE_MODEL_NAME, CABLE_MANUFACTURER_NAME, cableLength, mediumNumber, bundleNumber);
-        cableSplitterCOODF = createCable(splitterId, centralOfficeODFId, splitterConnectorInPortInId, centralOfficeODFConnectorBackId, CABLE_MODEL_NAME, CABLE_MANUFACTURER_NAME, cableLength, mediumNumber, bundleNumber);
-        cableCOODFAN = createCable(centralOfficeODFId, accessNodeId, centralOfficeODFConnectorFrontId, gponConnectorId, CABLE_MODEL_NAME, CABLE_MANUFACTURER_NAME, cableLength, mediumNumber, bundleNumber);
+        cableOutletCPODF = createCable(opticalOutletId, installationODFId, outletConnectorFrontId, installationODFConnectorBackId,
+        CABLE_MODEL_NAME, CABLE_MANUFACTURER_NAME, cableLength, mediumNumber, bundleNumber);
+        cableCPODFSplitter = createCable(installationODFId, splitterId, installationODFConnectorFrontId, splitterConnectorInPortOneId,
+        CABLE_MODEL_NAME, CABLE_MANUFACTURER_NAME, cableLength, mediumNumber, bundleNumber);
+        cableSplitterCOODF = createCable(splitterId, centralOfficeODFId, splitterConnectorInPortInId, centralOfficeODFConnectorBackId,
+        CABLE_MODEL_NAME, CABLE_MANUFACTURER_NAME, cableLength, mediumNumber, bundleNumber);
+        cableCOODFAN = createCable(centralOfficeODFId, accessNodeId, centralOfficeODFConnectorFrontId, gponConnectorId,
+        CABLE_MODEL_NAME, CABLE_MANUFACTURER_NAME, cableLength, mediumNumber, bundleNumber);
 
         Long gponAI = getAccessInterfaceId(accessNodeId, getPortIdInTextFormat(accessNodeId, "GPON"), "GPON");
         Long eponAI = getAccessInterfaceId(accessNodeId, getPortIdInTextFormat(accessNodeId, "EPON"), "10G-EPON");
@@ -219,10 +222,10 @@ public class PhysicalDataCreatorForSimpleCasesWithSQ {
         Long vdslAI = getAccessInterfaceId(accessNodeId, getPortIdInTextFormat(accessNodeId, "VDSL"), "VDSL2");
         Long docsisAI = getAccessInterfaceId(accessNodeId, getPortIdInTextFormat(accessNodeId, "DOCSIS"), "DOCSIS 3.1");
 
-        Long mediumFiberOutletCPODF = trailCoreRepository.getFirstMediumIdConnectedOnTerminantionPoint(outletConnectorFrontId, MEDIUM_TYPE);
-        Long mediumFiberCPODFSplitter = trailCoreRepository.getFirstMediumIdConnectedOnTerminantionPoint(splitterConnectorInPortOneId, MEDIUM_TYPE);
-        Long mediumFiberSplitterCOODF = trailCoreRepository.getFirstMediumIdConnectedOnTerminantionPoint(splitterConnectorInPortInId, MEDIUM_TYPE);
-        Long mediumFiberCOODFAN = trailCoreRepository.getFirstMediumIdConnectedOnTerminantionPoint(gponConnectorId, MEDIUM_TYPE);
+        Long mediumFiberOutletCPODF = trailCoreRepository.getFirstMediumIdConnectedOnTerminationPoint(outletConnectorFrontId, MEDIUM_TYPE);
+        Long mediumFiberCPODFSplitter = trailCoreRepository.getFirstMediumIdConnectedOnTerminationPoint(splitterConnectorInPortOneId, MEDIUM_TYPE);
+        Long mediumFiberSplitterCOODF = trailCoreRepository.getFirstMediumIdConnectedOnTerminationPoint(splitterConnectorInPortInId, MEDIUM_TYPE);
+        Long mediumFiberCOODFAN = trailCoreRepository.getFirstMediumIdConnectedOnTerminationPoint(gponConnectorId, MEDIUM_TYPE);
 
         installationDevicesList.add(installationODFId);
         installationDevicesList.add(centralOfficeODFId);
@@ -236,11 +239,14 @@ public class PhysicalDataCreatorForSimpleCasesWithSQ {
         accessInterfacesList.add(vdslAI);
         accessInterfacesList.add(docsisAI);
 
-        distributionAreaId = createDistributionArea(COVERAGE_FLAG, TECHNICAL_STANDARD, installationAddressId, splitterId, installationDevicesList, installationMediumsList, accessNodeId, accessInterfacesList);
+        distributionAreaId = createDistributionArea(COVERAGE_FLAG, TECHNICAL_STANDARD, installationAddressId, splitterId,
+        installationDevicesList, installationMediumsList, accessNodeId, accessInterfacesList);
         DelayUtils.sleep(10000);
     }
 
-    public void deleteAllDataForSimplePhysicalDataForSQTests(Long distributionAreaId, Long cableOutletCPODF, Long cableCPODFSplitter, Long cableSplitterCOODF, Long cableCOODFAN, Long accessNodeId, Long centralOfficeODFId, Long splitterId, Long installationODFId, Long opticalOutletId, Long installationBuildingId, Long centralOfficeBuildingId, Long centralOfficeAddressId, Long installationAddressId) {
+    public void deleteAllDataForSimplePhysicalDataForSQTests(Long distributionAreaId, Long cableOutletCPODF, Long cableCPODFSplitter, Long cableSplitterCOODF,
+        Long cableCOODFAN, Long accessNodeId, Long centralOfficeODFId, Long splitterId, Long installationODFId, Long opticalOutletId, Long installationBuildingId,
+        Long centralOfficeBuildingId, Long centralOfficeAddressId, Long installationAddressId) {
         distributionAreaRepository.removeDistributionArea(distributionAreaId);
         physicalConnectivityRepository.removeCable(cableOutletCPODF);
         physicalConnectivityRepository.removeCable(cableCPODFSplitter);
@@ -271,7 +277,8 @@ public class PhysicalDataCreatorForSimpleCasesWithSQ {
         return physicalInventoryRepository.createDevice(locationType, addressId, modelId, deviceName, deviceModelType);
     }
 
-    private Long createDeviceWithCard(String locationType, Long addressId, Long modelId, String deviceName, String deviceModelType, String slotName, Long cardModel, String cardModelType) {
+    private Long createDeviceWithCard(String locationType, Long addressId, Long modelId, String deviceName,
+        String deviceModelType, String slotName, Long cardModel, String cardModelType) {
         return physicalInventoryRepository.createDeviceWithCard(locationType, addressId, modelId, deviceName, deviceModelType, slotName, cardModel, cardModelType);
     }
 
@@ -283,12 +290,16 @@ public class PhysicalDataCreatorForSimpleCasesWithSQ {
         physicalInventoryRepository.addPluggableModuleToDevice(portId, pluggableModuleModelId, pluggableModlueModelType);
     }
 
-    private Long createCable(Long firstTerminationDeviceId, Long secondTerminationDeviceId, Long firstTermination, Long secondTermination, String cableModelName, String manufacturerName, int length, Long mediumNumber, Long bundleNumber) {
-        return physicalConnectivityRepository.createCableWithSpecificMediumAndBundleNumber(firstTerminationDeviceId, secondTerminationDeviceId, firstTermination, secondTermination, cableModelName, manufacturerName, length, mediumNumber, bundleNumber);
+    private Long createCable(Long firstTerminationDeviceId, Long secondTerminationDeviceId, Long firstTermination, Long secondTermination,
+        String cableModelName, String manufacturerName, int length, Long mediumNumber, Long bundleNumber) {
+        return physicalConnectivityRepository.createCableWithSpecificMediumAndBundleNumber(firstTerminationDeviceId, secondTerminationDeviceId,
+               firstTermination, secondTermination, cableModelName, manufacturerName, length, mediumNumber, bundleNumber);
     }
 
-    private Long createDistributionArea(boolean coverageFlag, String technicalStandard, Long addressId, Long accessPointId, List<Long> installationDevicesIds, List<Long> installationMediumsIds, Long accessNodeId, List<Long> accessInterfacesIds) {
-        return distributionAreaRepository.createDistributionAreaWithAddressAccessPointAccessNodeInstallationMediumsInstllationDevices(coverageFlag, technicalStandard, addressId, accessPointId, installationDevicesIds, installationMediumsIds, accessNodeId, accessInterfacesIds);
+    private Long createDistributionArea(boolean coverageFlag, String technicalStandard, Long addressId, Long accessPointId, List<Long> installationDevicesIds,
+        List<Long> installationMediumsIds, Long accessNodeId, List<Long> accessInterfacesIds) {
+        return distributionAreaRepository.createDistributionAreaWithAddressAccessPointAccessNodeInstallationMediumsInstllationDevices(coverageFlag,
+               technicalStandard, addressId, accessPointId, installationDevicesIds, installationMediumsIds, accessNodeId, accessInterfacesIds);
     }
 
     private Long getModelId(String modelName) {

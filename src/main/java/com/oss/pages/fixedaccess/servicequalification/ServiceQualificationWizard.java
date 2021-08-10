@@ -13,7 +13,6 @@ import org.openqa.selenium.WebDriver;
 import static com.oss.framework.components.inputs.Input.ComponentType.CHECKBOX;
 import static com.oss.framework.components.inputs.Input.ComponentType.RADIO_BUTTON;
 import static com.oss.framework.components.inputs.Input.ComponentType.SEARCH_FIELD;
-import static com.oss.framework.components.inputs.Input.ComponentType.SWITCHER;
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 
 
@@ -21,14 +20,13 @@ public class ServiceQualificationWizard extends BasePage {
 
     private static final String RADIO_BUTTONS_FOR_QUERY_OPTION = "sqRadioButtonsID";
     private static final String SEARCH_FIELD_FOR_QUERY = "sqSearchFieldUID_OSF";
-    private static final String ADDRESS_DETAILS_SWITCHER_FOR_QUERY = "sqSwitchButtonUID";
     private static final String REQUIRED_DOWNLOAD_SPEED_INPUT = "sqRequiredDownloadSpeedFieldUID";
     private static final String REQUIRED_UPLOAD_SPEED_INPUT = "sqRequiredUploadSpeedFieldUID";
     private static final String PROVIDE_ALTERNATIVE_CHECKBOX = "sqProvideAlternativesCheckboxUID";
     private static final String PROVIDE_RESOURCE_CHECKBOX = "sqProvideResourcesCheckboxUID";
     private static final String PROVIDE_SERVICE_NODE_CHECKBOX = "sqProvideServiceNodesCheckboxUID";
     private static final String ADVANCED_SEARCH_BUTTON = "btn-as-modal";
-    private static final String COMMON_ADVANCED_SEARCH_WIDGET = "common-advancedsearchwidget";
+    private static final String ADVANCED_SEARCH_WIDGET_ID = "advancedSearch";
     private static final String ADVANCED_SEARCH_ID = "advancedSearch";
     private static final String SERVICE_QUALIFICATION = "Service Qualification";
     private static final String NETWORK_DOMAINS = "Network domains";
@@ -59,12 +57,6 @@ public class ServiceQualificationWizard extends BasePage {
         Input input = getServiceQualificationWizard().getComponent(SEARCH_FIELD_FOR_QUERY, SEARCH_FIELD);
         input.clear();
         input.setSingleStringValueContains(queryParameter);
-        return this;
-    }
-
-    @Step("Set switcher for show or hide address details")
-    public ServiceQualificationWizard setSwitcherShowAddressDetails(String option) {
-        getServiceQualificationWizard().setComponentValue(ADDRESS_DETAILS_SWITCHER_FOR_QUERY, option, SWITCHER);
         return this;
     }
 
@@ -133,7 +125,7 @@ public class ServiceQualificationWizard extends BasePage {
     }
 
     private TableWidget getAdvancedSearchTableWidget() {
-        return TableWidget.create(driver, COMMON_ADVANCED_SEARCH_WIDGET, wait);
+        return TableWidget.createById(driver, ADVANCED_SEARCH_WIDGET_ID, wait);
     }
 
     private AdvancedSearch getAdvancedSearchWindow() {

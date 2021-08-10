@@ -16,11 +16,11 @@ public enum AccessTechnologiesEnum {
     DOCSIS_THREE_POINT_ZERO("DOCSIS 3.0", "1280.0", "200", "", "Coax"),
     DOCSIS_THREE_POINT_ONE("DOCSIS 3.1", "10000.0", "2000", "", "Coax");
 
-    private String name;
-    private String downloadSpeed;
-    private String uploadSpeed;
-    private String maxBandwidth;
-    private String supportedMediumType;
+    private final String name;
+    private final String downloadSpeed;
+    private final String uploadSpeed;
+    private final String maxBandwidth;
+    private final String supportedMediumType;
 
     AccessTechnologiesEnum(String name, String downloadSpeed, String uploadSpeed, String maxBandwidth, String supportedMediumType) {
         this.name = name;

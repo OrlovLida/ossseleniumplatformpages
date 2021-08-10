@@ -33,17 +33,24 @@ import static java.util.stream.Collectors.toSet;
 public class DistributionAreaRepository {
 
     private final DistributionAreaClient distributionAreaClient;
-    private Environment env;
+    private final Environment env;
 
     public DistributionAreaRepository(Environment env) {
         this.env = env;
         distributionAreaClient = DistributionAreaClient.getInstance(env);
     }
 
-    public Long createDistributionAreaWithAddressAccessPointAccessNodeInstallationMediumsInstllationDevices(boolean coverageFlag, String technicalStandard, Long pAddressId, Long pAccessPointId, List<Long> installationDevicesIds, List<Long> installationMediumsIds, Long accessNodeId, List<Long> accessInterfacesIds) {
-        Map<Long, Collection<Long>> accessNodeToAccessInterfacesMapping =
-                singletonMap(accessNodeId, accessInterfacesIds);
-        DistributionAreaPersistenceResponseDTO responseDTO = distributionAreaClient.synchronizeDistributionArea(buildDistributionAreaWithAddressAccessPointAccessNodeInstallationMediumsInstllationDevices(coverageFlag, technicalStandard, pAddressId, pAccessPointId, installationDevicesIds, installationMediumsIds, accessNodeToAccessInterfacesMapping));
+    public Long createDistributionAreaWithAddressAccessPointAccessNodeInstallationMediumsInstllationDevices(boolean coverageFlag, String technicalStandard, Long pAddressId,
+        Long pAccessPointId, List<Long> installationDevicesIds, List<Long> installationMediumsIds, Long accessNodeId, List<Long> accessInterfacesIds) {
+        Map<Long, Collection<Long>> accessNodeToAccessInterfacesMapping = singletonMap(accessNodeId, accessInterfacesIds);
+        DistributionAreaPersistenceResponseDTO responseDTO = distributionAreaClient.synchronizeDistributionArea(
+                buildDistributionAreaWithAddressAccessPointAccessNodeInstallationMediumsInstllationDevices(coverageFlag,
+                        technicalStandard,
+                        pAddressId,
+                        pAccessPointId,
+                        installationDevicesIds,
+                        installationMediumsIds,
+                        accessNodeToAccessInterfacesMapping));
         return responseDTO.getId();
     }
 
@@ -52,14 +59,15 @@ public class DistributionAreaRepository {
     }
 
     public String getDistributionAreaName(Long pDistributionAreaId) {
-        if (!(distributionAreaClient.getDistributionAreaV2(pDistributionAreaId).getName().equals(Optional.empty()))) {
+        if(!(distributionAreaClient.getDistributionAreaV2(pDistributionAreaId).getName().equals(Optional.empty()))) {
             String dAName = String.valueOf(distributionAreaClient.getDistributionAreaV2(pDistributionAreaId).getName());
             return dAName.substring(dAName.indexOf("[") + 1, dAName.indexOf("]")).trim();
         }
         return "";
     }
 
-    private DistributionAreaSyncDTO buildDistributionAreaWithAddressAccessPointAccessNodeInstallationMediumsInstllationDevices(boolean coverageFlag, String technicalStandart, Long pAddressId, Long pAccessPointId, List<Long> installationDevicesIds, List<Long> installationMediumsIds, Map<Long, Collection<Long>> accessNodeToAccessInterfacesMapping) {
+    private DistributionAreaSyncDTO buildDistributionAreaWithAddressAccessPointAccessNodeInstallationMediumsInstllationDevices(boolean coverageFlag, String technicalStandart,
+        Long pAddressId, Long pAccessPointId, List<Long> installationDevicesIds, List<Long> installationMediumsIds, Map<Long, Collection<Long>> accessNodeToAccessInterfacesMapping) {
         DistributionAreaSyncDTO dto = DistributionAreaSyncDTO.builder()
                 .networkCoverage(coverageFlag)
                 .technicalStandard(technicalStandart)
@@ -76,8 +84,8 @@ public class DistributionAreaRepository {
     private AddressesWrapperDTO buildAddressWrapperDTO(Collection<Long> addresses) {
         return AddressesWrapperDTO.builder()
                 .addAllElements(addresses.stream()
-                        .map(id -> AddressDTO.builder().id(id).build())
-                        .collect(Collectors.toList()))
+                .map(id -> AddressDTO.builder().id(id).build())
+                .collect(Collectors.toList()))
                 .build();
     }
 

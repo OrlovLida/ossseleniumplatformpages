@@ -11,22 +11,43 @@
         </classes>
     </test>
 
-    <test name="Check data in table and property panel for all access technologies in SQ View - HappyPath">
+    <test name="Check data in table and property panel for all access technologies in SQ View - HappyPath DA name">
         <classes>
             <class name="com.oss.fixedaccess.servicequalification.ServiceQualificationViewSimpleCasesTests">
                 <methods>
-                    <include name="checkDataInTableAndPropertyPanelForAllAccessTechnologiesInSQViewHappyPathTest"/>
+                    <include name="checkDataInTableAndPropertyPanelForAllAccessTechnologiesInSQViewHappyPathTestForDAName"/>
                 </methods>
             </class>
         </classes>
     </test>
 
-    <test name="Check error for required download speed grater than max download speed for all access technologies">
+    <test name="Check data in table and property panel for all access technologies in SQ View - HappyPath Address Name">
+        <classes>
+            <class name="com.oss.fixedaccess.servicequalification.ServiceQualificationViewSimpleCasesTests">
+                <methods>
+                    <include name="checkDataInTableAndPropertyPanelForAllAccessTechnologiesInSQViewHappyPathTestForAddressName"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <test name="Check error for required download speed grater than max download speed for all access technologies for DA name">
         <classes>
             <class name="com.oss.fixedaccess.servicequalification.ServiceQualificationViewSimpleCasesTests">
                 <methods>
                     <include
-                            name="checkErrorForRequiredDownloadSpeedGraterThanMaxDownloadSpeedForAllAccessTechnologiesTest"/>
+                            name="checkErrorForRequiredDownloadSpeedGraterThanMaxDownloadSpeedForAllAccessTechnologiesTestForDAName"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <test name="Check error for required download speed grater than max download speed for all access technologies for Address Name">
+        <classes>
+            <class name="com.oss.fixedaccess.servicequalification.ServiceQualificationViewSimpleCasesTests">
+                <methods>
+                    <include
+                            name="checkErrorForRequiredDownloadSpeedGraterThanMaxDownloadSpeedForAllAccessTechnologiesTestForAddressName"/>
                 </methods>
             </class>
         </classes>

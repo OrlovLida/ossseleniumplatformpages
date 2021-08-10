@@ -32,7 +32,8 @@ public class AddressRepository {
         return addressId;
     }
 
-    public Long createOrUpdateGeographicalAddressWithStreetNumber(String countryName, String postalCodeName, String regionName, String cityName, String districtName, String streetNumber) {
+    public Long createOrUpdateGeographicalAddressWithStreetNumber(String countryName, String postalCodeName,
+        String regionName, String cityName, String districtName, String streetNumber) {
         AddressClient client = new AddressClient(env);
         AddressDTO[] addressDTO = client.createGeographicalAddress(
                 buildGeographicalAddressWithStreetNumber(countryName, postalCodeName, regionName, cityName, districtName, streetNumber));
@@ -54,7 +55,8 @@ public class AddressRepository {
         client.removeGeographicalAddress(geographicalAddressId);
     }
 
-    private GeographicalAddressDTO buildGeographicalAddressWithStreetNumber(String countryName, String postalCodeName, String regionName, String cityName, String districtName, String streetNumber) {
+    private GeographicalAddressDTO buildGeographicalAddressWithStreetNumber(String countryName,
+        String postalCodeName, String regionName, String cityName, String districtName, String streetNumber) {
         return GeographicalAddressDTO.builder()
                 .addAddressItems(buildCountry(countryName))
                 .addAddressItems(buildPostalCode(postalCodeName))

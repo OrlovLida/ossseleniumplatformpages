@@ -134,23 +134,54 @@ public class PhysicalInventoryClient {
     }
 
     public String getDevicePortId(Long deviceId, String portName) {
-        return getDeviceStructure(deviceId).getPorts().stream().filter(e -> (e.getName().equals(portName))).map(e -> e.getId().get()).findAny().get().toString();
+        return getDeviceStructure(deviceId)
+               .getPorts()
+               .stream()
+               .filter(e -> (e.getName().equals(portName)))
+               .map(e -> e.getId().get())
+               .findAny()
+               .get()
+               .toString();
     }
 
     public Long getDeviceChassisId(Long deviceId, String chassisName) {
-        return getDeviceStructure(deviceId).getChassis().stream().filter(e -> (e.getName().equals(chassisName))).map(e -> e.getId().get()).findAny().get();
+        return getDeviceStructure(deviceId)
+               .getChassis()
+               .stream()
+               .filter(e -> (e.getName().equals(chassisName)))
+               .map(e -> e.getId().get())
+               .findAny()
+               .get();
     }
 
     public Long getDeviceCardUnderChassisId(Long chassisId, String cardName) {
-        return getChassisStructure(chassisId).getCards().stream().filter(e -> (e.getName().equals(Optional.of(cardName)))).map(e -> e.getId().get()).findAny().get();
+        return getChassisStructure(chassisId)
+               .getCards()
+               .stream()
+               .filter(e -> (e.getName().equals(Optional.of(cardName))))
+               .map(e -> e.getId().get())
+               .findAny()
+               .get();
     }
 
     public Long getDevicePortUnderCardId(Long cardId, String portName) {
-        return getCardStructure(cardId).getPorts().stream().filter(e -> (e.getName().equals(portName))).map(e -> e.getId().get()).findAny().get();
+        return getCardStructure(cardId)
+               .getPorts()
+               .stream()
+               .filter(e -> (e.getName().equals(portName)))
+               .map(e -> e.getId().get())
+               .findAny()
+               .get();
     }
 
     public String getAntennaArrayId(Long antennaId, String arrayName) {
-        return getDeviceStructure(antennaId).getAntennaArrays().stream().filter(e -> (e.getName().equals(arrayName))).map(e -> e.getId().get()).findAny().get().toString();
+        return getDeviceStructure(antennaId)
+               .getAntennaArrays()
+               .stream().filter(e -> (e.getName().equals(arrayName)))
+               .map(e -> e.getId().get())
+               .findAny()
+               .get()
+               .toString();
     }
 
 }

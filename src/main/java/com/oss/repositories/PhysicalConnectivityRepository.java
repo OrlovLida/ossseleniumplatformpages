@@ -19,28 +19,32 @@ import java.util.List;
 
 public class PhysicalConnectivityRepository {
 
-    private Environment env;
+    private final Environment env;
 
     public PhysicalConnectivityRepository(Environment env) {
         this.env = env;
     }
 
-    public Long createCable(Long terminationDeviceId1, Long terminationDeviceId2, Long terminationId1, Long terminationId2, String modelName, String manufacturerName, int length) {
+    public Long createCable(Long terminationDeviceId1, Long terminationDeviceId2, Long terminationId1,
+        Long terminationId2, String modelName, String manufacturerName, int length) {
         PhysicalConnectivityClient client = PhysicalConnectivityClient.getInstance(env);
-        CableSyncResultDTO cable = client.createCable(buildCable(terminationDeviceId1, terminationDeviceId2, terminationId1, terminationId2, modelName, manufacturerName, length, Long.valueOf(1), Long.valueOf(1)));
+        CableSyncResultDTO cable = client.createCable(buildCable(terminationDeviceId1, terminationDeviceId2, terminationId1,
+        terminationId2, modelName, manufacturerName, length, 1L, 1L));
         return cable.getCreatedCables().get(0).getId();
     }
 
-    public Long createCableWithSpecificMediumAndBundleNumber(Long terminationDeviceId1, Long terminationDeviceId2, Long terminationId1, Long terminationId2, String modelName, String manufacturerName, int length, Long mediumNumber, Long bundleNumber) {
+    public Long createCableWithSpecificMediumAndBundleNumber(Long terminationDeviceId1, Long terminationDeviceId2,
+        Long terminationId1, Long terminationId2, String modelName, String manufacturerName, int length, Long mediumNumber, Long bundleNumber) {
         PhysicalConnectivityClient client = PhysicalConnectivityClient.getInstance(env);
-        CableSyncResultDTO cable = client.createCable(buildCable(terminationDeviceId1, terminationDeviceId2, terminationId1, terminationId2, modelName, manufacturerName, length, mediumNumber, bundleNumber));
+        CableSyncResultDTO cable = client.createCable(buildCable(terminationDeviceId1, terminationDeviceId2,
+        terminationId1, terminationId2, modelName, manufacturerName, length, mediumNumber, bundleNumber));
         return cable.getCreatedCables().get(0).getId();
     }
 
     public void createMultipleSegmentCable(Long terminationId1, Long terminationId2, String modelName1, String manufacturerName, int length1, String modelName2, int length2, String modelName3, int length3) {
         PhysicalConnectivityClient client = PhysicalConnectivityClient.getInstance(env);
-        MultipleSegmentResultDTO multipleSegmentCable = client.createMultipleSegmentCable(buildMultipleSegmentCable(terminationId1, terminationId2, modelName1,
-                manufacturerName, length1, modelName2, length2, modelName3, length3));
+        client.createMultipleSegmentCable(buildMultipleSegmentCable(terminationId1, terminationId2, modelName1,
+        manufacturerName, length1, modelName2, length2, modelName3, length3));
     }
 
     public void removeCable(Long cableId) {
@@ -48,7 +52,8 @@ public class PhysicalConnectivityRepository {
         client.removeCable(cableId);
     }
 
-    private CableSyncDTO buildCable(Long terminationDeviceId1, Long terminationDeviceId2, Long terminationId1, Long terminationId2, String modelName, String manufacturerName, int length, Long mediumNumber, Long bundleNumber) {
+    private CableSyncDTO buildCable(Long terminationDeviceId1, Long terminationDeviceId2, Long terminationId1,
+        Long terminationId2, String modelName, String manufacturerName, int length, Long mediumNumber, Long bundleNumber) {
         return CableSyncDTO.builder()
                 .startTermination(getTermination(terminationDeviceId1, "Device"))
                 .endTermination(getTermination(terminationDeviceId2, "Device"))
