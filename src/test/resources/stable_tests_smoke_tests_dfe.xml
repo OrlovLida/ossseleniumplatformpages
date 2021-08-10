@@ -10,4 +10,9 @@
             <class name="com.oss.bigdata.dfe.SMOKE.KqiSmokeTest"/>
         </classes>
     </test>
+    <test name="DimensionSmokeTest">
+        <classes>
+            <class name="com.oss.bigdata.dfe.SMOKE.DimensionsSmokeTest"/>
+        </classes>
+    </test>
 </suite>
