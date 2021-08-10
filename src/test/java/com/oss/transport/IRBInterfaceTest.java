@@ -71,8 +71,9 @@ public class IRBInterfaceTest extends BaseTestCase {
         homePage.goToHomePageWithContext(driver);
         waitForPageToLoad();
         //homePage.chooseFromLeftSideMenu("Create IRB Interface", "Network domains", "Transport & IP");
-        driver.get("http://10.132.118.207:25080/#/view/transport/ip/ethernet/irb-interface?");
-        driver.navigate().refresh();
+        driver.get(String.format("%s/#/view/transport/ip/ethernet/irb-interface", BASIC_URL));
+        PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
+        perspectiveChooser.setCurrentTask();
         IRBInterfaceWizardPage irbInterfaceWizardPage = new IRBInterfaceWizardPage(driver);
         waitForPageToLoad();
         irbInterfaceWizardPage.createIRBInterface(IRB_INTERFACE_DEVICE_NAME, IRB_INTERFACE_ID);
@@ -82,8 +83,9 @@ public class IRBInterfaceTest extends BaseTestCase {
     @Description("Checks if IRB Interface is visible in New Inventory View")
     public void checkIRBInterface() {
         homePage.goToHomePageWithContext(driver);
-        driver.get("http://10.132.118.207:25080/#/dashboard/predefined/id/startDashboard?");
-        driver.navigate().refresh();
+        driver.get(String.format("%s/#/dashboard/predefined/id/startDashboard", BASIC_URL));
+        PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
+        perspectiveChooser.setCurrentTask();
         homePage.setNewObjectType(IRB_INTERFACE_SEARCH_NIV);
         waitForPageToLoad();
         newInventoryViewPage.searchObject(IRB_INTERFACE_DEVICE_NAME);
@@ -144,7 +146,9 @@ public class IRBInterfaceTest extends BaseTestCase {
     public void deleteIRBInterface() {
         homePage.goToHomePage(driver, BASIC_URL);
         PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
-        driver.get("http://10.132.118.207:25080/#/dashboard/predefined/id/startDashboard?perspective=LIVE");
+        driver.get(String.format("%s/#/dashboard/predefined/id/startDashboard", BASIC_URL));
+        PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
+        perspectiveChooser.setCurrentTask();
         homePage.setNewObjectType(IRB_INTERFACE_SEARCH_NIV);
         waitForPageToLoad();
         newInventoryViewPage.searchObject(IRB_INTERFACE_DEVICE_NAME);
