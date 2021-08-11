@@ -11,6 +11,7 @@ import com.oss.pages.platform.NewInventoryViewPage;
 import org.assertj.core.api.Assertions;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -40,10 +41,10 @@ public class AdvancedSearchCompact extends BaseTestCase {
         tableWidget = inventoryViewPage.getMainTable();
     }
 
-//    @AfterClass
-//    public void clear() {
-//        FilterManagerPage.goToFilterManagerPage(driver, BASIC_URL).expandAllCategories().deleteAllFilters();
-//    }
+    @AfterClass
+    public void clear() {
+        FilterManagerPage.goToFilterManagerPage(driver, BASIC_URL).expandAllCategories().deleteAllFilters();
+    }
 
     private Predicate<String> containsValue(String val) {
         return str -> str.contains(val);
@@ -80,6 +81,7 @@ public class AdvancedSearchCompact extends BaseTestCase {
 
     @Test(priority = 2)
     public void clearTags() {
+        DelayUtils.waitForPageToLoad(driver,webDriverWait);
         Multimap<String, String> filterFirst = inventoryViewPage.searchByAttributeValue(
                 SIMPLE_ATTRIBUTE,
                 tableWidget.getCellValue(DEFAULT_ROW_INDEX, SIMPLE_ATTRIBUTE),
@@ -146,11 +148,11 @@ public class AdvancedSearchCompact extends BaseTestCase {
         inventoryViewPage.toggleVisibilitySearchAttributes(attributes);
         List<String> filters = inventoryViewPage.getMainTable().getAllVisibleFilters();
 
-        Assert.assertFalse(filters.contains("actors"));
+        Assert.assertTrue(filters.contains("Actors"));
 
         inventoryViewPage.toggleVisibilitySearchAttributes(attributes);
         List<String> filtersSecond = inventoryViewPage.getMainTable().getAllVisibleFilters();
-        Assert.assertTrue(filtersSecond.contains("actors"));
+        Assert.assertFalse(filtersSecond.contains("Actors"));
     }
 
     @Test(priority = 7)
