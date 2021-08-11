@@ -2,7 +2,6 @@ package com.oss.pages.bigdata.dfe;
 
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.OldTable;
-import com.oss.framework.widgets.tabswidget.TabWindowWidget;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -10,8 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 
 public class AggregatePage extends BaseDfePage {
 
@@ -85,9 +82,8 @@ public class AggregatePage extends BaseDfePage {
     }
 
     @Step("I click Refresh Table Tab")
-    public void clickRefreshTabTable() {
-        TabWindowWidget.create(driver, wait).callActionByLabel(REFRESH_LABEL);
-        log.debug("Click context action: {}", REFRESH_LABEL);
+    public void clickRefreshInTabTable() {
+        clickRefreshTabTable(REFRESH_LABEL);
     }
 
     @Step("I check if IfRuns are not empty")
@@ -102,29 +98,17 @@ public class AggregatePage extends BaseDfePage {
 
     @Step("I check Last Request Generation Time")
     public LocalDateTime lastIfRunTime() {
-        String lastRequestGeneration = OldTable
-                .createByComponentId(driver, wait, TABLE_TAB_ID)
-                .getCellValue(0, COLUMN_REQUEST_GENERATION_TIME_LABEL);
-
-        LocalDateTime lastRequestGenerationTime = LocalDateTime.parse(lastRequestGeneration, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        log.info("Last Generation Time is: {}", lastRequestGenerationTime);
-
-        return lastRequestGenerationTime;
+        return lastLogTime(TABLE_TAB_ID, COLUMN_REQUEST_GENERATION_TIME_LABEL);
     }
 
     @Step("I check if Last Request Generation Time is fresh - up to 60 min old")
     public boolean IsIfRunsFresh() {
-        return ChronoUnit.MINUTES.between(lastIfRunTime(), LocalDateTime.now()) < 60;
+        return isLastLogTimeFresh(lastIfRunTime());
     }
 
     @Step("I check Status of Aggregate from Execution History tab")
     public String checkStatus() {
-        String actualStatus = OldTable
-                .createByComponentId(driver, wait, TABLE_TAB_ID)
-                .getCellValue(0, COLUMN_STATUS_LABEL);
-        log.info("Status of last aggregate log is {}", actualStatus);
-
-        return actualStatus;
+        return checkLogStatus(TABLE_TAB_ID, COLUMN_STATUS_LABEL);
     }
 
     @Override
