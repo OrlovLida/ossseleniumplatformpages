@@ -3,6 +3,7 @@ package com.oss.transport;
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
+import com.oss.framework.mainheader.PerspectiveChooser;
 import com.oss.framework.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
@@ -18,9 +19,9 @@ import java.util.Map;
  */
 public class TrafficClassTest extends BaseTestCase {
 
-    private static final String WIZARDS = "Wizards";
-    private static final String TRANSPORT = "Transport";
-    private static final String TRAFFIC_CLASS = "Traffic Class";
+    private static final String WIZARDS = "Network domains";
+    private static final String TRANSPORT = "Transport & IP";
+    private static final String TRAFFIC_CLASS = "Create Traffic Class";
 
     private static final String PRE_CREATED_LOCATION = "Gliwice-BU1";
     private static final String PRE_CREATED_DEVICE = "SeleniumTestDeviceTC";
@@ -92,8 +93,12 @@ public class TrafficClassTest extends BaseTestCase {
 
     private TrafficClassWizardPage goToWizardAtCreate() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
-        sideMenu.callActionByLabel(TRAFFIC_CLASS, WIZARDS, TRANSPORT);
+        //SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
+        //sideMenu.callActionByLabel(TRAFFIC_CLASS, WIZARDS, TRANSPORT);
+        driver.get(String.format("%s/#/view/transport/ip/ethernet/traffic-class?perspective=LIVE", BASIC_URL));
+        PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
+        perspectiveChooser.setCurrentTask();
+
         return new TrafficClassWizardPage(driver);
     }
 

@@ -7,6 +7,7 @@
 package com.oss.transport;
 
 import com.oss.BaseTestCase;
+import com.oss.framework.mainheader.PerspectiveChooser;
 import com.oss.framework.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.transport.VRF.VRFImpExpRouteTargetWizardPage;
@@ -27,9 +28,9 @@ import static com.oss.configuration.Configuration.CONFIGURATION;
  */
 public class CreateVRFTest extends BaseTestCase {
 
-    private static final String WIZARDS = "Wizards";
-    private static final String TRANSPORT = "Transport";
-    private static final String VRF = "VRF";
+    private static final String WIZARDS = "Network domains";
+    private static final String TRANSPORT = "Transport & IP";
+    private static final String VRF = "Create VRF";
 
     private static final String VRF_NAME = "vrfNameTest2";
     private static final String ROUTE_DISTINGUISHER = "999:999";
@@ -144,8 +145,12 @@ public class CreateVRFTest extends BaseTestCase {
 
     private VRFWizardPage goToVRFWizard() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        SideMenu sidemenu = SideMenu.create(driver, webDriverWait);
-        sidemenu.callActionByLabel(VRF, WIZARDS, TRANSPORT);
+        //SideMenu sidemenu = SideMenu.create(driver, webDriverWait);
+        //sidemenu.callActionByLabel(VRF, WIZARDS, TRANSPORT);
+        driver.get(String.format("%s/#/view/transport/tpt/vrf?perspective=LIVE", BASIC_URL));
+        PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
+        perspectiveChooser.setCurrentTask();
+
         return new VRFWizardPage(driver);
     }
 
