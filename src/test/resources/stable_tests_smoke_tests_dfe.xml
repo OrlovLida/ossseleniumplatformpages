@@ -15,4 +15,9 @@
             <class name="com.oss.bigdata.dfe.SMOKE.DimensionsSmokeTest"/>
         </classes>
     </test>
+    <test name="EtlSmokeTest">
+        <classes>
+            <class name="com.oss.bigdata.dfe.SMOKE.EtlSmokeTest"/>
+        </classes>
+    </test>
 </suite>

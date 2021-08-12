@@ -1,6 +1,5 @@
 package com.oss.pages.bigdata.dfe;
 
-import com.oss.framework.widgets.tablewidget.OldTable;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -8,8 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 
 public class DimensionsPage extends BaseDfePage {
 
@@ -83,30 +80,22 @@ public class DimensionsPage extends BaseDfePage {
     }
 
     @Step("I check last log time from Logs Tab")
-    public LocalDateTime lastLogTime() {
-        String lastLog = OldTable
-                .createByComponentId(driver, wait, LOGS_TABLE_TAB_ID)
-                .getCellValue(0, COLUMN_TIME_LABEL);
-
-        LocalDateTime lastLogTime = LocalDateTime.parse(lastLog, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        log.info("Last Log Time is: {}", lastLogTime);
-
-        return lastLogTime;
+    public LocalDateTime lastLogTimeInTimeColumn() {
+        return lastLogTime(LOGS_TABLE_TAB_ID, COLUMN_TIME_LABEL);
     }
 
     @Step("I check if Last Log Time is fresh - up to 60 min old")
-    public boolean isLastLogTimeFresh() {
-        return ChronoUnit.MINUTES.between(lastLogTime(), LocalDateTime.now()) < 60;
+    public boolean isLastLogTimeFromTimeColumnFresh() {
+        return isLastLogTimeFresh(lastLogTimeInTimeColumn());
     }
+
 
     @Step("I check Severity of Dimension Logs from Logs Tab")
     public String checkSeverity() {
-        String actualSeverity = OldTable
-                .createByComponentId(driver, wait, LOGS_TABLE_TAB_ID)
-                .getCellValue(0, COLUMN_SEVERITY_LABEL);
-        log.info("Severity of last dimension log is {}", actualSeverity);
+        String severityOfDimension = checkLogStatus(LOGS_TABLE_TAB_ID, COLUMN_SEVERITY_LABEL);
+        log.info("Severity of last dimension log is {}", severityOfDimension);
 
-        return actualSeverity;
+        return severityOfDimension;
     }
 
     @Override

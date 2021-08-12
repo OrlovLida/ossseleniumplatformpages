@@ -7,12 +7,15 @@ import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tabswidget.TabWindowWidget;
-import com.oss.framework.widgets.tabswidget.TabsInterface;
 import com.oss.pages.BasePage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 abstract public class BaseDfePage extends BasePage implements BaseDfePageInterface {
 
@@ -33,14 +36,14 @@ abstract public class BaseDfePage extends BasePage implements BaseDfePageInterfa
         log.info("Opening page: {}", pageUrl);
     }
 
-    public void searchFeed(String searchText) {
+    protected void searchFeed(String searchText) {
         SearchField search = (SearchField) ComponentFactory.create(getSearchId(), Input.ComponentType.SEARCH_FIELD, driver, wait);
         search.clear();
         search.typeValue(searchText);
         log.debug("Searching feed {}", searchText);
     }
 
-    public int getNumberOfRowsInTable(String columnLabel) {
+    protected int getNumberOfRowsInTable(String columnLabel) {
         return getTable(driver, wait).getNumberOfRowsInTable(columnLabel);
     }
 
@@ -75,14 +78,36 @@ abstract public class BaseDfePage extends BasePage implements BaseDfePageInterfa
     }
 
     protected void selectTab(String label) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        TabsInterface tab = TabWindowWidget.create(driver, wait);
-        tab.selectTabByLabel(label);
-        DelayUtils.waitForPageToLoad(driver, wait);
+        TabWindowWidget.create(driver, wait).selectTabByLabel(label);
     }
 
-    public void confirmDelete(String deleteLabel) {
-        ConfirmationBox confirmationBox = ConfirmationBox.create(driver, wait);
-        confirmationBox.clickButtonByLabel(deleteLabel);
+    protected void confirmDelete(String deleteLabel) {
+        ConfirmationBox.create(driver, wait).clickButtonByLabel(deleteLabel);
+    }
+
+    protected void clickRefreshTabTable(String refreshLabel) {
+        TabWindowWidget.create(driver, wait).callActionByLabel(refreshLabel);
+        log.debug("Click context action: {}", refreshLabel);
+    }
+
+    protected LocalDateTime lastLogTime(String tabId, String columnLabel) {
+        String lastLog = OldTable
+                .createByComponentId(driver, wait, tabId)
+                .getCellValue(0, columnLabel);
+
+        LocalDateTime lastLogTime = LocalDateTime.parse(lastLog, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        log.info("Last Log Time is: {}", lastLogTime);
+
+        return lastLogTime;
+    }
+
+    protected boolean isLastLogTimeFresh(LocalDateTime lastLogTime) {
+        return ChronoUnit.MINUTES.between(lastLogTime, LocalDateTime.now()) < 60;
+    }
+
+    protected String checkLogStatus(String logsTableTabId, String columnLabel) {
+        return OldTable
+                .createByComponentId(driver, wait, logsTableTabId)
+                .getCellValue(0, columnLabel);
     }
 }
