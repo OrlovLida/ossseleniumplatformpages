@@ -106,11 +106,8 @@ abstract public class BaseDfePage extends BasePage implements BaseDfePageInterfa
     }
 
     protected String checkLogStatus(String logsTableTabId, String columnLabel) {
-        String actualStatus = OldTable
+        return OldTable
                 .createByComponentId(driver, wait, logsTableTabId)
                 .getCellValue(0, columnLabel);
-        log.info("Severity of last dimension log is {}", actualStatus);
-
-        return actualStatus;
     }
 }

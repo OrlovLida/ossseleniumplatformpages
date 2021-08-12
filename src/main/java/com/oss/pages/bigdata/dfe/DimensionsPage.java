@@ -92,7 +92,10 @@ public class DimensionsPage extends BaseDfePage {
 
     @Step("I check Severity of Dimension Logs from Logs Tab")
     public String checkSeverity() {
-        return checkLogStatus(LOGS_TABLE_TAB_ID, COLUMN_SEVERITY_LABEL);
+        String severityOfDimension = checkLogStatus(LOGS_TABLE_TAB_ID, COLUMN_SEVERITY_LABEL);
+        log.info("Severity of last dimension log is {}", severityOfDimension);
+
+        return severityOfDimension;
     }
 
     @Override

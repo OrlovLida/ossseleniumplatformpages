@@ -95,9 +95,12 @@ public class EtlDataCollectionsPage extends BaseDfePage {
         return isLastLogTimeFresh(lastIfRunTime());
     }
 
-    @Step("I check Status of Aggregate from Execution History tab")
+    @Step("I check Status of ETL from Execution History tab")
     public String checkStatus() {
-        return checkLogStatus(TABLE_TAB_ID, COLUMN_STATUS_LABEL);
+        String statusOfEtl = checkLogStatus(TABLE_TAB_ID, COLUMN_STATUS_LABEL);
+        log.info("Status of last ETL log in Execution History is {}", statusOfEtl);
+
+        return statusOfEtl;
     }
 
     @Override

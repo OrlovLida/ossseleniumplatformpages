@@ -108,7 +108,10 @@ public class AggregatePage extends BaseDfePage {
 
     @Step("I check Status of Aggregate from Execution History tab")
     public String checkStatus() {
-        return checkLogStatus(TABLE_TAB_ID, COLUMN_STATUS_LABEL);
+        String statusOfAggregate = checkLogStatus(TABLE_TAB_ID, COLUMN_STATUS_LABEL);
+        log.info("Status of last aggregate log in Execution History is {}", statusOfAggregate);
+
+        return statusOfAggregate;
     }
 
     @Override
