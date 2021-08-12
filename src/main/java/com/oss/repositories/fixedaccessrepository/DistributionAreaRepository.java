@@ -40,8 +40,9 @@ public class DistributionAreaRepository {
         distributionAreaClient = DistributionAreaClient.getInstance(env);
     }
 
-    public Long createDistributionAreaWithAddressAccessPointAccessNodeInstallationMediumsInstllationDevices(boolean coverageFlag, String technicalStandard, Long pAddressId,
-        Long pAccessPointId, List<Long> installationDevicesIds, List<Long> installationMediumsIds, Long accessNodeId, List<Long> accessInterfacesIds) {
+    public Long createDistributionAreaWithAddressAccessPointAccessNodeInstallationMediumsInstllationDevices(boolean coverageFlag,
+        String technicalStandard, Long pAddressId, Long pAccessPointId, List<Long> installationDevicesIds,
+        List<Long> installationMediumsIds, Long accessNodeId, List<Long> accessInterfacesIds) {
         Map<Long, Collection<Long>> accessNodeToAccessInterfacesMapping = singletonMap(accessNodeId, accessInterfacesIds);
         DistributionAreaPersistenceResponseDTO responseDTO = distributionAreaClient.synchronizeDistributionArea(
                 buildDistributionAreaWithAddressAccessPointAccessNodeInstallationMediumsInstllationDevices(coverageFlag,

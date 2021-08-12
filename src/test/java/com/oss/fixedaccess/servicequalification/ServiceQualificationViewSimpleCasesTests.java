@@ -20,6 +20,8 @@ public class ServiceQualificationViewSimpleCasesTests extends BaseTestCase {
     private static final String DA_QUERY_OPTION = "Distribution Area";
     private static final String INSTALLATION_ADDRESS_QUERY_OPTION = "Installation Address";
     private static final String TECHNICAL_STANDARD = "FTTH";
+    private static final String DA_TYPE = "DA";
+    private static final String ADDRESS_TYPE = "ADDRESS";
     private static String distributionAreaName;
     private static String distributionAreaId;
     private static String installationAddressName;
@@ -83,7 +85,7 @@ public class ServiceQualificationViewSimpleCasesTests extends BaseTestCase {
         serviceQualificationWizard.openServiceQualificationWizard()
                 .setQueryOption(INSTALLATION_ADDRESS_QUERY_OPTION);
 
-        useProperMethodForSearchDAorAddress(installationAddressName, installationAddressId);
+        useProperMethodForSearchDAorAddress(installationAddressName, installationAddressId, ADDRESS_TYPE);
 
         serviceQualificationWizard
                 .setProvideAlternative("true")
@@ -111,7 +113,7 @@ public class ServiceQualificationViewSimpleCasesTests extends BaseTestCase {
         serviceQualificationWizard.openServiceQualificationWizard()
                 .setQueryOption(DA_QUERY_OPTION);
 
-        useProperMethodForSearchDAorAddress(distributionAreaName, Long.valueOf(distributionAreaId));
+        useProperMethodForSearchDAorAddress(distributionAreaName, Long.valueOf(distributionAreaId), DA_TYPE);
 
         serviceQualificationWizard
                 .setProvideAlternative("true")
@@ -139,7 +141,7 @@ public class ServiceQualificationViewSimpleCasesTests extends BaseTestCase {
         serviceQualificationWizard.openServiceQualificationWizard()
                 .setQueryOption(INSTALLATION_ADDRESS_QUERY_OPTION);
 
-        useProperMethodForSearchDAorAddress(installationAddressName, installationAddressId);
+        useProperMethodForSearchDAorAddress(installationAddressName, installationAddressId, ADDRESS_TYPE);
 
         serviceQualificationWizard
                 .setProvideAlternative("true")
@@ -169,7 +171,7 @@ public class ServiceQualificationViewSimpleCasesTests extends BaseTestCase {
         serviceQualificationView.clickButtonChangeParameters()
                 .setQueryOption(DA_QUERY_OPTION);
 
-        useProperMethodForSearchDAorAddress(distributionAreaName, Long.valueOf(distributionAreaId));
+        useProperMethodForSearchDAorAddress(distributionAreaName, Long.valueOf(distributionAreaId), DA_TYPE);
 
         serviceQualificationWizard
                 .setProvideAlternative("true")
@@ -199,11 +201,11 @@ public class ServiceQualificationViewSimpleCasesTests extends BaseTestCase {
         centralOfficeAddressId, installationAddressId);
     }
 
-    private void useProperMethodForSearchDAorAddress(String addressOrDaName, Long xId) {
+    private void useProperMethodForSearchDAorAddress(String addressOrDaName, Long xId, String advancedSearchTableType) {
         if (addressOrDaName.equals("")) {
             serviceQualificationWizard.openAdvancedSearchWindow()
                     .setXidInAdvancedSearchFilter(xId)
-                    .selectFirstResultInAdvancedSearchTable()
+                    .selectFirstResultInAdvancedSearchTable(advancedSearchTableType)
                     .clickButtonAddInAdvancedSearchWindow();
         } else {
             serviceQualificationWizard.setAddressOrDA(addressOrDaName);

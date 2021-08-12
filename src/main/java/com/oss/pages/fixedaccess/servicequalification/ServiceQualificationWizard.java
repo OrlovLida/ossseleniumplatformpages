@@ -1,11 +1,10 @@
 package com.oss.pages.fixedaccess.servicequalification;
 
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
-import com.oss.framework.widgets.tablewidget.TableWidget;
+import com.oss.framework.widgets.advancedsearch.AdvancedSearchWidget;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
@@ -26,7 +25,6 @@ public class ServiceQualificationWizard extends BasePage {
     private static final String PROVIDE_RESOURCE_CHECKBOX = "sqProvideResourcesCheckboxUID";
     private static final String PROVIDE_SERVICE_NODE_CHECKBOX = "sqProvideServiceNodesCheckboxUID";
     private static final String ADVANCED_SEARCH_BUTTON = "btn-as-modal";
-    private static final String ADVANCED_SEARCH_WIDGET_ID = "advancedSearch";
     private static final String ADVANCED_SEARCH_ID = "advancedSearch";
     private static final String SERVICE_QUALIFICATION = "Service Qualification";
     private static final String NETWORK_DOMAINS = "Network domains";
@@ -98,19 +96,25 @@ public class ServiceQualificationWizard extends BasePage {
 
     @Step("Set xid in advanced search filter")
     public ServiceQualificationWizard setXidInAdvancedSearchFilter(Long id) {
-        getAdvancedSearchWindow().getComponent("id", TEXT_FIELD).setSingleStringValueContains(id.toString());
+        getAdvancedSearch().getComponent("id", TEXT_FIELD).setSingleStringValueContains(id.toString());
         return this;
     }
 
     @Step("Select first result in advanced search table")
-    public ServiceQualificationWizard selectFirstResultInAdvancedSearchTable() {
-        getAdvancedSearchTableWidget().selectRow(0);
+    public ServiceQualificationWizard selectFirstResultInAdvancedSearchTable(String tableType) {
+        waitForPageToLoad();
+        if(tableType.equals("DA")){
+            getAdvancedSearch().getTableComponent("table-DistributionArea_sqSearchFieldUID_object-factory_modal_result_DistributionArea")
+                               .selectRow(0);
+        } else {
+            getAdvancedSearch().getTableComponent("table-Address_sqSearchFieldUID_object-factory_modal_result_Address").selectRow(0);
+        }
         return this;
     }
 
     @Step("Click button Add in advanced search window")
     public ServiceQualificationWizard clickButtonAddInAdvancedSearchWindow() {
-        getAdvancedSearchWindow().clickAdd();
+        getAdvancedSearch().clickAdd();
         return this;
     }
 
@@ -124,12 +128,8 @@ public class ServiceQualificationWizard extends BasePage {
         return Wizard.createWizard(driver, wait);
     }
 
-    private TableWidget getAdvancedSearchTableWidget() {
-        return TableWidget.createById(driver, ADVANCED_SEARCH_WIDGET_ID, wait);
-    }
-
-    private AdvancedSearch getAdvancedSearchWindow() {
-        return AdvancedSearch.createById(driver, wait, ADVANCED_SEARCH_ID);
+    private AdvancedSearchWidget getAdvancedSearch() {
+        return AdvancedSearchWidget.createById(driver, wait, ADVANCED_SEARCH_ID);
     }
 
     private void waitForPageToLoad() {
