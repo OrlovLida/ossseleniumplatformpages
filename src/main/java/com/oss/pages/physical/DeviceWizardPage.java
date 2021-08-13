@@ -1,5 +1,6 @@
 package com.oss.pages.physical;
 
+import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
 import static com.oss.framework.components.inputs.Input.ComponentType.DATE_TIME;
 import static com.oss.framework.components.inputs.Input.ComponentType.SEARCH_FIELD;
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_AREA;
@@ -81,7 +82,7 @@ public class DeviceWizardPage extends BasePage {
     
     @Step("Set Equipment Type")
     public void setEquipmentType(String equipmentType) {
-        getDeviceWizard().setComponentValue(DEVICE_EQUIPMENT_TYPE_DATA_ATTRIBUTE_NAME, equipmentType, SEARCH_FIELD);
+        getDeviceWizard().setComponentValue(DEVICE_EQUIPMENT_TYPE_DATA_ATTRIBUTE_NAME, equipmentType, COMBOBOX);
     }
     
     @Step("Set Model using contains")
