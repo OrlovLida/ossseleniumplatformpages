@@ -1,25 +1,22 @@
 package com.oss.pages.faultmanagement;
 
-import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.data.Data;
+import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.listwidget.CommonList;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.SEARCH_FIELD;
-
 public class FMDashboardPage extends BasePage {
     private static final Logger log = LoggerFactory.getLogger(FMDashboardPage.class);
-    private Input input;
+    public static final String HTTP_URL_TO_FM_DASHBOARD = "%s/#/dashboard/predefined/id/_FaultManagement";
+    public static final String COMMON_LIST_APP_ID = "_UserViewsListALARM_MANAGEMENT";
+    public static final String OPEN_BUTTON_ID = "Open";
+
 
     public FMDashboardPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -29,7 +26,7 @@ public class FMDashboardPage extends BasePage {
     public static FMDashboardPage goToPage(WebDriver driver, String basicURL) {
         WebDriverWait wait = new WebDriverWait(driver, 90);
 
-        String webURL = String.format("%s/#/dashboard/predefined/id/_FaultManagement", basicURL);
+        String webURL = String.format(HTTP_URL_TO_FM_DASHBOARD, basicURL);
         driver.navigate().to(webURL);
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Opened page: {}", webURL);
@@ -37,20 +34,33 @@ public class FMDashboardPage extends BasePage {
         return new FMDashboardPage(driver, wait);
     }
 
-    @Step
-    public void searchForAlarmList() {
-//        CommonList commonList = CommonList.create(driver,wait,"_UserViewsListALARM_MANAGEMENT");
-//        commonList.callAction("search");
-//        Input input = ComponentFactory.create("search", SEARCH_FIELD, driver, wait);
-//        input.click();
-//        input.setValue(Data.createSingleData("11"));
+    @Step("I search for specific alarm in list")
+    public void searchForAlarmList(String alarmListName) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        WebElement searchField = driver.findElement(By.xpath("//*[data-attributename='search_ga1zplwqxxv']"));
-        searchField.click();
-        searchField.sendKeys("11");
-        searchField.sendKeys(Keys.ENTER);
+        AdvancedSearch search = AdvancedSearch.createByWidgetId(driver,wait, COMMON_LIST_APP_ID);
+        search.fullTextSearch(alarmListName);
 
+    }
 
+    @Step("I open alarm list by the name")
+    public void openSelectedAlarmList(String alarmListName){
+        DelayUtils.waitForPageToLoad(driver, wait);
+        CommonList commonList = CommonList.create(driver,wait,COMMON_LIST_APP_ID);
+        commonList.getRow("Name",alarmListName).callAction(OPEN_BUTTON_ID);
+    }
+
+    @Step("I open alarm list by the seelected attribute")
+    public void openSelectedAlarmList(String attName, String alarmListAtt){
+        DelayUtils.waitForPageToLoad(driver, wait);
+        CommonList commonList = CommonList.create(driver,wait,COMMON_LIST_APP_ID);
+        commonList.getRow(attName,alarmListAtt).callAction(OPEN_BUTTON_ID);
+    }
+
+    @Step("I open N alarm from the list")
+    public void openAlarmListFromList(int n){
+        DelayUtils.waitForPageToLoad(driver, wait);
+        CommonList commonList = CommonList.create(driver,wait,COMMON_LIST_APP_ID);
+        commonList.getAllRows().get(n).callAction(OPEN_BUTTON_ID);
     }
 
 }
