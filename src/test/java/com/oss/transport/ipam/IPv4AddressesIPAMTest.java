@@ -1,4 +1,4 @@
-package com.oss.transport;
+package com.oss.transport.ipam;
 
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
