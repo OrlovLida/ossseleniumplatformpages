@@ -20,4 +20,9 @@
             <class name="com.oss.bigdata.dfe.SMOKE.EtlSmokeTest"/>
         </classes>
     </test>
+    <test name="ThresholdSmokeTest">
+        <classes>
+            <class name="com.oss.bigdata.dfe.SMOKE.ThresholdSmokeTest"/>
+        </classes>
+    </test>
 </suite>
