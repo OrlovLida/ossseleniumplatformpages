@@ -207,8 +207,8 @@ public class CellSiteConfigurationPage extends BasePage {
     }
 
     @Step("Create {amountOfCells} Cells 4G by bulk wizard with Carrier = {carrier}")
-    public void createCell4GBulk(int amountOfCells, String carrier, String[] cellNames, int[] cellsID) {
-        openCell4GBulkWizard().createCellBulkWizard(amountOfCells, carrier, cellNames, cellsID);
+    public void createCell4GBulk(int amountOfCells, String carrier, String[] cellNames, int[] cellsID, int crp) {
+        openCell4GBulkWizard().createCellBulkWizard(amountOfCells, carrier, cellNames, cellsID, crp);
     }
 
     @Step("Create {amountOfCells} Cells 5G by bulk wizard with Carrier = {carrier}")
