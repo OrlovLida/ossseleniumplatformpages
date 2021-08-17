@@ -292,23 +292,14 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
     public void deleteDevices() {
         openCellSiteConfiguration();
         waitForPageToLoad();
-        cellSiteConfigurationPage.filterObject(NAME, BBU_NAME);
-        waitForPageToLoad();
-        cellSiteConfigurationPage.removeObject();
-        waitForPageToLoad();
+        cellSiteConfigurationPage.removeDevice(NAME, BBU_NAME);
         checkMessageType();
 
         for (int i = 0; i < 3; i++) {
-            cellSiteConfigurationPage.filterObject(NAME, RADIO_UNIT_NAMES[i]);
-            waitForPageToLoad();
-            cellSiteConfigurationPage.removeObject();
-            waitForPageToLoad();
+            cellSiteConfigurationPage.removeDevice(NAME, RADIO_UNIT_NAMES[i]);
             checkMessageType();
 
-            cellSiteConfigurationPage.filterObject(NAME, ANTENNA_NAMES[i]);
-            waitForPageToLoad();
-            cellSiteConfigurationPage.removeObject();
-            waitForPageToLoad();
+            cellSiteConfigurationPage.removeDevice(NAME, ANTENNA_NAMES[i]);
             checkMessageType();
         }
     }
@@ -319,9 +310,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         waitForPageToLoad();
         cellSiteConfigurationPage.expandTreeToLocation(SITE, LOCATION_NAME);
         waitForPageToLoad();
-        cellSiteConfigurationPage.selectRowByAttributeValueWithLabel(NAME, ENODEB_NAME);
-        waitForPageToLoad();
-        cellSiteConfigurationPage.removeObject();
+        cellSiteConfigurationPage.removeBaseStation(NAME, ENODEB_NAME);
     }
 
     private void openCellSiteConfiguration() {
