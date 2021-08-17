@@ -308,8 +308,6 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
     @Description("Delete eNodeB")
     public void deleteNodeB() {
         waitForPageToLoad();
-        cellSiteConfigurationPage.expandTreeToLocation(SITE, LOCATION_NAME);
-        waitForPageToLoad();
         cellSiteConfigurationPage.removeBaseStation(NAME, ENODEB_NAME);
     }
 
