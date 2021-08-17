@@ -64,7 +64,12 @@ public class HomePage extends BasePage {
 
     public String getPageTitle() {
         WebDriverWait wait = new WebDriverWait(driver, 45);
-        DelayUtils.waitForVisibility(wait, pageTitle);
+//        DelayUtils.waitForVisibility(wait, pageTitle);
+        DelayUtils.waitForPageToLoad(driver,wait);
+        return pageTitle.getText();
+    }
+
+    public String getPageTitle(WebDriverWait wait) {
         return pageTitle.getText();
     }
 

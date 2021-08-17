@@ -1,6 +1,5 @@
 package com.oss.pages.faultmanagement;
 
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.listwidget.CommonList;
 import com.oss.framework.utils.DelayUtils;
@@ -37,29 +36,29 @@ public class FMDashboardPage extends BasePage {
     @Step("I search for specific alarm in list")
     public void searchForAlarmList(String alarmListName) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        AdvancedSearch search = AdvancedSearch.createByWidgetId(driver,wait, COMMON_LIST_APP_ID);
+        AdvancedSearch search = AdvancedSearch.createByWidgetId(driver, wait, COMMON_LIST_APP_ID);
         search.fullTextSearch(alarmListName);
 
     }
 
     @Step("I open alarm list by the name")
-    public void openSelectedAlarmList(String alarmListName){
+    public void openSelectedAlarmList(String alarmListName) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        CommonList commonList = CommonList.create(driver,wait,COMMON_LIST_APP_ID);
-        commonList.getRow("Name",alarmListName).callAction(OPEN_BUTTON_ID);
+        CommonList commonList = CommonList.create(driver, wait, COMMON_LIST_APP_ID);
+        commonList.getRow("Name", alarmListName).callAction(OPEN_BUTTON_ID);
     }
 
     @Step("I open alarm list by the seelected attribute")
-    public void openSelectedAlarmList(String attName, String alarmListAtt){
+    public void openSelectedAlarmList(String attName, String alarmListAtt) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        CommonList commonList = CommonList.create(driver,wait,COMMON_LIST_APP_ID);
-        commonList.getRow(attName,alarmListAtt).callAction(OPEN_BUTTON_ID);
+        CommonList commonList = CommonList.create(driver, wait, COMMON_LIST_APP_ID);
+        commonList.getRow(attName, alarmListAtt).callAction(OPEN_BUTTON_ID);
     }
 
     @Step("I open N alarm from the list")
-    public void openAlarmListFromList(int n){
+    public void openAlarmListFromList(int n) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        CommonList commonList = CommonList.create(driver,wait,COMMON_LIST_APP_ID);
+        CommonList commonList = CommonList.create(driver, wait, COMMON_LIST_APP_ID);
         commonList.getAllRows().get(n).callAction(OPEN_BUTTON_ID);
     }
 
