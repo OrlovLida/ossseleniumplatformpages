@@ -37,6 +37,7 @@ public class CellSiteConfigurationPage extends BasePage {
     private static final String TYPE_4G = "4G";
     private static final String TYPE_5G = "5G";
     private static final String DEVICES_TAB = "Devices";
+    private static final String BASE_STATIONS_TAB = "Base Stations";
     private static final String CREATE_DEVICE_ACTION = "Create Device";
     private static final String CREATE_RAN_ANTENNA_ACTION = "Create RAN Antenna";
     private static final String HOST_ON_DEVICE_ACTION_LABEL = "Host on Device";
@@ -100,6 +101,24 @@ public class CellSiteConfigurationPage extends BasePage {
         waitForPageToLoad();
         ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
         prompt.clickButtonByLabel(DELETE_LABEL);
+    }
+
+    @Step("Remove device {objectName}")
+    public void removeDevice(String columnName, String objectName){
+        selectTab(DEVICES_TAB);
+        waitForPageToLoad();
+        filterObject(columnName, objectName);
+        waitForPageToLoad();
+        removeObject();
+    }
+
+    @Step("Remove base station {objectName}")
+    public void removeBaseStation(String columnName, String objectName){
+        selectTab(BASE_STATIONS_TAB);
+        waitForPageToLoad();
+        selectRowByAttributeValueWithLabel(columnName, objectName);
+        waitForPageToLoad();
+        removeObject();
     }
 
     @Step("Expand the tree and select Base Station")
