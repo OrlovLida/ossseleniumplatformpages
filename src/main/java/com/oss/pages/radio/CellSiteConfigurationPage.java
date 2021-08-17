@@ -116,7 +116,7 @@ public class CellSiteConfigurationPage extends BasePage {
     public void removeBaseStation(String columnName, String objectName){
         selectTab(BASE_STATIONS_TAB);
         waitForPageToLoad();
-        selectRowByAttributeValueWithLabel(columnName, objectName);
+        filterObject(columnName, objectName);
         waitForPageToLoad();
         removeObject();
     }
