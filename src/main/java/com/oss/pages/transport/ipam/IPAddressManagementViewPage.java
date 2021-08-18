@@ -1,6 +1,7 @@
 package com.oss.pages.transport.ipam;
 
 import java.util.Arrays;
+import java.util.List;
 
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.transport.ipam.helper.IPAddressAssignmentWizardProperties;
@@ -20,6 +21,7 @@ import com.oss.framework.widgets.treewidget.TreeWidget;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
+import org.openqa.selenium.WebElement;
 
 import static com.oss.framework.alerts.SystemMessageContainer.MessageType.SUCCESS;
 import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
@@ -116,6 +118,12 @@ public class IPAddressManagementViewPage extends BasePage {
     public void selectTreeRowContains(String name) {
         waitForPageToLoad();
         getTreeView().selectTreeRowContains(name);
+    }
+
+    @Step("Unselect object with name: {name} on hierarchy view")
+    public void unselectTreeRow(String name){
+        waitForPageToLoad();
+        getTreeView().selectTreeRow(name);
     }
 
     @Step("Expand object with name: {name} on hierarchy view")

@@ -1,6 +1,7 @@
 package com.oss.pages.transport.ipam;
 
 import com.oss.framework.components.inputs.Button;
+import com.oss.framework.components.table.TableComponent;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Widget;
 import com.oss.framework.widgets.Wizard;
@@ -38,6 +39,11 @@ public class IPSubnetWizardPage extends BasePage {
         return TableWidget.create(driver, TableWidget.TABLE_WIDGET_CLASS, wait);
     }
 
+    private TableComponent getTableComponent(){
+        Widget.waitForWidget(wait, TableWidget.TABLE_WIDGET_CLASS);
+        return TableComponent.create(driver,wait,"subnetWizardWidgetId");
+    }
+
     @Step("IP Subnet Wizard select step")
     public void ipSubnetWizardSelectStep(IPSubnetFilterProperties ipSubnetFilterProperties) {
         waitForPageToLoad();
@@ -61,6 +67,21 @@ public class IPSubnetWizardPage extends BasePage {
         waitForPageToLoad();
         for (int i = 0; i < amount; i++)
             getTableWidget().selectRow(i);
+        waitForPageToLoad();
+        selectStep.clickNext();
+        waitForPageToLoad();
+    }
+
+    @Step("IP Subnet Wizard select step")
+    public void ipSubnetWizardSelectStep2(IPSubnetFilterProperties ipSubnetFilterProperties, int amount) {
+        waitForPageToLoad();
+        Wizard selectStep = createWizard();
+        fillSubnetWizardSelectStep(selectStep, ipSubnetFilterProperties);
+        Button button = Button.create(driver, FIND_SUBNETS, A_BLOCK);
+        button.click();
+        waitForPageToLoad();
+        for (int i = 0; i < amount; i++)
+            getTableComponent().selectRow(i);
         waitForPageToLoad();
         selectStep.clickNext();
         waitForPageToLoad();
