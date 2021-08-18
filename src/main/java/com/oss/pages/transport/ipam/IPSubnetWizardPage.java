@@ -1,6 +1,7 @@
 package com.oss.pages.transport.ipam;
 
 import com.oss.framework.components.inputs.Button;
+import com.oss.framework.components.table.TableComponent;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Widget;
 import com.oss.framework.widgets.Wizard;
@@ -27,15 +28,17 @@ public class IPSubnetWizardPage extends BasePage {
     private static final String DESCRIPTION_COMPONENT_ID = "descriptionComponentId";
     private static final String FIND_SUBNETS = "Find Subnets";
     private static final String FIND_NEXT_SUBNET = "Find next Subnet";
+    private static final String SUBNET_WIZARD_WIDGET_ID = "subnetWizardWidgetId";
     private static final String A_BLOCK = "a";
+    private static final int FIRST_ROW = 0;
 
     public IPSubnetWizardPage(WebDriver driver) {
         super(driver);
     }
 
-    private TableWidget getTableWidget() {
+    private TableComponent getTableComponent() {
         Widget.waitForWidget(wait, TableWidget.TABLE_WIDGET_CLASS);
-        return TableWidget.create(driver, TableWidget.TABLE_WIDGET_CLASS, wait);
+        return TableComponent.create(driver, wait, SUBNET_WIZARD_WIDGET_ID);
     }
 
     @Step("IP Subnet Wizard select step")
@@ -46,7 +49,7 @@ public class IPSubnetWizardPage extends BasePage {
         Button button = Button.create(driver, FIND_NEXT_SUBNET, A_BLOCK);
         button.click();
         waitForPageToLoad();
-        getTableWidget().selectFirstRow();
+        getTableComponent().selectRow(FIRST_ROW);
         waitForPageToLoad();
         selectStep.clickNext();
     }
@@ -60,7 +63,7 @@ public class IPSubnetWizardPage extends BasePage {
         button.click();
         waitForPageToLoad();
         for (int i = 0; i < amount; i++)
-            getTableWidget().selectRow(i);
+            getTableComponent().selectRow(i);
         waitForPageToLoad();
         selectStep.clickNext();
         waitForPageToLoad();
@@ -71,7 +74,7 @@ public class IPSubnetWizardPage extends BasePage {
         Wizard selectStep = createWizard();
         waitForPageToLoad();
         for (int i = 0; i < amount; i++)
-            getTableWidget().selectRow(i);
+            getTableComponent().selectRow(i);
         waitForPageToLoad();
         selectStep.clickNext();
         waitForPageToLoad();
@@ -81,7 +84,7 @@ public class IPSubnetWizardPage extends BasePage {
     public void ipSubnetWizardPropertiesStep(String type) {
         waitForPageToLoad();
         Wizard propertiesStep = createWizard();
-        getTableWidget().selectFirstRow();
+        getTableComponent().selectRow(FIRST_ROW);
         waitForPageToLoad();
         propertiesStep.setComponentValue(SUBNET_TYPE_COMPONENT_ID, type, COMBOBOX);
         waitForPageToLoad();
@@ -94,7 +97,7 @@ public class IPSubnetWizardPage extends BasePage {
         Wizard propertiesStep = createWizard();
         for (int i = 0; i < ipSubnetWizardPropertiesArray.length; i++)
         {
-            getTableWidget().selectRow(i);
+            getTableComponent().selectRow(i);
             waitForPageToLoad();
             propertiesStep.setComponentValue(SUBNET_TYPE_COMPONENT_ID, ipSubnetWizardPropertiesArray[i].getSubnetType(), COMBOBOX);
             if (ipSubnetWizardPropertiesArray[i].getStatus()!=null) {
@@ -108,7 +111,7 @@ public class IPSubnetWizardPage extends BasePage {
                 propertiesStep.setComponentValue(DESCRIPTION_COMPONENT_ID, ipSubnetWizardPropertiesArray[i].getDescription(), TEXT_FIELD);
             }
             waitForPageToLoad();
-            getTableWidget().unselectTableRow(i);
+            getTableComponent().unselectRow(i);
         }
         DelayUtils.sleep(500);
         propertiesStep.clickNext();
