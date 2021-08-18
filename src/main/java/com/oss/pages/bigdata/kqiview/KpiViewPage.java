@@ -1,8 +1,6 @@
 package com.oss.pages.bigdata.kqiview;
 
 import com.oss.framework.components.inputs.Button;
-import com.oss.framework.components.inputs.Input;
-import com.oss.framework.components.portals.PopupV2;
 import com.oss.framework.mainheader.ButtonPanel;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.dpe.kpichartwidget.KpiChartWidget;
@@ -47,7 +45,7 @@ public class KpiViewPage extends BasePage {
     private static final String CHART_COLOR_BUTTON_ID = "chart-color-button";
     private static final String FULL_SCREEN_BUTTON_ID = "full-screen-button";
     private static final String SAVE_BOOKMAK_BUTTON_ID = "buttonIcon fa fa-floppy-o ";
-    private static final String BOOKMARK_NAME_FIELD_ID = "viewName";
+
 
     private static final String OPTIONS_BUTTON_ID = "options-menu-button";
 
@@ -188,7 +186,6 @@ public class KpiViewPage extends BasePage {
             } catch (IOException e) {
                 log.error("Failed attaching files: {}", e.getMessage());
             }
-
         }
     }
 
@@ -438,14 +435,4 @@ public class KpiViewPage extends BasePage {
     public void clickSaveBookmark() {
         ButtonPanel.create(driver, wait).clickOnIcon(SAVE_BOOKMAK_BUTTON_ID);
     }
-
-    @Step("i fill Save Bookmark wizard")
-    public void fillBookmarkWizard(String bookmarkName) {
-        PopupV2 bookmarkWizard = PopupV2.create(driver, wait);
-        bookmarkWizard.setComponentValue(BOOKMARK_NAME_FIELD_ID, bookmarkName, Input.ComponentType.TEXT_FIELD);
-        log.info("I filled bookmark name with: {}", bookmarkName);
-        bookmarkWizard.clickButtonByLabel("Save");
-        log.info("I click Save");
-    }
-
 }
