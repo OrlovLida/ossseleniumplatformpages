@@ -2,22 +2,13 @@ package com.oss.transport;
 
 import com.oss.BaseTestCase;
 import com.oss.configuration.Configuration;
-import com.oss.framework.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.transport.VRF.VRFImpExpRouteTargetWizardPage;
-import com.oss.pages.transport.VRF.VRFOverviewPage;
-import com.oss.pages.transport.VRF.VRFWizardPage;
-import com.oss.pages.transport.VSI.VSIOverviewPage;
 import com.oss.pages.transport.regulatoryLicense.*;
 import io.qameta.allure.Step;
-import org.assertj.core.api.Assertions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
-
-import static com.oss.configuration.Configuration.CONFIGURATION;
 
 /**
  * @author Kamil Szota
@@ -35,8 +26,10 @@ public class RegulatoryLicenseTest extends BaseTestCase {
 
     private static final String LOCATION = "SELENIUM_LOCATION_RL";
     private static final String MICROWAVE_ANTENNA = "SELENIUM_MWANT_RL";
-    private static final String MICROWAVE_LINK = "MicrowaveLink 2911";
-    private static final String MICROWAVE_CHANNEL = "MHz  () (43501422)";
+    private static final String MICROWAVE_LINK = "SELENIUM_LOCATION_RL - SELENIUM_LOCATION2_RL 242";
+    private static final String MICROWAVE_LINK_LABEL = "MicrowaveLink 2911";
+    private static final String MICROWAVE_CHANNEL = "29 MHz  (Working) (43501422)";
+    private static final String MICROWAVE_CHANNEL_LABEL = "MicrowaveChannel 9376";
 
     private static final String NUMBER2 = "234SELENIUM";
     private static final String REGULATORY_AGENCY2 = "SELENIUM_AGENCY2";
@@ -47,7 +40,7 @@ public class RegulatoryLicenseTest extends BaseTestCase {
     private static final String TYPE2 = "NATIONAL";
     private static final String DESCRIPTION2 = "DESC78";
 
-    private static final String ENVIRONMENT_INDEPENDENT_URL_PART_AFTER_REMOVAL_REDIRECT = "/#/view/transport/microwave/licenses?perspective=LIVE";
+    private static final String ENVIRONMENT_INDEPENDENT_URL_PART_AFTER_REMOVAL_REDIRECT = "/#/view/transport/microwave/licenses?perspective=LIVE&withRemoved=false";
 
     @Test(priority = 1)
     @Step("Create Regulatory License")
@@ -55,10 +48,12 @@ public class RegulatoryLicenseTest extends BaseTestCase {
         RegulatoryLicenseAttributes regulatoryLicenseAttributes = getRegulatoryLicenseAttributesToCreate();
 
         RegulatoryLicenseWizardPage regulatoryLicenseWizard = goToRegulatoryLicenseWizard();
+        regulatoryLicenseWizard.clickCreate();
         fillRegulatoryLicenseWizardToCreate(regulatoryLicenseAttributes, regulatoryLicenseWizard);
-        RegulatoryLicenseOverviewPage regulatoryLicenseOverview = regulatoryLicenseWizard.clickAccept();
+        regulatoryLicenseWizard.clickAccept();
+        regulatoryLicenseWizard.openRegulatoryLicenseOverview();
 
-        assertRegulatoryLicenseAttributes(regulatoryLicenseAttributes, regulatoryLicenseOverview);
+        assertRegulatoryLicenseAttributes(regulatoryLicenseAttributes, new RegulatoryLicenseOverviewPage(driver));
     }
 
     @Test(priority = 2)
@@ -68,9 +63,9 @@ public class RegulatoryLicenseTest extends BaseTestCase {
         rlOverviewBeforeAssign.openLocationsTab();
         RegulatoryLicenseLocationsWizardPage locationsWizard = rlOverviewBeforeAssign.clickAddLocationButton();
         assignLocation(locationsWizard);
-        RegulatoryLicenseOverviewPage regulatoryLicenseOverviewAfterAssign = locationsWizard.clickAccept();
+        RegulatoryLicenseOverviewPage regulatoryLicenseOverviewAfterLocationAssignment = locationsWizard.clickAccept();
 
-        assertAssignedLocations(regulatoryLicenseOverviewAfterAssign, LOCATION);
+        assertAssignedLocations(regulatoryLicenseOverviewAfterLocationAssignment, LOCATION);
     }
 
     @Test(priority = 3)
@@ -80,9 +75,9 @@ public class RegulatoryLicenseTest extends BaseTestCase {
         rlOverviewBeforeAssign.openMicrowaveAntennasTab();
         RegulatoryLicenseMicrowaveAntennasWizardPage microwaveAntennasWizard = rlOverviewBeforeAssign.clickAddMicrowaveAntennaButton();
         assignMicrowaveAntenna(microwaveAntennasWizard);
-        RegulatoryLicenseOverviewPage regulatoryLicenseOverviewAfterAssign = microwaveAntennasWizard.clickAccept();
+        RegulatoryLicenseOverviewPage regulatoryLicenseOverviewAfterMicrowaveAntennaAssignment = microwaveAntennasWizard.clickAccept();
 
-        assertAssignedMicrowaveAntennas(regulatoryLicenseOverviewAfterAssign, MICROWAVE_ANTENNA);
+        assertAssignedMicrowaveAntennas(regulatoryLicenseOverviewAfterMicrowaveAntennaAssignment, MICROWAVE_ANTENNA);
     }
 
     @Test(priority = 4)
@@ -92,9 +87,9 @@ public class RegulatoryLicenseTest extends BaseTestCase {
         rlOverviewBeforeAssign.openMicrowaveChannelsTab();
         RegulatoryLicenseMicrowaveChannelsWizardPage microwaveChannelsWizard = rlOverviewBeforeAssign.clickAddMicrowaveChannelButton();
         assignMicrowaveChannel(microwaveChannelsWizard);
-        RegulatoryLicenseOverviewPage regulatoryLicenseOverviewAfterAssign = microwaveChannelsWizard.clickAccept();
+        RegulatoryLicenseOverviewPage regulatoryLicenseOverviewAfterMicrowaveChannelAssignment = microwaveChannelsWizard.clickAccept();
 
-        assertAssignedMicrowaveChannels(regulatoryLicenseOverviewAfterAssign, MICROWAVE_CHANNEL);
+        assertAssignedMicrowaveChannels(regulatoryLicenseOverviewAfterMicrowaveChannelAssignment, MICROWAVE_CHANNEL_LABEL);
     }
 
     @Test(priority = 5)
@@ -104,9 +99,9 @@ public class RegulatoryLicenseTest extends BaseTestCase {
         rlOverviewBeforeAssign.openMicrowaveLinksTab();
         RegulatoryLicenseMicrowaveLinksWizardPage microwaveLinksWizard = rlOverviewBeforeAssign.clickAddMicrowaveLinkButton();
         assignMicrowaveLinks(microwaveLinksWizard);
-        RegulatoryLicenseOverviewPage regulatoryLicenseOverviewAfterAssign = microwaveLinksWizard.clickAccept();
+        RegulatoryLicenseOverviewPage regulatoryLicenseOverviewAfterMicrowaveLinkAssignment = microwaveLinksWizard.clickAccept();
 
-        assertAssignedMicrowaveLinks(regulatoryLicenseOverviewAfterAssign, MICROWAVE_LINK);
+        assertAssignedMicrowaveLinks(regulatoryLicenseOverviewAfterMicrowaveLinkAssignment, MICROWAVE_LINK_LABEL);
     }
 
     @Test(priority = 5)
@@ -117,9 +112,9 @@ public class RegulatoryLicenseTest extends BaseTestCase {
         RegulatoryLicenseOverviewPage regulatoryLicenseOverviewBeforeUpdate = new RegulatoryLicenseOverviewPage(driver);
         RegulatoryLicenseWizardPage regulatoryLicenseWizard = regulatoryLicenseOverviewBeforeUpdate.clickEdit();
         fillRegulatoryLicenseWizardToUpdate(regulatoryLicenseAttributes, regulatoryLicenseWizard);
-        RegulatoryLicenseOverviewPage regulatoryLicenseOverviewAfterUpdate = regulatoryLicenseWizard.clickAccept();
+        regulatoryLicenseWizard.clickAccept();
 
-        assertRegulatoryLicenseAttributes(regulatoryLicenseAttributes, regulatoryLicenseOverviewAfterUpdate);
+        assertRegulatoryLicenseAttributes(regulatoryLicenseAttributes, new RegulatoryLicenseOverviewPage(driver));
     }
 
     @Test(priority = 6)
@@ -170,8 +165,6 @@ public class RegulatoryLicenseTest extends BaseTestCase {
 
         assertRegulatoryLicenseRemoval();
     }
-
-
 
     private RegulatoryLicenseAttributes getRegulatoryLicenseAttributesToCreate() {
         RegulatoryLicenseAttributes regLicAttributes = new RegulatoryLicenseAttributes();
@@ -228,25 +221,21 @@ public class RegulatoryLicenseTest extends BaseTestCase {
     }
 
     private void assignLocation(RegulatoryLicenseLocationsWizardPage locationWizard) {
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         locationWizard.selectLocation(LOCATION);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
     private void assignMicrowaveAntenna(RegulatoryLicenseMicrowaveAntennasWizardPage microwaveAntennasWizard) {
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         microwaveAntennasWizard.selectMicrowaveAntenna(MICROWAVE_ANTENNA);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
     private void assignMicrowaveChannel(RegulatoryLicenseMicrowaveChannelsWizardPage microwaveChannelsWizard) {
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         microwaveChannelsWizard.selectMicrowaveChannel(MICROWAVE_CHANNEL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
     private void assignMicrowaveLinks(RegulatoryLicenseMicrowaveLinksWizardPage microwaveLinksWizard) {
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         microwaveLinksWizard.selectMicrowaveLinks(MICROWAVE_LINK);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
@@ -319,5 +308,4 @@ public class RegulatoryLicenseTest extends BaseTestCase {
         private String type;
         private String description;
     }
-
 }

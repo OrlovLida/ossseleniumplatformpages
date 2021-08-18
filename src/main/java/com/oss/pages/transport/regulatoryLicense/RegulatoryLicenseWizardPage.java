@@ -1,13 +1,14 @@
 package com.oss.pages.transport.regulatoryLicense;
 
+import com.oss.framework.alerts.SystemMessageContainer;
+import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.CommonHierarchyApp;
 import com.oss.framework.widgets.Wizard;
+import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
-import java.util.List;
 
 public class RegulatoryLicenseWizardPage extends BasePage {
 
@@ -19,6 +20,9 @@ public class RegulatoryLicenseWizardPage extends BasePage {
     private static final String STATUS_FIELD_ID = "regulatory-license-status-field";
     private static final String TYPE_FIELD_ID = "regulatory-license-type-field";
     private static final String DESCRIPTION_FIELD_ID = "regulatory-license-description-field";
+
+    private static final String REGULATORY_LICENSES_TABLE_ID = "tableApp";
+    private static final String CREATE_BUTTON_DATA_ATTRIBUTENAME = "create";
 
     private final Wizard wizard;
 
@@ -77,6 +81,17 @@ public class RegulatoryLicenseWizardPage extends BasePage {
         return component;
     }
 
+    private OldTable getTableWidget(String tableId){
+        return OldTable.createByComponentDataAttributeName(driver, wait, tableId);
+    }
+
+    @Step("Click create button")
+    public void clickCreate() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        OldTable regulatoryLicensesTable = getTableWidget(REGULATORY_LICENSES_TABLE_ID);
+        regulatoryLicensesTable.callAction(CREATE_BUTTON_DATA_ATTRIBUTENAME);
+    }
+
     @Step("Click next step button")
     public void clickNextStep() {
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -84,8 +99,15 @@ public class RegulatoryLicenseWizardPage extends BasePage {
     }
 
     @Step("Click accept button")
-    public RegulatoryLicenseOverviewPage clickAccept() {
+    public void clickAccept() {
         wizard.clickAcceptOldWizard();
-        return new RegulatoryLicenseOverviewPage(driver);
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    @Step("Redirect to Regulatory License Overview")
+    public void openRegulatoryLicenseOverview() {
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, wait);
+        systemMessage.clickMessageLink();
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 }
