@@ -19,6 +19,7 @@ public class Cell4GBulkWizardPage extends BasePage {
     private static final String USE_SAME_LOCATION_AS_BASE_STATION = "sameLocationAsBS";
     private static final String COLUMN_NAME = "name";
     private static final String COLUMN_PCI = "pci";
+    private static final String COLUMN_CRP = "cellReselectionPriority";
     private static final String COLUMN_RSI = "rootSequenceIndex";
     private static final String CELLS_AMOUNT = "amountCells";
     private static final String CARRIER = "carrier-input";
@@ -32,6 +33,7 @@ public class Cell4GBulkWizardPage extends BasePage {
     private static final String COLUMN_LOCAL_CELL_ID = "localCellId";
     private static final String LOCAL_CELL_ID = "localCellId-NUMBER_FIELD";
     private static final String CELL_TOTAL_TX_POWER_ID = "cellTotalTxPower";
+    private static final String CRP_ID = "cellReselectionPriority-NUMBER_FIELD";
     private static final String WIZARD_ID = "cell-4g-bulk-wizard";
     private final Wizard wizard;
 
@@ -51,7 +53,7 @@ public class Cell4GBulkWizardPage extends BasePage {
     }
 
     @Step("Create Cells in Bulk Wizard")
-    public void createCellBulkWizard(int amountOfCells, String carrier, String[] cellNames, int[] localCellsId) {
+    public void createCellBulkWizard(int amountOfCells, String carrier, String[] cellNames, int[] localCellsId, int crp) {
         setCellsAmount(String.valueOf(amountOfCells));
         setCarrier(carrier);
         setSameLocation();
@@ -65,6 +67,7 @@ public class Cell4GBulkWizardPage extends BasePage {
         for (String cellName : cellNames) {
             Row row = EditableList.create(driver, wait).selectRow(rowNumber - 1);
             row.setEditableAttributeValue(cellName, COLUMN_NAME, NAME, Input.ComponentType.TEXT_FIELD);
+            row.setEditableAttributeValue(String.valueOf(crp), COLUMN_CRP, CRP_ID, Input.ComponentType.TEXT_FIELD);
             row.setEditableAttributeValue(String.valueOf(localCellsId[rowNumber - 1]), COLUMN_LOCAL_CELL_ID, LOCAL_CELL_ID, TEXT_FIELD);
             rowNumber--;
         }
@@ -72,7 +75,7 @@ public class Cell4GBulkWizardPage extends BasePage {
     }
 
     @Step("Create Cells 4G in Bulk Wizard with default values")
-    public void createCell4GBulkWizardWithDefaultValues(int amountOfCells, String carrier, String[] cellNames, int[] localCellsId) {
+    public void createCell4GBulkWizardWithDefaultValues(int amountOfCells, String carrier, String[] cellNames, int[] localCellsId, int crp) {
         setCellsAmount(String.valueOf(amountOfCells));
         setCarrier(carrier);
         setSameLocation();
@@ -87,6 +90,7 @@ public class Cell4GBulkWizardPage extends BasePage {
             Row row = EditableList.create(driver, wait).selectRow(rowNumber - 1);
             row.setEditableAttributeValue(cellName, COLUMN_NAME, NAME, Input.ComponentType.TEXT_FIELD);
             row.setEditableAttributeValue(String.valueOf(localCellsId[rowNumber]), COLUMN_LOCAL_CELL_ID, LOCAL_CELL_ID, TEXT_FIELD);
+            row.setEditableAttributeValue(String.valueOf(crp), COLUMN_CRP, CRP_ID, Input.ComponentType.TEXT_FIELD);
             row.setEditableAttributeValue("5", COLUMN_PCI, PCI, Input.ComponentType.TEXT_FIELD);
             row.setEditableAttributeValue("10", COLUMN_RSI, RSI, Input.ComponentType.TEXT_FIELD);
             rowNumber++;
