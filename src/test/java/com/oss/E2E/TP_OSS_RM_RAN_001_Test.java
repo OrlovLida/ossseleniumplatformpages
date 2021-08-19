@@ -43,6 +43,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
     private static final String REFERENCE_POWER = "0";
     private static final String[] TAC = { "2", "2", "2" };
     private static final int[] LOCAL_CELLS_ID = { 1, 2, 3 };
+    private static final int CRP = 2;
     private static final String PA_INPUT = "2";
     private static final String TASK_COMPLETED = "Task properly completed.";
     private static final String TASK_ASSIGNED = "The task properly assigned.";
@@ -100,7 +101,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
     public void createCell4GBulk() {
         waitForPageToLoad();
         cellSiteConfigurationPage.expandTreeToBaseStation(SITE, LOCATION_NAME, ENODEB_NAME);
-        cellSiteConfigurationPage.createCell4GBulk(AMOUNT_OF_CELLS, CARRIER, CELL_NAMES, LOCAL_CELLS_ID);
+        cellSiteConfigurationPage.createCell4GBulk(AMOUNT_OF_CELLS, CARRIER, CELL_NAMES, LOCAL_CELLS_ID, CRP);
         checkMessageType();
         checkMessageText("Cells 4G created success");
     }
@@ -291,23 +292,14 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
     public void deleteDevices() {
         openCellSiteConfiguration();
         waitForPageToLoad();
-        cellSiteConfigurationPage.filterObject(NAME, BBU_NAME);
-        waitForPageToLoad();
-        cellSiteConfigurationPage.removeObject();
-        waitForPageToLoad();
+        cellSiteConfigurationPage.removeDevice(NAME, BBU_NAME);
         checkMessageType();
 
         for (int i = 0; i < 3; i++) {
-            cellSiteConfigurationPage.filterObject(NAME, RADIO_UNIT_NAMES[i]);
-            waitForPageToLoad();
-            cellSiteConfigurationPage.removeObject();
-            waitForPageToLoad();
+            cellSiteConfigurationPage.removeDevice(NAME, RADIO_UNIT_NAMES[i]);
             checkMessageType();
 
-            cellSiteConfigurationPage.filterObject(NAME, ANTENNA_NAMES[i]);
-            waitForPageToLoad();
-            cellSiteConfigurationPage.removeObject();
-            waitForPageToLoad();
+            cellSiteConfigurationPage.removeDevice(NAME, ANTENNA_NAMES[i]);
             checkMessageType();
         }
     }
@@ -316,11 +308,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
     @Description("Delete eNodeB")
     public void deleteNodeB() {
         waitForPageToLoad();
-        cellSiteConfigurationPage.expandTreeToLocation(SITE, LOCATION_NAME);
-        waitForPageToLoad();
-        cellSiteConfigurationPage.selectRowByAttributeValueWithLabel(NAME, ENODEB_NAME);
-        waitForPageToLoad();
-        cellSiteConfigurationPage.removeObject();
+        cellSiteConfigurationPage.removeBaseStation(NAME, ENODEB_NAME);
     }
 
     private void openCellSiteConfiguration() {
