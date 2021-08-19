@@ -362,8 +362,7 @@ public class KpiViewPage extends BasePage {
         optionsPanel.chooseTimePeriod();
         optionsPanel.chooseTimePeriodOption(LATEST);
     }
-
-    // do zmiany nazwy - usunąć komentarz - zmergowane :(
+    
     @Step("I should see 2 visible Y axis and 1 hidden Y axis")
     public boolean shouldSeeVisibleYaxis(int expectedVisibleYAxisNumber) {
         DelayUtils.waitForPageToLoad(driver, wait);
