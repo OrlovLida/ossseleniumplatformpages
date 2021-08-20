@@ -202,10 +202,11 @@ public class ViewManagerTest extends BaseTestCase {
         DelayUtils.sleep(300);
         viewManagerPage.clickEditButton();
         ApplicationPopup editApplicationPopup = viewManagerPage.goToApplicationPopup();
+        DelayUtils.sleep(300);
+        editApplicationPopup.openQueryParamsTable();
 
-
+        editApplicationPopup.addTestQueryParams();
     }
-
 
     @Test(priority = 13)
     public void deleteCategory() {
