@@ -18,7 +18,7 @@ import com.oss.pages.bpm.TasksPage;
 import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
-import com.oss.pages.radio.CellBulkWizardPage;
+import com.oss.pages.radio.Cell4GBulkWizardPage;
 import com.oss.pages.radio.CellSiteConfigurationPage;
 import com.oss.pages.radio.EditCell4GWizardPage;
 import com.oss.pages.radio.HostingWizardPage;
@@ -32,6 +32,7 @@ public class TP_OSS_RM_RAN_004_All_Steps_Except_9 extends BaseTestCase {
     private static final String ENODEB_NAME = "TP_OSS_RM_RAN_004_eNodeB";
     private static final String CARRIER_L1800 = "L1800 (1392)";
     private static final String CARRIER_L2100 = "L2100 (10562)";
+    private static final int crp = 2;
     private static final String[] CELL_NAMES_L1800 = { "TP_OSS_RM_RAN_004_L1800_cell_1", "TP_OSS_RM_RAN_004_L1800_cell_2", "TP_OSS_RM_RAN_004_L1800_cell_3" };
     private static final String[] CELL_NAMES_L2100 = { "TP_OSS_RM_RAN_004_L2100_cell_1", "TP_OSS_RM_RAN_004_L2100_cell_2", "TP_OSS_RM_RAN_004_L2100_cell_3" };
 
@@ -96,12 +97,12 @@ public class TP_OSS_RM_RAN_004_All_Steps_Except_9 extends BaseTestCase {
         }
     }
 
-    private void createCellBulk(int amountOfCells, String carrier, String[] cellNames, int[] localCellsId) {
+    private void createCellBulk(int amountOfCells, String carrier, String[] cellNames, int[] localCellsId, int crp) {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cellSiteConfigurationPage.clickPlusIconAndSelectOption("Cell 4G Bulk Wizard");
-        CellBulkWizardPage cell4GBulkWizardPage = new CellBulkWizardPage(driver);
+        Cell4GBulkWizardPage cell4GBulkWizardPage = new Cell4GBulkWizardPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        cell4GBulkWizardPage.createCell4GBulkWizardWithDefaultValues(amountOfCells, carrier, cellNames, localCellsId);
+        cell4GBulkWizardPage.createCell4GBulkWizardWithDefaultValues(amountOfCells, carrier, cellNames, localCellsId, crp);
         checkPopup("Cells 4G created success");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
@@ -148,13 +149,13 @@ public class TP_OSS_RM_RAN_004_All_Steps_Except_9 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cellSiteConfigurationPage.selectTab("Cells 4G");
 
-        createCellBulk(amountOfCells, CARRIER_L1800, CELL_NAMES_L1800, localCellsId1800);
+        createCellBulk(amountOfCells, CARRIER_L1800, CELL_NAMES_L1800, localCellsId1800, crp);
     }
 
     @Test(priority = 5)
     @Description("Create Cell4G with Bulk Wizard")
     public void createCell4GL2100Bulk() {
-        createCellBulk(amountOfCells, CARRIER_L2100, CELL_NAMES_L2100, localCellsId2100);
+        createCellBulk(amountOfCells, CARRIER_L2100, CELL_NAMES_L2100, localCellsId2100, crp);
     }
 
     @Step("Create three Radio Units")

@@ -3,6 +3,7 @@ package com.oss.pages.physical;
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.contextactions.ButtonContainer;
+import com.oss.framework.components.contextactions.OldActionsContainer;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.prompts.ConfirmationBoxInterface;
@@ -19,6 +20,8 @@ import io.qameta.allure.Step;
  */
 
 public class LocationOverviewPage extends BasePage {
+
+    private static final String REFRESH_BUTTON_ID = "refresh-table-action";
 
     public LocationOverviewPage(WebDriver driver) {
         super(driver);
@@ -44,6 +47,16 @@ public class LocationOverviewPage extends BasePage {
         getTabTable(tabName).callActionByLabel(actionLabel);
     }
 
+    @Step("Click {actionLabel} in specific tab")
+    public void clickActionById(TabName tabName, String actionId) {
+        getTabTable(tabName).callAction(actionId);
+    }
+
+    @Step("Click refresh in specific tab")
+    public void clickRefreshInSpecificTab(TabName tabName) {
+        getTabTable(tabName).callAction(OldActionsContainer.KEBAB_GROUP_ID, REFRESH_BUTTON_ID);
+    }
+
     @Step("Filter and select object with {columnName} {objectName}")
     public LocationOverviewPage filterObjectInSpecificTab(TabName tabName, String columnName, String objectName) {
         getTabTable(tabName).searchByAttributeWithLabel(columnName, Input.ComponentType.TEXT_FIELD, objectName);
@@ -54,11 +67,6 @@ public class LocationOverviewPage extends BasePage {
     @Step("Select object with {attributeLabel} {value}")
     public void selectObjectInSpecificTab(TabName tabName, String attributeLabel, String value) {
         getTabTable(tabName).selectRowByAttributeValueWithLabel(attributeLabel, value);
-    }
-
-    @Step("Get row number for object with {attributeLabel} {value}")
-    public int getRowNumber(TabName tabName, String attributeLabel, String value) {
-        return getTabTable(tabName).getRowNumber(value, attributeLabel);
     }
 
     @Step("Get {attributeLabel} value for row number {rowNumber}")

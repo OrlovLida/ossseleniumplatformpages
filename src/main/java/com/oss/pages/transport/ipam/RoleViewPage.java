@@ -18,7 +18,8 @@ public class RoleViewPage extends BasePage {
     private static final String OK_BUTTON = "ConfirmationBox_removeBoxId_action_button";
     private static final String CREATE_NEW_ROLE_BUTTON_DATA_ATTRIBUTE_NAME = "buttons-uid-0";
     private static final String OK_BUTTON_DATA_ATTRIBUTE_NAME = "buttons-uid-1";
-    private Wizard wizard;
+    private static final String CREATE_WIZARD_ID = "create-uid";
+    private static final String EDIT_WIZARD_ID = "edit-uid";
     private CommonList commonList;
     private ButtonContainer buttonContainer;
 
@@ -33,13 +34,6 @@ public class RoleViewPage extends BasePage {
         return buttonContainer;
     }
 
-    protected Wizard getWizard() {
-        if (wizard == null) {
-            wizard = Wizard.createWizard(driver, wait);
-        }
-        return wizard;
-    }
-
     private CommonList getCommonList() {
         if (commonList == null) {
             commonList = CommonList.create(driver, wait, ROLE_COMMON_LIST_DATA_ATTRIBUTE_NAME);
@@ -50,13 +44,13 @@ public class RoleViewPage extends BasePage {
     @Step("Create new role {roleName}")
     public void createRole(String roleName) {
         getButtonContainer().callActionById(CREATE_NEW_ROLE_BUTTON_DATA_ATTRIBUTE_NAME);
-        setValueInRoleWizard(roleName);
+        setValueInRoleWizard(CREATE_WIZARD_ID, roleName);
     }
 
     @Step("Edit role name: {roleNameBeforeUpdate} to role name: {roleNameAfterUpdate}")
     public void editRole(String roleNameBeforeUpdate, String roleNameAfterUpdate) {
         getCommonList().clickOnEditButtonByListElementName(roleNameBeforeUpdate);
-        setValueInRoleWizard(roleNameAfterUpdate);
+        setValueInRoleWizard(EDIT_WIZARD_ID, roleNameAfterUpdate);
     }
 
     @Step("Delete {roleName} role")
@@ -75,9 +69,10 @@ public class RoleViewPage extends BasePage {
         getButtonContainer().callActionById(OK_BUTTON_DATA_ATTRIBUTE_NAME);
     }
 
-    private void setValueInRoleWizard(String roleName){
-        getWizard().setComponentValue(ROLE_TEXT_FIELD_DATA_ATTRIBUTE_NAME, roleName, TEXT_FIELD);
-        getWizard().clickAccept();
+    private void setValueInRoleWizard(String wizardId, String roleName){
+        Wizard wizard = Wizard.createByComponentId(driver, wait, wizardId);
+        wizard.setComponentValue(ROLE_TEXT_FIELD_DATA_ATTRIBUTE_NAME, roleName, TEXT_FIELD);
+        wizard.clickAccept();
     }
 
     private void acceptConfirmationBox() {

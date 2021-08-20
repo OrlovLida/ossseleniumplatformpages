@@ -1,10 +1,7 @@
 package com.oss.pages.bigdata.dfe.dictionary;
 
 import com.oss.framework.listwidget.EditableList;
-import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.tabswidget.TabWindowWidget;
-import com.oss.framework.widgets.tabswidget.TabsInterface;
 import com.oss.pages.bigdata.dfe.BaseDfePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
@@ -18,6 +15,7 @@ public class DictionaryPage extends BaseDfePage {
 
     private static final String TABLE_ID = "dictionariesAppId";
     private static final String KEY_CELL_ID = "1_keyId";
+    private static final String ENTRIES_TAB = "Entries";
 
     private final String ADD_NEW_DICTIONARY_LABEL = "Add New Dictionary";
     private final String EDIT_DICTIONARY_LABEL = "Edit Dictionary";
@@ -29,21 +27,8 @@ public class DictionaryPage extends BaseDfePage {
     private final String DELETE_LABEL = "Delete";
     private final String DELETE_ENTRIES_LABEL = "DELETE";
 
-    private final DictionaryPopupPage dictionaryPopup;
-    private final EntryPopupPage entryPopup;
-
     public DictionaryPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
-        dictionaryPopup = new DictionaryPopupPage(driver, wait);
-        entryPopup = new EntryPopupPage(driver, wait);
-    }
-
-    public DictionaryPopupPage getDictionaryPopup() {
-        return dictionaryPopup;
-    }
-
-    public EntryPopupPage getEntryPopup() {
-        return entryPopup;
     }
 
     @Step("I Open Dictionaries View")
@@ -71,6 +56,7 @@ public class DictionaryPage extends BaseDfePage {
 
     @Step("I check if Dictionary: {dictionaryName} exists into the table")
     public Boolean dictionaryExistsIntoTable(String dictionaryName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
         searchFeed(dictionaryName);
         DelayUtils.waitForPageToLoad(driver, wait);
         int numberOfRowsInTable = getNumberOfRowsInTable(NAME_COLUMN_LABEL);
@@ -85,16 +71,12 @@ public class DictionaryPage extends BaseDfePage {
 
     @Step("I confirm the removal")
     public void confirmDelete() {
-        ConfirmationBox confirmationBox = ConfirmationBox.create(driver, wait);
-        confirmationBox.clickButtonByLabel(DELETE_LABEL);
+        confirmDelete(DELETE_LABEL);
     }
 
-    @Step("I click {label} Tab")
-    public void selectTab(String label) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        TabsInterface tab = TabWindowWidget.create(driver, wait);
-        tab.selectTabByLabel(label);
-        DelayUtils.waitForPageToLoad(driver, wait);
+    @Step("I click Entries Tab")
+    public void selectEntriesTab() {
+        selectTab(ENTRIES_TAB);
     }
 
     @Step("I check if Entry: {entryName} exists into the table")
@@ -130,7 +112,6 @@ public class DictionaryPage extends BaseDfePage {
         clickEditableListAction(DELETE_ENTRIES_LABEL);
     }
 
-
     @Override
     public String getTableId() {
         return TABLE_ID;
@@ -155,6 +136,4 @@ public class DictionaryPage extends BaseDfePage {
     public String getSearchId() {
         return SEARCH_INPUT_ID;
     }
-
-
 }

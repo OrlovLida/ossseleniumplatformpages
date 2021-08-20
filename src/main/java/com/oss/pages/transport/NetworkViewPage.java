@@ -1,6 +1,7 @@
 package com.oss.pages.transport;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -16,12 +17,11 @@ import com.oss.framework.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.advancedsearch.AdvancedSearchWidget;
-import com.oss.framework.widgets.dockedPanel.DockedPanel;
-import com.oss.framework.widgets.dockedPanel.DockedPanelInterface;
+import com.oss.framework.widgets.docked_panel.DockedPanel;
+import com.oss.framework.widgets.docked_panel.DockedPanelInterface;
 import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tablewidget.TableInterface;
-import com.oss.framework.widgets.tabswidget.TabsInterface;
 import com.oss.framework.widgets.tabswidget.TabsWidget;
 import com.oss.pages.BasePage;
 import com.oss.pages.physical.DeviceWizardPage;
@@ -38,12 +38,13 @@ import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_AREA;
 
 public class NetworkViewPage extends BasePage {
 
-    public static final String ATTRIBUTES_AND_TERMINATIONS_ACTION = "Attributes and terminations";
+    public static final String ATTRIBUTES_AND_TERMINATIONS_ACTION = "Attributes and terminations-null";
     public static final String CREATE_DEVICE_ACTION = "Create Device-null";
     public static final String DELETE_TRAIL_ACTION = "Delete Trail";
     public static final String DELETE_ELEMENT_ACTION = "Delete Element-null";
+    public static final String DELETE_DEVICE_ACTION = "Delete Device-null";
     public static final String ADD_TO_VIEW_ACTION = "add_to_view_group";
-    public static final String CREATE_MEDIATION_CONFIGURATION_ID = "Create Mediation Configuration-null";
+    public static final String CREATE_MEDIATION_CONFIGURATION_ID = "Mediation Configuration-null";
     public static final String DELETE_CONNECTION_ID = "Delete Connection-null";
     public static final String CREATE_CONNECTION_ID = "Create Connection-null";
     public static final String HIERARCHY_VIEW_ACTION = "Hierarchy View-null";
@@ -51,7 +52,7 @@ public class NetworkViewPage extends BasePage {
     public static final String CONNECTION_ACTION = "Connection-null";
     private static final String CREATE_CONNECTION_ACTION = "Create Connection";
     private static final String DELETE_TERMINATION_ACTION = "Delete termination";
-    private static final String START_EDITING_CONNECTION_ACTION = "Start editing connection";
+    private static final String START_EDITING_CONNECTION_ACTION = "Start editing Connection";
     private static final String STOP_EDITING_CONNECTION_ACTION = "Stop editing connection";
     private static final String TERMINATION_ACTION = "Termination";
     private static final String ROUTING = "Routing";
@@ -59,10 +60,11 @@ public class NetworkViewPage extends BasePage {
     private static final String DELETE_BUTTON = "Delete";
     private static final String ADD_TO_GROUP_ACTION = "add_to_group";
     private static final String TRAIL_TYPE_COMBOBOX_ID = "trailTypeCombobox";
-    private static final String DOCKED_PANEL_LEFT_ID = "dockedPanel-left";
-    private static final String LEFT_PANEL_TAB_ID = "leftPanelTab";
+    private static final String LEFT_PANEL_TAB_ID = "LeftPanelWidget";
     private static final String VALIDATION_RESULT_ID = "Validation Results";
     private static final String ROUTING_TABLE_APP_ID = "routing-table-app";
+    private static final String TRAIL_TYPES_POPUP_ID = "trailTypesPopup";
+    private static final String SUPPRESSION_WIZARD_ID = "plaSuppressionWizard";
 
     private Wizard wizard = Wizard.createWizard(driver, wait);
 
@@ -175,11 +177,12 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Select trail type")
     public void selectTrailType(String trailType) {
-        Wizard popup = Wizard.createPopupWizard(driver, wait);
+        Wizard popup = Wizard.createByComponentId(driver, wait, TRAIL_TYPES_POPUP_ID);
         popup.setComponentValue(TRAIL_TYPE_COMBOBOX_ID, trailType, COMBOBOX);
     }
 
-    private <T extends TrailWizardPage> T getWizardPage(Class<T> trailWizardPage) throws Exception {
+    private <T extends TrailWizardPage> T getWizardPage(Class<T> trailWizardPage) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException {
         Constructor<T> constructor = trailWizardPage.getConstructor(WebDriver.class);
         return constructor.newInstance(driver);
     }
@@ -339,18 +342,23 @@ public class NetworkViewPage extends BasePage {
     }
 
     @Step("Suppress incomplete routing")
-    public void supressValidationResult(String validationResultType, String reason) {
+    public void supressValidationResult(String reason) {
         openValidationResultsTab();
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, "bottomTabs");
-        table.selectRowByAttributeValueWithLabel("Type", validationResultType);
+        TabsWidget tabsWidget = TabsWidget.createById(driver, wait, "bottomTabs");
+        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, "validation-results-table");
         waitForPageToLoad();
-        TabsInterface tabsWidget = TabsWidget.createById(driver, wait, "bottomTabs");
-        tabsWidget.callAction("__more-group", "Suppression wizard");
+        table.selectRow(0);
         waitForPageToLoad();
-        wizard.setComponentValue("reasonField", reason, TEXT_AREA);
+        tabsWidget.callActionById("Suppression wizard");
         waitForPageToLoad();
-        wizard.proceed();
+        suppressionWizard().setComponentValue("reasonField", reason, TEXT_AREA);
         waitForPageToLoad();
+        suppressionWizard().proceed();
+        waitForPageToLoad();
+    }
+
+    private Wizard suppressionWizard() {
+        return Wizard.createByComponentId(driver, wait, SUPPRESSION_WIZARD_ID);
     }
 
     private void openValidationResultsTab() {
@@ -456,7 +464,7 @@ public class NetworkViewPage extends BasePage {
         advancedSearchWidget.getComponent(componentId, componentType).clearByAction();
         advancedSearchWidget.getComponent(componentId, componentType).setSingleStringValue(value);
         waitForPageToLoad();
-        advancedSearchWidget.getTableWidget().selectFirstRow();
+        advancedSearchWidget.getTableComponent("win1").selectRow(0);
         DelayUtils.sleep(500);
         waitForPageToLoad();
         advancedSearchWidget.clickAdd();

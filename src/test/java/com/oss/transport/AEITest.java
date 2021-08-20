@@ -3,6 +3,7 @@ package com.oss.transport;
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
+import com.oss.framework.mainheader.PerspectiveChooser;
 import com.oss.framework.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.OldTable;
@@ -111,9 +112,12 @@ public class AEITest extends BaseTestCase {
     }
 
     private AEIWizardPage goToAEIWizardPage() {
-        SideMenu sidemenu = SideMenu.create(driver, webDriverWait);
+        //SideMenu sidemenu = SideMenu.create(driver, webDriverWait);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        sidemenu.callActionByLabel("Aggregated Ethernet Interface", "Wizards", "Transport");
+        //sidemenu.callActionByLabel("Create Aggregated Ethernet Interface", "Network domains", "Transport & IP");
+        driver.get(String.format("%s/#/view/transport/ip/ethernet/aei?perspective=LIVE", BASIC_URL));
+        PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
+        perspectiveChooser.setCurrentTask();
 
         return new AEIWizardPage(driver);
     }

@@ -2,19 +2,18 @@ package com.oss.bigdata.dfe;
 
 import com.oss.BaseTestCase;
 import com.oss.pages.bigdata.dfe.AggregatePage;
-import com.oss.pages.bigdata.dfe.stepwizard.aggregate.AggregateStepWizardPage;
+import com.oss.pages.bigdata.dfe.stepwizard.aggregate.AggregateConfigurationPage;
+import com.oss.pages.bigdata.dfe.stepwizard.aggregate.AggregateProcessSettingsPage;
+import com.oss.pages.bigdata.dfe.stepwizard.commons.BasicInformationPage;
+import com.oss.pages.bigdata.utils.ConstantsDfe;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @Listeners({TestListener.class})
 public class AggregateViewTest extends BaseTestCase {
@@ -24,39 +23,40 @@ public class AggregateViewTest extends BaseTestCase {
     private AggregatePage aggregatePage;
     private String aggregateName;
     private String updatedAggregateName;
+    private String tableName;
 
     private final static String ETL_PROCESS_NAME = "t:CRUD#ETLforAggr";
     private final static String AGGREGATE_CONFIGURATION_DIMENSION_NAME = "t:SMOKE#D_HOST (HOST_NM)";
     private final static String AGGREGATE_CONFIGURATION_NAME = "Selenium_Aggregate_Test";
-    private final static String AGGREGATE_CONFIGURATION_TABLE_PREFIX = "Selenium_Aggregate_Test";
-
 
     @BeforeClass
     public void goToAggregateView() {
         aggregatePage = AggregatePage.goToPage(driver, BASIC_URL);
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy_MM_dd");
-        String date = simpleDateFormat.format(new Date());
-        aggregateName = "Selenium_" + date + "_AggrTest";
+        aggregateName = ConstantsDfe.createName() + "_AggrTest";
         updatedAggregateName = aggregateName + "_updated";
+        tableName = ConstantsDfe.createName();
     }
 
     @Test(priority = 1, testName = "Add new Aggregate", description = "Add new Aggregate")
     @Description("Add new Aggregate")
     public void addAggregate() {
         aggregatePage.clickAddNewAggregate();
-        WebDriverWait wait = new WebDriverWait(driver, 45);
-        AggregateStepWizardPage aggregateStepWizard = new AggregateStepWizardPage(driver, wait);
-        aggregateStepWizard.getBasicInformationStep().fillBasicInformationStep(aggregateName, ETL_PROCESS_NAME);
-        aggregateStepWizard.clickNextStep();
-        aggregateStepWizard.clickNextStep();
-        aggregateStepWizard
-                .getAggregatesConfigurationStep()
-                .fillAggregatesConfigurationStepAggregate(AGGREGATE_CONFIGURATION_NAME, AGGREGATE_CONFIGURATION_TABLE_PREFIX, AGGREGATE_CONFIGURATION_DIMENSION_NAME);
-        aggregateStepWizard.clickAccept();
+        BasicInformationPage aggrBasicInfoWizard = new BasicInformationPage(driver, webDriverWait);
+        aggrBasicInfoWizard.fillName(aggregateName);
+        aggrBasicInfoWizard.fillProcess(ETL_PROCESS_NAME);
+        aggrBasicInfoWizard.clickNextStep();
+
+        AggregateProcessSettingsPage processSettingsWizard = new AggregateProcessSettingsPage(driver, webDriverWait);
+        processSettingsWizard.clickNextStep();
+
+        AggregateConfigurationPage aggrConfWizard = new AggregateConfigurationPage(driver, webDriverWait);
+        aggrConfWizard.fillAggregatesConfigurationStepAggregate(AGGREGATE_CONFIGURATION_NAME, tableName, AGGREGATE_CONFIGURATION_DIMENSION_NAME);
+        aggrConfWizard.clickAccept();
+
         Boolean aggregateIsCreated = aggregatePage.aggregateExistsIntoTable(aggregateName);
 
-        if(!aggregateIsCreated){
+        if (!aggregateIsCreated) {
             log.info("Cannot find created aggregate configuration");
         }
         Assert.assertTrue(aggregateIsCreated);
@@ -70,15 +70,18 @@ public class AggregateViewTest extends BaseTestCase {
             aggregatePage.selectFoundAggregate();
             aggregatePage.clickEditAggregate();
 
-            WebDriverWait wait = new WebDriverWait(driver, 45);
-            AggregateStepWizardPage aggregateStepWizard = new AggregateStepWizardPage(driver, wait);
-            aggregateStepWizard.getBasicInformationStep().fillName(updatedAggregateName);
-            aggregateStepWizard.clickNextStep();
-            aggregateStepWizard.clickNextStep();
-            aggregateStepWizard.clickAccept();
+            BasicInformationPage aggrBasicInfoWizard = new BasicInformationPage(driver, webDriverWait);
+            aggrBasicInfoWizard.fillName(updatedAggregateName);
+            aggrBasicInfoWizard.clickNextStep();
+
+            AggregateProcessSettingsPage processSettingsWizard = new AggregateProcessSettingsPage(driver, webDriverWait);
+            processSettingsWizard.clickNextStep();
+
+            AggregateConfigurationPage aggrConfWizard = new AggregateConfigurationPage(driver, webDriverWait);
+            aggrConfWizard.clickAccept();
 
             Boolean aggregateIsEdited = aggregatePage.aggregateExistsIntoTable(updatedAggregateName);
-            if(!aggregateIsEdited){
+            if (!aggregateIsEdited) {
                 log.info("Cannot find existing edited aggregate {}", updatedAggregateName);
             }
             Assert.assertTrue(aggregateIsEdited);
@@ -90,9 +93,9 @@ public class AggregateViewTest extends BaseTestCase {
 
     @Test(priority = 3, testName = "Delete Aggregate", description = "Delete Aggregate")
     @Description("Delete Aggregate")
-    public void deleteAggregate(){
+    public void deleteAggregate() {
         boolean aggregateExists = aggregatePage.aggregateExistsIntoTable(updatedAggregateName);
-        if(aggregateExists){
+        if (aggregateExists) {
             aggregatePage.selectFoundAggregate();
             aggregatePage.clickDeleteAggregate();
             aggregatePage.confirmDelete();
@@ -104,6 +107,4 @@ public class AggregateViewTest extends BaseTestCase {
             Assert.fail("Cannot find existing aggregate " + updatedAggregateName);
         }
     }
-
-
 }

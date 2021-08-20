@@ -1,6 +1,8 @@
 package com.oss.E2E;
 
-import org.assertj.core.api.Assertions;
+import java.net.URISyntaxException;
+
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
@@ -61,7 +63,7 @@ public class UC_NAR_005 extends BaseTestCase {
 
     @Test(priority = 2)
     @Description("Upload reconciliation samples")
-    public void uploadSamples() {
+    public void uploadSamples() throws URISyntaxException {
         DelayUtils.sleep(1000);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.moveToSamplesManagement();
@@ -81,8 +83,8 @@ public class UC_NAR_005 extends BaseTestCase {
         waitForPageToLoad();
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.runReconciliation();
-        networkDiscoveryControlViewPage.checkReconciliationStartedSystemMessage();
-        networkDiscoveryControlViewPage.waitForEndOfReco();
+        checkMessageType(MessageType.INFO);
+        Assert.assertEquals(networkDiscoveryControlViewPage.waitForEndOfReco(), "SUCCESS");
         networkDiscoveryControlViewPage.selectLatestReconciliationState();
         Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(IssueLevel.STARTUP_FATAL));
         Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(IssueLevel.FATAL));
@@ -97,16 +99,16 @@ public class UC_NAR_005 extends BaseTestCase {
         NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
         networkInconsistenciesViewPage.expandTree();
         networkInconsistenciesViewPage.assignLocation(DEVICE_NAME, "a");
-        networkInconsistenciesViewPage.checkUpdateDeviceSystemMessage();
+        checkMessageType(MessageType.SUCCESS);
         networkInconsistenciesViewPage.clearOldNotification();
         networkInconsistenciesViewPage.applyInconsistencies();
         DelayUtils.sleep(5000);
-        networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(DEVICE_NAME);
+        Assert.assertEquals(networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(), "Accepting discrepancies related to " + DEVICE_NAME + " finished");
     }
 
     @Test(priority = 5)
     @Description("Delete old reconciliation samples and upload a new ones")
-    public void deleteOldSamplesAndPutNewOne() {
+    public void deleteOldSamplesAndPutNewOne() throws URISyntaxException {
         openNetworkDiscoveryControlView();
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.moveToSamplesManagement();
@@ -123,13 +125,16 @@ public class UC_NAR_005 extends BaseTestCase {
     @Description("Open New Inventory View and Check value of Serial Number")
     public void openNewInventoryViewAndCheckSerialNumber() {
         homePage.goToHomePage(driver, BASIC_URL);
+        waitForPageToLoad();
+        homePage.chooseFromLeftSideMenu("Legacy Inventory Dashboard", "Resource Inventory ");
+        waitForPageToLoad();
         homePage.setNewObjectType("Router");
         waitForPageToLoad();
         NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.searchObject(DEVICE_NAME);
         waitForPageToLoad();
         Assert.assertFalse(newInventoryViewPage.checkIfTableIsEmpty());
-        Assert.assertEquals(SERIAL_NUMBER_BEFORE, newInventoryViewPage.getMainTable().getCellValue(0, "Serial Number"));
+        Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "Serial Number"), SERIAL_NUMBER_BEFORE);
     }
 
     @Test(priority = 7)
@@ -142,10 +147,10 @@ public class UC_NAR_005 extends BaseTestCase {
         notifications.clearAllNotification();
         newInventoryViewPage.callAction(ActionsContainer.OTHER_GROUP_ID, "run-narrow-reconciliation");
         DelayUtils.sleep(3000);
-        Assertions.assertThat(notifications.waitAndGetFinishedNotificationText().equals("Narrow reconciliation for GMOCs IPDevice finished")).isTrue();
+        Assert.assertEquals(notifications.waitAndGetFinishedNotificationText(), "Narrow reconciliation for GMOCs IPDevice finished");
         newInventoryViewPage.refreshMainTable();
         waitForPageToLoad();
-        Assert.assertEquals(SERIAL_NUMBER_AFTER, newInventoryViewPage.getMainTable().getCellValue(0, "Serial Number"));
+        Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "Serial Number"), SERIAL_NUMBER_AFTER);
     }
 
     @Test(priority = 8)
@@ -155,8 +160,8 @@ public class UC_NAR_005 extends BaseTestCase {
         newInventoryViewPage.selectFirstRow();
         newInventoryViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, "DeleteDeviceWizardAction");
         waitForPageToLoad();
-        Wizard.createWizard(driver, webDriverWait).clickActionById("ConfirmationBox_object_delete_wizard_confirmation_box_action_button");
-        checkMessageType();
+        Wizard.createWizard(driver, new WebDriverWait(driver, 90)).clickActionById("ConfirmationBox_object_delete_wizard_confirmation_box_action_button");
+        checkMessageType(MessageType.SUCCESS);
         newInventoryViewPage.refreshMainTable();
         Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());
     }
@@ -168,16 +173,16 @@ public class UC_NAR_005 extends BaseTestCase {
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.clearOldNotifications();
         networkDiscoveryControlViewPage.deleteCmDomain();
-        networkDiscoveryControlViewPage.checkDeleteCmDomainSystemMessage();
-        networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(CM_DOMAIN_NAME);
+        checkMessageType(MessageType.INFO);
+        Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
     }
 
     private void waitForPageToLoad() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    private void checkMessageType() {
-        Assert.assertEquals(MessageType.SUCCESS, (getFirstMessage().getMessageType()));
+    private void checkMessageType(MessageType messageType) {
+        Assert.assertEquals((getFirstMessage().getMessageType()), messageType);
     }
 
     private Message getFirstMessage() {

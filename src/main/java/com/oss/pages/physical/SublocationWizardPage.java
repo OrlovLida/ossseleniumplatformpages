@@ -16,11 +16,12 @@ public class SublocationWizardPage extends BasePage {
     private static final String WIDTH = "width";
     private static final String DEPTH = "depth";
     private static final String QUANTITY = "quantity";
+    private static final String WIZARD_ID = "optional";
     private final Wizard wizard;
 
     public SublocationWizardPage(WebDriver driver) {
         super(driver);
-        wizard = Wizard.createWizard(driver, wait);
+        wizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
     }
 
     @Step("Set Sublocation Type")

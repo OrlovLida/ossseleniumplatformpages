@@ -1,24 +1,23 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="RegressionSuiteWeb-WEB" thread-count="2" parallel="tests" verbose="1">
-    <test name="ExportTests">
+    <test name="AdvancedSearchComponent">
         <classes>
-            <class name="com.oss.web.ExportGuiWizardTest"/>
-            <class name="com.oss.web.ExportByScheduleTest"/>
+            <class name="com.oss.web.AdvancedSearchCompact"/>
+        </classes>
+    </test>
+    <test name="TableWidgetTest">
+        <classes>
+            <class name="com.oss.web.TableWidgetTest"/>
+        </classes>
+    </test>
+    <test name="PropertyPanelTest">
+        <classes>
+            <class name="com.oss.web.PropertyPanelTest"/>
         </classes>
     </test>
     <test name="LayoutTests">
         <classes>
             <class name="com.oss.web.LayoutTest"/>
-        </classes>
-    </test>
-    <test name="FiltersTests">
-        <classes>
-            <class name="com.oss.web.FiltersTest"/>
-        </classes>
-    </test>
-    <test name="InventoryViewTest">
-        <classes>
-            <class name="com.oss.web.InventoryViewTest"/>
         </classes>
     </test>
 </suite>

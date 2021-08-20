@@ -31,13 +31,13 @@ public class CellSiteConfigurationPage extends BasePage {
     private static final String EDIT_LABEL = "Edit";
     private static final String DELETE_LABEL = "Delete";
     private static final String BASE_STATION_ROW = "Base Stations";
-    private static final String DEVICES_ROW = "Devices";
     private static final String CREATE_ENODEB_ACTION = "Create eNodeB";
     private static final String CREATE_GNODEB_ACTION = "Create gNodeB";
     private static final String CREATE_GNODEB_DU_ACTION = "Create gNodeB DU";
     private static final String TYPE_4G = "4G";
     private static final String TYPE_5G = "5G";
     private static final String DEVICES_TAB = "Devices";
+    private static final String BASE_STATIONS_TAB = "Base Stations";
     private static final String CREATE_DEVICE_ACTION = "Create Device";
     private static final String CREATE_RAN_ANTENNA_ACTION = "Create RAN Antenna";
     private static final String HOST_ON_DEVICE_ACTION_LABEL = "Host on Device";
@@ -49,7 +49,7 @@ public class CellSiteConfigurationPage extends BasePage {
     }
 
     public CellSiteConfigurationPage goToCellSiteConfiguration(WebDriver driver, String basicURL, String locationId) {
-        driver.get(String.format("%s/#/view/radio/cellsite/xid?perspective=LIVE&withRemoved=true&ids=" + locationId + "", basicURL));
+        driver.get(String.format("%s/#/view/radio/cellsite/xid?perspective=LIVE&withRemoved=true&ids=%s", basicURL, locationId));
         return new CellSiteConfigurationPage(driver);
     }
 
@@ -103,6 +103,24 @@ public class CellSiteConfigurationPage extends BasePage {
         prompt.clickButtonByLabel(DELETE_LABEL);
     }
 
+    @Step("Remove device {objectName}")
+    public void removeDevice(String columnName, String objectName){
+        selectTab(DEVICES_TAB);
+        waitForPageToLoad();
+        filterObject(columnName, objectName);
+        waitForPageToLoad();
+        removeObject();
+    }
+
+    @Step("Remove base station {objectName}")
+    public void removeBaseStation(String columnName, String objectName){
+        selectTab(BASE_STATIONS_TAB);
+        waitForPageToLoad();
+        filterObject(columnName, objectName);
+        waitForPageToLoad();
+        removeObject();
+    }
+
     @Step("Expand the tree and select Base Station")
     public CellSiteConfigurationPage expandTreeToBaseStation(String locationType, String locationName, String baseStation) {
         waitForPageToLoad();
@@ -129,16 +147,6 @@ public class CellSiteConfigurationPage extends BasePage {
         getTree().expandTreeRow(BASE_STATION_ROW);
         getTree().expandTreeRow(baseStationName);
         getTree().selectTreeRow(cellName);
-        return this;
-    }
-
-    @Step("Expand the tree and select device")
-    public CellSiteConfigurationPage expandTreeToDevice(String locationType, String locationName, String deviceName) {
-        waitForPageToLoad();
-        getTree().expandTreeRow(locationType);
-        getTree().expandTreeRow(locationName);
-        getTree().expandTreeRow(DEVICES_ROW);
-        getTree().selectTreeRow(deviceName);
         return this;
     }
 
@@ -171,11 +179,6 @@ public class CellSiteConfigurationPage extends BasePage {
         wizard.clickAccept();
     }
 
-    @Step("Get row number for object with {attributeLabel} {value}")
-    public int getRowNumber(String attributeLabel, String value) {
-        return getTabTable().getRowNumber(value, attributeLabel);
-    }
-
     @Step("Get {attributeLabel} value for row number {rowNumber}")
     public String getValueByRowNumber(String attributeLabel, int rowNumber) {
         return getTabTable().getCellValue(rowNumber, attributeLabel);
@@ -200,19 +203,19 @@ public class CellSiteConfigurationPage extends BasePage {
         return OldTable.createTableForActiveTab(driver, wait);
     }
 
-    @Step("Create eNodeB with following attributes: Name = {eNodeBName}, ID = {eNodeBid}, Model = {eNodeBModel}, MCCMNC = {MCCMNCPrimary}")
-    public void createENodeB(String eNodeBName, String eNodeBid, String eNodeBModel, String MCCMNCPrimary) {
+    @Step("Create eNodeB with following attributes: Name = {eNodeBName}, ID = {eNodeBid}, Model = {eNodeBModel}, MCCMNC = {mccmncPrimary}")
+    public void createENodeB(String eNodeBName, String eNodeBid, String eNodeBModel, String mccmncPrimary) {
         clickPlusIconAndSelectOption(CREATE_ENODEB_ACTION);
         waitForPageToLoad();
         ENodeBWizardPage eNodeBWizard = new ENodeBWizardPage(driver);
-        eNodeBWizard.createENodeB(eNodeBName, eNodeBid, eNodeBModel, MCCMNCPrimary);
+        eNodeBWizard.createENodeB(eNodeBName, eNodeBid, eNodeBModel, mccmncPrimary);
     }
 
-    @Step("Create gNodeB with following attributes: Name = {gNodeBName}, ID = {gNodeBId}, Model = {gNodeBModel}, MCCMNC = {MCCMNCPrimary}")
-    public void createGNodeB(String gNodeBName, String gNodeBId, String gNodeBModel, String MCCMNCPrimary) {
+    @Step("Create gNodeB with following attributes: Name = {gNodeBName}, ID = {gNodeBId}, Model = {gNodeBModel}, MCCMNC = {mccmncPrimary}")
+    public void createGNodeB(String gNodeBName, String gNodeBId, String gNodeBModel, String mccmncPrimary) {
         clickPlusIconAndSelectOption(CREATE_GNODEB_ACTION);
         new GNodeBWizardPage(driver)
-                .createGNodeB(gNodeBName, gNodeBId, gNodeBModel, MCCMNCPrimary);
+                .createGNodeB(gNodeBName, gNodeBId, gNodeBModel, mccmncPrimary);
     }
 
     @Step("Create gNodeB DU with following attributes: Name = {gNodeBName}, ID = {gNodeBId}, Model = {gNodeBModel}, Controller = {controller}")
@@ -223,22 +226,31 @@ public class CellSiteConfigurationPage extends BasePage {
     }
 
     @Step("Create {amountOfCells} Cells 4G by bulk wizard with Carrier = {carrier}")
-    public void createCell4GBulk(int amountOfCells, String carrier, String[] cellNames) {
-        openCellBulkWizard(TYPE_4G).createCellBulkWizard(amountOfCells, carrier, cellNames);
+    public void createCell4GBulk(int amountOfCells, String carrier, String[] cellNames, int[] cellsID, int crp) {
+        openCell4GBulkWizard().createCellBulkWizard(amountOfCells, carrier, cellNames, cellsID, crp);
     }
 
     @Step("Create {amountOfCells} Cells 5G by bulk wizard with Carrier = {carrier}")
     public void createCell5GBulk(int amountOfCells, String carrier, String[] cellNames, int[] cellsID) {
-        openCellBulkWizard(TYPE_5G).createCell5GBulkWizardWithDefaultValues(amountOfCells, carrier, cellNames, cellsID);
+        openCell5GBulkWizard().createCell5GBulkWizardWithDefaultValues(amountOfCells, carrier, cellNames, cellsID);
     }
 
-    private CellBulkWizardPage openCellBulkWizard(String type) {
+    private Cell5GBulkWizardPage openCell5GBulkWizard() {
         waitForPageToLoad();
-        selectTab(String.format(CELL_TAB_NAME, type));
+        selectTab(String.format(CELL_TAB_NAME, CellSiteConfigurationPage.TYPE_5G));
         waitForPageToLoad();
-        clickPlusIconAndSelectOption(String.format(CREATE_CELL_BULK_ACTION, type));
+        clickPlusIconAndSelectOption(String.format(CREATE_CELL_BULK_ACTION, CellSiteConfigurationPage.TYPE_5G));
         waitForPageToLoad();
-        return new CellBulkWizardPage(driver);
+        return new Cell5GBulkWizardPage(driver);
+    }
+
+    private Cell4GBulkWizardPage openCell4GBulkWizard() {
+        waitForPageToLoad();
+        selectTab(String.format(CELL_TAB_NAME, CellSiteConfigurationPage.TYPE_4G));
+        waitForPageToLoad();
+        clickPlusIconAndSelectOption(String.format(CREATE_CELL_BULK_ACTION, CellSiteConfigurationPage.TYPE_4G));
+        waitForPageToLoad();
+        return new Cell4GBulkWizardPage(driver);
     }
 
     @Step("Create Base Band Unit with following attributes: Type = {bbuEquipmentType}, Name = {bbuName}, Model = {baseBandUnitModel}, Location = {locationName}")
