@@ -96,8 +96,6 @@ public class TrafficClassTest extends BaseTestCase {
         //SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
         //sideMenu.callActionByLabel(TRAFFIC_CLASS, WIZARDS, TRANSPORT);
         driver.get(String.format("%s/#/view/transport/ip/ethernet/traffic-class?perspective=LIVE", BASIC_URL));
-        PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
-        perspectiveChooser.setCurrentTask();
 
         return new TrafficClassWizardPage(driver);
     }
