@@ -34,7 +34,7 @@ public class TableWidgetTest extends BaseTestCase {
 
     @BeforeClass
     public void goToInventoryView() {
-        String TYPE = "Movie";
+        String TYPE = "TestMovie";
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TYPE);
         tableWidget = inventoryViewPage.getMainTable();
     }
