@@ -47,11 +47,11 @@ public class RegulatoryLicenseTest extends BaseTestCase {
     public void createRegulatoryLicense(){
         RegulatoryLicenseAttributes regulatoryLicenseAttributes = getRegulatoryLicenseAttributesToCreate();
 
-        RegulatoryLicenseWizardPage regulatoryLicenseWizard = goToRegulatoryLicenseWizard();
-        regulatoryLicenseWizard.clickCreate();
+        RegulatoryLicensesListPage regulatoryLicensesList = goToListOfRegulatoryLicenses();
+        RegulatoryLicenseWizardPage regulatoryLicenseWizard = regulatoryLicensesList.clickCreate();
         fillRegulatoryLicenseWizardToCreate(regulatoryLicenseAttributes, regulatoryLicenseWizard);
         regulatoryLicenseWizard.clickAccept();
-        regulatoryLicenseWizard.openRegulatoryLicenseOverview();
+        regulatoryLicensesList.openRegulatoryLicenseOverview();
 
         assertRegulatoryLicenseAttributes(regulatoryLicenseAttributes, new RegulatoryLicenseOverviewPage(driver));
     }
@@ -192,21 +192,20 @@ public class RegulatoryLicenseTest extends BaseTestCase {
         return regLicAttributes;
     }
 
+    public RegulatoryLicensesListPage goToListOfRegulatoryLicenses() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        //SideMenu sidemenu = SideMenu.create(driver, webDriverWait);
+        //sidemenu.callActionByLabel(REGULATORY_LICENSE, VIEWS, TRANSPORT);
+        driver.get(String.format("%s/#/view/transport/microwave/licenses?perspective=LIVE", BASIC_URL));
+        return new RegulatoryLicensesListPage(driver);
+    }
+
     private void fillRegulatoryLicenseWizardToCreate(RegulatoryLicenseAttributes regulatoryLicenseAttributes, RegulatoryLicenseWizardPage regulatoryLicenseWizard) {
         fulfillWizard(regulatoryLicenseWizard, regulatoryLicenseAttributes);
     }
 
     private void fillRegulatoryLicenseWizardToUpdate(RegulatoryLicenseAttributes regulatoryLicenseAttributes, RegulatoryLicenseWizardPage regulatoryLicenseWizard) {
         fulfillWizard(regulatoryLicenseWizard, regulatoryLicenseAttributes);
-    }
-
-    private RegulatoryLicenseWizardPage goToRegulatoryLicenseWizard() {
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        //SideMenu sidemenu = SideMenu.create(driver, webDriverWait);
-        //sidemenu.callActionByLabel(REGULATORY_LICENSE, VIEWS, TRANSPORT);
-        driver.get(String.format("%s/#/view/transport/microwave/licenses?perspective=LIVE", BASIC_URL));
-
-        return new RegulatoryLicenseWizardPage(driver);
     }
 
     private void fulfillWizard(RegulatoryLicenseWizardPage rlWizard, RegulatoryLicenseTest.RegulatoryLicenseAttributes rlAttributes) {
