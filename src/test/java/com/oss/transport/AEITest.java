@@ -116,8 +116,6 @@ public class AEITest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         //sidemenu.callActionByLabel("Create Aggregated Ethernet Interface", "Network domains", "Transport & IP");
         driver.get(String.format("%s/#/view/transport/ip/ethernet/aei?perspective=LIVE", BASIC_URL));
-        PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
-        perspectiveChooser.setCurrentTask();
 
         return new AEIWizardPage(driver);
     }
