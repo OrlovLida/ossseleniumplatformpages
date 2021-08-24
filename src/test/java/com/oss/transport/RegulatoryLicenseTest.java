@@ -250,14 +250,14 @@ public class RegulatoryLicenseTest extends BaseTestCase {
         String typeValue = regulatoryLicenseOverview.getTypeValue();
         String descriptionValue = regulatoryLicenseOverview.getDescriptionValue();
 
-        Assert.assertEquals(numberValue, regulatoryLicenseAttributes.number);
-        Assert.assertEquals(statusValue, regulatoryLicenseAttributes.status);
-        Assert.assertEquals(startingDateValue, regulatoryLicenseAttributes.startingDate);
-        Assert.assertEquals(expirationDateValue, regulatoryLicenseAttributes.expirationDate);
-        Assert.assertEquals(operatingHoursValue, regulatoryLicenseAttributes.operatingHours);
-        Assert.assertEquals(regulatoryAgencyValue, regulatoryLicenseAttributes.regulatoryAgency);
-        Assert.assertEquals(typeValue, regulatoryLicenseAttributes.type);
-        Assert.assertEquals(descriptionValue, regulatoryLicenseAttributes.description);
+        Assert.assertEquals(regulatoryLicenseAttributes.number, numberValue);
+        Assert.assertEquals(regulatoryLicenseAttributes.status, statusValue);
+        Assert.assertEquals(regulatoryLicenseAttributes.startingDate, startingDateValue);
+        Assert.assertEquals(regulatoryLicenseAttributes.expirationDate, expirationDateValue);
+        Assert.assertEquals(regulatoryLicenseAttributes.operatingHours, operatingHoursValue);
+        Assert.assertEquals(regulatoryLicenseAttributes.regulatoryAgency, regulatoryAgencyValue);
+        Assert.assertEquals(regulatoryLicenseAttributes.type, typeValue);
+        Assert.assertEquals(regulatoryLicenseAttributes.description, descriptionValue);
     }
 
     private void assertAssignedLocations(RegulatoryLicenseOverviewPage regulatoryLicenseOverview, String... expectedLocations) {
@@ -295,7 +295,7 @@ public class RegulatoryLicenseTest extends BaseTestCase {
     private void assertRegulatoryLicenseRemoval() {
         String properUrlAfterRemoval = Configuration.CONFIGURATION.getUrl() + ENVIRONMENT_INDEPENDENT_URL_PART_AFTER_REMOVAL_REDIRECT;
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertEquals(driver.getCurrentUrl(), properUrlAfterRemoval);
+        Assert.assertEquals(properUrlAfterRemoval, driver.getCurrentUrl());
     }
 
     private static class RegulatoryLicenseAttributes {
