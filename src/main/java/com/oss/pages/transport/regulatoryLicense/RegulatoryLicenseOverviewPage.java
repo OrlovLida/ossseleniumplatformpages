@@ -1,5 +1,7 @@
 package com.oss.pages.transport.regulatoryLicense;
 
+import com.oss.framework.alerts.SystemMessageContainer;
+import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
@@ -53,12 +55,16 @@ public class RegulatoryLicenseOverviewPage extends BasePage {
     private static final String REMOVAL_CONFIRMATION_BUTTON_DATA_ATTRIBUTENAME = "ConfirmationBox_confirmationBoxAppRemoveLocation_action_button";
 
 
+
     private final OldPropertyPanel propertyPanel;
 
     public RegulatoryLicenseOverviewPage(WebDriver driver) {
         super(driver);
         propertyPanel = OldPropertyPanel.create(driver, wait);
     }
+
+
+
 
     @Step("Click edit button")
     public RegulatoryLicenseWizardPage clickEdit() {
@@ -124,61 +130,49 @@ public class RegulatoryLicenseOverviewPage extends BasePage {
 
     @Step("Open bottom Locations tab")
     public void openLocationsTab() {
-        TabsInterface tabsWidget = TabWindowWidget.create(driver, wait);
-        tabsWidget.selectTabByLabel(BOTTOM_TABLE_LOCATIONS_LABEL);
+        selectTab(BOTTOM_TABLE_LOCATIONS_LABEL);
     }
 
     @Step("Open bottom Microwave Antennas tab")
     public void openMicrowaveAntennasTab() {
-        TabsInterface tabsWidget = TabWindowWidget.create(driver, wait);
-        tabsWidget.selectTabByLabel(BOTTOM_TABLE_MICROWAVE_ANTENNAS_LABEL);
+        selectTab(BOTTOM_TABLE_MICROWAVE_ANTENNAS_LABEL);
     }
 
     @Step("Open bottom Microwave Channels tab")
     public void openMicrowaveChannelsTab() {
-        TabsInterface tabsWidget = TabWindowWidget.create(driver, wait);
-        tabsWidget.selectTabByLabel(BOTTOM_TABLE_MICROWAVE_CHANNELS_LABEL);
+        selectTab(BOTTOM_TABLE_MICROWAVE_CHANNELS_LABEL);
     }
 
     @Step("Open bottom Microwave Links tab")
     public void openMicrowaveLinksTab() {
-        TabsInterface tabsWidget = TabWindowWidget.create(driver, wait);
-        tabsWidget.selectTabByLabel(BOTTOM_TABLE_MICROWAVE_LINKS_LABEL);
+        selectTab(BOTTOM_TABLE_MICROWAVE_LINKS_LABEL);
     }
 
     @Step("Click add Location button")
     public RegulatoryLicenseLocationsWizardPage clickAddLocationButton() {
         openLocationsTab();
-        DelayUtils.waitForPageToLoad(driver, wait);
-        OldTable locationsTabTable = getTableWidget(BOTTOM_LOCATIONS_TABLE_ID);
-        locationsTabTable.callAction(ADD_BUTTON_DATA_ATTRIBUTENAME);
+        addObjectInSpecificTable(BOTTOM_LOCATIONS_TABLE_ID);
         return new RegulatoryLicenseLocationsWizardPage(driver);
     }
 
     @Step("Click add Microwave Antenna button")
     public RegulatoryLicenseMicrowaveAntennasWizardPage clickAddMicrowaveAntennaButton() {
         openMicrowaveAntennasTab();
-        DelayUtils.waitForPageToLoad(driver, wait);
-        OldTable microwaveAntennasTabTable = getTableWidget(BOTTOM_MICROWAVE_ANTENNAS_TABLE_ID);
-        microwaveAntennasTabTable.callAction(ADD_BUTTON_DATA_ATTRIBUTENAME);
+        addObjectInSpecificTable(BOTTOM_MICROWAVE_ANTENNAS_TABLE_ID);
         return new RegulatoryLicenseMicrowaveAntennasWizardPage(driver);
     }
 
     @Step("Click add Microwave Channel button")
     public RegulatoryLicenseMicrowaveChannelsWizardPage clickAddMicrowaveChannelButton() {
         openMicrowaveChannelsTab();
-        DelayUtils.waitForPageToLoad(driver, wait);
-        OldTable microwaveChannelsTabTable = getTableWidget(BOTTOM_MICROWAVE_CHANNELS_TABLE_ID);
-        microwaveChannelsTabTable.callAction(ADD_BUTTON_DATA_ATTRIBUTENAME);
+        addObjectInSpecificTable(BOTTOM_MICROWAVE_CHANNELS_TABLE_ID);
         return new RegulatoryLicenseMicrowaveChannelsWizardPage(driver);
     }
 
     @Step("Click add Microwave Link button")
     public RegulatoryLicenseMicrowaveLinksWizardPage clickAddMicrowaveLinkButton() {
         openMicrowaveLinksTab();
-        DelayUtils.waitForPageToLoad(driver, wait);
-        OldTable microwaveLinksTabTable = getTableWidget(BOTTOM_MICROWAVE_LINKS_TABLE_ID);
-        microwaveLinksTabTable.callAction(ADD_BUTTON_DATA_ATTRIBUTENAME);
+        addObjectInSpecificTable(BOTTOM_MICROWAVE_LINKS_TABLE_ID);
         return new RegulatoryLicenseMicrowaveLinksWizardPage(driver);
     }
 
@@ -240,6 +234,18 @@ public class RegulatoryLicenseOverviewPage extends BasePage {
         microwaveLinkTable.callAction(REMOVE_MICROWAVE_ANTENNA_BUTTON_DATA_ATTRIBUTENAME);
         DelayUtils.waitForPageToLoad(driver, wait);
         confirmMicrowaveAntennaRemoval();
+    }
+
+    public void selectTab(String tabName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        TabsInterface tabs = TabWindowWidget.create(driver, wait);
+        tabs.selectTabByLabel(tabName);
+    }
+
+    private void addObjectInSpecificTable(String tableId){
+        DelayUtils.waitForPageToLoad(driver, wait);
+        OldTable tabTable = getTableWidget(tableId);
+        tabTable.callAction(ADD_BUTTON_DATA_ATTRIBUTENAME);
     }
 
     private void selectFirstMicrowaveLink(){
