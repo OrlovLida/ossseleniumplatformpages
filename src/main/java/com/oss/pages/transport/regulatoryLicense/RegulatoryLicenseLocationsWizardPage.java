@@ -19,9 +19,6 @@ public class RegulatoryLicenseLocationsWizardPage extends BasePage {
 
     @Step("Set Location value to {location}")
     public void selectLocation(String location) {
-        //Input locationComponent = wizard.getComponent(LOCATION_ID, Input.ComponentType.SEARCH_FIELD);
-        //locationComponent.clear();
-        //locationComponent.setSingleStringValue(location);
         wizard.setComponentValue(LOCATION_ID, location, Input.ComponentType.SEARCH_FIELD);
     }
 

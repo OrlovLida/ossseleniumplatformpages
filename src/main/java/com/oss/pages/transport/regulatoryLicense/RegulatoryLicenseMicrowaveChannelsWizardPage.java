@@ -19,9 +19,6 @@ public class RegulatoryLicenseMicrowaveChannelsWizardPage extends BasePage {
 
     @Step("Set Microwave Channel value to {microwaveChannel}")
     public void selectMicrowaveChannel(String microwaveChannel) {
-        //Input microwaveChannelComponent = wizard.getComponent(MICROWAVE_CHANNEL_ID, Input.ComponentType.SEARCH_FIELD);
-        //microwaveChannelComponent.clear();
-        //microwaveChannelComponent.setSingleStringValue(microwaveChannel);
         wizard.setComponentValue(MICROWAVE_CHANNEL_ID, microwaveChannel, Input.ComponentType.SEARCH_FIELD);
     }
 

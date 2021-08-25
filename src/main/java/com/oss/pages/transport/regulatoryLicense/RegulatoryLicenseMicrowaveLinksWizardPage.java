@@ -19,9 +19,6 @@ public class RegulatoryLicenseMicrowaveLinksWizardPage extends BasePage {
 
     @Step("Set Microwave Link value to {microwaveLink}")
     public void selectMicrowaveLinks(String microwaveLink) {
-        //Input microwaveLinkComponent = wizard.getComponent(MICROWAVE_LINK_ID, Input.ComponentType.SEARCH_FIELD);
-        //microwaveLinkComponent.clear();
-        //microwaveLinkComponent.setSingleStringValue(microwaveLink);
         wizard.setComponentValue(MICROWAVE_LINK_ID, microwaveLink, Input.ComponentType.SEARCH_FIELD);
     }
 

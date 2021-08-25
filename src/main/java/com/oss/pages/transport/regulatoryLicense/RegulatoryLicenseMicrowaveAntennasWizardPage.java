@@ -19,9 +19,6 @@ public class RegulatoryLicenseMicrowaveAntennasWizardPage extends BasePage {
 
     @Step("Set Microwave Antenna value to {microwaveAntenna}")
     public void selectMicrowaveAntenna(String microwaveAntenna) {
-        //Input microwaveAntennaComponent = wizard.getComponent(MICROWAVE_ANTENNA_ID, Input.ComponentType.SEARCH_FIELD);
-        //microwaveAntennaComponent.clear();
-        //microwaveAntennaComponent.setSingleStringValue(microwaveAntenna);
         wizard.setComponentValue(MICROWAVE_ANTENNA_ID, microwaveAntenna, Input.ComponentType.SEARCH_FIELD);
     }
 

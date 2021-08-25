@@ -7,6 +7,7 @@ import com.oss.pages.transport.regulatoryLicense.*;
 import io.qameta.allure.Step;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class RegulatoryLicenseTest extends BaseTestCase {
 
     @Test(priority = 1)
     @Step("Create Regulatory License")
-    public void createRegulatoryLicense(){
+    public void createRegulatoryLicense() {
         RegulatoryLicenseAttributes regulatoryLicenseAttributes = getRegulatoryLicenseAttributesToCreate();
 
         RegulatoryLicensesListPage regulatoryLicensesList = goToListOfRegulatoryLicenses();
@@ -119,7 +120,7 @@ public class RegulatoryLicenseTest extends BaseTestCase {
 
     @Test(priority = 6)
     @Step("Detach assigned Microwave Link")
-    public void detachMicrowaveLink(){
+    public void detachMicrowaveLink() {
         RegulatoryLicenseOverviewPage regulatoryLicenseOverview = new RegulatoryLicenseOverviewPage(driver);
         regulatoryLicenseOverview.openMicrowaveLinksTab();
         regulatoryLicenseOverview.removeFirstMicrowaveLink();
@@ -129,7 +130,7 @@ public class RegulatoryLicenseTest extends BaseTestCase {
 
     @Test(priority = 7)
     @Step("Detach assigned Microwave Channel")
-    public void detachMicrowaveChannel(){
+    public void detachMicrowaveChannel() {
         RegulatoryLicenseOverviewPage regulatoryLicenseOverview = new RegulatoryLicenseOverviewPage(driver);
         regulatoryLicenseOverview.openMicrowaveChannelsTab();
         regulatoryLicenseOverview.removeFirstMicrowaveChannel();
@@ -139,7 +140,7 @@ public class RegulatoryLicenseTest extends BaseTestCase {
 
     @Test(priority = 8)
     @Step("Detach assigned Microwave Antenna")
-    public void detachMicrowaveAntenna(){
+    public void detachMicrowaveAntenna() {
         RegulatoryLicenseOverviewPage regulatoryLicenseOverview = new RegulatoryLicenseOverviewPage(driver);
         regulatoryLicenseOverview.openMicrowaveAntennasTab();
         regulatoryLicenseOverview.removeFirstMicrowaveAntenna();
@@ -149,7 +150,7 @@ public class RegulatoryLicenseTest extends BaseTestCase {
 
     @Test(priority = 9)
     @Step("Check if all Locations were detached")
-    public void checkLocations(){
+    public void checkLocations() {
         RegulatoryLicenseOverviewPage regulatoryLicenseOverview = new RegulatoryLicenseOverviewPage(driver);
         regulatoryLicenseOverview.openLocationsTab();
 
@@ -158,7 +159,7 @@ public class RegulatoryLicenseTest extends BaseTestCase {
 
     @Test(priority = 10)
     @Step("Remove Regulatory License")
-    public void removeRegulatoryLicense(){
+    public void removeRegulatoryLicense() {
         RegulatoryLicenseOverviewPage regulatoryLicenseOverview = new RegulatoryLicenseOverviewPage(driver);
         regulatoryLicenseOverview.removeRegulatoryLicense();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -239,7 +240,7 @@ public class RegulatoryLicenseTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    private void assertRegulatoryLicenseAttributes(RegulatoryLicenseTest.RegulatoryLicenseAttributes regulatoryLicenseAttributes, RegulatoryLicenseOverviewPage regulatoryLicenseOverview){
+    private void assertRegulatoryLicenseAttributes(RegulatoryLicenseTest.RegulatoryLicenseAttributes regulatoryLicenseAttributes, RegulatoryLicenseOverviewPage regulatoryLicenseOverview) {
         String numberValue = regulatoryLicenseOverview.getNumberValue();
         String statusValue = regulatoryLicenseOverview.getStatusValue();
         String startingDateValue = regulatoryLicenseOverview.getStartingDateValue();
