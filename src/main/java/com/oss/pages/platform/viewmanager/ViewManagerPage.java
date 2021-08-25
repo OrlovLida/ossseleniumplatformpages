@@ -23,11 +23,12 @@ public class ViewManagerPage extends BasePage {
     private static final String SEARCH_TEST_ID = "search";
     private static final String ADD_APPLICATION_BUTTON_ID = "addTileButton0";
     private static final String CREATE_SUBCATEGORY_BUTTON_ID = "createSubcategoryButton0";
+    private static final String EDIT_SUBCATEGORY_BUTTON_ID = "editButton0";
     private static final String DELETE_CATEGORY_BUTTON_ID = "deleteCategoryButton0";
     private static final String EDIT_CATEGORY_BUTTON_ID = "editCategoryButton0";
     private static final String DRAG_CATEGORY_BUTTON_ID = "dragCategoryButton0";
     private static final String EDIT_APPLICATION_BUTTON_XPATH = "//a[@id='editButton0']";
-    private static final String THREE_DOTS_FIRST_BUTTON_FULL_XPATH = "//*[@id=\"frameworkObjectButtonsGroup\"]";
+    private static final String THREE_DOTS_BUTTONS_XPATH = "//*[@id=\"frameworkObjectButtonsGroup\"]";
     private static final String DELETE_BUTTON_IN_POPUP_XPATH = "//*[@class='CommonButton btn btn-danger btn-md']";
     private static final String EDIT_CATEGORY_POPUP_XPATH = "//*[@class='popupContainer']";
     private static final String CATEGORY_ROLLOUT_BUTTON_XPATH = "//div[@class='categories__buttons__rollout']/i[@class='fa fa-chevron-down']";
@@ -47,7 +48,7 @@ public class ViewManagerPage extends BasePage {
     @FindBy(className = "views-manager__bar__add-category")
     public WebElement addCategoryButton;
 
-    @FindBy(xpath = THREE_DOTS_FIRST_BUTTON_FULL_XPATH)
+    @FindBy(xpath = THREE_DOTS_BUTTONS_XPATH)
     public WebElement threeDotsFirstButton;
 
     @FindBy(xpath = DRAG_CATEGORY_BUTTON_ID)
@@ -57,12 +58,7 @@ public class ViewManagerPage extends BasePage {
         super(driver);
     }
 
-    public CategoryPopup goToCreateCategoryPopup() {
-        WebDriverWait wait = new WebDriverWait(driver, 45);
-        return new CategoryPopup(driver, wait);
-    }
-
-    public CategoryPopup goToEditCategoryPopup() {
+    public CategoryPopup goToCategoryPopup() {
         WebDriverWait wait = new WebDriverWait(driver, 45);
         return new CategoryPopup(driver, wait);
     }
@@ -90,6 +86,11 @@ public class ViewManagerPage extends BasePage {
     public WebElement getSubcategoryGroupButton(int numberOfButton){
         List<WebElement> applicationLinks = driver.findElements(By.xpath(SUBCATEGORIES_GROUP_BUTTONS_XPATH));
         return applicationLinks.get(numberOfButton);
+    }
+
+    public WebElement getThreeDotsGroupButton(int numberOfButton){
+        List<WebElement> threeDotsGroupButtons = driver.findElements(By.xpath(THREE_DOTS_BUTTONS_XPATH));
+        return threeDotsGroupButtons.get(numberOfButton);
     }
 
     @Step("Search specific category by name")
@@ -125,6 +126,12 @@ public class ViewManagerPage extends BasePage {
         actionsDropdownList.clickOnActionById(ADD_APPLICATION_BUTTON_ID);
     }
 
+    public void enterEditSubcategoryButton(){
+        getSubcategoryGroupButton(0).click();
+        ActionsDropdownList actionsDropdownList = new ActionsDropdownList(driver);
+        actionsDropdownList.clickOnActionById(EDIT_SUBCATEGORY_BUTTON_ID);
+    }
+
     public void enterCreateSubcategory(){
         threeDotsFirstButton.click();
         ActionsDropdownList actionsDropdownList = new ActionsDropdownList(driver);
@@ -148,6 +155,12 @@ public class ViewManagerPage extends BasePage {
         WebElement deleteButton = driver.findElement(By.xpath(DELETE_BUTTON_IN_POPUP_XPATH));
         deleteButton.click();
         DelayUtils.sleep(2000);
+    }
+
+    public void clickDeleteButton(){
+        ActionsDropdownList actionsDropdownList = new ActionsDropdownList(driver);
+        actionsDropdownList.clickOnActionById(DELETE_CATEGORY_BUTTON_ID);
+        DelayUtils.sleep(1000);
     }
 
     public void dragAndDropFirstAppInPlaceOfSecond(){
