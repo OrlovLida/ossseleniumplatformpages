@@ -42,11 +42,6 @@ public class IPSubnetWizardPage extends BasePage {
         return TableComponent.create(driver, wait, SUBNET_WIZARD_WIDGET_ID);
     }
 
-    private TableComponent getTableComponent(){
-        Widget.waitForWidget(wait, TableWidget.TABLE_WIDGET_CLASS);
-        return TableComponent.create(driver,wait,"subnetWizardWidgetId");
-    }
-
     @Step("IP Subnet Wizard select step")
     public void ipSubnetWizardSelectStep(IPSubnetFilterProperties ipSubnetFilterProperties) {
         waitForPageToLoad();

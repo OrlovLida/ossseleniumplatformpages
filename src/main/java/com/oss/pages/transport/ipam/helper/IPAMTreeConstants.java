@@ -17,6 +17,8 @@ public class IPAMTreeConstants {
     public static final String EDIT_OPERATION_FOR_IPV6_HOST_ASSIGNMENT_GROUP = "EditOperationsForIPv6HostAddressAssignment";
     public static final String ASSIGN_OPERATION_FOR_IPV4_SUBNET_WITH_ASSIGNMENT = "AssignOperationForIPv4SubnetWithAssignment";
     public static final String ASSIGN_OPERATION_FOR_IPV6_SUBNET_WITH_ASSIGNMENT = "AssignOperationForIPv6SubnetWithAssignment";
+    public static final String ASSIGN_OPERATION_FOR_IPV4_SUBNET_NETWORK_WITHOUT_ASSIGNMENT = "AssignOperationForIPv4SubnetNetworkWithoutAssignment";
+    public static final String ASSIGN_OPERATION_FOR_IPV6_SUBNET_NETWORK_WITHOUT_ASSIGNMENT = "AssignOperationForIPv6SubnetNetworkWithoutAssignment";
     public static final String ASSIGN_OPERATION_FOR_IPV4_SUBNET_WITHOUT_ASSIGNMENT = "AssignOperationFotIPv4SubnetWithoutAssignment";
     public static final String ASSIGN_OPERATION_FOR_IPV6_SUBNET_WITHOUT_ASSIGNMENT = "AssignOperationFotIPv6SubnetWithoutAssignment";
     public static final String ASSIGN_OPERATION_FOR_IPV4_HOST_ADDRESS = "AssignOperationsForIPv4HostAddress";
@@ -42,6 +44,7 @@ public class IPAMTreeConstants {
     public static final String RESERVE_LOOPBACK_IPV6_ADDRESS_ACTION = "ReserveLoopbackIPv6HostAddress";
     public static final String ASSIGN_IPV4_ADDRESS_ACTION_FROM_SUBNET_CONTEXT = "AssignHostAddressContextAction_9";
     public static final String ASSIGN_IPV6_ADDRESS_ACTION_FROM_SUBNET_CONTEXT = "AssignHostAddressContextAction_22";
+    public static final String ASSIGN_IPV6_ADDRESS_ACTION_FROM_SUBNET_CONTEXT_ALFA = "AssignHostAddressContextAction_28";
     public static final String ASSIGN_LOOPBACK_IPV4_ADDRESS_ACTION_FROM_SUBNET_CONTEXT = "AssignHostAddressContextAction_10";
     public static final String ASSIGN_LOOPBACK_IPV6_ADDRESS_ACTION_FROM_SUBNET_CONTEXT = "AssignHostAddressContextAction_23";
     public static final String ASSIGN_IPV4_ADDRESS_ACTION_FROM_HOST_CONTEXT = "AssignHostAddressContextAction_41";
@@ -65,6 +68,12 @@ public class IPAMTreeConstants {
     public static final String SPLIT_IPV6_SUBNET_ACTION = "SplitIPv6SubnetContextAction";
     public static final String MERGE_IPV4_SUBNET_ACTION = "MergeIPv4SubnetContextAction";
     public static final String MERGE_IPV6_SUBNET_ACTION = "MergeIPv6SubnetContextAction";
+    public static final String IP_NETWORK_REASSIGNMENT_HOST_ADDRESS_IPV4_ASSIGNMENT_CONTEXT_ACTION = "IPNetworkReassignmentHostAssignmentContextAction_64";
+    public static final String IP_NETWORK_REASSIGNMENT_HOST_ADDRESS_IPV6_ASSIGNMENT_CONTEXT_ACTION = "IPNetworkReassignmentHostAssignmentContextAction_65";
+    public static final String IP_NETWORK_REASSIGNMENT_HOST_ADDRESS_IPV4_CONTEXT_ACTION = "IPNetworkReassignmentHostAddressContextAction_62";
+    public static final String IP_NETWORK_REASSIGNMENT_HOST_ADDRESS_IPV6_CONTEXT_ACTION = "IPNetworkReassignmentHostAddressContextAction_63";
+    public static final String IP_NETWORK_REASSIGNMENT_NETWORK_SUBNET_IPV4_CONTEXT_ACTION = "IPNetworkReassignmentSubnetContextAction_45";
+    public static final String IP_NETWORK_REASSIGNMENT_BLOCK_SUBNET_IPV4_CONTEXT_ACTION = "IPNetworkReassignmentSubnetContextAction_48";
     public static final String ROLE_ACTION = "Role";
 
     public static final String OK_BUTTON_LABEL = "OK";

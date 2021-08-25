@@ -1,7 +1,6 @@
 package com.oss.pages.transport.ipam;
 
 import java.util.Arrays;
-import java.util.List;
 
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.transport.ipam.helper.IPAddressAssignmentWizardProperties;
@@ -21,7 +20,6 @@ import com.oss.framework.widgets.treewidget.TreeWidget;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
-import org.openqa.selenium.WebElement;
 
 import static com.oss.framework.alerts.SystemMessageContainer.MessageType.SUCCESS;
 import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
@@ -86,6 +84,12 @@ public class IPAddressManagementViewPage extends BasePage {
         return new IPAddressManagementViewPage(driver);
     }
 
+    @Step("Refresh IP Address Management Page")
+    public static IPAddressManagementViewPage refreshIPAddressManagementViewPage(WebDriver driver) {
+        driver.navigate().refresh();
+        return new IPAddressManagementViewPage(driver);
+    }
+
     @Step("Search IP Network")
     public IPAddressManagementViewPage searchIpNetwork(String value) {
         getTreeView()
@@ -102,6 +106,16 @@ public class IPAddressManagementViewPage extends BasePage {
         return new RoleViewPage(driver);
     }
 
+    @Step("Scroll to appropriate object on tree")
+    public void scrollToTreeRow(String rowName) {
+        getTreeView().scrollToTreeRow(rowName);
+    }
+
+    @Step("Scroll to appropriate object on tree")
+    public void scrollToTreeRowContains(String rowName) {
+        getTreeView().scrollToTreeRowContains(rowName);
+    }
+
     @Step("Select first object on hierarchy view")
     public void selectFirstTreeRow() {
         waitForPageToLoad();
@@ -114,14 +128,28 @@ public class IPAddressManagementViewPage extends BasePage {
         getTreeView().selectTreeRow(name);
     }
 
+    @Step("Scroll to object with name: {name} and select it")
+    public void scrollAndSelectTreeRow(String name) {
+        waitForPageToLoad();
+        scrollToTreeRow(name);
+        getTreeView().selectTreeRow(name);
+    }
+
     @Step("Select object contains name {name} on hierarchy view")
     public void selectTreeRowContains(String name) {
         waitForPageToLoad();
         getTreeView().selectTreeRowContains(name);
     }
 
+    @Step("Scroll to object with name: {name} and select it")
+    public void scrollAndSelectTreeRowContains(String name) {
+        waitForPageToLoad();
+        scrollToTreeRowContains(name);
+        getTreeView().selectTreeRowContains(name);
+    }
+
     @Step("Unselect object with name: {name} on hierarchy view")
-    public void unselectTreeRow(String name){
+    public void unselectTreeRow(String name) {
         waitForPageToLoad();
         getTreeView().selectTreeRow(name);
     }
@@ -133,9 +161,25 @@ public class IPAddressManagementViewPage extends BasePage {
         waitForPageToLoad();
     }
 
+    @Step("Scroll to object with name: {name} and expand it")
+    public void scrollAndExpandTreeRow(String name) {
+        waitForPageToLoad();
+        scrollToTreeRow(name);
+        getTreeView().expandTreeRow(name);
+        waitForPageToLoad();
+    }
+
     @Step("Expand object with name: {name} on hierarchy view")
     public void expandTreeRowContains(String name) {
         waitForPageToLoad();
+        getTreeView().expandTreeRowContains(name);
+        waitForPageToLoad();
+    }
+
+    @Step("Scroll to object with name: {name} and expand it")
+    public void scrollAndExpandTreeRowContains(String name) {
+        waitForPageToLoad();
+        scrollToTreeRowContains(name);
         getTreeView().expandTreeRowContains(name);
         waitForPageToLoad();
     }
@@ -225,7 +269,7 @@ public class IPAddressManagementViewPage extends BasePage {
         editIPSubnet(role, description);
     }
 
-    private void editIPSubnet(String role, String description){
+    private void editIPSubnet(String role, String description) {
         EditIPSubnetWizardPage editIPSubnetWizardPage = new EditIPSubnetWizardPage(driver);
         editIPSubnetWizardPage.editIPSubnet(role, description);
     }
@@ -245,14 +289,14 @@ public class IPAddressManagementViewPage extends BasePage {
     }
 
     @Step("Merge IPv4 Subnets")
-    public IPSubnetWizardPage mergeIPv4Subnet(String ... rowName) {
+    public IPSubnetWizardPage mergeIPv4Subnet(String... rowName) {
         Arrays.stream(rowName).forEach(this::selectTreeRowContains);
         useContextAction(MERGE_IPV4_SUBNET_ACTION);
         return new IPSubnetWizardPage(driver);
     }
 
     @Step("Merge IPv6 Subnets")
-    public IPSubnetWizardPage mergeIPv6Subnet(String ... rowName) {
+    public IPSubnetWizardPage mergeIPv6Subnet(String... rowName) {
         Arrays.stream(rowName).forEach(this::selectTreeRowContains);
         useContextAction(MERGE_IPV6_SUBNET_ACTION);
         return new IPSubnetWizardPage(driver);
@@ -274,7 +318,7 @@ public class IPAddressManagementViewPage extends BasePage {
         assignIPSubnet(assignmentType, assignmentName, role);
     }
 
-    private void assignIPSubnet(String assignmentType, String assignmentName, String role){
+    private void assignIPSubnet(String assignmentType, String assignmentName, String role) {
         AssignIPSubnetWizardPage assignIPSubnetWizardPage = new AssignIPSubnetWizardPage(driver);
         assignIPSubnetWizardPage.assignIPSubnet(assignmentType, assignmentName, role);
     }
@@ -293,7 +337,7 @@ public class IPAddressManagementViewPage extends BasePage {
         editRoleForIPSubnetAssignment(newRoleName);
     }
 
-    private void editRoleForIPSubnetAssignment(String newRoleName){
+    private void editRoleForIPSubnetAssignment(String newRoleName) {
         Wizard editIPSubnetAssignmentRole = Wizard.createPopupWizard(driver, wait);
         editIPSubnetAssignmentRole.setComponentValue(NEW_ROLE_DATA_ATTRIBUTE_NAME, newRoleName, COMBOBOX);
         editIPSubnetAssignmentRole.clickOK();
@@ -331,7 +375,7 @@ public class IPAddressManagementViewPage extends BasePage {
         reserveIPHost(description);
     }
 
-    private void reserveIPHost(String description){
+    private void reserveIPHost(String description) {
         ReserveIPAddressWizardPage reserveIPAddressWizardPage = new ReserveIPAddressWizardPage(driver);
         reserveIPAddressWizardPage.reserveIPAddress(description);
     }
@@ -339,6 +383,16 @@ public class IPAddressManagementViewPage extends BasePage {
     @Step("Assign IPv4 Host Address from subnet {rowName} context")
     public IPAddressAssignmentWizardPage assignIPv4HostAddressFromSubnetContext(String rowName) {
         return assignIPHost(rowName, ASSIGN_OPERATION_FOR_IPV4_SUBNET_WITHOUT_ASSIGNMENT, ASSIGN_IPV4_ADDRESS_ACTION_FROM_SUBNET_CONTEXT);
+    }
+
+    @Step("Assign IPv4 Host Address from subnet {rowName} context when assign button is visible")
+    public IPAddressAssignmentWizardPage assignIPv4HostAddressFromSubnetContextWithVisibleButton(String rowName) {
+        return assignIPHostWithVisibleButton(rowName, ASSIGN_OPERATION_FOR_IPV4_SUBNET_NETWORK_WITHOUT_ASSIGNMENT, ASSIGN_IPV4_ADDRESS_ACTION_FROM_SUBNET_CONTEXT);
+    }
+
+    @Step("Assign IPv6 Host Address from subnet {rowName} context when assign button is visible")
+    public IPAddressAssignmentWizardPage assignIPv6HostAddressFromSubnetContextWithVisibleButton(String rowName) {
+        return assignIPHostWithVisibleButton(rowName, ASSIGN_OPERATION_FOR_IPV6_SUBNET_NETWORK_WITHOUT_ASSIGNMENT, ASSIGN_IPV6_ADDRESS_ACTION_FROM_SUBNET_CONTEXT_ALFA);
     }
 
     @Step("Assign IPv6 Host Address from subnet {rowName} context")
@@ -356,11 +410,58 @@ public class IPAddressManagementViewPage extends BasePage {
         return assignIPHost(rowName, ASSIGN_OPERATION_FOR_IPV6_HOST_ADDRESS, ASSIGN_LOOPBACK_IPV6_ADDRESS_ACTION_FROM_HOST_CONTEXT);
     }
 
-    private IPAddressAssignmentWizardPage assignIPHost(String rowName, String contextActionGroup, String contextAction){
+    private IPAddressAssignmentWizardPage assignIPHost(String rowName, String contextActionGroup, String contextAction) {
         selectTreeRowContains(rowName);
         waitForPageToLoad();
         useContextAction(contextActionGroup, ASSIGN_OPERATION_ACTION, contextAction);
         return new IPAddressAssignmentWizardPage(driver);
+    }
+
+    private IPAddressAssignmentWizardPage assignIPHostWithVisibleButton(String rowName, String contextActionGroup, String contextAction) {
+        selectTreeRowContains(rowName);
+        waitForPageToLoad();
+        useContextAction(contextActionGroup, contextAction);
+        return new IPAddressAssignmentWizardPage(driver);
+    }
+
+    @Step("Change IP Network to {destinationNetwork} for IPv4 Host Address Assignment")
+    public void changeIPNetworkForIPv4AddressAssignment(String destinationNetwork, String... rowNames) {
+        Arrays.stream(rowNames).forEach(this::selectTreeRowContains);
+        waitForPageToLoad();
+        useContextAction(EDIT_OPERATION_FOR_IPV4_HOST_ASSIGNMENT_GROUP, IP_NETWORK_REASSIGNMENT_HOST_ADDRESS_IPV4_ASSIGNMENT_CONTEXT_ACTION);
+        waitForPageToLoad();
+        ChangeIPNetworkWizardPage changeIPNetworkWizardPage = new ChangeIPNetworkWizardPage(driver);
+        changeIPNetworkWizardPage.changeIPNetworkWithOutConflicts(destinationNetwork);
+    }
+
+    @Step("Change IP Network to {destinationNetwork} for IPv6 Host Address Assignment")
+    public void changeIPNetworkForIPv6AddressAssignment(String destinationNetwork, String... rowNames) {
+        Arrays.stream(rowNames).forEach(this::selectTreeRowContains);
+        waitForPageToLoad();
+        useContextAction(EDIT_OPERATION_FOR_IPV6_HOST_ASSIGNMENT_GROUP, IP_NETWORK_REASSIGNMENT_HOST_ADDRESS_IPV6_ASSIGNMENT_CONTEXT_ACTION);
+        waitForPageToLoad();
+        ChangeIPNetworkWizardPage changeIPNetworkWizardPage = new ChangeIPNetworkWizardPage(driver);
+        changeIPNetworkWizardPage.changeIPNetworkWithOutConflicts(destinationNetwork);
+    }
+
+    @Step("Change IP Network to {destinationNetwork} for IPv4 Host Address")
+    public void changeIPNetworkForIPv4HostAddress(String destinationNetwork, String... rowNames) {
+        Arrays.stream(rowNames).forEach(this::selectTreeRowContains);
+        waitForPageToLoad();
+        useContextAction(EDIT_OPERATION_FOR_IPV4_HOST_ADDRESS_GROUP, IP_NETWORK_REASSIGNMENT_HOST_ADDRESS_IPV4_CONTEXT_ACTION);
+        waitForPageToLoad();
+        ChangeIPNetworkWizardPage changeIPNetworkWizardPage = new ChangeIPNetworkWizardPage(driver);
+        changeIPNetworkWizardPage.changeIPNetworkWithOutConflicts(destinationNetwork);
+    }
+
+    @Step("Change IP Network to {destinationNetwork} for IPv6 Host Address")
+    public void changeIPNetworkForIPv6HostAddress(String destinationNetwork, String... rowNames) {
+        Arrays.stream(rowNames).forEach(this::selectTreeRowContains);
+        waitForPageToLoad();
+        useContextAction(EDIT_OPERATION_FOR_IPV6_HOST_ADDRESS_GROUP, IP_NETWORK_REASSIGNMENT_HOST_ADDRESS_IPV6_CONTEXT_ACTION);
+        waitForPageToLoad();
+        ChangeIPNetworkWizardPage changeIPNetworkWizardPage = new ChangeIPNetworkWizardPage(driver);
+        changeIPNetworkWizardPage.changeIPNetworkWithOutConflicts(destinationNetwork);
     }
 
     @Step("Change IPv4 Host {rowName} Mask")
@@ -379,7 +480,7 @@ public class IPAddressManagementViewPage extends BasePage {
         changeIPHostMask(mask);
     }
 
-    private void changeIPHostMask(String mask){
+    private void changeIPHostMask(String mask) {
         Wizard changeIPHostAddressMaskWizard = Wizard.createPopupWizard(driver, wait);
         changeIPHostAddressMaskWizard.setComponentValue(MASK_DATA_ATTRIBUTE_NAME, mask, COMBOBOX);
         changeIPHostAddressMaskWizard.clickOK();
