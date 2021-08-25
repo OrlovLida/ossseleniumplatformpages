@@ -104,7 +104,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
         deviceWizardPage.setModel("Generic");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.setName(deviceName1);
-        deviceWizardPage.setNetworkDomain(" ");
+        deviceWizardPage.setNetworkDomain("a");
         if (driver.getPageSource().contains("Hostname")) {
             deviceWizardPage.setHostname(deviceName1);
         }
@@ -195,7 +195,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
         deviceWizardPage.setModel("Generic");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.setName(deviceName2);
-        deviceWizardPage.setNetworkDomain(" ");
+        deviceWizardPage.setNetworkDomain("b");
         if (driver.getPageSource().contains("Hostname")) {
             deviceWizardPage.setHostname(deviceName2);
         }
