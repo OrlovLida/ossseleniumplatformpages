@@ -36,10 +36,11 @@ public class FilterManagerPage extends BasePage {
     
     @Step("Delete All Folders")
     public FilterManagerPage deleteAllFolders() {
-
-        List<CommonList.Category> categories = getCommonList().createCategories().stream().filter(category -> !category.getValue().equals("Uncategorized"))
-                .collect(Collectors.toList());
-        categories.forEach(category -> category.callAction(ActionsContainer.KEBAB_GROUP_ID, "remove_action"));
+        
+        List<CommonList.Category> categories =
+                getCommonList().createCategories().stream().filter(category -> !category.getValue().equals("Uncategorized"))
+                        .collect(Collectors.toList());
+        categories.forEach(category -> category.callAction("remove_action"));
         return this;
     }
     
@@ -79,14 +80,14 @@ public class FilterManagerPage extends BasePage {
     
     @Step("Edit Filter")
     public FilterManagerPage editFilter(String name) {
-        getCommonList().getRow("name", name).callAction(ActionsContainer.KEBAB_GROUP_ID, "Edit");
+        getCommonList().getRow("name", name).callAction("Edit");
         return this;
     }
     
     @Step("Delete Filter")
     public FilterManagerPage deleteFilter(String name) {
-
-        getCommonList().getRow("name", name).callAction(ActionsContainer.KEBAB_GROUP_ID, "remove_action");
+        
+        getCommonList().getRow("name", name).callAction("remove_action");
         
         return this;
     }
@@ -113,13 +114,13 @@ public class FilterManagerPage extends BasePage {
     
     @Step("Open Share Filter Page")
     private ShareFilterPage openShareFilter(String name) {
-        getCommonList().getRow("name", name).callAction(ActionsContainer.KEBAB_GROUP_ID, "share_action");
+        getCommonList().getRow("name", name).callAction("share_action");
         return new ShareFilterPage(driver);
     }
     
     @Step("Open Share Folder Page")
     private ShareFilterPage openShareFolder(String folderName) {
-        getCommonList().getCategory(folderName).callAction( ActionsContainer.KEBAB_GROUP_ID, "share_action");
+        getCommonList().getCategory(folderName).callAction("share_action");
         return new ShareFilterPage(driver);
     }
     

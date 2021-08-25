@@ -34,7 +34,7 @@ public class TableWidgetTest extends BaseTestCase {
 
     @BeforeClass
     public void goToInventoryView() {
-        String TYPE = "Movie";
+        String TYPE = "TestMovie";
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TYPE);
         tableWidget = inventoryViewPage.getMainTable();
     }
@@ -59,7 +59,7 @@ public class TableWidgetTest extends BaseTestCase {
         com.oss.framework.widgets.tablewidget.TableWidget tableWidget = inventoryViewPage.getMainTable();
         int defaultSize = tableWidget.getFirstColumnSize();
         DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
-        Assertions.assertThat(defaultSize).isEqualTo(229);
+        Assertions.assertThat(defaultSize).isEqualTo(200);
 
         int offset = 400;
         tableWidget.resizeFirstColumn(offset);

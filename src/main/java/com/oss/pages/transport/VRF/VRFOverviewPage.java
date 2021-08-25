@@ -34,7 +34,7 @@ public class VRFOverviewPage extends BasePage {
     private static final String ADDRESS_FAMILY_LABEL = "Address Family";
     private static final String EDIT_BUTTON_DATA_ATTRIBUTENAME = "Top_Window_Buttons_Id-0";
     private static final String REMOVE_BUTTON_DATA_ATTRIBUTENAME = "Top_Window_Buttons_Id-1";
-    private static final String CONFIRM_REMOVAL_BUTTON_DATA_ATTRIBUTENAME = "ConfirmationBox_confirmationBoxAppDeleteVRF_action_button";
+    private static final String CONFIRM_REMOVAL_BUTTON_DATA_ATTRIBUTENAME = "wizard-submit-button-wizard-widget-id";
     private static final String INTERFACE_ASSIGNMENT_LABEL = "Interface Assignment";
     private static final String ADD_ROUTE_TARGET_BUTTON_DATA_ATTRIBUTENAME = "addExisting";
     private static final String INTERFACES_TABLE_ID = "interfaces_table_id";
