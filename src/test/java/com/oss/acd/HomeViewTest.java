@@ -79,7 +79,7 @@ public class HomeViewTest extends BaseTestCase {
             Assert.fail();
         } else {
             homeViewPage.setValueOfIssueIdSearch();
-            homeViewPage.setValueInTimePeriodChooser("create_time", 1, 12, 33);
+            homeViewPage.setValueInTimePeriodChooser("create_time", 2, 12, 33);
 
             DelayUtils.sleep();
 
