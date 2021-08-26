@@ -106,6 +106,7 @@ abstract public class BaseDfePage extends BasePage implements BaseDfePageInterfa
     }
 
     protected String checkLogStatus(String logsTableTabId, String columnLabel) {
+        DelayUtils.waitForPageToLoad(driver, wait);
         return OldTable
                 .createByComponentId(driver, wait, logsTableTabId)
                 .getCellValue(0, columnLabel);

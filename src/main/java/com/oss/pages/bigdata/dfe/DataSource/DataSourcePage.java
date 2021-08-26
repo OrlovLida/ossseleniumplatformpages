@@ -1,12 +1,23 @@
 package com.oss.pages.bigdata.dfe.DataSource;
 
+import com.oss.framework.components.common.TimePeriodChooser;
+import com.oss.framework.components.inputs.ComponentFactory;
+import com.oss.framework.components.inputs.Input.ComponentType;
 import com.oss.framework.components.portals.DropdownList;
+import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.pages.bigdata.dfe.BaseDfePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.time.LocalDateTime;
 
 public class DataSourcePage extends BaseDfePage {
+
+    private static final Logger log = LoggerFactory.getLogger(DataSourcePage.class);
 
     private static final String TABLE_ID = "datasource/datasource-listAppId";
     private final String SEARCH_INPUT_ID = "datasource/datasource-listSearchAppId";
@@ -18,6 +29,13 @@ public class DataSourcePage extends BaseDfePage {
     private final String EDIT_DS_LABEL = "Edit";
     private final String DELETE_DS_LABEL = "Delete";
     private final String CONFIRM_DELETE_LABEL = "Delete";
+    private final String LOGS_TAB = "Logs";
+    private final String REFRESH_LABEL = "Refresh";
+    private final String TIME_PERIOD_ID = "timePeriod";
+    private final String SEVERITY_COMBOBOX_ID = "severityLogs-input";
+    private final String LOG_TAB_TABLE_ID = "LogsId";
+    private final String COLUMN_TIME_LABEL = "Time";
+    private final String COLUMN_SEVERITY_LABEL = "Severity";
 
     public DataSourcePage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -74,6 +92,56 @@ public class DataSourcePage extends BaseDfePage {
     @Step("I confirm the removal")
     public void clickConfirmDelete() {
         confirmDelete(CONFIRM_DELETE_LABEL);
+    }
+
+    @Step("I select logs tab")
+    public void selectLogsTab() {
+        selectTab(LOGS_TAB);
+    }
+
+    @Step("I click refresh Tab Table")
+    public void refreshLogsTable() {
+        clickTabsContextAction(REFRESH_LABEL);
+    }
+
+    @Step("I set value in time period chooser")
+    public void setValueInTimePeriodChooser(int days, int hours, int minutes) {
+        log.info("Setting value for last option in time period chooser: {} days, {} hours, {} minutes", days, hours, minutes);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        TimePeriodChooser timePeriodChooser = TimePeriodChooser.create(driver, wait, TIME_PERIOD_ID);
+        timePeriodChooser.clickClearValue();
+        timePeriodChooser.chooseOption(TimePeriodChooser.TimePeriodChooserOption.LAST);
+        timePeriodChooser.setLastPeriod(days, hours, minutes);
+    }
+
+    @Step("I choose option from Severity combobox")
+    public void setSeverityInCombobox(String severity) {
+        ComponentFactory.create(SEVERITY_COMBOBOX_ID, ComponentType.COMBOBOX, driver, wait)
+                .setSingleStringValue(severity);
+    }
+
+    @Step("I check if logs table is empty")
+    public boolean isLogsTableEmpty() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return OldTable.createByComponentId(driver, wait, LOG_TAB_TABLE_ID).hasNoData();
+    }
+
+    @Step("I check Last Request Generation Time")
+    public LocalDateTime lastIfRunTime() {
+        return lastLogTime(LOG_TAB_TABLE_ID, COLUMN_TIME_LABEL);
+    }
+
+    @Step("I check if Last Request Generation Time is fresh - up to 60 min old")
+    public boolean IsIfRunsFresh() {
+        return isLastLogTimeFresh(lastIfRunTime());
+    }
+
+    @Step("I check Severity of Data Source from Logs tab")
+    public String checkStatus() {
+        String severityOfDataSource = checkLogStatus(LOG_TAB_TABLE_ID, COLUMN_SEVERITY_LABEL);
+        log.info("Severity of last Data Source log in Logs Tab is {}", severityOfDataSource);
+
+        return severityOfDataSource;
     }
 
     @Override
