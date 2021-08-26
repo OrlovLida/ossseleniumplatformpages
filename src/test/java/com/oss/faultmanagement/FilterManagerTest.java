@@ -23,7 +23,7 @@ public class FilterManagerTest extends BaseTestCase {
     @Test
     public void openSelectedWAMV() {
         String date = new SimpleDateFormat("dd-MM-yyyy_HH:mm").format(new Date());
-//        fmFilterManagerPage.createFolder("selenium_test_folder" + "_" + date);
+        fmFilterManagerPage.createFolder("selenium_test_folder" + "_" + date);
         fmFilterManagerPage.createFilter("selenium_test_filter" + "_" + date, "Alarm");
     }
 }
