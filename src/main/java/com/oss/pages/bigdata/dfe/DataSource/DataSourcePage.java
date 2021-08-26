@@ -2,7 +2,6 @@ package com.oss.pages.bigdata.dfe.DataSource;
 
 import com.oss.framework.components.common.TimePeriodChooser;
 import com.oss.framework.components.inputs.ComponentFactory;
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.Input.ComponentType;
 import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.utils.DelayUtils;
@@ -117,8 +116,8 @@ public class DataSourcePage extends BaseDfePage {
 
     @Step("I choose option from Severity combobox")
     public void setSeverityInCombobox(String severity) {
-        Input severityCombobox = ComponentFactory.create(SEVERITY_COMBOBOX_ID, ComponentType.COMBOBOX, driver, wait);
-        severityCombobox.setSingleStringValue(severity);
+        ComponentFactory.create(SEVERITY_COMBOBOX_ID, ComponentType.COMBOBOX, driver, wait)
+                .setSingleStringValue(severity);
     }
 
     @Step("I check if logs table is empty")
