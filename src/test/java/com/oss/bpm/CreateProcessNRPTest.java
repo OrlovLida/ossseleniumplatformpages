@@ -104,13 +104,13 @@ public class CreateProcessNRPTest extends BaseTestCase {
         deviceWizardPage.setModel("Generic");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.setName(deviceName1);
-        deviceWizardPage.setNetworkDomain("a");
+        deviceWizardPage.setNetworkDomain(" ");
         if (driver.getPageSource().contains("Hostname")) {
             deviceWizardPage.setHostname(deviceName1);
         }
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.next();
-        deviceWizardPage.setPreciseLocation(" ");
+        deviceWizardPage.setPreciseLocation("a");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.accept();
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
@@ -195,13 +195,13 @@ public class CreateProcessNRPTest extends BaseTestCase {
         deviceWizardPage.setModel("Generic");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.setName(deviceName2);
-        deviceWizardPage.setNetworkDomain("b");
+        deviceWizardPage.setNetworkDomain(" ");
         if (driver.getPageSource().contains("Hostname")) {
             deviceWizardPage.setHostname(deviceName2);
         }
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.next();
-        deviceWizardPage.setPreciseLocation(" ");
+        deviceWizardPage.setPreciseLocation("b");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.accept();
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
