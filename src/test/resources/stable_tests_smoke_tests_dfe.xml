@@ -25,4 +25,9 @@
             <class name="com.oss.bigdata.dfe.SMOKE.ThresholdSmokeTest"/>
         </classes>
     </test>
+    <test name="DataSourceSmokeTest">
+        <classes>
+            <class name="com.oss.bigdata.dfe.SMOKE.DataSourceSmokeTest"/>
+        </classes>
+    </test>
 </suite>
