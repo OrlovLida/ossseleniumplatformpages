@@ -42,4 +42,23 @@ public class DataSourceSmokeTest extends BaseTestCase {
             Assert.fail();
         }
     }
+
+    @Test(priority = 2, testName = "Download processed file", description = "Download processed file and check if it is not empty")
+    @Description("Download processed file and check if it is not empty")
+    public void downloadProcessFile() {
+        boolean dataSourceExists = dataSourcePage.dataSourceExistIntoTable(DATA_SOURCE_NAME);
+        if (dataSourceExists) {
+            dataSourcePage.selectFoundDataSource();
+            dataSourcePage.selectProcessedFilesTab();
+            dataSourcePage.selectFirstFileInTheTable();
+            String fileName = dataSourcePage.getNameOfFirstFileInTheTable();
+            dataSourcePage.clickDownloadFile();
+            dataSourcePage.attachDownloadedFileToReport(fileName);
+
+            Assert.assertTrue(dataSourcePage.checkIfFileIsNotEmpty(fileName));
+        } else {
+            log.error("Data Source with name: {} doesn't exist", DATA_SOURCE_NAME);
+            Assert.fail();
+        }
+    }
 }

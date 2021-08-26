@@ -7,13 +7,21 @@ import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.pages.bigdata.dfe.BaseDfePage;
+import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
+
+import static com.oss.configuration.Configuration.CONFIGURATION;
 
 public class DataSourcePage extends BaseDfePage {
 
@@ -30,12 +38,15 @@ public class DataSourcePage extends BaseDfePage {
     private final String DELETE_DS_LABEL = "Delete";
     private final String CONFIRM_DELETE_LABEL = "Delete";
     private final String LOGS_TAB = "Logs";
+    private final String PROCESSED_FILES_TAB = "Processed Files";
     private final String REFRESH_LABEL = "Refresh";
     private final String TIME_PERIOD_ID = "timePeriod";
     private final String SEVERITY_COMBOBOX_ID = "severityLogs-input";
     private final String LOG_TAB_TABLE_ID = "LogsId";
     private final String COLUMN_TIME_LABEL = "Time";
     private final String COLUMN_SEVERITY_LABEL = "Severity";
+    private final String PROCESSED_FILES_TABLE_ID = "stats-tableAppId";
+    private final String DOWNLOAD_FILE_LABEL = "Download file";
 
     public DataSourcePage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -99,6 +110,11 @@ public class DataSourcePage extends BaseDfePage {
         selectTab(LOGS_TAB);
     }
 
+    @Step("I select Processed Files tab")
+    public void selectProcessedFilesTab() {
+        selectTab(PROCESSED_FILES_TAB);
+    }
+
     @Step("I click refresh Tab Table")
     public void refreshLogsTable() {
         clickTabsContextAction(REFRESH_LABEL);
@@ -142,6 +158,72 @@ public class DataSourcePage extends BaseDfePage {
         log.info("Severity of last Data Source log in Logs Tab is {}", severityOfDataSource);
 
         return severityOfDataSource;
+    }
+
+    @Step("I select first file from Processed Files table")
+    public void selectFirstFileInTheTable() {
+        OldTable.createByComponentId(driver, wait, PROCESSED_FILES_TABLE_ID).selectRow(0);
+    }
+
+    @Step("I check first file name")
+    public String getNameOfFirstFileInTheTable() {
+        return OldTable.createByComponentId(driver, wait, PROCESSED_FILES_TABLE_ID).getCellValue(0, "Filename");
+    }
+
+    @Step("I check first file size")
+    public String getSizeOfFirstFileInTheTable() {
+        return OldTable.createByComponentId(driver, wait, PROCESSED_FILES_TABLE_ID).getCellValue(0, "Size");
+    }
+
+    @Step("I click Download File button in Processed Files Tab")
+    public void clickDownloadFile() {
+        clickTabsContextAction(DOWNLOAD_FILE_LABEL);
+    }
+
+    @Step("I attach downloaded file to report")
+    public void attachDownloadedFileToReport(String fileName) {
+        if (ifDownloadDirExists()) {
+            File directory = new File(CONFIGURATION.getDownloadDir());
+            List<File> listFiles = (List<File>) FileUtils.listFiles(directory, new WildcardFileFilter(fileName), null);
+            try {
+                for (File file : listFiles) {
+                    log.info("Attaching file: {}", file.getCanonicalPath());
+                    attachFile(file);
+                }
+            } catch (IOException e) {
+                log.error("Failed attaching files: {}", e.getMessage());
+            }
+        }
+    }
+
+    private boolean ifDownloadDirExists() {
+        File tmpDir = new File(CONFIGURATION.getDownloadDir());
+        if (tmpDir.exists()) {
+            log.info("Download directory was successfully created");
+            return true;
+        }
+        return false;
+    }
+
+    public boolean checkIfFileIsNotEmpty(String fileName) {
+        File directory = new File(CONFIGURATION.getDownloadDir());
+        List<File> listFiles = (List<File>) FileUtils.listFiles(directory, new WildcardFileFilter(fileName), null);
+        boolean fileIsNotEmpty = false;
+        for (File file : listFiles) {
+            if (getFileSizeKiloBytes(file) > 0) {
+                fileIsNotEmpty = true;
+            }
+        }
+        return fileIsNotEmpty;
+    }
+
+    private double getFileSizeKiloBytes(File file) {
+        return (double) file.length() / 1024;
+    }
+
+    @Attachment(value = "Exported CSV file")
+    public byte[] attachFile(File file) throws IOException {
+        return FileUtils.readFileToByteArray(file);
     }
 
     @Override
