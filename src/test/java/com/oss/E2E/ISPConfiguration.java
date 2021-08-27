@@ -253,6 +253,7 @@ public class ISPConfiguration extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
         hierarchyViewPage.selectNodeByLabel(PHYSICAL_DEVICE_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hierarchyViewPage.useTreeContextAction(ActionsContainer.SHOW_ON_GROUP_ID, "MountingEditorForPhysicalElementAction");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
