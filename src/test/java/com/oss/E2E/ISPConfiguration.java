@@ -595,7 +595,7 @@ public class ISPConfiguration extends BaseTestCase {
         locationOverviewPage.filterObjectInSpecificTab(TabName.COOLING_ZONES, NAME, COOLING_ZONE_NAME);
         locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.COOLING_ZONES, "Delete Cooling Zone");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        locationOverviewPage.clickButtonInConfirmationBox("Delete Cooling Zone");
+        locationOverviewPage.clickButtonInConfirmationBox("Delete");
         checkPopupAndCloseMessage();
     }
 
