@@ -19,10 +19,11 @@ public class CreateCoolingZoneWizardPage extends BasePage {
     private static final String SET_COOLING_ZONE_NAME = "name";
     private static final String SELECT_COOLING_ZONE_NAME = "cooling_zone_uid";
     private static final String WIZARD_ID = "wizard";
+    private static final String ACCEPT_ID = "wizard-submit-button-cooling-zone-update-wizard";
 
-    @Step("Click Proceed")
-    public void clickProceed() {
-        Wizard.createWizard(driver, wait).proceed();
+    @Step("Click Accept")
+    public void clickAccept() {
+        wizard.clickActionById(ACCEPT_ID);
     }
 
     @Step("Click Update")
