@@ -51,22 +51,22 @@ public class InputsWizardTest extends BaseTestCase {
 
     @Test
     public void testCombobox() {
-        driver.get(PHYSICAL_CREATE_LOCATION_URL);
-        final String COMBOBOX_ID = "physicalinventory_physical_location_form_type";
-
-        Combobox combobox = (Combobox) inputsWizardPage
-                .getComponent(COMBOBOX_ID, ComponentType.COMBOBOX);
-        //Combobox specific test cases
-
-        combobox.setSingleStringValue("Building");
-        Assertions.assertThat(combobox.getStringValue()).isEqualTo("Building");
-        combobox.clear();
-        Assertions.assertThat(combobox.getStringValue()).isEqualTo("");
-        combobox.setSingleStringValue("Manhole");
-        Assertions.assertThat(combobox.getStringValue()).isEqualTo("Manhole");
+//        driver.get(PHYSICAL_CREATE_LOCATION_URL);
+//        final String COMBOBOX_ID = "physicalinventory_physical_location_form_type";
+//
+//        Combobox combobox = (Combobox) inputsWizardPage
+//                .getComponent(COMBOBOX_ID, ComponentType.COMBOBOX);
+//        //Combobox specific test cases
+//
+//        combobox.setSingleStringValue("Building");
+//        Assertions.assertThat(combobox.getStringValue()).isEqualTo("Building");
+//        combobox.clear();
+//        Assertions.assertThat(combobox.getStringValue()).isEqualTo("");
+//        combobox.setSingleStringValue("Manhole");
+//        Assertions.assertThat(combobox.getStringValue()).isEqualTo("Manhole");
 
         inputsWizardPage = homePage.goToInputsWizardPage(INPUTS_WIZARD_URL);
-        combobox = (Combobox) inputsWizardPage
+        Combobox combobox = (Combobox) inputsWizardPage
                 .getComponent(InputsWizardPage.COMBOBOX_ID, ComponentType.COMBOBOX);
 
         //Component tests
@@ -204,8 +204,8 @@ public class InputsWizardTest extends BaseTestCase {
                 .getComponent(InputsWizardPage.MULTI_SEARCH_FIELD_ID, ComponentType.MULTI_SEARCH_FIELD);
 
         //Multi Searchfield specific tests
-        multiSearchField.setSingleStringValue("Test MultiSearchField");
-        Assertions.assertThat(multiSearchField.getStringValue()).isEqualTo("Test MultiSearchField");
+        multiSearchField.setSingleStringValue("TestData1");
+        Assertions.assertThat(multiSearchField.getStringValue()).isEqualTo("TestData1");
         multiSearchField.clear();
         Assertions.assertThat(multiSearchField.getStringValue()).isEqualTo("");
 
@@ -339,7 +339,7 @@ public class InputsWizardTest extends BaseTestCase {
 
         //Messages danger test
         inputsWizardPage.setControllerValue(InputsWizardPage.DANGER_MESSAGE_CONTROLLER_ID, componentId);
-        driver.findElement(By.xpath(LIST_COLLAPSE_XPATH));
+        //driver.findElement(By.xpath(LIST_COLLAPSE_XPATH));
         input.hover();
         List<String> messages = input.getMessages();
         Assertions.assertThat(messages).contains("DANGER");
@@ -350,9 +350,9 @@ public class InputsWizardTest extends BaseTestCase {
 
         //Read only test //
         inputsWizardPage.setControllerValue(InputsWizardPage.READ_ONLY_CONTROLLER_ID, componentId);
-        driver.findElement(By.xpath(LIST_COLLAPSE_XPATH));
+       // driver.findElement(By.xpath(LIST_COLLAPSE_XPATH));
 
-        Assertions.assertThat(input.cursor()).isEqualTo("not-allowed");
+       Assertions.assertThat(input.cursor()).isEqualTo("not-allowed");
 
         inputsWizardPage.clearController(InputsWizardPage.READ_ONLY_CONTROLLER_ID);
 
