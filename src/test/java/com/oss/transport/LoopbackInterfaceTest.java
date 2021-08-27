@@ -116,8 +116,6 @@ public class LoopbackInterfaceTest extends BaseTestCase {
         //sidemenu.callActionByLabel("Create Loopback Interface", "Network domains", "Transport & IP");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         driver.get(String.format("%s/#/view/transport/ip/ethernet/loopback-interface?perspective=LIVE", BASIC_URL));
-        PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
-        perspectiveChooser.setCurrentTask();
 
         return new LoopbackInterfaceWizardPage(driver);
     }

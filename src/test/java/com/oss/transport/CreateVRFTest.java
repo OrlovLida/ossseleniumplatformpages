@@ -148,8 +148,6 @@ public class CreateVRFTest extends BaseTestCase {
         //SideMenu sidemenu = SideMenu.create(driver, webDriverWait);
         //sidemenu.callActionByLabel(VRF, WIZARDS, TRANSPORT);
         driver.get(String.format("%s/#/view/transport/tpt/vrf?perspective=LIVE", BASIC_URL));
-        PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
-        perspectiveChooser.setCurrentTask();
 
         return new VRFWizardPage(driver);
     }

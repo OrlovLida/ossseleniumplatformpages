@@ -10,7 +10,6 @@ import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageContainer.Message;
 import com.oss.framework.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.components.contextactions.ActionsContainer;
-import com.oss.framework.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.bpm.ProcessWizardPage;
@@ -56,7 +55,7 @@ public class VLANInterfaceTest extends BaseTestCase {
     public void createProcessNRP() {
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
         processNRPCode = processWizardPage.createSimpleNRP();
-        checkMessageSize(1);
+        checkMessageSize();
         checkMessageType();
         checkMessageContainsText(processNRPCode);
     }
@@ -72,12 +71,8 @@ public class VLANInterfaceTest extends BaseTestCase {
     @Test(priority = 3)
     @Description("Create new VLAN Interface")
     public void createNewVLANInterface() {
-        homePage.goToHomePageWithContext(driver);
+        homePage.goToSpecificPageWithContext(driver, "/#/view/transport/ip/ethernet/vlan-interface");
         waitForPageToLoad();
-        //homePage.chooseFromLeftSideMenu("Create VLAN Interface", "Network domains", "Transport & IP");
-        driver.get(String.format("%s/#/view/transport/ip/ethernet/vlan-interface", BASIC_URL));
-        PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
-        perspectiveChooser.setCurrentTask();
         VLANInterfaceWizardPage vlanInterfaceWizardPage = new VLANInterfaceWizardPage(driver);
         waitForPageToLoad();
         vlanInterfaceWizardPage.setType(VLAN_INTERFACE_TYPE);
@@ -95,10 +90,8 @@ public class VLANInterfaceTest extends BaseTestCase {
     @Test(priority = 4)
     @Description("Check new VLAN Interface")
     public void checkVLANInterface() {
-        homePage.goToHomePageWithContext(driver);
-        driver.get(String.format("%s/#/dashboard/predefined/id/startDashboard", BASIC_URL));
-        PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
-        perspectiveChooser.setCurrentTask();
+        homePage.goToSpecificPageWithContext(driver, "/#/dashboard/predefined/id/startDashboard");
+        waitForPageToLoad();
         homePage.setNewObjectType(VLAN_INTERFACE_SEARCH_NIV);
         waitForPageToLoad();
         newInventoryViewPage.searchObject(DEVICE);
@@ -131,8 +124,8 @@ public class VLANInterfaceTest extends BaseTestCase {
         DelayUtils.sleep(3000);
         newInventoryViewPage.refreshMainTable();
         waitForPageToLoad();
-        Assert.assertEquals(MTU_VALUE, newInventoryViewPage.getMainTable().getCellValue(0, "MTU"));
-        Assert.assertEquals(DESCRIPTION, newInventoryViewPage.getMainTable().getCellValue(0, "Description"));
+        Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "MTU"), MTU_VALUE);
+        Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "Description"), DESCRIPTION);
     }
 
     @Test(priority = 7)
@@ -157,11 +150,8 @@ public class VLANInterfaceTest extends BaseTestCase {
     @Test(priority = 9)
     @Description("Delete VLAN Interface")
     public void deleteVLANInterface() {
-        homePage.goToHomePage(driver, BASIC_URL);
-        PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
-        driver.get(String.format("%s/#/dashboard/predefined/id/startDashboard", BASIC_URL));
-        PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
-        perspectiveChooser.setCurrentTask();
+        homePage.goToSpecificPageWithContext(driver, "/#/dashboard/predefined/id/startDashboard");
+        waitForPageToLoad();
         homePage.setNewObjectType(VLAN_INTERFACE_SEARCH_NIV);
         waitForPageToLoad();
         newInventoryViewPage.searchObject(DEVICE);
@@ -176,7 +166,7 @@ public class VLANInterfaceTest extends BaseTestCase {
     }
 
     private void checkMessageType() {
-        Assert.assertEquals(MessageType.SUCCESS, (getFirstMessage().getMessageType()));
+        Assert.assertEquals((getFirstMessage().getMessageType()), MessageType.SUCCESS);
     }
 
     private void checkMessageContainsText(String message) {
@@ -184,14 +174,14 @@ public class VLANInterfaceTest extends BaseTestCase {
                 .contains(message));
     }
 
-    private void checkMessageText(String message) {
-        Assert.assertEquals(message, (getFirstMessage().getText()));
+    private void checkMessageText() {
+        Assert.assertEquals((getFirstMessage().getText()), "The task properly assigned.");
     }
 
-    private void checkMessageSize(int size) {
+    private void checkMessageSize() {
         Assert.assertEquals((SystemMessageContainer.create(driver, webDriverWait)
                 .getMessages()
-                .size()), size);
+                .size()), 1);
     }
 
     private Message getFirstMessage() {
@@ -202,7 +192,7 @@ public class VLANInterfaceTest extends BaseTestCase {
 
     private void checkTaskAssignment() {
         checkMessageType();
-        checkMessageText("The task properly assigned.");
+        checkMessageText();
     }
 
     private void waitForPageToLoad() {
