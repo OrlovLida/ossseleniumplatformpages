@@ -284,7 +284,7 @@ public class ISPConfiguration extends BaseTestCase {
         locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.COOLING_ZONES, "Create Cooling Zone");
         CreateCoolingZoneWizardPage coolingZoneWizard = new CreateCoolingZoneWizardPage(driver);
         coolingZoneWizard.setName(COOLING_ZONE_NAME);
-        coolingZoneWizard.clickProceed();
+        coolingZoneWizard.clickAccept();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         checkPopupAndCloseMessage();
     }
