@@ -439,12 +439,12 @@ public class ISPConfiguration extends BaseTestCase {
         TableInterface powerManagementTable = locationOverviewPage.getTabTable(TabName.POWER_MANAGEMENT);
         int rowNumber = powerManagementTable.getRowNumber(SUBLOCATION_NAME, NAME);
         String rowValue = powerManagementTable.getCellValue(rowNumber, "Power Capacity [kW]");
-        Assert.assertNotEquals(LOCATION_POWER_CAPACITY, rowValue);
+        Assert.assertNotEquals(LOCATION_POWER_CAPACITY, rowValue, String.format(ASSERT_NOT_EQUALS, rowValue, LOCATION_POWER_CAPACITY));
         LOCATION_POWER_CAPACITY = rowValue;
         rowValue = powerManagementTable.getCellValue(rowNumber, "Power Load [kW]");
-        Assert.assertNotEquals(rowValue, "0");
+        Assert.assertNotEquals(rowValue, "0", String.format(ASSERT_NOT_EQUALS, rowValue, "0"));
         rowValue = powerManagementTable.getCellValue(rowNumber, "Power Load Ratio [%]");
-        Assert.assertNotEquals(rowValue, "0");
+        Assert.assertNotEquals(rowValue, "0", String.format(ASSERT_NOT_EQUALS, rowValue, "0"));
     }
 
     @Test(priority = 25)
