@@ -60,6 +60,7 @@ public class ISPConfiguration extends BaseTestCase {
     private static final String DELETE_DEVICE = "Delete Device";
     private static final String UPDATE_DEVICE = "UpdateDeviceWizardAction";
     private static final String NAME = "Name";
+    private static final String ASSERT_NOT_EQUALS = "The checked value is %s and it shouldn't be equal to the defined %s value";
     private static String LOCATION_POWER_CAPACITY = "0.00";
 
     private void checkPopup() {
@@ -358,7 +359,7 @@ public class ISPConfiguration extends BaseTestCase {
         TableInterface coolingTable = locationOverviewPage.getTabTable(TabName.COOLING_ZONES);
         int rowNumber = coolingTable.getRowNumber(COOLING_ZONE_NAME, NAME);
         String rowValue = coolingTable.getCellValue(rowNumber, "Cooling Load [kW]");
-        Assert.assertNotEquals(rowValue, COOLING_ZONE_COOLING_LOAD);
+        Assert.assertNotEquals(rowValue, COOLING_ZONE_COOLING_LOAD, String.format(ASSERT_NOT_EQUALS, rowValue, COOLING_ZONE_COOLING_LOAD));
     }
 
     @Test(priority = 21)
@@ -413,7 +414,7 @@ public class ISPConfiguration extends BaseTestCase {
         TableInterface coolingTable = locationOverviewPage.getTabTable(TabName.COOLING_ZONES);
         int rowNumber = coolingTable.getRowNumber(COOLING_ZONE_NAME, NAME);
         String rowValue = coolingTable.getCellValue(rowNumber, "Cooling Load Ratio [%]");
-        Assert.assertNotEquals(rowValue, COOLING_ZONE_LOAD_RATIO);
+        Assert.assertNotEquals(rowValue, COOLING_ZONE_LOAD_RATIO, String.format(ASSERT_NOT_EQUALS, rowValue, COOLING_ZONE_LOAD_RATIO));
     }
 
     @Test(priority = 24)
