@@ -34,7 +34,8 @@ public class XDRBrowserTest extends BaseTestCase {
         xdrBrowserPage.clickExport();
         xdrBrowserPage.clickOnNotificationIcon();
         xdrBrowserPage.clickDownload();
+        xdrBrowserPage.attachDownloadedFileToReport();
 
-
+        Assert.assertTrue(xdrBrowserPage.checkIfFileIsNotEmpty());
     }
 }
