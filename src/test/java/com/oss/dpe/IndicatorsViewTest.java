@@ -174,6 +174,32 @@ public class IndicatorsViewTest extends BaseTestCase {
         }
     }
 
+    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToSelect"})
+    @Test(priority = 7, testName = "Verifying resize panel option", description = "Verifying resize panel option")
+    @Description("I verify if resize panel option works properly")
+    public void verifyIfResizePanelOptionWorksProperly(
+            @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
+            @Optional("AQ_TIME") String indicatorNodesToSelect,
+            @Optional("DC Type: ETL_DC") String dimensionNodesToSelect
+    ) {
+        try {
+            kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToSelect);
+            Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+            kpiViewPage.maximizeDataView();
+            kpiViewPage.shouldSeeOnlyDataViewDisplayed();
+            kpiViewPage.minimizeDataView();
+            kpiViewPage.maximizeIndicatorsPanel();
+            kpiViewPage.shouldSeeOnlyIndicatorsTreeDisplayed();
+            kpiViewPage.minimizeIndicatorsPanel();
+            kpiViewPage.maximizeDimensionsPanel();
+            kpiViewPage.shouldSeeOnlyDimensionsTreeDisplayed();
+            kpiViewPage.minimizeDimensionsPanel();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            Assert.fail();
+        }
+    }
+
     private void kpiViewSetup(String indicatorNodesToExpand, String indicatorNodesToSelect, String dimensionNodesToSelect) {
         kpiViewPage.setFilters(Collections.singletonList("Data Collection Statistics"));
 

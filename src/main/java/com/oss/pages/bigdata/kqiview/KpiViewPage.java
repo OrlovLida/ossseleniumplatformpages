@@ -2,6 +2,7 @@ package com.oss.pages.bigdata.kqiview;
 
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.view.Card;
 import com.oss.framework.widgets.dpe.kpichartwidget.KpiChartWidget;
 import com.oss.framework.widgets.dpe.toolbarpanel.ExportPanel;
 import com.oss.framework.widgets.dpe.toolbarpanel.ExportPanel.ExportType;
@@ -45,6 +46,7 @@ public class KpiViewPage extends BasePage {
     private static final String LINE_CHART_BUTTON_ID = "dropdown-list-button_line";
     private static final String CHART_COLOR_BUTTON_ID = "chart-color-button";
     private static final String FULL_SCREEN_BUTTON_ID = "full-screen-button";
+    private static final String DATA_VIEW_ID = "_Data_View";
 
     private static final String OPTIONS_BUTTON_ID = "options-menu-button";
 
@@ -179,6 +181,42 @@ public class KpiViewPage extends BasePage {
     @Step("I minimize chart")
     public void minimizeChart() {
         KpiChartWidget.create(driver, wait).minimizeChart();
+    }
+
+    @Step("I minimize data View")
+    public void minimizeDataView() {
+        Card card = Card.createCard(driver, wait, DATA_VIEW_ID);
+        card.minimizeCard(driver, wait);
+    }
+
+    @Step("I maximize data View")
+    public void maximizeDataView() {
+        Card card = Card.createCard(driver, wait, DATA_VIEW_ID);
+        card.maximizeCard(driver, wait);
+    }
+
+    @Step("I minimize Indicators Panel")
+    public void minimizeIndicatorsPanel() {
+        Card card = Card.createCard(driver, wait, INDICATORS_TREE_ID);
+        card.minimizeCard(driver, wait);
+    }
+
+    @Step("I maximize Indicators Panel")
+    public void maximizeIndicatorsPanel() {
+        Card card = Card.createCard(driver, wait, INDICATORS_TREE_ID);
+        card.maximizeCard(driver, wait);
+    }
+
+    @Step("I minimize Dimensions Panel")
+    public void minimizeDimensionsPanel() {
+        Card card = Card.createCard(driver, wait, DIMENSIONS_TREE_ID);
+        card.minimizeCard(driver, wait);
+    }
+
+    @Step("I maximize Dimensions Panel")
+    public void maximizeDimensionsPanel() {
+        Card card = Card.createCard(driver, wait, DIMENSIONS_TREE_ID);
+        card.maximizeCard(driver, wait);
     }
 
     private boolean ifDownloadDirExists() {
@@ -325,7 +363,6 @@ public class KpiViewPage extends BasePage {
         optionsPanel.chooseTimePeriodOption(LATEST);
     }
 
-    // do zmiany nazwy
     @Step("I should see 2 visible Y axis and 1 hidden Y axis")
     public boolean shouldSeeVisibleYaxis(int expectedVisibleYAxisNumber) {
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -400,6 +437,54 @@ public class KpiViewPage extends BasePage {
         KpiChartWidget kpiChartWidget = KpiChartWidget.create(driver, wait);
         int visibleOtherPeriodNumber = kpiChartWidget.countVisibleOtherPeriod();
         return visibleOtherPeriodNumber > 0;
+    }
+
+    @Step("I should see only Data View Panel displayed")
+    public boolean shouldSeeOnlyDataViewDisplayed() {
+        KpiChartWidget kpiChartWidget = KpiChartWidget.create(driver, wait);
+        boolean dataViewDisplayed = kpiChartWidget.dataViewPanelVisibility();
+        boolean indicatorsTreeDisplayed = kpiChartWidget.indicatorsTreeVisibility();
+        boolean dimensionsTreeDisplayed = kpiChartWidget.dimensionsTreeVisibility();
+        if (dataViewDisplayed & !indicatorsTreeDisplayed & !dimensionsTreeDisplayed){
+            log.info("Only Data View Panel is displayed");
+            return true;
+        }
+        else{
+            log.error("Other Panels are also visible");
+            return false;
+        }
+    }
+
+    @Step("I should see only Indicators Tree Panel displayed")
+    public boolean shouldSeeOnlyIndicatorsTreeDisplayed() {
+        KpiChartWidget kpiChartWidget = KpiChartWidget.create(driver, wait);
+        boolean dataViewDisplayed = kpiChartWidget.dataViewPanelVisibility();
+        boolean indicatorsTreeDisplayed = kpiChartWidget.indicatorsTreeVisibility();
+        boolean dimensionsTreeDisplayed = kpiChartWidget.dimensionsTreeVisibility();
+        if (!dataViewDisplayed & indicatorsTreeDisplayed & !dimensionsTreeDisplayed){
+            log.info("Only Indicators Tree Panel is displayed");
+            return true;
+        }
+        else{
+            log.error("Other Panels are also visible");
+            return false;
+        }
+    }
+
+    @Step("I should see only Dimensions Tree Panel displayed")
+    public boolean shouldSeeOnlyDimensionsTreeDisplayed() {
+        KpiChartWidget kpiChartWidget = KpiChartWidget.create(driver, wait);
+        boolean dataViewDisplayed = kpiChartWidget.dataViewPanelVisibility();
+        boolean indicatorsTreeDisplayed = kpiChartWidget.indicatorsTreeVisibility();
+        boolean dimensionsTreeDisplayed = kpiChartWidget.dimensionsTreeVisibility();
+        if (!dataViewDisplayed & !indicatorsTreeDisplayed & dimensionsTreeDisplayed){
+            log.info("Only Dimensions Tree Panel is displayed");
+            return true;
+        }
+        else{
+            log.error("Other Panels are also visible");
+            return false;
+        }
     }
 
 }
