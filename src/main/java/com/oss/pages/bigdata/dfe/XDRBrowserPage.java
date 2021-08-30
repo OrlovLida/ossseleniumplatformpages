@@ -3,6 +3,7 @@ package com.oss.pages.bigdata.dfe;
 import com.oss.framework.components.common.TimePeriodChooser;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.contextactions.ButtonContainer;
+import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
@@ -55,6 +56,7 @@ public class XDRBrowserPage extends BaseDfePage {
     @Step("I click Search")
     public void clickSearch() {
         ButtonContainer.create(driver, wait).callActionByLabel(SEARCH_LABEL);
+        DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Searching for ETL");
     }
 
@@ -71,7 +73,11 @@ public class XDRBrowserPage extends BaseDfePage {
 
     @Step("I click on notification icon")
     public void clickOnNotificationIcon() {
-        //Notifications.create(driver, wait).
+        openNotificationPanel().waitForExportFinish();
+    }
+
+    public void clickDownload() {
+        Button.create(driver, "Download file", "a[contains (text(), 'Download file')]").click();
     }
 
     @Override

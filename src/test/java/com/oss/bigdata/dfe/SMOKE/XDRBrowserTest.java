@@ -32,6 +32,8 @@ public class XDRBrowserTest extends BaseTestCase {
     @Description("Export XDR File")
     public void exportXDRFile() {
         xdrBrowserPage.clickExport();
+        xdrBrowserPage.clickOnNotificationIcon();
+        xdrBrowserPage.clickDownload();
 
 
     }
