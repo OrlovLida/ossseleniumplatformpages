@@ -27,9 +27,9 @@ import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.*;
 
 @Listeners({TestListener.class})
 public class ChangeIPNetworkHostAddressTest extends BaseTestCase {
-    private static final String FIRST_NETWORK_NAME = "ChangeIPNetworkSelenium1";
-    private static final String SECOND_NETWORK_NAME = "ChangeIPNetworkSelenium2";
-    private static final String THIRD_NETWORK_NAME = "ChangeIPNetworkSelenium3";
+    private static final String FIRST_NETWORK_NAME = "ChangeIPNetworkHost1";
+    private static final String SECOND_NETWORK_NAME = "ChangeIPNetworkHost2";
+    private static final String THIRD_NETWORK_NAME = "ChangeIPNetworkHost3";
     private static final String DESCRIPTION = "Host address case";
     private static final String BLOCK_SUBNET_TYPE = "Block";
     private static final String NETWORK_SUBNET_TYPE = "Network";
@@ -369,7 +369,7 @@ public class ChangeIPNetworkHostAddressTest extends BaseTestCase {
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
     }
 
-    public static class SubnetTree {
+    private static class SubnetTree {
         private HashMap<String, String> hostAddressWithAssignmentsMap;
         private HashMap<String, String> hostAddressAssignmentIdentifierMap;
         private HashMap<String, String> hostAddressIdentifierMap;

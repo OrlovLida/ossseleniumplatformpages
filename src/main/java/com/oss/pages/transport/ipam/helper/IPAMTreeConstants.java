@@ -74,6 +74,7 @@ public class IPAMTreeConstants {
     public static final String IP_NETWORK_REASSIGNMENT_HOST_ADDRESS_IPV6_CONTEXT_ACTION = "IPNetworkReassignmentHostAddressContextAction_63";
     public static final String IP_NETWORK_REASSIGNMENT_NETWORK_SUBNET_IPV4_CONTEXT_ACTION = "IPNetworkReassignmentSubnetContextAction_45";
     public static final String IP_NETWORK_REASSIGNMENT_BLOCK_SUBNET_IPV4_CONTEXT_ACTION = "IPNetworkReassignmentSubnetContextAction_48";
+    public static final String IP_NETWORK_REASSIGNMENT_NETWORK_SUBNET_IPV6_CONTEXT_ACTION = "IPNetworkReassignmentSubnetContextAction_52";
     public static final String ROLE_ACTION = "Role";
 
     public static final String OK_BUTTON_LABEL = "OK";

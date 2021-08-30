@@ -151,7 +151,7 @@ public class IPAddressManagementViewPage extends BasePage {
     @Step("Unselect object with name: {name} on hierarchy view")
     public void unselectTreeRow(String name) {
         waitForPageToLoad();
-        getTreeView().selectTreeRow(name);
+        getTreeView().selectTreeRowContains(name);
     }
 
     @Step("Expand object with name: {name} on hierarchy view")
@@ -400,6 +400,11 @@ public class IPAddressManagementViewPage extends BasePage {
         return assignIPHost(rowName, ASSIGN_OPERATION_FOR_IPV6_SUBNET_WITHOUT_ASSIGNMENT, ASSIGN_IPV6_ADDRESS_ACTION_FROM_SUBNET_CONTEXT);
     }
 
+    @Step("Assign IPv6 Host Address from subnet {rowName} context")
+    public IPAddressAssignmentWizardPage assignIPv6HostAddressFromSubnetContextAlfa(String rowName) {
+        return assignIPHost(rowName, ASSIGN_OPERATION_FOR_IPV6_SUBNET_WITHOUT_ASSIGNMENT, ASSIGN_IPV6_ADDRESS_ACTION_FROM_SUBNET_CONTEXT_ALFA);
+    }
+
     @Step("Assign Loopback IPv4 Host Address from subnet {rowName} context")
     public IPAddressAssignmentWizardPage assignLoopbackIPv4HostAddressFromSubnetContext(String rowName) {
         return assignIPHost(rowName, ASSIGN_OPERATION_FOR_IPV4_SUBNET_WITHOUT_ASSIGNMENT, ASSIGN_LOOPBACK_IPV4_ADDRESS_ACTION_FROM_SUBNET_CONTEXT);
@@ -459,6 +464,26 @@ public class IPAddressManagementViewPage extends BasePage {
         Arrays.stream(rowNames).forEach(this::selectTreeRowContains);
         waitForPageToLoad();
         useContextAction(EDIT_OPERATION_FOR_IPV6_HOST_ADDRESS_GROUP, IP_NETWORK_REASSIGNMENT_HOST_ADDRESS_IPV6_CONTEXT_ACTION);
+        waitForPageToLoad();
+        ChangeIPNetworkWizardPage changeIPNetworkWizardPage = new ChangeIPNetworkWizardPage(driver);
+        changeIPNetworkWizardPage.changeIPNetworkWithOutConflicts(destinationNetwork);
+    }
+
+    @Step("Change IP Network to {destinationNetwork} for IPv4 Network Subnet")
+    public void changeIPNetworkForIPv4NetworkSubnet(String destinationNetwork, String... subnetsRowNames){
+        Arrays.stream(subnetsRowNames).forEach(this::selectTreeRowContains);
+        waitForPageToLoad();
+        useContextAction(EDIT_OPERATION_FOR_IPV4_SUBNET_NETWORK_GROUP, EDIT_OPERATION_ACTION, IP_NETWORK_REASSIGNMENT_NETWORK_SUBNET_IPV4_CONTEXT_ACTION);
+        waitForPageToLoad();
+        ChangeIPNetworkWizardPage changeIPNetworkWizardPage = new ChangeIPNetworkWizardPage(driver);
+        changeIPNetworkWizardPage.changeIPNetworkWithOutConflicts(destinationNetwork);
+    }
+
+    @Step("Change IP Network to {destinationNetwork} for IPv4 Network Subnet")
+    public void changeIPNetworkForIPv6NetworkSubnet(String destinationNetwork, String... subnetsRowNames){
+        Arrays.stream(subnetsRowNames).forEach(this::selectTreeRowContains);
+        waitForPageToLoad();
+        useContextAction(EDIT_OPERATION_FOR_IPV6_SUBNET_NETWORK_GROUP, EDIT_OPERATION_ACTION, IP_NETWORK_REASSIGNMENT_NETWORK_SUBNET_IPV6_CONTEXT_ACTION);
         waitForPageToLoad();
         ChangeIPNetworkWizardPage changeIPNetworkWizardPage = new ChangeIPNetworkWizardPage(driver);
         changeIPNetworkWizardPage.changeIPNetworkWithOutConflicts(destinationNetwork);

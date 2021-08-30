@@ -125,7 +125,7 @@ public class IPAddressAssignmentWizardPage extends BasePage {
                 .ifPresent(subnet -> getWizard().getComponent(IP_SUBNET_COMPONENT_ID, SEARCH_FIELD).setSingleStringValueContains(subnet));
         DelayUtils.waitForPageToLoad(driver, wait);
         ipAddressAssignmentWizardProperties.getAddress()
-                .ifPresent(address -> getWizard().setComponentValue(IP_ADDRESS_MANUAL_MODE_COMPONENT_ID, address, SEARCH_FIELD));
+                .ifPresent(address -> getWizard().setComponentValue(IP_ADDRESS_MANUAL_MODE_COMPONENT_ID, address, TEXT_FIELD));
     }
 
     private void fillAutomaticModeFields(IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties) {
