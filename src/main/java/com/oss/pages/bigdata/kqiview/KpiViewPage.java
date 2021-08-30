@@ -442,9 +442,9 @@ public class KpiViewPage extends BasePage {
     @Step("I should see only Data View Panel displayed")
     public boolean shouldSeeOnlyDataViewDisplayed() {
         KpiChartWidget kpiChartWidget = KpiChartWidget.create(driver, wait);
-        boolean dataViewDisplayed = (kpiChartWidget.dataViewPanelVisibility());
-        boolean indicatorsTreeDisplayed = (kpiChartWidget.indicatorsTreeVisibility());
-        boolean dimensionsTreeDisplayed = (kpiChartWidget.dimensionsTreeVisibility());
+        boolean dataViewDisplayed = kpiChartWidget.dataViewPanelVisibility();
+        boolean indicatorsTreeDisplayed = kpiChartWidget.indicatorsTreeVisibility();
+        boolean dimensionsTreeDisplayed = kpiChartWidget.dimensionsTreeVisibility();
         if (dataViewDisplayed & !indicatorsTreeDisplayed & !dimensionsTreeDisplayed){
             log.info("Only Data View Panel is displayed");
             return true;
@@ -458,9 +458,9 @@ public class KpiViewPage extends BasePage {
     @Step("I should see only Indicators Tree Panel displayed")
     public boolean shouldSeeOnlyIndicatorsTreeDisplayed() {
         KpiChartWidget kpiChartWidget = KpiChartWidget.create(driver, wait);
-        boolean dataViewDisplayed = (kpiChartWidget.dataViewPanelVisibility());
-        boolean indicatorsTreeDisplayed = (kpiChartWidget.indicatorsTreeVisibility());
-        boolean dimensionsTreeDisplayed = (kpiChartWidget.dimensionsTreeVisibility());
+        boolean dataViewDisplayed = kpiChartWidget.dataViewPanelVisibility();
+        boolean indicatorsTreeDisplayed = kpiChartWidget.indicatorsTreeVisibility();
+        boolean dimensionsTreeDisplayed = kpiChartWidget.dimensionsTreeVisibility();
         if (!dataViewDisplayed & indicatorsTreeDisplayed & !dimensionsTreeDisplayed){
             log.info("Only Indicators Tree Panel is displayed");
             return true;
@@ -474,9 +474,9 @@ public class KpiViewPage extends BasePage {
     @Step("I should see only Dimensions Tree Panel displayed")
     public boolean shouldSeeOnlyDimensionsTreeDisplayed() {
         KpiChartWidget kpiChartWidget = KpiChartWidget.create(driver, wait);
-        boolean dataViewDisplayed = (kpiChartWidget.dataViewPanelVisibility());
-        boolean indicatorsTreeDisplayed = (kpiChartWidget.indicatorsTreeVisibility());
-        boolean dimensionsTreeDisplayed = (kpiChartWidget.dimensionsTreeVisibility());
+        boolean dataViewDisplayed = kpiChartWidget.dataViewPanelVisibility();
+        boolean indicatorsTreeDisplayed = kpiChartWidget.indicatorsTreeVisibility();
+        boolean dimensionsTreeDisplayed = kpiChartWidget.dimensionsTreeVisibility();
         if (!dataViewDisplayed & !indicatorsTreeDisplayed & dimensionsTreeDisplayed){
             log.info("Only Dimensions Tree Panel is displayed");
             return true;
