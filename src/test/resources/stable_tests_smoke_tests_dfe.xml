@@ -30,4 +30,9 @@
             <class name="com.oss.bigdata.dfe.SMOKE.DataSourceSmokeTest"/>
         </classes>
     </test>
+    <test name="XDRBrowserTest">
+        <classes>
+            <class name="com.oss.bigdata.dfe.SMOKE.XDRBrowserTest"/>
+        </classes>
+    </test>
 </suite>
