@@ -170,11 +170,6 @@ public class DataSourcePage extends BaseDfePage {
         return OldTable.createByComponentId(driver, wait, PROCESSED_FILES_TABLE_ID).getCellValue(0, "Filename");
     }
 
-    @Step("I check first file size")
-    public String getSizeOfFirstFileInTheTable() {
-        return OldTable.createByComponentId(driver, wait, PROCESSED_FILES_TABLE_ID).getCellValue(0, "Size");
-    }
-
     @Step("I click Download File button in Processed Files Tab")
     public void clickDownloadFile() {
         clickTabsContextAction(DOWNLOAD_FILE_LABEL);
