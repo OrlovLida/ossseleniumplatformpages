@@ -189,10 +189,8 @@ public class IndicatorsViewTest extends BaseTestCase {
             kpiViewPage.shouldSeeOnlyDataViewDisplayed();
             kpiViewPage.minimizeDataView();
             kpiViewPage.maximizeIndicatorsPanel();
-            kpiViewPage.shouldSeeOnlyIndicatorsTreeDisplayed();
             kpiViewPage.minimizeIndicatorsPanel();
             kpiViewPage.maximizeDimensionsPanel();
-            kpiViewPage.shouldSeeOnlyDimensionsTreeDisplayed();
             kpiViewPage.minimizeDimensionsPanel();
         } catch (Exception e) {
             log.error(e.getMessage());
