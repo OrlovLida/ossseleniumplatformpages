@@ -47,8 +47,8 @@ public class XDRBrowserPage extends BaseDfePage {
 
     @Step("I select ETL name from Combobox")
     public void selectETLName(String etlName) {
-        ComponentFactory.create(ETL_NAME_COMBOBOX_ID, Input.ComponentType.COMBOBOX, driver, wait).
-                setSingleStringValue(etlName);
+        ComponentFactory.create(ETL_NAME_COMBOBOX_ID, Input.ComponentType.COMBOBOX, driver, wait)
+                .setSingleStringValue(etlName);
         log.info("I select ETL: {}", etlName);
     }
 
@@ -78,7 +78,6 @@ public class XDRBrowserPage extends BaseDfePage {
     public void clickExport() {
         TableWidget.createById(driver, XDR_TABLE_ID, wait).callAction(ActionsContainer.KEBAB_GROUP_ID, EXPORT_BUTTON);
     }
-
 
     @Step("I click on notification icon")
     public void clickOnNotificationIcon() {
