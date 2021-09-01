@@ -134,6 +134,15 @@ public class XDRBrowserPage extends BaseDfePage {
         return FileUtils.readFileToByteArray(file);
     }
 
+    public void clearNotifications() {
+        Notifications.create(driver, wait).clearAllNotification();
+        DelayUtils.sleep(100);
+    }
+
+    public int amountOfNotifications() {
+        return Notifications.create(driver, wait).getAmountOfNotifications();
+    }
+
     @Override
     public String getTableId() {
         return null;
@@ -158,4 +167,5 @@ public class XDRBrowserPage extends BaseDfePage {
     public String getSearchId() {
         return null;
     }
+
 }

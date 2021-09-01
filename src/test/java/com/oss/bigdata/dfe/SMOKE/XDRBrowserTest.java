@@ -30,11 +30,16 @@ public class XDRBrowserTest extends BaseTestCase {
     @Test(priority = 2, testName = "exportXDRFile", description = "Export XDR File")
     @Description("Export XDR File")
     public void exportXDRFile() {
+        xdrBrowserPage.clearNotifications();
         xdrBrowserPage.clickExport();
         xdrBrowserPage.clickOnNotificationIcon();
+
+        Assert.assertEquals(xdrBrowserPage.amountOfNotifications(), 1);
         xdrBrowserPage.clickDownload();
         xdrBrowserPage.attachDownloadedFileToReport();
+        xdrBrowserPage.clearNotifications();
 
+        Assert.assertEquals(xdrBrowserPage.amountOfNotifications(), 0);
         Assert.assertTrue(xdrBrowserPage.checkIfFileIsNotEmpty());
     }
 }
