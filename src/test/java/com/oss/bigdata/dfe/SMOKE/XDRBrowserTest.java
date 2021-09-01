@@ -17,7 +17,6 @@ public class XDRBrowserTest extends BaseTestCase {
         xdrBrowserPage = XDRBrowserPage.goToPage(driver, BASIC_URL);
     }
 
-
     @Test(priority = 1, testName = "Search in XDR Browser", description = "Search in XDR Browser for ETL")
     @Description("Search in XDR Browser for ETL")
     public void searchInXDRBrowser() {
