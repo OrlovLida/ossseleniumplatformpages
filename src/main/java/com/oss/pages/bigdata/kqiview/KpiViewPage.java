@@ -454,37 +454,4 @@ public class KpiViewPage extends BasePage {
             return false;
         }
     }
-
-    @Step("I should see only Indicators Tree Panel displayed")
-    public boolean shouldSeeOnlyIndicatorsTreeDisplayed() {
-        KpiChartWidget kpiChartWidget = KpiChartWidget.create(driver, wait);
-        boolean dataViewDisplayed = kpiChartWidget.dataViewPanelVisibility();
-        boolean indicatorsTreeDisplayed = kpiChartWidget.indicatorsTreeVisibility();
-        boolean dimensionsTreeDisplayed = kpiChartWidget.dimensionsTreeVisibility();
-        if (!dataViewDisplayed & indicatorsTreeDisplayed & !dimensionsTreeDisplayed){
-            log.info("Only Indicators Tree Panel is displayed");
-            return true;
-        }
-        else{
-            log.error("Other Panels are also visible");
-            return false;
-        }
-    }
-
-    @Step("I should see only Dimensions Tree Panel displayed")
-    public boolean shouldSeeOnlyDimensionsTreeDisplayed() {
-        KpiChartWidget kpiChartWidget = KpiChartWidget.create(driver, wait);
-        boolean dataViewDisplayed = kpiChartWidget.dataViewPanelVisibility();
-        boolean indicatorsTreeDisplayed = kpiChartWidget.indicatorsTreeVisibility();
-        boolean dimensionsTreeDisplayed = kpiChartWidget.dimensionsTreeVisibility();
-        if (!dataViewDisplayed & !indicatorsTreeDisplayed & dimensionsTreeDisplayed){
-            log.info("Only Dimensions Tree Panel is displayed");
-            return true;
-        }
-        else{
-            log.error("Other Panels are also visible");
-            return false;
-        }
-    }
-
 }
