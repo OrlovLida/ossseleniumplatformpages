@@ -59,7 +59,7 @@ public class ISPConfigurationTest extends BaseTestCase {
     private static final String POWER_SUPPLY_UNIT_CAPACITY = "5";
     private static String COOLING_ZONE_COOLING_LOAD = "0.00";
     private static String COOLING_ZONE_LOAD_RATIO = "0.00";
-    private static final String COOLING_ZONE_CAPACITY = "0.00";
+    private static String COOLING_ZONE_CAPACITY = "0.00";
     private static final String DELETE_DEVICE = "Delete Device";
     private static final String UPDATE_DEVICE = "UpdateDeviceWizardAction";
     private static final String NAME = "Name";
@@ -360,13 +360,16 @@ public class ISPConfigurationTest extends BaseTestCase {
     public void assignDeviceToCoolingZone() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Devices");
-        locationOverviewPage.filterObjectInSpecificTab(TabName.DEVICES, NAME, PHYSICAL_DEVICE_NAME);
+        locationOverviewPage.filterObjectInSpecificTab(TabName.DEVICES, NAME, PHYSICAL_DEVICE_NAME3);
         locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.DEVICES, "Cooling Zone Editor");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         CoolingZoneEditorWizardPage coolingZoneWizardPage = new CoolingZoneEditorWizardPage(driver);
         coolingZoneWizardPage.selectNameFromList(COOLING_ZONE_NAME);
         coolingZoneWizardPage.clickUpdate();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        driver.navigate().refresh();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Cooling Zones");
         TableInterface coolingTable = locationOverviewPage.getTabTable(TabName.COOLING_ZONES);
         int rowNumber = coolingTable.getRowNumber(COOLING_ZONE_NAME, NAME);
@@ -378,6 +381,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         Assert.assertNotEquals(coolingLoadRatio, COOLING_ZONE_LOAD_RATIO, String.format(ASSERT_NOT_EQUALS, coolingLoadRatio, COOLING_ZONE_LOAD_RATIO));
         COOLING_ZONE_COOLING_LOAD = coolingLoad;
         COOLING_ZONE_LOAD_RATIO = coolingLoadRatio;
+        COOLING_ZONE_CAPACITY = coolingCapacity;
     }
 
     @Test(priority = 21)
@@ -392,6 +396,8 @@ public class ISPConfigurationTest extends BaseTestCase {
         deviceWizardPage.setModel(PHYSICAL_DEVICE_MODEL2);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.setName(PHYSICAL_DEVICE_NAME2);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        deviceWizardPage.setHeatEmission(DEVICE_HEAT_EMISSION);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.next();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
