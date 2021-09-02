@@ -31,7 +31,7 @@ public class DataSourceSmokeTest extends BaseTestCase {
             dataSourcePage.setValueInTimePeriodChooser(1, 2, 1);
             dataSourcePage.setSeverityInCombobox("Error");
 
-            Assert.assertTrue(dataSourcePage.isLogsTableEmpty());
+            Assert.assertTrue(dataSourcePage.isLogsTableEmpty(), "In logs tab is at least one log with status Error");
 
             dataSourcePage.setSeverityInCombobox("All");
 
@@ -56,6 +56,23 @@ public class DataSourceSmokeTest extends BaseTestCase {
             dataSourcePage.attachDownloadedFileToReport(fileName);
 
             Assert.assertTrue(dataSourcePage.checkIfFileIsNotEmpty(fileName));
+        } else {
+            log.error("Data Source with name: {} doesn't exist", DATA_SOURCE_NAME);
+            Assert.fail();
+        }
+    }
+
+    @Test(testName = "checkShowFile", description = "Check option show file and check if table with data is displayed")
+    @Description("Check option show file and check if table with data is displayed")
+    public void checkShowFile() {
+        boolean dataSourceExists = dataSourcePage.dataSourceExistIntoTable(DATA_SOURCE_NAME);
+        if (dataSourceExists) {
+            dataSourcePage.selectFoundDataSource();
+            dataSourcePage.selectProcessedFilesTab();
+            dataSourcePage.selectFirstFileInTheTable();
+            dataSourcePage.showFile();
+
+            Assert.assertTrue(dataSourcePage.checkIfShowFileTableIsNotEmpty(), "Show file Table is empty!");
         } else {
             log.error("Data Source with name: {} doesn't exist", DATA_SOURCE_NAME);
             Assert.fail();

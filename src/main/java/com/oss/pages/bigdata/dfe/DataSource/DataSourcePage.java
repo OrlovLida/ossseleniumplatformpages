@@ -40,6 +40,7 @@ public class DataSourcePage extends BaseDfePage {
     private final String LOGS_TAB = "Logs";
     private final String PROCESSED_FILES_TAB = "Processed Files";
     private final String REFRESH_LABEL = "Refresh";
+    private final String SHOW_FILE_LABEL = "Show file";
     private final String TIME_PERIOD_ID = "timePeriod";
     private final String SEVERITY_COMBOBOX_ID = "severityLogs-input";
     private final String LOG_TAB_TABLE_ID = "LogsId";
@@ -47,6 +48,7 @@ public class DataSourcePage extends BaseDfePage {
     private final String COLUMN_SEVERITY_LABEL = "Severity";
     private final String PROCESSED_FILES_TABLE_ID = "stats-tableAppId";
     private final String DOWNLOAD_FILE_LABEL = "Download file";
+    private final String SHOW_FILE_TABLE_ID = "TableId";
 
     public DataSourcePage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -88,6 +90,7 @@ public class DataSourcePage extends BaseDfePage {
     @Step("I select found Data Source")
     public void selectFoundDataSource() {
         getTable(driver, wait).selectRow(0);
+        log.info("I selected found Data Source");
     }
 
     @Step("I click Edit Data Source")
@@ -108,16 +111,25 @@ public class DataSourcePage extends BaseDfePage {
     @Step("I select logs tab")
     public void selectLogsTab() {
         selectTab(LOGS_TAB);
+        log.info("Selecting logs tab");
     }
 
     @Step("I select Processed Files tab")
     public void selectProcessedFilesTab() {
         selectTab(PROCESSED_FILES_TAB);
+        log.info("Selecting Processed Files Tab");
     }
 
     @Step("I click refresh Tab Table")
     public void refreshLogsTable() {
         clickTabsContextAction(REFRESH_LABEL);
+    }
+
+    @Step("I click show file in Tab Table")
+    public void showFile() {
+        clickTabsContextAction(SHOW_FILE_LABEL);
+        log.info("waiting for show file table to load");
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     @Step("I set value in time period chooser")
@@ -134,6 +146,7 @@ public class DataSourcePage extends BaseDfePage {
     public void setSeverityInCombobox(String severity) {
         ComponentFactory.create(SEVERITY_COMBOBOX_ID, ComponentType.COMBOBOX, driver, wait)
                 .setSingleStringValue(severity);
+        log.info("setting severity: {}", severity);
     }
 
     @Step("I check if logs table is empty")
@@ -163,6 +176,12 @@ public class DataSourcePage extends BaseDfePage {
     @Step("I select first file from Processed Files table")
     public void selectFirstFileInTheTable() {
         OldTable.createByComponentId(driver, wait, PROCESSED_FILES_TABLE_ID).selectRow(0);
+        log.info("Selecting first file in the table");
+    }
+
+    @Step("I check if Show File table is not empty")
+    public boolean checkIfShowFileTableIsNotEmpty() {
+        return !OldTable.createByComponentId(driver, wait, SHOW_FILE_TABLE_ID).hasNoData();
     }
 
     @Step("I check first file name")
@@ -173,6 +192,7 @@ public class DataSourcePage extends BaseDfePage {
     @Step("I click Download File button in Processed Files Tab")
     public void clickDownloadFile() {
         clickTabsContextAction(DOWNLOAD_FILE_LABEL);
+        log.info("Clicking on download file button");
     }
 
     @Step("I attach downloaded file to report")
