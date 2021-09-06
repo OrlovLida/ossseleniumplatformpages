@@ -36,7 +36,7 @@ public class EditMilestoneWizardPage extends BasePage {
     private final static String BPM_MILESTONE_IS_MANUAL_COMPLETION = "isManualCompletion";
     
     public Milestone editMilestone(Milestone milestone) throws RuntimeException {
-        Wizard editWizard = Wizard.createByComponentId(driver, wait, "milestones-edit_wizard-app");
+        Wizard editWizard = Wizard.createByComponentId(driver, wait, "Popup");
         EditableList milestoneList = EditableList.createById(driver, wait, EDIT_MILESTONE_LIST);
         EditableList.Row editMilestoneRow = milestoneList.getVisibleRows().get(0);
         DelayUtils.sleep(2000);
@@ -86,7 +86,7 @@ public class EditMilestoneWizardPage extends BasePage {
     }
     
     public void cancel() {
-        Wizard editWizard = Wizard.createByComponentId(driver, wait, "milestones-edit_wizard-app");
+        Wizard editWizard = Wizard.createByComponentId(driver, wait, "Popup");
         editWizard.clickActionById(CANCEL_BUTTON);
     }
     
