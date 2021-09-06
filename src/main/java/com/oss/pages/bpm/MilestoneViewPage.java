@@ -56,22 +56,4 @@ public class MilestoneViewPage extends BasePage {
         TableWidget milestoneTable = TableWidget.createById(driver, MILESTONE_TABLE, wait);
         milestoneTable.callAction(actionId);
     }
-
-    public void addColumnAttribute(String columnAttributeLabel){
-        DelayUtils.waitForPageToLoad(driver,wait);
-        TableWidget milestoneTable = TableWidget.createById(driver, MILESTONE_TABLE, wait);
-        milestoneTable.enableColumnByLabel(columnAttributeLabel);
-    }
-
-    public void selectAll(){
-        TableWidget milestoneTable = TableWidget.createById(driver, MILESTONE_TABLE, wait);
-        milestoneTable.selectAllRows();
-        DelayUtils.sleep(500);
-    }
-
-    public void clearFilters(){
-        TableWidget milestoneTable = TableWidget.createById(driver, MILESTONE_TABLE, wait);
-        milestoneTable.clearAllFilters();
-        DelayUtils.sleep(500);
-    }
 }
