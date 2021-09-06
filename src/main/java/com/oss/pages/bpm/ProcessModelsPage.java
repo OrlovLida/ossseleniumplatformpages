@@ -7,15 +7,21 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tablewidget.TableInterface;
+import com.oss.framework.widgets.tablewidget.TableRow;
 import com.oss.pages.BasePage;
 import com.oss.pages.dms.AttachFileWizardPage;
+import org.apache.logging.log4j.core.util.Assert;
+import org.assertj.core.api.Assertions;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
+import java.util.List;
 
+/**
+ * @author Paweł Rother
+ */
 public class ProcessModelsPage extends BasePage {
-    private final static String IMPORT_BUTTON = "bpm_models_view_import-model-popup_model-import-button-1";
 
 
     public ProcessModelsPage(WebDriver driver) {
@@ -28,7 +34,6 @@ public class ProcessModelsPage extends BasePage {
             sidemenu.callActionByLabel("Process Models", "BPM and Planning", "Business Process Management");
         else
             sidemenu.callActionByLabel("Process Models", "Views", "Business Process Management");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         return new ProcessModelsPage(driver);
     }
@@ -46,26 +51,33 @@ public class ProcessModelsPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    public TableInterface getModelsTable() {
+    private TableInterface getModelsTable() {
         DelayUtils.waitForPageToLoad(driver, wait);
         return OldTable.createByComponentDataAttributeName(driver, wait, "bpm_models_view_app-model-list");
     }
 
     public void selectProcessModelByName(String name) {
-        DelayUtils.waitForPageToLoad(driver, wait);
         getModelsTable().searchByAttributeWithLabel("Name", Input.ComponentType.TEXT_FIELD, name);
         getModelsTable().selectRow(0);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    public void callContextAction(String actionId) {
-        DelayUtils.waitForPageToLoad(driver, wait);
+    public void callAction(String actionId) {
         getModelsTable().callAction(actionId);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
+
+    public void callAction(String groupId, String actionId) {
+        getModelsTable().callAction(groupId, actionId);
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
     public boolean isFileDownloaded(String downloadPath, String fileName) {
         File dir = new File(downloadPath);
         File[] dirContents = dir.listFiles();
+        if (dirContents == null) {
+            return false;
+        }
 
         for (int i = 0; i < dirContents.length; i++) {
             if (dirContents[i].getName().contains(fileName)) {
@@ -77,22 +89,40 @@ public class ProcessModelsPage extends BasePage {
         return false;
     }
 
-    public void importModel(String filePath){
-        callContextAction("import");
-        Wizard importWizard = Wizard.createByComponentId(driver, wait, "bpm_models_view_import-model-popup");
-        Input component = importWizard.getComponent("bpm_models_view_import-model-popup_model-import-form", Input.ComponentType.FILE_CHOOSER);
-        component.setSingleStringValue(filePath);
-        importWizard.clickActionById(IMPORT_BUTTON);
-    }
 
-    public void deleteModel(String modelName){
-        OldTable modelsList = OldTable.createByComponentDataAttributeName(driver, wait, "bpm_models_view_app-model-list");
-        modelsList.searchByAttributeWithLabel("Name", Input.ComponentType.TEXT_FIELD,modelName);
+    public void deleteModel(String modelName) {
+        TableInterface modelsList = getModelsTable();
+        modelsList.searchByAttributeWithLabel("Name", Input.ComponentType.TEXT_FIELD, modelName);
         modelsList.selectRow(0);
         DelayUtils.sleep(1000);
-        modelsList.callAction("delete");
-        Wizard deleteWizard = Wizard.createByComponentId(driver,wait,"bpm_models_view_delete-model-popup");
+        modelsList.callAction("grouping-action-model-operations", "delete");
+        Wizard deleteWizard = Wizard.createByComponentId(driver, wait, "bpm_models_view_delete-model-popup");
         deleteWizard.clickActionById("ConfirmationBox_bpm_models_view_delete-model-popup_DELETE_MODEL_CONFIRMATION_BOX_VIEW_ID_action_button");
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    public void cloneModel(String baseModelName, String clonedModelName, String clonedIdentifier, String clonedDescription) {
+        TableInterface modelsList = getModelsTable();
+        modelsList.searchByAttributeWithLabel("Name", Input.ComponentType.TEXT_FIELD, baseModelName);
+        modelsList.selectRow(0);
+        DelayUtils.sleep(1000);
+        modelsList.callAction("grouping-action-model-operations", "clone");
+        Wizard cloneWizard = Wizard.createByComponentId(driver, wait, "bpm_models_view_clone-model-popup");
+        Input name = cloneWizard.getComponent("name-field", Input.ComponentType.TEXT_FIELD);
+        Input identifier = cloneWizard.getComponent("identifier-field", Input.ComponentType.TEXT_FIELD);
+        Input description = cloneWizard.getComponent("description-field", Input.ComponentType.TEXT_FIELD);
+        name.clear();
+        name.setSingleStringValue(clonedModelName);
+        identifier.clear();
+        identifier.setSingleStringValue(clonedIdentifier);
+        description.clear();
+        description.setSingleStringValue(clonedDescription);
+        cloneWizard.clickActionById("bpm_models_view_clone-model-popup_clone-model-buttons-1");
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    public void setKeyword(String keyword) {
+
     }
 
 }
