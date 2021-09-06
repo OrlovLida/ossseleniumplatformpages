@@ -35,7 +35,7 @@ public class VLANInterfaceTest extends BaseTestCase {
     private static final String LOCATION = "VLANInterfaceSeleniumTest";
     private static final String IP_SUBNET = "126.0.0.0/24 [VLANInterfaceSeleniumTest]";
     private static final String IP_NETWORK = "VLANInterfaceSeleniumTest";
-    private static final String IP_ADDRESS = "126.0.0.1";
+    private static final String IP_ADDRESS = "126.0.0.12";
     private static final String EDIT_VLAN_INTERFACE_ACTION_ID = "EditVLANInterfaceContextAction";
     private static final String DELETE_VLAN_INTERFACE_ACTION_ID = "DeleteVLANInterfaceContextAction";
     private static final String MTU_VALUE = "1432";
@@ -107,7 +107,7 @@ public class VLANInterfaceTest extends BaseTestCase {
         newInventoryViewPage.callAction(ActionsContainer.ASSIGN_GROUP_ID, "AssignIPv4Host");
         IPAddressAssignmentWizardPage ipAddressAssignmentWizardPage = new IPAddressAssignmentWizardPage(driver);
         IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties = IPAddressAssignmentWizardProperties.builder()
-                .address("126001").subnet(IP_SUBNET).isPrimary("false").build();
+                .address("1260012").subnet(IP_SUBNET).isPrimary("false").build();
         ipAddressAssignmentWizardPage.assignMoToIPAddress(ipAddressAssignmentWizardProperties);
         waitForPageToLoad();
     }
