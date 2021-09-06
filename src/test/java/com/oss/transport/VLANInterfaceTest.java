@@ -124,8 +124,8 @@ public class VLANInterfaceTest extends BaseTestCase {
         DelayUtils.sleep(3000);
         newInventoryViewPage.refreshMainTable();
         waitForPageToLoad();
-        Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "MTU"), MTU_VALUE);
-        Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "Description"), DESCRIPTION);
+        Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "mtu"), MTU_VALUE);
+        Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "description"), DESCRIPTION);
     }
 
     @Test(priority = 7)
