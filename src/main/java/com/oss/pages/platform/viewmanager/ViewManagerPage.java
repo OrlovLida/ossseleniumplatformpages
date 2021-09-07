@@ -132,6 +132,16 @@ public class ViewManagerPage extends BasePage {
         actionsDropdownList.clickOnActionById(EDIT_SUBCATEGORY_BUTTON_ID);
     }
 
+    public void removeFirstSubcategory(){
+        getSubcategoryGroupButton(0).click();
+        ActionsDropdownList actionsDropdownList = new ActionsDropdownList(driver);
+        actionsDropdownList.clickOnActionById(DELETE_CATEGORY_BUTTON_ID);
+
+        WebElement deleteButton = driver.findElement(By.xpath(DELETE_BUTTON_IN_POPUP_XPATH));
+        deleteButton.click();
+        DelayUtils.sleep(2000);
+    }
+
     public void enterCreateSubcategory(){
         threeDotsFirstButton.click();
         ActionsDropdownList actionsDropdownList = new ActionsDropdownList(driver);
@@ -160,7 +170,9 @@ public class ViewManagerPage extends BasePage {
     public void clickDeleteButton(){
         ActionsDropdownList actionsDropdownList = new ActionsDropdownList(driver);
         actionsDropdownList.clickOnActionById(DELETE_CATEGORY_BUTTON_ID);
-        DelayUtils.sleep(1000);
+        DelayUtils.sleep(1500);
+        WebElement deleteButton = driver.findElement(By.xpath(DELETE_BUTTON_IN_POPUP_XPATH));
+        deleteButton.click();
     }
 
     public void dragAndDropFirstAppInPlaceOfSecond(){

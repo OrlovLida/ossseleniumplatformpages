@@ -236,10 +236,44 @@ public class ViewManagerTest extends BaseTestCase {
         viewManagerPage.clickDeleteButton();
 
         DelayUtils.sleep(2500);
-        Assert.assertFalse(driver.findElement(By.xpath("//*[text()='Create Cable']")).isDisplayed());
+        try {
+            driver.findElement(By.xpath("//*[text()='Create Cable']"));
+            Assert.fail();
+        }
+        catch (org.openqa.selenium.NoSuchElementException e) {
+        }
     }
 
     @Test(priority = 15)
+    public void deleteApplicationFromMainCategory(){
+        DelayUtils.sleep(200);
+        viewManagerPage.clickButtonsGroupOnFirstApplication();
+        DelayUtils.sleep(300);
+        viewManagerPage.clickDeleteButton();
+
+        DelayUtils.sleep(2500);
+        try {
+            driver.findElement(By.xpath("//*[text()='Sublocation']"));
+            Assert.fail();
+        }
+        catch (org.openqa.selenium.NoSuchElementException e) {
+        }
+    }
+
+    @Test(priority = 16)
+    public void deleteSubcategory(){
+        viewManagerPage.removeFirstSubcategory();
+        DelayUtils.sleep(200);
+
+        try {
+            driver.findElement(By.xpath("//*[text()='Subcategory After Edition']"));
+            Assert.fail();
+        }
+        catch (org.openqa.selenium.NoSuchElementException e) {
+        }
+    }
+
+    @Test(priority = 17)
     public void deleteCategory() {
         DelayUtils.sleep(1000);
 
