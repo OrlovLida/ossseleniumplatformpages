@@ -130,8 +130,7 @@ public class IRBInterfaceTest extends BaseTestCase {
         ipAddressManagementViewPage.searchIpNetwork(IP_NETWORK);
         ipAddressManagementViewPage.expandTreeRow(IP_NETWORK);
         ipAddressManagementViewPage.expandTreeRowContains("%");
-        ipAddressManagementViewPage.expandTreeRow(IP_ADDRESS + "/24");
-        ipAddressManagementViewPage.deleteHostAssignment("/24 [");
+        ipAddressManagementViewPage.deleteIPHost(IP_ADDRESS + "/24");
     }
 
     @Test(priority = 9)
