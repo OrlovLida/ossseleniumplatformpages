@@ -6,18 +6,22 @@
  */
 package com.oss.pages.transport.VRF;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.openqa.selenium.WebDriver;
+
 import com.oss.framework.components.inputs.Button;
+import com.oss.framework.prompts.ConfirmationBox;
+import com.oss.framework.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tabswidget.TabWindowWidget;
 import com.oss.framework.widgets.tabswidget.TabsInterface;
 import com.oss.pages.BasePage;
-import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
 
-import java.util.ArrayList;
-import java.util.List;
+import io.qameta.allure.Step;
 
 /**
  * @author Kamil Szota
@@ -34,7 +38,7 @@ public class VRFOverviewPage extends BasePage {
     private static final String ADDRESS_FAMILY_LABEL = "Address Family";
     private static final String EDIT_BUTTON_DATA_ATTRIBUTENAME = "Top_Window_Buttons_Id-0";
     private static final String REMOVE_BUTTON_DATA_ATTRIBUTENAME = "Top_Window_Buttons_Id-1";
-    private static final String CONFIRM_REMOVAL_BUTTON_DATA_ATTRIBUTENAME = "ConfirmationBox_confirmationBoxAppDeleteVRF_action_button";
+    private static final String CONFIRM_REMOVAL_BUTTON_DATA_ATTRIBUTENAME = "wizard-submit-button-wizard-widget-id";
     private static final String INTERFACE_ASSIGNMENT_LABEL = "Interface Assignment";
     private static final String ADD_ROUTE_TARGET_BUTTON_DATA_ATTRIBUTENAME = "addExisting";
     private static final String INTERFACES_TABLE_ID = "interfaces_table_id";
@@ -64,8 +68,8 @@ public class VRFOverviewPage extends BasePage {
     @Step("Click remove confirmation button")
     public void confirmRemoval() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        Button confirmRemovalButton = Button.createById(driver, CONFIRM_REMOVAL_BUTTON_DATA_ATTRIBUTENAME);
-        confirmRemovalButton.click();
+        ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
+        prompt.clickButtonByDataAttributeName(CONFIRM_REMOVAL_BUTTON_DATA_ATTRIBUTENAME);
     }
 
     public String getNameValue() {
@@ -112,7 +116,6 @@ public class VRFOverviewPage extends BasePage {
         return new VRFImpExpRouteTargetWizardPage(driver);
     }
 
-
     @Step("Get all assigned interfaces names")
     public List<String> getAssignedInterfaces() {
         openInterfaceAssignmentTab();
@@ -134,14 +137,14 @@ public class VRFOverviewPage extends BasePage {
         return getAllElementsInColumn(routeTargetTabTable, ADDRESS_FAMILY_LABEL);
     }
 
-    private OldTable getTableWidget(String tableId){
+    private OldTable getTableWidget(String tableId) {
         return OldTable.createByComponentDataAttributeName(driver, wait, tableId);
     }
 
-    private List<String> getAllElementsInColumn(OldTable table, String columnName){
+    private List<String> getAllElementsInColumn(OldTable table, String columnName) {
         List<String> elementsInColumn = new ArrayList<>();
         int numberOfRows = table.getNumberOfRowsInTable(columnName);
-        for(int i = 0; i < numberOfRows; i++){
+        for (int i = 0; i < numberOfRows; i++) {
             String addressFamily = table.getCellValue(i, columnName);
             elementsInColumn.add(addressFamily);
         }
