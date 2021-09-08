@@ -17,19 +17,38 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class BookmarkTest extends BaseTestCase {
 
     private static final Logger log = LoggerFactory.getLogger(BookmarkTest.class);
-    private KpiViewPage kpiViewPage;
+
     private final String BOOKMARK_NAME = ConstantsDfe.createName() + "_bookmark";
     private final String EDITED_BOOKMARK_TITLE_ON_PAGE = BOOKMARK_NAME + " [Edited]";
     private final String EDITED_BOOKMARK_NAME = BOOKMARK_NAME + "_updated";
     private final String CATEGORY_NAME = "Selenium Test";
+    private final List<String> DIMENSION_TO_SELECT;
+
+    {
+        DIMENSION_TO_SELECT = new ArrayList<>(Collections.singletonList("D3_02"));
+    }
+
     private BookmarkManagerPage bookmarkManagerPage;
+    private KpiViewPage kpiViewPage;
 
     @BeforeClass
+    public void checkIfCategoryExist() {
+        bookmarkManagerPage = BookmarkManagerPage.goToPage(driver, BASIC_URL);
+        bookmarkManagerPage.searchForBookmark(CATEGORY_NAME);
+        boolean categoryExist = bookmarkManagerPage.isAnyBookmarkInList();
+        if (!categoryExist) {
+
+        }
+
+
+    }
+
     public void goKpiViewPage() {
         kpiViewPage = KpiViewPage.goToPage(driver, BASIC_URL);
     }
@@ -38,10 +57,10 @@ public class BookmarkTest extends BaseTestCase {
     @Test(priority = 1, testName = "Creating Bookmark", description = "Creating Bookmark")
     @Description("Creating Bookmark")
     public void createBookmark(
-            @Optional("DFE Tests,DFE Product Tests,Test Simple Random") String indicatorNodesToExpand,
+            @Optional("DFE Tests,DFE Product Tests,Selenium Tests") String indicatorNodesToExpand,
             @Optional("SUCCESS_LONG") String indicatorNodesToSelect,
-            @Optional("t:MANUAL#d4.TSRandom") String dimensionNodesToExpand,
-            @Optional("D4_01") String dimensionNodesToSelect,
+            @Optional("t:SMOKE#DimHierSelenium") String dimensionNodesToExpand,
+            @Optional("D3_01") String dimensionNodesToSelect,
             @Optional("DFE Tests") String filterName
     ) {
         try {
@@ -81,9 +100,7 @@ public class BookmarkTest extends BaseTestCase {
         if (bookmarkExist) {
             bookmarkManagerPage.expandBookmarkList(CATEGORY_NAME);
             bookmarkManagerPage.openBookmark(BOOKMARK_NAME);
-            List<String> dimensions = new ArrayList<>();
-            dimensions.add("D4_02");
-            kpiViewPage.selectUnfoldedDimension(dimensions);
+            kpiViewPage.selectUnfoldedDimension(DIMENSION_TO_SELECT);
             kpiViewPage.applyChanges();
 
             Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
@@ -104,6 +121,19 @@ public class BookmarkTest extends BaseTestCase {
 
             Assert.assertEquals(homePage.getPageTitle(), EDITED_BOOKMARK_NAME);
             Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(2));
+        } else {
+            log.error("There is no bookmarks on the search list.");
+            Assert.fail();
+        }
+    }
+
+    @Test(priority = 3)
+    public void deleteBookmark() {
+        bookmarkManagerPage = BookmarkManagerPage.goToPage(driver, BASIC_URL);
+        bookmarkManagerPage.searchForBookmark(BOOKMARK_NAME);
+        boolean bookmarkExist = bookmarkManagerPage.isAnyBookmarkInList();
+        if (bookmarkExist) {
+            bookmarkManagerPage.expandBookmarkList(CATEGORY_NAME);
         } else {
             log.error("There is no bookmarks on the search list.");
             Assert.fail();
