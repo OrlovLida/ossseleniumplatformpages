@@ -1,4 +1,4 @@
-package com.oss.pages.bigdata.kqiview;
+package com.oss.pages.bookmarkManager.BookmarkManagerWizards;
 
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.portals.PopupV2;

@@ -1,5 +1,6 @@
 package com.oss.pages.bookmarkManager;
 
+import com.oss.framework.components.contextactions.ButtonContainer;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.SearchField;
@@ -19,6 +20,7 @@ public class BookmarkManagerPage extends BasePage {
     private final String LIST_ID = "bookmarksList";
     private final String ROW_ATTRIBUTE_NAME = "Name";
     private final String LINK_TEXT = "Open";
+    private final String CREATE_NEW_CATEGORY_LABEL = "New category";
 
 
     public BookmarkManagerPage(WebDriver driver, WebDriverWait wait) {
@@ -58,6 +60,11 @@ public class BookmarkManagerPage extends BasePage {
 
     @Step("I check if list contains any bookmarks")
     public boolean isAnyBookmarkInList() {
+        DelayUtils.waitForPageToLoad(driver, wait);
         return !CommonList.create(driver, wait, LIST_ID).isNoData();
+    }
+
+    public void clickCreateNewCategory() {
+        ButtonContainer.create(driver, wait).callActionByLabel(CREATE_NEW_CATEGORY_LABEL);
     }
 }

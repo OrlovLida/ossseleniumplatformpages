@@ -2,19 +2,17 @@ package com.oss.bigdata.dfe;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bigdata.kqiview.BookmarkWizardPage;
 import com.oss.pages.bigdata.kqiview.KpiViewPage;
 import com.oss.pages.bigdata.utils.ConstantsDfe;
 import com.oss.pages.bookmarkManager.BookmarkManagerPage;
+import com.oss.pages.bookmarkManager.BookmarkManagerWizards.BookmarkWizardPage;
+import com.oss.pages.bookmarkManager.BookmarkManagerWizards.CategoryWizardPage;
 import com.oss.pages.platform.HomePage;
 import io.qameta.allure.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Optional;
-import org.testng.annotations.Parameters;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,6 +26,7 @@ public class BookmarkTest extends BaseTestCase {
     private final String EDITED_BOOKMARK_TITLE_ON_PAGE = BOOKMARK_NAME + " [Edited]";
     private final String EDITED_BOOKMARK_NAME = BOOKMARK_NAME + "_updated";
     private final String CATEGORY_NAME = "Selenium Test";
+
     private final List<String> DIMENSION_TO_SELECT;
 
     {
@@ -43,12 +42,14 @@ public class BookmarkTest extends BaseTestCase {
         bookmarkManagerPage.searchForBookmark(CATEGORY_NAME);
         boolean categoryExist = bookmarkManagerPage.isAnyBookmarkInList();
         if (!categoryExist) {
-
+            bookmarkManagerPage.clickCreateNewCategory();
+            CategoryWizardPage categoryWizardPage = new CategoryWizardPage(driver, webDriverWait);
+            categoryWizardPage.fillCategoryName(CATEGORY_NAME);
+            categoryWizardPage.clickSave();
         }
-
-
     }
 
+    @BeforeMethod
     public void goKpiViewPage() {
         kpiViewPage = KpiViewPage.goToPage(driver, BASIC_URL);
     }
@@ -127,6 +128,7 @@ public class BookmarkTest extends BaseTestCase {
         }
     }
 
+    // TODO poczekać na zmiany we frameworku (OSSWEB-13881)
     @Test(priority = 3)
     public void deleteBookmark() {
         bookmarkManagerPage = BookmarkManagerPage.goToPage(driver, BASIC_URL);
