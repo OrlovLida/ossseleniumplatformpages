@@ -1,16 +1,13 @@
 package com.oss.pages.bigdata.kqiview;
 
 import com.oss.framework.components.inputs.Button;
+import com.oss.framework.mainheader.ButtonPanel;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.view.Card;
 import com.oss.framework.widgets.dpe.kpichartwidget.KpiChartWidget;
-import com.oss.framework.widgets.dpe.toolbarpanel.ExportPanel;
+import com.oss.framework.widgets.dpe.toolbarpanel.*;
 import com.oss.framework.widgets.dpe.toolbarpanel.ExportPanel.ExportType;
-import com.oss.framework.widgets.dpe.toolbarpanel.FiltersPanel;
-import com.oss.framework.widgets.dpe.toolbarpanel.KpiToolbarPanel;
 import com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType;
-import com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel;
-import com.oss.framework.widgets.dpe.toolbarpanel.TopNPanel;
 import com.oss.framework.widgets.dpe.treewidget.KpiTreeWidget;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Attachment;
@@ -24,6 +21,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static com.oss.configuration.Configuration.CONFIGURATION;
@@ -45,10 +44,8 @@ public class KpiViewPage extends BasePage {
     private static final String BAR_CHART_BUTTON_ID = "dropdown-list-button_bar";
     private static final String LINE_CHART_BUTTON_ID = "dropdown-list-button_line";
     private static final String CHART_COLOR_BUTTON_ID = "chart-color-button";
-    private static final String FULL_SCREEN_BUTTON_ID = "full-screen-button";
     private static final String DATA_VIEW_ID = "_Data_View";
-
-    private static final String OPTIONS_BUTTON_ID = "options-menu-button";
+    private static final String SAVE_BOOKMARK_BUTTON_ID = "fa fa-floppy-o";
 
     public KpiViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -158,7 +155,6 @@ public class KpiViewPage extends BasePage {
             } catch (IOException e) {
                 log.error("Failed attaching files: {}", e.getMessage());
             }
-
         }
     }
 
@@ -445,13 +441,48 @@ public class KpiViewPage extends BasePage {
         boolean dataViewDisplayed = kpiChartWidget.dataViewPanelVisibility();
         boolean indicatorsTreeDisplayed = kpiChartWidget.indicatorsTreeVisibility();
         boolean dimensionsTreeDisplayed = kpiChartWidget.dimensionsTreeVisibility();
-        if (dataViewDisplayed & !indicatorsTreeDisplayed & !dimensionsTreeDisplayed){
+        if (dataViewDisplayed & !indicatorsTreeDisplayed & !dimensionsTreeDisplayed) {
             log.info("Only Data View Panel is displayed");
             return true;
-        }
-        else{
+        } else {
             log.error("Other Panels are also visible");
             return false;
         }
+    }
+
+    public void kpiViewSetup(String indicatorNodesToExpand, String indicatorNodesToSelect,
+                             String dimensionNodesToExpand, String dimensionNodesToSelect, String filterName) {
+        setFilters(Collections.singletonList(filterName));
+
+        List<String> indicatorNodesToExpandList = Arrays.asList(indicatorNodesToExpand.split(","));
+        List<String> indicatorNodesToSelectList = Arrays.asList(indicatorNodesToSelect.split(","));
+        selectIndicator(indicatorNodesToExpandList, indicatorNodesToSelectList);
+
+        List<String> dimensionNodesToExpandList = Arrays.asList(dimensionNodesToExpand.split(","));
+        List<String> dimensionNodesToSelectList = Arrays.asList(dimensionNodesToSelect.split(","));
+        selectDimension(dimensionNodesToExpandList, dimensionNodesToSelectList);
+
+        applyChanges();
+        seeChartIsDisplayed();
+    }
+
+    public void kpiViewSetup(String indicatorNodesToExpand, String indicatorNodesToSelect,
+                             String dimensionNodesToSelect, String filterName) {
+        setFilters(Collections.singletonList(filterName));
+
+        List<String> indicatorNodesToExpandList = Arrays.asList(indicatorNodesToExpand.split(","));
+        List<String> indicatorNodesToSelectList = Arrays.asList(indicatorNodesToSelect.split(","));
+        selectIndicator(indicatorNodesToExpandList, indicatorNodesToSelectList);
+
+        List<String> dimensionNodesToSelectList = Arrays.asList(dimensionNodesToSelect.split(","));
+        selectUnfoldedDimension(dimensionNodesToSelectList);
+
+        applyChanges();
+        seeChartIsDisplayed();
+    }
+
+    @Step("I click Save bookmark")
+    public void clickSaveBookmark() {
+        ButtonPanel.create(driver, wait).clickOnIcon(SAVE_BOOKMARK_BUTTON_ID);
     }
 }
