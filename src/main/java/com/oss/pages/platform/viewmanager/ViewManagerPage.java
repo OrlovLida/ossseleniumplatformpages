@@ -4,8 +4,8 @@ import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.SearchField;
 import com.oss.framework.components.portals.ActionsDropdownList;
-import com.oss.framework.components.portals.ApplicationPopup;
-import com.oss.framework.components.portals.CategoryPopup;
+import com.oss.framework.navigation.ApplicationWizard;
+import com.oss.framework.navigation.CategoryWizard;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.utils.DragAndDrop;
 import com.oss.pages.BasePage;
@@ -58,14 +58,14 @@ public class ViewManagerPage extends BasePage {
         super(driver);
     }
 
-    public CategoryPopup goToCategoryPopup() {
+    public CategoryWizard goToCategoryPopup() {
         WebDriverWait wait = new WebDriverWait(driver, 45);
-        return new CategoryPopup(driver, wait);
+        return CategoryWizard.create(driver, wait);
     }
 
-    public ApplicationPopup goToApplicationPopup() {
+    public ApplicationWizard goToApplicationPopup() {
         WebDriverWait wait = new WebDriverWait(driver, 45);
-        return new ApplicationPopup(driver, wait);
+        return ApplicationWizard.create(driver, wait);
     }
 
     public WebElement getApplication(int numberOfApplication){
