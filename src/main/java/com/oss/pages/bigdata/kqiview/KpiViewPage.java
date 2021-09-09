@@ -46,7 +46,7 @@ public class KpiViewPage extends BasePage {
     private static final String CHART_COLOR_BUTTON_ID = "chart-color-button";
     private static final String FULL_SCREEN_BUTTON_ID = "full-screen-button";
     private static final String DATA_VIEW_ID = "_Data_View";
-    private static final String SAVE_BOOKMAK_BUTTON_ID = "fa fa-floppy-o";
+    private static final String SAVE_BOOKMARK_BUTTON_ID = "fa fa-floppy-o";
 
     private static final String OPTIONS_BUTTON_ID = "options-menu-button";
 
@@ -158,7 +158,6 @@ public class KpiViewPage extends BasePage {
             } catch (IOException e) {
                 log.error("Failed attaching files: {}", e.getMessage());
             }
-
         }
     }
 
@@ -454,7 +453,8 @@ public class KpiViewPage extends BasePage {
         }
     }
 
-    public void kpiViewSetup(String indicatorNodesToExpand, String indicatorNodesToSelect, String dimensionNodesToExpand, String dimensionNodesToSelect, String filterName) {
+    public void kpiViewSetup(String indicatorNodesToExpand, String indicatorNodesToSelect,
+                             String dimensionNodesToExpand, String dimensionNodesToSelect, String filterName) {
         setFilters(Collections.singletonList(filterName));
 
         List<String> indicatorNodesToExpandList = Arrays.asList(indicatorNodesToExpand.split(","));
@@ -469,7 +469,8 @@ public class KpiViewPage extends BasePage {
         seeChartIsDisplayed();
     }
 
-    public void kpiViewSetup(String indicatorNodesToExpand, String indicatorNodesToSelect, String dimensionNodesToSelect, String filterName) {
+    public void kpiViewSetup(String indicatorNodesToExpand, String indicatorNodesToSelect,
+                             String dimensionNodesToSelect, String filterName) {
         setFilters(Collections.singletonList(filterName));
 
         List<String> indicatorNodesToExpandList = Arrays.asList(indicatorNodesToExpand.split(","));
@@ -485,6 +486,6 @@ public class KpiViewPage extends BasePage {
 
     @Step("I click Save bookmark")
     public void clickSaveBookmark() {
-        ButtonPanel.create(driver, wait).clickOnIcon(SAVE_BOOKMAK_BUTTON_ID);
+        ButtonPanel.create(driver, wait).clickOnIcon(SAVE_BOOKMARK_BUTTON_ID);
     }
 }

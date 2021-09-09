@@ -20,25 +20,25 @@ public class BookmarkWizardPage extends BasePage {
         super(driver, wait);
     }
 
-    public void fillBookmarkName(String bookmarkName) {
-        PopupV2.create(driver, wait).setComponentValue(BOOKMARK_NAME_FIELD_ID, bookmarkName, Input.ComponentType.TEXT_FIELD);
-        log.info("I fill bookmark name with: {}", bookmarkName);
-    }
-
-    public void fillBookmarkCategory(String categoryName) {
-        PopupV2.create(driver, wait).setComponentValue(BOOKMARK_CATEGORY_ID, categoryName, Input.ComponentType.COMBOBOX);
-        log.info("I fill category with: {}", categoryName);
-    }
-
-    public void clickSaveBookmark() {
-        PopupV2.create(driver, wait).clickButtonByLabel(SAVE_BOOKMARK_LABEL);
-        log.info("I click Save");
-    }
-
     @Step("i fill Save Bookmark wizard")
     public void fillBookmarkWizard(String bookmarkName, String categoryName) {
         fillBookmarkName(bookmarkName);
         fillBookmarkCategory(categoryName);
         clickSaveBookmark();
+    }
+
+    private void fillBookmarkName(String bookmarkName) {
+        PopupV2.create(driver, wait).setComponentValue(BOOKMARK_NAME_FIELD_ID, bookmarkName, Input.ComponentType.TEXT_FIELD);
+        log.info("I fill bookmark name with: {}", bookmarkName);
+    }
+
+    private void fillBookmarkCategory(String categoryName) {
+        PopupV2.create(driver, wait).setComponentValue(BOOKMARK_CATEGORY_ID, categoryName, Input.ComponentType.COMBOBOX);
+        log.info("I fill category with: {}", categoryName);
+    }
+
+    private void clickSaveBookmark() {
+        PopupV2.create(driver, wait).clickButtonByLabel(SAVE_BOOKMARK_LABEL);
+        log.info("I click Save");
     }
 }

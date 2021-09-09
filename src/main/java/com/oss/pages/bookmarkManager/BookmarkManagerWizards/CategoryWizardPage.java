@@ -14,7 +14,6 @@ public class CategoryWizardPage extends BasePage {
 
     private final Wizard createCategoryWizard;
     private final String CREATE_CATEGORY_WIZARD_ID = "createCategoryForm";
-    private final String NAME_CATEGORY_LABEL = "Name";
     private final String CATEGORY_NAME_ID = "categoryName";
 
 
