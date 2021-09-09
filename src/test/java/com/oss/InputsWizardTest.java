@@ -89,11 +89,7 @@ public class InputsWizardTest extends BaseTestCase {
 
         coordinates.clear();
         coordinatesList.clear();
-        coordinatesList.add("N");
-        coordinatesList.add("0");
-        coordinatesList.add("0");
-        coordinatesList.add("0");
-        Assertions.assertThat(coordinates.getStringValues()).isEqualTo(coordinatesList);
+
 
         //Component tests
         testComponent(InputsWizardPage.COORDINATES_ID, coordinates);
@@ -141,10 +137,12 @@ public class InputsWizardTest extends BaseTestCase {
 
     }
 
-    @Test(enabled = false)
+    @Test()
     public void testDateTime() {
         DateTime dateTime = (DateTime) inputsWizardPage
                 .getComponent(InputsWizardPage.DATE_TIME_ID, ComponentType.DATE_TIME);
+        dateTime.clickCalendar();
+        dateTime.chooseDate("2021-12-12");
 
         //Date Time specific test cases
         dateTime.setSingleStringValue("19951111121212");
@@ -339,7 +337,6 @@ public class InputsWizardTest extends BaseTestCase {
 
         //Messages danger test
         inputsWizardPage.setControllerValue(InputsWizardPage.DANGER_MESSAGE_CONTROLLER_ID, componentId);
-        //driver.findElement(By.xpath(LIST_COLLAPSE_XPATH));
         input.hover();
         List<String> messages = input.getMessages();
         Assertions.assertThat(messages).contains("DANGER");
@@ -350,7 +347,7 @@ public class InputsWizardTest extends BaseTestCase {
 
         //Read only test //
         inputsWizardPage.setControllerValue(InputsWizardPage.READ_ONLY_CONTROLLER_ID, componentId);
-       // driver.findElement(By.xpath(LIST_COLLAPSE_XPATH));
+
 
        Assertions.assertThat(input.cursor()).isEqualTo("not-allowed");
 
@@ -362,7 +359,7 @@ public class InputsWizardTest extends BaseTestCase {
         //Mandatory label test
         inputsWizardPage.setControllerValue(InputsWizardPage.MANDATORY_CONTROLLER_ID, componentId);
         String mandatoryLabel = input.getLabel();
-        driver.findElement(By.xpath(LIST_COLLAPSE_XPATH));
+       // driver.findElement(By.xpath(LIST_COLLAPSE_XPATH));
         Assertions.assertThat(mandatoryLabel).contains("*");
 
         //Mandatory validation test //

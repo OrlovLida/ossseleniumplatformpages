@@ -85,7 +85,7 @@ public class InputsWizardPage extends BasePage {
     }
 
     public void submit() {
-        this.wizard.submit();
+        this.wizard.clickAccept();
         DelayUtils.sleep();
     }
 
