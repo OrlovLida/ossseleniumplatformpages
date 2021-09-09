@@ -100,8 +100,8 @@ public class VLANRangeTest extends BaseTestCase {
         NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.searchObject(VLAN_NAME_2);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "Name"), VLAN_NAME_2);
-        Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "Description"), VLAN_DESCRIPTION_2);
+        Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "name"), VLAN_NAME_2);
+        Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "description"), VLAN_DESCRIPTION_2);
     }
 
     @Test(priority = 5)
