@@ -44,11 +44,8 @@ public class KpiViewPage extends BasePage {
     private static final String BAR_CHART_BUTTON_ID = "dropdown-list-button_bar";
     private static final String LINE_CHART_BUTTON_ID = "dropdown-list-button_line";
     private static final String CHART_COLOR_BUTTON_ID = "chart-color-button";
-    private static final String FULL_SCREEN_BUTTON_ID = "full-screen-button";
     private static final String DATA_VIEW_ID = "_Data_View";
     private static final String SAVE_BOOKMARK_BUTTON_ID = "fa fa-floppy-o";
-
-    private static final String OPTIONS_BUTTON_ID = "options-menu-button";
 
     public KpiViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
