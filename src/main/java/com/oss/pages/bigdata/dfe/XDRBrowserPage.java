@@ -64,6 +64,7 @@ public class XDRBrowserPage extends BaseDfePage {
 
     @Step("I click Search")
     public void clickSearch() {
+        DelayUtils.waitForPageToLoad(driver, wait);
         ButtonContainer.create(driver, wait).callActionByLabel(SEARCH_LABEL);
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Searching for ETL");

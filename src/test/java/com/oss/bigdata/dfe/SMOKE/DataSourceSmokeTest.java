@@ -62,7 +62,7 @@ public class DataSourceSmokeTest extends BaseTestCase {
         }
     }
 
-    @Test(testName = "checkShowFile", description = "Check option show file and check if table with data is displayed")
+    @Test(priority = 3, testName = "checkShowFile", description = "Check option show file and check if table with data is displayed")
     @Description("Check option show file and check if table with data is displayed")
     public void checkShowFile() {
         boolean dataSourceExists = dataSourcePage.dataSourceExistIntoTable(DATA_SOURCE_NAME);
