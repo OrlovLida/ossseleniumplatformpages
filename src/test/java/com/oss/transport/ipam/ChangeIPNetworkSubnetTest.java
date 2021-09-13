@@ -72,7 +72,6 @@ public class ChangeIPNetworkSubnetTest extends BaseTestCase {
         initializeSecondNetworkProperties();
     }
 
-
     @Test(priority = 1)
     @Description("Creating IP Networks")
     public void createIPNetworks() {
@@ -165,7 +164,7 @@ public class ChangeIPNetworkSubnetTest extends BaseTestCase {
     @Test(priority = 10)
     @Description("Finish first DCP Process")
     public void finishFirstDCPProcess() {
-        finishDCPProcess("DCP-138");
+        finishDCPProcess(firstDCPProcessCode);
     }
 
     @Test(priority = 11)
