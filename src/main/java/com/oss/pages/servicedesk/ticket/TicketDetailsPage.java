@@ -11,8 +11,12 @@ import com.oss.pages.BasePage;
 import com.oss.pages.servicedesk.ticket.wizard.WizardPage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TicketDetailsPage extends BasePage {
+
+    private static final Logger log = LoggerFactory.getLogger(TicketDetailsPage.class);
 
     public static final String DETAILS_PAGE_URL_PATTERN = "%s/#/view/service-desk/trouble-ticket/details/%s";
 
@@ -30,6 +34,7 @@ public class TicketDetailsPage extends BasePage {
     public WizardPage openEditTicketWizard(WebDriver driver) {
         DelayUtils.waitForPageToLoad(driver, wait);
         clickContextAction(EDIT_DETAILS_LABEL);
+        log.info("Ticket Wizard edit is opened");
         return new WizardPage(driver);
     }
 
@@ -37,14 +42,17 @@ public class TicketDetailsPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         Button releaseButton = Button.create(driver, RELEASE_LABEL);
         releaseButton.click();
+        log.info("Clicking release button");
     }
 
     private void clickContextAction(String contextActionLabel) {
         TabWindowWidget.create(driver, wait).callActionByLabel(contextActionLabel);
+        log.info("Clicking Context action {}", contextActionLabel);
     }
 
     public void selectTab(WebDriver driver, String tabLabel) {
         TabWindowWidget.create(driver, wait).selectTabByLabel(tabLabel);
+        log.info("Selecting tab {}", tabLabel);
     }
 
     @Step("I open create subticket wizard for flow {flowType}")
@@ -52,6 +60,7 @@ public class TicketDetailsPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         Button.createBySelectorAndId(driver, "button", CREATE_SUB_TICKET).click();
         DropdownList.create(driver, wait).selectOptionWithId(flowType);
+        log.info("Create subticket wizard for {} is opened", flowType);
         return new WizardPage(driver);
     }
 
@@ -59,10 +68,12 @@ public class TicketDetailsPage extends BasePage {
         CommonList commonList = CommonList.create(driver, wait, CHECKLIST_APP_ID);
         commonList.getAllRows()
             .forEach(row -> row.callActionIcon(SKIP_BUTTON_LABEL));
+        log.info("Skipping all actions on checklist");
     }
 
     public void changeStatus(String statusName) {
         Combobox statusComboBox = Combobox.createServiceDeskStatusComboBox(driver, wait);
         statusComboBox.setValue(Data.createSingleData(statusName));
+        log.info("Changing status to {}", statusName);
     }
 }
