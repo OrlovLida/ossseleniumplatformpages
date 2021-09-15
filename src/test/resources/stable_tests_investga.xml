@@ -1,53 +1,63 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="RegressionSuiteWeb-INVESTGA" thread-count="2" parallel="tests" verbose="1">
-    <test name="CreateVRFTest">
-        <classes>
-            <class name="com.oss.transport.CreateVRFTest"/>
-        </classes>
-    </test>
-    <test name="IPv4AddressesIPAMTest">
-        <classes>
-            <class name="com.oss.transport.IPv4AddressesIPAMTest"/>
-        </classes>
-    </test>
-    <test name="IPv6AddressesIPAMTest">
-        <classes>
-            <class name="com.oss.transport.IPv6AddressesIPAMTest"/>
-        </classes>
-    </test>
-    <test name="AEITest">
-        <classes>
-            <class name="com.oss.transport.AEITest"/>
-        </classes>
-    </test>
-    <test name="VSITest">
-        <classes>
-            <class name="com.oss.transport.VSITest"/>
-        </classes>
-    </test>
-    <test name="TrafficClassTest">
-        <classes>
-            <class name="com.oss.transport.TrafficClassTest"/>
-        </classes>
-    </test>
-    <test name="LoopbackInterfaceTest">
-        <classes>
-            <class name="com.oss.transport.LoopbackInterfaceTest"/>
-        </classes>
-    </test>
-    <test name="IRBInterfaceTest">
-        <classes>
-            <class name="com.oss.transport.IRBInterfaceTest"/>
-        </classes>
-    </test>
-        <test name="VLANInterfaceTest">
-        <classes>
-            <class name="com.oss.transport.VLANInterfaceTest"/>
-        </classes>
-    </test>
-        <test name="VLANRangeTest">
-        <classes>
-            <class name="com.oss.transport.VLANRangeTest"/>
-        </classes>
-    </test>
+  <test name="CreateVRFTest">
+    <classes>
+      <class name="com.oss.transport.CreateVRFTest"/>
+    </classes>
+  </test>
+  <test name="IPv4AddressesIPAMTest">
+    <classes>
+      <class name="com.oss.transport.IPv4AddressesIPAMTest"/>
+    </classes>
+  </test>
+  <test name="IPv6AddressesIPAMTest">
+    <classes>
+      <class name="com.oss.transport.IPv6AddressesIPAMTest"/>
+    </classes>
+  </test>
+  <test name="AEITest">
+    <classes>
+      <class name="com.oss.transport.AEITest"/>
+    </classes>
+  </test>
+  <test name="VSITest">
+    <classes>
+      <class name="com.oss.transport.VSITest"/>
+    </classes>
+  </test>
+  <test name="TrafficClassTest">
+    <classes>
+      <class name="com.oss.transport.TrafficClassTest"/>
+    </classes>
+  </test>
+  <test name="LoopbackInterfaceTest">
+    <classes>
+      <class name="com.oss.transport.LoopbackInterfaceTest"/>
+    </classes>
+  </test>
+  <test name="IRBInterfaceTest">
+    <classes>
+      <class name="com.oss.transport.IRBInterfaceTest"/>
+    </classes>
+  </test>
+  <test name="VLANInterfaceTest">
+    <classes>
+      <class name="com.oss.transport.VLANInterfaceTest"/>
+    </classes>
+  </test>
+  <test name="VLANRangeTest">
+    <classes>
+      <class name="com.oss.transport.VLANRangeTest"/>
+    </classes>
+  </test>
+  <test name="VLANPoolTest">
+    <classes>
+      <class name="com.oss.transport.VLANPoolTest"/>
+    </classes>
+  </test>
+  <test name="RegulatoryLicenseTest">
+    <classes>
+      <class name="com.oss.transport.RegulatoryLicenseTest"/>
+    </classes>
+  </test>
 </suite>

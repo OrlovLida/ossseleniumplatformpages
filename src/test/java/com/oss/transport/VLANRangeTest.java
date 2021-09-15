@@ -49,7 +49,8 @@ public class VLANRangeTest extends BaseTestCase {
     @Test(priority = 1)
     @Description("Set fields and create VLAN Range")
     public void createVLANRange() {
-        homePage.chooseFromLeftSideMenu("VLAN Range", "Wizards", "Transport");
+        driver.get(String.format("%s/#/view/transport/ip/ethernet/vlan-range/create?perspective=LIVE", BASIC_URL));
+        //homePage.chooseFromLeftSideMenu("Create VLAN Range", "Network domains", "Transport & IP");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         VLANRangeWizardPage vLANRangeWizardPage = new VLANRangeWizardPage(driver);
         vLANRangeWizardPage.setName(VLAN_NAME_1)
@@ -64,6 +65,7 @@ public class VLANRangeTest extends BaseTestCase {
     public void checkIfVLANRangeIsCreated() {
         HomePage homePage = new HomePage(driver)
                 .goToHomePage(driver, BASIC_URL);
+        driver.get(String.format("%s/#/dashboard/predefined/id/startDashboard?perspective=LIVE", BASIC_URL));
         homePage.setNewObjectType("VLAN Range");
         NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.searchObject(VLAN_NAME_1);
@@ -93,12 +95,13 @@ public class VLANRangeTest extends BaseTestCase {
     public void checkIfVLANRangeIsEditedCorrectly() {
         HomePage homePage = new HomePage(driver)
                 .goToHomePage(driver, BASIC_URL);
+        driver.get(String.format("%s/#/dashboard/predefined/id/startDashboard?perspective=LIVE", BASIC_URL));
         homePage.setNewObjectType("VLAN Range");
         NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.searchObject(VLAN_NAME_2);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "Name"), VLAN_NAME_2);
-        Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "Description"), VLAN_DESCRIPTION_2);
+        Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "name"), VLAN_NAME_2);
+        Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "description"), VLAN_DESCRIPTION_2);
     }
 
     @Test(priority = 5)

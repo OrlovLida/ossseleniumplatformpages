@@ -10,4 +10,29 @@
             <class name="com.oss.bigdata.dfe.SMOKE.KqiSmokeTest"/>
         </classes>
     </test>
+    <test name="DimensionSmokeTest">
+        <classes>
+            <class name="com.oss.bigdata.dfe.SMOKE.DimensionsSmokeTest"/>
+        </classes>
+    </test>
+    <test name="EtlSmokeTest">
+        <classes>
+            <class name="com.oss.bigdata.dfe.SMOKE.EtlSmokeTest"/>
+        </classes>
+    </test>
+    <test name="ThresholdSmokeTest">
+        <classes>
+            <class name="com.oss.bigdata.dfe.SMOKE.ThresholdSmokeTest"/>
+        </classes>
+    </test>
+    <test name="DataSourceSmokeTest">
+        <classes>
+            <class name="com.oss.bigdata.dfe.SMOKE.DataSourceSmokeTest"/>
+        </classes>
+    </test>
+    <test name="XDRBrowserTest">
+        <classes>
+            <class name="com.oss.bigdata.dfe.SMOKE.XDRBrowserTest"/>
+        </classes>
+    </test>
 </suite>

@@ -6,19 +6,21 @@
  */
 package com.oss.transport;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
+import org.assertj.core.api.Assertions;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
 import com.oss.BaseTestCase;
-import com.oss.framework.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.transport.VRF.VRFImpExpRouteTargetWizardPage;
 import com.oss.pages.transport.VRF.VRFOverviewPage;
 import com.oss.pages.transport.VRF.VRFWizardPage;
+
 import io.qameta.allure.Step;
-import org.assertj.core.api.Assertions;
-import org.testng.Assert;
-import org.testng.annotations.Test;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
 
 import static com.oss.configuration.Configuration.CONFIGURATION;
 
@@ -27,9 +29,9 @@ import static com.oss.configuration.Configuration.CONFIGURATION;
  */
 public class CreateVRFTest extends BaseTestCase {
 
-    private static final String WIZARDS = "Wizards";
-    private static final String TRANSPORT = "Transport";
-    private static final String VRF = "VRF";
+    private static final String WIZARDS = "Network domains";
+    private static final String TRANSPORT = "Transport & IP";
+    private static final String VRF = "Create VRF";
 
     private static final String VRF_NAME = "vrfNameTest2";
     private static final String ROUTE_DISTINGUISHER = "999:999";
@@ -46,7 +48,7 @@ public class CreateVRFTest extends BaseTestCase {
     private static final String ROUTE_TARGET = "3453:3453";
     private static final String ADDRESS_FAMILY = "IPv4";
 
-    private static final String ENVIRONMENT_INDEPENDENT_URL_REDIRECT_PART = "/#/dashboard/predefined/id/transport-dashboard";
+    private static final String ENVIRONMENT_INDEPENDENT_URL_REDIRECT_PART = "/#/?perspective=LIVE";
 
     @Test(priority = 1)
     @Step("Create VRF")
@@ -96,6 +98,7 @@ public class CreateVRFTest extends BaseTestCase {
         VRFOverviewPage vrfOverview = new VRFOverviewPage(driver);
         vrfOverview.clickRemove();
         vrfOverview.confirmRemoval();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         String url = driver.getCurrentUrl();
 
         assertVRFRemove(url);
@@ -144,8 +147,10 @@ public class CreateVRFTest extends BaseTestCase {
 
     private VRFWizardPage goToVRFWizard() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        SideMenu sidemenu = SideMenu.create(driver, webDriverWait);
-        sidemenu.callActionByLabel(VRF, WIZARDS, TRANSPORT);
+        //SideMenu sidemenu = SideMenu.create(driver, webDriverWait);
+        //sidemenu.callActionByLabel(VRF, WIZARDS, TRANSPORT);
+        driver.get(String.format("%s/#/view/transport/tpt/vrf?perspective=LIVE", BASIC_URL));
+
         return new VRFWizardPage(driver);
     }
 
@@ -203,7 +208,7 @@ public class CreateVRFTest extends BaseTestCase {
         Assert.assertEquals(assignedAddressFamilies.get(0).toUpperCase(), impExpAttributes.addressFamily.toUpperCase());
     }
 
-    private void assertVRFRemove(String url){
+    private void assertVRFRemove(String url) {
         Assertions.assertThat(url).isEqualTo(CONFIGURATION.getUrl() + ENVIRONMENT_INDEPENDENT_URL_REDIRECT_PART);
     }
 

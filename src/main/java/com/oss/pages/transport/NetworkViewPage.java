@@ -38,7 +38,7 @@ import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_AREA;
 
 public class NetworkViewPage extends BasePage {
 
-    public static final String ATTRIBUTES_AND_TERMINATIONS_ACTION = "Attributes and terminations";
+    public static final String ATTRIBUTES_AND_TERMINATIONS_ACTION = "Attributes and terminations-null";
     public static final String CREATE_DEVICE_ACTION = "Create Device-null";
     public static final String DELETE_TRAIL_ACTION = "Delete Trail";
     public static final String DELETE_ELEMENT_ACTION = "Delete Element-null";
@@ -52,7 +52,7 @@ public class NetworkViewPage extends BasePage {
     public static final String CONNECTION_ACTION = "Connection-null";
     private static final String CREATE_CONNECTION_ACTION = "Create Connection";
     private static final String DELETE_TERMINATION_ACTION = "Delete termination";
-    private static final String START_EDITING_CONNECTION_ACTION = "Start editing connection";
+    private static final String START_EDITING_CONNECTION_ACTION = "Start editing Connection";
     private static final String STOP_EDITING_CONNECTION_ACTION = "Stop editing connection";
     private static final String TERMINATION_ACTION = "Termination";
     private static final String ROUTING = "Routing";
