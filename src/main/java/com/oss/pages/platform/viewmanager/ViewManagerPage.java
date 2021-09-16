@@ -6,6 +6,7 @@ import com.oss.framework.components.inputs.SearchField;
 import com.oss.framework.components.portals.ActionsDropdownList;
 import com.oss.framework.navigation.ApplicationWizard;
 import com.oss.framework.navigation.CategoryWizard;
+import com.oss.framework.navigation.ToolsManagerWindow;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.utils.DragAndDrop;
 import com.oss.pages.BasePage;
@@ -51,11 +52,11 @@ public class ViewManagerPage extends BasePage {
     @FindBy(xpath = THREE_DOTS_BUTTONS_XPATH)
     public WebElement threeDotsFirstButton;
 
-    @FindBy(xpath = DRAG_CATEGORY_BUTTON_ID)
-    public WebElement dragButton;
+    private ToolsManagerWindow toolsManagerWindow;
 
     public ViewManagerPage(WebDriver driver) {
         super(driver);
+        this.toolsManagerWindow = ToolsManagerWindow.create(driver, wait);
     }
 
     public CategoryWizard goToCategoryPopup() {
@@ -71,6 +72,10 @@ public class ViewManagerPage extends BasePage {
     public WebElement getApplication(int numberOfApplication){
         List<WebElement> applicationLinks = driver.findElements(By.xpath(APPLICATIONS_LINKS_XPATH));
         return applicationLinks.get(numberOfApplication);
+    }
+
+    public String getApplicationsUrl(int numberOfApplication){
+        return this.toolsManagerWindow.getGivenApplicationsURL(numberOfApplication);
     }
 
     public String getCategoryName(int numberOfCategory){

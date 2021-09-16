@@ -117,11 +117,8 @@ public class ViewManagerTest extends BaseTestCase {
 
         DelayUtils.sleep(2500);
 
-        WebElement firstApplication = viewManagerPage.getApplication(0);
-        WebElement secondApplication = viewManagerPage.getApplication(1);
-
-        String gisUrl = secondApplication.getAttribute("href");
-        String sublocationWizardUrl = firstApplication.getAttribute("href");
+        String sublocationWizardUrl = viewManagerPage.getApplicationsUrl(0);
+        String gisUrl = viewManagerPage.getApplicationsUrl(1);
 
         Assert.assertTrue(gisUrl.contains("gis-view"));
         Assert.assertTrue(sublocationWizardUrl.contains("sublocation/create"));
