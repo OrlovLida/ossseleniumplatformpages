@@ -278,7 +278,6 @@ public class KpiViewPage extends BasePage {
     @Step("I click chart type - area")
     public void clickAreaChartType() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getChartActionsPanel().clickOnPanel();
         getChartActionsPanel().callAction(CHART_TYPE_BUTTON_ID, AREA_CHART_BUTTON_ID);
         log.info("Changing chart type to area");
     }
@@ -286,23 +285,18 @@ public class KpiViewPage extends BasePage {
     @Step("I click chart type - bar")
     public void clickBarChartType() {
         log.info("Changing chart type to bar chart");
-        getChartActionsPanel().clickOnPanel();
         getChartActionsPanel().callAction(CHART_TYPE_BUTTON_ID, BAR_CHART_BUTTON_ID);
-        getChartActionsPanel().clickOnPanel();
     }
 
     @Step("I click chart type - line")
     public void clickLineChartType() {
         log.info("Changing chart type to line chart");
-        getChartActionsPanel().clickOnPanel();
         getChartActionsPanel().callAction(CHART_TYPE_BUTTON_ID, LINE_CHART_BUTTON_ID);
     }
 
     @Step("I pick data series color")
     public void chooseDataSeriesColor() {
         log.info("Changing first data series color");
-        getChartActionsPanel().clickOnPanel();
-        getChartActionsPanel().callAction(CHART_TYPE_BUTTON_ID);
         getChartActionsPanel().callAction(CHART_COLOR_BUTTON_ID, COLOR_PICKER_CLASS, "rgb(150, 65, 54)");
     }
 
