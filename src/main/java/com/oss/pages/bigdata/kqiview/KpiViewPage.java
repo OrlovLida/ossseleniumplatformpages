@@ -1,9 +1,9 @@
 package com.oss.pages.bigdata.kqiview;
 
-import com.oss.framework.components.inputs.Button;
 import com.oss.framework.mainheader.ButtonPanel;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.view.Card;
+import com.oss.framework.widgets.dpe.contextaction.ContextActionPanel;
 import com.oss.framework.widgets.dpe.kpichartwidget.KpiChartWidget;
 import com.oss.framework.widgets.dpe.toolbarpanel.*;
 import com.oss.framework.widgets.dpe.toolbarpanel.ExportPanel.ExportType;
@@ -46,6 +46,7 @@ public class KpiViewPage extends BasePage {
     private static final String CHART_COLOR_BUTTON_ID = "chart-color-button";
     private static final String DATA_VIEW_ID = "_Data_View";
     private static final String SAVE_BOOKMARK_BUTTON_ID = "fa fa-floppy-o";
+    private static final String COLOR_PICKER_CLASS = "colorPickerWrapper";
 
     public KpiViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -269,32 +270,40 @@ public class KpiViewPage extends BasePage {
         KpiChartWidget.create(driver, wait).clickDataSeriesLegend();
     }
 
+    @Step("I go to Chart Actions Panel")
+    public ContextActionPanel getChartActionsPanel() {
+        return ContextActionPanel.create(driver, wait);
+    }
+
     @Step("I click chart type - area")
     public void clickAreaChartType() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        KpiChartWidget.create(driver, wait).clickChartActions();
-        Button.createById(driver, CHART_TYPE_BUTTON_ID).click();
-        Button.createById(driver, AREA_CHART_BUTTON_ID).click();
+        getChartActionsPanel().clickOnPanel();
+        getChartActionsPanel().callAction(CHART_TYPE_BUTTON_ID, AREA_CHART_BUTTON_ID);
         log.info("Changing chart type to area");
     }
 
     @Step("I click chart type - bar")
     public void clickBarChartType() {
         log.info("Changing chart type to bar chart");
-        Button.createById(driver, BAR_CHART_BUTTON_ID).click();
+        getChartActionsPanel().clickOnPanel();
+        getChartActionsPanel().callAction(CHART_TYPE_BUTTON_ID, BAR_CHART_BUTTON_ID);
+        getChartActionsPanel().clickOnPanel();
     }
 
     @Step("I click chart type - line")
     public void clickLineChartType() {
         log.info("Changing chart type to line chart");
-        Button.createById(driver, LINE_CHART_BUTTON_ID).click();
+        getChartActionsPanel().clickOnPanel();
+        getChartActionsPanel().callAction(CHART_TYPE_BUTTON_ID, LINE_CHART_BUTTON_ID);
     }
 
     @Step("I pick data series color")
     public void chooseDataSeriesColor() {
         log.info("Changing first data series color");
-        Button.createById(driver, CHART_COLOR_BUTTON_ID).click();
-        KpiChartWidget.create(driver, wait).pickDataSeriesColorButton();
+        getChartActionsPanel().clickOnPanel();
+        getChartActionsPanel().callAction(CHART_TYPE_BUTTON_ID);
+        getChartActionsPanel().callAction(CHART_COLOR_BUTTON_ID, COLOR_PICKER_CLASS, "rgb(150, 65, 54)");
     }
 
     @Step("I should see {expectedLineWidth} width line displayed")
