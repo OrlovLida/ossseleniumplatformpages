@@ -81,12 +81,14 @@ public class XDRBrowserPage extends BaseDfePage {
     }
 
     @Step("I click on notification icon")
-    public void clickOnNotificationIcon() {
+    public void openNotificationAndWaitForExportFinish() {
         openNotificationPanel().waitForExportFinish();
     }
 
+    @Step("I click download file")
     public void clickDownload() {
         Notifications.create(driver, wait).clickDownloadFile();
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     @Step("I attach downloaded file to report")
@@ -135,6 +137,7 @@ public class XDRBrowserPage extends BaseDfePage {
         return FileUtils.readFileToByteArray(file);
     }
 
+    @Step("I click clear all notifications")
     public void clearNotifications() {
         Notifications.create(driver, wait).clearAllNotification();
         DelayUtils.sleep(2000);
