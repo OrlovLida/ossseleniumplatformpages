@@ -170,16 +170,6 @@ public class KpiViewPage extends BasePage {
         toolbar.getLayoutPanel().changeLayout(LayoutType.LAYOUT_2x2);
     }
 
-    @Step("I maximize chart")
-    public void maximizeChart() {
-        KpiChartWidget.create(driver, wait).maximizeChart();
-    }
-
-    @Step("I minimize chart")
-    public void minimizeChart() {
-        KpiChartWidget.create(driver, wait).minimizeChart();
-    }
-
     @Step("I minimize data View")
     public void minimizeDataView() {
         Card card = Card.createCard(driver, wait, DATA_VIEW_ID);
