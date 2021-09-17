@@ -66,7 +66,7 @@ public class XDRBrowserPage extends BaseDfePage {
     public void clickSearch() {
         DelayUtils.waitForPageToLoad(driver, wait);
         ButtonContainer.create(driver, wait).callActionByLabel(SEARCH_LABEL);
-        DelayUtils.waitForPageToLoad(driver, wait);
+        DelayUtils.sleep(3000);
         log.info("Searching for ETL");
     }
 
@@ -137,7 +137,7 @@ public class XDRBrowserPage extends BaseDfePage {
 
     public void clearNotifications() {
         Notifications.create(driver, wait).clearAllNotification();
-        DelayUtils.sleep(100);
+        DelayUtils.sleep(2000);
     }
 
     public int amountOfNotifications() {
