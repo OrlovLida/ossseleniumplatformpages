@@ -7,15 +7,7 @@ import io.qameta.allure.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Listeners;
-import org.testng.annotations.Optional;
-import org.testng.annotations.Parameters;
-import org.testng.annotations.Test;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import org.testng.annotations.*;
 
 import static com.oss.utils.AttachmentsManager.attachConsoleLogs;
 import static com.oss.utils.AttachmentsManager.saveScreenshotPNG;
@@ -31,17 +23,18 @@ public class KpiViewTest extends BaseTestCase {
         kpiViewPage = KpiViewPage.goToPage(driver, BASIC_URL);
     }
 
-    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect"})
+    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
     @Test(priority = 1)
     @Description("I verify if KPI View works properly")
     public void verifyIfKpiViewWorksProperly(
             @Optional("DFE Tests,DFE Product Tests,Selenium Tests") String indicatorNodesToExpand,
             @Optional("CPU_NICE_USAGE,CPU_TOTAL_USAGE") String indicatorNodesToSelect,
             @Optional("t:SMOKE#D_HOST") String dimensionNodesToExpand,
-            @Optional("192.168.128.172,192.168.128.173") String dimensionNodesToSelect
+            @Optional("192.168.128.172,192.168.128.173") String dimensionNodesToSelect,
+            @Optional("Selenium Tests") String filterName
     ){
         try{
-            kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect);
+            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
 
             //TODO move mouse over point
             kpiViewPage.exportChart();
@@ -53,23 +46,25 @@ public class KpiViewTest extends BaseTestCase {
 
     }
 
-    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect"})
+    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
     @Test(priority = 2)
     @Description("I verify panels resize tool")
     public void verifyPanelsResizeTool(
             @Optional("DFE Tests,DFE Product Tests,Selenium Tests") String indicatorNodesToExpand,
             @Optional("CPU_NICE_USAGE,CPU_TOTAL_USAGE") String indicatorNodesToSelect,
             @Optional("t:SMOKE#D_HOST") String dimensionNodesToExpand,
-            @Optional("192.168.128.172,192.168.128.173") String dimensionNodesToSelect
+            @Optional("192.168.128.172,192.168.128.173") String dimensionNodesToSelect,
+            @Optional("Selenium Tests") String filterName
     ){
-        try{
-            kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect);
+        try {
+            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
             kpiViewPage.changeLayout();
             saveScreenshotPNG(driver);
 
-            kpiViewPage.maximizeChart();
+            kpiViewPage.maximizeDataView();
             saveScreenshotPNG(driver);
-            kpiViewPage.minimizeChart();
+
+            kpiViewPage.minimizeDataView();
             saveScreenshotPNG(driver);
             attachConsoleLogs(driver);
         } catch (Exception e){
@@ -77,17 +72,18 @@ public class KpiViewTest extends BaseTestCase {
         }
     }
 
-    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect"})
+    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
     @Test(priority = 3)
     @Description("I verify a number of ranges and line")
     public void verifyNumberOfRangesAndLine(
             @Optional("DFE Tests,DFE Product Tests,Selenium Tests") String indicatorNodesToExpand,
             @Optional("t:SMOKE#Attempts") String indicatorNodesToSelect,
             @Optional("d1") String dimensionNodesToExpand,
-            @Optional("D1_01") String dimensionNodesToSelect
+            @Optional("D1_01") String dimensionNodesToSelect,
+            @Optional("Selenium Tests") String filterName
     ){
         try{
-            kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect);
+            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
 
             kpiViewPage.setTopNOptions("d1");
             Assert.assertTrue(kpiViewPage.shouldSeeBoxesAndCurvesDisplayed(1,1));
@@ -102,20 +98,4 @@ public class KpiViewTest extends BaseTestCase {
         }
 
     }
-
-    private void kpiViewSetup(String indicatorNodesToExpand, String indicatorNodesToSelect, String dimensionNodesToExpand, String dimensionNodesToSelect) {
-        kpiViewPage.setFilters(Collections.singletonList("Selenium Tests"));
-
-        List<String> indicatorNodesToExpandList = Arrays.asList(indicatorNodesToExpand.split(","));
-        List<String> indicatorNodesToSelectList = Arrays.asList(indicatorNodesToSelect.split(","));
-        kpiViewPage.selectIndicator(indicatorNodesToExpandList, indicatorNodesToSelectList);
-
-        List<String> dimensionNodesToExpandList = Arrays.asList(dimensionNodesToExpand.split(","));
-        List<String> dimensionNodesToSelectList = Arrays.asList(dimensionNodesToSelect.split(","));
-        kpiViewPage.selectDimension(dimensionNodesToExpandList, dimensionNodesToSelectList);
-
-        kpiViewPage.applyChanges();
-        kpiViewPage.seeChartIsDisplayed();
-    }
-
 }
