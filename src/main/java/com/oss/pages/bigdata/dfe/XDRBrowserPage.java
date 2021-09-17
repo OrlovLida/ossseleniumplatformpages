@@ -81,7 +81,7 @@ public class XDRBrowserPage extends BaseDfePage {
     }
 
     @Step("I click on notification icon")
-    public void openNotificationAndWaitForExportFinish() {
+    public void openNotificationAndWaitForExportToFinish() {
         openNotificationPanel().waitForExportFinish();
     }
 
