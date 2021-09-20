@@ -59,13 +59,13 @@ public class IndicatorsViewTest extends BaseTestCase {
     @Description("I verify if changing chart type works properly")
     public void verifyIfChartTypesWorksProperly(
             @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
-            @Optional("DBTIME,AQ_TIME") String indicatorNodesToSelect,
+            @Optional("DBTIME") String indicatorNodesToSelect,
             @Optional("DC Type: ETL_DC") String dimensionNodesToSelect,
             @Optional("Data Collection Statistics") String filterName
     ) {
         try {
             kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToSelect, filterName);
-            Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(2));
+            Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
             kpiViewPage.clickAreaChartType();
             Assert.assertTrue(kpiViewPage.shouldSeeAreaChart(AREA_CHART_FILL_OPACITY));
             kpiViewPage.clickBarChartType();
@@ -85,7 +85,7 @@ public class IndicatorsViewTest extends BaseTestCase {
     @Description("I verify if Time Period Chooser works properly")
     public void verifyIfPeriodChooserWorksProperly(
             @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
-            @Optional("DBTIME,AQ_TIME") String indicatorNodesToSelect,
+            @Optional("DBTIME") String indicatorNodesToSelect,
             @Optional("DC Type: ETL_DC") String dimensionNodesToSelect,
             @Optional("Data Collection Statistics") String filterName
     ) {
@@ -98,7 +98,7 @@ public class IndicatorsViewTest extends BaseTestCase {
             kpiViewPage.chooseLatestOptionInTimePeriodChooser();
             kpiViewPage.applyChanges();
             kpiViewPage.clickLegend();
-            Assert.assertTrue(kpiViewPage.shouldSeePointsDisplayed(2));
+            Assert.assertTrue(kpiViewPage.shouldSeePointsDisplayed(1));
         } catch (Exception e) {
             log.error(e.getMessage());
             Assert.fail();
