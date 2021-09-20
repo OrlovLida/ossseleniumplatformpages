@@ -47,6 +47,8 @@ public class KpiViewPage extends BasePage {
     private static final String DATA_VIEW_ID = "_Data_View";
     private static final String SAVE_BOOKMARK_BUTTON_ID = "fa fa-floppy-o";
     private static final String COLOR_PICKER_CLASS = "colorPickerWrapper";
+    private static final String XDR_BROWSER_LINK_ID = "external-links-button";
+    private static final String LINK_TO_XDR_LABEL = "Open xDR for t:SMOKE#ETLforKqis. Time condition limited to last 1 hour(s) from chosen period.";
 
     public KpiViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -288,6 +290,13 @@ public class KpiViewPage extends BasePage {
     public void chooseDataSeriesColor() {
         log.info("Changing first data series color");
         getChartActionsPanel().callAction(CHART_COLOR_BUTTON_ID, COLOR_PICKER_CLASS, "rgb(150, 65, 54)");
+    }
+
+    @Step("I click link to XDR Browser")
+    public void clickLinkToXDRBrowser() {
+        getChartActionsPanel().callAction(XDR_BROWSER_LINK_ID, LINK_TO_XDR_LABEL);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Clicking on link to XDR Browser");
     }
 
     @Step("I should see {expectedLineWidth} width line displayed")
