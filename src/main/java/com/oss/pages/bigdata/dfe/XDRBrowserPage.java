@@ -34,6 +34,7 @@ public class XDRBrowserPage extends BaseDfePage {
     private final String SEARCH_LABEL = "Search";
     private final String XDR_TABLE_ID = "xdrTableId";
     private final String EXPORT_BUTTON = "tableExportButton";
+    private final String ADVANCED_SEARCH_CLASS = "advanced-search_component";
 
     public XDRBrowserPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -90,12 +91,14 @@ public class XDRBrowserPage extends BaseDfePage {
     @Step("I click on notification icon")
     public void openNotificationAndWaitForExportToFinish() {
         openNotificationPanel().waitForExportFinish();
+        log.info("Opening notification panel and waiting for download to finish");
     }
 
     @Step("I click download file")
     public void clickDownload() {
         Notifications.create(driver, wait).clickDownloadFile();
         DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Clicking download file");
     }
 
     @Step("I attach downloaded file to report")
@@ -158,7 +161,8 @@ public class XDRBrowserPage extends BaseDfePage {
 
     @Step("I check if active filter contain {filter}")
     public boolean checkIfFilterExist(String filter) {
-        Multimap<String, String> activeFilters = AdvancedSearch.createByClass(driver, wait, "advanced-search_component").getAppliedFilters();
+        Multimap<String, String> activeFilters = AdvancedSearch.createByClass(driver, wait, ADVANCED_SEARCH_CLASS).getAppliedFilters();
+        log.info("Checking if filter: {} is on the map", filter);
         return activeFilters.toString().contains(filter);
     }
 
