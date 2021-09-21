@@ -7,7 +7,6 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.viewmanager.ViewManagerPage;
 import com.oss.utils.TestListener;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
@@ -27,7 +26,7 @@ public class ViewManagerTest extends BaseTestCase {
     @Test(priority = 1)
     public void addNewCategoryToViewManagerTest() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        viewManagerPage.addCategoryButton.click();
+        viewManagerPage.clickAddCategoryButton();
         DelayUtils.sleep(200);
         CategoryWizard createCategoryWizard = viewManagerPage.goToCategoryPopup();
         createCategoryWizard.setNameValue("Test Category");
@@ -153,11 +152,11 @@ public class ViewManagerTest extends BaseTestCase {
     @Test(priority = 9)
     public void changePlacesOfTwoMainCategories(){
         viewManagerPage.clearSearchField();
-        String firstCategory = viewManagerPage.getCategoryName(0);
+        String firstCategory = viewManagerPage.getMainCategoryName(0);
 
         viewManagerPage.dragAndDropFirstCategoryInPlaceOfSecond();
 
-        String secondCategory = viewManagerPage.getCategoryName(1);
+        String secondCategory = viewManagerPage.getMainCategoryName(1);
         Assert.assertEquals(firstCategory, secondCategory);
     }
 
@@ -167,8 +166,7 @@ public class ViewManagerTest extends BaseTestCase {
         viewManagerPage.dragAndDropFirstAppToSubcategory();
         DelayUtils.sleep(1000);
 
-        WebElement firstApplication = viewManagerPage.getApplication(0);
-        String subLocationWizardUrl = firstApplication.getAttribute("href");
+        String subLocationWizardUrl = viewManagerPage.getApplicationsUrl(0);
 
         Assert.assertTrue(subLocationWizardUrl.contains("sublocation/create"));
     }
@@ -207,9 +205,7 @@ public class ViewManagerTest extends BaseTestCase {
 
         DelayUtils.sleep(2500);
 
-        WebElement firstApplication = viewManagerPage.getApplication(0);
-        String subLocationWizardUrl = firstApplication.getAttribute("href");
-
+        String subLocationWizardUrl = viewManagerPage.getApplicationsUrl(0);
         Assert.assertTrue(subLocationWizardUrl.contains("?testParameter=testValue"));
     }
 
@@ -228,9 +224,9 @@ public class ViewManagerTest extends BaseTestCase {
     @Test(priority = 14)
     public void deleteApplicationFromSubcategory(){
         int numberOfGroupButtonForFirstAppInFirstSubcategory = 5;
-        viewManagerPage.getThreeDotsGroupButton(numberOfGroupButtonForFirstAppInFirstSubcategory).click();
+        viewManagerPage.clickThreeDotsButton(numberOfGroupButtonForFirstAppInFirstSubcategory);
         DelayUtils.sleep(300);
-        viewManagerPage.clickDeleteButton();
+        viewManagerPage.clickDeleteButtonInDropdown();
 
         DelayUtils.sleep(2500);
         try {
@@ -246,7 +242,7 @@ public class ViewManagerTest extends BaseTestCase {
         DelayUtils.sleep(200);
         viewManagerPage.clickButtonsGroupOnFirstApplication();
         DelayUtils.sleep(300);
-        viewManagerPage.clickDeleteButton();
+        viewManagerPage.clickDeleteButtonInDropdown();
 
         DelayUtils.sleep(2500);
         try {
@@ -260,7 +256,7 @@ public class ViewManagerTest extends BaseTestCase {
     @Test(priority = 16)
     public void deleteSubcategory(){
         viewManagerPage.removeFirstSubcategory();
-        DelayUtils.sleep(200);
+        DelayUtils.sleep(1000);
 
         try {
             driver.findElement(By.xpath("//*[text()='Subcategory After Edition']"));
