@@ -51,70 +51,70 @@ public class ViewManagerPage extends BasePage {
         return ApplicationWizard.create(driver, wait);
     }
 
-    public String getApplicationsUrl(int numberOfApplication){
+    public String getApplicationsUrl(int numberOfApplication) {
         return this.toolsManagerWindow.getGivenApplicationsURL(numberOfApplication);
     }
 
-    public String getMainCategoryName(int numberOfCategory){
+    public String getMainCategoryName(int numberOfCategory) {
         return toolsManagerWindow.getMainCategoryName(numberOfCategory);
     }
 
-    public String getSubcategoryName(int numberOfSubcategory){
+    public String getSubcategoryName(int numberOfSubcategory) {
         return toolsManagerWindow.getSubcategoryName(numberOfSubcategory);
     }
 
-    private void clickSubcategoryGroupButton(int numberOfButton){
+    private void clickSubcategoryGroupButton(int numberOfButton) {
         toolsManagerWindow.clickSubcategoryGroupButton(numberOfButton);
     }
 
-    public void clickThreeDotsButton(int numberOfButton){
+    public void clickThreeDotsButton(int numberOfButton) {
         toolsManagerWindow.clickThreeDotsGroupButton(numberOfButton);
     }
 
-    public void clickAddCategoryButton(){
+    public void clickAddCategoryButton() {
         toolsManagerWindow.clickAddCategoryButton();
     }
 
     @Step("Search specific category by name")
-    public void searchForCategory(String categoryName){
+    public void searchForCategory(String categoryName) {
         SearchField searchField = (SearchField) ComponentFactory.create(SEARCH_TEST_ID, Input.ComponentType.SEARCH_FIELD, driver, wait);
         searchField.typeValue(categoryName);
 
         DelayUtils.sleep(1000);
     }
 
-    public void clearSearchField(){
+    public void clearSearchField() {
         SearchField searchField = (SearchField) ComponentFactory.create(SEARCH_TEST_ID, Input.ComponentType.SEARCH_FIELD, driver, wait);
         searchField.clear();
 
         DelayUtils.sleep(1000);
     }
 
-    public void enterEditionOfCategory(){
+    public void enterEditionOfCategory() {
         toolsManagerWindow.clickThreeDotsGroupButton(0);
         ActionsDropdownList actionsDropdownList = new ActionsDropdownList(driver);
         actionsDropdownList.clickOnActionById(EDIT_CATEGORY_BUTTON_ID);
     }
 
-    public void enterAddApplicationButtonInFirstMainCategory(){
+    public void enterAddApplicationButtonInFirstMainCategory() {
         toolsManagerWindow.clickThreeDotsGroupButton(0);
         ActionsDropdownList actionsDropdownList = new ActionsDropdownList(driver);
         actionsDropdownList.clickOnActionById(ADD_APPLICATION_BUTTON_ID);
     }
 
-    public void enterAddApplicationButtonInFirstSubcategory(){
+    public void enterAddApplicationButtonInFirstSubcategory() {
         clickSubcategoryGroupButton(0);
         ActionsDropdownList actionsDropdownList = new ActionsDropdownList(driver);
         actionsDropdownList.clickOnActionById(ADD_APPLICATION_BUTTON_ID);
     }
 
-    public void enterEditSubcategoryButton(){
+    public void enterEditSubcategoryButton() {
         clickSubcategoryGroupButton(0);
         ActionsDropdownList actionsDropdownList = new ActionsDropdownList(driver);
         actionsDropdownList.clickOnActionById(EDIT_SUBCATEGORY_BUTTON_ID);
     }
 
-    public void removeFirstSubcategory(){
+    public void removeFirstSubcategory() {
         clickSubcategoryGroupButton(0);
         ActionsDropdownList actionsDropdownList = new ActionsDropdownList(driver);
         actionsDropdownList.clickOnActionById(DELETE_CATEGORY_BUTTON_ID);
@@ -123,46 +123,46 @@ public class ViewManagerPage extends BasePage {
         DelayUtils.sleep(2000);
     }
 
-    public void enterCreateSubcategory(){
+    public void enterCreateSubcategory() {
         toolsManagerWindow.clickThreeDotsGroupButton(0);
         ActionsDropdownList actionsDropdownList = new ActionsDropdownList(driver);
         actionsDropdownList.clickOnActionById(CREATE_SUBCATEGORY_BUTTON_ID);
     }
 
-    public void clickButtonsGroupOnFirstApplication(){
+    public void clickButtonsGroupOnFirstApplication() {
         driver.findElement(By.xpath(FIRST_APPLICATION_THREE_DOTS_BUTTON_XPATH)).click();
     }
 
-    public void clickEditButton(){
+    public void clickEditButton() {
         driver.findElement(By.xpath(EDIT_APPLICATION_BUTTON_XPATH)).click();
     }
 
-    public void deleteFirstCategory(){
+    public void deleteFirstCategory() {
         toolsManagerWindow.clickThreeDotsGroupButton(0);
         toolsManagerWindow.clickDeleteButtonInDropdown();
     }
 
-    public void clickDeleteButtonInDropdown(){
+    public void clickDeleteButtonInDropdown() {
         toolsManagerWindow.clickDeleteButtonInDropdown();
     }
 
-    public void dragAndDropFirstAppInPlaceOfSecond(){
-        DragAndDrop.dragAndDrop(FIRST_APPLICATION_DRAG_AND_DROP_BUTTON_XPATH, SECOND_APPLICATION_DRAG_AND_DROP_BUTTON_XPATH,driver);
+    public void dragAndDropFirstAppInPlaceOfSecond() {
+        DragAndDrop.dragAndDrop(FIRST_APPLICATION_DRAG_AND_DROP_BUTTON_XPATH, SECOND_APPLICATION_DRAG_AND_DROP_BUTTON_XPATH, driver);
     }
 
-    public void dragAndDropFirstCategoryInPlaceOfSecond(){
+    public void dragAndDropFirstCategoryInPlaceOfSecond() {
         DragAndDrop.dragAndDrop(FIRST_CATEGORY_DRAG_AND_DROP_BUTTON_XPATH, SECOND_CATEGORY_DRAG_AND_DROP_BUTTON_XPATH, driver);
     }
 
-    public void dragAndDropFirstAppToSubcategory(){
+    public void dragAndDropFirstAppToSubcategory() {
         DragAndDrop.dragAndDrop(FIRST_APPLICATION_DRAG_AND_DROP_BUTTON_XPATH, FIRST_APP_FROM_SUBCATEGORY_DRAG_BUTTON_XPATH, driver);
     }
 
-    public void dragAndDropFirstSubcategoryToPlaceOfSecondSubcategory(){
+    public void dragAndDropFirstSubcategoryToPlaceOfSecondSubcategory() {
         DragAndDrop.dragAndDrop(FIRST_SUBCATEGORY_DRAG_BUTTON_XPATH, SECOND_SUBCATEGORY_DRAG_BUTTON_XPATH, driver);
     }
 
-    public void rolloutFirstCategory(){
+    public void rolloutFirstCategory() {
         driver.findElement(By.xpath(CATEGORY_ROLLOUT_BUTTON_XPATH)).click();
     }
 }

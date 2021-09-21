@@ -124,7 +124,7 @@ public class ViewManagerTest extends BaseTestCase {
     }
 
     @Test(priority = 7)
-    public void addSubcategory(){
+    public void addSubcategory() {
         viewManagerPage.enterCreateSubcategory();
         CategoryWizard subcategoryWizard = viewManagerPage.goToCategoryPopup();
         subcategoryWizard.setNameValue("Test Subcategory");
@@ -136,7 +136,7 @@ public class ViewManagerTest extends BaseTestCase {
     }
 
     @Test(priority = 8)
-    public void addApplicationToSubcategory(){
+    public void addApplicationToSubcategory() {
         viewManagerPage.enterAddApplicationButtonInFirstSubcategory();
         DelayUtils.sleep(200);
         ApplicationWizard addApplicationWizard = viewManagerPage.goToApplicationPopup();
@@ -150,7 +150,7 @@ public class ViewManagerTest extends BaseTestCase {
     }
 
     @Test(priority = 9)
-    public void changePlacesOfTwoMainCategories(){
+    public void changePlacesOfTwoMainCategories() {
         viewManagerPage.clearSearchField();
         String firstCategory = viewManagerPage.getMainCategoryName(0);
 
@@ -161,7 +161,7 @@ public class ViewManagerTest extends BaseTestCase {
     }
 
     @Test(priority = 10)
-    public void dragOutApplicationOutOfSubcategory(){
+    public void dragOutApplicationOutOfSubcategory() {
         viewManagerPage.searchForCategory("Name after edition");
         viewManagerPage.dragAndDropFirstAppToSubcategory();
         DelayUtils.sleep(1000);
@@ -172,7 +172,7 @@ public class ViewManagerTest extends BaseTestCase {
     }
 
     @Test(priority = 11)
-    public void changePlaceOfTwoSubcategories(){
+    public void changePlaceOfTwoSubcategories() {
         viewManagerPage.enterCreateSubcategory();
         CategoryWizard subcategoryWizard = viewManagerPage.goToCategoryPopup();
         subcategoryWizard.setNameValue("Second Subcategory");
@@ -191,7 +191,7 @@ public class ViewManagerTest extends BaseTestCase {
     }
 
     @Test(priority = 12)
-    public void addQueryParamToApplication(){
+    public void addQueryParamToApplication() {
         DelayUtils.sleep(200);
         viewManagerPage.clickButtonsGroupOnFirstApplication();
         DelayUtils.sleep(300);
@@ -200,7 +200,7 @@ public class ViewManagerTest extends BaseTestCase {
         DelayUtils.sleep(300);
         editApplicationWizard.openQueryParamsTable();
 
-        editApplicationWizard.addTestQueryParams();
+        editApplicationWizard.addTestQueryParamsToFirstRow("testParameter", "testValue");
         editApplicationWizard.clickSaveButton();
 
         DelayUtils.sleep(2500);
@@ -210,7 +210,7 @@ public class ViewManagerTest extends BaseTestCase {
     }
 
     @Test(priority = 13)
-    public void editSubcategory(){
+    public void editSubcategory() {
         viewManagerPage.enterEditSubcategoryButton();
         CategoryWizard editSubcategoryWizard = viewManagerPage.goToCategoryPopup();
         editSubcategoryWizard.setNameValue("Subcategory After Edition");
@@ -222,7 +222,7 @@ public class ViewManagerTest extends BaseTestCase {
     }
 
     @Test(priority = 14)
-    public void deleteApplicationFromSubcategory(){
+    public void deleteApplicationFromSubcategory() {
         int numberOfGroupButtonForFirstAppInFirstSubcategory = 5;
         viewManagerPage.clickThreeDotsButton(numberOfGroupButtonForFirstAppInFirstSubcategory);
         DelayUtils.sleep(300);
@@ -232,13 +232,12 @@ public class ViewManagerTest extends BaseTestCase {
         try {
             driver.findElement(By.xpath("//*[text()='Create Cable']"));
             Assert.fail();
-        }
-        catch (org.openqa.selenium.NoSuchElementException e) {
+        } catch (org.openqa.selenium.NoSuchElementException e) {
         }
     }
 
     @Test(priority = 15)
-    public void deleteApplicationFromMainCategory(){
+    public void deleteApplicationFromMainCategory() {
         DelayUtils.sleep(200);
         viewManagerPage.clickButtonsGroupOnFirstApplication();
         DelayUtils.sleep(300);
@@ -248,21 +247,19 @@ public class ViewManagerTest extends BaseTestCase {
         try {
             driver.findElement(By.xpath("//*[text()='Sublocation']"));
             Assert.fail();
-        }
-        catch (org.openqa.selenium.NoSuchElementException e) {
+        } catch (org.openqa.selenium.NoSuchElementException e) {
         }
     }
 
     @Test(priority = 16)
-    public void deleteSubcategory(){
+    public void deleteSubcategory() {
         viewManagerPage.removeFirstSubcategory();
         DelayUtils.sleep(1000);
 
         try {
             driver.findElement(By.xpath("//*[text()='Subcategory After Edition']"));
             Assert.fail();
-        }
-        catch (org.openqa.selenium.NoSuchElementException e) {
+        } catch (org.openqa.selenium.NoSuchElementException e) {
         }
     }
 
