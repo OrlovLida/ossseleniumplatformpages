@@ -38,7 +38,6 @@ public class LinkToXDRBrowserTest extends BaseTestCase {
     ) {
         try {
             kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
-            kpiViewPage.applyChanges();
 
             Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
 
