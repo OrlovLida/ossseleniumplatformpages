@@ -35,4 +35,9 @@
             <class name="com.oss.bigdata.dfe.SMOKE.XDRBrowserTest"/>
         </classes>
     </test>
+    <test name="LinkToXDRBrowserTest">
+        <classes>
+            <class name="com.oss.bigdata.dfe.SMOKE.LinkToXDRBrowserTest"/>
+        </classes>
+    </test>
 </suite>
