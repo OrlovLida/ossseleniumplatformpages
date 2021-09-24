@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
+import static com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.*;
+
 @Listeners({TestListener.class})
 public class IndicatorsViewTest extends BaseTestCase {
 
@@ -21,6 +23,7 @@ public class IndicatorsViewTest extends BaseTestCase {
     private static final String BAR_CHART_FILL_OPACITY = "0.6";
     private static final String LINE_CHART_FILL_OPACITY = "0";
     private static final String FIRST_CHART_COLOR = "rgb(150, 65, 54)";
+    private static final String LAYOUT_EXPECTED_STATUS = "active";
 
     private KpiViewPage kpiViewPage;
 
@@ -191,6 +194,38 @@ public class IndicatorsViewTest extends BaseTestCase {
             kpiViewPage.minimizeIndicatorsPanel();
             kpiViewPage.maximizeDimensionsPanel();
             kpiViewPage.minimizeDimensionsPanel();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            Assert.fail();
+        }
+    }
+
+    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToSelect", "filterName"})
+    @Test(priority = 8, testName = "Verifying changing layout option", description = "Verifying changing layout option")
+    @Description("I verify if changing layout option works properly")
+    public void ChangingChartLayoutOption(
+            @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
+            @Optional("AQ_TIME") String indicatorNodesToSelect,
+            @Optional("DC Type: ETL_DC") String dimensionNodesToSelect,
+            @Optional("Data Collection Statistics") String filterName
+    ) {
+        try {
+            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToSelect, filterName);
+            Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+            kpiViewPage.changeLayout(LAYOUT_1x1);
+            Assert.assertTrue(kpiViewPage.layoutButtonStatus(LAYOUT_1x1).equals(LAYOUT_EXPECTED_STATUS));
+            kpiViewPage.changeLayout(LAYOUT_2x1);
+            Assert.assertTrue(kpiViewPage.layoutButtonStatus(LAYOUT_2x1).equals(LAYOUT_EXPECTED_STATUS));
+            kpiViewPage.changeLayout(LAYOUT_2x2);
+            Assert.assertTrue(kpiViewPage.layoutButtonStatus(LAYOUT_2x2).equals(LAYOUT_EXPECTED_STATUS));
+            kpiViewPage.changeLayout(LAYOUT_4x4);
+            Assert.assertTrue(kpiViewPage.layoutButtonStatus(LAYOUT_4x4).equals(LAYOUT_EXPECTED_STATUS));
+            kpiViewPage.changeLayout(LAYOUT_3x3);
+            Assert.assertTrue(kpiViewPage.layoutButtonStatus(LAYOUT_3x3).equals(LAYOUT_EXPECTED_STATUS));
+            kpiViewPage.changeLayout(LAYOUT_3x2);
+            Assert.assertTrue(kpiViewPage.layoutButtonStatus(LAYOUT_3x2).equals(LAYOUT_EXPECTED_STATUS));
+            kpiViewPage.changeLayout(LAYOUT_AUTO);
+            Assert.assertTrue(kpiViewPage.layoutButtonStatus(LAYOUT_AUTO).equals(LAYOUT_EXPECTED_STATUS));
         } catch (Exception e) {
             log.error(e.getMessage());
             Assert.fail();
