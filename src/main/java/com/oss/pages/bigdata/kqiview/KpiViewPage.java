@@ -455,8 +455,7 @@ public class KpiViewPage extends BasePage {
     @Step("I check status of chosen layout button")
     public String layoutButtonStatus(LayoutType layout) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        String status = LayoutPanel.create(driver,wait).chartLayoutButtonStatus(layout);
-        return status;
+        return LayoutPanel.create(driver, wait).chartLayoutButtonStatus(layout);
     }
 
     public void kpiViewSetup(String indicatorNodesToExpand, String indicatorNodesToSelect,

@@ -219,7 +219,7 @@ public class IndicatorsViewTest extends BaseTestCase {
             Assert.assertTrue(kpiViewPage.layoutButtonStatus(LAYOUT_2x2).equals("active"));
             kpiViewPage.changeLayout(LAYOUT_AUTO);
             Assert.assertTrue(kpiViewPage.layoutButtonStatus(LAYOUT_AUTO).equals("active"));
-       } catch (Exception e) {
+        } catch (Exception e) {
             log.error(e.getMessage());
             Assert.fail();
         }
