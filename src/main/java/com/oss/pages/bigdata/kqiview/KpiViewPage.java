@@ -452,6 +452,13 @@ public class KpiViewPage extends BasePage {
         }
     }
 
+    @Step("I check status of chosen layout button")
+    public String layoutButtonStatus(LayoutType layout) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        String status = LayoutPanel.create(driver,wait).chartLayoutButtonStatus(layout);
+        return status;
+    }
+
     public void kpiViewSetup(String indicatorNodesToExpand, String indicatorNodesToSelect,
                              String dimensionNodesToExpand, String dimensionNodesToSelect, String filterName) {
         setFilters(Collections.singletonList(filterName));

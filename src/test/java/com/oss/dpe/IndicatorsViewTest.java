@@ -1,18 +1,13 @@
 package com.oss.dpe;
 
 import com.oss.BaseTestCase;
-import com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel;
 import com.oss.pages.bigdata.kqiview.KpiViewPage;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Listeners;
-import org.testng.annotations.Optional;
-import org.testng.annotations.Parameters;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import static com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.*;
 
@@ -207,7 +202,7 @@ public class IndicatorsViewTest extends BaseTestCase {
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToSelect", "filterName"})
     @Test(priority = 8, testName = "Verifying changing layout option", description = "Verifying changing layout option")
     @Description("I verify if changing layout option works properly")
-    public void verifyIfChangingLayoutOptionWorksProperly(
+    public void ChangingChartLayoutOption(
             @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
             @Optional("AQ_TIME") String indicatorNodesToSelect,
             @Optional("DC Type: ETL_DC") String dimensionNodesToSelect,
@@ -217,17 +212,13 @@ public class IndicatorsViewTest extends BaseTestCase {
             kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToSelect, filterName);
             Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
             kpiViewPage.changeLayout(LAYOUT_2x2);
-            String actualStatus = LayoutPanel.create(driver,webDriverWait).chartLayoutButtonStatus(LAYOUT_2x2);
-            Assert.assertTrue(actualStatus.equals("active"));
+            Assert.assertTrue(kpiViewPage.layoutButtonStatus(LAYOUT_2x2).equals("active"));
             kpiViewPage.changeLayout(LAYOUT_4x4);
-            String actualStatus2 = LayoutPanel.create(driver,webDriverWait).chartLayoutButtonStatus(LAYOUT_4x4);
-            Assert.assertTrue(actualStatus2.equals("active"));
+            Assert.assertTrue(kpiViewPage.layoutButtonStatus(LAYOUT_4x4).equals("active"));
             kpiViewPage.changeLayout(LAYOUT_2x2);
-            String actualStatus3 = LayoutPanel.create(driver,webDriverWait).chartLayoutButtonStatus(LAYOUT_2x2);
-            Assert.assertTrue(actualStatus3.equals("active"));
+            Assert.assertTrue(kpiViewPage.layoutButtonStatus(LAYOUT_2x2).equals("active"));
             kpiViewPage.changeLayout(LAYOUT_AUTO);
-            String actualStatus4 = LayoutPanel.create(driver,webDriverWait).chartLayoutButtonStatus(LAYOUT_AUTO);
-            Assert.assertTrue(actualStatus4.equals("active"));
+            Assert.assertTrue(kpiViewPage.layoutButtonStatus(LAYOUT_AUTO).equals("active"));
        } catch (Exception e) {
             log.error(e.getMessage());
             Assert.fail();
