@@ -1,18 +1,14 @@
 package com.oss.pages.faultmanagement;
 
 import com.oss.framework.components.inputs.Button;
-import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.IaaTable;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
 
 public class WAMVPage extends BasePage {
     private static final Logger log = LoggerFactory.getLogger(FMDashboardPage.class);
@@ -20,7 +16,7 @@ public class WAMVPage extends BasePage {
     private static final String BUTTON_ACK_TEST_ID = "Acknowledge";
     private static final String BUTTON_DEACK_TEST_ID = "Deacknowledge";
     private static final String ACK_COLUMN_ID = "cell-row-col-acknowledge";
-
+    private static final String ACK_ATT = "title";
 
 
     public WAMVPage(WebDriver driver) {
@@ -65,7 +61,7 @@ public class WAMVPage extends BasePage {
 
     @Step("I return a cell text from ack. status column")
     public String getTextFromAckStatusCell(int row) {
-        return createIaaTableElement().getListOfCells(ACK_COLUMN_ID).get(row).getAttribute("title").toString();
+        return createIaaTableElement().getCellValue(row, ACK_COLUMN_ID, ACK_ATT);
     }
 
 }
