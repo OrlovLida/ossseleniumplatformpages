@@ -7,8 +7,13 @@ import io.qameta.allure.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
-import org.testng.annotations.*;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
+import org.testng.annotations.Test;
 
+import static com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_2x2;
 import static com.oss.utils.AttachmentsManager.attachConsoleLogs;
 import static com.oss.utils.AttachmentsManager.saveScreenshotPNG;
 
@@ -58,7 +63,7 @@ public class KpiViewTest extends BaseTestCase {
     ){
         try {
             kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
-            kpiViewPage.changeLayout();
+            kpiViewPage.changeLayout(LAYOUT_2x2);
             saveScreenshotPNG(driver);
 
             kpiViewPage.maximizeDataView();
