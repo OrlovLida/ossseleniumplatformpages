@@ -167,9 +167,9 @@ public class KpiViewPage extends BasePage {
     }
 
     @Step("I change layout")
-    public void changeLayout(LayoutType layoutType) {
+    public void changeLayout() {
         KpiToolbarPanel toolbar = KpiToolbarPanel.create(driver, wait);
-        toolbar.getLayoutPanel().changeLayout(layoutType);
+        toolbar.getLayoutPanel().changeLayout(LayoutType.LAYOUT_2x2);
     }
 
     @Step("I minimize data View")
@@ -450,12 +450,6 @@ public class KpiViewPage extends BasePage {
             log.error("Other Panels are also visible");
             return false;
         }
-    }
-
-    @Step("I check status of chosen layout button")
-    public String layoutButtonStatus(LayoutType layout) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        return LayoutPanel.create(driver, wait).chartLayoutButtonStatus(layout);
     }
 
     public void kpiViewSetup(String indicatorNodesToExpand, String indicatorNodesToSelect,
