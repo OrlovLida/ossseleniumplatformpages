@@ -1,6 +1,7 @@
 package com.oss.bigdata.kpiview;
 
 import com.oss.BaseTestCase;
+import com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel;
 import com.oss.pages.bigdata.kqiview.KpiViewPage;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
@@ -58,7 +59,7 @@ public class KpiViewTest extends BaseTestCase {
     ){
         try {
             kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
-            kpiViewPage.changeLayout();
+            kpiViewPage.changeLayout(LayoutPanel.LayoutType.LAYOUT_2x2);
             saveScreenshotPNG(driver);
 
             kpiViewPage.maximizeDataView();
