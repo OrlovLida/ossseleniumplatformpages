@@ -237,8 +237,8 @@ public class IndicatorsViewTest extends BaseTestCase {
     }
 
     @Parameters({"filterName"})
-    @Test(priority = 9)
-    @Description("Verify search from indicators/dimensions tree")
+    @Test(priority = 9, testName = "Search in indicators and dimensions tress", description = "Verify search from indicators and dimensions trees for DPE data")
+    @Description("Verify search from indicators and dimensions trees for DPE data")
     public void searchIndicators(
             @Optional("Data Collection Statistics") String filterName
     ) {

@@ -105,8 +105,8 @@ public class KpiViewTest extends BaseTestCase {
     }
 
     @Parameters({"filterName"})
-    @Test(priority = 4, enabled = false)
-    @Description("Verify search indicators/dimensions from tree")
+    @Test(priority = 4, testName = "Search in indicators and dimensions tress", description = "Verify search from indicators and dimensions trees for DFE data")
+    @Description("Verify search from indicators and dimensions trees for DFE data")
     public void searchIndicators(
             @Optional("DFE Self Monitoring") String filterName
     ) {
