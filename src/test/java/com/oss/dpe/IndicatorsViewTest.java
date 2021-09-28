@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
+import java.util.Collections;
+
 import static com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.*;
 
 @Listeners({TestListener.class})
@@ -24,6 +26,8 @@ public class IndicatorsViewTest extends BaseTestCase {
     private static final String LINE_CHART_FILL_OPACITY = "0";
     private static final String FIRST_CHART_COLOR = "rgb(150, 65, 54)";
     private static final String LAYOUT_EXPECTED_STATUS = "active";
+    private static final String INDICATORS_TREE_ID = "_Indicators";
+    private static final String DIMENSIONS_TREE_ID = "_Dimensions";
 
     private KpiViewPage kpiViewPage;
 
@@ -232,4 +236,17 @@ public class IndicatorsViewTest extends BaseTestCase {
         }
     }
 
+    @Parameters({"filterName"})
+    @Test(priority = 9, testName = "Search in indicators and dimensions trees", description = "Verify search from indicators and dimensions trees for DPE data")
+    @Description("Verify search from indicators and dimensions trees for DPE data")
+    public void searchIndicators(
+            @Optional("Data Collection Statistics") String filterName
+    ) {
+        kpiViewPage.setFilters(Collections.singletonList(filterName));
+        kpiViewPage.searchInToolbarPanel("DBTIME", INDICATORS_TREE_ID);
+        kpiViewPage.searchInToolbarPanel("DC Type: PMSTA_DC", DIMENSIONS_TREE_ID);
+        kpiViewPage.applyChanges();
+
+        Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+    }
 }
