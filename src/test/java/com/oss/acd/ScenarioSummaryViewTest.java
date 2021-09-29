@@ -19,11 +19,14 @@ public class ScenarioSummaryViewTest extends BaseTestCase {
 
     private ScenarioSummaryViewPage scenarioSummaryViewPage;
 
+    private final String asdScenarioSummaryViewSuffixUrl = "%s/#/view/acd/asd";
+    private final String severityAttributeValue = "attribute1ValuesId";
     private String issuesTableRefreshButtonId = "DetectedIssuesButtonId-1";
+
 
     @BeforeClass
     public void goToASDScenarioSummaryView() {
-        scenarioSummaryViewPage = ScenarioSummaryViewPage.goToPage(driver, BASIC_URL);
+        scenarioSummaryViewPage = ScenarioSummaryViewPage.goToPage(driver, asdScenarioSummaryViewSuffixUrl, BASIC_URL);
     }
 
     @Test(priority = 1, testName = "Add new predefined filter", description = "Add new predefined filter")
@@ -37,11 +40,11 @@ public class ScenarioSummaryViewTest extends BaseTestCase {
         log.info("Visualization type - CHART - set");
         scenarioSummaryViewPage.chooseAttribute("Severity");
         log.info("Attribute name - Severity - set");
-        scenarioSummaryViewPage.insertAttributeValueToMultiComboBoxComponent("Cleared", "attribute1ValuesId");
+        scenarioSummaryViewPage.insertAttributeValueToMultiComboBoxComponent("Cleared", severityAttributeValue);
         log.info("Attribute Value - Cleared - set");
-        scenarioSummaryViewPage.insertAttributeValueToMultiComboBoxComponent("Major", "attribute1ValuesId");
+        scenarioSummaryViewPage.insertAttributeValueToMultiComboBoxComponent("Major", severityAttributeValue);
         log.info("Attribute Value - Major - set");
-        scenarioSummaryViewPage.insertAttributeValueToMultiComboBoxComponent("Critical", "attribute1ValuesId");
+        scenarioSummaryViewPage.insertAttributeValueToMultiComboBoxComponent("Critical", severityAttributeValue);
         log.info("Attribute Value - Critical - set");
         scenarioSummaryViewPage.savePredefinedFilter();
         log.info("Predefined filter has been added successfully");
@@ -78,7 +81,7 @@ public class ScenarioSummaryViewTest extends BaseTestCase {
                 Assert.fail();
             } else {
                 log.info("table contains data for issues without roots");
-                scenarioSummaryViewPage.setValueOfIssueStateBox("Automatically");
+                scenarioSummaryViewPage.setValueOfCreationTypeBox("Automatically");
                 scenarioSummaryViewPage.setValueInTimePeriodChooser("create_time", 3, 12, 33);
                 scenarioSummaryViewPage.setValueOfIssueIdSearch();
             }
@@ -87,7 +90,7 @@ public class ScenarioSummaryViewTest extends BaseTestCase {
             log.info("table contains data for issues with roots");
 
             scenarioSummaryViewPage.turnOnSwitcher();
-            scenarioSummaryViewPage.setValueOfIssueStateBox("Automatically");
+            scenarioSummaryViewPage.setValueOfCreationTypeBox("Automatically");
             scenarioSummaryViewPage.setValueInTimePeriodChooser("create_time", 3, 12, 33);
             scenarioSummaryViewPage.setValueOfIssueIdSearch();
 

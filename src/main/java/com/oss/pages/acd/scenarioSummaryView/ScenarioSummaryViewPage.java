@@ -50,10 +50,10 @@ public class ScenarioSummaryViewPage extends BasePage {
     }
 
     @Step("I Open Scenario Summary View")
-    public static ScenarioSummaryViewPage goToPage(WebDriver driver, String basicURL) {
+    public static ScenarioSummaryViewPage goToPage(WebDriver driver, String suffixURL, String basicURL) {
         WebDriverWait wait = new WebDriverWait(driver, 150);
 
-        String pageUrl = String.format("%s/#/view/acd/asd", basicURL);
+        String pageUrl = String.format(suffixURL, basicURL);
         driver.get(pageUrl);
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Opened page: {}", pageUrl);
@@ -149,7 +149,7 @@ public class ScenarioSummaryViewPage extends BasePage {
     }
 
     @Step("Set value of Issue State multiComboBox")
-    public void setValueOfIssueStateBox(String creationType) {
+    public void setValueOfCreationTypeBox(String creationType) {
         DelayUtils.waitForPageToLoad(driver, wait);
         Input issueStateComboBox = advancedSearch.getComponent("creation_type", Input.ComponentType.MULTI_COMBOBOX);
         log.info("Setting value of Issue State: {}", creationType);
