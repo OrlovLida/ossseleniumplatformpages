@@ -21,9 +21,9 @@ import org.slf4j.LoggerFactory;
 
 import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
 
-public class ScenarioSummaryViewPage extends BasePage {
+public class AsdScenarioSummaryViewPage extends BasePage {
 
-    private static final Logger log = LoggerFactory.getLogger(ScenarioSummaryViewPage.class);
+    private static final Logger log = LoggerFactory.getLogger(AsdScenarioSummaryViewPage.class);
 
     private final String PREDEFINED_FILTERS_VIEW_ID = "PredefinedFiltersWindowId";
     private final String ADD_PREDEFINED_FILTER_BUTTON = "contextButton-0";
@@ -41,7 +41,7 @@ public class ScenarioSummaryViewPage extends BasePage {
     private final OldTable table;
     private final ServiceDeskAdvancedSearch advancedSearch;
 
-    public ScenarioSummaryViewPage(WebDriver driver, WebDriverWait wait) {
+    public AsdScenarioSummaryViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
         visualizationTypeWizard = Wizard.createWizard(driver, wait);
         attributeWizard = Wizard.createWizard(driver, wait);
@@ -50,7 +50,7 @@ public class ScenarioSummaryViewPage extends BasePage {
     }
 
     @Step("I Open Scenario Summary View")
-    public static ScenarioSummaryViewPage goToPage(WebDriver driver, String suffixURL, String basicURL) {
+    public static AsdScenarioSummaryViewPage goToPage(WebDriver driver, String suffixURL, String basicURL) {
         WebDriverWait wait = new WebDriverWait(driver, 150);
 
         String pageUrl = String.format(suffixURL, basicURL);
@@ -58,7 +58,7 @@ public class ScenarioSummaryViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Opened page: {}", pageUrl);
 
-        return new ScenarioSummaryViewPage(driver, wait);
+        return new AsdScenarioSummaryViewPage(driver, wait);
     }
 
     @Step("Waiting for Predefined Filters presence")

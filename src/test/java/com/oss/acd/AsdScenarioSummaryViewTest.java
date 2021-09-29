@@ -2,7 +2,7 @@ package com.oss.acd;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.acd.scenarioSummaryView.ScenarioSummaryViewPage;
+import com.oss.pages.acd.scenarioSummaryView.AsdScenarioSummaryViewPage;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 import org.slf4j.Logger;
@@ -13,40 +13,39 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 @Listeners({TestListener.class})
-public class ScenarioSummaryViewTest extends BaseTestCase {
+public class AsdScenarioSummaryViewTest extends BaseTestCase {
 
-    private static final Logger log = LoggerFactory.getLogger(ScenarioSummaryViewTest.class);
+    private static final Logger log = LoggerFactory.getLogger(AsdScenarioSummaryViewTest.class);
 
-    private ScenarioSummaryViewPage scenarioSummaryViewPage;
+    private AsdScenarioSummaryViewPage asdScenarioSummaryViewPage;
 
     private final String asdScenarioSummaryViewSuffixUrl = "%s/#/view/acd/asd";
     private final String severityAttributeValue = "attribute1ValuesId";
     private String issuesTableRefreshButtonId = "DetectedIssuesButtonId-1";
 
-
     @BeforeClass
     public void goToASDScenarioSummaryView() {
-        scenarioSummaryViewPage = ScenarioSummaryViewPage.goToPage(driver, asdScenarioSummaryViewSuffixUrl, BASIC_URL);
+        asdScenarioSummaryViewPage = AsdScenarioSummaryViewPage.goToPage(driver, asdScenarioSummaryViewSuffixUrl, BASIC_URL);
     }
 
     @Test(priority = 1, testName = "Add new predefined filter", description = "Add new predefined filter")
     @Description("Add new predefined filter")
     public void addPredefinedFilter() {
         log.info("Waiting in method addPredefinedFilter");
-        scenarioSummaryViewPage.maximizeWindow("PredefinedFiltersWindowId");
-        scenarioSummaryViewPage.seePredefinedFilterAreaIsDisplayed();
-        scenarioSummaryViewPage.clickAddPredefinedFilter();
-        scenarioSummaryViewPage.chooseVisualizationType("Chart");
+        asdScenarioSummaryViewPage.maximizeWindow("PredefinedFiltersWindowId");
+        asdScenarioSummaryViewPage.seePredefinedFilterAreaIsDisplayed();
+        asdScenarioSummaryViewPage.clickAddPredefinedFilter();
+        asdScenarioSummaryViewPage.chooseVisualizationType("Chart");
         log.info("Visualization type - CHART - set");
-        scenarioSummaryViewPage.chooseAttribute("Severity");
+        asdScenarioSummaryViewPage.chooseAttribute("Severity");
         log.info("Attribute name - Severity - set");
-        scenarioSummaryViewPage.insertAttributeValueToMultiComboBoxComponent("Cleared", severityAttributeValue);
+        asdScenarioSummaryViewPage.insertAttributeValueToMultiComboBoxComponent("Cleared", severityAttributeValue);
         log.info("Attribute Value - Cleared - set");
-        scenarioSummaryViewPage.insertAttributeValueToMultiComboBoxComponent("Major", severityAttributeValue);
+        asdScenarioSummaryViewPage.insertAttributeValueToMultiComboBoxComponent("Major", severityAttributeValue);
         log.info("Attribute Value - Major - set");
-        scenarioSummaryViewPage.insertAttributeValueToMultiComboBoxComponent("Critical", severityAttributeValue);
+        asdScenarioSummaryViewPage.insertAttributeValueToMultiComboBoxComponent("Critical", severityAttributeValue);
         log.info("Attribute Value - Critical - set");
-        scenarioSummaryViewPage.savePredefinedFilter();
+        asdScenarioSummaryViewPage.savePredefinedFilter();
         log.info("Predefined filter has been added successfully");
     }
 
@@ -54,53 +53,53 @@ public class ScenarioSummaryViewTest extends BaseTestCase {
     @Description("Delete predefined filter")
     public void deletePredefinedFilter() {
         log.info("Waiting in method deletePredefinedFilter");
-        scenarioSummaryViewPage.deletePredefinedFilter();
-        scenarioSummaryViewPage.minimizeWindow("PredefinedFiltersWindowId");
+        asdScenarioSummaryViewPage.deletePredefinedFilter();
+        asdScenarioSummaryViewPage.minimizeWindow("PredefinedFiltersWindowId");
     }
 
     @Test(priority = 3, testName = "Check if ASD issues exist", description = "Check if ASD issues exists")
     @Description("Check if ASD issues exist")
     public void asdDetectedIssuesTableCheck() {
-        scenarioSummaryViewPage.maximizeWindow("DetectedIssuesWindowId");
+        asdScenarioSummaryViewPage.maximizeWindow("DetectedIssuesWindowId");
         checkIssuesTableWithFilters();
     }
 
     @Test(priority = 4, testName = "Check if issues table is refreshed and minimize window", description = "Check if issues table is refreshed and minimize window")
     @Description("Check if issues table is refreshed and minimize window")
     public void refreshDetectedIssuesTable() {
-        scenarioSummaryViewPage.refreshIssuesTable(issuesTableRefreshButtonId);
-        scenarioSummaryViewPage.minimizeWindow("DetectedIssuesWindowId");
+        asdScenarioSummaryViewPage.refreshIssuesTable(issuesTableRefreshButtonId);
+        asdScenarioSummaryViewPage.minimizeWindow("DetectedIssuesWindowId");
     }
 
     private void checkIssuesTableWithFilters() {
-        if (scenarioSummaryViewPage.checkDataInIssuesTable()) {
+        if (asdScenarioSummaryViewPage.checkDataInIssuesTable()) {
             log.info("table doesn't have data for issues with roots");
-            scenarioSummaryViewPage.turnOnSwitcher();
-            if (scenarioSummaryViewPage.checkDataInIssuesTable()) {
+            asdScenarioSummaryViewPage.turnOnSwitcher();
+            if (asdScenarioSummaryViewPage.checkDataInIssuesTable()) {
                 log.error("table doesn't have data for issues without roots");
                 Assert.fail();
             } else {
                 log.info("table contains data for issues without roots");
-                scenarioSummaryViewPage.setValueOfCreationTypeBox("Automatically");
-                scenarioSummaryViewPage.setValueInTimePeriodChooser("create_time", 3, 12, 33);
-                scenarioSummaryViewPage.setValueOfIssueIdSearch();
+                asdScenarioSummaryViewPage.setValueOfCreationTypeBox("Automatically");
+                asdScenarioSummaryViewPage.setValueInTimePeriodChooser("create_time", 3, 12, 33);
+                asdScenarioSummaryViewPage.setValueOfIssueIdSearch();
             }
 
         } else {
             log.info("table contains data for issues with roots");
 
-            scenarioSummaryViewPage.turnOnSwitcher();
-            scenarioSummaryViewPage.setValueOfCreationTypeBox("Automatically");
-            scenarioSummaryViewPage.setValueInTimePeriodChooser("create_time", 3, 12, 33);
-            scenarioSummaryViewPage.setValueOfIssueIdSearch();
+            asdScenarioSummaryViewPage.turnOnSwitcher();
+            asdScenarioSummaryViewPage.setValueOfCreationTypeBox("Automatically");
+            asdScenarioSummaryViewPage.setValueInTimePeriodChooser("create_time", 3, 12, 33);
+            asdScenarioSummaryViewPage.setValueOfIssueIdSearch();
 
             DelayUtils.sleep();
 
-            Boolean hasNoData = scenarioSummaryViewPage.checkDataInIssuesTable();
+            Boolean hasNoData = asdScenarioSummaryViewPage.checkDataInIssuesTable();
 
-            scenarioSummaryViewPage.clearMultiComboBox("creation_type");
-            scenarioSummaryViewPage.clearMultiSearch("id");
-            scenarioSummaryViewPage.clearTimePeriod("create_time");
+            asdScenarioSummaryViewPage.clearMultiComboBox("creation_type");
+            asdScenarioSummaryViewPage.clearMultiSearch("id");
+            asdScenarioSummaryViewPage.clearTimePeriod("create_time");
 
             Assert.assertFalse(hasNoData);
         }
