@@ -134,7 +134,7 @@ public class UC_NAR_005 extends BaseTestCase {
         newInventoryViewPage.searchObject(DEVICE_NAME);
         waitForPageToLoad();
         Assert.assertFalse(newInventoryViewPage.checkIfTableIsEmpty());
-        Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "Serial Number"), SERIAL_NUMBER_BEFORE);
+        Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "serialNumber"), SERIAL_NUMBER_BEFORE);
     }
 
     @Test(priority = 7)
@@ -150,7 +150,7 @@ public class UC_NAR_005 extends BaseTestCase {
         Assert.assertEquals(notifications.waitAndGetFinishedNotificationText(), "Narrow reconciliation for GMOCs IPDevice finished");
         newInventoryViewPage.refreshMainTable();
         waitForPageToLoad();
-        Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "Serial Number"), SERIAL_NUMBER_AFTER);
+        Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "serialNumber"), SERIAL_NUMBER_AFTER);
     }
 
     @Test(priority = 8)

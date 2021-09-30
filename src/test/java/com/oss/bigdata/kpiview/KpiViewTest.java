@@ -1,6 +1,7 @@
 package com.oss.bigdata.kpiview;
 
 import com.oss.BaseTestCase;
+import com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel;
 import com.oss.pages.bigdata.kqiview.KpiViewPage;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
@@ -8,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.*;
+
+import java.util.Collections;
 
 import static com.oss.utils.AttachmentsManager.attachConsoleLogs;
 import static com.oss.utils.AttachmentsManager.saveScreenshotPNG;
@@ -18,8 +21,11 @@ public class KpiViewTest extends BaseTestCase {
     private static final Logger log = LoggerFactory.getLogger(KpiViewTest.class);
     private KpiViewPage kpiViewPage;
 
+    private static final String INDICATORS_TREE_ID = "_Indicators";
+    private static final String DIMENSIONS_TREE_ID = "_Dimensions";
+
     @BeforeMethod
-    public void goToKpiView(){
+    public void goToKpiView() {
         kpiViewPage = KpiViewPage.goToPage(driver, BASIC_URL);
     }
 
@@ -58,7 +64,7 @@ public class KpiViewTest extends BaseTestCase {
     ){
         try {
             kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
-            kpiViewPage.changeLayout();
+            kpiViewPage.changeLayout(LayoutPanel.LayoutType.LAYOUT_2x2);
             saveScreenshotPNG(driver);
 
             kpiViewPage.maximizeDataView();
@@ -89,13 +95,26 @@ public class KpiViewTest extends BaseTestCase {
             Assert.assertTrue(kpiViewPage.shouldSeeBoxesAndCurvesDisplayed(1,1));
 
             kpiViewPage.setTopNOptions("d2");
-            Assert.assertTrue(kpiViewPage.shouldSeeBoxesAndCurvesDisplayed(2,2));
+            Assert.assertTrue(kpiViewPage.shouldSeeBoxesAndCurvesDisplayed(2, 2));
 
             kpiViewPage.setTopNOptions("t:SMOKE#DimHierSelenium", "3");
-            Assert.assertTrue(kpiViewPage.shouldSeeBoxesAndCurvesDisplayed(6,5));
-        } catch(Exception e){
+            Assert.assertTrue(kpiViewPage.shouldSeeBoxesAndCurvesDisplayed(6, 5));
+        } catch (Exception e) {
             log.error(e.getMessage());
         }
+    }
 
+    @Parameters({"filterName"})
+    @Test(priority = 4, testName = "Search in indicators and dimensions trees", description = "Verify search from indicators and dimensions trees for DFE data")
+    @Description("Verify search from indicators and dimensions trees for DFE data")
+    public void searchIndicators(
+            @Optional("DFE Self Monitoring") String filterName
+    ) {
+        kpiViewPage.setFilters(Collections.singletonList(filterName));
+        kpiViewPage.searchInToolbarPanel("numSkippedTasks", INDICATORS_TREE_ID);
+        kpiViewPage.searchInToolbarPanel("DataEngineFactETL", DIMENSIONS_TREE_ID);
+        kpiViewPage.applyChanges();
+
+        Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
     }
 }

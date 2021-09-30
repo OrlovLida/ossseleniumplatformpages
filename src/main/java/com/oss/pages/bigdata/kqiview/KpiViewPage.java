@@ -167,45 +167,45 @@ public class KpiViewPage extends BasePage {
     }
 
     @Step("I change layout")
-    public void changeLayout() {
+    public void changeLayout(LayoutType layoutType) {
         KpiToolbarPanel toolbar = KpiToolbarPanel.create(driver, wait);
-        toolbar.getLayoutPanel().changeLayout(LayoutType.LAYOUT_2x2);
+        toolbar.getLayoutPanel().changeLayout(layoutType);
     }
 
     @Step("I minimize data View")
     public void minimizeDataView() {
         Card card = Card.createCard(driver, wait, DATA_VIEW_ID);
-        card.minimizeCard(driver, wait);
+        card.minimizeCard();
     }
 
     @Step("I maximize data View")
     public void maximizeDataView() {
         Card card = Card.createCard(driver, wait, DATA_VIEW_ID);
-        card.maximizeCard(driver, wait);
+        card.maximizeCard();
     }
 
     @Step("I minimize Indicators Panel")
     public void minimizeIndicatorsPanel() {
         Card card = Card.createCard(driver, wait, INDICATORS_TREE_ID);
-        card.minimizeCard(driver, wait);
+        card.minimizeCard();
     }
 
     @Step("I maximize Indicators Panel")
     public void maximizeIndicatorsPanel() {
         Card card = Card.createCard(driver, wait, INDICATORS_TREE_ID);
-        card.maximizeCard(driver, wait);
+        card.maximizeCard();
     }
 
     @Step("I minimize Dimensions Panel")
     public void minimizeDimensionsPanel() {
         Card card = Card.createCard(driver, wait, DIMENSIONS_TREE_ID);
-        card.minimizeCard(driver, wait);
+        card.minimizeCard();
     }
 
     @Step("I maximize Dimensions Panel")
     public void maximizeDimensionsPanel() {
         Card card = Card.createCard(driver, wait, DIMENSIONS_TREE_ID);
-        card.maximizeCard(driver, wait);
+        card.maximizeCard();
     }
 
     private boolean ifDownloadDirExists() {
@@ -450,6 +450,21 @@ public class KpiViewPage extends BasePage {
             log.error("Other Panels are also visible");
             return false;
         }
+    }
+
+    @Step("I check status of chosen layout button")
+    public String layoutButtonStatus(LayoutType layout) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return LayoutPanel.create(driver, wait).chartLayoutButtonStatus(layout);
+    }
+
+    @Step("I search for Object in tree search toolbar")
+    public void searchInToolbarPanel(String objectName, String treeId) {
+        KpiTreeWidget kpiTreeWidget = KpiTreeWidget.create(driver, wait, treeId);
+        kpiTreeWidget.searchInToolbarPanel(objectName);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        kpiTreeWidget.selectFirstSearchResult();
+        kpiTreeWidget.closeSearchToolbar();
     }
 
     public void kpiViewSetup(String indicatorNodesToExpand, String indicatorNodesToSelect,

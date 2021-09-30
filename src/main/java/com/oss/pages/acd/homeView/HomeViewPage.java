@@ -139,14 +139,14 @@ public class HomeViewPage extends BasePage {
     @Step("Maximize window")
     public void maximizeWindow(String windowId) {
         Card card = Card.createCard(driver, wait, windowId);
-        card.maximizeCard(driver, wait);
+        card.maximizeCard();
         log.info("Maximizing window");
     }
 
     @Step("Minimize window")
     public void minimizeWindow(String windowId) {
         Card card = Card.createCard(driver, wait, windowId);
-        card.minimizeCard(driver, wait);
+        card.minimizeCard();
         log.info("Minimizing window");
     }
 
