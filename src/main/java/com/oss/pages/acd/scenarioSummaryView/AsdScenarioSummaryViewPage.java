@@ -25,12 +25,9 @@ public class AsdScenarioSummaryViewPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(AsdScenarioSummaryViewPage.class);
 
-    private final String PREDEFINED_FILTERS_VIEW_ID = "PredefinedFiltersWindowId";
     private final String ADD_PREDEFINED_FILTER_BUTTON = "contextButton-0";
     private final String VISUALIZATION_TYPE_ID = "widgetType-input";
     private final String ATTRIBUTE_ID = "attribute1Id-input";
-    private final String ATTRIBUTE_VALUES_ID = "attribute1ValuesId-input";
-    private final String ACCEPT_PREDEFINED_FILTER_BUTTON = "addPredefinedFilterId";
     private final String DETECTED_ISSUES_TABLE_WINDOW_ID = "DetectedIssuesWindowId";
     private final String DETECTED_ISSUES_TABLE_ID = "DetectedIssuesTableId";
     private final String SWITCHER_ID = "switcherId";
@@ -70,14 +67,14 @@ public class AsdScenarioSummaryViewPage extends BasePage {
     @Step("Maximize window")
     public void maximizeWindow(String windowId) {
         Card card = Card.createCard(driver, wait, windowId);
-        card.maximizeCard(driver, wait);
+        card.maximizeCard();
         log.info("Maximizing window");
     }
 
     @Step("Minimize window")
     public void minimizeWindow(String windowId) {
         Card card = Card.createCard(driver, wait, windowId);
-        card.minimizeCard(driver, wait);
+        card.minimizeCard();
         log.info("Minimizing window");
     }
 
