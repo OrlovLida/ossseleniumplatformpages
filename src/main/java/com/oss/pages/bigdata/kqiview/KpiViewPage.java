@@ -512,8 +512,9 @@ public class KpiViewPage extends BasePage {
         ButtonPanel.create(driver, wait).clickOnIcon(SAVE_BOOKMARK_BUTTON_ID);
     }
 
-    @Step("Check if node is selected")
-    public boolean isIndicatorsNodeSelected(String objectName) {
-        return KpiTreeWidget.create(driver, wait, INDICATORS_TREE_ID).isNodeSelected(objectName);
+    @Step("Check if node is selected in the tree")
+    public boolean isNodeInTreeSelected(String objectName, String treeId) {
+        log.info("Checking if node: {} is selected on the tree", objectName);
+        return KpiTreeWidget.create(driver, wait, treeId).isNodeSelected(objectName);
     }
 }

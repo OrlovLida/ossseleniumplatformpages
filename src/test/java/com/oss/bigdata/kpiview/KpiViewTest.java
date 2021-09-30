@@ -136,6 +136,8 @@ public class KpiViewTest extends BaseTestCase {
             kpiViewPage.clickLinkToChart();
 
             Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+            Assert.assertTrue(kpiViewPage.isNodeInTreeSelected(indicatorNodesToSelect, INDICATORS_TREE_ID));
+            Assert.assertTrue(kpiViewPage.isNodeInTreeSelected(dimensionNodesToSelect, DIMENSIONS_TREE_ID));
 
         } catch (Exception e) {
             log.error(e.getMessage());
