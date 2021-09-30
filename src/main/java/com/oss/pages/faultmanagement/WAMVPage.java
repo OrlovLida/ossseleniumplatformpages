@@ -1,6 +1,7 @@
 package com.oss.pages.faultmanagement;
 
 import com.oss.framework.components.inputs.Button;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.IaaTable;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
@@ -15,7 +16,9 @@ public class WAMVPage extends BasePage {
     private static final String TABLE_WIDGET_ID = "_AREA2AlarmListTable";
     private static final String BUTTON_ACK_TEST_ID = "Acknowledge";
     private static final String BUTTON_DEACK_TEST_ID = "Deacknowledge";
+    private static final String BUTTON_NOTE_TEST_ID = "Edit Note";
     private static final String ACK_COLUMN_ID = "cell-row-col-acknowledge";
+    private static final String NOTE_COLUMN_ID = "cell-row-col-note";
     private static final String ACK_ATT = "title";
 
 
@@ -50,18 +53,29 @@ public class WAMVPage extends BasePage {
     }
 
     @Step("I click on acknowledge button")
-    public void clickOnAckButton() {
-        createButton(BUTTON_ACK_TEST_ID).click();
-    }
+    public void clickOnAckButton() { createButton(BUTTON_ACK_TEST_ID).click(); }
 
     @Step("I click on deacknowledge button")
     public void clickOnDeackButton() {
         createButton(BUTTON_DEACK_TEST_ID).click();
     }
 
+    @Step("I click on acknowledge button")
+    public void addNote(String note) {
+        createButton(BUTTON_NOTE_TEST_ID).click();
+        EditNoteWizardPage editNote = new EditNoteWizardPage(driver);
+        editNote.typeNote(note);
+
+    }
+
     @Step("I return a cell text from ack. status column")
-    public String getTextFromAckStatusCell(int row) {
-        return createIaaTableElement().getCellValue(row, ACK_COLUMN_ID, ACK_ATT);
+    public String getTitleFromAckStatusCell(int row) {
+        return createIaaTableElement().getCellAttribute(row, ACK_COLUMN_ID, ACK_ATT);
+    }
+
+    @Step("I return a cell text from ack. status column")
+    public String getTextFromNoteStatusCell(int row) {
+        return createIaaTableElement().getCellText(row, NOTE_COLUMN_ID);
     }
 
 }

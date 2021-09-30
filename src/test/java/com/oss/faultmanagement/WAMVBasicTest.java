@@ -1,6 +1,5 @@
 package com.oss.faultmanagement;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.oss.BaseTestCase;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.faultmanagement.FMDashboardPage;
@@ -8,10 +7,11 @@ import com.oss.pages.faultmanagement.WAMVPage;
 import com.oss.pages.platform.HomePage;
 import com.oss.utils.TestListener;
 import org.testng.Assert;
-import static org.assertj.core.api.Assertions.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @Listeners({TestListener.class})
 public class WAMVBasicTest extends BaseTestCase {
@@ -20,6 +20,7 @@ public class WAMVBasicTest extends BaseTestCase {
     private HomePage homePage;
     private WAMVPage wamvPage;
     private int row = 0;
+    private int alarmListRow = 1;
 
     @BeforeMethod
     public void goToFMDashboardPage() {
@@ -34,21 +35,42 @@ public class WAMVBasicTest extends BaseTestCase {
         fmDashboardPage.openAlarmListFromList(row);
         assertThat(homePage.getPageTitle()).isIn("*" + alarmListName, alarmListName);
 
-        wamvPage.selectSpecificRow(row);
+
+        wamvPage.selectSpecificRow(alarmListRow);
 
         wamvPage.clickOnAckButton();
         waitForAckColumnChange("True");
-        Assert.assertEquals(wamvPage.getTextFromAckStatusCell(row), "True");
+        Assert.assertEquals(wamvPage.getTitleFromAckStatusCell(alarmListRow), "True");
 
 
         wamvPage.clickOnDeackButton();
         waitForAckColumnChange("False");
-        Assert.assertEquals(wamvPage.getTextFromAckStatusCell(row), "False");
+        Assert.assertEquals(wamvPage.getTitleFromAckStatusCell(alarmListRow), "False");
+
+
+        wamvPage.selectSpecificRow(alarmListRow + 1);
+        wamvPage.addNote("Selenium_automaited_test");
+        waitForNoteColumnChange("Selenium_automaited_test");
+        Assert.assertEquals(wamvPage.getTextFromNoteStatusCell(alarmListRow + 1), "Selenium_automaited_test");
+        wamvPage.addNote("");
+        waitForNoteColumnChange("");
+        Assert.assertEquals(wamvPage.getTextFromNoteStatusCell(alarmListRow + 1), "");
+
     }
 
     public void waitForAckColumnChange(String type) {
-        for (int i = 0; i < 25; i++){
-            if(wamvPage.getTextFromAckStatusCell(row).equals(type)){
+        for (int i = 0; i < 25; i++) {
+            if (wamvPage.getTitleFromAckStatusCell(alarmListRow).equals(type)) {
+                break;
+            } else {
+                DelayUtils.sleep(100);
+            }
+        }
+    }
+
+    public void waitForNoteColumnChange(String type) {
+        for (int i = 0; i < 25; i++) {
+            if (wamvPage.getTextFromNoteStatusCell(alarmListRow + 1).equals(type)) {
                 break;
             } else {
                 DelayUtils.sleep(100);
