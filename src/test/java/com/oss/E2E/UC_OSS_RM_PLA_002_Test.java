@@ -165,17 +165,6 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
     public void selectEthernetInterface() {
         HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
         waitForPageToLoad();
-        hierarchyViewPage.expandTreeNode(DEVICE_NAME);
-        waitForPageToLoad();
-        hierarchyViewPage.expandTreeNode("Ports");
-        waitForPageToLoad();
-        hierarchyViewPage.expandTreeNode(PORT_NAME);
-        waitForPageToLoad();
-        hierarchyViewPage.expandTreeNode("Termination Points");
-        waitForPageToLoad();
-        hierarchyViewPage.expandTreeNode("EthernetInterface_TP");
-        waitForPageToLoad();
-        DelayUtils.sleep(5000);
         String labelpath = DEVICE_NAME + ".Ports." + PORT_NAME + ".Termination Points.EthernetInterface_TP." + PORT_NAME;
         hierarchyViewPage.selectNodeByLabelsPath(labelpath);
         waitForPageToLoad();
@@ -231,8 +220,6 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         connectionWizardPage.terminatePort(PORT_NAME);
         waitForPageToLoad();
         connectionWizardPage.terminateTerminationPort(PORT_NAME);
-        waitForPageToLoad();
-        connectionWizardPage.clickNext();
         waitForPageToLoad();
         connectionWizardPage.clickAccept();
         waitForPageToLoad();
