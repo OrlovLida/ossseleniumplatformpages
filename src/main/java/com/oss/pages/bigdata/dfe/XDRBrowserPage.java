@@ -1,10 +1,12 @@
 package com.oss.pages.bigdata.dfe;
 
+import com.google.common.collect.Multimap;
 import com.oss.framework.components.common.TimePeriodChooser;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.contextactions.ButtonContainer;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.mainheader.Notifications;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.TableWidget;
@@ -32,6 +34,7 @@ public class XDRBrowserPage extends BaseDfePage {
     private final String SEARCH_LABEL = "Search";
     private final String XDR_TABLE_ID = "xdrTableId";
     private final String EXPORT_BUTTON = "tableExportButton";
+    private final String ADVANCED_SEARCH_CLASS = "advanced-search_component";
 
     public XDRBrowserPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -52,6 +55,11 @@ public class XDRBrowserPage extends BaseDfePage {
         log.info("I select ETL: {}", etlName);
     }
 
+    @Step("I check value of ETL name in XDR Browser search Combobox")
+    public String getETLName() {
+        return ComponentFactory.create(ETL_NAME_COMBOBOX_ID, Input.ComponentType.COMBOBOX, driver, wait).getStringValue();
+    }
+
     @Step("I set value in time period chooser")
     public void setValueInTimePeriodChooser(int days, int hours, int minutes) {
         log.info("Setting value for last option in time period chooser: {} days, {} hours, {} minutes", days, hours, minutes);
@@ -66,7 +74,7 @@ public class XDRBrowserPage extends BaseDfePage {
     public void clickSearch() {
         DelayUtils.waitForPageToLoad(driver, wait);
         ButtonContainer.create(driver, wait).callActionByLabel(SEARCH_LABEL);
-        DelayUtils.waitForPageToLoad(driver, wait);
+        DelayUtils.sleep(3000);
         log.info("Searching for ETL");
     }
 
@@ -81,12 +89,16 @@ public class XDRBrowserPage extends BaseDfePage {
     }
 
     @Step("I click on notification icon")
-    public void clickOnNotificationIcon() {
+    public void openNotificationAndWaitForExportToFinish() {
         openNotificationPanel().waitForExportFinish();
+        log.info("Opening notification panel and waiting for download to finish");
     }
 
+    @Step("I click download file")
     public void clickDownload() {
         Notifications.create(driver, wait).clickDownloadFile();
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Clicking download file");
     }
 
     @Step("I attach downloaded file to report")
@@ -135,13 +147,23 @@ public class XDRBrowserPage extends BaseDfePage {
         return FileUtils.readFileToByteArray(file);
     }
 
+    @Step("I click clear all notifications")
     public void clearNotifications() {
         Notifications.create(driver, wait).clearAllNotification();
-        DelayUtils.sleep(100);
+        log.info("Clearing notifications");
+        DelayUtils.sleep(2000);
     }
 
+    @Step("I check amount of Notifications")
     public int amountOfNotifications() {
         return Notifications.create(driver, wait).getAmountOfNotifications();
+    }
+
+    @Step("I check if active filter contain {filter}")
+    public boolean checkIfFilterExist(String filter) {
+        Multimap<String, String> activeFilters = AdvancedSearch.createByClass(driver, wait, ADVANCED_SEARCH_CLASS).getAppliedFilters();
+        log.info("Checking if filter: {} is on the map", filter);
+        return activeFilters.toString().contains(filter);
     }
 
     @Override
