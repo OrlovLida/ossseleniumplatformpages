@@ -247,6 +247,8 @@ public class IndicatorsViewTest extends BaseTestCase {
         kpiViewPage.searchInToolbarPanel("DC Type: PMSTA_DC", DIMENSIONS_TREE_ID);
         kpiViewPage.applyChanges();
 
+        Assert.assertTrue(kpiViewPage.isIndicatorsNodeSelected("DBTIME"));
+
         Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
     }
 }
