@@ -463,9 +463,6 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         ipAddressManagementViewPage.expandTreeRow(IP_NETWORK);
         ipAddressManagementViewPage.expandTreeRowContains("%");
         ipAddressManagementViewPage.deleteIPHost(ADDRESS + "/24");
-        ipAddressManagementViewPage.selectTreeRowContains("10.10.20.0/24");
-        ipAddressManagementViewPage.selectTreeRowContains("10.10.20.0/24");
-        ipAddressManagementViewPage.deleteIPHost("10.10.20.1/24");
     }
 
     @Test(priority = 23)
