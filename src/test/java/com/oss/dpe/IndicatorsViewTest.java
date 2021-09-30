@@ -277,5 +277,3 @@ public class IndicatorsViewTest extends BaseTestCase {
         }
     }
 }
-
-

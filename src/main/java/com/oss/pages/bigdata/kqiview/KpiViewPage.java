@@ -47,7 +47,7 @@ public class KpiViewPage extends BasePage {
     private static final String DATA_VIEW_ID = "_Data_View";
     private static final String SAVE_BOOKMARK_BUTTON_ID = "fa fa-floppy-o";
     private static final String COLOR_PICKER_CLASS = "colorPickerWrapper";
-    private static final String CHAR_ACTIONS_LINKS_ID = "external-links-button";
+    private static final String CHART_ACTIONS_LINKS_ID = "external-links-button";
     private static final String LINK_TO_XDR_LABEL = "Open xDR for t:SMOKE#ETLforKqis. Time condition limited to last 1 hour(s) from chosen period.";
     private static final String LINK_TO_INDICATORS_VIEW_CHART_LABEL = "Indicators View - Chart";
 
@@ -295,16 +295,16 @@ public class KpiViewPage extends BasePage {
 
     @Step("I click link to XDR Browser")
     public void clickLinkToXDRBrowser() {
-        getChartActionsPanel().callAction(CHAR_ACTIONS_LINKS_ID, LINK_TO_XDR_LABEL);
+        getChartActionsPanel().callAction(CHART_ACTIONS_LINKS_ID, LINK_TO_XDR_LABEL);
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Clicking on link to XDR Browser");
     }
 
     @Step("I click link to chart")
     public void clickLinkToChart() {
-        getChartActionsPanel().callAction(CHAR_ACTIONS_LINKS_ID, LINK_TO_INDICATORS_VIEW_CHART_LABEL);
+        getChartActionsPanel().callAction(CHART_ACTIONS_LINKS_ID, LINK_TO_INDICATORS_VIEW_CHART_LABEL);
         DelayUtils.waitForPageToLoad(driver, wait);
-        log.info("Clicking on link to Indicators View - Chart ");
+        log.info("Clicking on link to Indicators View - Chart");
     }
 
     @Step("I should see {expectedLineWidth} width line displayed")
@@ -514,7 +514,7 @@ public class KpiViewPage extends BasePage {
 
     @Step("Check if node is selected in the tree")
     public boolean isNodeInTreeSelected(String objectName, String treeId) {
-        log.info("Checking if node: {} is selected on the tree", objectName);
+        log.info("Checking if node: {} is selected in the tree", objectName);
         return KpiTreeWidget.create(driver, wait, treeId).isNodeSelected(objectName);
     }
 }
