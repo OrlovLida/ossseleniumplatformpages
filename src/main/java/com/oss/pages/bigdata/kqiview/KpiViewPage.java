@@ -521,8 +521,8 @@ public class KpiViewPage extends BasePage {
     public String activeAggMethod() {
         DelayUtils.waitForPageToLoad(driver, wait);
         OptionsPanel optionsPanel = OptionsPanel.create(driver, wait);
-        String activeAggMet = optionsPanel.getActiveAggregationMethod();
+        String activeAggMethod = optionsPanel.getActiveAggregationMethod();
 
-        return activeAggMet;
+        return activeAggMethod;
     }
 }

@@ -265,12 +265,12 @@ public class IndicatorsViewTest extends BaseTestCase {
             kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToSelect, filterName);
 
             Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
-            String activeAggMeth = kpiViewPage.activeAggMethod();
+            String activeAggMethod = kpiViewPage.activeAggMethod();
 
             kpiViewPage.clickLinkToChart();
 
             Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
-            Assert.assertTrue(kpiViewPage.isNodeInTreeSelected("AQ_TIME 1h " + activeAggMeth, INDICATORS_TREE_ID));
+            Assert.assertTrue(kpiViewPage.isNodeInTreeSelected("AQ_TIME 1h " + activeAggMethod, INDICATORS_TREE_ID));
             Assert.assertTrue(kpiViewPage.isNodeInTreeSelected(dimensionNodesToSelect, DIMENSIONS_TREE_ID));
         } catch (Exception e) {
             log.error(e.getMessage());
