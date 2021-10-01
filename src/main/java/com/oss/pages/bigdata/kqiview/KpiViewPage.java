@@ -517,4 +517,12 @@ public class KpiViewPage extends BasePage {
         log.info("Checking if node: {} is selected in the tree", objectName);
         return KpiTreeWidget.create(driver, wait, treeId).isNodeSelected(objectName);
     }
+
+    public String activeAggMethod() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        OptionsPanel optionsPanel = OptionsPanel.create(driver, wait);
+        String activeAggMet = optionsPanel.getActiveAggregationMethod();
+
+        return activeAggMet;
+    }
 }
