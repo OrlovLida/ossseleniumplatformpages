@@ -47,6 +47,9 @@ public class KpiViewPage extends BasePage {
     private static final String DATA_VIEW_ID = "_Data_View";
     private static final String SAVE_BOOKMARK_BUTTON_ID = "fa fa-floppy-o";
     private static final String COLOR_PICKER_CLASS = "colorPickerWrapper";
+    private static final String CHART_ACTIONS_LINKS_ID = "external-links-button";
+    private static final String LINK_TO_XDR_LABEL = "Open xDR for t:SMOKE#ETLforKqis. Time condition limited to last 1 hour(s) from chosen period.";
+    private static final String LINK_TO_INDICATORS_VIEW_CHART_LABEL = "Indicators View - Chart";
 
     public KpiViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -165,45 +168,45 @@ public class KpiViewPage extends BasePage {
     }
 
     @Step("I change layout")
-    public void changeLayout() {
+    public void changeLayout(LayoutType layoutType) {
         KpiToolbarPanel toolbar = KpiToolbarPanel.create(driver, wait);
-        toolbar.getLayoutPanel().changeLayout(LayoutType.LAYOUT_2x2);
+        toolbar.getLayoutPanel().changeLayout(layoutType);
     }
 
     @Step("I minimize data View")
     public void minimizeDataView() {
         Card card = Card.createCard(driver, wait, DATA_VIEW_ID);
-        card.minimizeCard(driver, wait);
+        card.minimizeCard();
     }
 
     @Step("I maximize data View")
     public void maximizeDataView() {
         Card card = Card.createCard(driver, wait, DATA_VIEW_ID);
-        card.maximizeCard(driver, wait);
+        card.maximizeCard();
     }
 
     @Step("I minimize Indicators Panel")
     public void minimizeIndicatorsPanel() {
         Card card = Card.createCard(driver, wait, INDICATORS_TREE_ID);
-        card.minimizeCard(driver, wait);
+        card.minimizeCard();
     }
 
     @Step("I maximize Indicators Panel")
     public void maximizeIndicatorsPanel() {
         Card card = Card.createCard(driver, wait, INDICATORS_TREE_ID);
-        card.maximizeCard(driver, wait);
+        card.maximizeCard();
     }
 
     @Step("I minimize Dimensions Panel")
     public void minimizeDimensionsPanel() {
         Card card = Card.createCard(driver, wait, DIMENSIONS_TREE_ID);
-        card.minimizeCard(driver, wait);
+        card.minimizeCard();
     }
 
     @Step("I maximize Dimensions Panel")
     public void maximizeDimensionsPanel() {
         Card card = Card.createCard(driver, wait, DIMENSIONS_TREE_ID);
-        card.maximizeCard(driver, wait);
+        card.maximizeCard();
     }
 
     private boolean ifDownloadDirExists() {
@@ -288,6 +291,20 @@ public class KpiViewPage extends BasePage {
     public void chooseDataSeriesColor() {
         log.info("Changing first data series color");
         getChartActionsPanel().callAction(CHART_COLOR_BUTTON_ID, COLOR_PICKER_CLASS, "rgb(150, 65, 54)");
+    }
+
+    @Step("I click link to XDR Browser")
+    public void clickLinkToXDRBrowser() {
+        getChartActionsPanel().callAction(CHART_ACTIONS_LINKS_ID, LINK_TO_XDR_LABEL);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Clicking on link to XDR Browser");
+    }
+
+    @Step("I click link to chart")
+    public void clickLinkToChart() {
+        getChartActionsPanel().callAction(CHART_ACTIONS_LINKS_ID, LINK_TO_INDICATORS_VIEW_CHART_LABEL);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Clicking on link to Indicators View - Chart");
     }
 
     @Step("I should see {expectedLineWidth} width line displayed")
@@ -443,6 +460,22 @@ public class KpiViewPage extends BasePage {
         }
     }
 
+    @Step("I check status of chosen layout button")
+    public String layoutButtonStatus(LayoutType layout) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return LayoutPanel.create(driver, wait).chartLayoutButtonStatus(layout);
+    }
+
+    @Step("I search for Object in tree search toolbar")
+    public void searchInToolbarPanel(String objectName, String treeId) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        KpiTreeWidget kpiTreeWidget = KpiTreeWidget.create(driver, wait, treeId);
+        kpiTreeWidget.searchInToolbarPanel(objectName);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        kpiTreeWidget.selectFirstSearchResult();
+        kpiTreeWidget.closeSearchToolbar();
+    }
+
     public void kpiViewSetup(String indicatorNodesToExpand, String indicatorNodesToSelect,
                              String dimensionNodesToExpand, String dimensionNodesToSelect, String filterName) {
         setFilters(Collections.singletonList(filterName));
@@ -477,5 +510,19 @@ public class KpiViewPage extends BasePage {
     @Step("I click Save bookmark")
     public void clickSaveBookmark() {
         ButtonPanel.create(driver, wait).clickOnIcon(SAVE_BOOKMARK_BUTTON_ID);
+    }
+
+    @Step("Check if node is selected in the tree")
+    public boolean isNodeInTreeSelected(String objectName, String treeId) {
+        log.info("Checking if node: {} is selected in the tree", objectName);
+        return KpiTreeWidget.create(driver, wait, treeId).isNodeSelected(objectName);
+    }
+
+    public String activeAggMethod() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        OptionsPanel optionsPanel = OptionsPanel.create(driver, wait);
+        String activeAggMethod = optionsPanel.getActiveAggregationMethod();
+
+        return activeAggMethod;
     }
 }

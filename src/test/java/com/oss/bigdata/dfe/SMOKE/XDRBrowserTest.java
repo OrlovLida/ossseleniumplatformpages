@@ -37,7 +37,7 @@ public class XDRBrowserTest extends BaseTestCase {
         if (!xdrBrowserPage.checkIfTableIsEmpty()) {
             xdrBrowserPage.clearNotifications();
             xdrBrowserPage.clickExport();
-            xdrBrowserPage.clickOnNotificationIcon();
+            xdrBrowserPage.openNotificationAndWaitForExportToFinish();
 
             Assert.assertEquals(xdrBrowserPage.amountOfNotifications(), 1);
             xdrBrowserPage.clickDownload();
