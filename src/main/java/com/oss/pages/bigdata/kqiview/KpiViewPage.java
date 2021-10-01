@@ -47,8 +47,9 @@ public class KpiViewPage extends BasePage {
     private static final String DATA_VIEW_ID = "_Data_View";
     private static final String SAVE_BOOKMARK_BUTTON_ID = "fa fa-floppy-o";
     private static final String COLOR_PICKER_CLASS = "colorPickerWrapper";
-    private static final String XDR_BROWSER_LINK_ID = "external-links-button";
+    private static final String CHART_ACTIONS_LINKS_ID = "external-links-button";
     private static final String LINK_TO_XDR_LABEL = "Open xDR for t:SMOKE#ETLforKqis. Time condition limited to last 1 hour(s) from chosen period.";
+    private static final String LINK_TO_INDICATORS_VIEW_CHART_LABEL = "Indicators View - Chart";
 
     public KpiViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -294,9 +295,16 @@ public class KpiViewPage extends BasePage {
 
     @Step("I click link to XDR Browser")
     public void clickLinkToXDRBrowser() {
-        getChartActionsPanel().callAction(XDR_BROWSER_LINK_ID, LINK_TO_XDR_LABEL);
+        getChartActionsPanel().callAction(CHART_ACTIONS_LINKS_ID, LINK_TO_XDR_LABEL);
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Clicking on link to XDR Browser");
+    }
+
+    @Step("I click link to chart")
+    public void clickLinkToChart() {
+        getChartActionsPanel().callAction(CHART_ACTIONS_LINKS_ID, LINK_TO_INDICATORS_VIEW_CHART_LABEL);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Clicking on link to Indicators View - Chart");
     }
 
     @Step("I should see {expectedLineWidth} width line displayed")
@@ -460,6 +468,7 @@ public class KpiViewPage extends BasePage {
 
     @Step("I search for Object in tree search toolbar")
     public void searchInToolbarPanel(String objectName, String treeId) {
+        DelayUtils.waitForPageToLoad(driver, wait);
         KpiTreeWidget kpiTreeWidget = KpiTreeWidget.create(driver, wait, treeId);
         kpiTreeWidget.searchInToolbarPanel(objectName);
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -501,5 +510,11 @@ public class KpiViewPage extends BasePage {
     @Step("I click Save bookmark")
     public void clickSaveBookmark() {
         ButtonPanel.create(driver, wait).clickOnIcon(SAVE_BOOKMARK_BUTTON_ID);
+    }
+
+    @Step("Check if node is selected in the tree")
+    public boolean isNodeInTreeSelected(String objectName, String treeId) {
+        log.info("Checking if node: {} is selected in the tree", objectName);
+        return KpiTreeWidget.create(driver, wait, treeId).isNodeSelected(objectName);
     }
 }
