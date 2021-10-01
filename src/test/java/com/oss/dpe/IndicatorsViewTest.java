@@ -7,15 +7,11 @@ import io.qameta.allure.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Listeners;
-import org.testng.annotations.Optional;
-import org.testng.annotations.Parameters;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
+
+import static com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.*;
 
 @Listeners({TestListener.class})
 public class IndicatorsViewTest extends BaseTestCase {
@@ -29,6 +25,9 @@ public class IndicatorsViewTest extends BaseTestCase {
     private static final String BAR_CHART_FILL_OPACITY = "0.6";
     private static final String LINE_CHART_FILL_OPACITY = "0";
     private static final String FIRST_CHART_COLOR = "rgb(150, 65, 54)";
+    private static final String LAYOUT_EXPECTED_STATUS = "active";
+    private static final String INDICATORS_TREE_ID = "_Indicators";
+    private static final String DIMENSIONS_TREE_ID = "_Dimensions";
 
     private KpiViewPage kpiViewPage;
 
@@ -37,16 +36,17 @@ public class IndicatorsViewTest extends BaseTestCase {
         kpiViewPage = KpiViewPage.goToPage(driver, BASIC_URL);
     }
 
-    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToSelect"})
+    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToSelect", "filterName"})
     @Test(priority = 1, testName = "Highlighting and hiding data series", description = "Highlighting and hiding data series")
     @Description("I verify if KPI View for DPE data works properly")
     public void verifyIfKpiViewWorksProperly(
             @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
             @Optional("DBTIME") String indicatorNodesToSelect,
-            @Optional("DC Type: ETL_DC") String dimensionNodesToSelect
+            @Optional("DC Type: ETL_DC") String dimensionNodesToSelect,
+            @Optional("Data Collection Statistics") String filterName
     ) {
         try {
-            kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToSelect);
+            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToSelect, filterName);
             Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
             kpiViewPage.clickLegend();
             Assert.assertTrue(kpiViewPage.shouldSeeDataSeriesLineWidth(HIGHLIGHTED_DATA_SERIES_WIDTH));
@@ -61,17 +61,18 @@ public class IndicatorsViewTest extends BaseTestCase {
         }
     }
 
-    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToSelect"})
+    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToSelect", "filterName"})
     @Test(priority = 2, testName = "Changing chart type", description = "Changing chart type")
     @Description("I verify if changing chart type works properly")
     public void verifyIfChartTypesWorksProperly(
             @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
-            @Optional("DBTIME,AQ_TIME") String indicatorNodesToSelect,
-            @Optional("DC Type: ETL_DC") String dimensionNodesToSelect
+            @Optional("DBTIME") String indicatorNodesToSelect,
+            @Optional("DC Type: ETL_DC") String dimensionNodesToSelect,
+            @Optional("Data Collection Statistics") String filterName
     ) {
         try {
-            kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToSelect);
-            Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(2));
+            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToSelect, filterName);
+            Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
             kpiViewPage.clickAreaChartType();
             Assert.assertTrue(kpiViewPage.shouldSeeAreaChart(AREA_CHART_FILL_OPACITY));
             kpiViewPage.clickBarChartType();
@@ -86,16 +87,17 @@ public class IndicatorsViewTest extends BaseTestCase {
         }
     }
 
-    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToSelect"})
+    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToSelect", "filterName"})
     @Test(priority = 3, testName = "Checking time period chooser", description = "Checking time period chooser")
     @Description("I verify if Time Period Chooser works properly")
     public void verifyIfPeriodChooserWorksProperly(
             @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
-            @Optional("DBTIME,AQ_TIME") String indicatorNodesToSelect,
-            @Optional("DC Type: ETL_DC") String dimensionNodesToSelect
+            @Optional("DBTIME") String indicatorNodesToSelect,
+            @Optional("DC Type: ETL_DC") String dimensionNodesToSelect,
+            @Optional("Data Collection Statistics") String filterName
     ) {
         try {
-            kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToSelect);
+            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToSelect, filterName);
             kpiViewPage.setValueInTimePeriodChooser(1, 2, 3);
             kpiViewPage.applyChanges();
             kpiViewPage.chooseSmartOptionInTimePeriodChooser();
@@ -103,23 +105,24 @@ public class IndicatorsViewTest extends BaseTestCase {
             kpiViewPage.chooseLatestOptionInTimePeriodChooser();
             kpiViewPage.applyChanges();
             kpiViewPage.clickLegend();
-            Assert.assertTrue(kpiViewPage.shouldSeePointsDisplayed(2));
+            Assert.assertTrue(kpiViewPage.shouldSeePointsDisplayed(1));
         } catch (Exception e) {
             log.error(e.getMessage());
             Assert.fail();
         }
     }
 
-    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToSelect"})
+    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToSelect", "filterName"})
     @Test(priority = 4, testName = "Changing Y axis option", description = "Changing Y axis option")
     @Description("I verify if Manual Y axis option works properly")
     public void verifyIfYAxisOptionsWorksProperly(
             @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
             @Optional("DBTIME,AQ_TIME") String indicatorNodesToSelect,
-            @Optional("DC Type: ETL_DC") String dimensionNodesToSelect
+            @Optional("DC Type: ETL_DC") String dimensionNodesToSelect,
+            @Optional("Data Collection Statistics") String filterName
     ) {
         try {
-            kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToSelect);
+            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToSelect, filterName);
             kpiViewPage.chooseSumAggregationMethod();
             kpiViewPage.applyChanges();
             Assert.assertTrue(kpiViewPage.shouldSeeVisibleYaxis(2));
@@ -131,16 +134,17 @@ public class IndicatorsViewTest extends BaseTestCase {
         }
     }
 
-    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToSelect"})
+    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToSelect", "filterName"})
     @Test(priority = 5, testName = "Enabling Miscellaneous options", description = "Enabling Miscellaneous options")
     @Description("I verify if Miscellaneous options work properly")
     public void verifyIfMiscellaneousOptionsWorkProperly(
             @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
             @Optional("DBTIME,AQ_TIME") String indicatorNodesToSelect,
-            @Optional("DC Type: ETL_DC") String dimensionNodesToSelect
+            @Optional("DC Type: ETL_DC") String dimensionNodesToSelect,
+            @Optional("Data Collection Statistics") String filterName
     ) {
         try {
-            kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToSelect);
+            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToSelect, filterName);
             kpiViewPage.enableDataCompleteness();
             kpiViewPage.applyChanges();
             Assert.assertTrue(kpiViewPage.shouldSeeDataCompleteness());
@@ -153,16 +157,17 @@ public class IndicatorsViewTest extends BaseTestCase {
         }
     }
 
-    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToSelect"})
+    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToSelect", "filterName"})
     @Test(priority = 6, testName = "Enabling Compare with other period option", description = "Enabling Compare with other period option")
     @Description("I verify if Compare with other period option works properly")
     public void verifyIfCompareWithOtherPeriodWorksProperly(
             @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
             @Optional("AQ_TIME") String indicatorNodesToSelect,
-            @Optional("DC Type: ETL_DC") String dimensionNodesToSelect
+            @Optional("DC Type: ETL_DC") String dimensionNodesToSelect,
+            @Optional("Data Collection Statistics") String filterName
     ) {
         try {
-            kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToSelect);
+            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToSelect, filterName);
             Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
             kpiViewPage.enableCompareWithOtherPeriod();
             kpiViewPage.applyChanges();
@@ -174,17 +179,102 @@ public class IndicatorsViewTest extends BaseTestCase {
         }
     }
 
-    private void kpiViewSetup(String indicatorNodesToExpand, String indicatorNodesToSelect, String dimensionNodesToSelect) {
-        kpiViewPage.setFilters(Collections.singletonList("Data Collection Statistics"));
+    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToSelect", "filterName"})
+    @Test(priority = 7, testName = "Verifying resize panel option", description = "Verifying resize panel option")
+    @Description("I verify if resize panel option works properly")
+    public void verifyIfResizePanelOptionWorksProperly(
+            @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
+            @Optional("AQ_TIME") String indicatorNodesToSelect,
+            @Optional("DC Type: ETL_DC") String dimensionNodesToSelect,
+            @Optional("Data Collection Statistics") String filterName
+    ) {
+        try {
+            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToSelect, filterName);
+            Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+            kpiViewPage.maximizeDataView();
+            kpiViewPage.shouldSeeOnlyDataViewDisplayed();
+            kpiViewPage.minimizeDataView();
+            kpiViewPage.maximizeIndicatorsPanel();
+            kpiViewPage.minimizeIndicatorsPanel();
+            kpiViewPage.maximizeDimensionsPanel();
+            kpiViewPage.minimizeDimensionsPanel();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            Assert.fail();
+        }
+    }
 
-        List<String> indicatorNodesToExpandList = Arrays.asList(indicatorNodesToExpand.split(","));
-        List<String> indicatorNodesToSelectList = Arrays.asList(indicatorNodesToSelect.split(","));
-        kpiViewPage.selectIndicator(indicatorNodesToExpandList, indicatorNodesToSelectList);
+    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToSelect", "filterName"})
+    @Test(priority = 8, testName = "Verifying changing layout option", description = "Verifying changing layout option")
+    @Description("I verify if changing layout option works properly")
+    public void ChangingChartLayoutOption(
+            @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
+            @Optional("AQ_TIME") String indicatorNodesToSelect,
+            @Optional("DC Type: ETL_DC") String dimensionNodesToSelect,
+            @Optional("Data Collection Statistics") String filterName
+    ) {
+        try {
+            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToSelect, filterName);
+            Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+            kpiViewPage.changeLayout(LAYOUT_1x1);
+            Assert.assertTrue(kpiViewPage.layoutButtonStatus(LAYOUT_1x1).equals(LAYOUT_EXPECTED_STATUS));
+            kpiViewPage.changeLayout(LAYOUT_2x1);
+            Assert.assertTrue(kpiViewPage.layoutButtonStatus(LAYOUT_2x1).equals(LAYOUT_EXPECTED_STATUS));
+            kpiViewPage.changeLayout(LAYOUT_2x2);
+            Assert.assertTrue(kpiViewPage.layoutButtonStatus(LAYOUT_2x2).equals(LAYOUT_EXPECTED_STATUS));
+            kpiViewPage.changeLayout(LAYOUT_4x4);
+            Assert.assertTrue(kpiViewPage.layoutButtonStatus(LAYOUT_4x4).equals(LAYOUT_EXPECTED_STATUS));
+            kpiViewPage.changeLayout(LAYOUT_3x3);
+            Assert.assertTrue(kpiViewPage.layoutButtonStatus(LAYOUT_3x3).equals(LAYOUT_EXPECTED_STATUS));
+            kpiViewPage.changeLayout(LAYOUT_3x2);
+            Assert.assertTrue(kpiViewPage.layoutButtonStatus(LAYOUT_3x2).equals(LAYOUT_EXPECTED_STATUS));
+            kpiViewPage.changeLayout(LAYOUT_AUTO);
+            Assert.assertTrue(kpiViewPage.layoutButtonStatus(LAYOUT_AUTO).equals(LAYOUT_EXPECTED_STATUS));
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            Assert.fail();
+        }
+    }
 
-        List<String> dimensionNodesToSelectList = Arrays.asList(dimensionNodesToSelect.split(","));
-        kpiViewPage.selectUnfoldedDimension(dimensionNodesToSelectList);
-
+    @Parameters({"filterName"})
+    @Test(priority = 9, testName = "Search in indicators and dimensions trees", description = "Verify search from indicators and dimensions trees for DPE data")
+    @Description("Verify search from indicators and dimensions trees for DPE data")
+    public void searchIndicators(
+            @Optional("Data Collection Statistics") String filterName
+    ) {
+        kpiViewPage.setFilters(Collections.singletonList(filterName));
+        kpiViewPage.searchInToolbarPanel("DBTIME", INDICATORS_TREE_ID);
+        kpiViewPage.searchInToolbarPanel("DC Type: PMSTA_DC", DIMENSIONS_TREE_ID);
         kpiViewPage.applyChanges();
-        kpiViewPage.seeChartIsDisplayed();
+
+        Assert.assertTrue(kpiViewPage.isNodeInTreeSelected("DBTIME", INDICATORS_TREE_ID));
+        Assert.assertTrue(kpiViewPage.isNodeInTreeSelected("DC Type: PMSTA_DC", DIMENSIONS_TREE_ID));
+        Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+    }
+
+    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToSelect", "filterName"})
+    @Test(priority = 8, testName = "Clicking link to chart from chart actions", description = "Clicking link to chart from chart actions")
+    @Description("Clicking link to chart from chart actions")
+    public void CheckLinkToIndicatorsView(
+            @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
+            @Optional("AQ_TIME") String indicatorNodesToSelect,
+            @Optional("DC Type: ETL_DC") String dimensionNodesToSelect,
+            @Optional("Data Collection Statistics") String filterName
+    ) {
+        try {
+            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToSelect, filterName);
+
+            Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+            String activeAggMethod = kpiViewPage.activeAggMethod();
+
+            kpiViewPage.clickLinkToChart();
+
+            Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+            Assert.assertTrue(kpiViewPage.isNodeInTreeSelected("AQ_TIME 1h " + activeAggMethod, INDICATORS_TREE_ID));
+            Assert.assertTrue(kpiViewPage.isNodeInTreeSelected(dimensionNodesToSelect, DIMENSIONS_TREE_ID));
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            Assert.fail();
+        }
     }
 }

@@ -55,4 +55,9 @@
       <class name="com.oss.transport.VLANPoolTest"/>
     </classes>
   </test>
+  <test name="RegulatoryLicenseTest">
+    <classes>
+      <class name="com.oss.transport.RegulatoryLicenseTest"/>
+    </classes>
+  </test>
 </suite>

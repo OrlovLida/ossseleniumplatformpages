@@ -1,13 +1,21 @@
 package com.oss.pages.servicedesk.ticket.wizard;
 
+import com.oss.framework.components.inputs.HtmlEditor;
 import com.oss.framework.components.inputs.Input;
+import com.oss.framework.data.Data;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.servicedesk.BaseSDPage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class WizardPage extends BaseSDPage {
+
+    private static final Logger log = LoggerFactory.getLogger(WizardPage.class);
+
+    private static final String INCIDENT_DESCRIPTION_ID = "TT_WIZARD_INPUT_INCIDENT_DESCRIPTION";
 
     private final MOStep moStep;
 
@@ -24,32 +32,47 @@ public class WizardPage extends BaseSDPage {
     public void clickNextButtonInWizard(WebDriver driver) {
         DelayUtils.waitForPageToLoad(driver, wait);
         getWizard().clickNext();
+        log.info("Clicking Next button in the wizard");
     }
 
     @Step("I click Accept button in wizard")
     public void clickAcceptButtonInWizard(WebDriver driver) {
         DelayUtils.waitForPageToLoad(driver, wait);
         getWizard().clickAccept();
+        log.info("Clicking Accept button in the wizard");
     }
 
-    @Step("I insert {value} to multi combo box component with id {componentId}")
+    @Step("I insert {text} to multi combo box component with id {componentId}")
     public void insertValueToMultiComboBoxComponent(String text, String componentId) {
         insertValueToComponent(componentId, text, Input.ComponentType.MULTI_COMBOBOX);
+        log.info("Value {} inserted to multi combobox", text);
     }
 
-    @Step("I insert {value} to combo box component with id {componentId}")
+    @Step("I insert {text} to combo box component with id {componentId}")
     public void insertValueToComboBoxComponent(String text, String componentId) {
         insertValueToComponent(componentId, text, Input.ComponentType.COMBOBOX);
+        log.info("Value {} inserted to combobox", text);
     }
 
-    @Step("I insert {value} to search component with id {componentId}")
+    @Step("I insert {text} to search component with id {componentId}")
     public void insertValueToSearchComponent(String text, String componentId) {
-        insertValueToComponent(componentId, text, Input.ComponentType.SEARCH_FIELD);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        insertValueToComponent(text, componentId, Input.ComponentType.SEARCH_FIELD);
+        log.info("Value {} inserted to searchfield", text);
     }
 
-    @Step("I insert {value} to text component with id {componentId}")
+    @Step("I insert {text} to text component with id {componentId}")
     public void insertValueToTextComponent(String text, String componentId) {
         insertValueToComponent(text, componentId, Input.ComponentType.TEXT_FIELD);
+        log.info("Value {} inserted to textfield", text);
+    }
+
+    @Step("I insert {description} to Incident Description field")
+    public void enterIncidentDescription(String description) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        HtmlEditor htmlEditor = HtmlEditor.create(driver, wait, INCIDENT_DESCRIPTION_ID);
+        htmlEditor.setValue(Data.createSingleData(description));
+        log.info("Incident description: {} is entered", description);
     }
 
     private void insertValueToComponent(String text, String componentId, Input.ComponentType componentType) {
