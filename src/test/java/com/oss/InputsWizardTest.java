@@ -120,7 +120,6 @@ public class InputsWizardTest extends BaseTestCase {
         date.chooseDate("2022-02-06");
         DelayUtils.sleep(500);
         Assertions.assertThat(date.getStringValue()).isEqualTo("2022-02-06");
-
         
         // Component tests
         testComponent(InputsWizardPage.DATE_ID, date);
