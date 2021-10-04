@@ -117,4 +117,31 @@ public class KpiViewTest extends BaseTestCase {
 
         Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
     }
+
+    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToSelect", "dimensionNodesToExpand", "filterName"})
+    @Test(priority = 5, testName = "Link to Indicators View - chart", description = "Opening Link to Indicators View - chart")
+    @Description("Opening Link to Indicators View - chart")
+    public void checkLinkToKPIViewChart(
+            @Optional("DFE Tests,DFE Product Tests,Selenium Tests") String indicatorNodesToExpand,
+            @Optional("SUCCESS_LONG") String indicatorNodesToSelect,
+            @Optional("t:SMOKE#DimHierSelenium") String dimensionNodesToExpand,
+            @Optional("D3_01") String dimensionNodesToSelect,
+            @Optional("DFE Tests") String filterName
+    ) {
+        try {
+            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+
+            Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+
+            kpiViewPage.clickLinkToChart();
+
+            Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+            Assert.assertTrue(kpiViewPage.isNodeInTreeSelected(indicatorNodesToSelect, INDICATORS_TREE_ID));
+            Assert.assertTrue(kpiViewPage.isNodeInTreeSelected(dimensionNodesToSelect, DIMENSIONS_TREE_ID));
+
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            Assert.fail();
+        }
+    }
 }

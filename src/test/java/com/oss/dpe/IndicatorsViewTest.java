@@ -247,6 +247,34 @@ public class IndicatorsViewTest extends BaseTestCase {
         kpiViewPage.searchInToolbarPanel("DC Type: PMSTA_DC", DIMENSIONS_TREE_ID);
         kpiViewPage.applyChanges();
 
+        Assert.assertTrue(kpiViewPage.isNodeInTreeSelected("DBTIME", INDICATORS_TREE_ID));
+        Assert.assertTrue(kpiViewPage.isNodeInTreeSelected("DC Type: PMSTA_DC", DIMENSIONS_TREE_ID));
         Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+    }
+
+    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToSelect", "filterName"})
+    @Test(priority = 8, testName = "Clicking link to chart from chart actions", description = "Clicking link to chart from chart actions")
+    @Description("Clicking link to chart from chart actions")
+    public void CheckLinkToIndicatorsView(
+            @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
+            @Optional("AQ_TIME") String indicatorNodesToSelect,
+            @Optional("DC Type: ETL_DC") String dimensionNodesToSelect,
+            @Optional("Data Collection Statistics") String filterName
+    ) {
+        try {
+            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToSelect, filterName);
+
+            Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+            String activeAggMethod = kpiViewPage.activeAggMethod();
+
+            kpiViewPage.clickLinkToChart();
+
+            Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+            Assert.assertTrue(kpiViewPage.isNodeInTreeSelected("AQ_TIME 1h " + activeAggMethod, INDICATORS_TREE_ID));
+            Assert.assertTrue(kpiViewPage.isNodeInTreeSelected(dimensionNodesToSelect, DIMENSIONS_TREE_ID));
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            Assert.fail();
+        }
     }
 }
