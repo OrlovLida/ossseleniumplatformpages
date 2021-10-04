@@ -71,12 +71,12 @@ public class InputsWizardPage extends BasePage {
     }
 
     public void setControllerValue(String controllerId, String componentId) {
-        setComponentValue(controllerId, componentId, ComponentType.COMBOBOX);
+        setComponentValue(controllerId, componentId, ComponentType.MULTI_COMBOBOX);
         DelayUtils.sleep();
     }
 
     public void clearController(String controllerId) {
-        getWizard().getComponent(controllerId, ComponentType.COMBOBOX).clear();
+        getWizard().getComponent(controllerId, ComponentType.MULTI_COMBOBOX).clear();
         DelayUtils.sleep();
     }
 
@@ -85,7 +85,7 @@ public class InputsWizardPage extends BasePage {
     }
 
     public void submit() {
-        this.wizard.submit();
+        this.wizard.clickButtonByLabel("Accept");
         DelayUtils.sleep();
     }
 
