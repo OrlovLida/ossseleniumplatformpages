@@ -11,16 +11,21 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Listeners({TestListener.class})
 public class WAMVBasicTest extends BaseTestCase {
-    private static String alarmListName = "Test Simple Alarm Collection";
+    private static final String alarmListName = "Test Simple Alarm Collection";
+    private final int alarmListRow = 2;
+    private final List<String> ackValues = Arrays.asList("True", "False");
+    private final List<String> noteValues = Arrays.asList("Selenium_automaited_test", "");
+
     private FMDashboardPage fmDashboardPage;
     private HomePage homePage;
     private WAMVPage wamvPage;
-    private int row = 0;
-    private int alarmListRow = 1;
 
     @BeforeMethod
     public void goToFMDashboardPage() {
@@ -31,31 +36,27 @@ public class WAMVBasicTest extends BaseTestCase {
 
     @Test
     public void openSelectedWAMV() {
+        int row = 0;
+
         fmDashboardPage.searchForAlarmList(alarmListName);
         fmDashboardPage.openAlarmListFromList(row);
         assertThat(homePage.getPageTitle()).isIn("*" + alarmListName, alarmListName);
 
-
         wamvPage.selectSpecificRow(alarmListRow);
 
-        wamvPage.clickOnAckButton();
-        waitForAckColumnChange("True");
-        Assert.assertEquals(wamvPage.getTitleFromAckStatusCell(alarmListRow), "True");
+        for (int i = 0; i <= 1; i++) {
+            if (i == 0) {
+                wamvPage.clickOnAckButton();
+            } else {
+                wamvPage.clickOnDeackButton();
+            }
+            waitForAckColumnChange(ackValues.get(i));
+            Assert.assertEquals(wamvPage.getTitleFromAckStatusCell(alarmListRow), ackValues.get(i));
 
-
-        wamvPage.clickOnDeackButton();
-        waitForAckColumnChange("False");
-        Assert.assertEquals(wamvPage.getTitleFromAckStatusCell(alarmListRow), "False");
-
-
-        wamvPage.selectSpecificRow(alarmListRow + 1);
-        wamvPage.addNote("Selenium_automaited_test");
-        waitForNoteColumnChange("Selenium_automaited_test");
-        Assert.assertEquals(wamvPage.getTextFromNoteStatusCell(alarmListRow + 1), "Selenium_automaited_test");
-        wamvPage.addNote("");
-        waitForNoteColumnChange("");
-        Assert.assertEquals(wamvPage.getTextFromNoteStatusCell(alarmListRow + 1), "");
-
+            wamvPage.addNote(noteValues.get(i));
+            waitForNoteColumnChange(noteValues.get(i));
+            Assert.assertEquals(wamvPage.getTextFromNoteStatusCell(alarmListRow), noteValues.get(i));
+        }
     }
 
     public void waitForAckColumnChange(String type) {
@@ -70,7 +71,7 @@ public class WAMVBasicTest extends BaseTestCase {
 
     public void waitForNoteColumnChange(String type) {
         for (int i = 0; i < 25; i++) {
-            if (wamvPage.getTextFromNoteStatusCell(alarmListRow + 1).equals(type)) {
+            if (wamvPage.getTextFromNoteStatusCell(alarmListRow).equals(type)) {
                 break;
             } else {
                 DelayUtils.sleep(100);
