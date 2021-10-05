@@ -21,7 +21,7 @@ public class WAMVBasicTest extends BaseTestCase {
     private static final String alarmListName = "Test Simple Alarm Collection";
     private final int alarmListRow = 2;
     private final List<String> ackValues = Arrays.asList("True", "False");
-    private final List<String> noteValues = Arrays.asList("Selenium_automaited_test", "");
+    private final List<String> noteValues = Arrays.asList("Selenium_automated_test", "");
 
     private FMDashboardPage fmDashboardPage;
     private HomePage homePage;
