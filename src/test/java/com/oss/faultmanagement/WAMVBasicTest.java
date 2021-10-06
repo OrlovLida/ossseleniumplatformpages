@@ -38,8 +38,8 @@ public class WAMVBasicTest extends BaseTestCase {
     public void openSelectedWAMV() {
         int row = 0;
 
-        fmDashboardPage.searchForAlarmList(alarmListName);
-        fmDashboardPage.openAlarmListFromList(row);
+        fmDashboardPage.searchInAlarmManagementView(alarmListName);
+        fmDashboardPage.openAlarmManagementViewByRow(row);
         assertThat(homePage.getPageTitle()).isIn("*" + alarmListName, alarmListName);
 
         wamvPage.selectSpecificRow(alarmListRow);
@@ -78,5 +78,4 @@ public class WAMVBasicTest extends BaseTestCase {
             }
         }
     }
-
 }
