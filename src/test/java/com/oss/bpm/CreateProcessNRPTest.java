@@ -110,7 +110,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
         }
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.next();
-        deviceWizardPage.setPreciseLocation(" ");
+        deviceWizardPage.setPreciseLocation("a");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.accept();
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
@@ -201,7 +201,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
         }
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.next();
-        deviceWizardPage.setPreciseLocation(" ");
+        deviceWizardPage.setPreciseLocation("b");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.accept();
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);

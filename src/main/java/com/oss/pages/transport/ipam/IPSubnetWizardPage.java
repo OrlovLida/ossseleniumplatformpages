@@ -3,9 +3,7 @@ package com.oss.pages.transport.ipam;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.table.TableComponent;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.Widget;
 import com.oss.framework.widgets.Wizard;
-import com.oss.framework.widgets.tablewidget.TableWidget;
 import com.oss.pages.BasePage;
 import com.oss.pages.transport.ipam.helper.IPSubnetFilterProperties;
 import com.oss.pages.transport.ipam.helper.IPSubnetWizardProperties;
@@ -31,6 +29,7 @@ public class IPSubnetWizardPage extends BasePage {
     private static final String FIND_NEXT_SUBNET = "Find next Subnet";
     private static final String SUBNET_WIZARD_WIDGET_ID = "subnetWizardWidgetId";
     private static final String A_BLOCK = "a";
+    private static final String TABLE_COMPONENT_ID = "subnetWizardWidgetId";
     private static final int FIRST_ROW = 0;
 
     public IPSubnetWizardPage(WebDriver driver) {
@@ -38,8 +37,7 @@ public class IPSubnetWizardPage extends BasePage {
     }
 
     private TableComponent getTableComponent() {
-        Widget.waitForWidget(wait, TableWidget.TABLE_WIDGET_CLASS);
-        return TableComponent.create(driver, wait, SUBNET_WIZARD_WIDGET_ID);
+        return TableComponent.create(driver, wait, TABLE_COMPONENT_ID);
     }
 
     @Step("IP Subnet Wizard select step")
@@ -57,21 +55,6 @@ public class IPSubnetWizardPage extends BasePage {
 
     @Step("IP Subnet Wizard select step")
     public void ipSubnetWizardSelectStep(IPSubnetFilterProperties ipSubnetFilterProperties, int amount) {
-        waitForPageToLoad();
-        Wizard selectStep = createWizard();
-        fillSubnetWizardSelectStep(selectStep, ipSubnetFilterProperties);
-        Button button = Button.create(driver, FIND_SUBNETS, A_BLOCK);
-        button.click();
-        waitForPageToLoad();
-        for (int i = 0; i < amount; i++)
-            getTableComponent().selectRow(i);
-        waitForPageToLoad();
-        selectStep.clickNext();
-        waitForPageToLoad();
-    }
-
-    @Step("IP Subnet Wizard select step")
-    public void ipSubnetWizardSelectStep2(IPSubnetFilterProperties ipSubnetFilterProperties, int amount) {
         waitForPageToLoad();
         Wizard selectStep = createWizard();
         fillSubnetWizardSelectStep(selectStep, ipSubnetFilterProperties);
