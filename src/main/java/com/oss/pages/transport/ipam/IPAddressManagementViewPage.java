@@ -351,6 +351,36 @@ public class IPAddressManagementViewPage extends BasePage {
         reserveIPHost(description);
     }
 
+    public void reserveGivenIPv4HostAddress(String rowName, String ipAddress){
+        selectTreeRowContains(rowName);
+        waitForPageToLoad();
+        useContextAction(CREATE_OPERATIONS_FOR_IPV4_SUBNET_NETWORK_GROUP, CREATE_OPERATION_ACTION, RESERVE_IPV4_ADDRESS_ACTION);
+        reserveGivenIPAddress(ipAddress);
+    }
+
+    public void reserveGivenIPv6HostAddress(String rowName, String ipAddress){
+        selectTreeRowContains(rowName);
+        waitForPageToLoad();
+        useContextAction(CREATE_OPERATIONS_FOR_IPV6_SUBNET_NETWORK_GROUP, CREATE_OPERATION_ACTION, RESERVE_IPV6_ADDRESS_ACTION);
+        reserveGivenIPAddress(ipAddress);
+    }
+
+    public void bulkIPv4AddressReservation(String numberOfHostAddressesToReserve, Boolean reserveConsecutive, String ... rowName){
+        Arrays.stream(rowName).forEach(this::selectTreeRowContains);
+        waitForPageToLoad();
+        useContextAction(CREATE_OPERATIONS_FOR_IPV4_SUBNET_NETWORK_GROUP, CREATE_OPERATION_ACTION, RESERVE_IPV4_ADDRESS_ACTION);
+        ReserveIPAddressWizardPage reserveIPAddressWizardPage = new ReserveIPAddressWizardPage(driver);
+        reserveIPAddressWizardPage.bulkIPAddressReservation(numberOfHostAddressesToReserve, reserveConsecutive);
+    }
+
+    public void bulkIPv6AddressReservation(String numberOfHostAddressesToReserve, Boolean reserveConsecutive, String ... rowName){
+        Arrays.stream(rowName).forEach(this::selectTreeRowContains);
+        waitForPageToLoad();
+        useContextAction(CREATE_OPERATIONS_FOR_IPV6_SUBNET_NETWORK_GROUP, CREATE_OPERATION_ACTION, RESERVE_IPV6_ADDRESS_ACTION);
+        ReserveIPAddressWizardPage reserveIPAddressWizardPage = new ReserveIPAddressWizardPage(driver);
+        reserveIPAddressWizardPage.bulkIPAddressReservation(numberOfHostAddressesToReserve, reserveConsecutive);
+    }
+
     @Step("Reserve IPv6 Host Address {rowName}")
     public void reserveIPv6HostAddress(String rowName, String description) {
         selectTreeRowContains(rowName);
@@ -378,6 +408,11 @@ public class IPAddressManagementViewPage extends BasePage {
     private void reserveIPHost(String description) {
         ReserveIPAddressWizardPage reserveIPAddressWizardPage = new ReserveIPAddressWizardPage(driver);
         reserveIPAddressWizardPage.reserveIPAddress(description);
+    }
+
+    private void reserveGivenIPAddress(String ipAddress){
+        ReserveIPAddressWizardPage reserveIPAddressWizardPage = new ReserveIPAddressWizardPage(driver);
+        reserveIPAddressWizardPage.reserveGivenIPAddress(ipAddress);
     }
 
     @Step("Assign IPv4 Host Address from subnet {rowName} context")
