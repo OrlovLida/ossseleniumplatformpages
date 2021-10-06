@@ -1,15 +1,13 @@
 package com.oss.pages.bigdata.kqiview;
 
-import com.oss.framework.components.inputs.Button;
+import com.oss.framework.mainheader.ButtonPanel;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.view.Card;
+import com.oss.framework.widgets.dpe.contextaction.ContextActionPanel;
 import com.oss.framework.widgets.dpe.kpichartwidget.KpiChartWidget;
-import com.oss.framework.widgets.dpe.toolbarpanel.ExportPanel;
+import com.oss.framework.widgets.dpe.toolbarpanel.*;
 import com.oss.framework.widgets.dpe.toolbarpanel.ExportPanel.ExportType;
-import com.oss.framework.widgets.dpe.toolbarpanel.FiltersPanel;
-import com.oss.framework.widgets.dpe.toolbarpanel.KpiToolbarPanel;
 import com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType;
-import com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel;
-import com.oss.framework.widgets.dpe.toolbarpanel.TopNPanel;
 import com.oss.framework.widgets.dpe.treewidget.KpiTreeWidget;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Attachment;
@@ -23,6 +21,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static com.oss.configuration.Configuration.CONFIGURATION;
@@ -44,9 +44,12 @@ public class KpiViewPage extends BasePage {
     private static final String BAR_CHART_BUTTON_ID = "dropdown-list-button_bar";
     private static final String LINE_CHART_BUTTON_ID = "dropdown-list-button_line";
     private static final String CHART_COLOR_BUTTON_ID = "chart-color-button";
-    private static final String FULL_SCREEN_BUTTON_ID = "full-screen-button";
-
-    private static final String OPTIONS_BUTTON_ID = "options-menu-button";
+    private static final String DATA_VIEW_ID = "_Data_View";
+    private static final String SAVE_BOOKMARK_BUTTON_ID = "fa fa-floppy-o";
+    private static final String COLOR_PICKER_CLASS = "colorPickerWrapper";
+    private static final String CHART_ACTIONS_LINKS_ID = "external-links-button";
+    private static final String LINK_TO_XDR_LABEL = "Open xDR for t:SMOKE#ETLforKqis. Time condition limited to last 1 hour(s) from chosen period.";
+    private static final String LINK_TO_INDICATORS_VIEW_CHART_LABEL = "Indicators View - Chart";
 
     public KpiViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -156,7 +159,6 @@ public class KpiViewPage extends BasePage {
             } catch (IOException e) {
                 log.error("Failed attaching files: {}", e.getMessage());
             }
-
         }
     }
 
@@ -166,19 +168,45 @@ public class KpiViewPage extends BasePage {
     }
 
     @Step("I change layout")
-    public void changeLayout() {
+    public void changeLayout(LayoutType layoutType) {
         KpiToolbarPanel toolbar = KpiToolbarPanel.create(driver, wait);
-        toolbar.getLayoutPanel().changeLayout(LayoutType.LAYOUT_2x2);
+        toolbar.getLayoutPanel().changeLayout(layoutType);
     }
 
-    @Step("I maximize chart")
-    public void maximizeChart() {
-        KpiChartWidget.create(driver, wait).maximizeChart();
+    @Step("I minimize data View")
+    public void minimizeDataView() {
+        Card card = Card.createCard(driver, wait, DATA_VIEW_ID);
+        card.minimizeCard();
     }
 
-    @Step("I minimize chart")
-    public void minimizeChart() {
-        KpiChartWidget.create(driver, wait).minimizeChart();
+    @Step("I maximize data View")
+    public void maximizeDataView() {
+        Card card = Card.createCard(driver, wait, DATA_VIEW_ID);
+        card.maximizeCard();
+    }
+
+    @Step("I minimize Indicators Panel")
+    public void minimizeIndicatorsPanel() {
+        Card card = Card.createCard(driver, wait, INDICATORS_TREE_ID);
+        card.minimizeCard();
+    }
+
+    @Step("I maximize Indicators Panel")
+    public void maximizeIndicatorsPanel() {
+        Card card = Card.createCard(driver, wait, INDICATORS_TREE_ID);
+        card.maximizeCard();
+    }
+
+    @Step("I minimize Dimensions Panel")
+    public void minimizeDimensionsPanel() {
+        Card card = Card.createCard(driver, wait, DIMENSIONS_TREE_ID);
+        card.minimizeCard();
+    }
+
+    @Step("I maximize Dimensions Panel")
+    public void maximizeDimensionsPanel() {
+        Card card = Card.createCard(driver, wait, DIMENSIONS_TREE_ID);
+        card.maximizeCard();
     }
 
     private boolean ifDownloadDirExists() {
@@ -235,32 +263,48 @@ public class KpiViewPage extends BasePage {
         KpiChartWidget.create(driver, wait).clickDataSeriesLegend();
     }
 
+    @Step("I go to Chart Actions Panel")
+    public ContextActionPanel getChartActionsPanel() {
+        return ContextActionPanel.create(driver, wait);
+    }
+
     @Step("I click chart type - area")
     public void clickAreaChartType() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        KpiChartWidget.create(driver, wait).clickChartActions();
-        Button.createById(driver, CHART_TYPE_BUTTON_ID).click();
-        Button.createById(driver, AREA_CHART_BUTTON_ID).click();
+        getChartActionsPanel().callAction(CHART_TYPE_BUTTON_ID, AREA_CHART_BUTTON_ID);
         log.info("Changing chart type to area");
     }
 
     @Step("I click chart type - bar")
     public void clickBarChartType() {
         log.info("Changing chart type to bar chart");
-        Button.createById(driver, BAR_CHART_BUTTON_ID).click();
+        getChartActionsPanel().callAction(CHART_TYPE_BUTTON_ID, BAR_CHART_BUTTON_ID);
     }
 
     @Step("I click chart type - line")
     public void clickLineChartType() {
         log.info("Changing chart type to line chart");
-        Button.createById(driver, LINE_CHART_BUTTON_ID).click();
+        getChartActionsPanel().callAction(CHART_TYPE_BUTTON_ID, LINE_CHART_BUTTON_ID);
     }
 
     @Step("I pick data series color")
     public void chooseDataSeriesColor() {
         log.info("Changing first data series color");
-        Button.createById(driver, CHART_COLOR_BUTTON_ID).click();
-        KpiChartWidget.create(driver, wait).pickDataSeriesColorButton();
+        getChartActionsPanel().callAction(CHART_COLOR_BUTTON_ID, COLOR_PICKER_CLASS, "rgb(150, 65, 54)");
+    }
+
+    @Step("I click link to XDR Browser")
+    public void clickLinkToXDRBrowser() {
+        getChartActionsPanel().callAction(CHART_ACTIONS_LINKS_ID, LINK_TO_XDR_LABEL);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Clicking on link to XDR Browser");
+    }
+
+    @Step("I click link to chart")
+    public void clickLinkToChart() {
+        getChartActionsPanel().callAction(CHART_ACTIONS_LINKS_ID, LINK_TO_INDICATORS_VIEW_CHART_LABEL);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Clicking on link to Indicators View - Chart");
     }
 
     @Step("I should see {expectedLineWidth} width line displayed")
@@ -325,7 +369,6 @@ public class KpiViewPage extends BasePage {
         optionsPanel.chooseTimePeriodOption(LATEST);
     }
 
-    // do zmiany nazwy
     @Step("I should see 2 visible Y axis and 1 hidden Y axis")
     public boolean shouldSeeVisibleYaxis(int expectedVisibleYAxisNumber) {
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -402,4 +445,84 @@ public class KpiViewPage extends BasePage {
         return visibleOtherPeriodNumber > 0;
     }
 
+    @Step("I should see only Data View Panel displayed")
+    public boolean shouldSeeOnlyDataViewDisplayed() {
+        KpiChartWidget kpiChartWidget = KpiChartWidget.create(driver, wait);
+        boolean dataViewDisplayed = kpiChartWidget.dataViewPanelVisibility();
+        boolean indicatorsTreeDisplayed = kpiChartWidget.indicatorsTreeVisibility();
+        boolean dimensionsTreeDisplayed = kpiChartWidget.dimensionsTreeVisibility();
+        if (dataViewDisplayed & !indicatorsTreeDisplayed & !dimensionsTreeDisplayed) {
+            log.info("Only Data View Panel is displayed");
+            return true;
+        } else {
+            log.error("Other Panels are also visible");
+            return false;
+        }
+    }
+
+    @Step("I check status of chosen layout button")
+    public String layoutButtonStatus(LayoutType layout) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return LayoutPanel.create(driver, wait).chartLayoutButtonStatus(layout);
+    }
+
+    @Step("I search for Object in tree search toolbar")
+    public void searchInToolbarPanel(String objectName, String treeId) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        KpiTreeWidget kpiTreeWidget = KpiTreeWidget.create(driver, wait, treeId);
+        kpiTreeWidget.searchInToolbarPanel(objectName);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        kpiTreeWidget.selectFirstSearchResult();
+        kpiTreeWidget.closeSearchToolbar();
+    }
+
+    public void kpiViewSetup(String indicatorNodesToExpand, String indicatorNodesToSelect,
+                             String dimensionNodesToExpand, String dimensionNodesToSelect, String filterName) {
+        setFilters(Collections.singletonList(filterName));
+
+        List<String> indicatorNodesToExpandList = Arrays.asList(indicatorNodesToExpand.split(","));
+        List<String> indicatorNodesToSelectList = Arrays.asList(indicatorNodesToSelect.split(","));
+        selectIndicator(indicatorNodesToExpandList, indicatorNodesToSelectList);
+
+        List<String> dimensionNodesToExpandList = Arrays.asList(dimensionNodesToExpand.split(","));
+        List<String> dimensionNodesToSelectList = Arrays.asList(dimensionNodesToSelect.split(","));
+        selectDimension(dimensionNodesToExpandList, dimensionNodesToSelectList);
+
+        applyChanges();
+        seeChartIsDisplayed();
+    }
+
+    public void kpiViewSetup(String indicatorNodesToExpand, String indicatorNodesToSelect,
+                             String dimensionNodesToSelect, String filterName) {
+        setFilters(Collections.singletonList(filterName));
+
+        List<String> indicatorNodesToExpandList = Arrays.asList(indicatorNodesToExpand.split(","));
+        List<String> indicatorNodesToSelectList = Arrays.asList(indicatorNodesToSelect.split(","));
+        selectIndicator(indicatorNodesToExpandList, indicatorNodesToSelectList);
+
+        List<String> dimensionNodesToSelectList = Arrays.asList(dimensionNodesToSelect.split(","));
+        selectUnfoldedDimension(dimensionNodesToSelectList);
+
+        applyChanges();
+        seeChartIsDisplayed();
+    }
+
+    @Step("I click Save bookmark")
+    public void clickSaveBookmark() {
+        ButtonPanel.create(driver, wait).clickOnIcon(SAVE_BOOKMARK_BUTTON_ID);
+    }
+
+    @Step("Check if node is selected in the tree")
+    public boolean isNodeInTreeSelected(String objectName, String treeId) {
+        log.info("Checking if node: {} is selected in the tree", objectName);
+        return KpiTreeWidget.create(driver, wait, treeId).isNodeSelected(objectName);
+    }
+
+    public String activeAggMethod() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        OptionsPanel optionsPanel = OptionsPanel.create(driver, wait);
+        String activeAggMethod = optionsPanel.getActiveAggregationMethod();
+
+        return activeAggMethod;
+    }
 }

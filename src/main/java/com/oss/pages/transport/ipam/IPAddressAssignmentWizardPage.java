@@ -131,8 +131,10 @@ public class IPAddressAssignmentWizardPage extends BasePage {
     private void fillAutomaticModeFields(IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties) {
         ipAddressAssignmentWizardProperties.getAddress()
                 .ifPresent(address -> getWizard().setComponentValue(IP_ADDRESS_AUTOMATIC_MODE_COMPONENT_ID, address, TEXT_FIELD));
+        DelayUtils.waitForPageToLoad(driver, wait);
         ipAddressAssignmentWizardProperties.getMask()
                 .ifPresent(mask -> getWizard().setComponentValue(MASK_COMPONENT_ID, mask, TEXT_FIELD));
+        DelayUtils.waitForPageToLoad(driver, wait);
         ipAddressAssignmentWizardProperties.getIpNetwork()
                 .ifPresent(network -> getWizard().setComponentValue(IP_NETWORK_COMPONENT_ID, network, SEARCH_FIELD));
     }
@@ -145,10 +147,13 @@ public class IPAddressAssignmentWizardPage extends BasePage {
     private void fillOptionalFieldsInMainStep(IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties) {
         ipAddressAssignmentWizardProperties.isPrimary()
                 .ifPresent(isPrimary -> getWizard().setComponentValue(IS_PRIMARY_COMPONENT_ID, isPrimary, CHECKBOX));
+        DelayUtils.waitForPageToLoad(driver, wait);
         ipAddressAssignmentWizardProperties.isInNAT()
                 .ifPresent(isInNAT -> getWizard().setComponentValue(IS_IN_NAT_COMPONENT_ID, isInNAT, CHECKBOX));
+        DelayUtils.waitForPageToLoad(driver, wait);
         ipAddressAssignmentWizardProperties.getRole()
                 .ifPresent(role -> getWizard().setComponentValue(ROLE_COMPONENT_ID, role, SEARCH_FIELD));
+        DelayUtils.waitForPageToLoad(driver, wait);
         ipAddressAssignmentWizardProperties.getDescription()
                 .ifPresent(description -> getWizard().setComponentValue(DESCRIPTION_COMPONENT_ID, description, TEXT_AREA));
     }
@@ -185,12 +190,16 @@ public class IPAddressAssignmentWizardPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         oppositeIpAddressAssignmentWizardProperties.getAddress()
                 .ifPresent(address -> getWizard().setComponentValue(IP_ADDRESS_OPPOSTE_ASSIGNMENT_STEP_COMPONENT_ID, address, SEARCH_FIELD));
+        DelayUtils.waitForPageToLoad(driver, wait);
         oppositeIpAddressAssignmentWizardProperties.isPrimary()
                 .ifPresent(isPrimary -> getWizard().setComponentValue(IS_PRIMARY_OPPOSTE_ASSIGNMENT_STEP_COMPONENT_ID, isPrimary, CHECKBOX));
+        DelayUtils.waitForPageToLoad(driver, wait);
         oppositeIpAddressAssignmentWizardProperties.isInNAT()
                 .ifPresent(isInNAT -> getWizard().setComponentValue(IS_IN_NAT_OPPOSTE_ASSIGNMENT_STEP_COMPONENT_ID, isInNAT, CHECKBOX));
+        DelayUtils.waitForPageToLoad(driver, wait);
         oppositeIpAddressAssignmentWizardProperties.getRole()
                 .ifPresent(role -> getWizard().setComponentValue(ROLE_OPPOSTE_ASSIGNMENT_STEP_COMPONENT_ID, role, SEARCH_FIELD));
+        DelayUtils.waitForPageToLoad(driver, wait);
         oppositeIpAddressAssignmentWizardProperties.getDescription()
                 .ifPresent(description -> getWizard().setComponentValue(DESCRIPTION_OPPOSTE_ASSIGNMENT_STEP_COMPONENT_ID, description, TEXT_AREA));
         DelayUtils.waitForPageToLoad(driver, wait);

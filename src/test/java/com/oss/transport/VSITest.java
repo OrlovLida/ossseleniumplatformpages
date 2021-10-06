@@ -37,9 +37,9 @@ public class VSITest extends BaseTestCase {
     private static final String ETHERNET_INTERFACE_LABEL = "Ethernet Interface";
     private static final String AEI_LABEL = "AEI";
     private static final String ENVIRONMENT_INDEPENDENT_URL_PART_AFTER_REMOVAL_REDIRECT = "/#/dashboard/predefined/id/transport-dashboard?perspective=LIVE";
-    private static final String WIZARDS = "Wizards";
-    private static final String TRANSPORT = "Transport";
-    private static final String VSI = "VSI";
+    private static final String WIZARDS = "Network domains";
+    private static final String TRANSPORT = "Transport & IP";
+    private static final String VSI = "Create VSI";
 
     private String createdRouteTargetOverviewPageURL;
 
@@ -47,8 +47,9 @@ public class VSITest extends BaseTestCase {
     @Step("Create Route Target")
     public void createRouteTarget(){
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
-        sideMenu.callActionByLabel("Route Target", WIZARDS, TRANSPORT);
+        //SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
+        //sideMenu.callActionByLabel("Create Route Target", WIZARDS, TRANSPORT);
+        driver.get(String.format("%s/#/view/transport/tpt/vpn/routetarget?perspective=LIVE", BASIC_URL));
 
         RouteTargetWizardPage routeTargetWizard = new RouteTargetWizardPage(driver);
         routeTargetWizard.setRouteTarget(ROUTE_TARGET_TO_CREATE);
@@ -166,8 +167,10 @@ public class VSITest extends BaseTestCase {
 
     private VSIWizardPage goToVSIWizardPage(){
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
-        sideMenu.callActionByLabel(VSI, WIZARDS, TRANSPORT);
+        //SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
+        //sideMenu.callActionByLabel(VSI, WIZARDS, TRANSPORT);
+        driver.get(String.format("%s/#/view/transport/ip/mpls/vsi?perspective=LIVE", BASIC_URL));
+
         return new VSIWizardPage(driver);
     }
 

@@ -3,6 +3,7 @@ package com.oss.transport;
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
+import com.oss.framework.mainheader.PerspectiveChooser;
 import com.oss.framework.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
@@ -111,9 +112,11 @@ public class LoopbackInterfaceTest extends BaseTestCase {
     }
 
     private LoopbackInterfaceWizardPage goToLoopbackWizard() {
-        SideMenu sidemenu = SideMenu.create(driver, webDriverWait);
-        sidemenu.callActionByLabel("Loopback Interface", "Wizards", "Transport");
+        //SideMenu sidemenu = SideMenu.create(driver, webDriverWait);
+        //sidemenu.callActionByLabel("Create Loopback Interface", "Network domains", "Transport & IP");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        driver.get(String.format("%s/#/view/transport/ip/ethernet/loopback-interface?perspective=LIVE", BASIC_URL));
+
         return new LoopbackInterfaceWizardPage(driver);
     }
 

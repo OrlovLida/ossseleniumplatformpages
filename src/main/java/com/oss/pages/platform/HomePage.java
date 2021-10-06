@@ -147,15 +147,23 @@ public class HomePage extends BasePage {
         return ComponentFactory.create(componentId, componentType, driver, wait);
     }
 
-    private String getCurrentPerspective() {
+    private String getHomePageLinkWithContext() {
         String href = logo.getAttribute("href");
-        log.info("Open link: {}", href);
+        log.info("Get current link: {}", href);
         return href;
     }
 
     @Step("Go to Home Page")
     public void goToHomePageWithContext(WebDriver driver) {
-        driver.get(getCurrentPerspective());
+        driver.get(getHomePageLinkWithContext());
+    }
+
+    @Step("Go to specific Page with context")
+    public void goToSpecificPageWithContext(WebDriver driver, String view) {
+        String link = getHomePageLinkWithContext();
+        link = link.replace("/#/", view);
+        log.info("Open link: {}", link);
+        driver.get(link);
     }
 
 }

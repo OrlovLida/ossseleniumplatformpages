@@ -50,7 +50,7 @@ public class DataSourceFromQueryTest extends BaseTestCase {
         dsStepWizard.clickNext();
         dsStepWizard.getSpecificInfoStep().fillSpecificInfo(OFFSET, UNIT, INTERVAL_AMOUNT);
         dsStepWizard.clickAccept();
-        Boolean dataSourceIsCreated = dataSourcePage.dataSourceExistIntoTable(dataSourceName);
+        boolean dataSourceIsCreated = dataSourcePage.dataSourceExistIntoTable(dataSourceName);
 
         Assert.assertTrue(dataSourceIsCreated);
     }
@@ -58,7 +58,7 @@ public class DataSourceFromQueryTest extends BaseTestCase {
     @Test(priority = 2, testName = "Edit Data Source", description = "Edit Data Source")
     @Description("Edit Data Source")
     public void editDataSourceFromQuery() {
-        Boolean dataSourceExists = dataSourcePage.dataSourceExistIntoTable(dataSourceName);
+        boolean dataSourceExists = dataSourcePage.dataSourceExistIntoTable(dataSourceName);
         if (dataSourceExists) {
             dataSourcePage.selectFoundDataSource();
             dataSourcePage.clickEditDS();
@@ -67,7 +67,7 @@ public class DataSourceFromQueryTest extends BaseTestCase {
             dsStepWizard.clickNext();
             dsStepWizard.clickNext();
             dsStepWizard.clickAccept();
-            Boolean dataSourceIsEdited = dataSourcePage.dataSourceExistIntoTable(updatedDataSourceName);
+            boolean dataSourceIsEdited = dataSourcePage.dataSourceExistIntoTable(updatedDataSourceName);
 
             Assert.assertTrue(dataSourceIsEdited);
         } else {
@@ -79,7 +79,7 @@ public class DataSourceFromQueryTest extends BaseTestCase {
     @Test(priority = 3, testName = "Delete Data Source", description = "Delete Data Source")
     @Description("Delete Data Source")
     public void deleteDataSourceFromQuery() {
-        Boolean dataSourceExists = dataSourcePage.dataSourceExistIntoTable(dataSourceName);
+        boolean dataSourceExists = dataSourcePage.dataSourceExistIntoTable(dataSourceName);
         if (dataSourceExists) {
             dataSourcePage.selectFoundDataSource();
             dataSourcePage.clickDeleteDS();

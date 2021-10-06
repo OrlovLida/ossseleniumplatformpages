@@ -18,7 +18,7 @@ public class PropertyPanelTest extends BaseTestCase {
 
     @BeforeClass
     public void goToInventoryView() {
-        String TYPE = "Movie";
+        String TYPE = "TestMovie";
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TYPE);
     }
 
@@ -60,7 +60,7 @@ public class PropertyPanelTest extends BaseTestCase {
         String name = inventoryViewPage.getAttributeValue(propertyName, ROW_ID);
         PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel(ROW_ID, PROPERTY_PANEL_ID);
         propertyPanel.fullTextSearch(name);
-        Assert.assertTrue(propertyPanel.getPropertyLabels().contains(propertyName));
+        Assert.assertTrue(propertyPanel.getVisibleAttributes().contains(propertyName));
         for (String attribute : propertyPanel.getVisibleAttributes()) {
             Assert.assertTrue(propertyPanel.getPropertyValue(attribute).contains(name));
         }
@@ -68,9 +68,9 @@ public class PropertyPanelTest extends BaseTestCase {
         inventoryViewPage.unselectObjectByRowId(0);
     }
 
-    @Test(priority = 3)
+    @Test(priority = 4)
     public void hideEmpty() {
-        String emptyValue = "-";
+        String emptyValue = "—";
 
         PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel(10, PROPERTY_PANEL_ID);
         propertyPanel.hideEmpty();
