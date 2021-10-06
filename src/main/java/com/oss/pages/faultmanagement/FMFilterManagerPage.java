@@ -28,18 +28,38 @@ public class FMFilterManagerPage extends BasePage {
         return new FMFilterManagerPage(driver);
     }
 
-    @Step("Create Folder")
-    public void createFolder(String name) {
-        FMCrateWizardPage fmCrateWizardPage = openCreateNewFolderWizard();
-        fmCrateWizardPage.typeName(name);
-        fmCrateWizardPage.clickAccept();
+    @Step("Open Create New Folder Wizard")
+    public FMCrateWizardPage openCreateNewFolderWizard() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getCommonList().callAction(NEW_FOLDER_ID);
+        return new FMCrateWizardPage(driver);
+    }
+
+    @Step("Open Create New Folder Wizard")
+    public FMCrateWizardPage openCreateNewFilterWizard() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getCommonList().callAction(NEW_FILTER_ID);
+        return new FMCrateWizardPage(driver);
+    }
+
+    private CommonList getCommonList() {
+        return CommonList.create(driver, wait, COMMON_LIST_APP_ID);
     }
 
     @Step("Create Folder")
-    public void createFilter(String name, String type) {
-        FMCrateWizardPage fmCrateWizardPage = openCreateNewFilterWizard();
-        fmCrateWizardPage.typeName(name);
-        fmCrateWizardPage.setTypeValue(type);
+    public void createFolder(String name, String description) {
+        FMCrateWizardPage fmWizardPage = openCreateNewFolderWizard();
+        fmWizardPage.setName(name);
+        fmWizardPage.setDescription(description);
+        fmWizardPage.clickAccept();
+    }
+
+    @Step("Create Folder")
+    public void createFilter(String name, String description, String type) {
+        FMCrateWizardPage fmWizardPage = openCreateNewFilterWizard();
+        fmWizardPage.setName(name);
+        fmWizardPage.setDescription(description);
+        fmWizardPage.setTypeValue(type);
 
         try {
             Thread.sleep(1500);
@@ -47,7 +67,7 @@ public class FMFilterManagerPage extends BasePage {
             e.printStackTrace();
         }
 
-        fmCrateWizardPage.clickOnConditon(ADD_BUTTON_LABEL);
+        fmWizardPage.clickOnConditon(ADD_BUTTON_LABEL);
 
         try {
             Thread.sleep(1000);
@@ -61,25 +81,5 @@ public class FMFilterManagerPage extends BasePage {
         popupV2.setComponentValue("search","coś tam wpisz", SEARCH_FIELD);
 //        popupV2.getComponent("search", SEARCH_FIELD).click();
 //        popupV2.getComponent("search", SEARCH_FIELD).setSingleStringValue("halo halo co się dzieje");
-    }
-
-    @Step("Open Create New Folder Wizard")
-    public FMCrateWizardPage openCreateNewFolderWizard() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        getCommonList().callAction(NEW_FOLDER_ID);
-        DelayUtils.waitForPageToLoad(driver, wait);
-        return new FMCrateWizardPage(driver);
-    }
-
-    @Step("Open Create New Folder Wizard")
-    public FMCrateWizardPage openCreateNewFilterWizard() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        getCommonList().callAction(NEW_FILTER_ID);
-        DelayUtils.waitForPageToLoad(driver, wait);
-        return new FMCrateWizardPage(driver);
-    }
-
-    private CommonList getCommonList() {
-        return CommonList.create(driver, wait, COMMON_LIST_APP_ID);
     }
 }

@@ -1,18 +1,15 @@
 package com.oss.pages.faultmanagement;
 
-import com.oss.framework.components.contextactions.ActionsInterface;
-import com.oss.framework.components.contextactions.ButtonContainer;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
-
 public class FMCrateWizardPage extends BasePage {
 
-    private static final String NAME_TEXT_FIELD_ID= "FilterFolderNameInput";
+    private static final String NAME_TEXT_FIELD_ID = "FilterFolderNameInput";
+    private static final String DESCRIPTION_TEXT_FIELD_ID = "FilterFolderDescriptionInput";
     private static final String WIZARD_ID = "webFilter_wizard_modal_template";
     private static final String TYPE_FIELD_ID = "FilterTypeInput";
     private static final String CONDITION_ID = "condition";
@@ -24,9 +21,14 @@ public class FMCrateWizardPage extends BasePage {
 
     private Wizard folderWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
 
-    @Step("Type Name of the folder")
-    public void typeName(String name){
-        folderWizard.getComponent(NAME_TEXT_FIELD_ID, TEXT_FIELD).setSingleStringValue(name);
+    @Step("I set Name of the wizard")
+    public void setName(String name){
+        folderWizard.getComponent(NAME_TEXT_FIELD_ID, Input.ComponentType.TEXT_FIELD).setSingleStringValue(name);
+    }
+
+    @Step("I set description of the wizard")
+    public void setDescription(String description){
+        folderWizard.getComponent(DESCRIPTION_TEXT_FIELD_ID, Input.ComponentType.TEXT_FIELD).setSingleStringValue(description);
     }
 
     @Step("Type Name of the folder")
