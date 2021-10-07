@@ -92,19 +92,18 @@ public class IPSubnetWizardPage extends BasePage {
     public void ipSubnetWizardPropertiesStep(IPSubnetWizardProperties... ipSubnetWizardPropertiesArray) {
         waitForPageToLoad();
         Wizard propertiesStep = createWizard();
-        for (int i = 0; i < ipSubnetWizardPropertiesArray.length; i++)
-        {
+        for (int i = 0; i < ipSubnetWizardPropertiesArray.length; i++) {
             getTableComponent().selectRow(i);
             waitForPageToLoad();
             propertiesStep.setComponentValue(SUBNET_TYPE_COMPONENT_ID, ipSubnetWizardPropertiesArray[i].getSubnetType(), COMBOBOX);
-            if (ipSubnetWizardPropertiesArray[i].getStatus()!=null) {
+            if (ipSubnetWizardPropertiesArray[i].getStatus() != null) {
                 propertiesStep.setComponentValue(SUBNET_STATUS_COMPONENT_ID, ipSubnetWizardPropertiesArray[i].getStatus(), COMBOBOX);
             }
-            if (ipSubnetWizardPropertiesArray[i].getRole()!=null) {
+            if (ipSubnetWizardPropertiesArray[i].getRole() != null) {
                 propertiesStep.setComponentValue(ROLE_COMPONENT_ID, ipSubnetWizardPropertiesArray[i].getRole(), SEARCH_FIELD);
                 DelayUtils.sleep(500);
             }
-            if (ipSubnetWizardPropertiesArray[i].getDescription()!=null) {
+            if (ipSubnetWizardPropertiesArray[i].getDescription() != null) {
                 propertiesStep.setComponentValue(DESCRIPTION_COMPONENT_ID, ipSubnetWizardPropertiesArray[i].getDescription(), TEXT_FIELD);
             }
             waitForPageToLoad();
@@ -124,19 +123,19 @@ public class IPSubnetWizardPage extends BasePage {
     private void fillSubnetWizardSelectStep(Wizard selectStep, IPSubnetFilterProperties ipSubnetFilterProperties) {
         selectStep.setComponentValue(START_IP_COMPONENT_ID, ipSubnetFilterProperties.getStartIp(), TEXT_FIELD);
         selectStep.setComponentValue(END_IP_COMPONENT_ID, ipSubnetFilterProperties.getEndIp(), TEXT_FIELD);
-        if (ipSubnetFilterProperties.getOperator()!=null) {
+        if (ipSubnetFilterProperties.getOperator() != null) {
             selectStep.setComponentValue(OPERATOR_COMPONENT_ID, ipSubnetFilterProperties.getOperator(), COMBOBOX);
         }
-        if (ipSubnetFilterProperties.getMaskLength()!=null) {
+        if (ipSubnetFilterProperties.getMaskLength() != null) {
             selectStep.setComponentValue(MASK_LENGTH_COMPONENT_ID, ipSubnetFilterProperties.getMaskLength(), COMBOBOX);
         }
     }
 
-    private void waitForPageToLoad(){
+    private void waitForPageToLoad() {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    private Wizard createWizard(){
+    private Wizard createWizard() {
         return Wizard.createWizard(driver, wait);
     }
 }
