@@ -27,7 +27,7 @@
         <radio.version>4.2.3.Final</radio.version>
         <resourcecatalog.version>2.7.1.Final</resourcecatalog.version>
         <planning.version>6.9.2.Final</planning.version>
-        <seleniumframework.version>0.9.0.Final</seleniumframework.version>
+        <seleniumframework.version>0.10.0-SNAPSHOT</seleniumframework.version>
         <log4j2.version>2.8.2</log4j2.version>
     </properties>
 
