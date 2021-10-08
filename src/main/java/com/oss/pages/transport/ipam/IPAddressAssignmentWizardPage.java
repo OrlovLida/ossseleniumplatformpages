@@ -15,13 +15,13 @@ import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
 import static com.oss.framework.components.inputs.Input.ComponentType.SEARCH_FIELD;
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_AREA;
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
-import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.AUTOMATIC_MODE;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.MANUAL_ADDRESS_MODE;
 import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.CARD;
 import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.INTERFACE;
 import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.LOGICAL_FUNCTION;
-import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.MANUAL_MODE;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.NEW_ADDRESS_MODE;
 import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.PHYSICAL_DEVICE;
-import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.RESERVED_MODE;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.EXISTING_ADDRESS_MODE;
 
 /**
  * @author Ewa Frączek
@@ -36,7 +36,7 @@ public class IPAddressAssignmentWizardPage extends BasePage {
     private static final String IP_SUBNET_COMPONENT_ID = "hostAssignmentWizardMainStepSubnetFieldComponentId";
     private static final String MASK_COMPONENT_ID = "hostAssignmentWizardMainStepMaskFieldComponentId";
     private static final String IP_NETWORK_COMPONENT_ID = "hostAssignmentWizardMainStepIPNetworkSearchFieldComponentId";
-    private static final String IS_PRIMARY_COMPONENT_ID = "hostAssignmentWizardMainStepIsPrimaryFieldComponentId";
+    private static final String IS_PRIMARY_COMPONENT_ID = "hostAssignmentWizardAssignmentStepIsPrimaryFieldComponentId";
     private static final String IS_IN_NAT_COMPONENT_ID = "hostAssignmentWizardMainStepIsInNatFieldComponentId";
     private static final String ROLE_COMPONENT_ID = "hostAssignmentWizardMainStepRoleSearchFieldComponentId";
     private static final String DESCRIPTION_COMPONENT_ID = "hostAssignmentWizardMainStepDescriptionFieldComponentId";
@@ -94,13 +94,13 @@ public class IPAddressAssignmentWizardPage extends BasePage {
                 DelayUtils.waitForPageToLoad(driver, wait);
             }
             switch (mode) {
-                case MANUAL_MODE:
+                case NEW_ADDRESS_MODE:
                     fillManualModeFields(ipAddressAssignmentWizardProperties);
                     break;
-                case AUTOMATIC_MODE:
+                case MANUAL_ADDRESS_MODE:
                     fillAutomaticModeFields(ipAddressAssignmentWizardProperties);
                     break;
-                case RESERVED_MODE:
+                case EXISTING_ADDRESS_MODE:
                     fillReservedModeFields(ipAddressAssignmentWizardProperties);
                     break;
             }
@@ -145,9 +145,6 @@ public class IPAddressAssignmentWizardPage extends BasePage {
     }
 
     private void fillOptionalFieldsInMainStep(IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties) {
-        ipAddressAssignmentWizardProperties.isPrimary()
-                .ifPresent(isPrimary -> getWizard().setComponentValue(IS_PRIMARY_COMPONENT_ID, isPrimary, CHECKBOX));
-        DelayUtils.waitForPageToLoad(driver, wait);
         ipAddressAssignmentWizardProperties.isInNAT()
                 .ifPresent(isInNAT -> getWizard().setComponentValue(IS_IN_NAT_COMPONENT_ID, isInNAT, CHECKBOX));
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -170,6 +167,9 @@ public class IPAddressAssignmentWizardPage extends BasePage {
         switch (assignmentType) {
             case INTERFACE:
                 getWizard().getComponent(SEARCH_INTERFACE_COMPONENT_ID, SEARCH_FIELD).setValueContains(Data.createFindFirst(assignmentName));
+                ipAddressAssignmentWizardProperties.isPrimary()
+                        .ifPresent(isPrimary -> getWizard().setComponentValue(IS_PRIMARY_COMPONENT_ID, isPrimary, CHECKBOX));
+                DelayUtils.waitForPageToLoad(driver, wait);
                 break;
             case PHYSICAL_DEVICE:
                 getWizard().getComponent(SEARCH_PHYSICAL_DEVICE_COMPONENT_ID, SEARCH_FIELD).setValueContains(Data.createFindFirst(assignmentName));

@@ -1,7 +1,5 @@
 package com.oss.pages.transport.ipam;
 
-import com.oss.framework.components.inputs.Button;
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.data.Data;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
@@ -14,7 +12,7 @@ import static com.oss.framework.components.inputs.Input.ComponentType.*;
  * @author Ewa Frączek
  */
 
-public class ReserveIPAddressWizardPage extends BasePage {
+class ReserveIPAddressWizardPage extends BasePage {
     private static final String HOST_RESERVE_IP_ADDRESS_FIELD_UID = "host-reserve-ip-address-field-uid";
     private static final String HOST_RESERVE_DESCRIPTION_FIELD_UID = "host-reserve-description-field-uid";
     private static final String HOST_RESERVE_MODE_UID_INPUT = "host-reserve-mode-uid-input";
@@ -22,20 +20,30 @@ public class ReserveIPAddressWizardPage extends BasePage {
     private static final String RESERVE_MULTIPLE_ADDRESSES = "Reserve multiple addresses";
     private static final String HOST_RESERVE_CONSECUTIVE_FIELD_UID = "host-reserve-consecutive-field-uid";
 
-    public ReserveIPAddressWizardPage(WebDriver driver) {
+    ReserveIPAddressWizardPage(WebDriver driver) {
         super(driver);
     }
 
-    public void reserveIPAddress(String description) {
+    void reserveIPAddressAndAccept(String description) {
+        Wizard reserveIPAddressWizard = reserveIPAddress(description);
+        reserveIPAddressWizard.clickAccept();
+    }
+
+    void reserveIPAddressAndClickOk(String description) {
+        Wizard reserveIPAddressWizard = reserveIPAddress(description);
+        reserveIPAddressWizard.clickOK();
+    }
+
+    private Wizard reserveIPAddress(String description) {
         DelayUtils.waitForPageToLoad(driver, wait);
         Wizard reserveIPAddressWizard = Wizard.createWizard(driver, wait);
         DelayUtils.waitForPageToLoad(driver, wait);
         reserveIPAddressWizard.getComponent(HOST_RESERVE_DESCRIPTION_FIELD_UID, TEXT_FIELD).setValueContains(Data.createFindFirst(description));
         DelayUtils.waitForPageToLoad(driver, wait);
-        reserveIPAddressWizard.clickAccept();
+        return reserveIPAddressWizard;
     }
 
-    public void bulkIPAddressReservation(String numberOfHostAddressesToReserve, Boolean reserveConsecutive) {
+    void bulkIPAddressReservation(String numberOfHostAddressesToReserve, Boolean reserveConsecutive) {
         Wizard reserveIPAddressWizard = Wizard.createWizard(driver, wait);
         reserveIPAddressWizard.getComponent(HOST_RESERVE_MODE_UID_INPUT, SEARCH_FIELD).clear();
         reserveIPAddressWizard.getComponent(HOST_RESERVE_MODE_UID_INPUT, SEARCH_FIELD).setValueContains(Data.createFindFirst(RESERVE_MULTIPLE_ADDRESSES));
@@ -47,7 +55,7 @@ public class ReserveIPAddressWizardPage extends BasePage {
         reserveIPAddressWizard.clickAccept();
     }
 
-    public void reserveGivenIPAddress(String ipAddress) {
+    void reserveGivenIPAddress(String ipAddress) {
         Wizard reserveIPAddressWizard = Wizard.createWizard(driver, wait);
         DelayUtils.waitForPageToLoad(driver, wait);
         reserveIPAddressWizard.getComponent(HOST_RESERVE_IP_ADDRESS_FIELD_UID, TEXT_FIELD).clear();
