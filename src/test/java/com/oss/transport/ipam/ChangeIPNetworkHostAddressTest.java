@@ -312,7 +312,7 @@ public class ChangeIPNetworkHostAddressTest extends BaseTestCase {
 
     private void createIPHostAddressAssignment(String ipVersion) {
         IPAddressAssignmentWizardProperties firstHostAssignmentProperties = IPAddressAssignmentWizardProperties.builder()
-                .wizardMode(MANUAL_MODE).isInNAT(FALSE).isPrimary(FALSE)
+                .wizardMode(NEW_ADDRESS_MODE).isInNAT(FALSE).isPrimary(FALSE)
                 .assignmentType(PHYSICAL_DEVICE).assignmentName(ROUTER_ID).build();
         IPAddressAssignmentWizardPage ipAddressAssignmentWizardPage;
         if (ipVersion.equals(IPv4)) {

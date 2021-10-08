@@ -161,7 +161,7 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
     @Description("Create IP Network")
     public void createIPNetwork() {
         ipAddressManagementViewPage.createIPNetwork(NETWORK_NAME, DESCRIPTION);
-        ipAddressManagementViewPage.selectTreeRow(NETWORK_NAME);
+        ipAddressManagementViewPage.scrollAndSelectTreeRow(NETWORK_NAME);
         Assert.assertEquals(ipAddressManagementViewPage.getPropertyValue(NETWORK_PROPERTY_NAME), NETWORK_NAME);
         Assert.assertEquals(ipAddressManagementViewPage.getPropertyValue(NETWORK_PROPERTY_DESCRIPTION), DESCRIPTION);
     }
@@ -180,7 +180,7 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
 
         updatePropertiesAfterIPv6SubnetsCreation();
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
-        ipAddressManagementViewPage.selectTreeRow(NETWORK_NAME);
+        ipAddressManagementViewPage.scrollAndSelectTreeRow(NETWORK_NAME);
         ipAddressManagementViewPage.selectTreeRow(NETWORK_NAME);
         ipAddressManagementViewPage.expandTreeRow(NETWORK_NAME);
         DelayUtils.sleep(100);
@@ -198,20 +198,24 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
         updatePropertiesAfterIPv6SubnetAssignment();
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
         DelayUtils.sleep(100);
+        ipAddressManagementViewPage.scrollToTreeRowContains(getAddressAndMask(firstIPv6SubnetProperties));
         checkAttributesOnIPAMTree(firstIPv6SubnetProperties, getAddressAndMask(firstIPv6SubnetProperties));
     }
 
     @Test(priority = 6)
     @Description("Reserve IPv6 Host Addresses")
     public void reserveIPv6Hosts() {
+        ipAddressManagementViewPage.scrollToTreeRowContains(getAddressAndMask(secondIPv6SubnetProperties));
         ipAddressManagementViewPage
                 .reserveIPv6HostAddress(getAddressAndMask(secondIPv6SubnetProperties), DESCRIPTION);
         updatePropertiesAfterIPv6HostsReservation();
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
+        ipAddressManagementViewPage.scrollToTreeRow(getAddressAndMask(ipv6HostAddressProperties));
         checkAttributesOnIPAMTree(ipv6HostAddressProperties, getAddressAndMask(ipv6HostAddressProperties));
         ipAddressManagementViewPage
                 .reserveLoopbackIPv6HostAddress(getAddressAndMask(secondIPv6SubnetProperties), DESCRIPTION);
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
+        ipAddressManagementViewPage.scrollToTreeRow(getAddressAndMask(loopbackIPv6HostAddressProperties));
         checkAttributesOnIPAMTree(loopbackIPv6HostAddressProperties, getAddressAndMask(loopbackIPv6HostAddressProperties));
         checkAttributesOnIPAMTree(secondIPv6SubnetProperties, getAddressAndMask(secondIPv6SubnetProperties));
     }
@@ -229,7 +233,7 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
         assignLoopbackAddressFromHostContext.assignIPAddressFromIPAddressContext(loopbackIpAddressAssignmentWizardProperties, oppositeSideLoopbackIpAddressAssignmentWizardProperties);
         updatePropertiesAfterIPv6HostsAssignment();
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
-        ipAddressManagementViewPage.selectTreeRowContains(getAssignmentAddressMaskAndAssignTo(loopbackIPv6HostAssignmentProperties, NETWORK_NAME));
+        ipAddressManagementViewPage.scrollAndSelectTreeRowContains(getAssignmentAddressMaskAndAssignTo(loopbackIPv6HostAssignmentProperties, NETWORK_NAME));
         ipAddressManagementViewPage.selectTreeRowContains(getAssignmentAddressMaskAndAssignTo(loopbackIPv6HostAssignmentProperties, NETWORK_NAME));
         IPAddressAssignmentWizardPage assignAddressFromSubnetContext = ipAddressManagementViewPage
                 .assignIPv6HostAddressFromSubnetContext(getAddressAndMask(secondIPv6SubnetProperties));
@@ -237,12 +241,15 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
                 .address(IPV6_HOST_ADDRESS).isPrimary(FALSE_STRING).isInNAT(FALSE_STRING).assignmentType(PHYSICAL_DEVICE).assignmentName(ASSIGNMENT_DEVICE_NAME).build();
         assignAddressFromSubnetContext.assignIPAddress(ipAddressAssignmentWizardProperties);
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
+        ipAddressManagementViewPage.scrollToTreeRowContains(getAssignmentAddressMaskAndAssignTo(ipv6HostAssignmentProperties, NETWORK_NAME));
         checkAttributesOnIPAMTree(ipv6HostAssignmentProperties, getAssignmentAddressMaskAndAssignTo(ipv6HostAssignmentProperties, NETWORK_NAME));
         checkAttributesOnIPAMTree(ipv6HostAddressProperties, getAddressAndMask(ipv6HostAddressProperties));
         ipAddressManagementViewPage.expandTreeRow(getAddressAndMask(loopbackIPv6HostAddressProperties));
         checkAttributesOnIPAMTree(loopbackIPv6HostAssignmentProperties, getAssignmentAddressMaskAndAssignTo(loopbackIPv6HostAssignmentProperties, NETWORK_NAME));
         checkAttributesOnIPAMTree(loopbackIPv6HostAddressProperties, getAddressAndMask(loopbackIPv6HostAddressProperties));
+        ipAddressManagementViewPage.scrollToTreeRow(getAddressAndMask(secondLoopbackIpv6HostAddressProperties));
         ipAddressManagementViewPage.expandTreeRow(getAddressAndMask(secondLoopbackIpv6HostAddressProperties));
+        ipAddressManagementViewPage.scrollToTreeRowContains(getAssignmentAddressMaskAndAssignTo(secondLoopbackIPv6HostAssignmentProperties, NETWORK_NAME));
         checkAttributesOnIPAMTree(secondLoopbackIPv6HostAssignmentProperties, getAssignmentAddressMaskAndAssignTo(secondLoopbackIPv6HostAssignmentProperties, NETWORK_NAME));
         checkAttributesOnIPAMTree(secondLoopbackIpv6HostAddressProperties, getAddressAndMask(secondLoopbackIpv6HostAddressProperties));
         checkAttributesOnIPAMTree(secondIPv6SubnetProperties, getAddressAndMask(secondIPv6SubnetProperties));
@@ -272,11 +279,12 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
     @Test(priority = 9)
     @Description("Edit IP Network")
     public void editIPNetwork() {
+        ipAddressManagementViewPage.scrollToTreeRow(NETWORK_NAME);
         ipAddressManagementViewPage.editIPNetwork(NETWORK_NAME, NETWORK_NAME_UPDATED, DESCRIPTION_UPDATED);
         updatePropertiesAfterIPNetworkEdition();
 
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
-        ipAddressManagementViewPage.selectTreeRow(NETWORK_NAME_UPDATED);
+        ipAddressManagementViewPage.scrollAndSelectTreeRow(NETWORK_NAME_UPDATED);
         Assert.assertEquals(ipAddressManagementViewPage.getPropertyValue(NETWORK_PROPERTY_NAME), NETWORK_NAME_UPDATED);
         Assert.assertEquals(ipAddressManagementViewPage.getPropertyValue(NETWORK_PROPERTY_DESCRIPTION), DESCRIPTION_UPDATED);
 
@@ -311,6 +319,7 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
 
         updatePropertiesAfterIPv6SubnetsSplit();
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
+        ipAddressManagementViewPage.scrollToTreeRow(NETWORK_NAME_UPDATED);
         checkAttributesOnIPAMTree(secondIPv6SubnetProperties, getAddressAndMask(secondIPv6SubnetProperties));
         checkAttributesOnIPAMTree(fourthIPv6SubnetProperties, getAddressAndMask(fourthIPv6SubnetProperties));
         ipAddressManagementViewPage.expandTreeRowContains(getAddressAndMask(fourthIPv6SubnetProperties));
@@ -330,6 +339,7 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
 
         updatePropertiesAfterIPv6SubnetsMerge();
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
+        ipAddressManagementViewPage.scrollToTreeRow(NETWORK_NAME_UPDATED);
         ipAddressManagementViewPage.expandTreeRow(NETWORK_NAME_UPDATED);
         ipAddressManagementViewPage.selectTreeRow(NETWORK_NAME_UPDATED);
         ipAddressManagementViewPage.selectTreeRow(NETWORK_NAME_UPDATED);
@@ -346,6 +356,7 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
         ipAddressManagementViewPage.editIPv6Subnet(getAddressAndMask(secondIPv6SubnetProperties), MANAGEMENT_SECONDARY_ROLE, DESCRIPTION_UPDATED);
 
         updatePropertiesAfterIPv6SubnetsEdition();
+        ipAddressManagementViewPage.scrollToTreeRow(NETWORK_NAME_UPDATED);
         checkAttributesOnIPAMTree(secondIPv6SubnetProperties, getAddressAndMask(secondIPv6SubnetProperties));
         checkAttributesOnIPAMTree(thirdIPv6SubnetProperties, getAddressAndMask(thirdIPv6SubnetProperties));
     }
@@ -356,6 +367,7 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
         ipAddressManagementViewPage.editRoleForIPv6SubnetAssignment(getAddressAndMask(firstIPv6SubnetProperties), STANDARD_ROLE);
         updatePropertiesAfterIPv6SubnetAssignmentEdition();
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
+        ipAddressManagementViewPage.scrollToTreeRow(NETWORK_NAME_UPDATED);
         checkAttributesOnIPAMTree(firstIPv6SubnetProperties, getAddressAndMask(firstIPv6SubnetProperties));
     }
 
@@ -370,6 +382,7 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
         ipAddressManagementViewPage.changeIPv6HostMask(getAddressAndMask(ipv6HostAddressProperties), LOOPBACK_IPV6_HOST_MASK);
         updatePropertiesAfterIPv6HostEdition();
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
+        ipAddressManagementViewPage.scrollToTreeRow(NETWORK_NAME_UPDATED);
         checkAttributesOnIPAMTree(ipv6HostAddressProperties, getAddressAndMask(ipv6HostAddressProperties));
     }
 
@@ -382,6 +395,7 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
         ipAddressManagementViewPage
                 .editIPv6HostAssignment(getAssignmentAddressMaskAndAssignTo(secondLoopbackIPv6HostAssignmentProperties, NETWORK_NAME_UPDATED), ipAddressAssignmentWizardProperties);
         updatePropertiesAfterIPv6HostAssignmentEdition();
+        ipAddressManagementViewPage.scrollToTreeRow(NETWORK_NAME_UPDATED);
         checkAttributesOnIPAMTree(secondLoopbackIPv6HostAssignmentProperties, getAssignmentAddressMaskAndAssignTo(secondLoopbackIPv6HostAssignmentProperties, NETWORK_NAME_UPDATED));
     }
 
@@ -471,12 +485,13 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
     public void deleteIPv6HostsAssignment() {
         ipAddressManagementViewPage = IPAddressManagementViewPage.goToIPAddressManagementViewPageLive(driver, BASIC_URL);
         DelayUtils.sleep(100);
+        ipAddressManagementViewPage.scrollToTreeRow(NETWORK_NAME_UPDATED);
         ipAddressManagementViewPage.expandTreeRow(NETWORK_NAME_UPDATED);
         ipAddressManagementViewPage.expandTreeRowContains(getAddressAndMask(firstIPv6SubnetProperties));
         ipAddressManagementViewPage.expandTreeRowContains(getAddressAndMask(secondIPv6SubnetProperties));
         ipAddressManagementViewPage.expandTreeRow(getAddressAndMask(loopbackIPv6HostAddressProperties));
         ipAddressManagementViewPage.deleteHostAssignment(getAssignmentAddressMaskAndAssignTo(loopbackIPv6HostAssignmentProperties, NETWORK_NAME_UPDATED));
-        ipAddressManagementViewPage.selectTreeRowContains(getAddressAndMask(secondIPv6SubnetProperties));
+        ipAddressManagementViewPage.scrollAndSelectTreeRowContains(getAddressAndMask(secondIPv6SubnetProperties));
         ipAddressManagementViewPage.selectTreeRowContains(getAddressAndMask(secondIPv6SubnetProperties));
         ipAddressManagementViewPage.expandTreeRow(getAddressAndMask(secondLoopbackIpv6HostAddressProperties));
         ipAddressManagementViewPage.deleteHostAssignment(getAssignmentAddressMaskAndAssignTo(secondLoopbackIPv6HostAssignmentProperties, NETWORK_NAME_UPDATED));
@@ -486,7 +501,7 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
     @Description("Delete IPv6 Hosts")
     public void deleteIPv6Hosts() {
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
-        ipAddressManagementViewPage.selectTreeRowContains(getAddressAndMask(secondIPv6SubnetProperties));
+        ipAddressManagementViewPage.scrollAndSelectTreeRowContains(getAddressAndMask(secondIPv6SubnetProperties));
         ipAddressManagementViewPage.selectTreeRowContains(getAddressAndMask(secondIPv6SubnetProperties));
         ipAddressManagementViewPage.deleteIPHost(getAddressAndMask(loopbackIPv6HostAddressProperties));
     }
@@ -495,7 +510,7 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
     @Description("Delete IPv6 Subnet Assignments")
     public void deleteIPv6SubnetAssignment() {
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
-        ipAddressManagementViewPage.selectTreeRowContains(getAddressAndMask(secondIPv6SubnetProperties));
+        ipAddressManagementViewPage.scrollAndSelectTreeRowContains(getAddressAndMask(secondIPv6SubnetProperties));
         ipAddressManagementViewPage.selectTreeRowContains(getAddressAndMask(secondIPv6SubnetProperties));
         ipAddressManagementViewPage.deleteIPv6SubnetAssignment(getAddressAndMask(firstIPv6SubnetProperties));
     }
@@ -504,16 +519,16 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
     @Description("Delete IPv6 Subnets")
     public void deleteIPv6Subnets() {
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
-        ipAddressManagementViewPage.selectTreeRowContains(getAddressAndMask(firstIPv6SubnetProperties));
+        ipAddressManagementViewPage.scrollAndSelectTreeRowContains(getAddressAndMask(firstIPv6SubnetProperties));
         ipAddressManagementViewPage.selectTreeRowContains(getAddressAndMask(firstIPv6SubnetProperties));
         ipAddressManagementViewPage.deleteIPv6SubnetTypeOfBlock(getAddressAndMask(firstIPv6SubnetProperties));
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
-        ipAddressManagementViewPage.selectTreeRow(NETWORK_NAME_UPDATED);
+        ipAddressManagementViewPage.scrollAndSelectTreeRow(NETWORK_NAME_UPDATED);
         ipAddressManagementViewPage.selectTreeRow(NETWORK_NAME_UPDATED);
         ipAddressManagementViewPage.expandTreeRow(NETWORK_NAME_UPDATED);
         ipAddressManagementViewPage.deleteIPv6SubnetTypeOfBlock(getAddressAndMask(thirdIPv6SubnetProperties));
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
-        ipAddressManagementViewPage.selectTreeRow(NETWORK_NAME_UPDATED);
+        ipAddressManagementViewPage.scrollAndSelectTreeRow(NETWORK_NAME_UPDATED);
         ipAddressManagementViewPage.selectTreeRow(NETWORK_NAME_UPDATED);
         ipAddressManagementViewPage.expandTreeRow(NETWORK_NAME_UPDATED);
         ipAddressManagementViewPage.deleteIPv6SubnetTypeOfNetwork(getAddressAndMask(secondIPv6SubnetProperties));
@@ -523,6 +538,7 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
     @Description("Delete IP Network")
     public void deleteIPNetwork() {
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
+        ipAddressManagementViewPage.scrollToTreeRow(NETWORK_NAME_UPDATED);
         ipAddressManagementViewPage.deleteIPNetwork(NETWORK_NAME_UPDATED);
     }
 
@@ -617,7 +633,7 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
 
     private void updatePropertiesAfterIPv6HostsAssignment() {
         secondIPv6SubnetProperties.put(SUBNET_PROPERTY_CHILD_COUNT, "3");
-        secondIPv6SubnetProperties.put(SUBNET_PROPERTY_PERCENT_FREE, "98%"); //BUG
+        secondIPv6SubnetProperties.put(SUBNET_PROPERTY_PERCENT_FREE, "96%");
 
         loopbackIPv6HostAddressProperties.put(HOST_PROPERTY_STATUS, ASSIGNED_STATUS);
         loopbackIPv6HostAddressProperties.put(HOST_PROPERTY_ASSIGNED_TO, ASSIGNMENT_INTERFACE_IDENTIFIER);
@@ -695,12 +711,12 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
         fifthIPv6SubnetProperties.put(SUBNET_PROPERTY_MASK_LENGTH, "124");
         fifthIPv6SubnetProperties.put(SUBNET_PROPERTY_SUBNET_TYPE, NETWORK_TYPE);
         fifthIPv6SubnetProperties.put(SUBNET_PROPERTY_CHILD_COUNT, "3");
-        fifthIPv6SubnetProperties.put(SUBNET_PROPERTY_PERCENT_FREE, "93%"); //bug
+        fifthIPv6SubnetProperties.put(SUBNET_PROPERTY_PERCENT_FREE, "86%");
         fifthIPv6SubnetProperties.put(SUBNET_PROPERTY_DESCRIPTION, "");
     }
 
     private void updatePropertiesAfterIPv6SubnetsMerge() {
-        secondIPv6SubnetProperties.put(SUBNET_PROPERTY_PERCENT_FREE, "98%"); //bug
+        secondIPv6SubnetProperties.put(SUBNET_PROPERTY_PERCENT_FREE, "96%");
         secondIPv6SubnetProperties.put(SUBNET_PROPERTY_CHILD_COUNT, "3");
         secondIPv6SubnetProperties.put(SUBNET_PROPERTY_SUBNET_TYPE, NETWORK_TYPE);
     }

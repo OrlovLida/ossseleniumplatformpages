@@ -426,7 +426,7 @@ public class ChangeIPNetworkSubnetTest extends BaseTestCase {
 
     private IPAddressAssignmentWizardProperties prepareAssignmentWizardProperties(String ipAddress) {
         return IPAddressAssignmentWizardProperties.builder()
-                .wizardMode(MANUAL_MODE).isInNAT(FALSE).isPrimary(FALSE)
+                .wizardMode(NEW_ADDRESS_MODE).isInNAT(FALSE).isPrimary(FALSE)
                 .assignmentType(PHYSICAL_DEVICE).assignmentName(ROUTER_ID)
                 .address(ipAddress)
                 .build();
