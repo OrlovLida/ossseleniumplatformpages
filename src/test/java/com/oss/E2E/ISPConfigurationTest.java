@@ -431,6 +431,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
         deviceWizardPage.setCoolingCapacity(COOLING_CAPACITY2);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.nextUpdateWizard();
         deviceWizardPage.acceptUpdateWizard();
         checkPopupAndCloseMessage();
