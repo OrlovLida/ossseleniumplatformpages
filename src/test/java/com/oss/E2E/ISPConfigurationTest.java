@@ -1,5 +1,7 @@
 package com.oss.E2E;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -30,6 +32,43 @@ import io.qameta.allure.Description;
 import static java.lang.String.format;
 
 public class ISPConfigurationTest extends BaseTestCase {
+
+    package com.oss.E2E;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
+import com.oss.BaseTestCase;
+import com.oss.framework.alerts.SystemMessageContainer;
+import com.oss.framework.alerts.SystemMessageContainer.MessageType;
+import com.oss.framework.alerts.SystemMessageInterface;
+import com.oss.framework.components.contextactions.ActionsContainer;
+import com.oss.framework.mainheader.PerspectiveChooser;
+import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.tablewidget.TableInterface;
+import com.oss.pages.physical.CardCreateWizardPage;
+import com.oss.pages.physical.ChangeCardModelWizard;
+import com.oss.pages.physical.ChangeModelWizardPage;
+import com.oss.pages.physical.CoolingZoneEditorWizardPage;
+import com.oss.pages.physical.CreateCoolingZoneWizardPage;
+import com.oss.pages.physical.DeviceWizardPage;
+import com.oss.pages.physical.LocationOverviewPage;
+import com.oss.pages.physical.LocationOverviewPage.TabName;
+import com.oss.pages.physical.LocationWizardPage;
+import com.oss.pages.physical.MountingEditorWizardPage;
+import com.oss.pages.physical.SublocationWizardPage;
+import com.oss.pages.platform.HierarchyViewPage;
+
+import io.qameta.allure.Description;
+
+import static java.lang.String.format;
+
+public class ISPConfigurationTest extends BaseTestCase {
+
+    private static final Logger log = LoggerFactory.getLogger(ISPConfigurationTest.class);
 
     private String LOCATION_OVERVIEW_URL = "";
     private static final String LOCATION_NAME = "ISPConfiguration_Building";
@@ -374,8 +413,11 @@ public class ISPConfigurationTest extends BaseTestCase {
         TableInterface coolingTable = locationOverviewPage.getTabTable(TabName.COOLING_ZONES);
         int rowNumber = coolingTable.getRowNumber(COOLING_ZONE_NAME, NAME);
         String coolingLoad = coolingTable.getCellValue(rowNumber, "Cooling Load [kW]");
+        log.info("Cooling load = {}", coolingLoad);
         String coolingCapacity = coolingTable.getCellValue(rowNumber, "Cooling Capacity [kW]");
+        log.info("Cooling capacity = {}", coolingCapacity);
         String coolingLoadRatio = coolingTable.getCellValue(rowNumber, "Cooling Load Ratio [%]");
+        log.info("Cooling load ratio = {}", coolingLoadRatio);
         Assert.assertNotEquals(coolingLoad, COOLING_ZONE_COOLING_LOAD, String.format(ASSERT_NOT_EQUALS, coolingLoad, COOLING_ZONE_COOLING_LOAD));
         Assert.assertNotEquals(coolingCapacity, COOLING_ZONE_CAPACITY, String.format(ASSERT_NOT_EQUALS, coolingCapacity, COOLING_ZONE_CAPACITY));
         Assert.assertNotEquals(coolingLoadRatio, COOLING_ZONE_LOAD_RATIO, String.format(ASSERT_NOT_EQUALS, coolingLoadRatio, COOLING_ZONE_LOAD_RATIO));
@@ -439,8 +481,11 @@ public class ISPConfigurationTest extends BaseTestCase {
         TableInterface coolingTable = locationOverviewPage.getTabTable(TabName.COOLING_ZONES);
         int rowNumber = coolingTable.getRowNumber(COOLING_ZONE_NAME, NAME);
         String coolingLoad = coolingTable.getCellValue(rowNumber, "Cooling Load [kW]");
+        log.info("Cooling load = {}", coolingLoad);
         String coolingCapacity = coolingTable.getCellValue(rowNumber, "Cooling Capacity [kW]");
+        log.info("Cooling capacity = {}", coolingCapacity);
         String coolingLoadRatio = coolingTable.getCellValue(rowNumber, "Cooling Load Ratio [%]");
+        log.info("Cooling load ratio= {}", coolingLoadRatio);
         Assert.assertNotEquals(coolingLoad, COOLING_ZONE_COOLING_LOAD, String.format(ASSERT_NOT_EQUALS, coolingLoad, COOLING_ZONE_COOLING_LOAD));
         Assert.assertNotEquals(coolingCapacity, COOLING_ZONE_CAPACITY, String.format(ASSERT_NOT_EQUALS, coolingCapacity, COOLING_ZONE_CAPACITY));
         Assert.assertNotEquals(coolingLoadRatio, COOLING_ZONE_LOAD_RATIO, String.format(ASSERT_NOT_EQUALS, coolingLoadRatio, COOLING_ZONE_LOAD_RATIO));
