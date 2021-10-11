@@ -91,7 +91,7 @@ public class ThresholdPage extends BaseDfePage {
         return isLastLogTimeFresh(lastIfRunTime());
     }
 
-    @Step("I check Status of Aggregate from Execution History tab")
+    @Step("I check Status of Threshold from Execution History tab")
     public String checkStatus() {
         String statusOfThreshold = checkLogStatus(TABLE_TAB_ID, COLUMN_STATUS_LABEL);
         log.info("Status of last threshold log in Execution History is {}", statusOfThreshold);
