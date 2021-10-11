@@ -7,12 +7,12 @@
   </test>
   <test name="IPv4AddressesIPAMTest">
     <classes>
-      <class name="com.oss.transport.IPv4AddressesIPAMTest"/>
+      <class name="com.oss.transport.ipam.IPv4AddressesIPAMTest"/>
     </classes>
   </test>
   <test name="IPv6AddressesIPAMTest">
     <classes>
-      <class name="com.oss.transport.IPv6AddressesIPAMTest"/>
+      <class name="com.oss.transport.ipam.IPv6AddressesIPAMTest"/>
     </classes>
   </test>
   <test name="AEITest">
@@ -53,11 +53,6 @@
   <test name="VLANPoolTest">
     <classes>
       <class name="com.oss.transport.VLANPoolTest"/>
-    </classes>
-  </test>
-  <test name="RegulatoryLicenseTest">
-    <classes>
-      <class name="com.oss.transport.RegulatoryLicenseTest"/>
     </classes>
   </test>
 </suite>

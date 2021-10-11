@@ -1,5 +1,6 @@
 package com.oss.pages.servicedesk.ticket.wizard;
 
+import com.oss.framework.components.contextactions.ButtonContainer;
 import com.oss.framework.components.inputs.HtmlEditor;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.data.Data;
@@ -16,6 +17,7 @@ public class WizardPage extends BaseSDPage {
     private static final Logger log = LoggerFactory.getLogger(WizardPage.class);
 
     private static final String INCIDENT_DESCRIPTION_ID = "TT_WIZARD_INPUT_INCIDENT_DESCRIPTION";
+    private final static String CREATE_EXTERNAL_LABEL = "Create External";
 
     private final MOStep moStep;
 
@@ -42,15 +44,22 @@ public class WizardPage extends BaseSDPage {
         log.info("Clicking Accept button in the wizard");
     }
 
+    @Step("I click Create External button in wizard")
+    public void clickCreateExternalButtonInWizard(WebDriver driver) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        ButtonContainer.create(driver, wait).callActionByLabel(CREATE_EXTERNAL_LABEL);
+        log.info("Clicking Create External button in the wizard");
+    }
+
     @Step("I insert {text} to multi combo box component with id {componentId}")
     public void insertValueToMultiComboBoxComponent(String text, String componentId) {
-        insertValueToComponent(componentId, text, Input.ComponentType.MULTI_COMBOBOX);
+        insertValueToComponent(text, componentId, Input.ComponentType.MULTI_COMBOBOX);
         log.info("Value {} inserted to multi combobox", text);
     }
 
     @Step("I insert {text} to combo box component with id {componentId}")
     public void insertValueToComboBoxComponent(String text, String componentId) {
-        insertValueToComponent(componentId, text, Input.ComponentType.COMBOBOX);
+        insertValueToComponent(text, componentId, Input.ComponentType.COMBOBOX);
         log.info("Value {} inserted to combobox", text);
     }
 

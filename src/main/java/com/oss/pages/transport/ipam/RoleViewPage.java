@@ -20,6 +20,9 @@ public class RoleViewPage extends BasePage {
     private static final String OK_BUTTON_DATA_ATTRIBUTE_NAME = "buttons-uid-1";
     private static final String CREATE_WIZARD_ID = "create-uid";
     private static final String EDIT_WIZARD_ID = "edit-uid";
+    private static final String ATTRIBUTE_NAME = "Role";
+    private static final String EDIT_ACTION_ID = "Edit";
+    private static final String DELETE_ACTION_ID = "Delete";
     private CommonList commonList;
     private ButtonContainer buttonContainer;
 
@@ -49,23 +52,24 @@ public class RoleViewPage extends BasePage {
 
     @Step("Edit role name: {roleNameBeforeUpdate} to role name: {roleNameAfterUpdate}")
     public void editRole(String roleNameBeforeUpdate, String roleNameAfterUpdate) {
-        getCommonList().clickOnEditButtonByListElementName(roleNameBeforeUpdate);
+        getCommonList().getRow(ATTRIBUTE_NAME, roleNameBeforeUpdate).callAction(EDIT_ACTION_ID);
         setValueInRoleWizard(EDIT_WIZARD_ID, roleNameAfterUpdate);
     }
 
     @Step("Delete {roleName} role")
     public void deleteRole(String roleName) {
-        getCommonList().clickOnDeleteButtonByListElementName(roleName);
+        getCommonList().getRow(ATTRIBUTE_NAME, roleName).callAction(DELETE_ACTION_ID);
         acceptConfirmationBox();
     }
 
     @Step("Check if role: {roleName} exist")
     public boolean doesRoleNameExist(String roleName) {
-        return getCommonList().isListElementVisible(roleName);
+        return getCommonList().isRowVisible(ATTRIBUTE_NAME, roleName);
     }
 
     @Step("Exit Role View")
     public void exitRoleView() {
+       // getCommonList().
         getButtonContainer().callActionById(OK_BUTTON_DATA_ATTRIBUTE_NAME);
     }
 
