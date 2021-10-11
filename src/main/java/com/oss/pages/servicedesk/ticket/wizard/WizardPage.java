@@ -44,7 +44,7 @@ public class WizardPage extends BaseSDPage {
         log.info("Clicking Accept button in the wizard");
     }
 
-    @Step("I click Accept button in wizard")
+    @Step("I click Create External button in wizard")
     public void clickCreateExternalButtonInWizard(WebDriver driver) {
         DelayUtils.waitForPageToLoad(driver, wait);
         ButtonContainer.create(driver, wait).callActionByLabel(CREATE_EXTERNAL_LABEL);
