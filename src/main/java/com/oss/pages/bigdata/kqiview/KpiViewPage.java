@@ -1,6 +1,8 @@
 package com.oss.pages.bigdata.kqiview;
 
 import com.oss.framework.mainheader.ButtonPanel;
+import com.oss.framework.mainheader.Share;
+import com.oss.framework.mainheader.ToolbarWidget;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.view.Card;
 import com.oss.framework.widgets.dpe.contextaction.ContextActionPanel;
@@ -524,5 +526,31 @@ public class KpiViewPage extends BasePage {
         String activeAggMethod = optionsPanel.getActiveAggregationMethod();
 
         return activeAggMethod;
+    }
+
+    @Step("I click Share View icon")
+    public void clickShare() {
+        ToolbarWidget.create(driver, wait).openSharePanel();
+        log.info("Click in Share icon");
+    }
+
+    //TODO add this function after fix in OSSWEB-14686
+    @Step("I click close panel")
+    public void clickCloseShare() {
+        ToolbarWidget.create(driver, wait).closeSharePanel();
+        log.info("Closing Share panel");
+    }
+
+    @Step("Copy link from Share panel")
+    public String copyLink() {
+        log.info("Copy link from Share panel");
+        return Share.create(driver, wait).copyLink();
+    }
+
+    @Step("Go to link copied from Share panel")
+    public void goToLink() {
+        driver.get(copyLink());
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Redirecting to page from link in Share panel");
     }
 }
