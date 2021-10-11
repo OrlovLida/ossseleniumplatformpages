@@ -1,5 +1,6 @@
 package com.oss.pages.servicedesk.ticket;
 
+import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.TableWidget;
@@ -20,6 +21,8 @@ public class TicketSearchPage extends BaseSDPage {
     public static final String CREATION_TIME_ATTRIBUTE = "createDate";
     public static final String SEVERITY_ATTRIBUTE = "severity";
     public static final String STATUS_ATTRIBUTE = "ticketOut.issueOut.status.name";
+    public final static String FILTER_BUTTON_CLASS = "button-filters-panel";
+    public final static String DESCRIPTION_ATTRIBUTE = "incidentDescription";
 
     private static final Logger log = LoggerFactory.getLogger(TicketSearchPage.class);
     private static final String TABLE_WIDGET_ID = "ticket-search-graphql-table";
@@ -31,6 +34,7 @@ public class TicketSearchPage extends BaseSDPage {
 
     @Step("I Open Ticket Search View")
     public TicketSearchPage goToPage(WebDriver driver, String basicURL) {
+        DelayUtils.waitForPageToLoad(driver, wait);
         openPage(driver, String.format(VIEWS_URL_PATTERN, basicURL, TICKET_SEARCH));
         log.info("Ticket Search View is opened");
         return new TicketSearchPage(driver);
@@ -54,6 +58,7 @@ public class TicketSearchPage extends BaseSDPage {
         // (see TableWidget#selectLinkInSpecificColumn)
         String ticketId = getTicketTable().getCellValue(Integer.parseInt(rowIndex), ID_ATTRIBUTE);
         log.info("Opening ticket details for ticket with id: {}", ticketId);
+        DelayUtils.waitForPageToLoad(driver, wait);
         openPage(driver, String.format(DETAILS_PAGE_URL_PATTERN, basicURL, ticketId));
         return new TicketDetailsPage(driver);
     }
@@ -88,5 +93,11 @@ public class TicketSearchPage extends BaseSDPage {
         DelayUtils.waitForPageToLoad(driver, wait);
         int numberOfRowsInTable = table.getRowsNumber();
         return numberOfRowsInTable == 1;
+    }
+
+    public void clickFilterButton() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        Button filterButton = Button.createByIcon(driver, "fa fa-filter", FILTER_BUTTON_CLASS);
+        filterButton.click();
     }
 }
