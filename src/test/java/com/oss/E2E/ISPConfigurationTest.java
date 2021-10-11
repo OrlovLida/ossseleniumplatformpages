@@ -442,6 +442,9 @@ public class ISPConfigurationTest extends BaseTestCase {
         deviceWizardPage.nextUpdateWizard();
         deviceWizardPage.acceptUpdateWizard();
         checkPopupAndCloseMessage();
+        driver.navigate().refresh();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Cooling Zones");
         TableInterface coolingTable = locationOverviewPage.getTabTable(TabName.COOLING_ZONES);
         int rowNumber = coolingTable.getRowNumber(COOLING_ZONE_NAME, NAME);
