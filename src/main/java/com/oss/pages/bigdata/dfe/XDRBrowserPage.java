@@ -31,7 +31,7 @@ public class XDRBrowserPage extends BaseDfePage {
 
     private final String ETL_NAME_COMBOBOX_ID = "etlProcessId-input";
     private final String TIME_PERIOD_ID = "etlTime";
-    private final String SEARCH_LABEL = "Search";
+    private final String SEARCH_BUTTON_ID = "Search_Button-0";
     private final String XDR_TABLE_ID = "xdrTableId";
     private final String EXPORT_BUTTON = "tableExportButton";
     private final String ADVANCED_SEARCH_CLASS = "advanced-search_component";
@@ -73,7 +73,7 @@ public class XDRBrowserPage extends BaseDfePage {
     @Step("I click Search")
     public void clickSearch() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        ButtonContainer.create(driver, wait).callActionByLabel(SEARCH_LABEL);
+        ButtonContainer.create(driver, wait).callActionById(SEARCH_BUTTON_ID);
         DelayUtils.sleep(3000);
         log.info("Searching for ETL");
     }
