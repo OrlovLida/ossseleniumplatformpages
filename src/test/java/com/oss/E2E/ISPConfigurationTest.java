@@ -1,5 +1,7 @@
 package com.oss.E2E;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -30,6 +32,8 @@ import io.qameta.allure.Description;
 import static java.lang.String.format;
 
 public class ISPConfigurationTest extends BaseTestCase {
+
+    private static final Logger log = LoggerFactory.getLogger(ISPConfigurationTest.class);
 
     private String LOCATION_OVERVIEW_URL = "";
     private static final String LOCATION_NAME = "ISPConfiguration_Building";
@@ -374,8 +378,11 @@ public class ISPConfigurationTest extends BaseTestCase {
         TableInterface coolingTable = locationOverviewPage.getTabTable(TabName.COOLING_ZONES);
         int rowNumber = coolingTable.getRowNumber(COOLING_ZONE_NAME, NAME);
         String coolingLoad = coolingTable.getCellValue(rowNumber, "Cooling Load [kW]");
+        log.info("Cooling load = {}", coolingLoad);
         String coolingCapacity = coolingTable.getCellValue(rowNumber, "Cooling Capacity [kW]");
+        log.info("Cooling capacity = {}", coolingCapacity);
         String coolingLoadRatio = coolingTable.getCellValue(rowNumber, "Cooling Load Ratio [%]");
+        log.info("Cooling load ratio = {}", coolingLoadRatio);
         Assert.assertNotEquals(coolingLoad, COOLING_ZONE_COOLING_LOAD, String.format(ASSERT_NOT_EQUALS, coolingLoad, COOLING_ZONE_COOLING_LOAD));
         Assert.assertNotEquals(coolingCapacity, COOLING_ZONE_CAPACITY, String.format(ASSERT_NOT_EQUALS, coolingCapacity, COOLING_ZONE_CAPACITY));
         Assert.assertNotEquals(coolingLoadRatio, COOLING_ZONE_LOAD_RATIO, String.format(ASSERT_NOT_EQUALS, coolingLoadRatio, COOLING_ZONE_LOAD_RATIO));
@@ -431,15 +438,22 @@ public class ISPConfigurationTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
         deviceWizardPage.setCoolingCapacity(COOLING_CAPACITY2);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.nextUpdateWizard();
         deviceWizardPage.acceptUpdateWizard();
         checkPopupAndCloseMessage();
+        driver.navigate().refresh();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Cooling Zones");
         TableInterface coolingTable = locationOverviewPage.getTabTable(TabName.COOLING_ZONES);
         int rowNumber = coolingTable.getRowNumber(COOLING_ZONE_NAME, NAME);
         String coolingLoad = coolingTable.getCellValue(rowNumber, "Cooling Load [kW]");
+        log.info("Cooling load = {}", coolingLoad);
         String coolingCapacity = coolingTable.getCellValue(rowNumber, "Cooling Capacity [kW]");
+        log.info("Cooling capacity = {}", coolingCapacity);
         String coolingLoadRatio = coolingTable.getCellValue(rowNumber, "Cooling Load Ratio [%]");
+        log.info("Cooling load ratio= {}", coolingLoadRatio);
         Assert.assertNotEquals(coolingLoad, COOLING_ZONE_COOLING_LOAD, String.format(ASSERT_NOT_EQUALS, coolingLoad, COOLING_ZONE_COOLING_LOAD));
         Assert.assertNotEquals(coolingCapacity, COOLING_ZONE_CAPACITY, String.format(ASSERT_NOT_EQUALS, coolingCapacity, COOLING_ZONE_CAPACITY));
         Assert.assertNotEquals(coolingLoadRatio, COOLING_ZONE_LOAD_RATIO, String.format(ASSERT_NOT_EQUALS, coolingLoadRatio, COOLING_ZONE_LOAD_RATIO));

@@ -6,6 +6,7 @@ import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.data.Data;
 import com.oss.framework.listwidget.CommonList;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.view.Card;
 import com.oss.framework.widgets.tabswidget.TabWindowWidget;
 import com.oss.pages.BasePage;
 import com.oss.pages.servicedesk.ticket.wizard.WizardPage;
@@ -25,6 +26,8 @@ public class TicketDetailsPage extends BasePage {
     private static final String CREATE_SUB_TICKET = "TT_DETAILS_SUBTICKET_CREATE_PROMPT_TITLE";
     private static final String CHECKLIST_APP_ID = "_checklistApp";
     private static final String SKIP_BUTTON_LABEL = "SKIP";
+    private static final String EXTERNAL_LIST_ID = "_detailsExternalsListApp";
+    private static final String EXTERNAL_INFO_LABEL = "External Info";
 
     public TicketDetailsPage(WebDriver driver) {
         super(driver);
@@ -45,12 +48,14 @@ public class TicketDetailsPage extends BasePage {
         log.info("Clicking release button");
     }
 
-    private void clickContextAction(String contextActionLabel) {
+    public void clickContextAction(String contextActionLabel) {
+        DelayUtils.waitForPageToLoad(driver, wait);
         TabWindowWidget.create(driver, wait).callActionByLabel(contextActionLabel);
         log.info("Clicking Context action {}", contextActionLabel);
     }
 
     public void selectTab(WebDriver driver, String tabLabel) {
+        DelayUtils.waitForPageToLoad(driver, wait);
         TabWindowWidget.create(driver, wait).selectTabByLabel(tabLabel);
         log.info("Selecting tab {}", tabLabel);
     }
@@ -67,7 +72,7 @@ public class TicketDetailsPage extends BasePage {
     public void skipAllActionsOnCheckList() {
         CommonList commonList = CommonList.create(driver, wait, CHECKLIST_APP_ID);
         commonList.getAllRows()
-            .forEach(row -> row.callActionIcon(SKIP_BUTTON_LABEL));
+                .forEach(row -> row.callActionIcon(SKIP_BUTTON_LABEL));
         log.info("Skipping all actions on checklist");
     }
 
@@ -75,5 +80,24 @@ public class TicketDetailsPage extends BasePage {
         Combobox statusComboBox = Combobox.createServiceDeskStatusComboBox(driver, wait);
         statusComboBox.setValue(Data.createSingleData(statusName));
         log.info("Changing status to {}", statusName);
+    }
+
+    @Step("Maximize window")
+    public void maximizeWindow(String windowId) {
+        Card card = Card.createCard(driver, wait, windowId);
+        card.maximizeCard();
+        log.info("Maximizing window");
+    }
+
+    public boolean checkExistingExternal(String expectedExistingExternal) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Checking if expected external '{}' exists on the list", expectedExistingExternal);
+        if (CommonList.create(driver, wait, EXTERNAL_LIST_ID).isRowVisible(EXTERNAL_INFO_LABEL, expectedExistingExternal)) {
+            log.info("Expected external '{}' exists on the list", expectedExistingExternal);
+            return true;
+        } else {
+            log.info("Expected external '{}' does not exists on the list", expectedExistingExternal);
+            return false;
+        }
     }
 }
