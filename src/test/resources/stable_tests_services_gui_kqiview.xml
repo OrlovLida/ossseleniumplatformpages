@@ -25,7 +25,19 @@
             </class>
         </classes>
     </test>
-    <test name="SharePanelTest">
+    <test name="searchIndicators">
+        <parameter name="filterName" value="DFE Self Monitoring"></parameter>
+        <parameter name="indicator" value="numSkippedTasks"></parameter>
+        <parameter name="dimension" value="DataEngineFactETL"></parameter>
+        <classes>
+            <class name="com.oss.dpe.IndicatorsViewTest">
+                <methods>
+                    <include name="searchIndicators"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="IndicatorsViewTests">
         <parameter name="indicatorNodesToExpand" value="DFE Tests,DFE Product Tests,Selenium Tests"></parameter>
         <parameter name="indicatorNodesToSelect" value="SUCCESS_LONG"></parameter>
         <parameter name="dimensionNodesToExpand" value="t:SMOKE#DimHierSelenium"></parameter>
@@ -34,6 +46,13 @@
         <classes>
             <class name="com.oss.dpe.IndicatorsViewTest">
                 <methods>
+                    <include name="verifyIfKpiViewWorksProperly"/>
+                    <include name="verifyIfChartTypesWorksProperly"/>
+                    <include name="verifyIfPeriodChooserWorksProperly"/>
+                    <include name="verifyIfMiscellaneousOptionsWorkProperly"/>
+                    <include name="verifyIfCompareWithOtherPeriodWorksProperly"/>
+                    <include name="verifyIfResizePanelOptionWorksProperly"/>
+                    <include name="ChangingChartLayoutOption"/>
                     <include name="SharePanelTest"/>
                 </methods>
             </class>

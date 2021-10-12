@@ -236,19 +236,21 @@ public class IndicatorsViewTest extends BaseTestCase {
         }
     }
 
-    @Parameters({"filterName"})
+    @Parameters({"filterName", "indicator", "dimension"})
     @Test(priority = 9, testName = "Search in indicators and dimensions trees", description = "Verify search from indicators and dimensions trees for DPE data")
     @Description("Verify search from indicators and dimensions trees for DPE data")
     public void searchIndicators(
-            @Optional("Data Collection Statistics") String filterName
+            @Optional("Data Collection Statistics") String filterName,
+            @Optional("DBTIME") String indicator,
+            @Optional("DC Type: PMSTA_DC") String dimension
     ) {
         kpiViewPage.setFilters(Collections.singletonList(filterName));
-        kpiViewPage.searchInToolbarPanel("DBTIME", INDICATORS_TREE_ID);
-        kpiViewPage.searchInToolbarPanel("DC Type: PMSTA_DC", DIMENSIONS_TREE_ID);
+        kpiViewPage.searchInToolbarPanel(indicator, INDICATORS_TREE_ID);
+        kpiViewPage.searchInToolbarPanel(dimension, DIMENSIONS_TREE_ID);
         kpiViewPage.applyChanges();
 
-        Assert.assertTrue(kpiViewPage.isNodeInTreeSelected("DBTIME", INDICATORS_TREE_ID));
-        Assert.assertTrue(kpiViewPage.isNodeInTreeSelected("DC Type: PMSTA_DC", DIMENSIONS_TREE_ID));
+        Assert.assertTrue(kpiViewPage.isNodeInTreeSelected(indicator, INDICATORS_TREE_ID));
+        Assert.assertTrue(kpiViewPage.isNodeInTreeSelected(dimension, DIMENSIONS_TREE_ID));
         Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
     }
 

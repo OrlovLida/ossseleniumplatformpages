@@ -10,8 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
-import java.util.Collections;
-
 import static com.oss.utils.AttachmentsManager.attachConsoleLogs;
 import static com.oss.utils.AttachmentsManager.saveScreenshotPNG;
 
@@ -102,20 +100,6 @@ public class KpiViewTest extends BaseTestCase {
         } catch (Exception e) {
             log.error(e.getMessage());
         }
-    }
-
-    @Parameters({"filterName"})
-    @Test(priority = 4, testName = "Search in indicators and dimensions trees", description = "Verify search from indicators and dimensions trees for DFE data")
-    @Description("Verify search from indicators and dimensions trees for DFE data")
-    public void searchIndicators(
-            @Optional("DFE Self Monitoring") String filterName
-    ) {
-        kpiViewPage.setFilters(Collections.singletonList(filterName));
-        kpiViewPage.searchInToolbarPanel("numSkippedTasks", INDICATORS_TREE_ID);
-        kpiViewPage.searchInToolbarPanel("DataEngineFactETL", DIMENSIONS_TREE_ID);
-        kpiViewPage.applyChanges();
-
-        Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToSelect", "dimensionNodesToExpand", "filterName"})
