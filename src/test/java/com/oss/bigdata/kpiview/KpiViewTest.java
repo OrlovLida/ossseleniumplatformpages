@@ -119,8 +119,8 @@ public class KpiViewTest extends BaseTestCase {
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToSelect", "dimensionNodesToExpand", "filterName"})
-    @Test(priority = 5, testName = "Link to Indicators View - chart", description = "Opening Link to Indicators View - chart")
-    @Description("Opening Link to Indicators View - chart")
+    @Test(priority = 5, testName = "Link to Indicators View - chart form chart actions", description = "Opening Link to Indicators View - chart form chart actions")
+    @Description("Opening Link to Indicators View - chart form chart actions")
     public void checkLinkToKPIViewChart(
             @Optional("DFE Tests,DFE Product Tests,Selenium Tests") String indicatorNodesToExpand,
             @Optional("SUCCESS_LONG") String indicatorNodesToSelect,

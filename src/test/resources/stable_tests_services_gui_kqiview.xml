@@ -20,7 +20,21 @@
         <classes>
             <class name="com.oss.bigdata.kpiview.KpiViewTest">
                 <methods>
-                    <include name="verifyNumberOfRangesAndLine" />
+                    <include name="verifyNumberOfRangesAndLine"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="SharePanelTest">
+        <parameter name="indicatorNodesToExpand" value="DFE Tests,DFE Product Tests,Selenium Tests"></parameter>
+        <parameter name="indicatorNodesToSelect" value="SUCCESS_LONG"></parameter>
+        <parameter name="dimensionNodesToExpand" value="t:SMOKE#DimHierSelenium"></parameter>
+        <parameter name="dimensionNodesToSelect" value="D3_01"></parameter>
+        <parameter name="filterName" value="DFE Tests"></parameter>
+        <classes>
+            <class name="com.oss.dpe.IndicatorsViewTest">
+                <methods>
+                    <include name="SharePanelTest"/>
                 </methods>
             </class>
         </classes>
