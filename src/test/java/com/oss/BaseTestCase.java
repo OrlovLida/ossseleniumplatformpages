@@ -78,6 +78,7 @@ public class BaseTestCase {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--ignore-certificate-errors");
         options.setExperimentalOption("prefs", getPreferences());
 
         return options;

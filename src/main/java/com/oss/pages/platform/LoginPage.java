@@ -41,6 +41,7 @@ public class LoginPage extends BasePage {
     }
 
     public void login(String user, String password) {
+        DelayUtils.waitForVisibility(wait, userInput);
         userInput.sendKeys(user);
         passwordInput.sendKeys(password);
         loginButton.click();

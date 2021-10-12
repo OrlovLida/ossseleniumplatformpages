@@ -36,7 +36,10 @@ public class DataSourceSmokeTest extends BaseTestCase {
             dataSourcePage.setSeverityInCombobox("All");
 
             Assert.assertTrue(dataSourcePage.IsIfRunsFresh());
-            Assert.assertEquals(dataSourcePage.checkStatus(), "Info");
+
+            String actualStatus = dataSourcePage.checkStatus();
+            boolean statusIsAcceptable = actualStatus.equals("Info") || actualStatus.equals("Warn");
+            Assert.assertTrue(statusIsAcceptable);
         } else {
             log.error("Data Source with name: {} doesn't exist", DATA_SOURCE_NAME);
             Assert.fail();
