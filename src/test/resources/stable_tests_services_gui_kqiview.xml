@@ -26,9 +26,9 @@
         </classes>
     </test>
     <test name="searchIndicators">
-        <parameter name="filterName" value="DFE Self Monitoring"></parameter>
-        <parameter name="indicator" value="numSkippedTasks"></parameter>
-        <parameter name="dimension" value="DataEngineFactETL"></parameter>
+        <parameter name="filterName" value="DFE Self Monitoring"/>
+        <parameter name="indicator" value="numSkippedTasks"/>
+        <parameter name="dimension" value="DataEngineFactETL"/>
         <classes>
             <class name="com.oss.dpe.IndicatorsViewTest">
                 <methods>
@@ -38,11 +38,11 @@
         </classes>
     </test>
     <test name="IndicatorsViewTests">
-        <parameter name="indicatorNodesToExpand" value="DFE Tests,DFE Product Tests,Selenium Tests"></parameter>
-        <parameter name="indicatorNodesToSelect" value="SUCCESS_LONG"></parameter>
-        <parameter name="dimensionNodesToExpand" value="t:SMOKE#DimHierSelenium"></parameter>
-        <parameter name="dimensionNodesToSelect" value="D3_01"></parameter>
-        <parameter name="filterName" value="DFE Tests"></parameter>
+        <parameter name="indicatorNodesToExpand" value="DFE Tests,DFE Product Tests,Selenium Tests"/>
+        <parameter name="indicatorNodesToSelect" value="SUCCESS_LONG"/>
+        <parameter name="dimensionNodesToExpand" value="t:SMOKE#DimHierSelenium"/>
+        <parameter name="dimensionNodesToSelect" value="D3_01"/>
+        <parameter name="filterName" value="DFE Tests"/>
         <classes>
             <class name="com.oss.dpe.IndicatorsViewTest">
                 <methods>
