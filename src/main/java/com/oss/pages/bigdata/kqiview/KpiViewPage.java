@@ -478,6 +478,7 @@ public class KpiViewPage extends BasePage {
         kpiTreeWidget.closeSearchToolbar();
     }
 
+    @Step("I setup Indicators View")
     public void kpiViewSetup(String indicatorNodesToExpand, String indicatorNodesToSelect,
                              String dimensionNodesToExpand, String dimensionNodesToSelect, String filterName) {
         setFilters(Collections.singletonList(filterName));
@@ -485,25 +486,14 @@ public class KpiViewPage extends BasePage {
         List<String> indicatorNodesToExpandList = Arrays.asList(indicatorNodesToExpand.split(","));
         List<String> indicatorNodesToSelectList = Arrays.asList(indicatorNodesToSelect.split(","));
         selectIndicator(indicatorNodesToExpandList, indicatorNodesToSelectList);
-
-        List<String> dimensionNodesToExpandList = Arrays.asList(dimensionNodesToExpand.split(","));
         List<String> dimensionNodesToSelectList = Arrays.asList(dimensionNodesToSelect.split(","));
-        selectDimension(dimensionNodesToExpandList, dimensionNodesToSelectList);
 
-        applyChanges();
-        seeChartIsDisplayed();
-    }
-
-    public void kpiViewSetup(String indicatorNodesToExpand, String indicatorNodesToSelect,
-                             String dimensionNodesToSelect, String filterName) {
-        setFilters(Collections.singletonList(filterName));
-
-        List<String> indicatorNodesToExpandList = Arrays.asList(indicatorNodesToExpand.split(","));
-        List<String> indicatorNodesToSelectList = Arrays.asList(indicatorNodesToSelect.split(","));
-        selectIndicator(indicatorNodesToExpandList, indicatorNodesToSelectList);
-
-        List<String> dimensionNodesToSelectList = Arrays.asList(dimensionNodesToSelect.split(","));
-        selectUnfoldedDimension(dimensionNodesToSelectList);
+        if (dimensionNodesToExpand != null) {
+            List<String> dimensionNodesToExpandList = Arrays.asList(dimensionNodesToExpand.split(","));
+            selectDimension(dimensionNodesToExpandList, dimensionNodesToSelectList);
+        } else {
+            selectUnfoldedDimension(dimensionNodesToSelectList);
+        }
 
         applyChanges();
         seeChartIsDisplayed();
