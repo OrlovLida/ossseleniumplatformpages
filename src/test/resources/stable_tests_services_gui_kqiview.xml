@@ -58,4 +58,13 @@
             </class>
         </classes>
     </test>
+    <test name="checkLinkToKPIViewChart">
+        <classes>
+            <class name="com.oss.bigdata.kpiview.KpiViewTest">
+                <methods>
+                    <include name="checkLinkToKPIViewChart"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
 </suite>
