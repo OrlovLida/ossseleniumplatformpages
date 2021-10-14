@@ -30,7 +30,7 @@ public class GlobalSearchPage extends BasePage {
 
     @Step("Filter by object type {objectType}")
     public void filterObjectType(String objectType) {
-        Input input = ComponentFactory.create(OBJECT_TYPE_FILTER_COMBOBOX_ID, ComponentType.COMBOBOXV2, driver, wait);
+        Input input = ComponentFactory.create(OBJECT_TYPE_FILTER_COMBOBOX_ID, ComponentType.MULTI_COMBOBOX, driver, wait);
         input.setSingleStringValue(objectType);
     }
 
