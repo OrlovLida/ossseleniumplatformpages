@@ -48,6 +48,7 @@ public class BaseTestCase {
     public void closeBrowser() {
         if (driver != null) {
             DelayUtils.sleep(5000);
+            driver.close();
             driver.quit();
         }
     }

@@ -28,7 +28,7 @@ public class FilterManagerTest extends BaseTestCase {
         fmFilterManagerPage = FMFilterManagerPage.goToFilterManagerPage(driver, BASIC_URL);
     }
 
-    @Parameters({"folderName", "description", "filterType"})
+    @Parameters({"folderName", "description"})
     @Test(priority = 1, testName = "Create new folder and filter", description = "Folder and filter creation verification")
     @Description("I verify if Folder and Filter creates without error")
     public void createNewFolderAndDelete(
@@ -39,6 +39,7 @@ public class FilterManagerTest extends BaseTestCase {
             fmFilterManagerPage.createFolder(folderName + "_" + date, description);
             Assert.assertEquals(fmFilterManagerPage.checkIfFolderNameExists(folderName + "_" + date), true);
             fmFilterManagerPage.deleteFolder(folderName + "_" + date);
+            Assert.assertEquals(fmFilterManagerPage.checkIfFolderNameNotExists(folderName + "_" + date), true);
         } catch (Exception e) {
             log.error(e.getMessage());
         }

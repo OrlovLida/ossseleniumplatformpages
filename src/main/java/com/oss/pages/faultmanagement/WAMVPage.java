@@ -125,7 +125,7 @@ public class WAMVPage extends BasePage {
         return propertyPanel.getPropertyValue("Notification Identifier");
     }
 
-    @Step("")
+    @Step("I check if Same MO Alarms Table is visible")
     public boolean checkVisibilityOfSameMOAlarmsTable() {
         return createSameMOAlarmsTable().tableVisibility(SAME_MO_ALARMS_TABLE_ID);
     }

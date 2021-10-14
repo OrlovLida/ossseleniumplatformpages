@@ -35,7 +35,7 @@ public class WAMVBasicTest extends BaseTestCase {
     public void goToFMDashboardPage() {
         fmDashboardPage = FMDashboardPage.goToPage(driver, BASIC_URL);
         homePage = new HomePage(driver);
-        wamvPage = new WAMVPage(driver);
+        wamvPage = WAMVPage.ceateWAMV(driver);
     }
 
     @Parameters({"alarmListName", "alarmListRow", "row"})

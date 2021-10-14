@@ -76,6 +76,19 @@ public class FMFilterManagerPage extends BasePage {
         return false;
     }
 
+    @Step("I check if folder not exists")
+    public boolean checkIfFolderNameNotExists(String nameLabel) {
+        for (int i = 0; i < 100; i++) {
+            List<CommonList.Category> categories =
+                    getCommonList().createCategories().stream().filter(category -> category.getValue().equals(nameLabel))
+                            .collect(Collectors.toList());
+            if (categories.size() == 0)
+                return true;
+            DelayUtils.sleep(50);
+        }
+        return false;
+    }
+
     @Step("I create filter")
     public void createFilter(String name, String description, String type) {
         FMCrateWizardPage fmWizardPage = openCreateNewFilterWizard();
