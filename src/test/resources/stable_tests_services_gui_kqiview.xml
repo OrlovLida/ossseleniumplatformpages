@@ -1,14 +1,15 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="ServicesGuiSQM-CRUD" thread-count="1" parallel="tests" verbose="1">
-    <parameter name="indicatorNodesToExpand" value="DFE Tests,DFE Product Tests,Selenium Tests"/>
-    <parameter name="indicatorNodesToSelect" value="CPU_NICE_USAGE,CPU_TOTAL_USAGE"/>
-    <parameter name="dimensionNodesToExpand" value="t:SMOKE#D_HOST"/>
-    <parameter name="dimensionNodesToSelect" value="192.168.128.172,192.168.128.173"/>
     <test name="BasicKpiViewTest">
+        <parameter name="indicatorNodesToExpand" value="DFE Tests,DFE Product Tests,Selenium Tests"/>
+        <parameter name="indicatorNodesToSelect" value="CPU_NICE_USAGE,CPU_TOTAL_USAGE"/>
+        <parameter name="dimensionNodesToExpand" value="t:SMOKE#D_HOST"/>
+        <parameter name="dimensionNodesToSelect" value="192.168.128.172,192.168.128.173"/>
         <classes>
             <class name="com.oss.bigdata.kpiview.KpiViewTest">
                 <methods>
                     <exclude name="verifyNumberOfRangesAndLine"/>
+                    <exclude name="checkLinkToKPIViewChart"/>
                 </methods>
             </class>
         </classes>
@@ -56,6 +57,10 @@
                     <include name="SharePanelTest"/>
                 </methods>
             </class>
+        </classes>
+    </test>
+    <test name="Check link to KPI View Chart">
+        <classes>
             <class name="com.oss.bigdata.kpiview.KpiViewTest">
                 <methods>
                     <include name="checkLinkToKPIViewChart"/>
