@@ -230,15 +230,8 @@ public class ISPConfigurationTest extends BaseTestCase {
         driver.navigate().refresh();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
-        hierarchyViewPage.expandTreeNode(PHYSICAL_DEVICE_NAME);
-        hierarchyViewPage.expandTreeNode("Chassis");
-        hierarchyViewPage.expandFirstCollapsedTreeNode();
-        hierarchyViewPage.expandTreeNode("Slots");
-        hierarchyViewPage.expandTreeNode("LT3");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        hierarchyViewPage.expandTreeNode("Cards");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        hierarchyViewPage.selectNodeByLabel("NELT-B");
+        String labelpath = PHYSICAL_DEVICE_NAME + ".Chassis.Chassis.Slots.LT3.Cards.NELT-B";
+        hierarchyViewPage.selectNodeByLabelsPath(labelpath);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hierarchyViewPage.useTreeContextAction(ActionsContainer.EDIT_GROUP_ID, "CardChangeModelAction");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);

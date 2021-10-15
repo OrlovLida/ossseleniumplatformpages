@@ -72,6 +72,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
     private static final String LAB_NETWORK_VIEW = "LAB Network View";
     private static final String NAME = "Name";
     private static final String LEFT = "left";
+    private static final String RIGHT = "right";
 
     private String serialNumber = "SN-" + (int) (Math.random() * 1001);
     private String processIPCode;
@@ -114,6 +115,8 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
     @Step("Select Location")
     public void selectLocation() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
+        waitForPageToLoad();
+        networkViewPage.hideDockedPanel(RIGHT);
         waitForPageToLoad();
         networkViewPage.expandDockedPanel(LEFT);
         waitForPageToLoad();
