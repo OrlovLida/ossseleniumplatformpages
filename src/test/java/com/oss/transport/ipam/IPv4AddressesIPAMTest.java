@@ -187,9 +187,11 @@ public class IPv4AddressesIPAMTest extends BaseTestCase {
         ipAddressManagementViewPage.selectTreeRow(NETWORK_NAME);
         ipAddressManagementViewPage.expandTreeRow(NETWORK_NAME);
         DelayUtils.sleep(100);
+        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(getAddressAndMask(firstIPSubnetProperties));
         checkAttributesOnIPAMTree(firstIPSubnetProperties, getAddressAndMask(firstIPSubnetProperties));
-        ipAddressManagementViewPage.expandTreeRowContains(getAddressAndMask(firstIPSubnetProperties));
+        ipAddressManagementViewPage.scrollToTreeRowContains(getAddressAndMask(secondIPSubnetProperties));
         checkAttributesOnIPAMTree(secondIPSubnetProperties, getAddressAndMask(secondIPSubnetProperties));
+        ipAddressManagementViewPage.scrollToTreeRowContains(getAddressAndMask(thirdIPSubnetProperties));
         checkAttributesOnIPAMTree(thirdIPSubnetProperties, getAddressAndMask(thirdIPSubnetProperties));
     }
 
@@ -252,8 +254,7 @@ public class IPv4AddressesIPAMTest extends BaseTestCase {
         ipAddressManagementViewPage.expandTreeRow(getAddressAndMask(loopbackHostAddressProperties));
         checkAttributesOnIPAMTree(loopbackHostAssignmentProperties, getAssignmentAddressMaskAndAssignTo(loopbackHostAssignmentProperties, NETWORK_NAME));
         checkAttributesOnIPAMTree(loopbackHostAddressProperties, getAddressAndMask(loopbackHostAddressProperties));
-        ipAddressManagementViewPage.scrollToTreeRow(getAddressAndMask(secondLoopbackHostAddressProperties));
-        ipAddressManagementViewPage.expandTreeRow(getAddressAndMask(secondLoopbackHostAddressProperties));
+        ipAddressManagementViewPage.scrollAndExpandTreeRow(getAddressAndMask(secondLoopbackHostAddressProperties));
         ipAddressManagementViewPage.scrollToTreeRowContains(getAssignmentAddressMaskAndAssignTo(secondLoopbackHostAssignmentProperties, NETWORK_NAME));
         checkAttributesOnIPAMTree(secondLoopbackHostAssignmentProperties, getAssignmentAddressMaskAndAssignTo(secondLoopbackHostAssignmentProperties, NETWORK_NAME));
         checkAttributesOnIPAMTree(secondLoopbackHostAddressProperties, getAddressAndMask(secondLoopbackHostAddressProperties));
@@ -295,17 +296,18 @@ public class IPv4AddressesIPAMTest extends BaseTestCase {
 
         ipAddressManagementViewPage.selectTreeRow(NETWORK_NAME_UPDATED);
         ipAddressManagementViewPage.expandTreeRow(NETWORK_NAME_UPDATED);
+        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(getAddressAndMask(firstIPSubnetProperties));
         checkAttributesOnIPAMTree(firstIPSubnetProperties, getAddressAndMask(firstIPSubnetProperties));
-        ipAddressManagementViewPage.expandTreeRowContains(getAddressAndMask(firstIPSubnetProperties));
-        ipAddressManagementViewPage.expandTreeRowContains(getAddressAndMask(secondIPSubnetProperties));
+        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(getAddressAndMask(secondIPSubnetProperties));
         checkAttributesOnIPAMTree(secondIPSubnetProperties, getAddressAndMask(secondIPSubnetProperties));
+        ipAddressManagementViewPage.scrollToTreeRowContains(getAddressAndMask(thirdIPSubnetProperties));
         checkAttributesOnIPAMTree(thirdIPSubnetProperties, getAddressAndMask(thirdIPSubnetProperties));
         checkAttributesOnIPAMTree(hostAddressProperties, getAddressAndMask(hostAddressProperties));
         checkAttributesOnIPAMTree(loopbackHostAddressProperties, getAddressAndMask(loopbackHostAddressProperties));
         checkAttributesOnIPAMTree(secondLoopbackHostAddressProperties, getAddressAndMask(secondLoopbackHostAddressProperties));
         ipAddressManagementViewPage.expandTreeRow(getAddressAndMask(hostAddressProperties));
         ipAddressManagementViewPage.expandTreeRow(getAddressAndMask(loopbackHostAddressProperties));
-        ipAddressManagementViewPage.expandTreeRow(getAddressAndMask(secondLoopbackHostAddressProperties));
+        ipAddressManagementViewPage.scrollAndExpandTreeRow(getAddressAndMask(secondLoopbackHostAddressProperties));
         checkAttributesOnIPAMTree(hostAssignmentProperties, getAssignmentAddressMaskAndAssignTo(hostAssignmentProperties, NETWORK_NAME_UPDATED));
         checkAttributesOnIPAMTree(loopbackHostAssignmentProperties, getAssignmentAddressMaskAndAssignTo(loopbackHostAssignmentProperties, NETWORK_NAME_UPDATED));
         checkAttributesOnIPAMTree(secondLoopbackHostAssignmentProperties, getAssignmentAddressMaskAndAssignTo(secondLoopbackHostAssignmentProperties, NETWORK_NAME_UPDATED));
@@ -324,10 +326,11 @@ public class IPv4AddressesIPAMTest extends BaseTestCase {
 
         updatePropertiesAfterIPv4SubnetsSplit();
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
-        ipAddressManagementViewPage.scrollToTreeRow(NETWORK_NAME_UPDATED);
+        ipAddressManagementViewPage.scrollToTreeRowContains(getAddressAndMask(fourthIPSubnetProperties));
         checkAttributesOnIPAMTree(secondIPSubnetProperties, getAddressAndMask(secondIPSubnetProperties));
         checkAttributesOnIPAMTree(fourthIPSubnetProperties, getAddressAndMask(fourthIPSubnetProperties));
         ipAddressManagementViewPage.expandTreeRowContains(getAddressAndMask(fourthIPSubnetProperties));
+        ipAddressManagementViewPage.scrollToTreeRowContains(getAddressAndMask(fifthIPSubnetProperties));
         checkAttributesOnIPAMTree(fifthIPSubnetProperties, getAddressAndMask(fifthIPSubnetProperties));
     }
 
@@ -344,24 +347,25 @@ public class IPv4AddressesIPAMTest extends BaseTestCase {
 
         updatePropertiesAfterIPv4SubnetsMerge();
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
-        ipAddressManagementViewPage.scrollToTreeRow(NETWORK_NAME_UPDATED);
-        ipAddressManagementViewPage.expandTreeRow(NETWORK_NAME_UPDATED);
+        ipAddressManagementViewPage.scrollAndExpandTreeRow(NETWORK_NAME_UPDATED);
         ipAddressManagementViewPage.selectTreeRow(NETWORK_NAME_UPDATED);
         ipAddressManagementViewPage.selectTreeRow(NETWORK_NAME_UPDATED);
-        ipAddressManagementViewPage.expandTreeRowContains(getAddressAndMask(firstIPSubnetProperties));
+        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(getAddressAndMask(firstIPSubnetProperties));
+        ipAddressManagementViewPage.scrollToTreeRowContains(getAddressAndMask(secondIPSubnetProperties));
         checkAttributesOnIPAMTree(secondIPSubnetProperties, getAddressAndMask(secondIPSubnetProperties));
     }
 
     @Test(priority = 12)
     @Description("Edit IPv4 Subnets")
     public void editIPv4Subnets() {
+        ipAddressManagementViewPage.scrollToTreeRowContains(getAddressAndMask(thirdIPSubnetProperties));
         ipAddressManagementViewPage.changeIPv4SubnetTypeToBlock(getAddressAndMask(thirdIPSubnetProperties));
-        ipAddressManagementViewPage.selectTreeRowContains(getAddressAndMask(thirdIPSubnetProperties));
+        ipAddressManagementViewPage.scrollAndSelectTreeRowContains(getAddressAndMask(thirdIPSubnetProperties));
         ipAddressManagementViewPage.selectTreeRowContains(getAddressAndMask(thirdIPSubnetProperties));
         ipAddressManagementViewPage.editIPv4Subnet(getAddressAndMask(secondIPSubnetProperties), MANAGEMENT_SECONDARY_ROLE, DESCRIPTION_UPDATED);
 
         updatePropertiesAfterIPv4SubnetsEdition();
-        ipAddressManagementViewPage.scrollToTreeRow(NETWORK_NAME_UPDATED);
+        ipAddressManagementViewPage.scrollToTreeRowContains(getAddressAndMask(thirdIPSubnetProperties));
         checkAttributesOnIPAMTree(secondIPSubnetProperties, getAddressAndMask(secondIPSubnetProperties));
         checkAttributesOnIPAMTree(thirdIPSubnetProperties, getAddressAndMask(thirdIPSubnetProperties));
     }
@@ -372,35 +376,36 @@ public class IPv4AddressesIPAMTest extends BaseTestCase {
         ipAddressManagementViewPage.editRoleForIPv4SubnetAssignment(getAddressAndMask(firstIPSubnetProperties), STANDARD_ROLE);
         updatePropertiesAfterIPv4SubnetAssignmentEdition();
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
-        ipAddressManagementViewPage.scrollToTreeRow(NETWORK_NAME_UPDATED);
+        ipAddressManagementViewPage.scrollToTreeRowContains(getAddressAndMask(firstIPSubnetProperties));
         checkAttributesOnIPAMTree(firstIPSubnetProperties, getAddressAndMask(firstIPSubnetProperties));
     }
 
     @Test(priority = 14)
     @Description("Edit IPv4 Host")
     public void editIPv4Host() {
-        ipAddressManagementViewPage.expandTreeRowContains(getAddressAndMask(secondIPSubnetProperties));
-        ipAddressManagementViewPage.expandTreeRow(getAddressAndMask(hostAddressProperties));
+        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(getAddressAndMask(secondIPSubnetProperties));
+        ipAddressManagementViewPage.scrollAndExpandTreeRow(getAddressAndMask(hostAddressProperties));
         ipAddressManagementViewPage.deleteHostAssignment(getAssignmentAddressMaskAndAssignTo(hostAssignmentProperties, NETWORK_NAME_UPDATED));
+        ipAddressManagementViewPage.scrollAndSelectTreeRowContains(getAddressAndMask(secondIPSubnetProperties));
         ipAddressManagementViewPage.selectTreeRowContains(getAddressAndMask(secondIPSubnetProperties));
-        ipAddressManagementViewPage.selectTreeRowContains(getAddressAndMask(secondIPSubnetProperties));
+        ipAddressManagementViewPage.scrollToTreeRow(getAddressAndMask(hostAddressProperties));
         ipAddressManagementViewPage.changeIPv4HostMask(getAddressAndMask(hostAddressProperties), LOOPBACK_IPV4_HOST_MASK);
         updatePropertiesAfterIPv4HostEdition();
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
-        ipAddressManagementViewPage.scrollToTreeRow(NETWORK_NAME_UPDATED);
+        ipAddressManagementViewPage.scrollToTreeRow(getAddressAndMask(hostAddressProperties));
         checkAttributesOnIPAMTree(hostAddressProperties, getAddressAndMask(hostAddressProperties));
     }
 
     @Test(priority = 15)
     @Description("Edit IPv4 Host Assignment")
     public void editIPv4HostAssignment() {
-        ipAddressManagementViewPage.expandTreeRow(getAddressAndMask(secondLoopbackHostAddressProperties));
+        ipAddressManagementViewPage.scrollAndExpandTreeRow(getAddressAndMask(secondLoopbackHostAddressProperties));
         IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties = IPAddressAssignmentWizardProperties.builder()
                 .isInNAT(FALSE_STRING).role(STANDARD_ROLE).description(DESCRIPTION).build();
         ipAddressManagementViewPage
                 .editIPv4HostAssignment(getAssignmentAddressMaskAndAssignTo(secondLoopbackHostAssignmentProperties, NETWORK_NAME_UPDATED), ipAddressAssignmentWizardProperties);
         updatePropertiesAfterIPv4HostAssignmentEdition();
-        ipAddressManagementViewPage.scrollToTreeRow(NETWORK_NAME_UPDATED);
+        ipAddressManagementViewPage.scrollToTreeRowContains(getAssignmentAddressMaskAndAssignTo(secondLoopbackHostAssignmentProperties, NETWORK_NAME_UPDATED));
         checkAttributesOnIPAMTree(secondLoopbackHostAssignmentProperties, getAssignmentAddressMaskAndAssignTo(secondLoopbackHostAssignmentProperties, NETWORK_NAME_UPDATED));
     }
 
@@ -491,15 +496,14 @@ public class IPv4AddressesIPAMTest extends BaseTestCase {
     public void deleteIPv4HostsAssignment() {
         ipAddressManagementViewPage = IPAddressManagementViewPage.goToIPAddressManagementViewPageLive(driver, BASIC_URL);
         DelayUtils.sleep(100);
-        ipAddressManagementViewPage.scrollToTreeRow(NETWORK_NAME_UPDATED);
-        ipAddressManagementViewPage.expandTreeRow(NETWORK_NAME_UPDATED);
-        ipAddressManagementViewPage.expandTreeRowContains(getAddressAndMask(firstIPSubnetProperties));
-        ipAddressManagementViewPage.expandTreeRowContains(getAddressAndMask(secondIPSubnetProperties));
-        ipAddressManagementViewPage.expandTreeRow(getAddressAndMask(loopbackHostAddressProperties));
+        ipAddressManagementViewPage.scrollAndExpandTreeRow(NETWORK_NAME_UPDATED);
+        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(getAddressAndMask(firstIPSubnetProperties));
+        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(getAddressAndMask(secondIPSubnetProperties));
+        ipAddressManagementViewPage.scrollAndExpandTreeRow(getAddressAndMask(loopbackHostAddressProperties));
         ipAddressManagementViewPage.deleteHostAssignment(getAssignmentAddressMaskAndAssignTo(loopbackHostAssignmentProperties, NETWORK_NAME_UPDATED));
         ipAddressManagementViewPage.scrollAndSelectTreeRowContains(getAddressAndMask(secondIPSubnetProperties));
         ipAddressManagementViewPage.selectTreeRowContains(getAddressAndMask(secondIPSubnetProperties));
-        ipAddressManagementViewPage.expandTreeRow(getAddressAndMask(secondLoopbackHostAddressProperties));
+        ipAddressManagementViewPage.scrollAndExpandTreeRow(getAddressAndMask(secondLoopbackHostAddressProperties));
         ipAddressManagementViewPage.deleteHostAssignment(getAssignmentAddressMaskAndAssignTo(secondLoopbackHostAssignmentProperties, NETWORK_NAME_UPDATED));
     }
 
@@ -509,6 +513,7 @@ public class IPv4AddressesIPAMTest extends BaseTestCase {
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
         ipAddressManagementViewPage.scrollAndSelectTreeRowContains(getAddressAndMask(secondIPSubnetProperties));
         ipAddressManagementViewPage.selectTreeRowContains(getAddressAndMask(secondIPSubnetProperties));
+        ipAddressManagementViewPage.scrollToTreeRow(getAddressAndMask(loopbackHostAddressProperties));
         ipAddressManagementViewPage.deleteIPHost(getAddressAndMask(loopbackHostAddressProperties));
     }
 
@@ -532,11 +537,13 @@ public class IPv4AddressesIPAMTest extends BaseTestCase {
         ipAddressManagementViewPage.scrollAndSelectTreeRow(NETWORK_NAME_UPDATED);
         ipAddressManagementViewPage.selectTreeRow(NETWORK_NAME_UPDATED);
         ipAddressManagementViewPage.expandTreeRow(NETWORK_NAME_UPDATED);
+        ipAddressManagementViewPage.selectTreeRowContains(getAddressAndMask(thirdIPSubnetProperties));
         ipAddressManagementViewPage.deleteIPv4SubnetTypeOfBlock(getAddressAndMask(thirdIPSubnetProperties));
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
         ipAddressManagementViewPage.scrollAndSelectTreeRow(NETWORK_NAME_UPDATED);
         ipAddressManagementViewPage.selectTreeRow(NETWORK_NAME_UPDATED);
         ipAddressManagementViewPage.expandTreeRow(NETWORK_NAME_UPDATED);
+        ipAddressManagementViewPage.selectTreeRowContains(getAddressAndMask(secondIPSubnetProperties));
         ipAddressManagementViewPage.deleteIPv4SubnetTypeOfNetwork(getAddressAndMask(secondIPSubnetProperties));
     }
 
