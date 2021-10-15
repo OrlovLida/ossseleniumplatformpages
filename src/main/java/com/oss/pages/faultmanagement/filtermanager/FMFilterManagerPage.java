@@ -93,26 +93,5 @@ public class FMFilterManagerPage extends BasePage {
     public void createFilter(String name, String description, String type) {
         FMCrateWizardPage fmWizardPage = openCreateNewFilterWizard();
         fmWizardPage.setName(name).setDescription(description).setTypeValue(type);
-
-//        try {
-//            Thread.sleep(1500);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//
-//        fmWizardPage.clickOnConditon(ADD_BUTTON_LABEL);
-//
-//        try {
-//            Thread.sleep(1000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-////        ConditionPopup popupV2 = new ConditionPopup(driver, wait);
-////        popupV2.typeAndEnterInGlobalSearch("coś do wyszukania");
-//
-//        PopupV2 popupV2 = PopupV2.create(driver,wait);
-//        popupV2.setComponentValue("search","coś tam wpisz", SEARCH_FIELD);
-//        popupV2.getComponent("search", SEARCH_FIELD).click();
-//        popupV2.getComponent("search", SEARCH_FIELD).setSingleStringValue("halo halo co się dzieje");
     }
 }
