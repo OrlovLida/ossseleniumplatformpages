@@ -85,13 +85,13 @@ public class WAMVBasicTest extends BaseTestCase {
             fmDashboardPage.openAlarmManagementViewByRow(row);
             assertThat(homePage.getPageTitle()).isIn("*" + alarmListName, alarmListName);
             wamvPage.selectSpecificRow(alarmListRow);
+            wamvPage.clickOnSameMOAlarmsTab();
+            Assert.assertTrue(wamvPage.checkVisibilityOfSameMOAlarmsTable());
             wamvPage.clickOnSameMODetailsTab();
             wamvPage.clickOnAdditionalTextTab();
             wamvPage.clickOnAlarmDetailsTab();
             Assert.assertEquals(wamvPage.getAdapterNameValueFromAlarmDetailsTab(), adapterName);
             Assert.assertEquals(wamvPage.getNotificationIdentifierValueFromAlarmDetailsTab(), wamvPage.getTextFromNotificationIdentifierCell(alarmListRow));
-            wamvPage.clickOnSameMOAlarmsTab();
-            Assert.assertEquals(wamvPage.checkVisibilityOfSameMOAlarmsTable(), true);
 
         } catch (Exception e) {
             log.error(e.getMessage());
