@@ -127,6 +127,6 @@ public class WAMVPage extends BasePage {
 
     @Step("I check if Same MO Alarms Table is visible")
     public boolean checkVisibilityOfSameMOAlarmsTable() {
-        return createSameMOAlarmsTable().tableVisibility(SAME_MO_ALARMS_TABLE_ID);
+        return driver.getPageSource().contains(SAME_MO_ALARMS_TABLE_ID);
     }
 }
