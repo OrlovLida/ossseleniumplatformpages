@@ -1,18 +1,13 @@
 package com.oss.pages.radio;
 
-import org.openqa.selenium.WebDriver;
-
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.listwidget.EditableList;
 import com.oss.framework.listwidget.EditableList.Row;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
-
 import io.qameta.allure.Step;
+import org.openqa.selenium.WebDriver;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.CHECKBOX;
-import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
-import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
+import static com.oss.framework.components.inputs.Input.ComponentType.*;
 
 public class Cell5GBulkWizardPage extends BasePage {
     private static final String USE_FIRST_AVAILABLE_ID = "useFirstAvailableId";
@@ -66,11 +61,11 @@ public class Cell5GBulkWizardPage extends BasePage {
         setFirstAvailableId();
         int rowNumber = 1;
         for (String cellName : cellNames) {
-            Row row = EditableList.create(driver, wait).selectRow(rowNumber - 1);
-            row.setEditableAttributeValue(cellName, COLUMN_NAME, NAME, Input.ComponentType.TEXT_FIELD);
+            Row row = EditableList.create(driver, wait).getRow(rowNumber - 1);
+            row.setEditableAttributeValue(cellName, COLUMN_NAME, NAME, TEXT_FIELD);
             row.setEditableAttributeValue(String.valueOf(localCellsId[rowNumber - 1]), COLUMN_LOCAL_CELL_ID, LOCAL_CELL_ID, TEXT_FIELD);
-            row.setEditableAttributeValue("5", COLUMN_PCI, PCI, Input.ComponentType.TEXT_FIELD);
-            row.setEditableAttributeValue("10", COLUMN_RSI, RSI, Input.ComponentType.TEXT_FIELD);
+            row.setEditableAttributeValue("5", COLUMN_PCI, PCI, TEXT_FIELD);
+            row.setEditableAttributeValue("10", COLUMN_RSI, RSI, TEXT_FIELD);
             rowNumber++;
         }
         clickAccept();
