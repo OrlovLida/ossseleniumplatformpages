@@ -52,8 +52,8 @@ public class FMCrateWizardPage extends BasePage {
         folderWizard.clickButtonByLabel(label);
     }
 
-    public void clickOnConditon(String label) {
-        folderWizard.clickButtonByLabel(label, CONDITION_ID);
+    public void clickOnAddConditon() {
+        folderWizard.clickButtonById("Add", CONDITION_ID);
     }
 
 }
