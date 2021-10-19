@@ -58,4 +58,11 @@ public class FMDashboardPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         commonAlarmManagement.getAllRows().get(rowNumber).callAction(OPEN_BUTTON_ID);
     }
+
+    @Step("I click on Creat New Alarm List button")
+    public FMCreateWAMVPage clickCreateNewAlarmList() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        commonAlarmManagement.callAction(CREATE_BUTTON_ID);
+        return new FMCreateWAMVPage(driver);
+    }
 }
