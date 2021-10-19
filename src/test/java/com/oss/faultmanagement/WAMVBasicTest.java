@@ -68,6 +68,7 @@ public class WAMVBasicTest extends BaseTestCase {
             }
         } catch (Exception e) {
             log.error(e.getMessage());
+            Assert.fail();
         }
     }
 
@@ -95,6 +96,7 @@ public class WAMVBasicTest extends BaseTestCase {
 
         } catch (Exception e) {
             log.error(e.getMessage());
+            Assert.fail();
         }
     }
 
