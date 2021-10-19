@@ -42,6 +42,7 @@ public class FilterManagerTest extends BaseTestCase {
             Assert.assertEquals(fmFilterManagerPage.checkIfFolderNameNotExists(folderName + "_" + date), true);
         } catch (Exception e) {
             log.error(e.getMessage());
+            Assert.fail();
         }
     }
 }
