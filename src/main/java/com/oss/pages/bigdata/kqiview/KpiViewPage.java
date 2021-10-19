@@ -1,5 +1,8 @@
 package com.oss.pages.bigdata.kqiview;
 
+import com.oss.framework.components.inputs.Button;
+import com.oss.framework.components.inputs.ComponentFactory;
+import com.oss.framework.components.inputs.Input;
 import com.oss.framework.mainheader.ButtonPanel;
 import com.oss.framework.mainheader.Share;
 import com.oss.framework.mainheader.ToolbarWidget;
@@ -52,6 +55,8 @@ public class KpiViewPage extends BasePage {
     private static final String CHART_ACTIONS_LINKS_ID = "external-links-button";
     private static final String LINK_TO_XDR_LABEL = "Open xDR for t:SMOKE#ETLforKqis. Time condition limited to last 1 hour(s) from chosen period.";
     private static final String LINK_TO_INDICATORS_VIEW_CHART_LABEL = "Indicators View - Chart";
+    private static final String DIMENSION_OPTIONS_BUTTON_ID = "dimension-options-button";
+    private static final String CHILD_OBJECT_LEVEL_INPUT_ID = "SelectChildMOLevelChanged";
 
     public KpiViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -120,6 +125,7 @@ public class KpiViewPage extends BasePage {
         log.info("Apply changes");
         KpiToolbarPanel toolbar = KpiToolbarPanel.create(driver, wait);
         toolbar.clickApply();
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     @Step("I see chart is displayed")
@@ -231,16 +237,17 @@ public class KpiViewPage extends BasePage {
     @Step("I should see {expectedColumnsCount} columns and {expectedLinesCount} lines displayed")
     public boolean shouldSeeBoxesAndCurvesDisplayed(int expectedColumnsCount, int expectedLinesCount) {
         KpiChartWidget kpiChartWidget = KpiChartWidget.create(driver, wait);
-        int columnsCount = kpiChartWidget.countColumns();
-        int linesCount = kpiChartWidget.countLines();
-        return columnsCount == expectedColumnsCount && linesCount == expectedLinesCount;
+        return kpiChartWidget.countColumns() == expectedColumnsCount && kpiChartWidget.countLines() == expectedLinesCount;
     }
 
     @Step("I should see {expectedLinesCount} lines displayed")
     public boolean shouldSeeCurvesDisplayed(int expectedLinesCount) {
-        KpiChartWidget kpiChartWidget = KpiChartWidget.create(driver, wait);
-        int linesCount = kpiChartWidget.countLines();
-        return linesCount == expectedLinesCount;
+        return KpiChartWidget.create(driver, wait).countLines() == expectedLinesCount;
+    }
+
+    @Step("I should see more than one line displayed")
+    public boolean shouldSeeMoreThanOneCurveDisplayed() {
+        return KpiChartWidget.create(driver, wait).countLines() > 1;
     }
 
     @Step("I should see {expectedPointsCount} highlighted points displayed")
@@ -542,5 +549,22 @@ public class KpiViewPage extends BasePage {
         driver.get(copyLink());
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Redirecting to page from link in Share panel");
+    }
+
+    @Step("I fill field: Display series for child objects from level")
+    public void fillLevelOfChildObjects(String level) {
+        ComponentFactory.create(CHILD_OBJECT_LEVEL_INPUT_ID, Input.ComponentType.TEXT_FIELD, driver, wait)
+                .setSingleStringValue(level);
+    }
+
+    @Step("I click on dimension node options button")
+    public void clickDimensionOptions(String dimensionNodeName) {
+        if (dimensionNodeName != null) {
+            KpiTreeWidget.create(driver, wait, DIMENSIONS_TREE_ID).clickNodeOptions(dimensionNodeName);
+            log.info("I Click on options button in: {}", dimensionNodeName);
+        } else {
+            Button.createById(driver, DIMENSION_OPTIONS_BUTTON_ID).click();
+            log.info("I click on option button in first dimension node");
+        }
     }
 }

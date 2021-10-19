@@ -53,8 +53,9 @@
                     <include name="verifyIfMiscellaneousOptionsWorkProperly"/>
                     <include name="verifyIfCompareWithOtherPeriodWorksProperly"/>
                     <include name="verifyIfResizePanelOptionWorksProperly"/>
-                    <include name="ChangingChartLayoutOption"/>
-                    <include name="SharePanelTest"/>
+                    <include name="changingChartLayoutOption"/>
+                    <include name="sharePanelTest"/>
+                    <include name="childObjectTest"/>
                 </methods>
             </class>
         </classes>

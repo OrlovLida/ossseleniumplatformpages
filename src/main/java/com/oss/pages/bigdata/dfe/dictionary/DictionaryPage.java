@@ -14,7 +14,7 @@ public class DictionaryPage extends BaseDfePage {
     private static final Logger log = LoggerFactory.getLogger(DictionaryPage.class);
 
     private static final String TABLE_ID = "dictionariesAppId";
-    private static final String KEY_CELL_ID = "1_keyId";
+    private static final String KEY_CELL_ID = "keyId";
     private static final String ENTRIES_TAB = "Entries";
 
     private final String ADD_NEW_DICTIONARY_LABEL = "Add New Dictionary";
