@@ -6,13 +6,12 @@
  */
 package com.oss.pages.bpm;
 
-import org.openqa.selenium.WebDriver;
-
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.listwidget.EditableList;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
+import org.openqa.selenium.WebDriver;
 
 /**
  * @author Gabriela Kasza
@@ -91,12 +90,12 @@ public class EditMilestoneWizardPage extends BasePage {
     }
     
     private Milestone getMilestoneFromRow(EditableList list, int row) {
-        String name = list.selectRow(row).getAttributeValue(BPM_MILESTONE_NAME);
-        String dueDate = list.selectRow(row).getAttributeValue(BPM_MILESTONE_DUE_DATE);
-        String leadTime = list.selectRow(row).getAttributeValue(BPM_MILESTONE_LEAD_TIME);
-        String description = list.selectRow(row).getAttributeValue(BPM_MILESTONE_DESCRIPTION);
-        String relatedTask = list.selectRow(row).getAttributeValue(BPM_MILESTONE_RELATED_TASK);
-        String isManualCompletion = list.selectRow(row).getAttributeValue(BPM_MILESTONE_IS_MANUAL_COMPLETION);
+        String name = list.getRow(row).getAttributeValue(BPM_MILESTONE_NAME);
+        String dueDate = list.getRow(row).getAttributeValue(BPM_MILESTONE_DUE_DATE);
+        String leadTime = list.getRow(row).getAttributeValue(BPM_MILESTONE_LEAD_TIME);
+        String description = list.getRow(row).getAttributeValue(BPM_MILESTONE_DESCRIPTION);
+        String relatedTask = list.getRow(row).getAttributeValue(BPM_MILESTONE_RELATED_TASK);
+        String isManualCompletion = list.getRow(row).getAttributeValue(BPM_MILESTONE_IS_MANUAL_COMPLETION);
         return Milestone.builder().setName(name)
                 .setDueDate(dueDate)
                 .setLeadTime(leadTime)

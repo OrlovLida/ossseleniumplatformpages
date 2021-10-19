@@ -1,23 +1,30 @@
 package com.oss.pages.faultmanagement;
 
 import com.oss.framework.components.inputs.Button;
+import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
 import com.oss.framework.widgets.tablewidget.FMSMTable;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+/**
+ * @author Bartosz Nowak
+ */
 public class WAMVPage extends BasePage {
-    private static final Logger log = LoggerFactory.getLogger(FMDashboardPage.class);
-    private static final String TABLE_WIDGET_ID = "_AREA2AlarmListTable";
+    private static final String TABLE_AREA2_WIDGET_ID = "_AREA2AlarmListTable";
     private static final String BUTTON_ACK_TEST_ID = "Acknowledge";
     private static final String BUTTON_DEACK_TEST_ID = "Deacknowledge";
     private static final String BUTTON_NOTE_TEST_ID = "Edit Note";
-    private static final String ACK_COLUMN_ID = "cell-row-col-acknowledge";
+    private static final String ACKNOWLEDGE_COLUMN_ID = "cell-row-col-acknowledge";
+    private static final String NOTIFICATION_IDENTIFIER_COLUMN_ID = "cell-row-col-notificationIdentifier";
     private static final String NOTE_COLUMN_ID = "cell-row-col-note";
+    private static final String ADDITIONAL_TEXT_TAB_ID = "tab__AREA3AdditionalTextTab";
+    private static final String ALARM_DETAILS_TAB_ID = "tab__AREA3AlarmDetailsTab";
+    private static final String SAME_MO_DETAILS_TAB_ID = "tab__AREA3SameMODetailsTab";
+    private static final String SAME_MO_ALARMS_TAB_ID = "tab__AREA3SameMOAlarmsTab";
+    private static final String SAME_MO_ALARMS_TABLE_ID = "_AREA3SameMOAlarms";
 
     public WAMVPage(WebDriver driver) {
         super(driver);
@@ -34,9 +41,14 @@ public class WAMVPage extends BasePage {
         return new WAMVPage(driver, wait);
     }
 
-    @Step("I create an IaaTable")
-    private FMSMTable createIaaTableElement() {
-        return FMSMTable.createById(driver, wait, TABLE_WIDGET_ID);
+    @Step("I create an FMSMTable")
+    private FMSMTable createArea2Table() {
+        return FMSMTable.createById(driver, wait, TABLE_AREA2_WIDGET_ID);
+    }
+
+    @Step("I create an FMSMTable")
+    private FMSMTable createSameMOAlarmsTable() {
+        return FMSMTable.createById(driver, wait, SAME_MO_ALARMS_TABLE_ID);
     }
 
     @Step("I create an button")
@@ -45,8 +57,8 @@ public class WAMVPage extends BasePage {
     }
 
     @Step("I choose a selected row from a list")
-    public void selectSpecificRow(int row) { // zakładam numerowanie od zera
-        createIaaTableElement().selectRow(row);
+    public void selectSpecificRow(int row) {
+        createArea2Table().selectRow(row);
     }
 
     @Step("I click on acknowledge button")
@@ -66,14 +78,55 @@ public class WAMVPage extends BasePage {
         editNote.typeNote(note);
     }
 
-    @Step("I return a cell text from ack. status column")
+    @Step("I return a cell text from acknowledge state column")
     public String getTitleFromAckStatusCell(int row) {
-        return createIaaTableElement().getCellValueById(row, ACK_COLUMN_ID);
+        return createArea2Table().getCellValueById(row, ACKNOWLEDGE_COLUMN_ID);
     }
 
-    @Step("I return a cell text from ack. status column")
+    @Step("I return a cell text from notification identifier column")
+    public String getTextFromNotificationIdentifierCell(int row) {
+        return createArea2Table().getCellValueById(row, NOTIFICATION_IDENTIFIER_COLUMN_ID);
+    }
+
+    @Step("I return a cell text from note column")
     public String getTextFromNoteStatusCell(int row) {
-        return createIaaTableElement().getCellValueById(row, NOTE_COLUMN_ID);
+        return createArea2Table().getCellValueById(row, NOTE_COLUMN_ID);
     }
 
+    @Step("I click on Additional Text tab")
+    public void clickOnAdditionalTextTab() {
+        createButton(ADDITIONAL_TEXT_TAB_ID).click();
+    }
+
+    @Step("I click on Alarm Details tab")
+    public void clickOnAlarmDetailsTab() {
+        createButton(ALARM_DETAILS_TAB_ID).click();
+    }
+
+    @Step("I click on Same MO Details tab")
+    public void clickOnSameMODetailsTab() {
+        createButton(SAME_MO_DETAILS_TAB_ID).click();
+    }
+
+    @Step("I click on Same MO Details tab")
+    public void clickOnSameMOAlarmsTab() {
+        createButton(SAME_MO_ALARMS_TAB_ID).click();
+    }
+
+    @Step("I get adapter name from Alarms Details Tab")
+    public String getAdapterNameValueFromAlarmDetailsTab() {
+        OldPropertyPanel propertyPanel = OldPropertyPanel.create(driver, wait);
+        return propertyPanel.getPropertyValue("Adapter Name");
+    }
+
+    @Step("I get notification identifier from Alarms Details Tab")
+    public String getNotificationIdentifierValueFromAlarmDetailsTab() {
+        OldPropertyPanel propertyPanel = OldPropertyPanel.create(driver, wait);
+        return propertyPanel.getPropertyValue("Notification Identifier");
+    }
+
+    @Step("I check if Same MO Alarms Table is visible")
+    public boolean checkVisibilityOfSameMOAlarmsTable() {
+        return driver.getPageSource().contains(SAME_MO_ALARMS_TABLE_ID);
+    }
 }
