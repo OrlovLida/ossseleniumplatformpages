@@ -264,9 +264,9 @@ public class IndicatorsViewTest extends BaseTestCase {
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
-    @Test(priority = 8, testName = "Clicking link to chart from chart actions", description = "Clicking link to chart from chart actions")
+    @Test(priority = 10, testName = "Clicking link to chart from chart actions", description = "Clicking link to chart from chart actions")
     @Description("Clicking link to chart from chart actions")
-    public void CheckLinkToIndicatorsView(
+    public void checkLinkToIndicatorsView(
             @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
             @Optional("AQ_TIME") String indicatorNodesToSelect,
             @Optional() String dimensionNodesToExpand,
@@ -291,9 +291,9 @@ public class IndicatorsViewTest extends BaseTestCase {
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
-    @Test(priority = 9, testName = "Sharing view", description = "Sharing view by created link")
+    @Test(priority = 11, testName = "Sharing view", description = "Sharing view by created link")
     @Description("Sharing view by created link")
-    public void SharePanelTest(
+    public void sharePanelTest(
             @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
             @Optional("AQ_TIME") String indicatorNodesToSelect,
             @Optional() String dimensionNodesToExpand,
@@ -311,6 +311,33 @@ public class IndicatorsViewTest extends BaseTestCase {
             Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
             Assert.assertTrue(kpiViewPage.isNodeInTreeSelected(indicatorNodesToSelect, INDICATORS_TREE_ID));
             Assert.assertTrue(kpiViewPage.isNodeInTreeSelected(dimensionNodesToSelect, DIMENSIONS_TREE_ID));
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            Assert.fail();
+        }
+    }
+
+
+    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
+    @Test(priority = 12, testName = "child Objects", description = "display series for child objects")
+    @Description("display series for child objects")
+    public void childObjectTest(
+            @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
+            @Optional("DBTIME") String indicatorNodesToSelect,
+            @Optional() String dimensionNodesToExpand,
+            @Optional("DC Type: THRES_DC") String dimensionNodesToSelect,
+            @Optional("Data Collection Statistics") String filterName
+    ) {
+        try {
+            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+
+            Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+
+            kpiViewPage.clickDimensionOptions(dimensionNodesToExpand);
+            kpiViewPage.fillLevelOfChildObjects("1");
+            kpiViewPage.applyChanges();
+
+            Assert.assertTrue(kpiViewPage.shouldSeeMoreThanOneCurveDisplayed());
         } catch (Exception e) {
             log.error(e.getMessage());
             Assert.fail();
