@@ -5,4 +5,9 @@
             <class name="com.oss.faultmanagement.WAMVBasicTest"/>
         </classes>
     </test>
+    <test name="FilterManagerTest">
+        <classes>
+            <class name="com.oss.faultmanagement.FilterManagerTest"/>
+        </classes>
+    </test>
 </suite>
