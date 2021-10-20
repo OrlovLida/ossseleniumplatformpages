@@ -5,6 +5,11 @@
             <class name="com.oss.servicedesk.CreateTroubleTicketTestVFNZ"/>
         </classes>
     </test>
+    <test name="TicketSearchViewTestVFNZ">
+        <classes>
+            <class name="com.oss.servicedesk.TicketSearchViewTestVFNZ"/>
+        </classes>
+    </test>
     <test name="TicketDetailsViewTestVFNZ">
         <classes>
             <class name="com.oss.servicedesk.TicketDetailsViewTestVFNZ"/>

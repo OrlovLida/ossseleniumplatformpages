@@ -25,7 +25,7 @@ public class CreateTroubleTicketTestVFNZ extends BaseTestCase {
 
     private final static String MO_IDENTIFIER = "CFS_SOM_01_901";
     private final static String TT_ASSIGNEE = "ca_kodrobinska";
-    private final static String TT_DESCRIPTION = "TestSelenium";
+    public final static String TT_DESCRIPTION = "TestSelenium";
     private final static String TT_DESCRIPTION_EDITED = "TestSelenium_edited";
     private final static String TT_NEW_ASSIGNEE = "admin oss";
     private final static String TT_CORRELATION_ID = "12345";
@@ -69,24 +69,7 @@ public class CreateTroubleTicketTestVFNZ extends BaseTestCase {
         Assert.assertEquals(ticketDashboardPage.getAssigneeForNthTicketInTTTable(0), TT_ASSIGNEE);
     }
 
-    @Test(priority = 2, testName = "Open Ticket Details from Tickets Search view", description = "Open Ticket Details from Tickets Search view")
-    @Description("Open Ticket Details from Tickets Search view")
-    public void openTicketDetailsFromTicketsSearchView() {
-        ticketSearchPage = new TicketSearchPage(driver);
-        ticketSearchPage = ticketSearchPage.goToPage(driver, BASIC_URL);
-        ticketSearchPage.clickFilterButton();
-        ticketSearchPage.filterByTextField(TicketSearchPage.ASSIGNEE_ATTRIBUTE, TT_ASSIGNEE);
-        String date = LocalDateTime.now().minusMinutes(120).format(CREATE_DATE_FILTER_DATE_FORMATTER);
-        ticketSearchPage.clickFilterButton();
-        ticketSearchPage.filterByTextField(TicketSearchPage.CREATION_TIME_ATTRIBUTE, date);
-        ticketSearchPage.clickFilterButton();
-        ticketSearchPage.filterByTextField(TicketSearchPage.DESCRIPTION_ATTRIBUTE, TT_DESCRIPTION);
-        ticketSearchPage.clickFilterButton();
-        ticketSearchPage.filterByComboBox(TicketSearchPage.STATUS_ATTRIBUTE, "New");
-        ticketDetailsPage = ticketSearchPage.openTicketDetailsView("0", BASIC_URL);
-    }
-
-    @Test(priority = 3, testName = "Edit Ticket Details", description = "Edit Ticket Details")
+    @Test(priority = 2, testName = "Edit Ticket Details", description = "Edit Ticket Details")
     @Description("Edit Ticket Details")
     public void editTicketDetails() {
         ticketDetailsPage = ticketDashboardPage.openTicketDetailsView("0", BASIC_URL);
