@@ -6,12 +6,12 @@ import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.Assert;
 import org.testng.annotations.*;
 
 import java.util.Collections;
 
 import static com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.*;
+import static org.testng.Assert.*;
 
 @Listeners({TestListener.class})
 public class IndicatorsViewTest extends BaseTestCase {
@@ -48,17 +48,17 @@ public class IndicatorsViewTest extends BaseTestCase {
     ) {
         try {
             kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
-            Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
             kpiViewPage.clickLegend();
-            Assert.assertTrue(kpiViewPage.shouldSeeDataSeriesLineWidth(HIGHLIGHTED_DATA_SERIES_WIDTH));
+            assertTrue(kpiViewPage.shouldSeeDataSeriesLineWidth(HIGHLIGHTED_DATA_SERIES_WIDTH));
             kpiViewPage.clickLegend();
-            Assert.assertTrue(kpiViewPage.shouldNotSeeHiddenLine(HIDDEN_DATA_SERIES_VISIBILITY));
+            assertTrue(kpiViewPage.shouldNotSeeHiddenLine(HIDDEN_DATA_SERIES_VISIBILITY));
             kpiViewPage.clickLegend();
-            Assert.assertTrue(kpiViewPage.shouldSeeDataSeriesLineWidth(NORMAL_DATA_SERIES_WIDTH));
+            assertTrue(kpiViewPage.shouldSeeDataSeriesLineWidth(NORMAL_DATA_SERIES_WIDTH));
             kpiViewPage.exportChart();
         } catch (Exception e) {
             log.error(e.getMessage());
-            Assert.fail();
+            fail();
         }
     }
 
@@ -74,18 +74,18 @@ public class IndicatorsViewTest extends BaseTestCase {
     ) {
         try {
             kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
-            Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
             kpiViewPage.clickAreaChartType();
-            Assert.assertTrue(kpiViewPage.shouldSeeAreaChart(AREA_CHART_FILL_OPACITY));
+            assertTrue(kpiViewPage.shouldSeeAreaChart(AREA_CHART_FILL_OPACITY));
             kpiViewPage.clickBarChartType();
-            Assert.assertTrue(kpiViewPage.shouldSeeBarChart(BAR_CHART_FILL_OPACITY));
+            assertTrue(kpiViewPage.shouldSeeBarChart(BAR_CHART_FILL_OPACITY));
             kpiViewPage.clickLineChartType();
-            Assert.assertTrue(kpiViewPage.shouldSeeAreaChart(LINE_CHART_FILL_OPACITY));
+            assertTrue(kpiViewPage.shouldSeeAreaChart(LINE_CHART_FILL_OPACITY));
             kpiViewPage.chooseDataSeriesColor();
-            Assert.assertTrue(kpiViewPage.shouldSeeColorChart(FIRST_CHART_COLOR));
+            assertTrue(kpiViewPage.shouldSeeColorChart(FIRST_CHART_COLOR));
         } catch (Exception e) {
             log.error(e.getMessage());
-            Assert.fail();
+            fail();
         }
     }
 
@@ -108,10 +108,10 @@ public class IndicatorsViewTest extends BaseTestCase {
             kpiViewPage.chooseLatestOptionInTimePeriodChooser();
             kpiViewPage.applyChanges();
             kpiViewPage.clickLegend();
-            Assert.assertTrue(kpiViewPage.shouldSeePointsDisplayed(1));
+            assertTrue(kpiViewPage.shouldSeePointsDisplayed(1));
         } catch (Exception e) {
             log.error(e.getMessage());
-            Assert.fail();
+            fail();
         }
     }
 
@@ -129,12 +129,12 @@ public class IndicatorsViewTest extends BaseTestCase {
             kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
             kpiViewPage.chooseSumAggregationMethod();
             kpiViewPage.applyChanges();
-            Assert.assertTrue(kpiViewPage.shouldSeeVisibleYaxis(2));
+            assertTrue(kpiViewPage.shouldSeeVisibleYaxis(2));
             kpiViewPage.chooseManualYaxis();
-            Assert.assertTrue(kpiViewPage.shouldSeeVisibleYaxis(1));
+            assertTrue(kpiViewPage.shouldSeeVisibleYaxis(1));
         } catch (Exception e) {
             log.error(e.getMessage());
-            Assert.fail();
+            fail();
         }
     }
 
@@ -152,13 +152,13 @@ public class IndicatorsViewTest extends BaseTestCase {
             kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
             kpiViewPage.enableDataCompleteness();
             kpiViewPage.applyChanges();
-            Assert.assertTrue(kpiViewPage.shouldSeeDataCompleteness());
+            assertTrue(kpiViewPage.shouldSeeDataCompleteness());
             kpiViewPage.enableLastSampleTime();
-            Assert.assertTrue(kpiViewPage.shouldSeeLastSampleTime(1));
+            assertTrue(kpiViewPage.shouldSeeLastSampleTime(1));
             kpiViewPage.applyChanges();
         } catch (Exception e) {
             log.error(e.getMessage());
-            Assert.fail();
+            fail();
         }
     }
 
@@ -175,14 +175,14 @@ public class IndicatorsViewTest extends BaseTestCase {
         try {
             kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
 
-            Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
             kpiViewPage.enableCompareWithOtherPeriod();
             kpiViewPage.applyChanges();
-            Assert.assertTrue(kpiViewPage.shouldSeeOtherPeriod());
-            Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(2));
+            assertTrue(kpiViewPage.shouldSeeOtherPeriod());
+            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(2));
         } catch (Exception e) {
             log.error(e.getMessage());
-            Assert.fail();
+            fail();
         }
     }
 
@@ -198,7 +198,7 @@ public class IndicatorsViewTest extends BaseTestCase {
     ) {
         try {
             kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
-            Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
             kpiViewPage.maximizeDataView();
             kpiViewPage.shouldSeeOnlyDataViewDisplayed();
             kpiViewPage.minimizeDataView();
@@ -208,14 +208,14 @@ public class IndicatorsViewTest extends BaseTestCase {
             kpiViewPage.minimizeDimensionsPanel();
         } catch (Exception e) {
             log.error(e.getMessage());
-            Assert.fail();
+            fail();
         }
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
     @Test(priority = 8, testName = "Verifying changing layout option", description = "Verifying changing layout option")
     @Description("I verify if changing layout option works properly")
-    public void ChangingChartLayoutOption(
+    public void changingChartLayoutOption(
             @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
             @Optional("AQ_TIME") String indicatorNodesToSelect,
             @Optional() String dimensionNodesToExpand,
@@ -224,24 +224,24 @@ public class IndicatorsViewTest extends BaseTestCase {
     ) {
         try {
             kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
-            Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
             kpiViewPage.changeLayout(LAYOUT_1x1);
-            Assert.assertTrue(kpiViewPage.layoutButtonStatus(LAYOUT_1x1).equals(LAYOUT_EXPECTED_STATUS));
+            assertEquals(kpiViewPage.layoutButtonStatus(LAYOUT_1x1), LAYOUT_EXPECTED_STATUS);
             kpiViewPage.changeLayout(LAYOUT_2x1);
-            Assert.assertTrue(kpiViewPage.layoutButtonStatus(LAYOUT_2x1).equals(LAYOUT_EXPECTED_STATUS));
+            assertEquals(kpiViewPage.layoutButtonStatus(LAYOUT_2x1), LAYOUT_EXPECTED_STATUS);
             kpiViewPage.changeLayout(LAYOUT_2x2);
-            Assert.assertTrue(kpiViewPage.layoutButtonStatus(LAYOUT_2x2).equals(LAYOUT_EXPECTED_STATUS));
+            assertEquals(kpiViewPage.layoutButtonStatus(LAYOUT_2x2), LAYOUT_EXPECTED_STATUS);
             kpiViewPage.changeLayout(LAYOUT_4x4);
-            Assert.assertTrue(kpiViewPage.layoutButtonStatus(LAYOUT_4x4).equals(LAYOUT_EXPECTED_STATUS));
+            assertEquals(kpiViewPage.layoutButtonStatus(LAYOUT_4x4), LAYOUT_EXPECTED_STATUS);
             kpiViewPage.changeLayout(LAYOUT_3x3);
-            Assert.assertTrue(kpiViewPage.layoutButtonStatus(LAYOUT_3x3).equals(LAYOUT_EXPECTED_STATUS));
+            assertEquals(kpiViewPage.layoutButtonStatus(LAYOUT_3x3), LAYOUT_EXPECTED_STATUS);
             kpiViewPage.changeLayout(LAYOUT_3x2);
-            Assert.assertTrue(kpiViewPage.layoutButtonStatus(LAYOUT_3x2).equals(LAYOUT_EXPECTED_STATUS));
+            assertEquals(kpiViewPage.layoutButtonStatus(LAYOUT_3x2), LAYOUT_EXPECTED_STATUS);
             kpiViewPage.changeLayout(LAYOUT_AUTO);
-            Assert.assertTrue(kpiViewPage.layoutButtonStatus(LAYOUT_AUTO).equals(LAYOUT_EXPECTED_STATUS));
+            assertEquals(kpiViewPage.layoutButtonStatus(LAYOUT_AUTO), LAYOUT_EXPECTED_STATUS);
         } catch (Exception e) {
             log.error(e.getMessage());
-            Assert.fail();
+            fail();
         }
     }
 
@@ -258,9 +258,9 @@ public class IndicatorsViewTest extends BaseTestCase {
         kpiViewPage.searchInToolbarPanel(dimension, DIMENSIONS_TREE_ID);
         kpiViewPage.applyChanges();
 
-        Assert.assertTrue(kpiViewPage.isNodeInTreeSelected(indicator, INDICATORS_TREE_ID));
-        Assert.assertTrue(kpiViewPage.isNodeInTreeSelected(dimension, DIMENSIONS_TREE_ID));
-        Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+        assertTrue(kpiViewPage.isNodeInTreeSelected(indicator, INDICATORS_TREE_ID));
+        assertTrue(kpiViewPage.isNodeInTreeSelected(dimension, DIMENSIONS_TREE_ID));
+        assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
@@ -276,17 +276,17 @@ public class IndicatorsViewTest extends BaseTestCase {
         try {
             kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
 
-            Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
             String activeAggMethod = kpiViewPage.activeAggMethod();
 
             kpiViewPage.clickLinkToChart();
 
-            Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
-            Assert.assertTrue(kpiViewPage.isNodeInTreeSelected("AQ_TIME 1h " + activeAggMethod, INDICATORS_TREE_ID));
-            Assert.assertTrue(kpiViewPage.isNodeInTreeSelected(dimensionNodesToSelect, DIMENSIONS_TREE_ID));
+            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+            assertTrue(kpiViewPage.isNodeInTreeSelected("AQ_TIME 1h " + activeAggMethod, INDICATORS_TREE_ID));
+            assertTrue(kpiViewPage.isNodeInTreeSelected(dimensionNodesToSelect, DIMENSIONS_TREE_ID));
         } catch (Exception e) {
             log.error(e.getMessage());
-            Assert.fail();
+            fail();
         }
     }
 
@@ -303,24 +303,24 @@ public class IndicatorsViewTest extends BaseTestCase {
         try {
             kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
 
-            Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
 
             kpiViewPage.clickShare();
             kpiViewPage.goToLink();
 
-            Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
-            Assert.assertTrue(kpiViewPage.isNodeInTreeSelected(indicatorNodesToSelect, INDICATORS_TREE_ID));
-            Assert.assertTrue(kpiViewPage.isNodeInTreeSelected(dimensionNodesToSelect, DIMENSIONS_TREE_ID));
+            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+            assertTrue(kpiViewPage.isNodeInTreeSelected(indicatorNodesToSelect, INDICATORS_TREE_ID));
+            assertTrue(kpiViewPage.isNodeInTreeSelected(dimensionNodesToSelect, DIMENSIONS_TREE_ID));
         } catch (Exception e) {
             log.error(e.getMessage());
-            Assert.fail();
+            fail();
         }
     }
 
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
-    @Test(priority = 12, testName = "child Objects", description = "display series for child objects")
-    @Description("display series for child objects")
+    @Test(priority = 12, testName = "Display Child Objects", description = "Display series for child objects")
+    @Description("Display series for child objects")
     public void childObjectTest(
             @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
             @Optional("DBTIME") String indicatorNodesToSelect,
@@ -331,16 +331,16 @@ public class IndicatorsViewTest extends BaseTestCase {
         try {
             kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
 
-            Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
 
             kpiViewPage.clickDimensionOptions(dimensionNodesToExpand);
             kpiViewPage.fillLevelOfChildObjects("1");
             kpiViewPage.applyChanges();
 
-            Assert.assertTrue(kpiViewPage.shouldSeeMoreThanOneCurveDisplayed());
+            assertTrue(kpiViewPage.shouldSeeMoreThanOneCurveDisplayed());
         } catch (Exception e) {
             log.error(e.getMessage());
-            Assert.fail();
+            fail();
         }
     }
 }

@@ -32,7 +32,9 @@ public class ThresholdSmokeTest extends BaseTestCase {
             boolean ifRunsFresh = thresholdPage.IsIfRunsFresh();
             Assert.assertTrue(ifRunsFresh);
 
-            Assert.assertEquals(thresholdPage.checkStatus(), "Success");
+            String actualStatus = thresholdPage.checkStatus();
+            boolean statusIsAcceptable = actualStatus.equals("Success") || actualStatus.equals("Warning");
+            Assert.assertTrue(statusIsAcceptable);
         } else {
             log.info("Cannot find existing Threshold {}", THRESHOLD_NAME);
             Assert.fail("Cannot find existing Threshold " + THRESHOLD_NAME);
