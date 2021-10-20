@@ -5,8 +5,10 @@ import com.oss.framework.components.inputs.Combobox;
 import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.data.Data;
 import com.oss.framework.listwidget.CommonList;
+import com.oss.framework.listwidget.iaa.ListApp;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.view.Card;
+import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tabswidget.TabWindowWidget;
 import com.oss.pages.BasePage;
 import com.oss.pages.servicedesk.ticket.wizard.WizardPage;
@@ -14,6 +16,8 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 public class TicketDetailsPage extends BasePage {
 
@@ -28,6 +32,8 @@ public class TicketDetailsPage extends BasePage {
     private static final String SKIP_BUTTON_LABEL = "SKIP";
     private static final String EXTERNAL_LIST_ID = "_detailsExternalsListApp";
     private static final String EXTERNAL_INFO_LABEL = "External Info";
+    private static final String DICTIONARIES_TABLE_ID = "_dictionariesTableId";
+    private static final String DICTIONARY_VALUE_TABLE_LABEL = "Dictionary Value";
 
     public TicketDetailsPage(WebDriver driver) {
         super(driver);
@@ -54,10 +60,10 @@ public class TicketDetailsPage extends BasePage {
         log.info("Clicking Context action {}", contextActionLabel);
     }
 
-    public void selectTab(WebDriver driver, String tabLabel) {
+    public void selectTab(WebDriver driver, String tabAriaControls) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        TabWindowWidget.create(driver, wait).selectTabByLabel(tabLabel);
-        log.info("Selecting tab {}", tabLabel);
+        TabWindowWidget.create(driver, wait).selectTabById(tabAriaControls);
+        log.info("Selecting tab {}", tabAriaControls);
     }
 
     @Step("I open create subticket wizard for flow {flowType}")
@@ -100,4 +106,25 @@ public class TicketDetailsPage extends BasePage {
             return false;
         }
     }
+
+    public String checkExistingDictionary() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return OldTable.createByComponentId(driver, wait, DICTIONARIES_TABLE_ID).getCellValue(0, DICTIONARY_VALUE_TABLE_LABEL);
+    }
+
+    public boolean checkDisplayedText(String expectedText, String windowId) {
+        List<String> text = ListApp.createFromParent(driver, wait, windowId).getValue();
+        if (text.contains(expectedText)) {
+            log.debug("Expected text {} is displayed", expectedText);
+            return true;
+        } else {
+            log.debug("Expected text {} is not displayed", expectedText);
+            return false;
+        }
+    }
+
+    public void createNewNotificationOnMessagesTab(){
+        ListApp.createFromParent(driver,wait,"_tablesWindow").clickCreateNewNotification();
+    }
+
 }

@@ -70,10 +70,23 @@ public class WizardPage extends BaseSDPage {
         log.info("Value {} inserted to searchfield", text);
     }
 
+    @Step("I insert {text} to multi search component with id {componentId}")
+    public void insertValueToMultiSearchComponent(String text, String componentId) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getWizard().getComponent(componentId, Input.ComponentType.MULTI_SEARCH_FIELD).setValueContains(Data.createSingleData(text));
+        log.info("Value {} inserted to multi searchfield", text);
+    }
+
     @Step("I insert {text} to text component with id {componentId}")
     public void insertValueToTextComponent(String text, String componentId) {
         insertValueToComponent(text, componentId, Input.ComponentType.TEXT_FIELD);
         log.info("Value {} inserted to textfield", text);
+    }
+
+    @Step("I insert {text} to text area component with id {componentId}")
+    public void insertValueToTextAreaComponent(String text, String componentId) {
+        insertValueToComponent(text, componentId, Input.ComponentType.TEXT_AREA);
+        log.info("Value {} inserted to textarea", text);
     }
 
     @Step("I insert {description} to Incident Description field")
@@ -82,6 +95,11 @@ public class WizardPage extends BaseSDPage {
         HtmlEditor htmlEditor = HtmlEditor.create(driver, wait, INCIDENT_DESCRIPTION_ID);
         htmlEditor.setValue(Data.createSingleData(description));
         log.info("Incident description: {} is entered", description);
+    }
+
+    public void clickComboBox(String componentId){
+        getWizard().getComponent(componentId, Input.ComponentType.COMBOBOX).click();
+        log.info("Clicking {} combobox", componentId);
     }
 
     private void insertValueToComponent(String text, String componentId, Input.ComponentType componentType) {

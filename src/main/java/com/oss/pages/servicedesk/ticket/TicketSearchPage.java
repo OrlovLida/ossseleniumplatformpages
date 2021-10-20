@@ -36,20 +36,21 @@ public class TicketSearchPage extends BaseSDPage {
     public TicketSearchPage goToPage(WebDriver driver, String basicURL) {
         DelayUtils.waitForPageToLoad(driver, wait);
         openPage(driver, String.format(VIEWS_URL_PATTERN, basicURL, TICKET_SEARCH));
+        DelayUtils.sleep(5000);
         log.info("Ticket Search View is opened");
         return new TicketSearchPage(driver);
     }
 
     @Step("I filter tickets by text attribute {attributeName} set to {attributeValue}")
-    public Boolean filterByTextField(String attributeName, String attributeValue) {
+    public void filterByTextField(String attributeName, String attributeValue) {
         log.info("Filtering tickets by text attribute {} set to {}", attributeName, attributeValue);
-        return filterBy(attributeName, attributeValue, Input.ComponentType.TEXT_FIELD);
+        filterBy(attributeName, attributeValue, Input.ComponentType.TEXT_FIELD);
     }
 
     @Step("I filter tickets by combo-box attribute {attributeName} set to {attributeValue}")
-    public Boolean filterByComboBox(String attributeName, String attributeValue) {
+    public void filterByComboBox(String attributeName, String attributeValue) {
         log.info("Filtering tickets by combo-box attribute {} set to {}", attributeName, attributeValue);
-        return filterBy(attributeName, attributeValue, Input.ComponentType.COMBOBOXV2);
+        filterBy(attributeName, attributeValue, Input.ComponentType.COMBOBOXV2);
     }
 
     @Step("I open details view for {rowIndex} ticket in Ticket table")
@@ -86,18 +87,15 @@ public class TicketSearchPage extends BaseSDPage {
         return TableWidget.createById(driver, tableWidgetId, wait);
     }
 
-    public Boolean filterBy(String attributeName, String attributeValue, Input.ComponentType componentType) {
+    public void filterBy(String attributeName, String attributeValue, Input.ComponentType componentType) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        TableWidget table = getTicketTable();
-        table.searchByAttribute(attributeName, componentType, attributeValue);
-        DelayUtils.waitForPageToLoad(driver, wait);
-        int numberOfRowsInTable = table.getRowsNumber();
-        return numberOfRowsInTable == 1;
+        getTicketTable().searchByAttribute(attributeName, componentType, attributeValue);
     }
 
     public void clickFilterButton() {
         DelayUtils.waitForPageToLoad(driver, wait);
         Button filterButton = Button.createByIcon(driver, "fa fa-filter", FILTER_BUTTON_CLASS);
+        log.info("Clicking filter button");
         filterButton.click();
     }
 }
