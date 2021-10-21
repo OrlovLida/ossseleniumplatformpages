@@ -48,7 +48,7 @@ public class TicketDetailsViewTestVFNZ extends BaseTestCase {
     public void goToTicketDetailsPage() {
         ticketDashboardPage = TicketDashboardPage.goToPage(driver, BASIC_URL);
         //TODO do zmiany na przejście z Ticket Search Page -> Details, gdy będą tam pojawiać się aktualne tickety - wyszukać po assignee - znaleźć stworzony TT na potrzeby Selenium
-        ticketDetailsPage = ticketDashboardPage.openTicketDetailsView("14", BASIC_URL);
+        ticketDetailsPage = ticketDashboardPage.openTicketDetailsView("0", BASIC_URL);
     }
 
     @Test(priority = 1, testName = "Add external to ticket", description = "Add external to ticket")
