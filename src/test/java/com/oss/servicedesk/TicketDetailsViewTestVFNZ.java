@@ -11,7 +11,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
-import static com.oss.servicedesk.CreateTroubleTicketTestVFNZ.TT_DESCRIPTION;
+import static com.oss.servicedesk.CreateTroubleTicketTestVFNZ.TT_DESCRIPTION_EDITED;
 
 @Listeners({TestListener.class})
 public class TicketDetailsViewTestVFNZ extends BaseTestCase {
@@ -48,7 +48,7 @@ public class TicketDetailsViewTestVFNZ extends BaseTestCase {
     public void goToTicketDetailsPage() {
         ticketDashboardPage = TicketDashboardPage.goToPage(driver, BASIC_URL);
         //TODO do zmiany na przejście z Ticket Search Page -> Details, gdy będą tam pojawiać się aktualne tickety - wyszukać po assignee - znaleźć stworzony TT na potrzeby Selenium
-        ticketDetailsPage = ticketDashboardPage.openTicketDetailsView("0", BASIC_URL);
+        ticketDetailsPage = ticketDashboardPage.openTicketDetailsView("14", BASIC_URL);
     }
 
     @Test(priority = 1, testName = "Add external to ticket", description = "Add external to ticket")
@@ -78,7 +78,7 @@ public class TicketDetailsViewTestVFNZ extends BaseTestCase {
     @Description("Check Description Tab")
     public void checkDescriptionTab() {
         ticketDetailsPage.selectTab(driver, DESCRIPTION_TAB_ARIA_CONTROLS);
-        Assert.assertTrue(ticketDetailsPage.checkDisplayedText(TT_DESCRIPTION, TABLES_WINDOW_ID));
+        Assert.assertTrue(ticketDetailsPage.checkDisplayedText(TT_DESCRIPTION_EDITED, TABLES_WINDOW_ID));
     }
 
     @Test(priority = 4, testName = "Check Messages Tab - add Notification", description = "Check Messages Tab - add Notification")

@@ -26,7 +26,7 @@ public class CreateTroubleTicketTestVFNZ extends BaseTestCase {
     private final static String MO_IDENTIFIER = "CFS_SOM_01_901";
     private final static String TT_ASSIGNEE = "ca_kodrobinska";
     public final static String TT_DESCRIPTION = "TestSelenium";
-    private final static String TT_DESCRIPTION_EDITED = "TestSelenium_edited";
+    public final static String TT_DESCRIPTION_EDITED = "TestSelenium_edited";
     private final static String TT_NEW_ASSIGNEE = "admin oss";
     private final static String TT_CORRELATION_ID = "12345";
     private final static String TT_REFERENCE_ID = "12345";
