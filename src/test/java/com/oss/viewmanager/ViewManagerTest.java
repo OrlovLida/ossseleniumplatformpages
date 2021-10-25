@@ -43,8 +43,9 @@ public class ViewManagerTest extends BaseTestCase {
 
     @Test(priority = 2)
     public void changeCategoryNameAndDescription() {
-        viewManagerPage.enterEditionOfCategory();
+        viewManagerPage.clearSearchField();
         DelayUtils.sleep(1000);
+        viewManagerPage.enterEditionOfCategory("Test Category");
         CategoryWizard editCategoryWizard = viewManagerPage.goToCategoryPopup();
         editCategoryWizard.deleteNameValue();
         editCategoryWizard.setNameValue("Name after edition");
@@ -63,8 +64,9 @@ public class ViewManagerTest extends BaseTestCase {
 
     @Test(priority = 3)
     public void addApplicationInCategory() {
-        viewManagerPage.enterAddApplicationButtonInFirstMainCategory();
+        viewManagerPage.clearSearchField();
         DelayUtils.sleep(1000);
+        viewManagerPage.enterAddApplicationInMainCategory("Name after edition");
         ApplicationWizard addApplicationWizard = viewManagerPage.goToApplicationPopup();
         addApplicationWizard.setApplication("Legacy left menu:Views:GIS View");
         addApplicationWizard.setApplicationName("GIS");
@@ -73,7 +75,7 @@ public class ViewManagerTest extends BaseTestCase {
 
         DelayUtils.sleep(2000);
 
-        viewManagerPage.rolloutFirstCategory();
+        viewManagerPage.expandCategory("Name after edition");
         DelayUtils.sleep(2500);
         Assert.assertTrue(driver.findElement(By.xpath("//*[text()='GIS']")).isDisplayed());
     }
@@ -81,7 +83,7 @@ public class ViewManagerTest extends BaseTestCase {
     @Test(priority = 4)
     public void editApplication() {
         DelayUtils.sleep(200);
-        viewManagerPage.clickButtonsGroupOnFirstApplication();
+        viewManagerPage.clickApplicationGroupButton("GIS");
         DelayUtils.sleep(300);
         viewManagerPage.clickEditButton();
         ApplicationWizard editApplicationWizard = viewManagerPage.goToApplicationPopup();
@@ -98,8 +100,7 @@ public class ViewManagerTest extends BaseTestCase {
 
     @Test(priority = 5)
     public void addSecondApplication() {
-        viewManagerPage.enterAddApplicationButtonInFirstMainCategory();
-        DelayUtils.sleep(200);
+        viewManagerPage.enterAddApplicationInMainCategory("Name after edition");
         ApplicationWizard addApplicationWizard = viewManagerPage.goToApplicationPopup();
         addApplicationWizard.setApplication("Legacy left menu:Views:GIS View");
         addApplicationWizard.setApplicationName("GIS");
@@ -116,16 +117,16 @@ public class ViewManagerTest extends BaseTestCase {
 
         DelayUtils.sleep(2500);
 
-        String sublocationWizardUrl = viewManagerPage.getApplicationsUrl(0);
-        String gisUrl = viewManagerPage.getApplicationsUrl(1);
+        String sublocationApplicationUrl = viewManagerPage.getApplicationUrl("Sublocation");
+        String gisUrl = viewManagerPage.getApplicationUrl("GIS");
 
         Assert.assertTrue(gisUrl.contains("gis-view"));
-        Assert.assertTrue(sublocationWizardUrl.contains("sublocation/create"));
+        Assert.assertTrue(sublocationApplicationUrl.contains("sublocation/create"));
     }
 
     @Test(priority = 7)
     public void addSubcategory() {
-        viewManagerPage.enterCreateSubcategory();
+        viewManagerPage.enterCreateSubcategoryInMainCategory("Name after edition");
         CategoryWizard subcategoryWizard = viewManagerPage.goToCategoryPopup();
         subcategoryWizard.setNameValue("Test Subcategory");
         subcategoryWizard.setDescriptionValue("Test Subcategory Description");
@@ -137,7 +138,7 @@ public class ViewManagerTest extends BaseTestCase {
 
     @Test(priority = 8)
     public void addApplicationToSubcategory() {
-        viewManagerPage.enterAddApplicationButtonInFirstSubcategory();
+        viewManagerPage.enterAddApplicationButtonInSubcategory("Test Subcategory");
         DelayUtils.sleep(200);
         ApplicationWizard addApplicationWizard = viewManagerPage.goToApplicationPopup();
         addApplicationWizard.setApplication("Create Cable");
@@ -166,14 +167,14 @@ public class ViewManagerTest extends BaseTestCase {
         viewManagerPage.dragAndDropFirstAppToSubcategory();
         DelayUtils.sleep(1000);
 
-        String subLocationWizardUrl = viewManagerPage.getApplicationsUrl(0);
+        String subLocationWizardUrl = viewManagerPage.getApplicationUrl("Sublocation");
 
         Assert.assertTrue(subLocationWizardUrl.contains("sublocation/create"));
     }
 
     @Test(priority = 11)
     public void changePlaceOfTwoSubcategories() {
-        viewManagerPage.enterCreateSubcategory();
+        viewManagerPage.enterCreateSubcategoryInMainCategory("Name after edition");
         CategoryWizard subcategoryWizard = viewManagerPage.goToCategoryPopup();
         subcategoryWizard.setNameValue("Second Subcategory");
         subcategoryWizard.setDescriptionValue("Second Subcategory Description");
@@ -205,13 +206,13 @@ public class ViewManagerTest extends BaseTestCase {
 
         DelayUtils.sleep(2500);
 
-        String subLocationWizardUrl = viewManagerPage.getApplicationsUrl(0);
+        String subLocationWizardUrl = viewManagerPage.getApplicationUrl("Sublocation");
         Assert.assertTrue(subLocationWizardUrl.contains("?testParameter=testValue"));
     }
 
     @Test(priority = 13)
     public void editSubcategory() {
-        viewManagerPage.enterEditSubcategoryButton();
+        viewManagerPage.enterEditSubcategoryButton("Second Subcategory");
         CategoryWizard editSubcategoryWizard = viewManagerPage.goToCategoryPopup();
         editSubcategoryWizard.setNameValue("Subcategory After Edition");
         editSubcategoryWizard.setDescriptionValue("Description After Edition");
@@ -223,8 +224,7 @@ public class ViewManagerTest extends BaseTestCase {
 
     @Test(priority = 14)
     public void deleteApplicationFromSubcategory() {
-        int numberOfGroupButtonForFirstAppInFirstSubcategory = 5;
-        viewManagerPage.clickThreeDotsButton(numberOfGroupButtonForFirstAppInFirstSubcategory);
+        viewManagerPage.clickApplicationGroupButton("Create Cable");
         DelayUtils.sleep(300);
         viewManagerPage.clickDeleteButtonInDropdown();
 
@@ -253,7 +253,7 @@ public class ViewManagerTest extends BaseTestCase {
 
     @Test(priority = 16)
     public void deleteSubcategory() {
-        viewManagerPage.removeFirstSubcategory();
+        viewManagerPage.removeSubcategory("Subcategory After Edition");
         DelayUtils.sleep(1000);
 
         try {
@@ -267,7 +267,7 @@ public class ViewManagerTest extends BaseTestCase {
     public void deleteCategory() {
         DelayUtils.sleep(1000);
 
-        viewManagerPage.deleteFirstCategory();
+        viewManagerPage.deleteTestCategory();
         DelayUtils.sleep(3000);
 
         Assert.assertFalse(driver.findElements(By.xpath("//*[text()='Name after edition']")).size() > 0);
