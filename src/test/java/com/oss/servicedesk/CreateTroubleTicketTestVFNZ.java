@@ -132,7 +132,7 @@ public class CreateTroubleTicketTestVFNZ extends BaseTestCase {
     public void addExternalToTicket() {
         ticketDashboardPage = TicketDashboardPage.goToPage(driver, BASIC_URL);
         //TODO do zmiany na przejście z Ticket Search Page -> Details, gdy będą tam pojawiać się aktualne tickety - wyszukać po assignee - znaleźć stworzony TT na potrzeby Selenium
-        ticketDetailsPage = ticketDashboardPage.openTicketDetailsView("6", BASIC_URL);
+        ticketDetailsPage = ticketDashboardPage.openTicketDetailsView("0", BASIC_URL);
         ticketDetailsPage.selectTab(driver, EXTERNAL_TAB_ARIA_CONTROLS);
         ticketDetailsPage.clickContextAction(ADD_EXTERNAL_LABEL);
         WizardPage wizardPage = new WizardPage(driver);
