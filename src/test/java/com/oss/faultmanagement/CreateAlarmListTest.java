@@ -1,8 +1,6 @@
 package com.oss.faultmanagement;
 
 import com.oss.BaseTestCase;
-import com.oss.bigdata.kpiview.KpiViewTest;
-import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.faultmanagement.FMCreateWAMVPage;
 import com.oss.pages.faultmanagement.FMDashboardPage;
 import com.oss.utils.TestListener;
@@ -20,8 +18,8 @@ import java.util.Date;
  */
 @Listeners({TestListener.class})
 public class CreateAlarmListTest extends BaseTestCase {
-    private static final Logger log = LoggerFactory.getLogger(KpiViewTest.class);
-    private final String date = new SimpleDateFormat("dd-MM-yyyy_HH:mm").format(new Date());
+    private static final String date = new SimpleDateFormat("dd-MM-yyyy_HH:mm").format(new Date());
+    private static final Logger log = LoggerFactory.getLogger(CreateAlarmListTest.class);
 
     private FMDashboardPage fmDashboardPage;
     private FMCreateWAMVPage fmWAMVPage;
@@ -34,18 +32,22 @@ public class CreateAlarmListTest extends BaseTestCase {
     @Parameters({"name", "description", "folderName"})
     @Test(priority = 1, testName = "Create new alarm management view", description = "Set name, description, folder and filter")
     @Description("I verify if it is possible to create Web Alarm Management View")
-    public void createNewWAMV(
+    public void createNewWAMVandDeleteIt(
             @Optional("Selenium_test_alarm_list") String name,
             @Optional("Selenium test description") String description,
-            @Optional("SeleniumTest") String folderName
+            @Optional("Selenium_test_folder") String folderName
     ) {
         try {
             fmWAMVPage = fmDashboardPage.clickCreateNewAlarmList();
-            fmWAMVPage.setName(name + '_' + date);
+            fmWAMVPage.setName(name + '_' + date.replace(":", "_"));
             fmWAMVPage.setDescription(description);
             fmWAMVPage.dragAndDropFilterByName(folderName);
             fmWAMVPage.selectFilterFromList(1);
             fmWAMVPage.clickAcceptButton();
+            Assert.assertTrue(fmDashboardPage.checkVisibilityOfWAMV(name + '_' + date.replace(":", "_")));
+            fmDashboardPage.searchInAlarmManagementView(name + '_' + date.replace(":", "_"));
+            fmDashboardPage.deleteWebAlarmManagementView(0);
+            Assert.assertFalse(fmDashboardPage.checkVisibilityOfWAMV(name + '_' + date.replace(":", "_")));
 
         } catch (Exception e) {
             log.error(e.getMessage());

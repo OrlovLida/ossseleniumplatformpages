@@ -1,11 +1,9 @@
 package com.oss.faultmanagement;
 
 import com.oss.BaseTestCase;
-import com.oss.bigdata.kpiview.KpiViewTest;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.faultmanagement.FMDashboardPage;
 import com.oss.pages.faultmanagement.WAMVPage;
-import com.oss.pages.platform.HomePage;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 import org.slf4j.Logger;
@@ -16,42 +14,36 @@ import org.testng.annotations.*;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 /**
  * @author Bartosz Nowak
  */
 @Listeners({TestListener.class})
 public class WAMVBasicTest extends BaseTestCase {
-    private static final Logger log = LoggerFactory.getLogger(KpiViewTest.class);
+    private static final Logger log = LoggerFactory.getLogger(WAMVBasicTest.class);
     private final List<String> ackValues = Arrays.asList("True", "False");
     private final List<String> noteValues = Arrays.asList("Selenium_automated_test", "");
 
     private FMDashboardPage fmDashboardPage;
-    private HomePage homePage;
     private WAMVPage wamvPage;
 
     @BeforeMethod
     public void goToFMDashboardPage() {
         fmDashboardPage = FMDashboardPage.goToPage(driver, BASIC_URL);
-        homePage = new HomePage(driver);
-        wamvPage = WAMVPage.ceateWAMV(driver);
     }
 
     @Parameters({"alarmListName", "alarmListRow", "row"})
     @Test(priority = 1, testName = "Check Ack., Deack. and Note options", description = "Acknowledge, Deacknowledge, Note")
     @Description("I verify if Web Alarm Management View opens and basic options works")
     public void openSelectedWAMVAndCheckAckDeackNoteFunctionality(
-            @Optional("Test Simple Alarm Collection") String alarmListName,
+            @Optional("Selenium_test_alarm_list") String alarmListName,
             @Optional("2") int alarmListRow,
             @Optional("0") int row
     ) {
         try {
             fmDashboardPage.searchInAlarmManagementView(alarmListName);
-            fmDashboardPage.openAlarmManagementViewByRow(row);
-            assertThat(homePage.getPageTitle()).isIn("*" + alarmListName, alarmListName);
+            wamvPage = fmDashboardPage.openAlarmManagementViewByRow(row);
+            Assert.assertTrue(wamvPage.checkIfPageTitleIsCorrect(alarmListName));
             wamvPage.selectSpecificRow(alarmListRow);
-
             for (int i = 0; i <= 1; i++) {
                 if (i == 0) {
                     wamvPage.clickOnAckButton();
@@ -68,6 +60,7 @@ public class WAMVBasicTest extends BaseTestCase {
             }
         } catch (Exception e) {
             log.error(e.getMessage());
+            Assert.fail();
         }
     }
 
@@ -75,15 +68,15 @@ public class WAMVBasicTest extends BaseTestCase {
     @Test(priority = 2, testName = "Check tabs from Area 3", description = "Check tabs")
     @Description("I verify if Web Alarm Management View opens and if it is possible to click on tabs")
     public void openSelectedWAMVAndCheckArea3Tabs(
-            @Optional("Test Simple Alarm Collection") String alarmListName,
+            @Optional("Selenium_test_alarm_list") String alarmListName,
             @Optional("2") int alarmListRow,
             @Optional("0") int row,
-            @Optional("MonitoringBrokerSystem") String adapterName
+            @Optional("AdapterAlarmGeneratorFromFile") String adapterName
     ) {
         try {
             fmDashboardPage.searchInAlarmManagementView(alarmListName);
-            fmDashboardPage.openAlarmManagementViewByRow(row);
-            assertThat(homePage.getPageTitle()).isIn("*" + alarmListName, alarmListName);
+            wamvPage = fmDashboardPage.openAlarmManagementViewByRow(row);
+            Assert.assertTrue(wamvPage.checkIfPageTitleIsCorrect(alarmListName));
             wamvPage.selectSpecificRow(alarmListRow);
             wamvPage.clickOnSameMOAlarmsTab();
             Assert.assertTrue(wamvPage.checkVisibilityOfSameMOAlarmsTable());
@@ -95,6 +88,7 @@ public class WAMVBasicTest extends BaseTestCase {
 
         } catch (Exception e) {
             log.error(e.getMessage());
+            Assert.fail();
         }
     }
 

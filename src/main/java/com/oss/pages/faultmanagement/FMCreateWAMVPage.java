@@ -7,51 +7,54 @@ import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class FMCreateWAMVPage extends BasePage {
-
+    private static final Logger log = LoggerFactory.getLogger(FMCreateWAMVPage.class);
     private static final String WIZARD_ID = "UserViewWizardModal";
     private static final String NAME_TEXT_FIELD_ID = "UserViewNameInput";
     private static final String DESCRIPTION_TEXT_FIELD_ID = "UserViewDescriptionInput";
     private static final String DROPDOWNLIST_AVALIVABLE = "Available";
     private static final String DROPDOWNLIST_SELECTED = "Selected";
-    private static final String DROPDOWNLIST_FILTER = "Filters";
 
     public FMCreateWAMVPage(WebDriver driver) {
         super(driver);
     }
 
-    private Wizard folderWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
-    private DropdownList dropdownListAvalivable = DropdownList.create(driver, wait, DROPDOWNLIST_AVALIVABLE);
-    private DropdownList dropdownListSelected = DropdownList.create(driver, wait, DROPDOWNLIST_SELECTED);
-    private DropdownList dropdownListFilter = DropdownList.create(driver, wait, DROPDOWNLIST_FILTER);
-
+    private final Wizard folderWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
+    private final DropdownList dropdownListAvailable = DropdownList.create(driver, wait, DROPDOWNLIST_AVALIVABLE);
+    private final DropdownList dropdownListSelected = DropdownList.create(driver, wait, DROPDOWNLIST_SELECTED);
 
 
     @Step("I set Name of the WAMV")
     public void setName(String name) {
         folderWizard.getComponent(NAME_TEXT_FIELD_ID, Input.ComponentType.TEXT_FIELD).setSingleStringValue(name);
+        log.info("Set WAMV name {}", name);
     }
 
     @Step("I set description of the WAMV")
     public void setDescription(String description) {
         folderWizard.getComponent(DESCRIPTION_TEXT_FIELD_ID, Input.ComponentType.TEXT_AREA).setSingleStringValue(description);
+        log.info("Add following description {} to WAMV", description);
     }
 
     @Step("I drag and drop filter by name")
     public void dragAndDropFilterByName(String filterName) {
-        dropdownListSelected.drop(dropdownListAvalivable.getDraggableElement(filterName));
+        dropdownListSelected.drop(dropdownListAvailable.getDraggableElement(filterName));
+        log.info("Drag filter {} and drop it", filterName);
     }
 
     @Step("I select N-th filter from filter list")
     public void selectFilterFromList(int row) {
-        EditableList filterList = EditableList.createById(driver,wait,"ExtendedList-WAMVFiltersInput");
-        filterList.getRow(row).clickCheckbox();
+        EditableList filters = EditableList.create(driver, wait);
+        filters.getRow(row).clickCheckbox();
+        log.info("Selecting {}=th filter from the list", row);
     }
 
+    @Step("I click accept button")
     public void clickAcceptButton() {
         folderWizard.clickAccept();
+        log.info("Clicking accept button");
     }
-
-
 }
