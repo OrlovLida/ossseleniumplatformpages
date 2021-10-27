@@ -48,7 +48,7 @@ public class FMCreateWAMVPage extends BasePage {
     @Step("I select N-th filter from filter list")
     public void selectFilterFromList(int row) {
         EditableList filters = EditableList.create(driver, wait);
-        filters.getRow(row).clickCheckbox();
+        filters.getRow(row).click();
         log.info("Selecting {}=th filter from the list", row);
     }
 
