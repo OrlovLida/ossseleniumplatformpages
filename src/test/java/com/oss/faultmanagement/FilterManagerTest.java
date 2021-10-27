@@ -31,7 +31,7 @@ public class FilterManagerTest extends BaseTestCase {
     @Test(priority = 1, testName = "Create new folder and delete", description = "Folder creation verification")
     @Description("I verify if Folder and Filter creates without error")
     public void createNewFolderAndDelete(
-            @Optional("selenium_test_folder") String folderName,
+            @Optional("Selenium_test_folder") String folderName,
             @Optional("Selenium test description") String description
     ) {
         try {
