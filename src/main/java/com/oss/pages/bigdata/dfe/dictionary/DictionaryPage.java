@@ -82,7 +82,7 @@ public class DictionaryPage extends BaseDfePage {
     @Step("I check if Entry: {entryName} exists into the table")
     public Boolean entryExistsIntoTable(String entryName) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        String textInTable = getEditableList().getRow(0).selectCell(KEY_CELL_ID).getText();
+        String textInTable = getEditableList().getRow(0).getCell(KEY_CELL_ID).getText();
         return textInTable.equals(entryName);
     }
 
