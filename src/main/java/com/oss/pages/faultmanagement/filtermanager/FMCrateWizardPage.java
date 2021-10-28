@@ -19,7 +19,7 @@ public class FMCrateWizardPage extends BasePage {
     private static final String WIZARD_ID = "webFilter_wizard_modal_template";
     private static final String TYPE_FIELD_ID = "FilterTypeInput";
     private static final String CONDITION_ID = "condition";
-    private static final String DROPDOWNLIST_AVALIVABLE = "Available Filters";
+    private static final String DROPDOWNLIST_AVAILABLE = "Available Filters";
     private static final String DROPDOWNLIST_ENABLED = "Enabled Filters";
 
 
@@ -27,7 +27,7 @@ public class FMCrateWizardPage extends BasePage {
         super(driver);
     }
 
-    private final DropdownList dropdownListAvailable = DropdownList.create(driver, wait, DROPDOWNLIST_AVALIVABLE);
+    private final DropdownList dropdownListAvailable = DropdownList.create(driver, wait, DROPDOWNLIST_AVAILABLE);
     private final DropdownList dropdownListEnabled = DropdownList.create(driver, wait, DROPDOWNLIST_ENABLED);
     private final Wizard folderWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
 
@@ -62,7 +62,6 @@ public class FMCrateWizardPage extends BasePage {
     public void clickOnLabel(String label) {
         folderWizard.clickButtonByLabel(label);
         log.info("Clicking on label: {}", label);
-
     }
 
     public void clickOnAddConditon() {

@@ -18,6 +18,9 @@ public class FMDashboardPage extends BasePage {
     private static final String OPEN_BUTTON_ID = "Open";
     private static final String CREATE_BUTTON_ID = "create-user-view";
     private static final String COLUMN_NAME_LABEL = "Name";
+    private static final String BUTTONS_GROUP_ID = "frameworkObjectButtonsGroup";
+    private static final String REMOVE_ACTION_ID = "remove-user-view";
+    private static final String CONFIRMATION_BOX_BUTTON_NAME = "ConfirmationBox_confirmationBoxWidget_action_button";
 
     public FMDashboardPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -65,7 +68,7 @@ public class FMDashboardPage extends BasePage {
         return new WAMVPage(driver);
     }
 
-    @Step("I click on Creat New Alarm List button")
+    @Step("I click on Create New Alarm List button")
     public FMCreateWAMVPage clickCreateNewAlarmList() {
         DelayUtils.waitForPageToLoad(driver, wait);
         commonAlarmManagement.callAction(CREATE_BUTTON_ID);
@@ -76,9 +79,9 @@ public class FMDashboardPage extends BasePage {
 
     @Step("I delete WAMV by name")
     public void deleteWebAlarmManagementView(int rowNumber) {
-        commonAlarmManagement.getAllRows().get(rowNumber).callAction("frameworkObjectButtonsGroup", "remove-user-view");
+        commonAlarmManagement.getAllRows().get(rowNumber).callAction(BUTTONS_GROUP_ID, REMOVE_ACTION_ID);
         ConfirmationBox confirmationBox = ConfirmationBox.create(driver, wait);
-        confirmationBox.clickButtonByDataAttributeName("ConfirmationBox_confirmationBoxWidget_action_button");
+        confirmationBox.clickButtonByDataAttributeName(CONFIRMATION_BOX_BUTTON_NAME);
         log.info("Deletion of WAMV in row {}", rowNumber);
     }
 

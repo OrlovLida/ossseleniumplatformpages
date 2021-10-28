@@ -15,7 +15,7 @@ public class FMCreateWAMVPage extends BasePage {
     private static final String WIZARD_ID = "UserViewWizardModal";
     private static final String NAME_TEXT_FIELD_ID = "UserViewNameInput";
     private static final String DESCRIPTION_TEXT_FIELD_ID = "UserViewDescriptionInput";
-    private static final String DROPDOWNLIST_AVALIVABLE = "Available";
+    private static final String DROPDOWNLIST_AVAILABLE = "Available";
     private static final String DROPDOWNLIST_SELECTED = "Selected";
 
     public FMCreateWAMVPage(WebDriver driver) {
@@ -23,7 +23,7 @@ public class FMCreateWAMVPage extends BasePage {
     }
 
     private final Wizard folderWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
-    private final DropdownList dropdownListAvailable = DropdownList.create(driver, wait, DROPDOWNLIST_AVALIVABLE);
+    private final DropdownList dropdownListAvailable = DropdownList.create(driver, wait, DROPDOWNLIST_AVAILABLE);
     private final DropdownList dropdownListSelected = DropdownList.create(driver, wait, DROPDOWNLIST_SELECTED);
 
 
@@ -49,7 +49,7 @@ public class FMCreateWAMVPage extends BasePage {
     public void selectFilterFromList(int row) {
         EditableList filters = EditableList.create(driver, wait);
         filters.getRow(row).click();
-        log.info("Selecting {}=th filter from the list", row);
+        log.info("Selecting {}. filter from the list", row);
     }
 
     @Step("I click accept button")

@@ -29,6 +29,8 @@ public class WAMVPage extends BasePage {
     private static final String SAME_MO_DETAILS_TAB_ID = "tab__AREA3SameMODetailsTab";
     private static final String SAME_MO_ALARMS_TAB_ID = "tab__AREA3SameMOAlarmsTab";
     private static final String SAME_MO_ALARMS_TABLE_ID = "_AREA3SameMOAlarms";
+    private static final String ADAPTER_NAME_VALUE = "Adapter Name";
+    private static final String NOTIFICATION_IDENTIFIER_VALUE = "Notification Identifier";
 
     private final FMSMTable fmsmTable = FMSMTable.createById(driver, wait, TABLE_AREA2_WIDGET_ID);
 
@@ -44,14 +46,9 @@ public class WAMVPage extends BasePage {
     @Step("I initialize new WAMV")
     public static WAMVPage createWAMV(WebDriver driver) {
         WebDriverWait wait = new WebDriverWait(driver, 90);
-        log.info("Initialization of WAMVPage");
+        log.info("Initialization of WAMV page");
         return new WAMVPage(driver, wait);
     }
-
-//    @Step("I create an FMSMTable")
-//    private FMSMTable createArea2Table() {
-//        return FMSMTable.createById(driver, wait, TABLE_AREA2_WIDGET_ID);
-//    }
 
     @Step("I create an SameMOAlarmsTable")
     private FMSMTable createSameMOAlarmsTable() {
@@ -137,14 +134,14 @@ public class WAMVPage extends BasePage {
     public String getAdapterNameValueFromAlarmDetailsTab() {
         OldPropertyPanel propertyPanel = OldPropertyPanel.create(driver, wait);
         log.info("Checking adapter name value from Alarm Details Tab");
-        return propertyPanel.getPropertyValue("Adapter Name");
+        return propertyPanel.getPropertyValue(ADAPTER_NAME_VALUE);
     }
 
     @Step("I get notification identifier from Alarms Details Tab")
     public String getNotificationIdentifierValueFromAlarmDetailsTab() {
         OldPropertyPanel propertyPanel = OldPropertyPanel.create(driver, wait);
         log.info("Checking notification identifier value from Alarm Details Tab");
-        return propertyPanel.getPropertyValue("Notification Identifier");
+        return propertyPanel.getPropertyValue(NOTIFICATION_IDENTIFIER_VALUE);
     }
 
     @Step("I check if Same MO Alarms Table is visible")
@@ -153,7 +150,9 @@ public class WAMVPage extends BasePage {
         return driver.getPageSource().contains(SAME_MO_ALARMS_TABLE_ID);
     }
 
+    @Step("I check page title")
     public boolean checkIfPageTitleIsCorrect(String pageTitleLabel) {
+        log.info("Checking page title: {}", pageTitleLabel);
         for (int i = 0; i < 100; i++) {
             if (driver.getPageSource().contains(pageTitleLabel)) {
                 return true;

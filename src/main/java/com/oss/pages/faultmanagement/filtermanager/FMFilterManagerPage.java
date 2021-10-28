@@ -22,6 +22,9 @@ public class FMFilterManagerPage extends BasePage {
     private static final String NEW_FOLDER_ID = "new_folder";
     private static final String NEW_FILTER_ID = "new_filter";
     private static final String COMMON_LIST_APP_ID = "_FilterManagerList";
+    private static final String REMOVE_ACTION_ID = "remove_action";
+    private static final String TREE_COMPONENT_CLASS = "tree-component";
+    private static final String ADAPTER_NAME_LABEL = "Adapter Name";
     private static final String ADD_BUTTON_LABEL = "Add";
 
     public FMFilterManagerPage(WebDriver driver) {
@@ -77,7 +80,7 @@ public class FMFilterManagerPage extends BasePage {
         List<CommonList.Category> categories =
                 getCommonList().createCategories().stream().filter(category -> category.getValue().equals(nameLabel))
                         .collect(Collectors.toList());
-        categories.forEach(category -> category.callAction("remove_action"));
+        categories.forEach(category -> category.callAction(REMOVE_ACTION_ID));
         log.info("Deleting folder : {}", nameLabel);
     }
 
@@ -115,9 +118,9 @@ public class FMFilterManagerPage extends BasePage {
         fmWizardPage.setName(name).setDescription(description).setTypeValue(type);
         fmWizardPage.clickOnAddConditon();
         PopupV2 popup = PopupV2.create(driver, wait);
-        TreeWidget tree = TreeWidget.createByClass(driver, "tree-component", wait);
-        tree.selectNodeByLabel("Adapter Name");
-        popup.clickButtonByLabel("Add");
+        TreeWidget tree = TreeWidget.createByClass(driver, TREE_COMPONENT_CLASS, wait);
+        tree.selectNodeByLabel(ADAPTER_NAME_LABEL);
+        popup.clickButtonByLabel(ADD_BUTTON_LABEL);
         //TODO skończyć gdy zostanie dostarczone OSSNGSA-9444
         log.info("Creating a filter name: {}, description: {}, type: {}", name, description, type);
     }
