@@ -6,7 +6,7 @@ import io.qameta.allure.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class DataSourceSmokeTest extends BaseTestCase {
@@ -15,7 +15,7 @@ public class DataSourceSmokeTest extends BaseTestCase {
     private DataSourcePage dataSourcePage;
     private static final String DATA_SOURCE_NAME = "t:SMOKE#DSforMonitoring";
 
-    @BeforeClass
+    @BeforeMethod
     public void goToDataSourceView() {
         dataSourcePage = DataSourcePage.goToPage(driver, BASIC_URL);
     }
@@ -36,7 +36,10 @@ public class DataSourceSmokeTest extends BaseTestCase {
             dataSourcePage.setSeverityInCombobox("All");
 
             Assert.assertTrue(dataSourcePage.IsIfRunsFresh());
-            Assert.assertEquals(dataSourcePage.checkStatus(), "Info");
+
+            String actualStatus = dataSourcePage.checkStatus();
+            boolean statusIsAcceptable = actualStatus.equals("Info") || actualStatus.equals("Warn");
+            Assert.assertTrue(statusIsAcceptable);
         } else {
             log.error("Data Source with name: {} doesn't exist", DATA_SOURCE_NAME);
             Assert.fail();
@@ -62,7 +65,7 @@ public class DataSourceSmokeTest extends BaseTestCase {
         }
     }
 
-    @Test(testName = "checkShowFile", description = "Check option show file and check if table with data is displayed")
+    @Test(priority = 3, testName = "checkShowFile", description = "Check option show file and check if table with data is displayed")
     @Description("Check option show file and check if table with data is displayed")
     public void checkShowFile() {
         boolean dataSourceExists = dataSourcePage.dataSourceExistIntoTable(DATA_SOURCE_NAME);

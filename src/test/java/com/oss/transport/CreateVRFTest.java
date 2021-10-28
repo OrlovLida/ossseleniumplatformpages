@@ -48,7 +48,7 @@ public class CreateVRFTest extends BaseTestCase {
     private static final String ROUTE_TARGET = "3453:3453";
     private static final String ADDRESS_FAMILY = "IPv4";
 
-    private static final String ENVIRONMENT_INDEPENDENT_URL_REDIRECT_PART = "/#/dashboard/predefined/id/transport-dashboard";
+    private static final String ENVIRONMENT_INDEPENDENT_URL_REDIRECT_PART = "/#/?perspective=LIVE";
 
     @Test(priority = 1)
     @Step("Create VRF")

@@ -14,7 +14,7 @@ public class DictionaryPage extends BaseDfePage {
     private static final Logger log = LoggerFactory.getLogger(DictionaryPage.class);
 
     private static final String TABLE_ID = "dictionariesAppId";
-    private static final String KEY_CELL_ID = "1_keyId";
+    private static final String KEY_CELL_ID = "keyId";
     private static final String ENTRIES_TAB = "Entries";
 
     private final String ADD_NEW_DICTIONARY_LABEL = "Add New Dictionary";
@@ -82,7 +82,7 @@ public class DictionaryPage extends BaseDfePage {
     @Step("I check if Entry: {entryName} exists into the table")
     public Boolean entryExistsIntoTable(String entryName) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        String textInTable = getEditableList().selectRow(0).selectCell(KEY_CELL_ID).getText();
+        String textInTable = getEditableList().getRow(0).getCell(KEY_CELL_ID).getText();
         return textInTable.equals(entryName);
     }
 
@@ -97,7 +97,7 @@ public class DictionaryPage extends BaseDfePage {
     }
 
     protected void clickEditableListAction(String editableListActionLabel) {
-        getEditableList().selectRow(0).callActionIcon(editableListActionLabel);
+        getEditableList().getRow(0).callActionIcon(editableListActionLabel);
         log.debug("Clicking context action: {}", editableListActionLabel);
     }
 

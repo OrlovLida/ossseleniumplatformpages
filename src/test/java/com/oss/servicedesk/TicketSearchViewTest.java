@@ -22,7 +22,7 @@ public class TicketSearchViewTest extends BaseTestCase {
     @Test(priority = 1, testName = "Open Ticket Details", description = "Open Ticket Details")
     @Description("Open Ticket Details")
     public void openTicketDetails() {
-        String ticketId = ticketSearchPage.geIdForNthTicketInTable(0);
+        String ticketId = ticketSearchPage.getIdForNthTicketInTable(0);
         ticketSearchPage.filterByTextField(TicketSearchPage.ID_ATTRIBUTE, ticketId);
         ticketSearchPage.openTicketDetailsView("0", BASIC_URL);
     }

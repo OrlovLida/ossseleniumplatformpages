@@ -128,29 +128,29 @@ public class AdvancedSearchCompact extends BaseTestCase {
     }
 
     // Uncomment after fix relation in schema
-//    @Test(priority = 5)
-//    public void filterByOSF() {
-//        String attributeValue = "241";
-//        inventoryViewPage.enableColumnAndApply("ID", "Director");
-//        Multimap<String, String> filters = inventoryViewPage.searchByAttributeValue(OSF_ATTRIBUTE_LABEL, attributeValue, Input.ComponentType.OBJECT_SEARCH_FIELD);
-//
-//        Assertions.assertThat(filters.keys()).hasSize(1);
-//        Assertions.assertThat(filters.get("Director")).containsExactly(attributeValue);
-//        Assert.assertTrue(checkIfCellContainsValue("director.id", attributeValue));
-//
-//        inventoryViewPage.clearFilters();
-//    }
+    @Test(priority = 5)
+    public void filterByOSF() {
+        String attributeValue = "241";
+        inventoryViewPage.enableColumnAndApply("ID", "Director");
+        Multimap<String, String> filters = inventoryViewPage.searchByAttributeValue(OSF_ATTRIBUTE_LABEL, attributeValue, Input.ComponentType.OBJECT_SEARCH_FIELD);
+
+        Assertions.assertThat(filters.keys()).hasSize(1);
+        Assertions.assertThat(filters.get("Director")).containsExactly(attributeValue);
+        Assert.assertTrue(checkIfCellContainsValue("director.id", attributeValue));
+
+        inventoryViewPage.clearFilters();
+    }
 
     @Test(priority = 6)
     public void toggleVisibilitySearchAttribute() {
         List<String> attributes = new ArrayList<>();
         attributes.add("actors");
-        inventoryViewPage.toggleVisibilitySearchAttributes(attributes);
+        inventoryViewPage.unselectVisibilitySearchAttributes(attributes);
         List<String> filters = inventoryViewPage.getMainTable().getAllVisibleFilters();
 
         Assert.assertFalse(filters.contains("Actors"));
 
-        inventoryViewPage.toggleVisibilitySearchAttributes(attributes);
+        inventoryViewPage.selectVisibilitySearchAttributes(attributes);
         List<String> filtersSecond = inventoryViewPage.getMainTable().getAllVisibleFilters();
         Assert.assertTrue(filtersSecond.contains("Actors"));
     }

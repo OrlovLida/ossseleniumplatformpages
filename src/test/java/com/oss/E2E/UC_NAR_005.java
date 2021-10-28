@@ -134,7 +134,7 @@ public class UC_NAR_005 extends BaseTestCase {
         newInventoryViewPage.searchObject(DEVICE_NAME);
         waitForPageToLoad();
         Assert.assertFalse(newInventoryViewPage.checkIfTableIsEmpty());
-        Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "Serial Number"), SERIAL_NUMBER_BEFORE);
+        Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "serialNumber"), SERIAL_NUMBER_BEFORE);
     }
 
     @Test(priority = 7)
@@ -143,14 +143,14 @@ public class UC_NAR_005 extends BaseTestCase {
         NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.selectFirstRow();
         waitForPageToLoad();
-        NotificationsInterface notifications = Notifications.create(driver, webDriverWait);
+        NotificationsInterface notifications = Notifications.create(driver, new WebDriverWait(driver, 180));
         notifications.clearAllNotification();
         newInventoryViewPage.callAction(ActionsContainer.OTHER_GROUP_ID, "run-narrow-reconciliation");
         DelayUtils.sleep(3000);
         Assert.assertEquals(notifications.waitAndGetFinishedNotificationText(), "Narrow reconciliation for GMOCs IPDevice finished");
         newInventoryViewPage.refreshMainTable();
         waitForPageToLoad();
-        Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "Serial Number"), SERIAL_NUMBER_AFTER);
+        Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "serialNumber"), SERIAL_NUMBER_AFTER);
     }
 
     @Test(priority = 8)

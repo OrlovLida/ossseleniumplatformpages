@@ -1,5 +1,6 @@
 package com.oss.pages.servicedesk.ticket;
 
+import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.TableWidget;
@@ -20,8 +21,10 @@ public class TicketSearchPage extends BaseSDPage {
     public static final String CREATION_TIME_ATTRIBUTE = "createDate";
     public static final String SEVERITY_ATTRIBUTE = "severity";
     public static final String STATUS_ATTRIBUTE = "ticketOut.issueOut.status.name";
+    public final static String FILTER_BUTTON_CLASS = "button-filters-panel";
+    public final static String DESCRIPTION_ATTRIBUTE = "incidentDescription";
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TicketSearchPage.class);
+    private static final Logger log = LoggerFactory.getLogger(TicketSearchPage.class);
     private static final String TABLE_WIDGET_ID = "ticket-search-graphql-table";
     private static final String TICKET_SEARCH = "ticket-search";
 
@@ -31,18 +34,23 @@ public class TicketSearchPage extends BaseSDPage {
 
     @Step("I Open Ticket Search View")
     public TicketSearchPage goToPage(WebDriver driver, String basicURL) {
+        DelayUtils.waitForPageToLoad(driver, wait);
         openPage(driver, String.format(VIEWS_URL_PATTERN, basicURL, TICKET_SEARCH));
+        DelayUtils.sleep(5000);
+        log.info("Ticket Search View is opened");
         return new TicketSearchPage(driver);
     }
 
     @Step("I filter tickets by text attribute {attributeName} set to {attributeValue}")
-    public Boolean filterByTextField(String attributeName, String attributeValue) {
-        return filterBy(attributeName, attributeValue, Input.ComponentType.TEXT_FIELD);
+    public void filterByTextField(String attributeName, String attributeValue) {
+        log.info("Filtering tickets by text attribute {} set to {}", attributeName, attributeValue);
+        filterBy(attributeName, attributeValue, Input.ComponentType.TEXT_FIELD);
     }
 
     @Step("I filter tickets by combo-box attribute {attributeName} set to {attributeValue}")
-    public Boolean filterByComboBox(String attributeName, String attributeValue) {
-        return filterBy(attributeName, attributeValue, Input.ComponentType.COMBOBOXV2);
+    public void filterByComboBox(String attributeName, String attributeValue) {
+        log.info("Filtering tickets by combo-box attribute {} set to {}", attributeName, attributeValue);
+        filterBy(attributeName, attributeValue, Input.ComponentType.COMBOBOXV2);
     }
 
     @Step("I open details view for {rowIndex} ticket in Ticket table")
@@ -50,28 +58,24 @@ public class TicketSearchPage extends BaseSDPage {
         // TODO: for now we cannot just click link - not implemented yet
         // (see TableWidget#selectLinkInSpecificColumn)
         String ticketId = getTicketTable().getCellValue(Integer.parseInt(rowIndex), ID_ATTRIBUTE);
-        LOGGER.info("Opening ticket details for ticket with id: {}", ticketId);
+        log.info("Opening ticket details for ticket with id: {}", ticketId);
+        DelayUtils.waitForPageToLoad(driver, wait);
         openPage(driver, String.format(DETAILS_PAGE_URL_PATTERN, basicURL, ticketId));
         return new TicketDetailsPage(driver);
     }
-    public TicketDetailsPage openTicketDetailsView2(String ticketId, String basicURL) {
-        openPage(driver, String.format(DETAILS_PAGE_URL_PATTERN, basicURL, ticketId));
-        return new TicketDetailsPage(driver);
-    }
-
 
     public String getAssigneeForNthTicketInTable(int n) {
         return getAttributeFromTable(n, ASSIGNEE_ATTRIBUTE);
     }
 
-    public String geIdForNthTicketInTable(int n) {
+    public String getIdForNthTicketInTable(int n) {
         DelayUtils.waitForPageToLoad(driver, wait);
         return getAttributeFromTable(n, ID_ATTRIBUTE);
     }
 
     private String getAttributeFromTable(int index, String attributeName) {
         String attributeValue = getTicketTable().getCellValue(index, attributeName);
-        LOGGER.info("Got value for {} attribute: {}", attributeName, attributeValue);
+        log.info("Got value for {} attribute: {}", attributeName, attributeValue);
         return attributeValue;
     }
 
@@ -83,12 +87,15 @@ public class TicketSearchPage extends BaseSDPage {
         return TableWidget.createById(driver, tableWidgetId, wait);
     }
 
-    public Boolean filterBy(String attributeName, String attributeValue, Input.ComponentType componentType) {
+    public void filterBy(String attributeName, String attributeValue, Input.ComponentType componentType) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        TableWidget table = getTicketTable();
-        table.searchByAttribute(attributeName, componentType, attributeValue);
+        getTicketTable().searchByAttribute(attributeName, componentType, attributeValue);
+    }
+
+    public void clickFilterButton() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        int numberOfRowsInTable = table.getRowsNumber();
-        return numberOfRowsInTable == 1;
+        Button filterButton = Button.createByIcon(driver, "fa fa-filter", FILTER_BUTTON_CLASS);
+        log.info("Clicking filter button");
+        filterButton.click();
     }
 }

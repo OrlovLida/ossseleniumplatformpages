@@ -111,8 +111,8 @@ public class IRBInterfaceTest extends BaseTestCase {
         DelayUtils.sleep(3000);
         newInventoryViewPage.refreshMainTable();
         waitForPageToLoad();
-        Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "MTU"), MTU_VALUE);
-        Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "Description"), DESCRIPTION);
+        Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "mtu"), MTU_VALUE);
+        Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "description"), DESCRIPTION);
     }
 
     @Test(priority = 7)
@@ -130,8 +130,7 @@ public class IRBInterfaceTest extends BaseTestCase {
         ipAddressManagementViewPage.searchIpNetwork(IP_NETWORK);
         ipAddressManagementViewPage.expandTreeRow(IP_NETWORK);
         ipAddressManagementViewPage.expandTreeRowContains("%");
-        ipAddressManagementViewPage.expandTreeRow(IP_ADDRESS + "/24");
-        ipAddressManagementViewPage.deleteHostAssignment("/24 [");
+        ipAddressManagementViewPage.deleteIPHost(IP_ADDRESS + "/24");
     }
 
     @Test(priority = 9)

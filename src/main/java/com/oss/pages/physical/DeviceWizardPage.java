@@ -180,28 +180,28 @@ public class DeviceWizardPage extends BasePage {
     @Step("Set Cooling Capacity")
     public void setCoolingCapacity(String coolingCapacity) {
         String DEVICE_COOLING_CAPACITY_DATA_ATTRIBUTE_NAME =
-                "oss__physical-inventory__physicaldevice__type__" + getEquipmentType() + "__CoolingCapacity";
+                "oss__046__physical__045__inventory__046__physicaldevice__046__type__046__" + getEquipmentType() + "___CoolingCapacity";
         getDeviceWizard().setComponentValue(DEVICE_COOLING_CAPACITY_DATA_ATTRIBUTE_NAME, coolingCapacity, TEXT_FIELD);
     }
-    
+
     @Step("Set Heat Emission")
     public void setHeatEmission(String heatEmission) {
         String DEVICE_HEAT_EMISSION_DATA_ATTRIBUTE_NAME =
-                "oss__physical-inventory__physicaldevice__type__" + getEquipmentType() + "__HeatEmission";
+                "oss__046__physical__045__inventory__046__physicaldevice__046__type__046__" + getEquipmentType() + "___HeatEmission";
         getDeviceWizard().setComponentValue(DEVICE_HEAT_EMISSION_DATA_ATTRIBUTE_NAME, heatEmission, TEXT_FIELD);
     }
-    
+
     @Step("Set Power Consumption")
     public void setPowerConsumption(String powerConsumption) {
         String DEVICE_POWER_CONSUMPTION_DATA_ATTRIBUTE_NAME =
-                "oss__physical-inventory__physicaldevice__type__" + getEquipmentType() + "__PowerConsumption";
+                "oss__046__physical__045__inventory__046__physicaldevice__046__type__046__" + getEquipmentType() + "___PowerConsumption";
         getDeviceWizard().setComponentValue(DEVICE_POWER_CONSUMPTION_DATA_ATTRIBUTE_NAME, powerConsumption, TEXT_FIELD);
     }
-    
+
     @Step("Set Power Capacity")
     public void setPowerCapacity(String powerCapacity) {
         String DEVICE_POWER_CAPACITY_DATA_ATTRIBUTE_NAME =
-                "oss__physical-inventory__physicaldevice__type__" + getEquipmentType() + "__PowerCapacity";
+                "oss__046__physical__045__inventory__046__physicaldevice__046__type__046__" + getEquipmentType() + "___PowerCapacity";
         getDeviceWizard().setComponentValue(DEVICE_POWER_CAPACITY_DATA_ATTRIBUTE_NAME, powerCapacity, TEXT_FIELD);
     }
     
@@ -251,7 +251,10 @@ public class DeviceWizardPage extends BasePage {
     }
     
     private String getEquipmentType() {
-        return getDeviceWizard().getComponent(DEVICE_EQUIPMENT_TYPE_DATA_ATTRIBUTE_NAME, SEARCH_FIELD).getStringValue().trim()
-                .replaceAll("\\s", "");
+        String equipmentType = getDeviceWizard().getComponent(DEVICE_EQUIPMENT_TYPE_DATA_ATTRIBUTE_NAME, SEARCH_FIELD).getStringValue().trim().replaceAll("\\s", "");
+        if (equipmentType.equals("DWDMDevice")) {
+            return "DWDM";
+        }
+        return equipmentType;
     }
 }

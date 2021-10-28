@@ -25,7 +25,7 @@ public class ColumnMappingPage extends BasePage {
 
     protected EditableList.Row getTableRow(String columnNameValue) {
         EditableList columnMappingList = EditableList.create(driver, wait);
-        return columnMappingList.selectRowByAttributeValue(COLUMN_DATA_ID, columnNameValue);
+        return columnMappingList.getRowByAttributeValue(COLUMN_DATA_ID, columnNameValue);
     }
 
     protected String getColumnRoleInputId() {

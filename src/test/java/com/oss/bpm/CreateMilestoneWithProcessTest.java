@@ -6,8 +6,13 @@
  */
 package com.oss.bpm;
 
-import java.time.LocalDate;
-
+import com.oss.BaseTestCase;
+import com.oss.framework.utils.DelayUtils;
+import com.oss.pages.bpm.milestones.Milestone;
+import com.oss.pages.bpm.processinstances.ProcessInstancesPage;
+import com.oss.pages.bpm.processinstances.ProcessWizardPage;
+import com.oss.utils.TestListener;
+import io.qameta.allure.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -15,14 +20,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
-import com.oss.BaseTestCase;
-import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bpm.milestones.Milestone;
-import com.oss.pages.bpm.processinstances.ProcessInstancesPage;
-import com.oss.pages.bpm.processinstances.ProcessWizardPage;
-import com.oss.utils.TestListener;
-
-import io.qameta.allure.Description;
+import java.time.LocalDate;
 
 /**
  * @author Gabriela Kasza
@@ -276,7 +274,7 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
         ProcessWizardPage.MilestoneStepWizard milestoneStepWizard =
                 processWizardPage.definedMilestoneInProcess("Milestone Process", 0L, "GK Milestones");
-        boolean isEditable = milestoneStepWizard.getMilestonePredefinedList().selectRow(0).isEditableAttribute("name");
+        boolean isEditable = milestoneStepWizard.getMilestonePredefinedList().getRow(0).isEditableAttribute("name");
         processWizardPage.clickCancelButton();
         Assert.assertFalse(isEditable);
         

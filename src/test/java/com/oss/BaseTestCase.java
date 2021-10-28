@@ -48,6 +48,7 @@ public class BaseTestCase {
     public void closeBrowser() {
         if (driver != null) {
             DelayUtils.sleep(5000);
+            driver.close();
             driver.quit();
         }
     }
@@ -78,6 +79,7 @@ public class BaseTestCase {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--ignore-certificate-errors");
         options.setExperimentalOption("prefs", getPreferences());
 
         return options;
