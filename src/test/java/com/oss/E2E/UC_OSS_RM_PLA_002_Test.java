@@ -19,7 +19,7 @@ import com.oss.framework.mainheader.Notifications;
 import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bpm.ProcessWizardPage;
+import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 import com.oss.pages.bpm.TasksPage;
 import com.oss.pages.filtermanager.ShareFilterPage;
 import com.oss.pages.mediation.CLIConfigurationWizardPage;

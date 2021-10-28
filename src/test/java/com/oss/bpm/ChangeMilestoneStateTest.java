@@ -1,15 +1,15 @@
 package com.oss.bpm;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
-import com.oss.framework.components.inputs.Date;
 import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bpm.*;
+import com.oss.pages.bpm.milestones.ChangeStateMilestoneWizardPage;
+import com.oss.pages.bpm.milestones.Milestone;
+import com.oss.pages.bpm.milestones.MilestoneViewPage;
+import com.oss.pages.bpm.processinstances.ProcessInstancesPage;
+import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 import com.oss.utils.TestListener;
-import org.apache.logging.log4j.message.Message;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
@@ -52,7 +52,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
     private ChangeStateMilestoneWizardPage changeStateMilestoneWizardPage;
 
     private void assertDueDate(String startDueDate, String dueDate, String newDueDate) {
-        if (startDueDate.equals("")) {
+        if (startDueDate.isEmpty()) {
             Assert.assertEquals("", newDueDate);
         } else {
             Assert.assertEquals(dueDate, newDueDate);
@@ -72,9 +72,9 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         DelayUtils.sleep(500);
 
-        String startModifyDate = milestoneViewPage.getValuePropertyPanel("modifyDate", 0);
-        String startDueDate = milestoneViewPage.getValuePropertyPanel("dueDate", 0);
-        String startCompletionDate = milestoneViewPage.getValuePropertyPanel("completionDate", 0);
+        String startModifyDate = milestoneViewPage.getMilestoneAttribute("modifyDate");
+        String startDueDate = milestoneViewPage.getMilestoneAttribute("dueDate");
+        String startCompletionDate = milestoneViewPage.getMilestoneAttribute("completionDate");
         //boolean manualCompletion = Boolean.parseBoolean(milestoneViewPage.getValuePropertyPanel("manualCompletion", 0));
 
         milestoneViewPage.callAction(CHANGE_STATE_BUTTON);
@@ -92,10 +92,10 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         String message = SystemMessageContainer.create(driver, webDriverWait).getFirstMessage().orElseThrow(() -> new RuntimeException("There is no any System Message")).getText();
         Assert.assertEquals("All milestones changed state successfully.", message);
         DelayUtils.sleep(1000);
-        String newStateValue = milestoneViewPage.getValuePropertyPanel("state", 0);
-        String newModifyDate = milestoneViewPage.getValuePropertyPanel("modifyDate", 0);
-        String newDueDate = milestoneViewPage.getValuePropertyPanel("dueDate", 0);
-        String newCompletionDate = milestoneViewPage.getValuePropertyPanel("completionDate", 0);
+        String newStateValue = milestoneViewPage.getMilestoneAttribute("state");
+        String newModifyDate = milestoneViewPage.getMilestoneAttribute("modifyDate");
+        String newDueDate = milestoneViewPage.getMilestoneAttribute("dueDate");
+        String newCompletionDate = milestoneViewPage.getMilestoneAttribute("completionDate");
         String approvalDate = LocalDate.now().plusDays(PLUS_DAYS).toString();
         String currentLeadDate = LocalDate.now().plusDays(Long.parseLong(LEAD_TIME)).toString();
         Assert.assertEquals(nextState, newStateValue);
@@ -188,7 +188,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         changeMilestoneState(NEW_STATE, IN_PROGRESS_STATE, CHANGE_STATE_REASON, false);
 
         //try to change state to Completed
-        String startModifyDate = milestoneViewPage.getValuePropertyPanel("modifyDate", 0);
+        String startModifyDate = milestoneViewPage.getMilestoneAttribute("modifyDate");
         milestoneViewPage.callAction(CHANGE_STATE_BUTTON);
         changeStateMilestoneWizardPage.setState(COMPLETED_STATE);
         changeStateMilestoneWizardPage.setApprovalDate(PLUS_DAYS);
@@ -196,8 +196,8 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         String message = SystemMessageContainer.create(driver, webDriverWait).getFirstMessage().orElseThrow(() -> new RuntimeException("There is no any System Message")).getText();
         Assert.assertEquals("Not all milestones changed state.\n" +
                 "Following milestones cannot be manually completed:" + milestoneName2 + ".", message);
-        String newModifyDate = milestoneViewPage.getValuePropertyPanel("modifyDate", 0);
-        String newStateValue = milestoneViewPage.getValuePropertyPanel("state", 0);
+        String newModifyDate = milestoneViewPage.getMilestoneAttribute("modifyDate");
+        String newStateValue = milestoneViewPage.getMilestoneAttribute("state");
         Assert.assertEquals(startModifyDate, newModifyDate);
         Assert.assertEquals(IN_PROGRESS_STATE, newStateValue);
 
@@ -248,13 +248,13 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         milestoneViewPage.selectAll();
         milestoneViewPage.selectAll();
         milestoneViewPage.selectMilestone(milestoneName1);
-        String state1 = milestoneViewPage.getValuePropertyPanel("state", 0);
+        String state1 = milestoneViewPage.getMilestoneAttribute("state");
 
         milestoneViewPage.clearFilters();
         milestoneViewPage.selectAll();
         milestoneViewPage.selectAll();
         milestoneViewPage.selectMilestone(milestoneName3);
-        String state2 = milestoneViewPage.getValuePropertyPanel("state", 0);
+        String state2 = milestoneViewPage.getMilestoneAttribute("state");
         Assert.assertEquals(IN_PROGRESS_STATE,state1);
         Assert.assertEquals(IN_PROGRESS_STATE,state2);
     }

@@ -1,4 +1,4 @@
-package com.oss.pages.bpm;
+package com.oss.pages.bpm.milestones;
 
 import com.oss.framework.components.inputs.Date;
 import com.oss.framework.components.inputs.DateTime;
@@ -25,15 +25,16 @@ public class ChangeStateMilestoneWizardPage extends BasePage {
     private static final String NEW_STATE_ATTRIBUTE_ID = "milestones-state-change_new-state-component-input";
     private static final String COMMENT_ATTRIBUTE_ID = "milestones-state-change_comment-component-id";
     private static final String APPROVAL_DATE_ATTRIBUTE_ID = "milestones-state-change_approval-date-component-id";
+    private static final String STATE_CHANGE_WIZARD_ID = "milestones-state-change_wizard-app";
 
 
     public void cancel() {
-        Wizard changeStateWizard = Wizard.createByComponentId(driver, wait, "milestones-state-change_wizard-app");
+        Wizard changeStateWizard = Wizard.createByComponentId(driver, wait, STATE_CHANGE_WIZARD_ID);
         changeStateWizard.clickActionById(CANCEL_BUTTON);
     }
 
     public void accept() {
-        Wizard changeStateWizard = Wizard.createByComponentId(driver, wait, "milestones-state-change_wizard-app");
+        Wizard changeStateWizard = Wizard.createByComponentId(driver, wait, STATE_CHANGE_WIZARD_ID);
         changeStateWizard.clickActionById(ACCEPT_BUTTON);
     }
 
@@ -51,7 +52,7 @@ public class ChangeStateMilestoneWizardPage extends BasePage {
     }
 
     public void setState(String newState) {
-        Wizard changeStateWizard = Wizard.createByComponentId(driver, wait, "milestones-state-change_wizard-app");
+        Wizard changeStateWizard = Wizard.createByComponentId(driver, wait, STATE_CHANGE_WIZARD_ID);
         DelayUtils.sleep(2000);
         Input componentNewState = changeStateWizard.getComponent(NEW_STATE_ATTRIBUTE_ID, Input.ComponentType.COMBOBOX);
         if (!componentNewState.getValue().getStringValue().equals(newState)) {
@@ -60,21 +61,21 @@ public class ChangeStateMilestoneWizardPage extends BasePage {
     }
 
     public boolean isReasonMandatory() {
-        Wizard changeStateWizard = Wizard.createByComponentId(driver, wait, "milestones-state-change_wizard-app");
+        Wizard changeStateWizard = Wizard.createByComponentId(driver, wait, STATE_CHANGE_WIZARD_ID);
         DelayUtils.sleep(2000);
         TextField componentComment = (TextField) changeStateWizard.getComponent(COMMENT_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD);
         return componentComment.isMandatory();
     }
 
     public void setReason(String reason) {
-        Wizard changeStateWizard = Wizard.createByComponentId(driver, wait, "milestones-state-change_wizard-app");
+        Wizard changeStateWizard = Wizard.createByComponentId(driver, wait, STATE_CHANGE_WIZARD_ID);
         DelayUtils.sleep(2000);
         TextField componentComment = (TextField) changeStateWizard.getComponent(COMMENT_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD);
         componentComment.setSingleStringValue(reason);
     }
 
     public void setApprovalDate(long plusDays){
-        Wizard changeStateWizard = Wizard.createByComponentId(driver, wait, "milestones-state-change_wizard-app");
+        Wizard changeStateWizard = Wizard.createByComponentId(driver, wait, STATE_CHANGE_WIZARD_ID);
         DelayUtils.sleep(2000);
         Input componentApprovalDate = changeStateWizard.getComponent(APPROVAL_DATE_ATTRIBUTE_ID, Input.ComponentType.DATE);
         componentApprovalDate.setSingleStringValue(LocalDate.now().plusDays(plusDays).toString());

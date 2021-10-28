@@ -1,4 +1,4 @@
-package com.oss.pages.bpm;
+package com.oss.pages.bpm.processmodels;
 
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.widgets.Wizard;

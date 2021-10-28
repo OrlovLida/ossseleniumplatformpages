@@ -17,9 +17,9 @@ import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bpm.Milestone;
-import com.oss.pages.bpm.ProcessInstancesPage;
-import com.oss.pages.bpm.ProcessWizardPage;
+import com.oss.pages.bpm.milestones.Milestone;
+import com.oss.pages.bpm.processinstances.ProcessInstancesPage;
+import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;

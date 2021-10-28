@@ -2,8 +2,8 @@ package com.oss.bpm;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bpm.ImportModelWizardPage;
-import com.oss.pages.bpm.ProcessModelsPage;
+import com.oss.pages.bpm.processmodels.ImportModelWizardPage;
+import com.oss.pages.bpm.processmodels.ProcessModelsPage;
 import com.oss.utils.TestListener;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -28,11 +28,8 @@ public class ImportExportModelTest extends BaseTestCase {
     private static final String DOMAIN = "Inventory Processes";
     private static final String MODEL_NAME = "bpm_selenium_test_process";
     private static final String FILE_NAME = MODEL_NAME.replaceAll(" ", "+");
-    private static final String MODEL_OPERATIONS_GROUP_ID = "grouping-action-model-operations";
     private static final String OTHER_GROUP_ID = "other";
     private static final String IMPORT_ID = "import";
-    private static final String EXPORT_AS_BAR_ID = "export-bar";
-    private static final String EXPORT_XML_ID = "export-with-configuration-files";
     private static final String EXPORT_PATH_LOCAL = "C:\\Projects\\ossseleniumplatformpages\\target\\downloadFiles";  //działa tylko lokalnie
     private static final String IMPORT_PATH = "bpm/bpm_selenium_test_process.bar";
 
@@ -64,12 +61,17 @@ public class ImportExportModelTest extends BaseTestCase {
     }
 
     @Test(priority = 2)
-    public void exportModelAsBar() {
+    public void exportModel() {
         ProcessModelsPage processModelsPage = ProcessModelsPage.goToProcessModelsPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         processModelsPage.chooseDomain(DOMAIN);
-        processModelsPage.selectProcessModelByName(MODEL_NAME);
-        processModelsPage.callAction(MODEL_OPERATIONS_GROUP_ID,EXPORT_AS_BAR_ID);
+
+        //export bar
+        processModelsPage.exportModelAsBAR(MODEL_NAME);
+        Assert.assertTrue(processModelsPage.isFileDownloaded(EXPORT_PATH_LOCAL, FILE_NAME));
+
+        //export xml
+        processModelsPage.exportModelAsXML(MODEL_NAME);
         Assert.assertTrue(processModelsPage.isFileDownloaded(EXPORT_PATH_LOCAL, FILE_NAME));
 
     }

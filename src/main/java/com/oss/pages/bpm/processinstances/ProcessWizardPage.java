@@ -4,11 +4,12 @@
  * duplication or redistribution of this software is allowed only according to
  * separate agreement prepared in written between Comarch and authorized party.
  */
-package com.oss.pages.bpm;
+package com.oss.pages.bpm.processinstances;
 
 import java.time.LocalDate;
 import java.util.List;
 
+import com.oss.pages.bpm.milestones.Milestone;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
