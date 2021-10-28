@@ -61,7 +61,9 @@ public class ProcessModelsPage extends BasePage {
     }
 
     public void chooseDomain(String domain) {
+        DelayUtils.waitForPageToLoad(driver,wait);
         Input domain_input = ComponentFactory.create(DOMAIN_CHOOSER_COMBOBOX_ID, Input.ComponentType.COMBOBOX, driver, wait);
+        domain_input.clear();
         domain_input.setSingleStringValue(domain);
         DelayUtils.waitForPageToLoad(driver, wait);
     }

@@ -205,7 +205,8 @@ public class ProcessWizardPage extends BasePage {
         
         public Milestone editPredefinedMilestone(Milestone milestone, int row) {
             EditableList predefinedMilestoneList = getMilestonePredefinedList();
-            EditableList.Row predefineMilestoneRow = predefinedMilestoneList.selectRow(row - 1);
+//            EditableList.Row predefineMilestoneRow = predefinedMilestoneList.selectRow(row - 1);
+            EditableList.Row predefineMilestoneRow = predefinedMilestoneList.getRow(row - 1);
             
             if (milestone.getName().isPresent()) {
                 predefineMilestoneRow.setEditableAttributeValue(milestone.getName().get(), BPM_MILESTONE_NAME, "name-TEXT_FIELD",
@@ -251,13 +252,23 @@ public class ProcessWizardPage extends BasePage {
         }
         
         private Milestone getMilestoneFromRow(EditableList list, int row) {
-            String name = list.selectRow(row).getAttributeValue(BPM_MILESTONE_NAME);
-            String dueDate = list.selectRow(row).getAttributeValue(BPM_MILESTONE_DUE_DATE);
-            String leadTime = list.selectRow(row).getAttributeValue(BPM_MILESTONE_LEAD_TIME);
-            String description = list.selectRow(row).getAttributeValue(BPM_MILESTONE_DESCRIPTION);
-            String relatedTask = list.selectRow(row).getAttributeValue(BPM_MILESTONE_RELATED_TASK);
-            String isActive = list.selectRow(row).getAttributeValue(BPM_MILESTONE_IS_ACTIVE);
-            String isManualCompletion = list.selectRow(row).getAttributeValue(BPM_MILESTONE_IS_MANUAL_COMPLETION);
+//            String name = list.selectRow(row).getAttributeValue(BPM_MILESTONE_NAME);
+//            String dueDate = list.selectRow(row).getAttributeValue(BPM_MILESTONE_DUE_DATE);
+//            String leadTime = list.selectRow(row).getAttributeValue(BPM_MILESTONE_LEAD_TIME);
+//            String description = list.selectRow(row).getAttributeValue(BPM_MILESTONE_DESCRIPTION);
+//            String relatedTask = list.selectRow(row).getAttributeValue(BPM_MILESTONE_RELATED_TASK);
+//            String isActive = list.selectRow(row).getAttributeValue(BPM_MILESTONE_IS_ACTIVE);
+//            String isManualCompletion = list.selectRow(row).getAttributeValue(BPM_MILESTONE_IS_MANUAL_COMPLETION);
+
+            String name = list.getRow(row).getCellValue(BPM_MILESTONE_NAME);
+            String dueDate = list.getRow(row).getCellValue(BPM_MILESTONE_DUE_DATE);
+            String leadTime = list.getRow(row).getCellValue(BPM_MILESTONE_LEAD_TIME);
+            String description = list.getRow(row).getCellValue(BPM_MILESTONE_DESCRIPTION);
+            String relatedTask = list.getRow(row).getCellValue(BPM_MILESTONE_RELATED_TASK);
+            String isActive = list.getRow(row).getCellValue(BPM_MILESTONE_IS_ACTIVE);
+            String isManualCompletion = list.getRow(row).getCellValue(BPM_MILESTONE_IS_MANUAL_COMPLETION);
+
+
             return Milestone.builder().setName(name)
                     .setDueDate(dueDate)
                     .setLeadTime(leadTime)
