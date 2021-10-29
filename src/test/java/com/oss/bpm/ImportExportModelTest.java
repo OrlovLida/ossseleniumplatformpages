@@ -36,7 +36,7 @@ public class ImportExportModelTest extends BaseTestCase {
     @BeforeClass
     public void openBrw() {
         ProcessModelsPage processModelsPage = new ProcessModelsPage(driver);
-        processModelsPage.changeUser(BPM_USER_LOGIN,BPM_USER_PASSWORD);
+        //processModelsPage.changeUser(BPM_USER_LOGIN,BPM_USER_PASSWORD);
     }
 
 
