@@ -70,19 +70,23 @@ public class WAMVPage extends BasePage {
 
     @Step("I click on acknowledge button")
     public void clickOnAckButton() {
+        DelayUtils.sleep(1000);
         createButton(BUTTON_ACK_TEST_ID).click();
         log.info("Clicking on acknowledge button");
     }
 
     @Step("I click on deacknowledge button")
     public void clickOnDeackButton() {
+        DelayUtils.sleep(1000);
         createButton(BUTTON_DEACK_TEST_ID).click();
         log.info("Clicking on deacknowledge button");
     }
 
     @Step("I add note to alarm")
     public void addNote(String note) {
+        DelayUtils.sleep(1000);
         createButton(BUTTON_NOTE_TEST_ID).click();
+        DelayUtils.sleep(1000);
         EditNoteWizardPage editNote = new EditNoteWizardPage(driver);
         editNote.typeNote(note);
         log.info("Adding note: {}", note);
@@ -90,18 +94,21 @@ public class WAMVPage extends BasePage {
 
     @Step("I return a cell text from acknowledge state column")
     public String getTitleFromAckStatusCell(int row) {
+        DelayUtils.sleep(1000);
         log.info("Returning cell text from acknowledge state column in row: {}", row);
         return fmsmTable.getCellValueById(row, ACKNOWLEDGE_COLUMN_ID);
     }
 
     @Step("I return a cell text from notification identifier column")
     public String getTextFromNotificationIdentifierCell(int row) {
+        DelayUtils.sleep(1000);
         log.info("Returning cell text from notification identifier column in row: {}", row);
         return fmsmTable.getCellValueById(row, NOTIFICATION_IDENTIFIER_COLUMN_ID);
     }
 
     @Step("I return a cell text from note column")
     public String getTextFromNoteStatusCell(int row) {
+        DelayUtils.sleep(2000);
         log.info("Returning cell text from note column in row: {}", row);
         return fmsmTable.getCellValueById(row, NOTE_COLUMN_ID);
     }
@@ -152,6 +159,7 @@ public class WAMVPage extends BasePage {
 
     @Step("I check page title")
     public boolean checkIfPageTitleIsCorrect(String pageTitleLabel) {
+        DelayUtils.sleep(1000);
         log.info("Checking page title: {}", pageTitleLabel);
         for (int i = 0; i < 100; i++) {
             if (driver.getPageSource().contains(pageTitleLabel)) {

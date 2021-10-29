@@ -31,8 +31,26 @@ public class WAMVBasicTest extends BaseTestCase {
         fmDashboardPage = FMDashboardPage.goToPage(driver, BASIC_URL);
     }
 
+    @Parameters({"alarmListName", "row"})
+    @Test(priority = 1, testName = "Check WAMV Title", description = "WAMV title check")
+    @Description("I verify if Web Alarm Management View opens and basic options works")
+    public void openSelectedWAMVAndCheckPageTitle(
+            @Optional("Selenium_test_alarm_list") String alarmListName,
+            @Optional("0") int row
+    ) {
+        try {
+            fmDashboardPage.searchInAlarmManagementView(alarmListName);
+            wamvPage = fmDashboardPage.openAlarmManagementViewByRow(row);
+            Assert.assertTrue(wamvPage.checkIfPageTitleIsCorrect(alarmListName));
+
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            Assert.fail();
+        }
+    }
+
     @Parameters({"alarmListName", "alarmListRow", "row"})
-    @Test(priority = 1, testName = "Check Ack., Deack. and Note options", description = "Acknowledge, Deacknowledge, Note")
+    @Test(priority = 2, testName = "Check Ack., Deack. and Note options", description = "Acknowledge, Deacknowledge, Note")
     @Description("I verify if Web Alarm Management View opens and basic options works")
     public void openSelectedWAMVAndCheckAckDeackNoteFunctionality(
             @Optional("Selenium_test_alarm_list") String alarmListName,
@@ -52,7 +70,6 @@ public class WAMVBasicTest extends BaseTestCase {
                 }
                 waitForAckColumnChange(alarmListRow, ackValues.get(i));
                 Assert.assertEquals(wamvPage.getTitleFromAckStatusCell(alarmListRow), ackValues.get(i));
-
                 wamvPage.addNote(noteValues.get(i));
                 waitForNoteColumnChange(alarmListRow, noteValues.get(i));
                 Assert.assertEquals(wamvPage.getTextFromNoteStatusCell(alarmListRow), noteValues.get(i));
@@ -65,7 +82,7 @@ public class WAMVBasicTest extends BaseTestCase {
     }
 
     @Parameters({"alarmListName", "alarmListRow", "row", "adapterName"})
-    @Test(priority = 2, testName = "Check tabs from Area 3", description = "Check tabs")
+    @Test(priority = 3, testName = "Check tabs from Area 3", description = "Check tabs")
     @Description("I verify if Web Alarm Management View opens and if it is possible to click on tabs")
     public void openSelectedWAMVAndCheckArea3Tabs(
             @Optional("Selenium_test_alarm_list") String alarmListName,
