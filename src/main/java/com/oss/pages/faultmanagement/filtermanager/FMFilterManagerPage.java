@@ -72,11 +72,11 @@ public class FMFilterManagerPage extends BasePage {
         fmWizardPage.dragAndDropFilterByName(filterName);
         fmWizardPage.clickAccept();
         log.info("Creating a folder name: {}, description: {}, filterName: {}", name, description, filterName);
-
     }
 
     @Step("I delete folders by name")
     public void deleteFolder(String nameLabel) {
+        DelayUtils.sleep(2000);
         List<CommonList.Category> categories =
                 getCommonList().createCategories().stream().filter(category -> category.getValue().equals(nameLabel))
                         .collect(Collectors.toList());
@@ -86,13 +86,15 @@ public class FMFilterManagerPage extends BasePage {
 
     @Step("I check if folder exists")
     public boolean checkIfFolderNameExists(String nameLabel) {
+        DelayUtils.sleep(2000);
         log.info("Checking if folder : {} exists", nameLabel);
         for (int i = 0; i < 100; i++) {
             List<CommonList.Category> categories =
                     getCommonList().createCategories().stream().filter(category -> category.getValue().contains(nameLabel))
                             .collect(Collectors.toList());
-            if (categories.size() > 0)
+            if (categories.size() > 0) {
                 return true;
+            }
             DelayUtils.sleep(50);
         }
         return false;
@@ -100,13 +102,15 @@ public class FMFilterManagerPage extends BasePage {
 
     @Step("I check if folder not exists")
     public boolean checkIfFolderNameNotExists(String nameLabel) {
+        DelayUtils.sleep(2000);
         log.info("Checking if folder : {} not exists", nameLabel);
         for (int i = 0; i < 100; i++) {
             List<CommonList.Category> categories =
                     getCommonList().createCategories().stream().filter(category -> category.getValue().contains(nameLabel))
                             .collect(Collectors.toList());
-            if (categories.size() == 0)
+            if (categories.size() == 0) {
                 return true;
+            }
             DelayUtils.sleep(50);
         }
         return false;

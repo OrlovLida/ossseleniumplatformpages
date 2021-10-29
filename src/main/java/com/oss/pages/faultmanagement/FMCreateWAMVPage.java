@@ -17,6 +17,7 @@ public class FMCreateWAMVPage extends BasePage {
     private static final String DESCRIPTION_TEXT_FIELD_ID = "UserViewDescriptionInput";
     private static final String DROPDOWNLIST_AVAILABLE = "Available";
     private static final String DROPDOWNLIST_SELECTED = "Selected";
+    private static final String EXTENDED_LIST_ID = "ExtendedList-WAMVFiltersInput";
 
     public FMCreateWAMVPage(WebDriver driver) {
         super(driver);
@@ -47,7 +48,7 @@ public class FMCreateWAMVPage extends BasePage {
 
     @Step("I select N-th filter from filter list")
     public void selectFilterFromList(int row) {
-        EditableList filters = EditableList.create(driver, wait);
+        EditableList filters = EditableList.createById(driver, wait, EXTENDED_LIST_ID);
         filters.getRow(row).click();
         log.info("Selecting {}. filter from the list", row);
     }
