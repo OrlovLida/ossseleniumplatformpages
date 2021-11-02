@@ -80,7 +80,9 @@ public class FMDashboardPage extends BasePage {
     @Step("I delete WAMV by name")
     public void deleteWebAlarmManagementView(int rowNumber) {
         DelayUtils.sleep(2000);
-        commonAlarmManagement.getAllRows().get(rowNumber).callAction(BUTTONS_GROUP_ID, REMOVE_ACTION_ID);
+        commonAlarmManagement.getAllRows().get(rowNumber).selectRow();
+        commonAlarmManagement.getAllRows().get(rowNumber).callAction(REMOVE_ACTION_ID);
+        DelayUtils.sleep(1000);
         ConfirmationBox confirmationBox = ConfirmationBox.create(driver, wait);
         confirmationBox.clickButtonByDataAttributeName(CONFIRMATION_BOX_BUTTON_NAME);
         log.info("Deletion of WAMV in row {}", rowNumber);
