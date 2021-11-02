@@ -143,7 +143,7 @@ public class UC_NAR_005 extends BaseTestCase {
         NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.selectFirstRow();
         waitForPageToLoad();
-        NotificationsInterface notifications = Notifications.create(driver, webDriverWait);
+        NotificationsInterface notifications = Notifications.create(driver, new WebDriverWait(driver, 180));
         notifications.clearAllNotification();
         newInventoryViewPage.callAction(ActionsContainer.OTHER_GROUP_ID, "run-narrow-reconciliation");
         DelayUtils.sleep(3000);

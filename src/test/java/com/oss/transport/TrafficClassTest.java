@@ -1,32 +1,29 @@
 package com.oss.transport;
 
+import java.util.List;
+import java.util.Map;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
-import com.oss.framework.mainheader.PerspectiveChooser;
-import com.oss.framework.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
 import com.oss.pages.transport.traffic.classs.TrafficClassWizardPage;
+
 import io.qameta.allure.Step;
-import org.testng.Assert;
-import org.testng.annotations.Test;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Kamil Sikora
  */
 public class TrafficClassTest extends BaseTestCase {
 
-    private static final String WIZARDS = "Network domains";
-    private static final String TRANSPORT = "Transport & IP";
-    private static final String TRAFFIC_CLASS = "Create Traffic Class";
-
     private static final String PRE_CREATED_LOCATION = "Gliwice-BU1";
     private static final String PRE_CREATED_DEVICE = "SeleniumTestDeviceTC";
-    private static final String INTERFACE_CREATE = "MGT LAN 0";
-    private static final String INTERFACE_UPDATE = "SFP+ 0";
+    private static final String INTERFACE_CREATE = "MGT LAN 0\\1";
+    private static final String INTERFACE_UPDATE = "SFP+ 0\\1";
 
     private static final String PROPERTIES_BOTTOM_TABLE_TEST_ID = "properties(TrafficClass)";
     private static final String EDIT_BUTTON_INSIDE_EDIT_GROUP_TEST_ID = "TrafficClassEditContextAction";
@@ -86,17 +83,14 @@ public class TrafficClassTest extends BaseTestCase {
         trafficClassAttributes.mplsExperimentalTop = "5";
         trafficClassAttributes.ipDscp = "BE";
         trafficClassAttributes.accessList = "test access list";
-        trafficClassAttributes.inputInterface = PRE_CREATED_DEVICE + "/" + INTERFACE_CREATE;
+        trafficClassAttributes.inputInterface = PRE_CREATED_DEVICE + "\\" + INTERFACE_CREATE;
         trafficClassAttributes.protocol = "test protocol";
         return trafficClassAttributes;
     }
 
     private TrafficClassWizardPage goToWizardAtCreate() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        //SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
-        //sideMenu.callActionByLabel(TRAFFIC_CLASS, WIZARDS, TRANSPORT);
         driver.get(String.format("%s/#/view/transport/ip/ethernet/traffic-class?perspective=LIVE", BASIC_URL));
-
         return new TrafficClassWizardPage(driver);
     }
 
@@ -119,7 +113,7 @@ public class TrafficClassTest extends BaseTestCase {
         trafficClassAttributes.mplsExperimentalTop = "4";
         trafficClassAttributes.ipDscp = "EF";
         trafficClassAttributes.accessList = "updated test access list";
-        trafficClassAttributes.inputInterface = PRE_CREATED_DEVICE + "/" + INTERFACE_UPDATE;
+        trafficClassAttributes.inputInterface = PRE_CREATED_DEVICE + "\\" + INTERFACE_UPDATE;
         trafficClassAttributes.protocol = "updated test protocol";
         return trafficClassAttributes;
     }
