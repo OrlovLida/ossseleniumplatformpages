@@ -89,7 +89,7 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Use context action {action} from group {group}")
     public void useContextAction(String group, String action) {
-        getMainActionContainer().callAction(group, action);
+        getMainActionContainer().callActionById(group, action);
         waitForPageToLoad();
     }
 
