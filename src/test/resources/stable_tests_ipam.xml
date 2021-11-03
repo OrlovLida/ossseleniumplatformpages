@@ -1,0 +1,13 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="RegressionSuiteWeb-INVESTGA" thread-count="2" parallel="tests" verbose="1">
+  <test name="IPv4AddressesIPAMTest">
+    <classes>
+      <class name="com.oss.transport.ipam.IPv4AddressesIPAMTest"/>
+    </classes>
+  </test>
+  <test name="IPv6AddressesIPAMTest">
+    <classes>
+      <class name="com.oss.transport.ipam.IPv6AddressesIPAMTest"/>
+    </classes>
+  </test>
+</suite>
