@@ -33,7 +33,7 @@ public class HostingWizardPage extends BasePage {
 
     @Step("Set hosting device using contains")
     public HostingWizardPage setDevice(String deviceName) {
-        getHostingWizard().getComponent(DEVICES_ON_LOCATION_DATA_ATTRIBUTE_NAME, COMBOBOXV2).setSingleStringValueContains(deviceName);
+        getHostingWizard().getComponent(DEVICES_ON_LOCATION_DATA_ATTRIBUTE_NAME, MULTI_COMBOBOX).setSingleStringValueContains(deviceName);
         return this;
     }
 
