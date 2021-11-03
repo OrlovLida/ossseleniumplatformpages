@@ -1,0 +1,14 @@
+{
+    "type": "IPDeviceModel",
+    "simpleAttributes": {
+        "Name": "RouterModelSeleniumTransportTests"
+    },
+    "referenceAttributes": {
+        "MasterEquipmentType": {
+            "type": "EquipmentType",
+            "name": "Router"
+        }
+    },
+    "chassis": [],
+    "ports": []
+}
