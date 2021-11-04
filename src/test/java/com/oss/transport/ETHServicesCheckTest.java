@@ -36,9 +36,9 @@ public class ETHServicesCheckTest {
     }
 
     @Test(priority = 3)
-    @Step("Check web-management-core")
-    public void checkWebManagementCore() {
-        SERVICES_CHECKER.testHealth("web-management-core");
+    @Step("Check web-management")
+    public void checkWebManagement() {
+        SERVICES_CHECKER.testHealth("web-management");
     }
 
     @Test(priority = 4)

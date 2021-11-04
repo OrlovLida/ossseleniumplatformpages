@@ -42,9 +42,9 @@ public class MWServicesCheckTest {
     }
 
     @Test(priority = 4)
-    @Step("Check web-management-core")
-    public void checkWebManagementCore() {
-        SERVICES_CHECKER.testHealth("web-management-core");
+    @Step("Check web-management")
+    public void checkWebManagement() {
+        SERVICES_CHECKER.testHealth("web-management");
     }
 
     @Test(priority = 5)
