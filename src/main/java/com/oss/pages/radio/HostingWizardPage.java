@@ -1,13 +1,14 @@
 package com.oss.pages.radio;
 
-import com.oss.framework.components.inputs.Input;
-import com.oss.framework.data.Data;
-import com.oss.framework.widgets.Wizard;
-import com.oss.pages.BasePage;
-import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.*;
+import com.oss.framework.widgets.Wizard;
+import com.oss.pages.BasePage;
+
+import io.qameta.allure.Step;
+
+import static com.oss.framework.components.inputs.Input.ComponentType.CHECKBOX;
+import static com.oss.framework.components.inputs.Input.ComponentType.MULTI_COMBOBOX;
 
 public class HostingWizardPage extends BasePage {
 
@@ -18,7 +19,9 @@ public class HostingWizardPage extends BasePage {
     private static final String ONLY_COMPATIBLE_DATA_ATTRIBUTE_NAME = "onlyCompatible";
     private static final String SHOW_ONLY_UNUSED_ARRAYS_DATA_ATTRIBUTE_NAME = "showOnlyUnusedArrays";
 
-    public HostingWizardPage(WebDriver driver) { super(driver); }
+    public HostingWizardPage(WebDriver driver) {
+        super(driver);
+    }
 
     @Step("Click Accept button")
     public void clickAccept() {
@@ -26,9 +29,8 @@ public class HostingWizardPage extends BasePage {
     }
 
     @Step("Use 'Only Compatible' checkbox")
-    public HostingWizardPage onlyCompatible(String showOnlyCompatible) {
+    public void onlyCompatible(String showOnlyCompatible) {
         getHostingWizard().setComponentValue(ONLY_COMPATIBLE_DATA_ATTRIBUTE_NAME, showOnlyCompatible, CHECKBOX);
-        return this;
     }
 
     @Step("Set hosting device using contains")
@@ -39,19 +41,19 @@ public class HostingWizardPage extends BasePage {
 
     @Step("Set hosting logic using contains")
     public HostingWizardPage setObjectType(String objectType) {
-        getHostingWizard().getComponent(OBJECT_TYPE_DATA_ATTRIBUTE_NAME, COMBOBOXV2).setSingleStringValueContains(objectType);
+        getHostingWizard().getComponent(OBJECT_TYPE_DATA_ATTRIBUTE_NAME, MULTI_COMBOBOX).setSingleStringValueContains(objectType);
         return this;
     }
 
     @Step("Select hosting object using contains")
     public HostingWizardPage setHostingContains(String hostingObjectName) {
-        getHostingWizard().getComponent(HOSTING_DATA_ATTRIBUTE_NAME, COMBOBOXV2).setSingleStringValueContains(hostingObjectName);
+        getHostingWizard().getComponent(HOSTING_DATA_ATTRIBUTE_NAME, MULTI_COMBOBOX).setSingleStringValueContains(hostingObjectName);
         return this;
     }
 
     @Step("Select hosting object")
     public HostingWizardPage setHosting(String hostingObjectName) {
-        getHostingWizard().setComponentValue(HOSTING_DATA_ATTRIBUTE_NAME, hostingObjectName, COMBOBOXV2);
+        getHostingWizard().setComponentValue(HOSTING_DATA_ATTRIBUTE_NAME, hostingObjectName, MULTI_COMBOBOX);
         return this;
     }
 
