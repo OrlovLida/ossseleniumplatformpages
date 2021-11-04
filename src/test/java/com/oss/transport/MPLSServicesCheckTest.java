@@ -12,7 +12,7 @@ import java.net.URL;
 
 import static com.oss.configuration.Configuration.CONFIGURATION;
 
-public class ETHServicesCheckTest {
+public class MPLSServicesCheckTest {
 
     public static final String BASIC_URL = CONFIGURATION.getUrl();
     private static final ServicesChecker SERVICES_CHECKER;
@@ -24,24 +24,18 @@ public class ETHServicesCheckTest {
     }
 
     @Test(priority = 1)
-    @Step("Check ethernet-core")
-    public void checkEthernetCore() {
-        SERVICES_CHECKER.testHealth("ethernet-core");
+    @Step("Check mpls-core")
+    public void checkMplsCore() {
+        SERVICES_CHECKER.testHealth("mpls-core");
     }
 
     @Test(priority = 2)
-    @Step("Check ethernet-view")
-    public void checkEthernetView() {
-        SERVICES_CHECKER.testHealth("ethernet-view");
+    @Step("Check mpls-view")
+    public void checkMplsView() {
+        SERVICES_CHECKER.testHealth("mpls-view");
     }
 
     @Test(priority = 3)
-    @Step("Check web-management-core")
-    public void checkWebManagementCore() {
-        SERVICES_CHECKER.testHealth("web-management-core");
-    }
-
-    @Test(priority = 4)
     @Step("Check inventory-view-core")
     public void checkInventoryViewCore() {
         SERVICES_CHECKER.testHealth("inventory-view-core");

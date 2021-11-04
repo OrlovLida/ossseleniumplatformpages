@@ -12,7 +12,7 @@ import java.net.URL;
 
 import static com.oss.configuration.Configuration.CONFIGURATION;
 
-public class ETHServicesCheckTest {
+public class IPAMServicesCheckTest {
 
     public static final String BASIC_URL = CONFIGURATION.getUrl();
     private static final ServicesChecker SERVICES_CHECKER;
@@ -24,24 +24,12 @@ public class ETHServicesCheckTest {
     }
 
     @Test(priority = 1)
-    @Step("Check ethernet-core")
-    public void checkEthernetCore() {
-        SERVICES_CHECKER.testHealth("ethernet-core");
+    @Step("Check ipaddress-management")
+    public void checkIPAddressManagement() {
+        SERVICES_CHECKER.testHealth("ipaddress-management");
     }
 
     @Test(priority = 2)
-    @Step("Check ethernet-view")
-    public void checkEthernetView() {
-        SERVICES_CHECKER.testHealth("ethernet-view");
-    }
-
-    @Test(priority = 3)
-    @Step("Check web-management-core")
-    public void checkWebManagementCore() {
-        SERVICES_CHECKER.testHealth("web-management-core");
-    }
-
-    @Test(priority = 4)
     @Step("Check inventory-view-core")
     public void checkInventoryViewCore() {
         SERVICES_CHECKER.testHealth("inventory-view-core");
