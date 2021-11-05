@@ -95,7 +95,7 @@ public class UC_NAR_001 extends BaseTestCase {
         networkDiscoveryControlViewPage.moveToNivFromNdcv();
         NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
         networkInconsistenciesViewPage.expandTree();
-        networkInconsistenciesViewPage.assignLocation(ROUTER_NAME, "a");
+        networkInconsistenciesViewPage.assignLocation(ROUTER_NAME, "1");
         checkPopupMessageType(MessageType.SUCCESS);
         networkInconsistenciesViewPage.clearOldNotification();
         networkInconsistenciesViewPage.applyInconsistencies();
