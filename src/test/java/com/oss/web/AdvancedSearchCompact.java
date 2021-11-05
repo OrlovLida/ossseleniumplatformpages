@@ -146,12 +146,12 @@ public class AdvancedSearchCompact extends BaseTestCase {
         List<String> attributes = new ArrayList<>();
         attributes.add("actors");
         inventoryViewPage.unselectVisibilitySearchAttributes(attributes);
-        List<String> filters = inventoryViewPage.getMainTable().getAllVisibleFilters();
+        List<String> filters = inventoryViewPage.getAllVisibleFilters();
 
         Assert.assertFalse(filters.contains("Actors"));
 
         inventoryViewPage.selectVisibilitySearchAttributes(attributes);
-        List<String> filtersSecond = inventoryViewPage.getMainTable().getAllVisibleFilters();
+        List<String> filtersSecond = inventoryViewPage.getAllVisibleFilters();
         Assert.assertTrue(filtersSecond.contains("Actors"));
     }
 

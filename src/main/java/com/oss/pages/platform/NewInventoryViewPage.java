@@ -120,6 +120,10 @@ public class NewInventoryViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         return filterValues;
     }
+
+    public List<String> getSavedFilters() {
+        return getAdvancedSearch().getSavedFilters();
+    }
     
     @Step("Clear all filters")
     public void clearFilters() {
@@ -145,6 +149,10 @@ public class NewInventoryViewPage extends BasePage {
     
     public List<String> getAllVisibleFilters() {
         return getMainTable().getAllVisibleFilters();
+    }
+    
+    public AdvancedSearch getAdvancedSearch() {
+        return getMainTable().getAdvancedSearch();
     }
     
     public String getAttributeValue(String columnId, int rowId) {
@@ -188,16 +196,6 @@ public class NewInventoryViewPage extends BasePage {
     @Step("Call context action by ID : {actionId}")
     public void callActionById(String actionId) {
         getMainTable().callAction(actionId);
-    }
-    
-    @Step("Clear all tags")
-    @Deprecated
-    public NewInventoryViewPage clearAllTags() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        AdvancedSearch advancedSearch = new AdvancedSearch(driver, wait);
-        advancedSearch.clickOnTagByLabel("Clear");
-        DelayUtils.waitForPageToLoad(driver, wait);
-        return this;
     }
     
     @Step("Change columns order")
@@ -492,17 +490,11 @@ public class NewInventoryViewPage extends BasePage {
         getTabsWidget().selectTabByLabel(tabLabel);
         return this;
     }
-    
-    public boolean isAllTagsInvisible() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        AdvancedSearch advancedSearch = new AdvancedSearch(driver, wait);
-        return advancedSearch.howManyTagsIsVisible() == 0;
-    }
-    
+
     public int countOfVisibleTags() {
         DelayUtils.waitForPageToLoad(driver, wait);
         AdvancedSearch advancedSearch = new AdvancedSearch(driver, wait);
-        return advancedSearch.howManyTagsIsVisible();
+        return advancedSearch.getTagsNumber();
     }
     
     public String getIdOfMainTableObject(int rowIndex) {
@@ -512,7 +504,7 @@ public class NewInventoryViewPage extends BasePage {
     
     public boolean isOnlyOneObject(String id) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        return getMainTable().howManyRowsOnFirstPage() == 1 && getIdOfMainTableObject(0).equals(id);
+        return getMainTable().getRowsNumber() == 1 && getIdOfMainTableObject(0).equals(id);
     }
     
 }
