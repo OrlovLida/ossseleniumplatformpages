@@ -3,6 +3,7 @@ package com.oss.pages.bigdata.kqiview;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.mainheader.ButtonPanel;
 import com.oss.framework.mainheader.Share;
 import com.oss.framework.mainheader.ToolbarWidget;
@@ -14,6 +15,7 @@ import com.oss.framework.widgets.dpe.toolbarpanel.*;
 import com.oss.framework.widgets.dpe.toolbarpanel.ExportPanel.ExportType;
 import com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType;
 import com.oss.framework.widgets.dpe.treewidget.KpiTreeWidget;
+import com.oss.framework.widgets.tablewidget.TableWidget;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
@@ -57,6 +59,7 @@ public class KpiViewPage extends BasePage {
     private static final String LINK_TO_INDICATORS_VIEW_CHART_LABEL = "Indicators View - Chart";
     private static final String DIMENSION_OPTIONS_BUTTON_ID = "dimension-options-button";
     private static final String CHILD_OBJECT_LEVEL_INPUT_ID = "SelectChildMOLevelChanged";
+    private static final String IND_VIEW_TABLE_ID = "ind-view-table";
 
     public KpiViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -243,6 +246,16 @@ public class KpiViewPage extends BasePage {
     @Step("I should see {expectedLinesCount} lines displayed")
     public boolean shouldSeeCurvesDisplayed(int expectedLinesCount) {
         return KpiChartWidget.create(driver, wait).countLines() == expectedLinesCount;
+    }
+
+    @Step("I should see {expectedPieCharts} Pie Charts displayed")
+    public boolean shouldSeePieChartsDisplayed(int expectedPieCharts) {
+        return KpiChartWidget.create(driver, wait).countPieCharts() == expectedPieCharts;
+    }
+
+    @Step("I check if Indicators View Table is empty")
+    public boolean isIndicatorsViewTableEmpty() {
+        return TableWidget.createById(driver, IND_VIEW_TABLE_ID, wait).hasNoData();
     }
 
     @Step("I should see more than one line displayed")
@@ -566,5 +579,12 @@ public class KpiViewPage extends BasePage {
             Button.createById(driver, DIMENSION_OPTIONS_BUTTON_ID).click();
             log.info("I click on option button in first dimension node");
         }
+    }
+
+    @Step("I select display type from toolbar panel")
+    public void setDisplayType(String displayTypeId) {
+        KpiToolbarPanel.create(driver, wait).selectDisplayType(displayTypeId);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Setting display type to: {}", displayTypeId);
     }
 }
