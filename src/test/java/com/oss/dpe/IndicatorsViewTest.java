@@ -317,7 +317,6 @@ public class IndicatorsViewTest extends BaseTestCase {
         }
     }
 
-
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
     @Test(priority = 12, testName = "Display Child Objects", description = "Display series for child objects")
     @Description("Display series for child objects")
@@ -338,6 +337,34 @@ public class IndicatorsViewTest extends BaseTestCase {
             kpiViewPage.applyChanges();
 
             assertTrue(kpiViewPage.shouldSeeMoreThanOneCurveDisplayed());
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            fail();
+        }
+    }
+
+    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
+    @Test(priority = 13, testName = "Change display type chart/table/pieChart", description = "Change display type chart/table/pieChart")
+    @Description("Change display type chart/table/pieChart")
+    public void changeDisplayType(
+            @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
+            @Optional("DBTIME") String indicatorNodesToSelect,
+            @Optional() String dimensionNodesToExpand,
+            @Optional("DC Type: THRES_DC") String dimensionNodesToSelect,
+            @Optional("Data Collection Statistics") String filterName
+    ) {
+        try {
+            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+
+            kpiViewPage.setDisplayType("Pie Chart");
+            assertTrue(kpiViewPage.shouldSeePieChartsDisplayed(1));
+
+            kpiViewPage.setDisplayType("Chart");
+            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+
+            kpiViewPage.setDisplayType("Table");
+            assertFalse(kpiViewPage.isIndicatorsViewTableEmpty());
         } catch (Exception e) {
             log.error(e.getMessage());
             fail();
