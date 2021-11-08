@@ -60,9 +60,9 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         table.callAction("EDIT", CHANGE_LOCATION_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         Wizard wizard = Wizard.createWizard(driver, new WebDriverWait(driver, 90));
-        wizard.setComponentValue(DeviceWizardPage.DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, preciseLocation, ComponentType.SEARCH_FIELD);
+        wizard.setComponentValue(DeviceWizardPage.DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, preciseLocation, ComponentType.ObjectSearchField);
         DelayUtils.waitForPageToLoad(driver, wait);
-        wizard.setComponentValue(DeviceWizardPage.DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, preciseLocation, ComponentType.SEARCH_FIELD);
+        wizard.setComponentValue(DeviceWizardPage.DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, preciseLocation, ComponentType.ObjectSearchField);
         DelayUtils.waitForPageToLoad(driver, wait);
         wizard.clickActionById(ACCEPT_CHANGE_LOCATION_BUTTON_ID);
     }
