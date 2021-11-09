@@ -15,6 +15,7 @@ public class GlobalSearchPage extends BasePage {
 
     private static final String OBJECTS_LIST_DATA_ATTRIBUTE_NAME = "objectsList";
     private static final String OBJECT_TYPE_FILTER_COMBOBOX_ID = "filteringWidget";
+    private static final String ATTRIBUTE = "Attributes";
 
     public GlobalSearchPage(WebDriver driver) {
         super(driver);
@@ -22,10 +23,7 @@ public class GlobalSearchPage extends BasePage {
 
     @Step("Expand {option} and select {viewName} from the drop-down list")
     public void expandShowOnAndChooseView(String objectName, String option, String viewName) {
-        getResultsList().expandListElementKebab(objectName);
-        DropdownList threeDotsList = DropdownList.create(driver, wait);
-        threeDotsList.selectOptionWithId(option);
-        threeDotsList.selectOptionWithId(viewName);
+        getResultsList().getRowContains(ATTRIBUTE, objectName).callAction(option,viewName);
     }
 
     @Step("Filter by object type {objectType}")
