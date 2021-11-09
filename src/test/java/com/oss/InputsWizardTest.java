@@ -43,6 +43,7 @@ public class InputsWizardTest extends BaseTestCase {
     public void testCheckbox() {
         Checkbox checkbox = (Checkbox) inputsWizardPage
                 .getComponent(InputsWizardPage.CHECKBOX_ID, ComponentType.CHECKBOX);
+        checkbox.setSingleStringValue("true");
         testComponent(InputsWizardPage.CHECKBOX_ID, checkbox);
     }
     
@@ -258,16 +259,15 @@ public class InputsWizardTest extends BaseTestCase {
         testComponent(InputsWizardPage.SEARCH_FIELD_ID, searchField);
     }
     
-    /*
-    @Test(enabled = false)
-    public void testSwitcher() throws InterruptedException {
-        Switcher switcher = inputsWizardPage.getSwitcher();
-        //Switcher specific test cases
-        switcher.set();
-        //Component tests
-        testComponent(InputsWizardPage.SWITCHER_ID, switcher);
-    }*/
-    
+//    @Test(enabled = false)
+//    public void testSwitcher() throws InterruptedException {
+//        Switcher switcher = inputsWizardPage.getSwitcher();
+//        //Switcher specific test cases
+//        switcher.set();
+//        //Component tests
+//        testComponent(InputsWizardPage.SWITCHER_ID, switcher);
+//    }
+//
     @Test
     public void testTextArea() {
         TextArea textArea = (TextArea) inputsWizardPage
@@ -333,13 +333,11 @@ public class InputsWizardTest extends BaseTestCase {
         
         // Read only test //
         inputsWizardPage.setControllerValue(InputsWizardPage.READ_ONLY_CONTROLLER_ID, componentId);
-        
-        Assertions.assertThat(input.cursor()).isEqualTo("not-allowed");
-        
+        Assertions.assertThat(input.cursor()).isEqualTo(Input.MouseCursor.NOT_ALLOWED);
         inputsWizardPage.clearController(InputsWizardPage.READ_ONLY_CONTROLLER_ID);
         
         // Tooltip message test
-        Assertions.assertThat(componentId).isEqualTo(input.getHint().get(0));
+        Assertions.assertThat(input.getHint().get(0)).contains(componentId);
         
         // Mandatory label test
         inputsWizardPage.setControllerValue(InputsWizardPage.MANDATORY_CONTROLLER_ID, componentId);
@@ -347,7 +345,7 @@ public class InputsWizardTest extends BaseTestCase {
         Assertions.assertThat(mandatoryLabel).contains("*");
         
         // Mandatory validation test //
-        inputsWizardPage.submit();
+        // inputsWizardPage.submit();
         input.hover();
         List<String> mandatoryMessages = input.getMessages();
         Assertions.assertThat(mandatoryMessages).contains("This field is mandatory.");
