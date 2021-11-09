@@ -2,7 +2,6 @@ package com.oss.web;
 
 import com.google.common.collect.Multimap;
 import com.oss.BaseTestCase;
-import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.TableWidget;
@@ -11,7 +10,6 @@ import com.oss.pages.platform.NewInventoryViewPage;
 import org.assertj.core.api.Assertions;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -146,12 +144,12 @@ public class AdvancedSearchCompact extends BaseTestCase {
         List<String> attributes = new ArrayList<>();
         attributes.add("actors");
         inventoryViewPage.unselectVisibilitySearchAttributes(attributes);
-        List<String> filters = inventoryViewPage.getMainTable().getAllVisibleFilters();
+        List<String> filters = inventoryViewPage.getAllVisibleFilters();
 
         Assert.assertFalse(filters.contains("Actors"));
 
         inventoryViewPage.selectVisibilitySearchAttributes(attributes);
-        List<String> filtersSecond = inventoryViewPage.getMainTable().getAllVisibleFilters();
+        List<String> filtersSecond = inventoryViewPage.getAllVisibleFilters();
         Assert.assertTrue(filtersSecond.contains("Actors"));
     }
 
@@ -164,7 +162,7 @@ public class AdvancedSearchCompact extends BaseTestCase {
         inventoryViewPage.clearFilter(SIMPLE_ATTRIBUTE_LABEL);
 
 
-        tableWidget.choseSavedFiltersByLabel(FILTER_NAME);
+        tableWidget.chooseSavedFiltersByLabel(FILTER_NAME);
         DelayUtils.sleep(500);
 
         Assert.assertTrue(checkIfCellContainsValue(SIMPLE_ATTRIBUTE, attributeValue));
