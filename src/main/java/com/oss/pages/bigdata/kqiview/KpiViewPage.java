@@ -3,7 +3,6 @@ package com.oss.pages.bigdata.kqiview;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.mainheader.ButtonPanel;
 import com.oss.framework.mainheader.Share;
 import com.oss.framework.mainheader.ToolbarWidget;
@@ -60,6 +59,9 @@ public class KpiViewPage extends BasePage {
     private static final String DIMENSION_OPTIONS_BUTTON_ID = "dimension-options-button";
     private static final String CHILD_OBJECT_LEVEL_INPUT_ID = "SelectChildMOLevelChanged";
     private static final String IND_VIEW_TABLE_ID = "ind-view-table";
+    private static final String TOP_N_BARCHART_DFE_ID = "amchart-series-DFE_y-selected";
+    private static final String TOP_N_BARCHART_DPE_ID = "amchart-series-DPE_y-selected";
+
 
     public KpiViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -229,14 +231,6 @@ public class KpiViewPage extends BasePage {
         return false;
     }
 
-    @Step("I set TopN options with dimension: {dimension}")
-    public void setTopNOptions(String dimension) {
-        TopNPanel topNPanel = KpiToolbarPanel.create(driver, wait).getTopNPanel();
-        topNPanel.openTopNPanel();
-        topNPanel.setTopNDimension(dimension);
-        topNPanel.clickPerform();
-    }
-
     @Step("I should see {expectedColumnsCount} columns and {expectedLinesCount} lines displayed")
     public boolean shouldSeeBoxesAndCurvesDisplayed(int expectedColumnsCount, int expectedLinesCount) {
         KpiChartWidget kpiChartWidget = KpiChartWidget.create(driver, wait);
@@ -270,13 +264,24 @@ public class KpiViewPage extends BasePage {
         return pointsCount == expectedPointsCount;
     }
 
-    @Step("I set TopN options with dimension: {dimension} and {nthLevel} level")
-    public void setTopNOptions(String dimension, String nthLevel) {
-        TopNPanel topNPanel = KpiToolbarPanel.create(driver, wait).getTopNPanel();
-        topNPanel.openTopNPanel();
-        topNPanel.setTopNDimension(dimension);
-        topNPanel.setNthLevel(nthLevel);
-        topNPanel.clickPerform();
+    @Step("I set topN dimension in TopN panel")
+    public void setTopNDimension(String dimensionId) {
+       getTopNPanel().setDimension(dimensionId);
+    }
+
+    @Step("I set topN level in TopN panel")
+    public void setTopNLevel(String levelId) {
+        getTopNPanel().setLevel(levelId);
+    }
+
+    @Step("I click Perform in TopN panel")
+    public void clickPerformTopN() {
+        getTopNPanel().clickPerform();
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    private TopNPanel getTopNPanel() {
+        return KpiToolbarPanel.create(driver, wait).openTopNPanel();
     }
 
     @Step("I click legend")
@@ -355,6 +360,16 @@ public class KpiViewPage extends BasePage {
         KpiChartWidget kpiChartWidget = KpiChartWidget.create(driver, wait);
         String fillOpacity = kpiChartWidget.barDataSeriesFillOpacity();
         return fillOpacity.equals(expectedFillOpacity);
+    }
+
+    @Step("I should see topN bar chart displayed with DFE data")
+    public boolean dfeTopNBarChartIsDisplayed() {
+        return KpiChartWidget.create(driver, wait).topNBarChartIsDisplayed(TOP_N_BARCHART_DFE_ID);
+    }
+
+    @Step("I should see topN bar chart displayed with DPE data")
+    public boolean dpeTopNBarChartIsDisplayed() {
+        return KpiChartWidget.create(driver, wait).topNBarChartIsDisplayed(TOP_N_BARCHART_DPE_ID);
     }
 
     @Step("I should see bar chart displayed")
@@ -586,5 +601,10 @@ public class KpiViewPage extends BasePage {
         KpiToolbarPanel.create(driver, wait).selectDisplayType(displayTypeId);
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Setting display type to: {}", displayTypeId);
+    }
+
+    @Step("I check if expected number of charts is visible")
+    public boolean isExpectedNumberOfChartsVisible(int expectedNumberOfCharts) {
+        return KpiChartWidget.create(driver, wait).countCharts() == expectedNumberOfCharts;
     }
 }
