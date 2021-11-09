@@ -12,6 +12,7 @@ import org.testng.annotations.*;
 
 import static com.oss.utils.AttachmentsManager.attachConsoleLogs;
 import static com.oss.utils.AttachmentsManager.saveScreenshotPNG;
+import static org.testng.Assert.assertTrue;
 
 @Listeners({TestListener.class})
 public class KpiViewTest extends BaseTestCase {
@@ -76,34 +77,8 @@ public class KpiViewTest extends BaseTestCase {
         }
     }
 
-    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
-    @Test(priority = 3)
-    @Description("I verify a number of ranges and line")
-    public void verifyNumberOfRangesAndLine(
-            @Optional("DFE Tests,DFE Product Tests,Selenium Tests") String indicatorNodesToExpand,
-            @Optional("t:SMOKE#Attempts") String indicatorNodesToSelect,
-            @Optional("d1") String dimensionNodesToExpand,
-            @Optional("D1_01") String dimensionNodesToSelect,
-            @Optional("Selenium Tests") String filterName
-    ){
-        try{
-            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
-
-            kpiViewPage.setTopNOptions("d1");
-            Assert.assertTrue(kpiViewPage.shouldSeeBoxesAndCurvesDisplayed(1,1));
-
-            kpiViewPage.setTopNOptions("d2");
-            Assert.assertTrue(kpiViewPage.shouldSeeBoxesAndCurvesDisplayed(2, 2));
-
-            kpiViewPage.setTopNOptions("t:SMOKE#DimHierSelenium", "3");
-            Assert.assertTrue(kpiViewPage.shouldSeeBoxesAndCurvesDisplayed(6, 5));
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
-    }
-
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToSelect", "dimensionNodesToExpand", "filterName"})
-    @Test(priority = 4, testName = "Link to Indicators View - chart from chart actions", description = "Opening Link to Indicators View - chart from chart actions")
+    @Test(priority = 3, testName = "Link to Indicators View - chart from chart actions", description = "Opening Link to Indicators View - chart from chart actions")
     @Description("Opening Link to Indicators View - chart from chart actions")
     public void checkLinkToKPIViewChart(
             @Optional("DFE Tests,DFE Product Tests,Selenium Tests") String indicatorNodesToExpand,
@@ -120,6 +95,33 @@ public class KpiViewTest extends BaseTestCase {
             Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
             Assert.assertTrue(kpiViewPage.isNodeInTreeSelected(indicatorNodesToSelect, INDICATORS_TREE_ID));
             Assert.assertTrue(kpiViewPage.isNodeInTreeSelected(dimensionNodesToSelect, DIMENSIONS_TREE_ID));
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            Assert.fail();
+        }
+    }
+
+    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToSelect", "dimensionNodesToExpand", "filterName"})
+    @Test(priority = 4, testName = "Check topN Panel for DFE data", description = "Check topN Panel for DFE data")
+    @Description("Check topN Panel for DFE data")
+    public void checkTopNPanelForDfe(
+            @Optional("DFE Tests,DFE Product Tests,Selenium Tests") String indicatorNodesToExpand,
+            @Optional("SUCCESS_LONG") String indicatorNodesToSelect,
+            @Optional("t:SMOKE#DimHierSelenium") String dimensionNodesToExpand,
+            @Optional("D3_01") String dimensionNodesToSelect,
+            @Optional("DFE Tests") String filterName
+    ) {
+        try {
+            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+            Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+
+            kpiViewPage.setTopNDimension("t:SMOKE#DimHierSelenium");
+            kpiViewPage.setTopNLevel("1st");
+            kpiViewPage.clickPerformTopN();
+
+            Assert.assertTrue(kpiViewPage.dfeTopNBarChartIsDisplayed());
+            Assert.assertTrue(kpiViewPage.isExpectedNumberOfChartsVisible(2));
+            Assert.assertTrue(kpiViewPage.shouldSeeBoxesAndCurvesDisplayed(3, 3));
         } catch (Exception e) {
             log.error(e.getMessage());
             Assert.fail();
