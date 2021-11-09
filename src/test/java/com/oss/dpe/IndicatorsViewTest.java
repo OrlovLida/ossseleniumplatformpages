@@ -370,4 +370,29 @@ public class IndicatorsViewTest extends BaseTestCase {
             fail();
         }
     }
+
+    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
+    @Test(priority = 14, testName = "Check topN Panel for DPE data", description = "Check topN Panel for DPE data")
+    @Description("Check topN Panel for DPE data")
+    public void checkTopNPanelForDpe(
+            @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
+            @Optional("DBTIME") String indicatorNodesToSelect,
+            @Optional() String dimensionNodesToExpand,
+            @Optional("DC Type: THRES_DC") String dimensionNodesToSelect,
+            @Optional("Data Collection Statistics") String filterName
+    ) {
+        try {
+            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+
+            kpiViewPage.clickPerformTopN();
+
+            assertTrue(kpiViewPage.dpeTopNBarChartIsDisplayed());
+            assertTrue(kpiViewPage.isExpectedNumberOfChartsVisible(2));
+            assertTrue(kpiViewPage.shouldSeeBoxesAndCurvesDisplayed(6, 5));
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            fail();
+        }
+    }
 }

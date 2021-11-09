@@ -196,7 +196,7 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Accept trail type")
     public void acceptTrailType() {
-        wizard.clickActionById("wizard-submit-button-trailTypeWizardWigdet");
+        wizard.clickActionById("wizard-submit-button-trailTypeWizardWidget");
     }
 
     @Step("Open modify termination wizard")
