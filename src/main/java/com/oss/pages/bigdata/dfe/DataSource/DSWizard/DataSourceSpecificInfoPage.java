@@ -36,6 +36,7 @@ public class DataSourceSpecificInfoPage extends BasePage {
     }
 
     private void fillIntervalUnit(String unit) {
+        specificInfoWizard.clearComponent(INTERVAL_UNIT_INPUT_ID, COMBOBOX);
         specificInfoWizard.setComponentValue(INTERVAL_UNIT_INPUT_ID, unit, COMBOBOX);
         log.debug("Setting interval unit with: {}", unit);
     }
