@@ -65,6 +65,7 @@ public class NetworkViewPage extends BasePage {
     private static final String ROUTING_TABLE_APP_ID = "routing-table-app";
     private static final String TRAIL_TYPES_POPUP_ID = "trailTypesPopup";
     private static final String SUPPRESSION_WIZARD_ID = "plaSuppressionWizard";
+    private static final String SUPPRESSION_WIZARD_CONTEXT_ACTION_ID = "frameworkCustomMore_Suppression wizard";
 
     private Wizard wizard = Wizard.createWizard(driver, wait);
 
@@ -349,7 +350,7 @@ public class NetworkViewPage extends BasePage {
         waitForPageToLoad();
         table.selectRow(0);
         waitForPageToLoad();
-        tabsWidget.callActionById("Suppression wizard");
+        tabsWidget.callActionById(SUPPRESSION_WIZARD_CONTEXT_ACTION_ID);
         waitForPageToLoad();
         suppressionWizard().setComponentValue("reasonField", reason, TEXT_AREA);
         waitForPageToLoad();
