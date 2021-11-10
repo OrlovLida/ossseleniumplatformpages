@@ -8,6 +8,7 @@ import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
+import static com.oss.framework.components.inputs.Input.ComponentType.CHECKBOX;
 import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
 import static com.oss.framework.components.inputs.Input.ComponentType.SEARCH_FIELD;
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
@@ -22,6 +23,7 @@ public class ConnectionWizardPage extends BasePage {
     private static final String CAPACITY_UNIT_ID = "trailCapacityUnitComponent";
     private static final String CAPACITY_VALUE_ID = "trailCapacityValueComponent";
     private static final String ETHERNET_LINK_SPEED_ID = "oss.transport.trail.type.Ethernet Link.Speed";
+    private static final String ADDRESS_TO_OPPOSITE_INTERFACE_ID = "oss.transport.trail.type.IP Link.AssignIPHostAddressComboboxComponent";
 
     public ConnectionWizardPage(WebDriver driver) {
         super(driver);
@@ -78,5 +80,10 @@ public class ConnectionWizardPage extends BasePage {
     @Step("Terminate Termination Port")
     public void terminateTerminationPort(String value) {
         wizard.setComponentValue(TERMINATE_TP_ID, value, SEARCH_FIELD);
+    }
+
+    @Step("Assign IP Host Address to the opposite interface = {value}")
+    public void assignAddressToOpositeInteface(boolean value) {
+        wizard.setComponentValue(ADDRESS_TO_OPPOSITE_INTERFACE_ID, String.valueOf(value), CHECKBOX);
     }
 }

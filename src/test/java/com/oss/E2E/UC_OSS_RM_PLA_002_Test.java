@@ -224,6 +224,8 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         waitForPageToLoad();
         connectionWizardPage.terminateTerminationPort(PORT_NAME);
         waitForPageToLoad();
+        connectionWizardPage.assignAddressToOpositeInteface(false);
+        waitForPageToLoad();
         connectionWizardPage.clickAccept();
         waitForPageToLoad();
     }
