@@ -2,6 +2,7 @@ package com.oss.web;
 
 import static com.oss.configuration.Configuration.CONFIGURATION;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -14,6 +15,7 @@ import org.testng.annotations.Test;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.search.AdvancedSearch;
+import com.oss.framework.data.Data;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.filtermanager.EditFilterPage;
 import com.oss.pages.filtermanager.FilterManagerPage;
@@ -38,7 +40,7 @@ public class FiltersTest extends BaseTestCase {
     private String VALUE_FOR_FILTER2 = "666";
     private String VALUE_FOR_FILTER3 = "3";
     private String VALUE_FOR_FILTER3_AFTER_EDIT = "4";
-    private String FOLDER_NAME = "test";
+    private String FOLDER_NAME = "SeleniumFilterTest "+ LocalDate.now();
     private String USER2_LOGIN = "webseleniumtests2";
     private String USER2_PASSWORD = "webtests";
     private String ATTRIBUTE_ID = "id";
