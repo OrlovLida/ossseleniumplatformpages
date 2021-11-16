@@ -21,8 +21,8 @@ import com.oss.framework.widgets.tablewidget.TableWidget;
 import com.oss.pages.platform.NewInventoryViewPage;
 
 public class TableWidgetTest extends BaseTestCase {
-    private static final String PAGE_SIZE_OPTION_200 = "200";
-    private static final String PAGE_SIZE_OPTION_100 = "100";
+    private static final int PAGE_SIZE_OPTION_200 = 200;
+    private static final int PAGE_SIZE_OPTION_100 = 100;
     private static final String PAGE_SIZE_OPTION_50 = "50";
     private static final String ID_COLUMN_ID = "id";
     private static final String TITLE_COLUMN_LABEL = "Title";
@@ -256,16 +256,16 @@ public class TableWidgetTest extends BaseTestCase {
     @Test (priority = 15)
     public void chanePaginationAndRefreshPage(){
         inventoryViewPage.setPagination(PAGE_SIZE_OPTION_200);
-        Assert.assertEquals(getRowsCount(), Integer.parseInt(PAGE_SIZE_OPTION_200));
+        Assert.assertEquals(getRowsCount(), PAGE_SIZE_OPTION_200);
         driver.navigate().refresh();
         DelayUtils.waitForPageToLoad(driver,webDriverWait);
-        Assert.assertEquals(getRowsCount(), Integer.parseInt(PAGE_SIZE_OPTION_200));
+        Assert.assertEquals(getRowsCount(), PAGE_SIZE_OPTION_200);
     }
 
     @Test (priority = 16)
     public void changePaginationAndOpenDifferentType(){
         inventoryViewPage.setPagination(PAGE_SIZE_OPTION_100);
-        Assert.assertEquals(getRowsCount(), Integer.parseInt(PAGE_SIZE_OPTION_100));
+        Assert.assertEquals(getRowsCount(), PAGE_SIZE_OPTION_100);
         String TYPE = "TestActor";
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TYPE);
         Assert.assertEquals(getRowsCount(), Integer.parseInt(PAGE_SIZE_OPTION_50));

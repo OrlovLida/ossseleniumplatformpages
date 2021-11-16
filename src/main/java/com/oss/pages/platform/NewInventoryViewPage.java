@@ -506,7 +506,7 @@ public class NewInventoryViewPage extends BasePage {
         int columnIndex = getMainTable().getActiveColumnIds().indexOf(columnId);
         return getMainTable().getColumnSize(columnIndex);
     }
-    public void setPagination(String paginationValue) {
+    public void setPagination(int paginationValue) {
         PaginationComponent pagination = getMainTable().getPagination();
         pagination.changeRowsCount(paginationValue);
     }
