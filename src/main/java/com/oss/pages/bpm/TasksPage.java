@@ -166,6 +166,7 @@ public class TasksPage extends BasePage {
         selectTab(FORM_TAB_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         getTab().clickButtonById(actionId);
+        DelayUtils.waitForPageToLoad(driver, wait);
         ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
         prompt.clickButtonByLabel("Proceed");
     }
