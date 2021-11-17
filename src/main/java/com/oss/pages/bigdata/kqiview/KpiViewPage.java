@@ -32,7 +32,6 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.oss.configuration.Configuration.CONFIGURATION;
-import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.AggregationMethodOption.SUM;
 import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.MiscellaneousOption.DATA_COMPLETENESS;
 import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.MiscellaneousOption.LAST_SAMPLE_TIME;
 import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.TimePeriodChooserOption.LATEST;
@@ -266,7 +265,7 @@ public class KpiViewPage extends BasePage {
 
     @Step("I set topN dimension in TopN panel")
     public void setTopNDimension(String dimensionId) {
-       getTopNPanel().setDimension(dimensionId);
+        getTopNPanel().setDimension(dimensionId);
     }
 
     @Step("I set topN level in TopN panel")
@@ -383,27 +382,21 @@ public class KpiViewPage extends BasePage {
     public void setValueInTimePeriodChooser(int days, int hours, int minutes) {
         log.info("Setting value for last option in time period chooser: {} days, {} hours, {} minutes", days, hours, minutes);
         DelayUtils.waitForPageToLoad(driver, wait);
-        OptionsPanel optionsPanel = OptionsPanel.create(driver, wait);
-        optionsPanel.chooseTimePeriod();
-        optionsPanel.setLastPeriodOption(days, hours, minutes);
+        KpiToolbarPanel.create(driver, wait).openOptionsPanel().setLastPeriodOption(days, hours, minutes);
     }
 
     @Step("Set SMART option in time period chooser")
     public void chooseSmartOptionInTimePeriodChooser() {
         log.info("Setting smart option in time period chooser");
         DelayUtils.waitForPageToLoad(driver, wait);
-        OptionsPanel optionsPanel = OptionsPanel.create(driver, wait);
-        optionsPanel.chooseTimePeriod();
-        optionsPanel.chooseTimePeriodOption(SMART);
+        KpiToolbarPanel.create(driver, wait).openOptionsPanel().chooseTimePeriodOption(SMART);
     }
 
     @Step("Set LATEST option in time period chooser")
     public void chooseLatestOptionInTimePeriodChooser() {
         log.info("Setting latest option in time period chooser");
         DelayUtils.waitForPageToLoad(driver, wait);
-        OptionsPanel optionsPanel = OptionsPanel.create(driver, wait);
-        optionsPanel.chooseTimePeriod();
-        optionsPanel.chooseTimePeriodOption(LATEST);
+        KpiToolbarPanel.create(driver, wait).openOptionsPanel().chooseTimePeriodOption(LATEST);
     }
 
     @Step("I should see 2 visible Y axis and 1 hidden Y axis")
@@ -414,40 +407,40 @@ public class KpiViewPage extends BasePage {
         return visibleYaxisNumber == expectedVisibleYAxisNumber;
     }
 
-    @Step("Set SUM aggregation method")
-    public void chooseSumAggregationMethod() {
-        log.info("Setting sum option in aggregation method");
+    @Step("I select Aggregation Method")
+    public void selectAggregationMethod(OptionsPanel.AggregationMethodOption option) {
+        log.info("Setting: {} option in aggregation method", option);
         DelayUtils.waitForPageToLoad(driver, wait);
-        OptionsPanel optionsPanel = OptionsPanel.create(driver, wait);
-        optionsPanel.chooseAggregationMethod();
-        optionsPanel.chooseAggregationMethodOption(SUM);
+        KpiToolbarPanel.create(driver, wait).openOptionsPanel().chooseAggregationMethodOption(option);
+    }
+
+    public void unselectEveryAggMethodOtherThan(OptionsPanel.AggregationMethodOption option) {
+        List<OptionsPanel.AggregationMethodOption> toUnselect = KpiToolbarPanel.create(driver, wait).openOptionsPanel().getActiveAggregationMethods();
+        toUnselect.remove(option);
+        for (OptionsPanel.AggregationMethodOption aggOption : toUnselect) {
+            KpiToolbarPanel.create(driver, wait).openOptionsPanel().chooseAggregationMethodOption(aggOption);
+        }
     }
 
     @Step("Set Y axis manual option")
     public void chooseManualYaxis() {
         log.info("Setting manual Y axis");
         DelayUtils.waitForPageToLoad(driver, wait);
-        OptionsPanel optionsPanel = OptionsPanel.create(driver, wait);
-        optionsPanel.chooseYAxisOption();
-        optionsPanel.setYAxisOption(MANUAL);
+        KpiToolbarPanel.create(driver, wait).openOptionsPanel().setYAxisOption(MANUAL);
     }
 
     @Step("I enable Data Completeness option")
     public void enableDataCompleteness() {
         log.info("Enabling Data Completeness visibility");
         DelayUtils.waitForPageToLoad(driver, wait);
-        OptionsPanel optionsPanel = OptionsPanel.create(driver, wait);
-        optionsPanel.chooseMiscellaneousOption();
-        optionsPanel.setMiscellaneousOption(DATA_COMPLETENESS);
+        KpiToolbarPanel.create(driver, wait).openOptionsPanel().setMiscellaneousOption(DATA_COMPLETENESS);
     }
 
     @Step("I enable Last Sample Time option")
     public void enableLastSampleTime() {
         log.info("Enabling Last Sample Time visibility");
         DelayUtils.waitForPageToLoad(driver, wait);
-        OptionsPanel optionsPanel = OptionsPanel.create(driver, wait);
-        optionsPanel.chooseMiscellaneousOption();
-        optionsPanel.setMiscellaneousOption(LAST_SAMPLE_TIME);
+        KpiToolbarPanel.create(driver, wait).openOptionsPanel().setMiscellaneousOption(LAST_SAMPLE_TIME);
     }
 
     @Step("I should see last sample time below chart")
@@ -470,8 +463,7 @@ public class KpiViewPage extends BasePage {
     public void enableCompareWithOtherPeriod() {
         log.info("Enabling Compare with Other Period option");
         DelayUtils.waitForPageToLoad(driver, wait);
-        OptionsPanel optionsPanel = OptionsPanel.create(driver, wait);
-        optionsPanel.setOtherPeriodOption();
+        KpiToolbarPanel.create(driver, wait).openOptionsPanel().setOtherPeriodOption();
     }
 
     @Step("I should see other period displayed in the legend")
@@ -530,6 +522,10 @@ public class KpiViewPage extends BasePage {
             selectUnfoldedDimension(dimensionNodesToSelectList);
         }
 
+        selectAggregationMethod(OptionsPanel.AggregationMethodOption.SUM);
+        unselectEveryAggMethodOtherThan(OptionsPanel.AggregationMethodOption.SUM);
+        closeOptionsPanel();
+
         applyChanges();
         seeChartIsDisplayed();
     }
@@ -547,10 +543,12 @@ public class KpiViewPage extends BasePage {
 
     public String activeAggMethod() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        OptionsPanel optionsPanel = OptionsPanel.create(driver, wait);
-        String activeAggMethod = optionsPanel.getActiveAggregationMethod();
+        return KpiToolbarPanel.create(driver, wait).openOptionsPanel().getActiveAggregationMethods().get(0).toString();
+    }
 
-        return activeAggMethod;
+    @Step("I close Options Panel")
+    public void closeOptionsPanel() {
+        KpiToolbarPanel.create(driver, wait).closeOptionsPanel();
     }
 
     @Step("I click Share View icon")

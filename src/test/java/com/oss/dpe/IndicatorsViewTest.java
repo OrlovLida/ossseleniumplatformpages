@@ -1,6 +1,7 @@
 package com.oss.dpe;
 
 import com.oss.BaseTestCase;
+import com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel;
 import com.oss.pages.bigdata.kqiview.KpiViewPage;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
@@ -120,16 +121,15 @@ public class IndicatorsViewTest extends BaseTestCase {
     @Description("I verify if Manual Y axis option works properly")
     public void verifyIfYAxisOptionsWorksProperly(
             @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
-            @Optional("DBTIME,AQ_TIME") String indicatorNodesToSelect,
+            @Optional("DBTIME,LOADED") String indicatorNodesToSelect,
             @Optional() String dimensionNodesToExpand,
-            @Optional("DC Type: ETL_DC") String dimensionNodesToSelect,
+            @Optional("DC Type: THRES_DC") String dimensionNodesToSelect,
             @Optional("Data Collection Statistics") String filterName
     ) {
         try {
             kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
-            kpiViewPage.chooseSumAggregationMethod();
-            kpiViewPage.applyChanges();
             assertTrue(kpiViewPage.shouldSeeVisibleYaxis(2));
+
             kpiViewPage.chooseManualYaxis();
             assertTrue(kpiViewPage.shouldSeeVisibleYaxis(1));
         } catch (Exception e) {
@@ -278,6 +278,7 @@ public class IndicatorsViewTest extends BaseTestCase {
 
             assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
             String activeAggMethod = kpiViewPage.activeAggMethod();
+            kpiViewPage.closeOptionsPanel();
 
             kpiViewPage.clickLinkToChart();
 
@@ -390,6 +391,34 @@ public class IndicatorsViewTest extends BaseTestCase {
             assertTrue(kpiViewPage.dpeTopNBarChartIsDisplayed());
             assertTrue(kpiViewPage.isExpectedNumberOfChartsVisible(2));
             assertTrue(kpiViewPage.shouldSeeBoxesAndCurvesDisplayed(6, 5));
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            fail();
+        }
+    }
+
+    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
+    @Test(priority = 15, testName = "Aggregation Method Check", description = "Aggregation Method Check")
+    @Description("Aggregation Method Check")
+    public void aggregationMethodCheck(
+            @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
+            @Optional("DBTIME,AQ_TIME") String indicatorNodesToSelect,
+            @Optional() String dimensionNodesToExpand,
+            @Optional("DC Type: THRES_DC") String dimensionNodesToSelect,
+            @Optional("Data Collection Statistics") String filterName
+    ) {
+        try {
+            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(2));
+
+            kpiViewPage.selectAggregationMethod(OptionsPanel.AggregationMethodOption.MAX);
+            kpiViewPage.selectAggregationMethod(OptionsPanel.AggregationMethodOption.MIN);
+            kpiViewPage.selectAggregationMethod(OptionsPanel.AggregationMethodOption.SUM);
+            kpiViewPage.unselectEveryAggMethodOtherThan(OptionsPanel.AggregationMethodOption.MAX);
+            kpiViewPage.applyChanges();
+            String selectedAggMethod = kpiViewPage.activeAggMethod();
+
+            assertTrue(selectedAggMethod.equals("MAX"));
         } catch (Exception e) {
             log.error(e.getMessage());
             fail();
