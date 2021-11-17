@@ -74,7 +74,7 @@ abstract public class BaseDfePage extends BasePage implements BaseDfePageInterfa
         DelayUtils.waitForPageToLoad(driver, wait);
         int numberOfRowsInTable = getNumberOfRowsInTable(columnLabel);
         log.trace("Found rows count: {}. Filtered by {}", numberOfRowsInTable, name);
-        return numberOfRowsInTable == 1;
+        return numberOfRowsInTable >= 1;
     }
 
     protected void selectTab(String label) {
