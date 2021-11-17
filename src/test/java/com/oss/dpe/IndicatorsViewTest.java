@@ -417,8 +417,10 @@ public class IndicatorsViewTest extends BaseTestCase {
             kpiViewPage.unselectEveryAggMethodOtherThan(OptionsPanel.AggregationMethodOption.MAX);
             kpiViewPage.applyChanges();
             String selectedAggMethod = kpiViewPage.activeAggMethod();
+            int numOfActiveAggMethods = kpiViewPage.numberOfActiveAggMethods();
 
             assertTrue(selectedAggMethod.equals("MAX"));
+            assertEquals(numOfActiveAggMethods, 1);
         } catch (Exception e) {
             log.error(e.getMessage());
             fail();

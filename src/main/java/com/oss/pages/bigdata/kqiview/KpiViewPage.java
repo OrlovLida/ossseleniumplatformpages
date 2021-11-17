@@ -546,6 +546,11 @@ public class KpiViewPage extends BasePage {
         return KpiToolbarPanel.create(driver, wait).openOptionsPanel().getActiveAggregationMethods().get(0).toString();
     }
 
+    public int numberOfActiveAggMethods() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return KpiToolbarPanel.create(driver, wait).openOptionsPanel().getActiveAggregationMethods().size();
+    }
+
     @Step("I close Options Panel")
     public void closeOptionsPanel() {
         KpiToolbarPanel.create(driver, wait).closeOptionsPanel();
