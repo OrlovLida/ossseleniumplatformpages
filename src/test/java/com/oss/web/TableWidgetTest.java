@@ -23,12 +23,8 @@ import com.oss.pages.platform.NewInventoryViewPage;
 public class TableWidgetTest extends BaseTestCase {
     private static final int PAGE_SIZE_OPTION_200 = 200;
     private static final int PAGE_SIZE_OPTION_100 = 100;
-    private static final String PAGE_SIZE_OPTION_50 = "50";
-    private static final String ID_COLUMN_ID = "id";
-    private static final String TITLE_COLUMN_LABEL = "Title";
-    private static final String TYPE_COLUMN_LABEL = "Type";
-    private static final String DIRECTOR_COLUMN_RELATION_LABEL = "Director";
-    private static final String TYPE_DIRECTOR_COLUMN_LABEL = "Type (Director)";
+    private static final int PAGE_SIZE_OPTION_50 = 50;
+    private static final String TYPE_DIRECTOR_COLUMN_ID = "director.id";
     private static final String MOVIE_LENGTH_COLUMN_ID = "movieLength";
     private NewInventoryViewPage inventoryViewPage;
     private TableWidget tableWidget;
@@ -218,80 +214,90 @@ public class TableWidgetTest extends BaseTestCase {
     public void addColumnByPath() {
         String path = "director.type";
         
-        AttributesChooser attributesChooser = tableWidget.getAttributesChooser();
-        attributesChooser.toggleAttributeByPath(path);
-        attributesChooser.clickApply();
+        toggleColumnByPath(path);
         List<String> ids = tableWidget.getActiveColumnIds();
         Assertions.assertThat(ids).contains(path);
     }
     
     @Test(priority = 13)
     public void changeDefaultColumnWidth() {
-        tableWidget.setColumnWidth(MOVIE_LENGTH_COLUMN_ID, "300");
-        int columnIndex = tableWidget.getActiveColumnIds().indexOf(MOVIE_LENGTH_COLUMN_ID);
-        int columnSize = tableWidget.getColumnSize(columnIndex);
-        Assertions.assertThat(columnSize).isEqualTo(300);
+        int defaultColumnSize = inventoryViewPage.getColumnSize(MOVIE_LENGTH_COLUMN_ID);
+        String newColumnSize = String.valueOf(100 + defaultColumnSize);
+        tableWidget.setColumnWidth(MOVIE_LENGTH_COLUMN_ID, newColumnSize);
+        Assertions.assertThat(inventoryViewPage.getColumnSize(MOVIE_LENGTH_COLUMN_ID)).isEqualTo(Integer.parseInt(newColumnSize));
         driver.navigate().refresh();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        tableWidget = inventoryViewPage.getMainTable();
-        int columnSizeRefresh = tableWidget.getColumnSize(columnIndex);
-        Assertions.assertThat(columnSizeRefresh).isEqualTo(300);
+        int columnSizeRefresh = inventoryViewPage.getColumnSize(MOVIE_LENGTH_COLUMN_ID);
+        Assertions.assertThat(columnSizeRefresh).isEqualTo(Integer.parseInt(newColumnSize));
     }
     
     @Test(priority = 14)
     public void setDefaultSettings() {
-        tableWidget = inventoryViewPage.getMainTable();
-        tableWidget.getAttributesChooser().clickDefaultSettings();
-        String firstColumn = inventoryViewPage.getActiveColumnsHeaders().get(0);
-        operationsOnColumns(firstColumn,ID_COLUMN_ID, TITLE_COLUMN_LABEL,TYPE_DIRECTOR_COLUMN_LABEL);
-        tableWidget.getAttributesChooser().clickDefaultSettings();
-        List<String> activeColumnsHeaders = inventoryViewPage.getActiveColumnsHeaders();
-        Assertions.assertThat(firstColumn).isEqualTo(activeColumnsHeaders.get(0));
-        Assertions.assertThat(inventoryViewPage.getColumnSize(ID_COLUMN_ID)).isEqualTo(200);
-        Assertions.assertThat(activeColumnsHeaders).contains(TITLE_COLUMN_LABEL);
-        Assertions.assertThat(activeColumnsHeaders).doesNotContain(TYPE_DIRECTOR_COLUMN_LABEL);
+        inventoryViewPage.setDefaultSettings();
+        List<String> defaultActiveHeaders = inventoryViewPage.getMainTable().getActiveColumnIds();
+        String defaultFirstColumn = inventoryViewPage.getMainTable().getActiveColumnIds().get(0);
+        int defaultFirstColumnSize = inventoryViewPage.getColumnSize(defaultFirstColumn);
+        String defaultForthColumn = inventoryViewPage.getMainTable().getActiveColumnIds().get(3);
+        
+        changeColumnsConfiguration(defaultFirstColumn, defaultFirstColumn, defaultForthColumn, TYPE_DIRECTOR_COLUMN_ID);
+        inventoryViewPage.setDefaultSettings();
+        
+        List<String> activeColumnsHeaders = inventoryViewPage.getMainTable().getActiveColumnIds();
+        Assertions.assertThat(defaultFirstColumn).isEqualTo(activeColumnsHeaders.get(0));
+        Assertions.assertThat(inventoryViewPage.getColumnSize(activeColumnsHeaders.get(0))).isEqualTo(defaultFirstColumnSize);
+        Assertions.assertThat(activeColumnsHeaders).contains(defaultForthColumn);
+        Assertions.assertThat(activeColumnsHeaders).doesNotContain(TYPE_DIRECTOR_COLUMN_ID);
+        Assertions.assertThat(defaultActiveHeaders).isEqualTo(activeColumnsHeaders);
     }
-
-
-    @Test (priority = 15)
-    public void chanePaginationAndRefreshPage(){
+    
+    @Test(priority = 15)
+    public void chanePaginationAndRefreshPage() {
         inventoryViewPage.setPagination(PAGE_SIZE_OPTION_200);
         Assert.assertEquals(getRowsCount(), PAGE_SIZE_OPTION_200);
         driver.navigate().refresh();
-        DelayUtils.waitForPageToLoad(driver,webDriverWait);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertEquals(getRowsCount(), PAGE_SIZE_OPTION_200);
     }
-
-    @Test (priority = 16)
-    public void changePaginationAndOpenDifferentType(){
+    
+    @Test(priority = 16)
+    public void changePaginationAndOpenDifferentType() {
         inventoryViewPage.setPagination(PAGE_SIZE_OPTION_100);
         Assert.assertEquals(getRowsCount(), PAGE_SIZE_OPTION_100);
         String TYPE = "TestActor";
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TYPE);
-        Assert.assertEquals(getRowsCount(), Integer.parseInt(PAGE_SIZE_OPTION_50));
+        Assert.assertEquals(getRowsCount(), PAGE_SIZE_OPTION_50);
     }
-
-    private int getRowsCount(){
+    
+    private int getRowsCount() {
         tableWidget = inventoryViewPage.getMainTable();
         PaginationComponent pagination = tableWidget.getPagination();
         return pagination.getRowsCount();
     }
-
-    private void operationsOnColumns(String orderChangeColumn, String resizeColumn, String disabledColumn, String enableColumn){
+    
+    private void changeColumnsConfiguration(String orderChangeColumn, String resizeColumn, String disabledColumn, String enableColumn) {
         // change column order
-        tableWidget.changeColumnsOrder(orderChangeColumn,2);
-        Assertions.assertThat(inventoryViewPage.getActiveColumnsHeaders().indexOf(orderChangeColumn)).isEqualTo(2);
+        tableWidget = inventoryViewPage.getMainTable();
+        tableWidget.changeColumnsOrderById(orderChangeColumn, 2);
+        Assertions.assertThat(inventoryViewPage.getMainTable().getActiveColumnIds().indexOf(orderChangeColumn)).isEqualTo(2);
         // change column size
-        tableWidget.setColumnWidth(resizeColumn, "100");
-        Assertions.assertThat(inventoryViewPage.getColumnSize(ID_COLUMN_ID)).isEqualTo(100);
+        int columnSize = inventoryViewPage.getColumnSize(resizeColumn);
+        int newColumnSize = columnSize - 50;
+        tableWidget.setColumnWidth(resizeColumn, String.valueOf(newColumnSize));
+        Assertions.assertThat(inventoryViewPage.getColumnSize(resizeColumn)).isEqualTo(newColumnSize);
         // unselect column
-        tableWidget.disableColumnByLabel(disabledColumn);
+        toggleColumnByPath(disabledColumn);
         Assertions.assertThat(inventoryViewPage.getActiveColumnsHeaders()).doesNotContain(disabledColumn);
-
-        //select new column
-        tableWidget.enableColumnByLabel(TYPE_COLUMN_LABEL, DIRECTOR_COLUMN_RELATION_LABEL);
-        Assertions.assertThat(inventoryViewPage.getActiveColumnsHeaders()).contains(enableColumn);
+        
+        // select new column
+        toggleColumnByPath(enableColumn);
+        List<String> ids = tableWidget.getActiveColumnIds();
+        Assertions.assertThat(ids).contains(enableColumn);
     }
-
-
+    
+    private void toggleColumnByPath(String columnId) {
+        AttributesChooser attributesChooser = inventoryViewPage.getMainTable().getAttributesChooser();
+        attributesChooser.toggleAttributeByPath(columnId);
+        attributesChooser.clickApply();
+    }
+    
 }

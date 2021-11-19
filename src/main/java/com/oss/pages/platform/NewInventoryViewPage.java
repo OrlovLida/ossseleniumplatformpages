@@ -511,5 +511,8 @@ public class NewInventoryViewPage extends BasePage {
         pagination.changeRowsCount(paginationValue);
     }
 
+    public void setDefaultSettings() {
+        getMainTable().getAttributesChooser().clickDefaultSettings();
+    }
 
 }
