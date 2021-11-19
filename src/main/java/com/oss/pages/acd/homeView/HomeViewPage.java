@@ -6,7 +6,6 @@ import com.oss.framework.components.inputs.Input;
 import com.oss.framework.data.Data;
 import com.oss.framework.utils.CSSUtils;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.view.Card;
 import com.oss.framework.widgets.chartwidget.ChartWidget;
 import com.oss.framework.widgets.serviceDeskAdvancedSearch.ServiceDeskAdvancedSearch;
 import com.oss.framework.widgets.tablewidget.OldTable;
@@ -78,6 +77,7 @@ public class HomeViewPage extends BasePage {
         button.click();
     }
 
+    /*
     @Step("Set value of issueType multiComboBox")
     public void setValueOfIssueTypeBox(String issueType) {
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -85,6 +85,14 @@ public class HomeViewPage extends BasePage {
         log.info("Setting value of Issue Type: {}", issueType);
         issueTypeComboBox.setValue(Data.createSingleData(issueType));
         DelayUtils.sleep();
+    }
+
+     */
+
+    @Step("Check value of Creation Type in table")
+    public void checkValueOfCreationTypeAttribute() {
+        String firstRowInTable = table.getCellValue(0, "Creation Type");
+        log.info("Value of first row for creation type is: {}", firstRowInTable);
     }
 
     @Step("Set value of Issue Id multiSearch")
@@ -102,7 +110,7 @@ public class HomeViewPage extends BasePage {
         TimePeriodChooser timePeriod = TimePeriodChooser.create(driver, wait, widgetId);
 
         timePeriod.chooseOption(TimePeriodChooser.TimePeriodChooserOption.LAST);
-        log.info("Setting value ine the time period chooser");
+        log.info("Setting value in the time period chooser");
         timePeriod.setLastPeriod(days, hours, minutes);
         DelayUtils.sleep();
     }
@@ -136,6 +144,7 @@ public class HomeViewPage extends BasePage {
         log.info("Clearing time period chooser");
     }
 
+    /*
     @Step("Maximize window")
     public void maximizeWindow(String windowId) {
         Card card = Card.createCard(driver, wait, windowId);
@@ -149,6 +158,8 @@ public class HomeViewPage extends BasePage {
         card.minimizeCard();
         log.info("Minimizing window");
     }
+
+     */
 
     @Step("Refresh Issues table")
     public void refreshIssuesTable() {
