@@ -562,7 +562,6 @@ public class KpiViewPage extends BasePage {
         log.info("Click in Share icon");
     }
 
-    //TODO add this function after fix in OSSWEB-14686
     @Step("I click close panel")
     public void clickCloseShare() {
         ToolbarWidget.create(driver, wait).closeSharePanel();
