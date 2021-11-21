@@ -23,7 +23,7 @@ public class AsdScenarioSummaryViewTest extends BaseTestCase {
 
     private final String asdScenarioSummaryViewSuffixUrl = "%s/#/view/acd/asd";
     private final String severityAttributeValue = "attribute1ValuesId";
-    private String issuesTableRefreshButtonId = "DetectedIssuesButtonId-1";
+    private String issuesTableRefreshButtonId = "undefined-1"; // "DetectedIssuesButtonId-1";
 
     @BeforeClass
     public void goToASDScenarioSummaryView() {
@@ -37,9 +37,9 @@ public class AsdScenarioSummaryViewTest extends BaseTestCase {
         log.info("Waiting in method addPredefinedFilter");
         baseACDPage.maximizeWindow("PredefinedFiltersWindowId");
         baseACDPage.clickAddPredefinedFilter();
-        baseACDPage.chooseVisualizationType("Chart");
+        asdScenarioSummaryViewPage.chooseVisualizationType("Chart");
         log.info("Visualization type - CHART - set");
-        baseACDPage.chooseAttribute("Severity");
+        asdScenarioSummaryViewPage.chooseAttribute("Severity");
         log.info("Attribute name - Severity - set");
         baseACDPage.insertAttributeValueToMultiComboBoxComponent("Cleared", severityAttributeValue);
         log.info("Attribute Value - Cleared - set");
@@ -47,7 +47,7 @@ public class AsdScenarioSummaryViewTest extends BaseTestCase {
         log.info("Attribute Value - Major - set");
         baseACDPage.insertAttributeValueToMultiComboBoxComponent("Critical", severityAttributeValue);
         log.info("Attribute Value - Critical - set");
-        baseACDPage.savePredefinedFilter();
+        asdScenarioSummaryViewPage.savePredefinedFilter();
         log.info("Predefined filter has been added successfully");
     }
 
@@ -74,34 +74,33 @@ public class AsdScenarioSummaryViewTest extends BaseTestCase {
     }
 
     private void checkIssuesTableWithFilters() {
-        if (baseACDPage.checkDataInIssuesTable()) {
+        if (asdScenarioSummaryViewPage.checkDataInIssuesTable()) {
             log.info("table doesn't have data for issues with roots");
             baseACDPage.turnOnSwitcher();
-            if (baseACDPage.checkDataInIssuesTable()) {
+            if (asdScenarioSummaryViewPage.checkDataInIssuesTable()) {
                 log.error("table doesn't have data for issues without roots");
                 Assert.fail();
             } else {
                 log.info("table contains data for issues without roots");
-                baseACDPage.setValueInMultiComboBox("creation_type", "Automatically");
+                asdScenarioSummaryViewPage.setValueInMultiComboBox("creation_type", "Automatically");
                 baseACDPage.setValueInTimePeriodChooser("create_time", 3, 12, 33);
-                baseACDPage.setValueOfIssueIdSearch();
-
+                asdScenarioSummaryViewPage.setValueOfIssueIdSearch();
             }
 
         } else {
             log.info("table contains data for issues with roots");
 
             baseACDPage.turnOnSwitcher();
-            baseACDPage.setValueInMultiComboBox("creation_type", "Automatically");
+            asdScenarioSummaryViewPage.setValueInMultiComboBox("creation_type", "Automatically");
             baseACDPage.setValueInTimePeriodChooser("create_time", 3, 12, 33);
-            baseACDPage.setValueOfIssueIdSearch();
+            asdScenarioSummaryViewPage.setValueOfIssueIdSearch();
 
             DelayUtils.sleep();
 
-            Boolean hasNoData = baseACDPage.checkDataInIssuesTable();
+            Boolean hasNoData = asdScenarioSummaryViewPage.checkDataInIssuesTable();
 
-            baseACDPage.clearMultiComboBox("creation_type");
-            baseACDPage.clearMultiSearch("id");
+            asdScenarioSummaryViewPage.clearMultiComboBox("creation_type");
+            asdScenarioSummaryViewPage.clearMultiSearch("id");
             baseACDPage.clearTimePeriod("create_time");
 
             Assert.assertFalse(hasNoData);

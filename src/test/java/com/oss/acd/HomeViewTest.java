@@ -76,7 +76,7 @@ public class HomeViewTest extends BaseTestCase {
     }
 
     private void checkScenarioTableWithFilters(String issueType) {
-        baseACDPage.setValueInMultiComboBox("issue_type", issueType);
+        homeViewPage.setValueInMultiComboBox("issue_type", issueType);
 
         if (homeViewPage.checkDataInScenarioTable()) {
             homeViewPage.clearMultiComboBox("issue_type");

@@ -9,14 +9,14 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.chartwidget.ChartWidget;
 import com.oss.framework.widgets.serviceDeskAdvancedSearch.ServiceDeskAdvancedSearch;
 import com.oss.framework.widgets.tablewidget.OldTable;
-import com.oss.pages.BasePage;
+import com.oss.pages.acd.BaseACDPage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class HomeViewPage extends BasePage {
+public class HomeViewPage extends BaseACDPage {
 
     private static final Logger log = LoggerFactory.getLogger(HomeViewPage.class);
 
@@ -77,18 +77,6 @@ public class HomeViewPage extends BasePage {
         button.click();
     }
 
-    /*
-    @Step("Set value of issueType multiComboBox")
-    public void setValueOfIssueTypeBox(String issueType) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        Input issueTypeComboBox = advancedSearch.getComponent("issue_type", Input.ComponentType.MULTI_COMBOBOX);
-        log.info("Setting value of Issue Type: {}", issueType);
-        issueTypeComboBox.setValue(Data.createSingleData(issueType));
-        DelayUtils.sleep();
-    }
-
-     */
-
     @Step("Check value of Creation Type in table")
     public void checkValueOfCreationTypeAttribute() {
         String firstRowInTable = table.getCellValue(0, "Creation Type");
@@ -98,7 +86,6 @@ public class HomeViewPage extends BasePage {
     @Step("Set value of Issue Id multiSearch")
     public void setValueOfIssueIdSearch() {
         Input issueIdSearch = advancedSearch.getComponent("id", Input.ComponentType.MULTI_SEARCH_FIELD);
-
         String firstIdInTable = table.getCellValue(0, "Issue Id");
         log.info("Setting value of Issue Id");
         issueIdSearch.setValue(Data.createSingleData(firstIdInTable));
@@ -144,27 +131,18 @@ public class HomeViewPage extends BasePage {
         log.info("Clearing time period chooser");
     }
 
-    /*
-    @Step("Maximize window")
-    public void maximizeWindow(String windowId) {
-        Card card = Card.createCard(driver, wait, windowId);
-        card.maximizeCard();
-        log.info("Maximizing window");
-    }
-
-    @Step("Minimize window")
-    public void minimizeWindow(String windowId) {
-        Card card = Card.createCard(driver, wait, windowId);
-        card.minimizeCard();
-        log.info("Minimizing window");
-    }
-
-     */
-
     @Step("Refresh Issues table")
     public void refreshIssuesTable() {
         Button button = Button.createByXpath(issuesTableRefreshButtonId, "li", CSSUtils.DATA_WIDGET_ID, driver);
         button.click();
         log.info("Clicking refresh issues table button");
+    }
+
+    @Step("Set value in multiComboBox")
+    public void setValueInMultiComboBox(String attributeName, String inputValue) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        Input multiComboBox = advancedSearch.getComponent(attributeName, Input.ComponentType.MULTI_COMBOBOX);
+        multiComboBox.setValue(Data.createSingleData(inputValue));
+        log.info("Setting value of {} attribute", inputValue, " as {}", attributeName);
     }
 }
