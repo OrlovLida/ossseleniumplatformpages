@@ -96,14 +96,15 @@ public class KpiViewPage extends BasePage {
     @Step("I set filters: {enabledFilters}")
     public void setFilters(List<String> enabledFilters) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        KpiToolbarPanel toolbar = KpiToolbarPanel.create(driver, wait);
-        FiltersPanel filtersPanel = toolbar.getFiltersPanel();
-        filtersPanel.openFilters();
-        filtersPanel.clearFilters();
-        filtersPanel.turnOnFilters(enabledFilters);
-        filtersPanel.clickConfirm();
+        getFiltersPanel().clearFilters();
+        getFiltersPanel().turnOnFilters(enabledFilters);
+        getFiltersPanel().clickConfirm();
 
         log.info("Selected filters: {}", enabledFilters);
+    }
+
+    private FiltersPanel getFiltersPanel() {
+        return KpiToolbarPanel.create(driver, wait).openFilterPanel();
     }
 
     @Step("I select indicator")
@@ -146,16 +147,18 @@ public class KpiViewPage extends BasePage {
 
     @Step("I export chart")
     public void exportChart() {
-        KpiToolbarPanel toolbar = KpiToolbarPanel.create(driver, wait);
-        ExportPanel exportPanel = toolbar.getExportPanel();
+        getExportPanel().exportKpiToFile(ExportType.JPG);
         log.info("Exporting chart to JPG");
-        exportPanel.exportKpiToFile(ExportType.JPG);
+        getExportPanel().exportKpiToFile(ExportType.PNG);
         log.info("Exporting chart to PNG");
-        exportPanel.exportKpiToFile(ExportType.PNG);
+        getExportPanel().exportKpiToFile(ExportType.PDF);
         log.info("Exporting chart to PDF");
-        exportPanel.exportKpiToFile(ExportType.PDF);
+        getExportPanel().exportKpiToFile(ExportType.XLSX);
         log.info("Exporting chart to XLSX");
-        exportPanel.exportKpiToFile(ExportType.XLSX);
+    }
+
+    private ExportPanel getExportPanel() {
+        return KpiToolbarPanel.create(driver, wait).openExportPanel();
     }
 
     @Step("Attach exported chart to report")
@@ -247,6 +250,7 @@ public class KpiViewPage extends BasePage {
 
     @Step("I check if Indicators View Table is empty")
     public boolean isIndicatorsViewTableEmpty() {
+        DelayUtils.waitForPageToLoad(driver, wait);
         return TableWidget.createById(driver, IND_VIEW_TABLE_ID, wait).hasNoData();
     }
 
