@@ -19,8 +19,8 @@ import static com.oss.pages.servicedesk.ticket.TicketDetailsPage.DETAILS_PAGE_UR
 public class TicketSearchPage extends BaseSDPage {
 
     public static final String ID_ATTRIBUTE = "id";
-    public static final String ASSIGNEE_ATTRIBUTE = "assignee";
-    public static final String CREATION_TIME_ATTRIBUTE = "createDate";
+    public static final String ASSIGNEE_ATTRIBUTE = "ticketOut.issueOut.assignee.name";
+    public static final String CREATION_TIME_ATTRIBUTE = "ticketOut.issueOut.createDate";
     public static final String SEVERITY_ATTRIBUTE = "severity";
     public static final String STATUS_ATTRIBUTE = "ticketOut.issueOut.status.name";
     public static final String FILTER_BUTTON_CLASS = "button-filters-panel";
