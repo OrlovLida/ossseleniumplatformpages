@@ -43,12 +43,10 @@ public class VSITest extends BaseTestCase {
 
     private String createdRouteTargetOverviewPageURL;
 
-    @BeforeClass
+    @Test(priority = 1)
     @Step("Create Route Target")
     public void createRouteTarget(){
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        //SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
-        //sideMenu.callActionByLabel("Create Route Target", WIZARDS, TRANSPORT);
         driver.get(String.format("%s/#/view/transport/tpt/vpn/routetarget?perspective=LIVE", BASIC_URL));
 
         RouteTargetWizardPage routeTargetWizard = new RouteTargetWizardPage(driver);
@@ -57,17 +55,7 @@ public class VSITest extends BaseTestCase {
         createdRouteTargetOverviewPageURL = driver.getCurrentUrl();
     }
 
-    @AfterClass
-    @Step("Remove created Route Target")
-    public void removeCreatedRouteTarget(){
-        driver.navigate().to(createdRouteTargetOverviewPageURL);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        RouteTargetOverviewPage routeTargetOverviewPage = new RouteTargetOverviewPage(driver);
-        routeTargetOverviewPage.clickRemove();
-        routeTargetOverviewPage.confirmRemoval();
-    }
-
-    @Test(priority = 1)
+    @Test(priority = 2)
     @Step("Create VSI")
     public void createVSI(){
         VSIAttributes vsiAttributes = getVSIAttributesToCreate();
@@ -81,7 +69,7 @@ public class VSITest extends BaseTestCase {
         assertRouteTargets(vsiOverview);
     }
 
-    @Test(priority = 2)
+    @Test(priority = 3)
     @Step("Update VSI attributes")
     public void updateVSI(){
         VSIAttributes vsiAttributes = getVSIAttributesToUpdate();
@@ -97,7 +85,7 @@ public class VSITest extends BaseTestCase {
         assertRouteTargets(vsiOverviewAfterUpdate);
     }
 
-    @Test(priority = 3)
+    @Test(priority = 4)
     @Step("Assign created earlier Route Target")
     public void assignCreatedRouteTarget(){
         VSIOverviewPage vsiOverview = new VSIOverviewPage(driver);
@@ -110,7 +98,7 @@ public class VSITest extends BaseTestCase {
         assertRouteTargets(vsiOverviewAfterRouteTargetAssignment, ROUTE_TARGET_TO_CREATE);
     }
 
-    @Test(priority = 4)
+    @Test(priority = 5)
     @Step("Detach assigned Route Target")
     public void detachRouteTarget(){
         VSIOverviewPage vsiOverview = new VSIOverviewPage(driver);
@@ -120,7 +108,7 @@ public class VSITest extends BaseTestCase {
         assertRouteTargets(vsiOverview);
     }
 
-    @Test(priority = 5)
+    @Test(priority = 6)
     @Step("Detach assigned interfaces")
     public void detachInterfaces(){
         VSIOverviewPage vsiOverview = new VSIOverviewPage(driver);
@@ -133,7 +121,7 @@ public class VSITest extends BaseTestCase {
         assertVsiInterfaces(vsiOverviewAfterDetachment);
     }
 
-    @Test(priority = 6)
+    @Test(priority = 7)
     @Step("Remove VSI")
     public void removeVsi(){
         VSIOverviewPage vsiOverview = new VSIOverviewPage(driver);
@@ -141,6 +129,16 @@ public class VSITest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         assertVsiRemoval();
+    }
+
+    @Test(priority = 8)
+    @Step("Remove created Route Target")
+    public void removeCreatedRouteTarget(){
+        driver.navigate().to(createdRouteTargetOverviewPageURL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        RouteTargetOverviewPage routeTargetOverviewPage = new RouteTargetOverviewPage(driver);
+        routeTargetOverviewPage.clickRemove();
+        routeTargetOverviewPage.confirmRemoval();
     }
 
     private VSIAttributes getVSIAttributesToCreate(){
@@ -167,8 +165,6 @@ public class VSITest extends BaseTestCase {
 
     private VSIWizardPage goToVSIWizardPage(){
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        //SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
-        //sideMenu.callActionByLabel(VSI, WIZARDS, TRANSPORT);
         driver.get(String.format("%s/#/view/transport/ip/mpls/vsi?perspective=LIVE", BASIC_URL));
 
         return new VSIWizardPage(driver);
