@@ -308,6 +308,7 @@ public class IndicatorsViewTest extends BaseTestCase {
 
             kpiViewPage.clickShare();
             kpiViewPage.goToLink();
+            kpiViewPage.clickCloseShare();
 
             assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
             assertTrue(kpiViewPage.isNodeInTreeSelected(indicatorNodesToSelect, INDICATORS_TREE_ID));
