@@ -43,6 +43,7 @@ public class UC_NAR_005 extends BaseTestCase {
 
     @BeforeClass
     public void openNetworkDiscoveryControlView() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
     }
