@@ -93,6 +93,7 @@ public class WizardPage extends BaseSDPage {
     public void enterIncidentDescription(String description) {
         DelayUtils.waitForPageToLoad(driver, wait);
         HtmlEditor htmlEditor = HtmlEditor.create(driver, wait, INCIDENT_DESCRIPTION_ID);
+        htmlEditor.clear();
         htmlEditor.setValue(Data.createSingleData(description));
         log.info("Incident description: {} is entered", description);
     }

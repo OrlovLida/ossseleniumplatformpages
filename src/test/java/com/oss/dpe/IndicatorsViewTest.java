@@ -39,7 +39,7 @@ public class IndicatorsViewTest extends BaseTestCase {
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
     @Test(priority = 1, testName = "Highlighting and hiding data series", description = "Highlighting and hiding data series")
-    @Description("I verify if KPI View for DPE data works properly")
+    @Description("I verify if KPI View works properly")
     public void verifyIfKpiViewWorksProperly(
             @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
             @Optional("DBTIME") String indicatorNodesToSelect,
@@ -246,8 +246,8 @@ public class IndicatorsViewTest extends BaseTestCase {
     }
 
     @Parameters({"filterName", "indicator", "dimension"})
-    @Test(priority = 9, testName = "Search in indicators and dimensions trees", description = "Verify search from indicators and dimensions trees for DPE data")
-    @Description("Verify search from indicators and dimensions trees for DPE data")
+    @Test(priority = 9, testName = "Search in indicators and dimensions trees", description = "Verify search from indicators and dimensions trees")
+    @Description("Verify search from indicators and dimensions trees")
     public void searchIndicators(
             @Optional("Data Collection Statistics") String filterName,
             @Optional("DBTIME") String indicator,
@@ -374,8 +374,8 @@ public class IndicatorsViewTest extends BaseTestCase {
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
-    @Test(priority = 14, testName = "Check topN Panel for DPE data", description = "Check topN Panel for DPE data")
-    @Description("Check topN Panel for DPE data")
+    @Test(priority = 14, testName = "Check topN Panel", description = "Check topN Panel")
+    @Description("Check topN Panel")
     public void checkTopNPanelForDpe(
             @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
             @Optional("DBTIME") String indicatorNodesToSelect,

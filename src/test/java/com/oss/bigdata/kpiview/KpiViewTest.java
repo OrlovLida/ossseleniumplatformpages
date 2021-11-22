@@ -12,7 +12,6 @@ import org.testng.annotations.*;
 
 import static com.oss.utils.AttachmentsManager.attachConsoleLogs;
 import static com.oss.utils.AttachmentsManager.saveScreenshotPNG;
-import static org.testng.Assert.assertTrue;
 
 @Listeners({TestListener.class})
 public class KpiViewTest extends BaseTestCase {
@@ -40,15 +39,13 @@ public class KpiViewTest extends BaseTestCase {
     ){
         try{
             kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
-
-            //TODO move mouse over point
             kpiViewPage.exportChart();
             kpiViewPage.attachExportedChartToReport();
             attachConsoleLogs(driver);
         } catch(Exception e){
             log.error(e.getMessage());
+            Assert.fail();
         }
-
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
@@ -74,6 +71,7 @@ public class KpiViewTest extends BaseTestCase {
             attachConsoleLogs(driver);
         } catch (Exception e){
             log.error(e.getMessage());
+            Assert.fail();
         }
     }
 
