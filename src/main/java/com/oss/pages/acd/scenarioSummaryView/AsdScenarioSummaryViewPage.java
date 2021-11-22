@@ -1,18 +1,12 @@
 package com.oss.pages.acd.scenarioSummaryView;
 
-import com.oss.framework.components.common.TimePeriodChooser;
-import com.oss.framework.components.contextactions.ButtonContainer;
-import com.oss.framework.components.inputs.Button;
-import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.data.Data;
-import com.oss.framework.utils.CSSUtils;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.view.Card;
 import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.serviceDeskAdvancedSearch.ServiceDeskAdvancedSearch;
 import com.oss.framework.widgets.tablewidget.OldTable;
-import com.oss.pages.BasePage;
+import com.oss.pages.acd.BaseACDPage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -21,32 +15,29 @@ import org.slf4j.LoggerFactory;
 
 import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
 
-public class AsdScenarioSummaryViewPage extends BasePage {
+public class AsdScenarioSummaryViewPage extends BaseACDPage {
 
     private static final Logger log = LoggerFactory.getLogger(AsdScenarioSummaryViewPage.class);
 
-    private final String ADD_PREDEFINED_FILTER_BUTTON = "contextButton-0";
+    private final String DETECTED_ISSUES_WINDOW_ID = "DetectedIssuesWindowId";
     private final String VISUALIZATION_TYPE_ID = "widgetType-input";
     private final String ATTRIBUTE_ID = "attribute1Id-input";
-    private final String DETECTED_ISSUES_TABLE_WINDOW_ID = "DetectedIssuesWindowId";
-    private final String DETECTED_ISSUES_TABLE_ID = "DetectedIssuesTableId";
-    private final String SWITCHER_ID = "switcherId";
-
-    private final Wizard visualizationTypeWizard;
-    private final Wizard attributeWizard;
 
     private final OldTable table;
     private final ServiceDeskAdvancedSearch advancedSearch;
+    private final Wizard attributeWizard;
+    private final Wizard visualizationTypeWizard;
 
     public AsdScenarioSummaryViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
+
+        table = OldTable.createByComponentDataAttributeName(driver, wait, DETECTED_ISSUES_WINDOW_ID);
+        advancedSearch = ServiceDeskAdvancedSearch.create(driver, wait, DETECTED_ISSUES_WINDOW_ID);
         visualizationTypeWizard = Wizard.createWizard(driver, wait);
         attributeWizard = Wizard.createWizard(driver, wait);
-        table = OldTable.createByComponentDataAttributeName(driver, wait, DETECTED_ISSUES_TABLE_ID);
-        advancedSearch = ServiceDeskAdvancedSearch.create(driver, wait, DETECTED_ISSUES_TABLE_WINDOW_ID);
     }
 
-    @Step("I Open Scenario Summary View")
+    @Step("I Open ASD Scenario Summary View")
     public static AsdScenarioSummaryViewPage goToPage(WebDriver driver, String suffixURL, String basicURL) {
         WebDriverWait wait = new WebDriverWait(driver, 150);
 
@@ -56,33 +47,6 @@ public class AsdScenarioSummaryViewPage extends BasePage {
         log.info("Opened page: {}", pageUrl);
 
         return new AsdScenarioSummaryViewPage(driver, wait);
-    }
-
-    @Step("Waiting for Predefined Filters presence")
-    public void seePredefinedFilterAreaIsDisplayed() {
-        log.info("Waiting for Predefined Filters presence");
-        DelayUtils.waitForPageToLoad(driver, wait);
-    }
-
-    @Step("Maximize window")
-    public void maximizeWindow(String windowId) {
-        Card card = Card.createCard(driver, wait, windowId);
-        card.maximizeCard();
-        log.info("Maximizing window");
-    }
-
-    @Step("Minimize window")
-    public void minimizeWindow(String windowId) {
-        Card card = Card.createCard(driver, wait, windowId);
-        card.minimizeCard();
-        log.info("Minimizing window");
-    }
-
-    @Step("Add predefined filter")
-    public void clickAddPredefinedFilter() {
-        Button button = Button.createByXpath(ADD_PREDEFINED_FILTER_BUTTON, "li", CSSUtils.DATA_WIDGET_ID, driver);
-        button.click();
-        log.info("Clicking Add predefined filter button");
     }
 
     @Step("Choose Predefined Filter type")
@@ -99,41 +63,11 @@ public class AsdScenarioSummaryViewPage extends BasePage {
         log.debug("Setting attribute for predefined filter: {}", attributeName);
     }
 
-    @Step("I insert {value} to multi combo box component with id {componentId}")
-    public void insertAttributeValueToMultiComboBoxComponent(String text, String componentId) {
-        insertValueToComponent(componentId, text, Input.ComponentType.MULTI_COMBOBOX);
-    }
-
     @Step("I click Accept button")
     public void savePredefinedFilter() {
         attributeWizard.clickAcceptOldWizard();
         log.info("I save predefined filter by clicking 'Accept'");
         DelayUtils.waitForPageToLoad(driver, wait);
-    }
-
-    private void insertValueToComponent(String componentId, String text, Input.ComponentType componentType) {
-        getWizard().setComponentValue(componentId, text, componentType);
-    }
-
-    private Wizard getWizard() {
-        return Wizard.createWizard(driver, wait);
-    }
-
-    @Step("I delete Predefined Filter")
-    public void deletePredefinedFilter() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        DelayUtils.sleep();
-        log.info("I prepare to filter deletion");
-
-        ButtonContainer deleteButton = ButtonContainer.create(driver, wait);
-        deleteButton.callActionByLabel("DELETE");
-
-        DelayUtils.waitForPageToLoad(driver, wait);
-
-        Button deleteButton2 = Button.create(driver, "Delete");
-        deleteButton2.click();
-
-        log.info("I deleted predefined filer");
     }
 
     @Step("Set value of Issue Id multiSearch")
@@ -145,42 +79,12 @@ public class AsdScenarioSummaryViewPage extends BasePage {
         DelayUtils.sleep();
     }
 
-    @Step("Set value of Issue State multiComboBox")
-    public void setValueOfCreationTypeBox(String creationType) {
+    @Step("Set value in multiComboBox")
+    public void setValueInMultiComboBox(String attributeName, String inputValue) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        Input issueStateComboBox = advancedSearch.getComponent("creation_type", Input.ComponentType.MULTI_COMBOBOX);
-        log.info("Setting value of Issue State: {}", creationType);
-        issueStateComboBox.setValue(Data.createSingleData(creationType));
-        DelayUtils.sleep();
-    }
-
-    @Step("Set value in time period chooser")
-    public void setValueInTimePeriodChooser(String widgetId, int days, int hours, int minutes) {
-        TimePeriodChooser timePeriod = TimePeriodChooser.create(driver, wait, widgetId);
-        timePeriod.chooseOption(TimePeriodChooser.TimePeriodChooserOption.LAST);
-        log.info("Setting value in the time period chooser");
-        timePeriod.setLastPeriod(days, hours, minutes);
-        DelayUtils.sleep();
-    }
-
-    @Step("Check if data in issues table is empty")
-    public Boolean checkDataInIssuesTable() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        log.info("Checking if issues table is empty");
-        return table.hasNoData();
-    }
-
-    @Step("Turn On Include Issues without Roots switcher")
-    public void turnOnSwitcher() {
-        ComponentFactory.create(SWITCHER_ID, Input.ComponentType.SWITCHER, driver, wait).click();
-        log.info("Turning on Include Issues without Roots");
-    }
-
-    @Step("Refresh issues table")
-    public void refreshIssuesTable(String issuesTableRefreshButtonId) {
-        Button button = Button.createByXpath(issuesTableRefreshButtonId, "li", CSSUtils.DATA_WIDGET_ID, driver);
-        button.click();
-        log.info("Clicking refresh issues table button");
+        Input multiComboBox = advancedSearch.getComponent(attributeName, Input.ComponentType.MULTI_COMBOBOX);
+        multiComboBox.setValue(Data.createSingleData(inputValue));
+        log.info("Setting value of {} attribute", inputValue, " as {}", attributeName);
     }
 
     @Step("Clear multiComboBox")
@@ -198,10 +102,11 @@ public class AsdScenarioSummaryViewPage extends BasePage {
         log.info("Clearing multisearch");
     }
 
-    @Step("Clear time period chooser")
-    public void clearTimePeriod(String widgetId) {
-        TimePeriodChooser timePeriod = TimePeriodChooser.create(driver, wait, widgetId);
-        timePeriod.clickClearValue();
-        log.info("Clearing time period chooser");
+    @Step("Check if data in issues table is empty")
+    public Boolean checkDataInIssuesTable() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Checking if issues table is empty");
+        return table.hasNoData();
     }
+
 }

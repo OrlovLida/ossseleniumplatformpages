@@ -181,8 +181,7 @@ public class KpiViewPage extends BasePage {
 
     @Step("I change layout")
     public void changeLayout(LayoutType layoutType) {
-        KpiToolbarPanel toolbar = KpiToolbarPanel.create(driver, wait);
-        toolbar.getLayoutPanel().changeLayout(layoutType);
+        KpiToolbarPanel.create(driver, wait).openLayoutPanel().changeLayout(layoutType);
     }
 
     @Step("I minimize data View")
@@ -492,7 +491,7 @@ public class KpiViewPage extends BasePage {
     @Step("I check status of chosen layout button")
     public String layoutButtonStatus(LayoutType layout) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        return LayoutPanel.create(driver, wait).chartLayoutButtonStatus(layout);
+        return KpiToolbarPanel.create(driver, wait).openLayoutPanel().chartLayoutButtonStatus(layout);
     }
 
     @Step("I search for Object in tree search toolbar")
@@ -562,7 +561,6 @@ public class KpiViewPage extends BasePage {
         log.info("Click in Share icon");
     }
 
-    //TODO add this function after fix in OSSWEB-14686
     @Step("I click close panel")
     public void clickCloseShare() {
         ToolbarWidget.create(driver, wait).closeSharePanel();
