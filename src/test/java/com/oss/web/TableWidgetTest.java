@@ -214,7 +214,7 @@ public class TableWidgetTest extends BaseTestCase {
     public void addColumnByPath() {
         String path = "director.type";
         
-        toggleColumnByPath(path);
+        enableColumn(path);
         List<String> ids = tableWidget.getActiveColumnIds();
         Assertions.assertThat(ids).contains(path);
     }
@@ -239,7 +239,11 @@ public class TableWidgetTest extends BaseTestCase {
         int defaultFirstColumnSize = inventoryViewPage.getColumnSize(defaultFirstColumn);
         String defaultForthColumn = inventoryViewPage.getMainTable().getActiveColumnIds().get(3);
         
-        changeColumnsConfiguration(defaultFirstColumn, defaultFirstColumn, defaultForthColumn, TYPE_DIRECTOR_COLUMN_ID);
+        changeColumnOrder(defaultFirstColumn, 2);
+        resizeColumnByAdministration(defaultFirstColumn, defaultFirstColumnSize - 50);
+        disableColumn(defaultForthColumn);
+        enableColumn(TYPE_DIRECTOR_COLUMN_ID);
+        
         inventoryViewPage.setDefaultSettings();
         
         List<String> activeColumnsHeaders = inventoryViewPage.getMainTable().getActiveColumnIds();
@@ -274,24 +278,26 @@ public class TableWidgetTest extends BaseTestCase {
         return pagination.getRowsCount();
     }
     
-    private void changeColumnsConfiguration(String orderChangeColumn, String resizeColumn, String disabledColumn, String enableColumn) {
-        // change column order
+    private void changeColumnOrder(String columnId, int position) {
         tableWidget = inventoryViewPage.getMainTable();
-        tableWidget.changeColumnsOrderById(orderChangeColumn, 2);
-        Assertions.assertThat(inventoryViewPage.getMainTable().getActiveColumnIds().indexOf(orderChangeColumn)).isEqualTo(2);
-        // change column size
-        int columnSize = inventoryViewPage.getColumnSize(resizeColumn);
-        int newColumnSize = columnSize - 50;
-        tableWidget.setColumnWidth(resizeColumn, String.valueOf(newColumnSize));
-        Assertions.assertThat(inventoryViewPage.getColumnSize(resizeColumn)).isEqualTo(newColumnSize);
-        // unselect column
-        toggleColumnByPath(disabledColumn);
-        Assertions.assertThat(inventoryViewPage.getActiveColumnsHeaders()).doesNotContain(disabledColumn);
-        
-        // select new column
-        toggleColumnByPath(enableColumn);
+        tableWidget.changeColumnsOrderById(columnId, position);
+        Assertions.assertThat(inventoryViewPage.getMainTable().getActiveColumnIds().indexOf(columnId)).isEqualTo(position);
+    }
+    
+    private void resizeColumnByAdministration(String columnId, int columnSize) {
+        tableWidget.setColumnWidth(columnId, String.valueOf(columnSize));
+        Assertions.assertThat(inventoryViewPage.getColumnSize(columnId)).isEqualTo(columnSize);
+    }
+    
+    private void disableColumn(String columnId) {
+        toggleColumnByPath(columnId);
+        Assertions.assertThat(inventoryViewPage.getActiveColumnsHeaders()).doesNotContain(columnId);
+    }
+    
+    private void enableColumn(String columnId) {
+        toggleColumnByPath(columnId);
         List<String> ids = tableWidget.getActiveColumnIds();
-        Assertions.assertThat(ids).contains(enableColumn);
+        Assertions.assertThat(ids).contains(columnId);
     }
     
     private void toggleColumnByPath(String columnId) {
