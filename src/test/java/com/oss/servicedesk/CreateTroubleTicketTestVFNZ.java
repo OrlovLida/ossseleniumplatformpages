@@ -104,7 +104,7 @@ public class CreateTroubleTicketTestVFNZ extends BaseTestCase {
         wizardPage.insertValueToSearchComponent(TT_NEW_ASSIGNEE, TT_WIZARD_ASSIGNEE);
         wizardPage.enterIncidentDescription(TT_DESCRIPTION_EDITED);
         wizardPage.insertValueToSearchComponent(TT_ESCALATED_TO, TT_WIZARD_ESCALATED_TO);
-        wizardPage.insertValueToComboBoxComponent(TT_SEVERITY, TT_WIZARD_SEVERITY);
+        wizardPage.insertValueToMultiComboBoxComponent(TT_SEVERITY, TT_WIZARD_SEVERITY);
         wizardPage.clickNextButtonInWizard(driver);
         wizardPage.clickAcceptButtonInWizard(driver);
     }
@@ -115,13 +115,15 @@ public class CreateTroubleTicketTestVFNZ extends BaseTestCase {
         ticketSearchPage = new TicketSearchPage(driver);
         ticketSearchPage.goToPage(driver, BASIC_URL);
         ticketSearchPage.clickFilterButton();
-        ticketSearchPage.filterByTextField(TicketSearchPage.ASSIGNEE_ATTRIBUTE, TT_ASSIGNEE);
+        ticketSearchPage.filterByTextField(TicketSearchPage.ASSIGNEE_ATTRIBUTE, TT_NEW_ASSIGNEE);
 //      TODO Do odkomentowania po naprawieniu aktualizacji widoku Ticket Search (OSSSD-2605)
-//        String date = LocalDateTime.now().minusMinutes(10).format(CREATE_DATE_FILTER_DATE_FORMATTER);
+//        String startDate = LocalDateTime.now().minusMinutes(10).format(CREATE_DATE_FILTER_DATE_FORMATTER);
+//        String endDate = LocalDateTime.now().minusMinutes(0).format(CREATE_DATE_FILTER_DATE_FORMATTER);
+//        String date = startDate + " - " + endDate;
 //        ticketSearchPage.clickFilterButton();
-//        ticketSearchPage.filterByTextField(TicketSearchPage.CREATION_TIME_ATTRIBUTE, date);
+//        ticketSearchPage.filterByTextField(TicketSearchPage.CREATION_TIME_ATTRIBUTE, date );
         ticketSearchPage.clickFilterButton();
-        ticketSearchPage.filterByTextField(TicketSearchPage.DESCRIPTION_ATTRIBUTE, TT_DESCRIPTION);
+        ticketSearchPage.filterByTextField(TicketSearchPage.DESCRIPTION_ATTRIBUTE, TT_DESCRIPTION_EDITED);
         ticketSearchPage.clickFilterButton();
         ticketSearchPage.filterByComboBox(TicketSearchPage.STATUS_ATTRIBUTE, "New");
         ticketSearchPage.openTicketDetailsView("0", BASIC_URL);
