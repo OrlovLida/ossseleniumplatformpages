@@ -232,7 +232,7 @@ public class TableWidgetTest extends BaseTestCase {
     }
     
     @Test(priority = 14)
-    public void setDefaultSettings() {
+    public void backToDefaultSettings() {
         inventoryViewPage.setDefaultSettings();
         List<String> defaultActiveHeaders = inventoryViewPage.getMainTable().getActiveColumnIds();
         String defaultFirstColumn = inventoryViewPage.getMainTable().getActiveColumnIds().get(0);
