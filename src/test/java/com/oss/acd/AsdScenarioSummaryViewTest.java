@@ -74,10 +74,11 @@ public class AsdScenarioSummaryViewTest extends BaseTestCase {
     }
 
     private void checkIssuesTableWithFilters() {
-        if (asdScenarioSummaryViewPage.checkDataInIssuesTable()) {
+
+        if (!asdScenarioSummaryViewPage.isDataInIssuesTable()) {
             log.info("table doesn't have data for issues with roots");
             baseACDPage.turnOnSwitcher();
-            if (asdScenarioSummaryViewPage.checkDataInIssuesTable()) {
+            if (!asdScenarioSummaryViewPage.isDataInIssuesTable()) {
                 log.error("table doesn't have data for issues without roots");
                 Assert.fail();
             } else {
@@ -89,21 +90,23 @@ public class AsdScenarioSummaryViewTest extends BaseTestCase {
 
         } else {
             log.info("table contains data for issues with roots");
-
             baseACDPage.turnOnSwitcher();
             asdScenarioSummaryViewPage.setValueInMultiComboBox("creation_type", "Automatically");
             baseACDPage.setValueInTimePeriodChooser("create_time", 3, 12, 33);
             asdScenarioSummaryViewPage.setValueOfIssueIdSearch();
 
+            if (!asdScenarioSummaryViewPage.isDataInIssuesTable()) {
+                asdScenarioSummaryViewPage.clearMultiComboBox("creation_type");
+                asdScenarioSummaryViewPage.clearMultiSearch("id");
+                baseACDPage.clearTimePeriod("create_time");
+                log.error("Table doesn't have data for provided filters");
+                Assert.fail();
+            }
+
             DelayUtils.sleep();
-
-            Boolean hasNoData = asdScenarioSummaryViewPage.checkDataInIssuesTable();
-
             asdScenarioSummaryViewPage.clearMultiComboBox("creation_type");
             asdScenarioSummaryViewPage.clearMultiSearch("id");
             baseACDPage.clearTimePeriod("create_time");
-
-            Assert.assertFalse(hasNoData);
         }
     }
 }
