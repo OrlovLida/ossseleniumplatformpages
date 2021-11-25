@@ -2,8 +2,8 @@ package com.oss.pages.acd.homeView;
 
 import com.oss.framework.components.common.TimePeriodChooser;
 import com.oss.framework.components.inputs.Button;
+import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.data.Data;
 import com.oss.framework.utils.CSSUtils;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.chartwidget.ChartWidget;
@@ -85,15 +85,30 @@ public class HomeViewPage extends BaseACDPage {
 
     @Step("Set value of Issue Id multiSearch")
     public void setValueOfIssueIdSearch() {
-        Input issueIdSearch = advancedSearch.getComponent("id", Input.ComponentType.MULTI_SEARCH_FIELD);
-        String firstIdInTable = table.getCellValue(0, "Issue Id");
-        log.info("Setting value of Issue Id");
-        issueIdSearch.setValue(Data.createSingleData(firstIdInTable));
-        DelayUtils.sleep();
+
+        if (isMultiSearchFilled("id")) {
+            clearMultiSearch("id");
+        }
+
+        if (!isDataInScenarioTable()) {
+            log.info("Table doesn't have data for chosen filters. Issue ID cannot be set");
+        } else {
+            String firstIdInTable = table.getCellValue(0, "Issue Id");
+            log.info("Setting value of Issue Id");
+            ComponentFactory.create("id", Input.ComponentType.MULTI_SEARCH_FIELD, driver, wait)
+                    .setSingleStringValue(firstIdInTable);
+
+            DelayUtils.sleep();
+        }
     }
 
     @Step("Set value in time period chooser")
     public void setValueInTimePeriodChooser(String widgetId, int days, int hours, int minutes) {
+
+        if (!isTimePeriodChooserFilled(widgetId)) {
+            clearTimePeriod(widgetId);
+        }
+
         TimePeriodChooser timePeriod = TimePeriodChooser.create(driver, wait, widgetId);
 
         timePeriod.chooseOption(TimePeriodChooser.TimePeriodChooserOption.LAST);
@@ -102,11 +117,11 @@ public class HomeViewPage extends BaseACDPage {
         DelayUtils.sleep();
     }
 
-    @Step("Check data in scenario table {issueType} is empty")
-    public Boolean checkDataInScenarioTable() {
+    @Step("Check if there is data in issues table")
+    public Boolean isDataInScenarioTable() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        log.info("Checking if scenario table is empty");
-        return table.hasNoData();
+        log.info("Checking if there is data in issues table");
+        return !table.hasNoData();
     }
 
     @Step("Clear multiComboBox")
@@ -114,14 +129,14 @@ public class HomeViewPage extends BaseACDPage {
         Input issueTypeComboBox = advancedSearch.getComponent(multiComboBoxId, Input.ComponentType.MULTI_COMBOBOX);
         DelayUtils.waitForPageToLoad(driver, wait);
         issueTypeComboBox.clear();
-        log.info("Clearing multicombobox");
+        log.info("Clearing multiComboBox");
     }
 
     @Step("Clear multiSearch")
     public void clearMultiSearch(String multiSearchId) {
         Input issueIdSearch = advancedSearch.getComponent(multiSearchId, Input.ComponentType.MULTI_SEARCH_FIELD);
         issueIdSearch.clear();
-        log.info("Clearing multisearch");
+        log.info("Clearing multiSearch");
     }
 
     @Step("Clear time period chooser")
@@ -140,9 +155,36 @@ public class HomeViewPage extends BaseACDPage {
 
     @Step("Set value in multiComboBox")
     public void setValueInMultiComboBox(String attributeName, String inputValue) {
+
+        if (isMultiComboBoxFilled(attributeName)) {
+            clearMultiComboBox(attributeName);
+        }
+
         DelayUtils.waitForPageToLoad(driver, wait);
-        Input multiComboBox = advancedSearch.getComponent(attributeName, Input.ComponentType.MULTI_COMBOBOX);
-        multiComboBox.setValue(Data.createSingleData(inputValue));
-        log.info("Setting value of {} attribute", inputValue, " as {}", attributeName);
+        ComponentFactory.create(attributeName, Input.ComponentType.MULTI_COMBOBOX, driver, wait)
+                .setSingleStringValue(inputValue);
+        log.info("Setting value in MultiComboBox");
+    }
+
+    @Step("Check if multiComboBox is filled")
+    public Boolean isMultiComboBoxFilled(String multiComboBoxId) {
+
+        return ComponentFactory.create(multiComboBoxId, Input.ComponentType.MULTI_COMBOBOX, driver, wait)
+                .getStringValues()
+                .size() > 0;
+    }
+
+    @Step("Check if multiSearch is filled")
+    public Boolean isMultiSearchFilled(String multiSearchId) {
+
+        return ComponentFactory.create(multiSearchId, Input.ComponentType.MULTI_SEARCH_FIELD, driver, wait)
+                .getStringValues()
+                .size() > 0;
+    }
+
+    @Step("Check if timePeriodChooser is filled")
+    public Boolean isTimePeriodChooserFilled(String widgetId) {
+
+        return TimePeriodChooser.create(driver, wait, widgetId).toString() != null;
     }
 }

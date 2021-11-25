@@ -31,7 +31,6 @@ public class BaseACDPage extends BasePage {
     public void maximizeWindow(String windowId) {
         Card.createCard(driver, wait, windowId).maximizeCard();
         log.info("Maximizing window");
-        log.info("Waiting for Predefined Filters presence");
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
@@ -39,6 +38,7 @@ public class BaseACDPage extends BasePage {
     public void minimizeWindow(String windowId) {
         Card.createCard(driver, wait, windowId).minimizeCard();
         log.info("Minimizing window");
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     @Step("Add predefined filter")

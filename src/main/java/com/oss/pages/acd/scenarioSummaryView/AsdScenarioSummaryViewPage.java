@@ -1,7 +1,7 @@
 package com.oss.pages.acd.scenarioSummaryView;
 
+import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.data.Data;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.serviceDeskAdvancedSearch.ServiceDeskAdvancedSearch;
@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
+import static com.oss.framework.components.inputs.Input.ComponentType.MULTI_SEARCH_FIELD;
 
 public class AsdScenarioSummaryViewPage extends BaseACDPage {
 
@@ -72,18 +73,22 @@ public class AsdScenarioSummaryViewPage extends BaseACDPage {
 
     @Step("Set value of Issue Id multiSearch")
     public void setValueOfIssueIdSearch() {
-        Input issueIdSearch = advancedSearch.getComponent("id", Input.ComponentType.MULTI_SEARCH_FIELD);
-        String firstIdInTable = table.getCellValue(0, "Issue Id");
-        log.info("Setting value of Issue Id");
-        issueIdSearch.setValue(Data.createSingleData(firstIdInTable));
-        DelayUtils.sleep();
+        if (!isDataInIssuesTable()) {
+            log.info("Table doesn't have data for chosen filters. Issue ID cannot be set");
+        } else {
+            String firstIdInTable = table.getCellValue(0, "Issue Id");
+            log.info("Setting value of Issue Id");
+            ComponentFactory.create("id", MULTI_SEARCH_FIELD, driver, wait)
+                    .setSingleStringValue(firstIdInTable);
+            DelayUtils.sleep();
+        }
     }
 
     @Step("Set value in multiComboBox")
     public void setValueInMultiComboBox(String attributeName, String inputValue) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        Input multiComboBox = advancedSearch.getComponent(attributeName, Input.ComponentType.MULTI_COMBOBOX);
-        multiComboBox.setValue(Data.createSingleData(inputValue));
+        ComponentFactory.create(attributeName, Input.ComponentType.MULTI_COMBOBOX, driver, wait)
+                .setSingleStringValue(inputValue);
         log.info("Setting value of {} attribute", inputValue, " as {}", attributeName);
     }
 
@@ -92,21 +97,20 @@ public class AsdScenarioSummaryViewPage extends BaseACDPage {
         Input issueTypeComboBox = advancedSearch.getComponent(multiComboBoxId, Input.ComponentType.MULTI_COMBOBOX);
         DelayUtils.waitForPageToLoad(driver, wait);
         issueTypeComboBox.clear();
-        log.info("Clearing multicombobox");
+        log.info("Clearing multiComboBox");
     }
 
     @Step("Clear multiSearch")
     public void clearMultiSearch(String multiSearchId) {
         Input issueIdSearch = advancedSearch.getComponent(multiSearchId, Input.ComponentType.MULTI_SEARCH_FIELD);
         issueIdSearch.clear();
-        log.info("Clearing multisearch");
+        log.info("Clearing multiSearch");
     }
 
-    @Step("Check if data in issues table is empty")
-    public Boolean checkDataInIssuesTable() {
+    @Step("Check if there is data in issues table")
+    public Boolean isDataInIssuesTable() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        log.info("Checking if issues table is empty");
-        return table.hasNoData();
+        log.info("Checking if there is data in issues table");
+        return !table.hasNoData();
     }
-
 }
