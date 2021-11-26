@@ -14,7 +14,7 @@ public class VLANRangeWizardPage extends BasePage {
         super(driver);
     }
 
-    private static final String WIZARD_ID = "VLAN_RANGE_ID";
+    private static final String WIZARD_ID = "VLANRangeWizardTemplateId";
     private static final String NAME_ATTRIBUTE_ID = "VLAN_RANGE_NAME_ATTRIBUTE_ID";
     private static final String RANGE_ATTRIBUTE_ID = "VLAN_RANGE_VLAN_ID_RANGE_ATTRIBUTE_ID";
     private static final String DESCRIPTION_ATTRIBUTE_ID = "VLAN_RANGE_DESCRIPTION_ATTRIBUTE_ID";

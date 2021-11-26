@@ -13,7 +13,7 @@ public class DataSourceSmokeTest extends BaseTestCase {
 
     private static final Logger log = LoggerFactory.getLogger(DataSourceSmokeTest.class);
     private DataSourcePage dataSourcePage;
-    private static final String DATA_SOURCE_NAME = "t:SMOKE#DSforMonitoring";
+    private static final String DATA_SOURCE_NAME = "t:SMOKE#DSforKqis";
 
     @BeforeMethod
     public void goToDataSourceView() {
@@ -36,7 +36,10 @@ public class DataSourceSmokeTest extends BaseTestCase {
             dataSourcePage.setSeverityInCombobox("All");
 
             Assert.assertTrue(dataSourcePage.IsIfRunsFresh());
-            Assert.assertEquals(dataSourcePage.checkStatus(), "Info");
+
+            String actualStatus = dataSourcePage.checkStatus();
+            boolean statusIsAcceptable = actualStatus.equals("Info") || actualStatus.equals("Warn");
+            Assert.assertTrue(statusIsAcceptable);
         } else {
             log.error("Data Source with name: {} doesn't exist", DATA_SOURCE_NAME);
             Assert.fail();

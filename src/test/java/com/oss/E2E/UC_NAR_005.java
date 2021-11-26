@@ -43,6 +43,7 @@ public class UC_NAR_005 extends BaseTestCase {
 
     @BeforeClass
     public void openNetworkDiscoveryControlView() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
     }
@@ -98,7 +99,7 @@ public class UC_NAR_005 extends BaseTestCase {
         networkDiscoveryControlViewPage.moveToNivFromNdcv();
         NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
         networkInconsistenciesViewPage.expandTree();
-        networkInconsistenciesViewPage.assignLocation(DEVICE_NAME, "a");
+        networkInconsistenciesViewPage.assignLocation(DEVICE_NAME, "1");
         checkMessageType(MessageType.SUCCESS);
         networkInconsistenciesViewPage.clearOldNotification();
         networkInconsistenciesViewPage.applyInconsistencies();
@@ -134,7 +135,7 @@ public class UC_NAR_005 extends BaseTestCase {
         newInventoryViewPage.searchObject(DEVICE_NAME);
         waitForPageToLoad();
         Assert.assertFalse(newInventoryViewPage.checkIfTableIsEmpty());
-        Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "Serial Number"), SERIAL_NUMBER_BEFORE);
+        Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "serialNumber"), SERIAL_NUMBER_BEFORE);
     }
 
     @Test(priority = 7)
@@ -143,14 +144,14 @@ public class UC_NAR_005 extends BaseTestCase {
         NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.selectFirstRow();
         waitForPageToLoad();
-        NotificationsInterface notifications = Notifications.create(driver, webDriverWait);
+        NotificationsInterface notifications = Notifications.create(driver, new WebDriverWait(driver, 180));
         notifications.clearAllNotification();
         newInventoryViewPage.callAction(ActionsContainer.OTHER_GROUP_ID, "run-narrow-reconciliation");
         DelayUtils.sleep(3000);
         Assert.assertEquals(notifications.waitAndGetFinishedNotificationText(), "Narrow reconciliation for GMOCs IPDevice finished");
         newInventoryViewPage.refreshMainTable();
         waitForPageToLoad();
-        Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "Serial Number"), SERIAL_NUMBER_AFTER);
+        Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "serialNumber"), SERIAL_NUMBER_AFTER);
     }
 
     @Test(priority = 8)
@@ -160,7 +161,7 @@ public class UC_NAR_005 extends BaseTestCase {
         newInventoryViewPage.selectFirstRow();
         newInventoryViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, "DeleteDeviceWizardAction");
         waitForPageToLoad();
-        Wizard.createWizard(driver, new WebDriverWait(driver, 90)).clickActionById("ConfirmationBox_object_delete_wizard_confirmation_box_action_button");
+        Wizard.createWizard(driver, webDriverWait).clickActionById("ConfirmationBox_object_delete_wizard_confirmation_box_action_button");
         checkMessageType(MessageType.SUCCESS);
         newInventoryViewPage.refreshMainTable();
         Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());

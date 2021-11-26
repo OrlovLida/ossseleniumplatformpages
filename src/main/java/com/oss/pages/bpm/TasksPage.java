@@ -136,7 +136,7 @@ public class TasksPage extends BasePage {
     public void setupIntegration(String processCode) {
         findTask(processCode, READY_FOR_INTEGRATION_TASK);
         DelayUtils.waitForPageToLoad(driver, wait);
-        getTab().callActionById(SETUP_INTEGRATION_ICON_ID);
+        getTab().clickButtonById(SETUP_INTEGRATION_ICON_ID);
     }
 
     public void addFile(String processCode, String taskName, String filePath) {
@@ -147,7 +147,6 @@ public class TasksPage extends BasePage {
         attachFileWizardPage.selectRadioButton("Upload anyway");
         attachFileWizardPage.attachFile(filePath);
         attachFileWizardPage.skipAndAccept();
-
     }
 
     public void selectTab(String tabId) {
@@ -166,7 +165,8 @@ public class TasksPage extends BasePage {
     private void actionTask(String actionId) {
         selectTab(FORM_TAB_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
-        getTab().callActionById(actionId);
+        getTab().clickButtonById(actionId);
+        DelayUtils.waitForPageToLoad(driver, wait);
         ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
         prompt.clickButtonByLabel("Proceed");
     }

@@ -225,15 +225,11 @@ public class DataSourcePage extends BaseDfePage {
         List<File> listFiles = (List<File>) FileUtils.listFiles(directory, new WildcardFileFilter(fileName), null);
         boolean fileIsNotEmpty = false;
         for (File file : listFiles) {
-            if (getFileSizeKiloBytes(file) > 0) {
+            if (file.length() > 0) {
                 fileIsNotEmpty = true;
             }
         }
         return fileIsNotEmpty;
-    }
-
-    private double getFileSizeKiloBytes(File file) {
-        return (double) file.length() / 1024;
     }
 
     @Attachment(value = "Exported CSV file")

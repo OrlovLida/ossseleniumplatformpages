@@ -1,8 +1,15 @@
 package com.oss;
 
+import com.comarch.oss.services.infrastructure.objectmapper.JDK8ObjectMapper;
+import com.jayway.restassured.RestAssured;
+import com.jayway.restassured.config.ObjectMapperConfig;
+import com.jayway.restassured.config.RestAssuredConfig;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.LoginPage;
+import com.oss.transport.infrastructure.Environment;
+import com.oss.transport.infrastructure.EnvironmentRequestClient;
+import com.oss.transport.infrastructure.User;
 import com.oss.utils.TestListener;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
@@ -15,6 +22,8 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,10 +38,14 @@ public class BaseTestCase {
     public WebDriver driver;
     public WebDriverWait webDriverWait;
     protected HomePage homePage;
+    protected EnvironmentRequestClient environmentRequestClient;
 
 
     @BeforeClass
     public void openBrowser() {
+        RestAssured.config = prepareRestAssureConfig();
+        Environment environment = createEnvironment();
+        environmentRequestClient = new EnvironmentRequestClient(environment);
         if (CONFIGURATION.getDriver().equals("chrome")) {
             startChromeDriver();
         } else {
@@ -48,6 +61,7 @@ public class BaseTestCase {
     public void closeBrowser() {
         if (driver != null) {
             DelayUtils.sleep(5000);
+            driver.close();
             driver.quit();
         }
     }
@@ -78,6 +92,7 @@ public class BaseTestCase {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--ignore-certificate-errors");
         options.setExperimentalOption("prefs", getPreferences());
 
         return options;
@@ -121,6 +136,29 @@ public class BaseTestCase {
         }
         driver = new FirefoxDriver(options);
         driver.manage().window().maximize();
+    }
+
+    private Environment createEnvironment() {
+        try {
+            URL url = new URL(BASIC_URL);
+            String host = url.getHost();
+            int port = url.getPort();
+            String userName = CONFIGURATION.getValue("user");
+            String pass = CONFIGURATION.getValue("password");
+            User user = new User(userName, pass);
+            return Environment.builder()
+                    .withEnvironmentUrl(host)
+                    .withEnvironmentPort(port)
+                    .withUser(user)
+                    .build();
+        } catch (MalformedURLException exception) {
+            throw new IllegalStateException(exception);
+        }
+    }
+
+    protected RestAssuredConfig prepareRestAssureConfig() {
+        return RestAssuredConfig.config()
+                .objectMapperConfig(new ObjectMapperConfig().jackson2ObjectMapperFactory((clazz, s) -> JDK8ObjectMapper.getMapper()));
     }
 
 }

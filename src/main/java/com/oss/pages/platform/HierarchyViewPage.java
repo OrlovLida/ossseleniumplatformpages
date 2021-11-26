@@ -117,12 +117,6 @@ public class HierarchyViewPage extends BasePage {
         getMainTree().expandNodeWithLabel(label);
     }
 
-    @Step("Expand first collapsed tree node")
-    public void expandFirstCollapsedTreeNode() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        getMainTree().expandNode();
-    }
-
     @Step("Select tree node by label - {label}")
     public void selectNodeByLabel(String label) {
         DelayUtils.waitForPageToLoad(driver, wait);

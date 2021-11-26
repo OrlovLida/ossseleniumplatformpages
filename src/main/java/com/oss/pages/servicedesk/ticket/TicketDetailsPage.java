@@ -5,7 +5,10 @@ import com.oss.framework.components.inputs.Combobox;
 import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.data.Data;
 import com.oss.framework.listwidget.CommonList;
+import com.oss.framework.listwidget.iaa.ListApp;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.view.Card;
+import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tabswidget.TabWindowWidget;
 import com.oss.pages.BasePage;
 import com.oss.pages.servicedesk.ticket.wizard.WizardPage;
@@ -13,6 +16,8 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 public class TicketDetailsPage extends BasePage {
 
@@ -25,6 +30,10 @@ public class TicketDetailsPage extends BasePage {
     private static final String CREATE_SUB_TICKET = "TT_DETAILS_SUBTICKET_CREATE_PROMPT_TITLE";
     private static final String CHECKLIST_APP_ID = "_checklistApp";
     private static final String SKIP_BUTTON_LABEL = "SKIP";
+    private static final String EXTERNAL_LIST_ID = "_detailsExternalsListApp";
+    private static final String EXTERNAL_INFO_LABEL = "External Info";
+    private static final String DICTIONARIES_TABLE_ID = "_dictionariesTableId";
+    private static final String DICTIONARY_VALUE_TABLE_LABEL = "Dictionary Value";
 
     public TicketDetailsPage(WebDriver driver) {
         super(driver);
@@ -45,14 +54,16 @@ public class TicketDetailsPage extends BasePage {
         log.info("Clicking release button");
     }
 
-    private void clickContextAction(String contextActionLabel) {
+    public void clickContextAction(String contextActionLabel) {
+        DelayUtils.waitForPageToLoad(driver, wait);
         TabWindowWidget.create(driver, wait).callActionByLabel(contextActionLabel);
         log.info("Clicking Context action {}", contextActionLabel);
     }
 
-    public void selectTab(WebDriver driver, String tabLabel) {
-        TabWindowWidget.create(driver, wait).selectTabByLabel(tabLabel);
-        log.info("Selecting tab {}", tabLabel);
+    public void selectTab(WebDriver driver, String tabAriaControls) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        TabWindowWidget.create(driver, wait).selectTabById(tabAriaControls);
+        log.info("Selecting tab {}", tabAriaControls);
     }
 
     @Step("I open create subticket wizard for flow {flowType}")
@@ -67,7 +78,7 @@ public class TicketDetailsPage extends BasePage {
     public void skipAllActionsOnCheckList() {
         CommonList commonList = CommonList.create(driver, wait, CHECKLIST_APP_ID);
         commonList.getAllRows()
-            .forEach(row -> row.callActionIcon(SKIP_BUTTON_LABEL));
+                .forEach(row -> row.callActionIcon(SKIP_BUTTON_LABEL));
         log.info("Skipping all actions on checklist");
     }
 
@@ -76,4 +87,45 @@ public class TicketDetailsPage extends BasePage {
         statusComboBox.setValue(Data.createSingleData(statusName));
         log.info("Changing status to {}", statusName);
     }
+
+    @Step("Maximize window")
+    public void maximizeWindow(String windowId) {
+        Card card = Card.createCard(driver, wait, windowId);
+        card.maximizeCard();
+        log.info("Maximizing window");
+    }
+
+    public boolean checkExistingExternal(String expectedExistingExternal) {
+        DelayUtils.sleep(5000);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Checking if expected external '{}' exists on the list", expectedExistingExternal);
+        if (CommonList.create(driver, wait, EXTERNAL_LIST_ID).isRowVisible(EXTERNAL_INFO_LABEL, expectedExistingExternal)) {
+            log.info("Expected external '{}' exists on the list", expectedExistingExternal);
+            return true;
+        } else {
+            log.info("Expected external '{}' does not exists on the list", expectedExistingExternal);
+            return false;
+        }
+    }
+
+    public String checkExistingDictionary() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return OldTable.createByComponentId(driver, wait, DICTIONARIES_TABLE_ID).getCellValue(0, DICTIONARY_VALUE_TABLE_LABEL);
+    }
+
+    public boolean checkDisplayedText(String expectedText, String windowId) {
+        List<String> text = ListApp.createFromParent(driver, wait, windowId).getValue();
+        if (text.contains(expectedText)) {
+            log.debug("Expected text {} is displayed", expectedText);
+            return true;
+        } else {
+            log.debug("Expected text {} is not displayed", expectedText);
+            return false;
+        }
+    }
+
+    public void createNewNotificationOnMessagesTab(){
+        ListApp.createFromParent(driver,wait,"_tablesWindow").clickCreateNewNotification();
+    }
+
 }

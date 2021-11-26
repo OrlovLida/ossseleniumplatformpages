@@ -1,13 +1,5 @@
 package com.oss.pages.platform;
 
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.SearchField;
@@ -19,8 +11,14 @@ import com.oss.pages.languageservice.LanguageServicePage;
 import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.physical.LocationWizardPage;
 import com.oss.pages.schedulerservice.SchedulerServicePage;
-
 import io.qameta.allure.Step;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class HomePage extends BasePage {
 
@@ -64,7 +62,11 @@ public class HomePage extends BasePage {
 
     public String getPageTitle() {
         WebDriverWait wait = new WebDriverWait(driver, 45);
-        DelayUtils.waitForVisibility(wait, pageTitle);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return pageTitle.getText();
+    }
+
+    public String getPageTitle(WebDriverWait wait) {
         return pageTitle.getText();
     }
 
@@ -160,5 +162,4 @@ public class HomePage extends BasePage {
         log.info("Open link: {}", link);
         driver.get(link);
     }
-
 }

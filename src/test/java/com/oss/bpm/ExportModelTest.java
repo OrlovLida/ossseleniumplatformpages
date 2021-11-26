@@ -1,22 +1,9 @@
 package com.oss.bpm;
 
 import com.oss.BaseTestCase;
-import com.oss.framework.components.inputs.ComponentFactory;
-import com.oss.framework.components.inputs.Input;
-import com.oss.framework.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.Wizard;
-import com.oss.framework.widgets.tablewidget.OldTable;
-import com.oss.framework.widgets.tablewidget.TableInterface;
-import com.oss.framework.widgets.tablewidget.TableWidget;
-import com.oss.pages.bpm.Milestone;
-import com.oss.pages.bpm.ProcessInstancesPage;
 import com.oss.pages.bpm.ProcessModelsPage;
 import com.oss.utils.TestListener;
-import javafx.scene.control.ComboBox;
-import org.apache.commons.logging.Log;
-import org.openqa.selenium.support.ui.Wait;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;

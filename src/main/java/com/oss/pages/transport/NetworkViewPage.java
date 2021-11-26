@@ -44,7 +44,7 @@ public class NetworkViewPage extends BasePage {
     public static final String DELETE_ELEMENT_ACTION = "Delete Element-null";
     public static final String DELETE_DEVICE_ACTION = "Delete Device-null";
     public static final String ADD_TO_VIEW_ACTION = "add_to_view_group";
-    public static final String CREATE_MEDIATION_CONFIGURATION_ID = "Mediation Configuration-null";
+    public static final String CREATE_MEDIATION_CONFIGURATION_ID = "CREATE_Mediation Configuration-null";
     public static final String DELETE_CONNECTION_ID = "Delete Connection-null";
     public static final String CREATE_CONNECTION_ID = "Create Connection-null";
     public static final String HIERARCHY_VIEW_ACTION = "Hierarchy View-null";
@@ -65,6 +65,7 @@ public class NetworkViewPage extends BasePage {
     private static final String ROUTING_TABLE_APP_ID = "routing-table-app";
     private static final String TRAIL_TYPES_POPUP_ID = "trailTypesPopup";
     private static final String SUPPRESSION_WIZARD_ID = "plaSuppressionWizard";
+    private static final String SUPPRESSION_WIZARD_CONTEXT_ACTION_ID = "frameworkCustomMore_Suppression wizard";
 
     private Wizard wizard = Wizard.createWizard(driver, wait);
 
@@ -89,7 +90,7 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Use context action {action} from group {group}")
     public void useContextAction(String group, String action) {
-        getMainActionContainer().callAction(group, action);
+        getMainActionContainer().callActionById(group, action);
         waitForPageToLoad();
     }
 
@@ -196,7 +197,7 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Accept trail type")
     public void acceptTrailType() {
-        wizard.clickActionById("wizard-submit-button-trailTypeWizardWigdet");
+        wizard.clickActionById("wizard-submit-button-trailTypeWizardWidget");
     }
 
     @Step("Open modify termination wizard")
@@ -349,7 +350,7 @@ public class NetworkViewPage extends BasePage {
         waitForPageToLoad();
         table.selectRow(0);
         waitForPageToLoad();
-        tabsWidget.callActionById("Suppression wizard");
+        tabsWidget.callActionById(SUPPRESSION_WIZARD_CONTEXT_ACTION_ID);
         waitForPageToLoad();
         suppressionWizard().setComponentValue("reasonField", reason, TEXT_AREA);
         waitForPageToLoad();

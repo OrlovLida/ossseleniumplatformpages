@@ -1,5 +1,7 @@
 package com.oss.E2E;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -31,10 +33,11 @@ import static java.lang.String.format;
 
 public class ISPConfigurationTest extends BaseTestCase {
 
+    private static final Logger log = LoggerFactory.getLogger(ISPConfigurationTest.class);
+
     private String LOCATION_OVERVIEW_URL = "";
     private static final String LOCATION_NAME = "ISPConfiguration_Building";
     private static final String SUBLOCATION_NAME = "ISPConfiguration_Room";
-    private static final String GEOGRAPHICAL_ADDRESS = "Kukułcza 81598, Gliwice";
     private static final String PHYSICAL_DEVICE_MODEL = "7360 ISAM FX-8";
     private static final String PHYSICAL_DEVICE_NAME = "ISPPhysicalDevice";
     private static final String PHYSICAL_DEVICE_MODEL2 = "ADVA Optical Networking FMT/1HU";
@@ -102,7 +105,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         locationWizardPage.clickNext();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        locationWizardPage.setGeographicalAddress(GEOGRAPHICAL_ADDRESS);
+        locationWizardPage.setGeographicalAddress("a");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         locationWizardPage.clickNext();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -212,9 +215,9 @@ public class ISPConfigurationTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cardCreateWizardPage.setModel("Alcatel NELT-B");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        cardCreateWizardPage.setSlots("LT3");
+        cardCreateWizardPage.setSlot("LT3");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        cardCreateWizardPage.setSlots("LT4");
+        cardCreateWizardPage.setSlot("LT4");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cardCreateWizardPage.clickAccept();
         checkPopupAndCloseMessage();
@@ -226,15 +229,8 @@ public class ISPConfigurationTest extends BaseTestCase {
         driver.navigate().refresh();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
-        hierarchyViewPage.expandTreeNode(PHYSICAL_DEVICE_NAME);
-        hierarchyViewPage.expandTreeNode("Chassis");
-        hierarchyViewPage.expandFirstCollapsedTreeNode();
-        hierarchyViewPage.expandTreeNode("Slots");
-        hierarchyViewPage.expandTreeNode("LT3");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        hierarchyViewPage.expandTreeNode("Cards");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        hierarchyViewPage.selectNodeByLabel("NELT-B");
+        String labelpath = PHYSICAL_DEVICE_NAME + ".Chassis.Chassis.Slots.LT3.Card.NELT-B";
+        hierarchyViewPage.selectNodeByLabelsPath(labelpath);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hierarchyViewPage.useTreeContextAction(ActionsContainer.EDIT_GROUP_ID, "CardChangeModelAction");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -374,8 +370,11 @@ public class ISPConfigurationTest extends BaseTestCase {
         TableInterface coolingTable = locationOverviewPage.getTabTable(TabName.COOLING_ZONES);
         int rowNumber = coolingTable.getRowNumber(COOLING_ZONE_NAME, NAME);
         String coolingLoad = coolingTable.getCellValue(rowNumber, "Cooling Load [kW]");
+        log.info("Cooling load = {}", coolingLoad);
         String coolingCapacity = coolingTable.getCellValue(rowNumber, "Cooling Capacity [kW]");
+        log.info("Cooling capacity = {}", coolingCapacity);
         String coolingLoadRatio = coolingTable.getCellValue(rowNumber, "Cooling Load Ratio [%]");
+        log.info("Cooling load ratio = {}", coolingLoadRatio);
         Assert.assertNotEquals(coolingLoad, COOLING_ZONE_COOLING_LOAD, String.format(ASSERT_NOT_EQUALS, coolingLoad, COOLING_ZONE_COOLING_LOAD));
         Assert.assertNotEquals(coolingCapacity, COOLING_ZONE_CAPACITY, String.format(ASSERT_NOT_EQUALS, coolingCapacity, COOLING_ZONE_CAPACITY));
         Assert.assertNotEquals(coolingLoadRatio, COOLING_ZONE_LOAD_RATIO, String.format(ASSERT_NOT_EQUALS, coolingLoadRatio, COOLING_ZONE_LOAD_RATIO));
@@ -431,15 +430,22 @@ public class ISPConfigurationTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
         deviceWizardPage.setCoolingCapacity(COOLING_CAPACITY2);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.nextUpdateWizard();
         deviceWizardPage.acceptUpdateWizard();
         checkPopupAndCloseMessage();
+        driver.navigate().refresh();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Cooling Zones");
         TableInterface coolingTable = locationOverviewPage.getTabTable(TabName.COOLING_ZONES);
         int rowNumber = coolingTable.getRowNumber(COOLING_ZONE_NAME, NAME);
         String coolingLoad = coolingTable.getCellValue(rowNumber, "Cooling Load [kW]");
+        log.info("Cooling load = {}", coolingLoad);
         String coolingCapacity = coolingTable.getCellValue(rowNumber, "Cooling Capacity [kW]");
+        log.info("Cooling capacity = {}", coolingCapacity);
         String coolingLoadRatio = coolingTable.getCellValue(rowNumber, "Cooling Load Ratio [%]");
+        log.info("Cooling load ratio= {}", coolingLoadRatio);
         Assert.assertNotEquals(coolingLoad, COOLING_ZONE_COOLING_LOAD, String.format(ASSERT_NOT_EQUALS, coolingLoad, COOLING_ZONE_COOLING_LOAD));
         Assert.assertNotEquals(coolingCapacity, COOLING_ZONE_CAPACITY, String.format(ASSERT_NOT_EQUALS, coolingCapacity, COOLING_ZONE_CAPACITY));
         Assert.assertNotEquals(coolingLoadRatio, COOLING_ZONE_LOAD_RATIO, String.format(ASSERT_NOT_EQUALS, coolingLoadRatio, COOLING_ZONE_LOAD_RATIO));

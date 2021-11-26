@@ -658,7 +658,7 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cardCreateWizardPage.setModel(cardModel);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        cardCreateWizardPage.setSlots("1");
+        cardCreateWizardPage.setSlot("1");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cardCreateWizardPage.clickAccept();
         checkPopupType();

@@ -34,13 +34,14 @@ public class LoginPage extends BasePage {
     }
 
     public HomePage login() {
-        userInput.sendKeys(CONFIGURATION.getValue("user"));
-        passwordInput.sendKeys(CONFIGURATION.getValue("password"));
+        userInput.sendKeys(CONFIGURATION.getLogin());
+        passwordInput.sendKeys(CONFIGURATION.getPassword());
         loginButton.click();
         return new HomePage(driver);
     }
 
     public void login(String user, String password) {
+        DelayUtils.waitForVisibility(wait, userInput);
         userInput.sendKeys(user);
         passwordInput.sendKeys(password);
         loginButton.click();
