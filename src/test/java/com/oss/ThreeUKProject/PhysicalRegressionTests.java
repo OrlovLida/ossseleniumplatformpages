@@ -65,7 +65,7 @@ public class PhysicalRegressionTests extends BaseTestCase {
 
     private void createSubLocation() {
         LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);
-        locationInventoryRepository.createSubLocation(locationTypeSite, subLocationSiteName, addressId, Long.valueOf(locationId), locationTypeSite);
+        locationInventoryRepository.createLocationInLocation(locationTypeSite, subLocationSiteName, addressId, Long.valueOf(locationId), locationTypeSite);
     }
 
     @BeforeMethod

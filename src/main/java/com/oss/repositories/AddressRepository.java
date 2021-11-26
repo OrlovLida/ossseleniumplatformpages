@@ -33,6 +33,11 @@ public class AddressRepository {
         return addressId;
     }
 
+    public Long getFirstGeographicalAddressId(){
+        AddressClient client = new AddressClient(env);
+        return client.getGeographicalAddresses().get(0).getId();
+    }
+
     private GeographicalAddressDTO buildAddress(String countryName, String postalCodeName, String regionName, String cityName, String districtName) {
         return GeographicalAddressDTO.builder()
                 .addAddressItems(buildCountry(countryName))
