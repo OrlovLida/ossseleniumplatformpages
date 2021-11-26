@@ -256,6 +256,8 @@ public class IndicatorsViewTest extends BaseTestCase {
         kpiViewPage.setFilters(Collections.singletonList(filterName));
         kpiViewPage.searchInToolbarPanel(indicator, INDICATORS_TREE_ID);
         kpiViewPage.searchInToolbarPanel(dimension, DIMENSIONS_TREE_ID);
+        kpiViewPage.selectAggregationMethod(OptionsPanel.AggregationMethodOption.SUM);
+        kpiViewPage.unselectEveryAggMethodOtherThan(OptionsPanel.AggregationMethodOption.SUM);
         kpiViewPage.applyChanges();
 
         assertTrue(kpiViewPage.isNodeInTreeSelected(indicator, INDICATORS_TREE_ID));

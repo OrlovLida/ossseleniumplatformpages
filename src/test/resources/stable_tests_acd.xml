@@ -10,4 +10,9 @@
             <class name="com.oss.acd.AsdScenarioSummaryViewTest"/>
         </classes>
     </test>
+    <test name="AbgadScenarioSummaryViewTest">
+        <classes>
+            <class name="com.oss.acd.AbgadScenarioSummaryViewTest"/>
+        </classes>
+    </test>
 </suite>

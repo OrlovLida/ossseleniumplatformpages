@@ -76,30 +76,37 @@ public class HomeViewTest extends BaseTestCase {
     }
 
     private void checkScenarioTableWithFilters(String issueType) {
+
         homeViewPage.setValueInMultiComboBox("issue_type", issueType);
 
-        if (homeViewPage.checkDataInScenarioTable()) {
+        if (!homeViewPage.isDataInScenarioTable()) {
             homeViewPage.clearMultiComboBox("issue_type");
             log.error("Table doesn't have data for issueType: " + issueType);
             Assert.fail();
-        } else {
-
-            //baseACDPage.setValueInMultiComboBox("creation_type", "Automatically");
-            //homeViewPage.checkValueOfCreationTypeAttribute();
-            homeViewPage.setValueInTimePeriodChooser("create_time", 1, 2, 3);
-            homeViewPage.setValueOfIssueIdSearch();
-
-
-            DelayUtils.sleep();
-
-            Boolean hasNoData = homeViewPage.checkDataInScenarioTable();
-
-            homeViewPage.clearMultiComboBox("issue_type");
-            //homeViewPage.clearMultiComboBox("creation_type");
-            homeViewPage.clearMultiSearch("id");
-            homeViewPage.clearTimePeriod("create_time");
-
-            Assert.assertFalse(hasNoData);
         }
+
+        //homeViewPage.setValueInMultiComboBox("creation_type", "Automatically");
+        //homeViewPage.checkValueOfCreationTypeAttribute();
+        homeViewPage.setValueInTimePeriodChooser("create_time", 1, 2, 3);
+
+        if (!homeViewPage.isDataInScenarioTable()) {
+            homeViewPage.clearTimePeriod("create_time");
+            homeViewPage.clearMultiComboBox("issue_type");
+            log.error("Table doesn't have data for provided filters");
+            Assert.fail();
+        }
+        homeViewPage.setValueOfIssueIdSearch();
+
+        if (!homeViewPage.isDataInScenarioTable()) {
+            homeViewPage.clearTimePeriod("create_time");
+            homeViewPage.clearMultiComboBox("issue_type");
+            homeViewPage.clearMultiSearch("id");
+            Assert.fail();
+        }
+
+        DelayUtils.sleep();
+        homeViewPage.clearTimePeriod("create_time");
+        homeViewPage.clearMultiComboBox("issue_type");
+        homeViewPage.clearMultiSearch("id");
     }
 }
