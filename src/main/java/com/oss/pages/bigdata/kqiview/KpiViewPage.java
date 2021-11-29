@@ -616,4 +616,21 @@ public class KpiViewPage extends BasePage {
     public boolean isExpectedNumberOfChartsVisible(int expectedNumberOfCharts) {
         return KpiChartWidget.create(driver, wait).countCharts() == expectedNumberOfCharts;
     }
+
+    @Step("I zoom the data view")
+    public void zoomChart() {
+        KpiChartWidget.create(driver, wait).zoomDataView();
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    @Step("I check if Zoom Out button is visible")
+    public boolean isZoomOutButtonVisible() {
+        return KpiChartWidget.create(driver, wait).isZoomOutButtonVisible();
+    }
+
+    @Step("I click Zoom Out Button")
+    public void clickZoomOutButton() {
+        KpiChartWidget.create(driver, wait).clickZoomOutButton();
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
 }
