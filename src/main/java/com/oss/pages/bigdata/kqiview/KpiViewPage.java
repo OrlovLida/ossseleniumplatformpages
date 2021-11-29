@@ -3,6 +3,7 @@ package com.oss.pages.bigdata.kqiview;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.table.TableComponent;
 import com.oss.framework.mainheader.ButtonPanel;
 import com.oss.framework.mainheader.Share;
 import com.oss.framework.mainheader.ToolbarWidget;
@@ -16,7 +17,6 @@ import com.oss.framework.widgets.dpe.toolbarpanel.KpiToolbarPanel;
 import com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType;
 import com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel;
 import com.oss.framework.widgets.dpe.treewidget.KpiTreeWidget;
-import com.oss.framework.widgets.tablewidget.TableWidget;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
@@ -242,7 +242,7 @@ public class KpiViewPage extends BasePage {
     @Step("I check if Indicators View Table is empty")
     public boolean isIndicatorsViewTableEmpty() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        return TableWidget.createById(driver, IND_VIEW_TABLE_ID, wait).hasNoData();
+        return TableComponent.create(driver, wait, IND_VIEW_TABLE_ID).hasNoData();
     }
 
     @Step("I should see more than one line displayed")
@@ -271,6 +271,18 @@ public class KpiViewPage extends BasePage {
     public void clickPerformTopN() {
         kpiToolbarPanel.openTopNPanel().clickPerform();
         DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    @Step("I double click on bar in TopN BarChart")
+    public void doubleClickTopNDPE() {
+        KpiChartWidget.create(driver, wait).doubleClickOnTopNBar(TOP_N_BARCHART_DPE_ID);
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    @Step("I check if TopN navigation bar is visible")
+    public boolean isTopNNavigationBarVisible() {
+        log.info("Checking visibility of TopN navigation bar");
+        return KpiChartWidget.create(driver, wait).isTopNNavigationBarVisible();
     }
 
     @Step("I click legend")
