@@ -34,8 +34,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.oss.configuration.Configuration.CONFIGURATION;
-import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.MiscellaneousOption.DATA_COMPLETENESS;
-import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.MiscellaneousOption.LAST_SAMPLE_TIME;
+import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.MiscellaneousOption.*;
 import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.TimePeriodChooserOption.LATEST;
 import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.TimePeriodChooserOption.SMART;
 import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.YAxisOption.MANUAL;
@@ -433,6 +432,20 @@ public class KpiViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         int visibleLastSampleTimeNumber = KpiChartWidget.create(driver, wait).countVisibleLastSampleTime();
         return visibleLastSampleTimeNumber == expectedVisibleLastSampleTimeNumber;
+    }
+
+    @Step("I enable Show Time Zone option")
+    public void enableShowTimeZone() {
+        log.info("Enabling Show Time Zone");
+        DelayUtils.waitForPageToLoad(driver, wait);
+        kpiToolbarPanel.openOptionsPanel().setMiscellaneousOption(SHOW_TIME_ZONE);
+    }
+
+    @Step("Checking visibility of Time Zone option")
+    public boolean isTimeZoneDisplayed() {
+        log.info("Checking visibility of Time Zone option");
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return KpiChartWidget.create(driver, wait).isTimeZoneDisplayed();
     }
 
     @Step("I should see data completeness displayed in the legend")
