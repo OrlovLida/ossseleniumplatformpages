@@ -41,6 +41,36 @@ public class MPLSServicesCheckTest {
         SERVICES_CHECKER.testHealth("inventory-view-core");
     }
 
+    @Test(priority = 4)
+    @Step("Check transport-core")
+    public void checkTransportCore() {
+        SERVICES_CHECKER.testHealth("transport-core");
+    }
+
+    @Test(priority = 5)
+    @Step("Check transport-view")
+    public void checkTransportView() {
+        SERVICES_CHECKER.testHealth("transport-view");
+    }
+
+    @Test(priority = 6)
+    @Step("Check tp-service")
+    public void checkTpService() {
+        SERVICES_CHECKER.testHealth("tp-service");
+    }
+
+    @Test(priority = 7)
+    @Step("Check ethernet-core")
+    public void checkEthernetCore() {
+        SERVICES_CHECKER.testHealth("ethernet-core");
+    }
+
+    @Test(priority = 8)
+    @Step("Check ethernet-view")
+    public void checkEthernetView() {
+        SERVICES_CHECKER.testHealth("ethernet-view");
+    }
+
     private static Environment createEnvironment() {
         try {
             URL url = new URL(BASIC_URL);
