@@ -153,9 +153,12 @@ public class IndicatorsViewTest extends BaseTestCase {
             kpiViewPage.enableDataCompleteness();
             kpiViewPage.applyChanges();
             assertTrue(kpiViewPage.shouldSeeDataCompleteness());
+
             kpiViewPage.enableLastSampleTime();
             assertTrue(kpiViewPage.shouldSeeLastSampleTime(1));
-            kpiViewPage.applyChanges();
+
+            kpiViewPage.enableShowTimeZone();
+            assertTrue(kpiViewPage.isTimeZoneDisplayed());
         } catch (Exception e) {
             log.error(e.getMessage());
             fail();
