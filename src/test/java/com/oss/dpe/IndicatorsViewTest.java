@@ -435,4 +435,29 @@ public class IndicatorsViewTest extends BaseTestCase {
             fail();
         }
     }
+
+    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
+    @Test(priority = 16, testName = "Zoom in/zoom out check", description = "Zoom in/zoom out check")
+    @Description("Zoom in/zoom out check")
+    public void zoomInChartCheck(
+            @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
+            @Optional("DBTIME") String indicatorNodesToSelect,
+            @Optional() String dimensionNodesToExpand,
+            @Optional("DC Type: THRES_DC") String dimensionNodesToSelect,
+            @Optional("Data Collection Statistics") String filterName
+    ) {
+        try {
+            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+
+            kpiViewPage.zoomChart();
+            assertTrue(kpiViewPage.isZoomOutButtonVisible());
+
+            kpiViewPage.clickZoomOutButton();
+            assertTrue(!kpiViewPage.isZoomOutButtonVisible());
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            fail();
+        }
+    }
 }
