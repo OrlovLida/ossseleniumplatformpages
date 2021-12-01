@@ -1,14 +1,14 @@
 package com.oss.configuration;
 
-import org.assertj.core.util.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Paths;
 import java.util.Properties;
+
+import org.assertj.core.util.Strings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Configuration {
 
@@ -38,11 +38,25 @@ public class Configuration {
         return System.getProperty("URL");
     }
 
+    public String getLogin() {
+        if (System.getProperty("LOGIN") == null) {
+            return CONFIGURATION.getValue("user");
+        }
+        return System.getProperty("LOGIN");
+    }
+
+    public String getPassword() {
+        if (System.getProperty("PASSWORD") == null) {
+            return CONFIGURATION.getValue("password");
+        }
+        return System.getProperty("PASSWORD");
+    }
+
     public String getDriver() {
-        if (System.getProperty("driver") == null) {
+        if (System.getProperty("DRIVER") == null) {
             return CONFIGURATION.getValue("driver");
         }
-        return System.getProperty("driver");
+        return System.getProperty("DRIVER");
     }
 
     public String getDownloadDir() {
@@ -55,10 +69,9 @@ public class Configuration {
     public String getApplicationIp() {
         String env = System.getProperty("env");
         if (Strings.isNullOrEmpty(env)) {
-            String ip = getUrl().split(":")[1].replace("//", "");
-            return ip;
+            return getUrl().split(":")[1].replace("//", "");
         }
-        log.info("ENV: " + env);
+        log.info("ENV: {}", env);
         return env;
     }
 

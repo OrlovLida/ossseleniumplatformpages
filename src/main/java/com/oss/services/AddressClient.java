@@ -4,6 +4,7 @@ import java.util.List;
 import javax.ws.rs.core.Response;
 import org.assertj.core.util.Lists;
 import com.comarch.oss.addressinventory.api.dto.AddressDTO;
+import com.comarch.oss.addressinventory.api.dto.AddressGlobalSearchResultDTO;
 import com.comarch.oss.addressinventory.api.dto.AddressItemDTO;
 import com.comarch.oss.addressinventory.api.dto.AddressItemSearchResultDTO;
 import com.comarch.oss.addressinventory.api.dto.GeographicalAddressDTO;
@@ -19,6 +20,7 @@ public class AddressClient {
     
     private static final String GEOGRAPHICAL_ADDRESS_API_PATH = "/geographicaladdress";
     private static final String ADDRESS_ITEM_API_PATH = "/addressitem";
+    private static final String GEOGRAPHICAL_ADDRESS_SEARCH_PATH = "/search";
     private static AddressClient instance;
     private final Environment ENV;
     
@@ -76,6 +78,21 @@ public class AddressClient {
                 .statusCode(Response.Status.OK.getStatusCode()).assertThat()
                 .extract()
                 .as(AddressItemSearchResultDTO.class);
+    }
+
+    public List <AddressGlobalSearchResultDTO> getGeographicalAddresses(){
+        AddressGlobalSearchResultDTO[] geographicalAddresses = ENV.getAddressCoreRequestSpecification()
+                .given()
+                .queryParam(Constants.TYPES, "GeographicalAddress")
+                .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
+                .when()
+                .get(GEOGRAPHICAL_ADDRESS_SEARCH_PATH)
+                .then()
+                .log().body()
+                .statusCode(Response.Status.OK.getStatusCode()).assertThat()
+                .extract()
+                .as(AddressGlobalSearchResultDTO[].class);
+        return Lists.newArrayList(geographicalAddresses);
     }
     
 }

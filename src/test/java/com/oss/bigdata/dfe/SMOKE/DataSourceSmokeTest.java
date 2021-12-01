@@ -13,7 +13,7 @@ public class DataSourceSmokeTest extends BaseTestCase {
 
     private static final Logger log = LoggerFactory.getLogger(DataSourceSmokeTest.class);
     private DataSourcePage dataSourcePage;
-    private static final String DATA_SOURCE_NAME = "t:SMOKE#DSforMonitoring";
+    private static final String DATA_SOURCE_NAME = "t:SMOKE#DSforKqis";
 
     @BeforeMethod
     public void goToDataSourceView() {

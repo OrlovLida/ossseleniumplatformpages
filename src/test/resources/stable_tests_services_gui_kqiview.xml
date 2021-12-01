@@ -8,20 +8,8 @@
         <classes>
             <class name="com.oss.bigdata.kpiview.KpiViewTest">
                 <methods>
-                    <exclude name="verifyNumberOfRangesAndLine"/>
                     <exclude name="checkLinkToKPIViewChart"/>
-                </methods>
-            </class>
-        </classes>
-    </test>
-    <test name="TopNKpiViewTest">
-        <parameter name="indicatorNodesToSelect" value="t:SMOKE#Attempts"/>
-        <parameter name="dimensionNodesToExpand" value="d1"/>
-        <parameter name="dimensionNodesToSelect" value="D1_01"/>
-        <classes>
-            <class name="com.oss.bigdata.kpiview.KpiViewTest">
-                <methods>
-                    <include name="verifyNumberOfRangesAndLine"/>
+                    <exclude name="checkTopNPanelForDfe"/>
                 </methods>
             </class>
         </classes>
@@ -56,15 +44,32 @@
                     <include name="changingChartLayoutOption"/>
                     <include name="sharePanelTest"/>
                     <include name="childObjectTest"/>
+                    <include name="changeDisplayType"/>
+                    <include name="zoomInChartCheck"/>
                 </methods>
             </class>
         </classes>
     </test>
-    <test name="Check link to KPI View Chart">
+    <test name="DFE">
         <classes>
             <class name="com.oss.bigdata.kpiview.KpiViewTest">
                 <methods>
                     <include name="checkLinkToKPIViewChart"/>
+                    <include name="checkTopNPanelForDfe"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="AggregationMethodCheck">
+        <parameter name="indicatorNodesToExpand" value="DFE Tests,DFE Product Tests,Selenium Tests"/>
+        <parameter name="indicatorNodesToSelect" value="SUCCESS_LONG"/>
+        <parameter name="dimensionNodesToExpand" value="t:SMOKE#DimHierSelenium"/>
+        <parameter name="dimensionNodesToSelect" value="D3_01,D3_02"/>
+        <parameter name="filterName" value="DFE Tests"/>
+        <classes>
+            <class name="com.oss.dpe.IndicatorsViewTest">
+                <methods>
+                    <include name="aggregationMethodCheck"/>
                 </methods>
             </class>
         </classes>

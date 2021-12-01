@@ -181,6 +181,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         newInventoryViewPage.selectFirstRow();
         waitForPageToLoad();
         newInventoryViewPage.callAction(ActionsContainer.ASSIGN_GROUP_ID, "AssignIPv4Host");
+        waitForPageToLoad();
         IPAddressAssignmentWizardPage ipAddressAssignmentWizardPage = new IPAddressAssignmentWizardPage(driver);
         IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties = IPAddressAssignmentWizardProperties.builder()
                 .address(ADDRESS).subnet("10.10.20.0/24 [" + IP_NETWORK + "]").isPrimary("false").build();
@@ -223,6 +224,8 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         connectionWizardPage.terminatePort(PORT_NAME);
         waitForPageToLoad();
         connectionWizardPage.terminateTerminationPort(PORT_NAME);
+        waitForPageToLoad();
+        connectionWizardPage.assignAddressToOpositeInteface(false);
         waitForPageToLoad();
         connectionWizardPage.clickAccept();
         waitForPageToLoad();

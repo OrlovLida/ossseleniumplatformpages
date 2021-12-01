@@ -1,6 +1,7 @@
 package com.oss.dpe;
 
 import com.oss.BaseTestCase;
+import com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel;
 import com.oss.pages.bigdata.kqiview.KpiViewPage;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
@@ -38,7 +39,7 @@ public class IndicatorsViewTest extends BaseTestCase {
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
     @Test(priority = 1, testName = "Highlighting and hiding data series", description = "Highlighting and hiding data series")
-    @Description("I verify if KPI View for DPE data works properly")
+    @Description("I verify if KPI View works properly")
     public void verifyIfKpiViewWorksProperly(
             @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
             @Optional("DBTIME") String indicatorNodesToSelect,
@@ -120,16 +121,15 @@ public class IndicatorsViewTest extends BaseTestCase {
     @Description("I verify if Manual Y axis option works properly")
     public void verifyIfYAxisOptionsWorksProperly(
             @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
-            @Optional("DBTIME,AQ_TIME") String indicatorNodesToSelect,
+            @Optional("DBTIME,LOADED") String indicatorNodesToSelect,
             @Optional() String dimensionNodesToExpand,
-            @Optional("DC Type: ETL_DC") String dimensionNodesToSelect,
+            @Optional("DC Type: THRES_DC") String dimensionNodesToSelect,
             @Optional("Data Collection Statistics") String filterName
     ) {
         try {
             kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
-            kpiViewPage.chooseSumAggregationMethod();
-            kpiViewPage.applyChanges();
             assertTrue(kpiViewPage.shouldSeeVisibleYaxis(2));
+
             kpiViewPage.chooseManualYaxis();
             assertTrue(kpiViewPage.shouldSeeVisibleYaxis(1));
         } catch (Exception e) {
@@ -153,9 +153,12 @@ public class IndicatorsViewTest extends BaseTestCase {
             kpiViewPage.enableDataCompleteness();
             kpiViewPage.applyChanges();
             assertTrue(kpiViewPage.shouldSeeDataCompleteness());
+
             kpiViewPage.enableLastSampleTime();
             assertTrue(kpiViewPage.shouldSeeLastSampleTime(1));
-            kpiViewPage.applyChanges();
+
+            kpiViewPage.enableShowTimeZone();
+            assertTrue(kpiViewPage.isTimeZoneDisplayed());
         } catch (Exception e) {
             log.error(e.getMessage());
             fail();
@@ -246,8 +249,8 @@ public class IndicatorsViewTest extends BaseTestCase {
     }
 
     @Parameters({"filterName", "indicator", "dimension"})
-    @Test(priority = 9, testName = "Search in indicators and dimensions trees", description = "Verify search from indicators and dimensions trees for DPE data")
-    @Description("Verify search from indicators and dimensions trees for DPE data")
+    @Test(priority = 9, testName = "Search in indicators and dimensions trees", description = "Verify search from indicators and dimensions trees")
+    @Description("Verify search from indicators and dimensions trees")
     public void searchIndicators(
             @Optional("Data Collection Statistics") String filterName,
             @Optional("DBTIME") String indicator,
@@ -256,6 +259,8 @@ public class IndicatorsViewTest extends BaseTestCase {
         kpiViewPage.setFilters(Collections.singletonList(filterName));
         kpiViewPage.searchInToolbarPanel(indicator, INDICATORS_TREE_ID);
         kpiViewPage.searchInToolbarPanel(dimension, DIMENSIONS_TREE_ID);
+        kpiViewPage.selectAggregationMethod(OptionsPanel.AggregationMethodOption.SUM);
+        kpiViewPage.unselectEveryAggMethodOtherThan(OptionsPanel.AggregationMethodOption.SUM);
         kpiViewPage.applyChanges();
 
         assertTrue(kpiViewPage.isNodeInTreeSelected(indicator, INDICATORS_TREE_ID));
@@ -278,6 +283,7 @@ public class IndicatorsViewTest extends BaseTestCase {
 
             assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
             String activeAggMethod = kpiViewPage.activeAggMethod();
+            kpiViewPage.closeOptionsPanel();
 
             kpiViewPage.clickLinkToChart();
 
@@ -307,6 +313,7 @@ public class IndicatorsViewTest extends BaseTestCase {
 
             kpiViewPage.clickShare();
             kpiViewPage.goToLink();
+            kpiViewPage.clickCloseShare();
 
             assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
             assertTrue(kpiViewPage.isNodeInTreeSelected(indicatorNodesToSelect, INDICATORS_TREE_ID));
@@ -316,7 +323,6 @@ public class IndicatorsViewTest extends BaseTestCase {
             fail();
         }
     }
-
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
     @Test(priority = 12, testName = "Display Child Objects", description = "Display series for child objects")
@@ -338,6 +344,117 @@ public class IndicatorsViewTest extends BaseTestCase {
             kpiViewPage.applyChanges();
 
             assertTrue(kpiViewPage.shouldSeeMoreThanOneCurveDisplayed());
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            fail();
+        }
+    }
+
+    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
+    @Test(priority = 13, testName = "Change display type chart/table/pieChart", description = "Change display type chart/table/pieChart")
+    @Description("Change display type chart/table/pieChart")
+    public void changeDisplayType(
+            @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
+            @Optional("DBTIME") String indicatorNodesToSelect,
+            @Optional() String dimensionNodesToExpand,
+            @Optional("DC Type: THRES_DC") String dimensionNodesToSelect,
+            @Optional("Data Collection Statistics") String filterName
+    ) {
+        try {
+            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+
+            kpiViewPage.setDisplayType("Pie Chart");
+            assertTrue(kpiViewPage.shouldSeePieChartsDisplayed(1));
+
+            kpiViewPage.setDisplayType("Chart");
+            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+
+            kpiViewPage.setDisplayType("Table");
+            assertFalse(kpiViewPage.isIndicatorsViewTableEmpty());
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            fail();
+        }
+    }
+
+    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
+    @Test(priority = 14, testName = "Check topN Panel", description = "Check topN Panel")
+    @Description("Check topN Panel")
+    public void checkTopNPanelForDpe(
+            @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
+            @Optional("DBTIME") String indicatorNodesToSelect,
+            @Optional() String dimensionNodesToExpand,
+            @Optional("DC Type: THRES_DC") String dimensionNodesToSelect,
+            @Optional("Data Collection Statistics") String filterName
+    ) {
+        try {
+            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+
+            kpiViewPage.clickPerformTopN();
+
+            assertTrue(kpiViewPage.dpeTopNBarChartIsDisplayed());
+            assertTrue(kpiViewPage.isExpectedNumberOfChartsVisible(2));
+            assertTrue(kpiViewPage.shouldSeeBoxesAndCurvesDisplayed(6, 5));
+
+            kpiViewPage.doubleClickTopNDPE();
+            assertTrue(kpiViewPage.isTopNNavigationBarVisible());
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            fail();
+        }
+    }
+
+    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
+    @Test(priority = 15, testName = "Aggregation Method Check", description = "Aggregation Method Check")
+    @Description("Aggregation Method Check")
+    public void aggregationMethodCheck(
+            @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
+            @Optional("DBTIME,AQ_TIME") String indicatorNodesToSelect,
+            @Optional() String dimensionNodesToExpand,
+            @Optional("DC Type: THRES_DC") String dimensionNodesToSelect,
+            @Optional("Data Collection Statistics") String filterName
+    ) {
+        try {
+            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(2));
+
+            kpiViewPage.selectAggregationMethod(OptionsPanel.AggregationMethodOption.MAX);
+            kpiViewPage.selectAggregationMethod(OptionsPanel.AggregationMethodOption.MIN);
+            kpiViewPage.selectAggregationMethod(OptionsPanel.AggregationMethodOption.SUM);
+            kpiViewPage.unselectEveryAggMethodOtherThan(OptionsPanel.AggregationMethodOption.MAX);
+            kpiViewPage.applyChanges();
+            String selectedAggMethod = kpiViewPage.activeAggMethod();
+            int numOfActiveAggMethods = kpiViewPage.numberOfActiveAggMethods();
+
+            assertTrue(selectedAggMethod.equals("MAX"));
+            assertEquals(numOfActiveAggMethods, 1);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            fail();
+        }
+    }
+
+    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
+    @Test(priority = 16, testName = "Zoom in/zoom out check", description = "Zoom in/zoom out check")
+    @Description("Zoom in/zoom out check")
+    public void zoomInChartCheck(
+            @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
+            @Optional("DBTIME") String indicatorNodesToSelect,
+            @Optional() String dimensionNodesToExpand,
+            @Optional("DC Type: THRES_DC") String dimensionNodesToSelect,
+            @Optional("Data Collection Statistics") String filterName
+    ) {
+        try {
+            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+
+            kpiViewPage.zoomChart();
+            assertTrue(kpiViewPage.isZoomOutButtonVisible());
+
+            kpiViewPage.clickZoomOutButton();
+            assertTrue(!kpiViewPage.isZoomOutButtonVisible());
         } catch (Exception e) {
             log.error(e.getMessage());
             fail();

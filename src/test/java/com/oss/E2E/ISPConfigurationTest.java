@@ -38,7 +38,6 @@ public class ISPConfigurationTest extends BaseTestCase {
     private String LOCATION_OVERVIEW_URL = "";
     private static final String LOCATION_NAME = "ISPConfiguration_Building";
     private static final String SUBLOCATION_NAME = "ISPConfiguration_Room";
-    private static final String GEOGRAPHICAL_ADDRESS = "Kukułcza 81598, Gliwice";
     private static final String PHYSICAL_DEVICE_MODEL = "7360 ISAM FX-8";
     private static final String PHYSICAL_DEVICE_NAME = "ISPPhysicalDevice";
     private static final String PHYSICAL_DEVICE_MODEL2 = "ADVA Optical Networking FMT/1HU";
@@ -106,7 +105,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         locationWizardPage.clickNext();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        locationWizardPage.setGeographicalAddress(GEOGRAPHICAL_ADDRESS);
+        locationWizardPage.setGeographicalAddress("a");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         locationWizardPage.clickNext();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -230,7 +229,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         driver.navigate().refresh();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
-        String labelpath = PHYSICAL_DEVICE_NAME + ".Chassis.Chassis.Slots.LT3.Cards.NELT-B";
+        String labelpath = PHYSICAL_DEVICE_NAME + ".Chassis.Chassis.Slots.LT3.Card.NELT-B";
         hierarchyViewPage.selectNodeByLabelsPath(labelpath);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hierarchyViewPage.useTreeContextAction(ActionsContainer.EDIT_GROUP_ID, "CardChangeModelAction");

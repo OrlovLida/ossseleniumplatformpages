@@ -1,15 +1,17 @@
 package com.oss.pages.servicedesk.ticket;
 
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.TableWidget;
 import com.oss.pages.servicedesk.BaseSDPage;
+
 import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static com.oss.pages.servicedesk.URLConstants.VIEWS_URL_PATTERN;
 import static com.oss.pages.servicedesk.ticket.TicketDetailsPage.DETAILS_PAGE_URL_PATTERN;
@@ -17,12 +19,12 @@ import static com.oss.pages.servicedesk.ticket.TicketDetailsPage.DETAILS_PAGE_UR
 public class TicketSearchPage extends BaseSDPage {
 
     public static final String ID_ATTRIBUTE = "id";
-    public static final String ASSIGNEE_ATTRIBUTE = "assignee";
-    public static final String CREATION_TIME_ATTRIBUTE = "createDate";
+    public static final String ASSIGNEE_ATTRIBUTE = "ticketOut.issueOut.assignee.name";
+    public static final String CREATION_TIME_ATTRIBUTE = "ticketOut.issueOut.createDate";
     public static final String SEVERITY_ATTRIBUTE = "severity";
     public static final String STATUS_ATTRIBUTE = "ticketOut.issueOut.status.name";
-    public final static String FILTER_BUTTON_CLASS = "button-filters-panel";
-    public final static String DESCRIPTION_ATTRIBUTE = "incidentDescription";
+    public static final String FILTER_BUTTON_CLASS = "button-filters-panel";
+    public static final String DESCRIPTION_ATTRIBUTE = "incidentDescription";
 
     private static final Logger log = LoggerFactory.getLogger(TicketSearchPage.class);
     private static final String TABLE_WIDGET_ID = "ticket-search-graphql-table";
@@ -50,7 +52,7 @@ public class TicketSearchPage extends BaseSDPage {
     @Step("I filter tickets by combo-box attribute {attributeName} set to {attributeValue}")
     public void filterByComboBox(String attributeName, String attributeValue) {
         log.info("Filtering tickets by combo-box attribute {} set to {}", attributeName, attributeValue);
-        filterBy(attributeName, attributeValue, Input.ComponentType.COMBOBOXV2);
+        filterBy(attributeName, attributeValue, Input.ComponentType.MULTI_COMBOBOX);
     }
 
     @Step("I open details view for {rowIndex} ticket in Ticket table")

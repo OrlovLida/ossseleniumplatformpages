@@ -43,6 +43,7 @@ public class UC_NAR_005 extends BaseTestCase {
 
     @BeforeClass
     public void openNetworkDiscoveryControlView() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
     }
@@ -98,7 +99,7 @@ public class UC_NAR_005 extends BaseTestCase {
         networkDiscoveryControlViewPage.moveToNivFromNdcv();
         NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
         networkInconsistenciesViewPage.expandTree();
-        networkInconsistenciesViewPage.assignLocation(DEVICE_NAME, "a");
+        networkInconsistenciesViewPage.assignLocation(DEVICE_NAME, "1");
         checkMessageType(MessageType.SUCCESS);
         networkInconsistenciesViewPage.clearOldNotification();
         networkInconsistenciesViewPage.applyInconsistencies();
@@ -160,7 +161,7 @@ public class UC_NAR_005 extends BaseTestCase {
         newInventoryViewPage.selectFirstRow();
         newInventoryViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, "DeleteDeviceWizardAction");
         waitForPageToLoad();
-        Wizard.createWizard(driver, new WebDriverWait(driver, 90)).clickActionById("ConfirmationBox_object_delete_wizard_confirmation_box_action_button");
+        Wizard.createWizard(driver, webDriverWait).clickActionById("ConfirmationBox_object_delete_wizard_confirmation_box_action_button");
         checkMessageType(MessageType.SUCCESS);
         newInventoryViewPage.refreshMainTable();
         Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());

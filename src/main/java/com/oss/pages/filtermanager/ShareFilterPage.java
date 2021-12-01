@@ -18,7 +18,7 @@ public class ShareFilterPage extends FilterManagerPage {
 
     private static final String SEARCH_ID = "userSearch";
     private static final String LEVEL_ELEMENT_PARTIAL_XPATH = "//li[contains (@class,  'levelElement')]//*[text() = '";
-    private static final String QUIT_MODAL_BUTTON_XPATH = "//a[@class = 'quitModalButton']";
+    private static final String QUIT_MODAL_BUTTON_XPATH = "//span[@class = 'icon-button button-close']";
 
     @Step("Type user name in search")
     public ShareFilterPage typeUserNameInSearch(String userName) {

@@ -5,4 +5,14 @@
             <class name="com.oss.dpe.IndicatorsViewTest"/>
         </classes>
     </test>
+    <test name="IndicatorsViewTest2">
+        <classes>
+
+            <class name="com.oss.bigdata.kpiview.KpiViewTest">
+                <methods>
+                    <include name="verifyIfKpiViewWorksProperly"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
 </suite>

@@ -94,18 +94,19 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     @Step("Waiting until reconciliation is over")
     public String waitForEndOfReco() {
-        DelayUtils.sleep(500);
+        DelayUtils.waitForPageToLoad(driver, wait);
         OldTable.createByComponentDataAttributeName(driver, wait, RECONCILIATION_TAB_ID).callAction(ActionsContainer.KEBAB_GROUP_ID, RECO_STATE_REFRESH_BUTTON_ID);
-        DelayUtils.sleep(500);
+        DelayUtils.waitForPageToLoad(driver, wait);
         String status = OldTable.createByComponentDataAttributeName(driver, wait, RECONCILIATION_STATE_TABLE_ID).getCellValue(0, STATUS);
         while (status.equals("IN_PROGRESS") || status.equals("PENDING")) {
             DelayUtils.sleep(5000);
+            DelayUtils.waitForPageToLoad(driver, wait);
             OldTable.createByComponentDataAttributeName(driver, wait, RECONCILIATION_TAB_ID).callAction(ActionsContainer.KEBAB_GROUP_ID, RECO_STATE_REFRESH_BUTTON_ID);
-            DelayUtils.sleep(1000);
+            DelayUtils.waitForPageToLoad(driver, wait);
             try {
                 status = OldTable.createByComponentDataAttributeName(driver, wait, RECONCILIATION_STATE_TABLE_ID).getCellValue(0, STATUS);
             } catch (StaleElementReferenceException e) {
-                DelayUtils.sleep(1000);
+                DelayUtils.waitForPageToLoad(driver, wait);
                 status = OldTable.createByComponentDataAttributeName(driver, wait, RECONCILIATION_STATE_TABLE_ID).getCellValue(0, STATUS);
             }
         }
