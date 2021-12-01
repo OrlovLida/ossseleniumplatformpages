@@ -153,8 +153,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
 
         ProcessWizardPage.MilestoneStepWizard milestoneStep = processWizardPage.definedMilestoneInProcess(processName, 5L,
                 "Data Correction Process");
-//        ProcessWizardPage.MilestoneStepWizard milestoneStep = processWizardPage.definedMilestoneInProcess(processName, 5L,
-//                "pr_milestones");
+
         milestoneStep.addMilestoneRow(milestone1);
         milestoneStep.addMilestoneRow(milestone2);
         milestoneStep.addMilestoneRow(milestone3);
@@ -168,7 +167,6 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
          */
         milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        //milestoneViewPage.addColumnAttribute("Manual Completion");
         milestoneViewPage.selectMilestone(milestoneName1);
 
         changeMilestoneState(NOT_NEEDED_STATE, NEW_STATE, CHANGE_STATE_REASON, true);
