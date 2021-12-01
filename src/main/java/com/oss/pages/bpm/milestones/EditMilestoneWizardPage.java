@@ -4,7 +4,7 @@
  * duplication or redistribution of this software is allowed only according to
  * separate agreement prepared in written between Comarch and authorized party.
  */
-package com.oss.pages.bpm;
+package com.oss.pages.bpm.milestones;
 
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.listwidget.EditableList;
@@ -33,9 +33,12 @@ public class EditMilestoneWizardPage extends BasePage {
     private final static String BPM_MILESTONE_DUE_DATE = "dueDate";
     private final static String BPM_MILESTONE_RELATED_TASK = "relatedObject";
     private final static String BPM_MILESTONE_IS_MANUAL_COMPLETION = "isManualCompletion";
-    
+
+    private final static String MILESTONE_EDIT_WIZARD_ID = "milestones-edit_wizard-app";
+
+
     public Milestone editMilestone(Milestone milestone) throws RuntimeException {
-        Wizard editWizard = Wizard.createByComponentId(driver, wait, "Popup");
+        Wizard editWizard = Wizard.createByComponentId(driver, wait, MILESTONE_EDIT_WIZARD_ID);
         EditableList milestoneList = EditableList.createById(driver, wait, EDIT_MILESTONE_LIST);
         EditableList.Row editMilestoneRow = milestoneList.getVisibleRows().get(0);
         DelayUtils.sleep(2000);
@@ -85,7 +88,7 @@ public class EditMilestoneWizardPage extends BasePage {
     }
     
     public void cancel() {
-        Wizard editWizard = Wizard.createByComponentId(driver, wait, "Popup");
+        Wizard editWizard = Wizard.createByComponentId(driver, wait, MILESTONE_EDIT_WIZARD_ID);
         editWizard.clickActionById(CANCEL_BUTTON);
     }
     

@@ -12,7 +12,7 @@ import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bpm.ProcessWizardPage;
+import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 import com.oss.pages.bpm.TasksPage;
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.NewInventoryViewPage;
