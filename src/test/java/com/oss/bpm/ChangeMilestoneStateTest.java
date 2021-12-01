@@ -75,7 +75,6 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         String startModifyDate = milestoneViewPage.getMilestoneAttribute("modifyDate");
         String startDueDate = milestoneViewPage.getMilestoneAttribute("dueDate");
         String startCompletionDate = milestoneViewPage.getMilestoneAttribute("completionDate");
-        //boolean manualCompletion = Boolean.parseBoolean(milestoneViewPage.getValuePropertyPanel("manualCompletion", 0));
 
         milestoneViewPage.callAction(CHANGE_STATE_BUTTON);
         changeStateMilestoneWizardPage.setState(nextState);
