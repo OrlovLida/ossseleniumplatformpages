@@ -317,6 +317,11 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         waitForPageToLoad();
         changeConfigurationPage.deployImmediately();
         waitForPageToLoad();
+    }
+    
+        @Test(priority = 13)
+        @Step("Check configuration change")
+        public void checkConfigurationChange() {
         ShareFilterPage shareFilterPage = new ShareFilterPage(driver);
         shareFilterPage.closeShareView();
         waitForPageToLoad();
@@ -327,7 +332,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         Assert.assertEquals(logManagerPage.getStatus(), "UPLOAD_SUCCESS");
     }
 
-    @Test(priority = 13)
+    @Test(priority = 14)
     @Step("Assign File to Process")
     public void assignFile() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
@@ -345,7 +350,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         Assert.assertTrue((files.get(0)).contains("SeleniumTest"));
     }
 
-    @Test(priority = 14)
+    @Test(priority = 15)
     @Step("Complete IP and NRP process")
     public void completeIpAndNrp() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
@@ -361,7 +366,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         checkTaskCompleted();
     }
 
-    @Test(priority = 15)
+    @Test(priority = 16)
     @Step("Go to Network Discovery Control View and create CM Domain")
     public void createCmDomain() {
         waitForPageToLoad();
@@ -375,7 +380,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    @Test(priority = 16)
+    @Test(priority = 17)
     @Step("Upload reconciliation samples")
     public void uploadSamples() throws URISyntaxException {
         DelayUtils.sleep(1000);
@@ -390,7 +395,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         samplesManagementPage.uploadSamples("recoSamples/ciscoE2E/H3_Lab_100.100.100.100_20181016_1500_sh_version.cli");
     }
 
-    @Test(priority = 17)
+    @Test(priority = 18)
     @Step("Run reconciliation and check if it ended without errors")
     public void runReconciliation() {
         waitForPageToLoad();
@@ -408,7 +413,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(IssueLevel.WARNING));
     }
 
-    @Test(priority = 18)
+    @Test(priority = 19)
     @Step("Apply inconsistencies from Network to Live")
     public void applyInconsistencies() {
         networkDiscoveryControlViewPage.moveToNivFromNdcv();
@@ -420,7 +425,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         Assert.assertEquals(networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(), "Accepting discrepancies related to " + DEVICE_NAME + " finished");
     }
 
-    @Test(priority = 19)
+    @Test(priority = 20)
     @Step("Delete CM Domain")
     public void deleteCmDomain() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
@@ -431,7 +436,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
     }
 
-    @Test(priority = 20)
+    @Test(priority = 21)
     @Step("Delete IP Link")
     public void deleteIpLink() {
         HomePage homePage = new HomePage(driver);
@@ -446,7 +451,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         networkViewPage.useContextActionAndClickConfirmation(ActionsContainer.EDIT_GROUP_ID, NetworkViewPage.DELETE_CONNECTION_ID, ConfirmationBox.DELETE);
     }
 
-    @Test(priority = 21)
+    @Test(priority = 22)
     @Step("Delete Mediation Connection")
     public void deleteMediation() {
         ViewConnectionConfigurationPage.goToViewConnectionConfigurationPage(driver, URL);
@@ -460,7 +465,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    @Test(priority = 22)
+    @Test(priority = 23)
     @Step("Delete IP Address Assignment")
     public void deleteIPAddressAssignment() {
         waitForPageToLoad();
@@ -471,7 +476,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         ipAddressManagementViewPage.deleteIPHost(ADDRESS + "/24");
     }
 
-    @Test(priority = 23)
+    @Test(priority = 24)
     @Step("Delete Physical Device")
     public void deletePhysicalDevice() {
         HomePage homePage = new HomePage(driver);
