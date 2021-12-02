@@ -1,5 +1,6 @@
 package com.oss.transport.ipam;
 
+import com.oss.framework.mainheader.PerspectiveChooser;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
@@ -63,10 +64,10 @@ public class IPv4AddressesIPAMTest extends BaseTestCase {
     private static final String ASSIGNMENT_DEVICE_NAME = "IPAMSeleniumTest";
     private static final String ASSIGNMENT_INTERFACE_NAME = "IPAMSeleniumTestFirstInterface";
     private static final String ASSIGNMENT_SECOND_INTERFACE_NAME = "IPAMSeleniumTestSecondInterface";
-    private static final String ASSIGNMENT_LOCATION_IDENTIFIER = "IPAMSeleniumTest-BU3"; //"IPSWICH-BU1"; //"Cracow-BU2";
-    private static final String ASSIGNMENT_DEVICE_IDENTIFIER = "-Router-7"; //"IPSWICH-BU1"; //"Cracow-BU2";
-    private static final String ASSIGNMENT_INTERFACE_IDENTIFIER = "-Router-7\\CLUSTER 0"; //"IPSWICH-BU1"; //"Cracow-BU2";
-    private static final String ASSIGNMENT_SECOND_INTERFACE_IDENTIFIER = "-Router-7\\CLUSTER 1"; //"IPSWICH-BU1"; //"Cracow-BU2";
+    private static final String ASSIGNMENT_LOCATION_IDENTIFIER = "IPAMSeleniumTest-BU3";
+    private static final String ASSIGNMENT_DEVICE_IDENTIFIER = "-Router-7";
+    private static final String ASSIGNMENT_INTERFACE_IDENTIFIER = "-Router-7\\CLUSTER 0";
+    private static final String ASSIGNMENT_SECOND_INTERFACE_IDENTIFIER = "-Router-7\\CLUSTER 1";
     private static final String HOST_ADDRESS = "126.0.0.1";
     private static final String LOOPBACK_HOST_ADDRESS = "126.0.0.0";
     private static final String SECOND_LOOPBACK_HOST_ADDRESS = "126.0.0.2";
@@ -113,10 +114,10 @@ public class IPv4AddressesIPAMTest extends BaseTestCase {
     @Test(priority = 2)
     @Description("Create Role")
     public void createRole() {
-        DelayUtils.sleep(3000);
         ipAddressManagementViewPage = IPAddressManagementViewPage.goToIPAddressManagementViewPageLive(driver, BASIC_URL);
-//        PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
-//        perspectiveChooser.setPlanPerspective(processNRPCode);
+        ipAddressManagementViewPage.waitForPageToLoad();
+        PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
+        perspectiveChooser.setLivePerspective();
         RoleViewPage roleViewPage = ipAddressManagementViewPage.openRoleView();
         roleViewPage.createRole(ROLE_NAME);
         Assert.assertTrue(roleViewPage.doesRoleNameExist(ROLE_NAME));

@@ -1,5 +1,6 @@
 package com.oss.transport.ipam;
 
+import com.oss.framework.mainheader.PerspectiveChooser;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
@@ -61,10 +62,10 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
     private static final String ASSIGNMENT_DEVICE_NAME = "IPAMSeleniumTest";
     private static final String ASSIGNMENT_INTERFACE_NAME = "IPAMSeleniumTestFirstInterface";
     private static final String ASSIGNMENT_SECOND_INTERFACE_NAME = "IPAMSeleniumTestSecondInterface";
-    private static final String ASSIGNMENT_LOCATION_IDENTIFIER = "IPAMSeleniumTest-BU3"; //"IPSWICH-BU1"; //"Cracow-BU2";
-    private static final String ASSIGNMENT_DEVICE_IDENTIFIER = "-Router-7"; //"IPSWICH-BU1"; //"Cracow-BU2";
-    private static final String ASSIGNMENT_INTERFACE_IDENTIFIER = "-Router-7\\CLUSTER 0"; //"IPSWICH-BU1"; //"Cracow-BU2";
-    private static final String ASSIGNMENT_SECOND_INTERFACE_IDENTIFIER = "-Router-7\\CLUSTER 1"; //"IPSWICH-BU1"; //"Cracow-BU2";
+    private static final String ASSIGNMENT_LOCATION_IDENTIFIER = "IPAMSeleniumTest-BU3";
+    private static final String ASSIGNMENT_DEVICE_IDENTIFIER = "-Router-7";
+    private static final String ASSIGNMENT_INTERFACE_IDENTIFIER = "-Router-7\\CLUSTER 0";
+    private static final String ASSIGNMENT_SECOND_INTERFACE_IDENTIFIER = "-Router-7\\CLUSTER 1";
     private static final String IPV6_HOST_ADDRESS = "::127:1";
     private static final String LOOPBACK_IPV6_HOST_ADDRESS = "::127:0";
     private static final String SECOND_LOOPBACK_IPV6_HOST_ADDRESS = "::127:2";
@@ -110,225 +111,225 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
     @Test(priority = 2)
     @Description("Create Role")
     public void createRole() {
-        DelayUtils.sleep(3000);
         ipAddressManagementViewPage = IPAddressManagementViewPage.goToIPAddressManagementViewPageLive(driver, BASIC_URL);
-////        PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
-////        perspectiveChooser.setPlanPerspective(processNRPCode);
-//        RoleViewPage roleViewPage = ipAddressManagementViewPage.openRoleView();
-//        roleViewPage.createRole(ROLE_NAME);
-//        Assert.assertTrue(roleViewPage.doesRoleNameExist(ROLE_NAME));
-//        roleViewPage.exitRoleView();
+        ipAddressManagementViewPage.waitForPageToLoad();
+        PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
+        perspectiveChooser.setLivePerspective();
+        RoleViewPage roleViewPage = ipAddressManagementViewPage.openRoleView();
+        roleViewPage.createRole(ROLE_NAME);
+        Assert.assertTrue(roleViewPage.doesRoleNameExist(ROLE_NAME));
+        roleViewPage.exitRoleView();
     }
 
     @Test(priority = 3)
     @Description("Create IP Network")
     public void createIPNetwork() {
-//        ipAddressManagementViewPage.createIPNetwork(NETWORK_NAME, DESCRIPTION);
-//        ipAddressManagementViewPage.scrollAndSelectTreeRow(NETWORK_NAME);
-//        Assert.assertEquals(ipAddressManagementViewPage.getPropertyValue(NETWORK_PROPERTY_NAME), NETWORK_NAME);
-//        Assert.assertEquals(ipAddressManagementViewPage.getPropertyValue(NETWORK_PROPERTY_DESCRIPTION), DESCRIPTION);
+        ipAddressManagementViewPage.createIPNetwork(NETWORK_NAME, DESCRIPTION);
+        ipAddressManagementViewPage.scrollAndSelectTreeRow(NETWORK_NAME);
+        Assert.assertEquals(ipAddressManagementViewPage.getPropertyValue(NETWORK_PROPERTY_NAME), NETWORK_NAME);
+        Assert.assertEquals(ipAddressManagementViewPage.getPropertyValue(NETWORK_PROPERTY_DESCRIPTION), DESCRIPTION);
     }
 
     @Test(priority = 4)
     @Description("Create IPv6 Subnets")
     public void createIPv6Subnets() {
-//        IPSubnetWizardPage ipv6SubnetWizardPage = ipAddressManagementViewPage.createIPv6Subnet();
-//        IPSubnetFilterProperties ipv6SubnetFilterProperties = new IPSubnetFilterProperties(IPV6_SUBNETS_ADDRESS, FILTER_IPV6_SUBNETS_END_IP_FOR_CREATION, OPERATOR_HIGHER_OR_EQUAL, LOWEST_IPV6_SUBNET_MASK);
-//        ipv6SubnetWizardPage.ipSubnetWizardSelectStep(ipv6SubnetFilterProperties, AMOUNT_OF_SUBNETS_SELECTED_DURING_SUBNET_CREATION);
-//        IPSubnetWizardProperties firstIpv6SubnetWizardProperties = new IPSubnetWizardProperties(BLOCK_SUBNET_TYPE);
-//        IPSubnetWizardProperties secondIpv6SubnetWizardProperties = new IPSubnetWizardProperties(NETWORK_SUBNET_TYPE, ROLE_NAME, DESCRIPTION);
-//        IPSubnetWizardProperties thirdIpv6SubnetWizardProperties = new IPSubnetWizardProperties(NETWORK_SUBNET_TYPE);
-//        ipv6SubnetWizardPage.ipSubnetWizardPropertiesStep(firstIpv6SubnetWizardProperties, secondIpv6SubnetWizardProperties, thirdIpv6SubnetWizardProperties);
-//        ipv6SubnetWizardPage.ipSubnetWizardSummaryStep();
+        IPSubnetWizardPage ipv6SubnetWizardPage = ipAddressManagementViewPage.createIPv6Subnet();
+        IPSubnetFilterProperties ipv6SubnetFilterProperties = new IPSubnetFilterProperties(IPV6_SUBNETS_ADDRESS, FILTER_IPV6_SUBNETS_END_IP_FOR_CREATION, OPERATOR_HIGHER_OR_EQUAL, LOWEST_IPV6_SUBNET_MASK);
+        ipv6SubnetWizardPage.ipSubnetWizardSelectStep(ipv6SubnetFilterProperties, AMOUNT_OF_SUBNETS_SELECTED_DURING_SUBNET_CREATION);
+        IPSubnetWizardProperties firstIpv6SubnetWizardProperties = new IPSubnetWizardProperties(BLOCK_SUBNET_TYPE);
+        IPSubnetWizardProperties secondIpv6SubnetWizardProperties = new IPSubnetWizardProperties(NETWORK_SUBNET_TYPE, ROLE_NAME, DESCRIPTION);
+        IPSubnetWizardProperties thirdIpv6SubnetWizardProperties = new IPSubnetWizardProperties(NETWORK_SUBNET_TYPE);
+        ipv6SubnetWizardPage.ipSubnetWizardPropertiesStep(firstIpv6SubnetWizardProperties, secondIpv6SubnetWizardProperties, thirdIpv6SubnetWizardProperties);
+        ipv6SubnetWizardPage.ipSubnetWizardSummaryStep();
 
         updatePropertiesAfterIPv6SubnetsCreation();
-//        ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
-//        ipAddressManagementViewPage.scrollAndSelectTreeRow(NETWORK_NAME);
-//        ipAddressManagementViewPage.selectTreeRow(NETWORK_NAME);
-//        ipAddressManagementViewPage.expandTreeRow(NETWORK_NAME);
-//        DelayUtils.sleep(100);
-//        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(getAddressAndMask(firstIPv6SubnetProperties));
-//        checkAttributesOnIPAMTree(firstIPv6SubnetProperties, getAddressAndMask(firstIPv6SubnetProperties));
-//        ipAddressManagementViewPage.scrollToTreeRowContains(getAddressAndMask(secondIPv6SubnetProperties));
-//        checkAttributesOnIPAMTree(secondIPv6SubnetProperties, getAddressAndMask(secondIPv6SubnetProperties));
-//        ipAddressManagementViewPage.scrollToTreeRowContains(getAddressAndMask(thirdIPv6SubnetProperties));
-//        checkAttributesOnIPAMTree(thirdIPv6SubnetProperties, getAddressAndMask(thirdIPv6SubnetProperties));
+        ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
+        ipAddressManagementViewPage.scrollAndSelectTreeRow(NETWORK_NAME);
+        ipAddressManagementViewPage.selectTreeRow(NETWORK_NAME);
+        ipAddressManagementViewPage.expandTreeRow(NETWORK_NAME);
+        DelayUtils.sleep(100);
+        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(getAddressAndMask(firstIPv6SubnetProperties));
+        checkAttributesOnIPAMTree(firstIPv6SubnetProperties, getAddressAndMask(firstIPv6SubnetProperties));
+        ipAddressManagementViewPage.scrollToTreeRowContains(getAddressAndMask(secondIPv6SubnetProperties));
+        checkAttributesOnIPAMTree(secondIPv6SubnetProperties, getAddressAndMask(secondIPv6SubnetProperties));
+        ipAddressManagementViewPage.scrollToTreeRowContains(getAddressAndMask(thirdIPv6SubnetProperties));
+        checkAttributesOnIPAMTree(thirdIPv6SubnetProperties, getAddressAndMask(thirdIPv6SubnetProperties));
     }
 
     @Test(priority = 5)
     @Description("Assign IPv6 Subnets")
     public void assignIPv6Subnets() {
-//        ipAddressManagementViewPage
-//                .assignIPv6Subnet(getAddressAndMask(firstIPv6SubnetProperties), LOCATION, ASSIGNMENT_LOCATION_NAME, ROLE_NAME);
+        ipAddressManagementViewPage
+                .assignIPv6Subnet(getAddressAndMask(firstIPv6SubnetProperties), LOCATION, ASSIGNMENT_LOCATION_NAME, ROLE_NAME);
         updatePropertiesAfterIPv6SubnetAssignment();
-//        ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
-//        DelayUtils.sleep(100);
-//        ipAddressManagementViewPage.scrollToTreeRowContains(getAddressAndMask(firstIPv6SubnetProperties));
-//        checkAttributesOnIPAMTree(firstIPv6SubnetProperties, getAddressAndMask(firstIPv6SubnetProperties));
+        ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
+        DelayUtils.sleep(100);
+        ipAddressManagementViewPage.scrollToTreeRowContains(getAddressAndMask(firstIPv6SubnetProperties));
+        checkAttributesOnIPAMTree(firstIPv6SubnetProperties, getAddressAndMask(firstIPv6SubnetProperties));
     }
 
     @Test(priority = 6)
     @Description("Reserve IPv6 Host Addresses")
     public void reserveIPv6Hosts() {
-//        ipAddressManagementViewPage.scrollToTreeRowContains(getAddressAndMask(secondIPv6SubnetProperties));
-//        ipAddressManagementViewPage
-//                .reserveIPv6HostAddress(getAddressAndMask(secondIPv6SubnetProperties), DESCRIPTION);
+        ipAddressManagementViewPage.scrollToTreeRowContains(getAddressAndMask(secondIPv6SubnetProperties));
+        ipAddressManagementViewPage
+                .reserveIPv6HostAddress(getAddressAndMask(secondIPv6SubnetProperties), DESCRIPTION);
         updatePropertiesAfterIPv6HostsReservation();
-//        ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
-//        ipAddressManagementViewPage.scrollToTreeRow(getAddressAndMask(ipv6HostAddressProperties));
-//        checkAttributesOnIPAMTree(ipv6HostAddressProperties, getAddressAndMask(ipv6HostAddressProperties));
-//        ipAddressManagementViewPage
-//                .reserveLoopbackIPv6HostAddress(getAddressAndMask(secondIPv6SubnetProperties), DESCRIPTION);
-//        ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
-//        ipAddressManagementViewPage.scrollToTreeRow(getAddressAndMask(loopbackIPv6HostAddressProperties));
-//        checkAttributesOnIPAMTree(loopbackIPv6HostAddressProperties, getAddressAndMask(loopbackIPv6HostAddressProperties));
-//        checkAttributesOnIPAMTree(secondIPv6SubnetProperties, getAddressAndMask(secondIPv6SubnetProperties));
+        ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
+        ipAddressManagementViewPage.scrollToTreeRow(getAddressAndMask(ipv6HostAddressProperties));
+        checkAttributesOnIPAMTree(ipv6HostAddressProperties, getAddressAndMask(ipv6HostAddressProperties));
+        ipAddressManagementViewPage
+                .reserveLoopbackIPv6HostAddress(getAddressAndMask(secondIPv6SubnetProperties), DESCRIPTION);
+        ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
+        ipAddressManagementViewPage.scrollToTreeRow(getAddressAndMask(loopbackIPv6HostAddressProperties));
+        checkAttributesOnIPAMTree(loopbackIPv6HostAddressProperties, getAddressAndMask(loopbackIPv6HostAddressProperties));
+        checkAttributesOnIPAMTree(secondIPv6SubnetProperties, getAddressAndMask(secondIPv6SubnetProperties));
     }
 
     @Test(priority = 7)
     @Description("Assign IPv6 Host Addresses")
     public void assignIPv6Hosts() {
-//        IPAddressAssignmentWizardPage assignLoopbackAddressFromHostContext = ipAddressManagementViewPage
-//                .assignLoopbackIPv6HostAddressFromHostContext(getAddressAndMask(loopbackIPv6HostAddressProperties));
-//        IPAddressAssignmentWizardProperties loopbackIpAddressAssignmentWizardProperties = IPAddressAssignmentWizardProperties.builder()
-//                .isPrimary(TRUE_STRING).isInNAT(TRUE_STRING).role(ROLE_NAME).description(DESCRIPTION)
-//                .assignmentType(INTERFACE).assignmentName(ASSIGNMENT_INTERFACE_IDENTIFIER).build();
-//        IPAddressAssignmentWizardProperties oppositeSideLoopbackIpAddressAssignmentWizardProperties = IPAddressAssignmentWizardProperties.builder()
-//                .isPrimary(TRUE_STRING).isInNAT(TRUE_STRING).role(ROLE_NAME).build();
-//        assignLoopbackAddressFromHostContext.assignIPAddressFromIPAddressContext(loopbackIpAddressAssignmentWizardProperties, oppositeSideLoopbackIpAddressAssignmentWizardProperties);
+        IPAddressAssignmentWizardPage assignLoopbackAddressFromHostContext = ipAddressManagementViewPage
+                .assignLoopbackIPv6HostAddressFromHostContext(getAddressAndMask(loopbackIPv6HostAddressProperties));
+        IPAddressAssignmentWizardProperties loopbackIpAddressAssignmentWizardProperties = IPAddressAssignmentWizardProperties.builder()
+                .isPrimary(TRUE_STRING).isInNAT(TRUE_STRING).role(ROLE_NAME).description(DESCRIPTION)
+                .assignmentType(INTERFACE).assignmentName(ASSIGNMENT_INTERFACE_IDENTIFIER).build();
+        IPAddressAssignmentWizardProperties oppositeSideLoopbackIpAddressAssignmentWizardProperties = IPAddressAssignmentWizardProperties.builder()
+                .isPrimary(TRUE_STRING).isInNAT(TRUE_STRING).role(ROLE_NAME).build();
+        assignLoopbackAddressFromHostContext.assignIPAddressFromIPAddressContext(loopbackIpAddressAssignmentWizardProperties, oppositeSideLoopbackIpAddressAssignmentWizardProperties);
 
         updatePropertiesAfterIPv6HostsAssignment();
-//        ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
-//        ipAddressManagementViewPage.scrollToTreeRowContains(getAddressAndMask(thirdIPv6SubnetProperties));
-//        if(ipAddressManagementViewPage.isTreeRowExpanded(getAddressAndMask(loopbackIPv6HostAddressProperties))){
-//            ipAddressManagementViewPage.selectTreeRowContains(getAssignmentAddressMaskAndAssignTo(loopbackIPv6HostAssignmentProperties, NETWORK_NAME));
-//            ipAddressManagementViewPage.selectTreeRowContains(getAssignmentAddressMaskAndAssignTo(loopbackIPv6HostAssignmentProperties, NETWORK_NAME));
-//        } else{
-//            ipAddressManagementViewPage.selectTreeRowContains(getAssignmentAddressMaskAndAssignTo(secondLoopbackIPv6HostAssignmentProperties, NETWORK_NAME));
-//            ipAddressManagementViewPage.selectTreeRowContains(getAssignmentAddressMaskAndAssignTo(secondLoopbackIPv6HostAssignmentProperties, NETWORK_NAME));
-//        }
-//
-//        IPAddressAssignmentWizardPage assignAddressFromSubnetContext = ipAddressManagementViewPage
-//                .assignIPv6HostAddressFromSubnetContext(getAddressAndMask(secondIPv6SubnetProperties));
-//        IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties = IPAddressAssignmentWizardProperties.builder()
-//                .address(IPV6_HOST_ADDRESS).wizardMode(EXISTING_ADDRESS_MODE).isPrimary(FALSE_STRING).isInNAT(FALSE_STRING).assignmentType(PHYSICAL_DEVICE).assignmentName(ASSIGNMENT_DEVICE_NAME).build();
-//        assignAddressFromSubnetContext.assignIPAddress(ipAddressAssignmentWizardProperties);
-//
-//        ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
-//        ipAddressManagementViewPage.scrollToTreeRowContains(getAssignmentAddressMaskAndAssignTo(ipv6HostAssignmentProperties, NETWORK_NAME));
-//        checkAttributesOnIPAMTree(ipv6HostAssignmentProperties, getAssignmentAddressMaskAndAssignTo(ipv6HostAssignmentProperties, NETWORK_NAME));
-//        checkAttributesOnIPAMTree(ipv6HostAddressProperties, getAddressAndMask(ipv6HostAddressProperties));
-//        ipAddressManagementViewPage.expandTreeRow(getAddressAndMask(loopbackIPv6HostAddressProperties));
-//        checkAttributesOnIPAMTree(loopbackIPv6HostAssignmentProperties, getAssignmentAddressMaskAndAssignTo(loopbackIPv6HostAssignmentProperties, NETWORK_NAME));
-//        checkAttributesOnIPAMTree(loopbackIPv6HostAddressProperties, getAddressAndMask(loopbackIPv6HostAddressProperties));
-//        ipAddressManagementViewPage.scrollAndExpandTreeRow(getAddressAndMask(secondLoopbackIpv6HostAddressProperties));
-//        ipAddressManagementViewPage.scrollToTreeRowContains(getAssignmentAddressMaskAndAssignTo(secondLoopbackIPv6HostAssignmentProperties, NETWORK_NAME));
-//        checkAttributesOnIPAMTree(secondLoopbackIPv6HostAssignmentProperties, getAssignmentAddressMaskAndAssignTo(secondLoopbackIPv6HostAssignmentProperties, NETWORK_NAME));
-//        checkAttributesOnIPAMTree(secondLoopbackIpv6HostAddressProperties, getAddressAndMask(secondLoopbackIpv6HostAddressProperties));
-//        checkAttributesOnIPAMTree(secondIPv6SubnetProperties, getAddressAndMask(secondIPv6SubnetProperties));
+        ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
+        ipAddressManagementViewPage.scrollToTreeRowContains(getAddressAndMask(thirdIPv6SubnetProperties));
+        if(ipAddressManagementViewPage.isTreeRowExpanded(getAddressAndMask(loopbackIPv6HostAddressProperties))){
+            ipAddressManagementViewPage.selectTreeRowContains(getAssignmentAddressMaskAndAssignTo(loopbackIPv6HostAssignmentProperties, NETWORK_NAME));
+            ipAddressManagementViewPage.selectTreeRowContains(getAssignmentAddressMaskAndAssignTo(loopbackIPv6HostAssignmentProperties, NETWORK_NAME));
+        } else{
+            ipAddressManagementViewPage.selectTreeRowContains(getAssignmentAddressMaskAndAssignTo(secondLoopbackIPv6HostAssignmentProperties, NETWORK_NAME));
+            ipAddressManagementViewPage.selectTreeRowContains(getAssignmentAddressMaskAndAssignTo(secondLoopbackIPv6HostAssignmentProperties, NETWORK_NAME));
+        }
+
+        IPAddressAssignmentWizardPage assignAddressFromSubnetContext = ipAddressManagementViewPage
+                .assignIPv6HostAddressFromSubnetContext(getAddressAndMask(secondIPv6SubnetProperties));
+        IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties = IPAddressAssignmentWizardProperties.builder()
+                .address(IPV6_HOST_ADDRESS).wizardMode(EXISTING_ADDRESS_MODE).isPrimary(FALSE_STRING).isInNAT(FALSE_STRING).assignmentType(PHYSICAL_DEVICE).assignmentName(ASSIGNMENT_DEVICE_NAME).build();
+        assignAddressFromSubnetContext.assignIPAddress(ipAddressAssignmentWizardProperties);
+
+        ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
+        ipAddressManagementViewPage.scrollToTreeRowContains(getAssignmentAddressMaskAndAssignTo(ipv6HostAssignmentProperties, NETWORK_NAME));
+        checkAttributesOnIPAMTree(ipv6HostAssignmentProperties, getAssignmentAddressMaskAndAssignTo(ipv6HostAssignmentProperties, NETWORK_NAME));
+        checkAttributesOnIPAMTree(ipv6HostAddressProperties, getAddressAndMask(ipv6HostAddressProperties));
+        ipAddressManagementViewPage.expandTreeRow(getAddressAndMask(loopbackIPv6HostAddressProperties));
+        checkAttributesOnIPAMTree(loopbackIPv6HostAssignmentProperties, getAssignmentAddressMaskAndAssignTo(loopbackIPv6HostAssignmentProperties, NETWORK_NAME));
+        checkAttributesOnIPAMTree(loopbackIPv6HostAddressProperties, getAddressAndMask(loopbackIPv6HostAddressProperties));
+        ipAddressManagementViewPage.scrollAndExpandTreeRow(getAddressAndMask(secondLoopbackIpv6HostAddressProperties));
+        ipAddressManagementViewPage.scrollToTreeRowContains(getAssignmentAddressMaskAndAssignTo(secondLoopbackIPv6HostAssignmentProperties, NETWORK_NAME));
+        checkAttributesOnIPAMTree(secondLoopbackIPv6HostAssignmentProperties, getAssignmentAddressMaskAndAssignTo(secondLoopbackIPv6HostAssignmentProperties, NETWORK_NAME));
+        checkAttributesOnIPAMTree(secondLoopbackIpv6HostAddressProperties, getAddressAndMask(secondLoopbackIpv6HostAddressProperties));
+        checkAttributesOnIPAMTree(secondIPv6SubnetProperties, getAddressAndMask(secondIPv6SubnetProperties));
     }
 
     @Test(priority = 8)
     @Description("Edit Role")
     public void editRole() {
-//        RoleViewPage roleViewPage = ipAddressManagementViewPage.openRoleView();
-//        roleViewPage.editRole(ROLE_NAME, ROLE_NAME_UPDATED);
-//        Assert.assertTrue(roleViewPage.doesRoleNameExist(ROLE_NAME_UPDATED));
-//        Assert.assertFalse(roleViewPage.doesRoleNameExist(ROLE_NAME));
-//        roleViewPage.exitRoleView();
+        RoleViewPage roleViewPage = ipAddressManagementViewPage.openRoleView();
+        roleViewPage.editRole(ROLE_NAME, ROLE_NAME_UPDATED);
+        Assert.assertTrue(roleViewPage.doesRoleNameExist(ROLE_NAME_UPDATED));
+        Assert.assertFalse(roleViewPage.doesRoleNameExist(ROLE_NAME));
+        roleViewPage.exitRoleView();
 
         updatePropertiesAfterRoleEdition();
-//        DelayUtils.sleep(100);
-//        ipAddressManagementViewPage.selectTreeRowContains(getAddressAndMask(firstIPv6SubnetProperties));
-//        Assert.assertEquals(ipAddressManagementViewPage.getPropertyValue(SUBNET_PROPERTY_ROLE), firstIPv6SubnetProperties.get(SUBNET_PROPERTY_ROLE));
-//        ipAddressManagementViewPage.selectTreeRowContains(getAddressAndMask(firstIPv6SubnetProperties));
-//        ipAddressManagementViewPage.selectTreeRowContains(getAddressAndMask(secondIPv6SubnetProperties));
-//        Assert.assertEquals(ipAddressManagementViewPage.getPropertyValue(SUBNET_PROPERTY_ROLE), secondIPv6SubnetProperties.get(SUBNET_PROPERTY_ROLE));
-//        ipAddressManagementViewPage.selectTreeRowContains(getAddressAndMask(secondIPv6SubnetProperties));
-//        checkAttributesOnIPAMTree(loopbackIPv6HostAssignmentProperties, getAssignmentAddressMaskAndAssignTo(loopbackIPv6HostAssignmentProperties, NETWORK_NAME));
-//        checkAttributesOnIPAMTree(secondLoopbackIPv6HostAssignmentProperties, getAssignmentAddressMaskAndAssignTo(secondLoopbackIPv6HostAssignmentProperties, NETWORK_NAME));
+        DelayUtils.sleep(100);
+        ipAddressManagementViewPage.selectTreeRowContains(getAddressAndMask(firstIPv6SubnetProperties));
+        Assert.assertEquals(ipAddressManagementViewPage.getPropertyValue(SUBNET_PROPERTY_ROLE), firstIPv6SubnetProperties.get(SUBNET_PROPERTY_ROLE));
+        ipAddressManagementViewPage.selectTreeRowContains(getAddressAndMask(firstIPv6SubnetProperties));
+        ipAddressManagementViewPage.selectTreeRowContains(getAddressAndMask(secondIPv6SubnetProperties));
+        Assert.assertEquals(ipAddressManagementViewPage.getPropertyValue(SUBNET_PROPERTY_ROLE), secondIPv6SubnetProperties.get(SUBNET_PROPERTY_ROLE));
+        ipAddressManagementViewPage.selectTreeRowContains(getAddressAndMask(secondIPv6SubnetProperties));
+        checkAttributesOnIPAMTree(loopbackIPv6HostAssignmentProperties, getAssignmentAddressMaskAndAssignTo(loopbackIPv6HostAssignmentProperties, NETWORK_NAME));
+        checkAttributesOnIPAMTree(secondLoopbackIPv6HostAssignmentProperties, getAssignmentAddressMaskAndAssignTo(secondLoopbackIPv6HostAssignmentProperties, NETWORK_NAME));
     }
 
     @Test(priority = 9)
     @Description("Edit IP Network")
     public void editIPNetwork() {
-//        ipAddressManagementViewPage.scrollToTreeRow(NETWORK_NAME);
-//        ipAddressManagementViewPage.editIPNetwork(NETWORK_NAME, NETWORK_NAME_UPDATED, DESCRIPTION_UPDATED);
+        ipAddressManagementViewPage.scrollToTreeRow(NETWORK_NAME);
+        ipAddressManagementViewPage.editIPNetwork(NETWORK_NAME, NETWORK_NAME_UPDATED, DESCRIPTION_UPDATED);
         updatePropertiesAfterIPNetworkEdition();
 
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
         ipAddressManagementViewPage.scrollAndSelectTreeRow(NETWORK_NAME_UPDATED);
-//        Assert.assertEquals(ipAddressManagementViewPage.getPropertyValue(NETWORK_PROPERTY_NAME), NETWORK_NAME_UPDATED);
-//        Assert.assertEquals(ipAddressManagementViewPage.getPropertyValue(NETWORK_PROPERTY_DESCRIPTION), DESCRIPTION_UPDATED);
+        Assert.assertEquals(ipAddressManagementViewPage.getPropertyValue(NETWORK_PROPERTY_NAME), NETWORK_NAME_UPDATED);
+        Assert.assertEquals(ipAddressManagementViewPage.getPropertyValue(NETWORK_PROPERTY_DESCRIPTION), DESCRIPTION_UPDATED);
 
         ipAddressManagementViewPage.selectTreeRow(NETWORK_NAME_UPDATED);
         ipAddressManagementViewPage.expandTreeRow(NETWORK_NAME_UPDATED);
         ipAddressManagementViewPage.scrollAndExpandTreeRowContains(getAddressAndMask(firstIPv6SubnetProperties));
-//        checkAttributesOnIPAMTree(firstIPv6SubnetProperties, getAddressAndMask(firstIPv6SubnetProperties));
-//        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(getAddressAndMask(secondIPv6SubnetProperties));
-//        checkAttributesOnIPAMTree(secondIPv6SubnetProperties, getAddressAndMask(secondIPv6SubnetProperties));
-//        ipAddressManagementViewPage.scrollToTreeRowContains(getAddressAndMask(thirdIPv6SubnetProperties));
-//        checkAttributesOnIPAMTree(thirdIPv6SubnetProperties, getAddressAndMask(thirdIPv6SubnetProperties));
-//        checkAttributesOnIPAMTree(ipv6HostAddressProperties, getAddressAndMask(ipv6HostAddressProperties));
-//        checkAttributesOnIPAMTree(loopbackIPv6HostAddressProperties, getAddressAndMask(loopbackIPv6HostAddressProperties));
-//        checkAttributesOnIPAMTree(secondLoopbackIpv6HostAddressProperties, getAddressAndMask(secondLoopbackIpv6HostAddressProperties));
-//        ipAddressManagementViewPage.expandTreeRow(getAddressAndMask(ipv6HostAddressProperties));
-//        ipAddressManagementViewPage.expandTreeRow(getAddressAndMask(loopbackIPv6HostAddressProperties));
-//        ipAddressManagementViewPage.scrollAndExpandTreeRow(getAddressAndMask(secondLoopbackIpv6HostAddressProperties));
-//        checkAttributesOnIPAMTree(ipv6HostAssignmentProperties, getAssignmentAddressMaskAndAssignTo(ipv6HostAssignmentProperties, NETWORK_NAME_UPDATED));
-//        checkAttributesOnIPAMTree(loopbackIPv6HostAssignmentProperties, getAssignmentAddressMaskAndAssignTo(loopbackIPv6HostAssignmentProperties, NETWORK_NAME_UPDATED));
-//        checkAttributesOnIPAMTree(secondLoopbackIPv6HostAssignmentProperties, getAssignmentAddressMaskAndAssignTo(secondLoopbackIPv6HostAssignmentProperties, NETWORK_NAME_UPDATED));
+        checkAttributesOnIPAMTree(firstIPv6SubnetProperties, getAddressAndMask(firstIPv6SubnetProperties));
+        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(getAddressAndMask(secondIPv6SubnetProperties));
+        checkAttributesOnIPAMTree(secondIPv6SubnetProperties, getAddressAndMask(secondIPv6SubnetProperties));
+        ipAddressManagementViewPage.scrollToTreeRowContains(getAddressAndMask(thirdIPv6SubnetProperties));
+        checkAttributesOnIPAMTree(thirdIPv6SubnetProperties, getAddressAndMask(thirdIPv6SubnetProperties));
+        checkAttributesOnIPAMTree(ipv6HostAddressProperties, getAddressAndMask(ipv6HostAddressProperties));
+        checkAttributesOnIPAMTree(loopbackIPv6HostAddressProperties, getAddressAndMask(loopbackIPv6HostAddressProperties));
+        checkAttributesOnIPAMTree(secondLoopbackIpv6HostAddressProperties, getAddressAndMask(secondLoopbackIpv6HostAddressProperties));
+        ipAddressManagementViewPage.expandTreeRow(getAddressAndMask(ipv6HostAddressProperties));
+        ipAddressManagementViewPage.expandTreeRow(getAddressAndMask(loopbackIPv6HostAddressProperties));
+        ipAddressManagementViewPage.scrollAndExpandTreeRow(getAddressAndMask(secondLoopbackIpv6HostAddressProperties));
+        checkAttributesOnIPAMTree(ipv6HostAssignmentProperties, getAssignmentAddressMaskAndAssignTo(ipv6HostAssignmentProperties, NETWORK_NAME_UPDATED));
+        checkAttributesOnIPAMTree(loopbackIPv6HostAssignmentProperties, getAssignmentAddressMaskAndAssignTo(loopbackIPv6HostAssignmentProperties, NETWORK_NAME_UPDATED));
+        checkAttributesOnIPAMTree(secondLoopbackIPv6HostAssignmentProperties, getAssignmentAddressMaskAndAssignTo(secondLoopbackIPv6HostAssignmentProperties, NETWORK_NAME_UPDATED));
     }
 
     @Test(priority = 10)
     @Description("Split IPv6 Subnet")
     public void splitIPv6Subnet() {
-//        IPSubnetWizardPage ipv6SubnetWizardPage = ipAddressManagementViewPage.splitIPv6Subnet(getAddressAndMask(secondIPv6SubnetProperties));
-//        IPSubnetFilterProperties ipv6SubnetFilterProperties = new IPSubnetFilterProperties(IPV6_SUBNETS_ADDRESS, IPV6_SUBNETS_ADDRESS);
-//        ipv6SubnetWizardPage.ipSubnetWizardSelectStep(ipv6SubnetFilterProperties, AMOUNT_OF_SUBNETS_SELECTED_DURING_SUBNET_SPLIT);
-//        IPSubnetWizardProperties firstIpv6SubnetWizardProperties = new IPSubnetWizardProperties(BLOCK_SUBNET_TYPE, MANAGEMENT_SECONDARY_ROLE, DESCRIPTION);
-//        IPSubnetWizardProperties secondIpv6SubnetWizardProperties = new IPSubnetWizardProperties(NETWORK_SUBNET_TYPE);
-//        ipv6SubnetWizardPage.ipSubnetWizardPropertiesStep(firstIpv6SubnetWizardProperties, secondIpv6SubnetWizardProperties);
-//        ipv6SubnetWizardPage.ipSubnetWizardSummaryStep();
+        IPSubnetWizardPage ipv6SubnetWizardPage = ipAddressManagementViewPage.splitIPv6Subnet(getAddressAndMask(secondIPv6SubnetProperties));
+        IPSubnetFilterProperties ipv6SubnetFilterProperties = new IPSubnetFilterProperties(IPV6_SUBNETS_ADDRESS, IPV6_SUBNETS_ADDRESS);
+        ipv6SubnetWizardPage.ipSubnetWizardSelectStep(ipv6SubnetFilterProperties, AMOUNT_OF_SUBNETS_SELECTED_DURING_SUBNET_SPLIT);
+        IPSubnetWizardProperties firstIpv6SubnetWizardProperties = new IPSubnetWizardProperties(BLOCK_SUBNET_TYPE, MANAGEMENT_SECONDARY_ROLE, DESCRIPTION);
+        IPSubnetWizardProperties secondIpv6SubnetWizardProperties = new IPSubnetWizardProperties(NETWORK_SUBNET_TYPE);
+        ipv6SubnetWizardPage.ipSubnetWizardPropertiesStep(firstIpv6SubnetWizardProperties, secondIpv6SubnetWizardProperties);
+        ipv6SubnetWizardPage.ipSubnetWizardSummaryStep();
 
         updatePropertiesAfterIPv6SubnetsSplit();
-//        ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
-//        ipAddressManagementViewPage.scrollToTreeRowContains(getAddressAndMask(fourthIPv6SubnetProperties));
-//        checkAttributesOnIPAMTree(secondIPv6SubnetProperties, getAddressAndMask(secondIPv6SubnetProperties));
-//        checkAttributesOnIPAMTree(fourthIPv6SubnetProperties, getAddressAndMask(fourthIPv6SubnetProperties));
-//        ipAddressManagementViewPage.expandTreeRowContains(getAddressAndMask(fourthIPv6SubnetProperties));
-//        ipAddressManagementViewPage.scrollToTreeRowContains(getAddressAndMask(fifthIPv6SubnetProperties));
-//        checkAttributesOnIPAMTree(fifthIPv6SubnetProperties, getAddressAndMask(fifthIPv6SubnetProperties));
+        ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
+        ipAddressManagementViewPage.scrollToTreeRowContains(getAddressAndMask(fourthIPv6SubnetProperties));
+        checkAttributesOnIPAMTree(secondIPv6SubnetProperties, getAddressAndMask(secondIPv6SubnetProperties));
+        checkAttributesOnIPAMTree(fourthIPv6SubnetProperties, getAddressAndMask(fourthIPv6SubnetProperties));
+        ipAddressManagementViewPage.expandTreeRowContains(getAddressAndMask(fourthIPv6SubnetProperties));
+        ipAddressManagementViewPage.scrollToTreeRowContains(getAddressAndMask(fifthIPv6SubnetProperties));
+        checkAttributesOnIPAMTree(fifthIPv6SubnetProperties, getAddressAndMask(fifthIPv6SubnetProperties));
     }
 
     @Test(priority = 11)
     @Description("Merge IPv6 Subnets")
     public void mergeIPv6Subnets() {
-//        IPSubnetWizardPage ipv6SubnetWizardPage = ipAddressManagementViewPage
-//                .mergeIPv6Subnet(getAddressAndMask(secondIPv6SubnetProperties),
-//                        getAddressAndMask(fourthIPv6SubnetProperties), getAddressAndMask(fifthIPv6SubnetProperties));
-//        ipv6SubnetWizardPage.ipSubnetWizardSelectStep(AMOUNT_OF_SUBNETS_SELECTED_DURING_SUBNET_MERGE);
-//        IPSubnetWizardProperties firstIpv6SubnetWizardProperties = new IPSubnetWizardProperties(NETWORK_SUBNET_TYPE);
-//        ipv6SubnetWizardPage.ipSubnetWizardPropertiesStep(firstIpv6SubnetWizardProperties);
-//        ipv6SubnetWizardPage.ipSubnetWizardSummaryStep();
+        IPSubnetWizardPage ipv6SubnetWizardPage = ipAddressManagementViewPage
+                .mergeIPv6Subnet(getAddressAndMask(secondIPv6SubnetProperties),
+                        getAddressAndMask(fourthIPv6SubnetProperties), getAddressAndMask(fifthIPv6SubnetProperties));
+        ipv6SubnetWizardPage.ipSubnetWizardSelectStep(AMOUNT_OF_SUBNETS_SELECTED_DURING_SUBNET_MERGE);
+        IPSubnetWizardProperties firstIpv6SubnetWizardProperties = new IPSubnetWizardProperties(NETWORK_SUBNET_TYPE);
+        ipv6SubnetWizardPage.ipSubnetWizardPropertiesStep(firstIpv6SubnetWizardProperties);
+        ipv6SubnetWizardPage.ipSubnetWizardSummaryStep();
 
         updatePropertiesAfterIPv6SubnetsMerge();
-//        ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
-//        ipAddressManagementViewPage.scrollAndExpandTreeRow(NETWORK_NAME_UPDATED);
-//        ipAddressManagementViewPage.selectTreeRow(NETWORK_NAME_UPDATED);
-//        ipAddressManagementViewPage.selectTreeRow(NETWORK_NAME_UPDATED);
-//        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(getAddressAndMask(firstIPv6SubnetProperties));
-//        ipAddressManagementViewPage.scrollToTreeRowContains(getAddressAndMask(secondIPv6SubnetProperties));
-//        checkAttributesOnIPAMTree(secondIPv6SubnetProperties, getAddressAndMask(secondIPv6SubnetProperties));
+        ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
+        ipAddressManagementViewPage.scrollAndExpandTreeRow(NETWORK_NAME_UPDATED);
+        ipAddressManagementViewPage.selectTreeRow(NETWORK_NAME_UPDATED);
+        ipAddressManagementViewPage.selectTreeRow(NETWORK_NAME_UPDATED);
+        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(getAddressAndMask(firstIPv6SubnetProperties));
+        ipAddressManagementViewPage.scrollToTreeRowContains(getAddressAndMask(secondIPv6SubnetProperties));
+        checkAttributesOnIPAMTree(secondIPv6SubnetProperties, getAddressAndMask(secondIPv6SubnetProperties));
     }
 
     @Test(priority = 12)
     @Description("Edit IPv6 Subnets")
     public void editIPv6Subnets() {
-//        ipAddressManagementViewPage.scrollToTreeRowContains(getAddressAndMask(thirdIPv6SubnetProperties));
-//        ipAddressManagementViewPage.changeIPv6SubnetTypeToBlock(getAddressAndMask(thirdIPv6SubnetProperties));
-//        ipAddressManagementViewPage.scrollAndSelectTreeRowContains(getAddressAndMask(thirdIPv6SubnetProperties));
-//        ipAddressManagementViewPage.selectTreeRowContains(getAddressAndMask(thirdIPv6SubnetProperties));
+        ipAddressManagementViewPage.scrollToTreeRowContains(getAddressAndMask(thirdIPv6SubnetProperties));
+        ipAddressManagementViewPage.changeIPv6SubnetTypeToBlock(getAddressAndMask(thirdIPv6SubnetProperties));
+        ipAddressManagementViewPage.scrollAndSelectTreeRowContains(getAddressAndMask(thirdIPv6SubnetProperties));
+        ipAddressManagementViewPage.selectTreeRowContains(getAddressAndMask(thirdIPv6SubnetProperties));
         ipAddressManagementViewPage.editIPv6Subnet(getAddressAndMask(secondIPv6SubnetProperties), MANAGEMENT_SECONDARY_ROLE, DESCRIPTION_UPDATED);
 
         updatePropertiesAfterIPv6SubnetsEdition();

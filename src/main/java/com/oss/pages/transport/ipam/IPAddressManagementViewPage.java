@@ -654,7 +654,7 @@ public class IPAddressManagementViewPage extends BasePage {
         confirmationBox.clickButtonByLabel(OK_BUTTON_LABEL);
     }
 
-    private void waitForPageToLoad() {
+    public void waitForPageToLoad() {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 }
