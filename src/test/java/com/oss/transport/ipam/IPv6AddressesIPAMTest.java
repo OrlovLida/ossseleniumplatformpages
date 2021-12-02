@@ -1,5 +1,6 @@
 package com.oss.transport.ipam;
 
+import com.oss.framework.mainheader.PerspectiveChooser;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
@@ -9,11 +10,9 @@ import io.qameta.allure.Description;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.propertypanel.PropertyPanel;
 import com.oss.utils.TestListener;
 import com.oss.pages.bpm.processinstances.ProcessInstancesPage;
 import com.oss.pages.bpm.processinstances.ProcessWizardPage;
@@ -28,7 +27,6 @@ import com.oss.pages.transport.ipam.helper.IPAddressAssignmentWizardProperties;
 import com.oss.pages.transport.ipam.helper.IPSubnetFilterProperties;
 import com.oss.pages.transport.ipam.helper.IPSubnetWizardProperties;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.*;
 
 /**
@@ -44,8 +42,8 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
 
     private static final String NETWORK_NAME = "IPv6IPAMSeleniumTest2";
     private static final String NETWORK_NAME_UPDATED = "IPv6IPAMSeleniumTestUpdated2";
-    private static final String ROLE_NAME = "IPv6IPAMSeleniumTest2";
-    private static final String ROLE_NAME_UPDATED = "IPv6IPAMSeleniumTestUpdated2";
+    private static final String ROLE_NAME = "IPv6IPAMSeleniumTest3";
+    private static final String ROLE_NAME_UPDATED = "IPv6IPAMSeleniumTestUpdated3";
     private static final String STANDARD_ROLE = "Standard";
     private static final String MANAGEMENT_SECONDARY_ROLE = "Management - Secondary";
     private static final int AMOUNT_OF_SUBNETS_SELECTED_DURING_SUBNET_CREATION = 3;
@@ -64,10 +62,10 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
     private static final String ASSIGNMENT_DEVICE_NAME = "IPAMSeleniumTest";
     private static final String ASSIGNMENT_INTERFACE_NAME = "IPAMSeleniumTestFirstInterface";
     private static final String ASSIGNMENT_SECOND_INTERFACE_NAME = "IPAMSeleniumTestSecondInterface";
-    private static final String ASSIGNMENT_LOCATION_IDENTIFIER = "IPAMSeleniumTest-BU2"; //"IPSWICH-BU1"; //"Cracow-BU2";
-    private static final String ASSIGNMENT_DEVICE_IDENTIFIER = "-Router-7"; //"IPSWICH-BU1"; //"Cracow-BU2";
-    private static final String ASSIGNMENT_INTERFACE_IDENTIFIER = "-Router-7\\CLUSTER 0"; //"IPSWICH-BU1"; //"Cracow-BU2";
-    private static final String ASSIGNMENT_SECOND_INTERFACE_IDENTIFIER = "-Router-7\\CLUSTER 1"; //"IPSWICH-BU1"; //"Cracow-BU2";
+    private static final String ASSIGNMENT_LOCATION_IDENTIFIER = "IPAMSeleniumTest-BU3";
+    private static final String ASSIGNMENT_DEVICE_IDENTIFIER = "-Router-7";
+    private static final String ASSIGNMENT_INTERFACE_IDENTIFIER = "-Router-7\\CLUSTER 0";
+    private static final String ASSIGNMENT_SECOND_INTERFACE_IDENTIFIER = "-Router-7\\CLUSTER 1";
     private static final String IPV6_HOST_ADDRESS = "::127:1";
     private static final String LOOPBACK_IPV6_HOST_ADDRESS = "::127:0";
     private static final String SECOND_LOOPBACK_IPV6_HOST_ADDRESS = "::127:2";
@@ -78,35 +76,6 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
     private static final String ASSIGNED_STATUS = "Assigned";
     private static final String BLOCK_TYPE = "BLOCK";
     private static final String NETWORK_TYPE = "NETWORK";
-
-    private static final String NETWORK_INVENTORY_TYPE = "IPNetwork";
-    private static final String IP_SUBNET_INVENTORY_TYPE = "IPSubnet";
-    private static final String IP_HOST_INVENTORY_TYPE = "IPHostAddress";
-    private static final String IP_SUBNET_ASSIGNMENT_INVENTORY_TYPE = "IPSubnetAssignment";
-    private static final String IP_HOST_ASSIGNMENT_INVENTORY_TYPE = "IPHostAssignment";
-    private static final String NETWORK_INVENTORY_PROPERTY_PANEL_ID = "PropertyPanelWidget_IPNetwork";
-    private static final String SUBNET_INVENTORY_PROPERTY_PANEL_ID = "PropertyPanelWidget_IPSubnet";
-    private static final String SUBNET_ASSIGNMENT_INVENTORY_PROPERTY_PANEL_ID = "PropertyPanelWidget_IPSubnetAssignment";
-    private static final String HOST_INVENTORY_PROPERTY_PANEL_ID = "PropertyPanelWidget_IPHostAddress";
-    private static final String HOST_ASSIGNMENT_INVENTORY_PROPERTY_PANEL_ID = "PropertyPanelWidget_IPHostAssignment";
-    private static final int FIRST_INVENTORY_VIEW_ROW_ID = 0;
-
-    private static final String INVENTORY_PROPERTY_NAME = "name";
-    private static final String INVENTORY_PROPERTY_IDENTIFIER = "identifier";
-    private static final String INVENTORY_PROPERTY_ADDRESS = "address";
-    private static final String INVENTORY_PROPERTY_HIGHEST_IP_ADDRESS = "highestIPAddress";
-    private static final String INVENTORY_PROPERTY_BROADCAST_IP_ADDRESS = "broadcastIPAddress";
-    private static final String INVENTORY_PROPERTY_IP_NETWORK = "ipNetwork_OSF";
-    private static final String INVENTORY_PROPERTY_MASK = "mask";
-    private static final String INVENTORY_PROPERTY_SUBNET_TYPE = "subnetType";
-    private static final String INVENTORY_PROPERTY_ROLE = "role";
-    private static final String INVENTORY_PROPERTY_PERCENT_FREE = "percentFree";
-    private static final String INVENTORY_PROPERTY_DESCRIPTION = "description";
-    private static final String INVENTORY_PROPERTY_STATUS = "status";
-    private static final String INVENTORY_PROPERTY_IS_PRIMARY = "isPrimary";
-    private static final String INVENTORY_PROPERTY_IS_IN_NAT = "isInNat";
-    private static final String INVENTORY_PROPERTY_LOCATION = "location.name";
-    private static final String INVENTORY_PROPERTY_INTERFACE = "terminationPoint.name";
 
     private Map<String, String> firstIPv6SubnetProperties = new HashMap<>();
     private Map<String, String> secondIPv6SubnetProperties = new HashMap<>();
@@ -122,13 +91,8 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
     private Map<String, String> ipv6HostAssignmentProperties = new HashMap<>();
     private Map<String, String> secondLoopbackIPv6HostAssignmentProperties = new HashMap<>();
 
-    private Map<String, String> inventoryViewPropertyNamesForSubnets = new HashMap<>();
-    private Map<String, String> inventoryViewPropertyNamesForHosts = new HashMap<>();
-    private Map<String, String> inventoryViewPropertyNamesForHostAssignments = new HashMap<>();
-
     @BeforeClass(enabled = false)
     public void prepareTest() {
-        prepareData();
         ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
@@ -147,10 +111,10 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
     @Test(priority = 2)
     @Description("Create Role")
     public void createRole() {
-        DelayUtils.sleep(2000);
         ipAddressManagementViewPage = IPAddressManagementViewPage.goToIPAddressManagementViewPageLive(driver, BASIC_URL);
-//        PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
-//        perspectiveChooser.setPlanPerspective(processNRPCode);
+        ipAddressManagementViewPage.waitForPageToLoad();
+        PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
+        perspectiveChooser.setLivePerspective();
         RoleViewPage roleViewPage = ipAddressManagementViewPage.openRoleView();
         roleViewPage.createRole(ROLE_NAME);
         Assert.assertTrue(roleViewPage.doesRoleNameExist(ROLE_NAME));
@@ -229,19 +193,28 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
                 .assignLoopbackIPv6HostAddressFromHostContext(getAddressAndMask(loopbackIPv6HostAddressProperties));
         IPAddressAssignmentWizardProperties loopbackIpAddressAssignmentWizardProperties = IPAddressAssignmentWizardProperties.builder()
                 .isPrimary(TRUE_STRING).isInNAT(TRUE_STRING).role(ROLE_NAME).description(DESCRIPTION)
-                .assignmentType(INTERFACE).assignmentName(ASSIGNMENT_INTERFACE_NAME).build();
+                .assignmentType(INTERFACE).assignmentName(ASSIGNMENT_INTERFACE_IDENTIFIER).build();
         IPAddressAssignmentWizardProperties oppositeSideLoopbackIpAddressAssignmentWizardProperties = IPAddressAssignmentWizardProperties.builder()
                 .isPrimary(TRUE_STRING).isInNAT(TRUE_STRING).role(ROLE_NAME).build();
         assignLoopbackAddressFromHostContext.assignIPAddressFromIPAddressContext(loopbackIpAddressAssignmentWizardProperties, oppositeSideLoopbackIpAddressAssignmentWizardProperties);
+
         updatePropertiesAfterIPv6HostsAssignment();
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
-        ipAddressManagementViewPage.scrollAndSelectTreeRowContains(getAssignmentAddressMaskAndAssignTo(loopbackIPv6HostAssignmentProperties, NETWORK_NAME));
-        ipAddressManagementViewPage.selectTreeRowContains(getAssignmentAddressMaskAndAssignTo(loopbackIPv6HostAssignmentProperties, NETWORK_NAME));
+        ipAddressManagementViewPage.scrollToTreeRowContains(getAddressAndMask(thirdIPv6SubnetProperties));
+        if(ipAddressManagementViewPage.isTreeRowExpanded(getAddressAndMask(loopbackIPv6HostAddressProperties))){
+            ipAddressManagementViewPage.selectTreeRowContains(getAssignmentAddressMaskAndAssignTo(loopbackIPv6HostAssignmentProperties, NETWORK_NAME));
+            ipAddressManagementViewPage.selectTreeRowContains(getAssignmentAddressMaskAndAssignTo(loopbackIPv6HostAssignmentProperties, NETWORK_NAME));
+        } else{
+            ipAddressManagementViewPage.selectTreeRowContains(getAssignmentAddressMaskAndAssignTo(secondLoopbackIPv6HostAssignmentProperties, NETWORK_NAME));
+            ipAddressManagementViewPage.selectTreeRowContains(getAssignmentAddressMaskAndAssignTo(secondLoopbackIPv6HostAssignmentProperties, NETWORK_NAME));
+        }
+
         IPAddressAssignmentWizardPage assignAddressFromSubnetContext = ipAddressManagementViewPage
                 .assignIPv6HostAddressFromSubnetContext(getAddressAndMask(secondIPv6SubnetProperties));
         IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties = IPAddressAssignmentWizardProperties.builder()
-                .address(IPV6_HOST_ADDRESS).isPrimary(FALSE_STRING).isInNAT(FALSE_STRING).assignmentType(PHYSICAL_DEVICE).assignmentName(ASSIGNMENT_DEVICE_NAME).build();
+                .address(IPV6_HOST_ADDRESS).wizardMode(EXISTING_ADDRESS_MODE).isPrimary(FALSE_STRING).isInNAT(FALSE_STRING).assignmentType(PHYSICAL_DEVICE).assignmentName(ASSIGNMENT_DEVICE_NAME).build();
         assignAddressFromSubnetContext.assignIPAddress(ipAddressAssignmentWizardProperties);
+
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
         ipAddressManagementViewPage.scrollToTreeRowContains(getAssignmentAddressMaskAndAssignTo(ipv6HostAssignmentProperties, NETWORK_NAME));
         checkAttributesOnIPAMTree(ipv6HostAssignmentProperties, getAssignmentAddressMaskAndAssignTo(ipv6HostAssignmentProperties, NETWORK_NAME));
@@ -249,7 +222,7 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
         ipAddressManagementViewPage.expandTreeRow(getAddressAndMask(loopbackIPv6HostAddressProperties));
         checkAttributesOnIPAMTree(loopbackIPv6HostAssignmentProperties, getAssignmentAddressMaskAndAssignTo(loopbackIPv6HostAssignmentProperties, NETWORK_NAME));
         checkAttributesOnIPAMTree(loopbackIPv6HostAddressProperties, getAddressAndMask(loopbackIPv6HostAddressProperties));
-        ipAddressManagementViewPage.scrollAndExpandTreeRow(getAddressAndMask(secondLoopbackIPv6HostAssignmentProperties));
+        ipAddressManagementViewPage.scrollAndExpandTreeRow(getAddressAndMask(secondLoopbackIpv6HostAddressProperties));
         ipAddressManagementViewPage.scrollToTreeRowContains(getAssignmentAddressMaskAndAssignTo(secondLoopbackIPv6HostAssignmentProperties, NETWORK_NAME));
         checkAttributesOnIPAMTree(secondLoopbackIPv6HostAssignmentProperties, getAssignmentAddressMaskAndAssignTo(secondLoopbackIPv6HostAssignmentProperties, NETWORK_NAME));
         checkAttributesOnIPAMTree(secondLoopbackIpv6HostAddressProperties, getAddressAndMask(secondLoopbackIpv6HostAddressProperties));
@@ -366,19 +339,8 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
     }
 
     @Test(priority = 13)
-    @Description("Edit IPv6 Subnet Assignment")
-    public void editIPv6SubnetAssignment() {
-        ipAddressManagementViewPage.editRoleForIPv6SubnetAssignment(getAddressAndMask(firstIPv6SubnetProperties), STANDARD_ROLE);
-        updatePropertiesAfterIPv6SubnetAssignmentEdition();
-        ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
-        ipAddressManagementViewPage.scrollToTreeRowContains(getAddressAndMask(firstIPv6SubnetProperties));
-        checkAttributesOnIPAMTree(firstIPv6SubnetProperties, getAddressAndMask(firstIPv6SubnetProperties));
-    }
-
-    @Test(priority = 14)
     @Description("Edit IPv6 Host")
     public void editIPv6Host() {
-        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(getAddressAndMask(secondIPv6SubnetProperties));
         ipAddressManagementViewPage.scrollAndExpandTreeRow(getAddressAndMask(ipv6HostAddressProperties));
         ipAddressManagementViewPage.deleteHostAssignment(getAssignmentAddressMaskAndAssignTo(ipv6HostAssignmentProperties, NETWORK_NAME_UPDATED));
         ipAddressManagementViewPage.scrollAndSelectTreeRowContains(getAddressAndMask(secondIPv6SubnetProperties));
@@ -391,7 +353,7 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
         checkAttributesOnIPAMTree(ipv6HostAddressProperties, getAddressAndMask(ipv6HostAddressProperties));
     }
 
-    @Test(priority = 15)
+    @Test(priority = 14)
     @Description("Edit IPv6 Host Assignment")
     public void editIPv6HostAssignment() {
         ipAddressManagementViewPage.scrollAndExpandTreeRow(getAddressAndMask(secondLoopbackIpv6HostAddressProperties));
@@ -400,11 +362,12 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
         ipAddressManagementViewPage
                 .editIPv6HostAssignment(getAssignmentAddressMaskAndAssignTo(secondLoopbackIPv6HostAssignmentProperties, NETWORK_NAME_UPDATED), ipAddressAssignmentWizardProperties);
         updatePropertiesAfterIPv6HostAssignmentEdition();
-        ipAddressManagementViewPage.scrollToTreeRowContains(getAssignmentAddressMaskAndAssignTo(secondLoopbackIPv6HostAssignmentProperties, NETWORK_NAME_UPDATED));
+        ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
+        ipAddressManagementViewPage.scrollToTreeRowContains(getAddressAndMask(secondLoopbackIpv6HostAddressProperties));
         checkAttributesOnIPAMTree(secondLoopbackIPv6HostAssignmentProperties, getAssignmentAddressMaskAndAssignTo(secondLoopbackIPv6HostAssignmentProperties, NETWORK_NAME_UPDATED));
     }
 
-    @Test(priority = 16, enabled = false)
+    @Test(priority = 15, enabled = false)
     @Description("Move PLAN to LIVE")
     public void movePlanToLive() {
         DelayUtils.sleep(1000);
@@ -413,95 +376,18 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 17)
-    @Description("Check New Inventory View for IP Network")
-    public void checkInventoryViewForIPNetwork() {
-        newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, NETWORK_INVENTORY_TYPE);
-        newInventoryViewPage.searchByAttributeValue(INVENTORY_PROPERTY_NAME, NETWORK_NAME_UPDATED, TEXT_FIELD);
-        DelayUtils.sleep(100);
-        PropertyPanel propertyPanel = newInventoryViewPage.getPropertyPanel(FIRST_INVENTORY_VIEW_ROW_ID, NETWORK_INVENTORY_PROPERTY_PANEL_ID);
-        Assert.assertEquals(propertyPanel.getPropertyValue(INVENTORY_PROPERTY_NAME), NETWORK_NAME_UPDATED);
-        Assert.assertEquals(propertyPanel.getPropertyValue(INVENTORY_PROPERTY_DESCRIPTION), DESCRIPTION_UPDATED);
-    }
-
-    @Test(priority = 18)
-    @Description("Check New Inventory View for IPv6 Subnets")
-    public void checkInventoryViewForIPv6Subnets() {
-        newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, IP_SUBNET_INVENTORY_TYPE);
-        newInventoryViewPage.searchByAttributeValue(INVENTORY_PROPERTY_IDENTIFIER, firstIPv6SubnetProperties.get(SUBNET_PROPERTY_IDENTIFIER), TEXT_FIELD);
-        PropertyPanel propertyPanelForFirstRow = newInventoryViewPage.getPropertyPanel(FIRST_INVENTORY_VIEW_ROW_ID, SUBNET_INVENTORY_PROPERTY_PANEL_ID);
-        checkAttributesOnNewIV(propertyPanelForFirstRow, firstIPv6SubnetProperties, inventoryViewPropertyNamesForSubnets);
-        newInventoryViewPage.clearFilters();
-        newInventoryViewPage.searchByAttributeValue(INVENTORY_PROPERTY_IDENTIFIER, secondIPv6SubnetProperties.get(SUBNET_PROPERTY_IDENTIFIER), TEXT_FIELD);
-        PropertyPanel propertyPanelForSecondRow = newInventoryViewPage.getPropertyPanel(FIRST_INVENTORY_VIEW_ROW_ID, SUBNET_INVENTORY_PROPERTY_PANEL_ID);
-        checkAttributesOnNewIV(propertyPanelForSecondRow, secondIPv6SubnetProperties, inventoryViewPropertyNamesForSubnets);
-        newInventoryViewPage.clearFilters();
-        newInventoryViewPage.searchByAttributeValue(INVENTORY_PROPERTY_IDENTIFIER, thirdIPv6SubnetProperties.get(SUBNET_PROPERTY_IDENTIFIER), TEXT_FIELD);
-        PropertyPanel propertyPanelForThirdRow = newInventoryViewPage.getPropertyPanel(FIRST_INVENTORY_VIEW_ROW_ID, SUBNET_INVENTORY_PROPERTY_PANEL_ID);
-        checkAttributesOnNewIV(propertyPanelForThirdRow, thirdIPv6SubnetProperties, inventoryViewPropertyNamesForSubnets);
-    }
-
-    @Test(priority = 19)
-    @Description("Check New Inventory View for IP Subnet Assignments")
-    public void checkInventoryViewForIPv4SubnetAssignments() {
-        newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, IP_SUBNET_ASSIGNMENT_INVENTORY_TYPE);
-        newInventoryViewPage.searchByAttributeValue(INVENTORY_PROPERTY_IDENTIFIER, firstIPv6SubnetProperties.get(SUBNET_PROPERTY_IDENTIFIER), TEXT_FIELD);
-        PropertyPanel propertyPanel = newInventoryViewPage.getPropertyPanel(FIRST_INVENTORY_VIEW_ROW_ID, SUBNET_ASSIGNMENT_INVENTORY_PROPERTY_PANEL_ID);
-        Assert.assertEquals(propertyPanel.getPropertyValue(INVENTORY_PROPERTY_ROLE), firstIPv6SubnetProperties.get(SUBNET_PROPERTY_ROLE));
-        Assert.assertEquals(propertyPanel.getPropertyValue(INVENTORY_PROPERTY_LOCATION), ASSIGNMENT_LOCATION_NAME);
-    }
-
-    @Test(priority = 20)
-    @Description("Check New Inventory View for IPv6 Hosts")
-    public void checkInventoryViewForIPv6Hosts() {
-        newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, IP_HOST_INVENTORY_TYPE);
-        newInventoryViewPage.searchByAttributeValue(INVENTORY_PROPERTY_IDENTIFIER, loopbackIPv6HostAddressProperties.get(HOST_PROPERTY_IDENTIFIER), TEXT_FIELD);
-        PropertyPanel propertyPanelForFirstRow = newInventoryViewPage.getPropertyPanel(FIRST_INVENTORY_VIEW_ROW_ID, HOST_INVENTORY_PROPERTY_PANEL_ID);
-        checkAttributesOnNewIV(propertyPanelForFirstRow, loopbackIPv6HostAddressProperties, inventoryViewPropertyNamesForHosts);
-        newInventoryViewPage.clearFilters();
-        newInventoryViewPage.searchByAttributeValue(INVENTORY_PROPERTY_IDENTIFIER, secondLoopbackIpv6HostAddressProperties.get(HOST_PROPERTY_IDENTIFIER), TEXT_FIELD);
-        PropertyPanel propertyPanelForSecondRow = newInventoryViewPage.getPropertyPanel(FIRST_INVENTORY_VIEW_ROW_ID, HOST_INVENTORY_PROPERTY_PANEL_ID);
-        checkAttributesOnNewIV(propertyPanelForSecondRow, secondLoopbackIpv6HostAddressProperties, inventoryViewPropertyNamesForHosts);
-    }
-
-    @Test(priority = 21)
-    @Description("Check New Inventory View for IPv6 Host Assignments")
-    public void checkInventoryViewForIPv6HostAssignments() {
-        newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, IP_HOST_ASSIGNMENT_INVENTORY_TYPE);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        newInventoryViewPage.searchObject(loopbackIPv6HostAssignmentProperties.get(HOST_ASSIGNMENT_PROPERTY_IDENTIFIER));
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        newInventoryViewPage.selectFirstRow();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        PropertyPanel propertyPanelForFirstRow = newInventoryViewPage.getPropertyPanel(FIRST_INVENTORY_VIEW_ROW_ID, HOST_ASSIGNMENT_INVENTORY_PROPERTY_PANEL_ID);
-        checkAttributesOnNewIV(propertyPanelForFirstRow, loopbackIPv6HostAssignmentProperties, inventoryViewPropertyNamesForHostAssignments);
-        Assert.assertEquals(propertyPanelForFirstRow.getPropertyValue(INVENTORY_PROPERTY_INTERFACE), ASSIGNMENT_INTERFACE_NAME);
-        newInventoryViewPage.clearFilters();
-        newInventoryViewPage.searchObject(secondLoopbackIPv6HostAssignmentProperties.get(HOST_ASSIGNMENT_PROPERTY_IDENTIFIER));
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        newInventoryViewPage.selectFirstRow();
-        PropertyPanel propertyPanelForSecondRow = newInventoryViewPage.getPropertyPanel(FIRST_INVENTORY_VIEW_ROW_ID, HOST_ASSIGNMENT_INVENTORY_PROPERTY_PANEL_ID);
-        checkAttributesOnNewIV(propertyPanelForSecondRow, secondLoopbackIPv6HostAssignmentProperties, inventoryViewPropertyNamesForHostAssignments);
-        Assert.assertEquals(propertyPanelForFirstRow.getPropertyValue(INVENTORY_PROPERTY_INTERFACE), ASSIGNMENT_SECOND_INTERFACE_NAME);
-    }
-
-    @Test(priority = 22)
+    @Test(priority = 16)
     @Description("Delete IPv6 Hosts Assignment")
     public void deleteIPv6HostsAssignment() {
-        ipAddressManagementViewPage = IPAddressManagementViewPage.goToIPAddressManagementViewPageLive(driver, BASIC_URL);
-        DelayUtils.sleep(100);
-        ipAddressManagementViewPage.scrollAndExpandTreeRow(NETWORK_NAME_UPDATED);
-        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(getAddressAndMask(firstIPv6SubnetProperties));
-        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(getAddressAndMask(secondIPv6SubnetProperties));
+        ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
+        ipAddressManagementViewPage.deleteHostAssignment(getAssignmentAddressMaskAndAssignTo(secondLoopbackIPv6HostAssignmentProperties, NETWORK_NAME_UPDATED));
+        ipAddressManagementViewPage.selectTreeRowContains(getAddressAndMask(secondIPv6SubnetProperties));
+        ipAddressManagementViewPage.selectTreeRowContains(getAddressAndMask(secondIPv6SubnetProperties));
         ipAddressManagementViewPage.scrollAndExpandTreeRow(getAddressAndMask(loopbackIPv6HostAddressProperties));
         ipAddressManagementViewPage.deleteHostAssignment(getAssignmentAddressMaskAndAssignTo(loopbackIPv6HostAssignmentProperties, NETWORK_NAME_UPDATED));
-        ipAddressManagementViewPage.scrollAndSelectTreeRowContains(getAddressAndMask(secondIPv6SubnetProperties));
-        ipAddressManagementViewPage.selectTreeRowContains(getAddressAndMask(secondIPv6SubnetProperties));
-        ipAddressManagementViewPage.scrollAndExpandTreeRow(getAddressAndMask(secondLoopbackIpv6HostAddressProperties));
-        ipAddressManagementViewPage.deleteHostAssignment(getAssignmentAddressMaskAndAssignTo(secondLoopbackIPv6HostAssignmentProperties, NETWORK_NAME_UPDATED));
     }
 
-    @Test(priority = 23)
+    @Test(priority = 17)
     @Description("Delete IPv6 Hosts")
     public void deleteIPv6Hosts() {
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
@@ -511,7 +397,7 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
         ipAddressManagementViewPage.deleteIPHost(getAddressAndMask(loopbackIPv6HostAddressProperties));
     }
 
-    @Test(priority = 24)
+    @Test(priority = 18)
     @Description("Delete IPv6 Subnet Assignments")
     public void deleteIPv6SubnetAssignment() {
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
@@ -520,7 +406,7 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
         ipAddressManagementViewPage.deleteIPv6SubnetAssignment(getAddressAndMask(firstIPv6SubnetProperties));
     }
 
-    @Test(priority = 25)
+    @Test(priority = 19)
     @Description("Delete IPv6 Subnets")
     public void deleteIPv6Subnets() {
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
@@ -531,17 +417,15 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
         ipAddressManagementViewPage.scrollAndSelectTreeRow(NETWORK_NAME_UPDATED);
         ipAddressManagementViewPage.selectTreeRow(NETWORK_NAME_UPDATED);
         ipAddressManagementViewPage.expandTreeRow(NETWORK_NAME_UPDATED);
-        ipAddressManagementViewPage.selectTreeRowContains(getAddressAndMask(thirdIPv6SubnetProperties));
         ipAddressManagementViewPage.deleteIPv6SubnetTypeOfBlock(getAddressAndMask(thirdIPv6SubnetProperties));
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
         ipAddressManagementViewPage.scrollAndSelectTreeRow(NETWORK_NAME_UPDATED);
         ipAddressManagementViewPage.selectTreeRow(NETWORK_NAME_UPDATED);
         ipAddressManagementViewPage.expandTreeRow(NETWORK_NAME_UPDATED);
-        ipAddressManagementViewPage.selectTreeRowContains(getAddressAndMask(secondIPv6SubnetProperties));
         ipAddressManagementViewPage.deleteIPv6SubnetTypeOfNetwork(getAddressAndMask(secondIPv6SubnetProperties));
     }
 
-    @Test(priority = 26)
+    @Test(priority = 20)
     @Description("Delete IP Network")
     public void deleteIPNetwork() {
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
@@ -549,39 +433,13 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
         ipAddressManagementViewPage.deleteIPNetwork(NETWORK_NAME_UPDATED);
     }
 
-    @Test(priority = 27)
+    @Test(priority = 21)
     @Description("Delete Role")
     public void deleteRole() {
         RoleViewPage roleViewPage = ipAddressManagementViewPage.openRoleView();
         roleViewPage.deleteRole(ROLE_NAME_UPDATED);
         Assert.assertFalse(roleViewPage.doesRoleNameExist(ROLE_NAME_UPDATED));
         roleViewPage.exitRoleView();
-    }
-
-    private void prepareData() {
-        inventoryViewPropertyNamesForSubnets.put(SUBNET_PROPERTY_IDENTIFIER, INVENTORY_PROPERTY_IDENTIFIER);
-        inventoryViewPropertyNamesForSubnets.put(SUBNET_PROPERTY_ADDRESS, INVENTORY_PROPERTY_ADDRESS);
-        inventoryViewPropertyNamesForSubnets.put(SUBNET_PROPERTY_HIGHEST_IP_ADDRESS, INVENTORY_PROPERTY_HIGHEST_IP_ADDRESS);
-        inventoryViewPropertyNamesForSubnets.put(SUBNET_PROPERTY_BROADCAST_IP_ADDRESS, INVENTORY_PROPERTY_BROADCAST_IP_ADDRESS);
-        inventoryViewPropertyNamesForSubnets.put(SUBNET_PROPERTY_IP_NETWORK_NAME, INVENTORY_PROPERTY_IP_NETWORK);
-        inventoryViewPropertyNamesForSubnets.put(SUBNET_PROPERTY_MASK_LENGTH, INVENTORY_PROPERTY_MASK);
-        inventoryViewPropertyNamesForSubnets.put(SUBNET_PROPERTY_SUBNET_TYPE, INVENTORY_PROPERTY_SUBNET_TYPE);
-        inventoryViewPropertyNamesForSubnets.put(SUBNET_PROPERTY_ROLE, INVENTORY_PROPERTY_ROLE);
-        inventoryViewPropertyNamesForSubnets.put(SUBNET_PROPERTY_PERCENT_FREE, INVENTORY_PROPERTY_PERCENT_FREE);
-        inventoryViewPropertyNamesForSubnets.put(SUBNET_PROPERTY_DESCRIPTION, INVENTORY_PROPERTY_DESCRIPTION);
-
-        inventoryViewPropertyNamesForHosts.put(HOST_PROPERTY_ADDRESS, INVENTORY_PROPERTY_ADDRESS);
-        inventoryViewPropertyNamesForHosts.put(HOST_PROPERTY_IDENTIFIER, INVENTORY_PROPERTY_IDENTIFIER);
-        inventoryViewPropertyNamesForHosts.put(HOST_PROPERTY_MASK, INVENTORY_PROPERTY_MASK);
-        inventoryViewPropertyNamesForHosts.put(HOST_PROPERTY_IP_NETWORK_NAME, INVENTORY_PROPERTY_IP_NETWORK);
-        inventoryViewPropertyNamesForHosts.put(HOST_PROPERTY_DESCRIPTION, INVENTORY_PROPERTY_DESCRIPTION);
-        inventoryViewPropertyNamesForHosts.put(HOST_PROPERTY_STATUS, INVENTORY_PROPERTY_STATUS);
-
-        inventoryViewPropertyNamesForHostAssignments.put(HOST_ASSIGNMENT_PROPERTY_IDENTIFIER, INVENTORY_PROPERTY_IDENTIFIER);
-        inventoryViewPropertyNamesForHostAssignments.put(HOST_ASSIGNMENT_PROPERTY_ROLE, INVENTORY_PROPERTY_ROLE);
-        inventoryViewPropertyNamesForHostAssignments.put(HOST_ASSIGNMENT_PROPERTY_IS_IN_NAT, INVENTORY_PROPERTY_IS_IN_NAT);
-        inventoryViewPropertyNamesForHostAssignments.put(HOST_ASSIGNMENT_PROPERTY_IS_PRIMARY, INVENTORY_PROPERTY_IS_PRIMARY);
-        inventoryViewPropertyNamesForHostAssignments.put(HOST_ASSIGNMENT_PROPERTY_DESCRIPTION, INVENTORY_PROPERTY_DESCRIPTION);
     }
 
     private void updatePropertiesAfterIPv6SubnetsCreation(){
@@ -719,7 +577,6 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
         fifthIPv6SubnetProperties.put(SUBNET_PROPERTY_SUBNET_TYPE, NETWORK_TYPE);
         fifthIPv6SubnetProperties.put(SUBNET_PROPERTY_CHILD_COUNT, "3");
         fifthIPv6SubnetProperties.put(SUBNET_PROPERTY_PERCENT_FREE, "86%");
-        fifthIPv6SubnetProperties.put(SUBNET_PROPERTY_DESCRIPTION, "");
     }
 
     private void updatePropertiesAfterIPv6SubnetsMerge() {
@@ -732,10 +589,6 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
         secondIPv6SubnetProperties.put(SUBNET_PROPERTY_ROLE, MANAGEMENT_SECONDARY_ROLE);
         secondIPv6SubnetProperties.put(SUBNET_PROPERTY_DESCRIPTION, DESCRIPTION_UPDATED);
         thirdIPv6SubnetProperties.put(SUBNET_PROPERTY_SUBNET_TYPE, BLOCK_TYPE);
-    }
-
-    private void updatePropertiesAfterIPv6SubnetAssignmentEdition() {
-        firstIPv6SubnetProperties.put(SUBNET_PROPERTY_ROLE, STANDARD_ROLE);
     }
 
     private void updatePropertiesAfterIPv6HostEdition() {
@@ -758,15 +611,6 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
             Assert.assertEquals(ipAddressManagementViewPage.getPropertyValue(key), properties.get(key));
         }
         ipAddressManagementViewPage.selectTreeRowContains(row);
-    }
-
-    private void checkAttributesOnNewIV(PropertyPanel propertyPanel, Map<String, String> properties, Map<String, String> inventoryPropertyNames) {
-        Set<String> keySet = properties.keySet().stream()
-                .filter(key -> inventoryPropertyNames.keySet().contains(key)).collect(Collectors.toSet());
-        for (String key : keySet) {
-            String inventoryPropertyName = inventoryPropertyNames.get(key);
-            Assert.assertEquals(propertyPanel.getPropertyValue(inventoryPropertyName), properties.get(key));
-        }
     }
 
     private String getAddressAndMask(Map<String, String> properties) {
