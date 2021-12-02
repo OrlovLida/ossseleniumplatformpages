@@ -69,7 +69,6 @@ public class RoleViewPage extends BasePage {
 
     @Step("Exit Role View")
     public void exitRoleView() {
-       // getCommonList().
         getButtonContainer().callActionById(OK_BUTTON_DATA_ATTRIBUTE_NAME);
     }
 
