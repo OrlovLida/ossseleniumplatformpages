@@ -18,6 +18,7 @@ public class Constants {
     public static final String GENERATE_CELL_ID = "generateCellId";
     public static final String SHOULD_CREATE_MISSING_ADDRESS_ITEMS ="shouldCreateMissingAddressItems";
     public static final String RSQL = "rsql";
+    public static final String TYPES = "types";
     public static final String NAME_PARAM = "Name";
     public static final String PORT_ID = "portId";
     public static final String DEVICE_ID = "deviceId";

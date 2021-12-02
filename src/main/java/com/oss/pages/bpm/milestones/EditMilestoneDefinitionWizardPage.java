@@ -1,4 +1,4 @@
-package com.oss.pages.bpm;
+package com.oss.pages.bpm.milestones;
 
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
@@ -10,8 +10,10 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
 
-public class EditMilestoneDefinitionPage extends BasePage {
+public class EditMilestoneDefinitionWizardPage extends BasePage {
 
-    public EditMilestoneDefinitionPage(WebDriver driver) {super(driver);}
+    public EditMilestoneDefinitionWizardPage(WebDriver driver) {super(driver);}
+
+
     
 }

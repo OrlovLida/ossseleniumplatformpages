@@ -3,32 +3,29 @@ package com.oss.acd;
 import com.oss.BaseTestCase;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.acd.BaseACDPage;
-import com.oss.pages.acd.scenarioSummaryView.AsdScenarioSummaryViewPage;
-import com.oss.utils.TestListener;
+import com.oss.pages.acd.scenarioSummaryView.ApdScenarioSummaryViewPage;
 import io.qameta.allure.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
-@Listeners({TestListener.class})
-public class AsdScenarioSummaryViewTest extends BaseTestCase {
+public class ApdScenarioSummaryViewTest extends BaseTestCase {
 
-    private static final Logger log = LoggerFactory.getLogger(AsdScenarioSummaryViewTest.class);
+    private static final Logger log = LoggerFactory.getLogger(ApdScenarioSummaryViewTest.class);
 
-    private AsdScenarioSummaryViewPage asdScenarioSummaryViewPage;
+    private ApdScenarioSummaryViewPage apdScenarioSummaryViewPage;
     private BaseACDPage baseACDPage;
 
-    private final String asdScenarioSummaryViewSuffixUrl = "%s/#/view/acd/asd";
-    private String issuesTableRefreshButtonId = "undefined-1";
-    private String PREDEFINED_FILTERS_WINDOW_ID = "PredefinedFiltersWindowId";
+    private final String apdScenarioSummaryViewSuffixUrl = "%s/#/view/acd/apd";
+
+    private final String PREDEFINED_FILTERS_WINDOW_ID = "PredefinedFiltersWindowId";
     private final String DETECTED_ISSUES_WINDOW_ID = "DetectedIssuesWindowId";
 
     @BeforeClass
-    public void goToASDScenarioSummaryView() {
-        asdScenarioSummaryViewPage = AsdScenarioSummaryViewPage.goToPage(driver, asdScenarioSummaryViewSuffixUrl, BASIC_URL);
+    public void goToAPDScenarioSummaryView() {
+        apdScenarioSummaryViewPage = ApdScenarioSummaryViewPage.goToPage(driver, apdScenarioSummaryViewSuffixUrl, BASIC_URL);
         baseACDPage = new BaseACDPage(driver, webDriverWait);
     }
 
@@ -60,53 +57,45 @@ public class AsdScenarioSummaryViewTest extends BaseTestCase {
         baseACDPage.minimizeWindow(PREDEFINED_FILTERS_WINDOW_ID);
     }
 
-    @Test(priority = 3, testName = "Check if ASD issues exist", description = "Check if ASD issues exists")
-    @Description("Check if ASD issues exist")
-    public void asdDetectedIssuesTableCheck() {
+    @Test(priority = 3, testName = "Check if ABGAD issues exist", description = "Check if ABGAD issues exist")
+    @Description("Check if ABGAD issues exist")
+    public void abgadDetectedIssuesTableCheck() {
         baseACDPage.maximizeWindow(DETECTED_ISSUES_WINDOW_ID);
-        checkIssuesTableWithFilters();
-    }
-
-    @Test(priority = 4, testName = "Check if issues table is refreshed and minimize window", description = "Check if issues table is refreshed and minimize window")
-    @Description("Check if issues table is refreshed and minimize window")
-    public void refreshDetectedIssuesTable() {
-        baseACDPage.refreshIssuesTable(issuesTableRefreshButtonId);
+        checkApdIssuesTableWithFilter();
         baseACDPage.minimizeWindow(DETECTED_ISSUES_WINDOW_ID);
     }
 
-    private void checkIssuesTableWithFilters() {
+    private void checkApdIssuesTableWithFilter() {
 
-        if (!asdScenarioSummaryViewPage.isDataInIssuesTable()) {
+        if (!apdScenarioSummaryViewPage.isDataInIssuesTable()) {
             log.info("table doesn't have data for issues with roots");
             baseACDPage.turnOnSwitcher();
-            if (!asdScenarioSummaryViewPage.isDataInIssuesTable()) {
+            if (!apdScenarioSummaryViewPage.isDataInIssuesTable()) {
                 log.error("table doesn't have data for issues without roots");
                 Assert.fail();
             } else {
                 log.info("table contains data for issues without roots");
                 baseACDPage.setValueInMultiComboBox("creation_type", "Automatically");
                 baseACDPage.setValueInTimePeriodChooser("create_time", 3, 12, 33);
-                asdScenarioSummaryViewPage.setValueOfIssueIdSearch();
+                apdScenarioSummaryViewPage.setValueOfIssueIdSearch();
             }
-
         } else {
             log.info("table contains data for issues with roots");
             baseACDPage.turnOnSwitcher();
             baseACDPage.setValueInMultiComboBox("creation_type", "Automatically");
             baseACDPage.setValueInTimePeriodChooser("create_time", 3, 12, 33);
-            asdScenarioSummaryViewPage.setValueOfIssueIdSearch();
+            apdScenarioSummaryViewPage.setValueOfIssueIdSearch();
 
-            if (!asdScenarioSummaryViewPage.isDataInIssuesTable()) {
-                asdScenarioSummaryViewPage.clearMultiComboBox("creation_type");
-                asdScenarioSummaryViewPage.clearMultiSearch("id");
+            if (!apdScenarioSummaryViewPage.isDataInIssuesTable()) {
+                apdScenarioSummaryViewPage.clearMultiComboBox("creation_type");
+                apdScenarioSummaryViewPage.clearMultiSearch("id");
                 baseACDPage.clearTimePeriod("create_time");
                 log.error("Table doesn't have data for provided filters");
                 Assert.fail();
             }
-
             DelayUtils.sleep();
-            asdScenarioSummaryViewPage.clearMultiComboBox("creation_type");
-            asdScenarioSummaryViewPage.clearMultiSearch("id");
+            apdScenarioSummaryViewPage.clearMultiComboBox("creation_type");
+            apdScenarioSummaryViewPage.clearMultiSearch("id");
             baseACDPage.clearTimePeriod("create_time");
         }
     }

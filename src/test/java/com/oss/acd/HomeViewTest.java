@@ -108,6 +108,5 @@ public class HomeViewTest extends BaseTestCase {
         homeViewPage.clearTimePeriod("create_time");
         homeViewPage.clearMultiComboBox("issue_type");
         homeViewPage.clearMultiSearch("id");
-
     }
 }

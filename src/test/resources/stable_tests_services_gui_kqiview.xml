@@ -45,6 +45,7 @@
                     <include name="sharePanelTest"/>
                     <include name="childObjectTest"/>
                     <include name="changeDisplayType"/>
+                    <include name="zoomInChartCheck"/>
                 </methods>
             </class>
         </classes>
