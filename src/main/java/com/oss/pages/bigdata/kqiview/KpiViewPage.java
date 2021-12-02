@@ -1,5 +1,6 @@
 package com.oss.pages.bigdata.kqiview;
 
+import com.oss.framework.components.common.ListAttributesChooser;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
@@ -632,5 +633,66 @@ public class KpiViewPage extends BasePage {
     public void clickZoomOutButton() {
         KpiChartWidget.create(driver, wait).clickZoomOutButton();
         DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    @Step("I enable column {columnId} into table")
+    public void enableColumnInTheTable(String columnId) {
+        ListAttributesChooser listAttributesChooser = TableComponent.create(driver, wait, IND_VIEW_TABLE_ID).getListAttributesChooser();
+        listAttributesChooser.enableAttributeById(columnId);
+        listAttributesChooser.clickApply();
+        log.info("Enabling column with id: {}", columnId);
+    }
+
+    @Step("I disable column {columnId} into table")
+    public void disableColumnInTheTable(String columnId) {
+        ListAttributesChooser listAttributesChooser = TableComponent.create(driver, wait, IND_VIEW_TABLE_ID).getListAttributesChooser();
+        listAttributesChooser.disableAttributeById(columnId);
+        listAttributesChooser.clickApply();
+        log.info("Disabling column with id: {}", columnId);
+    }
+
+    @Step("I check if column with Header {columnHeader} is present in the Table")
+    public boolean isColumnInTable(String columnHeader) {
+        return TableComponent.create(driver, wait, IND_VIEW_TABLE_ID).getColumnHeaders().contains(columnHeader);
+    }
+
+    @Step("I change columns order to: first column - {columnId}")
+    public void dragColumnToTarget(String columnId, String targetColumnId) {
+        ListAttributesChooser listAttributesChooser = TableComponent.create(driver, wait, IND_VIEW_TABLE_ID).getListAttributesChooser();
+        listAttributesChooser.enableAttributeById(columnId);
+        listAttributesChooser.dragColumnToTarget(columnId, targetColumnId);
+        listAttributesChooser.clickApply();
+        log.info("Changing columns by dragging in table options menu. First column is column with id: {}", columnId);
+    }
+
+    @Step("I check if column with Header {columnHeader} is first column in the Table")
+    public boolean isColumnFirstInTable(String columnHeader) {
+        return TableComponent.create(driver, wait, IND_VIEW_TABLE_ID).getColumnHeaders().stream()
+                .findFirst()
+                .orElse("")
+                .equals(columnHeader);
+    }
+
+    @Step("I drag column in Table")
+    public void changeColumnsOrderInTable(String columnToDragId, int position) {
+        TableComponent.create(driver, wait, IND_VIEW_TABLE_ID).changeColumnsOrderById(columnToDragId, position);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Dragging column with id: {} to position: {}", columnToDragId, position);
+    }
+
+    public void sortColumnASC(String columnId) {
+        TableComponent.create(driver, wait, IND_VIEW_TABLE_ID).sortColumnByASC(columnId);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Sorting column with id: {} in ASC order", columnId);
+    }
+
+    public void sortColumnDESC(String columnId) {
+        TableComponent.create(driver, wait, IND_VIEW_TABLE_ID).sortColumnByDESC(columnId);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Sorting column with id: {} in DESC order", columnId);
+    }
+
+    public boolean isValueInGivenRow(String value, int row, String columnId) {
+        return TableComponent.create(driver, wait, IND_VIEW_TABLE_ID).getCellValue(row, columnId).equals(value);
     }
 }
