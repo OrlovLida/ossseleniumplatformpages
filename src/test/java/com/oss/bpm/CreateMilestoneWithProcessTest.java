@@ -27,6 +27,10 @@ import java.time.LocalDate;
  */
 @Listeners({TestListener.class})
 public class CreateMilestoneWithProcessTest extends BaseTestCase {
+    private String BPM_USER_LOGIN = "bpm_webselenium";
+    private String BPM_USER_PASSWORD = "Webtests123!";
+    private String BPM_ADMIN_USER_LOGIN = "bpm_admin_webselenium";
+    private String BPM_ADMIN_USER_PASSWORD = "Webtests123!";
     
     private static final Logger log = LoggerFactory.getLogger(CreateMilestoneWithProcessTest.class);
     
@@ -36,7 +40,7 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
     @BeforeClass
     public void openProcessInstancesPage() {
         ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
-        processInstancesPage.changeUser("bpm_webselenium", "bpmweb");
+        processInstancesPage.changeUser(BPM_USER_LOGIN, BPM_USER_PASSWORD);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         
     }

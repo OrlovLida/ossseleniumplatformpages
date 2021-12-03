@@ -29,6 +29,11 @@ import com.oss.utils.TestListener;
  */
 @Listeners({TestListener.class})
 public class EditMilestoneTest extends BaseTestCase {
+    private String BPM_USER_LOGIN = "bpm_webselenium";
+    private String BPM_USER_PASSWORD = "Webtests123!";
+    private String BPM_ADMIN_USER_LOGIN = "bpm_admin_webselenium";
+    private String BPM_ADMIN_USER_PASSWORD = "Webtests123!";
+
     private static final Logger log = LoggerFactory.getLogger(EditMilestoneTest.class);
     private final static String EDIT_MILESTONE_BUTTON = "editMilestonesContextAction";
     
@@ -40,7 +45,7 @@ public class EditMilestoneTest extends BaseTestCase {
     public void createMilestone() {
         ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        processInstancesPage.changeUser("bpm_webselenium", "bpmweb");
+        processInstancesPage.changeUser(BPM_USER_LOGIN, BPM_USER_PASSWORD);
         String processName = "Selenium Test.Milestone-" + (int) (Math.random() * 1001);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
@@ -191,7 +196,7 @@ public class EditMilestoneTest extends BaseTestCase {
     public void checkIfModifyUserIsUpdated() {
         // given
         MilestoneViewPage milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
-        milestoneViewPage.changeUser("bpm_admin_webselenium", "bpmweb");
+        milestoneViewPage.changeUser(BPM_ADMIN_USER_LOGIN, BPM_ADMIN_USER_PASSWORD);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         milestoneViewPage.selectMilestone(milestoneName);
         String modifyDate = milestoneViewPage.getMilestoneAttribute("modifyDate");

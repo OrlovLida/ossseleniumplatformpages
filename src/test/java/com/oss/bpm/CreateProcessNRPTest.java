@@ -36,6 +36,10 @@ import java.util.regex.Pattern;
  */
 @Listeners({ TestListener.class })
 public class CreateProcessNRPTest extends BaseTestCase {
+    private String BPM_USER_LOGIN = "bpm_webselenium";
+    private String BPM_USER_PASSWORD = "Webtests123!";
+    private String BPM_ADMIN_USER_LOGIN = "bpm_admin_webselenium";
+    private String BPM_ADMIN_USER_PASSWORD = "Webtests123!";
 
     private static final Logger log = LoggerFactory.getLogger(CreateProcessNRPTest.class);
 
@@ -54,7 +58,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
         ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
         DelayUtils.sleep(3000);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        processInstancesPage.changeUser("bpm_webselenium", "bpmweb");
+        processInstancesPage.changeUser(BPM_USER_LOGIN, BPM_USER_PASSWORD);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
     }

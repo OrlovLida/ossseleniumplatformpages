@@ -10,6 +10,7 @@ import com.oss.pages.bpm.milestones.MilestoneViewPage;
 import com.oss.pages.bpm.processinstances.ProcessInstancesPage;
 import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 import com.oss.utils.TestListener;
+import io.qameta.allure.Description;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
@@ -29,9 +30,9 @@ import java.time.LocalDate;
 public class ChangeMilestoneStateTest extends BaseTestCase {
 
     private String BPM_USER_LOGIN = "bpm_webselenium";
-    private String BPM_USER_PASSWORD = "bpmweb";
+    private String BPM_USER_PASSWORD = "Webtests123!";
     private String BPM_ADMIN_USER_LOGIN = "bpm_admin_webselenium";
-    private String BPM_ADMIN_USER_PASSWORD = "bpmweb";
+    private String BPM_ADMIN_USER_PASSWORD = "Webtests123!";
 
     private String milestoneName1 = "Milestone Update " + (int) (Math.random() * 10001);
     private String milestoneName2 = "Milestone Update " + (int) (Math.random() * 10001);
@@ -174,6 +175,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
     }
 
     @Test(priority = 2)
+    @Description("secondMilestoneFlow")
     public void secondMilestoneFlow() {
         /**
          * new → in progress → completed (not permitted).....{change user}.....in progress → completed
