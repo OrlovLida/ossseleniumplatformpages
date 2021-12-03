@@ -19,8 +19,8 @@ public class MessagesTab extends BasePage {
     private static final String CREATE_BUTTON_LABEL = "CREATE";
     private static final String COMMENT_EDITOR_ID = "comment-editor";
 
-    public MessagesTab(WebDriver driver, WebDriverWait wait) {
-        super(driver, wait);
+    public MessagesTab(WebDriver driver) {
+        super(driver);
     }
 
     public void clickCreateNewCommentButton(WebDriver driver) {

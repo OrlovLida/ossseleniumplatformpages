@@ -70,8 +70,9 @@ public class LoopbackInterfaceTest extends BaseTestCase {
     public void clearAttributes() {
         LoopbackInterfaceAttributes loopbackAttributes = getLoopbackAttributesEmpty();
 
-        OldInventoryViewPage inventoryViewBeforeUpdate = new OldInventoryViewPage(driver);
-        LoopbackInterfaceWizardPage loopbackWizard = goToEditWizard(inventoryViewBeforeUpdate);
+        OldInventoryViewPage inventoryViewAfterUpdate = new OldInventoryViewPage(driver);
+        inventoryViewAfterUpdate.selectRowInTableAtIndex(0);
+        LoopbackInterfaceWizardPage loopbackWizard = goToEditWizard(inventoryViewAfterUpdate);
         fillLoopbackWizardToClear(loopbackWizard);
         OldInventoryViewPage inventoryView = loopbackWizard.clickAccept();
         inventoryView.selectRowInTableAtIndex(0);
@@ -82,10 +83,11 @@ public class LoopbackInterfaceTest extends BaseTestCase {
     @Test(priority = 4)
     @Step("Remove Loopback Interface")
     public void remove() {
-        OldInventoryViewPage inventoryView = new OldInventoryViewPage(driver);
+        OldInventoryViewPage inventoryViewBeforeDelete = new OldInventoryViewPage(driver);
 
-        inventoryView.expandEditAndChooseAction(DELETE_LOOPBACK_INTERFACE_CONTEXT_ACTION_ID);
-        inventoryView.clickConfirmRemovalButton();
+        inventoryViewBeforeDelete.selectRowInTableAtIndex(0);
+        inventoryViewBeforeDelete.expandEditAndChooseAction(DELETE_LOOPBACK_INTERFACE_CONTEXT_ACTION_ID);
+        inventoryViewBeforeDelete.clickConfirmRemovalButton();
 
         Assert.assertTrue(isRemoveMessageCorrect());
     }
@@ -112,8 +114,6 @@ public class LoopbackInterfaceTest extends BaseTestCase {
     }
 
     private LoopbackInterfaceWizardPage goToLoopbackWizard() {
-        //SideMenu sidemenu = SideMenu.create(driver, webDriverWait);
-        //sidemenu.callActionByLabel("Create Loopback Interface", "Network domains", "Transport & IP");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         driver.get(String.format("%s/#/view/transport/ip/ethernet/loopback-interface?perspective=LIVE", BASIC_URL));
 

@@ -27,6 +27,10 @@ import java.time.LocalDate;
  */
 @Listeners({TestListener.class})
 public class CreateMilestoneWithProcessTest extends BaseTestCase {
+    private String BPM_USER_LOGIN = "bpm_webselenium";
+    private String BPM_USER_PASSWORD = "Webtests123!";
+    private String BPM_ADMIN_USER_LOGIN = "bpm_admin_webselenium";
+    private String BPM_ADMIN_USER_PASSWORD = "Webtests123!";
     
     private static final Logger log = LoggerFactory.getLogger(CreateMilestoneWithProcessTest.class);
     
@@ -36,13 +40,13 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
     @BeforeClass
     public void openProcessInstancesPage() {
         ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
-        processInstancesPage.changeUser("bpm_webselenium", "bpmweb");
+        processInstancesPage.changeUser(BPM_USER_LOGIN, BPM_USER_PASSWORD);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         
     }
     
-    @Description("For Basic  Milestone User ")
     @Test(priority = 1)
+    @Description("Create Process with Milestone")
     public void createProcessWithMilestones() {
         ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -115,7 +119,8 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
         
     }
     
-    @Test
+    @Test(priority = 2)
+    @Description("Update Predefined Milestone")
     public void updatePredefinedMilestone() {
         ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -202,7 +207,8 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
         Assert.assertEquals(descriptionMilestone3, "Update 3");
     }
     
-    @Test
+    @Test(priority = 3)
+    @Description("Add Milestone for Data Correction Process")
     public void addMilestoneForDCP() {
         ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -267,7 +273,8 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
         
     }
     
-    @Test
+    @Test(priority = 4)
+    @Description("Check if Name is not editable for predefined Milestone")
     public void checkIfNameIsNotEditableForPredefinedMilestone() {
         ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);

@@ -17,6 +17,7 @@ import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 import com.oss.pages.bpm.TasksPage;
 import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.utils.TestListener;
+import io.qameta.allure.Description;
 import org.assertj.core.api.Assertions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +37,10 @@ import java.util.regex.Pattern;
  */
 @Listeners({ TestListener.class })
 public class CreateProcessNRPTest extends BaseTestCase {
+    private String BPM_USER_LOGIN = "bpm_webselenium";
+    private String BPM_USER_PASSWORD = "Webtests123!";
+    private String BPM_ADMIN_USER_LOGIN = "bpm_admin_webselenium";
+    private String BPM_ADMIN_USER_PASSWORD = "Webtests123!";
 
     private static final Logger log = LoggerFactory.getLogger(CreateProcessNRPTest.class);
 
@@ -54,12 +59,13 @@ public class CreateProcessNRPTest extends BaseTestCase {
         ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
         DelayUtils.sleep(3000);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        processInstancesPage.changeUser("bpm_webselenium", "bpmweb");
+        processInstancesPage.changeUser(BPM_USER_LOGIN, BPM_USER_PASSWORD);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
     }
 
     @Test(priority = 1)
+    @Description("Create Network Resource Process")
     public void createProcessNRP() {
         // given
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
@@ -76,6 +82,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     }
 
     @Test(priority = 2)
+    @Description("Start 'High Level Planning' Task")
     public void startHLPTask() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
@@ -92,6 +99,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     }
 
     @Test(priority = 3)
+    @Description("Create First Physical Device")
     public void createFirstPhysicalDevice() {
 
         // given
@@ -123,6 +131,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     }
 
     @Test(priority = 4)
+    @Description("Complete 'High Level Planning' Task")
     public void completeHLPTask() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
@@ -139,6 +148,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     }
 
     @Test(priority = 5)
+    @Description("Start 'Low Level Planning' Task")
     public void startLLPTask() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
@@ -160,6 +170,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     }
 
     @Test(priority = 6)
+    @Description("Assign File to 'Low Level Planning' Task")
     public void assignFile() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         try {
@@ -182,6 +193,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     }
 
     @Test(priority = 7)
+    @Description("Create Second Physical Device")
     public void createSecondPhysicalDevice() {
         // DeviceWizardPage deviceWizardPage =
         // DeviceWizardPage.goToDeviceWizardPagePlan(driver,BASIC_URL,"project_id=148835809&perspective=PLAN");
@@ -214,6 +226,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     }
 
     @Test(priority = 8)
+    @Description("Complete 'Low Level Design' Task")
     public void completeLLPTask() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
@@ -230,6 +243,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     }
 
     @Test(priority = 9)
+    @Description("Start 'Ready for Integration' Task")
     public void startRFITask() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
@@ -246,6 +260,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     }
 
     @Test(priority = 10)
+    @Description("Setup Integration")
     public void setupIntegration() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
@@ -263,6 +278,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     }
 
     @Test(priority = 11)
+    @Description("Get 'Integration Process' Code")
     public void getIPCode() {
 
         // given
@@ -277,6 +293,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     }
 
     @Test(priority = 12)
+    @Description("Complete 'Ready for Integration' Task")
     public void completeRFITask() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
@@ -293,6 +310,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     }
 
     @Test(priority = 13)
+    @Description("Start 'Scope Definition' Task in First Integration Process")
     public void startSDTaskIP1() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
@@ -309,6 +327,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     }
 
     @Test(priority = 14)
+    @Description("Complete 'Scope Definition' Task in First Integration Process")
     public void completeSDTaskIP1() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
@@ -325,6 +344,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     }
 
     @Test(priority = 15)
+    @Description("Start 'Implementation' Task in First Integration Process")
     public void startImplementationTaskIP1() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
@@ -341,6 +361,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     }
 
     @Test(priority = 16)
+    @Description("Complete 'Implementation' Task in First Integration Process")
     public void completeImplementationTaskIP1() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
@@ -357,6 +378,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     }
 
     @Test(priority = 17)
+    @Description("Start 'Acceptance' Task in First Integration Process")
     public void startAcceptanceTaskIP1() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
@@ -373,6 +395,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     }
 
     @Test(priority = 18)
+    @Description("Complete 'Acceptance' Task in First Integration Process")
     public void completeAcceptanceTaskIP1() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
@@ -389,6 +412,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     }
 
     @Test(priority = 19)
+    @Description("Start 'Scope Definition' Task in Second Integration Process")
     public void startSDTaskIP2() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
@@ -405,6 +429,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     }
 
     @Test(priority = 20)
+    @Description("Complete 'Scope Definition' Task in Second Integration Process")
     public void completeSDTaskIP2() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
@@ -421,6 +446,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     }
 
     @Test(priority = 21)
+    @Description("Start 'Implementation' Task in Second Integration Process")
     public void startImplementationTaskIP2() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
@@ -437,6 +463,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     }
 
     @Test(priority = 22)
+    @Description("Complete 'Implementation' Task in Second Integration Process")
     public void completeImplementationTaskIP2() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
@@ -453,6 +480,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     }
 
     @Test(priority = 23)
+    @Description("Start 'Acceptance' Task in Second Integration Process")
     public void startAcceptanceTaskIP2() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
@@ -469,6 +497,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     }
 
     @Test(priority = 24)
+    @Description("Complete 'Acceptance' Task in Second Integration Process")
     public void completeAcceptanceTaskIP2() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
@@ -485,6 +514,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     }
 
     @Test(priority = 25)
+    @Description("Start 'Verification' Task in NRP")
     public void startVerificationTask() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
@@ -501,6 +531,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     }
 
     @Test(priority = 26)
+    @Description("Complete 'Verification' Task")
     public void completeVerificationTask() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
@@ -517,6 +548,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     }
 
     @Test(priority = 27)
+    @Description("Check Process status")
     public void checkProcessStatus() {
         // given
         ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
