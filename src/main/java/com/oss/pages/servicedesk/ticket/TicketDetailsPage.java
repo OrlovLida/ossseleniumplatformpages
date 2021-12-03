@@ -84,7 +84,7 @@ public class TicketDetailsPage extends BasePage {
 
     public void changeStatus(String statusName) {
         Combobox statusComboBox = Combobox.createServiceDeskStatusComboBox(driver, wait);
-        statusComboBox.setValue(Data.createSingleData(statusName));
+        statusComboBox.setValueContains(Data.createSingleData(statusName));
         log.info("Changing status to {}", statusName);
     }
 

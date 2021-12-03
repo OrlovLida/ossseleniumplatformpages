@@ -4,6 +4,7 @@ import com.oss.BaseTestCase;
 import com.oss.pages.servicedesk.ticket.TicketDashboardPage;
 import com.oss.pages.servicedesk.ticket.TicketDetailsPage;
 import com.oss.pages.servicedesk.ticket.TicketSearchPage;
+import com.oss.pages.servicedesk.ticket.tabs.MessagesTab;
 import com.oss.pages.servicedesk.ticket.wizard.WizardPage;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
@@ -22,6 +23,7 @@ public class CreateTroubleTicketTestVFNZ extends BaseTestCase {
     private TicketSearchPage ticketSearchPage;
     private WizardPage wizardPage;
     private TicketDetailsPage ticketDetailsPage;
+    private MessagesTab messagesTab;
 
     private final static String MO_IDENTIFIER = "CFS_SOM_01_901";
     private final static String TT_ASSIGNEE = "ca_kodrobinska";
@@ -36,10 +38,14 @@ public class CreateTroubleTicketTestVFNZ extends BaseTestCase {
     private final static String TT_LIBRARY_TYPE = "Category";
     private final static String TT_CATEGORY_NAME = "Data Problem";
 
-    private final static String NOTIFICATION_CHANNEL = "Internal";
+    private final static String NOTIFICATION_CHANNEL_INTENRAL = "Internal";
+    private final static String NOTIFICATION_CHANNEL_EMAIL = "E-mail";
     private final static String NOTIFICATION_MESSAGE = "test selenium message";
-    private final static String NOTIFICATION_TO = "ca_kodrobinska";
+    private final static String NOTIFICATION_INTERNAL_TO = "ca_kodrobinska";
+    private final static String NOTIFICATION_EMAIL_TO = "kornelia.odrobinska@comarch.com";
+    private final static String NOTIFICATION_EMAIL_FROM = "Test@AIF.pl";
     private final static String NOTIFICATION_TYPE = "Success";
+    private final static String NOTIFICATION_SUBJECT = "Email notification test";
 
     private final static String TT_WIZARD_ASSIGNEE = "TT_WIZARD_INPUT_ASSIGNEE_LABEL";
     private final static String TT_WIZARD_ESCALATED_TO = "TT_WIZARD_INPUT_ESCALATED_TO_LABEL";
@@ -52,6 +58,7 @@ public class CreateTroubleTicketTestVFNZ extends BaseTestCase {
 
     private final static String DETAILS_WINDOW_ID = "_detailsWindow";
     private final static String WIZARD_EXTERNAL_NAME = "_name";
+    private final static String OVERVIEW_TAB_ARIA_CONTROLS = "most-wanted";
     private final static String EXTERNAL_TAB_ARIA_CONTROLS = "_detailsExternalTab";
     private final static String DICTIONARIES_TAB_ARIA_CONTROLS = "_dictionariesTab";
     private final static String DESCRIPTION_TAB_ARIA_CONTROLS = "_descriptionTab";
@@ -64,9 +71,12 @@ public class CreateTroubleTicketTestVFNZ extends BaseTestCase {
 
     private final static String NOTIFICATION_WIZARD_CHANNEL_ID = "channel-component-input";
     private final static String NOTIFICATION_WIZARD_MESSAGE_ID = "message-component";
-    private final static String NOTIFICATION_WIZARD_TO_ID = "internal-to-component";
+    private final static String NOTIFICATION_WIZARD_INTERNAL_TO_ID = "internal-to-component";
+    private final static String NOTIFICATION_WIZARD_TO_ID = "to-component";
+    private final static String NOTIFICATION_WIZARD_FROM_ID = "from-component";
     private final static String NOTIFICATION_WIZARD_TYPE_ID = "internal-type-component";
     private final static String NOTIFICATION_WIZARD_TEMPLATE_ID = "template-component";
+    private final static String NOTIFICATION_WIZARD_SUBJECT_ID = "subject-component";
 
     public static final DateTimeFormatter CREATE_DATE_FILTER_DATE_FORMATTER = DateTimeFormatter.ofPattern(CREATE_DATE_FILTER_DATE_PATTERN);
 
@@ -126,15 +136,12 @@ public class CreateTroubleTicketTestVFNZ extends BaseTestCase {
         ticketSearchPage.filterByTextField(TicketSearchPage.DESCRIPTION_ATTRIBUTE, TT_DESCRIPTION_EDITED);
         ticketSearchPage.clickFilterButton();
         ticketSearchPage.filterByComboBox(TicketSearchPage.STATUS_ATTRIBUTE, "New");
-        ticketSearchPage.openTicketDetailsView("0", BASIC_URL);
+        ticketDetailsPage = ticketSearchPage.openTicketDetailsView("0", BASIC_URL);
     }
 
     @Test(priority = 4, testName = "Add external to ticket", description = "Add external to ticket")
     @Description("Add external to ticket")
     public void addExternalToTicket() {
-        ticketDashboardPage = TicketDashboardPage.goToPage(driver, BASIC_URL);
-        //TODO do zmiany na przejście z Ticket Search Page -> Details, gdy będą tam pojawiać się aktualne tickety - wyszukać po assignee - znaleźć stworzony TT na potrzeby Selenium
-        ticketDetailsPage = ticketDashboardPage.openTicketDetailsView("0", BASIC_URL);
         ticketDetailsPage.selectTab(driver, EXTERNAL_TAB_ARIA_CONTROLS);
         ticketDetailsPage.clickContextAction(ADD_EXTERNAL_LABEL);
         WizardPage wizardPage = new WizardPage(driver);
@@ -162,17 +169,46 @@ public class CreateTroubleTicketTestVFNZ extends BaseTestCase {
         Assert.assertTrue(ticketDetailsPage.checkDisplayedText(TT_DESCRIPTION_EDITED, TABLES_WINDOW_ID));
     }
 
-    @Test(priority = 7, testName = "Check Messages Tab - add Notification", description = "Check Messages Tab - add Notification")
-    @Description("Check Messages Tab - add Notification")
-    public void checkMessagesTab() {
+    @Test(priority = 7, testName = "Check Messages Tab - add Internal Notification", description = "Check Messages Tab - add Internal Notification")
+    @Description("Check Messages Tab - add Internal Notification")
+    public void addInternalNotification() {
         ticketDetailsPage.selectTab(driver, MESSAGES_TAB_ARIA_CONTROLS);
         ticketDetailsPage.createNewNotificationOnMessagesTab();
         WizardPage notificationWizardPage = new WizardPage(driver);
-        notificationWizardPage.insertValueToComboBoxComponent(NOTIFICATION_CHANNEL, NOTIFICATION_WIZARD_CHANNEL_ID);
+        notificationWizardPage.insertValueToComboBoxComponent(NOTIFICATION_CHANNEL_INTENRAL, NOTIFICATION_WIZARD_CHANNEL_ID);
         notificationWizardPage.insertValueToTextAreaComponent(NOTIFICATION_MESSAGE, NOTIFICATION_WIZARD_MESSAGE_ID);
-        notificationWizardPage.insertValueToMultiSearchComponent(NOTIFICATION_TO, NOTIFICATION_WIZARD_TO_ID);
+        notificationWizardPage.insertValueToMultiSearchComponent(NOTIFICATION_INTERNAL_TO, NOTIFICATION_WIZARD_INTERNAL_TO_ID);
         notificationWizardPage.clickComboBox(NOTIFICATION_WIZARD_TEMPLATE_ID);
         notificationWizardPage.insertValueToComboBoxComponent(NOTIFICATION_TYPE, NOTIFICATION_WIZARD_TYPE_ID);
         notificationWizardPage.clickAcceptButtonInWizard(driver);
+        // TODO asercja
     }
+
+    @Test(priority = 8, testName = "Check Messages Tab - add Email Notification", description = "Check Messages Tab - add Email Notification")
+    @Description("Check Messages Tab - add Email Notification")
+    public void addEmailNotification() {
+        ticketDetailsPage.selectTab(driver, MESSAGES_TAB_ARIA_CONTROLS);
+        ticketDetailsPage.createNewNotificationOnMessagesTab();
+        WizardPage notificationWizardPage = new WizardPage(driver);
+        notificationWizardPage.insertValueToComboBoxComponent(NOTIFICATION_CHANNEL_EMAIL, NOTIFICATION_WIZARD_CHANNEL_ID);
+        notificationWizardPage.insertValueToMultiSearchComponent(NOTIFICATION_EMAIL_TO, NOTIFICATION_WIZARD_TO_ID);
+        notificationWizardPage.insertValueToMultiComboBoxComponent(NOTIFICATION_EMAIL_FROM, NOTIFICATION_WIZARD_FROM_ID);
+        notificationWizardPage.insertValueToTextComponent(NOTIFICATION_SUBJECT, NOTIFICATION_WIZARD_SUBJECT_ID);
+        notificationWizardPage.enterEmailMessage(NOTIFICATION_MESSAGE);
+        notificationWizardPage.clickAcceptButtonInWizard(driver);
+        // TODO asercja
+    }
+
+    @Test(priority = 9, testName = "Check Messages Tab - add Internal Comment", description = "Check Messages Tab - add Internal Comment")
+    @Description("Check Messages Tab - add Internal Comment")
+    public void addInternalComment() {
+        ticketDetailsPage.selectTab(driver, MESSAGES_TAB_ARIA_CONTROLS);
+        messagesTab = new MessagesTab(driver);
+        messagesTab.clickCreateNewCommentButton(driver);
+        // TODO dodac wybieranie typu komentarza
+        messagesTab.enterCommentMessage(NOTIFICATION_MESSAGE);
+        messagesTab.clickCreateCommentButton();
+        // TODO asercja
+    }
+
 }

@@ -17,6 +17,7 @@ public class WizardPage extends BaseSDPage {
     private static final Logger log = LoggerFactory.getLogger(WizardPage.class);
 
     private static final String INCIDENT_DESCRIPTION_ID = "TT_WIZARD_INPUT_INCIDENT_DESCRIPTION";
+    private static final String EMAIL_MESSAGE_ID = "message-component";
     private final static String CREATE_EXTERNAL_LABEL = "Create External";
 
     private final MOStep moStep;
@@ -96,6 +97,15 @@ public class WizardPage extends BaseSDPage {
         htmlEditor.clear();
         htmlEditor.setValue(Data.createSingleData(description));
         log.info("Incident description: {} is entered", description);
+    }
+
+    @Step("I insert {message} to Email Message field")
+    public void enterEmailMessage(String message) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        HtmlEditor htmlEditor = HtmlEditor.create(driver, wait, EMAIL_MESSAGE_ID);
+        htmlEditor.clear();
+        htmlEditor.setValue(Data.createSingleData(message));
+        log.info("Incident description: {} is entered", message);
     }
 
     public void clickComboBox(String componentId){
