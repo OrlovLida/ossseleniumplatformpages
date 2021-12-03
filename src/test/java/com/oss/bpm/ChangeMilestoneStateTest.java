@@ -161,6 +161,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
     }
 
     @Test(priority = 1)
+    @Description("First Milestone Change State Flow")
     public void firstMilestoneFlow() {
         /**
          * not needed → new → in progress → not needed
@@ -175,7 +176,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
     }
 
     @Test(priority = 2)
-    @Description("secondMilestoneFlow")
+    @Description("Second Milestone Change State Flow")
     public void secondMilestoneFlow() {
         /**
          * new → in progress → completed (not permitted).....{change user}.....in progress → completed
@@ -208,6 +209,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
     }
 
     @Test(priority = 3)
+    @Description("Third Milestone Change State Flow")
     public void thirdMilestoneFlow() {
         /**
          * not needed → new → suspended → in progress → completed → in progress → suspended → new → not needed
@@ -228,6 +230,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
     }
 
     @Test(priority = 4)
+    @Description("Multiselect Milestones Change State")
     public void multiChangeState() {
         /**
          * not needed → new → in progress → suspended → in progress
@@ -259,6 +262,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
     }
 
     @Test(priority = 5)
+    @Description("Multiselect Milestones Change State (Different States)")
     public void checkMultiChangeStateDifferent() {
         milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);

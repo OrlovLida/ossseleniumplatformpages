@@ -5,7 +5,9 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.processmodels.ImportModelWizardPage;
 import com.oss.pages.bpm.processmodels.ProcessModelsPage;
 import com.oss.utils.TestListener;
+import io.qameta.allure.Description;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -41,6 +43,7 @@ public class ImportExportModelTest extends BaseTestCase {
 
 
     @Test(priority = 1)
+    @Description("Import model from BAR")
     public void importModel() {
         ProcessModelsPage processModelsPage = ProcessModelsPage.goToProcessModelsPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -61,7 +64,8 @@ public class ImportExportModelTest extends BaseTestCase {
     }
 
     @Test(priority = 2)
-    public void exportModel() {
+    @Description("Export model to BAR")
+    public void exportModelBar() {
         ProcessModelsPage processModelsPage = ProcessModelsPage.goToProcessModelsPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         processModelsPage.chooseDomain(DOMAIN);
@@ -69,14 +73,20 @@ public class ImportExportModelTest extends BaseTestCase {
         //export bar
         processModelsPage.exportModelAsBAR(MODEL_NAME);
         Assert.assertTrue(processModelsPage.isFileDownloaded(EXPORT_PATH_LOCAL, FILE_NAME));
-
-        //export xml
-        processModelsPage.exportModelAsXML(MODEL_NAME);
-        Assert.assertTrue(processModelsPage.isFileDownloaded(EXPORT_PATH_LOCAL, FILE_NAME));
-
     }
 
     @Test(priority = 3)
+    @Description("Export model to XML")
+    public void exportModelXml() {
+        ProcessModelsPage processModelsPage = ProcessModelsPage.goToProcessModelsPage(driver, BASIC_URL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        processModelsPage.chooseDomain(DOMAIN);
+        //export xml
+        processModelsPage.exportModelAsXML(MODEL_NAME);
+        Assert.assertTrue(processModelsPage.isFileDownloaded(EXPORT_PATH_LOCAL, FILE_NAME));
+    }
+
+    @AfterClass
     public void deleteModel() {
         ProcessModelsPage processModelsPage = ProcessModelsPage.goToProcessModelsPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
