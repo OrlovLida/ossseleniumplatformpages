@@ -45,8 +45,8 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
         
     }
     
-    @Description("For Basic  Milestone User ")
     @Test(priority = 1)
+    @Description("Create Process with Milestone")
     public void createProcessWithMilestones() {
         ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -119,7 +119,8 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
         
     }
     
-    @Test
+    @Test(priority = 2)
+    @Description("Update Predefined Milestone")
     public void updatePredefinedMilestone() {
         ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -206,7 +207,8 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
         Assert.assertEquals(descriptionMilestone3, "Update 3");
     }
     
-    @Test
+    @Test(priority = 3)
+    @Description("Add Milestone for Data Correction Process")
     public void addMilestoneForDCP() {
         ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -271,7 +273,8 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
         
     }
     
-    @Test
+    @Test(priority = 4)
+    @Description("Check if Name is not editable for predefined Milestone")
     public void checkIfNameIsNotEditableForPredefinedMilestone() {
         ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
