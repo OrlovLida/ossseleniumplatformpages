@@ -112,7 +112,6 @@ public class IRBInterfaceTest extends BaseTestCase {
         newInventoryViewPage.refreshMainTable();
         waitForPageToLoad();
         Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "mtu"), MTU_VALUE);
-        Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "description"), DESCRIPTION);
     }
 
     @Test(priority = 7)
