@@ -127,14 +127,15 @@ public class AdvancedSearchCompact extends BaseTestCase {
     // Uncomment after fix relation in schema
     @Test(priority = 5)
     public void filterByOSF() {
-        String attributeValue = "241";
-        inventoryViewPage.enableColumnAndApply("ID", "Director");
+        String attributeValueId = "241";
+        String attributeValueLabel = "Siân G. Lloyd";
+        inventoryViewPage.enableColumnAndApply("Last Name", "Director");
         Multimap<String, String> filters =
-                inventoryViewPage.searchByAttributeValue(OSF_ATTRIBUTE_LABEL, attributeValue, Input.ComponentType.OBJECT_SEARCH_FIELD);
+                inventoryViewPage.searchByAttributeValue(OSF_ATTRIBUTE_LABEL, attributeValueId, Input.ComponentType.OBJECT_SEARCH_FIELD);
         
         Assertions.assertThat(filters.keys()).hasSize(1);
-        Assertions.assertThat(filters.get("Director")).containsExactly(attributeValue);
-        Assert.assertTrue(checkIfCellContainsValue("director.id", attributeValue));
+        Assertions.assertThat(filters.get("Director")).containsExactly(attributeValueLabel);
+        Assert.assertTrue(checkIfCellContainsValue("director.lastName",attributeValueLabel ));
         
         inventoryViewPage.clearFilters();
     }
