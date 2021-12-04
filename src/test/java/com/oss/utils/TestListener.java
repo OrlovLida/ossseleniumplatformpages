@@ -56,7 +56,7 @@ public class TestListener extends BaseTestCase implements ITestListener {
         if (driver instanceof WebDriver) {
             log.info("Screenshot captured for test case:" + getTestMethodName(iTestResult));
             saveScreenshotPNG(driver);
-            attachConsoleLogs(driver);
+            // attachConsoleLogs(driver);
         }
 
         //Save a log on allure.
