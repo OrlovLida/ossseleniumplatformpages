@@ -3,7 +3,6 @@ package com.oss.pages.servicedesk.ticket;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.Combobox;
 import com.oss.framework.components.portals.DropdownList;
-import com.oss.framework.data.Data;
 import com.oss.framework.listwidget.CommonList;
 import com.oss.framework.listwidget.iaa.ListApp;
 import com.oss.framework.utils.DelayUtils;
@@ -49,8 +48,7 @@ public class TicketDetailsPage extends BasePage {
 
     public void releaseTicket() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        Button releaseButton = Button.create(driver, RELEASE_LABEL);
-        releaseButton.click();
+        Button.create(driver, RELEASE_LABEL).click();
         log.info("Clicking release button");
     }
 
@@ -76,23 +74,27 @@ public class TicketDetailsPage extends BasePage {
     }
 
     public void skipAllActionsOnCheckList() {
-        CommonList commonList = CommonList.create(driver, wait, CHECKLIST_APP_ID);
-        commonList.getAllRows()
+        CommonList.create(driver, wait, CHECKLIST_APP_ID)
+                .getAllRows()
                 .forEach(row -> row.callActionIcon(SKIP_BUTTON_LABEL));
         log.info("Skipping all actions on checklist");
     }
 
     public void changeStatus(String statusName) {
-        Combobox statusComboBox = Combobox.createServiceDeskStatusComboBox(driver, wait);
-        statusComboBox.setValueContains(Data.createSingleData(statusName));
+        Combobox.createServiceDeskStatusComboBox(driver, wait).setSingleStringValue(statusName);
         log.info("Changing status to {}", statusName);
     }
 
     @Step("Maximize window")
     public void maximizeWindow(String windowId) {
-        Card card = Card.createCard(driver, wait, windowId);
-        card.maximizeCard();
+        Card.createCard(driver, wait, windowId).maximizeCard();
         log.info("Maximizing window");
+    }
+
+    @Step("Minimize window")
+    public void minimizeWindow(String windowId) {
+        Card.createCard(driver, wait, windowId).minimizeCard();
+        log.info("Minimizing window");
     }
 
     public boolean checkExistingExternal(String expectedExistingExternal) {
@@ -124,8 +126,17 @@ public class TicketDetailsPage extends BasePage {
         }
     }
 
-    public void createNewNotificationOnMessagesTab(){
-        ListApp.createFromParent(driver,wait,"_tablesWindow").clickCreateNewNotification();
+    public void createNewNotificationOnMessagesTab() {
+        ListApp.createFromParent(driver, wait, "_tablesWindow").clickCreateNewNotification();
     }
 
+    public boolean isAllActionsSkipped() {
+        List<CommonList.Row> allRows = CommonList.create(driver, wait, CHECKLIST_APP_ID).getAllRows();
+        for (CommonList.Row row : allRows) {
+            if (!row.getValue("Status").equals("Skipped")) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

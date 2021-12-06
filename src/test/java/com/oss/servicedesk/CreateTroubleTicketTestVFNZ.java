@@ -57,6 +57,7 @@ public class CreateTroubleTicketTestVFNZ extends BaseTestCase {
     private final static String TT_WIZARD_MESSAGE_DATE_ID = "PleaseProvideTheTimeOnTheHandsetTheTxtMessageArrived";
 
     private final static String DETAILS_WINDOW_ID = "_detailsWindow";
+    private final static String STATUS_ACKNOWLEDGED = "Acknowledged";
     private final static String WIZARD_EXTERNAL_NAME = "_name";
     private final static String OVERVIEW_TAB_ARIA_CONTROLS = "most-wanted";
     private final static String EXTERNAL_TAB_ARIA_CONTROLS = "_detailsExternalTab";
@@ -119,7 +120,16 @@ public class CreateTroubleTicketTestVFNZ extends BaseTestCase {
         wizardPage.clickAcceptButtonInWizard(driver);
     }
 
-    @Test(priority = 3, testName = "Open Ticket Details from Tickets Search view", description = "Open Ticket Details from Tickets Search view")
+    @Test(priority = 3, testName = "Skipp checklist actions and change status", description = "Skipp checklist actions and change status")
+    @Description("Skipp checklist actions and change status")
+    public void checkOverview() {
+        ticketDetailsPage.minimizeWindow(DETAILS_WINDOW_ID);
+        ticketDetailsPage.skipAllActionsOnCheckList();
+        Assert.assertTrue(ticketDetailsPage.isAllActionsSkipped());
+        ticketDetailsPage.changeStatus(STATUS_ACKNOWLEDGED);
+    }
+
+    @Test(priority = 4, testName = "Open Ticket Details from Tickets Search view", description = "Open Ticket Details from Tickets Search view")
     @Description("Open Ticket Details from Tickets Search view")
     public void openTicketDetailsFromTicketsSearchView() {
         ticketSearchPage = new TicketSearchPage(driver);
@@ -135,11 +145,11 @@ public class CreateTroubleTicketTestVFNZ extends BaseTestCase {
         ticketSearchPage.clickFilterButton();
         ticketSearchPage.filterByTextField(TicketSearchPage.DESCRIPTION_ATTRIBUTE, TT_DESCRIPTION_EDITED);
         ticketSearchPage.clickFilterButton();
-        ticketSearchPage.filterByComboBox(TicketSearchPage.STATUS_ATTRIBUTE, "New");
+        ticketSearchPage.filterByComboBox(TicketSearchPage.STATUS_ATTRIBUTE, STATUS_ACKNOWLEDGED);
         ticketDetailsPage = ticketSearchPage.openTicketDetailsView("0", BASIC_URL);
     }
 
-    @Test(priority = 4, testName = "Add external to ticket", description = "Add external to ticket")
+    @Test(priority = 5, testName = "Add external to ticket", description = "Add external to ticket")
     @Description("Add external to ticket")
     public void addExternalToTicket() {
         ticketDetailsPage.selectTab(driver, EXTERNAL_TAB_ARIA_CONTROLS);
@@ -150,7 +160,7 @@ public class CreateTroubleTicketTestVFNZ extends BaseTestCase {
         Assert.assertTrue(ticketDetailsPage.checkExistingExternal(TT_EXTERNAL));
     }
 
-    @Test(priority = 5, testName = "Add dictionary to ticket", description = "Add dictionary to ticket")
+    @Test(priority = 6, testName = "Add dictionary to ticket", description = "Add dictionary to ticket")
     @Description("Add dictionary to ticket")
     public void addDictionaryToTicket() {
         ticketDetailsPage.selectTab(driver, DICTIONARIES_TAB_ARIA_CONTROLS);
@@ -162,14 +172,14 @@ public class CreateTroubleTicketTestVFNZ extends BaseTestCase {
         Assert.assertEquals(ticketDetailsPage.checkExistingDictionary(), TT_CATEGORY_NAME);
     }
 
-    @Test(priority = 6, testName = "Check Description Tab", description = "Check Description Tab")
+    @Test(priority = 7, testName = "Check Description Tab", description = "Check Description Tab")
     @Description("Check Description Tab")
     public void checkDescriptionTab() {
         ticketDetailsPage.selectTab(driver, DESCRIPTION_TAB_ARIA_CONTROLS);
         Assert.assertTrue(ticketDetailsPage.checkDisplayedText(TT_DESCRIPTION_EDITED, TABLES_WINDOW_ID));
     }
 
-    @Test(priority = 7, testName = "Check Messages Tab - add Internal Notification", description = "Check Messages Tab - add Internal Notification")
+    @Test(priority = 8, testName = "Check Messages Tab - add Internal Notification", description = "Check Messages Tab - add Internal Notification")
     @Description("Check Messages Tab - add Internal Notification")
     public void addInternalNotification() {
         ticketDetailsPage.selectTab(driver, MESSAGES_TAB_ARIA_CONTROLS);
@@ -184,7 +194,7 @@ public class CreateTroubleTicketTestVFNZ extends BaseTestCase {
         // TODO asercja
     }
 
-    @Test(priority = 8, testName = "Check Messages Tab - add Email Notification", description = "Check Messages Tab - add Email Notification")
+    @Test(priority = 9, testName = "Check Messages Tab - add Email Notification", description = "Check Messages Tab - add Email Notification")
     @Description("Check Messages Tab - add Email Notification")
     public void addEmailNotification() {
         ticketDetailsPage.selectTab(driver, MESSAGES_TAB_ARIA_CONTROLS);
@@ -199,7 +209,7 @@ public class CreateTroubleTicketTestVFNZ extends BaseTestCase {
         // TODO asercja
     }
 
-    @Test(priority = 9, testName = "Check Messages Tab - add Internal Comment", description = "Check Messages Tab - add Internal Comment")
+    @Test(priority = 10, testName = "Check Messages Tab - add Internal Comment", description = "Check Messages Tab - add Internal Comment")
     @Description("Check Messages Tab - add Internal Comment")
     public void addInternalComment() {
         ticketDetailsPage.selectTab(driver, MESSAGES_TAB_ARIA_CONTROLS);
@@ -210,5 +220,4 @@ public class CreateTroubleTicketTestVFNZ extends BaseTestCase {
         messagesTab.clickCreateCommentButton();
         // TODO asercja
     }
-
 }
