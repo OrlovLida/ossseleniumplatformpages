@@ -10,6 +10,7 @@ import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.mainheader.PerspectiveChooser;
+import com.oss.framework.mainheader.ToolbarWidget;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.IntegrationProcessWizardPage;
 import com.oss.pages.bpm.processinstances.ProcessInstancesPage;
@@ -35,7 +36,7 @@ import java.util.regex.Pattern;
 /**
  * @author Gabriela Kasza
  */
-@Listeners({ TestListener.class })
+@Listeners({TestListener.class})
 public class CreateProcessNRPTest extends BaseTestCase {
     private String BPM_USER_LOGIN = "bpm_webselenium";
     private String BPM_USER_PASSWORD = "Webtests123!";
@@ -58,10 +59,13 @@ public class CreateProcessNRPTest extends BaseTestCase {
     public void openProcessInstancesPage() {
         ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
         DelayUtils.sleep(3000);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        processInstancesPage.changeUser(BPM_USER_LOGIN, BPM_USER_PASSWORD);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
+        ToolbarWidget toolbarWidget = ToolbarWidget.create(driver, webDriverWait);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        if (!toolbarWidget.getUserName().equals(BPM_USER_LOGIN)) {
+            processInstancesPage.changeUser(BPM_USER_LOGIN, BPM_USER_PASSWORD);
+        }
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
     @Test(priority = 1)

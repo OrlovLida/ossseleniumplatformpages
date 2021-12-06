@@ -2,6 +2,7 @@ package com.oss.bpm;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
+import com.oss.framework.mainheader.ToolbarWidget;
 import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.milestones.ChangeStateMilestoneWizardPage;
@@ -99,7 +100,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         String approvalDate = LocalDate.now().plusDays(PLUS_DAYS).toString();
         String currentLeadDate = LocalDate.now().plusDays(Long.parseLong(LEAD_TIME)).toString();
         Assert.assertEquals(nextState, newStateValue);
-        Assert.assertNotEquals(newModifyDate,startModifyDate);
+        Assert.assertNotEquals(newModifyDate, startModifyDate);
         switch (nextState) {
             case NOT_NEEDED_STATE:
                 Assert.assertEquals("", newCompletionDate);
@@ -131,7 +132,14 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
     public void createProcessWithMilestones() {
         ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
         changeStateMilestoneWizardPage = new ChangeStateMilestoneWizardPage(driver);
-        changeStateMilestoneWizardPage.changeUser(BPM_USER_LOGIN, BPM_USER_PASSWORD);
+
+        ToolbarWidget toolbarWidget = ToolbarWidget.create(driver, webDriverWait);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        if (!toolbarWidget.getUserName().equals(BPM_USER_LOGIN)) {
+            changeStateMilestoneWizardPage.changeUser(BPM_USER_LOGIN, BPM_USER_PASSWORD);
+        }
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+
         String processName = "Selenium Test.Milestone-" + (int) (Math.random() * 1001);
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
 
@@ -202,6 +210,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         Assert.assertEquals(IN_PROGRESS_STATE, newStateValue);
 
         // change user for admin and try again
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         changeStateMilestoneWizardPage.changeUser(BPM_ADMIN_USER_LOGIN, BPM_ADMIN_USER_PASSWORD);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         milestoneViewPage.selectMilestone(milestoneName2);
@@ -215,7 +224,9 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
          * not needed → new → suspended → in progress → completed → in progress → suspended → new → not needed
          */
         milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         milestoneViewPage.changeUser(BPM_USER_LOGIN, BPM_USER_PASSWORD);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         milestoneViewPage.selectMilestone(milestoneName3);
 
@@ -257,8 +268,8 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         milestoneViewPage.selectAll();
         milestoneViewPage.selectMilestone(milestoneName3);
         String state2 = milestoneViewPage.getMilestoneAttribute("state");
-        Assert.assertEquals(IN_PROGRESS_STATE,state1);
-        Assert.assertEquals(IN_PROGRESS_STATE,state2);
+        Assert.assertEquals(IN_PROGRESS_STATE, state1);
+        Assert.assertEquals(IN_PROGRESS_STATE, state2);
     }
 
     @Test(priority = 5)

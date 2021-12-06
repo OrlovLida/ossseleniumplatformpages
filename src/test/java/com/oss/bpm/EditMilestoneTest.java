@@ -8,6 +8,7 @@ package com.oss.bpm;
 
 import java.time.LocalDate;
 
+import com.oss.framework.mainheader.ToolbarWidget;
 import io.qameta.allure.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,32 +38,37 @@ public class EditMilestoneTest extends BaseTestCase {
 
     private static final Logger log = LoggerFactory.getLogger(EditMilestoneTest.class);
     private final static String EDIT_MILESTONE_BUTTON = "editMilestonesContextAction";
-    
+
     private String description = "Milestone Update " + (Math.random() * 1001);
     private String milestoneName = "Milestone Update " + (Math.random() * 1001);
     private String leadTime = String.valueOf((int) (Math.random() * 101));
-    
+
     @BeforeClass
     public void createMilestone() {
         ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
+
+        ToolbarWidget toolbarWidget = ToolbarWidget.create(driver, webDriverWait);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        processInstancesPage.changeUser(BPM_USER_LOGIN, BPM_USER_PASSWORD);
+        if (!toolbarWidget.getUserName().equals(BPM_USER_LOGIN)) {
+            processInstancesPage.changeUser(BPM_USER_LOGIN, BPM_USER_PASSWORD);
+        }
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+
         String processName = "Selenium Test.Milestone-" + (int) (Math.random() * 1001);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
-        
+
         Milestone milestone1 = Milestone.builder()
                 .setLeadTime("10")
                 .setRelatedTask("Correct data")
                 .setIsActive("true")
                 .setName(milestoneName).build();
-        
+
         processWizardPage.definedMilestoneInProcess(processName, 5L,
                 "Data Correction Process").addMilestoneRow(milestone1);
         processWizardPage.clickAcceptButton();
-        
+
     }
-    
+
     @Test(priority = 1)
     @Description("Edit Description")
     public void editDescription() {
@@ -83,7 +89,7 @@ public class EditMilestoneTest extends BaseTestCase {
         Assert.assertEquals(description, newDescriptionValue);
         Assert.assertNotEquals(newModifyDate, modifyDate);
     }
-    
+
     @Test(priority = 2)
     @Description("Edit LeadTime")
     public void editLeadTime() {
@@ -104,7 +110,7 @@ public class EditMilestoneTest extends BaseTestCase {
         Assert.assertNotEquals(newModifyDate, modifyDate);
         log.info("test");
     }
-    
+
     @Test(priority = 3)
     @Description("Edit related Task")
     public void editRelatedTask() {
@@ -117,9 +123,9 @@ public class EditMilestoneTest extends BaseTestCase {
         editWizard.editMilestone(setProcess);
         String relatedTask = milestoneViewPage.getMilestoneAttribute("relatedTaskName");
         Assert.assertEquals(relatedTask, "");
-        
+
     }
-    
+
     @Test(priority = 4)
     @Description("Edit Due Date for earlier date")
     public void editDueDateEarlierDate() {
@@ -140,7 +146,7 @@ public class EditMilestoneTest extends BaseTestCase {
         Assert.assertEquals(updated_dueDate.getDueDate().get(), newDueDateValue);
         Assert.assertNotEquals(newModifyDate, modifyDate);
     }
-    
+
     @Test(priority = 5)
     @Description("Edit Due Date for later date")
     void editDueDateLaterDate() {
@@ -161,9 +167,9 @@ public class EditMilestoneTest extends BaseTestCase {
         String newModifyDate = milestoneViewPage.getMilestoneAttribute("modifyDate");
         Assert.assertEquals(updated_dueDate.getDueDate().get(), newDueDateValue);
         Assert.assertNotEquals(newModifyDate, modifyDate);
-        
+
     }
-    
+
     @Test(priority = 6)
     @Description("Check if Name is editable")
     void checkIfNameIsEditable() {
@@ -180,9 +186,9 @@ public class EditMilestoneTest extends BaseTestCase {
         });
         editWizard.cancel();
         Assert.assertEquals(runtimeException.getMessage(), "Name is not editable. You need Admin permission");
-        
+
     }
-    
+
     @Test(priority = 7)
     @Description("Edit Manual Completion")
     void editManualCompletion() {
@@ -199,12 +205,13 @@ public class EditMilestoneTest extends BaseTestCase {
         Assert.assertEquals(aTrue.getIsManualCompletion().get(), newIsManualCompletionValue);
         Assert.assertNotEquals(newModifyDate, modifyDate);
     }
-    
+
     @Test(priority = 8)
     @Description("Check if Modify User is updated")
     public void checkIfModifyUserIsUpdated() {
         // given
         MilestoneViewPage milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         milestoneViewPage.changeUser(BPM_ADMIN_USER_LOGIN, BPM_ADMIN_USER_PASSWORD);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         milestoneViewPage.selectMilestone(milestoneName);
