@@ -1,6 +1,7 @@
 package com.oss.bpm;
 
 import com.oss.BaseTestCase;
+import com.oss.framework.mainheader.ToolbarWidget;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.processmodels.ImportModelWizardPage;
 import com.oss.pages.bpm.processmodels.ProcessModelsPage;
@@ -15,6 +16,7 @@ import org.testng.annotations.Test;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
+
 /**
  * @author Paweł Rother
  */
@@ -38,7 +40,12 @@ public class ImportExportModelTest extends BaseTestCase {
     @BeforeClass
     public void openBrw() {
         ProcessModelsPage processModelsPage = new ProcessModelsPage(driver);
-        processModelsPage.changeUser(BPM_USER_LOGIN,BPM_USER_PASSWORD);
+        ToolbarWidget toolbarWidget = ToolbarWidget.create(driver, webDriverWait);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        if (!toolbarWidget.getUserName().equals(BPM_USER_LOGIN)) {
+            processModelsPage.changeUser(BPM_USER_LOGIN, BPM_USER_PASSWORD);
+        }
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
 
@@ -48,14 +55,14 @@ public class ImportExportModelTest extends BaseTestCase {
         ProcessModelsPage processModelsPage = ProcessModelsPage.goToProcessModelsPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         processModelsPage.chooseDomain(DOMAIN);
-        processModelsPage.callAction(OTHER_GROUP_ID,IMPORT_ID);
+        processModelsPage.callAction(OTHER_GROUP_ID, IMPORT_ID);
         ImportModelWizardPage importModelWizardPage = new ImportModelWizardPage(driver);
         try {
             URL resource = ImportExportModelTest.class.getClassLoader().getResource(IMPORT_PATH);
             String absolutePatch = Paths.get(resource.toURI()).toFile().getAbsolutePath();
             importModelWizardPage.attachFile(absolutePatch);
             DelayUtils.sleep(1000);
-            Assert.assertEquals("Upload success",importModelWizardPage.getImportStatus());
+            Assert.assertEquals("Upload success", importModelWizardPage.getImportStatus());
             importModelWizardPage.importButton();
         } catch (URISyntaxException e) {
             throw new RuntimeException("Cannot load file", e);
