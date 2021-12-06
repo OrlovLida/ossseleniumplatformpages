@@ -67,8 +67,7 @@ public class TableWidgetTest extends BaseTestCase {
         com.oss.framework.widgets.tablewidget.TableWidget tableWidget = inventoryViewPage.getMainTable();
         int defaultSize = tableWidget.getFirstColumnSize();
         DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
-        Assertions.assertThat(defaultSize).isEqualTo(200);
-        
+
         int offset = 400;
         tableWidget.resizeFirstColumn(offset);
         DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
