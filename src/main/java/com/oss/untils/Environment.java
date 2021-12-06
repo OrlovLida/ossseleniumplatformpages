@@ -43,7 +43,8 @@ public class Environment {
     private static final String DISCOVERY_IP_PROP = "discovery.ip";
     
     private static final Integer CURRENT_TOKEN_IDENTIFIER = 1;
-    
+    private static final Configuration CONFIGURATION = new Configuration();
+
     private final String serviceDiscoveryUri;
     private final int serviceDiscoveryPort;
     private final String keycloakUserName;
@@ -69,8 +70,8 @@ public class Environment {
         LOGGER.info("Prefix URI for service discovery and keycloak: " + serviceDiscoveryUri + ":" + serviceDiscoveryPort);
         LOGGER.info("It can be changed using java properties: " + DISCOVERY_IP_PROP + " and " + DISCOVERY_PORT_PROP);
         
-        keycloakUserName = System.getProperty(KEYCLOAK_USERNAME_PROP, "ossadmin");
-        keycloakUserPassword = System.getProperty(KEYCLOAK_PASS_PROP, "insightadmin");
+        keycloakUserName = System.getProperty(KEYCLOAK_USERNAME_PROP, CONFIGURATION.getLogin());
+        keycloakUserPassword = System.getProperty(KEYCLOAK_PASS_PROP, CONFIGURATION.getPassword());
         
         Preconditions.checkNotNull(keycloakUserName, "Provide keycloak.username java parameter");
         Preconditions.checkNotNull(keycloakUserPassword, "Provide keycloak.pass java parameter");
