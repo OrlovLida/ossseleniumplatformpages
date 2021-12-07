@@ -35,6 +35,18 @@ public class IPAMServicesCheckTest {
         SERVICES_CHECKER.testHealth("inventory-view-core");
     }
 
+    @Test(priority = 3)
+    @Step("Check ipaddress-management-view")
+    public void checkIPAddressManagementView() {
+        SERVICES_CHECKER.testHealth("ipaddress-management-view");
+    }
+
+    @Test(priority = 4)
+    @Step("Check transport-view")
+    public void checkTransportView() {
+        SERVICES_CHECKER.testHealth("transport-view");
+    }
+
     private static Environment createEnvironment() {
         try {
             URL url = new URL(BASIC_URL);
