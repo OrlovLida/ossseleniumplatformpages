@@ -35,7 +35,7 @@ public class IPAMServicesCheckTest {
         SERVICES_CHECKER.testHealth("inventory-view-core");
     }
 
-    @Test(priority = 4)
+    @Test(priority = 3)
     @Step("Check transport-view")
     public void checkTransportView() {
         SERVICES_CHECKER.testHealth("transport-view");
