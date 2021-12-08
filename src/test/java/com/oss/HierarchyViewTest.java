@@ -39,20 +39,20 @@ public class HierarchyViewTest extends BaseTestCase {
     private HierarchyViewPage hierarchyViewPage;
     private String locationId;
     private Long roomId_2;
-
+    
     @BeforeClass
     public void goToHierarchyViewPage() {
         hierarchyViewPage = HierarchyViewPage.openHierarchyViewPage(driver, BASIC_URL, "Location");
         LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);
-        if (!locationInventoryRepository.getLocationId(LOCATION_NAME).isPresent()){
+        if (!locationInventoryRepository.getLocationId(LOCATION_NAME).isPresent()) {
             createLocationsForTest();
         }
         locationId = locationInventoryRepository.getLocationId(LOCATION_NAME).get();
         hierarchyViewPage.getMainTree().searchByAttribute(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, LOCATION_NAME);
         List<String> nodesLabel = hierarchyViewPage.getVisibleNodesLabel();
         Assertions.assertThat(nodesLabel).contains(LOCATION_NAME);
-
-        log.info("Location Id: "+locationId);
+        
+        log.info("Search Location (XID: " + locationId + ") in Hierarchy View");
     }
     
     private void createLocationsForTest() {
@@ -69,9 +69,9 @@ public class HierarchyViewTest extends BaseTestCase {
         Assertions.assertThat(hierarchyViewPage
                 .getFirstNode().isToggled()).isTrue();
     }
-
+    
     @Test(priority = 2)
-    public void unselectFirstNode(){
+    public void unselectFirstNode() {
         hierarchyViewPage.unselectFirstObject();
         Assertions.assertThat(hierarchyViewPage
                 .getFirstNode().isToggled()).isFalse();
@@ -82,13 +82,13 @@ public class HierarchyViewTest extends BaseTestCase {
         hierarchyViewPage.expandTreeNode(hierarchyViewPage.getFirstNode().getLabel());
         Assertions.assertThat(hierarchyViewPage.getFirstNode().isExpanded()).isTrue();
     }
-
+    
     @Test(priority = 4)
-    public void collapseNode(){
+    public void collapseNode() {
         hierarchyViewPage.getFirstNode().collapseNode();
         Assertions.assertThat(hierarchyViewPage.getFirstNode().isExpanded()).isFalse();
     }
-
+    
     @Test(priority = 5)
     public void expandNextLevel() {
         hierarchyViewPage.expandNextLevel(LOCATION_NAME);
@@ -103,7 +103,7 @@ public class HierarchyViewTest extends BaseTestCase {
     
     @Test(priority = 6)
     public void refreshRelation() {
-        roomId_2 = createRoom(ROOM_NAME_2,Long.valueOf(locationId),LOCATION_TYPE_BUILDING);
+        roomId_2 = createRoom(ROOM_NAME_2, Long.valueOf(locationId), LOCATION_TYPE_BUILDING);
         hierarchyViewPage.getMainTree()
                 .getNodeByLabelsPath(LOCATION_NAME + ".Locations")
                 .callAction(REFRESH_INLINE);
@@ -121,31 +121,30 @@ public class HierarchyViewTest extends BaseTestCase {
         Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(ROOM_NAME_2_UPDATED);
         
     }
-
-
+    
     @Test(priority = 8)
     public void searchWithNotExistingData() {
         hierarchyViewPage.clearFiltersOnMainTree();
         hierarchyViewPage.searchObject("hjakserzxaseer");
         List<Node> nodes = hierarchyViewPage.getMainTree().getVisibleNodes();
-
+        
         Assertions.assertThat(nodes).hasSize(0);
         hierarchyViewPage.clearFiltersOnMainTree();
     }
-
+    
     @Test(priority = 9)
     public void searchWithExistingData() {
         Node node = hierarchyViewPage.getFirstNode();
         String label = node.getLabel();
-
+        
         hierarchyViewPage.searchObject(label);
         List<Node> nodes = hierarchyViewPage.getMainTree().getVisibleNodes();
-
+        
         Assertions.assertThat(nodes).hasSize(1);
         Assertions.assertThat(nodes.get(0).getLabel()).isEqualTo(label);
         hierarchyViewPage.clearFiltersOnMainTree();
     }
-
+    
     @Test(priority = 10)
     public void showOnHierarchyView() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -154,43 +153,44 @@ public class HierarchyViewTest extends BaseTestCase {
         List<Node> nodes = hierarchyViewPage.getMainTree().getVisibleNodes();
         Assertions.assertThat(nodes).hasSize(1);
     }
-
     
     @AfterClass
     private void deleteSubLocation() {
         LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);
         locationInventoryRepository.deleteSubLocation(roomId_2.toString());
     }
-
-    private String createBuilding(Long addressId){
+    
+    private String createBuilding(Long addressId) {
         LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);
         return locationInventoryRepository.createLocation(LOCATION_NAME, LOCATION_TYPE_BUILDING, addressId);
     }
-
-    private Long createRoom(String roomName, Long preciseLocationId, String preciseLocationType){
+    
+    private Long createRoom(String roomName, Long preciseLocationId, String preciseLocationType) {
         LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);
         return locationInventoryRepository.createSubLocation(SUB_LOCATION_TYPE_ROOM, roomName, preciseLocationId, preciseLocationType,
                 Long.valueOf(locationId), LOCATION_TYPE_BUILDING);
     }
-    private Long createFloor(String floorName, String preciseLocationId, String preciseLocationType){
+    
+    private Long createFloor(String floorName, String preciseLocationId, String preciseLocationType) {
         LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);
-        return locationInventoryRepository.createSubLocation(SUB_LOCATION_TYPE_FLOOR, floorName, Long.parseLong(preciseLocationId), preciseLocationType,
+        return locationInventoryRepository.createSubLocation(SUB_LOCATION_TYPE_FLOOR, floorName, Long.parseLong(preciseLocationId),
+                preciseLocationType,
                 Long.valueOf(locationId), LOCATION_TYPE_BUILDING);
     }
-
-    private Long createRow(String rowName, Long preciseLocationId, String preciseLocationType){
+    
+    private Long createRow(String rowName, Long preciseLocationId, String preciseLocationType) {
         LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);
         return locationInventoryRepository.createSubLocation(SUB_LOCATION_TYPE_ROW, rowName, preciseLocationId, preciseLocationType,
                 Long.valueOf(locationId), LOCATION_TYPE_BUILDING);
     }
-
-    private void updateRoom(Long id, String roomName){
+    
+    private void updateRoom(Long id, String roomName) {
         LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);
-        locationInventoryRepository.updateSubLocation(id, SUB_LOCATION_TYPE_ROOM, roomName,Long.valueOf(locationId) ,
+        locationInventoryRepository.updateSubLocation(id, SUB_LOCATION_TYPE_ROOM, roomName, Long.valueOf(locationId),
                 LOCATION_TYPE_BUILDING, Long.valueOf(locationId), LOCATION_TYPE_BUILDING);
     }
-
-    private Long getGeographicalAddress(){
+    
+    private Long getGeographicalAddress() {
         AddressRepository addressRepository = new AddressRepository(env);
         return addressRepository.getFirstGeographicalAddressId();
     }
