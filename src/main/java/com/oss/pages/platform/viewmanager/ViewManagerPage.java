@@ -5,7 +5,6 @@ import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.SearchField;
 import com.oss.framework.components.portals.ActionsDropdownList;
 import com.oss.framework.navigation.ApplicationWizard;
-import com.oss.framework.navigation.CategoryWizard;
 import com.oss.framework.navigation.ToolsManagerWindow;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.utils.DragAndDrop;
@@ -13,7 +12,6 @@ import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class ViewManagerPage extends BasePage {
 
@@ -94,7 +92,7 @@ public class ViewManagerPage extends BasePage {
     }
 
     public void enterEditionOfCategory(String categoryName){
-        toolsManagerWindow.enterEditionOfCategory(categoryName);
+        toolsManagerWindow.openEditionOfCategory(categoryName);
     }
 
     public ApplicationWizard enterAddApplicationWizardInCategory(String categoryName, String wizardId){
@@ -108,7 +106,7 @@ public class ViewManagerPage extends BasePage {
     }
 
     public void enterEditSubcategoryButton(String subcategoryName) {
-        toolsManagerWindow.enterEditSubcategoryButton(subcategoryName);
+        toolsManagerWindow.openEditSubcategory(subcategoryName);
     }
 
     public void removeSubcategory(String subcategoryName) {
@@ -118,7 +116,7 @@ public class ViewManagerPage extends BasePage {
     }
 
     public void enterCreateSubcategoryInMainCategory(String mainCategoryName){
-        toolsManagerWindow.enterCreateSubcategoryInMainCategory(mainCategoryName);
+        toolsManagerWindow.openCreateSubcategoryInMainCategory(mainCategoryName);
     }
 
     public void clickButtonsGroupOnFirstApplication() {

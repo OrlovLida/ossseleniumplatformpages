@@ -45,7 +45,7 @@
 //    public void changeCategoryNameAndDescription() {
 //        viewManagerPage.clearSearchField();
 //        DelayUtils.sleep(1000);
-//        viewManagerPage.enterEditionOfCategory("Test Category");
+//        viewManagerPage.openEditionOfCategory("Test Category");
 //        CategoryWizard editCategoryWizard = viewManagerPage.goToCategoryPopup();
 //        editCategoryWizard.cleanValue();
 //        editCategoryWizard.setNameValue("Name after edition");
@@ -122,7 +122,7 @@
 //
 //    @Test(priority = 7)
 //    public void addSubcategory() {
-//        viewManagerPage.enterCreateSubcategoryInMainCategory("Name after edition");
+//        viewManagerPage.openCreateSubcategoryInMainCategory("Name after edition");
 //        CategoryWizard subcategoryWizard = viewManagerPage.goToCategoryPopup();
 //        subcategoryWizard.setNameValue("Test Subcategory");
 //        subcategoryWizard.setDescriptionValue("Test Subcategory Description");
@@ -170,7 +170,7 @@
 //
 //    @Test(priority = 11)
 //    public void changePlaceOfTwoSubcategories() {
-//        viewManagerPage.enterCreateSubcategoryInMainCategory("Name after edition");
+//        viewManagerPage.openCreateSubcategoryInMainCategory("Name after edition");
 //        CategoryWizard subcategoryWizard = viewManagerPage.goToCategoryPopup();
 //        subcategoryWizard.setNameValue("Second Subcategory");
 //        subcategoryWizard.setDescriptionValue("Second Subcategory Description");
@@ -208,7 +208,7 @@
 //
 //    @Test(priority = 13)
 //    public void editSubcategory() {
-//        viewManagerPage.enterEditSubcategoryButton("Second Subcategory");
+//        viewManagerPage.openEditSubcategory("Second Subcategory");
 //        CategoryWizard editSubcategoryWizard = viewManagerPage.goToCategoryPopup();
 //        editSubcategoryWizard.setNameValue("Subcategory After Edition");
 //        editSubcategoryWizard.setDescriptionValue("Description After Edition");
