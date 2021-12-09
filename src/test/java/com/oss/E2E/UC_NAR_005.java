@@ -75,6 +75,8 @@ public class UC_NAR_005 extends BaseTestCase {
         samplesManagementPage.uploadSamples("recoSamples/UC_NAR_005/First/UCNAR05_10.20.0.50_20170707_1300_sh_inventory_raw");
         DelayUtils.sleep(1000);
         samplesManagementPage.uploadSamples("recoSamples/UC_NAR_005/First/UCNAR05_10.20.0.50_20170707_1300_sh_version");
+        DelayUtils.sleep(1000);
+        waitForPageToLoad();
     }
 
     @Test(priority = 3)
@@ -120,6 +122,8 @@ public class UC_NAR_005 extends BaseTestCase {
         samplesManagementPage.uploadSamples("recoSamples/UC_NAR_005/Second/UCNAR05_10.20.0.50_20170707_1300_sh_inventory_raw");
         DelayUtils.sleep(1000);
         samplesManagementPage.uploadSamples("recoSamples/UC_NAR_005/Second/UCNAR05_10.20.0.50_20170707_1300_sh_version");
+        DelayUtils.sleep(1000);
+        waitForPageToLoad();
     }
 
     @Test(priority = 6)
