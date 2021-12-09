@@ -393,6 +393,8 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         samplesManagementPage.uploadSamples("recoSamples/ciscoE2E/H3_Lab_100.100.100.100_20181016_1500_sh_inventory_raw.cli");
         DelayUtils.sleep(1000);
         samplesManagementPage.uploadSamples("recoSamples/ciscoE2E/H3_Lab_100.100.100.100_20181016_1500_sh_version.cli");
+        DelayUtils.sleep(1000);
+        waitForPageToLoad();
     }
 
     @Test(priority = 18)
