@@ -68,6 +68,8 @@ public class UC_NAR_004 extends BaseTestCase {
         samplesManagementPage.uploadSamples("recoSamples/UC_NAR_004/KRK-SSE8-45_10.166.10.1_20181107_1306_sh_inventory_raw");
         DelayUtils.sleep(1000);
         samplesManagementPage.uploadSamples("recoSamples/UC_NAR_004/KRK-SSE8-45_10.166.10.1_20181107_1306_sh_version");
+        DelayUtils.sleep(1000);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
     @Test(priority = 3)
@@ -126,6 +128,8 @@ public class UC_NAR_004 extends BaseTestCase {
         samplesManagementPage.uploadSamples("recoSamples/ciscoIOS/empty/Selenium1_10.252.255.201_20170707_1324_sh_inventory_raw");
         DelayUtils.sleep(1000);
         samplesManagementPage.uploadSamples("recoSamples/ciscoIOS/empty/Selenium1_10.252.255.201_20170707_1324_sh_version");
+        DelayUtils.sleep(1000);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
     @Test(priority = 7)
