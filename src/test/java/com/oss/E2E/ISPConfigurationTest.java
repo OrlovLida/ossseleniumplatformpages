@@ -81,7 +81,7 @@ public class ISPConfigurationTest extends BaseTestCase {
     }
 
     private SystemMessageInterface getSuccesSystemMessage() {
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, 75));
         Assert.assertEquals((systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType()), MessageType.SUCCESS);
         return systemMessage;
     }
