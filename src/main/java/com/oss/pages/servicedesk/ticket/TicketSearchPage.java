@@ -18,6 +18,8 @@ import static com.oss.pages.servicedesk.ticket.TicketDetailsPage.DETAILS_PAGE_UR
 
 public class TicketSearchPage extends BaseSDPage {
 
+    private static final Logger log = LoggerFactory.getLogger(TicketSearchPage.class);
+
     public static final String ID_ATTRIBUTE = "id";
     public static final String ASSIGNEE_ATTRIBUTE = "ticketOut.issueOut.assignee.name";
     public static final String CREATION_TIME_ATTRIBUTE = "ticketOut.issueOut.createDate";
@@ -26,21 +28,19 @@ public class TicketSearchPage extends BaseSDPage {
     public static final String FILTER_BUTTON_CLASS = "button-filters-panel";
     public static final String DESCRIPTION_ATTRIBUTE = "incidentDescription";
 
-    private static final Logger log = LoggerFactory.getLogger(TicketSearchPage.class);
     private static final String TABLE_WIDGET_ID = "ticket-search-graphql-table";
     private static final String TICKET_SEARCH = "ticket-search";
 
-    public TicketSearchPage(WebDriver driver) {
-        super(driver);
+    public TicketSearchPage(WebDriver driver, WebDriverWait wait) {
+        super(driver, wait);
     }
 
     @Step("I Open Ticket Search View")
     public TicketSearchPage goToPage(WebDriver driver, String basicURL) {
-        DelayUtils.waitForPageToLoad(driver, wait);
         openPage(driver, String.format(VIEWS_URL_PATTERN, basicURL, TICKET_SEARCH));
-        DelayUtils.sleep(5000);
+        DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Ticket Search View is opened");
-        return new TicketSearchPage(driver);
+        return new TicketSearchPage(driver, wait);
     }
 
     @Step("I filter tickets by text attribute {attributeName} set to {attributeValue}")
@@ -61,9 +61,9 @@ public class TicketSearchPage extends BaseSDPage {
         // (see TableWidget#selectLinkInSpecificColumn)
         String ticketId = getTicketTable().getCellValue(Integer.parseInt(rowIndex), ID_ATTRIBUTE);
         log.info("Opening ticket details for ticket with id: {}", ticketId);
-        DelayUtils.waitForPageToLoad(driver, wait);
         openPage(driver, String.format(DETAILS_PAGE_URL_PATTERN, basicURL, ticketId));
-        return new TicketDetailsPage(driver);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return new TicketDetailsPage(driver, wait);
     }
 
     public String getAssigneeForNthTicketInTable(int n) {
@@ -96,8 +96,7 @@ public class TicketSearchPage extends BaseSDPage {
 
     public void clickFilterButton() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        Button filterButton = Button.createByIcon(driver, "fa fa-filter", FILTER_BUTTON_CLASS);
+        Button.createByIcon(driver, "fa fa-filter", FILTER_BUTTON_CLASS).click();
         log.info("Clicking filter button");
-        filterButton.click();
     }
 }

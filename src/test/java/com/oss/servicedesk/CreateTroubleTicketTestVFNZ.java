@@ -5,7 +5,7 @@ import com.oss.pages.servicedesk.ticket.TicketDashboardPage;
 import com.oss.pages.servicedesk.ticket.TicketDetailsPage;
 import com.oss.pages.servicedesk.ticket.TicketSearchPage;
 import com.oss.pages.servicedesk.ticket.tabs.MessagesTab;
-import com.oss.pages.servicedesk.ticket.wizard.WizardPage;
+import com.oss.pages.servicedesk.ticket.wizard.SDWizardPage;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 import org.testng.Assert;
@@ -21,7 +21,7 @@ public class CreateTroubleTicketTestVFNZ extends BaseTestCase {
 
     private TicketDashboardPage ticketDashboardPage;
     private TicketSearchPage ticketSearchPage;
-    private WizardPage wizardPage;
+    private SDWizardPage SDWizardPage;
     private TicketDetailsPage ticketDetailsPage;
     private MessagesTab messagesTab;
 
@@ -89,19 +89,19 @@ public class CreateTroubleTicketTestVFNZ extends BaseTestCase {
     @Test(priority = 1, testName = "Create CTT Ticket", description = "Create CTT Ticket")
     @Description("Create CTT Ticket")
     public void createCTTTicket() {
-        wizardPage = ticketDashboardPage.openCreateTicketWizard(driver, "CTT");
-        wizardPage.getMoStep().enterTextIntoSearchComponent(driver, MO_IDENTIFIER);
-        wizardPage.getMoStep().selectRowInMOTable(driver, "0");
-        wizardPage.clickNextButtonInWizard(driver);
-        wizardPage.insertValueToSearchComponent(TT_ASSIGNEE, TT_WIZARD_ASSIGNEE);
-        wizardPage.insertValueToTextComponent(TT_CORRELATION_ID, TT_WIZARD_CORRELATION_ID);
-        wizardPage.insertValueToTextComponent(TT_REFERENCE_ID, TT_WIZARD_REFERENCE_ID);
-        wizardPage.enterIncidentDescription(TT_DESCRIPTION);
-        wizardPage.clickNextButtonInWizard(driver);
+        SDWizardPage = ticketDashboardPage.openCreateTicketWizard("CTT");
+        SDWizardPage.getMoStep().enterTextIntoSearchComponent(MO_IDENTIFIER);
+        SDWizardPage.getMoStep().selectRowInMOTable("0");
+        SDWizardPage.clickNextButtonInWizard();
+        SDWizardPage.insertValueToSearchComponent(TT_ASSIGNEE, TT_WIZARD_ASSIGNEE);
+        SDWizardPage.insertValueToTextComponent(TT_CORRELATION_ID, TT_WIZARD_CORRELATION_ID);
+        SDWizardPage.insertValueToTextComponent(TT_REFERENCE_ID, TT_WIZARD_REFERENCE_ID);
+        SDWizardPage.enterIncidentDescription(TT_DESCRIPTION);
+        SDWizardPage.clickNextButtonInWizard();
         String date = LocalDateTime.now().minusMinutes(5).format(CREATE_DATE_FILTER_DATE_FORMATTER);
-        wizardPage.insertValueToTextComponent(date, TT_WIZARD_ISSUE_START_DATE_ID);
-        wizardPage.insertValueToTextComponent(date, TT_WIZARD_MESSAGE_DATE_ID);
-        wizardPage.clickAcceptButtonInWizard(driver);
+        SDWizardPage.insertValueToTextComponent(date, TT_WIZARD_ISSUE_START_DATE_ID);
+        SDWizardPage.insertValueToTextComponent(date, TT_WIZARD_MESSAGE_DATE_ID);
+        SDWizardPage.clickAcceptButtonInWizard();
         Assert.assertEquals(ticketDashboardPage.getAssigneeForNthTicketInTTTable(0), TT_ASSIGNEE);
     }
 
@@ -110,14 +110,14 @@ public class CreateTroubleTicketTestVFNZ extends BaseTestCase {
     public void editTicketDetails() {
         ticketDetailsPage = ticketDashboardPage.openTicketDetailsView("0", BASIC_URL);
         ticketDetailsPage.maximizeWindow(DETAILS_WINDOW_ID);
-        wizardPage = ticketDetailsPage.openEditTicketWizard(driver);
-        wizardPage.clickNextButtonInWizard(driver);
-        wizardPage.insertValueToSearchComponent(TT_NEW_ASSIGNEE, TT_WIZARD_ASSIGNEE);
-        wizardPage.enterIncidentDescription(TT_DESCRIPTION_EDITED);
-        wizardPage.insertValueToSearchComponent(TT_ESCALATED_TO, TT_WIZARD_ESCALATED_TO);
-        wizardPage.insertValueToMultiComboBoxComponent(TT_SEVERITY, TT_WIZARD_SEVERITY);
-        wizardPage.clickNextButtonInWizard(driver);
-        wizardPage.clickAcceptButtonInWizard(driver);
+        SDWizardPage = ticketDetailsPage.openEditTicketWizard();
+        SDWizardPage.clickNextButtonInWizard();
+        SDWizardPage.insertValueToSearchComponent(TT_NEW_ASSIGNEE, TT_WIZARD_ASSIGNEE);
+        SDWizardPage.enterIncidentDescription(TT_DESCRIPTION_EDITED);
+        SDWizardPage.insertValueToSearchComponent(TT_ESCALATED_TO, TT_WIZARD_ESCALATED_TO);
+        SDWizardPage.insertValueToMultiComboBoxComponent(TT_SEVERITY, TT_WIZARD_SEVERITY);
+        SDWizardPage.clickNextButtonInWizard();
+        SDWizardPage.clickAcceptButtonInWizard();
     }
 
     @Test(priority = 3, testName = "Skipp checklist actions and change status", description = "Skipp checklist actions and change status")
@@ -132,7 +132,7 @@ public class CreateTroubleTicketTestVFNZ extends BaseTestCase {
     @Test(priority = 4, testName = "Open Ticket Details from Tickets Search view", description = "Open Ticket Details from Tickets Search view")
     @Description("Open Ticket Details from Tickets Search view")
     public void openTicketDetailsFromTicketsSearchView() {
-        ticketSearchPage = new TicketSearchPage(driver);
+        ticketSearchPage = new TicketSearchPage(driver, webDriverWait);
         ticketSearchPage.goToPage(driver, BASIC_URL);
         ticketSearchPage.clickFilterButton();
         ticketSearchPage.filterByTextField(TicketSearchPage.ASSIGNEE_ATTRIBUTE, TT_NEW_ASSIGNEE);
@@ -152,69 +152,69 @@ public class CreateTroubleTicketTestVFNZ extends BaseTestCase {
     @Test(priority = 5, testName = "Add external to ticket", description = "Add external to ticket")
     @Description("Add external to ticket")
     public void addExternalToTicket() {
-        ticketDetailsPage.selectTab(driver, EXTERNAL_TAB_ARIA_CONTROLS);
+        ticketDetailsPage.selectTab(EXTERNAL_TAB_ARIA_CONTROLS);
         ticketDetailsPage.clickContextAction(ADD_EXTERNAL_LABEL);
-        WizardPage wizardPage = new WizardPage(driver);
-        wizardPage.insertValueToTextComponent(TT_EXTERNAL, WIZARD_EXTERNAL_NAME);
-        wizardPage.clickCreateExternalButtonInWizard(driver);
+        SDWizardPage SDWizardPage = new SDWizardPage(driver, webDriverWait);
+        SDWizardPage.insertValueToTextComponent(TT_EXTERNAL, WIZARD_EXTERNAL_NAME);
+        SDWizardPage.clickCreateExternalButtonInWizard();
         Assert.assertTrue(ticketDetailsPage.checkExistingExternal(TT_EXTERNAL));
     }
 
     @Test(priority = 6, testName = "Add dictionary to ticket", description = "Add dictionary to ticket")
     @Description("Add dictionary to ticket")
     public void addDictionaryToTicket() {
-        ticketDetailsPage.selectTab(driver, DICTIONARIES_TAB_ARIA_CONTROLS);
+        ticketDetailsPage.selectTab(DICTIONARIES_TAB_ARIA_CONTROLS);
         ticketDetailsPage.clickContextAction(ADD_TO_LIBRARY_LABEL);
-        WizardPage dictionaryWizardPage = new WizardPage(driver);
-        dictionaryWizardPage.insertValueToComboBoxComponent(TT_LIBRARY_TYPE, WIZARD_LIBRARY_TYPE_ID);
-        dictionaryWizardPage.insertValueToComboBoxComponent(TT_CATEGORY_NAME, WIZARD_CATEGORY_ID);
-        dictionaryWizardPage.clickAcceptButtonInWizard(driver);
+        SDWizardPage dictionarySDWizardPage = new SDWizardPage(driver, webDriverWait);
+        dictionarySDWizardPage.insertValueToComboBoxComponent(TT_LIBRARY_TYPE, WIZARD_LIBRARY_TYPE_ID);
+        dictionarySDWizardPage.insertValueToComboBoxComponent(TT_CATEGORY_NAME, WIZARD_CATEGORY_ID);
+        dictionarySDWizardPage.clickAcceptButtonInWizard();
         Assert.assertEquals(ticketDetailsPage.checkExistingDictionary(), TT_CATEGORY_NAME);
     }
 
     @Test(priority = 7, testName = "Check Description Tab", description = "Check Description Tab")
     @Description("Check Description Tab")
     public void checkDescriptionTab() {
-        ticketDetailsPage.selectTab(driver, DESCRIPTION_TAB_ARIA_CONTROLS);
+        ticketDetailsPage.selectTab(DESCRIPTION_TAB_ARIA_CONTROLS);
         Assert.assertTrue(ticketDetailsPage.checkDisplayedText(TT_DESCRIPTION_EDITED, TABLES_WINDOW_ID));
     }
 
     @Test(priority = 8, testName = "Check Messages Tab - add Internal Notification", description = "Check Messages Tab - add Internal Notification")
     @Description("Check Messages Tab - add Internal Notification")
     public void addInternalNotification() {
-        ticketDetailsPage.selectTab(driver, MESSAGES_TAB_ARIA_CONTROLS);
+        ticketDetailsPage.selectTab(MESSAGES_TAB_ARIA_CONTROLS);
         ticketDetailsPage.createNewNotificationOnMessagesTab();
-        WizardPage notificationWizardPage = new WizardPage(driver);
-        notificationWizardPage.insertValueToComboBoxComponent(NOTIFICATION_CHANNEL_INTENRAL, NOTIFICATION_WIZARD_CHANNEL_ID);
-        notificationWizardPage.insertValueToTextAreaComponent(NOTIFICATION_MESSAGE, NOTIFICATION_WIZARD_MESSAGE_ID);
-        notificationWizardPage.insertValueToMultiSearchComponent(NOTIFICATION_INTERNAL_TO, NOTIFICATION_WIZARD_INTERNAL_TO_ID);
-        notificationWizardPage.clickComboBox(NOTIFICATION_WIZARD_TEMPLATE_ID);
-        notificationWizardPage.insertValueToComboBoxComponent(NOTIFICATION_TYPE, NOTIFICATION_WIZARD_TYPE_ID);
-        notificationWizardPage.clickAcceptButtonInWizard(driver);
+        SDWizardPage notificationSDWizardPage = new SDWizardPage(driver, webDriverWait);
+        notificationSDWizardPage.insertValueToComboBoxComponent(NOTIFICATION_CHANNEL_INTENRAL, NOTIFICATION_WIZARD_CHANNEL_ID);
+        notificationSDWizardPage.insertValueToTextAreaComponent(NOTIFICATION_MESSAGE, NOTIFICATION_WIZARD_MESSAGE_ID);
+        notificationSDWizardPage.insertValueToMultiSearchComponent(NOTIFICATION_INTERNAL_TO, NOTIFICATION_WIZARD_INTERNAL_TO_ID);
+        notificationSDWizardPage.clickComboBox(NOTIFICATION_WIZARD_TEMPLATE_ID);
+        notificationSDWizardPage.insertValueToComboBoxComponent(NOTIFICATION_TYPE, NOTIFICATION_WIZARD_TYPE_ID);
+        notificationSDWizardPage.clickAcceptButtonInWizard();
         // TODO asercja
     }
 
     @Test(priority = 9, testName = "Check Messages Tab - add Email Notification", description = "Check Messages Tab - add Email Notification")
     @Description("Check Messages Tab - add Email Notification")
     public void addEmailNotification() {
-        ticketDetailsPage.selectTab(driver, MESSAGES_TAB_ARIA_CONTROLS);
+        ticketDetailsPage.selectTab(MESSAGES_TAB_ARIA_CONTROLS);
         ticketDetailsPage.createNewNotificationOnMessagesTab();
-        WizardPage notificationWizardPage = new WizardPage(driver);
-        notificationWizardPage.insertValueToComboBoxComponent(NOTIFICATION_CHANNEL_EMAIL, NOTIFICATION_WIZARD_CHANNEL_ID);
-        notificationWizardPage.insertValueToMultiSearchComponent(NOTIFICATION_EMAIL_TO, NOTIFICATION_WIZARD_TO_ID);
-        notificationWizardPage.insertValueToMultiComboBoxComponent(NOTIFICATION_EMAIL_FROM, NOTIFICATION_WIZARD_FROM_ID);
-        notificationWizardPage.insertValueToTextComponent(NOTIFICATION_SUBJECT, NOTIFICATION_WIZARD_SUBJECT_ID);
-        notificationWizardPage.enterEmailMessage(NOTIFICATION_MESSAGE);
-        notificationWizardPage.clickAcceptButtonInWizard(driver);
+        SDWizardPage notificationSDWizardPage = new SDWizardPage(driver, webDriverWait);
+        notificationSDWizardPage.insertValueToComboBoxComponent(NOTIFICATION_CHANNEL_EMAIL, NOTIFICATION_WIZARD_CHANNEL_ID);
+        notificationSDWizardPage.insertValueToMultiSearchComponent(NOTIFICATION_EMAIL_TO, NOTIFICATION_WIZARD_TO_ID);
+        notificationSDWizardPage.insertValueToMultiComboBoxComponent(NOTIFICATION_EMAIL_FROM, NOTIFICATION_WIZARD_FROM_ID);
+        notificationSDWizardPage.insertValueToTextComponent(NOTIFICATION_SUBJECT, NOTIFICATION_WIZARD_SUBJECT_ID);
+        notificationSDWizardPage.enterEmailMessage(NOTIFICATION_MESSAGE);
+        notificationSDWizardPage.clickAcceptButtonInWizard();
         // TODO asercja
     }
 
     @Test(priority = 10, testName = "Check Messages Tab - add Internal Comment", description = "Check Messages Tab - add Internal Comment")
     @Description("Check Messages Tab - add Internal Comment")
     public void addInternalComment() {
-        ticketDetailsPage.selectTab(driver, MESSAGES_TAB_ARIA_CONTROLS);
-        messagesTab = new MessagesTab(driver);
-        messagesTab.clickCreateNewCommentButton(driver);
+        ticketDetailsPage.selectTab(MESSAGES_TAB_ARIA_CONTROLS);
+        messagesTab = new MessagesTab(driver, webDriverWait);
+        messagesTab.clickCreateNewCommentButton();
         // TODO dodac wybieranie typu komentarza
         messagesTab.enterCommentMessage(NOTIFICATION_MESSAGE);
         messagesTab.clickCreateCommentButton();
