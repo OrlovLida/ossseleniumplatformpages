@@ -15,7 +15,7 @@ public class TicketSearchViewTest extends BaseTestCase {
 
     @BeforeClass
     public void goToTicketSearchView() {
-        ticketSearchPage = new TicketSearchPage(driver);
+        ticketSearchPage = new TicketSearchPage(driver, webDriverWait);
         ticketSearchPage.goToPage(driver, BASIC_URL);
     }
 
@@ -26,5 +26,4 @@ public class TicketSearchViewTest extends BaseTestCase {
         ticketSearchPage.filterByTextField(TicketSearchPage.ID_ATTRIBUTE, ticketId);
         ticketSearchPage.openTicketDetailsView("0", BASIC_URL);
     }
-
 }

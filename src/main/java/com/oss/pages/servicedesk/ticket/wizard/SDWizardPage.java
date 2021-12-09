@@ -1,7 +1,6 @@
 package com.oss.pages.servicedesk.ticket.wizard;
 
 import com.oss.framework.components.contextactions.ButtonContainer;
-import com.oss.framework.components.inputs.HtmlEditor;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.data.Data;
 import com.oss.framework.utils.DelayUtils;
@@ -9,12 +8,13 @@ import com.oss.framework.widgets.Wizard;
 import com.oss.pages.servicedesk.BaseSDPage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class WizardPage extends BaseSDPage {
+public class SDWizardPage extends BaseSDPage {
 
-    private static final Logger log = LoggerFactory.getLogger(WizardPage.class);
+    private static final Logger log = LoggerFactory.getLogger(SDWizardPage.class);
 
     private static final String INCIDENT_DESCRIPTION_ID = "TT_WIZARD_INPUT_INCIDENT_DESCRIPTION";
     private static final String EMAIL_MESSAGE_ID = "message-component";
@@ -22,9 +22,9 @@ public class WizardPage extends BaseSDPage {
 
     private final MOStep moStep;
 
-    public WizardPage(WebDriver driver) {
-        super(driver);
-        this.moStep = new MOStep(wait);
+    public SDWizardPage(WebDriver driver, WebDriverWait wait) {
+        super(driver, wait);
+        this.moStep = new MOStep(driver, wait);
     }
 
     public MOStep getMoStep() {
@@ -32,21 +32,21 @@ public class WizardPage extends BaseSDPage {
     }
 
     @Step("I click Next button in wizard")
-    public void clickNextButtonInWizard(WebDriver driver) {
+    public void clickNextButtonInWizard() {
         DelayUtils.waitForPageToLoad(driver, wait);
         getWizard().clickNext();
         log.info("Clicking Next button in the wizard");
     }
 
     @Step("I click Accept button in wizard")
-    public void clickAcceptButtonInWizard(WebDriver driver) {
+    public void clickAcceptButtonInWizard() {
         DelayUtils.waitForPageToLoad(driver, wait);
         getWizard().clickAccept();
         log.info("Clicking Accept button in the wizard");
     }
 
     @Step("I click Create External button in wizard")
-    public void clickCreateExternalButtonInWizard(WebDriver driver) {
+    public void clickCreateExternalButtonInWizard() {
         DelayUtils.waitForPageToLoad(driver, wait);
         ButtonContainer.create(driver, wait).callActionByLabel(CREATE_EXTERNAL_LABEL);
         log.info("Clicking Create External button in the wizard");
@@ -93,18 +93,14 @@ public class WizardPage extends BaseSDPage {
     @Step("I insert {description} to Incident Description field")
     public void enterIncidentDescription(String description) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        HtmlEditor htmlEditor = HtmlEditor.create(driver, wait, INCIDENT_DESCRIPTION_ID);
-        htmlEditor.clear();
-        htmlEditor.setValue(Data.createSingleData(description));
+        setValueInHtmlEditor(description, INCIDENT_DESCRIPTION_ID);
         log.info("Incident description: {} is entered", description);
     }
 
     @Step("I insert {message} to Email Message field")
     public void enterEmailMessage(String message) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        HtmlEditor htmlEditor = HtmlEditor.create(driver, wait, EMAIL_MESSAGE_ID);
-        htmlEditor.clear();
-        htmlEditor.setValue(Data.createSingleData(message));
+        setValueInHtmlEditor(message, EMAIL_MESSAGE_ID);
         log.info("Incident description: {} is entered", message);
     }
 
