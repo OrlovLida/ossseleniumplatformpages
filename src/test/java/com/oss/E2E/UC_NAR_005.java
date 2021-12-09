@@ -187,7 +187,7 @@ public class UC_NAR_005 extends BaseTestCase {
     }
 
     private Message getFirstMessage() {
-        return SystemMessageContainer.create(driver, webDriverWait)
+        return SystemMessageContainer.create(driver, new WebDriverWait(driver, 90))
                 .getFirstMessage()
                 .orElseThrow(() -> new RuntimeException("The list is empty"));
     }
