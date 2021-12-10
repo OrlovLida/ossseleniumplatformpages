@@ -13,7 +13,10 @@ import org.testng.annotations.Test;
 import com.google.common.collect.Multimap;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.inputs.ObjectSearchField;
+import com.oss.framework.components.table.TableComponent;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.advancedsearch.AdvancedSearchWidget;
 import com.oss.framework.widgets.tablewidget.TableWidget;
 import com.oss.pages.filtermanager.FilterManagerPage;
 import com.oss.pages.platform.NewInventoryViewPage;
@@ -27,6 +30,13 @@ public class AdvancedSearchCompact extends BaseTestCase {
     private final static String OSF_ATTRIBUTE_LABEL = "director_OSF";
     private final static int DEFAULT_ROW_INDEX = 0;
     private final static String FILTER_NAME = "WEB_TEST_FILTER";
+    private static final String LAST_NAME_ATTRIBUTE_ID = "lastName";
+    private static final String PLACE_OF_BIRTH_NAME_COLUMN_ID = "placeOfBirth.name";
+    private static final String FIRST_NAME_LABEL = "First Name";
+    private static final String PLACE_OF_BIRTH_LABEL = "Place of Birth";
+    private static final String ADVANCED_SEARCH_TABLE_ID = "advancedSearch";
+    private static final String ACTORS_OSF_ID = "actors_OSF";
+    private static final String PLACE_OF_BIRTH_OSF_ID = "placeOfBirth_OSF";
     
     private NewInventoryViewPage inventoryViewPage;
     private TableWidget tableWidget;
@@ -124,7 +134,6 @@ public class AdvancedSearchCompact extends BaseTestCase {
         inventoryViewPage.clearFilters();
     }
     
-    // Uncomment after fix relation in schema
     @Test(priority = 5)
     public void filterByOSF() {
         String attributeValueId = "241";
@@ -135,7 +144,7 @@ public class AdvancedSearchCompact extends BaseTestCase {
         
         Assertions.assertThat(filters.keys()).hasSize(1);
         Assertions.assertThat(filters.get("Director")).containsExactly(attributeValueLabel);
-        Assert.assertTrue(checkIfCellContainsValue("director.lastName",attributeValueLabel ));
+        Assert.assertTrue(checkIfCellContainsValue("director.lastName", attributeValueLabel));
         
         inventoryViewPage.clearFilters();
     }
@@ -178,5 +187,34 @@ public class AdvancedSearchCompact extends BaseTestCase {
         Assert.assertEquals(inventoryViewPage.countOfVisibleTags(), 1);
         
         inventoryViewPage.clearFilters();
+    }
+    //Disabled until fix OSSWEB-15793
+    @Test(priority = 9, enabled = false)
+    public void filterByOSFUsingAdvancedSearchWidget() {
+        // given
+        ObjectSearchField actorsOSF =
+                (ObjectSearchField) tableWidget.getAdvancedSearch().getComponent(ACTORS_OSF_ID, Input.ComponentType.OBJECT_SEARCH_FIELD);
+        AdvancedSearchWidget advancedSearchWidget = actorsOSF.openAdvancedSearchWidget();
+        TableComponent tableComponent = advancedSearchWidget.getTableComponent(ADVANCED_SEARCH_TABLE_ID);
+        String lastName = tableComponent.getCellValue(1, LAST_NAME_ATTRIBUTE_ID);
+        String placeOfBirth = tableComponent.getCellValue(1, PLACE_OF_BIRTH_NAME_COLUMN_ID);
+        advancedSearchWidget.getComponent(LAST_NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD).setSingleStringValue(lastName);
+        advancedSearchWidget.getComponent(PLACE_OF_BIRTH_OSF_ID, Input.ComponentType.OBJECT_SEARCH_FIELD)
+                .setSingleStringValue(placeOfBirth);
+        // when
+        Multimap<String, String> visibleTags = advancedSearchWidget.getAppliedFilters();
+        // then
+        Assertions.assertThat(visibleTags.keys()).contains(FIRST_NAME_LABEL);
+        Assertions.assertThat(visibleTags.values()).contains(lastName);
+        Assertions.assertThat(visibleTags.keys()).contains(PLACE_OF_BIRTH_LABEL);
+        Assertions.assertThat(visibleTags.values()).contains(placeOfBirth);
+        tableComponent.selectRow(0);
+        advancedSearchWidget.clickAdd();
+
+        Assertions.assertThat(actorsOSF.getStringValue()).isEqualTo(lastName);
+        tableWidget.getAdvancedSearch().clickApply();
+        Multimap<String, String> appliedFilters = tableWidget.getAppliedFilters();
+        Assertions.assertThat(appliedFilters.keys()).contains("Actors");
+        Assertions.assertThat(appliedFilters.values()).contains(lastName);
     }
 }
