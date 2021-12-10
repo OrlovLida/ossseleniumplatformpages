@@ -51,7 +51,7 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
 
     }
 
-    @Test(priority = 1)
+    @Test(priority = 1, description = "Create Process with Milestone")
     @Description("Create Process with Milestone")
     public void createProcessWithMilestones() {
         ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
@@ -125,7 +125,7 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
 
     }
 
-    @Test(priority = 2)
+    @Test(priority = 2, description = "Update Predefined Milestone")
     @Description("Update Predefined Milestone")
     public void updatePredefinedMilestone() {
         ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
@@ -213,7 +213,7 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
         Assert.assertEquals(descriptionMilestone3, "Update 3");
     }
 
-    @Test(priority = 3)
+    @Test(priority = 3, description = "Add Milestone for Data Correction Process")
     @Description("Add Milestone for Data Correction Process")
     public void addMilestoneForDCP() {
         ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
@@ -279,7 +279,7 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
 
     }
 
-    @Test(priority = 4)
+    @Test(priority = 4, description = "Check if Name is not editable for predefined Milestone")
     @Description("Check if Name is not editable for predefined Milestone")
     public void checkIfNameIsNotEditableForPredefinedMilestone() {
         ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
