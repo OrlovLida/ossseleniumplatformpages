@@ -1,5 +1,8 @@
 package com.oss.pages.platform;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -18,7 +21,7 @@ import io.qameta.allure.Step;
 
 public class HierarchyViewPage extends BasePage {
 
-    public static final String OPEN_HIERARCHY_VIEW_CONTEXT_ACTION_ID = "OpenHierarchyViewContext";
+    public static final String OPEN_HIERARCHY_VIEW_CONTEXT_ACTION_ID = "HierarchyView";
     private static final String BOTTOM_TABS_WIDGET_ID = "HierarchyView_BottomDetailTabs_%s";
     private static final String TOP_PROPERTY_PANEL_ID = "HierarchyView_TopDetailTabs_%sHierarchyView_PropertyPanelWidget_%s";
     private static final String HIERARCHY_VIEW_TREE_WIDGET_ID = "HierarchyTreeWidget";
@@ -45,17 +48,14 @@ public class HierarchyViewPage extends BasePage {
         return TreeWidgetV2.create(driver, wait, HIERARCHY_VIEW_TREE_WIDGET_ID);
     }
 
-    public void selectFirstNode() {
-        getMainTree().selectFirstNode();
-    }
-
     public Node getFirstNode() {
-        return getMainTree().getFirstNode();
+        return getMainTree().getNode(0);
     }
 
     public void searchObject(String text) {
         TreeWidgetV2 treeWidgetV2 = getMainTree();
         treeWidgetV2.typeIntoSearch(text);
+        DelayUtils.waitForPageToLoad(driver,wait);
     }
 
     public void clearFiltersOnMainTree(String filterName) {
@@ -96,8 +96,13 @@ public class HierarchyViewPage extends BasePage {
 
     @Step("Select First Object on Tree Widget")
     public HierarchyViewPage selectFirstObject() {
-        getMainTree().selectFirstNode();
+        getMainTree().selectNode(0);
         return this;
+    }
+    @Step("Unselect First Object on Tree Widget")
+    public void unselectFirstObject() {
+        String nodeLabel = getMainTree().getNode(0).getLabel();
+        getMainTree().unselectNodeByLabel(nodeLabel);
     }
 
     @Step("Use tree context action")
@@ -129,5 +134,13 @@ public class HierarchyViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         getMainTree()
                 .getNodeByLabelsPath(labels).toggleNode();
+    }
+
+    public List<String> getVisibleNodesLabel(){
+       return getMainTree().getVisibleNodes().stream().map(Node::getLabel).collect(Collectors.toList());
+    }
+
+    public void expandNextLevel(String pathLabel){
+        getMainTree().getNodeByLabelsPath(pathLabel).expandNextLevel();
     }
 }

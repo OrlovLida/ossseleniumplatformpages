@@ -68,7 +68,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 1)
+    @Test(priority = 1, description = "Create Network Resource Process")
     @Description("Create Network Resource Process")
     public void createProcessNRP() {
         // given
@@ -85,7 +85,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
         Assertions.assertThat(messages.get(0).getText()).contains(processNRPCode);
     }
 
-    @Test(priority = 2)
+    @Test(priority = 2, description = "Start 'High Level Planning' Task")
     @Description("Start 'High Level Planning' Task")
     public void startHLPTask() {
         // given
@@ -102,7 +102,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .isEqualTo("The task properly assigned.");
     }
 
-    @Test(priority = 3)
+    @Test(priority = 3, description = "Create First Physical Device")
     @Description("Create First Physical Device")
     public void createFirstPhysicalDevice() {
 
@@ -134,7 +134,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
     }
 
-    @Test(priority = 4)
+    @Test(priority = 4, description = "Complete 'High Level Planning' Task")
     @Description("Complete 'High Level Planning' Task")
     public void completeHLPTask() {
         // given
@@ -151,7 +151,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .contains("Task properly completed.");
     }
 
-    @Test(priority = 5)
+    @Test(priority = 5, description = "Start 'Low Level Planning' Task")
     @Description("Start 'Low Level Planning' Task")
     public void startLLPTask() {
         // given
@@ -173,7 +173,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
         Assertions.assertThat(perspectiveContext).contains("PLAN");
     }
 
-    @Test(priority = 6)
+    @Test(priority = 6, description = "Assign File to 'Low Level Planning' Task")
     @Description("Assign File to 'Low Level Planning' Task")
     public void assignFile() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
@@ -196,7 +196,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
 
     }
 
-    @Test(priority = 7)
+    @Test(priority = 7, description = "Create Second Physical Device")
     @Description("Create Second Physical Device")
     public void createSecondPhysicalDevice() {
         // DeviceWizardPage deviceWizardPage =
@@ -229,7 +229,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
     }
 
-    @Test(priority = 8)
+    @Test(priority = 8, description = "Complete 'Low Level Design' Task")
     @Description("Complete 'Low Level Design' Task")
     public void completeLLPTask() {
         // given
@@ -246,7 +246,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .contains("Task properly completed.");
     }
 
-    @Test(priority = 9)
+    @Test(priority = 9, description = "Start 'Ready for Integration' Task")
     @Description("Start 'Ready for Integration' Task")
     public void startRFITask() {
         // given
@@ -263,7 +263,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .isEqualTo("The task properly assigned.");
     }
 
-    @Test(priority = 10)
+    @Test(priority = 10, description = "Setup Integration")
     @Description("Setup Integration")
     public void setupIntegration() {
         // given
@@ -281,7 +281,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
         integrationWizard.clickAccept();
     }
 
-    @Test(priority = 11)
+    @Test(priority = 11, description = "Get 'Integration Process' Code")
     @Description("Get 'Integration Process' Code")
     public void getIPCode() {
 
@@ -296,7 +296,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
         log.info(processIPCode1 + processIPCode2);
     }
 
-    @Test(priority = 12)
+    @Test(priority = 12, description = "Complete 'Ready for Integration' Task")
     @Description("Complete 'Ready for Integration' Task")
     public void completeRFITask() {
         // given
@@ -313,7 +313,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .contains("Task properly completed.");
     }
 
-    @Test(priority = 13)
+    @Test(priority = 13, description = "Start 'Scope Definition' Task in First Integration Process")
     @Description("Start 'Scope Definition' Task in First Integration Process")
     public void startSDTaskIP1() {
         // given
@@ -330,7 +330,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .isEqualTo("The task properly assigned.");
     }
 
-    @Test(priority = 14)
+    @Test(priority = 14, description = "Complete 'Scope Definition' Task in First Integration Process")
     @Description("Complete 'Scope Definition' Task in First Integration Process")
     public void completeSDTaskIP1() {
         // given
@@ -347,7 +347,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .contains("Task properly completed.");
     }
 
-    @Test(priority = 15)
+    @Test(priority = 15, description = "Start 'Implementation' Task in First Integration Process")
     @Description("Start 'Implementation' Task in First Integration Process")
     public void startImplementationTaskIP1() {
         // given
@@ -364,7 +364,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .isEqualTo("The task properly assigned.");
     }
 
-    @Test(priority = 16)
+    @Test(priority = 16, description = "Complete 'Implementation' Task in First Integration Process")
     @Description("Complete 'Implementation' Task in First Integration Process")
     public void completeImplementationTaskIP1() {
         // given
@@ -381,7 +381,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .contains("Task properly completed.");
     }
 
-    @Test(priority = 17)
+    @Test(priority = 17, description = "Start 'Acceptance' Task in First Integration Process")
     @Description("Start 'Acceptance' Task in First Integration Process")
     public void startAcceptanceTaskIP1() {
         // given
@@ -398,7 +398,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .isEqualTo("The task properly assigned.");
     }
 
-    @Test(priority = 18)
+    @Test(priority = 18, description = "Complete 'Acceptance' Task in First Integration Process")
     @Description("Complete 'Acceptance' Task in First Integration Process")
     public void completeAcceptanceTaskIP1() {
         // given
@@ -415,7 +415,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .contains("Task properly completed.");
     }
 
-    @Test(priority = 19)
+    @Test(priority = 19, description = "Start 'Scope Definition' Task in Second Integration Process")
     @Description("Start 'Scope Definition' Task in Second Integration Process")
     public void startSDTaskIP2() {
         // given
@@ -432,7 +432,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .isEqualTo("The task properly assigned.");
     }
 
-    @Test(priority = 20)
+    @Test(priority = 20, description = "Complete 'Scope Definition' Task in Second Integration Process")
     @Description("Complete 'Scope Definition' Task in Second Integration Process")
     public void completeSDTaskIP2() {
         // given
@@ -449,7 +449,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .contains("Task properly completed.");
     }
 
-    @Test(priority = 21)
+    @Test(priority = 21, description = "Start 'Implementation' Task in Second Integration Process")
     @Description("Start 'Implementation' Task in Second Integration Process")
     public void startImplementationTaskIP2() {
         // given
@@ -466,7 +466,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .isEqualTo("The task properly assigned.");
     }
 
-    @Test(priority = 22)
+    @Test(priority = 22, description = "Complete 'Implementation' Task in Second Integration Process")
     @Description("Complete 'Implementation' Task in Second Integration Process")
     public void completeImplementationTaskIP2() {
         // given
@@ -483,7 +483,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .contains("Task properly completed.");
     }
 
-    @Test(priority = 23)
+    @Test(priority = 23, description = "Start 'Acceptance' Task in Second Integration Process")
     @Description("Start 'Acceptance' Task in Second Integration Process")
     public void startAcceptanceTaskIP2() {
         // given
@@ -500,7 +500,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .isEqualTo("The task properly assigned.");
     }
 
-    @Test(priority = 24)
+    @Test(priority = 24, description = "Complete 'Acceptance' Task in Second Integration Process")
     @Description("Complete 'Acceptance' Task in Second Integration Process")
     public void completeAcceptanceTaskIP2() {
         // given
@@ -517,7 +517,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .contains("Task properly completed.");
     }
 
-    @Test(priority = 25)
+    @Test(priority = 25, description = "Start 'Verification' Task in NRP")
     @Description("Start 'Verification' Task in NRP")
     public void startVerificationTask() {
         // given
@@ -534,7 +534,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .isEqualTo("The task properly assigned.");
     }
 
-    @Test(priority = 26)
+    @Test(priority = 26, description = "Complete 'Verification' Task")
     @Description("Complete 'Verification' Task")
     public void completeVerificationTask() {
         // given
@@ -551,7 +551,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .contains("Task properly completed.");
     }
 
-    @Test(priority = 27)
+    @Test(priority = 27, description = "Check Process status")
     @Description("Check Process status")
     public void checkProcessStatus() {
         // given

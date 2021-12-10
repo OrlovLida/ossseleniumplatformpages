@@ -69,7 +69,7 @@ public class EditMilestoneTest extends BaseTestCase {
 
     }
 
-    @Test(priority = 1)
+    @Test(priority = 1, description = "Edit Description")
     @Description("Edit Description")
     public void editDescription() {
         // given
@@ -90,7 +90,7 @@ public class EditMilestoneTest extends BaseTestCase {
         Assert.assertNotEquals(newModifyDate, modifyDate);
     }
 
-    @Test(priority = 2)
+    @Test(priority = 2, description = "Edit LeadTime")
     @Description("Edit LeadTime")
     public void editLeadTime() {
         // given
@@ -111,7 +111,7 @@ public class EditMilestoneTest extends BaseTestCase {
         log.info("test");
     }
 
-    @Test(priority = 3)
+    @Test(priority = 3, description = "Edit related Task")
     @Description("Edit related Task")
     public void editRelatedTask() {
         MilestoneViewPage milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
@@ -126,7 +126,7 @@ public class EditMilestoneTest extends BaseTestCase {
 
     }
 
-    @Test(priority = 4)
+    @Test(priority = 4, description = "Edit Due Date for earlier date")
     @Description("Edit Due Date for earlier date")
     public void editDueDateEarlierDate() {
         // given
@@ -147,7 +147,7 @@ public class EditMilestoneTest extends BaseTestCase {
         Assert.assertNotEquals(newModifyDate, modifyDate);
     }
 
-    @Test(priority = 5)
+    @Test(priority = 5, description = "Edit Due Date for later date")
     @Description("Edit Due Date for later date")
     void editDueDateLaterDate() {
         // given
@@ -170,7 +170,7 @@ public class EditMilestoneTest extends BaseTestCase {
 
     }
 
-    @Test(priority = 6)
+    @Test(priority = 6, description = "Check if Name is editable")
     @Description("Check if Name is editable")
     void checkIfNameIsEditable() {
         MilestoneViewPage milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
@@ -189,7 +189,7 @@ public class EditMilestoneTest extends BaseTestCase {
 
     }
 
-    @Test(priority = 7)
+    @Test(priority = 7, description = "Edit Manual Completion")
     @Description("Edit Manual Completion")
     void editManualCompletion() {
         MilestoneViewPage milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
@@ -206,7 +206,7 @@ public class EditMilestoneTest extends BaseTestCase {
         Assert.assertNotEquals(newModifyDate, modifyDate);
     }
 
-    @Test(priority = 8)
+    @Test(priority = 8, description = "Check if Modify User is updated")
     @Description("Check if Modify User is updated")
     public void checkIfModifyUserIsUpdated() {
         // given

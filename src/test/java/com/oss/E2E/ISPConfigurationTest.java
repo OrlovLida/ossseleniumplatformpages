@@ -1,5 +1,6 @@
 package com.oss.E2E;
 
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -81,7 +82,7 @@ public class ISPConfigurationTest extends BaseTestCase {
     }
 
     private SystemMessageInterface getSuccesSystemMessage() {
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, 90));
         Assert.assertEquals((systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType()), MessageType.SUCCESS);
         return systemMessage;
     }

@@ -75,6 +75,8 @@ public class UC_NAR_005 extends BaseTestCase {
         samplesManagementPage.uploadSamples("recoSamples/UC_NAR_005/First/UCNAR05_10.20.0.50_20170707_1300_sh_inventory_raw");
         DelayUtils.sleep(1000);
         samplesManagementPage.uploadSamples("recoSamples/UC_NAR_005/First/UCNAR05_10.20.0.50_20170707_1300_sh_version");
+        DelayUtils.sleep(1000);
+        waitForPageToLoad();
     }
 
     @Test(priority = 3)
@@ -120,6 +122,8 @@ public class UC_NAR_005 extends BaseTestCase {
         samplesManagementPage.uploadSamples("recoSamples/UC_NAR_005/Second/UCNAR05_10.20.0.50_20170707_1300_sh_inventory_raw");
         DelayUtils.sleep(1000);
         samplesManagementPage.uploadSamples("recoSamples/UC_NAR_005/Second/UCNAR05_10.20.0.50_20170707_1300_sh_version");
+        DelayUtils.sleep(1000);
+        waitForPageToLoad();
     }
 
     @Test(priority = 6)
@@ -187,7 +191,7 @@ public class UC_NAR_005 extends BaseTestCase {
     }
 
     private Message getFirstMessage() {
-        return SystemMessageContainer.create(driver, webDriverWait)
+        return SystemMessageContainer.create(driver, new WebDriverWait(driver, 90))
                 .getFirstMessage()
                 .orElseThrow(() -> new RuntimeException("The list is empty"));
     }

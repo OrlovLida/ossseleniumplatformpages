@@ -49,7 +49,7 @@ public class ImportExportModelTest extends BaseTestCase {
     }
 
 
-    @Test(priority = 1)
+    @Test(priority = 1, description = "Import model from BAR")
     @Description("Import model from BAR")
     public void importModel() {
         ProcessModelsPage processModelsPage = ProcessModelsPage.goToProcessModelsPage(driver, BASIC_URL);
@@ -70,19 +70,18 @@ public class ImportExportModelTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 2)
+    @Test(priority = 2, description = "Export model to BAR")
     @Description("Export model to BAR")
     public void exportModelBar() {
         ProcessModelsPage processModelsPage = ProcessModelsPage.goToProcessModelsPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         processModelsPage.chooseDomain(DOMAIN);
-
         //export bar
         processModelsPage.exportModelAsBAR(MODEL_NAME);
         Assert.assertTrue(processModelsPage.isFileDownloaded(EXPORT_PATH_LOCAL, FILE_NAME));
     }
 
-    @Test(priority = 3)
+    @Test(priority = 3, description = "Export model to XML")
     @Description("Export model to XML")
     public void exportModelXml() {
         ProcessModelsPage processModelsPage = ProcessModelsPage.goToProcessModelsPage(driver, BASIC_URL);

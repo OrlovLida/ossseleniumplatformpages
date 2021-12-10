@@ -168,7 +168,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         processWizardPage.clickAcceptButton();
     }
 
-    @Test(priority = 1)
+    @Test(priority = 1, description = "First Milestone Change State Flow")
     @Description("First Milestone Change State Flow")
     public void firstMilestoneFlow() {
         /**
@@ -183,7 +183,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         changeMilestoneState(IN_PROGRESS_STATE, NOT_NEEDED_STATE, CHANGE_STATE_REASON, true);
     }
 
-    @Test(priority = 2)
+    @Test(priority = 2, description = "Second Milestone Change State Flow")
     @Description("Second Milestone Change State Flow")
     public void secondMilestoneFlow() {
         /**
@@ -217,7 +217,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         changeMilestoneState(IN_PROGRESS_STATE, COMPLETED_STATE, CHANGE_STATE_REASON, false);
     }
 
-    @Test(priority = 3)
+    @Test(priority = 3, description = "Third Milestone Change State Flow")
     @Description("Third Milestone Change State Flow")
     public void thirdMilestoneFlow() {
         /**
@@ -240,7 +240,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         changeMilestoneState(NEW_STATE, NOT_NEEDED_STATE, CHANGE_STATE_REASON, true);
     }
 
-    @Test(priority = 4)
+    @Test(priority = 4, description = "Multiselect Milestones Change State")
     @Description("Multiselect Milestones Change State")
     public void multiChangeState() {
         /**
@@ -272,7 +272,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         Assert.assertEquals(IN_PROGRESS_STATE, state2);
     }
 
-    @Test(priority = 5)
+    @Test(priority = 5, description = "Multiselect Milestones Change State (Different States)")
     @Description("Multiselect Milestones Change State (Different States)")
     public void checkMultiChangeStateDifferent() {
         milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);

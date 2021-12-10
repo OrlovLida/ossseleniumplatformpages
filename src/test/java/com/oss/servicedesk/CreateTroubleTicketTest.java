@@ -4,7 +4,7 @@ import com.oss.BaseTestCase;
 import com.oss.pages.servicedesk.ticket.TicketDashboardPage;
 import com.oss.pages.servicedesk.ticket.TicketDetailsPage;
 import com.oss.pages.servicedesk.ticket.TicketSearchPage;
-import com.oss.pages.servicedesk.ticket.wizard.WizardPage;
+import com.oss.pages.servicedesk.ticket.wizard.SDWizardPage;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 import org.testng.annotations.BeforeClass;
@@ -19,7 +19,7 @@ public class CreateTroubleTicketTest extends BaseTestCase {
 
     private TicketDashboardPage ticketDashboardPage;
     private TicketSearchPage ticketSearchPage;
-    private WizardPage wizardPage;
+    private SDWizardPage SDWizardPage;
     private TicketDetailsPage ticketDetailsPage;
 
     private final static String MO_IDENTIFIER = "(03) LTE";
@@ -38,21 +38,21 @@ public class CreateTroubleTicketTest extends BaseTestCase {
     @Test(priority = 1, testName = "Create NTT Ticket", description = "Create Ticket")
     @Description("Create Ticket")
     public void createNTTTicket() {
-        wizardPage = ticketDashboardPage.openCreateTicketWizard(driver, "NTT");
-        wizardPage.getMoStep().enterTextIntoSearchComponent(driver, MO_IDENTIFIER);
-        wizardPage.getMoStep().selectRowInMOTable(driver, "0");
-        wizardPage.clickNextButtonInWizard(driver);
-        wizardPage.insertValueToSearchComponent(TT_ASSIGNEE, TT_WIZARD_ASSIGNEE);
-        wizardPage.enterIncidentDescription(TT_DESCRIPTION);
-        wizardPage.clickNextButtonInWizard(driver);
-        wizardPage.clickNextButtonInWizard(driver);
-        wizardPage.clickAcceptButtonInWizard(driver);
+        SDWizardPage = ticketDashboardPage.openCreateTicketWizard("NTT");
+        SDWizardPage.getMoStep().enterTextIntoSearchComponent(MO_IDENTIFIER);
+        SDWizardPage.getMoStep().selectRowInMOTable("0");
+        SDWizardPage.clickNextButtonInWizard();
+        SDWizardPage.insertValueToSearchComponent(TT_ASSIGNEE, TT_WIZARD_ASSIGNEE);
+        SDWizardPage.enterIncidentDescription(TT_DESCRIPTION);
+        SDWizardPage.clickNextButtonInWizard();
+        SDWizardPage.clickNextButtonInWizard();
+        SDWizardPage.clickAcceptButtonInWizard();
     }
 
     @Test(priority = 2, testName = "Open Ticket Details from Tickets Search view", description = "Open Ticket Details from Tickets Search view")
     @Description("Open Ticket Details from Tickets Search view")
     public void openTicketDetailsFromTicketsSearchView() {
-        ticketSearchPage = new TicketSearchPage(driver);
+        ticketSearchPage = new TicketSearchPage(driver, webDriverWait);
         ticketSearchPage = ticketSearchPage.goToPage(driver, BASIC_URL);
         ticketSearchPage.filterByTextField(TicketSearchPage.ASSIGNEE_ATTRIBUTE, TT_ASSIGNEE);
         String date = LocalDateTime.now().minusMinutes(5).format(CREATE_DATE_FILTER_DATE_FORMATTER);
@@ -64,13 +64,13 @@ public class CreateTroubleTicketTest extends BaseTestCase {
     @Test(priority = 3, testName = "Edit Ticket Details", description = "Edit Ticket Details")
     @Description("Edit Ticket Details")
     public void editTicketDetails() {
-        ticketDetailsPage = new TicketDetailsPage(driver);
-        wizardPage = ticketDetailsPage.openEditTicketWizard(driver);
-        wizardPage.clickNextButtonInWizard(driver);
-        wizardPage.insertValueToSearchComponent(TT_NEW_ASSIGNEE, TT_WIZARD_ASSIGNEE);
-        wizardPage.clickNextButtonInWizard(driver);
-        wizardPage.clickNextButtonInWizard(driver);
-        wizardPage.clickAcceptButtonInWizard(driver);
+        ticketDetailsPage = new TicketDetailsPage(driver, webDriverWait);
+        SDWizardPage = ticketDetailsPage.openEditTicketWizard();
+        SDWizardPage.clickNextButtonInWizard();
+        SDWizardPage.insertValueToSearchComponent(TT_NEW_ASSIGNEE, TT_WIZARD_ASSIGNEE);
+        SDWizardPage.clickNextButtonInWizard();
+        SDWizardPage.clickNextButtonInWizard();
+        SDWizardPage.clickAcceptButtonInWizard();
     }
 
 }
