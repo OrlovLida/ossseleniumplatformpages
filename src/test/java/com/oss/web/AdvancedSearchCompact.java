@@ -30,14 +30,19 @@ public class AdvancedSearchCompact extends BaseTestCase {
     private final static String OSF_ATTRIBUTE_LABEL = "director_OSF";
     private final static int DEFAULT_ROW_INDEX = 0;
     private final static String FILTER_NAME = "WEB_TEST_FILTER";
-    private static final String LAST_NAME_ATTRIBUTE_ID = "lastName";
+    private static final String LAST_NAME_ID = "lastName";
     private static final String PLACE_OF_BIRTH_NAME_COLUMN_ID = "placeOfBirth.name";
     private static final String FIRST_NAME_LABEL = "First Name";
     private static final String PLACE_OF_BIRTH_LABEL = "Place of Birth";
     private static final String ADVANCED_SEARCH_TABLE_ID = "advancedSearch";
     private static final String ACTORS_OSF_ID = "actors_OSF";
     private static final String PLACE_OF_BIRTH_OSF_ID = "placeOfBirth_OSF";
-    
+    private static final String DIRECTOR_LABEL = "Director";
+    private static final String DIRECTOR_LAST_NAME_COLUMN_ID = "director.lastName";
+    private static final String LAST_NAME_LABEL = "Last Name";
+    private static final String ACTORS_ATTRIBUTE_ID = "actors";
+    private static final String ACTORS_LABEL = "Actors";
+
     private NewInventoryViewPage inventoryViewPage;
     private TableWidget tableWidget;
     
@@ -138,13 +143,13 @@ public class AdvancedSearchCompact extends BaseTestCase {
     public void filterByOSF() {
         String attributeValueId = "241";
         String attributeValueLabel = "Siân G. Lloyd";
-        inventoryViewPage.enableColumnAndApply("Last Name", "Director");
+        inventoryViewPage.enableColumnAndApply(LAST_NAME_LABEL, DIRECTOR_LABEL);
         Multimap<String, String> filters =
                 inventoryViewPage.searchByAttributeValue(OSF_ATTRIBUTE_LABEL, attributeValueId, Input.ComponentType.OBJECT_SEARCH_FIELD);
         
         Assertions.assertThat(filters.keys()).hasSize(1);
-        Assertions.assertThat(filters.get("Director")).containsExactly(attributeValueLabel);
-        Assert.assertTrue(checkIfCellContainsValue("director.lastName", attributeValueLabel));
+        Assertions.assertThat(filters.get(DIRECTOR_LABEL)).containsExactly(attributeValueLabel);
+        Assert.assertTrue(checkIfCellContainsValue(DIRECTOR_LAST_NAME_COLUMN_ID, attributeValueLabel));
         
         inventoryViewPage.clearFilters();
     }
@@ -152,15 +157,15 @@ public class AdvancedSearchCompact extends BaseTestCase {
     @Test(priority = 6)
     public void toggleVisibilitySearchAttribute() {
         List<String> attributes = new ArrayList<>();
-        attributes.add("actors");
+        attributes.add(ACTORS_ATTRIBUTE_ID);
         inventoryViewPage.unselectVisibilitySearchAttributes(attributes);
         List<String> filters = inventoryViewPage.getAllVisibleFilters();
         
-        Assert.assertFalse(filters.contains("Actors"));
+        Assert.assertFalse(filters.contains(ACTORS_LABEL));
         
         inventoryViewPage.selectVisibilitySearchAttributes(attributes);
         List<String> filtersSecond = inventoryViewPage.getAllVisibleFilters();
-        Assert.assertTrue(filtersSecond.contains("Actors"));
+        Assert.assertTrue(filtersSecond.contains(ACTORS_LABEL));
     }
     
     @Test(priority = 7)
@@ -196,9 +201,9 @@ public class AdvancedSearchCompact extends BaseTestCase {
                 (ObjectSearchField) tableWidget.getAdvancedSearch().getComponent(ACTORS_OSF_ID, Input.ComponentType.OBJECT_SEARCH_FIELD);
         AdvancedSearchWidget advancedSearchWidget = actorsOSF.openAdvancedSearchWidget();
         TableComponent tableComponent = advancedSearchWidget.getTableComponent(ADVANCED_SEARCH_TABLE_ID);
-        String lastName = tableComponent.getCellValue(1, LAST_NAME_ATTRIBUTE_ID);
+        String lastName = tableComponent.getCellValue(1, LAST_NAME_ID);
         String placeOfBirth = tableComponent.getCellValue(1, PLACE_OF_BIRTH_NAME_COLUMN_ID);
-        advancedSearchWidget.getComponent(LAST_NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD).setSingleStringValue(lastName);
+        advancedSearchWidget.getComponent(LAST_NAME_ID, Input.ComponentType.TEXT_FIELD).setSingleStringValue(lastName);
         advancedSearchWidget.getComponent(PLACE_OF_BIRTH_OSF_ID, Input.ComponentType.OBJECT_SEARCH_FIELD)
                 .setSingleStringValue(placeOfBirth);
         // when
@@ -214,7 +219,7 @@ public class AdvancedSearchCompact extends BaseTestCase {
         Assertions.assertThat(actorsOSF.getStringValue()).isEqualTo(lastName);
         tableWidget.getAdvancedSearch().clickApply();
         Multimap<String, String> appliedFilters = tableWidget.getAppliedFilters();
-        Assertions.assertThat(appliedFilters.keys()).contains("Actors");
+        Assertions.assertThat(appliedFilters.keys()).contains(ACTORS_LABEL);
         Assertions.assertThat(appliedFilters.values()).contains(lastName);
     }
 }
