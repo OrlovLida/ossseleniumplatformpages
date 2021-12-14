@@ -43,7 +43,7 @@ public class UC_NAR_005 extends BaseTestCase {
 
     @BeforeClass
     public void openNetworkDiscoveryControlView() {
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
     }
@@ -59,23 +59,22 @@ public class UC_NAR_005 extends BaseTestCase {
         wizard.setStopOn(STOP_ON);
         wizard.setSavePerspective(SAVE_PERSPECTIVE);
         wizard.save();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
     }
 
     @Test(priority = 2)
     @Description("Upload reconciliation samples")
     public void uploadSamples() throws URISyntaxException {
-        DelayUtils.sleep(1000);
+        waitForPageToLoad();
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.moveToSamplesManagement();
         SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
         samplesManagementPage.selectPath();
         samplesManagementPage.createDirectory(CM_DOMAIN_NAME);
-        DelayUtils.sleep(1000);
+        waitForPageToLoad();
         samplesManagementPage.uploadSamples("recoSamples/UC_NAR_005/First/UCNAR05_10.20.0.50_20170707_1300_sh_inventory_raw");
-        DelayUtils.sleep(1000);
+        waitForPageToLoad();
         samplesManagementPage.uploadSamples("recoSamples/UC_NAR_005/First/UCNAR05_10.20.0.50_20170707_1300_sh_version");
-        DelayUtils.sleep(1000);
         waitForPageToLoad();
     }
 
@@ -118,11 +117,10 @@ public class UC_NAR_005 extends BaseTestCase {
         SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
         samplesManagementPage.selectPath();
         samplesManagementPage.deleteDirectoryContent();
-        DelayUtils.sleep(1000);
+        waitForPageToLoad();
         samplesManagementPage.uploadSamples("recoSamples/UC_NAR_005/Second/UCNAR05_10.20.0.50_20170707_1300_sh_inventory_raw");
-        DelayUtils.sleep(1000);
+        waitForPageToLoad();
         samplesManagementPage.uploadSamples("recoSamples/UC_NAR_005/Second/UCNAR05_10.20.0.50_20170707_1300_sh_version");
-        DelayUtils.sleep(1000);
         waitForPageToLoad();
     }
 
