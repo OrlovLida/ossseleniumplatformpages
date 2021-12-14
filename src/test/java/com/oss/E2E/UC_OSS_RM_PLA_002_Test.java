@@ -143,7 +143,6 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         deviceWizardPage.setPreciseLocation(LOCATION_NAME);
         waitForPageToLoad();
         deviceWizardPage.accept();
-        waitForPageToLoad();
         checkMessageSize();
         checkMessageType(MessageType.SUCCESS);
     }
