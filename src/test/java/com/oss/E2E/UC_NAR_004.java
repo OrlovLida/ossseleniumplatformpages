@@ -62,13 +62,12 @@ public class UC_NAR_004 extends BaseTestCase {
         SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
         samplesManagementPage.selectPath();
         samplesManagementPage.createDirectory(CM_DOMAIN_NAME);
-        DelayUtils.sleep(1000);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         samplesManagementPage.uploadSamples("recoSamples/UC_NAR_004/KRK-SSE8-45_10.166.10.1_20181107_1306_running-config");
-        DelayUtils.sleep(1000);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         samplesManagementPage.uploadSamples("recoSamples/UC_NAR_004/KRK-SSE8-45_10.166.10.1_20181107_1306_sh_inventory_raw");
-        DelayUtils.sleep(1000);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         samplesManagementPage.uploadSamples("recoSamples/UC_NAR_004/KRK-SSE8-45_10.166.10.1_20181107_1306_sh_version");
-        DelayUtils.sleep(1000);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -122,13 +121,12 @@ public class UC_NAR_004 extends BaseTestCase {
         SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
         samplesManagementPage.selectPath();
         samplesManagementPage.deleteDirectoryContent();
-        DelayUtils.sleep(2000);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         samplesManagementPage.uploadSamples("recoSamples/ciscoIOS/empty/Selenium1_10.252.255.201_20170707_1324_running-config");
-        DelayUtils.sleep(1000);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         samplesManagementPage.uploadSamples("recoSamples/ciscoIOS/empty/Selenium1_10.252.255.201_20170707_1324_sh_inventory_raw");
-        DelayUtils.sleep(1000);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         samplesManagementPage.uploadSamples("recoSamples/ciscoIOS/empty/Selenium1_10.252.255.201_20170707_1324_sh_version");
-        DelayUtils.sleep(1000);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
