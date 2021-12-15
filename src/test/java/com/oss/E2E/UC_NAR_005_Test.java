@@ -29,7 +29,7 @@ import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 
 @Listeners({ TestListener.class })
-public class UC_NAR_005 extends BaseTestCase {
+public class UC_NAR_005_Test extends BaseTestCase {
 
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
     private static final String CM_DOMAIN_NAME = "UC-NAR-005";
@@ -45,12 +45,14 @@ public class UC_NAR_005 extends BaseTestCase {
     public void openNetworkDiscoveryControlView() {
         waitForPageToLoad();
         PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
+        waitForPageToLoad();
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
     }
 
-    @Test(priority = 1)
-    @Description("Create CM Domain")
+    @Test(priority = 1, description = "Create CM Domain")
+    @Description("Create CM Domain in Network Discovery Control View")
     public void createCmDomain() {
+        waitForPageToLoad();
         networkDiscoveryControlViewPage.openCmDomainWizard();
         CmDomainWizardPage wizard = new CmDomainWizardPage(driver);
         wizard.setName(CM_DOMAIN_NAME);
@@ -62,14 +64,15 @@ public class UC_NAR_005 extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    @Test(priority = 2)
-    @Description("Upload reconciliation samples")
+    @Test(priority = 2, description = "Upload reconciliation samples")
+    @Description("Go to Samples Management View and upload reconciliation samples")
     public void uploadSamples() throws URISyntaxException {
-        waitForPageToLoad();
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
+        waitForPageToLoad();
         networkDiscoveryControlViewPage.moveToSamplesManagement();
         SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
         samplesManagementPage.selectPath();
+        waitForPageToLoad();
         samplesManagementPage.createDirectory(CM_DOMAIN_NAME);
         waitForPageToLoad();
         samplesManagementPage.uploadSamples("recoSamples/UC_NAR_005/First/UCNAR05_10.20.0.50_20170707_1300_sh_inventory_raw");
@@ -78,44 +81,55 @@ public class UC_NAR_005 extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    @Test(priority = 3)
-    @Description("Run reconciliation and after its finish check warnings and errors")
+    @Test(priority = 3, description = "Run reconciliation and check results")
+    @Description("Go to Network Discovery Control View, run reconciliation and check if it ended without errors")
     public void runReconciliationWithFullSample() {
         openNetworkDiscoveryControlView();
-        waitForPageToLoad();
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
+        waitForPageToLoad();
         networkDiscoveryControlViewPage.runReconciliation();
         checkMessageType(MessageType.INFO);
+        waitForPageToLoad();
         Assert.assertEquals(networkDiscoveryControlViewPage.waitForEndOfReco(), "SUCCESS");
+        waitForPageToLoad();
         networkDiscoveryControlViewPage.selectLatestReconciliationState();
+        waitForPageToLoad();
         Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(IssueLevel.STARTUP_FATAL));
+        waitForPageToLoad();
         Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(IssueLevel.FATAL));
+        waitForPageToLoad();
         Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(IssueLevel.ERROR));
+        waitForPageToLoad();
         Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(IssueLevel.WARNING));
     }
 
-    @Test(priority = 4)
-    @Description("Move to Network Inconsistencies View, assign location to device and Apply inconsistencies")
+    @Test(priority = 4, description = "Assign location and accept inconsistencies")
+    @Description("Move to Network Inconsistencies View, assign location to device and apply inconsistencies")
     public void assignLocationAndApplyInconsistencies() {
         networkDiscoveryControlViewPage.moveToNivFromNdcv();
         NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
         networkInconsistenciesViewPage.expandTree();
+        waitForPageToLoad();
         networkInconsistenciesViewPage.assignLocation(DEVICE_NAME, "1");
         checkMessageType(MessageType.SUCCESS);
+        waitForPageToLoad();
         networkInconsistenciesViewPage.clearOldNotification();
         networkInconsistenciesViewPage.applyInconsistencies();
-        DelayUtils.sleep(5000);
+        DelayUtils.sleep(3000);
+        waitForPageToLoad();
         Assert.assertEquals(networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(), "Accepting discrepancies related to " + DEVICE_NAME + " finished");
     }
 
-    @Test(priority = 5)
-    @Description("Delete old reconciliation samples and upload a new ones")
+    @Test(priority = 5, description = "Change reconciliation samples")
+    @Description("Go to Samples Management from Network Discovery Control View, delete old reconciliation samples and upload a new ones")
     public void deleteOldSamplesAndPutNewOne() throws URISyntaxException {
         openNetworkDiscoveryControlView();
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
+        waitForPageToLoad();
         networkDiscoveryControlViewPage.moveToSamplesManagement();
         SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
         samplesManagementPage.selectPath();
+        waitForPageToLoad();
         samplesManagementPage.deleteDirectoryContent();
         waitForPageToLoad();
         samplesManagementPage.uploadSamples("recoSamples/UC_NAR_005/Second/UCNAR05_10.20.0.50_20170707_1300_sh_inventory_raw");
@@ -124,8 +138,8 @@ public class UC_NAR_005 extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    @Test(priority = 6)
-    @Description("Open New Inventory View and Check value of Serial Number")
+    @Test(priority = 6, description = "Open router in New Inventory View")
+    @Description("Open router in New Inventory View and check value of serial number")
     public void openNewInventoryViewAndCheckSerialNumber() {
         homePage.goToHomePage(driver, BASIC_URL);
         waitForPageToLoad();
@@ -140,8 +154,8 @@ public class UC_NAR_005 extends BaseTestCase {
         Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "serialNumber"), SERIAL_NUMBER_BEFORE);
     }
 
-    @Test(priority = 7)
-    @Description("Run narrow reconciliation and after its finish check value of Serial Number")
+    @Test(priority = 7, description = "Run narrow reconciliation")
+    @Description("Run narrow reconciliation")
     public void runNarrowReconciliation() {
         NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.selectFirstRow();
@@ -150,33 +164,47 @@ public class UC_NAR_005 extends BaseTestCase {
         notifications.clearAllNotification();
         newInventoryViewPage.callAction(ActionsContainer.OTHER_GROUP_ID, "run-narrow-reconciliation");
         DelayUtils.sleep(3000);
+        waitForPageToLoad();
         Assert.assertEquals(notifications.waitAndGetFinishedNotificationText(), "Narrow reconciliation for GMOCs IPDevice finished");
+        waitForPageToLoad();
+    }
+
+    @Test(priority = 8, description = "Check serial number")
+    @Description("Refresh view, select first row and check if value of serial number is updated")
+    public void checkSerialNumber() {
+        NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.refreshMainTable();
+        waitForPageToLoad();
+        newInventoryViewPage.selectFirstRow();
         waitForPageToLoad();
         Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "serialNumber"), SERIAL_NUMBER_AFTER);
     }
 
-    @Test(priority = 8)
-    @Description("Delete device")
-    public void deleteDevice() {
+    @Test(priority = 9, description = "Delete router")
+    @Description("Delete router")
+    public void deleteRouter() {
         NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.selectFirstRow();
         newInventoryViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, "DeleteDeviceWizardAction");
         waitForPageToLoad();
         Wizard.createWizard(driver, webDriverWait).clickActionById("ConfirmationBox_object_delete_wizard_confirmation_box_action_button");
         checkMessageType(MessageType.SUCCESS);
+        waitForPageToLoad();
         newInventoryViewPage.refreshMainTable();
+        waitForPageToLoad();
         Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());
     }
 
-    @Test(priority = 9)
-    @Description("Delete CM Domain")
+    @Test(priority = 10, description = "Delete CM Domain")
+    @Description("Go to Network Discovery Control View, delete CM Domain and check notification")
     public void deleteCmDomain() {
         openNetworkDiscoveryControlView();
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
+        waitForPageToLoad();
         networkDiscoveryControlViewPage.clearOldNotifications();
         networkDiscoveryControlViewPage.deleteCmDomain();
         checkMessageType(MessageType.INFO);
+        waitForPageToLoad();
         Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
     }
 
