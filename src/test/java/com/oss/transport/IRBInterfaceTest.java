@@ -72,6 +72,7 @@ public class IRBInterfaceTest extends BaseTestCase {
         IRBInterfaceWizardPage irbInterfaceWizardPage = new IRBInterfaceWizardPage(driver);
         waitForPageToLoad();
         irbInterfaceWizardPage.createIRBInterface(IRB_INTERFACE_DEVICE_NAME, IRB_INTERFACE_ID);
+        waitForPageToLoad();
     }
 
     @Test(priority = 4)
