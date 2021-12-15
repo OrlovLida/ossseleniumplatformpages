@@ -435,6 +435,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         deviceWizardPage.nextUpdateWizard();
         deviceWizardPage.acceptUpdateWizard();
         checkPopupAndCloseMessage();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         driver.navigate().refresh();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         locationOverviewPage = new LocationOverviewPage(driver);
