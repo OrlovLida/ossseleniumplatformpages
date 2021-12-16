@@ -37,7 +37,7 @@ public class UC_NAR_004_Test extends BaseTestCase {
     private static final String ROUTER_NAME = "KRK-SSE8-45";
 
     @BeforeClass
-    public void openNetworkDiscoveryControlView() {
+    public void openConsole() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -76,7 +76,7 @@ public class UC_NAR_004_Test extends BaseTestCase {
     @Test(priority = 3, description = "Run reconciliation and check results")
     @Description("Go to Network Discovery Control View and run reconciliation and check if it ended without errors")
     public void runReconciliationWithFullSample() {
-        openNetworkDiscoveryControlView();
+        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.runReconciliation();
@@ -124,7 +124,7 @@ public class UC_NAR_004_Test extends BaseTestCase {
     @Test(priority = 6, description = "Change reconciliation samples to empty ones")
     @Description("Move to Samples Management from Network Discovery Control View, delete old reconciliation samples and upload empty samples")
     public void deleteOldSamplesAndPutNewOne() throws URISyntaxException {
-        openNetworkDiscoveryControlView();
+        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.moveToSamplesManagement();
@@ -144,7 +144,7 @@ public class UC_NAR_004_Test extends BaseTestCase {
     @Test(priority = 7, description = "Run reconciliation and check results")
     @Description("Go to Network Discovery Control View, run reconciliation and check if it ended without errors")
     public void runReconciliationWithEmptySample() {
-        openNetworkDiscoveryControlView();
+        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.runReconciliation();
@@ -166,7 +166,7 @@ public class UC_NAR_004_Test extends BaseTestCase {
     @Test(priority = 8, description = "Delete CM Domain")
     @Description("Delete CM Domain")
     public void deleteCmDomain() {
-        openNetworkDiscoveryControlView();
+        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.clearOldNotifications();
         networkDiscoveryControlViewPage.deleteCmDomain();
