@@ -208,8 +208,8 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         networkViewPage.selectTrailType("IP Link");
         waitForPageToLoad();
         networkViewPage.acceptTrailType();
-        ConnectionWizardPage connectionWizardPage = new ConnectionWizardPage(driver);
         waitForPageToLoad();
+        ConnectionWizardPage connectionWizardPage = new ConnectionWizardPage(driver);
         connectionWizardPage.setName(TRAIL_NAME);
         waitForPageToLoad();
         connectionWizardPage.clickNext();
