@@ -47,6 +47,24 @@ public class ETHServicesCheckTest {
         SERVICES_CHECKER.testHealth("inventory-view-core");
     }
 
+    @Test(priority = 5)
+    @Step("Check logical-function-core")
+    public void checkLogicalFunctionCore() {
+        SERVICES_CHECKER.testHealth("logical-function-core");
+    }
+
+    @Test(priority = 6)
+    @Step("Check capacity-management-core")
+    public void checkCapacityManagementCore() {
+        SERVICES_CHECKER.testHealth("capacity-management-core");
+    }
+
+    @Test(priority = 7)
+    @Step("Check tp-service")
+    public void checkTpService() {
+        SERVICES_CHECKER.testHealth("tp-service");
+    }
+
     private static Environment createEnvironment() {
         try {
             URL url = new URL(BASIC_URL);
