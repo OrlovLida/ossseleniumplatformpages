@@ -1,18 +1,33 @@
 package com.oss.dpe;
 
+import java.util.Collections;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
+import org.testng.annotations.Test;
+
 import com.oss.BaseTestCase;
 import com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel;
 import com.oss.pages.bigdata.kqiview.KpiViewPage;
 import com.oss.utils.TestListener;
+
 import io.qameta.allure.Description;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.annotations.*;
 
-import java.util.Collections;
-
-import static com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.*;
-import static org.testng.Assert.*;
+import static com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_1x1;
+import static com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_2x1;
+import static com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_2x2;
+import static com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_3x2;
+import static com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_3x3;
+import static com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_4x4;
+import static com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_AUTO;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.fail;
 
 @Listeners({TestListener.class})
 public class IndicatorsViewTest extends BaseTestCase {
@@ -159,11 +174,12 @@ public class IndicatorsViewTest extends BaseTestCase {
             kpiViewPage.applyChanges();
             assertTrue(kpiViewPage.shouldSeeDataCompleteness());
 
+            kpiViewPage.enableShowTimeZone();
+            kpiViewPage.applyChanges();
+            assertTrue(kpiViewPage.isTimeZoneDisplayed());
+
             kpiViewPage.enableLastSampleTime();
             assertTrue(kpiViewPage.shouldSeeLastSampleTime(1));
-
-            kpiViewPage.enableShowTimeZone();
-            assertTrue(kpiViewPage.isTimeZoneDisplayed());
         } catch (Exception e) {
             log.error(e.getMessage());
             fail();
