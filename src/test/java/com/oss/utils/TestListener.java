@@ -1,16 +1,19 @@
 package com.oss.utils;
 
-import com.oss.BaseTestCase;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
-import static com.oss.utils.AttachmentsManager.attachConsoleLogs;
+import com.oss.BaseTestCase;
+import com.oss.framework.alerts.SystemMessageContainer;
+import com.oss.framework.alerts.SystemMessageInterface;
+
 import static com.oss.utils.AttachmentsManager.saveScreenshotPNG;
 import static com.oss.utils.AttachmentsManager.saveTextLog;
 
@@ -53,10 +56,15 @@ public class TestListener extends BaseTestCase implements ITestListener {
         WebDriver driver = ((BaseTestCase) testClass).driver;
 
         //Allure ScreenShotRobot and SaveTestLog
-        if (driver instanceof WebDriver) {
+        if (driver != null) {
             log.info("Screenshot captured for test case:" + getTestMethodName(iTestResult));
             saveScreenshotPNG(driver);
             // attachConsoleLogs(driver);
+        }
+
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, 5));
+        if (systemMessage.isErrorDisplayed()) {
+            systemMessage.close();
         }
 
         //Save a log on allure.
