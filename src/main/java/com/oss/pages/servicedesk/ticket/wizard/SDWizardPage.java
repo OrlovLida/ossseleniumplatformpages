@@ -1,16 +1,18 @@
 package com.oss.pages.servicedesk.ticket.wizard;
 
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.oss.framework.components.contextactions.ButtonContainer;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.data.Data;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.servicedesk.BaseSDPage;
+
 import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class SDWizardPage extends BaseSDPage {
 
@@ -18,7 +20,7 @@ public class SDWizardPage extends BaseSDPage {
 
     private static final String INCIDENT_DESCRIPTION_ID = "TT_WIZARD_INPUT_INCIDENT_DESCRIPTION";
     private static final String EMAIL_MESSAGE_ID = "message-component";
-    private final static String CREATE_EXTERNAL_LABEL = "Create External";
+    private static final String CREATE_EXTERNAL_LABEL = "Create External";
 
     private final MOStep moStep;
 
@@ -42,6 +44,7 @@ public class SDWizardPage extends BaseSDPage {
     public void clickAcceptButtonInWizard() {
         DelayUtils.waitForPageToLoad(driver, wait);
         getWizard().clickAccept();
+        DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Clicking Accept button in the wizard");
     }
 
