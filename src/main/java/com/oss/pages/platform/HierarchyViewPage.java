@@ -52,6 +52,10 @@ public class HierarchyViewPage extends BasePage {
         return getMainTree().getNode(0);
     }
 
+    public Node getNodeByLabelPath(String path){
+       return getMainTree().getNodeByLabelsPath(path);
+    }
+
     public void searchObject(String text) {
         TreeWidgetV2 treeWidgetV2 = getMainTree();
         treeWidgetV2.typeIntoSearch(text);
