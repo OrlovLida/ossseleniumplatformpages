@@ -50,29 +50,24 @@ public class TestListener extends BaseTestCase implements ITestListener {
     @Override
     public void onTestFailure(ITestResult iTestResult) {
         log.info("I am in onTestFailure method " + getTestMethodName(iTestResult) + " failed");
-
         //Get driver from BaseTest and assign to local webdriver variable.
         Object testClass = iTestResult.getInstance();
         WebDriver driver = ((BaseTestCase) testClass).driver;
-
         //Allure ScreenShotRobot and SaveTestLog
         if (driver != null) {
             log.info("Screenshot captured for test case:" + getTestMethodName(iTestResult));
             saveScreenshotPNG(driver);
             // attachConsoleLogs(driver);
+            SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, 5));
+            if (systemMessage.isErrorDisplayed(true)) {
+                systemMessage.close();
+            }
+            //Take base64Screenshot screenshot for extent reports
+            String base64Screenshot = "data:image/png;base64," + ((TakesScreenshot) driver).
+                    getScreenshotAs(OutputType.BASE64);
         }
-
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, 5));
-        if (systemMessage.isErrorDisplayed()) {
-            systemMessage.close();
-        }
-
         //Save a log on allure.
         saveTextLog(getTestMethodName(iTestResult) + " failed and screenshot taken!");
-
-        //Take base64Screenshot screenshot for extent reports
-        String base64Screenshot = "data:image/png;base64," + ((TakesScreenshot) driver).
-                getScreenshotAs(OutputType.BASE64);
     }
 
     @Override
