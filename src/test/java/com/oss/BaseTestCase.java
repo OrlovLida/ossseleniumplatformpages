@@ -76,7 +76,11 @@ public class BaseTestCase implements IHookable {
     public void run(IHookCallBack cb, ITestResult testResult) {
         cb.runTestMethod(testResult);
         SystemMessageInterface systemMessage = SystemMessageContainer.create(this.driver, new WebDriverWait(this.driver, 5));
-        Assert.assertFalse(systemMessage.isErrorExists());
+        boolean isError = systemMessage.isErrorDisplayed();
+        if (isError){
+            systemMessage.close();
+        }
+        Assert.assertFalse(isError,"Some errors occurred during the test. Please check logs for details.\n");
     }
 
     private Cookie createCookie() {
