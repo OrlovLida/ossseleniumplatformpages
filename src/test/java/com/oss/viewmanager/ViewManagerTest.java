@@ -222,7 +222,7 @@
 //    public void deleteApplicationFromSubcategory() {
 //        viewManagerPage.clickApplicationGroupButton("Create Cable");
 //        DelayUtils.sleep(300);
-//        viewManagerPage.clickDeleteButtonInDropdown();
+//        viewManagerPage.clickDelete();
 //
 //        DelayUtils.sleep(2500);
 //        try {
@@ -237,7 +237,7 @@
 //        DelayUtils.sleep(200);
 //        viewManagerPage.clickButtonsGroupOnFirstApplication();
 //        DelayUtils.sleep(300);
-//        viewManagerPage.clickDeleteButtonInDropdown();
+//        viewManagerPage.clickDelete();
 //
 //        DelayUtils.sleep(2500);
 //        try {

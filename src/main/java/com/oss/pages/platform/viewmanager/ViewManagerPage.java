@@ -65,7 +65,7 @@ public class ViewManagerPage extends BasePage {
     }
 
     public void clickApplicationGroupButton(String applicationName){
-        toolsManagerWindow.expandGroupButtonOnApplication(applicationName);
+        toolsManagerWindow.expandApplication(applicationName);
     }
 
     public void clickAddCategoryButton() {
@@ -131,10 +131,10 @@ public class ViewManagerPage extends BasePage {
         ToolsManagerWindow.Category category = toolsManagerWindow.getCategoryByName("Name After Edition");
         category.removeCategory();
     }
-
-    public void clickDeleteButtonInDropdown() {
-        toolsManagerWindow.clickDeleteButtonInDropdown();
-    }
+//
+//    public void clickDeleteButtonInDropdown() {
+//        toolsManagerWindow.clickDelete();
+//    }
 
     public void clickDeleteButtonInConfirmationPopup() {
         toolsManagerWindow.clickDeleteButtonInConfirmationPopup();
