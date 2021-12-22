@@ -364,7 +364,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         coolingZoneWizardPage.selectNameFromList(COOLING_ZONE_NAME);
         coolingZoneWizardPage.clickUpdate();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        DelayUtils.sleep(5000);
+        DelayUtils.sleep(10000);
     }
 
     @Test(priority = 21, description = "Check cooling values")
