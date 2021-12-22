@@ -2,7 +2,7 @@
 <suite name="ServicesGuiServiceDesk" thread-count="2" parallel="tests" verbose="1">
     <test name="CreateTroubleTicketTestVFNZ">
         <classes>
-            <class name="com.oss.servicedesk.CreateTroubleTicketTestVFNZ"/>
+            <class name="com.oss.servicedesk.CreateTroubleTicketVFNZTest"/>
         </classes>
     </test>
 </suite>

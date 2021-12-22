@@ -1,5 +1,13 @@
 package com.oss.servicedesk;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Test;
+
 import com.oss.BaseTestCase;
 import com.oss.pages.servicedesk.ticket.TicketDashboardPage;
 import com.oss.pages.servicedesk.ticket.TicketDetailsPage;
@@ -7,17 +15,11 @@ import com.oss.pages.servicedesk.ticket.TicketSearchPage;
 import com.oss.pages.servicedesk.ticket.tabs.MessagesTab;
 import com.oss.pages.servicedesk.ticket.wizard.SDWizardPage;
 import com.oss.utils.TestListener;
-import io.qameta.allure.Description;
-import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Listeners;
-import org.testng.annotations.Test;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import io.qameta.allure.Description;
 
 @Listeners({TestListener.class})
-public class CreateTroubleTicketTestVFNZ extends BaseTestCase {
+public class CreateTroubleTicketVFNZTest extends BaseTestCase {
 
     private TicketDashboardPage ticketDashboardPage;
     private TicketSearchPage ticketSearchPage;
@@ -40,7 +42,9 @@ public class CreateTroubleTicketTestVFNZ extends BaseTestCase {
 
     private final static String NOTIFICATION_CHANNEL_INTENRAL = "Internal";
     private final static String NOTIFICATION_CHANNEL_EMAIL = "E-mail";
-    private final static String NOTIFICATION_MESSAGE = "test selenium message";
+    private final static String NOTIFICATION_MESSAGE_INTERNAL = "test selenium message internal";
+    private final static String NOTIFICATION_MESSAGE_EMAIL = "test selenium message E-mail";
+    private final static String NOTIFICATION_MESSAGE_COMMENT = "test selenium message comment";
     private final static String NOTIFICATION_INTERNAL_TO = "ca_kodrobinska";
     private final static String NOTIFICATION_EMAIL_TO = "kornelia.odrobinska@comarch.com";
     private final static String NOTIFICATION_EMAIL_FROM = "Test@AIF.pl";
@@ -183,30 +187,40 @@ public class CreateTroubleTicketTestVFNZ extends BaseTestCase {
     @Description("Check Messages Tab - add Internal Notification")
     public void addInternalNotification() {
         ticketDetailsPage.selectTab(MESSAGES_TAB_ARIA_CONTROLS);
-        ticketDetailsPage.createNewNotificationOnMessagesTab();
+        messagesTab = new MessagesTab(driver, webDriverWait);
+        messagesTab.createNewNotificationOnMessagesTab();
         SDWizardPage notificationSDWizardPage = new SDWizardPage(driver, webDriverWait);
         notificationSDWizardPage.insertValueToComboBoxComponent(NOTIFICATION_CHANNEL_INTENRAL, NOTIFICATION_WIZARD_CHANNEL_ID);
-        notificationSDWizardPage.insertValueToTextAreaComponent(NOTIFICATION_MESSAGE, NOTIFICATION_WIZARD_MESSAGE_ID);
+        notificationSDWizardPage.insertValueToTextAreaComponent(NOTIFICATION_MESSAGE_INTERNAL, NOTIFICATION_WIZARD_MESSAGE_ID);
         notificationSDWizardPage.insertValueToMultiSearchComponent(NOTIFICATION_INTERNAL_TO, NOTIFICATION_WIZARD_INTERNAL_TO_ID);
         notificationSDWizardPage.clickComboBox(NOTIFICATION_WIZARD_TEMPLATE_ID);
         notificationSDWizardPage.insertValueToComboBoxComponent(NOTIFICATION_TYPE, NOTIFICATION_WIZARD_TYPE_ID);
         notificationSDWizardPage.clickAcceptButtonInWizard();
-        // TODO asercja
+
+        Assert.assertFalse(messagesTab.isMessagesTabEmpty());
+        Assert.assertEquals(messagesTab.getMessageText(0), NOTIFICATION_MESSAGE_INTERNAL);
+        Assert.assertEquals(messagesTab.checkMessageType(0), "NOTIFICATION");
+        Assert.assertEquals(messagesTab.getBadgeTextFromMessage(0, 0), "New");
     }
 
     @Test(priority = 9, testName = "Check Messages Tab - add Email Notification", description = "Check Messages Tab - add Email Notification")
     @Description("Check Messages Tab - add Email Notification")
     public void addEmailNotification() {
         ticketDetailsPage.selectTab(MESSAGES_TAB_ARIA_CONTROLS);
-        ticketDetailsPage.createNewNotificationOnMessagesTab();
+        messagesTab = new MessagesTab(driver, webDriverWait);
+        messagesTab.createNewNotificationOnMessagesTab();
         SDWizardPage notificationSDWizardPage = new SDWizardPage(driver, webDriverWait);
         notificationSDWizardPage.insertValueToComboBoxComponent(NOTIFICATION_CHANNEL_EMAIL, NOTIFICATION_WIZARD_CHANNEL_ID);
         notificationSDWizardPage.insertValueToMultiSearchComponent(NOTIFICATION_EMAIL_TO, NOTIFICATION_WIZARD_TO_ID);
         notificationSDWizardPage.insertValueToMultiComboBoxComponent(NOTIFICATION_EMAIL_FROM, NOTIFICATION_WIZARD_FROM_ID);
         notificationSDWizardPage.insertValueToTextComponent(NOTIFICATION_SUBJECT, NOTIFICATION_WIZARD_SUBJECT_ID);
-        notificationSDWizardPage.enterEmailMessage(NOTIFICATION_MESSAGE);
+        notificationSDWizardPage.enterEmailMessage(NOTIFICATION_MESSAGE_EMAIL);
         notificationSDWizardPage.clickAcceptButtonInWizard();
-        // TODO asercja
+
+        Assert.assertFalse(messagesTab.isMessagesTabEmpty());
+        Assert.assertEquals(messagesTab.getMessageText(0), NOTIFICATION_MESSAGE_EMAIL);
+        Assert.assertEquals(messagesTab.checkMessageType(0), "NOTIFICATION");
+        Assert.assertEquals(messagesTab.getBadgeTextFromMessage(0, 0), "New");
     }
 
     @Test(priority = 10, testName = "Check Messages Tab - add Internal Comment", description = "Check Messages Tab - add Internal Comment")
@@ -216,8 +230,10 @@ public class CreateTroubleTicketTestVFNZ extends BaseTestCase {
         messagesTab = new MessagesTab(driver, webDriverWait);
         messagesTab.clickCreateNewCommentButton();
         // TODO dodac wybieranie typu komentarza
-        messagesTab.enterCommentMessage(NOTIFICATION_MESSAGE);
+        messagesTab.enterCommentMessage(NOTIFICATION_MESSAGE_COMMENT);
         messagesTab.clickCreateCommentButton();
-        // TODO asercja
+        Assert.assertTrue(messagesTab.checkMessageType(0).equals("COMMENT"));
+        Assert.assertEquals(messagesTab.getMessageText(0), NOTIFICATION_MESSAGE_COMMENT);
+        Assert.assertEquals(messagesTab.checkCommentType(0), "internal");
     }
 }
