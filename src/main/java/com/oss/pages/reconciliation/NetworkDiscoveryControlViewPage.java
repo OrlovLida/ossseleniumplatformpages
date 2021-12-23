@@ -154,6 +154,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     public boolean checkIssues(IssueLevel errorType) {
         String type = String.valueOf(errorType);
         getIssuesTable().searchByAttributeWithLabel("Issue Level", ComponentType.TEXT_FIELD, type);
+        DelayUtils.sleep(2000);
         DelayUtils.waitForPageToLoad(driver, wait);
         if (getIssuesTable().hasNoData()) {
             return true;
