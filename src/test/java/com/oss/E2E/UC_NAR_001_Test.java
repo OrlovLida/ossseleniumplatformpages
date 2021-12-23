@@ -29,7 +29,7 @@ public class UC_NAR_001_Test extends BaseTestCase {
 
     private static final String ROUTER_NAME = "UCNAR001Router";
     private static final String CM_DOMAIN_NAME = "UC_NAR_001";
-    private static final String NARROW_RECO_NOTIFICATION = "Narrow reconciliation for GMOCs IPDevice finished";
+    private static final String NARROW_RECO_NOTIFICATION = "Narrow reconciliation for GMOCs IPDevice, IPDevice finished";
     private static final String INTERFACE_NAME = "CISCO IOS XR without mediation";
     private static final String DOMAIN = "IP";
     private static final String EQUIPMENT_TYPE = "Physical Device";
