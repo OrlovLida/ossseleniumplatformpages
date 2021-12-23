@@ -197,7 +197,7 @@ public class IPv4AddressesIPAMTest extends BaseTestCase {
                 .assignLoopbackIPv4HostAddressFromSubnetContext(getAddressAndMask(secondIPSubnetProperties));
         IPAddressAssignmentWizardProperties loopbackIpAddressAssignmentWizardProperties = IPAddressAssignmentWizardProperties.builder()
                 .address(LOOPBACK_HOST_ASSIGNMENT_ADDRESS).wizardMode(MANUAL_ADDRESS_MODE).isPrimary(TRUE_STRING).isInNAT(TRUE_STRING).role(ROLE_NAME)
-                .assignmentType(INTERFACE).assignmentName(ASSIGNMENT_INTERFACE_IDENTIFIER).build();
+                .assignmentType(INTERFACE).assignmentName(ASSIGNMENT_INTERFACE_NAME).build();
         IPAddressAssignmentWizardProperties oppositeSideLoopbackIpAddressAssignmentWizardProperties = IPAddressAssignmentWizardProperties.builder()
                 .isPrimary(TRUE_STRING).isInNAT(TRUE_STRING).role(ROLE_NAME).build();
         assignLoopbackAddressFromSubnetContext.assignIPAddress(loopbackIpAddressAssignmentWizardProperties, oppositeSideLoopbackIpAddressAssignmentWizardProperties);

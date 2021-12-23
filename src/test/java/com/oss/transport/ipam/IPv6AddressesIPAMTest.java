@@ -193,7 +193,7 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
                 .assignLoopbackIPv6HostAddressFromHostContext(getAddressAndMask(loopbackIPv6HostAddressProperties));
         IPAddressAssignmentWizardProperties loopbackIpAddressAssignmentWizardProperties = IPAddressAssignmentWizardProperties.builder()
                 .isPrimary(TRUE_STRING).isInNAT(TRUE_STRING).role(ROLE_NAME).description(DESCRIPTION)
-                .assignmentType(INTERFACE).assignmentName(ASSIGNMENT_INTERFACE_IDENTIFIER).build();
+                .assignmentType(INTERFACE).assignmentName(ASSIGNMENT_INTERFACE_NAME).build();
         IPAddressAssignmentWizardProperties oppositeSideLoopbackIpAddressAssignmentWizardProperties = IPAddressAssignmentWizardProperties.builder()
                 .isPrimary(TRUE_STRING).isInNAT(TRUE_STRING).role(ROLE_NAME).build();
         assignLoopbackAddressFromHostContext.assignIPAddressFromIPAddressContext(loopbackIpAddressAssignmentWizardProperties, oppositeSideLoopbackIpAddressAssignmentWizardProperties);
