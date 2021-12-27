@@ -143,7 +143,7 @@ public class AdvancedSearchCompact extends BaseTestCase {
     public void filterByOSF() {
         String attributeValueId = "241";
         String attributeValueLabel = "Siân G. Lloyd";
-        inventoryViewPage.enableColumnAndApply(LAST_NAME_LABEL, DIRECTOR_LABEL);
+        inventoryViewPage.enableColumn(LAST_NAME_LABEL, DIRECTOR_LABEL);
         Multimap<String, String> filters =
                 inventoryViewPage.searchByAttributeValue(OSF_ATTRIBUTE_LABEL, attributeValueId, Input.ComponentType.OBJECT_SEARCH_FIELD);
         

@@ -108,7 +108,7 @@ public class TableWidgetTest extends BaseTestCase {
         columnHeaders = inventoryViewPage.getActiveColumnsHeaders();
         Assertions.assertThat(columnHeaders).doesNotContain(firstHeader);
         
-        inventoryViewPage.enableColumnAndApply(firstHeader);
+        inventoryViewPage.enableColumn(firstHeader);
         
         // then
         columnHeaders = inventoryViewPage.getActiveColumnsHeaders();
