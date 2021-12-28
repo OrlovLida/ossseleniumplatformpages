@@ -15,4 +15,9 @@
             <class name="com.oss.faultmanagement.CreateAlarmListTest"/>
         </classes>
     </test>
+    <test name="FMDashboardTest">
+        <classes>
+            <class name="com.oss.faultmanagement.FMDashboardTest"/>
+        </classes>
+    </test>
 </suite>
