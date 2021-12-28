@@ -20,6 +20,8 @@ import java.util.Date;
 public class CreateAlarmListTest extends BaseTestCase {
     private static final String date = new SimpleDateFormat("dd-MM-yyyy_HH:mm").format(new Date());
     private static final Logger log = LoggerFactory.getLogger(CreateAlarmListTest.class);
+    private static final String ALARM_MANAGEMENT_VIEW_ID = "_UserViewsListALARM_MANAGEMENT";
+
 
     private FMDashboardPage fmDashboardPage;
     private FMCreateWAMVPage fmWAMVPage;
@@ -44,10 +46,10 @@ public class CreateAlarmListTest extends BaseTestCase {
             fmWAMVPage.dragAndDropFilterByName(folderName);
             fmWAMVPage.selectFilterFromList(1);
             fmWAMVPage.clickAcceptButton();
-            Assert.assertTrue(fmDashboardPage.checkVisibilityOfWAMV(name + '_' + date.replace(":", "_")));
-            fmDashboardPage.searchInAlarmManagementView(name + '_' + date.replace(":", "_"));
-            fmDashboardPage.deleteWebAlarmManagementView(0);
-            Assert.assertFalse(fmDashboardPage.checkVisibilityOfWAMV(name + '_' + date.replace(":", "_")));
+            Assert.assertTrue(fmDashboardPage.checkVisibility(ALARM_MANAGEMENT_VIEW_ID,name + '_' + date.replace(":", "_")));
+            fmDashboardPage.searchInSpecificView(ALARM_MANAGEMENT_VIEW_ID, name + '_' + date.replace(":", "_"));
+            fmDashboardPage.deleteFromView(ALARM_MANAGEMENT_VIEW_ID,0);
+            Assert.assertFalse(fmDashboardPage.checkVisibility(ALARM_MANAGEMENT_VIEW_ID,name + '_' + date.replace(":", "_")));
 
         } catch (Exception e) {
             log.error(e.getMessage());
