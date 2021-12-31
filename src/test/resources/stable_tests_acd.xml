@@ -20,4 +20,9 @@
             <class name="com.oss.acd.ApdScenarioSummaryViewTest"/>
         </classes>
     </test>
+    <test name="ArSettingsTest">
+        <classes>
+            <class name="com.oss.acd.ArSettingsTest"/>
+        </classes>
+    </test>
 </suite>
