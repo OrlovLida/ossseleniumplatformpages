@@ -26,15 +26,15 @@ import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
 
-@Listeners({ TestListener.class })
+@Listeners({TestListener.class})
 public class UC_NAR_004_Test extends BaseTestCase {
 
-    private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
     private static final String CM_DOMAIN_NAME = "KRK-SSE8-45";
     private static final String INTERFACE_NAME = "CISCO IOS 12/15/XE without mediation";
     private static final String DOMAIN = "IP";
     private static final String EQUIPMENT_TYPE = "Physical Device";
     private static final String ROUTER_NAME = "KRK-SSE8-45";
+    private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
 
     @BeforeClass
     public void openConsole() {

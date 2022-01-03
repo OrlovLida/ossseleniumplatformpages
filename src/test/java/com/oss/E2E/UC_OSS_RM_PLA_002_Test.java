@@ -47,8 +47,6 @@ import io.qameta.allure.Description;
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 
 public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
-    private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
-
     private static final String DEVICE_MODEL = "CISCO1941/K9";
     private static final String LOCATION_NAME = "Poznan-BU1";
     private static final String CM_DOMAIN_NAME = "SeleniumE2ETest";
@@ -73,12 +71,11 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
     private static final String NAME = "Name";
     private static final String LEFT = "left";
     private static final String RIGHT = "right";
-
+    String URL = "";
+    private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
     private String serialNumber = "SN-" + (int) (Math.random() * 1001);
     private String processIPCode;
     private String processNRPCode;
-
-    String URL = "";
 
     @BeforeClass
     public void openConsole() {

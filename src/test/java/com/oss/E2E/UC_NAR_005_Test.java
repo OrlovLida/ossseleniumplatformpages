@@ -28,10 +28,9 @@ import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
 
-@Listeners({ TestListener.class })
+@Listeners({TestListener.class})
 public class UC_NAR_005_Test extends BaseTestCase {
 
-    private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
     private static final String CM_DOMAIN_NAME = "UC-NAR-005";
     private static final String CM_INTERFACE_NAME = "CISCO IOS 12/15/XE without mediation";
     private static final String DOMAIN_NAME = "IP";
@@ -40,6 +39,7 @@ public class UC_NAR_005_Test extends BaseTestCase {
     private static final String DEVICE_NAME = "UCNAR05";
     private static final String SERIAL_NUMBER_BEFORE = "SERIAL_NUMBER_BEFORE";
     private static final String SERIAL_NUMBER_AFTER = "SERIAL_NUMBER_AFTER";
+    private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
 
     @BeforeClass
     public void openNetworkDiscoveryControlView() {

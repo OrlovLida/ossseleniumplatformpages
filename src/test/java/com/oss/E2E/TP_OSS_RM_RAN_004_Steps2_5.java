@@ -27,18 +27,18 @@ public class TP_OSS_RM_RAN_004_Steps2_5 extends BaseTestCase {
     private static final String carrierL1800 = "L1800 (1392)";
     private static final String carrierL2100 = "L2100 (10562)";
     private static final int crp = 2;
-    private static final String[] cellNamesL1800 = { "TP_OSS_RM_RAN_004_L1800_cell_1", "TP_OSS_RM_RAN_004_L1800_cell_2", "TP_OSS_RM_RAN_004_L1800_cell_3" };
-    private static final String[] cellNamesL2100 = { "TP_OSS_RM_RAN_004_L2100_cell_1", "TP_OSS_RM_RAN_004_L2100_cell_2", "TP_OSS_RM_RAN_004_L2100_cell_3" };
+    private static final String[] cellNamesL1800 = {"TP_OSS_RM_RAN_004_L1800_cell_1", "TP_OSS_RM_RAN_004_L1800_cell_2", "TP_OSS_RM_RAN_004_L1800_cell_3"};
+    private static final String[] cellNamesL2100 = {"TP_OSS_RM_RAN_004_L2100_cell_1", "TP_OSS_RM_RAN_004_L2100_cell_2", "TP_OSS_RM_RAN_004_L2100_cell_3"};
 
     private static final String radioUnitEquipmentType = "Remote Radio Head/Unit";
     private static final String radioUnitModel = "HUAWEI Technology Co.,Ltd RRU5301";
-    private static final String radioUnitNames[] = { "TP_OSS_RM_RAN_004_RRU_1",
+    private static final String[] radioUnitNames = {"TP_OSS_RM_RAN_004_RRU_1",
             "TP_OSS_RM_RAN_004_RRU_2",
-            "TP_OSS_RM_RAN_004_RRU_3" };
+            "TP_OSS_RM_RAN_004_RRU_3"};
 
-    private static final String[] antennaNames = { "TP_OSS_RM_RAN_004_Antenna_1", "TP_OSS_RM_RAN_004_Antenna_2", "TP_OSS_RM_RAN_004_Antenna_3" };
-    private static final int[] localCellsId1800 = { 1, 2, 3 };
-    private static final int[] localCellsId2100 = { 4, 5, 6 };
+    private static final String[] antennaNames = {"TP_OSS_RM_RAN_004_Antenna_1", "TP_OSS_RM_RAN_004_Antenna_2", "TP_OSS_RM_RAN_004_Antenna_3"};
+    private static final int[] localCellsId1800 = {1, 2, 3};
+    private static final int[] localCellsId2100 = {4, 5, 6};
 
     private CellSiteConfigurationPage cellSiteConfigurationPage;
 

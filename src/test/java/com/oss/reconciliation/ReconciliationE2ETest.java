@@ -21,11 +21,11 @@ import com.oss.pages.reconciliation.NetworkInconsistenciesViewPage;
 import com.oss.pages.reconciliation.SamplesManagementPage;
 import com.oss.utils.TestListener;
 
-@Listeners({ TestListener.class })
+@Listeners({TestListener.class})
 public class ReconciliationE2ETest extends BaseTestCase {
 
-    private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
     private static final String cmDomainName = "SeleniumTestDomain";
+    private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
 
     @BeforeClass
     public void openNetworkDiscoveryControlView() {

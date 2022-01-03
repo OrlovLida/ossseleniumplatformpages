@@ -17,11 +17,11 @@ import io.qameta.allure.Description;
 
 public class PerformConfigurationTest extends BaseTestCase {
 
-    private static ChangeConfigurationPage changeConfigurationPage;
-    private static SetParametersWizardPage setParametersWizardPage;
     private static final String DEVICE_NAME = "SeleniumTemplateTestDevice";
     private static final String TEMPLATE_NAME = "E2E_Test_Loopback_v2";
     private static final String TEMPLATE_EXECUTION_NOTIFICATION = "Scripts execution for template E2E_Test_Loopback_v2";
+    private static ChangeConfigurationPage changeConfigurationPage;
+    private static SetParametersWizardPage setParametersWizardPage;
 
     @BeforeClass
     public void goToPerformConfigurationChange() {

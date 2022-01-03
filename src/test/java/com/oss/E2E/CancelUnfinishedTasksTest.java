@@ -17,29 +17,6 @@ public class CancelUnfinishedTasksTest extends BaseTestCase {
     private static final String NEEDS_CLARIFICATION = "needsClarification";
     private static TasksPage tasksPage;
 
-    @BeforeClass
-    public void openConsole() {
-        waitForPageToLoad();
-    }
-
-    @Test(priority = 1)
-    public void cancelUnfinishedTasks() {
-        tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        waitForPageToLoad();
-        tasksPage.clearFilter();
-        String[] tasks = { TasksPage.HIGH_LEVEL_PLANNING_TASK, TasksPage.LOW_LEVEL_PLANNING_TASK, TasksPage.CORRECT_DATA_TASK };
-        for (String taskName : tasks) {
-            log.debug("Started canceling {} tasks", taskName);
-            String processCode = tasksPage.startTaskByUsernameAndTaskName(USERNAME, taskName);
-            while (!processCode.equals("There is no task for specified values")) {
-                log.debug("Cancel task with Process Code = {}", processCode);
-                cancelProcess(processCode, taskName);
-                processCode = tasksPage.startTaskByUsernameAndTaskName(USERNAME, taskName);
-            }
-            log.debug("Finished canceling {} tasks", taskName);
-        }
-    }
-
     private static void cancelProcess(String processCode, String taskName) {
         switch (taskName) {
             case TasksPage.CORRECT_DATA_TASK:
@@ -55,6 +32,29 @@ public class CancelUnfinishedTasksTest extends BaseTestCase {
                 break;
             default:
                 throw new IllegalArgumentException("Cannot map task name = " + taskName);
+        }
+    }
+
+    @BeforeClass
+    public void openConsole() {
+        waitForPageToLoad();
+    }
+
+    @Test(priority = 1)
+    public void cancelUnfinishedTasks() {
+        tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        waitForPageToLoad();
+        tasksPage.clearFilter();
+        String[] tasks = {TasksPage.HIGH_LEVEL_PLANNING_TASK, TasksPage.LOW_LEVEL_PLANNING_TASK, TasksPage.CORRECT_DATA_TASK};
+        for (String taskName : tasks) {
+            log.debug("Started canceling {} tasks", taskName);
+            String processCode = tasksPage.startTaskByUsernameAndTaskName(USERNAME, taskName);
+            while (!processCode.equals("There is no task for specified values")) {
+                log.debug("Cancel task with Process Code = {}", processCode);
+                cancelProcess(processCode, taskName);
+                processCode = tasksPage.startTaskByUsernameAndTaskName(USERNAME, taskName);
+            }
+            log.debug("Finished canceling {} tasks", taskName);
         }
     }
 
