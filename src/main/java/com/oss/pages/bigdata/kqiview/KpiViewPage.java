@@ -1,8 +1,10 @@
 package com.oss.pages.bigdata.kqiview;
 
+import com.oss.framework.components.common.ListAttributesChooser;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.table.TableComponent;
 import com.oss.framework.mainheader.ButtonPanel;
 import com.oss.framework.mainheader.Share;
 import com.oss.framework.mainheader.ToolbarWidget;
@@ -16,7 +18,6 @@ import com.oss.framework.widgets.dpe.toolbarpanel.KpiToolbarPanel;
 import com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType;
 import com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel;
 import com.oss.framework.widgets.dpe.treewidget.KpiTreeWidget;
-import com.oss.framework.widgets.tablewidget.TableWidget;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
@@ -34,8 +35,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.oss.configuration.Configuration.CONFIGURATION;
-import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.MiscellaneousOption.DATA_COMPLETENESS;
-import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.MiscellaneousOption.LAST_SAMPLE_TIME;
+import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.MiscellaneousOption.*;
 import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.TimePeriodChooserOption.LATEST;
 import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.TimePeriodChooserOption.SMART;
 import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.YAxisOption.MANUAL;
@@ -243,7 +243,7 @@ public class KpiViewPage extends BasePage {
     @Step("I check if Indicators View Table is empty")
     public boolean isIndicatorsViewTableEmpty() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        return TableWidget.createById(driver, IND_VIEW_TABLE_ID, wait).hasNoData();
+        return TableComponent.create(driver, wait, IND_VIEW_TABLE_ID).hasNoData();
     }
 
     @Step("I should see more than one line displayed")
@@ -272,6 +272,18 @@ public class KpiViewPage extends BasePage {
     public void clickPerformTopN() {
         kpiToolbarPanel.openTopNPanel().clickPerform();
         DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    @Step("I double click on bar in TopN BarChart")
+    public void doubleClickTopNDPE() {
+        KpiChartWidget.create(driver, wait).doubleClickOnTopNBar(TOP_N_BARCHART_DPE_ID);
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    @Step("I check if TopN navigation bar is visible")
+    public boolean isTopNNavigationBarVisible() {
+        log.info("Checking visibility of TopN navigation bar");
+        return KpiChartWidget.create(driver, wait).isTopNNavigationBarVisible();
     }
 
     @Step("I click legend")
@@ -435,6 +447,20 @@ public class KpiViewPage extends BasePage {
         return visibleLastSampleTimeNumber == expectedVisibleLastSampleTimeNumber;
     }
 
+    @Step("I enable Show Time Zone option")
+    public void enableShowTimeZone() {
+        log.info("Enabling Show Time Zone");
+        DelayUtils.waitForPageToLoad(driver, wait);
+        kpiToolbarPanel.openOptionsPanel().setMiscellaneousOption(SHOW_TIME_ZONE);
+    }
+
+    @Step("Checking visibility of Time Zone option")
+    public boolean isTimeZoneDisplayed() {
+        log.info("Checking visibility of Time Zone option");
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return KpiChartWidget.create(driver, wait).isTimeZoneDisplayed();
+    }
+
     @Step("I should see data completeness displayed in the legend")
     public boolean shouldSeeDataCompleteness() {
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -590,5 +616,83 @@ public class KpiViewPage extends BasePage {
     @Step("I check if expected number of charts is visible")
     public boolean isExpectedNumberOfChartsVisible(int expectedNumberOfCharts) {
         return KpiChartWidget.create(driver, wait).countCharts() == expectedNumberOfCharts;
+    }
+
+    @Step("I zoom the data view")
+    public void zoomChart() {
+        KpiChartWidget.create(driver, wait).zoomDataView();
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    @Step("I check if Zoom Out button is visible")
+    public boolean isZoomOutButtonVisible() {
+        return KpiChartWidget.create(driver, wait).isZoomOutButtonVisible();
+    }
+
+    @Step("I click Zoom Out Button")
+    public void clickZoomOutButton() {
+        KpiChartWidget.create(driver, wait).clickZoomOutButton();
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    @Step("I enable column {columnId} into table")
+    public void enableColumnInTheTable(String columnId) {
+        ListAttributesChooser listAttributesChooser = TableComponent.create(driver, wait, IND_VIEW_TABLE_ID).getListAttributesChooser();
+        listAttributesChooser.enableAttributeById(columnId);
+        listAttributesChooser.clickApply();
+        log.info("Enabling column with id: {}", columnId);
+    }
+
+    @Step("I disable column {columnId} into table")
+    public void disableColumnInTheTable(String columnId) {
+        ListAttributesChooser listAttributesChooser = TableComponent.create(driver, wait, IND_VIEW_TABLE_ID).getListAttributesChooser();
+        listAttributesChooser.disableAttributeById(columnId);
+        listAttributesChooser.clickApply();
+        log.info("Disabling column with id: {}", columnId);
+    }
+
+    @Step("I check if column with Header {columnHeader} is present in the Table")
+    public boolean isColumnInTable(String columnHeader) {
+        return TableComponent.create(driver, wait, IND_VIEW_TABLE_ID).getColumnHeaders().contains(columnHeader);
+    }
+
+    @Step("I change columns order to: first column - {columnId}")
+    public void dragColumnToTarget(String columnId, String targetColumnId) {
+        ListAttributesChooser listAttributesChooser = TableComponent.create(driver, wait, IND_VIEW_TABLE_ID).getListAttributesChooser();
+        listAttributesChooser.enableAttributeById(columnId);
+        listAttributesChooser.dragColumnToTarget(columnId, targetColumnId);
+        listAttributesChooser.clickApply();
+        log.info("Changing columns by dragging in table options menu. First column is column with id: {}", columnId);
+    }
+
+    @Step("I check if column with Header {columnHeader} is first column in the Table")
+    public boolean isColumnFirstInTable(String columnHeader) {
+        return TableComponent.create(driver, wait, IND_VIEW_TABLE_ID).getColumnHeaders().stream()
+                .findFirst()
+                .orElse("")
+                .equals(columnHeader);
+    }
+
+    @Step("I drag column in Table")
+    public void changeColumnsOrderInTable(String columnToDragId, int position) {
+        TableComponent.create(driver, wait, IND_VIEW_TABLE_ID).changeColumnsOrderById(columnToDragId, position);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Dragging column with id: {} to position: {}", columnToDragId, position);
+    }
+
+    public void sortColumnASC(String columnId) {
+        TableComponent.create(driver, wait, IND_VIEW_TABLE_ID).sortColumnByASC(columnId);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Sorting column with id: {} in ASC order", columnId);
+    }
+
+    public void sortColumnDESC(String columnId) {
+        TableComponent.create(driver, wait, IND_VIEW_TABLE_ID).sortColumnByDESC(columnId);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Sorting column with id: {} in DESC order", columnId);
+    }
+
+    public boolean isValueInGivenRow(String value, int row, String columnId) {
+        return TableComponent.create(driver, wait, IND_VIEW_TABLE_ID).getCellValue(row, columnId).equals(value);
     }
 }

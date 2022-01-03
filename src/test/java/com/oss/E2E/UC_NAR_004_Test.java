@@ -27,7 +27,7 @@ import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 
 @Listeners({ TestListener.class })
-public class UC_NAR_004 extends BaseTestCase {
+public class UC_NAR_004_Test extends BaseTestCase {
 
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
     private static final String CM_DOMAIN_NAME = "KRK-SSE8-45";
@@ -37,14 +37,15 @@ public class UC_NAR_004 extends BaseTestCase {
     private static final String ROUTER_NAME = "KRK-SSE8-45";
 
     @BeforeClass
-    public void openNetworkDiscoveryControlView() {
-        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
+    public void openConsole() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 1)
-    @Description("Create CM Domain")
+    @Test(priority = 1, description = "Create CM Domain")
+    @Description("Go to Network Discovery Control View and Create CM Domain")
     public void createCmDomain() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.openCmDomainWizard();
         CmDomainWizardPage wizard = new CmDomainWizardPage(driver);
         wizard.setName(CM_DOMAIN_NAME);
@@ -54,100 +55,118 @@ public class UC_NAR_004 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 2)
-    @Description("Upload reconciliation samples")
+    @Test(priority = 2, description = "Upload reconciliation samples")
+    @Description("Go to Sample Management View and upload reconciliation samples")
     public void uploadSamples() throws URISyntaxException {
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.moveToSamplesManagement();
         SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
         samplesManagementPage.selectPath();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         samplesManagementPage.createDirectory(CM_DOMAIN_NAME);
-        DelayUtils.sleep(1000);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         samplesManagementPage.uploadSamples("recoSamples/UC_NAR_004/KRK-SSE8-45_10.166.10.1_20181107_1306_running-config");
-        DelayUtils.sleep(1000);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         samplesManagementPage.uploadSamples("recoSamples/UC_NAR_004/KRK-SSE8-45_10.166.10.1_20181107_1306_sh_inventory_raw");
-        DelayUtils.sleep(1000);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         samplesManagementPage.uploadSamples("recoSamples/UC_NAR_004/KRK-SSE8-45_10.166.10.1_20181107_1306_sh_version");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 3)
-    @Description("Run reconciliation and check if it ended without errors")
+    @Test(priority = 3, description = "Run reconciliation and check results")
+    @Description("Go to Network Discovery Control View and run reconciliation and check if it ended without errors")
     public void runReconciliationWithFullSample() {
-        openNetworkDiscoveryControlView();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.runReconciliation();
         checkPopupMessageType();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertEquals(networkDiscoveryControlViewPage.waitForEndOfReco(), "SUCCESS");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.selectLatestReconciliationState();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.STARTUP_FATAL));
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.FATAL));
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.ERROR));
     }
 
-    @Test(priority = 4)
-    @Description("Check discrepancy type (Creation)")
+    @Test(priority = 4, description = "Check inconsistencies")
+    @Description("Go to Network Inconsistencies View and check discrepancy type")
     public void checkOperationType() {
         networkDiscoveryControlViewPage.moveToNivFromNdcv();
         NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkInconsistenciesViewPage.expandTree();
         networkInconsistenciesViewPage.selectTreeObjectByRowOrder(3);
-        DelayUtils.sleep(5000);
+        DelayUtils.sleep(3000);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertTrue(networkInconsistenciesViewPage.checkInconsistenciesOperationType().contentEquals("CREATION"));
     }
 
-    @Test(priority = 5)
-    @Description("Search for router in Global Search and check it in New Inventory View")
+    @Test(priority = 5, description = "Search and open router in Inventory View")
+    @Description("Set Network perspective and search for router in Global Search and check it in New Inventory View")
     public void searchInGlobalSearchAndOpenInventoryView() {
         PerspectiveChooser.create(driver, webDriverWait).setNetworkPerspective();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.searchInGlobalSearch(ROUTER_NAME);
         GlobalSearchPage globalSearchPage = new GlobalSearchPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         globalSearchPage.filterObjectType(EQUIPMENT_TYPE);
-        globalSearchPage.expandShowOnAndChooseView(ROUTER_NAME, ActionsContainer.SHOW_ON_GROUP_ID, "OpenInventoryView");
+        globalSearchPage.expandShowOnAndChooseView(ROUTER_NAME, ActionsContainer.SHOW_ON_GROUP_ID, "InventoryView");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
         Assert.assertFalse(newInventoryViewPage.checkIfTableIsEmpty());
     }
 
-    @Test(priority = 6)
-    @Description("Delete old reconciliation samples and upload empty samples")
+    @Test(priority = 6, description = "Change reconciliation samples to empty ones")
+    @Description("Move to Samples Management from Network Discovery Control View, delete old reconciliation samples and upload empty samples")
     public void deleteOldSamplesAndPutNewOne() throws URISyntaxException {
-        openNetworkDiscoveryControlView();
+        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.moveToSamplesManagement();
         SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
         samplesManagementPage.selectPath();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         samplesManagementPage.deleteDirectoryContent();
-        DelayUtils.sleep(2000);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         samplesManagementPage.uploadSamples("recoSamples/ciscoIOS/empty/Selenium1_10.252.255.201_20170707_1324_running-config");
-        DelayUtils.sleep(1000);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         samplesManagementPage.uploadSamples("recoSamples/ciscoIOS/empty/Selenium1_10.252.255.201_20170707_1324_sh_inventory_raw");
-        DelayUtils.sleep(1000);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         samplesManagementPage.uploadSamples("recoSamples/ciscoIOS/empty/Selenium1_10.252.255.201_20170707_1324_sh_version");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 7)
-    @Description("Run reconciliation and check if it ended without errors")
+    @Test(priority = 7, description = "Run reconciliation and check results")
+    @Description("Go to Network Discovery Control View, run reconciliation and check if it ended without errors")
     public void runReconciliationWithEmptySample() {
-        openNetworkDiscoveryControlView();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.runReconciliation();
         checkPopupMessageType();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertEquals(networkDiscoveryControlViewPage.waitForEndOfReco(), "SUCCESS");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.selectLatestReconciliationState();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.STARTUP_FATAL));
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.FATAL));
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.ERROR));
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.WARNING));
     }
 
-    @Test(priority = 8)
+    @Test(priority = 8, description = "Delete CM Domain")
     @Description("Delete CM Domain")
     public void deleteCmDomain() {
-        openNetworkDiscoveryControlView();
+        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.clearOldNotifications();
         networkDiscoveryControlViewPage.deleteCmDomain();

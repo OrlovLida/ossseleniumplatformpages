@@ -6,8 +6,8 @@ import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tablewidget.TableWidget;
-import com.oss.pages.BasePage;
-import com.oss.pages.servicedesk.ticket.wizard.WizardPage;
+import com.oss.pages.servicedesk.BaseSDPage;
+import com.oss.pages.servicedesk.ticket.wizard.SDWizardPage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import static com.oss.pages.servicedesk.ticket.TicketDetailsPage.DETAILS_PAGE_URL_PATTERN;
 
-public class TicketDashboardPage extends BasePage {
+public class TicketDashboardPage extends BaseSDPage {
 
     private static final Logger log = LoggerFactory.getLogger(TicketDashboardPage.class);
 
@@ -38,34 +38,33 @@ public class TicketDashboardPage extends BasePage {
         String pageUrl = String.format("%s/#/dashboard/predefined/id/_TroubleTickets", basicURL);
         driver.get(pageUrl);
         DelayUtils.waitForPageToLoad(driver, wait);
-        DelayUtils.sleep(5000);
         log.info("Opened page: {}", pageUrl);
 
         return new TicketDashboardPage(driver, wait);
     }
 
     @Step("I open create ticket wizard for flow {flowType}")
-    public WizardPage openCreateTicketWizard(WebDriver driver, String flowType) {
-        DelayUtils.sleep(5000);
+    public SDWizardPage openCreateTicketWizard(String flowType) {
         DelayUtils.waitForPageToLoad(driver, wait);
         Button.createBySelectorAndId(driver, "button", CREATE_TICKET_BUTTON_ID).click();
         DropdownList.create(driver, wait).selectOptionWithId(flowType);
         log.info("Create ticket wizard for {} is opened", flowType);
-        return new WizardPage(driver);
+
+        return new SDWizardPage(driver, wait);
     }
 
     @Step("I check severity table")
-    public TableWidget getSeverityTable(WebDriver driver, String tableId, WebDriverWait wait) {
+    public TableWidget getSeverityTable(String tableId) {
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Create Table widget");
         return TableWidget.createById(driver, tableId, wait);
     }
 
     @Step("I check Trouble Tickets table")
-    public OldTable getTroubleTicketsTable(WebDriver driver, String tableId, WebDriverWait wait) {
+    public OldTable getTroubleTicketsTable() {
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Create Trouble Ticket Table");
-        return OldTable.createByComponentDataAttributeName(driver, wait, tableId);
+        return OldTable.createByComponentDataAttributeName(driver, wait, TROUBLE_TICKETS_TABLE_ID);
     }
 
     public String getIdForNthTicketInTable(int n) {
@@ -74,13 +73,13 @@ public class TicketDashboardPage extends BasePage {
     }
 
     private String getAttributeFromTable(int index, String attributeName) {
-        String attributeValue = getSeverityTable(driver, TABLE_ID, wait).getCellValue(index, attributeName);
+        String attributeValue = getSeverityTable(TABLE_ID).getCellValue(index, attributeName);
         log.info("Got value for {} attribute: {}", attributeName, attributeValue);
         return attributeValue;
     }
 
     private String getAttributeFromTicketsTable(int index, String attributeName) {
-        String attributeValue = getTroubleTicketsTable(driver, TROUBLE_TICKETS_TABLE_ID, wait).getCellValue(index, attributeName);
+        String attributeValue = getTroubleTicketsTable().getCellValue(index, attributeName);
         log.info("Got value for {} attribute: {} from Trouble Tickets Table", attributeName, attributeValue);
         return attributeValue;
     }
@@ -97,10 +96,10 @@ public class TicketDashboardPage extends BasePage {
 
     @Step("I open details view for {rowIndex} ticket in Ticket table")
     public TicketDetailsPage openTicketDetailsView(String rowIndex, String basicURL) {
-        String ticketId = getTroubleTicketsTable(driver, TROUBLE_TICKETS_TABLE_ID, wait).getCellValue(Integer.parseInt(rowIndex), ID_ATTRIBUTE);
+        String ticketId = getTroubleTicketsTable().getCellValue(Integer.parseInt(rowIndex), ID_ATTRIBUTE);
         log.info("Opening ticket details for ticket with id: {}", ticketId);
         DelayUtils.waitForPageToLoad(driver, wait);
         driver.get(String.format(DETAILS_PAGE_URL_PATTERN, basicURL, ticketId));
-        return new TicketDetailsPage(driver);
+        return new TicketDetailsPage(driver, wait);
     }
 }

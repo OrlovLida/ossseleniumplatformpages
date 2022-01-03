@@ -1,6 +1,7 @@
 package com.oss.repositories;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.comarch.oss.locationinventory.api.dto.AttributeDTO;
 import com.comarch.oss.locationinventory.api.dto.PhysicalLocationDTO;
@@ -60,10 +61,10 @@ public class LocationInventoryRepository {
         return Long.valueOf(subLocationId.substring(subLocationId.lastIndexOf("/") + 1, subLocationId.indexOf("?")));
     }
 
-    public String getLocationId(String locationName){
+    public Optional<String> getLocationId(String locationName){
         LocationInventoryClient client = new LocationInventoryClient(env);
         List<Integer> locationIds = client.getPhysicalLocationByName(locationName);
-        return locationIds.get(0).toString();
+        return locationIds.stream().findFirst().map(Object::toString);
     }
 
     public void updateSubLocation(Long subLocationId,String subLocationType, String subLocationName, Long preciseLocation, String preciseLocationType,

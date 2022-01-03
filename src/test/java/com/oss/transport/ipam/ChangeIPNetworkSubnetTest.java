@@ -2,8 +2,8 @@ package com.oss.transport.ipam;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bpm.ProcessInstancesPage;
-import com.oss.pages.bpm.ProcessWizardPage;
+import com.oss.pages.bpm.processinstances.ProcessInstancesPage;
+import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 import com.oss.pages.bpm.TasksPage;
 import com.oss.pages.transport.ipam.IPAddressAssignmentWizardPage;
 import com.oss.pages.transport.ipam.IPAddressManagementViewPage;

@@ -1,5 +1,6 @@
 package com.oss.E2E;
 
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -40,10 +41,10 @@ public class ISPConfigurationTest extends BaseTestCase {
     private static final String SUBLOCATION_NAME = "ISPConfiguration_Room";
     private static final String PHYSICAL_DEVICE_MODEL = "7360 ISAM FX-8";
     private static final String PHYSICAL_DEVICE_NAME = "ISPPhysicalDevice";
-    private static final String PHYSICAL_DEVICE_MODEL2 = "ADVA Optical Networking FMT/1HU";
-    private static final String PHYSICAL_DEVICE_MODEL3 = "JDSU OTU8000";
-    private static final String PHYSICAL_DEVICE_NAME2 = "ISPPhysicalDevice2";
-    private static final String PHYSICAL_DEVICE_NAME3 = "ISPPhysicalDevice3";
+    private static final String PHYSICAL_DEVICE_MODEL2 = "JDSU OTU8000";
+    private static final String PHYSICAL_DEVICE_MODEL3 = "ADVA Optical Networking FMT/1HU";
+    private static final String PHYSICAL_DEVICE_NAME2 = "ISPPhysicalDevice3";
+    private static final String PHYSICAL_DEVICE_NAME3 = "ISPPhysicalDevice2";
     private static final String MODEL_UPDATE = "Alcatel 7302";
     private static final String MOUNTING_EDITOR_MODEL = "Generic 19\" 42U 600x800 (Bottom-Up)";
     private static final String MOUNTING_EDITOR_NAME = "ISPMountingEditor";
@@ -81,23 +82,23 @@ public class ISPConfigurationTest extends BaseTestCase {
     }
 
     private SystemMessageInterface getSuccesSystemMessage() {
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, 90));
         Assert.assertEquals((systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType()), MessageType.SUCCESS);
         return systemMessage;
     }
 
     @BeforeClass
-    @Description("Open Create Location Wizard")
-    public void openCreateLocationWizard() {
+    @Description("Open Console and set Live perspective")
+    public void openConsoleAndSetLivePerspective() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        homePage.chooseFromLeftSideMenu("Create Physical Location", "Infrastructure management", "Create Infrastructure");
     }
 
-    @Test(priority = 1)
-    @Description("Create Building")
+    @Test(priority = 1, description = "Create building")
+    @Description("Create building")
     public void createBuilding() {
+        homePage.chooseFromLeftSideMenu("Create Physical Location", "Infrastructure management", "Create Infrastructure");
         LocationWizardPage locationWizardPage = new LocationWizardPage(driver);
         locationWizardPage.setLocationType("Building");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -113,8 +114,8 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopup();
     }
 
-    @Test(priority = 2)
-    @Description("Show building in Location Overview")
+    @Test(priority = 2, description = "Show building in Location Overview")
+    @Description("Show newly created building in Location Overview")
     public void showLocationOverviewFromPopup() {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         systemMessage.clickMessageLink();
@@ -122,16 +123,16 @@ public class ISPConfigurationTest extends BaseTestCase {
         LOCATION_OVERVIEW_URL = driver.getCurrentUrl();
     }
 
-    @Test(priority = 3)
-    @Description("Open Create Sublocation Wizard")
+    @Test(priority = 3, description = "Open Create Sublocation wizard")
+    @Description("Open Create Sublocation wizard")
     public void openSublocationWizard() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.clickButton("Create Sublocation");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 4)
-    @Description("Create Room")
+    @Test(priority = 4, description = "Create room")
+    @Description("Create room and check confirmation system message")
     public void createRoom() {
         SublocationWizardPage sublocationWizardPage = new SublocationWizardPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -146,16 +147,16 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 5)
-    @Description("Open Create Device Wizard")
+    @Test(priority = 5, description = "Open Create Device wizard")
+    @Description("Open Create Device wizard")
     public void openDeviceWizard() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.clickButton("Create Device");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 6)
-    @Description("Create Physical Device")
+    @Test(priority = 6, description = "Create physical device")
+    @Description("Create physical device and check confirmation system message")
     public void createPhysicalDevice() {
         DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
         deviceWizardPage.setModel(PHYSICAL_DEVICE_MODEL);
@@ -169,8 +170,8 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopup();
     }
 
-    @Test(priority = 7)
-    @Description("Show device in Device Overview")
+    @Test(priority = 7, description = "Show device in Hierarchy View")
+    @Description("Show device in Hierarchy View by clicking in direct link from system message")
     public void showHierarchyViewFromPopup() {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         systemMessage.clickMessageLink();
@@ -178,8 +179,8 @@ public class ISPConfigurationTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 8)
-    @Description("Open Change Model Wizard")
+    @Test(priority = 8, description = "Open Change Model wizard")
+    @Description("Select device and open Change Model wizard")
     public void openChangeModelWizard() {
         HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
         hierarchyViewPage.selectFirstObject();
@@ -188,8 +189,8 @@ public class ISPConfigurationTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 9)
-    @Description("Change device model")
+    @Test(priority = 9, description = "Change device model")
+    @Description("Change device model and check confirmation system message")
     public void changeDeviceModel() {
         ChangeModelWizardPage changeModelWizardPage = new ChangeModelWizardPage(driver);
         changeModelWizardPage.setModel(MODEL_UPDATE);
@@ -199,8 +200,8 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 10)
-    @Description("Open Create Card Wizard")
+    @Test(priority = 10, description = "Open Create Card wizard")
+    @Description("Open Create Card wizard")
     public void openCreateCardWizard() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
@@ -208,23 +209,23 @@ public class ISPConfigurationTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 11)
-    @Description("Set Card Model")
-    public void setCardModel() {
+    @Test(priority = 11, description = "Create card")
+    @Description("Create card and check confirmation system message")
+    public void createCard() {
         CardCreateWizardPage cardCreateWizardPage = new CardCreateWizardPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cardCreateWizardPage.setModel("Alcatel NELT-B");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        cardCreateWizardPage.setSlot("LT3");
+        cardCreateWizardPage.setSlot("Chassis\\LT3");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        cardCreateWizardPage.setSlot("LT4");
+        cardCreateWizardPage.setSlot("Chassis\\LT4");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cardCreateWizardPage.clickAccept();
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 12)
-    @Description("Open Change Card Model Wizard")
+    @Test(priority = 12, description = "Open Change Card Model wizard")
+    @Description("Refresh page, select newly created card and open Change Card Model wizard")
     public void openChangeCardWizard() {
         driver.navigate().refresh();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -236,8 +237,8 @@ public class ISPConfigurationTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 13)
-    @Description("Change Card Model")
+    @Test(priority = 13, description = "Change Card Model")
+    @Description("Change Card Model and check confirmation system message")
     public void changeCardModel() {
         ChangeCardModelWizard changeCardModelWizard = new ChangeCardModelWizard(driver);
         changeCardModelWizard.setModelCard("Alcatel NELT-A");
@@ -246,8 +247,8 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 14)
-    @Description("Open Mounting Editor Wizard")
+    @Test(priority = 14, description = "Open Mounting Editor wizard")
+    @Description("Refresh page, select device and open Mounting Editor wizard")
     public void openMountingEditorWizard() {
         driver.navigate().refresh();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -258,8 +259,8 @@ public class ISPConfigurationTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 15)
-    @Description("Set Mounting Editor")
+    @Test(priority = 15, description = "Set Mounting Editor")
+    @Description("Set Mounting Editor and check confirmation system message")
     public void setMountingEditor() {
         MountingEditorWizardPage mountingEditorWizardPage = new MountingEditorWizardPage(driver);
         mountingEditorWizardPage.setName(MOUNTING_EDITOR_NAME);
@@ -276,8 +277,8 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 16)
-    @Description("Move to Location Overview and create Cooling Zone")
+    @Test(priority = 16, description = "Move to Location Overview and create cooling zone")
+    @Description("Move to Location Overview by direct link, create cooling zone from Cooling Zones tab and check confirmation system message")
     public void createCoolingZone() {
         driver.get(format(LOCATION_OVERVIEW_URL, BASIC_URL));
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
@@ -290,8 +291,8 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 17)
-    @Description("Create Cooling Unit")
+    @Test(priority = 17, description = "Create cooling unit")
+    @Description("Create cooling unit from Devices tab and check confirmation system message")
     public void createCoolingUnit() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Devices");
@@ -311,8 +312,8 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 18)
-    @Description("Assign Cooling Unit to Cooling Zone")
+    @Test(priority = 18, description = "Assign cooling unit to cooling zone")
+    @Description("Assign cooling unit to cooling zone")
     public void assignCoolingUnitToCoolingZone() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Devices");
@@ -326,18 +327,18 @@ public class ISPConfigurationTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 19)
-    @Description("Create physical Device3")
-    public void createDevice3() {
+    @Test(priority = 19, description = "Create second device")
+    @Description("Create second device and check confirmation system message")
+    public void createSecondDevice() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Devices");
         locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.DEVICES, "Create Device");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        deviceWizardPage.setModel(PHYSICAL_DEVICE_MODEL3);
+        deviceWizardPage.setModel(PHYSICAL_DEVICE_MODEL2);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        deviceWizardPage.setName(PHYSICAL_DEVICE_NAME3);
+        deviceWizardPage.setName(PHYSICAL_DEVICE_NAME2);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.setHeatEmission(DEVICE_HEAT_EMISSION);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -351,21 +352,27 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 20)
-    @Description("Assign Device to Cooling Zone")
-    public void assignDeviceToCoolingZone() {
+    @Test(priority = 20, description = "Assign second device to cooling zone")
+    @Description("Assign second device to cooling zone")
+    public void assignSecondDeviceToCoolingZone() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Devices");
-        locationOverviewPage.filterObjectInSpecificTab(TabName.DEVICES, NAME, PHYSICAL_DEVICE_NAME3);
+        locationOverviewPage.filterObjectInSpecificTab(TabName.DEVICES, NAME, PHYSICAL_DEVICE_NAME2);
         locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.DEVICES, "Cooling Zone Editor");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         CoolingZoneEditorWizardPage coolingZoneWizardPage = new CoolingZoneEditorWizardPage(driver);
         coolingZoneWizardPage.selectNameFromList(COOLING_ZONE_NAME);
         coolingZoneWizardPage.clickUpdate();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        DelayUtils.sleep(10000);
+    }
+
+    @Test(priority = 21, description = "Check cooling values")
+    @Description("Refresh page and check cooling values in Cooling Zones tab")
+    public void checkCoolingValues() {
         driver.navigate().refresh();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        locationOverviewPage = new LocationOverviewPage(driver);
+        LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Cooling Zones");
         TableInterface coolingTable = locationOverviewPage.getTabTable(TabName.COOLING_ZONES);
         int rowNumber = coolingTable.getRowNumber(COOLING_ZONE_NAME, NAME);
@@ -383,18 +390,18 @@ public class ISPConfigurationTest extends BaseTestCase {
         COOLING_ZONE_CAPACITY = coolingCapacity;
     }
 
-    @Test(priority = 21)
-    @Description("Create Physical Device2")
-    public void createPhysicalDevice2() {
+    @Test(priority = 22, description = "Create third device")
+    @Description("Create third device and check confirmation system message")
+    public void createThirdDevice() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Devices");
         locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.DEVICES, "Create Device");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        deviceWizardPage.setModel(PHYSICAL_DEVICE_MODEL2);
+        deviceWizardPage.setModel(PHYSICAL_DEVICE_MODEL3);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        deviceWizardPage.setName(PHYSICAL_DEVICE_NAME2);
+        deviceWizardPage.setName(PHYSICAL_DEVICE_NAME3);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.setHeatEmission(DEVICE_HEAT_EMISSION);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -406,12 +413,12 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 22)
-    @Description("Assign Physcial Device2 to Cooling Zone")
-    public void assignDevice2ToCoolingZone() {
+    @Test(priority = 23, description = "Assign third device to cooling zone")
+    @Description("Assign third device to cooling zone")
+    public void assignThirdDeviceToCoolingZone() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Devices");
-        locationOverviewPage.filterObjectInSpecificTab(TabName.DEVICES, NAME, PHYSICAL_DEVICE_NAME2);
+        locationOverviewPage.filterObjectInSpecificTab(TabName.DEVICES, NAME, PHYSICAL_DEVICE_NAME3);
         locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.DEVICES, "Cooling Zone Editor");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         CoolingZoneEditorWizardPage coolingZoneWizardPage = new CoolingZoneEditorWizardPage(driver);
@@ -420,8 +427,8 @@ public class ISPConfigurationTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 23)
-    @Description("Update Cooling Unit")
+    @Test(priority = 24, description = "Update cooling unit")
+    @Description("Update Cooling Unit and check confirmation system message")
     public void updateCoolingUnit() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Devices");
@@ -434,9 +441,15 @@ public class ISPConfigurationTest extends BaseTestCase {
         deviceWizardPage.nextUpdateWizard();
         deviceWizardPage.acceptUpdateWizard();
         checkPopupAndCloseMessage();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    @Test(priority = 25, description = "Check updated cooling values")
+    @Description("Refresh page and check updated cooling values in cooling zones tab")
+    public void checkUpdatedCoolingValues() {
         driver.navigate().refresh();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        locationOverviewPage = new LocationOverviewPage(driver);
+        LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Cooling Zones");
         TableInterface coolingTable = locationOverviewPage.getTabTable(TabName.COOLING_ZONES);
         int rowNumber = coolingTable.getRowNumber(COOLING_ZONE_NAME, NAME);
@@ -451,8 +464,8 @@ public class ISPConfigurationTest extends BaseTestCase {
         Assert.assertNotEquals(coolingLoadRatio, COOLING_ZONE_LOAD_RATIO, String.format(ASSERT_NOT_EQUALS, coolingLoadRatio, COOLING_ZONE_LOAD_RATIO));
     }
 
-    @Test(priority = 24)
-    @Description("Create Power Device")
+    @Test(priority = 26, description = "Create power device")
+    @Description("Create power device from Devices tab and check confirmation system message")
     public void createPowerDevice() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Devices");
@@ -468,6 +481,12 @@ public class ISPConfigurationTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.accept();
         checkPopupAndCloseMessage();
+    }
+
+    @Test(priority = 27, description = "Check power values")
+    @Description("Check power values in Power Management tab")
+    public void checkPowerValues() {
+        LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Power Management");
         locationOverviewPage.clickRefreshInSpecificTab(TabName.POWER_MANAGEMENT);
         TableInterface powerManagementTable = locationOverviewPage.getTabTable(TabName.POWER_MANAGEMENT);
@@ -480,8 +499,8 @@ public class ISPConfigurationTest extends BaseTestCase {
         Assert.assertNotEquals(rowValue, "0", String.format(ASSERT_NOT_EQUALS, rowValue, "0"));
     }
 
-    @Test(priority = 25)
-    @Description("Create Power Supply Unit")
+    @Test(priority = 28, description = "Create power supply unit")
+    @Description("Create power supply unit and check confirmation system message")
     public void createPowerSupplyUnit() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Devices");
@@ -498,8 +517,8 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 26)
-    @Description("Create Row")
+    @Test(priority = 29, description = "Create row")
+    @Description("Create row and check confirmation system message")
     public void createRow() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Locations");
@@ -513,8 +532,8 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 27)
-    @Description("Create 3x Footprint")
+    @Test(priority = 30, description = "Create 3 footprints")
+    @Description("Create 3 footprints and check confirmation system message")
     public void createFootprint() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.filterObjectInSpecificTab(TabName.LOCATIONS, NAME, "rh01");
@@ -533,8 +552,8 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 28)
-    @Description("Edit Rack Precise Location to Footprint")
+    @Test(priority = 31, description = "Set rack Precise Location to footprint")
+    @Description("Set rack Precise Location to footprint and check confirmation system message")
     public void preciseRackLocation() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.filterObjectInSpecificTab(TabName.LOCATIONS, NAME, MOUNTING_EDITOR_NAME);
@@ -546,8 +565,8 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 29)
-    @Description("Edit Device Precise Location to Footprint")
+    @Test(priority = 32, description = "Set device Precise Location to footprint")
+    @Description("Set Device Precise Location to footprint and check confirmation system message")
     public void preciseDeviceLocation() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Devices");
@@ -564,8 +583,8 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 30)
-    @Description("Delete Power Supply Unit")
+    @Test(priority = 33, description = "Delete power supply unit")
+    @Description("Delete power supply unit and check confirmation system message")
     public void deletePowerSupplyUnit() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.filterObjectInSpecificTab(TabName.DEVICES, NAME, POWER_SUPPLY_UNIT_NAME);
@@ -574,8 +593,8 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 31)
-    @Description("Delete Power Device")
+    @Test(priority = 34, description = "Delete power device")
+    @Description("Delete power device and check confirmation system message")
     public void deletePowerDevice() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Devices");
@@ -585,9 +604,9 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 32)
-    @Description("Delete Physical Device3")
-    public void deletePhysicalDevice3() {
+    @Test(priority = 35, description = "Delete third device")
+    @Description("Delete third device and check confirmation system message")
+    public void deleteThirdDevice() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Devices");
         locationOverviewPage.filterObjectInSpecificTab(TabName.DEVICES, NAME, PHYSICAL_DEVICE_NAME3);
@@ -597,9 +616,9 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 33)
-    @Description("Delete Physical Device2")
-    public void deletePhysicalDevice2() {
+    @Test(priority = 36, description = "Delete second device")
+    @Description("Delete second device and check confirmation system message")
+    public void deleteSecondDevice() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Devices");
         locationOverviewPage.filterObjectInSpecificTab(TabName.DEVICES, NAME, PHYSICAL_DEVICE_NAME2);
@@ -609,8 +628,8 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 34)
-    @Description("Delete Physical Device")
+    @Test(priority = 37, description = "Delete first device")
+    @Description("Delete first device and check confirmation system message")
     public void deletePhysicalDevice() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Devices");
@@ -621,8 +640,8 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 35)
-    @Description("Delete Cooling Unit")
+    @Test(priority = 38, description = "Delete cooling unit")
+    @Description("Delete cooling unit and check confirmation system message")
     public void deleteCoolingUnit() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Devices");
@@ -633,8 +652,8 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 36)
-    @Description("Delete Cooling Zone")
+    @Test(priority = 39, description = "Delete cooling zone")
+    @Description("Delete cooling zone and check confirmation system message")
     public void deleteCoolingZone() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Cooling Zones");
@@ -645,8 +664,8 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 37)
-    @Description("Delete Footprints")
+    @Test(priority = 40, description = "Delete 3 footprints")
+    @Description("Delete 3 footprints and check confirmation system message")
     public void deleteFootprints() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Locations");
@@ -667,8 +686,8 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 38)
-    @Description("Delete Row")
+    @Test(priority = 41, description = "Delete row")
+    @Description("Delete row and check confirmation system message")
     public void deleteRow() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.filterObjectInSpecificTab(TabName.LOCATIONS, NAME, "rh01");
@@ -677,8 +696,8 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 39)
-    @Description("Delete Room")
+    @Test(priority = 42, description = "Delete room")
+    @Description("Delete room and check confirmation system message")
     public void deleteRoom() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Locations");
@@ -689,8 +708,8 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 40)
-    @Description("Delete Location")
+    @Test(priority = 43, description = "Delete location")
+    @Description("Delete location")
     public void deleteLocation() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.clickButton("Delete Location");

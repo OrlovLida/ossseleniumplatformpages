@@ -1,18 +1,33 @@
 package com.oss.dpe;
 
+import java.util.Collections;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
+import org.testng.annotations.Test;
+
 import com.oss.BaseTestCase;
 import com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel;
 import com.oss.pages.bigdata.kqiview.KpiViewPage;
 import com.oss.utils.TestListener;
+
 import io.qameta.allure.Description;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.annotations.*;
 
-import java.util.Collections;
-
-import static com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.*;
-import static org.testng.Assert.*;
+import static com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_1x1;
+import static com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_2x1;
+import static com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_2x2;
+import static com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_3x2;
+import static com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_3x3;
+import static com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_4x4;
+import static com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_AUTO;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.fail;
 
 @Listeners({TestListener.class})
 public class IndicatorsViewTest extends BaseTestCase {
@@ -29,6 +44,11 @@ public class IndicatorsViewTest extends BaseTestCase {
     private static final String LAYOUT_EXPECTED_STATUS = "active";
     private static final String INDICATORS_TREE_ID = "_Indicators";
     private static final String DIMENSIONS_TREE_ID = "_Dimensions";
+    private static final String IDENTIFIER_COLUMN_ID = "DPE_DIMENSION_ATTR_MANAGED_OBJECT_IDENTIFIER";
+    private static final String IDENTIFIER_COLUMN_HEADER = "IDENTIFIER";
+    private static final String SAMPLE_TIME_COLUMN_ID = "STIME";
+    private static final String SAMPLE_TIME_COLUMN_HEADER = "Sample Time";
+    private static final String MANAGED_OBJECT_COLUMN_DATA_COL_ID = "DPE_DIMENSION_managed_object";
 
     private KpiViewPage kpiViewPage;
 
@@ -153,9 +173,13 @@ public class IndicatorsViewTest extends BaseTestCase {
             kpiViewPage.enableDataCompleteness();
             kpiViewPage.applyChanges();
             assertTrue(kpiViewPage.shouldSeeDataCompleteness());
+
+            kpiViewPage.enableShowTimeZone();
+            kpiViewPage.applyChanges();
+            assertTrue(kpiViewPage.isTimeZoneDisplayed());
+
             kpiViewPage.enableLastSampleTime();
             assertTrue(kpiViewPage.shouldSeeLastSampleTime(1));
-            kpiViewPage.applyChanges();
         } catch (Exception e) {
             log.error(e.getMessage());
             fail();
@@ -394,6 +418,9 @@ public class IndicatorsViewTest extends BaseTestCase {
             assertTrue(kpiViewPage.dpeTopNBarChartIsDisplayed());
             assertTrue(kpiViewPage.isExpectedNumberOfChartsVisible(2));
             assertTrue(kpiViewPage.shouldSeeBoxesAndCurvesDisplayed(6, 5));
+
+            kpiViewPage.doubleClickTopNDPE();
+            assertTrue(kpiViewPage.isTopNNavigationBarVisible());
         } catch (Exception e) {
             log.error(e.getMessage());
             fail();
@@ -424,6 +451,75 @@ public class IndicatorsViewTest extends BaseTestCase {
 
             assertTrue(selectedAggMethod.equals("MAX"));
             assertEquals(numOfActiveAggMethods, 1);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            fail();
+        }
+    }
+
+    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
+    @Test(priority = 16, testName = "Zoom in/zoom out check", description = "Zoom in/zoom out check")
+    @Description("Zoom in/zoom out check")
+    public void zoomInChartCheck(
+            @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
+            @Optional("DBTIME") String indicatorNodesToSelect,
+            @Optional() String dimensionNodesToExpand,
+            @Optional("DC Type: THRES_DC") String dimensionNodesToSelect,
+            @Optional("Data Collection Statistics") String filterName
+    ) {
+        try {
+            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+
+            kpiViewPage.zoomChart();
+            assertTrue(kpiViewPage.isZoomOutButtonVisible());
+
+            kpiViewPage.clickZoomOutButton();
+            assertTrue(!kpiViewPage.isZoomOutButtonVisible());
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            fail();
+        }
+    }
+
+    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
+    @Test(priority = 17, testName = "table settings: sorting, adding/removing attribute columns", description = "table settings: sorting, adding/removing attribute columns")
+    @Description("table settings: sorting, adding/removing attribute columns")
+    public void checkTableSettings(
+            @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
+            @Optional("DBTIME") String indicatorNodesToSelect,
+            @Optional() String dimensionNodesToExpand,
+            @Optional("DC Type: THRES_DC,DC Type: PMSTA_DC") String dimensionNodesToSelect,
+            @Optional("Data Collection Statistics") String filterName
+    ) {
+        try {
+            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(2));
+
+            kpiViewPage.setDisplayType("Table");
+            assertFalse(kpiViewPage.isIndicatorsViewTableEmpty());
+
+            kpiViewPage.enableColumnInTheTable(IDENTIFIER_COLUMN_ID);
+            assertTrue(kpiViewPage.isColumnInTable(IDENTIFIER_COLUMN_HEADER));
+            assertFalse(kpiViewPage.isIndicatorsViewTableEmpty());
+
+            kpiViewPage.disableColumnInTheTable(IDENTIFIER_COLUMN_ID);
+            assertFalse(kpiViewPage.isColumnInTable(IDENTIFIER_COLUMN_HEADER));
+            assertFalse(kpiViewPage.isIndicatorsViewTableEmpty());
+
+            kpiViewPage.dragColumnToTarget(IDENTIFIER_COLUMN_ID, SAMPLE_TIME_COLUMN_ID);
+            assertTrue(kpiViewPage.isColumnFirstInTable(IDENTIFIER_COLUMN_HEADER));
+            assertFalse(kpiViewPage.isIndicatorsViewTableEmpty());
+
+            kpiViewPage.changeColumnsOrderInTable(SAMPLE_TIME_COLUMN_ID, 0);
+            assertTrue(kpiViewPage.isColumnFirstInTable(SAMPLE_TIME_COLUMN_HEADER));
+            assertFalse(kpiViewPage.isIndicatorsViewTableEmpty());
+
+            kpiViewPage.sortColumnASC(MANAGED_OBJECT_COLUMN_DATA_COL_ID);
+            assertTrue(kpiViewPage.isValueInGivenRow("DC Type: PMSTA_DC", 0, MANAGED_OBJECT_COLUMN_DATA_COL_ID));
+
+            kpiViewPage.sortColumnDESC(MANAGED_OBJECT_COLUMN_DATA_COL_ID);
+            assertTrue(kpiViewPage.isValueInGivenRow("DC Type: THRES_DC", 0, MANAGED_OBJECT_COLUMN_DATA_COL_ID));
         } catch (Exception e) {
             log.error(e.getMessage());
             fail();

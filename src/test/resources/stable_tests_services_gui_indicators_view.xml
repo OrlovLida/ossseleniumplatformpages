@@ -6,8 +6,12 @@
         </classes>
     </test>
     <test name="IndicatorsViewTest2">
+        <parameter name="indicatorNodesToExpand" value="self:extPM:DC Indicators"/>
+        <parameter name="indicatorNodesToSelect" value="DBTIME"/>
+        <parameter name="dimensionNodesToExpand" value=""/>
+        <parameter name="dimensionNodesToSelect" value="DC Type: THRES_DC"/>
+        <parameter name="filterName" value="Data Collection Statistics"/>
         <classes>
-
             <class name="com.oss.bigdata.kpiview.KpiViewTest">
                 <methods>
                     <include name="verifyIfKpiViewWorksProperly"/>

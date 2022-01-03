@@ -13,7 +13,7 @@ import com.oss.framework.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
-import com.oss.pages.bpm.ProcessWizardPage;
+import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 import com.oss.pages.bpm.TasksPage;
 import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.transport.NetworkViewPage;

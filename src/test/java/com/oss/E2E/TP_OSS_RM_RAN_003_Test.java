@@ -10,14 +10,16 @@ import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bpm.ProcessWizardPage;
 import com.oss.pages.bpm.TasksPage;
+import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
 import com.oss.pages.radio.CellSiteConfigurationPage;
 import com.oss.pages.radio.EditCell4GWizardPage;
 
-public class TP_OSS_RM_RAN_003 extends BaseTestCase {
+import io.qameta.allure.Description;
+
+public class TP_OSS_RM_RAN_003_Test extends BaseTestCase {
 
     private String processDCPCode;
     private Random r = new Random();
@@ -33,7 +35,8 @@ public class TP_OSS_RM_RAN_003 extends BaseTestCase {
     private final String pci = Integer.toString(r.nextInt(503));
     private final String rsi = Integer.toString(r.nextInt(503));
 
-    @Test(priority = 1)
+    @Test(priority = 1, description = "Create DCP")
+    @Description("Create new Data Correction Process")
     public void createNewProcess() {
         openView(PROCESS_INSTANCES, BPM_AND_PLANNING, BUSINESS_PROCESS_MANAGEMENT);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -43,7 +46,8 @@ public class TP_OSS_RM_RAN_003 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 2)
+    @Test(priority = 2, description = "Start DCP")
+    @Description("Start newly created Data Correction Process")
     public void startDCP() {
         openView(BPM_TASKS, BPM_AND_PLANNING, BUSINESS_PROCESS_MANAGEMENT);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -53,7 +57,8 @@ public class TP_OSS_RM_RAN_003 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 3)
+    @Test(priority = 3, description = "Find location and open it in Cell Site Configuration view")
+    @Description("Find location in old Inventory View and open location in Cell Site Configuration view")
     public void findLocation() {
         openView("Legacy Inventory Dashboard", "Resource Inventory ");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -67,7 +72,8 @@ public class TP_OSS_RM_RAN_003 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 4)
+    @Test(priority = 4, description = "Modify cells")
+    @Description("Modify Cells 4G parameters in bulk wizard")
     public void modifyCell4Gparameters() {
         CellSiteConfigurationPage cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);
         cellSiteConfigurationPage.expandTreeToBaseStation(SITE, LOCATION_NAME, E_NODE_B_NAME);
@@ -93,7 +99,8 @@ public class TP_OSS_RM_RAN_003 extends BaseTestCase {
         checkPopup("Cells 4G updated successfully");
     }
 
-    @Test(priority = 5)
+    @Test(priority = 5, description = "Finish DCP")
+    @Description("Finish Data Correction Process")
     public void finnishDCP() {
         openView(BPM_TASKS, BPM_AND_PLANNING, BUSINESS_PROCESS_MANAGEMENT);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);

@@ -92,8 +92,7 @@ public class IPAddressManagementViewPage extends BasePage {
 
     @Step("Search IP Network")
     public IPAddressManagementViewPage searchIpNetwork(String value) {
-        getTreeView()
-                .performSearchWithEnter(value);
+        getTreeView().performSearchWithEnter(value);
         waitForPageToLoad();
         return this;
     }
@@ -113,6 +112,7 @@ public class IPAddressManagementViewPage extends BasePage {
 
     @Step("Scroll to appropriate object on tree")
     public void scrollToTreeRowContains(String rowName) {
+        waitForPageToLoad();
         getTreeView().scrollToTreeRowContains(rowName);
     }
 
@@ -152,6 +152,12 @@ public class IPAddressManagementViewPage extends BasePage {
     public void unselectTreeRow(String name) {
         waitForPageToLoad();
         getTreeView().selectTreeRowContains(name);
+    }
+
+    @Step("Check if tree row is expanded")
+    public boolean isTreeRowExpanded(String name) {
+        waitForPageToLoad();
+        return getTreeView().isTreeRowExpanded(name);
     }
 
     @Step("Expand object with name: {name} on hierarchy view")
@@ -547,7 +553,7 @@ public class IPAddressManagementViewPage extends BasePage {
     }
 
     private void changeIPHostMask(String mask) {
-        Wizard changeIPHostAddressMaskWizard = Wizard.createPopupWizard(driver, wait);
+        Wizard changeIPHostAddressMaskWizard = Wizard.createByComponentId(driver, wait, CHANGE_MASK_WIZARD_DATA_ATTRIBUTE_NAME);
         changeIPHostAddressMaskWizard.setComponentValue(MASK_DATA_ATTRIBUTE_NAME, mask, COMBOBOX);
         changeIPHostAddressMaskWizard.clickOK();
     }
@@ -648,7 +654,7 @@ public class IPAddressManagementViewPage extends BasePage {
         confirmationBox.clickButtonByLabel(OK_BUTTON_LABEL);
     }
 
-    private void waitForPageToLoad() {
+    public void waitForPageToLoad() {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 }

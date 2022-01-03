@@ -16,6 +16,7 @@ import static com.oss.framework.components.inputs.Input.ComponentType.*;
  */
 
 public class IPSubnetWizardPage extends BasePage {
+    private static final String SUBNET_WIZARD_ID = "SubnetWizardTemplateId";
     private static final String START_IP_COMPONENT_ID = "startIpComponentId";
     private static final String END_IP_COMPONENT_ID = "endIpComponentId";
     private static final String OPERATOR_COMPONENT_ID = "operatorComponentId";
@@ -96,17 +97,19 @@ public class IPSubnetWizardPage extends BasePage {
             getTableComponent().selectRow(i);
             waitForPageToLoad();
             propertiesStep.setComponentValue(SUBNET_TYPE_COMPONENT_ID, ipSubnetWizardPropertiesArray[i].getSubnetType(), COMBOBOX);
+            waitForPageToLoad();
             if (ipSubnetWizardPropertiesArray[i].getStatus() != null) {
                 propertiesStep.setComponentValue(SUBNET_STATUS_COMPONENT_ID, ipSubnetWizardPropertiesArray[i].getStatus(), COMBOBOX);
+                waitForPageToLoad();
             }
             if (ipSubnetWizardPropertiesArray[i].getRole() != null) {
                 propertiesStep.setComponentValue(ROLE_COMPONENT_ID, ipSubnetWizardPropertiesArray[i].getRole(), SEARCH_FIELD);
-                DelayUtils.sleep(500);
+                waitForPageToLoad();
             }
             if (ipSubnetWizardPropertiesArray[i].getDescription() != null) {
                 propertiesStep.setComponentValue(DESCRIPTION_COMPONENT_ID, ipSubnetWizardPropertiesArray[i].getDescription(), TEXT_FIELD);
+                waitForPageToLoad();
             }
-            waitForPageToLoad();
             getTableComponent().unselectRow(i);
         }
         DelayUtils.sleep(500);
@@ -136,6 +139,6 @@ public class IPSubnetWizardPage extends BasePage {
     }
 
     private Wizard createWizard() {
-        return Wizard.createWizard(driver, wait);
+        return Wizard.createByComponentId(driver, wait, SUBNET_WIZARD_ID);
     }
 }

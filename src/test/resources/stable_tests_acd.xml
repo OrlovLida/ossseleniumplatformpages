@@ -15,4 +15,14 @@
             <class name="com.oss.acd.AbgadScenarioSummaryViewTest"/>
         </classes>
     </test>
+    <test name="ApdScenarioSummaryViewTest">
+        <classes>
+            <class name="com.oss.acd.ApdScenarioSummaryViewTest"/>
+        </classes>
+    </test>
+    <test name="ArSettingsTest">
+        <classes>
+            <class name="com.oss.acd.ArSettingsTest"/>
+        </classes>
+    </test>
 </suite>

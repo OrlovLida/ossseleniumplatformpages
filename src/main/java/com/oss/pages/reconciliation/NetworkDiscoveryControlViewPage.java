@@ -150,10 +150,12 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    @Step("Check if there are Issues with type {type}")
+    @Step("Check if there are Issues with type {errorType}")
     public boolean checkIssues(IssueLevel errorType) {
         String type = String.valueOf(errorType);
         getIssuesTable().searchByAttributeWithLabel("Issue Level", ComponentType.TEXT_FIELD, type);
+        DelayUtils.sleep(2000);
+        DelayUtils.waitForPageToLoad(driver, wait);
         if (getIssuesTable().hasNoData()) {
             return true;
         } else {

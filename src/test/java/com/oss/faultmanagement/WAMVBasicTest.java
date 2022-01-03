@@ -22,6 +22,8 @@ public class WAMVBasicTest extends BaseTestCase {
     private static final Logger log = LoggerFactory.getLogger(WAMVBasicTest.class);
     private final List<String> ackValues = Arrays.asList("True", "False");
     private final List<String> noteValues = Arrays.asList("Selenium_automated_test", "");
+    private static final String ALARM_MANAGEMENT_VIEW_ID = "_UserViewsListALARM_MANAGEMENT";
+
 
     private FMDashboardPage fmDashboardPage;
     private WAMVPage wamvPage;
@@ -39,8 +41,8 @@ public class WAMVBasicTest extends BaseTestCase {
             @Optional("0") int row
     ) {
         try {
-            fmDashboardPage.searchInAlarmManagementView(alarmListName);
-            wamvPage = fmDashboardPage.openAlarmManagementViewByRow(row);
+            fmDashboardPage.searchInSpecificView(ALARM_MANAGEMENT_VIEW_ID, alarmListName);
+            wamvPage = fmDashboardPage.openSelectedView(ALARM_MANAGEMENT_VIEW_ID, row);
             Assert.assertTrue(wamvPage.checkIfPageTitleIsCorrect(alarmListName));
 
         } catch (Exception e) {
@@ -58,8 +60,8 @@ public class WAMVBasicTest extends BaseTestCase {
             @Optional("0") int row
     ) {
         try {
-            fmDashboardPage.searchInAlarmManagementView(alarmListName);
-            wamvPage = fmDashboardPage.openAlarmManagementViewByRow(row);
+            fmDashboardPage.searchInSpecificView(ALARM_MANAGEMENT_VIEW_ID, alarmListName);
+            wamvPage = fmDashboardPage.openSelectedView(ALARM_MANAGEMENT_VIEW_ID, row);
             Assert.assertTrue(wamvPage.checkIfPageTitleIsCorrect(alarmListName));
             wamvPage.selectSpecificRow(alarmListRow);
             for (int i = 0; i <= 1; i++) {
@@ -91,8 +93,8 @@ public class WAMVBasicTest extends BaseTestCase {
             @Optional("AdapterAlarmGeneratorFromFile") String adapterName
     ) {
         try {
-            fmDashboardPage.searchInAlarmManagementView(alarmListName);
-            wamvPage = fmDashboardPage.openAlarmManagementViewByRow(row);
+            fmDashboardPage.searchInSpecificView(ALARM_MANAGEMENT_VIEW_ID, alarmListName);
+            wamvPage = fmDashboardPage.openSelectedView(ALARM_MANAGEMENT_VIEW_ID, row);
             Assert.assertTrue(wamvPage.checkIfPageTitleIsCorrect(alarmListName));
             wamvPage.selectSpecificRow(alarmListRow);
             wamvPage.clickOnSameMOAlarmsTab();

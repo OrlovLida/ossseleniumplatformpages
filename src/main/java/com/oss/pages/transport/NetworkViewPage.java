@@ -38,24 +38,24 @@ import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_AREA;
 
 public class NetworkViewPage extends BasePage {
 
-    public static final String ATTRIBUTES_AND_TERMINATIONS_ACTION = "Attributes and terminations-null";
-    public static final String CREATE_DEVICE_ACTION = "Create Device-null";
+    public static final String ATTRIBUTES_AND_TERMINATIONS_ACTION = "EDIT_Attributes and terminations-null";
+    public static final String CREATE_DEVICE_ACTION = "CREATE_Create Device-null";
     public static final String DELETE_TRAIL_ACTION = "Delete Trail";
     public static final String DELETE_ELEMENT_ACTION = "Delete Element-null";
-    public static final String DELETE_DEVICE_ACTION = "Delete Device-null";
+    public static final String DELETE_DEVICE_ACTION = "EDIT_Delete Device-null";
     public static final String ADD_TO_VIEW_ACTION = "add_to_view_group";
     public static final String CREATE_MEDIATION_CONFIGURATION_ID = "CREATE_Mediation Configuration-null";
-    public static final String DELETE_CONNECTION_ID = "Delete Connection-null";
-    public static final String CREATE_CONNECTION_ID = "Create Connection-null";
-    public static final String HIERARCHY_VIEW_ACTION = "Hierarchy View-null";
-    public static final String DEVICE_ACTION = "Device-null";
-    public static final String CONNECTION_ACTION = "Connection-null";
+    public static final String DELETE_CONNECTION_ID = "EDIT_Delete Connection-null";
+    public static final String CREATE_CONNECTION_ID = "CREATE_Create Connection-null";
+    public static final String HIERARCHY_VIEW_ACTION = "NAVIGATION_Hierarchy View-null";
+    public static final String DEVICE_ACTION = "add_to_view_group_Device-null";
+    public static final String CONNECTION_ACTION = "add_to_view_group_Connection-null";
     private static final String CREATE_CONNECTION_ACTION = "Create Connection";
     private static final String DELETE_TERMINATION_ACTION = "Delete termination";
     private static final String START_EDITING_CONNECTION_ACTION = "Start editing Connection";
-    private static final String STOP_EDITING_CONNECTION_ACTION = "Stop editing connection";
-    private static final String TERMINATION_ACTION = "Termination";
-    private static final String ROUTING = "Routing";
+    private static final String STOP_EDITING_CONNECTION_ACTION = "Stop editing Connection";
+    private static final String TERMINATION_ACTION = "add_to_group_Termination-null";
+    private static final String ROUTING = "add_to_group_Routing-null";
     private static final String ACCEPT_BUTTON = "Accept";
     private static final String DELETE_BUTTON = "Delete";
     private static final String ADD_TO_GROUP_ACTION = "add_to_group";

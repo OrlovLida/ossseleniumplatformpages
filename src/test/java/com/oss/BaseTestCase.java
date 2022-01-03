@@ -1,16 +1,10 @@
 package com.oss;
 
-import com.comarch.oss.services.infrastructure.objectmapper.JDK8ObjectMapper;
-import com.jayway.restassured.RestAssured;
-import com.jayway.restassured.config.ObjectMapperConfig;
-import com.jayway.restassured.config.RestAssuredConfig;
-import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.platform.HomePage;
-import com.oss.pages.platform.LoginPage;
-import com.oss.transport.infrastructure.Environment;
-import com.oss.transport.infrastructure.EnvironmentRequestClient;
-import com.oss.transport.infrastructure.User;
-import com.oss.utils.TestListener;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -18,19 +12,32 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+import org.testng.IHookCallBack;
+import org.testng.IHookable;
+import org.testng.ITestResult;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
+import com.comarch.oss.services.infrastructure.objectmapper.JDK8ObjectMapper;
+import com.jayway.restassured.RestAssured;
+import com.jayway.restassured.config.ObjectMapperConfig;
+import com.jayway.restassured.config.RestAssuredConfig;
+import com.oss.framework.alerts.SystemMessageContainer;
+import com.oss.framework.alerts.SystemMessageInterface;
+import com.oss.framework.utils.DelayUtils;
+import com.oss.pages.platform.HomePage;
+import com.oss.pages.platform.LoginPage;
+import com.oss.transport.infrastructure.Environment;
+import com.oss.transport.infrastructure.EnvironmentRequestClient;
+import com.oss.transport.infrastructure.User;
+import com.oss.utils.TestListener;
 
 import static com.oss.configuration.Configuration.CONFIGURATION;
 
 @Listeners({TestListener.class})
-public class BaseTestCase {
+public class BaseTestCase implements IHookable {
 
     public static final String BASIC_URL = CONFIGURATION.getUrl();
     public static final String MOCK_PATH = CONFIGURATION.getValue("mockPath");
@@ -39,7 +46,6 @@ public class BaseTestCase {
     public WebDriverWait webDriverWait;
     protected HomePage homePage;
     protected EnvironmentRequestClient environmentRequestClient;
-
 
     @BeforeClass
     public void openBrowser() {
@@ -64,6 +70,13 @@ public class BaseTestCase {
             driver.close();
             driver.quit();
         }
+    }
+
+    @Override
+    public void run(IHookCallBack cb, ITestResult testResult) {
+        cb.runTestMethod(testResult);
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(this.driver, new WebDriverWait(this.driver, 5));
+        Assert.assertFalse(systemMessage.isErrorDisplayed(false), "Some errors occurred during the test. Please check logs for details.\n");
     }
 
     private Cookie createCookie() {

@@ -53,7 +53,8 @@ public class LoopbackInterfaceWizardPage extends BasePage {
     }
 
     public OldInventoryViewPage clickAccept() {
-        wizard.clickAccept();
+        DelayUtils.waitForPageToLoad(driver, wait);
+        wizard.clickAcceptOldWizard();
         return new OldInventoryViewPage(driver);
     }
 }

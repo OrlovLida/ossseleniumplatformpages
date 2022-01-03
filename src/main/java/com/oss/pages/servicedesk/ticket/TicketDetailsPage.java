@@ -3,23 +3,23 @@ package com.oss.pages.servicedesk.ticket;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.Combobox;
 import com.oss.framework.components.portals.DropdownList;
-import com.oss.framework.data.Data;
 import com.oss.framework.listwidget.CommonList;
 import com.oss.framework.listwidget.iaa.ListApp;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.view.Card;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tabswidget.TabWindowWidget;
-import com.oss.pages.BasePage;
-import com.oss.pages.servicedesk.ticket.wizard.WizardPage;
+import com.oss.pages.servicedesk.BaseSDPage;
+import com.oss.pages.servicedesk.ticket.wizard.SDWizardPage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-public class TicketDetailsPage extends BasePage {
+public class TicketDetailsPage extends BaseSDPage {
 
     private static final Logger log = LoggerFactory.getLogger(TicketDetailsPage.class);
 
@@ -35,22 +35,21 @@ public class TicketDetailsPage extends BasePage {
     private static final String DICTIONARIES_TABLE_ID = "_dictionariesTableId";
     private static final String DICTIONARY_VALUE_TABLE_LABEL = "Dictionary Value";
 
-    public TicketDetailsPage(WebDriver driver) {
-        super(driver);
+    public TicketDetailsPage(WebDriver driver, WebDriverWait wait) {
+        super(driver, wait);
     }
 
     @Step("I open edit ticket wizard")
-    public WizardPage openEditTicketWizard(WebDriver driver) {
+    public SDWizardPage openEditTicketWizard() {
         DelayUtils.waitForPageToLoad(driver, wait);
         clickContextAction(EDIT_DETAILS_LABEL);
         log.info("Ticket Wizard edit is opened");
-        return new WizardPage(driver);
+        return new SDWizardPage(driver, wait);
     }
 
     public void releaseTicket() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        Button releaseButton = Button.create(driver, RELEASE_LABEL);
-        releaseButton.click();
+        Button.create(driver, RELEASE_LABEL).click();
         log.info("Clicking release button");
     }
 
@@ -60,39 +59,43 @@ public class TicketDetailsPage extends BasePage {
         log.info("Clicking Context action {}", contextActionLabel);
     }
 
-    public void selectTab(WebDriver driver, String tabAriaControls) {
+    public void selectTab(String tabAriaControls) {
         DelayUtils.waitForPageToLoad(driver, wait);
         TabWindowWidget.create(driver, wait).selectTabById(tabAriaControls);
         log.info("Selecting tab {}", tabAriaControls);
     }
 
     @Step("I open create subticket wizard for flow {flowType}")
-    public WizardPage openCreateSubTicketWizard(WebDriver driver, String flowType) {
+    public SDWizardPage openCreateSubTicketWizard(String flowType) {
         DelayUtils.waitForPageToLoad(driver, wait);
         Button.createBySelectorAndId(driver, "button", CREATE_SUB_TICKET).click();
         DropdownList.create(driver, wait).selectOptionWithId(flowType);
         log.info("Create subticket wizard for {} is opened", flowType);
-        return new WizardPage(driver);
+        return new SDWizardPage(driver, wait);
     }
 
     public void skipAllActionsOnCheckList() {
-        CommonList commonList = CommonList.create(driver, wait, CHECKLIST_APP_ID);
-        commonList.getAllRows()
+        CommonList.create(driver, wait, CHECKLIST_APP_ID)
+                .getAllRows()
                 .forEach(row -> row.callActionIcon(SKIP_BUTTON_LABEL));
         log.info("Skipping all actions on checklist");
     }
 
     public void changeStatus(String statusName) {
-        Combobox statusComboBox = Combobox.createServiceDeskStatusComboBox(driver, wait);
-        statusComboBox.setValue(Data.createSingleData(statusName));
+        Combobox.createServiceDeskStatusComboBox(driver, wait).setSingleStringValue(statusName);
         log.info("Changing status to {}", statusName);
     }
 
     @Step("Maximize window")
     public void maximizeWindow(String windowId) {
-        Card card = Card.createCard(driver, wait, windowId);
-        card.maximizeCard();
+        Card.createCard(driver, wait, windowId).maximizeCard();
         log.info("Maximizing window");
+    }
+
+    @Step("Minimize window")
+    public void minimizeWindow(String windowId) {
+        Card.createCard(driver, wait, windowId).minimizeCard();
+        log.info("Minimizing window");
     }
 
     public boolean checkExistingExternal(String expectedExistingExternal) {
@@ -124,8 +127,17 @@ public class TicketDetailsPage extends BasePage {
         }
     }
 
-    public void createNewNotificationOnMessagesTab(){
-        ListApp.createFromParent(driver,wait,"_tablesWindow").clickCreateNewNotification();
+    public void createNewNotificationOnMessagesTab() {
+        ListApp.createFromParent(driver, wait, "_tablesWindow").clickCreateNewNotification();
     }
 
+    public boolean isAllActionsSkipped() {
+        List<CommonList.Row> allRows = CommonList.create(driver, wait, CHECKLIST_APP_ID).getAllRows();
+        for (CommonList.Row row : allRows) {
+            if (!row.getValue("Status").equals("Skipped")) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
