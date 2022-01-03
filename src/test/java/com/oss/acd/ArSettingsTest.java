@@ -77,7 +77,6 @@ public class ArSettingsTest extends BaseTestCase {
     public void deleteActionTemplate() {
         arSettingsPage.selectFirstActionTemplateFromTable();
         arSettingsPage.deleteActionTemplate();
-
     }
 
     @Test(priority = 4, testName = "Check Subsystems Health", description = "Check Subsystems Health")
