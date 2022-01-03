@@ -156,7 +156,7 @@ public class XDRBrowserPage extends BaseDfePage {
 
     @Step("I check amount of Notifications")
     public int amountOfNotifications() {
-        return Notifications.create(driver, wait).getAmountOfNotifications();
+        return Notifications.create(driver, wait).countNotifications();
     }
 
     @Step("I check if active filter contain {filter}")

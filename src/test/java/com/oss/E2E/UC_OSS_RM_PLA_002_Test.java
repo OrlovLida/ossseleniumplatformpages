@@ -327,7 +327,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         ShareFilterPage shareFilterPage = new ShareFilterPage(driver);
         shareFilterPage.closeShareView();
         waitForPageToLoad();
-        Notifications.create(driver, webDriverWait).openDetailsForSpecificNotification(TEMPLATE_NAME, TEMPLATE_EXECUTION_NOTIFICATION);
+        Notifications.create(driver, webDriverWait).openDetails(TEMPLATE_NAME, TEMPLATE_EXECUTION_NOTIFICATION);
         waitForPageToLoad();
         LogManagerPage logManagerPage = new LogManagerPage(driver);
         Assert.assertEquals(logManagerPage.getStatus(), "UPLOAD_SUCCESS");

@@ -165,7 +165,7 @@ public class UC_NAR_005_Test extends BaseTestCase {
         newInventoryViewPage.callAction(ActionsContainer.OTHER_GROUP_ID, "run-narrow-reconciliation");
         DelayUtils.sleep(3000);
         waitForPageToLoad();
-        Assert.assertEquals(notifications.waitAndGetFinishedNotificationText(), "Narrow reconciliation for GMOCs IPDevice finished");
+        Assert.assertEquals(notifications.getNotificationMessage(), "Narrow reconciliation for GMOCs IPDevice finished");
         waitForPageToLoad();
     }
 

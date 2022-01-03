@@ -124,7 +124,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     @Step("Check notification after deleting CM Domain")
     public String checkDeleteCmDomainNotification() {
-        return Notifications.create(driver, wait).waitAndGetFinishedNotificationText();
+        return Notifications.create(driver, wait).getNotificationMessage();
     }
 
     @Step("Clear old notifications")

@@ -151,7 +151,7 @@ public class UC_NAR_001_Test extends BaseTestCase {
         notifications.clearAllNotification();
         newInventoryViewPage.callAction(ActionsContainer.OTHER_GROUP_ID, "run-narrow-reconciliation");
         DelayUtils.sleep(3000);
-        Assert.assertEquals(notifications.waitAndGetFinishedNotificationText(), NARROW_RECO_NOTIFICATION);
+        Assert.assertEquals(notifications.getNotificationMessage(), NARROW_RECO_NOTIFICATION);
         newInventoryViewPage.refreshMainTable();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         newInventoryViewPage.selectFirstRow();
