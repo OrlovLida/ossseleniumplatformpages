@@ -46,7 +46,6 @@ public class UC_NAR_001_Test extends BaseTestCase {
     public void createCmDomain() {
         PerspectiveChooser.create(driver, webDriverWait).setNetworkPerspective();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         networkDiscoveryControlViewPage.createCMDomain(CM_DOMAIN_NAME, INTERFACE_NAME, DOMAIN);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
