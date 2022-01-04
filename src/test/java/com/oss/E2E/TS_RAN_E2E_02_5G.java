@@ -30,8 +30,6 @@ import com.oss.pages.reconciliation.SamplesManagementPage;
 import io.qameta.allure.Description;
 
 public class TS_RAN_E2E_02_5G extends BaseTestCase {
-    private final String LOCATION_NAME = "Poznan-BU1";
-
     private static final String RECO_GNODEB_NAME = "DXNNR0599UAT6-Expo-Multilateral-Buildings-Mobility-District";
     private static final String RECO_GNODEB_TYPE = "GNodeB";
     private static final String RECO_GNODEBCUUP_TYPE = "GNodeBCUUP";
@@ -48,16 +46,12 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
     private static final String RAN_ANTENNA_NAME = "TS_RAN_E2E_02_RANAntenna";
     private static final String RAN_ANTENNA_MODEL = "Generic 3-Array Antenna";
     private static final String RAN_ANTENNA_ARRAY_NAME = "TS_RAN_E2E_02_RANAntenna/3-Array Antenna_Array 1/Freq(0-80000)";
-
     private static final String ANTENNA_TRAIL_NAME = "TS_RAN_E2E_02_AntennaTrail";
     private static final String CPRI_TRAIL_NAME = "TS_RAN_E2E_02_CPRI_Trail";
-
     private static final String CABLE_MODEL_DATA_ATTRIBUTENAME = "model";
     private static final String CABLE_NAME_DATA_ATTRIBUTENAME = "name";
     private static final String CREATE_TRAIL_DATA_ATTRIBUTENAME = "Create Trail";
     private static final String END_LOCATION_DATA_ATTRIBUTENAME = "endTermination";
-
-    private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
     private static final String CM_DOMAIN_NAME = "Selenium-TS-RAN-E2E-02-5G";
     private static final String CM_INTERFACE_NAME = "Huawei U2000 RAN";
     private static final String[] RAN_INCONSISTENCIES_NAMES = {
@@ -71,14 +65,8 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
             "PhysicalElement-" + RECO_SWITCH_NAME2,
             "PhysicalElement-" + RECO_SWITCH_NAME1,
     };
-
-    private void checkPopupMessageType(MessageType messageType) {
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
-        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assert.assertNotNull(messages);
-        Assert.assertEquals(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType(),
-                messageType);
-    }
+    private final String LOCATION_NAME = "Poznan-BU1";
+    private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
 
     public void openHomePage() {
         HomePage homePage = new HomePage(driver);
@@ -275,6 +263,19 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         checkPopupMessageType(MessageType.SUCCESS);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
+
+    @Test(priority = 12)
+    @Description("Delete CPRI Trail between RRU and BBU")
+    public void deleteCPRITrailBetweenRRUAndBBU() {
+        CellSiteConfigurationPage cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);
+        cellSiteConfigurationPage.selectTreeRow(LOCATION_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cellSiteConfigurationPage.selectTab("Trails");
+        /* cellSiteConfigurationPage.filterObject("Name", CPRI_TRAIL_NAME);
+        cellSiteConfigurationPage.removeObject();
+        checkPopup();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);*/
+    }
     
     /*//TODO: wait for OSSPHY-47340
     @Test(priority = 11)
@@ -296,19 +297,6 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         checkPopup();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }*/
-
-    @Test(priority = 12)
-    @Description("Delete CPRI Trail between RRU and BBU")
-    public void deleteCPRITrailBetweenRRUAndBBU() {
-        CellSiteConfigurationPage cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);
-        cellSiteConfigurationPage.selectTreeRow(LOCATION_NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        cellSiteConfigurationPage.selectTab("Trails");
-        /* cellSiteConfigurationPage.filterObject("Name", CPRI_TRAIL_NAME);
-        cellSiteConfigurationPage.removeObject();
-        checkPopup();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);*/
-    }
 
     @Test(priority = 13)
     @Description("Delete Antenna Trail between RRU and RAN Antenna")
@@ -378,17 +366,6 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         checkPopupMessageType(MessageType.SUCCESS);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
-    
-    /*@Test(priority = 18)
-    @Description("Delete Reco Cell 5G")
-    public void deleteRecoCell5G() {
-        CellSiteConfigurationPage cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);
-        cellSiteConfigurationPage.selectTab("Cells");
-        cellSiteConfigurationPage.filterObject("Name", RECO_CELL5G_NAME);
-        cellSiteConfigurationPage.removeObject();
-        checkPopup();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-    }*/
 
     @Test(priority = 19)
     @Description("Delete Reco gNodeBs")
@@ -407,5 +384,24 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         cellSiteConfigurationPage.removeObject();
         checkPopupMessageType(MessageType.SUCCESS);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+    
+    /*@Test(priority = 18)
+    @Description("Delete Reco Cell 5G")
+    public void deleteRecoCell5G() {
+        CellSiteConfigurationPage cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);
+        cellSiteConfigurationPage.selectTab("Cells");
+        cellSiteConfigurationPage.filterObject("Name", RECO_CELL5G_NAME);
+        cellSiteConfigurationPage.removeObject();
+        checkPopup();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }*/
+
+    private void checkPopupMessageType(MessageType messageType) {
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
+        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
+        Assert.assertNotNull(messages);
+        Assert.assertEquals(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType(),
+                messageType);
     }
 }

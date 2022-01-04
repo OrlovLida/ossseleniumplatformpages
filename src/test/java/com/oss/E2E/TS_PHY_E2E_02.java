@@ -1,5 +1,11 @@
 package com.oss.E2E;
 
+import java.util.List;
+
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
@@ -8,16 +14,18 @@ import com.oss.pages.gisView.CreateDuctWizardPage;
 import com.oss.pages.gisView.DuctCopyWizardPage;
 import com.oss.pages.gisView.GisViewPage;
 import com.oss.pages.gisView.RoutingWizardPage;
-import com.oss.pages.physical.*;
+import com.oss.pages.physical.CableRoutingViewPage;
+import com.oss.pages.physical.CardCreateWizardPage;
+import com.oss.pages.physical.CreatePluggableModuleWizardPage;
+import com.oss.pages.physical.DeviceWizardPage;
+import com.oss.pages.physical.LocationWizardPage;
+import com.oss.pages.physical.MediaTerminationPage;
+import com.oss.pages.physical.PatchcordWizardPage;
 import com.oss.pages.platform.HierarchyViewPage;
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.radio.CableWizardPage;
-import io.qameta.allure.Description;
-import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
 
-import java.util.List;
+import io.qameta.allure.Description;
 
 public class TS_PHY_E2E_02 extends BaseTestCase {
 
@@ -44,14 +52,12 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
     private static final String DUCT_FROM_C_TO_MANHOLE_NAME = "TS_PHY_E2E_02_duct_C_TO_MANHOLE";
     private static final String DUCT_FROM_A_TO_C_NAME = "TS_PHY_E2E_02_duct_A_TO_C";
     private static final String CENTRAL_LOCATION = "TS_PHY_E2E_02_CENTRAL_LOCATION";
-
-    private GisViewPage gisViewPage;
-    private LocationWizardPage locationWizardPage;
-
     private static final String DRAW_SINGLE_LOCATION_DATA_ATTRIBUTENAME = "activate-location-draw-mode";
     private static final String SHOW_ON_DATA_ATTRIBUTENAME = "viewLinksDropdown-NAVIGATION";
     private static final String CREATE_DATA_ATTRIBUTENAME = "viewLinksDropdown-CREATE";
     private static final String EDIT_DATA_ATTRIBUTENAME = "viewLinksDropdown-EDIT";
+    private GisViewPage gisViewPage;
+    private LocationWizardPage locationWizardPage;
 
     @BeforeClass
     public void openGisView() {
@@ -353,7 +359,6 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
         checkMessageText("Cable has been created successfully");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
-
 
     @Test(priority = 15)
     @Description("Route Cable over Primary Ducts")

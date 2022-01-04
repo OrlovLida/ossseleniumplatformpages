@@ -12,9 +12,9 @@ import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.PlanViewWizardPage;
+import com.oss.pages.bpm.TasksPage;
 import com.oss.pages.bpm.processinstances.ProcessInstancesPage;
 import com.oss.pages.bpm.processinstances.ProcessWizardPage;
-import com.oss.pages.bpm.TasksPage;
 import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
@@ -33,14 +33,14 @@ public class TP_OSS_RM_RAN_004_All_Steps_Except_9 extends BaseTestCase {
     private static final String CARRIER_L1800 = "L1800 (1392)";
     private static final String CARRIER_L2100 = "L2100 (10562)";
     private static final int crp = 2;
-    private static final String[] CELL_NAMES_L1800 = { "TP_OSS_RM_RAN_004_L1800_cell_1", "TP_OSS_RM_RAN_004_L1800_cell_2", "TP_OSS_RM_RAN_004_L1800_cell_3" };
-    private static final String[] CELL_NAMES_L2100 = { "TP_OSS_RM_RAN_004_L2100_cell_1", "TP_OSS_RM_RAN_004_L2100_cell_2", "TP_OSS_RM_RAN_004_L2100_cell_3" };
+    private static final String[] CELL_NAMES_L1800 = {"TP_OSS_RM_RAN_004_L1800_cell_1", "TP_OSS_RM_RAN_004_L1800_cell_2", "TP_OSS_RM_RAN_004_L1800_cell_3"};
+    private static final String[] CELL_NAMES_L2100 = {"TP_OSS_RM_RAN_004_L2100_cell_1", "TP_OSS_RM_RAN_004_L2100_cell_2", "TP_OSS_RM_RAN_004_L2100_cell_3"};
 
     private static final String RADIO_UNIT_EQUIPMENT_TYPE = "Remote Radio Head/Unit";
     private static final String RADIO_UNIT_MODEL = "HUAWEI Technology Co.,Ltd RRU5301";
-    private static final String RADIO_UNIT_NAMES[] = { "TP_OSS_RM_RAN_004_RRU_1", "TP_OSS_RM_RAN_004_RRU_2", "TP_OSS_RM_RAN_004_RRU_3" };
+    private static final String[] RADIO_UNIT_NAMES = {"TP_OSS_RM_RAN_004_RRU_1", "TP_OSS_RM_RAN_004_RRU_2", "TP_OSS_RM_RAN_004_RRU_3"};
 
-    private static final String[] ANTENNA_NAMES = { "TP_OSS_RM_RAN_004_Antenna_1", "TP_OSS_RM_RAN_004_Antenna_2", "TP_OSS_RM_RAN_004_Antenna_3" };
+    private static final String[] ANTENNA_NAMES = {"TP_OSS_RM_RAN_004_Antenna_1", "TP_OSS_RM_RAN_004_Antenna_2", "TP_OSS_RM_RAN_004_Antenna_3"};
 
     private static final String PCI = "2";              // change to public???
     private static final String RSI = "2";              // change to public???
@@ -51,61 +51,11 @@ public class TP_OSS_RM_RAN_004_All_Steps_Except_9 extends BaseTestCase {
     private String perspectiveContext;                  // change to public???
 
     private int amountOfCells = 3;
-    private int[] localCellsId1800 = { 1, 2, 3 };
-    private int[] localCellsId2100 = { 4, 5, 6 };
+    private int[] localCellsId1800 = {1, 2, 3};
+    private int[] localCellsId2100 = {4, 5, 6};
 
     private TasksPage tasksPage;
     private CellSiteConfigurationPage cellSiteConfigurationPage;
-
-    private void checkPopup(String text) {
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
-        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assert.assertEquals(messages.size(), 1);
-        Assert.assertEquals(messages.get(0).getMessageType(), SystemMessageContainer.MessageType.SUCCESS);
-        Assert.assertTrue((messages.get(0).getText()).contains(text));
-    }
-
-    private void hostCell4GOnRRU(String[] cellNames, String[] radioUnitNames) {
-        for (int i = 0; i < 3; i++) {
-            cellSiteConfigurationPage.selectTreeRow(cellNames[i]);
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            cellSiteConfigurationPage.selectTab("Hosting");
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            cellSiteConfigurationPage.clickPlusIconAndSelectOption("Host on Device");
-            HostingWizardPage wizard = new HostingWizardPage(driver);
-            //TODO: check below method
-            //wizard.selectDevice(radioUnitNames[i]);
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            wizard.clickAccept();
-            checkPopup("Hosting Create Success");
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        }
-    }
-
-    private void hostCell4GOnRANAntennaArray(String[] cellNames, String[] antennaNames) {
-        for (int i = 0; i < 3; i++) {
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            cellSiteConfigurationPage.selectTreeRow(cellNames[i]);
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            cellSiteConfigurationPage.clickPlusIconAndSelectOption("Host on Antenna Array");
-            HostingWizardPage wizard = new HostingWizardPage(driver);
-            //TODO: check below method
-            //wizard.selectArray(antennaNames[i] + "/APE4518R14V06_Ly1");
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            wizard.clickAccept();
-            checkPopup("Hosting Create Success");
-        }
-    }
-
-    private void createCellBulk(int amountOfCells, String carrier, String[] cellNames, int[] localCellsId, int crp) {
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        cellSiteConfigurationPage.clickPlusIconAndSelectOption("Cell 4G Bulk Wizard");
-        Cell4GBulkWizardPage cell4GBulkWizardPage = new Cell4GBulkWizardPage(driver);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        cell4GBulkWizardPage.createCell4GBulkWizardWithDefaultValues(amountOfCells, carrier, cellNames, localCellsId, crp);
-        checkPopup("Cells 4G created success");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-    }
 
     @Test(priority = 1)
     @Description("Go to BPM and create process NRP")
@@ -290,5 +240,55 @@ public class TP_OSS_RM_RAN_004_All_Steps_Except_9 extends BaseTestCase {
         editCell4GWizardPage.setPaOutputBulk(PA_OUTPUT);//
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         editCell4GWizardPage.accept();
+    }
+
+    private void checkPopup(String text) {
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
+        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
+        Assert.assertEquals(messages.size(), 1);
+        Assert.assertEquals(messages.get(0).getMessageType(), SystemMessageContainer.MessageType.SUCCESS);
+        Assert.assertTrue((messages.get(0).getText()).contains(text));
+    }
+
+    private void hostCell4GOnRRU(String[] cellNames, String[] radioUnitNames) {
+        for (int i = 0; i < 3; i++) {
+            cellSiteConfigurationPage.selectTreeRow(cellNames[i]);
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            cellSiteConfigurationPage.selectTab("Hosting");
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            cellSiteConfigurationPage.clickPlusIconAndSelectOption("Host on Device");
+            HostingWizardPage wizard = new HostingWizardPage(driver);
+            //TODO: check below method
+            //wizard.selectDevice(radioUnitNames[i]);
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            wizard.clickAccept();
+            checkPopup("Hosting Create Success");
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        }
+    }
+
+    private void hostCell4GOnRANAntennaArray(String[] cellNames, String[] antennaNames) {
+        for (int i = 0; i < 3; i++) {
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            cellSiteConfigurationPage.selectTreeRow(cellNames[i]);
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            cellSiteConfigurationPage.clickPlusIconAndSelectOption("Host on Antenna Array");
+            HostingWizardPage wizard = new HostingWizardPage(driver);
+            //TODO: check below method
+            //wizard.selectArray(antennaNames[i] + "/APE4518R14V06_Ly1");
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            wizard.clickAccept();
+            checkPopup("Hosting Create Success");
+        }
+    }
+
+    private void createCellBulk(int amountOfCells, String carrier, String[] cellNames, int[] localCellsId, int crp) {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cellSiteConfigurationPage.clickPlusIconAndSelectOption("Cell 4G Bulk Wizard");
+        Cell4GBulkWizardPage cell4GBulkWizardPage = new Cell4GBulkWizardPage(driver);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        cell4GBulkWizardPage.createCell4GBulkWizardWithDefaultValues(amountOfCells, carrier, cellNames, localCellsId, crp);
+        checkPopup("Cells 4G created success");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 }

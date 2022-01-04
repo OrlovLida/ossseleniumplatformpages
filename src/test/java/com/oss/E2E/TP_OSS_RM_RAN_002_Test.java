@@ -10,8 +10,8 @@ import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageContainer.Message;
 import com.oss.framework.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 import com.oss.pages.bpm.TasksPage;
+import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.radio.CellSiteConfigurationPage;
 import com.oss.utils.RandomGenerator;
@@ -19,17 +19,15 @@ import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
 
-@Listeners({ TestListener.class })
+@Listeners({TestListener.class})
 public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
 
-    private String processNRPCode;
-    private CellSiteConfigurationPage cellSiteConfigurationPage;
     private static final String LOCATION_NAME = "Poznan-BU1";
     private static final String SITE = "Site";
     private static final String ANTENNA_NAME_0 = "TP_OSS_RM_RAN_002_ANTENNA_0";
     private static final String ANTENNA_NAME_1 = "TP_OSS_RM_RAN_002_ANTENNA_1";
     private static final String ANTENNA_NAME_2 = "TP_OSS_RM_RAN_002_ANTENNA_2";
-    private static final String[] ANTENNA_NAMES = { ANTENNA_NAME_0, ANTENNA_NAME_1, ANTENNA_NAME_2 };
+    private static final String[] ANTENNA_NAMES = {ANTENNA_NAME_0, ANTENNA_NAME_1, ANTENNA_NAME_2};
     private static final String RAN_ANTENNA_MODEL = "HUAWEI Technology Co.,Ltd AAU5614";
     private static final String GNODEB_NAME = "TP_OSS_RM_RAN_002_GNODEB";
     private static final String GNODEB_DU_NAME = "TP_OSS_RM_RAN_002_GNODEB_DU";
@@ -41,13 +39,15 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
     private static final String CELL5G_NAME_0 = "TP_OSS_RM_RAN_002_CELL5G_0";
     private static final String CELL5G_NAME_1 = "TP_OSS_RM_RAN_002_CELL5G_1";
     private static final String CELL5G_NAME_2 = "TP_OSS_RM_RAN_002_CELL5G_2";
-    private static final String[] CELL5G_NAMES = { CELL5G_NAME_0, CELL5G_NAME_1, CELL5G_NAME_2 };
+    private static final String[] CELL5G_NAMES = {CELL5G_NAME_0, CELL5G_NAME_1, CELL5G_NAME_2};
     private static final String CELL5G_CARRIER = "NR3600-n78-140 (642000)";
     private static final String MCCMNC_PRIMARY = "DU03 [mcc: 424, mnc: 03]";
-    private static final int[] LOCAL_CELLS_ID = { 7, 8, 9 };
+    private static final int[] LOCAL_CELLS_ID = {7, 8, 9};
     private static final String BUSINESS_PROCESS_MANAGEMENT = "Business Process Management";
     private static final String BPM_AND_PLANNING = "BPM and Planning";
     private static final String PROCESS_INSTANCES = "Process Instances";
+    private String processNRPCode;
+    private CellSiteConfigurationPage cellSiteConfigurationPage;
 
     @BeforeClass
     public void openNetworkDiscoveryControlView() {

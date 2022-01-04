@@ -36,14 +36,6 @@ public class UC_NAR_001_Test extends BaseTestCase {
 
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
 
-    private void checkPopupMessageType(MessageType messageType) {
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
-        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assert.assertNotNull(messages);
-        Assert.assertEquals(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType(),
-                messageType);
-    }
-
     @BeforeClass
     public void openNetworkDiscoveryControlView() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
@@ -54,7 +46,6 @@ public class UC_NAR_001_Test extends BaseTestCase {
     public void createCmDomain() {
         PerspectiveChooser.create(driver, webDriverWait).setNetworkPerspective();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         networkDiscoveryControlViewPage.createCMDomain(CM_DOMAIN_NAME, INTERFACE_NAME, DOMAIN);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
@@ -151,7 +142,7 @@ public class UC_NAR_001_Test extends BaseTestCase {
         notifications.clearAllNotification();
         newInventoryViewPage.callAction(ActionsContainer.OTHER_GROUP_ID, "run-narrow-reconciliation");
         DelayUtils.sleep(3000);
-        Assert.assertEquals(notifications.waitAndGetFinishedNotificationText(), NARROW_RECO_NOTIFICATION);
+        Assert.assertEquals(notifications.getNotificationMessage(), NARROW_RECO_NOTIFICATION);
         newInventoryViewPage.refreshMainTable();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         newInventoryViewPage.selectFirstRow();
@@ -198,5 +189,13 @@ public class UC_NAR_001_Test extends BaseTestCase {
         newInventoryViewPage.selectFirstRow().callAction(ActionsContainer.EDIT_GROUP_ID, "DeleteDeviceWizardAction");
         Wizard.createWizard(driver, webDriverWait).clickButtonByLabel("Yes");
         checkPopupMessageType(MessageType.SUCCESS);
+    }
+
+    private void checkPopupMessageType(MessageType messageType) {
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
+        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
+        Assert.assertNotNull(messages);
+        Assert.assertEquals(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType(),
+                messageType);
     }
 }

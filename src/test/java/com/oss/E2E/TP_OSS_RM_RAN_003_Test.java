@@ -21,17 +21,17 @@ import io.qameta.allure.Description;
 
 public class TP_OSS_RM_RAN_003_Test extends BaseTestCase {
 
-    private String processDCPCode;
-    private Random r = new Random();
     private static final String LOCATION_NAME = "XYZ";
     private static final String E_NODE_B_NAME = "TP_OSS_RM_RAN_003_ENODEB";
-    private static final String[] CELL_NAMES = new String[] { "TP_OSS_RM_RAN_003_CELL4G_1", "TP_OSS_RM_RAN_003_CELL4G_2", "TP_OSS_RM_RAN_003_CELL4G_3" };
+    private static final String[] CELL_NAMES = new String[]{"TP_OSS_RM_RAN_003_CELL4G_1", "TP_OSS_RM_RAN_003_CELL4G_2", "TP_OSS_RM_RAN_003_CELL4G_3"};
     private static final String BUSINESS_PROCESS_MANAGEMENT = "Business Process Management";
     private static final String BPM_AND_PLANNING = "BPM and Planning";
     private static final String PROCESS_INSTANCES = "Process Instances";
     private static final String BPM_TASKS = "BPM Tasks";
     private static final String NAME = "Name";
     private static final String SITE = "Site";
+    private String processDCPCode;
+    private Random r = new Random();
     private final String pci = Integer.toString(r.nextInt(503));
     private final String rsi = Integer.toString(r.nextInt(503));
 

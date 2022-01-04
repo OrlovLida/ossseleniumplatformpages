@@ -30,12 +30,9 @@ import com.oss.pages.reconciliation.NetworkInconsistenciesViewPage;
 import com.oss.pages.reconciliation.SamplesManagementPage;
 import com.oss.utils.TestListener;
 
-@Listeners({ TestListener.class })
+@Listeners({TestListener.class})
 public class TS_RAN_E2E_01_4G extends BaseTestCase {
 
-    private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
-    private CellSiteConfigurationPage cellSiteConfigurationPage;
-    private NewInventoryViewPage newInventoryViewPage;
     private static final String LOCATION_NAME = "Poznan-BU1";
     private static final String ANTENNA_NAME = "TS-RAN-E2E-01-4G-ANTENNA";
     private static final String ANTENNA_TRAIL_NAME = "TS-RAN-E2E-01-4G-ANTENNA-TRAIL";
@@ -50,8 +47,11 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
     private static final String cmInterface = "Huawei U2000 RAN";
     private static final String[] inconsistenciesNames = {
             "PhysicalElement-" + BBU_NAME,
-            "PhysicalElement-" + RRU_NAME };
+            "PhysicalElement-" + RRU_NAME};
     private static final String inconsistenciesRanName = "ENODEB-" + ENODEB_NAME;
+    private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
+    private CellSiteConfigurationPage cellSiteConfigurationPage;
+    private NewInventoryViewPage newInventoryViewPage;
 
     @BeforeClass
     public void openNetworkDiscoveryControlView() {
