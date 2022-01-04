@@ -111,7 +111,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
     @Step("Check notification about accepting inconsistencies")
     public String checkNotificationAfterApplyInconsistencies() {
         NotificationsInterface notifications = Notifications.create(driver, new WebDriverWait(driver, 150));
-        return notifications.waitAndGetFinishedNotificationText();
+        return notifications.getNotificationMessage();
     }
 
     @Step("Check inconsistencies operation type for first object")

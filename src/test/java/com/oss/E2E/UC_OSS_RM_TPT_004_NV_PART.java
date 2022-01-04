@@ -1,40 +1,40 @@
 package com.oss.E2E;
 
+import java.util.List;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.platform.HomePage;
+import com.oss.pages.transport.NetworkViewPage;
 import com.oss.pages.transport.trail.EthernetLinkWizardPage;
 import com.oss.pages.transport.trail.MicrowaveLinkWizardPage;
-import com.oss.pages.transport.NetworkViewPage;
-import io.qameta.allure.Description;
-import org.testng.Assert;
-import org.testng.annotations.Test;
 
-import java.util.List;
+import io.qameta.allure.Description;
 
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 
 public class UC_OSS_RM_TPT_004_NV_PART extends BaseTestCase {
-    private HomePage homePage;
-    private  NetworkViewPage networkViewPage;
     private final static String LOCATION_1_NAME = "ABC";
     private final static String LOCATION_2_NAME = "XYZ";
     private final static String MICROWAVE_LINK_NAME = "UC_OSS_RM_TPT_004_MICROWAVE_LINK";
     private final static String IDU_MODEL = "HUAWEI Technology Co.,Ltd RTN950";
     private final static String IDU_ABC_NAME = "UC_OSS_RM_TPT_004_IDU_ABC";
     private final static String IDU_XYZ_NAME = "UC_OSS_RM_TPT_004_IDU_XYZ";
-
     private final static String ODU_MODEL = "HUAWEI Technology Co.,Ltd ODU RTN XMC-1 07G HI";
     private final static String ODU_ABC_NAME = "UC_OSS_RM_TPT_004_ODU_ABC";
     private final static String ODU_XYZ_NAME = "UC_OSS_RM_TPT_004_ODU_XYZ";
-
     private final static String ENODEB_NAME = "UC_OSS_RM_TPT_004_eNodeB";
     private final static String BBU_NAME = "UC_OSS_RM_TPT_004_BBU";
     private final static String ROUTER_NAME = "UC_OSS_RM_TPT_004_Router";
     private final static String ETHERNET_LINK_NAME = "UC_OSS_RM_TPT_004_Ethernet_Link";
+    private HomePage homePage;
+    private NetworkViewPage networkViewPage;
 
     @Test(priority = 1)
     @Description("Open network view")
@@ -92,7 +92,6 @@ public class UC_OSS_RM_TPT_004_NV_PART extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-
     @Test(priority = 7)
     @Description("Create Microwave Link between locations")
     public void addMicrowaveLink() {
@@ -136,14 +135,13 @@ public class UC_OSS_RM_TPT_004_NV_PART extends BaseTestCase {
         networkViewPage.queryElementAndAddItToView("name", TEXT_FIELD, BBU_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
-
         networkViewPage.useContextAction("add_to_view_group", "Device");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkViewPage.queryElementAndAddItToView("name", TEXT_FIELD, ROUTER_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-// TODO Add 2 ethernet links with termination
+    // TODO Add 2 ethernet links with termination
     @Test(priority = 9)
     @Description("Create Ethernet Link between MW IDU and eNodeB Ethernet interface")
     public void createEthernetLinkInABC() {

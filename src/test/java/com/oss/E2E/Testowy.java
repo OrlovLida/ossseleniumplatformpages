@@ -9,10 +9,6 @@ import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
 
 public class Testowy extends BaseTestCase {
 
-    private void waitForPageToLoad() {
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-    }
-
     @BeforeClass
     public void openConsole() {
         waitForPageToLoad();
@@ -32,5 +28,9 @@ public class Testowy extends BaseTestCase {
     @Test(priority = 3)
     public void testowy3() {
         waitForPageToLoad();
+    }
+
+    private void waitForPageToLoad() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 }

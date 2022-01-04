@@ -35,8 +35,6 @@ import static java.lang.String.format;
 public class ISPConfigurationTest extends BaseTestCase {
 
     private static final Logger log = LoggerFactory.getLogger(ISPConfigurationTest.class);
-
-    private String LOCATION_OVERVIEW_URL = "";
     private static final String LOCATION_NAME = "ISPConfiguration_Building";
     private static final String SUBLOCATION_NAME = "ISPConfiguration_Room";
     private static final String PHYSICAL_DEVICE_MODEL = "7360 ISAM FX-8";
@@ -61,31 +59,15 @@ public class ISPConfigurationTest extends BaseTestCase {
     private static final String POWER_SUPPLY_UNIT_MODEL = "Generic Power Supply Unit";
     private static final String POWER_SUPPLY_UNIT_NAME = "Power Supply Unit";
     private static final String POWER_SUPPLY_UNIT_CAPACITY = "5";
-    private static String COOLING_ZONE_COOLING_LOAD = "0.00";
-    private static String COOLING_ZONE_LOAD_RATIO = "0.00";
-    private static String COOLING_ZONE_CAPACITY = "0.00";
     private static final String DELETE_DEVICE = "Delete Device";
     private static final String UPDATE_DEVICE = "UpdateDeviceWizardAction";
     private static final String NAME = "Name";
     private static final String ASSERT_NOT_EQUALS = "The checked value is %s and it shouldn't be equal to the defined %s value";
     private static final String LOCATION_POWER_CAPACITY = "0.00";
-
-    private void checkPopup() {
-        getSuccesSystemMessage();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-    }
-
-    private void checkPopupAndCloseMessage() {
-        SystemMessageInterface systemMessage = getSuccesSystemMessage();
-        systemMessage.close();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-    }
-
-    private SystemMessageInterface getSuccesSystemMessage() {
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, 90));
-        Assert.assertEquals((systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType()), MessageType.SUCCESS);
-        return systemMessage;
-    }
+    private static String COOLING_ZONE_COOLING_LOAD = "0.00";
+    private static String COOLING_ZONE_LOAD_RATIO = "0.00";
+    private static String COOLING_ZONE_CAPACITY = "0.00";
+    private String LOCATION_OVERVIEW_URL = "";
 
     @BeforeClass
     @Description("Open Console and set Live perspective")
@@ -714,5 +696,22 @@ public class ISPConfigurationTest extends BaseTestCase {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.clickButton("Delete Location");
         locationOverviewPage.clickButtonInConfirmationBox("Delete");
+    }
+
+    private void checkPopup() {
+        getSuccesSystemMessage();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    private void checkPopupAndCloseMessage() {
+        SystemMessageInterface systemMessage = getSuccesSystemMessage();
+        systemMessage.close();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    private SystemMessageInterface getSuccesSystemMessage() {
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, 90));
+        Assert.assertEquals((systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType()), MessageType.SUCCESS);
+        return systemMessage;
     }
 }

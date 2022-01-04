@@ -24,11 +24,11 @@ public class NotificationWrapperPage extends BasePage {
     }
 
     public String waitAndGetFinishedNotificationText() {
-        return Notifications.create(driver, wait).waitAndGetFinishedNotificationText();
+        return Notifications.create(driver, wait).getNotificationMessage();
     }
 
     public int amountOfNotifications() {
-        return Notifications.create(driver, wait).getAmountOfNotifications();
+        return Notifications.create(driver, wait).countNotifications();
     }
 
     public BasePage close() {
