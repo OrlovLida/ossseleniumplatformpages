@@ -136,7 +136,7 @@ public class PageConfigurationTest extends BaseTestCase {
     @Description("Check configuration for second user")
     public void isConfigurationWorkingProperlyForSecondUser() {
         //given
-        newInventoryViewPage.changeUser("webseleniumtests", "Webtests123!");
+        newInventoryViewPage.changeUser("webseleniumtests2", "webtests");
 
         //when
         newInventoryViewPage
