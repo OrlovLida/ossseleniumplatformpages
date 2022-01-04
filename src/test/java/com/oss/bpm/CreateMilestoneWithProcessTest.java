@@ -28,10 +28,10 @@ import java.time.LocalDate;
  */
 @Listeners({TestListener.class})
 public class CreateMilestoneWithProcessTest extends BaseTestCase {
-    private String BPM_USER_LOGIN = "bpm_webselenium";
-    private String BPM_USER_PASSWORD = "Webtests123!";
-    private String BPM_ADMIN_USER_LOGIN = "bpm_admin_webselenium";
-    private String BPM_ADMIN_USER_PASSWORD = "Webtests123!";
+    private final String BPM_USER_LOGIN = "bpm_webselenium";
+    private final String BPM_USER_PASSWORD = "Webtests123!";
+    private final String BPM_ADMIN_USER_LOGIN = "bpm_admin_webselenium";
+    private final String BPM_ADMIN_USER_PASSWORD = "Webtests123!";
 
     private static final Logger log = LoggerFactory.getLogger(CreateMilestoneWithProcessTest.class);
 
