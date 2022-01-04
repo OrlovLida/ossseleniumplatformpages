@@ -1,37 +1,41 @@
-//package com.oss.viewmanager;
-//
-//import com.oss.BaseTestCase;
-//import com.oss.framework.navigation.ApplicationWizard;
-//import com.oss.framework.navigation.CategoryWizard;
-//import com.oss.framework.utils.DelayUtils;
-//import com.oss.pages.platform.viewmanager.ViewManagerPage;
-//import com.oss.utils.TestListener;
-//import org.openqa.selenium.By;
-//import org.testng.Assert;
-//import org.testng.annotations.BeforeClass;
-//import org.testng.annotations.Listeners;
-//import org.testng.annotations.Test;
-//
-//@Listeners({TestListener.class})
-//public class ViewManagerTest extends BaseTestCase {
-//
-//    private ViewManagerPage viewManagerPage;
-//
-//    @BeforeClass
-//    public void goToViewManager() {
-//        viewManagerPage = new ViewManagerPage(driver);
-//        viewManagerPage.closeLoginPanel();
-//    }
-//
-//    @Test(priority = 1)
-//    public void addNewCategoryToViewManagerTest() {
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        viewManagerPage.clickAddCategoryButton();
-//        DelayUtils.sleep(200);
+package com.oss.viewmanager;
+
+import java.util.List;
+
+import com.oss.BaseTestCase;
+import com.oss.framework.navigation.ApplicationWizard;
+import com.oss.framework.navigation.CategoryWizard;
+import com.oss.framework.utils.DelayUtils;
+import com.oss.pages.platform.viewmanager.ViewManagerPage;
+import com.oss.utils.TestListener;
+import org.openqa.selenium.By;
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Test;
+
+@Listeners({TestListener.class})
+public class ViewManagerTest extends BaseTestCase {
+
+    private ViewManagerPage viewManagerPage;
+
+    @BeforeClass
+    public void goToViewManager() {
+        viewManagerPage = new ViewManagerPage(driver);
+
+    }
+
+    @Test(priority = 1)
+    public void addNewCategory() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        //viewManagerPage.expandCategory("Administration");
+        List<String> resource_inventory = viewManagerPage.getSubcategories("Resource Inventory");
+        resource_inventory.forEach(System.out::println);
+        DelayUtils.sleep(200);
 //        CategoryWizard createCategoryWizard = viewManagerPage.goToCategoryPopup();
 //        createCategoryWizard.setNameValue("Test Category");
 //        createCategoryWizard.setDescriptionValue("Test Category Description");
-////        createCategoryWizard.clickOnAdministrationPanelIcon();   tutaj do poprawy z selectIcon i id ikonki konkretnym
+//        createCategoryWizard.clickOnAdministrationPanelIcon();   tutaj do poprawy z selectIcon i id ikonki konkretnym
 //        createCategoryWizard.clickOnSaveButton();
 //
 //        DelayUtils.sleep(2500);
@@ -39,7 +43,7 @@
 //        viewManagerPage.searchForCategory("Test Category");
 //        Assert.assertTrue(driver.findElement(By.xpath("//*[text()='Test Category']")).isDisplayed());
 //        Assert.assertTrue(driver.findElement(By.xpath("//*[text()='Test Category Description']")).isDisplayed());
-//    }
+    }
 //
 //    @Test(priority = 2)
 //    public void changeCategoryNameAndDescription() {
@@ -269,4 +273,4 @@
 //        Assert.assertFalse(driver.findElements(By.xpath("//*[text()='Name after edition']")).size() > 0);
 //        viewManagerPage.clearSearchField();
 //    }
-//}
+}
