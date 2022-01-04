@@ -83,15 +83,11 @@ public class NewInventoryViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    @Step("Enable Column and apply")
-    public NewInventoryViewPage enableColumnAndApply(String columnLabel, String... path) {
-        enableColumn(columnLabel, path).clickApply();
-        return this;
-    }
-    
     @Step("Enable Column")
-    public AttributesChooser enableColumn(String columnLabel, String... path) {
-        return getMainTable().getAttributesChooser().enableAttributeByLabel(columnLabel, path);
+    public void enableColumn(String columnLabel, String... path) {
+        AttributesChooser attributesChooser = getMainTable().getAttributesChooser();
+        attributesChooser.enableAttributeByLabel(columnLabel, path);
+        attributesChooser.clickApply();
     }
     
     public List<String> getActiveColumnsHeaders() {

@@ -38,7 +38,8 @@ public class TableWidgetConfigurationTest extends BaseTestCase {
     @Description("Saving new configuration for table widget for user")
     public void saveNewConfigurationForTableWidgetForUser() {
         //when
-        newInventoryViewPage.enableColumn("Depth").disableAttributeByLabel("Name");
+        newInventoryViewPage.enableColumn("Depth");
+        newInventoryViewPage.disableColumnAndApply("Name");
         newInventoryViewPage.changeLayoutToVertical()
                 .changeColumnsOrderInMainTable("XId", 3)
                 .openFilterPanel()
@@ -61,7 +62,8 @@ public class TableWidgetConfigurationTest extends BaseTestCase {
     @Description("Saving new configuration for table widget for group")
     public void saveNewConfigurationForTableWidgetForGroup() {
         //when
-        newInventoryViewPage.enableColumn("Height").disableAttributeByLabel("Latitude").clickApply();
+        newInventoryViewPage.enableColumn("Height");
+        newInventoryViewPage.disableColumnAndApply("Latitude");
         newInventoryViewPage.changeColumnsOrderInMainTable("XId", 2)
                 .openFilterPanel()
                 .setValueOnComboWithTags("type", "type-dropdown-search", "Site")
