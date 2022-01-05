@@ -10,10 +10,10 @@ import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.gisView.CreateDuctWizardPage;
-import com.oss.pages.gisView.DuctCopyWizardPage;
-import com.oss.pages.gisView.GisViewPage;
-import com.oss.pages.gisView.RoutingWizardPage;
+import com.oss.pages.gisview.CreateDuctWizardPage;
+import com.oss.pages.gisview.DuctCopyWizardPage;
+import com.oss.pages.gisview.GisViewPage;
+import com.oss.pages.gisview.RoutingWizardPage;
 import com.oss.pages.physical.CableRoutingViewPage;
 import com.oss.pages.physical.CardCreateWizardPage;
 import com.oss.pages.physical.CreatePluggableModuleWizardPage;
@@ -27,7 +27,7 @@ import com.oss.pages.radio.CableWizardPage;
 
 import io.qameta.allure.Description;
 
-public class TS_PHY_E2E_02 extends BaseTestCase {
+public class TS_PHY_E2E_02_Test extends BaseTestCase {
 
     private static final String BUILDING_A_NAME = "TS_PHY_E2E_02_Building_A";
     private static final String BUILDING_A_2_NAME = "TS_PHY_E2E_02_Building_A_002";
@@ -212,7 +212,7 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
         checkMessageText("Duct has been created");
 
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        gisViewPage.enableLayerInTree("Duct");
+        gisViewPage.enableLayerInTree("physical-connectivity.ducts");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -268,7 +268,7 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
     @Test(priority = 10)
     @Description("Check duct utilization %")
     public void checkDuctUtilizationValue() {
-        checkDuctUtilization(DUCT_FROM_A_TO_C_NAME, "119.71");
+        checkDuctUtilization("119.71");
     }
 
     @Test(priority = 11)
@@ -299,7 +299,7 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
     @Test(priority = 12)
     @Description("Check duct utilization %")
     public void checkDuctUtilizationAfterModelChange() {
-        checkDuctUtilization(DUCT_FROM_A_TO_C_NAME, "10.13");
+        checkDuctUtilization("10.13");
     }
 
     @Test(priority = 13)
@@ -439,38 +439,38 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
     @Test(priority = 18)
     @Description("Create ODF devices on Building A")
     public void createODFDeviceOnBuildingA() {
-        createODF(BUILDING_A_NAME, ODF_MODEL, ODF_A_NAME);
+        createODF(BUILDING_A_NAME, ODF_A_NAME);
     }
 
     @Test(priority = 19)
     @Description("Add Card to ODF on Building A")
     public void addCardToODFOnBuildingA() {
-        addCardToODF(ODF_A_NAME, CARD_MODEL);
+        addCardToODF(ODF_A_NAME);
     }
 
     @Test(priority = 20)
     @Description("Add Pluggable Module to ODF on Building A")
     public void addPluggableModuleToODFOnBuildingA() {
-        addPluggableModule(PLUGGABLE_MODULE_MODEL);
+        addPluggableModule();
     }
 
     @Test(priority = 21)
     @Description("Create ODF devices on Building C")
     public void createODFDeviceOnBuildingC() {
         openGIS();
-        createODF(BUILDING_C_NAME, ODF_MODEL, ODF_C_NAME);
+        createODF(BUILDING_C_NAME, ODF_C_NAME);
     }
 
     @Test(priority = 22)
     @Description("Add Card to ODF on Building C")
     public void addCardToODFOnBuildingC() {
-        addCardToODF(ODF_C_NAME, CARD_MODEL);
+        addCardToODF(ODF_C_NAME);
     }
 
     @Test(priority = 23)
     @Description("Add Pluggable Module to ODF on Building C")
     public void addPluggableModuleToODFOnBuildingC() {
-        addPluggableModule(PLUGGABLE_MODULE_MODEL);
+        addPluggableModule();
     }
 
     @Test(priority = 24)
@@ -629,25 +629,25 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    private void createODF(String buildingName, String model, String ODF_name) {
+    private void createODF(String buildingName, String odfName) {
         gisViewPage.searchResult(buildingName);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         gisViewPage.chooseOptionFromDropDownList(CREATE_DATA_ATTRIBUTENAME, "Create Device");
         DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        deviceWizardPage.setModel(model);
+        deviceWizardPage.setModel(TS_PHY_E2E_02_Test.ODF_MODEL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        deviceWizardPage.setName(ODF_name);
+        deviceWizardPage.setName(odfName);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.next();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.setPreciseLocation(buildingName);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.accept();
-        checkMessageText(ODF_name + " has been created successfully");
+        checkMessageText(odfName + " has been created successfully");
     }
 
-    private void addCardToODF(String ODF_name, String cardModel) {
+    private void addCardToODF(String ODF_name) {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         gisViewPage.searchResult(ODF_name);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -661,7 +661,7 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         CardCreateWizardPage cardCreateWizardPage = new CardCreateWizardPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        cardCreateWizardPage.setModel(cardModel);
+        cardCreateWizardPage.setModel(TS_PHY_E2E_02_Test.CARD_MODEL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cardCreateWizardPage.setSlot("1");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -669,13 +669,13 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
         checkPopupType();
     }
 
-    private void addPluggableModule(String pluggableModuleModel) {
+    private void addPluggableModule() {
         HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
         hierarchyViewPage.useTreeContextAction("CREATE", "CreatePluggableModuleOnDeviceApp");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         CreatePluggableModuleWizardPage createPluggableModuleWizardPage = new CreatePluggableModuleWizardPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        createPluggableModuleWizardPage.setModel(pluggableModuleModel);
+        createPluggableModuleWizardPage.setModel(TS_PHY_E2E_02_Test.PLUGGABLE_MODULE_MODEL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         createPluggableModuleWizardPage.setPort("1");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -696,8 +696,8 @@ public class TS_PHY_E2E_02 extends BaseTestCase {
         Assert.assertTrue((messages.get(0).getText()).contains(text));
     }
 
-    private void checkDuctUtilization(String ductName, String expectedUtilization) {
-        gisViewPage.searchResult(ductName);
+    private void checkDuctUtilization(String expectedUtilization) {
+        gisViewPage.searchResult(TS_PHY_E2E_02_Test.DUCT_FROM_A_TO_C_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         gisViewPage.expandDockedPanel("bottom");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
