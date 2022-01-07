@@ -1,5 +1,7 @@
 package com.oss.pages.transport.traffic.classs;
 
+import org.openqa.selenium.WebDriver;
+
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
@@ -7,8 +9,8 @@ import com.oss.framework.widgets.CommonHierarchyApp;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
 import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
+
 import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
 
 /**
  * @author Kamil Sikora
@@ -89,12 +91,6 @@ public class TrafficClassWizardPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    private Input getEmptyTextFieldComponent(String componentId){
-        Input component = wizard.getComponent(componentId, Input.ComponentType.TEXT_FIELD);
-        component.clear();
-        return component;
-    }
-
     @Step("Set Match type to {type}")
     public void setMatchType(String type) {
         Input typeComponent = getEmptyComboBoxComponent(MATCH_FIELD_ID);
@@ -114,23 +110,29 @@ public class TrafficClassWizardPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    private Input getEmptyComboBoxComponent(String componentId){
-        Input component = wizard.getComponent(componentId, Input.ComponentType.COMBOBOX);
-        component.clear();
-        return component;
-    }
-
     @Step("Click accept button")
     public OldInventoryViewPage clickAccept() {
-        wizard.clickAcceptOldWizard();
+        wizard.clickAccept();
         return new OldInventoryViewPage(driver);
     }
 
     @Step("Click save chenges button")
-    public OldInventoryViewPage clickSaveChanges(){
+    public OldInventoryViewPage clickSaveChanges() {
         Button saveButton = Button.createBySelectorAndId(driver, "a", SAVE_CHANGES_BUTTON_TEST_ID);
         saveButton.click();
         return new OldInventoryViewPage(driver);
+    }
+
+    private Input getEmptyTextFieldComponent(String componentId) {
+        Input component = wizard.getComponent(componentId, Input.ComponentType.TEXT_FIELD);
+        component.clear();
+        return component;
+    }
+
+    private Input getEmptyComboBoxComponent(String componentId) {
+        Input component = wizard.getComponent(componentId, Input.ComponentType.COMBOBOX);
+        component.clear();
+        return component;
     }
 
 }

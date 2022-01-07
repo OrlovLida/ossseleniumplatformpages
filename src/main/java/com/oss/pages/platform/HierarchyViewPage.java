@@ -9,10 +9,10 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.oss.framework.components.portals.SaveConfigurationWizard.Field;
 import com.oss.framework.components.tree.TreeComponent.Node;
 import com.oss.framework.mainheader.ButtonPanel;
+import com.oss.framework.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.TreeWidgetV2.TreeWidgetV2;
 import com.oss.framework.widgets.Widget;
-import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.tabswidget.TabsWidget;
 import com.oss.pages.BasePage;
 
@@ -110,8 +110,8 @@ public class HierarchyViewPage extends BasePage {
 
     @Step("Click {label} in Confirmation box")
     public void clickButtonInConfirmationBox(String label) {
-        Wizard wizard = Wizard.createPopupWizard(driver, wait);
-        wizard.clickButtonByLabel(label);
+        ConfirmationBox confirmationBox = ConfirmationBox.create(driver, wait);
+        confirmationBox.clickButtonByLabel(label);
     }
 
     @Step("Expand tree node by label - {label}")

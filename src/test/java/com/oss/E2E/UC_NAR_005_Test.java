@@ -187,7 +187,7 @@ public class UC_NAR_005_Test extends BaseTestCase {
         newInventoryViewPage.selectFirstRow();
         newInventoryViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, "DeleteDeviceWizardAction");
         waitForPageToLoad();
-        Wizard.createWizard(driver, webDriverWait).clickActionById("ConfirmationBox_object_delete_wizard_confirmation_box_action_button");
+        Wizard.createWizard(driver, webDriverWait).clickButtonById("ConfirmationBox_object_delete_wizard_confirmation_box_action_button");
         checkMessageType(MessageType.SUCCESS);
         waitForPageToLoad();
         newInventoryViewPage.refreshMainTable();

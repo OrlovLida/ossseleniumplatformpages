@@ -1,11 +1,13 @@
 package com.oss.pages.transport.regulatoryLicense;
 
+import org.openqa.selenium.WebDriver;
+
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
+
 import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
 
 public class RegulatoryLicenseWizardPage extends BasePage {
 
@@ -67,7 +69,7 @@ public class RegulatoryLicenseWizardPage extends BasePage {
 
     @Step("Click accept button")
     public void clickAccept() {
-        wizard.clickAcceptOldWizard();
+        wizard.clickAccept();
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 }

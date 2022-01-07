@@ -1,16 +1,18 @@
 package com.oss.pages.bigdata.dfe.stepwizard.aggregate;
 
-import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.Wizard;
-import com.oss.framework.widgets.dfe.aggregatesmanager.AggregatesManagerWidget;
-import com.oss.pages.BasePage;
-import io.qameta.allure.Step;
+import java.util.List;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
+import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.Wizard;
+import com.oss.framework.widgets.dfe.aggregatesmanager.AggregatesManagerWidget;
+import com.oss.pages.BasePage;
+
+import io.qameta.allure.Step;
 
 public class AggregateConfigurationPage extends BasePage {
 
@@ -47,7 +49,7 @@ public class AggregateConfigurationPage extends BasePage {
     @Step
     public void clickAccept() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        aggrConfWizard.clickAcceptOldWizard();
+        aggrConfWizard.clickAccept();
         log.info("Finishing Step Wizard by clicking 'Accept'");
     }
 

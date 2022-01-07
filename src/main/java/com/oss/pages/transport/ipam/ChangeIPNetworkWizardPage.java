@@ -1,5 +1,7 @@
 package com.oss.pages.transport.ipam;
 
+import org.openqa.selenium.WebDriver;
+
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.table.TableComponent;
 import com.oss.framework.data.Data;
@@ -8,7 +10,6 @@ import com.oss.framework.widgets.Widget;
 import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.tablewidget.TableWidget;
 import com.oss.pages.BasePage;
-import org.openqa.selenium.WebDriver;
 
 import static com.oss.framework.widgets.Wizard.createWizard;
 
@@ -50,7 +51,7 @@ public class ChangeIPNetworkWizardPage extends BasePage {
         Wizard conflictsStep = createWizard(driver, wait);
         getTableComponent().getVisibleRows().forEach(tableRow -> {
             getTableComponent().selectRow(0);
-            conflictsStep.callButtonById(CONFLICTS_STEP_RESOLVE_BUTTON_COMPONENT_ID);
+            conflictsStep.clickButtonById(CONFLICTS_STEP_RESOLVE_BUTTON_COMPONENT_ID);
         });
         conflictsStep.clickNext();
     }
