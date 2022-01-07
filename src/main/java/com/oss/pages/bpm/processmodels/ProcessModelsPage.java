@@ -1,5 +1,10 @@
 package com.oss.pages.bpm.processmodels;
 
+import java.io.File;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.sidemenu.SideMenu;
@@ -8,10 +13,6 @@ import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tablewidget.TableInterface;
 import com.oss.pages.BasePage;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.io.File;
 
 /**
  * @author Paweł Rother
@@ -27,8 +28,6 @@ public class ProcessModelsPage extends BasePage {
     private static final String EDIT_KEYWORDS_ACTION_BUTTON_ID = "edit-model-keywords";
     private static final String EXPORT_AS_BAR_ACTION_BUTTON_ID = "export-bar";
     private static final String EXPORT_AS_XML_ACTION_BUTTON_ID = "export-with-configuration-files";
-
-
 
     private static final String DELETE_MODEL_POPUP_ID = "bpm_models_view_delete-model-popup";
     private static final String DELETE_MODEL_CONFIRMATION_BUTTON_ID = "ConfirmationBox_bpm_models_view_delete-model-popup_DELETE_MODEL_CONFIRMATION_BOX_VIEW_ID_action_button";
@@ -61,16 +60,11 @@ public class ProcessModelsPage extends BasePage {
     }
 
     public void chooseDomain(String domain) {
-        DelayUtils.waitForPageToLoad(driver,wait);
-        Input domain_input = ComponentFactory.create(DOMAIN_CHOOSER_COMBOBOX_ID, Input.ComponentType.COMBOBOX, driver, wait);
-        domain_input.clear();
-        domain_input.setSingleStringValue(domain);
         DelayUtils.waitForPageToLoad(driver, wait);
-    }
-
-    private TableInterface getModelsTable() {
+        Input domainInput = ComponentFactory.create(DOMAIN_CHOOSER_COMBOBOX_ID, Input.ComponentType.COMBOBOX, driver, wait);
+        domainInput.clear();
+        domainInput.setSingleStringValue(domain);
         DelayUtils.waitForPageToLoad(driver, wait);
-        return OldTable.createByComponentDataAttributeName(driver, wait, MODEL_LIST_TABLE_ID);
     }
 
     public void selectModelByName(String name) {
@@ -106,57 +100,62 @@ public class ProcessModelsPage extends BasePage {
         return false;
     }
 
-
     public void deleteModel(String modelName) {
-        Wizard deleteWizard = openWizardForSelectedModel(modelName,MODEL_OPERATIONS_GROUPING_ACTION_BUTTON_ID,DELETE_ACTION_BUTTON_ID, DELETE_MODEL_POPUP_ID);
+        Wizard deleteWizard = openWizardForSelectedModel(modelName, MODEL_OPERATIONS_GROUPING_ACTION_BUTTON_ID, DELETE_ACTION_BUTTON_ID, DELETE_MODEL_POPUP_ID);
 
-        deleteWizard.clickActionById(DELETE_MODEL_CONFIRMATION_BUTTON_ID);
+        deleteWizard.clickButtonById(DELETE_MODEL_CONFIRMATION_BUTTON_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public void cloneModel(String baseModelName, String clonedModelName, String clonedIdentifier, String clonedDescription) {
-        Wizard cloneWizard = openWizardForSelectedModel(baseModelName,MODEL_OPERATIONS_GROUPING_ACTION_BUTTON_ID,CLONE_ACTION_BUTTON_ID, CLONE_MODEL_POPUP_ID);
-        setWizardAttributeValue(cloneWizard,"name-field", Input.ComponentType.TEXT_FIELD,clonedModelName);
-        setWizardAttributeValue(cloneWizard,"identifier-field",Input.ComponentType.TEXT_FIELD,clonedIdentifier);
-        setWizardAttributeValue(cloneWizard,"description-field",Input.ComponentType.TEXT_FIELD,clonedDescription);
+        Wizard cloneWizard = openWizardForSelectedModel(baseModelName, MODEL_OPERATIONS_GROUPING_ACTION_BUTTON_ID, CLONE_ACTION_BUTTON_ID, CLONE_MODEL_POPUP_ID);
+        setWizardAttributeValue(cloneWizard, "name-field", Input.ComponentType.TEXT_FIELD, clonedModelName);
+        setWizardAttributeValue(cloneWizard, "identifier-field", Input.ComponentType.TEXT_FIELD, clonedIdentifier);
+        setWizardAttributeValue(cloneWizard, "description-field", Input.ComponentType.TEXT_FIELD, clonedDescription);
 
-        cloneWizard.clickActionById(CLONE_MODEL_ACCEPT_BUTTON_ID);
+        cloneWizard.clickButtonById(CLONE_MODEL_ACCEPT_BUTTON_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    public void setWizardAttributeValue(Wizard wizard, String attributeId, Input.ComponentType inputType, String value){
-        Input attribute = wizard.getComponent(attributeId,inputType);
+    public void setWizardAttributeValue(Wizard wizard, String attributeId, Input.ComponentType inputType, String value) {
+        Input attribute = wizard.getComponent(attributeId, inputType);
         attribute.clear();
         attribute.setSingleStringValue(value);
     }
 
     public void setKeyword(String modelName, String keyword) {
-        Wizard editKeywordsWizard = openWizardForSelectedModel(modelName,MODEL_OPERATIONS_GROUPING_ACTION_BUTTON_ID, EDIT_KEYWORDS_ACTION_BUTTON_ID, EDIT_KEYWORDS_POPUP_ID);
-        setWizardAttributeValue(editKeywordsWizard,"keywordsComponentId", Input.ComponentType.MULTI_SEARCH_FIELD,keyword);
-        editKeywordsWizard.clickActionById(EDIT_KEYWORDS_ACCEPT_BUTTON_ID);
+        Wizard editKeywordsWizard = openWizardForSelectedModel(modelName, MODEL_OPERATIONS_GROUPING_ACTION_BUTTON_ID, EDIT_KEYWORDS_ACTION_BUTTON_ID, EDIT_KEYWORDS_POPUP_ID);
+        setWizardAttributeValue(editKeywordsWizard, "keywordsComponentId", Input.ComponentType.MULTI_SEARCH_FIELD, keyword);
+        editKeywordsWizard.clickButtonById(EDIT_KEYWORDS_ACCEPT_BUTTON_ID);
     }
-    public Wizard openWizardForSelectedModel(String modelName, String actionId, String wizardPopUpId){
+
+    public Wizard openWizardForSelectedModel(String modelName, String actionId, String wizardPopUpId) {
         TableInterface modelsList = getModelsTable();
         selectModelByName(modelName);
         modelsList.callAction(actionId);
         return Wizard.createByComponentId(driver, wait, wizardPopUpId);
     }
 
-    public Wizard openWizardForSelectedModel(String modelName,String groupingActionId, String actionId, String wizardPopUpId){
+    public Wizard openWizardForSelectedModel(String modelName, String groupingActionId, String actionId, String wizardPopUpId) {
         TableInterface modelsList = getModelsTable();
         selectModelByName(modelName);
         modelsList.callAction(groupingActionId, actionId);
         return Wizard.createByComponentId(driver, wait, wizardPopUpId);
     }
 
-    public void exportModelAsBAR(String modelName){
+    public void exportModelAsBAR(String modelName) {
         selectModelByName(modelName);
-        callAction(MODEL_OPERATIONS_GROUPING_ACTION_BUTTON_ID,EXPORT_AS_BAR_ACTION_BUTTON_ID);
+        callAction(MODEL_OPERATIONS_GROUPING_ACTION_BUTTON_ID, EXPORT_AS_BAR_ACTION_BUTTON_ID);
     }
 
-    public void exportModelAsXML(String modelName){
+    public void exportModelAsXML(String modelName) {
         selectModelByName(modelName);
-        callAction(MODEL_OPERATIONS_GROUPING_ACTION_BUTTON_ID,EXPORT_AS_XML_ACTION_BUTTON_ID);
+        callAction(MODEL_OPERATIONS_GROUPING_ACTION_BUTTON_ID, EXPORT_AS_XML_ACTION_BUTTON_ID);
+    }
+
+    private TableInterface getModelsTable() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return OldTable.createByComponentDataAttributeName(driver, wait, MODEL_LIST_TABLE_ID);
     }
 
 }

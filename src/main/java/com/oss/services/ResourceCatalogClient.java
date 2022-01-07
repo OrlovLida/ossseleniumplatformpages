@@ -36,7 +36,7 @@ public class ResourceCatalogClient {
                 .queryParam(Constants.NAME_PARAM, modelName)
                 .when()
                 .get(ResourceCatalogClient.MODELS_API_PATH);
-        List<Integer> idsList = response.jsonPath().getList("searchResult.id");
+        List<Integer> idsList = response.jsonPath().getList("setValue.id");
         Long id = Long.valueOf(idsList.get(0).toString());
         return id;
     }

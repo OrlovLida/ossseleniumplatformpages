@@ -6,36 +6,34 @@
  */
 package com.oss.pages.bpm.milestones;
 
+import org.openqa.selenium.WebDriver;
+
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.listwidget.EditableList;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
-import org.openqa.selenium.WebDriver;
 
 /**
  * @author Gabriela Kasza
  */
 public class EditMilestoneWizardPage extends BasePage {
+    private static final String ACCEPT_BUTTON = "wizard-submit-button-milestones-edit_wizard-app";
+    private static final String CANCEL_BUTTON = "wizard-cancel-button-milestones-edit_wizard-app";
+    private static final String EDIT_MILESTONE_LIST = "milestones-edit_wizard-editable-list";
+    private static final String MILESTONE_TABLE = "bpm_milestones_view_milestonesTableWidget";
+    private static final String EDIT_MILESTONE_BUTTON = "editMilestonesContextAction";
+    private static final String BPM_MILESTONE_NAME = "name";
+    private static final String BPM_MILESTONE_DESCRIPTION = "description";
+    private static final String BPM_MILESTONE_LEAD_TIME = "leadTime";
+    private static final String BPM_MILESTONE_DUE_DATE = "dueDate";
+    private static final String BPM_MILESTONE_RELATED_TASK = "relatedObject";
+    private static final String BPM_MILESTONE_IS_MANUAL_COMPLETION = "isManualCompletion";
+    private static final String MILESTONE_EDIT_WIZARD_ID = "milestones-edit_wizard-app";
+
     public EditMilestoneWizardPage(WebDriver driver) {
         super(driver);
     }
-    
-    private final static String ACCEPT_BUTTON = "wizard-submit-button-milestones-edit_wizard-app";
-    private final static String CANCEL_BUTTON = "wizard-cancel-button-milestones-edit_wizard-app";
-    private final static String EDIT_MILESTONE_LIST = "milestones-edit_wizard-editable-list";
-    private final static String MILESTONE_TABLE = "bpm_milestones_view_milestonesTableWidget";
-    private final static String EDIT_MILESTONE_BUTTON = "editMilestonesContextAction";
-    
-    private final static String BPM_MILESTONE_NAME = "name";
-    private final static String BPM_MILESTONE_DESCRIPTION = "description";
-    private final static String BPM_MILESTONE_LEAD_TIME = "leadTime";
-    private final static String BPM_MILESTONE_DUE_DATE = "dueDate";
-    private final static String BPM_MILESTONE_RELATED_TASK = "relatedObject";
-    private final static String BPM_MILESTONE_IS_MANUAL_COMPLETION = "isManualCompletion";
-
-    private final static String MILESTONE_EDIT_WIZARD_ID = "milestones-edit_wizard-app";
-
 
     public Milestone editMilestone(Milestone milestone) throws RuntimeException {
         Wizard editWizard = Wizard.createByComponentId(driver, wait, MILESTONE_EDIT_WIZARD_ID);
@@ -83,15 +81,15 @@ public class EditMilestoneWizardPage extends BasePage {
                         Input.ComponentType.TEXT_FIELD);
             }
         }
-        editWizard.clickActionById(ACCEPT_BUTTON);
+        editWizard.clickButtonById(ACCEPT_BUTTON);
         return editedMilestone;
     }
-    
+
     public void cancel() {
         Wizard editWizard = Wizard.createByComponentId(driver, wait, MILESTONE_EDIT_WIZARD_ID);
-        editWizard.clickActionById(CANCEL_BUTTON);
+        editWizard.clickButtonById(CANCEL_BUTTON);
     }
-    
+
     private Milestone getMilestoneFromRow(EditableList list, int row) {
         String name = list.getRow(row).getCellValue(BPM_MILESTONE_NAME);
         String dueDate = list.getRow(row).getCellValue(BPM_MILESTONE_DUE_DATE);

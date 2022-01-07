@@ -1,16 +1,17 @@
 package com.oss.pages.transport.aei;
 
-import com.oss.framework.components.inputs.Combobox;
+import java.util.List;
+
+import org.openqa.selenium.WebDriver;
+
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.CommonHierarchyApp;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
 import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
-import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
 
-import java.util.List;
+import io.qameta.allure.Step;
 
 /**
  * @author Kamil Jacko
@@ -72,10 +73,6 @@ public class AEIWizardPage extends BasePage {
         setTextFieldComponentValue(MAC_ADDRESS_FIELD_ID, macAddress);
     }
 
-    private void setTextFieldComponentValue(String componentId, String value){
-        wizard.setComponentValue(componentId, value, Input.ComponentType.TEXT_FIELD);
-    }
-
     @Step("Set administrative state to {administrativeState}")
     public void setAdministrativeState(String administrativeState) {
         setComboBoxComponentValue(ADMINISTRATIVE_STATE_FIELD_ID, administrativeState);
@@ -94,10 +91,6 @@ public class AEIWizardPage extends BasePage {
     @Step("Set LACP mode to {lacpMode}")
     public void setLACPMode(String lacpMode) {
         setComboBoxComponentValue(LACP_MODE_FIELD_ID, lacpMode);
-    }
-
-    private void setComboBoxComponentValue(String componentId, String value){
-        wizard.setComponentValue(componentId, value, Input.ComponentType.COMBOBOX);
     }
 
     @Step("Set LACP short period to {value}")
@@ -122,7 +115,15 @@ public class AEIWizardPage extends BasePage {
     @Step("Click accept button")
     public OldInventoryViewPage clickAccept() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        wizard.clickAcceptOldWizard();
+        wizard.clickAccept();
         return new OldInventoryViewPage(driver);
+    }
+
+    private void setTextFieldComponentValue(String componentId, String value) {
+        wizard.setComponentValue(componentId, value, Input.ComponentType.TEXT_FIELD);
+    }
+
+    private void setComboBoxComponentValue(String componentId, String value) {
+        wizard.setComponentValue(componentId, value, Input.ComponentType.COMBOBOX);
     }
 }

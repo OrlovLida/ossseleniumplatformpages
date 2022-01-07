@@ -1,22 +1,22 @@
 package com.oss.pages.transport.loopbackInterface;
 
+import org.openqa.selenium.WebDriver;
+
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.CommonHierarchyApp;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
 import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
-import org.openqa.selenium.WebDriver;
 
 /**
  * @author Kamil Jacko
  */
 public class LoopbackInterfaceWizardPage extends BasePage {
 
-    private final Wizard wizard;
-
     private static final String NUMBER_FIELD_ID = "uid-number";
     private static final String DESCRIPTION_FIELD_ID = "uid-description";
+    private final Wizard wizard;
 
     public LoopbackInterfaceWizardPage(WebDriver driver) {
         super(driver);
@@ -54,7 +54,7 @@ public class LoopbackInterfaceWizardPage extends BasePage {
 
     public OldInventoryViewPage clickAccept() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        wizard.clickAcceptOldWizard();
+        wizard.clickAccept();
         return new OldInventoryViewPage(driver);
     }
 }
