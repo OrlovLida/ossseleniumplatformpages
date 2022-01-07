@@ -6,13 +6,15 @@
  */
 package com.oss.pages.transport.VRF;
 
+import org.openqa.selenium.WebDriver;
+
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.data.Data;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
+
 import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
 
 /**
  * @author Kamil Szota
@@ -44,7 +46,7 @@ public class VRFImpExpRouteTargetWizardPage extends BasePage {
 
     @Step("Click accept button")
     public VRFOverviewPage clickAccept() {
-        wizard.clickAcceptOldWizard();
+        wizard.clickAccept();
         return new VRFOverviewPage(driver);
     }
 }

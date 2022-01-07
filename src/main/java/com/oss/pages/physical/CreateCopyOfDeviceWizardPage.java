@@ -1,9 +1,11 @@
 package com.oss.pages.physical;
 
+import org.openqa.selenium.WebDriver;
+
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
+
 import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
 
 import static com.oss.framework.components.inputs.Input.ComponentType.SEARCH_FIELD;
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
@@ -40,7 +42,7 @@ public class CreateCopyOfDeviceWizardPage extends BasePage {
 
     @Step("Click Create button")
     public void create() {
-        getCopyDeviceWizard().clickActionById(DEVICE_COPY_CREATE_BUTTON_DATA_ATTRIBUTE_NAME);
+        getCopyDeviceWizard().clickButtonById(DEVICE_COPY_CREATE_BUTTON_DATA_ATTRIBUTE_NAME);
     }
 
     private Wizard getCopyDeviceWizard() {

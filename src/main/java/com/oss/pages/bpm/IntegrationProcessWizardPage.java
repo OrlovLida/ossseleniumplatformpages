@@ -19,19 +19,18 @@ import com.oss.pages.BasePage;
  * @author Gabriela Kasza
  */
 public class IntegrationProcessWizardPage extends BasePage {
+    private static final String WIZARD_ID = "ipd_integration_wizard_SetupIntegrationComponentId";
+    private static final String IP_LIST = "IntegrationProcessWizardComponentId";
+    private static final String PROCESS_NAME_COLUMN_ID = "processNameId";
+    private static final String PROCESS_NAME_ATTRIBUTE_ID = "processNameId-TEXT_FIELD";
+    private static final String FINISH_DUE_DATE_COLUMN_ID = "FINISHED_DUE_DATE";
+    private static final String FINISH_DUE_DATE_ATTRIBUTE_ID = "FINISHED_DUE_DATE-DATE";
+    private static final String NEXT_BUTTON = "wizard-next-button-ipd_integration_wizard_SetupIntegrationComponentId";
+    private static final String ACCEPT_BUTTON = "wizard-submit-button-ipd_integration_wizard_SetupIntegrationComponentId";
+    private static final String DELETE_LABEL_ACTION = "Delete";
     public IntegrationProcessWizardPage(WebDriver driver) {
         super(driver);
     }
-
-    private final static String WIZARD_ID = "ipd_integration_wizard_SetupIntegrationComponentId";
-    private final static String IP_LIST = "IntegrationProcessWizardComponentId";
-    private final static String PROCESS_NAME_COLUMN_ID = "processNameId";
-    private final static String PROCESS_NAME_ATTRIBUTE_ID = "processNameId-TEXT_FIELD";
-    private final static String FINISH_DUE_DATE_COLUMN_ID = "FINISHED_DUE_DATE";
-    private final static String FINISH_DUE_DATE_ATTRIBUTE_ID = "FINISHED_DUE_DATE-DATE";
-    private final static String NEXT_BUTTON = "wizard-next-button-ipd_integration_wizard_SetupIntegrationComponentId";
-    private final static String ACCEPT_BUTTON = "wizard-submit-button-ipd_integration_wizard_SetupIntegrationComponentId";
-    private final static String DELETE_LABEL_ACTION = "Delete";
 
     public void defineIntegrationProcess(String processName, String finishDueDate, int row) {
         EditableList editableList = EditableList.createById(driver, wait, IP_LIST);
@@ -46,12 +45,12 @@ public class IntegrationProcessWizardPage extends BasePage {
     }
 
     public void clickNext() {
-        Wizard.createByComponentId(driver, wait, WIZARD_ID).clickActionById(NEXT_BUTTON);
+        Wizard.createByComponentId(driver, wait, WIZARD_ID).clickButtonById(NEXT_BUTTON);
     }
 
     public void clickAccept() {
         Wizard integrationWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
-        integrationWizard.clickActionById(ACCEPT_BUTTON);
+        integrationWizard.clickButtonById(ACCEPT_BUTTON);
         integrationWizard.waitToClose();
     }
 

@@ -16,17 +16,17 @@ public class IPPathWizardPage extends BasePage {
     private static final String NAME_ID = "name-uid";
     private static final String CAPACITY_VALUE_ID = "capacity-value-uid";
     private static final String PROCEED_ID = "IP_PATH_BUTTON_APP_ID-1";
-
-    public static IPPathWizardPage getIPPathWizardPage(WebDriver driver, WebDriverWait wait) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        return new IPPathWizardPage(driver, wait);
-    }
+    private static final String WIZARD_ID = "Popup";
+    private Wizard wizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
 
     private IPPathWizardPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
     }
 
-    private Wizard wizard = Wizard.createPopupWizard(driver, wait);
+    public static IPPathWizardPage getIPPathWizardPage(WebDriver driver, WebDriverWait wait) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return new IPPathWizardPage(driver, wait);
+    }
 
     @Step("Set name for IP Path to {name}")
     public void setName(String name) {
@@ -40,7 +40,7 @@ public class IPPathWizardPage extends BasePage {
 
     @Step("Proceed")
     public void proceed() {
-        wizard.clickActionById(PROCEED_ID);
+        wizard.clickButtonById(PROCEED_ID);
     }
 
 }

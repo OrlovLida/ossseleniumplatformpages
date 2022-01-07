@@ -73,7 +73,7 @@ public class LocationWizardPage extends BasePage {
 
     @Step("Create Location with mandatory fields - Location Type: {locationType} and Name: {locationName} in any wizard")
     public void createLocationInAnyWizard(String locationType, String locationName) {
-        if (locationWizard.numberOfSteps() > 1) {
+        if (locationWizard.countNumberOfSteps() > 1) {
             createLocationStepWizard(locationType, locationName);
         } else {
             createLocation(locationType, locationName);

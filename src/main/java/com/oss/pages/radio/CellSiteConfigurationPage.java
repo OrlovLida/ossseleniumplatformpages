@@ -43,6 +43,7 @@ public class CellSiteConfigurationPage extends BasePage {
     private static final String HOST_ON_DEVICE_ACTION_LABEL = "Host on Device";
     private static final String HOST_ON_ANTENNA_ARRAY_ACTION_LABEL = "Host on Antenna Array";
     private static final String HOSTING_TAB_LABEL = "Hosting";
+    private static final String WIZARD_ID = "Popup";
 
     public CellSiteConfigurationPage(WebDriver driver) {
         super(driver);
@@ -104,7 +105,7 @@ public class CellSiteConfigurationPage extends BasePage {
     }
 
     @Step("Remove device {objectName}")
-    public void removeDevice(String columnName, String objectName){
+    public void removeDevice(String columnName, String objectName) {
         selectTab(DEVICES_TAB);
         waitForPageToLoad();
         filterObject(columnName, objectName);
@@ -113,7 +114,7 @@ public class CellSiteConfigurationPage extends BasePage {
     }
 
     @Step("Remove base station {objectName}")
-    public void removeBaseStation(String columnName, String objectName){
+    public void removeBaseStation(String columnName, String objectName) {
         selectTab(BASE_STATIONS_TAB);
         waitForPageToLoad();
         filterObject(columnName, objectName);
@@ -174,7 +175,7 @@ public class CellSiteConfigurationPage extends BasePage {
 
     @Step("Select trail type")
     public void selectTrailType(String trailType) {
-        Wizard wizard = Wizard.createPopupWizard(driver, wait);
+        Wizard wizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
         wizard.setComponentValue(TRAIL_TYPE_ID, trailType, COMBOBOX);
         wizard.clickAccept();
     }
@@ -233,24 +234,6 @@ public class CellSiteConfigurationPage extends BasePage {
     @Step("Create {amountOfCells} Cells 5G by bulk wizard with Carrier = {carrier}")
     public void createCell5GBulk(int amountOfCells, String carrier, String[] cellNames, int[] cellsID) {
         openCell5GBulkWizard().createCell5GBulkWizardWithDefaultValues(amountOfCells, carrier, cellNames, cellsID);
-    }
-
-    private Cell5GBulkWizardPage openCell5GBulkWizard() {
-        waitForPageToLoad();
-        selectTab(String.format(CELL_TAB_NAME, CellSiteConfigurationPage.TYPE_5G));
-        waitForPageToLoad();
-        clickPlusIconAndSelectOption(String.format(CREATE_CELL_BULK_ACTION, CellSiteConfigurationPage.TYPE_5G));
-        waitForPageToLoad();
-        return new Cell5GBulkWizardPage(driver);
-    }
-
-    private Cell4GBulkWizardPage openCell4GBulkWizard() {
-        waitForPageToLoad();
-        selectTab(String.format(CELL_TAB_NAME, CellSiteConfigurationPage.TYPE_4G));
-        waitForPageToLoad();
-        clickPlusIconAndSelectOption(String.format(CREATE_CELL_BULK_ACTION, CellSiteConfigurationPage.TYPE_4G));
-        waitForPageToLoad();
-        return new Cell4GBulkWizardPage(driver);
     }
 
     @Step("Create Base Band Unit with following attributes: Type = {bbuEquipmentType}, Name = {bbuName}, Model = {baseBandUnitModel}, Location = {locationName}")
@@ -349,6 +332,24 @@ public class CellSiteConfigurationPage extends BasePage {
     public void editCellsInBulk(int cellsNumber, String pci, String rsi, String referencePower, String[] tac, String paOutput) {
         clickEditIcon();
         new EditCell4GWizardPage(driver).editCellsBulk(cellsNumber, pci, rsi, referencePower, tac, paOutput);
+    }
+
+    private Cell5GBulkWizardPage openCell5GBulkWizard() {
+        waitForPageToLoad();
+        selectTab(String.format(CELL_TAB_NAME, CellSiteConfigurationPage.TYPE_5G));
+        waitForPageToLoad();
+        clickPlusIconAndSelectOption(String.format(CREATE_CELL_BULK_ACTION, CellSiteConfigurationPage.TYPE_5G));
+        waitForPageToLoad();
+        return new Cell5GBulkWizardPage(driver);
+    }
+
+    private Cell4GBulkWizardPage openCell4GBulkWizard() {
+        waitForPageToLoad();
+        selectTab(String.format(CELL_TAB_NAME, CellSiteConfigurationPage.TYPE_4G));
+        waitForPageToLoad();
+        clickPlusIconAndSelectOption(String.format(CREATE_CELL_BULK_ACTION, CellSiteConfigurationPage.TYPE_4G));
+        waitForPageToLoad();
+        return new Cell4GBulkWizardPage(driver);
     }
 
     private void waitForPageToLoad() {

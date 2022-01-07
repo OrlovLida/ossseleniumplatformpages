@@ -1,18 +1,17 @@
 package com.oss.pages.transport.ethernetInterface;
 
+import org.openqa.selenium.WebDriver;
+
 import com.oss.framework.components.inputs.Combobox;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
-import org.openqa.selenium.WebDriver;
 
 /**
  * @author Kamil Jacko
  */
 public class EIWizardPage extends BasePage {
-
-    private final Wizard wizard;
 
     private static final String ADMINISTRATIVE_STATE_FIELD_ID = "uid-administrativeState-input";
     private static final String AUTO_NEGOTIATION_FILED_ID = "uid-autoNegotiation-input";
@@ -27,6 +26,7 @@ public class EIWizardPage extends BasePage {
     private static final String SWITCH_MODE_FIELD_ID = "uid-switchportMode-input";
     private static final String ACCESS_FUNCTION_FIELD_ID = "uid-accessFunction-input";
     private static final String DESCRIPTION_FIELD_DATA_ATTRIBUTE_NAME = "uid-description";
+    private final Wizard wizard;
 
     public EIWizardPage(WebDriver driver) {
         super(driver);
@@ -71,9 +71,9 @@ public class EIWizardPage extends BasePage {
     }
 
     public void setMTU(String mtu) {
-        Input MTUComponent = wizard.getComponent(MTU_FIELD_DATA_ATTRIBUTE_NAME, Input.ComponentType.TEXT_FIELD);
-        MTUComponent.clear();
-        MTUComponent.setSingleStringValue(mtu);
+        Input mtuComponent = wizard.getComponent(MTU_FIELD_DATA_ATTRIBUTE_NAME, Input.ComponentType.TEXT_FIELD);
+        mtuComponent.clear();
+        mtuComponent.setSingleStringValue(mtu);
     }
 
     public void setEncapsulation(String encapsulation) {
@@ -128,8 +128,8 @@ public class EIWizardPage extends BasePage {
     }
 
     public void clearMTU() {
-        Input MTUComponent = wizard.getComponent(MTU_FIELD_DATA_ATTRIBUTE_NAME, Input.ComponentType.TEXT_FIELD);
-        MTUComponent.clearByAction();
+        Input mtuComponent = wizard.getComponent(MTU_FIELD_DATA_ATTRIBUTE_NAME, Input.ComponentType.TEXT_FIELD);
+        mtuComponent.clearByAction();
     }
 
     public void clearBandwidth() {
@@ -159,7 +159,7 @@ public class EIWizardPage extends BasePage {
 
     public EIInventoryViewPage clickAccept() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        wizard.clickAcceptOldWizard();
+        wizard.clickAccept();
         return new EIInventoryViewPage(driver);
     }
 }

@@ -84,6 +84,6 @@ public class SamplesManagementPage extends BasePage {
         name.setSingleStringValue(cmDomainName);
         DelayUtils.waitForPageToLoad(driver, wait);
         DelayUtils.sleep(500);
-        wizard.clickActionById(CREATE_DIRECTORY_WIZARD_CONFIRM_ACTION);
+        wizard.clickButtonById(CREATE_DIRECTORY_WIZARD_CONFIRM_ACTION);
     }
 }

@@ -32,6 +32,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
     private static final String NIV_TREE = "narComponent_networkInconsistenciesViewIddiscrepanciesTreeTabId";
     private static final String ACCEPT_CHANGE_LOCATION_BUTTON_ID = "wizard-submit-button-change-location-wizard";
     private static final String TREE_ID = "narComponent_networkInconsistenciesViewIddiscrepanciesTreeId";
+    private static final String WIZARD_ID = "Popup";
 
     public NetworkInconsistenciesViewPage(WebDriver driver) {
         super(driver);
@@ -64,7 +65,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         wizard.setComponentValue(DeviceWizardPage.DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, preciseLocation, ComponentType.OBJECT_SEARCH_FIELD);
         DelayUtils.waitForPageToLoad(driver, wait);
-        wizard.clickActionById(ACCEPT_CHANGE_LOCATION_BUTTON_ID);
+        wizard.clickButtonById(ACCEPT_CHANGE_LOCATION_BUTTON_ID);
     }
 
     @Step("Select {inconsistencyName} and use assign location option")
@@ -74,7 +75,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, RAN_INCONSITENCIES_TABLE_ID);
         table.callAction("Assign Location");
         DelayUtils.waitForPageToLoad(driver, wait);
-        Wizard wizard = Wizard.createPopupWizard(driver, wait);
+        Wizard wizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
         Input locationField = wizard.getComponent("location_OSF", ComponentType.SEARCH_FIELD);
         locationField.setSingleStringValueContains(location);
         DelayUtils.waitForPageToLoad(driver, wait);
