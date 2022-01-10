@@ -2,6 +2,11 @@ package com.oss.pages.servicedesk.ticket;
 
 import java.util.List;
 
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
@@ -14,11 +19,8 @@ import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tabswidget.TabWindowWidget;
 import com.oss.pages.servicedesk.BaseSDPage;
 import com.oss.pages.servicedesk.ticket.wizard.SDWizardPage;
+
 import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class TicketDetailsPage extends BaseSDPage {
 
@@ -78,8 +80,8 @@ public class TicketDetailsPage extends BaseSDPage {
 
     public void skipAllActionsOnCheckList() {
         CommonList.create(driver, wait, CHECKLIST_APP_ID)
-            .getAllRows()
-            .forEach(row -> row.callActionIcon(SKIP_BUTTON_LABEL));
+                .getAllRows()
+                .forEach(row -> row.callActionIcon(SKIP_BUTTON_LABEL));
         log.info("Skipping all actions on checklist");
     }
 
