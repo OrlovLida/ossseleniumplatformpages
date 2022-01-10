@@ -12,10 +12,10 @@ import io.qameta.allure.Step;
 
 public class ViewConnectionConfigurationPage extends BasePage {
 
-    private static final String DELETE_BUTTON = "ConfirmationBox_confirmation-box_action_button";
-    private static final String TABLE_ID = "object-table-id";
     public static final String DELETE_BUTTON_ID = "Delete Connection Configuration";
     public static final String CONFIRMATION_PROMT = "confirmation-prompt";
+    private static final String DELETE_BUTTON = "ConfirmationBox_confirmation-box_action_button";
+    private static final String TABLE_ID = "object-table-id";
 
     public ViewConnectionConfigurationPage(WebDriver driver) {
         super(driver);
@@ -43,7 +43,7 @@ public class ViewConnectionConfigurationPage extends BasePage {
 
     @Step("Click Delete button")
     public void clickDelete() {
-        getWizard().clickActionById(DELETE_BUTTON);
+        getWizard().clickButtonById(DELETE_BUTTON);
     }
 
     private Wizard getWizard() {

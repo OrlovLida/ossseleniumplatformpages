@@ -38,11 +38,11 @@ public class AttachFileWizardPage extends BasePage {
     }
 
     public void nextButton() {
-        Wizard.createByComponentId(driver, wait, WIZARD_ID).clickActionById(NEXT_BUTTON_ID);
+        Wizard.createByComponentId(driver, wait, WIZARD_ID).clickButtonById(NEXT_BUTTON_ID);
     }
 
     public void acceptButton() {
-        addFileWizard.clickActionById(ACCEPT_BUTTON_ID);
+        addFileWizard.clickButtonById(ACCEPT_BUTTON_ID);
     }
 
     public void deleteFiles() {

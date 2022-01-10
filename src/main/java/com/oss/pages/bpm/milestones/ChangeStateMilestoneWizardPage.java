@@ -1,41 +1,38 @@
 package com.oss.pages.bpm.milestones;
 
-import com.oss.framework.components.inputs.Date;
-import com.oss.framework.components.inputs.DateTime;
+import java.time.LocalDate;
+
+import org.openqa.selenium.WebDriver;
+
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.TextField;
-import com.oss.framework.listwidget.EditableList;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
-import org.openqa.selenium.WebDriver;
 
-import java.time.LocalDate;
 /**
  * @author Paweł Rother
  */
 
 public class ChangeStateMilestoneWizardPage extends BasePage {
-    public ChangeStateMilestoneWizardPage(WebDriver driver) {
-        super(driver);
-    }
-
     private static final String CANCEL_BUTTON = "wizard-cancel-button-milestones-state-change_wizard-app";
     private static final String ACCEPT_BUTTON = "wizard-submit-button-milestones-state-change_wizard-app";
     private static final String NEW_STATE_ATTRIBUTE_ID = "milestones-state-change_new-state-component-input";
     private static final String COMMENT_ATTRIBUTE_ID = "milestones-state-change_comment-component-id";
     private static final String APPROVAL_DATE_ATTRIBUTE_ID = "milestones-state-change_approval-date-component-id";
     private static final String STATE_CHANGE_WIZARD_ID = "milestones-state-change_wizard-app";
-
+    public ChangeStateMilestoneWizardPage(WebDriver driver) {
+        super(driver);
+    }
 
     public void cancel() {
         Wizard changeStateWizard = Wizard.createByComponentId(driver, wait, STATE_CHANGE_WIZARD_ID);
-        changeStateWizard.clickActionById(CANCEL_BUTTON);
+        changeStateWizard.clickButtonById(CANCEL_BUTTON);
     }
 
     public void accept() {
         Wizard changeStateWizard = Wizard.createByComponentId(driver, wait, STATE_CHANGE_WIZARD_ID);
-        changeStateWizard.clickActionById(ACCEPT_BUTTON);
+        changeStateWizard.clickButtonById(ACCEPT_BUTTON);
     }
 
     public void changeState(String newState, String reason, long plusDays) {
@@ -74,7 +71,7 @@ public class ChangeStateMilestoneWizardPage extends BasePage {
         componentComment.setSingleStringValue(reason);
     }
 
-    public void setApprovalDate(long plusDays){
+    public void setApprovalDate(long plusDays) {
         Wizard changeStateWizard = Wizard.createByComponentId(driver, wait, STATE_CHANGE_WIZARD_ID);
         DelayUtils.sleep(2000);
         Input componentApprovalDate = changeStateWizard.getComponent(APPROVAL_DATE_ATTRIBUTE_ID, Input.ComponentType.DATE);

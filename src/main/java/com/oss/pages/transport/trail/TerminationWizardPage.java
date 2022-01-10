@@ -6,11 +6,12 @@
  */
 package com.oss.pages.transport.trail;
 
+import org.openqa.selenium.WebDriver;
+
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
-import org.openqa.selenium.WebDriver;
 
 /**
  * @author Robert Nawrat
@@ -36,7 +37,7 @@ public class TerminationWizardPage extends BasePage {
     }
 
     public void proceed() {
-        wizard.proceed();
+        wizard.clickProceed();
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 

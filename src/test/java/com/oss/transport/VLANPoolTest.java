@@ -32,7 +32,6 @@ public class VLANPoolTest extends BaseTestCase {
     private static final String CREATE_VLAN_POOL_ACTION_ID = "CreateVLANPoolContextAction";
     private static final String EDIT_VLAN_POOL_ACTION_ID = "EditVLANPoolContextAction";
     private static final String DELETE_VLAN_POOL_ACTION_ID = "DeleteVLANPoolContextAction";
-    private static final String CONFIRM_DELETE_ID = "ConfirmationBox_deleteBoxAppId_action_button";
 
     @BeforeClass
     public void openWebConsole() {
@@ -114,7 +113,7 @@ public class VLANPoolTest extends BaseTestCase {
     public void deleteVLANRange() {
         OldInventoryViewPage oldInventoryViewPage = new OldInventoryViewPage(driver);
         oldInventoryViewPage.useContextAction(ActionsContainer.EDIT_GROUP_ID, DELETE_VLAN_POOL_ACTION_ID);
-        oldInventoryViewPage.getWizard().callButtonById(CONFIRM_DELETE_ID);
+        oldInventoryViewPage.clickConfirmRemovalButton();
         checkPopup();
         oldInventoryViewPage.getTableWidget().searchByAttributeWithLabel("Name", ComponentType.TEXT_FIELD, VLAN_POOL_NAME_BEFORE);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);

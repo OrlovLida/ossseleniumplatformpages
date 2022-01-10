@@ -44,9 +44,9 @@ public class UC_NAR_001_Test extends BaseTestCase {
     @Test(priority = 1, description = "Create CM Domain")
     @Description("Set Network perspective, go to Network Discovery Control View and Create CM Domain")
     public void createCmDomain() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         PerspectiveChooser.create(driver, webDriverWait).setNetworkPerspective();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         networkDiscoveryControlViewPage.createCMDomain(CM_DOMAIN_NAME, INTERFACE_NAME, DOMAIN);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }

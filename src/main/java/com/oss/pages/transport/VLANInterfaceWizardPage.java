@@ -15,10 +15,6 @@ import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD
 
 public class VLANInterfaceWizardPage extends BasePage {
 
-    public VLANInterfaceWizardPage(WebDriver driver) {
-        super(driver);
-    }
-
     private static final String TYPE_ID = "typeSelectionApp";
     private static final String SUBINTERFACE_ID = "subinterface-id-uid";
     private static final String WIZARD_ID = "vlanInterfaceWizard";
@@ -26,6 +22,9 @@ public class VLANInterfaceWizardPage extends BasePage {
     private static final String NEXT_ID = "vlanInterfaceWizardApp-next";
     private static final String IRB_MTU_ID = "mtu-uid";
     private static final String IRB_DESCRIPTION_ID = "description-uid";
+    public VLANInterfaceWizardPage(WebDriver driver) {
+        super(driver);
+    }
 
     @Step("Set VLAN Interface type to {type}")
     public void setType(String type) {
@@ -39,18 +38,18 @@ public class VLANInterfaceWizardPage extends BasePage {
 
     @Step("Set interface to {paths}")
     public void setInterface(String... paths) {
-        CommonHierarchyApp commonHierarchyApp = CommonHierarchyApp.createByClass(driver,wait);
+        CommonHierarchyApp commonHierarchyApp = CommonHierarchyApp.createByClass(driver, wait);
         commonHierarchyApp.navigateToPath(paths);
     }
 
     @Step("Next")
     public void clickNext() {
-        getWizard().clickActionById(NEXT_ID);
+        getWizard().clickButtonById(NEXT_ID);
     }
 
     @Step("Accept")
     public void clickAccept() {
-        getWizard().clickActionById(ACCEPT_ID);
+        getWizard().clickButtonById(ACCEPT_ID);
     }
 
     @Step("Edit VLAN Interface and set MTU {mtu} and description {description}")

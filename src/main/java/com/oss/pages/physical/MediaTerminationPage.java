@@ -1,18 +1,26 @@
 package com.oss.pages.physical;
 
+import org.openqa.selenium.WebDriver;
+
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tablewidget.TableInterface;
 import com.oss.pages.BasePage;
+
 import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
 
 public class MediaTerminationPage extends BasePage {
 
     private static final String DEVICE_FIELD_DATA_ATTRIBUTENAME = "device";
     private static final String CARD_FIELD_DATA_ATTRIBUTENAME = "card";
     private static final String PORT_FIELD_DATA_ATTRIBUTENAME = "port";
+    private static final String CABLE_BUTTONS_WIZARD_ID = "cable-table-buttons";
+    private static final String START_TERMINATION_WIZARD_ID = "cable-termination-table-start-termination";
+    private static final String END_TERMINATION_WIZARD_ID = "cable-termination-table-end-termination";
+    private static final String MEDIA_TABLE_ID = "cableterminationconnectorstable_table";
+    private static final String UPDATE_CABLE_ID = "cable-table-buttons-2";
+    private static final String WIZARD_ID = "Popup";
 
     public MediaTerminationPage(WebDriver driver) {
         super(driver);
@@ -20,7 +28,7 @@ public class MediaTerminationPage extends BasePage {
 
     @Step("Click Update cable")
     public void clickUpdateCable() {
-        getCommonButtonsWidget().clickButtonByLabel("Update cable");
+        getCableButtonsWizard().clickButtonById(UPDATE_CABLE_ID);
     }
 
     @Step("Click Finish")
@@ -63,26 +71,23 @@ public class MediaTerminationPage extends BasePage {
         getEndTerminationWidget().setComponentValue(PORT_FIELD_DATA_ATTRIBUTENAME, portName, Input.ComponentType.SEARCH_FIELD);
     }
 
-    //TODO: temporary method createWizardByClassArrayIndex due to OSSWEB-9886
-    public Wizard getCommonButtonsWidget() {
-        return Wizard.createWizardByClassArrayIndex(driver, wait, "4");
+    public Wizard getCableButtonsWizard() {
+        return Wizard.createByComponentId(driver, wait, CABLE_BUTTONS_WIZARD_ID);
     }
 
-    //TODO: temporary method createWizardByHeader due to OSSWEB-9886
     public Wizard getStartTerminationWidget() {
-        return Wizard.createWizardByHeaderText(driver, wait, "Start Termination");
+        return Wizard.createByComponentId(driver, wait, START_TERMINATION_WIZARD_ID);
     }
 
-    //TODO: temporary method createWizardByHeader due to OSSWEB-9886
     public Wizard getEndTerminationWidget() {
-        return Wizard.createWizardByHeaderText(driver, wait, "End Termination");
+        return Wizard.createByComponentId(driver, wait, END_TERMINATION_WIZARD_ID);
     }
 
-    public TableInterface getMediaTable() {
-        return OldTable.createByComponentDataAttributeName(driver, wait, "cableterminationconnectorstable_table");
+    private TableInterface getMediaTable() {
+        return OldTable.createByComponentDataAttributeName(driver, wait, MEDIA_TABLE_ID);
     }
 
-    public Wizard getWizard() {
-        return Wizard.createPopupWizard(driver, wait);
+    private Wizard getWizard() {
+        return Wizard.createByComponentId(driver, wait, WIZARD_ID);
     }
 }

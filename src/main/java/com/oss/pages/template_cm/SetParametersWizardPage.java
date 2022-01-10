@@ -25,11 +25,6 @@ public class SetParametersWizardPage extends BasePage {
         super(driver);
     }
 
-    private void rolloutList(String id) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        setParametersWizard.rolloutById(id);
-    }
-
     @Step("Set password")
     public void setPassword(String value) {
         rolloutList(DEPLOY_SERVER_SETTINGS);
@@ -51,6 +46,11 @@ public class SetParametersWizardPage extends BasePage {
     @Step("Click fill parameters")
     public void clickFillParameters() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        setParametersWizard.clickActionById(FILL_BUTTON);
+        setParametersWizard.clickButtonById(FILL_BUTTON);
+    }
+
+    private void rolloutList(String id) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        setParametersWizard.rolloutById(id);
     }
 }

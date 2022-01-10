@@ -16,17 +16,17 @@ import com.oss.untils.Environment;
  */
 
 public class LocationInventoryClient {
-    
+
     private static final String PHYSICAL_LOCATIONS_API_PATH = "/physicallocations";
     private static final String SUB_LOCATION_API_PATH = "/sublocations";
-    
+
     private static LocationInventoryClient instance;
-    private final Environment ENV;
-    
+    private final Environment env;
+
     public LocationInventoryClient(Environment environment) {
-        ENV = environment;
+        env = environment;
     }
-    
+
     public static LocationInventoryClient getInstance(Environment pEnvironment) {
         if (instance != null) {
             return instance;
@@ -34,9 +34,9 @@ public class LocationInventoryClient {
         instance = new LocationInventoryClient(pEnvironment);
         return instance;
     }
-    
+
     public ResourceDTO createPhysicalLocation(PhysicalLocationDTO location) {
-        return ENV.getLocationInventoryCoreRequestSpecification()
+        return env.getLocationInventoryCoreRequestSpecification()
                 .given()
                 .contentType(ContentType.JSON)
                 .body(location)
@@ -47,20 +47,19 @@ public class LocationInventoryClient {
                 .extract()
                 .as(ResourceDTO.class);
     }
-    
+
     public List<Integer> getPhysicalLocationByName(String locationName) {
-        com.jayway.restassured.response.Response response = ENV.getLocationInventoryCoreRequestSpecification()
+        com.jayway.restassured.response.Response response = env.getLocationInventoryCoreRequestSpecification()
                 .given()
                 .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
                 .queryParam(Constants.NAME_PARAM, locationName)
                 .when()
                 .get(LocationInventoryClient.PHYSICAL_LOCATIONS_API_PATH);
-        List<Integer> idsList = response.jsonPath().getList("searchResult.id");
-        return idsList;
+        return response.jsonPath().getList("searchResult.id");
     }
-    
+
     public ResourceDTO createSubLocation(SublocationDTO subLocation) {
-        return ENV.getLocationInventoryCoreRequestSpecification()
+        return env.getLocationInventoryCoreRequestSpecification()
                 .given()
                 .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
                 .contentType(ContentType.JSON)
@@ -73,8 +72,8 @@ public class LocationInventoryClient {
                 .as(ResourceDTO.class);
     }
 
-    public void updateSubLocation(SublocationDTO subLocation, String id){
-        ENV.getLocationInventoryCoreRequestSpecification()
+    public void updateSubLocation(SublocationDTO subLocation, String id) {
+        env.getLocationInventoryCoreRequestSpecification()
                 .given()
                 .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
                 .contentType(ContentType.JSON)
@@ -84,9 +83,9 @@ public class LocationInventoryClient {
                 .then()
                 .statusCode(Response.Status.OK.getStatusCode()).assertThat();
     }
-    
+
     public void deleteSubLocation(String ids) {
-        ENV.getLocationInventoryCoreRequestSpecification()
+        env.getLocationInventoryCoreRequestSpecification()
                 .given()
                 .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
                 .queryParam("ids", ids)
@@ -95,5 +94,5 @@ public class LocationInventoryClient {
                 .then()
                 .statusCode(Response.Status.NO_CONTENT.getStatusCode()).assertThat();
     }
-    
+
 }

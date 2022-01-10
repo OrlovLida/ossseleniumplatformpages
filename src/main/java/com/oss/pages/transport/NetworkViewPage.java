@@ -94,11 +94,6 @@ public class NetworkViewPage extends BasePage {
         waitForPageToLoad();
     }
 
-    private OldActionsContainer getMainActionContainer() {
-        waitForPageToLoad();
-        return OldActionsContainer.createForMainWindow(driver, wait);
-    }
-
     @Step("Use context action {action} from group {group} and confirm action by clicking {confirmation}")
     public void useContextActionAndClickConfirmation(String group, String action, String confirmation) {
         useContextAction(group, action);
@@ -166,7 +161,7 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Click Proceed")
     public void clickProceed() {
-        Wizard.createWizard(driver, wait).proceed();
+        Wizard.createWizard(driver, wait).clickProceed();
     }
 
     @Step("Click confirmation box button")
@@ -182,12 +177,6 @@ public class NetworkViewPage extends BasePage {
         popup.setComponentValue(TRAIL_TYPE_COMBOBOX_ID, trailType, COMBOBOX);
     }
 
-    private <T extends TrailWizardPage> T getWizardPage(Class<T> trailWizardPage) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException,
-            IllegalArgumentException, InvocationTargetException {
-        Constructor<T> constructor = trailWizardPage.getConstructor(WebDriver.class);
-        return constructor.newInstance(driver);
-    }
-
     @Step("Create Device by context action")
     public DeviceWizardPage openCreateDeviceWizard() {
         useContextAction(ActionsContainer.CREATE_GROUP_ID, CREATE_DEVICE_ACTION);
@@ -197,7 +186,7 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Accept trail type")
     public void acceptTrailType() {
-        wizard.clickActionById("wizard-submit-button-trailTypeWizardWidget");
+        wizard.clickButtonById("wizard-submit-button-trailTypeWizardWidget");
     }
 
     @Step("Open modify termination wizard")
@@ -246,13 +235,6 @@ public class NetworkViewPage extends BasePage {
         clickOnObjectInViewContentByPartialName(partialName);
     }
 
-    @Deprecated //xpath allowed only in Framework
-    private void clickOnObjectInViewContentByPartialName(String partialName) {
-        String xpath = getXPathForObjectInViewContentByPartialName(partialName);
-        driver.findElement(By.xpath(xpath)).click();
-        waitForPageToLoad();
-    }
-
     @Step("Click on object in View content by partial name: {partialName} and index {index}")
     public void clickOnObject(String partialName, int index) {
         expandViewContentPanel();
@@ -266,16 +248,6 @@ public class NetworkViewPage extends BasePage {
     public boolean isObjectInViewContent(String partialName) {
         String xpath = getXPathForObjectInViewContentByPartialName(partialName);
         return !driver.findElements(By.xpath(xpath)).isEmpty();
-    }
-
-    private void expandViewContentPanel() {
-        expandDockedPanel("left");
-        waitForPageToLoad();
-    }
-
-    @Deprecated //xpath allowed only in Framework
-    private String getXPathForObjectInViewContentByPartialName(String partialName) {
-        return String.format("//div[contains(@class, 'Col_ColumnId_Name')]//div[contains(text(), '%s')]", partialName);
     }
 
     @Step("Select object in details tab")
@@ -310,11 +282,6 @@ public class NetworkViewPage extends BasePage {
         waitForPageToLoad();
     }
 
-    private void selectObjectInBottomPanel(String tableId, String column, String value) {
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, tableId);
-        table.selectRowByAttributeValueWithLabel(column, value);
-    }
-
     @Step("Check object presence in Routing 1st level")
     public boolean isObjectInRouting1stLevel(String partialValue) {
         openRouting1stLevelTab();
@@ -334,14 +301,6 @@ public class NetworkViewPage extends BasePage {
         return isObjectInBottomTab(partialValue);
     }
 
-    @Deprecated //xpath allowed only in Framework
-    private boolean isObjectInBottomTab(String partialValue) {
-        String xpath =
-                String.format("//div[@data-attributename = 'bottomTabs']//div[contains(@class, 'Cell')]//a[contains(text(), '%s')]",
-                        partialValue);
-        return !driver.findElements(By.xpath(xpath)).isEmpty();
-    }
-
     @Step("Suppress incomplete routing")
     public void supressValidationResult(String reason) {
         openValidationResultsTab();
@@ -354,17 +313,7 @@ public class NetworkViewPage extends BasePage {
         waitForPageToLoad();
         suppressionWizard().setComponentValue("reasonField", reason, TEXT_AREA);
         waitForPageToLoad();
-        suppressionWizard().proceed();
-        waitForPageToLoad();
-    }
-
-    private Wizard suppressionWizard() {
-        return Wizard.createByComponentId(driver, wait, SUPPRESSION_WIZARD_ID);
-    }
-
-    private void openValidationResultsTab() {
-        expandDetailsPanel();
-        selectTabFromBottomPanel(VALIDATION_RESULT_ID);
+        suppressionWizard().clickProceed();
         waitForPageToLoad();
     }
 
@@ -381,6 +330,85 @@ public class NetworkViewPage extends BasePage {
         button.click();
         waitForPageToLoad();
         clickConfirmationBoxButtonByLabel(DELETE_BUTTON);
+        waitForPageToLoad();
+    }
+
+    @Step("Remove terminations")
+    public void removeSelectedTerminations() {
+        useContextAction(DELETE_TERMINATION_ACTION);
+        waitForPageToLoad();
+        clickConfirmationBoxButtonByLabel(DELETE_BUTTON);
+        waitForPageToLoad();
+    }
+
+    @Step("Get value from Attributes panel")
+    public String getAttributeValue(String attributeName) {
+        expandAttributesPanel();
+        OldPropertyPanel attributesPanel = OldPropertyPanel.create(driver, wait);
+        return attributesPanel.getPropertyValue(attributeName);
+    }
+
+    @Step("Add element quered in advanced search")
+    public void queryElementAndAddItToView(String componentId, Input.ComponentType componentType, String value) {
+        AdvancedSearchWidget advancedSearchWidget = AdvancedSearchWidget.createById(driver, wait, "advancedSearch");
+        advancedSearchWidget.getComponent(componentId, componentType).clearByAction();
+        advancedSearchWidget.getComponent(componentId, componentType).setSingleStringValue(value);
+        waitForPageToLoad();
+        advancedSearchWidget.getTableComponent("win1").selectRow(0);
+        DelayUtils.sleep(500);
+        waitForPageToLoad();
+        advancedSearchWidget.clickAdd();
+        waitForPageToLoad();
+    }
+
+    private OldActionsContainer getMainActionContainer() {
+        waitForPageToLoad();
+        return OldActionsContainer.createForMainWindow(driver, wait);
+    }
+
+    private <T extends TrailWizardPage> T getWizardPage(Class<T> trailWizardPage) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException {
+        Constructor<T> constructor = trailWizardPage.getConstructor(WebDriver.class);
+        return constructor.newInstance(driver);
+    }
+
+    @Deprecated //xpath allowed only in Framework
+    private void clickOnObjectInViewContentByPartialName(String partialName) {
+        String xpath = getXPathForObjectInViewContentByPartialName(partialName);
+        driver.findElement(By.xpath(xpath)).click();
+        waitForPageToLoad();
+    }
+
+    private void expandViewContentPanel() {
+        expandDockedPanel("left");
+        waitForPageToLoad();
+    }
+
+    @Deprecated //xpath allowed only in Framework
+    private String getXPathForObjectInViewContentByPartialName(String partialName) {
+        return String.format("//div[contains(@class, 'Col_ColumnId_Name')]//div[contains(text(), '%s')]", partialName);
+    }
+
+    private void selectObjectInBottomPanel(String tableId, String column, String value) {
+        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, tableId);
+        table.selectRowByAttributeValueWithLabel(column, value);
+    }
+
+    @Deprecated //xpath allowed only in Framework
+    private boolean isObjectInBottomTab(String partialValue) {
+        String xpath =
+                String.format("//div[@data-attributename = 'bottomTabs']//div[contains(@class, 'Cell')]//a[contains(text(), '%s')]",
+                        partialValue);
+        return !driver.findElements(By.xpath(xpath)).isEmpty();
+    }
+
+    private Wizard suppressionWizard() {
+        return Wizard.createByComponentId(driver, wait, SUPPRESSION_WIZARD_ID);
+    }
+
+    private void openValidationResultsTab() {
+        expandDetailsPanel();
+        selectTabFromBottomPanel(VALIDATION_RESULT_ID);
         waitForPageToLoad();
     }
 
@@ -439,36 +467,8 @@ public class NetworkViewPage extends BasePage {
         driver.findElement(By.xpath(xpath)).click();
     }
 
-    @Step("Remove terminations")
-    public void removeSelectedTerminations() {
-        useContextAction(DELETE_TERMINATION_ACTION);
-        waitForPageToLoad();
-        clickConfirmationBoxButtonByLabel(DELETE_BUTTON);
-        waitForPageToLoad();
-    }
-
-    @Step("Get value from Attributes panel")
-    public String getAttributeValue(String attributeName) {
-        expandAttributesPanel();
-        OldPropertyPanel attributesPanel = OldPropertyPanel.create(driver, wait);
-        return attributesPanel.getPropertyValue(attributeName);
-    }
-
     private void expandAttributesPanel() {
         expandDockedPanel("right");
-        waitForPageToLoad();
-    }
-
-    @Step("Add element quered in advanced search")
-    public void queryElementAndAddItToView(String componentId, Input.ComponentType componentType, String value) {
-        AdvancedSearchWidget advancedSearchWidget = AdvancedSearchWidget.createById(driver, wait, "advancedSearch");
-        advancedSearchWidget.getComponent(componentId, componentType).clearByAction();
-        advancedSearchWidget.getComponent(componentId, componentType).setSingleStringValue(value);
-        waitForPageToLoad();
-        advancedSearchWidget.getTableComponent("win1").selectRow(0);
-        DelayUtils.sleep(500);
-        waitForPageToLoad();
-        advancedSearchWidget.clickAdd();
         waitForPageToLoad();
     }
 

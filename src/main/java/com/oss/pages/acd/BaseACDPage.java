@@ -1,5 +1,10 @@
 package com.oss.pages.acd;
 
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.oss.framework.components.common.TimePeriodChooser;
 import com.oss.framework.components.contextactions.ButtonContainer;
 import com.oss.framework.components.inputs.Button;
@@ -10,21 +15,18 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.view.Card;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
+
 import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class BaseACDPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(BaseACDPage.class);
 
-    private final String ADD_PREDEFINED_FILTER_BUTTON = "contextButton-0";
-    private final String SWITCHER_ID = "switcherId";
-    private final String VISUALIZATION_TYPE_ID = "widgetType-input";
-    private final String ATTRIBUTE_ID = "attribute1Id-input";
-    private final String ATTRIBUTE_VALUES_ID = "attribute1ValuesId";
+    private static final String ADD_PREDEFINED_FILTER_BUTTON = "contextButton-0";
+    private static final String SWITCHER_ID = "switcherId";
+    private static final String VISUALIZATION_TYPE_ID = "widgetType-input";
+    private static final String ATTRIBUTE_ID = "attribute1Id-input";
+    private static final String ATTRIBUTE_VALUES_ID = "attribute1ValuesId";
 
     public BaseACDPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -70,17 +72,9 @@ public class BaseACDPage extends BasePage {
         insertValueToComponent(ATTRIBUTE_VALUES_ID, text, Input.ComponentType.MULTI_COMBOBOX);
     }
 
-    private void insertValueToComponent(String componentId, String text, Input.ComponentType componentType) {
-        getWizard().setComponentValue(componentId, text, componentType);
-    }
-
-    private Wizard getWizard() {
-        return Wizard.createWizard(driver, wait);
-    }
-
     @Step("I save Predefined Filter")
     public void savePredefinedFilter() {
-        Wizard.createWizard(driver, wait).clickAcceptOldWizard();
+        Wizard.createWizard(driver, wait).clickAccept();
         log.info("I save predefined filter by clicking 'Accept' button");
         DelayUtils.waitForPageToLoad(driver, wait);
     }
@@ -136,5 +130,13 @@ public class BaseACDPage extends BasePage {
         TimePeriodChooser timePeriod = TimePeriodChooser.create(driver, wait, widgetId);
         timePeriod.clickClearValue();
         log.info("Clearing time period chooser");
+    }
+
+    private void insertValueToComponent(String componentId, String text, Input.ComponentType componentType) {
+        getWizard().setComponentValue(componentId, text, componentType);
+    }
+
+    private Wizard getWizard() {
+        return Wizard.createWizard(driver, wait);
     }
 }

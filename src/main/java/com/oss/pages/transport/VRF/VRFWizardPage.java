@@ -6,14 +6,17 @@
  */
 package com.oss.pages.transport.VRF;
 
+import java.util.List;
+
+import org.openqa.selenium.WebDriver;
+
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.CommonHierarchyApp;
 import com.oss.framework.widgets.Wizard;
 import com.oss.pages.BasePage;
+
 import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
-import java.util.List;
 
 /**
  * @author Kamil Szota
@@ -50,12 +53,6 @@ public class VRFWizardPage extends BasePage {
         descriptionComponent.setSingleStringValue(description);
     }
 
-    private Input getEmptyTextFieldComponent(String componentId){
-        Input component = wizard.getComponent(componentId, Input.ComponentType.TEXT_FIELD);
-        component.clear();
-        return component;
-    }
-
     @Step("Set device to {deviceName}")
     public void selectDevice(String deviceName) {
         Input deviceComponent = wizard.getComponent(DEVICE_FIELD_ID, Input.ComponentType.SEARCH_FIELD);
@@ -71,7 +68,7 @@ public class VRFWizardPage extends BasePage {
 
     @Step("Click accept button")
     public VRFOverviewPage clickAccept() {
-        wizard.clickAcceptOldWizard();
+        wizard.clickAccept();
         return new VRFOverviewPage(driver);
     }
 
@@ -80,6 +77,12 @@ public class VRFWizardPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         CommonHierarchyApp commonHierarchyApp = CommonHierarchyApp.createByClass(driver, wait);
         commonHierarchyApp.callAvailableAction(interfaceNames, resourceName);
+    }
+
+    private Input getEmptyTextFieldComponent(String componentId) {
+        Input component = wizard.getComponent(componentId, Input.ComponentType.TEXT_FIELD);
+        component.clear();
+        return component;
     }
 
 }
