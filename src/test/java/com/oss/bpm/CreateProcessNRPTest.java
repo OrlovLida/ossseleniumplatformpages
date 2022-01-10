@@ -38,10 +38,10 @@ import java.util.regex.Pattern;
  */
 @Listeners({TestListener.class})
 public class CreateProcessNRPTest extends BaseTestCase {
-    private String BPM_USER_LOGIN = "bpm_webselenium";
-    private String BPM_USER_PASSWORD = "Webtests123!";
-    private String BPM_ADMIN_USER_LOGIN = "bpm_admin_webselenium";
-    private String BPM_ADMIN_USER_PASSWORD = "Webtests123!";
+    private final String BPM_USER_LOGIN = "bpm_webselenium";
+    private final String BPM_USER_PASSWORD = "Webtests123!";
+    private final String BPM_ADMIN_USER_LOGIN = "bpm_admin_webselenium";
+    private final String BPM_ADMIN_USER_PASSWORD = "Webtests123!";
 
     private static final Logger log = LoggerFactory.getLogger(CreateProcessNRPTest.class);
 
@@ -124,6 +124,10 @@ public class CreateProcessNRPTest extends BaseTestCase {
         deviceWizardPage.next();
         deviceWizardPage.setPreciseLocation("a");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        if (driver.getPageSource().contains("Available Mounting Positions")){
+            deviceWizardPage.setFirstAvailableMountingPosition();
+            DelayUtils.waitForPageToLoad(driver,webDriverWait);
+        }
         deviceWizardPage.accept();
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
@@ -217,8 +221,12 @@ public class CreateProcessNRPTest extends BaseTestCase {
         }
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.next();
-        deviceWizardPage.setPreciseLocation("b");
+        deviceWizardPage.setPreciseLocation("t");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        if (driver.getPageSource().contains("Available Mounting Positions")){
+            deviceWizardPage.setFirstAvailableMountingPosition();
+            DelayUtils.waitForPageToLoad(driver,webDriverWait);
+        }
         deviceWizardPage.accept();
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();

@@ -43,6 +43,8 @@ public class DeviceWizardPage extends BasePage {
     private static final String DEVICE_IS_OWNED_BY_3RD_PARTY_DATA_ATTRIBUTE_NAME = "checkbox_is_leased";
     private static final String DEVICE_CREATE_WIZARD = "device_create_wizard_view";
     private static final String DEVICE_UPDATE_WIZARD = "device_update_wizard_view";
+    private static final String DEVICE_AVAILABLE_MOUNTING_POSITIONS_DATA_ATTRIBUTE_NAME = "mountingPosition";
+
     private static final String DEVICE_TYPE_PATTERN = "oss__046__physical__045__inventory__046__physicaldevice__046__type__046__";
 
     public DeviceWizardPage(WebDriver driver) {
@@ -126,6 +128,11 @@ public class DeviceWizardPage extends BasePage {
             getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, SEARCH_FIELD)
                     .setSingleStringValueContains(preciseLocation);
         }
+    }
+@Step("Set Available Mounting Positions")
+    public void setFirstAvailableMountingPosition() {
+        Input mountingPositionInput = getDeviceWizard().getComponent(DEVICE_AVAILABLE_MOUNTING_POSITIONS_DATA_ATTRIBUTE_NAME,COMBOBOX);
+        mountingPositionInput.setSingleStringValueContains("");
     }
 
     @Step("Set Logical Location")
