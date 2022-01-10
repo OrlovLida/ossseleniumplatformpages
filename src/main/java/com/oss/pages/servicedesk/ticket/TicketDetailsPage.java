@@ -1,7 +1,10 @@
 package com.oss.pages.servicedesk.ticket;
 
+import java.util.List;
+
 import com.oss.framework.components.inputs.Button;
-import com.oss.framework.components.inputs.Combobox;
+import com.oss.framework.components.inputs.ComponentFactory;
+import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.listwidget.CommonList;
 import com.oss.framework.listwidget.iaa.ListApp;
@@ -16,8 +19,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
 
 public class TicketDetailsPage extends BaseSDPage {
 
@@ -34,6 +35,7 @@ public class TicketDetailsPage extends BaseSDPage {
     private static final String EXTERNAL_INFO_LABEL = "External Info";
     private static final String DICTIONARIES_TABLE_ID = "_dictionariesTableId";
     private static final String DICTIONARY_VALUE_TABLE_LABEL = "Dictionary Value";
+    private static final String CHANGE_TICKET_STATUS_COMBOBOX_ID = "change-ticket-status-combobox-input";
 
     public TicketDetailsPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -76,13 +78,13 @@ public class TicketDetailsPage extends BaseSDPage {
 
     public void skipAllActionsOnCheckList() {
         CommonList.create(driver, wait, CHECKLIST_APP_ID)
-                .getAllRows()
-                .forEach(row -> row.callActionIcon(SKIP_BUTTON_LABEL));
+            .getAllRows()
+            .forEach(row -> row.callActionIcon(SKIP_BUTTON_LABEL));
         log.info("Skipping all actions on checklist");
     }
 
     public void changeStatus(String statusName) {
-        Combobox.createServiceDeskStatusComboBox(driver, wait).setSingleStringValue(statusName);
+        ComponentFactory.create(CHANGE_TICKET_STATUS_COMBOBOX_ID, Input.ComponentType.COMBOBOX, driver, wait).setSingleStringValue(statusName);
         log.info("Changing status to {}", statusName);
     }
 
