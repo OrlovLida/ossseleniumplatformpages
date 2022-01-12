@@ -30,15 +30,15 @@ import java.time.LocalDate;
 @Listeners({TestListener.class})
 public class ChangeMilestoneStateTest extends BaseTestCase {
 
-    private String BPM_USER_LOGIN = "bpm_webselenium";
-    private String BPM_USER_PASSWORD = "Webtests123!";
-    private String BPM_ADMIN_USER_LOGIN = "bpm_admin_webselenium";
-    private String BPM_ADMIN_USER_PASSWORD = "Webtests123!";
+    private final String BPM_USER_LOGIN = "bpm_webselenium";
+    private final String BPM_USER_PASSWORD = "Webtests123!";
+    private final String BPM_ADMIN_USER_LOGIN = "bpm_admin_webselenium";
+    private final String BPM_ADMIN_USER_PASSWORD = "Webtests123!";
 
-    private String milestoneName1 = "Milestone Update " + (int) (Math.random() * 10001);
-    private String milestoneName2 = "Milestone Update " + (int) (Math.random() * 10001);
-    private String milestoneName3 = "Milestone Update " + (int) (Math.random() * 10001);
-    private String description = "Milestone Update " + (Math.random() * 1001);
+    private final String milestoneName1 = "Milestone Update " + (int) (Math.random() * 10001);
+    private final String milestoneName2 = "Milestone Update " + (int) (Math.random() * 10001);
+    private final String milestoneName3 = "Milestone Update " + (int) (Math.random() * 10001);
+    private final String description = "Milestone Update " + (Math.random() * 1001);
     private static final String CHANGE_STATE_BUTTON = "setMilestonesStateContextAction";
     private static final String NEW_STATE = "New";
     private static final String NOT_NEEDED_STATE = "Not Needed";
@@ -174,6 +174,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         /**
          * not needed → new → in progress → not needed
          */
+        DelayUtils.waitForPageToLoad(driver,webDriverWait);
         milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         milestoneViewPage.selectMilestone(milestoneName1);
@@ -189,6 +190,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         /**
          * new → in progress → completed (not permitted).....{change user}.....in progress → completed
          */
+        DelayUtils.waitForPageToLoad(driver,webDriverWait);
         milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         milestoneViewPage.selectMilestone(milestoneName2);
@@ -223,6 +225,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         /**
          * not needed → new → suspended → in progress → completed → in progress → suspended → new → not needed
          */
+        DelayUtils.waitForPageToLoad(driver,webDriverWait);
         milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         milestoneViewPage.changeUser(BPM_USER_LOGIN, BPM_USER_PASSWORD);
@@ -246,7 +249,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         /**
          * not needed → new → in progress → suspended → in progress
          */
-
+        DelayUtils.waitForPageToLoad(driver,webDriverWait);
         milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
@@ -275,6 +278,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
     @Test(priority = 5, description = "Multiselect Milestones Change State (Different States)")
     @Description("Multiselect Milestones Change State (Different States)")
     public void checkMultiChangeStateDifferent() {
+        DelayUtils.waitForPageToLoad(driver,webDriverWait);
         milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 

@@ -24,10 +24,10 @@ import java.nio.file.Paths;
 @Listeners({TestListener.class})
 public class ImportExportModelTest extends BaseTestCase {
 
-    private String BPM_USER_LOGIN = "bpm_webselenium";
-    private String BPM_USER_PASSWORD = "bpmweb";
-    private String BPM_ADMIN_USER_LOGIN = "bpm_admin_webselenium";
-    private String BPM_ADMIN_USER_PASSWORD = "bpmweb";
+    private final String BPM_USER_LOGIN = "bpm_webselenium";
+    private final String BPM_USER_PASSWORD = "bpmweb";
+    private final String BPM_ADMIN_USER_LOGIN = "bpm_admin_webselenium";
+    private final String BPM_ADMIN_USER_PASSWORD = "bpmweb";
 
     private static final String DOMAIN = "Inventory Processes";
     private static final String MODEL_NAME = "bpm_selenium_test_process";
