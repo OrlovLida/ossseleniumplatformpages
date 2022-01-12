@@ -1,5 +1,13 @@
 package com.oss.configuration;
 
+import java.util.List;
+
+import org.assertj.core.api.Assertions;
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Test;
+
 import com.oss.BaseTestCase;
 import com.oss.framework.alerts.SystemMessageContainer;
 import com.oss.framework.alerts.SystemMessageInterface;
@@ -8,27 +16,19 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.HierarchyViewPage;
 import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.utils.TestListener;
-import io.qameta.allure.Description;
-import org.assertj.core.api.Assertions;
-import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Listeners;
-import org.testng.annotations.Test;
 
-import java.util.List;
+import io.qameta.allure.Description;
 
 import static com.oss.framework.components.portals.SaveConfigurationWizard.Property.GROUPS;
 import static com.oss.framework.components.portals.SaveConfigurationWizard.Property.TYPE;
 
 @Listeners({TestListener.class})
 public class TabsConfigurationTest extends BaseTestCase {
-    private NewInventoryViewPage newInventoryViewPage;
-
     private final static String GROUP_NAME = "SeleniumTests";
-    private final static String CONFIGURATION_NAME_TABS_WIDGET_BUILDING= "Tabs_Widget_Default";
-    private final static String CONFIGURATION_NAME_TABS_WIDGET_LOCATION= "Tabs_Widget_Location";
-    private final static String CONFIGURATION_NAME_TABS_WIDGET_GROUP= "Tabs_Widget_Group";
-
+    private final static String CONFIGURATION_NAME_TABS_WIDGET_BUILDING = "Tabs_Widget_Default";
+    private final static String CONFIGURATION_NAME_TABS_WIDGET_LOCATION = "Tabs_Widget_Location";
+    private final static String CONFIGURATION_NAME_TABS_WIDGET_GROUP = "Tabs_Widget_Group";
+    private NewInventoryViewPage newInventoryViewPage;
 
     @BeforeClass
     public void goToInventoryView() {
@@ -39,7 +39,7 @@ public class TabsConfigurationTest extends BaseTestCase {
 
     @Test(priority = 1)
     @Description("Saving new configuration for tabs widget for type")
-    public void saveNewConfigurationForTabsWidgetForType(){
+    public void saveNewConfigurationForTabsWidgetForType() {
         //when
         newInventoryViewPage.selectFirstRow();
         newInventoryViewPage.enableWidgetAndApply("Attachments");
@@ -55,12 +55,12 @@ public class TabsConfigurationTest extends BaseTestCase {
 
     @Test(priority = 2)
     @Description("Saving new configuration for tabs widget for supertype")
-    public void saveNewConfigurationForTabsWidgetForSupertype(){
+    public void saveNewConfigurationForTabsWidgetForSupertype() {
         //when
         newInventoryViewPage.selectFirstRow();
         newInventoryViewPage.disableWidgetAndApply("Attachments");
         newInventoryViewPage.changeTabsOrder("Devices", 3);
-        newInventoryViewPage.saveConfigurationForTabs(CONFIGURATION_NAME_TABS_WIDGET_LOCATION, createField(TYPE,"Location"));
+        newInventoryViewPage.saveConfigurationForTabs(CONFIGURATION_NAME_TABS_WIDGET_LOCATION, createField(TYPE, "Location"));
 
         //then
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
@@ -71,11 +71,11 @@ public class TabsConfigurationTest extends BaseTestCase {
 
     @Test(priority = 3)
     @Description("Saving new configuration for tabs widget for groups")
-    public void saveNewConfigurationForTabsWidgetForGroup(){
+    public void saveNewConfigurationForTabsWidgetForGroup() {
         //when
         newInventoryViewPage.selectFirstRow();
         newInventoryViewPage.changeTabsOrder("Devices", 4);
-        newInventoryViewPage.saveConfigurationForTabs(CONFIGURATION_NAME_TABS_WIDGET_GROUP,  createField(TYPE,"Location"), createField(GROUPS, GROUP_NAME));
+        newInventoryViewPage.saveConfigurationForTabs(CONFIGURATION_NAME_TABS_WIDGET_GROUP, createField(TYPE, "Location"), createField(GROUPS, GROUP_NAME));
 
         //then
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
@@ -86,30 +86,30 @@ public class TabsConfigurationTest extends BaseTestCase {
 
     @Test(priority = 4)
     @Description("Checking that configuration for tabs widget for type works")
-    public void isConfigurationForTabsWidgetForTypeWorks(){
+    public void isConfigurationForTabsWidgetForTypeWorks() {
         //when
         newInventoryViewPage.applyConfigurationForTabs(CONFIGURATION_NAME_TABS_WIDGET_BUILDING);
 
         //then
         Assert.assertEquals(newInventoryViewPage.getTabsWidget().getTabLabel(3), "Devices");
-        Assert.assertTrue(newInventoryViewPage.getTabsWidget().isTabVisible("Attachments"));
+        Assert.assertTrue(newInventoryViewPage.getTabsWidget().isTabDisplayed("Attachments"));
     }
 
     @Test(priority = 5)
     @Description("Checking that configuration for tabs widget for supertype works")
-    public void isConfigurationForTabsWidgetForSupertypeWorks(){
+    public void isConfigurationForTabsWidgetForSupertypeWorks() {
         //when
         NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Site");
         newInventoryViewPage.selectFirstRow();
 
         //then
         Assert.assertEquals(newInventoryViewPage.getTabsWidget().getTabLabel(2), "Devices");
-        Assert.assertFalse(newInventoryViewPage.getTabsWidget().isTabVisible("Attachments"));
+        Assert.assertFalse(newInventoryViewPage.getTabsWidget().isTabDisplayed("Attachments"));
     }
 
     @Test(priority = 6)
     @Description("Checking that configuration for tabs widget for supertype works")
-    public void isConfigurationForTabsWidgetForSTypeWorksInHierarchyView(){
+    public void isConfigurationForTabsWidgetForSTypeWorksInHierarchyView() {
         //given
         newInventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Site");
         newInventoryViewPage.selectFirstRow();
@@ -123,9 +123,9 @@ public class TabsConfigurationTest extends BaseTestCase {
 
     @Test(priority = 7)
     @Description("")
-    public void checkingConfigurationForTabsForGroup(){
+    public void checkingConfigurationForTabsForGroup() {
         //given
-        newInventoryViewPage.changeUser("webseleniumtests2","webtests");
+        newInventoryViewPage.changeUser("webseleniumtests2", "webtests");
         newInventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Location");
         //when
         newInventoryViewPage.selectFirstRow();
