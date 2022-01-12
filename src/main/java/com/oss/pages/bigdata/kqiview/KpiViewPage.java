@@ -52,7 +52,7 @@ public class KpiViewPage extends BasePage {
     private static final String LINE_CHART_BUTTON_ID = "dropdown-list-button_line";
     private static final String CHART_COLOR_BUTTON_ID = "chart-color-button";
     private static final String DATA_VIEW_ID = "_Data_View";
-    private static final String SAVE_BOOKMARK_BUTTON_ID = "fa fa-floppy-o";
+    private static final String SAVE_BOOKMARK_BUTTON_ID = "ButtonSaveBookmark";
     private static final String COLOR_PICKER_CLASS = "colorPickerWrapper";
     private static final String CHART_ACTIONS_LINKS_ID = "external-links-button";
     private static final String LINK_TO_XDR_LABEL = "Open xDR for t:SMOKE#ETLforKqis. Time condition limited to last 1 hour(s) from chosen period.";
@@ -540,7 +540,7 @@ public class KpiViewPage extends BasePage {
 
     @Step("I click Save bookmark")
     public void clickSaveBookmark() {
-        ButtonPanel.create(driver, wait).clickOnIcon(SAVE_BOOKMARK_BUTTON_ID);
+        ButtonPanel.create(driver, wait).clickButton(SAVE_BOOKMARK_BUTTON_ID);
     }
 
     @Step("Check if node is selected in the tree")
