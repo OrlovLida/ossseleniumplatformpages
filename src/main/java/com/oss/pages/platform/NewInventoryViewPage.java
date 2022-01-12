@@ -2,7 +2,6 @@ package com.oss.pages.platform;
 
 import java.util.List;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -11,7 +10,6 @@ import com.oss.framework.components.common.AttributesChooser;
 import com.oss.framework.components.common.PaginationComponent;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.Input.ComponentType;
-import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.components.portals.SaveConfigurationWizard.Field;
 import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.mainheader.ButtonPanel;
@@ -33,14 +31,13 @@ public class NewInventoryViewPage extends BasePage {
 
     private static final String TABLE_ID = "MainTableWidget";
     private static final String CONFIRM_ID = "ConfirmationBox_deleteBoxAppId_action_button";
+    private static final String CHANGE_LAYOUT_BUTTON_ID = "ButtonChooseViewLayouts";
+    private static final String HORIZONTAL_BUTTON_ID = "TWO_ROWS";
+    private static final String VERTICAL_BUTTON_ID = "TWO_COLUMNS";
 
     public NewInventoryViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
     }
-
-    private static final String CHANGE_LAYOUT_BUTTON_ID = "ButtonChooseViewLayouts";
-    private static final String HORIZONTAL_BUTTON_ID = "TWO_ROWS";
-    private static final String VERTICAL_BUTTON_ID = "TWO_COLUMNS";
 
     @Step("Open Inventory View")
     public static NewInventoryViewPage goToInventoryViewPage(WebDriver driver, String basicURL, String type) {
@@ -290,7 +287,7 @@ public class NewInventoryViewPage extends BasePage {
     public NewInventoryViewPage setHorizontalLayout() {
         DelayUtils.waitForPageToLoad(driver, wait);
         if (!isHorizontal()) {
-            ButtonPanel.create(driver,wait).clickButton(CHANGE_LAYOUT_BUTTON_ID, HORIZONTAL_BUTTON_ID);
+            ButtonPanel.create(driver, wait).clickButton(CHANGE_LAYOUT_BUTTON_ID, HORIZONTAL_BUTTON_ID);
         }
         DelayUtils.waitForPageToLoad(driver, wait);
         return this;
@@ -298,6 +295,7 @@ public class NewInventoryViewPage extends BasePage {
 
     public boolean isHorizontal() {
         return ButtonPanel.create(driver, wait).isHorizontalLayout();
+    }
 
     // TODO: add getMethods for popup and property panel
 
@@ -305,20 +303,22 @@ public class NewInventoryViewPage extends BasePage {
     public NewInventoryViewPage setVerticalLayout() {
         DelayUtils.waitForPageToLoad(driver, wait);
         if (isHorizontal()) {
-            ButtonPanel.create(driver,wait).clickButton(CHANGE_LAYOUT_BUTTON_ID, VERTICAL_BUTTON_ID);
+            ButtonPanel.create(driver, wait).clickButton(CHANGE_LAYOUT_BUTTON_ID, VERTICAL_BUTTON_ID);
         }
         DelayUtils.waitForPageToLoad(driver, wait);
         return this;
     }
 
     @Step("Change Properties order")
-    public NewInventoryViewPage changePropertiesOrder(int rowId, String widgetId, String propertyLabel, int position) {
+    public NewInventoryViewPage changePropertiesOrder(int rowId, String widgetId, String propertyLabel,
+                                                      int position) {
         getPropertyPanel(rowId, widgetId).changePropertyOrder(propertyLabel, position);
         return this;
     }
 
     @Step("Save configuration for properties")
-    public NewInventoryViewPage saveConfigurationForProperties(int rowId, String widgetId, String configurationName, Field... fields) {
+    public NewInventoryViewPage saveConfigurationForProperties(int rowId, String widgetId, String
+            configurationName, Field... fields) {
         DelayUtils.waitForPageToLoad(driver, wait);
         getPropertyPanel(rowId, widgetId).openSaveAsNewConfigurationWizard().saveAsNew(configurationName, fields);
         return this;
@@ -402,7 +402,8 @@ public class NewInventoryViewPage extends BasePage {
     }
 
     @Step("Delete configuration for properties")
-    public NewInventoryViewPage deleteConfigurationForProperties(int rowId, String propertyPanelId, String configurationName) {
+    public NewInventoryViewPage deleteConfigurationForProperties(int rowId, String propertyPanelId, String
+            configurationName) {
         DelayUtils.waitForPageToLoad(driver, wait);
         getPropertyPanel(rowId, propertyPanelId).openChooseConfigurationWizard().deleteConfiguration(configurationName).cancel();
         return this;
