@@ -30,6 +30,7 @@ public class TicketDetailsPage extends BaseSDPage {
 
     private static final String EDIT_DETAILS_LABEL = "Edit details";
     private static final String RELEASE_LABEL = "Release";
+    private static final String ALLOW_EDIT_LABEL = "Edit";
     private static final String CREATE_SUB_TICKET = "TT_DETAILS_SUBTICKET_CREATE_PROMPT_TITLE";
     private static final String CHECKLIST_APP_ID = "_checklistApp";
     private static final String SKIP_BUTTON_LABEL = "SKIP";
@@ -51,10 +52,19 @@ public class TicketDetailsPage extends BaseSDPage {
         return new SDWizardPage(driver, wait);
     }
 
+    @Step("Click release ticket")
     public void releaseTicket() {
         DelayUtils.waitForPageToLoad(driver, wait);
         Button.create(driver, RELEASE_LABEL).click();
+        DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Clicking release button");
+    }
+
+    @Step("Allow ticket editing")
+    public void allowEditingTicket() {
+        Button.create(driver, ALLOW_EDIT_LABEL).click();
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Clicking edit button");
     }
 
     public void clickContextAction(String contextActionLabel) {
@@ -82,6 +92,7 @@ public class TicketDetailsPage extends BaseSDPage {
         CommonList.create(driver, wait, CHECKLIST_APP_ID)
                 .getAllRows()
                 .forEach(row -> row.callActionIcon(SKIP_BUTTON_LABEL));
+        DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Skipping all actions on checklist");
     }
 
@@ -129,10 +140,6 @@ public class TicketDetailsPage extends BaseSDPage {
             log.debug("Expected text {} is not displayed", expectedText);
             return false;
         }
-    }
-
-    public void createNewNotificationOnMessagesTab() {
-        ListApp.createFromParent(driver, wait, "_tablesWindow").clickCreateNewNotification();
     }
 
     public boolean isAllActionsSkipped() {
