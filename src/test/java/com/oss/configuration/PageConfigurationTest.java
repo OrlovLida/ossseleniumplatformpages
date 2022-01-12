@@ -44,7 +44,7 @@ public class PageConfigurationTest extends BaseTestCase {
     @Description("Saving new configuration for Inventory View")
     public void saveConfigurationForIVPage() {
         //when
-        newInventoryViewPage.changeLayoutToHorizontal();
+        newInventoryViewPage.setHorizontalLayout();
         newInventoryViewPage.savePageConfiguration(
                 createField(NAME, CONFIGURATION_NAME_IV));
 
@@ -58,7 +58,7 @@ public class PageConfigurationTest extends BaseTestCase {
     public void saveConfigurationForIVPageForUser() {
         //when
         newInventoryViewPage
-                .changeLayoutToVertical()
+                .setVerticalLayout()
                 .saveNewPageConfiguration(
                         CONFIGURATION_NAME_IV_USER,
                         createField(DEFAULT_VIEW_FOR, "Me"));
@@ -76,7 +76,7 @@ public class PageConfigurationTest extends BaseTestCase {
 
         //when
         newInventoryViewPage
-                .changeLayoutToHorizontal();
+                .setHorizontalLayout();
         newInventoryViewPage
                 .saveNewPageConfiguration(
                         CONFIGURATION_NAME_IV_GROUP,
@@ -128,7 +128,7 @@ public class PageConfigurationTest extends BaseTestCase {
                 .applyConfigurationForPage(CONFIGURATION_NAME_IV);
 
         //then
-        Assert.assertEquals(newInventoryViewPage.howManyRows(), 1);
+        Assert.assertEquals(newInventoryViewPage.isHorizontal(), 1);
         // Assert.assertTrue(driver.getCurrentUrl().contains("Location"));
     }
 
@@ -143,7 +143,7 @@ public class PageConfigurationTest extends BaseTestCase {
                 .applyConfigurationForPage(CONFIGURATION_NAME_IV_GROUP);
 
         //then
-        Assert.assertEquals(newInventoryViewPage.howManyRows(), 2);
+        Assert.assertEquals(newInventoryViewPage.isHorizontal(), 2);
         //     Assert.assertTrue(driver.getCurrentUrl().contains("Building"));
     }
 

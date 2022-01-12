@@ -38,6 +38,10 @@ public class NewInventoryViewPage extends BasePage {
         super(driver, wait);
     }
 
+    private static final String CHANGE_LAYOUT_BUTTON_ID = "ButtonChooseViewLayouts";
+    private static final String HORIZONTAL_BUTTON_ID = "TWO_ROWS";
+    private static final String VERTICAL_BUTTON_ID = "TWO_COLUMNS";
+
     @Step("Open Inventory View")
     public static NewInventoryViewPage goToInventoryViewPage(WebDriver driver, String basicURL, String type) {
         driver.get(String.format("%s/#/views/management/views/inventory-view/" + type +
@@ -283,29 +287,25 @@ public class NewInventoryViewPage extends BasePage {
     }
 
     @Step("Change layout to Horizontal Orientation")
-    public NewInventoryViewPage changeLayoutToHorizontal() {
+    public NewInventoryViewPage setHorizontalLayout() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        if (howManyRows() == 1) {
-            ButtonPanel.create(driver, wait).expandLayoutMenu();
-            DropdownList.create(driver, wait).selectOptionWithId("TWO_ROWS");
+        if (!isHorizontal()) {
+            ButtonPanel.create(driver,wait).clickButton(CHANGE_LAYOUT_BUTTON_ID, HORIZONTAL_BUTTON_ID);
         }
         DelayUtils.waitForPageToLoad(driver, wait);
         return this;
     }
 
+    public boolean isHorizontal() {
+        return ButtonPanel.create(driver, wait).isHorizontalLayout();
+
     // TODO: add getMethods for popup and property panel
 
-    // TODO: create layoutWrapper component
-    public int howManyRows() {
-        return driver.findElements(By.xpath("//div[@class='view-v2-content']/div/div[@class='row']")).size();
-    }
-
     @Step("Change layout to Vertical Orientation")
-    public NewInventoryViewPage changeLayoutToVertical() {
+    public NewInventoryViewPage setVerticalLayout() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        if (howManyRows() == 2) {
-            ButtonPanel.create(driver, wait).expandLayoutMenu();
-            DropdownList.create(driver, wait).selectOptionWithId("TWO_COLUMNS");
+        if (isHorizontal()) {
+            ButtonPanel.create(driver,wait).clickButton(CHANGE_LAYOUT_BUTTON_ID, VERTICAL_BUTTON_ID);
         }
         DelayUtils.waitForPageToLoad(driver, wait);
         return this;

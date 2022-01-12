@@ -18,7 +18,7 @@ public class MessagesTab extends BaseSDPage {
 
     public static final String CREATE_NEW_COMMENT_BUTTON_TEXT = "Create New Comment";
     private static final String CREATE_BUTTON_LABEL = "CREATE";
-    private static final String COMMENT_EDITOR_ID = "comment-editor";
+    private static final String COMMENT_EDITOR_ID = "new-comment-editor";
     private static final String CREATE_NEW_NOTIFICATION_BUTTON_LABEL = "Create New Notification";
 
     public MessagesTab(WebDriver driver, WebDriverWait wait) {

@@ -1,11 +1,15 @@
 package com.oss.pages.servicedesk.ticket.wizard;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.contextactions.ButtonContainer;
+import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.data.Data;
 import com.oss.framework.utils.DelayUtils;
@@ -18,9 +22,11 @@ public class SDWizardPage extends BaseSDPage {
 
     private static final Logger log = LoggerFactory.getLogger(SDWizardPage.class);
 
-    private static final String INCIDENT_DESCRIPTION_ID = "TT_WIZARD_INPUT_INCIDENT_DESCRIPTION";
+    private static final String INCIDENT_DESCRIPTION_ID = "TT_WIZARD_INPUT_INCIDENT_DESCRIPTION_LABEL";
     private static final String EMAIL_MESSAGE_ID = "message-component";
     private static final String CREATE_EXTERNAL_LABEL = "Create External";
+    private static final String EXPECTED_RESOLUTION_DATE_ID = "TT_WIZARD_INPUT_EXPECTED_RESOLUTION_DATE_LABEL";
+    private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
     private final MOStep moStep;
 
@@ -100,6 +106,14 @@ public class SDWizardPage extends BaseSDPage {
         log.info("Incident description: {} is entered", description);
     }
 
+    @Step("Insert Expected resolution date: plus 5 days from now")
+    public void enterExpectedResolutionDate() {
+        String date = LocalDateTime.now().plusDays(5).format(DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN));
+        ComponentFactory.create(EXPECTED_RESOLUTION_DATE_ID, Input.ComponentType.TEXT_FIELD, driver, wait).setSingleStringValue(date);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Insert Expected resolution date: plus 5 days from now");
+    }
+
     @Step("I insert {message} to Email Message field")
     public void enterEmailMessage(String message) {
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -107,7 +121,7 @@ public class SDWizardPage extends BaseSDPage {
         log.info("Incident description: {} is entered", message);
     }
 
-    public void clickComboBox(String componentId){
+    public void clickComboBox(String componentId) {
         getWizard().getComponent(componentId, Input.ComponentType.COMBOBOX).click();
         log.info("Clicking {} combobox", componentId);
     }

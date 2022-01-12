@@ -40,7 +40,7 @@ public class TableWidgetConfigurationTest extends BaseTestCase {
         //when
         newInventoryViewPage.enableColumn("Depth");
         newInventoryViewPage.disableColumnAndApply("Name");
-        newInventoryViewPage.changeLayoutToVertical()
+        newInventoryViewPage.setVerticalLayout()
                 .changeColumnsOrderInMainTable("XId", 3)
                 .openFilterPanel()
                 .setValueOnComboWithTags("type", "type-dropdown-search", "Building")

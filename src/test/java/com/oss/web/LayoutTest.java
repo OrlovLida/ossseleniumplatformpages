@@ -24,15 +24,15 @@ public class LayoutTest extends BaseTestCase {
     @Description("Change the layout on the Inventory View to vertical orientation")
     public void changeLayoutToVertical() {
         inventoryViewPage.
-                changeLayoutToVertical();
-        Assert.assertEquals(inventoryViewPage.howManyRows(),1);
+                setVerticalLayout();
+        Assert.assertFalse(inventoryViewPage.isHorizontal());
     }
 
     @Test(priority = 2)
     @Description("Change the layout on the Inventory View to horizontal orientation")
     public void changeLayoutToHorizontal() {
         inventoryViewPage.
-                changeLayoutToHorizontal();
-        Assert.assertEquals(inventoryViewPage.howManyRows(),2);
+                setHorizontalLayout();
+        Assert.assertTrue(inventoryViewPage.isHorizontal());
     }
 }
