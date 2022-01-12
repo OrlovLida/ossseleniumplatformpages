@@ -101,6 +101,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
         SDWizardPage.insertValueToTextComponent(TT_CORRELATION_ID, TT_WIZARD_CORRELATION_ID);
         SDWizardPage.insertValueToTextComponent(TT_REFERENCE_ID, TT_WIZARD_REFERENCE_ID);
         SDWizardPage.enterIncidentDescription(TT_DESCRIPTION);
+        SDWizardPage.enterExpectedResolutionDate();
         SDWizardPage.clickNextButtonInWizard();
         String date = LocalDateTime.now().minusMinutes(5).format(CREATE_DATE_FILTER_DATE_FORMATTER);
         SDWizardPage.insertValueToTextComponent(date, TT_WIZARD_ISSUE_START_DATE_ID);
@@ -114,6 +115,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     public void editTicketDetails() {
         ticketDetailsPage = ticketDashboardPage.openTicketDetailsView("0", BASIC_URL);
         ticketDetailsPage.maximizeWindow(DETAILS_WINDOW_ID);
+        ticketDetailsPage.allowEditingTicket();
         SDWizardPage = ticketDetailsPage.openEditTicketWizard();
         SDWizardPage.clickNextButtonInWizard();
         SDWizardPage.insertValueToSearchComponent(TT_NEW_ASSIGNEE, TT_WIZARD_ASSIGNEE);
