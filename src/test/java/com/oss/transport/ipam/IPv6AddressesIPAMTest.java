@@ -63,9 +63,9 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
     private static final String ASSIGNMENT_INTERFACE_NAME = "IPAMSeleniumTestFirstInterface";
     private static final String ASSIGNMENT_SECOND_INTERFACE_NAME = "IPAMSeleniumTestSecondInterface";
     private static final String ASSIGNMENT_LOCATION_IDENTIFIER = "IPAMSeleniumTest-BU3";
-    private static final String ASSIGNMENT_DEVICE_IDENTIFIER = "-Router-7";
-    private static final String ASSIGNMENT_INTERFACE_IDENTIFIER = "-Router-7\\CLUSTER 0";
-    private static final String ASSIGNMENT_SECOND_INTERFACE_IDENTIFIER = "-Router-7\\CLUSTER 1";
+    private static final String ASSIGNMENT_DEVICE_IDENTIFIER = "IPAMSeleniumTest-Router-2";
+    private static final String ASSIGNMENT_INTERFACE_IDENTIFIER = "IPAMSeleniumTest-Router-2\\CLUSTER 0\\1";
+    private static final String ASSIGNMENT_SECOND_INTERFACE_IDENTIFIER = "IPAMSeleniumTest-Router-2\\CLUSTER 1\\1";
     private static final String IPV6_HOST_ADDRESS = "::127:1";
     private static final String LOOPBACK_IPV6_HOST_ADDRESS = "::127:0";
     private static final String SECOND_LOOPBACK_IPV6_HOST_ADDRESS = "::127:2";
@@ -193,7 +193,7 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
                 .assignLoopbackIPv6HostAddressFromHostContext(getAddressAndMask(loopbackIPv6HostAddressProperties));
         IPAddressAssignmentWizardProperties loopbackIpAddressAssignmentWizardProperties = IPAddressAssignmentWizardProperties.builder()
                 .isPrimary(TRUE_STRING).isInNAT(TRUE_STRING).role(ROLE_NAME).description(DESCRIPTION)
-                .assignmentType(INTERFACE).assignmentName(ASSIGNMENT_INTERFACE_NAME).build();
+                .assignmentType(INTERFACE).assignmentName(ASSIGNMENT_INTERFACE_IDENTIFIER).build();
         IPAddressAssignmentWizardProperties oppositeSideLoopbackIpAddressAssignmentWizardProperties = IPAddressAssignmentWizardProperties.builder()
                 .isPrimary(TRUE_STRING).isInNAT(TRUE_STRING).role(ROLE_NAME).build();
         assignLoopbackAddressFromHostContext.assignIPAddressFromIPAddressContext(loopbackIpAddressAssignmentWizardProperties, oppositeSideLoopbackIpAddressAssignmentWizardProperties);
