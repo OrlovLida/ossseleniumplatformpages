@@ -65,9 +65,9 @@ public class IPv4AddressesIPAMTest extends BaseTestCase {
     private static final String ASSIGNMENT_INTERFACE_NAME = "IPAMSeleniumTestFirstInterface";
     private static final String ASSIGNMENT_SECOND_INTERFACE_NAME = "IPAMSeleniumTestSecondInterface";
     private static final String ASSIGNMENT_LOCATION_IDENTIFIER = "IPAMSeleniumTest-BU3";
-    private static final String ASSIGNMENT_DEVICE_IDENTIFIER = "-Router-7";
-    private static final String ASSIGNMENT_INTERFACE_IDENTIFIER = "-Router-7\\CLUSTER 0";
-    private static final String ASSIGNMENT_SECOND_INTERFACE_IDENTIFIER = "-Router-7\\CLUSTER 1";
+    private static final String ASSIGNMENT_DEVICE_IDENTIFIER = "IPAMSeleniumTest-Router-2";
+    private static final String ASSIGNMENT_INTERFACE_IDENTIFIER = "IPAMSeleniumTest-Router-2\\CLUSTER 0\\1";
+    private static final String ASSIGNMENT_SECOND_INTERFACE_IDENTIFIER = "IPAMSeleniumTest-Router-2\\CLUSTER 1\\1";
     private static final String HOST_ADDRESS = "126.0.0.1";
     private static final String LOOPBACK_HOST_ADDRESS = "126.0.0.0";
     private static final String SECOND_LOOPBACK_HOST_ADDRESS = "126.0.0.2";
@@ -197,7 +197,7 @@ public class IPv4AddressesIPAMTest extends BaseTestCase {
                 .assignLoopbackIPv4HostAddressFromSubnetContext(getAddressAndMask(secondIPSubnetProperties));
         IPAddressAssignmentWizardProperties loopbackIpAddressAssignmentWizardProperties = IPAddressAssignmentWizardProperties.builder()
                 .address(LOOPBACK_HOST_ASSIGNMENT_ADDRESS).wizardMode(MANUAL_ADDRESS_MODE).isPrimary(TRUE_STRING).isInNAT(TRUE_STRING).role(ROLE_NAME)
-                .assignmentType(INTERFACE).assignmentName(ASSIGNMENT_INTERFACE_NAME).build();
+                .assignmentType(INTERFACE).assignmentName(ASSIGNMENT_INTERFACE_IDENTIFIER).build();
         IPAddressAssignmentWizardProperties oppositeSideLoopbackIpAddressAssignmentWizardProperties = IPAddressAssignmentWizardProperties.builder()
                 .isPrimary(TRUE_STRING).isInNAT(TRUE_STRING).role(ROLE_NAME).build();
         assignLoopbackAddressFromSubnetContext.assignIPAddress(loopbackIpAddressAssignmentWizardProperties, oppositeSideLoopbackIpAddressAssignmentWizardProperties);
