@@ -1,27 +1,30 @@
 package com.oss.pages.bigdata.dfe.DataSource.DSWizard;
 
-import com.oss.framework.widgets.Wizard;
-import com.oss.pages.BasePage;
-import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.*;
+import com.oss.framework.widgets.Wizard;
+import com.oss.pages.BasePage;
+
+import io.qameta.allure.Step;
+
+import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
+import static com.oss.framework.components.inputs.Input.ComponentType.SEARCH_FIELD;
+import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 
 public class DataSourceSpecificInfoPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(DataSourceSpecificInfoPage.class);
-    private final String OFFSET_INPUT_ID = "dataSourceOffsetId-input";
-    private final String INTERVAL_UNIT_INPUT_ID = "dataSourceIntervalUnitId-input";
-    private final String INTERVAL_AMOUNT_INPUT_ID = "dataSourceIntervalAmountId";
-    private final String WIZARD_ID = "dataSourcesWizardId";
-    private final String SERVER_GROUP_INPUT_ID = "dataSourceServerGroupNameId";
-    private final String BASE_INTERVAL_ID = "dataSourceBaseIntervalId";
-    private final String TOPIC_ID = "dataSourceTopicId";
-    private final String EVENT_TYPE_ID = "dataSourceEventTypeId";
-
+    private static final String OFFSET_INPUT_ID = "dataSourceOffsetId-input";
+    private static final String INTERVAL_UNIT_INPUT_ID = "dataSourceIntervalUnitId-input";
+    private static final String INTERVAL_AMOUNT_INPUT_ID = "dataSourceIntervalAmountId";
+    private static final String WIZARD_ID = "dataSourcesWizardId";
+    private static final String SERVER_GROUP_INPUT_ID = "dataSourceServerGroupNameId";
+    private static final String BASE_INTERVAL_ID = "dataSourceBaseIntervalId";
+    private static final String TOPIC_ID = "dataSourceTopicId";
+    private static final String EVENT_TYPE_ID = "dataSourceEventTypeId";
 
     private final Wizard specificInfoWizard;
 
@@ -36,7 +39,6 @@ public class DataSourceSpecificInfoPage extends BasePage {
     }
 
     private void fillIntervalUnit(String unit) {
-        specificInfoWizard.clearComponent(INTERVAL_UNIT_INPUT_ID, COMBOBOX);
         specificInfoWizard.setComponentValue(INTERVAL_UNIT_INPUT_ID, unit, COMBOBOX);
         log.debug("Setting interval unit with: {}", unit);
     }
