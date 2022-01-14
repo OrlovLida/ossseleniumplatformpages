@@ -31,7 +31,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     private final static String TT_ASSIGNEE = "ca_kodrobinska";
     private final static String TT_DESCRIPTION = "TestSelenium";
     private final static String TT_DESCRIPTION_EDITED = "TestSelenium_edited";
-    private final static String TT_NEW_ASSIGNEE = "admin oss";
+    private final static String TT_NEW_ASSIGNEE = "Tier2_Mobile";
     private final static String TT_CORRELATION_ID = "12345";
     private final static String TT_REFERENCE_ID = "12345";
     private final static String TT_ESCALATED_TO = "admin oss";
@@ -130,6 +130,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     @Description("Skipp checklist actions and change status")
     public void checkOverview() {
         ticketDetailsPage.minimizeWindow(DETAILS_WINDOW_ID);
+        ticketDetailsPage.allowEditingTicket();
         ticketDetailsPage.skipAllActionsOnCheckList();
         Assert.assertTrue(ticketDetailsPage.isAllActionsSkipped());
         ticketDetailsPage.changeStatus(STATUS_ACKNOWLEDGED);
