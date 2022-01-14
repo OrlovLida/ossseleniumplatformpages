@@ -7,7 +7,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.contextactions.ActionsContainer;
-import com.oss.framework.components.contextactions.ButtonContainer;
 import com.oss.framework.components.contextactions.OldActionsContainer;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.Input;
@@ -159,11 +158,6 @@ public class NetworkViewPage extends BasePage {
         button.click();
     }
 
-    @Step("Click Proceed")
-    public void clickProceed() {
-        Wizard.createWizard(driver, wait).clickProceed();
-    }
-
     @Step("Click confirmation box button")
     public void clickConfirmationBoxButtonByLabel(String label) {
         ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
@@ -191,8 +185,8 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Open modify termination wizard")
     public void modifyTermination() {
-        ButtonContainer button = ButtonContainer.create(driver, wait);
-        button.callActionById("Modify Termination");
+        TabsWidget tabsWidget = TabsWidget.createById(driver, wait, "bottomTabs");
+        tabsWidget.callActionById("Modify Termination");
     }
 
     @Step("Set trail termination port")
