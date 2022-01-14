@@ -1,18 +1,22 @@
 package com.oss.pages.bigdata.dfe.thresholds;
 
-import com.oss.framework.components.contextactions.ActionsContainer;
-import com.oss.framework.components.contextactions.ButtonContainer;
-import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.Wizard;
-import com.oss.framework.widgets.treewidget.TreeWidget;
-import com.oss.pages.BasePage;
-import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.*;
+import com.oss.framework.components.contextactions.ActionsContainer;
+import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.Wizard;
+import com.oss.framework.widgets.treewidget.TreeWidget;
+import com.oss.pages.BasePage;
+
+import io.qameta.allure.Step;
+
+import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
+import static com.oss.framework.components.inputs.Input.ComponentType.SEARCH_FIELD;
+import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_AREA;
+import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 
 public class ThresholdsConfigurationPage extends BasePage {
 
@@ -96,7 +100,7 @@ public class ThresholdsConfigurationPage extends BasePage {
     public void clickAddNewFilter() {
         DelayUtils.waitForPageToLoad(driver, wait);
         DelayUtils.sleep();
-        ButtonContainer.create(driver, wait).callActionById("dimensionButtonAddId");
+        configurationWizard.clickButtonById("dimensionButtonAddId");
         log.debug("Clicking add new filter button");
     }
 
