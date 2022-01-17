@@ -157,6 +157,7 @@ public class UC_NAR_005_Test extends BaseTestCase {
     @Test(priority = 7, description = "Run narrow reconciliation")
     @Description("Run narrow reconciliation")
     public void runNarrowReconciliation() {
+        DelayUtils.sleep(5000);
         NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.selectFirstRow();
         waitForPageToLoad();
