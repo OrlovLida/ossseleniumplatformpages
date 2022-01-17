@@ -62,6 +62,7 @@ public class TicketDetailsPage extends BaseSDPage {
 
     @Step("Allow ticket editing")
     public void allowEditingTicket() {
+        DelayUtils.waitForPageToLoad(driver, wait);
         Button.create(driver, ALLOW_EDIT_LABEL).click();
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Clicking edit button");
