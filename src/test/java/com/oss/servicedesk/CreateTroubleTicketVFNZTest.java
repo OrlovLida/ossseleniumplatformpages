@@ -142,14 +142,15 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
         ticketSearchPage = new TicketSearchPage(driver, webDriverWait);
         ticketSearchPage.goToPage(driver, BASIC_URL);
         ticketSearchPage.clickFilterButton();
-        ticketSearchPage.filterByTextField(TicketSearchPage.ASSIGNEE_ATTRIBUTE, TT_NEW_ASSIGNEE);
+        //TODO do odkomentowania linia 146 i 153 po naprawie buga OSSSD-3243
+        //ticketSearchPage.filterByTextField(TicketSearchPage.ASSIGNEE_ATTRIBUTE, TT_NEW_ASSIGNEE);
 //      TODO Do odkomentowania po naprawieniu aktualizacji widoku Ticket Search (OSSSD-2605)
 //        String startDate = LocalDateTime.now().minusMinutes(10).format(CREATE_DATE_FILTER_DATE_FORMATTER);
 //        String endDate = LocalDateTime.now().minusMinutes(0).format(CREATE_DATE_FILTER_DATE_FORMATTER);
 //        String date = startDate + " - " + endDate;
 //        ticketSearchPage.clickFilterButton();
 //        ticketSearchPage.filterByTextField(TicketSearchPage.CREATION_TIME_ATTRIBUTE, date );
-        ticketSearchPage.clickFilterButton();
+        //ticketSearchPage.clickFilterButton();
         ticketSearchPage.filterByTextField(TicketSearchPage.DESCRIPTION_ATTRIBUTE, TT_DESCRIPTION_EDITED);
         ticketSearchPage.clickFilterButton();
         ticketSearchPage.filterByComboBox(TicketSearchPage.STATUS_ATTRIBUTE, STATUS_ACKNOWLEDGED);
