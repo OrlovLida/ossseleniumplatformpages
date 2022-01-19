@@ -68,12 +68,14 @@ public class TicketDetailsPage extends BaseSDPage {
         log.info("Clicking edit button");
     }
 
+    @Step("Click Context action with label {contextActionLabel}")
     public void clickContextAction(String contextActionLabel) {
         DelayUtils.waitForPageToLoad(driver, wait);
         TabWindowWidget.create(driver, wait).callActionByLabel(contextActionLabel);
         log.info("Clicking Context action {}", contextActionLabel);
     }
 
+    @Step("Selecting tab {tabAriaControls}")
     public void selectTab(String tabAriaControls) {
         DelayUtils.waitForPageToLoad(driver, wait);
         TabWindowWidget.create(driver, wait).selectTabById(tabAriaControls);
@@ -89,14 +91,19 @@ public class TicketDetailsPage extends BaseSDPage {
         return new SDWizardPage(driver, wait);
     }
 
+    @Step("Skipping all actions on checklist")
     public void skipAllActionsOnCheckList() {
         CommonList.create(driver, wait, CHECKLIST_APP_ID)
                 .getAllRows()
-                .forEach(row -> row.callActionIcon(SKIP_BUTTON_LABEL));
+                .forEach(row -> {
+                    DelayUtils.waitForPageToLoad(driver, wait);
+                    row.callActionIcon(SKIP_BUTTON_LABEL);
+                });
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Skipping all actions on checklist");
     }
 
+    @Step("Changing status to {statusName}")
     public void changeStatus(String statusName) {
         ComponentFactory.create(CHANGE_TICKET_STATUS_COMBOBOX_ID, Input.ComponentType.COMBOBOX, driver, wait).setSingleStringValue(statusName);
         log.info("Changing status to {}", statusName);
@@ -114,6 +121,7 @@ public class TicketDetailsPage extends BaseSDPage {
         log.info("Minimizing window");
     }
 
+    @Step("Checking if expected external {expectedExistingExternal} exists on the list")
     public boolean checkExistingExternal(String expectedExistingExternal) {
         DelayUtils.sleep(5000);
         DelayUtils.waitForPageToLoad(driver, wait);
