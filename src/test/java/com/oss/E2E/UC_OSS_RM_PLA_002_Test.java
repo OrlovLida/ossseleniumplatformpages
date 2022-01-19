@@ -290,6 +290,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         waitForPageToLoad();
         Notifications.create(driver, webDriverWait).clearAllNotification();
         tasksPage.findTask(processIPCode, TasksPage.IMPLEMENTATION_TASK);
+        DelayUtils.sleep(3000);
         waitForPageToLoad();
         tasksPage.clickPerformConfigurationButton();
     }
