@@ -1,5 +1,18 @@
 package com.oss.pages.bigdata.kqiview;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.WildcardFileFilter;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.oss.framework.components.common.ListAttributesChooser;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.ComponentFactory;
@@ -19,23 +32,14 @@ import com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType;
 import com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel;
 import com.oss.framework.widgets.dpe.treewidget.KpiTreeWidget;
 import com.oss.pages.BasePage;
+
 import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.filefilter.WildcardFileFilter;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 import static com.oss.configuration.Configuration.CONFIGURATION;
-import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.MiscellaneousOption.*;
+import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.MiscellaneousOption.DATA_COMPLETENESS;
+import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.MiscellaneousOption.LAST_SAMPLE_TIME;
+import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.MiscellaneousOption.SHOW_TIME_ZONE;
 import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.TimePeriodChooserOption.LATEST;
 import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.TimePeriodChooserOption.SMART;
 import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.YAxisOption.MANUAL;
@@ -276,7 +280,7 @@ public class KpiViewPage extends BasePage {
 
     @Step("I double click on bar in TopN BarChart")
     public void doubleClickTopNDPE() {
-        KpiChartWidget.create(driver, wait).doubleClickOnTopNBar(TOP_N_BARCHART_DPE_ID);
+        KpiChartWidget.create(driver, wait).doubleClickTopNBar(TOP_N_BARCHART_DPE_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
@@ -338,25 +342,25 @@ public class KpiViewPage extends BasePage {
 
     @Step("I should see {expectedLineWidth} width line displayed")
     public boolean shouldSeeDataSeriesLineWidth(String expectedLineWidth) {
-        String lineWidth = KpiChartWidget.create(driver, wait).dataSeriesLineWidth();
+        String lineWidth = KpiChartWidget.create(driver, wait).getDataSeriesLineWidth();
         return lineWidth.equals(expectedLineWidth);
     }
 
     @Step("I should not see any lines on chart displayed")
     public boolean shouldNotSeeHiddenLine(String expectedLineVisibility) {
-        String lineVisibility = KpiChartWidget.create(driver, wait).dataSeriesVisibility();
+        String lineVisibility = KpiChartWidget.create(driver, wait).getDataSeriesVisibility();
         return lineVisibility.equals(expectedLineVisibility);
     }
 
     @Step("I should see area (0.6) or line (0) chart displayed")
     public boolean shouldSeeAreaChart(String expectedFillOpacity) {
-        String fillOpacity = KpiChartWidget.create(driver, wait).dataSeriesFillOpacity();
+        String fillOpacity = KpiChartWidget.create(driver, wait).getDataSeriesFillOpacity();
         return fillOpacity.equals(expectedFillOpacity);
     }
 
     @Step("I should see bar chart displayed")
     public boolean shouldSeeBarChart(String expectedFillOpacity) {
-        String fillOpacity = KpiChartWidget.create(driver, wait).barDataSeriesFillOpacity();
+        String fillOpacity = KpiChartWidget.create(driver, wait).getBarDataSeriesFillOpacity();
         return fillOpacity.equals(expectedFillOpacity);
     }
 
@@ -372,7 +376,7 @@ public class KpiViewPage extends BasePage {
 
     @Step("I should see bar chart displayed")
     public boolean shouldSeeColorChart(String expectedColor) {
-        String color = KpiChartWidget.create(driver, wait).dataSeriesColor();
+        String color = KpiChartWidget.create(driver, wait).getDataSeriesColor();
         return color.equals(expectedColor);
     }
 
@@ -631,7 +635,7 @@ public class KpiViewPage extends BasePage {
 
     @Step("I click Zoom Out Button")
     public void clickZoomOutButton() {
-        KpiChartWidget.create(driver, wait).clickZoomOutButton();
+        KpiChartWidget.create(driver, wait).clickZoomOut();
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
