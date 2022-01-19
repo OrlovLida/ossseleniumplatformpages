@@ -2,7 +2,7 @@ package com.oss.pages.filtermanager;
 
 import org.openqa.selenium.WebDriver;
 
-import com.oss.framework.components.list.DropdownList;
+import com.oss.framework.components.list.DraggableList;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.utils.DragAndDrop;
 import com.oss.framework.widgets.Wizard;
@@ -24,10 +24,10 @@ public class EditFilterPage extends FilterManagerPage {
     @Step("Change Folder for filer using drag and drop")
     public EditFilterPage changeFolderForFilter(String folderName) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        DropdownList available_folders = DropdownList.create(driver, wait, "Available folders");
-        DropdownList enabled_folders = DropdownList.create(driver, wait, "Enabled folders");
-        DragAndDrop.DraggableElement source = available_folders.getDraggableElement(folderName);
-        enabled_folders.drop(source);
+        DraggableList availableFolders = DraggableList.create(driver, wait, "Available folders");
+        DraggableList enabledFolders = DraggableList.create(driver, wait, "Enabled folders");
+        DragAndDrop.DraggableElement source = availableFolders.getDraggableElement(folderName);
+        enabledFolders.drop(source);
         //     DragAndDrop.dragAndDrop(TO_TAKE_XPATH, TO_DROP_XPATH, driver);
         return this;
     }
