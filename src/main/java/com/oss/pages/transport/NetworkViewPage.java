@@ -44,7 +44,7 @@ public class NetworkViewPage extends BasePage {
     public static final String DELETE_DEVICE_ACTION = "EDIT_Delete Device-null";
     public static final String ADD_TO_VIEW_ACTION = "add_to_view_group";
     public static final String CREATE_MEDIATION_CONFIGURATION_ID = "CREATE_Mediation Configuration-null";
-    public static final String DELETE_CONNECTION_ID = "EDIT_Delete Connection-null";
+    public static final String DELETE_CONNECTION_ID = "EDIT_Delete-null";
     public static final String CREATE_CONNECTION_ID = "CREATE_Create Connection-null";
     public static final String HIERARCHY_VIEW_ACTION = "NAVIGATION_Hierarchy View-null";
     public static final String DEVICE_ACTION = "add_to_view_group_Device-null";
