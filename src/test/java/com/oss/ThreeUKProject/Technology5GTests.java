@@ -13,7 +13,6 @@ import com.oss.pages.radio.CellSiteConfigurationPage;
 import com.oss.pages.radio.GNodeBWizardPage;
 import com.oss.pages.radio.HostingWizardPage;
 import com.oss.repositories.*;
-import com.oss.services.PhysicalInventoryClient;
 import com.oss.services.ResourceCatalogClient;
 import com.oss.untils.Constants;
 import com.oss.untils.Environment;
@@ -336,7 +335,7 @@ public class Technology5GTests extends BaseTestCase {
         homePage.searchInGlobalSearch(gNodeBNameForDelete);
         CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertTrue(objectsList.isNoData());
+        Assert.assertTrue(objectsList.hasNoData());
     }
 
     @Test
@@ -355,7 +354,7 @@ public class Technology5GTests extends BaseTestCase {
         homePage.searchInGlobalSearch(cell5GNameForDelete);
         CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertTrue(objectsList.isNoData());
+        Assert.assertTrue(objectsList.hasNoData());
     }
 
     private void getOrCreateAddress() {

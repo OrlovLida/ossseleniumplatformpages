@@ -117,7 +117,7 @@ public class TicketDetailsPage extends BaseSDPage {
         DelayUtils.sleep(5000);
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Checking if expected external '{}' exists on the list", expectedExistingExternal);
-        if (CommonList.create(driver, wait, EXTERNAL_LIST_ID).isRowVisible(EXTERNAL_INFO_LABEL, expectedExistingExternal)) {
+        if (CommonList.create(driver, wait, EXTERNAL_LIST_ID).isRowDisplayed(EXTERNAL_INFO_LABEL, expectedExistingExternal)) {
             log.info("Expected external '{}' exists on the list", expectedExistingExternal);
             return true;
         } else {

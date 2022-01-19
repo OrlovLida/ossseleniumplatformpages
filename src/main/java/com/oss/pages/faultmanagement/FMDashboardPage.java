@@ -66,7 +66,7 @@ public class FMDashboardPage extends BasePage {
 
     private boolean isNoData(CommonList commonList) {
         DelayUtils.sleep(1000);
-        return commonList.isNoData();
+        return commonList.hasNoData();
     }
 
     @Step("I open selected view by the name")
@@ -121,7 +121,7 @@ public class FMDashboardPage extends BasePage {
     public boolean checkVisibility(String commonListId, String name) {
         log.info("Checking the visibility of {}", name);
         CommonList commonList = createCommonList(commonListId);
-        return commonList.isRowVisible(COLUMN_NAME_LABEL, name);
+        return commonList.isRowDisplayed(COLUMN_NAME_LABEL, name);
     }
 
     @Step("Maximize window")

@@ -283,7 +283,7 @@ public class KpiViewPage extends BasePage {
     @Step("I check if TopN navigation bar is visible")
     public boolean isTopNNavigationBarVisible() {
         log.info("Checking visibility of TopN navigation bar");
-        return KpiChartWidget.create(driver, wait).isTopNNavigationBarVisible();
+        return KpiChartWidget.create(driver, wait).isTopNNavigationBarPresent();
     }
 
     @Step("I click legend")
@@ -362,12 +362,12 @@ public class KpiViewPage extends BasePage {
 
     @Step("I should see topN bar chart displayed with DFE data")
     public boolean dfeTopNBarChartIsDisplayed() {
-        return KpiChartWidget.create(driver, wait).topNBarChartIsDisplayed(TOP_N_BARCHART_DFE_ID);
+        return KpiChartWidget.create(driver, wait).isTopNBarChartIsPresent(TOP_N_BARCHART_DFE_ID);
     }
 
     @Step("I should see topN bar chart displayed with DPE data")
     public boolean dpeTopNBarChartIsDisplayed() {
-        return KpiChartWidget.create(driver, wait).topNBarChartIsDisplayed(TOP_N_BARCHART_DPE_ID);
+        return KpiChartWidget.create(driver, wait).isTopNBarChartIsPresent(TOP_N_BARCHART_DPE_ID);
     }
 
     @Step("I should see bar chart displayed")
@@ -458,7 +458,7 @@ public class KpiViewPage extends BasePage {
     public boolean isTimeZoneDisplayed() {
         log.info("Checking visibility of Time Zone option");
         DelayUtils.waitForPageToLoad(driver, wait);
-        return KpiChartWidget.create(driver, wait).isTimeZoneDisplayed();
+        return KpiChartWidget.create(driver, wait).isTimeZonePresent();
     }
 
     @Step("I should see data completeness displayed in the legend")
@@ -485,9 +485,9 @@ public class KpiViewPage extends BasePage {
     @Step("I should see only Data View Panel displayed")
     public boolean shouldSeeOnlyDataViewDisplayed() {
         KpiChartWidget kpiChartWidget = KpiChartWidget.create(driver, wait);
-        boolean dataViewDisplayed = kpiChartWidget.dataViewPanelVisibility();
-        boolean indicatorsTreeDisplayed = kpiChartWidget.indicatorsTreeVisibility();
-        boolean dimensionsTreeDisplayed = kpiChartWidget.dimensionsTreeVisibility();
+        boolean dataViewDisplayed = kpiChartWidget.isDataViewPanelPresent();
+        boolean indicatorsTreeDisplayed = kpiChartWidget.isIndicatorsTreePresent();
+        boolean dimensionsTreeDisplayed = kpiChartWidget.isDimensionsTreePresent();
         if (dataViewDisplayed & !indicatorsTreeDisplayed & !dimensionsTreeDisplayed) {
             log.info("Only Data View Panel is displayed");
             return true;
@@ -626,7 +626,7 @@ public class KpiViewPage extends BasePage {
 
     @Step("I check if Zoom Out button is visible")
     public boolean isZoomOutButtonVisible() {
-        return KpiChartWidget.create(driver, wait).isZoomOutButtonVisible();
+        return KpiChartWidget.create(driver, wait).isZoomOutButtonPresent();
     }
 
     @Step("I click Zoom Out Button")
