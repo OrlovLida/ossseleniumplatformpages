@@ -117,9 +117,9 @@ public class TableWidgetTest extends BaseTestCase {
     
     @Test(priority = 5)
     public void paginationInitialStatus() {
-        Assertions.assertThat(tableWidget.getPagination().isFirstPageBtnEnabled()).isFalse();
-        Assertions.assertThat(tableWidget.getPagination().isPrevPageBtnEnabled()).isFalse();
-        Assertions.assertThat(tableWidget.getPagination().isNextPageBtnEnabled()).isTrue();
+        Assertions.assertThat(tableWidget.getPagination().isFirstPageButtonPresent()).isFalse();
+        Assertions.assertThat(tableWidget.getPagination().isPreviousPageButtonPresent()).isFalse();
+        Assertions.assertThat(tableWidget.getPagination().isNextPageButtonPresent()).isTrue();
     }
     
     @Test(priority = 6)
@@ -128,8 +128,8 @@ public class TableWidgetTest extends BaseTestCase {
         
         DelayUtils.sleep(2000);
         
-        Assertions.assertThat(tableWidget.getPagination().isPrevPageBtnEnabled()).isTrue();
-        Assertions.assertThat(tableWidget.getPagination().isFirstPageBtnEnabled()).isTrue();
+        Assertions.assertThat(tableWidget.getPagination().isPreviousPageButtonPresent()).isTrue();
+        Assertions.assertThat(tableWidget.getPagination().isFirstPageButtonPresent()).isTrue();
         Assertions.assertThat(tableWidget.getPagination().getBottomRageOfRows()).isEqualTo(tableWidget.getPagination().getStep() + 1);
         Assertions.assertThat(tableWidget.getPagination().getTopRageOfRows()).isEqualTo(tableWidget.getPagination().getStep() * 2);
     }

@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import org.openqa.selenium.WebDriver;
 
-import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.listwidget.CommonList;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.BasePage;
@@ -150,17 +149,17 @@ public class FilterManagerPage extends BasePage {
     
     @Step("Checking that Filter is Visible")
     public boolean isFilterVisible(String filterName) {
-        return getCommonList().isRowVisible("name", filterName);
+        return getCommonList().isRowDisplayed("name", filterName);
     }
     
     @Step("Checking that Folder is Visible")
     public boolean isFolderVisible(String folderName) {
-        return getCommonList().isCategoryVisible(folderName);
+        return getCommonList().isCategoryDisplayed(folderName);
     }
     
     @Step("Checking that Edit Action is Visible")
     public boolean isEditActionVisible(String filterName) {
-        return getCommonList().getRow("name", filterName).isActionVisible("Edit");
+        return getCommonList().getRow("name", filterName).isActionPresent("Edit");
     }
     
     @Step("Checking that Filter is Favorite")

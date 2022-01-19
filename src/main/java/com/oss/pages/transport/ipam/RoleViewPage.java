@@ -51,7 +51,7 @@ public class RoleViewPage extends BasePage {
 
     @Step("Check if role: {roleName} exist")
     public boolean doesRoleNameExist(String roleName) {
-        return getCommonList().isRowVisible(ATTRIBUTE_NAME, roleName);
+        return getCommonList().isRowDisplayed(ATTRIBUTE_NAME, roleName);
     }
 
     @Step("Exit Role View")

@@ -353,7 +353,7 @@ public class Technology3GTests extends BaseTestCase {
         homePage.searchInGlobalSearch(nodeBNameForDelete);
         CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertTrue(objectsList.isNoData());
+        Assert.assertTrue(objectsList.hasNoData());
     }
 
     @Test
@@ -372,7 +372,7 @@ public class Technology3GTests extends BaseTestCase {
         homePage.searchInGlobalSearch(cell3GNameForDelete);
         CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertTrue(objectsList.isNoData());
+        Assert.assertTrue(objectsList.hasNoData());
     }
 
     private void getOrCreateAddress() {
