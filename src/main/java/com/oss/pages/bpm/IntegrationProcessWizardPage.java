@@ -9,7 +9,7 @@ package com.oss.pages.bpm;
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.components.list.DropdownList;
+import com.oss.framework.components.list.DraggableList;
 import com.oss.framework.listwidget.EditableList;
 import com.oss.framework.utils.DragAndDrop;
 import com.oss.framework.widgets.Wizard;
@@ -28,6 +28,7 @@ public class IntegrationProcessWizardPage extends BasePage {
     private static final String NEXT_BUTTON = "wizard-next-button-ipd_integration_wizard_SetupIntegrationComponentId";
     private static final String ACCEPT_BUTTON = "wizard-submit-button-ipd_integration_wizard_SetupIntegrationComponentId";
     private static final String DELETE_LABEL_ACTION = "Delete";
+
     public IntegrationProcessWizardPage(WebDriver driver) {
         super(driver);
     }
@@ -55,12 +56,9 @@ public class IntegrationProcessWizardPage extends BasePage {
     }
 
     public void dragAndDrop(String objectName, String sourceProcessName, String targetProcessName) {
-        DropdownList sourceList = DropdownList.create(driver, wait, sourceProcessName);
-        DropdownList targetList = DropdownList.create(driver, wait, targetProcessName);
-
+        DraggableList sourceList = DraggableList.create(driver, wait, sourceProcessName);
+        DraggableList targetList = DraggableList.create(driver, wait, targetProcessName);
         DragAndDrop.DraggableElement element = sourceList.getDraggableElement(objectName);
         targetList.drop(element);
-
     }
-
 }
