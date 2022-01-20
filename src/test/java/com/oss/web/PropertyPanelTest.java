@@ -80,6 +80,6 @@ public class PropertyPanelTest extends BaseTestCase {
         }
 
         propertyPanel.showEmpty();
-        inventoryViewPage.unselectObjectByRowId(0);
+        inventoryViewPage.unselectObjectByRowId(10);
     }
 }

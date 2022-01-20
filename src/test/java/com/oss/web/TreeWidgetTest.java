@@ -21,8 +21,8 @@ import com.oss.repositories.AddressRepository;
 import com.oss.repositories.LocationInventoryRepository;
 import com.oss.untils.Environment;
 
-public class HierarchyViewTest extends BaseTestCase {
-    private static final Logger log = LoggerFactory.getLogger(HierarchyViewTest.class);
+public class TreeWidgetTest extends BaseTestCase {
+    private static final Logger log = LoggerFactory.getLogger(TreeWidgetTest.class);
     private static final String REFRESH_TREE = "tree_gql_refresh";
     private Environment env = Environment.getInstance();
     private static final String SUB_LOCATION_TYPE_ROOM = "Room";
