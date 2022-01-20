@@ -113,7 +113,7 @@ public class TreeWidgetTest extends BaseTestCase {
         Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(ROOM_NAME_2);
     }
     
-    @Test(priority = 7)
+    @Test(priority = 7, enabled = false) //until fix OSSWEB-15508
     public void refreshTreeWidget() {
         hierarchyViewPage.getMainTree().callActionById(ActionsContainer.KEBAB_GROUP_ID, REFRESH_TREE);
         hierarchyViewPage.expandNextLevel(LOCATION_NAME);
