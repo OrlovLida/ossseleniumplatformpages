@@ -284,7 +284,7 @@ public class RadioDevicesTests extends BaseTestCase {
         homePage.searchInGlobalSearch(rruDeviceNameForDelete);
         CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertTrue(objectsList.isNoData());
+        Assert.assertTrue(objectsList.hasNoData());
     }
 
     @Test
@@ -303,7 +303,7 @@ public class RadioDevicesTests extends BaseTestCase {
         homePage.searchInGlobalSearch(bbuDeviceNameForDelete);
         CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertTrue(objectsList.isNoData());
+        Assert.assertTrue(objectsList.hasNoData());
     }
 
     @Test
@@ -322,7 +322,7 @@ public class RadioDevicesTests extends BaseTestCase {
         homePage.searchInGlobalSearch(antennaAHP4517R7v06NameForDelete);
         CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertTrue(objectsList.isNoData());
+        Assert.assertTrue(objectsList.hasNoData());
     }
 
     @Test
@@ -341,7 +341,7 @@ public class RadioDevicesTests extends BaseTestCase {
         homePage.searchInGlobalSearch(aauAAU5614NameForDelete);
         CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertTrue(objectsList.isNoData());
+        Assert.assertTrue(objectsList.hasNoData());
     }
 
 }

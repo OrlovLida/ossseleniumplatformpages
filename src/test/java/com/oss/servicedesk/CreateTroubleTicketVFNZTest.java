@@ -31,7 +31,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     private final static String TT_ASSIGNEE = "ca_kodrobinska";
     private final static String TT_DESCRIPTION = "TestSelenium";
     private final static String TT_DESCRIPTION_EDITED = "TestSelenium_edited";
-    private final static String TT_NEW_ASSIGNEE = "admin oss";
+    private final static String TT_NEW_ASSIGNEE = "Tier2_Mobile";
     private final static String TT_CORRELATION_ID = "12345";
     private final static String TT_REFERENCE_ID = "12345";
     private final static String TT_ESCALATED_TO = "admin oss";
@@ -101,6 +101,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
         SDWizardPage.insertValueToTextComponent(TT_CORRELATION_ID, TT_WIZARD_CORRELATION_ID);
         SDWizardPage.insertValueToTextComponent(TT_REFERENCE_ID, TT_WIZARD_REFERENCE_ID);
         SDWizardPage.enterIncidentDescription(TT_DESCRIPTION);
+        SDWizardPage.enterExpectedResolutionDate();
         SDWizardPage.clickNextButtonInWizard();
         String date = LocalDateTime.now().minusMinutes(5).format(CREATE_DATE_FILTER_DATE_FORMATTER);
         SDWizardPage.insertValueToTextComponent(date, TT_WIZARD_ISSUE_START_DATE_ID);
@@ -114,6 +115,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     public void editTicketDetails() {
         ticketDetailsPage = ticketDashboardPage.openTicketDetailsView("0", BASIC_URL);
         ticketDetailsPage.maximizeWindow(DETAILS_WINDOW_ID);
+        ticketDetailsPage.allowEditingTicket();
         SDWizardPage = ticketDetailsPage.openEditTicketWizard();
         SDWizardPage.clickNextButtonInWizard();
         SDWizardPage.insertValueToSearchComponent(TT_NEW_ASSIGNEE, TT_WIZARD_ASSIGNEE);
@@ -128,6 +130,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     @Description("Skipp checklist actions and change status")
     public void checkOverview() {
         ticketDetailsPage.minimizeWindow(DETAILS_WINDOW_ID);
+        ticketDetailsPage.allowEditingTicket();
         ticketDetailsPage.skipAllActionsOnCheckList();
         Assert.assertTrue(ticketDetailsPage.isAllActionsSkipped());
         ticketDetailsPage.changeStatus(STATUS_ACKNOWLEDGED);
@@ -139,14 +142,15 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
         ticketSearchPage = new TicketSearchPage(driver, webDriverWait);
         ticketSearchPage.goToPage(driver, BASIC_URL);
         ticketSearchPage.clickFilterButton();
-        ticketSearchPage.filterByTextField(TicketSearchPage.ASSIGNEE_ATTRIBUTE, TT_NEW_ASSIGNEE);
+        //TODO do odkomentowania linia 146 i 153 po naprawie buga OSSSD-3243
+        //ticketSearchPage.filterByTextField(TicketSearchPage.ASSIGNEE_ATTRIBUTE, TT_NEW_ASSIGNEE);
 //      TODO Do odkomentowania po naprawieniu aktualizacji widoku Ticket Search (OSSSD-2605)
 //        String startDate = LocalDateTime.now().minusMinutes(10).format(CREATE_DATE_FILTER_DATE_FORMATTER);
 //        String endDate = LocalDateTime.now().minusMinutes(0).format(CREATE_DATE_FILTER_DATE_FORMATTER);
 //        String date = startDate + " - " + endDate;
 //        ticketSearchPage.clickFilterButton();
 //        ticketSearchPage.filterByTextField(TicketSearchPage.CREATION_TIME_ATTRIBUTE, date );
-        ticketSearchPage.clickFilterButton();
+        //ticketSearchPage.clickFilterButton();
         ticketSearchPage.filterByTextField(TicketSearchPage.DESCRIPTION_ATTRIBUTE, TT_DESCRIPTION_EDITED);
         ticketSearchPage.clickFilterButton();
         ticketSearchPage.filterByComboBox(TicketSearchPage.STATUS_ATTRIBUTE, STATUS_ACKNOWLEDGED);

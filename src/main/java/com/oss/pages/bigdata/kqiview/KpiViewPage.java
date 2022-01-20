@@ -1,5 +1,18 @@
 package com.oss.pages.bigdata.kqiview;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.WildcardFileFilter;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.oss.framework.components.common.ListAttributesChooser;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.ComponentFactory;
@@ -19,23 +32,14 @@ import com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType;
 import com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel;
 import com.oss.framework.widgets.dpe.treewidget.KpiTreeWidget;
 import com.oss.pages.BasePage;
+
 import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.filefilter.WildcardFileFilter;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 import static com.oss.configuration.Configuration.CONFIGURATION;
-import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.MiscellaneousOption.*;
+import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.MiscellaneousOption.DATA_COMPLETENESS;
+import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.MiscellaneousOption.LAST_SAMPLE_TIME;
+import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.MiscellaneousOption.SHOW_TIME_ZONE;
 import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.TimePeriodChooserOption.LATEST;
 import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.TimePeriodChooserOption.SMART;
 import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.YAxisOption.MANUAL;
@@ -52,7 +56,7 @@ public class KpiViewPage extends BasePage {
     private static final String LINE_CHART_BUTTON_ID = "dropdown-list-button_line";
     private static final String CHART_COLOR_BUTTON_ID = "chart-color-button";
     private static final String DATA_VIEW_ID = "_Data_View";
-    private static final String SAVE_BOOKMARK_BUTTON_ID = "fa fa-floppy-o";
+    private static final String SAVE_BOOKMARK_BUTTON_ID = "ButtonSaveBookmark";
     private static final String COLOR_PICKER_CLASS = "colorPickerWrapper";
     private static final String CHART_ACTIONS_LINKS_ID = "external-links-button";
     private static final String LINK_TO_XDR_LABEL = "Open xDR for t:SMOKE#ETLforKqis. Time condition limited to last 1 hour(s) from chosen period.";
@@ -276,14 +280,14 @@ public class KpiViewPage extends BasePage {
 
     @Step("I double click on bar in TopN BarChart")
     public void doubleClickTopNDPE() {
-        KpiChartWidget.create(driver, wait).doubleClickOnTopNBar(TOP_N_BARCHART_DPE_ID);
+        KpiChartWidget.create(driver, wait).doubleClickTopNBar(TOP_N_BARCHART_DPE_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     @Step("I check if TopN navigation bar is visible")
     public boolean isTopNNavigationBarVisible() {
         log.info("Checking visibility of TopN navigation bar");
-        return KpiChartWidget.create(driver, wait).isTopNNavigationBarVisible();
+        return KpiChartWidget.create(driver, wait).isTopNNavigationBarPresent();
     }
 
     @Step("I click legend")
@@ -338,41 +342,41 @@ public class KpiViewPage extends BasePage {
 
     @Step("I should see {expectedLineWidth} width line displayed")
     public boolean shouldSeeDataSeriesLineWidth(String expectedLineWidth) {
-        String lineWidth = KpiChartWidget.create(driver, wait).dataSeriesLineWidth();
+        String lineWidth = KpiChartWidget.create(driver, wait).getDataSeriesLineWidth();
         return lineWidth.equals(expectedLineWidth);
     }
 
     @Step("I should not see any lines on chart displayed")
     public boolean shouldNotSeeHiddenLine(String expectedLineVisibility) {
-        String lineVisibility = KpiChartWidget.create(driver, wait).dataSeriesVisibility();
+        String lineVisibility = KpiChartWidget.create(driver, wait).getDataSeriesVisibility();
         return lineVisibility.equals(expectedLineVisibility);
     }
 
     @Step("I should see area (0.6) or line (0) chart displayed")
     public boolean shouldSeeAreaChart(String expectedFillOpacity) {
-        String fillOpacity = KpiChartWidget.create(driver, wait).dataSeriesFillOpacity();
+        String fillOpacity = KpiChartWidget.create(driver, wait).getDataSeriesFillOpacity();
         return fillOpacity.equals(expectedFillOpacity);
     }
 
     @Step("I should see bar chart displayed")
     public boolean shouldSeeBarChart(String expectedFillOpacity) {
-        String fillOpacity = KpiChartWidget.create(driver, wait).barDataSeriesFillOpacity();
+        String fillOpacity = KpiChartWidget.create(driver, wait).getBarDataSeriesFillOpacity();
         return fillOpacity.equals(expectedFillOpacity);
     }
 
     @Step("I should see topN bar chart displayed with DFE data")
     public boolean dfeTopNBarChartIsDisplayed() {
-        return KpiChartWidget.create(driver, wait).topNBarChartIsDisplayed(TOP_N_BARCHART_DFE_ID);
+        return KpiChartWidget.create(driver, wait).isTopNBarChartIsPresent(TOP_N_BARCHART_DFE_ID);
     }
 
     @Step("I should see topN bar chart displayed with DPE data")
     public boolean dpeTopNBarChartIsDisplayed() {
-        return KpiChartWidget.create(driver, wait).topNBarChartIsDisplayed(TOP_N_BARCHART_DPE_ID);
+        return KpiChartWidget.create(driver, wait).isTopNBarChartIsPresent(TOP_N_BARCHART_DPE_ID);
     }
 
     @Step("I should see bar chart displayed")
     public boolean shouldSeeColorChart(String expectedColor) {
-        String color = KpiChartWidget.create(driver, wait).dataSeriesColor();
+        String color = KpiChartWidget.create(driver, wait).getDataSeriesColor();
         return color.equals(expectedColor);
     }
 
@@ -458,7 +462,7 @@ public class KpiViewPage extends BasePage {
     public boolean isTimeZoneDisplayed() {
         log.info("Checking visibility of Time Zone option");
         DelayUtils.waitForPageToLoad(driver, wait);
-        return KpiChartWidget.create(driver, wait).isTimeZoneDisplayed();
+        return KpiChartWidget.create(driver, wait).isTimeZonePresent();
     }
 
     @Step("I should see data completeness displayed in the legend")
@@ -485,9 +489,9 @@ public class KpiViewPage extends BasePage {
     @Step("I should see only Data View Panel displayed")
     public boolean shouldSeeOnlyDataViewDisplayed() {
         KpiChartWidget kpiChartWidget = KpiChartWidget.create(driver, wait);
-        boolean dataViewDisplayed = kpiChartWidget.dataViewPanelVisibility();
-        boolean indicatorsTreeDisplayed = kpiChartWidget.indicatorsTreeVisibility();
-        boolean dimensionsTreeDisplayed = kpiChartWidget.dimensionsTreeVisibility();
+        boolean dataViewDisplayed = kpiChartWidget.isDataViewPanelPresent();
+        boolean indicatorsTreeDisplayed = kpiChartWidget.isIndicatorsTreePresent();
+        boolean dimensionsTreeDisplayed = kpiChartWidget.isDimensionsTreePresent();
         if (dataViewDisplayed & !indicatorsTreeDisplayed & !dimensionsTreeDisplayed) {
             log.info("Only Data View Panel is displayed");
             return true;
@@ -540,7 +544,7 @@ public class KpiViewPage extends BasePage {
 
     @Step("I click Save bookmark")
     public void clickSaveBookmark() {
-        ButtonPanel.create(driver, wait).clickOnIcon(SAVE_BOOKMARK_BUTTON_ID);
+        ButtonPanel.create(driver, wait).clickButton(SAVE_BOOKMARK_BUTTON_ID);
     }
 
     @Step("Check if node is selected in the tree")
@@ -626,12 +630,12 @@ public class KpiViewPage extends BasePage {
 
     @Step("I check if Zoom Out button is visible")
     public boolean isZoomOutButtonVisible() {
-        return KpiChartWidget.create(driver, wait).isZoomOutButtonVisible();
+        return KpiChartWidget.create(driver, wait).isZoomOutButtonPresent();
     }
 
     @Step("I click Zoom Out Button")
     public void clickZoomOutButton() {
-        KpiChartWidget.create(driver, wait).clickZoomOutButton();
+        KpiChartWidget.create(driver, wait).clickZoomOut();
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 

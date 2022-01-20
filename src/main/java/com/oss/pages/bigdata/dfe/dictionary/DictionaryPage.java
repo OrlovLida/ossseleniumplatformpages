@@ -89,7 +89,7 @@ public class DictionaryPage extends BaseDfePage {
     @Step("I check if Entry is deleted from the table")
     public Boolean entryDeletedFromTable() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        return getEditableList().isNoData();
+        return getEditableList().hasNoData();
     }
 
     private EditableList getEditableList() {

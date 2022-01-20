@@ -1,7 +1,15 @@
 package com.oss.pages.servicedesk.ticket;
 
+import java.util.List;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.oss.framework.components.inputs.Button;
-import com.oss.framework.components.inputs.Combobox;
+import com.oss.framework.components.inputs.ComponentFactory;
+import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.listwidget.CommonList;
 import com.oss.framework.listwidget.iaa.ListApp;
@@ -11,13 +19,8 @@ import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tabswidget.TabWindowWidget;
 import com.oss.pages.servicedesk.BaseSDPage;
 import com.oss.pages.servicedesk.ticket.wizard.SDWizardPage;
-import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.List;
+import io.qameta.allure.Step;
 
 public class TicketDetailsPage extends BaseSDPage {
 
@@ -27,6 +30,7 @@ public class TicketDetailsPage extends BaseSDPage {
 
     private static final String EDIT_DETAILS_LABEL = "Edit details";
     private static final String RELEASE_LABEL = "Release";
+    private static final String ALLOW_EDIT_LABEL = "Edit";
     private static final String CREATE_SUB_TICKET = "TT_DETAILS_SUBTICKET_CREATE_PROMPT_TITLE";
     private static final String CHECKLIST_APP_ID = "_checklistApp";
     private static final String SKIP_BUTTON_LABEL = "SKIP";
@@ -34,6 +38,7 @@ public class TicketDetailsPage extends BaseSDPage {
     private static final String EXTERNAL_INFO_LABEL = "External Info";
     private static final String DICTIONARIES_TABLE_ID = "_dictionariesTableId";
     private static final String DICTIONARY_VALUE_TABLE_LABEL = "Dictionary Value";
+    private static final String CHANGE_TICKET_STATUS_COMBOBOX_ID = "change-ticket-status-combobox-input";
 
     public TicketDetailsPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -47,18 +52,30 @@ public class TicketDetailsPage extends BaseSDPage {
         return new SDWizardPage(driver, wait);
     }
 
+    @Step("Click release ticket")
     public void releaseTicket() {
         DelayUtils.waitForPageToLoad(driver, wait);
         Button.create(driver, RELEASE_LABEL).click();
+        DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Clicking release button");
     }
 
+    @Step("Allow ticket editing")
+    public void allowEditingTicket() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        Button.create(driver, ALLOW_EDIT_LABEL).click();
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Clicking edit button");
+    }
+
+    @Step("Click Context action with label {contextActionLabel}")
     public void clickContextAction(String contextActionLabel) {
         DelayUtils.waitForPageToLoad(driver, wait);
         TabWindowWidget.create(driver, wait).callActionByLabel(contextActionLabel);
         log.info("Clicking Context action {}", contextActionLabel);
     }
 
+    @Step("Selecting tab {tabAriaControls}")
     public void selectTab(String tabAriaControls) {
         DelayUtils.waitForPageToLoad(driver, wait);
         TabWindowWidget.create(driver, wait).selectTabById(tabAriaControls);
@@ -74,15 +91,21 @@ public class TicketDetailsPage extends BaseSDPage {
         return new SDWizardPage(driver, wait);
     }
 
+    @Step("Skipping all actions on checklist")
     public void skipAllActionsOnCheckList() {
         CommonList.create(driver, wait, CHECKLIST_APP_ID)
                 .getAllRows()
-                .forEach(row -> row.callActionIcon(SKIP_BUTTON_LABEL));
+                .forEach(row -> {
+                    DelayUtils.waitForPageToLoad(driver, wait);
+                    row.callActionIcon(SKIP_BUTTON_LABEL);
+                });
+        DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Skipping all actions on checklist");
     }
 
+    @Step("Changing status to {statusName}")
     public void changeStatus(String statusName) {
-        Combobox.createServiceDeskStatusComboBox(driver, wait).setSingleStringValue(statusName);
+        ComponentFactory.create(CHANGE_TICKET_STATUS_COMBOBOX_ID, Input.ComponentType.COMBOBOX, driver, wait).setSingleStringValue(statusName);
         log.info("Changing status to {}", statusName);
     }
 
@@ -98,11 +121,12 @@ public class TicketDetailsPage extends BaseSDPage {
         log.info("Minimizing window");
     }
 
+    @Step("Checking if expected external {expectedExistingExternal} exists on the list")
     public boolean checkExistingExternal(String expectedExistingExternal) {
         DelayUtils.sleep(5000);
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Checking if expected external '{}' exists on the list", expectedExistingExternal);
-        if (CommonList.create(driver, wait, EXTERNAL_LIST_ID).isRowVisible(EXTERNAL_INFO_LABEL, expectedExistingExternal)) {
+        if (CommonList.create(driver, wait, EXTERNAL_LIST_ID).isRowDisplayed(EXTERNAL_INFO_LABEL, expectedExistingExternal)) {
             log.info("Expected external '{}' exists on the list", expectedExistingExternal);
             return true;
         } else {
@@ -125,10 +149,6 @@ public class TicketDetailsPage extends BaseSDPage {
             log.debug("Expected text {} is not displayed", expectedText);
             return false;
         }
-    }
-
-    public void createNewNotificationOnMessagesTab() {
-        ListApp.createFromParent(driver, wait, "_tablesWindow").clickCreateNewNotification();
     }
 
     public boolean isAllActionsSkipped() {

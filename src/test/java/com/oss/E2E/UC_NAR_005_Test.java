@@ -157,6 +157,7 @@ public class UC_NAR_005_Test extends BaseTestCase {
     @Test(priority = 7, description = "Run narrow reconciliation")
     @Description("Run narrow reconciliation")
     public void runNarrowReconciliation() {
+        DelayUtils.sleep(5000);
         NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.selectFirstRow();
         waitForPageToLoad();
@@ -172,6 +173,7 @@ public class UC_NAR_005_Test extends BaseTestCase {
     @Test(priority = 8, description = "Check serial number")
     @Description("Refresh view, select first row and check if value of serial number is updated")
     public void checkSerialNumber() {
+        DelayUtils.sleep(30000);
         NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.refreshMainTable();
         waitForPageToLoad();
@@ -183,6 +185,7 @@ public class UC_NAR_005_Test extends BaseTestCase {
     @Test(priority = 9, description = "Delete router")
     @Description("Delete router")
     public void deleteRouter() {
+        DelayUtils.sleep(30000);
         NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.selectFirstRow();
         newInventoryViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, "DeleteDeviceWizardAction");

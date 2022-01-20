@@ -1,14 +1,16 @@
 package com.oss.pages.faultmanagement;
 
-import com.oss.framework.components.inputs.Input;
-import com.oss.framework.components.list.DropdownList;
-import com.oss.framework.listwidget.EditableList;
-import com.oss.framework.widgets.Wizard;
-import com.oss.pages.BasePage;
-import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.list.DraggableList;
+import com.oss.framework.listwidget.EditableList;
+import com.oss.framework.widgets.Wizard;
+import com.oss.pages.BasePage;
+
+import io.qameta.allure.Step;
 
 public class FMCreateWAMVPage extends BasePage {
     private static final Logger log = LoggerFactory.getLogger(FMCreateWAMVPage.class);
@@ -18,15 +20,12 @@ public class FMCreateWAMVPage extends BasePage {
     private static final String DROPDOWNLIST_AVAILABLE = "Available";
     private static final String DROPDOWNLIST_SELECTED = "Selected";
     private static final String EXTENDED_LIST_ID = "ExtendedList-WAMVFiltersInput";
-
+    private final Wizard folderWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
+    private final DraggableList draggableListAvailable = DraggableList.create(driver, wait, DROPDOWNLIST_AVAILABLE);
+    private final DraggableList draggableListSelected = DraggableList.create(driver, wait, DROPDOWNLIST_SELECTED);
     public FMCreateWAMVPage(WebDriver driver) {
         super(driver);
     }
-
-    private final Wizard folderWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
-    private final DropdownList dropdownListAvailable = DropdownList.create(driver, wait, DROPDOWNLIST_AVAILABLE);
-    private final DropdownList dropdownListSelected = DropdownList.create(driver, wait, DROPDOWNLIST_SELECTED);
-
 
     @Step("I set Name of the WAMV")
     public void setName(String name) {
@@ -42,7 +41,7 @@ public class FMCreateWAMVPage extends BasePage {
 
     @Step("I drag and drop filter by name")
     public void dragAndDropFilterByName(String filterName) {
-        dropdownListSelected.drop(dropdownListAvailable.getDraggableElement(filterName));
+        draggableListSelected.drop(draggableListAvailable.getDraggableElement(filterName));
         log.info("Drag filter {} and drop it", filterName);
     }
 

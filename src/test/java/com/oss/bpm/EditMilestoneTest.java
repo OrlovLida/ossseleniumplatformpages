@@ -31,10 +31,10 @@ import com.oss.utils.TestListener;
  */
 @Listeners({TestListener.class})
 public class EditMilestoneTest extends BaseTestCase {
-    private String BPM_USER_LOGIN = "bpm_webselenium";
-    private String BPM_USER_PASSWORD = "Webtests123!";
-    private String BPM_ADMIN_USER_LOGIN = "bpm_admin_webselenium";
-    private String BPM_ADMIN_USER_PASSWORD = "Webtests123!";
+    private final String BPM_USER_LOGIN = "bpm_webselenium";
+    private final String BPM_USER_PASSWORD = "Webtests123!";
+    private final String BPM_ADMIN_USER_LOGIN = "bpm_admin_webselenium";
+    private final String BPM_ADMIN_USER_PASSWORD = "Webtests123!";
 
     private static final Logger log = LoggerFactory.getLogger(EditMilestoneTest.class);
     private final static String EDIT_MILESTONE_BUTTON = "editMilestonesContextAction";
@@ -72,6 +72,7 @@ public class EditMilestoneTest extends BaseTestCase {
     @Test(priority = 1, description = "Edit Description")
     @Description("Edit Description")
     public void editDescription() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         // given
         MilestoneViewPage milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -93,6 +94,7 @@ public class EditMilestoneTest extends BaseTestCase {
     @Test(priority = 2, description = "Edit LeadTime")
     @Description("Edit LeadTime")
     public void editLeadTime() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         // given
         MilestoneViewPage milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -114,6 +116,7 @@ public class EditMilestoneTest extends BaseTestCase {
     @Test(priority = 3, description = "Edit related Task")
     @Description("Edit related Task")
     public void editRelatedTask() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         MilestoneViewPage milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         milestoneViewPage.selectMilestone(milestoneName);
@@ -129,6 +132,7 @@ public class EditMilestoneTest extends BaseTestCase {
     @Test(priority = 4, description = "Edit Due Date for earlier date")
     @Description("Edit Due Date for earlier date")
     public void editDueDateEarlierDate() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         // given
         MilestoneViewPage milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -150,6 +154,7 @@ public class EditMilestoneTest extends BaseTestCase {
     @Test(priority = 5, description = "Edit Due Date for later date")
     @Description("Edit Due Date for later date")
     void editDueDateLaterDate() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         // given
         MilestoneViewPage milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -173,6 +178,7 @@ public class EditMilestoneTest extends BaseTestCase {
     @Test(priority = 6, description = "Check if Name is editable")
     @Description("Check if Name is editable")
     void checkIfNameIsEditable() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         MilestoneViewPage milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         // when
@@ -192,6 +198,7 @@ public class EditMilestoneTest extends BaseTestCase {
     @Test(priority = 7, description = "Edit Manual Completion")
     @Description("Edit Manual Completion")
     void editManualCompletion() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         MilestoneViewPage milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         milestoneViewPage.selectMilestone(milestoneName);
@@ -209,6 +216,7 @@ public class EditMilestoneTest extends BaseTestCase {
     @Test(priority = 8, description = "Check if Modify User is updated")
     @Description("Check if Modify User is updated")
     public void checkIfModifyUserIsUpdated() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         // given
         MilestoneViewPage milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);

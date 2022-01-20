@@ -61,7 +61,7 @@ public class BookmarkManagerPage extends BasePage {
     @Step("I check if list contains any bookmarks")
     public boolean isAnyBookmarkInList() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        return !CommonList.create(driver, wait, LIST_ID).isNoData();
+        return !CommonList.create(driver, wait, LIST_ID).hasNoData();
     }
 
     public void clickCreateNewCategory() {

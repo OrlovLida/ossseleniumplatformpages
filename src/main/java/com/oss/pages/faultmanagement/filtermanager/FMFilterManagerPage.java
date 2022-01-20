@@ -1,17 +1,19 @@
 package com.oss.pages.faultmanagement.filtermanager;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.openqa.selenium.WebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.oss.framework.components.portals.PopupV2;
 import com.oss.framework.listwidget.CommonList;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.treewidget.TreeWidget;
 import com.oss.pages.BasePage;
-import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import io.qameta.allure.Step;
 
 /**
  * @author Bartosz Nowak
@@ -39,35 +41,31 @@ public class FMFilterManagerPage extends BasePage {
     }
 
     @Step("Open Create New Folder Wizard")
-    public FMCrateWizardPage openCreateNewFolderWizard() {
+    public FMCreateWizardPage openCreateNewFolderWizard() {
         DelayUtils.waitForPageToLoad(driver, wait);
         getCommonList().callAction(NEW_FOLDER_ID);
         log.info("Opening wizard to create new folder");
-        return new FMCrateWizardPage(driver);
+        return new FMCreateWizardPage(driver);
     }
 
     @Step("Open Create New Filter Wizard")
-    public FMCrateWizardPage openCreateNewFilterWizard() {
+    public FMCreateWizardPage openCreateNewFilterWizard() {
         DelayUtils.waitForPageToLoad(driver, wait);
         getCommonList().callAction(NEW_FILTER_ID);
         log.info("Opening wizard to create new filter");
-        return new FMCrateWizardPage(driver);
-    }
-
-    private CommonList getCommonList() {
-        return CommonList.create(driver, wait, COMMON_LIST_APP_ID);
+        return new FMCreateWizardPage(driver);
     }
 
     @Step("I create Folder")
     public void createFolder(String name, String description) {
-        FMCrateWizardPage fmWizardPage = openCreateNewFolderWizard();
+        FMCreateWizardPage fmWizardPage = openCreateNewFolderWizard();
         fmWizardPage.setName(name).setDescription(description).clickAccept();
         log.info("Creating a folder name: {}, description: {}", name, description);
     }
 
     @Step("I create Folder")
     public void createFolder(String name, String description, String filterName) {
-        FMCrateWizardPage fmWizardPage = openCreateNewFolderWizard();
+        FMCreateWizardPage fmWizardPage = openCreateNewFolderWizard();
         fmWizardPage.setName(name).setDescription(description);
         fmWizardPage.dragAndDropFilterByName(filterName);
         fmWizardPage.clickAccept();
@@ -92,7 +90,7 @@ public class FMFilterManagerPage extends BasePage {
             List<CommonList.Category> categories =
                     getCommonList().createCategories().stream().filter(category -> category.getValue().contains(nameLabel))
                             .collect(Collectors.toList());
-            if (categories.size() > 0) {
+            if (!categories.isEmpty()) {
                 return true;
             }
             DelayUtils.sleep(50);
@@ -108,7 +106,7 @@ public class FMFilterManagerPage extends BasePage {
             List<CommonList.Category> categories =
                     getCommonList().createCategories().stream().filter(category -> category.getValue().contains(nameLabel))
                             .collect(Collectors.toList());
-            if (categories.size() == 0) {
+            if (categories.isEmpty()) {
                 return true;
             }
             DelayUtils.sleep(50);
@@ -118,7 +116,7 @@ public class FMFilterManagerPage extends BasePage {
 
     @Step("I create filter")
     public void createFilter(String name, String description, String type) {
-        FMCrateWizardPage fmWizardPage = openCreateNewFilterWizard();
+        FMCreateWizardPage fmWizardPage = openCreateNewFilterWizard();
         fmWizardPage.setName(name).setDescription(description).setTypeValue(type);
         fmWizardPage.clickOnAddConditon();
         PopupV2 popup = PopupV2.create(driver, wait);
@@ -127,5 +125,9 @@ public class FMFilterManagerPage extends BasePage {
         popup.clickButtonByLabel(ADD_BUTTON_LABEL);
         //TODO skończyć gdy zostanie dostarczone OSSNGSA-9444
         log.info("Creating a filter name: {}, description: {}, type: {}", name, description, type);
+    }
+
+    private CommonList getCommonList() {
+        return CommonList.create(driver, wait, COMMON_LIST_APP_ID);
     }
 }

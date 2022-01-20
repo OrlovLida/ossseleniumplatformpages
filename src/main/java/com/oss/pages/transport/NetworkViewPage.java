@@ -7,7 +7,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.contextactions.ActionsContainer;
-import com.oss.framework.components.contextactions.ButtonContainer;
 import com.oss.framework.components.contextactions.OldActionsContainer;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.Input;
@@ -45,7 +44,7 @@ public class NetworkViewPage extends BasePage {
     public static final String DELETE_DEVICE_ACTION = "EDIT_Delete Device-null";
     public static final String ADD_TO_VIEW_ACTION = "add_to_view_group";
     public static final String CREATE_MEDIATION_CONFIGURATION_ID = "CREATE_Mediation Configuration-null";
-    public static final String DELETE_CONNECTION_ID = "EDIT_Delete Connection-null";
+    public static final String DELETE_CONNECTION_ID = "EDIT_Delete-null";
     public static final String CREATE_CONNECTION_ID = "CREATE_Create Connection-null";
     public static final String HIERARCHY_VIEW_ACTION = "NAVIGATION_Hierarchy View-null";
     public static final String DEVICE_ACTION = "add_to_view_group_Device-null";
@@ -159,11 +158,6 @@ public class NetworkViewPage extends BasePage {
         button.click();
     }
 
-    @Step("Click Proceed")
-    public void clickProceed() {
-        Wizard.createWizard(driver, wait).clickProceed();
-    }
-
     @Step("Click confirmation box button")
     public void clickConfirmationBoxButtonByLabel(String label) {
         ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
@@ -191,8 +185,8 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Open modify termination wizard")
     public void modifyTermination() {
-        ButtonContainer button = ButtonContainer.create(driver, wait);
-        button.callActionById("Modify Termination");
+        TabsWidget tabsWidget = TabsWidget.createById(driver, wait, "bottomTabs");
+        tabsWidget.callActionById("Modify Termination");
     }
 
     @Step("Set trail termination port")

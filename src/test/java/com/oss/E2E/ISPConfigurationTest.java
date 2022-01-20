@@ -212,7 +212,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         driver.navigate().refresh();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
-        String labelpath = PHYSICAL_DEVICE_NAME + ".Chassis.Chassis.Slots.LT3.Card.NELT-B";
+        String labelpath = PHYSICAL_DEVICE_NAME + ".Chassis." + PHYSICAL_DEVICE_NAME + "/Chassis.Slots.LT3.Card.NELT-B";
         hierarchyViewPage.selectNodeByLabelsPath(labelpath);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hierarchyViewPage.useTreeContextAction(ActionsContainer.EDIT_GROUP_ID, "CardChangeModelAction");

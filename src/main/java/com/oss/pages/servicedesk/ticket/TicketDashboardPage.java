@@ -1,5 +1,9 @@
 package com.oss.pages.servicedesk.ticket;
 
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.portals.DropdownList;
@@ -8,11 +12,8 @@ import com.oss.framework.widgets.tablewidget.OldTable;
 import com.oss.framework.widgets.tablewidget.TableWidget;
 import com.oss.pages.servicedesk.BaseSDPage;
 import com.oss.pages.servicedesk.ticket.wizard.SDWizardPage;
+
 import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static com.oss.pages.servicedesk.ticket.TicketDetailsPage.DETAILS_PAGE_URL_PATTERN;
 
@@ -96,10 +97,12 @@ public class TicketDashboardPage extends BaseSDPage {
 
     @Step("I open details view for {rowIndex} ticket in Ticket table")
     public TicketDetailsPage openTicketDetailsView(String rowIndex, String basicURL) {
+        DelayUtils.waitForPageToLoad(driver, wait);
         String ticketId = getTroubleTicketsTable().getCellValue(Integer.parseInt(rowIndex), ID_ATTRIBUTE);
         log.info("Opening ticket details for ticket with id: {}", ticketId);
         DelayUtils.waitForPageToLoad(driver, wait);
         driver.get(String.format(DETAILS_PAGE_URL_PATTERN, basicURL, ticketId));
+        DelayUtils.waitForPageToLoad(driver, wait);
         return new TicketDetailsPage(driver, wait);
     }
 }

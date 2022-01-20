@@ -117,9 +117,9 @@ public class TableWidgetTest extends BaseTestCase {
     
     @Test(priority = 5)
     public void paginationInitialStatus() {
-        Assertions.assertThat(tableWidget.getPagination().isFirstPageBtnEnabled()).isFalse();
-        Assertions.assertThat(tableWidget.getPagination().isPrevPageBtnEnabled()).isFalse();
-        Assertions.assertThat(tableWidget.getPagination().isNextPageBtnEnabled()).isTrue();
+        Assertions.assertThat(tableWidget.getPagination().isFirstPageButtonPresent()).isFalse();
+        Assertions.assertThat(tableWidget.getPagination().isPreviousPageButtonPresent()).isFalse();
+        Assertions.assertThat(tableWidget.getPagination().isNextPageButtonPresent()).isTrue();
     }
     
     @Test(priority = 6)
@@ -128,8 +128,8 @@ public class TableWidgetTest extends BaseTestCase {
         
         DelayUtils.sleep(2000);
         
-        Assertions.assertThat(tableWidget.getPagination().isPrevPageBtnEnabled()).isTrue();
-        Assertions.assertThat(tableWidget.getPagination().isFirstPageBtnEnabled()).isTrue();
+        Assertions.assertThat(tableWidget.getPagination().isPreviousPageButtonPresent()).isTrue();
+        Assertions.assertThat(tableWidget.getPagination().isFirstPageButtonPresent()).isTrue();
         Assertions.assertThat(tableWidget.getPagination().getBottomRageOfRows()).isEqualTo(tableWidget.getPagination().getStep() + 1);
         Assertions.assertThat(tableWidget.getPagination().getTopRageOfRows()).isEqualTo(tableWidget.getPagination().getStep() * 2);
     }
@@ -158,11 +158,15 @@ public class TableWidgetTest extends BaseTestCase {
     public void checkSortingByASC() {
         String columnId = "id";
         String attributeId = "plot";
-        String attributeValue = "depression";
+        String attributeValue = "Two";
         
         inventoryViewPage.searchByAttributeValue(attributeId, attributeValue, Input.ComponentType.TEXT_FIELD);
         DelayUtils.sleep(1000);
-        List<String> sortedValues = getValuesFromTableByKey(columnId).stream().sorted().collect(Collectors.toList());
+        List<String> sortedValues = getValuesFromTableByKey(columnId).stream()
+                .map(Long::parseLong)
+                .sorted()
+                .map(String::valueOf)
+                .collect(Collectors.toList());
         
         tableWidget.sortColumnByASC(columnId);
         DelayUtils.sleep(1000);
@@ -177,14 +181,18 @@ public class TableWidgetTest extends BaseTestCase {
     public void checkSortingByDESC() {
         String columnId = "id";
         String attributeId = "plot";
-        String attributeValue = "depression";
+        String attributeValue = "Two";
         
         inventoryViewPage.searchByAttributeValue(attributeId, attributeValue, Input.ComponentType.TEXT_FIELD);
         DelayUtils.sleep(1000);
-        
-        List<String> sortedValues = getValuesFromTableByKey(columnId);
-        sortedValues.sort(Collections.reverseOrder());
-        
+
+        List<String> sortedValues = getValuesFromTableByKey(columnId).stream()
+                .map(Long::parseLong)
+                .sorted(Collections
+                        .reverseOrder())
+                .map(String::valueOf)
+                .collect(Collectors.toList());
+
         tableWidget.sortColumnByDESC(columnId);
         DelayUtils.sleep(1000);
         

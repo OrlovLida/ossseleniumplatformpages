@@ -16,8 +16,18 @@
         </classes>
     </test>
     <test name="LayoutTests">
+    <classes>
+        <class name="com.oss.web.LayoutTest"/>
+    </classes>
+</test>
+    <test name="FilteringOnRelationNodesTest">
         <classes>
-            <class name="com.oss.web.LayoutTest"/>
+            <class name="com.oss.web.FilteringOnRelationNodesTest"/>
+        </classes>
+    </test>
+    <test name="TreeWidget">
+        <classes>
+            <class name="com.oss.web.TreeWidgetTest"/>
         </classes>
     </test>
 </suite>
