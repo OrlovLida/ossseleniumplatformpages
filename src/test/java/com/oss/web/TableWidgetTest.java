@@ -158,11 +158,15 @@ public class TableWidgetTest extends BaseTestCase {
     public void checkSortingByASC() {
         String columnId = "id";
         String attributeId = "plot";
-        String attributeValue = "depression";
+        String attributeValue = "Two";
         
         inventoryViewPage.searchByAttributeValue(attributeId, attributeValue, Input.ComponentType.TEXT_FIELD);
         DelayUtils.sleep(1000);
-        List<String> sortedValues = getValuesFromTableByKey(columnId).stream().sorted().collect(Collectors.toList());
+        List<String> sortedValues = getValuesFromTableByKey(columnId).stream()
+                .map(Long::parseLong)
+                .sorted()
+                .map(String::valueOf)
+                .collect(Collectors.toList());
         
         tableWidget.sortColumnByASC(columnId);
         DelayUtils.sleep(1000);
@@ -177,14 +181,18 @@ public class TableWidgetTest extends BaseTestCase {
     public void checkSortingByDESC() {
         String columnId = "id";
         String attributeId = "plot";
-        String attributeValue = "depression";
+        String attributeValue = "Two";
         
         inventoryViewPage.searchByAttributeValue(attributeId, attributeValue, Input.ComponentType.TEXT_FIELD);
         DelayUtils.sleep(1000);
-        
-        List<String> sortedValues = getValuesFromTableByKey(columnId);
-        sortedValues.sort(Collections.reverseOrder());
-        
+
+        List<String> sortedValues = getValuesFromTableByKey(columnId).stream()
+                .map(Long::parseLong)
+                .sorted(Collections
+                        .reverseOrder())
+                .map(String::valueOf)
+                .collect(Collectors.toList());
+
         tableWidget.sortColumnByDESC(columnId);
         DelayUtils.sleep(1000);
         

@@ -28,7 +28,7 @@ import com.oss.untils.Environment;
  */
 public class FilteringOnRelationNodesTest extends BaseTestCase {
     private Environment env = Environment.getInstance();
-    private static final Logger log = LoggerFactory.getLogger(HierarchyViewTest.class);
+    private static final Logger log = LoggerFactory.getLogger(TreeWidgetTest.class);
     private static final String LOCATION_NAME = "FilteringOnRelationNodesTest";
     private static final String LOCATION_TYPE_BUILDING = "Building";
     private static final String NAME_ATTRIBUTE_ID = "name";
