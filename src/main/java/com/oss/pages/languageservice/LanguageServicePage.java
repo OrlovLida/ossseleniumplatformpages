@@ -1,9 +1,8 @@
 package com.oss.pages.languageservice;
 
 import com.oss.framework.components.contextactions.ActionsContainer;
-import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.tablewidget.TableWidget;
+import com.oss.framework.widgets.table.TableWidget;
 import com.oss.pages.BasePage;
 import com.oss.pages.exportguiwizard.ExportGuiWizardPage;
 import com.oss.pages.platform.NotificationWrapperPage;

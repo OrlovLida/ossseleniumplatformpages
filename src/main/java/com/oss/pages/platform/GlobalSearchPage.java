@@ -5,8 +5,7 @@ import org.openqa.selenium.WebDriver;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.Input.ComponentType;
-import com.oss.framework.components.portals.DropdownList;
-import com.oss.framework.listwidget.CommonList;
+import com.oss.framework.widgets.list.CommonList;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;

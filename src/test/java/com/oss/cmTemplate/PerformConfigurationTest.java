@@ -6,8 +6,8 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
-import com.oss.framework.mainheader.Notifications;
-import com.oss.framework.sidemenu.SideMenu;
+import com.oss.framework.components.mainheader.Notifications;
+import com.oss.framework.navigation.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.LogManagerPage;
 import com.oss.pages.template_cm.ChangeConfigurationPage;

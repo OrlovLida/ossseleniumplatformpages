@@ -3,7 +3,7 @@ package com.oss.pages.transport.ipam;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.table.TableComponent;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.Wizard;
+import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 import com.oss.pages.transport.ipam.helper.IPSubnetFilterProperties;
 import com.oss.pages.transport.ipam.helper.IPSubnetWizardProperties;

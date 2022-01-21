@@ -7,8 +7,8 @@ import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.Wizard;
-import com.oss.framework.widgets.treewidget.TreeWidget;
+import com.oss.framework.wizard.Wizard;
+import com.oss.framework.widgets.tree.TreeWidget;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;

@@ -2,8 +2,8 @@ package com.oss.pages.radio;
 
 import org.openqa.selenium.WebDriver;
 
-import com.oss.framework.widgets.Wizard;
-import com.oss.framework.widgets.treewidget.TreeWidget;
+import com.oss.framework.wizard.Wizard;
+import com.oss.framework.widgets.tree.TreeWidget;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;

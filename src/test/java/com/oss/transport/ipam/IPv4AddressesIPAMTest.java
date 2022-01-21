@@ -1,6 +1,6 @@
 package com.oss.transport.ipam;
 
-import com.oss.framework.mainheader.PerspectiveChooser;
+import com.oss.framework.components.mainheader.PerspectiveChooser;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;

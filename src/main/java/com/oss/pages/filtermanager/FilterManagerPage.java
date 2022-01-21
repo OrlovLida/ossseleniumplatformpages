@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import org.openqa.selenium.WebDriver;
 
-import com.oss.framework.listwidget.CommonList;
+import com.oss.framework.widgets.list.CommonList;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.BasePage;
 

@@ -7,17 +7,17 @@ import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.Input.ComponentType;
-import com.oss.framework.mainheader.Notifications;
-import com.oss.framework.mainheader.NotificationsInterface;
-import com.oss.framework.prompts.ConfirmationBox;
-import com.oss.framework.prompts.ConfirmationBoxInterface;
+import com.oss.framework.components.mainheader.Notifications;
+import com.oss.framework.components.mainheader.NotificationsInterface;
+import com.oss.framework.components.prompts.ConfirmationBox;
+import com.oss.framework.components.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Widget;
-import com.oss.framework.widgets.tablewidget.OldTable;
-import com.oss.framework.widgets.tablewidget.TableInterface;
-import com.oss.framework.widgets.tabswidget.TabWindowWidget;
-import com.oss.framework.widgets.tabswidget.TabsInterface;
-import com.oss.framework.widgets.treewidget.TreeWidget;
+import com.oss.framework.widgets.table.OldTable;
+import com.oss.framework.widgets.table.TableInterface;
+import com.oss.framework.widgets.tabs.TabWindowWidget;
+import com.oss.framework.widgets.tabs.TabsInterface;
+import com.oss.framework.widgets.tree.TreeWidget;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;

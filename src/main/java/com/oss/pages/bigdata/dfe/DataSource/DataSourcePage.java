@@ -5,7 +5,7 @@ import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input.ComponentType;
 import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.tablewidget.OldTable;
+import com.oss.framework.widgets.table.OldTable;
 import com.oss.pages.bigdata.dfe.BaseDfePage;
 import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;

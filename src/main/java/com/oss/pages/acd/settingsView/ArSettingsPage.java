@@ -1,25 +1,20 @@
 package com.oss.pages.acd.settingsView;
 
-import com.oss.framework.components.contextactions.ButtonContainer;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.components.inputs.SearchField;
-import com.oss.framework.prompts.ConfirmationBox;
-import com.oss.framework.prompts.ConfirmationBoxInterface;
+import com.oss.framework.components.prompts.ConfirmationBox;
+import com.oss.framework.components.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.CSSUtils;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.Wizard;
-import com.oss.framework.widgets.tablewidget.OldTable;
-import com.oss.framework.widgets.tabswidget.TabWindowWidget;
-import com.oss.framework.widgets.tabswidget.TabsInterface;
-import com.oss.framework.widgets.tabswidget.TabsWidget;
+import com.oss.framework.wizard.Wizard;
+import com.oss.framework.widgets.table.OldTable;
+import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.acd.BaseACDPage;
 import com.oss.pages.acd.scenarioSummaryView.AsdScenarioSummaryViewPage;
 
 import io.qameta.allure.Step;
 
-import org.apache.logging.log4j.core.util.Assert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;

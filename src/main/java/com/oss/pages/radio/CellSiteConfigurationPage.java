@@ -4,12 +4,12 @@ import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.portals.DropdownList;
-import com.oss.framework.prompts.ConfirmationBox;
-import com.oss.framework.prompts.ConfirmationBoxInterface;
+import com.oss.framework.components.prompts.ConfirmationBox;
+import com.oss.framework.components.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.Wizard;
-import com.oss.framework.widgets.tablewidget.OldTable;
-import com.oss.framework.widgets.treewidget.TreeWidget;
+import com.oss.framework.wizard.Wizard;
+import com.oss.framework.widgets.table.OldTable;
+import com.oss.framework.widgets.tree.TreeWidget;
 import com.oss.pages.BasePage;
 import com.oss.pages.physical.DeviceWizardPage;
 

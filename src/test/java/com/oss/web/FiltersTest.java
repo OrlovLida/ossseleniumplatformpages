@@ -15,7 +15,6 @@ import org.testng.annotations.Test;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.search.AdvancedSearch;
-import com.oss.framework.data.Data;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.filtermanager.EditFilterPage;
 import com.oss.pages.filtermanager.FilterManagerPage;

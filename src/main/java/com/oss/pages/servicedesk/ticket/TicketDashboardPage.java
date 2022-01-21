@@ -8,8 +8,8 @@ import org.slf4j.LoggerFactory;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.tablewidget.OldTable;
-import com.oss.framework.widgets.tablewidget.TableWidget;
+import com.oss.framework.widgets.table.OldTable;
+import com.oss.framework.widgets.table.TableWidget;
 import com.oss.pages.servicedesk.BaseSDPage;
 import com.oss.pages.servicedesk.ticket.wizard.SDWizardPage;
 

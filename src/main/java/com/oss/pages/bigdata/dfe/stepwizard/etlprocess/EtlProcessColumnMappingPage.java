@@ -1,7 +1,7 @@
 package com.oss.pages.bigdata.dfe.stepwizard.etlprocess;
 
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.listwidget.EditableList;
+import com.oss.framework.widgets.list.EditableList;
 import com.oss.pages.bigdata.dfe.stepwizard.commons.ColumnMappingPage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;

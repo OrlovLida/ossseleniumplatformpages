@@ -7,12 +7,12 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
-import com.oss.framework.alerts.SystemMessageContainer;
-import com.oss.framework.prompts.ConfirmationBox;
-import com.oss.framework.prompts.ConfirmationBoxInterface;
+import com.oss.framework.components.alerts.SystemMessageContainer;
+import com.oss.framework.components.prompts.ConfirmationBox;
+import com.oss.framework.components.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.tabswidget.TabWindowWidget;
-import com.oss.framework.widgets.tabswidget.TabsInterface;
+import com.oss.framework.widgets.tabs.TabWindowWidget;
+import com.oss.framework.widgets.tabs.TabsInterface;
 import com.oss.pages.physical.LocationOverviewPage;
 import com.oss.pages.physical.LocationOverviewPage.TabName;
 import com.oss.pages.physical.LocationWizardPage;

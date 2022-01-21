@@ -7,11 +7,11 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.sidemenu.SideMenu;
+import com.oss.framework.navigation.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.Wizard;
-import com.oss.framework.widgets.tablewidget.OldTable;
-import com.oss.framework.widgets.tablewidget.TableInterface;
+import com.oss.framework.wizard.Wizard;
+import com.oss.framework.widgets.table.OldTable;
+import com.oss.framework.widgets.table.TableInterface;
 import com.oss.pages.BasePage;
 
 /**

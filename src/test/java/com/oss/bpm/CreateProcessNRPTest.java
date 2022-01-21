@@ -7,10 +7,10 @@
 package com.oss.bpm;
 
 import com.oss.BaseTestCase;
-import com.oss.framework.alerts.SystemMessageContainer;
-import com.oss.framework.alerts.SystemMessageInterface;
-import com.oss.framework.mainheader.PerspectiveChooser;
-import com.oss.framework.mainheader.ToolbarWidget;
+import com.oss.framework.components.alerts.SystemMessageContainer;
+import com.oss.framework.components.alerts.SystemMessageInterface;
+import com.oss.framework.components.mainheader.PerspectiveChooser;
+import com.oss.framework.components.mainheader.ToolbarWidget;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.IntegrationProcessWizardPage;
 import com.oss.pages.bpm.processinstances.ProcessInstancesPage;

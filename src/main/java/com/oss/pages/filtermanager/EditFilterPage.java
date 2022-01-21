@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver;
 import com.oss.framework.components.list.DraggableList;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.utils.DragAndDrop;
-import com.oss.framework.widgets.Wizard;
+import com.oss.framework.wizard.Wizard;
 
 import io.qameta.allure.Step;
 

@@ -8,9 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.portals.PopupV2;
-import com.oss.framework.listwidget.CommonList;
+import com.oss.framework.widgets.list.CommonList;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.treewidget.TreeWidget;
+import com.oss.framework.widgets.tree.TreeWidget;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;

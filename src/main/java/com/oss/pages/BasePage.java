@@ -1,8 +1,8 @@
 package com.oss.pages;
 
-import com.oss.framework.mainheader.ToolbarWidget;
-import com.oss.framework.mainheader.LoginPanel;
-import com.oss.framework.sidemenu.SideMenu;
+import com.oss.framework.components.mainheader.ToolbarWidget;
+import com.oss.framework.components.mainheader.LoginPanel;
+import com.oss.framework.navigation.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.*;
 import io.qameta.allure.Step;

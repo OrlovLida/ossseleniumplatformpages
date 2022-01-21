@@ -1,6 +1,6 @@
 package com.oss.pages.bigdata.dfe.dictionary;
 
-import com.oss.framework.listwidget.EditableList;
+import com.oss.framework.widgets.list.EditableList;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bigdata.dfe.BaseDfePage;
 import io.qameta.allure.Step;

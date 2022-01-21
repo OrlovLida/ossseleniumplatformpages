@@ -1,19 +1,15 @@
 package com.oss.radio;
 
 import com.oss.BaseTestCase;
-import com.oss.framework.alerts.SystemMessageContainer;
-import com.oss.framework.alerts.SystemMessageInterface;
-import com.oss.framework.listwidget.CommonList;
+import com.oss.framework.components.alerts.SystemMessageContainer;
+import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.platform.GlobalSearchPage;
 import com.oss.pages.platform.HomePage;
-import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
 import com.oss.pages.radio.Cell5GWizardPage;
 import com.oss.pages.radio.CellSiteConfigurationPage;
 import com.oss.pages.radio.GNodeBWizardPage;
 import com.oss.pages.radio.HostingWizardPage;
 import com.oss.repositories.*;
-import com.oss.services.PhysicalInventoryClient;
 import com.oss.services.ResourceCatalogClient;
 import com.oss.untils.Constants;
 import com.oss.untils.Environment;

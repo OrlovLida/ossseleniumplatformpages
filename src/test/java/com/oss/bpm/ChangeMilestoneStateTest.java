@@ -1,9 +1,9 @@
 package com.oss.bpm;
 
 import com.oss.BaseTestCase;
-import com.oss.framework.alerts.SystemMessageContainer;
-import com.oss.framework.mainheader.ToolbarWidget;
-import com.oss.framework.prompts.ConfirmationBox;
+import com.oss.framework.components.alerts.SystemMessageContainer;
+import com.oss.framework.components.mainheader.ToolbarWidget;
+import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.milestones.ChangeStateMilestoneWizardPage;
 import com.oss.pages.bpm.milestones.Milestone;

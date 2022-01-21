@@ -7,7 +7,7 @@
 package com.oss.bpm;
 
 import com.oss.BaseTestCase;
-import com.oss.framework.mainheader.ToolbarWidget;
+import com.oss.framework.components.mainheader.ToolbarWidget;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.milestones.Milestone;
 import com.oss.pages.bpm.processinstances.ProcessInstancesPage;

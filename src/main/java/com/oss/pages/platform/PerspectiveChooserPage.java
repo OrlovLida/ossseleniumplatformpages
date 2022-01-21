@@ -1,7 +1,7 @@
 package com.oss.pages.platform;
 
-import com.oss.framework.mainheader.PerspectiveChooser;
-import com.oss.framework.mainheader.ToolbarWidget;
+import com.oss.framework.components.mainheader.PerspectiveChooser;
+import com.oss.framework.components.mainheader.ToolbarWidget;
 import com.oss.pages.BasePage;
 import org.openqa.selenium.WebDriver;
 
