@@ -9,11 +9,11 @@ package com.oss.pages.bpm.processinstances;
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.listwidget.CommonList;
+import com.oss.framework.widgets.list.CommonList;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.tablewidget.OldTable;
-import com.oss.framework.widgets.tablewidget.TableInterface;
-import com.oss.framework.widgets.tabswidget.TabsWidget;
+import com.oss.framework.widgets.table.OldTable;
+import com.oss.framework.widgets.table.TableInterface;
+import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.BasePage;
 
 /**

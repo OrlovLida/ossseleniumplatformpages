@@ -14,14 +14,14 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
-import com.oss.framework.alerts.SystemMessageContainer;
-import com.oss.framework.alerts.SystemMessageInterface;
+import com.oss.framework.components.alerts.SystemMessageContainer;
+import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.listwidget.EditableList;
+import com.oss.framework.widgets.list.EditableList;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.Wizard;
-import com.oss.framework.widgets.tablewidget.OldTable;
-import com.oss.framework.widgets.tablewidget.TableInterface;
+import com.oss.framework.wizard.Wizard;
+import com.oss.framework.widgets.table.OldTable;
+import com.oss.framework.widgets.table.TableInterface;
 import com.oss.pages.BasePage;
 import com.oss.pages.bpm.milestones.Milestone;
 

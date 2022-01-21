@@ -3,7 +3,7 @@ package com.oss.pages.mfc.spc;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.oss.framework.prompts.ConfirmationBox;
+import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.BasePage;
 
