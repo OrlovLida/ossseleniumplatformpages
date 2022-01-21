@@ -4,14 +4,14 @@ import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.table.TableComponent;
-import com.oss.framework.data.Data;
+import com.oss.framework.components.data.Data;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Widget;
-import com.oss.framework.widgets.Wizard;
-import com.oss.framework.widgets.tablewidget.TableWidget;
+import com.oss.framework.wizard.Wizard;
+import com.oss.framework.widgets.table.TableWidget;
 import com.oss.pages.BasePage;
 
-import static com.oss.framework.widgets.Wizard.createWizard;
+import static com.oss.framework.wizard.Wizard.createWizard;
 
 public class ChangeIPNetworkWizardPage extends BasePage {
     private static final String WIZARD_ID = "ipnetworkReassignmentWizardWigetId";

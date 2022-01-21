@@ -1,7 +1,7 @@
 package com.oss.pages.platform;
 
 import com.oss.framework.components.portals.SaveConfigurationWizard.Field;
-import com.oss.framework.mainheader.ButtonPanel;
+import com.oss.framework.components.mainheader.ButtonPanel;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
