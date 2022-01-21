@@ -3,7 +3,6 @@ package com.oss.transport;
 
 import com.oss.BaseTestCase;
 import com.oss.configuration.Configuration;
-import com.oss.framework.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.transport.VSI.VSIRouteTargetAssignmentPage;
 import com.oss.pages.transport.VSI.VSIOverviewPage;
@@ -12,8 +11,6 @@ import com.oss.pages.transport.routeTarget.RouteTargetOverviewPage;
 import com.oss.pages.transport.routeTarget.RouteTargetWizardPage;
 import io.qameta.allure.Step;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;

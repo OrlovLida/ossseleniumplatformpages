@@ -12,13 +12,13 @@ import java.util.List;
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.inputs.Button;
-import com.oss.framework.prompts.ConfirmationBox;
-import com.oss.framework.prompts.ConfirmationBoxInterface;
+import com.oss.framework.components.prompts.ConfirmationBox;
+import com.oss.framework.components.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
-import com.oss.framework.widgets.tablewidget.OldTable;
-import com.oss.framework.widgets.tabswidget.TabWindowWidget;
-import com.oss.framework.widgets.tabswidget.TabsInterface;
+import com.oss.framework.widgets.table.OldTable;
+import com.oss.framework.widgets.tabs.TabWindowWidget;
+import com.oss.framework.widgets.tabs.TabsInterface;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
