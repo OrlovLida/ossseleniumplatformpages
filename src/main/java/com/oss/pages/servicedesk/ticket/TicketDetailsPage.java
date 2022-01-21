@@ -11,12 +11,12 @@ import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.portals.DropdownList;
-import com.oss.framework.listwidget.CommonList;
-import com.oss.framework.listwidget.iaa.ListApp;
+import com.oss.framework.widgets.list.CommonList;
+import com.oss.framework.iaa.widget.list.ListApp;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.view.Card;
-import com.oss.framework.widgets.tablewidget.OldTable;
-import com.oss.framework.widgets.tabswidget.TabWindowWidget;
+import com.oss.framework.components.layout.Card;
+import com.oss.framework.widgets.table.OldTable;
+import com.oss.framework.widgets.tabs.TabWindowWidget;
 import com.oss.pages.servicedesk.BaseSDPage;
 import com.oss.pages.servicedesk.ticket.wizard.SDWizardPage;
 

@@ -11,8 +11,8 @@ import org.testng.ITestListener;
 import org.testng.ITestResult;
 
 import com.oss.BaseTestCase;
-import com.oss.framework.alerts.SystemMessageContainer;
-import com.oss.framework.alerts.SystemMessageInterface;
+import com.oss.framework.components.alerts.SystemMessageContainer;
+import com.oss.framework.components.alerts.SystemMessageInterface;
 
 import static com.oss.utils.AttachmentsManager.saveScreenshotPNG;
 import static com.oss.utils.AttachmentsManager.saveTextLog;

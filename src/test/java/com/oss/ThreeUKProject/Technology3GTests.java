@@ -1,9 +1,9 @@
 package com.oss.ThreeUKProject;
 
 import com.oss.BaseTestCase;
-import com.oss.framework.alerts.SystemMessageContainer;
-import com.oss.framework.alerts.SystemMessageInterface;
-import com.oss.framework.listwidget.CommonList;
+import com.oss.framework.components.alerts.SystemMessageContainer;
+import com.oss.framework.components.alerts.SystemMessageInterface;
+import com.oss.framework.widgets.list.CommonList;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.GlobalSearchPage;
 import com.oss.pages.platform.HomePage;
