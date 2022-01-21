@@ -17,7 +17,7 @@ import com.oss.framework.components.inputs.ObjectSearchField;
 import com.oss.framework.components.table.TableComponent;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.advancedsearch.AdvancedSearchWidget;
-import com.oss.framework.widgets.tablewidget.TableWidget;
+import com.oss.framework.widgets.table.TableWidget;
 import com.oss.pages.filtermanager.FilterManagerPage;
 import com.oss.pages.platform.NewInventoryViewPage;
 

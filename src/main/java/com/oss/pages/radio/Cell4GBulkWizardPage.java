@@ -1,9 +1,9 @@
 package com.oss.pages.radio;
 
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.listwidget.EditableList;
-import com.oss.framework.listwidget.EditableList.Row;
-import com.oss.framework.widgets.Wizard;
+import com.oss.framework.widgets.list.EditableList;
+import com.oss.framework.widgets.list.EditableList.Row;
+import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
