@@ -5,23 +5,23 @@ import java.util.Arrays;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-import com.oss.framework.alerts.SystemMessageContainer;
-import com.oss.framework.alerts.SystemMessageInterface;
+import com.oss.framework.components.alerts.SystemMessageContainer;
+import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.OldActionsContainer;
-import com.oss.framework.prompts.ConfirmationBox;
-import com.oss.framework.prompts.ConfirmationBoxInterface;
+import com.oss.framework.components.prompts.ConfirmationBox;
+import com.oss.framework.components.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Widget;
-import com.oss.framework.widgets.Wizard;
+import com.oss.framework.wizard.Wizard;
 import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
 import com.oss.framework.widgets.propertypanel.PropertyPanelInterface;
-import com.oss.framework.widgets.treewidget.TreeWidget;
+import com.oss.framework.widgets.tree.TreeWidget;
 import com.oss.pages.BasePage;
 import com.oss.pages.transport.ipam.helper.IPAddressAssignmentWizardProperties;
 
 import io.qameta.allure.Step;
 
-import static com.oss.framework.alerts.SystemMessageContainer.MessageType.SUCCESS;
+import static com.oss.framework.components.alerts.SystemMessageContainer.MessageType.SUCCESS;
 import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
 import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.ASSIGN_IPV4_ADDRESS_ACTION_FROM_SUBNET_CONTEXT;
 import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.ASSIGN_IPV4_SUBNET_ACTION;

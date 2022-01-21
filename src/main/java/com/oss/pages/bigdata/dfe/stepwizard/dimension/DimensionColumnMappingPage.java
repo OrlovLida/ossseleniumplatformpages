@@ -1,7 +1,7 @@
 package com.oss.pages.bigdata.dfe.stepwizard.dimension;
 
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.listwidget.EditableList;
+import com.oss.framework.widgets.list.EditableList;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;

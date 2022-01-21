@@ -1,7 +1,7 @@
 package com.oss.bigdata.kpiview;
 
 import com.oss.BaseTestCase;
-import com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel;
+import com.oss.framework.iaa.widget.dpe.toolbarpanel.LayoutPanel;
 import com.oss.pages.bigdata.kqiview.KpiViewPage;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;

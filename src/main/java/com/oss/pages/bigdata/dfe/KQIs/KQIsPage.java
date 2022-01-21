@@ -1,7 +1,7 @@
 package com.oss.pages.bigdata.dfe.KQIs;
 
 import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
-import com.oss.framework.widgets.tablewidget.OldTable;
+import com.oss.framework.widgets.table.OldTable;
 import com.oss.pages.bigdata.dfe.BaseDfePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;

@@ -1,10 +1,10 @@
 package com.oss.pages.faultmanagement;
 
 import com.oss.framework.components.search.AdvancedSearch;
-import com.oss.framework.listwidget.CommonList;
-import com.oss.framework.prompts.ConfirmationBox;
+import com.oss.framework.widgets.list.CommonList;
+import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.view.Card;
+import com.oss.framework.components.layout.Card;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;

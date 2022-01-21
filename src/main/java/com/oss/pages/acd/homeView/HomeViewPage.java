@@ -6,9 +6,9 @@ import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.CSSUtils;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.chartwidget.ChartWidget;
-import com.oss.framework.widgets.serviceDeskAdvancedSearch.ServiceDeskAdvancedSearch;
-import com.oss.framework.widgets.tablewidget.OldTable;
+import com.oss.framework.components.chart.ChartComponent;
+import com.oss.framework.iaa.widget.servicedeskadvancedsearch.ServiceDeskAdvancedSearch;
+import com.oss.framework.widgets.table.OldTable;
 import com.oss.pages.acd.BaseACDPage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
@@ -54,7 +54,7 @@ public class HomeViewPage extends BaseACDPage {
     public void seeColumnChartIsDisplayed() {
         log.info("Waiting for column chart presence");
         DelayUtils.waitForPageToLoad(driver, wait);
-        ChartWidget.create(driver, wait, columnChartViewId).waitForPresenceAndVisibility(columnChartViewId);
+        ChartComponent.create(driver, wait, columnChartViewId);
     }
 
     @Step("Refresh column chart")
@@ -67,7 +67,7 @@ public class HomeViewPage extends BaseACDPage {
     public void seePieChartIsDisplayed() {
         log.info("Waiting for pie chart presence");
         DelayUtils.waitForPageToLoad(driver, wait);
-        ChartWidget.create(driver, wait, pieChartViewId).waitForPresenceAndVisibility(pieChartViewId);
+        ChartComponent.create(driver, wait, pieChartViewId);
     }
 
     @Step("Refresh pie chart")

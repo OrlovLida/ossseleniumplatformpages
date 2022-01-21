@@ -8,7 +8,7 @@ package com.oss.bpm;
 
 import java.time.LocalDate;
 
-import com.oss.framework.mainheader.ToolbarWidget;
+import com.oss.framework.components.mainheader.ToolbarWidget;
 import io.qameta.allure.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

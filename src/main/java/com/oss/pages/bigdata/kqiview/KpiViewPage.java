@@ -18,31 +18,31 @@ import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.table.TableComponent;
-import com.oss.framework.mainheader.ButtonPanel;
-import com.oss.framework.mainheader.Share;
-import com.oss.framework.mainheader.ToolbarWidget;
+import com.oss.framework.components.mainheader.ButtonPanel;
+import com.oss.framework.components.mainheader.Share;
+import com.oss.framework.components.mainheader.ToolbarWidget;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.view.Card;
-import com.oss.framework.widgets.dpe.contextaction.ContextActionPanel;
-import com.oss.framework.widgets.dpe.kpichartwidget.KpiChartWidget;
-import com.oss.framework.widgets.dpe.toolbarpanel.ExportPanel.ExportType;
-import com.oss.framework.widgets.dpe.toolbarpanel.FiltersPanel;
-import com.oss.framework.widgets.dpe.toolbarpanel.KpiToolbarPanel;
-import com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType;
-import com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel;
-import com.oss.framework.widgets.dpe.treewidget.KpiTreeWidget;
+import com.oss.framework.components.layout.Card;
+import com.oss.framework.iaa.widget.dpe.contextaction.ContextActionPanel;
+import com.oss.framework.iaa.widget.dpe.kpichartwidget.KpiChartWidget;
+import com.oss.framework.iaa.widget.dpe.toolbarpanel.ExportPanel.ExportType;
+import com.oss.framework.iaa.widget.dpe.toolbarpanel.FiltersPanel;
+import com.oss.framework.iaa.widget.dpe.toolbarpanel.KpiToolbarPanel;
+import com.oss.framework.iaa.widget.dpe.toolbarpanel.LayoutPanel.LayoutType;
+import com.oss.framework.iaa.widget.dpe.toolbarpanel.OptionsPanel;
+import com.oss.framework.iaa.widget.dpe.treewidget.KpiTreeWidget;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
 
 import static com.oss.configuration.Configuration.CONFIGURATION;
-import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.MiscellaneousOption.DATA_COMPLETENESS;
-import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.MiscellaneousOption.LAST_SAMPLE_TIME;
-import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.MiscellaneousOption.SHOW_TIME_ZONE;
-import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.TimePeriodChooserOption.LATEST;
-import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.TimePeriodChooserOption.SMART;
-import static com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel.YAxisOption.MANUAL;
+import static com.oss.framework.iaa.widget.dpe.toolbarpanel.OptionsPanel.MiscellaneousOption.DATA_COMPLETENESS;
+import static com.oss.framework.iaa.widget.dpe.toolbarpanel.OptionsPanel.MiscellaneousOption.LAST_SAMPLE_TIME;
+import static com.oss.framework.iaa.widget.dpe.toolbarpanel.OptionsPanel.MiscellaneousOption.SHOW_TIME_ZONE;
+import static com.oss.framework.iaa.widget.dpe.toolbarpanel.OptionsPanel.TimePeriodChooserOption.LATEST;
+import static com.oss.framework.iaa.widget.dpe.toolbarpanel.OptionsPanel.TimePeriodChooserOption.SMART;
+import static com.oss.framework.iaa.widget.dpe.toolbarpanel.OptionsPanel.YAxisOption.MANUAL;
 
 public class KpiViewPage extends BasePage {
 

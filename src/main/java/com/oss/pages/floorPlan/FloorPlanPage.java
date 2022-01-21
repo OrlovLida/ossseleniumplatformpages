@@ -12,9 +12,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.oss.framework.components.inputs.Button;
-import com.oss.framework.floor_plan.FloorPlanTab;
-import com.oss.framework.floor_plan.FloorPlanTable;
-import com.oss.framework.floor_plan.FloorPlanTree;
+import com.oss.framework.widgets.floorplan.FloorPlanTab;
+import com.oss.framework.widgets.floorplan.FloorPlanTable;
+import com.oss.framework.widgets.floorplan.FloorPlanTree;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.BasePage;
 import com.oss.pages.platform.HomePage;

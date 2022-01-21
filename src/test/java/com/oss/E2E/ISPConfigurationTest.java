@@ -8,13 +8,13 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
-import com.oss.framework.alerts.SystemMessageContainer;
-import com.oss.framework.alerts.SystemMessageContainer.MessageType;
-import com.oss.framework.alerts.SystemMessageInterface;
+import com.oss.framework.components.alerts.SystemMessageContainer;
+import com.oss.framework.components.alerts.SystemMessageContainer.MessageType;
+import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.ActionsContainer;
-import com.oss.framework.mainheader.PerspectiveChooser;
+import com.oss.framework.components.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.tablewidget.TableInterface;
+import com.oss.framework.widgets.table.TableInterface;
 import com.oss.pages.physical.CardCreateWizardPage;
 import com.oss.pages.physical.ChangeCardModelWizard;
 import com.oss.pages.physical.ChangeModelWizardPage;

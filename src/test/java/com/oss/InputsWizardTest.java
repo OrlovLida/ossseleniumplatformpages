@@ -24,7 +24,7 @@ import com.oss.framework.components.inputs.SearchField;
 import com.oss.framework.components.inputs.TextArea;
 import com.oss.framework.components.inputs.TextField;
 import com.oss.framework.components.inputs.Time;
-import com.oss.framework.data.Data;
+import com.oss.framework.components.data.Data;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.InputsWizardPage;
 

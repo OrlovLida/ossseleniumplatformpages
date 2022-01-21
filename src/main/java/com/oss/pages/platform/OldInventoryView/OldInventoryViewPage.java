@@ -7,17 +7,17 @@ import org.openqa.selenium.WebDriver;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.Wizard;
-import com.oss.framework.widgets.tablewidget.OldTable;
-import com.oss.framework.widgets.tablewidget.TableInterface;
-import com.oss.framework.widgets.tabswidget.TabWindowWidget;
-import com.oss.framework.widgets.tabswidget.TabsInterface;
+import com.oss.framework.wizard.Wizard;
+import com.oss.framework.widgets.table.OldTable;
+import com.oss.framework.widgets.table.TableInterface;
+import com.oss.framework.widgets.tabs.TabWindowWidget;
+import com.oss.framework.widgets.tabs.TabsInterface;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
 import static com.oss.framework.components.contextactions.ActionsContainer.*;
-import static com.oss.framework.widgets.tablewidget.OldTable.createByComponentDataAttributeName;
+import static com.oss.framework.widgets.table.OldTable.createByComponentDataAttributeName;
 import static com.oss.pages.platform.OldInventoryView.helper.OldInventoryViewConstants.*;
 
 /**

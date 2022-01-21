@@ -11,7 +11,7 @@ import org.openqa.selenium.WebDriver;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.propertypanel.PropertyPanel;
-import com.oss.framework.widgets.tablewidget.TableWidget;
+import com.oss.framework.widgets.table.TableWidget;
 import com.oss.pages.BasePage;
 
 /**
