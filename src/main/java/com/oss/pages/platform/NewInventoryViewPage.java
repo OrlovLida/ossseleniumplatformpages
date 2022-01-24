@@ -10,10 +10,10 @@ import com.oss.framework.components.common.AttributesChooser;
 import com.oss.framework.components.common.PaginationComponent;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.Input.ComponentType;
-import com.oss.framework.components.portals.SaveConfigurationWizard.Field;
-import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.components.mainheader.ButtonPanel;
+import com.oss.framework.components.portals.SaveConfigurationWizard.Field;
 import com.oss.framework.components.prompts.ConfirmationBox;
+import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Widget;
 import com.oss.framework.widgets.Widget.WidgetType;
@@ -41,8 +41,7 @@ public class NewInventoryViewPage extends BasePage {
 
     @Step("Open Inventory View")
     public static NewInventoryViewPage goToInventoryViewPage(WebDriver driver, String basicURL, String type) {
-        driver.get(String.format("%s/#/views/management/views/inventory-view/" + type +
-                "?perspective=LIVE", basicURL));
+        driver.get(String.format("%s/#/views/management/views/inventory-view/%s?perspective=LIVE", basicURL, type));
         WebDriverWait wait = new WebDriverWait(driver, 45);
         DelayUtils.waitForPageToLoad(driver, wait);
         return new NewInventoryViewPage(driver, wait);
@@ -157,10 +156,6 @@ public class NewInventoryViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    public void callActionByLabel(String actionLabel, String... path) {
-
-    }
-
     @Step("Check if table has no data")
     public boolean checkIfTableIsEmpty() {
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -221,15 +216,19 @@ public class NewInventoryViewPage extends BasePage {
 
     public TabsWidget getTabsWidget() {
         if (getSelectedRows().isEmpty()) {
-            throw new RuntimeException("Only single selection is supported");
+            throw new UnsupportedOperationException("Only single selection is supported");
         }
-
         Widget.waitForWidget(wait, TabsWidget.TABS_WIDGET_CLASS);
         return TabsWidget.create(driver, wait);
     }
 
     public PropertyPanel getPropertyPanel(int rowId, String propertyPanelId) {
         selectObjectByRowId(rowId);
+        return getPropertyPanel(propertyPanelId);
+    }
+
+    public PropertyPanel getPropertyPanel(String propertyPanelId) {
+        Widget.waitForWidget(wait, PropertyPanel.PROPERTY_PANEL_CLASS);
         return (PropertyPanel) getTabsWidget().getWidget(propertyPanelId, WidgetType.PROPERTY_PANEL);
     }
 
@@ -239,12 +238,6 @@ public class NewInventoryViewPage extends BasePage {
 
     public String getTabLabel(int index) {
         return getTabsWidget().getTabLabel(index);
-    }
-
-    @Deprecated
-    public PropertyPanel getPropertyPanel() {
-        Widget.waitForWidget(wait, PropertyPanel.PROPERTY_PANEL_CLASS);
-        return PropertyPanel.create(driver);
     }
 
     @Deprecated
@@ -324,12 +317,6 @@ public class NewInventoryViewPage extends BasePage {
         return this;
     }
 
-    @Step("Delete properties configuration")
-    public void deletePropertiesConfiguration(int rowId, String widgetId, String configurationName) {
-        getPropertyPanel(rowId, widgetId).openChooseConfigurationWizard().deleteConfiguration(configurationName);
-        DelayUtils.waitForPageToLoad(driver, wait);
-    }
-
     @Step("Save configuration for page")
     public NewInventoryViewPage savePageConfiguration(Field... fields) {
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -393,22 +380,6 @@ public class NewInventoryViewPage extends BasePage {
         return this;
     }
 
-    @Step("Delete configuration for tabs")
-    public NewInventoryViewPage deleteConfigurationForTabs(int rowId, String tabsId, String configurationName) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        selectObjectByRowId(rowId);
-        getTabsWidget().openChooseConfigurationWizard().deleteConfiguration(configurationName).cancel();
-        return this;
-    }
-
-    @Step("Delete configuration for properties")
-    public NewInventoryViewPage deleteConfigurationForProperties(int rowId, String propertyPanelId, String
-            configurationName) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        getPropertyPanel(rowId, propertyPanelId).openChooseConfigurationWizard().deleteConfiguration(configurationName).cancel();
-        return this;
-    }
-
     @Step("Download configuration for main table")
     public NewInventoryViewPage downloadConfigurationForMainTable(String configurationName) {
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -416,24 +387,10 @@ public class NewInventoryViewPage extends BasePage {
         return this;
     }
 
-    @Step("Download configuration for tabs")
-    public NewInventoryViewPage downloadConfigurationForTabs(String configurationName) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        getTabsWidget().openDownloadConfigurationWizard().chooseConfiguration(configurationName).download();
-        return this;
-    }
-
     @Step("Download configuration for page")
     public NewInventoryViewPage downloadConfigurationForPage(String configurationName) {
         DelayUtils.waitForPageToLoad(driver, wait);
         ButtonPanel.create(driver, wait).openDownloadConfigurationWizard().chooseConfiguration(configurationName).download();
-        return this;
-    }
-
-    @Step("Download configuration for properties")
-    public NewInventoryViewPage downloadConfigurationForProperties(String configurationName) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        getPropertiesFilter().openDownloadConfigurationWizard().chooseConfiguration(configurationName).download();
         return this;
     }
 

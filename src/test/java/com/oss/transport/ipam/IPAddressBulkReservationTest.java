@@ -108,7 +108,7 @@ public class IPAddressBulkReservationTest extends BaseTestCase {
     @Test(priority = 2)
     @Description("Reserve all required in scenario addresses")
     public void reserveNecessaryHostAddresses() {
-        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(NETWORK_NAME);
+        ipAddressManagementViewPage.expandTreeRowContains(NETWORK_NAME);
         ipAddressManagementViewPage.reserveGivenIPv4HostAddress(FIRST_IPv4_SUBNET_ADDRESS, FIRST_IPv4_SUBNET_HOST);
         unselectTreeRow(FIRST_IPv4_SUBNET_HOST_ROW_NAME);
         ipAddressManagementViewPage.reserveGivenIPv6HostAddress(FIRST_IPv6_SUBNET_ADDRESS, FIRST_IPv6_SUBNET_HOST);
@@ -209,16 +209,16 @@ public class IPAddressBulkReservationTest extends BaseTestCase {
     }
 
     private void checkCorrectness(String ipSubnetAddress, SubnetProperties subnetProperties) {
-        ipAddressManagementViewPage.scrollAndSelectTreeRowContains(ipSubnetAddress);
+        ipAddressManagementViewPage.selectTreeRowContains(ipSubnetAddress);
         Assert.assertEquals(ipAddressManagementViewPage.getPropertyValue(SUBNET_PROPERTY_CHILD_COUNT), subnetProperties.getChildCount());
         Assert.assertEquals(ipAddressManagementViewPage.getPropertyValue(SUBNET_PROPERTY_PERCENT_FREE), subnetProperties.getPercentFree());
         ipAddressManagementViewPage.unselectTreeRow(ipSubnetAddress);
         subnetProperties.getBoundaryHostAddressPropertiesMap().forEach((boundaryAddress, addressProperties) -> {
             try {
-                ipAddressManagementViewPage.scrollAndSelectTreeRowContains(addressProperties.getHostAddressRowName());
+                ipAddressManagementViewPage.selectTreeRowContains(addressProperties.getHostAddressRowName());
             } catch (NoSuchElementException e) {
                 ipAddressManagementViewPage.expandTreeRowContains(ipSubnetAddress);
-                ipAddressManagementViewPage.scrollAndSelectTreeRowContains(addressProperties.getHostAddressRowName());
+                ipAddressManagementViewPage.selectTreeRowContains(addressProperties.getHostAddressRowName());
             }
             Assert.assertEquals(ipAddressManagementViewPage.getPropertyValue(HOST_PROPERTY_IP_NETWORK_NAME), addressProperties.getIpNetwork());
             Assert.assertEquals(ipAddressManagementViewPage.getPropertyValue(HOST_PROPERTY_IDENTIFIER), addressProperties.getIdentifier());
@@ -241,13 +241,13 @@ public class IPAddressBulkReservationTest extends BaseTestCase {
     private void deleteCreatedData() {
         ipAddressManagementViewPage.deleteIPv6SubnetTypeOfNetwork(SEC0ND_IPv6_SUBNET_ADDRESS);
         unselectTreeRow(NETWORK_NAME);
-        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(NETWORK_NAME);
+        ipAddressManagementViewPage.expandTreeRowContains(NETWORK_NAME);
         ipAddressManagementViewPage.deleteIPv6SubnetTypeOfNetwork(FIRST_IPv6_SUBNET_ADDRESS);
         unselectTreeRow(NETWORK_NAME);
-        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(NETWORK_NAME);
+        ipAddressManagementViewPage.expandTreeRowContains(NETWORK_NAME);
         ipAddressManagementViewPage.deleteIPv4SubnetTypeOfNetwork(SEC0ND_IPv4_SUBNET_ADDRESS);
         unselectTreeRow(NETWORK_NAME);
-        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(NETWORK_NAME);
+        ipAddressManagementViewPage.expandTreeRowContains(NETWORK_NAME);
         ipAddressManagementViewPage.deleteIPv4SubnetTypeOfNetwork(FIRST_IPv4_SUBNET_ADDRESS);
         ipAddressManagementViewPage.deleteIPNetwork(NETWORK_NAME);
     }

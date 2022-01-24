@@ -12,7 +12,6 @@ import com.oss.framework.components.mainheader.NotificationsInterface;
 import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.components.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.Widget;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.table.TableInterface;
 import com.oss.framework.widgets.tabs.TabWindowWidget;
@@ -26,7 +25,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(NetworkDiscoveryControlViewPage.class);
 
-    private TreeWidget mainTree;
+    private static final String TREE_ID = "narComponent_networkDiscoveryControlViewIdcmDomainsTreeId";
     private static final String RECONCILIATION_ACTION_ID = "narComponent_CmDomainActionFullReconciliationId";
     private static final String RECONCILIATION_TAB_ID = "narComponent_networkDiscoveryControlViewIdcmDomainTabsId";
     private static final String RECONCILIATION_STATE_TABLE_ID = "narComponent_networkDiscoveryControlViewIdreconciliationStatesTableId";
@@ -39,14 +38,14 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     private static final String RECO_STATE_REFRESH_BUTTON_ID = "tableRefreshButton";
     private static final String STATUS = "Status";
 
+    protected NetworkDiscoveryControlViewPage(WebDriver driver) {
+        super(driver);
+    }
+
     public static NetworkDiscoveryControlViewPage goToNetworkDiscoveryControlViewPage(WebDriver driver, String basicURL) {
         driver.get(String.format("%s/#/view/reco/network-repository-view/network-discovery" +
                 "?perspective=NETWORK", basicURL));
         return new NetworkDiscoveryControlViewPage(driver);
-    }
-
-    protected NetworkDiscoveryControlViewPage(WebDriver driver) {
-        super(driver);
     }
 
     @Step("Open CM Domain Wizard")
@@ -66,21 +65,17 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     }
 
     public TreeWidget getTreeView() {
-        if (mainTree == null) {
-            Widget.waitForWidget(wait, "TreeView");
-            mainTree = TreeWidget.createByClass(driver, "TreeView", wait);
-        }
-        return mainTree;
+        return TreeWidget.createById(driver, wait, TREE_ID);
     }
 
     @Step("Query and select CM Domain in Network Discovery Control View")
     public void queryAndSelectCmDomain(String cmDomainName) {
         DelayUtils.waitForPageToLoad(driver, wait);
         getTreeView()
-                .performSearchWithEnter(cmDomainName);
+                .search(cmDomainName);
         DelayUtils.waitForPageToLoad(driver, wait);
         getTreeView()
-                .selectTreeRowByText(cmDomainName);
+                .selectTreeRow(cmDomainName);
     }
 
     @Step("Run full reconciliation for selected CM Domain")

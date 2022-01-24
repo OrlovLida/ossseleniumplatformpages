@@ -20,7 +20,7 @@ import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.radio.AntennaArrayWizardPage;
 import com.oss.pages.radio.CableWizardPage;
 import com.oss.pages.radio.CellSiteConfigurationPage;
-import com.oss.pages.radio.ConnectionWizardPage;
+import com.oss.pages.transport.trail.ConnectionWizardPage;
 import com.oss.pages.radio.HostingWizardPage;
 import com.oss.pages.radio.RanAntennaWizardPage;
 import com.oss.pages.reconciliation.CmDomainWizardPage;
@@ -207,7 +207,7 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
         connectionWizardPage.setName(ANTENNA_TRAIL_NAME);
         connectionWizardPage.clickNext();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        connectionWizardPage.selectConnectionTermination(2);
+        connectionWizardPage.selectConnectionTermination("1_2");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         connectionWizardPage.terminateCardComponent("No Card/Component");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -241,7 +241,7 @@ public class TS_RAN_E2E_01_4G extends BaseTestCase {
 //        DelayUtils.waitForPageToLoad(driver, webDriverWait);
 //        connectionWizardPage.terminateTerminationPort("CPRI 1");
 //        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        connectionWizardPage.selectConnectionTermination(2);
+        connectionWizardPage.selectConnectionTermination("1_2");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         connectionWizardPage.terminateCardComponent("No Card/Component");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);

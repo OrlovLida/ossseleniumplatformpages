@@ -8,9 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.portals.PopupV2;
-import com.oss.framework.widgets.list.CommonList;
+import com.oss.framework.components.tree.TreeComponent;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.tree.TreeWidget;
+import com.oss.framework.widgets.list.CommonList;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
@@ -25,7 +25,6 @@ public class FMFilterManagerPage extends BasePage {
     private static final String NEW_FILTER_ID = "new_filter";
     private static final String COMMON_LIST_APP_ID = "_FilterManagerList";
     private static final String REMOVE_ACTION_ID = "remove_action";
-    private static final String TREE_COMPONENT_CLASS = "tree-component";
     private static final String ADAPTER_NAME_LABEL = "Adapter Name";
     private static final String ADD_BUTTON_LABEL = "Add";
 
@@ -120,8 +119,8 @@ public class FMFilterManagerPage extends BasePage {
         fmWizardPage.setName(name).setDescription(description).setTypeValue(type);
         fmWizardPage.clickOnAddConditon();
         PopupV2 popup = PopupV2.create(driver, wait);
-        TreeWidget tree = TreeWidget.createByClass(driver, TREE_COMPONENT_CLASS, wait);
-        tree.selectNodeByLabel(ADAPTER_NAME_LABEL);
+        TreeComponent tree = popup.getTreeComponent();
+        tree.getNodeByLabelsPath(ADAPTER_NAME_LABEL);
         popup.clickButtonByLabel(ADD_BUTTON_LABEL);
         //TODO skończyć gdy zostanie dostarczone OSSNGSA-9444
         log.info("Creating a filter name: {}, description: {}, type: {}", name, description, type);

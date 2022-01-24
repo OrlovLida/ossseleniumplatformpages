@@ -19,7 +19,7 @@ import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
 import com.oss.pages.radio.AntennaArrayWizardPage;
 import com.oss.pages.radio.CableWizardPage;
 import com.oss.pages.radio.CellSiteConfigurationPage;
-import com.oss.pages.radio.ConnectionWizardPage;
+import com.oss.pages.transport.trail.ConnectionWizardPage;
 import com.oss.pages.radio.HostingWizardPage;
 import com.oss.pages.radio.RanAntennaWizardPage;
 import com.oss.pages.reconciliation.CmDomainWizardPage;
@@ -257,7 +257,7 @@ public class TS_RAN_E2E_02_5G extends BaseTestCase {
         connectionWizardPage.setName(ANTENNA_TRAIL_NAME);
         connectionWizardPage.clickNext();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        connectionWizardPage.selectConnectionTermination(1);
+        connectionWizardPage.selectConnectionTermination("1_1");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         connectionWizardPage.clickAccept();
         checkPopupMessageType(MessageType.SUCCESS);

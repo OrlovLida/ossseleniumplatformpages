@@ -29,7 +29,7 @@ import com.oss.pages.platform.HierarchyViewPage;
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.LogManagerPage;
 import com.oss.pages.platform.NewInventoryViewPage;
-import com.oss.pages.radio.ConnectionWizardPage;
+import com.oss.pages.transport.trail.ConnectionWizardPage;
 import com.oss.pages.reconciliation.CmDomainWizardPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage.IssueLevel;
@@ -211,7 +211,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         waitForPageToLoad();
         connectionWizardPage.clickNext();
         waitForPageToLoad();
-        connectionWizardPage.selectConnectionTermination(1);
+        connectionWizardPage.selectConnectionTermination("1_1");
         waitForPageToLoad();
         connectionWizardPage.terminateCardComponent("No Card/Component");
         waitForPageToLoad();
@@ -219,7 +219,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         waitForPageToLoad();
         connectionWizardPage.terminateTerminationPort(PORT_NAME);
         waitForPageToLoad();
-        connectionWizardPage.selectConnectionTermination(2);
+        connectionWizardPage.selectConnectionTermination("1_2");
         waitForPageToLoad();
         connectionWizardPage.terminateCardComponent("No Card/Component");
         waitForPageToLoad();
