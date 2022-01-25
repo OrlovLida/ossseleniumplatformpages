@@ -1,6 +1,6 @@
 package com.oss.pages.acd.homeView;
 
-import com.oss.framework.components.common.TimePeriodChooser;
+import com.oss.framework.iaa.widget.timeperiodchooser.TimePeriodChooser;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;

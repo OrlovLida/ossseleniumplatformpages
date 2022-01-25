@@ -1,7 +1,7 @@
-package com.oss.pages.bookmarkManager.BookmarkManagerWizards;
+package com.oss.pages.bookmarkmanager.BookmarkManagerWizards;
 
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.components.portals.PopupV2;
+import com.oss.framework.components.prompts.PopupV2;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;

@@ -1,4 +1,4 @@
-package com.oss.pages.bookmarkManager;
+package com.oss.pages.bookmarkmanager;
 
 import com.oss.framework.components.contextactions.ButtonContainer;
 import com.oss.framework.components.inputs.ComponentFactory;

@@ -3,7 +3,7 @@ package com.oss.pages.platform;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.SearchField;
-import com.oss.framework.components.portals.PopupV2;
+import com.oss.framework.components.prompts.PopupV2;
 import com.oss.framework.components.data.Data;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.BasePage;

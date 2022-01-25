@@ -4,7 +4,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.oss.framework.components.inputs.Input.ComponentType;
-import com.oss.framework.components.portals.PopupV2;
+import com.oss.framework.components.prompts.PopupV2;
 import com.oss.framework.widgets.table.TableWidget;
 
 public class BookmarksTest extends BaseTestCase {

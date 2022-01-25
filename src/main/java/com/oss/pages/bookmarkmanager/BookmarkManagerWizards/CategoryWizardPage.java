@@ -1,4 +1,4 @@
-package com.oss.pages.bookmarkManager.BookmarkManagerWizards;
+package com.oss.pages.bookmarkmanager.BookmarkManagerWizards;
 
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.wizard.Wizard;

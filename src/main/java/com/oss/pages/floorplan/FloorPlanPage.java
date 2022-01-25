@@ -1,4 +1,4 @@
-package com.oss.pages.floorPlan;
+package com.oss.pages.floorplan;
 
 import java.io.File;
 import java.net.URISyntaxException;

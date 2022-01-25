@@ -7,7 +7,7 @@ import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.oss.framework.components.portals.PopupV2;
+import com.oss.framework.components.prompts.PopupV2;
 import com.oss.framework.components.tree.TreeComponent;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.CommonList;
