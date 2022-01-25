@@ -7,9 +7,9 @@ import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.components.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.wizard.Wizard;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.tree.TreeWidget;
+import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 import com.oss.pages.physical.DeviceWizardPage;
 
@@ -196,7 +196,7 @@ public class CellSiteConfigurationPage extends BasePage {
     }
 
     public TreeWidget getTree() {
-        return TreeWidget.createByDataAttributeName(driver, wait, TREE_DATA_ATTRIBUTE_NAME);
+        return TreeWidget.createById(driver, wait, TREE_DATA_ATTRIBUTE_NAME);
     }
 
     public OldTable getTabTable() {
@@ -331,7 +331,7 @@ public class CellSiteConfigurationPage extends BasePage {
 
     public void editCellsInBulk(int cellsNumber, String pci, String rsi, String referencePower, String[] tac, String paOutput) {
         clickEditIcon();
-        new EditCell4GWizardPage(driver).editCellsBulk(cellsNumber, pci, rsi, referencePower, tac, paOutput);
+        new EditCell4GBulkWizardPage(driver).editCellsBulk(cellsNumber, pci, rsi, referencePower, tac, paOutput);
     }
 
     private Cell5GBulkWizardPage openCell5GBulkWizard() {

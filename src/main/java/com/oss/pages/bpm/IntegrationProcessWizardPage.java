@@ -10,8 +10,8 @@ import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.list.DraggableList;
-import com.oss.framework.widgets.list.EditableList;
 import com.oss.framework.utils.DragAndDrop;
+import com.oss.framework.widgets.list.EditableList;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 
@@ -41,7 +41,7 @@ public class IntegrationProcessWizardPage extends BasePage {
     }
 
     public void deleteIntegrationProcess(String processName) {
-        EditableList editableList = EditableList.create(driver, wait);
+        EditableList editableList = EditableList.createById(driver, wait, IP_LIST);
         editableList.callActionByLabel(DELETE_LABEL_ACTION, PROCESS_NAME_COLUMN_ID, processName);
     }
 

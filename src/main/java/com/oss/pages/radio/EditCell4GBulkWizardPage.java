@@ -4,8 +4,8 @@ import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.widgets.list.EditableList;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.list.EditableList;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 
@@ -13,8 +13,10 @@ import io.qameta.allure.Step;
 
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 
-public class EditCell4GWizardPage extends BasePage {
+public class EditCell4GBulkWizardPage extends BasePage {
 
+    private static final String WIZARD_ID = "cell-4g-bulk-wizard";
+    private static final String LIST_ID = "ExtendedList-editableTableId";
     private static final String PCI_DATA_ATTRIBUTE_NAME = "pci";
     private static final String RSI_DATA_ATTRIBUTE_NAME = "rootSequenceIndex";
     private static final String RS_POWER_DATA_ATTRIBUTE_NAME = "referenceSignalPower";
@@ -26,9 +28,9 @@ public class EditCell4GWizardPage extends BasePage {
 
     private final Wizard wizard;
 
-    public EditCell4GWizardPage(WebDriver driver) {
+    public EditCell4GBulkWizardPage(WebDriver driver) {
         super(driver);
-        wizard = Wizard.createWizard(driver, wait);
+        wizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
     }
 
     @Step("Set PCI")
@@ -48,7 +50,7 @@ public class EditCell4GWizardPage extends BasePage {
 
     @Step("Set RSI")
     public void setTAC(int rowNumber, String tac) {
-        EditableList list = EditableList.create(driver, wait);
+        EditableList list = EditableList.createById(driver, wait, LIST_ID);
         list.setValueByRowIndex(rowNumber, tac, TAC_COLUMN_ID, TAC_NUMBER_FIELD_DATA_ATTRIBUTE_NAME, Input.ComponentType.TEXT_FIELD);
     }
 

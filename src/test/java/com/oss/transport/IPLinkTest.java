@@ -16,7 +16,7 @@ import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 import com.oss.pages.bpm.TasksPage;
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.NewInventoryViewPage;
-import com.oss.pages.radio.ConnectionWizardPage;
+import com.oss.pages.transport.trail.ConnectionWizardPage;
 import com.oss.pages.transport.NetworkViewPage;
 import com.oss.pages.transport.trail.RoutingWizardPage;
 import com.oss.utils.TestListener;
