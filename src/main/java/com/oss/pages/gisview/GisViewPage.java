@@ -30,7 +30,7 @@ public class GisViewPage extends BasePage {
     public void chooseOptionFromDropDownList(String buttonId, String optionId) {
         Button.createById(driver, buttonId).click();
         DelayUtils.waitForPageToLoad(driver, wait);
-        DropdownList.create(driver, wait).selectOptionWithId(optionId);
+        DropdownList.create(driver, wait).selectOptionById(optionId);
     }
 
     public void useContextActionByLabel(String actionLabel) {

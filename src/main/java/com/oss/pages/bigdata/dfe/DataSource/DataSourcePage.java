@@ -69,17 +69,17 @@ public class DataSourcePage extends BaseDfePage {
 
     @Step("I select Create Data Source - Query Result")
     public void selectDSFromQuery() {
-        DropdownList.create(driver, wait).selectOptionWithId(CREATE_DS_QUERY);
+        DropdownList.create(driver, wait).selectOptionById(CREATE_DS_QUERY);
     }
 
     @Step("I select Create Data Source - CSV File")
     public void selectDSFromCSV() {
-        DropdownList.create(driver, wait).selectOptionWithId(CREATE_DS_CSV);
+        DropdownList.create(driver, wait).selectOptionById(CREATE_DS_CSV);
     }
 
     @Step("I select Create Data Source - Kafka")
     public void selectDSFromKafka() {
-        DropdownList.create(driver, wait).selectOptionWithId(CREATE_DS_KAFKA);
+        DropdownList.create(driver, wait).selectOptionById(CREATE_DS_KAFKA);
     }
 
     @Step("I check if data source: {name} exists into table")
