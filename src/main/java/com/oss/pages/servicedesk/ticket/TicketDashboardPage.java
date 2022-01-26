@@ -48,7 +48,7 @@ public class TicketDashboardPage extends BaseSDPage {
     public SDWizardPage openCreateTicketWizard(String flowType) {
         DelayUtils.waitForPageToLoad(driver, wait);
         Button.createBySelectorAndId(driver, "button", CREATE_TICKET_BUTTON_ID).click();
-        DropdownList.create(driver, wait).selectOptionWithId(flowType);
+        DropdownList.create(driver, wait).selectOptionById(flowType);
         log.info("Create ticket wizard for {} is opened", flowType);
 
         return new SDWizardPage(driver, wait);
