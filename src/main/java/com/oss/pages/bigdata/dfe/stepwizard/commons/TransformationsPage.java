@@ -5,7 +5,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.oss.framework.iaa.widget.dfe.transformationsmanager.TransformationsManagerWidget;
+import com.oss.framework.iaa.widgets.dfe.transformationsmanager.TransformationsManagerWidget;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;

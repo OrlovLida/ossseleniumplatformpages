@@ -1,4 +1,4 @@
-package com.oss.pages.template_cm;
+package com.oss.pages.templatecm;
 
 import org.openqa.selenium.WebDriver;
 

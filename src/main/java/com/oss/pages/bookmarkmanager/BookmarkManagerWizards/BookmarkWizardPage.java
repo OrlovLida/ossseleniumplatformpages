@@ -1,7 +1,7 @@
-package com.oss.pages.bookmarkManager.BookmarkManagerWizards;
+package com.oss.pages.bookmarkmanager.BookmarkManagerWizards;
 
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.components.portals.PopupV2;
+import com.oss.framework.components.prompts.Popup;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
@@ -28,17 +28,17 @@ public class BookmarkWizardPage extends BasePage {
     }
 
     private void fillBookmarkName(String bookmarkName) {
-        PopupV2.create(driver, wait).setComponentValue(BOOKMARK_NAME_FIELD_ID, bookmarkName, Input.ComponentType.TEXT_FIELD);
+        Popup.create(driver, wait).setComponentValue(BOOKMARK_NAME_FIELD_ID, bookmarkName, Input.ComponentType.TEXT_FIELD);
         log.info("I fill bookmark name with: {}", bookmarkName);
     }
 
     private void fillBookmarkCategory(String categoryName) {
-        PopupV2.create(driver, wait).setComponentValue(BOOKMARK_CATEGORY_ID, categoryName, Input.ComponentType.COMBOBOX);
+        Popup.create(driver, wait).setComponentValue(BOOKMARK_CATEGORY_ID, categoryName, Input.ComponentType.COMBOBOX);
         log.info("I fill category with: {}", categoryName);
     }
 
     private void clickSaveBookmark() {
-        PopupV2.create(driver, wait).clickButtonByLabel(SAVE_BOOKMARK_LABEL);
+        Popup.create(driver, wait).clickButtonByLabel(SAVE_BOOKMARK_LABEL);
         log.info("I click Save");
     }
 }

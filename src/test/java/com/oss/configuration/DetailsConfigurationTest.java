@@ -14,15 +14,15 @@ import org.testng.annotations.Test;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
-import com.oss.framework.components.portals.SaveConfigurationWizard;
-import com.oss.framework.components.portals.SaveConfigurationWizard.Property;
+import com.oss.pages.platform.configuration.SaveConfigurationWizard;
+import com.oss.pages.platform.configuration.SaveConfigurationWizard.Property;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.untils.Constants;
 import com.oss.utils.TestListener;
 
-import static com.oss.framework.components.portals.SaveConfigurationWizard.Property.DEFAULT_VIEW_FOR;
-import static com.oss.framework.components.portals.SaveConfigurationWizard.Property.TYPE;
+import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Property.DEFAULT_VIEW_FOR;
+import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Property.TYPE;
 
 @Listeners({TestListener.class})
 public class DetailsConfigurationTest extends BaseTestCase {

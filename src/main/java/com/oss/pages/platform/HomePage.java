@@ -3,7 +3,7 @@ package com.oss.pages.platform;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.SearchField;
-import com.oss.framework.components.portals.PopupV2;
+import com.oss.framework.components.prompts.Popup;
 import com.oss.framework.components.data.Data;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.BasePage;
@@ -84,11 +84,11 @@ public class HomePage extends BasePage {
         return new FormAppPage(driver);
     }
 
-    public PopupV2 goToCreateBookmarkPopUp() {
+    public Popup goToCreateBookmarkPopUp() {
         WebDriverWait wait = new WebDriverWait(driver, 45);
         DelayUtils.waitForVisibility(wait, saveBookmarksButton);
         saveBookmarksButton.click();
-        return new PopupV2(driver, wait);
+        return new Popup(driver, wait);
     }
 
     public InputsWizardPage goToInputsWizardPage(String url) {

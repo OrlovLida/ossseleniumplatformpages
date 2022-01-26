@@ -12,7 +12,7 @@ import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.widgets.list.CommonList;
-import com.oss.framework.iaa.widget.list.ListApp;
+import com.oss.framework.iaa.widgets.list.ListApp;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.components.layout.Card;
 import com.oss.framework.widgets.table.OldTable;
