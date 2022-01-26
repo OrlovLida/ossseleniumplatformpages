@@ -7,7 +7,7 @@ import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.oss.framework.components.prompts.PopupV2;
+import com.oss.framework.components.prompts.Popup;
 import com.oss.framework.components.tree.TreeComponent;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.CommonList;
@@ -118,7 +118,7 @@ public class FMFilterManagerPage extends BasePage {
         FMCreateWizardPage fmWizardPage = openCreateNewFilterWizard();
         fmWizardPage.setName(name).setDescription(description).setTypeValue(type);
         fmWizardPage.clickOnAddConditon();
-        PopupV2 popup = PopupV2.create(driver, wait);
+        Popup popup = Popup.create(driver, wait);
         TreeComponent tree = popup.getTreeComponent();
         tree.getNodeByLabelsPath(ADAPTER_NAME_LABEL);
         popup.clickButtonByLabel(ADD_BUTTON_LABEL);

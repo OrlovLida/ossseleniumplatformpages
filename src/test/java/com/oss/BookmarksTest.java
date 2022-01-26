@@ -4,7 +4,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.oss.framework.components.inputs.Input.ComponentType;
-import com.oss.framework.components.prompts.PopupV2;
+import com.oss.framework.components.prompts.Popup;
 import com.oss.framework.widgets.table.TableWidget;
 
 public class BookmarksTest extends BaseTestCase {
@@ -20,7 +20,7 @@ public class BookmarksTest extends BaseTestCase {
                 .goToInventoryViewPage(TABLE_WIDGET_URL)
                 .getMainTable();
         
-        PopupV2 popupV2 = homePage.goToCreateBookmarkPopUp();
+        Popup popupV2 = homePage.goToCreateBookmarkPopUp();
         
         // TODO fix new WebDriver, create Page for bookmarks, try to use wizard class
         popupV2.setComponentValue("viewName", "Selenium Bookmark", ComponentType.TEXT_FIELD);
