@@ -1,7 +1,7 @@
 package com.oss.pages.bigdata.dfe;
 
 import com.google.common.collect.Multimap;
-import com.oss.framework.iaa.widget.timeperiodchooser.TimePeriodChooser;
+import com.oss.framework.iaa.widgets.timeperiodchooser.TimePeriodChooser;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.contextactions.ButtonContainer;
 import com.oss.framework.components.inputs.ComponentFactory;

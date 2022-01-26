@@ -3,7 +3,7 @@ package com.oss.pages.faultmanagement;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
-import com.oss.framework.iaa.widget.table.FMSMTable;
+import com.oss.framework.iaa.widgets.table.FMSMTable;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;

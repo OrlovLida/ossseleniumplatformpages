@@ -1,6 +1,6 @@
 package com.oss.pages.bigdata.dfe.DataSource;
 
-import com.oss.framework.iaa.widget.timeperiodchooser.TimePeriodChooser;
+import com.oss.framework.iaa.widgets.timeperiodchooser.TimePeriodChooser;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input.ComponentType;
 import com.oss.framework.components.portals.DropdownList;

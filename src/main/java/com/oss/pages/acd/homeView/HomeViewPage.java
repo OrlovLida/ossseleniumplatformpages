@@ -1,13 +1,13 @@
 package com.oss.pages.acd.homeView;
 
-import com.oss.framework.iaa.widget.timeperiodchooser.TimePeriodChooser;
+import com.oss.framework.iaa.widgets.timeperiodchooser.TimePeriodChooser;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.CSSUtils;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.components.chart.ChartComponent;
-import com.oss.framework.iaa.widget.servicedeskadvancedsearch.ServiceDeskAdvancedSearch;
+import com.oss.framework.iaa.widgets.servicedeskadvancedsearch.ServiceDeskAdvancedSearch;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.pages.acd.BaseACDPage;
 import io.qameta.allure.Step;
