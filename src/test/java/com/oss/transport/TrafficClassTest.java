@@ -2,6 +2,7 @@ package com.oss.transport;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -11,6 +12,8 @@ import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
+import com.oss.pages.transport.traffic.classs.TrafficClassCreationWizard;
+import com.oss.pages.transport.traffic.classs.TrafficClassModificationWizardPage;
 import com.oss.pages.transport.traffic.classs.TrafficClassWizardPage;
 
 import io.qameta.allure.Step;
@@ -20,7 +23,7 @@ import io.qameta.allure.Step;
  */
 public class TrafficClassTest extends BaseTestCase {
 
-    private static final String PRE_CREATED_LOCATION = "Gliwice-BU1";
+    private static final String PRE_CREATED_LOCATION = "SELENIUM_TRANSPORT_LOCATION";
     private static final String PRE_CREATED_DEVICE = "SeleniumTestDeviceTC";
     private static final String INTERFACE_CREATE = "MGT LAN 0\\1";
     private static final String INTERFACE_UPDATE = "SFP+ 0\\1";
@@ -29,6 +32,7 @@ public class TrafficClassTest extends BaseTestCase {
     private static final String EDIT_BUTTON_INSIDE_EDIT_GROUP_TEST_ID = "TrafficClassEditContextAction";
     private static final String REMOVE_BUTTON_INSIDE_EDIT_GROUP_TEST_ID = "TrafficClassDeleteContextAction";
 
+    Random rand = new Random();
     private Map<String, String> propertyNameToPropertyValue;
 
     @Test(priority = 1)
@@ -36,7 +40,7 @@ public class TrafficClassTest extends BaseTestCase {
     public void createTrafficClass() {
         TrafficClassAttributes trafficClassAttributes = getTrafficClassAttributesToCreate();
 
-        TrafficClassWizardPage trafficClassWizard = goToWizardAtCreate();
+        TrafficClassCreationWizard trafficClassWizard = goToWizardAtCreate();
         fillWizardAtCreate(trafficClassWizard, trafficClassAttributes);
         OldInventoryViewPage inventoryViewPage = trafficClassWizard.clickAccept();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -51,9 +55,9 @@ public class TrafficClassTest extends BaseTestCase {
         TrafficClassAttributes trafficClassAttributes = getTrafficClassAttributesToUpdate();
 
         OldInventoryViewPage inventoryViewBeforeUpdate = new OldInventoryViewPage(driver);
-        TrafficClassWizardPage trafficClassWizard = goToWizardAtUpdate(inventoryViewBeforeUpdate);
-        fillWizardAtUpdate(trafficClassWizard, trafficClassAttributes);
-        OldInventoryViewPage inventoryViewAfterUpdate = trafficClassWizard.clickSaveChanges();
+        TrafficClassModificationWizardPage trafficClassModificationWizard = goToWizardAtUpdate(inventoryViewBeforeUpdate);
+        fillWizardAtUpdate(trafficClassModificationWizard, trafficClassAttributes);
+        OldInventoryViewPage inventoryViewAfterUpdate = trafficClassModificationWizard.clickSaveChanges();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         propertyNameToPropertyValue = inventoryViewAfterUpdate.getProperties(PROPERTIES_BOTTOM_TABLE_TEST_ID);
 
@@ -75,7 +79,7 @@ public class TrafficClassTest extends BaseTestCase {
         TrafficClassAttributes trafficClassAttributes = new TrafficClassAttributes();
         trafficClassAttributes.location = PRE_CREATED_LOCATION;
         trafficClassAttributes.device = PRE_CREATED_DEVICE;
-        trafficClassAttributes.trafficClassName = "TrafficClassTest";
+        trafficClassAttributes.trafficClassName = "TrafficClassTest" + rand.nextInt(1000);
         trafficClassAttributes.description = "traffic class test description";
         trafficClassAttributes.matchType = "All";
         trafficClassAttributes.ipPrecedence = "5";
@@ -83,22 +87,22 @@ public class TrafficClassTest extends BaseTestCase {
         trafficClassAttributes.mplsExperimentalTop = "5";
         trafficClassAttributes.ipDscp = "BE";
         trafficClassAttributes.accessList = "test access list";
-        trafficClassAttributes.inputInterface = PRE_CREATED_DEVICE + "\\" + INTERFACE_CREATE;
+        trafficClassAttributes.inputInterface = PRE_CREATED_LOCATION + "-Router-1" + "\\" + INTERFACE_CREATE;
         trafficClassAttributes.protocol = "test protocol";
         return trafficClassAttributes;
     }
 
-    private TrafficClassWizardPage goToWizardAtCreate() {
+    private TrafficClassCreationWizard goToWizardAtCreate() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         driver.get(String.format("%s/#/view/transport/ip/ethernet/traffic-class?perspective=LIVE", BASIC_URL));
-        return new TrafficClassWizardPage(driver);
+        return new TrafficClassCreationWizard(driver);
     }
 
     private void fillWizardAtCreate(TrafficClassWizardPage trafficClassWizard, TrafficClassAttributes trafficClassAttributes) {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         trafficClassWizard.selectLocationAndDevice(trafficClassAttributes.location, trafficClassAttributes.device);
         trafficClassWizard.clickNextStep();
-        setAttributes(trafficClassWizard, trafficClassAttributes);
+        setAttributesToCreate(trafficClassWizard, trafficClassAttributes);
     }
 
     private TrafficClassAttributes getTrafficClassAttributesToUpdate() {
@@ -113,22 +117,22 @@ public class TrafficClassTest extends BaseTestCase {
         trafficClassAttributes.mplsExperimentalTop = "4";
         trafficClassAttributes.ipDscp = "EF";
         trafficClassAttributes.accessList = "updated test access list";
-        trafficClassAttributes.inputInterface = PRE_CREATED_DEVICE + "\\" + INTERFACE_UPDATE;
+        trafficClassAttributes.inputInterface = PRE_CREATED_LOCATION + "-Router-1" + "\\" + INTERFACE_UPDATE;
         trafficClassAttributes.protocol = "updated test protocol";
         return trafficClassAttributes;
     }
 
-    private TrafficClassWizardPage goToWizardAtUpdate(OldInventoryViewPage inventoryViewBeforeUpdate) {
+    private TrafficClassModificationWizardPage goToWizardAtUpdate(OldInventoryViewPage inventoryViewBeforeUpdate) {
         inventoryViewBeforeUpdate.selectRowInTableAtIndex(0);
         inventoryViewBeforeUpdate.expandEditAndChooseAction(EDIT_BUTTON_INSIDE_EDIT_GROUP_TEST_ID);
-        return new TrafficClassWizardPage(driver);
+        return new TrafficClassModificationWizardPage(driver);
     }
 
-    private void fillWizardAtUpdate(TrafficClassWizardPage trafficClassWizard, TrafficClassAttributes trafficClassAttributes) {
-        setAttributes(trafficClassWizard, trafficClassAttributes);
+    private void fillWizardAtUpdate(TrafficClassModificationWizardPage trafficClassModificationWizard, TrafficClassAttributes trafficClassAttributes) {
+        setAttributesToUpdate(trafficClassModificationWizard, trafficClassAttributes);
     }
 
-    private void setAttributes(TrafficClassWizardPage trafficClassWizard, TrafficClassAttributes trafficClassAttributes) {
+    private void setAttributesToCreate(TrafficClassWizardPage trafficClassWizard, TrafficClassAttributes trafficClassAttributes) {
         trafficClassWizard.setName(trafficClassAttributes.trafficClassName);
         trafficClassWizard.setDescription(trafficClassAttributes.description);
         trafficClassWizard.setMatchType(trafficClassAttributes.matchType);
@@ -139,6 +143,19 @@ public class TrafficClassTest extends BaseTestCase {
         trafficClassWizard.setAccessList(trafficClassAttributes.accessList);
         trafficClassWizard.setInputInterface(trafficClassAttributes.inputInterface);
         trafficClassWizard.setProtocol(trafficClassAttributes.protocol);
+    }
+
+    private void setAttributesToUpdate(TrafficClassModificationWizardPage trafficClassModificationWizard, TrafficClassAttributes trafficClassAttributes) {
+        trafficClassModificationWizard.setName(trafficClassAttributes.trafficClassName);
+        trafficClassModificationWizard.setDescription(trafficClassAttributes.description);
+        trafficClassModificationWizard.setMatchType(trafficClassAttributes.matchType);
+        trafficClassModificationWizard.setIpPrecedence(trafficClassAttributes.ipPrecedence);
+        trafficClassModificationWizard.setMpls(trafficClassAttributes.mplsExperimental);
+        trafficClassModificationWizard.setMplsTop(trafficClassAttributes.mplsExperimentalTop);
+        trafficClassModificationWizard.setIpDscp(trafficClassAttributes.ipDscp);
+        trafficClassModificationWizard.setAccessList(trafficClassAttributes.accessList);
+        trafficClassModificationWizard.setInputInterface(trafficClassAttributes.inputInterface);
+        trafficClassModificationWizard.setProtocol(trafficClassAttributes.protocol);
     }
 
     private void assertTrafficClassAttributes(TrafficClassAttributes trafficClassAttributes) {
