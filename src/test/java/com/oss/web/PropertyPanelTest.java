@@ -72,7 +72,7 @@ public class PropertyPanelTest extends BaseTestCase {
     public void hideEmpty() {
         String emptyValue = "—";
 
-        PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel(5, PROPERTY_PANEL_ID);
+        PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel(10, PROPERTY_PANEL_ID);
         propertyPanel.hideEmpty();
 
         for (String attribute : propertyPanel.getVisibleAttributes()) {
