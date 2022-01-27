@@ -1,5 +1,6 @@
 package com.oss.pages.acd.settingsView;
 
+import com.oss.framework.components.icons.StatusIcon;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
@@ -139,6 +140,19 @@ public class ArSettingsPage extends BaseACDPage {
         DelayUtils.waitForPageToLoad(driver, wait);
         TabsWidget.create(driver, wait).selectTabByLabel(tabLabel);
         log.debug("I opened Subsystems Health tab");
+    }
+
+    @Step("I check if AR subsystems are up and running")
+    public boolean isSubsystemUpAndRunning() {
+
+        for (StatusIcon.IconItem icon : StatusIcon.createStatusIcon(driver, wait).getIconCircles()) {
+            if (!icon.isIconGreen()) {
+                log.debug("At least one of AR subsystem is NOT up and running");
+                return false;
+            }
+        }
+        log.debug("All AR subsystems are up and running");
+        return true;
     }
 
 }
