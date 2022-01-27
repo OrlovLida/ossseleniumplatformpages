@@ -51,7 +51,7 @@ public class EditCell4GBulkWizardPage extends BasePage {
     @Step("Set RSI")
     public void setTAC(int rowNumber, String tac) {
         EditableList list = EditableList.createById(driver, wait, LIST_ID);
-        list.setValueByRowIndex(rowNumber, tac, TAC_COLUMN_ID, TAC_NUMBER_FIELD_DATA_ATTRIBUTE_NAME, Input.ComponentType.TEXT_FIELD);
+        list.setValue(rowNumber, tac, TAC_COLUMN_ID, TAC_NUMBER_FIELD_DATA_ATTRIBUTE_NAME, Input.ComponentType.TEXT_FIELD);
     }
 
     @Step("Set Pa Output")
@@ -80,7 +80,7 @@ public class EditCell4GBulkWizardPage extends BasePage {
         waitForPageToLoad();
         for (int i = 0; i < cellsNumber; i++) {
             waitForPageToLoad();
-            setTAC(i + 1, tac[i]);
+            setTAC(i, tac[i]);
             waitForPageToLoad();
         }
         setPaInputBulk(paOutput);

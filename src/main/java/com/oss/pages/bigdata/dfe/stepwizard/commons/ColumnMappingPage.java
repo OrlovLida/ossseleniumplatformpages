@@ -27,9 +27,16 @@ public class ColumnMappingPage extends BasePage {
         columnMappingWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
     }
 
+    @Step("I click Next Step")
+    public void clickNextStep() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        columnMappingWizard.clickNextStep();
+        log.info("I click Next Step");
+    }
+
     protected EditableList.Row getTableRow(String columnNameValue) {
         EditableList columnMappingList = EditableList.createById(driver, wait, LIST_ID);
-        return columnMappingList.getRowByAttributeValue(COLUMN_DATA_ID, columnNameValue);
+        return columnMappingList.getRowByValue(COLUMN_DATA_ID, columnNameValue);
     }
 
     protected String getColumnRoleInputId() {
@@ -38,12 +45,5 @@ public class ColumnMappingPage extends BasePage {
 
     protected String getColumnRoleId() {
         return COLUMN_ROLE_ID;
-    }
-
-    @Step("I click Next Step")
-    public void clickNextStep() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        columnMappingWizard.clickNextStep();
-        log.info("I click Next Step");
     }
 }

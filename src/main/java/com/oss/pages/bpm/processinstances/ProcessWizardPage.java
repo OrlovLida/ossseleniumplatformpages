@@ -17,11 +17,11 @@ import com.google.common.base.Splitter;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.widgets.list.EditableList;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.wizard.Wizard;
+import com.oss.framework.widgets.list.EditableList;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.table.TableInterface;
+import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 import com.oss.pages.bpm.milestones.Milestone;
 
@@ -74,12 +74,10 @@ public class ProcessWizardPage extends BasePage {
     }
 
     public String createDCPPlusDays(Long plusDays) {
-
         return createProcess(PROCESS_NAME, plusDays, DCP);
     }
 
     public String createNRPPlusDays(Long plusDays) {
-
         return createProcess(PROCESS_NAME, plusDays, NRP);
     }
 
@@ -87,7 +85,6 @@ public class ProcessWizardPage extends BasePage {
         TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, TABLE_PROCESSES);
         table.callAction("create", "start-process");
         definedBasicProcess(processName, processType, plusDays).clickButtonById(CREATE_BUTTON);
-
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, wait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
         String text = messages.get(0).getText();
@@ -109,7 +106,6 @@ public class ProcessWizardPage extends BasePage {
 
     public void clickAcceptButton() {
         Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2).clickButtonById(CREATE_BUTTON);
-
     }
 
     public void clickCancelButton() {
@@ -117,7 +113,6 @@ public class ProcessWizardPage extends BasePage {
     }
 
     private Wizard definedBasicProcess(String processName, String processType, Long plusDays) {
-
         Wizard wizardFirstStep = Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_1);
         Input componentDomain = wizardFirstStep.getComponent(DOMAIN_ATTRIBUTE_ID, Input.ComponentType.COMBOBOX);
         if (!componentDomain.getValue().getStringValue().equals(INVENTORY_PROCESS)) {
@@ -130,7 +125,6 @@ public class ProcessWizardPage extends BasePage {
         componentRelease.clear();
         componentRelease.setSingleStringValue(LATEST);
         wizardFirstStep.clickButtonById(ACCEPT_BUTTON);
-
         Wizard wizardSecondStep = Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2);
         Input processNameTextField = wizardSecondStep.getComponent(PROCESS_NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD);
         processNameTextField.setSingleStringValue(processName);
@@ -169,34 +163,30 @@ public class ProcessWizardPage extends BasePage {
         public Milestone addMilestoneRow(Milestone milestone) {
             EditableList addMilestoneList = EditableList.createById(driver, wait, ADD_MILESTONE_LIST);
             EditableList.Row row = addMilestoneList.addRow();
-            row.setEditableAttributeValue(milestone.getName().get(), BPM_MILESTONE_NAME, "name-TEXT_FIELD", Input.ComponentType.TEXT_FIELD);
-
+            row.setValue(milestone.getName().get(), BPM_MILESTONE_NAME, "name-TEXT_FIELD", Input.ComponentType.TEXT_FIELD);
             if (milestone.getDueDate().isPresent()) {
-                row.setEditableAttributeValue(milestone.getDueDate().get(), BPM_MILESTONE_DUE_DATE, "dueDate-DATE",
+                row.setValue(milestone.getDueDate().get(), BPM_MILESTONE_DUE_DATE, "dueDate-DATE",
                         Input.ComponentType.DATE);
-
             }
             if (milestone.getLeadTime().isPresent()) {
-                row.setEditableAttributeValue(milestone.getLeadTime().get(), BPM_MILESTONE_LEAD_TIME, "leadTime-NUMBER_FIELD",
+                row.setValue(milestone.getLeadTime().get(), BPM_MILESTONE_LEAD_TIME, "leadTime-NUMBER_FIELD",
                         Input.ComponentType.NUMBER_FIELD);
-
             }
             if (milestone.getDescription().isPresent()) {
-                row.setEditableAttributeValue(milestone.getDescription().get(), BPM_MILESTONE_DESCRIPTION, "description-TEXT_FIELD",
+                row.setValue(milestone.getDescription().get(), BPM_MILESTONE_DESCRIPTION, "description-TEXT_FIELD",
                         Input.ComponentType.TEXT_FIELD);
             }
             if (milestone.getRelatedTask().isPresent()) {
-                row.setEditableAttributeValue(milestone.getRelatedTask().get(), BPM_MILESTONE_RELATED_TASK,
+                row.setValue(milestone.getRelatedTask().get(), BPM_MILESTONE_RELATED_TASK,
                         RELATED_TASK_IDENTIFIER,
                         Input.ComponentType.COMBOBOX);
             }
             if (milestone.getIsActive().isPresent()) {
-                row.setEditableAttributeValue(milestone.getIsActive().get(), BPM_MILESTONE_IS_ACTIVE, "active-CHECKBOX",
+                row.setValue(milestone.getIsActive().get(), BPM_MILESTONE_IS_ACTIVE, "active-CHECKBOX",
                         Input.ComponentType.CHECKBOX);
-
             }
             if (milestone.getIsManualCompletion().isPresent()) {
-                row.setEditableAttributeValue(milestone.getIsManualCompletion().get(), BPM_MILESTONE_IS_MANUAL_COMPLETION,
+                row.setValue(milestone.getIsManualCompletion().get(), BPM_MILESTONE_IS_MANUAL_COMPLETION,
                         "isManualCompletion-CHECKBOX",
                         Input.ComponentType.CHECKBOX);
             }
@@ -206,23 +196,22 @@ public class ProcessWizardPage extends BasePage {
         public Milestone editPredefinedMilestone(Milestone milestone, int row) {
             EditableList predefinedMilestoneList = getMilestonePredefinedList();
             EditableList.Row predefineMilestoneRow = predefinedMilestoneList.getRow(row - 1);
-
             if (milestone.getName().isPresent()) {
-                predefineMilestoneRow.setEditableAttributeValue(milestone.getName().get(), BPM_MILESTONE_NAME, "name-TEXT_FIELD",
+                predefineMilestoneRow.setValue(milestone.getName().get(), BPM_MILESTONE_NAME, "name-TEXT_FIELD",
                         Input.ComponentType.TEXT_FIELD);
             }
 
             if (milestone.getDueDate().isPresent()) {
-                predefineMilestoneRow.setEditableAttributeValue(milestone.getDueDate().get(), BPM_MILESTONE_DUE_DATE, "dueDate-DATE",
+                predefineMilestoneRow.setValue(milestone.getDueDate().get(), BPM_MILESTONE_DUE_DATE, "dueDate-DATE",
                         Input.ComponentType.DATE);
             }
             if (milestone.getLeadTime().isPresent()) {
-                predefineMilestoneRow.setEditableAttributeValue(milestone.getLeadTime().get(), BPM_MILESTONE_LEAD_TIME,
+                predefineMilestoneRow.setValue(milestone.getLeadTime().get(), BPM_MILESTONE_LEAD_TIME,
                         "leadTime-NUMBER_FIELD",
                         Input.ComponentType.NUMBER_FIELD);
             }
             if (milestone.getDescription().isPresent()) {
-                predefineMilestoneRow.setEditableAttributeValue(milestone.getDescription().get(), BPM_MILESTONE_DESCRIPTION,
+                predefineMilestoneRow.setValue(milestone.getDescription().get(), BPM_MILESTONE_DESCRIPTION,
                         "description-TEXT_FIELD",
                         Input.ComponentType.TEXT_FIELD);
             }
@@ -231,28 +220,25 @@ public class ProcessWizardPage extends BasePage {
                     predefineMilestoneRow.clearValue(BPM_MILESTONE_RELATED_TASK, RELATED_TASK_IDENTIFIER,
                             Input.ComponentType.COMBOBOX);
                 } else {
-                    predefineMilestoneRow.setEditableAttributeValue(milestone.getRelatedTask().get(), BPM_MILESTONE_RELATED_TASK,
+                    predefineMilestoneRow.setValue(milestone.getRelatedTask().get(), BPM_MILESTONE_RELATED_TASK,
                             RELATED_TASK_IDENTIFIER,
                             Input.ComponentType.COMBOBOX);
                 }
             }
             if (milestone.getIsActive().isPresent()) {
-                predefineMilestoneRow.setEditableAttributeValue(milestone.getIsActive().get(), BPM_MILESTONE_IS_ACTIVE, "active-CHECKBOX",
+                predefineMilestoneRow.setValue(milestone.getIsActive().get(), BPM_MILESTONE_IS_ACTIVE, "active-CHECKBOX",
                         Input.ComponentType.CHECKBOX);
-
             }
             if (milestone.getIsManualCompletion().isPresent()) {
-                predefineMilestoneRow.setEditableAttributeValue(milestone.getIsManualCompletion().get(), BPM_MILESTONE_IS_MANUAL_COMPLETION,
+                predefineMilestoneRow.setValue(milestone.getIsManualCompletion().get(), BPM_MILESTONE_IS_MANUAL_COMPLETION,
                         "isManualCompletion-CHECKBOX",
                         Input.ComponentType.CHECKBOX);
             }
             return getMilestoneFromRow(predefinedMilestoneList, row - 1);
-
         }
 
         public void clickAcceptButton() {
             Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2).clickButtonById(CREATE_BUTTON);
-
         }
 
         public void clickCancelButton() {
@@ -260,7 +246,6 @@ public class ProcessWizardPage extends BasePage {
         }
 
         private Milestone getMilestoneFromRow(EditableList list, int row) {
-
             String name = list.getRow(row).getCellValue(BPM_MILESTONE_NAME);
             String dueDate = list.getRow(row).getCellValue(BPM_MILESTONE_DUE_DATE);
             String leadTime = list.getRow(row).getCellValue(BPM_MILESTONE_LEAD_TIME);
@@ -268,7 +253,6 @@ public class ProcessWizardPage extends BasePage {
             String relatedTask = list.getRow(row).getCellValue(BPM_MILESTONE_RELATED_TASK);
             String isActive = list.getRow(row).getCellValue(BPM_MILESTONE_IS_ACTIVE);
             String isManualCompletion = list.getRow(row).getCellValue(BPM_MILESTONE_IS_MANUAL_COMPLETION);
-
             return Milestone.builder().setName(name)
                     .setDueDate(dueDate)
                     .setLeadTime(leadTime)
@@ -278,7 +262,5 @@ public class ProcessWizardPage extends BasePage {
                     .setIsManualCompletion(isManualCompletion)
                     .build();
         }
-
     }
-
 }

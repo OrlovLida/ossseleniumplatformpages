@@ -231,11 +231,11 @@ public class TP_OSS_RM_RAN_004_All_Steps_Except_9 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         editCell4GBulkWizardPage.setReferencePowerBulk(REFERENCE_POWER);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        editCell4GBulkWizardPage.setTAC(1, TAC);//
+        editCell4GBulkWizardPage.setTAC(0, TAC);//
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        editCell4GBulkWizardPage.setTAC(1, TAC);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         editCell4GBulkWizardPage.setTAC(2, TAC);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        editCell4GBulkWizardPage.setTAC(3, TAC);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         editCell4GBulkWizardPage.setPaOutputBulk(PA_OUTPUT);//
         DelayUtils.waitForPageToLoad(driver, webDriverWait);

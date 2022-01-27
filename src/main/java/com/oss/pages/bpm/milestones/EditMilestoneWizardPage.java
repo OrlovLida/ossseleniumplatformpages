@@ -9,8 +9,8 @@ package com.oss.pages.bpm.milestones;
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.widgets.list.EditableList;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.list.EditableList;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 
@@ -41,22 +41,22 @@ public class EditMilestoneWizardPage extends BasePage {
         EditableList.Row editMilestoneRow = milestoneList.getVisibleRows().get(0);
         DelayUtils.sleep(2000);
         if (milestone.getName().isPresent()) {
-            if (!editMilestoneRow.isEditableAttribute(BPM_MILESTONE_NAME)) {
+            if (!editMilestoneRow.isAttributeEditable(BPM_MILESTONE_NAME)) {
                 throw new RuntimeException("Name is not editable. You need Admin permission");
             }
-            editMilestoneRow.setEditableAttributeValue(milestone.getName().get(), BPM_MILESTONE_NAME, "name-TEXT_FIELD",
+            editMilestoneRow.setValue(milestone.getName().get(), BPM_MILESTONE_NAME, "name-TEXT_FIELD",
                     Input.ComponentType.TEXT_FIELD);
         }
         if (milestone.getDueDate().isPresent()) {
-            editMilestoneRow.setEditableAttributeValue(milestone.getDueDate().get(), BPM_MILESTONE_DUE_DATE, "dueDate-DATE",
+            editMilestoneRow.setValue(milestone.getDueDate().get(), BPM_MILESTONE_DUE_DATE, "dueDate-DATE",
                     Input.ComponentType.DATE);
         }
         if (milestone.getLeadTime().isPresent()) {
-            editMilestoneRow.setEditableAttributeValue(milestone.getLeadTime().get(), BPM_MILESTONE_LEAD_TIME, "leadTime-NUMBER_FIELD",
+            editMilestoneRow.setValue(milestone.getLeadTime().get(), BPM_MILESTONE_LEAD_TIME, "leadTime-NUMBER_FIELD",
                     Input.ComponentType.NUMBER_FIELD);
         }
         if (milestone.getDescription().isPresent()) {
-            editMilestoneRow.setEditableAttributeValue(milestone.getDescription().get(), BPM_MILESTONE_DESCRIPTION,
+            editMilestoneRow.setValue(milestone.getDescription().get(), BPM_MILESTONE_DESCRIPTION,
                     "description-TEXT_FIELD",
                     Input.ComponentType.TEXT_FIELD);
         }
@@ -64,13 +64,13 @@ public class EditMilestoneWizardPage extends BasePage {
             if (milestone.getRelatedTask().get().equals("")) {
                 editMilestoneRow.clearValue(BPM_MILESTONE_RELATED_TASK, "relatedObject-COMBOBOX-input", Input.ComponentType.COMBOBOX);
             } else {
-                editMilestoneRow.setEditableAttributeValue(milestone.getRelatedTask().get(), BPM_MILESTONE_RELATED_TASK,
+                editMilestoneRow.setValue(milestone.getRelatedTask().get(), BPM_MILESTONE_RELATED_TASK,
                         "relatedObject-COMBOBOX-input",
                         Input.ComponentType.COMBOBOX);
             }
         }
         if (milestone.getIsManualCompletion().isPresent()) {
-            editMilestoneRow.setEditableAttributeValue(milestone.getIsManualCompletion().get(), BPM_MILESTONE_IS_MANUAL_COMPLETION,
+            editMilestoneRow.setValue(milestone.getIsManualCompletion().get(), BPM_MILESTONE_IS_MANUAL_COMPLETION,
                     "isManualCompletion-CHECKBOX",
                     Input.ComponentType.CHECKBOX);
         }
