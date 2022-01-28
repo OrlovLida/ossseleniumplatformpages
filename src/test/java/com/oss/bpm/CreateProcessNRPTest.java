@@ -6,19 +6,12 @@
  */
 package com.oss.bpm;
 
-import com.oss.BaseTestCase;
-import com.oss.framework.components.alerts.SystemMessageContainer;
-import com.oss.framework.components.alerts.SystemMessageInterface;
-import com.oss.framework.components.mainheader.PerspectiveChooser;
-import com.oss.framework.components.mainheader.ToolbarWidget;
-import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bpm.IntegrationProcessWizardPage;
-import com.oss.pages.bpm.processinstances.ProcessInstancesPage;
-import com.oss.pages.bpm.processinstances.ProcessWizardPage;
-import com.oss.pages.bpm.TasksPage;
-import com.oss.pages.physical.DeviceWizardPage;
-import com.oss.utils.TestListener;
-import io.qameta.allure.Description;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.regex.Pattern;
+
 import org.assertj.core.api.Assertions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,21 +20,30 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.regex.Pattern;
+import com.oss.BaseTestCase;
+import com.oss.framework.components.alerts.SystemMessageContainer;
+import com.oss.framework.components.alerts.SystemMessageInterface;
+import com.oss.framework.components.mainheader.PerspectiveChooser;
+import com.oss.framework.components.mainheader.ToolbarWidget;
+import com.oss.framework.utils.DelayUtils;
+import com.oss.pages.bpm.IntegrationProcessWizardPage;
+import com.oss.pages.bpm.TasksPage;
+import com.oss.pages.bpm.processinstances.ProcessInstancesPage;
+import com.oss.pages.bpm.processinstances.ProcessWizardPage;
+import com.oss.pages.physical.DeviceWizardPage;
+import com.oss.utils.TestListener;
+
+import io.qameta.allure.Description;
 
 /**
  * @author Gabriela Kasza
  */
 @Listeners({TestListener.class})
 public class CreateProcessNRPTest extends BaseTestCase {
-    private final String BPM_USER_LOGIN = "bpm_webselenium";
-    private final String BPM_USER_PASSWORD = "Webtests123!";
-    private final String BPM_ADMIN_USER_LOGIN = "bpm_admin_webselenium";
-    private final String BPM_ADMIN_USER_PASSWORD = "Webtests123!";
+    private static final String BPM_USER_LOGIN = "bpm_webselenium";
+    private static final String BPM_USER_PASSWORD = "Webtests123!";
+    private static final String BPM_ADMIN_USER_LOGIN = "bpm_admin_webselenium";
+    private static final String BPM_ADMIN_USER_PASSWORD = "Webtests123!";
 
     private static final Logger log = LoggerFactory.getLogger(CreateProcessNRPTest.class);
 
@@ -124,9 +126,9 @@ public class CreateProcessNRPTest extends BaseTestCase {
         deviceWizardPage.next();
         deviceWizardPage.setPreciseLocation("a");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        if (driver.getPageSource().contains("Available Mounting Positions")){
+        if (driver.getPageSource().contains("Available Mounting Positions")) {
             deviceWizardPage.setFirstAvailableMountingPosition();
-            DelayUtils.waitForPageToLoad(driver,webDriverWait);
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
         }
         deviceWizardPage.accept();
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
@@ -196,7 +198,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
         DelayUtils.sleep(2000);
         List<String> files = tasksPage.getListOfAttachments();
         Assertions.assertThat(files.get(0)).contains("SeleniumTest");
-        Assertions.assertThat(files.size()).isGreaterThan(0);
+        Assertions.assertThat(files.size()).isPositive();
 
     }
 
@@ -223,9 +225,9 @@ public class CreateProcessNRPTest extends BaseTestCase {
         deviceWizardPage.next();
         deviceWizardPage.setPreciseLocation("t");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        if (driver.getPageSource().contains("Available Mounting Positions")){
+        if (driver.getPageSource().contains("Available Mounting Positions")) {
             deviceWizardPage.setFirstAvailableMountingPosition();
-            DelayUtils.waitForPageToLoad(driver,webDriverWait);
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
         }
         deviceWizardPage.accept();
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
@@ -280,8 +282,8 @@ public class CreateProcessNRPTest extends BaseTestCase {
         // when
         tasksPage.setupIntegration(processNRPCode);
         IntegrationProcessWizardPage integrationWizard = new IntegrationProcessWizardPage(driver);
-        integrationWizard.defineIntegrationProcess(processIPName1, "2020-07-01", 1);
-        integrationWizard.defineIntegrationProcess(processIPName2, "2020-07-02", 2);
+        integrationWizard.defineIntegrationProcess(processIPName1, "2020-07-01", 0);
+        integrationWizard.defineIntegrationProcess(processIPName2, "2020-07-02", 1);
         DelayUtils.sleep();
         integrationWizard.clickNext();
         integrationWizard.dragAndDrop(deviceName1, processNRPCode, processIPName1);

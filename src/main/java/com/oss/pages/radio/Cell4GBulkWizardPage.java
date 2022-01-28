@@ -67,9 +67,9 @@ public class Cell4GBulkWizardPage extends BasePage {
         int rowNumber = amountOfCells;
         for (String cellName : cellNames) {
             Row row = EditableList.createById(driver, wait, CELLS_LIST_ID).getRow(rowNumber - 1);
-            row.setEditableAttributeValue(cellName, COLUMN_NAME, NAME, Input.ComponentType.TEXT_FIELD);
-            row.setEditableAttributeValue(String.valueOf(crp), COLUMN_CRP, CRP_ID, Input.ComponentType.TEXT_FIELD);
-            row.setEditableAttributeValue(String.valueOf(localCellsId[rowNumber - 1]), COLUMN_LOCAL_CELL_ID, LOCAL_CELL_ID, TEXT_FIELD);
+            row.setValue(cellName, COLUMN_NAME, NAME, Input.ComponentType.TEXT_FIELD);
+            row.setValue(String.valueOf(crp), COLUMN_CRP, CRP_ID, Input.ComponentType.TEXT_FIELD);
+            row.setValue(String.valueOf(localCellsId[rowNumber - 1]), COLUMN_LOCAL_CELL_ID, LOCAL_CELL_ID, TEXT_FIELD);
             rowNumber--;
         }
         clickAccept();
@@ -89,11 +89,11 @@ public class Cell4GBulkWizardPage extends BasePage {
         int rowNumber = 1;
         for (String cellName : cellNames) {
             Row row = EditableList.createById(driver, wait, CELLS_LIST_ID).getRow(rowNumber - 1);
-            row.setEditableAttributeValue(cellName, COLUMN_NAME, NAME, Input.ComponentType.TEXT_FIELD);
-            row.setEditableAttributeValue(String.valueOf(localCellsId[rowNumber]), COLUMN_LOCAL_CELL_ID, LOCAL_CELL_ID, TEXT_FIELD);
-            row.setEditableAttributeValue(String.valueOf(crp), COLUMN_CRP, CRP_ID, Input.ComponentType.TEXT_FIELD);
-            row.setEditableAttributeValue("5", COLUMN_PCI, PCI, Input.ComponentType.TEXT_FIELD);
-            row.setEditableAttributeValue("10", COLUMN_RSI, RSI, Input.ComponentType.TEXT_FIELD);
+            row.setValue(cellName, COLUMN_NAME, NAME, Input.ComponentType.TEXT_FIELD);
+            row.setValue(String.valueOf(localCellsId[rowNumber]), COLUMN_LOCAL_CELL_ID, LOCAL_CELL_ID, TEXT_FIELD);
+            row.setValue(String.valueOf(crp), COLUMN_CRP, CRP_ID, Input.ComponentType.TEXT_FIELD);
+            row.setValue("5", COLUMN_PCI, PCI, Input.ComponentType.TEXT_FIELD);
+            row.setValue("10", COLUMN_RSI, RSI, Input.ComponentType.TEXT_FIELD);
             rowNumber++;
         }
         clickAccept();

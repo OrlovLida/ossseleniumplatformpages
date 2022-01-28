@@ -6,14 +6,8 @@
  */
 package com.oss.bpm;
 
-import com.oss.BaseTestCase;
-import com.oss.framework.components.mainheader.ToolbarWidget;
-import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bpm.milestones.Milestone;
-import com.oss.pages.bpm.processinstances.ProcessInstancesPage;
-import com.oss.pages.bpm.processinstances.ProcessWizardPage;
-import com.oss.utils.TestListener;
-import io.qameta.allure.Description;
+import java.time.LocalDate;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -21,17 +15,25 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
-import java.time.LocalDate;
+import com.oss.BaseTestCase;
+import com.oss.framework.components.mainheader.ToolbarWidget;
+import com.oss.framework.utils.DelayUtils;
+import com.oss.pages.bpm.milestones.Milestone;
+import com.oss.pages.bpm.processinstances.ProcessInstancesPage;
+import com.oss.pages.bpm.processinstances.ProcessWizardPage;
+import com.oss.utils.TestListener;
+
+import io.qameta.allure.Description;
 
 /**
  * @author Gabriela Kasza
  */
 @Listeners({TestListener.class})
 public class CreateMilestoneWithProcessTest extends BaseTestCase {
-    private final String BPM_USER_LOGIN = "bpm_webselenium";
-    private final String BPM_USER_PASSWORD = "Webtests123!";
-    private final String BPM_ADMIN_USER_LOGIN = "bpm_admin_webselenium";
-    private final String BPM_ADMIN_USER_PASSWORD = "Webtests123!";
+    private static final String BPM_USER_LOGIN = "bpm_webselenium";
+    private static final String BPM_USER_PASSWORD = "Webtests123!";
+    private static final String BPM_ADMIN_USER_LOGIN = "bpm_admin_webselenium";
+    private static final String BPM_ADMIN_USER_PASSWORD = "Webtests123!";
 
     private static final Logger log = LoggerFactory.getLogger(CreateMilestoneWithProcessTest.class);
 
@@ -48,7 +50,6 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
             processInstancesPage.changeUser(BPM_USER_LOGIN, BPM_USER_PASSWORD);
         }
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-
     }
 
     @Test(priority = 1, description = "Create Process with Milestone")
@@ -122,7 +123,6 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
         Assert.assertEquals(relatedObjectMilestone2, "Task" + "(" + milestone2.getRelatedTask().get() + ")");
         Assert.assertEquals(relatedObjectPredefinedMilestone,
                 "Task" + "(" + milestonePredefined_1.getRelatedTask().get() + ")");
-
     }
 
     @Test(priority = 2, description = "Update Predefined Milestone")
@@ -276,7 +276,6 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
         String descriptionMilestone2 = processInstancesPage.getMilestoneValue(nameMilestone2, "Description");
         Assert.assertEquals(descriptionMilestone1, "Milestone 1 - Selenium Test");
         Assert.assertEquals(descriptionMilestone2, "");
-
     }
 
     @Test(priority = 4, description = "Check if Name is not editable for predefined Milestone")
@@ -287,10 +286,9 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
         ProcessWizardPage.MilestoneStepWizard milestoneStepWizard =
                 processWizardPage.definedMilestoneInProcess("Milestone Process", 0L, "GK Milestones");
-        boolean isEditable = milestoneStepWizard.getMilestonePredefinedList().getRow(0).isEditableAttribute("name");
+        boolean isEditable = milestoneStepWizard.getMilestonePredefinedList().getRow(0).isAttributeEditable("name");
         processWizardPage.clickCancelButton();
         Assert.assertFalse(isEditable);
-
     }
 
 }
