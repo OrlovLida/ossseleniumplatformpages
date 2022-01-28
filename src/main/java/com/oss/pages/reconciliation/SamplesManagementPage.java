@@ -81,6 +81,6 @@ public class SamplesManagementPage extends BasePage {
 
     private void confirm() {
         ConfirmationBox confirmationBox = ConfirmationBox.create(driver, wait);
-        confirmationBox.clickButtonByDataAttributeName(CONFIRM_ID);
+        confirmationBox.clickButtonById(CONFIRM_ID);
     }
 }

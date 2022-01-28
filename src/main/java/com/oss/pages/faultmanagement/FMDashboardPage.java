@@ -113,7 +113,7 @@ public class FMDashboardPage extends BasePage {
         commonList.getAllRows().get(rowNumber).callAction(REMOVE_ACTION_ID);
         DelayUtils.sleep(1000);
         ConfirmationBox confirmationBox = ConfirmationBox.create(driver, wait);
-        confirmationBox.clickButtonByDataAttributeName(CONFIRMATION_BOX_BUTTON_NAME);
+        confirmationBox.clickButtonById(CONFIRMATION_BOX_BUTTON_NAME);
         log.info("Deletion of WAMV in row {}", rowNumber);
     }
 
