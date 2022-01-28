@@ -79,6 +79,6 @@ public class RoleViewPage extends BasePage {
     private void acceptConfirmationBox() {
         DelayUtils.waitForPageToLoad(driver, wait);
         ConfirmationBoxInterface confirmationBox = ConfirmationBox.create(driver, wait);
-        confirmationBox.clickButtonByDataAttributeName(OK_BUTTON);
+        confirmationBox.clickButtonById(OK_BUTTON);
     }
 }

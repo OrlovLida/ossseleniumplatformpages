@@ -278,7 +278,7 @@ public class NewInventoryViewPage extends BasePage {
     }
 
     public void clickConfirmConfirmationBox() {
-        getConfirmationBox().clickButtonByDataAttributeName(CONFIRM_ID);
+        getConfirmationBox().clickButtonById(CONFIRM_ID);
     }
 
     @Step("Change layout to Horizontal Orientation")

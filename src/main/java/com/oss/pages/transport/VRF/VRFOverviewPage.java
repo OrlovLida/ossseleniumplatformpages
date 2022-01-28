@@ -69,7 +69,7 @@ public class VRFOverviewPage extends BasePage {
     public void confirmRemoval() {
         DelayUtils.waitForPageToLoad(driver, wait);
         ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
-        prompt.clickButtonByDataAttributeName(CONFIRM_REMOVAL_BUTTON_DATA_ATTRIBUTENAME);
+        prompt.clickButtonById(CONFIRM_REMOVAL_BUTTON_DATA_ATTRIBUTENAME);
     }
 
     public String getNameValue() {
