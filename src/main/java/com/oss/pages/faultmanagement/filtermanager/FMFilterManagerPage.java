@@ -75,7 +75,7 @@ public class FMFilterManagerPage extends BasePage {
     public void deleteFolder(String nameLabel) {
         DelayUtils.sleep(2000);
         List<CommonList.Category> categories =
-                getCommonList().createCategories().stream().filter(category -> category.getValue().equals(nameLabel))
+                getCommonList().getCategories().stream().filter(category -> category.getValue().equals(nameLabel))
                         .collect(Collectors.toList());
         categories.forEach(category -> category.callAction(REMOVE_ACTION_ID));
         log.info("Deleting folder : {}", nameLabel);
@@ -87,7 +87,7 @@ public class FMFilterManagerPage extends BasePage {
         log.info("Checking if folder : {} exists", nameLabel);
         for (int i = 0; i < 100; i++) {
             List<CommonList.Category> categories =
-                    getCommonList().createCategories().stream().filter(category -> category.getValue().contains(nameLabel))
+                    getCommonList().getCategories().stream().filter(category -> category.getValue().contains(nameLabel))
                             .collect(Collectors.toList());
             if (!categories.isEmpty()) {
                 return true;
@@ -103,7 +103,7 @@ public class FMFilterManagerPage extends BasePage {
         log.info("Checking if folder : {} not exists", nameLabel);
         for (int i = 0; i < 100; i++) {
             List<CommonList.Category> categories =
-                    getCommonList().createCategories().stream().filter(category -> category.getValue().contains(nameLabel))
+                    getCommonList().getCategories().stream().filter(category -> category.getValue().contains(nameLabel))
                             .collect(Collectors.toList());
             if (categories.isEmpty()) {
                 return true;
