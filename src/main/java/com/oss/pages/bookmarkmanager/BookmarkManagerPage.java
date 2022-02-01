@@ -48,7 +48,7 @@ public class BookmarkManagerPage extends BasePage {
 
     @Step("I expand found category")
     public void expandBookmarkList(String categoryName) {
-        CommonList.create(driver, wait, LIST_ID).clickOnCategoryByName(categoryName);
+        CommonList.create(driver, wait, LIST_ID).expandCategory(categoryName);
         log.info("I expanded category: {}", categoryName);
     }
 

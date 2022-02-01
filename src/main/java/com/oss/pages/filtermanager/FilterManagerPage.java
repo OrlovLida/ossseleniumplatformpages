@@ -131,7 +131,7 @@ public class FilterManagerPage extends BasePage {
     @Step("Expand Folder")
     public FilterManagerPage expandFolder(String folderName) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getCommonList().clickOnCategoryByName(folderName);
+        getCommonList().expandCategory(folderName);
         return this;
     }
 
