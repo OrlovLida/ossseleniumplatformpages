@@ -97,11 +97,11 @@ public class IndicatorsViewTest extends BaseTestCase {
             kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
             assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
             kpiViewPage.clickAreaChartType();
-            assertTrue(kpiViewPage.shouldSeeAreaChart(AREA_CHART_FILL_OPACITY));
+            assertTrue(kpiViewPage.isDataSeriesType("area"));
             kpiViewPage.clickBarChartType();
-            assertTrue(kpiViewPage.shouldSeeBarChart(BAR_CHART_FILL_OPACITY));
+            assertTrue(kpiViewPage.isDataSeriesType("bar"));
             kpiViewPage.clickLineChartType();
-            assertTrue(kpiViewPage.shouldSeeAreaChart(LINE_CHART_FILL_OPACITY));
+            assertTrue(kpiViewPage.isDataSeriesType("line"));
             kpiViewPage.chooseDataSeriesColor();
             assertTrue(kpiViewPage.shouldSeeColorChart(FIRST_CHART_COLOR));
         } catch (Exception e) {
