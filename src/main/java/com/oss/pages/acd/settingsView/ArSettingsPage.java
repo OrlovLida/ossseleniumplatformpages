@@ -1,5 +1,10 @@
 package com.oss.pages.acd.settingsView;
 
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.oss.framework.components.icons.StatusIcon;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.ComponentFactory;
@@ -8,18 +13,13 @@ import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.components.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.CSSUtils;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.wizard.Wizard;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.tabs.TabsWidget;
+import com.oss.framework.wizard.Wizard;
 import com.oss.pages.acd.BaseACDPage;
 import com.oss.pages.acd.scenarioSummaryView.AsdScenarioSummaryViewPage;
 
 import io.qameta.allure.Step;
-
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ArSettingsPage extends BaseACDPage {
 
@@ -145,7 +145,7 @@ public class ArSettingsPage extends BaseACDPage {
     @Step("I check if AR subsystems are up and running")
     public boolean isSubsystemUpAndRunning() {
 
-        for (StatusIcon.IconItem icon : StatusIcon.createStatusIcon(driver, wait).getIconCircles()) {
+        for (StatusIcon.IconItem icon : StatusIcon.createStatusIcon(driver, wait).getIcons()) {
             if (!icon.isIconGreen()) {
                 log.debug("At least one of AR subsystem is NOT up and running");
                 return false;
