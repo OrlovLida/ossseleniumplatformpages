@@ -1,18 +1,20 @@
 package com.oss.pages.faultmanagement;
 
-import com.oss.framework.components.search.AdvancedSearch;
-import com.oss.framework.widgets.list.CommonList;
-import com.oss.framework.components.prompts.ConfirmationBox;
-import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.components.layout.Card;
-import com.oss.pages.BasePage;
-import io.qameta.allure.Step;
+import java.util.List;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
+import com.oss.framework.components.layout.Card;
+import com.oss.framework.components.prompts.ConfirmationBox;
+import com.oss.framework.components.search.AdvancedSearch;
+import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.list.CommonList;
+import com.oss.pages.BasePage;
+
+import io.qameta.allure.Step;
 
 public class FMDashboardPage extends BasePage {
     private static final Logger log = LoggerFactory.getLogger(FMDashboardPage.class);
@@ -22,7 +24,6 @@ public class FMDashboardPage extends BasePage {
     private static final String COLUMN_NAME_LABEL = "Name";
     private static final String REMOVE_ACTION_ID = "remove-user-view";
     private static final String CONFIRMATION_BOX_BUTTON_NAME = "ConfirmationBox_confirmationBoxWidget_action_button";
-
     private static final String ALARM_COUNTERS_ID = "_AlarmCounters";
     private static final String ALARM_COUNTERS_VIEW_ID = "_UserViewsListALARM_COUNTERS";
     private static final String ALARM_MANAGEMENT_VIEW_ID = "_UserViewsListALARM_MANAGEMENT";
@@ -91,7 +92,7 @@ public class FMDashboardPage extends BasePage {
     public WAMVPage openSelectedView(String commonListId, int rowNumber) {
         DelayUtils.waitForPageToLoad(driver, wait);
         CommonList commonList = createCommonList(commonListId);
-        commonList.getAllRows().get(rowNumber).callAction(OPEN_BUTTON_ID);
+        commonList.getRows().get(rowNumber).callAction(OPEN_BUTTON_ID);
         log.info("Opening of WAMV in row {}", rowNumber);
         return new WAMVPage(driver);
     }
@@ -109,8 +110,8 @@ public class FMDashboardPage extends BasePage {
     public void deleteFromView(String commonListId, int rowNumber) {
         DelayUtils.sleep(1000);
         CommonList commonList = createCommonList(commonListId);
-        commonList.getAllRows().get(rowNumber).selectRow();
-        commonList.getAllRows().get(rowNumber).callAction(REMOVE_ACTION_ID);
+        commonList.getRows().get(rowNumber).selectRow();
+        commonList.getRows().get(rowNumber).callAction(REMOVE_ACTION_ID);
         DelayUtils.sleep(1000);
         ConfirmationBox confirmationBox = ConfirmationBox.create(driver, wait);
         confirmationBox.clickButtonById(CONFIRMATION_BOX_BUTTON_NAME);
@@ -147,12 +148,12 @@ public class FMDashboardPage extends BasePage {
 
     public boolean isHeaderVisible(String commonListId, String headerLabel) {
         CommonList commonList = createCommonList(commonListId);
-        return commonList.getHeaders().contains(headerLabel);
+        return commonList.getRowHeaders().contains(headerLabel);
     }
 
     public boolean isHeaderVisible(String commonListId, List<String> headerLabel) {
         CommonList commonList = createCommonList(commonListId);
-        return commonList.getHeaders().containsAll(headerLabel);
+        return commonList.getRowHeaders().containsAll(headerLabel);
     }
 
     public void sortCommonList(String commonListId) {
