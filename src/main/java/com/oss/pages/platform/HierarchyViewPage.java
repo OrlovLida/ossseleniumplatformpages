@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.oss.pages.platform.configuration.ChooseConfigurationWizard;
 import com.oss.pages.platform.configuration.SaveConfigurationWizard;
 import com.oss.pages.platform.configuration.SaveConfigurationWizard.Field;
 import com.oss.framework.components.tree.TreeComponent.Node;
@@ -143,5 +142,8 @@ public class HierarchyViewPage extends BasePage {
 
     public void expandNextLevel(String pathLabel) {
         getMainTree().getNodeByLabelsPath(pathLabel).expandNextLevel();
+    }
+    public boolean isNodePresent(String pathLabel){
+        return getMainTree().findNodeByLabelsPath(pathLabel).isPresent();
     }
 }
