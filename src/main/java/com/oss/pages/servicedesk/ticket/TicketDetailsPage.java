@@ -10,13 +10,13 @@ import org.slf4j.LoggerFactory;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.layout.Card;
 import com.oss.framework.components.portals.DropdownList;
-import com.oss.framework.listwidget.CommonList;
-import com.oss.framework.listwidget.iaa.ListApp;
+import com.oss.framework.iaa.widgets.list.ListApp;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.view.Card;
-import com.oss.framework.widgets.tablewidget.OldTable;
-import com.oss.framework.widgets.tabswidget.TabWindowWidget;
+import com.oss.framework.widgets.list.CommonList;
+import com.oss.framework.widgets.table.OldTable;
+import com.oss.framework.widgets.tabs.TabWindowWidget;
 import com.oss.pages.servicedesk.BaseSDPage;
 import com.oss.pages.servicedesk.ticket.wizard.SDWizardPage;
 
@@ -27,7 +27,6 @@ public class TicketDetailsPage extends BaseSDPage {
     private static final Logger log = LoggerFactory.getLogger(TicketDetailsPage.class);
 
     public static final String DETAILS_PAGE_URL_PATTERN = "%s/#/view/service-desk/trouble-ticket/details/%s";
-
     private static final String EDIT_DETAILS_LABEL = "Edit details";
     private static final String RELEASE_LABEL = "Release";
     private static final String ALLOW_EDIT_LABEL = "Edit";
@@ -86,7 +85,7 @@ public class TicketDetailsPage extends BaseSDPage {
     public SDWizardPage openCreateSubTicketWizard(String flowType) {
         DelayUtils.waitForPageToLoad(driver, wait);
         Button.createBySelectorAndId(driver, "button", CREATE_SUB_TICKET).click();
-        DropdownList.create(driver, wait).selectOptionWithId(flowType);
+        DropdownList.create(driver, wait).selectOptionById(flowType);
         log.info("Create subticket wizard for {} is opened", flowType);
         return new SDWizardPage(driver, wait);
     }
@@ -94,7 +93,7 @@ public class TicketDetailsPage extends BaseSDPage {
     @Step("Skipping all actions on checklist")
     public void skipAllActionsOnCheckList() {
         CommonList.create(driver, wait, CHECKLIST_APP_ID)
-                .getAllRows()
+                .getRows()
                 .forEach(row -> {
                     DelayUtils.waitForPageToLoad(driver, wait);
                     row.callActionIcon(SKIP_BUTTON_LABEL);
@@ -152,7 +151,7 @@ public class TicketDetailsPage extends BaseSDPage {
     }
 
     public boolean isAllActionsSkipped() {
-        List<CommonList.Row> allRows = CommonList.create(driver, wait, CHECKLIST_APP_ID).getAllRows();
+        List<CommonList.Row> allRows = CommonList.create(driver, wait, CHECKLIST_APP_ID).getRows();
         for (CommonList.Row row : allRows) {
             if (!row.getValue("Status").equals("Skipped")) {
                 return false;

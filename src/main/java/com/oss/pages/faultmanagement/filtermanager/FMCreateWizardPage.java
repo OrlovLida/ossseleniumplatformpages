@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.list.DraggableList;
-import com.oss.framework.widgets.Wizard;
+import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;

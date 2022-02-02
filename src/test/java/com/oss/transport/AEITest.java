@@ -1,12 +1,10 @@
 package com.oss.transport;
 
 import com.oss.BaseTestCase;
-import com.oss.framework.alerts.SystemMessageContainer;
-import com.oss.framework.alerts.SystemMessageInterface;
-import com.oss.framework.mainheader.PerspectiveChooser;
-import com.oss.framework.sidemenu.SideMenu;
+import com.oss.framework.components.alerts.SystemMessageContainer;
+import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.tablewidget.OldTable;
+import com.oss.framework.widgets.table.OldTable;
 import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
 import com.oss.pages.transport.aei.AEIWizardPage;
 import io.qameta.allure.Step;

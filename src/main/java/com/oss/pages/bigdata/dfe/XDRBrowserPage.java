@@ -1,15 +1,15 @@
 package com.oss.pages.bigdata.dfe;
 
 import com.google.common.collect.Multimap;
-import com.oss.framework.components.common.TimePeriodChooser;
+import com.oss.framework.iaa.widgets.timeperiodchooser.TimePeriodChooser;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.contextactions.ButtonContainer;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.search.AdvancedSearch;
-import com.oss.framework.mainheader.Notifications;
+import com.oss.framework.components.mainheader.Notifications;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.tablewidget.TableWidget;
+import com.oss.framework.widgets.table.TableWidget;
 import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
 import org.apache.commons.io.FileUtils;

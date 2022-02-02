@@ -88,7 +88,7 @@ public class ChangeIPNetworkSubnetTest extends BaseTestCase {
         IPSubnetFilterProperties secondIPv4SubnetFilterProperties = new IPSubnetFilterProperties(SECOND_FIXED_IPv4_ADDRESS, SECOND_FIXED_IPv4_ADDRESS, EQUAL, IPv4_NETWORK_MASK);
         IPSubnetFilterProperties firstIPv6SubnetFilterProperties = new IPSubnetFilterProperties(FIRST_IPv6_ADDRESS, FIRST_IPv6_ADDRESS, EQUAL, IPv6_NETWORK_MASK);
         IPSubnetFilterProperties secondIPv6SubnetFilterProperties = new IPSubnetFilterProperties(SECOND_IPv6_ADDRESS, SECOND_IPv6_ADDRESS, EQUAL, IPv6_NETWORK_MASK);
-        ipAddressManagementViewPage.scrollAndSelectTreeRow(FIRST_NETWORK_NAME);
+        ipAddressManagementViewPage.selectTreeRow(FIRST_NETWORK_NAME);
         createSubnets(FIRST_IPv4_IDENTIFIER, NETWORK_SUBNET_TYPE, firstIPv4SubnetFilterProperties, secondIPv4SubnetFilterProperties);
         createSubnets(FIRST_IPv6_IDENTIFIER, NETWORK_SUBNET_TYPE, firstIPv6SubnetFilterProperties, secondIPv6SubnetFilterProperties);
         unselectTreeRow(FIRST_NETWORK_NAME);
@@ -108,7 +108,7 @@ public class ChangeIPNetworkSubnetTest extends BaseTestCase {
         IPSubnetFilterProperties secondIPv4SubnetFilterProperties = new IPSubnetFilterProperties(SECOND_FIXED_IPv4_ADDRESS, SECOND_FIXED_IPv4_ADDRESS, EQUAL, HIGHER_IPv4_NETWORK_MASK);
         IPSubnetFilterProperties firstIPv6SubnetFilterProperties = new IPSubnetFilterProperties(FIRST_IPv6_ADDRESS, FIRST_IPv6_ADDRESS, EQUAL, HIGHER_IPv6_NETWORK_MASK);
         IPSubnetFilterProperties secondIPv6SubnetFilterProperties = new IPSubnetFilterProperties(SECOND_IPv6_ADDRESS, SECOND_IPv6_ADDRESS, EQUAL, HIGHER_IPv6_NETWORK_MASK);
-        ipAddressManagementViewPage.scrollAndSelectTreeRow(SECOND_NETWORK_NAME);
+        ipAddressManagementViewPage.selectTreeRow(SECOND_NETWORK_NAME);
         createSubnets(FIRST_IPv4_IDENTIFIER, NETWORK_SUBNET_TYPE, firstIPv4SubnetFilterProperties, secondIPv4SubnetFilterProperties);
         createSubnets(FIRST_IPv6_IDENTIFIER, NETWORK_SUBNET_TYPE, firstIPv6SubnetFilterProperties, secondIPv6SubnetFilterProperties);
         unselectTreeRow(SECOND_NETWORK_NAME);
@@ -128,7 +128,7 @@ public class ChangeIPNetworkSubnetTest extends BaseTestCase {
         IPSubnetFilterProperties secondIPv4SubnetFilterProperties = new IPSubnetFilterProperties(SECOND_FIXED_IPv4_ADDRESS, SECOND_FIXED_IPv4_ADDRESS, EQUAL, LOWER_IPv4_NETWORK_MASK);
         IPSubnetFilterProperties firstIPv6SubnetFilterProperties = new IPSubnetFilterProperties(FIRST_IPv6_ADDRESS, FIRST_IPv6_ADDRESS, EQUAL, LOWER_IPv6_NETWORK_MASK);
         IPSubnetFilterProperties secondIPv6SubnetFilterProperties = new IPSubnetFilterProperties(SECOND_IPv6_ADDRESS, SECOND_IPv6_ADDRESS, EQUAL, LOWER_IPv6_NETWORK_MASK);
-        ipAddressManagementViewPage.scrollAndSelectTreeRow(THIRD_NETWORK_NAME);
+        ipAddressManagementViewPage.selectTreeRow(THIRD_NETWORK_NAME);
         createSubnets(FIRST_IPv4_IDENTIFIER, BLOCK_SUBNET_TYPE, firstIPv4SubnetFilterProperties, secondIPv4SubnetFilterProperties);
         createSubnets(FIRST_IPv6_IDENTIFIER, BLOCK_SUBNET_TYPE, firstIPv6SubnetFilterProperties, secondIPv6SubnetFilterProperties);
         unselectTreeRow(THIRD_NETWORK_NAME);
@@ -144,7 +144,7 @@ public class ChangeIPNetworkSubnetTest extends BaseTestCase {
     @Description("Move IPv4 Subnets to second network")
     public void moveIPv4SubnetsToSecondNetwork() {
         ipAddressManagementViewPage = IPAddressManagementViewPage.goToIPAddressManagementPage(driver, BASIC_URL);
-        ipAddressManagementViewPage.scrollAndExpandTreeRow(FIRST_NETWORK_NAME);
+        ipAddressManagementViewPage.expandTreeRow(FIRST_NETWORK_NAME);
         String firstSubnetToMove = firstNetworkProperties.get(FIRST_IPv4_IDENTIFIER).networkSubnetRowName;
         String secondSubnetToMove = firstNetworkProperties.get(SECOND_IPv4_IDENTIFIER).networkSubnetRowName;
         ipAddressManagementViewPage.changeIPNetworkForIPv4NetworkSubnet(SECOND_NETWORK_NAME, firstSubnetToMove, secondSubnetToMove);
@@ -154,7 +154,7 @@ public class ChangeIPNetworkSubnetTest extends BaseTestCase {
     @Description("Move IPv6 Subnets to second network")
     public void moveIPv6SubnetsToSecondNetwork() {
         ipAddressManagementViewPage = IPAddressManagementViewPage.goToIPAddressManagementPage(driver, BASIC_URL);
-        ipAddressManagementViewPage.scrollAndExpandTreeRow(FIRST_NETWORK_NAME);
+        ipAddressManagementViewPage.expandTreeRow(FIRST_NETWORK_NAME);
         String firstSubnetToMove = firstNetworkProperties.get(FIRST_IPv6_IDENTIFIER).networkSubnetRowName;
         String secondSubnetToMove = firstNetworkProperties.get(SECOND_IPv6_IDENTIFIER).networkSubnetRowName;
         ipAddressManagementViewPage.changeIPNetworkForIPv6NetworkSubnet(SECOND_NETWORK_NAME, firstSubnetToMove, secondSubnetToMove);
@@ -171,7 +171,7 @@ public class ChangeIPNetworkSubnetTest extends BaseTestCase {
     @Description("Check correctness of changes")
     public void checkCorrectnessOfSecondNetworkChanges() {
         ipAddressManagementViewPage = IPAddressManagementViewPage.goToIPAddressManagementPage(driver, BASIC_URL);
-        ipAddressManagementViewPage.scrollAndExpandTreeRow(SECOND_NETWORK_NAME);
+        ipAddressManagementViewPage.expandTreeRow(SECOND_NETWORK_NAME);
         checkCorrectnessOfChanges(secondNetworkProperties);
     }
 
@@ -185,7 +185,7 @@ public class ChangeIPNetworkSubnetTest extends BaseTestCase {
     @Description("Move IPv4 subnets to third network")
     public void moveIPv4SubnetsToThirdNetwork() {
         ipAddressManagementViewPage = IPAddressManagementViewPage.goToIPAddressManagementPage(driver, BASIC_URL);
-        ipAddressManagementViewPage.scrollAndExpandTreeRow(SECOND_NETWORK_NAME);
+        ipAddressManagementViewPage.expandTreeRow(SECOND_NETWORK_NAME);
         String firstSubnetToMove = secondNetworkProperties.get(FIRST_IPv4_IDENTIFIER).networkSubnetRowName;
         String secondSubnetToMove = secondNetworkProperties.get(SECOND_IPv4_IDENTIFIER).networkSubnetRowName;
         ipAddressManagementViewPage.changeIPNetworkForIPv4NetworkSubnet(THIRD_NETWORK_NAME, firstSubnetToMove, secondSubnetToMove);
@@ -194,7 +194,7 @@ public class ChangeIPNetworkSubnetTest extends BaseTestCase {
     @Test(priority = 14)
     @Description("Move IPv6 subnets to third network")
     public void moveIPv6SubnetsToThirdNetwork() {
-        ipAddressManagementViewPage.scrollAndExpandTreeRow(SECOND_NETWORK_NAME);
+        ipAddressManagementViewPage.expandTreeRow(SECOND_NETWORK_NAME);
         String firstSubnetToMove = secondNetworkProperties.get(FIRST_IPv6_IDENTIFIER).networkSubnetRowName;
         String secondSubnetToMove = secondNetworkProperties.get(SECOND_IPv6_IDENTIFIER).networkSubnetRowName;
         ipAddressManagementViewPage.changeIPNetworkForIPv6NetworkSubnet(THIRD_NETWORK_NAME, firstSubnetToMove, secondSubnetToMove);
@@ -211,7 +211,7 @@ public class ChangeIPNetworkSubnetTest extends BaseTestCase {
     @Description("Check correctness of changes")
     public void checkCorrectnessOfThirdNetworkChanges() {
         ipAddressManagementViewPage = IPAddressManagementViewPage.goToIPAddressManagementPage(driver, BASIC_URL);
-        ipAddressManagementViewPage.scrollAndExpandTreeRow(THIRD_NETWORK_NAME);
+        ipAddressManagementViewPage.expandTreeRow(THIRD_NETWORK_NAME);
         ipAddressManagementViewPage.expandTreeRowContains(thirdNetworkProperties.get(FIRST_IPv4_IDENTIFIER).blockSubnetRowName);
         ipAddressManagementViewPage.expandTreeRowContains(thirdNetworkProperties.get(SECOND_IPv4_IDENTIFIER).blockSubnetRowName);
         ipAddressManagementViewPage.expandTreeRowContains(thirdNetworkProperties.get(FIRST_IPv6_IDENTIFIER).blockSubnetRowName);
@@ -366,7 +366,7 @@ public class ChangeIPNetworkSubnetTest extends BaseTestCase {
 
     private void checkCorrectnessOfChanges(HashMap<String, SubnetTree> networkProperties) {
         networkProperties.forEach((subnetIdentifier, subnetTree) -> {
-            ipAddressManagementViewPage.scrollAndExpandTreeRowContains(subnetTree.networkSubnetRowName);
+            ipAddressManagementViewPage.expandTreeRowContains(subnetTree.networkSubnetRowName);
             selectCheckUnselect(subnetTree.networkSubnetRowName, subnetTree.networkSubnetIdentifier, SUBNET_PROPERTY_IDENTIFIER);
             ipAddressManagementViewPage.expandTreeRowContains(subnetTree.getHostAddress(FIRST_INDEX));
             selectCheckUnselect(subnetTree.getHostAddressAssignment(FIRST_INDEX), subnetTree.getAssignmentIdentifier(FIRST_INDEX), HOST_ASSIGNMENT_PROPERTY_IDENTIFIER);
@@ -393,11 +393,11 @@ public class ChangeIPNetworkSubnetTest extends BaseTestCase {
 
     private void deleteIPv4Subnets(String networkName, SubnetTree subnetTree) {
         if (subnetTree.blockSubnetRowName == null) {
-            ipAddressManagementViewPage.scrollAndExpandTreeRow(networkName);
+            ipAddressManagementViewPage.expandTreeRow(networkName);
             ipAddressManagementViewPage.deleteIPv4SubnetTypeOfNetwork(subnetTree.networkSubnetRowName);
             unselectTreeRow(networkName);
         } else {
-            ipAddressManagementViewPage.scrollAndExpandTreeRow(networkName);
+            ipAddressManagementViewPage.expandTreeRow(networkName);
             ipAddressManagementViewPage.expandTreeRowContains(subnetTree.blockSubnetRowName);
             ipAddressManagementViewPage.deleteIPv4SubnetTypeOfNetwork(subnetTree.networkSubnetRowName);
             ipAddressManagementViewPage.deleteIPv4SubnetTypeOfBlock(subnetTree.blockSubnetRowName);
@@ -407,11 +407,11 @@ public class ChangeIPNetworkSubnetTest extends BaseTestCase {
 
     private void deleteIPv6Subnets(String networkName, SubnetTree subnetTree) {
         if (subnetTree.blockSubnetRowName == null) {
-            ipAddressManagementViewPage.scrollAndExpandTreeRow(networkName);
+            ipAddressManagementViewPage.expandTreeRow(networkName);
             ipAddressManagementViewPage.deleteIPv6SubnetTypeOfNetwork(subnetTree.networkSubnetRowName);
             unselectTreeRow(networkName);
         } else {
-            ipAddressManagementViewPage.scrollAndExpandTreeRow(networkName);
+            ipAddressManagementViewPage.expandTreeRow(networkName);
             ipAddressManagementViewPage.expandTreeRowContains(subnetTree.blockSubnetRowName);
             ipAddressManagementViewPage.deleteIPv6SubnetTypeOfNetwork(subnetTree.networkSubnetRowName);
             ipAddressManagementViewPage.deleteIPv6SubnetTypeOfBlock(subnetTree.blockSubnetRowName);

@@ -6,11 +6,11 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
-import com.oss.framework.alerts.SystemMessageContainer;
-import com.oss.framework.alerts.SystemMessageInterface;
+import com.oss.framework.components.alerts.SystemMessageContainer;
+import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.floorPlan.FloorPlanLoginPage;
-import com.oss.pages.floorPlan.FloorPlanPage;
+import com.oss.pages.floorplan.FloorPlanLoginPage;
+import com.oss.pages.floorplan.FloorPlanPage;
 import com.oss.pages.physical.LocationOverviewPage;
 import com.oss.pages.physical.SublocationWizardPage;
 import com.oss.pages.platform.HomePage;

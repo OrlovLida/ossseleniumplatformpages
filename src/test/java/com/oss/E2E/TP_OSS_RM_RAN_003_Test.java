@@ -7,15 +7,15 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
-import com.oss.framework.alerts.SystemMessageContainer;
-import com.oss.framework.alerts.SystemMessageInterface;
+import com.oss.framework.components.alerts.SystemMessageContainer;
+import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.TasksPage;
 import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
 import com.oss.pages.radio.CellSiteConfigurationPage;
-import com.oss.pages.radio.EditCell4GWizardPage;
+import com.oss.pages.radio.EditCell4GBulkWizardPage;
 
 import io.qameta.allure.Description;
 
@@ -89,13 +89,13 @@ public class TP_OSS_RM_RAN_003_Test extends BaseTestCase {
         }
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cellSiteConfigurationPage.clickEditIcon();
-        EditCell4GWizardPage editCell4GWizardPage = new EditCell4GWizardPage(driver);
+        EditCell4GBulkWizardPage editCell4GBulkWizardPage = new EditCell4GBulkWizardPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        editCell4GWizardPage.setPCIBulk(pci);
+        editCell4GBulkWizardPage.setPCIBulk(pci);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        editCell4GWizardPage.setRSIBulk(rsi);
+        editCell4GBulkWizardPage.setRSIBulk(rsi);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        editCell4GWizardPage.accept();
+        editCell4GBulkWizardPage.accept();
         checkPopup("Cells 4G updated successfully");
     }
 

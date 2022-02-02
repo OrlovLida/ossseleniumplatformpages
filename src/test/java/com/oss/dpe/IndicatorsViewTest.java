@@ -11,19 +11,19 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
-import com.oss.framework.widgets.dpe.toolbarpanel.OptionsPanel;
+import com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsPanel;
 import com.oss.pages.bigdata.kqiview.KpiViewPage;
 import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
 
-import static com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_1x1;
-import static com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_2x1;
-import static com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_2x2;
-import static com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_3x2;
-import static com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_3x3;
-import static com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_4x4;
-import static com.oss.framework.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_AUTO;
+import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_1x1;
+import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_2x1;
+import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_2x2;
+import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_3x2;
+import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_3x3;
+import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_4x4;
+import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_AUTO;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
@@ -97,11 +97,11 @@ public class IndicatorsViewTest extends BaseTestCase {
             kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
             assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
             kpiViewPage.clickAreaChartType();
-            assertTrue(kpiViewPage.shouldSeeAreaChart(AREA_CHART_FILL_OPACITY));
+            assertTrue(kpiViewPage.isDataSeriesType("area"));
             kpiViewPage.clickBarChartType();
-            assertTrue(kpiViewPage.shouldSeeBarChart(BAR_CHART_FILL_OPACITY));
+            assertTrue(kpiViewPage.isDataSeriesType("bar"));
             kpiViewPage.clickLineChartType();
-            assertTrue(kpiViewPage.shouldSeeAreaChart(LINE_CHART_FILL_OPACITY));
+            assertTrue(kpiViewPage.isDataSeriesType("line"));
             kpiViewPage.chooseDataSeriesColor();
             assertTrue(kpiViewPage.shouldSeeColorChart(FIRST_CHART_COLOR));
         } catch (Exception e) {

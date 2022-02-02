@@ -8,8 +8,8 @@ import org.slf4j.LoggerFactory;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.tablewidget.OldTable;
-import com.oss.framework.widgets.tablewidget.TableWidget;
+import com.oss.framework.widgets.table.OldTable;
+import com.oss.framework.widgets.table.TableWidget;
 import com.oss.pages.servicedesk.BaseSDPage;
 import com.oss.pages.servicedesk.ticket.wizard.SDWizardPage;
 
@@ -48,7 +48,7 @@ public class TicketDashboardPage extends BaseSDPage {
     public SDWizardPage openCreateTicketWizard(String flowType) {
         DelayUtils.waitForPageToLoad(driver, wait);
         Button.createBySelectorAndId(driver, "button", CREATE_TICKET_BUTTON_ID).click();
-        DropdownList.create(driver, wait).selectOptionWithId(flowType);
+        DropdownList.create(driver, wait).selectOptionById(flowType);
         log.info("Create ticket wizard for {} is opened", flowType);
 
         return new SDWizardPage(driver, wait);

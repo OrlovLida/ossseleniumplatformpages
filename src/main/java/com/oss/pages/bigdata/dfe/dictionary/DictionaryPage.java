@@ -1,31 +1,32 @@
 package com.oss.pages.bigdata.dfe.dictionary;
 
-import com.oss.framework.listwidget.EditableList;
-import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bigdata.dfe.BaseDfePage;
-import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.list.EditableList;
+import com.oss.pages.bigdata.dfe.BaseDfePage;
+
+import io.qameta.allure.Step;
+
 public class DictionaryPage extends BaseDfePage {
 
     private static final Logger log = LoggerFactory.getLogger(DictionaryPage.class);
 
+    private static final String LIST_ID = "ExtendedList-entriesId";
     private static final String TABLE_ID = "dictionariesAppId";
     private static final String KEY_CELL_ID = "keyId";
     private static final String ENTRIES_TAB = "Entries";
-
-    private final String ADD_NEW_DICTIONARY_LABEL = "Add New Dictionary";
-    private final String EDIT_DICTIONARY_LABEL = "Edit Dictionary";
-    private final String DELETE_DICTIONARY_LABEL = "Delete Dictionary";
-    private final String SEARCH_INPUT_ID = "dictionariesSearchAppId";
-    private final String ADD_NEW_ENTRY_LABEL = "Add New Entry";
-
-    private final String NAME_COLUMN_LABEL = "Name";
-    private final String DELETE_LABEL = "Delete";
-    private final String DELETE_ENTRIES_LABEL = "DELETE";
+    private static final String ADD_NEW_DICTIONARY_LABEL = "Add New Dictionary";
+    private static final String EDIT_DICTIONARY_LABEL = "Edit Dictionary";
+    private static final String DELETE_DICTIONARY_LABEL = "Delete Dictionary";
+    private static final String SEARCH_INPUT_ID = "dictionariesSearchAppId";
+    private static final String ADD_NEW_ENTRY_LABEL = "Add New Entry";
+    private static final String NAME_COLUMN_LABEL = "Name";
+    private static final String DELETE_LABEL = "Delete";
+    private static final String DELETE_ENTRIES_LABEL = "DELETE";
 
     public DictionaryPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -93,7 +94,7 @@ public class DictionaryPage extends BaseDfePage {
     }
 
     private EditableList getEditableList() {
-        return EditableList.create(driver, wait);
+        return EditableList.createById(driver, wait, LIST_ID);
     }
 
     protected void clickEditableListAction(String editableListActionLabel) {

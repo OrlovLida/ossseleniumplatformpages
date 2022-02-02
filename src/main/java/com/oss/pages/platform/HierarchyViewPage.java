@@ -6,14 +6,16 @@ import java.util.stream.Collectors;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.oss.framework.components.portals.SaveConfigurationWizard.Field;
+import com.oss.pages.platform.configuration.ChooseConfigurationWizard;
+import com.oss.pages.platform.configuration.SaveConfigurationWizard;
+import com.oss.pages.platform.configuration.SaveConfigurationWizard.Field;
 import com.oss.framework.components.tree.TreeComponent.Node;
-import com.oss.framework.mainheader.ButtonPanel;
-import com.oss.framework.prompts.ConfirmationBox;
+import com.oss.framework.components.mainheader.ButtonPanel;
+import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.TreeWidgetV2.TreeWidgetV2;
+import com.oss.framework.widgets.tree.TreeWidgetV2;
 import com.oss.framework.widgets.Widget;
-import com.oss.framework.widgets.tabswidget.TabsWidget;
+import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
@@ -87,7 +89,8 @@ public class HierarchyViewPage extends BasePage {
     @Step("Save new configuration for page")
     public HierarchyViewPage saveNewPageConfiguration(String configurationName, Field... fields) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        ButtonPanel.create(driver, wait).openSaveConfigurationWizard().saveAsNew(configurationName, fields);
+        ButtonPanel.create(driver, wait).clickButton("ButtonSaveViewConfig");
+        SaveConfigurationWizard.create(driver, wait).saveAsNew(configurationName, fields);
         return this;
     }
 

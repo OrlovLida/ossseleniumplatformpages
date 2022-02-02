@@ -2,7 +2,7 @@ package com.oss.pages.servicedesk.ticket.wizard;
 
 import com.oss.framework.components.table.TableComponent;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.tablewidget.TableWidget;
+import com.oss.framework.widgets.table.TableWidget;
 import com.oss.pages.servicedesk.BaseSDPage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;

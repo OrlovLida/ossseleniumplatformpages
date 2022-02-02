@@ -7,9 +7,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.oss.framework.iaa.widgets.dfe.aggregatesmanager.AggregatesManagerWidget;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.Wizard;
-import com.oss.framework.widgets.dfe.aggregatesmanager.AggregatesManagerWidget;
+import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
@@ -17,11 +17,12 @@ import io.qameta.allure.Step;
 public class AggregateConfigurationPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(AggregateConfigurationPage.class);
+    private static final String WIZARD_ID = "aggregatesWizardWindow";
     private final Wizard aggrConfWizard;
 
     public AggregateConfigurationPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
-        aggrConfWizard = Wizard.createWizard(driver, wait);
+        aggrConfWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
     }
 
     @Step("I fill Aggregates Configuration Step Aggregate")

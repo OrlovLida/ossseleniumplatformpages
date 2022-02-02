@@ -10,9 +10,9 @@ import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.list.DraggableList;
-import com.oss.framework.listwidget.EditableList;
 import com.oss.framework.utils.DragAndDrop;
-import com.oss.framework.widgets.Wizard;
+import com.oss.framework.widgets.list.EditableList;
+import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 
 /**
@@ -27,7 +27,7 @@ public class IntegrationProcessWizardPage extends BasePage {
     private static final String FINISH_DUE_DATE_ATTRIBUTE_ID = "FINISHED_DUE_DATE-DATE";
     private static final String NEXT_BUTTON = "wizard-next-button-ipd_integration_wizard_SetupIntegrationComponentId";
     private static final String ACCEPT_BUTTON = "wizard-submit-button-ipd_integration_wizard_SetupIntegrationComponentId";
-    private static final String DELETE_LABEL_ACTION = "Delete";
+    private static final String DELETE_ACTION_ID = "deleteButton1";
 
     public IntegrationProcessWizardPage(WebDriver driver) {
         super(driver);
@@ -36,13 +36,13 @@ public class IntegrationProcessWizardPage extends BasePage {
     public void defineIntegrationProcess(String processName, String finishDueDate, int row) {
         EditableList editableList = EditableList.createById(driver, wait, IP_LIST);
         editableList.addRow();
-        editableList.setValueByRowIndex(row, processName, PROCESS_NAME_COLUMN_ID, PROCESS_NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD);
-        editableList.setValueByRowIndex(row, finishDueDate, FINISH_DUE_DATE_COLUMN_ID, FINISH_DUE_DATE_ATTRIBUTE_ID, Input.ComponentType.DATE);
+        editableList.setValue(row, processName, PROCESS_NAME_COLUMN_ID, PROCESS_NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD);
+        editableList.setValue(row, finishDueDate, FINISH_DUE_DATE_COLUMN_ID, FINISH_DUE_DATE_ATTRIBUTE_ID, Input.ComponentType.DATE);
     }
 
     public void deleteIntegrationProcess(String processName) {
-        EditableList editableList = EditableList.create(driver, wait);
-        editableList.callActionByLabel(DELETE_LABEL_ACTION, PROCESS_NAME_COLUMN_ID, processName);
+        EditableList editableList = EditableList.createById(driver, wait, IP_LIST);
+        editableList.getRowByValue(PROCESS_NAME_COLUMN_ID, processName).callAction(DELETE_ACTION_ID);
     }
 
     public void clickNext() {

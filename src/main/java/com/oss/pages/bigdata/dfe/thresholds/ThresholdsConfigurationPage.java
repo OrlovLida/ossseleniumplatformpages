@@ -5,10 +5,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.oss.framework.components.contextactions.ActionsContainer;
+import com.oss.framework.components.tree.TreeComponent;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.Wizard;
-import com.oss.framework.widgets.treewidget.TreeWidget;
+import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
@@ -22,21 +21,22 @@ public class ThresholdsConfigurationPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(ThresholdsConfigurationPage.class);
 
-    private final String NAME_INPUT_ID = "conditionGroupNameId";
-    private final String ACTIVE_COMBOBOX_ID = "conditionGroupActiveId";
-    private final String AGGREGATION_COMBOBOX_ID = "conditionGroupTimeGrainId";
-    private final String DEBUG_COMBOBOX_ID = "conditionGroupDebugModeId";
-    private final String CONDITION_COMBOBOX_ID = "selectConditionTypeId";
-    private final String SEVERITY_COMBOBOX_ID = "simpleConditionSeverityId";
-    private final String ELSE_SEVERITY_COMBOBOX_ID = "elseConditionSeverityId";
-    private final String FORMULA_AREA_ID = "simpleConditionFormulaId";
-    private final String PROBLEM_NAME_FIELD_ID = "conditionGroupProblemId";
+    private static final String WIZARD_ID = "thresholdWizardWindowId";
+    private static final String NAME_INPUT_ID = "conditionGroupNameId";
+    private static final String ACTIVE_COMBOBOX_ID = "conditionGroupActiveId";
+    private static final String AGGREGATION_COMBOBOX_ID = "conditionGroupTimeGrainId";
+    private static final String DEBUG_COMBOBOX_ID = "conditionGroupDebugModeId";
+    private static final String CONDITION_COMBOBOX_ID = "selectConditionTypeId";
+    private static final String SEVERITY_COMBOBOX_ID = "simpleConditionSeverityId";
+    private static final String ELSE_SEVERITY_COMBOBOX_ID = "elseConditionSeverityId";
+    private static final String FORMULA_AREA_ID = "simpleConditionFormulaId";
+    private static final String PROBLEM_NAME_FIELD_ID = "conditionGroupProblemId";
 
     private final Wizard configurationWizard;
 
     public ThresholdsConfigurationPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
-        configurationWizard = Wizard.createWizard(driver, wait);
+        configurationWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
     }
 
     public void fillName(String name) {
@@ -68,8 +68,8 @@ public class ThresholdsConfigurationPage extends BasePage {
 
     public void addConditionGroup() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        TreeWidget treeWidget = TreeWidget.createByClass(driver, "tree-component", wait);
-        treeWidget.callActionById(ActionsContainer.KEBAB_GROUP_ID, "ADD");
+        TreeComponent treeComponent = configurationWizard.getTreeComponent();
+        treeComponent.getNodeByLabelsPath("Condition_Group").callAction("ADD");
         log.debug("Adding new condition group");
     }
 

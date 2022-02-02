@@ -11,9 +11,9 @@ import org.slf4j.LoggerFactory;
 import com.oss.framework.components.contextactions.ButtonContainer;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.data.Data;
+import com.oss.framework.components.data.Data;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.Wizard;
+import com.oss.framework.wizard.Wizard;
 import com.oss.pages.servicedesk.BaseSDPage;
 
 import io.qameta.allure.Step;

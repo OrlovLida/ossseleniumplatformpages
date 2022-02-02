@@ -1,11 +1,11 @@
 package com.oss.pages.bigdata.dfe.DataSource;
 
-import com.oss.framework.components.common.TimePeriodChooser;
+import com.oss.framework.iaa.widgets.timeperiodchooser.TimePeriodChooser;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input.ComponentType;
 import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.tablewidget.OldTable;
+import com.oss.framework.widgets.table.OldTable;
 import com.oss.pages.bigdata.dfe.BaseDfePage;
 import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
@@ -69,17 +69,17 @@ public class DataSourcePage extends BaseDfePage {
 
     @Step("I select Create Data Source - Query Result")
     public void selectDSFromQuery() {
-        DropdownList.create(driver, wait).selectOptionWithId(CREATE_DS_QUERY);
+        DropdownList.create(driver, wait).selectOptionById(CREATE_DS_QUERY);
     }
 
     @Step("I select Create Data Source - CSV File")
     public void selectDSFromCSV() {
-        DropdownList.create(driver, wait).selectOptionWithId(CREATE_DS_CSV);
+        DropdownList.create(driver, wait).selectOptionById(CREATE_DS_CSV);
     }
 
     @Step("I select Create Data Source - Kafka")
     public void selectDSFromKafka() {
-        DropdownList.create(driver, wait).selectOptionWithId(CREATE_DS_KAFKA);
+        DropdownList.create(driver, wait).selectOptionById(CREATE_DS_KAFKA);
     }
 
     @Step("I check if data source: {name} exists into table")

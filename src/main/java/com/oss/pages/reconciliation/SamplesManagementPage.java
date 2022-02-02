@@ -7,39 +7,30 @@ import java.nio.file.Paths;
 
 import org.openqa.selenium.WebDriver;
 
+import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.Input.ComponentType;
+import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.Widget;
-import com.oss.framework.widgets.Wizard;
-import com.oss.framework.widgets.treewidget.TreeWidget;
+import com.oss.framework.widgets.tree.TreeWidget;
+import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
 public class SamplesManagementPage extends BasePage {
 
-    private static final String SAMPLES_MANAGEMENT_WIDGET_ID = "narComponent_CMSamplesManagementViewIdFilesTreeId";
+    private static final String SAMPLES_MANAGEMENT_WIDGET_ID = "narComponent_CMSamplesManagementViewIdTreeWindowId";
     private static final String UPLOAD_ID = "narComponent_CmSampleActionUploadId";
     private static final String DELETE_CONTENT_ID = "narComponent_CmSampleActionDeleteContentId";
-    private static final String CREATE_DIRECTORY = "narComponent_CmSampleActionCreateId";
+    private static final String CREATE_DIRECTORY_ID = "narComponent_CmSampleActionCreateId";
     private static final String UPLOAD_WIZARD_ID = "narComponent_CMSamplesManagementViewIdUploadSamplesPromptId";
-    private static final String CREATE_DIRECTORY_WIZARD_ID = "narComponent_CMSamplesManagementViewIdFileNameTextFieldId";
-    private static final String CREATE_DIRECTORY_WIZARD_CONFIRM_ACTION = "narComponent_CMSamplesManagementViewIdFileActionButtonsId-1";
-
-    private TreeWidget mainTree;
+    private static final String CREATE_DIRECTORY_WIZARD_ID = "narComponent_CMSamplesManagementViewIdFileActionPromptId";
+    private static final String WIZARD_NAME_ID = "narComponent_CMSamplesManagementViewIdFileNameTextFieldId";
+    private static final String CONFIRM_ID = "narComponent_CMSamplesManagementViewIdFileActionButtonsId-1";
 
     public SamplesManagementPage(WebDriver driver) {
         super(driver);
-    }
-
-    public TreeWidget getTreeView() {
-        if (mainTree == null) {
-            Widget.waitForWidget(wait, "TreeView");
-            mainTree = TreeWidget.createByClass(driver, "TreeView", wait);
-            DelayUtils.waitForPageToLoad(driver, wait);
-        }
-        return mainTree;
     }
 
     @Step("Select samples path")
@@ -50,8 +41,7 @@ public class SamplesManagementPage extends BasePage {
 
     @Step("Upload samples for CM Domain")
     public void uploadSamples(String path) throws URISyntaxException {
-        TreeWidget widget = TreeWidget.createByDataAttributeName(driver, wait, SAMPLES_MANAGEMENT_WIDGET_ID);
-        widget.callOssWindowActionById("OTHER", UPLOAD_ID);
+        getTreeView().callActionById(ActionsContainer.OTHER_GROUP_ID, UPLOAD_ID);
         URL res = getClass().getClassLoader().getResource(path);
         try {
             assert res != null;
@@ -68,22 +58,29 @@ public class SamplesManagementPage extends BasePage {
 
     @Step("Delete samples for CM Domain")
     public void deleteDirectoryContent() {
-        TreeWidget widget = TreeWidget.createByDataAttributeName(driver, wait, SAMPLES_MANAGEMENT_WIDGET_ID);
-        widget.callOssWindowActionById("EDIT", DELETE_CONTENT_ID);
+        getTreeView().callActionById(ActionsContainer.EDIT_GROUP_ID, DELETE_CONTENT_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
-        Wizard wizard = Wizard.createWizard(driver, wait);
-        wizard.clickDelete();
+        confirm();
     }
 
     @Step("Create samples directory for CM Domain")
     public void createDirectory(String cmDomainName) {
-        TreeWidget widget = TreeWidget.createByDataAttributeName(driver, wait, SAMPLES_MANAGEMENT_WIDGET_ID);
-        widget.callOssWindowActionById("CREATE", CREATE_DIRECTORY);
-        Wizard wizard = Wizard.createWizard(driver, wait);
-        Input name = wizard.getComponent(CREATE_DIRECTORY_WIZARD_ID, ComponentType.TEXT_FIELD);
+        getTreeView().callActionById(ActionsContainer.CREATE_GROUP_ID, CREATE_DIRECTORY_ID);
+        Wizard wizard = Wizard.createByComponentId(driver, wait, CREATE_DIRECTORY_WIZARD_ID);
+        Input name = wizard.getComponent(WIZARD_NAME_ID, ComponentType.TEXT_FIELD);
         name.setSingleStringValue(cmDomainName);
         DelayUtils.waitForPageToLoad(driver, wait);
         DelayUtils.sleep(500);
-        wizard.clickButtonById(CREATE_DIRECTORY_WIZARD_CONFIRM_ACTION);
+        confirm();
+    }
+
+    private TreeWidget getTreeView() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return TreeWidget.createById(driver, wait, SAMPLES_MANAGEMENT_WIDGET_ID);
+    }
+
+    private void confirm() {
+        ConfirmationBox confirmationBox = ConfirmationBox.create(driver, wait);
+        confirmationBox.clickButtonById(CONFIRM_ID);
     }
 }

@@ -2,8 +2,8 @@ package com.oss.pages.platform;
 
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.tablewidget.OldTable;
-import com.oss.framework.widgets.tablewidget.TableInterface;
+import com.oss.framework.widgets.table.OldTable;
+import com.oss.framework.widgets.table.TableInterface;
 import com.oss.pages.BasePage;
 import org.openqa.selenium.WebDriver;
 

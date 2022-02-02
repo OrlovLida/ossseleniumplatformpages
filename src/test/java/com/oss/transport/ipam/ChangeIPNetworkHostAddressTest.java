@@ -82,15 +82,15 @@ public class ChangeIPNetworkHostAddressTest extends BaseTestCase {
     public void createIPNetworks() {
         ipAddressManagementViewPage = IPAddressManagementViewPage.goToIPAddressManagementPage(driver, BASIC_URL);
         ipAddressManagementViewPage.createIPNetwork(FIRST_NETWORK_NAME, DESCRIPTION);
-        ipAddressManagementViewPage.scrollAndSelectTreeRow(FIRST_NETWORK_NAME);
+        ipAddressManagementViewPage.selectTreeRow(FIRST_NETWORK_NAME);
         Assert.assertEquals(ipAddressManagementViewPage.getPropertyValue(NETWORK_PROPERTY_NAME), FIRST_NETWORK_NAME);
         ipAddressManagementViewPage.unselectTreeRow(FIRST_NETWORK_NAME);
         ipAddressManagementViewPage.createIPNetwork(SECOND_NETWORK_NAME, DESCRIPTION);
-        ipAddressManagementViewPage.scrollAndSelectTreeRow(SECOND_NETWORK_NAME);
+        ipAddressManagementViewPage.selectTreeRow(SECOND_NETWORK_NAME);
         Assert.assertEquals(ipAddressManagementViewPage.getPropertyValue(NETWORK_PROPERTY_NAME), SECOND_NETWORK_NAME);
         ipAddressManagementViewPage.unselectTreeRow(SECOND_NETWORK_NAME);
         ipAddressManagementViewPage.createIPNetwork(THIRD_NETWORK_NAME, DESCRIPTION);
-        ipAddressManagementViewPage.scrollAndSelectTreeRow(THIRD_NETWORK_NAME);
+        ipAddressManagementViewPage.selectTreeRow(THIRD_NETWORK_NAME);
         Assert.assertEquals(ipAddressManagementViewPage.getPropertyValue(NETWORK_PROPERTY_NAME), THIRD_NETWORK_NAME);
         ipAddressManagementViewPage.unselectTreeRow(THIRD_NETWORK_NAME);
     }
@@ -98,29 +98,29 @@ public class ChangeIPNetworkHostAddressTest extends BaseTestCase {
     @Test(priority = 2)
     @Description("Creating subnets for first network")
     public void createFirstNetworkSubnets() {
-        ipAddressManagementViewPage.scrollAndSelectTreeRow(FIRST_NETWORK_NAME);
+        ipAddressManagementViewPage.selectTreeRow(FIRST_NETWORK_NAME);
         createSubnets(IPv6_SUBNET_FILTER_PROPERTIES_FOR_FIRST_NETWORK, AMOUNT_OF_SELECTED_SUBNETS_FOR_FIRST_NETWORK, TYPE_BLOCK_SUBNET_WIZARD_PROPERTIES, TYPE_NETWORK_SUBNET_WIZARD_PROPERTIES);
         createSubnets(IPv4_SUBNET_FILTER_PROPERTIES_FOR_FIRST_NETWORK, AMOUNT_OF_SELECTED_SUBNETS_FOR_FIRST_NETWORK, TYPE_BLOCK_SUBNET_WIZARD_PROPERTIES, TYPE_NETWORK_SUBNET_WIZARD_PROPERTIES);
-        ipAddressManagementViewPage.scrollAndSelectTreeRow(FIRST_NETWORK_NAME);
+        ipAddressManagementViewPage.selectTreeRow(FIRST_NETWORK_NAME);
         ipAddressManagementViewPage.unselectTreeRow(FIRST_NETWORK_NAME);
     }
 
     @Test(priority = 3)
     @Description("Creating IP Host Address Assignments and checking theirs properties")
     public void createIPHostAddressAssignmentsForFirstSubnet() {
-        ipAddressManagementViewPage.scrollAndExpandTreeRow(FIRST_NETWORK_NAME);
+        ipAddressManagementViewPage.expandTreeRow(FIRST_NETWORK_NAME);
         String assignmentIdentifier;
         for (int indexOfAddress = 0; indexOfAddress < AMOUNT_OF_HAA; indexOfAddress++) {
-            ipAddressManagementViewPage.scrollAndExpandTreeRowContains(firstNetworkProperties.get(IPv4).blockSubnet);
+            ipAddressManagementViewPage.expandTreeRowContains(firstNetworkProperties.get(IPv4).blockSubnet);
             createIPHostAddressAssignment(IPv4);
-            ipAddressManagementViewPage.scrollAndSelectTreeRowContains(firstNetworkProperties.get(IPv4).getIPHostAddressAssignment(indexOfAddress));
+            ipAddressManagementViewPage.selectTreeRowContains(firstNetworkProperties.get(IPv4).getIPHostAddressAssignment(indexOfAddress));
             assignmentIdentifier = firstNetworkProperties.get(IPv4).getIPHostAddressAssignmentIdentifier(indexOfAddress);
             Assert.assertEquals(ipAddressManagementViewPage.getPropertyValue(HOST_PROPERTY_IDENTIFIER), assignmentIdentifier);
             Assert.assertEquals(ipAddressManagementViewPage.getPropertyValue(HOST_ASSIGNMENT_PROPERTY_ASSIGNED_TO), ROUTER_IDENTIFIER);
             ipAddressManagementViewPage.unselectTreeRow(firstNetworkProperties.get(IPv4).getIPHostAddressAssignment(indexOfAddress));
-            ipAddressManagementViewPage.scrollAndExpandTreeRowContains(firstNetworkProperties.get(IPv6).blockSubnet);
+            ipAddressManagementViewPage.expandTreeRowContains(firstNetworkProperties.get(IPv6).blockSubnet);
             createIPHostAddressAssignment(IPv6);
-            ipAddressManagementViewPage.scrollAndSelectTreeRowContains(firstNetworkProperties.get(IPv6).getIPHostAddressAssignment(indexOfAddress));
+            ipAddressManagementViewPage.selectTreeRowContains(firstNetworkProperties.get(IPv6).getIPHostAddressAssignment(indexOfAddress));
             assignmentIdentifier = firstNetworkProperties.get(IPv6).getIPHostAddressAssignmentIdentifier(indexOfAddress);
             Assert.assertEquals(ipAddressManagementViewPage.getPropertyValue(HOST_PROPERTY_IDENTIFIER), assignmentIdentifier);
             Assert.assertEquals(ipAddressManagementViewPage.getPropertyValue(HOST_ASSIGNMENT_PROPERTY_ASSIGNED_TO), ROUTER_IDENTIFIER);
@@ -131,15 +131,15 @@ public class ChangeIPNetworkHostAddressTest extends BaseTestCase {
     @Test(priority = 4)
     @Description("Creating subnets for second and third network")
     public void createSecondAndThirdNetworkSubnets() {
-        ipAddressManagementViewPage.scrollAndSelectTreeRow(SECOND_NETWORK_NAME);
+        ipAddressManagementViewPage.selectTreeRow(SECOND_NETWORK_NAME);
         createSubnets(IPv4_SUBNET_FILTER_PROPERTIES_FOR_SECOND_AND_THIRD_NETWORK, AMOUNT_OF_SELECTED_SUBNETS_FOR_SECOND_AND_THIRD_NETWORK, TYPE_BLOCK_SUBNET_WIZARD_PROPERTIES);
         createSubnets(IPv6_SUBNET_FILTER_PROPERTIES_FOR_SECOND_AND_THIRD_NETWORK, AMOUNT_OF_SELECTED_SUBNETS_FOR_SECOND_AND_THIRD_NETWORK, TYPE_BLOCK_SUBNET_WIZARD_PROPERTIES);
-        ipAddressManagementViewPage.scrollAndSelectTreeRow(SECOND_NETWORK_NAME);
+        ipAddressManagementViewPage.selectTreeRow(SECOND_NETWORK_NAME);
         ipAddressManagementViewPage.unselectTreeRow(SECOND_NETWORK_NAME);
-        ipAddressManagementViewPage.scrollAndSelectTreeRow(THIRD_NETWORK_NAME);
+        ipAddressManagementViewPage.selectTreeRow(THIRD_NETWORK_NAME);
         createSubnets(IPv4_SUBNET_FILTER_PROPERTIES_FOR_SECOND_AND_THIRD_NETWORK, AMOUNT_OF_SELECTED_SUBNETS_FOR_SECOND_AND_THIRD_NETWORK, TYPE_BLOCK_SUBNET_WIZARD_PROPERTIES);
         createSubnets(IPv6_SUBNET_FILTER_PROPERTIES_FOR_SECOND_AND_THIRD_NETWORK, AMOUNT_OF_SELECTED_SUBNETS_FOR_SECOND_AND_THIRD_NETWORK, TYPE_BLOCK_SUBNET_WIZARD_PROPERTIES);
-        ipAddressManagementViewPage.scrollAndSelectTreeRow(THIRD_NETWORK_NAME);
+        ipAddressManagementViewPage.selectTreeRow(THIRD_NETWORK_NAME);
         ipAddressManagementViewPage.unselectTreeRow(THIRD_NETWORK_NAME);
     }
 
@@ -160,17 +160,17 @@ public class ChangeIPNetworkHostAddressTest extends BaseTestCase {
     @Description("Move IPv4 and IPv6 Host Address Assignments to second network")
     public void changeIPNetworkForIPv4HostAddressAssignments() {
         ipAddressManagementViewPage = IPAddressManagementViewPage.goToIPAddressManagementPage(driver, BASIC_URL);
-        ipAddressManagementViewPage.scrollAndExpandTreeRow(FIRST_NETWORK_NAME);
-        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(firstNetworkProperties.get(IPv4).blockSubnet);
-        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(firstNetworkProperties.get(IPv4).networkSubnet);
-        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(firstNetworkProperties.get(IPv4).getIPHostAddress(FIRST_INDEX));
+        ipAddressManagementViewPage.expandTreeRow(FIRST_NETWORK_NAME);
+        ipAddressManagementViewPage.expandTreeRowContains(firstNetworkProperties.get(IPv4).blockSubnet);
+        ipAddressManagementViewPage.expandTreeRowContains(firstNetworkProperties.get(IPv4).networkSubnet);
+        ipAddressManagementViewPage.expandTreeRowContains(firstNetworkProperties.get(IPv4).getIPHostAddress(FIRST_INDEX));
         String firstIPv4HostAddressAssignment = firstNetworkProperties.get(IPv4).getIPHostAddressAssignment(FIRST_INDEX);
         ipAddressManagementViewPage.changeIPNetworkForIPv4AddressAssignment(SECOND_NETWORK_NAME, firstIPv4HostAddressAssignment);
-        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(FIRST_NETWORK_NAME);
-        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(firstNetworkProperties.get(IPv4).blockSubnet);
-        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(firstNetworkProperties.get(IPv4).networkSubnet);
-        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(firstNetworkProperties.get(IPv4).getIPHostAddress(SECOND_INDEX));
-        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(firstNetworkProperties.get(IPv4).getIPHostAddress(SECOND_INDEX));
+        ipAddressManagementViewPage.expandTreeRowContains(FIRST_NETWORK_NAME);
+        ipAddressManagementViewPage.expandTreeRowContains(firstNetworkProperties.get(IPv4).blockSubnet);
+        ipAddressManagementViewPage.expandTreeRowContains(firstNetworkProperties.get(IPv4).networkSubnet);
+        ipAddressManagementViewPage.expandTreeRowContains(firstNetworkProperties.get(IPv4).getIPHostAddress(SECOND_INDEX));
+        ipAddressManagementViewPage.expandTreeRowContains(firstNetworkProperties.get(IPv4).getIPHostAddress(SECOND_INDEX));
         String secondIPv4HostAddressAssignment = firstNetworkProperties.get(IPv4).getIPHostAddressAssignment(SECOND_INDEX);
         String thirdIPv4HostAddressAssignment = firstNetworkProperties.get(IPv4).getIPHostAddressAssignment(THIRD_INDEX);
         String[] arrayOfHostAddressAssignments = {secondIPv4HostAddressAssignment, thirdIPv4HostAddressAssignment};
@@ -180,17 +180,17 @@ public class ChangeIPNetworkHostAddressTest extends BaseTestCase {
     @Test(priority = 7)
     @Description("Move IPv6 Host Address Assignments to second network")
     public void changeIPNetworkForIPv6HostAddressAssignments() {
-        ipAddressManagementViewPage.scrollAndExpandTreeRow(FIRST_NETWORK_NAME);
-        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(firstNetworkProperties.get(IPv6).blockSubnet);
-        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(firstNetworkProperties.get(IPv6).networkSubnet);
-        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(firstNetworkProperties.get(IPv6).getIPHostAddress(FIRST_INDEX));
+        ipAddressManagementViewPage.expandTreeRow(FIRST_NETWORK_NAME);
+        ipAddressManagementViewPage.expandTreeRowContains(firstNetworkProperties.get(IPv6).blockSubnet);
+        ipAddressManagementViewPage.expandTreeRowContains(firstNetworkProperties.get(IPv6).networkSubnet);
+        ipAddressManagementViewPage.expandTreeRowContains(firstNetworkProperties.get(IPv6).getIPHostAddress(FIRST_INDEX));
         String firstIPv6HostAddressAssignment = firstNetworkProperties.get(IPv6).getIPHostAddressAssignment(FIRST_INDEX);
         ipAddressManagementViewPage.changeIPNetworkForIPv6AddressAssignment(SECOND_NETWORK_NAME, firstIPv6HostAddressAssignment);
-        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(FIRST_NETWORK_NAME);
-        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(firstNetworkProperties.get(IPv6).blockSubnet);
-        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(firstNetworkProperties.get(IPv6).networkSubnet);
-        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(firstNetworkProperties.get(IPv6).getIPHostAddress(SECOND_INDEX));
-        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(firstNetworkProperties.get(IPv6).getIPHostAddress(THIRD_INDEX));
+        ipAddressManagementViewPage.expandTreeRowContains(FIRST_NETWORK_NAME);
+        ipAddressManagementViewPage.expandTreeRowContains(firstNetworkProperties.get(IPv6).blockSubnet);
+        ipAddressManagementViewPage.expandTreeRowContains(firstNetworkProperties.get(IPv6).networkSubnet);
+        ipAddressManagementViewPage.expandTreeRowContains(firstNetworkProperties.get(IPv6).getIPHostAddress(SECOND_INDEX));
+        ipAddressManagementViewPage.expandTreeRowContains(firstNetworkProperties.get(IPv6).getIPHostAddress(THIRD_INDEX));
         String secondIPv6HostAddressAssignment = firstNetworkProperties.get(IPv6).getIPHostAddressAssignment(SECOND_INDEX);
         String thirdIPv6HostAddressAssignment = firstNetworkProperties.get(IPv6).getIPHostAddressAssignment(THIRD_INDEX);
         String[] arrayOfHostAddressAssignments = {secondIPv6HostAddressAssignment, thirdIPv6HostAddressAssignment};
@@ -209,14 +209,14 @@ public class ChangeIPNetworkHostAddressTest extends BaseTestCase {
     @Description("Move IPv4 Host Address Assignments to second network")
     public void changeIPNetworkForIPv4HostAddresses() {
         ipAddressManagementViewPage = IPAddressManagementViewPage.goToIPAddressManagementPage(driver, BASIC_URL);
-        ipAddressManagementViewPage.scrollAndExpandTreeRow(FIRST_NETWORK_NAME);
-        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(firstNetworkProperties.get(IPv4).blockSubnet);
-        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(firstNetworkProperties.get(IPv4).networkSubnet);
+        ipAddressManagementViewPage.expandTreeRow(FIRST_NETWORK_NAME);
+        ipAddressManagementViewPage.expandTreeRowContains(firstNetworkProperties.get(IPv4).blockSubnet);
+        ipAddressManagementViewPage.expandTreeRowContains(firstNetworkProperties.get(IPv4).networkSubnet);
         String firstIPv4HostAddress = firstNetworkProperties.get(IPv4).getIPHostAddress(FIRST_INDEX);
         ipAddressManagementViewPage.changeIPNetworkForIPv4HostAddress(THIRD_NETWORK_NAME, firstIPv4HostAddress);
-        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(FIRST_NETWORK_NAME);
-        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(firstNetworkProperties.get(IPv4).blockSubnet);
-        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(firstNetworkProperties.get(IPv4).networkSubnet);
+        ipAddressManagementViewPage.expandTreeRowContains(FIRST_NETWORK_NAME);
+        ipAddressManagementViewPage.expandTreeRowContains(firstNetworkProperties.get(IPv4).blockSubnet);
+        ipAddressManagementViewPage.expandTreeRowContains(firstNetworkProperties.get(IPv4).networkSubnet);
         String secondIPv6HostAddress = firstNetworkProperties.get(IPv4).getIPHostAddress(SECOND_INDEX);
         String thirdIPv6HostAddress = firstNetworkProperties.get(IPv4).getIPHostAddress(THIRD_INDEX);
         String[] arrayOfHostAddresses = {secondIPv6HostAddress, thirdIPv6HostAddress};
@@ -226,14 +226,14 @@ public class ChangeIPNetworkHostAddressTest extends BaseTestCase {
     @Test(priority = 10)
     @Description("Move IPv6 Host Address Assignments to second network")
     public void changeIPNetworkForIPv6HostAddresses() {
-        ipAddressManagementViewPage.scrollAndExpandTreeRow(FIRST_NETWORK_NAME);
-        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(firstNetworkProperties.get(IPv6).blockSubnet);
-        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(firstNetworkProperties.get(IPv6).networkSubnet);
+        ipAddressManagementViewPage.expandTreeRow(FIRST_NETWORK_NAME);
+        ipAddressManagementViewPage.expandTreeRowContains(firstNetworkProperties.get(IPv6).blockSubnet);
+        ipAddressManagementViewPage.expandTreeRowContains(firstNetworkProperties.get(IPv6).networkSubnet);
         String firstIPv6HostAddress = firstNetworkProperties.get(IPv6).getIPHostAddress(FIRST_INDEX);
         ipAddressManagementViewPage.changeIPNetworkForIPv6HostAddress(THIRD_NETWORK_NAME, firstIPv6HostAddress);
-        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(FIRST_NETWORK_NAME);
-        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(firstNetworkProperties.get(IPv6).blockSubnet);
-        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(firstNetworkProperties.get(IPv6).networkSubnet);
+        ipAddressManagementViewPage.expandTreeRowContains(FIRST_NETWORK_NAME);
+        ipAddressManagementViewPage.expandTreeRowContains(firstNetworkProperties.get(IPv6).blockSubnet);
+        ipAddressManagementViewPage.expandTreeRowContains(firstNetworkProperties.get(IPv6).networkSubnet);
         String secondIPv6HostAddress = firstNetworkProperties.get(IPv6).getIPHostAddress(SECOND_INDEX);
         String thirdIPv6HostAddress = firstNetworkProperties.get(IPv6).getIPHostAddress(THIRD_INDEX);
         String[] arrayOfHostAddresses = {secondIPv6HostAddress, thirdIPv6HostAddress};
@@ -244,7 +244,7 @@ public class ChangeIPNetworkHostAddressTest extends BaseTestCase {
     @Test(priority = 11)
     @Description("Check if Host Assignments are present in Second Network")
     public void checkAssignmentsPresenceInSecondNetwork() {
-        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(SECOND_NETWORK_NAME);
+        ipAddressManagementViewPage.expandTreeRowContains(SECOND_NETWORK_NAME);
         checkAssignmentsPresenceInSecondNetworkByIPVersion(IPv4);
         checkAssignmentsPresenceInSecondNetworkByIPVersion(IPv6);
     }
@@ -253,7 +253,7 @@ public class ChangeIPNetworkHostAddressTest extends BaseTestCase {
     @Description("Check if Host Addresses are present in Third Network")
     public void checkHostAddressesPresenceInThirdNetwork() {
         ipAddressManagementViewPage = IPAddressManagementViewPage.refreshIPAddressManagementViewPage(driver);
-        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(THIRD_NETWORK_NAME);
+        ipAddressManagementViewPage.expandTreeRowContains(THIRD_NETWORK_NAME);
         checkHostAddressPresenceInThirdNetworkByIPVersion(IPv4);
         checkHostAddressPresenceInThirdNetworkByIPVersion(IPv6);
     }
@@ -276,8 +276,8 @@ public class ChangeIPNetworkHostAddressTest extends BaseTestCase {
     }
 
     private void deleteSubnetsWithAllObjects(String networkName, HashMap<String, SubnetTree> networkProperties, String ipVersion) {
-        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(networkName);
-        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(networkProperties.get(ipVersion).blockSubnet);
+        ipAddressManagementViewPage.expandTreeRowContains(networkName);
+        ipAddressManagementViewPage.expandTreeRowContains(networkProperties.get(ipVersion).blockSubnet);
         if (ipVersion.equals(IPv4)) {
             ipAddressManagementViewPage.deleteIPv4SubnetTypeOfNetwork(networkProperties.get(ipVersion).networkSubnet);
             ipAddressManagementViewPage.deleteIPv4SubnetTypeOfBlock(networkProperties.get(ipVersion).blockSubnet);
@@ -288,11 +288,11 @@ public class ChangeIPNetworkHostAddressTest extends BaseTestCase {
     }
 
     private void checkAssignmentsPresenceInSecondNetworkByIPVersion(String ipVersion) {
-        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(secondNetworkProperties.get(ipVersion).blockSubnet);
-        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(secondNetworkProperties.get(ipVersion).networkSubnet);
+        ipAddressManagementViewPage.expandTreeRowContains(secondNetworkProperties.get(ipVersion).blockSubnet);
+        ipAddressManagementViewPage.expandTreeRowContains(secondNetworkProperties.get(ipVersion).networkSubnet);
         for (int indexOfAddress = 0; indexOfAddress < AMOUNT_OF_HAA; indexOfAddress++) {
-            ipAddressManagementViewPage.scrollAndExpandTreeRowContains(secondNetworkProperties.get(ipVersion).getIPHostAddress(indexOfAddress));
-            ipAddressManagementViewPage.scrollAndSelectTreeRowContains(secondNetworkProperties.get(ipVersion).getIPHostAddressAssignment(indexOfAddress));
+            ipAddressManagementViewPage.expandTreeRowContains(secondNetworkProperties.get(ipVersion).getIPHostAddress(indexOfAddress));
+            ipAddressManagementViewPage.selectTreeRowContains(secondNetworkProperties.get(ipVersion).getIPHostAddressAssignment(indexOfAddress));
             String hostAssignmentIdentifier = secondNetworkProperties.get(ipVersion).getIPHostAddressAssignmentIdentifier(indexOfAddress);
             Assert.assertEquals(ipAddressManagementViewPage.getPropertyValue(HOST_ASSIGNMENT_PROPERTY_IDENTIFIER), hostAssignmentIdentifier);
             ipAddressManagementViewPage.unselectTreeRow(secondNetworkProperties.get(ipVersion).getIPHostAddressAssignment(indexOfAddress));
@@ -300,10 +300,10 @@ public class ChangeIPNetworkHostAddressTest extends BaseTestCase {
     }
 
     private void checkHostAddressPresenceInThirdNetworkByIPVersion(String ipVersion) {
-        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(thirdNetworkProperties.get(ipVersion).blockSubnet);
-        ipAddressManagementViewPage.scrollAndExpandTreeRowContains(thirdNetworkProperties.get(ipVersion).networkSubnet);
+        ipAddressManagementViewPage.expandTreeRowContains(thirdNetworkProperties.get(ipVersion).blockSubnet);
+        ipAddressManagementViewPage.expandTreeRowContains(thirdNetworkProperties.get(ipVersion).networkSubnet);
         for (int indexOfAddress = 0; indexOfAddress < AMOUNT_OF_HAA; indexOfAddress++) {
-            ipAddressManagementViewPage.scrollAndSelectTreeRowContains(thirdNetworkProperties.get(ipVersion).getIPHostAddress(indexOfAddress));
+            ipAddressManagementViewPage.selectTreeRowContains(thirdNetworkProperties.get(ipVersion).getIPHostAddress(indexOfAddress));
             String hostAssignmentIdentifier = thirdNetworkProperties.get(ipVersion).getIPHostAddressIdentifier(indexOfAddress);
             Assert.assertEquals(ipAddressManagementViewPage.getPropertyValue(HOST_PROPERTY_IDENTIFIER), hostAssignmentIdentifier);
             ipAddressManagementViewPage.unselectTreeRow(thirdNetworkProperties.get(ipVersion).getIPHostAddress(indexOfAddress));

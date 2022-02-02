@@ -5,23 +5,22 @@ import java.util.Arrays;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-import com.oss.framework.alerts.SystemMessageContainer;
-import com.oss.framework.alerts.SystemMessageInterface;
+import com.oss.framework.components.alerts.SystemMessageContainer;
+import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.OldActionsContainer;
-import com.oss.framework.prompts.ConfirmationBox;
-import com.oss.framework.prompts.ConfirmationBoxInterface;
+import com.oss.framework.components.prompts.ConfirmationBox;
+import com.oss.framework.components.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.Widget;
-import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
 import com.oss.framework.widgets.propertypanel.PropertyPanelInterface;
-import com.oss.framework.widgets.treewidget.TreeWidget;
+import com.oss.framework.widgets.tree.TreeWidget;
+import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 import com.oss.pages.transport.ipam.helper.IPAddressAssignmentWizardProperties;
 
 import io.qameta.allure.Step;
 
-import static com.oss.framework.alerts.SystemMessageContainer.MessageType.SUCCESS;
+import static com.oss.framework.components.alerts.SystemMessageContainer.MessageType.SUCCESS;
 import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
 import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.ASSIGN_IPV4_ADDRESS_ACTION_FROM_SUBNET_CONTEXT;
 import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.ASSIGN_IPV4_SUBNET_ACTION;
@@ -97,14 +96,12 @@ import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.ROLE_ACTION;
 import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.SPLIT_IPV4_SUBNET_ACTION;
 import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.SPLIT_IPV6_SUBNET_ACTION;
 import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.TABS_CONTAINER_CLASS;
-import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.TREE_VIEW_CLASS;
-import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.TREE_VIEW_COMPONENT_CLASS;
 import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.WINDOW_TOOLBAR_CLASS;
 
 public class IPAddressManagementViewPage extends BasePage {
 
     private static final String WIZARD_ID = "Popup";
-    private TreeWidget mainTree;
+    private static final String TREE_ID = "uaaSubnetIPTreeAppID";
     private OldActionsContainer actionsContainer;
     private PropertyPanelInterface propertyPanel;
 
@@ -149,7 +146,7 @@ public class IPAddressManagementViewPage extends BasePage {
 
     @Step("Search IP Network")
     public IPAddressManagementViewPage searchIpNetwork(String value) {
-        getTreeView().performSearchWithEnter(value);
+        getTreeView().search(value);
         waitForPageToLoad();
         return this;
     }
@@ -160,17 +157,6 @@ public class IPAddressManagementViewPage extends BasePage {
         useContextAction(ROLE_ACTION);
         waitForPageToLoad();
         return new RoleViewPage(driver);
-    }
-
-    @Step("Scroll to appropriate object on tree")
-    public void scrollToTreeRow(String rowName) {
-        getTreeView().scrollToTreeRow(rowName);
-    }
-
-    @Step("Scroll to appropriate object on tree")
-    public void scrollToTreeRowContains(String rowName) {
-        waitForPageToLoad();
-        getTreeView().scrollToTreeRowContains(rowName);
     }
 
     @Step("Select first object on hierarchy view")
@@ -185,23 +171,9 @@ public class IPAddressManagementViewPage extends BasePage {
         getTreeView().selectTreeRow(name);
     }
 
-    @Step("Scroll to object with name: {name} and select it")
-    public void scrollAndSelectTreeRow(String name) {
-        waitForPageToLoad();
-        scrollToTreeRow(name);
-        getTreeView().selectTreeRow(name);
-    }
-
     @Step("Select object contains name {name} on hierarchy view")
     public void selectTreeRowContains(String name) {
         waitForPageToLoad();
-        getTreeView().selectTreeRowContains(name);
-    }
-
-    @Step("Scroll to object with name: {name} and select it")
-    public void scrollAndSelectTreeRowContains(String name) {
-        waitForPageToLoad();
-        scrollToTreeRowContains(name);
         getTreeView().selectTreeRowContains(name);
     }
 
@@ -224,25 +196,9 @@ public class IPAddressManagementViewPage extends BasePage {
         waitForPageToLoad();
     }
 
-    @Step("Scroll to object with name: {name} and expand it")
-    public void scrollAndExpandTreeRow(String name) {
-        waitForPageToLoad();
-        scrollToTreeRow(name);
-        getTreeView().expandTreeRow(name);
-        waitForPageToLoad();
-    }
-
     @Step("Expand object with name: {name} on hierarchy view")
     public void expandTreeRowContains(String name) {
         waitForPageToLoad();
-        getTreeView().expandTreeRowContains(name);
-        waitForPageToLoad();
-    }
-
-    @Step("Scroll to object with name: {name} and expand it")
-    public void scrollAndExpandTreeRowContains(String name) {
-        waitForPageToLoad();
-        scrollToTreeRowContains(name);
         getTreeView().expandTreeRowContains(name);
         waitForPageToLoad();
     }
@@ -658,13 +614,7 @@ public class IPAddressManagementViewPage extends BasePage {
     }
 
     private TreeWidget getTreeView() {
-        if (mainTree == null) {
-            Widget.waitForWidget(wait, TREE_VIEW_CLASS);
-            mainTree = TreeWidget.createByClass(driver, TREE_VIEW_CLASS, wait);
-            DelayUtils.waitForVisibility(wait, driver.findElement(By.className(TREE_VIEW_COMPONENT_CLASS)));
-        }
-        DelayUtils.waitForVisibility(wait, driver.findElement(By.className(TREE_VIEW_COMPONENT_CLASS)));
-        return mainTree;
+        return TreeWidget.createById(driver, wait, TREE_ID);
     }
 
     private OldActionsContainer getActionsInterface() {

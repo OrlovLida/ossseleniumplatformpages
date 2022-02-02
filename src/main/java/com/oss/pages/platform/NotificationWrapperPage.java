@@ -2,8 +2,8 @@ package com.oss.pages.platform;
 
 import org.openqa.selenium.WebDriver;
 
-import com.oss.framework.mainheader.Notifications;
-import com.oss.framework.mainheader.ToolbarWidget;
+import com.oss.framework.components.mainheader.Notifications;
+import com.oss.framework.components.mainheader.ToolbarWidget;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.BasePage;
 

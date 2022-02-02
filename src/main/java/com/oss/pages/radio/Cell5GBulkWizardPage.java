@@ -1,13 +1,17 @@
 package com.oss.pages.radio;
 
-import com.oss.framework.listwidget.EditableList;
-import com.oss.framework.listwidget.EditableList.Row;
-import com.oss.framework.widgets.Wizard;
-import com.oss.pages.BasePage;
-import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.*;
+import com.oss.framework.widgets.list.EditableList;
+import com.oss.framework.widgets.list.EditableList.Row;
+import com.oss.framework.wizard.Wizard;
+import com.oss.pages.BasePage;
+
+import io.qameta.allure.Step;
+
+import static com.oss.framework.components.inputs.Input.ComponentType.CHECKBOX;
+import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
+import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 
 public class Cell5GBulkWizardPage extends BasePage {
     private static final String USE_FIRST_AVAILABLE_ID = "useFirstAvailableId";
@@ -29,6 +33,7 @@ public class Cell5GBulkWizardPage extends BasePage {
     private static final String COLUMN_LOCAL_CELL_ID = "localCellId";
     private static final String LOCAL_CELL_ID = "localCellId-NUMBER_FIELD";
     private static final String WIZARD_ID = "cell-5g-bulk-wizard";
+    private static final String CELLS_LIST_ID = "ExtendedList-secondStep";
     private final Wizard wizard;
 
     public Cell5GBulkWizardPage(WebDriver driver) {
@@ -61,11 +66,11 @@ public class Cell5GBulkWizardPage extends BasePage {
         setFirstAvailableId();
         int rowNumber = 1;
         for (String cellName : cellNames) {
-            Row row = EditableList.create(driver, wait).getRow(rowNumber - 1);
-            row.setEditableAttributeValue(cellName, COLUMN_NAME, NAME, TEXT_FIELD);
-            row.setEditableAttributeValue(String.valueOf(localCellsId[rowNumber - 1]), COLUMN_LOCAL_CELL_ID, LOCAL_CELL_ID, TEXT_FIELD);
-            row.setEditableAttributeValue("5", COLUMN_PCI, PCI, TEXT_FIELD);
-            row.setEditableAttributeValue("10", COLUMN_RSI, RSI, TEXT_FIELD);
+            Row row = EditableList.createById(driver, wait, CELLS_LIST_ID).getRow(rowNumber - 1);
+            row.setValue(cellName, COLUMN_NAME, NAME, TEXT_FIELD);
+            row.setValue(String.valueOf(localCellsId[rowNumber - 1]), COLUMN_LOCAL_CELL_ID, LOCAL_CELL_ID, TEXT_FIELD);
+            row.setValue("5", COLUMN_PCI, PCI, TEXT_FIELD);
+            row.setValue("10", COLUMN_RSI, RSI, TEXT_FIELD);
             rowNumber++;
         }
         clickAccept();

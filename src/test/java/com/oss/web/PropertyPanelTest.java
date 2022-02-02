@@ -43,7 +43,7 @@ public class PropertyPanelTest extends BaseTestCase {
         propertyPanel.disableAttributeByLabel(firstProperty);
 
         List<String> labelsAfterDisable = propertyPanel.getPropertyLabels();
-        Assertions.assertThat(labelsAfterDisable).doesNotContain(firstProperty);
+        Assertions.assertThat(labelsAfterDisable).doesNotContain(firstProperty).isNotEmpty();
 
         propertyPanel.enableAttributeByLabel(firstProperty);
 

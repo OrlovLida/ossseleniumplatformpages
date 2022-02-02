@@ -8,7 +8,7 @@ package com.oss.transport.trail;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.components.contextactions.ActionsContainer;
-import com.oss.framework.prompts.ConfirmationBox;
+import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.transport.NetworkViewPage;
 import com.oss.pages.transport.trail.IPLinkWizardPage;

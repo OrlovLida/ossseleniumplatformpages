@@ -4,15 +4,15 @@ import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.portals.DropdownList;
-import com.oss.framework.prompts.ConfirmationBox;
+import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.docked_panel.DockedPanel;
-import com.oss.framework.widgets.docked_panel.DockedPanelInterface;
+import com.oss.framework.widgets.dockedpanel.DockedPanel;
+import com.oss.framework.widgets.dockedpanel.DockedPanelInterface;
 import com.oss.framework.widgets.gismap.GisMap;
 import com.oss.framework.widgets.gismap.GisMapInterface;
-import com.oss.framework.widgets.tablewidget.OldTable;
-import com.oss.framework.widgets.tablewidget.TableInterface;
-import com.oss.framework.widgets.tabswidget.TabsWidget;
+import com.oss.framework.widgets.table.OldTable;
+import com.oss.framework.widgets.table.TableInterface;
+import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.BasePage;
 
 public class GisViewPage extends BasePage {
@@ -30,7 +30,7 @@ public class GisViewPage extends BasePage {
     public void chooseOptionFromDropDownList(String buttonId, String optionId) {
         Button.createById(driver, buttonId).click();
         DelayUtils.waitForPageToLoad(driver, wait);
-        DropdownList.create(driver, wait).selectOptionWithId(optionId);
+        DropdownList.create(driver, wait).selectOptionById(optionId);
     }
 
     public void useContextActionByLabel(String actionLabel) {

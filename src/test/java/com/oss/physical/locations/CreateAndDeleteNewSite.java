@@ -1,7 +1,7 @@
 package com.oss.physical.locations;
 
 import com.oss.BaseTestCase;
-import com.oss.framework.alerts.SystemMessageContainer;
+import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.physical.LocationWizardPage;
 import io.qameta.allure.Step;

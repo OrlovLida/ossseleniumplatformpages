@@ -8,8 +8,8 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
-import com.oss.framework.alerts.SystemMessageContainer;
-import com.oss.framework.alerts.SystemMessageInterface;
+import com.oss.framework.components.alerts.SystemMessageContainer;
+import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.PlanViewWizardPage;
 import com.oss.pages.bpm.TasksPage;
@@ -20,7 +20,7 @@ import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
 import com.oss.pages.radio.Cell4GBulkWizardPage;
 import com.oss.pages.radio.CellSiteConfigurationPage;
-import com.oss.pages.radio.EditCell4GWizardPage;
+import com.oss.pages.radio.EditCell4GBulkWizardPage;
 import com.oss.pages.radio.HostingWizardPage;
 
 import io.qameta.allure.Description;
@@ -223,23 +223,23 @@ public class TP_OSS_RM_RAN_004_All_Steps_Except_9 extends BaseTestCase {
 
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cellSiteConfigurationPage.clickEditIcon();
-        EditCell4GWizardPage editCell4GWizardPage = new EditCell4GWizardPage(driver);
+        EditCell4GBulkWizardPage editCell4GBulkWizardPage = new EditCell4GBulkWizardPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        editCell4GWizardPage.setPCIBulk(PCI);//
+        editCell4GBulkWizardPage.setPCIBulk(PCI);//
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        editCell4GWizardPage.setRSIBulk(RSI);//
+        editCell4GBulkWizardPage.setRSIBulk(RSI);//
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        editCell4GWizardPage.setReferencePowerBulk(REFERENCE_POWER);
+        editCell4GBulkWizardPage.setReferencePowerBulk(REFERENCE_POWER);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        editCell4GWizardPage.setTAC(1, TAC);//
+        editCell4GBulkWizardPage.setTAC(0, TAC);//
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        editCell4GWizardPage.setTAC(2, TAC);
+        editCell4GBulkWizardPage.setTAC(1, TAC);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        editCell4GWizardPage.setTAC(3, TAC);
+        editCell4GBulkWizardPage.setTAC(2, TAC);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        editCell4GWizardPage.setPaOutputBulk(PA_OUTPUT);//
+        editCell4GBulkWizardPage.setPaOutputBulk(PA_OUTPUT);//
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        editCell4GWizardPage.accept();
+        editCell4GBulkWizardPage.accept();
     }
 
     private void checkPopup(String text) {

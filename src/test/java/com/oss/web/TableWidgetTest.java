@@ -11,13 +11,15 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
-import com.oss.framework.components.common.AttributesChooser;
-import com.oss.framework.components.common.PaginationComponent;
+import com.oss.framework.components.attributechooser.AttributesChooser;
+import com.oss.framework.components.pagination.PaginationComponent;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.tablewidget.TableRow;
-import com.oss.framework.widgets.tablewidget.TableWidget;
+import com.oss.framework.widgets.propertypanel.PropertyPanel;
+import com.oss.framework.widgets.table.TableRow;
+import com.oss.framework.widgets.table.TableWidget;
+import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.platform.NewInventoryViewPage;
 
 public class TableWidgetTest extends BaseTestCase {
@@ -64,7 +66,7 @@ public class TableWidgetTest extends BaseTestCase {
     
     @Test(priority = 2)
     public void resizeColumn() {
-        com.oss.framework.widgets.tablewidget.TableWidget tableWidget = inventoryViewPage.getMainTable();
+        com.oss.framework.widgets.table.TableWidget tableWidget = inventoryViewPage.getMainTable();
         int defaultSize = tableWidget.getFirstColumnSize();
         DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
 

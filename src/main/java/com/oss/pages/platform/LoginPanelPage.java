@@ -2,7 +2,7 @@ package com.oss.pages.platform;
 
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.mainheader.LoginPanel;
+import com.oss.framework.components.mainheader.LoginPanel;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.BasePage;
 import org.openqa.selenium.WebDriver;
@@ -37,4 +37,6 @@ public class LoginPanelPage extends BasePage {
     private Input getAlphaModeSwitcher() {
         return ComponentFactory.create(ALPHA_MODE_SWITCHER_ID, SWITCHER, driver, wait);
     }
+
+
 }

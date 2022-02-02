@@ -83,5 +83,6 @@ public class ArSettingsTest extends BaseTestCase {
     @Description("Check Subsystems Health")
     public void checkSubsystemsHealth() {
         arSettingsPage.goToSubsystemsHealthTab(SUBSYSTEMS_HEALTH_TAB);
+        Assert.assertTrue(arSettingsPage.isSubsystemUpAndRunning());
     }
 }

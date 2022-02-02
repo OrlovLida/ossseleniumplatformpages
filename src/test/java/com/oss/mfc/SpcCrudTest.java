@@ -2,21 +2,18 @@ package com.oss.mfc;
 
 import java.time.LocalDateTime;
 
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
-import com.oss.framework.mainheader.PerspectiveChooser;
+import com.oss.framework.components.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.tablewidget.TableWidget;
+import com.oss.framework.widgets.table.TableWidget;
 import com.oss.pages.mfc.spc.SpcNewInventoryViewPage;
 import com.oss.pages.mfc.spc.SpcPropertyPanel;
 import com.oss.pages.mfc.spc.SpcWizardPage.Format;
 import com.oss.pages.mfc.spc.SpcWizardPage.Length;
 import com.oss.pages.mfc.spc.SpcWizardPage.NetworkIdentifier;
-import com.oss.repositories.LogicalFunctionRepository;
-import com.oss.untils.Environment;
 
 import io.qameta.allure.Description;
 

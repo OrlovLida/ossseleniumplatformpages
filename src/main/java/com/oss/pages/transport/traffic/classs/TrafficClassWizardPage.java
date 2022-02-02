@@ -2,20 +2,19 @@ package com.oss.pages.transport.traffic.classs;
 
 import org.openqa.selenium.WebDriver;
 
-import com.oss.framework.components.inputs.Button;
+import com.oss.framework.components.data.Data;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.CommonHierarchyApp;
-import com.oss.framework.widgets.Wizard;
+import com.oss.framework.widgets.commonhierarchy.CommonHierarchyApp;
+import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
-import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
 
 import io.qameta.allure.Step;
 
 /**
  * @author Kamil Sikora
  */
-public class TrafficClassWizardPage extends BasePage {
+public abstract class TrafficClassWizardPage extends BasePage {
 
     private static final String NAME_FIELD_ID = "uid-name";
     private static final String DESCRIPTION_FIELD_ID = "uid-description";
@@ -27,14 +26,13 @@ public class TrafficClassWizardPage extends BasePage {
     private static final String ACCESS_LIST_FIELD_ID = "uid-accessList";
     private static final String INPUT_INTERFACE_FIELD_ID = "uid-inputInterface-input";
     private static final String PROTOCOL_FIELD_ID = "uid-protocol";
-    private static final String SAVE_CHANGES_BUTTON_TEST_ID = "buttonAppId-0";
+    private static final String COMPONENT_ID = "trafficClassWizard";
 
-    private final Wizard wizard;
-
-    public TrafficClassWizardPage(WebDriver driver) {
-        super(driver);
-        wizard = Wizard.createWizard(driver, wait);
+    public TrafficClassWizardPage(WebDriver webDriver) {
+        super(webDriver);
     }
+
+    public abstract Wizard getWizard();
 
     @Step("Navigate through Common Hierarchy app widget selecting {location} -> {deviceName}")
     public void selectLocationAndDevice(String location, String deviceName) {
@@ -45,7 +43,7 @@ public class TrafficClassWizardPage extends BasePage {
 
     @Step("Click next step button")
     public void clickNextStep() {
-        wizard.clickNextStep();
+        getWizard().clickNextStep();
     }
 
     @Step("Set name to {name}")
@@ -106,31 +104,18 @@ public class TrafficClassWizardPage extends BasePage {
     @Step("Set Input interface to {inputInterface}")
     public void setInputInterface(String inputInterface) {
         Input inputInterfaceComponent = getEmptyComboBoxComponent(INPUT_INTERFACE_FIELD_ID);
-        inputInterfaceComponent.setSingleStringValue(inputInterface);
+        inputInterfaceComponent.setValueContains(Data.createSingleData(inputInterface));
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    @Step("Click accept button")
-    public OldInventoryViewPage clickAccept() {
-        wizard.clickAccept();
-        return new OldInventoryViewPage(driver);
-    }
-
-    @Step("Click save chenges button")
-    public OldInventoryViewPage clickSaveChanges() {
-        Button saveButton = Button.createBySelectorAndId(driver, "a", SAVE_CHANGES_BUTTON_TEST_ID);
-        saveButton.click();
-        return new OldInventoryViewPage(driver);
-    }
-
     private Input getEmptyTextFieldComponent(String componentId) {
-        Input component = wizard.getComponent(componentId, Input.ComponentType.TEXT_FIELD);
+        Input component = getWizard().getComponent(componentId, Input.ComponentType.TEXT_FIELD);
         component.clear();
         return component;
     }
 
     private Input getEmptyComboBoxComponent(String componentId) {
-        Input component = wizard.getComponent(componentId, Input.ComponentType.COMBOBOX);
+        Input component = getWizard().getComponent(componentId, Input.ComponentType.COMBOBOX);
         component.clear();
         return component;
     }

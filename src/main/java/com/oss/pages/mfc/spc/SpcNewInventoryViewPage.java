@@ -34,7 +34,7 @@ public class SpcNewInventoryViewPage extends NewInventoryViewPage {
     }
 
     public SpcPropertyPanel getPropetiesPanelForSelectedSpc() {
-        PropertyPanel propertyPanel = getPropertyPanel();
+        PropertyPanel propertyPanel = getPropertyPanel("PropertyPanelWidget");
         return SpcPropertyPanel.create(propertyPanel);
     }
 

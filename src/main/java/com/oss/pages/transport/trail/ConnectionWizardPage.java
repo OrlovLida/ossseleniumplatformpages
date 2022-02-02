@@ -1,9 +1,9 @@
-package com.oss.pages.radio;
+package com.oss.pages.transport.trail;
 
 import org.openqa.selenium.WebDriver;
 
-import com.oss.framework.widgets.Wizard;
-import com.oss.framework.widgets.treewidget.TreeWidget;
+import com.oss.framework.components.tree.TreeComponent;
+import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
@@ -62,9 +62,9 @@ public class ConnectionWizardPage extends BasePage {
     }
 
     @Step("Select connection termination by position = {position}")
-    public void selectConnectionTermination(int position) {
-        TreeWidget tree = TreeWidget.createByClass(driver, "tree-component", wait);
-        tree.selectNodeByPosition(position);
+    public void selectConnectionTermination(String dataGuid) {
+        TreeComponent treeComponent = wizard.getTreeComponent();
+        treeComponent.toggleNodeByPath(dataGuid);
     }
 
     @Step("Terminate Card/Component")

@@ -1,4 +1,4 @@
-package com.oss.pages.floorPlan;
+package com.oss.pages.floorplan;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

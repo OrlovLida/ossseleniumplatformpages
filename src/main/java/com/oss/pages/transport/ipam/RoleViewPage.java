@@ -2,11 +2,11 @@ package com.oss.pages.transport.ipam;
 
 import org.openqa.selenium.WebDriver;
 
-import com.oss.framework.listwidget.CommonList;
-import com.oss.framework.prompts.ConfirmationBox;
-import com.oss.framework.prompts.ConfirmationBoxInterface;
+import com.oss.framework.widgets.list.CommonList;
+import com.oss.framework.components.prompts.ConfirmationBox;
+import com.oss.framework.components.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.Wizard;
+import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
@@ -79,6 +79,6 @@ public class RoleViewPage extends BasePage {
     private void acceptConfirmationBox() {
         DelayUtils.waitForPageToLoad(driver, wait);
         ConfirmationBoxInterface confirmationBox = ConfirmationBox.create(driver, wait);
-        confirmationBox.clickButtonByDataAttributeName(OK_BUTTON);
+        confirmationBox.clickButtonById(OK_BUTTON);
     }
 }
