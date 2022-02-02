@@ -12,6 +12,7 @@ public class PhysicalInventoryClient {
 
     private static final String DEVICES_API_PATH = "/devices";
     private static final String DEVICE_STRUCTURE_API_PATH = "/devices/%s/devicestructurebyjpa";
+    private static final String DEVICE_DELETE_API_PATH = "/devices/v2/%s";
     private static PhysicalInventoryClient instance;
     private final Environment ENV;
 
@@ -59,6 +60,18 @@ public class PhysicalInventoryClient {
 
     public String getAntennaArrayId(Long antennaId, String arrayName){
         return getDeviceStructure(antennaId).getAntennaArrays().stream().filter(e-> (e.getName().equals(arrayName))).map(e -> e.getId().get()).findAny().get().toString();
+    }
+
+    public void deleteDevice(String deviceId){
+        String devicePath = String.format(DEVICE_DELETE_API_PATH, deviceId);
+       ENV.getPhysicalInventoryCoreRequestSpecification()
+                .given()
+                .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
+                .when()
+                .delete(devicePath)
+                .then()
+                .statusCode(200).assertThat();
+
     }
 
 }

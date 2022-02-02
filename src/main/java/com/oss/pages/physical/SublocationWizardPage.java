@@ -16,7 +16,7 @@ public class SublocationWizardPage extends BasePage {
     private static final String WIDTH = "width";
     private static final String DEPTH = "depth";
     private static final String QUANTITY = "quantity";
-    private static final String WIZARD_ID = "optional";
+    private static final String WIZARD_ID = "sublocation-wizard";
     private final Wizard wizard;
 
     public SublocationWizardPage(WebDriver driver) {
@@ -61,7 +61,7 @@ public class SublocationWizardPage extends BasePage {
     }
 
     @Step("Click Accept button")
-    public void accept() {
+    public void clickAccept() {
         wizard.clickAccept();
     }
 }
