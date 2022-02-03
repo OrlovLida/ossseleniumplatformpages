@@ -38,19 +38,19 @@ public class ProcessInstancesPage extends BasePage {
     }
     
     public void selectPredefinedFilter(String filterName) {
-        OldTable processTable = OldTable.createByComponentDataAttributeName(driver, wait, PROCESS_VIEW);
+        OldTable processTable = OldTable.createById(driver, wait, PROCESS_VIEW);
         processTable.selectPredefinedFilter(filterName);
     }
     
     public String getProcessStatus(String code) {
-        OldTable processTable = OldTable.createByComponentDataAttributeName(driver, wait, PROCESS_VIEW);
+        OldTable processTable = OldTable.createById(driver, wait, PROCESS_VIEW);
         processTable.searchByAttributeWithLabel("Code", Input.ComponentType.TEXT_FIELD, code);
         int index = processTable.getRowNumber(code, "Code");
         return processTable.getCellValue(index, "Status");
     }
     
     public String getProcessName(String code) {
-        OldTable processTable = OldTable.createByComponentDataAttributeName(driver, wait, PROCESS_VIEW);
+        OldTable processTable = OldTable.createById(driver, wait, PROCESS_VIEW);
         processTable.searchByAttributeWithLabel("Code", Input.ComponentType.TEXT_FIELD, code);
         int index = processTable.getRowNumber(code, "Code");
         return processTable.getCellValue(index, "Name");
@@ -58,7 +58,7 @@ public class ProcessInstancesPage extends BasePage {
     
     public String getProcessCode(String processName) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        OldTable processTable = OldTable.createByComponentDataAttributeName(driver, wait, PROCESS_VIEW);
+        OldTable processTable = OldTable.createById(driver, wait, PROCESS_VIEW);
         processTable.searchByAttributeWithLabel("Name", Input.ComponentType.TEXT_FIELD, processName);
         processTable.doRefreshWhileNoData(1000, "refresh-table");
         int index = processTable.getRowNumber(processName, "Name");
@@ -70,7 +70,7 @@ public class ProcessInstancesPage extends BasePage {
     }
 
     private void findProcess(String attributeName, String value){
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, PROCESS_VIEW);
+        TableInterface table = OldTable.createById(driver, wait, PROCESS_VIEW);
         DelayUtils.waitForPageToLoad(driver, wait);
         table.searchByAttributeWithLabel(attributeName, Input.ComponentType.TEXT_FIELD, value);
         DelayUtils.waitForPageToLoad(driver, wait);

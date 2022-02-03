@@ -26,7 +26,7 @@ abstract public class BaseDfePage extends BasePage implements BaseDfePageInterfa
     }
 
     public OldTable getTable(WebDriver driver, WebDriverWait wait) {
-        return OldTable.createByComponentDataAttributeName(driver, wait, getTableId());
+        return OldTable.createById(driver, wait, getTableId());
     }
 
     public static void openDfePage(WebDriver driver, String basicURL, WebDriverWait wait, String viewName) {
@@ -44,7 +44,7 @@ abstract public class BaseDfePage extends BasePage implements BaseDfePageInterfa
     }
 
     protected int getNumberOfRowsInTable(String columnLabel) {
-        return getTable(driver, wait).getNumberOfRowsInTable(columnLabel);
+        return getTable(driver, wait).countRows(columnLabel);
     }
 
     protected void clickContextActionAdd() {
@@ -92,7 +92,7 @@ abstract public class BaseDfePage extends BasePage implements BaseDfePageInterfa
 
     protected LocalDateTime lastLogTime(String tabId, String columnLabel) {
         String lastLog = OldTable
-                .createByComponentId(driver, wait, tabId)
+                .createById(driver, wait, tabId)
                 .getCellValue(0, columnLabel);
 
         LocalDateTime lastLogTime = LocalDateTime.parse(lastLog, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
@@ -108,7 +108,7 @@ abstract public class BaseDfePage extends BasePage implements BaseDfePageInterfa
     protected String checkLogStatus(String logsTableTabId, String columnLabel) {
         DelayUtils.waitForPageToLoad(driver, wait);
         return OldTable
-                .createByComponentId(driver, wait, logsTableTabId)
+                .createById(driver, wait, logsTableTabId)
                 .getCellValue(0, columnLabel);
     }
 }

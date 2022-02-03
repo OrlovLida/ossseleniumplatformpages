@@ -69,7 +69,7 @@ public class NewInventoryViewPage extends BasePage {
 
     public NewInventoryViewPage searchObject(String text) {
         TableWidget mainTable = getMainTable();
-        mainTable.typeIntoSearch(text);
+        mainTable.fullTextSearch(text);
         DelayUtils.waitForPageToLoad(driver, wait);
         return this;
     }
@@ -88,7 +88,7 @@ public class NewInventoryViewPage extends BasePage {
 
     public void unselectObjectByRowId(int rowId) {
         TableWidget mainTable = getMainTable();
-        mainTable.unselectTableRow(rowId);
+        mainTable.unselectRow(rowId);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
@@ -255,7 +255,7 @@ public class NewInventoryViewPage extends BasePage {
         selectObjectByRowId(rowId);
         selectTabByLabel(detailLabel);
         TableWidget tableWidget = (TableWidget) getTabsWidget().getWidget(widgetId, WidgetType.TABLE_WIDGET);
-        tableWidget.typeIntoSearch(text);
+        tableWidget.fullTextSearch(text);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 

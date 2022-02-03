@@ -40,12 +40,13 @@ public class VSIOverviewPage extends BasePage {
     private static final String ADD_ROUTE_TARGET_BUTTON_DATA_ATTRIBUTENAME = "addRouteTarget";
     private static final String REMOVE_ROUTE_TARGET_BUTTON_DATA_ATTRIBUTENAME = "Remove";
     private static final String REMOVAL_CONFIRMATION_BUTTON_DATA_ATTRIBUTENAME = "ConfirmationBox_remove_RT_app_id_action_button";
+    private static final String PROPERTY_PANEL_ID = "propertyPanel";
 
     private final OldPropertyPanel propertyPanel;
 
     public VSIOverviewPage(WebDriver driver){
         super(driver);
-        propertyPanel = OldPropertyPanel.create(driver, wait);
+        propertyPanel = OldPropertyPanel.createById(driver, wait, PROPERTY_PANEL_ID);
     }
 
     @Step("Click edit button")
@@ -137,7 +138,7 @@ public class VSIOverviewPage extends BasePage {
     }
 
     private List<String> getListOfElementsInColumn(OldTable table, String columnName){
-        int rows = table.getNumberOfRowsInTable(columnName);
+        int rows = table.countRows(columnName);
         List<String> elements = new ArrayList<>();
         for(int i = 0; i < rows; i++){
             elements.add(table.getCellValue(i, columnName));
@@ -155,11 +156,11 @@ public class VSIOverviewPage extends BasePage {
     }
 
     private OldTable getTableWidget(String tableId){
-        return OldTable.createByComponentDataAttributeName(driver, wait, tableId);
+        return OldTable.createById(driver, wait, tableId);
     }
 
     private void selectFirstRouteTarget(){
-        OldTable table = OldTable.createByComponentId(driver, wait, BOTTOM_ROUTE_TARGET_TABLE_DATA_ATTRIBUTENAME);
+        OldTable table = OldTable.createById(driver, wait, BOTTOM_ROUTE_TARGET_TABLE_DATA_ATTRIBUTENAME);
         table.selectRow(0);
         DelayUtils.waitForPageToLoad(driver, wait);
     }

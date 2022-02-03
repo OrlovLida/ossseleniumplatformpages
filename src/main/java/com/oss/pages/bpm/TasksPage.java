@@ -201,7 +201,7 @@ public class TasksPage extends BasePage {
 
     private OldTable getOldTable() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        return OldTable.createByComponentDataAttributeName(driver, wait, TABLE_TASKS_ID);
+        return OldTable.createById(driver, wait, TABLE_TASKS_ID);
     }
 
     private String getProcessCodeAndStartItIfNotStarted(String username, String taskName) {
@@ -222,7 +222,7 @@ public class TasksPage extends BasePage {
     }
 
     private TableInterface getIPTable() {
-        return OldTable.createByComponentDataAttributeName(driver, wait, IP_TABLE_ID);
+        return OldTable.createById(driver, wait, IP_TABLE_ID);
     }
 
     private void actionTask(String actionId) {

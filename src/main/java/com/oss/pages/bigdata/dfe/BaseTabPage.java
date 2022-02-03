@@ -17,7 +17,7 @@ public abstract class BaseTabPage extends BaseDfePage {
 
     public OldTable createTabTable() {
         return OldTable
-                .createByComponentDataAttributeName(driver, wait, getTableId());
+                .createById(driver, wait, getTableId());
     }
 
     protected void clickTabsContextAction(String actionLabel) {

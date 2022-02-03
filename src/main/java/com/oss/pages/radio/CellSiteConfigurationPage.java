@@ -8,6 +8,7 @@ import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.components.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
+import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.framework.widgets.tree.TreeWidget;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
@@ -64,7 +65,8 @@ public class CellSiteConfigurationPage extends BasePage {
     @Step("Select {tabName} tab")
     public CellSiteConfigurationPage selectTab(String tabName) {
         waitForPageToLoad();
-        getTabTable().selectTabByLabel(tabName, TAB_TABLE_DATA_ATTRIBUTE_NAME);
+        TabsWidget tabs = TabsWidget.createById(driver, wait, TAB_TABLE_DATA_ATTRIBUTE_NAME);
+        tabs.selectTabByLabel(tabName);
         return this;
     }
 
@@ -187,7 +189,7 @@ public class CellSiteConfigurationPage extends BasePage {
 
     @Step("Get row count in a table")
     public int getRowCount(String attributeLabel) {
-        return getTabTable().getNumberOfRowsInTable(attributeLabel);
+        return getTabTable().countRows(attributeLabel);
     }
 
     public boolean hasNoData() {

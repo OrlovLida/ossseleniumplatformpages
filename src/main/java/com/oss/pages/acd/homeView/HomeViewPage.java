@@ -34,7 +34,7 @@ public class HomeViewPage extends BaseACDPage {
     public HomeViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
 
-        table = OldTable.createByComponentDataAttributeName(driver, wait, homeIssueTableId);
+        table = OldTable.createById(driver, wait, homeIssueTableId);
         advancedSearch = ServiceDeskAdvancedSearch.create(driver, wait, homeIssueTableWindowId);
     }
 

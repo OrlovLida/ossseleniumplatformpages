@@ -84,11 +84,11 @@ public class AdvancedSearchCompact extends BaseTestCase {
     @Test(priority = 1)
     public void filterBySearchInput() {
         String attributeValue = tableWidget.getCellValue(DEFAULT_ROW_INDEX, SIMPLE_ATTRIBUTE);
-        tableWidget.typeIntoSearch(attributeValue);
+        tableWidget.fullTextSearch(attributeValue);
         
         DelayUtils.sleep(500);
         Assert.assertTrue(checkIfCellContainsValue(SIMPLE_ATTRIBUTE, attributeValue));
-        tableWidget.typeIntoSearch("");
+        tableWidget.fullTextSearch("");
     }
     
     @Test(priority = 2)

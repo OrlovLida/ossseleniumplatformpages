@@ -24,7 +24,7 @@ public class MOStep extends BaseSDPage {
     @Step("I enter {text} into search component")
     public void enterTextIntoSearchComponent(String text) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        TableWidget.createById(driver, MO_TABLE_ID, wait).typeIntoSearch(text);
+        TableWidget.createById(driver, MO_TABLE_ID, wait).fullTextSearch(text);
         log.info("Search text {}", text);
     }
 

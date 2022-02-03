@@ -82,7 +82,7 @@ public class LocationOverviewPage extends BasePage {
 
     public OldTable getTabTable(TabName tabName) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        return OldTable.createByComponentDataAttributeName(driver, wait, tabName.getTab());
+        return OldTable.createById(driver, wait, tabName.getTab());
     }
 
     public enum TabName {

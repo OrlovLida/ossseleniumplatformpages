@@ -102,6 +102,8 @@ public class IPAddressManagementViewPage extends BasePage {
 
     private static final String WIZARD_ID = "Popup";
     private static final String TREE_ID = "uaaSubnetIPTreeAppID";
+    private static final String PROPERTY_PANEL_ID = "propAppID";
+
     private OldActionsContainer actionsContainer;
     private PropertyPanelInterface propertyPanel;
 
@@ -131,7 +133,7 @@ public class IPAddressManagementViewPage extends BasePage {
     public PropertyPanelInterface getPropertyPanel() {
         if (propertyPanel == null) {
             DelayUtils.waitForVisibility(wait, driver.findElement(By.className(OSS_WINDOW_CLASS)));
-            propertyPanel = OldPropertyPanel.create(driver, wait);
+            propertyPanel = OldPropertyPanel.createById(driver, wait, PROPERTY_PANEL_ID);
             DelayUtils.waitForVisibility(wait, driver.findElement(By.className(TABS_CONTAINER_CLASS)));
         }
         DelayUtils.waitForVisibility(wait, driver.findElement(By.className(TABS_CONTAINER_CLASS)));

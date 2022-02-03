@@ -155,7 +155,7 @@ public class ProcessModelsPage extends BasePage {
 
     private TableInterface getModelsTable() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        return OldTable.createByComponentDataAttributeName(driver, wait, MODEL_LIST_TABLE_ID);
+        return OldTable.createById(driver, wait, MODEL_LIST_TABLE_ID);
     }
 
 }

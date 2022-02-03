@@ -65,7 +65,7 @@ public class TicketDashboardPage extends BaseSDPage {
     public OldTable getTroubleTicketsTable() {
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Create Trouble Ticket Table");
-        return OldTable.createByComponentDataAttributeName(driver, wait, TROUBLE_TICKETS_TABLE_ID);
+        return OldTable.createById(driver, wait, TROUBLE_TICKETS_TABLE_ID);
     }
 
     public String getIdForNthTicketInTable(int n) {

@@ -26,7 +26,7 @@ public class AbgadScenarioSummaryViewPage extends BaseACDPage {
     public AbgadScenarioSummaryViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
 
-        table = OldTable.createByComponentDataAttributeName(driver, wait, DETECTED_ISSUES_WINDOW_ID);
+        table = OldTable.createById(driver, wait, DETECTED_ISSUES_WINDOW_ID);
         advancedSearch = ServiceDeskAdvancedSearch.create(driver, wait, DETECTED_ISSUES_WINDOW_ID);
     }
 

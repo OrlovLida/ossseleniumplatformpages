@@ -34,7 +34,7 @@ public class ArSettingsPage extends BaseACDPage {
 
     public ArSettingsPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
-        table = OldTable.createByComponentDataAttributeName(driver, wait, ACTION_TEMPLATE_TABLE_ID);
+        table = OldTable.createById(driver, wait, ACTION_TEMPLATE_TABLE_ID);
     }
 
     @Step("I Open AR Settings View")
@@ -114,7 +114,7 @@ public class ArSettingsPage extends BaseACDPage {
     public void selectFirstActionTemplateFromTable() {
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("I am selecting Action Template");
-        OldTable.createByComponentId(driver, wait, ACTION_TEMPLATE_TABLE_ID).selectRow(0);
+        OldTable.createById(driver, wait, ACTION_TEMPLATE_TABLE_ID).selectRow(0);
     }
 
     @Step("I click delete Action Template")

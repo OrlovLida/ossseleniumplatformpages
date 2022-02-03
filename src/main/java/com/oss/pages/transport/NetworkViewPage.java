@@ -65,6 +65,7 @@ public class NetworkViewPage extends BasePage {
     private static final String TRAIL_TYPES_POPUP_ID = "trailTypesPopup";
     private static final String SUPPRESSION_WIZARD_ID = "plaSuppressionWizard";
     private static final String SUPPRESSION_WIZARD_CONTEXT_ACTION_ID = "frameworkCustomMore_Suppression wizard";
+    private static final String PROPERTY_PANEL_ID = "NetworkViewPropertyPanelWidget";
 
     private Wizard wizard = Wizard.createWizard(driver, wait);
 
@@ -211,7 +212,7 @@ public class NetworkViewPage extends BasePage {
     @Step("Select object in view content")
     public void selectObjectInViewContent(String name, String value) {
         waitForPageToLoad();
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, LEFT_PANEL_TAB_ID);
+        TableInterface table = OldTable.createById(driver, wait, LEFT_PANEL_TAB_ID);
         table.selectRowByAttributeValueWithLabel(name, value);
     }
 
@@ -232,7 +233,7 @@ public class NetworkViewPage extends BasePage {
     @Step("Click on object in View content by partial name: {partialName} and index {index}")
     public void clickOnObject(String partialName, int index) {
         expandViewContentPanel();
-        OldTable oldTable = OldTable.createByComponentDataAttributeName(driver, wait, LEFT_PANEL_TAB_ID);
+        OldTable oldTable = OldTable.createById(driver, wait, LEFT_PANEL_TAB_ID);
         oldTable.selectRowByPartialNameAndIndex(partialName, index);
         waitForPageToLoad();
     }
@@ -247,7 +248,7 @@ public class NetworkViewPage extends BasePage {
     @Step("Select object in details tab")
     public void selectObjectInDetailsTab(String name, String value) {
         waitForPageToLoad();
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, "bottomTabs");
+        TableInterface table = OldTable.createById(driver, wait, "bottomTabs");
         table.selectRowByAttributeValueWithLabel(name, value);
     }
 
@@ -299,7 +300,7 @@ public class NetworkViewPage extends BasePage {
     public void supressValidationResult(String reason) {
         openValidationResultsTab();
         TabsWidget tabsWidget = TabsWidget.createById(driver, wait, "bottomTabs");
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, "validation-results-table");
+        TableInterface table = OldTable.createById(driver, wait, "validation-results-table");
         waitForPageToLoad();
         table.selectRow(0);
         waitForPageToLoad();
@@ -338,7 +339,7 @@ public class NetworkViewPage extends BasePage {
     @Step("Get value from Attributes panel")
     public String getAttributeValue(String attributeName) {
         expandAttributesPanel();
-        OldPropertyPanel attributesPanel = OldPropertyPanel.create(driver, wait);
+        OldPropertyPanel attributesPanel = OldPropertyPanel.createById(driver, wait , PROPERTY_PANEL_ID);
         return attributesPanel.getPropertyValue(attributeName);
     }
 
@@ -384,7 +385,7 @@ public class NetworkViewPage extends BasePage {
     }
 
     private void selectObjectInBottomPanel(String tableId, String column, String value) {
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, tableId);
+        TableInterface table = OldTable.createById(driver, wait, tableId);
         table.selectRowByAttributeValueWithLabel(column, value);
     }
 

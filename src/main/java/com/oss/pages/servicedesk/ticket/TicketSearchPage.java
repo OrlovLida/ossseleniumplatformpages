@@ -58,7 +58,7 @@ public class TicketSearchPage extends BaseSDPage {
     @Step("I open details view for {rowIndex} ticket in Ticket table")
     public TicketDetailsPage openTicketDetailsView(String rowIndex, String basicURL) {
         // TODO: for now we cannot just click link - not implemented yet
-        // (see TableWidget#selectLinkInSpecificColumn)
+        // (see TableWidget#clickLink)
         String ticketId = getTicketTable().getCellValue(Integer.parseInt(rowIndex), ID_ATTRIBUTE);
         log.info("Opening ticket details for ticket with id: {}", ticketId);
         openPage(driver, String.format(DETAILS_PAGE_URL_PATTERN, basicURL, ticketId));

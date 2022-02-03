@@ -31,6 +31,7 @@ public class WAMVPage extends BasePage {
     private static final String SAME_MO_ALARMS_TABLE_ID = "_AREA3SameMOAlarms";
     private static final String ADAPTER_NAME_VALUE = "Adapter Name";
     private static final String NOTIFICATION_IDENTIFIER_VALUE = "Notification Identifier";
+    private static final String PROPERTY_PANEL_ID = "tab-content_AREA3__AREA3AlarmDetailsTab";//TODO temporary id from appList, propertyPanel doesn't have id, update after Web fix
 
     private final FMSMTable fmsmTable = FMSMTable.createById(driver, wait, TABLE_AREA2_WIDGET_ID);
 
@@ -96,21 +97,21 @@ public class WAMVPage extends BasePage {
     public String getTitleFromAckStatusCell(int row) {
         DelayUtils.sleep(1000);
         log.info("Returning cell text from acknowledge state column in row: {}", row);
-        return fmsmTable.getCellValueById(row, ACKNOWLEDGE_COLUMN_ID);
+        return fmsmTable.getCellValue(row, ACKNOWLEDGE_COLUMN_ID);
     }
 
     @Step("I return a cell text from notification identifier column")
     public String getTextFromNotificationIdentifierCell(int row) {
         DelayUtils.sleep(1000);
         log.info("Returning cell text from notification identifier column in row: {}", row);
-        return fmsmTable.getCellValueById(row, NOTIFICATION_IDENTIFIER_COLUMN_ID);
+        return fmsmTable.getCellValue(row, NOTIFICATION_IDENTIFIER_COLUMN_ID);
     }
 
     @Step("I return a cell text from note column")
     public String getTextFromNoteStatusCell(int row) {
         DelayUtils.sleep(2000);
         log.info("Returning cell text from note column in row: {}", row);
-        return fmsmTable.getCellValueById(row, NOTE_COLUMN_ID);
+        return fmsmTable.getCellValue(row, NOTE_COLUMN_ID);
     }
 
     @Step("I click on Additional Text tab")
@@ -139,14 +140,14 @@ public class WAMVPage extends BasePage {
 
     @Step("I get adapter name from Alarms Details Tab")
     public String getAdapterNameValueFromAlarmDetailsTab() {
-        OldPropertyPanel propertyPanel = OldPropertyPanel.create(driver, wait);
+        OldPropertyPanel propertyPanel = OldPropertyPanel.createById(driver, wait, PROPERTY_PANEL_ID);
         log.info("Checking adapter name value from Alarm Details Tab");
         return propertyPanel.getPropertyValue(ADAPTER_NAME_VALUE);
     }
 
     @Step("I get notification identifier from Alarms Details Tab")
     public String getNotificationIdentifierValueFromAlarmDetailsTab() {
-        OldPropertyPanel propertyPanel = OldPropertyPanel.create(driver, wait);
+        OldPropertyPanel propertyPanel = OldPropertyPanel.createById(driver, wait, PROPERTY_PANEL_ID);
         log.info("Checking notification identifier value from Alarm Details Tab");
         return propertyPanel.getPropertyValue(NOTIFICATION_IDENTIFIER_VALUE);
     }
