@@ -160,7 +160,11 @@
             <artifactId>physical-connectivity-api</artifactId>
             <version>3.0.2.Final</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.github.javafaker</groupId>
+            <artifactId>javafaker</artifactId>
+            <version>0.17.2</version>
+        </dependency>
     </dependencies>
 
     <profiles>
