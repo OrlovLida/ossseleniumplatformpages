@@ -11,6 +11,7 @@ import com.oss.framework.components.pagination.PaginationComponent;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.Input.ComponentType;
 import com.oss.framework.components.mainheader.ButtonPanel;
+import com.oss.framework.components.prompts.Popup;
 import com.oss.pages.platform.configuration.ChooseConfigurationWizard;
 import com.oss.pages.platform.configuration.SaveConfigurationWizard;
 import com.oss.pages.platform.configuration.SaveConfigurationWizard.Field;
@@ -44,6 +45,7 @@ public class NewInventoryViewPage extends BasePage {
     private static final String SETTINGS_ID = "frameworkCustomButtonsSecondaryGroup";
     private static final String SAVE_PROPERTY_CONFIG_ID = "propertyPanelSave";
     private static final String SAVE_NEW_CONFIG_ID = "saveNewConfig";
+    private static final String CHANGE_LABEL = "Change";
 
     public NewInventoryViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -286,6 +288,7 @@ public class NewInventoryViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         if (!isHorizontal()) {
             ButtonPanel.create(driver, wait).clickButton(CHANGE_LAYOUT_BUTTON_ID, HORIZONTAL_BUTTON_ID);
+            Popup.create(driver,wait).clickButtonByLabel(CHANGE_LABEL);
         }
         DelayUtils.waitForPageToLoad(driver, wait);
         return this;
@@ -302,6 +305,7 @@ public class NewInventoryViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         if (isHorizontal()) {
             ButtonPanel.create(driver, wait).clickButton(CHANGE_LAYOUT_BUTTON_ID, VERTICAL_BUTTON_ID);
+            Popup.create(driver,wait).clickButtonByLabel(CHANGE_LABEL);
         }
         DelayUtils.waitForPageToLoad(driver, wait);
         return this;
