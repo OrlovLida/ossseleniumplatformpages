@@ -52,12 +52,13 @@ public class RegulatoryLicenseOverviewPage extends BasePage {
     private static final String REMOVE_MICROWAVE_ANTENNA_BUTTON_DATA_ATTRIBUTENAME = "remove";
 
     private static final String REMOVAL_CONFIRMATION_BUTTON_DATA_ATTRIBUTENAME = "ConfirmationBox_confirmationBoxAppRemoveLocation_action_button";
+    private static final String PROPERTY_PANEL_ID = "propertyPanel";
 
     private final OldPropertyPanel propertyPanel;
 
     public RegulatoryLicenseOverviewPage(WebDriver driver) {
         super(driver);
-        propertyPanel = OldPropertyPanel.create(driver, wait);
+        propertyPanel = OldPropertyPanel.createById(driver, wait, PROPERTY_PANEL_ID);
     }
 
     @Step("Click edit button")
@@ -171,7 +172,7 @@ public class RegulatoryLicenseOverviewPage extends BasePage {
     }
 
     private OldTable getTableWidget(String tableId) {
-        return OldTable.createByComponentDataAttributeName(driver, wait, tableId);
+        return OldTable.createById(driver, wait, tableId);
     }
 
     @Step("Get all assigned Locations values")
@@ -243,7 +244,7 @@ public class RegulatoryLicenseOverviewPage extends BasePage {
     }
 
     private void selectFirstMicrowaveLink() {
-        OldTable table = OldTable.createByComponentDataAttributeName(driver, wait, BOTTOM_MICROWAVE_LINKS_TABLE_DATA_ATTRIBUTENAME);
+        OldTable table = OldTable.createById(driver, wait, BOTTOM_MICROWAVE_LINKS_TABLE_DATA_ATTRIBUTENAME);
         table.selectRowByAttributeValueWithLabel("Technology Type", "HYB");
         DelayUtils.waitForPageToLoad(driver, wait);
     }
@@ -254,7 +255,7 @@ public class RegulatoryLicenseOverviewPage extends BasePage {
     }
 
     private void selectFirstMicrowaveChannel() {
-        OldTable table = OldTable.createByComponentId(driver, wait, BOTTOM_MICROWAVE_CHANNELS_TABLE_DATA_ATTRIBUTENAME);
+        OldTable table = OldTable.createById(driver, wait, BOTTOM_MICROWAVE_CHANNELS_TABLE_DATA_ATTRIBUTENAME);
         table.selectRowByAttributeValueWithLabel("Type", "MicrowaveChannel");
         DelayUtils.waitForPageToLoad(driver, wait);
     }
@@ -265,7 +266,7 @@ public class RegulatoryLicenseOverviewPage extends BasePage {
     }
 
     private void selectFirstMicrowaveAntenna() {
-        OldTable table = OldTable.createByComponentId(driver, wait, BOTTOM_MICROWAVE_ANTENNAS_TABLE_DATA_ATTRIBUTENAME);
+        OldTable table = OldTable.createById(driver, wait, BOTTOM_MICROWAVE_ANTENNAS_TABLE_DATA_ATTRIBUTENAME);
         table.selectRowByAttributeValueWithLabel("Manufacturer", "ARTA");
         DelayUtils.waitForPageToLoad(driver, wait);
     }
@@ -276,7 +277,7 @@ public class RegulatoryLicenseOverviewPage extends BasePage {
     }
 
     private List<String> getAllElementsInColumn(OldTable table, String columnName) {
-        int rows = table.getNumberOfRowsInTable(columnName);
+        int rows = table.countRows(columnName);
         List<String> elementsInColumn = new ArrayList<>();
         for (int i = 0; i < rows; i++) {
             elementsInColumn.add(table.getCellValue(i, columnName));

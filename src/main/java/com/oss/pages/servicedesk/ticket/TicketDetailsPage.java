@@ -136,7 +136,7 @@ public class TicketDetailsPage extends BaseSDPage {
 
     public String checkExistingDictionary() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        return OldTable.createByComponentId(driver, wait, DICTIONARIES_TABLE_ID).getCellValue(0, DICTIONARY_VALUE_TABLE_LABEL);
+        return OldTable.createById(driver, wait, DICTIONARIES_TABLE_ID).getCellValue(0, DICTIONARY_VALUE_TABLE_LABEL);
     }
 
     public boolean checkDisplayedText(String expectedText, String windowId) {

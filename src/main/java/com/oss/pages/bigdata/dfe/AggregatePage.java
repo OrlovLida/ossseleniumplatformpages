@@ -89,8 +89,8 @@ public class AggregatePage extends BaseDfePage {
     @Step("I check if IfRuns are not empty")
     public Boolean ifRunsNotEmpty() {
         boolean ifRunsExists = OldTable
-                .createByComponentId(driver, wait, TABLE_TAB_ID)
-                .getNumberOfRowsInTable(COLUMN_REQUEST_GENERATION_TIME_LABEL) >= 1;
+                .createById(driver, wait, TABLE_TAB_ID)
+                .countRows(COLUMN_REQUEST_GENERATION_TIME_LABEL) >= 1;
         log.info("In if Runs exist at least one row: {}", ifRunsExists);
 
         return ifRunsExists;

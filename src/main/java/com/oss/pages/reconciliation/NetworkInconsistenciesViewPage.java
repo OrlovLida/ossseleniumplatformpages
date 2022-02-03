@@ -54,7 +54,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
     public void assignLocation(String inconsistencyName, String preciseLocation) {
         getTreeView().selectTreeRow(inconsistencyName);
         DelayUtils.waitForPageToLoad(driver, wait);
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, PHYSICAL_INCONSITENCIES_TABLE_ID);
+        TableInterface table = OldTable.createById(driver, wait, PHYSICAL_INCONSITENCIES_TABLE_ID);
         table.callAction("EDIT", CHANGE_LOCATION_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         Wizard wizard = Wizard.createByComponentId(driver, new WebDriverWait(driver, 90), PHYSICAL_WIZARD_ID);
@@ -69,7 +69,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
     public void assignRanLocation(String inconsistencyName, String location) {
         getTreeView().selectTreeRow(inconsistencyName);
         DelayUtils.waitForPageToLoad(driver, wait);
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, RAN_INCONSITENCIES_TABLE_ID);
+        TableInterface table = OldTable.createById(driver, wait, RAN_INCONSITENCIES_TABLE_ID);
         table.callAction("Assign Location");
         DelayUtils.waitForPageToLoad(driver, wait);
         Wizard wizard = Wizard.createByComponentId(driver, wait, RAN_WIZARD_ID);
@@ -115,7 +115,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
     @Step("Check inconsistencies operation type for first object")
     public String checkInconsistenciesOperationType() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, PHYSICAL_INCONSITENCIES_TABLE_ID);
+        TableInterface table = OldTable.createById(driver, wait, PHYSICAL_INCONSITENCIES_TABLE_ID);
         return table.getCellValue(0, "Operation Type");
     }
 

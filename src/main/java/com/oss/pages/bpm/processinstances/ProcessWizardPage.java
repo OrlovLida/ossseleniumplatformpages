@@ -82,7 +82,7 @@ public class ProcessWizardPage extends BasePage {
     }
 
     public String createProcess(String processName, Long plusDays, String processType) {
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, TABLE_PROCESSES);
+        TableInterface table = OldTable.createById(driver, wait, TABLE_PROCESSES);
         table.callAction("create", "start-process");
         definedBasicProcess(processName, processType, plusDays).clickButtonById(CREATE_BUTTON);
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, wait);
@@ -93,7 +93,7 @@ public class ProcessWizardPage extends BasePage {
 
     @Description("Go to Milestone Step)")
     public MilestoneStepWizard definedMilestoneInProcess(String processName, Long plusDays, String processType) {
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, TABLE_PROCESSES);
+        TableInterface table = OldTable.createById(driver, wait, TABLE_PROCESSES);
         table.callAction("create", "start-process");
         Wizard processWizard = definedBasicProcess(processName, processType, plusDays);
         if (driver.getPageSource().contains("Add Milestones")) {

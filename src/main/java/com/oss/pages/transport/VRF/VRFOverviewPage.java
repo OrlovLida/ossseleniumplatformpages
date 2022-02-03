@@ -44,12 +44,13 @@ public class VRFOverviewPage extends BasePage {
     private static final String INTERFACES_TABLE_ID = "interfaces_table_id";
     private static final String BOTTOM_ROUTE_TARGET_TABLE_ID = "bottom_app_id";
     private static final String BOTTOM_INTERFACES_TAB_INTERFACE_NAME_COLUMN_LABEL = "Name";
+    private static final String PROPERTY_PANEL_ID = "propertyPanel";
 
     private final OldPropertyPanel propertyPanel;
 
     public VRFOverviewPage(WebDriver driver) {
         super(driver);
-        propertyPanel = OldPropertyPanel.create(driver, wait);
+        propertyPanel = OldPropertyPanel.createById(driver, wait, PROPERTY_PANEL_ID);
     }
 
     @Step("Click edit button")
@@ -138,12 +139,12 @@ public class VRFOverviewPage extends BasePage {
     }
 
     private OldTable getTableWidget(String tableId) {
-        return OldTable.createByComponentDataAttributeName(driver, wait, tableId);
+        return OldTable.createById(driver, wait, tableId);
     }
 
     private List<String> getAllElementsInColumn(OldTable table, String columnName) {
         List<String> elementsInColumn = new ArrayList<>();
-        int numberOfRows = table.getNumberOfRowsInTable(columnName);
+        int numberOfRows = table.countRows(columnName);
         for (int i = 0; i < numberOfRows; i++) {
             String addressFamily = table.getCellValue(i, columnName);
             elementsInColumn.add(addressFamily);

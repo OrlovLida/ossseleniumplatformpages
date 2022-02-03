@@ -1,15 +1,19 @@
 package com.oss.pages.languageservice;
 
+import org.openqa.selenium.WebDriver;
+
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.TableWidget;
 import com.oss.pages.BasePage;
 import com.oss.pages.exportguiwizard.ExportGuiWizardPage;
 import com.oss.pages.platform.NotificationWrapperPage;
+
 import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
 
 public class LanguageServicePage extends BasePage {
+
+    private static String WIDGET_ID = "TranslationsView_MainWidget";
 
     @Step("Open Language Service Page")
     public static LanguageServicePage goToLanguageServicePage(WebDriver driver, String baseURL) {
@@ -27,8 +31,7 @@ public class LanguageServicePage extends BasePage {
     @Step("Open Export File Wizard")
     public ExportGuiWizardPage openExportFileWizard() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        TableWidget tableWidget = tableWidget();
-        tableWidget.callAction(ActionsContainer.KEBAB_GROUP_ID, TableWidget.EXPORT_ACTION_ID);
+        tableWidget().callAction(ActionsContainer.KEBAB_GROUP_ID, TableWidget.EXPORT_ACTION_ID);
         return new ExportGuiWizardPage(driver);
     }
 
@@ -51,8 +54,8 @@ public class LanguageServicePage extends BasePage {
     @Step("Type ID of First Service in Search")
     public LanguageServicePage typeIdOfFirstServiceInSearch() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        String idOfFirstElement = TableWidget.create(driver, TableWidget.TABLE_WIDGET_CLASS, wait).getCellValue(0, "code");
-        TableWidget.create(driver, TableWidget.TABLE_WIDGET_CLASS, wait).typeIntoSearch(idOfFirstElement);
+        String idOfFirstElement = tableWidget().getCellValue(0, "code");
+        tableWidget().fullTextSearch(idOfFirstElement);
         return this;
     }
 
@@ -63,7 +66,7 @@ public class LanguageServicePage extends BasePage {
 
     private TableWidget tableWidget() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        return TableWidget.create(driver, TableWidget.TABLE_WIDGET_CLASS, wait);
+        return TableWidget.createById(driver, WIDGET_ID, wait);
     }
 }
 

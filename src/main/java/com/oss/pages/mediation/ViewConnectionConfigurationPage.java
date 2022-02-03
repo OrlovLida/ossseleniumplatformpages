@@ -30,14 +30,14 @@ public class ViewConnectionConfigurationPage extends BasePage {
     @Step("Use context action {action}")
     public void useContextAction(String group, String action) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, TABLE_ID);
+        TableInterface table = OldTable.createById(driver, wait, TABLE_ID);
         table.callAction(group, action);
     }
 
     @Step("Select mediation with name {name} and value {value}")
     public void selectRow(String name, String value) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, TABLE_ID);
+        TableInterface table = OldTable.createById(driver, wait, TABLE_ID);
         table.selectRowByAttributeValueWithLabel(name, value);
     }
 

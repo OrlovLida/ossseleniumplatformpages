@@ -18,7 +18,7 @@ public class RegulatoryLicensesListPage extends BasePage {
     }
 
     private OldTable getTableWidget(String tableId) {
-        return OldTable.createByComponentDataAttributeName(driver, wait, tableId);
+        return OldTable.createById(driver, wait, tableId);
     }
 
     @Step("Click create button")

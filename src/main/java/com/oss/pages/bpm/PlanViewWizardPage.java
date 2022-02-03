@@ -24,7 +24,7 @@ public class PlanViewWizardPage extends BasePage {
 
     public boolean validationErrorsPresent() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        OldTable oldTable = OldTable.createByComponentDataAttributeName(driver, wait, VALIDATION_TABLE_DATA_ATTRIBUTE_NAME);
+        OldTable oldTable = OldTable.createById(driver, wait, VALIDATION_TABLE_DATA_ATTRIBUTE_NAME);
         return !oldTable.hasNoData();
     }
 }

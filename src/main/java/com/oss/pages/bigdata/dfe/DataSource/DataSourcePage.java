@@ -152,7 +152,7 @@ public class DataSourcePage extends BaseDfePage {
     @Step("I check if logs table is empty")
     public boolean isLogsTableEmpty() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        return OldTable.createByComponentId(driver, wait, LOG_TAB_TABLE_ID).hasNoData();
+        return OldTable.createById(driver, wait, LOG_TAB_TABLE_ID).hasNoData();
     }
 
     @Step("I check Last Request Generation Time")
@@ -175,18 +175,18 @@ public class DataSourcePage extends BaseDfePage {
 
     @Step("I select first file from Processed Files table")
     public void selectFirstFileInTheTable() {
-        OldTable.createByComponentId(driver, wait, PROCESSED_FILES_TABLE_ID).selectRow(0);
+        OldTable.createById(driver, wait, PROCESSED_FILES_TABLE_ID).selectRow(0);
         log.info("Selecting first file in the table");
     }
 
     @Step("I check if Show File table is not empty")
     public boolean checkIfShowFileTableIsNotEmpty() {
-        return !OldTable.createByComponentId(driver, wait, SHOW_FILE_TABLE_ID).hasNoData();
+        return !OldTable.createById(driver, wait, SHOW_FILE_TABLE_ID).hasNoData();
     }
 
     @Step("I check first file name")
     public String getNameOfFirstFileInTheTable() {
-        return OldTable.createByComponentId(driver, wait, PROCESSED_FILES_TABLE_ID).getCellValue(0, "Filename");
+        return OldTable.createById(driver, wait, PROCESSED_FILES_TABLE_ID).getCellValue(0, "Filename");
     }
 
     @Step("I click Download File button in Processed Files Tab")

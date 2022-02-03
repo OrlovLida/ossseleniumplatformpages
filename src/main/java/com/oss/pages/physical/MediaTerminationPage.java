@@ -84,7 +84,7 @@ public class MediaTerminationPage extends BasePage {
     }
 
     private TableInterface getMediaTable() {
-        return OldTable.createByComponentDataAttributeName(driver, wait, MEDIA_TABLE_ID);
+        return OldTable.createById(driver, wait, MEDIA_TABLE_ID);
     }
 
     private Wizard getWizard() {

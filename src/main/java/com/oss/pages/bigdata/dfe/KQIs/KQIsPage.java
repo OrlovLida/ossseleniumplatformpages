@@ -13,17 +13,18 @@ public class KQIsPage extends BaseDfePage {
 
     private static final Logger log = LoggerFactory.getLogger(KQIsPage.class);
 
-    private final String ADD_NEW_KQI_LABEL = "Add New KQI";
-    private final String TABLE_ID = "kqi-listAppId";
-    private final String KQI_WIZARD_ID = "kqiWizardWindow";
-    private final String KQI_NAME_COLUMN_LABEL = "Name";
-    private final String SEARCH_INPUT_ID = "kqi-listSearchAppId";
-    private final String EDIT_KQI_LABEL = "Edit KQI";
-    private final String DELETE_KQI_LABEL = "Delete KQI";
-    private final String CONFIRM_DELETE_LABEL = "Delete";
-    private final String DETAILS_TAB = "Details";
-    private final String PARAMETERS_TAB = "Parameters";
-    private final String PARAMETERS_TABLE_ID = "kqi/tabs/parametersAppId";
+    private static final String ADD_NEW_KQI_LABEL = "Add New KQI";
+    private static final String TABLE_ID = "kqi-listAppId";
+    private static final String KQI_WIZARD_ID = "kqiWizardWindow";
+    private static final String KQI_NAME_COLUMN_LABEL = "Name";
+    private static final String SEARCH_INPUT_ID = "kqi-listSearchAppId";
+    private static final String EDIT_KQI_LABEL = "Edit KQI";
+    private static final String DELETE_KQI_LABEL = "Delete KQI";
+    private static final String CONFIRM_DELETE_LABEL = "Delete";
+    private static final String DETAILS_TAB = "Details";
+    private static final String PARAMETERS_TAB = "Parameters";
+    private static final String PARAMETERS_TABLE_ID = "kqi/tabs/parametersAppId";
+    private static final String PROPERTY_PANEL_ID = "detailsId";
 
     public KQIsPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -73,7 +74,7 @@ public class KQIsPage extends BaseDfePage {
 
     @Step("Check label and value in details tab")
     public String checkValueForPropertyInDetails(String propertyName) {
-        String propertyValue = OldPropertyPanel.create(driver, wait).getPropertyValue(propertyName);
+        String propertyValue = OldPropertyPanel.createById(driver, wait, PROPERTY_PANEL_ID).getPropertyValue(propertyName);
         log.info("Value of: {} is: {}", propertyName, propertyValue);
 
         return propertyValue;
@@ -87,8 +88,8 @@ public class KQIsPage extends BaseDfePage {
     @Step("I check if Parameters Table is not empty")
     public boolean parametersTableHasData() {
         return OldTable
-                .createByComponentId(driver, wait, PARAMETERS_TABLE_ID)
-                .getNumberOfRowsInTable("Name") > 0;
+                .createById(driver, wait, PARAMETERS_TABLE_ID)
+                .countRows("Name") > 0;
     }
 
     @Override

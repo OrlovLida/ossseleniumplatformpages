@@ -104,12 +104,12 @@ public class PatchcordWizardPage extends BasePage {
 
     public OldTable getPatchcordConnectorsTableStart() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        return OldTable.createByComponentDataAttributeName(driver, wait, START_CONNECTORS_TABLE_ID);
+        return OldTable.createById(driver, wait, START_CONNECTORS_TABLE_ID);
     }
 
     public OldTable getPatchcordConnectorsTableEnd() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        return OldTable.createByComponentDataAttributeName(driver, wait, END_CONNECTORS_TABLE_ID);
+        return OldTable.createById(driver, wait, END_CONNECTORS_TABLE_ID);
     }
 
     private Wizard getSubmitsButtonsWizard() {
@@ -125,7 +125,7 @@ public class PatchcordWizardPage extends BasePage {
     }
 
     private TableInterface getPatchcordTable() {
-        return OldTable.createByComponentDataAttributeName(driver, wait, PATCHCORD_TABLE_ID);
+        return OldTable.createById(driver, wait, PATCHCORD_TABLE_ID);
     }
 
     private Wizard getWizard() {

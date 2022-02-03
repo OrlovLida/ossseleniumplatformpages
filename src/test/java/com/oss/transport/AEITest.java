@@ -182,7 +182,7 @@ public class AEITest extends BaseTestCase {
         OldTable serverTerminationPointsTable = inventoryViewPage.getTableWidgetForTab(BOTTOM_SERVER_TERMINATION_POINTS_TAB_ID, BOTTOM_SERVER_TERMINATION_POINTS_TABLE_TEST_ID);
 
         List<String> assignedInterfaces = new ArrayList<>();
-        int numberOfRowsInTable = serverTerminationPointsTable.getNumberOfRowsInTable(SERVER_TERMINATION_POINTS_TABLE_NAME_COLUMN_LABEL);
+        int numberOfRowsInTable = serverTerminationPointsTable.countRows(SERVER_TERMINATION_POINTS_TABLE_NAME_COLUMN_LABEL);
         for (int i = 0; i < numberOfRowsInTable; i++) {
             assignedInterfaces.add(serverTerminationPointsTable.getCellValue(i, SERVER_TERMINATION_POINTS_TABLE_NAME_COLUMN_LABEL));
         }

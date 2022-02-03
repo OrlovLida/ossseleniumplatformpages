@@ -90,19 +90,19 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     @Step("Waiting until reconciliation is over")
     public String waitForEndOfReco() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        OldTable.createByComponentDataAttributeName(driver, wait, RECONCILIATION_TAB_ID).callAction(ActionsContainer.KEBAB_GROUP_ID, RECO_STATE_REFRESH_BUTTON_ID);
+        OldTable.createById(driver, wait, RECONCILIATION_TAB_ID).callAction(ActionsContainer.KEBAB_GROUP_ID, RECO_STATE_REFRESH_BUTTON_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
-        String status = OldTable.createByComponentDataAttributeName(driver, wait, RECONCILIATION_STATE_TABLE_ID).getCellValue(0, STATUS);
+        String status = OldTable.createById(driver, wait, RECONCILIATION_STATE_TABLE_ID).getCellValue(0, STATUS);
         while (status.equals("IN_PROGRESS") || status.equals("PENDING")) {
             DelayUtils.sleep(5000);
             DelayUtils.waitForPageToLoad(driver, wait);
-            OldTable.createByComponentDataAttributeName(driver, wait, RECONCILIATION_TAB_ID).callAction(ActionsContainer.KEBAB_GROUP_ID, RECO_STATE_REFRESH_BUTTON_ID);
+            OldTable.createById(driver, wait, RECONCILIATION_TAB_ID).callAction(ActionsContainer.KEBAB_GROUP_ID, RECO_STATE_REFRESH_BUTTON_ID);
             DelayUtils.waitForPageToLoad(driver, wait);
             try {
-                status = OldTable.createByComponentDataAttributeName(driver, wait, RECONCILIATION_STATE_TABLE_ID).getCellValue(0, STATUS);
+                status = OldTable.createById(driver, wait, RECONCILIATION_STATE_TABLE_ID).getCellValue(0, STATUS);
             } catch (StaleElementReferenceException e) {
                 DelayUtils.waitForPageToLoad(driver, wait);
-                status = OldTable.createByComponentDataAttributeName(driver, wait, RECONCILIATION_STATE_TABLE_ID).getCellValue(0, STATUS);
+                status = OldTable.createById(driver, wait, RECONCILIATION_STATE_TABLE_ID).getCellValue(0, STATUS);
             }
         }
         return status;
@@ -161,20 +161,20 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     @Step("Select latest reconciliation state")
     public void selectLatestReconciliationState() {
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, RECONCILIATION_STATE_TABLE_ID);
+        TableInterface table = OldTable.createById(driver, wait, RECONCILIATION_STATE_TABLE_ID);
         table.selectRow(0);
     }
 
     private void logIssues(String type) {
-        int issuesNumber = getIssuesTable().getTableObjectsCount();
+        int issuesNumber = getIssuesTable().getTotalCount();
         if (issuesNumber <= 10) {
             printIssues(type, issuesNumber);
         } else if (issuesNumber <= 100) {
-            getIssuesTable().changeItemsPerPageValue(100);
+            getIssuesTable().setPageSize(100);
             printIssues(type, issuesNumber);
         } else {
             log.info("There are over 100 issues with type = '{}'. Printing only latest 100:", type);
-            getIssuesTable().changeItemsPerPageValue(100);
+            getIssuesTable().setPageSize(100);
             printIssues(type, 100);
         }
     }
@@ -186,7 +186,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     }
 
     private OldTable getIssuesTable() {
-        return OldTable.createByComponentDataAttributeName(driver, wait, ISSUES_TABLE_ID);
+        return OldTable.createById(driver, wait, ISSUES_TABLE_ID);
     }
 
     public enum IssueLevel {
