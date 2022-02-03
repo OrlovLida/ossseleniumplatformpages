@@ -128,8 +128,11 @@ public class CellSiteConfigurationPage extends BasePage {
     public CellSiteConfigurationPage expandTreeToBaseStation(String locationType, String locationName, String baseStation) {
         waitForPageToLoad();
         getTree().expandTreeRow(locationType);
+        waitForPageToLoad();
         getTree().expandTreeRow(locationName);
+        waitForPageToLoad();
         getTree().expandTreeRow(BASE_STATION_ROW);
+        waitForPageToLoad();
         getTree().selectTreeRow(baseStation);
         return this;
     }
