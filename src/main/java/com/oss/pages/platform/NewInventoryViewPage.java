@@ -11,6 +11,7 @@ import com.oss.framework.components.pagination.PaginationComponent;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.Input.ComponentType;
 import com.oss.framework.components.mainheader.ButtonPanel;
+import com.oss.framework.components.prompts.Popup;
 import com.oss.pages.platform.configuration.ChooseConfigurationWizard;
 import com.oss.pages.platform.configuration.SaveConfigurationWizard;
 import com.oss.pages.platform.configuration.SaveConfigurationWizard.Field;
@@ -286,6 +287,7 @@ public class NewInventoryViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         if (!isHorizontal()) {
             ButtonPanel.create(driver, wait).clickButton(CHANGE_LAYOUT_BUTTON_ID, HORIZONTAL_BUTTON_ID);
+            Popup.create(driver,wait).clickButtonByLabel("Change");
         }
         DelayUtils.waitForPageToLoad(driver, wait);
         return this;
@@ -302,6 +304,7 @@ public class NewInventoryViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         if (isHorizontal()) {
             ButtonPanel.create(driver, wait).clickButton(CHANGE_LAYOUT_BUTTON_ID, VERTICAL_BUTTON_ID);
+            Popup.create(driver,wait).clickButtonByLabel("Change");
         }
         DelayUtils.waitForPageToLoad(driver, wait);
         return this;
