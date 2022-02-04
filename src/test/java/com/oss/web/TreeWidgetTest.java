@@ -163,7 +163,7 @@ public class TreeWidgetTest extends BaseTestCase {
         hierarchyViewPage.expandNextLevel(LOCATION_NAME);
         List<String> nodes = hierarchyViewPage.getVisibleNodesLabel();
         Assertions.assertThat(nodes).contains(ROOM_3_CREATE);
-        log.info(ROOM_3_CREATE);
+
     }
     
     @Test(priority = 9)
