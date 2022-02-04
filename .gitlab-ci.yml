@@ -1,5 +1,5 @@
 variables:
-  MVN_ARGS: ""
+  MVN_ARGS: "-DskipTests"
   GIT_SSL_NO_VERIFY: "true"
   TELCO_BOT: "false"
   CITEMPLATE_PROJECT: 'ssh://git@gitlab.czk.comarch:2222/toss/devops/cicd/citemplate.git'
