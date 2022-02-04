@@ -284,14 +284,13 @@ public class NewInventoryViewPage extends BasePage {
     }
 
     @Step("Change layout to Horizontal Orientation")
-    public NewInventoryViewPage setHorizontalLayout() {
+    public void setHorizontalLayout() {
         DelayUtils.waitForPageToLoad(driver, wait);
         if (!isHorizontal()) {
             ButtonPanel.create(driver, wait).clickButton(CHANGE_LAYOUT_BUTTON_ID, HORIZONTAL_BUTTON_ID);
             Popup.create(driver,wait).clickButtonByLabel(CHANGE_LABEL);
         }
         DelayUtils.waitForPageToLoad(driver, wait);
-        return this;
     }
 
     public boolean isHorizontal() {
@@ -301,14 +300,13 @@ public class NewInventoryViewPage extends BasePage {
     // TODO: add getMethods for popup and property panel
 
     @Step("Change layout to Vertical Orientation")
-    public NewInventoryViewPage setVerticalLayout() {
+    public void setVerticalLayout() {
         DelayUtils.waitForPageToLoad(driver, wait);
         if (isHorizontal()) {
             ButtonPanel.create(driver, wait).clickButton(CHANGE_LAYOUT_BUTTON_ID, VERTICAL_BUTTON_ID);
             Popup.create(driver,wait).clickButtonByLabel(CHANGE_LABEL);
         }
         DelayUtils.waitForPageToLoad(driver, wait);
-        return this;
     }
 
     @Step("Change Properties order")
