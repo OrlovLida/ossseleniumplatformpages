@@ -58,8 +58,8 @@ public class PageConfigurationTest extends BaseTestCase {
     public void saveConfigurationForIVPageForUser() {
         //when
         newInventoryViewPage
-                .setVerticalLayout()
-                .saveNewPageConfiguration(
+                .setVerticalLayout();
+        newInventoryViewPage.saveNewPageConfiguration(
                         CONFIGURATION_NAME_IV_USER,
                         createField(DEFAULT_VIEW_FOR, "Me"));
 
