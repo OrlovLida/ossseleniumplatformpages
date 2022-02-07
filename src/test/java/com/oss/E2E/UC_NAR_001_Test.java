@@ -16,7 +16,6 @@ import com.oss.framework.components.mainheader.Notifications;
 import com.oss.framework.components.mainheader.NotificationsInterface;
 import com.oss.framework.components.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.wizard.Wizard;
 import com.oss.pages.platform.GlobalSearchPage;
 import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
@@ -33,6 +32,7 @@ public class UC_NAR_001_Test extends BaseTestCase {
     private static final String INTERFACE_NAME = "CISCO IOS XR without mediation";
     private static final String DOMAIN = "IP";
     private static final String EQUIPMENT_TYPE = "Physical Device";
+    private static final String CONFIRM_ID = "ConfirmationBox_object_delete_wizard_confirmation_box_action_button";
 
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
 
@@ -188,7 +188,7 @@ public class UC_NAR_001_Test extends BaseTestCase {
         newInventoryViewPage.searchObject(ROUTER_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         newInventoryViewPage.selectFirstRow().callAction(ActionsContainer.EDIT_GROUP_ID, "DeleteDeviceWizardAction");
-        Wizard.createWizard(driver, webDriverWait).clickButtonByLabel("Yes");
+        newInventoryViewPage.clickConfirmationBox(CONFIRM_ID);
         checkPopupMessageType(MessageType.SUCCESS);
     }
 

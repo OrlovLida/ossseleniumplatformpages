@@ -10,8 +10,8 @@ import com.oss.framework.components.mainheader.NotificationsInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.table.TableInterface;
-import com.oss.framework.widgets.tabs.TabWindowWidget;
 import com.oss.framework.widgets.tabs.TabsInterface;
+import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.framework.widgets.tree.TreeWidget;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
@@ -31,6 +31,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
     private static final String ACCEPT_CHANGE_LOCATION_BUTTON_ID = "wizard-submit-button-change-location-wizard";
     private static final String TREE_ID = "narComponent_networkInconsistenciesViewIddiscrepanciesTreeId";
     private static final String RAN_WIZARD_ID = "changeLocationWizardId";
+    private static final String TAB_ID = "narComponent_networkInconsistenciesViewIddiscrepanciesTabsWindowId";
 
     public NetworkInconsistenciesViewPage(WebDriver driver) {
         super(driver);
@@ -82,7 +83,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
     @Step("Select first group of Inconsistencies and apply discrepancies to Live perspective")
     public void applyInconsistencies() {
         selectTreeObjectByRowOrder(2);
-        TabsInterface nivTabs = TabWindowWidget.create(driver, wait);
+        TabsInterface nivTabs = TabsWidget.createById(driver, wait, TAB_ID);
         nivTabs.selectTabById(NIV_TREE);
         DelayUtils.sleep(1000);
         nivTabs.callActionById(APPLY_GROUP_BUTTON_ID);
@@ -92,7 +93,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
 
     @Step("Apply discrepancies to Live perspective")
     public void applySelectedInconsistencies() {
-        TabsInterface nivTabs = TabWindowWidget.create(driver, wait);
+        TabsInterface nivTabs = TabsWidget.createById(driver, wait, TAB_ID);
         nivTabs.selectTabById(NIV_TREE);
         DelayUtils.sleep(1000);
         nivTabs.callActionById(APPLY_BUTTON_ID);

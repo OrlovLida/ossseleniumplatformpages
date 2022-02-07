@@ -17,18 +17,18 @@ import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.acd.BaseACDPage;
-import com.oss.pages.acd.scenarioSummaryView.AsdScenarioSummaryViewPage;
 
 import io.qameta.allure.Step;
 
 public class ArSettingsPage extends BaseACDPage {
 
-    private static final Logger log = LoggerFactory.getLogger(AsdScenarioSummaryViewPage.class);
+    private static final Logger log = LoggerFactory.getLogger(ArSettingsPage.class);
 
-    private final String ADD_ACTION_TEMPLATE_BUTTON = "undefined-1";
-    private final String REMOVE_ACTION_TEMPLATE_BUTTON = "undefined-0";
-    private final String ACTION_TEMPLATE_TABLE_ID = "actionTemplateTable";
-    private final String DELETE_LABEL = "Delete";
+    private static final String ADD_ACTION_TEMPLATE_BUTTON = "undefined-1";
+    private static final String REMOVE_ACTION_TEMPLATE_BUTTON = "undefined-0";
+    private static final String ACTION_TEMPLATE_TABLE_ID = "actionTemplateTable";
+    private static final String DELETE_LABEL = "Delete";
+    private static final String TAB_ID = "kaSettingsTabsContainer";
 
     private final OldTable table;
 
@@ -104,7 +104,7 @@ public class ArSettingsPage extends BaseACDPage {
     }
 
     @Step("I check if there is data in Action Template table")
-    public Boolean isDataInActionTemplatesTable() {
+    public boolean isDataInActionTemplatesTable() {
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("I am checking if there is data in Action Templates table");
         return !table.hasNoData();
@@ -138,7 +138,7 @@ public class ArSettingsPage extends BaseACDPage {
     @Step("I go to Subsystems Health tab")
     public void goToSubsystemsHealthTab(String tabLabel) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        TabsWidget.create(driver, wait).selectTabByLabel(tabLabel);
+        TabsWidget.createById(driver, wait, TAB_ID).selectTabByLabel(tabLabel);
         log.debug("I opened Subsystems Health tab");
     }
 

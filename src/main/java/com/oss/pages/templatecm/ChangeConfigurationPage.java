@@ -3,13 +3,13 @@ package com.oss.pages.templatecm;
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.inputs.Button;
+import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.wizard.Wizard;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.table.TableInterface;
-import com.oss.framework.widgets.tabs.TabWindowWidget;
 import com.oss.framework.widgets.tabs.TabsInterface;
+import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
@@ -24,8 +24,7 @@ public class ChangeConfigurationPage extends BasePage {
     private static final String DEVICE_SELECT_TABLE = "DeviceSelectionApp";
     private static final String TEMPLATE_SELECT_TABLE = "TemplatesTableApp";
     private static final String NAME = "Name";
-
-    private Wizard wizard = Wizard.createWizard(driver, wait);
+    private static final String TAB_ID = "DataSourceTabsWindow";
 
     public ChangeConfigurationPage(WebDriver driver) {
         super(driver);
@@ -33,7 +32,7 @@ public class ChangeConfigurationPage extends BasePage {
 
     @Step("Select object inventory tab")
     public void selectObjectInventoryTab() {
-        TabsInterface tabs = TabWindowWidget.create(driver, wait);
+        TabsInterface tabs = TabsWidget.createById(driver, wait, TAB_ID);
         tabs.selectTabById(INVENTORY_OBJECTS_TAB_ID);
     }
 
@@ -41,7 +40,7 @@ public class ChangeConfigurationPage extends BasePage {
     public void selectObjectType(String objectType) {
         DelayUtils.waitForPageToLoad(driver, wait);
         selectObjectInventoryTab();
-        wizard.getComponent(OBJECT_TYPE_INPUT_ID, Input.ComponentType.COMBOBOX).setSingleStringValue(objectType);
+        ComponentFactory.create(OBJECT_TYPE_INPUT_ID, Input.ComponentType.COMBOBOX, driver, wait).setSingleStringValue(objectType);
     }
 
     @Step("Query object for change configuration")

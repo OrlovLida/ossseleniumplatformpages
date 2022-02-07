@@ -15,7 +15,7 @@ import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD
 
 public class EditCell4GBulkWizardPage extends BasePage {
 
-    private static final String WIZARD_ID = "cell-4g-bulk-wizard";
+    private static final String WIZARD_ID = "cell-bulk-wizard-4g";
     private static final String LIST_ID = "ExtendedList-editableTableId";
     private static final String PCI_DATA_ATTRIBUTE_NAME = "pci";
     private static final String RSI_DATA_ATTRIBUTE_NAME = "rootSequenceIndex";

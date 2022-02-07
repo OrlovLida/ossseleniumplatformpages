@@ -11,8 +11,7 @@ import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.components.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.tabs.TabWindowWidget;
-import com.oss.framework.widgets.tabs.TabsInterface;
+import com.oss.framework.widgets.table.OldTable;
 import com.oss.pages.physical.LocationOverviewPage;
 import com.oss.pages.physical.LocationOverviewPage.TabName;
 import com.oss.pages.physical.LocationWizardPage;
@@ -150,8 +149,8 @@ public class PhysicalRegressionTests extends BaseTestCase {
         ConfirmationBoxInterface confirmationBox = ConfirmationBox.create(driver, webDriverWait);
         confirmationBox.clickButtonByLabel("Delete");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        TabsInterface tabTable = TabWindowWidget.create(driver, webDriverWait);
-        Assert.assertTrue(tabTable.hasNoData("tableAppLocationsId"));
+        OldTable table = new LocationOverviewPage(driver).getTabTable(TabName.LOCATIONS);
+        Assert.assertTrue(table.hasNoData());
     }
 
     private void getOrCreateAddress() {

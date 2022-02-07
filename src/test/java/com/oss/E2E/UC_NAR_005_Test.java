@@ -17,7 +17,6 @@ import com.oss.framework.components.mainheader.Notifications;
 import com.oss.framework.components.mainheader.NotificationsInterface;
 import com.oss.framework.components.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.wizard.Wizard;
 import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.reconciliation.CmDomainWizardPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
@@ -39,6 +38,8 @@ public class UC_NAR_005_Test extends BaseTestCase {
     private static final String DEVICE_NAME = "UCNAR05";
     private static final String SERIAL_NUMBER_BEFORE = "SERIAL_NUMBER_BEFORE";
     private static final String SERIAL_NUMBER_AFTER = "SERIAL_NUMBER_AFTER";
+    private static final String CONFIRM_ID = "ConfirmationBox_object_delete_wizard_confirmation_box_action_button";
+
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
 
     @BeforeClass
@@ -190,7 +191,7 @@ public class UC_NAR_005_Test extends BaseTestCase {
         newInventoryViewPage.selectFirstRow();
         newInventoryViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, "DeleteDeviceWizardAction");
         waitForPageToLoad();
-        Wizard.createWizard(driver, webDriverWait).clickButtonById("ConfirmationBox_object_delete_wizard_confirmation_box_action_button");
+        newInventoryViewPage.clickConfirmationBox(CONFIRM_ID);
         checkMessageType(MessageType.SUCCESS);
         waitForPageToLoad();
         newInventoryViewPage.refreshMainTable();
