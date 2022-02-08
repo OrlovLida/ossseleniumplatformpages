@@ -51,7 +51,7 @@ public class VSIOverviewPage extends BasePage {
 
     @Step("Click edit button")
     public VSIWizardPage clickEdit() {
-        Button editButton = Button.createBySelectorAndId(driver, "a", EDIT_BUTTON_DATA_ATTRIBUTENAME);
+        Button editButton = Button.createById(driver, EDIT_BUTTON_DATA_ATTRIBUTENAME);
         editButton.click();
         DelayUtils.waitForPageToLoad(driver, wait);
         return new VSIWizardPage(driver);
@@ -65,7 +65,7 @@ public class VSIOverviewPage extends BasePage {
 
     private void clickRemoveVsi() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        Button removeButton = Button.createBySelectorAndId(driver, "a", REMOVE_VSI_BUTTON_DATA_ATTRIBUTENAME);
+        Button removeButton = Button.createById(driver, REMOVE_VSI_BUTTON_DATA_ATTRIBUTENAME);
         removeButton.click();
         DelayUtils.waitForPageToLoad(driver, wait);
     }

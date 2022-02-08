@@ -40,6 +40,6 @@ public class RoutingWizardPage extends BasePage {
     }
 
     public void clickOk() {
-        Button.createBySelectorAndId(driver, "a", OK_BUTTON_ID).click();
+        Button.createById(driver, OK_BUTTON_ID).click();
     }
 }

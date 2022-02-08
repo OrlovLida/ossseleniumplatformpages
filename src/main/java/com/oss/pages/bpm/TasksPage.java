@@ -137,12 +137,12 @@ public class TasksPage extends BasePage {
     }
 
     public void clickPerformConfigurationButton() {
-        Button button = Button.create(driver, "Perform Configuration", "a");
+        Button button = Button.createByLabel(driver, TABS_TASKS_VIEW_ID, "Perform Configuration");
         button.click();
     }
 
     public void clickPlanViewButton() {
-        Button button = Button.create(driver, "Plan View", "a");
+        Button button = Button.createByLabel(driver, TABS_TASKS_VIEW_ID, "Plan View");
         button.click();
     }
 

@@ -14,8 +14,8 @@ public class CreateDuctWizardPage extends BasePage {
     private static final String NAME_ID = "Name_uid";
     private static final String MODEL_ID = "DuctModel_uid";
     private static final String DUCT_TYPE_ID = "DuctType_uid";
-    private static final String CREATE_BUTTON_ID = "PromptButtonId-0";
-    private static final String WIZARD_ID = "promptId";
+    private static final String CREATE_BUTTON_ID = "wizard-submit-button-ductWizardId";
+    private static final String WIZARD_ID = "ductWizardId";
 
     public CreateDuctWizardPage(WebDriver driver) {
         super(driver);
@@ -31,12 +31,10 @@ public class CreateDuctWizardPage extends BasePage {
 
     public void setType(String type) {
         getCreateDuctWizard().setComponentValue(DUCT_TYPE_ID, type, COMBOBOX);
-
     }
 
     public void create() {
-        Button create = Button.createBySelectorAndId(driver, "a", CREATE_BUTTON_ID);
-        create.click();
+       getCreateDuctWizard().clickButtonById(CREATE_BUTTON_ID);
     }
 
     private Wizard getCreateDuctWizard() {

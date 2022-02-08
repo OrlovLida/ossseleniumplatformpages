@@ -34,7 +34,7 @@ public class MessagesTab extends BaseSDPage {
 
     @Step("Click create in comment editor")
     public void clickCreateCommentButton() {
-        Button.create(driver, CREATE_BUTTON_LABEL, "a").click();
+        Button.createByLabel(driver, CREATE_BUTTON_LABEL).click();
         log.info("Click create comment button");
     }
 

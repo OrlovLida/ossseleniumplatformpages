@@ -2,6 +2,7 @@ package com.oss.pages.templatecm;
 
 import org.openqa.selenium.WebDriver;
 
+import com.oss.framework.components.contextactions.OldActionsContainer;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
@@ -14,9 +15,11 @@ import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
+import static com.oss.framework.components.contextactions.OldActionsContainer.*;
+
 public class ChangeConfigurationPage extends BasePage {
 
-    private static final String SET_PARAMETERS_BUTTON = "Set parameters";
+    private static final String SET_PARAMETERS_BUTTON = "SetParametersActionName";
     private static final String INVENTORY_OBJECTS_TAB_ID = "deviceSelectionWindowTabId";
     private static final String EXECUTE_ID = "dropdownButtonAction";
     private static final String IMMEDIATELY_ID = "executeImmediateButtonAction";
@@ -24,6 +27,7 @@ public class ChangeConfigurationPage extends BasePage {
     private static final String DEVICE_SELECT_TABLE = "DeviceSelectionApp";
     private static final String TEMPLATE_SELECT_TABLE = "TemplatesTableApp";
     private static final String NAME = "Name";
+    private static final String SCRIPT_EXECUTION_WINDOW = "ScriptExecutionWindow";
 
     private Wizard wizard = Wizard.createWizard(driver, wait);
 
@@ -63,15 +67,13 @@ public class ChangeConfigurationPage extends BasePage {
     @Step("Click set parameters button")
     public void clickSetParameters() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        Button setParametersButton = Button.create(driver, SET_PARAMETERS_BUTTON, "a");
-        setParametersButton.click();
+        createById(driver, wait, SCRIPT_EXECUTION_WINDOW).callActionByLabel(SET_PARAMETERS_BUTTON);
     }
 
     @Step("Deploy template immediately")
     public void deployImmediately() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        Button.createBySelectorAndId(driver, "button", EXECUTE_ID).click();
-        Button.createBySelectorAndId(driver, "a", IMMEDIATELY_ID).click();
+        createById(driver, wait, SCRIPT_EXECUTION_WINDOW).callActionById(EXECUTE_ID, IMMEDIATELY_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 }

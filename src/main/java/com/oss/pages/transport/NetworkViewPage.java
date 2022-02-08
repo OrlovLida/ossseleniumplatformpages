@@ -66,6 +66,7 @@ public class NetworkViewPage extends BasePage {
     private static final String SUPPRESSION_WIZARD_ID = "plaSuppressionWizard";
     private static final String SUPPRESSION_WIZARD_CONTEXT_ACTION_ID = "frameworkCustomMore_Suppression wizard";
     private static final String PROPERTY_PANEL_ID = "NetworkViewPropertyPanelWidget";
+    private static final String ACTION_CONTAINER_ID = "undefined-windowToolbar";
 
     private Wizard wizard = Wizard.createWizard(driver, wait);
 
@@ -149,14 +150,12 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Click Start editing trail button")
     public void startEditingSelectedTrail() {
-        Button button = Button.create(driver, START_EDITING_CONNECTION_ACTION);
-        button.click();
+        useContextAction("EDIT","EDIT_Start editing Connection-null");
     }
 
     @Step("Click Stop editing trail button")
     public void stopEditingTrail() {
-        Button button = Button.create(driver, STOP_EDITING_CONNECTION_ACTION);
-        button.click();
+        useContextAction("EDIT","EDIT_Stop editing Connection-null");
     }
 
     @Step("Click confirmation box button")
@@ -321,7 +320,7 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Remove from routing")
     public void removeSelectedTrailsFromRouting() {
-        Button button = Button.createBySelectorAndId(driver, "a", "Remove from routing");
+        Button button = Button.createById(driver, "Remove from routing");
         button.click();
         waitForPageToLoad();
         clickConfirmationBoxButtonByLabel(DELETE_BUTTON);
@@ -358,7 +357,7 @@ public class NetworkViewPage extends BasePage {
 
     private OldActionsContainer getMainActionContainer() {
         waitForPageToLoad();
-        return OldActionsContainer.createForMainWindow(driver, wait);
+        return OldActionsContainer.createById(driver, wait, ACTION_CONTAINER_ID);
     }
 
     private <T extends TrailWizardPage> T getWizardPage(Class<T> trailWizardPage) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException,
@@ -408,7 +407,7 @@ public class NetworkViewPage extends BasePage {
     }
 
     private void refreshRoutingElements() {
-        Button button = Button.createBySelectorAndId(driver, "a", "Refresh");
+        Button button = Button.createById(driver, "Refresh");
         button.click();
     }
 
