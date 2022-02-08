@@ -14,8 +14,8 @@ import com.oss.framework.components.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.table.TableInterface;
-import com.oss.framework.widgets.tabs.TabWindowWidget;
 import com.oss.framework.widgets.tabs.TabsInterface;
+import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.framework.widgets.tree.TreeWidget;
 import com.oss.pages.BasePage;
 
@@ -37,6 +37,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     private static final String ISSUES_TABLE_ID = "narComponent_networkDiscoveryControlViewIdissuesTableId";
     private static final String RECO_STATE_REFRESH_BUTTON_ID = "tableRefreshButton";
     private static final String STATUS = "Status";
+    private static final String TAB_ID = "narComponent_networkDiscoveryControlViewIdcmDomainWindowId";
 
     protected NetworkDiscoveryControlViewPage(WebDriver driver) {
         super(driver);
@@ -51,7 +52,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     @Step("Open CM Domain Wizard")
     public void openCmDomainWizard() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        TabsInterface tabs = TabWindowWidget.create(driver, wait);
+        TabsInterface tabs = getTabsInterface();
         tabs.selectTabById(RECONCILIATION_TREE_TAB_ID);
         tabs.callActionById(ActionsContainer.CREATE_GROUP_ID, CREATE_CM_DOMAIN_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -80,7 +81,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     @Step("Run full reconciliation for selected CM Domain")
     public void runReconciliation() {
-        TabsInterface tabs = TabWindowWidget.create(driver, wait);
+        TabsInterface tabs = getTabsInterface();
         tabs.selectTabById(RECONCILIATION_TREE_TAB_ID);
         tabs.callActionById(RECONCILIATION_ACTION_ID);
         ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
@@ -110,7 +111,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     @Step("Delete selected CM Domain")
     public void deleteCmDomain() {
-        TabsInterface tabs = TabWindowWidget.create(driver, wait);
+        TabsInterface tabs = getTabsInterface();
         tabs.selectTabById(RECONCILIATION_TREE_TAB_ID);
         tabs.callActionById(ActionsContainer.EDIT_GROUP_ID, DELETE_CM_DOMAIN_ACTION_ID);
         ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
@@ -130,7 +131,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     @Step("Move from Network Discovery Control View to Network Inconsistencies View in context of selected CM Domain")
     public void moveToNivFromNdcv() {
-        TabsInterface ndcvTabs = TabWindowWidget.create(driver, wait);
+        TabsInterface ndcvTabs = getTabsInterface();
         ndcvTabs.selectTabById(RECONCILIATION_TREE_TAB_ID);
         ndcvTabs.callActionById(ActionsContainer.SHOW_ON_GROUP_ID, SHOW_INCONCISTENCIES_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -138,7 +139,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     @Step("Move from Network Discovery Control View to CM Samples Management view in context of selected CM Domain")
     public void moveToSamplesManagement() {
-        TabsInterface ndcvTabs = TabWindowWidget.create(driver, wait);
+        TabsInterface ndcvTabs = getTabsInterface();
         ndcvTabs.selectTabById(RECONCILIATION_TREE_TAB_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         ndcvTabs.callActionById(ActionsContainer.SHOW_ON_GROUP_ID, SHOW_SAMPLES_MANAGEMENT_ACTION_ID);
@@ -195,5 +196,9 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         ERROR,
         FATAL,
         STARTUP_FATAL
+    }
+
+    private TabsInterface getTabsInterface(){
+        return TabsWidget.createById(driver, wait, TAB_ID);
     }
 }

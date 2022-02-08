@@ -7,15 +7,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.google.common.collect.Multimap;
 import com.oss.framework.components.attributechooser.AttributesChooser;
-import com.oss.framework.components.pagination.PaginationComponent;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.Input.ComponentType;
 import com.oss.framework.components.mainheader.ButtonPanel;
-import com.oss.framework.components.prompts.Popup;
-import com.oss.pages.platform.configuration.ChooseConfigurationWizard;
-import com.oss.pages.platform.configuration.SaveConfigurationWizard;
-import com.oss.pages.platform.configuration.SaveConfigurationWizard.Field;
+import com.oss.framework.components.pagination.PaginationComponent;
 import com.oss.framework.components.prompts.ConfirmationBox;
+import com.oss.framework.components.prompts.Popup;
 import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Widget;
@@ -26,13 +23,15 @@ import com.oss.framework.widgets.table.TableWidget;
 import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.BasePage;
 import com.oss.pages.filterpanel.FilterPanelPage;
+import com.oss.pages.platform.configuration.ChooseConfigurationWizard;
+import com.oss.pages.platform.configuration.SaveConfigurationWizard;
+import com.oss.pages.platform.configuration.SaveConfigurationWizard.Field;
 
 import io.qameta.allure.Step;
 
 public class NewInventoryViewPage extends BasePage {
 
     private static final String TABLE_ID = "MainTableWidget";
-    private static final String CONFIRM_ID = "ConfirmationBox_deleteBoxAppId_action_button";
     private static final String CHANGE_LAYOUT_BUTTON_ID = "ButtonChooseViewLayouts";
     private static final String HORIZONTAL_BUTTON_ID = "TWO_ROWS";
     private static final String VERTICAL_BUTTON_ID = "TWO_COLUMNS";
@@ -46,6 +45,7 @@ public class NewInventoryViewPage extends BasePage {
     private static final String SAVE_PROPERTY_CONFIG_ID = "propertyPanelSave";
     private static final String SAVE_NEW_CONFIG_ID = "saveNewConfig";
     private static final String CHANGE_LABEL = "Change";
+    private static final String TABS_CONTAINER_ID = "DetailTabsWidget";
 
     public NewInventoryViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -203,18 +203,16 @@ public class NewInventoryViewPage extends BasePage {
     }
 
     @Step("Change Tabs order")
-    public NewInventoryViewPage changeTabsOrder(String tabLabel, int position) {
+    public void changeTabsOrder(String tabLabel, int position) {
         getTabsWidget().changeTabsOrder(tabLabel, position);
         DelayUtils.waitForPageToLoad(driver, wait);
-        return this;
     }
 
     @Step("Save configuration for main table")
-    public NewInventoryViewPage saveConfigurationForMainTable(String configurationName, Field... fields) {
+    public void saveConfigurationForMainTable(String configurationName, Field... fields) {
         DelayUtils.waitForPageToLoad(driver, wait);
         getMainTable().callAction(ActionsContainer.KEBAB_GROUP_ID, SAVE_NEW_CONFIG_ID);
         getSaveConfigurationWizard().saveAsNew(configurationName, fields);
-        return this;
     }
 
     @Step("Refresh main table")
@@ -232,7 +230,7 @@ public class NewInventoryViewPage extends BasePage {
             throw new UnsupportedOperationException("Only single selection is supported");
         }
         Widget.waitForWidget(wait, TabsWidget.TABS_WIDGET_CLASS);
-        return TabsWidget.create(driver, wait);
+        return TabsWidget.createById(driver, wait, TABS_CONTAINER_ID);
     }
 
     public PropertyPanel getPropertyPanel(int rowId, String propertyPanelId) {
@@ -279,19 +277,18 @@ public class NewInventoryViewPage extends BasePage {
         return null;
     }
 
-    public void clickConfirmConfirmationBox() {
-        getConfirmationBox().clickButtonById(CONFIRM_ID);
+    public void clickConfirmationBox(String buttonId) {
+        getConfirmationBox().clickButtonById(buttonId);
     }
 
     @Step("Change layout to Horizontal Orientation")
-    public NewInventoryViewPage setHorizontalLayout() {
+    public void setHorizontalLayout() {
         DelayUtils.waitForPageToLoad(driver, wait);
         if (!isHorizontal()) {
             ButtonPanel.create(driver, wait).clickButton(CHANGE_LAYOUT_BUTTON_ID, HORIZONTAL_BUTTON_ID);
-            Popup.create(driver,wait).clickButtonByLabel(CHANGE_LABEL);
+            Popup.create(driver, wait).clickButtonByLabel(CHANGE_LABEL);
         }
         DelayUtils.waitForPageToLoad(driver, wait);
-        return this;
     }
 
     public boolean isHorizontal() {
@@ -301,54 +298,48 @@ public class NewInventoryViewPage extends BasePage {
     // TODO: add getMethods for popup and property panel
 
     @Step("Change layout to Vertical Orientation")
-    public NewInventoryViewPage setVerticalLayout() {
+    public void setVerticalLayout() {
         DelayUtils.waitForPageToLoad(driver, wait);
         if (isHorizontal()) {
             ButtonPanel.create(driver, wait).clickButton(CHANGE_LAYOUT_BUTTON_ID, VERTICAL_BUTTON_ID);
-            Popup.create(driver,wait).clickButtonByLabel(CHANGE_LABEL);
+            Popup.create(driver, wait).clickButtonByLabel(CHANGE_LABEL);
         }
         DelayUtils.waitForPageToLoad(driver, wait);
-        return this;
     }
 
     @Step("Change Properties order")
-    public NewInventoryViewPage changePropertiesOrder(int rowId, String widgetId, String propertyLabel,
-                                                      int position) {
+    public void changePropertiesOrder(int rowId, String widgetId, String propertyLabel,
+                                      int position) {
         getPropertyPanel(rowId, widgetId).changePropertyOrder(propertyLabel, position);
-        return this;
     }
 
     @Step("Save configuration for properties")
-    public NewInventoryViewPage saveConfigurationForProperties(int rowId, String widgetId, String
+    public void saveConfigurationForProperties(int rowId, String widgetId, String
             configurationName, Field... fields) {
         DelayUtils.waitForPageToLoad(driver, wait);
         getPropertyPanel(rowId, widgetId).callAction(SETTINGS_ID, SAVE_PROPERTY_CONFIG_ID);
         getSaveConfigurationWizard().saveAsNew(configurationName, fields);
-        return this;
     }
 
     @Step("Save configuration for page")
-    public NewInventoryViewPage savePageConfiguration(Field... fields) {
+    public void savePageConfiguration(Field... fields) {
         DelayUtils.waitForPageToLoad(driver, wait);
         ButtonPanel.create(driver, wait).clickButton(SAVE_CONFIGURATION_BUTTON_ID);
         getSaveConfigurationWizard().save(fields);
-        return this;
     }
 
     @Step("Save new configuration for page")
-    public NewInventoryViewPage saveNewPageConfiguration(String configurationName, Field... fields) {
+    public void saveNewPageConfiguration(String configurationName, Field... fields) {
         DelayUtils.waitForPageToLoad(driver, wait);
         ButtonPanel.create(driver, wait).clickButton(CHOOSE_CONFIGURATION_PAGE_ID);
         getSaveConfigurationWizard().saveAsNew(configurationName, fields);
-        return this;
     }
 
     @Step("Save configuration for tabs for user")
-    public NewInventoryViewPage saveConfigurationForTabs(String configurationName, Field... fields) {
+    public void saveConfigurationForTabs(String configurationName, Field... fields) {
         DelayUtils.waitForPageToLoad(driver, wait);
         getTabsWidget().callActionById(ActionsContainer.KEBAB_GROUP_ID, SAVE_CONFIG_TABS_ID);
         getSaveConfigurationWizard().saveAsNew(configurationName, fields);
-        return this;
     }
 
     @Step("Apply configuration for main table")
@@ -360,19 +351,17 @@ public class NewInventoryViewPage extends BasePage {
     }
 
     @Step("Apply configuration for tabs")
-    public NewInventoryViewPage applyConfigurationForTabs(String configurationName) {
+    public void applyConfigurationForTabs(String configurationName) {
         DelayUtils.waitForPageToLoad(driver, wait);
         getTabsWidget().callActionById(ActionsContainer.KEBAB_GROUP_ID, CHOOSE_CONFIG_ID);
         getChooseConfigurationWizard().chooseConfiguration(configurationName).apply();
-        return this;
     }
 
     @Step("Apply configuration for page")
-    public NewInventoryViewPage applyConfigurationForPage(String configurationName) {
+    public void applyConfigurationForPage(String configurationName) {
         DelayUtils.waitForPageToLoad(driver, wait);
         ButtonPanel.create(driver, wait).clickButton(CHOOSE_CONFIGURATION_PAGE_ID);
         getChooseConfigurationWizard().chooseConfiguration(configurationName).apply();
-        return this;
     }
 
     @Step("Delete configuration for page")
@@ -421,15 +410,15 @@ public class NewInventoryViewPage extends BasePage {
     }
 
     @Step("Enable Widget Tab and apply")
-    public NewInventoryViewPage enableWidgetAndApply(String widgetLabel) {
+    public void enableWidgetAndApply(String widgetLabel) {
         getTabsWidget().getWidgetChooser().enableWidgetsByLabel(widgetLabel).clickAdd();
-        return new NewInventoryViewPage(driver, wait);
+        new NewInventoryViewPage(driver, wait);
     }
 
     @Step("Disable Widget Tab and apply")
-    public NewInventoryViewPage disableWidgetAndApply(String widgetLabel) {
+    public void disableWidgetAndApply(String widgetLabel) {
         getTabsWidget().getWidgetChooser().disableWidgetsByLabel(widgetLabel).clickAdd();
-        return new NewInventoryViewPage(driver, wait);
+        new NewInventoryViewPage(driver, wait);
     }
 
     @Step("Open Hierarchy View for selected object")
@@ -481,11 +470,12 @@ public class NewInventoryViewPage extends BasePage {
     private ConfirmationBox getConfirmationBox() {
         return ConfirmationBox.create(driver, wait);
     }
-    private SaveConfigurationWizard getSaveConfigurationWizard(){
+
+    private SaveConfigurationWizard getSaveConfigurationWizard() {
         return SaveConfigurationWizard.create(driver, wait);
     }
 
-    private ChooseConfigurationWizard getChooseConfigurationWizard(){
+    private ChooseConfigurationWizard getChooseConfigurationWizard() {
         return ChooseConfigurationWizard.create(driver, wait);
     }
 

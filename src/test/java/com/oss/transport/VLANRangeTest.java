@@ -30,6 +30,8 @@ public class VLANRangeTest extends BaseTestCase {
     private static final String VLAN_RANGE_2 = "1, 3, 5-9";
     private static final String VLAN_DESCRIPTION_1 = "DescriptionBefore";
     private static final String VLAN_DESCRIPTION_2 = "DescriptionAfter";
+    private static final String CONFIRM_ID = "ConfirmationBox_deleteBoxAppId_action_button";
+
 
     @BeforeClass
     public void openWebConsole() {
@@ -102,7 +104,7 @@ public class VLANRangeTest extends BaseTestCase {
         NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.selectFirstRow();
         newInventoryViewPage.callActionById("DeleteVLANRangeContextAction");
-        newInventoryViewPage.clickConfirmConfirmationBox();
+        newInventoryViewPage.clickConfirmationBox(CONFIRM_ID);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         checkPopup();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);

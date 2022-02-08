@@ -10,7 +10,6 @@ import org.openqa.selenium.WebDriver;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.Input.ComponentType;
-import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tree.TreeWidget;
 import com.oss.framework.wizard.Wizard;
@@ -24,8 +23,8 @@ public class SamplesManagementPage extends BasePage {
     private static final String UPLOAD_ID = "narComponent_CmSampleActionUploadId";
     private static final String DELETE_CONTENT_ID = "narComponent_CmSampleActionDeleteContentId";
     private static final String CREATE_DIRECTORY_ID = "narComponent_CmSampleActionCreateId";
-    private static final String UPLOAD_WIZARD_ID = "narComponent_CMSamplesManagementViewIdUploadSamplesPromptId";
-    private static final String CREATE_DIRECTORY_WIZARD_ID = "narComponent_CMSamplesManagementViewIdFileActionPromptId";
+    private static final String UPLOAD_WIZARD_ID = "narComponent_CMSamplesManagementViewIdUploadSamplesPromptId_prompt-card";
+    private static final String CREATE_DIRECTORY_WIZARD_ID = "narComponent_CMSamplesManagementViewIdFileActionPromptId_prompt-card";
     private static final String WIZARD_NAME_ID = "narComponent_CMSamplesManagementViewIdFileNameTextFieldId";
     private static final String CONFIRM_ID = "narComponent_CMSamplesManagementViewIdFileActionButtonsId-1";
 
@@ -60,7 +59,8 @@ public class SamplesManagementPage extends BasePage {
     public void deleteDirectoryContent() {
         getTreeView().callActionById(ActionsContainer.EDIT_GROUP_ID, DELETE_CONTENT_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
-        confirm();
+        Wizard wizard = Wizard.createByComponentId(driver, wait, CREATE_DIRECTORY_WIZARD_ID);
+        wizard.clickButtonById(CONFIRM_ID);
     }
 
     @Step("Create samples directory for CM Domain")
@@ -71,16 +71,11 @@ public class SamplesManagementPage extends BasePage {
         name.setSingleStringValue(cmDomainName);
         DelayUtils.waitForPageToLoad(driver, wait);
         DelayUtils.sleep(500);
-        confirm();
+        wizard.clickButtonById(CONFIRM_ID);
     }
 
     private TreeWidget getTreeView() {
         DelayUtils.waitForPageToLoad(driver, wait);
         return TreeWidget.createById(driver, wait, SAMPLES_MANAGEMENT_WIDGET_ID);
-    }
-
-    private void confirm() {
-        ConfirmationBox confirmationBox = ConfirmationBox.create(driver, wait);
-        confirmationBox.clickButtonById(CONFIRM_ID);
     }
 }

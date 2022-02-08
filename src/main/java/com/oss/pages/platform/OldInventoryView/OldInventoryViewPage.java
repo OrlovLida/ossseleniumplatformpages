@@ -10,9 +10,8 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.table.TableInterface;
-import com.oss.framework.widgets.tabs.TabWindowWidget;
 import com.oss.framework.widgets.tabs.TabsInterface;
-import com.oss.framework.wizard.Wizard;
+import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
@@ -31,13 +30,10 @@ import static com.oss.pages.platform.OldInventoryView.helper.OldInventoryViewCon
 public class OldInventoryViewPage extends BasePage {
 
     private static final String CONFIRM_REMOVAL_BUTTON_ID = "ConfirmationBox_deleteAppId_action_button";
+    private static final String TAB_ID = "2";
 
     public OldInventoryViewPage(WebDriver driver) {
         super(driver);
-    }
-
-    public Wizard getWizard() {
-        return Wizard.createWizard(driver, wait);
     }
 
     @Step("Get table widget for upper table")
@@ -69,11 +65,6 @@ public class OldInventoryViewPage extends BasePage {
     @Step("Select row in upper table at index {index}")
     public void selectRowInTableAtIndex(int index) {
         getTableWidget().selectRow(index);
-    }
-
-    @Step("Select row at index {index} in table {tableTestId}")
-    public void selectRowInTableAtIndex(String tableTestId, int index) {
-        getTableWidget(tableTestId).selectRow(index);
     }
 
     @Step("Filter and select {objectName} row in upper table")
@@ -142,23 +133,19 @@ public class OldInventoryViewPage extends BasePage {
 
     @Step("Navigate to bottom tab by id {tabId}")
     public void navigateToBottomTabById(String tabId) {
-        TabsInterface tabsInterface = TabWindowWidget.create(driver, wait);
+        TabsInterface tabsInterface = TabsWidget.createById(driver, wait, TAB_ID);
         tabsInterface.selectTabById(tabId);
-    }
-
-    public void getNumberOfRowsInTable(String tableTestId, String anyLabelExistingInTable) {
-        OldTable.createById(driver, wait, tableTestId);
     }
 
     @Step("Click group {group} and action {actionId} in current tab")
     public void useContextActionInCurrentTab(String group, String actionId) {
-        TabsInterface tab = TabWindowWidget.create(driver, wait);
+        TabsInterface tab = TabsWidget.createById(driver, wait, TAB_ID);
         tab.callActionById(group, actionId);
     }
 
     public void navigateToBottomTabByLabel(String tabLabel) {
         waitForPageToLoad();
-        TabsInterface tabsInterface = TabWindowWidget.create(driver, wait);
+        TabsInterface tabsInterface = TabsWidget.createById(driver, wait, TAB_ID);
         tabsInterface.selectTabByLabel(tabLabel);
     }
 

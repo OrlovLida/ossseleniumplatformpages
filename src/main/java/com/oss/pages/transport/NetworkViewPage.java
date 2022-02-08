@@ -66,6 +66,7 @@ public class NetworkViewPage extends BasePage {
     private static final String SUPPRESSION_WIZARD_ID = "plaSuppressionWizard";
     private static final String SUPPRESSION_WIZARD_CONTEXT_ACTION_ID = "frameworkCustomMore_Suppression wizard";
     private static final String PROPERTY_PANEL_ID = "NetworkViewPropertyPanelWidget";
+    private static final String BOTTOM_TABS_ID = "bottomTabs";
     private static final String ACTION_CONTAINER_ID = "undefined-windowToolbar";
 
     private Wizard wizard = Wizard.createWizard(driver, wait);
@@ -185,7 +186,7 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Open modify termination wizard")
     public void modifyTermination() {
-        TabsWidget tabsWidget = TabsWidget.createById(driver, wait, "bottomTabs");
+        TabsWidget tabsWidget = TabsWidget.createById(driver, wait, BOTTOM_TABS_ID);
         tabsWidget.callActionById("Modify Termination");
     }
 
@@ -247,7 +248,7 @@ public class NetworkViewPage extends BasePage {
     @Step("Select object in details tab")
     public void selectObjectInDetailsTab(String name, String value) {
         waitForPageToLoad();
-        TableInterface table = OldTable.createById(driver, wait, "bottomTabs");
+        TableInterface table = OldTable.createById(driver, wait, BOTTOM_TABS_ID);
         table.selectRowByAttributeValueWithLabel(name, value);
     }
 
@@ -298,7 +299,7 @@ public class NetworkViewPage extends BasePage {
     @Step("Suppress incomplete routing")
     public void supressValidationResult(String reason) {
         openValidationResultsTab();
-        TabsWidget tabsWidget = TabsWidget.createById(driver, wait, "bottomTabs");
+        TabsWidget tabsWidget = TabsWidget.createById(driver, wait, BOTTOM_TABS_ID);
         TableInterface table = OldTable.createById(driver, wait, "validation-results-table");
         waitForPageToLoad();
         table.selectRow(0);
@@ -450,7 +451,7 @@ public class NetworkViewPage extends BasePage {
 
     private void selectTabFromBottomPanel(String tabName) {
         expandDetailsPanel();
-        TabsWidget tabsWidget = TabsWidget.create(driver, wait);
+        TabsWidget tabsWidget = TabsWidget.createById(driver, wait, BOTTOM_TABS_ID);
         tabsWidget.selectTabByLabel(tabName);
     }
 
