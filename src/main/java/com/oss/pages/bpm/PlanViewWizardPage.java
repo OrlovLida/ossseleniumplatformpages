@@ -4,12 +4,13 @@ import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
-import com.oss.framework.widgets.tabs.TabWindowWidget;
 import com.oss.framework.widgets.tabs.TabsInterface;
+import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.BasePage;
 
 public class PlanViewWizardPage extends BasePage {
     private static final String VALIDATION_TABLE_DATA_ATTRIBUTE_NAME = "plaPlanView_validationTable";
+    private static final String TAB_ID = "plaPlanView_leftSideTabs";
 
     public PlanViewWizardPage(WebDriver driver) {
         super(driver);
@@ -17,7 +18,7 @@ public class PlanViewWizardPage extends BasePage {
 
     public void selectTab(String label) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        TabsInterface tab = TabWindowWidget.create(driver, wait);
+        TabsInterface tab = TabsWidget.createById(driver, wait, TAB_ID);
         tab.selectTabByLabel(label);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
