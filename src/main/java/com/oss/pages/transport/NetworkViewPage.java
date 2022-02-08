@@ -51,8 +51,8 @@ public class NetworkViewPage extends BasePage {
     public static final String CONNECTION_ACTION = "add_to_view_group_Connection-null";
     private static final String CREATE_CONNECTION_ACTION = "Create Connection";
     private static final String DELETE_TERMINATION_ACTION = "Delete termination";
-    private static final String START_EDITING_CONNECTION_ACTION = "Start editing Connection";
-    private static final String STOP_EDITING_CONNECTION_ACTION = "Stop editing Connection";
+    private static final String START_EDITING_CONNECTION_ACTION = "EDIT_Start editing Connection-null";
+    private static final String STOP_EDITING_CONNECTION_ACTION = "EDIT_Stop editing Connection-null";
     private static final String TERMINATION_ACTION = "add_to_group_Termination-null";
     private static final String ROUTING = "add_to_group_Routing-null";
     private static final String ACCEPT_BUTTON = "Accept";
@@ -151,12 +151,12 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Click Start editing trail button")
     public void startEditingSelectedTrail() {
-        useContextAction("EDIT","EDIT_Start editing Connection-null");
+        useContextAction("EDIT",START_EDITING_CONNECTION_ACTION);
     }
 
     @Step("Click Stop editing trail button")
     public void stopEditingTrail() {
-        useContextAction("EDIT","EDIT_Stop editing Connection-null");
+        useContextAction("EDIT",STOP_EDITING_CONNECTION_ACTION);
     }
 
     @Step("Click confirmation box button")
