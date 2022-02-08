@@ -13,7 +13,7 @@ import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD
 
 public class CmDomainWizardPage extends BasePage {
 
-    private static final String CM_DOMAIN_WIZARD_ID = "narComponent_networkDiscoveryControlViewIdcmDomainActionPromptId";
+    private static final String CM_DOMAIN_WIZARD_ID = "narComponent_networkDiscoveryControlViewIdcmDomainActionPromptId_prompt-card";
     private static final String NAME_ID = "narComponent_networkDiscoveryControlViewIdnameTextFieldId";
     private static final String CM_INTERFACE_ID = "narComponent_networkDiscoveryControlViewIdinterfaceSearchBoxId";
     private static final String DOMAIN_ID = "narComponent_networkDiscoveryControlViewIddomainSearchBoxId";
