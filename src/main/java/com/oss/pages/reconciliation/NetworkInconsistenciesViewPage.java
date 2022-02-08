@@ -24,7 +24,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
     private static final String APPLY_GROUP_BUTTON_ID = "narComponent_GroupDiscrepancyActionApplyId";
     private static final String APPLY_BUTTON_ID = "narComponent_DiscrepancyActionApplyId";
     private static final String PHYSICAL_INCONSITENCIES_TABLE_ID = "narComponent_networkInconsistenciesViewIddiscrepancyDetailsTreeTableId";
-    private static final String PHYSICAL_WIZARD_ID = "optional";
+    private static final String PHYSICAL_WIZARD_ID = "optional_prompt-card";
     private static final String RAN_INCONSITENCIES_TABLE_ID = "radioAppId";
     private static final String CHANGE_LOCATION_ACTION_ID = "DeviceChangeLocationAction";
     private static final String NIV_TREE = "narComponent_networkInconsistenciesViewIddiscrepanciesTreeTabId";
