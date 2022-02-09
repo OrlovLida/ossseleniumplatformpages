@@ -34,7 +34,7 @@ public class Cell4GBulkWizardPage extends BasePage {
     private static final String LOCAL_CELL_ID = "localCellId-NUMBER_FIELD";
     private static final String CELL_TOTAL_TX_POWER_ID = "cellTotalTxPower";
     private static final String CRP_ID = "cellReselectionPriority-NUMBER_FIELD";
-    private static final String WIZARD_ID = "cell-4g-bulk-wizard";
+    private static final String WIZARD_ID = "cell-4g-bulk-wizard_prompt-card";
     private static final String CELLS_LIST_ID = "ExtendedList-secondStep";
     private final Wizard wizard;
 
