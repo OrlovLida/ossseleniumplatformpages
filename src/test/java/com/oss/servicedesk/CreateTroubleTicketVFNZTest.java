@@ -6,9 +6,13 @@ import java.time.format.DateTimeFormatter;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
+import com.oss.pages.servicedesk.ticket.MoreDetailsPage;
+import com.oss.pages.servicedesk.ticket.RemainderForm;
 import com.oss.pages.servicedesk.ticket.TicketDashboardPage;
 import com.oss.pages.servicedesk.ticket.TicketDetailsPage;
 import com.oss.pages.servicedesk.ticket.TicketSearchPage;
@@ -26,15 +30,14 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     private SDWizardPage SDWizardPage;
     private TicketDetailsPage ticketDetailsPage;
     private MessagesTab messagesTab;
+    private MoreDetailsPage moreDetailsPage;
+    private RemainderForm remainderForm;
+    private String ticketID;
 
-    private final static String MO_IDENTIFIER = "CFS_SOM_01_901";
-    private final static String TT_ASSIGNEE = "ca_kodrobinska";
     private final static String TT_DESCRIPTION = "TestSelenium";
     private final static String TT_DESCRIPTION_EDITED = "TestSelenium_edited";
-    private final static String TT_NEW_ASSIGNEE = "Tier2_Mobile";
     private final static String TT_CORRELATION_ID = "12345";
     private final static String TT_REFERENCE_ID = "12345";
-    private final static String TT_ESCALATED_TO = "admin oss";
     private final static String TT_SEVERITY = "Warning";
     private final static String TT_EXTERNAL = "Selenium test external";
     private final static String TT_LIBRARY_TYPE = "Category";
@@ -46,8 +49,6 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     private final static String NOTIFICATION_MESSAGE_EMAIL = "test selenium message E-mail";
     private final static String NOTIFICATION_MESSAGE_COMMENT = "test selenium message comment";
     private final static String NOTIFICATION_INTERNAL_TO = "ca_kodrobinska";
-    private final static String NOTIFICATION_EMAIL_TO = "kornelia.odrobinska@comarch.com";
-    private final static String NOTIFICATION_EMAIL_FROM = "Test@AIF.pl";
     private final static String NOTIFICATION_TYPE = "Success";
     private final static String NOTIFICATION_SUBJECT = "Email notification test";
 
@@ -70,8 +71,8 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     private final static String MESSAGES_TAB_ARIA_CONTROLS = "_messagesTab";
     private final static String ADD_EXTERNAL_LABEL = "Add External";
     private final static String ADD_TO_LIBRARY_LABEL = "Add to Library";
-    private final static String WIZARD_LIBRARY_TYPE_ID = "{\"identifier\":\"type\",\"parentIdentifier\":\"type\",\"parentValueIdentifier\":\"\",\"groupId\":\"type\"}"; //  TODO Do zmiany po rozwiązaniu OSSWEB-14814
-    private final static String WIZARD_CATEGORY_ID = "{\"identifier\":\"Category\",\"parentIdentifier\":\"type\",\"parentValueIdentifier\":\"\",\"groupId\":\"Category\"}-input"; //  TODO Do zmiany po rozwiązaniu OSSWEB-14814
+    private final static String WIZARD_LIBRARY_TYPE_ID = "{\"identifier\":\"type\",\"parentIdentifier\":\"type\",\"parentValueIdentifier\":\"\",\"groupId\":\"type\"}";
+    private final static String WIZARD_CATEGORY_ID = "{\"identifier\":\"Category\",\"parentIdentifier\":\"type\",\"parentValueIdentifier\":\"\",\"groupId\":\"Category\"}-input";
     private final static String TABLES_WINDOW_ID = "_tablesWindow";
 
     private final static String NOTIFICATION_WIZARD_CHANNEL_ID = "channel-component-input";
@@ -83,6 +84,9 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     private final static String NOTIFICATION_WIZARD_TEMPLATE_ID = "template-component";
     private final static String NOTIFICATION_WIZARD_SUBJECT_ID = "subject-component";
 
+    private final static String REMAINDER_NOTE = "Selenium Description Note";
+    private final static String EDITED_REMAINDER_NOTE = "Edited Remainder Text";
+
     public static final DateTimeFormatter CREATE_DATE_FILTER_DATE_FORMATTER = DateTimeFormatter.ofPattern(CREATE_DATE_FILTER_DATE_PATTERN);
 
     @BeforeClass
@@ -90,14 +94,18 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
         ticketDashboardPage = TicketDashboardPage.goToPage(driver, BASIC_URL);
     }
 
+    @Parameters({"MOIdentifier", "ttAssignee"})
     @Test(priority = 1, testName = "Create CTT Ticket", description = "Create CTT Ticket")
     @Description("Create CTT Ticket")
-    public void createCTTTicket() {
+    public void createCTTTicket(
+            @Optional("CFS_SOM_01_901") String MOIdentifier,
+            @Optional("ca_kodrobinska") String ttAssignee
+    ) {
         SDWizardPage = ticketDashboardPage.openCreateTicketWizard("CTT");
-        SDWizardPage.getMoStep().enterTextIntoSearchComponent(MO_IDENTIFIER);
+        SDWizardPage.getMoStep().enterTextIntoSearchComponent(MOIdentifier);
         SDWizardPage.getMoStep().selectRowInMOTable("0");
         SDWizardPage.clickNextButtonInWizard();
-        SDWizardPage.insertValueToSearchComponent(TT_ASSIGNEE, TT_WIZARD_ASSIGNEE);
+        SDWizardPage.insertValueToSearchComponent(ttAssignee, TT_WIZARD_ASSIGNEE);
         SDWizardPage.insertValueToTextComponent(TT_CORRELATION_ID, TT_WIZARD_CORRELATION_ID);
         SDWizardPage.insertValueToTextComponent(TT_REFERENCE_ID, TT_WIZARD_REFERENCE_ID);
         SDWizardPage.enterIncidentDescription(TT_DESCRIPTION);
@@ -107,20 +115,25 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
         SDWizardPage.insertValueToTextComponent(date, TT_WIZARD_ISSUE_START_DATE_ID);
         SDWizardPage.insertValueToTextComponent(date, TT_WIZARD_MESSAGE_DATE_ID);
         SDWizardPage.clickAcceptButtonInWizard();
-        Assert.assertEquals(ticketDashboardPage.getAssigneeForNthTicketInTTTable(0), TT_ASSIGNEE);
+        Assert.assertEquals(ticketDashboardPage.getAssigneeForNthTicketInTTTable(0), ttAssignee);
     }
 
+    @Parameters({"NewAssignee", "EscalatedTo"})
     @Test(priority = 2, testName = "Edit Ticket Details", description = "Edit Ticket Details")
     @Description("Edit Ticket Details")
-    public void editTicketDetails() {
+    public void editTicketDetails(
+            @Optional("Tier2_Mobile") String NewAssignee,
+            @Optional("admin oss") String EscalatedTo
+    ) {
         ticketDetailsPage = ticketDashboardPage.openTicketDetailsView("0", BASIC_URL);
         ticketDetailsPage.maximizeWindow(DETAILS_WINDOW_ID);
+        ticketID = ticketDetailsPage.getOpenedTicketId();
         ticketDetailsPage.allowEditingTicket();
         SDWizardPage = ticketDetailsPage.openEditTicketWizard();
         SDWizardPage.clickNextButtonInWizard();
-        SDWizardPage.insertValueToSearchComponent(TT_NEW_ASSIGNEE, TT_WIZARD_ASSIGNEE);
+        SDWizardPage.insertValueToSearchComponent(NewAssignee, TT_WIZARD_ASSIGNEE);
         SDWizardPage.enterIncidentDescription(TT_DESCRIPTION_EDITED);
-        SDWizardPage.insertValueToSearchComponent(TT_ESCALATED_TO, TT_WIZARD_ESCALATED_TO);
+        SDWizardPage.insertValueToSearchComponent(EscalatedTo, TT_WIZARD_ESCALATED_TO);
         SDWizardPage.insertValueToMultiComboBoxComponent(TT_SEVERITY, TT_WIZARD_SEVERITY);
         SDWizardPage.clickNextButtonInWizard();
         SDWizardPage.clickAcceptButtonInWizard();
@@ -130,7 +143,8 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     @Description("Skipp checklist actions and change status")
     public void checkOverview() {
         ticketDetailsPage.minimizeWindow(DETAILS_WINDOW_ID);
-        ticketDetailsPage.allowEditingTicket();
+        //do odkomentowania w razie zmiany flow
+        //ticketDetailsPage.allowEditingTicket();
         ticketDetailsPage.skipAllActionsOnCheckList();
         Assert.assertTrue(ticketDetailsPage.isAllActionsSkipped());
         ticketDetailsPage.changeStatus(STATUS_ACKNOWLEDGED);
@@ -150,9 +164,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
 //        String date = startDate + " - " + endDate;
 //        ticketSearchPage.clickFilterButton();
 //        ticketSearchPage.filterByTextField(TicketSearchPage.CREATION_TIME_ATTRIBUTE, date );
-        //ticketSearchPage.clickFilterButton();
         ticketSearchPage.filterByTextField(TicketSearchPage.DESCRIPTION_ATTRIBUTE, TT_DESCRIPTION_EDITED);
-        ticketSearchPage.clickFilterButton();
         ticketSearchPage.filterByComboBox(TicketSearchPage.STATUS_ATTRIBUTE, STATUS_ACKNOWLEDGED);
         ticketDetailsPage = ticketSearchPage.openTicketDetailsView("0", BASIC_URL);
     }
@@ -207,16 +219,20 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
         Assert.assertEquals(messagesTab.getBadgeTextFromMessage(0, 0), "New");
     }
 
+    @Parameters({"NotificationEmailTo", "NotificationEmailFrom"})
     @Test(priority = 9, testName = "Check Messages Tab - add Email Notification", description = "Check Messages Tab - add Email Notification")
     @Description("Check Messages Tab - add Email Notification")
-    public void addEmailNotification() {
+    public void addEmailNotification(
+            @Optional("kornelia.odrobinska@comarch.com") String NotificationEmailTo,
+            @Optional("Test@AIF.pl") String NotificationEmailFrom
+    ) {
         ticketDetailsPage.selectTab(MESSAGES_TAB_ARIA_CONTROLS);
         messagesTab = new MessagesTab(driver, webDriverWait);
         messagesTab.createNewNotificationOnMessagesTab();
         SDWizardPage notificationSDWizardPage = new SDWizardPage(driver, webDriverWait);
         notificationSDWizardPage.insertValueToComboBoxComponent(NOTIFICATION_CHANNEL_EMAIL, NOTIFICATION_WIZARD_CHANNEL_ID);
-        notificationSDWizardPage.insertValueToMultiSearchComponent(NOTIFICATION_EMAIL_TO, NOTIFICATION_WIZARD_TO_ID);
-        notificationSDWizardPage.insertValueToMultiComboBoxComponent(NOTIFICATION_EMAIL_FROM, NOTIFICATION_WIZARD_FROM_ID);
+        notificationSDWizardPage.insertValueToMultiSearchComponent(NotificationEmailTo, NOTIFICATION_WIZARD_TO_ID);
+        notificationSDWizardPage.insertValueToMultiComboBoxComponent(NotificationEmailFrom, NOTIFICATION_WIZARD_FROM_ID);
         notificationSDWizardPage.insertValueToTextComponent(NOTIFICATION_SUBJECT, NOTIFICATION_WIZARD_SUBJECT_ID);
         notificationSDWizardPage.enterEmailMessage(NOTIFICATION_MESSAGE_EMAIL);
         notificationSDWizardPage.clickAcceptButtonInWizard();
@@ -236,8 +252,49 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
         // TODO dodac wybieranie typu komentarza
         messagesTab.enterCommentMessage(NOTIFICATION_MESSAGE_COMMENT);
         messagesTab.clickCreateCommentButton();
-        Assert.assertTrue(messagesTab.checkMessageType(0).equals("COMMENT"));
+        Assert.assertEquals(messagesTab.checkMessageType(0), "COMMENT");
         Assert.assertEquals(messagesTab.getMessageText(0), NOTIFICATION_MESSAGE_COMMENT);
         Assert.assertEquals(messagesTab.checkCommentType(0), "internal");
+    }
+
+    @Test(priority = 11, testName = "Add Remainder", description = "Add Remainder")
+    @Description("Add Remainder")
+    public void addRemainderTest() {
+        goToTicketDashboardPage();
+        ticketDashboardPage.openTicketDetailsView(String.valueOf(ticketDashboardPage.getRowForTicketWithID(ticketID)), BASIC_URL);
+        ticketDetailsPage = new TicketDetailsPage(driver, webDriverWait);
+        ticketDetailsPage.maximizeWindow(DETAILS_WINDOW_ID);
+        ticketDetailsPage.clickAddRemainder();
+        remainderForm = new RemainderForm(driver, webDriverWait);
+        remainderForm.createReminderWithNote(REMAINDER_NOTE);
+        ticketDetailsPage.clickMoreDetails();
+        moreDetailsPage = new MoreDetailsPage(driver, webDriverWait);
+        Assert.assertTrue(moreDetailsPage.isReminderNoteInLogsTable(REMAINDER_NOTE));
+        goToTicketDashboardPage();
+        Assert.assertTrue(ticketDashboardPage.isReminderPresent(ticketDashboardPage.getRowForTicketWithID(ticketID), REMAINDER_NOTE));
+    }
+
+    @Test(priority = 12, testName = "Edit Reminder", description = "Edit Reminder")
+    @Description("Edit Reminder")
+    public void editRemainderTest() {
+        ticketDashboardPage.openTicketDetailsView(String.valueOf(ticketDashboardPage.getRowForTicketWithID(ticketID)), BASIC_URL);
+        ticketDetailsPage = new TicketDetailsPage(driver, webDriverWait);
+        ticketDetailsPage.maximizeWindow(DETAILS_WINDOW_ID);
+        ticketDetailsPage.clickEditRemainder();
+        remainderForm = new RemainderForm(driver, webDriverWait);
+        remainderForm.createReminderWithNote(EDITED_REMAINDER_NOTE);
+        goToTicketDashboardPage();
+        Assert.assertTrue(ticketDashboardPage.isReminderPresent(ticketDashboardPage.getRowForTicketWithID(ticketID), EDITED_REMAINDER_NOTE));
+    }
+
+    @Test(priority = 13, testName = "Delete Remainder", description = "Delete Remainder")
+    @Description("Delete Remainder")
+    public void deleteRemainderTest() {
+        ticketDashboardPage.openTicketDetailsView(String.valueOf(ticketDashboardPage.getRowForTicketWithID(ticketID)), BASIC_URL);
+        ticketDetailsPage = new TicketDetailsPage(driver, webDriverWait);
+        ticketDetailsPage.maximizeWindow(DETAILS_WINDOW_ID);
+        ticketDetailsPage.clickRemoveRemainder();
+        goToTicketDashboardPage();
+        Assert.assertFalse(ticketDashboardPage.isReminderPresent(ticketDashboardPage.getRowForTicketWithID(ticketID), EDITED_REMAINDER_NOTE));
     }
 }
