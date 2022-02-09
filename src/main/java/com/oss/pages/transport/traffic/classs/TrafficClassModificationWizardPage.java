@@ -29,7 +29,7 @@ public class TrafficClassModificationWizardPage extends TrafficClassWizardPage {
 
     @Step("Click save changes button")
     public OldInventoryViewPage clickSaveChanges() {
-        Button saveButton = Button.createBySelectorAndId(driver, "a", SAVE_CHANGES_BUTTON_TEST_ID);
+        Button saveButton = Button.createById(driver, SAVE_CHANGES_BUTTON_TEST_ID);
         saveButton.click();
         return new OldInventoryViewPage(driver);
     }

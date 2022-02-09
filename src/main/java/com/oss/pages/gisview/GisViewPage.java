@@ -55,8 +55,9 @@ public class GisViewPage extends BasePage {
         GisMapInterface gisMap = GisMap.create(driver, wait);
         gisMap.clickMapByCoordinatesWithShift(x, y);
         DelayUtils.waitForPageToLoad(driver, wait);
-        Button button = Button.create(driver, name);
-        button.click();
+        //Nie wygląda mi to na button
+//        Button button = Button.create(driver, name);
+//        button.click();
     }
 
     public void dragAndDropObject(int xSource, int ySource, int xDestination, int yDestination) {
@@ -70,9 +71,9 @@ public class GisViewPage extends BasePage {
     }
 
     public void enableLayerInTree(String layer) {
-        Button layersTreeButton = Button.createByIcon(driver, "fa fa-fw fa-bars", "");
-        layersTreeButton.click();
         GisMapInterface gisMap = GisMap.create(driver, wait);
+        Button layersTreeButton = Button.createByLabel(driver, "template-gisview", "Layers tree");
+        layersTreeButton.click();
         gisMap.getLayersTree().toggleNodeByPath(layer);
     }
 

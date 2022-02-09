@@ -59,7 +59,7 @@ public class HomeViewPage extends BaseACDPage {
 
     @Step("Refresh column chart")
     public void refreshColumnChart() {
-        Button button = Button.createByXpath(columnChartRefreshButtonId, "li", CSSUtils.DATA_WIDGET_ID, driver);
+        Button button = Button.createById(driver, columnChartRefreshButtonId);
         button.click();
     }
 
@@ -73,7 +73,7 @@ public class HomeViewPage extends BaseACDPage {
     @Step("Refresh pie chart")
     public void refreshPieChart() {
         log.info("Refreshing pie chart");
-        Button button = Button.createByXpath(pieChartRefreshButtonId, "li", CSSUtils.DATA_WIDGET_ID, driver);
+        Button button = Button.createById(driver,pieChartRefreshButtonId);
         button.click();
     }
 
@@ -148,7 +148,7 @@ public class HomeViewPage extends BaseACDPage {
 
     @Step("Refresh Issues table")
     public void refreshIssuesTable() {
-        Button button = Button.createByXpath(issuesTableRefreshButtonId, "li", CSSUtils.DATA_WIDGET_ID, driver);
+        Button button = Button.createById(driver,issuesTableRefreshButtonId);
         button.click();
         log.info("Clicking refresh issues table button");
     }

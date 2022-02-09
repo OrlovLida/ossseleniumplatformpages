@@ -97,7 +97,7 @@ public class TicketSearchPage extends BaseSDPage {
     @Step("Clicking filter button")
     public void clickFilterButton() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        Button.createByIcon(driver, "fa fa-filter", FILTER_BUTTON_CLASS).click();
+        getTicketTable().getAdvancedSearch().openSearchPanel();
         log.info("Clicking filter button");
     }
 }

@@ -29,7 +29,6 @@ public class ArSettingsPage extends BaseACDPage {
     private static final String ACTION_TEMPLATE_TABLE_ID = "actionTemplateTable";
     private static final String DELETE_LABEL = "Delete";
     private static final String TAB_ID = "kaSettingsTabsContainer";
-
     private final OldTable table;
 
     public ArSettingsPage(WebDriver driver, WebDriverWait wait) {
@@ -51,7 +50,7 @@ public class ArSettingsPage extends BaseACDPage {
 
     @Step("Click add new Action Template")
     public void clickAddActionTemplate() {
-        Button button = Button.createByXpath(ADD_ACTION_TEMPLATE_BUTTON, "li", CSSUtils.DATA_WIDGET_ID, driver);
+        Button button = Button.createById(driver, ADD_ACTION_TEMPLATE_BUTTON);
         button.click();
         log.info("Clicking Add new Action Template button");
     }
@@ -121,7 +120,7 @@ public class ArSettingsPage extends BaseACDPage {
     public Boolean deleteActionTemplate() {
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("I am clicking Remove Action Template button");
-        Button deleteButton = Button.createByXpath(REMOVE_ACTION_TEMPLATE_BUTTON, "li", CSSUtils.DATA_WIDGET_ID, driver);
+        Button deleteButton = Button.createById(driver, REMOVE_ACTION_TEMPLATE_BUTTON);
         deleteButton.click();
         log.info("I am confirming removal of Action Template");
         ConfirmationBox.create(driver, wait).clickButtonByLabel(DELETE_LABEL);
@@ -145,7 +144,7 @@ public class ArSettingsPage extends BaseACDPage {
     @Step("I check if AR subsystems are up and running")
     public boolean isSubsystemUpAndRunning() {
 
-        for (StatusIcon.IconItem icon : StatusIcon.createStatusIcon(driver, wait).getIcons()) {
+        for (StatusIcon.IconItem icon: StatusIcon.createStatusIcon(driver, wait).getIcons()) {
             if (!icon.isIconGreen()) {
                 log.debug("At least one of AR subsystem is NOT up and running");
                 return false;

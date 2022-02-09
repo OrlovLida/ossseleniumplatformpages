@@ -20,7 +20,7 @@ import com.oss.pages.BasePage;
  */
 public class AttachFileWizardPage extends BasePage {
 
-    private static final String WIZARD_ID = "addFileViewId";
+    private static final String WIZARD_ID = "addFileComponentId";
     private static final String FILE_COMPONENT_ID = "file";
     private static final String NEXT_BUTTON_ID = "wizard-next-button-addFileComponentId";
     private static final String ACCEPT_BUTTON_ID = "wizard-submit-button-addFileComponentId";

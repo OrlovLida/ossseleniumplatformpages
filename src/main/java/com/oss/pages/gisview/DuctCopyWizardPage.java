@@ -21,7 +21,7 @@ public class DuctCopyWizardPage extends BasePage {
     }
 
     public void create() {
-        Button.createBySelectorAndId(driver, "a", COPY_DUCT_BUTTON_ID).click();
+        getCreateDuctWizard().clickButtonById(COPY_DUCT_BUTTON_ID);
     }
 
     private Wizard getCreateDuctWizard() {

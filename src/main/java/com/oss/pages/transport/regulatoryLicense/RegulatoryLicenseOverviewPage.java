@@ -1,6 +1,7 @@
 package com.oss.pages.transport.regulatoryLicense;
 
 import com.oss.framework.components.inputs.Button;
+import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
 import com.oss.framework.widgets.table.OldTable;
@@ -64,7 +65,7 @@ public class RegulatoryLicenseOverviewPage extends BasePage {
     @Step("Click edit button")
     public RegulatoryLicenseWizardPage clickEdit() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        Button editButton = Button.createBySelectorAndId(driver, "a", EDIT_BUTTON_DATA_ATTRIBUTENAME);
+        Button editButton = Button.createById(driver, EDIT_BUTTON_DATA_ATTRIBUTENAME);
         editButton.click();
         return new RegulatoryLicenseWizardPage(driver);
     }
@@ -77,14 +78,14 @@ public class RegulatoryLicenseOverviewPage extends BasePage {
 
     private void clickRemoveRegulatoryLicense() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        Button removeButton = Button.createBySelectorAndId(driver, "a", REMOVE_REGULATORY_LICENSE_BUTTON_DATA_ATTRIBUTENAME);
+        Button removeButton = Button.createById(driver, REMOVE_REGULATORY_LICENSE_BUTTON_DATA_ATTRIBUTENAME);
         removeButton.click();
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     private void confirmRegulatoryLicenseRemoval() {
-        Button confirmationButton = Button.createById(driver, REGULATORY_LICENSE_REMOVAL_CONFIRMATION_BUTTON_DATA_ATTRIBUTENAME);
-        confirmationButton.click();
+        ConfirmationBox.create(driver, wait).clickButtonById(REGULATORY_LICENSE_REMOVAL_CONFIRMATION_BUTTON_DATA_ATTRIBUTENAME);
+
     }
 
     public String getNumberValue() {

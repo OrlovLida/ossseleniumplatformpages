@@ -5,6 +5,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.iaa.widgets.timeperiodchooser.TimePeriodChooser;
 import com.oss.framework.components.contextactions.ButtonContainer;
 import com.oss.framework.components.inputs.Button;
@@ -27,6 +28,7 @@ public class BaseACDPage extends BasePage {
     private static final String VISUALIZATION_TYPE_ID = "widgetType-input";
     private static final String ATTRIBUTE_ID = "attribute1Id-input";
     private static final String ATTRIBUTE_VALUES_ID = "attribute1ValuesId";
+    private static final String CONFIRM_DELETE_BUTTON_ID = "ConfirmationBox_prompt_action_button";
 
     public BaseACDPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -48,7 +50,7 @@ public class BaseACDPage extends BasePage {
 
     @Step("Add predefined filter")
     public void clickAddPredefinedFilter() {
-        Button button = Button.createByXpath(ADD_PREDEFINED_FILTER_BUTTON, "li", CSSUtils.DATA_WIDGET_ID, driver);
+        Button button = Button.createById(driver, ADD_PREDEFINED_FILTER_BUTTON);
         button.click();
         log.info("Clicking Add predefined filter button");
     }
@@ -89,8 +91,7 @@ public class BaseACDPage extends BasePage {
 
         DelayUtils.waitForPageToLoad(driver, wait);
 
-        Button deleteButton2 = Button.create(driver, "Delete");
-        deleteButton2.click();
+        ConfirmationBox.create(driver,wait).clickButtonById(CONFIRM_DELETE_BUTTON_ID);
 
         log.info("I deleted predefined filer");
     }
@@ -120,7 +121,7 @@ public class BaseACDPage extends BasePage {
 
     @Step("Refresh issues table")
     public void refreshIssuesTable(String issuesTableRefreshButtonId) {
-        Button button = Button.createByXpath(issuesTableRefreshButtonId, "li", CSSUtils.DATA_WIDGET_ID, driver);
+        Button button = Button.createById(driver, issuesTableRefreshButtonId);
         button.click();
         log.info("Clicking refresh issues table button");
     }

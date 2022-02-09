@@ -51,8 +51,8 @@ public class NetworkViewPage extends BasePage {
     public static final String CONNECTION_ACTION = "add_to_view_group_Connection-null";
     private static final String CREATE_CONNECTION_ACTION = "Create Connection";
     private static final String DELETE_TERMINATION_ACTION = "Delete termination";
-    private static final String START_EDITING_CONNECTION_ACTION = "Start editing Connection";
-    private static final String STOP_EDITING_CONNECTION_ACTION = "Stop editing Connection";
+    private static final String START_EDITING_CONNECTION_ACTION = "EDIT_Start editing Connection-null";
+    private static final String STOP_EDITING_CONNECTION_ACTION = "EDIT_Stop editing Connection-null";
     private static final String TERMINATION_ACTION = "add_to_group_Termination-null";
     private static final String ROUTING = "add_to_group_Routing-null";
     private static final String ACCEPT_BUTTON = "Accept";
@@ -67,6 +67,7 @@ public class NetworkViewPage extends BasePage {
     private static final String SUPPRESSION_WIZARD_CONTEXT_ACTION_ID = "frameworkCustomMore_Suppression wizard";
     private static final String PROPERTY_PANEL_ID = "NetworkViewPropertyPanelWidget";
     private static final String BOTTOM_TABS_ID = "bottomTabs";
+    private static final String ACTION_CONTAINER_ID = "undefined-windowToolbar";
 
     private Wizard wizard = Wizard.createWizard(driver, wait);
 
@@ -150,14 +151,12 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Click Start editing trail button")
     public void startEditingSelectedTrail() {
-        Button button = Button.create(driver, START_EDITING_CONNECTION_ACTION);
-        button.click();
+        useContextAction("EDIT",START_EDITING_CONNECTION_ACTION);
     }
 
     @Step("Click Stop editing trail button")
     public void stopEditingTrail() {
-        Button button = Button.create(driver, STOP_EDITING_CONNECTION_ACTION);
-        button.click();
+        useContextAction("EDIT",STOP_EDITING_CONNECTION_ACTION);
     }
 
     @Step("Click confirmation box button")
@@ -322,7 +321,7 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Remove from routing")
     public void removeSelectedTrailsFromRouting() {
-        Button button = Button.createBySelectorAndId(driver, "a", "Remove from routing");
+        Button button = Button.createById(driver, "Remove from routing");
         button.click();
         waitForPageToLoad();
         clickConfirmationBoxButtonByLabel(DELETE_BUTTON);
@@ -359,7 +358,7 @@ public class NetworkViewPage extends BasePage {
 
     private OldActionsContainer getMainActionContainer() {
         waitForPageToLoad();
-        return OldActionsContainer.createForMainWindow(driver, wait);
+        return OldActionsContainer.createById(driver, wait, ACTION_CONTAINER_ID);
     }
 
     private <T extends TrailWizardPage> T getWizardPage(Class<T> trailWizardPage) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException,
@@ -409,7 +408,7 @@ public class NetworkViewPage extends BasePage {
     }
 
     private void refreshRoutingElements() {
-        Button button = Button.createBySelectorAndId(driver, "a", "Refresh");
+        Button button = Button.createById(driver, "Refresh");
         button.click();
     }
 

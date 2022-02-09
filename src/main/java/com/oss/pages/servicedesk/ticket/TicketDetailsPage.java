@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.oss.framework.components.contextactions.OldActionsContainer;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
@@ -28,7 +29,7 @@ public class TicketDetailsPage extends BaseSDPage {
 
     public static final String DETAILS_PAGE_URL_PATTERN = "%s/#/view/service-desk/trouble-ticket/details/%s";
     private static final String EDIT_DETAILS_LABEL = "Edit details";
-    private static final String RELEASE_LABEL = "Release";
+    private static final String RELEASE_ID = "_detailsOverviewContextActions-7";
     private static final String ALLOW_EDIT_LABEL = "Edit";
     private static final String CREATE_SUB_TICKET = "TT_DETAILS_SUBTICKET_CREATE_PROMPT_TITLE";
     private static final String CHECKLIST_APP_ID = "_checklistApp";
@@ -38,6 +39,7 @@ public class TicketDetailsPage extends BaseSDPage {
     private static final String DICTIONARIES_TABLE_ID = "_dictionariesTableId";
     private static final String DICTIONARY_VALUE_TABLE_LABEL = "Dictionary Value";
     private static final String CHANGE_TICKET_STATUS_COMBOBOX_ID = "change-ticket-status-combobox-input";
+    private static final String ACTIONS_CONTAINER_ID = "_detailsWindow-windowToolbar";
 
     public TicketDetailsPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -54,7 +56,7 @@ public class TicketDetailsPage extends BaseSDPage {
     @Step("Click release ticket")
     public void releaseTicket() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        Button.create(driver, RELEASE_LABEL).click();
+        OldActionsContainer.createById(driver,wait, ACTIONS_CONTAINER_ID).callActionById(RELEASE_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Clicking release button");
     }
@@ -62,7 +64,7 @@ public class TicketDetailsPage extends BaseSDPage {
     @Step("Allow ticket editing")
     public void allowEditingTicket() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        Button.create(driver, ALLOW_EDIT_LABEL).click();
+        OldActionsContainer.createById(driver, wait,ACTIONS_CONTAINER_ID).callActionByLabel(ALLOW_EDIT_LABEL);
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Clicking edit button");
     }
@@ -84,7 +86,7 @@ public class TicketDetailsPage extends BaseSDPage {
     @Step("I open create subticket wizard for flow {flowType}")
     public SDWizardPage openCreateSubTicketWizard(String flowType) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        Button.createBySelectorAndId(driver, "button", CREATE_SUB_TICKET).click();
+        Button.createById(driver, CREATE_SUB_TICKET).click();
         DropdownList.create(driver, wait).selectOptionById(flowType);
         log.info("Create subticket wizard for {} is opened", flowType);
         return new SDWizardPage(driver, wait);

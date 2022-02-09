@@ -48,7 +48,7 @@ public class FloorPlanPage extends BasePage {
 
     @Step("Import floor plan for selected location")
     public void importFloorPlan(String filePath) {
-        Button.create(driver, "Import").click();
+        Button.createByLabel(driver, "Import").click();
         DelayUtils.waitForPageToLoad(driver, wait);
         URL res = getClass().getClassLoader().getResource(filePath);
         try {
@@ -93,7 +93,7 @@ public class FloorPlanPage extends BasePage {
 
     @Step("Export floor plan")
     public void exportFloorPlan() {
-        Button export = Button.create(driver, "Export");
+        Button export = Button.createByLabel(driver, "Export");
         export.click();
         DelayUtils.waitForPageToLoad(driver, wait);
         //TODO change to button when OSSWEB-10577 will be ready
