@@ -12,6 +12,7 @@ import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.layout.Card;
+import com.oss.framework.components.mainheader.ToolbarWidget;
 import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.iaa.widgets.list.ListApp;
 import com.oss.framework.utils.DelayUtils;
@@ -40,6 +41,10 @@ public class TicketDetailsPage extends BaseSDPage {
     private static final String DICTIONARY_VALUE_TABLE_LABEL = "Dictionary Value";
     private static final String CHANGE_TICKET_STATUS_COMBOBOX_ID = "change-ticket-status-combobox-input";
     private static final String ACTIONS_CONTAINER_ID = "_detailsWindow-windowToolbar";
+    private static final String ADD_REMAINDER_LABEL = "Add Reminder";
+    private static final String EDIT_REMAINDER_LABEL = "Edit Reminder";
+    private static final String REMOVE_REMAINDER_LABEL = "Remove Reminder";
+    private static final String MORE_DETAILS_LABEL = "More details";
 
     public TicketDetailsPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -160,5 +165,40 @@ public class TicketDetailsPage extends BaseSDPage {
             }
         }
         return true;
+    }
+
+    @Step("get id of opened ticket")
+    public String getOpenedTicketId() {
+        String viewTitle = ToolbarWidget.create(driver, wait).getViewTitle();
+        String[] viewWithID = viewTitle.split("#");
+        String id = viewWithID[1];
+        return id;
+    }
+
+    @Step("Click Add Remainder")
+    public RemainderForm clickAddRemainder() {
+        clickContextAction(ADD_REMAINDER_LABEL);
+        log.info("Clicking Add Remainder");
+        return new RemainderForm(driver, wait);
+    }
+
+    @Step("Click Add Remainder")
+    public RemainderForm clickEditRemainder() {
+        clickContextAction(EDIT_REMAINDER_LABEL);
+        log.info("Clicking Edit Remainder");
+        return new RemainderForm(driver, wait);
+    }
+
+    @Step("Click Add Remainder")
+    public void clickRemoveRemainder() {
+        clickContextAction(REMOVE_REMAINDER_LABEL);
+        log.info("Clicking Remove Remainder");
+    }
+
+    @Step("Click More Details")
+    public MoreDetailsPage clickMoreDetails() {
+        clickContextAction(MORE_DETAILS_LABEL);
+        log.info("Clicking More Details");
+        return new MoreDetailsPage(driver, wait);
     }
 }

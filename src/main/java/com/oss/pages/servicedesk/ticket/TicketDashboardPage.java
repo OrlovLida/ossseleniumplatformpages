@@ -105,4 +105,16 @@ public class TicketDashboardPage extends BaseSDPage {
         DelayUtils.waitForPageToLoad(driver, wait);
         return new TicketDetailsPage(driver, wait);
     }
+
+    @Step("Check if Reminder icon is present in Trouble Ticket Table")
+    public boolean isReminderPresent(int cellIndex, String reminderText) {
+        String iconTitles = getTroubleTicketsTable().getCellValue(cellIndex, "State");
+        log.info("Check if Reminder icon is present in Trouble Ticket Table");
+        return iconTitles.contains(reminderText);
+    }
+
+    @Step("get row number for ticket with {id}")
+    public int getRowForTicketWithID(String id) {
+        return getTroubleTicketsTable().getRowNumber(id, "ID");
+    }
 }
