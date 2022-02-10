@@ -3,7 +3,6 @@ package com.oss.pages.radio;
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.components.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
@@ -28,7 +27,7 @@ public class CellSiteConfigurationPage extends BasePage {
     private static final String CELL_TAB_NAME = "Cells %s";
     private static final String CREATE_CELL_BULK_ACTION = "Cell %s Bulk Wizard";
     private static final String TRAIL_TYPE_ID = "trailType";
-    private static final String ADD_LABEL = "ADD";
+    private static final String ADD_ID = "add";
     private static final String EDIT_LABEL = "Edit";
     private static final String DELETE_LABEL = "Delete";
     private static final String BASE_STATION_ROW = "Base Stations";
@@ -57,9 +56,7 @@ public class CellSiteConfigurationPage extends BasePage {
 
     @Step("Click plus icon and select {option} from the drop-down list")
     public void clickPlusIconAndSelectOption(String option) {
-        useTableContextActionByLabel(ADD_LABEL);
-        waitForPageToLoad();
-        DropdownList.create(driver, wait).selectOption(option);
+        getTabTable().callAction(ADD_ID, option);
     }
 
     @Step("Select {tabName} tab")
