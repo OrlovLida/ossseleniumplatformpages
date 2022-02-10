@@ -26,7 +26,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
     private static final String ENODEB_NAME = "GBM055TST";
     private static final String ENODEB_ID = "1" + (int) (Math.random() * 10);
     private static final String ENODEB_MODEL = "HUAWEI Technology Co.,Ltd BTS5900";
-    private static final String MCCMNC_PRIMARY = "DU03 [mcc: 424, mnc: 03]";
+    private static final String MCCMNC_PRIMARY = "E2ETests [mcc: 0001, mnc: 01]";
     private static final String BASE_BAND_UNIT_MODEL = "HUAWEI Technology Co.,Ltd BBU5900";
     private static final String BBU_NAME = "BTS5900,GBM055TST/0/BBU5900,0";
     private static final String RADIO_UNIT_MODEL = "HUAWEI Technology Co.,Ltd RRU5301";
@@ -35,7 +35,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
     private static final String[] ANTENNA_NAMES = {"TP_OSS_RM_RAN_001_ANTENNA_1", "TP_OSS_RM_RAN_001_ANTENNA_2", "TP_OSS_RM_RAN_001_ANTENNA_3"};
     private static final String BBU_EQUIPMENT_TYPE = "Base Band Unit";
     private static final String RADIO_UNIT_EQUIPMENT_TYPE = "Remote Radio Head/Unit";
-    private static final String CARRIER = "L800-B20-5 (6175)";
+    private static final String CARRIER = "E2E Carrier (11)";
     private static final String[] CELL_NAMES = new String[]{"TP_OSS_RM_RAN_001_CELL10", "TP_OSS_RM_RAN_001_CELL20", "TP_OSS_RM_RAN_001_CELL30"};
     private static final int AMOUNT_OF_CELLS = CELL_NAMES.length;
     private static final String PCI = "2";
