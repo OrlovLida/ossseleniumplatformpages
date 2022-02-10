@@ -75,6 +75,14 @@ public class Configuration {
         return env;
     }
 
+    public String getCheckErrors(){
+        if (System.getProperty("CHECK_ERRORS").isEmpty()) {
+            return CONFIGURATION.getValue("checkErrors");
+        }
+        return CONFIGURATION.getValue("checkErrors");
+
+    }
+
     public String getApplicationPort() {
         return CONFIGURATION.getValue("port");
     }
