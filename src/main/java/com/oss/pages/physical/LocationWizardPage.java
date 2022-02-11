@@ -1,12 +1,14 @@
 package com.oss.pages.physical;
 
-import com.oss.framework.components.inputs.Input;
+import org.openqa.selenium.WebDriver;
+
 import com.oss.framework.components.data.Data;
+import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
+
 import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
 
 public class LocationWizardPage extends BasePage {
 
@@ -28,23 +30,13 @@ public class LocationWizardPage extends BasePage {
     private static final String NUMBER_OF_LOCATIONS_DATA_ATTRIBUTE_NAME = "locationsCount";
     private static final String MODEL_DATA_ATTRIBUTE_NAME = "masterModel_OSF";
     private static final String STREET_NUMBER_DATA_ATTRIBUTE_NAME = "Street_OSF";
-
-
-    public static LocationWizardPage goToLocationWizardPageLive(WebDriver driver, String basicURL) {
-        driver.get(String.format("%s/#/view/location-inventory/wizard/physicallocation/create/select-type?" + "perspective=LIVE", basicURL));
-        return new LocationWizardPage(driver);
-    }
-
-    public static LocationWizardPage goToLocationWizardPagePlan(WebDriver driver, String basicURL, String perspective) {
-        driver.get(String.format("%s/#/view/location-inventory/wizard/physicallocation/create/select-type?" + perspective, basicURL));
-        return new LocationWizardPage(driver);
-    }
+    private static final String WIZARD_ID = "optional_prompt-card";
 
     public LocationWizardPage(WebDriver driver) {
         super(driver);
     }
 
-    private Wizard locationWizard = Wizard.createByComponentId(driver, wait, "optional");
+    private Wizard locationWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
 
     @Step("Create location with mandatory fields (location type, name, geographical address) filled in")
     public void createLocation(String locationType, String locationName) {
