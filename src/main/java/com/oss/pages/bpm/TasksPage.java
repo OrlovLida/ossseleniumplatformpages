@@ -169,6 +169,10 @@ public class TasksPage extends BasePage {
         completeTask(processCode, HIGH_LEVEL_PLANNING_TASK);
         startTask(processCode, LOW_LEVEL_PLANNING_TASK);
         completeTask(processCode, LOW_LEVEL_PLANNING_TASK);
+        return proceedNRPFromReadyForIntegration(processCode);
+    }
+
+    public String proceedNRPFromReadyForIntegration(String processCode) {
         startTask(processCode, READY_FOR_INTEGRATION_TASK);
         completeTask(processCode, READY_FOR_INTEGRATION_TASK);
         showCompletedTasks();

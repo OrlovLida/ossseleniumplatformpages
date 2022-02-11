@@ -52,9 +52,11 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
     private static final String BUSINESS_PROCESS_MANAGEMENT = "Business Process Management";
     private static final String BPM_AND_PLANNING = "BPM and Planning";
     private static final String PROCESS_INSTANCES = "Process Instances";
+    private static final String MANUFACTURER = "HUAWEI Technology Co.,Ltd";
 
     private CellSiteConfigurationPage cellSiteConfigurationPage;
     private String processNRPCode;
+    private String processIPCode;
 
     @BeforeClass
     public void openConsole() {
@@ -233,58 +235,24 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         tasksPage.completeTask(processNRPCode, TasksPage.LOW_LEVEL_PLANNING_TASK);
         checkMessageType();
         checkTaskCompleted();
-
-        tasksPage.startTask(processNRPCode, TasksPage.READY_FOR_INTEGRATION_TASK);
-        waitForPageToLoad();
-        checkMessageType();
-        checkTaskAssignment();
-
-        tasksPage.completeTask(processNRPCode, TasksPage.READY_FOR_INTEGRATION_TASK);
-        checkMessageType();
-        checkTaskCompleted();
+        processIPCode = tasksPage.proceedNRPFromReadyForIntegration(processNRPCode);
     }
 
     @Test(priority = 17)
-    @Description("Finish NRP")
+    @Description("Finish NRP and IP")
     public void completeProcessNRP() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         waitForPageToLoad();
-        tasksPage.startTask(processNRPCode, "Integrate");
-        checkMessageType();
-        checkTaskAssignment();
-        waitForPageToLoad();
-        tasksPage.completeTask(processNRPCode, "Integrate");
-        checkMessageType();
+        tasksPage.completeTask(processIPCode, TasksPage.IMPLEMENTATION_TASK);
         checkTaskCompleted();
-        waitForPageToLoad();
-
-        tasksPage.startTask(processNRPCode, "Implement");
-        checkMessageType();
+        tasksPage.startTask(processIPCode, TasksPage.ACCEPTANCE_TASK);
         checkTaskAssignment();
-        waitForPageToLoad();
-        tasksPage.completeTask(processNRPCode, "Implement");
-        checkMessageType();
+        tasksPage.completeTask(processIPCode, TasksPage.ACCEPTANCE_TASK);
         checkTaskCompleted();
-        waitForPageToLoad();
-
-        tasksPage.startTask(processNRPCode, "Accept");
-        checkMessageType();
-        checkTaskAssignment();
-        waitForPageToLoad();
-        tasksPage.completeTask(processNRPCode, "Accept");
-        checkMessageType();
-        checkTaskCompleted();
-        waitForPageToLoad();
-
-        tasksPage.startTask(processNRPCode, TasksPage.ACCEPTANCE_TASK);
-        waitForPageToLoad();
-        tasksPage.completeTask(processNRPCode, TasksPage.ACCEPTANCE_TASK);
-        waitForPageToLoad();
-
         tasksPage.startTask(processNRPCode, TasksPage.VERIFICATION_TASK);
-        waitForPageToLoad();
+        checkTaskAssignment();
         tasksPage.completeTask(processNRPCode, TasksPage.VERIFICATION_TASK);
-        waitForPageToLoad();
+        checkTaskCompleted();
     }
 
     @Test(priority = 18)
@@ -292,14 +260,12 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
     public void deleteDevices() {
         openCellSiteConfiguration();
         waitForPageToLoad();
-        cellSiteConfigurationPage.removeDevice(NAME, BBU_NAME);
+        cellSiteConfigurationPage.removeDevice("Base Band Units", MANUFACTURER, BBU_NAME);
         checkMessageType();
-
         for (int i = 0; i < 3; i++) {
-            cellSiteConfigurationPage.removeDevice(NAME, RADIO_UNIT_NAMES[i]);
+            cellSiteConfigurationPage.removeDevice("Remote Radio Units", MANUFACTURER, RADIO_UNIT_NAMES[i]);
             checkMessageType();
-
-            cellSiteConfigurationPage.removeDevice(NAME, ANTENNA_NAMES[i]);
+            cellSiteConfigurationPage.removeDevice("Antennas", MANUFACTURER, ANTENNA_NAMES[i]);
             checkMessageType();
         }
     }
