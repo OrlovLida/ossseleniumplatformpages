@@ -1,6 +1,6 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="ServicesGuiSQM-CRUD" thread-count="1" parallel="tests" verbose="1">
-    <test name="BasicKpiViewTest">
+    <test name="IndicatorsViewTestDFEPart1">
         <parameter name="indicatorNodesToExpand" value="DFE Tests,DFE Product Tests,Selenium Tests"/>
         <parameter name="indicatorNodesToSelect" value="CPU_NICE_USAGE,CPU_TOTAL_USAGE"/>
         <parameter name="dimensionNodesToExpand" value="t:SMOKE#D_HOST"/>
@@ -14,7 +14,7 @@
             </class>
         </classes>
     </test>
-    <test name="searchIndicators">
+    <test name="IndicatorsViewTestDFEPart2">
         <parameter name="filterName" value="DFE Self Monitoring"/>
         <parameter name="indicator" value="numSkippedTasks"/>
         <parameter name="dimension" value="DataEngineFactETL"/>
@@ -26,12 +26,13 @@
             </class>
         </classes>
     </test>
-    <test name="IndicatorsViewTests">
+    <test name="IndicatorsViewTestDFEPart3">
         <parameter name="indicatorNodesToExpand" value="DFE Tests,DFE Product Tests,Selenium Tests"/>
         <parameter name="indicatorNodesToSelect" value="SUCCESS_LONG"/>
         <parameter name="dimensionNodesToExpand" value="t:SMOKE#DimHierSelenium"/>
         <parameter name="dimensionNodesToSelect" value="D3_01"/>
         <parameter name="filterName" value="DFE Tests"/>
+        <parameter name="dimensionFolderWithOptions" value="t:SMOKE#DimHierSelenium"/>
         <classes>
             <class name="com.oss.dpe.IndicatorsViewTest">
                 <methods>
@@ -50,7 +51,7 @@
             </class>
         </classes>
     </test>
-    <test name="DFE">
+    <test name="IndicatorsViewTestDFEPart4">
         <classes>
             <class name="com.oss.bigdata.kpiview.KpiViewTest">
                 <methods>
@@ -60,7 +61,7 @@
             </class>
         </classes>
     </test>
-    <test name="AggregationMethodCheck">
+    <test name="IndicatorsViewTestDFEPart5">
         <parameter name="indicatorNodesToExpand" value="DFE Tests,DFE Product Tests,Selenium Tests"/>
         <parameter name="indicatorNodesToSelect" value="SUCCESS_LONG"/>
         <parameter name="dimensionNodesToExpand" value="t:SMOKE#DimHierSelenium"/>
