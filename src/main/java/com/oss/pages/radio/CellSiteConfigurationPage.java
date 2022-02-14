@@ -9,6 +9,7 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.framework.widgets.tree.TreeWidget;
+import com.oss.framework.widgets.treetable.OldTreeTableWidget;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 import com.oss.pages.physical.DeviceWizardPage;
@@ -27,7 +28,7 @@ public class CellSiteConfigurationPage extends BasePage {
     private static final String CELL_TAB_NAME = "Cells %s";
     private static final String CREATE_CELL_BULK_ACTION = "Cell %s Bulk Wizard";
     private static final String TRAIL_TYPE_ID = "trailType";
-    private static final String ADD_ID = "add";
+    private static final String ADD_LABEL = "ADD";
     private static final String EDIT_LABEL = "Edit";
     private static final String DELETE_LABEL = "Delete";
     private static final String BASE_STATION_ROW = "Base Stations";
@@ -44,6 +45,7 @@ public class CellSiteConfigurationPage extends BasePage {
     private static final String HOST_ON_ANTENNA_ARRAY_ACTION_LABEL = "Host on Antenna Array";
     private static final String HOSTING_TAB_LABEL = "Hosting";
     private static final String WIZARD_ID = "Popup";
+    private static final String TREE_TABLE_ID = "DevicesTableApp";
 
     public CellSiteConfigurationPage(WebDriver driver) {
         super(driver);
@@ -56,7 +58,7 @@ public class CellSiteConfigurationPage extends BasePage {
 
     @Step("Click plus icon and select {option} from the drop-down list")
     public void clickPlusIconAndSelectOption(String option) {
-        getTabTable().callAction(ADD_ID, option);
+        getTabTable().callActionByLabel(ADD_LABEL, option);
     }
 
     @Step("Select {tabName} tab")
@@ -104,12 +106,22 @@ public class CellSiteConfigurationPage extends BasePage {
     }
 
     @Step("Remove device {objectName}")
-    public void removeDevice(String columnName, String objectName) {
+    public void removeDevice(String type, String manufacturer, String objectName) {
         selectTab(DEVICES_TAB);
         waitForPageToLoad();
-        filterObject(columnName, objectName);
+        selectTreeTable(type, manufacturer, objectName);
         waitForPageToLoad();
         removeObject();
+        waitForPageToLoad();
+    }
+
+    private void selectTreeTable(String type, String manufacturer, String name) {
+        OldTreeTableWidget widget = OldTreeTableWidget.create(driver, wait, TREE_TABLE_ID);
+        widget.expandNode(type, "Type");
+        waitForPageToLoad();
+        widget.expandNode(manufacturer, "Type");
+        waitForPageToLoad();
+        widget.selectNode(name, "Name");
     }
 
     @Step("Remove base station {objectName}")

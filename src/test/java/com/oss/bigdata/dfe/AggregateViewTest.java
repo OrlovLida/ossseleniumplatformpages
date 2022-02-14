@@ -1,5 +1,12 @@
 package com.oss.bigdata.dfe;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Test;
+
 import com.oss.BaseTestCase;
 import com.oss.pages.bigdata.dfe.AggregatePage;
 import com.oss.pages.bigdata.dfe.stepwizard.aggregate.AggregateConfigurationPage;
@@ -7,13 +14,8 @@ import com.oss.pages.bigdata.dfe.stepwizard.aggregate.AggregateProcessSettingsPa
 import com.oss.pages.bigdata.dfe.stepwizard.commons.BasicInformationPage;
 import com.oss.pages.bigdata.utils.ConstantsDfe;
 import com.oss.utils.TestListener;
+
 import io.qameta.allure.Description;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Listeners;
-import org.testng.annotations.Test;
 
 @Listeners({TestListener.class})
 public class AggregateViewTest extends BaseTestCase {
@@ -28,6 +30,7 @@ public class AggregateViewTest extends BaseTestCase {
     private final static String ETL_PROCESS_NAME = "t:CRUD#ETLforAggr";
     private final static String AGGREGATE_CONFIGURATION_DIMENSION_NAME = "t:SMOKE#D_HOST (HOST_NM)";
     private final static String AGGREGATE_CONFIGURATION_NAME = "Selenium_Aggregate_Test";
+    private final static String AGGREGATE_WIZARD_ID = "aggregatesWizardWindow";
 
     @BeforeClass
     public void goToAggregateView() {
@@ -42,7 +45,7 @@ public class AggregateViewTest extends BaseTestCase {
     @Description("Add new Aggregate")
     public void addAggregate() {
         aggregatePage.clickAddNewAggregate();
-        BasicInformationPage aggrBasicInfoWizard = new BasicInformationPage(driver, webDriverWait);
+        BasicInformationPage aggrBasicInfoWizard = new BasicInformationPage(driver, webDriverWait, AGGREGATE_WIZARD_ID);
         aggrBasicInfoWizard.fillName(aggregateName);
         aggrBasicInfoWizard.fillProcess(ETL_PROCESS_NAME);
         aggrBasicInfoWizard.clickNextStep();
@@ -70,7 +73,7 @@ public class AggregateViewTest extends BaseTestCase {
             aggregatePage.selectFoundAggregate();
             aggregatePage.clickEditAggregate();
 
-            BasicInformationPage aggrBasicInfoWizard = new BasicInformationPage(driver, webDriverWait);
+            BasicInformationPage aggrBasicInfoWizard = new BasicInformationPage(driver, webDriverWait, AGGREGATE_WIZARD_ID);
             aggrBasicInfoWizard.fillName(updatedAggregateName);
             aggrBasicInfoWizard.clickNextStep();
 

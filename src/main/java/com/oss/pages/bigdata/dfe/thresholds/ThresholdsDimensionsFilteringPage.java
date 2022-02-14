@@ -16,10 +16,11 @@ import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD
 
 public class ThresholdsDimensionsFilteringPage extends BasePage {
 
-    private final String DIMENSION_COMBOBOX = "comboBoxDimensionId";
-    private final String GROUPING_COMBOBOX = "comboBoxGroupingId";
-    private final String FILTERING_TYPE_COMBOBOX = "comboBoxQueryOperatorId";
-    private final String MO_PATTERN_ID = "additionalPropertiesGroupMoIdentifierPatternId";
+    private static final String DIMENSION_COMBOBOX = "comboBoxDimensionId";
+    private static final String GROUPING_COMBOBOX = "comboBoxGroupingId";
+    private static final String FILTERING_TYPE_COMBOBOX = "comboBoxQueryOperatorId";
+    private static final String MO_PATTERN_ID = "additionalPropertiesGroupMoIdentifierPatternId";
+    private static final String WIZARD_ID = "thresholdWizard";
 
     private final Wizard dimensionsFilterWizard;
 
@@ -27,7 +28,7 @@ public class ThresholdsDimensionsFilteringPage extends BasePage {
 
     public ThresholdsDimensionsFilteringPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
-        dimensionsFilterWizard = Wizard.createWizard(driver, wait);
+        dimensionsFilterWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
     }
 
     public void fillDimensionCombobox(String dimension) {
