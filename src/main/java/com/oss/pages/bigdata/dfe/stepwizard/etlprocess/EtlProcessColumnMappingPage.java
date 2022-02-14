@@ -16,9 +16,10 @@ public class EtlProcessColumnMappingPage extends ColumnMappingPage {
     private static final Logger log = LoggerFactory.getLogger(EtlProcessColumnMappingPage.class);
     private static final String LINKAGE_TO_DIMENSION_TABLE_ID = "linkageToDimensionTable";
     private static final String LINKAGE_TO_DIMENSION_TABLE_INPUT_ID = "linkageToDimensionTable-COMBOBOX-input";
+    private static final String ETL_WIZARD_ID = "etlWizardWindow";
 
     public EtlProcessColumnMappingPage(WebDriver driver, WebDriverWait wait) {
-        super(driver, wait);
+        super(driver, wait, ETL_WIZARD_ID);
     }
 
     @Step("I fill Column Mapping Step. I set column role: {columnRole} and linkage to dimension table: {linkageToDimensionTable} for column: {columnNameValue}")

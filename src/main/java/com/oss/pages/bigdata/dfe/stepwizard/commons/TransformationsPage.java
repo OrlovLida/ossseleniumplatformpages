@@ -15,12 +15,11 @@ import io.qameta.allure.Step;
 public class TransformationsPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(TransformationsPage.class);
-    private static final String WIZARD_ID = "etlWizardWindow";
     private final Wizard transformationWizard;
 
-    public TransformationsPage(WebDriver driver, WebDriverWait wait) {
+    public TransformationsPage(WebDriver driver, WebDriverWait wait, String wizardId) {
         super(driver, wait);
-        transformationWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
+        transformationWizard = Wizard.createByComponentId(driver, wait, wizardId);
     }
 
     public void addNewTransformation(String transformationName) {

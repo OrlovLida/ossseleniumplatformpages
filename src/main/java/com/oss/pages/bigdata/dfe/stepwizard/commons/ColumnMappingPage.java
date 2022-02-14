@@ -15,16 +15,15 @@ import io.qameta.allure.Step;
 public class ColumnMappingPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(ColumnMappingPage.class);
-    private static final String WIZARD_ID = "etlWizardWindow";
     private static final String LIST_ID = "ExtendedList-column-mapping-data";
     private static final String COLUMN_ROLE_INPUT_ID = "columnRole-COMBOBOX-input";
     private static final String COLUMN_DATA_ID = "columnName";
     private static final String COLUMN_ROLE_ID = "columnRole";
     private final Wizard columnMappingWizard;
 
-    public ColumnMappingPage(WebDriver driver, WebDriverWait wait) {
+    public ColumnMappingPage(WebDriver driver, WebDriverWait wait, String wizardId) {
         super(driver, wait);
-        columnMappingWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
+        columnMappingWizard = Wizard.createByComponentId(driver, wait, wizardId);
     }
 
     @Step("I click Next Step")

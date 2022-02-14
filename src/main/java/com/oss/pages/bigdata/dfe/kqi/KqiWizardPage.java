@@ -1,28 +1,33 @@
-package com.oss.pages.bigdata.dfe.KQIs;
+package com.oss.pages.bigdata.dfe.kqi;
 
-import com.oss.framework.wizard.Wizard;
-import com.oss.pages.BasePage;
-import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.*;
+import com.oss.framework.wizard.Wizard;
+import com.oss.pages.BasePage;
 
-public class KQIWizardPage extends BasePage {
+import io.qameta.allure.Step;
 
-    private static final Logger log = LoggerFactory.getLogger(KQIWizardPage.class);
+import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
+import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_AREA;
+import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 
-    private final String KPI_NAME_INPUT_ID = "kqiNameId";
-    private final String VALUE_TYPE_ID = "kqiValueType-input";
-    private final String UNIT_TYPE_ID = "kqiUnitId-input";
-    private final String FORMULA_ID = "kqiFormulaId";
+public class KqiWizardPage extends BasePage {
+
+    private static final Logger log = LoggerFactory.getLogger(KqiWizardPage.class);
+
+    private static final String KPI_NAME_INPUT_ID = "kqiNameId";
+    private static final String VALUE_TYPE_ID = "kqiValueType-input";
+    private static final String UNIT_TYPE_ID = "kqiUnitId-input";
+    private static final String FORMULA_ID = "kqiFormulaId";
+    private static final String KQI_WIZARD_ID = "kqiWizardWidgetId";
     private final Wizard kqiWizard;
 
-    public KQIWizardPage(WebDriver driver, WebDriverWait wait) {
+    public KqiWizardPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
-        kqiWizard = Wizard.createWizard(driver, wait);
+        kqiWizard = Wizard.createByComponentId(driver, wait, KQI_WIZARD_ID);
     }
 
     public void fillName(String name) {
