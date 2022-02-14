@@ -22,8 +22,8 @@ public class CategoryWizard {
         this.category = wizard;
     }
     
-    public static CategoryWizard create(WebDriver driver, WebDriverWait wait, String wizardId) {
-        Wizard wizard = Wizard.createByComponentId(driver, wait, wizardId);
+    public static CategoryWizard create(WebDriver driver, WebDriverWait wait) {
+        Wizard wizard = Wizard.createByComponentId(driver, wait, "popup_container");
         return new CategoryWizard(driver, wait, wizard);
     }
     
