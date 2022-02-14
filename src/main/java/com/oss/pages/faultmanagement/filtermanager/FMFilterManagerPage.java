@@ -7,6 +7,7 @@ import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.oss.framework.components.categorylist.CategoryList;
 import com.oss.framework.components.prompts.Popup;
 import com.oss.framework.components.tree.TreeComponent;
 import com.oss.framework.utils.DelayUtils;
@@ -74,7 +75,7 @@ public class FMFilterManagerPage extends BasePage {
     @Step("I delete folders by name")
     public void deleteFolder(String nameLabel) {
         DelayUtils.sleep(2000);
-        List<CommonList.Category> categories =
+        List<CategoryList> categories =
                 getCommonList().getCategories().stream().filter(category -> category.getValue().equals(nameLabel))
                         .collect(Collectors.toList());
         categories.forEach(category -> category.callAction(REMOVE_ACTION_ID));
@@ -86,7 +87,7 @@ public class FMFilterManagerPage extends BasePage {
         DelayUtils.sleep(2000);
         log.info("Checking if folder : {} exists", nameLabel);
         for (int i = 0; i < 100; i++) {
-            List<CommonList.Category> categories =
+            List<CategoryList> categories =
                     getCommonList().getCategories().stream().filter(category -> category.getValue().contains(nameLabel))
                             .collect(Collectors.toList());
             if (!categories.isEmpty()) {
@@ -102,7 +103,7 @@ public class FMFilterManagerPage extends BasePage {
         DelayUtils.sleep(2000);
         log.info("Checking if folder : {} not exists", nameLabel);
         for (int i = 0; i < 100; i++) {
-            List<CommonList.Category> categories =
+            List<CategoryList> categories =
                     getCommonList().getCategories().stream().filter(category -> category.getValue().contains(nameLabel))
                             .collect(Collectors.toList());
             if (categories.isEmpty()) {
