@@ -140,16 +140,17 @@ public class TreeWidgetTest extends BaseTestCase {
         Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(ROOM_NAME_2);
     }
     
-    @Test(priority = 7, enabled = false) // until fix OSSWEB-15508
+    @Test(priority = 7)
     public void refreshTreeWidget() {
         hierarchyViewPage.getMainTree().callActionById(ActionsContainer.KEBAB_GROUP_ID, REFRESH_TREE);
         hierarchyViewPage.expandNextLevel(LOCATION_NAME);
         updateRoom(roomId_2);
         hierarchyViewPage.getMainTree().callActionById(ActionsContainer.KEBAB_GROUP_ID, REFRESH_TREE);
+        hierarchyViewPage.expandNextLevel(LOCATION_NAME);
         Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(ROOM_NAME_2_UPDATED);
     }
     
-    @Test(priority = 8)
+    @Test(priority = 8, enabled = false) //until fix OSSPHY-53281
     public void createRoom() {
         hierarchyViewPage.selectNodeByLabel(LOCATION_NAME);
         hierarchyViewPage.getMainTree().callActionById(ActionsContainer.CREATE_GROUP_ID, CREATE_SUBLOCATION_ACTION);
@@ -166,7 +167,7 @@ public class TreeWidgetTest extends BaseTestCase {
 
     }
     
-    @Test(priority = 9)
+    @Test(priority = 9, enabled = false)
     public void updateRoom() {
         hierarchyViewPage.selectNodeByLabelsPath(PATH_ROOM_3);
         hierarchyViewPage.getMainTree().callActionById(ActionsContainer.EDIT_GROUP_ID, UPDATE_SUBLOCATION_ACTION);
@@ -178,7 +179,7 @@ public class TreeWidgetTest extends BaseTestCase {
         Assertions.assertThat(nodes).contains(ROOM_3_UPDATE);
     }
     
-    @Test(priority = 10)
+    @Test(priority = 10, enabled = false)
     public void deleteRoom() {
         hierarchyViewPage.selectNodeByLabelsPath(PATH_ROOM_3_UPDATE);
         hierarchyViewPage.getMainTree().callActionById(ActionsContainer.EDIT_GROUP_ID, REMOVE_SUBLOCATION_ACTION);
