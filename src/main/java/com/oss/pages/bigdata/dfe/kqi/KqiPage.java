@@ -1,21 +1,22 @@
-package com.oss.pages.bigdata.dfe.KQIs;
+package com.oss.pages.bigdata.dfe.kqi;
 
-import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
-import com.oss.framework.widgets.table.OldTable;
-import com.oss.pages.bigdata.dfe.BaseDfePage;
-import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class KQIsPage extends BaseDfePage {
+import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
+import com.oss.framework.widgets.table.OldTable;
+import com.oss.pages.bigdata.dfe.BaseDfePage;
 
-    private static final Logger log = LoggerFactory.getLogger(KQIsPage.class);
+import io.qameta.allure.Step;
+
+public class KqiPage extends BaseDfePage {
+
+    private static final Logger log = LoggerFactory.getLogger(KqiPage.class);
 
     private static final String ADD_NEW_KQI_LABEL = "Add New KQI";
     private static final String TABLE_ID = "kqi-listAppId";
-    private static final String KQI_WIZARD_ID = "kqiWizardWindow";
     private static final String KQI_NAME_COLUMN_LABEL = "Name";
     private static final String SEARCH_INPUT_ID = "kqi-listSearchAppId";
     private static final String EDIT_KQI_LABEL = "Edit KQI";
@@ -26,15 +27,15 @@ public class KQIsPage extends BaseDfePage {
     private static final String PARAMETERS_TABLE_ID = "kqi/tabs/parametersAppId";
     private static final String PROPERTY_PANEL_ID = "detailsId";
 
-    public KQIsPage(WebDriver driver, WebDriverWait wait) {
+    public KqiPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
     }
 
     @Step("I open KQIs View")
-    public static KQIsPage goToPage(WebDriver driver, String basicURL) {
+    public static KqiPage goToPage(WebDriver driver, String basicURL) {
         WebDriverWait wait = new WebDriverWait(driver, 45);
         BaseDfePage.openDfePage(driver, basicURL, wait, "kqi");
-        return new KQIsPage(driver, wait);
+        return new KqiPage(driver, wait);
     }
 
     @Step("I click add new KQI")

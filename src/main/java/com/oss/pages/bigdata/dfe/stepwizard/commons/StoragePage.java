@@ -19,9 +19,9 @@ public class StoragePage extends BasePage {
     private static final String TABLE_NAME_INPUT_ID = "tableName";
     private final Wizard storageWizard;
 
-    public StoragePage(WebDriver driver, WebDriverWait wait) {
+    public StoragePage(WebDriver driver, WebDriverWait wait, String wizardId) {
         super(driver, wait);
-        storageWizard = Wizard.createWizard(driver, wait);
+        storageWizard = Wizard.createByComponentId(driver, wait, wizardId);
     }
 
     @Step("I fill Storage Step with table name: {tableName}")

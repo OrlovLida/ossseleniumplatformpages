@@ -1,25 +1,27 @@
 package com.oss.pages.bigdata.dfe.stepwizard.commons;
 
-import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.wizard.Wizard;
-import com.oss.pages.BasePage;
-import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.wizard.Wizard;
+import com.oss.pages.BasePage;
+
+import io.qameta.allure.Step;
 
 import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
 
 public class DataSourceAndProcessingPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(DataSourceAndProcessingPage.class);
-    final private String FEED_INPUT_ID = "dataSource-input";
-    final private Wizard dsAndProcessingWizard;
+    private static final String FEED_INPUT_ID = "dataSource-input";
+    private final Wizard dsAndProcessingWizard;
 
-    public DataSourceAndProcessingPage(WebDriver driver, WebDriverWait wait) {
+    public DataSourceAndProcessingPage(WebDriver driver, WebDriverWait wait, String wizardId) {
         super(driver, wait);
-        dsAndProcessingWizard = Wizard.createWizard(driver, wait);
+        dsAndProcessingWizard = Wizard.createByComponentId(driver, wait, wizardId);
     }
 
     @Step("I fill Data Source and Processing Step with feed name: {feedName}")
