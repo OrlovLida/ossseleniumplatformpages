@@ -23,37 +23,38 @@ import com.oss.framework.widgets.table.TableWidget;
 import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.platform.toolsmanager.ApplicationWizard;
 import com.oss.pages.platform.toolsmanager.CategoryWizard;
+import com.oss.pages.platform.toolsmanager.ToolsManagerPage;
 import com.oss.untils.FakeGenerator;
 
 /**
  * @author Gabriela Zaranek
  */
 public class NewNavigationTest extends BaseTestCase {
-    //private static final String CATEGORY_NAME = "Selenium Test Navigation " + FakeGenerator.getIdNumber();
+    // private static final String CATEGORY_NAME = "Selenium Test Navigation " + FakeGenerator.getIdNumber();
     private static final String CATEGORY_NAME = "Selenium Test Navigation 123-27-7901";
+    private static final String CATEGORY_NAME_UPDATE = CATEGORY_NAME + "Update";
     private static final String DESCRIPTION = FakeGenerator.getCharacter(FakeGenerator.FilmTitle.LORD_OF_THE_RING);
     private static final String ICON_ID = "AI_CONTROL_DESK";
     private static final String CREATE_SUBCATEGORY_ID = "createSubcategoryButton26";
     private static final String MOVIES_SUBCATEGORY = "Movies";
     private static final String ACTORS_SUBCATEGORY = "Actors";
+    private static final String ACTOR_SUBCATEGORY_UPDATE = ACTORS_SUBCATEGORY + " Update";
     private static final String ADD_APPLICATION = "addTileButton0";
     private static final String APPLICATION_NAME = "All Test Movies";
     private static final String APPLICATION_NAME_2 = "Test Movies";
     private static final String APPLICATION_TYPE = "Inventory View";
-    private static final String EDIT_APPLICATION_BUTTON = "editButton0";
-    private static final String APPLICATION_NAME_2_UPDATE = "Best Movies" ;
+    private static final String EDIT_BUTTON = "editButton0";
+    private static final String APPLICATION_NAME_2_UPDATE = "Best Movies";
+    private static final String EDIT_CATEGORY_BUTTON = "editCategoryButton1";
     private ToolsManagerWindow toolsManagerWindow;
     
     @BeforeClass
     public void getToolsManager() {
-
-        toolsManagerWindow = ToolsManagerWindow.create(driver, webDriverWait);
-    }
-    private void goToHomePage(){
-        driver.get(String.format("%s/#/", BASIC_URL));
+        ToolsManagerPage toolsManagerPage = new ToolsManagerPage(driver);
+        toolsManagerWindow = toolsManagerPage.getToolsManager();
     }
     
-    @Test (priority = 1)
+    @Test(priority = 1)
     public void createCategory() {
         toolsManagerWindow.clickCreateCategory();
         CategoryWizard categoryWizard = CategoryWizard.create(driver, webDriverWait);
@@ -70,9 +71,9 @@ public class NewNavigationTest extends BaseTestCase {
         Assertions.assertThat(toolsManagerWindow.getCategoryDescription(CATEGORY_NAME)).isEqualTo(DESCRIPTION);
     }
     
-    @Test (priority = 2)
+    @Test(priority = 2)
     public void createSubcategories() {
-        toolsManagerWindow.callAction(CATEGORY_NAME,CREATE_SUBCATEGORY_ID);
+        toolsManagerWindow.callAction(CATEGORY_NAME, CREATE_SUBCATEGORY_ID);
         CategoryWizard subcategory = CategoryWizard.create(driver, webDriverWait);
         subcategory.setName(MOVIES_SUBCATEGORY);
         subcategory.clickSave();
@@ -90,7 +91,7 @@ public class NewNavigationTest extends BaseTestCase {
         Assertions.assertThat(message1.get().getText()).contains(MOVIES_SUBCATEGORY);
         Assertions.assertThat(message2).isPresent();
         Assertions.assertThat(message2.get().getText()).contains(ACTORS_SUBCATEGORY);
-
+        
         List<String> subcategoriesNames = toolsManagerWindow.getSubcategoriesNames(CATEGORY_NAME);
         Assertions.assertThat(subcategoriesNames).contains(MOVIES_SUBCATEGORY).contains(ACTORS_SUBCATEGORY);
     }
@@ -105,7 +106,8 @@ public class NewNavigationTest extends BaseTestCase {
         messages.close();
         applicationWizard.addApplication(APPLICATION_TYPE, APPLICATION_NAME);
         Assertions.assertThat(message1).isPresent();
-        Assertions.assertThat(message1.get().getText()).isEqualTo("You've just created an application "+APPLICATION_NAME+" in "+MOVIES_SUBCATEGORY);
+        Assertions.assertThat(message1.get().getText())
+                .isEqualTo("You've just created an application " + APPLICATION_NAME + " in " + MOVIES_SUBCATEGORY);
         DelayUtils.sleep(1000);
         Assertions.assertThat(toolsManagerWindow.getApplicationNames(CATEGORY_NAME)).contains(APPLICATION_NAME);
         Assertions.assertThat(toolsManagerWindow.getApplicationURL(APPLICATION_NAME)).contains("#/views/management/views/inventory-view");
@@ -114,15 +116,15 @@ public class NewNavigationTest extends BaseTestCase {
     @Test
     public void changeOrderCategory() {
         int categoryPosition = toolsManagerWindow.getCategoriesName().indexOf(CATEGORY_NAME);
-        toolsManagerWindow.changeCategoryOrder(CATEGORY_NAME, categoryPosition-2);
+        toolsManagerWindow.changeCategoryOrder(CATEGORY_NAME, categoryPosition - 2);
         int newPosition = toolsManagerWindow.getCategoriesName().indexOf(CATEGORY_NAME);
-        Assertions.assertThat(newPosition).isNotEqualTo(categoryPosition).isEqualTo(categoryPosition-2);
+        Assertions.assertThat(newPosition).isNotEqualTo(categoryPosition).isEqualTo(categoryPosition - 2);
     }
     
     @Test
     public void changeOrderSubcategory() {
         int placeOfActors = toolsManagerWindow.getPlaceOfSubcategory(CATEGORY_NAME, ACTORS_SUBCATEGORY);
-        toolsManagerWindow.changeSubcategoryOrder(CATEGORY_NAME,MOVIES_SUBCATEGORY, placeOfActors);
+        toolsManagerWindow.changeSubcategoryOrder(CATEGORY_NAME, MOVIES_SUBCATEGORY, placeOfActors);
         int newPosition = toolsManagerWindow.getPlaceOfSubcategory(CATEGORY_NAME, MOVIES_SUBCATEGORY);
         Assertions.assertThat(newPosition).isEqualTo(placeOfActors);
     }
@@ -130,58 +132,98 @@ public class NewNavigationTest extends BaseTestCase {
     @Test
     public void changeOrderApplication() {
         int appPosition = toolsManagerWindow.getApplicationNames(CATEGORY_NAME).indexOf(APPLICATION_NAME_2);
-        toolsManagerWindow.changeApplicationOrder(CATEGORY_NAME,APPLICATION_NAME,appPosition);
+        toolsManagerWindow.changeApplicationOrder(CATEGORY_NAME, APPLICATION_NAME, appPosition);
         int newPosition = toolsManagerWindow.getApplicationNames(CATEGORY_NAME).indexOf(APPLICATION_NAME);
         Assertions.assertThat(newPosition).isEqualTo(appPosition);
     }
+    
     @Test
     public void addPathParam() {
-        toolsManagerWindow.callActionApplication(APPLICATION_NAME_2,CATEGORY_NAME, EDIT_APPLICATION_BUTTON);
-        ApplicationWizard applicationWizard = ApplicationWizard.create(driver, webDriverWait);
+        ApplicationWizard applicationWizard = openApplicationWizard();
         applicationWizard.addPathParam("TestMovie");
         applicationWizard.clickSave();
         toolsManagerWindow.openApplication(CATEGORY_NAME, APPLICATION_NAME_2);
-        DelayUtils.waitForPageToLoad(driver,webDriverWait);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assertions.assertThat(driver.getCurrentUrl()).contains("TestMovie");
     }
-
-
+    
     @Test
     public void addQueryParam() {
-        toolsManagerWindow.callActionApplication(APPLICATION_NAME_2,CATEGORY_NAME, EDIT_APPLICATION_BUTTON);
-        ApplicationWizard applicationWizard = ApplicationWizard.create(driver, webDriverWait);
+        ApplicationWizard applicationWizard = openApplicationWizard();
         applicationWizard.addQueryParam("query", "rating=='10'");
         applicationWizard.clickSave();
         toolsManagerWindow.openApplication(CATEGORY_NAME, APPLICATION_NAME_2);
-        DelayUtils.waitForPageToLoad(driver,webDriverWait);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         ArrayList<String> ratingValues = getValuesFromColumn("rating");
         ratingValues.forEach(value -> Assertions.assertThat(value).isEqualTo("10"));
     }
-
+    
     @Test
     public void editApplication() {
-        toolsManagerWindow.callActionApplication(APPLICATION_NAME_2, CATEGORY_NAME, EDIT_APPLICATION_BUTTON);
-        ApplicationWizard applicationWizard = ApplicationWizard.create(driver, webDriverWait);
+        ApplicationWizard applicationWizard = openApplicationWizard();
         applicationWizard.setApplicationName(APPLICATION_NAME_2_UPDATE);
         List<String> applicationNames = toolsManagerWindow.getApplicationNames(CATEGORY_NAME);
         Assertions.assertThat(applicationNames).contains(APPLICATION_NAME_2_UPDATE);
     }
-
+    
     @Test
     public void addPolitics() {
+        ApplicationWizard applicationWizard = openApplicationWizard();
+        applicationWizard.togglePolicies("true");
+        Assertions.assertThat(applicationWizard.isPoliciesSet()).isTrue();
+        applicationWizard.setPolicies("PhysicalDevice", "CREATE");
+        applicationWizard.clickSave();
+        ToolsManagerPage toolsManagerPage = new ToolsManagerPage(driver);
+        toolsManagerPage.changeUser("webseleniumtests2", "oss");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        toolsManagerWindow = toolsManagerPage.getToolsManager();
+        List<String> applicationNames = toolsManagerWindow.getApplicationNames(CATEGORY_NAME);
+        Assertions.assertThat(applicationNames).doesNotContain(APPLICATION_NAME_2_UPDATE).contains(APPLICATION_NAME);
     }
-
+    
+    @Test
+    public void editSubcategoryName() {
+        ToolsManagerPage toolsManagerPage = new ToolsManagerPage(driver);
+        toolsManagerPage.changeUser("webseleniumtests", "Webtests123!");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        toolsManagerWindow = toolsManagerPage.getToolsManager();
+        toolsManagerWindow.callActionSubcategory(CATEGORY_NAME, ACTORS_SUBCATEGORY, EDIT_BUTTON);
+        CategoryWizard categoryWizard = CategoryWizard.create(driver, webDriverWait);
+        categoryWizard.setName(ACTOR_SUBCATEGORY_UPDATE);
+        categoryWizard.clickSave();
+        DelayUtils.sleep(1000);
+        List<String> subcategoriesNames = toolsManagerWindow.getSubcategoriesNames(CATEGORY_NAME);
+        Assertions.assertThat(subcategoriesNames).doesNotContain(ACTORS_SUBCATEGORY).contains(ACTOR_SUBCATEGORY_UPDATE);
+    }
+    
+    @Test
+    public void editCategoryName() {
+        toolsManagerWindow.callAction(CATEGORY_NAME, EDIT_CATEGORY_BUTTON);
+        CategoryWizard categoryWizard = CategoryWizard.create(driver, webDriverWait);
+        categoryWizard.setName(CATEGORY_NAME_UPDATE);
+        categoryWizard.clickSave();
+        DelayUtils.sleep(1000);
+        List<String> categoriesName = toolsManagerWindow.getCategoriesName();
+        Assertions.assertThat(categoriesName).contains(CATEGORY_NAME_UPDATE).doesNotContain(CATEGORY_NAME);
+        
+    }
+    
+    private ApplicationWizard openApplicationWizard() {
+        toolsManagerWindow.callActionApplication(APPLICATION_NAME_2, CATEGORY_NAME, EDIT_BUTTON);
+        return ApplicationWizard.create(driver, webDriverWait);
+    }
+    
     private ArrayList<String> getValuesFromColumn(String columnId) {
         ArrayList<String> attributeValues = new ArrayList<>();
         NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
         TableWidget tableWidget = newInventoryViewPage.getMainTable();
-
+        
         int rowsNumber = tableWidget.getRowsNumber();
         for (int i = 0; i < rowsNumber; i++) {
             attributeValues.add(tableWidget.getCellValue(i, columnId));
         }
-
+        
         return attributeValues;
     }
-
+    
 }
