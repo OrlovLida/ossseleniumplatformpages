@@ -5,7 +5,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.TableWidget;
@@ -22,10 +21,8 @@ public class TicketSearchPage extends BaseSDPage {
 
     public static final String ID_ATTRIBUTE = "id";
     public static final String ASSIGNEE_ATTRIBUTE = "ticketOut.issueOut.assignee.name";
-    public static final String CREATION_TIME_ATTRIBUTE = "ticketOut.issueOut.createDate";
-    public static final String SEVERITY_ATTRIBUTE = "severity";
+    public static final String CREATION_TIME_ATTRIBUTE = "createDate";
     public static final String STATUS_ATTRIBUTE = "ticketOut.issueOut.status.name";
-    public static final String FILTER_BUTTON_CLASS = "button-filters-panel";
     public static final String DESCRIPTION_ATTRIBUTE = "incidentDescription";
 
     private static final String TABLE_WIDGET_ID = "ticket-search-graphql-table";
@@ -66,10 +63,6 @@ public class TicketSearchPage extends BaseSDPage {
         return new TicketDetailsPage(driver, wait);
     }
 
-    public String getAssigneeForNthTicketInTable(int n) {
-        return getAttributeFromTable(n, ASSIGNEE_ATTRIBUTE);
-    }
-
     public String getIdForNthTicketInTable(int n) {
         DelayUtils.waitForPageToLoad(driver, wait);
         return getAttributeFromTable(n, ID_ATTRIBUTE);
@@ -92,12 +85,5 @@ public class TicketSearchPage extends BaseSDPage {
     public void filterBy(String attributeName, String attributeValue, Input.ComponentType componentType) {
         DelayUtils.waitForPageToLoad(driver, wait);
         getTicketTable().searchByAttribute(attributeName, componentType, attributeValue);
-    }
-
-    @Step("Clicking filter button")
-    public void clickFilterButton() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        getTicketTable().getAdvancedSearch().openSearchPanel();
-        log.info("Clicking filter button");
     }
 }
