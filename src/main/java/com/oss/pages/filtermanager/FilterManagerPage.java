@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.openqa.selenium.WebDriver;
 
+import com.oss.framework.components.categorylist.CategoryList;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.CommonList;
 import com.oss.pages.BasePage;
@@ -36,7 +37,7 @@ public class FilterManagerPage extends BasePage {
 
     @Step("Delete All Folders")
     public FilterManagerPage deleteAllFolders() {
-        List<CommonList.Category> categories =
+        List<CategoryList> categories =
                 getCommonList().getCategories().stream().filter(category -> !category.getValue().equals("Uncategorized"))
                         .collect(Collectors.toList());
         categories.forEach(category -> category.callAction(REMOVE_ACTION_ID));
