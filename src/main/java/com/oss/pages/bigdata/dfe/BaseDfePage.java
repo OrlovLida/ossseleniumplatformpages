@@ -1,21 +1,23 @@
 package com.oss.pages.bigdata.dfe;
 
-import com.oss.framework.components.inputs.ComponentFactory;
-import com.oss.framework.components.inputs.Input;
-import com.oss.framework.components.inputs.SearchField;
-import com.oss.framework.components.prompts.ConfirmationBox;
-import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.table.OldTable;
-import com.oss.framework.widgets.tabs.TabWindowWidget;
-import com.oss.pages.BasePage;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
+import com.oss.framework.components.inputs.ComponentFactory;
+import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.inputs.SearchField;
+import com.oss.framework.components.prompts.ConfirmationBox;
+import com.oss.framework.widgets.table.OldTable;
+import com.oss.framework.widgets.tabs.TabWindowWidget;
+import com.oss.pages.BasePage;
+
+import static com.oss.framework.utils.DelayUtils.waitForPageToLoad;
 
 abstract public class BaseDfePage extends BasePage implements BaseDfePageInterface {
 
@@ -32,7 +34,7 @@ abstract public class BaseDfePage extends BasePage implements BaseDfePageInterfa
     public static void openDfePage(WebDriver driver, String basicURL, WebDriverWait wait, String viewName) {
         String pageUrl = String.format("%s/#/view/dfe/%s", basicURL, viewName);
         driver.get(pageUrl);
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad(driver, wait);
         log.info("Opening page: {}", pageUrl);
     }
 
@@ -71,7 +73,7 @@ abstract public class BaseDfePage extends BasePage implements BaseDfePageInterfa
 
     protected Boolean feedExistIntoTable(String name, String columnLabel) {
         searchFeed(name);
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad(driver, wait);
         int numberOfRowsInTable = getNumberOfRowsInTable(columnLabel);
         log.trace("Found rows count: {}. Filtered by {}", numberOfRowsInTable, name);
         return numberOfRowsInTable >= 1;
@@ -106,7 +108,7 @@ abstract public class BaseDfePage extends BasePage implements BaseDfePageInterfa
     }
 
     protected String checkLogStatus(String logsTableTabId, String columnLabel) {
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad(driver, wait);
         return OldTable
                 .createById(driver, wait, logsTableTabId)
                 .getCellValue(0, columnLabel);

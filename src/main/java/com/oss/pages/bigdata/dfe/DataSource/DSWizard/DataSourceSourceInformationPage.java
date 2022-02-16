@@ -1,22 +1,24 @@
 package com.oss.pages.bigdata.dfe.DataSource.DSWizard;
 
-import com.oss.framework.components.inputs.Input;
-import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.wizard.Wizard;
-import com.oss.pages.BasePage;
-import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
 
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.oss.framework.components.inputs.Input;
+import com.oss.framework.wizard.Wizard;
+import com.oss.pages.BasePage;
+
+import io.qameta.allure.Step;
+
 import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
 import static com.oss.framework.components.inputs.Input.ComponentType.SCRIPT_COMPONENT;
+import static com.oss.framework.utils.DelayUtils.waitForPageToLoad;
 
 public class DataSourceSourceInformationPage extends BasePage {
 
@@ -36,14 +38,14 @@ public class DataSourceSourceInformationPage extends BasePage {
 
     @Step("I fill Database with: {database}")
     public void fillDatabase(String database) {
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad(driver, wait);
         sourceInformationWizard.setComponentValue(DATABASE_INPUT_ID, database, COMBOBOX);
         log.debug("Setting database with: {}", database);
     }
 
     @Step("I fill Data Source query")
     public void fillQuery(String query) {
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad(driver, wait);
         sourceInformationWizard.setComponentValue(QUERY_INPUT_ID, query, SCRIPT_COMPONENT);
         log.debug("Setting query field with {}", query);
     }
@@ -64,7 +66,7 @@ public class DataSourceSourceInformationPage extends BasePage {
 
     @Step("I fill Data Source Type with {dsType}")
     public void selectDSType(String dsType) {
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad(driver, wait);
         sourceInformationWizard.setComponentValue(DS_TYPE_INPUT_ID, dsType, COMBOBOX);
         log.debug("Setting Data Source Type with: {}", dsType);
     }

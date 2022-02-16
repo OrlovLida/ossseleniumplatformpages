@@ -1,14 +1,10 @@
 package com.oss.pages.bigdata.dfe.DataSource;
 
-import com.oss.framework.iaa.widgets.timeperiodchooser.TimePeriodChooser;
-import com.oss.framework.components.inputs.ComponentFactory;
-import com.oss.framework.components.inputs.Input.ComponentType;
-import com.oss.framework.components.portals.DropdownList;
-import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.table.OldTable;
-import com.oss.pages.bigdata.dfe.BaseDfePage;
-import io.qameta.allure.Attachment;
-import io.qameta.allure.Step;
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.openqa.selenium.WebDriver;
@@ -16,12 +12,18 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.List;
+import com.oss.framework.components.inputs.ComponentFactory;
+import com.oss.framework.components.inputs.Input.ComponentType;
+import com.oss.framework.components.portals.DropdownList;
+import com.oss.framework.iaa.widgets.timeperiodchooser.TimePeriodChooser;
+import com.oss.framework.widgets.table.OldTable;
+import com.oss.pages.bigdata.dfe.BaseDfePage;
+
+import io.qameta.allure.Attachment;
+import io.qameta.allure.Step;
 
 import static com.oss.configuration.Configuration.CONFIGURATION;
+import static com.oss.framework.utils.DelayUtils.waitForPageToLoad;
 
 public class DataSourcePage extends BaseDfePage {
 
@@ -129,13 +131,13 @@ public class DataSourcePage extends BaseDfePage {
     public void showFile() {
         clickTabsContextAction(SHOW_FILE_LABEL);
         log.info("waiting for show file table to load");
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad(driver, wait);
     }
 
     @Step("I set value in time period chooser")
     public void setValueInTimePeriodChooser(int days, int hours, int minutes) {
         log.info("Setting value for last option in time period chooser: {} days, {} hours, {} minutes", days, hours, minutes);
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad(driver, wait);
         TimePeriodChooser timePeriodChooser = TimePeriodChooser.create(driver, wait, TIME_PERIOD_ID);
         timePeriodChooser.clickClearValue();
         timePeriodChooser.chooseOption(TimePeriodChooser.TimePeriodChooserOption.LAST);
@@ -151,7 +153,7 @@ public class DataSourcePage extends BaseDfePage {
 
     @Step("I check if logs table is empty")
     public boolean isLogsTableEmpty() {
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad(driver, wait);
         return OldTable.createById(driver, wait, LOG_TAB_TABLE_ID).hasNoData();
     }
 

@@ -187,14 +187,14 @@ public class TicketDetailsPage extends BaseSDPage {
         return new RemainderForm(driver, wait);
     }
 
-    @Step("Click Add Remainder")
+    @Step("Click Edit Remainder")
     public RemainderForm clickEditRemainder() {
         clickContextAction(EDIT_REMAINDER_LABEL);
         log.info("Clicking Edit Remainder");
         return new RemainderForm(driver, wait);
     }
 
-    @Step("Click Add Remainder")
+    @Step("Click Remove Remainder")
     public void clickRemoveRemainder() {
         clickContextAction(REMOVE_REMAINDER_LABEL);
         log.info("Clicking Remove Remainder");
