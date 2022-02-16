@@ -5,11 +5,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.EditableList;
 import com.oss.pages.bigdata.dfe.BaseDfePage;
 
 import io.qameta.allure.Step;
+
+import static com.oss.framework.utils.DelayUtils.waitForPageToLoad;
 
 public class DictionaryPage extends BaseDfePage {
 
@@ -57,9 +58,9 @@ public class DictionaryPage extends BaseDfePage {
 
     @Step("I check if Dictionary: {dictionaryName} exists into the table")
     public Boolean dictionaryExistsIntoTable(String dictionaryName) {
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad(driver, wait);
         searchFeed(dictionaryName);
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad(driver, wait);
         int numberOfRowsInTable = getNumberOfRowsInTable(NAME_COLUMN_LABEL);
         log.trace("Found rows count: {}. Filtered by {}", numberOfRowsInTable, dictionaryName);
         return numberOfRowsInTable == 1;
@@ -82,14 +83,14 @@ public class DictionaryPage extends BaseDfePage {
 
     @Step("I check if Entry: {entryName} exists into the table")
     public Boolean entryExistsIntoTable(String entryName) {
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad(driver, wait);
         String textInTable = getEditableList().getRow(0).getCell(KEY_CELL_ID).getText();
         return textInTable.equals(entryName);
     }
 
     @Step("I check if Entry is deleted from the table")
     public Boolean entryDeletedFromTable() {
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad(driver, wait);
         return getEditableList().hasNoData();
     }
 
@@ -109,7 +110,7 @@ public class DictionaryPage extends BaseDfePage {
 
     @Step("I click delete Entry")
     public void clickDeleteEntry() {
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad(driver, wait);
         clickEditableListAction(DELETE_ENTRIES_LABEL);
     }
 

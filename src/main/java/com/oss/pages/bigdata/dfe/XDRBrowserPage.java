@@ -1,17 +1,9 @@
 package com.oss.pages.bigdata.dfe;
 
-import com.google.common.collect.Multimap;
-import com.oss.framework.iaa.widgets.timeperiodchooser.TimePeriodChooser;
-import com.oss.framework.components.contextactions.ActionsContainer;
-import com.oss.framework.components.contextactions.ButtonContainer;
-import com.oss.framework.components.inputs.ComponentFactory;
-import com.oss.framework.components.inputs.Input;
-import com.oss.framework.components.search.AdvancedSearch;
-import com.oss.framework.components.mainheader.Notifications;
-import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.table.TableWidget;
-import io.qameta.allure.Attachment;
-import io.qameta.allure.Step;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.openqa.selenium.WebDriver;
@@ -19,11 +11,22 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
+import com.google.common.collect.Multimap;
+import com.oss.framework.components.contextactions.ActionsContainer;
+import com.oss.framework.components.contextactions.ButtonContainer;
+import com.oss.framework.components.inputs.ComponentFactory;
+import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.mainheader.Notifications;
+import com.oss.framework.components.search.AdvancedSearch;
+import com.oss.framework.iaa.widgets.timeperiodchooser.TimePeriodChooser;
+import com.oss.framework.widgets.table.TableWidget;
+
+import io.qameta.allure.Attachment;
+import io.qameta.allure.Step;
 
 import static com.oss.configuration.Configuration.CONFIGURATION;
+import static com.oss.framework.utils.DelayUtils.sleep;
+import static com.oss.framework.utils.DelayUtils.waitForPageToLoad;
 
 public class XDRBrowserPage extends BaseDfePage {
 
@@ -63,7 +66,7 @@ public class XDRBrowserPage extends BaseDfePage {
     @Step("I set value in time period chooser")
     public void setValueInTimePeriodChooser(int days, int hours, int minutes) {
         log.info("Setting value for last option in time period chooser: {} days, {} hours, {} minutes", days, hours, minutes);
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad(driver, wait);
         TimePeriodChooser timePeriodChooser = TimePeriodChooser.create(driver, wait, TIME_PERIOD_ID);
         timePeriodChooser.clickClearValue();
         timePeriodChooser.chooseOption(TimePeriodChooser.TimePeriodChooserOption.LAST);
@@ -72,9 +75,9 @@ public class XDRBrowserPage extends BaseDfePage {
 
     @Step("I click Search")
     public void clickSearch() {
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad(driver, wait);
         ButtonContainer.create(driver, wait).callActionById(SEARCH_BUTTON_ID);
-        DelayUtils.sleep(3000);
+        sleep(3000);
         log.info("Searching for ETL");
     }
 
@@ -97,7 +100,7 @@ public class XDRBrowserPage extends BaseDfePage {
     @Step("I click download file")
     public void clickDownload() {
         Notifications.create(driver, wait).clickDownloadFile();
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad(driver, wait);
         log.info("Clicking download file");
     }
 
@@ -151,7 +154,7 @@ public class XDRBrowserPage extends BaseDfePage {
     public void clearNotifications() {
         Notifications.create(driver, wait).clearAllNotification();
         log.info("Clearing notifications");
-        DelayUtils.sleep(2000);
+        sleep(2000);
     }
 
     @Step("I check amount of Notifications")
