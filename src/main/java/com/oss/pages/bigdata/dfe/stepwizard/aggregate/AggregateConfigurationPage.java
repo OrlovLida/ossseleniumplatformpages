@@ -8,11 +8,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.oss.framework.iaa.widgets.dfe.aggregatesmanager.AggregatesManagerWidget;
-import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
+
+import static com.oss.framework.utils.DelayUtils.waitForPageToLoad;
 
 public class AggregateConfigurationPage extends BasePage {
 
@@ -27,7 +28,7 @@ public class AggregateConfigurationPage extends BasePage {
 
     @Step("I fill Aggregates Configuration Step Aggregate")
     public void fillAggregatesConfigurationStepAggregate(String configName, String baseTableName, String selectedDimension) {
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad(driver, wait);
 
         AggregatesManagerWidget aggregatesManager = AggregatesManagerWidget.create(driver, wait);
         addNewAggregateConfiguration(aggregatesManager);
@@ -49,8 +50,9 @@ public class AggregateConfigurationPage extends BasePage {
 
     @Step
     public void clickAccept() {
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad(driver, wait);
         aggrConfWizard.clickAccept();
+        waitForPageToLoad(driver, wait);
         log.info("Finishing Step Wizard by clicking 'Accept'");
     }
 

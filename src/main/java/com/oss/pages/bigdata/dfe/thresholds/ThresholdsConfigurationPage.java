@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.tree.TreeComponent;
-import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 
@@ -16,6 +15,8 @@ import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
 import static com.oss.framework.components.inputs.Input.ComponentType.SEARCH_FIELD;
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_AREA;
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
+import static com.oss.framework.utils.DelayUtils.sleep;
+import static com.oss.framework.utils.DelayUtils.waitForPageToLoad;
 
 public class ThresholdsConfigurationPage extends BasePage {
 
@@ -40,7 +41,7 @@ public class ThresholdsConfigurationPage extends BasePage {
     }
 
     public void fillName(String name) {
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad(driver, wait);
         configurationWizard.setComponentValue(NAME_INPUT_ID, name, TEXT_FIELD);
         log.debug("Setting name with: {}", name);
     }
@@ -61,45 +62,45 @@ public class ThresholdsConfigurationPage extends BasePage {
     }
 
     public void fillDebugCombobox(String debugMode) {
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad(driver, wait);
         configurationWizard.setComponentValue(DEBUG_COMBOBOX_ID, debugMode, COMBOBOX);
         log.debug("Setting debug mode: {}", debugMode);
     }
 
     public void addConditionGroup() {
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad(driver, wait);
         TreeComponent treeComponent = configurationWizard.getTreeComponent();
         treeComponent.getNodeByLabelsPath("Condition Group").callAction("ADD");
         log.debug("Adding new condition group");
     }
 
     public void fillConditionTypeCombobox(String conditionType) {
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad(driver, wait);
         configurationWizard.setComponentValue(CONDITION_COMBOBOX_ID, conditionType, COMBOBOX);
         log.debug("Setting condition type with: {}", conditionType);
     }
 
     public void fillFormula(String formula) {
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad(driver, wait);
         configurationWizard.setComponentValue(FORMULA_AREA_ID, formula, TEXT_AREA);
         log.debug("Setting description with: {}", formula);
     }
 
     public void fillSeverityCombobox(String severity) {
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad(driver, wait);
         configurationWizard.setComponentValue(SEVERITY_COMBOBOX_ID, severity, COMBOBOX);
         log.debug("Setting severity for simple condition with: {}", severity);
     }
 
     public void fillElseSeverityCombobox(String severity) {
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad(driver, wait);
         configurationWizard.setComponentValue(ELSE_SEVERITY_COMBOBOX_ID, severity, COMBOBOX);
         log.debug("Setting severity for else condition with: {}", severity);
     }
 
     public void clickAddNewFilter() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        DelayUtils.sleep();
+        waitForPageToLoad(driver, wait);
+        sleep();
         configurationWizard.clickButtonById("dimensionButtonAddId");
         log.debug("Clicking add new filter button");
     }
