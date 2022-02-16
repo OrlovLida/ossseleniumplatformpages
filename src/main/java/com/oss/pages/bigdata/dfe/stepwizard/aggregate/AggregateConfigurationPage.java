@@ -17,12 +17,12 @@ import io.qameta.allure.Step;
 public class AggregateConfigurationPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(AggregateConfigurationPage.class);
-    private static final String WIZARD_ID = "aggregatesWizardWindow";
+    private static final String AGGREGATES_WIZARD_ID = "aggregatesWizardWindow";
     private final Wizard aggrConfWizard;
 
     public AggregateConfigurationPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
-        aggrConfWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
+        aggrConfWizard = Wizard.createByComponentId(driver, wait, AGGREGATES_WIZARD_ID);
     }
 
     @Step("I fill Aggregates Configuration Step Aggregate")

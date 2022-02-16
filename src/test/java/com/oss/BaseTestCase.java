@@ -12,6 +12,8 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.IHookCallBack;
 import org.testng.IHookable;
@@ -26,6 +28,7 @@ import com.jayway.restassured.config.ObjectMapperConfig;
 import com.jayway.restassured.config.RestAssuredConfig;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
+import com.oss.framework.components.mainheader.LoginPanel;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.LoginPage;
@@ -41,6 +44,7 @@ public class BaseTestCase implements IHookable {
 
     public static final String BASIC_URL = CONFIGURATION.getUrl();
     public static final String MOCK_PATH = CONFIGURATION.getValue("mockPath");
+    private static final Logger LOGGER = LoggerFactory.getLogger(BaseTestCase.class);
 
     public WebDriver driver;
     public WebDriverWait webDriverWait;
@@ -66,6 +70,11 @@ public class BaseTestCase implements IHookable {
     @AfterClass
     public void closeBrowser() {
         if (driver != null) {
+            try {
+                logout();
+            } catch (Exception e) {
+                LOGGER.warn("Cannot logout. Exception occured: {}", e.getMessage());
+            }
             DelayUtils.sleep(5000);
             driver.close();
             driver.quit();
@@ -174,6 +183,10 @@ public class BaseTestCase implements IHookable {
     protected RestAssuredConfig prepareRestAssureConfig() {
         return RestAssuredConfig.config()
                 .objectMapperConfig(new ObjectMapperConfig().jackson2ObjectMapperFactory((clazz, s) -> JDK8ObjectMapper.getMapper()));
+    }
+
+    private void logout() {
+        LoginPanel.create(driver, webDriverWait).open().logOut();
     }
 
 }

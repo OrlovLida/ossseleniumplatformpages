@@ -13,9 +13,10 @@ import io.qameta.allure.Step;
 public class DimensionColumnMappingPage extends com.oss.pages.bigdata.dfe.stepwizard.commons.ColumnMappingPage {
 
     private static final Logger log = LoggerFactory.getLogger(DimensionColumnMappingPage.class);
+    private static final String DIMENSION_WIZARD_ID = "dimensionsWizardWindow";
 
     public DimensionColumnMappingPage(WebDriver driver, WebDriverWait wait) {
-        super(driver, wait);
+        super(driver, wait, DIMENSION_WIZARD_ID);
     }
 
     @Step("I fill Column Mapping Step. I set column role: {columnRole}")

@@ -98,8 +98,8 @@ public class FilteringOnRelationNodesTest extends BaseTestCase {
         Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).doesNotContain(FLOOR_NAME).doesNotContain(FLOOR_NAME_2);
         clearFilter(node);
     }
-    // disabled until fix OSSWEB-15969
-    @Test(priority = 5, enabled = false)
+
+    @Test(priority = 5)
     public void filterOnMoreRelations() {
         TreeComponent.Node location1stLevel = hierarchyViewPage.getNodeByLabelPath(LOCATION_NAME + ".Locations");
         AdvancedSearch advancedSearch = location1stLevel.openAdvancedSearch();
@@ -119,7 +119,7 @@ public class FilteringOnRelationNodesTest extends BaseTestCase {
         clearFilter(location1stLevel);
     }
     
-    @Test(priority = 6, enabled = false)
+    @Test(priority = 6)
     public void filterOnRelationsAtDifferentLevels() {
         String nodePathLabel = LOCATION_NAME + ".Locations." + SUB_LOCATION_TYPE_FLOOR + "." + FLOOR_NAME + ".Locations";
         hierarchyViewPage.expandNextLevel(LOCATION_NAME);

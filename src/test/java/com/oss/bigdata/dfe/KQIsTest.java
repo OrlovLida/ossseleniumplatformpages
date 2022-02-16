@@ -1,17 +1,19 @@
 package com.oss.bigdata.dfe;
 
-import com.oss.BaseTestCase;
-import com.oss.pages.bigdata.dfe.KQIs.KQIWizardPage;
-import com.oss.pages.bigdata.dfe.KQIs.KQIsPage;
-import com.oss.pages.bigdata.utils.ConstantsDfe;
-import com.oss.utils.TestListener;
-import io.qameta.allure.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+
+import com.oss.BaseTestCase;
+import com.oss.pages.bigdata.dfe.kqi.KqiPage;
+import com.oss.pages.bigdata.dfe.kqi.KqiWizardPage;
+import com.oss.pages.bigdata.utils.ConstantsDfe;
+import com.oss.utils.TestListener;
+
+import io.qameta.allure.Description;
 
 @Listeners({TestListener.class})
 public class KQIsTest extends BaseTestCase {
@@ -21,13 +23,13 @@ public class KQIsTest extends BaseTestCase {
     private final String UNIT_TYPE = "Minutes";
     private final String FORMULA = "$[M:COUNT(t:SMOKE#ETLforKqis.ATTEMPTS_LONG)]";
 
-    private KQIsPage kqisPage;
+    private KqiPage kqisPage;
     private String kqisName;
     private String updatedKQIsName;
 
     @BeforeClass
     public void goToKQIsView() {
-        kqisPage = KQIsPage.goToPage(driver, BASIC_URL);
+        kqisPage = KqiPage.goToPage(driver, BASIC_URL);
 
         kqisName = ConstantsDfe.createName() + "_kqiTest";
         updatedKQIsName = kqisName + "_updated";
@@ -37,7 +39,7 @@ public class KQIsTest extends BaseTestCase {
     @Description("Add new KQI")
     public void addKQI() {
         kqisPage.clickAddNewKQI();
-        KQIWizardPage kqiWizard = new KQIWizardPage(driver, webDriverWait);
+        KqiWizardPage kqiWizard = new KqiWizardPage(driver, webDriverWait);
         kqiWizard.fillKQIWizard(kqisName, VALUE_TYPE, UNIT_TYPE, FORMULA);
         kqiWizard.clickAccept();
         Boolean kqiIsCreated = kqisPage.kqiExistIntoTable(kqisName);
@@ -52,7 +54,7 @@ public class KQIsTest extends BaseTestCase {
         if (kqiExists) {
             kqisPage.selectFoundKQI();
             kqisPage.clickEditKQI();
-            KQIWizardPage kqiWizard = new KQIWizardPage(driver, webDriverWait);
+            KqiWizardPage kqiWizard = new KqiWizardPage(driver, webDriverWait);
             kqiWizard.fillName(updatedKQIsName);
             kqiWizard.clickAccept();
             Boolean kqiIsEdited = kqisPage.kqiExistIntoTable(updatedKQIsName);
@@ -67,12 +69,12 @@ public class KQIsTest extends BaseTestCase {
     @Test(priority = 3, testName = "Delete KQI", description = "Delete KQI")
     @Description("Delete KQI")
     public void deleteKQI() {
-        Boolean kqiExists = kqisPage.kqiExistIntoTable(kqisName);
+        boolean kqiExists = kqisPage.kqiExistIntoTable(kqisName);
         if (kqiExists) {
             kqisPage.selectFoundKQI();
             kqisPage.clickDeleteKQI();
             kqisPage.clickConfirmDelete();
-            Boolean kqiIsDeleted = !kqisPage.kqiExistIntoTable(kqisName);
+            boolean kqiIsDeleted = !kqisPage.kqiExistIntoTable(kqisName);
 
             Assert.assertTrue(kqiIsDeleted);
         } else {

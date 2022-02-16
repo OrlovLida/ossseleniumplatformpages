@@ -154,7 +154,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         networkViewPage.expandDockedPanel(LEFT);
         waitForPageToLoad();
         networkViewPage.selectObjectInViewContent(NAME, DEVICE_NAME);
-        DelayUtils.sleep(5000); // naming has to recalculate, it doesn't show progress in the console
+        DelayUtils.sleep(15000); // naming has to recalculate, it doesn't show progress in the console
         networkViewPage.selectObjectInViewContent(NAME, DEVICE_NAME);
         waitForPageToLoad();
         networkViewPage.useContextAction(ActionsContainer.SHOW_ON_GROUP_ID, NetworkViewPage.HIERARCHY_VIEW_ACTION);

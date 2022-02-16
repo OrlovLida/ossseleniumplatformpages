@@ -112,7 +112,13 @@ public class TicketDetailsPage extends BaseSDPage {
     @Step("Changing status to {statusName}")
     public void changeStatus(String statusName) {
         ComponentFactory.create(CHANGE_TICKET_STATUS_COMBOBOX_ID, Input.ComponentType.COMBOBOX, driver, wait).setSingleStringValue(statusName);
+        DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Changing status to {}", statusName);
+    }
+
+    @Step("Check status in ticket status combobox")
+    public String checkStatus() {
+        return ComponentFactory.create(CHANGE_TICKET_STATUS_COMBOBOX_ID, Input.ComponentType.COMBOBOX, driver, wait).getStringValue();
     }
 
     @Step("Maximize window")
@@ -171,8 +177,7 @@ public class TicketDetailsPage extends BaseSDPage {
     public String getOpenedTicketId() {
         String viewTitle = ToolbarWidget.create(driver, wait).getViewTitle();
         String[] viewWithID = viewTitle.split("#");
-        String id = viewWithID[1];
-        return id;
+        return viewWithID[1];
     }
 
     @Step("Click Add Remainder")

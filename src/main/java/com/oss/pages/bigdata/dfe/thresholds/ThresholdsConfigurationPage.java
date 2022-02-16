@@ -21,7 +21,7 @@ public class ThresholdsConfigurationPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(ThresholdsConfigurationPage.class);
 
-    private static final String WIZARD_ID = "thresholdWizardWindowId";
+    private static final String WIZARD_ID = "thresholdWizard";
     private static final String NAME_INPUT_ID = "conditionGroupNameId";
     private static final String ACTIVE_COMBOBOX_ID = "conditionGroupActiveId";
     private static final String AGGREGATION_COMBOBOX_ID = "conditionGroupTimeGrainId";
@@ -69,7 +69,7 @@ public class ThresholdsConfigurationPage extends BasePage {
     public void addConditionGroup() {
         DelayUtils.waitForPageToLoad(driver, wait);
         TreeComponent treeComponent = configurationWizard.getTreeComponent();
-        treeComponent.getNodeByLabelsPath("Condition_Group").callAction("ADD");
+        treeComponent.getNodeByLabelsPath("Condition Group").callAction("ADD");
         log.debug("Adding new condition group");
     }
 

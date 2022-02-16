@@ -345,22 +345,23 @@ public class IndicatorsViewTest extends BaseTestCase {
         }
     }
 
-    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
+    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName", "dimensionFolderWithOptions"})
     @Test(priority = 12, testName = "Display Child Objects", description = "Display series for child objects")
     @Description("Display series for child objects")
     public void childObjectTest(
-            @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
+            @Optional("All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators") String indicatorNodesToExpand,
             @Optional("DBTIME") String indicatorNodesToSelect,
-            @Optional() String dimensionNodesToExpand,
+            @Optional("Self Monitoring Package,MOs: self:DPE:IF Run Analysis") String dimensionNodesToExpand,
             @Optional("DC Type: THRES_DC") String dimensionNodesToSelect,
-            @Optional("Data Collection Statistics") String filterName
+            @Optional("All Self Monitoring") String filterName,
+            @Optional("Managed Objects") String dimensionFolderWithOptions
     ) {
         try {
             kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
 
             assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
 
-            kpiViewPage.clickDimensionOptions(dimensionNodesToExpand);
+            kpiViewPage.clickDimensionOptions(dimensionFolderWithOptions);
             kpiViewPage.fillLevelOfChildObjects("1");
             kpiViewPage.applyChanges();
 
@@ -449,7 +450,7 @@ public class IndicatorsViewTest extends BaseTestCase {
             String selectedAggMethod = kpiViewPage.activeAggMethod();
             int numOfActiveAggMethods = kpiViewPage.numberOfActiveAggMethods();
 
-            assertTrue(selectedAggMethod.equals("MAX"));
+            assertEquals(selectedAggMethod, "MAX");
             assertEquals(numOfActiveAggMethods, 1);
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -475,7 +476,7 @@ public class IndicatorsViewTest extends BaseTestCase {
             assertTrue(kpiViewPage.isZoomOutButtonVisible());
 
             kpiViewPage.clickZoomOutButton();
-            assertTrue(!kpiViewPage.isZoomOutButtonVisible());
+            assertFalse(kpiViewPage.isZoomOutButtonVisible());
         } catch (Exception e) {
             log.error(e.getMessage());
             fail();
