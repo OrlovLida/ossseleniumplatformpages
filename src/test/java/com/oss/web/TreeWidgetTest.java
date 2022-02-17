@@ -205,6 +205,8 @@ public class TreeWidgetTest extends BaseTestCase {
         pmWizard.setModel(PLUGGABLE_MODULE_MODLE);
         pmWizard.accept();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        hierarchyViewPage.getMainTree().unselectAllNodes();
+        DelayUtils.waitForPageToLoad(driver,webDriverWait);
         Assertions.assertThat(hierarchyViewPage.isNodePresent(PLUGGABLE_MODULE_01_PATH)).isTrue();
         Assertions.assertThat(hierarchyViewPage.isNodePresent(PLUGGABLE_MODULE_02_PATH)).isTrue();
         
