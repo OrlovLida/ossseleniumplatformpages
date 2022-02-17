@@ -7,6 +7,7 @@
 package com.oss.web;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
 import org.slf4j.Logger;
@@ -18,6 +19,7 @@ import com.oss.BaseTestCase;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.components.tree.TreeComponent;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.HierarchyViewPage;
 import com.oss.repositories.AddressRepository;
 import com.oss.repositories.LocationInventoryRepository;
@@ -38,8 +40,7 @@ public class FilteringOnRelationNodesTest extends BaseTestCase {
     private static final String FLOOR_NAME_2 = "FL_ST2";
     private static final String SUB_LOCATION_TYPE_FLOOR = "Floor";
     private static final String FLOOR_NAME = "FL_ST1";
-    private static final String SUB_LOCATION_TYPE_ROW = "Row";
-    private static final String ROW_NAME = "rh01";
+    private static final String ROOM_PATH = LOCATION_NAME + ".Locations." + SUB_LOCATION_TYPE_FLOOR + "." + FLOOR_NAME + ".Locations." + SUB_LOCATION_TYPE_ROOM + "." + ROOM_NAME;
     
     private HierarchyViewPage hierarchyViewPage;
     private String locationId;
@@ -111,7 +112,8 @@ public class FilteringOnRelationNodesTest extends BaseTestCase {
         advancedSearch = location2stLevel.openAdvancedSearch();
         advancedSearch.setFilter(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, ROOM_NAME);
         advancedSearch.clickApply();
-
+        Optional<TreeComponent.Node> roomNode = hierarchyViewPage.getMainTree().findNodeByLabelsPath(ROOM_PATH);
+        Assertions.assertThat(roomNode).isPresent();
         Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(FLOOR_NAME).doesNotContain(FLOOR_NAME_2).contains(ROOM_NAME)
                 .doesNotContain(ROOM_NAME_2);
         
@@ -139,11 +141,11 @@ public class FilteringOnRelationNodesTest extends BaseTestCase {
         advancedSearch = location1stLevel.openAdvancedSearch();
         advancedSearch.setFilter(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, FLOOR_NAME);
         advancedSearch.clickApply();
-        hierarchyViewPage.expandTreeNode(FLOOR_NAME);
-        hierarchyViewPage.getNodeByLabelPath(nodePathLabel).expandNode();
+        Optional<TreeComponent.Node> roomNode = hierarchyViewPage.getMainTree().findNodeByLabelsPath(ROOM_PATH);
+        Assertions.assertThat(roomNode).isPresent();
         Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(FLOOR_NAME).doesNotContain(FLOOR_NAME_2).contains(ROOM_NAME).doesNotContain(ROOM_NAME_2);
 
-        clearFilter(location2stLevel);
+        clearFilter(hierarchyViewPage.getNodeByLabelPath(nodePathLabel));
         clearFilter(location1stLevel);
     }
 
@@ -169,10 +171,10 @@ public class FilteringOnRelationNodesTest extends BaseTestCase {
     private void createLocationsForTest() {
         Long firstGeographicalAddressId = getGeographicalAddress();
         locationId = createBuilding(firstGeographicalAddressId);
-        Long floorId = createFloor(FLOOR_NAME, locationId, LOCATION_TYPE_BUILDING);
-        createFloor(FLOOR_NAME_2, locationId, LOCATION_TYPE_BUILDING);
-        createRoom(ROOM_NAME, floorId, SUB_LOCATION_TYPE_FLOOR);
-        createRoom(ROOM_NAME_2, floorId, SUB_LOCATION_TYPE_FLOOR);
+        Long floorId = createFloor(FLOOR_NAME, locationId);
+        createFloor(FLOOR_NAME_2, locationId);
+        createRoom(ROOM_NAME, floorId);
+        createRoom(ROOM_NAME_2, floorId);
     }
     
     private Long getGeographicalAddress() {
@@ -185,17 +187,16 @@ public class FilteringOnRelationNodesTest extends BaseTestCase {
         return locationInventoryRepository.createLocation(LOCATION_NAME, LOCATION_TYPE_BUILDING, addressId);
     }
     
-    private Long createRoom(String roomName, Long preciseLocationId, String preciseLocationType) {
+    private Long createRoom(String roomName, Long preciseLocationId) {
         LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);
-        return locationInventoryRepository.createSubLocation(SUB_LOCATION_TYPE_ROOM, roomName, preciseLocationId, preciseLocationType,
+        return locationInventoryRepository.createSubLocation(SUB_LOCATION_TYPE_ROOM, roomName, preciseLocationId, SUB_LOCATION_TYPE_FLOOR,
                 Long.valueOf(locationId), LOCATION_TYPE_BUILDING);
     }
     
-    private Long createFloor(String floorName, String preciseLocationId, String preciseLocationType) {
+    private Long createFloor(String floorName, String preciseLocationId) {
         LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);
         return locationInventoryRepository.createSubLocation(SUB_LOCATION_TYPE_FLOOR, floorName, Long.parseLong(preciseLocationId),
-                preciseLocationType,
-                Long.valueOf(locationId), LOCATION_TYPE_BUILDING);
+                LOCATION_TYPE_BUILDING, Long.valueOf(locationId), LOCATION_TYPE_BUILDING);
     }
 
 }
