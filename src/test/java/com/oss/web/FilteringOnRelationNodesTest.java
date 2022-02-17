@@ -19,7 +19,6 @@ import com.oss.BaseTestCase;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.components.tree.TreeComponent;
-import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.HierarchyViewPage;
 import com.oss.repositories.AddressRepository;
 import com.oss.repositories.LocationInventoryRepository;
@@ -40,7 +39,8 @@ public class FilteringOnRelationNodesTest extends BaseTestCase {
     private static final String FLOOR_NAME_2 = "FL_ST2";
     private static final String SUB_LOCATION_TYPE_FLOOR = "Floor";
     private static final String FLOOR_NAME = "FL_ST1";
-    private static final String ROOM_PATH = LOCATION_NAME + ".Locations." + SUB_LOCATION_TYPE_FLOOR + "." + FLOOR_NAME + ".Locations." + SUB_LOCATION_TYPE_ROOM + "." + ROOM_NAME;
+    private static final String ROOM_PATH = LOCATION_NAME + ".Locations." + SUB_LOCATION_TYPE_FLOOR + "." + FLOOR_NAME + ".Locations."
+            + SUB_LOCATION_TYPE_ROOM + "." + ROOM_NAME;
     
     private HierarchyViewPage hierarchyViewPage;
     private String locationId;
@@ -59,7 +59,7 @@ public class FilteringOnRelationNodesTest extends BaseTestCase {
         Assertions.assertThat(nodesLabel).contains(LOCATION_NAME);
         
         log.info("Search Location (XID: " + locationId + ") in Hierarchy View");
-
+        
     }
     
     @Test(priority = 1)
@@ -99,7 +99,7 @@ public class FilteringOnRelationNodesTest extends BaseTestCase {
         Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).doesNotContain(FLOOR_NAME).doesNotContain(FLOOR_NAME_2);
         clearFilter(node);
     }
-
+    
     @Test(priority = 5)
     public void filterOnMoreRelations() {
         TreeComponent.Node location1stLevel = hierarchyViewPage.getNodeByLabelPath(LOCATION_NAME + ".Locations");
@@ -114,7 +114,8 @@ public class FilteringOnRelationNodesTest extends BaseTestCase {
         advancedSearch.clickApply();
         Optional<TreeComponent.Node> roomNode = hierarchyViewPage.getMainTree().findNodeByLabelsPath(ROOM_PATH);
         Assertions.assertThat(roomNode).isPresent();
-        Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(FLOOR_NAME).doesNotContain(FLOOR_NAME_2).contains(ROOM_NAME)
+        Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(FLOOR_NAME).doesNotContain(FLOOR_NAME_2)
+                .contains(ROOM_NAME)
                 .doesNotContain(ROOM_NAME_2);
         
         clearFilter(location2stLevel);
@@ -137,19 +138,20 @@ public class FilteringOnRelationNodesTest extends BaseTestCase {
         advancedSearch.setFilter(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, FLOOR_NAME_2);
         advancedSearch.clickApply();
         Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(FLOOR_NAME_2).doesNotContain(FLOOR_NAME);
-
+        
         advancedSearch = location1stLevel.openAdvancedSearch();
         advancedSearch.setFilter(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, FLOOR_NAME);
         advancedSearch.clickApply();
         Optional<TreeComponent.Node> roomNode = hierarchyViewPage.getMainTree().findNodeByLabelsPath(ROOM_PATH);
         Assertions.assertThat(roomNode).isPresent();
-        Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(FLOOR_NAME).doesNotContain(FLOOR_NAME_2).contains(ROOM_NAME).doesNotContain(ROOM_NAME_2);
-
+        Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(FLOOR_NAME).doesNotContain(FLOOR_NAME_2)
+                .contains(ROOM_NAME).doesNotContain(ROOM_NAME_2);
+        
         clearFilter(hierarchyViewPage.getNodeByLabelPath(nodePathLabel));
         clearFilter(location1stLevel);
     }
-
-    @Test (priority = 7)
+    
+    @Test(priority = 7)
     public void filterOnRelationsAndExpandNextLevel() {
         hierarchyViewPage.getFirstNode().expandNextLevel();
         TreeComponent.Node node = hierarchyViewPage.getNodeByLabelPath(LOCATION_NAME + ".Locations");
@@ -159,7 +161,7 @@ public class FilteringOnRelationNodesTest extends BaseTestCase {
         Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(FLOOR_NAME).doesNotContain(FLOOR_NAME_2);
         hierarchyViewPage.expandNextLevel(LOCATION_NAME);
         Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(FLOOR_NAME).contains(FLOOR_NAME_2);
-
+        
     }
     
     private void clearFilter(TreeComponent.Node node) {
@@ -198,5 +200,5 @@ public class FilteringOnRelationNodesTest extends BaseTestCase {
         return locationInventoryRepository.createSubLocation(SUB_LOCATION_TYPE_FLOOR, floorName, Long.parseLong(preciseLocationId),
                 LOCATION_TYPE_BUILDING, Long.valueOf(locationId), LOCATION_TYPE_BUILDING);
     }
-
+    
 }
