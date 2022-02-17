@@ -55,7 +55,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
 
     private void assertDueDate(String startDueDate, String dueDate, String newDueDate) {
         if (startDueDate.isEmpty()) {
-            Assert.assertEquals("", newDueDate);
+            Assert.assertEquals(newDueDate, "");
         } else {
             Assert.assertEquals(dueDate, newDueDate);
         }
@@ -67,7 +67,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         changeStateMilestoneWizardPage.setReason(reason);
         changeStateMilestoneWizardPage.accept();
         String message = SystemMessageContainer.create(driver, webDriverWait).getFirstMessage().orElseThrow(() -> new RuntimeException("There is no any System Message")).getText();
-        Assert.assertEquals("All milestones changed state successfully.", message);
+        Assert.assertEquals(message, "All milestones changed state successfully.");
     }
 
     private void changeMilestoneState(String previousState, String nextState, String reason, boolean isReasonMandatory) {
@@ -91,7 +91,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         changeStateMilestoneWizardPage.accept();
 
         String message = SystemMessageContainer.create(driver, webDriverWait).getFirstMessage().orElseThrow(() -> new RuntimeException("There is no any System Message")).getText();
-        Assert.assertEquals("All milestones changed state successfully.", message);
+        Assert.assertEquals(message, "All milestones changed state successfully.");
         DelayUtils.sleep(1000);
         String newStateValue = milestoneViewPage.getMilestoneAttribute("state");
         String newModifyDate = milestoneViewPage.getMilestoneAttribute("modifyDate");
@@ -103,7 +103,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         Assert.assertNotEquals(newModifyDate, startModifyDate);
         switch (nextState) {
             case NOT_NEEDED_STATE:
-                Assert.assertEquals("", newCompletionDate);
+                Assert.assertEquals(newCompletionDate, "");
                 assertDueDate(startDueDate, startDueDate, newDueDate);
                 break;
             case NEW_STATE:
@@ -169,12 +169,12 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
     }
 
     @Test(priority = 1, description = "First Milestone Change State Flow")
-    @Description("First Milestone Change State Flow")
+    @Description("First Milestone Change State Flow:\n not needed → new → in progress → not needed")
     public void firstMilestoneFlow() {
         /**
          * not needed → new → in progress → not needed
          */
-        DelayUtils.waitForPageToLoad(driver,webDriverWait);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         milestoneViewPage.selectMilestone(milestoneName1);
@@ -185,12 +185,12 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
     }
 
     @Test(priority = 2, description = "Second Milestone Change State Flow")
-    @Description("Second Milestone Change State Flow")
+    @Description("Second Milestone Change State Flow:\n new → in progress → completed (not permitted).....{change user}.....in progress → completed")
     public void secondMilestoneFlow() {
         /**
          * new → in progress → completed (not permitted).....{change user}.....in progress → completed
          */
-        DelayUtils.waitForPageToLoad(driver,webDriverWait);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         milestoneViewPage.selectMilestone(milestoneName2);
@@ -209,7 +209,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         String newModifyDate = milestoneViewPage.getMilestoneAttribute("modifyDate");
         String newStateValue = milestoneViewPage.getMilestoneAttribute("state");
         Assert.assertEquals(startModifyDate, newModifyDate);
-        Assert.assertEquals(IN_PROGRESS_STATE, newStateValue);
+        Assert.assertEquals(newStateValue, IN_PROGRESS_STATE);
 
         // change user for admin and try again
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -220,12 +220,12 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
     }
 
     @Test(priority = 3, description = "Third Milestone Change State Flow")
-    @Description("Third Milestone Change State Flow")
+    @Description("Third Milestone Change State Flow:\n not needed → new → suspended → in progress → completed → in progress → suspended → new → not needed")
     public void thirdMilestoneFlow() {
         /**
          * not needed → new → suspended → in progress → completed → in progress → suspended → new → not needed
          */
-        DelayUtils.waitForPageToLoad(driver,webDriverWait);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         milestoneViewPage.changeUser(BPM_USER_LOGIN, BPM_USER_PASSWORD);
@@ -244,12 +244,12 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
     }
 
     @Test(priority = 4, description = "Multiselect Milestones Change State")
-    @Description("Multiselect Milestones Change State")
+    @Description("Multiselect Milestones Change State:\n not needed → new → in progress → suspended → in progress")
     public void multiChangeState() {
         /**
          * not needed → new → in progress → suspended → in progress
          */
-        DelayUtils.waitForPageToLoad(driver,webDriverWait);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
@@ -271,14 +271,14 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         milestoneViewPage.selectAll();
         milestoneViewPage.selectMilestone(milestoneName3);
         String state2 = milestoneViewPage.getMilestoneAttribute("state");
-        Assert.assertEquals(IN_PROGRESS_STATE, state1);
-        Assert.assertEquals(IN_PROGRESS_STATE, state2);
+        Assert.assertEquals(state1, IN_PROGRESS_STATE);
+        Assert.assertEquals(state2, IN_PROGRESS_STATE);
     }
 
     @Test(priority = 5, description = "Multiselect Milestones Change State (Different States)")
     @Description("Multiselect Milestones Change State (Different States)")
     public void checkMultiChangeStateDifferent() {
-        DelayUtils.waitForPageToLoad(driver,webDriverWait);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
