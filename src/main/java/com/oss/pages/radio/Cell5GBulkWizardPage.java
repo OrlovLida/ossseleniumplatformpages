@@ -64,14 +64,14 @@ public class Cell5GBulkWizardPage extends BasePage {
         setMimo("2Tx2Rx");
         clickNext();
         setFirstAvailableId();
-        int rowNumber = 1;
+        int rowNumber = amountOfCells;
         for (String cellName : cellNames) {
             Row row = EditableList.createById(driver, wait, CELLS_LIST_ID).getRow(rowNumber - 1);
             row.setValue(cellName, COLUMN_NAME, NAME, TEXT_FIELD);
             row.setValue(String.valueOf(localCellsId[rowNumber - 1]), COLUMN_LOCAL_CELL_ID, LOCAL_CELL_ID, TEXT_FIELD);
             row.setValue("5", COLUMN_PCI, PCI, TEXT_FIELD);
             row.setValue("10", COLUMN_RSI, RSI, TEXT_FIELD);
-            rowNumber++;
+            rowNumber--;
         }
         clickAccept();
     }
