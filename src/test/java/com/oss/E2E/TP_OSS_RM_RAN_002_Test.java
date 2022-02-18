@@ -7,12 +7,11 @@ import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
-import com.oss.framework.components.alerts.SystemMessageContainer.Message;
-import com.oss.framework.components.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.TasksPage;
 import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 import com.oss.pages.platform.HomePage;
+import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
 import com.oss.pages.radio.CellSiteConfigurationPage;
 import com.oss.utils.RandomGenerator;
 import com.oss.utils.TestListener;
@@ -22,8 +21,11 @@ import io.qameta.allure.Description;
 @Listeners({TestListener.class})
 public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
 
-    private static final String LOCATION_NAME = "Poznan-BU1";
+    private String processNRPCode;
+    private CellSiteConfigurationPage cellSiteConfigurationPage;
+    private static final String LOCATION_NAME = "XYZ_SeleniumTests";
     private static final String SITE = "Site";
+    private static final String NAME = "Name";
     private static final String ANTENNA_NAME_0 = "TP_OSS_RM_RAN_002_ANTENNA_0";
     private static final String ANTENNA_NAME_1 = "TP_OSS_RM_RAN_002_ANTENNA_1";
     private static final String ANTENNA_NAME_2 = "TP_OSS_RM_RAN_002_ANTENNA_2";
@@ -41,30 +43,29 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
     private static final String CELL5G_NAME_2 = "TP_OSS_RM_RAN_002_CELL5G_2";
     private static final String[] CELL5G_NAMES = {CELL5G_NAME_0, CELL5G_NAME_1, CELL5G_NAME_2};
     private static final String CELL5G_CARRIER = "NR3600-n78-140 (642000)";
-    private static final String MCCMNC_PRIMARY = "DU03 [mcc: 424, mnc: 03]";
+    private static final String MCCMNC_PRIMARY = "E2ETests [mcc: 0001, mnc: 01]";
     private static final int[] LOCAL_CELLS_ID = {7, 8, 9};
     private static final String BUSINESS_PROCESS_MANAGEMENT = "Business Process Management";
     private static final String BPM_AND_PLANNING = "BPM and Planning";
     private static final String PROCESS_INSTANCES = "Process Instances";
-    private String processNRPCode;
-    private CellSiteConfigurationPage cellSiteConfigurationPage;
 
     @BeforeClass
-    public void openNetworkDiscoveryControlView() {
+    public void openConsole() {
         waitForPageToLoad();
         cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);
-        homePage.chooseFromLeftSideMenu(PROCESS_INSTANCES, BPM_AND_PLANNING, BUSINESS_PROCESS_MANAGEMENT);
-        waitForPageToLoad();
     }
 
     @Test(priority = 1)
     @Description("Create NRP Process")
     public void createProcessNRP() {
+        homePage.chooseFromLeftSideMenu(PROCESS_INSTANCES, BPM_AND_PLANNING, BUSINESS_PROCESS_MANAGEMENT);
+        waitForPageToLoad();
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
         processNRPCode = processWizardPage.createSimpleNRP();
         checkMessageSize();
         checkMessageType();
         checkMessageContainsText(processNRPCode);
+        closeMessage();
     }
 
     @Test(priority = 2)
@@ -73,6 +74,7 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.startTask(processNRPCode, TasksPage.HIGH_LEVEL_PLANNING_TASK);
         checkTaskAssignment();
+        closeMessage();
     }
 
     @Test(priority = 3)
@@ -80,14 +82,16 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
     public void create5Gnode() {
         openCellSiteConfigurationView();
         cellSiteConfigurationPage.createGNodeB(GNODEB_NAME, randomGNodeBId, GNODEB_MODEL, MCCMNC_PRIMARY);
-        checkMessageContainsText("Created gNodeB");
+        checkMessageContainsText("GNodeB was created");
+        closeMessage();
     }
 
     @Test(priority = 4)
     @Description("Create gNodeB DU")
     public void create5GnodeDU() {
         cellSiteConfigurationPage.createGNodeBDU(GNODEB_DU_NAME, randomGNodeBDUId, GNODEB_DU_MODEL, GNODEB_NAME);
-        checkMessageContainsText("Created gNodeBDU");
+        checkMessageContainsText("GNodeB DU was created");
+        closeMessage();
     }
 
     @Test(priority = 5)
@@ -96,17 +100,21 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
         cellSiteConfigurationPage.expandTreeToBaseStation("Site", LOCATION_NAME, GNODEB_NAME);
         cellSiteConfigurationPage.createCell5GBulk(3, CELL5G_CARRIER, CELL5G_NAMES, LOCAL_CELLS_ID);
         checkMessageContainsText("Cells 5G created success");
+        closeMessage();
     }
 
     @Test(priority = 6)
     @Description("Create three ran antenna")
     public void createRanAntenna() {
+        waitForPageToLoad();
         cellSiteConfigurationPage.selectTreeRow(LOCATION_NAME);
         waitForPageToLoad();
         for (String ranAntenna : ANTENNA_NAMES) {
             cellSiteConfigurationPage.selectTab("Devices");
+            waitForPageToLoad();
             cellSiteConfigurationPage.createRanAntennaAndArray(ranAntenna, RAN_ANTENNA_MODEL, LOCATION_NAME);
             checkMessageType();
+            closeMessage();
         }
     }
 
@@ -116,13 +124,16 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
         cellSiteConfigurationPage.selectTreeRow(GNODEB_NAME);
         cellSiteConfigurationPage.createHostingOnDevice(BBU_NAME, false);
         checkMessageType();
-        waitForPageToLoad();
-        //TODO hosting na gnodebDU
+        closeMessage();
+        cellSiteConfigurationPage.selectTreeRow(GNODEB_DU_NAME);
+        cellSiteConfigurationPage.createHostingOnDevice(BBU_NAME, false);
+        checkMessageType();
+        closeMessage();
         for (int i = 0; i < CELL5G_NAMES.length; i++) {
             cellSiteConfigurationPage.selectTreeRow(CELL5G_NAMES[i]);
             cellSiteConfigurationPage.createHostingOnAntennaArray(ANTENNA_NAMES[i]);
             checkMessageType();
-            waitForPageToLoad();
+            closeMessage();
         }
     }
 
@@ -145,7 +156,7 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
         cellSiteConfigurationPage.removeObject();
         waitForPageToLoad();
         checkMessageType();
-        waitForPageToLoad();
+        closeMessage();
         cellSiteConfigurationPage.getTree().expandTreeRow(GNODEB_NAME);
         for (String cell : CELL5G_NAMES) {
             waitForPageToLoad();
@@ -157,6 +168,7 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
             cellSiteConfigurationPage.removeObject();
             waitForPageToLoad();
             checkMessageType();
+            closeMessage();
         }
     }
 
@@ -170,6 +182,7 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
             cellSiteConfigurationPage.filterObject("Name", ranAntenna);
             cellSiteConfigurationPage.removeObject();
             checkMessageType();
+            closeMessage();
         }
     }
 
@@ -183,6 +196,7 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
             cellSiteConfigurationPage.filterObject("Name", cell);
             cellSiteConfigurationPage.removeObject();
             checkMessageType();
+            closeMessage();
         }
     }
 
@@ -196,6 +210,7 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
         cellSiteConfigurationPage.filterObject("Name", GNODEB_DU_NAME);
         cellSiteConfigurationPage.removeObject();
         checkMessageType();
+        closeMessage();
     }
 
     @Test(priority = 13)
@@ -210,17 +225,26 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
         cellSiteConfigurationPage.filterObject("Name", GNODEB_NAME);
         cellSiteConfigurationPage.removeObject();
         checkMessageType();
+        closeMessage();
     }
 
     private void openCellSiteConfigurationView() {
         HomePage homePage = new HomePage(driver);
         homePage.goToHomePage(driver, BASIC_URL);
         waitForPageToLoad();
-        homePage.chooseFromLeftSideMenu("Cell Site Configuration", "Favourites", "Bookmarks");
+        homePage.chooseFromLeftSideMenu("Legacy Inventory Dashboard", "Resource Inventory ");
+        waitForPageToLoad();
+        homePage.setOldObjectType(SITE);
+        waitForPageToLoad();
+        OldInventoryViewPage oldInventoryViewPage = new OldInventoryViewPage(driver);
+        oldInventoryViewPage.filterObject(NAME, LOCATION_NAME);
+        waitForPageToLoad();
+        oldInventoryViewPage.expandShowOnAndChooseView("Cell Site Configuration");
+        waitForPageToLoad();
     }
 
     private void checkMessageType() {
-        Assert.assertEquals((getFirstMessage().getMessageType()), MessageType.SUCCESS);
+        Assert.assertEquals((getFirstMessage().getMessageType()), SystemMessageContainer.MessageType.SUCCESS);
     }
 
     private void checkMessageContainsText(String message) {
@@ -238,7 +262,7 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
                 .size()), 1);
     }
 
-    private Message getFirstMessage() {
+    private SystemMessageContainer.Message getFirstMessage() {
         return SystemMessageContainer.create(driver, webDriverWait)
                 .getFirstMessage()
                 .orElseThrow(() -> new RuntimeException("The list is empty"));
@@ -253,4 +277,8 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
+    private void closeMessage() {
+        SystemMessageContainer.create(driver, webDriverWait).close();
+        waitForPageToLoad();
+    }
 }
