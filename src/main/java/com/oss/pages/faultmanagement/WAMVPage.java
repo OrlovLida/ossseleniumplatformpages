@@ -17,21 +17,21 @@ import org.slf4j.LoggerFactory;
  */
 public class WAMVPage extends BasePage {
     private static final Logger log = LoggerFactory.getLogger(WAMVPage.class);
-    private static final String TABLE_AREA2_WIDGET_ID = "_AREA2AlarmListTable";
+    private static final String TABLE_AREA2_WIDGET_ID = "area2-alarm-table";
     private static final String BUTTON_ACK_TEST_ID = "Acknowledge";
     private static final String BUTTON_DEACK_TEST_ID = "Deacknowledge";
     private static final String BUTTON_NOTE_TEST_ID = "Edit Note";
     private static final String ACKNOWLEDGE_COLUMN_ID = "cell-row-col-acknowledge";
     private static final String NOTIFICATION_IDENTIFIER_COLUMN_ID = "cell-row-col-notificationIdentifier";
     private static final String NOTE_COLUMN_ID = "cell-row-col-note";
-    private static final String ADDITIONAL_TEXT_TAB_ID = "tab__AREA3AdditionalTextTab";
-    private static final String ALARM_DETAILS_TAB_ID = "tab__AREA3AlarmDetailsTab";
-    private static final String SAME_MO_DETAILS_TAB_ID = "tab__AREA3SameMODetailsTab";
-    private static final String SAME_MO_ALARMS_TAB_ID = "tab__AREA3SameMOAlarmsTab";
-    private static final String SAME_MO_ALARMS_TABLE_ID = "_AREA3SameMOAlarms";
+    private static final String ADDITIONAL_TEXT_TAB_ID = "additional-text";
+    private static final String ALARM_DETAILS_TAB_ID = "alarm-details";
+    private static final String SAME_MO_DETAILS_TAB_ID = "mo-properties";
+    private static final String SAME_MO_ALARMS_TAB_ID = "mo-alarms";
+    private static final String SAME_MO_ALARMS_TABLE_ID = "area3-mo-alarms";
     private static final String ADAPTER_NAME_VALUE = "Adapter Name";
     private static final String NOTIFICATION_IDENTIFIER_VALUE = "Notification Identifier";
-    private static final String PROPERTY_PANEL_ID = "tab-content_AREA3__AREA3AlarmDetailsTab";//TODO temporary id from appList, propertyPanel doesn't have id, update after Web fix
+    private static final String PROPERTY_PANEL_ID = "tab-content_AREA3__AREA3AlarmDetailsTab";//TODO temporary id from appList, propertyPanel doesn't have id, update after Web fix OSSWEB-16869
 
     private final FMSMTable fmsmTable = FMSMTable.createById(driver, wait, TABLE_AREA2_WIDGET_ID);
 
@@ -155,6 +155,7 @@ public class WAMVPage extends BasePage {
     @Step("I check if Same MO Alarms Table is visible")
     public boolean checkVisibilityOfSameMOAlarmsTable() {
         log.info("Checking visibility of Same MO Alarms Table");
+        DelayUtils.waitForPageToLoad(driver, wait);
         return driver.getPageSource().contains(SAME_MO_ALARMS_TABLE_ID);
     }
 

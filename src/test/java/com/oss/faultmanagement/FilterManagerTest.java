@@ -28,8 +28,8 @@ public class FilterManagerTest extends BaseTestCase {
     }
 
     @Parameters({"folderName", "description"})
-    @Test(priority = 1, testName = "Create new folder and delete", description = "Folder creation verification")
-    @Description("I verify if Folder and Filter creates without error")
+    @Test(priority = 1, testName = "Create new folder and delete it", description = "Folder creation verification")
+    @Description("I verify if Folder creates without error")
     public void createNewFolderAndDelete(
             @Optional("Selenium_test_folder") String folderName,
             @Optional("Selenium test description") String description
@@ -47,8 +47,8 @@ public class FilterManagerTest extends BaseTestCase {
     }
 
     @Parameters({"folderName", "description", "filterName"})
-    @Test(priority = 2, testName = "Create new folder with filter", description = "Folder with filter creation verification")
-    @Description("I verify if Folder and Filter creates without error")
+    @Test(priority = 2, testName = "Create new folder with filter and delete it", description = "Folder with filter creation verification")
+    @Description("I verify if Folder with Filter creates without error")
     public void createNewFolderWithFilterAndDelete(
             @Optional("Selenium_test_folder") String folderName,
             @Optional("Selenium test description") String description,

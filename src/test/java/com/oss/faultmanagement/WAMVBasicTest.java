@@ -33,16 +33,16 @@ public class WAMVBasicTest extends BaseTestCase {
         fmDashboardPage = FMDashboardPage.goToPage(driver, BASIC_URL);
     }
 
-    @Parameters({"alarmListName", "row"})
+    @Parameters({"alarmListName", "alarmManagementViewRow"})
     @Test(priority = 1, testName = "Check WAMV Title", description = "WAMV title check")
-    @Description("I verify if Web Alarm Management View opens and basic options works")
+    @Description("I verify if Web Alarm Management View opens and its title is correct")
     public void openSelectedWAMVAndCheckPageTitle(
             @Optional("Selenium_test_alarm_list") String alarmListName,
-            @Optional("0") int row
+            @Optional("0") int alarmManagementViewRow
     ) {
         try {
             fmDashboardPage.searchInSpecificView(ALARM_MANAGEMENT_VIEW_ID, alarmListName);
-            wamvPage = fmDashboardPage.openSelectedView(ALARM_MANAGEMENT_VIEW_ID, row);
+            wamvPage = fmDashboardPage.openSelectedView(ALARM_MANAGEMENT_VIEW_ID, alarmManagementViewRow);
             Assert.assertTrue(wamvPage.checkIfPageTitleIsCorrect(alarmListName));
 
         } catch (Exception e) {
@@ -51,17 +51,17 @@ public class WAMVBasicTest extends BaseTestCase {
         }
     }
 
-    @Parameters({"alarmListName", "alarmListRow", "row"})
+    @Parameters({"alarmListName", "alarmListRow", "alarmManagementViewRow"})
     @Test(priority = 2, testName = "Check Ack., Deack. and Note options", description = "Acknowledge, Deacknowledge, Note")
-    @Description("I verify if Web Alarm Management View opens and basic options works")
+    @Description("I verify if acknowledge, deacknowledge and note options work in WAMV")
     public void openSelectedWAMVAndCheckAckDeackNoteFunctionality(
             @Optional("Selenium_test_alarm_list") String alarmListName,
             @Optional("2") int alarmListRow,
-            @Optional("0") int row
+            @Optional("0") int alarmManagementViewRow
     ) {
         try {
             fmDashboardPage.searchInSpecificView(ALARM_MANAGEMENT_VIEW_ID, alarmListName);
-            wamvPage = fmDashboardPage.openSelectedView(ALARM_MANAGEMENT_VIEW_ID, row);
+            wamvPage = fmDashboardPage.openSelectedView(ALARM_MANAGEMENT_VIEW_ID, alarmManagementViewRow);
             Assert.assertTrue(wamvPage.checkIfPageTitleIsCorrect(alarmListName));
             wamvPage.selectSpecificRow(alarmListRow);
             for (int i = 0; i <= 1; i++) {
@@ -83,18 +83,18 @@ public class WAMVBasicTest extends BaseTestCase {
         }
     }
 
-    @Parameters({"alarmListName", "alarmListRow", "row", "adapterName"})
+    @Parameters({"alarmListName", "alarmListRow", "alarmManagementViewRow", "adapterName"})
     @Test(priority = 3, testName = "Check tabs from Area 3", description = "Check tabs")
-    @Description("I verify if Web Alarm Management View opens and if it is possible to click on tabs")
+    @Description("I verify if Tabs from Area 3 work properly")
     public void openSelectedWAMVAndCheckArea3Tabs(
             @Optional("Selenium_test_alarm_list") String alarmListName,
-            @Optional("2") int alarmListRow,
-            @Optional("0") int row,
+            @Optional("0") int alarmListRow,
+            @Optional("0") int alarmManagementViewRow,
             @Optional("AdapterAlarmGeneratorFromFile") String adapterName
     ) {
         try {
             fmDashboardPage.searchInSpecificView(ALARM_MANAGEMENT_VIEW_ID, alarmListName);
-            wamvPage = fmDashboardPage.openSelectedView(ALARM_MANAGEMENT_VIEW_ID, row);
+            wamvPage = fmDashboardPage.openSelectedView(ALARM_MANAGEMENT_VIEW_ID, alarmManagementViewRow);
             Assert.assertTrue(wamvPage.checkIfPageTitleIsCorrect(alarmListName));
             wamvPage.selectSpecificRow(alarmListRow);
             wamvPage.clickOnSameMOAlarmsTab();
