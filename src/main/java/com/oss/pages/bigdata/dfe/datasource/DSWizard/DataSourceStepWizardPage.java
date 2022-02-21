@@ -1,13 +1,15 @@
-package com.oss.pages.bigdata.dfe.DataSource.DSWizard;
+package com.oss.pages.bigdata.dfe.datasource.DSWizard;
 
-import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.wizard.Wizard;
-import com.oss.pages.BasePage;
-import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.wizard.Wizard;
+import com.oss.pages.BasePage;
+
+import io.qameta.allure.Step;
 
 public class DataSourceStepWizardPage extends BasePage {
 
@@ -16,7 +18,7 @@ public class DataSourceStepWizardPage extends BasePage {
     private final DataSourceBasicInfoPage basicInfoStep;
     private final DataSourceSourceInformationPage sourceInfoStep;
     private final DataSourceSpecificInfoPage specificInfoStep;
-    private final String WIZARD_ID = "dataSourcesWizardId";
+    private static final String WIZARD_ID = "dataSourcesWizardId";
 
     private final Wizard wizard;
 

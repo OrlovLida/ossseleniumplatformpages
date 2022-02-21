@@ -1,12 +1,7 @@
-package com.oss.pages.bigdata.dfe.DataSource;
+package com.oss.pages.bigdata.dfe.datasource;
 
-import java.io.File;
-import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.List;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
@@ -19,10 +14,8 @@ import com.oss.framework.iaa.widgets.timeperiodchooser.TimePeriodChooser;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.pages.bigdata.dfe.BaseDfePage;
 
-import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
 
-import static com.oss.configuration.Configuration.CONFIGURATION;
 import static com.oss.framework.utils.DelayUtils.waitForPageToLoad;
 
 public class DataSourcePage extends BaseDfePage {
@@ -30,27 +23,27 @@ public class DataSourcePage extends BaseDfePage {
     private static final Logger log = LoggerFactory.getLogger(DataSourcePage.class);
 
     private static final String TABLE_ID = "datasource/datasource-listAppId";
-    private final String SEARCH_INPUT_ID = "datasource/datasource-listSearchAppId";
-    private final String ADD_NEW_DS_LABEL = "ADD";
-    private final String CREATE_DS_QUERY = "OPEN_MODAL_QUERY";
-    private final String CREATE_DS_CSV = "OPEN_MODAL_CSV";
-    private final String CREATE_DS_KAFKA = "OPEN_MODAL_KAFKA";
-    private final String DATA_SOURCE_NAME_COLUMN = "Name";
-    private final String EDIT_DS_LABEL = "Edit";
-    private final String DELETE_DS_LABEL = "Delete";
-    private final String CONFIRM_DELETE_LABEL = "Delete";
-    private final String LOGS_TAB = "Logs";
-    private final String PROCESSED_FILES_TAB = "Processed Files";
-    private final String REFRESH_LABEL = "Refresh";
-    private final String SHOW_FILE_LABEL = "Show file";
-    private final String TIME_PERIOD_ID = "timePeriod";
-    private final String SEVERITY_COMBOBOX_ID = "severityLogs-input";
-    private final String LOG_TAB_TABLE_ID = "LogsId";
-    private final String COLUMN_TIME_LABEL = "Time";
-    private final String COLUMN_SEVERITY_LABEL = "Severity";
-    private final String PROCESSED_FILES_TABLE_ID = "stats-tableAppId";
-    private final String DOWNLOAD_FILE_LABEL = "Download file";
-    private final String SHOW_FILE_TABLE_ID = "TableId";
+    private static final String SEARCH_INPUT_ID = "datasource/datasource-listSearchAppId";
+    private static final String ADD_NEW_DS_LABEL = "ADD";
+    private static final String CREATE_DS_QUERY = "OPEN_MODAL_QUERY";
+    private static final String CREATE_DS_CSV = "OPEN_MODAL_CSV";
+    private static final String CREATE_DS_KAFKA = "OPEN_MODAL_KAFKA";
+    private static final String DATA_SOURCE_NAME_COLUMN = "Name";
+    private static final String EDIT_DS_LABEL = "Edit";
+    private static final String DELETE_DS_LABEL = "Delete";
+    private static final String CONFIRM_DELETE_LABEL = "Delete";
+    private static final String LOGS_TAB = "Logs";
+    private static final String PROCESSED_FILES_TAB = "Processed Files";
+    private static final String REFRESH_LABEL = "Refresh";
+    private static final String SHOW_FILE_LABEL = "Show file";
+    private static final String TIME_PERIOD_ID = "timePeriod";
+    private static final String SEVERITY_COMBOBOX_ID = "severityLogs-input";
+    private static final String LOG_TAB_TABLE_ID = "LogsId";
+    private static final String COLUMN_TIME_LABEL = "Time";
+    private static final String COLUMN_SEVERITY_LABEL = "Severity";
+    private static final String PROCESSED_FILES_TABLE_ID = "stats-tableAppId";
+    private static final String DOWNLOAD_FILE_LABEL = "Download file";
+    private static final String SHOW_FILE_TABLE_ID = "TableId";
 
     public DataSourcePage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -163,7 +156,7 @@ public class DataSourcePage extends BaseDfePage {
     }
 
     @Step("I check if Last Request Generation Time is fresh - up to 60 min old")
-    public boolean IsIfRunsFresh() {
+    public boolean isIfRunsFresh() {
         return isLastLogTimeFresh(lastIfRunTime());
     }
 
@@ -195,48 +188,6 @@ public class DataSourcePage extends BaseDfePage {
     public void clickDownloadFile() {
         clickTabsContextAction(DOWNLOAD_FILE_LABEL);
         log.info("Clicking on download file button");
-    }
-
-    @Step("I attach downloaded file to report")
-    public void attachDownloadedFileToReport(String fileName) {
-        if (ifDownloadDirExists()) {
-            File directory = new File(CONFIGURATION.getDownloadDir());
-            List<File> listFiles = (List<File>) FileUtils.listFiles(directory, new WildcardFileFilter(fileName), null);
-            try {
-                for (File file : listFiles) {
-                    log.info("Attaching file: {}", file.getCanonicalPath());
-                    attachFile(file);
-                }
-            } catch (IOException e) {
-                log.error("Failed attaching files: {}", e.getMessage());
-            }
-        }
-    }
-
-    private boolean ifDownloadDirExists() {
-        File tmpDir = new File(CONFIGURATION.getDownloadDir());
-        if (tmpDir.exists()) {
-            log.info("Download directory was successfully created");
-            return true;
-        }
-        return false;
-    }
-
-    public boolean checkIfFileIsNotEmpty(String fileName) {
-        File directory = new File(CONFIGURATION.getDownloadDir());
-        List<File> listFiles = (List<File>) FileUtils.listFiles(directory, new WildcardFileFilter(fileName), null);
-        boolean fileIsNotEmpty = false;
-        for (File file : listFiles) {
-            if (file.length() > 0) {
-                fileIsNotEmpty = true;
-            }
-        }
-        return fileIsNotEmpty;
-    }
-
-    @Attachment(value = "Exported CSV file")
-    public byte[] attachFile(File file) throws IOException {
-        return FileUtils.readFileToByteArray(file);
     }
 
     @Override

@@ -13,17 +13,21 @@ import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.SearchField;
 import com.oss.framework.components.prompts.ConfirmationBox;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.tabs.TabWindowWidget;
 import com.oss.pages.BasePage;
+import com.oss.untils.FileDownload;
+
+import io.qameta.allure.Step;
 
 import static com.oss.framework.utils.DelayUtils.waitForPageToLoad;
 
-abstract public class BaseDfePage extends BasePage implements BaseDfePageInterface {
+public abstract class BaseDfePage extends BasePage implements BaseDfePageInterface {
 
     private static final Logger log = LoggerFactory.getLogger(BaseDfePage.class);
 
-    public BaseDfePage(WebDriver driver, WebDriverWait wait) {
+    protected BaseDfePage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
     }
 
@@ -112,5 +116,18 @@ abstract public class BaseDfePage extends BasePage implements BaseDfePageInterfa
         return OldTable
                 .createById(driver, wait, logsTableTabId)
                 .getCellValue(0, columnLabel);
+    }
+
+    @Step("Attach downloaded file to report")
+    public void attachFileToReport(String fileName) {
+        FileDownload.attachDownloadedFileToReport(fileName);
+        log.info("Attaching downloaded file to report");
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    @Step("Check if file is not empty")
+    public boolean checkIfFileIsNotEmpty(String fileName) {
+        log.info("Checking if file is not empty");
+        return FileDownload.checkIfFileIsNotEmpty(fileName);
     }
 }
