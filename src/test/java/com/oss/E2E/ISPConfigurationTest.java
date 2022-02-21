@@ -101,6 +101,7 @@ public class ISPConfigurationTest extends BaseTestCase {
     public void showLocationOverviewFromPopup() {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         systemMessage.clickMessageLink();
+        systemMessage.close();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         LOCATION_OVERVIEW_URL = driver.getCurrentUrl();
     }
