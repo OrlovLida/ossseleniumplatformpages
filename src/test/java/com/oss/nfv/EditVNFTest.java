@@ -1,14 +1,17 @@
 package com.oss.nfv;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
-import com.oss.framework.navigation.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.nfv.VNFWizardFirstStep;
 import com.oss.pages.nfv.VNFWizardFourthStep;
@@ -16,38 +19,45 @@ import com.oss.pages.nfv.VNFWizardPage;
 import com.oss.pages.nfv.VNFWizardSecondStep;
 import com.oss.pages.nfv.VNFWizardStep;
 import com.oss.pages.nfv.VNFWizardThirdStep;
-import com.oss.pages.resourcecatalog.ResourceSpecificationsViewPage;
+import com.oss.pages.platform.NewInventoryViewPage;
+import com.oss.services.nfv.VNFApiClient;
 import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
 
-import static com.oss.nfv.CreateVNFTestConstants.CREATE_ACTION_GROUP_ID;
-import static com.oss.nfv.CreateVNFTestConstants.CREATE_LOGICAL_FUNCTION_ACTION_LABEL;
-import static com.oss.nfv.CreateVNFTestConstants.NEW_VNF_NAME;
-import static com.oss.nfv.CreateVNFTestConstants.RESOURCE_CATALOG_PATH;
-import static com.oss.nfv.CreateVNFTestConstants.RESOURCE_SPECIFICATIONS_ACTION_LABEL;
-import static com.oss.nfv.CreateVNFTestConstants.ROOT_NODE_PATH;
-import static com.oss.nfv.CreateVNFTestConstants.SPECIFICATION_NAME_ATTRIBUTE_NAME_LABEL;
-import static com.oss.nfv.CreateVNFTestConstants.VNF_INSTANTIATION_LEVEL_0_IDENTIFIER;
-import static com.oss.nfv.CreateVNFTestConstants.VNF_INSTANTIATION_LEVEL_0_NAME;
+import static com.oss.nfv.EditVNFTestConstants.EDIT_ACTION_GROUP_ID;
+import static com.oss.nfv.EditVNFTestConstants.EDIT_LOGICAL_ELEMENT_ACTION_LABEL;
+import static com.oss.nfv.EditVNFTestConstants.NEW_VNF_NAME;
+import static com.oss.nfv.EditVNFTestConstants.VNF_NAME;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 @Listeners({TestListener.class})
-public class CreateVNFTest extends BaseVNFTest {
+public class EditVNFTest extends BaseVNFTest {
 
-    @Test(priority = 1, description = "Open 'Create VNF' wizard")
-    @Description("Got to Resource Specifications view, find and select VNF specification and open VNF wizard from context menu")
-    public void openCreateVNFWizard() {
+    private static final String JSON_FILE_PATH_TO_TEST = "src/test/resources/nfv/createVNF.json";
+
+    @BeforeClass
+    public void prepareData() throws IOException {
+        super.prepareData();
+        createVNFInstance();
+    }
+
+    private void createVNFInstance() throws IOException {
+        String jsonContent = new String(Files.readAllBytes(Paths.get(JSON_FILE_PATH_TO_TEST)));
+        VNFApiClient.getInstance(env).createVnf(jsonContent);
+    }
+
+    @Test(priority = 1,description = "Open 'Edit VNF' wizard")
+    @Description("Go directly to Inventory View page, find VNF, select it on results and open VNF wizard from context menu")
+    public void openEditVNFWizard() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         //given
-        SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
+        NewInventoryViewPage inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "LogicalFunction");
         //when
-        goToResourceSpecificationsView(sideMenu);
-        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver, webDriverWait);
-        searchForVNFSpecification(resourceSpecificationsViewPage);
-        selectVNFSpecificationInTree(resourceSpecificationsViewPage);
-        openVNFWizardForVNFCreation(resourceSpecificationsViewPage);
+        searchForVNF(inventoryViewPage);
+        selectVNFInTree(inventoryViewPage);
+        openVNFWizardForVNFEdit(inventoryViewPage);
         //then
         assertThatVNFWizardIsOpenAndStructureTreeIsVisible();
     }
@@ -92,18 +102,18 @@ public class CreateVNFTest extends BaseVNFTest {
         secondStep.toggleTerminationPointRelations();
     }
 
-    @Test(priority = 3, description = "Create VNF")
+    @Test(priority = 3,description = "Submit VNF")
     @Description("Submit VNF wizard and check system messages")
-    public void createVNF() {
+    public void submitVNF() {
         //given
         VNFWizardPage wizard = VNFWizardPage.create(driver, webDriverWait);
         //when
-        submitVNFCreation(wizard);
+        submitVNFUpdate(wizard);
         //then
         assertThatThereIsOneSuccessfulMessage();
     }
 
-    private void submitVNFCreation(VNFWizardPage wizard) {
+    private void submitVNFUpdate(VNFWizardPage wizard) {
         wizard.clickAccept();
     }
 
@@ -116,7 +126,8 @@ public class CreateVNFTest extends BaseVNFTest {
     }
 
     private void assertThatNameHasChangedInTree(SoftAssert softly, VNFWizardStep vnfWizardStep, String stepName) {
-        softly.assertTrue(vnfWizardStep.nodeExists(NEW_VNF_NAME), "No node with name " + NEW_VNF_NAME + " has been found in " + stepName + " step");
+        softly.assertTrue(vnfWizardStep.nodeExists(NEW_VNF_NAME),
+                "No node with name " + NEW_VNF_NAME + " has been found in " + stepName + " step");
     }
 
     private void assertThatNameHasBeenSetInTextField(VNFWizardFirstStep firstStep, SoftAssert softly) {
@@ -128,7 +139,7 @@ public class CreateVNFTest extends BaseVNFTest {
     }
 
     private void selectTreeRootNode(VNFWizardFirstStep firstStep) {
-        firstStep.selectNode(ROOT_NODE_PATH);
+        firstStep.selectNode(VNF_NAME);
     }
 
     private void enableRelationsStep(VNFWizardFirstStep firstStep) {
@@ -139,20 +150,16 @@ public class CreateVNFTest extends BaseVNFTest {
         assertTrue(VNFWizardPage.create(driver, webDriverWait).getFirstStep().isStructureTreeVisible());
     }
 
-    private void openVNFWizardForVNFCreation(ResourceSpecificationsViewPage resourceSpecificationsViewPage) {
-        resourceSpecificationsViewPage.callActionByLabel(CREATE_ACTION_GROUP_ID, CREATE_LOGICAL_FUNCTION_ACTION_LABEL);
+    private void openVNFWizardForVNFEdit(NewInventoryViewPage inventoryViewPage) {
+        inventoryViewPage.callActionByLabel(EDIT_ACTION_GROUP_ID, EDIT_LOGICAL_ELEMENT_ACTION_LABEL);
     }
 
-    private void selectVNFSpecificationInTree(ResourceSpecificationsViewPage resourceSpecificationsViewPage) {
-        resourceSpecificationsViewPage.selectTreeNode(VNF_INSTANTIATION_LEVEL_0_NAME, SPECIFICATION_NAME_ATTRIBUTE_NAME_LABEL);
+    private void selectVNFInTree(NewInventoryViewPage inventoryViewPage) {
+        inventoryViewPage.selectFirstRow();
     }
 
-    private void searchForVNFSpecification(ResourceSpecificationsViewPage resourceSpecificationsViewPage) {
-        resourceSpecificationsViewPage.setSearchText(VNF_INSTANTIATION_LEVEL_0_IDENTIFIER);
-    }
-
-    private void goToResourceSpecificationsView(SideMenu sideMenu) {
-        sideMenu.callActionByLabel(RESOURCE_SPECIFICATIONS_ACTION_LABEL, new String[]{RESOURCE_CATALOG_PATH, RESOURCE_CATALOG_PATH});
+    private void searchForVNF(NewInventoryViewPage inventoryViewPage) {
+        inventoryViewPage.searchObject(VNF_NAME);
     }
 
 }
