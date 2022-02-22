@@ -44,20 +44,20 @@ public class WAMVPage extends BasePage {
         PageFactory.initElements(driver, this);
     }
 
-    @Step("I initialize new WAMV")
+    @Step("I initialize a new WAMV")
     public static WAMVPage createWAMV(WebDriver driver) {
         WebDriverWait wait = new WebDriverWait(driver, 90);
         log.info("Initialization of WAMV page");
         return new WAMVPage(driver, wait);
     }
 
-    @Step("I create an SameMOAlarmsTable")
+    @Step("I create a SameMOAlarmsTable")
     private FMSMTable createSameMOAlarmsTable() {
         log.info("Creating Same MO Alarms Table");
         return FMSMTable.createById(driver, wait, SAME_MO_ALARMS_TABLE_ID);
     }
 
-    @Step("I create an button")
+    @Step("I create a button")
     private Button createButton(String buttonId) {
         log.info("Creating a button");
         return Button.createById(driver, buttonId);
@@ -94,8 +94,8 @@ public class WAMVPage extends BasePage {
     }
 
     @Step("I return a cell text from acknowledge state column")
-    public String getTitleFromAckStatusCell(int row) {
-        DelayUtils.sleep(1000);
+    public String getTitleFromAckStatusCell(int row, String value) {
+        fmsmTable.getCell(row, ACKNOWLEDGE_COLUMN_ID).waitForExpectedValue(wait, value);
         log.info("Returning cell text from acknowledge state column in row: {}", row);
         return fmsmTable.getCellValue(row, ACKNOWLEDGE_COLUMN_ID);
     }
@@ -108,8 +108,8 @@ public class WAMVPage extends BasePage {
     }
 
     @Step("I return a cell text from note column")
-    public String getTextFromNoteStatusCell(int row) {
-        DelayUtils.sleep(2000);
+    public String getTextFromNoteStatusCell(int row, String value) {
+        fmsmTable.getCell(row, NOTE_COLUMN_ID).waitForExpectedValue(wait, value);
         log.info("Returning cell text from note column in row: {}", row);
         return fmsmTable.getCellValue(row, NOTE_COLUMN_ID);
     }
