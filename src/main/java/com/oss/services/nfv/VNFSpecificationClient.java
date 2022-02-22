@@ -1,9 +1,8 @@
 package com.oss.services.nfv;
 
-import com.jayway.restassured.http.ContentType;
-import com.oss.untils.Environment;
-
 import javax.ws.rs.core.Response;
+
+import com.oss.untils.Environment;
 
 public class VNFSpecificationClient {
 
@@ -11,10 +10,10 @@ public class VNFSpecificationClient {
     public static final String PERSPECTIVE_LIVE_PARAM = "?perspective=LIVE";
 
     private static VNFSpecificationClient instance;
-    private final Environment ENV;
+    private final Environment env;
 
     private VNFSpecificationClient(Environment environment) {
-        ENV = environment;
+        env = environment;
     }
 
     public static VNFSpecificationClient getInstance(Environment environment) {
@@ -25,7 +24,7 @@ public class VNFSpecificationClient {
     }
 
     public void deleteVnfSpecificationById(String id) {
-        ENV.getNFVCoreSpecification()
+        env.getNFVCoreSpecification()
                 .when().delete(VNF_SPECIFICATION_PATH + id + PERSPECTIVE_LIVE_PARAM)
                 .then().log().status().log().body().statusCode(Response.Status.NO_CONTENT.getStatusCode());
     }

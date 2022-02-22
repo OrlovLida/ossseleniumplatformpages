@@ -21,7 +21,7 @@ public abstract class VNFWizardStep extends BasePage {
     }
 
     public void selectNode(String path) {
-        TreeComponent.Node node = getStructureTree().getNodeByPath(path);
+        TreeComponent.Node node = getStructureTree().getNodeByLabelsPath(path);
         if (!node.isToggled()) {
             node.toggleNode();
         }
