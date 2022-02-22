@@ -418,7 +418,6 @@ public class IndicatorsViewTest extends BaseTestCase {
 
             assertTrue(kpiViewPage.dpeTopNBarChartIsDisplayed());
             assertTrue(kpiViewPage.isExpectedNumberOfChartsVisible(2));
-            assertTrue(kpiViewPage.shouldSeeBoxesAndCurvesDisplayed(6, 5));
 
             kpiViewPage.doubleClickTopNDPE();
             assertTrue(kpiViewPage.isTopNNavigationBarVisible());
