@@ -1,20 +1,18 @@
 package com.oss.pages.faultmanagement;
 
-import java.util.List;
-
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.oss.framework.components.layout.Card;
 import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.CommonList;
 import com.oss.pages.BasePage;
-
 import io.qameta.allure.Step;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 public class FMDashboardPage extends BasePage {
     private static final Logger log = LoggerFactory.getLogger(FMDashboardPage.class);
@@ -57,6 +55,7 @@ public class FMDashboardPage extends BasePage {
 
     public boolean isNoDataInView(String commonListId) {
         CommonList commonList = CommonList.create(driver, wait, commonListId);
+        log.info("Checking if '{}' has 'No data' shown: {}", commonListId, isNoData(commonList));
         return isNoData(commonList);
     }
 
@@ -139,17 +138,20 @@ public class FMDashboardPage extends BasePage {
         log.info("Minimizing window");
     }
 
-    @Step("I check if card if macimized")
+    @Step("I check if card if maximized")
     public boolean checkCardMaximize(String windowId) {
         DelayUtils.sleep(1000);
         Card card = Card.createCard(driver, wait, windowId);
+        log.info("Checking if card {} is maximized", windowId);
         return card.isCardMaximized();
     }
 
+    @Step("I check if header is visible")
     public boolean isHeaderVisible(String commonListId, String headerLabel) {
+        log.info("Checking the visibility of header '{}' on view '{}'", headerLabel, commonListId);
         CommonList commonList = createCommonList(commonListId);
         return commonList.getRowHeaders().contains(headerLabel);
-    }
+            }
 
     public boolean isHeaderVisible(String commonListId, List<String> headerLabel) {
         CommonList commonList = createCommonList(commonListId);
@@ -158,6 +160,7 @@ public class FMDashboardPage extends BasePage {
 
     public void sortCommonList(String commonListId) {
         CommonList commonList = createCommonList(commonListId);
+        log.info("Sorting list {}", commonListId);
         commonList.callAction("sort-by-user-view", "Name_desc");
     }
 }
