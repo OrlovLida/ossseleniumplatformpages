@@ -228,12 +228,6 @@ public class KpiViewPage extends BasePage {
         return false;
     }
 
-    @Step("I should see {expectedColumnsCount} columns and {expectedLinesCount} lines displayed")
-    public boolean shouldSeeBoxesAndCurvesDisplayed(int expectedColumnsCount, int expectedLinesCount) {
-        KpiChartWidget kpiChartWidget = KpiChartWidget.create(driver, wait);
-        return kpiChartWidget.countColumns() == expectedColumnsCount && kpiChartWidget.countLines() == expectedLinesCount;
-    }
-
     @Step("I should see {expectedLinesCount} lines displayed")
     public boolean shouldSeeCurvesDisplayed(int expectedLinesCount) {
         return KpiChartWidget.create(driver, wait).countLines() == expectedLinesCount;
@@ -485,7 +479,7 @@ public class KpiViewPage extends BasePage {
         boolean dataViewDisplayed = kpiChartWidget.isDataViewPanelPresent();
         boolean indicatorsTreeDisplayed = kpiChartWidget.isIndicatorsTreePresent();
         boolean dimensionsTreeDisplayed = kpiChartWidget.isDimensionsTreePresent();
-        if (dataViewDisplayed & !indicatorsTreeDisplayed & !dimensionsTreeDisplayed) {
+        if (dataViewDisplayed && !indicatorsTreeDisplayed && !dimensionsTreeDisplayed) {
             log.info("Only Data View Panel is displayed");
             return true;
         } else {
