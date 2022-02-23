@@ -123,7 +123,7 @@ public class BaseTestCase implements IHookable {
     }
 
     private void setWebDriver(ChromeOptions options) {
-        boolean isLocally = Boolean.parseBoolean(CONFIGURATION.getValue("locally"));
+        boolean isLocally = CONFIGURATION.isLocally();
         boolean isWebRunner = Boolean.parseBoolean(CONFIGURATION.getValue("webRunner"));
 
         if (isLocally) {
@@ -152,7 +152,7 @@ public class BaseTestCase implements IHookable {
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--width=1920");
         options.addArguments("--height=1080");
-        if (CONFIGURATION.getValue("locally").equals("true")) {
+        if (CONFIGURATION.isLocally()) {
             System.setProperty("webdriver.gecko.driver", CONFIGURATION.getValue("geckoDriverPath"));
         } else {
             System.setProperty("webdriver.gecko.driver", CONFIGURATION.getValue("geckoDriverLinuxPath"));
