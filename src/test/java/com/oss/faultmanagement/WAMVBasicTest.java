@@ -1,7 +1,6 @@
 package com.oss.faultmanagement;
 
 import com.oss.BaseTestCase;
-import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.faultmanagement.FMDashboardPage;
 import com.oss.pages.faultmanagement.WAMVPage;
 import com.oss.utils.TestListener;
@@ -11,19 +10,17 @@ import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * @author Bartosz Nowak
  */
 @Listeners({TestListener.class})
 public class WAMVBasicTest extends BaseTestCase {
     private static final Logger log = LoggerFactory.getLogger(WAMVBasicTest.class);
-    private final List<String> ackValues = Arrays.asList("True", "False");
-    private final List<String> noteValues = Arrays.asList("Selenium_automated_test", "");
+    private final String ACKNOWLEDGE_VALUE = "True";
+    private final String DEACKNOWLEDGE_VALUE = "False";
+    private final String TEST_NOTE_VALUE = "Selenium_automated_test";
+    private final String EMPTY_NOTE_VALUE = "";
     private static final String ALARM_MANAGEMENT_VIEW_ID = "_UserViewsListALARM_MANAGEMENT";
-
 
     private FMDashboardPage fmDashboardPage;
     private WAMVPage wamvPage;
@@ -52,9 +49,9 @@ public class WAMVBasicTest extends BaseTestCase {
     }
 
     @Parameters({"alarmListName", "alarmListRow", "alarmManagementViewRow"})
-    @Test(priority = 2, testName = "Check Ack., Deack. and Note options", description = "Acknowledge, Deacknowledge, Note")
-    @Description("I verify if acknowledge, deacknowledge and note options work in WAMV")
-    public void openSelectedWAMVAndCheckAckDeackNoteFunctionality(
+    @Test(priority = 2, testName = "Check Acknowledge and Deacknowledge options", description = "Check Acknowledge and Deacknowledge options")
+    @Description("I verify if acknowledge and deacknowledge work in WAMV")
+    public void openSelectedWAMVAndCheckAckDeackFunctionality(
             @Optional("Selenium_test_alarm_list") String alarmListName,
             @Optional("2") int alarmListRow,
             @Optional("0") int alarmManagementViewRow
@@ -62,21 +59,33 @@ public class WAMVBasicTest extends BaseTestCase {
         try {
             fmDashboardPage.searchInSpecificView(ALARM_MANAGEMENT_VIEW_ID, alarmListName);
             wamvPage = fmDashboardPage.openSelectedView(ALARM_MANAGEMENT_VIEW_ID, alarmManagementViewRow);
-            Assert.assertTrue(wamvPage.checkIfPageTitleIsCorrect(alarmListName));
             wamvPage.selectSpecificRow(alarmListRow);
-            for (int i = 0; i <= 1; i++) {
-                if (i == 0) {
-                    wamvPage.clickOnAckButton();
-                } else {
-                    wamvPage.clickOnDeackButton();
-                }
-                waitForAckColumnChange(alarmListRow, ackValues.get(i));
-                Assert.assertEquals(wamvPage.getTitleFromAckStatusCell(alarmListRow), ackValues.get(i));
-                wamvPage.addNote(noteValues.get(i));
-                waitForNoteColumnChange(alarmListRow, noteValues.get(i));
-                Assert.assertEquals(wamvPage.getTextFromNoteStatusCell(alarmListRow), noteValues.get(i));
+            wamvPage.clickOnAckButton();
+            Assert.assertEquals(wamvPage.getTitleFromAckStatusCell(alarmListRow, ACKNOWLEDGE_VALUE), ACKNOWLEDGE_VALUE);
+            wamvPage.clickOnDeackButton();
+            Assert.assertEquals(wamvPage.getTitleFromAckStatusCell(alarmListRow, DEACKNOWLEDGE_VALUE), DEACKNOWLEDGE_VALUE);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            Assert.fail();
+        }
+    }
 
-            }
+    @Parameters({"alarmListName", "alarmListRow", "alarmManagementViewRow"})
+    @Test(priority = 3, testName = "Check Note option", description = "Check Note option")
+    @Description("I verify if note option works in WAMV")
+    public void openSelectedWAMVAndCheckNoteFunctionality(
+            @Optional("Selenium_test_alarm_list") String alarmListName,
+            @Optional("2") int alarmListRow,
+            @Optional("0") int alarmManagementViewRow
+    ) {
+        try {
+            fmDashboardPage.searchInSpecificView(ALARM_MANAGEMENT_VIEW_ID, alarmListName);
+            wamvPage = fmDashboardPage.openSelectedView(ALARM_MANAGEMENT_VIEW_ID, alarmManagementViewRow);
+            wamvPage.selectSpecificRow(alarmListRow);
+            wamvPage.addNote(TEST_NOTE_VALUE);
+            Assert.assertEquals(wamvPage.getTextFromNoteStatusCell(alarmListRow, TEST_NOTE_VALUE), TEST_NOTE_VALUE);
+            wamvPage.addNote(EMPTY_NOTE_VALUE);
+            Assert.assertEquals(wamvPage.getTextFromNoteStatusCell(alarmListRow, EMPTY_NOTE_VALUE), EMPTY_NOTE_VALUE);
         } catch (Exception e) {
             log.error(e.getMessage());
             Assert.fail();
@@ -84,7 +93,7 @@ public class WAMVBasicTest extends BaseTestCase {
     }
 
     @Parameters({"alarmListName", "alarmListRow", "alarmManagementViewRow", "adapterName"})
-    @Test(priority = 3, testName = "Check tabs from Area 3", description = "Check tabs")
+    @Test(priority = 4, testName = "Check tabs from Area 3", description = "Check tabs from Area 3")
     @Description("I verify if Tabs from Area 3 work properly")
     public void openSelectedWAMVAndCheckArea3Tabs(
             @Optional("Selenium_test_alarm_list") String alarmListName,
@@ -108,26 +117,6 @@ public class WAMVBasicTest extends BaseTestCase {
         } catch (Exception e) {
             log.error(e.getMessage());
             Assert.fail();
-        }
-    }
-
-    public void waitForAckColumnChange(int alarmListRow, String type) {
-        for (int i = 0; i < 25; i++) {
-            if (wamvPage.getTitleFromAckStatusCell(alarmListRow).equals(type)) {
-                break;
-            } else {
-                DelayUtils.sleep(100);
-            }
-        }
-    }
-
-    public void waitForNoteColumnChange(int alarmListRow, String type) {
-        for (int i = 0; i < 25; i++) {
-            if (wamvPage.getTextFromNoteStatusCell(alarmListRow).equals(type)) {
-                break;
-            } else {
-                DelayUtils.sleep(100);
-            }
         }
     }
 }
