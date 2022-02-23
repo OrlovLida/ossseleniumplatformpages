@@ -1,13 +1,15 @@
 package com.oss.bigdata.dfe.SMOKE;
 
-import com.oss.BaseTestCase;
-import com.oss.pages.bigdata.dfe.DataSource.DataSourcePage;
-import io.qameta.allure.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import com.oss.BaseTestCase;
+import com.oss.pages.bigdata.dfe.datasource.DataSourcePage;
+
+import io.qameta.allure.Description;
 
 public class DataSourceSmokeTest extends BaseTestCase {
 
@@ -35,7 +37,7 @@ public class DataSourceSmokeTest extends BaseTestCase {
 
             dataSourcePage.setSeverityInCombobox("All");
 
-            Assert.assertTrue(dataSourcePage.IsIfRunsFresh());
+            Assert.assertTrue(dataSourcePage.isIfRunsFresh());
 
             String actualStatus = dataSourcePage.checkStatus();
             boolean statusIsAcceptable = actualStatus.equals("Info") || actualStatus.equals("Warn");
@@ -56,7 +58,7 @@ public class DataSourceSmokeTest extends BaseTestCase {
             dataSourcePage.selectFirstFileInTheTable();
             String fileName = dataSourcePage.getNameOfFirstFileInTheTable();
             dataSourcePage.clickDownloadFile();
-            dataSourcePage.attachDownloadedFileToReport(fileName);
+            dataSourcePage.attachFileToReport(fileName);
 
             Assert.assertTrue(dataSourcePage.checkIfFileIsNotEmpty(fileName));
         } else {

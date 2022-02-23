@@ -1,11 +1,5 @@
 package com.oss.pages.bigdata.dfe;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
@@ -16,15 +10,12 @@ import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.contextactions.ButtonContainer;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.components.mainheader.Notifications;
 import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.iaa.widgets.timeperiodchooser.TimePeriodChooser;
 import com.oss.framework.widgets.table.TableWidget;
 
-import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
 
-import static com.oss.configuration.Configuration.CONFIGURATION;
 import static com.oss.framework.utils.DelayUtils.sleep;
 import static com.oss.framework.utils.DelayUtils.waitForPageToLoad;
 
@@ -32,12 +23,12 @@ public class XDRBrowserPage extends BaseDfePage {
 
     private static final Logger log = LoggerFactory.getLogger(XDRBrowserPage.class);
 
-    private final String ETL_NAME_COMBOBOX_ID = "etlProcessId-input";
-    private final String TIME_PERIOD_ID = "etlTime";
-    private final String SEARCH_BUTTON_ID = "Search_Button-0";
-    private final String XDR_TABLE_ID = "xdrTableId";
-    private final String EXPORT_BUTTON = "tableExportButton";
-    private final String ADVANCED_SEARCH_CLASS = "advanced-search_component";
+    private static final String ETL_NAME_COMBOBOX_ID = "etlProcessId-input";
+    private static final String TIME_PERIOD_ID = "etlTime";
+    private static final String SEARCH_BUTTON_ID = "Search_Button-0";
+    private static final String XDR_TABLE_ID = "xdrTableId";
+    private static final String EXPORT_BUTTON = "tableExportButton";
+    private static final String ADVANCED_SEARCH_CLASS = "advanced-search_component";
 
     public XDRBrowserPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -89,77 +80,6 @@ public class XDRBrowserPage extends BaseDfePage {
     @Step("I click on kebab menu and Export button")
     public void clickExport() {
         TableWidget.createById(driver, XDR_TABLE_ID, wait).callAction(ActionsContainer.KEBAB_GROUP_ID, EXPORT_BUTTON);
-    }
-
-    @Step("I click on notification icon")
-    public void openNotificationAndWaitForExportToFinish() {
-        openNotificationPanel().waitForExportFinish();
-        log.info("Opening notification panel and waiting for download to finish");
-    }
-
-    @Step("I click download file")
-    public void clickDownload() {
-        Notifications.create(driver, wait).clickDownloadFile();
-        waitForPageToLoad(driver, wait);
-        log.info("Clicking download file");
-    }
-
-    @Step("I attach downloaded file to report")
-    public void attachDownloadedFileToReport() {
-        if (ifDownloadDirExists()) {
-            File directory = new File(CONFIGURATION.getDownloadDir());
-            List<File> listFiles = (List<File>) FileUtils.listFiles(directory, new WildcardFileFilter("*.csv"), null);
-            try {
-                for (File file : listFiles) {
-                    log.info("Attaching file: {}", file.getCanonicalPath());
-                    attachFile(file);
-                }
-            } catch (IOException e) {
-                log.error("Failed attaching files: {}", e.getMessage());
-            }
-        }
-    }
-
-    private boolean ifDownloadDirExists() {
-        File tmpDir = new File(CONFIGURATION.getDownloadDir());
-        if (tmpDir.exists()) {
-            log.info("Download directory was successfully created");
-            return true;
-        }
-        return false;
-    }
-
-    public boolean checkIfFileIsNotEmpty() {
-        File directory = new File(CONFIGURATION.getDownloadDir());
-        List<File> listFiles = (List<File>) FileUtils.listFiles(directory, new WildcardFileFilter("*.csv"), null);
-        boolean fileIsNotEmpty = false;
-        for (File file : listFiles) {
-            if (getFileSizeKiloBytes(file) > 0) {
-                fileIsNotEmpty = true;
-            }
-        }
-        return fileIsNotEmpty;
-    }
-
-    private double getFileSizeKiloBytes(File file) {
-        return (double) file.length() / 1024;
-    }
-
-    @Attachment(value = "Exported CSV file")
-    public byte[] attachFile(File file) throws IOException {
-        return FileUtils.readFileToByteArray(file);
-    }
-
-    @Step("I click clear all notifications")
-    public void clearNotifications() {
-        Notifications.create(driver, wait).clearAllNotification();
-        log.info("Clearing notifications");
-        sleep(2000);
-    }
-
-    @Step("I check amount of Notifications")
-    public int amountOfNotifications() {
-        return Notifications.create(driver, wait).countNotifications();
     }
 
     @Step("I check if active filter contain {filter}")
