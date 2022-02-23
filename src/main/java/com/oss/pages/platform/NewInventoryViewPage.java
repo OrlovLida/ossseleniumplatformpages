@@ -161,11 +161,15 @@ public class NewInventoryViewPage extends BasePage {
         return mainTable.getCellValue(rowId, columnId);
     }
 
-    public void callActionByLabel(int rowId, String groupLabel, String actionLabel) {
-        selectObjectByRowId(rowId);
+    public void callActionByLabel(String groupLabel, String actionLabel) {
         TableWidget tableWidget = getMainTable();
         tableWidget.callActionByLabel(groupLabel, actionLabel);
         DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    public void callActionByLabel(int rowId, String groupLabel, String actionLabel) {
+        selectObjectByRowId(rowId);
+        callActionByLabel(groupLabel, actionLabel);
     }
 
     @Step("Check if table has no data")

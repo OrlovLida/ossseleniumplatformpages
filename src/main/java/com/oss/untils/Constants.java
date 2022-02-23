@@ -10,6 +10,7 @@ public class Constants {
 
     //params
     public static final String ID = "id";
+    public static final String IDS = "ids";
     public static final String CELL_ID = "cell_id";
     public static final String PERSPECTIVE = "perspective";
     public static final String LIVE = "LIVE";
