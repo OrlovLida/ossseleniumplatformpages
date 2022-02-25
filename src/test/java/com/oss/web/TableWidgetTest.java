@@ -58,11 +58,11 @@ public class TableWidgetTest extends BaseTestCase {
         
         // then
         Assertions.assertThat(selectedRows).hasSize(1);
-        Assertions.assertThat(selectedRows.get(0).getIndex()).isEqualTo(0);
+        Assertions.assertThat(selectedRows.get(0).getIndex()).isZero();
         
         inventoryViewPage.unselectObjectByRowId(0);
         selectedRows = inventoryViewPage.getSelectedRows();
-        Assertions.assertThat(selectedRows).hasSize(0);
+        Assertions.assertThat(selectedRows).isEmpty();
     }
     
     @Test(priority = 2)
@@ -96,7 +96,7 @@ public class TableWidgetTest extends BaseTestCase {
         List<String> newHeaders = inventoryViewPage.getActiveColumnsHeaders();
         
         Assertions.assertThat(newHeaders.indexOf(firstHeader)).isEqualTo(2);
-        Assertions.assertThat(newHeaders.indexOf(secondHeader)).isEqualTo(0);
+        Assertions.assertThat(newHeaders.indexOf(secondHeader)).isZero();
         Assertions.assertThat(newHeaders.indexOf(thirdHeader)).isEqualTo(1);
     }
     
