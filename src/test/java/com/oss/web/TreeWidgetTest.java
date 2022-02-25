@@ -53,8 +53,7 @@ public class TreeWidgetTest extends BaseTestCase {
     private static final String PATH_ROOM_3 = PATH_RELATION_LOCATIONS + "." + SUB_LOCATION_TYPE_ROOM + "." + ROOM_3_CREATE;
     private static final String ROOM_3_UPDATE = FakeGenerator.getLocation(FakeGenerator.FilmTitle.LORD_OF_THE_RING);
     private static final String PATH_ROOM_3_UPDATE = PATH_RELATION_LOCATIONS + "." + SUB_LOCATION_TYPE_ROOM + "." + ROOM_3_UPDATE;
-    private static final String DEVICE_NAME =
-            FakeGenerator.getCharacter(FakeGenerator.FilmTitle.FRIENDS) + "." + FakeGenerator.getIdNumber();
+    private static final String DEVICE_NAME = FakeGenerator.getIdNumber();
     private static final String PORT_01_PATH = LOCATION_NAME + ".Hardware.Switch." + DEVICE_NAME + ".Ports.01";
     private static final String PORT_02_PATH = LOCATION_NAME + ".Hardware.Switch." + DEVICE_NAME + ".Ports.02";
     private static final String DEVICE_MODEL_TYPE = "IPDeviceModel";
@@ -197,6 +196,7 @@ public class TreeWidgetTest extends BaseTestCase {
         driver.navigate().refresh();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hierarchyViewPage.getMainTree().searchByAttribute(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, LOCATION_NAME);
+        hierarchyViewPage.expandNextLevel(LOCATION_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hierarchyViewPage.selectNodeByLabelsPath(PORT_01_PATH);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
