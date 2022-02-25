@@ -9,9 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.contextactions.ButtonContainer;
+import com.oss.framework.components.data.Data;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.components.data.Data;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.servicedesk.BaseSDPage;
@@ -52,6 +52,14 @@ public class SDWizardPage extends BaseSDPage {
         getWizard().clickAccept();
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Clicking Accept button in the wizard");
+    }
+
+    @Step("I click {buttonID} button in wizard")
+    public void clickButton(String buttonID) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getWizard().clickButtonById(buttonID);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Clicking {} button in the wizard", buttonID);
     }
 
     @Step("I click Create External button in wizard")

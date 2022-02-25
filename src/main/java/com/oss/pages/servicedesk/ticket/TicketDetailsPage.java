@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.oss.framework.components.contextactions.ButtonContainer;
 import com.oss.framework.components.contextactions.OldActionsContainer;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.ComponentFactory;
@@ -45,6 +46,23 @@ public class TicketDetailsPage extends BaseSDPage {
     private static final String EDIT_REMAINDER_LABEL = "Edit Reminder";
     private static final String REMOVE_REMAINDER_LABEL = "Remove Reminder";
     private static final String MORE_DETAILS_LABEL = "More details";
+    private static final String SAME_MO_TT_TABLE_ID = "_sameMOTTTableWidget";
+    private static final String LINK_TICKETS_ID = "LINK_TICKETS";
+    private static final String ADD_ROOT_CAUSE_ID = "_addRootCause";
+    private static final String ADD_PARTICIPANT_ID = "_createParticipant";
+    private static final String PARTICIPANTS_TABLE_ID = "_participantsTableApp";
+    private static final String PARTICIPANTS_TABLE_FIRST_NAME_ATTRIBUTE_ID = "First Name";
+    private static final String PARTICIPANTS_TABLE_SURNAME_ATTRIBUTE_ID = "Surname";
+    private static final String PARTICIPANTS_TABLE_ROLE_ATTRIBUTE_ID = "Role";
+    private static final String CREATE_PROBLEM_ID = "_createProblem";
+    private static final String RELATED_PROBLEMS_TABLE_ID = "_relatedProblemsApp";
+    private static final String RELATED_PROBLEMS_TABLE_NAME_ATTRIBUTE_ID = "Name";
+    private static final String RELATED_PROBLEMS_TABLE_ASSIGNEE_ATTRIBUTE_ID = "Assignee";
+    private static final String RELATED_PROBLEMS_TABLE_LABEL_ATTRIBUTE_ID = "Label";
+    private static final String RELATED_TICKETS_TABLE_ID = "_relatedTicketsTableWidget";
+    private static final String RELATED_TICKETS_TABLE_ID_ATTRIBUTE_ID = "ID";
+    private static final String ROOT_CAUSES_TABLE_ID = "_rootCausesApp";
+    private static final String ROOT_CAUSES_TABLE_ID_MO_IDENTIFIER_ID = "MO Identifier";
 
     public TicketDetailsPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -78,6 +96,13 @@ public class TicketDetailsPage extends BaseSDPage {
     public void clickContextAction(String contextActionLabel) {
         DelayUtils.waitForPageToLoad(driver, wait);
         TabWindowWidget.create(driver, wait).callActionByLabel(contextActionLabel);
+        log.info("Clicking Context action {}", contextActionLabel);
+    }
+
+    @Step("Click Context action from button with label {contextActionLabel}")
+    public void clickContextActionFromButtonContainer(String contextActionLabel) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        ButtonContainer.create(driver, wait).callActionById(contextActionLabel);
         log.info("Clicking Context action {}", contextActionLabel);
     }
 
@@ -205,5 +230,120 @@ public class TicketDetailsPage extends BaseSDPage {
         clickContextAction(MORE_DETAILS_LABEL);
         log.info("Clicking More Details");
         return new MoreDetailsPage(driver, wait);
+    }
+
+    @Step("I check Same MO TT table")
+    public boolean checkIfSameMOTTTableIsNotEmpty() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Check Same MO TT Table");
+        return !OldTable.createById(driver, wait, SAME_MO_TT_TABLE_ID).hasNoData();
+    }
+
+    @Step("I open link ticket wizard")
+    public SDWizardPage openLinkTicketWizard() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        clickContextActionFromButtonContainer(LINK_TICKETS_ID);
+        log.info("Link Tickets Wizard is opened");
+        return new SDWizardPage(driver, wait);
+    }
+
+    @Step("I open add root cause wizard")
+    public SDWizardPage openAddRootCauseWizard() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        clickContextActionFromButtonContainer(ADD_ROOT_CAUSE_ID);
+        log.info("Add Root Cause Wizard is opened");
+        return new SDWizardPage(driver, wait);
+    }
+
+    @Step("I open add participant wizard")
+    public SDWizardPage openAddParticipantWizard() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        clickContextActionFromButtonContainer(ADD_PARTICIPANT_ID);
+        log.info("Add Participant Wizard is opened");
+        return new SDWizardPage(driver, wait);
+    }
+
+    @Step("I check participant first name")
+    public String checkParticipantFirstName(int participantIndex) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Check participant first name");
+        return checkParticipantData(participantIndex, PARTICIPANTS_TABLE_FIRST_NAME_ATTRIBUTE_ID);
+    }
+
+    @Step("I check participant surname")
+    public String checkParticipantSurname(int participantIndex) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Check participant surname");
+        return checkParticipantData(participantIndex, PARTICIPANTS_TABLE_SURNAME_ATTRIBUTE_ID);
+    }
+
+    @Step("I check participant role")
+    public String checkParticipantRole(int participantIndex) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Check participant role");
+        return checkParticipantData(participantIndex, PARTICIPANTS_TABLE_ROLE_ATTRIBUTE_ID);
+    }
+
+    private String checkParticipantData(int participantIndex, String attributeId) {
+        return checkOldTableData(PARTICIPANTS_TABLE_ID, participantIndex, attributeId);
+    }
+
+    @Step("I open Create Problem wizard")
+    public SDWizardPage openCreateProblemWizard() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        clickContextActionFromButtonContainer(CREATE_PROBLEM_ID);
+        log.info("Create Problem Wizard is opened");
+        return new SDWizardPage(driver, wait);
+    }
+
+    @Step("I check related problem name")
+    public String checkRelatedProblemName(int problemIndex) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Check related problem name");
+        return checkRelatedProblemsData(problemIndex, RELATED_PROBLEMS_TABLE_NAME_ATTRIBUTE_ID);
+    }
+
+    @Step("I check related problem assignee")
+    public String checkRelatedProblemAssignee(int problemIndex) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Check related problem assignee");
+        return checkRelatedProblemsData(problemIndex, RELATED_PROBLEMS_TABLE_ASSIGNEE_ATTRIBUTE_ID);
+    }
+
+    @Step("I check related problem label")
+    public String checkRelatedProblemLabel(int problemIndex) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Check related problem label");
+        return checkRelatedProblemsData(problemIndex, RELATED_PROBLEMS_TABLE_LABEL_ATTRIBUTE_ID);
+    }
+
+    private String checkRelatedProblemsData(int problemIndex, String attributeId) {
+        return checkOldTableData(RELATED_PROBLEMS_TABLE_ID, problemIndex, attributeId);
+    }
+
+    @Step("I check related tickets ID")
+    public String checkRelatedTicketsId(int ticketIndex) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Check related tickets ID");
+        return checkRelatedTicketsData(ticketIndex, RELATED_TICKETS_TABLE_ID_ATTRIBUTE_ID);
+    }
+
+    private String checkRelatedTicketsData(int ticketIndex, String attributeId) {
+        return checkOldTableData(RELATED_TICKETS_TABLE_ID, ticketIndex, attributeId);
+    }
+
+    @Step("I check root cause  - MO Identifier")
+    public String checkRootCausesMOIdentifier(int ticketIndex) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Check root cause  - MO Identifier");
+        return checkRootCausesData(ticketIndex, ROOT_CAUSES_TABLE_ID_MO_IDENTIFIER_ID);
+    }
+
+    private String checkRootCausesData(int objectIndex, String attributeId) {
+        return checkOldTableData(ROOT_CAUSES_TABLE_ID, objectIndex, attributeId);
+    }
+
+    private String checkOldTableData(String tableId, int index, String attributeId) {
+        return OldTable.createById(driver, wait, tableId).getCellValue(index, attributeId);
     }
 }
