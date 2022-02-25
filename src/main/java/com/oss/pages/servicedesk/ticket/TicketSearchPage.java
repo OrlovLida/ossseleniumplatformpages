@@ -5,10 +5,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.TableWidget;
 import com.oss.pages.servicedesk.BaseSDPage;
+import com.oss.pages.servicedesk.ticket.wizard.ExportWizardPage;
 
 import io.qameta.allure.Step;
 
@@ -27,6 +29,8 @@ public class TicketSearchPage extends BaseSDPage {
 
     private static final String TABLE_WIDGET_ID = "ticket-search-graphql-table";
     private static final String TICKET_SEARCH = "ticket-search";
+    private static final String EXPORT_BUTTON_ID = "exportButton";
+    private static final String EXPORT_WIZARD_ID = "exportgui-wizard-widget";
 
     public TicketSearchPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -85,5 +89,18 @@ public class TicketSearchPage extends BaseSDPage {
     public void filterBy(String attributeName, String attributeValue, Input.ComponentType componentType) {
         DelayUtils.waitForPageToLoad(driver, wait);
         getTicketTable().searchByAttribute(attributeName, componentType, attributeValue);
+    }
+
+    public boolean isTicketSearchTableEmpty() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return getTicketTable().hasNoData();
+    }
+
+    @Step("Click Export button in Ticket Search Page")
+    public ExportWizardPage clickExportInTicketSearch() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getTicketTable().callAction(ActionsContainer.KEBAB_GROUP_ID, EXPORT_BUTTON_ID);
+        log.info("Clicking Export Button");
+        return new ExportWizardPage(driver, wait, EXPORT_WIZARD_ID);
     }
 }

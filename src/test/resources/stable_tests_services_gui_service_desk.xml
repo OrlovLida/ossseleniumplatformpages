@@ -1,14 +1,21 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="ServicesGuiServiceDesk" thread-count="1" parallel="tests" verbose="1">
-    <test name="CreateTroubleTicketVFNZTest">
+<suite name="ServicesGuiServiceDesk" thread-count="2" parallel="methods" verbose="1">
+    <test name="CreateTroubleTicket">
         <parameter name="MOIdentifier" value="CFS_SOM_01_901"/>
         <parameter name="ttAssignee" value="ca_kodrobinska"/>
         <parameter name="NewAssignee" value="Tier2_Mobile"/>
         <parameter name="EscalatedTo" value="admin oss"/>
         <parameter name="NotificationEmailTo" value="kornelia.odrobinska@comarch.com"/>
         <parameter name="NotificationEmailFrom" value="Test@AIF.pl"/>
+        <parameter name="RelatedTicketID" value="100"/>
+        <parameter name="SecondMOIdentifier" value="CFS_SOM_01_1101"/>
         <classes>
             <class name="com.oss.servicedesk.CreateTroubleTicketVFNZTest"/>
+        </classes>
+    </test>
+    <test name="ExportTest">
+        <classes>
+            <class name="com.oss.servicedesk.ExportTest"/>
         </classes>
     </test>
 </suite>
