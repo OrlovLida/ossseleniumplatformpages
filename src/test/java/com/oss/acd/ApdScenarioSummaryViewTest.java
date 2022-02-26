@@ -34,6 +34,7 @@ public class ApdScenarioSummaryViewTest extends BaseTestCase {
     public void addPredefinedFilter() {
         log.info("Waiting in method addPredefinedFilter");
         baseACDPage.maximizeWindow(PREDEFINED_FILTERS_WINDOW_ID);
+        Assert.assertTrue(baseACDPage.checkCardMaximize(PREDEFINED_FILTERS_WINDOW_ID));
         baseACDPage.clickAddPredefinedFilter();
         baseACDPage.chooseVisualizationType("Chart");
         log.info("Visualization type - CHART - set");
@@ -55,14 +56,17 @@ public class ApdScenarioSummaryViewTest extends BaseTestCase {
         log.info("Waiting in method deletePredefinedFilter");
         baseACDPage.deletePredefinedFilter();
         baseACDPage.minimizeWindow(PREDEFINED_FILTERS_WINDOW_ID);
+        Assert.assertFalse(baseACDPage.checkCardMaximize(PREDEFINED_FILTERS_WINDOW_ID));
     }
 
     @Test(priority = 3, testName = "Check if ABGAD issues exist", description = "Check if ABGAD issues exist")
     @Description("Check if ABGAD issues exist")
     public void abgadDetectedIssuesTableCheck() {
         baseACDPage.maximizeWindow(DETECTED_ISSUES_WINDOW_ID);
+        Assert.assertTrue(baseACDPage.checkCardMaximize(DETECTED_ISSUES_WINDOW_ID));
         checkApdIssuesTableWithFilter();
         baseACDPage.minimizeWindow(DETECTED_ISSUES_WINDOW_ID);
+        Assert.assertFalse(baseACDPage.checkCardMaximize(DETECTED_ISSUES_WINDOW_ID));
     }
 
     private void checkApdIssuesTableWithFilter() {

@@ -5,7 +5,9 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.acd.BaseACDPage;
 import com.oss.pages.acd.homeView.HomeViewPage;
 import com.oss.utils.TestListener;
+
 import io.qameta.allure.Description;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -17,6 +19,10 @@ import org.testng.annotations.Test;
 public class HomeViewTest extends BaseTestCase {
 
     private static final Logger log = LoggerFactory.getLogger(HomeViewTest.class);
+
+    private static final String COLUMN_CHART_WINDOW_ID = "ColumnChartWindowId";
+    private static final String PIE_CHART_WINDOW_ID = "PieChartTableWindowId";
+    private static final String ISSUE_TABLE_WINDOW_ID = "IssueTableWindowId";
 
     private HomeViewPage homeViewPage;
     private BaseACDPage baseACDPage;
@@ -30,27 +36,38 @@ public class HomeViewTest extends BaseTestCase {
     @Test(priority = 1, testName = "Check column chart", description = "Check column chart")
     @Description("Check column chart")
     public void checkColumnChart() {
-        baseACDPage.maximizeWindow("ColumnChartWindowId");
-        homeViewPage.seeColumnChartIsDisplayed();
-        //homeViewPage.refreshColumnChart();
-        homeViewPage.seeColumnChartIsDisplayed();
-        baseACDPage.minimizeWindow("ColumnChartWindowId");
+        try {
+            baseACDPage.maximizeWindow(COLUMN_CHART_WINDOW_ID);
+            Assert.assertTrue(baseACDPage.checkCardMaximize(COLUMN_CHART_WINDOW_ID));
+            homeViewPage.seeColumnChartIsDisplayed();
+            baseACDPage.minimizeWindow(COLUMN_CHART_WINDOW_ID);
+            Assert.assertFalse(baseACDPage.checkCardMaximize(COLUMN_CHART_WINDOW_ID));
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            Assert.fail();
+        }
     }
 
     @Test(priority = 2, testName = "Check pie chart", description = "Check pie chart")
     @Description("Check pie chart")
     public void checkPieChart() {
-        baseACDPage.maximizeWindow("PieChartTableWindowId");
-        homeViewPage.seePieChartIsDisplayed();
-        //homeViewPage.refreshPieChart();
-        homeViewPage.seePieChartIsDisplayed();
-        baseACDPage.minimizeWindow("PieChartTableWindowId");
+        try {
+            baseACDPage.maximizeWindow(PIE_CHART_WINDOW_ID);
+            Assert.assertTrue(baseACDPage.checkCardMaximize(PIE_CHART_WINDOW_ID));
+            homeViewPage.seePieChartIsDisplayed();
+            baseACDPage.minimizeWindow(PIE_CHART_WINDOW_ID);
+            Assert.assertFalse(baseACDPage.checkCardMaximize(PIE_CHART_WINDOW_ID));
+        } catch (Exception e){
+            log.error(e.getMessage());
+            Assert.fail();
+        }
     }
 
     @Test(priority = 3, testName = "Check if Situations exist", description = "Check if Situations exist")
     @Description("Check if Situations exist")
     public void situationCheck() {
-        baseACDPage.maximizeWindow("IssueTableWindowId");
+        baseACDPage.maximizeWindow(ISSUE_TABLE_WINDOW_ID);
+        Assert.assertTrue(baseACDPage.checkCardMaximize(ISSUE_TABLE_WINDOW_ID));
         checkScenarioTableWithFilters("Situation");
     }
 
@@ -71,8 +88,8 @@ public class HomeViewTest extends BaseTestCase {
     @Test(priority = 6, testName = "Check if issues table is refreshed and minimize window", description = "Check if issues table is refreshed and minimize window")
     @Description("Check if issues table is refreshed and minimize window")
     public void refreshIssuesTable() {
-        //homeViewPage.refreshIssuesTable();
-        baseACDPage.minimizeWindow("IssueTableWindowId");
+        baseACDPage.minimizeWindow(ISSUE_TABLE_WINDOW_ID);
+        Assert.assertFalse(baseACDPage.checkCardMaximize(ISSUE_TABLE_WINDOW_ID));
     }
 
     private void checkScenarioTableWithFilters(String issueType) {
