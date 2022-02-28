@@ -15,12 +15,12 @@ import com.oss.pages.platform.NewInventoryViewPage;
 
 public class SelectionBarTableWidgetTest extends BaseTestCase {
 
+    private NewInventoryViewPage inventoryViewPage;
+    private TableWidget tableWidget;
     String zeroSelected = "0 selected";
     String oneSelected = "1 selected";
     String fiveSelected = "5 selected";
     String threeSelected = "3 selected";
-    private NewInventoryViewPage inventoryViewPage;
-    private TableWidget tableWidget;
 
     @BeforeClass
     public void goToInventoryView() {
