@@ -53,7 +53,7 @@ public class TreeWidgetTest extends BaseTestCase {
     private static final String PATH_ROOM_3 = PATH_RELATION_LOCATIONS + "." + SUB_LOCATION_TYPE_ROOM + "." + ROOM_3_CREATE;
     private static final String ROOM_3_UPDATE = FakeGenerator.getLocation(FakeGenerator.FilmTitle.LORD_OF_THE_RING);
     private static final String PATH_ROOM_3_UPDATE = PATH_RELATION_LOCATIONS + "." + SUB_LOCATION_TYPE_ROOM + "." + ROOM_3_UPDATE;
-    private static final String DEVICE_NAME = FakeGenerator.getCharacter(FakeGenerator.FilmTitle.LORD_OF_THE_RING);
+    private static final String DEVICE_NAME = FakeGenerator.getIdNumber();
     private static final String PORT_01_PATH = LOCATION_NAME + ".Hardware.Switch." + DEVICE_NAME + ".Ports.01";
     private static final String PORT_02_PATH = LOCATION_NAME + ".Hardware.Switch." + DEVICE_NAME + ".Ports.02";
     private static final String DEVICE_MODEL_TYPE = "IPDeviceModel";
@@ -150,7 +150,7 @@ public class TreeWidgetTest extends BaseTestCase {
         Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(ROOM_NAME_2_UPDATED);
     }
     
-    @Test(priority = 8, enabled = false) //until fix OSSPHY-53281
+    @Test(priority = 8, enabled = false) // until fix OSSPHY-53281
     public void createRoom() {
         hierarchyViewPage.selectNodeByLabel(LOCATION_NAME);
         hierarchyViewPage.getMainTree().callActionById(ActionsContainer.CREATE_GROUP_ID, CREATE_SUBLOCATION_ACTION);
@@ -164,7 +164,7 @@ public class TreeWidgetTest extends BaseTestCase {
         hierarchyViewPage.expandNextLevel(LOCATION_NAME);
         List<String> nodes = hierarchyViewPage.getVisibleNodesLabel();
         Assertions.assertThat(nodes).contains(ROOM_3_CREATE);
-
+        
     }
     
     @Test(priority = 9, enabled = false)
@@ -196,6 +196,7 @@ public class TreeWidgetTest extends BaseTestCase {
         driver.navigate().refresh();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hierarchyViewPage.getMainTree().searchByAttribute(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, LOCATION_NAME);
+        hierarchyViewPage.expandNextLevel(LOCATION_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hierarchyViewPage.selectNodeByLabelsPath(PORT_01_PATH);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -206,7 +207,7 @@ public class TreeWidgetTest extends BaseTestCase {
         pmWizard.accept();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hierarchyViewPage.getMainTree().unselectAllNodes();
-        DelayUtils.waitForPageToLoad(driver,webDriverWait);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assertions.assertThat(hierarchyViewPage.isNodePresent(PLUGGABLE_MODULE_01_PATH)).isTrue();
         Assertions.assertThat(hierarchyViewPage.isNodePresent(PLUGGABLE_MODULE_02_PATH)).isTrue();
         

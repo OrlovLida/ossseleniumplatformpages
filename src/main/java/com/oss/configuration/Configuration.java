@@ -31,7 +31,18 @@ public class Configuration {
     public String getValue(String key) {
         return properties.getProperty(key);
     }
-    
+
+    public boolean isLocally() {
+        return Boolean.valueOf(getLocally());
+    }
+
+    private String getLocally() {
+        if (System.getProperty("LOCALLY") == null) {
+            return CONFIGURATION.getValue("locally");
+        }
+        return System.getProperty("LOCALLY");
+    }
+
     public String getUrl() {
         if (System.getProperty("URL") == null) {
             return CONFIGURATION.getValue("baseUrl");
