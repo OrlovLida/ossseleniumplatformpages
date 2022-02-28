@@ -1,6 +1,8 @@
 package com.oss.pages.faultmanagement;
 
 import com.oss.framework.components.inputs.Button;
+import com.oss.framework.components.search.AdvancedSearch;
+import com.oss.framework.iaa.widgets.list.ListApp;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
 import com.oss.framework.iaa.widgets.table.FMSMTable;
@@ -11,6 +13,8 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * @author Bartosz Nowak
@@ -31,6 +35,7 @@ public class WAMVPage extends BasePage {
     private static final String SAME_MO_ALARMS_TABLE_ID = "area3-mo-alarms";
     private static final String ADAPTER_NAME_VALUE = "Adapter Name";
     private static final String NOTIFICATION_IDENTIFIER_VALUE = "Notification Identifier";
+    private static final String PERCEIVED_SEVERITY_VALUE = "Perceived Severity";
     private static final String PROPERTY_PANEL_ID = "tab-content_AREA3__AREA3AlarmDetailsTab";//TODO temporary id from appList, propertyPanel doesn't have id, update after Web fix OSSWEB-16869
 
     private final FMSMTable fmsmTable = FMSMTable.createById(driver, wait, TABLE_AREA2_WIDGET_ID);
@@ -65,6 +70,7 @@ public class WAMVPage extends BasePage {
 
     @Step("I choose a selected row from a list")
     public void selectSpecificRow(int row) {
+        DelayUtils.waitForPageToLoad(driver, wait);
         fmsmTable.selectRow(row);
         log.info("Selecting row {} on alarm list", row);
     }
@@ -152,6 +158,13 @@ public class WAMVPage extends BasePage {
         return propertyPanel.getPropertyValue(NOTIFICATION_IDENTIFIER_VALUE);
     }
 
+    @Step("I get perceived severity from Alarms Details Tab")
+    public String getPerceivedSeverityValueFromAlarmDetailsTab() {
+        OldPropertyPanel propertyPanel = OldPropertyPanel.createById(driver, wait, PROPERTY_PANEL_ID);
+        log.info("Checking perceived severity value from Alarm Details Tab");
+        return propertyPanel.getPropertyValue(PERCEIVED_SEVERITY_VALUE);
+    }
+
     @Step("I check if Same MO Alarms Table is visible")
     public boolean checkVisibilityOfSameMOAlarmsTable() {
         log.info("Checking visibility of Same MO Alarms Table");
@@ -170,5 +183,24 @@ public class WAMVPage extends BasePage {
             DelayUtils.sleep(50);
         }
         return false;
+    }
+
+    @Step ("I check if additional text is displayed")
+    public boolean checkDisplayedText(String expectedText, String windowId) {
+        List<String> text = ListApp.createFromParent(driver, wait, windowId).getValue();
+        if (text.contains(expectedText)) {
+            log.info("Expected additional text {} is displayed", expectedText);
+            return true;
+        } else {
+            log.info("Expected additional text {} is not displayed", expectedText);
+            return false;
+        }
+    }
+
+    public void searchInView(String searchedAttribute, String widgetId) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        AdvancedSearch search = AdvancedSearch.createByWidgetId(driver, wait, widgetId);
+        search.fullTextSearch(searchedAttribute);
+        log.info("Searching in {} for text {}", widgetId, searchedAttribute);
     }
 }
