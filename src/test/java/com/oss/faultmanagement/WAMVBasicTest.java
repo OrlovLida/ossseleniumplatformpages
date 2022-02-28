@@ -113,7 +113,7 @@ public class WAMVBasicTest extends BaseTestCase {
             Assert.assertTrue(wamvPage.checkVisibilityOfSameMOAlarmsTable());
             wamvPage.clickOnSameMODetailsTab();
             wamvPage.clickOnAdditionalTextTab();
-            Assert.assertTrue(wamvPage.checkDisplayedText(EXPECTED_TEXT, AREA_3_WINDOW_ID));
+            Assert.assertTrue(wamvPage.isAdditionalTextDisplayed(EXPECTED_TEXT, AREA_3_WINDOW_ID));
             wamvPage.clickOnAlarmDetailsTab();
             Assert.assertEquals(wamvPage.getAdapterNameValueFromAlarmDetailsTab(), adapterName);
             Assert.assertEquals(wamvPage.getNotificationIdentifierValueFromAlarmDetailsTab(), wamvPage.getTextFromNotificationIdentifierCell(alarmListRow));

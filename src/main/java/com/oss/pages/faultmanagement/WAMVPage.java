@@ -185,8 +185,8 @@ public class WAMVPage extends BasePage {
         return false;
     }
 
-    @Step ("I check if additional text is displayed")
-    public boolean checkDisplayedText(String expectedText, String windowId) {
+    @Step("I check if additional text is displayed")
+    public boolean isAdditionalTextDisplayed(String expectedText, String windowId) {
         List<String> text = ListApp.createFromParent(driver, wait, windowId).getValue();
         if (text.contains(expectedText)) {
             log.info("Expected additional text {} is displayed", expectedText);
@@ -197,10 +197,10 @@ public class WAMVPage extends BasePage {
         }
     }
 
+    @Step("Search in view for specific attribute")
     public void searchInView(String searchedAttribute, String widgetId) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        AdvancedSearch search = AdvancedSearch.createByWidgetId(driver, wait, widgetId);
-        search.fullTextSearch(searchedAttribute);
+        AdvancedSearch.createByWidgetId(driver, wait, widgetId).fullTextSearch(searchedAttribute);
         log.info("Searching in {} for text {}", widgetId, searchedAttribute);
     }
 }
