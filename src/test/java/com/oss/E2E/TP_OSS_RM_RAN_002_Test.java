@@ -48,6 +48,7 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
     private static final String BUSINESS_PROCESS_MANAGEMENT = "Business Process Management";
     private static final String BPM_AND_PLANNING = "BPM and Planning";
     private static final String PROCESS_INSTANCES = "Process Instances";
+    private static final String MANUFACTURER = "HUAWEI Technology Co.,Ltd";
 
     @BeforeClass
     public void openConsole() {
@@ -109,8 +110,8 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
         waitForPageToLoad();
         cellSiteConfigurationPage.selectTreeRow(LOCATION_NAME);
         waitForPageToLoad();
+        cellSiteConfigurationPage.selectTab("Devices");
         for (String ranAntenna : ANTENNA_NAMES) {
-            cellSiteConfigurationPage.selectTab("Devices");
             waitForPageToLoad();
             cellSiteConfigurationPage.createRanAntennaAndArray(ranAntenna, RAN_ANTENNA_MODEL, LOCATION_NAME);
             checkMessageType();
@@ -121,7 +122,9 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
     @Test(priority = 7)
     @Description("Create hosting on BBU and hostings on antenna arrays")
     public void createHostingRelation() {
+        waitForPageToLoad();
         cellSiteConfigurationPage.selectTreeRow(GNODEB_NAME);
+        waitForPageToLoad();
         cellSiteConfigurationPage.createHostingOnDevice(BBU_NAME, false);
         checkMessageType();
         closeMessage();
@@ -149,26 +152,28 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
     public void deleteHostingRelation() {
         openCellSiteConfigurationView();
         cellSiteConfigurationPage.expandTreeToBaseStation("Site", LOCATION_NAME, GNODEB_NAME);
+        waitForPageToLoad();
         cellSiteConfigurationPage.selectTab("Hosting");
         waitForPageToLoad();
         cellSiteConfigurationPage.filterObject("Hosted Resource", GNODEB_NAME);
         waitForPageToLoad();
         cellSiteConfigurationPage.removeObject();
-        waitForPageToLoad();
         checkMessageType();
         closeMessage();
+        waitForPageToLoad();
         cellSiteConfigurationPage.getTree().expandTreeRow(GNODEB_NAME);
         for (String cell : CELL5G_NAMES) {
             waitForPageToLoad();
             cellSiteConfigurationPage.selectTreeRow(cell);
+            waitForPageToLoad();
             cellSiteConfigurationPage.selectTab("Hosting");
             waitForPageToLoad();
             cellSiteConfigurationPage.filterObject("Hosted Resource", cell);
             waitForPageToLoad();
             cellSiteConfigurationPage.removeObject();
-            waitForPageToLoad();
             checkMessageType();
             closeMessage();
+            waitForPageToLoad();
         }
     }
 
@@ -176,13 +181,16 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
     @Description("Delete ran antennas")
     public void deleteRanAntenna() {
         cellSiteConfigurationPage.selectTreeRow(LOCATION_NAME);
+        waitForPageToLoad();
+        cellSiteConfigurationPage.selectTab("Devices");
         for (String ranAntenna : ANTENNA_NAMES) {
             waitForPageToLoad();
-            cellSiteConfigurationPage.selectTab("Devices");
-            cellSiteConfigurationPage.filterObject("Name", ranAntenna);
+            cellSiteConfigurationPage.removeDevice("Antennas", MANUFACTURER,  ranAntenna);
+            waitForPageToLoad();
             cellSiteConfigurationPage.removeObject();
             checkMessageType();
             closeMessage();
+            waitForPageToLoad();
         }
     }
 
@@ -191,12 +199,15 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
     public void delete5Gcells() {
         cellSiteConfigurationPage.selectTreeRow(GNODEB_NAME);
         waitForPageToLoad();
+        cellSiteConfigurationPage.selectTab("Cells 5G");
+        waitForPageToLoad();
         for (String cell : CELL5G_NAMES) {
-            cellSiteConfigurationPage.selectTab("Cells 5G");
             cellSiteConfigurationPage.filterObject("Name", cell);
+            waitForPageToLoad();
             cellSiteConfigurationPage.removeObject();
             checkMessageType();
             closeMessage();
+            waitForPageToLoad();
         }
     }
 
@@ -208,6 +219,7 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
         cellSiteConfigurationPage.selectTab("Base Stations");
         waitForPageToLoad();
         cellSiteConfigurationPage.filterObject("Name", GNODEB_DU_NAME);
+        waitForPageToLoad();
         cellSiteConfigurationPage.removeObject();
         checkMessageType();
         closeMessage();
@@ -216,13 +228,9 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
     @Test(priority = 13)
     @Description("Delete gNodeB")
     public void delete5Gnode() {
-        openCellSiteConfigurationView();
-        cellSiteConfigurationPage.expandTreeToLocation(SITE, LOCATION_NAME);
-        cellSiteConfigurationPage.selectTreeRow(LOCATION_NAME);
-        waitForPageToLoad();
-        cellSiteConfigurationPage.selectTab("Base Stations");
         waitForPageToLoad();
         cellSiteConfigurationPage.filterObject("Name", GNODEB_NAME);
+        waitForPageToLoad();
         cellSiteConfigurationPage.removeObject();
         checkMessageType();
         closeMessage();

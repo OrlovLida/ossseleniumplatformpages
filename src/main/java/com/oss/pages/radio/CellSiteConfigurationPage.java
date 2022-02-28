@@ -3,8 +3,6 @@ package com.oss.pages.radio;
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.components.prompts.ConfirmationBox;
-import com.oss.framework.components.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.tabs.TabsWidget;
@@ -46,6 +44,8 @@ public class CellSiteConfigurationPage extends BasePage {
     private static final String HOSTING_TAB_LABEL = "Hosting";
     private static final String WIZARD_ID = "Popup";
     private static final String TREE_TABLE_ID = "DevicesTableApp";
+    private static final String DELETE_WIZARD_ID = "delete-popup";
+    private static final String DELETE_BUTTON_ID = "delete-popup-buttons-app-1";
 
     public CellSiteConfigurationPage(WebDriver driver) {
         super(driver);
@@ -65,6 +65,7 @@ public class CellSiteConfigurationPage extends BasePage {
     public CellSiteConfigurationPage selectTab(String tabName) {
         waitForPageToLoad();
         TabsWidget tabs = TabsWidget.createById(driver, wait, TAB_TABLE_DATA_ATTRIBUTE_NAME);
+        waitForPageToLoad();
         tabs.selectTabByLabel(tabName);
         return this;
     }
@@ -101,8 +102,8 @@ public class CellSiteConfigurationPage extends BasePage {
     public void removeObject() {
         getTabTable().callActionByLabel(DELETE_LABEL);
         waitForPageToLoad();
-        ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
-        prompt.clickButtonByLabel(DELETE_LABEL);
+        Wizard wizard = Wizard.createByComponentId(driver, wait, DELETE_WIZARD_ID);
+        wizard.clickButtonById(DELETE_BUTTON_ID);
     }
 
     @Step("Remove device {objectName}")
