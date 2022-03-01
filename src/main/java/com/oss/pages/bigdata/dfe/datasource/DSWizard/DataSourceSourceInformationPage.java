@@ -1,10 +1,5 @@
 package com.oss.pages.bigdata.dfe.datasource.DSWizard;
 
-import java.io.File;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Paths;
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
@@ -52,16 +47,9 @@ public class DataSourceSourceInformationPage extends BasePage {
 
     @Step("I upload a Data Source file")
     public void uploadCSVFile(String path) {
-        try {
-            URL res = getClass().getClassLoader().getResource(path);
-            File file = Paths.get(res.toURI()).toFile();
-            String absolutePath = file.getAbsolutePath();
-            Wizard wizard = Wizard.createByComponentId(driver, wait, UPLOAD_WIZARD);
-            Input input = wizard.getComponent(UPLOAD_WIZARD, Input.ComponentType.FILE_CHOOSER);
-            input.setSingleStringValue(absolutePath);
-        } catch (URISyntaxException e) {
-            throw new RuntimeException("Cannot load file", e);
-        }
+        Wizard wizard = Wizard.createByComponentId(driver, wait, UPLOAD_WIZARD);
+        Input input = wizard.getComponent(UPLOAD_WIZARD, Input.ComponentType.FILE_CHOOSER);
+        input.setSingleStringValue(getAbsolutePath(path));
     }
 
     @Step("I fill Data Source Type with {dsType}")
