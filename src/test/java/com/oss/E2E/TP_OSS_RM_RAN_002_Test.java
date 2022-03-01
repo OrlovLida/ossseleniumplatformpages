@@ -186,8 +186,6 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
         for (String ranAntenna : ANTENNA_NAMES) {
             waitForPageToLoad();
             cellSiteConfigurationPage.removeDevice("Antennas", MANUFACTURER,  ranAntenna);
-            waitForPageToLoad();
-            cellSiteConfigurationPage.removeObject();
             checkMessageType();
             closeMessage();
             waitForPageToLoad();
