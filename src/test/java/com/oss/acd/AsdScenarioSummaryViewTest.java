@@ -37,6 +37,7 @@ public class AsdScenarioSummaryViewTest extends BaseTestCase {
     public void addPredefinedFilter() {
         log.info("Waiting in method addPredefinedFilter");
         baseACDPage.maximizeWindow(PREDEFINED_FILTERS_WINDOW_ID);
+        Assert.assertTrue(baseACDPage.checkCardMaximize(PREDEFINED_FILTERS_WINDOW_ID));
         baseACDPage.clickAddPredefinedFilter();
         baseACDPage.chooseVisualizationType("Chart");
         log.info("Visualization type - CHART - set");
@@ -58,12 +59,14 @@ public class AsdScenarioSummaryViewTest extends BaseTestCase {
         log.info("Waiting in method deletePredefinedFilter");
         baseACDPage.deletePredefinedFilter();
         baseACDPage.minimizeWindow(PREDEFINED_FILTERS_WINDOW_ID);
+        Assert.assertFalse(baseACDPage.checkCardMaximize(PREDEFINED_FILTERS_WINDOW_ID));
     }
 
     @Test(priority = 3, testName = "Check if ASD issues exist", description = "Check if ASD issues exists")
     @Description("Check if ASD issues exist")
     public void asdDetectedIssuesTableCheck() {
         baseACDPage.maximizeWindow(DETECTED_ISSUES_WINDOW_ID);
+        Assert.assertTrue(baseACDPage.checkCardMaximize(DETECTED_ISSUES_WINDOW_ID));
         checkIssuesTableWithFilters();
     }
 
@@ -72,6 +75,7 @@ public class AsdScenarioSummaryViewTest extends BaseTestCase {
     public void refreshDetectedIssuesTable() {
         baseACDPage.refreshIssuesTable(issuesTableRefreshButtonId);
         baseACDPage.minimizeWindow(DETECTED_ISSUES_WINDOW_ID);
+        Assert.assertFalse(baseACDPage.checkCardMaximize(DETECTED_ISSUES_WINDOW_ID));
     }
 
     private void checkIssuesTableWithFilters() {

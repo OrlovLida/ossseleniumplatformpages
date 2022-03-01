@@ -20,7 +20,11 @@ public class WAMVBasicTest extends BaseTestCase {
     private final String DEACKNOWLEDGE_VALUE = "False";
     private final String TEST_NOTE_VALUE = "Selenium_automated_test";
     private final String EMPTY_NOTE_VALUE = "";
+    private final String EXPECTED_TEXT = "SeleniumTest";
+    private final String PERCEIVED_SEVERITY = "Critical";
     private static final String ALARM_MANAGEMENT_VIEW_ID = "_UserViewsListALARM_MANAGEMENT";
+    private static final String AREA_3_WINDOW_ID = "AREA3";
+    private static final String AREA_2_WINDOW_ID = "AREA2";
 
     private FMDashboardPage fmDashboardPage;
     private WAMVPage wamvPage;
@@ -53,7 +57,7 @@ public class WAMVBasicTest extends BaseTestCase {
     @Description("I verify if acknowledge and deacknowledge work in WAMV")
     public void openSelectedWAMVAndCheckAckDeackFunctionality(
             @Optional("Selenium_test_alarm_list") String alarmListName,
-            @Optional("2") int alarmListRow,
+            @Optional("0") int alarmListRow,
             @Optional("0") int alarmManagementViewRow
     ) {
         try {
@@ -104,15 +108,38 @@ public class WAMVBasicTest extends BaseTestCase {
         try {
             fmDashboardPage.searchInSpecificView(ALARM_MANAGEMENT_VIEW_ID, alarmListName);
             wamvPage = fmDashboardPage.openSelectedView(ALARM_MANAGEMENT_VIEW_ID, alarmManagementViewRow);
-            Assert.assertTrue(wamvPage.checkIfPageTitleIsCorrect(alarmListName));
             wamvPage.selectSpecificRow(alarmListRow);
             wamvPage.clickOnSameMOAlarmsTab();
             Assert.assertTrue(wamvPage.checkVisibilityOfSameMOAlarmsTable());
             wamvPage.clickOnSameMODetailsTab();
             wamvPage.clickOnAdditionalTextTab();
+            Assert.assertTrue(wamvPage.isAdditionalTextDisplayed(EXPECTED_TEXT, AREA_3_WINDOW_ID));
             wamvPage.clickOnAlarmDetailsTab();
             Assert.assertEquals(wamvPage.getAdapterNameValueFromAlarmDetailsTab(), adapterName);
             Assert.assertEquals(wamvPage.getNotificationIdentifierValueFromAlarmDetailsTab(), wamvPage.getTextFromNotificationIdentifierCell(alarmListRow));
+
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            Assert.fail();
+        }
+    }
+
+    @Parameters({"alarmListName", "alarmListRow", "alarmManagementViewRow"})
+    @Test(priority = 5, testName = "Searching in WAMV", description = "Searching in WAMV")
+    @Description("I verify if searching in WAMV works properly")
+    public void openSelectedWAMVAndCheckSearch(
+            @Optional("Selenium_test_alarm_list") String alarmListName,
+            @Optional("0") int alarmListRow,
+            @Optional("0") int alarmManagementViewRow
+    ) {
+        try {
+            fmDashboardPage.searchInSpecificView(ALARM_MANAGEMENT_VIEW_ID, alarmListName);
+            wamvPage = fmDashboardPage.openSelectedView(ALARM_MANAGEMENT_VIEW_ID, alarmManagementViewRow);
+            wamvPage.searchInView(PERCEIVED_SEVERITY, AREA_2_WINDOW_ID);
+            wamvPage.selectSpecificRow(alarmListRow);
+            wamvPage.clickOnAdditionalTextTab();
+            wamvPage.clickOnAlarmDetailsTab();
+            Assert.assertEquals(wamvPage.getPerceivedSeverityValueFromAlarmDetailsTab(), PERCEIVED_SEVERITY);
 
         } catch (Exception e) {
             log.error(e.getMessage());
