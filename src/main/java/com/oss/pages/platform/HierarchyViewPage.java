@@ -132,8 +132,10 @@ public class HierarchyViewPage extends BasePage {
     @Step("Select tree node by labels - {labels}")
     public void selectNodeByLabelsPath(String labels) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getMainTree()
-                .getNodeByLabelsPath(labels).toggleNode();
+        Node node = getMainTree().getNodeByLabelsPath(labels);
+        if (!node.isToggled()){
+            node.toggleNode();
+        }
     }
 
     public List<String> getVisibleNodesLabel() {
