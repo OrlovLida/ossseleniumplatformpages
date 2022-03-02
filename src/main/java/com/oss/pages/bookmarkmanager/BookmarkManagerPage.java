@@ -40,9 +40,8 @@ public class BookmarkManagerPage extends BasePage {
 
     @Step("I search for bookmark")
     public void searchForBookmark(String bookmarkName) {
-        SearchField search = (SearchField) ComponentFactory.create(SEARCH_FIELD_ID, Input.ComponentType.SEARCH_FIELD, driver, wait);
-        search.clear();
-        search.typeValue(bookmarkName);
+        Input search = ComponentFactory.create(SEARCH_FIELD_ID, Input.ComponentType.SEARCH_BOX, driver, wait);
+        search.setSingleStringValue(bookmarkName);
         log.debug("Searching bookmark {}", bookmarkName);
     }
 

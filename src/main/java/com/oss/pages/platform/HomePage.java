@@ -128,16 +128,14 @@ public class HomePage extends BasePage {
 
     @Step("Set and select {object type}")
     public void setOldObjectType(String objectType) {
-        SearchField searchField = (SearchField) getComponent(OLD_OBJECT_TYPE_DATA_ATTRIBUTE_NAME, Input.ComponentType.SEARCH_FIELD);
-        searchField.typeValue(objectType);
-        searchField.chooseFirstResult(Data.createFindFirst(objectType));
+        Input searchField =getComponent(OLD_OBJECT_TYPE_DATA_ATTRIBUTE_NAME, Input.ComponentType.SEARCH_BOX);
+        searchField.setSingleStringValue(objectType);
     }
 
     @Step("Set and select {object type}")
     public void setNewObjectType(String objectType) {
-        SearchField searchField = (SearchField) getComponent(NEW_OBJECT_TYPE_DATA_ATTRIBUTE_NAME, Input.ComponentType.SEARCH_FIELD);
-        searchField.typeValue(objectType);
-        searchField.chooseFirstResult(Data.createFindFirst(objectType));
+        Input searchField = getComponent(NEW_OBJECT_TYPE_DATA_ATTRIBUTE_NAME, Input.ComponentType.SEARCH_BOX);
+        searchField.setSingleStringValue(objectType);
     }
 
     private Input getComponent(String componentId, Input.ComponentType componentType) {

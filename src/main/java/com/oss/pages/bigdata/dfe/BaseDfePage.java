@@ -43,9 +43,8 @@ public abstract class BaseDfePage extends BasePage implements BaseDfePageInterfa
     }
 
     protected void searchFeed(String searchText) {
-        SearchField search = (SearchField) ComponentFactory.create(getSearchId(), Input.ComponentType.SEARCH_FIELD, driver, wait);
-        search.clear();
-        search.typeValue(searchText);
+        Input search =ComponentFactory.create(getSearchId(), Input.ComponentType.SEARCH_BOX, driver, wait);
+        search.setSingleStringValue(searchText);
         log.debug("Searching feed {}", searchText);
     }
 

@@ -67,8 +67,8 @@ public class FilterSettingsFilter extends FilterSettings {
     }
 
     private void setValueOnSearchField(String value) {
-        SearchField searchField = (SearchField) getComponent(SEARCH_FIELD_ID, ComponentType.SEARCH_FIELD);
-        searchField.typeValue(value);
+        Input searchField = getComponent(SEARCH_FIELD_ID, ComponentType.SEARCH_BOX);
+        searchField.setSingleStringValue(value);
     }
 
     private Input getComponent(String componentId, Input.ComponentType componentType) {
