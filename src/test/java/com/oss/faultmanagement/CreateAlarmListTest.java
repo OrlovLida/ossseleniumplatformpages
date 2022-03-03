@@ -2,7 +2,7 @@ package com.oss.faultmanagement;
 
 import com.oss.BaseTestCase;
 import com.oss.pages.faultmanagement.FMCreateWAMVPage;
-import com.oss.pages.faultmanagement.FMDashboardPage;
+import com.oss.pages.faultmanagement.FMSMDashboardPage;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 import org.slf4j.Logger;
@@ -22,13 +22,14 @@ public class CreateAlarmListTest extends BaseTestCase {
     private static final Logger log = LoggerFactory.getLogger(CreateAlarmListTest.class);
     private static final String ALARM_MANAGEMENT_VIEW_ID = "_UserViewsListALARM_MANAGEMENT";
 
-
-    private FMDashboardPage fmDashboardPage;
+    private FMSMDashboardPage fmsmDashboardPage;
     private FMCreateWAMVPage fmWAMVPage;
 
     @BeforeMethod
-    public void goToFMDashboardPage() {
-        fmDashboardPage = FMDashboardPage.goToPage(driver, BASIC_URL);
+    public void goToFMDashboardPage(
+            @Optional("FaultManagement") String chosenDashboard
+    ) {
+        fmsmDashboardPage = fmsmDashboardPage.goToPage(driver, BASIC_URL, chosenDashboard);
     }
 
     @Parameters({"name", "description", "folderName"})
@@ -40,16 +41,16 @@ public class CreateAlarmListTest extends BaseTestCase {
             @Optional("Selenium_test_folder") String folderName
     ) {
         try {
-            fmWAMVPage = fmDashboardPage.clickCreateNewAlarmList();
+            fmWAMVPage = fmsmDashboardPage.clickCreateNewAlarmList();
             fmWAMVPage.setName(name + '_' + date.replace(":", "_"));
             fmWAMVPage.setDescription(description);
             fmWAMVPage.dragAndDropFilterByName(folderName);
             fmWAMVPage.selectFilterFromList(1);
             fmWAMVPage.clickAcceptButton();
-            Assert.assertTrue(fmDashboardPage.checkVisibility(ALARM_MANAGEMENT_VIEW_ID,name + '_' + date.replace(":", "_")));
-            fmDashboardPage.searchInSpecificView(ALARM_MANAGEMENT_VIEW_ID, name + '_' + date.replace(":", "_"));
-            fmDashboardPage.deleteFromView(ALARM_MANAGEMENT_VIEW_ID,0);
-            Assert.assertFalse(fmDashboardPage.checkVisibility(ALARM_MANAGEMENT_VIEW_ID,name + '_' + date.replace(":", "_")));
+            Assert.assertTrue(fmsmDashboardPage.checkVisibility(ALARM_MANAGEMENT_VIEW_ID,name + '_' + date.replace(":", "_")));
+            fmsmDashboardPage.searchInView(ALARM_MANAGEMENT_VIEW_ID, name + '_' + date.replace(":", "_"));
+            fmsmDashboardPage.deleteFromView(ALARM_MANAGEMENT_VIEW_ID,0);
+            Assert.assertFalse(fmsmDashboardPage.checkVisibility(ALARM_MANAGEMENT_VIEW_ID,name + '_' + date.replace(":", "_")));
 
         } catch (Exception e) {
             log.error(e.getMessage());

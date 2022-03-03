@@ -1,7 +1,7 @@
 package com.oss.faultmanagement;
 
 import com.oss.BaseTestCase;
-import com.oss.pages.faultmanagement.FMDashboardPage;
+import com.oss.pages.faultmanagement.FMSMDashboardPage;
 import com.oss.pages.faultmanagement.WAMVPage;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
@@ -26,12 +26,14 @@ public class WAMVBasicTest extends BaseTestCase {
     private static final String AREA_3_WINDOW_ID = "AREA3";
     private static final String AREA_2_WINDOW_ID = "AREA2";
 
-    private FMDashboardPage fmDashboardPage;
+    private FMSMDashboardPage fmsmDashboardPage;
     private WAMVPage wamvPage;
 
     @BeforeMethod
-    public void goToFMDashboardPage() {
-        fmDashboardPage = FMDashboardPage.goToPage(driver, BASIC_URL);
+    public void goToFMDashboardPage(
+            @Optional("FaultManagement") String chosenDashboard
+    ) {
+        fmsmDashboardPage = fmsmDashboardPage.goToPage(driver, BASIC_URL, chosenDashboard);
     }
 
     @Parameters({"alarmListName", "alarmManagementViewRow"})
@@ -42,8 +44,8 @@ public class WAMVBasicTest extends BaseTestCase {
             @Optional("0") int alarmManagementViewRow
     ) {
         try {
-            fmDashboardPage.searchInSpecificView(ALARM_MANAGEMENT_VIEW_ID, alarmListName);
-            wamvPage = fmDashboardPage.openSelectedView(ALARM_MANAGEMENT_VIEW_ID, alarmManagementViewRow);
+            fmsmDashboardPage.searchInView(ALARM_MANAGEMENT_VIEW_ID, alarmListName);
+            wamvPage = fmsmDashboardPage.openSelectedView(ALARM_MANAGEMENT_VIEW_ID, alarmManagementViewRow);
             Assert.assertTrue(wamvPage.checkIfPageTitleIsCorrect(alarmListName));
 
         } catch (Exception e) {
@@ -61,8 +63,8 @@ public class WAMVBasicTest extends BaseTestCase {
             @Optional("0") int alarmManagementViewRow
     ) {
         try {
-            fmDashboardPage.searchInSpecificView(ALARM_MANAGEMENT_VIEW_ID, alarmListName);
-            wamvPage = fmDashboardPage.openSelectedView(ALARM_MANAGEMENT_VIEW_ID, alarmManagementViewRow);
+            fmsmDashboardPage.searchInView(ALARM_MANAGEMENT_VIEW_ID, alarmListName);
+            wamvPage = fmsmDashboardPage.openSelectedView(ALARM_MANAGEMENT_VIEW_ID, alarmManagementViewRow);
             wamvPage.selectSpecificRow(alarmListRow);
             wamvPage.clickOnAckButton();
             Assert.assertEquals(wamvPage.getTitleFromAckStatusCell(alarmListRow, ACKNOWLEDGE_VALUE), ACKNOWLEDGE_VALUE);
@@ -83,8 +85,8 @@ public class WAMVBasicTest extends BaseTestCase {
             @Optional("0") int alarmManagementViewRow
     ) {
         try {
-            fmDashboardPage.searchInSpecificView(ALARM_MANAGEMENT_VIEW_ID, alarmListName);
-            wamvPage = fmDashboardPage.openSelectedView(ALARM_MANAGEMENT_VIEW_ID, alarmManagementViewRow);
+            fmsmDashboardPage.searchInView(ALARM_MANAGEMENT_VIEW_ID, alarmListName);
+            wamvPage = fmsmDashboardPage.openSelectedView(ALARM_MANAGEMENT_VIEW_ID, alarmManagementViewRow);
             wamvPage.selectSpecificRow(alarmListRow);
             wamvPage.addNote(TEST_NOTE_VALUE);
             Assert.assertEquals(wamvPage.getTextFromNoteStatusCell(alarmListRow, TEST_NOTE_VALUE), TEST_NOTE_VALUE);
@@ -106,8 +108,8 @@ public class WAMVBasicTest extends BaseTestCase {
             @Optional("AdapterAlarmGeneratorFromFile") String adapterName
     ) {
         try {
-            fmDashboardPage.searchInSpecificView(ALARM_MANAGEMENT_VIEW_ID, alarmListName);
-            wamvPage = fmDashboardPage.openSelectedView(ALARM_MANAGEMENT_VIEW_ID, alarmManagementViewRow);
+            fmsmDashboardPage.searchInView(ALARM_MANAGEMENT_VIEW_ID, alarmListName);
+            wamvPage = fmsmDashboardPage.openSelectedView(ALARM_MANAGEMENT_VIEW_ID, alarmManagementViewRow);
             wamvPage.selectSpecificRow(alarmListRow);
             wamvPage.clickOnSameMOAlarmsTab();
             Assert.assertTrue(wamvPage.checkVisibilityOfSameMOAlarmsTable());
@@ -133,8 +135,8 @@ public class WAMVBasicTest extends BaseTestCase {
             @Optional("0") int alarmManagementViewRow
     ) {
         try {
-            fmDashboardPage.searchInSpecificView(ALARM_MANAGEMENT_VIEW_ID, alarmListName);
-            wamvPage = fmDashboardPage.openSelectedView(ALARM_MANAGEMENT_VIEW_ID, alarmManagementViewRow);
+            fmsmDashboardPage.searchInView(ALARM_MANAGEMENT_VIEW_ID, alarmListName);
+            wamvPage = fmsmDashboardPage.openSelectedView(ALARM_MANAGEMENT_VIEW_ID, alarmManagementViewRow);
             wamvPage.searchInView(PERCEIVED_SEVERITY, AREA_2_WINDOW_ID);
             wamvPage.selectSpecificRow(alarmListRow);
             wamvPage.clickOnAdditionalTextTab();
