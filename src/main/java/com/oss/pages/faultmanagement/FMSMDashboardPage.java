@@ -14,21 +14,17 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-public class FMDashboardPage extends BasePage {
-    private static final Logger log = LoggerFactory.getLogger(FMDashboardPage.class);
-    private static final String HTTP_URL_TO_FM_DASHBOARD = "%s/#/dashboard/predefined/id/_FaultManagement";
+public class FMSMDashboardPage extends BasePage {
+    private static final Logger log = LoggerFactory.getLogger(FMSMDashboardPage.class);
+    private static final String HTTP_URL_TO_FM_SM_DASHBOARD = "%s/#/dashboard/predefined/id/_%s";
     private static final String OPEN_BUTTON_ID = "Open";
     private static final String CREATE_BUTTON_ID = "create-user-view";
     private static final String COLUMN_NAME_LABEL = "Name";
     private static final String REMOVE_ACTION_ID = "remove-user-view";
     private static final String CONFIRMATION_BOX_BUTTON_NAME = "ConfirmationBox_confirmationBoxWidget_action_button";
-    private static final String ALARM_COUNTERS_ID = "_AlarmCounters";
-    private static final String ALARM_COUNTERS_VIEW_ID = "_UserViewsListALARM_COUNTERS";
     private static final String ALARM_MANAGEMENT_VIEW_ID = "_UserViewsListALARM_MANAGEMENT";
-    private static final String HISTORICAL_ALARM_VIEW_ID = "_UserViewsListHISTORICAL_ALARM_MANAGEMENT";
-    private static final String MAP_MONITORING_VIEW_ID = "_UserViewsListMAP_MONITORING";
 
-    public FMDashboardPage(WebDriver driver, WebDriverWait wait) {
+    public FMSMDashboardPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
     }
 
@@ -36,14 +32,14 @@ public class FMDashboardPage extends BasePage {
         return CommonList.create(driver, wait, commonListId);
     }
 
-    @Step("I open FM Dashboard")
-    public static FMDashboardPage goToPage(WebDriver driver, String basicURL) {
+    @Step("I open chosen Dashboard")
+    public static FMSMDashboardPage goToPage(WebDriver driver, String basicURL, String chosenDashboard) {
         WebDriverWait wait = new WebDriverWait(driver, 90);
-        String webURL = String.format(HTTP_URL_TO_FM_DASHBOARD, basicURL);
+        String webURL = String.format(HTTP_URL_TO_FM_SM_DASHBOARD, basicURL, chosenDashboard);
         driver.navigate().to(webURL);
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Opened page: {}", webURL);
-        return new FMDashboardPage(driver, wait);
+        return new FMSMDashboardPage(driver, wait);
     }
 
     @Step("I search for specific alarm in View")
@@ -59,13 +55,16 @@ public class FMDashboardPage extends BasePage {
         return isNoData(commonList);
     }
 
-    private void searchInView(String alarmsViewName, String widgetId) {
+    @Step("I search for text in View")
+    public void searchInView(String widgetId, String searchedText) {
         AdvancedSearch search = AdvancedSearch.createByWidgetId(driver, wait, widgetId);
-        search.fullTextSearch(alarmsViewName);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        search.fullTextSearch(searchedText);
+        log.info("Searching in view: {}", widgetId);
     }
 
     private boolean isNoData(CommonList commonList) {
-        DelayUtils.sleep(1000);
+        DelayUtils.waitForPageToLoad(driver, wait);
         return commonList.hasNoData();
     }
 
@@ -123,10 +122,10 @@ public class FMDashboardPage extends BasePage {
         CommonList commonList = createCommonList(commonListId);
         return commonList.isRowDisplayed(COLUMN_NAME_LABEL, name);
     }
-
     @Step("Maximize window")
     public void maximizeWindow(String windowId) {
         Card card = Card.createCard(driver, wait, windowId);
+        DelayUtils.waitForPageToLoad(driver, wait);
         card.maximizeCard();
         log.info("Maximizing window");
     }
@@ -134,6 +133,7 @@ public class FMDashboardPage extends BasePage {
     @Step("Minimize window")
     public void minimizeWindow(String windowId) {
         Card card = Card.createCard(driver, wait, windowId);
+        DelayUtils.waitForPageToLoad(driver, wait);
         card.minimizeCard();
         log.info("Minimizing window");
     }
