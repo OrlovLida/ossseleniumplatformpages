@@ -45,7 +45,7 @@ public class NewNavigationTest extends BaseTestCase {
     private static final String MOVIES_SUBCATEGORY = "Movies";
     private static final String ACTORS_SUBCATEGORY = "Actors";
     private static final String ACTOR_SUBCATEGORY_UPDATE = ACTORS_SUBCATEGORY + " Update";
-    private static final String ADD_APPLICATION = "addTileButton0";
+    private static final String ADD_APPLICATION = "addTileButton1";
     private static final String APPLICATION_NAME = "All Test Movies";
     private static final String APPLICATION_NAME_2 = "Test Movies";
     private static final String APPLICATION_NAME_3 = "Actors";
@@ -63,7 +63,8 @@ public class NewNavigationTest extends BaseTestCase {
     private static final String MODELS_LEARNING_ROLE = "MODELS_LEARNING";
     private static final String TEST_MOVIE_TYPE = "TestMovie";
     private static final String INVENTORY_VIEW_LINK = "#/views/management/views/inventory-view";
-
+    private static final String LINK_IS_NOT_AVAILABLE_EXCEPTION = "Link is not available";
+    
     private ToolsManagerWindow toolsManagerWindow;
     
     @BeforeClass
@@ -135,7 +136,8 @@ public class NewNavigationTest extends BaseTestCase {
         toolsManagerWindow.waitForNavigationElement(APPLICATION_NAME_2);
         
         Assertions.assertThat(toolsManagerWindow.getApplicationNames(CATEGORY_NAME)).contains(APPLICATION_NAME);
-        Assertions.assertThat(toolsManagerWindow.getApplicationURL(APPLICATION_NAME)).contains(INVENTORY_VIEW_LINK);
+        Assertions.assertThat(toolsManagerWindow.getApplicationURL(APPLICATION_NAME).orElse(LINK_IS_NOT_AVAILABLE_EXCEPTION))
+                .contains(INVENTORY_VIEW_LINK);
         
     }
     
@@ -188,12 +190,13 @@ public class NewNavigationTest extends BaseTestCase {
     @Description("Set Favorites Application and check show ony favourites")
     public void setFavoriteApplication() {
         Application application = toolsManagerWindow.getApplication(APPLICATION_NAME_2, CATEGORY_NAME);
-        application.markAsFavorite();
+        application.setFavorite();
         Assertions.assertThat(application.isFavorite()).isTrue();
         toolsManagerWindow.setShowOnlyFavourites();
         Assertions.assertThat(toolsManagerWindow.getApplicationNames()).contains(APPLICATION_NAME_2);
         openViewBySideMenu(APPLICATION_NAME_2);
-        Assertions.assertThat(toolsManagerWindow.getApplicationURL(APPLICATION_NAME_2)).isEqualTo(driver.getCurrentUrl());
+        Assertions.assertThat(toolsManagerWindow.getApplicationURL(APPLICATION_NAME_2).orElse(LINK_IS_NOT_AVAILABLE_EXCEPTION))
+                .isEqualTo(driver.getCurrentUrl());
     }
     
     @Test(priority = 10)
@@ -201,7 +204,7 @@ public class NewNavigationTest extends BaseTestCase {
     public void setFavoriteSubcategory() {
         goToHomePage();
         Subcategory subcategoryMovie = toolsManagerWindow.getSubcategoryByName(MOVIES_SUBCATEGORY, CATEGORY_NAME);
-        subcategoryMovie.markAsFavorite();
+        subcategoryMovie.setFavorite();
         Assertions.assertThat(subcategoryMovie.isFavorite()).isTrue();
         Assertions.assertThat(subcategoryMovie.getBadge()).isEqualTo("2/2");
         List<Application> applications = subcategoryMovie.getApplications();
@@ -210,7 +213,8 @@ public class NewNavigationTest extends BaseTestCase {
         List<String> applicationNames = applications.stream().map(Application::getApplicationName).collect(Collectors.toList());
         Assertions.assertThat(toolsManagerWindow.getApplicationNames()).containsAll(applicationNames);
         openViewBySideMenu(APPLICATION_NAME);
-        Assertions.assertThat(toolsManagerWindow.getApplicationURL(APPLICATION_NAME)).isEqualTo(driver.getCurrentUrl());
+        Assertions.assertThat(toolsManagerWindow.getApplicationURL(APPLICATION_NAME_2).orElse(LINK_IS_NOT_AVAILABLE_EXCEPTION))
+                .isEqualTo(driver.getCurrentUrl());
     }
     
     @Test(priority = 11)
@@ -220,7 +224,7 @@ public class NewNavigationTest extends BaseTestCase {
         applicationWizard.setPolicies(PHYSICAL_DEVICE_TYPE, MODELS_LEARNING_ROLE);
         applicationWizard.clickSave();
         DelayUtils.sleep(3000);
-        Assertions.assertThat(toolsManagerWindow.getApplicationURL(APPLICATION_NAME_2)).isNull();
+        Assertions.assertThat(toolsManagerWindow.getApplicationURL(APPLICATION_NAME_2)).isEmpty();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         changeUser(USER_2, PASSWORD_2);
         List<String> applicationNames = toolsManagerWindow.getApplicationNames(CATEGORY_NAME);
@@ -230,7 +234,7 @@ public class NewNavigationTest extends BaseTestCase {
     @Test(priority = 12)
     @Description("Check if Subcategory is not visible for user without configuration role ")
     public void checkPoliticsNotVisibleSubcategory() {
-        goToHomePage();
+        // goToHomePage();
         toolsManagerWindow.callActionSubcategory(ACTORS_SUBCATEGORY, CATEGORY_NAME, ADD_APPLICATION);
         ApplicationWizard applicationWizard = ApplicationWizard.create(driver, webDriverWait);
         applicationWizard.setApplication(APPLICATION_TYPE);
@@ -322,7 +326,6 @@ public class NewNavigationTest extends BaseTestCase {
         for (int i = 0; i < rowsNumber; i++) {
             attributeValues.add(tableWidget.getCellValue(i, columnId));
         }
-        
         return attributeValues;
     }
     
