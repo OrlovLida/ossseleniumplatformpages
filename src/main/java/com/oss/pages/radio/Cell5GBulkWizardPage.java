@@ -32,7 +32,7 @@ public class Cell5GBulkWizardPage extends BasePage {
     private static final String NAME = "name-TEXT_FIELD";
     private static final String COLUMN_LOCAL_CELL_ID = "localCellId";
     private static final String LOCAL_CELL_ID = "localCellId-NUMBER_FIELD";
-    private static final String WIZARD_ID = "cell-5g-bulk-wizard";
+    private static final String WIZARD_ID = "cell-5g-bulk-wizard_prompt-card";
     private static final String CELLS_LIST_ID = "ExtendedList-secondStep";
     private final Wizard wizard;
 
