@@ -48,6 +48,14 @@ public class BaseACDPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
+    @Step("I check if card is maximized")
+    public boolean checkCardMaximize(String windowId){
+        DelayUtils.sleep(1000);
+        Card card = Card.createCard(driver, wait, windowId);
+        log.info("Checking if card {} is maximized", windowId);
+        return card.isCardMaximized();
+    }
+
     @Step("Add predefined filter")
     public void clickAddPredefinedFilter() {
         Button button = Button.createById(driver, ADD_PREDEFINED_FILTER_BUTTON);

@@ -53,8 +53,7 @@ public class TreeWidgetTest extends BaseTestCase {
     private static final String PATH_ROOM_3 = PATH_RELATION_LOCATIONS + "." + SUB_LOCATION_TYPE_ROOM + "." + ROOM_3_CREATE;
     private static final String ROOM_3_UPDATE = FakeGenerator.getLocation(FakeGenerator.FilmTitle.LORD_OF_THE_RING);
     private static final String PATH_ROOM_3_UPDATE = PATH_RELATION_LOCATIONS + "." + SUB_LOCATION_TYPE_ROOM + "." + ROOM_3_UPDATE;
-    private static final String DEVICE_NAME =
-            FakeGenerator.getCharacter(FakeGenerator.FilmTitle.FRIENDS) + "." + FakeGenerator.getIdNumber();
+    private static final String DEVICE_NAME = FakeGenerator.getIdNumber();
     private static final String PORT_01_PATH = LOCATION_NAME + ".Hardware.Switch." + DEVICE_NAME + ".Ports.01";
     private static final String PORT_02_PATH = LOCATION_NAME + ".Hardware.Switch." + DEVICE_NAME + ".Ports.02";
     private static final String DEVICE_MODEL_TYPE = "IPDeviceModel";
@@ -123,9 +122,6 @@ public class TreeWidgetTest extends BaseTestCase {
     @Test(priority = 5)
     public void expandNextLevel() {
         hierarchyViewPage.expandNextLevel(LOCATION_NAME);
-        List<Node> expandedNodes =
-                hierarchyViewPage.getMainTree().getVisibleNodes().stream().filter(Node::isExpanded).collect(Collectors.toList());
-        // Assertions.assertThat(expandedNodes.size()).isEqualTo(6); Until fix gsLSC OSSWEB-15231
         Node nodeRoom = hierarchyViewPage.getMainTree()
                 .getNodeByLabelsPath(PATH_ROOM_1);
         Assertions.assertThat(nodeRoom.isExpanded()).isFalse();
@@ -144,14 +140,16 @@ public class TreeWidgetTest extends BaseTestCase {
     @Test(priority = 7)
     public void refreshTreeWidget() {
         hierarchyViewPage.getMainTree().callActionById(ActionsContainer.KEBAB_GROUP_ID, REFRESH_TREE);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hierarchyViewPage.expandNextLevel(LOCATION_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         updateRoom(roomId_2);
         hierarchyViewPage.getMainTree().callActionById(ActionsContainer.KEBAB_GROUP_ID, REFRESH_TREE);
         hierarchyViewPage.expandNextLevel(LOCATION_NAME);
         Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(ROOM_NAME_2_UPDATED);
     }
     
-    @Test(priority = 8, enabled = false) // until fix OSSPHY-53281
+    @Test(priority = 8)
     public void createRoom() {
         hierarchyViewPage.selectNodeByLabel(LOCATION_NAME);
         hierarchyViewPage.getMainTree().callActionById(ActionsContainer.CREATE_GROUP_ID, CREATE_SUBLOCATION_ACTION);
@@ -168,21 +166,22 @@ public class TreeWidgetTest extends BaseTestCase {
         
     }
     
-    @Test(priority = 9, enabled = false)
+    @Test(priority = 9)
     public void updateRoom() {
+        hierarchyViewPage.unselectFirstObject();
         hierarchyViewPage.selectNodeByLabelsPath(PATH_ROOM_3);
         hierarchyViewPage.getMainTree().callActionById(ActionsContainer.EDIT_GROUP_ID, UPDATE_SUBLOCATION_ACTION);
         SublocationWizardPage sublocation = new SublocationWizardPage(driver);
         sublocation.setSublocationName(ROOM_3_UPDATE);
-        sublocation.clickNext();
         sublocation.clickAccept();
         List<String> nodes = hierarchyViewPage.getVisibleNodesLabel();
         Assertions.assertThat(nodes).contains(ROOM_3_UPDATE);
     }
     
-    @Test(priority = 10, enabled = false)
+    @Test(priority = 10)
     public void deleteRoom() {
         hierarchyViewPage.selectNodeByLabelsPath(PATH_ROOM_3_UPDATE);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hierarchyViewPage.getMainTree().callActionById(ActionsContainer.EDIT_GROUP_ID, REMOVE_SUBLOCATION_ACTION);
         ConfirmationBox.create(driver, webDriverWait).clickButtonByLabel(CONFIRM_DELETE_BUTTON);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -197,6 +196,7 @@ public class TreeWidgetTest extends BaseTestCase {
         driver.navigate().refresh();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hierarchyViewPage.getMainTree().searchByAttribute(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, LOCATION_NAME);
+        hierarchyViewPage.expandNextLevel(LOCATION_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hierarchyViewPage.selectNodeByLabelsPath(PORT_01_PATH);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
