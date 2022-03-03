@@ -1,6 +1,6 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="services_gui_sm" thread-count="2" parallel="tests" verbose="1">
-    <test name="FMDashboardTest">
+    <test name="SMDashboardTest">
         <parameter name="chosenDashboard" value="ServiceMonitoring"></parameter>
         <parameter name="viewsForChosenDashboard" value="_UserViewsListOBJECT_MONITORING,_UserViewsListOBJECT_STATE,_UserViewsListALARM_MANAGEMENT"></parameter>
         <classes>

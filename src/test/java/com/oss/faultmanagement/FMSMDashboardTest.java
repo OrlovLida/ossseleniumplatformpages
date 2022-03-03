@@ -18,11 +18,8 @@ import java.util.List;
 @Listeners({TestListener.class})
 public class FMSMDashboardTest extends BaseTestCase {
     private static final Logger log = LoggerFactory.getLogger(WAMVBasicTest.class);
-    private static final String ALARM_COUNTERS_ID = "_AlarmCounters";
     private static final String ALARM_COUNTERS_VIEW_ID = "_UserViewsListALARM_COUNTERS";
     private static final String ALARM_MANAGEMENT_VIEW_ID = "_UserViewsListALARM_MANAGEMENT";
-    private static final String HISTORICAL_ALARM_VIEW_ID = "_UserViewsListHISTORICAL_ALARM_MANAGEMENT";
-    private static final String MAP_MONITORING_VIEW_ID = "_UserViewsListMAP_MONITORING";
 
     private FMSMDashboardPage fmsmDashboardPage;
 
@@ -38,7 +35,7 @@ public class FMSMDashboardTest extends BaseTestCase {
     @Test(priority = 1, testName = "Check if maximize and minimize works", description = "Check if maximize and minimize works")
     @Description("I verify if maximize and minimize works")
     public void checkMaximizeAndMinimize(
-            @Optional("ALARM_COUNTERS_ID, ALARM_COUNTERS_VIEW_ID, ALARM_MANAGEMENT_VIEW_ID, HISTORICAL_ALARM_VIEW_ID, MAP_MONITORING_VIEW_ID") String viewsForChosenDashboard
+            @Optional("_AlarmCounters,_UserViewsListALARM_COUNTERS,_UserViewsListALARM_MANAGEMENT,_UserViewsListHISTORICAL_ALARM_MANAGEMENT,_UserViewsListMAP_MONITORING") String viewsForChosenDashboard
     ) {
         List<String> views = Arrays.asList(viewsForChosenDashboard.split(","));
         try {
@@ -59,7 +56,7 @@ public class FMSMDashboardTest extends BaseTestCase {
     @Description("I verify if FM or SM Dashboard search panels works correctly")
     public void checkSearchPanel(
             @Optional("!@#$%^&*()_+=-|?/:;{}[]`") String searchPhrase,
-            @Optional("ALARM_COUNTERS_ID, ALARM_COUNTERS_VIEW_ID, ALARM_MANAGEMENT_VIEW_ID, HISTORICAL_ALARM_VIEW_ID, MAP_MONITORING_VIEW_ID") String viewsForChosenDashboard
+            @Optional("_AlarmCounters,_UserViewsListALARM_COUNTERS,_UserViewsListALARM_MANAGEMENT,_UserViewsListHISTORICAL_ALARM_MANAGEMENT,_UserViewsListMAP_MONITORING") String viewsForChosenDashboard
     ) {
         List<String> views = Arrays.asList(viewsForChosenDashboard.split(","));
         try {
@@ -92,7 +89,7 @@ public class FMSMDashboardTest extends BaseTestCase {
     @Test(priority = 4, testName = "Check headers", description = "Check headers")
     @Description("I verify if headers in tables are correct")
     public void checkHeaders(
-            @Optional("ALARM_COUNTERS_VIEW_ID, ALARM_MANAGEMENT_VIEW_ID, HISTORICAL_ALARM_VIEW_ID, MAP_MONITORING_VIEW_ID") String viewsForChosenDashboard
+            @Optional("_UserViewsListALARM_COUNTERS,_UserViewsListALARM_MANAGEMENT,_UserViewsListHISTORICAL_ALARM_MANAGEMENT,_UserViewsListMAP_MONITORING") String viewsForChosenDashboard
     ) {
         List<String> views_with_tables = Arrays.asList(viewsForChosenDashboard.split(","));
         try {
