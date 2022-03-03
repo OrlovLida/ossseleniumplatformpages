@@ -2,6 +2,7 @@ package com.oss.pages.platform;
 
 import java.util.List;
 
+import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -92,6 +93,11 @@ public class NewInventoryViewPage extends BasePage {
         TableWidget mainTable = getMainTable();
         mainTable.unselectRow(rowId);
         DelayUtils.waitForPageToLoad(driver, wait);
+    }
+    public void selectSeveralObjectsByRowId(int @NotNull ...index) {
+        for (int j : index) {
+            selectObjectByRowId(j);
+        }
     }
 
     @Step("Enable Column")
@@ -276,6 +282,7 @@ public class NewInventoryViewPage extends BasePage {
         tableWidget.selectRow(detailRowId);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
+
 
     public String getDetailAttributeValue() {
         return null;

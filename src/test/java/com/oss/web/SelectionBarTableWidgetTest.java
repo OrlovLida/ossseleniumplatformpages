@@ -3,6 +3,7 @@ package com.oss.web;
 import java.util.List;
 
 import org.assertj.core.api.Assertions;
+import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -17,10 +18,14 @@ public class SelectionBarTableWidgetTest extends BaseTestCase {
 
     private NewInventoryViewPage inventoryViewPage;
     private TableWidget tableWidget;
-    String zeroSelected = "0 selected";
-    String oneSelected = "1 selected";
-    String fiveSelected = "5 selected";
-    String threeSelected = "3 selected";
+    private static final String zeroSelected = "0 selected";
+    private static final String oneSelected = "1 selected";
+    private static final String twoSelected = "2 selected";
+    private static final String threeSelected = "3 selected";
+    private static final String fiveSelected = "5 selected";
+
+    private static String attributeId = "id";
+    private static String attributeValue = "3";
 
     @BeforeClass
     public void goToInventoryView() {
@@ -30,109 +35,18 @@ public class SelectionBarTableWidgetTest extends BaseTestCase {
     }
 
     @Test(priority = 1)
-    public void selectOneRow() {
-        inventoryViewPage.selectObjectByRowId(0);
-        List<TableRow> selectedRows = inventoryViewPage.getSelectedRows();
+    public void showSelectedRows() {
 
-        final int allRows = tableWidget.getPagination().getTotalCount();
-
-        String selectedObjectCount = tableWidget.getSelectedObjectCount();
-
-        tableWidget.showOnlySelectedRows();
-
-        Assertions.assertThat(selectedRows).hasSize(1);
-        Assertions.assertThat(selectedRows.get(0).getIndex()).isZero();
-        Assertions.assertThat(selectedObjectCount).isEqualTo(oneSelected);
-        Assertions.assertThat(tableWidget.getPagination().getTotalCount()).isEqualTo(1);
-
-        tableWidget.showAllRows();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-
-        Assertions.assertThat(tableWidget.getPagination().getTotalCount()).isEqualTo(allRows);
-
-        tableWidget.unselectAllRows();
-
-        selectedRows = inventoryViewPage.getSelectedRows();
-        Assertions.assertThat(selectedRows).isEmpty();
-    }
-
-    @Test(priority = 2)
-    public void unselectobjectByClickOnCheckboxes() {
-
-        inventoryViewPage.selectObjectByRowId(3);
-        inventoryViewPage.selectObjectByRowId(6);
-
-        List<TableRow> selectedRows = inventoryViewPage.getSelectedRows();
-        String selectedObjectCount = tableWidget.getSelectedObjectCount();
-
-        Assertions.assertThat(selectedRows).hasSize(2);
-        Assertions.assertThat(selectedObjectCount).isEqualTo("2 selected");
-
-        inventoryViewPage.unselectObjectByRowId(3);
-
-        List<TableRow> selectedRowsAfterChange1 = inventoryViewPage.getSelectedRows();
-        String selectedObjectCountAfterChange1 = tableWidget.getSelectedObjectCount();
-
-        Assertions.assertThat(selectedRowsAfterChange1).hasSize(1);
-        Assertions.assertThat(selectedObjectCountAfterChange1).isEqualTo(oneSelected);
-
-        inventoryViewPage.unselectObjectByRowId(6);
-
-        List<TableRow> selectedRowsAfterChange2 = inventoryViewPage.getSelectedRows();
-        String selectedObjectCountAfterChange2 = tableWidget.getSelectedObjectCount();
-
-        Assertions.assertThat(selectedRowsAfterChange2).isEmpty();
-        Assertions.assertThat(selectedObjectCountAfterChange2).isEqualTo(zeroSelected);
-
-    }
-
-    @Test(priority = 3)
-    public void unselectAllObjects() {
-        for (int i = 0; i < 13; i = i + 3) {
-            inventoryViewPage.selectObjectByRowId(i);
-        }
-
-        List<TableRow> selectedRows = inventoryViewPage.getSelectedRows();
-        String selectedObjectCount = tableWidget.getSelectedObjectCount();
-
-        Assertions.assertThat(selectedRows).hasSize(5);
-
-        Assertions.assertThat(selectedObjectCount).isEqualTo(fiveSelected);
-
-        tableWidget.unselectAllRows();
-
-        List<TableRow> selectedRowsAfterUnselect = inventoryViewPage.getSelectedRows();
-        String selectedObjectCountAfterUnselect = tableWidget.getSelectedObjectCount();
-
-        Assertions.assertThat(selectedRowsAfterUnselect).isEmpty();
-        Assertions.assertThat(selectedObjectCountAfterUnselect).isEqualTo(zeroSelected);
-
-    }
-
-    @Test(priority = 4)
-    public void selectionsFromDifferentPages() {
-
-        final int allRows = tableWidget.getPagination().getTotalCount();
         inventoryViewPage.selectObjectByRowId(2);
 
         List<TableRow> selectedRows = inventoryViewPage.getSelectedRows();
         String selectedObjectCount = tableWidget.getSelectedObjectCount();
 
         Assertions.assertThat(selectedRows).hasSize(1);
-
         Assertions.assertThat(selectedObjectCount).isEqualTo(oneSelected);
 
-        tableWidget.getPagination().goOnNextPage();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-
-        inventoryViewPage.selectObjectByRowId(3);
-        inventoryViewPage.selectObjectByRowId(5);
-
-        tableWidget.getPagination().goOnNextPage();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-
-        inventoryViewPage.selectObjectByRowId(4);
-        inventoryViewPage.selectObjectByRowId(5);
+        selectRowsOnNextPage(3, 5);
+        selectRowsOnNextPage(4, 5);
 
         String selectedObjectCountAllPages = tableWidget.getSelectedObjectCount();
 
@@ -142,18 +56,51 @@ public class SelectionBarTableWidgetTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         Assertions.assertThat(tableWidget.getPagination().getTotalCount()).isEqualTo(5);
+    }
+
+    @Test(priority = 2)
+    public void showAllRows() {
+        int allRows = tableWidget.getPagination().getTotalCount();
+
+        inventoryViewPage.selectObjectByRowId(2);
+        selectRowsOnNextPage(3, 5);
+        selectRowsOnNextPage(4, 5);
+
+        tableWidget.showOnlySelectedRows();
 
         tableWidget.showAllRows();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         Assertions.assertThat(tableWidget.getPagination().getTotalCount()).isEqualTo(allRows);
+    }
+
+    @Test(priority = 3)
+    public void unselectObjectByClickOnCheckbox() {
+        inventoryViewPage.selectSeveralObjectsByRowId(3, 4, 9);
+
+        List<TableRow> selectedRows = inventoryViewPage.getSelectedRows();
+        String selectedObjectCount = tableWidget.getSelectedObjectCount();
+
+        Assertions.assertThat(selectedRows).hasSize(3);
+        Assertions.assertThat(selectedObjectCount).isEqualTo(threeSelected);
+
+        inventoryViewPage.unselectObjectByRowId(4);
+
+        List<TableRow> selectedRowsAfterUnselect = inventoryViewPage.getSelectedRows();
+        String selectedObjectCountAfterUnselect = tableWidget.getSelectedObjectCount();
+
+        Assertions.assertThat(selectedRowsAfterUnselect).hasSize(2);
+        Assertions.assertThat(selectedObjectCountAfterUnselect).isEqualTo(twoSelected);
+
+    }
+
+    @Test(priority = 4)
+    public void unselectAllObjects() {
+        inventoryViewPage.selectSeveralObjectsByRowId(2, 4, 5);
+        selectRowsOnNextPage(1, 2);
 
         inventoryViewPage.unselectObjectByRowId(2);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-
-        String selectedObjectCountAfterUnselect = tableWidget.getSelectedObjectCount();
-
-        Assertions.assertThat(selectedObjectCountAfterUnselect).isEqualTo("4 selected");
 
         tableWidget.unselectAllRows();
 
@@ -168,46 +115,42 @@ public class SelectionBarTableWidgetTest extends BaseTestCase {
     @Test(priority = 5)
     public void filteringAndShowSelected() {
 
-        String attributeId = "id";
-        String attributeValue = "3";
-
-        final int allRows = tableWidget.getPagination().getTotalCount();
-
-        inventoryViewPage.searchByAttributeValue(attributeId, attributeValue, Input.ComponentType.NUMBER_FIELD);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-
-        inventoryViewPage.selectObjectByRowId(0);
-        inventoryViewPage.clearFilters();
-
-        inventoryViewPage.selectObjectByRowId(10);
-        inventoryViewPage.selectObjectByRowId(11);
-
-        inventoryViewPage.searchByAttributeValue(attributeId, attributeValue, Input.ComponentType.NUMBER_FIELD);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        showSelectedAndFiltered(attributeId, attributeValue);
 
         String selectedObjectCount = tableWidget.getSelectedObjectCount();
 
-        tableWidget.showOnlySelectedRows();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-
-        Assertions.assertThat(selectedObjectCount).isEqualTo(threeSelected);
+        checkIfThreeSelected(selectedObjectCount);
         Assertions.assertThat(tableWidget.getPagination().getTotalCount()).isEqualTo(1);
 
         inventoryViewPage.clearFilters();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
-        Assertions.assertThat(selectedObjectCount).isEqualTo(threeSelected);
         Assertions.assertThat(tableWidget.getPagination().getTotalCount()).isEqualTo(3);
 
+    }
+
+    @Test(priority = 6)
+    public void filteringAndShowAll() {
+        int allRows = tableWidget.getPagination().getTotalCount();
+
+        showSelectedAndFiltered(attributeId, attributeValue);
         tableWidget.showAllRows();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+
         String selectedObjectCountAfterShowAll = tableWidget.getSelectedObjectCount();
 
-        Assertions.assertThat(selectedObjectCountAfterShowAll).isEqualTo(threeSelected);
-        Assertions.assertThat(tableWidget.getPagination().getTotalCount()).isEqualTo(allRows);
+        checkIfThreeSelected(selectedObjectCountAfterShowAll);
+        Assertions.assertThat(tableWidget.getPagination().getTotalCount()).isEqualTo(1);
 
-        inventoryViewPage.searchByAttributeValue(attributeId, attributeValue, Input.ComponentType.NUMBER_FIELD);
+        inventoryViewPage.clearFilters();
+        Assertions.assertThat(tableWidget.getPagination().getTotalCount()).isEqualTo(allRows);
+    }
+
+    @Test(priority = 8)
+    public void filteringAndUnselectAll() {
+        int allRows = tableWidget.getPagination().getTotalCount();
+        showSelectedAndFiltered(attributeId, attributeValue);
         tableWidget.unselectAllRows();
+
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         String selectedObjectCountAfterUnselectAll = tableWidget.getSelectedObjectCount();
@@ -218,11 +161,42 @@ public class SelectionBarTableWidgetTest extends BaseTestCase {
         inventoryViewPage.clearFilters();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
-        String selectedObjectCountAfterClearFilters = tableWidget.getSelectedObjectCount();
+        Assertions.assertThat(tableWidget.getPagination().getTotalCount()).isEqualTo(3);
 
-        Assertions.assertThat(selectedObjectCountAfterClearFilters).isEqualTo(zeroSelected);
+        tableWidget.showAllRows();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+
         Assertions.assertThat(tableWidget.getPagination().getTotalCount()).isEqualTo(allRows);
 
+    }
+
+    private void showSelectedAndFiltered(String attributeId, String attributeValue) {
+        inventoryViewPage.searchByAttributeValue(attributeId, attributeValue, Input.ComponentType.NUMBER_FIELD);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+
+        inventoryViewPage.selectObjectByRowId(0);
+        inventoryViewPage.clearFilters();
+
+        inventoryViewPage.selectSeveralObjectsByRowId(10, 11);
+
+        inventoryViewPage.searchByAttributeValue(attributeId, attributeValue, Input.ComponentType.NUMBER_FIELD);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+
+        tableWidget.openSelectionBar();
+        tableWidget.showOnlySelectedRows();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+
+    }
+
+    private void selectRowsOnNextPage(int @NotNull ... index) {
+        tableWidget.getPagination().goOnNextPage();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        inventoryViewPage.selectSeveralObjectsByRowId(index);
+    }
+
+    private void checkIfThreeSelected(String selectedObjectCount) {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        Assertions.assertThat(selectedObjectCount).isEqualTo(threeSelected);
     }
 
 }
