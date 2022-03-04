@@ -73,22 +73,22 @@ public class FloorPlanPage extends BasePage {
     @Step("Show layer - {layerName}")
     public void showLayer(String layerName) {
         FloorPlanTable floorPlanTable = FloorPlanTable.createById(driver, wait, LAYERS_TABLE_ID);
-        int rowNr = floorPlanTable.getRowNr(layerName);
-        floorPlanTable.checkNthRowAndNthColumn(rowNr, 2);
+        int rowNr = floorPlanTable.getRowNumber(layerName);
+        floorPlanTable.selectRow(rowNr, 2);
     }
 
     @Step("Show label - {labelName}")
     public void showLabels(String labelName) {
         FloorPlanTable floorPlanTable = FloorPlanTable.createById(driver, wait, LAYERS_TABLE_ID);
-        int rowNr = floorPlanTable.getRowNr(labelName);
-        floorPlanTable.checkNthRowAndNthColumn(rowNr, 3);
+        int rowNr = floorPlanTable.getRowNumber(labelName);
+        floorPlanTable.selectRow(rowNr, 3);
     }
 
     @Step("Enable snapping - {name}")
     public void enableSnapping(String name) {
         FloorPlanTable floorPlanTable = FloorPlanTable.createById(driver, wait, LAYERS_TABLE_ID);
-        int rowNr = floorPlanTable.getRowNr(name);
-        floorPlanTable.checkNthRowAndNthColumn(rowNr, 4);
+        int rowNr = floorPlanTable.getRowNumber(name);
+        floorPlanTable.selectRow(rowNr, 4);
     }
 
     @Step("Export floor plan")
@@ -111,7 +111,7 @@ public class FloorPlanPage extends BasePage {
 
     @Step("Get cell value")
     public String getCellValue(String nodeName, int columnNr) {
-        return getTree("cell_floorPlanObjectHome_tab_2").getTreeTableCellValue(nodeName, columnNr);
+        return getTree("cell_floorPlanObjectHome_tab_2").geCellValue(nodeName, columnNr);
     }
 
     private FloorPlanTree getTree(String treeId) {
