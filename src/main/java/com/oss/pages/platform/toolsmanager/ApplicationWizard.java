@@ -54,20 +54,13 @@ public class ApplicationWizard {
     }
     
     public void setPolicies(String policiesType, String politicsName) {
-        if (!isPoliciesSet()) {
-            togglePolicies("true");
-        }
-        
+        togglePolicies("true");
         wizard.setComponentValue("politics_type", policiesType, Input.ComponentType.COMBOBOX);
         wizard.setComponentValue("politics_name", politicsName, Input.ComponentType.COMBOBOX);
     }
     
-    public void togglePolicies(String value) {
+    private void togglePolicies(String value) {
         wizard.setComponentValue("politics", value, Input.ComponentType.CHECKBOX);
-    }
-    
-    public boolean isPoliciesSet() {
-        return wizard.getComponent("politics", Input.ComponentType.CHECKBOX).getStringValue().equals("true");
     }
     
     public void clickSave() {
