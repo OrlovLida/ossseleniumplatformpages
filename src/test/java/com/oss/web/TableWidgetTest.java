@@ -28,6 +28,7 @@ public class TableWidgetTest extends BaseTestCase {
     private static final int PAGE_SIZE_OPTION_50 = 50;
     private static final String TYPE_DIRECTOR_COLUMN_ID = "director.id";
     private static final String MOVIE_LENGTH_COLUMN_ID = "movieLength";
+    private static final String ONE_SELECTED = "1 selected";
     private NewInventoryViewPage inventoryViewPage;
     private TableWidget tableWidget;
     
@@ -259,8 +260,7 @@ public class TableWidgetTest extends BaseTestCase {
         List<String> activeColumnsHeaders = inventoryViewPage.getMainTable().getActiveColumnIds();
         Assertions.assertThat(defaultFirstColumn).isEqualTo(activeColumnsHeaders.get(0));
         Assertions.assertThat(inventoryViewPage.getColumnSize(activeColumnsHeaders.get(0))).isEqualTo(defaultFirstColumnSize);
-        Assertions.assertThat(activeColumnsHeaders).contains(defaultForthColumn);
-        Assertions.assertThat(activeColumnsHeaders).doesNotContain(TYPE_DIRECTOR_COLUMN_ID);
+        Assertions.assertThat(activeColumnsHeaders).contains(defaultForthColumn).doesNotContain(TYPE_DIRECTOR_COLUMN_ID);
         Assertions.assertThat(defaultActiveHeaders).isEqualTo(activeColumnsHeaders);
     }
     
@@ -281,7 +281,24 @@ public class TableWidgetTest extends BaseTestCase {
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TYPE);
         Assert.assertEquals(getRowsCount(), PAGE_SIZE_OPTION_50);
     }
-    
+
+    @Test (priority = 17)
+    public void SingleSelect() {
+        // when
+        inventoryViewPage.selectObjectByRowId(0);
+        inventoryViewPage.selectObjectByRowId(3);
+
+        tableWidget.clickRow(6);
+
+        List<TableRow> selectedRows = inventoryViewPage.getSelectedRows();
+        String selectedObjectCount = tableWidget.getSelectedObjectCount();
+
+        // then
+        Assertions.assertThat(selectedRows).hasSize(1);
+        Assertions.assertThat(selectedObjectCount).isEqualTo(ONE_SELECTED);
+    }
+
+
     private int getRowsCount() {
         tableWidget = inventoryViewPage.getMainTable();
         PaginationComponent pagination = tableWidget.getPagination();
@@ -316,22 +333,4 @@ public class TableWidgetTest extends BaseTestCase {
         attributesChooser.clickApply();
     }
 
-    @Test (priority = 17)
-    public void SingleSelect() {
-        // when
-        inventoryViewPage.selectObjectByRowId(0);
-        inventoryViewPage.selectObjectByRowId(3);
-
-        tableWidget.clickRow(6);
-
-        List<TableRow> selectedRows = inventoryViewPage.getSelectedRows();
-        String selectedObjectCount = tableWidget.getSelectedObjectCount();
-
-        // then
-        Assertions.assertThat(selectedRows).hasSize(1);
-        Assertions.assertThat(selectedObjectCount).isEqualTo("1 selected");
-
-
-    }
-    
 }
