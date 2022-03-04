@@ -190,7 +190,7 @@ public class NewNavigationTest extends BaseTestCase {
     @Description("Set Favorites Application and check show ony favourites")
     public void setFavoriteApplication() {
         Application application = toolsManagerWindow.getApplication(APPLICATION_NAME_2, CATEGORY_NAME);
-        application.setFavorite();
+        application.markFavorite();
         Assertions.assertThat(application.isFavorite()).isTrue();
         toolsManagerWindow.setShowOnlyFavourites();
         Assertions.assertThat(toolsManagerWindow.getApplicationNames()).contains(APPLICATION_NAME_2);
@@ -204,7 +204,7 @@ public class NewNavigationTest extends BaseTestCase {
     public void setFavoriteSubcategory() {
         goToHomePage();
         Subcategory subcategoryMovie = toolsManagerWindow.getSubcategoryByName(MOVIES_SUBCATEGORY, CATEGORY_NAME);
-        subcategoryMovie.setFavorite();
+        subcategoryMovie.markFavorite();
         Assertions.assertThat(subcategoryMovie.isFavorite()).isTrue();
         Assertions.assertThat(subcategoryMovie.getBadge()).isEqualTo("2/2");
         List<Application> applications = subcategoryMovie.getApplications();
