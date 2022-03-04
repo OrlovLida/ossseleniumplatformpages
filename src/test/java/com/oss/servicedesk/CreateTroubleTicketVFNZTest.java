@@ -121,7 +121,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     @Test(priority = 1, testName = "Create CTT Ticket", description = "Create CTT Ticket")
     @Description("Create CTT Ticket")
     public void createCTTTicket(
-            @Optional("CFS_SOM_01_901") String MOIdentifier,
+            @Optional("CFS_Access_Product_Selenium_1") String MOIdentifier,
             @Optional("ca_kodrobinska") String ttAssignee
     ) {
         SDWizardPage = ticketDashboardPage.openCreateTicketWizard("CTT");
@@ -346,16 +346,16 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     @Parameters({"SecondMOIdentifier"})
     @Test(priority = 16, testName = "Check Root Causes", description = "Check Root Causes Tab - add MO")
     @Description("Check Root Causes Tab - add MO")
-    public void addRootCause(@Optional("CFS_SOM_01_1101") String SecondMOIdentifier) {
+    public void addRootCause(@Optional("CFS_Access_Product_Selenium_2") String SecondMOIdentifier) {
         ticketDetailsPage = ticketDashboardPage.openTicketDetailsView(String.valueOf(ticketDashboardPage.getRowForTicketWithID(ticketID)), BASIC_URL);
         ticketDetailsPage.selectTab(ROOT_CAUSES_TAB_ARIA_CONTROLS);
         SDWizardPage = ticketDetailsPage.openAddRootCauseWizard();
         SDWizardPage.getMoStep().showAllMOs();
         SDWizardPage.getMoStep().enterTextIntoSearchComponent(SecondMOIdentifier);
-        SDWizardPage.getMoStep().selectRowInMOTable("0");
+        SDWizardPage.getMoStep().selectRowInMOTable("1");
         SDWizardPage.clickAcceptButtonInWizard();
 
-        Assert.assertEquals(ticketDetailsPage.checkRootCausesMOIdentifier(0), SecondMOIdentifier);
+        Assert.assertEquals(ticketDetailsPage.checkRootCausesMOIdentifier(1), SecondMOIdentifier);
     }
 
     @Test(priority = 17, testName = "Check Participants", description = "Check Participants Tab - add Participant")
