@@ -333,10 +333,10 @@ public class TicketDetailsPage extends BaseSDPage {
     }
 
     @Step("I check root cause  - MO Identifier")
-    public String checkRootCausesMOIdentifier(int ticketIndex) {
+    public String checkRootCausesMOIdentifier(int objectIndex) {
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Check root cause  - MO Identifier");
-        return checkRootCausesData(ticketIndex, ROOT_CAUSES_TABLE_ID_MO_IDENTIFIER_ID);
+        return checkRootCausesData(objectIndex, ROOT_CAUSES_TABLE_ID_MO_IDENTIFIER_ID);
     }
 
     private String checkRootCausesData(int objectIndex, String attributeId) {

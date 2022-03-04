@@ -42,7 +42,7 @@ public class AdvancedSearchCompact extends BaseTestCase {
     private static final String LAST_NAME_LABEL = "Last Name";
     private static final String ACTORS_ATTRIBUTE_ID = "actors";
     private static final String ACTORS_LABEL = "Actors";
-
+    
     private NewInventoryViewPage inventoryViewPage;
     private TableWidget tableWidget;
     
@@ -185,14 +185,15 @@ public class AdvancedSearchCompact extends BaseTestCase {
     
     @Test(priority = 8)
     public void markFilterAsFavByLabel() {
-        tableWidget.markFilterAsFavByLabel(FILTER_NAME);
+        tableWidget.markFavoriteFilter(FILTER_NAME);
         tableWidget.setQuickFilter(FILTER_NAME);
         
         Assert.assertEquals(inventoryViewPage.countOfVisibleTags(), 1);
         
         inventoryViewPage.clearFilters();
     }
-    //Disabled until fix OSSWEB-15793
+    
+    // Disabled until fix OSSWEB-15793
     @Test(priority = 9, enabled = false)
     public void filterByOSFUsingAdvancedSearchWidget() {
         // given
@@ -214,7 +215,7 @@ public class AdvancedSearchCompact extends BaseTestCase {
         Assertions.assertThat(visibleTags.values()).contains(placeOfBirth);
         tableComponent.selectRow(0);
         advancedSearchWidget.clickAdd();
-
+        
         Assertions.assertThat(actorsOSF.getStringValue()).isEqualTo(lastName);
         tableWidget.getAdvancedSearch().clickApply();
         Multimap<String, String> appliedFilters = tableWidget.getAppliedFilters();
