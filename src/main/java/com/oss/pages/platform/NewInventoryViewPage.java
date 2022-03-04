@@ -1,6 +1,8 @@
 package com.oss.pages.platform;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -92,6 +94,11 @@ public class NewInventoryViewPage extends BasePage {
         TableWidget mainTable = getMainTable();
         mainTable.unselectRow(rowId);
         DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    public void selectSeveralObjectsByRowId(int... indexes) {
+        List<Integer> rows = Arrays.stream(indexes).boxed().collect(Collectors.toList());
+        rows.forEach(this::selectObjectByRowId);
     }
 
     @Step("Enable Column")

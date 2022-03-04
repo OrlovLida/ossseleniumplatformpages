@@ -48,7 +48,8 @@ public class TableWidgetTest extends BaseTestCase {
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TYPE);
         tableWidget = inventoryViewPage.getMainTable();
     }
-    
+
+
     @Test(priority = 1)
     public void selectFirstRow() {
         // when
@@ -57,11 +58,11 @@ public class TableWidgetTest extends BaseTestCase {
         
         // then
         Assertions.assertThat(selectedRows).hasSize(1);
-        Assertions.assertThat(selectedRows.get(0).getIndex()).isEqualTo(0);
+        Assertions.assertThat(selectedRows.get(0).getIndex()).isZero();
         
         inventoryViewPage.unselectObjectByRowId(0);
         selectedRows = inventoryViewPage.getSelectedRows();
-        Assertions.assertThat(selectedRows).hasSize(0);
+        Assertions.assertThat(selectedRows).isEmpty();
     }
     
     @Test(priority = 2)
@@ -95,7 +96,7 @@ public class TableWidgetTest extends BaseTestCase {
         List<String> newHeaders = inventoryViewPage.getActiveColumnsHeaders();
         
         Assertions.assertThat(newHeaders.indexOf(firstHeader)).isEqualTo(2);
-        Assertions.assertThat(newHeaders.indexOf(secondHeader)).isEqualTo(0);
+        Assertions.assertThat(newHeaders.indexOf(secondHeader)).isZero();
         Assertions.assertThat(newHeaders.indexOf(thirdHeader)).isEqualTo(1);
     }
     
@@ -313,6 +314,24 @@ public class TableWidgetTest extends BaseTestCase {
         AttributesChooser attributesChooser = inventoryViewPage.getMainTable().getAttributesChooser();
         attributesChooser.toggleAttributeByPath(columnId);
         attributesChooser.clickApply();
+    }
+
+    @Test (priority = 17)
+    public void SingleSelect() {
+        // when
+        inventoryViewPage.selectObjectByRowId(0);
+        inventoryViewPage.selectObjectByRowId(3);
+
+        tableWidget.clickRow(6);
+
+        List<TableRow> selectedRows = inventoryViewPage.getSelectedRows();
+        String selectedObjectCount = tableWidget.getSelectedObjectCount();
+
+        // then
+        Assertions.assertThat(selectedRows).hasSize(1);
+        Assertions.assertThat(selectedObjectCount).isEqualTo("1 selected");
+
+
     }
     
 }
