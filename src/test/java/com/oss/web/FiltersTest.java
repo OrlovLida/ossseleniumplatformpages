@@ -39,7 +39,7 @@ public class FiltersTest extends BaseTestCase {
     private String VALUE_FOR_FILTER2 = "666";
     private String VALUE_FOR_FILTER3 = "3";
     private String VALUE_FOR_FILTER3_AFTER_EDIT = "4";
-    private String FOLDER_NAME = "SeleniumFilterTest "+ LocalDate.now();
+    private String FOLDER_NAME = "SeleniumFilterTest " + LocalDate.now();
     private String USER2_LOGIN = "webseleniumtests2";
     private String USER2_PASSWORD = "webtests";
     private String ATTRIBUTE_ID = "id";
@@ -82,14 +82,14 @@ public class FiltersTest extends BaseTestCase {
     @Test(priority = 2)
     @Description("Adding filter to favorite, checking that the star icon for that filter is filled")
     public void addingFilterToFavorite() {
-        advancedSearch.markFilterAsFavByLabel(FILTER2_NAME);
+        advancedSearch.setFavoriteFilter(FILTER2_NAME);
         Assert.assertTrue(advancedSearch.getFavoriteFilters().contains(FILTER2_NAME));
     }
     
     @Test(priority = 3)
     @Description("Checking that filter is applied properly and name of the filter is displayed in Filter Panel")
     public void isFilterApply() {
-        advancedSearch.chooseSavedFilterByLabel(FILTER2_NAME);
+        advancedSearch.selectSavedFilterByLabel(FILTER2_NAME);
         advancedSearch.clickApply();
         Assert.assertEquals(advancedSearch.getAppliedFilters().size(), 1);
         advancedSearch.clearAllFilters();
@@ -98,11 +98,11 @@ public class FiltersTest extends BaseTestCase {
     @Test(priority = 4)
     @Description("Editing an Existing Filter and save them. Checking that the value is change after saving it")
     public void editingAnExistingFilter() {
-        advancedSearch.chooseSavedFilterByLabel(FILTER3_NAME);
-        advancedSearch.setFilter(ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD,VALUE_FOR_FILTER3_AFTER_EDIT);
+        advancedSearch.selectSavedFilterByLabel(FILTER3_NAME);
+        advancedSearch.setFilter(ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, VALUE_FOR_FILTER3_AFTER_EDIT);
         advancedSearch.saveFilter();
-        advancedSearch.chooseSavedFilterByLabel(FILTER2_NAME);
-        advancedSearch.chooseSavedFilterByLabel(FILTER3_NAME);
+        advancedSearch.selectSavedFilterByLabel(FILTER2_NAME);
+        advancedSearch.selectSavedFilterByLabel(FILTER3_NAME);
         
         String idValue = advancedSearch.getComponent(ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD).getStringValue();
         Assert.assertEquals(idValue, VALUE_FOR_FILTER3_AFTER_EDIT);
@@ -111,7 +111,7 @@ public class FiltersTest extends BaseTestCase {
     @Test(priority = 5)
     @Description("Checking that filter is filtering object in Inventory View after apply it")
     public void isFilterWorking() {
-        advancedSearch.chooseSavedFilterByLabel(FILTER_NAME);
+        advancedSearch.selectSavedFilterByLabel(FILTER_NAME);
         advancedSearch.clickApply();
         
         String attributeValue = inventoryViewPage.getAttributeValue(ATTRIBUTE_ID, 0);
@@ -228,7 +228,7 @@ public class FiltersTest extends BaseTestCase {
     @Test(priority = 17)
     @Description("Checking that filter have a proper value in Inventory View for a second user")
     public void isFilterHaveProperValue() {
-        advancedSearch.chooseSavedFilterByLabel(FILTER2_NAME);
+        advancedSearch.selectSavedFilterByLabel(FILTER2_NAME);
         String idValue = advancedSearch.getComponent(ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD).getStringValue();
         
         Assert.assertEquals(idValue, VALUE_FOR_FILTER2);
