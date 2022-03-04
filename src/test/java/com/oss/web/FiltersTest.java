@@ -82,7 +82,7 @@ public class FiltersTest extends BaseTestCase {
     @Test(priority = 2)
     @Description("Adding filter to favorite, checking that the star icon for that filter is filled")
     public void addingFilterToFavorite() {
-        advancedSearch.setFavoriteFilter(FILTER2_NAME);
+        advancedSearch.markFavoriteFilter(FILTER2_NAME);
         Assert.assertTrue(advancedSearch.getFavoriteFilters().contains(FILTER2_NAME));
     }
     

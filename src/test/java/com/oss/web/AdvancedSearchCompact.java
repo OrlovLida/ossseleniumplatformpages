@@ -185,7 +185,7 @@ public class AdvancedSearchCompact extends BaseTestCase {
     
     @Test(priority = 8)
     public void markFilterAsFavByLabel() {
-        tableWidget.setFavoriteFilter(FILTER_NAME);
+        tableWidget.markFavoriteFilter(FILTER_NAME);
         tableWidget.setQuickFilter(FILTER_NAME);
         
         Assert.assertEquals(inventoryViewPage.countOfVisibleTags(), 1);

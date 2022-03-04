@@ -12,14 +12,12 @@ import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.components.attributechooser.AttributesChooser;
-import com.oss.framework.components.pagination.PaginationComponent;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.pagination.PaginationComponent;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.propertypanel.PropertyPanel;
 import com.oss.framework.widgets.table.TableRow;
 import com.oss.framework.widgets.table.TableWidget;
-import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.platform.NewInventoryViewPage;
 
 public class TableWidgetTest extends BaseTestCase {
@@ -49,8 +47,7 @@ public class TableWidgetTest extends BaseTestCase {
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TYPE);
         tableWidget = inventoryViewPage.getMainTable();
     }
-
-
+    
     @Test(priority = 1)
     public void selectFirstRow() {
         // when
@@ -71,7 +68,7 @@ public class TableWidgetTest extends BaseTestCase {
         com.oss.framework.widgets.table.TableWidget tableWidget = inventoryViewPage.getMainTable();
         int defaultSize = tableWidget.getFirstColumnSize();
         DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
-
+        
         int offset = 400;
         tableWidget.resizeFirstColumn(offset);
         DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
@@ -189,14 +186,14 @@ public class TableWidgetTest extends BaseTestCase {
         
         inventoryViewPage.searchByAttributeValue(attributeId, attributeValue, Input.ComponentType.TEXT_FIELD);
         DelayUtils.sleep(1000);
-
+        
         List<String> sortedValues = getValuesFromTableByKey(columnId).stream()
                 .map(Long::parseLong)
                 .sorted(Collections
                         .reverseOrder())
                 .map(String::valueOf)
                 .collect(Collectors.toList());
-
+        
         tableWidget.sortColumnByDESC(columnId);
         DelayUtils.sleep(1000);
         
@@ -281,24 +278,23 @@ public class TableWidgetTest extends BaseTestCase {
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TYPE);
         Assert.assertEquals(getRowsCount(), PAGE_SIZE_OPTION_50);
     }
-
-    @Test (priority = 17)
+    
+    @Test(priority = 17)
     public void SingleSelect() {
         // when
         inventoryViewPage.selectObjectByRowId(0);
         inventoryViewPage.selectObjectByRowId(3);
-
+        
         tableWidget.clickRow(6);
-
+        
         List<TableRow> selectedRows = inventoryViewPage.getSelectedRows();
         String selectedObjectCount = tableWidget.getSelectedObjectCount();
-
+        
         // then
         Assertions.assertThat(selectedRows).hasSize(1);
         Assertions.assertThat(selectedObjectCount).isEqualTo(ONE_SELECTED);
     }
-
-
+    
     private int getRowsCount() {
         tableWidget = inventoryViewPage.getMainTable();
         PaginationComponent pagination = tableWidget.getPagination();
@@ -332,5 +328,5 @@ public class TableWidgetTest extends BaseTestCase {
         attributesChooser.toggleAttributeByPath(columnId);
         attributesChooser.clickApply();
     }
-
+    
 }
