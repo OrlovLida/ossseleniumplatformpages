@@ -14,8 +14,8 @@ import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 
+import static com.oss.utils.AttachmentsManager.saveLink;
 import static com.oss.utils.AttachmentsManager.saveScreenshotPNG;
-import static com.oss.utils.AttachmentsManager.saveTextLog;
 
 public class TestListener extends BaseTestCase implements ITestListener {
 
@@ -49,25 +49,25 @@ public class TestListener extends BaseTestCase implements ITestListener {
 
     @Override
     public void onTestFailure(ITestResult iTestResult) {
-        log.info("I am in onTestFailure method " + getTestMethodName(iTestResult) + " failed");
+        String testMethodName = getTestMethodName(iTestResult);
+        log.info("I am in onTestFailure method " + testMethodName + " failed");
         //Get driver from BaseTest and assign to local webdriver variable.
         Object testClass = iTestResult.getInstance();
         WebDriver driver = ((BaseTestCase) testClass).driver;
         //Allure ScreenShotRobot and SaveTestLog
         if (driver != null) {
-            log.info("Screenshot captured for test case:" + getTestMethodName(iTestResult));
+            log.info("Screenshot captured for test case:" + testMethodName);
             saveScreenshotPNG(driver);
             // attachConsoleLogs(driver);
             SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, 5));
             if (systemMessage.isErrorDisplayed(true)) {
                 systemMessage.close();
             }
+            saveLink(driver);
             //Take base64Screenshot screenshot for extent reports
             String base64Screenshot = "data:image/png;base64," + ((TakesScreenshot) driver).
                     getScreenshotAs(OutputType.BASE64);
         }
-        //Save a log on allure.
-        saveTextLog(getTestMethodName(iTestResult) + " failed and screenshot taken!");
     }
 
     @Override
