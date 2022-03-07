@@ -219,11 +219,18 @@ public class NewInventoryViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    @Step("Save configuration for main table")
-    public void saveConfigurationForMainTable(String configurationName, Field... fields) {
+    @Step("Save new configuration for main table")
+    public void saveNewConfigurationForMainTable(String configurationName, Field... fields) {
         DelayUtils.waitForPageToLoad(driver, wait);
         getMainTable().callAction(ActionsContainer.KEBAB_GROUP_ID, SAVE_NEW_CONFIG_ID);
         getSaveConfigurationWizard().saveAsNew(configurationName, fields);
+    }
+
+    @Step("Update configuration for main table")
+    public void updateConfigurationForMainTable(Field... fields) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getMainTable().callAction(ActionsContainer.KEBAB_GROUP_ID, SAVE_NEW_CONFIG_ID);
+        getSaveConfigurationWizard().save();
     }
 
     @Step("Refresh main table")
