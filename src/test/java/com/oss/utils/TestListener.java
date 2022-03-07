@@ -64,7 +64,6 @@ public class TestListener extends BaseTestCase implements ITestListener {
         if (driver != null) {
             log.info("Screenshot captured for test case:" + testMethodName);
             saveScreenshotPNG(driver);
-            // attachConsoleLogs(driver);
             SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, 5));
             if (systemMessage.isErrorDisplayed(true)) {
                 systemMessage.close();
