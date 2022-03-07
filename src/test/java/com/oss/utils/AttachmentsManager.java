@@ -41,7 +41,7 @@ public class AttachmentsManager {
         return html;
     }
 
-    @Attachment(value = "Console Logs")
+    @Attachment(value = "Console logs")
     public static String attachConsoleLogs(WebDriver webDriver) {
         if (CONFIGURATION.getDriver().equals("gecko")) {
             log.debug("Gecko driver doesn't support capturing browser logs");
