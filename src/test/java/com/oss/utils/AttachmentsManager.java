@@ -60,7 +60,6 @@ public class AttachmentsManager {
                 builder.append("\n");
             }
             builder.append("\n");
-            log.debug(builder.toString());
             return builder.toString();
         }
     }
