@@ -14,6 +14,7 @@ import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 
+import static com.oss.utils.AttachmentsManager.attachConsoleLogs;
 import static com.oss.utils.AttachmentsManager.saveLink;
 import static com.oss.utils.AttachmentsManager.saveScreenshotPNG;
 
@@ -67,6 +68,7 @@ public class TestListener extends BaseTestCase implements ITestListener {
             //Take base64Screenshot screenshot for extent reports
             String base64Screenshot = "data:image/png;base64," + ((TakesScreenshot) driver).
                     getScreenshotAs(OutputType.BASE64);
+            attachConsoleLogs(driver);
         }
     }
 
