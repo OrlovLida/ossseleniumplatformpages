@@ -46,6 +46,10 @@ public class TestListener extends BaseTestCase implements ITestListener {
     @Override
     public void onTestSuccess(ITestResult iTestResult) {
         log.info("I am in onTestSuccess method " + getTestMethodName(iTestResult) + " succeed");
+        if (driver != null) {
+            log.info("Screenshot captured for test case:" + getTestMethodName(iTestResult));
+            saveScreenshotPNG(driver);
+        }
     }
 
     @Override
