@@ -130,7 +130,8 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
 
     @BeforeClass
     public void createProcessWithMilestones() {
-        ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
+        ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
+        processInstancesPage.clearAllColumnFilters();
         changeStateMilestoneWizardPage = new ChangeStateMilestoneWizardPage(driver);
 
         ToolbarWidget toolbarWidget = ToolbarWidget.create(driver, webDriverWait);

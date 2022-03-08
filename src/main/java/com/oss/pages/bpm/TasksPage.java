@@ -69,6 +69,11 @@ public class TasksPage extends BasePage {
         return new TasksPage(driver);
     }
 
+    public void clearAllColumnFilters() {
+        OldTable tasksTable = getOldTable();
+        tasksTable.clearAllColumnValues();
+    }
+
     public void findTask(String processCode, String taskName) {
         OldTable table = getOldTable();
         table.clearColumnValue(ASSIGNEE);

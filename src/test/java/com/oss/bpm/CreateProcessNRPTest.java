@@ -61,6 +61,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     public void openProcessInstancesPage() {
         ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
         DelayUtils.sleep(3000);
+        processInstancesPage.clearAllColumnFilters();
 
         ToolbarWidget toolbarWidget = ToolbarWidget.create(driver, webDriverWait);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -92,6 +93,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     public void startHLPTask() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        tasksPage.clearAllColumnFilters();
 
         // when
         tasksPage.startTask(processNRPCode, TasksPage.HIGH_LEVEL_PLANNING_TASK);
@@ -145,6 +147,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     public void completeHLPTask() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        tasksPage.clearAllColumnFilters();
 
         // when
         tasksPage.completeTask(processNRPCode, TasksPage.HIGH_LEVEL_PLANNING_TASK);
@@ -162,6 +165,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     public void startLLPTask() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        tasksPage.clearAllColumnFilters();
 
         // when
         tasksPage.startTask(processNRPCode, TasksPage.LOW_LEVEL_PLANNING_TASK);
@@ -183,6 +187,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     @Description("Assign File to 'Low Level Planning' Task")
     public void assignFile() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        tasksPage.clearAllColumnFilters();
         try {
             URL resource = CreateProcessNRPTest.class.getClassLoader().getResource("bpm/SeleniumTest.txt");
             String absolutePatch = Paths.get(resource.toURI()).toFile().getAbsolutePath();
@@ -244,6 +249,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     public void completeLLPTask() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        tasksPage.clearAllColumnFilters();
 
         // when
         tasksPage.completeTask(processNRPCode, TasksPage.LOW_LEVEL_PLANNING_TASK);
@@ -261,6 +267,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     public void startRFITask() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        tasksPage.clearAllColumnFilters();
 
         // when
         tasksPage.startTask(processNRPCode, TasksPage.READY_FOR_INTEGRATION_TASK);
@@ -278,6 +285,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     public void setupIntegration() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        tasksPage.clearAllColumnFilters();
 
         // when
         tasksPage.setupIntegration(processNRPCode);
@@ -297,6 +305,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
 
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        tasksPage.clearAllColumnFilters();
 
         // when
         tasksPage.findTask(processNRPCode, TasksPage.READY_FOR_INTEGRATION_TASK);
@@ -311,6 +320,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     public void completeRFITask() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        tasksPage.clearAllColumnFilters();
 
         // when
         tasksPage.completeTask(processNRPCode, TasksPage.READY_FOR_INTEGRATION_TASK);
@@ -328,6 +338,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     public void startSDTaskIP1() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        tasksPage.clearAllColumnFilters();
 
         // when
         tasksPage.startTask(processIPCode1, TasksPage.SCOPE_DEFINITION_TASK);
@@ -345,6 +356,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     public void completeSDTaskIP1() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        tasksPage.clearAllColumnFilters();
 
         // when
         tasksPage.completeTask(processIPCode1, TasksPage.SCOPE_DEFINITION_TASK);
@@ -362,6 +374,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     public void startImplementationTaskIP1() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        tasksPage.clearAllColumnFilters();
 
         // when
         tasksPage.startTask(processIPCode1, TasksPage.IMPLEMENTATION_TASK);
@@ -379,6 +392,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     public void completeImplementationTaskIP1() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        tasksPage.clearAllColumnFilters();
 
         // when
         tasksPage.completeTask(processIPCode1, TasksPage.IMPLEMENTATION_TASK);
@@ -396,6 +410,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     public void startAcceptanceTaskIP1() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        tasksPage.clearAllColumnFilters();
 
         // when
         tasksPage.startTask(processIPCode1, TasksPage.ACCEPTANCE_TASK);
@@ -413,6 +428,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     public void completeAcceptanceTaskIP1() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        tasksPage.clearAllColumnFilters();
 
         // when
         tasksPage.completeTask(processIPCode1, TasksPage.ACCEPTANCE_TASK);
@@ -430,6 +446,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     public void startSDTaskIP2() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        tasksPage.clearAllColumnFilters();
 
         // when
         tasksPage.startTask(processIPCode2, TasksPage.SCOPE_DEFINITION_TASK);
@@ -447,6 +464,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     public void completeSDTaskIP2() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        tasksPage.clearAllColumnFilters();
 
         // when
         tasksPage.completeTask(processIPCode2, TasksPage.SCOPE_DEFINITION_TASK);
@@ -464,6 +482,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     public void startImplementationTaskIP2() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        tasksPage.clearAllColumnFilters();
         tasksPage.startTask(processIPCode2, TasksPage.IMPLEMENTATION_TASK);
 
         // when
@@ -481,6 +500,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     public void completeImplementationTaskIP2() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        tasksPage.clearAllColumnFilters();
 
         // when
         tasksPage.completeTask(processIPCode2, TasksPage.IMPLEMENTATION_TASK);
@@ -498,6 +518,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     public void startAcceptanceTaskIP2() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        tasksPage.clearAllColumnFilters();
 
         // when
         tasksPage.startTask(processIPCode2, TasksPage.ACCEPTANCE_TASK);
@@ -515,6 +536,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     public void completeAcceptanceTaskIP2() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        tasksPage.clearAllColumnFilters();
 
         // when
         tasksPage.completeTask(processIPCode2, TasksPage.ACCEPTANCE_TASK);
@@ -532,6 +554,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     public void startVerificationTask() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        tasksPage.clearAllColumnFilters();
 
         // when
         tasksPage.startTask(processNRPCode, TasksPage.VERIFICATION_TASK);
@@ -549,6 +572,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     public void completeVerificationTask() {
         // given
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        tasksPage.clearAllColumnFilters();
 
         // when
         tasksPage.completeTask(processNRPCode, TasksPage.VERIFICATION_TASK);
@@ -566,6 +590,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     public void checkProcessStatus() {
         // given
         ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
+        processInstancesPage.clearAllColumnFilters();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         // when
