@@ -355,7 +355,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
         SDWizardPage.getMoStep().selectRowInMOTable("1");
         SDWizardPage.clickAcceptButtonInWizard();
 
-        Assert.assertEquals(ticketDetailsPage.checkRootCausesMOIdentifier(1), SecondMOIdentifier);
+        Assert.assertTrue(ticketDetailsPage.checkIfMOIdentifierIsPresentOnRootCauses(SecondMOIdentifier));
     }
 
     @Test(priority = 17, testName = "Check Participants", description = "Check Participants Tab - add Participant")
