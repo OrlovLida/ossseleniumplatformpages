@@ -1,6 +1,7 @@
 package com.oss.utils;
 
-import io.qameta.allure.Attachment;
+import java.sql.Timestamp;
+
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -10,7 +11,7 @@ import org.openqa.selenium.logging.LogType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Timestamp;
+import io.qameta.allure.Attachment;
 
 import static com.oss.configuration.Configuration.CONFIGURATION;
 
@@ -21,6 +22,11 @@ public class AttachmentsManager {
     @Attachment(value = "Page screenshot", type = "image/png")
     public static byte[] saveScreenshotPNG(WebDriver driver) {
         return ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+    }
+
+    @Attachment(value = "Console link")
+    public static String saveLink(WebDriver driver) {
+        return driver.getCurrentUrl();
     }
 
     //Text attachments for Allure
@@ -35,9 +41,9 @@ public class AttachmentsManager {
         return html;
     }
 
-    @Attachment(value="Console Logs")
+    @Attachment(value = "Console logs")
     public static String attachConsoleLogs(WebDriver webDriver) {
-        if(CONFIGURATION.getDriver().equals("gecko")){
+        if (CONFIGURATION.getDriver().equals("gecko")) {
             log.debug("Gecko driver doesn't support capturing browser logs");
             return "Gecko driver doesn't support capturing browser logs";
         } else {
@@ -54,7 +60,6 @@ public class AttachmentsManager {
                 builder.append("\n");
             }
             builder.append("\n");
-            log.debug(builder.toString());
             return builder.toString();
         }
     }

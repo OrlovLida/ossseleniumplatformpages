@@ -686,4 +686,10 @@ public class KpiViewPage extends BasePage {
     public boolean isValueInGivenRow(String value, int row, String columnId) {
         return TableComponent.create(driver, wait, IND_VIEW_TABLE_ID).getCellValue(row, columnId).equals(value);
     }
+
+    @Step("Get Bookmark Title from header")
+    public String getBookmarkTitle() {
+        waitForPageToLoad(driver, wait);
+        return ToolbarWidget.create(driver, wait).getViewTitle();
+    }
 }
