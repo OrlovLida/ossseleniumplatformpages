@@ -1,0 +1,35 @@
+[
+  {
+    "name": "NETWORK-SLICE-EDIT-SELENIUM-TEST",
+    "attributes": [
+      {
+        "name": "operationalState",
+        "value": "DISABLED"
+      },
+      {
+        "name": "administrativeState",
+        "value": "UNLOCKED"
+      }
+    ],
+    "description": "NETWORK-SLICE-EDIT-DESCRIPTION",
+    "masterRelations": [
+    ],
+    "networkSliceSubnetRef": [
+    ],
+    "serviceProfileList": [
+      {
+        "attributes": [
+        ],
+        "name": "SERVICE-PROFILE-EDIT-SELENIUM-TEST",
+        "plmnInfoList": [
+          {
+            "mcc": "801",
+            "mnc": "6014",
+            "sd": 16007211,
+            "sst": 141
+          }
+        ]
+      }
+    ]
+  }
+]

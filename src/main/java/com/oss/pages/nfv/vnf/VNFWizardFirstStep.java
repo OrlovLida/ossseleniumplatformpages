@@ -1,4 +1,4 @@
-package com.oss.pages.nfv;
+package com.oss.pages.nfv.vnf;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;

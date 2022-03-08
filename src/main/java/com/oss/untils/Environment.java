@@ -38,6 +38,7 @@ public class Environment {
     private static final String TP_SERVICE = "tp-service";
     private static final String CONNECTIVITY_CORE = "physical-connectivity-core";
     private static final String NFV_CORE = "nfv-core";
+    private static final String NETWORK_SLICE_CORE = "network-slice-core";
     private static final String TMF_CATALOG_CORE = "tmf-catalog-core";
 
     private static final String KEYCLOAK_PASS_PROP = "keycloak.pass";
@@ -202,6 +203,8 @@ public class Environment {
     public RequestSpecification getPhysicalConnectivityCoreSpecification() { return getRequestSpecificationByName(CONNECTIVITY_CORE); }
 
     public RequestSpecification getNFVCoreSpecification() { return getRequestSpecificationByName(NFV_CORE); }
+
+    public RequestSpecification getNetworkSliceCoreSpecification() { return getRequestSpecificationByName(NETWORK_SLICE_CORE); }
 
     public RequestSpecification getTMFResourceCatalog() { return getRequestSpecificationByName(TMF_CATALOG_CORE); }
 
