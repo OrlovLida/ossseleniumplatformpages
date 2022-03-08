@@ -25,9 +25,6 @@ public class BaseACDPage extends BasePage {
 
     private static final String ADD_PREDEFINED_FILTER_BUTTON = "contextButton-0";
     private static final String SWITCHER_ID = "switcherId";
-    private static final String VISUALIZATION_TYPE_ID = "widgetType-input";
-    private static final String ATTRIBUTE_ID = "attribute1Id-input";
-    private static final String ATTRIBUTE_VALUES_ID = "attribute1ValuesId";
     private static final String CONFIRM_DELETE_BUTTON_ID = "ConfirmationBox_prompt_action_button";
 
     public BaseACDPage(WebDriver driver, WebDriverWait wait) {
@@ -63,28 +60,21 @@ public class BaseACDPage extends BasePage {
         log.info("Clicking Add predefined filter button");
     }
 
-    @Step("Choose Predefined Filter type")
-    public void chooseVisualizationType(String visualizationType) {
+    @Step("Set value in ComboBox")
+    public void setValueInComboBox(String componentId, String value){
         DelayUtils.waitForPageToLoad(driver, wait);
-        Wizard.createWizard(driver, wait).setComponentValue(VISUALIZATION_TYPE_ID, visualizationType, Input.ComponentType.COMBOBOX);
-        log.info("Setting visualization type: {}", visualizationType);
-    }
-
-    @Step("Choose attribute for predefined filter")
-    public void chooseAttribute(String attributeName) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        Wizard.createWizard(driver, wait).setComponentValue(ATTRIBUTE_ID, attributeName, Input.ComponentType.COMBOBOX);
-        log.debug("Setting attribute for predefined filter: {}", attributeName);
+        Wizard.createByComponentId(driver, wait, componentId).setComponentValue(componentId, value, Input.ComponentType.COMBOBOX);
+        log.info("Setting value of {} attribute", componentId, " as {}", value);
     }
 
     @Step("I insert {value} to multiComboBox component with id {componentId}")
-    public void insertAttributeValueToMultiComboBoxComponent(String text) {
-        insertValueToComponent(ATTRIBUTE_VALUES_ID, text, Input.ComponentType.MULTI_COMBOBOX);
+    public void chooseValueInMultiComboBox(String componentId, String value) {
+        Wizard.createByComponentId(driver, wait, componentId).setComponentValue(componentId, value, Input.ComponentType.MULTI_COMBOBOX);
     }
 
     @Step("I save Predefined Filter")
-    public void savePredefinedFilter() {
-        Wizard.createWizard(driver, wait).clickAccept();
+    public void savePredefinedFilter(String componentId) {
+        Wizard.createByComponentId(driver, wait, componentId).clickAccept();
         log.info("I save predefined filter by clicking 'Accept' button");
         DelayUtils.waitForPageToLoad(driver, wait);
     }
@@ -118,13 +108,13 @@ public class BaseACDPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         ComponentFactory.create(attributeName, Input.ComponentType.MULTI_COMBOBOX, driver, wait)
                 .setSingleStringValue(inputValue);
-        log.info("Setting value of {} attribute", inputValue, " as {}", attributeName);
+        log.info("Setting value of {} attribute as {}", inputValue, attributeName);
     }
 
     @Step("Turn On Include Issues without Roots switcher")
     public void turnOnSwitcher() {
         ComponentFactory.create(SWITCHER_ID, Input.ComponentType.SWITCHER, driver, wait).click();
-        log.info("Turning on Include Issues without Roots");
+        log.info("Turning on Include Issues without Roots switcher");
     }
 
     @Step("Refresh issues table")
@@ -139,13 +129,5 @@ public class BaseACDPage extends BasePage {
         TimePeriodChooser timePeriod = TimePeriodChooser.create(driver, wait, widgetId);
         timePeriod.clickClearValue();
         log.info("Clearing time period chooser");
-    }
-
-    private void insertValueToComponent(String componentId, String text, Input.ComponentType componentType) {
-        getWizard().setComponentValue(componentId, text, componentType);
-    }
-
-    private Wizard getWizard() {
-        return Wizard.createWizard(driver, wait);
     }
 }
