@@ -110,4 +110,9 @@
             </class>
         </classes>
     </test>
+    <test name="IndicatorsViewTestPart8 - Bookmarks Test">
+        <classes>
+            <class name="com.oss.bigdata.dfe.BookmarkTest"/>
+        </classes>
+    </test>
 </suite>
