@@ -1,4 +1,4 @@
-package com.oss.nfv;
+package com.oss.nfv.vnf;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -13,20 +13,20 @@ import com.comarch.oss.logical.function.api.dto.LogicalFunctionIdentificationDTO
 import com.comarch.oss.resourcecatalog.tmf.api.dto.ResourceSpecificationDTO;
 import com.oss.BaseTestCase;
 import com.oss.services.LogicalFunctionClient;
-import com.oss.services.nfv.OnboardClient;
-import com.oss.services.nfv.VNFApiClient;
-import com.oss.services.nfv.VNFSpecificationClient;
+import com.oss.services.nfv.vnf.OnboardClient;
+import com.oss.services.nfv.vnf.VNFApiClient;
+import com.oss.services.nfv.vnf.VNFSpecificationClient;
 import com.oss.services.resourcecatalog.tmf.TMFCatalogClient;
 import com.oss.untils.Environment;
 import com.oss.utils.TestListener;
 
-import static com.oss.nfv.CreateVNFTestConstants.VNF_INSTANTIATION_LEVEL_0_IDENTIFIER;
-import static com.oss.nfv.CreateVNFTestConstants.VNF_ROOT_IDENTIFIER;
+import static com.oss.nfv.vnf.CreateVNFTestConstants.VNF_INSTANTIATION_LEVEL_0_IDENTIFIER;
+import static com.oss.nfv.vnf.CreateVNFTestConstants.VNF_ROOT_IDENTIFIER;
 
 @Listeners({TestListener.class})
 public abstract class BaseVNFTest extends BaseTestCase {
 
-    private final String XML_FILE_PATH_TO_TEST = "src/test/resources/nfv/specificationDescriptor.xml";
+    private final String XML_FILE_PATH_TO_TEST = "src/test/resources/nfv/vnf/specificationDescriptor.xml";
 
     protected Environment env = Environment.getInstance();
 

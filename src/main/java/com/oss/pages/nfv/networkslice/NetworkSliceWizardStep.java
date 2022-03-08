@@ -1,4 +1,4 @@
-package com.oss.pages.nfv;
+package com.oss.pages.nfv.networkslice;
 
 import com.oss.framework.components.tree.TreeComponent;
 import com.oss.framework.utils.DelayUtils;
@@ -7,17 +7,17 @@ import com.oss.pages.BasePage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public abstract class VNFWizardStep extends BasePage {
+public abstract class NetworkSliceWizardStep extends BasePage {
 
-    protected final Wizard vnfWizard;
+    protected final Wizard networkSliceWizard;
 
-    protected VNFWizardStep(WebDriver driver, WebDriverWait wait, Wizard vnfWizard) {
+    protected NetworkSliceWizardStep(WebDriver driver, WebDriverWait wait, Wizard networkSliceWizard) {
         super(driver, wait);
-        this.vnfWizard = vnfWizard;
+        this.networkSliceWizard = networkSliceWizard;
     }
 
     public TreeComponent getStructureTree() {
-        return this.vnfWizard.getTreeComponent();
+        return this.networkSliceWizard.getTreeComponent();
     }
 
     public void selectNode(String path) {

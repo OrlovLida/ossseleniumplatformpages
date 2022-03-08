@@ -1,10 +1,11 @@
-package com.oss.nfv;
+package com.oss.nfv.vnf;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
+import com.oss.framework.components.contextactions.ActionsContainer;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -13,29 +14,28 @@ import org.testng.asserts.SoftAssert;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.nfv.VNFWizardFirstStep;
-import com.oss.pages.nfv.VNFWizardFourthStep;
-import com.oss.pages.nfv.VNFWizardPage;
-import com.oss.pages.nfv.VNFWizardSecondStep;
-import com.oss.pages.nfv.VNFWizardStep;
-import com.oss.pages.nfv.VNFWizardThirdStep;
+import com.oss.pages.nfv.vnf.VNFWizardFirstStep;
+import com.oss.pages.nfv.vnf.VNFWizardFourthStep;
+import com.oss.pages.nfv.vnf.VNFWizardPage;
+import com.oss.pages.nfv.vnf.VNFWizardSecondStep;
+import com.oss.pages.nfv.vnf.VNFWizardStep;
+import com.oss.pages.nfv.vnf.VNFWizardThirdStep;
 import com.oss.pages.platform.NewInventoryViewPage;
-import com.oss.services.nfv.VNFApiClient;
+import com.oss.services.nfv.vnf.VNFApiClient;
 import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
 
-import static com.oss.nfv.EditVNFTestConstants.EDIT_ACTION_GROUP_ID;
-import static com.oss.nfv.EditVNFTestConstants.EDIT_LOGICAL_ELEMENT_ACTION_LABEL;
-import static com.oss.nfv.EditVNFTestConstants.NEW_VNF_NAME;
-import static com.oss.nfv.EditVNFTestConstants.VNF_NAME;
+import static com.oss.nfv.vnf.EditVNFTestConstants.EDIT_LOGICAL_ELEMENT_ACTION_LABEL;
+import static com.oss.nfv.vnf.EditVNFTestConstants.NEW_VNF_NAME;
+import static com.oss.nfv.vnf.EditVNFTestConstants.VNF_NAME;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 @Listeners({TestListener.class})
 public class EditVNFTest extends BaseVNFTest {
 
-    private static final String JSON_FILE_PATH_TO_TEST = "src/test/resources/nfv/createVNF.json";
+    private static final String JSON_FILE_PATH_TO_TEST = "src/test/resources/nfv/vnf/createVNF.json";
 
     @BeforeClass
     public void prepareData() throws IOException {
@@ -151,7 +151,7 @@ public class EditVNFTest extends BaseVNFTest {
     }
 
     private void openVNFWizardForVNFEdit(NewInventoryViewPage inventoryViewPage) {
-        inventoryViewPage.callActionByLabel(EDIT_ACTION_GROUP_ID, EDIT_LOGICAL_ELEMENT_ACTION_LABEL);
+        inventoryViewPage.callActionByLabel(ActionsContainer.EDIT_GROUP_ID, EDIT_LOGICAL_ELEMENT_ACTION_LABEL);
     }
 
     private void selectVNFInTree(NewInventoryViewPage inventoryViewPage) {
