@@ -51,7 +51,8 @@ public class FilteringOnRelationNodesTest extends BaseTestCase {
     private static final String PORT_10_PATH = PATH_PORTS_RELATION + "." + PORT_NAME_10;
     private static final String PORT_02_PATH = PATH_PORTS_RELATION + "." + PORT_NAME_02;
     private static final String FLOOR_NAME = "FL_ST1";
-    private static final String PATH_LOCATIONS_2ST_RELATION = LOCATION_NAME + ".Locations." + SUB_LOCATION_TYPE_FLOOR + "." + FLOOR_NAME + ".Locations";
+    private static final String PATH_LOCATIONS_2ST_RELATION =
+            LOCATION_NAME + ".Locations." + SUB_LOCATION_TYPE_FLOOR + "." + FLOOR_NAME + ".Locations";
     private static final String ROOM_PATH = LOCATION_NAME + ".Locations." + SUB_LOCATION_TYPE_FLOOR + "." + FLOOR_NAME + ".Locations."
             + SUB_LOCATION_TYPE_ROOM + "." + ROOM_NAME;
     private static final String ROOM_2_PATH = LOCATION_NAME + ".Locations." + SUB_LOCATION_TYPE_FLOOR + "." + FLOOR_NAME + ".Locations."
@@ -115,7 +116,7 @@ public class FilteringOnRelationNodesTest extends BaseTestCase {
         location1stLevel.searchByAttribute(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, FLOOR_NAME);
         TreeComponent.Node location2stLevel = getNode(PATH_LOCATIONS_2ST_RELATION);
         location2stLevel.searchByAttribute(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, ROOM_NAME);
-
+        
         Assertions.assertThat(hierarchyViewPage.isNodePresent(ROOM_PATH)).isTrue();
         Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(FLOOR_NAME).doesNotContain(FLOOR_NAME_2)
                 .contains(ROOM_NAME)
@@ -131,34 +132,32 @@ public class FilteringOnRelationNodesTest extends BaseTestCase {
         TreeComponent.Node location2stLevel = getNode(PATH_LOCATIONS_2ST_RELATION);
         location2stLevel.searchByAttribute(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, ROOM_NAME);
         Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(FLOOR_NAME).doesNotContain(ROOM_NAME_2);
-
+        
         TreeComponent.Node nodePathPorts = hierarchyViewPage.getNodeByLabelPath(PATH_PORTS_RELATION);
         nodePathPorts.expandNode();
         nodePathPorts.searchByAttribute(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, PORT_NAME_10);
         Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(PORT_NAME_10).doesNotContain(PORT_NAME_02);
-
+        
         TreeComponent.Node location1stLevel = getNode(PATH_1ST_LOCATIONS_RELATION);
         location1stLevel.searchByAttribute(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, FLOOR_NAME_2);
         Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(FLOOR_NAME_2).doesNotContain(FLOOR_NAME);
-
+        
         location1stLevel.searchByAttribute(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, FLOOR_NAME);
         Assertions.assertThat(hierarchyViewPage.isNodePresent(ROOM_PATH)).isTrue();
         Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(FLOOR_NAME).doesNotContain(FLOOR_NAME_2)
                 .contains(ROOM_NAME).doesNotContain(ROOM_NAME_2);
         
         clearFilter(location1stLevel);
-
+        
         Assertions.assertThat(hierarchyViewPage.isNodePresent(PORT_10_PATH)).isTrue();
         Assertions.assertThat(hierarchyViewPage.isNodePresent(PORT_02_PATH)).isFalse();
         Assertions.assertThat(hierarchyViewPage.isNodePresent(ROOM_PATH)).isTrue();
         Assertions.assertThat(hierarchyViewPage.isNodePresent(ROOM_2_PATH)).isFalse();
-
+        
         clearFilter(hierarchyViewPage.getNodeByLabelPath(PATH_LOCATIONS_2ST_RELATION));
         clearFilter(hierarchyViewPage.getNodeByLabelPath(PATH_PORTS_RELATION));
     }
-
-
-
+    
     @Test(priority = 8)
     public void filterOnRelationsAndExpandNextLevel() {
         hierarchyViewPage.getFirstNode().expandNextLevel();
@@ -216,6 +215,7 @@ public class FilteringOnRelationNodesTest extends BaseTestCase {
         physicalInventoryRepository.createDevice(SUB_LOCATION_TYPE_FLOOR, locationId, deviceModelId, DEVICE_NAME,
                 DEVICE_MODEL_TYPE);
     }
+    
     private TreeComponent.Node getNode(String nodePath) {
         return hierarchyViewPage.getNodeByLabelPath(nodePath);
     }
