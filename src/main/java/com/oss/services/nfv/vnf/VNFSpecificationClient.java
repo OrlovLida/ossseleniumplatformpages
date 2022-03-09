@@ -1,4 +1,4 @@
-package com.oss.services.nfv;
+package com.oss.services.nfv.vnf;
 
 import javax.ws.rs.core.Response;
 

@@ -48,7 +48,7 @@ public class ArSettingsPage extends BaseACDPage {
         return new ArSettingsPage(driver, wait);
     }
 
-    @Step("Click add new Action Template")
+    @Step("I click add new Action Template")
     public void clickAddActionTemplate() {
         Button button = Button.createById(driver, ADD_ACTION_TEMPLATE_BUTTON);
         button.click();
@@ -58,20 +58,19 @@ public class ArSettingsPage extends BaseACDPage {
     @Step("I set value in ComboBox")
     public void chooseOptionInComboBox(String comboBoxId, String value) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        Wizard.createWizard(driver, wait).setComponentValue(comboBoxId, value, Input.ComponentType.COMBOBOX);
+        Wizard.createByComponentId(driver, wait, comboBoxId).setComponentValue(comboBoxId, value, Input.ComponentType.COMBOBOX);
         log.info("Setting value in ComboBox: {}", value);
     }
 
-    @Step("I set description")
+    @Step("I set value in InputField")
     public void setValueInInputField(String fieldName, String value) {
         ComponentFactory.create(fieldName, Input.ComponentType.TEXT_FIELD, driver, wait).setSingleStringValue(value);
         DelayUtils.sleep();
     }
 
-    @Step("I click accept button")
+    @Step("I click Save button")
     public void clickSaveButton() {
-        ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
-        prompt.clickButtonByLabel("Save");
+        Button.createByLabel(driver, "Save").click();
     }
 
     @Step("I search for Action Template")
@@ -153,5 +152,4 @@ public class ArSettingsPage extends BaseACDPage {
         log.debug("All AR subsystems are up and running");
         return true;
     }
-
 }

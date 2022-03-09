@@ -26,14 +26,16 @@ public class BookmarkTest extends BaseTestCase {
 
     private static final Logger log = LoggerFactory.getLogger(BookmarkTest.class);
 
-    private String product = "_DPE";
-    private final String bookmarkName = ConstantsDfe.createName() + "_bookmark" + product;
-    private final String EDITED_BOOKMARK_TITLE_ON_PAGE = bookmarkName + " [Edited]";
-    private final String EDITED_BOOKMARK_NAME = bookmarkName + "_updated";
+    private final String BOOKMARK_NAME = ConstantsDfe.createName() + "_bookmark";
+    private String bookmarkForProduct;
+    private String updatedBookmarkForProduct;
+    private final String EDITED = " [Edited]";
+    private final String UPDATED = "_updated";
     private final String CATEGORY_NAME = "Selenium Test";
 
     private BookmarkManagerPage bookmarkManagerPage;
     private KpiViewPage kpiViewPage;
+    private BookmarkWizardPage bookmarkWizardPage;
 
     @BeforeClass
     public void checkIfCategoryExist() {
@@ -49,8 +51,8 @@ public class BookmarkTest extends BaseTestCase {
     }
 
     @BeforeMethod
-    public void goKpiViewPage() {
-        kpiViewPage = KpiViewPage.goToPage(driver, BASIC_URL);
+    public void goToBookmarkManagerPage() {
+        bookmarkManagerPage = BookmarkManagerPage.goToPage(driver, BASIC_URL);
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName", "productName"})
@@ -65,24 +67,22 @@ public class BookmarkTest extends BaseTestCase {
             @Optional("_DPE") String productName
     ) {
         try {
+            kpiViewPage = KpiViewPage.goToPage(driver, BASIC_URL);
             kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
             kpiViewPage.applyChanges();
-            product = productName;
+            bookmarkForProduct = BOOKMARK_NAME + productName;
 
             Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
-
-            kpiViewPage.clickSaveBookmark();
-            BookmarkWizardPage bookmarkWizardPage = new BookmarkWizardPage(driver, webDriverWait);
-            bookmarkWizardPage.fillBookmarkWizard(bookmarkName, CATEGORY_NAME);
+            bookmarkWizardPage = kpiViewPage.clickSaveBookmark();
+            bookmarkWizardPage.fillBookmarkWizard(bookmarkForProduct, CATEGORY_NAME);
 
             Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
-
             bookmarkManagerPage = BookmarkManagerPage.goToPage(driver, BASIC_URL);
-            bookmarkManagerPage.searchForBookmark(bookmarkName);
+            bookmarkManagerPage.searchForBookmark(bookmarkForProduct);
             bookmarkManagerPage.expandBookmarkList(CATEGORY_NAME);
-            bookmarkManagerPage.openBookmark(bookmarkName);
+            bookmarkManagerPage.openBookmark(bookmarkForProduct);
 
-            Assert.assertEquals(bookmarkName, kpiViewPage.getBookmarkTitle());
+            Assert.assertEquals(bookmarkForProduct, kpiViewPage.getBookmarkTitle());
             Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -90,36 +90,33 @@ public class BookmarkTest extends BaseTestCase {
         }
     }
 
-    @Parameters({"anotherDimensionToSelect", "product"})
+    @Parameters({"anotherDimensionToSelect"})
     @Test(priority = 2, testName = "Editing Bookmark", description = "Editing Bookmark")
     @Description("Editing Bookmark")
     public void editBookmark(
-            @Optional("DC Type: PM_DC") String anotherDimensionToSelect,
-            @Optional("_DPE") String productName
+            @Optional("DC Type: PM_DC") String anotherDimensionToSelect
     ) {
-        product = productName;
-        bookmarkManagerPage = BookmarkManagerPage.goToPage(driver, BASIC_URL);
-        bookmarkManagerPage.searchForBookmark(bookmarkName);
+        bookmarkManagerPage.searchForBookmark(bookmarkForProduct);
         boolean bookmarkExist = bookmarkManagerPage.isAnyBookmarkInList();
         if (bookmarkExist) {
             bookmarkManagerPage.expandBookmarkList(CATEGORY_NAME);
-            bookmarkManagerPage.openBookmark(bookmarkName);
+            bookmarkManagerPage.openBookmark(bookmarkForProduct);
             kpiViewPage.selectUnfoldedDimension(new ArrayList<>(Collections.singletonList(anotherDimensionToSelect)));
             kpiViewPage.applyChanges();
+            String editedBookmarkTitle = bookmarkForProduct + EDITED;
 
             Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(2));
-            Assert.assertEquals(EDITED_BOOKMARK_TITLE_ON_PAGE, kpiViewPage.getBookmarkTitle());
-
-            kpiViewPage.clickSaveBookmark();
-            BookmarkWizardPage bookmarkWizardPage = new BookmarkWizardPage(driver, webDriverWait);
-            bookmarkWizardPage.fillBookmarkWizard(EDITED_BOOKMARK_NAME, CATEGORY_NAME);
+            Assert.assertEquals(kpiViewPage.getBookmarkTitle(), editedBookmarkTitle);
+            bookmarkWizardPage = kpiViewPage.clickSaveBookmark();
+            updatedBookmarkForProduct = bookmarkForProduct + UPDATED;
+            bookmarkWizardPage.fillBookmarkWizard(updatedBookmarkForProduct, CATEGORY_NAME);
             bookmarkManagerPage = BookmarkManagerPage.goToPage(driver, BASIC_URL);
-            bookmarkManagerPage.searchForBookmark(EDITED_BOOKMARK_NAME);
+            bookmarkManagerPage.searchForBookmark(updatedBookmarkForProduct);
             bookmarkManagerPage.expandBookmarkList(CATEGORY_NAME);
-            bookmarkManagerPage.openBookmark(EDITED_BOOKMARK_NAME);
+            bookmarkManagerPage.openBookmark(updatedBookmarkForProduct);
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
-            Assert.assertEquals(kpiViewPage.getBookmarkTitle(), EDITED_BOOKMARK_NAME);
+            Assert.assertEquals(kpiViewPage.getBookmarkTitle(), updatedBookmarkForProduct);
             Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(2));
         } else {
             log.error("There is no bookmarks on the search list.");
@@ -127,20 +124,15 @@ public class BookmarkTest extends BaseTestCase {
         }
     }
 
-    @Parameters({"product"})
     @Test(priority = 3)
-    public void deleteBookmark(
-            @Optional("_DPE") String productName
-    ) {
-        product = productName;
-        bookmarkManagerPage = BookmarkManagerPage.goToPage(driver, BASIC_URL);
-        bookmarkManagerPage.searchForBookmark(EDITED_BOOKMARK_NAME);
+    public void deleteBookmark() {
+        bookmarkManagerPage.searchForBookmark(updatedBookmarkForProduct);
         boolean bookmarkExist = bookmarkManagerPage.isAnyBookmarkInList();
         if (bookmarkExist) {
             bookmarkManagerPage.expandBookmarkList(CATEGORY_NAME);
-            bookmarkManagerPage.clickDeleteBookmark(EDITED_BOOKMARK_NAME);
-            bookmarkManagerPage.searchForBookmark(EDITED_BOOKMARK_NAME);
-            Assert.assertTrue(bookmarkManagerPage.isBookmarkDeleted(EDITED_BOOKMARK_NAME));
+            bookmarkManagerPage.clickDeleteBookmark(updatedBookmarkForProduct);
+            bookmarkManagerPage.searchForBookmark(updatedBookmarkForProduct);
+            Assert.assertTrue(bookmarkManagerPage.isBookmarkDeleted(updatedBookmarkForProduct));
         } else {
             log.error("There is no bookmarks on the search list.");
             Assert.fail();

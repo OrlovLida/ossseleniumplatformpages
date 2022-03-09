@@ -25,6 +25,10 @@ public class AbgadScenarioSummaryViewTest extends BaseTestCase {
 
     private final String PREDEFINED_FILTERS_WINDOW_ID = "PredefinedFiltersWindowId";
     private final String DETECTED_ISSUES_WINDOW_ID = "DetectedIssuesWindowId";
+    private final String WIZARD_TYPE_ID = "widgetType-input";
+    private final String WIZARD_ATTRIBUTE_ID = "attribute1Id-input";
+    private final String WIZARD_PREDEFINED_FILTERS_ID = "addPredefinedFilterId_prompt-card";
+    private final String WIZARD_ATTRIBUTE_VALUES_ID = "attribute1ValuesId";
     
     @BeforeClass
     public void goToABGADScenarioSummaryView() {
@@ -35,28 +39,26 @@ public class AbgadScenarioSummaryViewTest extends BaseTestCase {
     @Test(priority = 1, testName = "Add new predefined filter", description = "Add new predefined filter")
     @Description("Add new predefined filter")
     public void addPredefinedFilter() {
-        log.info("Waiting in method addPredefinedFilter");
         baseACDPage.maximizeWindow(PREDEFINED_FILTERS_WINDOW_ID);
         Assert.assertTrue(baseACDPage.checkCardMaximize(PREDEFINED_FILTERS_WINDOW_ID));
         baseACDPage.clickAddPredefinedFilter();
-        baseACDPage.chooseVisualizationType("Chart");
+        baseACDPage.setValueInComboBox(WIZARD_TYPE_ID,"Chart");
         log.info("Visualization type - CHART - set");
-        baseACDPage.chooseAttribute("Severity");
+        baseACDPage.setValueInComboBox(WIZARD_ATTRIBUTE_ID,"Severity");
         log.info("Attribute name - Severity - set");
-        baseACDPage.insertAttributeValueToMultiComboBoxComponent("Cleared");
+        baseACDPage.chooseValueInMultiComboBox(WIZARD_ATTRIBUTE_VALUES_ID,"Cleared");
         log.info("Attribute Value - Cleared - set");
-        baseACDPage.insertAttributeValueToMultiComboBoxComponent("Major");
+        baseACDPage.chooseValueInMultiComboBox(WIZARD_ATTRIBUTE_VALUES_ID,"Major");
         log.info("Attribute Value - Major - set");
-        baseACDPage.insertAttributeValueToMultiComboBoxComponent("Critical");
+        baseACDPage.chooseValueInMultiComboBox(WIZARD_ATTRIBUTE_VALUES_ID,"Critical");
         log.info("Attribute Value - Critical - set");
-        baseACDPage.savePredefinedFilter();
+        baseACDPage.savePredefinedFilter(WIZARD_PREDEFINED_FILTERS_ID);
         log.info("Predefined filter has been added successfully");
     }
 
     @Test(priority = 2, testName = "Delete predefined filter", description = "Delete predefined filter")
     @Description("Delete predefined filter")
     public void deletePredefinedFilter() {
-        log.info("Waiting in method deletePredefinedFilter");
         baseACDPage.deletePredefinedFilter();
         baseACDPage.minimizeWindow(PREDEFINED_FILTERS_WINDOW_ID);
         Assert.assertFalse(baseACDPage.checkCardMaximize(PREDEFINED_FILTERS_WINDOW_ID));

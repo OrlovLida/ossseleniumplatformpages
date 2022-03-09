@@ -40,4 +40,16 @@
             <class name="com.oss.bigdata.dfe.SMOKE.LinkToXDRBrowserTest"/>
         </classes>
     </test>
+    <test name="BookmarkTest">
+        <parameter name="indicatorNodesToExpand" value="DFE Tests,DFE Product Tests,Selenium Tests"/>
+        <parameter name="indicatorNodesToSelect" value="SUCCESS_LONG"/>
+        <parameter name="dimensionNodesToExpand" value="t:SMOKE#DimHierSelenium"/>
+        <parameter name="dimensionNodesToSelect" value="D3_01"/>
+        <parameter name="filterName" value="DFE Tests"/>
+        <parameter name="anotherDimensionToSelect" value="D3_02"/>
+        <parameter name="productName" value="_DFE"/>
+        <classes>
+            <class name="com.oss.bigdata.dfe.BookmarkTest"/>
+        </classes>
+    </test>
 </suite>
