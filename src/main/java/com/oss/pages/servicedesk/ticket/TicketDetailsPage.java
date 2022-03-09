@@ -343,7 +343,7 @@ public class TicketDetailsPage extends BaseSDPage {
     public boolean checkIfMOIdentifierIsPresentOnRootCauses(String MOIdentifier) {
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("I check if MO Identifier is present on Root Causes tab");
-        int numberOfRows = OldTable.createById(driver, wait, ROOT_CAUSES_TABLE_ID).countRows("MO Identifier");
+        int numberOfRows = OldTable.createById(driver, wait, ROOT_CAUSES_TABLE_ID).countRows(ROOT_CAUSES_TABLE_ID_MO_IDENTIFIER_ID);
         for (int i=0; i < numberOfRows; i++) {
             if (checkRootCausesData(i, ROOT_CAUSES_TABLE_ID_MO_IDENTIFIER_ID).equals(MOIdentifier)) {
                 return true;
