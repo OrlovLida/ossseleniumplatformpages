@@ -23,16 +23,12 @@ public class AsdScenarioSummaryViewPage extends BaseACDPage {
 
     private final OldTable table;
     private final ServiceDeskAdvancedSearch advancedSearch;
-    private final Wizard attributeWizard;
-    private final Wizard visualizationTypeWizard;
 
     public AsdScenarioSummaryViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
 
         table = OldTable.createById(driver, wait, DETECTED_ISSUES_WINDOW_ID);
         advancedSearch = ServiceDeskAdvancedSearch.create(driver, wait, DETECTED_ISSUES_WINDOW_ID);
-        visualizationTypeWizard = Wizard.createWizard(driver, wait);
-        attributeWizard = Wizard.createWizard(driver, wait);
     }
 
     @Step("I Open ASD Scenario Summary View")
@@ -81,5 +77,4 @@ public class AsdScenarioSummaryViewPage extends BaseACDPage {
         log.info("Checking if there is data in issues table");
         return !table.hasNoData();
     }
-
 }
