@@ -17,6 +17,7 @@ import com.oss.pages.servicedesk.ticket.TicketDashboardPage;
 import com.oss.pages.servicedesk.ticket.TicketDetailsPage;
 import com.oss.pages.servicedesk.ticket.TicketSearchPage;
 import com.oss.pages.servicedesk.ticket.tabs.MessagesTab;
+import com.oss.pages.servicedesk.ticket.wizard.AttachmentWizardPage;
 import com.oss.pages.servicedesk.ticket.wizard.SDWizardPage;
 import com.oss.utils.TestListener;
 
@@ -32,6 +33,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     private MessagesTab messagesTab;
     private MoreDetailsPage moreDetailsPage;
     private RemainderForm remainderForm;
+    private AttachmentWizardPage attachmentWizardPage;
     private String ticketID;
 
     private final static String TT_DESCRIPTION = "TestSelenium";
@@ -67,6 +69,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     private final static String OVERVIEW_TAB_ARIA_CONTROLS = "most-wanted";
     private final static String EXTERNAL_TAB_ARIA_CONTROLS = "_detailsExternalTab";
     private final static String DICTIONARIES_TAB_ARIA_CONTROLS = "_dictionariesTab";
+    private static final String ATTACHMENTS_TAB_ARIA_CONTROLS = "attachmentManager";
     private final static String DESCRIPTION_TAB_ARIA_CONTROLS = "_descriptionTab";
     private final static String MESSAGES_TAB_ARIA_CONTROLS = "_messagesTab";
     private final static String SAME_MO_TT_TAB_ARIA_CONTROLS = "_sameMOTTTab";
@@ -109,6 +112,10 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     private final static String CREATE_PROBLEM_NAME = "Related Problem - Selenium Test";
     private final static String CREATE_PROBLEM_ASSIGNEE = "sd_seleniumtest";
     private final static String CREATE_PROBLEM_LABEL = LocalDateTime.now().toString();
+
+    private static final String USER_NAME = "sd_seleniumtest";
+    private static final String FILE_TO_UPLOAD_PATH = "DataSourceCSV/CPU_USAGE_INFO_RAW-MAP.xlsx";
+    private static final String CSV_FILE = "*CPU_USAGE_INFO_RAW-MAP*.*";
 
     public static final DateTimeFormatter CREATE_DATE_FILTER_DATE_FORMATTER = DateTimeFormatter.ofPattern(CREATE_DATE_FILTER_DATE_PATTERN);
 
@@ -390,4 +397,46 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
         Assert.assertEquals(ticketDetailsPage.checkRelatedProblemLabel(0), CREATE_PROBLEM_LABEL);
     }
 
+    @Test(priority = 19, testName = "Add attachment to ticket", description = "Add attachment to ticket")
+    @Description("Add attachment to ticket")
+    public void addAttachment() {
+        ticketDetailsPage = ticketDashboardPage.openTicketDetailsView(String.valueOf(ticketDashboardPage.getRowForTicketWithID(ticketID)), BASIC_URL);
+        ticketDetailsPage.maximizeWindow(DETAILS_WINDOW_ID);
+        ticketDetailsPage.selectTab(ATTACHMENTS_TAB_ARIA_CONTROLS);
+
+        Assert.assertTrue(ticketDetailsPage.isAttachmentListEmpty());
+        attachmentWizardPage = ticketDetailsPage.clickAttachFile();
+        attachmentWizardPage.uploadAttachmentFile(FILE_TO_UPLOAD_PATH);
+        ticketDetailsPage = attachmentWizardPage.clickAccept();
+
+        Assert.assertFalse(ticketDetailsPage.isAttachmentListEmpty());
+        Assert.assertEquals(ticketDetailsPage.getAttachmentOwner(), USER_NAME);
+    }
+
+    @Test(priority = 20, testName = "Download Attachment", description = "Download the Attachment from Attachment tab in Ticket Details")
+    @Description("Download the Attachment from Attachment tab in Ticket Details")
+    public void downloadAttachment() {
+        ticketDetailsPage = ticketDashboardPage.openTicketDetailsView(String.valueOf(ticketDashboardPage.getRowForTicketWithID(ticketID)), BASIC_URL);
+        ticketDetailsPage.maximizeWindow(DETAILS_WINDOW_ID);
+        ticketDetailsPage.selectTab(ATTACHMENTS_TAB_ARIA_CONTROLS);
+
+        Assert.assertFalse(ticketDetailsPage.isAttachmentListEmpty());
+        ticketDetailsPage.clickDownloadAttachment();
+        ticketDetailsPage.attachFileToReport(CSV_FILE);
+
+        Assert.assertTrue(ticketDetailsPage.checkIfFileIsNotEmpty(CSV_FILE));
+    }
+
+    @Test(priority = 21, testName = "Delete Attachment", description = "Delete the Attachment from Attachment tab in Ticket Details")
+    @Description("Delete the Attachment from Attachment tab in Ticket Details")
+    public void deleteAttachment() {
+        ticketDetailsPage = ticketDashboardPage.openTicketDetailsView(String.valueOf(ticketDashboardPage.getRowForTicketWithID(ticketID)), BASIC_URL);
+        ticketDetailsPage.maximizeWindow(DETAILS_WINDOW_ID);
+        ticketDetailsPage.selectTab(ATTACHMENTS_TAB_ARIA_CONTROLS);
+
+        Assert.assertFalse(ticketDetailsPage.isAttachmentListEmpty());
+        ticketDetailsPage.clickDeleteAttachment();
+
+        Assert.assertTrue(ticketDetailsPage.isAttachmentListEmpty());
+    }
 }

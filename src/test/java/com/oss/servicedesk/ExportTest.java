@@ -30,7 +30,7 @@ public class ExportTest extends BaseTestCase {
         ticketDashboardPage = TicketDashboardPage.goToPage(driver, BASIC_URL);
     }
 
-    @Test(priority = 5, testName = "Export from Ticket Search View", description = "Export from Ticket Search View")
+    @Test(priority = 1, testName = "Export from Ticket Search View", description = "Export from Ticket Search View")
     @Description("Export from Ticket Search View")
     public void exportFromTicketSearch() {
         ticketSearchPage = new TicketSearchPage(driver, webDriverWait);
@@ -61,6 +61,23 @@ public class ExportTest extends BaseTestCase {
             Assert.assertTrue(ticketSearchPage.checkIfFileIsNotEmpty(DOWNLOAD_FILE));
         } else {
             Assert.fail("Ticket Search Table is Empty - no tickets to Export");
+        }
+    }
+
+    @Test(priority = 2, testName = "Refresh test", description = "Click on refresh button and check if data is visible")
+    @Description("Click on refresh button and check if data is visible")
+    public void refreshOnTicketSearchTest() {
+        ticketSearchPage = new TicketSearchPage(driver, webDriverWait);
+        ticketSearchPage.goToPage(driver, BASIC_URL);
+        if (!ticketSearchPage.isTicketSearchTableEmpty()) {
+            int ticketsInTable = ticketSearchPage.countTicketsInTable();
+            ticketSearchPage.clickRefresh();
+            int ticketsAfterRefresh = ticketSearchPage.countTicketsInTable();
+
+            Assert.assertTrue(!ticketSearchPage.isTicketSearchTableEmpty());
+            Assert.assertTrue(ticketsInTable >= ticketsAfterRefresh);
+        } else {
+            Assert.fail("No data in ticket search - cannot check refresh function");
         }
     }
 }
