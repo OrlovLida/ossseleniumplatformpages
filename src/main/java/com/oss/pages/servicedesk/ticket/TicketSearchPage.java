@@ -30,6 +30,7 @@ public class TicketSearchPage extends BaseSDPage {
     private static final String TABLE_WIDGET_ID = "ticket-search-graphql-table";
     private static final String TICKET_SEARCH = "ticket-search";
     private static final String EXPORT_BUTTON_ID = "exportButton";
+    private static final String REFRESH_BUTTON_ID = "refreshButton";
     private static final String EXPORT_WIZARD_ID = "exportgui-wizard-widget";
 
     public TicketSearchPage(WebDriver driver, WebDriverWait wait) {
@@ -102,5 +103,17 @@ public class TicketSearchPage extends BaseSDPage {
         getTicketTable().callAction(ActionsContainer.KEBAB_GROUP_ID, EXPORT_BUTTON_ID);
         log.info("Clicking Export Button");
         return new ExportWizardPage(driver, wait, EXPORT_WIZARD_ID);
+    }
+
+    @Step("Count number of visible tickets")
+    public int countTicketsInTable() {
+        return getTicketTable().getRowsNumber();
+    }
+
+    @Step("Click Refresh button")
+    public void clickRefresh() {
+        getTicketTable().callAction(ActionsContainer.KEBAB_GROUP_ID, REFRESH_BUTTON_ID);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Clicking Refresh Button");
     }
 }
