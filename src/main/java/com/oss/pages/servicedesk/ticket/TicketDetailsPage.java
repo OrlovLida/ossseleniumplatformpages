@@ -339,6 +339,19 @@ public class TicketDetailsPage extends BaseSDPage {
         return checkRootCausesData(objectIndex, ROOT_CAUSES_TABLE_ID_MO_IDENTIFIER_ID);
     }
 
+    @Step("I check if MO Identifier is present on Root Causes tab")
+    public boolean checkIfMOIdentifierIsPresentOnRootCauses(String MOIdentifier) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("I check if MO Identifier is present on Root Causes tab");
+        int numberOfRows = OldTable.createById(driver, wait, ROOT_CAUSES_TABLE_ID).countRows(ROOT_CAUSES_TABLE_ID_MO_IDENTIFIER_ID);
+        for (int i=0; i < numberOfRows; i++) {
+            if (checkRootCausesData(i, ROOT_CAUSES_TABLE_ID_MO_IDENTIFIER_ID).equals(MOIdentifier)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private String checkRootCausesData(int objectIndex, String attributeId) {
         return checkOldTableData(ROOT_CAUSES_TABLE_ID, objectIndex, attributeId);
     }
