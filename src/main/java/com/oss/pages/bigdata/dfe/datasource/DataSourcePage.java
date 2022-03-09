@@ -11,6 +11,7 @@ import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input.ComponentType;
 import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.iaa.widgets.timeperiodchooser.TimePeriodChooser;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.pages.bigdata.dfe.BaseDfePage;
 
@@ -187,6 +188,7 @@ public class DataSourcePage extends BaseDfePage {
     @Step("I click Download File button in Processed Files Tab")
     public void clickDownloadFile() {
         clickTabsContextAction(DOWNLOAD_FILE_LABEL);
+        DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Clicking on download file button");
     }
 

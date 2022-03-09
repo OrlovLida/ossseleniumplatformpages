@@ -46,12 +46,14 @@ public class BookmarkManagerPage extends BasePage {
     public void searchForBookmark(String bookmarkName) {
         ComponentFactory.create(SEARCH_FIELD_ID, Input.ComponentType.SEARCH_BOX, driver, wait)
                 .setSingleStringValue(bookmarkName);
+        DelayUtils.waitForPageToLoad(driver, wait);
         log.debug("Searching bookmark {}", bookmarkName);
     }
 
     @Step("Expand found category")
     public void expandBookmarkList(String categoryName) {
         getBookmarkList().expandCategory(categoryName);
+        DelayUtils.waitForPageToLoad(driver, wait);
         log.info("I expanded category: {}", categoryName);
     }
 
