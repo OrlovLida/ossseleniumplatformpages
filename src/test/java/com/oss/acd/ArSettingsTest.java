@@ -45,7 +45,6 @@ public class ArSettingsTest extends BaseTestCase {
     @Test(priority = 1, testName = "Add new Action Template", description = "Add new Action Template")
     @Description("Add new Action Template")
     public void addNewActionTemplate() {
-        log.info("Waiting in method addNewActionTemplate");
         arSettingsPage.clickAddActionTemplate();
         arSettingsPage.chooseOptionInComboBox(TYPE_ACTION_TEMPLATE_COMBOBOX_ID, ACTION_TEMPLATE_TYPE_VALUE);
         arSettingsPage.chooseOptionInComboBox(REASON_ACTION_TEMPLATE_COMBOBOX_ID, ACTION_TEMPLATE_REASON_VALUE);
