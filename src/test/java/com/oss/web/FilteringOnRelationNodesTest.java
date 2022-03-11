@@ -34,7 +34,6 @@ public class FilteringOnRelationNodesTest extends BaseTestCase {
     private static final String DEVICE_NAME = "FORN-123-456";
     private static final String PORT_NAME_10 = "10";
     private static final String PORT_NAME_02 = "02";
-    private static final String CANNOT_FIND_NODE_EXCEPTION = "Cannot find node";
     private Environment env = Environment.getInstance();
     private static final Logger log = LoggerFactory.getLogger(TreeWidgetTest.class);
     private static final String LOCATION_NAME = "FilteringOnRelationNodesTest";
