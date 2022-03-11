@@ -46,6 +46,7 @@ public class EditMilestoneTest extends BaseTestCase {
     @BeforeClass
     public void createMilestone() {
         ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
+        processInstancesPage.clearAllColumnFilters();
 
         ToolbarWidget toolbarWidget = ToolbarWidget.create(driver, webDriverWait);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);

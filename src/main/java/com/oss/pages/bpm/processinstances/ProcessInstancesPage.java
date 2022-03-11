@@ -36,6 +36,10 @@ public class ProcessInstancesPage extends BasePage {
         
         return new ProcessInstancesPage(driver);
     }
+    public void clearAllColumnFilters(){
+        OldTable processTable = OldTable.createById(driver, wait, PROCESS_VIEW);
+        processTable.clearAllColumnValues();
+    }
     
     public void selectPredefinedFilter(String filterName) {
         OldTable processTable = OldTable.createById(driver, wait, PROCESS_VIEW);

@@ -21,6 +21,7 @@ import com.oss.framework.widgets.list.CommonList;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.tabs.TabWindowWidget;
 import com.oss.pages.servicedesk.BaseSDPage;
+import com.oss.pages.servicedesk.ticket.wizard.AttachmentWizardPage;
 import com.oss.pages.servicedesk.ticket.wizard.SDWizardPage;
 
 import io.qameta.allure.Step;
@@ -63,6 +64,13 @@ public class TicketDetailsPage extends BaseSDPage {
     private static final String RELATED_TICKETS_TABLE_ID_ATTRIBUTE_ID = "ID";
     private static final String ROOT_CAUSES_TABLE_ID = "_rootCausesApp";
     private static final String ROOT_CAUSES_TABLE_ID_MO_IDENTIFIER_ID = "MO Identifier";
+    private static final String ATTACHMENT_WIZARD_ID = "addFileComponentId";
+    private static final String ATTACH_FILE_LABEL = "Attach file";
+    private static final String ATTACHMENTS_LIST_ID = "attachmentManagerBusinessView_commonList";
+    private static final String OWNER_COLUMN_NAME = "Owner";
+    private static final String DOWNLOAD_ATTACHMENT_LABEL = "DOWNLOAD";
+    private static final String DELETE_ATTACHMENT_LABEL = "Delete";
+    private static final String CONFIRM_DELETE_ATTACHMENT_BUTTON_ID = "ConfirmationBox_removeAttachmentPopup_confirmationBox_action_button";
 
     public TicketDetailsPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -339,11 +347,60 @@ public class TicketDetailsPage extends BaseSDPage {
         return checkRootCausesData(objectIndex, ROOT_CAUSES_TABLE_ID_MO_IDENTIFIER_ID);
     }
 
+    @Step("I check if MO Identifier is present on Root Causes tab")
+    public boolean checkIfMOIdentifierIsPresentOnRootCauses(String MOIdentifier) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("I check if MO Identifier is present on Root Causes tab");
+        int numberOfRows = OldTable.createById(driver, wait, ROOT_CAUSES_TABLE_ID).countRows(ROOT_CAUSES_TABLE_ID_MO_IDENTIFIER_ID);
+        for (int i = 0; i < numberOfRows; i++) {
+            if (checkRootCausesData(i, ROOT_CAUSES_TABLE_ID_MO_IDENTIFIER_ID).equals(MOIdentifier)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Step("Click Attach File")
+    public AttachmentWizardPage clickAttachFile() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        clickContextAction(ATTACH_FILE_LABEL);
+        return new AttachmentWizardPage(driver, wait, ATTACHMENT_WIZARD_ID);
+    }
+
+    @Step("Check if Attachment List is empty")
+    public boolean isAttachmentListEmpty() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return getAttachmentList().hasNoData();
+    }
+
+    @Step("Check if Attachment owner is visible")
+    public String getAttachmentOwner() {
+        return getAttachmentList().getRows().get(0).getValue(OWNER_COLUMN_NAME);
+    }
+
+    @Step("Click Download Attachment")
+    public void clickDownloadAttachment() {
+        getAttachmentList().getRows().get(0).callActionIcon(DOWNLOAD_ATTACHMENT_LABEL);
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    @Step("Click Delete Attachment")
+    public void clickDeleteAttachment() {
+        getAttachmentList().getRows().get(0).callActionByLabel(DELETE_ATTACHMENT_LABEL);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        Button.createById(driver, CONFIRM_DELETE_ATTACHMENT_BUTTON_ID).click();
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
     private String checkRootCausesData(int objectIndex, String attributeId) {
         return checkOldTableData(ROOT_CAUSES_TABLE_ID, objectIndex, attributeId);
     }
 
     private String checkOldTableData(String tableId, int index, String attributeId) {
         return OldTable.createById(driver, wait, tableId).getCellValue(index, attributeId);
+    }
+
+    private CommonList getAttachmentList() {
+        return CommonList.create(driver, wait, ATTACHMENTS_LIST_ID);
     }
 }
