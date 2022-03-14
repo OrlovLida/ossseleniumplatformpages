@@ -26,14 +26,16 @@ public class TableWidgetConfigurationTest extends BaseTestCase {
     private final static String GROUP_NAME = "SeleniumTests";
     private final static String CONFIGURATION_NAME_TABLE_WIDGET = "Table_Widget_Selenium_Test_Configuration";
     private final static String CONFIGURATION_NAME_TABLE_WIDGET_GROUP = "Table_Widget_Group";
+    private final static String CONFIGURATION_NAME_TABLE_WIDGET_USER = "Table_Widget_User";
     private final static String DEFAULT_CONFIGURATION = "DEFAULT";
-    private final static String TYPE_LABEL = "DM_TestPerson.type";
-    private final static String GENDER_LABEL = "DM_TestPerson.gender";
+    private final static String TYPE_LABEL = "Name";
+    private final static String GENDER_LABEL = "Object Type";
+    private final static String ID_LABEL = "Identifier";
 
     @BeforeClass
     public void goToInventoryView() {
         //given
-        newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "TestPerson");
+        newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Location");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -41,12 +43,10 @@ public class TableWidgetConfigurationTest extends BaseTestCase {
     public void saveNewConfigurationForTableWidget() {
 
         //when
-        newInventoryViewPage.disableColumnAndApply(GENDER_LABEL);
-
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-
         List<String> columnHeaders = newInventoryViewPage.getActiveColumnsHeaders();
         String firstHeader = columnHeaders.get(0);
+
+        newInventoryViewPage.disableColumnAndApply(GENDER_LABEL);
 
         newInventoryViewPage.changeColumnsOrderInMainTable(firstHeader, 2);
 
@@ -81,9 +81,11 @@ public class TableWidgetConfigurationTest extends BaseTestCase {
 
         newInventoryViewPage.applyConfigurationForMainTable(CONFIGURATION_NAME_TABLE_WIDGET);
 
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+
         List<String> columnHeadersAfterChangeConfig = newInventoryViewPage.getActiveColumnsHeaders();
 
-        Assertions.assertThat(columnHeadersAfterChangeConfig).isNotEmpty().doesNotContain(GENDER_LABEL);
+        Assertions.assertThat(columnHeadersAfterChangeConfig).doesNotContain(GENDER_LABEL);
 
         Assertions.assertThat(columnHeadersAfterChangeConfig.indexOf(firstHeader)).isEqualTo(2);
         Assertions.assertThat(columnHeadersAfterChangeConfig.indexOf(secondHeader)).isZero();
@@ -120,6 +122,7 @@ public class TableWidgetConfigurationTest extends BaseTestCase {
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
         Assertions.assertThat(messages).hasSize(1);
         Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
+        systemMessage.close();
     }
 
     @Test(priority = 6)
@@ -135,6 +138,30 @@ public class TableWidgetConfigurationTest extends BaseTestCase {
     }
 
     @Test(priority = 7)
+    public void saveDefaultConfigurationOfTableWidgetForUser() {
+        newInventoryViewPage.enableColumn(ID_LABEL);
+        newInventoryViewPage.changeColumnsOrderInMainTable(ID_LABEL, 0);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+
+        newInventoryViewPage.saveNewConfigurationForMainTable(CONFIGURATION_NAME_TABLE_WIDGET_USER, createField(DEFAULT_VIEW_FOR, "Me"));
+        //then
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
+        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
+        Assertions.assertThat(messages).hasSize(1);
+        Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
+
+        driver.navigate().refresh();
+
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+
+        List<String> columnHeaders = newInventoryViewPage.getActiveColumnsHeaders();
+        Assertions.assertThat(columnHeaders.indexOf(ID_LABEL)).isZero();
+
+        newInventoryViewPage.deleteConfigurationForMainTable(CONFIGURATION_NAME_TABLE_WIDGET_USER);
+
+    }
+
+    @Test(priority = 8)
     public void saveDefaultConfigurationOfTableWidgetForGroup() {
         newInventoryViewPage.enableColumn(TYPE_LABEL);
         newInventoryViewPage.changeColumnsOrderInMainTable(TYPE_LABEL, 0);
@@ -149,10 +176,25 @@ public class TableWidgetConfigurationTest extends BaseTestCase {
 
         setDefaultConfigurationForTable();
 
-
+        newInventoryViewPage.chooseGroupContext(GROUP_NAME);
 
         List<String> columnHeaders = newInventoryViewPage.getActiveColumnsHeaders();
         Assertions.assertThat(columnHeaders.indexOf(TYPE_LABEL)).isZero();
+
+    }
+
+    @Test(priority = 9)
+    public void groupAndTypeInheritanceDefaultConfigurationOfTableWidget() {
+        newInventoryViewPage.changeUser("fszczepanik", "fszczepanik");
+        newInventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Building");
+
+        newInventoryViewPage.chooseGroupContext(GROUP_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+
+        List<String> columnHeaders = newInventoryViewPage.getActiveColumnsHeaders();
+        Assertions.assertThat(columnHeaders.indexOf(TYPE_LABEL)).isZero();
+
+        newInventoryViewPage.deleteConfigurationForMainTable(CONFIGURATION_NAME_TABLE_WIDGET_GROUP);
 
     }
 
@@ -161,51 +203,6 @@ public class TableWidgetConfigurationTest extends BaseTestCase {
         newInventoryViewPage.setDefaultSettings();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
-
-
-
-   /*@Test(priority = 1)
-    @Description("Saving new configuration for table widget for user")
-    public void saveNewConfigurationForTableWidgetForUser() {
-        //when
-        newInventoryViewPage.enableColumn("Depth");
-        newInventoryViewPage.disableColumnAndApply("Name");
-        newInventoryViewPage.setVerticalLayout();
-        newInventoryViewPage.changeColumnsOrderInMainTable("XId", 3)
-                .openFilterPanel()
-                .setValueOnComboWithTags("type", "type-dropdown-search", "Building")
-                .applyFilter();
-        newInventoryViewPage.saveNewConfigurationForMainTable(CONFIGURATION_NAME_TABLE_WIDGET);
-
-        //then
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
-        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages).hasSize(1);
-        Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
-    }
-
-    @Test(priority = 2)
-    @Description("Checking that configuration is saved properly in this Table Widget")
-    public void isConfigurationForTableWidgetWorks() {
-    }
-
-    @Test(priority = 3)
-    @Description("Saving new configuration for table widget for group")
-    public void saveNewConfigurationForTableWidgetForGroup() {
-        //when
-        newInventoryViewPage.enableColumn("Height");
-        newInventoryViewPage.disableColumnAndApply("Latitude");
-        newInventoryViewPage.changeColumnsOrderInMainTable("XId", 2)
-                .openFilterPanel()
-                .setValueOnComboWithTags("type", "type-dropdown-search", "Site")
-                .applyFilter();
-        newInventoryViewPage.saveNewConfigurationForMainTable(CONFIGURATION_NAME_TABLE_WIDGET_GROUP, createField(GROUPS, GROUP_NAME));
-        //then
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
-        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages).hasSize(1);
-        Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
-    }*/
 
     private SaveConfigurationWizard.Field createField(SaveConfigurationWizard.Property property, String... values) {
         return SaveConfigurationWizard.create(driver, webDriverWait).createField(property, values);
