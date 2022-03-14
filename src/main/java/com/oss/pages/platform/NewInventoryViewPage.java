@@ -372,7 +372,7 @@ public class NewInventoryViewPage extends BasePage {
     @Step("Download configuration for tabs")
     public void downloadConfigurationForTabs(String configurationName) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getTabsWidget().callActionById(ActionsContainer.KEBAB_GROUP_ID, DOWNLOAD_CONFIG_ID);
+        getTabsWidget().callActionById(ActionsContainer.KEBAB_GROUP_ID, DOWNLOAD_CONFIG_TABS_ID);
         getChooseConfigurationWizard().chooseConfiguration(configurationName).download();
     }
 

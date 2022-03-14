@@ -109,7 +109,8 @@ public class TableWidgetConfigurationTest extends BaseTestCase {
         newInventoryViewPage.applyConfigurationForMainTable(CONFIGURATION_NAME_TABLE_WIDGET);
         DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
 
-        int newSize = tableWidget.getFirstColumnSize();
+        com.oss.framework.widgets.table.TableWidget tableWidget1 = newInventoryViewPage.getMainTable();
+        int newSize = tableWidget1.getFirstColumnSize();
         Assertions.assertThat(defaultSize + offset).isEqualTo(newSize);
     }
 
