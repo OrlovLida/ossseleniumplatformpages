@@ -48,6 +48,21 @@ public class LocationInventoryClient {
                 .as(ResourceDTO.class);
     }
 
+    public ResourceDTO createPhysicalLocation(PhysicalLocationDTO location, long projectId) {
+        return env.getLocationInventoryCoreRequestSpecification()
+                .given()
+                .queryParam(Constants.PERSPECTIVE, Constants.PLAN)
+                .queryParam("project_id", projectId)
+                .contentType(ContentType.JSON)
+                .body(location)
+                .when()
+                .post(PHYSICAL_LOCATIONS_API_PATH)
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode()).assertThat()
+                .extract()
+                .as(ResourceDTO.class);
+    }
+
     public List<Integer> getPhysicalLocationByName(String locationName) {
         com.jayway.restassured.response.Response response = env.getLocationInventoryCoreRequestSpecification()
                 .given()

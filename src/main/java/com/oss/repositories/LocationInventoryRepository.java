@@ -39,6 +39,12 @@ public class LocationInventoryRepository {
         String locationId = resourceDTO.getUri().toString();
         return locationId.substring(locationId.lastIndexOf("/") + 1, locationId.indexOf("?"));
     }
+    public String createLocation(String locationName, String locationType, Long addressId, long projectId ) {
+        LocationInventoryClient client = new LocationInventoryClient(env);
+        ResourceDTO resourceDTO = client.createPhysicalLocation(buildLocation(locationType, locationName, addressId), projectId);
+        String locationId = resourceDTO.getUri().toString();
+        return locationId.substring(locationId.lastIndexOf("/") + 1, locationId.indexOf("?"));
+    }
     
     public void createLocationInLocation(String locationType, String subLocationSiteNameForCreate, Long addressId, Long parentId,
             String parentLocationType) {
