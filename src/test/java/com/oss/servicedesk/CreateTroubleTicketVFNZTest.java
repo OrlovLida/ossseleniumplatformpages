@@ -342,7 +342,30 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
         Assert.assertEquals(ticketDetailsPage.checkRelatedTicketsId(0), RelatedTicketID);
     }
 
-    @Test(priority = 15, testName = "Check Same MO TT Tab", description = "Check Same MO TT Tab")
+    @Test(priority = 15, testName = "Check Related Tickets Tab - unlink Ticket", description = "Check Related Tickets Tab - unlink Ticket")
+    @Description("Check Related Tickets Tab - unlink Ticket")
+    public void unlinkTicketFromTicket() {
+        ticketDetailsPage = ticketDashboardPage.openTicketDetailsView(String.valueOf(ticketDashboardPage.getRowForTicketWithID(ticketID)), BASIC_URL);
+        ticketDetailsPage.selectTab(RELATED_TICKETS_TAB_ARIA_CONTROLS);
+        ticketDetailsPage.selectTicketInRelatedTicketsTab(0);
+        ticketDetailsPage.unlinkTicketFromRelatedTicketsTab();
+        ticketDetailsPage.confirmUnlinkingTicketFromRelatedTicketsTab();
+
+        Assert.assertTrue(ticketDetailsPage.checkIfRelatedTicketsTableIsEmpty());
+    }
+
+    @Parameters({"RelatedTicketID"})
+    @Test(priority = 16, testName = "Check Related Tickets Tab - show archived switcher", description = "Check Related Tickets Tab - show archived switcher")
+    @Description("Check Related Tickets Tab - show archived switcher")
+    public void showArchived(@Optional("100") String RelatedTicketID) {
+        ticketDetailsPage = ticketDashboardPage.openTicketDetailsView(String.valueOf(ticketDashboardPage.getRowForTicketWithID(ticketID)), BASIC_URL);
+        ticketDetailsPage.selectTab(RELATED_TICKETS_TAB_ARIA_CONTROLS);
+        ticketDetailsPage.turnOnShowArchived();
+
+        Assert.assertEquals(ticketDetailsPage.checkRelatedTicketsId(0), RelatedTicketID);
+    }
+
+    @Test(priority = 17, testName = "Check Same MO TT Tab", description = "Check Same MO TT Tab")
     @Description("Check Same MO TT Tab")
     public void checkSameMOTTTab() {
         ticketDetailsPage = ticketDashboardPage.openTicketDetailsView(String.valueOf(ticketDashboardPage.getRowForTicketWithID(ticketID)), BASIC_URL);
@@ -351,7 +374,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     }
 
     @Parameters({"SecondMOIdentifier"})
-    @Test(priority = 16, testName = "Check Root Causes", description = "Check Root Causes Tab - add MO")
+    @Test(priority = 18, testName = "Check Root Causes", description = "Check Root Causes Tab - add MO")
     @Description("Check Root Causes Tab - add MO")
     public void addRootCause(@Optional("CFS_Access_Product_Selenium_2") String SecondMOIdentifier) {
         ticketDetailsPage = ticketDashboardPage.openTicketDetailsView(String.valueOf(ticketDashboardPage.getRowForTicketWithID(ticketID)), BASIC_URL);
@@ -365,7 +388,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
         Assert.assertTrue(ticketDetailsPage.checkIfMOIdentifierIsPresentOnRootCauses(SecondMOIdentifier));
     }
 
-    @Test(priority = 17, testName = "Check Participants", description = "Check Participants Tab - add Participant")
+    @Test(priority = 19, testName = "Check Participants", description = "Check Participants Tab - add Participant")
     @Description("Check Participants Tab - add Participant")
     public void addParticipant() {
         ticketDetailsPage = ticketDashboardPage.openTicketDetailsView(String.valueOf(ticketDashboardPage.getRowForTicketWithID(ticketID)), BASIC_URL);
@@ -381,7 +404,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
         Assert.assertEquals(ticketDetailsPage.checkParticipantRole(0), PARTICIPANT_ROLE.toUpperCase());
     }
 
-    @Test(priority = 18, testName = "Check Related Problems tab", description = "Check Related Problems tab - Create Problem")
+    @Test(priority = 20, testName = "Check Related Problems tab", description = "Check Related Problems tab - Create Problem")
     @Description("Check Related Problems tab - Create Problem")
     public void createProblemRelatedToTicket() {
         ticketDetailsPage = ticketDashboardPage.openTicketDetailsView(String.valueOf(ticketDashboardPage.getRowForTicketWithID(ticketID)), BASIC_URL);
@@ -397,7 +420,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
         Assert.assertEquals(ticketDetailsPage.checkRelatedProblemLabel(0), CREATE_PROBLEM_LABEL);
     }
 
-    @Test(priority = 19, testName = "Add attachment to ticket", description = "Add attachment to ticket")
+    @Test(priority = 21, testName = "Add attachment to ticket", description = "Add attachment to ticket")
     @Description("Add attachment to ticket")
     public void addAttachment() {
         ticketDetailsPage = ticketDashboardPage.openTicketDetailsView(String.valueOf(ticketDashboardPage.getRowForTicketWithID(ticketID)), BASIC_URL);
@@ -413,7 +436,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
         Assert.assertEquals(ticketDetailsPage.getAttachmentOwner(), USER_NAME);
     }
 
-    @Test(priority = 20, testName = "Download Attachment", description = "Download the Attachment from Attachment tab in Ticket Details")
+    @Test(priority = 22, testName = "Download Attachment", description = "Download the Attachment from Attachment tab in Ticket Details")
     @Description("Download the Attachment from Attachment tab in Ticket Details")
     public void downloadAttachment() {
         ticketDetailsPage = ticketDashboardPage.openTicketDetailsView(String.valueOf(ticketDashboardPage.getRowForTicketWithID(ticketID)), BASIC_URL);
@@ -427,7 +450,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
         Assert.assertTrue(ticketDetailsPage.checkIfFileIsNotEmpty(CSV_FILE));
     }
 
-    @Test(priority = 21, testName = "Delete Attachment", description = "Delete the Attachment from Attachment tab in Ticket Details")
+    @Test(priority = 23, testName = "Delete Attachment", description = "Delete the Attachment from Attachment tab in Ticket Details")
     @Description("Delete the Attachment from Attachment tab in Ticket Details")
     public void deleteAttachment() {
         ticketDetailsPage = ticketDashboardPage.openTicketDetailsView(String.valueOf(ticketDashboardPage.getRowForTicketWithID(ticketID)), BASIC_URL);
