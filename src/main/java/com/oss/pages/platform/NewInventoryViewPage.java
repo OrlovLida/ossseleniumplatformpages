@@ -457,7 +457,7 @@ public class NewInventoryViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         if (!isTabVisible(widgetLabel)) {
             getTabsWidget().callActionById(ActionsContainer.KEBAB_GROUP_ID, ADD_TABS_ID);
-            getWidgetChooser().toggleWidgetByTypeAndLabel(widgetType,widgetLabel).clickAdd();
+            getWidgetChooser().addWidget(widgetType,widgetLabel);
             new NewInventoryViewPage(driver, wait);
         }
     }
@@ -467,7 +467,7 @@ public class NewInventoryViewPage extends BasePage {
     public void disableWidget(String widgetLabel) {
         DelayUtils.waitForPageToLoad(driver, wait);
         if (isTabVisible(widgetLabel)) {
-            getTabsWidget().removeTabByLabel(widgetLabel);
+            getTabsWidget().removeTab(widgetLabel);
             new NewInventoryViewPage(driver, wait);
         }
 
