@@ -51,6 +51,7 @@ public class NewInventoryViewPage extends BasePage {
     private static final String SAVE_NEW_CONFIG_ID = "saveNewConfig";
     private static final String CHANGE_LABEL = "Change";
     private static final String TABS_CONTAINER_ID = "DetailTabsWidget";
+    private static final String OPEN_HIERARCHY_VIEW_ACTION_ID = "OpenHierarchyViewContext";
 
     public NewInventoryViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -476,7 +477,7 @@ public class NewInventoryViewPage extends BasePage {
     @Step("Open Hierarchy View for selected object")
     public HierarchyViewPage goToHierarchyViewForSelectedObject() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        callAction(ActionsContainer.SHOW_ON_GROUP_ID, "WebManagement_HierarchicalView");
+        callAction(ActionsContainer.SHOW_ON_GROUP_ID, OPEN_HIERARCHY_VIEW_ACTION_ID);
         return new HierarchyViewPage(driver);
     }
 

@@ -58,12 +58,12 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
     private static final String FILTER_IPV6_SUBNETS_END_IP_FOR_CREATION = "::127:7f";
     private static final String LOWEST_IPV6_SUBNET_MASK = "121";
     private static final String HIGHER_IPV6_SUBNET_MASK = "122";
-    private static final String ASSIGNMENT_LOCATION_NAME = "IPAMSeleniumTest";
+    private static final String ASSIGNMENT_LOCATION_NAME = "SELENIUM_TRANSPORT_LOCATION";
     private static final String ASSIGNMENT_DEVICE_NAME = "IPAMSeleniumTest";
     private static final String ASSIGNMENT_INTERFACE_NAME = "IPAMSeleniumTestFirstInterface";
     private static final String ASSIGNMENT_SECOND_INTERFACE_NAME = "IPAMSeleniumTestSecondInterface";
-    private static final String ASSIGNMENT_LOCATION_IDENTIFIER = "IPAMSeleniumTest-BU3";
-    private static final String ASSIGNMENT_DEVICE_IDENTIFIER = "IPAMSeleniumTest-Router-2";
+    private static final String ASSIGNMENT_LOCATION_IDENTIFIER = "SELENIUM_TRANSPORT_CITY-SI1";
+    private static final String ASSIGNMENT_DEVICE_IDENTIFIER = "SELENIUM_TRANSPORT_LOCATION-Access Control-1";
     private static final String ASSIGNMENT_INTERFACE_IDENTIFIER = "IPAMSeleniumTest-Router-2\\CLUSTER 0\\1";
     private static final String ASSIGNMENT_SECOND_INTERFACE_IDENTIFIER = "IPAMSeleniumTest-Router-2\\CLUSTER 1\\1";
     private static final String IPV6_HOST_ADDRESS = "::127:1";
