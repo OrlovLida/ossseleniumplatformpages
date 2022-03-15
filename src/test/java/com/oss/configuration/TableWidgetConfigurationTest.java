@@ -31,11 +31,15 @@ public class TableWidgetConfigurationTest extends BaseTestCase {
     private final static String TYPE_LABEL = "Name";
     private final static String GENDER_LABEL = "Object Type";
     private final static String ID_LABEL = "Identifier";
+    private final static String USER2 = "webseleniumtest2";
+    private static final String PASSWORD_2 = "oss";
+    private static final String LOCATION = "Location";
+    private static final String BUILDING = "Building";
 
     @BeforeClass
     public void goToInventoryView() {
         //given
-        newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Location");
+        newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, LOCATION);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -186,8 +190,8 @@ public class TableWidgetConfigurationTest extends BaseTestCase {
 
     @Test(priority = 9)
     public void groupAndTypeInheritanceDefaultConfigurationOfTableWidget() {
-        newInventoryViewPage.changeUser("fszczepanik", "fszczepanik");
-        newInventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Building");
+        newInventoryViewPage.changeUser(USER2, PASSWORD_2);
+        newInventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, BUILDING);
 
         newInventoryViewPage.chooseGroupContext(GROUP_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
