@@ -28,16 +28,17 @@ public class TabsConfigurationTest extends BaseTestCase {
     private NewInventoryViewPage newInventoryViewPage;
 
     private final static String DEFAULT_CONFIGURATION = "DEFAULT";
-    private static final String LOCATION = "Location";
-    private static final String DEVICES = "Devices";
+    private static final String TEST_PERSON = "TestPerson";;
     private static final String INTERESTS = "Interests";
     private static final String OTHER_TYPE = "Other";
-    private static final String CONNECTIONS = "Connections";
+    private static final String PLANNING_INFO = "Planning Info";
+    private static final String TABLE_TYPE = "Table";
+    private static final String MOVIES = "Movies";
 
     @BeforeClass
     public void goToInventoryView() {
         //given
-        newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, LOCATION);
+        newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_PERSON);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -45,9 +46,11 @@ public class TabsConfigurationTest extends BaseTestCase {
     public void saveNewConfigurationForTabsWidgetForType() {
         //when
         newInventoryViewPage.selectFirstRow();
-        newInventoryViewPage.enableWidget(OTHER_TYPE, CONNECTIONS);
-        newInventoryViewPage.changeTabsOrder(DEVICES, 2);
-        newInventoryViewPage.saveConfigurationForTabs(CONFIGURATION_NAME_TABS_WIDGET, createField(TYPE, LOCATION));
+        newInventoryViewPage.enableWidget(OTHER_TYPE, PLANNING_INFO);
+        newInventoryViewPage.enableWidget(TABLE_TYPE, MOVIES);
+        newInventoryViewPage.enableWidget(TABLE_TYPE, INTERESTS);
+        newInventoryViewPage.changeTabsOrder(PLANNING_INFO, 2);
+        newInventoryViewPage.saveConfigurationForTabs(CONFIGURATION_NAME_TABS_WIDGET);
 
         //then
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
@@ -65,7 +68,7 @@ public class TabsConfigurationTest extends BaseTestCase {
 
         List<String> columnHeaders = newInventoryViewPage.getActiveColumnsHeaders();
 
-        Assert.assertTrue(!newInventoryViewPage.isTabVisible(CONNECTIONS));
+        Assert.assertTrue(!newInventoryViewPage.isTabVisible(MOVIES));
 
     }
 
@@ -73,8 +76,8 @@ public class TabsConfigurationTest extends BaseTestCase {
     public void chooseConfigurationForTabsWidget() {
         newInventoryViewPage.applyConfigurationForTabs(CONFIGURATION_NAME_TABS_WIDGET);
 
-        Assert.assertTrue(newInventoryViewPage.isTabVisible(CONNECTIONS));
-        Assert.assertEquals(newInventoryViewPage.getTabsWidget().getTabLabel(3), DEVICES);
+        Assert.assertTrue(newInventoryViewPage.isTabVisible(PLANNING_INFO));
+        Assert.assertEquals(newInventoryViewPage.getTabsWidget().getTabLabel(2), PLANNING_INFO);
 
     }
 
