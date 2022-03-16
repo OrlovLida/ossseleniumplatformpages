@@ -15,8 +15,7 @@ public class ApplicationWizard {
     private static final String NAME_TEXT_FIELD_ID = "name";
     private static final String DESCRIPTION_TEXT_AREA_ID = "description";
     private static final String SAVE_BUTTON_FULL_XPATH = "//div[@class='popupBackground']//a[@class='CommonButton btn btn-primary btn-md']";
-    private static final String QUERY_PARAM_KEY_COLUMN_ID = "1_key";
-    private static final String QUERY_PARAM_VALUE_COLUMN_ID = "1_value";
+    private static final String KEY_COLUMN_ID = "key";
     private static final String EDITABLE_LIST_KEY_COMPONENT_ID = "key-TEXT_FIELD";
     private static final String EDITABLE_LIST_VALUE_COMPONENT_ID = "value-TEXT_FIELD";
     private static final String PATH_TYPE = "Path";
@@ -69,8 +68,8 @@ public class ApplicationWizard {
     
     public void addQueryParam(String key, String testValue) {
         EditableList.Row firstRow = getRow();
-        firstRow.setValue(key, QUERY_PARAM_KEY_COLUMN_ID, EDITABLE_LIST_KEY_COMPONENT_ID, Input.ComponentType.TEXT_FIELD);
-        firstRow.setValue(testValue, QUERY_PARAM_VALUE_COLUMN_ID, EDITABLE_LIST_VALUE_COMPONENT_ID, Input.ComponentType.TEXT_FIELD);
+        firstRow.setValue(key, KEY_COLUMN_ID, EDITABLE_LIST_KEY_COMPONENT_ID, Input.ComponentType.TEXT_FIELD);
+        firstRow.setValue(testValue, VALUE_COLUMN_ID, EDITABLE_LIST_VALUE_COMPONENT_ID, Input.ComponentType.TEXT_FIELD);
     }
     
     public void addPathParam(String value) {
