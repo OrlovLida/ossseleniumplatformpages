@@ -231,7 +231,7 @@ public class NewInventoryViewPage extends BasePage {
     }
 
     @Step("Update configuration for main table")
-    public void updateConfigurationForMainTable(Field... fields) {
+    public void updateConfigurationForMainTable() {
         DelayUtils.waitForPageToLoad(driver, wait);
         getMainTable().callAction(ActionsContainer.KEBAB_GROUP_ID, SAVE_NEW_CONFIG_ID);
         getSaveConfigurationWizard().save();
@@ -363,8 +363,9 @@ public class NewInventoryViewPage extends BasePage {
         getTabsWidget().callActionById(ActionsContainer.KEBAB_GROUP_ID, SAVE_CONFIG_TABS_ID);
         getSaveConfigurationWizard().saveAsNew(configurationName, fields);
     }
+
     @Step("Update configuration for tabs")
-    public void updateConfigurationForTabs(Field... fields) {
+    public void updateConfigurationForTabs() {
         DelayUtils.waitForPageToLoad(driver, wait);
         getTabsWidget().callActionById(ActionsContainer.KEBAB_GROUP_ID, SAVE_CONFIG_TABS_ID);
         getSaveConfigurationWizard().save();
@@ -383,7 +384,6 @@ public class NewInventoryViewPage extends BasePage {
         getTabsWidget().callActionById(ActionsContainer.KEBAB_GROUP_ID, CHOOSE_CONFIG_ID);
         getChooseConfigurationWizard().deleteConfiguration(configurationName).cancel();
     }
-
 
     @Step("Apply configuration for main table")
     public NewInventoryViewPage applyConfigurationForMainTable(String configurationName) {
@@ -453,15 +453,14 @@ public class NewInventoryViewPage extends BasePage {
     }
 
     @Step("Enable Widget Tab")
-    public void enableWidget(String widgetType,String widgetLabel) {
+    public void enableWidget(String widgetType, String widgetLabel) {
         DelayUtils.waitForPageToLoad(driver, wait);
         if (!isTabVisible(widgetLabel)) {
             getTabsWidget().callActionById(ActionsContainer.KEBAB_GROUP_ID, ADD_TABS_ID);
-            getWidgetChooser().addWidget(widgetType,widgetLabel);
+            getWidgetChooser().addWidget(widgetType, widgetLabel);
             new NewInventoryViewPage(driver, wait);
         }
     }
-
 
     @Step("Disable Widget")
     public void disableWidget(String widgetLabel) {
@@ -472,7 +471,6 @@ public class NewInventoryViewPage extends BasePage {
         }
 
     }
-
 
     @Step("Open Hierarchy View for selected object")
     public HierarchyViewPage goToHierarchyViewForSelectedObject() {
@@ -535,6 +533,5 @@ public class NewInventoryViewPage extends BasePage {
     private WidgetChooser getWidgetChooser() {
         return WidgetChooser.create(driver, wait);
     }
-
 
 }

@@ -16,8 +16,6 @@ import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.platform.configuration.SaveConfigurationWizard;
 import com.oss.utils.TestListener;
 
-import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Property.TYPE;
-
 @Listeners({TestListener.class})
 public class TabsConfigurationTest extends BaseTestCase {
     private final static String GROUP_NAME = "SeleniumTests";
@@ -28,7 +26,8 @@ public class TabsConfigurationTest extends BaseTestCase {
     private NewInventoryViewPage newInventoryViewPage;
 
     private final static String DEFAULT_CONFIGURATION = "DEFAULT";
-    private static final String TEST_PERSON = "TestPerson";;
+    private static final String TEST_PERSON = "TestPerson";
+    ;
     private static final String INTERESTS = "Interests";
     private static final String OTHER_TYPE = "Other";
     private static final String PLANNING_INFO = "Planning Info";
@@ -49,7 +48,6 @@ public class TabsConfigurationTest extends BaseTestCase {
         newInventoryViewPage.enableWidget(OTHER_TYPE, PLANNING_INFO);
         newInventoryViewPage.enableWidget(TABLE_TYPE, MOVIES);
         newInventoryViewPage.enableWidget(TABLE_TYPE, INTERESTS);
-        newInventoryViewPage.changeTabsOrder(PLANNING_INFO, 2);
         newInventoryViewPage.saveConfigurationForTabs(CONFIGURATION_NAME_TABS_WIDGET);
 
         //then
@@ -66,8 +64,6 @@ public class TabsConfigurationTest extends BaseTestCase {
 
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
-        List<String> columnHeaders = newInventoryViewPage.getActiveColumnsHeaders();
-
         Assert.assertTrue(!newInventoryViewPage.isTabVisible(MOVIES));
 
     }
@@ -77,7 +73,6 @@ public class TabsConfigurationTest extends BaseTestCase {
         newInventoryViewPage.applyConfigurationForTabs(CONFIGURATION_NAME_TABS_WIDGET);
 
         Assert.assertTrue(newInventoryViewPage.isTabVisible(PLANNING_INFO));
-        Assert.assertEquals(newInventoryViewPage.getTabsWidget().getTabLabel(2), PLANNING_INFO);
 
     }
 
@@ -85,6 +80,7 @@ public class TabsConfigurationTest extends BaseTestCase {
     public void updateConfigurationForTabsWidget() {
 
         newInventoryViewPage.disableWidget(INTERESTS);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         newInventoryViewPage.updateConfigurationForTabs();
 

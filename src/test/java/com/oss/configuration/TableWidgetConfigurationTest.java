@@ -28,18 +28,19 @@ public class TableWidgetConfigurationTest extends BaseTestCase {
     private final static String CONFIGURATION_NAME_TABLE_WIDGET_GROUP = "Table_Widget_Group";
     private final static String CONFIGURATION_NAME_TABLE_WIDGET_USER = "Table_Widget_User";
     private final static String DEFAULT_CONFIGURATION = "DEFAULT";
-    private final static String TYPE_LABEL = "Name";
-    private final static String GENDER_LABEL = "Object Type";
-    private final static String ID_LABEL = "Identifier";
-    private final static String USER2 = "webseleniumtest2";
+    private final static String TYPE_LABEL = "Type";
+    private final static String GENDER_LABEL = "Gender";
+    private final static String NATIONALITY_LABEL = "Nationality";
+    private final static String USER2 = "webseleniumtests2";
     private static final String PASSWORD_2 = "oss";
-    private static final String LOCATION = "Location";
-    private static final String BUILDING = "Building";
+    private static final String TEST_PERSON = "TestPerson";
+    private static final String TEST_ACTOR = "TestActor";
+    private static final String ME = "Me";
 
     @BeforeClass
     public void goToInventoryView() {
         //given
-        newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, LOCATION);
+        newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_PERSON);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -144,11 +145,11 @@ public class TableWidgetConfigurationTest extends BaseTestCase {
 
     @Test(priority = 7)
     public void saveDefaultConfigurationOfTableWidgetForUser() {
-        newInventoryViewPage.enableColumn(ID_LABEL);
-        newInventoryViewPage.changeColumnsOrderInMainTable(ID_LABEL, 0);
+        newInventoryViewPage.enableColumn(NATIONALITY_LABEL);
+        newInventoryViewPage.changeColumnsOrderInMainTable(NATIONALITY_LABEL, 0);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
-        newInventoryViewPage.saveNewConfigurationForMainTable(CONFIGURATION_NAME_TABLE_WIDGET_USER, createField(DEFAULT_VIEW_FOR, "Me"));
+        newInventoryViewPage.saveNewConfigurationForMainTable(CONFIGURATION_NAME_TABLE_WIDGET_USER, createField(DEFAULT_VIEW_FOR, ME));
         //then
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
@@ -160,7 +161,7 @@ public class TableWidgetConfigurationTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         List<String> columnHeaders = newInventoryViewPage.getActiveColumnsHeaders();
-        Assertions.assertThat(columnHeaders.indexOf(ID_LABEL)).isZero();
+        Assertions.assertThat(columnHeaders.indexOf(NATIONALITY_LABEL)).isZero();
 
         newInventoryViewPage.deleteConfigurationForMainTable(CONFIGURATION_NAME_TABLE_WIDGET_USER);
 
@@ -191,13 +192,15 @@ public class TableWidgetConfigurationTest extends BaseTestCase {
     @Test(priority = 9)
     public void groupAndTypeInheritanceDefaultConfigurationOfTableWidget() {
         newInventoryViewPage.changeUser(USER2, PASSWORD_2);
-        newInventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, BUILDING);
+        newInventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_ACTOR);
 
         newInventoryViewPage.chooseGroupContext(GROUP_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         List<String> columnHeaders = newInventoryViewPage.getActiveColumnsHeaders();
         Assertions.assertThat(columnHeaders.indexOf(TYPE_LABEL)).isZero();
+
+        newInventoryViewPage.deleteConfigurationForMainTable(CONFIGURATION_NAME_TABLE_WIDGET_GROUP);
 
         newInventoryViewPage.deleteConfigurationForMainTable(CONFIGURATION_NAME_TABLE_WIDGET_GROUP);
 
