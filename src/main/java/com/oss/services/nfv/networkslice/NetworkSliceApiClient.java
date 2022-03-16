@@ -7,6 +7,7 @@ import javax.ws.rs.core.Response;
 
 public class NetworkSliceApiClient {
     public static final String NETWORK_SLICE_PATH = "network-slice";
+    public static final String NETWORK_SLICE_SUBNET_PATH = "network-slice-subnet";
     public static final String PERSPECTIVE_LIVE_PARAM = "?perspective=LIVE";
 
     private static NetworkSliceApiClient instance;
@@ -32,9 +33,24 @@ public class NetworkSliceApiClient {
                 .then().log().status().log().body().statusCode(Response.Status.CREATED.getStatusCode());
     }
 
+    public void createNetworkSliceSubnet(String json) {
+        env.getNetworkSliceCoreSpecification()
+                .given()
+                .contentType(ContentType.JSON)
+                .body(json)
+                .when().post(NETWORK_SLICE_SUBNET_PATH + PERSPECTIVE_LIVE_PARAM)
+                .then().log().status().log().body().statusCode(Response.Status.CREATED.getStatusCode());
+    }
+
     public void deleteNetworkSlice(Long id) {
         env.getNetworkSliceCoreSpecification()
                 .when().delete(NETWORK_SLICE_PATH + "/" + id.toString() + PERSPECTIVE_LIVE_PARAM)
+                .then().log().status().log().body().statusCode(Response.Status.NO_CONTENT.getStatusCode());
+    }
+
+    public void deleteNetworkSliceSubnet(Long id) {
+        env.getNetworkSliceCoreSpecification()
+                .when().delete(NETWORK_SLICE_SUBNET_PATH + "/" + id.toString() + PERSPECTIVE_LIVE_PARAM)
                 .then().log().status().log().body().statusCode(Response.Status.NO_CONTENT.getStatusCode());
     }
 }

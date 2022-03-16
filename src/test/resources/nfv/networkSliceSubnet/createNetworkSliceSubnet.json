@@ -1,0 +1,36 @@
+[
+  {
+    "name": "NETWORK-SLICE-SUBNET-EDIT-SELENIUM-TEST",
+    "resourceSpecificationId": "RANSliceSubnet",
+    "attributes": [
+      {
+        "name": "operationalState",
+        "value": "DISABLED"
+      },
+      {
+        "name": "administrativeState",
+        "value": "UNLOCKED"
+      }
+    ],
+    "description": "NETWORK-SLICE-SUBNET-EDIT-DESCRIPTION",
+    "masterRelations": [
+    ],
+    "networkSliceSubnetRef": [
+    ],
+    "sliceProfileList": [
+      {
+        "attributes": [
+        ],
+        "name": "SLICE-PROFILE-EDIT-SELENIUM-TEST",
+        "plmnInfoList": [
+          {
+            "mcc": "805",
+            "mnc": "6015",
+            "sd": 16007215,
+            "sst": 145
+          }
+        ]
+      }
+    ]
+  }
+]
