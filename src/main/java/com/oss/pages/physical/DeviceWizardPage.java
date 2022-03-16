@@ -41,7 +41,7 @@ public class DeviceWizardPage extends BasePage {
     private static final String DEVICE_HARDWARE_VERSION_DATA_ATTRIBUTE_NAME = "hardwareVersion";
     private static final String DEVICE_DESCRIPTION_DATA_ATTRIBUTE_NAME = "description";
     private static final String DEVICE_IS_OWNED_BY_3RD_PARTY_DATA_ATTRIBUTE_NAME = "checkbox_is_leased";
-    private static final String DEVICE_CREATE_WIZARD = "device_create_wizard_web_view_prompt-card";
+    private static final String DEVICE_CREATE_WIZARD = "devices_create_wizard_view";
     private static final String DEVICE_UPDATE_WIZARD = "physical_device_update_wizard_view_prompt-card";
     private static final String DEVICE_AVAILABLE_MOUNTING_POSITIONS_DATA_ATTRIBUTE_NAME = "mountingPosition";
 

@@ -20,6 +20,12 @@ public class PhysicalInventoryRepository {
         String deviceId = resourceDTO.getUri().toString();
         return Long.valueOf(deviceId.substring(deviceId.lastIndexOf("/") + 1, deviceId.indexOf("?")));
     }
+    public Long createDevice(String locationType, Long locationId, Long deviceModelId, String deviceName, String deviceModelType, long projectId) {
+        PhysicalInventoryClient client = new PhysicalInventoryClient(env);
+        ResourceDTO resourceDTO = client.createDevice(buildDevice(locationType, locationId, deviceModelId, deviceName, deviceModelType), projectId);
+        String deviceId = resourceDTO.getUri().toString();
+        return Long.valueOf(deviceId.substring(deviceId.lastIndexOf("/") + 1, deviceId.indexOf("?")));
+    }
 
     public Long createDeviceWithCard(String locationType, Long locationId, Long deviceModelId, String deviceName, String deviceModelType, String slotName, Long cardModelId, String cardModelType) {
         PhysicalInventoryClient client = new PhysicalInventoryClient(env);

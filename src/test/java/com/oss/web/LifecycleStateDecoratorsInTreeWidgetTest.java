@@ -8,18 +8,24 @@ package com.oss.web;
 
 import java.time.LocalDate;
 
+import org.assertj.core.api.Assertions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
+import com.oss.framework.components.contextactions.ActionsContainer;
+import com.oss.framework.components.tree.TreeComponent;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.physical.SublocationWizardPage;
 import com.oss.pages.platform.HierarchyViewPage;
 import com.oss.repositories.AddressRepository;
 import com.oss.repositories.LocationInventoryRepository;
+import com.oss.repositories.PhysicalInventoryRepository;
 import com.oss.repositories.PlanningRepository;
+import com.oss.services.ResourceCatalogClient;
 import com.oss.untils.Environment;
 import com.oss.untils.FakeGenerator;
 
@@ -29,31 +35,87 @@ import com.oss.untils.FakeGenerator;
 public class LifecycleStateDecoratorsInTreeWidgetTest extends BaseTestCase {
     private static final Logger log = LoggerFactory.getLogger(LifecycleStateDecoratorsInTreeWidgetTest.class);
     private static final String PROJECT_NAME_CODE_1 = "HVLSC-" + FakeGenerator.getIdNumber();
-    private static final String BUILDING_NAME = FakeGenerator.getCity() + "-" + FakeGenerator.getIdNumber();
+    private static final String BUILDING_NAME = FakeGenerator.getCity() + "-BU" + FakeGenerator.getRandomInt();
+    private static final String HARDWARE_RELATION_PATH = BUILDING_NAME + ".Hardware";
+    private static final String LOCATION_RELATION_PATH = BUILDING_NAME + ".Locations";
     private static final String LOCATION_TYPE_BUILDING = "Building";
     private static final String CREATE_ACTION_ID = "CREATE";
     private static final String CREATE_SUBLOCATION_ACTION_ID = "CreateSublocationInLocationWizardAction";
     private static final String SUB_LOCATION_TYPE_ROOM = "Room";
-    private static final String ROOM_1_CREATE = "R_1";
+    private static final String ROOM_1_NAME = "R_1";
+    private static final String ROOM_1_PATH = BUILDING_NAME + ".Locations.Room." + ROOM_1_NAME;
+    private static final String DEVICE_1_MODEL = "N9K-C9396PX";
+    private static final String DEVICE_1_NAME = "Device_1";
+    private static final String DEVICE_1_PATH = BUILDING_NAME + ".Hardware.Switch." + DEVICE_1_NAME;
+    private static final String PORT_01_PATH = DEVICE_1_PATH + ".Ports.01";
+    private static final TreeComponent.Node.DecoratorStatus GREEN = TreeComponent.Node.DecoratorStatus.GREEN;
+    private static final String CREATE_DEVICE_ACTION_ID = "CreateDeviceOnLocationWizardAction";
+    private static final String ROOM_2_NAME = "R_2";
+    private static final String ROOM_3_NAME = "R_3";
+    private static final String ROOM_TYPE = "Room";
+    private static final String REFRESH_ACTION_ID = "tree_gql_refresh_relation";
+    private static final String ROOM_2_PATH = BUILDING_NAME + ".Locations.Room." + ROOM_2_NAME;
+    private static final String DEVICE_MODEL_TYPE = "IPDeviceModel";
+    private static final String DEVICE_2_NAME = "Device_2";
+    private static final String DEVICE_3_NAME = "Device_3";
+    private static final String DEVICE_2_PATH = BUILDING_NAME + ".Hardware.Switch." + DEVICE_2_NAME;
+    private static final String PORT_02_PATH = DEVICE_2_PATH + ".Ports.01";
+    private static final String REFRESH_TREE_ACTION_ID = "tree_gql_refresh";
+    private static final String DEVICE_3_PATH = BUILDING_NAME + ".Hardware.Switch." + DEVICE_3_NAME;
+    private static final String PORT_03_PATH = DEVICE_3_PATH + ".Ports.01";
+    private static final String ROOM_3_PATH = BUILDING_NAME + ".Locations.Room." + ROOM_3_NAME;
     private Environment env = Environment.getInstance();
     private HierarchyViewPage hierarchyViewPage;
+    private Long project1;
+    private String buildingId;
+    private Long room2Id;
+    private Long device1Id;
+    private Long device2Id;
+    private Long device3Id;
     
     @BeforeClass
     public void openHierarchyView() {
-      //  hierarchyViewPage = HierarchyViewPage.goToHierarchyViewPage(driver, BASIC_URL, LOCATION_TYPE_BUILDING, "117290108", "117290533");
+        // hierarchyViewPage = HierarchyViewPage.goToHierarchyViewPage(driver, BASIC_URL, LOCATION_TYPE_BUILDING, "117290108", "117290533");
     }
     
     @Test
     public void createNewObjects() {
-        Long project1 = createProject(PROJECT_NAME_CODE_1, LocalDate.now());
+        project1 = createProject(PROJECT_NAME_CODE_1, LocalDate.now());
         log.info("Project id: " + project1 + ", Project Code: " + PROJECT_NAME_CODE_1);
-        String building = createBuilding(project1);
-        log.info("Building id: " + building);
+        buildingId = createBuilding(project1);
+        log.info("Building id: " + buildingId);
         hierarchyViewPage =
-                HierarchyViewPage.goToHierarchyViewPage(driver, BASIC_URL, LOCATION_TYPE_BUILDING, building, project1.toString());
+                HierarchyViewPage.goToHierarchyViewPage(driver, BASIC_URL, LOCATION_TYPE_BUILDING, buildingId, project1.toString());
         hierarchyViewPage.getFirstNode().callAction(CREATE_ACTION_ID, CREATE_SUBLOCATION_ACTION_ID);
         createSublocationWizard();
-        hierarchyViewPage.expandTreeNode(BUILDING_NAME);
+        hierarchyViewPage.expandNextLevel(BUILDING_NAME);
+        hierarchyViewPage.getFirstNode().callAction(CREATE_ACTION_ID, CREATE_DEVICE_ACTION_ID);
+        createDeviceWizard();
+        Assertions.assertThat(hierarchyViewPage.getNodeByLabelPath(BUILDING_NAME).getDecoratorStatus()).isEqualTo(GREEN);
+        Assertions.assertThat(hierarchyViewPage.getNodeByLabelPath(ROOM_1_PATH).getDecoratorStatus()).isEqualTo(GREEN);
+        Assertions.assertThat(hierarchyViewPage.getNodeByLabelPath(DEVICE_1_PATH).getDecoratorStatus()).isEqualTo(GREEN);
+        Assertions.assertThat(hierarchyViewPage.getNodeByLabelPath(PORT_01_PATH).getDecoratorStatus()).isEqualTo(GREEN);
+    }
+    
+    @Test
+    public void createObjectsAndRefreshRelation() {
+        room2Id = createRoom(ROOM_2_NAME, project1);
+        hierarchyViewPage.getNodeByLabelPath(LOCATION_RELATION_PATH).callAction(REFRESH_ACTION_ID);
+        Assertions.assertThat(hierarchyViewPage.getNodeByLabelPath(ROOM_2_PATH).getDecoratorStatus()).isEqualTo(GREEN);
+        device2Id = createDevice(DEVICE_2_NAME, project1);
+        hierarchyViewPage.getNodeByLabelPath(HARDWARE_RELATION_PATH).callAction(REFRESH_ACTION_ID);
+        Assertions.assertThat(hierarchyViewPage.getNodeByLabelPath(DEVICE_2_PATH).getDecoratorStatus()).isEqualTo(GREEN);
+        Assertions.assertThat(hierarchyViewPage.getNodeByLabelPath(PORT_02_PATH).getDecoratorStatus()).isEqualTo(GREEN);
+    }
+    
+    @Test
+    public void createObjectsAndRefreshTree() {
+        createRoom(ROOM_3_NAME, project1);
+        device3Id = createDevice(DEVICE_3_NAME, project1);
+        hierarchyViewPage.getMainTree().callActionById(ActionsContainer.KEBAB_GROUP_ID, REFRESH_TREE_ACTION_ID);
+        Assertions.assertThat(hierarchyViewPage.getNodeByLabelPath(ROOM_3_PATH).getDecoratorStatus()).isEqualTo(GREEN);
+        Assertions.assertThat(hierarchyViewPage.getNodeByLabelPath(DEVICE_3_PATH).getDecoratorStatus()).isEqualTo(GREEN);
+        Assertions.assertThat(hierarchyViewPage.getNodeByLabelPath(PORT_03_PATH).getDecoratorStatus()).isEqualTo(GREEN);
     }
     
     private Long createProject(String code, LocalDate finishDueDate) {
@@ -67,18 +129,42 @@ public class LifecycleStateDecoratorsInTreeWidgetTest extends BaseTestCase {
         return locationInventoryRepository.createLocation(BUILDING_NAME, LOCATION_TYPE_BUILDING, getGeographicalAddress(), projectId);
     }
     
+    private Long createRoom(String roomName, long projectId) {
+        LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);
+        return locationInventoryRepository.createSubLocation(ROOM_TYPE, roomName, Long.parseLong(buildingId), LOCATION_TYPE_BUILDING,
+                Long.parseLong(buildingId), LOCATION_TYPE_BUILDING,
+                projectId);
+    }
+    
     private Long getGeographicalAddress() {
         AddressRepository addressRepository = new AddressRepository(env);
         return addressRepository.getFirstGeographicalAddressId();
     }
-
-    private void createSublocationWizard(){
+    
+    private void createSublocationWizard() {
         SublocationWizardPage sublocation = new SublocationWizardPage(driver);
         sublocation.setSublocationType(SUB_LOCATION_TYPE_ROOM);
-        sublocation.setSublocationName(ROOM_1_CREATE);
+        sublocation.setSublocationName(ROOM_1_NAME);
         sublocation.setPreciseLocation(BUILDING_NAME);
         sublocation.clickNext();
         sublocation.clickAccept();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+    
+    private void createDeviceWizard() {
+        DeviceWizardPage deviceWizard = new DeviceWizardPage(driver);
+        deviceWizard.setModel(DEVICE_1_MODEL);
+        deviceWizard.setName(DEVICE_1_NAME);
+        deviceWizard.next();
+        deviceWizard.setPreciseLocation(BUILDING_NAME);
+        deviceWizard.accept();
+    }
+    
+    private Long createDevice(String deviceName, Long projectId) {
+        ResourceCatalogClient resourceCatalogClient = new ResourceCatalogClient(env);
+        Long deviceModelId = resourceCatalogClient.getModelIds(DEVICE_1_MODEL);
+        PhysicalInventoryRepository physicalInventoryRepository = new PhysicalInventoryRepository(env);
+        return physicalInventoryRepository.createDevice(LOCATION_TYPE_BUILDING, Long.valueOf(buildingId), deviceModelId, deviceName,
+                DEVICE_MODEL_TYPE, projectId);
     }
 }

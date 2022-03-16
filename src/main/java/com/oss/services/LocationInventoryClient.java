@@ -19,6 +19,7 @@ public class LocationInventoryClient {
 
     private static final String PHYSICAL_LOCATIONS_API_PATH = "/physicallocations";
     private static final String SUB_LOCATION_API_PATH = "/sublocations";
+    private static final String PROJECT_ID = "project_id";
 
     private static LocationInventoryClient instance;
     private final Environment env;
@@ -52,7 +53,7 @@ public class LocationInventoryClient {
         return env.getLocationInventoryCoreRequestSpecification()
                 .given()
                 .queryParam(Constants.PERSPECTIVE, Constants.PLAN)
-                .queryParam("project_id", projectId)
+                .queryParam(PROJECT_ID, projectId)
                 .contentType(ContentType.JSON)
                 .body(location)
                 .when()
@@ -77,6 +78,21 @@ public class LocationInventoryClient {
         return env.getLocationInventoryCoreRequestSpecification()
                 .given()
                 .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
+                .contentType(ContentType.JSON)
+                .body(subLocation)
+                .when()
+                .post(SUB_LOCATION_API_PATH)
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode()).assertThat()
+                .extract()
+                .as(ResourceDTO.class);
+    }
+
+    public ResourceDTO createSubLocation(SublocationDTO subLocation, long projectId) {
+        return env.getLocationInventoryCoreRequestSpecification()
+                .given()
+                .queryParam(Constants.PERSPECTIVE, Constants.PLAN)
+                .queryParam(PROJECT_ID, projectId)
                 .contentType(ContentType.JSON)
                 .body(subLocation)
                 .when()
