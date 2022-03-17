@@ -63,6 +63,14 @@ public class ServicesClient {
         RequestSpecification findApplicationBasePath = findApplicationBasePath(name);
         return prepareRequestSpecification(findApplicationBasePath);
     }
+
+    public RequestSpecification getRequestSpecificationByApplicationBasePath(String path) {
+        RequestSpecification findApplicationBasePath = RestAssured.given()
+                .baseUri(environment.getEnvironmentUrl())
+                .port(environment.getEnvironmentPort())
+                .basePath(path);
+        return prepareRequestSpecification(findApplicationBasePath);
+    }
     
     public RequestSpecification prepareRequestSpecificationWithoutUri() {
         RequestSpecification given = RestAssured.given();

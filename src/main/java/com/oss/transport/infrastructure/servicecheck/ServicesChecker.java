@@ -34,6 +34,14 @@ public class ServicesChecker {
         return javax.ws.rs.core.Response.Status.Family.SUCCESSFUL.equals(responseFamily);
     }
 
+    public boolean testHealthByApplicationBasePath(String applicationPath) {
+        Response response = requestClient.getServicesClient().getRequestSpecificationByApplicationBasePath(applicationPath)
+                .when().get("/health");
+        response.then().log().body().log().status();
+        javax.ws.rs.core.Response.Status.Family responseFamily = javax.ws.rs.core.Response.Status.Family.familyOf(response.getStatusCode());
+        return javax.ws.rs.core.Response.Status.Family.SUCCESSFUL.equals(responseFamily);
+    }
+
     public boolean testUsability(String applicationName) {
         if (usabilityCheckers.containsKey(applicationName)) {
             return usabilityCheckers.get(applicationName).test();
