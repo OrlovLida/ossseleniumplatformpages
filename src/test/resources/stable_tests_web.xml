@@ -35,12 +35,12 @@
             <class name="com.oss.web.TreeWidgetTest"/>
         </classes>
     </test>
-    <test name="TableWidgetConfiguration">
+    <test name="TableWidgetConfigurationTest">
         <classes>
             <class name="com.oss.configuration.TableWidgetConfigurationTest"/>
         </classes>
     </test>
-    <test name="TabsWidgetConfiguration">
+    <test name="TabsConfigurationTest">
         <classes>
             <class name="com.oss.configuration.TabsConfigurationTest"/>
         </classes>
