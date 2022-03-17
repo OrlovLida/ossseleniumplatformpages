@@ -33,6 +33,8 @@ public class TableWidgetConfigurationTest extends BaseTestCase {
     private final static String NATIONALITY_LABEL = "Nationality";
     private final static String USER2 = "webseleniumtests2";
     private static final String PASSWORD_2 = "oss";
+    private final static String USER1 = "webseleniumtests";
+    private static final String PASSWORD_1 = "Webtests123!";
     private static final String TEST_PERSON = "TestPerson";
     private static final String TEST_ACTOR = "TestActor";
     private static final String ME = "Me";
@@ -200,7 +202,8 @@ public class TableWidgetConfigurationTest extends BaseTestCase {
         List<String> columnHeaders = newInventoryViewPage.getActiveColumnsHeaders();
         Assertions.assertThat(columnHeaders.indexOf(TYPE_LABEL)).isZero();
 
-        newInventoryViewPage.deleteConfigurationForMainTable(CONFIGURATION_NAME_TABLE_WIDGET_GROUP);
+        newInventoryViewPage.changeUser(USER1, PASSWORD_1);
+        newInventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_PERSON);
 
         newInventoryViewPage.deleteConfigurationForMainTable(CONFIGURATION_NAME_TABLE_WIDGET_GROUP);
 
