@@ -172,7 +172,7 @@ public class NewNavigationTest extends BaseTestCase {
         ApplicationWizard applicationWizard = openApplicationWizard();
         applicationWizard.addPathParam(TEST_MOVIE_TYPE);
         applicationWizard.clickSave();
-        DelayUtils.sleep(2000);
+        DelayUtils.sleep(3000);
         toolsManagerWindow.openApplication(CATEGORY_NAME, APPLICATION_NAME_2);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assertions.assertThat(driver.getCurrentUrl()).contains(TEST_MOVIE_TYPE);
@@ -230,7 +230,7 @@ public class NewNavigationTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         applicationWizard.setPolicies(PHYSICAL_DEVICE_TYPE, MODELS_LEARNING_ROLE);
         applicationWizard.clickSave();
-        DelayUtils.sleep(3000);
+        DelayUtils.sleep(5000);
         Assertions.assertThat(toolsManagerWindow.getApplicationURL(APPLICATION_NAME_2)).isEmpty();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         changeUser(USER_2, PASSWORD_2);
