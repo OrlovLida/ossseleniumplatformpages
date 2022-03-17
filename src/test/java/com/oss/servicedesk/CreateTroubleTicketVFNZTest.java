@@ -17,6 +17,7 @@ import com.oss.pages.servicedesk.ticket.TicketDashboardPage;
 import com.oss.pages.servicedesk.ticket.TicketDetailsPage;
 import com.oss.pages.servicedesk.ticket.TicketSearchPage;
 import com.oss.pages.servicedesk.ticket.tabs.MessagesTab;
+import com.oss.pages.servicedesk.ticket.wizard.AttachmentWizardPage;
 import com.oss.pages.servicedesk.ticket.wizard.SDWizardPage;
 import com.oss.utils.TestListener;
 
@@ -32,83 +33,92 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     private MessagesTab messagesTab;
     private MoreDetailsPage moreDetailsPage;
     private RemainderForm remainderForm;
+    private AttachmentWizardPage attachmentWizardPage;
+    private MessagesTab mostImportantInfoTab;
     private String ticketID;
 
-    private final static String TT_DESCRIPTION = "TestSelenium";
-    private final static String TT_DESCRIPTION_EDITED = "TestSelenium_edited";
-    private final static String TT_CORRELATION_ID = "12345";
-    private final static String TT_REFERENCE_ID = "12345";
-    private final static String TT_SEVERITY = "Warning";
-    private final static String TT_EXTERNAL = "Selenium test external";
-    private final static String TT_LIBRARY_TYPE = "Category";
-    private final static String TT_CATEGORY_NAME = "Data Problem";
+    private static final String TT_DESCRIPTION = "TestSelenium";
+    private static final String TT_DESCRIPTION_EDITED = "TestSelenium_edited";
+    private static final String TT_CORRELATION_ID = "12345";
+    private static final String TT_REFERENCE_ID = "12345";
+    private static final String TT_SEVERITY = "Warning";
+    private static final String TT_EXTERNAL = "Selenium test external";
+    private static final String TT_LIBRARY_TYPE = "Category";
+    private static final String TT_CATEGORY_NAME = "Data Problem";
 
-    private final static String NOTIFICATION_CHANNEL_INTENRAL = "Internal";
-    private final static String NOTIFICATION_CHANNEL_EMAIL = "E-mail";
-    private final static String NOTIFICATION_MESSAGE_INTERNAL = "test selenium message internal";
-    private final static String NOTIFICATION_MESSAGE_EMAIL = "test selenium message E-mail";
-    private final static String NOTIFICATION_MESSAGE_COMMENT = "test selenium message comment";
-    private final static String NOTIFICATION_INTERNAL_TO = "ca_kodrobinska";
-    private final static String NOTIFICATION_TYPE = "Success";
-    private final static String NOTIFICATION_SUBJECT = "Email notification test";
+    private static final String NOTIFICATION_CHANNEL_INTENRAL = "Internal";
+    private static final String NOTIFICATION_CHANNEL_EMAIL = "E-mail";
+    private static final String NOTIFICATION_MESSAGE_INTERNAL = "test selenium message internal";
+    private static final String NOTIFICATION_MESSAGE_EMAIL = "test selenium message E-mail";
+    private static final String NOTIFICATION_MESSAGE_COMMENT = "test selenium message comment";
+    private static final String NOTIFICATION_MESSAGE_COMMENT_IMPORTANT = "Selenium message - Most Important";
+    private static final String NOTIFICATION_INTERNAL_TO = "ca_kodrobinska";
+    private static final String NOTIFICATION_TYPE = "Success";
+    private static final String NOTIFICATION_SUBJECT = "Email notification test";
 
-    private final static String TT_WIZARD_ASSIGNEE = "TT_WIZARD_INPUT_ASSIGNEE_LABEL";
-    private final static String TT_WIZARD_ESCALATED_TO = "TT_WIZARD_INPUT_ESCALATED_TO_LABEL";
-    private final static String TT_WIZARD_SEVERITY = "TT_WIZARD_INPUT_SEVERITY_LABEL";
-    private final static String CREATE_DATE_FILTER_DATE_PATTERN = "yyyy-MM-dd HH:mm:ss";
-    private final static String TT_WIZARD_CORRELATION_ID = "ISSUE_CORRELATION_ID";
-    private final static String TT_WIZARD_REFERENCE_ID = "TT_WIZARD_INPUT_REFERENCE_ID_LABEL";
-    private final static String TT_WIZARD_ISSUE_START_DATE_ID = "IssueStartDate";
-    private final static String TT_WIZARD_MESSAGE_DATE_ID = "PleaseProvideTheTimeOnTheHandsetTheTxtMessageArrived";
+    private static final String TT_WIZARD_ASSIGNEE = "TT_WIZARD_INPUT_ASSIGNEE_LABEL";
+    private static final String TT_WIZARD_ESCALATED_TO = "TT_WIZARD_INPUT_ESCALATED_TO_LABEL";
+    private static final String TT_WIZARD_SEVERITY = "TT_WIZARD_INPUT_SEVERITY_LABEL";
+    private static final String CREATE_DATE_FILTER_DATE_PATTERN = "yyyy-MM-dd HH:mm:ss";
+    private static final String TT_WIZARD_CORRELATION_ID = "ISSUE_CORRELATION_ID";
+    private static final String TT_WIZARD_REFERENCE_ID = "TT_WIZARD_INPUT_REFERENCE_ID_LABEL";
+    private static final String TT_WIZARD_ISSUE_START_DATE_ID = "IssueStartDate";
+    private static final String TT_WIZARD_MESSAGE_DATE_ID = "PleaseProvideTheTimeOnTheHandsetTheTxtMessageArrived";
 
-    private final static String DETAILS_WINDOW_ID = "_detailsWindow";
-    private final static String STATUS_ACKNOWLEDGED = "Acknowledged";
-    private final static String WIZARD_EXTERNAL_NAME = "_name";
-    private final static String OVERVIEW_TAB_ARIA_CONTROLS = "most-wanted";
-    private final static String EXTERNAL_TAB_ARIA_CONTROLS = "_detailsExternalTab";
-    private final static String DICTIONARIES_TAB_ARIA_CONTROLS = "_dictionariesTab";
-    private final static String DESCRIPTION_TAB_ARIA_CONTROLS = "_descriptionTab";
-    private final static String MESSAGES_TAB_ARIA_CONTROLS = "_messagesTab";
-    private final static String SAME_MO_TT_TAB_ARIA_CONTROLS = "_sameMOTTTab";
-    private final static String RELATED_TICKETS_TAB_ARIA_CONTROLS = "_relatedTicketsTab";
-    private final static String ROOT_CAUSES_TAB_ARIA_CONTROLS = "_rootCausesTab";
-    private final static String PARTICIPANTS_TAB_ARIA_CONTROLS = "_participantsTabApp";
-    private final static String RELATED_PROBLEMS_TAB_ARIA_CONTROLS = "_relatedProblems";
-    private final static String ADD_EXTERNAL_LABEL = "Add External";
-    private final static String ADD_TO_LIBRARY_LABEL = "Add to Library";
-    private final static String WIZARD_LIBRARY_TYPE_ID = "{\"identifier\":\"type\",\"parentIdentifier\":\"type\",\"parentValueIdentifier\":\"\",\"groupId\":\"type\"}";
-    private final static String WIZARD_CATEGORY_ID = "{\"identifier\":\"Category\",\"parentIdentifier\":\"type\",\"parentValueIdentifier\":\"\",\"groupId\":\"Category\"}-input";
-    private final static String TABLES_WINDOW_ID = "_tablesWindow";
+    private static final String DETAILS_WINDOW_ID = "_detailsWindow";
+    private static final String STATUS_ACKNOWLEDGED = "Acknowledged";
+    private static final String WIZARD_EXTERNAL_NAME = "_name";
+    private static final String OVERVIEW_TAB_ARIA_CONTROLS = "most-wanted";
+    private static final String EXTERNAL_TAB_ARIA_CONTROLS = "_detailsExternalTab";
+    private static final String DICTIONARIES_TAB_ARIA_CONTROLS = "_dictionariesTab";
+    private static final String ATTACHMENTS_TAB_ARIA_CONTROLS = "attachmentManager";
+    private static final String DESCRIPTION_TAB_ARIA_CONTROLS = "_descriptionTab";
+    private static final String MESSAGES_TAB_ARIA_CONTROLS = "_messagesTab";
+    private static final String MOST_IMPORTANT_INFO_TAB_ARIA_CONTROLS = "_mostImportantTab";
+    private static final String SAME_MO_TT_TAB_ARIA_CONTROLS = "_sameMOTTTab";
+    private static final String RELATED_TICKETS_TAB_ARIA_CONTROLS = "_relatedTicketsTab";
+    private static final String ROOT_CAUSES_TAB_ARIA_CONTROLS = "_rootCausesTab";
+    private static final String PARTICIPANTS_TAB_ARIA_CONTROLS = "_participantsTabApp";
+    private static final String RELATED_PROBLEMS_TAB_ARIA_CONTROLS = "_relatedProblems";
+    private static final String ADD_EXTERNAL_LABEL = "Add External";
+    private static final String ADD_TO_LIBRARY_LABEL = "Add to Library";
+    private static final String WIZARD_LIBRARY_TYPE_ID = "{\"identifier\":\"type\",\"parentIdentifier\":\"type\",\"parentValueIdentifier\":\"\",\"groupId\":\"type\"}";
+    private static final String WIZARD_CATEGORY_ID = "{\"identifier\":\"Category\",\"parentIdentifier\":\"type\",\"parentValueIdentifier\":\"\",\"groupId\":\"Category\"}-input";
+    private static final String TABLES_WINDOW_ID = "_tablesWindow";
 
-    private final static String NOTIFICATION_WIZARD_CHANNEL_ID = "channel-component-input";
-    private final static String NOTIFICATION_WIZARD_MESSAGE_ID = "message-component";
-    private final static String NOTIFICATION_WIZARD_INTERNAL_TO_ID = "internal-to-component";
-    private final static String NOTIFICATION_WIZARD_TO_ID = "to-component";
-    private final static String NOTIFICATION_WIZARD_FROM_ID = "from-component";
-    private final static String NOTIFICATION_WIZARD_TYPE_ID = "internal-type-component";
-    private final static String NOTIFICATION_WIZARD_TEMPLATE_ID = "template-component";
-    private final static String NOTIFICATION_WIZARD_SUBJECT_ID = "subject-component";
+    private static final String NOTIFICATION_WIZARD_CHANNEL_ID = "channel-component-input";
+    private static final String NOTIFICATION_WIZARD_MESSAGE_ID = "message-component";
+    private static final String NOTIFICATION_WIZARD_INTERNAL_TO_ID = "internal-to-component";
+    private static final String NOTIFICATION_WIZARD_TO_ID = "to-component";
+    private static final String NOTIFICATION_WIZARD_FROM_ID = "from-component";
+    private static final String NOTIFICATION_WIZARD_TYPE_ID = "internal-type-component";
+    private static final String NOTIFICATION_WIZARD_TEMPLATE_ID = "template-component";
+    private static final String NOTIFICATION_WIZARD_SUBJECT_ID = "subject-component";
 
-    private final static String REMAINDER_NOTE = "Selenium Description Note";
-    private final static String EDITED_REMAINDER_NOTE = "Edited Remainder Text";
+    private static final String REMAINDER_NOTE = "Selenium Description Note";
+    private static final String EDITED_REMAINDER_NOTE = "Edited Remainder Text";
 
     private static final String LINK_TICKETS_BUTTON_ID = "_buttonsApp-1";
 
-    private final static String PARTICIPANT_WIZARD_FIRST_NAME_ID = "firstName";
-    private final static String PARTICIPANT_WIZARD_SURNAME_ID = "surname";
-    private final static String PARTICIPANT_WIZARD_ROLE_ID = "role";
-    private final static String PARTICIPANT_WIZARD_ADD_PARTICIPANT_ID = "_searchParticipant_buttons-2";
-    private final static String PARTICIPANT_FIRST_NAME = "SeleniumTest";
-    private final static String PARTICIPANT_SURNAME = LocalDateTime.now().toString();
-    private final static String PARTICIPANT_ROLE = "Contact";
+    private static final String PARTICIPANT_WIZARD_FIRST_NAME_ID = "firstName";
+    private static final String PARTICIPANT_WIZARD_SURNAME_ID = "surname";
+    private static final String PARTICIPANT_WIZARD_ROLE_ID = "role";
+    private static final String PARTICIPANT_WIZARD_ADD_PARTICIPANT_ID = "_searchParticipant_buttons-2";
+    private static final String PARTICIPANT_FIRST_NAME = "SeleniumTest";
+    private static final String PARTICIPANT_SURNAME = LocalDateTime.now().toString();
+    private static final String PARTICIPANT_ROLE = "Contact";
 
-    private final static String CREATE_PROBLEM_WIZARD_NAME_ID = "name";
-    private final static String CREATE_PROBLEM_WIZARD_ASSIGNEE_ID = "assignee";
-    private final static String CREATE_PROBLEM_WIZARD_LABEL_ID = "label";
-    private final static String CREATE_PROBLEM_WIZARD_CREATE_PROBLEM_ID = "_createProblemSubmitId-1";
-    private final static String CREATE_PROBLEM_NAME = "Related Problem - Selenium Test";
-    private final static String CREATE_PROBLEM_ASSIGNEE = "sd_seleniumtest";
-    private final static String CREATE_PROBLEM_LABEL = LocalDateTime.now().toString();
+    private static final String CREATE_PROBLEM_WIZARD_NAME_ID = "name";
+    private static final String CREATE_PROBLEM_WIZARD_ASSIGNEE_ID = "assignee";
+    private static final String CREATE_PROBLEM_WIZARD_LABEL_ID = "label";
+    private static final String CREATE_PROBLEM_WIZARD_CREATE_PROBLEM_ID = "_createProblemSubmitId-1";
+    private static final String CREATE_PROBLEM_NAME = "Related Problem - Selenium Test";
+    private static final String CREATE_PROBLEM_ASSIGNEE = "sd_seleniumtest";
+    private static final String CREATE_PROBLEM_LABEL = LocalDateTime.now().toString();
+
+    private static final String USER_NAME = "sd_seleniumtest";
+    private static final String FILE_TO_UPLOAD_PATH = "DataSourceCSV/CPU_USAGE_INFO_RAW-MAP.xlsx";
+    private static final String CSV_FILE = "*CPU_USAGE_INFO_RAW-MAP*.*";
 
     public static final DateTimeFormatter CREATE_DATE_FILTER_DATE_FORMATTER = DateTimeFormatter.ofPattern(CREATE_DATE_FILTER_DATE_PATTERN);
 
@@ -335,7 +345,30 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
         Assert.assertEquals(ticketDetailsPage.checkRelatedTicketsId(0), RelatedTicketID);
     }
 
-    @Test(priority = 15, testName = "Check Same MO TT Tab", description = "Check Same MO TT Tab")
+    @Test(priority = 15, testName = "Check Related Tickets Tab - unlink Ticket", description = "Check Related Tickets Tab - unlink Ticket")
+    @Description("Check Related Tickets Tab - unlink Ticket")
+    public void unlinkTicketFromTicket() {
+        ticketDetailsPage = ticketDashboardPage.openTicketDetailsView(String.valueOf(ticketDashboardPage.getRowForTicketWithID(ticketID)), BASIC_URL);
+        ticketDetailsPage.selectTab(RELATED_TICKETS_TAB_ARIA_CONTROLS);
+        ticketDetailsPage.selectTicketInRelatedTicketsTab(0);
+        ticketDetailsPage.unlinkTicketFromRelatedTicketsTab();
+        ticketDetailsPage.confirmUnlinkingTicketFromRelatedTicketsTab();
+
+        Assert.assertTrue(ticketDetailsPage.checkIfRelatedTicketsTableIsEmpty());
+    }
+
+    @Parameters({"RelatedTicketID"})
+    @Test(priority = 16, testName = "Check Related Tickets Tab - show archived switcher", description = "Check Related Tickets Tab - show archived switcher")
+    @Description("Check Related Tickets Tab - show archived switcher")
+    public void showArchived(@Optional("100") String RelatedTicketID) {
+        ticketDetailsPage = ticketDashboardPage.openTicketDetailsView(String.valueOf(ticketDashboardPage.getRowForTicketWithID(ticketID)), BASIC_URL);
+        ticketDetailsPage.selectTab(RELATED_TICKETS_TAB_ARIA_CONTROLS);
+        ticketDetailsPage.turnOnShowArchived();
+
+        Assert.assertEquals(ticketDetailsPage.checkRelatedTicketsId(0), RelatedTicketID);
+    }
+
+    @Test(priority = 17, testName = "Check Same MO TT Tab", description = "Check Same MO TT Tab")
     @Description("Check Same MO TT Tab")
     public void checkSameMOTTTab() {
         ticketDetailsPage = ticketDashboardPage.openTicketDetailsView(String.valueOf(ticketDashboardPage.getRowForTicketWithID(ticketID)), BASIC_URL);
@@ -344,7 +377,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     }
 
     @Parameters({"SecondMOIdentifier"})
-    @Test(priority = 16, testName = "Check Root Causes", description = "Check Root Causes Tab - add MO")
+    @Test(priority = 18, testName = "Check Root Causes", description = "Check Root Causes Tab - add MO")
     @Description("Check Root Causes Tab - add MO")
     public void addRootCause(@Optional("CFS_Access_Product_Selenium_2") String SecondMOIdentifier) {
         ticketDetailsPage = ticketDashboardPage.openTicketDetailsView(String.valueOf(ticketDashboardPage.getRowForTicketWithID(ticketID)), BASIC_URL);
@@ -355,10 +388,10 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
         SDWizardPage.getMoStep().selectRowInMOTable("1");
         SDWizardPage.clickAcceptButtonInWizard();
 
-        Assert.assertEquals(ticketDetailsPage.checkRootCausesMOIdentifier(1), SecondMOIdentifier);
+        Assert.assertTrue(ticketDetailsPage.checkIfMOIdentifierIsPresentOnRootCauses(SecondMOIdentifier));
     }
 
-    @Test(priority = 17, testName = "Check Participants", description = "Check Participants Tab - add Participant")
+    @Test(priority = 19, testName = "Check Participants", description = "Check Participants Tab - add Participant")
     @Description("Check Participants Tab - add Participant")
     public void addParticipant() {
         ticketDetailsPage = ticketDashboardPage.openTicketDetailsView(String.valueOf(ticketDashboardPage.getRowForTicketWithID(ticketID)), BASIC_URL);
@@ -374,7 +407,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
         Assert.assertEquals(ticketDetailsPage.checkParticipantRole(0), PARTICIPANT_ROLE.toUpperCase());
     }
 
-    @Test(priority = 18, testName = "Check Related Problems tab", description = "Check Related Problems tab - Create Problem")
+    @Test(priority = 20, testName = "Check Related Problems tab", description = "Check Related Problems tab - Create Problem")
     @Description("Check Related Problems tab - Create Problem")
     public void createProblemRelatedToTicket() {
         ticketDetailsPage = ticketDashboardPage.openTicketDetailsView(String.valueOf(ticketDashboardPage.getRowForTicketWithID(ticketID)), BASIC_URL);
@@ -390,4 +423,67 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
         Assert.assertEquals(ticketDetailsPage.checkRelatedProblemLabel(0), CREATE_PROBLEM_LABEL);
     }
 
+    @Test(priority = 21, testName = "Add attachment to ticket", description = "Add attachment to ticket")
+    @Description("Add attachment to ticket")
+    public void addAttachment() {
+        ticketDetailsPage = ticketDashboardPage.openTicketDetailsView(String.valueOf(ticketDashboardPage.getRowForTicketWithID(ticketID)), BASIC_URL);
+        ticketDetailsPage.maximizeWindow(DETAILS_WINDOW_ID);
+        ticketDetailsPage.selectTab(ATTACHMENTS_TAB_ARIA_CONTROLS);
+
+        Assert.assertTrue(ticketDetailsPage.isAttachmentListEmpty());
+        attachmentWizardPage = ticketDetailsPage.clickAttachFile();
+        attachmentWizardPage.uploadAttachmentFile(FILE_TO_UPLOAD_PATH);
+        ticketDetailsPage = attachmentWizardPage.clickAccept();
+
+        Assert.assertFalse(ticketDetailsPage.isAttachmentListEmpty());
+        Assert.assertEquals(ticketDetailsPage.getAttachmentOwner(), USER_NAME);
+    }
+
+    @Test(priority = 22, testName = "Download Attachment", description = "Download the Attachment from Attachment tab in Ticket Details")
+    @Description("Download the Attachment from Attachment tab in Ticket Details")
+    public void downloadAttachment() {
+        ticketDetailsPage = ticketDashboardPage.openTicketDetailsView(String.valueOf(ticketDashboardPage.getRowForTicketWithID(ticketID)), BASIC_URL);
+        ticketDetailsPage.maximizeWindow(DETAILS_WINDOW_ID);
+        ticketDetailsPage.selectTab(ATTACHMENTS_TAB_ARIA_CONTROLS);
+
+        Assert.assertFalse(ticketDetailsPage.isAttachmentListEmpty());
+        ticketDetailsPage.clickDownloadAttachment();
+        ticketDetailsPage.attachFileToReport(CSV_FILE);
+
+        Assert.assertTrue(ticketDetailsPage.checkIfFileIsNotEmpty(CSV_FILE));
+    }
+
+    @Test(priority = 23, testName = "Delete Attachment", description = "Delete the Attachment from Attachment tab in Ticket Details")
+    @Description("Delete the Attachment from Attachment tab in Ticket Details")
+    public void deleteAttachment() {
+        ticketDetailsPage = ticketDashboardPage.openTicketDetailsView(String.valueOf(ticketDashboardPage.getRowForTicketWithID(ticketID)), BASIC_URL);
+        ticketDetailsPage.maximizeWindow(DETAILS_WINDOW_ID);
+        ticketDetailsPage.selectTab(ATTACHMENTS_TAB_ARIA_CONTROLS);
+
+        Assert.assertFalse(ticketDetailsPage.isAttachmentListEmpty());
+        ticketDetailsPage.clickDeleteAttachment();
+
+        Assert.assertTrue(ticketDetailsPage.isAttachmentListEmpty());
+    }
+
+    @Test(priority = 24, testName = "Most Important Info test", description = "add comment as important and check if it is displayed in most important info tab")
+    @Description("add comment as important and check if it is displayed in most important info tab")
+    public void mostImportantInfoTest() {
+        ticketDetailsPage = ticketDashboardPage.openTicketDetailsView(String.valueOf(ticketDashboardPage.getRowForTicketWithID(ticketID)), BASIC_URL);
+        ticketDetailsPage.selectTab(MESSAGES_TAB_ARIA_CONTROLS);
+        messagesTab = new MessagesTab(driver, webDriverWait);
+        messagesTab.clickCreateNewCommentButton();
+        messagesTab.enterCommentMessage(NOTIFICATION_MESSAGE_COMMENT_IMPORTANT);
+        messagesTab.clickCreateCommentButton();
+        Assert.assertFalse(messagesTab.isMessagesTabEmpty());
+        Assert.assertEquals(messagesTab.getMessageText(0), NOTIFICATION_MESSAGE_COMMENT_IMPORTANT);
+
+        messagesTab.markAsImportant(0);
+        Assert.assertEquals(messagesTab.getBadgeTextFromMessage(0, 1), "IMPORTANT");
+        ticketDetailsPage.selectTab(MOST_IMPORTANT_INFO_TAB_ARIA_CONTROLS);
+        mostImportantInfoTab = new MessagesTab(driver, webDriverWait);
+        Assert.assertFalse(mostImportantInfoTab.isMessagesTabEmpty());
+        Assert.assertEquals(mostImportantInfoTab.getMessageText(0), NOTIFICATION_MESSAGE_COMMENT_IMPORTANT);
+        Assert.assertEquals(mostImportantInfoTab.getBadgeTextFromMessage(0, 1), "IMPORTANT");
+    }
 }

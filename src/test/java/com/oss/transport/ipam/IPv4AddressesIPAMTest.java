@@ -60,12 +60,12 @@ public class IPv4AddressesIPAMTest extends BaseTestCase {
     private static final String OPERATOR_HIGHER_OR_EQUAL = ">=";
     private static final String LOWEST_IP_SUBNET_MASK = "24";
     private static final String HIGHER_IP_SUBNET_MASK = "25";
-    private static final String ASSIGNMENT_LOCATION_NAME = "IPAMSeleniumTest";
+    private static final String ASSIGNMENT_LOCATION_NAME = "SELENIUM_TRANSPORT_LOCATION";
     private static final String ASSIGNMENT_DEVICE_NAME = "IPAMSeleniumTest";
     private static final String ASSIGNMENT_INTERFACE_NAME = "IPAMSeleniumTestFirstInterface";
     private static final String ASSIGNMENT_SECOND_INTERFACE_NAME = "IPAMSeleniumTestSecondInterface";
-    private static final String ASSIGNMENT_LOCATION_IDENTIFIER = "IPAMSeleniumTest-BU3";
-    private static final String ASSIGNMENT_DEVICE_IDENTIFIER = "IPAMSeleniumTest-Router-2";
+    private static final String ASSIGNMENT_LOCATION_IDENTIFIER = "SELENIUM_TRANSPORT_CITY-SI1";
+    private static final String ASSIGNMENT_DEVICE_IDENTIFIER = "SELENIUM_TRANSPORT_LOCATION-Access Control-1";
     private static final String ASSIGNMENT_INTERFACE_IDENTIFIER = "IPAMSeleniumTest-Router-2\\CLUSTER 0\\1";
     private static final String ASSIGNMENT_SECOND_INTERFACE_IDENTIFIER = "IPAMSeleniumTest-Router-2\\CLUSTER 1\\1";
     private static final String HOST_ADDRESS = "126.0.0.1";

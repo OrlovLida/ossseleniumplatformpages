@@ -31,6 +31,7 @@ import com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType;
 import com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsPanel;
 import com.oss.framework.iaa.widgets.dpe.treewidget.KpiTreeWidget;
 import com.oss.pages.BasePage;
+import com.oss.pages.bookmarkmanager.bookmarkmanagerwizards.BookmarkWizardPage;
 
 import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
@@ -529,9 +530,10 @@ public class KpiViewPage extends BasePage {
         seeChartIsDisplayed();
     }
 
-    @Step("I click Save bookmark")
-    public void clickSaveBookmark() {
+    @Step("Click Save bookmark")
+    public BookmarkWizardPage clickSaveBookmark() {
         ButtonPanel.create(driver, wait).clickButton(SAVE_BOOKMARK_BUTTON_ID);
+        return new BookmarkWizardPage(driver, wait);
     }
 
     @Step("Check if node is selected in the tree")
@@ -685,5 +687,11 @@ public class KpiViewPage extends BasePage {
 
     public boolean isValueInGivenRow(String value, int row, String columnId) {
         return TableComponent.create(driver, wait, IND_VIEW_TABLE_ID).getCellValue(row, columnId).equals(value);
+    }
+
+    @Step("Get Bookmark Title from header")
+    public String getBookmarkTitle() {
+        waitForPageToLoad(driver, wait);
+        return ToolbarWidget.create(driver, wait).getViewTitle();
     }
 }

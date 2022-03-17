@@ -2,6 +2,7 @@ package com.oss.pages.servicedesk.ticket;
 
 import java.util.List;
 
+import com.oss.framework.components.prompts.ConfirmationBox;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
@@ -21,6 +22,7 @@ import com.oss.framework.widgets.list.CommonList;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.tabs.TabWindowWidget;
 import com.oss.pages.servicedesk.BaseSDPage;
+import com.oss.pages.servicedesk.ticket.wizard.AttachmentWizardPage;
 import com.oss.pages.servicedesk.ticket.wizard.SDWizardPage;
 
 import io.qameta.allure.Step;
@@ -48,6 +50,9 @@ public class TicketDetailsPage extends BaseSDPage {
     private static final String MORE_DETAILS_LABEL = "More details";
     private static final String SAME_MO_TT_TABLE_ID = "_sameMOTTTableWidget";
     private static final String LINK_TICKETS_ID = "LINK_TICKETS";
+    private static final String UNLINK_TICKET_ID = "UNLINK_TICKET";
+    private static final String CONFIRM_UNLINK_TICKET_BUTTON_LABEL = "Unlink";
+    private static final String SHOW_ARCHIVED_SWITCHER_ID = "_relatedTicketsSwitcherApp";
     private static final String ADD_ROOT_CAUSE_ID = "_addRootCause";
     private static final String ADD_PARTICIPANT_ID = "_createParticipant";
     private static final String PARTICIPANTS_TABLE_ID = "_participantsTableApp";
@@ -63,6 +68,13 @@ public class TicketDetailsPage extends BaseSDPage {
     private static final String RELATED_TICKETS_TABLE_ID_ATTRIBUTE_ID = "ID";
     private static final String ROOT_CAUSES_TABLE_ID = "_rootCausesApp";
     private static final String ROOT_CAUSES_TABLE_ID_MO_IDENTIFIER_ID = "MO Identifier";
+    private static final String ATTACHMENT_WIZARD_ID = "addFileComponentId";
+    private static final String ATTACH_FILE_LABEL = "Attach file";
+    private static final String ATTACHMENTS_LIST_ID = "attachmentManagerBusinessView_commonList";
+    private static final String OWNER_COLUMN_NAME = "Owner";
+    private static final String DOWNLOAD_ATTACHMENT_LABEL = "DOWNLOAD";
+    private static final String DELETE_ATTACHMENT_LABEL = "Delete";
+    private static final String CONFIRM_DELETE_ATTACHMENT_BUTTON_ID = "ConfirmationBox_removeAttachmentPopup_confirmationBox_action_button";
 
     public TicketDetailsPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -339,11 +351,91 @@ public class TicketDetailsPage extends BaseSDPage {
         return checkRootCausesData(objectIndex, ROOT_CAUSES_TABLE_ID_MO_IDENTIFIER_ID);
     }
 
+    @Step("I check if MO Identifier is present on Root Causes tab")
+    public boolean checkIfMOIdentifierIsPresentOnRootCauses(String MOIdentifier) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("I check if MO Identifier is present on Root Causes tab");
+        int numberOfRows = OldTable.createById(driver, wait, ROOT_CAUSES_TABLE_ID).countRows(ROOT_CAUSES_TABLE_ID_MO_IDENTIFIER_ID);
+        for (int i = 0; i < numberOfRows; i++) {
+            if (checkRootCausesData(i, ROOT_CAUSES_TABLE_ID_MO_IDENTIFIER_ID).equals(MOIdentifier)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Step("Click Attach File")
+    public AttachmentWizardPage clickAttachFile() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        clickContextAction(ATTACH_FILE_LABEL);
+        return new AttachmentWizardPage(driver, wait, ATTACHMENT_WIZARD_ID);
+    }
+
+    @Step("Check if Attachment List is empty")
+    public boolean isAttachmentListEmpty() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return getAttachmentList().hasNoData();
+    }
+
+    @Step("Check if Attachment owner is visible")
+    public String getAttachmentOwner() {
+        return getAttachmentList().getRows().get(0).getValue(OWNER_COLUMN_NAME);
+    }
+
+    @Step("Click Download Attachment")
+    public void clickDownloadAttachment() {
+        getAttachmentList().getRows().get(0).callActionIcon(DOWNLOAD_ATTACHMENT_LABEL);
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    @Step("Click Delete Attachment")
+    public void clickDeleteAttachment() {
+        getAttachmentList().getRows().get(0).callAction(DELETE_ATTACHMENT_LABEL);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        Button.createById(driver, CONFIRM_DELETE_ATTACHMENT_BUTTON_ID).click();
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
     private String checkRootCausesData(int objectIndex, String attributeId) {
         return checkOldTableData(ROOT_CAUSES_TABLE_ID, objectIndex, attributeId);
     }
 
     private String checkOldTableData(String tableId, int index, String attributeId) {
         return OldTable.createById(driver, wait, tableId).getCellValue(index, attributeId);
+    }
+
+    private CommonList getAttachmentList() {
+        return CommonList.create(driver, wait, ATTACHMENTS_LIST_ID);
+    }
+
+    public void selectTicketInRelatedTicketsTab(int index) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        OldTable.createById(driver, wait, RELATED_TICKETS_TABLE_ID).selectRow(index);
+    }
+
+    public void unlinkTicketFromRelatedTicketsTab() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        clickContextActionFromButtonContainer(UNLINK_TICKET_ID);
+        log.info("Unlink Ticket popup is opened");
+    }
+
+    public void confirmUnlinkingTicketFromRelatedTicketsTab() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        ConfirmationBox.create(driver, wait).clickButtonByLabel(CONFIRM_UNLINK_TICKET_BUTTON_LABEL);
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    @Step("I check Related Tickets table")
+    public boolean checkIfRelatedTicketsTableIsEmpty() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Check if Related Tickets Table is empty");
+        return OldTable.createById(driver, wait, RELATED_TICKETS_TABLE_ID).hasNoData();
+    }
+
+    public void turnOnShowArchived() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Turn On Show archived switcher");
+        ComponentFactory.create(SHOW_ARCHIVED_SWITCHER_ID, Input.ComponentType.SWITCHER, driver, wait).setSingleStringValue("true");
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 }

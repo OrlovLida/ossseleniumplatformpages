@@ -1,4 +1,4 @@
-package com.oss.services.nfv;
+package com.oss.services.nfv.vnf;
 
 import com.jayway.restassured.http.ContentType;
 import com.oss.untils.Environment;

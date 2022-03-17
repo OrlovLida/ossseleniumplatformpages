@@ -53,6 +53,10 @@ public class BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
+    public void chooseGroupContext(String groupName) {
+        LoginPanel.create(driver, wait).chooseGroupContext(groupName);
+    }
+
     public LoginPanelPage openLoginPanel() {
         ToolbarWidget.create(driver, wait).openLoginPanel();
         return new LoginPanelPage(driver);

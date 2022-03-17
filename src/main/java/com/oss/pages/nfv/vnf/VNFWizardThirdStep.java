@@ -1,4 +1,4 @@
-package com.oss.pages.nfv;
+package com.oss.pages.nfv.vnf;
 
 import com.oss.framework.wizard.Wizard;
 import org.openqa.selenium.WebDriver;
