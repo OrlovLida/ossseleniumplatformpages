@@ -21,10 +21,10 @@
         </classes>
     </test>
     <test name="LayoutTests">
-    <classes>
-        <class name="com.oss.web.LayoutTest"/>
-    </classes>
-</test>
+        <classes>
+            <class name="com.oss.web.LayoutTest"/>
+        </classes>
+    </test>
     <test name="FilteringOnRelationNodesTest">
         <classes>
             <class name="com.oss.web.FilteringOnRelationNodesTest"/>
@@ -33,6 +33,16 @@
     <test name="TreeWidget">
         <classes>
             <class name="com.oss.web.TreeWidgetTest"/>
+        </classes>
+    </test>
+    <test name="TableWidgetConfigurationTest">
+        <classes>
+            <class name="com.oss.configuration.TableWidgetConfigurationTest"/>
+        </classes>
+    </test>
+    <test name="TabsConfigurationTest">
+        <classes>
+            <class name="com.oss.configuration.TabsConfigurationTest"/>
         </classes>
     </test>
     <test name="NewNavigationTest">
