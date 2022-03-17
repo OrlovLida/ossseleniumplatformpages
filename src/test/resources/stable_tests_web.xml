@@ -35,4 +35,9 @@
             <class name="com.oss.web.TreeWidgetTest"/>
         </classes>
     </test>
+    <test name="NewNavigationTest">
+        <classes>
+            <class name="com.oss.web.NewNavigationTest"/>
+        </classes>
+    </test>
 </suite>
