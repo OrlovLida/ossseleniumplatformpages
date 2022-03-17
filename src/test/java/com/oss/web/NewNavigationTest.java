@@ -147,9 +147,8 @@ public class NewNavigationTest extends BaseTestCase {
         toolsManagerWindow.getCategoryByName(CATEGORY_NAME).collapseCategory();
         int categoryPosition = toolsManagerWindow.getCategoriesName().indexOf(CATEGORY_NAME);
         toolsManagerWindow.changeCategoryOrder(CATEGORY_NAME, categoryPosition - 1);
-        //toolsManagerWindow= ToolsManagerWindow.create(driver,webDriverWait);
         int newPosition = toolsManagerWindow.getCategoriesName().indexOf(CATEGORY_NAME);
-        Assertions.assertThat(newPosition).isNotEqualTo(categoryPosition);
+        Assertions.assertThat(newPosition).isNotEqualTo(categoryPosition).isEqualTo(categoryPosition - 1);
     }
     
     @Test(priority = 5)
@@ -291,7 +290,6 @@ public class NewNavigationTest extends BaseTestCase {
     @Test(priority = 16)
     @Description(value = "Delete Application" + APPLICATION_NAME)
     public void deleteApplication() {
-        changeUser(USER_1, PASSWORD_1);
         toolsManagerWindow.callActionApplication(APPLICATION_NAME, CATEGORY_NAME_UPDATE, DELETE_APPLICATION_ID);
         confirmDelete();
         DelayUtils.sleep(5000);
