@@ -17,8 +17,10 @@ import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.prompts.Popup;
 import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.components.tree.TreeComponent;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.HierarchyViewPage;
 import com.oss.repositories.AddressRepository;
 import com.oss.repositories.LocationInventoryRepository;
@@ -28,6 +30,10 @@ import com.oss.untils.Environment;
  * @author Gabriela Zaranek
  */
 public class FilteringOnRelationNodesTest extends BaseTestCase {
+    private static final String DEVICE_NAME = "FORN-123-456";
+    private static final String PORT_NAME_10 = "10";
+    private static final String PORT_NAME_02 = "02";
+    private static final String EXPAND_CLEAR_FILTERS_BUTTON = "Expand & Clear Filters";
     private Environment env = Environment.getInstance();
     private static final Logger log = LoggerFactory.getLogger(TreeWidgetTest.class);
     private static final String LOCATION_NAME = "FilteringOnRelationNodesTest";
@@ -74,13 +80,12 @@ public class FilteringOnRelationNodesTest extends BaseTestCase {
     
     @Test(priority = 2)
     public void editFilter() {
-        hierarchyViewPage.getFirstNode().expandNextLevel();
         TreeComponent.Node node = hierarchyViewPage.getNodeByLabelPath(LOCATION_NAME + ".Locations");
         AdvancedSearch advancedSearch = node.openAdvancedSearch();
         advancedSearch.setFilter(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, FLOOR_NAME);
         advancedSearch.clickApply();
         Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(FLOOR_NAME).doesNotContain(FLOOR_NAME_2);
-        
+
     }
     
     @Test(priority = 3)
@@ -99,8 +104,20 @@ public class FilteringOnRelationNodesTest extends BaseTestCase {
         Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).doesNotContain(FLOOR_NAME).doesNotContain(FLOOR_NAME_2);
         clearFilter(node);
     }
-    
+
     @Test(priority = 5)
+    public void filterOnRelationsAndExpandNextLevel() {
+        hierarchyViewPage.getFirstNode().expandNextLevel();
+        TreeComponent.Node node = hierarchyViewPage.getNodeByLabelPath(PATH_1ST_LOCATIONS_RELATION);
+        node.searchByAttribute(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, FLOOR_NAME);
+        Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(FLOOR_NAME).doesNotContain(FLOOR_NAME_2);
+        hierarchyViewPage.expandNextLevel(LOCATION_NAME);
+        Popup.create(driver,webDriverWait).clickButtonByLabel(EXPAND_CLEAR_FILTERS_BUTTON);
+        Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(FLOOR_NAME).contains(FLOOR_NAME_2);
+    }
+
+
+    @Test(priority = 6)
     public void filterOnMoreRelations() {
         TreeComponent.Node location1stLevel = hierarchyViewPage.getNodeByLabelPath(LOCATION_NAME + ".Locations");
         AdvancedSearch advancedSearch = location1stLevel.openAdvancedSearch();
@@ -122,7 +139,7 @@ public class FilteringOnRelationNodesTest extends BaseTestCase {
         clearFilter(location1stLevel);
     }
     
-    @Test(priority = 6)
+    @Test(priority = 7)
     public void filterOnRelationsAtDifferentLevels() {
         String nodePathLabel = LOCATION_NAME + ".Locations." + SUB_LOCATION_TYPE_FLOOR + "." + FLOOR_NAME + ".Locations";
         hierarchyViewPage.expandNextLevel(LOCATION_NAME);
@@ -151,19 +168,7 @@ public class FilteringOnRelationNodesTest extends BaseTestCase {
         clearFilter(location1stLevel);
     }
     
-    @Test(priority = 7)
-    public void filterOnRelationsAndExpandNextLevel() {
-        hierarchyViewPage.getFirstNode().expandNextLevel();
-        TreeComponent.Node node = hierarchyViewPage.getNodeByLabelPath(LOCATION_NAME + ".Locations");
-        AdvancedSearch advancedSearch = node.openAdvancedSearch();
-        advancedSearch.setFilter(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, FLOOR_NAME);
-        advancedSearch.clickApply();
-        Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(FLOOR_NAME).doesNotContain(FLOOR_NAME_2);
-        hierarchyViewPage.expandNextLevel(LOCATION_NAME);
-        Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(FLOOR_NAME).contains(FLOOR_NAME_2);
-        
-    }
-    
+
     private void clearFilter(TreeComponent.Node node) {
         AdvancedSearch advancedSearch = node.openAdvancedSearch();
         advancedSearch.clickClearAll();
@@ -200,5 +205,5 @@ public class FilteringOnRelationNodesTest extends BaseTestCase {
         return locationInventoryRepository.createSubLocation(SUB_LOCATION_TYPE_FLOOR, floorName, Long.parseLong(preciseLocationId),
                 LOCATION_TYPE_BUILDING, Long.valueOf(locationId), LOCATION_TYPE_BUILDING);
     }
-    
+
 }
