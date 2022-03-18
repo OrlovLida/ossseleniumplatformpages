@@ -49,7 +49,7 @@ public class TreeWidgetTest extends BaseTestCase {
     private static final String PATH_ROOM_1 = PATH_RELATION_LOCATIONS + "." + SUB_LOCATION_TYPE_FLOOR + "." + FLOOR_NAME
             + ".Locations." + SUB_LOCATION_TYPE_ROOM + "." + ROOM_NAME;
     private static final String LOCATION_TYPE_BUILDING = "Building";
-    private static final String ROOM_3_CREATE = FakeGenerator.getLocation(FakeGenerator.FilmTitle.HARRY_POTTER);
+    private static final String ROOM_3_CREATE = "Room_"+ FakeGenerator.getIdNumber();
     private static final String PATH_ROOM_3 = PATH_RELATION_LOCATIONS + "." + SUB_LOCATION_TYPE_ROOM + "." + ROOM_3_CREATE;
     private static final String ROOM_3_UPDATE = FakeGenerator.getLocation(FakeGenerator.FilmTitle.LORD_OF_THE_RING);
     private static final String PATH_ROOM_3_UPDATE = PATH_RELATION_LOCATIONS + "." + SUB_LOCATION_TYPE_ROOM + "." + ROOM_3_UPDATE;
@@ -69,7 +69,7 @@ public class TreeWidgetTest extends BaseTestCase {
     private String locationId;
     private Long roomId_2;
     private Long deviceId;
-    
+
     @BeforeClass
     public void goToHierarchyViewPage() {
         hierarchyViewPage = HierarchyViewPage.openHierarchyViewPage(driver, BASIC_URL, "Location");

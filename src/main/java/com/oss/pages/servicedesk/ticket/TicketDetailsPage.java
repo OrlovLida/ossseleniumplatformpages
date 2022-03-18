@@ -2,6 +2,7 @@ package com.oss.pages.servicedesk.ticket;
 
 import java.util.List;
 
+import com.oss.framework.components.prompts.ConfirmationBox;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
@@ -49,6 +50,9 @@ public class TicketDetailsPage extends BaseSDPage {
     private static final String MORE_DETAILS_LABEL = "More details";
     private static final String SAME_MO_TT_TABLE_ID = "_sameMOTTTableWidget";
     private static final String LINK_TICKETS_ID = "LINK_TICKETS";
+    private static final String UNLINK_TICKET_ID = "UNLINK_TICKET";
+    private static final String CONFIRM_UNLINK_TICKET_BUTTON_LABEL = "Unlink";
+    private static final String SHOW_ARCHIVED_SWITCHER_ID = "_relatedTicketsSwitcherApp";
     private static final String ADD_ROOT_CAUSE_ID = "_addRootCause";
     private static final String ADD_PARTICIPANT_ID = "_createParticipant";
     private static final String PARTICIPANTS_TABLE_ID = "_participantsTableApp";
@@ -386,7 +390,7 @@ public class TicketDetailsPage extends BaseSDPage {
 
     @Step("Click Delete Attachment")
     public void clickDeleteAttachment() {
-        getAttachmentList().getRows().get(0).callActionByLabel(DELETE_ATTACHMENT_LABEL);
+        getAttachmentList().getRows().get(0).callAction(DELETE_ATTACHMENT_LABEL);
         DelayUtils.waitForPageToLoad(driver, wait);
         Button.createById(driver, CONFIRM_DELETE_ATTACHMENT_BUTTON_ID).click();
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -402,5 +406,36 @@ public class TicketDetailsPage extends BaseSDPage {
 
     private CommonList getAttachmentList() {
         return CommonList.create(driver, wait, ATTACHMENTS_LIST_ID);
+    }
+
+    public void selectTicketInRelatedTicketsTab(int index) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        OldTable.createById(driver, wait, RELATED_TICKETS_TABLE_ID).selectRow(index);
+    }
+
+    public void unlinkTicketFromRelatedTicketsTab() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        clickContextActionFromButtonContainer(UNLINK_TICKET_ID);
+        log.info("Unlink Ticket popup is opened");
+    }
+
+    public void confirmUnlinkingTicketFromRelatedTicketsTab() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        ConfirmationBox.create(driver, wait).clickButtonByLabel(CONFIRM_UNLINK_TICKET_BUTTON_LABEL);
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    @Step("I check Related Tickets table")
+    public boolean checkIfRelatedTicketsTableIsEmpty() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Check if Related Tickets Table is empty");
+        return OldTable.createById(driver, wait, RELATED_TICKETS_TABLE_ID).hasNoData();
+    }
+
+    public void turnOnShowArchived() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Turn On Show archived switcher");
+        ComponentFactory.create(SHOW_ARCHIVED_SWITCHER_ID, Input.ComponentType.SWITCHER, driver, wait).setSingleStringValue("true");
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 }

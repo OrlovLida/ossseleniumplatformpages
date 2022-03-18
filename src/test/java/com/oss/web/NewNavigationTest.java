@@ -38,22 +38,23 @@ import io.qameta.allure.Description;
  */
 public class NewNavigationTest extends BaseTestCase {
     private static final String CATEGORY_NAME = "Selenium Test Navigation " + FakeGenerator.getIdNumber();
-    private static final String CATEGORY_NAME_UPDATE = CATEGORY_NAME + "Update";
+    //private static final String CATEGORY_NAME = "Selenium Test Navigation 718-98-3065";
+    private static final String CATEGORY_NAME_UPDATE = CATEGORY_NAME + " Update";
     private static final String DESCRIPTION = FakeGenerator.getCharacter(FakeGenerator.FilmTitle.LORD_OF_THE_RING);
     private static final String ICON_ID = "AI_CONTROL_DESK";
-    private static final String CREATE_SUBCATEGORY_ID = "createSubcategoryButton26";
+    private static final String CREATE_SUBCATEGORY_ID = "createSubcategoryButton";
     private static final String MOVIES_SUBCATEGORY = "Movies";
     private static final String ACTORS_SUBCATEGORY = "Actors";
     private static final String ACTOR_SUBCATEGORY_UPDATE = ACTORS_SUBCATEGORY + " Update";
-    private static final String ADD_APPLICATION = "addTileButton1";
+    private static final String ADD_APPLICATION = "addTileButton";
     private static final String APPLICATION_NAME = "All Test Movies";
     private static final String APPLICATION_NAME_2 = "Test Movies";
     private static final String APPLICATION_NAME_3 = "Actors";
     private static final String APPLICATION_TYPE = "Inventory View";
-    private static final String EDIT_BUTTON = "editButton0";
+    private static final String EDIT_BUTTON = "editButton";
     private static final String APPLICATION_NAME_2_UPDATE = "Best Movies";
-    private static final String EDIT_CATEGORY_BUTTON = "editCategoryButton1";
-    private static final String DELETE_APPLICATION_ID = "deleteCategoryButton1";
+    private static final String EDIT_CATEGORY_BUTTON = "editCategoryButton";
+    private static final String DELETE_APPLICATION_ID = "deleteCategoryButton";
     private static final String USER_1 = "webseleniumtests";
     private static final String PASSWORD_1 = "Webtests123!";
     private static final String USER_2 = "webseleniumtests2";
@@ -143,10 +144,11 @@ public class NewNavigationTest extends BaseTestCase {
     
     @Test(priority = 4)
     public void changeOrderCategory() {
+        toolsManagerWindow.getCategoryByName(CATEGORY_NAME).collapseCategory();
         int categoryPosition = toolsManagerWindow.getCategoriesName().indexOf(CATEGORY_NAME);
-        toolsManagerWindow.changeCategoryOrder(CATEGORY_NAME, categoryPosition - 2);
+        toolsManagerWindow.changeCategoryOrder(CATEGORY_NAME, categoryPosition - 1);
         int newPosition = toolsManagerWindow.getCategoriesName().indexOf(CATEGORY_NAME);
-        Assertions.assertThat(newPosition).isNotEqualTo(categoryPosition).isEqualTo(categoryPosition - 2);
+        Assertions.assertThat(newPosition).isNotEqualTo(categoryPosition).isEqualTo(categoryPosition - 1);
     }
     
     @Test(priority = 5)
@@ -170,6 +172,7 @@ public class NewNavigationTest extends BaseTestCase {
         ApplicationWizard applicationWizard = openApplicationWizard();
         applicationWizard.addPathParam(TEST_MOVIE_TYPE);
         applicationWizard.clickSave();
+        DelayUtils.sleep(3000);
         toolsManagerWindow.openApplication(CATEGORY_NAME, APPLICATION_NAME_2);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assertions.assertThat(driver.getCurrentUrl()).contains(TEST_MOVIE_TYPE);
@@ -177,9 +180,11 @@ public class NewNavigationTest extends BaseTestCase {
     
     @Test(priority = 8)
     public void addQueryParam() {
+        goToHomePage();
         ApplicationWizard applicationWizard = openApplicationWizard();
         applicationWizard.addQueryParam("query", "rating=='10'");
         applicationWizard.clickSave();
+        DelayUtils.sleep(2000);
         toolsManagerWindow.openApplication(CATEGORY_NAME, APPLICATION_NAME_2);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         ArrayList<String> ratingValues = getValuesFromColumn("rating");
@@ -189,14 +194,15 @@ public class NewNavigationTest extends BaseTestCase {
     @Test(priority = 9)
     @Description("Set Favorites Application and check show ony favourites")
     public void setFavoriteApplication() {
-        Application application = toolsManagerWindow.getApplication(APPLICATION_NAME_2, CATEGORY_NAME);
+        goToHomePage();
+        Application application = toolsManagerWindow.getApplication(APPLICATION_NAME, CATEGORY_NAME);
         application.markFavorite();
         Assertions.assertThat(application.isFavorite()).isTrue();
         toolsManagerWindow.setShowOnlyFavourites();
-        Assertions.assertThat(toolsManagerWindow.getApplicationNames()).contains(APPLICATION_NAME_2);
-        openViewBySideMenu(APPLICATION_NAME_2);
-        Assertions.assertThat(toolsManagerWindow.getApplicationURL(APPLICATION_NAME_2).orElse(LINK_IS_NOT_AVAILABLE_EXCEPTION))
-                .isEqualTo(driver.getCurrentUrl());
+        String applicationURL = toolsManagerWindow.getApplicationURL(APPLICATION_NAME).orElse(LINK_IS_NOT_AVAILABLE_EXCEPTION);
+        Assertions.assertThat(toolsManagerWindow.getApplicationNames()).contains(APPLICATION_NAME);
+        openViewBySideMenu(APPLICATION_NAME);
+        Assertions.assertThat(applicationURL).isEqualTo(driver.getCurrentUrl());
     }
     
     @Test(priority = 10)
@@ -212,29 +218,31 @@ public class NewNavigationTest extends BaseTestCase {
         toolsManagerWindow.setShowOnlyFavourites();
         List<String> applicationNames = applications.stream().map(Application::getApplicationName).collect(Collectors.toList());
         Assertions.assertThat(toolsManagerWindow.getApplicationNames()).containsAll(applicationNames);
-        openViewBySideMenu(APPLICATION_NAME);
-        Assertions.assertThat(toolsManagerWindow.getApplicationURL(APPLICATION_NAME_2).orElse(LINK_IS_NOT_AVAILABLE_EXCEPTION))
-                .isEqualTo(driver.getCurrentUrl());
+        String applicationURL = toolsManagerWindow.getApplicationURL(APPLICATION_NAME_2).orElse(LINK_IS_NOT_AVAILABLE_EXCEPTION);
+        openViewBySideMenu(APPLICATION_NAME_2);
+        Assertions.assertThat(applicationURL).isEqualTo(driver.getCurrentUrl());
     }
     
     @Test(priority = 11)
     public void addPolitics() {
+        goToHomePage();
         ApplicationWizard applicationWizard = openApplicationWizard();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         applicationWizard.setPolicies(PHYSICAL_DEVICE_TYPE, MODELS_LEARNING_ROLE);
         applicationWizard.clickSave();
-        DelayUtils.sleep(3000);
+        DelayUtils.sleep(5000);
         Assertions.assertThat(toolsManagerWindow.getApplicationURL(APPLICATION_NAME_2)).isEmpty();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         changeUser(USER_2, PASSWORD_2);
         List<String> applicationNames = toolsManagerWindow.getApplicationNames(CATEGORY_NAME);
-        Assertions.assertThat(applicationNames).doesNotContain(APPLICATION_NAME_2_UPDATE).contains(APPLICATION_NAME);
+        Assertions.assertThat(applicationNames).doesNotContain(APPLICATION_NAME_2).contains(APPLICATION_NAME);
     }
     
     @Test(priority = 12)
     @Description("Check if Subcategory is not visible for user without configuration role ")
     public void checkPoliticsNotVisibleSubcategory() {
         // goToHomePage();
+        changeUser(USER_1, PASSWORD_1);
         toolsManagerWindow.callActionSubcategory(ACTORS_SUBCATEGORY, CATEGORY_NAME, ADD_APPLICATION);
         ApplicationWizard applicationWizard = ApplicationWizard.create(driver, webDriverWait);
         applicationWizard.setApplication(APPLICATION_TYPE);
@@ -248,20 +256,22 @@ public class NewNavigationTest extends BaseTestCase {
     
     @Test(priority = 13)
     public void editApplication() {
+        changeUser(USER_1, PASSWORD_1);
         ApplicationWizard applicationWizard = openApplicationWizard();
         applicationWizard.setApplicationName(APPLICATION_NAME_2_UPDATE);
+        applicationWizard.clickSave();
+        DelayUtils.sleep(5000);
         List<String> applicationNames = toolsManagerWindow.getApplicationNames(CATEGORY_NAME);
         Assertions.assertThat(applicationNames).contains(APPLICATION_NAME_2_UPDATE);
     }
     
     @Test(priority = 14)
     public void editSubcategoryName() {
-        changeUser(USER_1, PASSWORD_1);
-        toolsManagerWindow.callActionSubcategory(CATEGORY_NAME, ACTORS_SUBCATEGORY, EDIT_BUTTON);
+        toolsManagerWindow.callActionSubcategory(ACTORS_SUBCATEGORY,CATEGORY_NAME, EDIT_BUTTON);
         CategoryWizard categoryWizard = CategoryWizard.create(driver, webDriverWait);
         categoryWizard.setName(ACTOR_SUBCATEGORY_UPDATE);
         categoryWizard.clickSave();
-        DelayUtils.sleep(1000);
+        DelayUtils.sleep(5000);
         List<String> subcategoriesNames = toolsManagerWindow.getSubcategoriesNames(CATEGORY_NAME);
         Assertions.assertThat(subcategoriesNames).doesNotContain(ACTORS_SUBCATEGORY).contains(ACTOR_SUBCATEGORY_UPDATE);
     }
@@ -272,7 +282,7 @@ public class NewNavigationTest extends BaseTestCase {
         CategoryWizard categoryWizard = CategoryWizard.create(driver, webDriverWait);
         categoryWizard.setName(CATEGORY_NAME_UPDATE);
         categoryWizard.clickSave();
-        DelayUtils.sleep(1000);
+        DelayUtils.sleep(5000);
         List<String> categoriesName = toolsManagerWindow.getCategoriesName();
         Assertions.assertThat(categoriesName).contains(CATEGORY_NAME_UPDATE).doesNotContain(CATEGORY_NAME);
     }
@@ -280,20 +290,21 @@ public class NewNavigationTest extends BaseTestCase {
     @Test(priority = 16)
     @Description(value = "Delete Application" + APPLICATION_NAME)
     public void deleteApplication() {
-        changeUser(USER_1, PASSWORD_1);
-        toolsManagerWindow.callActionApplication(APPLICATION_NAME, CATEGORY_NAME, DELETE_APPLICATION_ID);
+        toolsManagerWindow.callActionApplication(APPLICATION_NAME, CATEGORY_NAME_UPDATE, DELETE_APPLICATION_ID);
         confirmDelete();
-        List<String> applicationNames = toolsManagerWindow.getApplicationNames(CATEGORY_NAME);
+        DelayUtils.sleep(5000);
+        List<String> applicationNames = toolsManagerWindow.getApplicationNames(CATEGORY_NAME_UPDATE);
         Assertions.assertThat(applicationNames).doesNotContain(APPLICATION_NAME).isNotEmpty();
     }
     
     @Test(priority = 17)
     @Description(value = "Delete Category" + MOVIES_SUBCATEGORY)
     public void deleteSubcategory() {
-        toolsManagerWindow.callActionSubcategory(MOVIES_SUBCATEGORY, CATEGORY_NAME, DELETE_CATEGORY_BUTTON_ID);
+        toolsManagerWindow.callActionSubcategory(MOVIES_SUBCATEGORY, CATEGORY_NAME_UPDATE, DELETE_CATEGORY_BUTTON_ID);
         confirmDelete();
-        List<String> subcategoriesNames = toolsManagerWindow.getSubcategoriesNames(CATEGORY_NAME);
-        Assertions.assertThat(subcategoriesNames).contains(ACTORS_SUBCATEGORY).doesNotContain(MOVIES_SUBCATEGORY);
+        DelayUtils.sleep(5000);
+        List<String> subcategoriesNames = toolsManagerWindow.getSubcategoriesNames(CATEGORY_NAME_UPDATE);
+        Assertions.assertThat(subcategoriesNames).contains(ACTOR_SUBCATEGORY_UPDATE).doesNotContain(MOVIES_SUBCATEGORY);
     }
     
     @Test(priority = 18)
@@ -301,15 +312,17 @@ public class NewNavigationTest extends BaseTestCase {
     public void checkPoliticsNotVisibleCategory() {
         changeUser(USER_2, PASSWORD_2);
         List<String> categoriesName = toolsManagerWindow.getCategoriesName();
-        Assertions.assertThat(categoriesName).doesNotContain(CATEGORY_NAME).isNotEmpty();
+        Assertions.assertThat(categoriesName).doesNotContain(CATEGORY_NAME_UPDATE).isNotEmpty();
     }
     
     @Test(priority = 19)
     public void deleteCategory() {
         changeUser(USER_1, PASSWORD_1);
-        toolsManagerWindow.callAction(CATEGORY_NAME, DELETE_CATEGORY_BUTTON_ID);
+        toolsManagerWindow.callAction(CATEGORY_NAME_UPDATE, DELETE_CATEGORY_BUTTON_ID);
+        Popup.create(driver,webDriverWait).clickButtonByLabel("Delete");
+        DelayUtils.sleep(5000);
         List<String> categoriesName = toolsManagerWindow.getCategoriesName();
-        Assertions.assertThat(categoriesName).doesNotContain(CATEGORY_NAME).isNotEmpty();
+        Assertions.assertThat(categoriesName).doesNotContain(CATEGORY_NAME_UPDATE).isNotEmpty();
     }
     
     private ApplicationWizard openApplicationWizard() {
@@ -339,6 +352,7 @@ public class NewNavigationTest extends BaseTestCase {
         toolsManagerPage.changeUser(userName, password);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         toolsManagerWindow = toolsManagerPage.getToolsManager();
+        DelayUtils.waitForPageToLoad(driver,webDriverWait);
     }
     
     private void confirmDelete() {
@@ -353,6 +367,10 @@ public class NewNavigationTest extends BaseTestCase {
     
     private void openViewBySideMenu(String applicationName) {
         SideMenu.create(driver, webDriverWait).callActionByLabel(applicationName, "Favourites", "Tools");
+    }
+
+    private void waitUntilMessageDisappear(){
+        SystemMessageContainer.create(driver,webDriverWait).waitForMessageDisappear();
     }
     
 }

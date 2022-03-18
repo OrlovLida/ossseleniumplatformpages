@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.iaa.widgets.list.MessageListWidget;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.tabs.TabWindowWidget;
 import com.oss.pages.servicedesk.BaseSDPage;
 
 import io.qameta.allure.Step;
@@ -20,6 +21,7 @@ public class MessagesTab extends BaseSDPage {
     private static final String CREATE_BUTTON_LABEL = "CREATE";
     private static final String COMMENT_EDITOR_ID = "new-comment-editor";
     private static final String CREATE_NEW_NOTIFICATION_BUTTON_LABEL = "Create New Notification";
+    private static final String MARK_AS_IMPORTANT_LABEL = "Mark as important";
 
     public MessagesTab(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -28,7 +30,7 @@ public class MessagesTab extends BaseSDPage {
     @Step("Click create new comment button")
     public void clickCreateNewCommentButton() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        MessageListWidget.create(driver, wait).clickButtonByLabel(CREATE_NEW_COMMENT_BUTTON_TEXT);
+        getMessageListWidget().clickButtonByLabel(CREATE_NEW_COMMENT_BUTTON_TEXT);
         log.info("Click create new comment");
     }
 
@@ -46,28 +48,29 @@ public class MessagesTab extends BaseSDPage {
 
     @Step("Create new notification on Messages Tab")
     public void createNewNotificationOnMessagesTab() {
-        MessageListWidget.create(driver, wait).clickButtonByLabel(CREATE_NEW_NOTIFICATION_BUTTON_LABEL);
+        getMessageListWidget().clickButtonByLabel(CREATE_NEW_NOTIFICATION_BUTTON_LABEL);
     }
 
     @Step("Check if Messages Tab is Empty")
     public boolean isMessagesTabEmpty() {
         log.info("Check if Messages Tab is Empty");
-        return MessageListWidget.create(driver, wait).hasNoData();
+        return getMessageListWidget().hasNoData();
     }
 
     @Step("Check Text in Message")
     public String getMessageText(int messageIndex) {
-        return MessageListWidget.create(driver, wait).getMessageItems().get(messageIndex).getMessageText();
+        return getMessageListWidget().getMessageItems().get(messageIndex).getMessageText();
     }
 
     @Step("Check type of message")
     public String checkMessageType(int messageIndex) {
-        return MessageListWidget.create(driver, wait).getMessageItems().get(messageIndex).getMessageType();
+        return getMessageListWidget().getMessageItems().get(messageIndex).getMessageType();
     }
 
     @Step("Check Badges in message")
     public String getBadgeTextFromMessage(int messageIndex, int budgeIndex) {
-        MessageListWidget.MessageItem message = MessageListWidget.create(driver, wait)
+        DelayUtils.waitForPageToLoad(driver, wait);
+        MessageListWidget.MessageItem message = getMessageListWidget()
                 .getMessageItems()
                 .get(messageIndex);
         int budgesNumber = message.getBadgesNumber();
@@ -81,6 +84,16 @@ public class MessagesTab extends BaseSDPage {
 
     @Step("Check Comment type")
     public String checkCommentType(int messageIndex) {
-        return MessageListWidget.create(driver, wait).getMessageItems().get(messageIndex).getCommentType();
+        return getMessageListWidget().getMessageItems().get(messageIndex).getCommentType();
+    }
+
+    @Step("Mark message as important")
+    public void markAsImportant(int messageIndex) {
+        getMessageListWidget().getMessageItems().get(messageIndex).clickMessageAction(MARK_AS_IMPORTANT_LABEL);
+        log.info("Marking message as important");
+    }
+
+    private MessageListWidget getMessageListWidget() {
+        return TabWindowWidget.create(driver, wait).getMessageListWidget("_tablesWindow");
     }
 }

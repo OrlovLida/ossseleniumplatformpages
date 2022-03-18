@@ -5,7 +5,9 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.acd.BaseACDPage;
 import com.oss.pages.acd.scenarioSummaryView.AsdScenarioSummaryViewPage;
 import com.oss.utils.TestListener;
+
 import io.qameta.allure.Description;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -36,35 +38,16 @@ public class AsdScenarioSummaryViewTest extends BaseTestCase {
         baseACDPage = new BaseACDPage(driver, webDriverWait);
     }
 
-    @Test(priority = 1, testName = "Add new predefined filter", description = "Add new predefined filter")
-    @Description("Add new predefined filter")
-    public void addPredefinedFilter() {
+    @Test(priority = 1, testName = "Resize predefined filters area", description = "Resize predefined filters area")
+    @Description("Resize predefined filters area")
+    public void resizePredefinedFiltersArea() {
         baseACDPage.maximizeWindow(PREDEFINED_FILTERS_WINDOW_ID);
         Assert.assertTrue(baseACDPage.checkCardMaximize(PREDEFINED_FILTERS_WINDOW_ID));
-        baseACDPage.clickAddPredefinedFilter();
-        baseACDPage.setValueInComboBox(WIZARD_TYPE_ID, "Chart");
-        log.info("Visualization type - CHART - set");
-        baseACDPage.setValueInComboBox(WIZARD_ATTRIBUTE_ID, "Severity");
-        log.info("Attribute name - Severity - set");
-        baseACDPage.chooseValueInMultiComboBox(WIZARD_ATTRIBUTE_VALUES_ID,"Cleared");
-        log.info("Attribute Value - Cleared - set");
-        baseACDPage.chooseValueInMultiComboBox(WIZARD_ATTRIBUTE_VALUES_ID,"Major");
-        log.info("Attribute Value - Major - set");
-        baseACDPage.chooseValueInMultiComboBox(WIZARD_ATTRIBUTE_VALUES_ID,"Critical");
-        log.info("Attribute Value - Critical - set");
-        baseACDPage.savePredefinedFilter(WIZARD_PREDEFINED_FILTERS_ID);
-        log.info("Predefined filter has been added successfully");
-    }
-
-    @Test(priority = 2, testName = "Delete predefined filter", description = "Delete predefined filter")
-    @Description("Delete predefined filter")
-    public void deletePredefinedFilter() {
-        baseACDPage.deletePredefinedFilter();
         baseACDPage.minimizeWindow(PREDEFINED_FILTERS_WINDOW_ID);
         Assert.assertFalse(baseACDPage.checkCardMaximize(PREDEFINED_FILTERS_WINDOW_ID));
     }
 
-    @Test(priority = 3, testName = "Check if ASD issues exist", description = "Check if ASD issues exists")
+    @Test(priority = 2, testName = "Check if ASD issues exist", description = "Check if ASD issues exists")
     @Description("Check if ASD issues exist")
     public void asdDetectedIssuesTableCheck() {
         baseACDPage.maximizeWindow(DETECTED_ISSUES_WINDOW_ID);
@@ -72,7 +55,7 @@ public class AsdScenarioSummaryViewTest extends BaseTestCase {
         checkIssuesTableWithFilters();
     }
 
-    @Test(priority = 4, testName = "Check if issues table is refreshed and minimize window", description = "Check if issues table is refreshed and minimize window")
+    @Test(priority = 3, testName = "Check if issues table is refreshed and minimize window", description = "Check if issues table is refreshed and minimize window")
     @Description("Check if issues table is refreshed and minimize window")
     public void refreshDetectedIssuesTable() {
         baseACDPage.refreshIssuesTable(issuesTableRefreshButtonId);

@@ -23,7 +23,7 @@ public class SaveConfigurationWizard {
     private static final String SAVE_AS_NEW_ID = "configuration_popup_button_save_as_new";
     private static final String SAVE_ID = "configuration_popup_button_save";
     private static final String GROUPS_ID = "groups-input";
-    private static final String GROUPS_DROPDOWN_ID = "groups-dropdown-search";
+    private static final String GROUPS_DROPDOWN_ID = "groups-dropdown";
     private final WebDriver driver;
     private final WebDriverWait wait;
 

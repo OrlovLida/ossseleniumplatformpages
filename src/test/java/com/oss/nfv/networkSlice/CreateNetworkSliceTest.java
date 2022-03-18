@@ -98,9 +98,9 @@ public class CreateNetworkSliceTest extends BaseTestCase {
         NetworkSliceWizardPage wizard = NetworkSliceWizardPage.create(driver, webDriverWait);
         NetworkSliceWizardFirstStep firstStep = wizard.getFirstStep();
         //when
-        fillNetworkServiceParams(firstStep);
+        fillNetworkSliceParams(firstStep);
         //then
-        assertNetworkServiceFirstStepParams(firstStep);
+        validateNetworkSliceFirstStepParams(firstStep);
         //when
         wizard.goToNextStep();
         NetworkSliceWizardSecondStep secondStep = wizard.getSecondStep();
@@ -108,13 +108,13 @@ public class CreateNetworkSliceTest extends BaseTestCase {
         selectServiceProfile(secondStep);
         fillServiceProfileParams(secondStep);
         //then
-        assertServiceProfileParams(secondStep);
+        validateServiceProfileParams(secondStep);
         //when
         secondStep.clickAddPLMNInfo();
         selectPLMNInfo(secondStep);
         fillPLMNInfoParams(secondStep);
         //then
-        assertPLMNInfoParams(secondStep);
+        validatePLMNInfoParams(secondStep);
         wizard.goToNextStep();
     }
 
@@ -145,16 +145,16 @@ public class CreateNetworkSliceTest extends BaseTestCase {
         resourceSpecificationsViewPage.selectTreeNode(NETWORK_SLICE_SPECIFICATION_NAME, SPECIFICATION_NAME_ATTRIBUTE_NAME_LABEL);
     }
 
-    private void fillNetworkServiceParams(NetworkSliceWizardFirstStep firstStep) {
+    private void fillNetworkSliceParams(NetworkSliceWizardFirstStep firstStep) {
         firstStep.setName(NETWORK_SLICE_NAME);
         firstStep.setDescription(NETWORK_SLICE_DESCRIPTION);
         firstStep.setOperationalState(OPERATIONAL_STATE_VALUE);
     }
 
-    private void assertNetworkServiceFirstStepParams(NetworkSliceWizardFirstStep firstStep) {
+    private void validateNetworkSliceFirstStepParams(NetworkSliceWizardFirstStep firstStep) {
         SoftAssert softly = new SoftAssert();
         softly.assertEquals(firstStep.getName(), NETWORK_SLICE_NAME, "Name has not been set");
-        softly.assertEquals(firstStep.getDescription(), NETWORK_SLICE_DESCRIPTION, "Network Slice has not been set");
+        softly.assertEquals(firstStep.getDescription(), NETWORK_SLICE_DESCRIPTION, "Description has not been set");
         softly.assertEquals(firstStep.getOperationalState(), OPERATIONAL_STATE_VALUE, "Operational State has not been set");
         softly.assertAll();
     }
@@ -171,7 +171,7 @@ public class CreateNetworkSliceTest extends BaseTestCase {
         secondStep.setServiceProfileName(SERVICE_PROFILE_NAME);
     }
 
-    private void assertServiceProfileParams(NetworkSliceWizardSecondStep secondStep) {
+    private void validateServiceProfileParams(NetworkSliceWizardSecondStep secondStep) {
         assertEquals(secondStep.getServiceProfileName(), SERVICE_PROFILE_NAME, "Name has not been set");
     }
 
@@ -182,12 +182,13 @@ public class CreateNetworkSliceTest extends BaseTestCase {
         secondStep.setPLMNInfoSD(SD_VALUE);
     }
 
-    private void assertPLMNInfoParams(NetworkSliceWizardSecondStep secondStep) {
+    private void validatePLMNInfoParams(NetworkSliceWizardSecondStep secondStep) {
         SoftAssert softly = new SoftAssert();
         softly.assertEquals(secondStep.getPLMNInfoMCC(), MCC_VALUE, "MCC has not been set");
         softly.assertEquals(secondStep.getPLMNInfoMNC(), MNC_VALUE, "MNC has not been set");
         softly.assertEquals(secondStep.getPLMNInfoSST(), SST_VALUE, "SST has not been set");
         softly.assertEquals(secondStep.getPLMNInfoSD(), SD_VALUE, "SD has not been set");
+        softly.assertAll();
     }
 
     private void assertThatThereIsOneSuccessfulMessage() {
