@@ -18,10 +18,8 @@ import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.components.prompts.Popup;
 import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.components.tree.TreeComponent;
-import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.HierarchyViewPage;
 import com.oss.repositories.AddressRepository;
 import com.oss.repositories.LocationInventoryRepository;
@@ -33,11 +31,11 @@ import com.oss.untils.Environment;
  * @author Gabriela Zaranek
  */
 public class FilteringOnRelationNodesTest extends BaseTestCase {
+    private Environment env = Environment.getInstance();
     private static final String DEVICE_NAME = "FORN-123-456";
     private static final String PORT_NAME_10 = "10";
     private static final String PORT_NAME_02 = "02";
     private static final String EXPAND_CLEAR_FILTERS_BUTTON = "Expand & Clear Filters";
-    private Environment env = Environment.getInstance();
     private static final Logger log = LoggerFactory.getLogger(TreeWidgetTest.class);
     private static final String LOCATION_NAME = "FilteringOnRelationNodesTest";
     private static final String PATH_1ST_LOCATIONS_RELATION = LOCATION_NAME + ".Locations";
@@ -60,7 +58,7 @@ public class FilteringOnRelationNodesTest extends BaseTestCase {
     private static final String ROOM_2_PATH = LOCATION_NAME + ".Locations." + SUB_LOCATION_TYPE_FLOOR + "." + FLOOR_NAME + ".Locations."
             + SUB_LOCATION_TYPE_ROOM + "." + ROOM_NAME_2;
     private static final String DEVICE_MODEL = "N9K-C9396PX";
-
+    
     private HierarchyViewPage hierarchyViewPage;
     private String locationId;
     
@@ -110,19 +108,17 @@ public class FilteringOnRelationNodesTest extends BaseTestCase {
         Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).doesNotContain(FLOOR_NAME).doesNotContain(FLOOR_NAME_2);
         clearFilter(node);
     }
-
+    
     @Test(priority = 5)
     public void filterOnRelationsAndExpandNextLevel() {
         hierarchyViewPage.getFirstNode().expandNextLevel();
         TreeComponent.Node node = hierarchyViewPage.getNodeByLabelPath(PATH_1ST_LOCATIONS_RELATION);
         node.searchByAttribute(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, FLOOR_NAME);
         Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(FLOOR_NAME).doesNotContain(FLOOR_NAME_2);
-        hierarchyViewPage.expandNextLevel(LOCATION_NAME);
-        Popup.create(driver,webDriverWait).clickButtonByLabel(EXPAND_CLEAR_FILTERS_BUTTON);
+        hierarchyViewPage.expandNextLevelWithPopup(LOCATION_NAME).clickButtonByLabel(EXPAND_CLEAR_FILTERS_BUTTON);
         Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(FLOOR_NAME).contains(FLOOR_NAME_2);
     }
-
-
+    
     @Test(priority = 6)
     public void filterOnMoreRelations() {
         TreeComponent.Node location1stLevel = getNode(PATH_1ST_LOCATIONS_RELATION);
@@ -150,7 +146,7 @@ public class FilteringOnRelationNodesTest extends BaseTestCase {
         nodePathPorts.expandNode();
         nodePathPorts.searchByAttribute(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, PORT_NAME_10);
         Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(PORT_NAME_10).doesNotContain(PORT_NAME_02);
-
+        
         TreeComponent.Node location1stLevel = getNode(PATH_1ST_LOCATIONS_RELATION);
         location1stLevel.searchByAttribute(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, FLOOR_NAME_2);
         Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(FLOOR_NAME_2).doesNotContain(FLOOR_NAME);
@@ -159,19 +155,18 @@ public class FilteringOnRelationNodesTest extends BaseTestCase {
         Assertions.assertThat(hierarchyViewPage.isNodePresent(ROOM_PATH)).isTrue();
         Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(FLOOR_NAME).doesNotContain(FLOOR_NAME_2)
                 .contains(ROOM_NAME).doesNotContain(ROOM_NAME_2);
-
+        
         clearFilter(location1stLevel);
-
+        
         Assertions.assertThat(hierarchyViewPage.isNodePresent(PORT_10_PATH)).isTrue();
         Assertions.assertThat(hierarchyViewPage.isNodePresent(PORT_02_PATH)).isFalse();
         Assertions.assertThat(hierarchyViewPage.isNodePresent(ROOM_PATH)).isTrue();
         Assertions.assertThat(hierarchyViewPage.isNodePresent(ROOM_2_PATH)).isFalse();
-
+        
         clearFilter(hierarchyViewPage.getNodeByLabelPath(PATH_LOCATIONS_2ST_RELATION));
         clearFilter(hierarchyViewPage.getNodeByLabelPath(PATH_PORTS_RELATION));
     }
     
-
     private void clearFilter(TreeComponent.Node node) {
         AdvancedSearch advancedSearch = node.openAdvancedSearch();
         advancedSearch.clickClearAll();
@@ -209,16 +204,17 @@ public class FilteringOnRelationNodesTest extends BaseTestCase {
         return locationInventoryRepository.createSubLocation(SUB_LOCATION_TYPE_FLOOR, floorName, Long.parseLong(preciseLocationId),
                 LOCATION_TYPE_BUILDING, Long.valueOf(locationId), LOCATION_TYPE_BUILDING);
     }
-private void createDevice(Long locationId) {
+    
+    private void createDevice(Long locationId) {
         ResourceCatalogClient resourceCatalogClient = new ResourceCatalogClient(env);
         Long deviceModelId = resourceCatalogClient.getModelIds(DEVICE_MODEL);
         PhysicalInventoryRepository physicalInventoryRepository = new PhysicalInventoryRepository(env);
         physicalInventoryRepository.createDevice(SUB_LOCATION_TYPE_FLOOR, locationId, deviceModelId, DEVICE_NAME,
                 DEVICE_MODEL_TYPE);
     }
-
+    
     private TreeComponent.Node getNode(String nodePath) {
         return hierarchyViewPage.getNodeByLabelPath(nodePath);
     }
-
+    
 }
