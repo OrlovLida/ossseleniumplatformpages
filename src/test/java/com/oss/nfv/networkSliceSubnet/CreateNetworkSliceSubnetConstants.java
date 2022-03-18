@@ -23,7 +23,7 @@ public class CreateNetworkSliceSubnetConstants {
     public static final String SLICE_PROFILE_NAME = "SLICE-PROFILE-CREATE-SELENIUM-TEST";
 
     public static final String SLICE_PROFILE_DEFAULT_LABEL_PATH = "Slice Profile 1";
-    public static final String PLMN_INFO_DEFAULT_LABEL_PATH = SLICE_PROFILE_DEFAULT_LABEL_PATH
+    public static final String PLMN_INFO_DEFAULT_LABEL_PATH = SLICE_PROFILE_NAME
             + ".PLMN Info 1 (mcc: , mnc: , sd: , sst: )";
 
     public static final String MCC_VALUE = "809";
