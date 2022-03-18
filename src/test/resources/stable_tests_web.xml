@@ -45,4 +45,9 @@
             <class name="com.oss.configuration.TabsConfigurationTest"/>
         </classes>
     </test>
+    <test name="NewNavigationTest">
+        <classes>
+            <class name="com.oss.web.NewNavigationTest"/>
+        </classes>
+    </test>
 </suite>
