@@ -115,7 +115,7 @@ public class FilteringOnRelationNodesTest extends BaseTestCase {
         TreeComponent.Node node = hierarchyViewPage.getNodeByLabelPath(PATH_1ST_LOCATIONS_RELATION);
         node.searchByAttribute(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, FLOOR_NAME);
         Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(FLOOR_NAME).doesNotContain(FLOOR_NAME_2);
-        hierarchyViewPage.expandNextLevelWithPopup(LOCATION_NAME).clickButtonByLabel(EXPAND_CLEAR_FILTERS_BUTTON);
+        hierarchyViewPage.expandNextLevel(LOCATION_NAME).ifPresent(popup-> popup.clickButtonByLabel(EXPAND_CLEAR_FILTERS_BUTTON));
         Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(FLOOR_NAME).contains(FLOOR_NAME_2);
     }
     
@@ -137,7 +137,7 @@ public class FilteringOnRelationNodesTest extends BaseTestCase {
     
     @Test(priority = 7)
     public void filterOnRelationsAtDifferentLevels() {
-        hierarchyViewPage.expandNextLevel(LOCATION_NAME);
+        hierarchyViewPage.expandNextLevel(LOCATION_NAME).ifPresent(popup -> popup.clickButtonByLabel(EXPAND_CLEAR_FILTERS_BUTTON));
         TreeComponent.Node location2stLevel = getNode(PATH_LOCATIONS_2ST_RELATION);
         location2stLevel.searchByAttribute(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, ROOM_NAME);
         Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(FLOOR_NAME).doesNotContain(ROOM_NAME_2);

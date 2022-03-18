@@ -2,6 +2,7 @@ package com.oss.pages.platform;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.openqa.selenium.WebDriver;
@@ -144,15 +145,10 @@ public class HierarchyViewPage extends BasePage {
         return getMainTree().getVisibleNodes().stream().map(Node::getLabel).collect(Collectors.toList());
     }
     
-    public void expandNextLevel(String pathLabel) {
-        getMainTree().getNodeByLabelsPath(pathLabel).expandNextLevel();
+    public Optional<Popup> expandNextLevel(String pathLabel) {
+       return getMainTree().getNodeByLabelsPath(pathLabel).expandNextLevel();
     }
-    
-    public Popup expandNextLevelWithPopup(String pathLabel) {
-        return getMainTree().getNodeByLabelsPath(pathLabel).expandNextLevel()
-                .orElseThrow(() -> new NoSuchElementException("Cannot find popup"));
-    }
-    
+
     public boolean isNodePresent(String pathLabel) {
         return getMainTree().findNodeByLabelsPath(pathLabel).isPresent();
     }
