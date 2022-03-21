@@ -44,7 +44,7 @@ public class CellSiteConfigurationPage extends BasePage {
     private static final String HOSTING_TAB_LABEL = "Hosting";
     private static final String WIZARD_ID = "Popup";
     private static final String TREE_TABLE_ID = "DevicesTableApp";
-    private static final String DELETE_WIZARD_ID = "delete-popup";
+    private static final String DELETE_WIZARD_ID = "delete-popup_prompt-card";
     private static final String DELETE_BUTTON_ID = "delete-popup-buttons-app-1";
 
     public CellSiteConfigurationPage(WebDriver driver) {
