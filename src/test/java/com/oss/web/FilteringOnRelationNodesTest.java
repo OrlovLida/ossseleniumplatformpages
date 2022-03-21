@@ -31,10 +31,11 @@ import com.oss.untils.Environment;
  * @author Gabriela Zaranek
  */
 public class FilteringOnRelationNodesTest extends BaseTestCase {
+    private Environment env = Environment.getInstance();
     private static final String DEVICE_NAME = "FORN-123-456";
     private static final String PORT_NAME_10 = "10";
     private static final String PORT_NAME_02 = "02";
-    private Environment env = Environment.getInstance();
+    private static final String EXPAND_CLEAR_FILTERS_BUTTON = "Expand & Clear Filters";
     private static final Logger log = LoggerFactory.getLogger(TreeWidgetTest.class);
     private static final String LOCATION_NAME = "FilteringOnRelationNodesTest";
     private static final String PATH_1ST_LOCATIONS_RELATION = LOCATION_NAME + ".Locations";
@@ -88,7 +89,6 @@ public class FilteringOnRelationNodesTest extends BaseTestCase {
     
     @Test(priority = 2)
     public void editFilter() {
-        hierarchyViewPage.getFirstNode().expandNextLevel();
         TreeComponent.Node node = getNode(PATH_1ST_LOCATIONS_RELATION);
         node.searchByAttribute(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, FLOOR_NAME);
         Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(FLOOR_NAME).doesNotContain(FLOOR_NAME_2);
@@ -110,6 +110,16 @@ public class FilteringOnRelationNodesTest extends BaseTestCase {
     }
     
     @Test(priority = 5)
+    public void filterOnRelationsAndExpandNextLevel() {
+        hierarchyViewPage.getFirstNode().expandNextLevel();
+        TreeComponent.Node node = hierarchyViewPage.getNodeByLabelPath(PATH_1ST_LOCATIONS_RELATION);
+        node.searchByAttribute(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, FLOOR_NAME);
+        Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(FLOOR_NAME).doesNotContain(FLOOR_NAME_2);
+        hierarchyViewPage.expandNextLevel(LOCATION_NAME).ifPresent(popup-> popup.clickButtonByLabel(EXPAND_CLEAR_FILTERS_BUTTON));
+        Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(FLOOR_NAME).contains(FLOOR_NAME_2);
+    }
+    
+    @Test(priority = 6)
     public void filterOnMoreRelations() {
         TreeComponent.Node location1stLevel = getNode(PATH_1ST_LOCATIONS_RELATION);
         location1stLevel.searchByAttribute(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, FLOOR_NAME);
@@ -125,9 +135,9 @@ public class FilteringOnRelationNodesTest extends BaseTestCase {
         clearFilter(location1stLevel);
     }
     
-    @Test(priority = 6)
+    @Test(priority = 7)
     public void filterOnRelationsAtDifferentLevels() {
-        hierarchyViewPage.expandNextLevel(LOCATION_NAME);
+        hierarchyViewPage.expandNextLevel(LOCATION_NAME).ifPresent(popup -> popup.clickButtonByLabel(EXPAND_CLEAR_FILTERS_BUTTON));
         TreeComponent.Node location2stLevel = getNode(PATH_LOCATIONS_2ST_RELATION);
         location2stLevel.searchByAttribute(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, ROOM_NAME);
         Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(FLOOR_NAME).doesNotContain(ROOM_NAME_2);
@@ -155,18 +165,6 @@ public class FilteringOnRelationNodesTest extends BaseTestCase {
         
         clearFilter(hierarchyViewPage.getNodeByLabelPath(PATH_LOCATIONS_2ST_RELATION));
         clearFilter(hierarchyViewPage.getNodeByLabelPath(PATH_PORTS_RELATION));
-    }
-    
-    @Test(priority = 8)
-    public void filterOnRelationsAndExpandNextLevel() {
-        hierarchyViewPage.getFirstNode().expandNextLevel();
-        TreeComponent.Node node = hierarchyViewPage.getNodeByLabelPath(PATH_1ST_LOCATIONS_RELATION);
-        AdvancedSearch advancedSearch = node.openAdvancedSearch();
-        advancedSearch.setFilter(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, FLOOR_NAME);
-        advancedSearch.clickApply();
-        Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(FLOOR_NAME).doesNotContain(FLOOR_NAME_2);
-        hierarchyViewPage.expandNextLevel(LOCATION_NAME);
-        Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(FLOOR_NAME).contains(FLOOR_NAME_2);
     }
     
     private void clearFilter(TreeComponent.Node node) {

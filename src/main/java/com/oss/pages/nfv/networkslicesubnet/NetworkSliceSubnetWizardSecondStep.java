@@ -38,6 +38,7 @@ public class NetworkSliceSubnetWizardSecondStep extends NetworkSliceSubnetWizard
 
     public void setSliceProfileName(String name) {
         networkSliceSubnetWizard.setComponentValue(NAME_COMPONENT_ID, name, TEXT_FIELD);
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public String getSliceProfileName() {
