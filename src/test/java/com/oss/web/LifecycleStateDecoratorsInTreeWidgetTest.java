@@ -35,6 +35,7 @@ import com.oss.untils.FakeGenerator;
 public class LifecycleStateDecoratorsInTreeWidgetTest extends BaseTestCase {
     private static final Logger log = LoggerFactory.getLogger(LifecycleStateDecoratorsInTreeWidgetTest.class);
     private static final String PROJECT_NAME_CODE_1 = "HVLSC-" + FakeGenerator.getIdNumber();
+    private static final String PROJECT_NAME_CODE_2 = "HVLSC2-" + FakeGenerator.getIdNumber();
     private static final String BUILDING_NAME = FakeGenerator.getCity() + "-BU" + FakeGenerator.getRandomInt();
     private static final String HARDWARE_RELATION_PATH = BUILDING_NAME + ".Hardware";
     private static final String LOCATION_RELATION_PATH = BUILDING_NAME + ".Locations";
@@ -64,9 +65,14 @@ public class LifecycleStateDecoratorsInTreeWidgetTest extends BaseTestCase {
     private static final String DEVICE_3_PATH = BUILDING_NAME + ".Hardware.Switch." + DEVICE_3_NAME;
     private static final String PORT_03_PATH = DEVICE_3_PATH + ".Ports.01";
     private static final String ROOM_3_PATH = BUILDING_NAME + ".Locations.Room." + ROOM_3_NAME;
+    private static final String UPDATE_SUBLOCATION_ACTION_ID = "UpdateSublocationWizardAction";
+    private static final TreeComponent.Node.DecoratorStatus PURPLE = TreeComponent.Node.DecoratorStatus.PURPLE;
+    private static final String UPDATE = "Update";
+    private static final String UPDATE_DEVICE_ACTION_ID = "UpdateDeviceWizardAction";
     private Environment env = Environment.getInstance();
     private HierarchyViewPage hierarchyViewPage;
     private Long project1;
+    private Long project2;
     private String buildingId;
     private Long room2Id;
     private Long device1Id;
@@ -91,21 +97,21 @@ public class LifecycleStateDecoratorsInTreeWidgetTest extends BaseTestCase {
         hierarchyViewPage.expandNextLevel(BUILDING_NAME);
         hierarchyViewPage.getFirstNode().callAction(CREATE_ACTION_ID, CREATE_DEVICE_ACTION_ID);
         createDeviceWizard();
-        Assertions.assertThat(hierarchyViewPage.getNodeByLabelPath(BUILDING_NAME).getDecoratorStatus()).isEqualTo(GREEN);
-        Assertions.assertThat(hierarchyViewPage.getNodeByLabelPath(ROOM_1_PATH).getDecoratorStatus()).isEqualTo(GREEN);
-        Assertions.assertThat(hierarchyViewPage.getNodeByLabelPath(DEVICE_1_PATH).getDecoratorStatus()).isEqualTo(GREEN);
-        Assertions.assertThat(hierarchyViewPage.getNodeByLabelPath(PORT_01_PATH).getDecoratorStatus()).isEqualTo(GREEN);
+        Assertions.assertThat(getNode(BUILDING_NAME).getDecoratorStatus()).isEqualTo(GREEN);
+        Assertions.assertThat(getNode(ROOM_1_PATH).getDecoratorStatus()).isEqualTo(GREEN);
+        Assertions.assertThat(getNode(DEVICE_1_PATH).getDecoratorStatus()).isEqualTo(GREEN);
+        Assertions.assertThat(getNode(PORT_01_PATH).getDecoratorStatus()).isEqualTo(GREEN);
     }
     
     @Test
     public void createObjectsAndRefreshRelation() {
         room2Id = createRoom(ROOM_2_NAME, project1);
-        hierarchyViewPage.getNodeByLabelPath(LOCATION_RELATION_PATH).callAction(REFRESH_ACTION_ID);
-        Assertions.assertThat(hierarchyViewPage.getNodeByLabelPath(ROOM_2_PATH).getDecoratorStatus()).isEqualTo(GREEN);
+        getNode(LOCATION_RELATION_PATH).callAction(REFRESH_ACTION_ID);
+        Assertions.assertThat(getNode(ROOM_2_PATH).getDecoratorStatus()).isEqualTo(GREEN);
         device2Id = createDevice(DEVICE_2_NAME, project1);
-        hierarchyViewPage.getNodeByLabelPath(HARDWARE_RELATION_PATH).callAction(REFRESH_ACTION_ID);
-        Assertions.assertThat(hierarchyViewPage.getNodeByLabelPath(DEVICE_2_PATH).getDecoratorStatus()).isEqualTo(GREEN);
-        Assertions.assertThat(hierarchyViewPage.getNodeByLabelPath(PORT_02_PATH).getDecoratorStatus()).isEqualTo(GREEN);
+        getNode(HARDWARE_RELATION_PATH).callAction(REFRESH_ACTION_ID);
+        Assertions.assertThat(getNode(DEVICE_2_PATH).getDecoratorStatus()).isEqualTo(GREEN);
+        Assertions.assertThat(getNode(PORT_02_PATH).getDecoratorStatus()).isEqualTo(GREEN);
     }
     
     @Test
@@ -113,11 +119,46 @@ public class LifecycleStateDecoratorsInTreeWidgetTest extends BaseTestCase {
         createRoom(ROOM_3_NAME, project1);
         device3Id = createDevice(DEVICE_3_NAME, project1);
         hierarchyViewPage.getMainTree().callActionById(ActionsContainer.KEBAB_GROUP_ID, REFRESH_TREE_ACTION_ID);
-        Assertions.assertThat(hierarchyViewPage.getNodeByLabelPath(ROOM_3_PATH).getDecoratorStatus()).isEqualTo(GREEN);
-        Assertions.assertThat(hierarchyViewPage.getNodeByLabelPath(DEVICE_3_PATH).getDecoratorStatus()).isEqualTo(GREEN);
-        Assertions.assertThat(hierarchyViewPage.getNodeByLabelPath(PORT_03_PATH).getDecoratorStatus()).isEqualTo(GREEN);
+        Assertions.assertThat(getNode(ROOM_3_PATH).getDecoratorStatus()).isEqualTo(GREEN);
+        Assertions.assertThat(getNode(DEVICE_3_PATH).getDecoratorStatus()).isEqualTo(GREEN);
+        Assertions.assertThat(getNode(PORT_03_PATH).getDecoratorStatus()).isEqualTo(GREEN);
     }
     
+    @Test
+    public void updateObjectsWizard() {
+        project2 = createProject(PROJECT_NAME_CODE_2, LocalDate.now().plusDays(2));
+        hierarchyViewPage =
+                HierarchyViewPage.goToHierarchyViewPage(driver, BASIC_URL, LOCATION_TYPE_BUILDING, buildingId, project2.toString());
+        getNode(ROOM_1_PATH).callAction(ActionsContainer.EDIT_GROUP_ID, UPDATE_SUBLOCATION_ACTION_ID);
+        updateSublocationWizard();
+        TreeComponent.Node nodeRoom1 = getNode(ROOM_1_PATH);
+        Assertions.assertThat(nodeRoom1.countDecorators()).isEqualTo(1);
+        Assertions.assertThat(nodeRoom1.getDecoratorStatus()).isEqualTo(PURPLE);
+        getNode(DEVICE_1_PATH).callAction(ActionsContainer.EDIT_GROUP_ID, UPDATE_DEVICE_ACTION_ID);
+        updateDeviceWizard();
+        TreeComponent.Node nodeDevice1 = getNode(DEVICE_1_PATH);
+        Assertions.assertThat(nodeDevice1.countDecorators()).isEqualTo(1);
+        Assertions.assertThat(nodeDevice1.getDecoratorStatus()).isEqualTo(PURPLE);
+    }
+    
+    @Test
+    public void updateObjectsAndRefreshRelation() {
+        updateDevice(device2Id, project2);
+        getNode(HARDWARE_RELATION_PATH).callAction(REFRESH_ACTION_ID);
+        Assertions.assertThat(getNode(DEVICE_2_PATH).getDecoratorStatus()).isEqualTo(PURPLE);
+    }
+
+    @Test
+    public void updateObjectsAndRefreshTre() {
+        updateDevice(device3Id, project2);
+        hierarchyViewPage.getMainTree().callActionById(ActionsContainer.KEBAB_GROUP_ID, REFRESH_TREE_ACTION_ID);
+        Assertions.assertThat(getNode(DEVICE_3_PATH).getDecoratorStatus()).isEqualTo(PURPLE);
+    }
+
+    @Test
+    public void completeProjectAndRefreshRelation() {
+    }
+
     private Long createProject(String code, LocalDate finishDueDate) {
         PlanningRepository planningRepository = new PlanningRepository(env);
         return planningRepository.createProject(code, code, finishDueDate);
@@ -161,10 +202,38 @@ public class LifecycleStateDecoratorsInTreeWidgetTest extends BaseTestCase {
     }
     
     private Long createDevice(String deviceName, Long projectId) {
-        ResourceCatalogClient resourceCatalogClient = new ResourceCatalogClient(env);
-        Long deviceModelId = resourceCatalogClient.getModelIds(DEVICE_1_MODEL);
+        Long deviceModelId = getDeviceModelId();
         PhysicalInventoryRepository physicalInventoryRepository = new PhysicalInventoryRepository(env);
         return physicalInventoryRepository.createDevice(LOCATION_TYPE_BUILDING, Long.valueOf(buildingId), deviceModelId, deviceName,
                 DEVICE_MODEL_TYPE, projectId);
+    }
+    
+    private Long getDeviceModelId() {
+        ResourceCatalogClient resourceCatalogClient = new ResourceCatalogClient(env);
+        return resourceCatalogClient.getModelIds(DEVICE_1_MODEL);
+    }
+    
+    private void updateSublocationWizard() {
+        SublocationWizardPage sublocationWizard = new SublocationWizardPage(driver);
+        sublocationWizard.setDescription(UPDATE);
+        sublocationWizard.clickAccept();
+    }
+
+    private void updateDeviceWizard() {
+        DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
+        deviceWizardPage.setDescription(UPDATE);
+        deviceWizardPage.nextUpdateWizard();
+        deviceWizardPage.acceptUpdateWizard();
+    }
+    
+    private void updateDevice(Long deviceId, Long projectId) {
+        Long deviceModelId = getDeviceModelId();
+        PhysicalInventoryRepository physicalInventoryRepository = new PhysicalInventoryRepository(env);
+        physicalInventoryRepository.updateDeviceSerialNumber(deviceId, FakeGenerator.getIdNumber(), deviceModelId, DEVICE_MODEL_TYPE,
+                projectId);
+    }
+    
+    private TreeComponent.Node getNode(String nodePath) {
+        return hierarchyViewPage.getNodeByLabelPath(nodePath);
     }
 }
