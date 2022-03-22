@@ -23,12 +23,11 @@ import com.oss.untils.Environment;
 public class PlanningClient {
     
     private static final String CANNOT_FIND_OBJECT = "Cannot find object with type \"{0}\" and name \"{1}\"";
-    
     private static final String QUERY_QUERY_PARAM = "query";
     private static final String RSQL_QUERY_NAME_PARAM = "Name==\"{0}\"";
-    
     private static final String QUERY_OBJECTS_V2_PATH = "objects/v2/{0}";
     private static final String PROJECT_API_PATH = "/projects";
+    private static final String PLANNING_API_PATH = "/planning/projects";
     
     private static PlanningClient instance;
     
@@ -64,7 +63,7 @@ public class PlanningClient {
                 .contentType(ContentType.JSON)
                 .body(perspectiveDTO)
                 .when()
-                .put(PROJECT_API_PATH + "/" + projectId + "/perspective")
+                .put(PLANNING_API_PATH + "/" + projectId + "/perspective")
                 .then()
                 .statusCode(Response.Status.NO_CONTENT.getStatusCode()).assertThat();
     }

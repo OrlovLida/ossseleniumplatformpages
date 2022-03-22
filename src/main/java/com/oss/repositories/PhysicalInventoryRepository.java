@@ -26,10 +26,11 @@ public class PhysicalInventoryRepository {
         String deviceId = resourceDTO.getUri().toString();
         return Long.valueOf(deviceId.substring(deviceId.lastIndexOf("/") + 1, deviceId.indexOf("?")));
     }
-    public void updateDeviceSerialNumber(long deviceId, String serialNumber, Long deviceModelId,String deviceModelType, long projectId){
+    public void updateDeviceSerialNumber(long deviceId,String locationType, Long locationId, String serialNumber, Long deviceModelId,String deviceModelType, long projectId){
         PhysicalInventoryClient client = new PhysicalInventoryClient(env);
         PhysicalDeviceDTO build = PhysicalDeviceDTO.builder()
                 .serialNumber(serialNumber)
+                .location(getLocation(locationId,locationType))
                 .deviceModel(getDeviceModelId(deviceModelId,deviceModelType))
                 .build();
         client.updateDevice(build,deviceId,projectId);
