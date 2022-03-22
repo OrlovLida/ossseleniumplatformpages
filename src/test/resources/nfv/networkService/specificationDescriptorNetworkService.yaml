@@ -1,0 +1,71 @@
+tosca_definitions_version: tosca_simple_yaml_1_2
+
+metadata:
+
+        template_name: PCG_1_7_NSD_SELENIUMTEST
+        template_vendor: Ericsson
+        template_version: '1.0.0'
+
+description: |-
+        Old-style single flavour NSD.
+
+imports:
+        - Definitions/etsi_nfv_sol001_nsd_2_5_1_types.yaml
+        - Definitions/etsi_nfv_sol001_vnfd_2_5_1_types.yaml
+        - Definitions/eric-pc-gateway.yaml
+
+
+node_types:
+
+        Ericsson.EOCM.PCG_1_7_NSD_SELENIUMTEST:
+                derived_from: tosca.nodes.nfv.NS
+                properties:
+                        descriptor_id:
+                                type: string
+                                constraints: [ valid_values: [ nsd-id-SELENIUMTEST ] ]
+                                default: nsd-id-SELENIUMTEST
+                        designer:
+                                type: string
+                                constraints: [ valid_values: [ 'Designer-6404708211' ] ]
+                                default: Designer-6404708211
+                        version:
+                                type: string
+                                constraints: [ valid_values: [ 'NsdVersion-0193660122' ] ]
+                                default: 'NsdVersion-0193660122'
+                        name:
+                                type: string
+                                constraints: [ valid_values: [ NSD_NAME_3988164862 ] ]
+                                default: NSD_NAME_3988164862
+                        invariant_id:
+                                type: string
+                                constraints: [ valid_values: [ InvariantId-6491967933  ] ]
+                                default: InvariantId-6491967933
+                        flavour_id:
+                                type: string
+                                constraints: [ valid_values: [ NsdFlavourId-6789755718  ] ]
+                                default: NsdFlavourId-6789755718
+                        vendor:
+                                type: string
+                                constraints: [ valid_values: [ Ericsson  ] ]
+                                default: Ericsson
+
+topology_template:
+
+        substitution_mappings:
+                node_type: Ericsson.EOCM.PCG_1_7_NSD_SELENIUMTEST
+
+        node_templates:
+
+                self:
+                        type: Ericsson.EOCM.PCG_1_7_NSD_SELENIUMTEST
+
+                PCG-01-SELENIUMTEST:
+                        type: Ericsson.PCG.AXM90107_1.CXP9037448_1.R43B
+                        derived_from: tosca.nodes.nfv.VNF
+                        properties:
+                                flavour_id: default
+                                vendor: Ericsson
+                                version: "1.0.0"
+                                vnf_profile:
+                                        min_number_of_instances: 1
+                                        max_number_of_instances: 1

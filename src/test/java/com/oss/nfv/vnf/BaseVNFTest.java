@@ -45,7 +45,7 @@ public abstract class BaseVNFTest extends BaseTestCase {
 
     private void onboardNewVNFSpecificationsStructure() throws IOException {
         String xmlContent = new String(Files.readAllBytes(Paths.get(XML_FILE_PATH_TO_TEST)));
-        OnboardClient.getInstance(env).uploadResourceSpecificationAndGetVNFId(xmlContent);
+        OnboardClient.getInstance(env).uploadResourceSpecificationXMLAndGetVNFId(xmlContent);
     }
 
     private void deleteAnyVNFInstances() {
