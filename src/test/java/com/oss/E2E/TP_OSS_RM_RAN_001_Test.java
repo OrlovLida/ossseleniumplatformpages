@@ -4,6 +4,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
@@ -55,6 +56,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
     private static final String BPM_AND_PLANNING = "BPM and Planning";
     private static final String PROCESS_INSTANCES = "Process Instances";
     private static final String MANUFACTURER = "HUAWEI Technology Co.,Ltd";
+    private SoftAssert softAssert;
 
     private CellSiteConfigurationPage cellSiteConfigurationPage;
     private String processNRPCode;
@@ -63,6 +65,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
     @BeforeClass
     public void openConsole() {
         waitForPageToLoad();
+        softAssert = new SoftAssert();
     }
 
     @Test(priority = 1)
@@ -298,12 +301,12 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
     }
 
     private void checkMessageContainsText(String message) {
-        Assert.assertTrue((getFirstMessage().getText())
+        softAssert.assertTrue((getFirstMessage().getText())
                 .contains(message));
     }
 
     private void checkMessageText(String message) {
-        Assert.assertEquals((getFirstMessage().getText()), message);
+        softAssert.assertEquals((getFirstMessage().getText()), message);
     }
 
     private Message getFirstMessage() {
@@ -330,7 +333,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
 
     private SystemMessageInterface getSuccesSystemMessage() {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, 90));
-        Assert.assertEquals((systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType()), MessageType.SUCCESS);
+        softAssert.assertEquals((systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType()), MessageType.SUCCESS);
         return systemMessage;
     }
 }

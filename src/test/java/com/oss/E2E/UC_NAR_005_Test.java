@@ -7,6 +7,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
@@ -39,11 +40,13 @@ public class UC_NAR_005_Test extends BaseTestCase {
     private static final String SERIAL_NUMBER_BEFORE = "SERIAL_NUMBER_BEFORE";
     private static final String SERIAL_NUMBER_AFTER = "SERIAL_NUMBER_AFTER";
     private static final String CONFIRM_ID = "ConfirmationBox_object_delete_wizard_confirmation_box_action_button";
+    private SoftAssert softAssert;
 
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
 
     @BeforeClass
     public void openNetworkDiscoveryControlView() {
+        softAssert = new SoftAssert();
         waitForPageToLoad();
         PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
         waitForPageToLoad();
@@ -217,7 +220,7 @@ public class UC_NAR_005_Test extends BaseTestCase {
     }
 
     private void checkMessageType(MessageType messageType) {
-        Assert.assertEquals((getFirstMessage().getMessageType()), messageType);
+        softAssert.assertEquals((getFirstMessage().getMessageType()), messageType);
     }
 
     private Message getFirstMessage() {

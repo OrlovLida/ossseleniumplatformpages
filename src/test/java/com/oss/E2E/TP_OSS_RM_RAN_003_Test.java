@@ -3,8 +3,8 @@ package com.oss.E2E;
 import java.util.List;
 import java.util.Random;
 
-import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
@@ -34,10 +34,12 @@ public class TP_OSS_RM_RAN_003_Test extends BaseTestCase {
     private Random r = new Random();
     private final String pci = Integer.toString(r.nextInt(503));
     private final String rsi = Integer.toString(r.nextInt(503));
+    private SoftAssert softAssert;
 
     @Test(priority = 1, description = "Create DCP")
     @Description("Create new Data Correction Process")
     public void createNewProcess() {
+        softAssert = new SoftAssert();
         openView(PROCESS_INSTANCES, BPM_AND_PLANNING, BUSINESS_PROCESS_MANAGEMENT);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
@@ -121,8 +123,8 @@ public class TP_OSS_RM_RAN_003_Test extends BaseTestCase {
     private void checkPopup(String text) {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assert.assertEquals(messages.size(), 1);
-        Assert.assertEquals(messages.get(0).getMessageType(), SystemMessageContainer.MessageType.SUCCESS);
-        Assert.assertTrue((messages.get(0).getText()).contains(text));
+        softAssert.assertEquals(messages.size(), 1);
+        softAssert.assertEquals(messages.get(0).getMessageType(), SystemMessageContainer.MessageType.SUCCESS);
+        softAssert.assertTrue((messages.get(0).getText()).contains(text));
     }
 }

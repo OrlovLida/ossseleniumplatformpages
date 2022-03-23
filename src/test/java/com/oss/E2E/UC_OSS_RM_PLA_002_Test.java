@@ -7,6 +7,7 @@ import java.util.List;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 import com.oss.BaseTestCase;
 import com.oss.bpm.CreateProcessNRPTest;
@@ -29,7 +30,6 @@ import com.oss.pages.platform.HierarchyViewPage;
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.LogManagerPage;
 import com.oss.pages.platform.NewInventoryViewPage;
-import com.oss.pages.transport.trail.ConnectionWizardPage;
 import com.oss.pages.reconciliation.CmDomainWizardPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage.IssueLevel;
@@ -41,6 +41,7 @@ import com.oss.pages.transport.NetworkViewPage;
 import com.oss.pages.transport.ipam.IPAddressAssignmentWizardPage;
 import com.oss.pages.transport.ipam.IPAddressManagementViewPage;
 import com.oss.pages.transport.ipam.helper.IPAddressAssignmentWizardProperties;
+import com.oss.pages.transport.trail.ConnectionWizardPage;
 
 import io.qameta.allure.Description;
 
@@ -73,12 +74,14 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
     private static final String RIGHT = "right";
     String URL = "";
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
+    private SoftAssert softAssert;
     private String serialNumber = "SN-" + (int) (Math.random() * 1001);
     private String processIPCode;
     private String processNRPCode;
 
     @BeforeClass
     public void openConsole() {
+        softAssert = new SoftAssert();
         waitForPageToLoad();
     }
 
@@ -508,20 +511,20 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
     }
 
     private void checkMessageType(MessageType messageType) {
-        Assert.assertEquals((getFirstMessage().getMessageType()), messageType);
+        softAssert.assertEquals((getFirstMessage().getMessageType()), messageType);
     }
 
     private void checkMessageContainsText(String message) {
-        Assert.assertTrue((getFirstMessage().getText())
+        softAssert.assertTrue((getFirstMessage().getText())
                 .contains(message));
     }
 
     private void checkMessageText() {
-        Assert.assertEquals((getFirstMessage().getText()), "The task properly assigned.");
+        softAssert.assertEquals((getFirstMessage().getText()), "The task properly assigned.");
     }
 
     private void checkMessageSize() {
-        Assert.assertEquals((SystemMessageContainer.create(driver, webDriverWait)
+        softAssert.assertEquals((SystemMessageContainer.create(driver, webDriverWait)
                 .getMessages()
                 .size()), 1);
     }

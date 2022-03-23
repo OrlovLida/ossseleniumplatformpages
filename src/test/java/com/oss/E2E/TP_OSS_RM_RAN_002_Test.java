@@ -1,9 +1,9 @@
 package com.oss.E2E;
 
-import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
@@ -21,8 +21,6 @@ import io.qameta.allure.Description;
 @Listeners({TestListener.class})
 public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
 
-    private String processNRPCode;
-    private CellSiteConfigurationPage cellSiteConfigurationPage;
     private static final String LOCATION_NAME = "XYZ_SeleniumTests";
     private static final String SITE = "Site";
     private static final String NAME = "Name";
@@ -49,11 +47,15 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
     private static final String BPM_AND_PLANNING = "BPM and Planning";
     private static final String PROCESS_INSTANCES = "Process Instances";
     private static final String MANUFACTURER = "HUAWEI Technology Co.,Ltd";
+    private String processNRPCode;
+    private CellSiteConfigurationPage cellSiteConfigurationPage;
+    private SoftAssert softAssert;
 
     @BeforeClass
     public void openConsole() {
         waitForPageToLoad();
         cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);
+        softAssert = new SoftAssert();
     }
 
     @Test(priority = 1)
@@ -185,7 +187,7 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
         cellSiteConfigurationPage.selectTab("Devices");
         for (String ranAntenna : ANTENNA_NAMES) {
             waitForPageToLoad();
-            cellSiteConfigurationPage.removeDevice("Antennas", MANUFACTURER,  ranAntenna);
+            cellSiteConfigurationPage.removeDevice("Antennas", MANUFACTURER, ranAntenna);
             checkMessageType();
             closeMessage();
             waitForPageToLoad();
@@ -250,20 +252,20 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
     }
 
     private void checkMessageType() {
-        Assert.assertEquals((getFirstMessage().getMessageType()), SystemMessageContainer.MessageType.SUCCESS);
+        softAssert.assertEquals((getFirstMessage().getMessageType()), SystemMessageContainer.MessageType.SUCCESS);
     }
 
     private void checkMessageContainsText(String message) {
-        Assert.assertTrue((getFirstMessage().getText())
+        softAssert.assertTrue((getFirstMessage().getText())
                 .contains(message));
     }
 
     private void checkMessageText() {
-        Assert.assertEquals((getFirstMessage().getText()), "The task properly assigned.");
+        softAssert.assertEquals((getFirstMessage().getText()), "The task properly assigned.");
     }
 
     private void checkMessageSize() {
-        Assert.assertEquals((SystemMessageContainer.create(driver, webDriverWait)
+        softAssert.assertEquals((SystemMessageContainer.create(driver, webDriverWait)
                 .getMessages()
                 .size()), 1);
     }

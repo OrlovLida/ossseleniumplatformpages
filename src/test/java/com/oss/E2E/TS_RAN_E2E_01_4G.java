@@ -20,7 +20,6 @@ import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.radio.AntennaArrayWizardPage;
 import com.oss.pages.radio.CableWizardPage;
 import com.oss.pages.radio.CellSiteConfigurationPage;
-import com.oss.pages.transport.trail.ConnectionWizardPage;
 import com.oss.pages.radio.HostingWizardPage;
 import com.oss.pages.radio.RanAntennaWizardPage;
 import com.oss.pages.reconciliation.CmDomainWizardPage;
@@ -28,6 +27,7 @@ import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage.IssueLevel;
 import com.oss.pages.reconciliation.NetworkInconsistenciesViewPage;
 import com.oss.pages.reconciliation.SamplesManagementPage;
+import com.oss.pages.transport.trail.ConnectionWizardPage;
 import com.oss.utils.TestListener;
 
 @Listeners({TestListener.class})
