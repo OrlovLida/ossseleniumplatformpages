@@ -96,7 +96,6 @@ public class BaseTestCase implements IHookable {
 
     private void addCookies(WebDriver driver) {
         boolean isWebRunner = Boolean.parseBoolean(CONFIGURATION.getValue("webRunner"));
-
         if (!isWebRunner) {
             driver.manage().addCookie(createCookie());
         }
@@ -108,7 +107,6 @@ public class BaseTestCase implements IHookable {
         prefs.put("download.directory_upgrade", true);
         prefs.put("profile.default_content_settings.popups", 0);
         prefs.put("download.default_directory", CONFIGURATION.getDownloadDir());
-
         return prefs;
     }
 
@@ -117,8 +115,12 @@ public class BaseTestCase implements IHookable {
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--ignore-certificate-errors");
+        options.addArguments("start-maximized");
+        options.addArguments("enable-automation");
+        options.addArguments("--disable-infobars");
+        options.addArguments("--disable-browser-side-navigation");
+        options.addArguments("--disable-gpu");
         options.setExperimentalOption("prefs", getPreferences());
-
         return options;
     }
 
@@ -128,7 +130,6 @@ public class BaseTestCase implements IHookable {
 
         if (isLocally) {
             System.setProperty("webdriver.chrome.driver", CONFIGURATION.getValue("chromeDriverPath"));
-            options.addArguments("start-maximized");
         } else if (isWebRunner) {
             System.setProperty("webdriver.chrome.driver", CONFIGURATION.getValue("chromeDriverWebRunner"));
             options.addArguments("--window-size=1920,1080");

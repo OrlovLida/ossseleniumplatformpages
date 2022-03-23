@@ -7,6 +7,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
@@ -35,10 +36,12 @@ public class UC_NAR_004_Test extends BaseTestCase {
     private static final String EQUIPMENT_TYPE = "Physical Device";
     private static final String ROUTER_NAME = "KRK-SSE8-45";
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
+    private SoftAssert softAssert;
 
     @BeforeClass
     public void openConsole() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        softAssert = new SoftAssert();
     }
 
     @Test(priority = 1, description = "Create CM Domain")
@@ -177,8 +180,8 @@ public class UC_NAR_004_Test extends BaseTestCase {
     private void checkPopupMessageType() {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<Message> messages = systemMessage.getMessages();
-        Assert.assertNotNull(messages);
-        Assert.assertEquals(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType(),
+        softAssert.assertNotNull(messages);
+        softAssert.assertEquals(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType(),
                 MessageType.INFO);
     }
 }

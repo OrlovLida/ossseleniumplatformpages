@@ -8,6 +8,7 @@ import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
 
 import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
+import static com.oss.framework.components.inputs.Input.ComponentType.OBJECT_SEARCH_FIELD;
 import static com.oss.framework.components.inputs.Input.ComponentType.SEARCH_FIELD;
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 
@@ -63,7 +64,7 @@ public class RanAntennaWizardPage extends BasePage {
 
     @Step("Set precise location")
     public void setPreciseLocation(String location) {
-        getRanAntennaWizard().setComponentValue(RAN_ANTENNA_PRECISE_LOCATION_DATA_ATTRIBUTE_NAME, location, COMBOBOX);
+        getRanAntennaWizard().setComponentValue(RAN_ANTENNA_PRECISE_LOCATION_DATA_ATTRIBUTE_NAME, location, OBJECT_SEARCH_FIELD);
     }
 
     @Step("Set mechanical tilt")

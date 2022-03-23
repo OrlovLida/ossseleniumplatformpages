@@ -6,6 +6,7 @@ import java.util.List;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
@@ -33,11 +34,13 @@ public class UC_NAR_001_Test extends BaseTestCase {
     private static final String DOMAIN = "IP";
     private static final String EQUIPMENT_TYPE = "Physical Device";
     private static final String CONFIRM_ID = "ConfirmationBox_object_delete_wizard_confirmation_box_action_button";
+    private SoftAssert softAssert;
 
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
 
     @BeforeClass
     public void openNetworkDiscoveryControlView() {
+        softAssert = new SoftAssert();
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
     }
 
@@ -195,8 +198,8 @@ public class UC_NAR_001_Test extends BaseTestCase {
     private void checkPopupMessageType(MessageType messageType) {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assert.assertNotNull(messages);
-        Assert.assertEquals(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType(),
+        softAssert.assertNotNull(messages);
+        softAssert.assertEquals(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType(),
                 messageType);
     }
 }

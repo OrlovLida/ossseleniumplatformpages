@@ -1,0 +1,368 @@
+tosca_definitions_version: tosca_simple_yaml_1_2
+
+description: VNF Descriptor for Ericsson Packet Core Controller
+
+imports:
+  - etsi_nfv_sol001_vnfd_2_5_1_types.yaml
+
+data_types:
+  PCG-01.datatypes.nfv.InstantiateVnfOperationAdditionalParameters:
+    derived_from: tosca.datatypes.nfv.VnfOperationAdditionalParameters
+    properties:
+      namespace:
+        type: string
+        description: The namespace the application is to be deployed into.
+        required: false
+        default: default
+
+      cleanUpResources:
+        type: boolean
+        description: Remove the resources on the cluster that are associated
+          with the application, including the Persistent Volume Claims (PVCs)
+          and Persistent Volumes.
+        required: false
+        default: false
+
+      applicationTimeOut:
+        type: integer
+        description: Maximum time allocated for the application to instantiate.
+          When the package has multiple Helm charts, the specified
+          applicationTimeOut is multiplied by the number of Helm charts.
+        required: false
+        default: 1200
+
+      commandTimeOut:
+        type: integer
+        description: Maximum time allocated for helm/kubectl commands to
+          execute. If the time value is greater than the applicationTimeOut
+          value, the value is set as the applicationTimeOut value.
+        required: false
+        default: 1200
+
+      pvcTimeOut:
+        type: integer
+        description: Specifies the time to wait for PVCs to delete.
+          Only applicable if cleanUpResources is set to true.
+        required: false
+        default: 100
+
+      skipVerification:
+        type: boolean
+        description: Flag indicating whether to bypass the application verification checks.
+        required: false
+        default: false
+
+      skipJobVerification:
+        type: boolean
+        description: Flag indicating whether to bypass verification of pods created as part of Job.
+        required: false
+        default: true
+
+      disableOpenapiValidation:
+        type: boolean
+        description: Flag indicating whether to validate rendered templates against the Kubernetes OpenAPI Schema.
+        required: false
+        default: true
+
+      helmWait:
+        type: boolean
+        description: If set, waits until all pods, PVCs, services, and minimum
+          number of pods of a deployment are in a ready state before marking the
+          release as successful. The wait time is specified in commandTimeOut.
+        required: false
+        default: false
+
+      helmNoHooks:
+        type: boolean
+        description: If set, adds --no-hooks to the helm command.
+        required: false
+        default: false
+
+      addNodeToOSS:
+        type: boolean
+        description: The value indicates whether to add the network element to ENM after instantiated.
+        required: false
+        default: false
+
+      ossTopology.managedElementId:
+        type: string
+        description: 'The same as the NetworkElement Managed Object (MO) name.
+          This matches the MeContext MO name, if it exists, and is case sensitive.
+          Some characters are restricted in ENM system models. These cannot be used in the networkElementId attribute.
+          The value cannot contain the special characters =,%{}<>:"/\|?* and all ASCII characters below or equal to hexadecimal 1F.
+          If no value is provided, a combination of <cluster-name>-<namespace>-<vnf Instance name> is set for this parameter.'
+        required: false
+
+      ossTopology.timeZone:
+        type: string
+        description: The local time zone of the node.
+          Use the following command to get the appropriate value
+          "cmedit describe NetworkElement.timeZone" in ENM.
+          It is mandatory when addNodeToOSS parameter is set to true.
+        required: false
+
+      ossTopology.networkElementType:
+        constraints:
+          - valid_values:
+              - PCC
+        type: string
+        description: The network element type.
+          It is mandatory when addNodeToOSS parameter is set to true.
+        required: false
+
+      ossTopology.networkElementVersion:
+        type: string
+        description: The version of the network element.
+          In ENM, this parameter refers to ossModelIdentity, such as 1.0.
+          To execute the command "cmedit describe --neType PCC" in
+          ENM to get the available network element version.
+          It is mandatory depending on the networkElementType.
+        required: false
+
+      ossTopology.networkElementUsername:
+        type: string
+        description: Username for login by ENM.
+          It is mandatory when addNodeToOSS parameter is set to true.
+        required: false
+
+      ossTopology.networkElementPassword:
+        type: string
+        description: Password for login by ENM.
+          For security reasons, this value must be Base64 encoded.
+          It is mandatory when addNodeToOSS parameter is set to true.
+        required: false
+
+      ossTopology.nodeIpAddress:
+        type: string
+        description: The O&M IP Address of the Network Element.
+          It is mandatory when addNodeToOSS parameter is set to true.
+        required: false
+
+      ossTopology.communityString:
+        type: string
+        description: Community string for SNMP.
+          If not provided, the default string nm-public is set.
+        required: false
+
+      ossTopology.snmpPort:
+        type: string
+        description: SNMP port.
+          If a port is not provided, the default port 161 is set.
+        required: false
+
+      ossTopology.snmpVersion:
+        constraints:
+          - valid_values:
+              - V2c
+              - SNMP_V3
+        type: string
+        description: SNMP Version.
+        required: false
+
+      ossTopology.snmpSecurityLevel:
+        constraints:
+          - valid_values:
+              - AUTH_PRIV
+              - AUTH_NO_PRIV
+              - NO_AUTH_NO_PRIV
+        type: string
+        description: It is the permitted level of security within a security model.
+          It is mandatory when addNodeToOSS parameter is set to true.
+        required: false
+
+      ossTopology.snmpSecurityName:
+        type: string
+        description: The security name for SNMP V3.
+          It is mandatory when addNodeToOSS parameter is set to true and SNMP V3.
+        required: false
+
+      ossTopology.snmpAuthProtocol:
+        type: string
+        description: Authentication protocol used to authorize the identity of user.
+          If not provided, it is defaulted to MD5.
+          Applicable if SNMP V3 is used and the security level is AUTH_NO_PRIV or AUTH_PRIV.
+          Example values MD5, SHA1.
+        required: false
+
+      ossTopology.snmpPrivProtocol:
+        type: string
+        description: Privacy Protocol used for encryption of SNMP v3 messages to ensure confidentiality of data.
+          If not provided, it is defaulted to AES128 for ENM.
+          Applicable if SNMP V3 is used and the security level is AUTH_PRIV.
+          Example values for ENM AES128, DES.
+        required: false
+
+      ossTopology.snmpAuthPassword:
+        type: string
+        description: Applicable only for ENM when SNMP V3 is used and the security level is AUTH_NO_PRIV or AUTH_PRIV.
+          Password set for authentication with the provided Authentication Protocol for secure authorization.
+          8 characters minimum. The password must be base64 encoded.
+        required: false
+
+      ossTopology.snmpPrivacyPassword:
+        type: string
+        description: Applicable only for ENM when SNMP V3 is used and the security level is AUTH_PRIV.
+          Password set for authentication with the provided Privacy Protocol for secure authorization.
+          8 characters minimum. The password must be base64 encoded.
+        required: false
+
+      ossTopology.pmFunction:
+        type: boolean
+        description: PmFunction is used to switch on and off PMIC Mediation flows for each Network Element.
+          If PmFunction is on, all file collection, subscription activation, subscription deactivation, scanner polling,
+          and scanner master functionality is available for the Network Element.
+          Default value is false.
+        required: false
+
+      ossTopology.cmNodeHeartbeatSupervision:
+        type: boolean
+        description: Enabling CM Supervision copies the current status of the configuration data of the node into ENM and enables CM Notifications.
+          Enabling CM Notifications ensures that the node notifies ENM of any configuration data changes.
+          Default value is true.
+        required: false
+
+      ossTopology.fmAlarmSupervision:
+        type: boolean
+        description: FmAlarmSupervision is used to enable or disable alarms in case of any failures.
+          Default value is true.
+        required: false
+
+      ossTopology.netConfPort:
+        type: string
+        description: NetConf port number.
+          If not provided, the default port number 830 must be set.
+          It is mandatory when addNodeToOSS parameter is set to true.
+        required: false
+
+      ossTopology.subNetworks:
+        type: string
+        description: SubNetwork is used for logical grouping of nodes within ENM.
+          It can contain one or more child subnetwork.
+          If only one subNetwork, then the format is SubNetwork=CL.
+          If more than one child SubNetwork, the format is SubNetwork=CL,SubNetwork=COMS.
+          That is SubNetwork has to be separated by a comma (,).
+        required: false
+
+      ossTopology.transportProtocol:
+        type: string
+        description: If transportProtocol is not provided, the default value SSH is used.
+          Possible values are SSH and TLS.
+        required: false
+
+      values.yaml:
+        type: string
+        description: The parameter can be used to convey the values that are not modelled in other additonalParameters.
+        required: false
+
+  PCG-01.datatypes.nfv.TerminateVnfOperationAdditionalParameters:
+    derived_from: tosca.datatypes.nfv.VnfOperationAdditionalParameters
+    properties:
+      cleanUpResources:
+        type: boolean
+        description: 'Remove Persistent Volume Claims and Persistent Volumes of
+          an application. Note: cleanUpResources removes the PVCs and PVs only
+          when those resources have the Kubernetes instance label
+          (app.kubernetes.io/instance: <RELEASE_NAME>).'
+        required: false
+        default: false
+
+      pvcTimeOut:
+        type: integer
+        description: Specifies the time to wait for PVC to delete.
+        required: false
+        default: 100
+
+      applicationTimeOut:
+        type: integer
+        description: Maximum time allocated for application to instantiate.
+          When the package has multiple Helm charts, the specified
+          applicationTimeOut is multiplied by the number of Helm charts.
+        required: false
+        default: 3600
+
+      skipVerification:
+        type: boolean
+        description: Flag indicating whether to bypass the Application Verification Checks.
+        required: false
+        default: false
+
+      skipJobVerification:
+        type: boolean
+        description: Flag indicating whether to bypass verification of pods created as part of Job.
+        required: false
+        default: false
+
+      clusterName:
+        type: string
+        description: The name of the chosen cluster.
+        required: false
+
+      commandTimeOut:
+        type: integer
+        description: Maximum time allocated for helm/kubectl commands to execute.
+        required: false
+        default: 300
+
+node_types:
+  PCG-01:
+    derived_from: tosca.nodes.nfv.VNF
+    properties:
+      descriptor_id:
+        type: string
+        constraints: [ valid_values: [ PCG01SELENIUMTEST ] ]
+        default: PCG01SELENIUMTEST
+      descriptor_version:
+        type: string
+        constraints: [ valid_values: [ 1.0.0 ] ]
+        default: 1.0.0
+      provider:
+        type: string
+        constraints: [ valid_values: [ Ericsson ] ]
+        default: Ericsson
+      description:
+        type: string
+        constraints: [ valid_values: [ Cloud Mobile Gateway ] ]
+        default: Cloud Mobile Gateway
+      product_name:
+        type: string
+        constraints: [ valid_values: [ PCC ] ]
+        default: PCC
+      software_version:
+        type: string
+        constraints: [ valid_values: [ '1.0.0' ] ]
+        default: '1.0.0'
+      vnfm_info:
+        type: list
+        entry_schema:
+          type: string
+          constraints: [ valid_values: [ '3881:E-VNFM' ] ]
+        default: [ '3881:E-VNFM' ]
+      flavour_id:
+        type: string
+        constraints: [ valid_values: [ scalable ] ]
+        default: scalable
+      flavour_description:
+        type: string
+        default: ''
+    interfaces:
+      Vnflcm:
+        type: tosca.interfaces.nfv.Vnflcm
+        instantiate:
+          inputs:
+            additional_parameters:
+              type: PCG-01.datatypes.nfv.InstantiateVnfOperationAdditionalParameters
+              required: false
+        terminate:
+          inputs:
+            additional_parameters:
+              type: PCG-01.datatypes.nfv.TerminateVnfOperationAdditionalParameters
+              required: false
+    artifacts:
+      helm_package:
+        description: Helm package associated with this descriptor
+        type: tosca.artifacts.File
+        file: Definitions/OtherTemplates/eric-pc-controller-1.41.2-5.tgz
+      software_images:
+        description: Location of the software images being used in this package
+        type: tosca.artifacts.nfv.SwImage
+        file: Files/images/docker.tar
