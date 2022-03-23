@@ -172,7 +172,7 @@ public class NewNavigationTest extends BaseTestCase {
         ApplicationWizard applicationWizard = openApplicationWizard();
         applicationWizard.addPathParam(TEST_MOVIE_TYPE);
         applicationWizard.clickSave();
-        DelayUtils.sleep(3000);
+        DelayUtils.sleep(5000);
         toolsManagerWindow.openApplication(CATEGORY_NAME, APPLICATION_NAME_2);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assertions.assertThat(driver.getCurrentUrl()).contains(TEST_MOVIE_TYPE);
@@ -184,7 +184,7 @@ public class NewNavigationTest extends BaseTestCase {
         ApplicationWizard applicationWizard = openApplicationWizard();
         applicationWizard.addQueryParam("query", "rating=='10'");
         applicationWizard.clickSave();
-        DelayUtils.sleep(2000);
+        DelayUtils.sleep(5000);
         toolsManagerWindow.openApplication(CATEGORY_NAME, APPLICATION_NAME_2);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         ArrayList<String> ratingValues = getValuesFromColumn("rating");

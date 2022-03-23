@@ -11,14 +11,13 @@ import java.time.LocalDate;
 import org.assertj.core.api.Assertions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.tree.TreeComponent;
-import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.physical.DeviceWizardPage;
-import com.oss.pages.physical.SublocationWizardPage;
 import com.oss.pages.platform.HierarchyViewPage;
 import com.oss.repositories.AddressRepository;
 import com.oss.repositories.LocationInventoryRepository;
@@ -46,7 +45,6 @@ public class LifecycleStateDecoratorsInTreeWidgetTest extends BaseTestCase {
     private static final TreeComponent.Node.DecoratorStatus GREEN = TreeComponent.Node.DecoratorStatus.GREEN;
     private static final TreeComponent.Node.DecoratorStatus PURPLE = TreeComponent.Node.DecoratorStatus.PURPLE;
     private static final String CREATE_DEVICE_ACTION_ID = "CreateDeviceOnLocationWizardAction";
-    private static final String ROOM_TYPE = "Room";
     private static final String REFRESH_ACTION_ID = "tree_gql_refresh_relation";
     private static final String DEVICE_MODEL_TYPE = "IPDeviceModel";
     private static final String DEVICE_2_NAME = "Device_2";
@@ -65,8 +63,6 @@ public class LifecycleStateDecoratorsInTreeWidgetTest extends BaseTestCase {
     private Long project1;
     private Long project2;
     private String buildingId;
-    private Long room2Id;
-    private Long device1Id;
     private Long device2Id;
     private Long device3Id;
     
@@ -81,6 +77,7 @@ public class LifecycleStateDecoratorsInTreeWidgetTest extends BaseTestCase {
         hierarchyViewPage.getFirstNode().callAction(CREATE_ACTION_ID, CREATE_DEVICE_ACTION_ID);
         createDeviceWizard();
         Assertions.assertThat(getNode(BUILDING_NAME).getDecoratorStatus()).isEqualTo(GREEN);
+        Assertions.assertThat(getNode(DEVICE_1_PATH).getDecoratorStatus()).isEqualTo(GREEN);
         Assertions.assertThat(getNode(PORT_01_PATH).getDecoratorStatus()).isEqualTo(GREEN);
     }
     
@@ -122,7 +119,8 @@ public class LifecycleStateDecoratorsInTreeWidgetTest extends BaseTestCase {
     }
     
     @Test(priority = 5)
-    public void updateObjectsAndRefreshTre() {
+    public void updateObjectsAndRefreshTree() {
+        updateBuilding();
         updateDevice(device3Id, project2);
         hierarchyViewPage.getMainTree().callActionById(ActionsContainer.KEBAB_GROUP_ID, REFRESH_TREE_ACTION_ID);
         TreeComponent.Node node = getNode(DEVICE_3_PATH);
@@ -153,7 +151,14 @@ public class LifecycleStateDecoratorsInTreeWidgetTest extends BaseTestCase {
         Assertions.assertThat(device1.countDecorators()).isZero();
         Assertions.assertThat(device2.countDecorators()).isZero();
         Assertions.assertThat(device3.countDecorators()).isZero();
-
+    }
+    
+    @AfterClass
+    public void clear() {
+        deleteDevice(device3Id);
+        deleteDevice(device2Id);
+        deleteDevice(getDeviceId(DEVICE_1_NAME, buildingId));
+        deleteBuilding();
     }
     
     private Long createProject(String code, LocalDate finishDueDate) {
@@ -172,12 +177,23 @@ public class LifecycleStateDecoratorsInTreeWidgetTest extends BaseTestCase {
         log.info("Building name: " + BUILDING_NAME);
         return locationInventoryRepository.createLocation(BUILDING_NAME, LOCATION_TYPE_BUILDING, getGeographicalAddress(), projectId);
     }
-
+    
+    private void updateBuilding() {
+        LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);
+        locationInventoryRepository.updateLocation(BUILDING_NAME, LOCATION_TYPE_BUILDING, buildingId, getGeographicalAddress(),
+                FakeGenerator.getAddress(), project2);
+    }
+    
+    private void deleteBuilding() {
+        LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);
+        locationInventoryRepository.deleteLocation(buildingId, LOCATION_TYPE_BUILDING);
+    }
+    
     private Long getGeographicalAddress() {
         AddressRepository addressRepository = new AddressRepository(env);
         return addressRepository.getFirstGeographicalAddressId();
     }
-
+    
     private void createDeviceWizard() {
         DeviceWizardPage deviceWizard = new DeviceWizardPage(driver);
         deviceWizard.setModel(DEVICE_1_MODEL);
@@ -198,7 +214,7 @@ public class LifecycleStateDecoratorsInTreeWidgetTest extends BaseTestCase {
         ResourceCatalogClient resourceCatalogClient = new ResourceCatalogClient(env);
         return resourceCatalogClient.getModelIds(DEVICE_1_MODEL);
     }
-
+    
     private void updateDeviceWizard() {
         DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
         deviceWizardPage.setDescription(UPDATE);
@@ -212,6 +228,16 @@ public class LifecycleStateDecoratorsInTreeWidgetTest extends BaseTestCase {
         physicalInventoryRepository.updateDeviceSerialNumber(deviceId, LOCATION_TYPE_BUILDING, Long.valueOf(buildingId),
                 FakeGenerator.getIdNumber(), deviceModelId, DEVICE_MODEL_TYPE,
                 projectId);
+    }
+    
+    private void deleteDevice(long deviceId) {
+        PhysicalInventoryRepository physicalInventoryRepository = new PhysicalInventoryRepository(env);
+        physicalInventoryRepository.deleteDevice(String.valueOf(deviceId));
+    }
+    
+    private Long getDeviceId(String deviceName, String locationId) {
+        PhysicalInventoryRepository physicalInventoryRepository = new PhysicalInventoryRepository(env);
+        return physicalInventoryRepository.getDeviceId(locationId, deviceName);
     }
     
     private TreeComponent.Node getNode(String nodePath) {
