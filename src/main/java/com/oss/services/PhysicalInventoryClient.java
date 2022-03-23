@@ -4,6 +4,7 @@ import javax.ws.rs.core.Response;
 
 import com.comarch.oss.physicalinventory.api.dto.PhysicalDeviceDTO;
 import com.comarch.oss.physicalinventory.api.dto.ResourceDTO;
+import com.comarch.oss.physicalinventory.api.dto.SearchDTO;
 import com.jayway.restassured.http.ContentType;
 import com.oss.untils.Constants;
 import com.oss.untils.Environment;
@@ -17,6 +18,8 @@ public class PhysicalInventoryClient {
     private static final String ID = "id";
     private static final String CHECK_COMPATIBILITY = "checkCompatibility";
     private static final String FALSE = "false";
+    private static final String LOCATION = "location";
+    private static final String QUERY = "query";
     private static PhysicalInventoryClient instance;
     private final Environment ENV;
     
@@ -72,6 +75,21 @@ public class PhysicalInventoryClient {
                 .put(DEVICES_API_PATH + "/" + deviceId)
                 .then()
                 .statusCode(Response.Status.OK.getStatusCode()).assertThat();
+    }
+    
+    public SearchDTO getDeviceId(String locationId, String queryVale) {
+       return ENV.getPhysicalInventoryCoreRequestSpecification()
+                .given()
+                .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
+                .queryParam(LOCATION, locationId)
+                .queryParam(QUERY, queryVale)
+                .contentType(ContentType.JSON)
+                .when()
+                .get(DEVICES_API_PATH)
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode()).assertThat()
+                .extract()
+                .as(SearchDTO.class);
     }
     
     private PhysicalDeviceDTO getDeviceStructure(Long deviceId) {
