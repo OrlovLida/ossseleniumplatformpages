@@ -3,7 +3,6 @@ package com.oss.configuration;
 import java.util.List;
 
 import org.assertj.core.api.Assertions;
-import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -78,8 +77,8 @@ public class DetailsConfigurationTest extends BaseTestCase {
         inventoryViewPage.applyConfigurationForProperties(ROW_ID_0, PROPERTY_PANEL_ID, DEFAULT_CONFIGURATION);
 
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-
-        Assert.assertTrue(inventoryViewPage.isPropertyVisible(ROW_ID_0, PROPERTY_PANEL_ID, NATIONALITY_LABEL));
+        PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel(ROW_ID_0, PROPERTY_PANEL_ID);
+        Assertions.assertThat(propertyPanel.getPropertyLabels()).contains(NATIONALITY_LABEL);
 
     }
 
@@ -88,8 +87,8 @@ public class DetailsConfigurationTest extends BaseTestCase {
     public void chooseConfigurationForProperties() {
 
         inventoryViewPage.applyConfigurationForProperties(ROW_ID_0, PROPERTY_PANEL_ID, CONFIGURATION_NAME_PROPERTIES);
-
-        Assert.assertFalse(inventoryViewPage.isPropertyVisible(ROW_ID_0, PROPERTY_PANEL_ID, NATIONALITY_LABEL));
+        PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel(ROW_ID_0, PROPERTY_PANEL_ID);
+        Assertions.assertThat(propertyPanel.getPropertyLabels()).doesNotContain(NATIONALITY_LABEL);
 
     }
 
@@ -163,8 +162,9 @@ public class DetailsConfigurationTest extends BaseTestCase {
 
         driver.navigate().refresh();
         inventoryViewPage.selectFirstRow();
+        PropertyPanel propertyPanel1 = inventoryViewPage.getPropertyPanel(ROW_ID_0, PROPERTY_PANEL_ID);
 
-        Assert.assertFalse(inventoryViewPage.isPropertyVisible(ROW_ID_0, PROPERTY_PANEL_ID, GENDER_LABEL));
+        Assertions.assertThat(propertyPanel1.getPropertyLabels()).doesNotContain(GENDER_LABEL);
         inventoryViewPage.removeConfigurationOfProperties(ROW_ID_0, PROPERTY_PANEL_ID, CONFIGURATION_NAME_PROPERTIES_DEFAULT_FOR_USER);
     }
 

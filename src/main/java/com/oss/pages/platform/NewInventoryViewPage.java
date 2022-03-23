@@ -514,10 +514,6 @@ public class NewInventoryViewPage extends BasePage {
         return getTabsWidget().isTabDisplayed(tabLabel);
     }
 
-    public boolean isPropertyVisible(int rowId, String propertyPanelId, String propertyLabel) {
-        return getPropertyPanel(rowId, propertyPanelId).isPropertyDisplayed(propertyLabel);
-    }
-
     public NewInventoryViewPage changeTab(String tabLabel) {
         getTabsWidget().selectTabByLabel(tabLabel);
         return this;
