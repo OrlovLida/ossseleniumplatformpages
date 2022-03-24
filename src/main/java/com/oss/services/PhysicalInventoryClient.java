@@ -4,7 +4,7 @@ import javax.ws.rs.core.Response;
 
 import com.comarch.oss.physicalinventory.api.dto.PhysicalDeviceDTO;
 import com.comarch.oss.physicalinventory.api.dto.ResourceDTO;
-import com.comarch.oss.physicalinventory.api.dto.SearchDTO;
+import com.comarch.oss.physicalinventory.api.dto.SearchResultDTO;
 import com.jayway.restassured.http.ContentType;
 import com.oss.untils.Constants;
 import com.oss.untils.Environment;
@@ -15,16 +15,15 @@ public class PhysicalInventoryClient {
     private static final String DEVICE_STRUCTURE_API_PATH = "/devices/%s/devicestructurebyjpa";
     private static final String DEVICE_DELETE_API_PATH = "/devices/v2/%s";
     private static final String PROJECT_ID = "project_id";
-    private static final String ID = "id";
     private static final String CHECK_COMPATIBILITY = "checkCompatibility";
     private static final String FALSE = "false";
     private static final String LOCATION = "location";
     private static final String QUERY = "query";
     private static PhysicalInventoryClient instance;
-    private final Environment ENV;
+    private final Environment env;
     
     public PhysicalInventoryClient(Environment environment) {
-        ENV = environment;
+        env = environment;
     }
     
     public static PhysicalInventoryClient getInstance(Environment pEnvironment) {
@@ -36,7 +35,7 @@ public class PhysicalInventoryClient {
     }
     
     public ResourceDTO createDevice(PhysicalDeviceDTO device) {
-        return ENV.getPhysicalInventoryCoreRequestSpecification()
+        return env.getPhysicalInventoryCoreRequestSpecification()
                 .given()
                 .contentType(ContentType.JSON)
                 .body(device)
@@ -49,7 +48,7 @@ public class PhysicalInventoryClient {
     }
     
     public ResourceDTO createDevice(PhysicalDeviceDTO device, long projectId) {
-        return ENV.getPhysicalInventoryCoreRequestSpecification()
+        return env.getPhysicalInventoryCoreRequestSpecification()
                 .given()
                 .queryParam(Constants.PERSPECTIVE, Constants.PLAN)
                 .queryParam(PROJECT_ID, projectId)
@@ -64,7 +63,7 @@ public class PhysicalInventoryClient {
     }
     
     public void updateDevice(PhysicalDeviceDTO deviceDTO, long deviceId, long projectId) {
-        ENV.getPhysicalInventoryCoreRequestSpecification()
+        env.getPhysicalInventoryCoreRequestSpecification()
                 .given()
                 .queryParam(Constants.PERSPECTIVE, Constants.PLAN)
                 .queryParam(PROJECT_ID, projectId)
@@ -77,8 +76,8 @@ public class PhysicalInventoryClient {
                 .statusCode(Response.Status.OK.getStatusCode()).assertThat();
     }
     
-    public SearchDTO getDeviceId(String locationId, String queryVale) {
-       return ENV.getPhysicalInventoryCoreRequestSpecification()
+    public SearchResultDTO getDeviceId(String locationId, String queryVale) {
+        return env.getPhysicalInventoryCoreRequestSpecification()
                 .given()
                 .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
                 .queryParam(LOCATION, locationId)
@@ -89,12 +88,12 @@ public class PhysicalInventoryClient {
                 .then()
                 .statusCode(Response.Status.OK.getStatusCode()).assertThat()
                 .extract()
-                .as(SearchDTO.class);
+                .as(SearchResultDTO.class);
     }
     
     private PhysicalDeviceDTO getDeviceStructure(Long deviceId) {
         String devicePath = String.format(DEVICE_STRUCTURE_API_PATH, deviceId);
-        return ENV.getPhysicalInventoryCoreRequestSpecification()
+        return env.getPhysicalInventoryCoreRequestSpecification()
                 .given()
                 .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
                 .when()
@@ -117,7 +116,7 @@ public class PhysicalInventoryClient {
     
     public void deleteDevice(String deviceId) {
         String devicePath = String.format(DEVICE_DELETE_API_PATH, deviceId);
-        ENV.getPhysicalInventoryCoreRequestSpecification()
+        env.getPhysicalInventoryCoreRequestSpecification()
                 .given()
                 .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
                 .when()

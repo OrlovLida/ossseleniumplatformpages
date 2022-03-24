@@ -7,7 +7,7 @@ import com.comarch.oss.physicalinventory.api.dto.CardDTO;
 import com.comarch.oss.physicalinventory.api.dto.ChassisDTO;
 import com.comarch.oss.physicalinventory.api.dto.PhysicalDeviceDTO;
 import com.comarch.oss.physicalinventory.api.dto.ResourceDTO;
-import com.comarch.oss.physicalinventory.api.dto.SearchDTO;
+import com.comarch.oss.physicalinventory.api.dto.SearchResultDTO;
 import com.oss.services.PhysicalInventoryClient;
 import com.oss.untils.Environment;
 
@@ -62,8 +62,8 @@ public class PhysicalInventoryRepository {
     
     public Long getDeviceId(String locationId, String deviceName) {
         PhysicalInventoryClient client = new PhysicalInventoryClient(env);
-        SearchDTO deviceId = client.getDeviceId(locationId, "Name==" + deviceName);
-        return deviceId.getId();
+        SearchResultDTO deviceId = client.getDeviceId(locationId, "Name==" + deviceName);
+        return deviceId.getSearchResult().get(0).getId();
     }
     
     private PhysicalDeviceDTO buildDevice(String locationType, Long locationId, Long deviceModelId, String deviceName,
