@@ -8,10 +8,10 @@ public class TrailCoreClient {
 
     private static final String TRAILS_SEARCH_PATH = "trails/search?terminationId=";
     private static TrailCoreClient instance;
-    private final Environment ENV;
+    private final Environment env;
 
     public TrailCoreClient(Environment environment) {
-        ENV = environment;
+        env = environment;
     }
 
     public static TrailCoreClient getInstance(Environment pEnvironment) {
@@ -23,7 +23,7 @@ public class TrailCoreClient {
     }
 
     public TrailListDTO searchTrailsByTerminations(Long terminationPointId) {
-        return ENV.getTrailCoreSpecification()
+        return env.getTrailCoreSpecification()
                 .given()
                 .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
                 .when()

@@ -10,17 +10,16 @@ import com.oss.untils.Environment;
 
 import static java.net.HttpURLConnection.HTTP_OK;
 
-
 public class DistributionAreaClient {
 
     private static final String DISTRIBUTION_AREAS_PATH = "distribution-areas/";
     private static final String SYNC_PATH = "sync";
     private static final String DISTRIBUTION_AREAS_V2_PATH = DISTRIBUTION_AREAS_PATH + "v2/";
     private static DistributionAreaClient instance;
-    private final Environment ENV;
+    private final Environment env;
 
     public DistributionAreaClient(Environment environment) {
-        ENV = environment;
+        env = environment;
     }
 
     public static DistributionAreaClient getInstance(Environment pEnvironment) {
@@ -38,7 +37,7 @@ public class DistributionAreaClient {
     }
 
     public Response removeDistributionArea(Long pDistributionAreaId) {
-        return ENV.getFixedAccessCoreSpecification()
+        return env.getFixedAccessCoreSpecification()
                 .when()
                 .delete(DISTRIBUTION_AREAS_PATH + "{id}", pDistributionAreaId)
                 .then()
@@ -52,7 +51,7 @@ public class DistributionAreaClient {
     }
 
     public DistributionAreaDTO getDistributionAreaV2(Long pDistributionAreaId) {
-        return ENV.getFixedAccessCoreSpecification()
+        return env.getFixedAccessCoreSpecification()
                 .when()
                 .get(DISTRIBUTION_AREAS_V2_PATH + pDistributionAreaId + "?perspective=LIVE")
                 .then()
@@ -67,7 +66,7 @@ public class DistributionAreaClient {
     }
 
     private ValidatableResponse executeSyncRequest(DistributionAreaSyncDTO pDistributionAreaSyncDTO) {
-        return ENV.getFixedAccessCoreSpecification()
+        return env.getFixedAccessCoreSpecification()
                 .given()
                 .contentType(ContentType.JSON)
                 .body(pDistributionAreaSyncDTO)

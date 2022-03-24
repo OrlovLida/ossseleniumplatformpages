@@ -1,20 +1,19 @@
 package com.oss.configuration;
 
-import org.assertj.core.util.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Paths;
 import java.util.Properties;
 
+import org.assertj.core.util.Strings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class Configuration {
 
-    private static final Logger log = LoggerFactory.getLogger(Configuration.class);
-
     public static final Configuration CONFIGURATION = new Configuration();
+    private static final Logger log = LoggerFactory.getLogger(Configuration.class);
     private static final String DEFAULT_DOWNLOAD_DIR = Paths.get(System.getProperty("user.dir") + File.separator + "target" + File.separator + "downloadFiles").toString();
     private final Properties properties = new Properties();
 

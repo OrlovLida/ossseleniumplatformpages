@@ -1,56 +1,59 @@
 package com.oss.repositories;
 
-import com.comarch.oss.physicalinventory.api.dto.*;
+import java.util.Collections;
+
+import com.comarch.oss.physicalinventory.api.dto.AttributeDTO;
+import com.comarch.oss.physicalinventory.api.dto.CardDTO;
+import com.comarch.oss.physicalinventory.api.dto.ChassisDTO;
+import com.comarch.oss.physicalinventory.api.dto.PhysicalDeviceDTO;
+import com.comarch.oss.physicalinventory.api.dto.PluggableModuleDTO;
+import com.comarch.oss.physicalinventory.api.dto.PortDTO;
+import com.comarch.oss.physicalinventory.api.dto.ResourceDTO;
 import com.oss.services.PhysicalInventoryClient;
 import com.oss.untils.Environment;
-
-import java.util.Collections;
 
 public class PhysicalInventoryRepository {
 
     private final Environment env;
+    private PhysicalInventoryClient client;
 
     public PhysicalInventoryRepository(Environment env) {
         this.env = env;
+        client = new PhysicalInventoryClient(env);
     }
 
     public Long createDevice(String locationType, Long locationId, Long deviceModelId, String deviceName, String deviceModelType) {
-        PhysicalInventoryClient client = new PhysicalInventoryClient(env);
         ResourceDTO resourceDTO = client.createDevice(buildDevice(locationType, locationId, deviceModelId, deviceName, deviceModelType));
         String deviceId = resourceDTO.getUri().toString();
         return Long.valueOf(deviceId.substring(deviceId.lastIndexOf("/") + 1, deviceId.indexOf("?")));
     }
 
     public Long createDeviceWithCard(String locationType, Long locationId, Long deviceModelId, String deviceName, String deviceModelType, String slotName, Long cardModelId, String cardModelType) {
-        PhysicalInventoryClient client = new PhysicalInventoryClient(env);
         ResourceDTO resourceDTO = client.createDevice(buildDeviceWithCard(locationType, locationId, deviceModelId, deviceName, deviceModelType, slotName, cardModelId, cardModelType));
         String deviceId = resourceDTO.getUri().toString();
         return Long.valueOf(deviceId.substring(deviceId.lastIndexOf("/") + 1, deviceId.indexOf("?")));
     }
 
-    public void deleteDevice(Long deviceId){
-        PhysicalInventoryClient client = new PhysicalInventoryClient(env);
-        client.removeDevice(deviceId);
+    public void deleteDevice(Long deviceId) {
+        client.deleteDevice(String.valueOf(deviceId));
     }
 
-    public void addPortToDevice(Long deviceId, Long portModelId, String cardModelType, String portName){
-        PhysicalInventoryClient client = new PhysicalInventoryClient(env);
+    public void addPortToDevice(Long deviceId, Long portModelId, String cardModelType, String portName) {
         client.addPortToDevice(deviceId, buildAddPortToDevice(portModelId, cardModelType, portName));
     }
 
-    public void addPluggableModuleToDevice(Long portId, Long pluggableModelId, String pluggableModelType){
-        PhysicalInventoryClient client = new PhysicalInventoryClient(env);
+    public void addPluggableModuleToDevice(Long portId, Long pluggableModelId, String pluggableModelType) {
         client.addPluggableModuleToPort(portId, buildAddPluggableModuleToPort(pluggableModelId, portId, pluggableModelType));
     }
 
-    private PluggableModuleDTO buildAddPluggableModuleToPort(Long pluggableModelId, Long portId, String pluggableModuleType){
+    private PluggableModuleDTO buildAddPluggableModuleToPort(Long pluggableModelId, Long portId, String pluggableModuleType) {
         return PluggableModuleDTO.builder()
                 .portId(portId)
                 .model(getPluggableModuleModelId(pluggableModelId, pluggableModuleType))
                 .build();
     }
 
-    private PortDTO buildAddPortToDevice(Long portModelId, String portModelType, String portName){
+    private PortDTO buildAddPortToDevice(Long portModelId, String portModelType, String portName) {
         return PortDTO.builder()
                 .portModel(getPortModelId(portModelId, portModelType))
                 .name(portName)

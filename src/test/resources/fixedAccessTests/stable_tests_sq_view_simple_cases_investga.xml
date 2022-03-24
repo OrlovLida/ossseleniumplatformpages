@@ -15,7 +15,7 @@
         <classes>
             <class name="com.oss.fixedaccess.servicequalification.ServiceQualificationViewSimpleCasesTests">
                 <methods>
-                    <include name="checkDataInTableAndPropertyPanelForAllAccessTechnologiesInSQViewHappyPathTestForDAName"/>
+                    <include name="checkDataInSQViewForDAName"/>
                 </methods>
             </class>
         </classes>
@@ -25,18 +25,7 @@
         <classes>
             <class name="com.oss.fixedaccess.servicequalification.ServiceQualificationViewSimpleCasesTests">
                 <methods>
-                    <include name="checkDataInTableAndPropertyPanelForAllAccessTechnologiesInSQViewHappyPathTestForAddressName"/>
-                </methods>
-            </class>
-        </classes>
-    </test>
-
-    <test name="Check error for required download speed grater than max download speed for all access technologies for DA name">
-        <classes>
-            <class name="com.oss.fixedaccess.servicequalification.ServiceQualificationViewSimpleCasesTests">
-                <methods>
-                    <include
-                            name="checkErrorForRequiredDownloadSpeedGraterThanMaxDownloadSpeedForAllAccessTechnologiesTestForDAName"/>
+                    <include name="checkDataInSQViewTestForAddressName"/>
                 </methods>
             </class>
         </classes>
@@ -47,11 +36,23 @@
             <class name="com.oss.fixedaccess.servicequalification.ServiceQualificationViewSimpleCasesTests">
                 <methods>
                     <include
-                            name="checkErrorForRequiredDownloadSpeedGraterThanMaxDownloadSpeedForAllAccessTechnologiesTestForAddressName"/>
+                            name="checkErrorForRequiredDownloadSpeedForAddressName"/>
                 </methods>
             </class>
         </classes>
     </test>
+
+    <test name="Check error for required download speed grater than max download speed for all access technologies for DA name">
+        <classes>
+            <class name="com.oss.fixedaccess.servicequalification.ServiceQualificationViewSimpleCasesTests">
+                <methods>
+                    <include
+                            name="checkErrorForRequiredDownloadSpeedForDAName"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
 
     <test name="Deletion of data for tests">
         <classes>

@@ -1,15 +1,16 @@
 package com.oss.repositories;
 
+import java.util.Arrays;
+import java.util.Optional;
+
+import org.apache.commons.lang3.StringUtils;
+
 import com.comarch.oss.addressinventory.api.dto.AddressDTO;
 import com.comarch.oss.addressinventory.api.dto.AddressItemDTO;
 import com.comarch.oss.addressinventory.api.dto.GeographicalAddressDTO;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.oss.services.AddressClient;
 import com.oss.untils.Environment;
-
-import java.util.Arrays;
-import java.util.Optional;
-
 
 /**
  * @author Milena Miętkiewicz
@@ -18,45 +19,47 @@ import java.util.Optional;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AddressRepository {
 
-    private Environment env;
+    private AddressClient client;
 
     public AddressRepository(Environment env) {
-        this.env = env;
+        client = new AddressClient(env);
     }
 
     public Long updateOrCreateAddress(String countryName, String postalCodeName, String regionName, String cityName, String districtName) {
-        AddressClient client = new AddressClient(env);
         AddressDTO[] addressDTO = client.createGeographicalAddress(
                 buildAddress(countryName, postalCodeName, regionName, cityName, districtName));
-        Long addressId = Arrays.stream(addressDTO).findAny().get().getId();
+        Long addressId = Arrays.stream(addressDTO)
+                .findAny()
+                .orElseThrow(() -> new RuntimeException("Can't find id of created address or address wasn't created properly"))
+                .getId();
         return addressId;
     }
 
     public Long createOrUpdateGeographicalAddressWithStreetNumber(String countryName, String postalCodeName,
-        String regionName, String cityName, String districtName, String streetNumber) {
-        AddressClient client = new AddressClient(env);
+                                                                  String regionName, String cityName, String districtName, String streetNumber) {
         AddressDTO[] addressDTO = client.createGeographicalAddress(
                 buildGeographicalAddressWithStreetNumber(countryName, postalCodeName, regionName, cityName, districtName, streetNumber));
-        return Arrays.stream(addressDTO).findAny().get().getId();
+        return Arrays.stream(addressDTO)
+                .findAny()
+                .orElseThrow(() -> new RuntimeException("Can't find id of address or address wasn't created properly"))
+                .getId();
     }
 
     public String getGeographicalAddressName(Long addressId) {
-        AddressClient client = new AddressClient(env);
         GeographicalAddressDTO[] addressResponse = client.getGeographicalAddressById(addressId);
         if (!(Arrays.stream(addressResponse).findAny().get().getName().equals(Optional.empty()))) {
             String addressName = Arrays.stream(addressResponse).findAny().get().getName().toString();
             return addressName.substring(addressName.indexOf("[") + 1, addressName.indexOf("]")).trim();
         }
-        return "";
+        return StringUtils.EMPTY;
     }
 
     public void deleteGeographicalAddress(Long geographicalAddressId) {
-        AddressClient client = new AddressClient(env);
         client.removeGeographicalAddress(geographicalAddressId);
     }
 
     private GeographicalAddressDTO buildGeographicalAddressWithStreetNumber(String countryName,
-        String postalCodeName, String regionName, String cityName, String districtName, String streetNumber) {
+                                                                            String postalCodeName, String regionName, String cityName, String districtName, String streetNumber) {
         return GeographicalAddressDTO.builder()
                 .addAddressItems(buildCountry(countryName))
                 .addAddressItems(buildPostalCode(postalCodeName))

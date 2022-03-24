@@ -1,5 +1,12 @@
 package com.oss.repositories.fixedaccessrepository;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import com.comarch.oss.inventory.fixedaccess.distributionarea.api.dto.AccessInterfaceDTO;
 import com.comarch.oss.inventory.fixedaccess.distributionarea.api.dto.AccessNodeDTO;
 import com.comarch.oss.inventory.fixedaccess.distributionarea.api.dto.AccessNodeWrapperDTO;
@@ -8,7 +15,6 @@ import com.comarch.oss.inventory.fixedaccess.distributionarea.api.dto.AccessPoin
 import com.comarch.oss.inventory.fixedaccess.distributionarea.api.dto.AddressDTO;
 import com.comarch.oss.inventory.fixedaccess.distributionarea.api.dto.AddressesWrapperDTO;
 import com.comarch.oss.inventory.fixedaccess.distributionarea.api.dto.CentralOfficeSyncDTO;
-import com.comarch.oss.inventory.fixedaccess.distributionarea.api.dto.DistributionAreaPersistenceResponseDTO;
 import com.comarch.oss.inventory.fixedaccess.distributionarea.api.dto.DistributionAreaSyncDTO;
 import com.comarch.oss.inventory.fixedaccess.distributionarea.api.dto.ImmutableInstallationDevicesDTO;
 import com.comarch.oss.inventory.fixedaccess.distributionarea.api.dto.InstallationDeviceWrapperDTO;
@@ -19,13 +25,6 @@ import com.comarch.oss.inventory.fixedaccess.distributionarea.api.dto.Installati
 import com.oss.services.fixedaccessclient.DistributionAreaClient;
 import com.oss.untils.Environment;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import static java.util.Collections.singleton;
 import static java.util.Collections.singletonMap;
 import static java.util.stream.Collectors.toSet;
@@ -33,26 +32,24 @@ import static java.util.stream.Collectors.toSet;
 public class DistributionAreaRepository {
 
     private final DistributionAreaClient distributionAreaClient;
-    private final Environment env;
 
     public DistributionAreaRepository(Environment env) {
-        this.env = env;
         distributionAreaClient = DistributionAreaClient.getInstance(env);
     }
 
-    public Long createDistributionAreaWithAddressAccessPointAccessNodeInstallationMediumsInstllationDevices(boolean coverageFlag,
-        String technicalStandard, Long pAddressId, Long pAccessPointId, List<Long> installationDevicesIds,
-        List<Long> installationMediumsIds, Long accessNodeId, List<Long> accessInterfacesIds) {
+    public Long createDistributionAreaWithAddressAccessPointAccessNodeInstallationMediumsInstallationDevices(boolean coverageFlag,
+                                                                                                             String technicalStandard, Long pAddressId, Long pAccessPointId, List<Long> installationDevicesIds,
+                                                                                                             List<Long> installationMediumsIds, Long accessNodeId, List<Long> accessInterfacesIds) {
         Map<Long, Collection<Long>> accessNodeToAccessInterfacesMapping = singletonMap(accessNodeId, accessInterfacesIds);
-        DistributionAreaPersistenceResponseDTO responseDTO = distributionAreaClient.synchronizeDistributionArea(
-                buildDistributionAreaWithAddressAccessPointAccessNodeInstallationMediumsInstllationDevices(coverageFlag,
+        return distributionAreaClient.synchronizeDistributionArea(
+                buildDistributionAreaWithAddressAccessPointAccessNodeInstallationMediumsInstallationDevices(coverageFlag,
                         technicalStandard,
                         pAddressId,
                         pAccessPointId,
                         installationDevicesIds,
                         installationMediumsIds,
-                        accessNodeToAccessInterfacesMapping));
-        return responseDTO.getId();
+                        accessNodeToAccessInterfacesMapping))
+                .getId();
     }
 
     public void removeDistributionArea(Long pDistributionAreaId) {
@@ -60,18 +57,19 @@ public class DistributionAreaRepository {
     }
 
     public String getDistributionAreaName(Long pDistributionAreaId) {
-        if(!(distributionAreaClient.getDistributionAreaV2(pDistributionAreaId).getName().equals(Optional.empty()))) {
+        if (!(distributionAreaClient.getDistributionAreaV2(pDistributionAreaId).getName().equals(Optional.empty()))) {
             String dAName = String.valueOf(distributionAreaClient.getDistributionAreaV2(pDistributionAreaId).getName());
-            return dAName.substring(dAName.indexOf("[") + 1, dAName.indexOf("]")).trim();
+            return dAName.substring(dAName.indexOf('[') + 1, dAName.indexOf(']')).trim();
         }
         return "";
     }
 
-    private DistributionAreaSyncDTO buildDistributionAreaWithAddressAccessPointAccessNodeInstallationMediumsInstllationDevices(boolean coverageFlag, String technicalStandart,
-        Long pAddressId, Long pAccessPointId, List<Long> installationDevicesIds, List<Long> installationMediumsIds, Map<Long, Collection<Long>> accessNodeToAccessInterfacesMapping) {
-        DistributionAreaSyncDTO dto = DistributionAreaSyncDTO.builder()
+    private DistributionAreaSyncDTO buildDistributionAreaWithAddressAccessPointAccessNodeInstallationMediumsInstallationDevices(
+            boolean coverageFlag, String technicalStandard, Long pAddressId, Long pAccessPointId, List<Long> installationDevicesIds,
+            List<Long> installationMediumsIds, Map<Long, Collection<Long>> accessNodeToAccessInterfacesMapping) {
+        return DistributionAreaSyncDTO.builder()
                 .networkCoverage(coverageFlag)
-                .technicalStandard(technicalStandart)
+                .technicalStandard(technicalStandard)
                 .addresses(buildAddressWrapperDTO(singleton(pAddressId)))
                 .installationNetwork(buildInstallationNetworkDTO(
                         Optional.of(buildAccessPointsDTO(singleton(pAccessPointId))),
@@ -79,14 +77,13 @@ public class DistributionAreaRepository {
                         Optional.of(buildInstallationMediumsDTO(installationMediumsIds))))
                 .centralOffice(buildCentralOfficeDTO(accessNodeToAccessInterfacesMapping))
                 .build();
-        return dto;
     }
 
     private AddressesWrapperDTO buildAddressWrapperDTO(Collection<Long> addresses) {
         return AddressesWrapperDTO.builder()
                 .addAllElements(addresses.stream()
-                .map(id -> AddressDTO.builder().id(id).build())
-                .collect(Collectors.toList()))
+                        .map(id -> AddressDTO.builder().id(id).build())
+                        .collect(Collectors.toList()))
                 .build();
     }
 

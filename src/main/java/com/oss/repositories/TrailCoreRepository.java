@@ -6,22 +6,21 @@ import com.oss.untils.Environment;
 public class TrailCoreRepository {
 
     private final TrailCoreClient trailCoreClient;
-    private final Environment env;
 
     public TrailCoreRepository(Environment env) {
-        this.env = env;
         trailCoreClient = TrailCoreClient.getInstance(env);
     }
 
     public Long getFirstMediumIdConnectedOnTerminationPoint(Long terminationPointId, String mediumType) {
-        Long mediumId = trailCoreClient.searchTrailsByTerminations(terminationPointId)
+        return trailCoreClient.searchTrailsByTerminations(terminationPointId)
                 .getTrails()
                 .stream()
                 .filter(e -> e.getType().equals(mediumType))
                 .map(e -> e.getId())
-                .findFirst().
-                get();
-        return mediumId;
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Can't find any medium type " + mediumType + " on TP with id " + terminationPointId))
+                .longValue();
+
     }
 
 }

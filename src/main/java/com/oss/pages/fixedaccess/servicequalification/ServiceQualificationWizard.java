@@ -1,19 +1,20 @@
 package com.oss.pages.fixedaccess.servicequalification;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.advancedsearch.AdvancedSearchWidget;
 import com.oss.pages.BasePage;
+
 import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
 
 import static com.oss.framework.components.inputs.Input.ComponentType.CHECKBOX;
 import static com.oss.framework.components.inputs.Input.ComponentType.RADIO_BUTTON;
 import static com.oss.framework.components.inputs.Input.ComponentType.SEARCH_FIELD;
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
-
 
 public class ServiceQualificationWizard extends BasePage {
 
@@ -26,27 +27,24 @@ public class ServiceQualificationWizard extends BasePage {
     private static final String PROVIDE_SERVICE_NODE_CHECKBOX = "sqProvideServiceNodesCheckboxUID";
     private static final String ADVANCED_SEARCH_BUTTON = "btn-as-modal";
     private static final String ADVANCED_SEARCH_ID = "advancedSearch";
-    private static final String SERVICE_QUALIFICATION = "Service Qualification";
-    private static final String NETWORK_DOMAINS = "Network domains";
-    private static final String FIXED_ACCESS = "Fixed Access";
+    private static final String TABLE_DISTRIBUTION_AREA_SQ_SEARCH_FIELD_UID = "table-DistributionArea_sqSearchFieldUID_object_factory_modal_result_DistributionArea";
+    private static final String TABLE_ADDRESS_SQ_SEARCH_FIELD_UID = "table-Address_sqSearchFieldUID_object_factory_modal_result_Address";
 
     public ServiceQualificationWizard(WebDriver driver) {
         super(driver);
     }
 
     @Step("Open wizard for Service Qualification")
-    public ServiceQualificationWizard openServiceQualificationWizard() {
+    public ServiceQualificationWizard openServiceQualificationWizard(String url) {
         waitForPageToLoad();
-        SideMenu sideMenu = SideMenu.create(driver, wait);
-        sideMenu.callActionByLabel(SERVICE_QUALIFICATION, NETWORK_DOMAINS, FIXED_ACCESS);
-        waitForPageToLoad();
+        driver.get(String.format("%s/#/view/fixed-access/service-qualification/wizard?perspective=LIVE", url));
         return this;
     }
 
     @Step("Set query option for SQ (Address or DA as input)")
     public ServiceQualificationWizard setQueryOption(String option) {
         getServiceQualificationWizard().setComponentValue(RADIO_BUTTONS_FOR_QUERY_OPTION, option, RADIO_BUTTON);
-        DelayUtils.sleep(2000);
+        waitForPageToLoad();
         return this;
     }
 
@@ -60,6 +58,7 @@ public class ServiceQualificationWizard extends BasePage {
 
     @Step("Set Required Download Speed")
     public ServiceQualificationWizard setRequiredDownloadSpeed(String requiredDownloadSpeed) {
+        waitForPageToLoad();
         getServiceQualificationWizard().setComponentValue(REQUIRED_DOWNLOAD_SPEED_INPUT, requiredDownloadSpeed, TEXT_FIELD);
         return this;
     }
@@ -72,30 +71,35 @@ public class ServiceQualificationWizard extends BasePage {
 
     @Step("Set provide alternative checkbox")
     public ServiceQualificationWizard setProvideAlternative(String provideAlternativeValue) {
+        waitForPageToLoad();
         getServiceQualificationWizard().setComponentValue(PROVIDE_ALTERNATIVE_CHECKBOX, provideAlternativeValue, CHECKBOX);
         return this;
     }
 
     @Step("Set provide resource checkbox")
     public ServiceQualificationWizard setProvideResource(String provideResourceValue) {
+        waitForPageToLoad();
         getServiceQualificationWizard().setComponentValue(PROVIDE_RESOURCE_CHECKBOX, provideResourceValue, CHECKBOX);
         return this;
     }
 
     @Step("Set provide service node checkbox")
     public ServiceQualificationWizard setProvideServiceNode(String provideServiceNodeValue) {
+        waitForPageToLoad();
         getServiceQualificationWizard().setComponentValue(PROVIDE_SERVICE_NODE_CHECKBOX, provideServiceNodeValue, CHECKBOX);
         return this;
     }
 
     @Step("Open advanced search window")
     public ServiceQualificationWizard openAdvancedSearchWindow() {
+        waitForPageToLoad();
         getServiceQualificationWizard().callButtonById(ADVANCED_SEARCH_BUTTON);
         return this;
     }
 
     @Step("Set xid in advanced search filter")
     public ServiceQualificationWizard setXidInAdvancedSearchFilter(Long id) {
+        waitForPageToLoad();
         getAdvancedSearch().getComponent("id", TEXT_FIELD).setSingleStringValueContains(id.toString());
         return this;
     }
@@ -103,11 +107,10 @@ public class ServiceQualificationWizard extends BasePage {
     @Step("Select first result in advanced search table")
     public ServiceQualificationWizard selectFirstResultInAdvancedSearchTable(String tableType) {
         waitForPageToLoad();
-        if(tableType.equals("DA")){
-            getAdvancedSearch().getTableComponent("table-DistributionArea_sqSearchFieldUID_object-factory_modal_result_DistributionArea")
-                               .selectRow(0);
+        if (tableType.equals("DA")) {
+            driver.findElement(By.xpath(".//div[@data-testid='" + TABLE_DISTRIBUTION_AREA_SQ_SEARCH_FIELD_UID + "' ]//div[@data-row='0' and @data-col='name']")).click();
         } else {
-            getAdvancedSearch().getTableComponent("table-Address_sqSearchFieldUID_object-factory_modal_result_Address").selectRow(0);
+            driver.findElement(By.xpath(".//div[@data-testid='" + TABLE_ADDRESS_SQ_SEARCH_FIELD_UID + "' ]//div[@data-row='0' and @data-col='name']")).click();
         }
         return this;
     }
@@ -120,6 +123,7 @@ public class ServiceQualificationWizard extends BasePage {
 
     @Step("Click Accept button")
     public ServiceQualificationView clickAccept() {
+        waitForPageToLoad();
         getServiceQualificationWizard().clickAccept();
         return new ServiceQualificationView(driver);
     }

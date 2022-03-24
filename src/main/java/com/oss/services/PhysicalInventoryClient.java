@@ -1,5 +1,11 @@
 package com.oss.services;
 
+import java.util.Optional;
+
+import javax.ws.rs.core.Response;
+
+import org.assertj.core.util.Lists;
+
 import com.comarch.oss.physicalinventory.api.dto.CardDTO;
 import com.comarch.oss.physicalinventory.api.dto.ChassisDTO;
 import com.comarch.oss.physicalinventory.api.dto.PhysicalDeviceDTO;
@@ -9,26 +15,21 @@ import com.comarch.oss.physicalinventory.api.dto.ResourceDTO;
 import com.jayway.restassured.http.ContentType;
 import com.oss.untils.Constants;
 import com.oss.untils.Environment;
-import org.assertj.core.util.Lists;
-
-import javax.ws.rs.core.Response;
-import java.util.Optional;
-
-import static java.net.HttpURLConnection.HTTP_NO_CONTENT;
 
 public class PhysicalInventoryClient {
 
     private static final String DEVICES_API_PATH = "/devices";
     private static final String DEVICE_STRUCTURE_API_PATH = "/devices/%s/devicestructurebyjpa";
+    private static final String DEVICE_DELETE_API_PATH = "/devices/v2/%s";
     private static final String DEVICES_PORTS_API_PATH = "/devices/%s/ports";
     private static final String PORTS_PLUGGABLE_API_PATH = "/ports/%s/pluggablemodule?invokeTPService=true&checkCompatibility=false";
     private static final String CHASSIS_STRUCTURE_API_PATH = "/chassis/%s/structure";
     private static final String CARDS_STRUCTURE_API_PATH = "/cards/%s/structure";
     private static PhysicalInventoryClient instance;
-    private final Environment ENV;
+    private final Environment env;
 
     public PhysicalInventoryClient(Environment environment) {
-        ENV = environment;
+        env = environment;
     }
 
     public static PhysicalInventoryClient getInstance(Environment pEnvironment) {
@@ -40,8 +41,9 @@ public class PhysicalInventoryClient {
     }
 
     public ResourceDTO createDevice(PhysicalDeviceDTO device) {
-        return ENV.getPhysicalInventoryCoreRequestSpecification()
+        return env.getPhysicalInventoryCoreRequestSpecification()
                 .given()
+                .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
                 .contentType(ContentType.JSON)
                 .body(device)
                 .when()
@@ -52,37 +54,97 @@ public class PhysicalInventoryClient {
                 .as(ResourceDTO.class);
     }
 
-    public ResourceDTO addPortToDevice(Long deviceId, PortDTO portDTO) {
+    public void addPortToDevice(Long deviceId, PortDTO portDTO) {
         String devicesPortsPath = String.format(DEVICES_PORTS_API_PATH, deviceId);
-        return ENV.getPhysicalInventoryCoreRequestSpecification()
+        env.getPhysicalInventoryCoreRequestSpecification()
                 .given()
                 .contentType(ContentType.JSON)
                 .body(Lists.newArrayList(portDTO))
                 .when()
                 .put(devicesPortsPath)
                 .then()
-                .statusCode(Response.Status.OK.getStatusCode())
-                .extract()
-                .as(ResourceDTO.class);
+                .statusCode(Response.Status.OK.getStatusCode());
+
     }
 
-    public ResourceDTO addPluggableModuleToPort(Long portId, PluggableModuleDTO pluggableModuleDTO) {
+    public void addPluggableModuleToPort(Long portId, PluggableModuleDTO pluggableModuleDTO) {
         String portsPluggableModulePath = String.format(PORTS_PLUGGABLE_API_PATH, portId);
-        return ENV.getPhysicalInventoryCoreRequestSpecification()
+        env.getPhysicalInventoryCoreRequestSpecification()
                 .given()
                 .contentType(ContentType.JSON)
                 .body(pluggableModuleDTO)
                 .when()
                 .put(portsPluggableModulePath)
                 .then()
-                .statusCode(Response.Status.OK.getStatusCode())
-                .extract()
-                .as(ResourceDTO.class);
+                .statusCode(Response.Status.OK.getStatusCode());
+    }
+
+    public String getDevicePortId(Long deviceId, String portName) {
+        return getDeviceStructure(deviceId)
+                .getPorts()
+                .stream()
+                .filter(e -> (e.getName().equals(portName)))
+                .map(e -> e.getId().get())
+                .findAny()
+                .get()
+                .toString();
+    }
+
+    public Long getDeviceChassisId(Long deviceId, String chassisName) {
+        return getDeviceStructure(deviceId)
+                .getChassis()
+                .stream()
+                .filter(e -> (e.getName().equals(chassisName)))
+                .map(e -> e.getId().get())
+                .findAny()
+                .get();
+    }
+
+    public Long getDeviceCardUnderChassisId(Long chassisId, String cardName) {
+        return getChassisStructure(chassisId)
+                .getCards()
+                .stream()
+                .filter(e -> (e.getName().equals(Optional.of(cardName))))
+                .map(e -> e.getId().get())
+                .findAny()
+                .get();
+    }
+
+    public Long getDevicePortUnderCardId(Long cardId, String portName) {
+        return getCardStructure(cardId)
+                .getPorts()
+                .stream()
+                .filter(e -> (e.getName().equals(portName)))
+                .map(e -> e.getId().get())
+                .findAny()
+                .get();
+    }
+
+    public String getAntennaArrayId(Long antennaId, String arrayName) {
+        return getDeviceStructure(antennaId)
+                .getAntennaArrays()
+                .stream().filter(e -> (e.getName().equals(arrayName)))
+                .map(e -> e.getId().get())
+                .findAny()
+                .get()
+                .toString();
+    }
+
+    public void deleteDevice(String deviceId) {
+        String devicePath = String.format(DEVICE_DELETE_API_PATH, deviceId);
+        env.getPhysicalInventoryCoreRequestSpecification()
+                .given()
+                .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
+                .when()
+                .delete(devicePath)
+                .then()
+                .statusCode(200).assertThat();
+
     }
 
     private PhysicalDeviceDTO getDeviceStructure(Long deviceId) {
         String devicePath = String.format(DEVICE_STRUCTURE_API_PATH, deviceId);
-        return ENV.getPhysicalInventoryCoreRequestSpecification()
+        return env.getPhysicalInventoryCoreRequestSpecification()
                 .given()
                 .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
                 .when()
@@ -95,7 +157,7 @@ public class PhysicalInventoryClient {
 
     private ChassisDTO getChassisStructure(Long chassisId) {
         String chassisStructurePath = String.format(CHASSIS_STRUCTURE_API_PATH, chassisId);
-        return ENV.getPhysicalInventoryCoreRequestSpecification()
+        return env.getPhysicalInventoryCoreRequestSpecification()
                 .given()
                 .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
                 .when()
@@ -108,7 +170,7 @@ public class PhysicalInventoryClient {
 
     private CardDTO getCardStructure(Long cardId) {
         String cardStructurePath = String.format(CARDS_STRUCTURE_API_PATH, cardId);
-        return ENV.getPhysicalInventoryCoreRequestSpecification()
+        return env.getPhysicalInventoryCoreRequestSpecification()
                 .given()
                 .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
                 .when()
@@ -117,71 +179,6 @@ public class PhysicalInventoryClient {
                 .log().body()
                 .extract()
                 .as(CardDTO.class);
-    }
-
-    public com.jayway.restassured.response.Response removeDevice(Long deviceId) {
-        return ENV.getPhysicalInventoryCoreRequestSpecification()
-                .when()
-                .delete(DEVICES_API_PATH + "/{id}", deviceId)
-                .then()
-                .log()
-                .status()
-                .log()
-                .body()
-                .statusCode(HTTP_NO_CONTENT)
-                .extract()
-                .response();
-    }
-
-    public String getDevicePortId(Long deviceId, String portName) {
-        return getDeviceStructure(deviceId)
-               .getPorts()
-               .stream()
-               .filter(e -> (e.getName().equals(portName)))
-               .map(e -> e.getId().get())
-               .findAny()
-               .get()
-               .toString();
-    }
-
-    public Long getDeviceChassisId(Long deviceId, String chassisName) {
-        return getDeviceStructure(deviceId)
-               .getChassis()
-               .stream()
-               .filter(e -> (e.getName().equals(chassisName)))
-               .map(e -> e.getId().get())
-               .findAny()
-               .get();
-    }
-
-    public Long getDeviceCardUnderChassisId(Long chassisId, String cardName) {
-        return getChassisStructure(chassisId)
-               .getCards()
-               .stream()
-               .filter(e -> (e.getName().equals(Optional.of(cardName))))
-               .map(e -> e.getId().get())
-               .findAny()
-               .get();
-    }
-
-    public Long getDevicePortUnderCardId(Long cardId, String portName) {
-        return getCardStructure(cardId)
-               .getPorts()
-               .stream()
-               .filter(e -> (e.getName().equals(portName)))
-               .map(e -> e.getId().get())
-               .findAny()
-               .get();
-    }
-
-    public String getAntennaArrayId(Long antennaId, String arrayName) {
-        return getDeviceStructure(antennaId)
-               .getAntennaArrays()
-               .stream().filter(e -> (e.getName().equals(arrayName)))
-               .map(e -> e.getId().get())
-               .findAny()
-               .get()
-               .toString();
     }
 
 }
