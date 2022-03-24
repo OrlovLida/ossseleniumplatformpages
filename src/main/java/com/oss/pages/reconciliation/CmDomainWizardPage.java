@@ -2,7 +2,7 @@ package com.oss.pages.reconciliation;
 
 import org.openqa.selenium.WebDriver;
 
-import com.oss.framework.widgets.Wizard;
+import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
@@ -13,7 +13,7 @@ import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD
 
 public class CmDomainWizardPage extends BasePage {
 
-    private static final String CM_DOMAIN_WIZARD_ID = "narComponent_networkDiscoveryControlViewIdcmDomainActionPromptId";
+    private static final String CM_DOMAIN_WIZARD_ID = "narComponent_networkDiscoveryControlViewIdcmDomainActionPromptId_prompt-card";
     private static final String NAME_ID = "narComponent_networkDiscoveryControlViewIdnameTextFieldId";
     private static final String CM_INTERFACE_ID = "narComponent_networkDiscoveryControlViewIdinterfaceSearchBoxId";
     private static final String DOMAIN_ID = "narComponent_networkDiscoveryControlViewIddomainSearchBoxId";
@@ -26,12 +26,11 @@ public class CmDomainWizardPage extends BasePage {
     private static final String NETWORK_MODIFICATION_ID = "narComponent_networkDiscoveryControlViewIdmaxFutureNumberFieldId";
     private static final String SAVE_ID = "narComponent_networkDiscoveryControlViewIdCmDomainActionButtonsAppId-1";
     private static final String CANCEL_ID = "narComponent_networkDiscoveryControlViewIdCmDomainActionButtonsAppId-0";
+    private Wizard cmDomainWizard = Wizard.createByComponentId(driver, wait, CM_DOMAIN_WIZARD_ID);
 
     public CmDomainWizardPage(WebDriver driver) {
         super(driver);
     }
-
-    private Wizard cmDomainWizard = Wizard.createByComponentId(driver, wait, CM_DOMAIN_WIZARD_ID);
 
     @Step("Fill CM Domain wizard with Name: {name}, CM Interface: {cmInterface}, Domain: {domain}")
     public void fillCmDomainWizard(String name, String cmInterface, String domain) {
@@ -93,11 +92,11 @@ public class CmDomainWizardPage extends BasePage {
 
     @Step("Save CM Domain wizard")
     public void save() {
-        cmDomainWizard.clickActionById(SAVE_ID);
+        cmDomainWizard.clickButtonById(SAVE_ID);
     }
 
     @Step("Cancel CM Domain wizard")
     public void cancel() {
-        cmDomainWizard.clickActionById(CANCEL_ID);
+        cmDomainWizard.clickButtonById(CANCEL_ID);
     }
 }

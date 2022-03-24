@@ -10,6 +10,7 @@ public class Constants {
 
     //params
     public static final String ID = "id";
+    public static final String IDS = "ids";
     public static final String CELL_ID = "cell_id";
     public static final String PERSPECTIVE = "perspective";
     public static final String LIVE = "LIVE";
@@ -18,6 +19,7 @@ public class Constants {
     public static final String GENERATE_CELL_ID = "generateCellId";
     public static final String SHOULD_CREATE_MISSING_ADDRESS_ITEMS ="shouldCreateMissingAddressItems";
     public static final String RSQL = "rsql";
+    public static final String TYPES = "types";
     public static final String NAME_PARAM = "Name";
     public static final String PORT_ID = "portId";
     public static final String DEVICE_ID = "deviceId";

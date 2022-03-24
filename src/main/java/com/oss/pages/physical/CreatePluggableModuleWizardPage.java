@@ -1,14 +1,17 @@
 package com.oss.pages.physical;
 
-import com.oss.framework.components.inputs.Input;
-import com.oss.framework.data.Data;
-import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.Wizard;
-import com.oss.pages.BasePage;
-import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.*;
+import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.data.Data;
+import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.wizard.Wizard;
+import com.oss.pages.BasePage;
+
+import io.qameta.allure.Step;
+
+import static com.oss.framework.components.inputs.Input.ComponentType.MULTI_COMBOBOX;
+import static com.oss.framework.components.inputs.Input.ComponentType.SEARCH_FIELD;
 
 public class CreatePluggableModuleWizardPage extends BasePage {
     private static final String PLUGGABLE_MODULE_WIZARD_DATA_ATTRIBUTE_NAME = "pluggable-module-wizard-create";
@@ -27,14 +30,14 @@ public class CreatePluggableModuleWizardPage extends BasePage {
 
     @Step("Set port")
     public void setPort(String portName) {
-        Input devicesOnLocation = getPluggableModuleWizard().getComponent(PORT_COMBOBOX_DATA_ATTRIBUTE_NAME, COMBOBOXV2);
+        Input devicesOnLocation = getPluggableModuleWizard().getComponent(PORT_COMBOBOX_DATA_ATTRIBUTE_NAME, MULTI_COMBOBOX);
         DelayUtils.waitForPageToLoad(driver, wait);
         devicesOnLocation.setValueContains(Data.createSingleData(portName));
     }
 
     @Step("Click Accept button")
     public void accept() {
-        getPluggableModuleWizard().clickActionById(PLUGGABLE_MODULE_ACCEPT_BUTTON_DATA_NAME);
+        getPluggableModuleWizard().clickButtonById(PLUGGABLE_MODULE_ACCEPT_BUTTON_DATA_NAME);
     }
 
     private Wizard getPluggableModuleWizard() {

@@ -1,7 +1,7 @@
 package com.oss.pages.transport.ipam;
 
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.widgets.Wizard;
+import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 import org.openqa.selenium.WebDriver;
 
@@ -12,7 +12,7 @@ public class EditIPSubnetWizardPage extends BasePage {
     private static final String ROLE_ATTRIBUTE_ID = "role-field-uid";
     private static final String DESCRIPTION_ATTRIBUTE_ID = "description-field-uid";
 
-    public EditIPSubnetWizardPage(WebDriver driver) {
+    EditIPSubnetWizardPage(WebDriver driver) {
         super(driver);
     }
 
@@ -28,7 +28,7 @@ public class EditIPSubnetWizardPage extends BasePage {
         Wizard editIPSubnet = createWizard();
         setRole(editIPSubnet, role);
         setDescription(editIPSubnet, description);
-        editIPSubnet.clickOK();
+        editIPSubnet.clickAccept();
     }
 
     private void setSubnetMask(Wizard editIPSubnet, String mask){

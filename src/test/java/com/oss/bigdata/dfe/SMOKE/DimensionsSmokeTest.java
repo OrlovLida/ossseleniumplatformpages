@@ -29,13 +29,13 @@ public class DimensionsSmokeTest extends BaseTestCase {
             dimensionsPage.selectLogsTab();
             dimensionsPage.refreshLogsTable();
 
-            boolean isLastLogTimeFresh = dimensionsPage.isLastLogTimeFresh();
+            boolean isLastLogTimeFresh = dimensionsPage.isLastLogTimeFromTimeColumnFresh();
             Assert.assertTrue(isLastLogTimeFresh);
 
             Assert.assertEquals(dimensionsPage.checkSeverity(), "Info");
         } else {
-            log.info("Cannot find existing aggregate {}", DIMENSION_NAME);
-            Assert.fail("Cannot find existing aggregate " + DIMENSION_NAME);
+            log.info("Cannot find existing dimension {}", DIMENSION_NAME);
+            Assert.fail("Cannot find existing dimension " + DIMENSION_NAME);
         }
     }
 }

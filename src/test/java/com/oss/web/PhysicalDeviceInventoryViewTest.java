@@ -6,10 +6,10 @@ import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.components.contextactions.ActionsContainer;
-import com.oss.framework.prompts.ConfirmationBox;
-import com.oss.framework.prompts.ConfirmationBoxInterface;
+import com.oss.framework.components.prompts.ConfirmationBox;
+import com.oss.framework.components.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.tablewidget.TableWidget;
+import com.oss.framework.widgets.table.TableWidget;
 import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.platform.NewInventoryViewPage;
 
@@ -41,7 +41,7 @@ public class PhysicalDeviceInventoryViewTest extends BaseTestCase {
         //Wait till indexed
         DelayUtils.sleep(3000);
 
-        physicalDeviceTable.typeIntoSearch(PHYSICAL_DEVICE_NAME);
+        physicalDeviceTable.fullTextSearch(PHYSICAL_DEVICE_NAME);
         DelayUtils.sleep(3000);
 
         int rows = physicalDeviceTable.getRowsNumber();
@@ -53,7 +53,7 @@ public class PhysicalDeviceInventoryViewTest extends BaseTestCase {
     public void fullTextSearchTest() {
         TableWidget tableWidget = inventoryViewPage.getMainTable();
         String secondID = tableWidget.getCellValue(1,"XId");
-        tableWidget.typeIntoSearch(secondID);
+        tableWidget.fullTextSearch(secondID);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         String newFirstID = tableWidget.getCellValue(0,"XId");
         Assert.assertEquals(secondID, newFirstID);
@@ -108,7 +108,7 @@ public class PhysicalDeviceInventoryViewTest extends BaseTestCase {
     @Test
     public void deletePhysicalDevice () {
         TableWidget physicalDeviceTable = inventoryViewPage.getMainTable();
-        physicalDeviceTable.typeIntoSearch(PHYSICAL_DEVICE_NAME);
+        physicalDeviceTable.fullTextSearch(PHYSICAL_DEVICE_NAME);
         DelayUtils.sleep(3000);
         physicalDeviceTable.selectFirstRow();
         physicalDeviceTable.callAction(ActionsContainer.EDIT_GROUP_ID, PHYSICAL_DEVICE_DELETE_ACTION_ID);

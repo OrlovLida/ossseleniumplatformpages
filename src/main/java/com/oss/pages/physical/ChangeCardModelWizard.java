@@ -3,14 +3,14 @@ package com.oss.pages.physical;
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.widgets.Wizard;
+import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
 public class ChangeCardModelWizard extends BasePage {
 
-    private static final String WIZARD_ID = "card_change_model_wizard_view";
+    private static final String WIZARD_ID = "card_change_model_wizard_view_prompt-card";
 
     private Wizard wizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
     private static final String MODEL_SEARCH = "search_box_card_change_model";

@@ -3,7 +3,7 @@ package com.oss.pages.transport;
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.widgets.Wizard;
+import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
@@ -14,7 +14,7 @@ public class VLANRangeWizardPage extends BasePage {
         super(driver);
     }
 
-    private static final String WIZARD_ID = "VLAN_RANGE_ID";
+    private static final String WIZARD_ID = "VLANRangeWizardTemplateId";
     private static final String NAME_ATTRIBUTE_ID = "VLAN_RANGE_NAME_ATTRIBUTE_ID";
     private static final String RANGE_ATTRIBUTE_ID = "VLAN_RANGE_VLAN_ID_RANGE_ATTRIBUTE_ID";
     private static final String DESCRIPTION_ATTRIBUTE_ID = "VLAN_RANGE_DESCRIPTION_ATTRIBUTE_ID";

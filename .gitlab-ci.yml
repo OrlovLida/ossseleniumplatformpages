@@ -1,2 +1,11 @@
-job:
-  script: "mvn compile"
+variables:
+  MVN_ARGS: "-DskipTests"
+  GIT_SSL_NO_VERIFY: "true"
+  TELCO_BOT: "false"
+  CITEMPLATE_PROJECT: 'ssh://git@gitlab.czk.comarch:2222/toss/devops/cicd/citemplate.git'
+  CITEMPLATE_BRANCH: '4.5.0'
+
+include:
+  - project: toss/devops/cicd/citemplate
+    ref: 4.5.0
+    file: base-ci.yml

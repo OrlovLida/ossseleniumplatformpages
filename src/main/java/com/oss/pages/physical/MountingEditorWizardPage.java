@@ -6,7 +6,7 @@ import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.Input.ComponentType;
 import com.oss.framework.components.table.TableComponent;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.Wizard;
+import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
@@ -16,7 +16,7 @@ public class MountingEditorWizardPage extends BasePage {
     private static final String NAME = "name-id";
     private static final String PRECISE_LOCATION = "precise-location-id";
     private static final String MODEL = "model-id";
-    private static final String WIZARD_ID = "mounting-editor-modal-id";
+    private static final String WIZARD_ID = "mounting-editor-widget-id";
 
     private Wizard wizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
 

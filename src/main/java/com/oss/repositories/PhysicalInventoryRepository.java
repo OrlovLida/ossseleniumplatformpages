@@ -60,6 +60,11 @@ public class PhysicalInventoryRepository {
                 .build();
     }
 
+    public void deleteDevice(String deviceId){
+        PhysicalInventoryClient client = new PhysicalInventoryClient(env);
+        client.deleteDevice(deviceId);
+    }
+
     private PhysicalDeviceDTO buildDevice(String locationType, Long locationId, Long deviceModelId, String deviceName, String deviceModelType) {
         return PhysicalDeviceDTO.builder()
                 .deviceModel(getDeviceModelId(deviceModelId, deviceModelType))

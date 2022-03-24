@@ -6,20 +6,21 @@
  */
 package com.oss.transport;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
+import org.assertj.core.api.Assertions;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
 import com.oss.BaseTestCase;
-import com.oss.framework.mainheader.PerspectiveChooser;
-import com.oss.framework.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.transport.VRF.VRFImpExpRouteTargetWizardPage;
 import com.oss.pages.transport.VRF.VRFOverviewPage;
 import com.oss.pages.transport.VRF.VRFWizardPage;
+
 import io.qameta.allure.Step;
-import org.assertj.core.api.Assertions;
-import org.testng.Assert;
-import org.testng.annotations.Test;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
 
 import static com.oss.configuration.Configuration.CONFIGURATION;
 
@@ -47,7 +48,7 @@ public class CreateVRFTest extends BaseTestCase {
     private static final String ROUTE_TARGET = "3453:3453";
     private static final String ADDRESS_FAMILY = "IPv4";
 
-    private static final String ENVIRONMENT_INDEPENDENT_URL_REDIRECT_PART = "/#/dashboard/predefined/id/transport-dashboard";
+    private static final String ENVIRONMENT_INDEPENDENT_URL_REDIRECT_PART = "/#/?perspective=LIVE";
 
     @Test(priority = 1)
     @Step("Create VRF")
@@ -97,6 +98,7 @@ public class CreateVRFTest extends BaseTestCase {
         VRFOverviewPage vrfOverview = new VRFOverviewPage(driver);
         vrfOverview.clickRemove();
         vrfOverview.confirmRemoval();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         String url = driver.getCurrentUrl();
 
         assertVRFRemove(url);
@@ -148,8 +150,6 @@ public class CreateVRFTest extends BaseTestCase {
         //SideMenu sidemenu = SideMenu.create(driver, webDriverWait);
         //sidemenu.callActionByLabel(VRF, WIZARDS, TRANSPORT);
         driver.get(String.format("%s/#/view/transport/tpt/vrf?perspective=LIVE", BASIC_URL));
-        PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
-        perspectiveChooser.setCurrentTask();
 
         return new VRFWizardPage(driver);
     }
@@ -208,7 +208,7 @@ public class CreateVRFTest extends BaseTestCase {
         Assert.assertEquals(assignedAddressFamilies.get(0).toUpperCase(), impExpAttributes.addressFamily.toUpperCase());
     }
 
-    private void assertVRFRemove(String url){
+    private void assertVRFRemove(String url) {
         Assertions.assertThat(url).isEqualTo(CONFIGURATION.getUrl() + ENVIRONMENT_INDEPENDENT_URL_REDIRECT_PART);
     }
 

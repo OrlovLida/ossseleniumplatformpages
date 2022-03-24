@@ -9,10 +9,10 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
-import com.oss.framework.alerts.SystemMessageContainer;
-import com.oss.framework.alerts.SystemMessageContainer.Message;
-import com.oss.framework.alerts.SystemMessageContainer.MessageType;
-import com.oss.framework.alerts.SystemMessageInterface;
+import com.oss.framework.components.alerts.SystemMessageContainer;
+import com.oss.framework.components.alerts.SystemMessageContainer.Message;
+import com.oss.framework.components.alerts.SystemMessageContainer.MessageType;
+import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.reconciliation.CmDomainWizardPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
@@ -21,11 +21,11 @@ import com.oss.pages.reconciliation.NetworkInconsistenciesViewPage;
 import com.oss.pages.reconciliation.SamplesManagementPage;
 import com.oss.utils.TestListener;
 
-@Listeners({ TestListener.class })
+@Listeners({TestListener.class})
 public class RunRecoAndApplyInconsistencies extends BaseTestCase {
 
-    private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
     private static final String cmDomainName = "SeleniumTestDomain";
+    private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
 
     @BeforeClass
     public void openNetworkDiscoveryControlView() {

@@ -5,17 +5,13 @@ import org.openqa.selenium.WebDriver;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.Input.ComponentType;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.CommonHierarchyApp;
-import com.oss.framework.widgets.Wizard;
+import com.oss.framework.widgets.commonhierarchy.CommonHierarchyApp;
+import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
 public class VLANPoolWizardPage extends BasePage {
-
-    public VLANPoolWizardPage(WebDriver driver) {
-        super(driver);
-    }
 
     private static final String WIZARD_ID = "vlanPoolWizard";
     private static final String NAME_ID = "name-uid";
@@ -23,9 +19,8 @@ public class VLANPoolWizardPage extends BasePage {
     private static final String VLAN_RANGE_ID = "vlan-range-uid";
     private static final String NEXT_STEP_ID = "vlanPoolWizardApp-next";
     private static final String ACCEPT_ID = "vlanPoolWizardApp-finish";
-
-    private Wizard getWizard() {
-        return Wizard.createByComponentId(driver, wait, WIZARD_ID);
+    public VLANPoolWizardPage(WebDriver driver) {
+        super(driver);
     }
 
     @Step("Set Name to {name}")
@@ -45,7 +40,7 @@ public class VLANPoolWizardPage extends BasePage {
 
     @Step("Click next step")
     public void clickNextStep() {
-        getWizard().clickActionById(NEXT_STEP_ID);
+        getWizard().clickButtonById(NEXT_STEP_ID);
     }
 
     @Step("Navigate through Common Hierarchy App widget selecting {resourceName} and names of interfaces")
@@ -57,6 +52,10 @@ public class VLANPoolWizardPage extends BasePage {
 
     @Step("Click accept")
     public void clickAccept() {
-        getWizard().clickActionById(ACCEPT_ID);
+        getWizard().clickButtonById(ACCEPT_ID);
+    }
+
+    private Wizard getWizard() {
+        return Wizard.createByComponentId(driver, wait, WIZARD_ID);
     }
 }

@@ -35,6 +35,10 @@ public class AddressRepository {
         return addressId;
     }
 
+    public Long getFirstGeographicalAddressId(){
+        return client.getGeographicalAddresses().get(0).getId();
+    }
+
     public Long createOrUpdateGeographicalAddressWithStreetNumber(String countryName, String postalCodeName,
                                                                   String regionName, String cityName, String districtName, String streetNumber) {
         AddressDTO[] addressDTO = client.createGeographicalAddress(

@@ -1,5 +1,12 @@
 package com.oss.bigdata.dfe;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Test;
+
 import com.oss.BaseTestCase;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bigdata.dfe.EtlDataCollectionsPage;
@@ -10,13 +17,8 @@ import com.oss.pages.bigdata.dfe.stepwizard.commons.TransformationsPage;
 import com.oss.pages.bigdata.dfe.stepwizard.etlprocess.EtlProcessColumnMappingPage;
 import com.oss.pages.bigdata.utils.ConstantsDfe;
 import com.oss.utils.TestListener;
+
 import io.qameta.allure.Description;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Listeners;
-import org.testng.annotations.Test;
 
 @Listeners({TestListener.class})
 public class EtlDataCollectionsTest extends BaseTestCase {
@@ -34,6 +36,7 @@ public class EtlDataCollectionsTest extends BaseTestCase {
     private final static String DIMENSION_COLUMN_ROLE = "Dimension";
     private final static String DEGENERATED_DIMENSION_TABLE = "Degenerated";
     private final static String HOST_DIMENSION_TABLE = "t:SMOKE#D_HOST";
+    private final static String ETL_WIZARD_ID = "etlWizardWindow";
 
     @BeforeClass
     public void goToEtlDataCollectionsView() {
@@ -49,16 +52,16 @@ public class EtlDataCollectionsTest extends BaseTestCase {
     public void addEtlProcess() {
         etlDataCollectionsPage.clickAddNewEtlProcess();
 
-        BasicInformationPage etlBasicInfoWizard = new BasicInformationPage(driver, webDriverWait);
+        BasicInformationPage etlBasicInfoWizard = new BasicInformationPage(driver, webDriverWait, ETL_WIZARD_ID);
         etlBasicInfoWizard.fillName(etlProcessName);
         etlBasicInfoWizard.clickNextStep();
 
-        DataSourceAndProcessingPage dsAndProcessingWizard = new DataSourceAndProcessingPage(driver, webDriverWait);
+        DataSourceAndProcessingPage dsAndProcessingWizard = new DataSourceAndProcessingPage(driver, webDriverWait, ETL_WIZARD_ID);
         dsAndProcessingWizard.fillFeed(DATASOURCE_NAME);
         DelayUtils.sleep(5000);
         dsAndProcessingWizard.clickNextStep();
 
-        TransformationsPage transformationStep = new TransformationsPage(driver, webDriverWait);
+        TransformationsPage transformationStep = new TransformationsPage(driver, webDriverWait, ETL_WIZARD_ID);
         transformationStep.fillTransformationsStep(TRANSFORMATION_TYPE);
         transformationStep.clickNextStep();
 
@@ -66,7 +69,7 @@ public class EtlDataCollectionsTest extends BaseTestCase {
         columnMappingStep.fillColumnMappingStep(COLUMN_MAPPING_HOST_NM_NAME, DIMENSION_COLUMN_ROLE, DEGENERATED_DIMENSION_TABLE);
         columnMappingStep.clickNextStep();
 
-        StoragePage storageStep = new StoragePage(driver, webDriverWait);
+        StoragePage storageStep = new StoragePage(driver, webDriverWait, ETL_WIZARD_ID);
         storageStep.fillStorageStep(tableName);
         storageStep.clickAccept();
         DelayUtils.sleep(5000);
@@ -86,21 +89,21 @@ public class EtlDataCollectionsTest extends BaseTestCase {
             etlDataCollectionsPage.selectFoundEtlProcess();
             etlDataCollectionsPage.clickEditEtlProcess();
 
-            BasicInformationPage etlBasicInfoWizard = new BasicInformationPage(driver, webDriverWait);
+            BasicInformationPage etlBasicInfoWizard = new BasicInformationPage(driver, webDriverWait, ETL_WIZARD_ID);
             etlBasicInfoWizard.fillName(updatedEtlProcessName);
             etlBasicInfoWizard.clickNextStep();
 
-            DataSourceAndProcessingPage dsAndProcessingWizard = new DataSourceAndProcessingPage(driver, webDriverWait);
+            DataSourceAndProcessingPage dsAndProcessingWizard = new DataSourceAndProcessingPage(driver, webDriverWait, ETL_WIZARD_ID);
             dsAndProcessingWizard.clickNextStep();
 
-            TransformationsPage transformationStep = new TransformationsPage(driver, webDriverWait);
+            TransformationsPage transformationStep = new TransformationsPage(driver, webDriverWait, ETL_WIZARD_ID);
             transformationStep.clickNextStep();
 
             EtlProcessColumnMappingPage columnMappingStep = new EtlProcessColumnMappingPage(driver, webDriverWait);
             columnMappingStep.fillColumnMappingStep(COLUMN_MAPPING_HOST_NM_NAME, HOST_DIMENSION_TABLE);
             columnMappingStep.clickNextStep();
 
-            StoragePage storageStep = new StoragePage(driver, webDriverWait);
+            StoragePage storageStep = new StoragePage(driver, webDriverWait, ETL_WIZARD_ID);
             DelayUtils.sleep(5000);
             storageStep.clickAccept();
 

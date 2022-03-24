@@ -3,19 +3,19 @@ package com.oss.pages.mediation;
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.Wizard;
-import com.oss.framework.widgets.tablewidget.OldTable;
-import com.oss.framework.widgets.tablewidget.TableInterface;
+import com.oss.framework.wizard.Wizard;
+import com.oss.framework.widgets.table.OldTable;
+import com.oss.framework.widgets.table.TableInterface;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
 public class ViewConnectionConfigurationPage extends BasePage {
 
-    private static final String DELETE_BUTTON = "ConfirmationBox_confirmation-box_action_button";
-    private static final String TABLE_ID = "object-table-id";
     public static final String DELETE_BUTTON_ID = "Delete Connection Configuration";
     public static final String CONFIRMATION_PROMT = "confirmation-prompt";
+    private static final String DELETE_BUTTON = "ConfirmationBox_confirmation-box_action_button";
+    private static final String TABLE_ID = "object-table-id";
 
     public ViewConnectionConfigurationPage(WebDriver driver) {
         super(driver);
@@ -30,20 +30,20 @@ public class ViewConnectionConfigurationPage extends BasePage {
     @Step("Use context action {action}")
     public void useContextAction(String group, String action) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, TABLE_ID);
+        TableInterface table = OldTable.createById(driver, wait, TABLE_ID);
         table.callAction(group, action);
     }
 
     @Step("Select mediation with name {name} and value {value}")
     public void selectRow(String name, String value) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        TableInterface table = OldTable.createByComponentDataAttributeName(driver, wait, TABLE_ID);
+        TableInterface table = OldTable.createById(driver, wait, TABLE_ID);
         table.selectRowByAttributeValueWithLabel(name, value);
     }
 
     @Step("Click Delete button")
     public void clickDelete() {
-        getWizard().clickActionById(DELETE_BUTTON);
+        getWizard().clickButtonById(DELETE_BUTTON);
     }
 
     private Wizard getWizard() {

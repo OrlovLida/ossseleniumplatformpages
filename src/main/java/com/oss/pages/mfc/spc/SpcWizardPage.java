@@ -7,9 +7,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.oss.framework.components.inputs.Input.ComponentType;
-import com.oss.framework.data.Data;
+import com.oss.framework.components.data.Data;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.Wizard;
+import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
@@ -33,63 +33,63 @@ public class SpcWizardPage<R extends BasePage> extends BasePage {
     @Step("Set description")
     public SpcWizardPage<R> setDescription(String description) {
         wizard.getComponent("description-text-area", ComponentType.TEXT_AREA)
-            .setSingleStringValue(description);
+                .setSingleStringValue(description);
         return this;
     }
 
     @Step("Set name")
     public SpcWizardPage<R> setName(String name) {
         wizard.getComponent("name", ComponentType.TEXT_FIELD)
-            .setSingleStringValue(name);
+                .setSingleStringValue(name);
         return this;
     }
 
     @Step("Set is additional")
     public SpcWizardPage<R> setIsAdditional(boolean isAdditional) {
         wizard.getComponent("is-additional", ComponentType.COMBOBOX)
-            .setValue(Data.createFindFirst(Objects.toString(isAdditional)));
+                .setValue(Data.createFindFirst(Objects.toString(isAdditional)));
         return this;
     }
 
     @Step("Set length")
     public SpcWizardPage<R> setLength(Length length) {
         wizard.getComponent("point-code-length", ComponentType.COMBOBOX)
-            .setValue(Data.createFindFirst(length.name()));
+                .setValue(Data.createFindFirst(length.name()));
         return this;
     }
 
     @Step("Set network identifier")
     public SpcWizardPage<R> setNetworkIdentifier(NetworkIdentifier networkIdentifier) {
         wizard.getComponent("network-identifier", ComponentType.COMBOBOX)
-            .setValue(Data.createFindFirst(networkIdentifier.getReadable()));
+                .setValue(Data.createFindFirst(networkIdentifier.getReadable()));
         return this;
     }
 
     @Step("Set predefined format")
     public SpcWizardPage<R> setFormat(Format format) {
         wizard.getComponent("point-code-format", ComponentType.COMBOBOX)
-            .setValue(Data.createFindFirst(format.getReadable()));
+                .setValue(Data.createFindFirst(format.getReadable()));
         return this;
     }
 
     @Step("Change format to custom")
     public SpcWizardPage<R> setCustomFormatOn(boolean customOn) {
         wizard.getComponent("format-checkbox", ComponentType.CHECKBOX)
-            .setSingleStringValue(Objects.toString(customOn));
+                .setSingleStringValue(Objects.toString(customOn));
         return this;
     }
 
     @Step("Set custom format")
     public SpcWizardPage<R> setCustomFormat(String format) {
         wizard.getComponent("custom-point-code-format", ComponentType.TEXT_FIELD)
-            .setSingleStringValue(format);
+                .setSingleStringValue(format);
         return this;
     }
 
     @Step("Set spc value")
     public SpcWizardPage<R> setSpcValue(String value) {
         wizard.getComponent("point-code-value", ComponentType.TEXT_FIELD)
-            .setSingleStringValue(value);
+                .setSingleStringValue(value);
         return this;
     }
 
@@ -100,7 +100,7 @@ public class SpcWizardPage<R extends BasePage> extends BasePage {
 
     @Step("Close SPC wizard without creating instance")
     public R cancel() {
-        wizard.cancel();
+        wizard.clickCancel();
         return returnPage;
     }
 
@@ -127,8 +127,8 @@ public class SpcWizardPage<R extends BasePage> extends BasePage {
 
         public static Format of(String value) {
             return Arrays.stream(values())
-                       .filter(t -> t.getReadable().equals(value)).findFirst()
-                       .orElseThrow(() -> new EnumConstantNotPresentException(Format.class, value));
+                    .filter(t -> t.getReadable().equals(value)).findFirst()
+                    .orElseThrow(() -> new EnumConstantNotPresentException(Format.class, value));
         }
 
         public String getReadable() {

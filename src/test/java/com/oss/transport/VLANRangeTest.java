@@ -8,12 +8,12 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
-import com.oss.framework.alerts.SystemMessageContainer;
-import com.oss.framework.alerts.SystemMessageInterface;
+import com.oss.framework.components.alerts.SystemMessageContainer;
+import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.ActionsContainer;
-import com.oss.framework.mainheader.PerspectiveChooser;
+import com.oss.framework.components.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.tablewidget.TableWidget;
+import com.oss.framework.widgets.table.TableWidget;
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.transport.VLANRangeWizardPage;
@@ -21,7 +21,7 @@ import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
 
-@Listeners({ TestListener.class })
+@Listeners({TestListener.class})
 public class VLANRangeTest extends BaseTestCase {
 
     private static final String VLAN_NAME_1 = "VLANRangeSeleniumTest";
@@ -30,14 +30,8 @@ public class VLANRangeTest extends BaseTestCase {
     private static final String VLAN_RANGE_2 = "1, 3, 5-9";
     private static final String VLAN_DESCRIPTION_1 = "DescriptionBefore";
     private static final String VLAN_DESCRIPTION_2 = "DescriptionAfter";
+    private static final String CONFIRM_ID = "ConfirmationBox_deleteBoxAppId_action_button";
 
-    private void checkPopup() {
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
-        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assert.assertNotNull(messages);
-        Assert.assertEquals(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType(),
-                SystemMessageContainer.MessageType.SUCCESS);
-    }
 
     @BeforeClass
     public void openWebConsole() {
@@ -100,8 +94,8 @@ public class VLANRangeTest extends BaseTestCase {
         NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.searchObject(VLAN_NAME_2);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "Name"), VLAN_NAME_2);
-        Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "Description"), VLAN_DESCRIPTION_2);
+        Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "name"), VLAN_NAME_2);
+        Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "description"), VLAN_DESCRIPTION_2);
     }
 
     @Test(priority = 5)
@@ -110,12 +104,20 @@ public class VLANRangeTest extends BaseTestCase {
         NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.selectFirstRow();
         newInventoryViewPage.callActionById("DeleteVLANRangeContextAction");
-        newInventoryViewPage.getWizard().clickButtonByLabel("OK");
+        newInventoryViewPage.clickConfirmationBox(CONFIRM_ID);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         checkPopup();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         newInventoryViewPage.getMainTable()
                 .callAction(ActionsContainer.KEBAB_GROUP_ID, TableWidget.REFRESH_ACTION_ID);
         Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());
+    }
+
+    private void checkPopup() {
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
+        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
+        Assert.assertNotNull(messages);
+        Assert.assertEquals(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType(),
+                SystemMessageContainer.MessageType.SUCCESS);
     }
 }

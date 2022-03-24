@@ -10,8 +10,8 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.contextactions.ActionsContainer;
-import com.oss.framework.mainheader.PerspectiveChooser;
-import com.oss.framework.prompts.ConfirmationBox;
+import com.oss.framework.components.mainheader.PerspectiveChooser;
+import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.transport.NetworkViewPage;
@@ -151,8 +151,8 @@ public class IPLinkTest extends BaseTestCase {
         fillAttributes(ipLinkWizard, attributes);
 
         IPLinkTerminationStepPage terminationStep = ipLinkWizard.next();
-        fillTermination(terminationStep, TerminationStepPage.TerminationType.Start);
-        fillTermination(terminationStep, TerminationStepPage.TerminationType.End);
+        fillTermination(terminationStep, TerminationStepPage.TerminationType.START);
+        fillTermination(terminationStep, TerminationStepPage.TerminationType.END);
 
         terminationStep.setCreateAssociatedEthernetLink(true);
 
@@ -364,7 +364,7 @@ public class IPLinkTest extends BaseTestCase {
     public void addLocationToTerminations() {
         networkView.selectObject(LOCATION_NAME);
         TerminationStepPage terminationStep = networkView.addSelectedObjectsToTerminationV2();
-        terminationStep.chooseTerminationType(TerminationType.Start);
+        terminationStep.chooseTerminationType(TerminationType.START);
         terminationStep.accept();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkView.unselectObject(LOCATION_NAME);
@@ -378,7 +378,7 @@ public class IPLinkTest extends BaseTestCase {
     public void addIpDeviceToTerminations() {
         networkView.selectObject(DEVICE_2_NAME);
         TerminationStepPage terminationStep = networkView.addSelectedObjectsToTerminationV2();
-        terminationStep.chooseTerminationType(TerminationType.End);
+        terminationStep.chooseTerminationType(TerminationType.END);
         terminationStep.accept();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkView.unselectObject(DEVICE_2_NAME);

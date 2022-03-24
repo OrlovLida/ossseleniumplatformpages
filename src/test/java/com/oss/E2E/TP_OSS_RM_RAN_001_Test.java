@@ -1,20 +1,25 @@
 package com.oss.E2E;
 
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 import com.oss.BaseTestCase;
-import com.oss.framework.alerts.SystemMessageContainer;
-import com.oss.framework.alerts.SystemMessageContainer.Message;
-import com.oss.framework.alerts.SystemMessageContainer.MessageType;
-import com.oss.framework.mainheader.PerspectiveChooser;
+import com.oss.framework.components.alerts.SystemMessageContainer;
+import com.oss.framework.components.alerts.SystemMessageContainer.Message;
+import com.oss.framework.components.alerts.SystemMessageContainer.MessageType;
+import com.oss.framework.components.alerts.SystemMessageInterface;
+import com.oss.framework.components.contextactions.ActionsContainer;
+import com.oss.framework.components.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.PlanViewWizardPage;
-import com.oss.pages.bpm.ProcessWizardPage;
 import com.oss.pages.bpm.TasksPage;
+import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 import com.oss.pages.platform.HomePage;
-import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
+import com.oss.pages.platform.NewInventoryViewPage;
+import com.oss.pages.platform.SearchObjectTypePage;
 import com.oss.pages.radio.CellSiteConfigurationPage;
 
 import io.qameta.allure.Description;
@@ -26,23 +31,24 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
     private static final String ENODEB_NAME = "GBM055TST";
     private static final String ENODEB_ID = "1" + (int) (Math.random() * 10);
     private static final String ENODEB_MODEL = "HUAWEI Technology Co.,Ltd BTS5900";
-    private static final String MCCMNC_PRIMARY = "DU03 [mcc: 424, mnc: 03]";
+    private static final String MCCMNC_PRIMARY = "E2ETests [mcc: 0001, mnc: 01]";
     private static final String BASE_BAND_UNIT_MODEL = "HUAWEI Technology Co.,Ltd BBU5900";
     private static final String BBU_NAME = "BTS5900,GBM055TST/0/BBU5900,0";
     private static final String RADIO_UNIT_MODEL = "HUAWEI Technology Co.,Ltd RRU5301";
-    private static final String[] RADIO_UNIT_NAMES = { "BTS5900,GBM055TST/0/MRRU,60", "BTS5900,GBM055TST/0/MRRU,70", "BTS5900,GBM055TST/0/MRRU,80" };
+    private static final String[] RADIO_UNIT_NAMES = {"BTS5900,GBM055TST/0/MRRU,60", "BTS5900,GBM055TST/0/MRRU,70", "BTS5900,GBM055TST/0/MRRU,80"};
     private static final String RAN_ANTENNA_MODEL = "HUAWEI Technology Co.,Ltd APE4518R14V06";
-    private static final String[] ANTENNA_NAMES = { "TP_OSS_RM_RAN_001_ANTENNA_1", "TP_OSS_RM_RAN_001_ANTENNA_2", "TP_OSS_RM_RAN_001_ANTENNA_3" };
+    private static final String[] ANTENNA_NAMES = {"TP_OSS_RM_RAN_001_ANTENNA_1", "TP_OSS_RM_RAN_001_ANTENNA_2", "TP_OSS_RM_RAN_001_ANTENNA_3"};
     private static final String BBU_EQUIPMENT_TYPE = "Base Band Unit";
     private static final String RADIO_UNIT_EQUIPMENT_TYPE = "Remote Radio Head/Unit";
-    private static final String CARRIER = "L800-B20-5 (6175)";
-    private static final String[] CELL_NAMES = new String[] { "TP_OSS_RM_RAN_001_CELL10", "TP_OSS_RM_RAN_001_CELL20", "TP_OSS_RM_RAN_001_CELL30" };
+    private static final String CARRIER = "E2E Carrier (11)";
+    private static final String[] CELL_NAMES = new String[]{"TP_OSS_RM_RAN_001_CELL10", "TP_OSS_RM_RAN_001_CELL20", "TP_OSS_RM_RAN_001_CELL30"};
     private static final int AMOUNT_OF_CELLS = CELL_NAMES.length;
     private static final String PCI = "2";
     private static final String RSI = "2";
     private static final String REFERENCE_POWER = "0";
-    private static final String[] TAC = { "2", "2", "2" };
-    private static final int[] LOCAL_CELLS_ID = { 1, 2, 3 };
+    private static final String[] TAC = {"2", "2", "2"};
+    private static final int[] LOCAL_CELLS_ID = {1, 2, 3};
+    private static final int CRP = 2;
     private static final String PA_INPUT = "2";
     private static final String TASK_COMPLETED = "Task properly completed.";
     private static final String TASK_ASSIGNED = "The task properly assigned.";
@@ -51,13 +57,17 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
     private static final String BUSINESS_PROCESS_MANAGEMENT = "Business Process Management";
     private static final String BPM_AND_PLANNING = "BPM and Planning";
     private static final String PROCESS_INSTANCES = "Process Instances";
+    private static final String MANUFACTURER = "HUAWEI Technology Co.,Ltd";
+    private SoftAssert softAssert;
 
     private CellSiteConfigurationPage cellSiteConfigurationPage;
     private String processNRPCode;
+    private String processIPCode;
 
     @BeforeClass
     public void openConsole() {
         waitForPageToLoad();
+        softAssert = new SoftAssert();
     }
 
     @Test(priority = 1)
@@ -66,9 +76,8 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         waitForPageToLoad();
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
         processNRPCode = processWizardPage.createSimpleNRP();
-        checkMessageSize();
-        checkMessageType();
         checkMessageContainsText(processNRPCode);
+        checkMessageType();
     }
 
     @Test(priority = 2)
@@ -76,7 +85,6 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         waitForPageToLoad();
         tasksPage.startTask(processNRPCode, TasksPage.HIGH_LEVEL_PLANNING_TASK);
-        checkMessageType();
         checkTaskAssignment();
         waitForPageToLoad();
     }
@@ -100,9 +108,9 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
     public void createCell4GBulk() {
         waitForPageToLoad();
         cellSiteConfigurationPage.expandTreeToBaseStation(SITE, LOCATION_NAME, ENODEB_NAME);
-        cellSiteConfigurationPage.createCell4GBulk(AMOUNT_OF_CELLS, CARRIER, CELL_NAMES, LOCAL_CELLS_ID);
-        checkMessageType();
+        cellSiteConfigurationPage.createCell4GBulk(AMOUNT_OF_CELLS, CARRIER, CELL_NAMES, LOCAL_CELLS_ID, CRP);
         checkMessageText("Cells 4G created success");
+        checkMessageType();
     }
 
     @Step("Create Base Band Unit")
@@ -167,6 +175,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
             waitForPageToLoad();
             cellSiteConfigurationPage.createHostingOnAntennaArray(ANTENNA_NAMES[i]);
             checkMessageType();
+            waitForPageToLoad();
         }
     }
 
@@ -177,7 +186,6 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         waitForPageToLoad();
         tasksPage.completeTask(processNRPCode, TasksPage.HIGH_LEVEL_PLANNING_TASK);
-        checkMessageType();
         checkTaskCompleted();
     }
 
@@ -187,7 +195,6 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         waitForPageToLoad();
         tasksPage.startTask(processNRPCode, TasksPage.LOW_LEVEL_PLANNING_TASK);
-        checkMessageType();
         checkTaskAssignment();
         waitForPageToLoad();
     }
@@ -230,60 +237,25 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         waitForPageToLoad();
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.completeTask(processNRPCode, TasksPage.LOW_LEVEL_PLANNING_TASK);
-        checkMessageType();
         checkTaskCompleted();
-
-        tasksPage.startTask(processNRPCode, TasksPage.READY_FOR_INTEGRATION_TASK);
-        waitForPageToLoad();
-        checkMessageType();
-        checkTaskAssignment();
-
-        tasksPage.completeTask(processNRPCode, TasksPage.READY_FOR_INTEGRATION_TASK);
-        checkMessageType();
-        checkTaskCompleted();
+        processIPCode = tasksPage.proceedNRPFromReadyForIntegration(processNRPCode);
     }
 
     @Test(priority = 17)
-    @Description("Finish NRP")
+    @Description("Finish NRP and IP")
     public void completeProcessNRP() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         waitForPageToLoad();
-        tasksPage.startTask(processNRPCode, "Integrate");
-        checkMessageType();
-        checkTaskAssignment();
-        waitForPageToLoad();
-        tasksPage.completeTask(processNRPCode, "Integrate");
-        checkMessageType();
+        tasksPage.completeTask(processIPCode, TasksPage.IMPLEMENTATION_TASK);
         checkTaskCompleted();
-        waitForPageToLoad();
-
-        tasksPage.startTask(processNRPCode, "Implement");
-        checkMessageType();
+        tasksPage.startTask(processIPCode, TasksPage.ACCEPTANCE_TASK);
         checkTaskAssignment();
-        waitForPageToLoad();
-        tasksPage.completeTask(processNRPCode, "Implement");
-        checkMessageType();
+        tasksPage.completeTask(processIPCode, TasksPage.ACCEPTANCE_TASK);
         checkTaskCompleted();
-        waitForPageToLoad();
-
-        tasksPage.startTask(processNRPCode, "Accept");
-        checkMessageType();
-        checkTaskAssignment();
-        waitForPageToLoad();
-        tasksPage.completeTask(processNRPCode, "Accept");
-        checkMessageType();
-        checkTaskCompleted();
-        waitForPageToLoad();
-
-        tasksPage.startTask(processNRPCode, TasksPage.ACCEPTANCE_TASK);
-        waitForPageToLoad();
-        tasksPage.completeTask(processNRPCode, TasksPage.ACCEPTANCE_TASK);
-        waitForPageToLoad();
-
         tasksPage.startTask(processNRPCode, TasksPage.VERIFICATION_TASK);
-        waitForPageToLoad();
+        checkTaskAssignment();
         tasksPage.completeTask(processNRPCode, TasksPage.VERIFICATION_TASK);
-        waitForPageToLoad();
+        checkTaskCompleted();
     }
 
     @Test(priority = 18)
@@ -291,24 +263,16 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
     public void deleteDevices() {
         openCellSiteConfiguration();
         waitForPageToLoad();
-        cellSiteConfigurationPage.filterObject(NAME, BBU_NAME);
-        waitForPageToLoad();
-        cellSiteConfigurationPage.removeObject();
-        waitForPageToLoad();
+        cellSiteConfigurationPage.removeDevice("Base Band Units", MANUFACTURER, BBU_NAME);
         checkMessageType();
-
+        waitForPageToLoad();
         for (int i = 0; i < 3; i++) {
-            cellSiteConfigurationPage.filterObject(NAME, RADIO_UNIT_NAMES[i]);
-            waitForPageToLoad();
-            cellSiteConfigurationPage.removeObject();
-            waitForPageToLoad();
+            cellSiteConfigurationPage.removeDevice("Remote Radio Units", MANUFACTURER, RADIO_UNIT_NAMES[i]);
             checkMessageType();
-
-            cellSiteConfigurationPage.filterObject(NAME, ANTENNA_NAMES[i]);
             waitForPageToLoad();
-            cellSiteConfigurationPage.removeObject();
-            waitForPageToLoad();
+            cellSiteConfigurationPage.removeDevice("Antennas", MANUFACTURER, ANTENNA_NAMES[i]);
             checkMessageType();
+            waitForPageToLoad();
         }
     }
 
@@ -316,25 +280,24 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
     @Description("Delete eNodeB")
     public void deleteNodeB() {
         waitForPageToLoad();
-        cellSiteConfigurationPage.expandTreeToLocation(SITE, LOCATION_NAME);
-        waitForPageToLoad();
-        cellSiteConfigurationPage.selectRowByAttributeValueWithLabel(NAME, ENODEB_NAME);
-        waitForPageToLoad();
-        cellSiteConfigurationPage.removeObject();
+        cellSiteConfigurationPage.removeBaseStation(NAME, ENODEB_NAME);
     }
 
     private void openCellSiteConfiguration() {
         HomePage homePage = new HomePage(driver);
         homePage.goToHomePage(driver, BASIC_URL);
         waitForPageToLoad();
-        homePage.chooseFromLeftSideMenu("Legacy Inventory Dashboard", "Resource Inventory ");
+        homePage.chooseFromLeftSideMenu("Inventory View", "Resource Inventory ");
         waitForPageToLoad();
-        homePage.setOldObjectType(SITE);
+        SearchObjectTypePage searchObjectTypePage = new SearchObjectTypePage(driver, webDriverWait);
+        searchObjectTypePage.searchType(SITE);
         waitForPageToLoad();
-        OldInventoryViewPage oldInventoryViewPage = new OldInventoryViewPage(driver);
-        oldInventoryViewPage.filterObject(NAME, LOCATION_NAME);
+        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
+        newInventoryViewPage.searchObject(LOCATION_NAME);
         waitForPageToLoad();
-        oldInventoryViewPage.expandShowOnAndChooseView("Cell Site Configuration");
+        newInventoryViewPage.selectFirstRow();
+        waitForPageToLoad();
+        newInventoryViewPage.callAction(ActionsContainer.SHOW_ON_GROUP_ID, "Cell Site Configuration");
         waitForPageToLoad();
     }
 
@@ -342,23 +305,13 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    private void checkMessageType() {
-        Assert.assertEquals((getFirstMessage().getMessageType()), MessageType.SUCCESS);
-    }
-
     private void checkMessageContainsText(String message) {
-        Assert.assertTrue((getFirstMessage().getText())
+        softAssert.assertTrue((getFirstMessage().getText())
                 .contains(message));
     }
 
     private void checkMessageText(String message) {
-        Assert.assertEquals((getFirstMessage().getText()), message);
-    }
-
-    private void checkMessageSize() {
-        Assert.assertEquals((SystemMessageContainer.create(driver, webDriverWait)
-                .getMessages()
-                .size()), 1);
+        softAssert.assertEquals((getFirstMessage().getText()), message);
     }
 
     private Message getFirstMessage() {
@@ -368,12 +321,24 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
     }
 
     private void checkTaskAssignment() {
-        checkMessageType();
         checkMessageText(TASK_ASSIGNED);
+        checkMessageType();
     }
 
     private void checkTaskCompleted() {
-        checkMessageType();
         checkMessageContainsText(TASK_COMPLETED);
+        checkMessageType();
+    }
+
+    private void checkMessageType() {
+        SystemMessageInterface systemMessage = getSuccesSystemMessage();
+        systemMessage.close();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    private SystemMessageInterface getSuccesSystemMessage() {
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, 90));
+        softAssert.assertEquals((systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType()), MessageType.SUCCESS);
+        return systemMessage;
     }
 }

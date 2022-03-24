@@ -4,11 +4,11 @@
 
     <groupId>com.comarch.oss.web.tests.platform</groupId>
     <artifactId>OSSSeleniumPlatformPages</artifactId>
-    <version>0.7.0-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
 
     <scm>
-        <connection>scm:git:ssh://git@makumba-vm-1.krakow.comarch/ossseleniumtests/ossseleniumplatformpages.git</connection>
-        <developerConnection>scm:git:ssh://git@makumba-vm-1.krakow.comarch/ossseleniumtests/ossseleniumplatformpages.git</developerConnection>
+        <connection>scm:git:ssh://git@gitlab.czk.comarch:2222/toss/pfm/seleniumtests/ossseleniumplatformpages.git</connection>
+        <developerConnection>scm:git:ssh://git@gitlab.czk.comarch:2222/toss/pfm/seleniumtests/ossseleniumplatformpages.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
@@ -27,9 +27,9 @@
         <radio.version>4.2.3.Final</radio.version>
         <resourcecatalog.version>2.7.1.Final</resourcecatalog.version>
         <planning.version>6.9.2.Final</planning.version>
+        <seleniumframework.version>1.0.0-SNAPSHOT</seleniumframework.version>
         <fixedaccess.version>4.9.6</fixedaccess.version>
         <trail-api.version>3.20.0.Final</trail-api.version>
-        <seleniumframework.version>0.9.0-SNAPSHOT</seleniumframework.version>
         <log4j2.version>2.8.2</log4j2.version>
     </properties>
 
@@ -172,7 +172,11 @@
             <artifactId>physical-connectivity-api</artifactId>
             <version>3.0.2.Final</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.github.javafaker</groupId>
+            <artifactId>javafaker</artifactId>
+            <version>0.17.2</version>
+        </dependency>
     </dependencies>
 
     <profiles>

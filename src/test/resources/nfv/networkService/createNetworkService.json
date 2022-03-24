@@ -1,0 +1,29 @@
+{
+  "id" : null,
+  "name" : "SELENIUM-TEST",
+  "description" : null,
+  "resourceSpecificationId" : "NetworkServicensdidSELENIUMTESTNsdVersion0193660122",
+  "attributes" : [ {
+    "name" : "monitoringParams",
+    "value" : null
+  }, {
+    "name" : "autoScalePolicy",
+    "value" : null
+  } ],
+  "ethernetInterfaces" : [ ],
+  "vnfs" : [ ],
+  "pnfs" : [ ],
+  "networkServices" : [ ],
+  "forwardingGraphs" : [ ],
+  "masterRelations" : [ {
+    "name" : "MasterNSD",
+    "value" : null
+  }, {
+    "name" : "MasterOSS",
+    "value" : null
+  } ],
+  "logicalLocation" : {
+    "id" : null,
+    "type" : "PoP"
+  }
+}

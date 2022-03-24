@@ -1,12 +1,13 @@
 package com.oss.pages.platform;
 
+import org.openqa.selenium.WebDriver;
+
 import com.google.common.collect.ImmutableSet;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.Input.ComponentType;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.Wizard;
+import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
-import org.openqa.selenium.WebDriver;
 
 public class InputsWizardPage extends BasePage {
     public static final String MANDATORY_CONTROLLER_ID = "mandatoryController";
@@ -14,6 +15,7 @@ public class InputsWizardPage extends BasePage {
     public static final String WARNING_MESSAGE_CONTROLLER_ID = "messageWarningController";
     public static final String HIDDEN_CONTROLLER_ID = "hiddenController";
     public static final String READ_ONLY_CONTROLLER_ID = "readOnlyController";
+    public static final String DISABLED_CONTROLLER_ID = "disabledController";
 
     public static final String ACCEPT_BTN_ID = "Accept";
 
@@ -37,23 +39,15 @@ public class InputsWizardPage extends BasePage {
 
     public static final String DISABLED_FIELD_XPATH = "//div[contains(@class,'disabled')]";
 
-    private static final ImmutableSet<String> inputLabels = ImmutableSet.of("DATE_TIME", "COMBOBOX");
-    private static final ImmutableSet<String> controllerIds = ImmutableSet.of("mandatoryController",
-            "messageDangerController",
-            "messageWarningController", "hiddenController", "disabledController", "readOnlyController");
+    private static final ImmutableSet<String> inputLabels = ImmutableSet.of(DATE_TIME_ID, COMBOBOX_ID);
+    private static final ImmutableSet<String> controllerIds = ImmutableSet.of(MANDATORY_CONTROLLER_ID,
+            DANGER_MESSAGE_CONTROLLER_ID,
+            WARNING_MESSAGE_CONTROLLER_ID, HIDDEN_CONTROLLER_ID, DISABLED_CONTROLLER_ID, READ_ONLY_CONTROLLER_ID);
 
     private Wizard wizard = Wizard.createWizard(driver, wait);
 
     InputsWizardPage(WebDriver driver) {
         super(driver);
-    }
-
-    //Lazy
-    private Wizard getWizard() {
-        if(this.wizard == null) {
-            this.wizard = Wizard.createWizard(this.driver, this.wait);
-        }
-        return this.wizard;
     }
 
     public void setComponentValue(String componentId, String value, Input.ComponentType componentType) {
@@ -71,12 +65,12 @@ public class InputsWizardPage extends BasePage {
     }
 
     public void setControllerValue(String controllerId, String componentId) {
-        setComponentValue(controllerId, componentId, ComponentType.COMBOBOX);
+        setComponentValue(controllerId, componentId, ComponentType.MULTI_COMBOBOX);
         DelayUtils.sleep();
     }
 
     public void clearController(String controllerId) {
-        getWizard().getComponent(controllerId, ComponentType.COMBOBOX).clear();
+        getWizard().getComponent(controllerId, ComponentType.MULTI_COMBOBOX).clear();
         DelayUtils.sleep();
     }
 
@@ -85,13 +79,21 @@ public class InputsWizardPage extends BasePage {
     }
 
     public void submit() {
-        this.wizard.submit();
+        this.wizard.clickButtonByLabel(ACCEPT_BTN_ID);
         DelayUtils.sleep();
     }
 
     public void cancel() {
-        this.wizard.cancel();
+        this.wizard.clickCancel();
         DelayUtils.sleep();
+    }
+
+    //Lazy
+    private Wizard getWizard() {
+        if (this.wizard == null) {
+            this.wizard = Wizard.createWizard(this.driver, this.wait);
+        }
+        return this.wizard;
     }
 
 }

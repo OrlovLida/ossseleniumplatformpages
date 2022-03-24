@@ -19,6 +19,7 @@ public class AggregatesSmokeTest extends BaseTestCase {
     private AggregatePage aggregatePage;
     private static final String AGGREGATE_NAME = "t:SMOKE#AGGRforMonitoring";
 
+
     @BeforeClass
     public void goToAggregateView() {
         aggregatePage = AggregatePage.goToPage(driver, BASIC_URL);
@@ -31,7 +32,7 @@ public class AggregatesSmokeTest extends BaseTestCase {
         if (aggregateExists) {
             aggregatePage.selectFoundAggregate();
             aggregatePage.selectExecutionHistoryTab();
-            aggregatePage.clickRefreshTabTable();
+            aggregatePage.clickRefreshInTabTable();
 
             boolean ifRunsExists = aggregatePage.ifRunsNotEmpty();
             Assert.assertTrue(ifRunsExists);

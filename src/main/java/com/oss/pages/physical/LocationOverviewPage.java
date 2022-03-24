@@ -5,12 +5,12 @@ import org.openqa.selenium.WebDriver;
 import com.oss.framework.components.contextactions.ButtonContainer;
 import com.oss.framework.components.contextactions.OldActionsContainer;
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.prompts.ConfirmationBox;
-import com.oss.framework.prompts.ConfirmationBoxInterface;
+import com.oss.framework.components.prompts.ConfirmationBox;
+import com.oss.framework.components.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.tablewidget.OldTable;
-import com.oss.framework.widgets.tabswidget.TabWindowWidget;
-import com.oss.framework.widgets.tabswidget.TabsInterface;
+import com.oss.framework.widgets.table.OldTable;
+import com.oss.framework.widgets.tabs.TabsInterface;
+import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
@@ -22,6 +22,7 @@ import io.qameta.allure.Step;
 public class LocationOverviewPage extends BasePage {
 
     private static final String REFRESH_BUTTON_ID = "refresh-table-action";
+    private static final String TAB_ID = "windowBottomId";
 
     public LocationOverviewPage(WebDriver driver) {
         super(driver);
@@ -30,8 +31,7 @@ public class LocationOverviewPage extends BasePage {
     @Step("Select {tabName} tab")
     public LocationOverviewPage selectTab(String tabName) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        TabsInterface tabs = TabWindowWidget.create(driver, wait);
-        tabs.selectTabByLabel(tabName);
+        getTabs().selectTabByLabel(tabName);
         return this;
     }
 
@@ -82,7 +82,11 @@ public class LocationOverviewPage extends BasePage {
 
     public OldTable getTabTable(TabName tabName) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        return OldTable.createByComponentDataAttributeName(driver, wait, tabName.getTab());
+        return OldTable.createById(driver, wait, tabName.getTab());
+    }
+
+    private TabsInterface getTabs(){
+        return TabsWidget.createById(driver, wait, TAB_ID);
     }
 
     public enum TabName {

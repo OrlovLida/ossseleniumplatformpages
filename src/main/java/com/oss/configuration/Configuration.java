@@ -14,7 +14,8 @@ public class Configuration {
 
     public static final Configuration CONFIGURATION = new Configuration();
     private static final Logger log = LoggerFactory.getLogger(Configuration.class);
-    private static final String DEFAULT_DOWNLOAD_DIR = Paths.get(System.getProperty("user.dir") + File.separator + "target" + File.separator + "downloadFiles").toString();
+    private static final String DEFAULT_DOWNLOAD_DIR =
+            Paths.get(System.getProperty("user.dir") + File.separator + "target" + File.separator + "downloadFiles").toString();
     private final Properties properties = new Properties();
 
     public Configuration() {
@@ -30,6 +31,17 @@ public class Configuration {
         return properties.getProperty(key);
     }
 
+    public boolean isLocally() {
+        return Boolean.valueOf(getLocally());
+    }
+
+    private String getLocally() {
+        if (System.getProperty("LOCALLY") == null) {
+            return CONFIGURATION.getValue("locally");
+        }
+        return System.getProperty("LOCALLY");
+    }
+
     public String getUrl() {
         if (System.getProperty("URL") == null) {
             return CONFIGURATION.getValue("baseUrl");
@@ -37,11 +49,25 @@ public class Configuration {
         return System.getProperty("URL");
     }
 
+    public String getLogin() {
+        if (System.getProperty("LOGIN") == null) {
+            return CONFIGURATION.getValue("user");
+        }
+        return System.getProperty("LOGIN");
+    }
+
+    public String getPassword() {
+        if (System.getProperty("PASSWORD") == null) {
+            return CONFIGURATION.getValue("password");
+        }
+        return System.getProperty("PASSWORD");
+    }
+
     public String getDriver() {
-        if (System.getProperty("driver") == null) {
+        if (System.getProperty("DRIVER") == null) {
             return CONFIGURATION.getValue("driver");
         }
-        return System.getProperty("driver");
+        return System.getProperty("DRIVER");
     }
 
     public String getDownloadDir() {
@@ -54,11 +80,17 @@ public class Configuration {
     public String getApplicationIp() {
         String env = System.getProperty("env");
         if (Strings.isNullOrEmpty(env)) {
-            String ip = getUrl().split(":")[1].replace("//", "");
-            return ip;
+            return getUrl().split(":")[1].replace("//", "");
         }
-        log.info("ENV: " + env);
+        log.info("ENV: {}", env);
         return env;
+    }
+
+    public String getCheckErrors() {
+        if (System.getProperty("CHECK_ERRORS") == null) {
+            return CONFIGURATION.getValue("checkErrors");
+        }
+        return System.getProperty("CHECK_ERRORS");
     }
 
     public String getApplicationPort() {

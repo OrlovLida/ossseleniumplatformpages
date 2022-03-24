@@ -1,12 +1,10 @@
 package com.oss.transport;
 
 import com.oss.BaseTestCase;
-import com.oss.framework.alerts.SystemMessageContainer;
-import com.oss.framework.alerts.SystemMessageInterface;
-import com.oss.framework.mainheader.PerspectiveChooser;
-import com.oss.framework.sidemenu.SideMenu;
+import com.oss.framework.components.alerts.SystemMessageContainer;
+import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.tablewidget.OldTable;
+import com.oss.framework.widgets.table.OldTable;
 import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
 import com.oss.pages.transport.aei.AEIWizardPage;
 import io.qameta.allure.Step;
@@ -116,8 +114,6 @@ public class AEITest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         //sidemenu.callActionByLabel("Create Aggregated Ethernet Interface", "Network domains", "Transport & IP");
         driver.get(String.format("%s/#/view/transport/ip/ethernet/aei?perspective=LIVE", BASIC_URL));
-        PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
-        perspectiveChooser.setCurrentTask();
 
         return new AEIWizardPage(driver);
     }
@@ -186,7 +182,7 @@ public class AEITest extends BaseTestCase {
         OldTable serverTerminationPointsTable = inventoryViewPage.getTableWidgetForTab(BOTTOM_SERVER_TERMINATION_POINTS_TAB_ID, BOTTOM_SERVER_TERMINATION_POINTS_TABLE_TEST_ID);
 
         List<String> assignedInterfaces = new ArrayList<>();
-        int numberOfRowsInTable = serverTerminationPointsTable.getNumberOfRowsInTable(SERVER_TERMINATION_POINTS_TABLE_NAME_COLUMN_LABEL);
+        int numberOfRowsInTable = serverTerminationPointsTable.countRows(SERVER_TERMINATION_POINTS_TABLE_NAME_COLUMN_LABEL);
         for (int i = 0; i < numberOfRowsInTable; i++) {
             assignedInterfaces.add(serverTerminationPointsTable.getCellValue(i, SERVER_TERMINATION_POINTS_TABLE_NAME_COLUMN_LABEL));
         }

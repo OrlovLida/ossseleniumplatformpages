@@ -1,30 +1,34 @@
 package com.oss.pages.bigdata.dfe.stepwizard.aggregate;
 
-import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.Wizard;
-import com.oss.framework.widgets.dfe.aggregatesmanager.AggregatesManagerWidget;
-import com.oss.pages.BasePage;
-import io.qameta.allure.Step;
+import java.util.List;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
+import com.oss.framework.iaa.widgets.dfe.aggregatesmanager.AggregatesManagerWidget;
+import com.oss.framework.wizard.Wizard;
+import com.oss.pages.BasePage;
+
+import io.qameta.allure.Step;
+
+import static com.oss.framework.utils.DelayUtils.waitForPageToLoad;
 
 public class AggregateConfigurationPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(AggregateConfigurationPage.class);
+    private static final String AGGREGATES_WIZARD_ID = "aggregatesWizardWindow";
     private final Wizard aggrConfWizard;
 
     public AggregateConfigurationPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
-        aggrConfWizard = Wizard.createWizard(driver, wait);
+        aggrConfWizard = Wizard.createByComponentId(driver, wait, AGGREGATES_WIZARD_ID);
     }
 
     @Step("I fill Aggregates Configuration Step Aggregate")
     public void fillAggregatesConfigurationStepAggregate(String configName, String baseTableName, String selectedDimension) {
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad(driver, wait);
 
         AggregatesManagerWidget aggregatesManager = AggregatesManagerWidget.create(driver, wait);
         addNewAggregateConfiguration(aggregatesManager);
@@ -46,8 +50,9 @@ public class AggregateConfigurationPage extends BasePage {
 
     @Step
     public void clickAccept() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        aggrConfWizard.clickAcceptOldWizard();
+        waitForPageToLoad(driver, wait);
+        aggrConfWizard.clickAccept();
+        waitForPageToLoad(driver, wait);
         log.info("Finishing Step Wizard by clicking 'Accept'");
     }
 

@@ -6,22 +6,22 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
-import com.oss.framework.mainheader.Notifications;
-import com.oss.framework.sidemenu.SideMenu;
+import com.oss.framework.components.mainheader.Notifications;
+import com.oss.framework.navigation.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.LogManagerPage;
-import com.oss.pages.template_cm.ChangeConfigurationPage;
-import com.oss.pages.template_cm.SetParametersWizardPage;
+import com.oss.pages.templatecm.ChangeConfigurationPage;
+import com.oss.pages.templatecm.SetParametersWizardPage;
 
 import io.qameta.allure.Description;
 
 public class PerformConfigurationTest extends BaseTestCase {
 
-    private static ChangeConfigurationPage changeConfigurationPage;
-    private static SetParametersWizardPage setParametersWizardPage;
     private static final String DEVICE_NAME = "SeleniumTemplateTestDevice";
     private static final String TEMPLATE_NAME = "E2E_Test_Loopback_v2";
     private static final String TEMPLATE_EXECUTION_NOTIFICATION = "Scripts execution for template E2E_Test_Loopback_v2";
+    private static ChangeConfigurationPage changeConfigurationPage;
+    private static SetParametersWizardPage setParametersWizardPage;
 
     @BeforeClass
     public void goToPerformConfigurationChange() {
@@ -67,7 +67,7 @@ public class PerformConfigurationTest extends BaseTestCase {
         changeConfigurationPage.deployImmediately();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
-        Notifications.create(driver, new WebDriverWait(driver, 180)).openDetailsForSpecificNotification(TEMPLATE_EXECUTION_NOTIFICATION, "FINISHED");
+        Notifications.create(driver, new WebDriverWait(driver, 180)).openDetails(TEMPLATE_EXECUTION_NOTIFICATION, "FINISHED");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         LogManagerPage logManagerPage = new LogManagerPage(driver);
         Assertions.assertThat(logManagerPage.getStatus()).isEqualTo("UPLOAD_SUCCESS");

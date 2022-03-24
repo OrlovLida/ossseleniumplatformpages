@@ -5,4 +5,24 @@
             <class name="com.oss.acd.HomeViewTest"/>
         </classes>
     </test>
+    <test name="AsdScenarioSummaryViewTest">
+        <classes>
+            <class name="com.oss.acd.AsdScenarioSummaryViewTest"/>
+        </classes>
+    </test>
+    <test name="AbgadScenarioSummaryViewTest">
+        <classes>
+            <class name="com.oss.acd.AbgadScenarioSummaryViewTest"/>
+        </classes>
+    </test>
+    <test name="ApdScenarioSummaryViewTest">
+        <classes>
+            <class name="com.oss.acd.ApdScenarioSummaryViewTest"/>
+        </classes>
+    </test>
+    <test name="ArSettingsTest">
+        <classes>
+            <class name="com.oss.acd.ArSettingsTest"/>
+        </classes>
+    </test>
 </suite>

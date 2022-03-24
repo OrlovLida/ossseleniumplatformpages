@@ -4,9 +4,9 @@ package com.oss.pages.transport.VSI;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
-import com.oss.framework.widgets.tablewidget.OldTable;
-import com.oss.framework.widgets.tabswidget.TabWindowWidget;
-import com.oss.framework.widgets.tabswidget.TabsInterface;
+import com.oss.framework.widgets.table.OldTable;
+import com.oss.framework.widgets.tabs.TabWindowWidget;
+import com.oss.framework.widgets.tabs.TabsInterface;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
@@ -40,17 +40,18 @@ public class VSIOverviewPage extends BasePage {
     private static final String ADD_ROUTE_TARGET_BUTTON_DATA_ATTRIBUTENAME = "addRouteTarget";
     private static final String REMOVE_ROUTE_TARGET_BUTTON_DATA_ATTRIBUTENAME = "Remove";
     private static final String REMOVAL_CONFIRMATION_BUTTON_DATA_ATTRIBUTENAME = "ConfirmationBox_remove_RT_app_id_action_button";
+    private static final String PROPERTY_PANEL_ID = "propertyPanel";
 
     private final OldPropertyPanel propertyPanel;
 
     public VSIOverviewPage(WebDriver driver){
         super(driver);
-        propertyPanel = OldPropertyPanel.create(driver, wait);
+        propertyPanel = OldPropertyPanel.createById(driver, wait, PROPERTY_PANEL_ID);
     }
 
     @Step("Click edit button")
     public VSIWizardPage clickEdit() {
-        Button editButton = Button.createBySelectorAndId(driver, "a", EDIT_BUTTON_DATA_ATTRIBUTENAME);
+        Button editButton = Button.createById(driver, EDIT_BUTTON_DATA_ATTRIBUTENAME);
         editButton.click();
         DelayUtils.waitForPageToLoad(driver, wait);
         return new VSIWizardPage(driver);
@@ -64,7 +65,7 @@ public class VSIOverviewPage extends BasePage {
 
     private void clickRemoveVsi() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        Button removeButton = Button.createBySelectorAndId(driver, "a", REMOVE_VSI_BUTTON_DATA_ATTRIBUTENAME);
+        Button removeButton = Button.createById(driver, REMOVE_VSI_BUTTON_DATA_ATTRIBUTENAME);
         removeButton.click();
         DelayUtils.waitForPageToLoad(driver, wait);
     }
@@ -137,7 +138,7 @@ public class VSIOverviewPage extends BasePage {
     }
 
     private List<String> getListOfElementsInColumn(OldTable table, String columnName){
-        int rows = table.getNumberOfRowsInTable(columnName);
+        int rows = table.countRows(columnName);
         List<String> elements = new ArrayList<>();
         for(int i = 0; i < rows; i++){
             elements.add(table.getCellValue(i, columnName));
@@ -155,11 +156,11 @@ public class VSIOverviewPage extends BasePage {
     }
 
     private OldTable getTableWidget(String tableId){
-        return OldTable.createByComponentDataAttributeName(driver, wait, tableId);
+        return OldTable.createById(driver, wait, tableId);
     }
 
     private void selectFirstRouteTarget(){
-        OldTable table = OldTable.createByComponentId(driver, wait, BOTTOM_ROUTE_TARGET_TABLE_DATA_ATTRIBUTENAME);
+        OldTable table = OldTable.createById(driver, wait, BOTTOM_ROUTE_TARGET_TABLE_DATA_ATTRIBUTENAME);
         table.selectRow(0);
         DelayUtils.waitForPageToLoad(driver, wait);
     }

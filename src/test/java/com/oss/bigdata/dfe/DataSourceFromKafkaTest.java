@@ -1,18 +1,20 @@
 package com.oss.bigdata.dfe;
 
-import com.oss.BaseTestCase;
-import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bigdata.dfe.DataSource.DSWizard.DataSourceStepWizardPage;
-import com.oss.pages.bigdata.dfe.DataSource.DataSourcePage;
-import com.oss.pages.bigdata.utils.ConstantsDfe;
-import com.oss.utils.TestListener;
-import io.qameta.allure.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+
+import com.oss.BaseTestCase;
+import com.oss.framework.utils.DelayUtils;
+import com.oss.pages.bigdata.dfe.datasource.DSWizard.DataSourceStepWizardPage;
+import com.oss.pages.bigdata.dfe.datasource.DataSourcePage;
+import com.oss.pages.bigdata.utils.ConstantsDfe;
+import com.oss.utils.TestListener;
+
+import io.qameta.allure.Description;
 
 @Listeners({TestListener.class})
 public class DataSourceFromKafkaTest extends BaseTestCase {

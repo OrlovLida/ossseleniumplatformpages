@@ -3,7 +3,7 @@ package com.oss.pages.radio;
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.widgets.Wizard;
+import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
@@ -13,11 +13,12 @@ import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD
 
 public class CableWizardPage extends BasePage {
 
+    private static final String WIZARD_ID = "Popup";
+    private Wizard wizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
+
     public CableWizardPage(WebDriver driver) {
         super(driver);
     }
-
-    private Wizard wizard = Wizard.createPopupWizard(driver, wait);
 
     @Step("Set model")
     public void setModel(String model) {

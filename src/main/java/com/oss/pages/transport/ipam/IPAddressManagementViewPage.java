@@ -2,69 +2,138 @@ package com.oss.pages.transport.ipam;
 
 import java.util.Arrays;
 
-import com.oss.framework.widgets.Wizard;
-import com.oss.pages.transport.ipam.helper.IPAddressAssignmentWizardProperties;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-import com.oss.framework.alerts.SystemMessageContainer;
-import com.oss.framework.alerts.SystemMessageInterface;
+import com.oss.framework.components.alerts.SystemMessageContainer;
+import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.OldActionsContainer;
-import com.oss.framework.prompts.ConfirmationBox;
-import com.oss.framework.prompts.ConfirmationBoxInterface;
+import com.oss.framework.components.prompts.ConfirmationBox;
+import com.oss.framework.components.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.Widget;
 import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
 import com.oss.framework.widgets.propertypanel.PropertyPanelInterface;
-import com.oss.framework.widgets.treewidget.TreeWidget;
+import com.oss.framework.widgets.tree.TreeWidget;
+import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
+import com.oss.pages.transport.ipam.helper.IPAddressAssignmentWizardProperties;
 
 import io.qameta.allure.Step;
 
-import static com.oss.framework.alerts.SystemMessageContainer.MessageType.SUCCESS;
+import static com.oss.framework.components.alerts.SystemMessageContainer.MessageType.SUCCESS;
 import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
-import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.*;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.ASSIGN_IPV4_ADDRESS_ACTION_FROM_SUBNET_CONTEXT;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.ASSIGN_IPV4_SUBNET_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.ASSIGN_IPV6_ADDRESS_ACTION_FROM_SUBNET_CONTEXT;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.ASSIGN_IPV6_ADDRESS_ACTION_FROM_SUBNET_CONTEXT_ALFA;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.ASSIGN_IPV6_SUBNET_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.ASSIGN_LOOPBACK_IPV4_ADDRESS_ACTION_FROM_SUBNET_CONTEXT;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.ASSIGN_LOOPBACK_IPV6_ADDRESS_ACTION_FROM_HOST_CONTEXT;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.ASSIGN_OPERATION_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.ASSIGN_OPERATION_FOR_IPV4_SUBNET_BLOCK_WITHOUT_ASSIGNMENT;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.ASSIGN_OPERATION_FOR_IPV4_SUBNET_BLOCK_WITH_ASSIGNMENT;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.ASSIGN_OPERATION_FOR_IPV4_SUBNET_NETWORK_WITHOUT_ASSIGNMENT;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.ASSIGN_OPERATION_FOR_IPV6_HOST_ADDRESS;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.ASSIGN_OPERATION_FOR_IPV6_SUBNET_BLOCK_WITHOUT_ASSIGNMENT;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.ASSIGN_OPERATION_FOR_IPV6_SUBNET_BLOCK_WITH_ASSIGNMENT;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.ASSIGN_OPERATION_FOR_IPV6_SUBNET_NETWORK_WITHOUT_ASSIGNMENT;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.CHANGE_IPV4_HOST_ADDRESS_MASK_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.CHANGE_IPV4_SUBNET_TYPE_TO_BLOCK_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.CHANGE_IPV6_HOST_ADDRESS_MASK_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.CHANGE_IPV6_SUBNET_TYPE_TO_BLOCK_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.CHANGE_MASK_WIZARD_DATA_ATTRIBUTE_NAME;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.CREATE_IPV4_SUBNET_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.CREATE_IPV6_SUBNET_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.CREATE_IP_NETWORK_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.CREATE_OPERATIONS_FOR_IPV4_SUBNET_NETWORK_GROUP;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.CREATE_OPERATIONS_FOR_IPV6_SUBNET_NETWORK_GROUP;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.CREATE_OPERATIONS_FOR_NETWORK_GROUP;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.CREATE_OPERATION_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.DELETE_HOST_ADDRESS_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.DELETE_HOST_ASSIGNMENT_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.DELETE_IPV4_SUBNET_ASSIGNMENT_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.DELETE_IPV4_SUBNET_TYPE_OF_BLOCK_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.DELETE_IPV4_SUBNET_TYPE_OF_NETWORK_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.DELETE_IPV6_SUBNET_ASSIGNMENT_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.DELETE_IPV6_SUBNET_TYPE_OF_BLOCK_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.DELETE_IPV6_SUBNET_TYPE_OF_NETWORK_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.DELETE_IP_NETWORK_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.EDIT_IPV4_HOST_ASSIGNMENT_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.EDIT_IPV4_SUBNET_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.EDIT_IPV6_HOST_ASSIGNMENT_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.EDIT_IPV6_SUBNET_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.EDIT_IP_NETWORK_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.EDIT_OPERATION_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.EDIT_OPERATION_FOR_IPV4_HOST_ADDRESS_GROUP;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.EDIT_OPERATION_FOR_IPV4_HOST_ASSIGNMENT_GROUP;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.EDIT_OPERATION_FOR_IPV4_SUBNET_NETWORK_GROUP;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.EDIT_OPERATION_FOR_IPV6_HOST_ADDRESS_GROUP;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.EDIT_OPERATION_FOR_IPV6_HOST_ASSIGNMENT_GROUP;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.EDIT_OPERATION_FOR_IPV6_SUBNET_NETWORK_GROUP;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.EDIT_OPERATION_FOR_NETWORK_GROUP;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.EDIT_ROLE_OF_IPV4_SUBNET_ASSIGNMENT_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.EDIT_ROLE_OF_IPV6_SUBNET_ASSIGNMENT_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.IPADDRESS_MANAGEMENT_VIEW_URL;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.IP_NETWORK_REASSIGNMENT_HOST_ADDRESS_IPV4_ASSIGNMENT_CONTEXT_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.IP_NETWORK_REASSIGNMENT_HOST_ADDRESS_IPV4_CONTEXT_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.IP_NETWORK_REASSIGNMENT_HOST_ADDRESS_IPV6_ASSIGNMENT_CONTEXT_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.IP_NETWORK_REASSIGNMENT_HOST_ADDRESS_IPV6_CONTEXT_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.IP_NETWORK_REASSIGNMENT_NETWORK_SUBNET_IPV4_CONTEXT_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.IP_NETWORK_REASSIGNMENT_NETWORK_SUBNET_IPV6_CONTEXT_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.LIVE;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.MASK_DATA_ATTRIBUTE_NAME;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.MERGE_IPV4_SUBNET_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.MERGE_IPV6_SUBNET_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.NEW_ROLE_DATA_ATTRIBUTE_NAME;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.OK_BUTTON_LABEL;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.OSS_WINDOW_CLASS;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.PERSPECTIVE;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.RESERVE_IPV4_ADDRESS_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.RESERVE_IPV6_ADDRESS_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.RESERVE_LOOPBACK_IPV4_ADDRESS_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.RESERVE_LOOPBACK_IPV6_ADDRESS_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.ROLE_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.SPLIT_IPV4_SUBNET_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.SPLIT_IPV6_SUBNET_ACTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.TABS_CONTAINER_CLASS;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.WINDOW_TOOLBAR_CLASS;
 
 public class IPAddressManagementViewPage extends BasePage {
 
-    private TreeWidget mainTree;
+    private static final String WIZARD_ID = "Popup";
+    private static final String TREE_ID = "uaaSubnetIPTreeAppID";
+    private static final String PROPERTY_PANEL_ID = "propAppID";
+
     private OldActionsContainer actionsContainer;
     private PropertyPanelInterface propertyPanel;
-
-    public static IPAddressManagementViewPage goToIPAddressManagementViewPageLive(WebDriver driver, String basicURL) {
-        driver.get(String.format(IPADDRESS_MANAGEMENT_VIEW_URL + PERSPECTIVE, basicURL, LIVE));
-        return new IPAddressManagementViewPage(driver);
-    }
 
     public IPAddressManagementViewPage(WebDriver driver) {
         super(driver);
         waitForPageToLoad();
     }
 
-    private TreeWidget getTreeView() {
-        if (mainTree == null) {
-            Widget.waitForWidget(wait, TREE_VIEW_CLASS);
-            mainTree = TreeWidget.createByClass(driver, TREE_VIEW_CLASS, wait);
-            DelayUtils.waitForVisibility(wait, driver.findElement(By.className(TREE_VIEW_COMPONENT_CLASS)));
-        }
-        DelayUtils.waitForVisibility(wait, driver.findElement(By.className(TREE_VIEW_COMPONENT_CLASS)));
-        return mainTree;
+    public static IPAddressManagementViewPage goToIPAddressManagementViewPageLive(WebDriver driver, String basicURL) {
+        driver.get(String.format(IPADDRESS_MANAGEMENT_VIEW_URL + PERSPECTIVE, basicURL, LIVE));
+        return new IPAddressManagementViewPage(driver);
     }
 
-    private OldActionsContainer getActionsInterface() {
-        if (actionsContainer == null) {
-            DelayUtils.waitForVisibility(wait, driver.findElement(By.className(OSS_WINDOW_CLASS)));
-            actionsContainer = OldActionsContainer.createFromParent(driver, wait, driver.findElement(By.className(OSS_WINDOW_CLASS)));
-            DelayUtils.waitForVisibility(wait, driver.findElement(By.className(WINDOW_TOOLBAR_CLASS)));
-        }
-        DelayUtils.waitForVisibility(wait, driver.findElement(By.className(WINDOW_TOOLBAR_CLASS)));
-        return actionsContainer;
+    @Step("Open ip Address Management")
+    public static IPAddressManagementViewPage goToIPAddressManagementPage(WebDriver driver, String basicURL) {
+        driver.get(String.format(IPADDRESS_MANAGEMENT_VIEW_URL, basicURL));
+        DelayUtils.sleep(1000);
+        return new IPAddressManagementViewPage(driver);
+    }
+
+    @Step("Refresh IP Address Management Page")
+    public static IPAddressManagementViewPage refreshIPAddressManagementViewPage(WebDriver driver) {
+        driver.navigate().refresh();
+        return new IPAddressManagementViewPage(driver);
     }
 
     public PropertyPanelInterface getPropertyPanel() {
         if (propertyPanel == null) {
             DelayUtils.waitForVisibility(wait, driver.findElement(By.className(OSS_WINDOW_CLASS)));
-            propertyPanel = OldPropertyPanel.create(driver, wait);
+            propertyPanel = OldPropertyPanel.createById(driver, wait, PROPERTY_PANEL_ID);
             DelayUtils.waitForVisibility(wait, driver.findElement(By.className(TABS_CONTAINER_CLASS)));
         }
         DelayUtils.waitForVisibility(wait, driver.findElement(By.className(TABS_CONTAINER_CLASS)));
@@ -77,17 +146,9 @@ public class IPAddressManagementViewPage extends BasePage {
         return getPropertyPanel().getPropertyValue(propertyName);
     }
 
-    @Step("Open ip Address Management")
-    public static IPAddressManagementViewPage goToIPAddressManagementPage(WebDriver driver, String basicURL) {
-        driver.get(String.format(IPADDRESS_MANAGEMENT_VIEW_URL, basicURL));
-        DelayUtils.sleep(1000);
-        return new IPAddressManagementViewPage(driver);
-    }
-
     @Step("Search IP Network")
     public IPAddressManagementViewPage searchIpNetwork(String value) {
-        getTreeView()
-                .performSearchWithEnter(value);
+        getTreeView().search(value);
         waitForPageToLoad();
         return this;
     }
@@ -116,6 +177,18 @@ public class IPAddressManagementViewPage extends BasePage {
     public void selectTreeRowContains(String name) {
         waitForPageToLoad();
         getTreeView().selectTreeRowContains(name);
+    }
+
+    @Step("Unselect object with name: {name} on hierarchy view")
+    public void unselectTreeRow(String name) {
+        waitForPageToLoad();
+        getTreeView().selectTreeRowContains(name);
+    }
+
+    @Step("Check if tree row is expanded")
+    public boolean isTreeRowExpanded(String name) {
+        waitForPageToLoad();
+        return getTreeView().isTreeRowExpanded(name);
     }
 
     @Step("Expand object with name: {name} on hierarchy view")
@@ -217,11 +290,6 @@ public class IPAddressManagementViewPage extends BasePage {
         editIPSubnet(role, description);
     }
 
-    private void editIPSubnet(String role, String description){
-        EditIPSubnetWizardPage editIPSubnetWizardPage = new EditIPSubnetWizardPage(driver);
-        editIPSubnetWizardPage.editIPSubnet(role, description);
-    }
-
     @Step("Split IPv4 Subnet: {rowName}")
     public IPSubnetWizardPage splitIPv4Subnet(String rowName) {
         selectTreeRowContains(rowName);
@@ -237,14 +305,14 @@ public class IPAddressManagementViewPage extends BasePage {
     }
 
     @Step("Merge IPv4 Subnets")
-    public IPSubnetWizardPage mergeIPv4Subnet(String ... rowName) {
+    public IPSubnetWizardPage mergeIPv4Subnet(String... rowName) {
         Arrays.stream(rowName).forEach(this::selectTreeRowContains);
         useContextAction(MERGE_IPV4_SUBNET_ACTION);
         return new IPSubnetWizardPage(driver);
     }
 
     @Step("Merge IPv6 Subnets")
-    public IPSubnetWizardPage mergeIPv6Subnet(String ... rowName) {
+    public IPSubnetWizardPage mergeIPv6Subnet(String... rowName) {
         Arrays.stream(rowName).forEach(this::selectTreeRowContains);
         useContextAction(MERGE_IPV6_SUBNET_ACTION);
         return new IPSubnetWizardPage(driver);
@@ -254,7 +322,7 @@ public class IPAddressManagementViewPage extends BasePage {
     public void assignIPv4Subnet(String rowName, String assignmentType, String assignmentName, String role) {
         selectTreeRowContains(rowName);
         waitForPageToLoad();
-        useContextAction(ASSIGN_OPERATION_FOR_IPV4_SUBNET_WITHOUT_ASSIGNMENT, ASSIGN_OPERATION_ACTION, ASSIGN_IPV4_SUBNET_ACTION);
+        useContextAction(ASSIGN_OPERATION_FOR_IPV4_SUBNET_BLOCK_WITHOUT_ASSIGNMENT, ASSIGN_OPERATION_ACTION, ASSIGN_IPV4_SUBNET_ACTION);
         assignIPSubnet(assignmentType, assignmentName, role);
     }
 
@@ -262,33 +330,52 @@ public class IPAddressManagementViewPage extends BasePage {
     public void assignIPv6Subnet(String rowName, String assignmentType, String assignmentName, String role) {
         selectTreeRowContains(rowName);
         waitForPageToLoad();
-        useContextAction(ASSIGN_OPERATION_FOR_IPV6_SUBNET_WITHOUT_ASSIGNMENT, ASSIGN_OPERATION_ACTION, ASSIGN_IPV6_SUBNET_ACTION);
+        useContextAction(ASSIGN_OPERATION_FOR_IPV6_SUBNET_BLOCK_WITHOUT_ASSIGNMENT, ASSIGN_OPERATION_ACTION, ASSIGN_IPV6_SUBNET_ACTION);
         assignIPSubnet(assignmentType, assignmentName, role);
-    }
-
-    private void assignIPSubnet(String assignmentType, String assignmentName, String role){
-        AssignIPSubnetWizardPage assignIPSubnetWizardPage = new AssignIPSubnetWizardPage(driver);
-        assignIPSubnetWizardPage.assignIPSubnet(assignmentType, assignmentName, role);
     }
 
     @Step("Edit role for IPv4 Subnet assignment {rowName} to: {newRoleName}")
     public void editRoleForIPv4SubnetAssignment(String rowName, String newRoleName) {
         selectTreeRowContains(rowName);
-        useContextAction(ASSIGN_OPERATION_FOR_IPV4_SUBNET_WITH_ASSIGNMENT, ASSIGN_OPERATION_ACTION, EDIT_ROLE_OF_IPV4_SUBNET_ASSIGNMENT_ACTION);
+        useContextAction(ASSIGN_OPERATION_FOR_IPV4_SUBNET_BLOCK_WITH_ASSIGNMENT, ASSIGN_OPERATION_ACTION, EDIT_ROLE_OF_IPV4_SUBNET_ASSIGNMENT_ACTION);
         editRoleForIPSubnetAssignment(newRoleName);
     }
 
     @Step("Edit role for IPv6 Subnet assignment {rowName} to: {newRoleName}")
     public void editRoleForIPv6SubnetAssignment(String rowName, String newRoleName) {
         selectTreeRowContains(rowName);
-        useContextAction(ASSIGN_OPERATION_FOR_IPV6_SUBNET_WITH_ASSIGNMENT, ASSIGN_OPERATION_ACTION, EDIT_ROLE_OF_IPV6_SUBNET_ASSIGNMENT_ACTION);
+        useContextAction(ASSIGN_OPERATION_FOR_IPV6_SUBNET_BLOCK_WITH_ASSIGNMENT, ASSIGN_OPERATION_ACTION, EDIT_ROLE_OF_IPV6_SUBNET_ASSIGNMENT_ACTION);
         editRoleForIPSubnetAssignment(newRoleName);
     }
 
-    private void editRoleForIPSubnetAssignment(String newRoleName){
-        Wizard editIPSubnetAssignmentRole = Wizard.createPopupWizard(driver, wait);
-        editIPSubnetAssignmentRole.setComponentValue(NEW_ROLE_DATA_ATTRIBUTE_NAME, newRoleName, COMBOBOX);
-        editIPSubnetAssignmentRole.clickOK();
+    public void reserveGivenIPv4HostAddress(String rowName, String ipAddress) {
+        selectTreeRowContains(rowName);
+        waitForPageToLoad();
+        useContextAction(CREATE_OPERATIONS_FOR_IPV4_SUBNET_NETWORK_GROUP, CREATE_OPERATION_ACTION, RESERVE_IPV4_ADDRESS_ACTION);
+        reserveGivenIPAddress(ipAddress);
+    }
+
+    public void reserveGivenIPv6HostAddress(String rowName, String ipAddress) {
+        selectTreeRowContains(rowName);
+        waitForPageToLoad();
+        useContextAction(CREATE_OPERATIONS_FOR_IPV6_SUBNET_NETWORK_GROUP, CREATE_OPERATION_ACTION, RESERVE_IPV6_ADDRESS_ACTION);
+        reserveGivenIPAddress(ipAddress);
+    }
+
+    public void bulkIPv4AddressReservation(String numberOfHostAddressesToReserve, Boolean reserveConsecutive, String... rowName) {
+        Arrays.stream(rowName).forEach(this::selectTreeRowContains);
+        waitForPageToLoad();
+        useContextAction(CREATE_OPERATIONS_FOR_IPV4_SUBNET_NETWORK_GROUP, CREATE_OPERATION_ACTION, RESERVE_IPV4_ADDRESS_ACTION);
+        ReserveIPAddressWizardPage reserveIPAddressWizardPage = new ReserveIPAddressWizardPage(driver);
+        reserveIPAddressWizardPage.bulkIPAddressReservation(numberOfHostAddressesToReserve, reserveConsecutive);
+    }
+
+    public void bulkIPv6AddressReservation(String numberOfHostAddressesToReserve, Boolean reserveConsecutive, String... rowName) {
+        Arrays.stream(rowName).forEach(this::selectTreeRowContains);
+        waitForPageToLoad();
+        useContextAction(CREATE_OPERATIONS_FOR_IPV6_SUBNET_NETWORK_GROUP, CREATE_OPERATION_ACTION, RESERVE_IPV6_ADDRESS_ACTION);
+        ReserveIPAddressWizardPage reserveIPAddressWizardPage = new ReserveIPAddressWizardPage(driver);
+        reserveIPAddressWizardPage.bulkIPAddressReservation(numberOfHostAddressesToReserve, reserveConsecutive);
     }
 
     @Step("Reserve IPv4 Host Address {rowName}")
@@ -296,7 +383,7 @@ public class IPAddressManagementViewPage extends BasePage {
         selectTreeRowContains(rowName);
         waitForPageToLoad();
         useContextAction(CREATE_OPERATIONS_FOR_IPV4_SUBNET_NETWORK_GROUP, CREATE_OPERATION_ACTION, RESERVE_IPV4_ADDRESS_ACTION);
-        reserveIPHost(description);
+        reserveIPHostAndAccept(description);
     }
 
     @Step("Reserve IPv6 Host Address {rowName}")
@@ -304,7 +391,7 @@ public class IPAddressManagementViewPage extends BasePage {
         selectTreeRowContains(rowName);
         waitForPageToLoad();
         useContextAction(CREATE_OPERATIONS_FOR_IPV6_SUBNET_NETWORK_GROUP, CREATE_OPERATION_ACTION, RESERVE_IPV6_ADDRESS_ACTION);
-        reserveIPHost(description);
+        reserveIPHostAndAccept(description);
     }
 
     @Step("Reserve Loopback IPv4 Host Address {rowName}")
@@ -323,24 +410,34 @@ public class IPAddressManagementViewPage extends BasePage {
         reserveIPHost(description);
     }
 
-    private void reserveIPHost(String description){
-        ReserveIPAddressWizardPage reserveIPAddressWizardPage = new ReserveIPAddressWizardPage(driver);
-        reserveIPAddressWizardPage.reserveIPAddress(description);
-    }
-
     @Step("Assign IPv4 Host Address from subnet {rowName} context")
     public IPAddressAssignmentWizardPage assignIPv4HostAddressFromSubnetContext(String rowName) {
-        return assignIPHost(rowName, ASSIGN_OPERATION_FOR_IPV4_SUBNET_WITHOUT_ASSIGNMENT, ASSIGN_IPV4_ADDRESS_ACTION_FROM_SUBNET_CONTEXT);
+        return assignIPHost(rowName, ASSIGN_OPERATION_FOR_IPV4_SUBNET_NETWORK_WITHOUT_ASSIGNMENT, ASSIGN_IPV4_ADDRESS_ACTION_FROM_SUBNET_CONTEXT);
+    }
+
+    @Step("Assign IPv4 Host Address from subnet {rowName} context when assign button is visible")
+    public IPAddressAssignmentWizardPage assignIPv4HostAddressFromSubnetContextWithVisibleButton(String rowName) {
+        return assignIPHostWithVisibleButton(rowName, ASSIGN_OPERATION_FOR_IPV4_SUBNET_NETWORK_WITHOUT_ASSIGNMENT, ASSIGN_IPV4_ADDRESS_ACTION_FROM_SUBNET_CONTEXT);
+    }
+
+    @Step("Assign IPv6 Host Address from subnet {rowName} context when assign button is visible")
+    public IPAddressAssignmentWizardPage assignIPv6HostAddressFromSubnetContextWithVisibleButton(String rowName) {
+        return assignIPHostWithVisibleButton(rowName, ASSIGN_OPERATION_FOR_IPV6_SUBNET_NETWORK_WITHOUT_ASSIGNMENT, ASSIGN_IPV6_ADDRESS_ACTION_FROM_SUBNET_CONTEXT_ALFA);
     }
 
     @Step("Assign IPv6 Host Address from subnet {rowName} context")
     public IPAddressAssignmentWizardPage assignIPv6HostAddressFromSubnetContext(String rowName) {
-        return assignIPHost(rowName, ASSIGN_OPERATION_FOR_IPV6_SUBNET_WITHOUT_ASSIGNMENT, ASSIGN_IPV6_ADDRESS_ACTION_FROM_SUBNET_CONTEXT);
+        return assignIPHost(rowName, ASSIGN_OPERATION_FOR_IPV6_SUBNET_NETWORK_WITHOUT_ASSIGNMENT, ASSIGN_IPV6_ADDRESS_ACTION_FROM_SUBNET_CONTEXT);
+    }
+
+    @Step("Assign IPv6 Host Address from subnet {rowName} context")
+    public IPAddressAssignmentWizardPage assignIPv6HostAddressFromSubnetContextAlfa(String rowName) {
+        return assignIPHost(rowName, ASSIGN_OPERATION_FOR_IPV6_SUBNET_NETWORK_WITHOUT_ASSIGNMENT, ASSIGN_IPV6_ADDRESS_ACTION_FROM_SUBNET_CONTEXT_ALFA);
     }
 
     @Step("Assign Loopback IPv4 Host Address from subnet {rowName} context")
     public IPAddressAssignmentWizardPage assignLoopbackIPv4HostAddressFromSubnetContext(String rowName) {
-        return assignIPHost(rowName, ASSIGN_OPERATION_FOR_IPV4_SUBNET_WITHOUT_ASSIGNMENT, ASSIGN_LOOPBACK_IPV4_ADDRESS_ACTION_FROM_SUBNET_CONTEXT);
+        return assignIPHost(rowName, ASSIGN_OPERATION_FOR_IPV4_SUBNET_NETWORK_WITHOUT_ASSIGNMENT, ASSIGN_LOOPBACK_IPV4_ADDRESS_ACTION_FROM_SUBNET_CONTEXT);
     }
 
     @Step("Assign Loopback IPv6 Host Address from host {rowName} context")
@@ -348,11 +445,64 @@ public class IPAddressManagementViewPage extends BasePage {
         return assignIPHost(rowName, ASSIGN_OPERATION_FOR_IPV6_HOST_ADDRESS, ASSIGN_LOOPBACK_IPV6_ADDRESS_ACTION_FROM_HOST_CONTEXT);
     }
 
-    private IPAddressAssignmentWizardPage assignIPHost(String rowName, String contextActionGroup, String contextAction){
-        selectTreeRowContains(rowName);
+    @Step("Change IP Network to {destinationNetwork} for IPv4 Host Address Assignment")
+    public void changeIPNetworkForIPv4AddressAssignment(String destinationNetwork, String... rowNames) {
+        Arrays.stream(rowNames).forEach(this::selectTreeRowContains);
         waitForPageToLoad();
-        useContextAction(contextActionGroup, ASSIGN_OPERATION_ACTION, contextAction);
-        return new IPAddressAssignmentWizardPage(driver);
+        useContextAction(EDIT_OPERATION_FOR_IPV4_HOST_ASSIGNMENT_GROUP, IP_NETWORK_REASSIGNMENT_HOST_ADDRESS_IPV4_ASSIGNMENT_CONTEXT_ACTION);
+        waitForPageToLoad();
+        ChangeIPNetworkWizardPage changeIPNetworkWizardPage = new ChangeIPNetworkWizardPage(driver);
+        changeIPNetworkWizardPage.changeIPNetworkWithOutConflicts(destinationNetwork);
+    }
+
+    @Step("Change IP Network to {destinationNetwork} for IPv6 Host Address Assignment")
+    public void changeIPNetworkForIPv6AddressAssignment(String destinationNetwork, String... rowNames) {
+        Arrays.stream(rowNames).forEach(this::selectTreeRowContains);
+        waitForPageToLoad();
+        useContextAction(EDIT_OPERATION_FOR_IPV6_HOST_ASSIGNMENT_GROUP, IP_NETWORK_REASSIGNMENT_HOST_ADDRESS_IPV6_ASSIGNMENT_CONTEXT_ACTION);
+        waitForPageToLoad();
+        ChangeIPNetworkWizardPage changeIPNetworkWizardPage = new ChangeIPNetworkWizardPage(driver);
+        changeIPNetworkWizardPage.changeIPNetworkWithOutConflicts(destinationNetwork);
+    }
+
+    @Step("Change IP Network to {destinationNetwork} for IPv4 Host Address")
+    public void changeIPNetworkForIPv4HostAddress(String destinationNetwork, String... rowNames) {
+        Arrays.stream(rowNames).forEach(this::selectTreeRowContains);
+        waitForPageToLoad();
+        useContextAction(EDIT_OPERATION_FOR_IPV4_HOST_ADDRESS_GROUP, IP_NETWORK_REASSIGNMENT_HOST_ADDRESS_IPV4_CONTEXT_ACTION);
+        waitForPageToLoad();
+        ChangeIPNetworkWizardPage changeIPNetworkWizardPage = new ChangeIPNetworkWizardPage(driver);
+        changeIPNetworkWizardPage.changeIPNetworkWithOutConflicts(destinationNetwork);
+    }
+
+    @Step("Change IP Network to {destinationNetwork} for IPv6 Host Address")
+    public void changeIPNetworkForIPv6HostAddress(String destinationNetwork, String... rowNames) {
+        Arrays.stream(rowNames).forEach(this::selectTreeRowContains);
+        waitForPageToLoad();
+        useContextAction(EDIT_OPERATION_FOR_IPV6_HOST_ADDRESS_GROUP, IP_NETWORK_REASSIGNMENT_HOST_ADDRESS_IPV6_CONTEXT_ACTION);
+        waitForPageToLoad();
+        ChangeIPNetworkWizardPage changeIPNetworkWizardPage = new ChangeIPNetworkWizardPage(driver);
+        changeIPNetworkWizardPage.changeIPNetworkWithOutConflicts(destinationNetwork);
+    }
+
+    @Step("Change IP Network to {destinationNetwork} for IPv4 Network Subnet")
+    public void changeIPNetworkForIPv4NetworkSubnet(String destinationNetwork, String... subnetsRowNames) {
+        Arrays.stream(subnetsRowNames).forEach(this::selectTreeRowContains);
+        waitForPageToLoad();
+        useContextAction(EDIT_OPERATION_FOR_IPV4_SUBNET_NETWORK_GROUP, EDIT_OPERATION_ACTION, IP_NETWORK_REASSIGNMENT_NETWORK_SUBNET_IPV4_CONTEXT_ACTION);
+        waitForPageToLoad();
+        ChangeIPNetworkWizardPage changeIPNetworkWizardPage = new ChangeIPNetworkWizardPage(driver);
+        changeIPNetworkWizardPage.changeIPNetworkWithOutConflicts(destinationNetwork);
+    }
+
+    @Step("Change IP Network to {destinationNetwork} for IPv4 Network Subnet")
+    public void changeIPNetworkForIPv6NetworkSubnet(String destinationNetwork, String... subnetsRowNames) {
+        Arrays.stream(subnetsRowNames).forEach(this::selectTreeRowContains);
+        waitForPageToLoad();
+        useContextAction(EDIT_OPERATION_FOR_IPV6_SUBNET_NETWORK_GROUP, EDIT_OPERATION_ACTION, IP_NETWORK_REASSIGNMENT_NETWORK_SUBNET_IPV6_CONTEXT_ACTION);
+        waitForPageToLoad();
+        ChangeIPNetworkWizardPage changeIPNetworkWizardPage = new ChangeIPNetworkWizardPage(driver);
+        changeIPNetworkWizardPage.changeIPNetworkWithOutConflicts(destinationNetwork);
     }
 
     @Step("Change IPv4 Host {rowName} Mask")
@@ -369,12 +519,6 @@ public class IPAddressManagementViewPage extends BasePage {
         waitForPageToLoad();
         useContextAction(EDIT_OPERATION_FOR_IPV6_HOST_ADDRESS_GROUP, EDIT_OPERATION_ACTION, CHANGE_IPV6_HOST_ADDRESS_MASK_ACTION);
         changeIPHostMask(mask);
-    }
-
-    private void changeIPHostMask(String mask){
-        Wizard changeIPHostAddressMaskWizard = Wizard.createPopupWizard(driver, wait);
-        changeIPHostAddressMaskWizard.setComponentValue(MASK_DATA_ATTRIBUTE_NAME, mask, COMBOBOX);
-        changeIPHostAddressMaskWizard.clickOK();
     }
 
     @Step("Edit IPv4 Host Assignment {rowName}")
@@ -447,7 +591,7 @@ public class IPAddressManagementViewPage extends BasePage {
     public void deleteIPv4SubnetAssignment(String name) {
         waitForPageToLoad();
         selectTreeRowContains(name);
-        useContextAction(ASSIGN_OPERATION_FOR_IPV4_SUBNET_WITH_ASSIGNMENT, ASSIGN_OPERATION_ACTION, DELETE_IPV4_SUBNET_ASSIGNMENT_ACTION);
+        useContextAction(ASSIGN_OPERATION_FOR_IPV4_SUBNET_BLOCK_WITH_ASSIGNMENT, ASSIGN_OPERATION_ACTION, DELETE_IPV4_SUBNET_ASSIGNMENT_ACTION);
         acceptConfirmationBox();
     }
 
@@ -455,7 +599,7 @@ public class IPAddressManagementViewPage extends BasePage {
     public void deleteIPv6SubnetAssignment(String name) {
         waitForPageToLoad();
         selectTreeRowContains(name);
-        useContextAction(ASSIGN_OPERATION_FOR_IPV6_SUBNET_WITH_ASSIGNMENT, ASSIGN_OPERATION_ACTION, DELETE_IPV6_SUBNET_ASSIGNMENT_ACTION);
+        useContextAction(ASSIGN_OPERATION_FOR_IPV6_SUBNET_BLOCK_WITH_ASSIGNMENT, ASSIGN_OPERATION_ACTION, DELETE_IPV6_SUBNET_ASSIGNMENT_ACTION);
         acceptConfirmationBox();
     }
 
@@ -467,13 +611,79 @@ public class IPAddressManagementViewPage extends BasePage {
         acceptConfirmationBox();
     }
 
+    public void waitForPageToLoad() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    private TreeWidget getTreeView() {
+        return TreeWidget.createById(driver, wait, TREE_ID);
+    }
+
+    private OldActionsContainer getActionsInterface() {
+        if (actionsContainer == null) {
+            DelayUtils.waitForVisibility(wait, driver.findElement(By.className(OSS_WINDOW_CLASS)));
+            actionsContainer = OldActionsContainer.createFromParent(driver, wait, driver.findElement(By.className(OSS_WINDOW_CLASS)));
+            DelayUtils.waitForVisibility(wait, driver.findElement(By.className(WINDOW_TOOLBAR_CLASS)));
+        }
+        DelayUtils.waitForVisibility(wait, driver.findElement(By.className(WINDOW_TOOLBAR_CLASS)));
+        return actionsContainer;
+    }
+
+    private void editIPSubnet(String role, String description) {
+        EditIPSubnetWizardPage editIPSubnetWizardPage = new EditIPSubnetWizardPage(driver);
+        editIPSubnetWizardPage.editIPSubnet(role, description);
+    }
+
+    private void assignIPSubnet(String assignmentType, String assignmentName, String role) {
+        waitForPageToLoad();
+        AssignIPSubnetWizardPage assignIPSubnetWizardPage = new AssignIPSubnetWizardPage(driver);
+        assignIPSubnetWizardPage.assignIPSubnet(assignmentType, assignmentName, role);
+    }
+
+    private void editRoleForIPSubnetAssignment(String newRoleName) {
+        Wizard editIPSubnetAssignmentRole = Wizard.createByComponentId(driver, wait, WIZARD_ID);
+        editIPSubnetAssignmentRole.setComponentValue(NEW_ROLE_DATA_ATTRIBUTE_NAME, newRoleName, COMBOBOX);
+        editIPSubnetAssignmentRole.clickOK();
+    }
+
+    private void reserveIPHostAndAccept(String description) {
+        ReserveIPAddressWizardPage reserveIPAddressWizardPage = new ReserveIPAddressWizardPage(driver);
+        reserveIPAddressWizardPage.reserveIPAddressAndAccept(description);
+    }
+
+    private void reserveIPHost(String description) {
+        ReserveIPAddressWizardPage reserveIPAddressWizardPage = new ReserveIPAddressWizardPage(driver);
+        reserveIPAddressWizardPage.reserveIPAddressAndClickOk(description);
+    }
+
+    private void reserveGivenIPAddress(String ipAddress) {
+        ReserveIPAddressWizardPage reserveIPAddressWizardPage = new ReserveIPAddressWizardPage(driver);
+        reserveIPAddressWizardPage.reserveGivenIPAddress(ipAddress);
+    }
+
+    private IPAddressAssignmentWizardPage assignIPHost(String rowName, String contextActionGroup, String contextAction) {
+        selectTreeRowContains(rowName);
+        waitForPageToLoad();
+        useContextAction(contextActionGroup, ASSIGN_OPERATION_ACTION, contextAction);
+        return new IPAddressAssignmentWizardPage(driver);
+    }
+
+    private IPAddressAssignmentWizardPage assignIPHostWithVisibleButton(String rowName, String contextActionGroup, String contextAction) {
+        selectTreeRowContains(rowName);
+        waitForPageToLoad();
+        useContextAction(contextActionGroup, contextAction);
+        return new IPAddressAssignmentWizardPage(driver);
+    }
+
+    private void changeIPHostMask(String mask) {
+        Wizard changeIPHostAddressMaskWizard = Wizard.createByComponentId(driver, wait, CHANGE_MASK_WIZARD_DATA_ATTRIBUTE_NAME);
+        changeIPHostAddressMaskWizard.setComponentValue(MASK_DATA_ATTRIBUTE_NAME, mask, COMBOBOX);
+        changeIPHostAddressMaskWizard.clickOK();
+    }
+
     private void acceptConfirmationBox() {
         waitForPageToLoad();
         ConfirmationBoxInterface confirmationBox = ConfirmationBox.create(driver, wait);
         confirmationBox.clickButtonByLabel(OK_BUTTON_LABEL);
-    }
-
-    private void waitForPageToLoad() {
-        DelayUtils.waitForPageToLoad(driver, wait);
     }
 }

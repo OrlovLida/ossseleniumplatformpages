@@ -1,11 +1,16 @@
 package com.oss.pages.radio;
 
-import com.oss.framework.widgets.Wizard;
-import com.oss.pages.BasePage;
-import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.*;
+import com.oss.framework.wizard.Wizard;
+import com.oss.pages.BasePage;
+
+import io.qameta.allure.Step;
+
+import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
+import static com.oss.framework.components.inputs.Input.ComponentType.OBJECT_SEARCH_FIELD;
+import static com.oss.framework.components.inputs.Input.ComponentType.SEARCH_FIELD;
+import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 
 public class RanAntennaWizardPage extends BasePage {
 
@@ -59,7 +64,7 @@ public class RanAntennaWizardPage extends BasePage {
 
     @Step("Set precise location")
     public void setPreciseLocation(String location) {
-        getRanAntennaWizard().setComponentValue(RAN_ANTENNA_PRECISE_LOCATION_DATA_ATTRIBUTE_NAME, location, COMBOBOX);
+        getRanAntennaWizard().setComponentValue(RAN_ANTENNA_PRECISE_LOCATION_DATA_ATTRIBUTE_NAME, location, OBJECT_SEARCH_FIELD);
     }
 
     @Step("Set mechanical tilt")
@@ -94,7 +99,7 @@ public class RanAntennaWizardPage extends BasePage {
 
     @Step("Click Cancel button")
     public void clickCancel() {
-        getRanAntennaWizard().cancel();
+        getRanAntennaWizard().clickCancel();
     }
 
     private Wizard getRanAntennaWizard() {

@@ -1,63 +1,71 @@
 package com.oss.pages.physical;
 
-import com.oss.framework.components.inputs.Input;
-import com.oss.framework.prompts.ConfirmationBox;
-import com.oss.framework.prompts.ConfirmationBoxInterface;
-import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.Wizard;
-import com.oss.framework.widgets.tablewidget.OldTable;
-import com.oss.framework.widgets.tablewidget.TableInterface;
-import com.oss.pages.BasePage;
-import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
+
+import com.oss.framework.components.inputs.Input;
+import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.wizard.Wizard;
+import com.oss.framework.widgets.table.OldTable;
+import com.oss.framework.widgets.table.TableInterface;
+import com.oss.pages.BasePage;
+
+import io.qameta.allure.Step;
 
 public class PatchcordWizardPage extends BasePage {
 
-    private static final String DEVICE_FIELD_DATA_ATTRIBUTENAME = "device";
-    private static final String CARD_FIELD_DATA_ATTRIBUTENAME = "card";
-    private static final String PORT_FIELD_DATA_ATTRIBUTENAME = "port";
+    private static final String DEVICE_ID = "device";
+    private static final String CARD_ID = "card";
+    private static final String UPDATE_PATCHCORDS_ID = "patchcordTerminationSubmitButtons-1";
+    private static final String SUBMITS_BUTTONS_WIZARD_ID = "patchcordTerminationSubmitButtons";
+    private static final String START_TERMINATION_WIZARD_ID = "patchcord-termination-table-start-termination";
+    private static final String END_TERMINATION_WIZARD_ID = "patchcord-termination-table-end-termination";
+    private static final String PATCHCORD_TABLE_ID = "patchcordTerminationTreeTablePatchcordId";
+    private static final String START_CONNECTORS_TABLE_ID = "patchcord-connectors-table-start";
+    private static final String END_CONNECTORS_TABLE_ID = "patchcord-connectors-table-end";
+    private static final String WIZARD_ID = "Popup";
 
-    public PatchcordWizardPage(WebDriver driver) { super(driver); }
+    public PatchcordWizardPage(WebDriver driver) {
+        super(driver);
+    }
 
     @Step("Click Update patchcords")
     public void clickUpdatePatchcords() {
-        getCommonButtonsWidget().clickButtonByLabel("Update patchcords");
+        getSubmitsButtonsWizard().clickButtonById(UPDATE_PATCHCORDS_ID);
     }
 
     @Step("Click Finish")
-    public void clickFinish() { getWizard().clickButtonByLabel("Finish"); }
-
-    @Step("Click Close")
-    public void clickClose() { getCommonButtonsWidget().clickButtonByLabel("Close"); }
+    public void clickFinish() {
+        getWizard().clickButtonByLabel("Finish");
+    }
 
     @Step("Select Device for Termination A")
     public void setDeviceTerminationA(String deviceName) {
-        getTerminationAWidget().setComponentValue(DEVICE_FIELD_DATA_ATTRIBUTENAME, deviceName, Input.ComponentType.SEARCH_FIELD);
+        getStartTerminationWizard().setComponentValue(DEVICE_ID, deviceName, Input.ComponentType.SEARCH_FIELD);
     }
 
     @Step("Select Device for Termination B")
     public void setDeviceTerminationB(String deviceName) {
-        getTerminationBWidget().setComponentValue(DEVICE_FIELD_DATA_ATTRIBUTENAME, deviceName, Input.ComponentType.SEARCH_FIELD);
+        getEndTerminationWizard().setComponentValue(DEVICE_ID, deviceName, Input.ComponentType.SEARCH_FIELD);
     }
 
     @Step("Select Card for Termination A")
     public void setCardTerminationA(String cardName) {
-        getTerminationAWidget().setComponentValue(CARD_FIELD_DATA_ATTRIBUTENAME, cardName, Input.ComponentType.SEARCH_FIELD);
+        getStartTerminationWizard().setComponentValue(CARD_ID, cardName, Input.ComponentType.SEARCH_FIELD);
     }
 
     @Step("Select Card for Termination B")
     public void setCardTerminationB(String cardName) {
-        getTerminationBWidget().setComponentValue(CARD_FIELD_DATA_ATTRIBUTENAME, cardName, Input.ComponentType.SEARCH_FIELD);
+        getEndTerminationWizard().setComponentValue(CARD_ID, cardName, Input.ComponentType.SEARCH_FIELD);
     }
 
     @Step("Select Port for Termination A")
     public void setPortTerminationA(String portName) {
-        getTerminationAWidget().setComponentValue(CARD_FIELD_DATA_ATTRIBUTENAME, portName, Input.ComponentType.SEARCH_FIELD);
+        getStartTerminationWizard().setComponentValue(CARD_ID, portName, Input.ComponentType.SEARCH_FIELD);
     }
 
     @Step("Select Port for Termination B")
     public void setPortTerminationB(String portName) {
-        getTerminationBWidget().setComponentValue(CARD_FIELD_DATA_ATTRIBUTENAME, portName, Input.ComponentType.SEARCH_FIELD);
+        getEndTerminationWizard().setComponentValue(CARD_ID, portName, Input.ComponentType.SEARCH_FIELD);
     }
 
     @Step("Click Create single-medium patchcord")
@@ -71,10 +79,14 @@ public class PatchcordWizardPage extends BasePage {
     }
 
     @Step("Selects first Patchcord from Patchcord table")
-    public void selectFirstPatchcord() { getPatchcordTable().selectFirstRow(); }
+    public void selectFirstPatchcord() {
+        getPatchcordTable().selectFirstRow();
+    }
 
     @Step("Click Remove patchcord")
-    public void clickRemovePatchcord() { getPatchcordTable().callActionByLabel("Remove patchcord"); }
+    public void clickRemovePatchcord() {
+        getPatchcordTable().callActionByLabel("Remove patchcord");
+    }
 
     @Step("Filter and select {objectName} row")
     public PatchcordWizardPage filterPatchcordConnectorsStart(String columnName, String portName) {
@@ -92,32 +104,31 @@ public class PatchcordWizardPage extends BasePage {
 
     public OldTable getPatchcordConnectorsTableStart() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        return OldTable.createByComponentDataAttributeName(driver, wait, "patchcord-connectors-table-start");
+        return OldTable.createById(driver, wait, START_CONNECTORS_TABLE_ID);
     }
 
     public OldTable getPatchcordConnectorsTableEnd() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        return OldTable.createByComponentDataAttributeName(driver, wait, "patchcord-connectors-table-end");
+        return OldTable.createById(driver, wait, END_CONNECTORS_TABLE_ID);
     }
 
-    //TODO: temporary method createWizardByClassArrayIndex due to OSSWEB-9896
-    public Wizard getCommonButtonsWidget() {
-        return Wizard.createWizardByClassArrayIndex(driver, wait, "4");
+    private Wizard getSubmitsButtonsWizard() {
+        return Wizard.createByComponentId(driver, wait, SUBMITS_BUTTONS_WIZARD_ID);
     }
 
-    //TODO: temporary method createWizardByHeader due to OSSWEB-9896
-    public Wizard getTerminationAWidget() {
-        return Wizard.createWizardByHeaderText(driver, wait, "Termination A");
+    private Wizard getStartTerminationWizard() {
+        return Wizard.createByComponentId(driver, wait, START_TERMINATION_WIZARD_ID);
     }
 
-    //TODO: temporary method createWizardByHeader due to OSSWEB-9896
-    public Wizard getTerminationBWidget() {
-        return Wizard.createWizardByHeaderText(driver, wait, "Termination B");
+    private Wizard getEndTerminationWizard() {
+        return Wizard.createByComponentId(driver, wait, END_TERMINATION_WIZARD_ID);
     }
 
-    public TableInterface getPatchcordTable() {
-        return OldTable.createByComponentDataAttributeName(driver, wait, "patchcordterminationconnectorstable_table");
+    private TableInterface getPatchcordTable() {
+        return OldTable.createById(driver, wait, PATCHCORD_TABLE_ID);
     }
 
-    public Wizard getWizard() { return Wizard.createPopupWizard(driver, wait); }
+    private Wizard getWizard() {
+        return Wizard.createByComponentId(driver, wait, WIZARD_ID);
+    }
 }

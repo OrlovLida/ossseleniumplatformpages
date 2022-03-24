@@ -1,9 +1,9 @@
 package com.oss.ThreeUKProject;
 
 import com.oss.BaseTestCase;
-import com.oss.framework.alerts.SystemMessageContainer;
-import com.oss.framework.alerts.SystemMessageInterface;
-import com.oss.framework.listwidget.CommonList;
+import com.oss.framework.components.alerts.SystemMessageContainer;
+import com.oss.framework.components.alerts.SystemMessageInterface;
+import com.oss.framework.widgets.list.CommonList;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.platform.GlobalSearchPage;
@@ -284,7 +284,7 @@ public class RadioDevicesTests extends BaseTestCase {
         homePage.searchInGlobalSearch(rruDeviceNameForDelete);
         CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertTrue(objectsList.isNoData());
+        Assert.assertTrue(objectsList.hasNoData());
     }
 
     @Test
@@ -303,7 +303,7 @@ public class RadioDevicesTests extends BaseTestCase {
         homePage.searchInGlobalSearch(bbuDeviceNameForDelete);
         CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertTrue(objectsList.isNoData());
+        Assert.assertTrue(objectsList.hasNoData());
     }
 
     @Test
@@ -322,7 +322,7 @@ public class RadioDevicesTests extends BaseTestCase {
         homePage.searchInGlobalSearch(antennaAHP4517R7v06NameForDelete);
         CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertTrue(objectsList.isNoData());
+        Assert.assertTrue(objectsList.hasNoData());
     }
 
     @Test
@@ -341,7 +341,7 @@ public class RadioDevicesTests extends BaseTestCase {
         homePage.searchInGlobalSearch(aauAAU5614NameForDelete);
         CommonList objectsList = new GlobalSearchPage(driver).getResultsList();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertTrue(objectsList.isNoData());
+        Assert.assertTrue(objectsList.hasNoData());
     }
 
 }

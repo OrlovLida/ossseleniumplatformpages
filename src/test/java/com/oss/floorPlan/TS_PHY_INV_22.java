@@ -1,27 +1,29 @@
 package com.oss.floorPlan;
 
+import java.util.List;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
 import com.oss.BaseTestCase;
-import com.oss.framework.alerts.SystemMessageContainer;
-import com.oss.framework.alerts.SystemMessageInterface;
+import com.oss.framework.components.alerts.SystemMessageContainer;
+import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.floorPlan.FloorPlanLoginPage;
-import com.oss.pages.floorPlan.FloorPlanPage;
+import com.oss.pages.floorplan.FloorPlanLoginPage;
+import com.oss.pages.floorplan.FloorPlanPage;
 import com.oss.pages.physical.LocationOverviewPage;
 import com.oss.pages.physical.SublocationWizardPage;
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
-import io.qameta.allure.Description;
-import org.testng.Assert;
-import org.testng.annotations.Test;
 
-import java.util.List;
+import io.qameta.allure.Description;
 
 public class TS_PHY_INV_22 extends BaseTestCase {
+    FloorPlanPage floorPlanPage;
+    LocationOverviewPage locationOverviewPage;
     private String locationName = "TS_PHY_INV_22_TestLocation";
     private String sublocationName = "TS_PHY_INV_22_Room";
     private String filePath = "floorPlans/Testroom_EN.vsdx";
-    FloorPlanPage floorPlanPage;
-    LocationOverviewPage locationOverviewPage;
 
     @Test(priority = 1)
     @Description("Create sublocation")
@@ -44,7 +46,7 @@ public class TS_PHY_INV_22 extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         sublocationWizardPage.clickNext();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        sublocationWizardPage.accept();
+        sublocationWizardPage.clickAccept();
         checkPopup("Sublocation created successfully");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
@@ -71,7 +73,7 @@ public class TS_PHY_INV_22 extends BaseTestCase {
 
     @Test(priority = 4)
     @Description("Show rows layer")
-    public void showRows(){
+    public void showRows() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         floorPlanPage.selectTab("Layers");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -80,7 +82,7 @@ public class TS_PHY_INV_22 extends BaseTestCase {
 
     @Test(priority = 5)
     @Description("Export floor plan")
-    public void exportFloorPlan(){
+    public void exportFloorPlan() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         floorPlanPage.exportFloorPlan();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);

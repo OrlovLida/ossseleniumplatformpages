@@ -1,17 +1,18 @@
 package com.oss.pages.bigdata.dfe.thresholds;
 
-import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.Wizard;
-import com.oss.pages.BasePage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.wizard.Wizard;
+import com.oss.pages.BasePage;
+
 public class ThresholdStepWizardPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(ThresholdStepWizardPage.class);
-    private static final String THRESHOLD_WIZARD_ID = "thresholdWizardWindowId";
+    private static final String THRESHOLD_WIZARD_ID = "thresholdWizard";
 
     private final ThresholdsConfigurationPage thresholdsConfigurationStep;
     private final ThresholdsDimensionsFilteringPage thresholdsDimensionsFilteringStep;

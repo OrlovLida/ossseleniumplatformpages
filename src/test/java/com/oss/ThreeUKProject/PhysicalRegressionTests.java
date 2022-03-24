@@ -1,27 +1,29 @@
 package com.oss.ThreeUKProject;
 
-import com.oss.BaseTestCase;
-import com.oss.framework.alerts.SystemMessageContainer;
-import com.oss.framework.prompts.ConfirmationBox;
-import com.oss.framework.prompts.ConfirmationBoxInterface;
-import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.tabswidget.TabWindowWidget;
-import com.oss.framework.widgets.tabswidget.TabsInterface;
-import com.oss.pages.physical.LocationOverviewPage;
-import com.oss.pages.physical.LocationOverviewPage.TabName;
-import com.oss.pages.physical.LocationWizardPage;
-import com.oss.pages.platform.HomePage;
-import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
-import com.oss.repositories.*;
-import com.oss.untils.Environment;
-import com.oss.utils.RandomGenerator;
-import com.oss.utils.TestListener;
-import io.qameta.allure.Description;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+
+import com.oss.BaseTestCase;
+import com.oss.framework.components.alerts.SystemMessageContainer;
+import com.oss.framework.components.prompts.ConfirmationBox;
+import com.oss.framework.components.prompts.ConfirmationBoxInterface;
+import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.table.OldTable;
+import com.oss.pages.physical.LocationOverviewPage;
+import com.oss.pages.physical.LocationOverviewPage.TabName;
+import com.oss.pages.physical.LocationWizardPage;
+import com.oss.pages.platform.HomePage;
+import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
+import com.oss.repositories.AddressRepository;
+import com.oss.repositories.LocationInventoryRepository;
+import com.oss.untils.Environment;
+import com.oss.utils.RandomGenerator;
+import com.oss.utils.TestListener;
+
+import io.qameta.allure.Description;
 
 /**
  * @author Milena Miętkiewicz
@@ -30,11 +32,7 @@ import org.testng.annotations.Test;
 @Listeners({TestListener.class})
 public class PhysicalRegressionTests extends BaseTestCase {
 
-    private Environment env = Environment.getInstance();
-
-    private static String locationId;
     private static final String locationName = "LocationSeleniumTests" + (int) (Math.random() * 10000);
-    private static Long addressId;
     private static final String countryName = "CountrySeleniumTests";
     private static final String postalCodeName = "PostalCodeSeleniumTests";
     private static final String regionName = "RegionSeleniumTests";
@@ -44,28 +42,15 @@ public class PhysicalRegressionTests extends BaseTestCase {
     private static final String objectTypeLocation = "Location";
     private static final String locationTypeSite = "Site";
     private static final String description = "Selenium Test";
-
+    private static String locationId;
+    private static Long addressId;
+    private Environment env = Environment.getInstance();
 
     @BeforeClass
     public void createTestData() {
         getOrCreateAddress();
         createPhysicalLocation();
         createSubLocation();
-    }
-
-    private void getOrCreateAddress() {
-        AddressRepository addressRepository = new AddressRepository(env);
-        addressId = addressRepository.updateOrCreateAddress(countryName, postalCodeName, regionName, cityName, districtName);
-    }
-
-    private void createPhysicalLocation() {
-        LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);
-        locationId = locationInventoryRepository.createLocation(locationName, locationTypeSite, addressId);
-    }
-
-    private void createSubLocation() {
-        LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);
-        locationInventoryRepository.createSubLocation(locationTypeSite, subLocationSiteName, addressId, Long.valueOf(locationId), locationTypeSite);
     }
 
     @BeforeMethod
@@ -164,8 +149,23 @@ public class PhysicalRegressionTests extends BaseTestCase {
         ConfirmationBoxInterface confirmationBox = ConfirmationBox.create(driver, webDriverWait);
         confirmationBox.clickButtonByLabel("Delete");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        TabsInterface tabTable = TabWindowWidget.create(driver, webDriverWait);
-        Assert.assertTrue(tabTable.isNoData("tableAppLocationsId"));
+        OldTable table = new LocationOverviewPage(driver).getTabTable(TabName.LOCATIONS);
+        Assert.assertTrue(table.hasNoData());
+    }
+
+    private void getOrCreateAddress() {
+        AddressRepository addressRepository = new AddressRepository(env);
+        addressId = addressRepository.updateOrCreateAddress(countryName, postalCodeName, regionName, cityName, districtName);
+    }
+
+    private void createPhysicalLocation() {
+        LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);
+        locationId = locationInventoryRepository.createLocation(locationName, locationTypeSite, addressId);
+    }
+
+    private void createSubLocation() {
+        LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);
+        locationInventoryRepository.createLocationInLocation(locationTypeSite, subLocationSiteName, addressId, Long.valueOf(locationId), locationTypeSite);
     }
 
 }

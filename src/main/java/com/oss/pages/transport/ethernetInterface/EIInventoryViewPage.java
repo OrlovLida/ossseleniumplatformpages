@@ -1,17 +1,18 @@
 package com.oss.pages.transport.ethernetInterface;
 
-import com.oss.framework.components.contextactions.ActionsContainer;
-import com.oss.framework.components.contextactions.ActionsInterface;
-import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.tabswidget.TabWindowWidget;
-import com.oss.framework.widgets.tabswidget.TabsInterface;
-import com.oss.pages.BasePage;
-import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.oss.framework.components.contextactions.ActionsContainer;
+import com.oss.framework.components.contextactions.ActionsInterface;
+import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.tabs.TabsInterface;
+import com.oss.framework.widgets.tabs.TabsWidget;
+import com.oss.pages.BasePage;
+import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
 
 /**
  * @author Kamil Jacko
@@ -38,12 +39,14 @@ public class EIInventoryViewPage extends BasePage {
 
     private static final String EI_TECHNOLOGY = "EthernetInterface";
     private static final String PROPERTIES_TAB = "Properties";
+    private static final String PROPERTY_PANEL_ID = "properties(EthernetInterface)";
+    private static final String TAB_ID = "2";
 
     public EIInventoryViewPage(WebDriver driver) {
         super(driver);
         DelayUtils.waitForPageToLoad(driver, wait);
         actionsInterface = ActionsContainer.createFromParent(driver.findElement(By.xpath("//div[@class='windowContent']")), driver, wait);
-        tabsInterface = TabWindowWidget.create(driver, wait);
+        tabsInterface = TabsWidget.createById(driver, wait, TAB_ID);
     }
 
     public void selectEI() {
@@ -64,7 +67,7 @@ public class EIInventoryViewPage extends BasePage {
 
     public void obtainPropertyValues() {
         OldInventoryViewPage oldInventoryViewPage = new OldInventoryViewPage(driver);
-        propertiesToValuesMap = oldInventoryViewPage.getTableWidget().getPropertyNamesToValues();
+        propertiesToValuesMap = oldInventoryViewPage.getProperties(PROPERTY_PANEL_ID);
     }
 
     public String getAdministrativeStateValue() {

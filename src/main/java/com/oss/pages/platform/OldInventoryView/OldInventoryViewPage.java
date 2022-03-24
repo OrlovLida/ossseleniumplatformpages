@@ -7,18 +7,21 @@ import org.openqa.selenium.WebDriver;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.Wizard;
-import com.oss.framework.widgets.tablewidget.OldTable;
-import com.oss.framework.widgets.tablewidget.TableInterface;
-import com.oss.framework.widgets.tabswidget.TabWindowWidget;
-import com.oss.framework.widgets.tabswidget.TabsInterface;
+import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
+import com.oss.framework.widgets.table.OldTable;
+import com.oss.framework.widgets.table.TableInterface;
+import com.oss.framework.widgets.tabs.TabsInterface;
+import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
-import static com.oss.framework.components.contextactions.ActionsContainer.*;
-import static com.oss.framework.widgets.tablewidget.OldTable.createByComponentDataAttributeName;
-import static com.oss.pages.platform.OldInventoryView.helper.OldInventoryViewConstants.*;
+import static com.oss.framework.components.contextactions.ActionsContainer.CREATE_GROUP_ID;
+import static com.oss.framework.components.contextactions.ActionsContainer.EDIT_GROUP_ID;
+import static com.oss.framework.components.contextactions.ActionsContainer.OTHER_GROUP_ID;
+import static com.oss.framework.components.contextactions.ActionsContainer.SHOW_ON_GROUP_ID;
+import static com.oss.framework.widgets.table.OldTable.createById;
+import static com.oss.pages.platform.OldInventoryView.helper.OldInventoryViewConstants.PROPERTIES_TAB_LABEL;
 
 /**
  * @author Ewa Frączek
@@ -27,25 +30,22 @@ import static com.oss.pages.platform.OldInventoryView.helper.OldInventoryViewCon
 public class OldInventoryViewPage extends BasePage {
 
     private static final String CONFIRM_REMOVAL_BUTTON_ID = "ConfirmationBox_deleteAppId_action_button";
+    private static final String TAB_ID = "2";
 
     public OldInventoryViewPage(WebDriver driver) {
         super(driver);
     }
 
-    public Wizard getWizard() {
-        return Wizard.createWizard(driver, wait);
-    }
-
     @Step("Get table widget for upper table")
     public OldTable getTableWidget() {
         waitForPageToLoad();
-        return createByComponentDataAttributeName(driver, wait, "table(" + getTypeBasedOnUrl(driver.getCurrentUrl()) + ")");
+        return createById(driver, wait, "table(" + getTypeBasedOnUrl(driver.getCurrentUrl()) + ")");
     }
 
     @Step("Get table widget for table by testId {tableTestId}")
     public OldTable getTableWidget(String tableTestId) {
         waitForPageToLoad();
-        return createByComponentDataAttributeName(driver, wait, tableTestId);
+        return createById(driver, wait, tableTestId);
     }
 
     @Step("Select row with value {value} in column {columnName} in upper table")
@@ -65,11 +65,6 @@ public class OldInventoryViewPage extends BasePage {
     @Step("Select row in upper table at index {index}")
     public void selectRowInTableAtIndex(int index) {
         getTableWidget().selectRow(index);
-    }
-
-    @Step("Select row at index {index} in table {tableTestId}")
-    public void selectRowInTableAtIndex(String tableTestId, int index) {
-        getTableWidget(tableTestId).selectRow(index);
     }
 
     @Step("Filter and select {objectName} row in upper table")
@@ -92,10 +87,14 @@ public class OldInventoryViewPage extends BasePage {
     }
 
     @Step("Expand other group and select action {actionId} from the drop-down list")
-    public void expandOtherAndChooseAction(String actionId) { useContextAction(OTHER_GROUP_ID, actionId); }
+    public void expandOtherAndChooseAction(String actionId) {
+        useContextAction(OTHER_GROUP_ID, actionId);
+    }
 
     @Step("Expand create group and select action {actionId} from the drop-down list")
-    public void expandCreateAndChooseAction(String actionId) { useContextAction(CREATE_GROUP_ID, actionId); }
+    public void expandCreateAndChooseAction(String actionId) {
+        useContextAction(CREATE_GROUP_ID, actionId);
+    }
 
     @Step("Click group {group} and action {action} on upper table")
     public void useContextAction(String group, String action) {
@@ -122,8 +121,7 @@ public class OldInventoryViewPage extends BasePage {
     public Map<String, String> getProperties(String tableTestId) {
         navigateToBottomTabByLabel(PROPERTIES_TAB_LABEL);
         waitForPageToLoad();
-        TableInterface table = getTableWidget(tableTestId);
-        return table.getPropertyNamesToValues();
+        return OldPropertyPanel.createById(driver, wait, tableTestId).getPropertyNamesToValues();
     }
 
     @Step("Navigate to bottom tab {tabId} and get table widget for table {tableTestId}")
@@ -135,30 +133,25 @@ public class OldInventoryViewPage extends BasePage {
 
     @Step("Navigate to bottom tab by id {tabId}")
     public void navigateToBottomTabById(String tabId) {
-        TabsInterface tabsInterface = TabWindowWidget.create(driver, wait);
+        TabsInterface tabsInterface = TabsWidget.createById(driver, wait, TAB_ID);
         tabsInterface.selectTabById(tabId);
-    }
-
-    public void getNumberOfRowsInTable(String tableTestId, String anyLabelExistingInTable) {
-        OldTable.createByComponentDataAttributeName(driver, wait, tableTestId);
     }
 
     @Step("Click group {group} and action {actionId} in current tab")
     public void useContextActionInCurrentTab(String group, String actionId) {
-        TabsInterface tab = TabWindowWidget.create(driver, wait);
+        TabsInterface tab = TabsWidget.createById(driver, wait, TAB_ID);
         tab.callActionById(group, actionId);
     }
 
     public void navigateToBottomTabByLabel(String tabLabel) {
         waitForPageToLoad();
-        TabsInterface tabsInterface = TabWindowWidget.create(driver, wait);
+        TabsInterface tabsInterface = TabsWidget.createById(driver, wait, TAB_ID);
         tabsInterface.selectTabByLabel(tabLabel);
     }
 
     @Step("Click link in {columnName}")
     public void clickLinkInColumn(String columnName) {
-        OldTable oldTable = OldTable.createByOssWindow(driver, wait);
-        oldTable.selectLinkInSpecificColumn(columnName);
+        getTableWidget().clickLink(columnName);
     }
 
     private void waitForPageToLoad() {

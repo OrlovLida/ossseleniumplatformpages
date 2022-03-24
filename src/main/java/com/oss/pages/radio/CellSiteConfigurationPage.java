@@ -3,13 +3,12 @@ package com.oss.pages.radio;
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.components.portals.DropdownList;
-import com.oss.framework.prompts.ConfirmationBox;
-import com.oss.framework.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.Wizard;
-import com.oss.framework.widgets.tablewidget.OldTable;
-import com.oss.framework.widgets.treewidget.TreeWidget;
+import com.oss.framework.widgets.table.OldTable;
+import com.oss.framework.widgets.tabs.TabsWidget;
+import com.oss.framework.widgets.tree.TreeWidget;
+import com.oss.framework.widgets.treetable.OldTreeTableWidget;
+import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 import com.oss.pages.physical.DeviceWizardPage;
 
@@ -37,11 +36,16 @@ public class CellSiteConfigurationPage extends BasePage {
     private static final String TYPE_4G = "4G";
     private static final String TYPE_5G = "5G";
     private static final String DEVICES_TAB = "Devices";
+    private static final String BASE_STATIONS_TAB = "Base Stations";
     private static final String CREATE_DEVICE_ACTION = "Create Device";
     private static final String CREATE_RAN_ANTENNA_ACTION = "Create RAN Antenna";
     private static final String HOST_ON_DEVICE_ACTION_LABEL = "Host on Device";
     private static final String HOST_ON_ANTENNA_ARRAY_ACTION_LABEL = "Host on Antenna Array";
     private static final String HOSTING_TAB_LABEL = "Hosting";
+    private static final String WIZARD_ID = "Popup";
+    private static final String TREE_TABLE_ID = "DevicesTableApp";
+    private static final String DELETE_WIZARD_ID = "delete-popup_prompt-card";
+    private static final String DELETE_BUTTON_ID = "delete-popup-buttons-app-1";
 
     public CellSiteConfigurationPage(WebDriver driver) {
         super(driver);
@@ -54,15 +58,15 @@ public class CellSiteConfigurationPage extends BasePage {
 
     @Step("Click plus icon and select {option} from the drop-down list")
     public void clickPlusIconAndSelectOption(String option) {
-        useTableContextActionByLabel(ADD_LABEL);
-        waitForPageToLoad();
-        DropdownList.create(driver, wait).selectOption(option);
+        getTabTable().callActionByLabel(ADD_LABEL, option);
     }
 
     @Step("Select {tabName} tab")
     public CellSiteConfigurationPage selectTab(String tabName) {
         waitForPageToLoad();
-        getTabTable().selectTabByLabel(tabName, TAB_TABLE_DATA_ATTRIBUTE_NAME);
+        TabsWidget tabs = TabsWidget.createById(driver, wait, TAB_TABLE_DATA_ATTRIBUTE_NAME);
+        waitForPageToLoad();
+        tabs.selectTabByLabel(tabName);
         return this;
     }
 
@@ -98,16 +102,47 @@ public class CellSiteConfigurationPage extends BasePage {
     public void removeObject() {
         getTabTable().callActionByLabel(DELETE_LABEL);
         waitForPageToLoad();
-        ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
-        prompt.clickButtonByLabel(DELETE_LABEL);
+        Wizard wizard = Wizard.createByComponentId(driver, wait, DELETE_WIZARD_ID);
+        wizard.clickButtonById(DELETE_BUTTON_ID);
+    }
+
+    @Step("Remove device {objectName}")
+    public void removeDevice(String type, String manufacturer, String objectName) {
+        selectTab(DEVICES_TAB);
+        waitForPageToLoad();
+        selectTreeTable(type, manufacturer, objectName);
+        waitForPageToLoad();
+        removeObject();
+        waitForPageToLoad();
+    }
+
+    private void selectTreeTable(String type, String manufacturer, String name) {
+        OldTreeTableWidget widget = OldTreeTableWidget.create(driver, wait, TREE_TABLE_ID);
+        widget.expandNode(type, "Type");
+        waitForPageToLoad();
+        widget.expandNode(manufacturer, "Type");
+        waitForPageToLoad();
+        widget.selectNode(name, "Name");
+    }
+
+    @Step("Remove base station {objectName}")
+    public void removeBaseStation(String columnName, String objectName) {
+        selectTab(BASE_STATIONS_TAB);
+        waitForPageToLoad();
+        filterObject(columnName, objectName);
+        waitForPageToLoad();
+        removeObject();
     }
 
     @Step("Expand the tree and select Base Station")
     public CellSiteConfigurationPage expandTreeToBaseStation(String locationType, String locationName, String baseStation) {
         waitForPageToLoad();
         getTree().expandTreeRow(locationType);
+        waitForPageToLoad();
         getTree().expandTreeRow(locationName);
+        waitForPageToLoad();
         getTree().expandTreeRow(BASE_STATION_ROW);
+        waitForPageToLoad();
         getTree().selectTreeRow(baseStation);
         return this;
     }
@@ -155,7 +190,7 @@ public class CellSiteConfigurationPage extends BasePage {
 
     @Step("Select trail type")
     public void selectTrailType(String trailType) {
-        Wizard wizard = Wizard.createPopupWizard(driver, wait);
+        Wizard wizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
         wizard.setComponentValue(TRAIL_TYPE_ID, trailType, COMBOBOX);
         wizard.clickAccept();
     }
@@ -167,7 +202,7 @@ public class CellSiteConfigurationPage extends BasePage {
 
     @Step("Get row count in a table")
     public int getRowCount(String attributeLabel) {
-        return getTabTable().getNumberOfRowsInTable(attributeLabel);
+        return getTabTable().countRows(attributeLabel);
     }
 
     public boolean hasNoData() {
@@ -176,7 +211,7 @@ public class CellSiteConfigurationPage extends BasePage {
     }
 
     public TreeWidget getTree() {
-        return TreeWidget.createByDataAttributeName(driver, wait, TREE_DATA_ATTRIBUTE_NAME);
+        return TreeWidget.createById(driver, wait, TREE_DATA_ATTRIBUTE_NAME);
     }
 
     public OldTable getTabTable() {
@@ -207,31 +242,13 @@ public class CellSiteConfigurationPage extends BasePage {
     }
 
     @Step("Create {amountOfCells} Cells 4G by bulk wizard with Carrier = {carrier}")
-    public void createCell4GBulk(int amountOfCells, String carrier, String[] cellNames, int[] cellsID) {
-        openCell4GBulkWizard().createCellBulkWizard(amountOfCells, carrier, cellNames, cellsID);
+    public void createCell4GBulk(int amountOfCells, String carrier, String[] cellNames, int[] cellsID, int crp) {
+        openCell4GBulkWizard().createCellBulkWizard(amountOfCells, carrier, cellNames, cellsID, crp);
     }
 
     @Step("Create {amountOfCells} Cells 5G by bulk wizard with Carrier = {carrier}")
     public void createCell5GBulk(int amountOfCells, String carrier, String[] cellNames, int[] cellsID) {
         openCell5GBulkWizard().createCell5GBulkWizardWithDefaultValues(amountOfCells, carrier, cellNames, cellsID);
-    }
-
-    private Cell5GBulkWizardPage openCell5GBulkWizard() {
-        waitForPageToLoad();
-        selectTab(String.format(CELL_TAB_NAME, CellSiteConfigurationPage.TYPE_5G));
-        waitForPageToLoad();
-        clickPlusIconAndSelectOption(String.format(CREATE_CELL_BULK_ACTION, CellSiteConfigurationPage.TYPE_5G));
-        waitForPageToLoad();
-        return new Cell5GBulkWizardPage(driver);
-    }
-
-    private Cell4GBulkWizardPage openCell4GBulkWizard() {
-        waitForPageToLoad();
-        selectTab(String.format(CELL_TAB_NAME, CellSiteConfigurationPage.TYPE_4G));
-        waitForPageToLoad();
-        clickPlusIconAndSelectOption(String.format(CREATE_CELL_BULK_ACTION, CellSiteConfigurationPage.TYPE_4G));
-        waitForPageToLoad();
-        return new Cell4GBulkWizardPage(driver);
     }
 
     @Step("Create Base Band Unit with following attributes: Type = {bbuEquipmentType}, Name = {bbuName}, Model = {baseBandUnitModel}, Location = {locationName}")
@@ -329,7 +346,25 @@ public class CellSiteConfigurationPage extends BasePage {
 
     public void editCellsInBulk(int cellsNumber, String pci, String rsi, String referencePower, String[] tac, String paOutput) {
         clickEditIcon();
-        new EditCell4GWizardPage(driver).editCellsBulk(cellsNumber, pci, rsi, referencePower, tac, paOutput);
+        new EditCell4GBulkWizardPage(driver).editCellsBulk(cellsNumber, pci, rsi, referencePower, tac, paOutput);
+    }
+
+    private Cell5GBulkWizardPage openCell5GBulkWizard() {
+        waitForPageToLoad();
+        selectTab(String.format(CELL_TAB_NAME, CellSiteConfigurationPage.TYPE_5G));
+        waitForPageToLoad();
+        clickPlusIconAndSelectOption(String.format(CREATE_CELL_BULK_ACTION, CellSiteConfigurationPage.TYPE_5G));
+        waitForPageToLoad();
+        return new Cell5GBulkWizardPage(driver);
+    }
+
+    private Cell4GBulkWizardPage openCell4GBulkWizard() {
+        waitForPageToLoad();
+        selectTab(String.format(CELL_TAB_NAME, CellSiteConfigurationPage.TYPE_4G));
+        waitForPageToLoad();
+        clickPlusIconAndSelectOption(String.format(CREATE_CELL_BULK_ACTION, CellSiteConfigurationPage.TYPE_4G));
+        waitForPageToLoad();
+        return new Cell4GBulkWizardPage(driver);
     }
 
     private void waitForPageToLoad() {

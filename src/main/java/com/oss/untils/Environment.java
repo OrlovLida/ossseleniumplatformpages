@@ -38,6 +38,11 @@ public class Environment {
     private static final String LOGICAL_FUNCTION_CORE = "logical-function-core";
     private static final String TP_SERVICE = "tp-service";
     private static final String CONNECTIVITY_CORE = "physical-connectivity-core";
+    private static final String NFV_CORE = "nfv-core";
+    private static final String NETWORK_SERVICE_CORE = "network-service-core";
+    private static final String NETWORK_SLICE_CORE = "network-slice-core";
+    private static final String TMF_CATALOG_CORE = "tmf-catalog-core";
+
     private static final String KEYCLOAK_PASS_PROP = "keycloak.pass";
     private static final String KEYCLOAK_USERNAME_PROP = "keycloak.username";
     private static final String DISCOVERY_PORT_PROP = "discovery.port";
@@ -46,6 +51,8 @@ public class Environment {
     private static final String TRAIL_CORE = "trail-core";
 
     private static final Integer CURRENT_TOKEN_IDENTIFIER = 1;
+    private static final Configuration CONFIGURATION = new Configuration();
+
     private static Environment env;
     private final String serviceDiscoveryUri;
     private final int serviceDiscoveryPort;
@@ -69,10 +76,10 @@ public class Environment {
 
         LOGGER.info("Prefix URI for service discovery and keycloak: " + serviceDiscoveryUri + ":" + serviceDiscoveryPort);
         LOGGER.info("It can be changed using java properties: " + DISCOVERY_IP_PROP + " and " + DISCOVERY_PORT_PROP);
-
-        keycloakUserName = System.getProperty(KEYCLOAK_USERNAME_PROP, "ossadmin");
-        keycloakUserPassword = System.getProperty(KEYCLOAK_PASS_PROP, "insightadmin");
-
+        
+        keycloakUserName = System.getProperty(KEYCLOAK_USERNAME_PROP, CONFIGURATION.getLogin());
+        keycloakUserPassword = System.getProperty(KEYCLOAK_PASS_PROP, CONFIGURATION.getPassword());
+        
         Preconditions.checkNotNull(keycloakUserName, "Provide keycloak.username java parameter");
         Preconditions.checkNotNull(keycloakUserPassword, "Provide keycloak.pass java parameter");
 
@@ -213,6 +220,15 @@ public class Environment {
     public RequestSpecification getTrailCoreSpecification() {
         return getRequestSpecificationByName(TRAIL_CORE);
     }
+
+    public RequestSpecification getNFVCoreSpecification() { return getRequestSpecificationByName(NFV_CORE); }
+
+    public RequestSpecification getNetworkServiceCoreSpecification() { return getRequestSpecificationByName(NETWORK_SERVICE_CORE); }
+
+    public RequestSpecification getNetworkSliceCoreSpecification() { return getRequestSpecificationByName(NETWORK_SLICE_CORE); }
+
+    public RequestSpecification getTMFResourceCatalog() { return getRequestSpecificationByName(TMF_CATALOG_CORE); }
+
 
     public RequestSpecification getRequestSpecificationByName(String pName) {
         RequestSpecification findApplicationBasePath = findApplicationBasePath(pName);

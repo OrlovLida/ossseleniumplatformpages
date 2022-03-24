@@ -1,11 +1,5 @@
 package com.oss.bigdata.dfe;
 
-import com.oss.BaseTestCase;
-import com.oss.pages.bigdata.dfe.DataSource.DSWizard.DataSourceStepWizardPage;
-import com.oss.pages.bigdata.dfe.DataSource.DataSourcePage;
-import com.oss.pages.bigdata.utils.ConstantsDfe;
-import com.oss.utils.TestListener;
-import io.qameta.allure.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -13,6 +7,13 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
+import com.oss.BaseTestCase;
+import com.oss.pages.bigdata.dfe.datasource.DSWizard.DataSourceStepWizardPage;
+import com.oss.pages.bigdata.dfe.datasource.DataSourcePage;
+import com.oss.pages.bigdata.utils.ConstantsDfe;
+import com.oss.utils.TestListener;
+
+import io.qameta.allure.Description;
 
 @Listeners({TestListener.class})
 public class DataSourceFromQueryTest extends BaseTestCase {
@@ -50,7 +51,7 @@ public class DataSourceFromQueryTest extends BaseTestCase {
         dsStepWizard.clickNext();
         dsStepWizard.getSpecificInfoStep().fillSpecificInfo(OFFSET, UNIT, INTERVAL_AMOUNT);
         dsStepWizard.clickAccept();
-        Boolean dataSourceIsCreated = dataSourcePage.dataSourceExistIntoTable(dataSourceName);
+        boolean dataSourceIsCreated = dataSourcePage.dataSourceExistIntoTable(dataSourceName);
 
         Assert.assertTrue(dataSourceIsCreated);
     }
@@ -58,7 +59,7 @@ public class DataSourceFromQueryTest extends BaseTestCase {
     @Test(priority = 2, testName = "Edit Data Source", description = "Edit Data Source")
     @Description("Edit Data Source")
     public void editDataSourceFromQuery() {
-        Boolean dataSourceExists = dataSourcePage.dataSourceExistIntoTable(dataSourceName);
+        boolean dataSourceExists = dataSourcePage.dataSourceExistIntoTable(dataSourceName);
         if (dataSourceExists) {
             dataSourcePage.selectFoundDataSource();
             dataSourcePage.clickEditDS();
@@ -67,7 +68,7 @@ public class DataSourceFromQueryTest extends BaseTestCase {
             dsStepWizard.clickNext();
             dsStepWizard.clickNext();
             dsStepWizard.clickAccept();
-            Boolean dataSourceIsEdited = dataSourcePage.dataSourceExistIntoTable(updatedDataSourceName);
+            boolean dataSourceIsEdited = dataSourcePage.dataSourceExistIntoTable(updatedDataSourceName);
 
             Assert.assertTrue(dataSourceIsEdited);
         } else {
@@ -79,7 +80,7 @@ public class DataSourceFromQueryTest extends BaseTestCase {
     @Test(priority = 3, testName = "Delete Data Source", description = "Delete Data Source")
     @Description("Delete Data Source")
     public void deleteDataSourceFromQuery() {
-        Boolean dataSourceExists = dataSourcePage.dataSourceExistIntoTable(dataSourceName);
+        boolean dataSourceExists = dataSourcePage.dataSourceExistIntoTable(dataSourceName);
         if (dataSourceExists) {
             dataSourcePage.selectFoundDataSource();
             dataSourcePage.clickDeleteDS();

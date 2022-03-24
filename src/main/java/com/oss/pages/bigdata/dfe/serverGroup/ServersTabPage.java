@@ -41,7 +41,7 @@ public class ServersTabPage extends BaseTabPage {
     @Step("Check if any server exist in servers table")
     public Boolean isAnyServerExist() {
         Boolean serverExist = createTabTable()
-                .getNumberOfRowsInTable(SERVER_NAME_COLUMN_LABEL) >= 1;
+                .countRows(SERVER_NAME_COLUMN_LABEL) >= 1;
         log.info("In server table exist at least one server: {}", serverExist);
 
         return serverExist;
