@@ -8,10 +8,6 @@ import org.assertj.core.util.Lists;
 
 import com.comarch.oss.physicalinventory.api.dto.CardDTO;
 import com.comarch.oss.physicalinventory.api.dto.ChassisDTO;
-import java.util.NoSuchElementException;
-
-import javax.ws.rs.core.Response;
-
 import com.comarch.oss.physicalinventory.api.dto.PhysicalDeviceDTO;
 import com.comarch.oss.physicalinventory.api.dto.PluggableModuleDTO;
 import com.comarch.oss.physicalinventory.api.dto.PortDTO;
@@ -140,8 +136,6 @@ public class PhysicalInventoryClient {
                 .toString();
     }
 
-    private PhysicalDeviceDTO getDeviceStructure(Long deviceId) {
-
     public ResourceDTO createDevice(PhysicalDeviceDTO device, long projectId) {
         return env.getPhysicalInventoryCoreRequestSpecification()
                 .given()
@@ -186,6 +180,18 @@ public class PhysicalInventoryClient {
                 .as(SearchResultDTO.class);
     }
 
+    public void deleteDevice(String deviceId) {
+        String devicePath = String.format(DEVICE_DELETE_API_PATH, deviceId);
+        env.getPhysicalInventoryCoreRequestSpecification()
+                .given()
+                .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
+                .when()
+                .delete(devicePath)
+                .then()
+                .statusCode(200).assertThat();
+
+    }
+
     private PhysicalDeviceDTO getDeviceStructure(Long deviceId) {
         String devicePath = String.format(DEVICE_STRUCTURE_API_PATH, deviceId);
         return env.getPhysicalInventoryCoreRequestSpecification()
@@ -210,15 +216,7 @@ public class PhysicalInventoryClient {
                 .log().body()
                 .extract()
                 .as(ChassisDTO.class);
-
-    public String getDevicePortId(Long deviceId, String portName) {
-        return getDeviceStructure(deviceId).getPorts().stream().filter(e -> (e.getName().equals(portName))).map(e -> e.getId().get())
-                .findAny().orElseThrow(()-> new NoSuchElementException("Cannot get Port Id")).toString();
     }
-
-    public String getAntennaArrayId(Long antennaId, String arrayName) {
-        return getDeviceStructure(antennaId).getAntennaArrays().stream().filter(e -> (e.getName().equals(arrayName)))
-                .map(e -> e.getId().get()).findAny().orElseThrow(()-> new NoSuchElementException("Cannot get AntennaArray Id")).toString();
 
     private CardDTO getCardStructure(Long cardId) {
         String cardStructurePath = String.format(CARDS_STRUCTURE_API_PATH, cardId);
@@ -231,18 +229,6 @@ public class PhysicalInventoryClient {
                 .log().body()
                 .extract()
                 .as(CardDTO.class);
-    }
-
-    public void deleteDevice(String deviceId) {
-        String devicePath = String.format(DEVICE_DELETE_API_PATH, deviceId);
-        env.getPhysicalInventoryCoreRequestSpecification()
-                .given()
-                .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
-                .when()
-                .delete(devicePath)
-                .then()
-                .statusCode(200).assertThat();
-
     }
 
 }

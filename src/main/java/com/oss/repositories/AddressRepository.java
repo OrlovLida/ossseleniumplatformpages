@@ -1,7 +1,9 @@
 package com.oss.repositories;
 
 import java.util.Arrays;
-import java.util.NoSuchElementException;
+import java.util.Optional;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.comarch.oss.addressinventory.api.dto.AddressDTO;
 import com.comarch.oss.addressinventory.api.dto.AddressItemDTO;
@@ -74,6 +76,7 @@ public class AddressRepository {
 
     private GeographicalAddressDTO buildAddress(String countryName, String postalCodeName, String regionName, String cityName,
                                                 String districtName) {
+        return GeographicalAddressDTO.builder()
                 .addAddressItems(buildCountry(countryName))
                 .addAddressItems(buildPostalCode(postalCodeName))
                 .addAddressItems(buildRegion(regionName))

@@ -9,24 +9,16 @@ import com.comarch.oss.physicalinventory.api.dto.PhysicalDeviceDTO;
 import com.comarch.oss.physicalinventory.api.dto.PluggableModuleDTO;
 import com.comarch.oss.physicalinventory.api.dto.PortDTO;
 import com.comarch.oss.physicalinventory.api.dto.ResourceDTO;
-import java.util.Collections;
-
-import com.comarch.oss.physicalinventory.api.dto.AttributeDTO;
-import com.comarch.oss.physicalinventory.api.dto.CardDTO;
-import com.comarch.oss.physicalinventory.api.dto.ChassisDTO;
-import com.comarch.oss.physicalinventory.api.dto.PhysicalDeviceDTO;
-import com.comarch.oss.physicalinventory.api.dto.ResourceDTO;
 import com.comarch.oss.physicalinventory.api.dto.SearchResultDTO;
 import com.oss.services.PhysicalInventoryClient;
 import com.oss.untils.Environment;
 
 public class PhysicalInventoryRepository {
 
-    private final Environment env;
     private PhysicalInventoryClient client;
 
     public PhysicalInventoryRepository(Environment env) {
-        this.env = env;
+        client = new PhysicalInventoryClient(env);
     }
 
     public Long createDevice(String locationType, Long locationId, Long deviceModelId, String deviceName, String deviceModelType) {
@@ -34,9 +26,6 @@ public class PhysicalInventoryRepository {
         String deviceId = resourceDTO.getUri().toString();
         return Long.valueOf(deviceId.substring(deviceId.lastIndexOf("/") + 1, deviceId.indexOf("?")));
     }
-
-    public Long createDeviceWithCard(String locationType, Long locationId, Long deviceModelId, String deviceName, String deviceModelType, String slotName, Long cardModelId, String cardModelType) {
-        ResourceDTO resourceDTO = client.createDevice(buildDeviceWithCard(locationType, locationId, deviceModelId, deviceName, deviceModelType, slotName, cardModelId, cardModelType));
 
     public Long createDevice(String locationType, Long locationId, Long deviceModelId, String deviceName, String deviceModelType,
             long projectId) {
@@ -58,7 +47,6 @@ public class PhysicalInventoryRepository {
 
     public Long createDeviceWithCard(String locationType, Long locationId, Long deviceModelId, String deviceName, String deviceModelType,
             String slotName, Long cardModelId, String cardModelType) {
-        PhysicalInventoryClient client = new PhysicalInventoryClient(env);
         ResourceDTO resourceDTO = client.createDevice(buildDeviceWithCard(locationType, locationId, deviceModelId, deviceName,
                 deviceModelType, slotName, cardModelId, cardModelType));
         String deviceId = resourceDTO.getUri().toString();
@@ -92,7 +80,6 @@ public class PhysicalInventoryRepository {
     }
 
     public void deleteDevice(String deviceId){
-        PhysicalInventoryClient client = new PhysicalInventoryClient(env);
         client.deleteDevice(deviceId);
     }
 
