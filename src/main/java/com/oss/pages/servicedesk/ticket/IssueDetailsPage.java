@@ -2,7 +2,6 @@ package com.oss.pages.servicedesk.ticket;
 
 import java.util.List;
 
-import com.oss.framework.components.prompts.ConfirmationBox;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
@@ -10,32 +9,34 @@ import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.contextactions.ButtonContainer;
 import com.oss.framework.components.contextactions.OldActionsContainer;
-import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.components.layout.Card;
 import com.oss.framework.components.mainheader.ToolbarWidget;
-import com.oss.framework.components.portals.DropdownList;
+import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.iaa.widgets.list.ListApp;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.CommonList;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.tabs.TabWindowWidget;
 import com.oss.pages.servicedesk.BaseSDPage;
-import com.oss.pages.servicedesk.ticket.wizard.AttachmentWizardPage;
+import com.oss.pages.servicedesk.ticket.tabs.AttachmentsTab;
 import com.oss.pages.servicedesk.ticket.wizard.SDWizardPage;
 
 import io.qameta.allure.Step;
 
-public class TicketDetailsPage extends BaseSDPage {
+public class IssueDetailsPage extends BaseSDPage {
 
-    private static final Logger log = LoggerFactory.getLogger(TicketDetailsPage.class);
+    private static final Logger log = LoggerFactory.getLogger(IssueDetailsPage.class);
 
-    public static final String DETAILS_PAGE_URL_PATTERN = "%s/#/view/service-desk/trouble-ticket/details/%s";
+    public static final String DETAILS_PAGE_URL_PATTERN = "%s/#/view/service-desk/%s/details/%s";
+
     private static final String EDIT_DETAILS_LABEL = "Edit details";
     private static final String RELEASE_ID = "_detailsOverviewContextActions-7";
-    private static final String ALLOW_EDIT_LABEL = "Edit";
+    private static final String ACTIONS_CONTAINER_ID = "_detailsWindow-windowToolbar";
     private static final String CREATE_SUB_TICKET = "TT_DETAILS_SUBTICKET_CREATE_PROMPT_TITLE";
+    private static final String ALLOW_EDIT_LABEL = "Edit";
+    private static final String PROBLEM_ASSIGNEE_ID = "assignee";
+    private static final String PROBLEM_STATUS_ID = "status-input";
     private static final String CHECKLIST_APP_ID = "_checklistApp";
     private static final String SKIP_BUTTON_LABEL = "SKIP";
     private static final String EXTERNAL_LIST_ID = "_detailsExternalsListApp";
@@ -43,7 +44,6 @@ public class TicketDetailsPage extends BaseSDPage {
     private static final String DICTIONARIES_TABLE_ID = "_dictionariesTableId";
     private static final String DICTIONARY_VALUE_TABLE_LABEL = "Dictionary Value";
     private static final String CHANGE_TICKET_STATUS_COMBOBOX_ID = "change-ticket-status-combobox-input";
-    private static final String ACTIONS_CONTAINER_ID = "_detailsWindow-windowToolbar";
     private static final String ADD_REMAINDER_LABEL = "Add Reminder";
     private static final String EDIT_REMAINDER_LABEL = "Edit Reminder";
     private static final String REMOVE_REMAINDER_LABEL = "Remove Reminder";
@@ -68,15 +68,9 @@ public class TicketDetailsPage extends BaseSDPage {
     private static final String RELATED_TICKETS_TABLE_ID_ATTRIBUTE_ID = "ID";
     private static final String ROOT_CAUSES_TABLE_ID = "_rootCausesApp";
     private static final String ROOT_CAUSES_TABLE_ID_MO_IDENTIFIER_ID = "MO Identifier";
-    private static final String ATTACHMENT_WIZARD_ID = "addFileComponentId";
-    private static final String ATTACH_FILE_LABEL = "Attach file";
-    private static final String ATTACHMENTS_LIST_ID = "attachmentManagerBusinessView_commonList";
-    private static final String OWNER_COLUMN_NAME = "Owner";
-    private static final String DOWNLOAD_ATTACHMENT_LABEL = "DOWNLOAD";
-    private static final String DELETE_ATTACHMENT_LABEL = "Delete";
-    private static final String CONFIRM_DELETE_ATTACHMENT_BUTTON_ID = "ConfirmationBox_removeAttachmentPopup_confirmationBox_action_button";
+    private static final String ATTACHMENTS_TAB_ARIA_CONTROLS = "attachmentManager";
 
-    public TicketDetailsPage(WebDriver driver, WebDriverWait wait) {
+    public IssueDetailsPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
     }
 
@@ -125,13 +119,12 @@ public class TicketDetailsPage extends BaseSDPage {
         log.info("Selecting tab {}", tabAriaControls);
     }
 
-    @Step("I open create subticket wizard for flow {flowType}")
-    public SDWizardPage openCreateSubTicketWizard(String flowType) {
+    public AttachmentsTab selectAttachmentsTab() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        Button.createById(driver, CREATE_SUB_TICKET).click();
-        DropdownList.create(driver, wait).selectOptionById(flowType);
-        log.info("Create subticket wizard for {} is opened", flowType);
-        return new SDWizardPage(driver, wait);
+        TabWindowWidget.create(driver, wait).selectTabById(ATTACHMENTS_TAB_ARIA_CONTROLS);
+        log.info("Selecting tab Attachments");
+
+        return new AttachmentsTab(driver, wait);
     }
 
     @Step("Skipping all actions on checklist")
@@ -147,27 +140,29 @@ public class TicketDetailsPage extends BaseSDPage {
     }
 
     @Step("Changing status to {statusName}")
-    public void changeStatus(String statusName) {
+    public void changeTicketStatus(String statusName) {
         ComponentFactory.create(CHANGE_TICKET_STATUS_COMBOBOX_ID, Input.ComponentType.COMBOBOX, driver, wait).setSingleStringValue(statusName);
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Changing status to {}", statusName);
     }
 
     @Step("Check status in ticket status combobox")
-    public String checkStatus() {
+    public String checkTicketStatus() {
         return ComponentFactory.create(CHANGE_TICKET_STATUS_COMBOBOX_ID, Input.ComponentType.COMBOBOX, driver, wait).getStringValue();
     }
 
-    @Step("Maximize window")
-    public void maximizeWindow(String windowId) {
-        Card.createCard(driver, wait, windowId).maximizeCard();
-        log.info("Maximizing window");
+    @Step("Change problem assignee")
+    public void changeProblemAssignee(String assignee) {
+        ComponentFactory.create(PROBLEM_ASSIGNEE_ID, Input.ComponentType.SEARCH_FIELD, driver, wait)
+                .setSingleStringValue(assignee);
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    @Step("Minimize window")
-    public void minimizeWindow(String windowId) {
-        Card.createCard(driver, wait, windowId).minimizeCard();
-        log.info("Minimizing window");
+    @Step("Change problem status")
+    public void changeProblemStatus(String status) {
+        ComponentFactory.create(PROBLEM_STATUS_ID, Input.ComponentType.COMBOBOX, driver, wait)
+                .setSingleStringValue(status);
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     @Step("Checking if expected external {expectedExistingExternal} exists on the list")
@@ -364,48 +359,12 @@ public class TicketDetailsPage extends BaseSDPage {
         return false;
     }
 
-    @Step("Click Attach File")
-    public AttachmentWizardPage clickAttachFile() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        clickContextAction(ATTACH_FILE_LABEL);
-        return new AttachmentWizardPage(driver, wait, ATTACHMENT_WIZARD_ID);
-    }
-
-    @Step("Check if Attachment List is empty")
-    public boolean isAttachmentListEmpty() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        return getAttachmentList().hasNoData();
-    }
-
-    @Step("Check if Attachment owner is visible")
-    public String getAttachmentOwner() {
-        return getAttachmentList().getRows().get(0).getValue(OWNER_COLUMN_NAME);
-    }
-
-    @Step("Click Download Attachment")
-    public void clickDownloadAttachment() {
-        getAttachmentList().getRows().get(0).callActionIcon(DOWNLOAD_ATTACHMENT_LABEL);
-        DelayUtils.waitForPageToLoad(driver, wait);
-    }
-
-    @Step("Click Delete Attachment")
-    public void clickDeleteAttachment() {
-        getAttachmentList().getRows().get(0).callAction(DELETE_ATTACHMENT_LABEL);
-        DelayUtils.waitForPageToLoad(driver, wait);
-        Button.createById(driver, CONFIRM_DELETE_ATTACHMENT_BUTTON_ID).click();
-        DelayUtils.waitForPageToLoad(driver, wait);
-    }
-
     private String checkRootCausesData(int objectIndex, String attributeId) {
         return checkOldTableData(ROOT_CAUSES_TABLE_ID, objectIndex, attributeId);
     }
 
     private String checkOldTableData(String tableId, int index, String attributeId) {
         return OldTable.createById(driver, wait, tableId).getCellValue(index, attributeId);
-    }
-
-    private CommonList getAttachmentList() {
-        return CommonList.create(driver, wait, ATTACHMENTS_LIST_ID);
     }
 
     public void selectTicketInRelatedTicketsTab(int index) {
