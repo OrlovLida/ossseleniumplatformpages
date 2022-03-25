@@ -50,4 +50,14 @@
             <class name="com.oss.web.NewNavigationTest"/>
         </classes>
     </test>
+    <test name="DetailsConfigurationTest">
+        <classes>
+            <class name="com.oss.configuration.DetailsConfigurationTest"/>
+        </classes>
+    </test>
+    <test name="LifecycleStateDecoratorsInTreeWidgetTest">
+        <classes>
+            <class name="com.oss.web.LifecycleStateDecoratorsInTreeWidgetTest"/>
+        </classes>
+    </test>
 </suite>
