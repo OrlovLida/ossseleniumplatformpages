@@ -260,7 +260,7 @@ public class TreeWidgetTest extends BaseTestCase {
         LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);
         locationInventoryRepository.deleteSubLocation(roomId_2.toString());
         locationInventoryRepository.deleteSubLocation(roomId_4.toString());
-        // deleteDevice();
+        deleteDevice();
     }
     
     private String createBuilding(Long addressId) {
