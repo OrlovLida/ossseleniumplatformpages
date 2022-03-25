@@ -146,6 +146,11 @@
             <version>4.1.1.Final</version>
         </dependency>
         <dependency>
+            <groupId>com.comarch.oss.planning</groupId>
+            <artifactId>planning-api</artifactId>
+            <version>6.9.9.Final</version>
+        </dependency>
+        <dependency>
             <groupId>com.comarch.oss.resourcecatalog</groupId>
             <artifactId>tmf-catalog-api</artifactId>
             <version>4.0.8.Final</version>
