@@ -47,6 +47,7 @@ public class SamplesManagementPage extends BasePage {
             File file = Paths.get(res.toURI()).toFile();
             String absolutePath = file.getAbsolutePath();
             Wizard wizard = Wizard.createByComponentId(driver, wait, UPLOAD_WIZARD_ID);
+            DelayUtils.waitForPageToLoad(driver, wait);
             Input input = wizard.getComponent(UPLOAD_WIZARD_ID, ComponentType.FILE_CHOOSER);
             input.setSingleStringValue(absolutePath);
             wizard.clickOK();
