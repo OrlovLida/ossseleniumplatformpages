@@ -9,7 +9,7 @@ import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.servicedesk.BaseSDPage;
-import com.oss.pages.servicedesk.ticket.TicketDetailsPage;
+import com.oss.pages.servicedesk.ticket.IssueDetailsPage;
 
 import io.qameta.allure.Step;
 
@@ -31,11 +31,11 @@ public class AttachmentWizardPage extends BaseSDPage {
     }
 
     @Step("Click Accept")
-    public TicketDetailsPage clickAccept() {
+    public IssueDetailsPage clickAccept() {
         attachementWizard.clickAccept();
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Clicking Accept");
-        return new TicketDetailsPage(driver, wait);
+        return new IssueDetailsPage(driver, wait);
     }
 }
 
