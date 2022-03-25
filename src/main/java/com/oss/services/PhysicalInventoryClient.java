@@ -1,5 +1,7 @@
 package com.oss.services;
 
+import java.util.NoSuchElementException;
+
 import javax.ws.rs.core.Response;
 
 import com.comarch.oss.physicalinventory.api.dto.PhysicalDeviceDTO;
@@ -106,12 +108,12 @@ public class PhysicalInventoryClient {
     
     public String getDevicePortId(Long deviceId, String portName) {
         return getDeviceStructure(deviceId).getPorts().stream().filter(e -> (e.getName().equals(portName))).map(e -> e.getId().get())
-                .findAny().get().toString();
+                .findAny().orElseThrow(()-> new NoSuchElementException("Cannot get Port Id")).toString();
     }
     
     public String getAntennaArrayId(Long antennaId, String arrayName) {
         return getDeviceStructure(antennaId).getAntennaArrays().stream().filter(e -> (e.getName().equals(arrayName)))
-                .map(e -> e.getId().get()).findAny().get().toString();
+                .map(e -> e.getId().get()).findAny().orElseThrow(()-> new NoSuchElementException("Cannot get AntennaArray Id")).toString();
     }
     
     public void deleteDevice(String deviceId) {
