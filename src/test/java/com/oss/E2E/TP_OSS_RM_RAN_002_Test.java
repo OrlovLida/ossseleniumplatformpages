@@ -7,11 +7,13 @@ import org.testng.asserts.SoftAssert;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
+import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.TasksPage;
 import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 import com.oss.pages.platform.HomePage;
-import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
+import com.oss.pages.platform.NewInventoryViewPage;
+import com.oss.pages.platform.SearchObjectTypePage;
 import com.oss.pages.radio.CellSiteConfigurationPage;
 import com.oss.utils.RandomGenerator;
 import com.oss.utils.TestListener;
@@ -23,7 +25,6 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
 
     private static final String LOCATION_NAME = "XYZ_SeleniumTests";
     private static final String SITE = "Site";
-    private static final String NAME = "Name";
     private static final String ANTENNA_NAME_0 = "TP_OSS_RM_RAN_002_ANTENNA_0";
     private static final String ANTENNA_NAME_1 = "TP_OSS_RM_RAN_002_ANTENNA_1";
     private static final String ANTENNA_NAME_2 = "TP_OSS_RM_RAN_002_ANTENNA_2";
@@ -240,14 +241,17 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
         HomePage homePage = new HomePage(driver);
         homePage.goToHomePage(driver, BASIC_URL);
         waitForPageToLoad();
-        homePage.chooseFromLeftSideMenu("Legacy Inventory Dashboard", "Resource Inventory ");
+        homePage.chooseFromLeftSideMenu("Inventory View", "Resource Inventory ");
         waitForPageToLoad();
-        homePage.setOldObjectType(SITE);
+        SearchObjectTypePage searchObjectTypePage = new SearchObjectTypePage(driver, webDriverWait);
+        searchObjectTypePage.searchType(SITE);
         waitForPageToLoad();
-        OldInventoryViewPage oldInventoryViewPage = new OldInventoryViewPage(driver);
-        oldInventoryViewPage.filterObject(NAME, LOCATION_NAME);
+        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
+        newInventoryViewPage.searchObject(LOCATION_NAME);
         waitForPageToLoad();
-        oldInventoryViewPage.expandShowOnAndChooseView("Cell Site Configuration");
+        newInventoryViewPage.selectFirstRow();
+        waitForPageToLoad();
+        newInventoryViewPage.callAction(ActionsContainer.SHOW_ON_GROUP_ID, "Cell Site Configuration");
         waitForPageToLoad();
     }
 

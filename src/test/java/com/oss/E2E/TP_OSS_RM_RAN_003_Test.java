@@ -9,11 +9,13 @@ import org.testng.asserts.SoftAssert;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
+import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.TasksPage;
 import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 import com.oss.pages.platform.HomePage;
-import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
+import com.oss.pages.platform.NewInventoryViewPage;
+import com.oss.pages.platform.SearchObjectTypePage;
 import com.oss.pages.radio.CellSiteConfigurationPage;
 import com.oss.pages.radio.EditCell4GBulkWizardPage;
 
@@ -41,37 +43,39 @@ public class TP_OSS_RM_RAN_003_Test extends BaseTestCase {
     public void createNewProcess() {
         softAssert = new SoftAssert();
         openView(PROCESS_INSTANCES, BPM_AND_PLANNING, BUSINESS_PROCESS_MANAGEMENT);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
         processDCPCode = processWizardPage.createSimpleDCP();
         checkPopup(processDCPCode);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
     }
 
     @Test(priority = 2, description = "Start DCP")
     @Description("Start newly created Data Correction Process")
     public void startDCP() {
         openView(BPM_TASKS, BPM_AND_PLANNING, BUSINESS_PROCESS_MANAGEMENT);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         TasksPage tasksPage = new TasksPage(driver);
         tasksPage.startTask(processDCPCode, "Correct data");
         checkPopup("The task properly assigned.");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
     }
 
     @Test(priority = 3, description = "Find location and open it in Cell Site Configuration view")
     @Description("Find location in old Inventory View and open location in Cell Site Configuration view")
     public void findLocation() {
-        openView("Legacy Inventory Dashboard", "Resource Inventory ");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        homePage.setOldObjectType(SITE);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-
-        OldInventoryViewPage oldInventoryViewPage = new OldInventoryViewPage(driver);
-        oldInventoryViewPage.filterObject(NAME, LOCATION_NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        oldInventoryViewPage.expandShowOnAndChooseView("Cell Site Configuration");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        openView("Inventory View", "Resource Inventory ");
+        waitForPageToLoad();
+        SearchObjectTypePage searchObjectTypePage = new SearchObjectTypePage(driver, webDriverWait);
+        searchObjectTypePage.searchType(SITE);
+        waitForPageToLoad();
+        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
+        newInventoryViewPage.searchObject(LOCATION_NAME);
+        waitForPageToLoad();
+        newInventoryViewPage.selectFirstRow();
+        waitForPageToLoad();
+        newInventoryViewPage.callAction(ActionsContainer.SHOW_ON_GROUP_ID, "Cell Site Configuration");
+        waitForPageToLoad();
     }
 
     @Test(priority = 4, description = "Modify cells")
@@ -79,24 +83,24 @@ public class TP_OSS_RM_RAN_003_Test extends BaseTestCase {
     public void modifyCell4Gparameters() {
         CellSiteConfigurationPage cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);
         cellSiteConfigurationPage.expandTreeToBaseStation(SITE, LOCATION_NAME, E_NODE_B_NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         cellSiteConfigurationPage.selectTab("Cells 4G");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         cellSiteConfigurationPage.clearColumnFilter(NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
 
         for (int i = 0; i < 3; i++) {
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            waitForPageToLoad();
             cellSiteConfigurationPage.selectRowByAttributeValueWithLabel(NAME, CELL_NAMES[i]);
         }
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         cellSiteConfigurationPage.clickEditIcon();
         EditCell4GBulkWizardPage editCell4GBulkWizardPage = new EditCell4GBulkWizardPage(driver);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         editCell4GBulkWizardPage.setPCIBulk(pci);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         editCell4GBulkWizardPage.setRSIBulk(rsi);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         editCell4GBulkWizardPage.accept();
         checkPopup("Cells 4G updated successfully");
     }
@@ -105,18 +109,18 @@ public class TP_OSS_RM_RAN_003_Test extends BaseTestCase {
     @Description("Finish Data Correction Process")
     public void finnishDCP() {
         openView(BPM_TASKS, BPM_AND_PLANNING, BUSINESS_PROCESS_MANAGEMENT);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         TasksPage tasksPage = new TasksPage(driver);
         tasksPage.completeTask(processDCPCode, "Correct data");
         checkPopup("Task properly completed.");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
     }
 
     private void openView(String actionLabel, String... path) {
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         HomePage homePage = new HomePage(driver);
         homePage.goToHomePage(driver, BASIC_URL);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         homePage.chooseFromLeftSideMenu(actionLabel, path);
     }
 
@@ -127,4 +131,9 @@ public class TP_OSS_RM_RAN_003_Test extends BaseTestCase {
         softAssert.assertEquals(messages.get(0).getMessageType(), SystemMessageContainer.MessageType.SUCCESS);
         softAssert.assertTrue((messages.get(0).getText()).contains(text));
     }
+
+    private void waitForPageToLoad() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
 }

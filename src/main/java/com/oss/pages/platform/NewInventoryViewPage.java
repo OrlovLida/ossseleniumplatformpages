@@ -48,6 +48,8 @@ public class NewInventoryViewPage extends BasePage {
     private static final String DOWNLOAD_CONFIG_TABS_ID = "downloadTabs";
     private static final String SETTINGS_ID = "frameworkCustomButtonsSecondaryGroup";
     private static final String SAVE_PROPERTY_CONFIG_ID = "propertyPanelSave";
+    private static final String CHOOSE_PROPERTY_CONFIG_ID = "chooseConfiguration";
+    private static final String DOWNLOAD_PROPERTY_CONFIG_ID = "propertyPanelDownload";
     private static final String SAVE_NEW_CONFIG_ID = "saveNewConfig";
     private static final String CHANGE_LABEL = "Change";
     private static final String TABS_CONTAINER_ID = "DetailTabsWidget";
@@ -330,9 +332,9 @@ public class NewInventoryViewPage extends BasePage {
     }
 
     @Step("Change Properties order")
-    public void changePropertiesOrder(int rowId, String widgetId, String propertyLabel,
+    public void changePropertiesOrder(int rowId, String widgetId, String propertyId,
                                       int position) {
-        getPropertyPanel(rowId, widgetId).changePropertyOrder(propertyLabel, position);
+        getPropertyPanel(rowId, widgetId).changePropertyOrder(propertyId, position);
     }
 
     @Step("Save configuration for properties")
@@ -341,6 +343,27 @@ public class NewInventoryViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         getPropertyPanel(rowId, widgetId).callAction(SETTINGS_ID, SAVE_PROPERTY_CONFIG_ID);
         getSaveConfigurationWizard().saveAsNew(configurationName, fields);
+    }
+
+    @Step("Update configuration for properties")
+    public void updateConfigurationForProperties(int rowId, String widgetId) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getPropertyPanel(rowId, widgetId).callAction(SETTINGS_ID, SAVE_PROPERTY_CONFIG_ID);
+        getSaveConfigurationWizard().save();
+    }
+
+    @Step("Download configuration for properties")
+    public void downloadConfigurationForProperties(int rowId, String widgetId, String configurationName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getPropertyPanel(rowId, widgetId).callAction(SETTINGS_ID, DOWNLOAD_PROPERTY_CONFIG_ID);
+        getChooseConfigurationWizard().chooseConfiguration(configurationName).download();
+    }
+
+    @Step("Delete configuration of properties")
+    public void removeConfigurationOfProperties(int rowId, String widgetId, String configurationName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getPropertyPanel(rowId, widgetId).callAction(SETTINGS_ID, CHOOSE_PROPERTY_CONFIG_ID);
+        getChooseConfigurationWizard().deleteConfiguration(configurationName).cancel();
     }
 
     @Step("Save configuration for page")
@@ -397,6 +420,14 @@ public class NewInventoryViewPage extends BasePage {
     public void applyConfigurationForTabs(String configurationName) {
         DelayUtils.waitForPageToLoad(driver, wait);
         getTabsWidget().callActionById(ActionsContainer.KEBAB_GROUP_ID, CHOOSE_CONFIG_ID);
+        getChooseConfigurationWizard().chooseConfiguration(configurationName).apply();
+    }
+
+    @Step("Apply configuration for properties")
+    public void applyConfigurationForProperties(int rowId, String widgetId, String
+            configurationName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getPropertyPanel(rowId, widgetId).callAction(SETTINGS_ID, CHOOSE_PROPERTY_CONFIG_ID);
         getChooseConfigurationWizard().chooseConfiguration(configurationName).apply();
     }
 
