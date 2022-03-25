@@ -88,8 +88,7 @@ public class DetailsConfigurationTest extends BaseTestCase {
 
         inventoryViewPage.applyConfigurationForProperties(ROW_ID_0, PROPERTY_PANEL_ID, CONFIGURATION_NAME_PROPERTIES);
         PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel(ROW_ID_0, PROPERTY_PANEL_ID);
-        Assertions.assertThat(propertyPanel.getPropertyLabels()).isNotEmpty();
-        Assertions.assertThat(propertyPanel.getPropertyLabels()).doesNotContain(NATIONALITY_LABEL);
+        Assertions.assertThat(propertyPanel.getPropertyLabels()).isNotEmpty().doesNotContain(NATIONALITY_LABEL);
 
     }
 
@@ -165,8 +164,7 @@ public class DetailsConfigurationTest extends BaseTestCase {
         inventoryViewPage.selectFirstRow();
         PropertyPanel propertyPanel1 = inventoryViewPage.getPropertyPanel(ROW_ID_0, PROPERTY_PANEL_ID);
 
-        Assertions.assertThat(propertyPanel1.getPropertyLabels()).isNotEmpty();
-        Assertions.assertThat(propertyPanel1.getPropertyLabels()).doesNotContain(GENDER_LABEL);
+        Assertions.assertThat(propertyPanel1.getPropertyLabels()).isNotEmpty().doesNotContain(GENDER_LABEL);
         inventoryViewPage.removeConfigurationOfProperties(ROW_ID_0, PROPERTY_PANEL_ID, CONFIGURATION_NAME_PROPERTIES_DEFAULT_FOR_USER);
     }
 
