@@ -4,19 +4,22 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageContainer.Message;
 import com.oss.framework.components.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.components.alerts.SystemMessageInterface;
+import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.PlanViewWizardPage;
 import com.oss.pages.bpm.TasksPage;
 import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 import com.oss.pages.platform.HomePage;
-import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
+import com.oss.pages.platform.NewInventoryViewPage;
+import com.oss.pages.platform.SearchObjectTypePage;
 import com.oss.pages.radio.CellSiteConfigurationPage;
 
 import io.qameta.allure.Description;
@@ -55,6 +58,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
     private static final String BPM_AND_PLANNING = "BPM and Planning";
     private static final String PROCESS_INSTANCES = "Process Instances";
     private static final String MANUFACTURER = "HUAWEI Technology Co.,Ltd";
+    private SoftAssert softAssert;
 
     private CellSiteConfigurationPage cellSiteConfigurationPage;
     private String processNRPCode;
@@ -63,6 +67,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
     @BeforeClass
     public void openConsole() {
         waitForPageToLoad();
+        softAssert = new SoftAssert();
     }
 
     @Test(priority = 1)
@@ -282,14 +287,17 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         HomePage homePage = new HomePage(driver);
         homePage.goToHomePage(driver, BASIC_URL);
         waitForPageToLoad();
-        homePage.chooseFromLeftSideMenu("Legacy Inventory Dashboard", "Resource Inventory ");
+        homePage.chooseFromLeftSideMenu("Inventory View", "Resource Inventory ");
         waitForPageToLoad();
-        homePage.setOldObjectType(SITE);
+        SearchObjectTypePage searchObjectTypePage = new SearchObjectTypePage(driver, webDriverWait);
+        searchObjectTypePage.searchType(SITE);
         waitForPageToLoad();
-        OldInventoryViewPage oldInventoryViewPage = new OldInventoryViewPage(driver);
-        oldInventoryViewPage.filterObject(NAME, LOCATION_NAME);
+        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
+        newInventoryViewPage.searchObject(LOCATION_NAME);
         waitForPageToLoad();
-        oldInventoryViewPage.expandShowOnAndChooseView("Cell Site Configuration");
+        newInventoryViewPage.selectFirstRow();
+        waitForPageToLoad();
+        newInventoryViewPage.callAction(ActionsContainer.SHOW_ON_GROUP_ID, "Cell Site Configuration");
         waitForPageToLoad();
     }
 
@@ -298,12 +306,12 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
     }
 
     private void checkMessageContainsText(String message) {
-        Assert.assertTrue((getFirstMessage().getText())
+        softAssert.assertTrue((getFirstMessage().getText())
                 .contains(message));
     }
 
     private void checkMessageText(String message) {
-        Assert.assertEquals((getFirstMessage().getText()), message);
+        softAssert.assertEquals((getFirstMessage().getText()), message);
     }
 
     private Message getFirstMessage() {
@@ -330,7 +338,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
 
     private SystemMessageInterface getSuccesSystemMessage() {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, 90));
-        Assert.assertEquals((systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType()), MessageType.SUCCESS);
+        softAssert.assertEquals((systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType()), MessageType.SUCCESS);
         return systemMessage;
     }
 }

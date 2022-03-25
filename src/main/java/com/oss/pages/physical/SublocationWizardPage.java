@@ -17,6 +17,7 @@ public class SublocationWizardPage extends BasePage {
     private static final String DEPTH = "depth";
     private static final String QUANTITY = "quantity";
     private static final String WIZARD_ID = "sublocation-wizard";
+    private static final String DESCRIPTION = "description";
     private final Wizard wizard;
 
     public SublocationWizardPage(WebDriver driver) {
@@ -53,6 +54,10 @@ public class SublocationWizardPage extends BasePage {
     @Step("Set Quantity")
     public void setQuantity(String quantity) {
         wizard.setComponentValue(QUANTITY, quantity, ComponentType.NUMBER_FIELD);
+    }
+    @Step("Set Description")
+    public void setDescription(String description) {
+        wizard.setComponentValue(DESCRIPTION, description, ComponentType.TEXT_FIELD);
     }
 
     @Step("Click Next Step button")

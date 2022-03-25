@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
@@ -43,7 +44,7 @@ public class ISPConfigurationTest extends BaseTestCase {
     private static final String PHYSICAL_DEVICE_MODEL3 = "ADVA Optical Networking FMT/1HU";
     private static final String PHYSICAL_DEVICE_NAME2 = "ISPPhysicalDevice3";
     private static final String PHYSICAL_DEVICE_NAME3 = "ISPPhysicalDevice2";
-    private static final String MODEL_UPDATE = "Alcatel 7302";
+    private static final String MODEL_UPDATE = "Alcatel 7302 ISAM";
     private static final String MOUNTING_EDITOR_MODEL = "Generic 19\" 42U 600x800 (Bottom-Up)";
     private static final String MOUNTING_EDITOR_NAME = "ISPMountingEditor";
     private static final String COOLING_ZONE_NAME = "ISPCoolingZone";
@@ -68,6 +69,7 @@ public class ISPConfigurationTest extends BaseTestCase {
     private static String COOLING_ZONE_LOAD_RATIO = "0.00";
     private static String COOLING_ZONE_CAPACITY = "0.00";
     private String LOCATION_OVERVIEW_URL = "";
+    private SoftAssert softAssert;
 
     @BeforeClass
     @Description("Open Console and set Live perspective")
@@ -75,6 +77,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        softAssert = new SoftAssert();
     }
 
     @Test(priority = 1, description = "Create building")
@@ -712,7 +715,7 @@ public class ISPConfigurationTest extends BaseTestCase {
 
     private SystemMessageInterface getSuccesSystemMessage() {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, 90));
-        Assert.assertEquals((systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType()), MessageType.SUCCESS);
+        softAssert.assertEquals((systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType()), MessageType.SUCCESS);
         return systemMessage;
     }
 }
