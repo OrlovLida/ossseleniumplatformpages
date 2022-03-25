@@ -5,8 +5,8 @@ import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.Wizard;
 import com.oss.framework.widgets.advancedsearch.AdvancedSearchWidget;
+import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
@@ -25,7 +25,7 @@ public class ServiceQualificationWizard extends BasePage {
     private static final String PROVIDE_ALTERNATIVE_CHECKBOX = "sqProvideAlternativesCheckboxUID";
     private static final String PROVIDE_RESOURCE_CHECKBOX = "sqProvideResourcesCheckboxUID";
     private static final String PROVIDE_SERVICE_NODE_CHECKBOX = "sqProvideServiceNodesCheckboxUID";
-    private static final String ADVANCED_SEARCH_BUTTON = "btn-as-modal";
+    private static final String ADVANCED_SEARCH_BUTTON = "sqSearchFieldUID_OSF_as-modal";
     private static final String ADVANCED_SEARCH_ID = "advancedSearch";
     private static final String TABLE_DISTRIBUTION_AREA_SQ_SEARCH_FIELD_UID = "table-DistributionArea_sqSearchFieldUID_object_factory_modal_result_DistributionArea";
     private static final String TABLE_ADDRESS_SQ_SEARCH_FIELD_UID = "table-Address_sqSearchFieldUID_object_factory_modal_result_Address";
@@ -93,7 +93,7 @@ public class ServiceQualificationWizard extends BasePage {
     @Step("Open advanced search window")
     public ServiceQualificationWizard openAdvancedSearchWindow() {
         waitForPageToLoad();
-        getServiceQualificationWizard().callButtonById(ADVANCED_SEARCH_BUTTON);
+        getServiceQualificationWizard().clickButtonById(ADVANCED_SEARCH_BUTTON);
         return this;
     }
 

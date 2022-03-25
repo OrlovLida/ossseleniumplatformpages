@@ -25,7 +25,6 @@ public class PhysicalInventoryClient {
     private static final String PORTS_PLUGGABLE_API_PATH = "/ports/%s/pluggablemodule?invokeTPService=true&checkCompatibility=false";
     private static final String CHASSIS_STRUCTURE_API_PATH = "/chassis/%s/structure";
     private static final String CARDS_STRUCTURE_API_PATH = "/cards/%s/structure";
-    private static final String DEVICE_DELETE_API_PATH = "/devices/v2/%s";
     private static PhysicalInventoryClient instance;
     private final Environment env;
 
@@ -129,18 +128,6 @@ public class PhysicalInventoryClient {
                 .findAny()
                 .get()
                 .toString();
-    }
-
-    public void deleteDevice(String deviceId) {
-        String devicePath = String.format(DEVICE_DELETE_API_PATH, deviceId);
-        env.getPhysicalInventoryCoreRequestSpecification()
-                .given()
-                .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
-                .when()
-                .delete(devicePath)
-                .then()
-                .statusCode(200).assertThat();
-
     }
 
     private PhysicalDeviceDTO getDeviceStructure(Long deviceId) {

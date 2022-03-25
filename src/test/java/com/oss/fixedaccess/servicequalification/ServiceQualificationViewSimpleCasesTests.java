@@ -17,7 +17,7 @@ import io.qameta.allure.Description;
 
 public class ServiceQualificationViewSimpleCasesTests extends BaseTestCase {
 
-    private static final String REQUIRED_DOWNLOAD_SPEED_ERROR_MESSAGE = "sRequired download speed is greater than max download speed";
+    private static final String REQUIRED_DOWNLOAD_SPEED_ERROR_MESSAGE = "Required download speed is greater than max download speed";
     private static final String DA_QUERY_OPTION = "Distribution Area";
     private static final String INSTALLATION_ADDRESS_QUERY_OPTION = "Installation Address";
     private static final String TECHNICAL_STANDARD = "FTTH";
@@ -53,7 +53,6 @@ public class ServiceQualificationViewSimpleCasesTests extends BaseTestCase {
         serviceQualificationView = new ServiceQualificationView(driver);
         physicalDataCreatorForSimpleCasesWithSQ = new PhysicalDataCreator(env);
         accessTechnologyController = new AccessTechnologyController(env);
-        accessTechnologyController.fillAccessTechnologyContainer();
         softAssert = new SoftAssert();
     }
 
@@ -77,6 +76,7 @@ public class ServiceQualificationViewSimpleCasesTests extends BaseTestCase {
         splitterId = physicalDataCreatorForSimpleCasesWithSQ.getSplitterId();
         installationODFId = physicalDataCreatorForSimpleCasesWithSQ.getInstallationODFId();
         opticalOutletId = physicalDataCreatorForSimpleCasesWithSQ.getOpticalOutletId();
+        accessTechnologyController.fillAccessTechnologyContainer();
     }
 
     @Test()

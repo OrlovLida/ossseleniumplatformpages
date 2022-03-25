@@ -1,13 +1,20 @@
 package com.oss.services;
 
+import java.util.List;
+
+import javax.ws.rs.core.Response;
+
 import com.comarch.oss.addressinventory.api.dto.AddressDTO;
 import com.comarch.oss.addressinventory.api.dto.AddressGlobalSearchResultDTO;
 import com.comarch.oss.addressinventory.api.dto.AddressItemDTO;
 import com.comarch.oss.addressinventory.api.dto.AddressItemSearchResultDTO;
 import com.comarch.oss.addressinventory.api.dto.GeographicalAddressDTO;
+import com.google.common.collect.Lists;
 import com.jayway.restassured.http.ContentType;
 import com.oss.untils.Constants;
 import com.oss.untils.Environment;
+
+import static java.net.HttpURLConnection.HTTP_NO_CONTENT;
 
 /**
  * @author Milena Miętkiewicz
@@ -19,10 +26,10 @@ public class AddressClient {
     private static final String ADDRESS_ITEM_API_PATH = "/addressitem";
     private static final String GEOGRAPHICAL_ADDRESS_SEARCH_PATH = "/search";
     private static AddressClient instance;
-    private final Environment ENV;
+    private final Environment env;
 
     public AddressClient(Environment environment) {
-        ENV = environment;
+        env = environment;
     }
 
     public static AddressClient getInstance(Environment pEnvironment) {
@@ -34,7 +41,7 @@ public class AddressClient {
     }
 
     public AddressDTO[] createGeographicalAddress(GeographicalAddressDTO address) {
-        return ENV.getAddressCoreRequestSpecification()
+        return env.getAddressCoreRequestSpecification()
                 .given()
                 .contentType(ContentType.JSON)
                 .body(address)
@@ -48,7 +55,7 @@ public class AddressClient {
     }
 
     public String createAddressItem(AddressItemDTO addressItem) {
-        com.jayway.restassured.response.Response response = ENV.getAddressCoreRequestSpecification()
+        com.jayway.restassured.response.Response response = env.getAddressCoreRequestSpecification()
                 .given()
                 .contentType(ContentType.JSON)
                 .body(Lists.newArrayList(addressItem))
@@ -64,7 +71,7 @@ public class AddressClient {
     }
 
     public AddressItemSearchResultDTO getAddressItemByName(String name) {
-        return ENV.getAddressCoreRequestSpecification()
+        return env.getAddressCoreRequestSpecification()
                 .given()
                 .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
                 .queryParam(Constants.RSQL, "name=='" + name + "'")
@@ -78,7 +85,7 @@ public class AddressClient {
     }
 
     public GeographicalAddressDTO[] getGeographicalAddressById(Long addressId) {
-        return ENV.getAddressCoreRequestSpecification()
+        return env.getAddressCoreRequestSpecification()
                 .given()
                 .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
                 .when()
@@ -91,7 +98,7 @@ public class AddressClient {
     }
 
     public com.jayway.restassured.response.Response removeGeographicalAddress(Long addressId) {
-        return ENV.getAddressCoreRequestSpecification()
+        return env.getAddressCoreRequestSpecification()
                 .when()
                 .delete(GEOGRAPHICAL_ADDRESS_API_PATH + "/" + addressId)
                 .then()
@@ -104,9 +111,8 @@ public class AddressClient {
                 .response();
     }
 
-
-    public List <AddressGlobalSearchResultDTO> getGeographicalAddresses(){
-        AddressGlobalSearchResultDTO[] geographicalAddresses = ENV.getAddressCoreRequestSpecification()
+    public List<AddressGlobalSearchResultDTO> getGeographicalAddresses() {
+        AddressGlobalSearchResultDTO[] geographicalAddresses = env.getAddressCoreRequestSpecification()
                 .given()
                 .queryParam(Constants.TYPES, "GeographicalAddress")
                 .queryParam(Constants.PERSPECTIVE, Constants.LIVE)

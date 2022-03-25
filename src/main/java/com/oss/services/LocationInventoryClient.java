@@ -10,8 +10,6 @@ import com.comarch.oss.locationinventory.api.dto.SublocationDTO;
 import com.jayway.restassured.http.ContentType;
 import com.oss.untils.Constants;
 import com.oss.untils.Environment;
-import javax.ws.rs.core.Response;
-import java.util.List;
 
 import static java.net.HttpURLConnection.HTTP_NO_CONTENT;
 
@@ -97,31 +95,6 @@ public class LocationInventoryClient {
                 .delete(SUB_LOCATION_API_PATH + "/" + ids)
                 .then()
                 .statusCode(Response.Status.NO_CONTENT.getStatusCode()).assertThat();
-    }
-
-
-    public Optional<String> getLocationId(String locationName){
-        LocationInventoryClient client = new LocationInventoryClient(env);
-        List<Integer> locationIds = client.getPhysicalLocationByName(locationName);
-        return locationIds.stream().findFirst().map(Object::toString);
-    }
-
-    public void updateSubLocation(Long subLocationId,String subLocationType, String subLocationName, Long preciseLocation, String preciseLocationType,
-                                  Long parentLocationId, String parentLocationType){
-        LocationInventoryClient client = new LocationInventoryClient(env);
-        SublocationDTO subLocation = SublocationDTO.builder()
-                .location(getLocation(parentLocationId, parentLocationType))
-                .preciseLocation(getLocation(preciseLocation, preciseLocationType))
-                .name(subLocationName)
-                .type(subLocationType)
-                .id(subLocationId)
-                .build();
-        client.updateSubLocation(subLocation, subLocationId.toString());
-    }
-
-    public void deleteSubLocation(String ids){
-        LocationInventoryClient client = new LocationInventoryClient(env);
-        client.deleteSubLocation(ids);
     }
 
     public com.jayway.restassured.response.Response removeLocation(Long locationId, String locationType) {

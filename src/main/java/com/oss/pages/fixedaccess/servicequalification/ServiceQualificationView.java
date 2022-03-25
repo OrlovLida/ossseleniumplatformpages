@@ -10,7 +10,7 @@ import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
-import com.oss.framework.widgets.tablewidget.OldTable;
+import com.oss.framework.widgets.table.OldTable;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
@@ -18,6 +18,7 @@ import io.qameta.allure.Step;
 public class ServiceQualificationView extends BasePage {
 
     private static final String SERVICE_QUALIFICATION_VIEW_TABLE_ID = "sqTableAppId";
+    private static final String SERVICE_QUALIFICATION_PROP_PANEL_ID = "sqAttributesAppId";
     private static final String SERVICE_CONNECTION_OPTION_COLUMN_LABEL = "Service Connection Options";
     private static final String DOWNLOAD_SPEED_COLUMN_LABEL = "Download Speed";
     private static final String UPLOAD_SPEED_COLUMN_LABEL = "Upload Speed";
@@ -63,6 +64,7 @@ public class ServiceQualificationView extends BasePage {
 
     @Step("Get value of {property Name}")
     public String getValueFromPropertyPanelInSQView(String propertyName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
         return getOldPropertyPanel().getPropertyValue(propertyName);
     }
 
@@ -84,18 +86,18 @@ public class ServiceQualificationView extends BasePage {
 
     private OldTable getOldTable() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        return OldTable.createByComponentDataAttributeName(driver, wait, SERVICE_QUALIFICATION_VIEW_TABLE_ID);
+        return OldTable.createById(driver, wait, SERVICE_QUALIFICATION_VIEW_TABLE_ID);
     }
 
     private OldPropertyPanel getOldPropertyPanel() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        return OldPropertyPanel.create(driver, wait);
+        return OldPropertyPanel.createById(driver, wait, SERVICE_QUALIFICATION_PROP_PANEL_ID);
     }
 
     private void collectValuesForFirstColumnAndAnotherOne(String columnName) {
         if (!allValuesInTable.containsKey(columnName)) {
             Map<String, String> tableValues = new HashMap<>();
-            int rowNumbers = getOldTable().getNumberOfRowsInTable(SERVICE_CONNECTION_OPTION_COLUMN_LABEL);
+            int rowNumbers = getOldTable().countRows(SERVICE_CONNECTION_OPTION_COLUMN_LABEL);
             for (int i = 0; i < rowNumbers; i++) {
                 tableValues.put(getValueFromCell(i, SERVICE_CONNECTION_OPTION_COLUMN_LABEL), getValueFromCell(i, columnName));
             }
