@@ -6,6 +6,7 @@ import javax.ws.rs.core.Response;
 
 import com.comarch.oss.locationinventory.api.dto.PhysicalLocationDTO;
 import com.comarch.oss.locationinventory.api.dto.ResourceDTO;
+import com.comarch.oss.locationinventory.api.dto.SearchResultDTO;
 import com.comarch.oss.locationinventory.api.dto.SublocationDTO;
 import com.jayway.restassured.http.ContentType;
 import com.oss.untils.Constants;
@@ -95,4 +96,18 @@ public class LocationInventoryClient {
                 .statusCode(Response.Status.NO_CONTENT.getStatusCode()).assertThat();
     }
 
+    public SearchResultDTO getSublocationId(String locationId, String query) {
+        return env.getLocationInventoryCoreRequestSpecification()
+                .given()
+                .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
+                .queryParam("location", locationId)
+                .queryParam("query", query)
+                .contentType(ContentType.JSON)
+                .when()
+                .get(SUB_LOCATION_API_PATH)
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode()).assertThat()
+                .extract()
+                .as(SearchResultDTO.class);
+    }
 }

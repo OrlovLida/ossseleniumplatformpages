@@ -6,6 +6,7 @@ import java.util.Optional;
 import com.comarch.oss.locationinventory.api.dto.AttributeDTO;
 import com.comarch.oss.locationinventory.api.dto.PhysicalLocationDTO;
 import com.comarch.oss.locationinventory.api.dto.ResourceDTO;
+import com.comarch.oss.locationinventory.api.dto.SearchResultDTO;
 import com.comarch.oss.locationinventory.api.dto.SublocationDTO;
 import com.oss.services.LocationInventoryClient;
 import com.oss.untils.Constants;
@@ -60,15 +61,16 @@ public class LocationInventoryRepository {
         String subLocationId = resourceDTO.getUri().toString();
         return Long.valueOf(subLocationId.substring(subLocationId.lastIndexOf("/") + 1, subLocationId.indexOf("?")));
     }
-
-    public Optional<String> getLocationId(String locationName){
+    
+    public Optional<String> getLocationId(String locationName) {
         LocationInventoryClient client = new LocationInventoryClient(env);
         List<Integer> locationIds = client.getPhysicalLocationByName(locationName);
         return locationIds.stream().findFirst().map(Object::toString);
     }
-
-    public void updateSubLocation(Long subLocationId,String subLocationType, String subLocationName, Long preciseLocation, String preciseLocationType,
-                                  Long parentLocationId, String parentLocationType){
+    
+    public void updateSubLocation(Long subLocationId, String subLocationType, String subLocationName, Long preciseLocation,
+            String preciseLocationType,
+            Long parentLocationId, String parentLocationType) {
         LocationInventoryClient client = new LocationInventoryClient(env);
         SublocationDTO subLocation = SublocationDTO.builder()
                 .location(getLocation(parentLocationId, parentLocationType))
@@ -79,10 +81,16 @@ public class LocationInventoryRepository {
                 .build();
         client.updateSubLocation(subLocation, subLocationId.toString());
     }
-
-    public void deleteSubLocation(String ids){
+    
+    public void deleteSubLocation(String ids) {
         LocationInventoryClient client = new LocationInventoryClient(env);
         client.deleteSubLocation(ids);
+    }
+    
+    public Long getSublocationId(String locationId, String floorName) {
+        LocationInventoryClient client = new LocationInventoryClient(env);
+        SearchResultDTO sublocationId = client.getSublocationId(locationId, "Name==" + floorName);
+        return sublocationId.getSearchResult().get(0).getId();
     }
     
     private PhysicalLocationDTO buildLocation(String locationType, String locationName, Long addressId) {
