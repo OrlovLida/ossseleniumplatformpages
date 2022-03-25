@@ -14,6 +14,7 @@ public class Constants {
     public static final String CELL_ID = "cell_id";
     public static final String PERSPECTIVE = "perspective";
     public static final String LIVE = "LIVE";
+    public static final String PLAN = "PLAN";
     public static final String GENERATE_CONTROLLER_ID = "generateControllerId";
     public static final String GENERATE_BASE_STATION_ID = "generateBaseStationId";
     public static final String GENERATE_CELL_ID = "generateCellId";

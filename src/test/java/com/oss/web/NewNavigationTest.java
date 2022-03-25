@@ -172,7 +172,7 @@ public class NewNavigationTest extends BaseTestCase {
         ApplicationWizard applicationWizard = openApplicationWizard();
         applicationWizard.addPathParam(TEST_MOVIE_TYPE);
         applicationWizard.clickSave();
-        DelayUtils.sleep(3000);
+        DelayUtils.sleep(10000);
         toolsManagerWindow.openApplication(CATEGORY_NAME, APPLICATION_NAME_2);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assertions.assertThat(driver.getCurrentUrl()).contains(TEST_MOVIE_TYPE);
@@ -184,7 +184,7 @@ public class NewNavigationTest extends BaseTestCase {
         ApplicationWizard applicationWizard = openApplicationWizard();
         applicationWizard.addQueryParam("query", "rating=='10'");
         applicationWizard.clickSave();
-        DelayUtils.sleep(2000);
+        DelayUtils.sleep(10000);
         toolsManagerWindow.openApplication(CATEGORY_NAME, APPLICATION_NAME_2);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         ArrayList<String> ratingValues = getValuesFromColumn("rating");
@@ -230,7 +230,7 @@ public class NewNavigationTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         applicationWizard.setPolicies(PHYSICAL_DEVICE_TYPE, MODELS_LEARNING_ROLE);
         applicationWizard.clickSave();
-        DelayUtils.sleep(5000);
+        DelayUtils.sleep(10000);
         Assertions.assertThat(toolsManagerWindow.getApplicationURL(APPLICATION_NAME_2)).isEmpty();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         changeUser(USER_2, PASSWORD_2);
@@ -260,7 +260,7 @@ public class NewNavigationTest extends BaseTestCase {
         ApplicationWizard applicationWizard = openApplicationWizard();
         applicationWizard.setApplicationName(APPLICATION_NAME_2_UPDATE);
         applicationWizard.clickSave();
-        DelayUtils.sleep(5000);
+        DelayUtils.sleep(10000);
         List<String> applicationNames = toolsManagerWindow.getApplicationNames(CATEGORY_NAME);
         Assertions.assertThat(applicationNames).contains(APPLICATION_NAME_2_UPDATE);
     }
@@ -271,7 +271,7 @@ public class NewNavigationTest extends BaseTestCase {
         CategoryWizard categoryWizard = CategoryWizard.create(driver, webDriverWait);
         categoryWizard.setName(ACTOR_SUBCATEGORY_UPDATE);
         categoryWizard.clickSave();
-        DelayUtils.sleep(5000);
+        DelayUtils.sleep(10000);
         List<String> subcategoriesNames = toolsManagerWindow.getSubcategoriesNames(CATEGORY_NAME);
         Assertions.assertThat(subcategoriesNames).doesNotContain(ACTORS_SUBCATEGORY).contains(ACTOR_SUBCATEGORY_UPDATE);
     }
@@ -282,7 +282,7 @@ public class NewNavigationTest extends BaseTestCase {
         CategoryWizard categoryWizard = CategoryWizard.create(driver, webDriverWait);
         categoryWizard.setName(CATEGORY_NAME_UPDATE);
         categoryWizard.clickSave();
-        DelayUtils.sleep(5000);
+        DelayUtils.sleep(10000);
         List<String> categoriesName = toolsManagerWindow.getCategoriesName();
         Assertions.assertThat(categoriesName).contains(CATEGORY_NAME_UPDATE).doesNotContain(CATEGORY_NAME);
     }
@@ -292,7 +292,7 @@ public class NewNavigationTest extends BaseTestCase {
     public void deleteApplication() {
         toolsManagerWindow.callActionApplication(APPLICATION_NAME, CATEGORY_NAME_UPDATE, DELETE_APPLICATION_ID);
         confirmDelete();
-        DelayUtils.sleep(5000);
+        DelayUtils.sleep(10000);
         List<String> applicationNames = toolsManagerWindow.getApplicationNames(CATEGORY_NAME_UPDATE);
         Assertions.assertThat(applicationNames).doesNotContain(APPLICATION_NAME).isNotEmpty();
     }
@@ -302,7 +302,7 @@ public class NewNavigationTest extends BaseTestCase {
     public void deleteSubcategory() {
         toolsManagerWindow.callActionSubcategory(MOVIES_SUBCATEGORY, CATEGORY_NAME_UPDATE, DELETE_CATEGORY_BUTTON_ID);
         confirmDelete();
-        DelayUtils.sleep(5000);
+        DelayUtils.sleep(10000);
         List<String> subcategoriesNames = toolsManagerWindow.getSubcategoriesNames(CATEGORY_NAME_UPDATE);
         Assertions.assertThat(subcategoriesNames).contains(ACTOR_SUBCATEGORY_UPDATE).doesNotContain(MOVIES_SUBCATEGORY);
     }

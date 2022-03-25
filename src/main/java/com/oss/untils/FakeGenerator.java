@@ -27,6 +27,10 @@ public class FakeGenerator {
     public static String getIdNumber() {
         return faker.idNumber().valid();
     }
+
+    public static int getRandomInt(){
+        return faker.random().nextInt(500);
+    }
     
     public static String getLocation(FilmTitle filmTitle) {
         switch (filmTitle) {

@@ -9,6 +9,14 @@ import com.comarch.oss.physicalinventory.api.dto.PhysicalDeviceDTO;
 import com.comarch.oss.physicalinventory.api.dto.PluggableModuleDTO;
 import com.comarch.oss.physicalinventory.api.dto.PortDTO;
 import com.comarch.oss.physicalinventory.api.dto.ResourceDTO;
+import java.util.Collections;
+
+import com.comarch.oss.physicalinventory.api.dto.AttributeDTO;
+import com.comarch.oss.physicalinventory.api.dto.CardDTO;
+import com.comarch.oss.physicalinventory.api.dto.ChassisDTO;
+import com.comarch.oss.physicalinventory.api.dto.PhysicalDeviceDTO;
+import com.comarch.oss.physicalinventory.api.dto.ResourceDTO;
+import com.comarch.oss.physicalinventory.api.dto.SearchResultDTO;
 import com.oss.services.PhysicalInventoryClient;
 import com.oss.untils.Environment;
 
@@ -19,7 +27,6 @@ public class PhysicalInventoryRepository {
 
     public PhysicalInventoryRepository(Environment env) {
         this.env = env;
-        client = new PhysicalInventoryClient(env);
     }
 
     public Long createDevice(String locationType, Long locationId, Long deviceModelId, String deviceName, String deviceModelType) {
@@ -30,6 +37,30 @@ public class PhysicalInventoryRepository {
 
     public Long createDeviceWithCard(String locationType, Long locationId, Long deviceModelId, String deviceName, String deviceModelType, String slotName, Long cardModelId, String cardModelType) {
         ResourceDTO resourceDTO = client.createDevice(buildDeviceWithCard(locationType, locationId, deviceModelId, deviceName, deviceModelType, slotName, cardModelId, cardModelType));
+
+    public Long createDevice(String locationType, Long locationId, Long deviceModelId, String deviceName, String deviceModelType,
+            long projectId) {
+        ResourceDTO resourceDTO =
+                client.createDevice(buildDevice(locationType, locationId, deviceModelId, deviceName, deviceModelType), projectId);
+        String deviceId = resourceDTO.getUri().toString();
+        return Long.valueOf(deviceId.substring(deviceId.lastIndexOf("/") + 1, deviceId.indexOf("?")));
+    }
+
+    public void updateDeviceSerialNumber(long deviceId, String locationType, Long locationId, String serialNumber, Long deviceModelId,
+            String deviceModelType, long projectId) {
+        PhysicalDeviceDTO build = PhysicalDeviceDTO.builder()
+                .serialNumber(serialNumber)
+                .location(getLocation(locationId, locationType))
+                .deviceModel(getDeviceModelId(deviceModelId, deviceModelType))
+                .build();
+        client.updateDevice(build, deviceId, projectId);
+    }
+
+    public Long createDeviceWithCard(String locationType, Long locationId, Long deviceModelId, String deviceName, String deviceModelType,
+            String slotName, Long cardModelId, String cardModelType) {
+        PhysicalInventoryClient client = new PhysicalInventoryClient(env);
+        ResourceDTO resourceDTO = client.createDevice(buildDeviceWithCard(locationType, locationId, deviceModelId, deviceName,
+                deviceModelType, slotName, cardModelId, cardModelType));
         String deviceId = resourceDTO.getUri().toString();
         return Long.valueOf(deviceId.substring(deviceId.lastIndexOf("/") + 1, deviceId.indexOf("?")));
     }
@@ -65,7 +96,13 @@ public class PhysicalInventoryRepository {
         client.deleteDevice(deviceId);
     }
 
-    private PhysicalDeviceDTO buildDevice(String locationType, Long locationId, Long deviceModelId, String deviceName, String deviceModelType) {
+    public Long getDeviceId(String locationId, String deviceName) {
+        SearchResultDTO deviceId = client.getDeviceId(locationId, "Name==" + deviceName);
+        return deviceId.getSearchResult().get(0).getId();
+    }
+
+    private PhysicalDeviceDTO buildDevice(String locationType, Long locationId, Long deviceModelId, String deviceName,
+            String deviceModelType) {
         return PhysicalDeviceDTO.builder()
                 .deviceModel(getDeviceModelId(deviceModelId, deviceModelType))
                 .location(getLocation(locationId, locationType))
@@ -73,7 +110,8 @@ public class PhysicalInventoryRepository {
                 .build();
     }
 
-    private PhysicalDeviceDTO buildDeviceWithCard(String locationType, Long locationId, Long deviceModelId, String deviceName, String deviceModelType, String slotName, Long id, String cardModelType) {
+    private PhysicalDeviceDTO buildDeviceWithCard(String locationType, Long locationId, Long deviceModelId, String deviceName,
+            String deviceModelType, String slotName, Long id, String cardModelType) {
         return PhysicalDeviceDTO.builder()
                 .deviceModel(getDeviceModelId(deviceModelId, deviceModelType))
                 .location(getLocation(locationId, locationType))

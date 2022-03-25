@@ -9,11 +9,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.inputs.HtmlEditor;
+import com.oss.framework.components.layout.Card;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.BasePage;
+import com.oss.pages.servicedesk.ticket.IssueDetailsPage;
 import com.oss.untils.FileDownload;
 
 import io.qameta.allure.Step;
+
+import static com.oss.pages.servicedesk.ticket.IssueDetailsPage.DETAILS_PAGE_URL_PATTERN;
 
 public abstract class BaseSDPage extends BasePage {
 
@@ -29,11 +33,13 @@ public abstract class BaseSDPage extends BasePage {
     }
 
     public void openPage(WebDriver driver, String url) {
+        WebDriverWait wait = new WebDriverWait(driver, 150);
         driver.get(url);
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Opening page: {}", url);
     }
 
+    @Step("Set value in HTML Editor")
     public void setValueInHtmlEditor(String value, String componentId) {
         HtmlEditor htmlEditor = HtmlEditor.create(driver, wait, componentId);
         htmlEditor.clear();
@@ -61,5 +67,26 @@ public abstract class BaseSDPage extends BasePage {
     public boolean checkIfFileIsNotEmpty(String fileName) {
         log.info("Checking if file is not empty");
         return FileDownload.checkIfFileIsNotEmpty(fileName);
+    }
+
+    @Step("Open Details View")
+    public IssueDetailsPage openIssueDetailsView(String issueId, String basicURL, String issueType) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Opening issue details with id: {}", issueId);
+        driver.get(String.format(DETAILS_PAGE_URL_PATTERN, basicURL, issueType, issueId));
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return new IssueDetailsPage(driver, wait);
+    }
+
+    @Step("Maximize window")
+    public void maximizeWindow(String windowId) {
+        Card.createCard(driver, wait, windowId).maximizeCard();
+        log.info("Maximizing window");
+    }
+
+    @Step("Minimize window")
+    public void minimizeWindow(String windowId) {
+        Card.createCard(driver, wait, windowId).minimizeCard();
+        log.info("Minimizing window");
     }
 }

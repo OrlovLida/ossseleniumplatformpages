@@ -7,7 +7,8 @@ import org.testng.annotations.Test;
 import com.oss.BaseTestCase;
 import com.oss.pages.platform.NotificationWrapperPage;
 import com.oss.pages.servicedesk.BaseSDPage;
-import com.oss.pages.servicedesk.ticket.TicketDashboardPage;
+import com.oss.pages.servicedesk.GraphQLSearchPage;
+import com.oss.pages.servicedesk.ticket.BaseDashboardPage;
 import com.oss.pages.servicedesk.ticket.TicketSearchPage;
 import com.oss.pages.servicedesk.ticket.wizard.ExportWizardPage;
 
@@ -15,7 +16,7 @@ import io.qameta.allure.Description;
 
 public class ExportTest extends BaseTestCase {
 
-    private TicketDashboardPage ticketDashboardPage;
+    private BaseDashboardPage baseDashboardPage;
     private TicketSearchPage ticketSearchPage;
     private ExportWizardPage exportWizardPage;
     private NotificationWrapperPage notificationWrapperPage;
@@ -24,27 +25,27 @@ public class ExportTest extends BaseTestCase {
     private static final String EXPORT_FILE_NAME = "Selenium test " + BaseSDPage.getDateFormat();
     private static final String DATE_MASK = "ISO Local Date";
     private static final String DOWNLOAD_FILE = "*.csv";
+    private static final String TICKET_DASHBOARD = "_TroubleTickets";
 
     @BeforeMethod
     public void goToTicketDashboardPage() {
-        ticketDashboardPage = TicketDashboardPage.goToPage(driver, BASIC_URL);
+        baseDashboardPage = new BaseDashboardPage(driver, webDriverWait).goToPage(driver, BASIC_URL, TICKET_DASHBOARD);
     }
 
     @Test(priority = 1, testName = "Export from Ticket Search View", description = "Export from Ticket Search View")
     @Description("Export from Ticket Search View")
     public void exportFromTicketSearch() {
-        ticketSearchPage = new TicketSearchPage(driver, webDriverWait);
-        ticketSearchPage.goToPage(driver, BASIC_URL);
+        ticketSearchPage = new TicketSearchPage(driver, webDriverWait).goToPage(driver, BASIC_URL);
         notificationWrapperPage = ticketSearchPage.openNotificationPanel();
         notificationWrapperPage.clearNotifications();
-        if (!ticketSearchPage.isTicketSearchTableEmpty()) {
-            ticketSearchPage.filterByTextField(TicketSearchPage.CREATION_TIME_ATTRIBUTE, ticketSearchPage.getTimePeriodForLastNMinutes(minutes));
-            while (ticketSearchPage.isTicketSearchTableEmpty()) {
+        if (!ticketSearchPage.isIssueTableEmpty()) {
+            ticketSearchPage.filterByTextField(GraphQLSearchPage.CREATION_TIME_ATTRIBUTE, ticketSearchPage.getTimePeriodForLastNMinutes(minutes));
+            while (ticketSearchPage.isIssueTableEmpty()) {
                 minutes += 30;
                 if (minutes > maxSearchTime6hours) {
                     Assert.fail("No tickets to export created within last 6 hours");
                 }
-                ticketSearchPage.filterByTextField(TicketSearchPage.CREATION_TIME_ATTRIBUTE, ticketSearchPage.getTimePeriodForLastNMinutes(minutes));
+                ticketSearchPage.filterByTextField(GraphQLSearchPage.CREATION_TIME_ATTRIBUTE, ticketSearchPage.getTimePeriodForLastNMinutes(minutes));
             }
             exportWizardPage = ticketSearchPage.clickExportInTicketSearch();
             exportWizardPage.fillFileName(EXPORT_FILE_NAME);
@@ -67,14 +68,13 @@ public class ExportTest extends BaseTestCase {
     @Test(priority = 2, testName = "Refresh test", description = "Click on refresh button and check if data is visible")
     @Description("Click on refresh button and check if data is visible")
     public void refreshOnTicketSearchTest() {
-        ticketSearchPage = new TicketSearchPage(driver, webDriverWait);
-        ticketSearchPage.goToPage(driver, BASIC_URL);
-        if (!ticketSearchPage.isTicketSearchTableEmpty()) {
-            int ticketsInTable = ticketSearchPage.countTicketsInTable();
+        ticketSearchPage = new TicketSearchPage(driver, webDriverWait).goToPage(driver, BASIC_URL);
+        if (!ticketSearchPage.isIssueTableEmpty()) {
+            int ticketsInTable = ticketSearchPage.countIssuesInTable();
             ticketSearchPage.clickRefresh();
-            int ticketsAfterRefresh = ticketSearchPage.countTicketsInTable();
+            int ticketsAfterRefresh = ticketSearchPage.countIssuesInTable();
 
-            Assert.assertTrue(!ticketSearchPage.isTicketSearchTableEmpty());
+            Assert.assertTrue(!ticketSearchPage.isIssueTableEmpty());
             Assert.assertTrue(ticketsInTable >= ticketsAfterRefresh);
         } else {
             Assert.fail("No data in ticket search - cannot check refresh function");

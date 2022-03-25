@@ -2,7 +2,6 @@ package com.oss.web;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.assertj.core.api.Assertions;
 import org.slf4j.Logger;
@@ -49,7 +48,7 @@ public class TreeWidgetTest extends BaseTestCase {
     private static final String PATH_ROOM_1 = PATH_RELATION_LOCATIONS + "." + SUB_LOCATION_TYPE_FLOOR + "." + FLOOR_NAME
             + ".Locations." + SUB_LOCATION_TYPE_ROOM + "." + ROOM_NAME;
     private static final String LOCATION_TYPE_BUILDING = "Building";
-    private static final String ROOM_3_CREATE = "Room_"+ FakeGenerator.getIdNumber();
+    private static final String ROOM_3_CREATE = "Room_" + FakeGenerator.getIdNumber();
     private static final String PATH_ROOM_3 = PATH_RELATION_LOCATIONS + "." + SUB_LOCATION_TYPE_ROOM + "." + ROOM_3_CREATE;
     private static final String ROOM_3_UPDATE = FakeGenerator.getLocation(FakeGenerator.FilmTitle.LORD_OF_THE_RING);
     private static final String PATH_ROOM_3_UPDATE = PATH_RELATION_LOCATIONS + "." + SUB_LOCATION_TYPE_ROOM + "." + ROOM_3_UPDATE;
@@ -63,13 +62,19 @@ public class TreeWidgetTest extends BaseTestCase {
             PORT_02_PATH + "." + "Pluggable Module Slot.Slot.Pluggable Module.10GBASE-ER SFP+";
     private static final String CREATE_PM_ACTION = "CreatePluggableModuleOnPortAction";
     private static final String DEVICE_MODEL = "N9K-C9396PX";
-    private static final String PLUGGABLE_MODULE_MODLE = "Generic 10GBASE-ER SFP+";
+    private static final String PLUGGABLE_MODULE_MODEL = "Generic 10GBASE-ER SFP+";
+    private static final String PATH_LOCATIONS_RELATIONS_3TH_LEVEL = PATH_ROOM_1 + ".Locations";
+    private static final String PATH_ROW = PATH_LOCATIONS_RELATIONS_3TH_LEVEL + ".Row.rh01";
+    private static final String ROOM_NAME_4 = "Room_" + FakeGenerator.getIdNumber();
+    private static final String PATH_ROOM_4 = PATH_RELATION_LOCATIONS + "." + SUB_LOCATION_TYPE_FLOOR + "." + FLOOR_NAME
+            + ".Locations." + SUB_LOCATION_TYPE_ROOM + "." + ROOM_NAME_4;
     private Environment env = Environment.getInstance();
     private HierarchyViewPage hierarchyViewPage;
     private String locationId;
     private Long roomId_2;
+    private Long roomId_4;
     private Long deviceId;
-
+    
     @BeforeClass
     public void goToHierarchyViewPage() {
         hierarchyViewPage = HierarchyViewPage.openHierarchyViewPage(driver, BASIC_URL, "Location");
@@ -143,10 +148,15 @@ public class TreeWidgetTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hierarchyViewPage.expandNextLevel(LOCATION_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        updateRoom(roomId_2);
+        updateRoom(roomId_2, ROOM_NAME_2_UPDATED);
         hierarchyViewPage.getMainTree().callActionById(ActionsContainer.KEBAB_GROUP_ID, REFRESH_TREE);
         hierarchyViewPage.expandNextLevel(LOCATION_NAME);
         Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(ROOM_NAME_2_UPDATED);
+        hierarchyViewPage.getNodeByLabelPath(PATH_ROW);
+        hierarchyViewPage.getNodeByLabelPath(PATH_LOCATIONS_RELATIONS_3TH_LEVEL).callAction(REFRESH_INLINE);
+        roomId_4 = createRoom(ROOM_NAME_4, getFloorId(), SUB_LOCATION_TYPE_FLOOR);
+        hierarchyViewPage.getMainTree().callActionById(ActionsContainer.KEBAB_GROUP_ID, REFRESH_TREE);
+        Assertions.assertThat(hierarchyViewPage.isNodePresent(PATH_ROOM_4)).isTrue();
     }
     
     @Test(priority = 8)
@@ -203,7 +213,7 @@ public class TreeWidgetTest extends BaseTestCase {
         hierarchyViewPage.selectNodeByLabelsPath(PORT_02_PATH);
         hierarchyViewPage.getMainTree().callActionById(ActionsContainer.CREATE_GROUP_ID, CREATE_PM_ACTION);
         CreatePluggableModuleWizardPage pmWizard = new CreatePluggableModuleWizardPage(driver);
-        pmWizard.setModel(PLUGGABLE_MODULE_MODLE);
+        pmWizard.setModel(PLUGGABLE_MODULE_MODEL);
         pmWizard.accept();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hierarchyViewPage.getMainTree().unselectAllNodes();
@@ -249,6 +259,7 @@ public class TreeWidgetTest extends BaseTestCase {
     private void deleteObjects() {
         LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);
         locationInventoryRepository.deleteSubLocation(roomId_2.toString());
+        locationInventoryRepository.deleteSubLocation(roomId_4.toString());
         deleteDevice();
     }
     
@@ -276,9 +287,9 @@ public class TreeWidgetTest extends BaseTestCase {
                 Long.valueOf(locationId), LOCATION_TYPE_BUILDING);
     }
     
-    private void updateRoom(Long id) {
+    private void updateRoom(Long id, String roomName) {
         LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);
-        locationInventoryRepository.updateSubLocation(id, SUB_LOCATION_TYPE_ROOM, ROOM_NAME_2_UPDATED, Long.valueOf(locationId),
+        locationInventoryRepository.updateSubLocation(id, SUB_LOCATION_TYPE_ROOM, roomName, Long.valueOf(locationId),
                 LOCATION_TYPE_BUILDING, Long.valueOf(locationId), LOCATION_TYPE_BUILDING);
     }
     
@@ -298,6 +309,10 @@ public class TreeWidgetTest extends BaseTestCase {
     private void deleteDevice() {
         PhysicalInventoryRepository physicalInventoryRepository = new PhysicalInventoryRepository(env);
         physicalInventoryRepository.deleteDevice(Long.toString(deviceId));
-        
+    }
+    
+    private Long getFloorId() {
+        LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);
+        return locationInventoryRepository.getSublocationId(locationId, FLOOR_NAME);
     }
 }

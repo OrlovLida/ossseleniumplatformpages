@@ -1,9 +1,7 @@
 package com.oss.repositories;
 
 import java.util.Arrays;
-import java.util.Optional;
-
-import org.apache.commons.lang3.StringUtils;
+import java.util.NoSuchElementException;
 
 import com.comarch.oss.addressinventory.api.dto.AddressDTO;
 import com.comarch.oss.addressinventory.api.dto.AddressItemDTO;
@@ -35,7 +33,7 @@ public class AddressRepository {
         return addressId;
     }
 
-    public Long getFirstGeographicalAddressId(){
+    public Long getFirstGeographicalAddressId() {
         return client.getGeographicalAddresses().get(0).getId();
     }
 
@@ -74,8 +72,8 @@ public class AddressRepository {
                 .build();
     }
 
-    private GeographicalAddressDTO buildAddress(String countryName, String postalCodeName, String regionName, String cityName, String districtName) {
-        return GeographicalAddressDTO.builder()
+    private GeographicalAddressDTO buildAddress(String countryName, String postalCodeName, String regionName, String cityName,
+                                                String districtName) {
                 .addAddressItems(buildCountry(countryName))
                 .addAddressItems(buildPostalCode(postalCodeName))
                 .addAddressItems(buildRegion(regionName))
