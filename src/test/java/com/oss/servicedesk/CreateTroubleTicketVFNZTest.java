@@ -144,7 +144,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     ) {
         sdWizardPage = baseDashboardPage.openCreateTicketWizard("CTT");
         sdWizardPage.getMoStep().enterTextIntoSearchComponent(MOIdentifier);
-        sdWizardPage.getMoStep().selectRowInMOTable("0");
+        sdWizardPage.getMoStep().selectObjectInMOTable(MOIdentifier);
         sdWizardPage.clickNextButtonInWizard();
         sdWizardPage.insertValueToSearchComponent(ttAssignee, TT_WIZARD_ASSIGNEE);
         sdWizardPage.insertValueToTextComponent(TT_REFERENCE_ID, TT_WIZARD_REFERENCE_ID);
@@ -394,7 +394,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
         sdWizardPage = issueDetailsPage.openAddRootCauseWizard();
         sdWizardPage.getMoStep().showAllMOs();
         sdWizardPage.getMoStep().enterTextIntoSearchComponent(SecondMOIdentifier);
-        sdWizardPage.getMoStep().selectRowInMOTable("1");
+        sdWizardPage.getMoStep().selectObjectInMOTable(SecondMOIdentifier);
         sdWizardPage.clickAcceptButtonInWizard();
 
         Assert.assertTrue(issueDetailsPage.checkIfMOIdentifierIsPresentOnRootCauses(SecondMOIdentifier));
