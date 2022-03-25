@@ -6,6 +6,7 @@ import java.util.Optional;
 import com.comarch.oss.locationinventory.api.dto.AttributeDTO;
 import com.comarch.oss.locationinventory.api.dto.PhysicalLocationDTO;
 import com.comarch.oss.locationinventory.api.dto.ResourceDTO;
+import com.comarch.oss.locationinventory.api.dto.SearchResultDTO;
 import com.comarch.oss.locationinventory.api.dto.SublocationDTO;
 import com.oss.services.LocationInventoryClient;
 import com.oss.untils.Constants;
@@ -38,7 +39,7 @@ public class LocationInventoryRepository {
         String locationId = resourceDTO.getUri().toString();
         return locationId.substring(locationId.lastIndexOf("/") + 1, locationId.indexOf("?"));
     }
-    
+
     public String createLocation(String locationName, String locationType, Long addressId, long projectId) {
         LocationInventoryClient client = new LocationInventoryClient(env);
         ResourceDTO resourceDTO = client.createPhysicalLocation(buildLocation(locationType, locationName, addressId,""), projectId);
@@ -72,7 +73,7 @@ public class LocationInventoryRepository {
         LocationInventoryClient client = new LocationInventoryClient(env);
         client.deleteLocation(locationId, locationType);
     }
-    
+
     private SublocationDTO buildSubLocation(String subLocationType, String subLocationName, Long preciseLocation,
                                             String preciseLocationType, Long parentLocationId, String parentLocationType) {
         return SublocationDTO.builder()
@@ -82,13 +83,13 @@ public class LocationInventoryRepository {
                 .type(subLocationType)
                 .build();
     }
-    
+
     public Optional<String> getLocationId(String locationName) {
         LocationInventoryClient client = new LocationInventoryClient(env);
         List<Integer> locationIds = client.getPhysicalLocationByName(locationName);
         return locationIds.stream().findFirst().map(Object::toString);
     }
-    
+
     public void updateSubLocation(Long subLocationId, String subLocationType, String subLocationName, Long preciseLocation,
             String preciseLocationType,
             Long parentLocationId, String parentLocationType) {
@@ -102,12 +103,18 @@ public class LocationInventoryRepository {
                 .build();
         client.updateSubLocation(subLocation, subLocationId.toString());
     }
-    
+
     public void deleteSubLocation(String ids) {
         LocationInventoryClient client = new LocationInventoryClient(env);
         client.deleteSubLocation(ids);
     }
     
+    public Long getSublocationId(String locationId, String floorName) {
+        LocationInventoryClient client = new LocationInventoryClient(env);
+        SearchResultDTO sublocationId = client.getSublocationId(locationId, "Name==" + floorName);
+        return sublocationId.getSearchResult().get(0).getId();
+    }
+
     private PhysicalLocationDTO buildLocation(String locationType, String locationName, Long addressId, String description) {
         return PhysicalLocationDTO.builder()
                 .type(locationType)

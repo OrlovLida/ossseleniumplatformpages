@@ -6,6 +6,7 @@ import javax.ws.rs.core.Response;
 
 import com.comarch.oss.locationinventory.api.dto.PhysicalLocationDTO;
 import com.comarch.oss.locationinventory.api.dto.ResourceDTO;
+import com.comarch.oss.locationinventory.api.dto.SearchResultDTO;
 import com.comarch.oss.locationinventory.api.dto.SublocationDTO;
 import com.jayway.restassured.http.ContentType;
 import com.oss.untils.Constants;
@@ -16,18 +17,18 @@ import com.oss.untils.Environment;
  */
 
 public class LocationInventoryClient {
-    
+
     private static final String PHYSICAL_LOCATIONS_API_PATH = "/physicallocations";
     private static final String SUB_LOCATION_API_PATH = "/sublocations";
     private static final String PROJECT_ID = "project_id";
-    
+
     private static LocationInventoryClient instance;
     private final Environment env;
-    
+
     public LocationInventoryClient(Environment environment) {
         env = environment;
     }
-    
+
     public static LocationInventoryClient getInstance(Environment pEnvironment) {
         if (instance != null) {
             return instance;
@@ -35,7 +36,7 @@ public class LocationInventoryClient {
         instance = new LocationInventoryClient(pEnvironment);
         return instance;
     }
-    
+
     public ResourceDTO createPhysicalLocation(PhysicalLocationDTO location) {
         return env.getLocationInventoryCoreRequestSpecification()
                 .given()
@@ -48,7 +49,7 @@ public class LocationInventoryClient {
                 .extract()
                 .as(ResourceDTO.class);
     }
-    
+
     public ResourceDTO createPhysicalLocation(PhysicalLocationDTO location, long projectId) {
         return env.getLocationInventoryCoreRequestSpecification()
                 .given()
@@ -63,7 +64,7 @@ public class LocationInventoryClient {
                 .extract()
                 .as(ResourceDTO.class);
     }
-    
+
     public ResourceDTO updateLocation(PhysicalLocationDTO location, String locationId, long projectId) {
         return env.getLocationInventoryCoreRequestSpecification()
                 .given()
@@ -78,7 +79,7 @@ public class LocationInventoryClient {
                 .extract()
                 .as(ResourceDTO.class);
     }
-    
+
     public List<Integer> getPhysicalLocationByName(String locationName) {
         com.jayway.restassured.response.Response response = env.getLocationInventoryCoreRequestSpecification()
                 .given()
@@ -88,7 +89,7 @@ public class LocationInventoryClient {
                 .get(LocationInventoryClient.PHYSICAL_LOCATIONS_API_PATH);
         return response.jsonPath().getList("searchResult.id");
     }
-    
+
     public ResourceDTO createSubLocation(SublocationDTO subLocation) {
         return env.getLocationInventoryCoreRequestSpecification()
                 .given()
@@ -102,7 +103,7 @@ public class LocationInventoryClient {
                 .extract()
                 .as(ResourceDTO.class);
     }
-    
+
     public ResourceDTO createSubLocation(SublocationDTO subLocation, long projectId) {
         return env.getLocationInventoryCoreRequestSpecification()
                 .given()
@@ -117,7 +118,7 @@ public class LocationInventoryClient {
                 .extract()
                 .as(ResourceDTO.class);
     }
-    
+
     public void updateSubLocation(SublocationDTO subLocation, String id) {
         env.getLocationInventoryCoreRequestSpecification()
                 .given()
@@ -129,7 +130,7 @@ public class LocationInventoryClient {
                 .then()
                 .statusCode(Response.Status.OK.getStatusCode()).assertThat();
     }
-    
+
     public void deleteSubLocation(String ids) {
         env.getLocationInventoryCoreRequestSpecification()
                 .given()
@@ -140,7 +141,7 @@ public class LocationInventoryClient {
                 .then()
                 .statusCode(Response.Status.NO_CONTENT.getStatusCode()).assertThat();
     }
-    
+
     public void deleteLocation(String locationId, String locationType) {
         env.getLocationInventoryCoreRequestSpecification()
                 .given()
@@ -149,5 +150,20 @@ public class LocationInventoryClient {
                 .delete(PHYSICAL_LOCATIONS_API_PATH + "/" + locationType + "/" + locationId)
                 .then()
                 .statusCode(Response.Status.NO_CONTENT.getStatusCode()).assertThat();
+    }
+
+    public SearchResultDTO getSublocationId(String locationId, String query) {
+        return env.getLocationInventoryCoreRequestSpecification()
+                .given()
+                .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
+                .queryParam("location", locationId)
+                .queryParam("query", query)
+                .contentType(ContentType.JSON)
+                .when()
+                .get(SUB_LOCATION_API_PATH)
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode()).assertThat()
+                .extract()
+                .as(SearchResultDTO.class);
     }
 }
