@@ -1,0 +1,11 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="ProblemsSD" thread-count="2" parallel="tests" verbose="1">
+    <test name="CreateProblem">
+        <parameter name="MOIdentifier" value="CFS_Access_Product_Selenium_1"/>
+        <parameter name="ProblemAssignee" value="ca_kodrobinska"/>
+        <parameter name="NewAssignee" value="sd_seleniuimtest"/>
+        <classes>
+            <class name="com.oss.servicedesk.ProblemsVFNZTest"/>
+        </classes>
+    </test>
+</suite>
