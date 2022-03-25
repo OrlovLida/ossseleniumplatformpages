@@ -4,9 +4,7 @@ import com.oss.BaseTestCase;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.acd.BaseACDPage;
 import com.oss.pages.acd.scenarioSummaryView.ApdScenarioSummaryViewPage;
-
 import io.qameta.allure.Description;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -28,6 +26,8 @@ public class ApdScenarioSummaryViewTest extends BaseTestCase {
     private final String WIZARD_ATTRIBUTE_ID = "attribute1Id-input";
     private final String WIZARD_PREDEFINED_FILTERS_ID = "addPredefinedFilterId_prompt-card";
     private final String WIZARD_ATTRIBUTE_VALUES_ID = "attribute1ValuesId";
+    private final String SEVERITY_STATE_TABLE_NAME = "Severity/State";
+    private final String LEFT_HEADER_NEW = "New";
 
     @BeforeClass
     public void goToAPDScenarioSummaryView() {
@@ -52,6 +52,25 @@ public class ApdScenarioSummaryViewTest extends BaseTestCase {
         checkApdIssuesTableWithFilter();
         baseACDPage.minimizeWindow(DETECTED_ISSUES_WINDOW_ID);
         Assert.assertFalse(baseACDPage.checkCardMaximize(DETECTED_ISSUES_WINDOW_ID));
+    }
+
+    @Test(priority = 3, testName = "Check Table2D filtering by choosing cell", description = "Check Table2D filtering by choosing cell")
+    @Description("Check Table2D filtering by choosing cell")
+    public void Table2DFilteringByCellCheck() {
+        baseACDPage.turnOnSwitcher();
+        baseACDPage.selectCellInTable(SEVERITY_STATE_TABLE_NAME, LEFT_HEADER_NEW, "Critical");
+        Assert.assertTrue(baseACDPage.checkIfFilteringBySelectingCellWorks(SEVERITY_STATE_TABLE_NAME, LEFT_HEADER_NEW, "Critical"));
+        baseACDPage.clearFiltersInTable(SEVERITY_STATE_TABLE_NAME);
+    }
+
+    @Test(priority = 4, testName = "Check Table2D filtering by choosing row", description = "Check Table2D filtering by choosing row")
+    @Description("Check Table2D filtering by choosing row")
+    public void Table2DFilteringByRowCheck() {
+        baseACDPage.turnOnSwitcher();
+        baseACDPage.selectRowInTable(SEVERITY_STATE_TABLE_NAME, LEFT_HEADER_NEW);
+        baseACDPage.sumValuesOfSelectedCells(SEVERITY_STATE_TABLE_NAME);
+        Assert.assertTrue(baseACDPage.checkIfFilteringBySelectingRowOrColumnWorks(SEVERITY_STATE_TABLE_NAME));
+        baseACDPage.clearFiltersInTable(SEVERITY_STATE_TABLE_NAME);
     }
 
     private void checkApdIssuesTableWithFilter() {

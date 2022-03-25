@@ -44,7 +44,7 @@ public class ISPConfigurationTest extends BaseTestCase {
     private static final String PHYSICAL_DEVICE_MODEL3 = "ADVA Optical Networking FMT/1HU";
     private static final String PHYSICAL_DEVICE_NAME2 = "ISPPhysicalDevice3";
     private static final String PHYSICAL_DEVICE_NAME3 = "ISPPhysicalDevice2";
-    private static final String MODEL_UPDATE = "Alcatel 7302";
+    private static final String MODEL_UPDATE = "Alcatel 7302 ISAM";
     private static final String MOUNTING_EDITOR_MODEL = "Generic 19\" 42U 600x800 (Bottom-Up)";
     private static final String MOUNTING_EDITOR_NAME = "ISPMountingEditor";
     private static final String COOLING_ZONE_NAME = "ISPCoolingZone";
