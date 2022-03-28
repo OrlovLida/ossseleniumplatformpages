@@ -12,6 +12,7 @@ import org.assertj.core.api.Assertions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
@@ -39,7 +40,7 @@ public class LifecycleStateDecoratorsInTreeWidgetTest extends BaseTestCase {
     private static final String LOCATION_TYPE_BUILDING = "Building";
     private static final String CREATE_ACTION_ID = "CREATE";
     private static final String DEVICE_1_MODEL = "N9K-C9396PX";
-    private static final String DEVICE_1_NAME = "Device_1";
+    private static final String DEVICE_1_NAME = "Device_1_" + FakeGenerator.getRandomInt();
     private static final String DEVICE_1_PATH = BUILDING_NAME + ".Hardware.Switch." + DEVICE_1_NAME;
     private static final String PORT_01_PATH = DEVICE_1_PATH + ".Ports.01";
     private static final TreeComponent.Node.DecoratorStatus GREEN = TreeComponent.Node.DecoratorStatus.GREEN;
@@ -66,10 +67,17 @@ public class LifecycleStateDecoratorsInTreeWidgetTest extends BaseTestCase {
     private Long device2Id;
     private Long device3Id;
     
-    @Test(priority = 0)
-    public void createNewObjects() {
+    @BeforeClass
+    public void createProjects() {
         project1 = createProject(PROJECT_NAME_CODE_1, LocalDate.now());
         log.info("Project id: " + project1 + ", Project Code: " + PROJECT_NAME_CODE_1);
+        
+        project2 = createProject(PROJECT_NAME_CODE_2, LocalDate.now().plusDays(2));
+        log.info("Project id 2: " + project2 + ", Project Code: " + PROJECT_NAME_CODE_2);
+    }
+    
+    @Test(priority = 0)
+    public void createNewObjects() {
         buildingId = createBuilding(project1);
         log.info("Building id: " + buildingId);
         hierarchyViewPage =
@@ -99,7 +107,7 @@ public class LifecycleStateDecoratorsInTreeWidgetTest extends BaseTestCase {
     
     @Test(priority = 3)
     public void updateObjectsWizard() {
-        project2 = createProject(PROJECT_NAME_CODE_2, LocalDate.now().plusDays(2));
+        
         hierarchyViewPage =
                 HierarchyViewPage.goToHierarchyViewPage(driver, BASIC_URL, LOCATION_TYPE_BUILDING, buildingId, project2.toString());
         getNode(DEVICE_1_PATH).callAction(ActionsContainer.EDIT_GROUP_ID, UPDATE_DEVICE_ACTION_ID);
