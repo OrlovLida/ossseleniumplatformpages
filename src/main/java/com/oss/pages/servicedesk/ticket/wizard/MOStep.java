@@ -1,5 +1,8 @@
 package com.oss.pages.servicedesk.ticket.wizard;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
@@ -50,5 +53,18 @@ public class MOStep extends BaseSDPage {
         wizard.clickButtonById(SHOW_SELECTED_ONLY_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Show All MO switched on");
+    }
+
+    @Step("I select {MOIdentifier} in MO table")
+    public void selectObjectInMOTable(String MOIdentifier) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        TableComponent objectsTable = TableComponent.create(driver, wait, MO_COMPONENT_ID);
+        List<String> objectsList = new ArrayList<String>();
+        long numberOfMOs = TableComponent.create(driver, wait, MO_COMPONENT_ID).getVisibleRows().stream().count();
+        for (int i = 0; i < numberOfMOs; i++) {
+            objectsList.add(objectsTable.getCellValue(i, "identifier"));
+        }
+        log.info("Select MO {} in table", MOIdentifier);
+        objectsTable.selectRow(objectsList.indexOf(MOIdentifier));
     }
 }
