@@ -280,7 +280,7 @@ public class TableWidgetTest extends BaseTestCase {
     }
     
     @Test(priority = 17)
-    public void SingleSelect() {
+    public void singleSelect() {
         // when
         inventoryViewPage.selectObjectByRowId(0);
         inventoryViewPage.selectObjectByRowId(3);
