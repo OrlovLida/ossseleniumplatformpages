@@ -8,6 +8,7 @@ import com.oss.untils.Environment;
 
 public class AccessTechnologyRepository {
 
+    private static final String CANT_FIND_LAYER_TEXT = "Can't find layer: ";
     private final AccessTechnologyClient accessTechnologyClient;
 
     public AccessTechnologyRepository(Environment env) {
@@ -19,7 +20,7 @@ public class AccessTechnologyRepository {
         return Arrays.stream(accessTechnologyLayerDTOS)
                 .filter(layer -> layer.getLayer().equals(layerName))
                 .findAny()
-                .orElseThrow(() -> new RuntimeException("Can't find layer:" + layerName))
+                .orElseThrow(() -> new RuntimeException(CANT_FIND_LAYER_TEXT + layerName))
                 .getLayerParameters()
                 .get(0)
                 .getMaxDownloadSpeed()
@@ -31,7 +32,7 @@ public class AccessTechnologyRepository {
         return Arrays.stream(accessTechnologyLayerDTOS)
                 .filter(layer -> layer.getLayer().equals(layerName))
                 .findAny()
-                .orElseThrow(() -> new RuntimeException("Can't find layer:" + layerName))
+                .orElseThrow(() -> new RuntimeException(CANT_FIND_LAYER_TEXT + layerName))
                 .getLayerParameters()
                 .get(0)
                 .getMaxUploadSpeed()
@@ -43,7 +44,7 @@ public class AccessTechnologyRepository {
         return Arrays.stream(accessTechnologyLayerDTOS)
                 .filter(layer -> layer.getLayer().equals(layerName))
                 .findAny()
-                .orElseThrow(() -> new RuntimeException("Can't find layer:" + layerName))
+                .orElseThrow(() -> new RuntimeException(CANT_FIND_LAYER_TEXT + layerName))
                 .getLayerParameters()
                 .get(0)
                 .getMediumType()

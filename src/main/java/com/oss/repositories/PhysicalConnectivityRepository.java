@@ -17,8 +17,8 @@ import com.oss.untils.Environment;
 
 public class PhysicalConnectivityRepository {
 
-    private final static String DEVICE_TERMINATION_LEVEL = "Device";
-    private final static String TP_TERMINATION_LEVEL = "TerminationPoint";
+    private static final String DEVICE_TERMINATION_LEVEL = "Device";
+    private static final String TP_TERMINATION_LEVEL = "TerminationPoint";
     private PhysicalConnectivityClient client;
 
     public PhysicalConnectivityRepository(Environment env) {

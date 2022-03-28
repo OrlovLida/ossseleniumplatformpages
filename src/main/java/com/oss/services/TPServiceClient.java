@@ -45,7 +45,7 @@ public class TPServiceClient {
         return Arrays.stream(getDeviceConnectors(deviceId, portId))
                 .filter(e -> (e.getName()
                         .equals(connectorName)))
-                .map(e -> e.getId())
+                .map(TerminationPointDetailDTO::getId)
                 .findAny()
                 .orElseThrow(() -> new RuntimeException("Cant find termination point with name " + connectorName + " on port id " + portId))
                 .toString();
@@ -55,7 +55,7 @@ public class TPServiceClient {
     public Long getAccessInterfaceId(Long deviceId, String portId, String layerName) {
         return Arrays.stream(getDeviceConnectors(deviceId, portId))
                 .filter(e -> (e.getLayer().equals(layerName)))
-                .map(e -> e.getId())
+                .map(TerminationPointDetailDTO::getId)
                 .findAny()
                 .orElseThrow(() -> new RuntimeException("Cant find AccessInterface with layer name " + layerName + " on port id " + portId))
                 .longValue();

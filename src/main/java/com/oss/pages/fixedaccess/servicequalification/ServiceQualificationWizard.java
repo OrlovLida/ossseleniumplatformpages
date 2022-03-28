@@ -18,6 +18,7 @@ import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD
 
 public class ServiceQualificationWizard extends BasePage {
 
+    private static final String SQ_WIZARD_ID = "sqWebViewID";
     private static final String RADIO_BUTTONS_FOR_QUERY_OPTION = "sqRadioButtonsID";
     private static final String SEARCH_FIELD_FOR_QUERY = "sqSearchFieldUID_OSF";
     private static final String REQUIRED_DOWNLOAD_SPEED_INPUT = "sqRequiredDownloadSpeedFieldUID";
@@ -129,7 +130,7 @@ public class ServiceQualificationWizard extends BasePage {
     }
 
     private Wizard getServiceQualificationWizard() {
-        return Wizard.createWizard(driver, wait);
+        return Wizard.createByComponentId(driver, wait, SQ_WIZARD_ID);
     }
 
     private AdvancedSearchWidget getAdvancedSearch() {

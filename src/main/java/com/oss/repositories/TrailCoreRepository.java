@@ -1,5 +1,6 @@
 package com.oss.repositories;
 
+import com.comarch.oss.transport.trail.api.dto.TrailIdentificationDTO;
 import com.oss.services.TrailCoreClient;
 import com.oss.untils.Environment;
 
@@ -16,7 +17,7 @@ public class TrailCoreRepository {
                 .getTrails()
                 .stream()
                 .filter(e -> e.getType().equals(mediumType))
-                .map(e -> e.getId())
+                .map(TrailIdentificationDTO::getId)
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Can't find any medium type " + mediumType + " on TP with id " + terminationPointId))
                 .longValue();

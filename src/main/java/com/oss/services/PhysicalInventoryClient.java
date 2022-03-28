@@ -92,7 +92,7 @@ public class PhysicalInventoryClient {
                 .filter(e -> (e.getName().equals(portName)))
                 .map(e -> e.getId().get())
                 .findAny()
-                .get()
+                .orElseThrow(() -> new RuntimeException("Can't find port with name: " + portName + " on device with id: " + deviceId))
                 .toString();
     }
 
@@ -103,7 +103,8 @@ public class PhysicalInventoryClient {
                 .filter(e -> (e.getName().equals(chassisName)))
                 .map(e -> e.getId().get())
                 .findAny()
-                .get();
+                .orElseThrow(() -> new RuntimeException("Can't find chassis with name: " + chassisName + " on device with id: " + deviceId))
+                .longValue();
     }
 
     public Long getDeviceCardUnderChassisId(Long chassisId, String cardName) {
@@ -113,7 +114,8 @@ public class PhysicalInventoryClient {
                 .filter(e -> (e.getName().equals(Optional.of(cardName))))
                 .map(e -> e.getId().get())
                 .findAny()
-                .get();
+                .orElseThrow(() -> new RuntimeException("Can't find card with name: " + cardName + " on chassis with id: " + chassisId))
+                .longValue();
     }
 
     public Long getDevicePortUnderCardId(Long cardId, String portName) {
@@ -123,7 +125,8 @@ public class PhysicalInventoryClient {
                 .filter(e -> (e.getName().equals(portName)))
                 .map(e -> e.getId().get())
                 .findAny()
-                .get();
+                .orElseThrow(() -> new RuntimeException("Can't find port with name: " + portName + " on card with id: " + cardId))
+                .longValue();
     }
 
     public String getAntennaArrayId(Long antennaId, String arrayName) {
@@ -132,7 +135,7 @@ public class PhysicalInventoryClient {
                 .stream().filter(e -> (e.getName().equals(arrayName)))
                 .map(e -> e.getId().get())
                 .findAny()
-                .get()
+                .orElseThrow(() -> new RuntimeException("Can't find array with name: " + arrayName + " on antenna with id: " + antennaId))
                 .toString();
     }
 

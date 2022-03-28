@@ -28,11 +28,10 @@ public class AddressRepository {
     public Long updateOrCreateAddress(String countryName, String postalCodeName, String regionName, String cityName, String districtName) {
         AddressDTO[] addressDTO = client.createGeographicalAddress(
                 buildAddress(countryName, postalCodeName, regionName, cityName, districtName));
-        Long addressId = Arrays.stream(addressDTO)
+        return Arrays.stream(addressDTO)
                 .findAny()
                 .orElseThrow(() -> new RuntimeException("Can't find id of created address or address wasn't created properly"))
                 .getId();
-        return addressId;
     }
 
     public Long getFirstGeographicalAddressId() {
@@ -51,8 +50,12 @@ public class AddressRepository {
 
     public String getGeographicalAddressName(Long addressId) {
         GeographicalAddressDTO[] addressResponse = client.getGeographicalAddressById(addressId);
-        if (!(Arrays.stream(addressResponse).findAny().get().getName().equals(Optional.empty()))) {
-            String addressName = Arrays.stream(addressResponse).findAny().get().getName().toString();
+        if (!(Arrays.stream(addressResponse).findAny().orElseThrow(() -> new RuntimeException("Can't find address for id: " + addressId)).getName().equals(Optional.empty()))) {
+            String addressName = Arrays.stream(addressResponse)
+                    .findAny()
+                    .orElseThrow(() -> new RuntimeException("Can't find address name for address id: " + addressId))
+                    .getName()
+                    .toString();
             return addressName.substring(addressName.indexOf("[") + 1, addressName.indexOf("]")).trim();
         }
         return StringUtils.EMPTY;
