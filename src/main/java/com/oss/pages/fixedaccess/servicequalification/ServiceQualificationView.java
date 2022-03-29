@@ -17,13 +17,14 @@ import io.qameta.allure.Step;
 
 public class ServiceQualificationView extends BasePage {
 
-    private static final String SERVICE_QUALIFICATION_VIEW_TABLE_ID = "sqTableAppId";
-    private static final String SERVICE_QUALIFICATION_PROP_PANEL_ID = "sqAttributesAppId";
+    private static final String SERVICE_QUALIFICATION_VIEW_TABLE_ID = "sqViewLeftWindowId";
+    private static final String SERVICE_QUALIFICATION_PROP_PANEL_ID = "sqViewRightWindowId";
     private static final String SERVICE_CONNECTION_OPTION_COLUMN_LABEL = "Service Connection Options";
     private static final String DOWNLOAD_SPEED_COLUMN_LABEL = "Download Speed";
     private static final String UPLOAD_SPEED_COLUMN_LABEL = "Upload Speed";
     private static final String AVAILABILITY_COLUMN_LABEL = "Availability";
     private static final String DISTRIBUTION_AREA_COLUMN_LABEL = "Distribution Area";
+    private static final String PRIMARY_TECH_PROPERTY_NAME = "Primary Technology";
 
     private final Map<String, Map<String, String>> allValuesInTable = new HashMap<>();
 
@@ -99,7 +100,8 @@ public class ServiceQualificationView extends BasePage {
             Map<String, String> tableValues = new HashMap<>();
             int rowNumbers = getOldTable().countRows(SERVICE_CONNECTION_OPTION_COLUMN_LABEL);
             for (int i = 0; i < rowNumbers; i++) {
-                tableValues.put(getValueFromCell(i, SERVICE_CONNECTION_OPTION_COLUMN_LABEL), getValueFromCell(i, columnName));
+                getOldTable().selectRow(i);
+                tableValues.put(getValueFromPropertyPanelInSQView(PRIMARY_TECH_PROPERTY_NAME), getValueFromCell(i, columnName));
             }
             allValuesInTable.put(columnName, tableValues);
         }

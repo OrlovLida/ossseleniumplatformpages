@@ -14,6 +14,7 @@ import com.oss.pages.fixedaccess.servicequalification.ServiceQualificationWizard
 import com.oss.untils.Environment;
 
 import io.qameta.allure.Description;
+import io.qameta.allure.Step;
 
 public class ServiceQualificationViewSimpleCasesTests extends BaseTestCase {
 
@@ -54,10 +55,11 @@ public class ServiceQualificationViewSimpleCasesTests extends BaseTestCase {
         physicalDataCreatorForSimpleCasesWithSQ = new PhysicalDataCreator(env);
         accessTechnologyController = new AccessTechnologyController(env);
         softAssert = new SoftAssert();
+        accessTechnologyController.fillAccessTechnologyContainer();
     }
 
     @Test()
-    @Description("Create whole data structure for tests /nDA {distributionAreaName} xid:{distributionAreaId}")
+    @Description("Create whole data structure for tests")
     public void createDataForTests() {
         physicalDataCreatorForSimpleCasesWithSQ.createSimplePhysicalDataForSQTests();
         distributionAreaId = String.valueOf(physicalDataCreatorForSimpleCasesWithSQ.getDistributionAreaId());
@@ -76,12 +78,10 @@ public class ServiceQualificationViewSimpleCasesTests extends BaseTestCase {
         splitterId = physicalDataCreatorForSimpleCasesWithSQ.getSplitterId();
         installationODFId = physicalDataCreatorForSimpleCasesWithSQ.getInstallationODFId();
         opticalOutletId = physicalDataCreatorForSimpleCasesWithSQ.getOpticalOutletId();
-        accessTechnologyController.fillAccessTechnologyContainer();
     }
 
     @Test()
-    @Description("Test for check for all Access technologies, that data in table and in property panel are correct. " +
-            "/n This test doesn't check resources for each access technology. Test run for installation address name.")
+    @Description("Test for check for all Access technologies, that data in table and in property panel are correct. This test doesn't check resources for each access technology. Test run for installation address name.")
     public void checkDataInSQViewTestForAddressName() {
 
         serviceQualificationWizard.openServiceQualificationWizard(BASIC_URL)
@@ -105,8 +105,7 @@ public class ServiceQualificationViewSimpleCasesTests extends BaseTestCase {
     }
 
     @Test()
-    @Description("Test for check for all Access technologies, that data in table and in property panel are correct. " +
-            "/n This test doesn't check resources for each access technology. Test run for DA name.")
+    @Description("Test for check for all Access technologies, that data in table and in property panel are correct. This test doesn't check resources for each access technology. Test run for DA name.")
     public void checkDataInSQViewForDAName() {
 
         serviceQualificationWizard.openServiceQualificationWizard(BASIC_URL)
@@ -130,8 +129,7 @@ public class ServiceQualificationViewSimpleCasesTests extends BaseTestCase {
     }
 
     @Test()
-    @Description("Test for check for all Access technologies, that error code {REQUIRED_DOWNLOAD_SPEED_ERROR_MESSAGE} " +
-            "appear when download speed is grater than max. Test run for installation address name.")
+    @Description("Test for check for all Access technologies, that error code \"Required download speed is greater than max download speed\" appear when download speed is grater than max. Test run for installation address name.")
     public void checkErrorForRequiredDownloadSpeedForAddressName() {
 
         serviceQualificationWizard.openServiceQualificationWizard(BASIC_URL)
@@ -157,8 +155,7 @@ public class ServiceQualificationViewSimpleCasesTests extends BaseTestCase {
     }
 
     @Test()
-    @Description("Test for check for all Access technologies, that error code {REQUIRED_DOWNLOAD_SPEED_ERROR_MESSAGE} " +
-            "appear when download speed is grater than max. Test run for DA name .")
+    @Description("Test for check for all Access technologies, that error code \"Required download speed is greater than max download speed\" appear when download speed is grater than max. Test run for DA name .")
     public void checkErrorForRequiredDownloadSpeedForDAName() {
 
         serviceQualificationWizard.openServiceQualificationWizard(BASIC_URL)
@@ -207,7 +204,7 @@ public class ServiceQualificationViewSimpleCasesTests extends BaseTestCase {
                 .clickButtonAddInAdvancedSearchWindow();
     }
 
-    private void checkDataInPropertyPanelForParticularAccessTechnology(String expectedCovergae, String expectedDistributionAreaName,
+    private void checkDataInPropertyPanelForParticularAccessTechnology(String expectedCoverage, String expectedDistributionAreaName,
                                                                        String expectedDistributionAreaId, String expectedPrimaryTechnology, String expectedTechnicalStandard, String expectedMediumType) {
         String coverageFromPropertyPanel = serviceQualificationView.getValueFromPropertyPanelInSQView("Coverage");
         String distributionAreaNameFromPropertyPanel = serviceQualificationView.getValueFromPropertyPanelInSQView("Distribution Area");
@@ -215,7 +212,7 @@ public class ServiceQualificationViewSimpleCasesTests extends BaseTestCase {
         String primaryTechnologyFromPropertyPanel = serviceQualificationView.getValueFromPropertyPanelInSQView("Primary Technology");
         String technicalStandardFromPropertyPanel = serviceQualificationView.getValueFromPropertyPanelInSQView("Technical standard");
         String mediumTypeFromPropertyPanel = serviceQualificationView.getValueFromPropertyPanelInSQView("Medium Type");
-        softAssert.assertEquals(templateForAssertInput(expectedPrimaryTechnology) + coverageFromPropertyPanel, templateForAssertInput(expectedPrimaryTechnology) + expectedCovergae);
+        softAssert.assertEquals(templateForAssertInput(expectedPrimaryTechnology) + coverageFromPropertyPanel, templateForAssertInput(expectedPrimaryTechnology) + expectedCoverage);
         softAssert.assertEquals(templateForAssertInput(expectedPrimaryTechnology) + distributionAreaNameFromPropertyPanel, templateForAssertInput(expectedPrimaryTechnology) + expectedDistributionAreaName);
         softAssert.assertEquals(templateForAssertInput(expectedPrimaryTechnology) + distributionAreaIdFromPropertyPanel, templateForAssertInput(expectedPrimaryTechnology) + expectedDistributionAreaId);
         softAssert.assertEquals(templateForAssertInput(expectedPrimaryTechnology) + primaryTechnologyFromPropertyPanel, templateForAssertInput(expectedPrimaryTechnology) + expectedPrimaryTechnology);
@@ -228,12 +225,12 @@ public class ServiceQualificationViewSimpleCasesTests extends BaseTestCase {
         String downloadSpeedFromTable = serviceQualificationView.getDownloadSpeedFromTable(accessTechnologyController.getAccessTechnology(accessTechnologyLayer).getName());
         String uploadSpeedFromTable = serviceQualificationView.getUploadSpeedFromTable(accessTechnologyController.getAccessTechnology(accessTechnologyLayer).getName());
         String distributionAreaIdFromTable = serviceQualificationView.getDistributionAreaIdFromTable(accessTechnologyController.getAccessTechnology(accessTechnologyLayer).getName());
-        softAssert.assertEquals(templateForAssertInput(accessTechnologyController.getAccessTechnology(accessTechnologyLayer).getName())
-                + downloadSpeedFromTable, templateForAssertInput(accessTechnologyController.getAccessTechnology(accessTechnologyLayer).getName()) + expectedDownloadSpeed);
-        softAssert.assertEquals(templateForAssertInput(accessTechnologyController.getAccessTechnology(accessTechnologyLayer).getName())
-                + uploadSpeedFromTable, templateForAssertInput(accessTechnologyController.getAccessTechnology(accessTechnologyLayer).getName()) + expectedUploadSpeed);
-        softAssert.assertEquals(templateForAssertInput(accessTechnologyController.getAccessTechnology(accessTechnologyLayer).getName())
-                + distributionAreaIdFromTable, templateForAssertInput(accessTechnologyController.getAccessTechnology(accessTechnologyLayer).getName()) + expectedDistributionAreaId);
+        softAssert.assertEquals(templateForAssertInput(accessTechnologyController.getAccessTechnology(accessTechnologyLayer).getName()) + downloadSpeedFromTable, templateForAssertInput(accessTechnologyController.getAccessTechnology(accessTechnologyLayer).getName())
+                + expectedDownloadSpeed);
+        softAssert.assertEquals(templateForAssertInput(accessTechnologyController.getAccessTechnology(accessTechnologyLayer).getName()) + uploadSpeedFromTable, templateForAssertInput(accessTechnologyController.getAccessTechnology(accessTechnologyLayer).getName())
+                + expectedUploadSpeed);
+        softAssert.assertEquals(templateForAssertInput(accessTechnologyController.getAccessTechnology(accessTechnologyLayer).getName()) + distributionAreaIdFromTable, templateForAssertInput(accessTechnologyController.getAccessTechnology(accessTechnologyLayer).getName())
+                + expectedDistributionAreaId);
         checkAvailabilityFromTableForParticularAccessTechnology(accessTechnologyLayer, expectedAvailability);
     }
 
@@ -244,8 +241,8 @@ public class ServiceQualificationViewSimpleCasesTests extends BaseTestCase {
     private void checkAvailabilityFromTableForParticularAccessTechnology(String accessTechnologyLayer,
                                                                          String expectedAvailability) {
         String availabilityFromTable = serviceQualificationView.getAvailabilityForTechnologyFromTable(accessTechnologyController.getAccessTechnology(accessTechnologyLayer).getName());
-        softAssert.assertEquals(templateForAssertInput(accessTechnologyController.getAccessTechnology(accessTechnologyLayer).getName())
-                + availabilityFromTable, templateForAssertInput(accessTechnologyController.getAccessTechnology(accessTechnologyLayer).getName()) + expectedAvailability);
+        softAssert.assertEquals(templateForAssertInput(accessTechnologyController.getAccessTechnology(accessTechnologyLayer).getName()) + availabilityFromTable, templateForAssertInput(accessTechnologyController.getAccessTechnology(accessTechnologyLayer).getName())
+                + expectedAvailability);
     }
 
     private void checkProblemDescriptionForParticularAccessTechnology(String accessTechnologyLayer, String problemDescriptionError) {
@@ -254,6 +251,7 @@ public class ServiceQualificationViewSimpleCasesTests extends BaseTestCase {
                 + problemDescription, templateForAssertInput(accessTechnologyController.getAccessTechnology(accessTechnologyLayer).getName()) + problemDescriptionError);
     }
 
+    @Step("Check problem description and availability for all access technologies")
     private void checkProblemDescriptionAndAvailabilityForAllAccessTechnologies(Set<String> accessTechnologyMapKeys,
                                                                                 String problemDescriptionError, String expectedAvailability) {
         for (String accessTechnologyLayer : accessTechnologyMapKeys) {
@@ -263,6 +261,7 @@ public class ServiceQualificationViewSimpleCasesTests extends BaseTestCase {
         }
     }
 
+    @Step("Check data in table and property panel for all access technologies")
     private void checkDataInTableAndPropertyPanelForAllAccessTechnologies(Set<String> accessTechnologyMapKeys,
                                                                           String expectedDistributionAreaId, String expectedAvailability, String expectedCoverage,
                                                                           String distributionAreaName, String technicalStandard) {
