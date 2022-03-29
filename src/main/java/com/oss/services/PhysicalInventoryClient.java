@@ -1,10 +1,16 @@
 package com.oss.services;
 
-import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import javax.ws.rs.core.Response;
 
+import org.assertj.core.util.Lists;
+
+import com.comarch.oss.physicalinventory.api.dto.CardDTO;
+import com.comarch.oss.physicalinventory.api.dto.ChassisDTO;
 import com.comarch.oss.physicalinventory.api.dto.PhysicalDeviceDTO;
+import com.comarch.oss.physicalinventory.api.dto.PluggableModuleDTO;
+import com.comarch.oss.physicalinventory.api.dto.PortDTO;
 import com.comarch.oss.physicalinventory.api.dto.ResourceDTO;
 import com.comarch.oss.physicalinventory.api.dto.SearchResultDTO;
 import com.jayway.restassured.http.ContentType;
@@ -12,7 +18,7 @@ import com.oss.untils.Constants;
 import com.oss.untils.Environment;
 
 public class PhysicalInventoryClient {
-    
+
     private static final String DEVICES_API_PATH = "/devices";
     private static final String DEVICE_STRUCTURE_API_PATH = "/devices/%s/devicestructurebyjpa";
     private static final String DEVICE_DELETE_API_PATH = "/devices/v2/%s";
@@ -21,13 +27,17 @@ public class PhysicalInventoryClient {
     private static final String FALSE = "false";
     private static final String LOCATION = "location";
     private static final String QUERY = "query";
+    private static final String DEVICES_PORTS_API_PATH = "/devices/%s/ports";
+    private static final String PORTS_PLUGGABLE_API_PATH = "/ports/%s/pluggablemodule?invokeTPService=true&checkCompatibility=false";
+    private static final String CHASSIS_STRUCTURE_API_PATH = "/chassis/%s/structure";
+    private static final String CARDS_STRUCTURE_API_PATH = "/cards/%s/structure";
     private static PhysicalInventoryClient instance;
     private final Environment env;
-    
+
     public PhysicalInventoryClient(Environment environment) {
         env = environment;
     }
-    
+
     public static PhysicalInventoryClient getInstance(Environment pEnvironment) {
         if (instance != null) {
             return instance;
@@ -35,10 +45,11 @@ public class PhysicalInventoryClient {
         instance = new PhysicalInventoryClient(pEnvironment);
         return instance;
     }
-    
+
     public ResourceDTO createDevice(PhysicalDeviceDTO device) {
         return env.getPhysicalInventoryCoreRequestSpecification()
                 .given()
+                .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
                 .contentType(ContentType.JSON)
                 .body(device)
                 .when()
@@ -48,7 +59,86 @@ public class PhysicalInventoryClient {
                 .extract()
                 .as(ResourceDTO.class);
     }
-    
+
+    public void addPortToDevice(Long deviceId, PortDTO portDTO) {
+        String devicesPortsPath = String.format(DEVICES_PORTS_API_PATH, deviceId);
+        env.getPhysicalInventoryCoreRequestSpecification()
+                .given()
+                .contentType(ContentType.JSON)
+                .body(Lists.newArrayList(portDTO))
+                .when()
+                .put(devicesPortsPath)
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode());
+
+    }
+
+    public void addPluggableModuleToPort(Long portId, PluggableModuleDTO pluggableModuleDTO) {
+        String portsPluggableModulePath = String.format(PORTS_PLUGGABLE_API_PATH, portId);
+        env.getPhysicalInventoryCoreRequestSpecification()
+                .given()
+                .contentType(ContentType.JSON)
+                .body(pluggableModuleDTO)
+                .when()
+                .put(portsPluggableModulePath)
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode());
+    }
+
+    public String getDevicePortId(Long deviceId, String portName) {
+        return getDeviceStructure(deviceId)
+                .getPorts()
+                .stream()
+                .filter(e -> (e.getName().equals(portName)))
+                .map(e -> e.getId().get())
+                .findAny()
+                .orElseThrow(() -> new RuntimeException("Can't find port with name: " + portName + " on device with id: " + deviceId))
+                .toString();
+    }
+
+    public Long getDeviceChassisId(Long deviceId, String chassisName) {
+        return getDeviceStructure(deviceId)
+                .getChassis()
+                .stream()
+                .filter(e -> (e.getName().equals(chassisName)))
+                .map(e -> e.getId().get())
+                .findAny()
+                .orElseThrow(() -> new RuntimeException("Can't find chassis with name: " + chassisName + " on device with id: " + deviceId))
+                .longValue();
+    }
+
+    public Long getDeviceCardUnderChassisId(Long chassisId, String cardName) {
+        return getChassisStructure(chassisId)
+                .getCards()
+                .stream()
+                .filter(e -> (e.getName().equals(Optional.of(cardName))))
+                .map(e -> e.getId().get())
+                .findAny()
+                .orElseThrow(() -> new RuntimeException("Can't find card with name: " + cardName + " on chassis with id: " + chassisId))
+                .longValue();
+    }
+
+    public Long getDevicePortUnderCardId(Long cardId, String portName) {
+        return getCardStructure(cardId)
+                .getPorts()
+                .stream()
+                .filter(e -> (e.getName().equals(portName)))
+                .map(e -> e.getId().get())
+                .findAny()
+                .orElseThrow(() -> new RuntimeException("Can't find port with name: " + portName + " on card with id: " + cardId))
+                .longValue();
+    }
+
+    public String getAntennaArrayId(Long antennaId, String arrayName) {
+        return getDeviceStructure(antennaId)
+                .getAntennaArrays()
+                .stream().filter(e -> (e.getName().equals(arrayName)))
+                .map(e -> e.getId().get())
+                .findAny()
+                .orElseThrow(() -> new RuntimeException("Can't find array with name: " + arrayName + " on antenna with id: " + antennaId))
+                .toString();
+    }
+
     public ResourceDTO createDevice(PhysicalDeviceDTO device, long projectId) {
         return env.getPhysicalInventoryCoreRequestSpecification()
                 .given()
@@ -63,7 +153,7 @@ public class PhysicalInventoryClient {
                 .extract()
                 .as(ResourceDTO.class);
     }
-    
+
     public void updateDevice(PhysicalDeviceDTO deviceDTO, long deviceId, long projectId) {
         env.getPhysicalInventoryCoreRequestSpecification()
                 .given()
@@ -77,7 +167,7 @@ public class PhysicalInventoryClient {
                 .then()
                 .statusCode(Response.Status.OK.getStatusCode()).assertThat();
     }
-    
+
     public SearchResultDTO getDeviceId(String locationId, String queryVale) {
         return env.getPhysicalInventoryCoreRequestSpecification()
                 .given()
@@ -92,7 +182,19 @@ public class PhysicalInventoryClient {
                 .extract()
                 .as(SearchResultDTO.class);
     }
-    
+
+    public void deleteDevice(String deviceId) {
+        String devicePath = String.format(DEVICE_DELETE_API_PATH, deviceId);
+        env.getPhysicalInventoryCoreRequestSpecification()
+                .given()
+                .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
+                .when()
+                .delete(devicePath)
+                .then()
+                .statusCode(200).assertThat();
+
+    }
+
     private PhysicalDeviceDTO getDeviceStructure(Long deviceId) {
         String devicePath = String.format(DEVICE_STRUCTURE_API_PATH, deviceId);
         return env.getPhysicalInventoryCoreRequestSpecification()
@@ -105,27 +207,31 @@ public class PhysicalInventoryClient {
                 .extract()
                 .as(PhysicalDeviceDTO.class);
     }
-    
-    public String getDevicePortId(Long deviceId, String portName) {
-        return getDeviceStructure(deviceId).getPorts().stream().filter(e -> (e.getName().equals(portName))).map(e -> e.getId().get())
-                .findAny().orElseThrow(()-> new NoSuchElementException("Cannot get Port Id")).toString();
-    }
-    
-    public String getAntennaArrayId(Long antennaId, String arrayName) {
-        return getDeviceStructure(antennaId).getAntennaArrays().stream().filter(e -> (e.getName().equals(arrayName)))
-                .map(e -> e.getId().get()).findAny().orElseThrow(()-> new NoSuchElementException("Cannot get AntennaArray Id")).toString();
-    }
-    
-    public void deleteDevice(String deviceId) {
-        String devicePath = String.format(DEVICE_DELETE_API_PATH, deviceId);
-        env.getPhysicalInventoryCoreRequestSpecification()
+
+    private ChassisDTO getChassisStructure(Long chassisId) {
+        String chassisStructurePath = String.format(CHASSIS_STRUCTURE_API_PATH, chassisId);
+        return env.getPhysicalInventoryCoreRequestSpecification()
                 .given()
                 .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
                 .when()
-                .delete(devicePath)
+                .get(chassisStructurePath)
                 .then()
-                .statusCode(200).assertThat();
-        
+                .log().body()
+                .extract()
+                .as(ChassisDTO.class);
     }
-    
+
+    private CardDTO getCardStructure(Long cardId) {
+        String cardStructurePath = String.format(CARDS_STRUCTURE_API_PATH, cardId);
+        return env.getPhysicalInventoryCoreRequestSpecification()
+                .given()
+                .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
+                .when()
+                .get(cardStructurePath)
+                .then()
+                .log().body()
+                .extract()
+                .as(CardDTO.class);
+    }
+
 }

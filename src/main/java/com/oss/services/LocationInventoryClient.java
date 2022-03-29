@@ -12,6 +12,8 @@ import com.jayway.restassured.http.ContentType;
 import com.oss.untils.Constants;
 import com.oss.untils.Environment;
 
+import static java.net.HttpURLConnection.HTTP_NO_CONTENT;
+
 /**
  * @author Milena Miętkiewicz
  */
@@ -140,6 +142,20 @@ public class LocationInventoryClient {
                 .delete(SUB_LOCATION_API_PATH + "/" + ids)
                 .then()
                 .statusCode(Response.Status.NO_CONTENT.getStatusCode()).assertThat();
+    }
+
+    public com.jayway.restassured.response.Response removeLocation(Long locationId, String locationType) {
+        return env.getLocationInventoryCoreRequestSpecification()
+                .when()
+                .delete(PHYSICAL_LOCATIONS_API_PATH + "/" + locationType + "/" + locationId)
+                .then()
+                .log()
+                .status()
+                .log()
+                .body()
+                .statusCode(HTTP_NO_CONTENT)
+                .extract()
+                .response();
     }
 
     public void deleteLocation(String locationId, String locationType) {

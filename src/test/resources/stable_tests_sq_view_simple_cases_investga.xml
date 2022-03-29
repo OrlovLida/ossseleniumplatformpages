@@ -1,0 +1,67 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="RegressionSuiteSQViewSimpleCases-INVESTGA" thread-count="1" parallel="tests" verbose="1">
+
+    <test name="Creation of data for tests">
+        <classes>
+            <class name="com.oss.fixedaccess.servicequalification.ServiceQualificationViewSimpleCasesTests">
+                <methods>
+                    <include name="createDataForTests"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <test name="Check data in table and property panel for all access technologies in SQ View - HappyPath DA name">
+        <classes>
+            <class name="com.oss.fixedaccess.servicequalification.ServiceQualificationViewSimpleCasesTests">
+                <methods>
+                    <include name="checkDataInSQViewForDAName"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <test name="Check data in table and property panel for all access technologies in SQ View - HappyPath Address Name">
+        <classes>
+            <class name="com.oss.fixedaccess.servicequalification.ServiceQualificationViewSimpleCasesTests">
+                <methods>
+                    <include name="checkDataInSQViewTestForAddressName"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <test name="Check error for required download speed grater than max download speed for all access technologies for Address Name">
+        <classes>
+            <class name="com.oss.fixedaccess.servicequalification.ServiceQualificationViewSimpleCasesTests">
+                <methods>
+                    <include
+                            name="checkErrorForRequiredDownloadSpeedForAddressName"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <test name="Check error for required download speed grater than max download speed for all access technologies for DA name">
+        <classes>
+            <class name="com.oss.fixedaccess.servicequalification.ServiceQualificationViewSimpleCasesTests">
+                <methods>
+                    <include
+                            name="checkErrorForRequiredDownloadSpeedForDAName"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+
+    <test name="Deletion of data for tests">
+        <classes>
+            <class name="com.oss.fixedaccess.servicequalification.ServiceQualificationViewSimpleCasesTests">
+                <methods>
+                    <include name="deleteDataForTests"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+</suite>

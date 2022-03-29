@@ -1,10 +1,11 @@
 package com.oss.services;
 
+import java.util.Arrays;
+
 import com.comarch.oss.transport.tpt.tp.api.dto.TerminationPointDetailDTO;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.untils.Constants;
 import com.oss.untils.Environment;
-
-import java.util.Arrays;
 
 public class TPServiceClient {
 
@@ -27,6 +28,7 @@ public class TPServiceClient {
 
     public TerminationPointDetailDTO[] getDeviceConnectors(Long deviceId, String portId) {
         String devicePath = String.format(TERMINATION_POINT_API_PATH, deviceId);
+        DelayUtils.sleep(15000);
         return env.getTPServiceSpecification()
                 .given()
                 .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
@@ -40,6 +42,22 @@ public class TPServiceClient {
     }
 
     public String getConnectorId(Long deviceId, String portId, String connectorName) {
-        return Arrays.stream(getDeviceConnectors(deviceId, portId)).filter(e -> (e.getName().equals(connectorName))).map(e -> e.getId()).findAny().get().toString();
+        return Arrays.stream(getDeviceConnectors(deviceId, portId))
+                .filter(e -> (e.getName()
+                        .equals(connectorName)))
+                .map(TerminationPointDetailDTO::getId)
+                .findAny()
+                .orElseThrow(() -> new RuntimeException("Cant find termination point with name " + connectorName + " on port id " + portId))
+                .toString();
+
+    }
+
+    public Long getAccessInterfaceId(Long deviceId, String portId, String layerName) {
+        return Arrays.stream(getDeviceConnectors(deviceId, portId))
+                .filter(e -> (e.getLayer().equals(layerName)))
+                .map(TerminationPointDetailDTO::getId)
+                .findAny()
+                .orElseThrow(() -> new RuntimeException("Cant find AccessInterface with layer name " + layerName + " on port id " + portId))
+                .longValue();
     }
 }

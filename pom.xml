@@ -22,12 +22,14 @@
         <restassured.version>2.9.0</restassured.version>
         <rs.version>2.1.1</rs.version>
         <locationinventory.version>1.34.14.Final</locationinventory.version>
-        <physicalinventory.version>2.1.5.Final</physicalinventory.version>
+        <physicalinventory.version>2.1.55.Final</physicalinventory.version>
         <addressinventory.version>1.17.32.Final</addressinventory.version>
         <radio.version>4.2.3.Final</radio.version>
         <resourcecatalog.version>2.7.1.Final</resourcecatalog.version>
         <planning.version>6.9.2.Final</planning.version>
         <seleniumframework.version>1.0.0-SNAPSHOT</seleniumframework.version>
+        <fixedaccess.version>4.9.6</fixedaccess.version>
+        <trail-api.version>3.20.0.Final</trail-api.version>
         <log4j2.version>2.8.2</log4j2.version>
     </properties>
 
@@ -74,9 +76,9 @@
             <version>${log4j2.version}</version>
         </dependency>
         <dependency>
-        <groupId>javax.xml.bind</groupId>
-        <artifactId>jaxb-api</artifactId>
-        <version>2.3.1</version>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.1</version>
         </dependency>
         <dependency>
             <groupId>com.jayway.restassured</groupId>
@@ -89,6 +91,16 @@
             <version>${rs.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.comarch.oss.inventory.fixedaccess</groupId>
+            <artifactId>fixed-access-api</artifactId>
+            <version>${fixedaccess.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.comarch.oss.inventory.transport.trail.framework</groupId>
+            <artifactId>trail-api</artifactId>
+            <version>${trail-api.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.comarch.oss.tests.webframework</groupId>
             <artifactId>OSSSeleniumTestFramework</artifactId>
