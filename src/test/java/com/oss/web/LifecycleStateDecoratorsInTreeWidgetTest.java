@@ -18,6 +18,7 @@ import org.testng.annotations.Test;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.tree.TreeComponent;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.platform.HierarchyViewPage;
 import com.oss.repositories.AddressRepository;
@@ -80,8 +81,13 @@ public class LifecycleStateDecoratorsInTreeWidgetTest extends BaseTestCase {
     public void createNewObjects() {
         buildingId = createBuilding(project1);
         log.info("Building id: " + buildingId);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hierarchyViewPage =
                 HierarchyViewPage.goToHierarchyViewPage(driver, BASIC_URL, LOCATION_TYPE_BUILDING, buildingId, project1.toString());
+        if (!hierarchyViewPage.isNodePresent(BUILDING_NAME)) {
+            hierarchyViewPage.getMainTree().callActionById(ActionsContainer.KEBAB_GROUP_ID, REFRESH_TREE_ACTION_ID);
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        }
         hierarchyViewPage.getFirstNode().callAction(CREATE_ACTION_ID, CREATE_DEVICE_ACTION_ID);
         createDeviceWizard();
         Assertions.assertThat(getNode(BUILDING_NAME).getDecoratorStatus()).isEqualTo(GREEN);
