@@ -18,7 +18,7 @@ import java.util.*;
  */
 public class AEITest extends BaseTestCase {
 
-    private static final String PRE_CREATED_LOCATION = "Gliwice-BU1";
+    private static final String PRE_CREATED_LOCATION = "SELENIUM_TRANSPORT_LOCATION";
     private static final String PRE_CREATED_DEVICE = "SeleniumTestDeviceAEI";
 
     private static final String INTERFACE1_NAME = "CLUSTER 0";
