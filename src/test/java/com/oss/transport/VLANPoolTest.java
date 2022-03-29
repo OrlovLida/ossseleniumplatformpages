@@ -21,7 +21,7 @@ import io.qameta.allure.Description;
 
 public class VLANPoolTest extends BaseTestCase {
 
-    private static final String LOCATION_NAME = "VLANPoolSeleniumTest";
+    private static final String LOCATION_NAME = "SELENIUM_TRANSPORT_LOCATION";
     private static final String IPDEVICE_NAME = "VLANPoolSeleniumTest";
     private static final String VLAN_POOL_NAME_BEFORE = "VLANPoolSeleniumTestBefore";
     private static final String VLAN_POOL_NAME_AFTER = "VLANPoolSeleniumTestAfter";

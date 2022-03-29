@@ -24,8 +24,8 @@ import io.qameta.allure.Description;
 @Listeners({TestListener.class})
 public class VLANRangeTest extends BaseTestCase {
 
-    private static final String VLAN_NAME_1 = "VLANRangeSeleniumTest";
-    private static final String VLAN_NAME_2 = "VLANRangeSeleniumTestModified";
+    private static final String VLAN_NAME_1 = "VLANRangeSeleniumTest" + (int) (Math.random() * 1000);
+    private static final String VLAN_NAME_2 = "VLANRangeSeleniumTestModified" + (int) (Math.random() * 1000);
     private static final String VLAN_RANGE_1 = "1, 3, 5-10";
     private static final String VLAN_RANGE_2 = "1, 3, 5-9";
     private static final String VLAN_DESCRIPTION_1 = "DescriptionBefore";

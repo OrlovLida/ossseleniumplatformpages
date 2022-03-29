@@ -18,11 +18,11 @@ import java.util.Map;
  */
 public class LoopbackInterfaceTest extends BaseTestCase {
 
-    private static final String PRE_CREATED_LOCATION_NAME = "Gliwice-BU1";
+    private static final String PRE_CREATED_LOCATION_NAME = "SELENIUM_TRANSPORT_LOCATION";
     private static final String PRE_CREATED_DEVICE_NAME = "SeleniumTestDeviceLI";
 
-    private static final String NUMBER = "101";
-    private static final String NUMBER2 = "102";
+    private static final String NUMBER = "1" + (int) (Math.random() * 100);
+    private static final String NUMBER2 = "2" + (int) (Math.random() * 100);
     private static final String DESCRIPTION = "Opis1";
     private static final String DESCRIPTION2 = "Opis2";
 
