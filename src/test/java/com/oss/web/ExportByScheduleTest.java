@@ -7,9 +7,11 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.exportguiwizard.ExportGuiWizardPage;
 import com.oss.pages.languageservice.LanguageServicePage;
 import com.oss.pages.schedulerservice.SchedulerServicePage;
+import com.oss.untils.FakeGenerator;
 import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
@@ -19,14 +21,13 @@ public class ExportByScheduleTest extends BaseTestCase {
     
     private static final String LANGUAGE_SERVICE_PAGE_URL = String.format("%s/#/views/languagesservice/views/translations" +
             "?perspective=LIVE", BASIC_URL);
-    private static String TASK_NAME = "!Test_Export123";
-    
-    private LanguageServicePage languageServicePage;
+    private static String TASK_NAME = "Test_Export"+ FakeGenerator.getRandomInt();
+
     private SchedulerServicePage schedulerServicePage;
     
     @BeforeMethod
     public void openExportGuiWizard() {
-        languageServicePage = new LanguageServicePage(driver);
+        LanguageServicePage languageServicePage = new LanguageServicePage(driver);
         homePage.goToLanguageServicePage(LANGUAGE_SERVICE_PAGE_URL);
         languageServicePage
                 .typeIdOfFirstServiceInSearch()

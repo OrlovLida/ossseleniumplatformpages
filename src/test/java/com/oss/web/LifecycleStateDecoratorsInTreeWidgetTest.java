@@ -113,7 +113,6 @@ public class LifecycleStateDecoratorsInTreeWidgetTest extends BaseTestCase {
     
     @Test(priority = 3)
     public void updateObjectsWizard() {
-        
         hierarchyViewPage =
                 HierarchyViewPage.goToHierarchyViewPage(driver, BASIC_URL, LOCATION_TYPE_BUILDING, buildingId, project2.toString());
         getNode(DEVICE_1_PATH).callAction(ActionsContainer.EDIT_GROUP_ID, UPDATE_DEVICE_ACTION_ID);
@@ -212,6 +211,7 @@ public class LifecycleStateDecoratorsInTreeWidgetTest extends BaseTestCase {
         DeviceWizardPage deviceWizard = new DeviceWizardPage(driver);
         deviceWizard.setModel(DEVICE_1_MODEL);
         deviceWizard.setName(DEVICE_1_NAME);
+        DelayUtils.sleep(5000);
         deviceWizard.next();
         deviceWizard.setPreciseLocation(BUILDING_NAME);
         deviceWizard.accept();
@@ -232,6 +232,7 @@ public class LifecycleStateDecoratorsInTreeWidgetTest extends BaseTestCase {
     private void updateDeviceWizard() {
         DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
         deviceWizardPage.setDescription(UPDATE);
+        DelayUtils.sleep(5000);
         deviceWizardPage.nextUpdateWizard();
         deviceWizardPage.acceptUpdateWizard();
     }
