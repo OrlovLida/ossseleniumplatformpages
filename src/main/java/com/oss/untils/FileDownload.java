@@ -21,12 +21,10 @@ public class FileDownload {
 
     public static void attachDownloadedFileToReport(String fileName) {
         if (ifDownloadDirExists()) {
-            File directory = new File(CONFIGURATION.getDownloadDir());
-            List<File> listFiles = (List<File>) FileUtils.listFiles(directory, new WildcardFileFilter(fileName), null);
             try {
-                for (File file : listFiles) {
+                for (File file : getFilesList(fileName)) {
                     log.info("Attaching file: {}", file.getCanonicalPath());
-                    attachFile(file);
+                    attachFileWithExtension(file);
                 }
             } catch (IOException e) {
                 log.error("Failed attaching files: {}", e.getMessage());
@@ -35,19 +33,36 @@ public class FileDownload {
     }
 
     private static boolean ifDownloadDirExists() {
-        File tmpDir = new File(CONFIGURATION.getDownloadDir());
-        if (tmpDir.exists()) {
+        if (downloadDirectory().exists()) {
             log.info("Download directory was successfully created");
             return true;
         }
         return false;
     }
 
+    private static File downloadDirectory() {
+        return new File(CONFIGURATION.getDownloadDir());
+    }
+
+    private static List<File> getFilesList(String fileName) {
+        return (List<File>) FileUtils.listFiles(downloadDirectory(), new WildcardFileFilter(fileName), null);
+    }
+
+    private static String getFileExtension(File file) throws IOException {
+        return file.getCanonicalPath().split("\\.")[1];
+    }
+
+    private static void attachFileWithExtension(File file) throws IOException {
+        if (getFileExtension(file).equalsIgnoreCase("xlsx")) {
+            attachXlsxFile(file);
+        } else {
+            attachFile(file);
+        }
+    }
+
     public static boolean checkIfFileIsNotEmpty(String fileName) {
-        File directory = new File(CONFIGURATION.getDownloadDir());
-        List<File> listFiles = (List<File>) FileUtils.listFiles(directory, new WildcardFileFilter(fileName), null);
         boolean fileIsNotEmpty = false;
-        for (File file : listFiles) {
+        for (File file : getFilesList(fileName)) {
             if (file.length() > 0) {
                 fileIsNotEmpty = true;
             }
@@ -55,7 +70,12 @@ public class FileDownload {
         return fileIsNotEmpty;
     }
 
-    @Attachment(value = "Exported CSV file")
+    @Attachment(value = "Exported XLSX file", fileExtension = ".xlsx")
+    public static byte[] attachXlsxFile(File file) throws IOException {
+        return FileUtils.readFileToByteArray(file);
+    }
+
+    @Attachment(value = "Exported file")
     public static byte[] attachFile(File file) throws IOException {
         return FileUtils.readFileToByteArray(file);
     }
