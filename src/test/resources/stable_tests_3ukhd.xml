@@ -26,9 +26,4 @@
             <class name="com.oss.web.InventoryViewTest"/>
         </classes>
     </test>
-    <test name="PhysicalDeviceInventoryViewTest">
-        <classes>
-            <class name="com.oss.web.PhysicalDeviceInventoryViewTest"/>
-        </classes>
-    </test>
 </suite>
