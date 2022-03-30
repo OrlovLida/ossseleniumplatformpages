@@ -170,13 +170,14 @@ public class TreeWidgetTest extends BaseTestCase {
         sublocation.clickNext();
         sublocation.clickAccept();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        hierarchyViewPage.unselectFirstObject();
         hierarchyViewPage.expandNextLevel(LOCATION_NAME);
         List<String> nodes = hierarchyViewPage.getVisibleNodesLabel();
         Assertions.assertThat(nodes).contains(ROOM_3_CREATE);
         
     }
     
-    @Test(priority = 9)
+    @Test(priority = 9, enabled = false)
     public void updateRoom() {
         hierarchyViewPage.unselectFirstObject();
         hierarchyViewPage.selectNodeByLabelsPath(PATH_ROOM_3);
@@ -190,7 +191,7 @@ public class TreeWidgetTest extends BaseTestCase {
     
     @Test(priority = 10)
     public void deleteRoom() {
-        hierarchyViewPage.selectNodeByLabelsPath(PATH_ROOM_3_UPDATE);
+        hierarchyViewPage.selectNodeByLabelsPath(PATH_ROOM_3);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hierarchyViewPage.getMainTree().callActionById(ActionsContainer.EDIT_GROUP_ID, REMOVE_SUBLOCATION_ACTION);
         ConfirmationBox.create(driver, webDriverWait).clickButtonByLabel(CONFIRM_DELETE_BUTTON);

@@ -13,6 +13,7 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
+import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.utils.DelayUtils;
@@ -68,12 +69,15 @@ public class FiltersTest extends BaseTestCase {
             
             advancedSearch.setFilter(ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, id);
             advancedSearch.saveAsNewFilter(FILTER_NAME);
-            
+
             advancedSearch.setFilter(ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, VALUE_FOR_FILTER2);
             advancedSearch.saveAsNewFilter(FILTER2_NAME);
-            
+            SystemMessageContainer.create(driver,webDriverWait).waitForMessageDisappear();
+
             advancedSearch.setFilter(ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, VALUE_FOR_FILTER3);
             advancedSearch.saveAsNewFilter(FILTER3_NAME);
+            SystemMessageContainer.create(driver,webDriverWait).waitForMessageDisappear();
+
             
             Assert.assertEquals(inventoryViewPage.getSavedFilters().size(), 3);
         }
