@@ -105,6 +105,7 @@ public class FiltersTest extends BaseTestCase {
         advancedSearch.selectSavedFilterByLabel(FILTER3_NAME);
         advancedSearch.setFilter(ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, VALUE_FOR_FILTER3_AFTER_EDIT);
         advancedSearch.saveFilter();
+        waitForMessageDisappear();
         advancedSearch.selectSavedFilterByLabel(FILTER2_NAME);
         advancedSearch.selectSavedFilterByLabel(FILTER3_NAME);
         
