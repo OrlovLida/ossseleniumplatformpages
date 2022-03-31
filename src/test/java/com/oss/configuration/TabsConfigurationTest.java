@@ -15,6 +15,8 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.platform.configuration.SaveConfigurationWizard;
 import com.oss.utils.TestListener;
+import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Property.DEFAULT_VIEW_FOR;
+import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Property.GROUPS;
 
 @Listeners({TestListener.class})
 public class TabsConfigurationTest extends BaseTestCase {
@@ -27,12 +29,17 @@ public class TabsConfigurationTest extends BaseTestCase {
 
     private final static String DEFAULT_CONFIGURATION = "DEFAULT";
     private static final String TEST_PERSON = "TestPerson";
-    ;
+    private static final String TEST_ACTOR = "TestActor";
     private static final String INTERESTS = "Interests";
     private static final String OTHER_TYPE = "Other";
     private static final String PLANNING_INFO = "Planning Info";
     private static final String TABLE_TYPE = "Table";
     private static final String MOVIES = "Movies";
+    private static final String ME = "Me";
+    private final static String USER2 = "webseleniumtests2";
+    private static final String PASSWORD_2 = "oss";
+    private final static String USER1 = "webseleniumtests";
+    private static final String PASSWORD_1 = "Webtests123!";
 
     @BeforeClass
     public void goToInventoryView() {
@@ -124,6 +131,71 @@ public class TabsConfigurationTest extends BaseTestCase {
 
     private SaveConfigurationWizard.Field createField(SaveConfigurationWizard.Property property, String... values) {
         return SaveConfigurationWizard.create(driver, webDriverWait).createField(property, values);
+    }
+    @Test(priority = 7)
+    public void saveDefaultConfigurationForTabsWidgetForUser() {
+        //when
+        newInventoryViewPage.selectFirstRow();
+        newInventoryViewPage.enableWidget(TABLE_TYPE, MOVIES);
+        newInventoryViewPage.saveConfigurationForTabs(CONFIGURATION_NAME_TABS_WIDGET_DEFAULT_FOR_USER, createField(DEFAULT_VIEW_FOR, ME));
+
+        //then
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
+        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
+        Assertions.assertThat(messages).hasSize(1);
+        Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
+
+        driver.navigate().refresh();
+
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        newInventoryViewPage.selectFirstRow();
+
+        Assert.assertTrue(newInventoryViewPage.isTabVisible(MOVIES));
+
+        newInventoryViewPage.removeConfigurationForTabs(CONFIGURATION_NAME_TABS_WIDGET_DEFAULT_FOR_USER);
+    }
+
+    @Test(priority = 8)
+    public void saveDefaultConfigurationForTabsWidgetForGroup() {
+        //when
+        newInventoryViewPage.selectFirstRow();
+        newInventoryViewPage.enableWidget(TABLE_TYPE, INTERESTS);
+        newInventoryViewPage.saveConfigurationForTabs(CONFIGURATION_NAME_TABS_WIDGET_GROUP, createField(GROUPS, GROUP_NAME));
+
+        //then
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
+        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
+        Assertions.assertThat(messages).hasSize(1);
+        Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
+
+        driver.navigate().refresh();
+        newInventoryViewPage.chooseGroupContext(GROUP_NAME);
+
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        newInventoryViewPage.selectFirstRow();
+
+        Assert.assertTrue(newInventoryViewPage.isTabVisible(INTERESTS));
+    }
+
+    @Test(priority = 9)
+    public void groupAndTypeInheritanceDefaultConfigurationOfTabsWidget() {
+        //when
+        newInventoryViewPage.changeUser(USER2, PASSWORD_2);
+        newInventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_ACTOR);
+
+        newInventoryViewPage.chooseGroupContext(GROUP_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+
+        newInventoryViewPage.selectFirstRow();
+
+        Assert.assertTrue(newInventoryViewPage.isTabVisible(INTERESTS));
+
+        newInventoryViewPage.changeUser(USER1, PASSWORD_1);
+        newInventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_PERSON);
+        newInventoryViewPage.selectFirstRow();
+
+        newInventoryViewPage.removeConfigurationForTabs(CONFIGURATION_NAME_TABS_WIDGET_GROUP);
+
     }
 
 }
