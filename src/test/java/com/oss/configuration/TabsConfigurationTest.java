@@ -15,6 +15,7 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.platform.configuration.SaveConfigurationWizard;
 import com.oss.utils.TestListener;
+
 import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Property.DEFAULT_VIEW_FOR;
 import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Property.GROUPS;
 
@@ -129,9 +130,6 @@ public class TabsConfigurationTest extends BaseTestCase {
         Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
     }
 
-    private SaveConfigurationWizard.Field createField(SaveConfigurationWizard.Property property, String... values) {
-        return SaveConfigurationWizard.create(driver, webDriverWait).createField(property, values);
-    }
     @Test(priority = 7)
     public void saveDefaultConfigurationForTabsWidgetForUser() {
         //when
@@ -196,6 +194,10 @@ public class TabsConfigurationTest extends BaseTestCase {
 
         newInventoryViewPage.removeConfigurationForTabs(CONFIGURATION_NAME_TABS_WIDGET_GROUP);
 
+    }
+
+    private SaveConfigurationWizard.Field createField(SaveConfigurationWizard.Property property, String... values) {
+        return SaveConfigurationWizard.create(driver, webDriverWait).createField(property, values);
     }
 
 }
