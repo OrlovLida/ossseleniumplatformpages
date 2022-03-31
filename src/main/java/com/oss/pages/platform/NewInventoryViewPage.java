@@ -373,7 +373,7 @@ public class NewInventoryViewPage extends BasePage {
     @Step("Update configuration for page")
     public void updatePageConfiguration() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        ButtonPanel.create(driver, wait).clickButton(ActionsContainer.KEBAB_GROUP_ID, SAVE_CONFIGURATION_BUTTON_ID);
+        ButtonPanel.create(driver, wait).clickButton(KEBAB_OBJECT_GROUP_ID, SAVE_CONFIGURATION_BUTTON_ID);
         getSaveConfigurationWizard().save();
     }
 
