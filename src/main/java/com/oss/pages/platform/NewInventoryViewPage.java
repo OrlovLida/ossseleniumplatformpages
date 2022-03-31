@@ -53,6 +53,7 @@ public class NewInventoryViewPage extends BasePage {
     private static final String CHANGE_LABEL = "Change";
     private static final String TABS_CONTAINER_ID = "DetailTabsWidget";
     private static final String OPEN_HIERARCHY_VIEW_ACTION_ID = "OpenHierarchyViewContext";
+    public static final String KEBAB_OBJECT_GROUP_ID= "frameworkObjectButtonsGroup";
 
     public NewInventoryViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -379,7 +380,7 @@ public class NewInventoryViewPage extends BasePage {
     @Step("Save new configuration for page")
     public void saveNewPageConfiguration(String configurationName, Field... fields) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        ButtonPanel.create(driver, wait).clickButton(ActionsContainer.KEBAB_OBJECT_GROUP_ID, SAVE_CONFIGURATION_BUTTON_ID);
+        ButtonPanel.create(driver, wait).clickButton(KEBAB_OBJECT_GROUP_ID, SAVE_CONFIGURATION_BUTTON_ID);
         getSaveConfigurationWizard().saveAsNew(configurationName, fields);
     }
 
@@ -437,14 +438,14 @@ public class NewInventoryViewPage extends BasePage {
     @Step("Apply configuration for page")
     public void applyConfigurationForPage(String configurationName) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        ButtonPanel.create(driver, wait).clickButton(ActionsContainer.KEBAB_OBJECT_GROUP_ID, CHOOSE_CONFIGURATION_PAGE_ID);
+        ButtonPanel.create(driver, wait).clickButton(KEBAB_OBJECT_GROUP_ID, CHOOSE_CONFIGURATION_PAGE_ID);
         getChooseConfigurationWizard().chooseConfiguration(configurationName).apply();
     }
 
     @Step("Delete configuration for page")
     public NewInventoryViewPage deletePageConfiguration(String configurationName) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        ButtonPanel.create(driver, wait).clickButton(ActionsContainer.KEBAB_OBJECT_GROUP_ID, CHOOSE_CONFIGURATION_PAGE_ID);
+        ButtonPanel.create(driver, wait).clickButton(KEBAB_OBJECT_GROUP_ID, CHOOSE_CONFIGURATION_PAGE_ID);
         getChooseConfigurationWizard().deleteConfiguration(configurationName).cancel();
         return this;
     }
@@ -468,7 +469,7 @@ public class NewInventoryViewPage extends BasePage {
     @Step("Download configuration for page")
     public NewInventoryViewPage downloadConfigurationForPage(String configurationName) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        ButtonPanel.create(driver, wait).clickButton(ActionsContainer.KEBAB_OBJECT_GROUP_ID, DOWNLOAD_CONFIG_PAGE_ID);
+        ButtonPanel.create(driver, wait).clickButton(KEBAB_OBJECT_GROUP_ID, DOWNLOAD_CONFIG_PAGE_ID);
         getChooseConfigurationWizard().chooseConfiguration(configurationName).download();
         return this;
     }
