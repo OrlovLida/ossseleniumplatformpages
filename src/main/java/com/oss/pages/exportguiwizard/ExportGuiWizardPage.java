@@ -94,8 +94,8 @@ public class ExportGuiWizardPage extends BasePage {
         return this;
     }
 
-    public ExportGuiWizardPage typeFileName(String FILE_NAME) {
-        setValueOnTextField(TEXT_FIELD_FILE_NAME_ID, Data.createSingleData(FILE_NAME));
+    public ExportGuiWizardPage typeFileName(String fileName) {
+        setValueOnTextField(TEXT_FIELD_FILE_NAME_ID, Data.createSingleData(fileName));
         return this;
     }
 
@@ -152,29 +152,29 @@ public class ExportGuiWizardPage extends BasePage {
     }
 
 
-    protected void setValueOnCombobox(String COMBOBOX_ID, String value) {
-        getWizard().getComponent(COMBOBOX_ID, ComponentType.COMBOBOX)
+    void setValueOnCombobox(String comboboxId, String value) {
+        getWizard().getComponent(comboboxId, ComponentType.COMBOBOX)
                 .setSingleStringValue(value);
     }
 
-    protected void setValueContainsOnCombobox(String COMBOBOX_ID, String value) {
-        getWizard().getComponent(COMBOBOX_ID, ComponentType.COMBOBOX).clear();
-        getWizard().getComponent(COMBOBOX_ID, ComponentType.COMBOBOX)
+    private void setValueContainsOnCombobox(String comboboxId, String value) {
+        getWizard().getComponent(comboboxId, ComponentType.COMBOBOX).clear();
+        getWizard().getComponent(comboboxId, ComponentType.COMBOBOX)
                 .setSingleStringValueContains(value);
     }
 
-    protected void setValueOnTextField(String TEXT_FIELD_ID, Data value) {
-        TextField textField = (TextField) getComponent(TEXT_FIELD_ID, Input.ComponentType.TEXT_FIELD);
+    void setValueOnTextField(String textFieldId, Data value) {
+        TextField textField = (TextField) getComponent(textFieldId, Input.ComponentType.TEXT_FIELD);
         textField.setValue(value);
     }
 
-    protected void checkTheCheckbox(String CHECKBOX_ID) {
-        Input checkBox = getWizard().getComponent(CHECKBOX_ID, ComponentType.CHECKBOX);
+    void checkTheCheckbox(String checkboxId) {
+        Input checkBox = getWizard().getComponent(checkboxId, ComponentType.CHECKBOX);
         checkBox.setSingleStringValue("true");
     }
 
-    private void uncheckTheCheckbox(String CHECKBOX_ID) {
-        Input checkBox = getWizard().getComponent(CHECKBOX_ID, ComponentType.CHECKBOX);
+    private void uncheckTheCheckbox(String checkboxId) {
+        Input checkBox = getWizard().getComponent(checkboxId, ComponentType.CHECKBOX);
         checkBox.setSingleStringValue("false");
     }
 
@@ -184,6 +184,7 @@ public class ExportGuiWizardPage extends BasePage {
 
     private void clickOnAccept() {
         getWizard().clickAccept();
+       DelayUtils.waitForPageToLoad(driver,wait);
     }
 
     private void clickOnNext() {

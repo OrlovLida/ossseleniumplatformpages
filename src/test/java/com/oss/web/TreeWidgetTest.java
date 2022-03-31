@@ -167,6 +167,7 @@ public class TreeWidgetTest extends BaseTestCase {
         sublocation.setSublocationType(SUB_LOCATION_TYPE_ROOM);
         sublocation.setSublocationName(ROOM_3_CREATE);
         sublocation.setPreciseLocation(LOCATION_NAME);
+        DelayUtils.sleep(5000);
         sublocation.clickNext();
         sublocation.clickAccept();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);

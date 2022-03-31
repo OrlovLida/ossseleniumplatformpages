@@ -24,7 +24,8 @@ public class ExportTest extends BaseTestCase {
     private static final int maxSearchTime6hours = 360;
     private static final String EXPORT_FILE_NAME = "Selenium test " + BaseSDPage.getDateFormat();
     private static final String DATE_MASK = "ISO Local Date";
-    private static final String DOWNLOAD_FILE = "*.csv";
+    private static final String DOWNLOAD_FILE = "Selenium test*.csv";
+    private static final String TT_DOWNLOAD_FILE = "TroubleTicket*.xlsx";
     private static final String TICKET_DASHBOARD = "_TroubleTickets";
 
     @BeforeMethod
@@ -74,10 +75,28 @@ public class ExportTest extends BaseTestCase {
             ticketSearchPage.clickRefresh();
             int ticketsAfterRefresh = ticketSearchPage.countIssuesInTable();
 
-            Assert.assertTrue(!ticketSearchPage.isIssueTableEmpty());
+            Assert.assertFalse(ticketSearchPage.isIssueTableEmpty());
             Assert.assertTrue(ticketsInTable >= ticketsAfterRefresh);
         } else {
             Assert.fail("No data in ticket search - cannot check refresh function");
         }
+    }
+
+    @Test(priority = 3, testName = "Export form Ticket Dashboard", description = "Export form Ticket Dashboard")
+    @Description("Export form Ticket Dashboard")
+    public void exportFromTicketDashboard() {
+        notificationWrapperPage = baseDashboardPage.openNotificationPanel();
+        notificationWrapperPage.clearNotifications();
+        notificationWrapperPage.close();
+        baseDashboardPage.clickExport();
+        notificationWrapperPage = baseDashboardPage.openNotificationPanel();
+        notificationWrapperPage.waitForExportFinish();
+        notificationWrapperPage.clickDownload();
+        notificationWrapperPage.waitAndGetFinishedNotificationText();
+        notificationWrapperPage.clearNotifications();
+        baseDashboardPage.attachFileToReport(TT_DOWNLOAD_FILE);
+
+        Assert.assertEquals(notificationWrapperPage.amountOfNotifications(), 0);
+        Assert.assertTrue(baseDashboardPage.checkIfFileIsNotEmpty(TT_DOWNLOAD_FILE));
     }
 }

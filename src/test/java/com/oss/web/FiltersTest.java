@@ -69,15 +69,14 @@ public class FiltersTest extends BaseTestCase {
             
             advancedSearch.setFilter(ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, id);
             advancedSearch.saveAsNewFilter(FILTER_NAME);
-
+            
             advancedSearch.setFilter(ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, VALUE_FOR_FILTER2);
             advancedSearch.saveAsNewFilter(FILTER2_NAME);
-            SystemMessageContainer.create(driver,webDriverWait).waitForMessageDisappear();
-
+            waitForMessageDisappear();
+            
             advancedSearch.setFilter(ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, VALUE_FOR_FILTER3);
             advancedSearch.saveAsNewFilter(FILTER3_NAME);
-            SystemMessageContainer.create(driver,webDriverWait).waitForMessageDisappear();
-
+            waitForMessageDisappear();
             
             Assert.assertEquals(inventoryViewPage.getSavedFilters().size(), 3);
         }
@@ -87,9 +86,10 @@ public class FiltersTest extends BaseTestCase {
     @Description("Adding filter to favorite, checking that the star icon for that filter is filled")
     public void addingFilterToFavorite() {
         advancedSearch.markFavoriteFilter(FILTER2_NAME);
+        waitForMessageDisappear();
         Assert.assertTrue(advancedSearch.getFavoriteFilters().contains(FILTER2_NAME));
     }
-    
+
     @Test(priority = 3)
     @Description("Checking that filter is applied properly and name of the filter is displayed in Filter Panel")
     public void isFilterApply() {
@@ -105,6 +105,7 @@ public class FiltersTest extends BaseTestCase {
         advancedSearch.selectSavedFilterByLabel(FILTER3_NAME);
         advancedSearch.setFilter(ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, VALUE_FOR_FILTER3_AFTER_EDIT);
         advancedSearch.saveFilter();
+        waitForMessageDisappear();
         advancedSearch.selectSavedFilterByLabel(FILTER2_NAME);
         advancedSearch.selectSavedFilterByLabel(FILTER3_NAME);
         
@@ -143,7 +144,6 @@ public class FiltersTest extends BaseTestCase {
     @Test(priority = 8)
     @Description("Creating Folder and checking that the created folder is visible in Filter Manager View")
     public void creatingFolder() {
-        filterManagerPage = FilterManagerPage.goToFilterManagerPage(driver, BASIC_URL);
         filterManagerPage
                 .createFolder(FOLDER_NAME)
                 .expandAllCategories();
@@ -266,5 +266,9 @@ public class FiltersTest extends BaseTestCase {
                 .deleteAllFolders();
         Assert.assertEquals(filterManagerPage.howManyFilters(), 0);
         Assert.assertEquals(filterManagerPage.howManyFolders(), 1);
+    }
+    
+    private void waitForMessageDisappear() {
+        SystemMessageContainer.create(driver, webDriverWait).waitForMessageDisappear();
     }
 }

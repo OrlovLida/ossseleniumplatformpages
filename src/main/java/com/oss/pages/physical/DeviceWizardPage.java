@@ -41,7 +41,8 @@ public class DeviceWizardPage extends BasePage {
     private static final String DEVICE_HARDWARE_VERSION_DATA_ATTRIBUTE_NAME = "hardwareVersion";
     private static final String DEVICE_DESCRIPTION_DATA_ATTRIBUTE_NAME = "description";
     private static final String DEVICE_IS_OWNED_BY_3RD_PARTY_DATA_ATTRIBUTE_NAME = "checkbox_is_leased";
-    private static final String DEVICE_CREATE_WIZARD = "devices_create_wizard_view";
+    private static final String DEVICE_CREATE_WIZARD_PLAN = "device_create_wizard_view";
+    private static final String DEVICE_CREATE_WIZARD_LIVE = "devices_create_wizard_view";
     private static final String DEVICE_UPDATE_WIZARD = "device_update_wizard_view";
     private static final String DEVICE_AVAILABLE_MOUNTING_POSITIONS_DATA_ATTRIBUTE_NAME = "mountingPosition";
 
@@ -245,8 +246,11 @@ public class DeviceWizardPage extends BasePage {
 
     private Wizard getDeviceWizard() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        if (driver.getPageSource().contains(DEVICE_CREATE_WIZARD)) {
-            return Wizard.createByComponentId(driver, wait, DEVICE_CREATE_WIZARD);
+        if (driver.getPageSource().contains(DEVICE_CREATE_WIZARD_PLAN)) {
+            return Wizard.createByComponentId(driver, wait, DEVICE_CREATE_WIZARD_PLAN);
+        }
+        if (driver.getPageSource().contains(DEVICE_CREATE_WIZARD_LIVE)){
+            return Wizard.createByComponentId(driver, wait, DEVICE_CREATE_WIZARD_LIVE);
         } else
             return Wizard.createByComponentId(driver, wait, DEVICE_UPDATE_WIZARD);
     }

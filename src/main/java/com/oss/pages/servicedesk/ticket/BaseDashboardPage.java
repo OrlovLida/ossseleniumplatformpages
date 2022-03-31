@@ -29,6 +29,8 @@ public class BaseDashboardPage extends BaseSDPage {
     private static final String CREATE_PROBLEM_BUTTON_ID = "PM_WIZARD_CREATE_TITLE";
     private static final String PROBLEM_BUTTON_ID = "Problem";
     private static final String PROBLEMS_TABLE_ID = "_tableProblems";
+    private static final String GROUP_ID_OLD_ACTIONS_CONTAINER = "frameworkCustomEllipsis";
+    private static final String EXPORT_BUTTON_ID = "EXPORT";
 
     public BaseDashboardPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -60,6 +62,14 @@ public class BaseDashboardPage extends BaseSDPage {
         log.info("Create Problem wizard is opened");
 
         return new SDWizardPage(driver, wait);
+    }
+
+    @Step("Click Export")
+    public void clickExport() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getTroubleTicketsTable().callAction(GROUP_ID_OLD_ACTIONS_CONTAINER, EXPORT_BUTTON_ID);
+
+        log.info("Exporting XLSX file");
     }
 
     private String getAttributeFromTicketsTable(int index, String attributeName) {
