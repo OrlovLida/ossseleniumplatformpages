@@ -394,7 +394,7 @@ public class NewInventoryViewPage extends BasePage {
     @Step("Update configuration for tabs")
     public void updateConfigurationForTabs() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getTabsWidget().callActionById(ActionsContainer.KEBAB_GROUP_ID, SAVE_CONFIG_TABS_ID);
+        getTabsWidget().callActionById(KEBAB_OBJECT_GROUP_ID, SAVE_CONFIG_TABS_ID);
         getSaveConfigurationWizard().save();
     }
 
