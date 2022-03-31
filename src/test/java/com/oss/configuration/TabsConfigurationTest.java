@@ -88,6 +88,7 @@ public class TabsConfigurationTest extends BaseTestCase {
     public void updateConfigurationForTabsWidget() {
 
         newInventoryViewPage.disableWidget(INTERESTS);
+
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         newInventoryViewPage.updateConfigurationForTabs();
