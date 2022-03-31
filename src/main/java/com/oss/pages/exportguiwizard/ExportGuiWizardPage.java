@@ -184,7 +184,7 @@ public class ExportGuiWizardPage extends BasePage {
 
     private void clickOnAccept() {
         getWizard().clickAccept();
-        getWizard().waitToClose();
+       DelayUtils.waitForPageToLoad(driver,wait);
     }
 
     private void clickOnNext() {
