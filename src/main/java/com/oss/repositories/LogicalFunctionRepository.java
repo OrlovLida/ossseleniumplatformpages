@@ -54,7 +54,7 @@ public class LogicalFunctionRepository {
                                                                 .description(name)
                                                                 .build())
                                          .build();
-        LogicalFunctionBulkIdentificationsDTO logicalFunction = logicalFunctionClient.createLogicalFunction(dto);
+        LogicalFunctionBulkIdentificationsDTO logicalFunction = logicalFunctionClient.createLogicalFunctionBulk(dto);
         return logicalFunction.getLogicalFunctionsIdentifications()
                    .stream()
                    .map(LogicalFunctionSyncIdentificationDTO::getId)
