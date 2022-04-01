@@ -1,25 +1,27 @@
 package com.oss.pages.bigdata.dfe.externalresource;
 
-import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bigdata.dfe.BaseDfePage;
-import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.oss.framework.utils.DelayUtils;
+import com.oss.pages.bigdata.dfe.BaseDfePage;
+
+import io.qameta.allure.Step;
 
 public class ExternalResourcesPage extends BaseDfePage {
 
     private static final Logger log = LoggerFactory.getLogger(ExternalResourcesPage.class);
     private static final String TABLE_ID = "external-resources-listAppId";
 
-    private final String ADD_NEW_EXTERNAL_RESOURCE_LABEL = "Add New External Resource";
-    private final String EDIT_EXTERNAL_RESOURCE_LABEL = "Edit External Resource";
-    private final String DELETE_EXTERNAL_RESOURCE_LABEL = "Delete External Resource";
-    private final String SEARCH_INPUT_ID = "external-resources-listSearchAppId";
+    private static final String ADD_NEW_EXTERNAL_RESOURCE_LABEL = "Add New External Resource";
+    private static final String EDIT_EXTERNAL_RESOURCE_LABEL = "Edit External Resource";
+    private static final String DELETE_EXTERNAL_RESOURCE_LABEL = "Delete External Resource";
+    private static final String SEARCH_INPUT_ID = "external-resources-listSearchAppId";
 
-    private final String NAME_COLUMN_LABEL = "Name";
-    private final String DELETE_LABEL = "Delete";
+    private static final String NAME_COLUMN_LABEL = "Name";
+    private static final String DELETE_LABEL = "Delete";
 
     public ExternalResourcesPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);

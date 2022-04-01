@@ -1,13 +1,14 @@
 package com.oss.pages.bigdata.dfe.dictionary;
 
-
-import com.oss.framework.wizard.Wizard;
-import com.oss.pages.BasePage;
-import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.oss.framework.wizard.Wizard;
+import com.oss.pages.BasePage;
+
+import io.qameta.allure.Step;
 
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 
@@ -15,13 +16,13 @@ public class EntryPopupPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(EntryPopupPage.class);
 
-    private final String KEY_INPUT_ID = "name";
-    private final String VALUE_INPUT_ID = "value";
+    private static final String KEY_INPUT_ID = "name";
+    private static final String VALUE_INPUT_ID = "value";
     private final Wizard entryWizard;
 
-    public EntryPopupPage(WebDriver driver, WebDriverWait wait, String WIZARD_ID) {
+    public EntryPopupPage(WebDriver driver, WebDriverWait wait, String wizardId) {
         super(driver, wait);
-        entryWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
+        entryWizard = Wizard.createByComponentId(driver, wait, wizardId);
     }
 
     public void fillKey(String key) {

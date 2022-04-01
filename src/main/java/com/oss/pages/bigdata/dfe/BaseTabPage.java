@@ -1,18 +1,21 @@
 package com.oss.pages.bigdata.dfe;
 
-import com.oss.framework.widgets.table.OldTable;
-import com.oss.framework.widgets.tabs.TabWindowWidget;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.oss.framework.widgets.table.OldTable;
+import com.oss.framework.widgets.tabs.TabsWidget;
+
 public abstract class BaseTabPage extends BaseDfePage {
 
     private static final Logger log = LoggerFactory.getLogger(BaseTabPage.class);
+    private final TabsWidget tabsWidget;
 
-    public BaseTabPage(WebDriver driver, WebDriverWait wait) {
+    public BaseTabPage(WebDriver driver, WebDriverWait wait, String widgetId) {
         super(driver, wait);
+        tabsWidget = TabsWidget.createById(driver, wait, widgetId);
     }
 
     public OldTable createTabTable() {
@@ -21,7 +24,7 @@ public abstract class BaseTabPage extends BaseDfePage {
     }
 
     protected void clickTabsContextAction(String actionLabel) {
-        TabWindowWidget.create(driver, wait).callActionByLabel(actionLabel);
+        tabsWidget.callActionByLabel(actionLabel);
         log.debug("Click context action: {}", actionLabel);
     }
 

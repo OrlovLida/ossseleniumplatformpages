@@ -18,10 +18,10 @@ import io.qameta.allure.Description;
 @Listeners({TestListener.class})
 public class KQIsTest extends BaseTestCase {
 
-    private final static Logger log = LoggerFactory.getLogger(KQIsTest.class);
-    private final String VALUE_TYPE = "Number";
-    private final String UNIT_TYPE = "Minutes";
-    private final String FORMULA = "$[M:COUNT(t:SMOKE#ETLforKqis.ATTEMPTS_LONG)]";
+    private static final Logger log = LoggerFactory.getLogger(KQIsTest.class);
+    private static final String VALUE_TYPE = "Number";
+    private static final String UNIT_TYPE = "Minutes";
+    private static final String FORMULA = "$[M:COUNT(t:SMOKE#ETLforKqis.ATTEMPTS_LONG)]";
 
     private KqiPage kqisPage;
     private String kqisName;
@@ -42,7 +42,7 @@ public class KQIsTest extends BaseTestCase {
         KqiWizardPage kqiWizard = new KqiWizardPage(driver, webDriverWait);
         kqiWizard.fillKQIWizard(kqisName, VALUE_TYPE, UNIT_TYPE, FORMULA);
         kqiWizard.clickAccept();
-        Boolean kqiIsCreated = kqisPage.kqiExistIntoTable(kqisName);
+        boolean kqiIsCreated = kqisPage.kqiExistIntoTable(kqisName);
 
         Assert.assertTrue(kqiIsCreated);
     }
@@ -50,14 +50,14 @@ public class KQIsTest extends BaseTestCase {
     @Test(priority = 2, testName = "Edit KQI", description = "Edit KQI")
     @Description("Edit KQI")
     public void editKQI() {
-        Boolean kqiExists = kqisPage.kqiExistIntoTable(kqisName);
+        boolean kqiExists = kqisPage.kqiExistIntoTable(kqisName);
         if (kqiExists) {
             kqisPage.selectFoundKQI();
             kqisPage.clickEditKQI();
             KqiWizardPage kqiWizard = new KqiWizardPage(driver, webDriverWait);
             kqiWizard.fillName(updatedKQIsName);
             kqiWizard.clickAccept();
-            Boolean kqiIsEdited = kqisPage.kqiExistIntoTable(updatedKQIsName);
+            boolean kqiIsEdited = kqisPage.kqiExistIntoTable(updatedKQIsName);
 
             Assert.assertTrue(kqiIsEdited);
         } else {

@@ -19,6 +19,7 @@ public class DictionaryPage extends BaseDfePage {
     private static final String LIST_ID = "ExtendedList-entriesId";
     private static final String TABLE_ID = "dictionariesAppId";
     private static final String KEY_CELL_ID = "keyId";
+    private static final String TAB_WIDGET_ID = "card-content_dictionaryTabsId";
     private static final String ENTRIES_TAB = "Entries";
     private static final String ADD_NEW_DICTIONARY_LABEL = "Add New Dictionary";
     private static final String EDIT_DICTIONARY_LABEL = "Edit Dictionary";
@@ -78,7 +79,7 @@ public class DictionaryPage extends BaseDfePage {
 
     @Step("I click Entries Tab")
     public void selectEntriesTab() {
-        selectTab(ENTRIES_TAB);
+        selectTab(TAB_WIDGET_ID, ENTRIES_TAB);
     }
 
     @Step("I check if Entry: {entryName} exists into the table")
@@ -105,7 +106,7 @@ public class DictionaryPage extends BaseDfePage {
 
     @Step("I click add new Entry")
     public void clickAddNewEntry() {
-        clickTabsContextAction(ADD_NEW_ENTRY_LABEL);
+        clickTabsContextAction(TAB_WIDGET_ID, ADD_NEW_ENTRY_LABEL);
     }
 
     @Step("I click delete Entry")

@@ -1,14 +1,16 @@
 package com.oss.pages.bigdata.dfe;
 
-import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.table.OldTable;
-import io.qameta.allure.Step;
+import java.time.LocalDateTime;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.LocalDateTime;
+import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.table.OldTable;
+
+import io.qameta.allure.Step;
 
 public class AggregatePage extends BaseDfePage {
 
@@ -16,18 +18,19 @@ public class AggregatePage extends BaseDfePage {
 
     private static final String TABLE_ID = "aggregates-tableAppId";
 
-    private final String ADD_NEW_AGGREGATE_LABEL = "Add New Aggregate";
-    private final String EDIT_AGGREGATE_LABEL = "Edit Aggregate";
-    private final String DELETE_AGGREGATE_LABEL = "Delete Aggregate";
-    private final String SEARCH_INPUT_ID = "aggregates-tableSearchAppId";
+    private static final String ADD_NEW_AGGREGATE_LABEL = "Add New Aggregate";
+    private static final String EDIT_AGGREGATE_LABEL = "Edit Aggregate";
+    private static final String DELETE_AGGREGATE_LABEL = "Delete Aggregate";
+    private static final String SEARCH_INPUT_ID = "aggregates-tableSearchAppId";
 
-    private final String NAME_COLUMN_LABEL = "Name";
-    private final String DELETE_LABEL = "Delete";
-    private final String EXECUTION_HISTORY_TAB = "Execution History";
-    private final String TABLE_TAB_ID = "executionHistoryId";
-    private final String COLUMN_REQUEST_GENERATION_TIME_LABEL = "Request Generation Time";
-    private final String COLUMN_STATUS_LABEL = "Status";
-    private final String REFRESH_LABEL = "Refresh";
+    private static final String NAME_COLUMN_LABEL = "Name";
+    private static final String DELETE_LABEL = "Delete";
+    private static final String TABS_WIDGET_ID = "card-content_tabsId";
+    private static final String EXECUTION_HISTORY_TAB = "Execution History";
+    private static final String TABLE_TAB_ID = "executionHistoryId";
+    private static final String COLUMN_REQUEST_GENERATION_TIME_LABEL = "Request Generation Time";
+    private static final String COLUMN_STATUS_LABEL = "Status";
+    private static final String REFRESH_LABEL = "Refresh";
 
     private AggregatePage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -78,12 +81,12 @@ public class AggregatePage extends BaseDfePage {
 
     @Step("I click Execution History Tab")
     public void selectExecutionHistoryTab() {
-        selectTab(EXECUTION_HISTORY_TAB);
+        selectTab(TABS_WIDGET_ID, EXECUTION_HISTORY_TAB);
     }
 
     @Step("I click Refresh Table Tab")
     public void clickRefreshInTabTable() {
-        clickRefreshTabTable(REFRESH_LABEL);
+        clickRefreshTabTable(TABS_WIDGET_ID, REFRESH_LABEL);
     }
 
     @Step("I check if IfRuns are not empty")

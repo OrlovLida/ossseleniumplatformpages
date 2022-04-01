@@ -1,4 +1,4 @@
-package com.oss.pages.bigdata.dfe.datasource.DSWizard;
+package com.oss.pages.bigdata.dfe.datasource.dswizard;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;

@@ -8,8 +8,8 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
-import com.oss.pages.bigdata.dfe.datasource.DSWizard.DataSourceStepWizardPage;
 import com.oss.pages.bigdata.dfe.datasource.DataSourcePage;
+import com.oss.pages.bigdata.dfe.datasource.dswizard.DataSourceStepWizardPage;
 import com.oss.pages.bigdata.utils.ConstantsDfe;
 import com.oss.utils.TestListener;
 
@@ -25,10 +25,10 @@ public class DataSourceFromQueryTest extends BaseTestCase {
     private String updatedDataSourceName;
 
     private static final String DATABASE = "DFE Data-Model DB";
-    private final String QUERY = "SELECT SYSDATE stime, CASE WHEN aa = 1 THEN 'D1_01' WHEN aa = 2 THEN 'D1_02' WHEN aa = 3 THEN 'D1_01' WHEN aa = 4 THEN 'D1_02' ELSE 'D1_01' END d1, CASE WHEN aa = 1 THEN 'D2_01' WHEN aa = 2 THEN 'D2_02' WHEN aa = 3 THEN 'D2_02' WHEN aa = 4 THEN 'D2_01' ELSE 'D2_01' END d2, CASE WHEN aa = 1 THEN 'D3_01_01_01' WHEN aa = 2 THEN 'D3_01_02_01' WHEN aa = 3 THEN 'D3_01_03_01' WHEN aa = 4 THEN 'D3_02_01_01' WHEN aa = 5 THEN 'D3_02_02_01' WHEN aa = 6 THEN 'D3_02_03_01' WHEN aa = 7 THEN 'D3_03_01_01' WHEN aa = 8 THEN 'D3_03_02_01' WHEN aa = 9 THEN 'D3_03_03_01' END d3, t.attempts, round(dbms_random.value(0, 100) * t.attempts / 100, 2) success FROM (SELECT level aa, round(dbms_random.value(0, 100), 2) attempts FROM dual CONNECT BY level < 10 ) t";
-    private final String OFFSET = "No offset";
-    private final String UNIT = "Minute";
-    private final String INTERVAL_AMOUNT = "1";
+    private static final String QUERY = "SELECT SYSDATE stime, CASE WHEN aa = 1 THEN 'D1_01' WHEN aa = 2 THEN 'D1_02' WHEN aa = 3 THEN 'D1_01' WHEN aa = 4 THEN 'D1_02' ELSE 'D1_01' END d1, CASE WHEN aa = 1 THEN 'D2_01' WHEN aa = 2 THEN 'D2_02' WHEN aa = 3 THEN 'D2_02' WHEN aa = 4 THEN 'D2_01' ELSE 'D2_01' END d2, CASE WHEN aa = 1 THEN 'D3_01_01_01' WHEN aa = 2 THEN 'D3_01_02_01' WHEN aa = 3 THEN 'D3_01_03_01' WHEN aa = 4 THEN 'D3_02_01_01' WHEN aa = 5 THEN 'D3_02_02_01' WHEN aa = 6 THEN 'D3_02_03_01' WHEN aa = 7 THEN 'D3_03_01_01' WHEN aa = 8 THEN 'D3_03_02_01' WHEN aa = 9 THEN 'D3_03_03_01' END d3, t.attempts, round(dbms_random.value(0, 100) * t.attempts / 100, 2) success FROM (SELECT level aa, round(dbms_random.value(0, 100), 2) attempts FROM dual CONNECT BY level < 10 ) t";
+    private static final String OFFSET = "No offset";
+    private static final String UNIT = "Minute";
+    private static final String INTERVAL_AMOUNT = "1";
 
     @BeforeClass
     public void goToDataSourceView() {

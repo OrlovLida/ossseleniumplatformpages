@@ -1,13 +1,15 @@
 package com.oss.pages.bigdata.dfe;
 
-import com.oss.framework.utils.DelayUtils;
-import io.qameta.allure.Step;
+import java.time.LocalDateTime;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.LocalDateTime;
+import com.oss.framework.utils.DelayUtils;
+
+import io.qameta.allure.Step;
 
 public class ThresholdPage extends BaseDfePage {
 
@@ -15,18 +17,19 @@ public class ThresholdPage extends BaseDfePage {
 
     private static final String TABLE_ID = "thresholdsAppId";
 
-    private final String ADD_NEW_THRESHOLD_LABEL = "Add New Threshold";
-    private final String EDIT_THRESHOLD_LABEL = "Edit Threshold";
-    private final String DELETE_THRESHOLD_LABEL = "Delete Threshold";
-    private final String SEARCH_INPUT_ID = "thresholdsSearchAppId";
-    private final String EXECUTION_HISTORY_TAB = "Execution History";
-    private final String TABLE_TAB_ID = "logsId";
-    private final String COLUMN_REQUEST_GENERATION_TIME_LABEL = "Request Generation Time";
-    private final String COLUMN_STATUS_LABEL = "Status";
-    private final String REFRESH_LABEL = "Refresh";
+    private static final String ADD_NEW_THRESHOLD_LABEL = "Add New Threshold";
+    private static final String EDIT_THRESHOLD_LABEL = "Edit Threshold";
+    private static final String DELETE_THRESHOLD_LABEL = "Delete Threshold";
+    private static final String SEARCH_INPUT_ID = "thresholdsSearchAppId";
+    private static final String TABS_WIDGET_ID = "card-content_tabsId";
+    private static final String EXECUTION_HISTORY_TAB = "Execution History";
+    private static final String TABLE_TAB_ID = "logsId";
+    private static final String COLUMN_REQUEST_GENERATION_TIME_LABEL = "Request Generation Time";
+    private static final String COLUMN_STATUS_LABEL = "Status";
+    private static final String REFRESH_LABEL = "Refresh";
 
-    private final String NAME_COLUMN_LABEL = "Name";
-    private final String DELETE_LABEL = "Delete";
+    private static final String NAME_COLUMN_LABEL = "Name";
+    private static final String DELETE_LABEL = "Delete";
 
     private ThresholdPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -73,12 +76,12 @@ public class ThresholdPage extends BaseDfePage {
 
     @Step("I click Execution History Tab")
     public void selectExecutionHistoryTab() {
-        selectTab(EXECUTION_HISTORY_TAB);
+        selectTab(TABS_WIDGET_ID, EXECUTION_HISTORY_TAB);
     }
 
     @Step("I click Refresh Table Tab")
     public void clickRefreshInTabTable() {
-        clickRefreshTabTable(REFRESH_LABEL);
+        clickRefreshTabTable(TABS_WIDGET_ID, REFRESH_LABEL);
     }
 
     @Step("I check Last Request Generation Time")

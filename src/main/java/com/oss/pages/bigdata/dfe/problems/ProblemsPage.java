@@ -1,22 +1,23 @@
 package com.oss.pages.bigdata.dfe.problems;
 
-import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bigdata.dfe.BaseDfePage;
-import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import com.oss.framework.utils.DelayUtils;
+import com.oss.pages.bigdata.dfe.BaseDfePage;
+
+import io.qameta.allure.Step;
 
 public class ProblemsPage extends BaseDfePage {
 
     private static final String TABLE_ID = "problemsAppId";
-    private final String ADD_NEW_PROBLEM_LABEL = "Add New Problems Configuration";
-    private final String EDIT_PROBLEM_LABEL = "Edit Problems Configuration";
-    private final String DELETE_PROBLEM_LABEL = "Delete Problems Configuration";
-    private final String SEARCH_INPUT_ID = "problemsSearchAppId";
+    private static final String ADD_NEW_PROBLEM_LABEL = "Add New Problems Configuration";
+    private static final String EDIT_PROBLEM_LABEL = "Edit Problems Configuration";
+    private static final String DELETE_PROBLEM_LABEL = "Delete Problems Configuration";
+    private static final String SEARCH_INPUT_ID = "problemsSearchAppId";
 
-    private final String NAME_COLUMN_LABEL = "Name";
-    private final String DELETE_LABEL = "Delete";
-
+    private static final String NAME_COLUMN_LABEL = "Name";
+    private static final String DELETE_LABEL = "Delete";
 
     public ProblemsPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);

@@ -1,4 +1,4 @@
-package com.oss.pages.bigdata.dfe.datasource.DSWizard;
+package com.oss.pages.bigdata.dfe.datasource.dswizard;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -55,5 +55,6 @@ public class DataSourceStepWizardPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         wizard.clickAccept();
         log.info("Finishing Step Wizard by clicking 'Accept'");
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 }

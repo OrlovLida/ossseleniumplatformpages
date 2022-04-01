@@ -1,20 +1,23 @@
-package com.oss.pages.bigdata.dfe.serverGroup;
+package com.oss.pages.bigdata.dfe.servergroup;
 
-import com.oss.pages.bigdata.dfe.BaseDfePage;
-import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import com.oss.pages.bigdata.dfe.BaseDfePage;
+
+import io.qameta.allure.Step;
 
 public class ServerGroupPage extends BaseDfePage {
 
     private static final String TABLE_ID = "server-groupAppId";
-    private final String SEARCH_INPUT_ID = "server-groupSearchAppId";
-    private final String ADD_NEW_SERVER_GROUP_LABEL = "Add New Server Group";
-    private final String EDIT_SERVER_GROUP_LABEL = "Edit Server Group";
-    private final String DELETE_SERVER_GROUP_LABEL = "Delete Server Group";
-    private final String SERVER_GROUP_NAME_COLUMN_LABEL = "Name";
-    private final static String SERVERS_TAB = "Servers";
-    private final String CONFIRM_DELETE_LABEL = "Delete";
+    private static final String SEARCH_INPUT_ID = "server-groupSearchAppId";
+    private static final String ADD_NEW_SERVER_GROUP_LABEL = "Add New Server Group";
+    private static final String EDIT_SERVER_GROUP_LABEL = "Edit Server Group";
+    private static final String DELETE_SERVER_GROUP_LABEL = "Delete Server Group";
+    private static final String SERVER_GROUP_NAME_COLUMN_LABEL = "Name";
+    private static final String TABS_WIDGET_ID = "card-content_serverGroupTabsId";
+    private static final String SERVERS_TAB = "Servers";
+    private static final String CONFIRM_DELETE_LABEL = "Delete";
 
     public ServerGroupPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -34,7 +37,7 @@ public class ServerGroupPage extends BaseDfePage {
     }
 
     @Step("I check if server group: {name} exists into the table")
-    public Boolean serverGroupExistIntoTable(String name) {
+    public boolean serverGroupExistIntoTable(String name) {
         return feedExistIntoTable(name, SERVER_GROUP_NAME_COLUMN_LABEL);
     }
 
@@ -55,7 +58,7 @@ public class ServerGroupPage extends BaseDfePage {
 
     @Step("I click Servers Tab")
     public void selectServersTab() {
-        selectTab(SERVERS_TAB);
+        selectTab(TABS_WIDGET_ID, SERVERS_TAB);
     }
 
     @Step("I confirm the removal")

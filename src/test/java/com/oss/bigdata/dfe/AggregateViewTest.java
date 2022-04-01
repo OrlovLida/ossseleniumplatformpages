@@ -27,10 +27,10 @@ public class AggregateViewTest extends BaseTestCase {
     private String updatedAggregateName;
     private String tableName;
 
-    private final static String ETL_PROCESS_NAME = "t:CRUD#ETLforAggr";
-    private final static String AGGREGATE_CONFIGURATION_DIMENSION_NAME = "t:SMOKE#D_HOST (HOST_NM)";
-    private final static String AGGREGATE_CONFIGURATION_NAME = "Selenium_Aggregate_Test";
-    private final static String AGGREGATE_WIZARD_ID = "aggregatesWizardWindow";
+    private static final String ETL_PROCESS_NAME = "t:CRUD#ETLforAggr";
+    private static final String AGGREGATE_CONFIGURATION_DIMENSION_NAME = "t:SMOKE#D_HOST (HOST_NM)";
+    private static final String AGGREGATE_CONFIGURATION_NAME = "Selenium_Aggregate_Test";
+    private static final String AGGREGATE_WIZARD_ID = "aggregatesWizardWindow";
 
     @BeforeClass
     public void goToAggregateView() {
@@ -57,7 +57,7 @@ public class AggregateViewTest extends BaseTestCase {
         aggrConfWizard.fillAggregatesConfigurationStepAggregate(AGGREGATE_CONFIGURATION_NAME, tableName, AGGREGATE_CONFIGURATION_DIMENSION_NAME);
         aggrConfWizard.clickAccept();
 
-        Boolean aggregateIsCreated = aggregatePage.aggregateExistsIntoTable(aggregateName);
+        boolean aggregateIsCreated = aggregatePage.aggregateExistsIntoTable(aggregateName);
 
         if (!aggregateIsCreated) {
             log.info("Cannot find created aggregate configuration");
@@ -68,7 +68,7 @@ public class AggregateViewTest extends BaseTestCase {
     @Test(priority = 2, testName = "Edit Aggregate", description = "Edit Aggregate")
     @Description("Edit Aggregate")
     public void editAggregate() {
-        Boolean aggregateExists = aggregatePage.aggregateExistsIntoTable(aggregateName);
+        boolean aggregateExists = aggregatePage.aggregateExistsIntoTable(aggregateName);
         if (aggregateExists) {
             aggregatePage.selectFoundAggregate();
             aggregatePage.clickEditAggregate();
@@ -83,7 +83,7 @@ public class AggregateViewTest extends BaseTestCase {
             AggregateConfigurationPage aggrConfWizard = new AggregateConfigurationPage(driver, webDriverWait);
             aggrConfWizard.clickAccept();
 
-            Boolean aggregateIsEdited = aggregatePage.aggregateExistsIntoTable(updatedAggregateName);
+            boolean aggregateIsEdited = aggregatePage.aggregateExistsIntoTable(updatedAggregateName);
             if (!aggregateIsEdited) {
                 log.info("Cannot find existing edited aggregate {}", updatedAggregateName);
             }

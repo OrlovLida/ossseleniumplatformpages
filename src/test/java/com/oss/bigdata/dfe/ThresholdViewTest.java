@@ -1,11 +1,5 @@
 package com.oss.bigdata.dfe;
 
-import com.oss.BaseTestCase;
-import com.oss.pages.bigdata.dfe.ThresholdPage;
-import com.oss.pages.bigdata.dfe.thresholds.ThresholdStepWizardPage;
-import com.oss.pages.bigdata.dfe.thresholds.ThresholdsConfigurationPage;
-import com.oss.pages.bigdata.utils.ConstantsDfe;
-import io.qameta.allure.Description;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,8 +7,12 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import com.oss.BaseTestCase;
+import com.oss.pages.bigdata.dfe.ThresholdPage;
+import com.oss.pages.bigdata.dfe.thresholds.ThresholdStepWizardPage;
+import com.oss.pages.bigdata.utils.ConstantsDfe;
+
+import io.qameta.allure.Description;
 
 public class ThresholdViewTest extends BaseTestCase {
 
@@ -24,19 +22,19 @@ public class ThresholdViewTest extends BaseTestCase {
     private String thresholdName;
     private String updatedThresholdName;
 
-    private final static String NOTIFICATION_STATUS = "Yes";
-    private final static String AGGREGATION_PERIOD = "Five Minutes";
-    private final static String DEBUG_MODE = "No";
-    private final static String CONDITION_TYPE = "Simple Condition";
-    private final static String CONDITION_TYPE_ELSE = "Else Condition";
-    private final static String THRESHOLD_FORMULA = "$[K:t:SMOKE#SuccessRate] < 30";
-    private final static String SEVERITY = "WARNING";
-    private final static String PROBLEM_NAME = "t:SMOKE#Problem";
-    private final static String SEVERITY_ELSE_CONDITION = "CLEARED";
-    private final static String DIMENSION_NAME = "d1 [EtlForKqis_d1]";
-    private final static String GROUPING_FLAG = "Yes";
-    private final static String FILTERING_TYPE = "NONE";
-    private final static String MO_ID_PATTERN = "$[d1.d1]";
+    private static final String NOTIFICATION_STATUS = "Yes";
+    private static final String AGGREGATION_PERIOD = "Five Minutes";
+    private static final String DEBUG_MODE = "No";
+    private static final String CONDITION_TYPE = "Simple Condition";
+    private static final String CONDITION_TYPE_ELSE = "Else Condition";
+    private static final String THRESHOLD_FORMULA = "$[K:t:SMOKE#SuccessRate] < 30";
+    private static final String SEVERITY = "WARNING";
+    private static final String PROBLEM_NAME = "t:SMOKE#Problem";
+    private static final String SEVERITY_ELSE_CONDITION = "CLEARED";
+    private static final String DIMENSION_NAME = "d1 [EtlForKqis_d1]";
+    private static final String GROUPING_FLAG = "Yes";
+    private static final String FILTERING_TYPE = "NONE";
+    private static final String MO_ID_PATTERN = "$[d1.d1]";
 
     @BeforeClass
     public void goToThresholdsView() {
@@ -61,7 +59,7 @@ public class ThresholdViewTest extends BaseTestCase {
         thresholdsStepWizardPage.getThresholdsDimensionsFilteringStep().clickSaveFilter();
         thresholdsStepWizardPage.getThresholdsDimensionsFilteringStep().fillMOPatternField(MO_ID_PATTERN);
         thresholdsStepWizardPage.clickAccept();
-        Boolean thresholdIsCreated = thresholdPage.thresholdExistsIntoTable(thresholdName);
+        boolean thresholdIsCreated = thresholdPage.thresholdExistsIntoTable(thresholdName);
 
         if (!thresholdIsCreated) {
             log.error("Cannot find created threshold configuration ");
@@ -72,7 +70,7 @@ public class ThresholdViewTest extends BaseTestCase {
     @Test(priority = 2, testName = "Edit Threshold", description = "Edit Threshold")
     @Description("Edit Threshold")
     public void editThreshold() {
-        Boolean thresholdExists = thresholdPage.thresholdExistsIntoTable(thresholdName);
+        boolean thresholdExists = thresholdPage.thresholdExistsIntoTable(thresholdName);
         if (thresholdExists) {
             thresholdPage.selectFoundThreshold();
             thresholdPage.clickEditThreshold();
@@ -83,7 +81,7 @@ public class ThresholdViewTest extends BaseTestCase {
             thresholdsStepWizardPage.clickNext();
             thresholdsStepWizardPage.clickAccept();
 
-            Boolean thresholdIsEdited = thresholdPage.thresholdExistsIntoTable(updatedThresholdName);
+            boolean thresholdIsEdited = thresholdPage.thresholdExistsIntoTable(updatedThresholdName);
             if (!thresholdIsEdited) {
                 log.info("Cannot find existing edited threshold {}", updatedThresholdName);
             }
@@ -97,12 +95,12 @@ public class ThresholdViewTest extends BaseTestCase {
     @Test(priority = 3, testName = "Delete Threshold", description = "Delete Threshold")
     @Description("Delete Threshold")
     public void deleteThreshold() {
-        Boolean thresholdExists = thresholdPage.thresholdExistsIntoTable(updatedThresholdName);
+        boolean thresholdExists = thresholdPage.thresholdExistsIntoTable(updatedThresholdName);
         if (thresholdExists) {
             thresholdPage.selectFoundThreshold();
             thresholdPage.clickDeleteThreshold();
             thresholdPage.confirmDelete();
-            Boolean thresholdDeleted = !thresholdPage.thresholdExistsIntoTable(updatedThresholdName);
+            boolean thresholdDeleted = !thresholdPage.thresholdExistsIntoTable(updatedThresholdName);
 
             Assert.assertTrue(thresholdDeleted);
         } else {

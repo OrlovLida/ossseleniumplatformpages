@@ -26,10 +26,8 @@ public class EtlProcessColumnMappingPage extends ColumnMappingPage {
     public void fillColumnMappingStep(String columnNameValue, String columnRole, String linkageToDimensionTable) {
         EditableList.Row row = getTableRow(columnNameValue);
 
-        row.clearValue(getColumnRoleId(), getColumnRoleInputId(), Input.ComponentType.COMBOBOX);
         row.setValue(columnRole, getColumnRoleId(), getColumnRoleInputId(), Input.ComponentType.COMBOBOX);
         log.debug("Setting '{}' as column role for row with column name: {}", columnRole, columnNameValue);
-        row.clearValue(LINKAGE_TO_DIMENSION_TABLE_ID, LINKAGE_TO_DIMENSION_TABLE_INPUT_ID, Input.ComponentType.COMBOBOX);
         row.setValue(linkageToDimensionTable, LINKAGE_TO_DIMENSION_TABLE_ID, LINKAGE_TO_DIMENSION_TABLE_INPUT_ID, Input.ComponentType.COMBOBOX);
         log.debug("Setting '{}' as linkage to dimension table for row with column name: {}", linkageToDimensionTable, columnNameValue);
         log.info("Filled Column Mapping Step");

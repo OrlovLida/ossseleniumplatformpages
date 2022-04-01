@@ -22,7 +22,6 @@ public class DimensionColumnMappingPage extends com.oss.pages.bigdata.dfe.stepwi
     @Step("I fill Column Mapping Step. I set column role: {columnRole}")
     public void fillDimensionColumnMappingStep(String columnNameValue, String columnRole) {
         EditableList.Row row = getTableRow(columnNameValue);
-        row.clearValue(getColumnRoleId(), getColumnRoleInputId(), Input.ComponentType.COMBOBOX);
         row.setValue(columnRole, getColumnRoleId(), getColumnRoleInputId(), Input.ComponentType.COMBOBOX);
         log.debug("Setting '{}' as column role for row with column name: {}", columnRole, columnNameValue);
         log.info("Filled Column Mapping Step");
