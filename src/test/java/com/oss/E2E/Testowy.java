@@ -1,18 +1,14 @@
 package com.oss.E2E;
 
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
+import com.oss.pages.servicedesk.ticket.BaseDashboardPage;
 
 public class Testowy extends BaseTestCase {
 
-    @BeforeClass
-    public void openConsole() {
-        waitForPageToLoad();
-    }
+    private static final String PROBLEMS_DASHBOARD = "_ProblemManagement";
 
     @Test(priority = 1)
     public void testowy1() {
@@ -21,13 +17,7 @@ public class Testowy extends BaseTestCase {
 
     @Test(priority = 2)
     public void testowy2() {
-        NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
-        waitForPageToLoad();
-    }
-
-    @Test(priority = 3)
-    public void testowy3() {
-        waitForPageToLoad();
+        BaseDashboardPage baseDashboardPage = new BaseDashboardPage(driver, webDriverWait).goToPage(driver, BASIC_URL, PROBLEMS_DASHBOARD);
     }
 
     private void waitForPageToLoad() {
