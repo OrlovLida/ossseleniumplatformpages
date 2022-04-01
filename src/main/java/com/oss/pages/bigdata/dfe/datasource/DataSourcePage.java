@@ -135,6 +135,7 @@ public class DataSourcePage extends BaseDfePage {
         waitForPageToLoad(driver, wait);
         TimePeriodChooser timePeriodChooser = TimePeriodChooser.create(driver, wait, TIME_PERIOD_ID);
         timePeriodChooser.clickClearValue();
+        waitForPageToLoad(driver, wait);
         timePeriodChooser.chooseOption(TimePeriodChooser.TimePeriodChooserOption.LAST);
         timePeriodChooser.setLastPeriod(days, hours, minutes);
     }

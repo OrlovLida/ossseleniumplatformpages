@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Multimap;
 import com.oss.framework.components.contextactions.ActionsContainer;
-import com.oss.framework.components.contextactions.ButtonContainer;
+import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.search.AdvancedSearch;
@@ -25,7 +25,7 @@ public class XDRBrowserPage extends BaseDfePage {
 
     private static final String ETL_NAME_COMBOBOX_ID = "etlProcessId-input";
     private static final String TIME_PERIOD_ID = "etlTime";
-    private static final String SEARCH_BUTTON_ID = "Search_Button-0";
+    private static final String SEARCH_BUTTON_LABEL = "Search";
     private static final String XDR_TABLE_ID = "xdrTableId";
     private static final String EXPORT_BUTTON = "tableExportButton";
     private static final String ADVANCED_SEARCH_CLASS = "advanced-search_component";
@@ -67,7 +67,8 @@ public class XDRBrowserPage extends BaseDfePage {
     @Step("I click Search")
     public void clickSearch() {
         waitForPageToLoad(driver, wait);
-        ButtonContainer.create(driver, wait).callActionById(SEARCH_BUTTON_ID);
+        Button.createByLabel(driver, SEARCH_BUTTON_LABEL).click();
+        waitForPageToLoad(driver, wait);
         sleep(3000);
         log.info("Searching for ETL");
     }

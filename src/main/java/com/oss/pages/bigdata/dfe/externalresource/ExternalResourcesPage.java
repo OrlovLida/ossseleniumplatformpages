@@ -13,7 +13,7 @@ import io.qameta.allure.Step;
 public class ExternalResourcesPage extends BaseDfePage {
 
     private static final Logger log = LoggerFactory.getLogger(ExternalResourcesPage.class);
-    private static final String TABLE_ID = "external-resources-listAppId";
+    private static final String TABLE_ID = "ExternalResourcesTableWindowId";
 
     private static final String ADD_NEW_EXTERNAL_RESOURCE_LABEL = "Add New External Resource";
     private static final String EDIT_EXTERNAL_RESOURCE_LABEL = "Edit External Resource";

@@ -15,19 +15,19 @@ public class DimensionsPage extends BaseDfePage {
 
     private static final String TABLE_ID = "dimension-listAppId";
 
-    private final String ADD_NEW_DIMENSION_LABEL = "Add New Dimension";
-    private final String EDIT_DIMENSION_LABEL = "Edit Dimension";
-    private final String DELETE_DIMENSION_LABEL = "Delete Dimension";
-    private final String SEARCH_INPUT_ID = "dimension-listSearchAppId";
-    private final String LOGS_TAB = "Logs";
-    private final String REFRESH_LABEL = "Refresh";
-    private final String LOGS_TABLE_TAB_ID = "logsId";
-    private final String COLUMN_TIME_LABEL = "Time";
-    private final String COLUMN_SEVERITY_LABEL = "Severity";
-    private static final String TABS_WIDGET_ID = "card-content_tabsId";
+    private static final String ADD_NEW_DIMENSION_LABEL = "Add New Dimension";
+    private static final String EDIT_DIMENSION_LABEL = "Edit Dimension";
+    private static final String DELETE_DIMENSION_LABEL = "Delete Dimension";
+    private static final String SEARCH_INPUT_ID = "dimension-listSearchAppId";
+    private static final String LOGS_TAB = "Logs";
+    private static final String REFRESH_LABEL = "Refresh";
+    private static final String LOGS_TABLE_TAB_ID = "logsId";
+    private static final String COLUMN_TIME_LABEL = "Time";
+    private static final String COLUMN_SEVERITY_LABEL = "Severity";
+    private static final String TABS_WIDGET_ID = "card-content_TabsId";
 
-    private final String NAME_COLUMN_LABEL = "Name";
-    private final String DELETE_LABEL = "Delete";
+    private static final String NAME_COLUMN_LABEL = "Name";
+    private static final String DELETE_LABEL = "Delete";
 
     private DimensionsPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
