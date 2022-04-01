@@ -47,7 +47,7 @@ public class DimensionsViewTest extends BaseTestCase {
     public void addDimension() {
         dimensionsPage.clickAddNewDimension();
         handleAddDimensionWizard();
-        Boolean dimensionIsCreated = dimensionsPage.dimensionExistsIntoTable(dimensionName);
+        boolean dimensionIsCreated = dimensionsPage.dimensionExistsIntoTable(dimensionName);
 
         if (!dimensionIsCreated) {
             log.info("Cannot find created dimension");
@@ -80,12 +80,12 @@ public class DimensionsViewTest extends BaseTestCase {
     @Test(priority = 2, testName = "Edit Dimension", description = "Edit Dimension")
     @Description("Edit Dimension")
     public void editDimension() {
-        Boolean dimensionExists = dimensionsPage.dimensionExistsIntoTable(dimensionName);
+        boolean dimensionExists = dimensionsPage.dimensionExistsIntoTable(dimensionName);
         if (dimensionExists) {
             dimensionsPage.selectFoundDimension();
             dimensionsPage.clickEditDimension();
             handleEditDimensionWizard();
-            Boolean dimensionIsCreated = dimensionsPage.dimensionExistsIntoTable(updatedDimensionName);
+            boolean dimensionIsCreated = dimensionsPage.dimensionExistsIntoTable(updatedDimensionName);
 
             Assert.assertTrue(dimensionIsCreated);
 

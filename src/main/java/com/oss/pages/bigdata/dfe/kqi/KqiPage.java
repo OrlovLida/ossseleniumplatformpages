@@ -26,6 +26,7 @@ public class KqiPage extends BaseDfePage {
     private static final String PARAMETERS_TAB = "Parameters";
     private static final String PARAMETERS_TABLE_ID = "kqi/tabs/parametersAppId";
     private static final String PROPERTY_PANEL_ID = "detailsId";
+    private static final String TAB_WIDGET_ID = "card-content_kqiTabsWindow";
 
     public KqiPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -70,7 +71,7 @@ public class KqiPage extends BaseDfePage {
 
     @Step("I click Details Tab")
     public void selectDetailsTab() {
-        selectTab(DETAILS_TAB);
+        selectTab(TAB_WIDGET_ID, DETAILS_TAB);
     }
 
     @Step("Check label and value in details tab")
@@ -83,7 +84,7 @@ public class KqiPage extends BaseDfePage {
 
     @Step("I click Parameters Tab")
     public void selectParametersTab() {
-        selectTab(PARAMETERS_TAB);
+        selectTab(TAB_WIDGET_ID, PARAMETERS_TAB);
     }
 
     @Step("I check if Parameters Table is not empty")

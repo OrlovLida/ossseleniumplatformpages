@@ -1,12 +1,13 @@
 package com.oss.pages.bigdata.dfe;
 
-import io.qameta.allure.Step;
+import java.time.LocalDateTime;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.LocalDateTime;
+import io.qameta.allure.Step;
 
 public class DimensionsPage extends BaseDfePage {
 
@@ -23,6 +24,7 @@ public class DimensionsPage extends BaseDfePage {
     private final String LOGS_TABLE_TAB_ID = "logsId";
     private final String COLUMN_TIME_LABEL = "Time";
     private final String COLUMN_SEVERITY_LABEL = "Severity";
+    private static final String TABS_WIDGET_ID = "card-content_tabsId";
 
     private final String NAME_COLUMN_LABEL = "Name";
     private final String DELETE_LABEL = "Delete";
@@ -71,12 +73,12 @@ public class DimensionsPage extends BaseDfePage {
 
     @Step("I click Logs Tab")
     public void selectLogsTab() {
-        selectTab(LOGS_TAB);
+        selectTab(TABS_WIDGET_ID, LOGS_TAB);
     }
 
     @Step("I click refresh Tab Table")
     public void refreshLogsTable() {
-        clickTabsContextAction(REFRESH_LABEL);
+        clickTabsContextAction(TABS_WIDGET_ID, REFRESH_LABEL);
     }
 
     @Step("I check last log time from Logs Tab")

@@ -1,11 +1,5 @@
 package com.oss.bigdata.dfe;
 
-import com.oss.BaseTestCase;
-import com.oss.pages.bigdata.dfe.externalresource.ExternalResourcesPage;
-import com.oss.pages.bigdata.dfe.externalresource.ExternalResourcesPopupPage;
-import com.oss.pages.bigdata.utils.ConstantsDfe;
-import com.oss.utils.TestListener;
-import io.qameta.allure.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -13,14 +7,22 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
+import com.oss.BaseTestCase;
+import com.oss.pages.bigdata.dfe.externalresource.ExternalResourcesPage;
+import com.oss.pages.bigdata.dfe.externalresource.ExternalResourcesPopupPage;
+import com.oss.pages.bigdata.utils.ConstantsDfe;
+import com.oss.utils.TestListener;
+
+import io.qameta.allure.Description;
+
 @Listeners({TestListener.class})
 public class ExternalResourcesTest extends BaseTestCase {
 
-    private final static String EXTERNAL_RESOURCE_TYPE = "Database";
-    private final static String CONNECTION_URL = "jdbc:";
-    private final static Logger log = LoggerFactory.getLogger(ExternalResourcesTest.class);
-    private final static String ADD_WIZARD_ID = "add-prompt-id";
-    private final static String EDIT_WIZARD_ID = "edit-prompt-id";
+    private static final String EXTERNAL_RESOURCE_TYPE = "Database";
+    private static final String CONNECTION_URL = "jdbc:";
+    private static final Logger log = LoggerFactory.getLogger(ExternalResourcesTest.class);
+    private static final String ADD_WIZARD_ID = "add-prompt-id_prompt-card";
+    private static final String EDIT_WIZARD_ID = "edit-prompt-id_prompt-card";
 
     private ExternalResourcesPage externalResource;
     private String externalResourceName;
@@ -41,7 +43,7 @@ public class ExternalResourcesTest extends BaseTestCase {
         ExternalResourcesPopupPage externalResourceWizard = new ExternalResourcesPopupPage(driver, webDriverWait, ADD_WIZARD_ID);
         externalResourceWizard.fillExternalResourcesPopup(externalResourceName, EXTERNAL_RESOURCE_TYPE, CONNECTION_URL);
         externalResourceWizard.clickSave();
-        Boolean externalResourceIsCreated = externalResource.externalResourceExistsIntoTable(externalResourceName);
+        boolean externalResourceIsCreated = externalResource.externalResourceExistsIntoTable(externalResourceName);
 
         Assert.assertTrue(externalResourceIsCreated);
     }
@@ -49,14 +51,14 @@ public class ExternalResourcesTest extends BaseTestCase {
     @Test(priority = 2, testName = "Edit External Resource", description = "Edit External Resource")
     @Description("Edit External Resource")
     public void editExternalResource() {
-        Boolean externalResourceExists = externalResource.externalResourceExistsIntoTable(externalResourceName);
+        boolean externalResourceExists = externalResource.externalResourceExistsIntoTable(externalResourceName);
         if (externalResourceExists) {
             externalResource.selectFoundExternalResource();
             externalResource.clickEditExternalResource();
             ExternalResourcesPopupPage externalResourceWizard = new ExternalResourcesPopupPage(driver, webDriverWait, EDIT_WIZARD_ID);
             externalResourceWizard.fillName(updatedExternalResourceName);
             externalResourceWizard.clickSave();
-            Boolean externalResourceIsCreated = externalResource.externalResourceExistsIntoTable(updatedExternalResourceName);
+            boolean externalResourceIsCreated = externalResource.externalResourceExistsIntoTable(updatedExternalResourceName);
 
             Assert.assertTrue(externalResourceIsCreated);
         } else {
@@ -68,12 +70,12 @@ public class ExternalResourcesTest extends BaseTestCase {
     @Test(priority = 3, testName = "Delete External Resource", description = "Delete External Resource")
     @Description("Delete External Resource")
     public void deleteExternalResource() {
-        Boolean externalResourceExists = externalResource.externalResourceExistsIntoTable(externalResourceName);
+        boolean externalResourceExists = externalResource.externalResourceExistsIntoTable(externalResourceName);
         if (externalResourceExists) {
             externalResource.selectFoundExternalResource();
             externalResource.clickDeleteExternalResource();
             externalResource.confirmDelete();
-            Boolean externalResourceDeleted = !externalResource.externalResourceExistsIntoTable(externalResourceName);
+            boolean externalResourceDeleted = !externalResource.externalResourceExistsIntoTable(externalResourceName);
 
             Assert.assertTrue(externalResourceDeleted);
         } else {

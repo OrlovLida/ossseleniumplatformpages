@@ -35,6 +35,7 @@ public class StoragePage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         storageWizard.clickAccept();
         log.info("Finishing Step Wizard by clicking 'Accept'");
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     private void fillTableName(String tableName) {

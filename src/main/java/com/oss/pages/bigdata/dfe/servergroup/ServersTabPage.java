@@ -1,25 +1,27 @@
-package com.oss.pages.bigdata.dfe.serverGroup;
+package com.oss.pages.bigdata.dfe.servergroup;
 
-import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bigdata.dfe.BaseTabPage;
-import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.oss.framework.utils.DelayUtils;
+import com.oss.pages.bigdata.dfe.BaseTabPage;
+
+import io.qameta.allure.Step;
+
 public class ServersTabPage extends BaseTabPage {
 
     private static final Logger log = LoggerFactory.getLogger(ServersTabPage.class);
-    private final String SERVERS_TABLE_ID = "server-group/tabs/serversAppId";
-    private final String ADD_NEW_SERVER_LABEL = "Add New Server";
-    private final String EDIT_SERVER_LABEL = "Edit Server";
-    private final String DELETE_SERVER_LABEL = "Delete Server";
-    private final String SERVER_NAME_COLUMN_LABEL = "Server Name";
-
+    private static final String TABS_WIDGET_ID = "card-content_serverGroupTabsId";
+    private static final String SERVERS_TABLE_ID = "server-group/tabs/serversAppId";
+    private static final String ADD_NEW_SERVER_LABEL = "Add New Server";
+    private static final String EDIT_SERVER_LABEL = "Edit Server";
+    private static final String DELETE_SERVER_LABEL = "Delete Server";
+    private static final String SERVER_NAME_COLUMN_LABEL = "Server Name";
 
     public ServersTabPage(WebDriver driver, WebDriverWait wait) {
-        super(driver, wait);
+        super(driver, wait, TABS_WIDGET_ID);
     }
 
     @Step("I select server")

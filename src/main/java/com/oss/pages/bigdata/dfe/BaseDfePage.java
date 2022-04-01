@@ -1,7 +1,5 @@
 package com.oss.pages.bigdata.dfe;
 
-import static com.oss.framework.utils.DelayUtils.waitForPageToLoad;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -16,11 +14,13 @@ import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
-import com.oss.framework.widgets.tabs.TabWindowWidget;
+import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.BasePage;
 import com.oss.untils.FileDownload;
 
 import io.qameta.allure.Step;
+
+import static com.oss.framework.utils.DelayUtils.waitForPageToLoad;
 
 public abstract class BaseDfePage extends BasePage implements BaseDfePageInterface {
     
@@ -58,47 +58,48 @@ public abstract class BaseDfePage extends BasePage implements BaseDfePageInterfa
     protected void clickContextActionEdit() {
         clickContextAction(getContextActionEditLabel());
     }
-    
+
     protected void clickContextActionDelete() {
         clickContextAction(getContextActionDeleteLabel());
     }
-    
+
     protected void clickContextAction(String actionLabel) {
         getTable(driver, wait).callActionByLabel(actionLabel);
         log.debug("Clicking context action: {}", actionLabel);
     }
-    
-    protected void clickTabsContextAction(String actionLabel) {
-        TabWindowWidget.create(driver, wait).callActionByLabel(actionLabel);
+
+    protected void clickTabsContextAction(String widgetId, String actionLabel) {
+        TabsWidget.createById(driver, wait, widgetId).callActionByLabel(actionLabel);
         log.debug("Clicking context action: {}", actionLabel);
     }
-    
+
     protected Boolean feedExistIntoTable(String name, String columnLabel) {
+        waitForPageToLoad(driver, wait);
         searchFeed(name);
         waitForPageToLoad(driver, wait);
         int numberOfRowsInTable = getNumberOfRowsInTable(columnLabel);
         log.trace("Found rows count: {}. Filtered by {}", numberOfRowsInTable, name);
         return numberOfRowsInTable >= 1;
     }
-    
-    protected void selectTab(String label) {
-        TabWindowWidget.create(driver, wait).selectTabByLabel(label);
+
+    protected void selectTab(String widgetId, String label) {
+        TabsWidget.createById(driver, wait, widgetId).selectTabByLabel(label);
     }
-    
+
     protected void confirmDelete(String deleteLabel) {
         ConfirmationBox.create(driver, wait).clickButtonByLabel(deleteLabel);
     }
-    
-    protected void clickRefreshTabTable(String refreshLabel) {
-        TabWindowWidget.create(driver, wait).callActionByLabel(refreshLabel);
+
+    protected void clickRefreshTabTable(String widgetId, String refreshLabel) {
+        TabsWidget.createById(driver, wait, widgetId).callActionByLabel(refreshLabel);
         log.debug("Click context action: {}", refreshLabel);
     }
-    
+
     protected LocalDateTime lastLogTime(String tabId, String columnLabel) {
         String lastLog = OldTable
                 .createById(driver, wait, tabId)
                 .getCellValue(0, columnLabel);
-        
+
         LocalDateTime lastLogTime = LocalDateTime.parse(lastLog, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         log.info("Last Log Time is: {}", lastLogTime);
         

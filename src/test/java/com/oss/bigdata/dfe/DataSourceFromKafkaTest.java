@@ -9,8 +9,8 @@ import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bigdata.dfe.datasource.DSWizard.DataSourceStepWizardPage;
 import com.oss.pages.bigdata.dfe.datasource.DataSourcePage;
+import com.oss.pages.bigdata.dfe.datasource.dswizard.DataSourceStepWizardPage;
 import com.oss.pages.bigdata.utils.ConstantsDfe;
 import com.oss.utils.TestListener;
 
@@ -23,8 +23,8 @@ public class DataSourceFromKafkaTest extends BaseTestCase {
     private DataSourcePage dataSourcePage;
     private String dataSourceName;
     private String dataSourceName_updated;
-    private final String TOPIC = "Selenium Test Topic";
-    private final String EVENT_TYPE = "Text Line";
+    private static final String TOPIC = "Selenium Test Topic";
+    private static final String EVENT_TYPE = "Text Line";
 
     @BeforeClass
     public void goToDataSourceView() {
@@ -45,7 +45,7 @@ public class DataSourceFromKafkaTest extends BaseTestCase {
         dsStepWizard.clickNext();
         dsStepWizard.getSpecificInfoStep().fillSpecificInfoForKafka(TOPIC, EVENT_TYPE);
         dsStepWizard.clickAccept();
-        Boolean dataSourceIsCreated = dataSourcePage.dataSourceExistIntoTable(dataSourceName);
+        boolean dataSourceIsCreated = dataSourcePage.dataSourceExistIntoTable(dataSourceName);
 
         Assert.assertTrue(dataSourceIsCreated);
     }
@@ -53,7 +53,7 @@ public class DataSourceFromKafkaTest extends BaseTestCase {
     @Test(priority = 2, testName = "Edit Data Source from Kafka", description = "Edit Data Source from Kafka")
     @Description("Edit Data Source from Kafka")
     public void editDataSourceFromKafka() {
-        Boolean dataSourceExists = dataSourcePage.dataSourceExistIntoTable(dataSourceName);
+        boolean dataSourceExists = dataSourcePage.dataSourceExistIntoTable(dataSourceName);
         if (dataSourceExists) {
             dataSourcePage.selectFoundDataSource();
             dataSourcePage.clickEditDS();
@@ -63,7 +63,7 @@ public class DataSourceFromKafkaTest extends BaseTestCase {
             dsStepWizard.clickNext();
             dsStepWizard.clickAccept();
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            Boolean dataSourceIsCreated = dataSourcePage.dataSourceExistIntoTable(dataSourceName_updated);
+            boolean dataSourceIsCreated = dataSourcePage.dataSourceExistIntoTable(dataSourceName_updated);
 
             Assert.assertTrue(dataSourceIsCreated);
         } else {
@@ -75,7 +75,7 @@ public class DataSourceFromKafkaTest extends BaseTestCase {
     @Test(priority = 3, testName = "Delete Data Source from Kafka", description = "Delete Data Source from Kafka")
     @Description("Delete Data Source from Kafka")
     public void deleteDsFromKafka() {
-        Boolean dataSourceExists = dataSourcePage.dataSourceExistIntoTable(dataSourceName);
+        boolean dataSourceExists = dataSourcePage.dataSourceExistIntoTable(dataSourceName);
         if (dataSourceExists) {
             dataSourcePage.selectFoundDataSource();
             dataSourcePage.clickDeleteDS();

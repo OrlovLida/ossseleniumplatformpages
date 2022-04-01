@@ -1,26 +1,28 @@
 package com.oss.pages.bigdata.dfe.problems;
 
-import com.oss.framework.wizard.Wizard;
-import com.oss.pages.BasePage;
-import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.oss.framework.wizard.Wizard;
+import com.oss.pages.BasePage;
+
+import io.qameta.allure.Step;
 
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 
 public class ProblemsPopupPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(ProblemsPopupPage.class);
-    private final String NAME_INPUT_ID = "name";
-    private final String DESCRIPTION_INPUT_ID = "description";
+    private static final String NAME_INPUT_ID = "name";
+    private static final String DESCRIPTION_INPUT_ID = "description";
 
     private final Wizard problemsWizard;
 
-    public ProblemsPopupPage(WebDriver driver, WebDriverWait wait, String WIZARD_TEST_ID) {
+    public ProblemsPopupPage(WebDriver driver, WebDriverWait wait, String wizardTestId) {
         super(driver, wait);
-        problemsWizard = Wizard.createByComponentId(driver,wait, WIZARD_TEST_ID);
+        problemsWizard = Wizard.createByComponentId(driver, wait, wizardTestId);
     }
 
     public void fillName(String name) {

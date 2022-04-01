@@ -45,6 +45,7 @@ public class DataSourcePage extends BaseDfePage {
     private static final String PROCESSED_FILES_TABLE_ID = "stats-tableAppId";
     private static final String DOWNLOAD_FILE_LABEL = "Download file";
     private static final String SHOW_FILE_TABLE_ID = "TableId";
+    private static final String TAB_WIDGET_ID = "card-content_TabsId";
 
     public DataSourcePage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -106,24 +107,24 @@ public class DataSourcePage extends BaseDfePage {
 
     @Step("I select logs tab")
     public void selectLogsTab() {
-        selectTab(LOGS_TAB);
+        selectTab(TAB_WIDGET_ID, LOGS_TAB);
         log.info("Selecting logs tab");
     }
 
     @Step("I select Processed Files tab")
     public void selectProcessedFilesTab() {
-        selectTab(PROCESSED_FILES_TAB);
+        selectTab(TAB_WIDGET_ID, PROCESSED_FILES_TAB);
         log.info("Selecting Processed Files Tab");
     }
 
     @Step("I click refresh Tab Table")
     public void refreshLogsTable() {
-        clickTabsContextAction(REFRESH_LABEL);
+        clickTabsContextAction(TAB_WIDGET_ID, REFRESH_LABEL);
     }
 
     @Step("I click show file in Tab Table")
     public void showFile() {
-        clickTabsContextAction(SHOW_FILE_LABEL);
+        clickTabsContextAction(TAB_WIDGET_ID, SHOW_FILE_LABEL);
         log.info("waiting for show file table to load");
         waitForPageToLoad(driver, wait);
     }
@@ -187,7 +188,7 @@ public class DataSourcePage extends BaseDfePage {
 
     @Step("I click Download File button in Processed Files Tab")
     public void clickDownloadFile() {
-        clickTabsContextAction(DOWNLOAD_FILE_LABEL);
+        clickTabsContextAction(TAB_WIDGET_ID, DOWNLOAD_FILE_LABEL);
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Clicking on download file button");
     }

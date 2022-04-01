@@ -1,13 +1,5 @@
 package com.oss.bigdata.dfe;
 
-import com.oss.BaseTestCase;
-import com.oss.pages.bigdata.dfe.serverGroup.ServerGroupPage;
-import com.oss.pages.bigdata.dfe.serverGroup.ServerGroupPopupPage;
-import com.oss.pages.bigdata.dfe.serverGroup.ServerPopupPage;
-import com.oss.pages.bigdata.dfe.serverGroup.ServersTabPage;
-import com.oss.pages.bigdata.utils.ConstantsDfe;
-import com.oss.utils.TestListener;
-import io.qameta.allure.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -15,19 +7,29 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
+import com.oss.BaseTestCase;
+import com.oss.pages.bigdata.dfe.servergroup.ServerGroupPage;
+import com.oss.pages.bigdata.dfe.servergroup.ServerGroupPopupPage;
+import com.oss.pages.bigdata.dfe.servergroup.ServerPopupPage;
+import com.oss.pages.bigdata.dfe.servergroup.ServersTabPage;
+import com.oss.pages.bigdata.utils.ConstantsDfe;
+import com.oss.utils.TestListener;
+
+import io.qameta.allure.Description;
+
 @Listeners({TestListener.class})
 public class ServerGroupTest extends BaseTestCase {
 
-    private final static Logger log = LoggerFactory.getLogger(ServerGroupTest.class);
-    private final static String PROTOCOL_TYPE = "SFTP";
-    private final static String SERVERS_SERVER_NAME = "Selenium Test Server";
-    private final static String SERVERS_SERVER_NAME_UPDATED = SERVERS_SERVER_NAME + "-updated";
-    private final static String SERVERS_SERVER_ADDRESS = "Selenium.Test.Address";
-    private final static String SERVERS_USER_NAME = "Selenium Test Name";
-    private final static String SERVERS_PASSWORD = "Password";
-    private final static String SERVERS_DIRECTORY = "/test";
-    private final String ADD_WIZARD_ID = "add-prompt-id";
-    private final String EDIT_WIZARD_ID = "edit-prompt-id";
+    private static final Logger log = LoggerFactory.getLogger(ServerGroupTest.class);
+    private static final String PROTOCOL_TYPE = "SFTP";
+    private static final String SERVERS_SERVER_NAME = "Selenium Test Server";
+    private static final String SERVERS_SERVER_NAME_UPDATED = SERVERS_SERVER_NAME + "-updated";
+    private static final String SERVERS_SERVER_ADDRESS = "Selenium.Test.Address";
+    private static final String SERVERS_USER_NAME = "Selenium Test Name";
+    private static final String SERVERS_PASSWORD = "Password";
+    private static final String SERVERS_DIRECTORY = "/test";
+    private static final String ADD_WIZARD_ID = "add-prompt-id_prompt-card";
+    private static final String EDIT_WIZARD_ID = "edit-prompt-id_prompt-card";
 
     private ServerGroupPage serverGroupPage;
     private String serverGroupName;
@@ -66,7 +68,7 @@ public class ServerGroupTest extends BaseTestCase {
             serverPopupWizard.fillAddNewServerPopup(SERVERS_SERVER_NAME, SERVERS_SERVER_ADDRESS,
                     SERVERS_USER_NAME, SERVERS_PASSWORD, SERVERS_DIRECTORY);
             serverPopupWizard.clickSave();
-            Boolean serverCreated = serversTabPage.isServerCreated(SERVERS_SERVER_NAME);
+            boolean serverCreated = serversTabPage.isServerCreated(SERVERS_SERVER_NAME);
 
             Assert.assertTrue(serverCreated);
         } else {
@@ -78,7 +80,7 @@ public class ServerGroupTest extends BaseTestCase {
     @Test(priority = 3, testName = "Edit server", description = "Edit server")
     @Description("Edit server")
     public void editServer() {
-        Boolean serverGroupExists = serverGroupPage.serverGroupExistIntoTable(serverGroupName);
+        boolean serverGroupExists = serverGroupPage.serverGroupExistIntoTable(serverGroupName);
         if (serverGroupExists) {
             serverGroupPage.selectFoundServerGroup();
             serverGroupPage.selectServersTab();
@@ -107,7 +109,7 @@ public class ServerGroupTest extends BaseTestCase {
     @Test(priority = 4, testName = "Delete server", description = "Delete server")
     @Description("Delete server")
     public void deleteServer() {
-        Boolean serverGroupExists = serverGroupPage.serverGroupExistIntoTable(serverGroupName);
+        boolean serverGroupExists = serverGroupPage.serverGroupExistIntoTable(serverGroupName);
         if (serverGroupExists) {
             serverGroupPage.selectFoundServerGroup();
             serverGroupPage.selectServersTab();
@@ -116,7 +118,7 @@ public class ServerGroupTest extends BaseTestCase {
                 serversTabPage.selectServer();
                 serversTabPage.clickDeleteServer();
                 serverGroupPage.clickConfirmDelete();
-                Boolean serverDeleted = serversTabPage.isServerDeleted();
+                boolean serverDeleted = serversTabPage.isServerDeleted();
 
                 Assert.assertTrue(serverDeleted);
             } else {
@@ -132,14 +134,14 @@ public class ServerGroupTest extends BaseTestCase {
     @Test(priority = 5, testName = "Edit server group", description = "Edit server group")
     @Description("Edit server group")
     public void editServerGroup() {
-        Boolean serverGroupExists = serverGroupPage.serverGroupExistIntoTable(serverGroupName);
+        boolean serverGroupExists = serverGroupPage.serverGroupExistIntoTable(serverGroupName);
         if (serverGroupExists) {
             serverGroupPage.selectFoundServerGroup();
             serverGroupPage.clickEditServerGroup();
             ServerGroupPopupPage serverGroupPopupWizard = new ServerGroupPopupPage(driver, webDriverWait, EDIT_WIZARD_ID);
             serverGroupPopupWizard.fillName(updatedServerGroupName);
             serverGroupPopupWizard.clickSave();
-            Boolean serverGroupIsEdited = serverGroupPage.serverGroupExistIntoTable(updatedServerGroupName);
+            boolean serverGroupIsEdited = serverGroupPage.serverGroupExistIntoTable(updatedServerGroupName);
 
             Assert.assertTrue(serverGroupIsEdited);
         } else {
@@ -151,7 +153,7 @@ public class ServerGroupTest extends BaseTestCase {
     @Test(priority = 6, testName = "Delete server group", description = "Delete server group")
     @Description("Delete server group")
     public void deleteServerGroup() {
-        Boolean serverGroupExists = serverGroupPage.serverGroupExistIntoTable(serverGroupName);
+        boolean serverGroupExists = serverGroupPage.serverGroupExistIntoTable(serverGroupName);
         if (serverGroupExists) {
             serverGroupPage.selectFoundServerGroup();
             serverGroupPage.clickDeleteServerGroup();

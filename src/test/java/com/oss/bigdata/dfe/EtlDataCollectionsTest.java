@@ -30,13 +30,13 @@ public class EtlDataCollectionsTest extends BaseTestCase {
     private String updatedEtlProcessName;
     private String tableName;
 
-    private final static String DATASOURCE_NAME = "t:CRUD#DSforEtl";
-    private final static String TRANSFORMATION_TYPE = "SQL Transformation";
-    private final static String COLUMN_MAPPING_HOST_NM_NAME = "HOST_NM";
-    private final static String DIMENSION_COLUMN_ROLE = "Dimension";
-    private final static String DEGENERATED_DIMENSION_TABLE = "Degenerated";
-    private final static String HOST_DIMENSION_TABLE = "t:SMOKE#D_HOST";
-    private final static String ETL_WIZARD_ID = "etlWizardWindow";
+    private static final String DATASOURCE_NAME = "t:CRUD#DSforEtl";
+    private static final String TRANSFORMATION_TYPE = "SQL Transformation";
+    private static final String COLUMN_MAPPING_HOST_NM_NAME = "HOST_NM";
+    private static final String DIMENSION_COLUMN_ROLE = "Dimension";
+    private static final String DEGENERATED_DIMENSION_TABLE = "Degenerated";
+    private static final String HOST_DIMENSION_TABLE = "t:SMOKE#D_HOST";
+    private static final String ETL_WIZARD_ID = "etlWizardWindow";
 
     @BeforeClass
     public void goToEtlDataCollectionsView() {
@@ -84,7 +84,7 @@ public class EtlDataCollectionsTest extends BaseTestCase {
     @Test(priority = 2, testName = "Edit ETL Process", description = "Edit ETL Process")
     @Description("Edit ETL Process")
     public void editEtlProcess() {
-        Boolean etlProcessExists = etlDataCollectionsPage.etlProcessExistsIntoTable(etlProcessName);
+        boolean etlProcessExists = etlDataCollectionsPage.etlProcessExistsIntoTable(etlProcessName);
         if (etlProcessExists) {
             etlDataCollectionsPage.selectFoundEtlProcess();
             etlDataCollectionsPage.clickEditEtlProcess();

@@ -1,13 +1,15 @@
-package com.oss.pages.bigdata.dfe.serverGroup;
+package com.oss.pages.bigdata.dfe.servergroup;
 
-import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.wizard.Wizard;
-import com.oss.pages.BasePage;
-import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.wizard.Wizard;
+import com.oss.pages.BasePage;
+
+import io.qameta.allure.Step;
 
 import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
@@ -15,14 +17,14 @@ import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD
 public class ServerGroupPopupPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(ServerGroupPopupPage.class);
-    private final String SERVER_GROUP_NAME_INPUT_ID = "name";
-    private final String PROTOCOL_INPUT_ID = "protocol-input";
+    private static final String SERVER_GROUP_NAME_INPUT_ID = "name";
+    private static final String PROTOCOL_INPUT_ID = "protocol-input";
 
     private final Wizard serverGroupPopupWizard;
 
-    public ServerGroupPopupPage(WebDriver driver, WebDriverWait wait, String WIZARD_ID) {
+    public ServerGroupPopupPage(WebDriver driver, WebDriverWait wait, String wizardId) {
         super(driver, wait);
-        serverGroupPopupWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
+        serverGroupPopupWizard = Wizard.createByComponentId(driver, wait, wizardId);
     }
 
     public void fillName(String name) {

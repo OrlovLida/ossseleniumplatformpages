@@ -8,8 +8,8 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
-import com.oss.pages.bigdata.dfe.datasource.DSWizard.DataSourceStepWizardPage;
 import com.oss.pages.bigdata.dfe.datasource.DataSourcePage;
+import com.oss.pages.bigdata.dfe.datasource.dswizard.DataSourceStepWizardPage;
 import com.oss.pages.bigdata.utils.ConstantsDfe;
 import com.oss.utils.TestListener;
 
@@ -22,9 +22,9 @@ public class DataSourceFromCSVTest extends BaseTestCase {
     private DataSourcePage dataSourcePage;
     private String dataSourceName;
     private String dataSourceName_updated;
-    private final String DS_TYPE = "ServerGroup";
-    private final String SERVER_GROUP_NAME = "t:GENERAL#Test Server Group";
-    private final String INTERVAL = "60";
+    private static final String DS_TYPE = "ServerGroup";
+    private static final String SERVER_GROUP_NAME = "t:GENERAL#Test Server Group";
+    private static final String INTERVAL = "60";
 
     @BeforeClass
     public void goToDataSourceView() {
@@ -46,7 +46,7 @@ public class DataSourceFromCSVTest extends BaseTestCase {
         dsStepWizard.clickNext();
         dsStepWizard.getSpecificInfoStep().fillSpecificInfoForCSV(SERVER_GROUP_NAME, INTERVAL);
         dsStepWizard.clickAccept();
-        Boolean dataSourceIsCreated = dataSourcePage.dataSourceExistIntoTable(dataSourceName);
+        boolean dataSourceIsCreated = dataSourcePage.dataSourceExistIntoTable(dataSourceName);
 
         Assert.assertTrue(dataSourceIsCreated);
     }
@@ -54,7 +54,7 @@ public class DataSourceFromCSVTest extends BaseTestCase {
     @Test(priority = 2, testName = "Edit Data Source from CSV", description = "Edit Data Source from CSV")
     @Description("Edit Data Source from CSV")
     public void editDSFromCSV() {
-        Boolean dataSourceExists = dataSourcePage.dataSourceExistIntoTable(dataSourceName);
+        boolean dataSourceExists = dataSourcePage.dataSourceExistIntoTable(dataSourceName);
         if (dataSourceExists) {
             dataSourcePage.selectFoundDataSource();
             dataSourcePage.clickEditDS();
@@ -63,7 +63,7 @@ public class DataSourceFromCSVTest extends BaseTestCase {
             dsStepWizard.clickNext();
             dsStepWizard.clickNext();
             dsStepWizard.clickAccept();
-            Boolean dataSourceIsCreated = dataSourcePage.dataSourceExistIntoTable(dataSourceName_updated);
+            boolean dataSourceIsCreated = dataSourcePage.dataSourceExistIntoTable(dataSourceName_updated);
 
             Assert.assertTrue(dataSourceIsCreated);
         } else {
@@ -75,7 +75,7 @@ public class DataSourceFromCSVTest extends BaseTestCase {
     @Test(priority = 3, testName = "Delete Data Source from CSV", description = "Delete Data Source from CSV")
     @Description("Delete Data Source from CSV")
     public void deleteDsFromCSV() {
-        Boolean dataSourceExists = dataSourcePage.dataSourceExistIntoTable(dataSourceName);
+        boolean dataSourceExists = dataSourcePage.dataSourceExistIntoTable(dataSourceName);
         if (dataSourceExists) {
             dataSourcePage.selectFoundDataSource();
             dataSourcePage.clickDeleteDS();
