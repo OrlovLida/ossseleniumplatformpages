@@ -21,6 +21,7 @@ public class NotificationWrapperPage extends BasePage {
 
     public NotificationWrapperPage clearNotifications() {
         Notifications.create(driver, wait).clearAllNotification();
+        DelayUtils.waitForPageToLoad(driver, wait);
         return this;
     }
 
