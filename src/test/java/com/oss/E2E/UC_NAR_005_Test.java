@@ -177,7 +177,7 @@ public class UC_NAR_005_Test extends BaseTestCase {
     @Test(priority = 8, description = "Check serial number")
     @Description("Refresh view, select first row and check if value of serial number is updated")
     public void checkSerialNumber() {
-        DelayUtils.sleep(30000);
+        DelayUtils.sleep(45000);
         NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.refreshMainTable();
         waitForPageToLoad();
@@ -189,7 +189,7 @@ public class UC_NAR_005_Test extends BaseTestCase {
     @Test(priority = 9, description = "Delete router")
     @Description("Delete router")
     public void deleteRouter() {
-        DelayUtils.sleep(30000);
+        DelayUtils.sleep(45000);
         NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.selectFirstRow();
         newInventoryViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, "DeleteDeviceWizardAction");
