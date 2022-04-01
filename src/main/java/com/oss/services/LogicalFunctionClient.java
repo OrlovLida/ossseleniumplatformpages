@@ -12,6 +12,7 @@ import com.oss.untils.Constants;
 import com.oss.untils.Environment;
 
 import java.util.List;
+
 public class LogicalFunctionClient {
 
     private static final String BULK_V2 = "/v2/bulk";
@@ -31,32 +32,32 @@ public class LogicalFunctionClient {
         return instance;
     }
 
-    public LogicalFunctionBulkIdentificationsDTO createLogicalFunction(LogicalFunctionBulkDTO dto) {
+    public LogicalFunctionBulkIdentificationsDTO createLogicalFunctionBulk(LogicalFunctionBulkDTO dto) {
         return ENV.getLogicalFunctionSpecification()
-                   .given()
-                   .contentType(ContentType.JSON)
-                   .body(dto)
-                   .when()
-                   .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
-                   .post(BULK_V2)
-                   .then()
-                   .statusCode(Response.Status.OK.getStatusCode())
-                   .extract()
-                   .as(LogicalFunctionBulkIdentificationsDTO.class);
+                .given()
+                .contentType(ContentType.JSON)
+                .body(dto)
+                .when()
+                .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
+                .post(BULK_V2)
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode())
+                .extract()
+                .as(LogicalFunctionBulkIdentificationsDTO.class);
     }
 
     public void deleteLogicalFunction(long id) {
         ENV.getLogicalFunctionSpecification()
-            .given()
-            .contentType(ContentType.JSON)
-            .when()
-            .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
-            .delete("/" + id)
-            .then()
-            .statusCode(Response.Status.NO_CONTENT.getStatusCode());
+                .given()
+                .contentType(ContentType.JSON)
+                .when()
+                .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
+                .delete("/" + id)
+                .then().log().body()
+                .statusCode(Response.Status.NO_CONTENT.getStatusCode());
     }
 
-    public LogicalFunctionIdentificationsDTO getLogicalFunctionBySpecification(String identifier){
+    public LogicalFunctionIdentificationsDTO getLogicalFunctionBySpecification(String identifier) {
         return ENV.getLogicalFunctionSpecification()
                 .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
                 .queryParam(Constants.IDS, identifier)
@@ -67,7 +68,7 @@ public class LogicalFunctionClient {
                 .as(LogicalFunctionIdentificationsDTO.class);
     }
 
-    public List<LogicalFunctionViewDTO> getLogicalFunctionByName(String name){
+    public List<LogicalFunctionViewDTO> getLogicalFunctionByName(String name) {
         return Lists.newArrayList(ENV.getLogicalFunctionSpecification()
                 .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
                 .queryParam(Constants.NAME_PARAM.toLowerCase(), name)

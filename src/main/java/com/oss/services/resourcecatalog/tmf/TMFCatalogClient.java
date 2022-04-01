@@ -1,5 +1,6 @@
 package com.oss.services.resourcecatalog.tmf;
 
+import com.comarch.oss.resourcecatalog.tmf.api.dto.ResourceSpecificationCreationDTO;
 import com.comarch.oss.resourcecatalog.tmf.api.dto.ResourceSpecificationDTO;
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.response.Response;
@@ -35,6 +36,14 @@ public class TMFCatalogClient {
             return Optional.empty();
         }
         return Optional.of(response.as(ResourceSpecificationDTO.class));
+    }
+
+    public void createResourceSpecification(ResourceSpecificationCreationDTO specificationCreationDTOS) {
+        ENV.getTMFResourceCatalog()
+                .given().contentType(ContentType.JSON).body(specificationCreationDTOS)
+                .when().post(RESOURCE_SPECIFICATION_PATH)
+                .then().log().status().log().body()
+                .extract().as(ResourceSpecificationDTO.class);
     }
 
     public void deleteResourceSpecification(String specificationIdentifier, boolean cascade) {
