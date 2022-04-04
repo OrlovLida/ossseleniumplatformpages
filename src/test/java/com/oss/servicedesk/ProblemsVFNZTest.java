@@ -12,7 +12,10 @@ import com.oss.BaseTestCase;
 import com.oss.pages.servicedesk.ticket.BaseDashboardPage;
 import com.oss.pages.servicedesk.ticket.IssueDetailsPage;
 import com.oss.pages.servicedesk.ticket.tabs.AttachmentsTab;
+import com.oss.pages.servicedesk.ticket.tabs.ExternalTab;
+import com.oss.pages.servicedesk.ticket.tabs.RootCausesTab;
 import com.oss.pages.servicedesk.ticket.wizard.AttachmentWizardPage;
+import com.oss.pages.servicedesk.ticket.wizard.ExternalPromptPage;
 import com.oss.pages.servicedesk.ticket.wizard.SDWizardPage;
 
 import io.qameta.allure.Description;
@@ -26,6 +29,9 @@ public class ProblemsVFNZTest extends BaseTestCase {
     private IssueDetailsPage issueDetailsPage;
     private AttachmentsTab attachmentsTab;
     private AttachmentWizardPage attachmentWizardPage;
+    private ExternalTab externalTab;
+    private ExternalPromptPage externalPromptPage;
+    private RootCausesTab rootCausesTab;
     private String problemId;
     private static final String PROBLEMS_DASHBOARD = "_ProblemManagement";
     private static final String PROBLEM_ISSUE_TYPE = "problem";
@@ -39,6 +45,9 @@ public class ProblemsVFNZTest extends BaseTestCase {
     private static final String USER_NAME = "sd_seleniumtest";
     private static final String FILE_TO_UPLOAD_PATH = "DataSourceCSV/CPU_USAGE_INFO_RAW-MAP.xlsx";
     private static final String CSV_FILE = "*CPU_USAGE_INFO_RAW-MAP*.*";
+    private static final String PROBLEM_EXTERNAL = "Selenium External Problem";
+    private static final String PROBLEM_EXTERNAL_EDITED = "Selenium External Problem_EDITED";
+    private static final String EXTERNAL_LIST_ID = "_PMDetailsExternalsListApp";
 
     @BeforeMethod
     public void goToProblemDashboardPage() {
@@ -120,4 +129,70 @@ public class ProblemsVFNZTest extends BaseTestCase {
 
         Assert.assertTrue(attachmentsTab.isAttachmentListEmpty());
     }
+
+    @Test(priority = 6, testName = "Add External to Problem", description = "Add External to Problem")
+    @Description("Add External to Problem")
+    public void addExternalToProblem() {
+        issueDetailsPage = baseDashboardPage.openIssueDetailsView(problemId, BASIC_URL, PROBLEM_ISSUE_TYPE);
+        externalTab = issueDetailsPage.selectExternalTab();
+        Assert.assertTrue(externalTab.isExternalListEmpty(EXTERNAL_LIST_ID));
+
+        externalPromptPage = externalTab.clickAddExternal();
+        externalPromptPage.fillExternalName(PROBLEM_EXTERNAL);
+        externalPromptPage.clickCreateExternal();
+        Assert.assertTrue(externalTab.isExternalCreated(PROBLEM_EXTERNAL, EXTERNAL_LIST_ID));
+    }
+
+    @Test(priority = 7, testName = "Edit External in Problem", description = "Edit External in Problem")
+    @Description("Edit External in Problem")
+    public void editExternalInProblem() {
+        issueDetailsPage = baseDashboardPage.openIssueDetailsView(problemId, BASIC_URL, PROBLEM_ISSUE_TYPE);
+        externalTab = issueDetailsPage.selectExternalTab();
+        Assert.assertTrue(externalTab.isExternalCreated(PROBLEM_EXTERNAL, EXTERNAL_LIST_ID));
+
+        externalPromptPage = externalTab.clickEditExternal(EXTERNAL_LIST_ID);
+        externalPromptPage.fillExternalName(PROBLEM_EXTERNAL_EDITED);
+        externalPromptPage.clickSave();
+        Assert.assertTrue(externalTab.isExternalCreated(PROBLEM_EXTERNAL_EDITED, EXTERNAL_LIST_ID));
+    }
+
+    @Test(priority = 8, testName = "Delete External", description = "Delete External in Problem")
+    @Description("Delete External in Problem")
+    public void deleteExternalInProblem() {
+        issueDetailsPage = baseDashboardPage.openIssueDetailsView(problemId, BASIC_URL, PROBLEM_ISSUE_TYPE);
+        externalTab = issueDetailsPage.selectExternalTab();
+        Assert.assertTrue(externalTab.isExternalCreated(PROBLEM_EXTERNAL_EDITED, EXTERNAL_LIST_ID));
+
+        externalTab.clickDeleteExternal(EXTERNAL_LIST_ID);
+        Assert.assertTrue(externalTab.isExternalListEmpty(EXTERNAL_LIST_ID));
+    }
+
+    @Test(priority = 9, testName = "Check Root Causes Tree Table in Problem", description = "Check Root Causes Tree Table in Problem")
+    @Description("Check Root Causes Tree Table in Problem")
+    public void checkRootCauseTreeTable() {
+        issueDetailsPage = baseDashboardPage.openIssueDetailsView(problemId, BASIC_URL, PROBLEM_ISSUE_TYPE);
+        rootCausesTab = issueDetailsPage.selectRootCauseTab();
+        Assert.assertFalse(rootCausesTab.isRootCauseTableEmpty());
+
+        rootCausesTab.selectMOInRootCausesTab(0);
+        Assert.assertTrue(rootCausesTab.checkIfRootCausesTreeTableIsNotEmpty());
+    }
+
+    @Parameters({"SecondMOIdentifier"})
+    @Test(priority = 10, testName = "Add second MO in Root Causes tab", description = "Add second MO in Root Causes tab")
+    @Description("Add second MO in Root Causes tab")
+    public void addRootCause(
+            @Optional("CFS_Access_Product_Selenium_2") String SecondMOIdentifier
+    ) {
+        issueDetailsPage = baseDashboardPage.openIssueDetailsView(problemId, BASIC_URL, PROBLEM_ISSUE_TYPE);
+        rootCausesTab = issueDetailsPage.selectRootCauseTab();
+        sdWizardPage = rootCausesTab.openAddRootCauseWizard();
+        sdWizardPage.getMoStep().showAllMOs();
+        sdWizardPage.getMoStep().enterTextIntoSearchComponent(SecondMOIdentifier);
+        sdWizardPage.getMoStep().selectObjectInMOTable(SecondMOIdentifier);
+        sdWizardPage.clickAcceptButtonInWizard();
+
+        Assert.assertTrue(rootCausesTab.checkIfMOIdentifierIsPresentOnRootCauses(SecondMOIdentifier));
+    }
+
 }

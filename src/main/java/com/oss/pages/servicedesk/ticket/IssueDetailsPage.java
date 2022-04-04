@@ -7,7 +7,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.oss.framework.components.contextactions.ButtonContainer;
 import com.oss.framework.components.contextactions.OldActionsContainer;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
@@ -20,6 +19,9 @@ import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.tabs.TabWindowWidget;
 import com.oss.pages.servicedesk.BaseSDPage;
 import com.oss.pages.servicedesk.ticket.tabs.AttachmentsTab;
+import com.oss.pages.servicedesk.ticket.tabs.ExternalTab;
+import com.oss.pages.servicedesk.ticket.tabs.MessagesTab;
+import com.oss.pages.servicedesk.ticket.tabs.RootCausesTab;
 import com.oss.pages.servicedesk.ticket.wizard.SDWizardPage;
 
 import io.qameta.allure.Step;
@@ -39,8 +41,7 @@ public class IssueDetailsPage extends BaseSDPage {
     private static final String PROBLEM_STATUS_ID = "status-input";
     private static final String CHECKLIST_APP_ID = "_checklistApp";
     private static final String SKIP_BUTTON_LABEL = "SKIP";
-    private static final String EXTERNAL_LIST_ID = "_detailsExternalsListApp";
-    private static final String EXTERNAL_INFO_LABEL = "External Info";
+    private static final String EXTERNAL_TAB_ARIA_CONTROLS = "_detailsExternalTab";
     private static final String DICTIONARIES_TABLE_ID = "_dictionariesTableId";
     private static final String DICTIONARY_VALUE_TABLE_LABEL = "Dictionary Value";
     private static final String CHANGE_TICKET_STATUS_COMBOBOX_ID = "change-ticket-status-combobox-input";
@@ -53,7 +54,6 @@ public class IssueDetailsPage extends BaseSDPage {
     private static final String UNLINK_TICKET_ID = "UNLINK_TICKET";
     private static final String CONFIRM_UNLINK_TICKET_BUTTON_LABEL = "Unlink";
     private static final String SHOW_ARCHIVED_SWITCHER_ID = "_relatedTicketsSwitcherApp";
-    private static final String ADD_ROOT_CAUSE_ID = "_addRootCause";
     private static final String ADD_PARTICIPANT_ID = "_createParticipant";
     private static final String PARTICIPANTS_TABLE_ID = "_participantsTableApp";
     private static final String PARTICIPANTS_TABLE_FIRST_NAME_ATTRIBUTE_ID = "First Name";
@@ -66,9 +66,9 @@ public class IssueDetailsPage extends BaseSDPage {
     private static final String RELATED_PROBLEMS_TABLE_LABEL_ATTRIBUTE_ID = "Label";
     private static final String RELATED_TICKETS_TABLE_ID = "_relatedTicketsTableWidget";
     private static final String RELATED_TICKETS_TABLE_ID_ATTRIBUTE_ID = "ID";
-    private static final String ROOT_CAUSES_TABLE_ID = "_rootCausesApp";
-    private static final String ROOT_CAUSES_TABLE_ID_MO_IDENTIFIER_ID = "MO Identifier";
     private static final String ATTACHMENTS_TAB_ARIA_CONTROLS = "attachmentManager";
+    private static final String MESSAGES_TAB_ARIA_CONTROLS = "_messagesTab";
+    private static final String ROOT_CAUSES_TAB_ARIA_CONTROLS = "_rootCausesTab";
 
     public IssueDetailsPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -105,13 +105,6 @@ public class IssueDetailsPage extends BaseSDPage {
         log.info("Clicking Context action {}", contextActionLabel);
     }
 
-    @Step("Click Context action from button with label {contextActionLabel}")
-    public void clickContextActionFromButtonContainer(String contextActionLabel) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        ButtonContainer.create(driver, wait).callActionById(contextActionLabel);
-        log.info("Clicking Context action {}", contextActionLabel);
-    }
-
     @Step("Selecting tab {tabAriaControls}")
     public void selectTab(String tabAriaControls) {
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -120,11 +113,31 @@ public class IssueDetailsPage extends BaseSDPage {
     }
 
     public AttachmentsTab selectAttachmentsTab() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        TabWindowWidget.create(driver, wait).selectTabById(ATTACHMENTS_TAB_ARIA_CONTROLS);
+        selectTab(ATTACHMENTS_TAB_ARIA_CONTROLS);
         log.info("Selecting tab Attachments");
 
         return new AttachmentsTab(driver, wait);
+    }
+
+    public ExternalTab selectExternalTab() {
+        selectTab(EXTERNAL_TAB_ARIA_CONTROLS);
+        log.info("Selecting tab External");
+
+        return new ExternalTab(driver, wait);
+    }
+
+    public MessagesTab selectMessagesTab() {
+        selectTab(MESSAGES_TAB_ARIA_CONTROLS);
+        log.info("Selecting Messages Tab");
+
+        return new MessagesTab(driver, wait);
+    }
+
+    public RootCausesTab selectRootCauseTab() {
+        selectTab(ROOT_CAUSES_TAB_ARIA_CONTROLS);
+        log.info("Selecting Root Cause Tab");
+
+        return new RootCausesTab(driver, wait);
     }
 
     @Step("Skipping all actions on checklist")
@@ -163,20 +176,6 @@ public class IssueDetailsPage extends BaseSDPage {
         ComponentFactory.create(PROBLEM_STATUS_ID, Input.ComponentType.COMBOBOX, driver, wait)
                 .setSingleStringValue(status);
         DelayUtils.waitForPageToLoad(driver, wait);
-    }
-
-    @Step("Checking if expected external {expectedExistingExternal} exists on the list")
-    public boolean checkExistingExternal(String expectedExistingExternal) {
-        DelayUtils.sleep(5000);
-        DelayUtils.waitForPageToLoad(driver, wait);
-        log.info("Checking if expected external '{}' exists on the list", expectedExistingExternal);
-        if (CommonList.create(driver, wait, EXTERNAL_LIST_ID).isRowDisplayed(EXTERNAL_INFO_LABEL, expectedExistingExternal)) {
-            log.info("Expected external '{}' exists on the list", expectedExistingExternal);
-            return true;
-        } else {
-            log.info("Expected external '{}' does not exists on the list", expectedExistingExternal);
-            return false;
-        }
     }
 
     public String checkExistingDictionary() {
@@ -251,14 +250,6 @@ public class IssueDetailsPage extends BaseSDPage {
         DelayUtils.waitForPageToLoad(driver, wait);
         clickContextActionFromButtonContainer(LINK_TICKETS_ID);
         log.info("Link Tickets Wizard is opened");
-        return new SDWizardPage(driver, wait);
-    }
-
-    @Step("I open add root cause wizard")
-    public SDWizardPage openAddRootCauseWizard() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        clickContextActionFromButtonContainer(ADD_ROOT_CAUSE_ID);
-        log.info("Add Root Cause Wizard is opened");
         return new SDWizardPage(driver, wait);
     }
 
@@ -337,30 +328,6 @@ public class IssueDetailsPage extends BaseSDPage {
 
     private String checkRelatedTicketsData(int ticketIndex, String attributeId) {
         return checkOldTableData(RELATED_TICKETS_TABLE_ID, ticketIndex, attributeId);
-    }
-
-    @Step("I check root cause  - MO Identifier")
-    public String checkRootCausesMOIdentifier(int objectIndex) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        log.info("Check root cause  - MO Identifier");
-        return checkRootCausesData(objectIndex, ROOT_CAUSES_TABLE_ID_MO_IDENTIFIER_ID);
-    }
-
-    @Step("I check if MO Identifier is present on Root Causes tab")
-    public boolean checkIfMOIdentifierIsPresentOnRootCauses(String MOIdentifier) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        log.info("I check if MO Identifier is present on Root Causes tab");
-        int numberOfRows = OldTable.createById(driver, wait, ROOT_CAUSES_TABLE_ID).countRows(ROOT_CAUSES_TABLE_ID_MO_IDENTIFIER_ID);
-        for (int i = 0; i < numberOfRows; i++) {
-            if (checkRootCausesData(i, ROOT_CAUSES_TABLE_ID_MO_IDENTIFIER_ID).equals(MOIdentifier)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private String checkRootCausesData(int objectIndex, String attributeId) {
-        return checkOldTableData(ROOT_CAUSES_TABLE_ID, objectIndex, attributeId);
     }
 
     private String checkOldTableData(String tableId, int index, String attributeId) {

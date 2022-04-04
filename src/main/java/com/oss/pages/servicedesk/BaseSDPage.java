@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.oss.framework.components.contextactions.ButtonContainer;
 import com.oss.framework.components.inputs.HtmlEditor;
 import com.oss.framework.components.layout.Card;
 import com.oss.framework.utils.DelayUtils;
@@ -88,5 +89,12 @@ public abstract class BaseSDPage extends BasePage {
     public void minimizeWindow(String windowId) {
         Card.createCard(driver, wait, windowId).minimizeCard();
         log.info("Minimizing window");
+    }
+
+    @Step("Click Context action from button with label {contextActionLabel}")
+    public void clickContextActionFromButtonContainer(String contextActionLabel) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        ButtonContainer.create(driver, wait).callActionById(contextActionLabel);
+        log.info("Clicking Context action {}", contextActionLabel);
     }
 }
