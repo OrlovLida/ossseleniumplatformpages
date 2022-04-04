@@ -30,7 +30,7 @@ public class VNFPKGManualOnboardingTest extends BaseVNFPKGManualOnboardingTest {
     private VNFPKGManualOnboardingWizardFirstStep firstStep;
 
     @Test(priority = 1, description = "Open 'VNFPKG manual onboard' wizard")
-    @Description("Got to Resource Specifications view, find and select VNFPKG specification and open manual wizard from context menu")
+    @Description("Go to Resource Specifications view, find and select VNFPKG specification and open manual wizard from context menu")
     public void openVnfpkgOnboardingWizard() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         //given
