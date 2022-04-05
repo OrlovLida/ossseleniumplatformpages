@@ -16,14 +16,11 @@ import com.oss.services.resourcecatalog.tmf.TMFCatalogClient;
 import com.oss.untils.Environment;
 
 import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.EOCMNFVO_NAME;
-import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.SamsungNFVO_NAME;
-import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.VNFPKG_IDENTIFIER;
-import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.MARKETPLACE_EOCMNFVO_NAME;
-import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.VIM_EOCMNFVO_NAME;
-import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.VNFM_EOCMNFVO_NAME;
 import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.MARKETPLACE_SAMSUNGNFVO_NAME;
+import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.SamsungNFVO_NAME;
 import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.VIM_SAMSUNGNFVO_NAME;
-import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.VNFM_SAMSUNGNFVO_NAME;
+import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.VNFM_EOCMNFVO_NAME;
+import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.VNFPKG_IDENTIFIER;
 
 public class BaseVNFPKGManualOnboardingTest extends BaseTestCase {
 
@@ -59,12 +56,9 @@ public class BaseVNFPKGManualOnboardingTest extends BaseTestCase {
     }
 
     private void deleteRelatedObjects() {
-        logicalFunctionClient.deleteLogicalFunction(idByNameMap.get(MARKETPLACE_EOCMNFVO_NAME));
-        logicalFunctionClient.deleteLogicalFunction(idByNameMap.get(VIM_EOCMNFVO_NAME));
         logicalFunctionClient.deleteLogicalFunction(idByNameMap.get(VNFM_EOCMNFVO_NAME));
         logicalFunctionClient.deleteLogicalFunction(idByNameMap.get(MARKETPLACE_SAMSUNGNFVO_NAME));
         logicalFunctionClient.deleteLogicalFunction(idByNameMap.get(VIM_SAMSUNGNFVO_NAME));
-        logicalFunctionClient.deleteLogicalFunction(idByNameMap.get(VNFM_SAMSUNGNFVO_NAME));
     }
 
     private void createTestInstances() {

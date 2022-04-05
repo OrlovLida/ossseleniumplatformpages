@@ -34,13 +34,10 @@ public class VNFPKGManualOnboardConstants {
     public static final String SamsungNFVO_VENDOR_ATTRIBUTE_VALUE = "Samsung";
 
     public static final String MARKETPLACE_TYPE = "Marketplace";
-    public static final String MARKETPLACE_EOCMNFVO_NAME = "Marketplace-EOCMNFVO-seleniumtest64258";
     public static final String MARKETPLACE_SAMSUNGNFVO_NAME = "Marketplace-SamsungNFVO-seleniumtest64258";
     public static final String VIM_TYPE = "VIM";
-    public static final String VIM_EOCMNFVO_NAME = "VIM-EOCMNFVO-seleniumtest64258";
     public static final String VIM_SAMSUNGNFVO_NAME = "VIM-SamsungNFVO-seleniumtest64258";
     public static final String VNFM_TYPE = "VNFM";
     public static final String VNFM_EOCMNFVO_NAME = "VNFM-EOCMNFVO-seleniumtest64258";
-    public static final String VNFM_SAMSUNGNFVO_NAME = "VNFM-SamsungNFVO-seleniumtest64258";
 
 }
