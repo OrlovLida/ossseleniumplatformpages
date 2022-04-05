@@ -15,11 +15,21 @@ import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.CATEGORY_ATTRIBUTE
 import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.EOCMNFVO_NAME;
 import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.EOCMNFVO_TYPE;
 import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.EOCMNFVO_VENDOR_ATTRIBUTE_VALUE;
+import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.MARKETPLACE_EOCMNFVO_NAME;
+import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.MARKETPLACE_SAMSUNGNFVO_NAME;
+import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.MARKETPLACE_TYPE;
+import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.MASTER_OSS_RELATION_NAME;
 import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.NFVO_CATEGORY_ATTRIBUTE_VALUE;
 import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.SamsungNFVO_NAME;
 import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.SamsungNFVO_TYPE;
 import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.SamsungNFVO_VENDOR_ATTRIBUTE_VALUE;
 import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.VENDOR_ATTRIBUTE_NAME;
+import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.VIM_EOCMNFVO_NAME;
+import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.VIM_SAMSUNGNFVO_NAME;
+import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.VIM_TYPE;
+import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.VNFM_EOCMNFVO_NAME;
+import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.VNFM_SAMSUNGNFVO_NAME;
+import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.VNFM_TYPE;
 import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.VNFPKG_DESCRIPTION;
 import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.VNFPKG_IDENTIFIER;
 import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.VNFPKG_NAME;
@@ -36,9 +46,15 @@ public class VNFPKGManualOnboardingDtoBuilder {
 
     }
 
-    public static LogicalFunctionBulkDTO getCreateDto() {
+    public static LogicalFunctionBulkDTO getNFVOsCreateDto() {
         return LogicalFunctionBulkDTO.builder()
-            .createOrUpdate(getSyncDtos())
+            .createOrUpdate(getNFVOsSyncDto())
+            .build();
+    }
+
+    public static LogicalFunctionBulkDTO getRelatedObjectsCreateDto(Long eocmNfvoId, Long samsungNfvoId) {
+        return LogicalFunctionBulkDTO.builder()
+            .createOrUpdate(getRelatedObjectsSyncDto(eocmNfvoId, samsungNfvoId))
             .build();
     }
 
@@ -73,10 +89,60 @@ public class VNFPKGManualOnboardingDtoBuilder {
             .build();
     }
 
-    private static List<LogicalFunctionSyncDTO> getSyncDtos() {
+    private static List<LogicalFunctionSyncDTO> getNFVOsSyncDto() {
         return ImmutableList.of(
             getCreateEocmnfvoDto(),
             getCreateSamsungNfvoDto()
+        );
+    }
+
+    private static List<LogicalFunctionSyncDTO> getRelatedObjectsSyncDto(Long eocmNfvoId, Long samsungNfvoId) {
+        return ImmutableList.of(
+            getCreateEocmNfvoMarketplaceDto(eocmNfvoId),
+            getCreateEocmNfvoVimDto(eocmNfvoId),
+            getCreateEocmNfvoVnfmDto(eocmNfvoId),
+            getCreateSamsungNfvoMarketplaceDto(samsungNfvoId),
+            getCreateSamsungNfvoVimDto(samsungNfvoId),
+            getCreateSamsungNfvoVnfmDto(samsungNfvoId)
+        );
+    }
+
+    private static LogicalFunctionSyncDTO getCreateSamsungNfvoMarketplaceDto(Long samsungNfvoId) {
+        return getCreateNfvoRelatedDto(MARKETPLACE_SAMSUNGNFVO_NAME, MARKETPLACE_TYPE, samsungNfvoId);
+    }
+
+    private static LogicalFunctionSyncDTO getCreateSamsungNfvoVimDto(Long samsungNfvoId) {
+        return getCreateNfvoRelatedDto(VIM_SAMSUNGNFVO_NAME, VIM_TYPE, samsungNfvoId);
+    }
+
+    private static LogicalFunctionSyncDTO getCreateSamsungNfvoVnfmDto(Long samsungNfvoId) {
+        return getCreateNfvoRelatedDto(VNFM_SAMSUNGNFVO_NAME, VNFM_TYPE, samsungNfvoId);
+    }
+
+    private static LogicalFunctionSyncDTO getCreateEocmNfvoVnfmDto(Long eocmNfvoId) {
+        return getCreateNfvoRelatedDto(VNFM_EOCMNFVO_NAME, VNFM_TYPE, eocmNfvoId);
+    }
+
+    private static LogicalFunctionSyncDTO getCreateEocmNfvoVimDto(Long eocmNfvoId) {
+        return getCreateNfvoRelatedDto(VIM_EOCMNFVO_NAME, VIM_TYPE, eocmNfvoId);
+    }
+
+    private static LogicalFunctionSyncDTO getCreateEocmNfvoMarketplaceDto(Long eocmNfvoId) {
+        return getCreateNfvoRelatedDto(MARKETPLACE_EOCMNFVO_NAME, MARKETPLACE_TYPE, eocmNfvoId);
+    }
+
+    private static LogicalFunctionSyncDTO getCreateNfvoRelatedDto(String name, String type, Long masterOssId) {
+        return LogicalFunctionSyncDTO.builder()
+            .name(name)
+            .type(type)
+            .model(getRsModel(type))
+            .relations(getMasterOssRelation(masterOssId))
+            .build();
+    }
+
+    private static List<AttributeDTO> getMasterOssRelation(Long eocmNfvoId) {
+        return ImmutableList.of(
+            getAttribute(MASTER_OSS_RELATION_NAME, eocmNfvoId.toString())
         );
     }
 

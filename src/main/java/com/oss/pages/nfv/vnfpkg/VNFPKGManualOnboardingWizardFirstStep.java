@@ -3,6 +3,7 @@ package com.oss.pages.nfv.vnfpkg;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.oss.framework.components.inputs.Input.ComponentType;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 
@@ -43,5 +44,21 @@ public class VNFPKGManualOnboardingWizardFirstStep extends VNFPKGManualOnboardin
 
     public boolean marketplaceSearchFieldIsDisplayed() {
         return this.vnfpkgWizard.isElementPresentById(SEARCH_MARKETPLACE_COMPONENT_ID);
+    }
+
+    public String getVnfmSearchFieldValue() {
+        return getComponentStringValue(SEARCH_VNFM_COMPONENT_ID, OBJECT_SEARCH_FIELD);
+    }
+
+    public String getMarketplaceSearchFieldValue() {
+        return getComponentStringValue(SEARCH_MARKETPLACE_COMPONENT_ID, OBJECT_SEARCH_FIELD);
+    }
+
+    public String getVimSearchFieldValue() {
+        return getComponentStringValue(SEARCH_VIM_COMPONENT_ID, OBJECT_SEARCH_FIELD);
+    }
+
+    private String getComponentStringValue(String componentId, ComponentType componentType) {
+        return vnfpkgWizard.getComponent(componentId, componentType).getStringValue();
     }
 }

@@ -1,5 +1,6 @@
 package com.oss.nfv.vnfpkg;
 
+import org.assertj.core.api.SoftAssertions;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
@@ -14,15 +15,16 @@ import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 
 import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.EOCMNFVO_NAME;
+import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.MARKETPLACE_SAMSUNGNFVO_NAME;
 import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.RESOURCE_CATALOG_PATH;
 import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.RESOURCE_SPECIFICATIONS_ACTION_LABEL;
 import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.SPECIFICATION_NAME_ATTRIBUTE_NAME_LABEL;
 import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.SamsungNFVO_NAME;
+import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.VIM_SAMSUNGNFVO_NAME;
+import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.VNFM_EOCMNFVO_NAME;
 import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.VNFPKG_IDENTIFIER;
 import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.VNFPKG_NAME;
 import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.VNFPKG_ONBOARDING_ACTION_LABEL;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
 
 @Listeners({ TestListener.class})
 public class VNFPKGManualOnboardingTest extends BaseVNFPKGManualOnboardingTest {
@@ -49,7 +51,7 @@ public class VNFPKGManualOnboardingTest extends BaseVNFPKGManualOnboardingTest {
     }
 
     @Test(priority = 2, description = "Select EOCMNFVO")
-    @Description("Select EOCMNFVO and validate that proper fields are displayed")
+    @Description("Select EOCMNFVO and validate that proper fields are displayed and filled with proper values")
     public void selectEOCMNFVO() {
         //given
         VNFPKGManualOnboardingWizardPage wizard = VNFPKGManualOnboardingWizardPage.create(driver, webDriverWait);
@@ -59,10 +61,26 @@ public class VNFPKGManualOnboardingTest extends BaseVNFPKGManualOnboardingTest {
         firstStep.selectNfvo(EOCMNFVO_NAME);
 
         //then
-        assertTrue(firstStep.vnfmSearchFieldIsDisplayed());
-        assertTrue(firstStep.defaultRemoteFieldIsDisplayed());
-        assertFalse(firstStep.marketplaceSearchFieldIsDisplayed());
-        assertFalse(firstStep.vimSearchFieldIsDisplayed());
+        SoftAssertions soft = new SoftAssertions();
+
+        soft.assertThat(firstStep.vnfmSearchFieldIsDisplayed())
+            .describedAs("VNFM field not displayed")
+            .isTrue();
+        soft.assertThat(firstStep.defaultRemoteFieldIsDisplayed())
+            .describedAs("Default remote folder field not displayed")
+            .isTrue();
+        soft.assertThat(firstStep.marketplaceSearchFieldIsDisplayed())
+            .describedAs("Marketplace search field not hidden")
+            .isFalse();
+        soft.assertThat(firstStep.vimSearchFieldIsDisplayed())
+            .describedAs("VIM search field not hidden")
+            .isFalse();
+
+        soft.assertThat(firstStep.getVnfmSearchFieldValue())
+            .describedAs("VNFM field not filled with proper value")
+            .isEqualTo(VNFM_EOCMNFVO_NAME);
+
+        soft.assertAll();
     }
 
     @Test(priority = 3, description = "Select SamsungNFVO")
@@ -73,10 +91,29 @@ public class VNFPKGManualOnboardingTest extends BaseVNFPKGManualOnboardingTest {
         firstStep.selectNfvo(SamsungNFVO_NAME);
 
         //then
-        assertTrue(firstStep.marketplaceSearchFieldIsDisplayed());
-        assertTrue(firstStep.vimSearchFieldIsDisplayed());
-        assertTrue(firstStep.defaultRemoteFieldIsDisplayed());
-        assertFalse(firstStep.vnfmSearchFieldIsDisplayed());
+        SoftAssertions soft = new SoftAssertions();
+
+        soft.assertThat(firstStep.marketplaceSearchFieldIsDisplayed())
+            .describedAs("Marketplace field not displayed")
+            .isTrue();
+        soft.assertThat(firstStep.vimSearchFieldIsDisplayed())
+            .describedAs("VIM search field not hidden")
+            .isTrue();
+        soft.assertThat(firstStep.defaultRemoteFieldIsDisplayed())
+            .describedAs("Default remote folder field not displayed")
+            .isTrue();
+        soft.assertThat(firstStep.vnfmSearchFieldIsDisplayed())
+            .describedAs("VNFM search field not hidden")
+            .isFalse();
+
+        soft.assertThat(firstStep.getMarketplaceSearchFieldValue())
+            .describedAs("Marketplace field not filled with proper value")
+            .isEqualTo(MARKETPLACE_SAMSUNGNFVO_NAME);
+        soft.assertThat(firstStep.getVimSearchFieldValue())
+            .describedAs("VIM field not filled with proper value")
+            .isEqualTo(VIM_SAMSUNGNFVO_NAME);
+
+        soft.assertAll();
     }
 
     private void openManualVnfpkgOnboardWizard(ResourceSpecificationsViewPage resourceSpecificationsViewPage) {

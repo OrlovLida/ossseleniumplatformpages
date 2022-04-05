@@ -1,6 +1,7 @@
 package com.oss.nfv.vnfpkg;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -17,13 +18,19 @@ import com.oss.untils.Environment;
 import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.EOCMNFVO_NAME;
 import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.SamsungNFVO_NAME;
 import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.VNFPKG_IDENTIFIER;
+import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.MARKETPLACE_EOCMNFVO_NAME;
+import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.VIM_EOCMNFVO_NAME;
+import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.VNFM_EOCMNFVO_NAME;
+import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.MARKETPLACE_SAMSUNGNFVO_NAME;
+import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.VIM_SAMSUNGNFVO_NAME;
+import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.VNFM_SAMSUNGNFVO_NAME;
 
 public class BaseVNFPKGManualOnboardingTest extends BaseTestCase {
 
     private final Environment env = Environment.getInstance();
     private final LogicalFunctionClient logicalFunctionClient = LogicalFunctionClient.getInstance(env);
     private final TMFCatalogClient tmfCatalogClient = TMFCatalogClient.getInstance(env);
-    private Map<String, Long> idByTypeMap;
+    private final Map<String, Long> idByNameMap = new HashMap<>();
 
     @BeforeClass
     public void prepareData() throws IOException {
@@ -37,6 +44,7 @@ public class BaseVNFPKGManualOnboardingTest extends BaseTestCase {
 
     @AfterClass(alwaysRun = true)
     public void cleanData() {
+        deleteRelatedObjects();
         deleteTestInstances();
         deleteVNFPKGspec();
     }
@@ -46,13 +54,38 @@ public class BaseVNFPKGManualOnboardingTest extends BaseTestCase {
     }
 
     private void deleteTestInstances() {
-        logicalFunctionClient.deleteLogicalFunction(idByTypeMap.get(EOCMNFVO_NAME));
-        logicalFunctionClient.deleteLogicalFunction(idByTypeMap.get(SamsungNFVO_NAME));
+        logicalFunctionClient.deleteLogicalFunction(idByNameMap.get(EOCMNFVO_NAME));
+        logicalFunctionClient.deleteLogicalFunction(idByNameMap.get(SamsungNFVO_NAME));
+    }
+
+    private void deleteRelatedObjects() {
+        logicalFunctionClient.deleteLogicalFunction(idByNameMap.get(MARKETPLACE_EOCMNFVO_NAME));
+        logicalFunctionClient.deleteLogicalFunction(idByNameMap.get(VIM_EOCMNFVO_NAME));
+        logicalFunctionClient.deleteLogicalFunction(idByNameMap.get(VNFM_EOCMNFVO_NAME));
+        logicalFunctionClient.deleteLogicalFunction(idByNameMap.get(MARKETPLACE_SAMSUNGNFVO_NAME));
+        logicalFunctionClient.deleteLogicalFunction(idByNameMap.get(VIM_SAMSUNGNFVO_NAME));
+        logicalFunctionClient.deleteLogicalFunction(idByNameMap.get(VNFM_SAMSUNGNFVO_NAME));
     }
 
     private void createTestInstances() {
-        LogicalFunctionBulkIdentificationsDTO bulkResponse = logicalFunctionClient.createLogicalFunctionBulk(VNFPKGManualOnboardingDtoBuilder.getCreateDto());
-        idByTypeMap = bulkResponse.getLogicalFunctionsIdentifications().stream()
+        createNFVOs();
+        createRelatedObjects();
+    }
+
+    private void createNFVOs() {
+        LogicalFunctionBulkIdentificationsDTO bulkResponse = logicalFunctionClient
+            .createLogicalFunctionBulk(VNFPKGManualOnboardingDtoBuilder.getNFVOsCreateDto());
+        idByNameMap.putAll(getIdByNameMap(bulkResponse));
+    }
+
+    private void createRelatedObjects() {
+        LogicalFunctionBulkIdentificationsDTO bulkResponse = logicalFunctionClient
+            .createLogicalFunctionBulk(VNFPKGManualOnboardingDtoBuilder.getRelatedObjectsCreateDto(idByNameMap.get(EOCMNFVO_NAME), idByNameMap.get(SamsungNFVO_NAME)));
+        idByNameMap.putAll(getIdByNameMap(bulkResponse));
+    }
+
+    private Map<String, Long> getIdByNameMap(LogicalFunctionBulkIdentificationsDTO bulkResponse) {
+        return bulkResponse.getLogicalFunctionsIdentifications().stream()
             .collect(Collectors.toMap(LogicalFunctionSyncIdentificationDTO::getName, LogicalFunctionSyncIdentificationDTO::getId));
     }
 }

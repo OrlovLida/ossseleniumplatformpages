@@ -13,6 +13,7 @@ public class VNFPKGManualOnboardConstants {
     public static final String VENDOR_ATTRIBUTE_NAME = "Vendor";
     public static final String CATEGORY_ATTRIBUTE_NAME = "Category";
     public static final String NFVO_CATEGORY_ATTRIBUTE_VALUE = "NFVO";
+    public static final String MASTER_OSS_RELATION_NAME = "MasterOSS";
 
     public static final String VNFPKG_IDENTIFIER = "VNFPKGSamsungLGU210vSPGW202002seleniumtest64258";
     public static final String VNFPKG_NAME = "VNFPKGSamsung-LGU210-vSPGW-202002-seleniumtest64258";
@@ -31,5 +32,15 @@ public class VNFPKGManualOnboardConstants {
     public static final String SamsungNFVO_NAME = "SamsungNFVO-seleniumtest64258";
     public static final String SamsungNFVO_TYPE = "SamsungNFVO";
     public static final String SamsungNFVO_VENDOR_ATTRIBUTE_VALUE = "Samsung";
+
+    public static final String MARKETPLACE_TYPE = "Marketplace";
+    public static final String MARKETPLACE_EOCMNFVO_NAME = "Marketplace-EOCMNFVO-seleniumtest64258";
+    public static final String MARKETPLACE_SAMSUNGNFVO_NAME = "Marketplace-SamsungNFVO-seleniumtest64258";
+    public static final String VIM_TYPE = "VIM";
+    public static final String VIM_EOCMNFVO_NAME = "VIM-EOCMNFVO-seleniumtest64258";
+    public static final String VIM_SAMSUNGNFVO_NAME = "VIM-SamsungNFVO-seleniumtest64258";
+    public static final String VNFM_TYPE = "VNFM";
+    public static final String VNFM_EOCMNFVO_NAME = "VNFM-EOCMNFVO-seleniumtest64258";
+    public static final String VNFM_SAMSUNGNFVO_NAME = "VNFM-SamsungNFVO-seleniumtest64258";
 
 }
