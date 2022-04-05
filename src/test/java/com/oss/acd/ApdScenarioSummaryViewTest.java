@@ -87,6 +87,8 @@ public class ApdScenarioSummaryViewTest extends BaseTestCase {
                 baseACDPage.setValueInTimePeriodChooser("create_time", 3, 12, 33);
                 apdScenarioSummaryViewPage.setValueOfIssueIdSearch();
             }
+            DelayUtils.sleep();
+            clearIssueTableFilters();
         } else {
             log.info("table contains data for issues with roots");
             baseACDPage.turnOnSwitcher();
@@ -95,16 +97,18 @@ public class ApdScenarioSummaryViewTest extends BaseTestCase {
             apdScenarioSummaryViewPage.setValueOfIssueIdSearch();
 
             if (!apdScenarioSummaryViewPage.isDataInIssuesTable()) {
-                apdScenarioSummaryViewPage.clearMultiComboBox("creation_type");
-                apdScenarioSummaryViewPage.clearMultiSearch("id");
-                baseACDPage.clearTimePeriod("create_time");
+                clearIssueTableFilters();
                 log.error("Table doesn't have data for provided filters");
                 Assert.fail();
             }
             DelayUtils.sleep();
-            apdScenarioSummaryViewPage.clearMultiComboBox("creation_type");
-            apdScenarioSummaryViewPage.clearMultiSearch("id");
-            baseACDPage.clearTimePeriod("create_time");
+            clearIssueTableFilters();
         }
+    }
+
+    private void clearIssueTableFilters() {
+        apdScenarioSummaryViewPage.clearMultiComboBox("creation_type");
+        apdScenarioSummaryViewPage.clearMultiSearch("id");
+        baseACDPage.clearTimePeriod("create_time");
     }
 }
