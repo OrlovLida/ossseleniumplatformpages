@@ -11,7 +11,6 @@ import com.oss.framework.components.contextactions.OldActionsContainer;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.mainheader.ToolbarWidget;
-import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.iaa.widgets.list.ListApp;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.CommonList;
@@ -21,6 +20,8 @@ import com.oss.pages.servicedesk.BaseSDPage;
 import com.oss.pages.servicedesk.ticket.tabs.AttachmentsTab;
 import com.oss.pages.servicedesk.ticket.tabs.ExternalTab;
 import com.oss.pages.servicedesk.ticket.tabs.MessagesTab;
+import com.oss.pages.servicedesk.ticket.tabs.ParticipantsTab;
+import com.oss.pages.servicedesk.ticket.tabs.RelatedTicketsTab;
 import com.oss.pages.servicedesk.ticket.tabs.RootCausesTab;
 import com.oss.pages.servicedesk.ticket.wizard.SDWizardPage;
 
@@ -50,25 +51,16 @@ public class IssueDetailsPage extends BaseSDPage {
     private static final String REMOVE_REMAINDER_LABEL = "Remove Reminder";
     private static final String MORE_DETAILS_LABEL = "More details";
     private static final String SAME_MO_TT_TABLE_ID = "_sameMOTTTableWidget";
-    private static final String LINK_TICKETS_ID = "LINK_TICKETS";
-    private static final String UNLINK_TICKET_ID = "UNLINK_TICKET";
-    private static final String CONFIRM_UNLINK_TICKET_BUTTON_LABEL = "Unlink";
-    private static final String SHOW_ARCHIVED_SWITCHER_ID = "_relatedTicketsSwitcherApp";
-    private static final String ADD_PARTICIPANT_ID = "_createParticipant";
-    private static final String PARTICIPANTS_TABLE_ID = "_participantsTableApp";
-    private static final String PARTICIPANTS_TABLE_FIRST_NAME_ATTRIBUTE_ID = "First Name";
-    private static final String PARTICIPANTS_TABLE_SURNAME_ATTRIBUTE_ID = "Surname";
-    private static final String PARTICIPANTS_TABLE_ROLE_ATTRIBUTE_ID = "Role";
     private static final String CREATE_PROBLEM_ID = "_createProblem";
     private static final String RELATED_PROBLEMS_TABLE_ID = "_relatedProblemsApp";
     private static final String RELATED_PROBLEMS_TABLE_NAME_ATTRIBUTE_ID = "Name";
     private static final String RELATED_PROBLEMS_TABLE_ASSIGNEE_ATTRIBUTE_ID = "Assignee";
     private static final String RELATED_PROBLEMS_TABLE_LABEL_ATTRIBUTE_ID = "Label";
-    private static final String RELATED_TICKETS_TABLE_ID = "_relatedTicketsTableWidget";
-    private static final String RELATED_TICKETS_TABLE_ID_ATTRIBUTE_ID = "ID";
     private static final String ATTACHMENTS_TAB_ARIA_CONTROLS = "attachmentManager";
     private static final String MESSAGES_TAB_ARIA_CONTROLS = "_messagesTab";
     private static final String ROOT_CAUSES_TAB_ARIA_CONTROLS = "_rootCausesTab";
+    private static final String RELATED_TICKETS_TAB_ARIA_CONTROLS = "_relatedTicketsTab";
+    private static final String PARTICIPANTS_TAB_ARIA_CONTROLS = "_participantsTabApp";
 
     public IssueDetailsPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -138,6 +130,20 @@ public class IssueDetailsPage extends BaseSDPage {
         log.info("Selecting Root Cause Tab");
 
         return new RootCausesTab(driver, wait);
+    }
+
+    public RelatedTicketsTab selectRelatedTicketsTab() {
+        selectTab(RELATED_TICKETS_TAB_ARIA_CONTROLS);
+        log.info("Selecting Related Tickets Tab");
+
+        return new RelatedTicketsTab(driver, wait);
+    }
+
+    public ParticipantsTab selectParticipantsTab() {
+        selectTab(PARTICIPANTS_TAB_ARIA_CONTROLS);
+        log.info("Selecting Participants Tab");
+
+        return new ParticipantsTab(driver, wait);
     }
 
     @Step("Skipping all actions on checklist")
@@ -245,47 +251,6 @@ public class IssueDetailsPage extends BaseSDPage {
         return !OldTable.createById(driver, wait, SAME_MO_TT_TABLE_ID).hasNoData();
     }
 
-    @Step("I open link ticket wizard")
-    public SDWizardPage openLinkTicketWizard() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        clickContextActionFromButtonContainer(LINK_TICKETS_ID);
-        log.info("Link Tickets Wizard is opened");
-        return new SDWizardPage(driver, wait);
-    }
-
-    @Step("I open add participant wizard")
-    public SDWizardPage openAddParticipantWizard() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        clickContextActionFromButtonContainer(ADD_PARTICIPANT_ID);
-        log.info("Add Participant Wizard is opened");
-        return new SDWizardPage(driver, wait);
-    }
-
-    @Step("I check participant first name")
-    public String checkParticipantFirstName(int participantIndex) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        log.info("Check participant first name");
-        return checkParticipantData(participantIndex, PARTICIPANTS_TABLE_FIRST_NAME_ATTRIBUTE_ID);
-    }
-
-    @Step("I check participant surname")
-    public String checkParticipantSurname(int participantIndex) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        log.info("Check participant surname");
-        return checkParticipantData(participantIndex, PARTICIPANTS_TABLE_SURNAME_ATTRIBUTE_ID);
-    }
-
-    @Step("I check participant role")
-    public String checkParticipantRole(int participantIndex) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        log.info("Check participant role");
-        return checkParticipantData(participantIndex, PARTICIPANTS_TABLE_ROLE_ATTRIBUTE_ID);
-    }
-
-    private String checkParticipantData(int participantIndex, String attributeId) {
-        return checkOldTableData(PARTICIPANTS_TABLE_ID, participantIndex, attributeId);
-    }
-
     @Step("I open Create Problem wizard")
     public SDWizardPage openCreateProblemWizard() {
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -319,49 +284,7 @@ public class IssueDetailsPage extends BaseSDPage {
         return checkOldTableData(RELATED_PROBLEMS_TABLE_ID, problemIndex, attributeId);
     }
 
-    @Step("I check related tickets ID")
-    public String checkRelatedTicketsId(int ticketIndex) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        log.info("Check related tickets ID");
-        return checkRelatedTicketsData(ticketIndex, RELATED_TICKETS_TABLE_ID_ATTRIBUTE_ID);
-    }
-
-    private String checkRelatedTicketsData(int ticketIndex, String attributeId) {
-        return checkOldTableData(RELATED_TICKETS_TABLE_ID, ticketIndex, attributeId);
-    }
-
     private String checkOldTableData(String tableId, int index, String attributeId) {
         return OldTable.createById(driver, wait, tableId).getCellValue(index, attributeId);
-    }
-
-    public void selectTicketInRelatedTicketsTab(int index) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        OldTable.createById(driver, wait, RELATED_TICKETS_TABLE_ID).selectRow(index);
-    }
-
-    public void unlinkTicketFromRelatedTicketsTab() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        clickContextActionFromButtonContainer(UNLINK_TICKET_ID);
-        log.info("Unlink Ticket popup is opened");
-    }
-
-    public void confirmUnlinkingTicketFromRelatedTicketsTab() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        ConfirmationBox.create(driver, wait).clickButtonByLabel(CONFIRM_UNLINK_TICKET_BUTTON_LABEL);
-        DelayUtils.waitForPageToLoad(driver, wait);
-    }
-
-    @Step("I check Related Tickets table")
-    public boolean checkIfRelatedTicketsTableIsEmpty() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        log.info("Check if Related Tickets Table is empty");
-        return OldTable.createById(driver, wait, RELATED_TICKETS_TABLE_ID).hasNoData();
-    }
-
-    public void turnOnShowArchived() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        log.info("Turn On Show archived switcher");
-        ComponentFactory.create(SHOW_ARCHIVED_SWITCHER_ID, Input.ComponentType.SWITCHER, driver, wait).setSingleStringValue("true");
-        DelayUtils.waitForPageToLoad(driver, wait);
     }
 }
