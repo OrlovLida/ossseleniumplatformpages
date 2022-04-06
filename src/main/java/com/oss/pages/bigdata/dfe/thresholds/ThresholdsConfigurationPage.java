@@ -12,6 +12,7 @@ import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
 
 import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
+import static com.oss.framework.components.inputs.Input.ComponentType.MULTI_SEARCH_FIELD;
 import static com.oss.framework.components.inputs.Input.ComponentType.SEARCH_FIELD;
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_AREA;
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
@@ -32,6 +33,7 @@ public class ThresholdsConfigurationPage extends BasePage {
     private static final String ELSE_SEVERITY_COMBOBOX_ID = "elseConditionSeverityId";
     private static final String FORMULA_AREA_ID = "simpleConditionFormulaId";
     private static final String PROBLEM_NAME_FIELD_ID = "conditionGroupProblemId";
+    private static final String CATEGORIES_NAME_FIELD_ID = "conditionGroupCategoriesId";
 
     private final Wizard configurationWizard;
 
@@ -103,6 +105,12 @@ public class ThresholdsConfigurationPage extends BasePage {
         sleep();
         configurationWizard.clickButtonById("dimensionButtonAddId");
         log.debug("Clicking add new filter button");
+    }
+
+    public void fillCategories(String categories) {
+        waitForPageToLoad(driver, wait);
+        configurationWizard.setComponentValue(CATEGORIES_NAME_FIELD_ID, categories, MULTI_SEARCH_FIELD);
+        log.debug("Filling categories with: {}", categories);
     }
 
     @Step("I fill Threshold Configuration Step")
