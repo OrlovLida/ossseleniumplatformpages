@@ -13,9 +13,12 @@ import com.oss.pages.servicedesk.ticket.BaseDashboardPage;
 import com.oss.pages.servicedesk.ticket.IssueDetailsPage;
 import com.oss.pages.servicedesk.ticket.tabs.AttachmentsTab;
 import com.oss.pages.servicedesk.ticket.tabs.ExternalTab;
+import com.oss.pages.servicedesk.ticket.tabs.ParticipantsTab;
+import com.oss.pages.servicedesk.ticket.tabs.RelatedTicketsTab;
 import com.oss.pages.servicedesk.ticket.tabs.RootCausesTab;
 import com.oss.pages.servicedesk.ticket.wizard.AttachmentWizardPage;
 import com.oss.pages.servicedesk.ticket.wizard.ExternalPromptPage;
+import com.oss.pages.servicedesk.ticket.wizard.ParticipantsPromptPage;
 import com.oss.pages.servicedesk.ticket.wizard.SDWizardPage;
 
 import io.qameta.allure.Description;
@@ -32,6 +35,9 @@ public class ProblemsVFNZTest extends BaseTestCase {
     private ExternalTab externalTab;
     private ExternalPromptPage externalPromptPage;
     private RootCausesTab rootCausesTab;
+    private RelatedTicketsTab relatedTicketsTab;
+    private ParticipantsTab participantsTab;
+    private ParticipantsPromptPage participantsPromptPage;
     private String problemId;
     private static final String PROBLEMS_DASHBOARD = "_ProblemManagement";
     private static final String PROBLEM_ISSUE_TYPE = "problem";
@@ -48,6 +54,9 @@ public class ProblemsVFNZTest extends BaseTestCase {
     private static final String PROBLEM_EXTERNAL = "Selenium External Problem";
     private static final String PROBLEM_EXTERNAL_EDITED = "Selenium External Problem_EDITED";
     private static final String EXTERNAL_LIST_ID = "_PMDetailsExternalsListApp";
+    private static final String PARTICIPANT_FIRST_NAME = "SeleniumTest";
+    private static final String PARTICIPANT_SURNAME = LocalDateTime.now().toString();
+    private static final String PARTICIPANT_ROLE = "Contact";
 
     @BeforeMethod
     public void goToProblemDashboardPage() {
@@ -193,6 +202,62 @@ public class ProblemsVFNZTest extends BaseTestCase {
         sdWizardPage.clickAcceptButtonInWizard();
 
         Assert.assertTrue(rootCausesTab.checkIfMOIdentifierIsPresentOnRootCauses(SecondMOIdentifier));
+    }
+
+    @Parameters({"RelatedTicketID"})
+    @Test(priority = 11, testName = "Check Related Tickets Tab - link Ticket", description = "Check Related Tickets Tab - link Ticket")
+    @Description("Check Related Tickets Tab - link Ticket")
+    public void linkTicketToTicket(
+            @Optional("100") String RelatedTicketID
+    ) {
+        issueDetailsPage = baseDashboardPage.openIssueDetailsView(problemId, BASIC_URL, PROBLEM_ISSUE_TYPE);
+        relatedTicketsTab = issueDetailsPage.selectRelatedTicketsTab();
+        sdWizardPage = relatedTicketsTab.openLinkTicketWizard();
+        sdWizardPage.insertValueToMultiSearchComponent(RelatedTicketID, "issueIdsToLink");
+        sdWizardPage.clickLinkTicket();
+
+        Assert.assertEquals(relatedTicketsTab.checkRelatedTicketsId(0), RelatedTicketID);
+    }
+
+    @Test(priority = 12, testName = "Check Related Tickets Tab - unlink Ticket", description = "Check Related Tickets Tab - unlink Ticket")
+    @Description("Check Related Tickets Tab - unlink Ticket")
+    public void unlinkTicketFromTicket() {
+        issueDetailsPage = baseDashboardPage.openIssueDetailsView(problemId, BASIC_URL, PROBLEM_ISSUE_TYPE);
+        relatedTicketsTab = issueDetailsPage.selectRelatedTicketsTab();
+        relatedTicketsTab.selectTicket(0);
+        relatedTicketsTab.unlinkTicket();
+        relatedTicketsTab.confirmUnlinking();
+
+        Assert.assertTrue(relatedTicketsTab.isRelatedTicketsTableEmpty());
+    }
+
+    @Parameters({"RelatedTicketID"})
+    @Test(priority = 13, testName = "Check Related Tickets Tab - show archived switcher", description = "Check Related Tickets Tab - show archived switcher")
+    @Description("Check Related Tickets Tab - show archived switcher")
+    public void showArchived(
+            @Optional("100") String RelatedTicketID
+    ) {
+        issueDetailsPage = baseDashboardPage.openIssueDetailsView(problemId, BASIC_URL, PROBLEM_ISSUE_TYPE);
+        relatedTicketsTab = issueDetailsPage.selectRelatedTicketsTab();
+        relatedTicketsTab.turnOnShowArchived();
+
+        Assert.assertEquals(relatedTicketsTab.checkRelatedTicketsId(0), RelatedTicketID);
+    }
+
+    @Test(priority = 14, testName = "Check Participants", description = "Check Participants Tab - add Participant")
+    @Description("Check Participants Tab - add Participant")
+    public void addParticipant() {
+        issueDetailsPage = baseDashboardPage.openIssueDetailsView(problemId, BASIC_URL, PROBLEM_ISSUE_TYPE);
+        participantsTab = issueDetailsPage.selectParticipantsTab();
+        participantsPromptPage = participantsTab.clickAddParticipant();
+        participantsPromptPage.setParticipantName(PARTICIPANT_FIRST_NAME);
+        participantsPromptPage.setParticipantSurname(PARTICIPANT_SURNAME);
+        participantsPromptPage.setPartcicipantRole(PARTICIPANT_ROLE);
+        participantsPromptPage.clickAddParticipant();
+
+        Assert.assertEquals(participantsTab.checkParticipantFirstName(0), PARTICIPANT_FIRST_NAME);
+        Assert.assertEquals(participantsTab.checkParticipantSurname(0), PARTICIPANT_SURNAME);
+        Assert.assertEquals(participantsTab.checkParticipantRole(0), PARTICIPANT_ROLE.toUpperCase());
     }
 
 }
