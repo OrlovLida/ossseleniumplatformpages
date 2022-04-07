@@ -5,6 +5,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.oss.framework.components.data.Data;
 import com.oss.framework.components.tree.TreeComponent;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
@@ -107,9 +108,11 @@ public class ThresholdsConfigurationPage extends BasePage {
         log.debug("Clicking add new filter button");
     }
 
+    @Step("Fill Category field")
     public void fillCategories(String categories) {
         waitForPageToLoad(driver, wait);
-        configurationWizard.setComponentValue(CATEGORIES_NAME_FIELD_ID, categories, MULTI_SEARCH_FIELD);
+        configurationWizard.getComponent(CATEGORIES_NAME_FIELD_ID, MULTI_SEARCH_FIELD)
+                .setValueContains(Data.createSingleData(categories));
         log.debug("Filling categories with: {}", categories);
     }
 
