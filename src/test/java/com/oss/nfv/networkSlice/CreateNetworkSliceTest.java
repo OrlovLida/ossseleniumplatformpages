@@ -6,13 +6,23 @@
  */
 package com.oss.nfv.networkSlice;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
+
 import com.comarch.oss.logical.function.api.dto.LogicalFunctionViewDTO;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
-import com.oss.framework.components.contextactions.ActionsContainer;
-import com.oss.framework.navigation.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.nfv.common.ResourceSpecificationsViewService;
+import com.oss.nfv.common.SideMenuService;
+import com.oss.nfv.common.WebDriversData;
 import com.oss.pages.nfv.networkslice.NetworkSliceWizardFirstStep;
 import com.oss.pages.nfv.networkslice.NetworkSliceWizardPage;
 import com.oss.pages.nfv.networkslice.NetworkSliceWizardSecondStep;
@@ -23,16 +33,7 @@ import com.oss.services.nfv.networkslice.NetworkSliceApiClient;
 import com.oss.untils.Environment;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Listeners;
-import org.testng.annotations.Test;
-import org.testng.asserts.SoftAssert;
 
-import java.util.List;
-import java.util.Optional;
-
-import static com.oss.nfv.networkSlice.CreateNetworkSliceConstants.CREATE_LOGICAL_FUNCTION_ACTION_LABEL;
 import static com.oss.nfv.networkSlice.CreateNetworkSliceConstants.MCC_VALUE;
 import static com.oss.nfv.networkSlice.CreateNetworkSliceConstants.MNC_VALUE;
 import static com.oss.nfv.networkSlice.CreateNetworkSliceConstants.NETWORK_SLICE_DESCRIPTION;
@@ -42,11 +43,8 @@ import static com.oss.nfv.networkSlice.CreateNetworkSliceConstants.NETWORK_SLICE
 import static com.oss.nfv.networkSlice.CreateNetworkSliceConstants.OPERATIONAL_STATE_VALUE;
 import static com.oss.nfv.networkSlice.CreateNetworkSliceConstants.PLMN_INFO_DEFAULT_LABEL_PATH;
 import static com.oss.nfv.networkSlice.CreateNetworkSliceConstants.PROFILE_SERVICE_DEFAULT_LABEL_PATH;
-import static com.oss.nfv.networkSlice.CreateNetworkSliceConstants.RESOURCE_CATALOG_PATH;
-import static com.oss.nfv.networkSlice.CreateNetworkSliceConstants.RESOURCE_SPECIFICATIONS_ACTION_LABEL;
 import static com.oss.nfv.networkSlice.CreateNetworkSliceConstants.SD_VALUE;
 import static com.oss.nfv.networkSlice.CreateNetworkSliceConstants.SERVICE_PROFILE_NAME;
-import static com.oss.nfv.networkSlice.CreateNetworkSliceConstants.SPECIFICATION_NAME_ATTRIBUTE_NAME_LABEL;
 import static com.oss.nfv.networkSlice.CreateNetworkSliceConstants.SST_VALUE;
 import static org.testng.Assert.assertEquals;
 
@@ -81,13 +79,13 @@ public class CreateNetworkSliceTest extends BaseTestCase {
     public void openCreateNetworkSliceWizard() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         //given
-        SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
+        SideMenuService.goToResourceSpecificationsView(driver, webDriverWait);
         //when
-        goToResourceSpecificationsView(sideMenu);
-        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver, webDriverWait);
-        searchForNetworkSliceSpecification(resourceSpecificationsViewPage);
-        selectNetworkSliceSpecificationInTree(resourceSpecificationsViewPage);
-        openNetworkSliceWizardForNetworkSliceCreation(resourceSpecificationsViewPage);
+        ResourceSpecificationsViewService.openCreateLogicalFunctionWizard(
+                NETWORK_SLICE_SPECIFICATION_IDENTIFIER,
+                NETWORK_SLICE_SPECIFICATION_NAME,
+                WebDriversData.create(driver, webDriverWait)
+        );
     }
 
     @Test(priority = 2, description = "Edit NetworkSlice in wizard")
@@ -127,22 +125,6 @@ public class CreateNetworkSliceTest extends BaseTestCase {
         wizard.clickAccept();
         //then
         assertThatThereIsOneSuccessfulMessage();
-    }
-
-    private void goToResourceSpecificationsView(SideMenu sideMenu) {
-        sideMenu.callActionByLabel(RESOURCE_SPECIFICATIONS_ACTION_LABEL, RESOURCE_CATALOG_PATH, RESOURCE_CATALOG_PATH);
-    }
-
-    private void searchForNetworkSliceSpecification(ResourceSpecificationsViewPage resourceSpecificationsViewPage) {
-        resourceSpecificationsViewPage.setSearchText(NETWORK_SLICE_SPECIFICATION_IDENTIFIER);
-    }
-
-    private void openNetworkSliceWizardForNetworkSliceCreation(ResourceSpecificationsViewPage resourceSpecificationsViewPage) {
-        resourceSpecificationsViewPage.callActionByLabel(ActionsContainer.CREATE_GROUP_ID, CREATE_LOGICAL_FUNCTION_ACTION_LABEL);
-    }
-
-    private void selectNetworkSliceSpecificationInTree(ResourceSpecificationsViewPage resourceSpecificationsViewPage) {
-        resourceSpecificationsViewPage.selectTreeNode(NETWORK_SLICE_SPECIFICATION_NAME, SPECIFICATION_NAME_ATTRIBUTE_NAME_LABEL);
     }
 
     private void fillNetworkSliceParams(NetworkSliceWizardFirstStep firstStep) {

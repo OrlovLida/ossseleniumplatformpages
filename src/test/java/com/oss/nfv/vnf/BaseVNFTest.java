@@ -57,7 +57,7 @@ public abstract class BaseVNFTest extends BaseTestCase {
 
     private void deleteVNFSpecifications() {
         Optional<ResourceSpecificationDTO> vnfRootSpec = TMFCatalogClient.getInstance(env).getResourceSpecification(VNF_ROOT_IDENTIFIER);
-        vnfRootSpec.map(ResourceSpecificationDTO::getXId).ifPresent(VNFSpecificationClient.getInstance(env)::deleteVnfSpecificationById);
+        vnfRootSpec.flatMap(ResourceSpecificationDTO::getXId).ifPresent(VNFSpecificationClient.getInstance(env)::deleteVnfSpecificationById);
     }
 
 }

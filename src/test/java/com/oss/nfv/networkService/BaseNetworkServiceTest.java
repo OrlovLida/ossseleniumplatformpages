@@ -70,7 +70,7 @@ public abstract class BaseNetworkServiceTest extends BaseTestCase {
 
     private void deleteVNFSpecifications() {
         TMFCatalogClient.getInstance(env).getResourceSpecification(VNF_IDENTIFIER)
-                .map(ResourceSpecificationDTO::getXId)
+                .flatMap(ResourceSpecificationDTO::getXId)
                 .ifPresent(VNFSpecificationClient.getInstance(env)::deleteVnfSpecificationById);
     }
 
