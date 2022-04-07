@@ -1,20 +1,13 @@
 package com.oss.pages.bigdata.kqiview;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.attributechooser.ListAttributesChooser;
-import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.layout.Card;
@@ -25,18 +18,15 @@ import com.oss.framework.components.table.TableComponent;
 import com.oss.framework.iaa.widgets.dpe.contextaction.ContextActionPanel;
 import com.oss.framework.iaa.widgets.dpe.kpichartwidget.KpiChartWidget;
 import com.oss.framework.iaa.widgets.dpe.toolbarpanel.ExportPanel.ExportType;
-import com.oss.framework.iaa.widgets.dpe.toolbarpanel.FiltersPanel;
 import com.oss.framework.iaa.widgets.dpe.toolbarpanel.KpiToolbarPanel;
 import com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType;
 import com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsPanel;
-import com.oss.framework.iaa.widgets.dpe.treewidget.KpiTreeWidget;
 import com.oss.pages.BasePage;
 import com.oss.pages.bookmarkmanager.bookmarkmanagerwizards.BookmarkWizardPage;
+import com.oss.untils.FileDownload;
 
-import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
 
-import static com.oss.configuration.Configuration.CONFIGURATION;
 import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsPanel.MiscellaneousOption.DATA_COMPLETENESS;
 import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsPanel.MiscellaneousOption.LAST_SAMPLE_TIME;
 import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsPanel.MiscellaneousOption.SHOW_TIME_ZONE;
@@ -62,7 +52,6 @@ public class KpiViewPage extends BasePage {
     private static final String CHART_ACTIONS_LINKS_ID = "external-links-button";
     private static final String LINK_TO_XDR_LABEL = "Open xDR for t:SMOKE#ETLforKqis. Time condition limited to last 1 hour(s) from chosen period.";
     private static final String LINK_TO_INDICATORS_VIEW_CHART_LABEL = "Indicators View - Chart";
-    private static final String DIMENSION_OPTIONS_BUTTON_ID = "dimension-options-button";
     private static final String CHILD_OBJECT_LEVEL_INPUT_ID = "SelectChildMOLevelChanged";
     private static final String IND_VIEW_TABLE_ID = "ind-view-table";
     private static final String TOP_N_BARCHART_DFE_ID = "amchart-series-DFE_y-selected";
@@ -102,52 +91,6 @@ public class KpiViewPage extends BasePage {
         return INDICATORS_VIEW_URL;
     }
 
-    private void selectTreeNodes(List<String> nodesToExpand, List<String> nodesToSelect, String componentId) {
-        waitForPageToLoad(driver, wait);
-        KpiTreeWidget indicatorsTree = KpiTreeWidget.create(driver, wait, componentId);
-        indicatorsTree.selectNodes(nodesToExpand, nodesToSelect);
-        log.debug("Expanded nodes: {}", nodesToExpand);
-        log.debug("Selecting: {}", nodesToSelect);
-    }
-
-    private void selectUnfoldedTreeNodes(List<String> nodesToSelect, String componentId) {
-        waitForPageToLoad(driver, wait);
-        KpiTreeWidget.create(driver, wait, componentId).selectExpandedObjects(nodesToSelect);
-        log.debug("Selecting: {}", nodesToSelect);
-    }
-
-    @Step("I set filters: {enabledFilters}")
-    public void setFilters(List<String> enabledFilters) {
-        waitForPageToLoad(driver, wait);
-        getFiltersPanel().clearFilters();
-        getFiltersPanel().turnOnFilters(enabledFilters);
-        getFiltersPanel().clickConfirm();
-
-        log.info("Selected filters: {}", enabledFilters);
-    }
-
-    private FiltersPanel getFiltersPanel() {
-        return kpiToolbarPanel.openFilterPanel();
-    }
-
-    @Step("I select indicator")
-    public void selectIndicator(List<String> nodesToExpand, List<String> nodesToSelect) {
-        log.info("Select indicator nodes: " + nodesToSelect);
-        selectTreeNodes(nodesToExpand, nodesToSelect, INDICATORS_TREE_ID);
-    }
-
-    @Step("I select dimension")
-    public void selectDimension(List<String> nodesToExpand, List<String> nodesToSelect) {
-        log.info("Select dimension nodes: " + nodesToSelect);
-        selectTreeNodes(nodesToExpand, nodesToSelect, DIMENSIONS_TREE_ID);
-    }
-
-    @Step("I select unfolded dimension")
-    public void selectUnfoldedDimension(List<String> nodesToSelect) {
-        log.info("Select dimension nodes: " + nodesToSelect);
-        selectUnfoldedTreeNodes(nodesToSelect, DIMENSIONS_TREE_ID);
-    }
-
     @Step("I apply changes")
     public void applyChanges() {
         log.info("Apply changes");
@@ -181,23 +124,7 @@ public class KpiViewPage extends BasePage {
 
     @Step("Attach exported chart to report")
     public void attachExportedChartToReport() {
-        if (ifDownloadDirExists()) {
-            File directory = new File(CONFIGURATION.getDownloadDir());
-            List<File> listFiles = (List<File>) FileUtils.listFiles(directory, new WildcardFileFilter("kpi_view_export_*.*"), null);
-            try {
-                for (File file : listFiles) {
-                    log.info("Attaching file: {}", file.getCanonicalPath());
-                    attachFile(file);
-                }
-            } catch (IOException e) {
-                log.error("Failed attaching files: {}", e.getMessage());
-            }
-        }
-    }
-
-    @Attachment(value = "Exported chart")
-    public byte[] attachFile(File file) throws IOException {
-        return FileUtils.readFileToByteArray(file);
+        FileDownload.attachDownloadedFileToReport("kpi_view_export_*.*");
     }
 
     @Step("I change layout")
@@ -233,15 +160,6 @@ public class KpiViewPage extends BasePage {
     @Step("I maximize Dimensions Panel")
     public void maximizeDimensionsPanel() {
         Card.createCard(driver, wait, DIMENSIONS_TREE_ID).maximizeCard();
-    }
-
-    private boolean ifDownloadDirExists() {
-        File tmpDir = new File(CONFIGURATION.getDownloadDir());
-        if (tmpDir.exists()) {
-            log.info("Download directory was successfully created");
-            return true;
-        }
-        return false;
     }
 
     @Step("I should see {expectedLinesCount} lines displayed")
@@ -510,51 +428,10 @@ public class KpiViewPage extends BasePage {
         return kpiToolbarPanel.openLayoutPanel().chartLayoutButtonStatus(layout);
     }
 
-    @Step("I search for Object in tree search toolbar")
-    public void searchInToolbarPanel(String objectName, String treeId) {
-        waitForPageToLoad(driver, wait);
-        KpiTreeWidget kpiTreeWidget = KpiTreeWidget.create(driver, wait, treeId);
-        kpiTreeWidget.searchInToolbarPanel(objectName);
-        waitForPageToLoad(driver, wait);
-        kpiTreeWidget.selectFirstSearchResult();
-        kpiTreeWidget.closeSearchToolbar();
-    }
-
-    @Step("I setup Indicators View")
-    public void kpiViewSetup(String indicatorNodesToExpand, String indicatorNodesToSelect,
-                             String dimensionNodesToExpand, String dimensionNodesToSelect, String filterName) {
-        setFilters(Collections.singletonList(filterName));
-
-        List<String> indicatorNodesToExpandList = Arrays.asList(indicatorNodesToExpand.split(","));
-        List<String> indicatorNodesToSelectList = Arrays.asList(indicatorNodesToSelect.split(","));
-        selectIndicator(indicatorNodesToExpandList, indicatorNodesToSelectList);
-        List<String> dimensionNodesToSelectList = Arrays.asList(dimensionNodesToSelect.split(","));
-
-        if (dimensionNodesToExpand != null) {
-            List<String> dimensionNodesToExpandList = Arrays.asList(dimensionNodesToExpand.split(","));
-            selectDimension(dimensionNodesToExpandList, dimensionNodesToSelectList);
-        } else {
-            selectUnfoldedDimension(dimensionNodesToSelectList);
-        }
-
-        selectAggregationMethod(OptionsPanel.AggregationMethodOption.SUM);
-        unselectEveryAggMethodOtherThan(OptionsPanel.AggregationMethodOption.SUM);
-        closeOptionsPanel();
-
-        applyChanges();
-        seeChartIsDisplayed();
-    }
-
     @Step("Click Save bookmark")
     public BookmarkWizardPage clickSaveBookmark() {
         ButtonPanel.create(driver, wait).clickButton(SAVE_BOOKMARK_BUTTON_ID);
         return new BookmarkWizardPage(driver, wait);
-    }
-
-    @Step("Check if node is selected in the tree")
-    public boolean isNodeInTreeSelected(String objectName, String treeId) {
-        log.info("Checking if node: {} is selected in the tree", objectName);
-        return KpiTreeWidget.create(driver, wait, treeId).isNodeSelected(objectName);
     }
 
     public String activeAggMethod() {
@@ -601,17 +478,6 @@ public class KpiViewPage extends BasePage {
     public void fillLevelOfChildObjects(String level) {
         ComponentFactory.create(CHILD_OBJECT_LEVEL_INPUT_ID, Input.ComponentType.TEXT_FIELD, driver, wait)
                 .setSingleStringValue(level);
-    }
-
-    @Step("I click on dimension node options button")
-    public void clickDimensionOptions(String dimensionNodeName) {
-        if (dimensionNodeName != null) {
-            KpiTreeWidget.create(driver, wait, DIMENSIONS_TREE_ID).clickNodeOptions(dimensionNodeName);
-            log.info("I Click on options button in: {}", dimensionNodeName);
-        } else {
-            Button.createById(driver, DIMENSION_OPTIONS_BUTTON_ID).click();
-            log.info("I click on option button in first dimension node");
-        }
     }
 
     @Step("I select display type from toolbar panel")

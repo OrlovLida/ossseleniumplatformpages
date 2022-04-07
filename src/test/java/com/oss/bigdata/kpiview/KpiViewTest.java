@@ -12,6 +12,7 @@ import org.testng.annotations.Test;
 import com.oss.BaseTestCase;
 import com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel;
 import com.oss.pages.bigdata.kqiview.KpiViewPage;
+import com.oss.pages.bigdata.kqiview.KpiViewSetupPage;
 import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
@@ -24,6 +25,7 @@ public class KpiViewTest extends BaseTestCase {
 
     private static final Logger log = LoggerFactory.getLogger(KpiViewTest.class);
     private KpiViewPage kpiViewPage;
+    private KpiViewSetupPage kpiViewSetup;
 
     private static final String INDICATORS_TREE_ID = "_Indicators";
     private static final String DIMENSIONS_TREE_ID = "_Dimensions";
@@ -34,6 +36,7 @@ public class KpiViewTest extends BaseTestCase {
             @Optional("INDICATORS_VIEW") KpiViewPage.KpiViewType kpiViewType
     ) {
         kpiViewPage = KpiViewPage.goToPage(driver, BASIC_URL, kpiViewType);
+        kpiViewSetup = new KpiViewSetupPage(driver, webDriverWait);
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
@@ -47,7 +50,7 @@ public class KpiViewTest extends BaseTestCase {
             @Optional("Selenium Tests") String filterName
     ){
         try{
-            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+            kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
             kpiViewPage.exportChart();
             kpiViewPage.attachExportedChartToReport();
             attachConsoleLogs(driver);
@@ -68,7 +71,7 @@ public class KpiViewTest extends BaseTestCase {
             @Optional("Selenium Tests") String filterName
     ){
         try {
-            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+            kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
             kpiViewPage.changeLayout(LayoutPanel.LayoutType.LAYOUT_2x2);
             saveScreenshotPNG(driver);
 
@@ -95,13 +98,13 @@ public class KpiViewTest extends BaseTestCase {
             @Optional("DFE Tests") String filterName
     ) {
         try {
-            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+            kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
             Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
 
             kpiViewPage.clickLinkToChart();
             Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
-            Assert.assertTrue(kpiViewPage.isNodeInTreeSelected(indicatorNodesToSelect, INDICATORS_TREE_ID));
-            Assert.assertTrue(kpiViewPage.isNodeInTreeSelected(dimensionNodesToSelect, DIMENSIONS_TREE_ID));
+            Assert.assertTrue(kpiViewSetup.isNodeInTreeSelected(indicatorNodesToSelect, INDICATORS_TREE_ID));
+            Assert.assertTrue(kpiViewSetup.isNodeInTreeSelected(dimensionNodesToSelect, DIMENSIONS_TREE_ID));
         } catch (Exception e) {
             log.error(e.getMessage());
             Assert.fail();
@@ -119,7 +122,7 @@ public class KpiViewTest extends BaseTestCase {
             @Optional("DFE Tests") String filterName
     ) {
         try {
-            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+            kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
             Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
 
             kpiViewPage.setTopNDimension("t:SMOKE#DimHierSelenium");
