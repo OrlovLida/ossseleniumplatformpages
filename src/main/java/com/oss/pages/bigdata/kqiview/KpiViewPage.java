@@ -67,6 +67,8 @@ public class KpiViewPage extends BasePage {
     private static final String IND_VIEW_TABLE_ID = "ind-view-table";
     private static final String TOP_N_BARCHART_DFE_ID = "amchart-series-DFE_y-selected";
     private static final String TOP_N_BARCHART_DPE_ID = "amchart-series-DPE_y-selected";
+    private static final String INDICATORS_VIEW_URL = "Assurance/KPIView";
+    private static final String STANDALONE_INDICATORS_VIEW_URL = "indicators-view/indicators-view";
 
     private final KpiToolbarPanel kpiToolbarPanel;
 
@@ -76,15 +78,28 @@ public class KpiViewPage extends BasePage {
     }
 
     @Step("I Open KPI View")
-    public static KpiViewPage goToPage(WebDriver driver, String basicURL) {
+    public static KpiViewPage goToPage(WebDriver driver, String basicURL, KpiViewType kpiViewType) {
         WebDriverWait wait = new WebDriverWait(driver, 90);
 
-        String pageUrl = String.format("%s/#/view/Assurance/KPIView", basicURL);
+        String pageUrl = String.format("%s/#/view/%s", basicURL, chooseKpiView(kpiViewType));
         driver.get(pageUrl);
         waitForPageToLoad(driver, wait);
         log.info("Opened page: {}", pageUrl);
 
         return new KpiViewPage(driver, wait);
+    }
+
+    public enum KpiViewType {
+        INDICATORS_VIEW, STANDALONE_INDICATORS_VIEW
+    }
+
+    private static String chooseKpiView(KpiViewType kpiType) {
+        if (kpiType == null) {
+            return INDICATORS_VIEW_URL;
+        } else if (kpiType == KpiViewType.STANDALONE_INDICATORS_VIEW) {
+            return STANDALONE_INDICATORS_VIEW_URL;
+        }
+        return INDICATORS_VIEW_URL;
     }
 
     private void selectTreeNodes(List<String> nodesToExpand, List<String> nodesToSelect, String componentId) {

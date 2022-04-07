@@ -1,9 +1,5 @@
 package com.oss.bigdata.dfe.SMOKE;
 
-import com.oss.BaseTestCase;
-import com.oss.pages.bigdata.dfe.XDRBrowserPage;
-import com.oss.pages.bigdata.kqiview.KpiViewPage;
-import io.qameta.allure.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -11,6 +7,12 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
+
+import com.oss.BaseTestCase;
+import com.oss.pages.bigdata.dfe.XDRBrowserPage;
+import com.oss.pages.bigdata.kqiview.KpiViewPage;
+
+import io.qameta.allure.Description;
 
 public class LinkToXDRBrowserTest extends BaseTestCase {
 
@@ -21,9 +23,12 @@ public class LinkToXDRBrowserTest extends BaseTestCase {
 
     private KpiViewPage kpiViewPage;
 
+    @Parameters({"kpiViewType"})
     @BeforeClass
-    public void goKpiViewPage() {
-        kpiViewPage = KpiViewPage.goToPage(driver, BASIC_URL);
+    public void goToKpiView(
+            @Optional("INDICATORS_VIEW") KpiViewPage.KpiViewType kpiViewType
+    ) {
+        kpiViewPage = KpiViewPage.goToPage(driver, BASIC_URL, kpiViewType);
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToSelect", "dimensionNodesToExpand", "filterName"})
