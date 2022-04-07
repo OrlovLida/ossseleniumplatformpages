@@ -14,7 +14,7 @@ import org.testng.annotations.Listeners;
 import java.io.IOException;
 import java.util.Optional;
 
-import static com.oss.nfv.onboardNetworkService.OnboardNetworkServiceConstants.NFVO_NAME;
+import static com.oss.nfv.onboardNetworkService.OnboardNetworkServiceConstants.ERICSSON_NFVO_NAME;
 
 @Listeners({TestListener.class})
 public class BaseOnboardNetworkServiceTest extends BaseTestCase {
@@ -30,7 +30,7 @@ public class BaseOnboardNetworkServiceTest extends BaseTestCase {
     }
 
     public void createRequiredLogicalFunctions(){
-        createLogicalFunction(OnboardNetworkServiceResource.buildNFVOLogicalFunctionBulkDTO());
+        createLogicalFunction(OnboardNetworkServiceDTOBuilder.buildNFVOLogicalFunctionBulkDTO());
     }
 
     private LogicalFunctionSyncIdentificationDTO createLogicalFunction(LogicalFunctionBulkDTO logicalFunctionBulkDTO) {
@@ -46,7 +46,7 @@ public class BaseOnboardNetworkServiceTest extends BaseTestCase {
     }
 
     private void deleteLogicalFunctions() {
-        deleteLogicalFunctionsByName(NFVO_NAME);
+        deleteLogicalFunctionsByName(ERICSSON_NFVO_NAME);
     }
 
     private void deleteLogicalFunctionsByName(String masterOSSName) {

@@ -6,13 +6,23 @@
  */
 package com.oss.nfv.networkSliceSubnet;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
+
 import com.comarch.oss.logical.function.api.dto.LogicalFunctionViewDTO;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
-import com.oss.framework.components.contextactions.ActionsContainer;
-import com.oss.framework.navigation.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.nfv.common.ResourceSpecificationsViewService;
+import com.oss.nfv.common.SideMenuService;
+import com.oss.nfv.common.WebDriversData;
 import com.oss.pages.nfv.networkslicesubnet.NetworkSliceSubnetWizardFirstStep;
 import com.oss.pages.nfv.networkslicesubnet.NetworkSliceSubnetWizardPage;
 import com.oss.pages.nfv.networkslicesubnet.NetworkSliceSubnetWizardSecondStep;
@@ -23,16 +33,7 @@ import com.oss.services.nfv.networkslice.NetworkSliceApiClient;
 import com.oss.untils.Environment;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Listeners;
-import org.testng.annotations.Test;
-import org.testng.asserts.SoftAssert;
 
-import java.util.List;
-import java.util.Optional;
-
-import static com.oss.nfv.networkSliceSubnet.CreateNetworkSliceSubnetConstants.CREATE_LOGICAL_FUNCTION_ACTION_LABEL;
 import static com.oss.nfv.networkSliceSubnet.CreateNetworkSliceSubnetConstants.MCC_VALUE;
 import static com.oss.nfv.networkSliceSubnet.CreateNetworkSliceSubnetConstants.MNC_VALUE;
 import static com.oss.nfv.networkSliceSubnet.CreateNetworkSliceSubnetConstants.NETWORK_SLICE_SUBNET_DESCRIPTION;
@@ -40,12 +41,9 @@ import static com.oss.nfv.networkSliceSubnet.CreateNetworkSliceSubnetConstants.N
 import static com.oss.nfv.networkSliceSubnet.CreateNetworkSliceSubnetConstants.NETWORK_SLICE_SUBNET_SPECIFICATION_IDENTIFIER;
 import static com.oss.nfv.networkSliceSubnet.CreateNetworkSliceSubnetConstants.OPERATIONAL_STATE_VALUE;
 import static com.oss.nfv.networkSliceSubnet.CreateNetworkSliceSubnetConstants.PLMN_INFO_DEFAULT_LABEL_PATH;
-import static com.oss.nfv.networkSliceSubnet.CreateNetworkSliceSubnetConstants.SLICE_PROFILE_DEFAULT_LABEL_PATH;
-import static com.oss.nfv.networkSliceSubnet.CreateNetworkSliceSubnetConstants.RESOURCE_CATALOG_PATH;
-import static com.oss.nfv.networkSliceSubnet.CreateNetworkSliceSubnetConstants.RESOURCE_SPECIFICATIONS_ACTION_LABEL;
 import static com.oss.nfv.networkSliceSubnet.CreateNetworkSliceSubnetConstants.SD_VALUE;
+import static com.oss.nfv.networkSliceSubnet.CreateNetworkSliceSubnetConstants.SLICE_PROFILE_DEFAULT_LABEL_PATH;
 import static com.oss.nfv.networkSliceSubnet.CreateNetworkSliceSubnetConstants.SLICE_PROFILE_NAME;
-import static com.oss.nfv.networkSliceSubnet.CreateNetworkSliceSubnetConstants.SPECIFICATION_NAME_ATTRIBUTE_NAME_LABEL;
 import static com.oss.nfv.networkSliceSubnet.CreateNetworkSliceSubnetConstants.SST_VALUE;
 import static org.testng.Assert.assertEquals;
 
@@ -80,13 +78,13 @@ public class CreateNetworkSliceSubnetTest extends BaseTestCase {
     public void openCreateNetworkSliceSubnetWizard() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         //given
-        SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
+        SideMenuService.goToResourceSpecificationsView(driver, webDriverWait);
         //when
-        goToResourceSpecificationsView(sideMenu);
-        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver, webDriverWait);
-        searchForNetworkSliceSubnetSpecification(resourceSpecificationsViewPage);
-        selectNetworkSliceSubnetSpecificationInTree(resourceSpecificationsViewPage);
-        openNetworkSliceSubnetWizardForNetworkSliceSubnetCreation(resourceSpecificationsViewPage);
+        ResourceSpecificationsViewService.openCreateLogicalFunctionWizard(
+                NETWORK_SLICE_SUBNET_SPECIFICATION_IDENTIFIER,
+                NETWORK_SLICE_SUBNET_SPECIFICATION_IDENTIFIER,
+                WebDriversData.create(driver, webDriverWait)
+        );
     }
 
     @Test(priority = 2, description = "Edit NetworkSliceSubnet in wizard")
@@ -128,22 +126,6 @@ public class CreateNetworkSliceSubnetTest extends BaseTestCase {
         wizard.clickAccept();
         //then
         assertThatThereIsOneSuccessfulMessage();
-    }
-
-    private void goToResourceSpecificationsView(SideMenu sideMenu) {
-        sideMenu.callActionByLabel(RESOURCE_SPECIFICATIONS_ACTION_LABEL, RESOURCE_CATALOG_PATH, RESOURCE_CATALOG_PATH);
-    }
-
-    private void searchForNetworkSliceSubnetSpecification(ResourceSpecificationsViewPage resourceSpecificationsViewPage) {
-        resourceSpecificationsViewPage.setSearchText(NETWORK_SLICE_SUBNET_SPECIFICATION_IDENTIFIER);
-    }
-
-    private void openNetworkSliceSubnetWizardForNetworkSliceSubnetCreation(ResourceSpecificationsViewPage resourceSpecificationsViewPage) {
-        resourceSpecificationsViewPage.callActionByLabel(ActionsContainer.CREATE_GROUP_ID, CREATE_LOGICAL_FUNCTION_ACTION_LABEL);
-    }
-
-    private void selectNetworkSliceSubnetSpecificationInTree(ResourceSpecificationsViewPage resourceSpecificationsViewPage) {
-        resourceSpecificationsViewPage.selectTreeNode(NETWORK_SLICE_SUBNET_SPECIFICATION_IDENTIFIER, SPECIFICATION_NAME_ATTRIBUTE_NAME_LABEL);
     }
 
     private void fillNetworkSliceSubnetParams(NetworkSliceSubnetWizardFirstStep firstStep) {

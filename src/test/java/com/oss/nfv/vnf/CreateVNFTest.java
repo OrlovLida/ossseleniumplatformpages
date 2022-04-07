@@ -2,32 +2,27 @@ package com.oss.nfv.vnf;
 
 import java.util.List;
 
-import com.oss.framework.components.contextactions.ActionsContainer;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
-import com.oss.framework.navigation.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.nfv.common.ResourceSpecificationsViewService;
+import com.oss.nfv.common.SideMenuService;
+import com.oss.nfv.common.WebDriversData;
 import com.oss.pages.nfv.vnf.VNFWizardFirstStep;
 import com.oss.pages.nfv.vnf.VNFWizardFourthStep;
 import com.oss.pages.nfv.vnf.VNFWizardPage;
 import com.oss.pages.nfv.vnf.VNFWizardSecondStep;
 import com.oss.pages.nfv.vnf.VNFWizardStep;
 import com.oss.pages.nfv.vnf.VNFWizardThirdStep;
-import com.oss.pages.resourcecatalog.ResourceSpecificationsViewPage;
 import com.oss.utils.TestListener;
-
 import io.qameta.allure.Description;
 
-import static com.oss.nfv.vnf.CreateVNFTestConstants.CREATE_LOGICAL_FUNCTION_ACTION_LABEL;
 import static com.oss.nfv.vnf.CreateVNFTestConstants.NEW_VNF_NAME;
-import static com.oss.nfv.vnf.CreateVNFTestConstants.RESOURCE_CATALOG_PATH;
-import static com.oss.nfv.vnf.CreateVNFTestConstants.RESOURCE_SPECIFICATIONS_ACTION_LABEL;
 import static com.oss.nfv.vnf.CreateVNFTestConstants.ROOT_NODE_PATH;
-import static com.oss.nfv.vnf.CreateVNFTestConstants.SPECIFICATION_NAME_ATTRIBUTE_NAME_LABEL;
 import static com.oss.nfv.vnf.CreateVNFTestConstants.VNF_INSTANTIATION_LEVEL_0_IDENTIFIER;
 import static com.oss.nfv.vnf.CreateVNFTestConstants.VNF_INSTANTIATION_LEVEL_0_NAME;
 import static org.testng.Assert.assertEquals;
@@ -41,13 +36,13 @@ public class CreateVNFTest extends BaseVNFTest {
     public void openCreateVNFWizard() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         //given
-        SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
+        SideMenuService.goToResourceSpecificationsView(driver, webDriverWait);
         //when
-        goToResourceSpecificationsView(sideMenu);
-        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver, webDriverWait);
-        searchForVNFSpecification(resourceSpecificationsViewPage);
-        selectVNFSpecificationInTree(resourceSpecificationsViewPage);
-        openVNFWizardForVNFCreation(resourceSpecificationsViewPage);
+        ResourceSpecificationsViewService.openCreateLogicalFunctionWizard(
+                VNF_INSTANTIATION_LEVEL_0_IDENTIFIER,
+                VNF_INSTANTIATION_LEVEL_0_NAME,
+                WebDriversData.create(driver, webDriverWait)
+        );
         //then
         assertThatVNFWizardIsOpenAndStructureTreeIsVisible();
     }
@@ -138,21 +133,4 @@ public class CreateVNFTest extends BaseVNFTest {
     private void assertThatVNFWizardIsOpenAndStructureTreeIsVisible() {
         assertTrue(VNFWizardPage.create(driver, webDriverWait).getFirstStep().isStructureTreeVisible());
     }
-
-    private void openVNFWizardForVNFCreation(ResourceSpecificationsViewPage resourceSpecificationsViewPage) {
-        resourceSpecificationsViewPage.callActionByLabel(ActionsContainer.CREATE_GROUP_ID, CREATE_LOGICAL_FUNCTION_ACTION_LABEL);
-    }
-
-    private void selectVNFSpecificationInTree(ResourceSpecificationsViewPage resourceSpecificationsViewPage) {
-        resourceSpecificationsViewPage.selectTreeNode(VNF_INSTANTIATION_LEVEL_0_NAME, SPECIFICATION_NAME_ATTRIBUTE_NAME_LABEL);
-    }
-
-    private void searchForVNFSpecification(ResourceSpecificationsViewPage resourceSpecificationsViewPage) {
-        resourceSpecificationsViewPage.setSearchText(VNF_INSTANTIATION_LEVEL_0_IDENTIFIER);
-    }
-
-    private void goToResourceSpecificationsView(SideMenu sideMenu) {
-        sideMenu.callActionByLabel(RESOURCE_SPECIFICATIONS_ACTION_LABEL, new String[]{RESOURCE_CATALOG_PATH, RESOURCE_CATALOG_PATH});
-    }
-
 }

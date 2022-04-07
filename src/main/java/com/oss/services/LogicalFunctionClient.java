@@ -1,5 +1,7 @@
 package com.oss.services;
 
+import java.util.List;
+
 import javax.ws.rs.core.Response;
 
 import com.comarch.oss.logical.function.api.dto.LogicalFunctionBulkIdentificationsDTO;
@@ -10,8 +12,6 @@ import com.google.common.collect.Lists;
 import com.jayway.restassured.http.ContentType;
 import com.oss.untils.Constants;
 import com.oss.untils.Environment;
-
-import java.util.List;
 
 public class LogicalFunctionClient {
 
@@ -40,7 +40,7 @@ public class LogicalFunctionClient {
                 .when()
                 .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
                 .post(BULK_V2)
-                .then()
+                .then().log().status().log().body()
                 .statusCode(Response.Status.OK.getStatusCode())
                 .extract()
                 .as(LogicalFunctionBulkIdentificationsDTO.class);
@@ -53,7 +53,7 @@ public class LogicalFunctionClient {
                 .when()
                 .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
                 .delete("/" + id)
-                .then().log().body()
+                .then().log().status().log().body()
                 .statusCode(Response.Status.NO_CONTENT.getStatusCode());
     }
 
@@ -62,7 +62,7 @@ public class LogicalFunctionClient {
                 .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
                 .queryParam(Constants.IDS, identifier)
                 .get(SPECIFICATION)
-                .then()
+                .then().log().status().log().body()
                 .statusCode(Response.Status.OK.getStatusCode())
                 .extract()
                 .as(LogicalFunctionIdentificationsDTO.class);
@@ -73,7 +73,7 @@ public class LogicalFunctionClient {
                 .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
                 .queryParam(Constants.NAME_PARAM.toLowerCase(), name)
                 .get(NAME)
-                .then()
+                .then().log().status().log().body()
                 .statusCode(Response.Status.OK.getStatusCode())
                 .extract()
                 .as(LogicalFunctionViewDTO[].class));

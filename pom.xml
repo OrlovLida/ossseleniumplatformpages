@@ -163,9 +163,9 @@
             <version>6.9.9.Final</version>
         </dependency>
         <dependency>
-            <groupId>com.comarch.oss.resourcecatalog</groupId>
+            <groupId>com.comarch.oss.rso.resource.catalog</groupId>
             <artifactId>tmf-catalog-api</artifactId>
-            <version>4.0.8.Final</version>
+            <version>7.5.7</version>
         </dependency>
         <dependency>
             <groupId>com.comarch.oss.transport.tp</groupId>

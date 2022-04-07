@@ -11,10 +11,6 @@ package com.oss.nfv.networkSlice;
  */
 public class CreateNetworkSliceConstants {
 
-    public static final String RESOURCE_SPECIFICATIONS_ACTION_LABEL = "Resource Specifications";
-    public static final String CREATE_LOGICAL_FUNCTION_ACTION_LABEL = "Create Logical Function";
-    public static final String RESOURCE_CATALOG_PATH = "Resource Catalog";
-    public static final String SPECIFICATION_NAME_ATTRIBUTE_NAME_LABEL = "Specification Name";
     public static final String NETWORK_SLICE_SPECIFICATION_IDENTIFIER = "NetworkSlice";
     public static final String NETWORK_SLICE_SPECIFICATION_NAME = "Network Slice";
 

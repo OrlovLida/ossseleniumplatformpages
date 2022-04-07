@@ -11,12 +11,7 @@ package com.oss.nfv.networkSliceSubnet;
  */
 public class CreateNetworkSliceSubnetConstants {
 
-    public static final String RESOURCE_SPECIFICATIONS_ACTION_LABEL = "Resource Specifications";
-    public static final String CREATE_LOGICAL_FUNCTION_ACTION_LABEL = "Create Logical Function";
-    public static final String RESOURCE_CATALOG_PATH = "Resource Catalog";
-    public static final String SPECIFICATION_NAME_ATTRIBUTE_NAME_LABEL = "Specification Name";
     public static final String NETWORK_SLICE_SUBNET_SPECIFICATION_IDENTIFIER = "RANSliceSubnet";
-
     public static final String NETWORK_SLICE_SUBNET_NAME = "NETWORK-SLICE-SUBNET-CREATE-SELENIUM-TEST";
     public static final String NETWORK_SLICE_SUBNET_DESCRIPTION = "NETWORK-SLICE-SUBNET-CREATE-DESCRIPTION";
     public static final String OPERATIONAL_STATE_VALUE = "ENABLED";
