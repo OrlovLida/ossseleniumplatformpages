@@ -19,9 +19,12 @@ import com.oss.pages.servicedesk.ticket.TicketSearchPage;
 import com.oss.pages.servicedesk.ticket.tabs.AttachmentsTab;
 import com.oss.pages.servicedesk.ticket.tabs.ExternalTab;
 import com.oss.pages.servicedesk.ticket.tabs.MessagesTab;
+import com.oss.pages.servicedesk.ticket.tabs.ParticipantsTab;
+import com.oss.pages.servicedesk.ticket.tabs.RelatedTicketsTab;
 import com.oss.pages.servicedesk.ticket.tabs.RootCausesTab;
 import com.oss.pages.servicedesk.ticket.wizard.AttachmentWizardPage;
 import com.oss.pages.servicedesk.ticket.wizard.ExternalPromptPage;
+import com.oss.pages.servicedesk.ticket.wizard.ParticipantsPromptPage;
 import com.oss.pages.servicedesk.ticket.wizard.SDWizardPage;
 import com.oss.utils.TestListener;
 
@@ -47,6 +50,9 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     private ExternalTab externalTab;
     private ExternalPromptPage externalPromptPage;
     private RootCausesTab rootCausesTab;
+    private RelatedTicketsTab relatedTicketsTab;
+    private ParticipantsTab participantsTab;
+    private ParticipantsPromptPage participantsPromptPage;
     private String ticketID;
 
     private static final String TROUBLE_TICKET_ISSUE_TYPE = "trouble-ticket";
@@ -90,8 +96,6 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     private static final String DESCRIPTION_TAB_ARIA_CONTROLS = "_descriptionTab";
     private static final String MOST_IMPORTANT_INFO_TAB_ARIA_CONTROLS = "_mostImportantTab";
     private static final String SAME_MO_TT_TAB_ARIA_CONTROLS = "_sameMOTTTab";
-    private static final String RELATED_TICKETS_TAB_ARIA_CONTROLS = "_relatedTicketsTab";
-    private static final String PARTICIPANTS_TAB_ARIA_CONTROLS = "_participantsTabApp";
     private static final String RELATED_PROBLEMS_TAB_ARIA_CONTROLS = "_relatedProblems";
     private static final String EXTERNAL_LIST_ID = "_detailsExternalsListApp";
     private static final String ADD_TO_LIBRARY_LABEL = "Add to Library";
@@ -110,13 +114,6 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
 
     private static final String REMAINDER_NOTE = "Selenium Description Note";
     private static final String EDITED_REMAINDER_NOTE = "Edited Remainder Text";
-
-    private static final String LINK_TICKETS_BUTTON_ID = "_buttonsApp-1";
-
-    private static final String PARTICIPANT_WIZARD_FIRST_NAME_ID = "firstName";
-    private static final String PARTICIPANT_WIZARD_SURNAME_ID = "surname";
-    private static final String PARTICIPANT_WIZARD_ROLE_ID = "role";
-    private static final String PARTICIPANT_WIZARD_ADD_PARTICIPANT_ID = "_searchParticipant_buttons-2";
     private static final String PARTICIPANT_FIRST_NAME = "SeleniumTest";
     private static final String PARTICIPANT_SURNAME = LocalDateTime.now().toString();
     private static final String PARTICIPANT_ROLE = "Contact";
@@ -369,24 +366,24 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     @Description("Check Related Tickets Tab - link Ticket")
     public void linkTicketToTicket(@Optional("100") String RelatedTicketID) {
         issueDetailsPage = baseDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
-        issueDetailsPage.selectTab(RELATED_TICKETS_TAB_ARIA_CONTROLS);
-        sdWizardPage = issueDetailsPage.openLinkTicketWizard();
+        relatedTicketsTab = issueDetailsPage.selectRelatedTicketsTab();
+        sdWizardPage = relatedTicketsTab.openLinkTicketWizard();
         sdWizardPage.insertValueToMultiSearchComponent(RelatedTicketID, "issueIdsToLink");
-        sdWizardPage.clickButton(LINK_TICKETS_BUTTON_ID);
+        sdWizardPage.clickLinkTicket();
 
-        Assert.assertEquals(issueDetailsPage.checkRelatedTicketsId(0), RelatedTicketID);
+        Assert.assertEquals(relatedTicketsTab.checkRelatedTicketsId(0), RelatedTicketID);
     }
 
     @Test(priority = 17, testName = "Check Related Tickets Tab - unlink Ticket", description = "Check Related Tickets Tab - unlink Ticket")
     @Description("Check Related Tickets Tab - unlink Ticket")
     public void unlinkTicketFromTicket() {
         issueDetailsPage = baseDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
-        issueDetailsPage.selectTab(RELATED_TICKETS_TAB_ARIA_CONTROLS);
-        issueDetailsPage.selectTicketInRelatedTicketsTab(0);
-        issueDetailsPage.unlinkTicketFromRelatedTicketsTab();
-        issueDetailsPage.confirmUnlinkingTicketFromRelatedTicketsTab();
+        relatedTicketsTab = issueDetailsPage.selectRelatedTicketsTab();
+        relatedTicketsTab.selectTicket(0);
+        relatedTicketsTab.unlinkTicket();
+        relatedTicketsTab.confirmUnlinking();
 
-        Assert.assertTrue(issueDetailsPage.checkIfRelatedTicketsTableIsEmpty());
+        Assert.assertTrue(relatedTicketsTab.isRelatedTicketsTableEmpty());
     }
 
     @Parameters({"RelatedTicketID"})
@@ -394,10 +391,10 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     @Description("Check Related Tickets Tab - show archived switcher")
     public void showArchived(@Optional("100") String RelatedTicketID) {
         issueDetailsPage = baseDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
-        issueDetailsPage.selectTab(RELATED_TICKETS_TAB_ARIA_CONTROLS);
-        issueDetailsPage.turnOnShowArchived();
+        relatedTicketsTab = issueDetailsPage.selectRelatedTicketsTab();
+        relatedTicketsTab.turnOnShowArchived();
 
-        Assert.assertEquals(issueDetailsPage.checkRelatedTicketsId(0), RelatedTicketID);
+        Assert.assertEquals(relatedTicketsTab.checkRelatedTicketsId(0), RelatedTicketID);
     }
 
     @Test(priority = 19, testName = "Check Same MO TT Tab", description = "Check Same MO TT Tab")
@@ -438,16 +435,16 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     @Description("Check Participants Tab - add Participant")
     public void addParticipant() {
         issueDetailsPage = baseDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
-        issueDetailsPage.selectTab(PARTICIPANTS_TAB_ARIA_CONTROLS);
-        sdWizardPage = issueDetailsPage.openAddParticipantWizard();
-        sdWizardPage.insertValueToTextComponent(PARTICIPANT_FIRST_NAME, PARTICIPANT_WIZARD_FIRST_NAME_ID);
-        sdWizardPage.insertValueToTextComponent(PARTICIPANT_SURNAME, PARTICIPANT_WIZARD_SURNAME_ID);
-        sdWizardPage.insertValueToComboBoxComponent(PARTICIPANT_ROLE, PARTICIPANT_WIZARD_ROLE_ID);
-        sdWizardPage.clickButton(PARTICIPANT_WIZARD_ADD_PARTICIPANT_ID);
+        participantsTab = issueDetailsPage.selectParticipantsTab();
+        participantsPromptPage = participantsTab.clickAddParticipant();
+        participantsPromptPage.setParticipantName(PARTICIPANT_FIRST_NAME);
+        participantsPromptPage.setParticipantSurname(PARTICIPANT_SURNAME);
+        participantsPromptPage.setPartcicipantRole(PARTICIPANT_ROLE);
+        participantsPromptPage.clickAddParticipant();
 
-        Assert.assertEquals(issueDetailsPage.checkParticipantFirstName(0), PARTICIPANT_FIRST_NAME);
-        Assert.assertEquals(issueDetailsPage.checkParticipantSurname(0), PARTICIPANT_SURNAME);
-        Assert.assertEquals(issueDetailsPage.checkParticipantRole(0), PARTICIPANT_ROLE.toUpperCase());
+        Assert.assertEquals(participantsTab.checkParticipantFirstName(0), PARTICIPANT_FIRST_NAME);
+        Assert.assertEquals(participantsTab.checkParticipantSurname(0), PARTICIPANT_SURNAME);
+        Assert.assertEquals(participantsTab.checkParticipantRole(0), PARTICIPANT_ROLE.toUpperCase());
     }
 
     @Test(priority = 23, testName = "Check Related Problems tab", description = "Check Related Problems tab - Create Problem")

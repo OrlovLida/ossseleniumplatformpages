@@ -1,13 +1,15 @@
 package com.oss.bigdata.dfe.SMOKE;
 
-import com.oss.BaseTestCase;
-import com.oss.pages.bigdata.dfe.ThresholdPage;
-import io.qameta.allure.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
+import com.oss.BaseTestCase;
+import com.oss.pages.bigdata.dfe.ThresholdPage;
+
+import io.qameta.allure.Description;
 
 public class ThresholdSmokeTest extends BaseTestCase {
 
@@ -29,7 +31,7 @@ public class ThresholdSmokeTest extends BaseTestCase {
             thresholdPage.selectExecutionHistoryTab();
             thresholdPage.clickRefreshInTabTable();
 
-            boolean ifRunsFresh = thresholdPage.IsIfRunsFresh();
+            boolean ifRunsFresh = thresholdPage.isIfRunsFresh();
             Assert.assertTrue(ifRunsFresh);
 
             String actualStatus = thresholdPage.checkStatus();

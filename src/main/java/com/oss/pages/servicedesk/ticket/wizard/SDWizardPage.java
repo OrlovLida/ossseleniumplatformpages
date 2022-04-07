@@ -27,6 +27,7 @@ public class SDWizardPage extends BaseSDPage {
     private static final String CREATE_EXTERNAL_LABEL = "Create External";
     private static final String EXPECTED_RESOLUTION_DATE_ID = "TT_WIZARD_INPUT_EXPECTED_RESOLUTION_DATE_LABEL";
     private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss";
+    private static final String LINK_TICKETS_BUTTON_ID = "_buttonsApp-1";
 
     private final MOStep moStep;
 
@@ -127,6 +128,11 @@ public class SDWizardPage extends BaseSDPage {
         DelayUtils.waitForPageToLoad(driver, wait);
         setValueInHtmlEditor(message, EMAIL_MESSAGE_ID);
         log.info("Incident description: {} is entered", message);
+    }
+
+    @Step("Click Link Ticket Button")
+    public void clickLinkTicket() {
+        clickButton(LINK_TICKETS_BUTTON_ID);
     }
 
     public void clickComboBox(String componentId) {

@@ -17,11 +17,6 @@ import io.qameta.allure.Description;
 public class ThresholdViewTest extends BaseTestCase {
 
     private static final Logger log = LoggerFactory.getLogger(ThresholdViewTest.class);
-
-    private ThresholdPage thresholdPage;
-    private String thresholdName;
-    private String updatedThresholdName;
-
     private static final String NOTIFICATION_STATUS = "Yes";
     private static final String AGGREGATION_PERIOD = "Five Minutes";
     private static final String DEBUG_MODE = "No";
@@ -35,6 +30,10 @@ public class ThresholdViewTest extends BaseTestCase {
     private static final String GROUPING_FLAG = "Yes";
     private static final String FILTERING_TYPE = "NONE";
     private static final String MO_ID_PATTERN = "$[d1.d1]";
+    private static final String CATEGORIES_TYPE = "selenium";
+    private ThresholdPage thresholdPage;
+    private String thresholdName;
+    private String updatedThresholdName;
 
     @BeforeClass
     public void goToThresholdsView() {
@@ -78,6 +77,7 @@ public class ThresholdViewTest extends BaseTestCase {
             WebDriverWait wait = new WebDriverWait(driver, 45);
             ThresholdStepWizardPage thresholdsStepWizardPage = new ThresholdStepWizardPage(driver, wait);
             thresholdsStepWizardPage.getThresholdsConfigurationStep().fillName(updatedThresholdName);
+            thresholdsStepWizardPage.getThresholdsConfigurationStep().fillCategories(CATEGORIES_TYPE);
             thresholdsStepWizardPage.clickNext();
             thresholdsStepWizardPage.clickAccept();
 
@@ -86,13 +86,21 @@ public class ThresholdViewTest extends BaseTestCase {
                 log.info("Cannot find existing edited threshold {}", updatedThresholdName);
             }
             Assert.assertTrue(thresholdIsEdited);
+            Assert.assertEquals(thresholdPage.getCategoryName(0), CATEGORIES_TYPE);
         } else {
             log.error("Cannot find existing threshold {}", thresholdName);
             Assert.fail("Cannot find existing threshold " + thresholdName);
         }
     }
 
-    @Test(priority = 3, testName = "Delete Threshold", description = "Delete Threshold")
+    @Test(priority = 3, testName = "Check Categories", description = "Check Categories")
+    @Description("Check Categories")
+    public void checkCategories() {
+        thresholdPage.searchCategories(CATEGORIES_TYPE);
+        Assert.assertEquals(thresholdPage.getCategoryName(0), CATEGORIES_TYPE);
+    }
+
+    @Test(priority = 4, testName = "Delete Threshold", description = "Delete Threshold")
     @Description("Delete Threshold")
     public void deleteThreshold() {
         boolean thresholdExists = thresholdPage.thresholdExistsIntoTable(updatedThresholdName);
