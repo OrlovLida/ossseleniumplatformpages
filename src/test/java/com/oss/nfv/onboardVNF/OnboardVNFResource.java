@@ -16,6 +16,7 @@ import org.assertj.core.util.Lists;
 
 import java.util.List;
 
+import static com.oss.nfv.common.SeleniumTestsConstants.LOGICAL_FUNCTION_INVENTORY_TYPE;
 import static com.oss.nfv.onboardVNF.OnboardVNFConstants.MARKETPLACE_NAME;
 import static com.oss.nfv.onboardVNF.OnboardVNFConstants.NFVO_NAME;
 import static com.oss.nfv.onboardVNF.OnboardVNFConstants.VIM_NAME;
@@ -44,6 +45,8 @@ public class OnboardVNFResource {
                 .name(VNFPKG_SPECIFICATION_IDENTIFIER)
                 .type(ResourceSpecificationCreationDTO.TypeEnum.R)
                 .baseType(VNFPKG)
+                .instanceType(VNFPKG)
+                .inventoryType(LOGICAL_FUNCTION_INVENTORY_TYPE)
                 .build();
     }
 
