@@ -28,9 +28,12 @@ public class KpiViewTest extends BaseTestCase {
     private static final String INDICATORS_TREE_ID = "_Indicators";
     private static final String DIMENSIONS_TREE_ID = "_Dimensions";
 
+    @Parameters({"kpiViewType"})
     @BeforeMethod
-    public void goToKpiView() {
-        kpiViewPage = KpiViewPage.goToPage(driver, BASIC_URL);
+    public void goToKpiView(
+            @Optional("INDICATORS_VIEW") KpiViewPage.KpiViewType kpiViewType
+    ) {
+        kpiViewPage = KpiViewPage.goToPage(driver, BASIC_URL, kpiViewType);
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})

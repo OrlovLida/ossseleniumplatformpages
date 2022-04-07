@@ -52,9 +52,12 @@ public class IndicatorsViewTest extends BaseTestCase {
 
     private KpiViewPage kpiViewPage;
 
+    @Parameters({"kpiViewType"})
     @BeforeMethod
-    public void goToKpiView() {
-        kpiViewPage = KpiViewPage.goToPage(driver, BASIC_URL);
+    public void goToKpiView(
+            @Optional("INDICATORS_VIEW") KpiViewPage.KpiViewType kpiViewType
+    ) {
+        kpiViewPage = KpiViewPage.goToPage(driver, BASIC_URL, kpiViewType);
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
