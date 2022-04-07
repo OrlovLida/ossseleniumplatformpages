@@ -15,6 +15,7 @@ import org.testng.annotations.Test;
 import com.oss.BaseTestCase;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bigdata.kqiview.KpiViewPage;
+import com.oss.pages.bigdata.kqiview.KpiViewSetupPage;
 import com.oss.pages.bigdata.utils.ConstantsDfe;
 import com.oss.pages.bookmarkmanager.BookmarkManagerPage;
 import com.oss.pages.bookmarkmanager.bookmarkmanagerwizards.BookmarkWizardPage;
@@ -35,6 +36,7 @@ public class BookmarkTest extends BaseTestCase {
 
     private BookmarkManagerPage bookmarkManagerPage;
     private KpiViewPage kpiViewPage;
+    private KpiViewSetupPage kpiViewSetup;
     private BookmarkWizardPage bookmarkWizardPage;
 
     @BeforeClass
@@ -69,7 +71,7 @@ public class BookmarkTest extends BaseTestCase {
     ) {
         try {
             kpiViewPage = KpiViewPage.goToPage(driver, BASIC_URL, kpiViewType);
-            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+            kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
             kpiViewPage.applyChanges();
             bookmarkForProduct = BOOKMARK_NAME + productName;
 
@@ -102,7 +104,7 @@ public class BookmarkTest extends BaseTestCase {
         if (bookmarkExist) {
             bookmarkManagerPage.expandBookmarkList(CATEGORY_NAME);
             bookmarkManagerPage.openBookmark(bookmarkForProduct);
-            kpiViewPage.selectUnfoldedDimension(new ArrayList<>(Collections.singletonList(anotherDimensionToSelect)));
+            kpiViewSetup.selectUnfoldedDimension(new ArrayList<>(Collections.singletonList(anotherDimensionToSelect)));
             kpiViewPage.applyChanges();
             String editedBookmarkTitle = bookmarkForProduct + EDITED;
 

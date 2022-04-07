@@ -13,6 +13,7 @@ import org.testng.annotations.Test;
 import com.oss.BaseTestCase;
 import com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsPanel;
 import com.oss.pages.bigdata.kqiview.KpiViewPage;
+import com.oss.pages.bigdata.kqiview.KpiViewSetupPage;
 import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
@@ -37,9 +38,6 @@ public class IndicatorsViewTest extends BaseTestCase {
     private static final String HIDDEN_DATA_SERIES_VISIBILITY = "hidden";
     private static final String HIGHLIGHTED_DATA_SERIES_WIDTH = "5px";
     private static final String NORMAL_DATA_SERIES_WIDTH = "2px";
-    private static final String AREA_CHART_FILL_OPACITY = "0.6";
-    private static final String BAR_CHART_FILL_OPACITY = "0.6";
-    private static final String LINE_CHART_FILL_OPACITY = "0";
     private static final String FIRST_CHART_COLOR = "rgb(150, 65, 54)";
     private static final String LAYOUT_EXPECTED_STATUS = "active";
     private static final String INDICATORS_TREE_ID = "_Indicators";
@@ -51,6 +49,7 @@ public class IndicatorsViewTest extends BaseTestCase {
     private static final String MANAGED_OBJECT_COLUMN_DATA_COL_ID = "DPE_DIMENSION_managed_object";
 
     private KpiViewPage kpiViewPage;
+    private KpiViewSetupPage kpiViewSetup;
 
     @Parameters({"kpiViewType"})
     @BeforeMethod
@@ -58,6 +57,7 @@ public class IndicatorsViewTest extends BaseTestCase {
             @Optional("INDICATORS_VIEW") KpiViewPage.KpiViewType kpiViewType
     ) {
         kpiViewPage = KpiViewPage.goToPage(driver, BASIC_URL, kpiViewType);
+        kpiViewSetup = new KpiViewSetupPage(driver, webDriverWait);
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
@@ -71,7 +71,7 @@ public class IndicatorsViewTest extends BaseTestCase {
             @Optional("Data Collection Statistics") String filterName
     ) {
         try {
-            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+            kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
             assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
             kpiViewPage.clickLegend();
             assertTrue(kpiViewPage.shouldSeeDataSeriesLineWidth(HIGHLIGHTED_DATA_SERIES_WIDTH));
@@ -97,7 +97,7 @@ public class IndicatorsViewTest extends BaseTestCase {
             @Optional("Data Collection Statistics") String filterName
     ) {
         try {
-            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+            kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
             assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
             kpiViewPage.clickAreaChartType();
             assertTrue(kpiViewPage.isDataSeriesType("area"));
@@ -124,7 +124,7 @@ public class IndicatorsViewTest extends BaseTestCase {
             @Optional("Data Collection Statistics") String filterName
     ) {
         try {
-            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+            kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
             kpiViewPage.setValueInTimePeriodChooser(1, 2, 3);
             kpiViewPage.applyChanges();
             kpiViewPage.chooseSmartOptionInTimePeriodChooser();
@@ -150,7 +150,7 @@ public class IndicatorsViewTest extends BaseTestCase {
             @Optional("Data Collection Statistics") String filterName
     ) {
         try {
-            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+            kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
             assertTrue(kpiViewPage.shouldSeeVisibleYaxis(2));
 
             kpiViewPage.chooseManualYaxis();
@@ -172,7 +172,7 @@ public class IndicatorsViewTest extends BaseTestCase {
             @Optional("Data Collection Statistics") String filterName
     ) {
         try {
-            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+            kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
             kpiViewPage.enableDataCompleteness();
             kpiViewPage.applyChanges();
             assertTrue(kpiViewPage.shouldSeeDataCompleteness());
@@ -200,7 +200,7 @@ public class IndicatorsViewTest extends BaseTestCase {
             @Optional("Data Collection Statistics") String filterName
     ) {
         try {
-            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+            kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
 
             assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
             kpiViewPage.enableCompareWithOtherPeriod();
@@ -224,10 +224,12 @@ public class IndicatorsViewTest extends BaseTestCase {
             @Optional("Data Collection Statistics") String filterName
     ) {
         try {
-            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+            kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
             assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+
             kpiViewPage.maximizeDataView();
-            kpiViewPage.shouldSeeOnlyDataViewDisplayed();
+            assertTrue(kpiViewPage.shouldSeeOnlyDataViewDisplayed());
+
             kpiViewPage.minimizeDataView();
             kpiViewPage.maximizeIndicatorsPanel();
             kpiViewPage.minimizeIndicatorsPanel();
@@ -250,7 +252,7 @@ public class IndicatorsViewTest extends BaseTestCase {
             @Optional("Data Collection Statistics") String filterName
     ) {
         try {
-            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+            kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
             assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
             kpiViewPage.changeLayout(LAYOUT_1x1);
             assertEquals(kpiViewPage.layoutButtonStatus(LAYOUT_1x1), LAYOUT_EXPECTED_STATUS);
@@ -280,15 +282,15 @@ public class IndicatorsViewTest extends BaseTestCase {
             @Optional("DBTIME") String indicator,
             @Optional("DC Type: PMSTA_DC") String dimension
     ) {
-        kpiViewPage.setFilters(Collections.singletonList(filterName));
-        kpiViewPage.searchInToolbarPanel(indicator, INDICATORS_TREE_ID);
-        kpiViewPage.searchInToolbarPanel(dimension, DIMENSIONS_TREE_ID);
+        kpiViewSetup.setFilters(Collections.singletonList(filterName));
+        kpiViewSetup.searchInToolbarPanel(indicator, INDICATORS_TREE_ID);
+        kpiViewSetup.searchInToolbarPanel(dimension, DIMENSIONS_TREE_ID);
         kpiViewPage.selectAggregationMethod(OptionsPanel.AggregationMethodOption.SUM);
         kpiViewPage.unselectEveryAggMethodOtherThan(OptionsPanel.AggregationMethodOption.SUM);
         kpiViewPage.applyChanges();
 
-        assertTrue(kpiViewPage.isNodeInTreeSelected(indicator, INDICATORS_TREE_ID));
-        assertTrue(kpiViewPage.isNodeInTreeSelected(dimension, DIMENSIONS_TREE_ID));
+        assertTrue(kpiViewSetup.isNodeInTreeSelected(indicator, INDICATORS_TREE_ID));
+        assertTrue(kpiViewSetup.isNodeInTreeSelected(dimension, DIMENSIONS_TREE_ID));
         assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
     }
 
@@ -303,7 +305,7 @@ public class IndicatorsViewTest extends BaseTestCase {
             @Optional("Data Collection Statistics") String filterName
     ) {
         try {
-            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+            kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
 
             assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
             String activeAggMethod = kpiViewPage.activeAggMethod();
@@ -312,8 +314,8 @@ public class IndicatorsViewTest extends BaseTestCase {
             kpiViewPage.clickLinkToChart();
 
             assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
-            assertTrue(kpiViewPage.isNodeInTreeSelected("AQ_TIME 1h " + activeAggMethod, INDICATORS_TREE_ID));
-            assertTrue(kpiViewPage.isNodeInTreeSelected(dimensionNodesToSelect, DIMENSIONS_TREE_ID));
+            assertTrue(kpiViewSetup.isNodeInTreeSelected("AQ_TIME 1h " + activeAggMethod, INDICATORS_TREE_ID));
+            assertTrue(kpiViewSetup.isNodeInTreeSelected(dimensionNodesToSelect, DIMENSIONS_TREE_ID));
         } catch (Exception e) {
             log.error(e.getMessage());
             fail();
@@ -331,7 +333,7 @@ public class IndicatorsViewTest extends BaseTestCase {
             @Optional("Data Collection Statistics") String filterName
     ) {
         try {
-            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+            kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
 
             assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
 
@@ -340,8 +342,8 @@ public class IndicatorsViewTest extends BaseTestCase {
             kpiViewPage.clickCloseShare();
 
             assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
-            assertTrue(kpiViewPage.isNodeInTreeSelected(indicatorNodesToSelect, INDICATORS_TREE_ID));
-            assertTrue(kpiViewPage.isNodeInTreeSelected(dimensionNodesToSelect, DIMENSIONS_TREE_ID));
+            assertTrue(kpiViewSetup.isNodeInTreeSelected(indicatorNodesToSelect, INDICATORS_TREE_ID));
+            assertTrue(kpiViewSetup.isNodeInTreeSelected(dimensionNodesToSelect, DIMENSIONS_TREE_ID));
         } catch (Exception e) {
             log.error(e.getMessage());
             fail();
@@ -360,11 +362,11 @@ public class IndicatorsViewTest extends BaseTestCase {
             @Optional("Managed Objects") String dimensionFolderWithOptions
     ) {
         try {
-            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+            kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
 
             assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
 
-            kpiViewPage.clickDimensionOptions(dimensionFolderWithOptions);
+            kpiViewSetup.clickDimensionOptions(dimensionFolderWithOptions);
             kpiViewPage.fillLevelOfChildObjects("1");
             kpiViewPage.applyChanges();
 
@@ -386,7 +388,7 @@ public class IndicatorsViewTest extends BaseTestCase {
             @Optional("Data Collection Statistics") String filterName
     ) {
         try {
-            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+            kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
             assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
 
             kpiViewPage.setDisplayType("Pie Chart");
@@ -414,7 +416,7 @@ public class IndicatorsViewTest extends BaseTestCase {
             @Optional("Data Collection Statistics") String filterName
     ) {
         try {
-            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+            kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
             assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
 
             kpiViewPage.clickPerformTopN();
@@ -434,14 +436,14 @@ public class IndicatorsViewTest extends BaseTestCase {
     @Test(priority = 15, testName = "Aggregation Method Check", description = "Aggregation Method Check")
     @Description("Aggregation Method Check")
     public void aggregationMethodCheck(
-            @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
+            @Optional("All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators") String indicatorNodesToExpand,
             @Optional("DBTIME,AQ_TIME") String indicatorNodesToSelect,
             @Optional() String dimensionNodesToExpand,
             @Optional("DC Type: THRES_DC") String dimensionNodesToSelect,
             @Optional("Data Collection Statistics") String filterName
     ) {
         try {
-            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+            kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
             assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(2));
 
             kpiViewPage.selectAggregationMethod(OptionsPanel.AggregationMethodOption.MAX);
@@ -471,7 +473,7 @@ public class IndicatorsViewTest extends BaseTestCase {
             @Optional("Data Collection Statistics") String filterName
     ) {
         try {
-            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+            kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
             assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
 
             kpiViewPage.zoomChart();
@@ -496,7 +498,7 @@ public class IndicatorsViewTest extends BaseTestCase {
             @Optional("Data Collection Statistics") String filterName
     ) {
         try {
-            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+            kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
             assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(2));
 
             kpiViewPage.setDisplayType("Table");

@@ -11,6 +11,7 @@ import org.testng.annotations.Test;
 import com.oss.BaseTestCase;
 import com.oss.pages.bigdata.dfe.XDRBrowserPage;
 import com.oss.pages.bigdata.kqiview.KpiViewPage;
+import com.oss.pages.bigdata.kqiview.KpiViewSetupPage;
 
 import io.qameta.allure.Description;
 
@@ -22,6 +23,7 @@ public class LinkToXDRBrowserTest extends BaseTestCase {
     private static final String DIMENSION_IN_XDR_FILTER = "D3_01";
 
     private KpiViewPage kpiViewPage;
+    private KpiViewSetupPage kpiViewSetup;
 
     @Parameters({"kpiViewType"})
     @BeforeClass
@@ -29,6 +31,7 @@ public class LinkToXDRBrowserTest extends BaseTestCase {
             @Optional("INDICATORS_VIEW") KpiViewPage.KpiViewType kpiViewType
     ) {
         kpiViewPage = KpiViewPage.goToPage(driver, BASIC_URL, kpiViewType);
+        kpiViewSetup = new KpiViewSetupPage(driver, webDriverWait);
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToSelect", "dimensionNodesToExpand", "filterName"})
@@ -42,7 +45,7 @@ public class LinkToXDRBrowserTest extends BaseTestCase {
             @Optional("DFE Tests") String filterName
     ) {
         try {
-            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+            kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
 
             Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
 
