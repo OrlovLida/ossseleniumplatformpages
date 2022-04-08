@@ -30,7 +30,7 @@
         <seleniumframework.version>1.0.1-SNAPSHOT</seleniumframework.version>
         <fixedaccess.version>4.9.6</fixedaccess.version>
         <trail-api.version>3.20.0.Final</trail-api.version>
-        <tmf.catalog.version>7.6.0-SNAPSHOT</tmf.catalog.version>
+        <tmf.catalog.version>7.5.10</tmf.catalog.version>
         <log4j2.version>2.8.2</log4j2.version>
     </properties>
 

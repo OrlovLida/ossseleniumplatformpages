@@ -12,11 +12,12 @@ import com.comarch.oss.logical.function.api.dto.ModelIdentificationDTO;
 import com.comarch.oss.logical.function.v2.api.dto.LogicalFunctionBulkDTO;
 import com.comarch.oss.logical.function.v2.api.dto.LogicalFunctionSyncDTO;
 import com.comarch.oss.resourcecatalog.tmf.api.dto.ResourceSpecificationCreationDTO;
+import com.oss.nfv.common.ResourceSpecification;
+
 import org.assertj.core.util.Lists;
 
 import java.util.List;
 
-import static com.oss.nfv.common.SeleniumTestsConstants.LOGICAL_FUNCTION_INVENTORY_TYPE;
 import static com.oss.nfv.onboardVNF.OnboardVNFConstants.MARKETPLACE_NAME;
 import static com.oss.nfv.onboardVNF.OnboardVNFConstants.NFVO_NAME;
 import static com.oss.nfv.onboardVNF.OnboardVNFConstants.VIM_NAME;
@@ -46,7 +47,7 @@ public class OnboardVNFResource {
                 .type(ResourceSpecificationCreationDTO.TypeEnum.R)
                 .baseType(VNFPKG)
                 .instanceType(VNFPKG)
-                .inventoryType(LOGICAL_FUNCTION_INVENTORY_TYPE)
+                .inventoryType(ResourceSpecification.LOGICAL_FUNCTION.getInventoryType())
                 .build();
     }
 
