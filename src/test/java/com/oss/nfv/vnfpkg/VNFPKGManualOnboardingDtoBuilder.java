@@ -10,6 +10,7 @@ import com.comarch.oss.resourcecatalog.tmf.api.dto.ResourceSpecCharacteristicDTO
 import com.comarch.oss.resourcecatalog.tmf.api.dto.ResourceSpecificationCreationDTO;
 import com.comarch.oss.resourcecatalog.tmf.api.dto.ResourceSpecificationCreationDTO.TypeEnum;
 import com.google.common.collect.ImmutableList;
+import com.oss.nfv.common.ResourceSpecification;
 
 import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.CATEGORY_ATTRIBUTE_NAME;
 import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.EOCMNFVO_NAME;
@@ -61,6 +62,7 @@ public class VNFPKGManualOnboardingDtoBuilder {
             .id(VNFPKG_IDENTIFIER)
             .baseType(VNFPKG_TYPE)
             .instanceType(VNFPKG_TYPE)
+            .inventoryType(ResourceSpecification.LOGICAL_FUNCTION.getInventoryType())
             .provider(VNFPKG_PROVIDER)
             .resourceSpecCharacteristic(getVNFPKGcharacteristics())
             .type(TypeEnum.R)

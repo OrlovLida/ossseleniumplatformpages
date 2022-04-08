@@ -17,6 +17,7 @@ import com.comarch.oss.logical.function.v2.api.dto.LogicalFunctionBulkDTO;
 import com.comarch.oss.logical.function.v2.api.dto.LogicalFunctionSyncDTO;
 import com.comarch.oss.resourcecatalog.tmf.api.dto.ResourceSpecificationCreationDTO;
 import com.comarch.oss.resourcecatalog.tmf.api.dto.ResourceSpecificationCreationDTO.TypeEnum;
+import com.oss.nfv.common.ResourceSpecification;
 
 import static com.oss.nfv.manualOnboardNetworkService.ManualOnboardNetworkServiceConstants.ERICSSON_NFVO_CATEGORY_ATTR;
 import static com.oss.nfv.manualOnboardNetworkService.ManualOnboardNetworkServiceConstants.ERICSSON_NFVO_CATEGORY_VALUE;
@@ -48,6 +49,7 @@ public class ManualOnboardNetworkServiceDTOBuilder {
                 .id(NS_PACKAGE_IDENTIFIER)
                 .baseType(NS_PACKAGE_BASE_TYPE)
                 .instanceType(NS_PACKAGE_BASE_TYPE)
+                .inventoryType(ResourceSpecification.LOGICAL_FUNCTION.getInventoryType())
                 .type(TypeEnum.TEMPLATE)
                 .version(NS_PACKAGE_VERSION)
                 .description(NS_PACKAGE_DESCRIPTION)

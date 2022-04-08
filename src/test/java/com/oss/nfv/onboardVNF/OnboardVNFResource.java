@@ -12,6 +12,8 @@ import com.comarch.oss.logical.function.api.dto.ModelIdentificationDTO;
 import com.comarch.oss.logical.function.v2.api.dto.LogicalFunctionBulkDTO;
 import com.comarch.oss.logical.function.v2.api.dto.LogicalFunctionSyncDTO;
 import com.comarch.oss.resourcecatalog.tmf.api.dto.ResourceSpecificationCreationDTO;
+import com.oss.nfv.common.ResourceSpecification;
+
 import org.assertj.core.util.Lists;
 
 import java.util.List;
@@ -44,6 +46,8 @@ public class OnboardVNFResource {
                 .name(VNFPKG_SPECIFICATION_IDENTIFIER)
                 .type(ResourceSpecificationCreationDTO.TypeEnum.R)
                 .baseType(VNFPKG)
+                .instanceType(VNFPKG)
+                .inventoryType(ResourceSpecification.LOGICAL_FUNCTION.getInventoryType())
                 .build();
     }
 
