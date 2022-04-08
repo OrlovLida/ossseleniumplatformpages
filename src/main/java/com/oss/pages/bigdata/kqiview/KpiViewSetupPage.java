@@ -1,22 +1,20 @@
 package com.oss.pages.bigdata.kqiview;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.iaa.widgets.dpe.toolbarpanel.FiltersPanel;
 import com.oss.framework.iaa.widgets.dpe.toolbarpanel.KpiToolbarPanel;
 import com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsPanel;
 import com.oss.framework.iaa.widgets.dpe.treewidget.KpiTreeWidget;
 import com.oss.pages.BasePage;
-
 import io.qameta.allure.Step;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import static com.oss.framework.utils.DelayUtils.waitForPageToLoad;
 
@@ -28,10 +26,12 @@ public class KpiViewSetupPage extends BasePage {
     private static final String DIMENSIONS_TREE_ID = "_Dimensions";
     private static final String DIMENSION_OPTIONS_BUTTON_ID = "dimension-options-button";
     private final KpiViewPage kpiViewPage;
+    private final KpiToolbarPanelPage kpiToolbarPanel;
 
     public KpiViewSetupPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
         kpiViewPage = new KpiViewPage(driver, wait);
+        kpiToolbarPanel = new KpiToolbarPanelPage(driver, wait);
     }
 
     @Step("I set filters: {enabledFilters}")
@@ -83,11 +83,11 @@ public class KpiViewSetupPage extends BasePage {
             selectUnfoldedDimension(dimensionNodesToSelectList);
         }
 
-        kpiViewPage.selectAggregationMethod(OptionsPanel.AggregationMethodOption.SUM);
-        kpiViewPage.unselectEveryAggMethodOtherThan(OptionsPanel.AggregationMethodOption.SUM);
-        kpiViewPage.closeOptionsPanel();
+        kpiToolbarPanel.selectAggregationMethod(OptionsPanel.AggregationMethodOption.SUM);
+        kpiToolbarPanel.unselectEveryAggMethodOtherThan(OptionsPanel.AggregationMethodOption.SUM);
+        kpiToolbarPanel.closeOptionsPanel();
 
-        kpiViewPage.applyChanges();
+        kpiToolbarPanel.applyChanges();
         kpiViewPage.seeChartIsDisplayed();
     }
 
