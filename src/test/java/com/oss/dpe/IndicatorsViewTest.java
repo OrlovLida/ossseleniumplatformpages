@@ -1,34 +1,21 @@
 package com.oss.dpe;
 
-import java.util.Collections;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Listeners;
-import org.testng.annotations.Optional;
-import org.testng.annotations.Parameters;
-import org.testng.annotations.Test;
-
 import com.oss.BaseTestCase;
 import com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsPanel;
+import com.oss.pages.bigdata.kqiview.ChartActionsPanelPage;
+import com.oss.pages.bigdata.kqiview.KpiToolbarPanelPage;
 import com.oss.pages.bigdata.kqiview.KpiViewPage;
 import com.oss.pages.bigdata.kqiview.KpiViewSetupPage;
 import com.oss.utils.TestListener;
-
 import io.qameta.allure.Description;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.testng.annotations.*;
 
-import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_1x1;
-import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_2x1;
-import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_2x2;
-import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_3x2;
-import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_3x3;
-import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_4x4;
-import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_AUTO;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
-import static org.testng.Assert.fail;
+import java.util.Collections;
+
+import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.*;
+import static org.testng.Assert.*;
 
 @Listeners({TestListener.class})
 public class IndicatorsViewTest extends BaseTestCase {
@@ -50,6 +37,8 @@ public class IndicatorsViewTest extends BaseTestCase {
 
     private KpiViewPage kpiViewPage;
     private KpiViewSetupPage kpiViewSetup;
+    private ChartActionsPanelPage chartActionsPanel;
+    private KpiToolbarPanelPage kpiToolbarPanel;
 
     @Parameters({"kpiViewType"})
     @BeforeMethod
@@ -58,6 +47,8 @@ public class IndicatorsViewTest extends BaseTestCase {
     ) {
         kpiViewPage = KpiViewPage.goToPage(driver, BASIC_URL, kpiViewType);
         kpiViewSetup = new KpiViewSetupPage(driver, webDriverWait);
+        chartActionsPanel = new ChartActionsPanelPage(driver, webDriverWait);
+        kpiToolbarPanel = new KpiToolbarPanelPage(driver, webDriverWait);
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
@@ -79,7 +70,7 @@ public class IndicatorsViewTest extends BaseTestCase {
             assertTrue(kpiViewPage.shouldNotSeeHiddenLine(HIDDEN_DATA_SERIES_VISIBILITY));
             kpiViewPage.clickLegend();
             assertTrue(kpiViewPage.shouldSeeDataSeriesLineWidth(NORMAL_DATA_SERIES_WIDTH));
-            kpiViewPage.exportChart();
+            kpiToolbarPanel.exportChart();
         } catch (Exception e) {
             log.error(e.getMessage());
             fail();
@@ -99,13 +90,13 @@ public class IndicatorsViewTest extends BaseTestCase {
         try {
             kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
             assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
-            kpiViewPage.clickAreaChartType();
+            chartActionsPanel.clickAreaChartType();
             assertTrue(kpiViewPage.isDataSeriesType("area"));
-            kpiViewPage.clickBarChartType();
+            chartActionsPanel.clickBarChartType();
             assertTrue(kpiViewPage.isDataSeriesType("bar"));
-            kpiViewPage.clickLineChartType();
+            chartActionsPanel.clickLineChartType();
             assertTrue(kpiViewPage.isDataSeriesType("line"));
-            kpiViewPage.chooseDataSeriesColor();
+            chartActionsPanel.chooseDataSeriesColor();
             assertTrue(kpiViewPage.shouldSeeColorChart(FIRST_CHART_COLOR));
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -125,12 +116,12 @@ public class IndicatorsViewTest extends BaseTestCase {
     ) {
         try {
             kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
-            kpiViewPage.setValueInTimePeriodChooser(1, 2, 3);
-            kpiViewPage.applyChanges();
-            kpiViewPage.chooseSmartOptionInTimePeriodChooser();
-            kpiViewPage.applyChanges();
-            kpiViewPage.chooseLatestOptionInTimePeriodChooser();
-            kpiViewPage.applyChanges();
+            kpiToolbarPanel.setValueInTimePeriodChooser(1, 2, 3);
+            kpiToolbarPanel.applyChanges();
+            kpiToolbarPanel.chooseSmartOptionInTimePeriodChooser();
+            kpiToolbarPanel.applyChanges();
+            kpiToolbarPanel.chooseLatestOptionInTimePeriodChooser();
+            kpiToolbarPanel.applyChanges();
             kpiViewPage.clickLegend();
             assertTrue(kpiViewPage.shouldSeePointsDisplayed(1));
         } catch (Exception e) {
@@ -153,7 +144,7 @@ public class IndicatorsViewTest extends BaseTestCase {
             kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
             assertTrue(kpiViewPage.shouldSeeVisibleYaxis(2));
 
-            kpiViewPage.chooseManualYaxis();
+            kpiToolbarPanel.chooseManualYaxis();
             assertTrue(kpiViewPage.shouldSeeVisibleYaxis(1));
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -173,15 +164,15 @@ public class IndicatorsViewTest extends BaseTestCase {
     ) {
         try {
             kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
-            kpiViewPage.enableDataCompleteness();
-            kpiViewPage.applyChanges();
+            kpiToolbarPanel.enableDataCompleteness();
+            kpiToolbarPanel.applyChanges();
             assertTrue(kpiViewPage.shouldSeeDataCompleteness());
 
-            kpiViewPage.enableShowTimeZone();
-            kpiViewPage.applyChanges();
+            kpiToolbarPanel.enableShowTimeZone();
+            kpiToolbarPanel.applyChanges();
             assertTrue(kpiViewPage.isTimeZoneDisplayed());
 
-            kpiViewPage.enableLastSampleTime();
+            kpiToolbarPanel.enableLastSampleTime();
             assertTrue(kpiViewPage.shouldSeeLastSampleTime(1));
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -203,8 +194,8 @@ public class IndicatorsViewTest extends BaseTestCase {
             kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
 
             assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
-            kpiViewPage.enableCompareWithOtherPeriod();
-            kpiViewPage.applyChanges();
+            kpiToolbarPanel.enableCompareWithOtherPeriod();
+            kpiToolbarPanel.applyChanges();
             assertTrue(kpiViewPage.shouldSeeOtherPeriod());
             assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(2));
         } catch (Exception e) {
@@ -254,20 +245,20 @@ public class IndicatorsViewTest extends BaseTestCase {
         try {
             kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
             assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
-            kpiViewPage.changeLayout(LAYOUT_1x1);
-            assertEquals(kpiViewPage.layoutButtonStatus(LAYOUT_1x1), LAYOUT_EXPECTED_STATUS);
-            kpiViewPage.changeLayout(LAYOUT_2x1);
-            assertEquals(kpiViewPage.layoutButtonStatus(LAYOUT_2x1), LAYOUT_EXPECTED_STATUS);
-            kpiViewPage.changeLayout(LAYOUT_2x2);
-            assertEquals(kpiViewPage.layoutButtonStatus(LAYOUT_2x2), LAYOUT_EXPECTED_STATUS);
-            kpiViewPage.changeLayout(LAYOUT_4x4);
-            assertEquals(kpiViewPage.layoutButtonStatus(LAYOUT_4x4), LAYOUT_EXPECTED_STATUS);
-            kpiViewPage.changeLayout(LAYOUT_3x3);
-            assertEquals(kpiViewPage.layoutButtonStatus(LAYOUT_3x3), LAYOUT_EXPECTED_STATUS);
-            kpiViewPage.changeLayout(LAYOUT_3x2);
-            assertEquals(kpiViewPage.layoutButtonStatus(LAYOUT_3x2), LAYOUT_EXPECTED_STATUS);
-            kpiViewPage.changeLayout(LAYOUT_AUTO);
-            assertEquals(kpiViewPage.layoutButtonStatus(LAYOUT_AUTO), LAYOUT_EXPECTED_STATUS);
+            kpiToolbarPanel.changeLayout(LAYOUT_1x1);
+            assertEquals(kpiToolbarPanel.layoutButtonStatus(LAYOUT_1x1), LAYOUT_EXPECTED_STATUS);
+            kpiToolbarPanel.changeLayout(LAYOUT_2x1);
+            assertEquals(kpiToolbarPanel.layoutButtonStatus(LAYOUT_2x1), LAYOUT_EXPECTED_STATUS);
+            kpiToolbarPanel.changeLayout(LAYOUT_2x2);
+            assertEquals(kpiToolbarPanel.layoutButtonStatus(LAYOUT_2x2), LAYOUT_EXPECTED_STATUS);
+            kpiToolbarPanel.changeLayout(LAYOUT_4x4);
+            assertEquals(kpiToolbarPanel.layoutButtonStatus(LAYOUT_4x4), LAYOUT_EXPECTED_STATUS);
+            kpiToolbarPanel.changeLayout(LAYOUT_3x3);
+            assertEquals(kpiToolbarPanel.layoutButtonStatus(LAYOUT_3x3), LAYOUT_EXPECTED_STATUS);
+            kpiToolbarPanel.changeLayout(LAYOUT_3x2);
+            assertEquals(kpiToolbarPanel.layoutButtonStatus(LAYOUT_3x2), LAYOUT_EXPECTED_STATUS);
+            kpiToolbarPanel.changeLayout(LAYOUT_AUTO);
+            assertEquals(kpiToolbarPanel.layoutButtonStatus(LAYOUT_AUTO), LAYOUT_EXPECTED_STATUS);
         } catch (Exception e) {
             log.error(e.getMessage());
             fail();
@@ -285,9 +276,9 @@ public class IndicatorsViewTest extends BaseTestCase {
         kpiViewSetup.setFilters(Collections.singletonList(filterName));
         kpiViewSetup.searchInToolbarPanel(indicator, INDICATORS_TREE_ID);
         kpiViewSetup.searchInToolbarPanel(dimension, DIMENSIONS_TREE_ID);
-        kpiViewPage.selectAggregationMethod(OptionsPanel.AggregationMethodOption.SUM);
-        kpiViewPage.unselectEveryAggMethodOtherThan(OptionsPanel.AggregationMethodOption.SUM);
-        kpiViewPage.applyChanges();
+        kpiToolbarPanel.selectAggregationMethod(OptionsPanel.AggregationMethodOption.SUM);
+        kpiToolbarPanel.unselectEveryAggMethodOtherThan(OptionsPanel.AggregationMethodOption.SUM);
+        kpiToolbarPanel.applyChanges();
 
         assertTrue(kpiViewSetup.isNodeInTreeSelected(indicator, INDICATORS_TREE_ID));
         assertTrue(kpiViewSetup.isNodeInTreeSelected(dimension, DIMENSIONS_TREE_ID));
@@ -308,10 +299,10 @@ public class IndicatorsViewTest extends BaseTestCase {
             kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
 
             assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
-            String activeAggMethod = kpiViewPage.activeAggMethod();
-            kpiViewPage.closeOptionsPanel();
+            String activeAggMethod = kpiToolbarPanel.activeAggMethod();
+            kpiToolbarPanel.closeOptionsPanel();
 
-            kpiViewPage.clickLinkToChart();
+            chartActionsPanel.clickLinkToChart();
 
             assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
             assertTrue(kpiViewSetup.isNodeInTreeSelected("AQ_TIME 1h " + activeAggMethod, INDICATORS_TREE_ID));
@@ -368,7 +359,7 @@ public class IndicatorsViewTest extends BaseTestCase {
 
             kpiViewSetup.clickDimensionOptions(dimensionFolderWithOptions);
             kpiViewPage.fillLevelOfChildObjects("1");
-            kpiViewPage.applyChanges();
+            kpiToolbarPanel.applyChanges();
 
             assertTrue(kpiViewPage.shouldSeeMoreThanOneCurveDisplayed());
         } catch (Exception e) {
@@ -391,13 +382,13 @@ public class IndicatorsViewTest extends BaseTestCase {
             kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
             assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
 
-            kpiViewPage.setDisplayType("Pie Chart");
+            kpiToolbarPanel.setDisplayType("Pie Chart");
             assertTrue(kpiViewPage.shouldSeePieChartsDisplayed(1));
 
-            kpiViewPage.setDisplayType("Chart");
+            kpiToolbarPanel.setDisplayType("Chart");
             assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
 
-            kpiViewPage.setDisplayType("Table");
+            kpiToolbarPanel.setDisplayType("Table");
             assertFalse(kpiViewPage.isIndicatorsViewTableEmpty());
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -419,7 +410,7 @@ public class IndicatorsViewTest extends BaseTestCase {
             kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
             assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
 
-            kpiViewPage.clickPerformTopN();
+            kpiToolbarPanel.clickPerformTopN();
 
             assertTrue(kpiViewPage.dpeTopNBarChartIsDisplayed());
             assertTrue(kpiViewPage.isExpectedNumberOfChartsVisible(2));
@@ -446,13 +437,13 @@ public class IndicatorsViewTest extends BaseTestCase {
             kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
             assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(2));
 
-            kpiViewPage.selectAggregationMethod(OptionsPanel.AggregationMethodOption.MAX);
-            kpiViewPage.selectAggregationMethod(OptionsPanel.AggregationMethodOption.MIN);
-            kpiViewPage.selectAggregationMethod(OptionsPanel.AggregationMethodOption.SUM);
-            kpiViewPage.unselectEveryAggMethodOtherThan(OptionsPanel.AggregationMethodOption.MAX);
-            kpiViewPage.applyChanges();
-            String selectedAggMethod = kpiViewPage.activeAggMethod();
-            int numOfActiveAggMethods = kpiViewPage.numberOfActiveAggMethods();
+            kpiToolbarPanel.selectAggregationMethod(OptionsPanel.AggregationMethodOption.MAX);
+            kpiToolbarPanel.selectAggregationMethod(OptionsPanel.AggregationMethodOption.MIN);
+            kpiToolbarPanel.selectAggregationMethod(OptionsPanel.AggregationMethodOption.SUM);
+            kpiToolbarPanel.unselectEveryAggMethodOtherThan(OptionsPanel.AggregationMethodOption.MAX);
+            kpiToolbarPanel.applyChanges();
+            String selectedAggMethod = kpiToolbarPanel.activeAggMethod();
+            int numOfActiveAggMethods = kpiToolbarPanel.numberOfActiveAggMethods();
 
             assertEquals(selectedAggMethod, "MAX");
             assertEquals(numOfActiveAggMethods, 1);
@@ -501,7 +492,7 @@ public class IndicatorsViewTest extends BaseTestCase {
             kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
             assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(2));
 
-            kpiViewPage.setDisplayType("Table");
+            kpiToolbarPanel.setDisplayType("Table");
             assertFalse(kpiViewPage.isIndicatorsViewTableEmpty());
 
             kpiViewPage.enableColumnInTheTable(IDENTIFIER_COLUMN_ID);

@@ -1,27 +1,22 @@
 package com.oss.bigdata.dfe;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Optional;
-import org.testng.annotations.Parameters;
-import org.testng.annotations.Test;
-
 import com.oss.BaseTestCase;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.pages.bigdata.kqiview.KpiToolbarPanelPage;
 import com.oss.pages.bigdata.kqiview.KpiViewPage;
 import com.oss.pages.bigdata.kqiview.KpiViewSetupPage;
 import com.oss.pages.bigdata.utils.ConstantsDfe;
 import com.oss.pages.bookmarkmanager.BookmarkManagerPage;
 import com.oss.pages.bookmarkmanager.bookmarkmanagerwizards.BookmarkWizardPage;
 import com.oss.pages.bookmarkmanager.bookmarkmanagerwizards.CategoryWizardPage;
-
 import io.qameta.allure.Description;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.testng.Assert;
+import org.testng.annotations.*;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class BookmarkTest extends BaseTestCase {
 
@@ -38,6 +33,7 @@ public class BookmarkTest extends BaseTestCase {
     private KpiViewPage kpiViewPage;
     private KpiViewSetupPage kpiViewSetup;
     private BookmarkWizardPage bookmarkWizardPage;
+    private KpiToolbarPanelPage kpiToolbarPanel;
 
     @BeforeClass
     public void checkIfCategoryExist() {
@@ -71,8 +67,10 @@ public class BookmarkTest extends BaseTestCase {
     ) {
         try {
             kpiViewPage = KpiViewPage.goToPage(driver, BASIC_URL, kpiViewType);
+            kpiViewSetup = new KpiViewSetupPage(driver, webDriverWait);
             kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
-            kpiViewPage.applyChanges();
+            kpiToolbarPanel = new KpiToolbarPanelPage(driver, webDriverWait);
+            kpiToolbarPanel.applyChanges();
             bookmarkForProduct = BOOKMARK_NAME + productName;
 
             Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
@@ -104,8 +102,10 @@ public class BookmarkTest extends BaseTestCase {
         if (bookmarkExist) {
             bookmarkManagerPage.expandBookmarkList(CATEGORY_NAME);
             bookmarkManagerPage.openBookmark(bookmarkForProduct);
+            kpiViewSetup = new KpiViewSetupPage(driver, webDriverWait);
             kpiViewSetup.selectUnfoldedDimension(new ArrayList<>(Collections.singletonList(anotherDimensionToSelect)));
-            kpiViewPage.applyChanges();
+            kpiToolbarPanel = new KpiToolbarPanelPage(driver, webDriverWait);
+            kpiToolbarPanel.applyChanges();
             String editedBookmarkTitle = bookmarkForProduct + EDITED;
 
             Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(2));

@@ -1,12 +1,5 @@
 package com.oss.pages.bigdata.kqiview;
 
-import java.util.List;
-
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.oss.framework.components.attributechooser.ListAttributesChooser;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
@@ -15,24 +8,16 @@ import com.oss.framework.components.mainheader.ButtonPanel;
 import com.oss.framework.components.mainheader.Share;
 import com.oss.framework.components.mainheader.ToolbarWidget;
 import com.oss.framework.components.table.TableComponent;
-import com.oss.framework.iaa.widgets.dpe.contextaction.ContextActionPanel;
 import com.oss.framework.iaa.widgets.dpe.kpichartwidget.KpiChartWidget;
-import com.oss.framework.iaa.widgets.dpe.toolbarpanel.ExportPanel.ExportType;
-import com.oss.framework.iaa.widgets.dpe.toolbarpanel.KpiToolbarPanel;
-import com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType;
-import com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsPanel;
 import com.oss.pages.BasePage;
 import com.oss.pages.bookmarkmanager.bookmarkmanagerwizards.BookmarkWizardPage;
 import com.oss.untils.FileDownload;
-
 import io.qameta.allure.Step;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsPanel.MiscellaneousOption.DATA_COMPLETENESS;
-import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsPanel.MiscellaneousOption.LAST_SAMPLE_TIME;
-import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsPanel.MiscellaneousOption.SHOW_TIME_ZONE;
-import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsPanel.TimePeriodChooserOption.LATEST;
-import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsPanel.TimePeriodChooserOption.SMART;
-import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsPanel.YAxisOption.MANUAL;
 import static com.oss.framework.utils.DelayUtils.waitForPageToLoad;
 
 public class KpiViewPage extends BasePage {
@@ -41,17 +26,8 @@ public class KpiViewPage extends BasePage {
 
     private static final String INDICATORS_TREE_ID = "_Indicators";
     private static final String DIMENSIONS_TREE_ID = "_Dimensions";
-    private static final String CHART_TYPE_BUTTON_ID = "chart-type-button";
-    private static final String AREA_CHART_BUTTON_ID = "dropdown-list-button_area";
-    private static final String BAR_CHART_BUTTON_ID = "dropdown-list-button_bar";
-    private static final String LINE_CHART_BUTTON_ID = "dropdown-list-button_line";
-    private static final String CHART_COLOR_BUTTON_ID = "chart-color-button";
     private static final String DATA_VIEW_ID = "_Data_View";
     private static final String SAVE_BOOKMARK_BUTTON_ID = "ButtonSaveBookmark";
-    private static final String COLOR_PICKER_CLASS = "colorPickerWrapper";
-    private static final String CHART_ACTIONS_LINKS_ID = "external-links-button";
-    private static final String LINK_TO_XDR_LABEL = "Open xDR for t:SMOKE#ETLforKqis. Time condition limited to last 1 hour(s) from chosen period.";
-    private static final String LINK_TO_INDICATORS_VIEW_CHART_LABEL = "Indicators View - Chart";
     private static final String CHILD_OBJECT_LEVEL_INPUT_ID = "SelectChildMOLevelChanged";
     private static final String IND_VIEW_TABLE_ID = "ind-view-table";
     private static final String TOP_N_BARCHART_DFE_ID = "amchart-series-DFE_y-selected";
@@ -59,11 +35,8 @@ public class KpiViewPage extends BasePage {
     private static final String INDICATORS_VIEW_URL = "Assurance/KPIView";
     private static final String STANDALONE_INDICATORS_VIEW_URL = "indicators-view/indicators-view";
 
-    private final KpiToolbarPanel kpiToolbarPanel;
-
     public KpiViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
-        kpiToolbarPanel = KpiToolbarPanel.create(driver, wait);
     }
 
     @Step("I Open KPI View")
@@ -91,13 +64,6 @@ public class KpiViewPage extends BasePage {
         return INDICATORS_VIEW_URL;
     }
 
-    @Step("I apply changes")
-    public void applyChanges() {
-        log.info("Apply changes");
-        kpiToolbarPanel.clickApply();
-        waitForPageToLoad(driver, wait);
-    }
-
     @Step("I see chart is displayed")
     public void seeChartIsDisplayed() {
         log.info("Waiting for chart presence");
@@ -110,26 +76,9 @@ public class KpiViewPage extends BasePage {
         KpiChartWidget.create(driver, wait).hoverMouseOverPoint();
     }
 
-    @Step("I export chart")
-    public void exportChart() {
-        kpiToolbarPanel.openExportPanel().exportKpiToFile(ExportType.JPG);
-        log.info("Exporting chart to JPG");
-        kpiToolbarPanel.openExportPanel().exportKpiToFile(ExportType.PNG);
-        log.info("Exporting chart to PNG");
-        kpiToolbarPanel.openExportPanel().exportKpiToFile(ExportType.PDF);
-        log.info("Exporting chart to PDF");
-        kpiToolbarPanel.openExportPanel().exportKpiToFile(ExportType.XLSX);
-        log.info("Exporting chart to XLSX");
-    }
-
     @Step("Attach exported chart to report")
     public void attachExportedChartToReport() {
         FileDownload.attachDownloadedFileToReport("kpi_view_export_*.*");
-    }
-
-    @Step("I change layout")
-    public void changeLayout(LayoutType layoutType) {
-        kpiToolbarPanel.openLayoutPanel().changeLayout(layoutType);
     }
 
     @Step("I minimize data View")
@@ -190,22 +139,6 @@ public class KpiViewPage extends BasePage {
         return pointsCount == expectedPointsCount;
     }
 
-    @Step("I set topN dimension in TopN panel")
-    public void setTopNDimension(String dimensionId) {
-        kpiToolbarPanel.openTopNPanel().setDimension(dimensionId);
-    }
-
-    @Step("I set topN level in TopN panel")
-    public void setTopNLevel(String levelId) {
-        kpiToolbarPanel.openTopNPanel().setLevel(levelId);
-    }
-
-    @Step("I click Perform in TopN panel")
-    public void clickPerformTopN() {
-        kpiToolbarPanel.openTopNPanel().clickPerform();
-        waitForPageToLoad(driver, wait);
-    }
-
     @Step("I double click on bar in TopN BarChart")
     public void doubleClickTopNDPE() {
         KpiChartWidget.create(driver, wait).doubleClickTopNBar(TOP_N_BARCHART_DPE_ID);
@@ -222,50 +155,6 @@ public class KpiViewPage extends BasePage {
     public void clickLegend() {
         log.info("Clicking first element from legend");
         KpiChartWidget.create(driver, wait).clickDataSeriesLegend();
-    }
-
-    @Step("I go to Chart Actions Panel")
-    public ContextActionPanel getChartActionsPanel() {
-        return ContextActionPanel.create(driver, wait);
-    }
-
-    @Step("I click chart type - area")
-    public void clickAreaChartType() {
-        waitForPageToLoad(driver, wait);
-        getChartActionsPanel().callAction(CHART_TYPE_BUTTON_ID, AREA_CHART_BUTTON_ID);
-        log.info("Changing chart type to area");
-    }
-
-    @Step("I click chart type - bar")
-    public void clickBarChartType() {
-        log.info("Changing chart type to bar chart");
-        getChartActionsPanel().callAction(CHART_TYPE_BUTTON_ID, BAR_CHART_BUTTON_ID);
-    }
-
-    @Step("I click chart type - line")
-    public void clickLineChartType() {
-        log.info("Changing chart type to line chart");
-        getChartActionsPanel().callAction(CHART_TYPE_BUTTON_ID, LINE_CHART_BUTTON_ID);
-    }
-
-    @Step("I pick data series color")
-    public void chooseDataSeriesColor() {
-        log.info("Changing first data series color");
-        getChartActionsPanel().callAction(CHART_COLOR_BUTTON_ID, COLOR_PICKER_CLASS, "rgb(150, 65, 54)");
-    }
-
-    @Step("I click link to XDR Browser")
-    public void clickLinkToXDRBrowser() {
-        getChartActionsPanel().callAction(CHART_ACTIONS_LINKS_ID, LINK_TO_XDR_LABEL);
-        waitForPageToLoad(driver, wait);
-        log.info("Clicking on link to XDR Browser");
-    }
-
-    @Step("I click link to chart")
-    public void clickLinkToChart() {
-        getChartActionsPanel().callAction(CHART_ACTIONS_LINKS_ID, LINK_TO_INDICATORS_VIEW_CHART_LABEL);
-        waitForPageToLoad(driver, wait);
-        log.info("Clicking on link to Indicators View - Chart");
     }
 
     @Step("I should see {expectedLineWidth} width line displayed")
@@ -301,27 +190,6 @@ public class KpiViewPage extends BasePage {
         return color.equals(expectedColor);
     }
 
-    @Step("Set value in time period chooser")
-    public void setValueInTimePeriodChooser(int days, int hours, int minutes) {
-        log.info("Setting value for last option in time period chooser: {} days, {} hours, {} minutes", days, hours, minutes);
-        waitForPageToLoad(driver, wait);
-        kpiToolbarPanel.openOptionsPanel().setLastPeriodOption(days, hours, minutes);
-    }
-
-    @Step("Set SMART option in time period chooser")
-    public void chooseSmartOptionInTimePeriodChooser() {
-        log.info("Setting smart option in time period chooser");
-        waitForPageToLoad(driver, wait);
-        kpiToolbarPanel.openOptionsPanel().chooseTimePeriodOption(SMART);
-    }
-
-    @Step("Set LATEST option in time period chooser")
-    public void chooseLatestOptionInTimePeriodChooser() {
-        log.info("Setting latest option in time period chooser");
-        waitForPageToLoad(driver, wait);
-        kpiToolbarPanel.openOptionsPanel().chooseTimePeriodOption(LATEST);
-    }
-
     @Step("I should see 2 visible Y axis and 1 hidden Y axis")
     public boolean shouldSeeVisibleYaxis(int expectedVisibleYAxisNumber) {
         waitForPageToLoad(driver, wait);
@@ -329,54 +197,11 @@ public class KpiViewPage extends BasePage {
         return visibleYaxisNumber == expectedVisibleYAxisNumber;
     }
 
-    @Step("I select Aggregation Method")
-    public void selectAggregationMethod(OptionsPanel.AggregationMethodOption option) {
-        log.info("Setting: {} option in aggregation method", option);
-        waitForPageToLoad(driver, wait);
-        kpiToolbarPanel.openOptionsPanel().chooseAggregationMethodOption(option);
-    }
-
-    public void unselectEveryAggMethodOtherThan(OptionsPanel.AggregationMethodOption option) {
-        List<OptionsPanel.AggregationMethodOption> toUnselect = kpiToolbarPanel.openOptionsPanel().getActiveAggregationMethods();
-        toUnselect.remove(option);
-        for (OptionsPanel.AggregationMethodOption aggOption : toUnselect) {
-            kpiToolbarPanel.openOptionsPanel().chooseAggregationMethodOption(aggOption);
-        }
-    }
-
-    @Step("Set Y axis manual option")
-    public void chooseManualYaxis() {
-        log.info("Setting manual Y axis");
-        waitForPageToLoad(driver, wait);
-        kpiToolbarPanel.openOptionsPanel().setYAxisOption(MANUAL);
-    }
-
-    @Step("I enable Data Completeness option")
-    public void enableDataCompleteness() {
-        log.info("Enabling Data Completeness visibility");
-        waitForPageToLoad(driver, wait);
-        kpiToolbarPanel.openOptionsPanel().setMiscellaneousOption(DATA_COMPLETENESS);
-    }
-
-    @Step("I enable Last Sample Time option")
-    public void enableLastSampleTime() {
-        log.info("Enabling Last Sample Time visibility");
-        waitForPageToLoad(driver, wait);
-        kpiToolbarPanel.openOptionsPanel().setMiscellaneousOption(LAST_SAMPLE_TIME);
-    }
-
     @Step("I should see last sample time below chart")
     public boolean shouldSeeLastSampleTime(int expectedVisibleLastSampleTimeNumber) {
         waitForPageToLoad(driver, wait);
         int visibleLastSampleTimeNumber = KpiChartWidget.create(driver, wait).countVisibleLastSampleTime();
         return visibleLastSampleTimeNumber == expectedVisibleLastSampleTimeNumber;
-    }
-
-    @Step("I enable Show Time Zone option")
-    public void enableShowTimeZone() {
-        log.info("Enabling Show Time Zone");
-        waitForPageToLoad(driver, wait);
-        kpiToolbarPanel.openOptionsPanel().setMiscellaneousOption(SHOW_TIME_ZONE);
     }
 
     @Step("Checking visibility of Time Zone option")
@@ -391,13 +216,6 @@ public class KpiViewPage extends BasePage {
         waitForPageToLoad(driver, wait);
         int visibleLastSampleTimeNumber = KpiChartWidget.create(driver, wait).countVisibleDataCompleteness();
         return visibleLastSampleTimeNumber > 0;
-    }
-
-    @Step("I enable Compare with Other Period option")
-    public void enableCompareWithOtherPeriod() {
-        log.info("Enabling Compare with Other Period option");
-        waitForPageToLoad(driver, wait);
-        kpiToolbarPanel.openOptionsPanel().setOtherPeriodOption();
     }
 
     @Step("I should see other period displayed in the legend")
@@ -422,31 +240,10 @@ public class KpiViewPage extends BasePage {
         }
     }
 
-    @Step("I check status of chosen layout button")
-    public String layoutButtonStatus(LayoutType layout) {
-        waitForPageToLoad(driver, wait);
-        return kpiToolbarPanel.openLayoutPanel().chartLayoutButtonStatus(layout);
-    }
-
     @Step("Click Save bookmark")
     public BookmarkWizardPage clickSaveBookmark() {
         ButtonPanel.create(driver, wait).clickButton(SAVE_BOOKMARK_BUTTON_ID);
         return new BookmarkWizardPage(driver, wait);
-    }
-
-    public String activeAggMethod() {
-        waitForPageToLoad(driver, wait);
-        return kpiToolbarPanel.openOptionsPanel().getActiveAggregationMethods().get(0).toString();
-    }
-
-    public int numberOfActiveAggMethods() {
-        waitForPageToLoad(driver, wait);
-        return kpiToolbarPanel.openOptionsPanel().getActiveAggregationMethods().size();
-    }
-
-    @Step("I close Options Panel")
-    public void closeOptionsPanel() {
-        kpiToolbarPanel.closeOptionsPanel();
     }
 
     @Step("I click Share View icon")
@@ -478,13 +275,6 @@ public class KpiViewPage extends BasePage {
     public void fillLevelOfChildObjects(String level) {
         ComponentFactory.create(CHILD_OBJECT_LEVEL_INPUT_ID, Input.ComponentType.TEXT_FIELD, driver, wait)
                 .setSingleStringValue(level);
-    }
-
-    @Step("I select display type from toolbar panel")
-    public void setDisplayType(String displayTypeId) {
-        kpiToolbarPanel.selectDisplayType(displayTypeId);
-        waitForPageToLoad(driver, wait);
-        log.info("Setting display type to: {}", displayTypeId);
     }
 
     @Step("I check if expected number of charts is visible")

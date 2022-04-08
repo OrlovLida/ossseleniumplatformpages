@@ -1,21 +1,17 @@
 package com.oss.bigdata.kpiview;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Listeners;
-import org.testng.annotations.Optional;
-import org.testng.annotations.Parameters;
-import org.testng.annotations.Test;
-
 import com.oss.BaseTestCase;
 import com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel;
+import com.oss.pages.bigdata.kqiview.ChartActionsPanelPage;
+import com.oss.pages.bigdata.kqiview.KpiToolbarPanelPage;
 import com.oss.pages.bigdata.kqiview.KpiViewPage;
 import com.oss.pages.bigdata.kqiview.KpiViewSetupPage;
 import com.oss.utils.TestListener;
-
 import io.qameta.allure.Description;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.testng.Assert;
+import org.testng.annotations.*;
 
 import static com.oss.utils.AttachmentsManager.attachConsoleLogs;
 import static com.oss.utils.AttachmentsManager.saveScreenshotPNG;
@@ -26,6 +22,8 @@ public class KpiViewTest extends BaseTestCase {
     private static final Logger log = LoggerFactory.getLogger(KpiViewTest.class);
     private KpiViewPage kpiViewPage;
     private KpiViewSetupPage kpiViewSetup;
+    private ChartActionsPanelPage chartActionsPanel;
+    private KpiToolbarPanelPage kpiToolbarPanel;
 
     private static final String INDICATORS_TREE_ID = "_Indicators";
     private static final String DIMENSIONS_TREE_ID = "_Dimensions";
@@ -37,6 +35,8 @@ public class KpiViewTest extends BaseTestCase {
     ) {
         kpiViewPage = KpiViewPage.goToPage(driver, BASIC_URL, kpiViewType);
         kpiViewSetup = new KpiViewSetupPage(driver, webDriverWait);
+        chartActionsPanel = new ChartActionsPanelPage(driver, webDriverWait);
+        kpiToolbarPanel = new KpiToolbarPanelPage(driver, webDriverWait);
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
@@ -48,13 +48,13 @@ public class KpiViewTest extends BaseTestCase {
             @Optional("t:SMOKE#D_HOST") String dimensionNodesToExpand,
             @Optional("192.168.128.172,192.168.128.173") String dimensionNodesToSelect,
             @Optional("Selenium Tests") String filterName
-    ){
-        try{
+    ) {
+        try {
             kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
-            kpiViewPage.exportChart();
+            kpiToolbarPanel.exportChart();
             kpiViewPage.attachExportedChartToReport();
             attachConsoleLogs(driver);
-        } catch(Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             Assert.fail();
         }
@@ -69,10 +69,10 @@ public class KpiViewTest extends BaseTestCase {
             @Optional("t:SMOKE#D_HOST") String dimensionNodesToExpand,
             @Optional("192.168.128.172,192.168.128.173") String dimensionNodesToSelect,
             @Optional("Selenium Tests") String filterName
-    ){
+    ) {
         try {
             kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
-            kpiViewPage.changeLayout(LayoutPanel.LayoutType.LAYOUT_2x2);
+            kpiToolbarPanel.changeLayout(LayoutPanel.LayoutType.LAYOUT_2x2);
             saveScreenshotPNG(driver);
 
             kpiViewPage.maximizeDataView();
@@ -81,7 +81,7 @@ public class KpiViewTest extends BaseTestCase {
             kpiViewPage.minimizeDataView();
             saveScreenshotPNG(driver);
             attachConsoleLogs(driver);
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             Assert.fail();
         }
@@ -101,7 +101,7 @@ public class KpiViewTest extends BaseTestCase {
             kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
             Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
 
-            kpiViewPage.clickLinkToChart();
+            chartActionsPanel.clickLinkToChart();
             Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
             Assert.assertTrue(kpiViewSetup.isNodeInTreeSelected(indicatorNodesToSelect, INDICATORS_TREE_ID));
             Assert.assertTrue(kpiViewSetup.isNodeInTreeSelected(dimensionNodesToSelect, DIMENSIONS_TREE_ID));
@@ -125,9 +125,9 @@ public class KpiViewTest extends BaseTestCase {
             kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
             Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
 
-            kpiViewPage.setTopNDimension("t:SMOKE#DimHierSelenium");
-            kpiViewPage.setTopNLevel("1st");
-            kpiViewPage.clickPerformTopN();
+            kpiToolbarPanel.setTopNDimension("t:SMOKE#DimHierSelenium");
+            kpiToolbarPanel.setTopNLevel("1st");
+            kpiToolbarPanel.clickPerformTopN();
 
             Assert.assertTrue(kpiViewPage.dfeTopNBarChartIsDisplayed());
             Assert.assertTrue(kpiViewPage.isExpectedNumberOfChartsVisible(2));
