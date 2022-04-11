@@ -31,7 +31,7 @@ public class ParticipantsPromptPage extends SDWizardPage {
     }
 
     @Step("Set Participant Role")
-    public void setPartcicipantRole(String participantRole) {
+    public void setParticipantRole(String participantRole) {
         insertValueToComboBoxComponent(participantRole, PARTICIPANT_ROLE_ID);
     }
 

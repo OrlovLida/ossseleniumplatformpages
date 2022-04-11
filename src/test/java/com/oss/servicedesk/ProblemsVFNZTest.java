@@ -14,6 +14,7 @@ import com.oss.pages.servicedesk.ticket.IssueDetailsPage;
 import com.oss.pages.servicedesk.ticket.tabs.AttachmentsTab;
 import com.oss.pages.servicedesk.ticket.tabs.ExternalTab;
 import com.oss.pages.servicedesk.ticket.tabs.ParticipantsTab;
+import com.oss.pages.servicedesk.ticket.tabs.RelatedProblemsTab;
 import com.oss.pages.servicedesk.ticket.tabs.RelatedTicketsTab;
 import com.oss.pages.servicedesk.ticket.tabs.RootCausesTab;
 import com.oss.pages.servicedesk.ticket.wizard.AttachmentWizardPage;
@@ -38,6 +39,7 @@ public class ProblemsVFNZTest extends BaseTestCase {
     private RelatedTicketsTab relatedTicketsTab;
     private ParticipantsTab participantsTab;
     private ParticipantsPromptPage participantsPromptPage;
+    private RelatedProblemsTab relatedProblemsTab;
     private String problemId;
     private static final String PROBLEMS_DASHBOARD = "_ProblemManagement";
     private static final String PROBLEM_ISSUE_TYPE = "problem";
@@ -57,6 +59,7 @@ public class ProblemsVFNZTest extends BaseTestCase {
     private static final String PARTICIPANT_FIRST_NAME = "SeleniumTest";
     private static final String PARTICIPANT_SURNAME = LocalDateTime.now().toString();
     private static final String PARTICIPANT_ROLE = "Contact";
+    private static final String COMBOBOX_LINK_PROBLEM_ID = "linkProblem";
 
     @BeforeMethod
     public void goToProblemDashboardPage() {
@@ -214,7 +217,7 @@ public class ProblemsVFNZTest extends BaseTestCase {
         relatedTicketsTab = issueDetailsPage.selectRelatedTicketsTab();
         sdWizardPage = relatedTicketsTab.openLinkTicketWizard();
         sdWizardPage.insertValueToMultiSearchComponent(RelatedTicketID, "issueIdsToLink");
-        sdWizardPage.clickLinkTicket();
+        sdWizardPage.clickLinkButton();
 
         Assert.assertEquals(relatedTicketsTab.checkRelatedTicketsId(0), RelatedTicketID);
     }
@@ -252,7 +255,7 @@ public class ProblemsVFNZTest extends BaseTestCase {
         participantsPromptPage = participantsTab.clickAddParticipant();
         participantsPromptPage.setParticipantName(PARTICIPANT_FIRST_NAME);
         participantsPromptPage.setParticipantSurname(PARTICIPANT_SURNAME);
-        participantsPromptPage.setPartcicipantRole(PARTICIPANT_ROLE);
+        participantsPromptPage.setParticipantRole(PARTICIPANT_ROLE);
         participantsPromptPage.clickAddParticipant();
 
         Assert.assertEquals(participantsTab.checkParticipantFirstName(0), PARTICIPANT_FIRST_NAME);
@@ -260,4 +263,30 @@ public class ProblemsVFNZTest extends BaseTestCase {
         Assert.assertEquals(participantsTab.checkParticipantRole(0), PARTICIPANT_ROLE.toUpperCase());
     }
 
+    @Parameters({"ProblemToLinkId"})
+    @Test(priority = 15, testName = "Link Problem to Problem", description = "Link Problem to Problem")
+    @Description("Link Problem to Problem")
+    public void linkProblem(
+            @Optional("100") String ProblemToLinkId
+    ) {
+        issueDetailsPage = baseDashboardPage.openIssueDetailsView(problemId, BASIC_URL, PROBLEM_ISSUE_TYPE);
+        relatedProblemsTab = issueDetailsPage.selectRelatedProblemsTab();
+        sdWizardPage = relatedProblemsTab.clickLinkProblem();
+        sdWizardPage.insertValueToMultiSearchComponent(ProblemToLinkId, COMBOBOX_LINK_PROBLEM_ID);
+        sdWizardPage.clickLinkButton();
+
+        Assert.assertEquals(relatedProblemsTab.checkRelatedProblemId(0), ProblemToLinkId);
+    }
+
+    @Test(priority = 15, testName = "Unlink Problem from Problem", description = "Unlink Problem from Problem")
+    @Description("Unlink Problem from Problem")
+    public void unlinkProblem() {
+        issueDetailsPage = baseDashboardPage.openIssueDetailsView(problemId, BASIC_URL, PROBLEM_ISSUE_TYPE);
+        relatedProblemsTab = issueDetailsPage.selectRelatedProblemsTab();
+        relatedProblemsTab.selectProblem(0);
+        sdWizardPage = relatedProblemsTab.clickUnlinkProblem();
+        sdWizardPage.clickUnlinkConfirmationButton();
+
+        Assert.assertTrue(relatedProblemsTab.isRelatedProblemsTableEmpty());
+    }
 }

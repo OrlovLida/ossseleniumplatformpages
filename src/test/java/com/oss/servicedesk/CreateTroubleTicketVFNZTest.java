@@ -20,6 +20,7 @@ import com.oss.pages.servicedesk.ticket.tabs.AttachmentsTab;
 import com.oss.pages.servicedesk.ticket.tabs.ExternalTab;
 import com.oss.pages.servicedesk.ticket.tabs.MessagesTab;
 import com.oss.pages.servicedesk.ticket.tabs.ParticipantsTab;
+import com.oss.pages.servicedesk.ticket.tabs.RelatedProblemsTab;
 import com.oss.pages.servicedesk.ticket.tabs.RelatedTicketsTab;
 import com.oss.pages.servicedesk.ticket.tabs.RootCausesTab;
 import com.oss.pages.servicedesk.ticket.wizard.AttachmentWizardPage;
@@ -53,6 +54,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     private RelatedTicketsTab relatedTicketsTab;
     private ParticipantsTab participantsTab;
     private ParticipantsPromptPage participantsPromptPage;
+    private RelatedProblemsTab relatedProblemsTab;
     private String ticketID;
 
     private static final String TROUBLE_TICKET_ISSUE_TYPE = "trouble-ticket";
@@ -96,7 +98,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     private static final String DESCRIPTION_TAB_ARIA_CONTROLS = "_descriptionTab";
     private static final String MOST_IMPORTANT_INFO_TAB_ARIA_CONTROLS = "_mostImportantTab";
     private static final String SAME_MO_TT_TAB_ARIA_CONTROLS = "_sameMOTTTab";
-    private static final String RELATED_PROBLEMS_TAB_ARIA_CONTROLS = "_relatedProblems";
+
     private static final String EXTERNAL_LIST_ID = "_detailsExternalsListApp";
     private static final String ADD_TO_LIBRARY_LABEL = "Add to Library";
     private static final String WIZARD_LIBRARY_TYPE_ID = "{\"identifier\":\"type\",\"parentIdentifier\":\"type\",\"parentValueIdentifier\":\"\",\"groupId\":\"type\"}";
@@ -129,6 +131,8 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     private static final String USER_NAME = "sd_seleniumtest";
     private static final String FILE_TO_UPLOAD_PATH = "DataSourceCSV/CPU_USAGE_INFO_RAW-MAP.xlsx";
     private static final String CSV_FILE = "*CPU_USAGE_INFO_RAW-MAP*.*";
+
+    private static final String EMPTY_SEARCH_FILTER = "";
 
     @BeforeMethod
     public void goToTicketDashboardPage() {
@@ -169,7 +173,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     ) {
         issueDetailsPage = baseDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
         issueDetailsPage.maximizeWindow(DETAILS_WINDOW_ID);
-        ticketID = issueDetailsPage.getOpenedTicketId();
+        ticketID = issueDetailsPage.getOpenedIssueId();
         issueDetailsPage.allowEditingTicket();
         sdWizardPage = issueDetailsPage.openEditTicketWizard();
         sdWizardPage.clickNextButtonInWizard();
@@ -198,7 +202,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
             @Optional("Tier2_Mobile") String NewAssignee
     ) {
         ticketSearchPage = new TicketSearchPage(driver, webDriverWait);
-        ticketSearchPage.goToPage(driver, BASIC_URL);
+        ticketSearchPage.goToTicketSearchPage(driver, BASIC_URL, EMPTY_SEARCH_FILTER);
         ticketSearchPage.filterByTextField(TICKETS_SEARCH_ASSIGNEE_ATTRIBUTE, NewAssignee);
         String startDate = LocalDateTime.now().minusMinutes(10).format(CREATE_DATE_FILTER_DATE_FORMATTER);
         String endDate = LocalDateTime.now().format(CREATE_DATE_FILTER_DATE_FORMATTER);
@@ -207,7 +211,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
         ticketSearchPage.filterByTextField(GraphQLSearchPage.DESCRIPTION_ATTRIBUTE, TT_DESCRIPTION_EDITED);
         ticketSearchPage.filterByComboBox(TICKETS_SEARCH_STATUS_ATTRIBUTE, STATUS_ACKNOWLEDGED);
         issueDetailsPage = ticketSearchPage.openTicketDetailsView("0", BASIC_URL);
-        Assert.assertEquals(issueDetailsPage.getOpenedTicketId(), ticketID);
+        Assert.assertEquals(issueDetailsPage.getOpenedIssueId(), ticketID);
     }
 
     @Test(priority = 5, testName = "Add External to ticket", description = "Add External to ticket")
@@ -369,7 +373,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
         relatedTicketsTab = issueDetailsPage.selectRelatedTicketsTab();
         sdWizardPage = relatedTicketsTab.openLinkTicketWizard();
         sdWizardPage.insertValueToMultiSearchComponent(RelatedTicketID, "issueIdsToLink");
-        sdWizardPage.clickLinkTicket();
+        sdWizardPage.clickLinkButton();
 
         Assert.assertEquals(relatedTicketsTab.checkRelatedTicketsId(0), RelatedTicketID);
     }
@@ -439,7 +443,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
         participantsPromptPage = participantsTab.clickAddParticipant();
         participantsPromptPage.setParticipantName(PARTICIPANT_FIRST_NAME);
         participantsPromptPage.setParticipantSurname(PARTICIPANT_SURNAME);
-        participantsPromptPage.setPartcicipantRole(PARTICIPANT_ROLE);
+        participantsPromptPage.setParticipantRole(PARTICIPANT_ROLE);
         participantsPromptPage.clickAddParticipant();
 
         Assert.assertEquals(participantsTab.checkParticipantFirstName(0), PARTICIPANT_FIRST_NAME);
@@ -451,16 +455,16 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     @Description("Check Related Problems tab - Create Problem")
     public void createProblemRelatedToTicket() {
         issueDetailsPage = baseDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
-        issueDetailsPage.selectTab(RELATED_PROBLEMS_TAB_ARIA_CONTROLS);
-        sdWizardPage = issueDetailsPage.openCreateProblemWizard();
+        relatedProblemsTab = issueDetailsPage.selectRelatedProblemsTab();
+        sdWizardPage = relatedProblemsTab.openCreateProblemWizard();
         sdWizardPage.insertValueToTextComponent(CREATE_PROBLEM_NAME, CREATE_PROBLEM_WIZARD_NAME_ID);
         sdWizardPage.insertValueToSearchComponent(CREATE_PROBLEM_ASSIGNEE, CREATE_PROBLEM_WIZARD_ASSIGNEE_ID);
         sdWizardPage.insertValueToTextComponent(CREATE_PROBLEM_LABEL, CREATE_PROBLEM_WIZARD_LABEL_ID);
         sdWizardPage.clickButton(CREATE_PROBLEM_WIZARD_CREATE_PROBLEM_ID);
 
-        Assert.assertEquals(issueDetailsPage.checkRelatedProblemName(0), CREATE_PROBLEM_NAME);
-        Assert.assertEquals(issueDetailsPage.checkRelatedProblemAssignee(0), CREATE_PROBLEM_ASSIGNEE);
-        Assert.assertEquals(issueDetailsPage.checkRelatedProblemLabel(0), CREATE_PROBLEM_LABEL);
+        Assert.assertEquals(relatedProblemsTab.checkRelatedProblemName(0), CREATE_PROBLEM_NAME);
+        Assert.assertEquals(relatedProblemsTab.checkRelatedProblemAssignee(0), CREATE_PROBLEM_ASSIGNEE);
+        Assert.assertEquals(relatedProblemsTab.checkRelatedProblemLabel(0), CREATE_PROBLEM_LABEL);
     }
 
     @Test(priority = 24, testName = "Add attachment to ticket", description = "Add attachment to ticket")

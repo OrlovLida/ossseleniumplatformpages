@@ -5,7 +5,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.TableWidget;
 import com.oss.pages.servicedesk.GraphQLSearchPage;
 
@@ -26,20 +25,16 @@ public class TicketSearchPage extends GraphQLSearchPage {
     }
 
     @Step("I Open Ticket Search View")
-    public TicketSearchPage goToPage(WebDriver driver, String basicURL) {
-        goToPage(driver, basicURL, TICKET_SEARCH);
+    public TicketSearchPage goToTicketSearchPage(WebDriver driver, String basicURL, String searchViewName) {
+        goToPage(driver, basicURL, TICKET_SEARCH + searchViewName);
         log.info("Ticket Search View is opened");
         return new TicketSearchPage(driver, wait);
     }
 
     @Step("I open details view for {rowIndex} ticket in Ticket table")
     public IssueDetailsPage openTicketDetailsView(String rowIndex, String basicURL) {
-        // TODO: for now we cannot just click link - not implemented yet
-        // (see TableWidget#selectLinkInSpecificColumn)
         String ticketId = getIssueTable().getCellValue(Integer.parseInt(rowIndex), ID_ATTRIBUTE);
-        log.info("Opening ticket details for ticket with id: {}", ticketId);
         openPage(driver, String.format(DETAILS_PAGE_URL_PATTERN, basicURL, "trouble-ticket", ticketId));
-        DelayUtils.waitForPageToLoad(driver, wait);
         return new IssueDetailsPage(driver, wait);
     }
 

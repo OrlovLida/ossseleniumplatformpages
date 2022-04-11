@@ -35,7 +35,6 @@ public abstract class GraphQLSearchPage extends BaseSDPage {
 
     public void goToPage(WebDriver driver, String basicURL, String pageURL) {
         openPage(driver, String.format(VIEWS_URL_PATTERN, basicURL, pageURL));
-        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     @Step("I filter issues by text attribute {attributeName} set to {attributeValue}")

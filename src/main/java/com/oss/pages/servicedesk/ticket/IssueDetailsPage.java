@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import com.oss.framework.components.contextactions.OldActionsContainer;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.components.mainheader.ToolbarWidget;
 import com.oss.framework.iaa.widgets.list.ListApp;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.CommonList;
@@ -21,6 +20,7 @@ import com.oss.pages.servicedesk.ticket.tabs.AttachmentsTab;
 import com.oss.pages.servicedesk.ticket.tabs.ExternalTab;
 import com.oss.pages.servicedesk.ticket.tabs.MessagesTab;
 import com.oss.pages.servicedesk.ticket.tabs.ParticipantsTab;
+import com.oss.pages.servicedesk.ticket.tabs.RelatedProblemsTab;
 import com.oss.pages.servicedesk.ticket.tabs.RelatedTicketsTab;
 import com.oss.pages.servicedesk.ticket.tabs.RootCausesTab;
 import com.oss.pages.servicedesk.ticket.wizard.SDWizardPage;
@@ -51,16 +51,12 @@ public class IssueDetailsPage extends BaseSDPage {
     private static final String REMOVE_REMAINDER_LABEL = "Remove Reminder";
     private static final String MORE_DETAILS_LABEL = "More details";
     private static final String SAME_MO_TT_TABLE_ID = "_sameMOTTTableWidget";
-    private static final String CREATE_PROBLEM_ID = "_createProblem";
-    private static final String RELATED_PROBLEMS_TABLE_ID = "_relatedProblemsApp";
-    private static final String RELATED_PROBLEMS_TABLE_NAME_ATTRIBUTE_ID = "Name";
-    private static final String RELATED_PROBLEMS_TABLE_ASSIGNEE_ATTRIBUTE_ID = "Assignee";
-    private static final String RELATED_PROBLEMS_TABLE_LABEL_ATTRIBUTE_ID = "Label";
     private static final String ATTACHMENTS_TAB_ARIA_CONTROLS = "attachmentManager";
     private static final String MESSAGES_TAB_ARIA_CONTROLS = "_messagesTab";
     private static final String ROOT_CAUSES_TAB_ARIA_CONTROLS = "_rootCausesTab";
     private static final String RELATED_TICKETS_TAB_ARIA_CONTROLS = "_relatedTicketsTab";
     private static final String PARTICIPANTS_TAB_ARIA_CONTROLS = "_participantsTabApp";
+    private static final String RELATED_PROBLEMS_TAB_ARIA_CONTROLS = "_relatedProblems";
 
     public IssueDetailsPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -77,7 +73,7 @@ public class IssueDetailsPage extends BaseSDPage {
     @Step("Click release ticket")
     public void releaseTicket() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        OldActionsContainer.createById(driver,wait, ACTIONS_CONTAINER_ID).callActionById(RELEASE_ID);
+        OldActionsContainer.createById(driver, wait, ACTIONS_CONTAINER_ID).callActionById(RELEASE_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Clicking release button");
     }
@@ -85,7 +81,7 @@ public class IssueDetailsPage extends BaseSDPage {
     @Step("Allow ticket editing")
     public void allowEditingTicket() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        OldActionsContainer.createById(driver, wait,ACTIONS_CONTAINER_ID).callActionByLabel(ALLOW_EDIT_LABEL);
+        OldActionsContainer.createById(driver, wait, ACTIONS_CONTAINER_ID).callActionByLabel(ALLOW_EDIT_LABEL);
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Clicking edit button");
     }
@@ -144,6 +140,13 @@ public class IssueDetailsPage extends BaseSDPage {
         log.info("Selecting Participants Tab");
 
         return new ParticipantsTab(driver, wait);
+    }
+
+    public RelatedProblemsTab selectRelatedProblemsTab() {
+        selectTab(RELATED_PROBLEMS_TAB_ARIA_CONTROLS);
+        log.info("Selecting Related Problems Tab");
+
+        return new RelatedProblemsTab(driver, wait);
     }
 
     @Step("Skipping all actions on checklist")
@@ -211,10 +214,8 @@ public class IssueDetailsPage extends BaseSDPage {
     }
 
     @Step("get id of opened ticket")
-    public String getOpenedTicketId() {
-        String viewTitle = ToolbarWidget.create(driver, wait).getViewTitle();
-        String[] viewWithID = viewTitle.split("#");
-        return viewWithID[1];
+    public String getOpenedIssueId() {
+        return getViewTitle().split("#")[1];
     }
 
     @Step("Click Add Remainder")
@@ -249,42 +250,5 @@ public class IssueDetailsPage extends BaseSDPage {
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Check Same MO TT Table");
         return !OldTable.createById(driver, wait, SAME_MO_TT_TABLE_ID).hasNoData();
-    }
-
-    @Step("I open Create Problem wizard")
-    public SDWizardPage openCreateProblemWizard() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        clickContextActionFromButtonContainer(CREATE_PROBLEM_ID);
-        log.info("Create Problem Wizard is opened");
-        return new SDWizardPage(driver, wait);
-    }
-
-    @Step("I check related problem name")
-    public String checkRelatedProblemName(int problemIndex) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        log.info("Check related problem name");
-        return checkRelatedProblemsData(problemIndex, RELATED_PROBLEMS_TABLE_NAME_ATTRIBUTE_ID);
-    }
-
-    @Step("I check related problem assignee")
-    public String checkRelatedProblemAssignee(int problemIndex) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        log.info("Check related problem assignee");
-        return checkRelatedProblemsData(problemIndex, RELATED_PROBLEMS_TABLE_ASSIGNEE_ATTRIBUTE_ID);
-    }
-
-    @Step("I check related problem label")
-    public String checkRelatedProblemLabel(int problemIndex) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        log.info("Check related problem label");
-        return checkRelatedProblemsData(problemIndex, RELATED_PROBLEMS_TABLE_LABEL_ATTRIBUTE_ID);
-    }
-
-    private String checkRelatedProblemsData(int problemIndex, String attributeId) {
-        return checkOldTableData(RELATED_PROBLEMS_TABLE_ID, problemIndex, attributeId);
-    }
-
-    private String checkOldTableData(String tableId, int index, String attributeId) {
-        return OldTable.createById(driver, wait, tableId).getCellValue(index, attributeId);
     }
 }

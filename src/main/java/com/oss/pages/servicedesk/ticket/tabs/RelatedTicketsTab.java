@@ -20,10 +20,12 @@ public class RelatedTicketsTab extends BaseSDPage {
     private static final Logger log = LoggerFactory.getLogger(RelatedTicketsTab.class);
 
     private static final String LINK_TICKETS_ID = "LINK_TICKETS";
+    private static final String LINK_TICKETS_IN_PROBLEMS_ID = "_linkSubticket";
     private static final String RELATED_TICKETS_TABLE_ID_ATTRIBUTE_ID = "ID";
     private static final String RELATED_TICKETS_TABLE_ID = "_relatedTicketsTableWidget";
     private static final String UNLINK_TICKET_ID = "UNLINK_TICKET";
     private static final String CONFIRM_UNLINK_TICKET_BUTTON_LABEL = "Unlink";
+    private static final String UNLINK_TICKET_IN_PROBLEMS_ID = "_unlinkSubticket";
     private static final String SHOW_ARCHIVED_SWITCHER_ID = "_relatedTicketsSwitcherApp";
 
     public RelatedTicketsTab(WebDriver driver, WebDriverWait wait) {
@@ -33,7 +35,11 @@ public class RelatedTicketsTab extends BaseSDPage {
     @Step("Open link ticket prompt")
     public SDWizardPage openLinkTicketWizard() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        clickContextActionFromButtonContainer(LINK_TICKETS_ID);
+        if (isIssueTypeTicket()) {
+            clickContextActionFromButtonContainer(LINK_TICKETS_ID);
+        } else {
+            clickContextActionFromButtonContainer(LINK_TICKETS_IN_PROBLEMS_ID);
+        }
         log.info("Link Tickets prompt is opened");
         return new SDWizardPage(driver, wait);
     }
@@ -62,7 +68,11 @@ public class RelatedTicketsTab extends BaseSDPage {
     @Step("Click unlink Ticket from Related Tickets Tab")
     public void unlinkTicket() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        clickContextActionFromButtonContainer(UNLINK_TICKET_ID);
+        if (isIssueTypeTicket()) {
+            clickContextActionFromButtonContainer(UNLINK_TICKET_ID);
+        } else {
+            clickContextActionFromButtonContainer(UNLINK_TICKET_IN_PROBLEMS_ID);
+        }
         log.info("Unlink Ticket popup is opened");
     }
 

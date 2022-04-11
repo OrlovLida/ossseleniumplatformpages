@@ -27,6 +27,7 @@ public class ExportTest extends BaseTestCase {
     private static final String DOWNLOAD_FILE = "Selenium test*.csv";
     private static final String TT_DOWNLOAD_FILE = "TroubleTicket*.xlsx";
     private static final String TICKET_DASHBOARD = "_TroubleTickets";
+    private static final String EMPTY_SEARCH_FILTER = "";
 
     @BeforeMethod
     public void goToTicketDashboardPage() {
@@ -36,7 +37,7 @@ public class ExportTest extends BaseTestCase {
     @Test(priority = 1, testName = "Export from Ticket Search View", description = "Export from Ticket Search View")
     @Description("Export from Ticket Search View")
     public void exportFromTicketSearch() {
-        ticketSearchPage = new TicketSearchPage(driver, webDriverWait).goToPage(driver, BASIC_URL);
+        ticketSearchPage = new TicketSearchPage(driver, webDriverWait).goToTicketSearchPage(driver, BASIC_URL, EMPTY_SEARCH_FILTER);
         notificationWrapperPage = ticketSearchPage.openNotificationPanel();
         notificationWrapperPage.clearNotifications();
         if (!ticketSearchPage.isIssueTableEmpty()) {
@@ -69,7 +70,7 @@ public class ExportTest extends BaseTestCase {
     @Test(priority = 2, testName = "Refresh test", description = "Click on refresh button and check if data is visible")
     @Description("Click on refresh button and check if data is visible")
     public void refreshOnTicketSearchTest() {
-        ticketSearchPage = new TicketSearchPage(driver, webDriverWait).goToPage(driver, BASIC_URL);
+        ticketSearchPage = new TicketSearchPage(driver, webDriverWait).goToTicketSearchPage(driver, BASIC_URL, EMPTY_SEARCH_FILTER);
         if (!ticketSearchPage.isIssueTableEmpty()) {
             int ticketsInTable = ticketSearchPage.countIssuesInTable();
             ticketSearchPage.clickRefresh();

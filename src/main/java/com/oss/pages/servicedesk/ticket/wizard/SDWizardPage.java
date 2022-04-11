@@ -28,6 +28,7 @@ public class SDWizardPage extends BaseSDPage {
     private static final String EXPECTED_RESOLUTION_DATE_ID = "TT_WIZARD_INPUT_EXPECTED_RESOLUTION_DATE_LABEL";
     private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss";
     private static final String LINK_TICKETS_BUTTON_ID = "_buttonsApp-1";
+    private static final String UNLINK_CONFIRMATION_BUTTON_ID = "ConfirmationBox__confirmUnlinkProblemApp_action_button";
 
     private final MOStep moStep;
 
@@ -130,9 +131,14 @@ public class SDWizardPage extends BaseSDPage {
         log.info("Incident description: {} is entered", message);
     }
 
-    @Step("Click Link Ticket Button")
-    public void clickLinkTicket() {
+    @Step("Click Link Button")
+    public void clickLinkButton() {
         clickButton(LINK_TICKETS_BUTTON_ID);
+    }
+
+    @Step("Click Unlink Button")
+    public void clickUnlinkConfirmationButton() {
+        clickButton(UNLINK_CONFIRMATION_BUTTON_ID);
     }
 
     public void clickComboBox(String componentId) {
