@@ -4,6 +4,9 @@
         <parameter name="MOIdentifier" value="CFS_Access_Product_Selenium_1"/>
         <parameter name="ProblemAssignee" value="ca_kodrobinska"/>
         <parameter name="NewAssignee" value="sd_seleniuimtest"/>
+        <parameter name="SecondMOIdentifier" value="CFS_Access_Product_Selenium_2"/>
+        <parameter name="RelatedTicketID" value="100"/>
+        <parameter name="ProblemToLinkId" value="100"/>
         <classes>
             <class name="com.oss.servicedesk.ProblemsVFNZTest"/>
         </classes>

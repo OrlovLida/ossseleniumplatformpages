@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import com.oss.framework.components.contextactions.ButtonContainer;
 import com.oss.framework.components.inputs.HtmlEditor;
 import com.oss.framework.components.layout.Card;
+import com.oss.framework.components.mainheader.ToolbarWidget;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.BasePage;
 import com.oss.pages.servicedesk.ticket.IssueDetailsPage;
@@ -96,5 +97,13 @@ public abstract class BaseSDPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         ButtonContainer.create(driver, wait).callActionById(contextActionLabel);
         log.info("Clicking Context action {}", contextActionLabel);
+    }
+
+    public String getViewTitle() {
+        return ToolbarWidget.create(driver, wait).getViewTitle();
+    }
+
+    public boolean isIssueTypeTicket() {
+        return getViewTitle().contains("Ticket");
     }
 }
