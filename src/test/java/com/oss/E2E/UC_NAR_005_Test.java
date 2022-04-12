@@ -197,7 +197,7 @@ public class UC_NAR_005_Test extends BaseTestCase {
         newInventoryViewPage.clickConfirmationBox(CONFIRM_ID);
         checkMessageType(MessageType.SUCCESS);
         waitForPageToLoad();
-        newInventoryViewPage.refreshMainTable();
+        DelayUtils.sleep(15000);
         waitForPageToLoad();
         Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());
     }
