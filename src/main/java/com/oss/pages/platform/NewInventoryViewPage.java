@@ -25,7 +25,6 @@ import com.oss.framework.widgets.table.TableRow;
 import com.oss.framework.widgets.table.TableWidget;
 import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.BasePage;
-import com.oss.pages.filterpanel.FilterPanelPage;
 import com.oss.pages.platform.configuration.ChooseConfigurationWizard;
 import com.oss.pages.platform.configuration.SaveConfigurationWizard;
 import com.oss.pages.platform.configuration.SaveConfigurationWizard.Field;
@@ -53,7 +52,7 @@ public class NewInventoryViewPage extends BasePage {
     private static final String CHANGE_LABEL = "Change";
     private static final String TABS_CONTAINER_ID = "DetailTabsWidget";
     private static final String OPEN_HIERARCHY_VIEW_ACTION_ID = "OpenHierarchyViewContext";
-    public static final String KEBAB_OBJECT_GROUP_ID= "frameworkObjectButtonsGroup";
+    public static final String KEBAB_OBJECT_GROUP_ID = "frameworkObjectButtonsGroup";
 
     public NewInventoryViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -88,6 +87,11 @@ public class NewInventoryViewPage extends BasePage {
     public NewInventoryViewPage selectFirstRow() {
         selectObjectByRowId(0);
         return this;
+    }
+
+    public void selectRow(String attributeId, String value) {
+        getMainTable().selectRowByAttributeValue(attributeId, value);
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public void selectObjectByRowId(int rowId) {
@@ -191,16 +195,6 @@ public class NewInventoryViewPage extends BasePage {
         return getMainTable().hasNoData();
     }
 
-    @Step("Open Filter Panel")
-    @Deprecated
-    public FilterPanelPage openFilterPanel() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        AdvancedSearch advancedSearch = new AdvancedSearch(driver, wait);
-        advancedSearch.openSearchPanel();
-        DelayUtils.waitForPageToLoad(driver, wait);
-        return new FilterPanelPage(driver);
-    }
-
     @Step("Call {actionId} action from {groupId} group")
     public NewInventoryViewPage callAction(String groupId, String actionId) {
         getMainTable().callAction(groupId, actionId);
@@ -213,10 +207,9 @@ public class NewInventoryViewPage extends BasePage {
     }
 
     @Step("Change columns order")
-    public NewInventoryViewPage changeColumnsOrderInMainTable(String columnLabel, int position) {
+    public void changeColumnsOrderInMainTable(String columnLabel, int position) {
         getMainTable().changeColumnsOrder(columnLabel, position);
         DelayUtils.waitForPageToLoad(driver, wait);
-        return this;
     }
 
     @Step("Change Tabs order")
@@ -413,11 +406,10 @@ public class NewInventoryViewPage extends BasePage {
     }
 
     @Step("Apply configuration for main table")
-    public NewInventoryViewPage applyConfigurationForMainTable(String configurationName) {
+    public void applyConfigurationForMainTable(String configurationName) {
         DelayUtils.waitForPageToLoad(driver, wait);
         getMainTable().callAction(ActionsContainer.KEBAB_GROUP_ID, CHOOSE_CONFIG_ID);
         getChooseConfigurationWizard().chooseConfiguration(configurationName).apply();
-        return this;
     }
 
     @Step("Apply configuration for tabs")
@@ -443,35 +435,31 @@ public class NewInventoryViewPage extends BasePage {
     }
 
     @Step("Delete configuration for page")
-    public NewInventoryViewPage deletePageConfiguration(String configurationName) {
+    public void deletePageConfiguration(String configurationName) {
         DelayUtils.waitForPageToLoad(driver, wait);
         ButtonPanel.create(driver, wait).clickButton(KEBAB_OBJECT_GROUP_ID, CHOOSE_CONFIGURATION_PAGE_ID);
         getChooseConfigurationWizard().deleteConfiguration(configurationName).cancel();
-        return this;
     }
 
     @Step("Delete configuration for main table")
-    public NewInventoryViewPage deleteConfigurationForMainTable(String configurationName) {
+    public void deleteConfigurationForMainTable(String configurationName) {
         DelayUtils.waitForPageToLoad(driver, wait);
         getMainTable().callAction(ActionsContainer.KEBAB_GROUP_ID, CHOOSE_CONFIG_ID);
         getChooseConfigurationWizard().deleteConfiguration(configurationName).cancel();
-        return this;
     }
 
     @Step("Download configuration for main table")
-    public NewInventoryViewPage downloadConfigurationForMainTable(String configurationName) {
+    public void downloadConfigurationForMainTable(String configurationName) {
         DelayUtils.waitForPageToLoad(driver, wait);
         getMainTable().callAction(ActionsContainer.KEBAB_GROUP_ID, DOWNLOAD_CONFIG_ID);
         getChooseConfigurationWizard().chooseConfiguration(configurationName).download();
-        return this;
     }
 
     @Step("Download configuration for page")
-    public NewInventoryViewPage downloadConfigurationForPage(String configurationName) {
+    public void downloadConfigurationForPage(String configurationName) {
         DelayUtils.waitForPageToLoad(driver, wait);
         ButtonPanel.create(driver, wait).clickButton(KEBAB_OBJECT_GROUP_ID, DOWNLOAD_CONFIG_PAGE_ID);
         getChooseConfigurationWizard().chooseConfiguration(configurationName).download();
-        return this;
     }
 
     @Step("Disable Column and apply")

@@ -72,7 +72,7 @@ public class TP_OSS_RM_RAN_003_Test extends BaseTestCase {
         NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.searchObject(LOCATION_NAME);
         waitForPageToLoad();
-        newInventoryViewPage.selectFirstRow();
+        newInventoryViewPage.selectRow("col-name", LOCATION_NAME);
         waitForPageToLoad();
         newInventoryViewPage.callAction(ActionsContainer.SHOW_ON_GROUP_ID, "Cell Site Configuration");
         waitForPageToLoad();
