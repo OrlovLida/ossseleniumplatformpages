@@ -9,6 +9,7 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
+import com.oss.pages.platform.NotificationWrapperPage;
 import com.oss.pages.servicedesk.ticket.BaseDashboardPage;
 import com.oss.pages.servicedesk.ticket.IssueDetailsPage;
 import com.oss.pages.servicedesk.ticket.tabs.AttachmentsTab;
@@ -40,6 +41,7 @@ public class ProblemsVFNZTest extends BaseTestCase {
     private ParticipantsTab participantsTab;
     private ParticipantsPromptPage participantsPromptPage;
     private RelatedProblemsTab relatedProblemsTab;
+    private NotificationWrapperPage notificationWrapperPage;
     private String problemId;
     private static final String PROBLEMS_DASHBOARD = "_ProblemManagement";
     private static final String PROBLEM_ISSUE_TYPE = "problem";
@@ -222,7 +224,26 @@ public class ProblemsVFNZTest extends BaseTestCase {
         Assert.assertEquals(relatedTicketsTab.checkRelatedTicketsId(0), RelatedTicketID);
     }
 
-    @Test(priority = 12, testName = "Check Related Tickets Tab - unlink Ticket", description = "Check Related Tickets Tab - unlink Ticket")
+    @Test(priority = 12, testName = "Export Related Tickets", description = "Export Related Tickets")
+    @Description("Export Related Tickets")
+    public void exportRelatedTickets() {
+        issueDetailsPage = baseDashboardPage.openIssueDetailsView(problemId, BASIC_URL, PROBLEM_ISSUE_TYPE);
+        relatedTicketsTab = issueDetailsPage.selectRelatedTicketsTab();
+        notificationWrapperPage = relatedTicketsTab.openNotificationPanel();
+        notificationWrapperPage.clearNotifications();
+        relatedTicketsTab.clickExport();
+        notificationWrapperPage = relatedTicketsTab.openNotificationPanel();
+        notificationWrapperPage.waitForExportFinish();
+        notificationWrapperPage.clickDownload();
+        notificationWrapperPage.waitAndGetFinishedNotificationText();
+        notificationWrapperPage.clearNotifications();
+        relatedTicketsTab.attachRelatedTicketsFile();
+
+        Assert.assertEquals(notificationWrapperPage.amountOfNotifications(), 0);
+        Assert.assertTrue(relatedTicketsTab.isRelatedTicketsFileNotEmpty());
+    }
+
+    @Test(priority = 13, testName = "Check Related Tickets Tab - unlink Ticket", description = "Check Related Tickets Tab - unlink Ticket")
     @Description("Check Related Tickets Tab - unlink Ticket")
     public void unlinkTicketFromTicket() {
         issueDetailsPage = baseDashboardPage.openIssueDetailsView(problemId, BASIC_URL, PROBLEM_ISSUE_TYPE);
@@ -235,7 +256,7 @@ public class ProblemsVFNZTest extends BaseTestCase {
     }
 
     @Parameters({"RelatedTicketID"})
-    @Test(priority = 13, testName = "Check Related Tickets Tab - show archived switcher", description = "Check Related Tickets Tab - show archived switcher")
+    @Test(priority = 14, testName = "Check Related Tickets Tab - show archived switcher", description = "Check Related Tickets Tab - show archived switcher")
     @Description("Check Related Tickets Tab - show archived switcher")
     public void showArchived(
             @Optional("100") String RelatedTicketID
@@ -247,7 +268,7 @@ public class ProblemsVFNZTest extends BaseTestCase {
         Assert.assertEquals(relatedTicketsTab.checkRelatedTicketsId(0), RelatedTicketID);
     }
 
-    @Test(priority = 14, testName = "Check Participants", description = "Check Participants Tab - add Participant")
+    @Test(priority = 15, testName = "Check Participants", description = "Check Participants Tab - add Participant")
     @Description("Check Participants Tab - add Participant")
     public void addParticipant() {
         issueDetailsPage = baseDashboardPage.openIssueDetailsView(problemId, BASIC_URL, PROBLEM_ISSUE_TYPE);
@@ -264,7 +285,7 @@ public class ProblemsVFNZTest extends BaseTestCase {
     }
 
     @Parameters({"ProblemToLinkId"})
-    @Test(priority = 15, testName = "Link Problem to Problem", description = "Link Problem to Problem")
+    @Test(priority = 16, testName = "Link Problem to Problem", description = "Link Problem to Problem")
     @Description("Link Problem to Problem")
     public void linkProblem(
             @Optional("100") String ProblemToLinkId
@@ -278,7 +299,26 @@ public class ProblemsVFNZTest extends BaseTestCase {
         Assert.assertEquals(relatedProblemsTab.checkRelatedProblemId(0), ProblemToLinkId);
     }
 
-    @Test(priority = 15, testName = "Unlink Problem from Problem", description = "Unlink Problem from Problem")
+    @Test(priority = 17, testName = "Export from Related Problems tab", description = "Export from Related Problems tab")
+    @Description("Export from Related Problems tab")
+    public void exportFromRelatedProblemsTab() {
+        issueDetailsPage = baseDashboardPage.openIssueDetailsView(problemId, BASIC_URL, PROBLEM_ISSUE_TYPE);
+        relatedProblemsTab = issueDetailsPage.selectRelatedProblemsTab();
+        notificationWrapperPage = relatedProblemsTab.openNotificationPanel();
+        notificationWrapperPage.clearNotifications();
+        relatedProblemsTab.clickExport();
+        notificationWrapperPage = relatedProblemsTab.openNotificationPanel();
+        notificationWrapperPage.waitForExportFinish();
+        notificationWrapperPage.clickDownload();
+        notificationWrapperPage.waitAndGetFinishedNotificationText();
+        notificationWrapperPage.clearNotifications();
+        relatedProblemsTab.attachRelatedProblemsFile();
+
+        Assert.assertEquals(notificationWrapperPage.amountOfNotifications(), 0);
+        Assert.assertTrue(relatedProblemsTab.isRelatedProblemFileNotEmpty());
+    }
+
+    @Test(priority = 18, testName = "Unlink Problem from Problem", description = "Unlink Problem from Problem")
     @Description("Unlink Problem from Problem")
     public void unlinkProblem() {
         issueDetailsPage = baseDashboardPage.openIssueDetailsView(problemId, BASIC_URL, PROBLEM_ISSUE_TYPE);
