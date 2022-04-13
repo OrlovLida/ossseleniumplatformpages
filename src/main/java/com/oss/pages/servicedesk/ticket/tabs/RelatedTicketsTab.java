@@ -27,6 +27,8 @@ public class RelatedTicketsTab extends BaseSDPage {
     private static final String CONFIRM_UNLINK_TICKET_BUTTON_LABEL = "Unlink";
     private static final String UNLINK_TICKET_IN_PROBLEMS_ID = "_unlinkSubticket";
     private static final String SHOW_ARCHIVED_SWITCHER_ID = "_relatedTicketsSwitcherApp";
+    private static final String RELATED_TICKETS_EXPORT_FILE = "TroubleTicket*.xlsx";
+    private static final String TABS_CONTAINER_ID = "_tablesWindow";
 
     public RelatedTicketsTab(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -91,6 +93,21 @@ public class RelatedTicketsTab extends BaseSDPage {
         ComponentFactory.create(SHOW_ARCHIVED_SWITCHER_ID, Input.ComponentType.SWITCHER, driver, wait)
                 .setSingleStringValue(Boolean.TRUE.toString());
         DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    @Step("Click Export")
+    public void clickExport() {
+        clickExportFromTab(TABS_CONTAINER_ID);
+    }
+
+    @Step("Attach file with Related Tickets to report")
+    public void attachRelatedTicketsFile() {
+        attachFileToReport(RELATED_TICKETS_EXPORT_FILE);
+    }
+
+    @Step("Check if exported file with Related Tickets is not empty")
+    public boolean isRelatedTicketsFileNotEmpty() {
+        return checkIfFileIsNotEmpty(RELATED_TICKETS_EXPORT_FILE);
     }
 
     private OldTable getRelatedTicketTable() {

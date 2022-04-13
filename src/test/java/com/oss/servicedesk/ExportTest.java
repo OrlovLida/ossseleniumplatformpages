@@ -89,7 +89,7 @@ public class ExportTest extends BaseTestCase {
         notificationWrapperPage = baseDashboardPage.openNotificationPanel();
         notificationWrapperPage.clearNotifications();
         notificationWrapperPage.close();
-        baseDashboardPage.clickExport();
+        baseDashboardPage.clickExportFromTTTable();
         notificationWrapperPage = baseDashboardPage.openNotificationPanel();
         notificationWrapperPage.waitForExportFinish();
         notificationWrapperPage.clickDownload();

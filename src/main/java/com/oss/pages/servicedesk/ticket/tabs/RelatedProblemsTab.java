@@ -24,6 +24,8 @@ public class RelatedProblemsTab extends BaseSDPage {
     private static final String LINK_PROBLEM_TO_PROBLEM_BUTTON_ID = "_linkProblem";
     private static final String COLUMN_PROBLEM_ID_LABEL = "Problem ID";
     private static final String UNLINK_PROBLEM_BUTTON_ID = "_unlinkProblem";
+    private static final String RELATED_PROBLEMS_EXPORT_FILE = "Problem*.xlsx";
+    private static final String TABS_CONTAINER_ID = "_tablesWindow";
 
     public RelatedProblemsTab(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -88,6 +90,21 @@ public class RelatedProblemsTab extends BaseSDPage {
     @Step("Check if Related Problems Table is Empty")
     public boolean isRelatedProblemsTableEmpty() {
         return getRelatedProblemsTable().hasNoData();
+    }
+
+    @Step("Click Export")
+    public void clickExport() {
+        clickExportFromTab(TABS_CONTAINER_ID);
+    }
+
+    @Step("Attach file with Related Problems to report")
+    public void attachRelatedProblemsFile() {
+        attachFileToReport(RELATED_PROBLEMS_EXPORT_FILE);
+    }
+
+    @Step("Check if file with Related Problems is not empty")
+    public boolean isRelatedProblemFileNotEmpty() {
+        return checkIfFileIsNotEmpty(RELATED_PROBLEMS_EXPORT_FILE);
     }
 
     private OldTable getRelatedProblemsTable() {

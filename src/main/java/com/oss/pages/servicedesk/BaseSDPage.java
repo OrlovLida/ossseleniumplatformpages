@@ -13,6 +13,8 @@ import com.oss.framework.components.inputs.HtmlEditor;
 import com.oss.framework.components.layout.Card;
 import com.oss.framework.components.mainheader.ToolbarWidget;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.table.OldTable;
+import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.BasePage;
 import com.oss.pages.servicedesk.ticket.IssueDetailsPage;
 import com.oss.untils.FileDownload;
@@ -29,6 +31,8 @@ public abstract class BaseSDPage extends BasePage {
     private static final String DATE_FORMAT = "yyMMddHHmm";
     public static final DateTimeFormatter CREATE_DATE_FILTER_DATE_FORMATTER = DateTimeFormatter.ofPattern(CREATE_DATE_FILTER_DATE_PATTERN);
     public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(DATE_FORMAT);
+    private static final String GROUP_ID_OLD_ACTIONS_CONTAINER = "frameworkCustomEllipsis";
+    private static final String EXPORT_BUTTON_ID = "EXPORT";
 
     protected BaseSDPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -65,7 +69,6 @@ public abstract class BaseSDPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    @Step("Check if file is not empty")
     public boolean checkIfFileIsNotEmpty(String fileName) {
         log.info("Checking if file is not empty");
         return FileDownload.checkIfFileIsNotEmpty(fileName);
@@ -97,6 +100,20 @@ public abstract class BaseSDPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         ButtonContainer.create(driver, wait).callActionById(contextActionLabel);
         log.info("Clicking Context action {}", contextActionLabel);
+    }
+
+    public void clickExportFromTable(String tableId) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        OldTable.createById(driver, wait, tableId).callAction(GROUP_ID_OLD_ACTIONS_CONTAINER, EXPORT_BUTTON_ID);
+
+        log.info("Exporting file");
+    }
+
+    public void clickExportFromTab(String tabContainerId) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        TabsWidget.createById(driver, wait, tabContainerId).callActionById(GROUP_ID_OLD_ACTIONS_CONTAINER, EXPORT_BUTTON_ID);
+
+        log.info("Exporting file");
     }
 
     public String getViewTitle() {

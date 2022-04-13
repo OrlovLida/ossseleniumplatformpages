@@ -10,6 +10,7 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
+import com.oss.pages.platform.NotificationWrapperPage;
 import com.oss.pages.servicedesk.GraphQLSearchPage;
 import com.oss.pages.servicedesk.ticket.BaseDashboardPage;
 import com.oss.pages.servicedesk.ticket.IssueDetailsPage;
@@ -55,6 +56,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     private ParticipantsTab participantsTab;
     private ParticipantsPromptPage participantsPromptPage;
     private RelatedProblemsTab relatedProblemsTab;
+    private NotificationWrapperPage notificationWrapperPage;
     private String ticketID;
 
     private static final String TROUBLE_TICKET_ISSUE_TYPE = "trouble-ticket";
@@ -378,7 +380,26 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
         Assert.assertEquals(relatedTicketsTab.checkRelatedTicketsId(0), RelatedTicketID);
     }
 
-    @Test(priority = 17, testName = "Check Related Tickets Tab - unlink Ticket", description = "Check Related Tickets Tab - unlink Ticket")
+    @Test(priority = 17, testName = "Export Related Tickets", description = "Export Related Tickets")
+    @Description("Export Related Tickets")
+    public void exportRelatedTickets() {
+        issueDetailsPage = baseDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
+        relatedTicketsTab = issueDetailsPage.selectRelatedTicketsTab();
+        notificationWrapperPage = relatedTicketsTab.openNotificationPanel();
+        notificationWrapperPage.clearNotifications();
+        relatedTicketsTab.clickExport();
+        notificationWrapperPage = relatedTicketsTab.openNotificationPanel();
+        notificationWrapperPage.waitForExportFinish();
+        notificationWrapperPage.clickDownload();
+        notificationWrapperPage.waitAndGetFinishedNotificationText();
+        notificationWrapperPage.clearNotifications();
+        relatedTicketsTab.attachRelatedTicketsFile();
+
+        Assert.assertEquals(notificationWrapperPage.amountOfNotifications(), 0);
+        Assert.assertTrue(relatedTicketsTab.isRelatedTicketsFileNotEmpty());
+    }
+
+    @Test(priority = 18, testName = "Check Related Tickets Tab - unlink Ticket", description = "Check Related Tickets Tab - unlink Ticket")
     @Description("Check Related Tickets Tab - unlink Ticket")
     public void unlinkTicketFromTicket() {
         issueDetailsPage = baseDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
@@ -391,7 +412,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     }
 
     @Parameters({"RelatedTicketID"})
-    @Test(priority = 18, testName = "Check Related Tickets Tab - show archived switcher", description = "Check Related Tickets Tab - show archived switcher")
+    @Test(priority = 19, testName = "Check Related Tickets Tab - show archived switcher", description = "Check Related Tickets Tab - show archived switcher")
     @Description("Check Related Tickets Tab - show archived switcher")
     public void showArchived(@Optional("100") String RelatedTicketID) {
         issueDetailsPage = baseDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
@@ -401,7 +422,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
         Assert.assertEquals(relatedTicketsTab.checkRelatedTicketsId(0), RelatedTicketID);
     }
 
-    @Test(priority = 19, testName = "Check Same MO TT Tab", description = "Check Same MO TT Tab")
+    @Test(priority = 20, testName = "Check Same MO TT Tab", description = "Check Same MO TT Tab")
     @Description("Check Same MO TT Tab")
     public void checkSameMOTTTab() {
         issueDetailsPage = baseDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
@@ -409,7 +430,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
         Assert.assertTrue(issueDetailsPage.checkIfSameMOTTTableIsNotEmpty());
     }
 
-    @Test(priority = 20, testName = "Check Root Causes Tree Table", description = "Check Root Causes Tree Table")
+    @Test(priority = 21, testName = "Check Root Causes Tree Table", description = "Check Root Causes Tree Table")
     @Description("Check Root Causes Tree Table")
     public void checkRootCause() {
         issueDetailsPage = baseDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
@@ -421,7 +442,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     }
 
     @Parameters({"SecondMOIdentifier"})
-    @Test(priority = 21, testName = "Add second MO in Root Causes tab", description = "Add second MO in Root Causes tab")
+    @Test(priority = 22, testName = "Add second MO in Root Causes tab", description = "Add second MO in Root Causes tab")
     @Description("Add second MO in Root Causes tab")
     public void addRootCause(@Optional("CFS_Access_Product_Selenium_2") String SecondMOIdentifier) {
         issueDetailsPage = baseDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
@@ -435,7 +456,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
         Assert.assertTrue(rootCausesTab.checkIfMOIdentifierIsPresentOnRootCauses(SecondMOIdentifier));
     }
 
-    @Test(priority = 22, testName = "Check Participants", description = "Check Participants Tab - add Participant")
+    @Test(priority = 23, testName = "Check Participants", description = "Check Participants Tab - add Participant")
     @Description("Check Participants Tab - add Participant")
     public void addParticipant() {
         issueDetailsPage = baseDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
@@ -451,7 +472,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
         Assert.assertEquals(participantsTab.checkParticipantRole(0), PARTICIPANT_ROLE.toUpperCase());
     }
 
-    @Test(priority = 23, testName = "Check Related Problems tab", description = "Check Related Problems tab - Create Problem")
+    @Test(priority = 24, testName = "Check Related Problems tab", description = "Check Related Problems tab - Create Problem")
     @Description("Check Related Problems tab - Create Problem")
     public void createProblemRelatedToTicket() {
         issueDetailsPage = baseDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
@@ -467,7 +488,26 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
         Assert.assertEquals(relatedProblemsTab.checkRelatedProblemLabel(0), CREATE_PROBLEM_LABEL);
     }
 
-    @Test(priority = 24, testName = "Add attachment to ticket", description = "Add attachment to ticket")
+    @Test(priority = 25, testName = "Export from Related Problems tab", description = "Export from Related Problems tab")
+    @Description("Export from Related Problems tab")
+    public void exportFromRelatedProblemsTab() {
+        issueDetailsPage = baseDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
+        relatedProblemsTab = issueDetailsPage.selectRelatedProblemsTab();
+        notificationWrapperPage = relatedProblemsTab.openNotificationPanel();
+        notificationWrapperPage.clearNotifications();
+        relatedProblemsTab.clickExport();
+        notificationWrapperPage = relatedProblemsTab.openNotificationPanel();
+        notificationWrapperPage.waitForExportFinish();
+        notificationWrapperPage.clickDownload();
+        notificationWrapperPage.waitAndGetFinishedNotificationText();
+        notificationWrapperPage.clearNotifications();
+        relatedProblemsTab.attachRelatedProblemsFile();
+
+        Assert.assertEquals(notificationWrapperPage.amountOfNotifications(), 0);
+        Assert.assertTrue(relatedProblemsTab.isRelatedProblemFileNotEmpty());
+    }
+
+    @Test(priority = 26, testName = "Add attachment to ticket", description = "Add attachment to ticket")
     @Description("Add attachment to ticket")
     public void addAttachment() {
         issueDetailsPage = baseDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
@@ -483,7 +523,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
         Assert.assertEquals(attachmentsTab.getAttachmentOwner(), USER_NAME);
     }
 
-    @Test(priority = 25, testName = "Download Attachment", description = "Download the Attachment from Attachment tab in Ticket Details")
+    @Test(priority = 27, testName = "Download Attachment", description = "Download the Attachment from Attachment tab in Ticket Details")
     @Description("Download the Attachment from Attachment tab in Ticket Details")
     public void downloadAttachment() {
         issueDetailsPage = baseDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
@@ -497,7 +537,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
         Assert.assertTrue(issueDetailsPage.checkIfFileIsNotEmpty(CSV_FILE));
     }
 
-    @Test(priority = 26, testName = "Delete Attachment", description = "Delete the Attachment from Attachment tab in Ticket Details")
+    @Test(priority = 28, testName = "Delete Attachment", description = "Delete the Attachment from Attachment tab in Ticket Details")
     @Description("Delete the Attachment from Attachment tab in Ticket Details")
     public void deleteAttachment() {
         issueDetailsPage = baseDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
@@ -510,7 +550,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
         Assert.assertTrue(attachmentsTab.isAttachmentListEmpty());
     }
 
-    @Test(priority = 27, testName = "Most Important Info test", description = "add comment as important and check if it is displayed in most important info tab")
+    @Test(priority = 29, testName = "Most Important Info test", description = "add comment as important and check if it is displayed in most important info tab")
     @Description("add comment as important and check if it is displayed in most important info tab")
     public void mostImportantInfoTest() {
         issueDetailsPage = baseDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
