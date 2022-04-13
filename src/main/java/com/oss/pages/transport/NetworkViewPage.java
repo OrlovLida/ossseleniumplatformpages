@@ -14,7 +14,6 @@ import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.components.prompts.ConfirmationBoxInterface;
 import com.oss.framework.navigation.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.wizard.Wizard;
 import com.oss.framework.widgets.advancedsearch.AdvancedSearchWidget;
 import com.oss.framework.widgets.dockedpanel.DockedPanel;
 import com.oss.framework.widgets.dockedpanel.DockedPanelInterface;
@@ -22,6 +21,7 @@ import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.table.TableInterface;
 import com.oss.framework.widgets.tabs.TabsWidget;
+import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.transport.trail.RoutingWizardPage;
@@ -32,7 +32,6 @@ import com.oss.pages.transport.trail.v2.TerminationStepPage;
 import io.qameta.allure.Step;
 
 import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
-import static com.oss.framework.components.inputs.Input.ComponentType.SEARCH_FIELD;
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_AREA;
 
 public class NetworkViewPage extends BasePage {
@@ -68,8 +67,7 @@ public class NetworkViewPage extends BasePage {
     private static final String PROPERTY_PANEL_ID = "NetworkViewPropertyPanelWidget";
     private static final String BOTTOM_TABS_ID = "bottomTabs";
     private static final String ACTION_CONTAINER_ID = "undefined-windowToolbar";
-
-    private Wizard wizard = Wizard.createWizard(driver, wait);
+    private static final String TRAIL_TYPE_WIZARD_ID = "trailTypesPopup_prompt-card";
 
     public NetworkViewPage(WebDriver driver) {
         super(driver);
@@ -151,12 +149,12 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Click Start editing trail button")
     public void startEditingSelectedTrail() {
-        useContextAction("EDIT",START_EDITING_CONNECTION_ACTION);
+        useContextAction("EDIT", START_EDITING_CONNECTION_ACTION);
     }
 
     @Step("Click Stop editing trail button")
     public void stopEditingTrail() {
-        useContextAction("EDIT",STOP_EDITING_CONNECTION_ACTION);
+        useContextAction("EDIT", STOP_EDITING_CONNECTION_ACTION);
     }
 
     @Step("Click confirmation box button")
@@ -181,6 +179,7 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Accept trail type")
     public void acceptTrailType() {
+        Wizard wizard = Wizard.createByComponentId(driver, wait, TRAIL_TYPES_POPUP_ID);
         wizard.clickButtonById("wizard-submit-button-trailTypeWizardWidget");
     }
 
@@ -188,11 +187,6 @@ public class NetworkViewPage extends BasePage {
     public void modifyTermination() {
         TabsWidget tabsWidget = TabsWidget.createById(driver, wait, BOTTOM_TABS_ID);
         tabsWidget.callActionById("Modify Termination");
-    }
-
-    @Step("Set trail termination port")
-    public void setTrailPort(String port) {
-        wizard.setComponentValue("portId", port, SEARCH_FIELD);
     }
 
     @Step("Expand docked panel")
@@ -339,7 +333,7 @@ public class NetworkViewPage extends BasePage {
     @Step("Get value from Attributes panel")
     public String getAttributeValue(String attributeName) {
         expandAttributesPanel();
-        OldPropertyPanel attributesPanel = OldPropertyPanel.createById(driver, wait , PROPERTY_PANEL_ID);
+        OldPropertyPanel attributesPanel = OldPropertyPanel.createById(driver, wait, PROPERTY_PANEL_ID);
         return attributesPanel.getPropertyValue(attributeName);
     }
 
