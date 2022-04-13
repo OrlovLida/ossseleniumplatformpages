@@ -179,7 +179,7 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Accept trail type")
     public void acceptTrailType() {
-        Wizard wizard = Wizard.createByComponentId(driver, wait, TRAIL_TYPES_POPUP_ID);
+        Wizard wizard = Wizard.createByComponentId(driver, wait, TRAIL_TYPE_WIZARD_ID);
         wizard.clickButtonById("wizard-submit-button-trailTypeWizardWidget");
     }
 
