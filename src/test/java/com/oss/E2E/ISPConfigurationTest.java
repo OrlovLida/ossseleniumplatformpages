@@ -171,7 +171,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
         hierarchyViewPage.selectFirstObject();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        hierarchyViewPage.getMainTree().callActionById("EDIT", "DeviceChangeModelAction");
+        hierarchyViewPage.getMainTree().callActionById("EDIT", "ChangeDeviceModelAction");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
