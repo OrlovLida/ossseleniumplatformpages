@@ -12,7 +12,7 @@ public class ChangeModelWizardPage extends BasePage {
     private static final String WIZARD_ID = "optional_prompt-card";
 
     private Wizard wizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
-    private static final String MODEL_SEARCH = "search_model";
+    private static final String MODEL_SEARCH = "model_OSF";
 
     public ChangeModelWizardPage(WebDriver driver) {
         super(driver);
