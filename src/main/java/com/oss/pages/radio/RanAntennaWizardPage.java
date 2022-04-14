@@ -2,6 +2,7 @@ package com.oss.pages.radio;
 
 import org.openqa.selenium.WebDriver;
 
+import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 
@@ -36,6 +37,7 @@ public class RanAntennaWizardPage extends BasePage {
         setModel(model);
         setLocation(location);
         setPreciseLocation(location);
+        DelayUtils.waitForPageToLoad(driver, wait);
         clickAccept();
     }
 

@@ -3,6 +3,7 @@ package com.oss.pages.radio;
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.inputs.Input;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 
@@ -38,6 +39,7 @@ public class GNodeBWizardPage extends BasePage {
         setId(gNodeBId);
         setModel(gNodeBModel);
         setMccMncPrimary(MCCMNCPrimary);
+        DelayUtils.waitForPageToLoad(driver, wait);
         accept();
     }
 
