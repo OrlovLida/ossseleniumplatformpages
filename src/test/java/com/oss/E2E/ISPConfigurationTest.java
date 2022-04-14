@@ -61,7 +61,7 @@ public class ISPConfigurationTest extends BaseTestCase {
     private static final String POWER_SUPPLY_UNIT_NAME = "Power Supply Unit";
     private static final String POWER_SUPPLY_UNIT_CAPACITY = "5";
     private static final String DELETE_DEVICE = "Delete Device";
-    private static final String UPDATE_DEVICE = "UpdateDeviceWizardAction";
+    private static final String UPDATE_DEVICE = "frameworkCustomMore_UpdateDeviceWizardAction";
     private static final String NAME = "Name";
     private static final String ASSERT_NOT_EQUALS = "The checked value is %s and it shouldn't be equal to the defined %s value";
     private static final String LOCATION_POWER_CAPACITY = "0.00";
