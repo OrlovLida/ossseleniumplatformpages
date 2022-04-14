@@ -1,6 +1,7 @@
 package com.oss.pages.radio;
 
 import com.oss.framework.components.inputs.Input;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
@@ -50,6 +51,7 @@ public class Cell4GWizardPage extends BasePage {
         setENodeBName(eNodeBName);
         setCell4GId(cellId);
         setCarrier4G(carrier4G);
+        DelayUtils.waitForPageToLoad(driver, wait);
         accept();
     }
 

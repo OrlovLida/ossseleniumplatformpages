@@ -2,6 +2,7 @@ package com.oss.pages.radio;
 
 import org.openqa.selenium.WebDriver;
 
+import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.EditableList;
 import com.oss.framework.widgets.list.EditableList.Row;
 import com.oss.framework.wizard.Wizard;
@@ -73,6 +74,7 @@ public class Cell5GBulkWizardPage extends BasePage {
             row.setValue("10", COLUMN_RSI, RSI, TEXT_FIELD);
             rowNumber--;
         }
+        DelayUtils.waitForPageToLoad(driver, wait);
         clickAccept();
     }
 
