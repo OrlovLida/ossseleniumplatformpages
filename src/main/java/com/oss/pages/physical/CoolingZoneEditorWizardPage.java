@@ -16,11 +16,11 @@ public class CoolingZoneEditorWizardPage extends BasePage {
 
     private Wizard wizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
     private static final String SELECT_COOLING_ZONE_NAME = "cooling_zone_uid";
-    private static final String WIZARD_ID = "physical_device_cooling_zone_view";
+    private static final String WIZARD_ID = "physical_device_cooling_zone_view_prompt-card";
 
     @Step("Click Update")
     public void clickUpdate() {
-        Wizard.createWizard(driver, wait).clickUpdate();
+        wizard.clickUpdate();
     }
 
     @Step("Select Cooling Zone to assign to device")
