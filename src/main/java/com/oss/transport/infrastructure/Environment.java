@@ -1,6 +1,10 @@
 package com.oss.transport.infrastructure;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Optional;
+
+import static com.oss.configuration.Configuration.CONFIGURATION;
 
 public class Environment {
     
@@ -40,6 +44,24 @@ public class Environment {
     
     public static Builder builder(Environment environment) {
         return new Builder(environment);
+    }
+
+    public static Environment createEnvironmentFromConfiguration() {
+        try {
+            URL url = new URL(CONFIGURATION.getUrl());
+            String host = url.getHost();
+            int port = url.getPort();
+            String userName = CONFIGURATION.getValue("user");
+            String pass = CONFIGURATION.getValue("password");
+            User user = new User(userName, pass);
+            return Environment.builder()
+                .withEnvironmentUrl(host)
+                .withEnvironmentPort(port)
+                .withUser(user)
+                .build();
+        } catch (MalformedURLException exception) {
+            throw new IllegalStateException(exception);
+        }
     }
     
     public static final class Builder {

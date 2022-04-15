@@ -1,7 +1,10 @@
 package com.oss.cmTemplate.templatemanager;
 
+import java.util.UUID;
+
 import org.openqa.selenium.NoSuchElementException;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -13,6 +16,7 @@ import com.oss.pages.templatecm.templatemanager.CreateEditTemplateFolderPromptPa
 import com.oss.pages.templatecm.templatemanager.DeleteTemplateFolderPromptPage;
 import com.oss.pages.templatecm.templatemanager.TemplateDetailsPage;
 import com.oss.pages.templatecm.templatemanager.TemplateTreePage;
+import com.oss.template.infrastructure.template.folder.TemplateFolderClient;
 
 import io.qameta.allure.Description;
 
@@ -25,9 +29,7 @@ public class TemplateManagerOperationsTest extends BaseTestCase {
     private static final String TEMPLATES_MANAGER_APPLICATION_NAME = "Templates Manager";
 
     private static final String CREATED_FOLDER_NAME = "cm_selenium_folder_operations";
-    private static final String CREATED_FOLDER_DESCRIPTION = "folder_description";
-    private static final String EDITED_FOLDER_NAME = "cm_selenium_folder_operations_edited";
-    private static final String EDITED_FOLDER_DESCRIPTION = "folder_description_edited";
+    private static final String EDITED_FOLDER_DESCRIPTION = UUID.randomUUID().toString();
 
     @BeforeClass
     public void init() {
@@ -51,7 +53,6 @@ public class TemplateManagerOperationsTest extends BaseTestCase {
 
         CreateEditTemplateFolderPromptPage createEditTemplateFolderPromptPage = new CreateEditTemplateFolderPromptPage(driver);
         createEditTemplateFolderPromptPage.setFolderName(CREATED_FOLDER_NAME);
-        createEditTemplateFolderPromptPage.setFolderDescription(CREATED_FOLDER_DESCRIPTION);
         createEditTemplateFolderPromptPage.clickSaveButton();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
@@ -60,7 +61,6 @@ public class TemplateManagerOperationsTest extends BaseTestCase {
         TemplateDetailsPage templateDetailsPage = new TemplateDetailsPage(driver);
 
         Assert.assertEquals(templateDetailsPage.getName(), CREATED_FOLDER_NAME);
-        Assert.assertEquals(templateDetailsPage.getDescription(), CREATED_FOLDER_DESCRIPTION);
     }
 
     @Test(priority = 2)
@@ -71,16 +71,15 @@ public class TemplateManagerOperationsTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         CreateEditTemplateFolderPromptPage createEditTemplateFolderPromptPage = new CreateEditTemplateFolderPromptPage(driver);
-        createEditTemplateFolderPromptPage.setFolderName(EDITED_FOLDER_NAME);
         createEditTemplateFolderPromptPage.setFolderDescription(EDITED_FOLDER_DESCRIPTION);
         createEditTemplateFolderPromptPage.clickSaveButton();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
-        templateTreePage.selectTemplateFolder(EDITED_FOLDER_NAME);
+        templateTreePage.selectTemplateFolder(CREATED_FOLDER_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         TemplateDetailsPage templateDetailsPage = new TemplateDetailsPage(driver);
 
-        Assert.assertEquals(templateDetailsPage.getName(), EDITED_FOLDER_NAME);
+        Assert.assertEquals(templateDetailsPage.getName(), CREATED_FOLDER_NAME);
         Assert.assertEquals(templateDetailsPage.getDescription(), EDITED_FOLDER_DESCRIPTION);
     }
 
@@ -95,6 +94,12 @@ public class TemplateManagerOperationsTest extends BaseTestCase {
         deleteTemplateFolderPromptPage.clickDeleteButton();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
-        templateTreePage.selectTemplateFolder(EDITED_FOLDER_NAME);
+        templateTreePage.selectTemplateFolder(CREATED_FOLDER_NAME);
+    }
+
+    @AfterClass(alwaysRun = true)
+    public void clear() {
+        TemplateFolderClient templateFolderClient = TemplateFolderClient.getInstance(environmentRequestClient);
+        templateFolderClient.deleteFolderPermanently(CREATED_FOLDER_NAME);
     }
 }

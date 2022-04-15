@@ -1,17 +1,18 @@
 package com.oss.transport.infrastructure;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.Collection;
+import java.util.Map;
+
+import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.UriBuilderException;
+
 import com.jayway.restassured.response.ValidatableResponse;
 import com.jayway.restassured.specification.RequestSpecification;
 import com.oss.transport.infrastructure.navigation.LinkDTO;
 import com.oss.transport.infrastructure.navigation.ModuleNavigationClient;
 import com.oss.transport.infrastructure.planning.PlanningContext;
-
-import javax.ws.rs.core.UriBuilder;
-import javax.ws.rs.core.UriBuilderException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.Collection;
-import java.util.Map;
 
 public class EnvironmentRequestClient {
 
@@ -113,6 +114,10 @@ public class EnvironmentRequestClient {
 
     public RequestSpecification getIpAddressManagementRequestSpecification() {
         return servicesClient.getRequestSpecificationByName("ipaddress-management");
+    }
+
+    public RequestSpecification getTemplateFillerCoreSpecification() {
+        return servicesClient.getRequestSpecificationByName("template-filler");
     }
 
     public RequestSpecification prepareRequestSpecificationWithoutUri() {
