@@ -1,4 +1,4 @@
-package com.oss.cmTemplate;
+package com.oss.cmTemplate.changeConfig;
 
 import org.assertj.core.api.Assertions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -10,8 +10,8 @@ import com.oss.framework.components.mainheader.Notifications;
 import com.oss.framework.navigation.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.LogManagerPage;
-import com.oss.pages.templatecm.ChangeConfigurationPage;
-import com.oss.pages.templatecm.SetParametersWizardPage;
+import com.oss.pages.templatecm.changeconfig.ChangeConfigurationPage;
+import com.oss.pages.templatecm.changeconfig.SetParametersWizardPage;
 
 import io.qameta.allure.Description;
 

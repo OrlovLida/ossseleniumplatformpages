@@ -1,5 +1,5 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="RegressionSuiteWeb-INVESTGA" thread-count="2" parallel="tests" verbose="1">
+<suite name="RegressionSuiteWeb-INVESTGA" thread-count="1" parallel="tests" verbose="1">
   <test name="SMServicesCheckTest">
     <classes>
       <class name="com.oss.softwaremanagement.checkservices.SMServicesCheckTest"/>

@@ -1,7 +1,7 @@
-package com.oss.pages.templatecm;
+package com.oss.pages.templatecm.changeconfig;
 
 import org.openqa.selenium.WebDriver;
-import com.oss.framework.components.contextactions.OldActionsContainer;
+
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
@@ -13,7 +13,7 @@ import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
-import static com.oss.framework.components.contextactions.OldActionsContainer.*;
+import static com.oss.framework.components.contextactions.OldActionsContainer.createById;
 
 public class ChangeConfigurationPage extends BasePage {
 
