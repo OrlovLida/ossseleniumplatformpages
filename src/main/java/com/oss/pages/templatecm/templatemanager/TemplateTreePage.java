@@ -15,6 +15,7 @@ public class TemplateTreePage extends BasePage {
 
     private static final String TEMPLATES_TREE_ID = "card-content_TemplateBrowserWindow";
     private static final String TEMPLATE_APPLICATION_CREATE_FOLDER_ACTION_ID = "TemplateApplicationCreateFolderActionId";
+    private static final String TEMPLATE_APPLICATION_EDIT_FOLDER_ACTION_ID = "TemplateApplicationEditFolderActionId";
 
     private final TreeWidget templatesTree;
 
@@ -26,6 +27,11 @@ public class TemplateTreePage extends BasePage {
     @Step("Open template folder creation popup")
     public void openTemplateFolderCreationPopup() {
         templatesTree.callActionById(ActionsContainer.CREATE_GROUP_ID, TEMPLATE_APPLICATION_CREATE_FOLDER_ACTION_ID);
+    }
+
+    @Step("Open template folder modification popup")
+    public void openTemplateFolderModificationPopup() {
+        templatesTree.callActionById(ActionsContainer.EDIT_GROUP_ID, TEMPLATE_APPLICATION_EDIT_FOLDER_ACTION_ID);
     }
 
     @Step("Open template folder creation popup")

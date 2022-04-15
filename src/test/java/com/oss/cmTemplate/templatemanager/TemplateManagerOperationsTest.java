@@ -22,15 +22,17 @@ public class TemplateManagerOperationsTest extends BaseTestCase {
     private static final String CONFIGURATION_MANAGEMENT_CATEGORY_NAME = "Configuration Management";
     private static final String TEMPLATES_MANAGER_APPLICATION_NAME = "Templates Manager";
 
-    private static final String FOLDER_NAME = "cm_selenium_folder_operations";
-    private static final String FOLDER_DESCRIPTION = "folder_description";
-
-    private TemplateTreePage templateTreePage;
-    private TemplateDetailsPage templateDetailsPage;
-    private CreateEditTemplateFolderPromptPage createEditTemplateFolderPromptPage;
+    private static final String CREATED_FOLDER_NAME = "cm_selenium_folder_operations";
+    private static final String CREATED_FOLDER_DESCRIPTION = "folder_description";
+    private static final String EDITED_FOLDER_NAME = "cm_selenium_folder_operations_edited";
+    private static final String EDITED_FOLDER_DESCRIPTION = "folder_description_edited";
 
     @BeforeClass
-    public void getToolsManager() {
+    public void init() {
+        moveToTemplateManager();
+    }
+
+    private void moveToTemplateManager() {
         ToolsManagerPage toolsManagerPage = new ToolsManagerPage(driver);
         ToolsManagerWindow toolsManagerWindow = toolsManagerPage.getToolsManager();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -41,21 +43,42 @@ public class TemplateManagerOperationsTest extends BaseTestCase {
     @Test(priority = 1)
     @Description("Create template folder")
     public void createTemplateFolder() {
-        templateTreePage = new TemplateTreePage(driver);
+        TemplateTreePage templateTreePage = new TemplateTreePage(driver);
         templateTreePage.openTemplateFolderCreationPopup();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
-        createEditTemplateFolderPromptPage = new CreateEditTemplateFolderPromptPage(driver);
-        createEditTemplateFolderPromptPage.setFolderName(FOLDER_NAME);
-        createEditTemplateFolderPromptPage.setFolderDescription(FOLDER_DESCRIPTION);
+        CreateEditTemplateFolderPromptPage createEditTemplateFolderPromptPage = new CreateEditTemplateFolderPromptPage(driver);
+        createEditTemplateFolderPromptPage.setFolderName(CREATED_FOLDER_NAME);
+        createEditTemplateFolderPromptPage.setFolderDescription(CREATED_FOLDER_DESCRIPTION);
         createEditTemplateFolderPromptPage.clickSaveButton();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
-        templateTreePage.selectTemplateFolder(FOLDER_NAME);
+        templateTreePage.selectTemplateFolder(CREATED_FOLDER_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        templateDetailsPage = new TemplateDetailsPage(driver);
+        TemplateDetailsPage templateDetailsPage = new TemplateDetailsPage(driver);
 
-        Assert.assertEquals(templateDetailsPage.getName(), FOLDER_NAME);
-        Assert.assertEquals(templateDetailsPage.getDescription(), FOLDER_DESCRIPTION);
+        Assert.assertEquals(templateDetailsPage.getName(), CREATED_FOLDER_NAME);
+        Assert.assertEquals(templateDetailsPage.getDescription(), CREATED_FOLDER_DESCRIPTION);
+    }
+
+    @Test(priority = 2)
+    @Description("Edit template folder")
+    public void editTemplateFolder() {
+        TemplateTreePage templateTreePage = new TemplateTreePage(driver);
+        templateTreePage.openTemplateFolderModificationPopup();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+
+        CreateEditTemplateFolderPromptPage createEditTemplateFolderPromptPage = new CreateEditTemplateFolderPromptPage(driver);
+        createEditTemplateFolderPromptPage.setFolderName(EDITED_FOLDER_NAME);
+        createEditTemplateFolderPromptPage.setFolderDescription(EDITED_FOLDER_DESCRIPTION);
+        createEditTemplateFolderPromptPage.clickSaveButton();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+
+        templateTreePage.selectTemplateFolder(EDITED_FOLDER_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        TemplateDetailsPage templateDetailsPage = new TemplateDetailsPage(driver);
+
+        Assert.assertEquals(templateDetailsPage.getName(), EDITED_FOLDER_NAME);
+        Assert.assertEquals(templateDetailsPage.getDescription(), EDITED_FOLDER_DESCRIPTION);
     }
 }
