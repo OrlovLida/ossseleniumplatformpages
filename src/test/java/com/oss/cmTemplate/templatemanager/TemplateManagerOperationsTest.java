@@ -1,5 +1,6 @@
 package com.oss.cmTemplate.templatemanager;
 
+import org.openqa.selenium.NoSuchElementException;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -9,6 +10,7 @@ import com.oss.framework.navigation.toolsmanager.ToolsManagerWindow;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.toolsmanager.ToolsManagerPage;
 import com.oss.pages.templatecm.templatemanager.CreateEditTemplateFolderPromptPage;
+import com.oss.pages.templatecm.templatemanager.DeleteTemplateFolderPromptPage;
 import com.oss.pages.templatecm.templatemanager.TemplateDetailsPage;
 import com.oss.pages.templatecm.templatemanager.TemplateTreePage;
 
@@ -80,5 +82,19 @@ public class TemplateManagerOperationsTest extends BaseTestCase {
 
         Assert.assertEquals(templateDetailsPage.getName(), EDITED_FOLDER_NAME);
         Assert.assertEquals(templateDetailsPage.getDescription(), EDITED_FOLDER_DESCRIPTION);
+    }
+
+    @Test(priority = 3, expectedExceptions = NoSuchElementException.class)
+    @Description("Delete template folder")
+    public void deleteTemplateFolder() {
+        TemplateTreePage templateTreePage = new TemplateTreePage(driver);
+        templateTreePage.openTemplateFolderDeletionPopup();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+
+        DeleteTemplateFolderPromptPage deleteTemplateFolderPromptPage = new DeleteTemplateFolderPromptPage(driver);
+        deleteTemplateFolderPromptPage.clickDeleteButton();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+
+        templateTreePage.selectTemplateFolder(EDITED_FOLDER_NAME);
     }
 }
