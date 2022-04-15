@@ -202,9 +202,9 @@ public class ISPConfigurationTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cardCreateWizardPage.setModel("Alcatel NELT-B");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        cardCreateWizardPage.setSlot("Chassis\\LT3");
+        cardCreateWizardPage.setSlot("LT3");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        cardCreateWizardPage.setSlot("Chassis\\LT4");
+        cardCreateWizardPage.setSlot("LT4");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cardCreateWizardPage.clickAccept();
         checkPopupAndCloseMessage();
