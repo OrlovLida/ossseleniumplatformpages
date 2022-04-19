@@ -1,10 +1,12 @@
 package com.oss.pages.softwaremanagement.repository;
 
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
+import org.openqa.selenium.WebDriver;
+
+import com.google.common.collect.Iterables;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tree.TreeWidget;
@@ -22,48 +24,53 @@ public class SoftwareRepositoryPage extends BasePage {
     private static final String RENAME_ACTION_ID = "narComponent_SM_SOFTWARE_DIRECTORYActionRenameId,narComponent_SM_SOFTWARE_FILEActionRenameId";
     private static final String DELETE_ACTION_ID = "narComponent_SM_SOFTWARE_DIRECTORYActionDeleteId,narComponent_SM_SOFTWARE_FILEActionDeleteId";
 
-    private static final String ROOT_PATH = "/";
-    private static final String SOFTWARE_MANAGEMENT_REPOSITORY_PATH = "SoftwareManagementRepository";
+    private static final String ROOT_PATH_TREE_NODE_NAME = "/";
 
-    private static final Logger LOG = LoggerFactory.getLogger(SoftwareRepositoryPage.class);
     private final TreeWidget softwareRepositoryTree;
+    private final String rootPath;
 
-    public SoftwareRepositoryPage(WebDriver driver) {
+    public SoftwareRepositoryPage(WebDriver driver, String rootPath) {
         super(driver);
-        softwareRepositoryTree = TreeWidget.createById(driver, wait, SOFTWARE_REPOSITORY_TREE_ID);
+        this.softwareRepositoryTree = TreeWidget.createById(driver, wait, SOFTWARE_REPOSITORY_TREE_ID);
+        this.rootPath = rootPath;
     }
 
     @Step("Expand root folder")
     public void expandRootFolder() {
-        if (softwareRepositoryTree.isTreeRowExpanded(ROOT_PATH)) {
-            tryExpandSoftwareManagementRepositoryFolder();
+        if (softwareRepositoryTree.isTreeRowExpanded(ROOT_PATH_TREE_NODE_NAME)) {
+            expandMainFolders();
         } else {
-            softwareRepositoryTree.expandTreeRow(ROOT_PATH);
+            softwareRepositoryTree.expandTreeRow(ROOT_PATH_TREE_NODE_NAME);
             DelayUtils.waitForPageToLoad(driver, wait);
-            tryExpandSoftwareManagementRepositoryFolder();
+            expandMainFolders();
         }
     }
 
-    private void tryExpandSoftwareManagementRepositoryFolder() {
-        try {
-            expandSoftwareManagementRepositoryFolder();
-        } catch (NoSuchElementException e) {
-            LOG.debug("Software Repository has no {} directory", SOFTWARE_MANAGEMENT_REPOSITORY_PATH);
-        }
+    private void expandMainFolders() {
+        Arrays.stream(rootPath.split("/"))
+            .filter(directory -> !directory.isEmpty())
+            .forEach(directory -> {
+                expandFolder(directory);
+                DelayUtils.waitForPageToLoad(driver, wait);
+            });
     }
 
-    private void expandSoftwareManagementRepositoryFolder() {
-        if (!softwareRepositoryTree.isTreeRowExpanded(SOFTWARE_MANAGEMENT_REPOSITORY_PATH)) {
-            softwareRepositoryTree.expandTreeRow(SOFTWARE_MANAGEMENT_REPOSITORY_PATH);
+    private void expandFolder(String directory) {
+        if (!softwareRepositoryTree.isTreeRowExpanded(directory)) {
+            softwareRepositoryTree.expandTreeRow(directory);
         }
     }
 
     @Step("Select root directory")
     public void selectRootDirectory() {
-        try {
-            softwareRepositoryTree.selectTreeRow(SOFTWARE_MANAGEMENT_REPOSITORY_PATH);
-        } catch (NoSuchElementException e) {
-            softwareRepositoryTree.selectTreeRow(ROOT_PATH);
+        Collection<String> rootDirectories = Arrays.stream(rootPath.split("/"))
+            .filter(directory -> !directory.isEmpty())
+            .collect(Collectors.toList());
+
+        if (rootDirectories.isEmpty()) {
+            softwareRepositoryTree.selectTreeRow(ROOT_PATH_TREE_NODE_NAME);
+        } else {
+            softwareRepositoryTree.selectTreeRow(Iterables.getLast(rootDirectories));
         }
     }
 
