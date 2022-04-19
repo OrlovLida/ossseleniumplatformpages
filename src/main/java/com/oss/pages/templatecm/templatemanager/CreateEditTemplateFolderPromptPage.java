@@ -25,12 +25,12 @@ public class CreateEditTemplateFolderPromptPage extends BasePage {
         createEditTemplateFolderWizard = Wizard.createByComponentId(driver, wait, EDIT_TEMPLATE_FOLDER_WINDOW_ID);
     }
 
-    @Step("Set folder name")
+    @Step("Set folder name: {folderName}")
     public void setFolderName(String folderName) {
         createEditTemplateFolderWizard.setComponentValue(FOLDER_NAME_ID, folderName, Input.ComponentType.TEXT_FIELD);
     }
 
-    @Step("Set folder description")
+    @Step("Set folder description: {folderDescription}")
     public void setFolderDescription(String folderDescription) {
         createEditTemplateFolderWizard.setComponentValue(DESCRIPTION_ID, folderDescription, Input.ComponentType.TEXT_FIELD);
     }
