@@ -29,4 +29,14 @@ public class SoftwareRepositoryClient {
             .then().log().status().log()
             .body().contentType(ContentType.TEXT).extract().asString();
     }
+
+    public void deletePath(String path, boolean contentOnly) {
+        requestClient.getSoftwareManagementCoreSpecification()
+            .given()
+            .queryParam("path", path)
+            .queryParam("contentOnly", contentOnly)
+            .delete("software-repository/delete")
+            .then().log()
+            .status().log();
+    }
 }

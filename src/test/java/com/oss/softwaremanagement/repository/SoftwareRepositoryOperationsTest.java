@@ -2,6 +2,7 @@ package com.oss.softwaremanagement.repository;
 
 import org.openqa.selenium.NoSuchElementException;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -105,5 +106,11 @@ public class SoftwareRepositoryOperationsTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         softwareRepositoryPage.selectFileOrDirectory(SELENIUM_TEST_FOLDER_UNDER_ROOT_EDITED_NAME);
+    }
+
+    @AfterClass(alwaysRun = true)
+    public void clear() {
+        softwareRepositoryClient.deletePath(rootPath + "/" + SELENIUM_TEST_FOLDER_UNDER_ROOT_NAME, false);
+        softwareRepositoryClient.deletePath(rootPath + "/" + SELENIUM_TEST_FOLDER_UNDER_ROOT_EDITED_NAME, false);
     }
 }
