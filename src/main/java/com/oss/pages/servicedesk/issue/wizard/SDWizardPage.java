@@ -1,4 +1,4 @@
-package com.oss.pages.servicedesk.ticket.wizard;
+package com.oss.pages.servicedesk.issue.wizard;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -15,6 +15,7 @@ import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.servicedesk.BaseSDPage;
+import com.oss.pages.servicedesk.issue.BaseDashboardPage;
 
 import io.qameta.allure.Step;
 
@@ -29,6 +30,12 @@ public class SDWizardPage extends BaseSDPage {
     private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss";
     private static final String LINK_TICKETS_BUTTON_ID = "_buttonsApp-1";
     private static final String UNLINK_CONFIRMATION_BUTTON_ID = "ConfirmationBox__confirmUnlinkProblemApp_action_button";
+    private static final String TT_WIZARD_ASSIGNEE = "TT_WIZARD_INPUT_ASSIGNEE_LABEL";
+    private static final String TEST_SELENIUM_ID = "12345";
+    private static final String TT_WIZARD_CORRELATION_ID = "ISSUE_CORRELATION_ID";
+    private static final String TT_WIZARD_REFERENCE_ID = "TT_WIZARD_INPUT_REFERENCE_ID_LABEL";
+    private static final String TT_WIZARD_ISSUE_START_DATE_ID = "IssueStartDate";
+    private static final String TT_WIZARD_MESSAGE_DATE_ID = "PleaseProvideTheTimeOnTheHandsetTheTxtMessageArrived";
 
     private final MOStep moStep;
 
@@ -144,6 +151,25 @@ public class SDWizardPage extends BaseSDPage {
     public void clickComboBox(String componentId) {
         getWizard().getComponent(componentId, Input.ComponentType.COMBOBOX).click();
         log.info("Clicking {} combobox", componentId);
+    }
+
+    public BaseDashboardPage createTicketTypeCTT(String moIdentifier, String assignee) {
+        BaseDashboardPage baseDashboardPage = new BaseDashboardPage(driver, wait);
+        baseDashboardPage.openCreateTicketWizard("CTT");
+        getMoStep().enterTextIntoSearchComponent(moIdentifier);
+        getMoStep().selectObjectInMOTable(moIdentifier);
+        clickNextButtonInWizard();
+        insertValueToSearchComponent(assignee, TT_WIZARD_ASSIGNEE);
+        insertValueToTextComponent(TEST_SELENIUM_ID, TT_WIZARD_REFERENCE_ID);
+        enterIncidentDescription("Selenium Test ticket");
+        enterExpectedResolutionDate();
+        insertValueToTextComponent(TEST_SELENIUM_ID, TT_WIZARD_CORRELATION_ID);
+        clickNextButtonInWizard();
+        String date = LocalDateTime.now().minusMinutes(5).format(CREATE_DATE_FILTER_DATE_FORMATTER);
+        insertValueToTextComponent(date, TT_WIZARD_ISSUE_START_DATE_ID);
+        insertValueToTextComponent(date, TT_WIZARD_MESSAGE_DATE_ID);
+        clickAcceptButtonInWizard();
+        return new BaseDashboardPage(driver, wait);
     }
 
     private void insertValueToComponent(String text, String componentId, Input.ComponentType componentType) {

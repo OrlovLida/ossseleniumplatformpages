@@ -1,4 +1,4 @@
-package com.oss.pages.servicedesk.ticket;
+package com.oss.pages.servicedesk.issue;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;

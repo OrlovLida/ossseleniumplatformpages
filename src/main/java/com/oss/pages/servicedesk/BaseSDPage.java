@@ -16,12 +16,12 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.BasePage;
-import com.oss.pages.servicedesk.ticket.IssueDetailsPage;
+import com.oss.pages.servicedesk.issue.IssueDetailsPage;
 import com.oss.untils.FileDownload;
 
 import io.qameta.allure.Step;
 
-import static com.oss.pages.servicedesk.ticket.IssueDetailsPage.DETAILS_PAGE_URL_PATTERN;
+import static com.oss.pages.servicedesk.issue.IssueDetailsPage.DETAILS_PAGE_URL_PATTERN;
 
 public abstract class BaseSDPage extends BasePage {
 

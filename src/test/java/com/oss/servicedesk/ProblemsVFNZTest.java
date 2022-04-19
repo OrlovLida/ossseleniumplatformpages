@@ -10,18 +10,18 @@ import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.pages.platform.NotificationWrapperPage;
-import com.oss.pages.servicedesk.ticket.BaseDashboardPage;
-import com.oss.pages.servicedesk.ticket.IssueDetailsPage;
-import com.oss.pages.servicedesk.ticket.tabs.AttachmentsTab;
-import com.oss.pages.servicedesk.ticket.tabs.ExternalTab;
-import com.oss.pages.servicedesk.ticket.tabs.ParticipantsTab;
-import com.oss.pages.servicedesk.ticket.tabs.RelatedProblemsTab;
-import com.oss.pages.servicedesk.ticket.tabs.RelatedTicketsTab;
-import com.oss.pages.servicedesk.ticket.tabs.RootCausesTab;
-import com.oss.pages.servicedesk.ticket.wizard.AttachmentWizardPage;
-import com.oss.pages.servicedesk.ticket.wizard.ExternalPromptPage;
-import com.oss.pages.servicedesk.ticket.wizard.ParticipantsPromptPage;
-import com.oss.pages.servicedesk.ticket.wizard.SDWizardPage;
+import com.oss.pages.servicedesk.issue.BaseDashboardPage;
+import com.oss.pages.servicedesk.issue.IssueDetailsPage;
+import com.oss.pages.servicedesk.issue.tabs.AttachmentsTab;
+import com.oss.pages.servicedesk.issue.tabs.ExternalTab;
+import com.oss.pages.servicedesk.issue.tabs.ParticipantsTab;
+import com.oss.pages.servicedesk.issue.tabs.RelatedProblemsTab;
+import com.oss.pages.servicedesk.issue.tabs.RelatedTicketsTab;
+import com.oss.pages.servicedesk.issue.tabs.RootCausesTab;
+import com.oss.pages.servicedesk.issue.wizard.AttachmentWizardPage;
+import com.oss.pages.servicedesk.issue.wizard.ExternalPromptPage;
+import com.oss.pages.servicedesk.issue.wizard.ParticipantsPromptPage;
+import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
 
 import io.qameta.allure.Description;
 

@@ -1,4 +1,4 @@
-package com.oss.pages.servicedesk.ticket.tabs;
+package com.oss.pages.servicedesk.issue.tabs;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -68,17 +68,17 @@ public class MessagesTab extends BaseSDPage {
     }
 
     @Step("Check Badges in message")
-    public String getBadgeTextFromMessage(int messageIndex, int budgeIndex) {
+    public String getBadgeTextFromMessage(int messageIndex, int badgeIndex) {
         DelayUtils.waitForPageToLoad(driver, wait);
         MessageListWidget.MessageItem message = getMessageListWidget()
                 .getMessageItems()
                 .get(messageIndex);
-        int budgesNumber = message.getBadgesNumber();
-        if (budgeIndex < budgesNumber) {
-            log.debug("Badge of message with index {} and budgeIndex {} is: {}", messageIndex, budgeIndex, message.getBadgeText(budgeIndex));
-            return message.getBadgeText(budgeIndex);
+        int badgesNumber = message.getBadgesNumber();
+        if (badgeIndex < badgesNumber) {
+            log.debug("Badge of message with index {} and badgeIndex {} is: {}", messageIndex, badgeIndex, message.getBadgeText(badgeIndex));
+            return message.getBadgeText(badgeIndex);
         }
-        log.info("No budge for message with index {}, and budge index {}", messageIndex, budgeIndex);
+        log.info("No badge for message with index {}, and badge index {}", messageIndex, badgeIndex);
         return "";
     }
 

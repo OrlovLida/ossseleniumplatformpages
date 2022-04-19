@@ -1,4 +1,4 @@
-package com.oss.pages.servicedesk.ticket.wizard;
+package com.oss.pages.servicedesk.issue.wizard;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -9,7 +9,7 @@ import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.servicedesk.BaseSDPage;
-import com.oss.pages.servicedesk.ticket.IssueDetailsPage;
+import com.oss.pages.servicedesk.issue.IssueDetailsPage;
 
 import io.qameta.allure.Step;
 

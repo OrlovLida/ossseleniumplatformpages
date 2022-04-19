@@ -1,4 +1,4 @@
-package com.oss.pages.servicedesk.ticket.tabs;
+package com.oss.pages.servicedesk.issue.tabs;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.pages.servicedesk.BaseSDPage;
-import com.oss.pages.servicedesk.ticket.wizard.SDWizardPage;
+import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
 
 import io.qameta.allure.Step;
 

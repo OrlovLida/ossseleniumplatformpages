@@ -1,4 +1,4 @@
-package com.oss.pages.servicedesk.ticket.wizard;
+package com.oss.pages.servicedesk.issue.wizard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,15 +56,15 @@ public class MOStep extends BaseSDPage {
     }
 
     @Step("I select {MOIdentifier} in MO table")
-    public void selectObjectInMOTable(String MOIdentifier) {
+    public void selectObjectInMOTable(String moIdentifier) {
         DelayUtils.waitForPageToLoad(driver, wait);
         TableComponent objectsTable = TableComponent.create(driver, wait, MO_COMPONENT_ID);
-        List<String> objectsList = new ArrayList<String>();
+        List<String> objectsList = new ArrayList<>();
         long numberOfMOs = TableComponent.create(driver, wait, MO_COMPONENT_ID).getVisibleRows().stream().count();
         for (int i = 0; i < numberOfMOs; i++) {
             objectsList.add(objectsTable.getCellValue(i, "identifier"));
         }
-        log.info("Select MO {} in table", MOIdentifier);
-        objectsTable.selectRow(objectsList.indexOf(MOIdentifier));
+        log.info("Select MO {} in table", moIdentifier);
+        objectsTable.selectRow(objectsList.indexOf(moIdentifier));
     }
 }
