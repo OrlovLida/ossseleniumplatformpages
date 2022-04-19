@@ -1,5 +1,6 @@
 package com.oss.softwaremanagement.repository;
 
+import org.openqa.selenium.NoSuchElementException;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -23,6 +24,7 @@ public class SoftwareRepositoryOperationsTest extends BaseTestCase {
     private static final String REPOSITORY_MANAGER_ACTION_NAME = "Repository Manager";
 
     private static final String SELENIUM_TEST_FOLDER_UNDER_ROOT_NAME = "selenium_test_folder_under_root";
+    private static final String SELENIUM_TEST_FOLDER_UNDER_ROOT_EDITED_NAME = SELENIUM_TEST_FOLDER_UNDER_ROOT_NAME + "_edited";
 
     @BeforeClass
     public void init() {
@@ -61,5 +63,27 @@ public class SoftwareRepositoryOperationsTest extends BaseTestCase {
 
         Assert.assertEquals(propertiesPage.getFileName(), SELENIUM_TEST_FOLDER_UNDER_ROOT_NAME);
         Assert.assertTrue(propertiesPage.getPath().contains(SELENIUM_TEST_FOLDER_UNDER_ROOT_NAME));
+    }
+
+    @Test(priority = 2, expectedExceptions = NoSuchElementException.class)
+    @Description("Rename folder")
+    public void renameFolder() {
+        SoftwareRepositoryPage softwareRepositoryPage = new SoftwareRepositoryPage(driver);
+        softwareRepositoryPage.openRenamePopup();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+
+        FileActionPromptPage fileActionPromptPage = new FileActionPromptPage(driver);
+        fileActionPromptPage.setName(SELENIUM_TEST_FOLDER_UNDER_ROOT_EDITED_NAME);
+        fileActionPromptPage.clickSubmitButton();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+
+        softwareRepositoryPage.selectFileOrDirectory(SELENIUM_TEST_FOLDER_UNDER_ROOT_EDITED_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        PropertiesPage propertiesPage = new PropertiesPage(driver);
+
+        Assert.assertEquals(propertiesPage.getFileName(), SELENIUM_TEST_FOLDER_UNDER_ROOT_EDITED_NAME);
+        Assert.assertTrue(propertiesPage.getPath().contains(SELENIUM_TEST_FOLDER_UNDER_ROOT_EDITED_NAME));
+
+        softwareRepositoryPage.selectFileOrDirectory(SELENIUM_TEST_FOLDER_UNDER_ROOT_NAME);
     }
 }

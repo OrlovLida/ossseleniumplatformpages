@@ -19,6 +19,7 @@ public class SoftwareRepositoryPage extends BasePage {
 
     private static final String SOFTWARE_REPOSITORY_TREE_ID = "smComponent_SoftwareRepositoryViewIdTreeWindowId";
     private static final String CREATE_DIRECTORY_ACTION_ID = "narComponent_SM_SOFTWARE_DIRECTORYActionCreateId,narComponent_SM_SOFTWARE_ROOT_DIRECTORYActionCreateId";
+    private static final String RENAME_ACTION_ID = "narComponent_SM_SOFTWARE_DIRECTORYActionRenameId,narComponent_SM_SOFTWARE_FILEActionRenameId";
 
     private static final String ROOT_PATH = "/";
     private static final String SOFTWARE_MANAGEMENT_REPOSITORY_PATH = "SoftwareManagementRepository";
@@ -73,5 +74,10 @@ public class SoftwareRepositoryPage extends BasePage {
     @Step("Open folder creation popup")
     public void openFolderCreationPopup() {
         softwareRepositoryTree.callActionById(ActionsContainer.CREATE_GROUP_ID, CREATE_DIRECTORY_ACTION_ID);
+    }
+
+    @Step("Open rename popup")
+    public void openRenamePopup() {
+        softwareRepositoryTree.callActionById(ActionsContainer.EDIT_GROUP_ID, RENAME_ACTION_ID);
     }
 }
