@@ -11,13 +11,13 @@ import com.oss.pages.servicedesk.issue.IssueDetailsPage;
 
 import io.qameta.allure.Step;
 
+import static com.oss.pages.servicedesk.ServiceDeskConstants.ID_ATTRIBUTE;
 import static com.oss.pages.servicedesk.issue.IssueDetailsPage.DETAILS_PAGE_URL_PATTERN;
 
 public class TicketSearchPage extends GraphQLSearchPage {
 
     private static final Logger log = LoggerFactory.getLogger(TicketSearchPage.class);
 
-    public static final String ID_ATTRIBUTE = "id";
     private static final String TABLE_WIDGET_ID = "ticket-search-graphql-table";
     private static final String TICKET_SEARCH = "ticket-search";
 

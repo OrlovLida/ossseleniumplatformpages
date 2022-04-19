@@ -15,14 +15,14 @@ import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
 
 import io.qameta.allure.Step;
 
-import static com.oss.pages.servicedesk.URLConstants.PREDEFINED_DASHBOARD_URL_PATTERN;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.ID_UPPERCASE_ATTRIBUTE;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.PREDEFINED_DASHBOARD_URL_PATTERN;
 
 public class BaseDashboardPage extends BaseSDPage {
 
     private static final Logger log = LoggerFactory.getLogger(BaseDashboardPage.class);
 
     private static final String CREATE_TICKET_BUTTON_ID = "TT_WIZARD_INPUT_CREATE_TICKET";
-    private static final String ID_ATTRIBUTE = "ID";
     private static final String NAME_ATTRIBUTE = "Name";
     private static final String ASSIGNEE_ATTRIBUTE = "Assignee";
     private static final String PROBLEM_ID_ATTRIBUTE = "Problem ID";
@@ -70,6 +70,11 @@ public class BaseDashboardPage extends BaseSDPage {
         return new SDWizardPage(driver, wait);
     }
 
+    @Step("Click Export")
+    public void clickExportFromTTTable() {
+        clickExportFromTable(TROUBLE_TICKETS_TABLE_ID);
+    }
+
     private String getAttributeFromTicketsTable(int index, String attributeName) {
         String attributeValue = getTroubleTicketsTable().getCellValue(index, attributeName);
         log.info("Got value for {} attribute: {} from Trouble Tickets Table", attributeName, attributeValue);
@@ -82,7 +87,11 @@ public class BaseDashboardPage extends BaseSDPage {
     }
 
     public String getTicketIdWithAssignee(String assignee) {
-        return getTroubleTicketsTable().getCellValue(getRowWithTicketAssignee(assignee), ID_ATTRIBUTE);
+        return getTroubleTicketsTable().getCellValue(getRowWithTicketAssignee(assignee), ID_UPPERCASE_ATTRIBUTE);
+    }
+
+    public String getFirstTicketId(String tableSuffix) {
+        return OldTable.createById(driver, wait, TROUBLE_TICKETS_TABLE_ID + tableSuffix).getCellValue(0, ID_UPPERCASE_ATTRIBUTE);
     }
 
     @Step("Check if Reminder icon is present in Trouble Ticket Table")
@@ -94,7 +103,7 @@ public class BaseDashboardPage extends BaseSDPage {
 
     @Step("get row number for ticket with {id}")
     public int getRowForTicketWithID(String id) {
-        return getTroubleTicketsTable().getRowNumber(id, ID_ATTRIBUTE);
+        return getTroubleTicketsTable().getRowNumber(id, ID_UPPERCASE_ATTRIBUTE);
     }
 
     private int getRowWithTicketAssignee(String assignee) {
@@ -135,11 +144,6 @@ public class BaseDashboardPage extends BaseSDPage {
             return splitMessage[1];
         }
         return "No message is shown";
-    }
-
-    @Step("Click Export")
-    public void clickExportFromTTTable() {
-        clickExportFromTable(TROUBLE_TICKETS_TABLE_ID);
     }
 
     private int getRowWithProblemName(String problemName) {

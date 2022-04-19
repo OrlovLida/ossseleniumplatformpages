@@ -150,6 +150,7 @@ public class IssueDetailsPage extends BaseSDPage {
 
     @Step("Skipping all actions on checklist")
     public void skipAllActionsOnCheckList() {
+        DelayUtils.waitForPageToLoad(driver, wait);
         CommonList.create(driver, wait, CHECKLIST_APP_ID)
                 .getRows()
                 .forEach(row -> {

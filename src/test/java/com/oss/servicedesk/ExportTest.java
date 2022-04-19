@@ -14,6 +14,10 @@ import com.oss.pages.servicedesk.issue.wizard.ExportWizardPage;
 
 import io.qameta.allure.Description;
 
+import static com.oss.pages.servicedesk.ServiceDeskConstants.DATE_MASK;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.DOWNLOAD_FILE;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.TICKET_DASHBOARD;
+
 public class ExportTest extends BaseTestCase {
 
     private BaseDashboardPage baseDashboardPage;
@@ -23,10 +27,7 @@ public class ExportTest extends BaseTestCase {
     private static int minutes = 60;
     private static final int maxSearchTime6hours = 360;
     private static final String EXPORT_FILE_NAME = "Selenium test " + BaseSDPage.getDateFormat();
-    private static final String DATE_MASK = "ISO Local Date";
-    private static final String DOWNLOAD_FILE = "Selenium test*.csv";
     private static final String TT_DOWNLOAD_FILE = "TroubleTicket*.xlsx";
-    private static final String TICKET_DASHBOARD = "_TroubleTickets";
     private static final String EMPTY_SEARCH_FILTER = "";
 
     @BeforeMethod

@@ -10,7 +10,7 @@ import com.oss.pages.servicedesk.GraphQLSearchPage;
 
 import io.qameta.allure.Step;
 
-import static com.oss.pages.servicedesk.URLConstants.VIEWS_URL_PATTERN;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.VIEWS_URL_PATTERN;
 
 public class MyProblemsPage extends GraphQLSearchPage {
 
