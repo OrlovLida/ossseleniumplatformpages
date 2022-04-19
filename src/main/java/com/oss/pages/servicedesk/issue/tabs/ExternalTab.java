@@ -1,4 +1,4 @@
-package com.oss.pages.servicedesk.ticket.tabs;
+package com.oss.pages.servicedesk.issue.tabs;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -10,7 +10,7 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.CommonList;
 import com.oss.framework.widgets.tabs.TabWindowWidget;
 import com.oss.pages.servicedesk.BaseSDPage;
-import com.oss.pages.servicedesk.ticket.wizard.ExternalPromptPage;
+import com.oss.pages.servicedesk.issue.wizard.ExternalPromptPage;
 
 import io.qameta.allure.Step;
 

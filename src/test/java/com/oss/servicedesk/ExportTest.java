@@ -8,9 +8,9 @@ import com.oss.BaseTestCase;
 import com.oss.pages.platform.NotificationWrapperPage;
 import com.oss.pages.servicedesk.BaseSDPage;
 import com.oss.pages.servicedesk.GraphQLSearchPage;
-import com.oss.pages.servicedesk.ticket.BaseDashboardPage;
-import com.oss.pages.servicedesk.ticket.TicketSearchPage;
-import com.oss.pages.servicedesk.ticket.wizard.ExportWizardPage;
+import com.oss.pages.servicedesk.issue.BaseDashboardPage;
+import com.oss.pages.servicedesk.issue.ticket.TicketSearchPage;
+import com.oss.pages.servicedesk.issue.wizard.ExportWizardPage;
 
 import io.qameta.allure.Description;
 

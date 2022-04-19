@@ -1,18 +1,21 @@
-package com.oss.pages.servicedesk.ticket;
+package com.oss.pages.servicedesk.issue;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.pages.servicedesk.BaseSDPage;
-import com.oss.pages.servicedesk.ticket.wizard.SDWizardPage;
+import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
 
 import io.qameta.allure.Step;
+
+import static com.oss.pages.servicedesk.URLConstants.PREDEFINED_DASHBOARD_URL_PATTERN;
 
 public class BaseDashboardPage extends BaseSDPage {
 
@@ -36,10 +39,15 @@ public class BaseDashboardPage extends BaseSDPage {
 
     @Step("I Open ticket dashboard View")
     public BaseDashboardPage goToPage(WebDriver driver, String basicURL, String dashboardName) {
-        String pageUrl = String.format("%s/#/dashboard/predefined/id/%s", basicURL, dashboardName);
+        String pageUrl = String.format(PREDEFINED_DASHBOARD_URL_PATTERN, basicURL, dashboardName);
         openPage(driver, pageUrl);
 
         return new BaseDashboardPage(driver, wait);
+    }
+
+    @Step("Check if current url leads to Trouble Ticket dashboard")
+    public boolean isDashboardOpen(String basicURL, String dashboardName) {
+        return driver.getCurrentUrl().equals(String.format(PREDEFINED_DASHBOARD_URL_PATTERN, basicURL, dashboardName));
     }
 
     @Step("I open create ticket wizard for flow {flowType}")
@@ -111,6 +119,22 @@ public class BaseDashboardPage extends BaseSDPage {
     @Step("Get problem status")
     public String getProblemStatus(String problemName) {
         return getProblemsTable().getCellValue(getRowWithProblemName(problemName), STATUS_ATTRIBUTE);
+    }
+
+    public String getMessageFromPrompt() {
+        return SystemMessageContainer.create(driver, wait)
+                .getFirstMessage()
+                .map(SystemMessageContainer.Message::getText)
+                .orElse(null);
+    }
+
+    public String getIdFromMessage() {
+        if (!getMessageFromPrompt().isEmpty()) {
+            String[] splitMessage = getMessageFromPrompt().split(" ");
+            log.info("id is: {}", splitMessage[1]);
+            return splitMessage[1];
+        }
+        return "No message is shown";
     }
 
     @Step("Click Export")

@@ -1,0 +1,10 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="MyGroupTicketsSD" thread-count="2" parallel="tests" verbose="1">
+    <test name="MyGroupTickets">
+        <parameter name="MOIdentifier" value="CFS_Access_Product_Selenium_1"/>
+        <parameter name="ProblemAssignee" value="Tier 2 Mobile"/>
+        <classes>
+            <class name="com.oss.servicedesk.MyGroupTicketsVFNZTest"/>
+        </classes>
+    </test>
+</suite>

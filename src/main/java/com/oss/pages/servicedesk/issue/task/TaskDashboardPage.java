@@ -1,4 +1,4 @@
-package com.oss.pages.servicedesk.task;
+package com.oss.pages.servicedesk.issue.task;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -9,7 +9,7 @@ import com.oss.framework.components.inputs.Button;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.pages.servicedesk.BaseSDPage;
-import com.oss.pages.servicedesk.ticket.wizard.SDWizardPage;
+import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
 
 import io.qameta.allure.Step;
 
@@ -23,6 +23,7 @@ public class TaskDashboardPage extends BaseSDPage {
     private static final String TASKS_TABLE_TASK_ID = "Task ID";
     private static final String ASSIGNEE_ATTRIBUTE = "Assignee";
     private static final String EDIT_TASK_BUTTON_ID = "open-details";
+    private static final String TASKS_URL_PATTERN = "%s/#/view/service-desk/problem/tasks";
 
     public TaskDashboardPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -32,12 +33,18 @@ public class TaskDashboardPage extends BaseSDPage {
     public static TaskDashboardPage goToPage(WebDriver driver, String basicURL) {
         WebDriverWait wait = new WebDriverWait(driver, 150);
 
-        String pageUrl = String.format("%s/#/view/service-desk/problem/tasks", basicURL);
+        String pageUrl = String.format(TASKS_URL_PATTERN, basicURL);
         driver.get(pageUrl);
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Opened page: {}", pageUrl);
 
         return new TaskDashboardPage(driver, wait);
+    }
+
+    @Step("Check if Task Dashboard is opened")
+    public boolean isTaskDashboardOpened(String basicURL) {
+        log.info("Current URL is {}", driver.getCurrentUrl());
+        return driver.getCurrentUrl().equals(String.format(TASKS_URL_PATTERN, basicURL));
     }
 
     @Step("I open create task wizard")

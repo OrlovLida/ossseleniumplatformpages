@@ -1,4 +1,4 @@
-package com.oss.pages.servicedesk.ticket;
+package com.oss.pages.servicedesk.issue;
 
 import java.util.List;
 
@@ -16,14 +16,14 @@ import com.oss.framework.widgets.list.CommonList;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.tabs.TabWindowWidget;
 import com.oss.pages.servicedesk.BaseSDPage;
-import com.oss.pages.servicedesk.ticket.tabs.AttachmentsTab;
-import com.oss.pages.servicedesk.ticket.tabs.ExternalTab;
-import com.oss.pages.servicedesk.ticket.tabs.MessagesTab;
-import com.oss.pages.servicedesk.ticket.tabs.ParticipantsTab;
-import com.oss.pages.servicedesk.ticket.tabs.RelatedProblemsTab;
-import com.oss.pages.servicedesk.ticket.tabs.RelatedTicketsTab;
-import com.oss.pages.servicedesk.ticket.tabs.RootCausesTab;
-import com.oss.pages.servicedesk.ticket.wizard.SDWizardPage;
+import com.oss.pages.servicedesk.issue.tabs.AttachmentsTab;
+import com.oss.pages.servicedesk.issue.tabs.ExternalTab;
+import com.oss.pages.servicedesk.issue.tabs.MessagesTab;
+import com.oss.pages.servicedesk.issue.tabs.ParticipantsTab;
+import com.oss.pages.servicedesk.issue.tabs.RelatedProblemsTab;
+import com.oss.pages.servicedesk.issue.tabs.RelatedTicketsTab;
+import com.oss.pages.servicedesk.issue.tabs.RootCausesTab;
+import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
 
 import io.qameta.allure.Step;
 
@@ -36,7 +36,6 @@ public class IssueDetailsPage extends BaseSDPage {
     private static final String EDIT_DETAILS_LABEL = "Edit details";
     private static final String RELEASE_ID = "_detailsOverviewContextActions-7";
     private static final String ACTIONS_CONTAINER_ID = "_detailsWindow-windowToolbar";
-    private static final String CREATE_SUB_TICKET = "TT_DETAILS_SUBTICKET_CREATE_PROMPT_TITLE";
     private static final String ALLOW_EDIT_LABEL = "Edit";
     private static final String PROBLEM_ASSIGNEE_ID = "assignee";
     private static final String PROBLEM_STATUS_ID = "status-input";

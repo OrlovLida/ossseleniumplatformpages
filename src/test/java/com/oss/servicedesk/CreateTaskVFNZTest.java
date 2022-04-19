@@ -10,8 +10,8 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
-import com.oss.pages.servicedesk.task.MyTasksPage;
-import com.oss.pages.servicedesk.task.TaskDashboardPage;
+import com.oss.pages.servicedesk.issue.task.MyTasksPage;
+import com.oss.pages.servicedesk.issue.task.TaskDashboardPage;
 import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
@@ -24,7 +24,7 @@ public class CreateTaskVFNZTest extends BaseTestCase {
 
     private TaskDashboardPage taskDashboardPage;
     private MyTasksPage myTasksPage;
-    private com.oss.pages.servicedesk.ticket.wizard.SDWizardPage SDWizardPage;
+    private com.oss.pages.servicedesk.issue.wizard.SDWizardPage SDWizardPage;
     private String taskID;
 
     private static final String TASK_WIZARD_NAME = "name";
@@ -85,7 +85,7 @@ public class CreateTaskVFNZTest extends BaseTestCase {
     @Description("My Tasks view")
     public void myTasks() {
         myTasksPage = new MyTasksPage(driver, webDriverWait);
-        myTasksPage.goToPage(driver, BASIC_URL);
+        myTasksPage.goToMyTasks(driver, BASIC_URL);
         myTasksPage.filterByTextField(MY_TASKS_NAME_ATTRIBUTE, TASK_NAME);
         myTasksPage.filterByTextField(MY_TASKS_ASSIGNEE_ATTRIBUTE, TASK_NEW_ASSIGNEE);
         myTasksPage.filterByComboBox(MY_TASKS_STATUS_ATTRIBUTE, TASK_NEW_STATUS);

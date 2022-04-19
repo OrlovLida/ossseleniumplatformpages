@@ -1,4 +1,4 @@
-package com.oss.pages.servicedesk.ticket;
+package com.oss.pages.servicedesk.issue.ticket;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -7,10 +7,11 @@ import org.slf4j.LoggerFactory;
 
 import com.oss.framework.widgets.table.TableWidget;
 import com.oss.pages.servicedesk.GraphQLSearchPage;
+import com.oss.pages.servicedesk.issue.IssueDetailsPage;
 
 import io.qameta.allure.Step;
 
-import static com.oss.pages.servicedesk.ticket.IssueDetailsPage.DETAILS_PAGE_URL_PATTERN;
+import static com.oss.pages.servicedesk.issue.IssueDetailsPage.DETAILS_PAGE_URL_PATTERN;
 
 public class TicketSearchPage extends GraphQLSearchPage {
 

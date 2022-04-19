@@ -1,21 +1,17 @@
-package com.oss.pages.servicedesk.ticket.tabs;
+package com.oss.pages.servicedesk.issue.tabs;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.CommonList;
 import com.oss.pages.servicedesk.BaseSDPage;
-import com.oss.pages.servicedesk.ticket.wizard.AttachmentWizardPage;
+import com.oss.pages.servicedesk.issue.wizard.AttachmentWizardPage;
 
 import io.qameta.allure.Step;
 
 public class AttachmentsTab extends BaseSDPage {
-
-    private static final Logger log = LoggerFactory.getLogger(AttachmentsTab.class);
 
     private static final String ATTACHMENT_WIZARD_ID = "addFileComponentId";
     private static final String ATTACH_FILE_BUTTON_ID = "newFileActionName";

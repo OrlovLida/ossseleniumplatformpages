@@ -9,7 +9,8 @@ import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.TableWidget;
-import com.oss.pages.servicedesk.ticket.wizard.ExportWizardPage;
+import com.oss.pages.platform.NotificationWrapperPage;
+import com.oss.pages.servicedesk.issue.wizard.ExportWizardPage;
 
 import io.qameta.allure.Step;
 
@@ -26,6 +27,10 @@ public abstract class GraphQLSearchPage extends BaseSDPage {
     private static final String EXPORT_BUTTON_ID = "exportButton";
     private static final String REFRESH_BUTTON_ID = "refreshButton";
     private static final String EXPORT_WIZARD_ID = "exportgui-wizard-widget";
+    private static final String EXPORT_FILE_NAME = "Selenium test " + BaseSDPage.getDateFormat();
+    private static final String DATE_MASK = "ISO Local Date";
+    private static final String DOWNLOAD_FILE = "Selenium test*.csv";
+    private static final int MAX_SEARCH_TIME_6_HOURS = 360;
 
     protected GraphQLSearchPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -92,6 +97,39 @@ public abstract class GraphQLSearchPage extends BaseSDPage {
         getIssueTable().callAction(ActionsContainer.KEBAB_GROUP_ID, REFRESH_BUTTON_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Clicking Refresh Button");
+    }
+
+    public void exportFromSearchViewTable(String exportWizardId) {
+        NotificationWrapperPage notificationWrapperPage = new NotificationWrapperPage(driver);
+        notificationWrapperPage.openNotificationPanel();
+        notificationWrapperPage.clearNotifications();
+        if (!isIssueTableEmpty()) {
+            int minutes = 60;
+            filterByTextField(GraphQLSearchPage.CREATION_TIME_ATTRIBUTE, getTimePeriodForLastNMinutes(minutes));
+            while (isIssueTableEmpty()) {
+                minutes += 30;
+                if (minutes > MAX_SEARCH_TIME_6_HOURS) {
+                    throw new RuntimeException("No tickets to export created within last 6 hours");
+                }
+                filterByTextField(GraphQLSearchPage.CREATION_TIME_ATTRIBUTE, getTimePeriodForLastNMinutes(minutes));
+            }
+            clickExportInTicketSearch();
+            ExportWizardPage exportWizardPage = new ExportWizardPage(driver, wait, exportWizardId);
+            exportWizardPage.fillFileName(EXPORT_FILE_NAME);
+            exportWizardPage.fillDateMask(DATE_MASK);
+            exportWizardPage.clickAccept();
+            notificationWrapperPage.openNotificationPanel();
+            notificationWrapperPage.waitForExportFinish();
+            notificationWrapperPage.clickDownload();
+            notificationWrapperPage.clearNotifications();
+            attachFileToReport(DOWNLOAD_FILE);
+        }
+    }
+
+    @Step("Check if current url leads to search page page")
+    public boolean isSearchPageOpened(String basicURL, String pageURL) {
+        log.info("Current URL is: {}", driver.getCurrentUrl());
+        return driver.getCurrentUrl().equals(String.format(VIEWS_URL_PATTERN, basicURL, pageURL));
     }
 
     public String getIssueID(int index) {

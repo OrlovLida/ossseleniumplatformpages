@@ -1,4 +1,4 @@
-package com.oss.pages.servicedesk.task;
+package com.oss.pages.servicedesk.issue.task;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -22,7 +22,7 @@ public class MyTasksPage extends GraphQLSearchPage {
     }
 
     @Step("I Open My Tasks View")
-    public MyTasksPage goToPage(WebDriver driver, String basicURL) {
+    public MyTasksPage goToMyTasks(WebDriver driver, String basicURL) {
         goToPage(driver, basicURL, MY_TASKS);
         log.info("My Tasks View is opened");
         return new MyTasksPage(driver, wait);
@@ -32,4 +32,3 @@ public class MyTasksPage extends GraphQLSearchPage {
         return TableWidget.createById(driver, TABLE_WIDGET_ID, wait);
     }
 }
-

@@ -1,4 +1,4 @@
-package com.oss.pages.servicedesk.ticket;
+package com.oss.pages.servicedesk.issue;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -21,11 +21,11 @@ public class MoreDetailsPage extends BaseSDPage {
     }
 
     @Step("Check if logs table has entry with Remainder note")
-    public boolean isReminderNoteInLogsTable(String ReminderNote) {
+    public boolean isReminderNoteInLogsTable(String reminderNote) {
         log.info("Check if logs table has entry with Remainder note");
         return CommonList.create(driver, wait, LOGS_TABLE_ID)
-                .getRowContains(MESSAGE_COLUMN_NAME, ReminderNote)
+                .getRowContains(MESSAGE_COLUMN_NAME, reminderNote)
                 .getValue(MESSAGE_COLUMN_NAME)
-                .contains(ReminderNote);
+                .contains(reminderNote);
     }
 }

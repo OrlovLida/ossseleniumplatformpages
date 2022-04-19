@@ -4,7 +4,7 @@ import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.servicedesk.ticket.BaseDashboardPage;
+import com.oss.pages.servicedesk.issue.BaseDashboardPage;
 
 public class Testowy extends BaseTestCase {
 
