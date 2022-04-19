@@ -40,7 +40,7 @@ public class TemplateTreePage extends BasePage {
         templatesTree.callActionById(ActionsContainer.EDIT_GROUP_ID, TEMPLATE_APPLICATION_DELETE_FOLDER_ACTION_ID);
     }
 
-    @Step("Open template folder creation popup")
+    @Step("Select template folder")
     public void selectTemplateFolder(String folderName) {
         templatesTree.selectTreeRow(folderName);
     }
