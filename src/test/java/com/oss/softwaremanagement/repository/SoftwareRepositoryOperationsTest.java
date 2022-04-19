@@ -86,4 +86,18 @@ public class SoftwareRepositoryOperationsTest extends BaseTestCase {
 
         softwareRepositoryPage.selectFileOrDirectory(SELENIUM_TEST_FOLDER_UNDER_ROOT_NAME);
     }
+
+    @Test(priority = 3, expectedExceptions = NoSuchElementException.class)
+    @Description("Delete folder")
+    public void deleteFolder() {
+        SoftwareRepositoryPage softwareRepositoryPage = new SoftwareRepositoryPage(driver);
+        softwareRepositoryPage.openDeletionPopup();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+
+        FileActionPromptPage fileActionPromptPage = new FileActionPromptPage(driver);
+        fileActionPromptPage.clickSubmitButton();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+
+        softwareRepositoryPage.selectFileOrDirectory(SELENIUM_TEST_FOLDER_UNDER_ROOT_EDITED_NAME);
+    }
 }
