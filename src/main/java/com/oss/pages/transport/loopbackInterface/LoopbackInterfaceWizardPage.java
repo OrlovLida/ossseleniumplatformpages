@@ -16,6 +16,8 @@ public class LoopbackInterfaceWizardPage extends BasePage {
 
     private static final String NUMBER_FIELD_ID = "uid-number";
     private static final String DESCRIPTION_FIELD_ID = "uid-description";
+    private static final String WIDGET_ID = "CommonHierarchyApp-hierarchyAppId";
+
     private final Wizard wizard;
 
     public LoopbackInterfaceWizardPage(WebDriver driver) {
@@ -47,7 +49,7 @@ public class LoopbackInterfaceWizardPage extends BasePage {
     }
 
     public void searchLocationAndDevice(String location, String device) {
-        CommonHierarchyApp hierarchyApp = CommonHierarchyApp.createByClass(driver, wait);
+        CommonHierarchyApp hierarchyApp = CommonHierarchyApp.create(driver, wait, WIDGET_ID);
         hierarchyApp.navigateToPath(location, device);
         DelayUtils.waitForPageToLoad(driver, wait);
     }

@@ -22,6 +22,8 @@ public class VLANInterfaceWizardPage extends BasePage {
     private static final String NEXT_ID = "vlanInterfaceWizardApp-next";
     private static final String IRB_MTU_ID = "mtu-uid";
     private static final String IRB_DESCRIPTION_ID = "description-uid";
+    private static final String WIDGET_ID = "CommonHierarchyApp-parentInterfaceApp";
+
     public VLANInterfaceWizardPage(WebDriver driver) {
         super(driver);
     }
@@ -38,7 +40,7 @@ public class VLANInterfaceWizardPage extends BasePage {
 
     @Step("Set interface to {paths}")
     public void setInterface(String... paths) {
-        CommonHierarchyApp commonHierarchyApp = CommonHierarchyApp.createByClass(driver, wait);
+        CommonHierarchyApp commonHierarchyApp = CommonHierarchyApp.create(driver, wait, WIDGET_ID);
         commonHierarchyApp.navigateToPath(paths);
     }
 

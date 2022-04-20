@@ -30,6 +30,7 @@ public class AEIWizardPage extends BasePage {
     private static final String MAC_ADDRESS_FIELD_ID = "uid-macAddress";
     private static final String ADMINISTRATIVE_STATE_FIELD_ID = "uid-administrativeState";
     private static final String ENCAPSULATION_FIELD_ID = "uid-encapsulation";
+    private static final String WIDGET_ID = "CommonHierarchyApp-hierarchyAppId";
 
     private final Wizard wizard;
 
@@ -108,7 +109,7 @@ public class AEIWizardPage extends BasePage {
     @Step("Navigate through Common Hierarchy App widget selecting {location} -> {device} and interface names")
     public void assignEthernetInterfaces(List<String> interfacesNamesToSelect, String location, String device) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        CommonHierarchyApp commonHierarchyApp = CommonHierarchyApp.createByClass(driver, wait);
+        CommonHierarchyApp commonHierarchyApp = CommonHierarchyApp.create(driver, wait, WIDGET_ID);
         commonHierarchyApp.callAvailableAction(interfacesNamesToSelect, location, device);
     }
 

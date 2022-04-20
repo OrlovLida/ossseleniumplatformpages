@@ -27,6 +27,7 @@ public abstract class TrafficClassWizardPage extends BasePage {
     private static final String INPUT_INTERFACE_FIELD_ID = "uid-inputInterface-input";
     private static final String PROTOCOL_FIELD_ID = "uid-protocol";
     private static final String COMPONENT_ID = "trafficClassWizard";
+    private static final String WIDGET_ID = "CommonHierarchyApp-hierarchyAppId";
 
     public TrafficClassWizardPage(WebDriver webDriver) {
         super(webDriver);
@@ -36,7 +37,7 @@ public abstract class TrafficClassWizardPage extends BasePage {
 
     @Step("Navigate through Common Hierarchy app widget selecting {location} -> {deviceName}")
     public void selectLocationAndDevice(String location, String deviceName) {
-        CommonHierarchyApp commonHierarchyApp = CommonHierarchyApp.createByClass(driver, wait);
+        CommonHierarchyApp commonHierarchyApp = CommonHierarchyApp.create(driver, wait, WIDGET_ID);
         commonHierarchyApp.navigateToPath(location, deviceName);
         DelayUtils.waitForPageToLoad(driver, wait);
     }

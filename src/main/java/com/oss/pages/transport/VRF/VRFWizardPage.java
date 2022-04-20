@@ -27,6 +27,7 @@ public class VRFWizardPage extends BasePage {
     private static final String ROUTE_DISTINGUISHER_FIELD_ID = "uidFieldRouteDistinguisher";
     private static final String DESCRIPTION_FIELD_ID = "uidFieldDescription";
     private static final String DEVICE_FIELD_ID = "uidFieldDevice";
+    private static final String WIDGET_ID = "CommonHierarchyApp-vrfAppSelect";
 
     private final Wizard wizard;
 
@@ -75,7 +76,7 @@ public class VRFWizardPage extends BasePage {
     @Step("Navigate through Common Hierarchy App widget selecting {resourceName} and names of interfaces")
     public void selectInterfacesInResourceTree(String resourceName, List<String> interfaceNames) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        CommonHierarchyApp commonHierarchyApp = CommonHierarchyApp.createByClass(driver, wait);
+        CommonHierarchyApp commonHierarchyApp = CommonHierarchyApp.create(driver, wait, WIDGET_ID);
         commonHierarchyApp.callAvailableAction(interfaceNames, resourceName);
     }
 

@@ -19,6 +19,8 @@ public class VLANPoolWizardPage extends BasePage {
     private static final String VLAN_RANGE_ID = "vlan-range-uid";
     private static final String NEXT_STEP_ID = "vlanPoolWizardApp-next";
     private static final String ACCEPT_ID = "vlanPoolWizardApp-finish";
+    private static final String WIDGET_ID = "CommonHierarchyApp-parent-selection-hierarchy-app-uid";
+
     public VLANPoolWizardPage(WebDriver driver) {
         super(driver);
     }
@@ -46,7 +48,7 @@ public class VLANPoolWizardPage extends BasePage {
     @Step("Navigate through Common Hierarchy App widget selecting {resourceName} and names of interfaces")
     public void selectLocationAndDevice(String locationName, String deviceName) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        CommonHierarchyApp commonHierarchyApp = CommonHierarchyApp.createByClass(driver, wait);
+        CommonHierarchyApp commonHierarchyApp = CommonHierarchyApp.create(driver, wait, WIDGET_ID);
         commonHierarchyApp.navigateToPath(locationName, deviceName);
     }
 
