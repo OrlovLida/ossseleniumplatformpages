@@ -14,22 +14,21 @@ import com.oss.pages.servicedesk.issue.wizard.ExportWizardPage;
 
 import io.qameta.allure.Step;
 
-import static com.oss.pages.servicedesk.URLConstants.VIEWS_URL_PATTERN;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.DATE_MASK;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.DOWNLOAD_FILE;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.ID_ATTRIBUTE;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.VIEWS_URL_PATTERN;
 
 public abstract class GraphQLSearchPage extends BaseSDPage {
 
     private static final Logger log = LoggerFactory.getLogger(GraphQLSearchPage.class);
 
-    public static final String ID_ATTRIBUTE = "id";
     public static final String CREATION_TIME_ATTRIBUTE = "createDate";
     public static final String DESCRIPTION_ATTRIBUTE = "incidentDescription";
-
     private static final String EXPORT_BUTTON_ID = "exportButton";
     private static final String REFRESH_BUTTON_ID = "refreshButton";
     private static final String EXPORT_WIZARD_ID = "exportgui-wizard-widget";
     private static final String EXPORT_FILE_NAME = "Selenium test " + BaseSDPage.getDateFormat();
-    private static final String DATE_MASK = "ISO Local Date";
-    private static final String DOWNLOAD_FILE = "Selenium test*.csv";
     private static final int MAX_SEARCH_TIME_6_HOURS = 360;
 
     protected GraphQLSearchPage(WebDriver driver, WebDriverWait wait) {

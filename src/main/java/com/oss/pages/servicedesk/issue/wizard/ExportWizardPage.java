@@ -29,13 +29,13 @@ public class ExportWizardPage extends BaseSDPage {
     @Step("Fill file name")
     public void fillFileName(String fileName) {
         exportWizard.setComponentValue(FILE_NAME_TEXTFIELD_ID, fileName, Input.ComponentType.TEXT_FIELD);
-        log.info("Filling file name with: {fileName}");
+        log.info("Filling file name with: {}", fileName);
     }
 
     @Step("Fill date mask")
     public void fillDateMask(String dateMask) {
         ComponentFactory.create(DATE_MASK_ID, Input.ComponentType.COMBOBOX, driver, wait).setSingleStringValueContains(dateMask);
-        log.info("Filling date mask containing: {dateMask}");
+        log.info("Filling date mask containing: {}", dateMask);
     }
 
     @Step("Click Accept")

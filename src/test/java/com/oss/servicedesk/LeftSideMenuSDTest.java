@@ -15,6 +15,9 @@ import com.oss.pages.servicedesk.issue.ticket.TicketSearchPage;
 
 import io.qameta.allure.Description;
 
+import static com.oss.pages.servicedesk.ServiceDeskConstants.PROBLEMS_DASHBOARD;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.TICKET_DASHBOARD;
+
 public class LeftSideMenuSDTest extends BaseTestCase {
 
     private ServiceDeskMenuPage serviceDeskMenuPage;
@@ -24,8 +27,6 @@ public class LeftSideMenuSDTest extends BaseTestCase {
     private ProblemSearchPage problemSearchPage;
     private MyProblemsPage myProblemsPage;
     private TaskDashboardPage taskDashboardPage;
-    private static final String TROUBLE_TICKET_DASHBOARD = "_TroubleTickets";
-    private static final String PROBLEMS_DASHBOARD = "_ProblemManagement";
     private static final String DASHBOARD_PAGE = "Dashboard";
     private static final String TICKETS_SEARCH_PAGE = "Tickets Search";
     private static final String MY_TICKETS_PAGE = "My Tickets";
@@ -34,6 +35,7 @@ public class LeftSideMenuSDTest extends BaseTestCase {
     private static final String MY_PROBLEMS_PAGE = "My Problems";
     private static final String MY_GROUP_PROBLEMS_PAGE = "My Group Problems";
     private static final String TASKS_DASHBOARD_PAGE = "Tasks";
+    private static final String CLOSED_TICKETS_PAGE = "Closed Tickets";
 
     @BeforeMethod
     public void openMainPage() {
@@ -45,7 +47,7 @@ public class LeftSideMenuSDTest extends BaseTestCase {
     public void goToTTDashboard() {
         serviceDeskMenuPage.chooseFromTroubleTicketsMenu(DASHBOARD_PAGE);
         baseDashboardPage = new BaseDashboardPage(driver, webDriverWait);
-        Assert.assertTrue(baseDashboardPage.isDashboardOpen(BASIC_URL, TROUBLE_TICKET_DASHBOARD));
+        Assert.assertTrue(baseDashboardPage.isDashboardOpen(BASIC_URL, TICKET_DASHBOARD));
     }
 
     @Test(testName = "Go to Ticket Search", description = "Going to Ticket Search from Left Side Menu")
@@ -118,4 +120,14 @@ public class LeftSideMenuSDTest extends BaseTestCase {
         Assert.assertTrue(taskDashboardPage.isTaskDashboardOpened(BASIC_URL));
         Assert.assertEquals(taskDashboardPage.getViewTitle(), TASKS_DASHBOARD_PAGE);
     }
+
+    @Test(testName = "Go to Closed Tickets", description = "Going to Closed Tickets from Left Side Menu")
+    @Description("Going to Closed Tickets from Left Side Menu")
+    public void goToClosedTickets() {
+        serviceDeskMenuPage.chooseFromTroubleTicketsMenu(CLOSED_TICKETS_PAGE);
+        myTicketsPage = new MyTicketsPage(driver, webDriverWait);
+        Assert.assertTrue(myTicketsPage.isMyTicketsPageOpened(BASIC_URL, CLOSED_TICKETS_PAGE));
+        Assert.assertEquals(myTicketsPage.getViewTitle(), CLOSED_TICKETS_PAGE);
+    }
 }
+

@@ -16,8 +16,8 @@ import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
 
-import static com.oss.pages.servicedesk.GraphQLIssueTableConstants.ISSUE_OUT_ASSIGNEE_ATTR;
-import static com.oss.pages.servicedesk.GraphQLIssueTableConstants.ISSUE_OUT_STATUS_ATTR;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.ISSUE_OUT_ASSIGNEE_ATTR;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.ISSUE_OUT_STATUS_ATTR;
 
 @Listeners({TestListener.class})
 public class CreateTaskVFNZTest extends BaseTestCase {

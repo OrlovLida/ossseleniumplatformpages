@@ -153,9 +153,7 @@ public class SDWizardPage extends BaseSDPage {
         log.info("Clicking {} combobox", componentId);
     }
 
-    public BaseDashboardPage createTicketTypeCTT(String moIdentifier, String assignee) {
-        BaseDashboardPage baseDashboardPage = new BaseDashboardPage(driver, wait);
-        baseDashboardPage.openCreateTicketWizard("CTT");
+    public BaseDashboardPage createTicket(String moIdentifier, String assignee) {
         getMoStep().enterTextIntoSearchComponent(moIdentifier);
         getMoStep().selectObjectInMOTable(moIdentifier);
         clickNextButtonInWizard();

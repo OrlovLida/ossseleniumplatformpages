@@ -17,6 +17,10 @@ import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
 
+import static com.oss.pages.servicedesk.ServiceDeskConstants.ID_ATTRIBUTE;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.TICKET_DASHBOARD;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.TROUBLE_TICKET_ISSUE_TYPE;
+
 @Listeners({TestListener.class})
 public class MyGroupTicketsVFNZTest extends BaseTestCase {
     private BaseDashboardPage baseDashboardPage;
@@ -26,14 +30,11 @@ public class MyGroupTicketsVFNZTest extends BaseTestCase {
     private SDWizardPage sdWizardPage;
     private String ticketID;
 
-    private static final String TICKET_DASHBOARD = "_TroubleTickets";
     private static final String DOWNLOAD_FILE = "Selenium test*.csv";
     private static final String EXPORT_WIZARD_ID = "exportgui-mainview";
-    private static final String TROUBLE_TICKET_ISSUE_TYPE = "trouble-ticket";
     private static final String TT_WIZARD_ASSIGNEE = "TT_WIZARD_INPUT_ASSIGNEE_LABEL";
     private static final String DETAILS_WINDOW_ID = "_detailsWindow";
     private static final String SELENIUM_TEST_USER = "sd_seleniumtest";
-    private static final String ID_ATTRIBUTE = "id";
 
     @BeforeMethod
     public void goToTicketDashboardPage() {
@@ -47,8 +48,8 @@ public class MyGroupTicketsVFNZTest extends BaseTestCase {
             @Optional("CFS_Access_Product_Selenium_1") String MOIdentifier,
             @Optional("Tier 2 Mobile") String ttAssignee
     ) {
-        SDWizardPage sdWizardPage = new SDWizardPage(driver, webDriverWait);
-        baseDashboardPage = sdWizardPage.createTicketTypeCTT(MOIdentifier, ttAssignee);
+        sdWizardPage = baseDashboardPage.openCreateTicketWizard("CTT");
+        sdWizardPage.createTicket(MOIdentifier, ttAssignee);
         ticketID = baseDashboardPage.getIdFromMessage();
         Assert.assertTrue(baseDashboardPage.getAssigneeForNthTicketInTTTable(0).contains(ttAssignee));
         Assert.assertEquals(baseDashboardPage.getRowForTicketWithID(ticketID), 0);

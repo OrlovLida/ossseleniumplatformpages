@@ -28,7 +28,7 @@ public abstract class BaseSDPage extends BasePage {
     private static final Logger log = LoggerFactory.getLogger(BaseSDPage.class);
 
     private static final String CREATE_DATE_FILTER_DATE_PATTERN = "yyyy-MM-dd HH:mm:ss";
-    private static final String DATE_FORMAT = "yyMMddHHmm";
+    private static final String DATE_FORMAT = "yyMMddHHmmSS";
     public static final DateTimeFormatter CREATE_DATE_FILTER_DATE_FORMATTER = DateTimeFormatter.ofPattern(CREATE_DATE_FILTER_DATE_PATTERN);
     public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(DATE_FORMAT);
     private static final String GROUP_ID_OLD_ACTIONS_CONTAINER = "frameworkCustomEllipsis";

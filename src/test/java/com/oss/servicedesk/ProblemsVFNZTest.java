@@ -26,6 +26,8 @@ import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
 import io.qameta.allure.Description;
 
 import static com.oss.pages.servicedesk.BaseSDPage.CREATE_DATE_FILTER_DATE_FORMATTER;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.PROBLEMS_DASHBOARD;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.PROBLEM_ISSUE_TYPE;
 
 public class ProblemsVFNZTest extends BaseTestCase {
 
@@ -43,8 +45,6 @@ public class ProblemsVFNZTest extends BaseTestCase {
     private RelatedProblemsTab relatedProblemsTab;
     private NotificationWrapperPage notificationWrapperPage;
     private String problemId;
-    private static final String PROBLEMS_DASHBOARD = "_ProblemManagement";
-    private static final String PROBLEM_ISSUE_TYPE = "problem";
     private static final String PROBLEM_NAME_DESCRIPTION_ID = "TT_WIZARD_INPUT_PROBLEM_NAME_DESCRIPTION";
     private static final String PROBLEM_NAME_DESCRIPTION_TXT = "Selenium test Problem " + LocalDateTime.now().format(CREATE_DATE_FILTER_DATE_FORMATTER);
     private static final String SEVERITY_COMBOBOX_ID = "TT_WIZARD_INPUT_SEVERITY_LABEL-input";

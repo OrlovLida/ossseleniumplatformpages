@@ -33,8 +33,10 @@ import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 
 import static com.oss.pages.servicedesk.BaseSDPage.CREATE_DATE_FILTER_DATE_FORMATTER;
-import static com.oss.pages.servicedesk.GraphQLIssueTableConstants.ISSUE_OUT_ASSIGNEE_ATTR;
-import static com.oss.pages.servicedesk.GraphQLIssueTableConstants.ISSUE_OUT_STATUS_ATTR;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.ISSUE_OUT_ASSIGNEE_ATTR;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.ISSUE_OUT_STATUS_ATTR;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.TICKET_DASHBOARD;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.TROUBLE_TICKET_ISSUE_TYPE;
 
 @Listeners({TestListener.class})
 public class CreateTroubleTicketVFNZTest extends BaseTestCase {
@@ -59,8 +61,6 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     private NotificationWrapperPage notificationWrapperPage;
     private String ticketID;
 
-    private static final String TROUBLE_TICKET_ISSUE_TYPE = "trouble-ticket";
-    private static final String TICKET_DASHBOARD = "_TroubleTickets";
     private static final String TT_DESCRIPTION = "TestSelenium";
     private static final String TT_DESCRIPTION_EDITED = "TestSelenium_edited";
     private static final String TT_CORRELATION_ID = "12345";
