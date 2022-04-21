@@ -1,18 +1,12 @@
 package com.oss.cmTemplate.checkservices;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import org.testng.annotations.Test;
 
 import com.oss.transport.infrastructure.Environment;
 import com.oss.transport.infrastructure.EnvironmentRequestClient;
-import com.oss.transport.infrastructure.User;
 import com.oss.transport.infrastructure.servicecheck.ServicesChecker;
 
 import io.qameta.allure.Step;
-
-import static com.oss.configuration.Configuration.CONFIGURATION;
 
 /**
  * Created by Bartłomiej Jędrzejczyk on 2022-04-14
@@ -22,27 +16,9 @@ public class CMServicesCheckTest {
     private static final ServicesChecker SERVICES_CHECKER;
 
     static {
-        Environment environment = createEnvironment();
+        Environment environment = Environment.createEnvironmentFromConfiguration();
         EnvironmentRequestClient environmentRequestClient = new EnvironmentRequestClient(environment);
         SERVICES_CHECKER = new ServicesChecker(environmentRequestClient);
-    }
-
-    private static Environment createEnvironment() {
-        try {
-            URL url = new URL(CONFIGURATION.getUrl());
-            String host = url.getHost();
-            int port = url.getPort();
-            String userName = CONFIGURATION.getValue("user");
-            String pass = CONFIGURATION.getValue("password");
-            User user = new User(userName, pass);
-            return Environment.builder()
-                .withEnvironmentUrl(host)
-                .withEnvironmentPort(port)
-                .withUser(user)
-                .build();
-        } catch (MalformedURLException exception) {
-            throw new IllegalStateException(exception);
-        }
     }
 
     @Test(priority = 1)

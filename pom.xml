@@ -31,6 +31,7 @@
         <fixedaccess.version>4.9.6</fixedaccess.version>
         <trail-api.version>3.20.0.Final</trail-api.version>
         <tmf.catalog.version>7.5.10</tmf.catalog.version>
+        <template.filler.version>2.21.12</template.filler.version>
         <log4j2.version>2.8.2</log4j2.version>
     </properties>
 
@@ -167,6 +168,11 @@
             <groupId>com.comarch.oss.rso.resource.catalog</groupId>
             <artifactId>tmf-catalog-api</artifactId>
             <version>${tmf.catalog.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.comarch.oss.cm.template.filler</groupId>
+            <artifactId>template-filler-api</artifactId>
+            <version>${template.filler.version}</version>
         </dependency>
         <dependency>
             <groupId>com.comarch.oss.transport.tp</groupId>

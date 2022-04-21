@@ -1,7 +1,5 @@
 package com.oss;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,7 +32,6 @@ import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.LoginPage;
 import com.oss.transport.infrastructure.Environment;
 import com.oss.transport.infrastructure.EnvironmentRequestClient;
-import com.oss.transport.infrastructure.User;
 import com.oss.utils.TestListener;
 
 import static com.oss.configuration.Configuration.CONFIGURATION;
@@ -54,7 +51,7 @@ public class BaseTestCase implements IHookable {
     @BeforeClass
     public void openBrowser() {
         RestAssured.config = prepareRestAssureConfig();
-        Environment environment = createEnvironment();
+        Environment environment = Environment.createEnvironmentFromConfiguration();
         environmentRequestClient = new EnvironmentRequestClient(environment);
         if (CONFIGURATION.getDriver().equals("chrome")) {
             startChromeDriver();
@@ -161,24 +158,6 @@ public class BaseTestCase implements IHookable {
         }
         driver = new FirefoxDriver(options);
         driver.manage().window().maximize();
-    }
-
-    private Environment createEnvironment() {
-        try {
-            URL url = new URL(BASIC_URL);
-            String host = url.getHost();
-            int port = url.getPort();
-            String userName = CONFIGURATION.getValue("user");
-            String pass = CONFIGURATION.getValue("password");
-            User user = new User(userName, pass);
-            return Environment.builder()
-                    .withEnvironmentUrl(host)
-                    .withEnvironmentPort(port)
-                    .withUser(user)
-                    .build();
-        } catch (MalformedURLException exception) {
-            throw new IllegalStateException(exception);
-        }
     }
 
     protected RestAssuredConfig prepareRestAssureConfig() {
