@@ -24,6 +24,8 @@ public class TaskDashboardPage extends BaseSDPage {
     private static final String ASSIGNEE_ATTRIBUTE = "Assignee";
     private static final String EDIT_TASK_BUTTON_ID = "open-details";
     private static final String TASKS_URL_PATTERN = "%s/#/view/service-desk/problem/tasks";
+    private static final String PROMPT_ID = "_createTask_prompt-card";
+    private static final String EDIT_PROMPT_ID = "_taskDetails_prompt-card";
 
     public TaskDashboardPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -53,7 +55,7 @@ public class TaskDashboardPage extends BaseSDPage {
         Button.createById(driver, CREATE_TASK_BUTTON_ID).click();
         log.info("Create task wizard is opened");
 
-        return new SDWizardPage(driver, wait);
+        return new SDWizardPage(driver, wait, PROMPT_ID);
     }
 
     @Step("I check Tasks table")
@@ -101,6 +103,6 @@ public class TaskDashboardPage extends BaseSDPage {
         Button.createById(driver, EDIT_TASK_BUTTON_ID).click();
         log.info("Edit task wizard is opened");
 
-        return new SDWizardPage(driver, wait);
+        return new SDWizardPage(driver, wait, EDIT_PROMPT_ID);
     }
 }

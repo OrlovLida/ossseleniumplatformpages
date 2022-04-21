@@ -38,9 +38,11 @@ public class SDWizardPage extends BaseSDPage {
     private static final String TT_WIZARD_MESSAGE_DATE_ID = "PleaseProvideTheTimeOnTheHandsetTheTxtMessageArrived";
 
     private final MOStep moStep;
+    private final Wizard wizard;
 
-    public SDWizardPage(WebDriver driver, WebDriverWait wait) {
+    public SDWizardPage(WebDriver driver, WebDriverWait wait, String wizardId) {
         super(driver, wait);
+        this.wizard = Wizard.createByComponentId(driver, wait, wizardId);
         this.moStep = new MOStep(driver, wait);
     }
 
@@ -48,17 +50,21 @@ public class SDWizardPage extends BaseSDPage {
         return moStep;
     }
 
+    public Wizard getWizard() {
+        return wizard;
+    }
+
     @Step("I click Next button in wizard")
     public void clickNextButtonInWizard() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getWizard().clickNext();
+        wizard.clickNext();
         log.info("Clicking Next button in the wizard");
     }
 
     @Step("I click Accept button in wizard")
     public void clickAcceptButtonInWizard() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getWizard().clickAccept();
+        wizard.clickAccept();
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Clicking Accept button in the wizard");
     }
@@ -66,7 +72,7 @@ public class SDWizardPage extends BaseSDPage {
     @Step("I click {buttonID} button in wizard")
     public void clickButton(String buttonID) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getWizard().clickButtonById(buttonID);
+        wizard.clickButtonById(buttonID);
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Clicking {} button in the wizard", buttonID);
     }
@@ -80,7 +86,7 @@ public class SDWizardPage extends BaseSDPage {
 
     @Step("I insert {text} to multi combo box component with id {componentId}")
     public void insertValueToMultiComboBoxComponent(String text, String componentId) {
-        insertValueToComponent(text, componentId, Input.ComponentType.MULTI_COMBOBOX);
+        getWizard().getComponent(componentId, Input.ComponentType.MULTI_COMBOBOX).setValueContains(Data.createSingleData(text));
         log.info("Value {} inserted to multi combobox", text);
     }
 
@@ -149,7 +155,7 @@ public class SDWizardPage extends BaseSDPage {
     }
 
     public void clickComboBox(String componentId) {
-        getWizard().getComponent(componentId, Input.ComponentType.COMBOBOX).click();
+        wizard.getComponent(componentId, Input.ComponentType.COMBOBOX).click();
         log.info("Clicking {} combobox", componentId);
     }
 
@@ -171,10 +177,6 @@ public class SDWizardPage extends BaseSDPage {
     }
 
     private void insertValueToComponent(String text, String componentId, Input.ComponentType componentType) {
-        getWizard().setComponentValue(componentId, text, componentType);
-    }
-
-    private Wizard getWizard() {
-        return Wizard.createWizard(driver, wait);
+        wizard.setComponentValue(componentId, text, componentType);
     }
 }

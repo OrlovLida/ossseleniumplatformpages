@@ -67,6 +67,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     private static final String TT_REFERENCE_ID = "12345";
     private static final String TT_SEVERITY = "Warning";
     private static final String TT_EXTERNAL = "Selenium test external";
+    private static final String TT_EXTERNAL_URL = "http://test.pl";
     private static final String TT_EXTERNAL_EDITED = "Selenium test external_EDITED";
     private static final String TT_LIBRARY_TYPE = "Category";
     private static final String TT_CATEGORY_NAME = "Data Problem";
@@ -84,6 +85,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     private static final String NOTIFICATION_INTERNAL_TO = "ca_kodrobinska";
     private static final String NOTIFICATION_TYPE = "Success";
     private static final String NOTIFICATION_SUBJECT = "Email notification test";
+    private static final String NOTIFICATION_WIZARD_ID = "notification-wizard_prompt-card";
 
     private static final String TT_WIZARD_ASSIGNEE = "TT_WIZARD_INPUT_ASSIGNEE_LABEL";
     private static final String TT_WIZARD_ESCALATED_TO = "TT_WIZARD_INPUT_ESCALATED_TO_LABEL";
@@ -103,6 +105,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
 
     private static final String EXTERNAL_LIST_ID = "_detailsExternalsListApp";
     private static final String ADD_TO_LIBRARY_LABEL = "Add to Library";
+    private static final String ADD_TO_LIBRARY_WIZARD_ID = "addToLibraryPrompt_prompt-card";
     private static final String WIZARD_LIBRARY_TYPE_ID = "{\"identifier\":\"type\",\"parentIdentifier\":\"type\",\"parentValueIdentifier\":\"\",\"groupId\":\"type\"}";
     private static final String WIZARD_CATEGORY_ID = "{\"identifier\":\"Category\",\"parentIdentifier\":\"type\",\"parentValueIdentifier\":\"\",\"groupId\":\"Category\"}-input";
     private static final String TABLES_WINDOW_ID = "_tablesWindow";
@@ -122,13 +125,10 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     private static final String PARTICIPANT_SURNAME = LocalDateTime.now().toString();
     private static final String PARTICIPANT_ROLE = "Contact";
 
-    private static final String CREATE_PROBLEM_WIZARD_NAME_ID = "name";
-    private static final String CREATE_PROBLEM_WIZARD_ASSIGNEE_ID = "assignee";
-    private static final String CREATE_PROBLEM_WIZARD_LABEL_ID = "label";
-    private static final String CREATE_PROBLEM_WIZARD_CREATE_PROBLEM_ID = "_createProblemSubmitId-1";
+    private static final String CREATE_PROBLEM_WIZARD_NAME_ID = "TT_WIZARD_INPUT_PROBLEM_NAME_DESCRIPTION";
+    private static final String CREATE_PROBLEM_WIZARD_ASSIGNEE_ID = "TT_WIZARD_INPUT_ASSIGNEE_LABEL";
     private static final String CREATE_PROBLEM_NAME = "Related Problem - Selenium Test";
     private static final String CREATE_PROBLEM_ASSIGNEE = "sd_seleniumtest";
-    private static final String CREATE_PROBLEM_LABEL = LocalDateTime.now().toString();
 
     private static final String USER_NAME = "sd_seleniumtest";
     private static final String FILE_TO_UPLOAD_PATH = "DataSourceCSV/CPU_USAGE_INFO_RAW-MAP.xlsx";
@@ -223,6 +223,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
         externalTab = issueDetailsPage.selectExternalTab();
         externalPromptPage = externalTab.clickAddExternal();
         externalPromptPage.fillExternalName(TT_EXTERNAL);
+        externalPromptPage.fillExternalUrl(TT_EXTERNAL_URL);
         externalPromptPage.clickCreateExternal();
         Assert.assertTrue(externalTab.isExternalCreated(TT_EXTERNAL, EXTERNAL_LIST_ID));
     }
@@ -255,9 +256,9 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     @Description("Add dictionary to ticket")
     public void addDictionaryToTicket() {
         issueDetailsPage = baseDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
-        issueDetailsPage.selectTab(DICTIONARIES_TAB_ARIA_CONTROLS);
+        issueDetailsPage.selectTabFromDetailsWindow(DICTIONARIES_TAB_ARIA_CONTROLS);
         issueDetailsPage.clickContextAction(ADD_TO_LIBRARY_LABEL);
-        SDWizardPage dictionarySDWizardPage = new SDWizardPage(driver, webDriverWait);
+        SDWizardPage dictionarySDWizardPage = new SDWizardPage(driver, webDriverWait, ADD_TO_LIBRARY_WIZARD_ID);
         dictionarySDWizardPage.insertValueToComboBoxComponent(TT_LIBRARY_TYPE, WIZARD_LIBRARY_TYPE_ID);
         dictionarySDWizardPage.insertValueToComboBoxComponent(TT_CATEGORY_NAME, WIZARD_CATEGORY_ID);
         dictionarySDWizardPage.clickAcceptButtonInWizard();
@@ -268,7 +269,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     @Description("Check Description Tab")
     public void checkDescriptionTab() {
         issueDetailsPage = baseDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
-        issueDetailsPage.selectTab(DESCRIPTION_TAB_ARIA_CONTROLS);
+        issueDetailsPage.selectTabFromTablesWindow(DESCRIPTION_TAB_ARIA_CONTROLS);
         Assert.assertTrue(issueDetailsPage.checkDisplayedText(TT_DESCRIPTION_EDITED, TABLES_WINDOW_ID));
     }
 
@@ -278,10 +279,10 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
         issueDetailsPage = baseDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
         messagesTab = issueDetailsPage.selectMessagesTab();
         messagesTab.createNewNotificationOnMessagesTab();
-        SDWizardPage notificationSDWizardPage = new SDWizardPage(driver, webDriverWait);
+        SDWizardPage notificationSDWizardPage = new SDWizardPage(driver, webDriverWait, NOTIFICATION_WIZARD_ID);
         notificationSDWizardPage.insertValueToComboBoxComponent(NOTIFICATION_CHANNEL_INTERNAL, NOTIFICATION_WIZARD_CHANNEL_ID);
         notificationSDWizardPage.insertValueToTextAreaComponent(NOTIFICATION_MESSAGE_INTERNAL, NOTIFICATION_WIZARD_MESSAGE_ID);
-        notificationSDWizardPage.insertValueToMultiSearchComponent(NOTIFICATION_INTERNAL_TO, NOTIFICATION_WIZARD_INTERNAL_TO_ID);
+        notificationSDWizardPage.insertValueToMultiComboBoxComponent(NOTIFICATION_INTERNAL_TO, NOTIFICATION_WIZARD_INTERNAL_TO_ID);
         notificationSDWizardPage.clickComboBox(NOTIFICATION_WIZARD_TEMPLATE_ID);
         notificationSDWizardPage.insertValueToComboBoxComponent(NOTIFICATION_TYPE, NOTIFICATION_WIZARD_TYPE_ID);
         notificationSDWizardPage.clickAcceptButtonInWizard();
@@ -302,7 +303,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
         issueDetailsPage = baseDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
         messagesTab = issueDetailsPage.selectMessagesTab();
         messagesTab.createNewNotificationOnMessagesTab();
-        SDWizardPage notificationSDWizardPage = new SDWizardPage(driver, webDriverWait);
+        SDWizardPage notificationSDWizardPage = new SDWizardPage(driver, webDriverWait, NOTIFICATION_WIZARD_ID);
         notificationSDWizardPage.insertValueToComboBoxComponent(NOTIFICATION_CHANNEL_EMAIL, NOTIFICATION_WIZARD_CHANNEL_ID);
         notificationSDWizardPage.insertValueToMultiSearchComponent(NotificationEmailTo, NOTIFICATION_WIZARD_TO_ID);
         notificationSDWizardPage.insertValueToComboBoxComponent(NotificationEmailFrom, NOTIFICATION_WIZARD_FROM_ID);
@@ -334,7 +335,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     @Description("Add Remainder")
     public void addRemainderTest() {
         issueDetailsPage = baseDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
-        issueDetailsPage.selectTab(OVERVIEW_TAB_ARIA_CONTROLS);
+        issueDetailsPage.selectTabFromDetailsWindow(OVERVIEW_TAB_ARIA_CONTROLS);
         issueDetailsPage.maximizeWindow(DETAILS_WINDOW_ID);
         remainderForm = issueDetailsPage.clickAddRemainder();
         remainderForm.createReminderWithNote(REMAINDER_NOTE);
@@ -348,7 +349,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     @Description("Edit Reminder")
     public void editRemainderTest() {
         issueDetailsPage = baseDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
-        issueDetailsPage.selectTab(OVERVIEW_TAB_ARIA_CONTROLS);
+        issueDetailsPage.selectTabFromTablesWindow(OVERVIEW_TAB_ARIA_CONTROLS);
         issueDetailsPage.maximizeWindow(DETAILS_WINDOW_ID);
         remainderForm = issueDetailsPage.clickEditRemainder();
         remainderForm.createReminderWithNote(EDITED_REMAINDER_NOTE);
@@ -360,7 +361,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     @Description("Delete Remainder")
     public void deleteRemainderTest() {
         issueDetailsPage = baseDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
-        issueDetailsPage.selectTab(OVERVIEW_TAB_ARIA_CONTROLS);
+        issueDetailsPage.selectTabFromTablesWindow(OVERVIEW_TAB_ARIA_CONTROLS);
         issueDetailsPage.maximizeWindow(DETAILS_WINDOW_ID);
         issueDetailsPage.clickRemoveRemainder();
         goToTicketDashboardPage();
@@ -426,7 +427,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     @Description("Check Same MO TT Tab")
     public void checkSameMOTTTab() {
         issueDetailsPage = baseDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
-        issueDetailsPage.selectTab(SAME_MO_TT_TAB_ARIA_CONTROLS);
+        issueDetailsPage.selectTabFromTablesWindow(SAME_MO_TT_TAB_ARIA_CONTROLS);
         Assert.assertTrue(issueDetailsPage.checkIfSameMOTTTableIsNotEmpty());
     }
 
@@ -478,14 +479,14 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
         issueDetailsPage = baseDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
         relatedProblemsTab = issueDetailsPage.selectRelatedProblemsTab();
         sdWizardPage = relatedProblemsTab.openCreateProblemWizard();
-        sdWizardPage.insertValueToTextComponent(CREATE_PROBLEM_NAME, CREATE_PROBLEM_WIZARD_NAME_ID);
+        sdWizardPage.clickNextButtonInWizard();
+        sdWizardPage.insertValueToTextAreaComponent(CREATE_PROBLEM_NAME, CREATE_PROBLEM_WIZARD_NAME_ID);
         sdWizardPage.insertValueToSearchComponent(CREATE_PROBLEM_ASSIGNEE, CREATE_PROBLEM_WIZARD_ASSIGNEE_ID);
-        sdWizardPage.insertValueToTextComponent(CREATE_PROBLEM_LABEL, CREATE_PROBLEM_WIZARD_LABEL_ID);
-        sdWizardPage.clickButton(CREATE_PROBLEM_WIZARD_CREATE_PROBLEM_ID);
+        sdWizardPage.clickNextButtonInWizard();
+        sdWizardPage.clickAcceptButtonInWizard();
 
-        Assert.assertEquals(relatedProblemsTab.checkRelatedProblemName(0), CREATE_PROBLEM_NAME);
+        Assert.assertTrue(relatedProblemsTab.checkRelatedProblemName(0).contains(CREATE_PROBLEM_NAME));
         Assert.assertEquals(relatedProblemsTab.checkRelatedProblemAssignee(0), CREATE_PROBLEM_ASSIGNEE);
-        Assert.assertEquals(relatedProblemsTab.checkRelatedProblemLabel(0), CREATE_PROBLEM_LABEL);
     }
 
     @Test(priority = 25, testName = "Export from Related Problems tab", description = "Export from Related Problems tab")
@@ -563,7 +564,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
 
         messagesTab.markAsImportant(0);
         Assert.assertEquals(messagesTab.getBadgeTextFromMessage(0, 1), "IMPORTANT");
-        issueDetailsPage.selectTab(MOST_IMPORTANT_INFO_TAB_ARIA_CONTROLS);
+        issueDetailsPage.selectTabFromTablesWindow(MOST_IMPORTANT_INFO_TAB_ARIA_CONTROLS);
         mostImportantInfoTab = new MessagesTab(driver, webDriverWait);
         Assert.assertFalse(mostImportantInfoTab.isMessagesTabEmpty());
         Assert.assertEquals(mostImportantInfoTab.getMessageText(0), NOTIFICATION_MESSAGE_COMMENT_IMPORTANT);

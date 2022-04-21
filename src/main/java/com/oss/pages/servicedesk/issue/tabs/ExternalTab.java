@@ -8,11 +8,13 @@ import org.slf4j.LoggerFactory;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.CommonList;
-import com.oss.framework.widgets.tabs.TabWindowWidget;
+import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.servicedesk.BaseSDPage;
 import com.oss.pages.servicedesk.issue.wizard.ExternalPromptPage;
 
 import io.qameta.allure.Step;
+
+import static com.oss.pages.servicedesk.ServiceDeskConstants.DETAILS_TABS_CONTAINER_ID;
 
 public class ExternalTab extends BaseSDPage {
 
@@ -21,8 +23,8 @@ public class ExternalTab extends BaseSDPage {
     private static final String DELETE_EXTERNAL_LABEL = "DELETE";
     private static final String EXTERNAL_INFO_LABEL = "External Info";
     private static final String CONFIRM_REMOVE_BUTTON_ID = "ConfirmationBox__formCreateExternal_action_button";
-    private static final String ADD_EXTERNAL_PROMPT_WIZARD_ID = "_addExternalPrompt";
-    private static final String EDIT_EXTERNAL_PROMPT_WIZARD_ID = "_editExternalPrompt";
+    private static final String ADD_EXTERNAL_PROMPT_WIZARD_ID = "_addExternalPrompt_prompt-card";
+    private static final String EDIT_EXTERNAL_PROMPT_WIZARD_ID = "_editExternalPrompt_prompt-card";
 
     private static final Logger log = LoggerFactory.getLogger(ExternalTab.class);
 
@@ -33,7 +35,7 @@ public class ExternalTab extends BaseSDPage {
     @Step("Click Add External")
     public ExternalPromptPage clickAddExternal() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        TabWindowWidget.create(driver, wait).callActionByLabel(ADD_EXTERNAL_LABEL);
+        TabsWidget.createById(driver, wait, DETAILS_TABS_CONTAINER_ID).callActionByLabel(ADD_EXTERNAL_LABEL);
         log.info("Clicking Add External");
 
         return new ExternalPromptPage(driver, wait, ADD_EXTERNAL_PROMPT_WIZARD_ID);

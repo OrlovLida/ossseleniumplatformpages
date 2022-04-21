@@ -12,6 +12,8 @@ import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
 
 import io.qameta.allure.Step;
 
+import static com.oss.pages.servicedesk.ServiceDeskConstants.COMMON_WIZARD_ID;
+
 public class RootCausesTab extends BaseSDPage {
 
     private static final Logger log = LoggerFactory.getLogger(RootCausesTab.class);
@@ -50,7 +52,7 @@ public class RootCausesTab extends BaseSDPage {
         DelayUtils.waitForPageToLoad(driver, wait);
         clickContextActionFromButtonContainer(ADD_ROOT_CAUSE_ID);
         log.info("Add Root Cause Wizard is opened");
-        return new SDWizardPage(driver, wait);
+        return new SDWizardPage(driver, wait, COMMON_WIZARD_ID);
     }
 
     @Step("I check if MO Identifier is present on Root Causes tab")

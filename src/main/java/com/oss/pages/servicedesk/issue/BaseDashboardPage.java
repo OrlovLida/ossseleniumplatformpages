@@ -15,6 +15,7 @@ import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
 
 import io.qameta.allure.Step;
 
+import static com.oss.pages.servicedesk.ServiceDeskConstants.COMMON_WIZARD_ID;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.ID_UPPERCASE_ATTRIBUTE;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.PREDEFINED_DASHBOARD_URL_PATTERN;
 
@@ -57,7 +58,7 @@ public class BaseDashboardPage extends BaseSDPage {
         DropdownList.create(driver, wait).selectOptionById(flowType);
         log.info("Create ticket wizard for {} is opened", flowType);
 
-        return new SDWizardPage(driver, wait);
+        return new SDWizardPage(driver, wait, COMMON_WIZARD_ID);
     }
 
     @Step("I open create problem wizard")
@@ -67,7 +68,7 @@ public class BaseDashboardPage extends BaseSDPage {
         DropdownList.create(driver, wait).selectOptionById(PROBLEM_BUTTON_ID);
         log.info("Create Problem wizard is opened");
 
-        return new SDWizardPage(driver, wait);
+        return new SDWizardPage(driver, wait, COMMON_WIZARD_ID);
     }
 
     @Step("Click Export")
