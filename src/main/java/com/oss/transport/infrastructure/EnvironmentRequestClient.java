@@ -120,6 +120,10 @@ public class EnvironmentRequestClient {
         return servicesClient.getRequestSpecificationByName("template-filler");
     }
 
+    public RequestSpecification getSoftwareManagementCoreSpecification() {
+        return servicesClient.getRequestSpecificationByName("software-management-core");
+    }
+
     public RequestSpecification prepareRequestSpecificationWithoutUri() {
         return servicesClient.prepareRequestSpecificationWithoutUri();
     }
