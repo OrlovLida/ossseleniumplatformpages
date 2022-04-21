@@ -1,5 +1,10 @@
 package com.oss.pages.bigdata.kqiview;
 
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.oss.framework.components.attributechooser.ListAttributesChooser;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
@@ -10,13 +15,10 @@ import com.oss.framework.components.mainheader.ToolbarWidget;
 import com.oss.framework.components.table.TableComponent;
 import com.oss.framework.iaa.widgets.dpe.kpichartwidget.KpiChartWidget;
 import com.oss.pages.BasePage;
-import com.oss.pages.bookmarkmanager.bookmarkmanagerwizards.BookmarkWizardPage;
+import com.oss.pages.administration.managerwizards.BookmarkWizardPage;
 import com.oss.untils.FileDownload;
+
 import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static com.oss.framework.utils.DelayUtils.waitForPageToLoad;
 

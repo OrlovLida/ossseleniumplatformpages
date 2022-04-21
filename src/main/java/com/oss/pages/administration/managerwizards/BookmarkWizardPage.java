@@ -1,4 +1,4 @@
-package com.oss.pages.bookmarkmanager.bookmarkmanagerwizards;
+package com.oss.pages.administration.managerwizards;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -48,5 +48,4 @@ public class BookmarkWizardPage extends BasePage {
         Popup.create(driver, wait).clickButtonByLabel(SAVE_BOOKMARK_LABEL);
         log.info("I click Save");
     }
-
 }
