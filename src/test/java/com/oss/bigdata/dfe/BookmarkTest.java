@@ -1,22 +1,28 @@
 package com.oss.bigdata.dfe;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
+import org.testng.annotations.Test;
+
 import com.oss.BaseTestCase;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.pages.administration.BookmarkManagerPage;
+import com.oss.pages.administration.managerwizards.BookmarkWizardPage;
+import com.oss.pages.administration.managerwizards.CategoryWizardPage;
 import com.oss.pages.bigdata.kqiview.KpiToolbarPanelPage;
 import com.oss.pages.bigdata.kqiview.KpiViewPage;
 import com.oss.pages.bigdata.kqiview.KpiViewSetupPage;
 import com.oss.pages.bigdata.utils.ConstantsDfe;
-import com.oss.pages.bookmarkmanager.BookmarkManagerPage;
-import com.oss.pages.bookmarkmanager.bookmarkmanagerwizards.BookmarkWizardPage;
-import com.oss.pages.bookmarkmanager.bookmarkmanagerwizards.CategoryWizardPage;
-import io.qameta.allure.Description;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.Assert;
-import org.testng.annotations.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import io.qameta.allure.Description;
 
 public class BookmarkTest extends BaseTestCase {
 
