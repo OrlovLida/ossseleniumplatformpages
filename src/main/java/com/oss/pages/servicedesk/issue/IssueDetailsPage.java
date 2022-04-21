@@ -14,7 +14,7 @@ import com.oss.framework.iaa.widgets.list.ListApp;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.CommonList;
 import com.oss.framework.widgets.table.OldTable;
-import com.oss.framework.widgets.tabs.TabWindowWidget;
+import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.servicedesk.BaseSDPage;
 import com.oss.pages.servicedesk.issue.tabs.AttachmentsTab;
 import com.oss.pages.servicedesk.issue.tabs.ExternalTab;
@@ -27,6 +27,9 @@ import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
 
 import io.qameta.allure.Step;
 
+import static com.oss.pages.servicedesk.ServiceDeskConstants.COMMON_WIZARD_ID;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.DETAILS_TABS_CONTAINER_ID;
+
 public class IssueDetailsPage extends BaseSDPage {
 
     private static final Logger log = LoggerFactory.getLogger(IssueDetailsPage.class);
@@ -34,8 +37,8 @@ public class IssueDetailsPage extends BaseSDPage {
     public static final String DETAILS_PAGE_URL_PATTERN = "%s/#/view/service-desk/%s/details/%s";
 
     private static final String EDIT_DETAILS_LABEL = "Edit details";
-    private static final String RELEASE_ID = "_detailsOverviewContextActions-7";
-    private static final String ACTIONS_CONTAINER_ID = "_detailsWindow-windowToolbar";
+    private static final String RELEASE_BUTTON_LABEL = "Release";
+    private static final String DETAILS_VIEW_ACTIONS_CONTAINER_ID = "_detailsWindow-windowToolbar";
     private static final String ALLOW_EDIT_LABEL = "Edit";
     private static final String PROBLEM_ASSIGNEE_ID = "assignee";
     private static final String PROBLEM_STATUS_ID = "status-input";
@@ -56,6 +59,8 @@ public class IssueDetailsPage extends BaseSDPage {
     private static final String RELATED_TICKETS_TAB_ARIA_CONTROLS = "_relatedTicketsTab";
     private static final String PARTICIPANTS_TAB_ARIA_CONTROLS = "_participantsTabApp";
     private static final String RELATED_PROBLEMS_TAB_ARIA_CONTROLS = "_relatedProblems";
+    private static final String MORE_BUTTON_LABEL = "More";
+    private static final String TABS_WIDGET_ID = "_tablesWindow";
 
     public IssueDetailsPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -64,15 +69,15 @@ public class IssueDetailsPage extends BaseSDPage {
     @Step("I open edit ticket wizard")
     public SDWizardPage openEditTicketWizard() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        clickContextAction(EDIT_DETAILS_LABEL);
+        getDetailsViewOldActionsContainer().callActionByLabel(MORE_BUTTON_LABEL, EDIT_DETAILS_LABEL);
         log.info("Ticket Wizard edit is opened");
-        return new SDWizardPage(driver, wait);
+        return new SDWizardPage(driver, wait, COMMON_WIZARD_ID);
     }
 
     @Step("Click release ticket")
     public void releaseTicket() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        OldActionsContainer.createById(driver, wait, ACTIONS_CONTAINER_ID).callActionById(RELEASE_ID);
+        getDetailsViewOldActionsContainer().callActionByLabel(RELEASE_BUTTON_LABEL);
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Clicking release button");
     }
@@ -80,7 +85,7 @@ public class IssueDetailsPage extends BaseSDPage {
     @Step("Allow ticket editing")
     public void allowEditingTicket() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        OldActionsContainer.createById(driver, wait, ACTIONS_CONTAINER_ID).callActionByLabel(ALLOW_EDIT_LABEL);
+        getDetailsViewOldActionsContainer().callActionByLabel(ALLOW_EDIT_LABEL);
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Clicking edit button");
     }
@@ -88,61 +93,68 @@ public class IssueDetailsPage extends BaseSDPage {
     @Step("Click Context action with label {contextActionLabel}")
     public void clickContextAction(String contextActionLabel) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        TabWindowWidget.create(driver, wait).callActionByLabel(contextActionLabel);
+        getDetailsViewOldActionsContainer().callActionByLabel(contextActionLabel);
         log.info("Clicking Context action {}", contextActionLabel);
     }
 
-    @Step("Selecting tab {tabAriaControls}")
-    public void selectTab(String tabAriaControls) {
+    @Step("Selecting tab {tabId}")
+    public void selectTabFromTablesWindow(String tabId) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        TabWindowWidget.create(driver, wait).selectTabById(tabAriaControls);
-        log.info("Selecting tab {}", tabAriaControls);
+        TabsWidget.createById(driver, wait, TABS_WIDGET_ID).selectTabById(tabId);
+        log.info("Selecting tab {}", tabId);
+    }
+
+    @Step("Selecting tab {tabId}")
+    public void selectTabFromDetailsWindow(String tabId) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        TabsWidget.createById(driver, wait, DETAILS_TABS_CONTAINER_ID).selectTabById(tabId);
+        log.info("Selecting tab {}", tabId);
     }
 
     public AttachmentsTab selectAttachmentsTab() {
-        selectTab(ATTACHMENTS_TAB_ARIA_CONTROLS);
+        selectTabFromDetailsWindow(ATTACHMENTS_TAB_ARIA_CONTROLS);
         log.info("Selecting tab Attachments");
 
         return new AttachmentsTab(driver, wait);
     }
 
     public ExternalTab selectExternalTab() {
-        selectTab(EXTERNAL_TAB_ARIA_CONTROLS);
+        selectTabFromDetailsWindow(EXTERNAL_TAB_ARIA_CONTROLS);
         log.info("Selecting tab External");
 
         return new ExternalTab(driver, wait);
     }
 
     public MessagesTab selectMessagesTab() {
-        selectTab(MESSAGES_TAB_ARIA_CONTROLS);
+        selectTabFromTablesWindow(MESSAGES_TAB_ARIA_CONTROLS);
         log.info("Selecting Messages Tab");
 
         return new MessagesTab(driver, wait);
     }
 
     public RootCausesTab selectRootCauseTab() {
-        selectTab(ROOT_CAUSES_TAB_ARIA_CONTROLS);
+        selectTabFromTablesWindow(ROOT_CAUSES_TAB_ARIA_CONTROLS);
         log.info("Selecting Root Cause Tab");
 
         return new RootCausesTab(driver, wait);
     }
 
     public RelatedTicketsTab selectRelatedTicketsTab() {
-        selectTab(RELATED_TICKETS_TAB_ARIA_CONTROLS);
+        selectTabFromTablesWindow(RELATED_TICKETS_TAB_ARIA_CONTROLS);
         log.info("Selecting Related Tickets Tab");
 
         return new RelatedTicketsTab(driver, wait);
     }
 
     public ParticipantsTab selectParticipantsTab() {
-        selectTab(PARTICIPANTS_TAB_ARIA_CONTROLS);
+        selectTabFromTablesWindow(PARTICIPANTS_TAB_ARIA_CONTROLS);
         log.info("Selecting Participants Tab");
 
         return new ParticipantsTab(driver, wait);
     }
 
     public RelatedProblemsTab selectRelatedProblemsTab() {
-        selectTab(RELATED_PROBLEMS_TAB_ARIA_CONTROLS);
+        selectTabFromTablesWindow(RELATED_PROBLEMS_TAB_ARIA_CONTROLS);
         log.info("Selecting Related Problems Tab");
 
         return new RelatedProblemsTab(driver, wait);
@@ -220,27 +232,27 @@ public class IssueDetailsPage extends BaseSDPage {
 
     @Step("Click Add Remainder")
     public RemainderForm clickAddRemainder() {
-        clickContextAction(ADD_REMAINDER_LABEL);
+        getDetailsViewOldActionsContainer().callActionByLabel(MORE_BUTTON_LABEL, ADD_REMAINDER_LABEL);
         log.info("Clicking Add Remainder");
         return new RemainderForm(driver, wait);
     }
 
     @Step("Click Edit Remainder")
     public RemainderForm clickEditRemainder() {
-        clickContextAction(EDIT_REMAINDER_LABEL);
+        getDetailsViewOldActionsContainer().callActionByLabel(MORE_BUTTON_LABEL, EDIT_REMAINDER_LABEL);
         log.info("Clicking Edit Remainder");
         return new RemainderForm(driver, wait);
     }
 
     @Step("Click Remove Remainder")
     public void clickRemoveRemainder() {
-        clickContextAction(REMOVE_REMAINDER_LABEL);
+        getDetailsViewOldActionsContainer().callActionByLabel(MORE_BUTTON_LABEL, REMOVE_REMAINDER_LABEL);
         log.info("Clicking Remove Remainder");
     }
 
     @Step("Click More Details")
     public MoreDetailsPage clickMoreDetails() {
-        clickContextAction(MORE_DETAILS_LABEL);
+        getDetailsViewOldActionsContainer().callActionByLabel(MORE_BUTTON_LABEL, MORE_DETAILS_LABEL);
         log.info("Clicking More Details");
         return new MoreDetailsPage(driver, wait);
     }
@@ -250,5 +262,9 @@ public class IssueDetailsPage extends BaseSDPage {
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Check Same MO TT Table");
         return !OldTable.createById(driver, wait, SAME_MO_TT_TABLE_ID).hasNoData();
+    }
+
+    private OldActionsContainer getDetailsViewOldActionsContainer() {
+        return OldActionsContainer.createById(driver, wait, DETAILS_VIEW_ACTIONS_CONTAINER_ID);
     }
 }

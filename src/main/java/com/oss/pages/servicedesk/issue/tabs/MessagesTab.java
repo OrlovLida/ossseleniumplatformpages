@@ -8,10 +8,12 @@ import org.slf4j.LoggerFactory;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.iaa.widgets.list.MessageListWidget;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.tabs.TabWindowWidget;
+import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.servicedesk.BaseSDPage;
 
 import io.qameta.allure.Step;
+
+import static com.oss.pages.servicedesk.ServiceDeskConstants.TABS_WIDGET_ID;
 
 public class MessagesTab extends BaseSDPage {
 
@@ -53,6 +55,7 @@ public class MessagesTab extends BaseSDPage {
 
     @Step("Check if Messages Tab is Empty")
     public boolean isMessagesTabEmpty() {
+        DelayUtils.sleep(2000);
         log.info("Check if Messages Tab is Empty");
         return getMessageListWidget().hasNoData();
     }
@@ -94,6 +97,6 @@ public class MessagesTab extends BaseSDPage {
     }
 
     private MessageListWidget getMessageListWidget() {
-        return TabWindowWidget.create(driver, wait).getMessageListWidget("_tablesWindow");
+        return TabsWidget.createById(driver, wait, TABS_WIDGET_ID).getMessageListWidget(TABS_WIDGET_ID);
     }
 }

@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import com.oss.framework.components.contextactions.ButtonContainer;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.wizard.Wizard;
 
 import io.qameta.allure.Step;
 
@@ -17,19 +16,22 @@ public class ExternalPromptPage extends SDWizardPage {
     private static final Logger log = LoggerFactory.getLogger(ExternalPromptPage.class);
 
     private static final String EXTERNAL_NAME_ID = "_name";
+    private static final String EXTERNAL_URL_ID = "_url";
     private static final String CREATE_EXTERNAL_LABEL = "Create External";
     private static final String SAVE_LABEL = "Save";
 
-    private final Wizard externalPrompt;
-
     public ExternalPromptPage(WebDriver driver, WebDriverWait wait, String wizardId) {
-        super(driver, wait);
-        externalPrompt = Wizard.createByComponentId(driver, wait, wizardId);
+        super(driver, wait, wizardId);
     }
 
     @Step("Fill External Name")
     public void fillExternalName(String externalName) {
-        externalPrompt.setComponentValue(EXTERNAL_NAME_ID, externalName, Input.ComponentType.TEXT_FIELD);
+        getWizard().setComponentValue(EXTERNAL_NAME_ID, externalName, Input.ComponentType.TEXT_FIELD);
+    }
+
+    @Step("Fill External URL")
+    public void fillExternalUrl(String url) {
+        getWizard().setComponentValue(EXTERNAL_URL_ID, url, Input.ComponentType.TEXT_FIELD);
     }
 
     @Step("Click Create External button in wizard")

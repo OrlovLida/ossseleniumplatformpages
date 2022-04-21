@@ -29,6 +29,7 @@ public class RelatedTicketsTab extends BaseSDPage {
     private static final String SHOW_ARCHIVED_SWITCHER_ID = "_relatedTicketsSwitcherApp";
     private static final String RELATED_TICKETS_EXPORT_FILE = "TroubleTicket*.xlsx";
     private static final String TABS_CONTAINER_ID = "_tablesWindow";
+    private static final String LINK_TICKET_PROMPT_ID = "_linkSubTicketModal_prompt-card";
 
     public RelatedTicketsTab(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -43,7 +44,7 @@ public class RelatedTicketsTab extends BaseSDPage {
             clickContextActionFromButtonContainer(LINK_TICKETS_IN_PROBLEMS_ID);
         }
         log.info("Link Tickets prompt is opened");
-        return new SDWizardPage(driver, wait);
+        return new SDWizardPage(driver, wait, LINK_TICKET_PROMPT_ID);
     }
 
     @Step("Check related tickets ID")

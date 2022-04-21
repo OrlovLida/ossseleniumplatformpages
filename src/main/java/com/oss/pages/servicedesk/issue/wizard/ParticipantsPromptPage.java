@@ -11,9 +11,10 @@ public class ParticipantsPromptPage extends SDWizardPage {
     private static final String PARTICIPANT_SURNAME_ID = "surname";
     private static final String PARTICIPANT_ROLE_ID = "role";
     private static final String ADD_PARTICIPANT_ID = "_searchParticipant_buttons-2";
+    private static final String ADD_PARTICIPANT_PROMPT_ID = "_createParticipantModal_prompt-card";
 
     public ParticipantsPromptPage(WebDriver driver, WebDriverWait wait) {
-        super(driver, wait);
+        super(driver, wait, ADD_PARTICIPANT_PROMPT_ID);
     }
 
     @Step("Set Participant Name")

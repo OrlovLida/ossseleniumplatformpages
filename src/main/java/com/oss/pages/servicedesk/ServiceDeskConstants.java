@@ -18,4 +18,7 @@ public class ServiceDeskConstants {
     public static final String ID_UPPERCASE_ATTRIBUTE = "ID";
     public static final String ISSUE_OUT_ASSIGNEE_ATTR = "issueOut.assignee.name";
     public static final String ISSUE_OUT_STATUS_ATTR = "issueOut.status.name";
+    public static final String COMMON_WIZARD_ID = "_WizardWindow";
+    public static final String DETAILS_TABS_CONTAINER_ID = "_detailsWindow";
+    public static final String TABS_WIDGET_ID = "_tablesWindow";
 }
