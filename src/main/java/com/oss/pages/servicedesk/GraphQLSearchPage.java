@@ -28,7 +28,6 @@ public abstract class GraphQLSearchPage extends BaseSDPage {
     private static final String EXPORT_BUTTON_ID = "exportButton";
     private static final String REFRESH_BUTTON_ID = "refreshButton";
     private static final String EXPORT_WIZARD_ID = "exportgui-wizard-widget";
-    private static final String EXPORT_FILE_NAME = "Selenium test " + BaseSDPage.getDateFormat();
     private static final int MAX_SEARCH_TIME_6_HOURS = 360;
 
     protected GraphQLSearchPage(WebDriver driver, WebDriverWait wait) {
@@ -114,7 +113,8 @@ public abstract class GraphQLSearchPage extends BaseSDPage {
             }
             clickExportInTicketSearch();
             ExportWizardPage exportWizardPage = new ExportWizardPage(driver, wait, exportWizardId);
-            exportWizardPage.fillFileName(EXPORT_FILE_NAME);
+            String exportFileName = "Selenium test " + BaseSDPage.getDateFormat();
+            exportWizardPage.fillFileName(exportFileName);
             exportWizardPage.fillDateMask(DATE_MASK);
             exportWizardPage.clickAccept();
             notificationWrapperPage.openNotificationPanel();
