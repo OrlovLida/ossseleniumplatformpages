@@ -2,6 +2,8 @@ package com.oss.configuration;
 
 import java.util.List;
 
+import com.oss.framework.components.inputs.Input;
+import com.oss.framework.widgets.table.TableWidget;
 import org.assertj.core.api.Assertions;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -16,20 +18,22 @@ import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.platform.configuration.SaveConfigurationWizard;
 import com.oss.utils.TestListener;
 
-import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Property.DEFAULT_VIEW_FOR;
-import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Property.GROUPS;
+import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Property.*;
 
 @Listeners({TestListener.class})
 public class TabsConfigurationTest extends BaseTestCase {
     private final static String GROUP_NAME = "SeleniumTests";
-    private final static String CONFIGURATION_NAME_TABS_WIDGET = "Tabs_Widget_Configuration";
+    private static final String ATTRIBUTE_ID_TYPE = "type";
+    private final static String CONFIGURATION_NAME_TABS_WIDGET = "Tabs_Widget_TestActor_Configuration";
     private final static String CONFIGURATION_NAME_TABS_WIDGET_DEFAULT_FOR_USER = "Tabs_Widget_Supertype_Default_For_User";
     private final static String CONFIGURATION_NAME_TABS_WIDGET_GROUP = "Tabs_Widget_Group";
 
     private NewInventoryViewPage newInventoryViewPage;
+    private TableWidget tableWidget;
 
     private final static String DEFAULT_CONFIGURATION = "DEFAULT";
     private static final String TEST_PERSON = "TestPerson";
+    private static final String TEST_DIRECTOR = "TestDirector";
     private static final String TEST_ACTOR = "TestActor";
     private static final String INTERESTS = "Interests";
     private static final String OTHER_TYPE = "Other";
@@ -50,13 +54,14 @@ public class TabsConfigurationTest extends BaseTestCase {
     }
 
     @Test(priority = 1)
-    public void saveNewConfigurationForTabsWidgetForType() {
+    public void saveNewConfigurationForTabsWidgetForSupertype() {
         //when
-        newInventoryViewPage.selectFirstRow();
+
+        selectObjectOfSuperType(TEST_ACTOR);
         newInventoryViewPage.enableWidget(OTHER_TYPE, PLANNING_INFO);
         newInventoryViewPage.enableWidget(TABLE_TYPE, MOVIES);
         newInventoryViewPage.enableWidget(TABLE_TYPE, INTERESTS);
-        newInventoryViewPage.saveConfigurationForTabs(CONFIGURATION_NAME_TABS_WIDGET);
+        newInventoryViewPage.saveConfigurationForTabs(CONFIGURATION_NAME_TABS_WIDGET, createField(TYPE, TEST_ACTOR));
 
         //then
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
@@ -72,7 +77,7 @@ public class TabsConfigurationTest extends BaseTestCase {
 
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
-        Assert.assertFalse(newInventoryViewPage.isTabVisible(MOVIES));
+        Assert.assertFalse(newInventoryViewPage.isTabVisible(PLANNING_INFO));
 
     }
 
@@ -94,7 +99,7 @@ public class TabsConfigurationTest extends BaseTestCase {
         newInventoryViewPage.updateConfigurationForTabs();
 
         driver.navigate().refresh();
-        newInventoryViewPage.selectFirstRow();
+        selectObjectOfSuperType(TEST_ACTOR);
 
         newInventoryViewPage.applyConfigurationForTabs(CONFIGURATION_NAME_TABS_WIDGET);
 
@@ -105,8 +110,6 @@ public class TabsConfigurationTest extends BaseTestCase {
     @Test(priority = 5)
     public void downloadConfigurationOfTabsWidget() {
         //when
-        newInventoryViewPage.selectFirstRow();
-
         newInventoryViewPage.downloadConfigurationForTabs(CONFIGURATION_NAME_TABS_WIDGET);
 
         //then
@@ -119,8 +122,6 @@ public class TabsConfigurationTest extends BaseTestCase {
     @Test(priority = 6)
     public void removeConfigurationOfTabsWidget() {
         //when
-        newInventoryViewPage.selectFirstRow();
-
         newInventoryViewPage.removeConfigurationForTabs(CONFIGURATION_NAME_TABS_WIDGET);
 
         //then
@@ -131,11 +132,11 @@ public class TabsConfigurationTest extends BaseTestCase {
     }
 
     @Test(priority = 7)
-    public void saveDefaultConfigurationForTabsWidgetForUser() {
+    public void saveDefaultConfigurationForTabsWidgetForUserForSuperType() {
         //when
-        newInventoryViewPage.selectFirstRow();
+        selectObjectOfSuperType(TEST_ACTOR);
         newInventoryViewPage.enableWidget(TABLE_TYPE, MOVIES);
-        newInventoryViewPage.saveConfigurationForTabs(CONFIGURATION_NAME_TABS_WIDGET_DEFAULT_FOR_USER, createField(DEFAULT_VIEW_FOR, ME));
+        newInventoryViewPage.saveConfigurationForTabs(CONFIGURATION_NAME_TABS_WIDGET_DEFAULT_FOR_USER, createField(DEFAULT_VIEW_FOR, ME), createField(TYPE, TEST_ACTOR));
 
         //then
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
@@ -146,7 +147,7 @@ public class TabsConfigurationTest extends BaseTestCase {
         driver.navigate().refresh();
 
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        newInventoryViewPage.selectFirstRow();
+        selectObjectOfSuperType(TEST_ACTOR);
 
         Assert.assertTrue(newInventoryViewPage.isTabVisible(MOVIES));
 
@@ -154,11 +155,10 @@ public class TabsConfigurationTest extends BaseTestCase {
     }
 
     @Test(priority = 8)
-    public void saveDefaultConfigurationForTabsWidgetForGroup() {
+    public void saveDefaultConfigurationForTabsWidgetForGroupForType() {
         //when
-        newInventoryViewPage.selectFirstRow();
         newInventoryViewPage.enableWidget(TABLE_TYPE, INTERESTS);
-        newInventoryViewPage.saveConfigurationForTabs(CONFIGURATION_NAME_TABS_WIDGET_GROUP, createField(GROUPS, GROUP_NAME));
+        newInventoryViewPage.saveConfigurationForTabs(CONFIGURATION_NAME_TABS_WIDGET_GROUP, createField(GROUPS, GROUP_NAME), createField(TYPE, TEST_PERSON));
 
         //then
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
@@ -179,21 +179,30 @@ public class TabsConfigurationTest extends BaseTestCase {
     public void groupAndTypeInheritanceDefaultConfigurationOfTabsWidget() {
         //when
         newInventoryViewPage.changeUser(USER2, PASSWORD_2);
-        newInventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_ACTOR);
+        newInventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_PERSON);
 
         newInventoryViewPage.chooseGroupContext(GROUP_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
-        newInventoryViewPage.selectFirstRow();
+        selectObjectOfSuperType(TEST_DIRECTOR);
 
         Assert.assertTrue(newInventoryViewPage.isTabVisible(INTERESTS));
 
         newInventoryViewPage.changeUser(USER1, PASSWORD_1);
         newInventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_PERSON);
-        newInventoryViewPage.selectFirstRow();
+        selectObjectOfSuperType(TEST_ACTOR);
+        Assert.assertTrue(newInventoryViewPage.isTabVisible(MOVIES));
+        Assert.assertFalse(newInventoryViewPage.isTabVisible(INTERESTS));
 
         newInventoryViewPage.removeConfigurationForTabs(CONFIGURATION_NAME_TABS_WIDGET_GROUP);
 
+    }
+
+    private void selectObjectOfSuperType(String typeValue) {
+        newInventoryViewPage.searchByAttributeValue(ATTRIBUTE_ID_TYPE, typeValue, Input.ComponentType.MULTI_COMBOBOX);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        newInventoryViewPage.selectFirstRow();
+        newInventoryViewPage.clearFilters();
     }
 
     private SaveConfigurationWizard.Field createField(SaveConfigurationWizard.Property property, String... values) {
