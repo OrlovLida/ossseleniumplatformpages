@@ -141,18 +141,20 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
         baseDashboardPage = new BaseDashboardPage(driver, webDriverWait).goToPage(driver, BASIC_URL, TICKET_DASHBOARD);
     }
 
-    @Parameters({"MOIdentifier", "ttAssignee"})
+    @Parameters({"MOIdentifier", "ttAssignee", "EscalatedTo1"})
     @Test(priority = 1, testName = "Create CTT Ticket", description = "Create CTT Ticket")
     @Description("Create CTT Ticket")
     public void createCTTTicket(
-            @Optional("CFS_Access_Product_Selenium_1") String MOIdentifier,
-            @Optional("ca_kodrobinska") String ttAssignee
+            @Optional("TEST_MO") String MOIdentifier,
+            @Optional("ca_akolczyk") String ttAssignee,
+            @Optional("ca_akolczyk") String EscalatedTo1
     ) {
         sdWizardPage = baseDashboardPage.openCreateTicketWizard("CTT");
         sdWizardPage.getMoStep().enterTextIntoSearchComponent(MOIdentifier);
         sdWizardPage.getMoStep().selectObjectInMOTable(MOIdentifier);
         sdWizardPage.clickNextButtonInWizard();
         sdWizardPage.insertValueToSearchComponent(ttAssignee, TT_WIZARD_ASSIGNEE);
+        sdWizardPage.insertValueToSearchComponent(EscalatedTo1, TT_WIZARD_ESCALATED_TO);
         sdWizardPage.insertValueToTextComponent(TT_REFERENCE_ID, TT_WIZARD_REFERENCE_ID);
         sdWizardPage.enterIncidentDescription(TT_DESCRIPTION);
         sdWizardPage.enterExpectedResolutionDate();
