@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.widgets.table.TableWidget;
-import org.assertj.core.api.Assertions;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
@@ -59,15 +58,15 @@ public class TabsConfigurationTest extends BaseTestCase {
 
         selectObjectOfSuperType(TEST_ACTOR);
         newInventoryViewPage.enableWidget(OTHER_TYPE, PLANNING_INFO);
-        newInventoryViewPage.enableWidget(TABLE_TYPE, MOVIES);
         newInventoryViewPage.enableWidget(TABLE_TYPE, INTERESTS);
         newInventoryViewPage.saveConfigurationForTabs(CONFIGURATION_NAME_TABS_WIDGET, createField(TYPE, TEST_ACTOR));
 
         //then
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages).hasSize(1);
-        Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
+
+        Assert.assertEquals(messages.size(), 1);
+        Assert.assertSame(messages.get(0).getMessageType(),(SystemMessageContainer.MessageType.SUCCESS));
     }
 
     @Test(priority = 2)
@@ -115,8 +114,8 @@ public class TabsConfigurationTest extends BaseTestCase {
         //then
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages).hasSize(1);
-        Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
+        Assert.assertEquals(messages.size(), 1);
+        Assert.assertSame(messages.get(0).getMessageType(),(SystemMessageContainer.MessageType.SUCCESS));
     }
 
     @Test(priority = 6)
@@ -127,8 +126,8 @@ public class TabsConfigurationTest extends BaseTestCase {
         //then
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages).hasSize(1);
-        Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
+        Assert.assertEquals(messages.size(), 1);
+        Assert.assertSame(messages.get(0).getMessageType(),(SystemMessageContainer.MessageType.SUCCESS));
     }
 
     @Test(priority = 7)
@@ -141,8 +140,8 @@ public class TabsConfigurationTest extends BaseTestCase {
         //then
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages).hasSize(1);
-        Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
+        Assert.assertEquals(messages.size(), 1);
+        Assert.assertSame(messages.get(0).getMessageType(),(SystemMessageContainer.MessageType.SUCCESS));
 
         driver.navigate().refresh();
 
@@ -151,7 +150,6 @@ public class TabsConfigurationTest extends BaseTestCase {
 
         Assert.assertTrue(newInventoryViewPage.isTabVisible(MOVIES));
 
-        newInventoryViewPage.removeConfigurationForTabs(CONFIGURATION_NAME_TABS_WIDGET_DEFAULT_FOR_USER);
     }
 
     @Test(priority = 8)
@@ -163,14 +161,14 @@ public class TabsConfigurationTest extends BaseTestCase {
         //then
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages).hasSize(1);
-        Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
+        Assert.assertEquals(messages.size(), 1);
+        Assert.assertSame(messages.get(0).getMessageType(),(SystemMessageContainer.MessageType.SUCCESS));
 
         driver.navigate().refresh();
         newInventoryViewPage.chooseGroupContext(GROUP_NAME);
 
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        newInventoryViewPage.selectFirstRow();
+        selectObjectOfSuperType(TEST_DIRECTOR);
 
         Assert.assertTrue(newInventoryViewPage.isTabVisible(INTERESTS));
     }
@@ -195,6 +193,7 @@ public class TabsConfigurationTest extends BaseTestCase {
         Assert.assertFalse(newInventoryViewPage.isTabVisible(INTERESTS));
 
         newInventoryViewPage.removeConfigurationForTabs(CONFIGURATION_NAME_TABS_WIDGET_GROUP);
+        newInventoryViewPage.removeConfigurationForTabs(CONFIGURATION_NAME_TABS_WIDGET_DEFAULT_FOR_USER);
 
     }
 
