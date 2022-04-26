@@ -9,7 +9,7 @@ public class VNFPKGManualOnboardConstants {
     public static final String RESOURCE_SPECIFICATIONS_ACTION_LABEL = "Resource Specifications";
     public static final String RESOURCE_CATALOG_PATH = "Resource Catalog";
     public static final String SPECIFICATION_NAME_ATTRIBUTE_NAME_LABEL = "Specification Name";
-    public static final String VNFPKG_ONBOARDING_ACTION_LABEL = "VNF Package Onboarding";
+    public static final String VNFPKG_ONBOARDING_ACTION_LABEL = "VNF Package Onboarding to NFVO";
     public static final String VENDOR_ATTRIBUTE_NAME = "Vendor";
     public static final String CATEGORY_ATTRIBUTE_NAME = "Category";
     public static final String NFVO_CATEGORY_ATTRIBUTE_VALUE = "NFVO";

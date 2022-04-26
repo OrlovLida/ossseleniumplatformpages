@@ -27,10 +27,11 @@ public class BaseVNFPKGManualOnboardingTest extends BaseTestCase {
     private final Environment env = Environment.getInstance();
     private final LogicalFunctionClient logicalFunctionClient = LogicalFunctionClient.getInstance(env);
     private final TMFCatalogClient tmfCatalogClient = TMFCatalogClient.getInstance(env);
-    private final Map<String, Long> idByNameMap = new HashMap<>();
+    protected final Map<String, Long> idByNameMap = new HashMap<>();
 
     @BeforeClass
     public void prepareData() throws IOException {
+        deleteVnfpkgSpec();
         createVNFPKGspec();
         createTestInstances();
     }
@@ -43,10 +44,10 @@ public class BaseVNFPKGManualOnboardingTest extends BaseTestCase {
     public void cleanData() {
         deleteRelatedObjects();
         deleteTestInstances();
-        deleteVNFPKGspec();
+        deleteVnfpkgSpec();
     }
 
-    private void deleteVNFPKGspec() {
+    private void deleteVnfpkgSpec() {
         tmfCatalogClient.deleteResourceSpecification(VNFPKG_IDENTIFIER, true);
     }
 

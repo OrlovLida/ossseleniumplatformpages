@@ -9,7 +9,7 @@ import com.oss.pages.BasePage;
 public class VNFPKGManualOnboardingWizardPage extends BasePage {
 
 
-    private static final String WIZARD_ID = "onboardWizardId";
+    private static final String WIZARD_ID = "manualOnboardWizardId";
 
     private final Wizard vnfpkgWizard;
 
