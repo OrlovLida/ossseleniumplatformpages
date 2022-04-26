@@ -1,14 +1,20 @@
 package com.oss.faultmanagement;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
+import org.testng.annotations.Test;
+
 import com.oss.BaseTestCase;
 import com.oss.pages.faultmanagement.FMSMDashboardPage;
 import com.oss.pages.faultmanagement.WAMVPage;
 import com.oss.utils.TestListener;
+
 import io.qameta.allure.Description;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.Assert;
-import org.testng.annotations.*;
 
 /**
  * @author Bartosz Nowak
@@ -29,6 +35,7 @@ public class WAMVBasicTest extends BaseTestCase {
     private FMSMDashboardPage fmsmDashboardPage;
     private WAMVPage wamvPage;
 
+    @Parameters("chosenDashboard")
     @BeforeMethod
     public void goToFMDashboardPage(
             @Optional("FaultManagement") String chosenDashboard

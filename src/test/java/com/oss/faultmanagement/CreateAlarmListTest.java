@@ -1,17 +1,23 @@
 package com.oss.faultmanagement;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
+import org.testng.annotations.Test;
+
 import com.oss.BaseTestCase;
 import com.oss.pages.faultmanagement.FMCreateWAMVPage;
 import com.oss.pages.faultmanagement.FMSMDashboardPage;
 import com.oss.utils.TestListener;
-import io.qameta.allure.Description;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.Assert;
-import org.testng.annotations.*;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import io.qameta.allure.Description;
 
 /**
  * @author Bartosz Nowak
@@ -25,6 +31,7 @@ public class CreateAlarmListTest extends BaseTestCase {
     private FMSMDashboardPage fmsmDashboardPage;
     private FMCreateWAMVPage fmWAMVPage;
 
+    @Parameters ("chosenDashboard")
     @BeforeMethod
     public void goToFMDashboardPage(
             @Optional("FaultManagement") String chosenDashboard
