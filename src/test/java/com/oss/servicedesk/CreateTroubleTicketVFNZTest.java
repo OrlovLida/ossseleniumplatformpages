@@ -272,7 +272,7 @@ public class CreateTroubleTicketVFNZTest extends BaseTestCase {
     public void checkDescriptionTab() {
         issueDetailsPage = baseDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
         issueDetailsPage.selectTabFromTablesWindow(DESCRIPTION_TAB_ARIA_CONTROLS);
-        Assert.assertTrue(issueDetailsPage.checkDisplayedText(TT_DESCRIPTION_EDITED, TABLES_WINDOW_ID));
+        Assert.assertEquals(issueDetailsPage.getDisplayedText(TABLES_WINDOW_ID), TT_DESCRIPTION_EDITED);
     }
 
     @Test(priority = 10, testName = "Check Messages Tab - add Internal Notification", description = "Check Messages Tab - add Internal Notification")

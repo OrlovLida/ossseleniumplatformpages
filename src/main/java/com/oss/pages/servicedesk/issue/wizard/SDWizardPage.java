@@ -64,7 +64,7 @@ public class SDWizardPage extends BaseSDPage {
     @Step("I click Accept button in wizard")
     public void clickAcceptButtonInWizard() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        wizard.clickAccept();
+        wizard.clickAcceptOldWizard();
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Clicking Accept button in the wizard");
     }
