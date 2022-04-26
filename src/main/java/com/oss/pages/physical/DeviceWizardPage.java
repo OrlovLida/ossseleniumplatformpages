@@ -53,7 +53,7 @@ public class DeviceWizardPage extends BasePage {
     }
 
     public static DeviceWizardPage goToDeviceWizardPageLive(WebDriver driver, String basicURL) {
-        driver.get(String.format("%s/#/view/physical-inventory/wizard/device/create?" + "perspective=LIVE", basicURL));
+        driver.get(String.format("%s/#/view/physical-inventory/wizard/devices/create?" + "perspective=LIVE", basicURL));
         return new DeviceWizardPage(driver);
     }
 
@@ -130,9 +130,10 @@ public class DeviceWizardPage extends BasePage {
                     .setSingleStringValueContains(preciseLocation);
         }
     }
-@Step("Set Available Mounting Positions")
+
+    @Step("Set Available Mounting Positions")
     public void setFirstAvailableMountingPosition() {
-        Input mountingPositionInput = getDeviceWizard().getComponent(DEVICE_AVAILABLE_MOUNTING_POSITIONS_DATA_ATTRIBUTE_NAME,COMBOBOX);
+        Input mountingPositionInput = getDeviceWizard().getComponent(DEVICE_AVAILABLE_MOUNTING_POSITIONS_DATA_ATTRIBUTE_NAME, COMBOBOX);
         mountingPositionInput.setSingleStringValueContains("");
     }
 
@@ -249,7 +250,7 @@ public class DeviceWizardPage extends BasePage {
         if (driver.getPageSource().contains(DEVICE_CREATE_WIZARD_PLAN)) {
             return Wizard.createByComponentId(driver, wait, DEVICE_CREATE_WIZARD_PLAN);
         }
-        if (driver.getPageSource().contains(DEVICE_CREATE_WIZARD_LIVE)){
+        if (driver.getPageSource().contains(DEVICE_CREATE_WIZARD_LIVE)) {
             return Wizard.createByComponentId(driver, wait, DEVICE_CREATE_WIZARD_LIVE);
         } else
             return Wizard.createByComponentId(driver, wait, DEVICE_UPDATE_WIZARD);
@@ -261,6 +262,14 @@ public class DeviceWizardPage extends BasePage {
             return "DWDM";
         }
         return equipmentType;
+    }
+
+    public boolean isNextStepPresent() {
+        return getDeviceWizard().isNextStepPresent();
+    }
+
+    public String getCurrentStateTitle() {
+        return getDeviceWizard().getCurrentStepTitle();
     }
 
     @Step("Set Equipment Type")
