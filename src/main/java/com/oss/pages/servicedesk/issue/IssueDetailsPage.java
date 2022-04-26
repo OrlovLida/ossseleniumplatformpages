@@ -61,6 +61,7 @@ public class IssueDetailsPage extends BaseSDPage {
     private static final String RELATED_PROBLEMS_TAB_ARIA_CONTROLS = "_relatedProblems";
     private static final String MORE_BUTTON_LABEL = "More";
     private static final String TABS_WIDGET_ID = "_tablesWindow";
+    private static final String DESCRIPTION_FIELD_ID = "_incidentDescriptionApp";
 
     public IssueDetailsPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -204,15 +205,8 @@ public class IssueDetailsPage extends BaseSDPage {
         return OldTable.createById(driver, wait, DICTIONARIES_TABLE_ID).getCellValue(0, DICTIONARY_VALUE_TABLE_LABEL);
     }
 
-    public boolean checkDisplayedText(String expectedText, String windowId) {
-        List<String> text = ListApp.createFromParent(driver, wait, windowId).getValue();
-        if (text.contains(expectedText)) {
-            log.debug("Expected text {} is displayed", expectedText);
-            return true;
-        } else {
-            log.debug("Expected text {} is not displayed", expectedText);
-            return false;
-        }
+    public String getDisplayedText(String windowId) {
+        return ListApp.createFromParent(driver, wait, windowId).getValueFromField(DESCRIPTION_FIELD_ID);
     }
 
     public boolean isAllActionsSkipped() {
