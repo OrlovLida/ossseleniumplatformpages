@@ -120,7 +120,7 @@ public class VNFPKGManualOnboardingDtoBuilder {
             .name(name)
             .type(type)
             .model(getRsModel(type))
-            .relations(getMasterOssRelation(masterOssId))
+            .attributes(getMasterOssRelation(masterOssId))
             .build();
     }
 

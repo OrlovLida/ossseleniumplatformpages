@@ -11,11 +11,11 @@ import static com.oss.framework.components.inputs.Input.ComponentType.OBJECT_SEA
 
 public class VNFPKGManualOnboardingWizardFirstStep extends VNFPKGManualOnboardingWizardStep {
 
-    private static final String SELECT_NFVO_COMPONENT_ID = "onboardNFVOSearchFieldId";
-    private static final String SEARCH_VNFM_COMPONENT_ID = "onboardVNFMSearchFieldId";
-    private static final String SEARCH_VIM_COMPONENT_ID = "onboardVIMSearchFieldId";
-    private static final String SELECT_DEFAULT_REMOTE_FOLDER_COMPONENT_ID = "onboardDefaultRemoteFolderTextFieldId";
-    private static final String SEARCH_MARKETPLACE_COMPONENT_ID = "onboardMarketplaceSearchFieldId";
+    private static final String SELECT_NFVO_COMPONENT_ID = "manualOnboardNFVOSearchFieldId";
+    private static final String SEARCH_VNFM_COMPONENT_ID = "manualOnboardVNFMSearchFieldId";
+    private static final String SEARCH_VIM_COMPONENT_ID = "manualOnboardVIMSearchFieldId";
+    private static final String SELECT_DEFAULT_REMOTE_FOLDER_COMPONENT_ID = "manualOnboardDefaultRemoteFolderTextFieldId";
+    private static final String SEARCH_MARKETPLACE_COMPONENT_ID = "manualOnboardMarketplaceSearchFieldId";
 
     private VNFPKGManualOnboardingWizardFirstStep(WebDriver driver, WebDriverWait wait, Wizard vnfpkgWizard) {
         super(driver, wait, vnfpkgWizard);
@@ -25,8 +25,8 @@ public class VNFPKGManualOnboardingWizardFirstStep extends VNFPKGManualOnboardin
         return new VNFPKGManualOnboardingWizardFirstStep(driver, wait, vnfpkgWizard);
     }
 
-    public void selectNfvo(String nfvoIdentifier) {
-        vnfpkgWizard.setComponentValue(SELECT_NFVO_COMPONENT_ID, nfvoIdentifier, OBJECT_SEARCH_FIELD);
+    public void selectNfvo(Long nfvoId) {
+        vnfpkgWizard.setComponentValue(SELECT_NFVO_COMPONENT_ID, nfvoId.toString(), OBJECT_SEARCH_FIELD);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
