@@ -1,20 +1,22 @@
 package com.oss.pages.bigdata.kqiview;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.iaa.widgets.dpe.toolbarpanel.FiltersPanel;
 import com.oss.framework.iaa.widgets.dpe.toolbarpanel.KpiToolbarPanel;
 import com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsPanel;
 import com.oss.framework.iaa.widgets.dpe.treewidget.KpiTreeWidget;
 import com.oss.pages.BasePage;
-import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import io.qameta.allure.Step;
 
 import static com.oss.framework.utils.DelayUtils.waitForPageToLoad;
 
@@ -114,7 +116,7 @@ public class KpiViewSetupPage extends BasePage {
         KpiTreeWidget kpiTreeWidget = getKpiTree(treeId);
         kpiTreeWidget.searchInToolbarPanel(objectName);
         waitForPageToLoad(driver, wait);
-        kpiTreeWidget.selectFirstSearchResult();
+        kpiTreeWidget.selectResult(objectName);
         kpiTreeWidget.closeSearchToolbar();
     }
 
