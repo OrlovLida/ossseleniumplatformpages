@@ -294,8 +294,10 @@ public class CreateProcessNRPTest extends BaseTestCase {
         integrationWizard.defineIntegrationProcess(processIPName2, "2020-07-02", 1);
         DelayUtils.sleep();
         integrationWizard.clickNext();
-        integrationWizard.dragAndDrop(deviceName1, processNRPCode, processIPName1);
-        integrationWizard.dragAndDrop(deviceName2, processNRPCode, processIPName2);
+        DelayUtils.sleep(1500);
+        String processNRPCodeName = processNRPName + " (" + processNRPCode + ")";
+        integrationWizard.dragAndDrop(deviceName1, processNRPCodeName, processIPName1);
+        integrationWizard.dragAndDrop(deviceName2, processNRPCodeName, processIPName2);
         integrationWizard.clickAccept();
     }
 
