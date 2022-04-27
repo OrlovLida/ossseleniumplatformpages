@@ -2,6 +2,7 @@ package com.oss.nfv.vnf;
 
 import java.util.List;
 
+import com.oss.pages.logicalfunction.LogicalFunctionWizardPreStep;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
@@ -9,9 +10,7 @@ import org.testng.asserts.SoftAssert;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.nfv.common.ResourceSpecificationsViewService;
 import com.oss.nfv.common.SideMenuService;
-import com.oss.nfv.common.WebDriversData;
 import com.oss.pages.nfv.vnf.VNFWizardFirstStep;
 import com.oss.pages.nfv.vnf.VNFWizardFourthStep;
 import com.oss.pages.nfv.vnf.VNFWizardPage;
@@ -23,7 +22,6 @@ import io.qameta.allure.Description;
 
 import static com.oss.nfv.vnf.CreateVNFTestConstants.NEW_VNF_NAME;
 import static com.oss.nfv.vnf.CreateVNFTestConstants.ROOT_NODE_PATH;
-import static com.oss.nfv.vnf.CreateVNFTestConstants.VNF_INSTANTIATION_LEVEL_0_IDENTIFIER;
 import static com.oss.nfv.vnf.CreateVNFTestConstants.VNF_INSTANTIATION_LEVEL_0_NAME;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -36,13 +34,11 @@ public class CreateVNFTest extends BaseVNFTest {
     public void openCreateVNFWizard() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         //given
-        SideMenuService.goToResourceSpecificationsView(driver, webDriverWait);
+        SideMenuService.goToCreateVNFView(driver, webDriverWait);
         //when
-        ResourceSpecificationsViewService.openCreateLogicalFunctionWizard(
-                VNF_INSTANTIATION_LEVEL_0_IDENTIFIER,
-                VNF_INSTANTIATION_LEVEL_0_NAME,
-                WebDriversData.create(driver, webDriverWait)
-        );
+        LogicalFunctionWizardPreStep logicalFunctionWizardPreStep = LogicalFunctionWizardPreStep.create(driver, webDriverWait);
+        logicalFunctionWizardPreStep.searchResourceSpecification(VNF_INSTANTIATION_LEVEL_0_NAME);
+        logicalFunctionWizardPreStep.clickAccept();
         //then
         assertThatVNFWizardIsOpenAndStructureTreeIsVisible();
     }

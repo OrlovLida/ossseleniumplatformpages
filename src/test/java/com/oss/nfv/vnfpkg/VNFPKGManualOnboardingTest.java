@@ -58,7 +58,7 @@ public class VNFPKGManualOnboardingTest extends BaseVNFPKGManualOnboardingTest {
         firstStep = wizard.getFirstStep();
 
         //when
-        firstStep.selectNfvo(EOCMNFVO_NAME);
+        firstStep.selectNfvo(idByNameMap.get(EOCMNFVO_NAME));
 
         //then
         SoftAssertions soft = new SoftAssertions();
@@ -88,7 +88,7 @@ public class VNFPKGManualOnboardingTest extends BaseVNFPKGManualOnboardingTest {
     public void selectSamsungNFVO() {
 
         //when
-        firstStep.selectNfvo(SamsungNFVO_NAME);
+        firstStep.selectNfvo(idByNameMap.get(SamsungNFVO_NAME));
 
         //then
         SoftAssertions soft = new SoftAssertions();

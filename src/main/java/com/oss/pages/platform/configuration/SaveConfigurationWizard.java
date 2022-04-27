@@ -87,7 +87,7 @@ public class SaveConfigurationWizard {
     }
 
     private SaveConfigurationWizard setType(String type) {
-        getWizard().getComponent(TYPE_COMBOBOX_ID, Input.ComponentType.COMBOBOX).setSingleStringValue(type);
+        getWizard().getComponent(TYPE_COMBOBOX_ID, Input.ComponentType.COMBOBOX).setSingleStringValueContains(type);
         return this;
     }
 

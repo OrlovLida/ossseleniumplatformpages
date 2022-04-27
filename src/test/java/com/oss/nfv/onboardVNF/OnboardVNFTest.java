@@ -1,8 +1,8 @@
 package com.oss.nfv.onboardVNF;
 
-import com.oss.framework.navigation.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
 
+import com.oss.nfv.common.SideMenuService;
 import com.oss.pages.nfv.onboardvnf.OnboardVNFWizardPage;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
@@ -12,12 +12,9 @@ import org.testng.asserts.SoftAssert;
 
 import static com.oss.nfv.onboardVNF.OnboardVNFConstants.DEFAULT_REMOTE_FOLDER_VALUE;
 import static com.oss.nfv.onboardVNF.OnboardVNFConstants.MARKETPLACE_NAME;
-import static com.oss.nfv.onboardVNF.OnboardVNFConstants.NETWORK_DOMAINS_PATH;
 import static com.oss.nfv.onboardVNF.OnboardVNFConstants.NFVO_NAME;
-import static com.oss.nfv.onboardVNF.OnboardVNFConstants.NFV_VIRTUALIZATION_PATH;
 import static com.oss.nfv.onboardVNF.OnboardVNFConstants.VIM_NAME;
 import static com.oss.nfv.onboardVNF.OnboardVNFConstants.VNFPKG_NAME;
-import static com.oss.nfv.onboardVNF.OnboardVNFConstants.VNF_PACKAGE_ONBOARDING_ACTION_LABEL;
 
 @Listeners({TestListener.class})
 public class OnboardVNFTest extends BaseOnboardVNFTest {
@@ -27,9 +24,7 @@ public class OnboardVNFTest extends BaseOnboardVNFTest {
     public void openOnboardVNFWizard() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         //given
-        SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
-        //when
-        goToVNFPackageOnboardingWizard(sideMenu);
+        SideMenuService.goToVNFPackageOnboardingWizard(driver, webDriverWait);
         //then
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
@@ -79,10 +74,6 @@ public class OnboardVNFTest extends BaseOnboardVNFTest {
         softly.assertEquals(onboardVNFWizardPage.getSelectedVIM(), VIM_NAME);
         softly.assertEquals(onboardVNFWizardPage.getDefaultRemoteFolder(), DEFAULT_REMOTE_FOLDER_VALUE);
         softly.assertAll();
-    }
-
-    private void goToVNFPackageOnboardingWizard(SideMenu sideMenu) {
-        sideMenu.callActionByLabel(VNF_PACKAGE_ONBOARDING_ACTION_LABEL, NETWORK_DOMAINS_PATH, NFV_VIRTUALIZATION_PATH);
     }
 
 }

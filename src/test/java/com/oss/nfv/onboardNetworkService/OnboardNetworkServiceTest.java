@@ -1,7 +1,7 @@
 package com.oss.nfv.onboardNetworkService;
 
-import com.oss.framework.navigation.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.nfv.common.SideMenuService;
 import com.oss.pages.nfv.onboardnetworkservice.OnboardNetworkServiceWizardPage;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
@@ -10,10 +10,7 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 import static com.oss.nfv.onboardNetworkService.OnboardNetworkServiceConstants.DEFAULT_REMOTE_FOLDER_VALUE;
-import static com.oss.nfv.onboardNetworkService.OnboardNetworkServiceConstants.NETWORK_DOMAINS_PATH;
-import static com.oss.nfv.onboardNetworkService.OnboardNetworkServiceConstants.NETWORK_SERVICES_PATH;
 import static com.oss.nfv.onboardNetworkService.OnboardNetworkServiceConstants.ERICSSON_NFVO_NAME;
-import static com.oss.nfv.onboardNetworkService.OnboardNetworkServiceConstants.NETWORK_SERVICE_PACKAGE_ONBOARDING_ACTION_LABEL;
 
 @Listeners({TestListener.class})
 public class OnboardNetworkServiceTest extends BaseOnboardNetworkServiceTest {
@@ -23,9 +20,7 @@ public class OnboardNetworkServiceTest extends BaseOnboardNetworkServiceTest {
     public void openOnboardNetworkServiceWizard() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         //given
-        SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
-        //when
-        goToNetworkServicePackageOnboardingWizard(sideMenu);
+        SideMenuService.goToNetworkServicePackageOnboardingWizard(driver, webDriverWait);
         //then
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
@@ -48,9 +43,5 @@ public class OnboardNetworkServiceTest extends BaseOnboardNetworkServiceTest {
         softly.assertEquals(onboardNetworkServiceWizardPage.getSelectedNFVO(), ERICSSON_NFVO_NAME);
         softly.assertEquals(onboardNetworkServiceWizardPage.getDefaultRemoteFolder(), DEFAULT_REMOTE_FOLDER_VALUE);
         softly.assertAll();
-    }
-
-    private void goToNetworkServicePackageOnboardingWizard(SideMenu sideMenu) {
-        sideMenu.callActionByLabel(NETWORK_SERVICE_PACKAGE_ONBOARDING_ACTION_LABEL, NETWORK_DOMAINS_PATH, NETWORK_SERVICES_PATH);
     }
 }

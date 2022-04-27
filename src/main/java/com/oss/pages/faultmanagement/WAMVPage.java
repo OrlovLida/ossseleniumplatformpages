@@ -1,5 +1,13 @@
 package com.oss.pages.faultmanagement;
 
+import java.util.List;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.iaa.widgets.list.ListApp;
@@ -7,14 +15,8 @@ import com.oss.framework.iaa.widgets.table.FMSMTable;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
 import com.oss.pages.BasePage;
-import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.List;
+import io.qameta.allure.Step;
 
 /**
  * @author Bartosz Nowak
@@ -36,7 +38,7 @@ public class WAMVPage extends BasePage {
     private static final String ADAPTER_NAME_VALUE = "Adapter Name";
     private static final String NOTIFICATION_IDENTIFIER_VALUE = "Notification Identifier";
     private static final String PERCEIVED_SEVERITY_VALUE = "Perceived Severity";
-    private static final String PROPERTY_PANEL_ID = "tab-content_AREA3__AREA3AlarmDetailsTab";//TODO temporary id from appList, propertyPanel doesn't have id, update after Web fix OSSWEB-16869
+    private static final String PROPERTY_PANEL_ID = "card-content_AREA3";
 
     private final FMSMTable fmsmTable = FMSMTable.createById(driver, wait, TABLE_AREA2_WIDGET_ID);
 
@@ -146,23 +148,20 @@ public class WAMVPage extends BasePage {
 
     @Step("I get adapter name from Alarms Details Tab")
     public String getAdapterNameValueFromAlarmDetailsTab() {
-        OldPropertyPanel propertyPanel = OldPropertyPanel.createById(driver, wait, PROPERTY_PANEL_ID);
         log.info("Checking adapter name value from Alarm Details Tab");
-        return propertyPanel.getPropertyValue(ADAPTER_NAME_VALUE);
+        return getPropertyPanel().getPropertyValue(ADAPTER_NAME_VALUE);
     }
 
     @Step("I get notification identifier from Alarms Details Tab")
     public String getNotificationIdentifierValueFromAlarmDetailsTab() {
-        OldPropertyPanel propertyPanel = OldPropertyPanel.createById(driver, wait, PROPERTY_PANEL_ID);
         log.info("Checking notification identifier value from Alarm Details Tab");
-        return propertyPanel.getPropertyValue(NOTIFICATION_IDENTIFIER_VALUE);
+        return getPropertyPanel().getPropertyValue(NOTIFICATION_IDENTIFIER_VALUE);
     }
 
     @Step("I get perceived severity from Alarms Details Tab")
     public String getPerceivedSeverityValueFromAlarmDetailsTab() {
-        OldPropertyPanel propertyPanel = OldPropertyPanel.createById(driver, wait, PROPERTY_PANEL_ID);
         log.info("Checking perceived severity value from Alarm Details Tab");
-        return propertyPanel.getPropertyValue(PERCEIVED_SEVERITY_VALUE);
+        return getPropertyPanel().getPropertyValue(PERCEIVED_SEVERITY_VALUE);
     }
 
     @Step("I check if Same MO Alarms Table is visible")
@@ -187,7 +186,7 @@ public class WAMVPage extends BasePage {
 
     @Step("I check if additional text is displayed")
     public boolean isAdditionalTextDisplayed(String expectedText, String windowId) {
-        List<String> text = ListApp.createFromParent(driver, wait, windowId).getValue();
+        List<String> text = ListApp.createFromParent(driver, wait, windowId).getValues();
         if (text.contains(expectedText)) {
             log.info("Expected additional text {} is displayed", expectedText);
             return true;
@@ -202,5 +201,9 @@ public class WAMVPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         AdvancedSearch.createByWidgetId(driver, wait, widgetId).fullTextSearch(searchedAttribute);
         log.info("Searching in {} for text {}", widgetId, searchedAttribute);
+    }
+
+    private OldPropertyPanel getPropertyPanel() {
+        return OldPropertyPanel.createById(driver, wait, PROPERTY_PANEL_ID);
     }
 }
