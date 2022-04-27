@@ -604,7 +604,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     @AfterClass()
     public void switchToLivePerspective() {
         PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
-        if (!perspectiveChooser.getCurrentPerspective().equals("Live"))
+        if (!perspectiveChooser.getCurrentPerspective().equalsIgnoreCase("live"))
             perspectiveChooser.setLivePerspective();
     }
 
