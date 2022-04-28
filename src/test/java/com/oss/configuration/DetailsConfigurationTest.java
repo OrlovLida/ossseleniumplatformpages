@@ -221,11 +221,5 @@ public class DetailsConfigurationTest extends BaseTestCase {
         return SaveConfigurationWizard.create(driver, webDriverWait).createField(property, values);
     }
 
-    private void selectObjectOfSuperType(String typeValue) {
-        inventoryViewPage.searchByAttributeValue(ATTRIBUTE_ID_TYPE, typeValue, Input.ComponentType.MULTI_COMBOBOX);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        inventoryViewPage.selectFirstRow();
-        inventoryViewPage.clearFilters();
-    }
 
 }
