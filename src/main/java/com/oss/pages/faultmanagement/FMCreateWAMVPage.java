@@ -17,12 +17,13 @@ public class FMCreateWAMVPage extends BasePage {
     private static final String WIZARD_ID = "UserViewWizardModal";
     private static final String NAME_TEXT_FIELD_ID = "UserViewNameInput";
     private static final String DESCRIPTION_TEXT_FIELD_ID = "UserViewDescriptionInput";
-    private static final String DROPDOWNLIST_AVAILABLE = "Available";
-    private static final String DROPDOWNLIST_SELECTED = "Selected";
+    private static final String DROPDOWNLIST_AVAILABLE_ID = "Available Filters";
+    private static final String DROPDOWNLIST_SELECTED_ID = "Selected Filters";
     private static final String EXTENDED_LIST_ID = "ExtendedList-WAMVFiltersInput";
     private final Wizard folderWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
-    private final DraggableList draggableListAvailable = DraggableList.create(driver, wait, DROPDOWNLIST_AVAILABLE);
-    private final DraggableList draggableListSelected = DraggableList.create(driver, wait, DROPDOWNLIST_SELECTED);
+    private final DraggableList draggableListAvailable = DraggableList.create(driver, wait, DROPDOWNLIST_AVAILABLE_ID);
+    private final DraggableList draggableListSelected = DraggableList.create(driver, wait, DROPDOWNLIST_SELECTED_ID);
+
     public FMCreateWAMVPage(WebDriver driver) {
         super(driver);
     }
