@@ -121,7 +121,7 @@ public class DetailsConfigurationTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         List<String> labels = inventoryViewPage.getPropertyPanel(ROW_ID_0, PROPERTY_PANEL_ID).getPropertyLabels();
 
-        Assert.assertEquals(labels.indexOf(NAME_LABEL),0);
+        Assert.assertEquals(labels.indexOf(NAME_LABEL), 0);
 
     }
 
