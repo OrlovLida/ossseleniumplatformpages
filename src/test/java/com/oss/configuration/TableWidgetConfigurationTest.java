@@ -2,7 +2,7 @@ package com.oss.configuration;
 
 import java.util.List;
 
-import org.assertj.core.api.Assertions;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -15,8 +15,7 @@ import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.platform.configuration.SaveConfigurationWizard;
 import com.oss.utils.TestListener;
 
-import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Property.DEFAULT_VIEW_FOR;
-import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Property.GROUPS;
+import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Property.*;
 
 @Listeners({TestListener.class})
 public class TableWidgetConfigurationTest extends BaseTestCase {
@@ -25,8 +24,8 @@ public class TableWidgetConfigurationTest extends BaseTestCase {
 
     private final static String GROUP_NAME = "SeleniumTests";
     private final static String CONFIGURATION_NAME_TABLE_WIDGET = "Table_Widget_Selenium_Test_Configuration";
-    private final static String CONFIGURATION_NAME_TABLE_WIDGET_GROUP = "Table_Widget_Group";
-    private final static String CONFIGURATION_NAME_TABLE_WIDGET_USER = "Table_Widget_User";
+    private final static String CONFIGURATION_NAME_TABLE_WIDGET_GROUP_TEST_PERSON = "Table_Widget_Group";
+    private final static String CONFIGURATION_NAME_TABLE_WIDGET_USER_TEST_ACTOR = "Table_Widget_User";
     private final static String DEFAULT_CONFIGURATION = "DEFAULT";
     private final static String TYPE_LABEL = "Type";
     private final static String GENDER_LABEL = "Gender";
@@ -37,6 +36,7 @@ public class TableWidgetConfigurationTest extends BaseTestCase {
     private static final String PASSWORD_1 = "Webtests123!";
     private static final String TEST_PERSON = "TestPerson";
     private static final String TEST_ACTOR = "TestActor";
+    private static final String TEST_DIRECTOR = "TestActor";
     private static final String ME = "Me";
 
     @BeforeClass
@@ -62,8 +62,8 @@ public class TableWidgetConfigurationTest extends BaseTestCase {
         //then
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages).hasSize(1);
-        Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
+        Assert.assertEquals(messages.size(), 1);
+        Assert.assertSame(messages.get(0).getMessageType(), (SystemMessageContainer.MessageType.SUCCESS));
         systemMessage.close();
     }
 
@@ -74,7 +74,7 @@ public class TableWidgetConfigurationTest extends BaseTestCase {
 
         List<String> columnHeaders = newInventoryViewPage.getActiveColumnsHeaders();
 
-        Assertions.assertThat(columnHeaders).contains(GENDER_LABEL);
+        Assert.assertTrue(columnHeaders.contains(GENDER_LABEL));
 
     }
 
@@ -92,11 +92,11 @@ public class TableWidgetConfigurationTest extends BaseTestCase {
 
         List<String> columnHeadersAfterChangeConfig = newInventoryViewPage.getActiveColumnsHeaders();
 
-        Assertions.assertThat(columnHeadersAfterChangeConfig).doesNotContain(GENDER_LABEL);
+        Assert.assertFalse(columnHeadersAfterChangeConfig.contains(GENDER_LABEL));
 
-        Assertions.assertThat(columnHeadersAfterChangeConfig.indexOf(firstHeader)).isEqualTo(2);
-        Assertions.assertThat(columnHeadersAfterChangeConfig.indexOf(secondHeader)).isZero();
-        Assertions.assertThat(columnHeadersAfterChangeConfig.indexOf(thirdHeader)).isEqualTo(1);
+        Assert.assertEquals(columnHeadersAfterChangeConfig.indexOf(firstHeader), 2);
+        Assert.assertEquals(columnHeadersAfterChangeConfig.indexOf(secondHeader), 0);
+        Assert.assertEquals(columnHeadersAfterChangeConfig.indexOf(thirdHeader), 1);
 
     }
 
@@ -118,7 +118,7 @@ public class TableWidgetConfigurationTest extends BaseTestCase {
 
         com.oss.framework.widgets.table.TableWidget tableWidget1 = newInventoryViewPage.getMainTable();
         int newSize = tableWidget1.getFirstColumnSize();
-        Assertions.assertThat(defaultSize + offset).isEqualTo(newSize);
+        Assert.assertEquals(defaultSize + offset, newSize);
     }
 
     @Test(priority = 5)
@@ -128,8 +128,8 @@ public class TableWidgetConfigurationTest extends BaseTestCase {
 
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages).hasSize(1);
-        Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
+        Assert.assertEquals(messages.size(), 1);
+        Assert.assertSame(messages.get(0).getMessageType(), (SystemMessageContainer.MessageType.SUCCESS));
         systemMessage.close();
     }
 
@@ -140,72 +140,83 @@ public class TableWidgetConfigurationTest extends BaseTestCase {
 
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages).hasSize(1);
-        Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
+        Assert.assertEquals(messages.size(), 1);
+        Assert.assertSame(messages.get(0).getMessageType(), (SystemMessageContainer.MessageType.SUCCESS));
         systemMessage.close();
     }
 
     @Test(priority = 7)
-    public void saveDefaultConfigurationOfTableWidgetForUser() {
+    public void saveDefaultConfigurationOfTableWidgetForUserForSuperType() {
+        newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_ACTOR);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         newInventoryViewPage.enableColumn(NATIONALITY_LABEL);
         newInventoryViewPage.changeColumnsOrderInMainTable(NATIONALITY_LABEL, 0);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
-        newInventoryViewPage.saveNewConfigurationForMainTable(CONFIGURATION_NAME_TABLE_WIDGET_USER, createField(DEFAULT_VIEW_FOR, ME));
+        newInventoryViewPage.saveNewConfigurationForMainTable(CONFIGURATION_NAME_TABLE_WIDGET_USER_TEST_ACTOR, createField(TYPE, TEST_ACTOR), createField(DEFAULT_VIEW_FOR, ME));
         //then
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages).hasSize(1);
-        Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
+        Assert.assertEquals(messages.size(), 1);
+        Assert.assertSame(messages.get(0).getMessageType(), (SystemMessageContainer.MessageType.SUCCESS));
 
         driver.navigate().refresh();
 
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         List<String> columnHeaders = newInventoryViewPage.getActiveColumnsHeaders();
-        Assertions.assertThat(columnHeaders.indexOf(NATIONALITY_LABEL)).isZero();
+        Assert.assertEquals(columnHeaders.indexOf(NATIONALITY_LABEL), 0);
 
-        newInventoryViewPage.deleteConfigurationForMainTable(CONFIGURATION_NAME_TABLE_WIDGET_USER);
 
     }
 
     @Test(priority = 8)
-    public void saveDefaultConfigurationOfTableWidgetForGroup() {
+    public void saveDefaultConfigurationOfTableWidgetForGroupForType() {
+        newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_PERSON);
         newInventoryViewPage.enableColumn(TYPE_LABEL);
         newInventoryViewPage.changeColumnsOrderInMainTable(TYPE_LABEL, 0);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
-        newInventoryViewPage.saveNewConfigurationForMainTable(CONFIGURATION_NAME_TABLE_WIDGET_GROUP, createField(GROUPS, GROUP_NAME));
+        newInventoryViewPage.saveNewConfigurationForMainTable(CONFIGURATION_NAME_TABLE_WIDGET_GROUP_TEST_PERSON, createField(GROUPS, GROUP_NAME));
         //then
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages).hasSize(1);
-        Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
+        Assert.assertEquals(messages.size(), 1);
+        Assert.assertSame(messages.get(0).getMessageType(), (SystemMessageContainer.MessageType.SUCCESS));
 
         setDefaultConfigurationForTable();
 
         newInventoryViewPage.chooseGroupContext(GROUP_NAME);
 
         List<String> columnHeaders = newInventoryViewPage.getActiveColumnsHeaders();
-        Assertions.assertThat(columnHeaders.indexOf(TYPE_LABEL)).isZero();
+        Assert.assertEquals(columnHeaders.indexOf(TYPE_LABEL), 0);
 
     }
 
     @Test(priority = 9)
     public void groupAndTypeInheritanceDefaultConfigurationOfTableWidget() {
         newInventoryViewPage.changeUser(USER2, PASSWORD_2);
-        newInventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_ACTOR);
+        newInventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_DIRECTOR);
 
         newInventoryViewPage.chooseGroupContext(GROUP_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         List<String> columnHeaders = newInventoryViewPage.getActiveColumnsHeaders();
-        Assertions.assertThat(columnHeaders.indexOf(TYPE_LABEL)).isZero();
+        Assert.assertEquals(columnHeaders.indexOf(TYPE_LABEL), 0);
 
         newInventoryViewPage.changeUser(USER1, PASSWORD_1);
-        newInventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_PERSON);
+        newInventoryViewPage.chooseGroupContext(GROUP_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
-        newInventoryViewPage.deleteConfigurationForMainTable(CONFIGURATION_NAME_TABLE_WIDGET_GROUP);
+        List<String> columnHeaders1 = newInventoryViewPage.getActiveColumnsHeaders();
+        Assert.assertEquals(columnHeaders1.indexOf(TYPE_LABEL), 0);
+
+        newInventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_ACTOR);
+        List<String> columnHeaders2 = newInventoryViewPage.getActiveColumnsHeaders();
+        Assert.assertNotEquals(columnHeaders2.indexOf(TYPE_LABEL), 0);
+
+        newInventoryViewPage.deleteConfigurationForMainTable(CONFIGURATION_NAME_TABLE_WIDGET_GROUP_TEST_PERSON);
+        newInventoryViewPage.deleteConfigurationForMainTable(CONFIGURATION_NAME_TABLE_WIDGET_USER_TEST_ACTOR);
 
     }
 

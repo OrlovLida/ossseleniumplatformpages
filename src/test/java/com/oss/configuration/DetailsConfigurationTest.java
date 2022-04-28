@@ -2,7 +2,9 @@ package com.oss.configuration;
 
 import java.util.List;
 
-import org.assertj.core.api.Assertions;
+import com.oss.framework.components.inputs.Input;
+import com.oss.framework.widgets.table.TableWidget;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -17,19 +19,20 @@ import com.oss.pages.platform.configuration.SaveConfigurationWizard;
 import com.oss.pages.platform.configuration.SaveConfigurationWizard.Property;
 import com.oss.utils.TestListener;
 
-import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Property.DEFAULT_VIEW_FOR;
-import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Property.GROUPS;
+import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Property.*;
 
 @Listeners({TestListener.class})
 public class DetailsConfigurationTest extends BaseTestCase {
 
     private NewInventoryViewPage inventoryViewPage;
+    private TableWidget tableWidget;
 
     private final static String DEFAULT_CONFIGURATION = "DEFAULT";
+    private static final String ATTRIBUTE_ID_TYPE = "type";
     private final static String GROUP_NAME = "SeleniumTests";
-    private final static String CONFIGURATION_NAME_PROPERTIES = "Properties_Configuration";
-    private final static String CONFIGURATION_NAME_PROPERTIES_DEFAULT_FOR_USER = "Properties_User_Configuration";
-    private final static String CONFIGURATION_NAME_PROPERTIES_GROUP = "Properties_Group";
+    private final static String CONFIGURATION_NAME_PROPERTIES_TEST_ACTOR = "Properties_Test_Actor_Configuration";
+    private final static String CONFIGURATION_NAME_PROPERTIES_DEFAULT_FOR_USER_TEST_ACTOR = "Properties_User_Configuration";
+    private final static String CONFIGURATION_NAME_PROPERTIES_DEFAULT_FOR_GROUP_TEST_PERSON = "Properties_Group_Configuration";
 
     private final static String PROPERTY_PANEL_ID = "PropertyPanelWidget";
     private final static int ROW_ID_0 = 0;
@@ -40,6 +43,7 @@ public class DetailsConfigurationTest extends BaseTestCase {
     private static final String GENDER_LABEL = "Gender";
     private static final String GENDER_ID = "gender";
     private static final String TEST_PERSON_TYPE = "TestPerson";
+    private static final String TEST_ACTOR_TYPE = "TestActor";
     private static final String TEST_DIRECTOR_TYPE = "TestDirector";
     private static final String ME = "Me";
     private final static String USER2 = "webseleniumtests2";
@@ -55,6 +59,8 @@ public class DetailsConfigurationTest extends BaseTestCase {
 
     @Test(priority = 1)
     public void saveNewConfigurationForPropertiesForSuperType() {
+        inventoryViewPage.searchByAttributeValue(ATTRIBUTE_ID_TYPE, TEST_ACTOR_TYPE, Input.ComponentType.MULTI_COMBOBOX);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel(ROW_ID_0, PROPERTY_PANEL_ID);
 
@@ -62,13 +68,13 @@ public class DetailsConfigurationTest extends BaseTestCase {
 
         propertyPanel.disableAttributeByLabel(NATIONALITY_LABEL);
 
-        inventoryViewPage.saveConfigurationForProperties(ROW_ID_0, PROPERTY_PANEL_ID, CONFIGURATION_NAME_PROPERTIES);
+        inventoryViewPage.saveConfigurationForProperties(ROW_ID_0, PROPERTY_PANEL_ID, CONFIGURATION_NAME_PROPERTIES_TEST_ACTOR);
 
         //then
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages).hasSize(1);
-        Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
+        Assert.assertEquals(messages.size(), 1);
+        Assert.assertSame(messages.get(0).getMessageType(), (SystemMessageContainer.MessageType.SUCCESS));
     }
 
     @Test(priority = 2)
@@ -78,7 +84,7 @@ public class DetailsConfigurationTest extends BaseTestCase {
 
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel(ROW_ID_0, PROPERTY_PANEL_ID);
-        Assertions.assertThat(propertyPanel.getPropertyLabels()).contains(NATIONALITY_LABEL);
+        Assert.assertTrue(propertyPanel.getPropertyLabels().contains(NATIONALITY_LABEL));
 
     }
 
@@ -86,9 +92,9 @@ public class DetailsConfigurationTest extends BaseTestCase {
 
     public void chooseConfigurationForProperties() {
 
-        inventoryViewPage.applyConfigurationForProperties(ROW_ID_0, PROPERTY_PANEL_ID, CONFIGURATION_NAME_PROPERTIES);
+        inventoryViewPage.applyConfigurationForProperties(ROW_ID_0, PROPERTY_PANEL_ID, CONFIGURATION_NAME_PROPERTIES_TEST_ACTOR);
         PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel(ROW_ID_0, PROPERTY_PANEL_ID);
-        Assertions.assertThat(propertyPanel.getPropertyLabels()).isNotEmpty().doesNotContain(NATIONALITY_LABEL);
+        Assert.assertFalse(propertyPanel.getPropertyLabels().contains(NATIONALITY_LABEL));
 
     }
 
@@ -102,17 +108,20 @@ public class DetailsConfigurationTest extends BaseTestCase {
         //then
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages).hasSize(1);
-        Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
+        Assert.assertEquals(messages.size(), 1);
+        Assert.assertSame(messages.get(0).getMessageType(), (SystemMessageContainer.MessageType.SUCCESS));
 
         driver.navigate().refresh();
+        inventoryViewPage.searchByAttributeValue(ATTRIBUTE_ID_TYPE, TEST_ACTOR_TYPE, Input.ComponentType.MULTI_COMBOBOX);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
-        inventoryViewPage.applyConfigurationForProperties(ROW_ID_0, PROPERTY_PANEL_ID, CONFIGURATION_NAME_PROPERTIES);
+
+        inventoryViewPage.applyConfigurationForProperties(ROW_ID_0, PROPERTY_PANEL_ID, CONFIGURATION_NAME_PROPERTIES_TEST_ACTOR);
 
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         List<String> labels = inventoryViewPage.getPropertyPanel(ROW_ID_0, PROPERTY_PANEL_ID).getPropertyLabels();
 
-        Assertions.assertThat(labels.indexOf(NAME_LABEL)).isZero();
+        Assert.assertEquals(labels.indexOf(NAME_LABEL), 0);
 
     }
 
@@ -120,31 +129,29 @@ public class DetailsConfigurationTest extends BaseTestCase {
     public void downloadConfigurationOfTabsWidget() {
         //when
 
-        inventoryViewPage.downloadConfigurationForProperties(ROW_ID_0, PROPERTY_PANEL_ID, CONFIGURATION_NAME_PROPERTIES);
+        inventoryViewPage.downloadConfigurationForProperties(ROW_ID_0, PROPERTY_PANEL_ID, CONFIGURATION_NAME_PROPERTIES_TEST_ACTOR);
 
         //then
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages).hasSize(1);
-        Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
+        Assert.assertEquals(messages.size(), 1);
+        Assert.assertSame(messages.get(0).getMessageType(), (SystemMessageContainer.MessageType.SUCCESS));
     }
 
     @Test(priority = 6)
     public void removeConfigurationOfProperties() {
         //when
-        inventoryViewPage.selectFirstRow();
-
-        inventoryViewPage.removeConfigurationOfProperties(ROW_ID_0, PROPERTY_PANEL_ID, CONFIGURATION_NAME_PROPERTIES);
+        inventoryViewPage.removeConfigurationOfProperties(ROW_ID_0, PROPERTY_PANEL_ID, CONFIGURATION_NAME_PROPERTIES_TEST_ACTOR);
 
         //then
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages).hasSize(1);
-        Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
+        Assert.assertEquals(messages.size(), 1);
+        Assert.assertSame(messages.get(0).getMessageType(), (SystemMessageContainer.MessageType.SUCCESS));
     }
 
     @Test(priority = 7)
-    public void saveDefaultConfigurationForPropertiesForUser() {
+    public void saveDefaultConfigurationForPropertiesForUserForSuperType() {
         //when
         PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel(ROW_ID_0, PROPERTY_PANEL_ID);
 
@@ -152,25 +159,21 @@ public class DetailsConfigurationTest extends BaseTestCase {
 
         propertyPanel.disableAttributeByLabel(GENDER_LABEL);
 
-        inventoryViewPage.saveConfigurationForProperties(ROW_ID_0, PROPERTY_PANEL_ID, CONFIGURATION_NAME_PROPERTIES_DEFAULT_FOR_USER, createField(DEFAULT_VIEW_FOR, ME));
+        inventoryViewPage.saveConfigurationForProperties(ROW_ID_0, PROPERTY_PANEL_ID, CONFIGURATION_NAME_PROPERTIES_DEFAULT_FOR_USER_TEST_ACTOR, createField(TYPE, TEST_ACTOR_TYPE), createField(DEFAULT_VIEW_FOR, ME));
 
-        //then
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
-        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages).hasSize(1);
-        Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
 
         driver.navigate().refresh();
-        inventoryViewPage.selectFirstRow();
+        inventoryViewPage.searchByAttributeValue(ATTRIBUTE_ID_TYPE, TEST_ACTOR_TYPE, Input.ComponentType.MULTI_COMBOBOX);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         PropertyPanel propertyPanel1 = inventoryViewPage.getPropertyPanel(ROW_ID_0, PROPERTY_PANEL_ID);
 
-        Assertions.assertThat(propertyPanel1.getPropertyLabels()).isNotEmpty().doesNotContain(GENDER_LABEL);
-        inventoryViewPage.removeConfigurationOfProperties(ROW_ID_0, PROPERTY_PANEL_ID, CONFIGURATION_NAME_PROPERTIES_DEFAULT_FOR_USER);
+        Assert.assertFalse(propertyPanel1.getPropertyLabels().contains(GENDER_LABEL));
     }
 
     @Test(priority = 8)
-    public void saveDefaultConfigurationForPropertiesForGroup() {
+    public void saveDefaultConfigurationForPropertiesForGroupForType() {
 
+        inventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_DIRECTOR_TYPE);
         PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel(ROW_ID_0, PROPERTY_PANEL_ID);
 
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -178,27 +181,20 @@ public class DetailsConfigurationTest extends BaseTestCase {
         propertyPanel.enableAttributeByLabel(GENDER_LABEL);
         inventoryViewPage.changePropertiesOrder(ROW_ID_0, PROPERTY_PANEL_ID, GENDER_ID, 0);
 
-        inventoryViewPage.saveConfigurationForProperties(ROW_ID_0, PROPERTY_PANEL_ID, CONFIGURATION_NAME_PROPERTIES_GROUP, createField(GROUPS, GROUP_NAME));
-
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
-        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages).hasSize(1);
-        Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
+        inventoryViewPage.saveConfigurationForProperties(ROW_ID_0, PROPERTY_PANEL_ID, CONFIGURATION_NAME_PROPERTIES_DEFAULT_FOR_GROUP_TEST_PERSON, createField(GROUPS, GROUP_NAME), createField(TYPE, TEST_PERSON_TYPE));
 
         driver.navigate().refresh();
         inventoryViewPage.chooseGroupContext(GROUP_NAME);
 
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         List<String> labels = inventoryViewPage.getPropertyPanel(ROW_ID_0, PROPERTY_PANEL_ID).getPropertyLabels();
-
-        Assertions.assertThat(labels.indexOf(GENDER_LABEL)).isZero();
+        Assert.assertEquals(labels.indexOf(GENDER_LABEL), 0);
     }
 
     @Test(priority = 9)
     public void groupAndTypeInheritanceDefaultConfigurationOfTabsWidget() {
         //when
         inventoryViewPage.changeUser(USER2, PASSWORD_2);
-        inventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_DIRECTOR_TYPE);
+        inventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_ACTOR_TYPE);
 
         inventoryViewPage.chooseGroupContext(GROUP_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -208,18 +204,22 @@ public class DetailsConfigurationTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         List<String> labels = inventoryViewPage.getPropertyPanel(ROW_ID_0, PROPERTY_PANEL_ID).getPropertyLabels();
 
-        Assertions.assertThat(labels.indexOf(GENDER_LABEL)).isZero();
+        Assert.assertEquals(labels.indexOf(GENDER_LABEL), 0);
 
         inventoryViewPage.changeUser(USER1, PASSWORD_1);
-        inventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_PERSON_TYPE);
-        inventoryViewPage.selectFirstRow();
+        inventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_ACTOR_TYPE);
+        PropertyPanel propertyPanel1 = inventoryViewPage.getPropertyPanel(ROW_ID_0, PROPERTY_PANEL_ID);
 
-        inventoryViewPage.removeConfigurationForTabs(CONFIGURATION_NAME_PROPERTIES_GROUP);
+        Assert.assertFalse(propertyPanel1.getPropertyLabels().contains(GENDER_LABEL));
+
+        inventoryViewPage.removeConfigurationOfProperties(ROW_ID_0, PROPERTY_PANEL_ID, CONFIGURATION_NAME_PROPERTIES_DEFAULT_FOR_GROUP_TEST_PERSON);
+        inventoryViewPage.removeConfigurationOfProperties(ROW_ID_0, PROPERTY_PANEL_ID, CONFIGURATION_NAME_PROPERTIES_DEFAULT_FOR_USER_TEST_ACTOR);
 
     }
 
     private SaveConfigurationWizard.Field createField(Property property, String... values) {
         return SaveConfigurationWizard.create(driver, webDriverWait).createField(property, values);
     }
+
 
 }
