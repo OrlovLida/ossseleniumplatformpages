@@ -15,10 +15,11 @@ public final class ManualOnboardNetworkServiceConstants {
     public static final String NS_PACKAGE_BASE_TYPE = "NSPackage";
     public static final String NS_PACKAGE_VERSION = "NsdVersion-0193660122";
     public static final String NS_PACKAGE_DESCRIPTION = "NSPackage manual onboard selenium test";
+    public static final String NS_PACKAGE_PATH_CHAR_NAME = "path";
+    public static final String NS_PACKAGE_PATH_CHAR_VALUE = "/test/path";
+    public static final String NS_PACKAGE_PATH_CHARACTERISTIC_TYPE = "string";
 
     public static final String NETWORK_SERVICE_PACKAGE_ONBOARDING_ACTION_LABEL = "Network Service Package Onboarding to NFVO";
-    public static final String NETWORK_DOMAINS_PATH = "Network domains";
-    public static final String NETWORK_SERVICES_PATH = "Network Services";
     public static final String DEFAULT_REMOTE_FOLDER_VALUE = "defaultRemoteFolderValueOnboardNSSeleniumTest";
 
     private ManualOnboardNetworkServiceConstants(){}

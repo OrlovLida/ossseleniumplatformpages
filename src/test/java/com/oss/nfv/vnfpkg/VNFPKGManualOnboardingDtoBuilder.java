@@ -1,5 +1,6 @@
 package com.oss.nfv.vnfpkg;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.comarch.oss.logical.function.api.dto.AttributeDTO;
@@ -64,18 +65,13 @@ public class VNFPKGManualOnboardingDtoBuilder {
             .instanceType(VNFPKG_TYPE)
             .inventoryType(ResourceSpecification.LOGICAL_FUNCTION.getInventoryType())
             .provider(VNFPKG_PROVIDER)
-            .resourceSpecCharacteristic(getVNFPKGcharacteristics())
+            .addResourceSpecCharacteristic(getPathCharacteristic())
             .type(TypeEnum.R)
             .version(VNFPKG_VERSION)
             .description(VNFPKG_DESCRIPTION)
             .build();
     }
 
-    private static List<ResourceSpecCharacteristicDTO> getVNFPKGcharacteristics() {
-        return ImmutableList.of(
-            getPathCharacteristic()
-        );
-    }
     private static ResourceSpecCharacteristicDTO getPathCharacteristic() {
         return ResourceSpecCharacteristicDTO.builder()
             .name(VNFPKG_PATH_CHARACTERISTIC_NAME)
