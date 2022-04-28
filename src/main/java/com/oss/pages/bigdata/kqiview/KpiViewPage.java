@@ -93,6 +93,11 @@ public class KpiViewPage extends BasePage {
         Card.createCard(driver, wait, DATA_VIEW_ID).maximizeCard();
     }
 
+    @Step("I should see only Data View Panel displayed")
+    public boolean isDataViewMaximized() {
+        return Card.createCard(driver, wait, DATA_VIEW_ID).isCardMaximized();
+    }
+
     @Step("I minimize Indicators Panel")
     public void minimizeIndicatorsPanel() {
         Card.createCard(driver, wait, INDICATORS_TREE_ID).minimizeCard();
@@ -103,6 +108,11 @@ public class KpiViewPage extends BasePage {
         Card.createCard(driver, wait, INDICATORS_TREE_ID).maximizeCard();
     }
 
+    @Step("Indicators Panel should be maximized")
+    public boolean isIndicatorsPanelMaximized() {
+        return Card.createCard(driver, wait, INDICATORS_TREE_ID).isCardMaximized();
+    }
+
     @Step("I minimize Dimensions Panel")
     public void minimizeDimensionsPanel() {
         Card.createCard(driver, wait, DIMENSIONS_TREE_ID).minimizeCard();
@@ -111,6 +121,11 @@ public class KpiViewPage extends BasePage {
     @Step("I maximize Dimensions Panel")
     public void maximizeDimensionsPanel() {
         Card.createCard(driver, wait, DIMENSIONS_TREE_ID).maximizeCard();
+    }
+
+    @Step("Dimensions Panel should be maximized")
+    public boolean isDimensionPanelMaximized() {
+        return Card.createCard(driver, wait, DIMENSIONS_TREE_ID).isCardMaximized();
     }
 
     @Step("I should see {expectedLinesCount} lines displayed")
@@ -221,25 +236,9 @@ public class KpiViewPage extends BasePage {
     }
 
     @Step("I should see other period displayed in the legend")
-    public boolean shouldSeeOtherPeriod() {
+    public boolean isLegendWithOtherPeriodDisplayed() {
         waitForPageToLoad(driver, wait);
-        int visibleOtherPeriodNumber = KpiChartWidget.create(driver, wait).countVisibleOtherPeriod();
-        return visibleOtherPeriodNumber > 0;
-    }
-
-    @Step("I should see only Data View Panel displayed")
-    public boolean shouldSeeOnlyDataViewDisplayed() {
-        KpiChartWidget kpiChartWidget = KpiChartWidget.create(driver, wait);
-        boolean dataViewDisplayed = kpiChartWidget.isDataViewPanelPresent();
-        boolean indicatorsTreeDisplayed = kpiChartWidget.isIndicatorsTreePresent();
-        boolean dimensionsTreeDisplayed = kpiChartWidget.isDimensionsTreePresent();
-        if (dataViewDisplayed && !indicatorsTreeDisplayed && !dimensionsTreeDisplayed) {
-            log.info("Only Data View Panel is displayed");
-            return true;
-        } else {
-            log.error("Other Panels are also visible");
-            return false;
-        }
+        return KpiChartWidget.create(driver, wait).isLegendPresent("Other period");
     }
 
     @Step("Click Save bookmark")
