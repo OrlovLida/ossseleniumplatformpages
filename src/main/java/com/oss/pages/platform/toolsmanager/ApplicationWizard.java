@@ -20,7 +20,7 @@ public class ApplicationWizard {
     private static final String EDITABLE_LIST_VALUE_COMPONENT_ID = "value-TEXT_FIELD";
     private static final String PATH_TYPE = "Path";
     private static final String TYPE_COLUMN_ID = "type";
-    private static final String COMBOBOX_ID = "type-COMBOBOX";
+    private static final String COMBOBOX_ID = "type-input";
     private static final String VALUE_COLUMN_ID = "value";
     private static final String EDITABLE_LIST_ID = "ExtendedList-additionalQueryParamsList";
     
