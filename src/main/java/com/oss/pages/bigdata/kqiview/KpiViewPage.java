@@ -267,7 +267,9 @@ public class KpiViewPage extends BasePage {
 
     @Step("Go to link copied from Share panel")
     public void goToLink() {
-        driver.get(copyLink());
+        String link = copyLink();
+        clickCloseShare();
+        driver.get(link);
         waitForPageToLoad(driver, wait);
         log.info("Redirecting to page from link in Share panel");
     }
