@@ -52,22 +52,28 @@ public class TreeWidgetTest extends BaseTestCase {
     private static final String PATH_ROOM_3 = PATH_RELATION_LOCATIONS + "." + SUB_LOCATION_TYPE_ROOM + "." + ROOM_3_CREATE;
     private static final String ROOM_3_UPDATE = FakeGenerator.getLocation(FakeGenerator.FilmTitle.LORD_OF_THE_RING);
     private static final String PATH_ROOM_3_UPDATE = PATH_RELATION_LOCATIONS + "." + SUB_LOCATION_TYPE_ROOM + "." + ROOM_3_UPDATE;
-    private static final String DEVICE_NAME = FakeGenerator.getIdNumber();
-    private static final String PORT_01_PATH = LOCATION_NAME + ".Hardware.Switch." + DEVICE_NAME + ".Ports.01";
-    private static final String PORT_02_PATH = LOCATION_NAME + ".Hardware.Switch." + DEVICE_NAME + ".Ports.02";
+    private static final String DEVICE_NAME = LocalDate.now() + "_" + FakeGenerator.getIdNumber();
+    private static final String CARD_MODEL = "A9K-8T-B";
+    private static final String SLOT_NAME_0 = "0";
+    private static final String SLOT_NAME_1 = "1";
+    private static final String PORT_01_PATH =
+            LOCATION_NAME + ".Hardware.Router." + DEVICE_NAME + ".Chassis.Chassis.Slots.0.Card." + CARD_MODEL + ".Ports.00";
+    private static final String PORT_02_PATH =
+            LOCATION_NAME + ".Hardware.Router." + DEVICE_NAME + ".Chassis.Chassis.Slots.1.Card." + CARD_MODEL + ".Ports.00";;
     private static final String DEVICE_MODEL_TYPE = "IPDeviceModel";
     private static final String PLUGGABLE_MODULE_01_PATH =
-            PORT_01_PATH + "." + "Pluggable Module Slot.Slot.Pluggable Module.10GBASE-ER SFP+";
+            PORT_01_PATH + ".Pluggable Module Slot.Slot.Pluggable Module.XFP-10G-MM-SR";
     private static final String PLUGGABLE_MODULE_02_PATH =
-            PORT_02_PATH + "." + "Pluggable Module Slot.Slot.Pluggable Module.10GBASE-ER SFP+";
+            PORT_02_PATH + ".Pluggable Module Slot.Slot.Pluggable Module.XFP-10G-MM-SR";
     private static final String CREATE_PM_ACTION = "CreatePluggableModuleOnPortAction";
-    private static final String DEVICE_MODEL = "N9K-C9396PX";
-    private static final String PLUGGABLE_MODULE_MODEL = "Generic 10GBASE-ER SFP+";
+    private static final String DEVICE_MODEL = "ASR-9010-AC";
+    private static final String PLUGGABLE_MODULE_MODEL = "Cisco Systems Inc. XFP-10G-MM-SR";
     private static final String PATH_LOCATIONS_RELATIONS_3TH_LEVEL = PATH_ROOM_1 + ".Locations";
     private static final String PATH_ROW = PATH_LOCATIONS_RELATIONS_3TH_LEVEL + ".Row.rh01";
     private static final String ROOM_NAME_4 = "Room_" + FakeGenerator.getIdNumber();
     private static final String PATH_ROOM_4 = PATH_RELATION_LOCATIONS + "." + SUB_LOCATION_TYPE_FLOOR + "." + FLOOR_NAME
             + ".Locations." + SUB_LOCATION_TYPE_ROOM + "." + ROOM_NAME_4;
+    private static final String CARD_MODEL_TYPE = "CardModel";
     private Environment env = Environment.getInstance();
     private HierarchyViewPage hierarchyViewPage;
     private String locationId;
@@ -204,7 +210,7 @@ public class TreeWidgetTest extends BaseTestCase {
     
     @Test(priority = 11)
     public void multiPluggableModuleCreation() {
-        createDevice();
+        createRouterWithCards();
         driver.navigate().refresh();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hierarchyViewPage.getMainTree().searchByAttribute(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, LOCATION_NAME);
@@ -300,12 +306,15 @@ public class TreeWidgetTest extends BaseTestCase {
         return addressRepository.getFirstGeographicalAddressId();
     }
     
-    private void createDevice() {
+    private void createRouterWithCards() {
         ResourceCatalogClient resourceCatalogClient = new ResourceCatalogClient(env);
         Long deviceModelId = resourceCatalogClient.getModelIds(DEVICE_MODEL);
         PhysicalInventoryRepository physicalInventoryRepository = new PhysicalInventoryRepository(env);
         deviceId = physicalInventoryRepository.createDevice(LOCATION_TYPE_BUILDING, Long.valueOf(locationId), deviceModelId, DEVICE_NAME,
                 DEVICE_MODEL_TYPE);
+        Long cardModelId = resourceCatalogClient.getModelIds(CARD_MODEL);
+        physicalInventoryRepository.createCard(deviceId, SLOT_NAME_0, cardModelId, CARD_MODEL_TYPE);
+        physicalInventoryRepository.createCard(deviceId, SLOT_NAME_1, cardModelId, CARD_MODEL_TYPE);
     }
     
     private void deleteDevice() {
