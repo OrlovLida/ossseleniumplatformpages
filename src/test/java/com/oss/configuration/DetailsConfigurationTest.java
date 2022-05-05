@@ -25,7 +25,6 @@ import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Prope
 public class DetailsConfigurationTest extends BaseTestCase {
 
     private NewInventoryViewPage inventoryViewPage;
-    private TableWidget tableWidget;
 
     private final static String DEFAULT_CONFIGURATION = "DEFAULT";
     private static final String ATTRIBUTE_ID_TYPE = "type";
@@ -191,7 +190,7 @@ public class DetailsConfigurationTest extends BaseTestCase {
     }
 
     @Test(priority = 9)
-    public void groupAndTypeInheritanceDefaultConfigurationOfTabsWidget() {
+    public void groupAndTypeInheritanceDefaultConfigurationOfProperties() {
         //when
         inventoryViewPage.changeUser(USER2, PASSWORD_2);
         inventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_ACTOR_TYPE);

@@ -36,7 +36,7 @@ public class TableWidgetConfigurationTest extends BaseTestCase {
     private static final String PASSWORD_1 = "Webtests123!";
     private static final String TEST_PERSON = "TestPerson";
     private static final String TEST_ACTOR = "TestActor";
-    private static final String TEST_DIRECTOR = "TestActor";
+    private static final String TEST_DIRECTOR = "TestDirector";
     private static final String ME = "Me";
 
     @BeforeClass
@@ -150,6 +150,7 @@ public class TableWidgetConfigurationTest extends BaseTestCase {
         newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_ACTOR);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         newInventoryViewPage.enableColumn(NATIONALITY_LABEL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         newInventoryViewPage.changeColumnsOrderInMainTable(NATIONALITY_LABEL, 0);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
@@ -177,7 +178,8 @@ public class TableWidgetConfigurationTest extends BaseTestCase {
         newInventoryViewPage.changeColumnsOrderInMainTable(TYPE_LABEL, 0);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
-        newInventoryViewPage.saveNewConfigurationForMainTable(CONFIGURATION_NAME_TABLE_WIDGET_GROUP_TEST_PERSON, createField(GROUPS, GROUP_NAME));
+        newInventoryViewPage.
+                saveNewConfigurationForMainTable(CONFIGURATION_NAME_TABLE_WIDGET_GROUP_TEST_PERSON, createField(GROUPS, GROUP_NAME));
         //then
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
