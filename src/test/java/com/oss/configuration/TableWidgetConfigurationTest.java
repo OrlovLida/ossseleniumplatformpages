@@ -178,8 +178,7 @@ public class TableWidgetConfigurationTest extends BaseTestCase {
         newInventoryViewPage.changeColumnsOrderInMainTable(TYPE_LABEL, 0);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
-        newInventoryViewPage.
-                saveNewConfigurationForMainTable(CONFIGURATION_NAME_TABLE_WIDGET_GROUP_TEST_PERSON, createField(GROUPS, GROUP_NAME));
+        newInventoryViewPage.saveNewConfigurationForMainTable(CONFIGURATION_NAME_TABLE_WIDGET_GROUP_TEST_PERSON, createField(GROUPS, GROUP_NAME));
         //then
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
