@@ -8,7 +8,7 @@ import com.oss.BaseTestCase;
 import com.oss.pages.platform.NotificationWrapperPage;
 import com.oss.pages.servicedesk.BaseSDPage;
 import com.oss.pages.servicedesk.GraphQLSearchPage;
-import com.oss.pages.servicedesk.issue.BaseDashboardPage;
+import com.oss.pages.servicedesk.issue.ticket.TicketDashboardPage;
 import com.oss.pages.servicedesk.issue.ticket.TicketSearchPage;
 import com.oss.pages.servicedesk.issue.wizard.ExportWizardPage;
 
@@ -16,11 +16,10 @@ import io.qameta.allure.Description;
 
 import static com.oss.pages.servicedesk.ServiceDeskConstants.DATE_MASK;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.DOWNLOAD_FILE;
-import static com.oss.pages.servicedesk.ServiceDeskConstants.TICKET_DASHBOARD;
 
 public class ExportTest extends BaseTestCase {
 
-    private BaseDashboardPage baseDashboardPage;
+    private TicketDashboardPage ticketDashboardPage;
     private TicketSearchPage ticketSearchPage;
     private ExportWizardPage exportWizardPage;
     private NotificationWrapperPage notificationWrapperPage;
@@ -32,7 +31,7 @@ public class ExportTest extends BaseTestCase {
 
     @BeforeMethod
     public void goToTicketDashboardPage() {
-        baseDashboardPage = new BaseDashboardPage(driver, webDriverWait).goToPage(driver, BASIC_URL, TICKET_DASHBOARD);
+        ticketDashboardPage = new TicketDashboardPage(driver, webDriverWait).goToPage(driver, BASIC_URL);
     }
 
     @Test(priority = 1, testName = "Export from Ticket Search View", description = "Export from Ticket Search View")
@@ -87,18 +86,18 @@ public class ExportTest extends BaseTestCase {
     @Test(priority = 3, testName = "Export form Ticket Dashboard", description = "Export form Ticket Dashboard")
     @Description("Export form Ticket Dashboard")
     public void exportFromTicketDashboard() {
-        notificationWrapperPage = baseDashboardPage.openNotificationPanel();
+        notificationWrapperPage = ticketDashboardPage.openNotificationPanel();
         notificationWrapperPage.clearNotifications();
         notificationWrapperPage.close();
-        baseDashboardPage.clickExportFromTTTable();
-        notificationWrapperPage = baseDashboardPage.openNotificationPanel();
+        ticketDashboardPage.clickExport();
+        notificationWrapperPage = ticketDashboardPage.openNotificationPanel();
         notificationWrapperPage.waitForExportFinish();
         notificationWrapperPage.clickDownload();
         notificationWrapperPage.waitAndGetFinishedNotificationText();
         notificationWrapperPage.clearNotifications();
-        baseDashboardPage.attachFileToReport(TT_DOWNLOAD_FILE);
+        ticketDashboardPage.attachFileToReport(TT_DOWNLOAD_FILE);
 
         Assert.assertEquals(notificationWrapperPage.amountOfNotifications(), 0);
-        Assert.assertTrue(baseDashboardPage.checkIfFileIsNotEmpty(TT_DOWNLOAD_FILE));
+        Assert.assertTrue(ticketDashboardPage.checkIfFileIsNotEmpty(TT_DOWNLOAD_FILE));
     }
 }
