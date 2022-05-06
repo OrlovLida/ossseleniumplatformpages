@@ -66,7 +66,7 @@ public class TabsConfigurationTest extends BaseTestCase {
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
 
         Assert.assertEquals(messages.size(), 1);
-        Assert.assertSame(messages.get(0).getMessageType(),(SystemMessageContainer.MessageType.SUCCESS));
+        Assert.assertSame(messages.get(0).getMessageType(), (SystemMessageContainer.MessageType.SUCCESS));
     }
 
     @Test(priority = 2)
@@ -115,7 +115,7 @@ public class TabsConfigurationTest extends BaseTestCase {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
         Assert.assertEquals(messages.size(), 1);
-        Assert.assertSame(messages.get(0).getMessageType(),(SystemMessageContainer.MessageType.SUCCESS));
+        Assert.assertSame(messages.get(0).getMessageType(), (SystemMessageContainer.MessageType.SUCCESS));
     }
 
     @Test(priority = 6)
@@ -127,7 +127,7 @@ public class TabsConfigurationTest extends BaseTestCase {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
         Assert.assertEquals(messages.size(), 1);
-        Assert.assertSame(messages.get(0).getMessageType(),(SystemMessageContainer.MessageType.SUCCESS));
+        Assert.assertSame(messages.get(0).getMessageType(), (SystemMessageContainer.MessageType.SUCCESS));
     }
 
     @Test(priority = 7)
@@ -141,7 +141,7 @@ public class TabsConfigurationTest extends BaseTestCase {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
         Assert.assertEquals(messages.size(), 1);
-        Assert.assertSame(messages.get(0).getMessageType(),(SystemMessageContainer.MessageType.SUCCESS));
+        Assert.assertSame(messages.get(0).getMessageType(), (SystemMessageContainer.MessageType.SUCCESS));
 
         driver.navigate().refresh();
 
@@ -162,7 +162,7 @@ public class TabsConfigurationTest extends BaseTestCase {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
         Assert.assertEquals(messages.size(), 1);
-        Assert.assertSame(messages.get(0).getMessageType(),(SystemMessageContainer.MessageType.SUCCESS));
+        Assert.assertSame(messages.get(0).getMessageType(), (SystemMessageContainer.MessageType.SUCCESS));
 
         driver.navigate().refresh();
         newInventoryViewPage.chooseGroupContext(GROUP_NAME);

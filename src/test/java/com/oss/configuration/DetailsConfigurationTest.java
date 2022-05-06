@@ -1,23 +1,21 @@
 package com.oss.configuration;
 
-import java.util.List;
-
-import com.oss.framework.components.inputs.Input;
-import com.oss.framework.widgets.table.TableWidget;
-import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Listeners;
-import org.testng.annotations.Test;
-
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
+import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.propertypanel.PropertyPanel;
 import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.platform.configuration.SaveConfigurationWizard;
 import com.oss.pages.platform.configuration.SaveConfigurationWizard.Property;
 import com.oss.utils.TestListener;
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Test;
+
+import java.util.List;
 
 import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Property.*;
 

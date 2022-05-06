@@ -196,7 +196,6 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
 
         inventoryViewPage.saveNewConfigurationForMainTable(CONFIGURATION_NAME_TABLE_WIDGET_USED_IN_DEFAULT_VIEW_CONFIG, createField(TYPE, TEST_DIRECTOR_TYPE));
 
-
         inventoryViewPage.selectFirstRow();
         inventoryViewPage.enableWidget(OTHER_TYPE, VALDATION_RESULTS);
         inventoryViewPage.saveConfigurationForTabs(CONFIGURATION_TEST_PERSON_TABS_WIDGET_USED_IN_DEFAULT_VIEW_CONFIG, createField(TYPE, TEST_PERSON_TYPE));
