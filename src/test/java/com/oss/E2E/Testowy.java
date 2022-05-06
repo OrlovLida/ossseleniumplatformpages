@@ -4,11 +4,9 @@ import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.servicedesk.issue.BaseDashboardPage;
+import com.oss.pages.servicedesk.issue.problem.ProblemDashboardPage;
 
 public class Testowy extends BaseTestCase {
-
-    private static final String PROBLEMS_DASHBOARD = "_ProblemManagement";
 
     @Test(priority = 1)
     public void testowy1() {
@@ -17,7 +15,7 @@ public class Testowy extends BaseTestCase {
 
     @Test(priority = 2)
     public void testowy2() {
-        BaseDashboardPage baseDashboardPage = new BaseDashboardPage(driver, webDriverWait).goToPage(driver, BASIC_URL, PROBLEMS_DASHBOARD);
+        ProblemDashboardPage problemDashboardPage = new ProblemDashboardPage(driver, webDriverWait).goToPage(driver, BASIC_URL);
     }
 
     private void waitForPageToLoad() {

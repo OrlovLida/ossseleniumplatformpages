@@ -21,4 +21,5 @@ public class ServiceDeskConstants {
     public static final String COMMON_WIZARD_ID = "_WizardWindow";
     public static final String DETAILS_TABS_CONTAINER_ID = "_detailsWindow";
     public static final String TABS_WIDGET_ID = "_tablesWindow";
+    public static final String CHANGE_DASHBOARD = "_ChangeManagement";
 }

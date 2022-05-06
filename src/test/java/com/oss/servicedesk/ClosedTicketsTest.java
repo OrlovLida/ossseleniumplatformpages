@@ -8,21 +8,20 @@ import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.pages.platform.NotificationWrapperPage;
-import com.oss.pages.servicedesk.issue.BaseDashboardPage;
 import com.oss.pages.servicedesk.issue.IssueDetailsPage;
 import com.oss.pages.servicedesk.issue.ticket.MyTicketsPage;
+import com.oss.pages.servicedesk.issue.ticket.TicketDashboardPage;
 import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
 
 import io.qameta.allure.Description;
 
 import static com.oss.pages.servicedesk.ServiceDeskConstants.DOWNLOAD_FILE;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.ID_ATTRIBUTE;
-import static com.oss.pages.servicedesk.ServiceDeskConstants.TICKET_DASHBOARD;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.TROUBLE_TICKET_ISSUE_TYPE;
 
 public class ClosedTicketsTest extends BaseTestCase {
 
-    private BaseDashboardPage baseDashboardPage;
+    private TicketDashboardPage ticketDashboardPage;
     private SDWizardPage sdWizardPage;
     private IssueDetailsPage issueDetailsPage;
     private MyTicketsPage closedTicketsPage;
@@ -36,7 +35,7 @@ public class ClosedTicketsTest extends BaseTestCase {
 
     @BeforeClass
     public void goToTicketDashboard() {
-        baseDashboardPage = new BaseDashboardPage(driver, webDriverWait).goToPage(driver, BASIC_URL, TICKET_DASHBOARD);
+        ticketDashboardPage = new TicketDashboardPage(driver, webDriverWait).goToPage(driver, BASIC_URL);
     }
 
     @Parameters({"MOIdentifier", "ttAssignee"})
@@ -46,10 +45,10 @@ public class ClosedTicketsTest extends BaseTestCase {
             @Optional("CFS_Access_Product_Selenium_1") String MOIdentifier,
             @Optional("Tier 2 Mobile") String ttAssignee
     ) {
-        sdWizardPage = baseDashboardPage.openCreateTicketWizard("CTT");
+        sdWizardPage = ticketDashboardPage.openCreateTicketWizard("CTT");
         sdWizardPage.createTicket(MOIdentifier, ttAssignee);
-        ticketID = baseDashboardPage.getIdFromMessage();
-        issueDetailsPage = baseDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
+        ticketID = ticketDashboardPage.getIdFromMessage();
+        issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
         issueDetailsPage.allowEditingTicket();
         issueDetailsPage.skipAllActionsOnCheckList();
         issueDetailsPage.changeTicketStatus(STATUS_ACKNOWLEDGED);

@@ -15,7 +15,7 @@ import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.servicedesk.BaseSDPage;
-import com.oss.pages.servicedesk.issue.BaseDashboardPage;
+import com.oss.pages.servicedesk.issue.ticket.TicketDashboardPage;
 
 import io.qameta.allure.Step;
 
@@ -159,7 +159,7 @@ public class SDWizardPage extends BaseSDPage {
         log.info("Clicking {} combobox", componentId);
     }
 
-    public BaseDashboardPage createTicket(String moIdentifier, String assignee) {
+    public TicketDashboardPage createTicket(String moIdentifier, String assignee) {
         getMoStep().enterTextIntoSearchComponent(moIdentifier);
         getMoStep().selectObjectInMOTable(moIdentifier);
         clickNextButtonInWizard();
@@ -173,7 +173,7 @@ public class SDWizardPage extends BaseSDPage {
         insertValueToTextComponent(date, TT_WIZARD_ISSUE_START_DATE_ID);
         insertValueToTextComponent(date, TT_WIZARD_MESSAGE_DATE_ID);
         clickAcceptButtonInWizard();
-        return new BaseDashboardPage(driver, wait);
+        return new TicketDashboardPage(driver, wait);
     }
 
     private void insertValueToComponent(String text, String componentId, Input.ComponentType componentType) {
