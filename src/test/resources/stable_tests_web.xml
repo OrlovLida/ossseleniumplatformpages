@@ -55,6 +55,11 @@
             <class name="com.oss.configuration.DetailsConfigurationTest"/>
         </classes>
     </test>
+    <test name="InventoryViewConfigurationTest">
+        <classes>
+            <class name="com.oss.configuration.InventoryViewConfigurationTest"/>
+        </classes>
+    </test>
     <test name="LifecycleStateDecoratorsInTreeWidgetTest">
         <classes>
             <class name="com.oss.web.LifecycleStateDecoratorsInTreeWidgetTest"/>

@@ -12,6 +12,7 @@ import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.NewInventoryViewPage;
+import com.oss.framework.widgets.table.TableWidget;
 import com.oss.pages.platform.configuration.SaveConfigurationWizard;
 import com.oss.utils.TestListener;
 
@@ -36,7 +37,7 @@ public class TableWidgetConfigurationTest extends BaseTestCase {
     private static final String PASSWORD_1 = "Webtests123!";
     private static final String TEST_PERSON = "TestPerson";
     private static final String TEST_ACTOR = "TestActor";
-    private static final String TEST_DIRECTOR = "TestActor";
+    private static final String TEST_DIRECTOR = "TestDirector";
     private static final String ME = "Me";
 
     @BeforeClass
@@ -102,7 +103,7 @@ public class TableWidgetConfigurationTest extends BaseTestCase {
 
     @Test(priority = 4)
     public void updateConfigurationForTableWidget() {
-        com.oss.framework.widgets.table.TableWidget tableWidget = newInventoryViewPage.getMainTable();
+        TableWidget tableWidget = newInventoryViewPage.getMainTable();
         int defaultSize = tableWidget.getFirstColumnSize();
         DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
 
@@ -116,7 +117,7 @@ public class TableWidgetConfigurationTest extends BaseTestCase {
         newInventoryViewPage.applyConfigurationForMainTable(CONFIGURATION_NAME_TABLE_WIDGET);
         DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
 
-        com.oss.framework.widgets.table.TableWidget tableWidget1 = newInventoryViewPage.getMainTable();
+        TableWidget tableWidget1 = newInventoryViewPage.getMainTable();
         int newSize = tableWidget1.getFirstColumnSize();
         Assert.assertEquals(defaultSize + offset, newSize);
     }
@@ -150,6 +151,7 @@ public class TableWidgetConfigurationTest extends BaseTestCase {
         newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_ACTOR);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         newInventoryViewPage.enableColumn(NATIONALITY_LABEL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         newInventoryViewPage.changeColumnsOrderInMainTable(NATIONALITY_LABEL, 0);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
@@ -196,7 +198,7 @@ public class TableWidgetConfigurationTest extends BaseTestCase {
     @Test(priority = 9)
     public void groupAndTypeInheritanceDefaultConfigurationOfTableWidget() {
         newInventoryViewPage.changeUser(USER2, PASSWORD_2);
-        newInventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_DIRECTOR);
+        newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_DIRECTOR);
 
         newInventoryViewPage.chooseGroupContext(GROUP_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -211,7 +213,7 @@ public class TableWidgetConfigurationTest extends BaseTestCase {
         List<String> columnHeaders1 = newInventoryViewPage.getActiveColumnsHeaders();
         Assert.assertEquals(columnHeaders1.indexOf(TYPE_LABEL), 0);
 
-        newInventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_ACTOR);
+        newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_ACTOR);
         List<String> columnHeaders2 = newInventoryViewPage.getActiveColumnsHeaders();
         Assert.assertNotEquals(columnHeaders2.indexOf(TYPE_LABEL), 0);
 
