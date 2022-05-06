@@ -172,7 +172,7 @@ public class DetailsConfigurationTest extends BaseTestCase {
     @Test(priority = 8)
     public void saveDefaultConfigurationForPropertiesForGroupForType() {
 
-        inventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_DIRECTOR_TYPE);
+        inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_DIRECTOR_TYPE);
         PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel(ROW_ID_0, PROPERTY_PANEL_ID);
 
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -193,7 +193,7 @@ public class DetailsConfigurationTest extends BaseTestCase {
     public void groupAndTypeInheritanceDefaultConfigurationOfProperties() {
         //when
         inventoryViewPage.changeUser(USER2, PASSWORD_2);
-        inventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_ACTOR_TYPE);
+        inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_ACTOR_TYPE);
 
         inventoryViewPage.chooseGroupContext(GROUP_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -206,7 +206,7 @@ public class DetailsConfigurationTest extends BaseTestCase {
         Assert.assertEquals(labels.indexOf(GENDER_LABEL), 0);
 
         inventoryViewPage.changeUser(USER1, PASSWORD_1);
-        inventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_ACTOR_TYPE);
+        inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_ACTOR_TYPE);
         PropertyPanel propertyPanel1 = inventoryViewPage.getPropertyPanel(ROW_ID_0, PROPERTY_PANEL_ID);
 
         Assert.assertFalse(propertyPanel1.getPropertyLabels().contains(GENDER_LABEL));

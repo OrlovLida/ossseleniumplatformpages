@@ -146,7 +146,7 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
         inventoryViewPage.downloadConfigurationForPage(CONFIGURATION_NAME_IV);
         assertSuccessMessage();
 
-        inventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_DIRECTOR_TYPE);
+        inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_DIRECTOR_TYPE);
 
         inventoryViewPage.downloadConfigurationForPage(CONFIGURATION_NAME_IV);
         assertSuccessMessage();
@@ -154,7 +154,7 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
 
     @Test(priority = 7)
     public void tryRemoveConfigurationUsedInConfigurationOfPage() {
-        inventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_PERSON_TYPE);
+        inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_PERSON_TYPE);
 
         inventoryViewPage.deleteConfigurationForMainTable(CONFIGURATION_NAME_TABLE_WIDGET_USED_IN_VIEW_CONFIG);
         assertDangerMessage();
@@ -186,8 +186,8 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
 
     @Test(priority = 9)
     public void saveDefaultViewConfigurationForUserForSuperType() {
-        inventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_DIRECTOR_TYPE);
-        com.oss.framework.widgets.table.TableWidget tableWidget = inventoryViewPage.getMainTable();
+        inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_DIRECTOR_TYPE);
+        TableWidget tableWidget = inventoryViewPage.getMainTable();
         DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
 
         int offset = 400;
@@ -208,7 +208,7 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
 
     @Test(priority = 10)
     public void saveDefaultViewConfigurationForGroupForType() {
-        inventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_PERSON_TYPE);
+        inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_PERSON_TYPE);
         saveConfigurationForTabsForSuperType(TEST_DIRECTOR_TYPE, OTHER_TYPE, PLANNING_INFO, CONFIGURATION_TEST_DIRECTOR_TABS_WIDGET_USED_IN_DEFAULT_GROUP_CONFIG);
 
         inventoryViewPage.saveNewPageConfiguration(CONFIGURATION_NAME_IV_TYPE_DEFAULT_FOR_GROUP, createField(GROUPS, GROUP_NAME));
@@ -222,8 +222,8 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
     public void groupAndTypeInheritanceDefaultViewConfiguration() {
         inventoryViewPage.changeUser(USER2, PASSWORD_2);
 
-        inventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_DIRECTOR_TYPE);
-        com.oss.framework.widgets.table.TableWidget tableWidget = inventoryViewPage.getMainTable();
+        inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_DIRECTOR_TYPE);
+        TableWidget tableWidget = inventoryViewPage.getMainTable();
         int defaultSize = tableWidget.getFirstColumnSize();
         DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
 
@@ -236,10 +236,10 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
 
         inventoryViewPage.changeUser(USER1, PASSWORD_1);
 
-        inventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_DIRECTOR_TYPE);
+        inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_DIRECTOR_TYPE);
 
         inventoryViewPage.chooseGroupContext(GROUP_NAME);
-        com.oss.framework.widgets.table.TableWidget tableWidget1 = inventoryViewPage.getMainTable();
+        TableWidget tableWidget1 = inventoryViewPage.getMainTable();
 
 
         int newSize = tableWidget1.getFirstColumnSize();
