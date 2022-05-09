@@ -14,6 +14,8 @@ import com.oss.framework.iaa.widgets.list.ListApp;
 import com.oss.framework.iaa.widgets.table.FMSMTable;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
+import com.oss.framework.widgets.table.OldTable;
+import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
@@ -34,11 +36,17 @@ public class WAMVPage extends BasePage {
     private static final String ALARM_DETAILS_TAB_ID = "alarm-details";
     private static final String SAME_MO_DETAILS_TAB_ID = "mo-properties";
     private static final String SAME_MO_ALARMS_TAB_ID = "mo-alarms";
+    private static final String CORRELATED_ALARMS_TAB_ID = "correlated-alarms";
+    private static final String ALARM_CHANGES_TAB_ID = "alarm-changes";
+    private static final String TROUBLE_TICKETS_TAB_ID = "trouble-tickets";
+    private static final String OUTAGES_TAB_ID = "outages";
+
     private static final String SAME_MO_ALARMS_TABLE_ID = "area3-mo-alarms";
     private static final String ADAPTER_NAME_VALUE = "Adapter Name";
     private static final String NOTIFICATION_IDENTIFIER_VALUE = "Notification Identifier";
     private static final String PERCEIVED_SEVERITY_VALUE = "Perceived Severity";
     private static final String PROPERTY_PANEL_ID = "card-content_AREA3";
+    private static final String AREA_3_ID = "AREA3";
 
     private final FMSMTable fmsmTable = FMSMTable.createById(driver, wait, TABLE_AREA2_WIDGET_ID);
 
@@ -122,28 +130,59 @@ public class WAMVPage extends BasePage {
         return fmsmTable.getCellValue(row, NOTE_COLUMN_ID);
     }
 
+    @Step("Selecting tab {tabId}")
+    public void selectTabFromArea3(String tabId) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        TabsWidget.createById(driver, wait, AREA_3_ID).selectTabById(tabId);
+        log.info("Selecting tab {}", tabId);
+    }
+
     @Step("I click on Additional Text tab")
     public void clickOnAdditionalTextTab() {
-        createButton(ADDITIONAL_TEXT_TAB_ID).click();
+        selectTabFromArea3(ADDITIONAL_TEXT_TAB_ID);
         log.info("Clicking on Additional Text tab");
     }
 
     @Step("I click on Alarm Details tab")
     public void clickOnAlarmDetailsTab() {
-        createButton(ALARM_DETAILS_TAB_ID).click();
+        selectTabFromArea3(ALARM_DETAILS_TAB_ID);
         log.info("Clicking on Alarm Details tab");
     }
 
     @Step("I click on Same MO Details tab")
     public void clickOnSameMODetailsTab() {
-        createButton(SAME_MO_DETAILS_TAB_ID).click();
+        selectTabFromArea3(SAME_MO_DETAILS_TAB_ID);
         log.info("Clicking on Same Mo Details tab");
     }
 
     @Step("I click on Same MO Alarms tab")
     public void clickOnSameMOAlarmsTab() {
-        createButton(SAME_MO_ALARMS_TAB_ID).click();
-        log.info("Clicking on Same Mo Alarms tab");
+        selectTabFromArea3(SAME_MO_ALARMS_TAB_ID);
+        log.info("Clicking on Same MO Alarms tab");
+    }
+
+    @Step("I click on Correlated Alarms tab")
+    public void clickOnCorrelatedAlarmsTab() {
+        selectTabFromArea3(CORRELATED_ALARMS_TAB_ID);
+        log.info("Clicking on Correlated Alarms tab");
+    }
+
+    @Step("I click on Alarm Changes tab")
+    public void clickOnAlarmChangesTab() {
+        selectTabFromArea3(ALARM_CHANGES_TAB_ID);
+        log.info("Clicking on Alarm Changes tab");
+    }
+
+    @Step("I click on Trouble Tickets tab")
+    public void clickOnTroubleTicketsTab() {
+        selectTabFromArea3(TROUBLE_TICKETS_TAB_ID);
+        log.info("Clicking on Trouble Tickets tab");
+    }
+
+    @Step("I click on Outages tab")
+    public void clickOnOutagesTab() {
+        selectTabFromArea3(OUTAGES_TAB_ID);
+        log.info("Clicking on Outages tab");
     }
 
     @Step("I get adapter name from Alarms Details Tab")
@@ -164,11 +203,20 @@ public class WAMVPage extends BasePage {
         return getPropertyPanel().getPropertyValue(PERCEIVED_SEVERITY_VALUE);
     }
 
-    @Step("I check if Same MO Alarms Table is visible")
-    public boolean checkVisibilityOfSameMOAlarmsTable() {
-        log.info("Checking visibility of Same MO Alarms Table");
+    @Step("I check if {tableId} table exists")
+    public boolean checkIfTableExists(String tableId) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        return driver.getPageSource().contains(SAME_MO_ALARMS_TABLE_ID);
+        log.info("I check if {} table exists", tableId);
+        if (!getOldTable(tableId).hasNoData()) {
+            log.info("Table exists and has some data");
+            return true;
+        } else if (getOldTable(tableId).hasNoData()) {
+            log.info("Table exists and it's empty");
+            return true;
+        } else {
+            log.error("Table doesn't exist");
+            return false;
+        }
     }
 
     @Step("I check page title")
@@ -205,5 +253,9 @@ public class WAMVPage extends BasePage {
 
     private OldPropertyPanel getPropertyPanel() {
         return OldPropertyPanel.createById(driver, wait, PROPERTY_PANEL_ID);
+    }
+
+    private OldTable getOldTable(String tableId) {
+        return OldTable.createById(driver, wait, tableId);
     }
 }
