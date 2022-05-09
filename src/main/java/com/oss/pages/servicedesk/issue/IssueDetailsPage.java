@@ -174,6 +174,16 @@ public class IssueDetailsPage extends BaseSDPage {
         log.info("Skipping all actions on checklist");
     }
 
+    @Step("Checking if Skip buttons are present for all actions on checklist")
+    public boolean areSkipButtonsActive() {
+        return CommonList.create(driver, wait, CHECKLIST_APP_ID)
+                .getRows()
+                .stream().allMatch(row -> {
+                    DelayUtils.waitForPageToLoad(driver, wait);
+                    return row.isActionIconPresentByLabel(SKIP_BUTTON_LABEL);
+                });
+    }
+
     @Step("Changing status to {statusName}")
     public void changeTicketStatus(String statusName) {
         ComponentFactory.create(CHANGE_TICKET_STATUS_COMBOBOX_ID, Input.ComponentType.COMBOBOX, driver, wait).setSingleStringValue(statusName);
