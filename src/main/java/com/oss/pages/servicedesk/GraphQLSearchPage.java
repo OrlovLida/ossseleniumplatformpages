@@ -70,6 +70,7 @@ public abstract class GraphQLSearchPage extends BaseSDPage {
     public void filterBy(String attributeName, String attributeValue, Input.ComponentType componentType) {
         DelayUtils.waitForPageToLoad(driver, wait);
         getIssueTable().searchByAttribute(attributeName, componentType, attributeValue);
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public boolean isIssueTableEmpty() {

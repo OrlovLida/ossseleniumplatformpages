@@ -55,6 +55,10 @@ public class RootCausesTab extends BaseSDPage {
         return new SDWizardPage(driver, wait, COMMON_WIZARD_ID);
     }
 
+    public boolean isAddRootCauseButtonActive() {
+        return isActionPresent(ADD_ROOT_CAUSE_ID);
+    }
+
     @Step("I check if MO Identifier is present on Root Causes tab")
     public boolean checkIfMOIdentifierIsPresentOnRootCauses(String moIdentifier) {
         DelayUtils.waitForPageToLoad(driver, wait);
