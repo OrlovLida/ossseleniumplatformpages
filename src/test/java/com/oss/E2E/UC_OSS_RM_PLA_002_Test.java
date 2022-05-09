@@ -305,6 +305,8 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         waitForPageToLoad();
         changeConfigurationPage.selectObjectType("Router");
         waitForPageToLoad();
+        changeConfigurationPage.selectObject(DEVICE_NAME);
+        waitForPageToLoad();
         changeConfigurationPage.selectTemplate(TEMPLATE_NAME);
         waitForPageToLoad();
         changeConfigurationPage.clickSetParameters();

@@ -46,6 +46,10 @@ public class RelatedProblemsTab extends BaseSDPage {
         return new SDWizardPage(driver, wait, COMMON_WIZARD_ID);
     }
 
+    public boolean isCreateProblemButtonActive() {
+        return isActionPresent(CREATE_PROBLEM_ID);
+    }
+
     @Step("I check related problem name")
     public String checkRelatedProblemName(int problemIndex) {
         DelayUtils.waitForPageToLoad(driver, wait);

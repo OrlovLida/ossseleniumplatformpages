@@ -6,11 +6,12 @@ import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.pages.servicedesk.ServiceDeskMenuPage;
-import com.oss.pages.servicedesk.issue.BaseDashboardPage;
 import com.oss.pages.servicedesk.issue.problem.MyProblemsPage;
+import com.oss.pages.servicedesk.issue.problem.ProblemDashboardPage;
 import com.oss.pages.servicedesk.issue.problem.ProblemSearchPage;
 import com.oss.pages.servicedesk.issue.task.TaskDashboardPage;
 import com.oss.pages.servicedesk.issue.ticket.MyTicketsPage;
+import com.oss.pages.servicedesk.issue.ticket.TicketDashboardPage;
 import com.oss.pages.servicedesk.issue.ticket.TicketSearchPage;
 
 import io.qameta.allure.Description;
@@ -21,7 +22,8 @@ import static com.oss.pages.servicedesk.ServiceDeskConstants.TICKET_DASHBOARD;
 public class LeftSideMenuSDTest extends BaseTestCase {
 
     private ServiceDeskMenuPage serviceDeskMenuPage;
-    private BaseDashboardPage baseDashboardPage;
+    private TicketDashboardPage ticketDashboardPage;
+    private ProblemDashboardPage problemDashboardPage;
     private TicketSearchPage ticketSearchPage;
     private MyTicketsPage myTicketsPage;
     private ProblemSearchPage problemSearchPage;
@@ -46,8 +48,8 @@ public class LeftSideMenuSDTest extends BaseTestCase {
     @Description("Going to TT Dashboard from Left Side Menu")
     public void goToTTDashboard() {
         serviceDeskMenuPage.chooseFromTroubleTicketsMenu(DASHBOARD_PAGE);
-        baseDashboardPage = new BaseDashboardPage(driver, webDriverWait);
-        Assert.assertTrue(baseDashboardPage.isDashboardOpen(BASIC_URL, TICKET_DASHBOARD));
+        ticketDashboardPage = new TicketDashboardPage(driver, webDriverWait);
+        Assert.assertTrue(ticketDashboardPage.isDashboardOpen(BASIC_URL, TICKET_DASHBOARD));
     }
 
     @Test(testName = "Go to Ticket Search", description = "Going to Ticket Search from Left Side Menu")
@@ -81,8 +83,8 @@ public class LeftSideMenuSDTest extends BaseTestCase {
     @Description("Going to Problem Dashboard from Left Side Menu")
     public void goToProblemDashboard() {
         serviceDeskMenuPage.chooseFromProblemManagementMenu(DASHBOARD_PAGE);
-        baseDashboardPage = new BaseDashboardPage(driver, webDriverWait);
-        Assert.assertTrue(baseDashboardPage.isDashboardOpen(BASIC_URL, PROBLEMS_DASHBOARD));
+        problemDashboardPage = new ProblemDashboardPage(driver, webDriverWait);
+        Assert.assertTrue(problemDashboardPage.isDashboardOpen(BASIC_URL, PROBLEMS_DASHBOARD));
     }
 
     @Test(testName = "Go to Problem Search", description = "Going to Problem Search from Left Side Menu")

@@ -41,6 +41,10 @@ public class RelatedTicketsTab extends BaseSDPage {
         return new SDWizardPage(driver, wait, LINK_TICKET_PROMPT_ID);
     }
 
+    public boolean isLinkTicketButtonActive() {
+        return isActionPresent(LINK_ISSUE_BUTTON_ID);
+    }
+
     @Step("Check related tickets ID")
     public String checkRelatedTicketsId(int ticketIndex) {
         DelayUtils.waitForPageToLoad(driver, wait);

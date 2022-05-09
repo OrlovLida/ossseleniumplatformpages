@@ -21,7 +21,7 @@ public class ChangeModelWizardPage extends BasePage {
 
     @Step("Set Model")
     public void setModel(String model) {
-        wizard.setComponentValue(MODEL_SEARCH, model, Input.ComponentType.SEARCH_FIELD);
+        wizard.setComponentValue(MODEL_SEARCH, model, Input.ComponentType.OBJECT_SEARCH_FIELD);
     }
 
     @Step("Click Update button")

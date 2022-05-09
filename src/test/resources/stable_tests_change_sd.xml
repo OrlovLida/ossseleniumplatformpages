@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="change_sd" thread-count="2" parallel="tests" verbose="1">
+    <test name="CreateChange">
+        <parameter name="userName" value="sd_seleniumtest"/>
+        <classes>
+            <class name="com.oss.servicedesk.changemanagement.CreateChangeTest"/>
+        </classes>
+    </test>
+</suite>

@@ -1,23 +1,21 @@
 package com.oss.configuration;
 
-import java.util.List;
-
-import com.oss.framework.components.inputs.Input;
-import com.oss.framework.widgets.table.TableWidget;
-import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Listeners;
-import org.testng.annotations.Test;
-
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
+import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.propertypanel.PropertyPanel;
 import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.platform.configuration.SaveConfigurationWizard;
 import com.oss.pages.platform.configuration.SaveConfigurationWizard.Property;
 import com.oss.utils.TestListener;
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Test;
+
+import java.util.List;
 
 import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Property.*;
 
@@ -25,7 +23,6 @@ import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Prope
 public class DetailsConfigurationTest extends BaseTestCase {
 
     private NewInventoryViewPage inventoryViewPage;
-    private TableWidget tableWidget;
 
     private final static String DEFAULT_CONFIGURATION = "DEFAULT";
     private static final String ATTRIBUTE_ID_TYPE = "type";
@@ -173,7 +170,7 @@ public class DetailsConfigurationTest extends BaseTestCase {
     @Test(priority = 8)
     public void saveDefaultConfigurationForPropertiesForGroupForType() {
 
-        inventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_DIRECTOR_TYPE);
+        inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_DIRECTOR_TYPE);
         PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel(ROW_ID_0, PROPERTY_PANEL_ID);
 
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -191,10 +188,10 @@ public class DetailsConfigurationTest extends BaseTestCase {
     }
 
     @Test(priority = 9)
-    public void groupAndTypeInheritanceDefaultConfigurationOfTabsWidget() {
+    public void groupAndTypeInheritanceDefaultConfigurationOfProperties() {
         //when
         inventoryViewPage.changeUser(USER2, PASSWORD_2);
-        inventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_ACTOR_TYPE);
+        inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_ACTOR_TYPE);
 
         inventoryViewPage.chooseGroupContext(GROUP_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -207,7 +204,7 @@ public class DetailsConfigurationTest extends BaseTestCase {
         Assert.assertEquals(labels.indexOf(GENDER_LABEL), 0);
 
         inventoryViewPage.changeUser(USER1, PASSWORD_1);
-        inventoryViewPage = com.oss.pages.platform.NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_ACTOR_TYPE);
+        inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_ACTOR_TYPE);
         PropertyPanel propertyPanel1 = inventoryViewPage.getPropertyPanel(ROW_ID_0, PROPERTY_PANEL_ID);
 
         Assert.assertFalse(propertyPanel1.getPropertyLabels().contains(GENDER_LABEL));
