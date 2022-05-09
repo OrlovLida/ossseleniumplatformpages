@@ -3,13 +3,14 @@ package com.oss.faultmanagement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.faultmanagement.FMSMDashboardPage;
 import com.oss.pages.faultmanagement.WAMVPage;
 import com.oss.utils.TestListener;
@@ -27,20 +28,26 @@ public class WAMVBasicTest extends BaseTestCase {
     private final String TEST_NOTE_VALUE = "Selenium_automated_test";
     private final String EMPTY_NOTE_VALUE = "";
     private final String EXPECTED_TEXT = "SeleniumTest";
-    private final String PERCEIVED_SEVERITY = "Critical";
+    private final String PERCEIVED_SEVERITY = "CRITICAL";
     private static final String ALARM_MANAGEMENT_VIEW_ID = "_UserViewsListALARM_MANAGEMENT";
     private static final String AREA_3_WINDOW_ID = "AREA3";
     private static final String AREA_2_WINDOW_ID = "AREA2";
+    private static final String SAME_MO_ALARMS_TABLE_ID = "area3-mo-alarms";
+    private static final String CORRELATED_ALARMS_TABLE_ID = "area3-correlated-alarms";
+    private static final String ALARM_CHANGES_TABLE_ID = "area3-alarm-changes";
+    private static final String TROUBLE_TICKETS_TABLE_ID = "area3-trouble-tickets";
+    private static final String OUTAGES_TABLE_ID = "area3-outages";
 
     private FMSMDashboardPage fmsmDashboardPage;
     private WAMVPage wamvPage;
 
     @Parameters("chosenDashboard")
-    @BeforeMethod
+    @BeforeClass
     public void goToFMDashboardPage(
             @Optional("FaultManagement") String chosenDashboard
     ) {
         fmsmDashboardPage = fmsmDashboardPage.goToPage(driver, BASIC_URL, chosenDashboard);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
     @Parameters({"alarmListName", "alarmManagementViewRow"})
@@ -119,14 +126,21 @@ public class WAMVBasicTest extends BaseTestCase {
             wamvPage = fmsmDashboardPage.openSelectedView(ALARM_MANAGEMENT_VIEW_ID, alarmManagementViewRow);
             wamvPage.selectSpecificRow(alarmListRow);
             wamvPage.clickOnSameMOAlarmsTab();
-            Assert.assertTrue(wamvPage.checkVisibilityOfSameMOAlarmsTable());
+            Assert.assertTrue(wamvPage.checkIfTableExists(SAME_MO_ALARMS_TABLE_ID));
+            wamvPage.clickOnCorrelatedAlarmsTab();
+            Assert.assertTrue(wamvPage.checkIfTableExists(CORRELATED_ALARMS_TABLE_ID));
+            wamvPage.clickOnAlarmChangesTab();
+            Assert.assertTrue(wamvPage.checkIfTableExists(ALARM_CHANGES_TABLE_ID));
             wamvPage.clickOnSameMODetailsTab();
             wamvPage.clickOnAdditionalTextTab();
             Assert.assertTrue(wamvPage.isAdditionalTextDisplayed(EXPECTED_TEXT, AREA_3_WINDOW_ID));
+            wamvPage.clickOnTroubleTicketsTab();
+            Assert.assertTrue(wamvPage.checkIfTableExists(TROUBLE_TICKETS_TABLE_ID));
+            wamvPage.clickOnOutagesTab();
+            Assert.assertTrue(wamvPage.checkIfTableExists(OUTAGES_TABLE_ID));
             wamvPage.clickOnAlarmDetailsTab();
             Assert.assertEquals(wamvPage.getAdapterNameValueFromAlarmDetailsTab(), adapterName);
             Assert.assertEquals(wamvPage.getNotificationIdentifierValueFromAlarmDetailsTab(), wamvPage.getTextFromNotificationIdentifierCell(alarmListRow));
-
         } catch (Exception e) {
             log.error(e.getMessage());
             Assert.fail();
@@ -149,7 +163,6 @@ public class WAMVBasicTest extends BaseTestCase {
             wamvPage.clickOnAdditionalTextTab();
             wamvPage.clickOnAlarmDetailsTab();
             Assert.assertEquals(wamvPage.getPerceivedSeverityValueFromAlarmDetailsTab(), PERCEIVED_SEVERITY);
-
         } catch (Exception e) {
             log.error(e.getMessage());
             Assert.fail();
