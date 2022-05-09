@@ -25,6 +25,8 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(NetworkDiscoveryControlViewPage.class);
 
+    private static final String MORE_GROUP_ID = "moreActions";
+    private static final String OTHER_GROUP_ID = "OTHER";
     private static final String TREE_ID = "narComponent_networkDiscoveryControlViewIdcmDomainsTreeId";
     private static final String RECONCILIATION_ACTION_ID = "narComponent_CmDomainActionFullReconciliationId";
     private static final String RECONCILIATION_TAB_ID = "narComponent_networkDiscoveryControlViewIdcmDomainTabsId";
@@ -38,6 +40,8 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     private static final String RECO_STATE_REFRESH_BUTTON_ID = "tableRefreshButton";
     private static final String STATUS = "Status";
     private static final String TAB_ID = "narComponent_networkDiscoveryControlViewIdcmDomainWindowId";
+    private static final String DETAILS_ID = "narComponent_CmDomainActionDetailsId";
+    private static final String TEXT_TO_FIND_CMDOMAINID = "Reason";
 
     protected NetworkDiscoveryControlViewPage(WebDriver driver) {
         super(driver);
@@ -94,7 +98,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         OldTable.createById(driver, wait, RECONCILIATION_TAB_ID).callAction(ActionsContainer.KEBAB_GROUP_ID, RECO_STATE_REFRESH_BUTTON_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         String status = OldTable.createById(driver, wait, RECONCILIATION_STATE_TABLE_ID).getCellValue(0, STATUS);
-        while (status.equals("IN_PROGRESS") || status.equals("PENDING")) {
+        while (status.contains("IN_PROGRESS") || status.contains("PENDING")) {
             DelayUtils.sleep(5000);
             DelayUtils.waitForPageToLoad(driver, wait);
             OldTable.createById(driver, wait, RECONCILIATION_TAB_ID).callAction(ActionsContainer.KEBAB_GROUP_ID, RECO_STATE_REFRESH_BUTTON_ID);
@@ -146,6 +150,14 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
+    @Step("Move to Details about CMDomain")
+    public void moveToDetails() {
+        TabsInterface ndcvTabs = getTabsInterface();
+        DelayUtils.waitForPageToLoad(driver, wait);
+        ndcvTabs.callActionById(ActionsContainer.OTHER_GROUP_ID, DETAILS_ID);
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
     @Step("Check if there are Issues with type {errorType}")
     public boolean checkIssues(IssueLevel errorType) {
         String type = String.valueOf(errorType);
@@ -164,6 +176,20 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     public void selectLatestReconciliationState() {
         TableInterface table = OldTable.createById(driver, wait, RECONCILIATION_STATE_TABLE_ID);
         table.selectRow(0);
+    }
+
+    @Step("Get Reconciliation starting event")
+    public String getRecoStartingEvent() {
+        getIssuesTable().searchByAttributeWithLabel(TEXT_TO_FIND_CMDOMAINID, ComponentType.TEXT_FIELD, "Reconciliation with ID");
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return getIssuesTable().getCellValue(0, "Reason");
+    }
+
+    @Step("Get CMDomain ID from reconciliation starting event")
+    public String getCMDomainIdFromRecoStartingEvent(String recoStartingEvent) {
+        String cmDomainId = recoStartingEvent.substring(recoStartingEvent.indexOf("(ID:"));
+        cmDomainId = cmDomainId.substring(5, (cmDomainId.length() - 6));
+        return cmDomainId;
     }
 
     private void logIssues(String type) {
