@@ -68,6 +68,26 @@ public class TreeWidgetTest extends BaseTestCase {
     private static final String ROOM_NAME_4 = "Room_" + FakeGenerator.getIdNumber();
     private static final String PATH_ROOM_4 = PATH_RELATION_LOCATIONS + "." + SUB_LOCATION_TYPE_FLOOR + "." + FLOOR_NAME
             + ".Locations." + SUB_LOCATION_TYPE_ROOM + "." + ROOM_NAME_4;
+    private static final String CARD_MODEL_TYPE = "CardModel";
+    private static final String DEVICE_ROOT_SLOTS_RELATION_PATH = DEVICE_NAME + ".Chassis.Chassis.Slots";
+    private static final String DEVICE_ROOT_PORT_04 = DEVICE_ROOT_SLOTS_RELATION_PATH + ".Card.A9K-8T-B.Ports.04";
+    private static final String BUDGET_1_21 = "1/21";
+    private static final String BADGET_1_1 = "1/1";
+    private static final String BADGE_1_39 = "1/39";
+    private static final String CHECK_BUDGE_FOR_ROUTER = "Check budge for Router";
+    private static final String IS_BUDGET_PRESENT_FOR_DEVICE = "Is Budget present For Device";
+    private static final String BADGE_1_37 = "1/37";
+    private static final String BADGE_2_39 = "2/39";
+    private static final String BADGE_1_19 = "1/19";
+    private static final String BADGE_1_2 = "1/2";
+    private static final String BADGE_2_19 = "2/19";
+    private static final String BADGE_2_37 = "2/37";
+    private static final String BADGE_3_39 = "3/39";
+    private static final String BADGE_3_37 = "3/37";
+    private static final String BADGE_4_39 = "4/39";
+    private static final String BADGE_3_19 = "3/19";
+    private static final String CHECKING_BAGES_FOR_SLOTS_RELATION = "Checking bages for Slots Relation";
+    private static final String CHECK_BADGE_FOR_PORT_05 = "Check badge for port 05";
     private Environment env = Environment.getInstance();
     private HierarchyViewPage hierarchyViewPage;
     private String locationId;
@@ -86,7 +106,7 @@ public class TreeWidgetTest extends BaseTestCase {
         hierarchyViewPage.getMainTree().searchByAttribute(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, LOCATION_NAME);
         List<String> nodesLabel = hierarchyViewPage.getVisibleNodesLabel();
         Assertions.assertThat(nodesLabel).contains(LOCATION_NAME);
-        
+
         log.info("Search Location (XID: " + locationId + ") in Hierarchy View");
     }
     
@@ -204,11 +224,10 @@ public class TreeWidgetTest extends BaseTestCase {
     
     @Test(priority = 11)
     public void multiPluggableModuleCreation() {
-        createDevice();
+        createRouterWithCards();
         driver.navigate().refresh();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hierarchyViewPage.getMainTree().searchByAttribute(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, LOCATION_NAME);
-        hierarchyViewPage.expandNextLevel(LOCATION_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hierarchyViewPage.selectNodeByLabelsPath(PORT_01_PATH);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -220,9 +239,9 @@ public class TreeWidgetTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hierarchyViewPage.getMainTree().unselectAllNodes();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        HierarchyViewPage hierarchyViewPage = HierarchyViewPage.goToHierarchyViewPage(driver, BASIC_URL, "Building", "919424");
         Assertions.assertThat(hierarchyViewPage.isNodePresent(PLUGGABLE_MODULE_01_PATH)).isTrue();
         Assertions.assertThat(hierarchyViewPage.isNodePresent(PLUGGABLE_MODULE_02_PATH)).isTrue();
-        
     }
     
     @Test(priority = 12)
@@ -255,6 +274,53 @@ public class TreeWidgetTest extends BaseTestCase {
                 HierarchyViewPage.OPEN_HIERARCHY_VIEW_CONTEXT_ACTION_ID);
         List<Node> nodes = hierarchyViewPage.getMainTree().getVisibleNodes();
         Assertions.assertThat(nodes).hasSize(1);
+    }
+    
+    @Test(priority = 15)
+    public void checkBadges() {
+        HierarchyViewPage viewPage = HierarchyViewPage.goToHierarchyViewPage(driver, BASIC_URL, "Router", deviceId.toString());
+        Node router = viewPage.getFirstNode();
+        Assertions.assertThat(router.isBadgePresent()).as(IS_BUDGET_PRESENT_FOR_DEVICE).isFalse();
+
+        router.toggleNode();
+        Assertions.assertThat(router.getBadge()).as(CHECK_BUDGE_FOR_ROUTER).isEqualTo(BADGET_1_1);
+
+        router.expandNextLevel();
+        Assertions.assertThat(router.getBadge()).isEqualTo(BUDGET_1_21);
+
+        Node slot = viewPage.getNodeByLabelPath(DEVICE_ROOT_SLOT_PATH);
+        slot.expandNextLevel();
+        Assertions.assertThat(router.getBadge()).isEqualTo(BADGE_1_39);
+
+        viewPage.selectNodeByLabel(CARD_MODEL);
+        Assertions.assertThat(viewPage.getNodeByLabelPath(DEVICE_NAME).getBadge()).isEqualTo(BADGE_2_39);
+        Assertions.assertThat(viewPage.getNodeByLabelPath(DEVICE_ROOT_SLOT_PATH).getBadge()).isEqualTo(BADGE_1_19);
+
+        Node slotsRelation = viewPage.getNodeByLabelPath(DEVICE_ROOT_SLOTS_RELATION_PATH);
+        Assertions.assertThat(slotsRelation.getBadge()).isEqualTo(BADGE_1_37);
+
+        Node port04 = viewPage.getNodeByLabelPath(DEVICE_ROOT_PORT_04);
+        port04.toggleNode();
+        Assertions.assertThat(port04.getBadge()).isEqualTo(BADGE_1_2);
+        Assertions.assertThat(viewPage.getNodeByLabelPath(DEVICE_ROOT_SLOT_PATH).getBadge()).isEqualTo(BADGE_2_19);
+        Assertions.assertThat(viewPage.getNodeByLabelPath(DEVICE_ROOT_SLOTS_RELATION_PATH).getBadge()).isEqualTo(BADGE_2_37);
+        Assertions.assertThat(viewPage.getNodeByLabelPath(DEVICE_NAME).getBadge()).isEqualTo(BADGE_3_39);
+
+        Node port05 = viewPage.getNodeByLabelPath(DEVICE_ROOT_PORT_05);
+        port05.toggleNode();
+        Assertions.assertThat(port05.getBadge()).as(CHECK_BADGE_FOR_PORT_05).isEqualTo(BADGE_1_2);
+        Assertions.assertThat(slot.getBadge()).isEqualTo(BADGE_3_19);
+        Assertions.assertThat(slotsRelation.getBadge()).as(CHECKING_BAGES_FOR_SLOTS_RELATION).isEqualTo(BADGE_3_37);
+        Assertions.assertThat(router.getBadge()).isEqualTo(BADGE_4_39);
+
+        port04.toggleNode();
+        Assertions.assertThat(port04.isBadgePresent()).isFalse();
+        Assertions.assertThat(slotsRelation.getBadge()).as(CHECKING_BAGES_FOR_SLOTS_RELATION).isEqualTo(BADGE_2_37);
+        Assertions.assertThat(router.getBadge()).isEqualTo(BADGE_3_39);
+
+        viewPage.unselectFirstObject();
+        Assertions.assertThat(router.getBadge()).isEqualTo(BADGE_2_39);
+        
     }
     
     @AfterClass
@@ -300,12 +366,15 @@ public class TreeWidgetTest extends BaseTestCase {
         return addressRepository.getFirstGeographicalAddressId();
     }
     
-    private void createDevice() {
+    private void createRouterWithCards() {
         ResourceCatalogClient resourceCatalogClient = new ResourceCatalogClient(env);
         Long deviceModelId = resourceCatalogClient.getModelIds(DEVICE_MODEL);
         PhysicalInventoryRepository physicalInventoryRepository = new PhysicalInventoryRepository(env);
         deviceId = physicalInventoryRepository.createDevice(LOCATION_TYPE_BUILDING, Long.valueOf(locationId), deviceModelId, DEVICE_NAME,
                 DEVICE_MODEL_TYPE);
+        Long cardModelId = resourceCatalogClient.getModelIds(CARD_MODEL);
+        physicalInventoryRepository.createCard(deviceId, SLOT_NAME_0, cardModelId, CARD_MODEL_TYPE);
+        physicalInventoryRepository.createCard(deviceId, SLOT_NAME_1, cardModelId, CARD_MODEL_TYPE);
     }
     
     private void deleteDevice() {
