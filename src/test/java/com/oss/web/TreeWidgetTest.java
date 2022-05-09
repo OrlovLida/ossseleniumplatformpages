@@ -75,9 +75,11 @@ public class TreeWidgetTest extends BaseTestCase {
             + ".Locations." + SUB_LOCATION_TYPE_ROOM + "." + ROOM_NAME_4;
     private static final String CARD_MODEL_TYPE = "CardModel";
     private static final String DEVICE_ROOT_SLOTS_RELATION_PATH = DEVICE_NAME + ".Chassis.Chassis.Slots";
-    private static final String DEVICE_ROOT_PORT_04 = DEVICE_ROOT_SLOTS_RELATION_PATH + ".Card.A9K-8T-B.Ports.04";
-    private static final String BUDGET_1_21 = "1/21";
-    private static final String BADGET_1_1 = "1/1";
+    private static final String DEVICE_ROOT_SLOT_PATH = DEVICE_ROOT_SLOTS_RELATION_PATH + ".0";
+    private static final String DEVICE_ROOT_PORT_04 = DEVICE_ROOT_SLOT_PATH + ".Card.A9K-8T-B.Ports.04";
+    private static final String DEVICE_ROOT_PORT_05 =  DEVICE_ROOT_SLOT_PATH + ".Card.A9K-8T-B.Ports.05";
+    private static final String BADGE_1_21 = "1/21";
+    private static final String BADGE_1_1 = "1/1";
     private static final String BADGE_1_39 = "1/39";
     private static final String CHECK_BUDGE_FOR_ROUTER = "Check budge for Router";
     private static final String IS_BUDGET_PRESENT_FOR_DEVICE = "Is Budget present For Device";
@@ -91,8 +93,10 @@ public class TreeWidgetTest extends BaseTestCase {
     private static final String BADGE_3_37 = "3/37";
     private static final String BADGE_4_39 = "4/39";
     private static final String BADGE_3_19 = "3/19";
-    private static final String CHECKING_BAGES_FOR_SLOTS_RELATION = "Checking bages for Slots Relation";
+    private static final String CHECKING_BADGES_FOR_SLOTS_RELATION = "Checking bages for Slots Relation";
     private static final String CHECK_BADGE_FOR_PORT_05 = "Check badge for port 05";
+
+
     private Environment env = Environment.getInstance();
     private HierarchyViewPage hierarchyViewPage;
     private String locationId;
@@ -287,10 +291,10 @@ public class TreeWidgetTest extends BaseTestCase {
         Assertions.assertThat(router.isBadgePresent()).as(IS_BUDGET_PRESENT_FOR_DEVICE).isFalse();
 
         router.toggleNode();
-        Assertions.assertThat(router.getBadge()).as(CHECK_BUDGE_FOR_ROUTER).isEqualTo(BADGET_1_1);
+        Assertions.assertThat(router.getBadge()).as(CHECK_BUDGE_FOR_ROUTER).isEqualTo(BADGE_1_1);
 
         router.expandNextLevel();
-        Assertions.assertThat(router.getBadge()).isEqualTo(BUDGET_1_21);
+        Assertions.assertThat(router.getBadge()).isEqualTo(BADGE_1_21);
 
         Node slot = viewPage.getNodeByLabelPath(DEVICE_ROOT_SLOT_PATH);
         slot.expandNextLevel();
@@ -314,12 +318,12 @@ public class TreeWidgetTest extends BaseTestCase {
         port05.toggleNode();
         Assertions.assertThat(port05.getBadge()).as(CHECK_BADGE_FOR_PORT_05).isEqualTo(BADGE_1_2);
         Assertions.assertThat(slot.getBadge()).isEqualTo(BADGE_3_19);
-        Assertions.assertThat(slotsRelation.getBadge()).as(CHECKING_BAGES_FOR_SLOTS_RELATION).isEqualTo(BADGE_3_37);
+        Assertions.assertThat(slotsRelation.getBadge()).as(CHECKING_BADGES_FOR_SLOTS_RELATION).isEqualTo(BADGE_3_37);
         Assertions.assertThat(router.getBadge()).isEqualTo(BADGE_4_39);
 
         port04.toggleNode();
         Assertions.assertThat(port04.isBadgePresent()).isFalse();
-        Assertions.assertThat(slotsRelation.getBadge()).as(CHECKING_BAGES_FOR_SLOTS_RELATION).isEqualTo(BADGE_2_37);
+        Assertions.assertThat(slotsRelation.getBadge()).as(CHECKING_BADGES_FOR_SLOTS_RELATION).isEqualTo(BADGE_2_37);
         Assertions.assertThat(router.getBadge()).isEqualTo(BADGE_3_39);
 
         viewPage.unselectFirstObject();
