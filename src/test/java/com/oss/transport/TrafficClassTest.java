@@ -10,9 +10,9 @@ import org.testng.annotations.Test;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
+import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.NewInventoryViewPage;
-import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
 import com.oss.pages.transport.traffic.classs.TrafficClassCreationWizard;
 import com.oss.pages.transport.traffic.classs.TrafficClassModificationWizardPage;
 import com.oss.pages.transport.traffic.classs.TrafficClassWizardPage;
@@ -31,9 +31,7 @@ public class TrafficClassTest extends BaseTestCase {
 
     private static final String PROPERTIES_BOTTOM_TABLE_TEST_ID = "properties(TrafficClass)";
     private static final String EDIT_BUTTON_INSIDE_EDIT_GROUP_TEST_ID = "TrafficClassEditContextAction";
-    private static final String EDIT_TRAFFIC_CLASS_CONTEXT_GROUP_ID = "EDIT";
     private static final String REMOVE_BUTTON_INSIDE_EDIT_GROUP_TEST_ID = "TrafficClassDeleteContextAction";
-    private static final String CONFIRMATION_BOX_DELETE = "ConfirmationBox_deleteAppId_action_button";
 
     Random rand = new Random();
     private Map<String, String> propertyNameToPropertyValue;
@@ -120,7 +118,7 @@ public class TrafficClassTest extends BaseTestCase {
         TrafficClassAttributes trafficClassAttributes = new TrafficClassAttributes();
         trafficClassAttributes.location = PRE_CREATED_LOCATION;
         trafficClassAttributes.device = PRE_CREATED_DEVICE;
-        trafficClassAttributes.trafficClassName = "updated TrafficClassTest"+ rand.nextInt(1000);
+        trafficClassAttributes.trafficClassName = "updated TrafficClassTest" + rand.nextInt(1000);
         trafficClassAttributes.description = "updated traffic class test description";
         trafficClassAttributes.matchType = "Any";
         trafficClassAttributes.ipPrecedence = "2";
@@ -135,7 +133,7 @@ public class TrafficClassTest extends BaseTestCase {
 
     private TrafficClassModificationWizardPage goToWizardAtUpdate(NewInventoryViewPage inventoryViewBeforeUpdate) {
         inventoryViewBeforeUpdate.selectFirstRow();
-        inventoryViewBeforeUpdate.callAction(EDIT_TRAFFIC_CLASS_CONTEXT_GROUP_ID, EDIT_BUTTON_INSIDE_EDIT_GROUP_TEST_ID);
+        inventoryViewBeforeUpdate.callAction(ActionsContainer.EDIT_GROUP_ID, EDIT_BUTTON_INSIDE_EDIT_GROUP_TEST_ID);
         return new TrafficClassModificationWizardPage(driver);
     }
 
@@ -194,8 +192,8 @@ public class TrafficClassTest extends BaseTestCase {
     private void deleteTrafficClass(NewInventoryViewPage inventoryView) {
         inventoryView.selectFirstRow();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        inventoryView.callAction(EDIT_TRAFFIC_CLASS_CONTEXT_GROUP_ID,REMOVE_BUTTON_INSIDE_EDIT_GROUP_TEST_ID);
-        inventoryView.clickConfirmationBox(CONFIRMATION_BOX_DELETE);
+        inventoryView.callAction(ActionsContainer.EDIT_GROUP_ID, REMOVE_BUTTON_INSIDE_EDIT_GROUP_TEST_ID);
+        inventoryView.clickConfirmationRemovalButton();
     }
 
     private boolean hasBeenDeleted() {

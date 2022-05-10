@@ -3,7 +3,6 @@ package com.oss.pages.transport.aei;
 import java.util.List;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
@@ -11,7 +10,6 @@ import com.oss.framework.widgets.commonhierarchy.CommonHierarchyApp;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 import com.oss.pages.platform.NewInventoryViewPage;
-import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
 
 import io.qameta.allure.Step;
 
@@ -39,7 +37,7 @@ public class AEIWizardPage extends BasePage {
 
     public AEIWizardPage(WebDriver driver) {
         super(driver);
-        wizard = Wizard.createByComponentId(driver, wait,COMPONENT_ID);
+        wizard = Wizard.createByComponentId(driver, wait, COMPONENT_ID);
     }
 
     @Step("Set number to {number}")
@@ -120,7 +118,7 @@ public class AEIWizardPage extends BasePage {
     public NewInventoryViewPage clickAccept() {
         DelayUtils.waitForPageToLoad(driver, wait);
         wizard.clickAccept();
-        return new NewInventoryViewPage(driver,wait);
+        return new NewInventoryViewPage(driver, wait);
     }
 
     private void setTextFieldComponentValue(String componentId, String value) {

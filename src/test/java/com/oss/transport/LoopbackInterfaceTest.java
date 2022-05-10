@@ -1,18 +1,21 @@
 package com.oss.transport;
 
+import java.util.List;
+import java.util.Map;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
+import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
 import com.oss.pages.transport.loopbackInterface.LoopbackInterfaceWizardPage;
-import io.qameta.allure.Step;
-import org.testng.Assert;
-import org.testng.annotations.Test;
 
-import java.util.List;
-import java.util.Map;
+import io.qameta.allure.Step;
 
 /**
  * @author Kamil Jacko
@@ -30,11 +33,9 @@ public class LoopbackInterfaceTest extends BaseTestCase {
     private static final String DESCRIPTION_ATTRIBUTE_NAME = "Description";
     private static final String BOTTOM_PROPERTIES_TABLE_TEST_ID = "properties(LoopbackInterface)";
     private static final String EDIT_LOOPBACK_INTERFACE_CONTEXT_ACTION_ID = "EditLoopbackInterfaceContextAction";
-    private static final String EDIT_LOOPBACK_INTERFACE_CONTEXT_GROUP_ID = "EDIT";
     private static final String DELETE_LOOPBACK_INTERFACE_CONTEXT_ACTION_ID = "DeleteLoopbackInterfaceContextAction";
     private static final String EMPTY_NUMBER_ATTRIBUTE_VALUE = "";
     private static final String EMPTY_DESCRIPTION_ATTRIBUTE_VALUE = "";
-    private static final String CONFIRMATION_BOX_DELETE = "ConfirmationBox_deleteAppId_action_button";
 
     private Map<String, String> propertyNamesToValues;
 
@@ -47,7 +48,7 @@ public class LoopbackInterfaceTest extends BaseTestCase {
         LoopbackInterfaceWizardPage loopbackWizard = goToLoopbackWizard();
         fillLoopbackWizardToCreate(loopbackAttributes, loopbackWizard);
         NewInventoryViewPage inventoryView = loopbackWizard.clickAccept();
-        inventoryView.searchObject("Loopback"+ loopbackAttributes.number);
+        inventoryView.searchObject("Loopback" + loopbackAttributes.number);
 
         Assert.assertFalse(inventoryView.checkIfTableIsEmpty());
 
@@ -64,7 +65,7 @@ public class LoopbackInterfaceTest extends BaseTestCase {
         LoopbackInterfaceWizardPage loopbackWizard = goToEditWizard(inventoryViewBeforeUpdate);
         fillLoopbackWizardToUpdate(loopbackAttributes, loopbackWizard);
         NewInventoryViewPage inventoryView = loopbackWizard.clickAccept();
-        inventoryView.searchObject("Loopback"+loopbackAttributes.number);
+        inventoryView.searchObject("Loopback" + loopbackAttributes.number);
 
         Assert.assertFalse(inventoryView.checkIfTableIsEmpty());
 
@@ -92,12 +93,17 @@ public class LoopbackInterfaceTest extends BaseTestCase {
         NewInventoryViewPage inventoryViewBeforeDelete = new NewInventoryViewPage(driver, webDriverWait);
 
         inventoryViewBeforeDelete.selectFirstRow();
-        inventoryViewBeforeDelete.callAction(EDIT_LOOPBACK_INTERFACE_CONTEXT_GROUP_ID,DELETE_LOOPBACK_INTERFACE_CONTEXT_ACTION_ID);
-        inventoryViewBeforeDelete.clickConfirmationBox(CONFIRMATION_BOX_DELETE);
+        inventoryViewBeforeDelete.callAction(ActionsContainer.EDIT_GROUP_ID, DELETE_LOOPBACK_INTERFACE_CONTEXT_ACTION_ID);
+        inventoryViewBeforeDelete.clickConfirmationRemovalButton();
 
         Assert.assertTrue(isRemoveMessageCorrect());
         inventoryViewBeforeDelete.refreshMainTable();
         Assert.assertTrue(inventoryViewBeforeDelete.checkIfTableIsEmpty());
+    }
+
+    public boolean isRemoveMessageCorrect() {
+        SystemMessageInterface message = SystemMessageContainer.create(driver, webDriverWait);
+        return containsRemoveMessage(message.getMessages());
     }
 
     private LoopbackInterfaceAttributes getLoopbackAttributesToCreate() {
@@ -129,7 +135,7 @@ public class LoopbackInterfaceTest extends BaseTestCase {
     }
 
     private LoopbackInterfaceWizardPage goToEditWizard(NewInventoryViewPage inventoryViewPage) {
-        inventoryViewPage.callAction(EDIT_LOOPBACK_INTERFACE_CONTEXT_GROUP_ID, EDIT_LOOPBACK_INTERFACE_CONTEXT_ACTION_ID);
+        inventoryViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, EDIT_LOOPBACK_INTERFACE_CONTEXT_ACTION_ID);
         return new LoopbackInterfaceWizardPage(driver);
     }
 
@@ -165,16 +171,11 @@ public class LoopbackInterfaceTest extends BaseTestCase {
         Assert.assertTrue(isDescriptionSetCorrectly);
     }
 
-    private boolean isDescriptionAttributeCorrect(String expectedValue){
-        if(expectedValue.equals(EMPTY_DESCRIPTION_ATTRIBUTE_VALUE)){
+    private boolean isDescriptionAttributeCorrect(String expectedValue) {
+        if (expectedValue.equals(EMPTY_DESCRIPTION_ATTRIBUTE_VALUE)) {
             return !propertyNamesToValues.containsKey(DESCRIPTION_ATTRIBUTE_NAME);
         }
         return propertyNamesToValues.get(DESCRIPTION_ATTRIBUTE_NAME).equals(expectedValue);
-    }
-
-    public boolean isRemoveMessageCorrect() {
-        SystemMessageInterface message = SystemMessageContainer.create(driver, webDriverWait);
-        return containsRemoveMessage(message.getMessages());
     }
 
     private boolean containsRemoveMessage(List<SystemMessageContainer.Message> messages) {

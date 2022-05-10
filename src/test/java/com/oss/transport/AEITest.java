@@ -1,5 +1,13 @@
 package com.oss.transport;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
@@ -8,14 +16,8 @@ import com.oss.framework.widgets.table.OldTable;
 import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
 import com.oss.pages.transport.aei.AEIWizardPage;
+
 import io.qameta.allure.Step;
-
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
-import org.testng.annotations.Test;
-
-import java.util.*;
 
 /**
  * @author Kamil Jacko
@@ -36,7 +38,6 @@ public class AEITest extends BaseTestCase {
     private static final String BOTTOM_SERVER_TERMINATION_POINTS_TAB_ID = "Tab:DetailServerNodes(AggregatedEthernetInterface)";
     private static final String BOTTOM_SERVER_TERMINATION_POINTS_TABLE_TEST_ID = "DetailServerNodes(AggregatedEthernetInterface)";
     /* private static final String BOTTOM_PROPERTIES_TABLE_TEST_ID = "properties(AggregatedEthernetInterface)";*/
-    private static final String CONFIRMATION_BOX_DELETE = "ConfirmationBox_deleteAppId_action_button";
     private static final String EDIT_AGGREGATED_ETHERNET_INTERFACE_CONTEXT_GROUP_ID = "EDIT";
 
     private Map<String, String> propertyNamesToValues;
@@ -51,8 +52,8 @@ public class AEITest extends BaseTestCase {
 
         NewInventoryViewPage newInventoryViewPage = aeiWizard.clickAccept();
 
-        newInventoryViewPage.selectFirstRow().refreshMainTable();
-        newInventoryViewPage.searchObject(aeiAttributes.deviceName);
+        newInventoryViewPage.refreshMainTable();
+        newInventoryViewPage.searchObject(aeiAttributes.deviceName).selectFirstRow();
 
         Assert.assertFalse(newInventoryViewPage.checkIfTableIsEmpty());
 
@@ -82,8 +83,8 @@ public class AEITest extends BaseTestCase {
     @Step("Remove Aggregated Ethernet Interface")
     public void removeAEI() {
         NewInventoryViewPage inventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
-        inventoryViewPage.callAction(EDIT_AGGREGATED_ETHERNET_INTERFACE_CONTEXT_GROUP_ID,DELETE_AGGREGATED_ETHERNET_INTERFACE_CONTEXT_ACTION_ID);
-        inventoryViewPage.clickConfirmationBox(CONFIRMATION_BOX_DELETE);
+        inventoryViewPage.callAction(EDIT_AGGREGATED_ETHERNET_INTERFACE_CONTEXT_GROUP_ID, DELETE_AGGREGATED_ETHERNET_INTERFACE_CONTEXT_ACTION_ID);
+        inventoryViewPage.clickConfirmationRemovalButton();
 
         Assert.assertTrue(isRemovalPopupCorrect());
         inventoryViewPage.refreshMainTable();
@@ -207,7 +208,7 @@ public class AEITest extends BaseTestCase {
 
     private AEIWizardPage goToWizardAtUpdate() {
         NewInventoryViewPage inventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
-        inventoryViewPage.callAction(EDIT_AGGREGATED_ETHERNET_INTERFACE_CONTEXT_GROUP_ID,EDIT_AGGREGATED_ETHERNET_INTERFACE_CONTEXT_ACTION_ID);
+        inventoryViewPage.callAction(EDIT_AGGREGATED_ETHERNET_INTERFACE_CONTEXT_GROUP_ID, EDIT_AGGREGATED_ETHERNET_INTERFACE_CONTEXT_ACTION_ID);
         return new AEIWizardPage(driver);
     }
 
