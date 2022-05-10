@@ -5,7 +5,6 @@ import org.openqa.selenium.WebDriver;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.platform.NewInventoryViewPage;
-import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
 
 import io.qameta.allure.Step;
 

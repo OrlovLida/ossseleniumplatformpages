@@ -8,7 +8,6 @@ import com.oss.framework.widgets.commonhierarchy.CommonHierarchyApp;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 import com.oss.pages.platform.NewInventoryViewPage;
-import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
 
 /**
  * @author Kamil Jacko
@@ -24,7 +23,7 @@ public class LoopbackInterfaceWizardPage extends BasePage {
 
     public LoopbackInterfaceWizardPage(WebDriver driver) {
         super(driver);
-        wizard = Wizard.createByComponentId(driver, wait,COMPONENT_ID);
+        wizard = Wizard.createByComponentId(driver, wait, COMPONENT_ID);
     }
 
     public void setNumber(String number) {
