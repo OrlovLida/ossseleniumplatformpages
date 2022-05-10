@@ -11,6 +11,7 @@ public class ServiceDeskConstants {
     public static final String TICKET_DASHBOARD = "_TroubleTickets";
     public static final String TROUBLE_TICKET_ISSUE_TYPE = "trouble-ticket";
     public static final String PROBLEM_ISSUE_TYPE = "problem";
+    public static final String CHANGE_ISSUE_TYPE = "change";
     public static final String PROBLEMS_DASHBOARD = "_ProblemManagement";
     public static final String DOWNLOAD_FILE = "Selenium test*.csv";
     public static final String DATE_MASK = "ISO Local Date";
