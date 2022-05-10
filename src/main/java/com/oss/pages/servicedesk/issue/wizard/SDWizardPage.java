@@ -36,6 +36,17 @@ public class SDWizardPage extends BaseSDPage {
     private static final String TT_WIZARD_REFERENCE_ID = "TT_WIZARD_INPUT_REFERENCE_ID_LABEL";
     private static final String TT_WIZARD_ISSUE_START_DATE_ID = "IssueStartDate";
     private static final String TT_WIZARD_MESSAGE_DATE_ID = "PleaseProvideTheTimeOnTheHandsetTheTxtMessageArrived";
+    private static final String NOTIFICATION_CHANNEL_INTERNAL = "Internal";
+    private static final String NOTIFICATION_WIZARD_CHANNEL_ID = "channel-component-input";
+    private static final String NOTIFICATION_WIZARD_MESSAGE_ID = "message-component";
+    private static final String NOTIFICATION_WIZARD_INTERNAL_TO_ID = "internal-to-component";
+    private static final String NOTIFICATION_WIZARD_TYPE_ID = "internal-type-component";
+    private static final String NOTIFICATION_TYPE = "Success";
+    private static final String NOTIFICATION_WIZARD_TO_ID = "to-component";
+    private static final String NOTIFICATION_WIZARD_FROM_ID = "from-component";
+    private static final String NOTIFICATION_WIZARD_SUBJECT_ID = "subject-component";
+    private static final String NOTIFICATION_CHANNEL_EMAIL = "E-mail";
+    private static final String NOTIFICATION_SUBJECT = "Email notification test";
 
     private final MOStep moStep;
     private final Wizard wizard;
@@ -174,6 +185,23 @@ public class SDWizardPage extends BaseSDPage {
         insertValueToTextComponent(date, TT_WIZARD_MESSAGE_DATE_ID);
         clickAcceptButtonInWizard();
         return new TicketDashboardPage(driver, wait);
+    }
+
+    public void createInternalNotification(String textMessage, String messageTo) {
+        insertValueToComboBoxComponent(NOTIFICATION_CHANNEL_INTERNAL, NOTIFICATION_WIZARD_CHANNEL_ID);
+        insertValueToTextAreaComponent(textMessage, NOTIFICATION_WIZARD_MESSAGE_ID);
+        insertValueToMultiComboBoxComponent(messageTo, NOTIFICATION_WIZARD_INTERNAL_TO_ID);
+        insertValueToComboBoxComponent(NOTIFICATION_TYPE, NOTIFICATION_WIZARD_TYPE_ID);
+        clickAcceptButtonInWizard();
+    }
+
+    public void createEmailNotification(String notificationEmailTo, String notificationEmailFrom, String textMessage) {
+        insertValueToComboBoxComponent(NOTIFICATION_CHANNEL_EMAIL, NOTIFICATION_WIZARD_CHANNEL_ID);
+        insertValueToMultiSearchComponent(notificationEmailTo, NOTIFICATION_WIZARD_TO_ID);
+        insertValueToComboBoxComponent(notificationEmailFrom, NOTIFICATION_WIZARD_FROM_ID);
+        insertValueToTextComponent(NOTIFICATION_SUBJECT, NOTIFICATION_WIZARD_SUBJECT_ID);
+        enterEmailMessage(textMessage);
+        clickAcceptButtonInWizard();
     }
 
     private void insertValueToComponent(String text, String componentId, Input.ComponentType componentType) {

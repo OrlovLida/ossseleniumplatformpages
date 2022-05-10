@@ -4,7 +4,7 @@
         <parameter name="MOIdentifier" value="TEST_MO"/>
         <parameter name="ttAssignee" value="ca_kodrobinska"/>
         <classes>
-            <class name="com.oss.servicedesk.EditReleaseFunctionality"/>
+            <class name="com.oss.servicedesk.EditReleaseFunctionalityTest"/>
         </classes>
     </test>
 

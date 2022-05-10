@@ -22,7 +22,7 @@ import io.qameta.allure.Description;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.ID_ATTRIBUTE;
 
 @Listeners({TestListener.class})
-public class EditReleaseFunctionality extends BaseTestCase {
+public class EditReleaseFunctionalityTest extends BaseTestCase {
 
     private TicketDashboardPage ticketDashboardPage;
     private TicketSearchPage ticketSearchPage;
@@ -65,7 +65,7 @@ public class EditReleaseFunctionality extends BaseTestCase {
     @Description("Edit mode - check if Link Ticket button is available")
     public void relatedTicketsOnEditMode() {
         relatedTicketsTab = issueDetailsPage.selectRelatedTicketsTab();
-        Assert.assertTrue(relatedTicketsTab.isLinkTicketButtonActive());
+        Assert.assertTrue(relatedTicketsTab.isLinkIssueButtonActive());
     }
 
     @Test(priority = 4, testName = "Root Cause - edit mode", description = "Edit mode - check if Add Root Cause button is available")
@@ -101,7 +101,7 @@ public class EditReleaseFunctionality extends BaseTestCase {
     @Description("Read only mode - check if Link Ticket button is available")
     public void relatedTicketsOnReadOnlyMode() {
         relatedTicketsTab = issueDetailsPage.selectRelatedTicketsTab();
-        Assert.assertFalse(relatedTicketsTab.isLinkTicketButtonActive());
+        Assert.assertFalse(relatedTicketsTab.isLinkIssueButtonActive());
     }
 
     @Test(priority = 9, testName = "Root Cause - read only mode", description = "Read only mode - check if Add Root Cause button is not available")
