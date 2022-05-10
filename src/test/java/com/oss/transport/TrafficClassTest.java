@@ -11,6 +11,7 @@ import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
 import com.oss.pages.transport.traffic.classs.TrafficClassCreationWizard;
 import com.oss.pages.transport.traffic.classs.TrafficClassModificationWizardPage;
@@ -30,7 +31,9 @@ public class TrafficClassTest extends BaseTestCase {
 
     private static final String PROPERTIES_BOTTOM_TABLE_TEST_ID = "properties(TrafficClass)";
     private static final String EDIT_BUTTON_INSIDE_EDIT_GROUP_TEST_ID = "TrafficClassEditContextAction";
+    private static final String EDIT_TRAFFIC_CLASS_CONTEXT_GROUP_ID = "EDIT";
     private static final String REMOVE_BUTTON_INSIDE_EDIT_GROUP_TEST_ID = "TrafficClassDeleteContextAction";
+    private static final String CONFIRMATION_BOX_DELETE = "ConfirmationBox_deleteAppId_action_button";
 
     Random rand = new Random();
     private Map<String, String> propertyNameToPropertyValue;
@@ -42,11 +45,14 @@ public class TrafficClassTest extends BaseTestCase {
 
         TrafficClassCreationWizard trafficClassWizard = goToWizardAtCreate();
         fillWizardAtCreate(trafficClassWizard, trafficClassAttributes);
-        OldInventoryViewPage inventoryViewPage = trafficClassWizard.clickAccept();
+        NewInventoryViewPage inventoryViewPage = trafficClassWizard.clickAccept();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        propertyNameToPropertyValue = inventoryViewPage.getProperties(PROPERTIES_BOTTOM_TABLE_TEST_ID);
+        inventoryViewPage.searchObject(trafficClassAttributes.trafficClassName);
 
-        assertTrafficClassAttributes(trafficClassAttributes);
+        Assert.assertFalse(inventoryViewPage.checkIfTableIsEmpty());
+
+        /*propertyNameToPropertyValue = inventoryViewPage.getProperties(PROPERTIES_BOTTOM_TABLE_TEST_ID);
+        assertTrafficClassAttributes(trafficClassAttributes);*/
     }
 
     @Test(priority = 2)
@@ -54,25 +60,30 @@ public class TrafficClassTest extends BaseTestCase {
     public void updateTrafficClass() {
         TrafficClassAttributes trafficClassAttributes = getTrafficClassAttributesToUpdate();
 
-        OldInventoryViewPage inventoryViewBeforeUpdate = new OldInventoryViewPage(driver);
+        NewInventoryViewPage inventoryViewBeforeUpdate = new NewInventoryViewPage(driver, webDriverWait);
         TrafficClassModificationWizardPage trafficClassModificationWizard = goToWizardAtUpdate(inventoryViewBeforeUpdate);
         fillWizardAtUpdate(trafficClassModificationWizard, trafficClassAttributes);
-        OldInventoryViewPage inventoryViewAfterUpdate = trafficClassModificationWizard.clickSaveChanges();
+        NewInventoryViewPage inventoryViewAfterUpdate = trafficClassModificationWizard.clickSaveChanges();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        propertyNameToPropertyValue = inventoryViewAfterUpdate.getProperties(PROPERTIES_BOTTOM_TABLE_TEST_ID);
+        inventoryViewAfterUpdate.searchObject(trafficClassAttributes.trafficClassName);
 
-        assertTrafficClassAttributes(trafficClassAttributes);
+        Assert.assertFalse(inventoryViewAfterUpdate.checkIfTableIsEmpty());
+
+        /*propertyNameToPropertyValue = inventoryViewAfterUpdate.getProperties(PROPERTIES_BOTTOM_TABLE_TEST_ID);
+        assertTrafficClassAttributes(trafficClassAttributes);*/
     }
 
     @Test(priority = 3)
     @Step("Remove created Traffic Class")
     public void removeTrafficClass() {
-        OldInventoryViewPage inventoryView = new OldInventoryViewPage(driver);
+        NewInventoryViewPage inventoryView = new NewInventoryViewPage(driver, webDriverWait);
 
         deleteTrafficClass(inventoryView);
         boolean hasBeenDeleted = hasBeenDeleted();
 
         Assert.assertTrue(hasBeenDeleted);
+        inventoryView.refreshMainTable();
+        Assert.assertTrue(inventoryView.checkIfTableIsEmpty());
     }
 
     private TrafficClassAttributes getTrafficClassAttributesToCreate() {
@@ -109,7 +120,7 @@ public class TrafficClassTest extends BaseTestCase {
         TrafficClassAttributes trafficClassAttributes = new TrafficClassAttributes();
         trafficClassAttributes.location = PRE_CREATED_LOCATION;
         trafficClassAttributes.device = PRE_CREATED_DEVICE;
-        trafficClassAttributes.trafficClassName = "updated TrafficClassTest";
+        trafficClassAttributes.trafficClassName = "updated TrafficClassTest"+ rand.nextInt(1000);
         trafficClassAttributes.description = "updated traffic class test description";
         trafficClassAttributes.matchType = "Any";
         trafficClassAttributes.ipPrecedence = "2";
@@ -122,9 +133,9 @@ public class TrafficClassTest extends BaseTestCase {
         return trafficClassAttributes;
     }
 
-    private TrafficClassModificationWizardPage goToWizardAtUpdate(OldInventoryViewPage inventoryViewBeforeUpdate) {
-        inventoryViewBeforeUpdate.selectRowInTableAtIndex(0);
-        inventoryViewBeforeUpdate.expandEditAndChooseAction(EDIT_BUTTON_INSIDE_EDIT_GROUP_TEST_ID);
+    private TrafficClassModificationWizardPage goToWizardAtUpdate(NewInventoryViewPage inventoryViewBeforeUpdate) {
+        inventoryViewBeforeUpdate.selectFirstRow();
+        inventoryViewBeforeUpdate.callAction(EDIT_TRAFFIC_CLASS_CONTEXT_GROUP_ID, EDIT_BUTTON_INSIDE_EDIT_GROUP_TEST_ID);
         return new TrafficClassModificationWizardPage(driver);
     }
 
@@ -180,11 +191,11 @@ public class TrafficClassTest extends BaseTestCase {
         Assert.assertEquals(protocol, trafficClassAttributes.protocol);
     }
 
-    private void deleteTrafficClass(OldInventoryViewPage inventoryView) {
-        inventoryView.selectRowInTableAtIndex(0);
+    private void deleteTrafficClass(NewInventoryViewPage inventoryView) {
+        inventoryView.selectFirstRow();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        inventoryView.expandEditAndChooseAction(REMOVE_BUTTON_INSIDE_EDIT_GROUP_TEST_ID);
-        inventoryView.clickConfirmRemovalButton();
+        inventoryView.callAction(EDIT_TRAFFIC_CLASS_CONTEXT_GROUP_ID,REMOVE_BUTTON_INSIDE_EDIT_GROUP_TEST_ID);
+        inventoryView.clickConfirmationBox(CONFIRMATION_BOX_DELETE);
     }
 
     private boolean hasBeenDeleted() {

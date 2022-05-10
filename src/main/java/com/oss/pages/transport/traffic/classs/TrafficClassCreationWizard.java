@@ -3,6 +3,7 @@ package com.oss.pages.transport.traffic.classs;
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.wizard.Wizard;
+import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
 
 import io.qameta.allure.Step;
@@ -22,8 +23,8 @@ public class TrafficClassCreationWizard extends TrafficClassWizardPage {
     }
 
     @Step("Click accept button")
-    public OldInventoryViewPage clickAccept() {
+    public NewInventoryViewPage clickAccept() {
         getWizard().clickAccept();
-        return new OldInventoryViewPage(driver);
+        return new NewInventoryViewPage(driver, wait);
     }
 }

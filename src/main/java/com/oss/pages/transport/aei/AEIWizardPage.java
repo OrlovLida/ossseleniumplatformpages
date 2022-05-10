@@ -3,12 +3,14 @@ package com.oss.pages.transport.aei;
 import java.util.List;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.commonhierarchy.CommonHierarchyApp;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
+import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
 
 import io.qameta.allure.Step;
@@ -31,12 +33,13 @@ public class AEIWizardPage extends BasePage {
     private static final String ADMINISTRATIVE_STATE_FIELD_ID = "uid-administrativeState";
     private static final String ENCAPSULATION_FIELD_ID = "uid-encapsulation";
     private static final String WIDGET_ID = "CommonHierarchyApp-hierarchyAppId";
+    private static final String COMPONENT_ID = "aeiWizard";
 
     private final Wizard wizard;
 
     public AEIWizardPage(WebDriver driver) {
         super(driver);
-        wizard = Wizard.createWizard(driver, wait);
+        wizard = Wizard.createByComponentId(driver, wait,COMPONENT_ID);
     }
 
     @Step("Set number to {number}")
@@ -114,10 +117,10 @@ public class AEIWizardPage extends BasePage {
     }
 
     @Step("Click accept button")
-    public OldInventoryViewPage clickAccept() {
+    public NewInventoryViewPage clickAccept() {
         DelayUtils.waitForPageToLoad(driver, wait);
         wizard.clickAccept();
-        return new OldInventoryViewPage(driver);
+        return new NewInventoryViewPage(driver,wait);
     }
 
     private void setTextFieldComponentValue(String componentId, String value) {

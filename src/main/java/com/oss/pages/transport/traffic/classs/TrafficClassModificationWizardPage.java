@@ -4,6 +4,7 @@ import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.wizard.Wizard;
+import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
 
 import io.qameta.allure.Step;
@@ -13,7 +14,7 @@ import io.qameta.allure.Step;
  */
 public class TrafficClassModificationWizardPage extends TrafficClassWizardPage {
 
-    private static final String COMPONENT_ID = "trafficClassModificationWizard";
+    private static final String COMPONENT_ID = "card-content_trafficClassModificationWizard_prompt-card";
     private static final String SAVE_CHANGES_BUTTON_TEST_ID = "buttonAppId-0";
 
     private final Wizard wizard;
@@ -28,9 +29,9 @@ public class TrafficClassModificationWizardPage extends TrafficClassWizardPage {
     }
 
     @Step("Click save changes button")
-    public OldInventoryViewPage clickSaveChanges() {
+    public NewInventoryViewPage clickSaveChanges() {
         Button saveButton = Button.createById(driver, SAVE_CHANGES_BUTTON_TEST_ID);
         saveButton.click();
-        return new OldInventoryViewPage(driver);
+        return new NewInventoryViewPage(driver, wait);
     }
 }
