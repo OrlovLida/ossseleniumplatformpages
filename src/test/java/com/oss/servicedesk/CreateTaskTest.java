@@ -20,7 +20,7 @@ import static com.oss.pages.servicedesk.ServiceDeskConstants.ISSUE_OUT_ASSIGNEE_
 import static com.oss.pages.servicedesk.ServiceDeskConstants.ISSUE_OUT_STATUS_ATTR;
 
 @Listeners({TestListener.class})
-public class CreateTaskVFNZTest extends BaseTestCase {
+public class CreateTaskTest extends BaseTestCase {
 
     private TaskDashboardPage taskDashboardPage;
     private MyTasksPage myTasksPage;
