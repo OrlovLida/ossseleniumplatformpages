@@ -17,13 +17,11 @@ import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD
 
 public class DeviceWizardPage extends BasePage {
 
-    public static final String DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME = "preciseLocation";
+    public static final String DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME = "preciseLocation_OSF";
     public static final String DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME = "physicalLocation";
     private static final String CREATE_BUTTON_DATA_ATTRIBUTE_NAME = "physical_device_common_buttons_app-1";
     private static final String UPDATE_BUTTON_DATA_ATTRIBUTE_NAME = "physical_device_update_common_buttons_app-1";
-    private static final String NEXT_BUTTON_CREATE_WIZARD_DATA_ATTRIBUTE_NAME = "wizard-next-button-device_create_wizard_view";
     private static final String NEXT_BUTTON_UPDATE_WIZARD_DATA_ATTRIBUTE_NAME = "wizard-next-button-device_update_wizard_view";
-    private static final String ACCEPT_BUTTON_DATA_ATTRIBUTE_NAME = "wizard-submit-button-device_create_wizard_view";
     private static final String ACCEPT_UPDATE_WIZARD_BUTTON_DATA_ATTRIBUTE_NAME = "wizard-submit-button-device_update_wizard_view";
     private static final String DEVICE_EQUIPMENT_TYPE_DATA_ATTRIBUTE_NAME = "equipmentType";
     private static final String DEVICE_MODEL_DATA_ATTRIBUTE_NAME = "model_OSF";
@@ -40,7 +38,6 @@ public class DeviceWizardPage extends BasePage {
     private static final String DEVICE_FIRMWARE_VERSION_DATA_ATTRIBUTE_NAME = "firmwareVersion";
     private static final String DEVICE_HARDWARE_VERSION_DATA_ATTRIBUTE_NAME = "hardwareVersion";
     private static final String DEVICE_DESCRIPTION_DATA_ATTRIBUTE_NAME = "description";
-    private static final String DEVICE_IS_OWNED_BY_3RD_PARTY_DATA_ATTRIBUTE_NAME = "checkbox_is_leased";
     private static final String DEVICE_CREATE_WIZARD_PLAN = "device_create_wizard_view";
     private static final String DEVICE_CREATE_WIZARD_LIVE = "devices_create_wizard_view";
     private static final String DEVICE_UPDATE_WIZARD = "device_update_wizard_view";
@@ -124,7 +121,7 @@ public class DeviceWizardPage extends BasePage {
 
     @Step("Set Precise Location using contains")
     public void setPreciseLocation(String preciseLocation) {
-        if (getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, Input.ComponentType.SEARCH_FIELD)
+        if (getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, Input.ComponentType.OBJECT_SEARCH_FIELD)
                 .getStringValue().isEmpty()) {
             getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, SEARCH_FIELD)
                     .setSingleStringValueContains(preciseLocation);
