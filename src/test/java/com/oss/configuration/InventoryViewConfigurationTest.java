@@ -159,7 +159,7 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
         inventoryViewPage.deleteConfigurationForMainTable(CONFIGURATION_NAME_TABLE_WIDGET_USED_IN_VIEW_CONFIG);
         assertDangerMessage();
 
-        selectObjectOfSuperType(TEST_ACTOR_TYPE);
+        selectObjectOfSuperType(TEST_DIRECTOR_TYPE);
         inventoryViewPage.removeConfigurationForTabs(CONFIGURATION_TEST_DIRECTOR_TABS_WIDGET_USED_IN_VIEW_CONFIG);
         assertDangerMessage();
     }
