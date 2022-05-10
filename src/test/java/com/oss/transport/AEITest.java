@@ -11,6 +11,7 @@ import org.testng.annotations.Test;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
+import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.pages.platform.NewInventoryViewPage;
@@ -38,7 +39,6 @@ public class AEITest extends BaseTestCase {
     private static final String BOTTOM_SERVER_TERMINATION_POINTS_TAB_ID = "Tab:DetailServerNodes(AggregatedEthernetInterface)";
     private static final String BOTTOM_SERVER_TERMINATION_POINTS_TABLE_TEST_ID = "DetailServerNodes(AggregatedEthernetInterface)";
     /* private static final String BOTTOM_PROPERTIES_TABLE_TEST_ID = "properties(AggregatedEthernetInterface)";*/
-    private static final String EDIT_AGGREGATED_ETHERNET_INTERFACE_CONTEXT_GROUP_ID = "EDIT";
 
     private Map<String, String> propertyNamesToValues;
 
@@ -83,7 +83,7 @@ public class AEITest extends BaseTestCase {
     @Step("Remove Aggregated Ethernet Interface")
     public void removeAEI() {
         NewInventoryViewPage inventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
-        inventoryViewPage.callAction(EDIT_AGGREGATED_ETHERNET_INTERFACE_CONTEXT_GROUP_ID, DELETE_AGGREGATED_ETHERNET_INTERFACE_CONTEXT_ACTION_ID);
+        inventoryViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, DELETE_AGGREGATED_ETHERNET_INTERFACE_CONTEXT_ACTION_ID);
         inventoryViewPage.clickConfirmationRemovalButton();
 
         Assert.assertTrue(isRemovalPopupCorrect());
@@ -208,7 +208,7 @@ public class AEITest extends BaseTestCase {
 
     private AEIWizardPage goToWizardAtUpdate() {
         NewInventoryViewPage inventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
-        inventoryViewPage.callAction(EDIT_AGGREGATED_ETHERNET_INTERFACE_CONTEXT_GROUP_ID, EDIT_AGGREGATED_ETHERNET_INTERFACE_CONTEXT_ACTION_ID);
+        inventoryViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, EDIT_AGGREGATED_ETHERNET_INTERFACE_CONTEXT_ACTION_ID);
         return new AEIWizardPage(driver);
     }
 
