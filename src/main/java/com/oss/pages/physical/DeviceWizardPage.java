@@ -113,7 +113,7 @@ public class DeviceWizardPage extends BasePage {
 
     @Step("Set Physical Location using contains")
     public void setPhysicalLocation(String preciseLocation) {
-        if (getDeviceWizard().getComponent(DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, Input.ComponentType.OBJECT_SEARCH_FIELD)
+        if (getDeviceWizard().getComponent(DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, OBJECT_SEARCH_FIELD)
                 .getStringValue().isEmpty()) {
             getDeviceWizard().getComponent(DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, OBJECT_SEARCH_FIELD)
                     .setSingleStringValueContains(preciseLocation);
@@ -122,7 +122,7 @@ public class DeviceWizardPage extends BasePage {
 
     @Step("Set Precise Location using contains")
     public void setPreciseLocation(String preciseLocation) {
-        if (getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, Input.ComponentType.OBJECT_SEARCH_FIELD)
+        if (getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, OBJECT_SEARCH_FIELD)
                 .getStringValue().isEmpty()) {
             getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, OBJECT_SEARCH_FIELD)
                     .setSingleStringValueContains(preciseLocation);
