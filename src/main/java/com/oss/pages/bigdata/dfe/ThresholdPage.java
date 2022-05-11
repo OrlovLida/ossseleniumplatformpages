@@ -19,7 +19,7 @@ import static com.oss.framework.utils.DelayUtils.waitForPageToLoad;
 
 public class ThresholdPage extends BaseDfePage {
 
-    public static final String DETAILS_TAB = "Details";
+    private static final String DETAILS_TAB = "Details";
     private static final Logger log = LoggerFactory.getLogger(ThresholdPage.class);
     private static final String TABLE_ID = "thresholdsAppId";
     private static final String ADD_NEW_THRESHOLD_LABEL = "Add New Threshold";
@@ -124,7 +124,7 @@ public class ThresholdPage extends BaseDfePage {
         return getTable(driver, wait).getCellValue(index, CATEGORY_COLUMN_LABEL);
     }
 
-    @Step("I click Details Tab")
+    @Step("Click details tab")
     public void selectDetailsTab() {
         selectTab(TAB_WIDGET_ID, DETAILS_TAB);
     }

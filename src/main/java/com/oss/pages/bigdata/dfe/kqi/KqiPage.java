@@ -21,7 +21,7 @@ public class KqiPage extends BaseDfePage {
     private static final String EDIT_KQI_LABEL = "Edit KQI";
     private static final String DELETE_KQI_LABEL = "Delete KQI";
     private static final String CONFIRM_DELETE_LABEL = "Delete";
-    public static final String DETAILS_TAB = "Details";
+    private static final String DETAILS_TAB = "Details";
     private static final String PARAMETERS_TAB = "Parameters";
     private static final String PARAMETERS_TABLE_ID = "kqi/tabs/parametersAppId";
     private static final String PROPERTY_PANEL_ID = "detailsId";

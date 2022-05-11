@@ -19,6 +19,7 @@ import io.qameta.allure.Description;
 public class KqiSmokeTest extends BaseTestCase {
     private static final Logger log = LoggerFactory.getLogger(KqiSmokeTest.class);
     private static final String FORMULA_SMOKE_KQI = "$[M:COUNT(t:SMOKE#ETLforKqis.ATTEMPTS_LONG)]";
+    
     private KqiPage kqiPage;
 
     @BeforeClass
