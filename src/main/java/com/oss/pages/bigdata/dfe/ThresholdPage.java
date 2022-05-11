@@ -19,10 +19,9 @@ import static com.oss.framework.utils.DelayUtils.waitForPageToLoad;
 
 public class ThresholdPage extends BaseDfePage {
 
+    public static final String DETAILS_TAB = "Details";
     private static final Logger log = LoggerFactory.getLogger(ThresholdPage.class);
-
     private static final String TABLE_ID = "thresholdsAppId";
-
     private static final String ADD_NEW_THRESHOLD_LABEL = "Add New Threshold";
     private static final String EDIT_THRESHOLD_LABEL = "Edit Threshold";
     private static final String DELETE_THRESHOLD_LABEL = "Delete Threshold";
@@ -37,6 +36,9 @@ public class ThresholdPage extends BaseDfePage {
     private static final String NAME_COLUMN_LABEL = "Name";
     private static final String CATEGORY_COLUMN_LABEL = "Category";
     private static final String DELETE_LABEL = "Delete";
+    private static final String TAB_WIDGET_ID = "card-content_tabsId";
+    private static final String PROPERTY_PANEL_ID = "detailsId";
+    private static final String NAME_PROPERTY = "Name";
 
     private ThresholdPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -120,6 +122,18 @@ public class ThresholdPage extends BaseDfePage {
     @Step("I look for category name")
     public String getCategoryName(int index) {
         return getTable(driver, wait).getCellValue(index, CATEGORY_COLUMN_LABEL);
+    }
+
+    @Step("I click Details Tab")
+    public void selectDetailsTab() {
+        selectTab(TAB_WIDGET_ID, DETAILS_TAB);
+    }
+
+    @Step("Check name value in details tab")
+    public String checkNameInPropertyPanel() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return checkValueInPropertyPanel(PROPERTY_PANEL_ID,
+                NAME_PROPERTY);
     }
 
     @Override
