@@ -54,7 +54,7 @@ public class UC_NAR_001_Test extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 2, description = "Upload basic samples")
+    @Test(priority = 2, description = "Upload basic samples", dependsOnMethods = {"createCmDomain"})
     @Description("Go to Samples Management view and upload basic samples")
     public void uploadBasicSamples() throws URISyntaxException {
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
@@ -69,7 +69,7 @@ public class UC_NAR_001_Test extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 3, description = "Run reconciliation with basic samples")
+    @Test(priority = 3, description = "Run reconciliation with basic samples", dependsOnMethods = {"uploadBasicSamples"})
     @Description("Open Network Discovery Control View, query CM Domain, run reconciliation with basic samples and check if there are no errors after it")
     public void runReconciliationWithBasicSample() {
         openNetworkDiscoveryControlView();
@@ -91,7 +91,7 @@ public class UC_NAR_001_Test extends BaseTestCase {
         Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.WARNING));
     }
 
-    @Test(priority = 4, description = "Apply inconsistencies")
+    @Test(priority = 4, description = "Apply inconsistencies", dependsOnMethods = {"runReconciliationWithBasicSample"})
     @Description("Move to Network Inconsistencies View, apply inconsistencies and check notification")
     public void applyInconsistencies() {
         networkDiscoveryControlViewPage.moveToNivFromNdcv();
@@ -105,7 +105,7 @@ public class UC_NAR_001_Test extends BaseTestCase {
         Assert.assertEquals(networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(), "Accepting discrepancies related to " + ROUTER_NAME + " finished");
     }
 
-    @Test(priority = 5, description = "Replace samples")
+    @Test(priority = 5, description = "Replace samples", dependsOnMethods = {"createCmDomain"})
     @Description("Open Network Discovery Control View, move to Samples Management View and replace old samples")
     public void replaceOldSamples() throws URISyntaxException {
         openNetworkDiscoveryControlView();
@@ -121,7 +121,7 @@ public class UC_NAR_001_Test extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 6, description = "Search router and open it in New Inventory View")
+    @Test(priority = 6, description = "Search router and open it in New Inventory View", dependsOnMethods = {"applyInconsistencies"})
     @Description("Search for router in Global Search and open New Inventory View")
     public void searchInGlobalSearchAndOpenInventoryView() {
         PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
@@ -136,7 +136,7 @@ public class UC_NAR_001_Test extends BaseTestCase {
         Assert.assertFalse(newInventoryViewPage.checkIfTableIsEmpty());
     }
 
-    @Test(priority = 7, description = "Run narrow reconciliation")
+    @Test(priority = 7, description = "Run narrow reconciliation", dependsOnMethods = {"searchInGlobalSearchAndOpenInventoryView"})
     @Description("Run narrow reconciliation from context action in new Inventory View")
     public void runNarrowReco() {
         NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
@@ -153,7 +153,7 @@ public class UC_NAR_001_Test extends BaseTestCase {
         newInventoryViewPage.callAction(ActionsContainer.SHOW_ON_GROUP_ID, "open-network-inconsistencies-view");
     }
 
-    @Test(priority = 8, description = "Go to Network Inconsistencies View and apply inconsistencies")
+    @Test(priority = 8, description = "Go to Network Inconsistencies View and apply inconsistencies", dependsOnMethods = {"runNarrowReco"})
     @Description("Go to Network Inconsistencies View, apply inconsistencies and check notification")
     public void goToNIVAndApplyInconsistencies() {
         NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
@@ -165,7 +165,7 @@ public class UC_NAR_001_Test extends BaseTestCase {
         Assert.assertEquals(networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(), "Accepting discrepancies related to " + ROUTER_NAME + " finished");
     }
 
-    @Test(priority = 9, description = "Delete CM Domain")
+    @Test(priority = 9, description = "Delete CM Domain", dependsOnMethods = {"createCmDomain"})
     @Description("Go to Network Discovery Control View, Delete CM Domain and check notification")
     public void deleteCmDomain() {
         openNetworkDiscoveryControlView();
@@ -176,7 +176,7 @@ public class UC_NAR_001_Test extends BaseTestCase {
         Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
     }
 
-    @Test(priority = 10, description = "Delete device")
+    @Test(priority = 10, description = "Delete device", dependsOnMethods = {"applyInconsistencies"})
     @Description("Set perspective to Live, open new Inventory View, query device, delete device and check confirmation system message")
     public void deleteDevice() {
         PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
