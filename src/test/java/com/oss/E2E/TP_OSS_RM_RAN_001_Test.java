@@ -145,7 +145,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         }
     }
 
-    @Test(priority = 9, description = "Create hosting relation between eNodeB and BBU", dependsOnMethods = {"createENodeB, createBaseBandUnit"})
+    @Test(priority = 9, description = "Create hosting relation between eNodeB and BBU", dependsOnMethods = {"createENodeB", "createBaseBandUnit"})
     @Description("Create hosting relation between eNodeB and BBU")
     public void hostENodeBOnBBU() {
         waitForPageToLoad();
@@ -156,7 +156,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    @Test(priority = 10, description = "Create hosting relation between Cell 4G and RRU", dependsOnMethods = {"createCell4GBulk, createRadioUnit"})
+    @Test(priority = 10, description = "Create hosting relation between Cell 4G and RRU", dependsOnMethods = {"createCell4GBulk", "createRadioUnit"})
     @Description("Create hosting relation between Cell 4G and RRU")
     public void hostCell4GOnRRU() {
         for (int i = 0; i < 3; i++) {
@@ -168,7 +168,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         }
     }
 
-    @Test(priority = 11, description = "Create hosting relation between Cell 4G and RAN Antenna Array", dependsOnMethods = {"createCell4GBulk, createRanAntennaAndArray"})
+    @Test(priority = 11, description = "Create hosting relation between Cell 4G and RAN Antenna Array", dependsOnMethods = {"createCell4GBulk", "createRanAntennaAndArray"})
     @Description("Create hosting relation between Cell 4G and RAN Antenna Array")
     public void hostCell4GOnRANAntennaArray() {
         for (int i = 0; i < 3; i++) {
@@ -260,7 +260,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         checkTaskCompleted();
     }
 
-    @Test(priority = 18, description = "Delete antennas, BBU, RRU", dependsOnMethods = {"createBaseBandUnit, createRadioUnit"})
+    @Test(priority = 18, description = "Delete antennas, BBU, RRU", dependsOnMethods = {"createBaseBandUnit", "createRadioUnit"})
     @Description("Delete antennas, BBU, RRU")
     public void deleteDevices() {
         openCellSiteConfiguration();
