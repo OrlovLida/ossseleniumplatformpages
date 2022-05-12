@@ -7,7 +7,7 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.commonhierarchy.CommonHierarchyApp;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
-import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
+import com.oss.pages.platform.NewInventoryViewPage;
 
 /**
  * @author Kamil Jacko
@@ -17,12 +17,13 @@ public class LoopbackInterfaceWizardPage extends BasePage {
     private static final String NUMBER_FIELD_ID = "uid-number";
     private static final String DESCRIPTION_FIELD_ID = "uid-description";
     private static final String WIDGET_ID = "CommonHierarchyApp-hierarchyAppId";
+    private static final String COMPONENT_ID = "loopbackInterfaceWizard";
 
     private final Wizard wizard;
 
     public LoopbackInterfaceWizardPage(WebDriver driver) {
         super(driver);
-        wizard = Wizard.createWizard(driver, wait);
+        wizard = Wizard.createByComponentId(driver, wait, COMPONENT_ID);
     }
 
     public void setNumber(String number) {
@@ -54,9 +55,9 @@ public class LoopbackInterfaceWizardPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    public OldInventoryViewPage clickAccept() {
+    public NewInventoryViewPage clickAccept() {
         DelayUtils.waitForPageToLoad(driver, wait);
         wizard.clickAccept();
-        return new OldInventoryViewPage(driver);
+        return new NewInventoryViewPage(driver, wait);
     }
 }

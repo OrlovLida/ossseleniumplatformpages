@@ -102,7 +102,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         checkTaskAssignment();
     }
 
-    @Test(priority = 2, description = "Open Network View")
+    @Test(priority = 2, description = "Open Network View", dependsOnMethods = {"createProcessNRP"})
     @Description("Open Network View from bookmarks")
     public void openNetworkView() {
         HomePage homePage = new HomePage(driver);
@@ -112,7 +112,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         sideMenu.callActionByLabel(LAB_NETWORK_VIEW, FAVOURITES, BOOKMARKS);
     }
 
-    @Test(priority = 3, description = "Select location")
+    @Test(priority = 3, description = "Select location", dependsOnMethods = {"openNetworkView"})
     @Description("Select location")
     public void selectLocation() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
@@ -125,7 +125,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    @Test(priority = 4, description = "Create device")
+    @Test(priority = 4, description = "Create device", dependsOnMethods = {"selectLocation"})
     @Description("Create device and check confirmation system message")
     public void createDevice() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
@@ -149,7 +149,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         checkMessageType(MessageType.SUCCESS);
     }
 
-    @Test(priority = 5, description = "Open device in Hierarchy View")
+    @Test(priority = 5, description = "Open device in Hierarchy View", dependsOnMethods = {"createDevice"})
     @Description("Open Hierarchy View with newly created device")
     public void moveToHierarchyView() {
         waitForPageToLoad();
@@ -164,7 +164,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    @Test(priority = 6, description = "Select ethernet interface and open it in New Inventory View")
+    @Test(priority = 6, description = "Select ethernet interface and open it in New Inventory View", dependsOnMethods = {"moveToHierarchyView"})
     @Description("Select Ethernet Interface in Hierarchy View and open it in New Inventory View")
     public void selectEthernetInterface() {
         HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
@@ -174,7 +174,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         hierarchyViewPage.useTreeContextAction(ActionsContainer.SHOW_ON_GROUP_ID, "InventoryView");
     }
 
-    @Test(priority = 7, description = "Assign IP V4 address")
+    @Test(priority = 7, description = "Assign IP V4 address", dependsOnMethods = {"selectEthernetInterface"})
     @Description("Select Ethernet Interface in New Inventory View and Assign IP V4 Address")
     public void assignIpV4Address() {
         NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
@@ -190,7 +190,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    @Test(priority = 8, description = "Create IP link")
+    @Test(priority = 8, description = "Create IP link", dependsOnMethods = {"createDevice"})
     @Description("Open Network View and create IP link")
     public void createIpLink() {
         openNetworkView();
@@ -236,7 +236,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    @Test(priority = 9, description = "Suppress validation result about incomplete routing")
+    @Test(priority = 9, description = "Suppress validation result about incomplete routing", dependsOnMethods = {"createIpLink"})
     @Description("Suppress validation result about incomplete routing")
     public void suppressValidationResult() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
@@ -246,7 +246,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         networkViewPage.hideDockedPanel("bottom");
     }
 
-    @Test(priority = 10, description = "Create mediation Configuration")
+    @Test(priority = 10, description = "Create mediation Configuration", dependsOnMethods = {"assignIpV4Address", "createIpLink"})
     @Description("Create mediation configuration")
     public void createMediationConfiguration() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
@@ -285,7 +285,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         systemMessage.close();
     }
 
-    @Test(priority = 11, description = "Go through NRP task to IP Implementation task and click Perform Configuration")
+    @Test(priority = 11, description = "Go through NRP task to IP Implementation task and click Perform Configuration", dependsOnMethods = {"createDevice"})
     @Description("Go through NRP task to IP Implementation task and click Perform Configuration")
     public void startImplementationTaskIP() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
@@ -298,7 +298,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         tasksPage.clickPerformConfigurationButton();
     }
 
-    @Test(priority = 12, description = "Perform Configuration change using prepared CM Template")
+    @Test(priority = 12, description = "Perform Configuration change using prepared CM Template", dependsOnMethods = {"startImplementationTaskIP"})
     @Description("Perform Configuration change using prepared CM Template")
     public void performConfigurationChange() {
         ChangeConfigurationPage changeConfigurationPage = new ChangeConfigurationPage(driver);
@@ -324,7 +324,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    @Test(priority = 13, description = "Check configuration change")
+    @Test(priority = 13, description = "Check configuration change", dependsOnMethods = {"startImplementationTaskIP"})
     @Description("Check configuration change status")
     public void checkConfigurationChange() {
         ShareFilterPage shareFilterPage = new ShareFilterPage(driver);
@@ -336,7 +336,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         Assert.assertEquals(logManagerPage.getStatus(), "UPLOAD_SUCCESS");
     }
 
-    @Test(priority = 14, description = "Assign File to Process")
+    @Test(priority = 14, description = "Assign File to Process", dependsOnMethods = {"startImplementationTaskIP"})
     @Description("Assign File to Process")
     public void assignFile() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
@@ -354,7 +354,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         Assert.assertTrue((files.get(0)).contains("SeleniumTest"));
     }
 
-    @Test(priority = 15, description = "Complete IP and NRP process")
+    @Test(priority = 15, description = "Complete IP and NRP process", dependsOnMethods = {"startImplementationTaskIP"})
     @Description("Complete IP and NRP process")
     public void completeIpAndNrp() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
@@ -370,7 +370,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         checkTaskCompleted();
     }
 
-    @Test(priority = 16, description = "Create CM Domain")
+    @Test(priority = 16, description = "Create CM Domain", dependsOnMethods = {"createDevice"})
     @Description("Go to Network Discovery Control View and create CM Domain")
     public void createCmDomain() {
         waitForPageToLoad();
@@ -389,7 +389,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    @Test(priority = 17, description = "Upload reconciliation samples")
+    @Test(priority = 17, description = "Upload reconciliation samples", dependsOnMethods = {"createCmDomain"})
     @Description("Go to Samples Management View and upload reconciliation samples")
     public void uploadSamples() throws URISyntaxException {
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
@@ -406,7 +406,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    @Test(priority = 18, description = "Run reconciliation and check results")
+    @Test(priority = 18, description = "Run reconciliation and check results", dependsOnMethods = {"uploadSamples"})
     @Description("Run reconciliation and check if it ended without errors")
     public void runReconciliation() {
         NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
@@ -428,7 +428,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(IssueLevel.WARNING));
     }
 
-    @Test(priority = 19, description = "Apply inconsistencies")
+    @Test(priority = 19, description = "Apply inconsistencies", dependsOnMethods = {"runReconciliation"})
     @Description("Go to Network Inconsistencies View, apply inconsistencies from Network to Live and check notification")
     public void applyInconsistencies() {
         networkDiscoveryControlViewPage.moveToNivFromNdcv();
@@ -441,7 +441,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         Assert.assertEquals(networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(), "Accepting discrepancies related to " + DEVICE_NAME + " finished");
     }
 
-    @Test(priority = 20, description = "Delete CM Domain")
+    @Test(priority = 20, description = "Delete CM Domain", dependsOnMethods = {"createCmDomain"})
     @Description("Go to Network Discovery Control View and delete CM Domain")
     public void deleteCmDomain() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
@@ -454,7 +454,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
     }
 
-    @Test(priority = 21, description = "Delete IP link")
+    @Test(priority = 21, description = "Delete IP link", dependsOnMethods = {"createIpLink"})
     @Description("Delete IP link in Network View")
     public void deleteIpLink() {
         HomePage homePage = new HomePage(driver);
@@ -470,7 +470,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         networkViewPage.useContextActionAndClickConfirmation(ActionsContainer.EDIT_GROUP_ID, NetworkViewPage.DELETE_CONNECTION_ID, ConfirmationBox.DELETE);
     }
 
-    @Test(priority = 22, description = "Delete mediation connection")
+    @Test(priority = 22, description = "Delete mediation connection", dependsOnMethods = {"createMediationConfiguration"})
     @Description("Go to Connection Configuration View by direct link and delete mediation connection")
     public void deleteMediation() {
         ViewConnectionConfigurationPage.goToViewConnectionConfigurationPage(driver, URL);
@@ -484,7 +484,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    @Test(priority = 23, description = "Delete IP address assignment")
+    @Test(priority = 23, description = "Delete IP address assignment", dependsOnMethods = {"assignIpV4Address"})
     @Description("Go to Address Management View by direct link and delete IP address assignment")
     public void deleteIPAddressAssignment() {
         IPAddressManagementViewPage ipAddressManagementViewPage = IPAddressManagementViewPage.goToIPAddressManagementPage(driver, BASIC_URL);
@@ -494,7 +494,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         ipAddressManagementViewPage.deleteIPHost(ADDRESS + "/24");
     }
 
-    @Test(priority = 24, description = "Delete device")
+    @Test(priority = 24, description = "Delete device", dependsOnMethods = {"createDevice"})
     @Description("Delete device in Network View and check confirmation system message")
     public void deleteDevice() {
         HomePage homePage = new HomePage(driver);

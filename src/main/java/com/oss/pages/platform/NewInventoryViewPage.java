@@ -53,7 +53,8 @@ public class NewInventoryViewPage extends BasePage {
     private static final String TABS_CONTAINER_ID = "DetailTabsWidget";
     private static final String OPEN_HIERARCHY_VIEW_ACTION_ID = "OpenHierarchyViewContext";
     public static final String KEBAB_OBJECT_GROUP_ID = "frameworkObjectButtonsGroup";
-    
+    private static final String CONFIRM_REMOVAL_BUTTON_ID = "ConfirmationBox_deleteAppId_action_button";
+
     public NewInventoryViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
     }
@@ -298,7 +299,11 @@ public class NewInventoryViewPage extends BasePage {
     public void clickConfirmationBox(String buttonId) {
         getConfirmationBox().clickButtonById(buttonId);
     }
-    
+
+    public void clickConfirmationRemovalButton() {
+        clickConfirmationBox(CONFIRM_REMOVAL_BUTTON_ID);
+    }
+
     @Step("Change layout to Horizontal Orientation")
     public void setHorizontalLayout(String layoutId) {
         DelayUtils.waitForPageToLoad(driver, wait);
