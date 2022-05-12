@@ -246,7 +246,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         networkViewPage.hideDockedPanel("bottom");
     }
 
-    @Test(priority = 10, description = "Create mediation Configuration", dependsOnMethods = {"assignIpV4Address, createIpLink"})
+    @Test(priority = 10, description = "Create mediation Configuration", dependsOnMethods = {"assignIpV4Address", "createIpLink"})
     @Description("Create mediation configuration")
     public void createMediationConfiguration() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
