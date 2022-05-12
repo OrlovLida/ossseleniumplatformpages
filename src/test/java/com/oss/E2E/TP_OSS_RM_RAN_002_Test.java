@@ -59,7 +59,7 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
         softAssert = new SoftAssert();
     }
 
-    @Test(priority = 1)
+    @Test(priority = 1, description = "Create NRP Process")
     @Description("Create NRP Process")
     public void createProcessNRP() {
         homePage.chooseFromLeftSideMenu(PROCESS_INSTANCES, BPM_AND_PLANNING, BUSINESS_PROCESS_MANAGEMENT);
@@ -72,7 +72,7 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
         closeMessage();
     }
 
-    @Test(priority = 2)
+    @Test(priority = 2, description = "Start High Level Planning Task", dependsOnMethods = {"createProcessNRP"})
     @Description("Start High Level Planning Task")
     public void startHLPTask() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
@@ -81,7 +81,7 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
         closeMessage();
     }
 
-    @Test(priority = 3)
+    @Test(priority = 3, description = "Create gNodeB", dependsOnMethods = {"startHLPTask"})
     @Description("Create gNodeB")
     public void create5Gnode() {
         openCellSiteConfigurationView();
@@ -90,7 +90,7 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
         closeMessage();
     }
 
-    @Test(priority = 4)
+    @Test(priority = 4, description = "Create gNodeB DU", dependsOnMethods = {"create5Gnode"})
     @Description("Create gNodeB DU")
     public void create5GnodeDU() {
         cellSiteConfigurationPage.createGNodeBDU(GNODEB_DU_NAME, randomGNodeBDUId, GNODEB_DU_MODEL, GNODEB_NAME);
@@ -98,7 +98,7 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
         closeMessage();
     }
 
-    @Test(priority = 5)
+    @Test(priority = 5, description = "Create three cells 5G", dependsOnMethods = {"create5GnodeDU"})
     @Description("Create three cells 5G")
     public void create5Gcells() {
         cellSiteConfigurationPage.expandTreeToBaseStation("Site", LOCATION_NAME, GNODEB_NAME);
@@ -107,7 +107,7 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
         closeMessage();
     }
 
-    @Test(priority = 6)
+    @Test(priority = 6, description = "Create three ran antenna", dependsOnMethods = {"create5Gcells"})
     @Description("Create three ran antenna")
     public void createRanAntenna() {
         waitForPageToLoad();
@@ -122,7 +122,7 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
         }
     }
 
-    @Test(priority = 7)
+    @Test(priority = 7, description = "Create hosting on BBU and hostings on antenna arrays", dependsOnMethods = {"createRanAntenna"})
     @Description("Create hosting on BBU and hostings on antenna arrays")
     public void createHostingRelation() {
         waitForPageToLoad();
@@ -143,14 +143,14 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
         }
     }
 
-    @Test(priority = 8)
+    @Test(priority = 8, description = "Finish rest of NRP and IP Tasks", dependsOnMethods = {"createHostingRelation"})
     @Description("Finish rest of NRP and IP Tasks")
     public void finishProcessesTasks() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.completeNRP(processNRPCode);
     }
 
-    @Test(priority = 9)
+    @Test(priority = 9, description = "Delete hosting relations", dependsOnMethods = {"createHostingRelation"})
     @Description("Delete hosting relations")
     public void deleteHostingRelation() {
         openCellSiteConfigurationView();
@@ -180,7 +180,7 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
         }
     }
 
-    @Test(priority = 10)
+    @Test(priority = 10, description = "Delete ran antennas", dependsOnMethods = {"createRanAntenna"})
     @Description("Delete ran antennas")
     public void deleteRanAntenna() {
         cellSiteConfigurationPage.selectTreeRow(LOCATION_NAME);
@@ -195,7 +195,7 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
         }
     }
 
-    @Test(priority = 11)
+    @Test(priority = 11, description = "Delete cells 5G", dependsOnMethods = {"create5Gcells"})
     @Description("Delete cells 5G")
     public void delete5Gcells() {
         cellSiteConfigurationPage.selectTreeRow(GNODEB_NAME);
@@ -212,7 +212,7 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
         }
     }
 
-    @Test(priority = 12)
+    @Test(priority = 12, description = "Delete gNodeB DU", dependsOnMethods = {"create5GnodeDU"})
     @Description("Delete gNodeB DU")
     public void delete5GnodeDU() {
         cellSiteConfigurationPage.selectTreeRow(LOCATION_NAME);
@@ -226,7 +226,7 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
         closeMessage();
     }
 
-    @Test(priority = 13)
+    @Test(priority = 13, description = "Delete gNodeB", dependsOnMethods = {"create5Gnode"})
     @Description("Delete gNodeB")
     public void delete5Gnode() {
         waitForPageToLoad();

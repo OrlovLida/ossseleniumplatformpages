@@ -68,7 +68,7 @@ public class UC_NAR_005_Test extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    @Test(priority = 2, description = "Upload reconciliation samples")
+    @Test(priority = 2, description = "Upload reconciliation samples", dependsOnMethods = {"createCmDomain"})
     @Description("Go to Samples Management View and upload reconciliation samples")
     public void uploadSamples() throws URISyntaxException {
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
@@ -85,7 +85,7 @@ public class UC_NAR_005_Test extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    @Test(priority = 3, description = "Run reconciliation and check results")
+    @Test(priority = 3, description = "Run reconciliation and check results", dependsOnMethods = {"uploadSamples"})
     @Description("Go to Network Discovery Control View, run reconciliation and check if it ended without errors")
     public void runReconciliationWithFullSample() {
         openNetworkDiscoveryControlView();
@@ -107,7 +107,7 @@ public class UC_NAR_005_Test extends BaseTestCase {
         Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(IssueLevel.WARNING));
     }
 
-    @Test(priority = 4, description = "Assign location and accept inconsistencies")
+    @Test(priority = 4, description = "Assign location and accept inconsistencies", dependsOnMethods = {"runReconciliationWithFullSample"})
     @Description("Move to Network Inconsistencies View, assign location to device and apply inconsistencies")
     public void assignLocationAndApplyInconsistencies() {
         networkDiscoveryControlViewPage.moveToNivFromNdcv();
@@ -124,7 +124,7 @@ public class UC_NAR_005_Test extends BaseTestCase {
         Assert.assertEquals(networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(), "Accepting discrepancies related to " + DEVICE_NAME + " finished");
     }
 
-    @Test(priority = 5, description = "Change reconciliation samples")
+    @Test(priority = 5, description = "Change reconciliation samples", dependsOnMethods = {"assignLocationAndApplyInconsistencies"})
     @Description("Go to Samples Management from Network Discovery Control View, delete old reconciliation samples and upload a new ones")
     public void deleteOldSamplesAndPutNewOne() throws URISyntaxException {
         openNetworkDiscoveryControlView();
@@ -142,7 +142,7 @@ public class UC_NAR_005_Test extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    @Test(priority = 6, description = "Open router in New Inventory View")
+    @Test(priority = 6, description = "Open router in New Inventory View", dependsOnMethods = {"deleteOldSamplesAndPutNewOne"})
     @Description("Open router in New Inventory View and check value of serial number")
     public void openNewInventoryViewAndCheckSerialNumber() {
         homePage.goToHomePage(driver, BASIC_URL);
@@ -158,7 +158,7 @@ public class UC_NAR_005_Test extends BaseTestCase {
         Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "serialNumber"), SERIAL_NUMBER_BEFORE);
     }
 
-    @Test(priority = 7, description = "Run narrow reconciliation")
+    @Test(priority = 7, description = "Run narrow reconciliation", dependsOnMethods = {"openNewInventoryViewAndCheckSerialNumber"})
     @Description("Run narrow reconciliation")
     public void runNarrowReconciliation() {
         DelayUtils.sleep(5000);
@@ -174,7 +174,7 @@ public class UC_NAR_005_Test extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    @Test(priority = 8, description = "Check serial number")
+    @Test(priority = 8, description = "Check serial number", dependsOnMethods = {"runNarrowReconciliation"})
     @Description("Refresh view, select first row and check if value of serial number is updated")
     public void checkSerialNumber() {
         DelayUtils.sleep(45000);
@@ -186,7 +186,7 @@ public class UC_NAR_005_Test extends BaseTestCase {
         Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "serialNumber"), SERIAL_NUMBER_AFTER);
     }
 
-    @Test(priority = 9, description = "Delete router")
+    @Test(priority = 9, description = "Delete router", dependsOnMethods = {"assignLocationAndApplyInconsistencies"})
     @Description("Delete router")
     public void deleteRouter() {
         DelayUtils.sleep(45000);
@@ -202,7 +202,7 @@ public class UC_NAR_005_Test extends BaseTestCase {
         Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());
     }
 
-    @Test(priority = 10, description = "Delete CM Domain")
+    @Test(priority = 10, description = "Delete CM Domain", dependsOnMethods = {"createCmDomain"})
     @Description("Go to Network Discovery Control View, delete CM Domain and check notification")
     public void deleteCmDomain() {
         openNetworkDiscoveryControlView();

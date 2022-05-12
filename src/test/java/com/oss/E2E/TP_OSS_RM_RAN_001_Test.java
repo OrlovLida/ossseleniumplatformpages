@@ -23,7 +23,6 @@ import com.oss.pages.platform.SearchObjectTypePage;
 import com.oss.pages.radio.CellSiteConfigurationPage;
 
 import io.qameta.allure.Description;
-import io.qameta.allure.Step;
 
 public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
 
@@ -70,7 +69,8 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         softAssert = new SoftAssert();
     }
 
-    @Test(priority = 1)
+    @Test(priority = 1, description = "Create and start NRP Process")
+    @Description("Create and start NRP Process")
     public void createProcessNRP() {
         homePage.chooseFromLeftSideMenu(PROCESS_INSTANCES, BPM_AND_PLANNING, BUSINESS_PROCESS_MANAGEMENT);
         waitForPageToLoad();
@@ -80,7 +80,8 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         checkMessageType();
     }
 
-    @Test(priority = 2)
+    @Test(priority = 2, description = "Start HLP task", dependsOnMethods = {"createProcessNRP"})
+    @Description("Start High Level Planning task")
     public void startHLP() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         waitForPageToLoad();
@@ -89,12 +90,13 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    @Test(priority = 3)
+    @Test(priority = 3, description = "Find location and open it in Cell Site Configuration view", dependsOnMethods = {"startHLP"})
+    @Description("Find location in new Inventory View and open location in Cell Site Configuration view")
     public void findLocation() {
         openCellSiteConfiguration();
     }
 
-    @Test(priority = 4)
+    @Test(priority = 4, description = "Create eNodeB", dependsOnMethods = {"findLocation"})
     @Description("Create eNodeB")
     public void createENodeB() {
         waitForPageToLoad();
@@ -103,7 +105,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         checkMessageText("ENodeB was created");
     }
 
-    @Test(priority = 5)
+    @Test(priority = 5, description = "Create Cell4G with Bulk Wizard", dependsOnMethods = {"createENodeB"})
     @Description("Create Cell4G with Bulk Wizard")
     public void createCell4GBulk() {
         waitForPageToLoad();
@@ -113,8 +115,8 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         checkMessageType();
     }
 
-    @Step("Create Base Band Unit")
-    @Test(priority = 6)
+    @Test(priority = 6, description = "Create Base Band Unit", dependsOnMethods = {"createCell4GBulk"})
+    @Description("Create Base Band Unit")
     public void createBaseBandUnit() {
         waitForPageToLoad();
         cellSiteConfigurationPage.selectTreeRow(LOCATION_NAME);
@@ -123,8 +125,8 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    @Step("Create three Radio Units")
-    @Test(priority = 7)
+    @Test(priority = 7, description = "Create three Radio Units", dependsOnMethods = {"createBaseBandUnit"})
+    @Description("Create three Radio Units")
     public void createRadioUnit() {
         for (int i = 0; i < 3; i++) {
             cellSiteConfigurationPage.createRadioUnit(RADIO_UNIT_EQUIPMENT_TYPE, RADIO_UNIT_MODEL, RADIO_UNIT_NAMES[i], LOCATION_NAME);
@@ -133,8 +135,8 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         }
     }
 
-    @Step("Create three RAN Antennas")
-    @Test(priority = 8)
+    @Test(priority = 8, description = "Create three RAN Antennas", dependsOnMethods = {"createRadioUnit"})
+    @Description("Create three RAN Antennas")
     public void createRanAntennaAndArray() {
         for (int i = 0; i < 3; i++) {
             cellSiteConfigurationPage.createRanAntennaAndArray(ANTENNA_NAMES[i], RAN_ANTENNA_MODEL, LOCATION_NAME);
@@ -143,7 +145,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         }
     }
 
-    @Test(priority = 9)
+    @Test(priority = 9, description = "Create hosting relation between eNodeB and BBU", dependsOnMethods = {"createENodeB, createBaseBandUnit"})
     @Description("Create hosting relation between eNodeB and BBU")
     public void hostENodeBOnBBU() {
         waitForPageToLoad();
@@ -154,7 +156,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    @Test(priority = 10)
+    @Test(priority = 10, description = "Create hosting relation between Cell 4G and RRU", dependsOnMethods = {"createCell4GBulk, createRadioUnit"})
     @Description("Create hosting relation between Cell 4G and RRU")
     public void hostCell4GOnRRU() {
         for (int i = 0; i < 3; i++) {
@@ -166,7 +168,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         }
     }
 
-    @Test(priority = 11)
+    @Test(priority = 11, description = "Create hosting relation between Cell 4G and RAN Antenna Array", dependsOnMethods = {"createCell4GBulk, createRanAntennaAndArray"})
     @Description("Create hosting relation between Cell 4G and RAN Antenna Array")
     public void hostCell4GOnRANAntennaArray() {
         for (int i = 0; i < 3; i++) {
@@ -179,8 +181,8 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         }
     }
 
-    @Test(priority = 12)
-    @Description("Finish HLP")
+    @Test(priority = 12, description = "Finish HLP task", dependsOnMethods = {"hostCell4GOnRANAntennaArray"})
+    @Description("Finish High Level Planning task")
     public void finishHLP() {
         waitForPageToLoad();
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
@@ -189,7 +191,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         checkTaskCompleted();
     }
 
-    @Test(priority = 13)
+    @Test(priority = 13, description = "Start LLP task", dependsOnMethods = {"finishHLP"})
     @Description("Start Low Level Planning")
     public void startLLP() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
@@ -199,7 +201,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    @Test(priority = 14)
+    @Test(priority = 14, description = "Check validation results", dependsOnMethods = {"startLLP"})
     @Description("Check validation results")
     public void validateProjectPlan() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
@@ -213,7 +215,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         Assert.assertTrue(planViewWizardPage.validationErrorsPresent());
     }
 
-    @Test(priority = 15)
+    @Test(priority = 15, description = "Complete cells configuration", dependsOnMethods = {"validateProjectPlan"})
     @Description("Complete cells configuration")
     public void lowLevelLogicalDesign() {
         openCellSiteConfiguration();
@@ -228,8 +230,8 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         cellSiteConfigurationPage.editCellsInBulk(AMOUNT_OF_CELLS, PCI, RSI, REFERENCE_POWER, TAC, PA_INPUT);
     }
 
-    @Test(priority = 16)
-    @Description("Finish Low Level Planning")
+    @Test(priority = 16, description = "Finish LLP task", dependsOnMethods = {"lowLevelLogicalDesign"})
+    @Description("Finish Low Level Planning task")
     public void finishLowLevelPlanningTask() {
         waitForPageToLoad();
         PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
@@ -241,7 +243,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         processIPCode = tasksPage.proceedNRPFromReadyForIntegration(processNRPCode);
     }
 
-    @Test(priority = 17)
+    @Test(priority = 17, description = "Finish NRP and IP", dependsOnMethods = {"finishLowLevelPlanningTask"})
     @Description("Finish NRP and IP")
     public void completeProcessNRP() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
@@ -258,7 +260,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         checkTaskCompleted();
     }
 
-    @Test(priority = 18)
+    @Test(priority = 18, description = "Delete antennas, BBU, RRU", dependsOnMethods = {"createBaseBandUnit, createRadioUnit"})
     @Description("Delete antennas, BBU, RRU")
     public void deleteDevices() {
         openCellSiteConfiguration();
@@ -276,7 +278,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         }
     }
 
-    @Test(priority = 19)
+    @Test(priority = 19, description = "Delete eNodeB", dependsOnMethods = {"createENodeB"})
     @Description("Delete eNodeB")
     public void deleteNodeB() {
         waitForPageToLoad();
