@@ -12,8 +12,8 @@ import com.oss.framework.components.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
-import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 import com.oss.pages.bpm.TasksPage;
+import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.transport.IRBInterfaceWizardPage;
 import com.oss.pages.transport.ipam.IPAddressAssignmentWizardPage;
@@ -23,13 +23,10 @@ import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
 
-@Listeners({ TestListener.class })
+@Listeners({TestListener.class})
 public class IRBInterfaceTest extends BaseTestCase {
 
-    private NewInventoryViewPage newInventoryViewPage;
-    private String processNRPCode;
-
-    private static final String IRB_INTERFACE_ID = "117";
+    private static final String IRB_INTERFACE_ID = "1" + (int) (Math.random() * 1001);
     private static final String MTU_VALUE = "1000";
     private static final String DESCRIPTION = "IRBInterfaceSeleniumTest" + (int) (Math.random() * 1001);
     private static final String IRB_INTERFACE_DEVICE_NAME = "IRBInterfaceSeleniumTest";
@@ -37,6 +34,9 @@ public class IRBInterfaceTest extends BaseTestCase {
     private static final String IP_NETWORK = "E2ESeleniumTest";
     private static final String IP_ADDRESS = "10.10.20.2";
     private static final String IRB_INTERFACE_SEARCH_NIV = "IRB Interface";
+    private static final String COMPONENT_ID = "irbInterfaceWizard";
+    private NewInventoryViewPage newInventoryViewPage;
+    private String processNRPCode;
 
     @BeforeClass
     public void openWebConsole() {
@@ -145,7 +145,7 @@ public class IRBInterfaceTest extends BaseTestCase {
         newInventoryViewPage.selectFirstRow();
         newInventoryViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, "DeleteIRBInterfaceContextAction");
         waitForPageToLoad();
-        Wizard.createWizard(driver, webDriverWait).clickButtonByLabel("OK");
+        Wizard.createByComponentId(driver, webDriverWait, COMPONENT_ID).clickButtonByLabel("OK");
         checkMessageType();
         newInventoryViewPage.refreshMainTable();
         Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());
