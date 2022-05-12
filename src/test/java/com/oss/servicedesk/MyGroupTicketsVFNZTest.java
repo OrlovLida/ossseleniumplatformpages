@@ -9,21 +9,20 @@ import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.pages.platform.NotificationWrapperPage;
-import com.oss.pages.servicedesk.issue.BaseDashboardPage;
 import com.oss.pages.servicedesk.issue.IssueDetailsPage;
 import com.oss.pages.servicedesk.issue.ticket.MyTicketsPage;
+import com.oss.pages.servicedesk.issue.ticket.TicketDashboardPage;
 import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
 import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
 
 import static com.oss.pages.servicedesk.ServiceDeskConstants.ID_ATTRIBUTE;
-import static com.oss.pages.servicedesk.ServiceDeskConstants.TICKET_DASHBOARD;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.TROUBLE_TICKET_ISSUE_TYPE;
 
 @Listeners({TestListener.class})
 public class MyGroupTicketsVFNZTest extends BaseTestCase {
-    private BaseDashboardPage baseDashboardPage;
+    private TicketDashboardPage ticketDashboardPage;
     private MyTicketsPage myTicketsPage;
     private NotificationWrapperPage notificationWrapperPage;
     private IssueDetailsPage issueDetailsPage;
@@ -38,7 +37,7 @@ public class MyGroupTicketsVFNZTest extends BaseTestCase {
 
     @BeforeMethod
     public void goToTicketDashboardPage() {
-        baseDashboardPage = new BaseDashboardPage(driver, webDriverWait).goToPage(driver, BASIC_URL, TICKET_DASHBOARD);
+        ticketDashboardPage = new TicketDashboardPage(driver, webDriverWait).goToPage(driver, BASIC_URL);
     }
 
     @Parameters({"MOIdentifier", "ttAssignee"})
@@ -48,11 +47,11 @@ public class MyGroupTicketsVFNZTest extends BaseTestCase {
             @Optional("CFS_Access_Product_Selenium_1") String MOIdentifier,
             @Optional("Tier 2 Mobile") String ttAssignee
     ) {
-        sdWizardPage = baseDashboardPage.openCreateTicketWizard("CTT");
+        sdWizardPage = ticketDashboardPage.openCreateTicketWizard("CTT");
         sdWizardPage.createTicket(MOIdentifier, ttAssignee);
-        ticketID = baseDashboardPage.getIdFromMessage();
-        Assert.assertTrue(baseDashboardPage.getAssigneeForNthTicketInTTTable(0).contains(ttAssignee));
-        Assert.assertEquals(baseDashboardPage.getRowForTicketWithID(ticketID), 0);
+        ticketID = ticketDashboardPage.getIdFromMessage();
+        Assert.assertTrue(ticketDashboardPage.getAssigneeForNthTicketInTable(0).contains(ttAssignee));
+        Assert.assertEquals(ticketDashboardPage.getRowForIssueWithID(ticketID), 0);
     }
 
     @Test(priority = 2, testName = "Check My Group Tickets", description = "Check My Group Tickets")
@@ -98,7 +97,7 @@ public class MyGroupTicketsVFNZTest extends BaseTestCase {
     @Test(priority = 5, testName = "My Tickets Check", description = "Change assignee nad check if ticket is visible in My Ticket View")
     @Description("Change assignee nad check if ticket is visible in My Ticket View")
     public void myTicketsCheck() {
-        issueDetailsPage = baseDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
+        issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
         issueDetailsPage.allowEditingTicket();
         issueDetailsPage.maximizeWindow(DETAILS_WINDOW_ID);
         sdWizardPage = issueDetailsPage.openEditTicketWizard();

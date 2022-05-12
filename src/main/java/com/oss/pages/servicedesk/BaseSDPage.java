@@ -102,6 +102,13 @@ public abstract class BaseSDPage extends BasePage {
         log.info("Clicking Context action {}", contextActionLabel);
     }
 
+    @Step("Check if Context action {contextActionID} is present")
+    public boolean isActionPresent(String contextActionID) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Checking if Context action {} is present", contextActionID);
+        return ButtonContainer.create(driver, wait).isElementPresent(contextActionID);
+    }
+
     public void clickExportFromTable(String tableId) {
         DelayUtils.waitForPageToLoad(driver, wait);
         OldTable.createById(driver, wait, tableId).callAction(GROUP_ID_OLD_ACTIONS_CONTAINER, EXPORT_BUTTON_ID);

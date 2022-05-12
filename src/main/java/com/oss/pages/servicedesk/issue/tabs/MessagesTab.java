@@ -10,6 +10,7 @@ import com.oss.framework.iaa.widgets.list.MessageListWidget;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.servicedesk.BaseSDPage;
+import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
 
 import io.qameta.allure.Step;
 
@@ -24,6 +25,7 @@ public class MessagesTab extends BaseSDPage {
     private static final String COMMENT_EDITOR_ID = "new-comment-editor";
     private static final String CREATE_NEW_NOTIFICATION_BUTTON_LABEL = "Create New Notification";
     private static final String MARK_AS_IMPORTANT_LABEL = "Mark as important";
+    private static final String NEW_NOTIFICATION_PROMPT_ID = "notification-wizard_prompt-card";
 
     public MessagesTab(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -49,8 +51,9 @@ public class MessagesTab extends BaseSDPage {
     }
 
     @Step("Create new notification on Messages Tab")
-    public void createNewNotificationOnMessagesTab() {
+    public SDWizardPage createNewNotificationOnMessagesTab() {
         getMessageListWidget().clickButtonByLabel(CREATE_NEW_NOTIFICATION_BUTTON_LABEL);
+        return new SDWizardPage(driver, wait, NEW_NOTIFICATION_PROMPT_ID);
     }
 
     @Step("Check if Messages Tab is Empty")
@@ -83,6 +86,13 @@ public class MessagesTab extends BaseSDPage {
         }
         log.info("No badge for message with index {}, and badge index {}", messageIndex, badgeIndex);
         return "";
+    }
+
+    @Step("Add internal comment")
+    public void addInternalComment(String commentMessage) {
+        clickCreateNewCommentButton();
+        enterCommentMessage(commentMessage);
+        clickCreateCommentButton();
     }
 
     @Step("Check Comment type")

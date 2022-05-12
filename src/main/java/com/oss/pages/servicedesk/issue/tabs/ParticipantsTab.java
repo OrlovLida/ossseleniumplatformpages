@@ -34,6 +34,10 @@ public class ParticipantsTab extends BaseSDPage {
         return new ParticipantsPromptPage(driver, wait);
     }
 
+    public boolean isAddParticipantButtonActive() {
+        return isActionPresent(ADD_PARTICIPANT_ID);
+    }
+
     @Step("Check participant first name")
     public String checkParticipantFirstName(int participantIndex) {
         DelayUtils.waitForPageToLoad(driver, wait);

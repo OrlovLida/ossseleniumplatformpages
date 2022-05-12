@@ -1,0 +1,11 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="EditRelease" thread-count="2" parallel="tests" verbose="1">
+    <test name="EditReadOnlyMode">
+        <parameter name="MOIdentifier" value="TEST_MO"/>
+        <parameter name="ttAssignee" value="ca_kodrobinska"/>
+        <classes>
+            <class name="com.oss.servicedesk.EditReleaseFunctionalityTest"/>
+        </classes>
+    </test>
+
+</suite>

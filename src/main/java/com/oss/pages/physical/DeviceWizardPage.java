@@ -12,25 +12,24 @@ import io.qameta.allure.Step;
 import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
 import static com.oss.framework.components.inputs.Input.ComponentType.DATE_TIME;
 import static com.oss.framework.components.inputs.Input.ComponentType.SEARCH_FIELD;
+import static com.oss.framework.components.inputs.Input.ComponentType.OBJECT_SEARCH_FIELD;
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_AREA;
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 
 public class DeviceWizardPage extends BasePage {
 
-    public static final String DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME = "preciseLocation";
-    public static final String DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME = "physicalLocation";
+    public static final String DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME = "preciseLocation_OSF";
+    public static final String DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME = "physicalLocation_OSF";
     private static final String CREATE_BUTTON_DATA_ATTRIBUTE_NAME = "physical_device_common_buttons_app-1";
     private static final String UPDATE_BUTTON_DATA_ATTRIBUTE_NAME = "physical_device_update_common_buttons_app-1";
-    private static final String NEXT_BUTTON_CREATE_WIZARD_DATA_ATTRIBUTE_NAME = "wizard-next-button-device_create_wizard_view";
     private static final String NEXT_BUTTON_UPDATE_WIZARD_DATA_ATTRIBUTE_NAME = "wizard-next-button-device_update_wizard_view";
-    private static final String ACCEPT_BUTTON_DATA_ATTRIBUTE_NAME = "wizard-submit-button-device_create_wizard_view";
     private static final String ACCEPT_UPDATE_WIZARD_BUTTON_DATA_ATTRIBUTE_NAME = "wizard-submit-button-device_update_wizard_view";
     private static final String DEVICE_EQUIPMENT_TYPE_DATA_ATTRIBUTE_NAME = "equipmentType";
     private static final String DEVICE_MODEL_DATA_ATTRIBUTE_NAME = "model_OSF";
     private static final String DEVICE_NAME_DATA_ATTRIBUTE_NAME = "name";
     private static final String DEVICE_NETWORK_FUNCTION_NAME_TYPE_DATA_ATTRIBUTE_NAME = "networkFunctionName";
     private static final String DEVICE_CHASSIS_ID_DATA_ATTRIBUTE_NAME = "chassisId";
-    private static final String DEVICE_LOCATION_DATA_ATTRIBUTE_NAME = "location";
+    private static final String DEVICE_LOCATION_DATA_ATTRIBUTE_NAME = "location_OSF";
     private static final String DEVICE_LOGICAL_LOCATION_DATA_ATTRIBUTE_NAME = "search_logical_location";
     private static final String DEVICE_NETWORK_DOMAIN_DATA_ATTRIBUTE_NAME = "networkDomain";
     private static final String DEVICE_SERIAL_NUMBER_DATA_ATTRIBUTE_NAME = "serialNumber";
@@ -40,7 +39,6 @@ public class DeviceWizardPage extends BasePage {
     private static final String DEVICE_FIRMWARE_VERSION_DATA_ATTRIBUTE_NAME = "firmwareVersion";
     private static final String DEVICE_HARDWARE_VERSION_DATA_ATTRIBUTE_NAME = "hardwareVersion";
     private static final String DEVICE_DESCRIPTION_DATA_ATTRIBUTE_NAME = "description";
-    private static final String DEVICE_IS_OWNED_BY_3RD_PARTY_DATA_ATTRIBUTE_NAME = "checkbox_is_leased";
     private static final String DEVICE_CREATE_WIZARD_PLAN = "device_create_wizard_view";
     private static final String DEVICE_CREATE_WIZARD_LIVE = "devices_create_wizard_view";
     private static final String DEVICE_UPDATE_WIZARD = "device_update_wizard_view";
@@ -106,27 +104,27 @@ public class DeviceWizardPage extends BasePage {
 
     @Step("Set Location using contains")
     public void setLocation(String location) {
-        if (getDeviceWizard().getComponent(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME, SEARCH_FIELD)
+        if (getDeviceWizard().getComponent(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME, OBJECT_SEARCH_FIELD)
                 .getStringValue().isEmpty()) {
-            getDeviceWizard().getComponent(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME, SEARCH_FIELD)
+            getDeviceWizard().getComponent(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME, OBJECT_SEARCH_FIELD)
                     .setSingleStringValueContains(location);
         }
     }
 
     @Step("Set Physical Location using contains")
     public void setPhysicalLocation(String preciseLocation) {
-        if (getDeviceWizard().getComponent(DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, Input.ComponentType.SEARCH_FIELD)
+        if (getDeviceWizard().getComponent(DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, OBJECT_SEARCH_FIELD)
                 .getStringValue().isEmpty()) {
-            getDeviceWizard().getComponent(DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, SEARCH_FIELD)
+            getDeviceWizard().getComponent(DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, OBJECT_SEARCH_FIELD)
                     .setSingleStringValueContains(preciseLocation);
         }
     }
 
     @Step("Set Precise Location using contains")
     public void setPreciseLocation(String preciseLocation) {
-        if (getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, Input.ComponentType.SEARCH_FIELD)
+        if (getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, OBJECT_SEARCH_FIELD)
                 .getStringValue().isEmpty()) {
-            getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, SEARCH_FIELD)
+            getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, OBJECT_SEARCH_FIELD)
                     .setSingleStringValueContains(preciseLocation);
         }
     }
