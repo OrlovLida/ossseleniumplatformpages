@@ -11,9 +11,10 @@ import io.qameta.allure.Step;
 public class ChangeCardModelWizard extends BasePage {
 
     private static final String WIZARD_ID = "optional_prompt-card";
+    private static final String SUBMIT_ID = "wizard-submit-button-changeCardModelWizard";
+    private static final String MODEL_SEARCH = "model";
 
     private Wizard wizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
-    private static final String MODEL_SEARCH = "model";
 
     public ChangeCardModelWizard(WebDriver driver) {
         super(driver);
@@ -25,7 +26,7 @@ public class ChangeCardModelWizard extends BasePage {
     }
 
     @Step("Click Update button")
-    public void clickUpdate() {
-        wizard.clickUpdate();
+    public void clickSubmit() {
+        wizard.clickButtonById(SUBMIT_ID);
     }
 }
