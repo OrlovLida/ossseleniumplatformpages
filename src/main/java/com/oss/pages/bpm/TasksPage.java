@@ -148,7 +148,7 @@ public class TasksPage extends BasePage {
     }
 
     public void clickPlanViewButton() {
-        Button button = Button.createById(driver, "planView");
+        Button button = Button.createByLabel(driver, "Plan View");
         button.click();
     }
 

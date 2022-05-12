@@ -229,7 +229,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         ChangeCardModelWizard changeCardModelWizard = new ChangeCardModelWizard(driver);
         changeCardModelWizard.setModelCard("Alcatel NELT-A");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        changeCardModelWizard.clickUpdate();
+        changeCardModelWizard.clickSubmit();
         checkPopupAndCloseMessage();
     }
 
