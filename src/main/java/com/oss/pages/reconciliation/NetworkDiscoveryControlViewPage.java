@@ -20,6 +20,7 @@ import com.oss.framework.widgets.tree.TreeWidget;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
+import org.testng.Assert;
 
 public class NetworkDiscoveryControlViewPage extends BasePage {
 
@@ -94,7 +95,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         OldTable.createById(driver, wait, RECONCILIATION_TAB_ID).callAction(ActionsContainer.KEBAB_GROUP_ID, RECO_STATE_REFRESH_BUTTON_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         String status = OldTable.createById(driver, wait, RECONCILIATION_STATE_TABLE_ID).getCellValue(0, STATUS);
-        while (status.equals("IN_PROGRESS") || status.equals("PENDING")) {
+        while (status.contains("IN_PROGRESS") || status.contains("PENDING")) {
             DelayUtils.sleep(5000);
             DelayUtils.waitForPageToLoad(driver, wait);
             OldTable.createById(driver, wait, RECONCILIATION_TAB_ID).callAction(ActionsContainer.KEBAB_GROUP_ID, RECO_STATE_REFRESH_BUTTON_ID);
@@ -164,6 +165,13 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     public void selectLatestReconciliationState() {
         TableInterface table = OldTable.createById(driver, wait, RECONCILIATION_STATE_TABLE_ID);
         table.selectRow(0);
+    }
+
+    @Step("Check and assert if conflict event appeared during reconciliation")
+    public void assertConflictEvent() {
+        getIssuesTable().searchByAttributeWithLabel("Issue Level", ComponentType.TEXT_FIELD, "");
+        getIssuesTable().searchByAttributeWithLabel("Reason", ComponentType.TEXT_FIELD, "conflict");
+        Assert.assertTrue(getIssuesTable().getCellValue(0, "Reason").contains("conflict"));
     }
 
     private void logIssues(String type) {
