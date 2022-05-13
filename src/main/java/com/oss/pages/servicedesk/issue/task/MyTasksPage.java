@@ -2,33 +2,39 @@ package com.oss.pages.servicedesk.issue.task;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.oss.framework.widgets.table.TableWidget;
-import com.oss.pages.servicedesk.GraphQLSearchPage;
+import com.oss.pages.servicedesk.BaseSearchPage;
 
 import io.qameta.allure.Step;
 
-public class MyTasksPage extends GraphQLSearchPage {
+import static com.oss.pages.servicedesk.ServiceDeskConstants.PROBLEMS_TABLE_ID;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.PROBLEM_ISSUE_TYPE;
 
-    private static final Logger log = LoggerFactory.getLogger(MyTasksPage.class);
+public class MyTasksPage extends BaseSearchPage {
 
     private static final String MY_TASKS = "problem-search?type=my-tasks";
-    private static final String TABLE_WIDGET_ID = "problem-search-graphql-table";
 
     public MyTasksPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
     }
 
+    @Override
     @Step("I Open My Tasks View")
-    public MyTasksPage goToMyTasks(WebDriver driver, String basicURL) {
+    public MyTasksPage openView(WebDriver driver, String basicURL) {
         goToPage(driver, basicURL, MY_TASKS);
-        log.info("My Tasks View is opened");
-        return new MyTasksPage(driver, wait);
+        return this;
+    }
+
+    public String getSearchPageUrl() {
+        return MY_TASKS;
+    }
+
+    public String getIssueType() {
+        return PROBLEM_ISSUE_TYPE;
     }
 
     public TableWidget getIssueTable() {
-        return TableWidget.createById(driver, TABLE_WIDGET_ID, wait);
+        return TableWidget.createById(driver, PROBLEMS_TABLE_ID, wait);
     }
 }

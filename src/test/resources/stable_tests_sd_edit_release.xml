@@ -1,5 +1,5 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="EditRelease" thread-count="2" parallel="tests" verbose="1">
+<suite name="EditRelease and Left Side Menu tests" thread-count="2" parallel="tests" verbose="1">
     <test name="EditReadOnlyMode">
         <parameter name="MOIdentifier" value="TEST_MO"/>
         <parameter name="ttAssignee" value="ca_kodrobinska"/>
@@ -7,5 +7,9 @@
             <class name="com.oss.servicedesk.EditReleaseFunctionalityTest"/>
         </classes>
     </test>
-
+    <test name="LeftSideMenuTests">
+        <classes>
+            <class name="com.oss.servicedesk.LeftSideMenuSDTest"/>
+        </classes>
+    </test>
 </suite>

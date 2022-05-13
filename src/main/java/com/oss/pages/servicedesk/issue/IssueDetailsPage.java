@@ -234,6 +234,11 @@ public class IssueDetailsPage extends BaseSDPage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
+    @Step("Check status in problem status combobox")
+    public String checkProblemStatus() {
+        return ComponentFactory.create(PROBLEM_STATUS_ID, Input.ComponentType.COMBOBOX, driver, wait).getStringValue();
+    }
+
     public String checkExistingDictionary() {
         DelayUtils.waitForPageToLoad(driver, wait);
         return OldTable.createById(driver, wait, DICTIONARIES_TABLE_ID).getCellValue(0, DICTIONARY_VALUE_TABLE_LABEL);

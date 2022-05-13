@@ -10,6 +10,7 @@ import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.TableWidget;
 import com.oss.pages.platform.NotificationWrapperPage;
+import com.oss.pages.servicedesk.issue.IssueDetailsPage;
 import com.oss.pages.servicedesk.issue.wizard.ExportWizardPage;
 
 import io.qameta.allure.Step;
@@ -18,10 +19,11 @@ import static com.oss.pages.servicedesk.ServiceDeskConstants.DATE_MASK;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.DOWNLOAD_FILE;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.ID_ATTRIBUTE;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.VIEWS_URL_PATTERN;
+import static com.oss.pages.servicedesk.issue.IssueDetailsPage.DETAILS_PAGE_URL_PATTERN;
 
-public abstract class GraphQLSearchPage extends BaseSDPage {
+public abstract class BaseSearchPage extends BaseSDPage {
 
-    private static final Logger log = LoggerFactory.getLogger(GraphQLSearchPage.class);
+    private static final Logger log = LoggerFactory.getLogger(BaseSearchPage.class);
 
     public static final String CREATION_TIME_ATTRIBUTE = "createDate";
     public static final String DESCRIPTION_ATTRIBUTE = "incidentDescription";
@@ -30,14 +32,26 @@ public abstract class GraphQLSearchPage extends BaseSDPage {
     private static final String EXPORT_WIZARD_ID = "exportgui-wizard-widget";
     private static final int MAX_SEARCH_TIME_6_HOURS = 360;
 
-    protected GraphQLSearchPage(WebDriver driver, WebDriverWait wait) {
+    protected BaseSearchPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
     }
 
     public abstract TableWidget getIssueTable();
 
+    public abstract BaseSearchPage openView(WebDriver driver, String basicURL);
+
+    public abstract String getSearchPageUrl();
+
+    public abstract String getIssueType();
+
     public void goToPage(WebDriver driver, String basicURL, String pageURL) {
         openPage(driver, String.format(VIEWS_URL_PATTERN, basicURL, pageURL));
+    }
+
+    @Step("Check if current url leads to {1} page")
+    public boolean isPageOpened(String basicURL) {
+        log.info("Current URL is: {}", driver.getCurrentUrl());
+        return driver.getCurrentUrl().equals(String.format(VIEWS_URL_PATTERN, basicURL, getSearchPageUrl()));
     }
 
     @Step("I filter issues by text attribute {attributeName} set to {attributeValue}")
@@ -104,13 +118,13 @@ public abstract class GraphQLSearchPage extends BaseSDPage {
         notificationWrapperPage.clearNotifications();
         if (!isIssueTableEmpty()) {
             int minutes = 60;
-            filterByTextField(GraphQLSearchPage.CREATION_TIME_ATTRIBUTE, getTimePeriodForLastNMinutes(minutes));
+            filterByTextField(BaseSearchPage.CREATION_TIME_ATTRIBUTE, getTimePeriodForLastNMinutes(minutes));
             while (isIssueTableEmpty()) {
                 minutes += 30;
                 if (minutes > MAX_SEARCH_TIME_6_HOURS) {
                     throw new RuntimeException("No tickets to export created within last 6 hours");
                 }
-                filterByTextField(GraphQLSearchPage.CREATION_TIME_ATTRIBUTE, getTimePeriodForLastNMinutes(minutes));
+                filterByTextField(BaseSearchPage.CREATION_TIME_ATTRIBUTE, getTimePeriodForLastNMinutes(minutes));
             }
             clickExportInTicketSearch();
             ExportWizardPage exportWizardPage = new ExportWizardPage(driver, wait, exportWizardId);
@@ -126,13 +140,14 @@ public abstract class GraphQLSearchPage extends BaseSDPage {
         }
     }
 
-    @Step("Check if current url leads to search page page")
-    public boolean isSearchPageOpened(String basicURL, String pageURL) {
-        log.info("Current URL is: {}", driver.getCurrentUrl());
-        return driver.getCurrentUrl().equals(String.format(VIEWS_URL_PATTERN, basicURL, pageURL));
-    }
-
     public String getIssueID(int index) {
         return getIssueTable().getCellValue(index, ID_ATTRIBUTE);
+    }
+
+    @Step("I open details view for {rowIndex} issue in Issue table")
+    public IssueDetailsPage openIssueDetailsViewFromSearchPage(String rowIndex, String basicURL) {
+        String issueId = getIssueTable().getCellValue(Integer.parseInt(rowIndex), ID_ATTRIBUTE);
+        openPage(driver, String.format(DETAILS_PAGE_URL_PATTERN, basicURL, getIssueType(), issueId));
+        return new IssueDetailsPage(driver, wait);
     }
 }

@@ -64,7 +64,7 @@ public class ClosedTicketsTest extends BaseTestCase {
     @Test(priority = 2, testName = "Check Closed Tickets View", description = "Refresh, search and check if ticket is shown in the closed tickets table")
     @Description("Refresh, search and check if ticket is shown in the closed tickets table")
     public void checkClosedTicketView() {
-        closedTicketsPage = new MyTicketsPage(driver, webDriverWait).goToClosedTickets(driver, BASIC_URL);
+        closedTicketsPage = new MyTicketsPage(driver, webDriverWait).openView(driver, BASIC_URL);
         closedTicketsPage.clickRefresh();
         closedTicketsPage.filterByTextField(ID_ATTRIBUTE, ticketID);
         Assert.assertEquals(closedTicketsPage.getIdForNthTicketInTable(0), ticketID);
@@ -73,7 +73,7 @@ public class ClosedTicketsTest extends BaseTestCase {
     @Test(priority = 3, testName = "Export Closed Ticket", description = "Export Closed Ticket")
     @Description("Export Closed Ticket")
     public void ExportClosedTicket() {
-        closedTicketsPage = new MyTicketsPage(driver, webDriverWait).goToClosedTickets(driver, BASIC_URL);
+        closedTicketsPage = new MyTicketsPage(driver, webDriverWait).openView(driver, BASIC_URL);
         try {
             closedTicketsPage.exportFromSearchViewTable(EXPORT_WIZARD_ID);
         } catch (RuntimeException e) {
