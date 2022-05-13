@@ -11,7 +11,7 @@ import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.pages.platform.NotificationWrapperPage;
-import com.oss.pages.servicedesk.GraphQLSearchPage;
+import com.oss.pages.servicedesk.BaseSearchPage;
 import com.oss.pages.servicedesk.issue.IssueDetailsPage;
 import com.oss.pages.servicedesk.issue.MoreDetailsPage;
 import com.oss.pages.servicedesk.issue.RemainderForm;
@@ -38,7 +38,7 @@ import static com.oss.pages.servicedesk.ServiceDeskConstants.ISSUE_OUT_STATUS_AT
 import static com.oss.pages.servicedesk.ServiceDeskConstants.TROUBLE_TICKET_ISSUE_TYPE;
 
 @Listeners({TestListener.class})
-public class CreateTroubleTicketTest extends BaseTestCase {
+public class TicketsTest extends BaseTestCase {
 
     private TicketDashboardPage ticketDashboardPage;
     private TicketSearchPage ticketSearchPage;
@@ -133,7 +133,6 @@ public class CreateTroubleTicketTest extends BaseTestCase {
     private static final String FILE_TO_UPLOAD_PATH = "DataSourceCSV/CPU_USAGE_INFO_RAW-MAP.xlsx";
     private static final String CSV_FILE = "*CPU_USAGE_INFO_RAW-MAP*.*";
 
-    private static final String EMPTY_SEARCH_FILTER = "";
 
     @BeforeMethod
     public void goToTicketDashboardPage() {
@@ -144,7 +143,7 @@ public class CreateTroubleTicketTest extends BaseTestCase {
     @Test(priority = 1, testName = "Create CTT Ticket", description = "Create CTT Ticket")
     @Description("Create CTT Ticket")
     public void createCTTTicket(
-            @Optional("TEST_MO") String MOIdentifier,
+            @Optional("CFS_Access_Product_Selenium_1") String MOIdentifier,
             @Optional("ca_akolczyk") String ttAssignee,
             @Optional("ca_akolczyk") String EscalatedTo1
     ) {
@@ -205,15 +204,15 @@ public class CreateTroubleTicketTest extends BaseTestCase {
             @Optional("Tier2_Mobile") String NewAssignee
     ) {
         ticketSearchPage = new TicketSearchPage(driver, webDriverWait);
-        ticketSearchPage.goToTicketSearchPage(driver, BASIC_URL, EMPTY_SEARCH_FILTER);
+        ticketSearchPage.openView(driver, BASIC_URL);
         ticketSearchPage.filterByTextField(TICKETS_SEARCH_ASSIGNEE_ATTRIBUTE, NewAssignee);
         String startDate = LocalDateTime.now().minusMinutes(10).format(CREATE_DATE_FILTER_DATE_FORMATTER);
         String endDate = LocalDateTime.now().format(CREATE_DATE_FILTER_DATE_FORMATTER);
         String date = startDate + " - " + endDate;
-        ticketSearchPage.filterByTextField(GraphQLSearchPage.CREATION_TIME_ATTRIBUTE, date);
-        ticketSearchPage.filterByTextField(GraphQLSearchPage.DESCRIPTION_ATTRIBUTE, TT_DESCRIPTION_EDITED);
+        ticketSearchPage.filterByTextField(BaseSearchPage.CREATION_TIME_ATTRIBUTE, date);
+        ticketSearchPage.filterByTextField(BaseSearchPage.DESCRIPTION_ATTRIBUTE, TT_DESCRIPTION_EDITED);
         ticketSearchPage.filterByComboBox(TICKETS_SEARCH_STATUS_ATTRIBUTE, STATUS_ACKNOWLEDGED);
-        issueDetailsPage = ticketSearchPage.openTicketDetailsView("0", BASIC_URL);
+        issueDetailsPage = ticketSearchPage.openIssueDetailsViewFromSearchPage("0", BASIC_URL);
         Assert.assertEquals(issueDetailsPage.getOpenedIssueId(), ticketID);
     }
 

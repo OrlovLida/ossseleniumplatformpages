@@ -19,7 +19,7 @@ import io.qameta.allure.Description;
 
 import static com.oss.pages.servicedesk.ServiceDeskConstants.CHANGE_ISSUE_TYPE;
 
-public class CreateChangeTest extends BaseTestCase {
+public class ChangesTest extends BaseTestCase {
 
     private ChangeDashboardPage changeDashboardPage;
     private SDWizardPage sdWizardPage;

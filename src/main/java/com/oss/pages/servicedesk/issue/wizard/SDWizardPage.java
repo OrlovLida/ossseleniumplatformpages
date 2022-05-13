@@ -15,6 +15,7 @@ import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.servicedesk.BaseSDPage;
+import com.oss.pages.servicedesk.issue.problem.ProblemDashboardPage;
 import com.oss.pages.servicedesk.issue.ticket.TicketDashboardPage;
 
 import io.qameta.allure.Step;
@@ -36,6 +37,7 @@ public class SDWizardPage extends BaseSDPage {
     private static final String TT_WIZARD_REFERENCE_ID = "TT_WIZARD_INPUT_REFERENCE_ID_LABEL";
     private static final String TT_WIZARD_ISSUE_START_DATE_ID = "IssueStartDate";
     private static final String TT_WIZARD_MESSAGE_DATE_ID = "PleaseProvideTheTimeOnTheHandsetTheTxtMessageArrived";
+    private static final String PROBLEM_NAME_DESCRIPTION_ID = "TT_WIZARD_INPUT_PROBLEM_NAME_DESCRIPTION";
     private static final String NOTIFICATION_CHANNEL_INTERNAL = "Internal";
     private static final String NOTIFICATION_WIZARD_CHANNEL_ID = "channel-component-input";
     private static final String NOTIFICATION_WIZARD_MESSAGE_ID = "message-component";
@@ -185,6 +187,17 @@ public class SDWizardPage extends BaseSDPage {
         insertValueToTextComponent(date, TT_WIZARD_MESSAGE_DATE_ID);
         clickAcceptButtonInWizard();
         return new TicketDashboardPage(driver, wait);
+    }
+
+    public ProblemDashboardPage createProblem(String moIdentifier, String assignee, String description) {
+        getMoStep().enterTextIntoSearchComponent(moIdentifier);
+        getMoStep().selectObjectInMOTable(moIdentifier);
+        clickNextButtonInWizard();
+        insertValueToTextAreaComponent(description, PROBLEM_NAME_DESCRIPTION_ID);
+        insertValueToSearchComponent(assignee, TT_WIZARD_ASSIGNEE);
+        clickNextButtonInWizard();
+        clickAcceptButtonInWizard();
+        return new ProblemDashboardPage(driver, wait);
     }
 
     public void createInternalNotification(String textMessage, String messageTo) {

@@ -8,7 +8,7 @@
         <parameter name="RelatedTicketID" value="100"/>
         <parameter name="ProblemToLinkId" value="100"/>
         <classes>
-            <class name="com.oss.servicedesk.ProblemsTest"/>
+            <class name="com.oss.servicedesk.problemmanagement.ProblemsTest"/>
         </classes>
     </test>
 </suite>

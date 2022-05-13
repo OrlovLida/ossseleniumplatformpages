@@ -23,4 +23,6 @@ public class ServiceDeskConstants {
     public static final String DETAILS_TABS_CONTAINER_ID = "_detailsWindow";
     public static final String TABS_WIDGET_ID = "_tablesWindow";
     public static final String CHANGE_DASHBOARD = "_ChangeManagement";
+    public static final String TICKETS_TABLE_ID = "ticket-search-graphql-table";
+    public static final String PROBLEMS_TABLE_ID = "problem-search-graphql-table";
 }

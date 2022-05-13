@@ -11,23 +11,23 @@ import io.qameta.allure.Step;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.PROBLEMS_TABLE_ID;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.PROBLEM_ISSUE_TYPE;
 
-public class ProblemSearchPage extends BaseSearchPage {
+public class ClosedProblemsPage extends BaseSearchPage {
 
-    private static final String PROBLEMS_SEARCH = "problem-search";
+    private static final String CLOSED_PROBLEMS = "problem-search?type=closed";
 
-    public ProblemSearchPage(WebDriver driver, WebDriverWait wait) {
+    public ClosedProblemsPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
     }
 
     @Override
-    @Step("I open Problems Search View")
-    public ProblemSearchPage openView(WebDriver driver, String basicURL) {
-        goToPage(driver, basicURL, PROBLEMS_SEARCH);
+    @Step("I open Closed Problems View")
+    public ClosedProblemsPage openView(WebDriver driver, String basicURL) {
+        goToPage(driver, basicURL, CLOSED_PROBLEMS);
         return this;
     }
 
     public String getSearchPageUrl() {
-        return PROBLEMS_SEARCH;
+        return CLOSED_PROBLEMS;
     }
 
     public String getIssueType() {
