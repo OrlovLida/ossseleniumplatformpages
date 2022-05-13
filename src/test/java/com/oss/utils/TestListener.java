@@ -79,12 +79,6 @@ public class TestListener extends BaseTestCase implements ITestListener {
     @Override
     public void onTestSkipped(ITestResult iTestResult) {
         log.info("I am in onTestSkipped method " + getTestMethodName(iTestResult) + " skipped");
-        Object testClass = iTestResult.getInstance();
-        WebDriver driver = ((BaseTestCase) testClass).driver;
-        if (driver != null) {
-            log.info("Screenshot captured for test case:" + getTestMethodName(iTestResult));
-            saveScreenshotPNG(driver);
-        }
     }
 
     @Override
