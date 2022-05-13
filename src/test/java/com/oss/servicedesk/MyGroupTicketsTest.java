@@ -21,7 +21,7 @@ import static com.oss.pages.servicedesk.ServiceDeskConstants.ID_ATTRIBUTE;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.TROUBLE_TICKET_ISSUE_TYPE;
 
 @Listeners({TestListener.class})
-public class MyGroupTicketsVFNZTest extends BaseTestCase {
+public class MyGroupTicketsTest extends BaseTestCase {
     private TicketDashboardPage ticketDashboardPage;
     private MyTicketsPage myTicketsPage;
     private NotificationWrapperPage notificationWrapperPage;
@@ -57,7 +57,7 @@ public class MyGroupTicketsVFNZTest extends BaseTestCase {
     @Test(priority = 2, testName = "Check My Group Tickets", description = "Check My Group Tickets")
     @Description("Check My Group Tickets")
     public void checkMyGroupTickets() {
-        myTicketsPage = new MyTicketsPage(driver, webDriverWait).goToMyGroupTickets(driver, BASIC_URL);
+        myTicketsPage = new MyTicketsPage(driver, webDriverWait).openView(driver, BASIC_URL);
         myTicketsPage.filterByTextField(ID_ATTRIBUTE, ticketID);
         Assert.assertFalse(myTicketsPage.isIssueTableEmpty());
         Assert.assertEquals(ticketID, myTicketsPage.getIdForNthTicketInTable(0));
@@ -66,7 +66,7 @@ public class MyGroupTicketsVFNZTest extends BaseTestCase {
     @Test(priority = 3, testName = "Refresh MyGroup Tickets", description = "Refresh MyGroup Tickets")
     @Description("Refresh MyGroup Tickets")
     public void refreshMyGroupTickets() {
-        myTicketsPage = new MyTicketsPage(driver, webDriverWait).goToMyGroupTickets(driver, BASIC_URL);
+        myTicketsPage = new MyTicketsPage(driver, webDriverWait).openView(driver, BASIC_URL);
         if (!myTicketsPage.isIssueTableEmpty()) {
             int ticketsInTable = myTicketsPage.countIssuesInTable();
             myTicketsPage.clickRefresh();
@@ -82,7 +82,7 @@ public class MyGroupTicketsVFNZTest extends BaseTestCase {
     @Test(priority = 4, testName = "Export from My Group Tickets", description = "Export from My Group Tickets")
     @Description("Export from My Group Tickets")
     public void exportFromMyGroupTickets() {
-        myTicketsPage = new MyTicketsPage(driver, webDriverWait).goToMyGroupTickets(driver, BASIC_URL);
+        myTicketsPage = new MyTicketsPage(driver, webDriverWait).openView(driver, BASIC_URL);
         try {
             myTicketsPage.exportFromSearchViewTable(EXPORT_WIZARD_ID);
         } catch (RuntimeException e) {
@@ -94,8 +94,8 @@ public class MyGroupTicketsVFNZTest extends BaseTestCase {
         Assert.assertTrue(myTicketsPage.checkIfFileIsNotEmpty(DOWNLOAD_FILE));
     }
 
-    @Test(priority = 5, testName = "My Tickets Check", description = "Change assignee nad check if ticket is visible in My Ticket View")
-    @Description("Change assignee nad check if ticket is visible in My Ticket View")
+    @Test(priority = 5, testName = "My Tickets Check", description = "Change assignee and check if ticket is visible in My Ticket View")
+    @Description("Change assignee and check if ticket is visible in My Ticket View")
     public void myTicketsCheck() {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
         issueDetailsPage.allowEditingTicket();
@@ -105,7 +105,7 @@ public class MyGroupTicketsVFNZTest extends BaseTestCase {
         sdWizardPage.insertValueToSearchComponent(SELENIUM_TEST_USER, TT_WIZARD_ASSIGNEE);
         sdWizardPage.clickNextButtonInWizard();
         sdWizardPage.clickAcceptButtonInWizard();
-        myTicketsPage = new MyTicketsPage(driver, webDriverWait).goToMyTickets(driver, BASIC_URL);
+        myTicketsPage = new MyTicketsPage(driver, webDriverWait).openView(driver, BASIC_URL);
         Assert.assertFalse(myTicketsPage.isIssueTableEmpty());
 
         myTicketsPage.filterByTextField(ID_ATTRIBUTE, ticketID);

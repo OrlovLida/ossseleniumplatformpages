@@ -9,7 +9,7 @@
         <parameter name="RelatedChangeID" value="35"/>
         <parameter name="SecondMOIdentifier" value="TEST_MO"/>
         <classes>
-            <class name="com.oss.servicedesk.changemanagement.CreateChangeTest"/>
+            <class name="com.oss.servicedesk.changemanagement.ChangesTest"/>
         </classes>
     </test>
 </suite>

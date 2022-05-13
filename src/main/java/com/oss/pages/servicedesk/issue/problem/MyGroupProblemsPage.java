@@ -11,23 +11,23 @@ import io.qameta.allure.Step;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.PROBLEMS_TABLE_ID;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.PROBLEM_ISSUE_TYPE;
 
-public class ProblemSearchPage extends BaseSearchPage {
+public class MyGroupProblemsPage extends BaseSearchPage {
 
-    private static final String PROBLEMS_SEARCH = "problem-search";
+    private static final String MY_GROUP_PROBLEMS = "problem-search?type=my-group";
 
-    public ProblemSearchPage(WebDriver driver, WebDriverWait wait) {
+    public MyGroupProblemsPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
     }
 
     @Override
-    @Step("I open Problems Search View")
-    public ProblemSearchPage openView(WebDriver driver, String basicURL) {
-        goToPage(driver, basicURL, PROBLEMS_SEARCH);
+    @Step("I open My Group Problems View")
+    public MyGroupProblemsPage openView(WebDriver driver, String basicURL) {
+        goToPage(driver, basicURL, MY_GROUP_PROBLEMS);
         return this;
     }
 
     public String getSearchPageUrl() {
-        return PROBLEMS_SEARCH;
+        return MY_GROUP_PROBLEMS;
     }
 
     public String getIssueType() {
