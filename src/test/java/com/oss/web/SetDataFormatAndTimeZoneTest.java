@@ -39,7 +39,6 @@ public class SetDataFormatAndTimeZoneTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-
     @Test(priority = 1)
     public void changeDataFormat() {
         homePage.chooseDataFormat(PRESENT_FORMAT, DFT1);
