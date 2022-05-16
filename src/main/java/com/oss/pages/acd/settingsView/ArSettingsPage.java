@@ -132,24 +132,4 @@ public class ArSettingsPage extends BaseACDPage {
         log.info("Table is empty. Action Template has been removed successfully");
         return true;
     }
-
-    @Step("I go to Subsystems Health tab")
-    public void goToSubsystemsHealthTab(String tabLabel) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        TabsWidget.createById(driver, wait, TAB_ID).selectTabByLabel(tabLabel);
-        log.debug("I opened Subsystems Health tab");
-    }
-
-    @Step("I check if AR subsystems are up and running")
-    public boolean isSubsystemUpAndRunning() {
-
-        for (StatusIcon.IconItem icon: StatusIcon.createStatusIcon(driver, wait).getIcons()) {
-            if (!icon.isIconGreen()) {
-                log.debug("At least one of AR subsystem is NOT up and running");
-                return false;
-            }
-        }
-        log.debug("All AR subsystems are up and running");
-        return true;
-    }
 }
