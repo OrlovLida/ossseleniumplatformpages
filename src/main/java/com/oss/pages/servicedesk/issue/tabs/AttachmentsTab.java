@@ -56,6 +56,13 @@ public class AttachmentsTab extends BaseSDPage {
         confirmDelete();
     }
 
+    public AttachmentsTab addAttachment(String fileToUpload) {
+        clickAttachFile()
+                .uploadAttachmentFile(fileToUpload)
+                .clickAccept();
+        return this;
+    }
+
     private void confirmDelete() {
         Button.createById(driver, CONFIRM_DELETE_ATTACHMENT_BUTTON_ID).click();
         DelayUtils.waitForPageToLoad(driver, wait);
