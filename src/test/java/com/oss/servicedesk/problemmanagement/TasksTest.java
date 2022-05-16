@@ -1,4 +1,4 @@
-package com.oss.servicedesk;
+package com.oss.servicedesk.problemmanagement;
 
 import java.time.LocalDateTime;
 
@@ -20,7 +20,7 @@ import static com.oss.pages.servicedesk.ServiceDeskConstants.ISSUE_OUT_ASSIGNEE_
 import static com.oss.pages.servicedesk.ServiceDeskConstants.ISSUE_OUT_STATUS_ATTR;
 
 @Listeners({TestListener.class})
-public class CreateTaskTest extends BaseTestCase {
+public class TasksTest extends BaseTestCase {
 
     private TaskDashboardPage taskDashboardPage;
     private MyTasksPage myTasksPage;
@@ -85,7 +85,7 @@ public class CreateTaskTest extends BaseTestCase {
     @Description("My Tasks view")
     public void myTasks() {
         myTasksPage = new MyTasksPage(driver, webDriverWait);
-        myTasksPage.goToMyTasks(driver, BASIC_URL);
+        myTasksPage.openView(driver, BASIC_URL);
         myTasksPage.filterByTextField(MY_TASKS_NAME_ATTRIBUTE, TASK_NAME);
         myTasksPage.filterByTextField(MY_TASKS_ASSIGNEE_ATTRIBUTE, TASK_NEW_ASSIGNEE);
         myTasksPage.filterByComboBox(MY_TASKS_STATUS_ATTRIBUTE, TASK_NEW_STATUS);

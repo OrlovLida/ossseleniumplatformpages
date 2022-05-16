@@ -34,13 +34,11 @@ public class EditReleaseFunctionalityTest extends BaseTestCase {
     private RelatedProblemsTab relatedProblemsTab;
     private String ticketID;
 
-    private static final String EMPTY_SEARCH_FILTER = "";
-
     @Parameters({"MOIdentifier", "ttAssignee"})
     @Test(priority = 1, testName = "Create CTT Ticket", description = "Create CTT Ticket")
     @Description("Create CTT Ticket")
     public void createCTTTicket(
-            @Optional("TEST_MO") String MOIdentifier,
+            @Optional("CFS_Access_Product_Selenium_1") String MOIdentifier,
             @Optional("ca_kodrobinska") String ttAssignee
     ) {
         ticketDashboardPage = new TicketDashboardPage(driver, webDriverWait).goToPage(driver, BASIC_URL);
@@ -53,9 +51,9 @@ public class EditReleaseFunctionalityTest extends BaseTestCase {
     @Test(priority = 2, testName = "Checklist - edit mode", description = "Edit mode - check if Skip buttons are available")
     @Description("Edit mode - check if Skip buttons are available")
     public void checklistOnEditMode() {
-        ticketSearchPage = new TicketSearchPage(driver, webDriverWait).goToTicketSearchPage(driver, BASIC_URL, EMPTY_SEARCH_FILTER);
+        ticketSearchPage = new TicketSearchPage(driver, webDriverWait).openView(driver, BASIC_URL);
         ticketSearchPage.filterByTextField(ID_ATTRIBUTE, ticketID);
-        issueDetailsPage = ticketSearchPage.openTicketDetailsView("0", BASIC_URL);
+        issueDetailsPage = ticketSearchPage.openIssueDetailsViewFromSearchPage("0", BASIC_URL);
         issueDetailsPage.allowEditingTicket();
 
         Assert.assertTrue(issueDetailsPage.areSkipButtonsActive());

@@ -4,6 +4,7 @@ import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Prope
 import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Property.GROUPS;
 import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Property.TYPE;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.testng.Assert;
@@ -32,17 +33,17 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
     private final static String CONFIGURATION_NAME_IV_TYPE_DEFAULT_FOR_GROUP = "IV_Default_For_GROUP_TYPE";
     private final static String DEFAULT_CONFIGURATION = "DEFAULT";
     private final static String CONFIGURATION_NAME_TABLE_WIDGET_USED_IN_VIEW_CONFIG =
-            "Table_Widget_Used_In_View_Configuration_Selenium_Test";
+            "Table_Widget_Used_In_View_Configuration_Selenium_Test_" + LocalDate.now();
     private final static String CONFIGURATION_NAME_TABLE_WIDGET_USED_IN_DEFAULT_VIEW_CONFIG =
-            "Table_Configurationt_Used_In__Default_View_Configuration";
+            "Table_Configurationt_Used_In__Default_View_Configuration_" + LocalDate.now();
     private final static String CONFIGURATION_TEST_PERSON_TABS_WIDGET_USED_IN_DEFAULT_VIEW_CONFIG =
-            "Tabs_Widget_Person_Configuration_Used_In_Default_View_Configuration";
+            "Tabs_Widget_Person_Configuration_Used_In_Default_View_Configuration_" + LocalDate.now();
     private final static String CONFIGURATION_TEST_DIRECTOR_TABS_WIDGET_USED_IN_DEFAULT_GROUP_CONFIG =
-            "Tabs_Widget_Director_Configuration_Used_In_Default_Group_Configuration";
+            "Tabs_Widget_Director_Configuration_Used_In_Default_Group_Configuration_" + LocalDate.now();
     private final static String CONFIGURATION_TEST_ACTOR_TABS_WIDGET_USED_IN_VIEW_CONFIG =
-            "Tabs_Widget_Actor_Configuration_Used_In_View_Configuration_Selenium_Tests";
+            "Tabs_Widget_Actor_Configuration_Used_In_View_Configuration_Selenium_Tests_" + LocalDate.now();
     private final static String CONFIGURATION_TEST_DIRECTOR_TABS_WIDGET_USED_IN_VIEW_CONFIG =
-            "Tabs_Widget_Director_Configuration_Used_In_View_Configuration_Selenium_Tests";
+            "Tabs_Widget_Director_Configuration_Used_In_View_Configuration_Selenium_Tests_" + LocalDate.now();
     private final static String TYPE_LABEL = "Type";
     private static final String LIFECYCLE_STATE_LABEL = "Lifecycle State";
     private final static String GENDER_LABEL = "Gender";

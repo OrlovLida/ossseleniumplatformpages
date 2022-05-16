@@ -1,0 +1,26 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="RegressionSuiteWeb-WEB" thread-count="1" parallel="tests" verbose="1">
+
+    <test name="TableWidgetConfigurationTest">
+        <classes>
+            <class name="com.oss.configuration.TableWidgetConfigurationTest"/>
+        </classes>
+    </test>
+    <test name="TabsConfigurationTest">
+        <classes>
+            <class name="com.oss.configuration.TabsConfigurationTest"/>
+        </classes>
+    </test>
+
+    <test name="DetailsConfigurationTest">
+        <classes>
+            <class name="com.oss.configuration.DetailsConfigurationTest"/>
+        </classes>
+    </test>
+    <test name="InventoryViewConfigurationTest">
+        <classes>
+            <class name="com.oss.configuration.InventoryViewConfigurationTest"/>
+        </classes>
+    </test>
+
+</suite>

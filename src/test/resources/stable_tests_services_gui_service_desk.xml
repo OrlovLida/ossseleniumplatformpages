@@ -10,7 +10,7 @@
         <parameter name="RelatedTicketID" value="100"/>
         <parameter name="SecondMOIdentifier" value="CFS_Access_Product_Selenium_2"/>
         <classes>
-            <class name="com.oss.servicedesk.CreateTroubleTicketTest"/>
+            <class name="com.oss.servicedesk.TicketsTest"/>
         </classes>
     </test>
     <test name="ExportTest">

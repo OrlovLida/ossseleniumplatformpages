@@ -1,4 +1,4 @@
-package com.oss.servicedesk;
+package com.oss.servicedesk.problemmanagement;
 
 import java.time.LocalDateTime;
 

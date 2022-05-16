@@ -6,10 +6,15 @@ import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.pages.servicedesk.ServiceDeskMenuPage;
+import com.oss.pages.servicedesk.issue.problem.ClosedProblemsPage;
+import com.oss.pages.servicedesk.issue.problem.MyGroupProblemsPage;
 import com.oss.pages.servicedesk.issue.problem.MyProblemsPage;
 import com.oss.pages.servicedesk.issue.problem.ProblemDashboardPage;
 import com.oss.pages.servicedesk.issue.problem.ProblemSearchPage;
+import com.oss.pages.servicedesk.issue.task.MyTasksPage;
 import com.oss.pages.servicedesk.issue.task.TaskDashboardPage;
+import com.oss.pages.servicedesk.issue.ticket.ClosedTicketsPage;
+import com.oss.pages.servicedesk.issue.ticket.MyGroupTicketsPage;
 import com.oss.pages.servicedesk.issue.ticket.MyTicketsPage;
 import com.oss.pages.servicedesk.issue.ticket.TicketDashboardPage;
 import com.oss.pages.servicedesk.issue.ticket.TicketSearchPage;
@@ -26,9 +31,14 @@ public class LeftSideMenuSDTest extends BaseTestCase {
     private ProblemDashboardPage problemDashboardPage;
     private TicketSearchPage ticketSearchPage;
     private MyTicketsPage myTicketsPage;
+    private MyGroupTicketsPage myGroupTicketsPage;
+    private ClosedTicketsPage closedTicketsPage;
     private ProblemSearchPage problemSearchPage;
     private MyProblemsPage myProblemsPage;
+    private MyGroupProblemsPage myGroupProblemsPage;
+    private ClosedProblemsPage closedProblemsPage;
     private TaskDashboardPage taskDashboardPage;
+    private MyTasksPage myTasksPage;
     private static final String DASHBOARD_PAGE = "Dashboard";
     private static final String TICKETS_SEARCH_PAGE = "Tickets Search";
     private static final String MY_TICKETS_PAGE = "My Tickets";
@@ -38,6 +48,8 @@ public class LeftSideMenuSDTest extends BaseTestCase {
     private static final String MY_GROUP_PROBLEMS_PAGE = "My Group Problems";
     private static final String TASKS_DASHBOARD_PAGE = "Tasks";
     private static final String CLOSED_TICKETS_PAGE = "Closed Tickets";
+    private static final String CLOSED_PROBLEMS_PAGE = "Closed Problems";
+    private static final String MY_TASKS_PAGE = "My Tasks";
 
     @BeforeMethod
     public void openMainPage() {
@@ -57,7 +69,7 @@ public class LeftSideMenuSDTest extends BaseTestCase {
     public void goToTicketSearch() {
         serviceDeskMenuPage.chooseFromTroubleTicketsMenu(TICKETS_SEARCH_PAGE);
         ticketSearchPage = new TicketSearchPage(driver, webDriverWait);
-        Assert.assertTrue(ticketSearchPage.isSearchPageOpened(BASIC_URL, "ticket-search"));
+        Assert.assertTrue(ticketSearchPage.isPageOpened(BASIC_URL));
         Assert.assertEquals(ticketSearchPage.getViewTitle(), TICKETS_SEARCH_PAGE);
     }
 
@@ -66,7 +78,7 @@ public class LeftSideMenuSDTest extends BaseTestCase {
     public void goToMyTickets() {
         serviceDeskMenuPage.chooseFromTroubleTicketsMenu(MY_TICKETS_PAGE);
         myTicketsPage = new MyTicketsPage(driver, webDriverWait);
-        Assert.assertTrue(myTicketsPage.isMyTicketsPageOpened(BASIC_URL, MY_TICKETS_PAGE));
+        Assert.assertTrue(myTicketsPage.isPageOpened(BASIC_URL));
         Assert.assertEquals(myTicketsPage.getViewTitle(), MY_TICKETS_PAGE);
     }
 
@@ -74,9 +86,9 @@ public class LeftSideMenuSDTest extends BaseTestCase {
     @Description("Going to My Group Tickets from Left Side Menu")
     public void goToMyGroupTickets() {
         serviceDeskMenuPage.chooseFromTroubleTicketsMenu(MY_GROUP_TICKETS_PAGE);
-        myTicketsPage = new MyTicketsPage(driver, webDriverWait);
-        Assert.assertTrue(myTicketsPage.isMyTicketsPageOpened(BASIC_URL, MY_GROUP_TICKETS_PAGE));
-        Assert.assertEquals(myTicketsPage.getViewTitle(), MY_GROUP_TICKETS_PAGE);
+        myGroupTicketsPage = new MyGroupTicketsPage(driver, webDriverWait);
+        Assert.assertTrue(myGroupTicketsPage.isPageOpened(BASIC_URL));
+        Assert.assertEquals(myGroupTicketsPage.getViewTitle(), MY_GROUP_TICKETS_PAGE);
     }
 
     @Test(testName = "Go to Problem Dashboard", description = "Going to Problem Dashboard from Left Side Menu")
@@ -92,7 +104,7 @@ public class LeftSideMenuSDTest extends BaseTestCase {
     public void goToProblemSearch() {
         serviceDeskMenuPage.chooseFromProblemManagementMenu(PROBLEMS_SEARCH_PAGE);
         problemSearchPage = new ProblemSearchPage(driver, webDriverWait);
-        Assert.assertTrue(problemSearchPage.isSearchPageOpened(BASIC_URL, "problem-search"));
+        Assert.assertTrue(problemSearchPage.isPageOpened(BASIC_URL));
         Assert.assertEquals(problemSearchPage.getViewTitle(), PROBLEMS_SEARCH_PAGE);
     }
 
@@ -101,7 +113,7 @@ public class LeftSideMenuSDTest extends BaseTestCase {
     public void goToMyProblems() {
         serviceDeskMenuPage.chooseFromProblemManagementMenu(MY_PROBLEMS_PAGE);
         myProblemsPage = new MyProblemsPage(driver, webDriverWait);
-        Assert.assertTrue(myProblemsPage.isMyProblemPageOpened(BASIC_URL, MY_PROBLEMS_PAGE));
+        Assert.assertTrue(myProblemsPage.isPageOpened(BASIC_URL));
         Assert.assertEquals(myProblemsPage.getViewTitle(), MY_PROBLEMS_PAGE);
     }
 
@@ -109,9 +121,9 @@ public class LeftSideMenuSDTest extends BaseTestCase {
     @Description("Going to My Group Problems from Left Side Menu")
     public void goToMyGroupProblems() {
         serviceDeskMenuPage.chooseFromProblemManagementMenu(MY_GROUP_PROBLEMS_PAGE);
-        myProblemsPage = new MyProblemsPage(driver, webDriverWait);
-        Assert.assertTrue(myProblemsPage.isMyProblemPageOpened(BASIC_URL, MY_GROUP_PROBLEMS_PAGE));
-        Assert.assertEquals(myProblemsPage.getViewTitle(), MY_GROUP_PROBLEMS_PAGE);
+        myGroupProblemsPage = new MyGroupProblemsPage(driver, webDriverWait);
+        Assert.assertTrue(myGroupProblemsPage.isPageOpened(BASIC_URL));
+        Assert.assertEquals(myGroupProblemsPage.getViewTitle(), MY_GROUP_PROBLEMS_PAGE);
     }
 
     @Test(testName = "Go to Tasks dashboard", description = "Going to Tasks dashboard from Left Side Menu")
@@ -127,9 +139,27 @@ public class LeftSideMenuSDTest extends BaseTestCase {
     @Description("Going to Closed Tickets from Left Side Menu")
     public void goToClosedTickets() {
         serviceDeskMenuPage.chooseFromTroubleTicketsMenu(CLOSED_TICKETS_PAGE);
-        myTicketsPage = new MyTicketsPage(driver, webDriverWait);
-        Assert.assertTrue(myTicketsPage.isMyTicketsPageOpened(BASIC_URL, CLOSED_TICKETS_PAGE));
-        Assert.assertEquals(myTicketsPage.getViewTitle(), CLOSED_TICKETS_PAGE);
+        closedTicketsPage = new ClosedTicketsPage(driver, webDriverWait);
+        Assert.assertTrue(closedTicketsPage.isPageOpened(BASIC_URL));
+        Assert.assertEquals(closedTicketsPage.getViewTitle(), CLOSED_TICKETS_PAGE);
+    }
+
+    @Test(testName = "Go to Closed Problems", description = "Going to Closed Problems from Left Side Menu")
+    @Description("Going to Closed Problems from Left Side Menu")
+    public void goToClosedProblems() {
+        serviceDeskMenuPage.chooseFromTroubleTicketsMenu(CLOSED_PROBLEMS_PAGE);
+        closedProblemsPage = new ClosedProblemsPage(driver, webDriverWait);
+        Assert.assertTrue(closedProblemsPage.isPageOpened(BASIC_URL));
+        Assert.assertEquals(closedProblemsPage.getViewTitle(), CLOSED_PROBLEMS_PAGE);
+    }
+
+    @Test(testName = "Go to My Tasks", description = "Going to My Tasks from Left Side Menu")
+    @Description("Going to My Tasks from Left Side Menu")
+    public void goToMyTasks() {
+        serviceDeskMenuPage.chooseFromProblemManagementMenu(MY_TASKS_PAGE);
+        myTasksPage = new MyTasksPage(driver, webDriverWait);
+        Assert.assertTrue(myTasksPage.isPageOpened(BASIC_URL));
+        Assert.assertEquals(myTasksPage.getViewTitle(), MY_TASKS_PAGE);
     }
 }
 
