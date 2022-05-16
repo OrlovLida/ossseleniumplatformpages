@@ -1,5 +1,8 @@
 package com.oss.servicedesk.changemanagement;
 
+import java.lang.reflect.Method;
+import java.time.LocalDateTime;
+
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Optional;
@@ -7,17 +10,24 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
-import com.oss.pages.platform.NotificationWrapperPage;
 import com.oss.pages.servicedesk.changemanagement.ChangeDashboardPage;
 import com.oss.pages.servicedesk.issue.IssueDetailsPage;
+import com.oss.pages.servicedesk.issue.tabs.AttachmentsTab;
 import com.oss.pages.servicedesk.issue.tabs.MessagesTab;
+import com.oss.pages.servicedesk.issue.tabs.ParticipantsTab;
 import com.oss.pages.servicedesk.issue.tabs.RelatedChangesTab;
+import com.oss.pages.servicedesk.issue.tabs.RelatedProblemsTab;
+import com.oss.pages.servicedesk.issue.tabs.RolesTab;
 import com.oss.pages.servicedesk.issue.tabs.RootCausesTab;
 import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
 
 import io.qameta.allure.Description;
 
 import static com.oss.pages.servicedesk.ServiceDeskConstants.CHANGE_ISSUE_TYPE;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.COMBOBOX_LINK_PROBLEM_ID;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.CSV_FILE;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.FILE_TO_UPLOAD_PATH;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.USER_NAME;
 
 public class ChangesTest extends BaseTestCase {
 
@@ -26,8 +36,11 @@ public class ChangesTest extends BaseTestCase {
     private IssueDetailsPage issueDetailsPage;
     private MessagesTab messagesTab;
     private RelatedChangesTab relatedChangesTab;
-    private NotificationWrapperPage notificationWrapperPage;
     private RootCausesTab rootCausesTab;
+    private RelatedProblemsTab relatedProblemsTab;
+    private RolesTab rolesTab;
+    private ParticipantsTab participantsTab;
+    private AttachmentsTab attachmentsTab;
     private String changeID;
 
     private static final String RISK_ASSESSMENT_ID = "TT_WIZARD_INPUT_RISK_ASSESSMENT_LABEL";
@@ -44,10 +57,20 @@ public class ChangesTest extends BaseTestCase {
     private static final String NOTIFICATION_EMAIL_MSG = "Test Selenium Email Message";
     private static final String TABLES_WINDOW_ID = "_tablesWindow";
     private static final String INTERNAL_COMMENT_MSG = "Test Selenium Message Comment in Change";
+    private static final String PARTICIPANT_FIRST_NAME = "SeleniumTest";
+    private static final String PARTICIPANT_FIRST_NAME_EDITED = "SeleniumTestEdited";
+    private static final String PARTICIPANT_SURNAME = LocalDateTime.now().toString();
+    private static final String PARTICIPANT_ROLE = "Contact";
+    private static final String TABS_WIDGET_ID = "_tablesWindow";
 
     @BeforeMethod
-    public void goToTicketDashboardPage() {
+    public void goToChangeDashboardOrIssue(Method method) {
         changeDashboardPage = new ChangeDashboardPage(driver, webDriverWait).goToPage(driver, BASIC_URL);
+        if (changeID != null) {
+            issueDetailsPage = changeDashboardPage.openIssueDetailsView(changeID, BASIC_URL, CHANGE_ISSUE_TYPE);
+        } else if (!method.getName().equals("createChange")) {
+            Assert.fail("Change has not been created.");
+        }
     }
 
     @Parameters({"userName"})
@@ -74,7 +97,6 @@ public class ChangesTest extends BaseTestCase {
     public void editChange(
             @Optional("ca_kodrobinska") String newAssignee
     ) {
-        issueDetailsPage = changeDashboardPage.openIssueDetailsView(changeID, BASIC_URL, CHANGE_ISSUE_TYPE);
         sdWizardPage = issueDetailsPage.openEditChangeWizard();
         sdWizardPage.insertValueToSearchComponent(newAssignee, ASSIGNEE_ID);
         sdWizardPage.insertValueToTextAreaComponent(INCIDENT_DESCRIPTION_TXT_EDITED, INCIDENT_DESCRIPTION_ID);
@@ -86,7 +108,6 @@ public class ChangesTest extends BaseTestCase {
     @Test(priority = 3, testName = "Check description", description = "Check change description on Description tab")
     @Description("Check change description on Description tab")
     public void checkDescription() {
-        issueDetailsPage = changeDashboardPage.openIssueDetailsView(changeID, BASIC_URL, CHANGE_ISSUE_TYPE);
         issueDetailsPage.selectTabFromTabsWidget(DESCRIPTION_WINDOW_ID, DESCRIPTION_TAB_ID);
         Assert.assertEquals(issueDetailsPage.getDisplayedText(DESCRIPTION_WINDOW_ID, DESCRIPTION_FIELD_ID), INCIDENT_DESCRIPTION_TXT_EDITED);
     }
@@ -97,7 +118,6 @@ public class ChangesTest extends BaseTestCase {
     public void addInternalNotification(
             @Optional("ca_kodrobinska") String messageTo
     ) {
-        issueDetailsPage = changeDashboardPage.openIssueDetailsView(changeID, BASIC_URL, CHANGE_ISSUE_TYPE);
         issueDetailsPage.maximizeWindow(TABLES_WINDOW_ID);
         messagesTab = issueDetailsPage.selectMessagesTab();
         sdWizardPage = messagesTab.createNewNotificationOnMessagesTab();
@@ -116,7 +136,6 @@ public class ChangesTest extends BaseTestCase {
             @Optional("kornelia.odrobinska@comarch.com") String notificationEmailTo,
             @Optional("switch.ticket@comarch.com") String notificationEmailFrom
     ) {
-        issueDetailsPage = changeDashboardPage.openIssueDetailsView(changeID, BASIC_URL, CHANGE_ISSUE_TYPE);
         issueDetailsPage.maximizeWindow(TABLES_WINDOW_ID);
         messagesTab = issueDetailsPage.selectMessagesTab();
         sdWizardPage = messagesTab.createNewNotificationOnMessagesTab();
@@ -130,7 +149,6 @@ public class ChangesTest extends BaseTestCase {
     @Test(priority = 6, testName = "Add Internal Comment", description = "Add Internal Comment")
     @Description("Add Internal Comment")
     public void addInternalComment() {
-        issueDetailsPage = changeDashboardPage.openIssueDetailsView(changeID, BASIC_URL, CHANGE_ISSUE_TYPE);
         issueDetailsPage.maximizeWindow(TABLES_WINDOW_ID);
         messagesTab = issueDetailsPage.selectMessagesTab();
         messagesTab.addInternalComment(INTERNAL_COMMENT_MSG);
@@ -147,7 +165,6 @@ public class ChangesTest extends BaseTestCase {
     public void addRelatedChange(
             @Optional("35") String RelatedChangeID
     ) {
-        issueDetailsPage = changeDashboardPage.openIssueDetailsView(changeID, BASIC_URL, CHANGE_ISSUE_TYPE);
         relatedChangesTab = issueDetailsPage.selectRelatedChangesTab();
         sdWizardPage = relatedChangesTab.openLinkIssueWizard();
         sdWizardPage.insertValueToMultiSearchComponent(RelatedChangeID, "linkChange");
@@ -159,30 +176,19 @@ public class ChangesTest extends BaseTestCase {
     @Test(priority = 8, testName = "Export Related Changes", description = "Export Related Changes")
     @Description("Export Related Changes")
     public void exportRelatedChanges() {
-        issueDetailsPage = changeDashboardPage.openIssueDetailsView(changeID, BASIC_URL, CHANGE_ISSUE_TYPE);
         relatedChangesTab = issueDetailsPage.selectRelatedChangesTab();
-        notificationWrapperPage = relatedChangesTab.openNotificationPanel();
-        notificationWrapperPage.clearNotifications();
-        relatedChangesTab.clickExport();
-        notificationWrapperPage = relatedChangesTab.openNotificationPanel();
-        notificationWrapperPage.waitForExportFinish();
-        notificationWrapperPage.clickDownload();
-        notificationWrapperPage.waitAndGetFinishedNotificationText();
-        notificationWrapperPage.clearNotifications();
-        relatedChangesTab.attachRelatedIssuesFile();
+        relatedChangesTab.exportFromTabTable();
+        int amountOfNotifications = relatedChangesTab.openNotificationPanel().amountOfNotifications();
 
-        Assert.assertEquals(notificationWrapperPage.amountOfNotifications(), 0);
+        Assert.assertEquals(amountOfNotifications, 0);
         Assert.assertTrue(relatedChangesTab.isRelatedIssuesFileNotEmpty());
     }
 
     @Test(priority = 9, testName = "Check Related Changes Tab - unlink Change", description = "Check Related Changes Tab - unlink Change")
     @Description("Check Related Changes Tab - unlink Change")
     public void unlinkChange() {
-        issueDetailsPage = changeDashboardPage.openIssueDetailsView(changeID, BASIC_URL, CHANGE_ISSUE_TYPE);
         relatedChangesTab = issueDetailsPage.selectRelatedChangesTab();
-        relatedChangesTab.selectIssue(0);
-        relatedChangesTab.unlinkIssue();
-        relatedChangesTab.confirmUnlinking();
+        relatedChangesTab.unlinkFirstIssue();
 
         Assert.assertTrue(relatedChangesTab.isRelatedIssueTableEmpty());
     }
@@ -191,7 +197,6 @@ public class ChangesTest extends BaseTestCase {
     @Test(priority = 10, testName = "Add second MO in Root Causes tab", description = "Add second MO in Root Causes tab")
     @Description("Add second MO in Root Causes tab")
     public void addRootCause(@Optional("TEST_MO") String SecondMOIdentifier) {
-        issueDetailsPage = changeDashboardPage.openIssueDetailsView(changeID, BASIC_URL, CHANGE_ISSUE_TYPE);
         rootCausesTab = issueDetailsPage.selectRootCauseTab();
         sdWizardPage = rootCausesTab.openAddRootCauseWizard();
         sdWizardPage.getMoStep().enterTextIntoSearchComponent(SecondMOIdentifier);
@@ -199,5 +204,139 @@ public class ChangesTest extends BaseTestCase {
         sdWizardPage.clickAcceptButtonInWizard();
 
         Assert.assertTrue(rootCausesTab.checkIfMOIdentifierIsPresentOnRootCauses(SecondMOIdentifier));
+    }
+
+    @Parameters({"ProblemToLinkId"})
+    @Test(priority = 11, testName = "Link Problem to Problem", description = "Link Problem to Problem")
+    @Description("Link Problem to Problem")
+    public void linkProblem(
+            @Optional("35") String ProblemToLinkId
+    ) {
+        relatedProblemsTab = issueDetailsPage.selectRelatedProblemsTab();
+        relatedProblemsTab.linkIssue(ProblemToLinkId, COMBOBOX_LINK_PROBLEM_ID);
+
+        Assert.assertEquals(relatedProblemsTab.checkRelatedIssueId(0), ProblemToLinkId);
+    }
+
+    @Test(priority = 12, testName = "Export from Related Problems tab", description = "Export from Related Problems tab")
+    @Description("Export from Related Problems tab")
+    public void exportFromRelatedProblemsTab() {
+        relatedProblemsTab = issueDetailsPage.selectRelatedProblemsTab();
+        relatedProblemsTab.exportFromTabTable();
+        int amountOfNotifications = relatedProblemsTab.openNotificationPanel().amountOfNotifications();
+
+        Assert.assertEquals(amountOfNotifications, 0);
+        Assert.assertTrue(relatedProblemsTab.isRelatedIssuesFileNotEmpty());
+    }
+
+    @Test(priority = 13, testName = "Unlink Problem from Problem", description = "Unlink Problem from Problem")
+    @Description("Unlink Problem from Problem")
+    public void unlinkProblem() {
+        relatedProblemsTab = issueDetailsPage.selectRelatedProblemsTab();
+        relatedProblemsTab.unlinkFirstIssue();
+
+        Assert.assertTrue(relatedProblemsTab.isRelatedIssueTableEmpty());
+    }
+
+    @Parameters({"userForRoles"})
+    @Test(priority = 14, testName = "Add Roles in Roles Tab", description = "Assign test user to roles in Roles Tab")
+    @Description("Assign test user to roles in Roles Tab")
+    public void rolesTabTest(
+            @Optional("sd_seleniumtest") String userForRoles
+    ) {
+        rolesTab = issueDetailsPage.selectRolesTab();
+        rolesTab.fillUser(rolesTab.getImplementerSearchBoxId(), userForRoles);
+        rolesTab.fillUser(rolesTab.getApproverSearchBoxId(), userForRoles);
+        rolesTab.fillUser(rolesTab.getCoordinatorSearchBoxId(), userForRoles);
+
+        Assert.assertEquals(rolesTab.getValueFromSearchBox(rolesTab.getImplementerSearchBoxId()), userForRoles);
+        Assert.assertEquals(rolesTab.getValueFromSearchBox(rolesTab.getApproverSearchBoxId()), userForRoles);
+        Assert.assertEquals(rolesTab.getValueFromSearchBox(rolesTab.getCoordinatorSearchBoxId()), userForRoles);
+    }
+
+    @Test(priority = 15, testName = "Check Participants", description = "Check Participants Tab - add Participant")
+    @Description("Check Participants Tab - add Participant")
+    public void addParticipant() {
+        participantsTab = issueDetailsPage.selectParticipantsTab();
+        participantsTab.createParticipantAndLinkToIssue(PARTICIPANT_FIRST_NAME, PARTICIPANT_SURNAME, PARTICIPANT_ROLE);
+        int newParticipantRow = participantsTab.participantRow(PARTICIPANT_FIRST_NAME);
+
+        Assert.assertEquals(participantsTab.checkParticipantFirstName(newParticipantRow), PARTICIPANT_FIRST_NAME);
+        Assert.assertEquals(participantsTab.checkParticipantSurname(newParticipantRow), PARTICIPANT_SURNAME);
+        Assert.assertEquals(participantsTab.checkParticipantRole(newParticipantRow), PARTICIPANT_ROLE.toUpperCase());
+    }
+
+    @Test(priority = 16, testName = "Edit participant", description = "Edit participant")
+    @Description("Edit participant")
+    public void editParticipant() {
+        participantsTab = issueDetailsPage.selectParticipantsTab();
+        int newParticipantRow = participantsTab.participantRow(PARTICIPANT_FIRST_NAME);
+        participantsTab.selectParticipant(newParticipantRow);
+        participantsTab.editParticipant(PARTICIPANT_FIRST_NAME_EDITED, PARTICIPANT_SURNAME, PARTICIPANT_ROLE);
+        int editedParticipantRow = participantsTab.participantRow(PARTICIPANT_FIRST_NAME_EDITED);
+
+        Assert.assertEquals(participantsTab.checkParticipantFirstName(editedParticipantRow), PARTICIPANT_FIRST_NAME_EDITED);
+        Assert.assertEquals(participantsTab.checkParticipantSurname(editedParticipantRow), PARTICIPANT_SURNAME);
+        Assert.assertEquals(participantsTab.checkParticipantRole(editedParticipantRow), PARTICIPANT_ROLE.toUpperCase());
+    }
+
+    @Test(priority = 17, testName = "Unlink Participant", description = "Unlink Edited Participant")
+    @Description("Unlink Edited Participant")
+    public void unlinkParticipant() {
+        participantsTab = issueDetailsPage.selectParticipantsTab();
+        int participantsInTable = participantsTab.countParticipantsInTable();
+        participantsTab.selectParticipant(participantsTab.participantRow(PARTICIPANT_FIRST_NAME_EDITED));
+        participantsTab.clickUnlinkParticipant();
+
+        Assert.assertEquals(participantsTab.countParticipantsInTable(), participantsInTable - 1);
+    }
+
+    @Test(priority = 18, testName = "Remove Participant", description = "Remove Edited Participant")
+    @Description("Remove Edited Participant")
+    public void removeParticipant() {
+        participantsTab = issueDetailsPage.selectParticipantsTab();
+        participantsTab.addExistingParticipant(PARTICIPANT_FIRST_NAME_EDITED, PARTICIPANT_ROLE);
+        int participantsInTable = participantsTab.countParticipantsInTable();
+        participantsTab.selectParticipant(participantsTab.participantRow(PARTICIPANT_FIRST_NAME_EDITED));
+        participantsTab.clickRemoveParticipant();
+        participantsTab.clickConfirmRemove();
+
+        Assert.assertEquals(participantsTab.countParticipantsInTable(), participantsInTable - 1);
+    }
+
+    @Test(priority = 19, testName = "Add attachment to change", description = "Add attachment to change")
+    @Description("Add attachment to change")
+    public void addAttachment() {
+        attachmentsTab = issueDetailsPage.selectAttachmentsTab(TABS_WIDGET_ID);
+
+        Assert.assertTrue(attachmentsTab.isAttachmentListEmpty());
+        attachmentsTab.addAttachment(FILE_TO_UPLOAD_PATH);
+
+        Assert.assertFalse(attachmentsTab.isAttachmentListEmpty());
+        Assert.assertEquals(attachmentsTab.getAttachmentOwner(), USER_NAME);
+    }
+
+    @Test(priority = 20, testName = "Download Attachment", description = "Download the Attachment from Attachment tab in Change")
+    @Description("Download the Attachment from Attachment tab in Change")
+    public void downloadAttachment() {
+        attachmentsTab = issueDetailsPage.selectAttachmentsTab(TABS_WIDGET_ID);
+
+        Assert.assertFalse(attachmentsTab.isAttachmentListEmpty());
+        attachmentsTab.clickDownloadAttachment();
+        issueDetailsPage.attachFileToReport(CSV_FILE);
+
+        Assert.assertTrue(issueDetailsPage.checkIfFileIsNotEmpty(CSV_FILE));
+    }
+
+    @Test(priority = 21, testName = "Delete Attachment", description = "Delete the Attachment from Attachment tab in Change")
+    @Description("Delete the Attachment from Attachment tab in Change")
+    public void deleteAttachment() {
+        attachmentsTab = issueDetailsPage.selectAttachmentsTab(TABS_WIDGET_ID);
+        issueDetailsPage.maximizeWindow(TABS_WIDGET_ID);
+
+        Assert.assertFalse(attachmentsTab.isAttachmentListEmpty());
+        attachmentsTab.clickDeleteAttachment();
+
+        Assert.assertTrue(attachmentsTab.isAttachmentListEmpty());
     }
 }

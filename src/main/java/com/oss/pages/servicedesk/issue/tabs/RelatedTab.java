@@ -84,6 +84,33 @@ public abstract class RelatedTab extends BaseSDPage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
+    public RelatedTab linkIssue(String issueId, String componentId) {
+        openLinkIssueWizard()
+                .insertValueToMultiSearchComponent(issueId, componentId)
+                .clickLinkButton();
+        return this;
+    }
+
+    public RelatedTab exportFromTabTable() {
+        openNotificationPanel()
+                .clearNotifications();
+        clickExport();
+        openNotificationPanel()
+                .waitForExportFinish()
+                .clickDownload();
+        openNotificationPanel().waitAndGetFinishedNotificationText();
+        openNotificationPanel().clearNotifications();
+        attachRelatedIssuesFile();
+        return this;
+    }
+
+    public RelatedTab unlinkFirstIssue() {
+        selectIssue(0);
+        unlinkIssue();
+        confirmUnlinking();
+        return this;
+    }
+
     @Step("Click Export")
     public void clickExport() {
         clickExportFromTab(TABS_CONTAINER_ID);
