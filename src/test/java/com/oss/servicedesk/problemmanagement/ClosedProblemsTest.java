@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 import com.oss.BaseTestCase;
 import com.oss.pages.platform.NotificationWrapperPage;
 import com.oss.pages.servicedesk.issue.IssueDetailsPage;
-import com.oss.pages.servicedesk.issue.problem.MyProblemsPage;
+import com.oss.pages.servicedesk.issue.problem.ClosedProblemsPage;
 import com.oss.pages.servicedesk.issue.problem.ProblemDashboardPage;
 import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
 
@@ -24,7 +24,7 @@ public class ClosedProblemsTest extends BaseTestCase {
     private ProblemDashboardPage problemDashboardPage;
     private SDWizardPage sdWizardPage;
     private IssueDetailsPage issueDetailsPage;
-    private MyProblemsPage closedProblemsPage;
+    private ClosedProblemsPage closedProblemsPage;
     private NotificationWrapperPage notificationWrapperPage;
     private String problemID;
     private static final String STATUS_IN_PROGRESS = "In Progress";
@@ -34,7 +34,7 @@ public class ClosedProblemsTest extends BaseTestCase {
     private static final String PROBLEM_DESCRIPTION = "Selenium Test - Closed Problem";
 
     @BeforeClass
-    public void goToTicketDashboard() {
+    public void goToProblemDashboard() {
         problemDashboardPage = new ProblemDashboardPage(driver, webDriverWait).goToPage(driver, BASIC_URL);
     }
 
@@ -49,16 +49,16 @@ public class ClosedProblemsTest extends BaseTestCase {
         sdWizardPage.createProblem(MOIdentifier, problemAssignee, PROBLEM_DESCRIPTION);
         problemID = problemDashboardPage.getProblemIdWithProblemName(PROBLEM_DESCRIPTION);
         issueDetailsPage = problemDashboardPage.openIssueDetailsView(problemID, BASIC_URL, PROBLEM_ISSUE_TYPE);
-        issueDetailsPage.changeProblemStatus(STATUS_IN_PROGRESS);
-        issueDetailsPage.changeProblemStatus(STATUS_RESOLVED);
-        issueDetailsPage.changeProblemStatus(STATUS_CLOSED);
-        Assert.assertEquals(issueDetailsPage.checkProblemStatus(), STATUS_CLOSED);
+        issueDetailsPage.changeIssueStatus(STATUS_IN_PROGRESS);
+        issueDetailsPage.changeIssueStatus(STATUS_RESOLVED);
+        issueDetailsPage.changeIssueStatus(STATUS_CLOSED);
+        Assert.assertEquals(issueDetailsPage.checkIssueStatus(), STATUS_CLOSED);
     }
 
     @Test(priority = 2, testName = "Check Closed Problems View", description = "Refresh, search and check if problem is shown in the closed problems table")
     @Description("Refresh, search and check if problem is shown in the closed problems table")
     public void checkClosedProblemsView() {
-        closedProblemsPage = new MyProblemsPage(driver, webDriverWait).openView(driver, BASIC_URL);
+        closedProblemsPage = new ClosedProblemsPage(driver, webDriverWait).openView(driver, BASIC_URL);
         closedProblemsPage.clickRefresh();
         closedProblemsPage.filterByTextField(ID_ATTRIBUTE, problemID);
         Assert.assertEquals(closedProblemsPage.getIdForNthTicketInTable(0), problemID);
@@ -66,8 +66,8 @@ public class ClosedProblemsTest extends BaseTestCase {
 
     @Test(priority = 3, testName = "Export Closed Problems", description = "Export Closed Problems")
     @Description("Export Closed Problems")
-    public void ExportClosedTicket() {
-        closedProblemsPage = new MyProblemsPage(driver, webDriverWait).openView(driver, BASIC_URL);
+    public void ExportClosedProblems() {
+        closedProblemsPage = new ClosedProblemsPage(driver, webDriverWait).openView(driver, BASIC_URL);
         try {
             closedProblemsPage.exportFromSearchViewTable(EXPORT_WIZARD_ID);
         } catch (RuntimeException e) {

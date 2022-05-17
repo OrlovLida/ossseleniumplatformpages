@@ -26,6 +26,7 @@ public class ServiceDeskConstants {
     public static final String COMBOBOX_LINK_PROBLEM_ID = "linkProblem";
     public static final String TICKETS_TABLE_ID = "ticket-search-graphql-table";
     public static final String PROBLEMS_TABLE_ID = "problem-search-graphql-table";
+    public static final String CHANGES_TABLE_ID = "change-search-graphql-table";
     public static final String FILE_TO_UPLOAD_PATH = "DataSourceCSV/CPU_USAGE_INFO_RAW-MAP.xlsx";
     public static final String CSV_FILE = "*CPU_USAGE_INFO_RAW-MAP*.*";
     public static final String USER_NAME = "sd_seleniumtest";

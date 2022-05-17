@@ -15,6 +15,7 @@ import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.servicedesk.BaseSDPage;
+import com.oss.pages.servicedesk.changemanagement.ChangeDashboardPage;
 import com.oss.pages.servicedesk.issue.problem.ProblemDashboardPage;
 import com.oss.pages.servicedesk.issue.ticket.TicketDashboardPage;
 
@@ -25,6 +26,7 @@ public class SDWizardPage extends BaseSDPage {
     private static final Logger log = LoggerFactory.getLogger(SDWizardPage.class);
 
     private static final String INCIDENT_DESCRIPTION_ID = "TT_WIZARD_INPUT_INCIDENT_DESCRIPTION";
+    private static final String CHANGE_INCIDENT_DESCRIPTION_ID = "TT_WIZARD_INPUT_INCIDENT_DESCRIPTION_LABEL";
     private static final String EMAIL_MESSAGE_ID = "message-component";
     private static final String CREATE_EXTERNAL_LABEL = "Create External";
     private static final String EXPECTED_RESOLUTION_DATE_ID = "TT_WIZARD_INPUT_EXPECTED_RESOLUTION_DATE_LABEL";
@@ -32,12 +34,14 @@ public class SDWizardPage extends BaseSDPage {
     private static final String LINK_TICKETS_BUTTON_ID = "_buttonsApp-1";
     private static final String UNLINK_CONFIRMATION_BUTTON_ID = "ConfirmationBox__confirmUnlinkProblemApp_action_button";
     private static final String TT_WIZARD_ASSIGNEE = "TT_WIZARD_INPUT_ASSIGNEE_LABEL";
+    private static final String TT_WIZARD_REQUESTER = "TT_WIZARD_INPUT_REQUESTER_LABEL";
     private static final String TEST_SELENIUM_ID = "12345";
     private static final String TT_WIZARD_CORRELATION_ID = "ISSUE_CORRELATION_ID";
     private static final String TT_WIZARD_REFERENCE_ID = "TT_WIZARD_INPUT_REFERENCE_ID_LABEL";
     private static final String TT_WIZARD_ISSUE_START_DATE_ID = "IssueStartDate";
     private static final String TT_WIZARD_MESSAGE_DATE_ID = "PleaseProvideTheTimeOnTheHandsetTheTxtMessageArrived";
     private static final String PROBLEM_NAME_DESCRIPTION_ID = "TT_WIZARD_INPUT_PROBLEM_NAME_DESCRIPTION";
+    private static final String CHANGE_RISK_ASSESSMENT_ID = "TT_WIZARD_INPUT_RISK_ASSESSMENT_LABEL";
     private static final String NOTIFICATION_CHANNEL_INTERNAL = "Internal";
     private static final String NOTIFICATION_WIZARD_CHANNEL_ID = "channel-component-input";
     private static final String NOTIFICATION_WIZARD_MESSAGE_ID = "message-component";
@@ -206,6 +210,16 @@ public class SDWizardPage extends BaseSDPage {
         clickNextButtonInWizard();
         clickAcceptButtonInWizard();
         return new ProblemDashboardPage(driver, wait);
+    }
+
+    public ChangeDashboardPage createChange(String requester, String assignee, String description) {
+        insertValueToTextComponent("LOW", CHANGE_RISK_ASSESSMENT_ID);
+        insertValueToSearchComponent(requester, TT_WIZARD_REQUESTER);
+        insertValueToSearchComponent(assignee, TT_WIZARD_ASSIGNEE);
+        insertValueToTextAreaComponent(description, CHANGE_INCIDENT_DESCRIPTION_ID);
+        clickNextButtonInWizard();
+        clickAcceptButtonInWizard();
+        return new ChangeDashboardPage(driver, wait);
     }
 
     public void createInternalNotification(String textMessage, String messageTo) {

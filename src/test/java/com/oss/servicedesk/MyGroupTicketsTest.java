@@ -17,8 +17,11 @@ import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
 
+import static com.oss.pages.servicedesk.ServiceDeskConstants.DETAILS_TABS_CONTAINER_ID;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.DOWNLOAD_FILE;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.ID_ATTRIBUTE;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.TROUBLE_TICKET_ISSUE_TYPE;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.USER_NAME;
 
 @Listeners({TestListener.class})
 public class MyGroupTicketsTest extends BaseTestCase {
@@ -29,11 +32,8 @@ public class MyGroupTicketsTest extends BaseTestCase {
     private SDWizardPage sdWizardPage;
     private String ticketID;
 
-    private static final String DOWNLOAD_FILE = "Selenium test*.csv";
     private static final String EXPORT_WIZARD_ID = "exportgui-mainview";
     private static final String TT_WIZARD_ASSIGNEE = "TT_WIZARD_INPUT_ASSIGNEE_LABEL";
-    private static final String DETAILS_WINDOW_ID = "_detailsWindow";
-    private static final String SELENIUM_TEST_USER = "sd_seleniumtest";
 
     @BeforeMethod
     public void goToTicketDashboardPage() {
@@ -60,7 +60,7 @@ public class MyGroupTicketsTest extends BaseTestCase {
         myTicketsPage = new MyTicketsPage(driver, webDriverWait).openView(driver, BASIC_URL);
         myTicketsPage.filterByTextField(ID_ATTRIBUTE, ticketID);
         Assert.assertFalse(myTicketsPage.isIssueTableEmpty());
-        Assert.assertEquals(ticketID, myTicketsPage.getIdForNthTicketInTable(0));
+        Assert.assertEquals(myTicketsPage.getIdForNthTicketInTable(0), ticketID);
     }
 
     @Test(priority = 3, testName = "Refresh MyGroup Tickets", description = "Refresh MyGroup Tickets")
@@ -73,7 +73,7 @@ public class MyGroupTicketsTest extends BaseTestCase {
             int ticketsAfterRefresh = myTicketsPage.countIssuesInTable();
 
             Assert.assertFalse(myTicketsPage.isIssueTableEmpty());
-            Assert.assertTrue(ticketsInTable >= ticketsAfterRefresh);
+            Assert.assertTrue(ticketsInTable <= ticketsAfterRefresh);
         } else {
             Assert.fail("No data in table - cannot check refresh function");
         }
@@ -99,10 +99,10 @@ public class MyGroupTicketsTest extends BaseTestCase {
     public void myTicketsCheck() {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
         issueDetailsPage.allowEditingTicket();
-        issueDetailsPage.maximizeWindow(DETAILS_WINDOW_ID);
+        issueDetailsPage.maximizeWindow(DETAILS_TABS_CONTAINER_ID);
         sdWizardPage = issueDetailsPage.openEditTicketWizard();
         sdWizardPage.clickNextButtonInWizard();
-        sdWizardPage.insertValueToSearchComponent(SELENIUM_TEST_USER, TT_WIZARD_ASSIGNEE);
+        sdWizardPage.insertValueToSearchComponent(USER_NAME, TT_WIZARD_ASSIGNEE);
         sdWizardPage.clickNextButtonInWizard();
         sdWizardPage.clickAcceptButtonInWizard();
         myTicketsPage = new MyTicketsPage(driver, webDriverWait).openView(driver, BASIC_URL);
