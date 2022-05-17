@@ -11,4 +11,9 @@
             <class name="com.oss.servicedesk.problemmanagement.ProblemsTest"/>
         </classes>
     </test>
+    <test name="ExportFromDashboard">
+        <classes>
+            <class name="com.oss.servicedesk.problemmanagement.ProblemsDashboardTest"/>
+        </classes>
+    </test>
 </suite>
