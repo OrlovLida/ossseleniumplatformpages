@@ -20,7 +20,7 @@ public class ChangeSearchPage extends BaseSearchPage {
     }
 
     @Override
-    @Step("I open Problems Search View")
+    @Step("I open Changes Search View")
     public ChangeSearchPage openView(WebDriver driver, String basicURL) {
         goToPage(driver, basicURL, CHANGES_SEARCH);
         return this;
