@@ -117,10 +117,18 @@ public class SDWizardPage extends BaseSDPage {
     }
 
     @Step("I insert {text} to multi search component with id {componentId}")
-    public void insertValueToMultiSearchComponent(String text, String componentId) {
+    public SDWizardPage insertValueToMultiSearchComponent(String text, String componentId) {
         DelayUtils.waitForPageToLoad(driver, wait);
         getWizard().getComponent(componentId, Input.ComponentType.MULTI_SEARCH_FIELD).setValueContains(Data.createSingleData(text));
         log.info("Value {} inserted to multi searchfield", text);
+        return this;
+    }
+
+    @Step("I insert {text} to multi search box component with id {componentId}")
+    public void insertValueToSearchBoxComponent(String text, String componentId) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getWizard().getComponent(componentId, Input.ComponentType.SEARCH_BOX).setValueContains(Data.createSingleData(text));
+        log.info("Value {} inserted to search box", text);
     }
 
     @Step("I insert {text} to text component with id {componentId}")

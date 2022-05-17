@@ -88,6 +88,5 @@ public class RelatedProblemsTab extends RelatedTab {
     public String getIdAttribute() {
         return COLUMN_PROBLEM_ID_LABEL;
     }
-
 }
 
