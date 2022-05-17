@@ -20,7 +20,6 @@ import com.oss.framework.widgets.tree.TreeWidget;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
-import org.testng.Assert;
 
 public class NetworkDiscoveryControlViewPage extends BasePage {
 
@@ -39,6 +38,9 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     private static final String RECO_STATE_REFRESH_BUTTON_ID = "tableRefreshButton";
     private static final String STATUS = "Status";
     private static final String TAB_ID = "narComponent_networkDiscoveryControlViewIdcmDomainWindowId";
+    private static final String ISSUE_LEVEL = "Issue Level";
+    private static final String REASON = "Reason";
+    private static final String CONFLICT = "conflict";
 
     protected NetworkDiscoveryControlViewPage(WebDriver driver) {
         super(driver);
@@ -163,15 +165,14 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     @Step("Select latest reconciliation state")
     public void selectLatestReconciliationState() {
-        TableInterface table = OldTable.createById(driver, wait, RECONCILIATION_STATE_TABLE_ID);
-        table.selectRow(0);
+        OldTable.createById(driver, wait, RECONCILIATION_STATE_TABLE_ID).selectRow(0);
     }
 
     @Step("Check and assert if conflict event appeared during reconciliation")
-    public void assertConflictEvent() {
-        getIssuesTable().searchByAttributeWithLabel("Issue Level", ComponentType.TEXT_FIELD, "");
-        getIssuesTable().searchByAttributeWithLabel("Reason", ComponentType.TEXT_FIELD, "conflict");
-        Assert.assertTrue(getIssuesTable().getCellValue(0, "Reason").contains("conflict"));
+    public boolean checkConflictEvent() {
+        getIssuesTable().searchByAttributeWithLabel(ISSUE_LEVEL, ComponentType.TEXT_FIELD, "");
+        getIssuesTable().searchByAttributeWithLabel(REASON, ComponentType.TEXT_FIELD, CONFLICT);
+        return getIssuesTable().getCellValue(0, REASON).contains(CONFLICT);
     }
 
     private void logIssues(String type) {

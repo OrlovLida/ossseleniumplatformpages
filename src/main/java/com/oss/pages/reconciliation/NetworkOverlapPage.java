@@ -32,37 +32,36 @@ public class NetworkOverlapPage extends BasePage {
         return new NetworkOverlapPage(driver);
     }
 
-    @Step("Assert conflict status")
-    public void assertConflictStatus(String status) {
+    @Step("Get conflict status for given rowIndex")
+    public String getConflictStatus(int rowIndex) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        OldTable oldTable = getOldTable();
-        Assert.assertEquals(oldTable.getCellValue(0, STATUS_LABEL), status);
-        oldTable.selectRow(0);
+        return getOldTable().getCellValue(rowIndex, STATUS_LABEL);
+    }
+
+    @Step("Select row with given index")
+    public void selectConflict(int rowIndex) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getOldTable().selectRow(rowIndex);
     }
 
     @Step("click Resolve button")
-    public void clickResolveButton() {
-        TabsInterface tabsInterface = getTabsInterface();
-        tabsInterface.callActionById(RESOLVE);
-
+    public void clickResolve() {
+        getTabsInterface().callActionById(RESOLVE);
     }
 
-    @Step("Assert if domain exists in Conflicted Objects tab in first two rows")
-    public void assertIfDomainExistsInConflictedObjects(String cmDomainName) {
-        EditableList confictedObjects = EditableList.createById(driver, wait, EDITABLE_LIST_ID);
+    @Step("Get Domain Name from Conflicted Objects tab")
+    public String getDomainFromConflictedObjectsTab(int rowIndex) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        if (confictedObjects.getRow(0).getCellValue(DOMAIN_HEADER_ID).equals(cmDomainName)) {
-            Assert.assertEquals(confictedObjects.getRow(0).getCellValue(DOMAIN_HEADER_ID), cmDomainName);
-        }
-        else {
-            Assert.assertEquals(confictedObjects.getRow(1).getCellValue(DOMAIN_HEADER_ID), cmDomainName);
-        }
+        return getConflictedObjects().getRow(rowIndex).getCellValue(DOMAIN_HEADER_ID);
     }
 
     @Step("Search for object by name")
     public void searchByObjectName(String name) {
-        OldTable oldTable = getOldTable();
-        oldTable.searchByAttribute(NETWORK_ELEMENT_NAME, Input.ComponentType.TEXT_FIELD, name);
+        getOldTable().searchByAttribute(NETWORK_ELEMENT_NAME, Input.ComponentType.TEXT_FIELD, name);
+    }
+
+    private EditableList getConflictedObjects() {
+        return EditableList.createById(driver, wait, EDITABLE_LIST_ID);
     }
 
     private TableWidget getTableWidget() {

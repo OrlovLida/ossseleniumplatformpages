@@ -14,6 +14,7 @@ import com.oss.pages.reconciliation.NetworkOverlapPage;
 import com.oss.pages.reconciliation.ResolveConflictWizardPage;
 import com.oss.pages.reconciliation.SamplesManagementPage;
 import com.oss.utils.TestListener;
+import io.qameta.allure.Step;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
@@ -51,16 +52,11 @@ public class NetworkOverlapTest extends BaseTestCase {
     public void createCmDomain1() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkDiscoveryControlViewPage.openCmDomainWizard();
-        CmDomainWizardPage wizard = new CmDomainWizardPage(driver);
-        wizard.setName(CM_DOMAIN_NAME);
-        wizard.setInterface(INTERFACE_NAME);
-        wizard.setDomain(DOMAIN);
-        wizard.save();
+        networkDiscoveryControlViewPage.createCMDomain(CM_DOMAIN_NAME, INTERFACE_NAME, DOMAIN);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 2, description = "Upload reconciliation samples")
+    @Test(priority = 2, description = "Upload reconciliation samples", dependsOnMethods = {"createCmDomain1"})
     @Description("Go to Sample Management View and upload reconciliation samples")
     public void uploadSamples1() throws URISyntaxException {
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
@@ -74,7 +70,7 @@ public class NetworkOverlapTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 3, description = "Run reconciliation and check results")
+    @Test(priority = 3, description = "Run reconciliation and check results", dependsOnMethods = {"uploadSamples1"})
     @Description("Go to Network Discovery Control View and run reconciliation and check if it ended without errors")
     public void runReconciliationWithFullSample1() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
@@ -94,21 +90,16 @@ public class NetworkOverlapTest extends BaseTestCase {
         Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.ERROR));
     }
 
-    @Test(priority = 4, description = "Create CM Domain")
+    @Test(priority = 4, description = "Create CM Domain", dependsOnMethods = {"runReconciliationWithFullSample1"})
     @Description("Go to Network Discovery Control View and Create CM Domain")
     public void createCmDomain2() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkDiscoveryControlViewPage.openCmDomainWizard();
-        CmDomainWizardPage wizard = new CmDomainWizardPage(driver);
-        wizard.setName(CM_DOMAIN_NAME_2);
-        wizard.setInterface(INTERFACE_NAME);
-        wizard.setDomain(DOMAIN);
-        wizard.save();
+        networkDiscoveryControlViewPage.createCMDomain(CM_DOMAIN_NAME_2, INTERFACE_NAME, DOMAIN);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 5, description = "Upload reconciliation samples")
+    @Test(priority = 5, description = "Upload reconciliation samples", dependsOnMethods = {"createCmDomain2"})
     @Description("Go to Sample Management View and upload reconciliation samples")
     public void uploadSamples2() throws URISyntaxException {
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME_2);
@@ -122,7 +113,7 @@ public class NetworkOverlapTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 6, description = "Run reconciliation and check results")
+    @Test(priority = 6, description = "Run reconciliation and check results", dependsOnMethods = {"uploadSamples2"})
     @Description("Go to Network Discovery Control View and run reconciliation and check if it ended without errors")
     public void runReconciliationWithFullSample2() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
@@ -143,30 +134,46 @@ public class NetworkOverlapTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 7, description = "Check conflict event")
-    @Description("Refresh and check if event with informatiob about conflict has appeared")
+    @Test(priority = 7, description = "Check conflict event", dependsOnMethods = {"runReconciliationWithFullSample2"})
+    @Description("Refresh and check if event with information about conflict has appeared")
     public void checkConflictEvent() {
-        networkDiscoveryControlViewPage.assertConflictEvent();
+        Assert.assertTrue(networkDiscoveryControlViewPage.checkConflictEvent());
     }
 
-
-    @Test(priority = 8, description = "Resolve conflict")
-    @Description("Go to Network Overlap View Page and resolve conflict with choosing leading domain")
-    public void resolveConflict() {
+    @Test(priority = 8, description = "Select conflict", dependsOnMethods = {"checkConflictEvent"})
+    @Description("Go to Network Overlap View Page and select conflict")
+    public void selectConflict() {
         networkOverlapPage = NetworkOverlapPage.goToNetworkOverlapPage(driver, BASIC_URL);
         networkOverlapPage.searchByObjectName(DEVICE_1_NAME);
-        networkOverlapPage.assertConflictStatus("OPEN");
-        networkOverlapPage.assertIfDomainExistsInConflictedObjects(CM_DOMAIN_NAME);
-        networkOverlapPage.assertIfDomainExistsInConflictedObjects(CM_DOMAIN_NAME_2);
+        Assert.assertEquals(networkOverlapPage.getConflictStatus(0), "OPEN");
+        networkOverlapPage.selectConflict(0);
+    }
+
+    @Test(priority = 9, description = "Resolve conflict", dependsOnMethods = {"selectConflict"})
+    @Description("Go to Network Overlap View Page and resolve conflict with choosing leading domain")
+    public void assertDomainsInConflict() {
+        if (networkOverlapPage.getDomainFromConflictedObjectsTab(0).equals(CM_DOMAIN_NAME)) {
+            Assert.assertEquals(networkOverlapPage.getDomainFromConflictedObjectsTab(0), CM_DOMAIN_NAME);
+            Assert.assertEquals(networkOverlapPage.getDomainFromConflictedObjectsTab(1), CM_DOMAIN_NAME_2);
+        }
+        else {
+            Assert.assertEquals(networkOverlapPage.getDomainFromConflictedObjectsTab(1), CM_DOMAIN_NAME);
+            Assert.assertEquals(networkOverlapPage.getDomainFromConflictedObjectsTab(0), CM_DOMAIN_NAME_2);
+        }
+    }
+
+    @Test(priority = 10, description = "Resolve conflict with choosing leading domain", dependsOnMethods = {"assertDomainsInConflict"})
+    @Description("Resolve conflict with choosing leading domain")
+    public void resolveConflict() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkOverlapPage.clickResolveButton();
+        networkOverlapPage.clickResolve();
         ResolveConflictWizardPage resolveConflictWizardPage = new ResolveConflictWizardPage(driver);
-        resolveConflictWizardPage.fromLastReconciliation();
-        resolveConflictWizardPage.chooseLeadingDomain("Selenium-NetworkOverlapTest-Domain1");
+        resolveConflictWizardPage.clickChooseManually();
+        resolveConflictWizardPage.setLeadingDomain(CM_DOMAIN_NAME);
         resolveConflictWizardPage.clickSubmit();
     }
 
-    @Test(priority = 9, description = "Run reconciliation and check results")
+    @Test(priority = 11, description = "Run reconciliation and check results", dependsOnMethods = {"resolveConflict"})
     @Description("Go to Network Discovery Control View and run reconciliation and check if it ended without errors")
     public void runReconciliationWithFullSample1Again() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
@@ -186,7 +193,7 @@ public class NetworkOverlapTest extends BaseTestCase {
         Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.ERROR));
     }
 
-    @Test(priority = 10, description = "Search and open router in Inventory View")
+    @Test(priority = 12, description = "Search and open router in Inventory View", dependsOnMethods = {"runReconciliationWithFullSample1Again"})
     @Description("Set Network perspective and search for router in Global Search and check it in New Inventory View")
     public void searchInGlobalSearchAndOpenInventoryView() {
         PerspectiveChooser.create(driver, webDriverWait).setNetworkPerspective();
@@ -201,15 +208,15 @@ public class NetworkOverlapTest extends BaseTestCase {
         Assert.assertFalse(newInventoryViewPage.checkIfTableIsEmpty());
     }
 
-    @Test(priority = 11, description = "Check if conflict is resolved")
+    @Test(priority = 13, description = "Check if conflict is resolved", dependsOnMethods = {"searchInGlobalSearchAndOpenInventoryView"})
     @Description("Check if conflict is now resolved")
     public void checkIfConflictIsResolved() {
         networkOverlapPage = NetworkOverlapPage.goToNetworkOverlapPage(driver, BASIC_URL);
         networkOverlapPage.searchByObjectName(DEVICE_1_NAME);
-        networkOverlapPage.assertConflictStatus("RESOLVED");
+        Assert.assertEquals(networkOverlapPage.getConflictStatus(0), "RESOLVED");
     }
 
-    @Test(priority = 12, description = "Delete CM Domain 1")
+    @Test(priority = 14, description = "Delete CM Domain 1", dependsOnMethods = {"createCmDomain1"})
     @Description("Delete CM Domain1")
     public void deleteCmDomain1() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
@@ -220,7 +227,7 @@ public class NetworkOverlapTest extends BaseTestCase {
         Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
     }
 
-    @Test(priority = 13, description = "Delete CM Domain 2")
+    @Test(priority = 15, description = "Delete CM Domain 2", dependsOnMethods = {"createCmDomain2"})
     @Description("Delete CM Domain2")
     public void deleteCmDomain2() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
