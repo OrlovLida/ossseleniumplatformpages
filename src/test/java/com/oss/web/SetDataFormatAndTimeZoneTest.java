@@ -23,7 +23,10 @@ public class SetDataFormatAndTimeZoneTest extends BaseTestCase {
     private static final String LOCATION_TYPE = "Location";
     private final static String PROPERTY_PANEL_ID = "PropertyPanelWidget";
     private final static int ROW_ID = 0;
-    private final static String DATE_CREATED_LABEL = "auditInformation.created.time";
+    private final static String DATE_CREATED_ID = "auditInformation.created.time";
+    private final static String DATE_CREATED_LABEL = "Date";
+    private final static String AUDIT_INFORMATION_LABEL = "Audit Information";
+    private final static String CREATED_LABEL = "Created";
     private final static String USER2 = "webseleniumtests2";
     private static final String PASSWORD_2 = "oss";
     private final static String USER1 = "webseleniumtests";
@@ -41,12 +44,12 @@ public class SetDataFormatAndTimeZoneTest extends BaseTestCase {
 
     @Test(priority = 1)
     public void changeDataFormat() {
+
         homePage.chooseDataFormat(PRESENT_FORMAT, DFT1);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-
         PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel(ROW_ID, PROPERTY_PANEL_ID);
-        String dateCreatedAfterChangeFormatValue = propertyPanel.getPropertyValue(DATE_CREATED_LABEL);
-
+        propertyPanel.enableAttributeByLabel(DATE_CREATED_LABEL, AUDIT_INFORMATION_LABEL, CREATED_LABEL);
+        String dateCreatedAfterChangeFormatValue = propertyPanel.getPropertyValue(DATE_CREATED_ID);
         Assert.assertTrue(checkDateFormat(DFT1, dateCreatedAfterChangeFormatValue));
     }
 
@@ -55,41 +58,32 @@ public class SetDataFormatAndTimeZoneTest extends BaseTestCase {
         inventoryViewPage.changeUser(USER2, PASSWORD_2);
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, LOCATION_TYPE);
         PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel(ROW_ID, PROPERTY_PANEL_ID);
-        String dateCreatedValue = propertyPanel.getPropertyValue(DATE_CREATED_LABEL);
-
+        String dateCreatedValue = propertyPanel.getPropertyValue(DATE_CREATED_ID);
         Assert.assertTrue(checkDateFormat(PRESENT_FORMAT, dateCreatedValue));
 
         inventoryViewPage.changeUser(USER1, PASSWORD_1);
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, LOCATION_TYPE);
         PropertyPanel propertyPanel1 = inventoryViewPage.getPropertyPanel(ROW_ID, PROPERTY_PANEL_ID);
-        String dateCreatedValueU1 = propertyPanel1.getPropertyValue(DATE_CREATED_LABEL);
-
+        String dateCreatedValueU1 = propertyPanel1.getPropertyValue(DATE_CREATED_ID);
         Assert.assertTrue(checkDateFormat(DFT1, dateCreatedValueU1));
     }
 
     @Test(priority = 3)
     public void changeTimeZone() {
         PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel(ROW_ID, PROPERTY_PANEL_ID);
-        String dateCreatedValueInDefaultTimeZone = propertyPanel.getPropertyValue(DATE_CREATED_LABEL);
-
+        String dateCreatedValueInDefaultTimeZone = propertyPanel.getPropertyValue(DATE_CREATED_ID);
         LocalDateTime dateCreatedValue = LocalDateTime.parse(dateCreatedValueInDefaultTimeZone, DFT1);
         LocalDateTime shiftedDateTimeAsiaTokio = dateCreatedValue.plusHours(8);
-
         homePage.disableAutoTimeZone();
         homePage.chooseTimeZone(TIME_ZONE_1);
-
         PropertyPanel propertyPanel1 = inventoryViewPage.getPropertyPanel(ROW_ID, PROPERTY_PANEL_ID);
-        String dateCreatedAfterChangeZone = propertyPanel1.getPropertyValue(DATE_CREATED_LABEL);
-
+        String dateCreatedAfterChangeZone = propertyPanel1.getPropertyValue(DATE_CREATED_ID);
         LocalDateTime dateCreatedValueAfterChangeZone = LocalDateTime.parse(dateCreatedAfterChangeZone, DFT1);
-
         Assert.assertEquals(shiftedDateTimeAsiaTokio, dateCreatedValueAfterChangeZone);
 
         homePage.enableAutoTimeZone();
-
         PropertyPanel propertyPanel2 = inventoryViewPage.getPropertyPanel(ROW_ID, PROPERTY_PANEL_ID);
-        String dateCreatedAfterEnableAutoTimeZone = propertyPanel2.getPropertyValue(DATE_CREATED_LABEL);
-
+        String dateCreatedAfterEnableAutoTimeZone = propertyPanel2.getPropertyValue(DATE_CREATED_ID);
         Assert.assertEquals(dateCreatedValueInDefaultTimeZone, dateCreatedAfterEnableAutoTimeZone);
     }
 

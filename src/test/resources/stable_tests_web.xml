@@ -45,4 +45,9 @@
             <class name="com.oss.web.LifecycleStateDecoratorsInTreeWidgetTest"/>
         </classes>
     </test>
+    <test name="SetDataFormatAndTimeZoneTest">
+        <classes>
+            <class name="com.oss.web.SetDataFormatAndTimeZoneTest"/>
+        </classes>
+    </test>
 </suite>
