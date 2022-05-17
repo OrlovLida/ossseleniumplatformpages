@@ -9,7 +9,6 @@ import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.servicedesk.BaseSDPage;
-import com.oss.pages.servicedesk.issue.IssueDetailsPage;
 
 import io.qameta.allure.Step;
 
@@ -24,18 +23,18 @@ public class AttachmentWizardPage extends BaseSDPage {
         attachementWizard = Wizard.createByComponentId(driver, wait, wizardId);
     }
 
-    @Step("I upload a attachment file")
-    public void uploadAttachmentFile(String path) {
+    @Step("I upload an attachment file")
+    public AttachmentWizardPage uploadAttachmentFile(String path) {
         attachementWizard.setComponentValue(UPLOAD_FILE_INPUT_ID, getAbsolutePath(path), Input.ComponentType.FILE_CHOOSER);
         log.info("Uploading attachment file");
+        return this;
     }
 
     @Step("Click Accept")
-    public IssueDetailsPage clickAccept() {
+    public void clickAccept() {
         attachementWizard.clickAccept();
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Clicking Accept");
-        return new IssueDetailsPage(driver, wait);
     }
 }
 

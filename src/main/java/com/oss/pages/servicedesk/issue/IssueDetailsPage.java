@@ -23,6 +23,7 @@ import com.oss.pages.servicedesk.issue.tabs.ParticipantsTab;
 import com.oss.pages.servicedesk.issue.tabs.RelatedChangesTab;
 import com.oss.pages.servicedesk.issue.tabs.RelatedProblemsTab;
 import com.oss.pages.servicedesk.issue.tabs.RelatedTicketsTab;
+import com.oss.pages.servicedesk.issue.tabs.RolesTab;
 import com.oss.pages.servicedesk.issue.tabs.RootCausesTab;
 import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
 
@@ -30,6 +31,7 @@ import io.qameta.allure.Step;
 
 import static com.oss.pages.servicedesk.ServiceDeskConstants.COMMON_WIZARD_ID;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.DETAILS_TABS_CONTAINER_ID;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.TABS_WIDGET_ID;
 
 public class IssueDetailsPage extends BaseSDPage {
 
@@ -62,7 +64,7 @@ public class IssueDetailsPage extends BaseSDPage {
     private static final String RELATED_PROBLEMS_TAB_ARIA_CONTROLS = "_relatedProblems";
     private static final String RELATED_CHANGES_TAB_ID = "_relatedChangesTab";
     private static final String MORE_BUTTON_LABEL = "More";
-    private static final String TABS_WIDGET_ID = "_tablesWindow";
+    private static final String ROLES_TAB_ID = "_detailsRoles";
 
     public IssueDetailsPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -124,8 +126,8 @@ public class IssueDetailsPage extends BaseSDPage {
         selectTabFromTabsWidget(DETAILS_TABS_CONTAINER_ID, tabId);
     }
 
-    public AttachmentsTab selectAttachmentsTab() {
-        selectTabFromDetailsWindow(ATTACHMENTS_TAB_ARIA_CONTROLS);
+    public AttachmentsTab selectAttachmentsTab(String widgetId) {
+        selectTabFromTabsWidget(widgetId, ATTACHMENTS_TAB_ARIA_CONTROLS);
         log.info("Selecting tab Attachments");
 
         return new AttachmentsTab(driver, wait);
@@ -178,6 +180,12 @@ public class IssueDetailsPage extends BaseSDPage {
         log.info("Selecting Related Changes Tab");
 
         return new RelatedChangesTab(driver, wait);
+    }
+
+    public RolesTab selectRolesTab() {
+        selectTabFromDetailsWindow(ROLES_TAB_ID);
+        log.info("Selecting Roles Tab");
+        return new RolesTab(driver, wait);
     }
 
     @Step("Skipping all actions on checklist")
