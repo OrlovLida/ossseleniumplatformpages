@@ -8,21 +8,17 @@ import com.oss.framework.components.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.GlobalSearchPage;
 import com.oss.pages.platform.NewInventoryViewPage;
-import com.oss.pages.reconciliation.CmDomainWizardPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
 import com.oss.pages.reconciliation.NetworkOverlapPage;
 import com.oss.pages.reconciliation.ResolveConflictWizardPage;
 import com.oss.pages.reconciliation.SamplesManagementPage;
 import com.oss.utils.TestListener;
-import io.qameta.allure.Step;
+import io.qameta.allure.Description;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
-
-import io.qameta.allure.Description;
-
 
 import java.net.URISyntaxException;
 import java.util.List;
@@ -137,7 +133,7 @@ public class NetworkOverlapTest extends BaseTestCase {
     @Test(priority = 7, description = "Check conflict event", dependsOnMethods = {"runReconciliationWithFullSample2"})
     @Description("Refresh and check if event with information about conflict has appeared")
     public void checkConflictEvent() {
-        Assert.assertTrue(networkDiscoveryControlViewPage.checkConflictEvent());
+        Assert.assertTrue(networkDiscoveryControlViewPage.isConflictEventPresent());
     }
 
     @Test(priority = 8, description = "Select conflict", dependsOnMethods = {"checkConflictEvent"})
@@ -149,14 +145,13 @@ public class NetworkOverlapTest extends BaseTestCase {
         networkOverlapPage.selectConflict(0);
     }
 
-    @Test(priority = 9, description = "Resolve conflict", dependsOnMethods = {"selectConflict"})
-    @Description("Go to Network Overlap View Page and resolve conflict with choosing leading domain")
+    @Test(priority = 9, description = "Assert domains in conflicted objects tab", dependsOnMethods = {"selectConflict"})
+    @Description("Assert if Domains are present in Conflicted Objects tab")
     public void assertDomainsInConflict() {
         if (networkOverlapPage.getDomainFromConflictedObjectsTab(0).equals(CM_DOMAIN_NAME)) {
             Assert.assertEquals(networkOverlapPage.getDomainFromConflictedObjectsTab(0), CM_DOMAIN_NAME);
             Assert.assertEquals(networkOverlapPage.getDomainFromConflictedObjectsTab(1), CM_DOMAIN_NAME_2);
-        }
-        else {
+        } else {
             Assert.assertEquals(networkOverlapPage.getDomainFromConflictedObjectsTab(1), CM_DOMAIN_NAME);
             Assert.assertEquals(networkOverlapPage.getDomainFromConflictedObjectsTab(0), CM_DOMAIN_NAME_2);
         }

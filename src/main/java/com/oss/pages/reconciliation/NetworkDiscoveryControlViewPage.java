@@ -1,10 +1,5 @@
 package com.oss.pages.reconciliation;
 
-import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.WebDriver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.Input.ComponentType;
 import com.oss.framework.components.mainheader.Notifications;
@@ -13,13 +8,15 @@ import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.components.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
-import com.oss.framework.widgets.table.TableInterface;
 import com.oss.framework.widgets.tabs.TabsInterface;
 import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.framework.widgets.tree.TreeWidget;
 import com.oss.pages.BasePage;
-
 import io.qameta.allure.Step;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.WebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class NetworkDiscoveryControlViewPage extends BasePage {
 
@@ -152,7 +149,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     @Step("Check if there are Issues with type {errorType}")
     public boolean checkIssues(IssueLevel errorType) {
         String type = String.valueOf(errorType);
-        getIssuesTable().searchByAttributeWithLabel("Issue Level", ComponentType.TEXT_FIELD, type);
+        getIssuesTable().searchByAttributeWithLabel(ISSUE_LEVEL, ComponentType.TEXT_FIELD, type);
         DelayUtils.sleep(2000);
         DelayUtils.waitForPageToLoad(driver, wait);
         if (getIssuesTable().hasNoData()) {
@@ -168,8 +165,8 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         OldTable.createById(driver, wait, RECONCILIATION_STATE_TABLE_ID).selectRow(0);
     }
 
-    @Step("Check and assert if conflict event appeared during reconciliation")
-    public boolean checkConflictEvent() {
+    @Step("Check if conflict event appeared during reconciliation")
+    public boolean isConflictEventPresent() {
         getIssuesTable().searchByAttributeWithLabel(ISSUE_LEVEL, ComponentType.TEXT_FIELD, "");
         getIssuesTable().searchByAttributeWithLabel(REASON, ComponentType.TEXT_FIELD, CONFLICT);
         return getIssuesTable().getCellValue(0, REASON).contains(CONFLICT);
@@ -191,12 +188,16 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     private void printIssues(String type, int issuesNumber) {
         for (int i = 0; i < issuesNumber; i++) {
-            log.info("[{}] {}", type, getIssuesTable().getCellValue(i, "Reason"));
+            log.info("[{}] {}", type, getIssuesTable().getCellValue(i, REASON));
         }
     }
 
     private OldTable getIssuesTable() {
         return OldTable.createById(driver, wait, ISSUES_TABLE_ID);
+    }
+
+    private TabsInterface getTabsInterface() {
+        return TabsWidget.createById(driver, wait, TAB_ID);
     }
 
     public enum IssueLevel {
@@ -205,9 +206,5 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         ERROR,
         FATAL,
         STARTUP_FATAL
-    }
-
-    private TabsInterface getTabsInterface(){
-        return TabsWidget.createById(driver, wait, TAB_ID);
     }
 }

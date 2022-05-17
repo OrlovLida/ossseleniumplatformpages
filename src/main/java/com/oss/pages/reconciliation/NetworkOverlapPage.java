@@ -4,13 +4,11 @@ import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.EditableList;
 import com.oss.framework.widgets.table.OldTable;
-import com.oss.framework.widgets.table.TableWidget;
 import com.oss.framework.widgets.tabs.TabsInterface;
 import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
-import org.testng.Assert;
 
 public class NetworkOverlapPage extends BasePage {
 
@@ -62,10 +60,6 @@ public class NetworkOverlapPage extends BasePage {
 
     private EditableList getConflictedObjects() {
         return EditableList.createById(driver, wait, EDITABLE_LIST_ID);
-    }
-
-    private TableWidget getTableWidget() {
-        return TableWidget.createById(driver, CONFLICT_TAB, wait);
     }
 
     private OldTable getOldTable() {
