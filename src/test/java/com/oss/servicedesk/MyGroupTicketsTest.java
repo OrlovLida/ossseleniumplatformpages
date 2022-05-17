@@ -10,6 +10,7 @@ import org.testng.annotations.Test;
 import com.oss.BaseTestCase;
 import com.oss.pages.platform.NotificationWrapperPage;
 import com.oss.pages.servicedesk.issue.IssueDetailsPage;
+import com.oss.pages.servicedesk.issue.ticket.MyGroupTicketsPage;
 import com.oss.pages.servicedesk.issue.ticket.MyTicketsPage;
 import com.oss.pages.servicedesk.issue.ticket.TicketDashboardPage;
 import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
@@ -27,6 +28,7 @@ import static com.oss.pages.servicedesk.ServiceDeskConstants.USER_NAME;
 public class MyGroupTicketsTest extends BaseTestCase {
     private TicketDashboardPage ticketDashboardPage;
     private MyTicketsPage myTicketsPage;
+    private MyGroupTicketsPage myGroupTicketsPage;
     private NotificationWrapperPage notificationWrapperPage;
     private IssueDetailsPage issueDetailsPage;
     private SDWizardPage sdWizardPage;
@@ -57,22 +59,22 @@ public class MyGroupTicketsTest extends BaseTestCase {
     @Test(priority = 2, testName = "Check My Group Tickets", description = "Check My Group Tickets")
     @Description("Check My Group Tickets")
     public void checkMyGroupTickets() {
-        myTicketsPage = new MyTicketsPage(driver, webDriverWait).openView(driver, BASIC_URL);
-        myTicketsPage.filterByTextField(ID_ATTRIBUTE, ticketID);
-        Assert.assertFalse(myTicketsPage.isIssueTableEmpty());
-        Assert.assertEquals(myTicketsPage.getIdForNthTicketInTable(0), ticketID);
+        myGroupTicketsPage = new MyGroupTicketsPage(driver, webDriverWait).openView(driver, BASIC_URL);
+        myGroupTicketsPage.filterByTextField(ID_ATTRIBUTE, ticketID);
+        Assert.assertFalse(myGroupTicketsPage.isIssueTableEmpty());
+        Assert.assertEquals(myGroupTicketsPage.getIdForNthTicketInTable(0), ticketID);
     }
 
     @Test(priority = 3, testName = "Refresh MyGroup Tickets", description = "Refresh MyGroup Tickets")
     @Description("Refresh MyGroup Tickets")
     public void refreshMyGroupTickets() {
-        myTicketsPage = new MyTicketsPage(driver, webDriverWait).openView(driver, BASIC_URL);
-        if (!myTicketsPage.isIssueTableEmpty()) {
-            int ticketsInTable = myTicketsPage.countIssuesInTable();
-            myTicketsPage.clickRefresh();
-            int ticketsAfterRefresh = myTicketsPage.countIssuesInTable();
+        myGroupTicketsPage = new MyGroupTicketsPage(driver, webDriverWait).openView(driver, BASIC_URL);
+        if (!myGroupTicketsPage.isIssueTableEmpty()) {
+            int ticketsInTable = myGroupTicketsPage.countIssuesInTable();
+            myGroupTicketsPage.clickRefresh();
+            int ticketsAfterRefresh = myGroupTicketsPage.countIssuesInTable();
 
-            Assert.assertFalse(myTicketsPage.isIssueTableEmpty());
+            Assert.assertFalse(myGroupTicketsPage.isIssueTableEmpty());
             Assert.assertTrue(ticketsInTable <= ticketsAfterRefresh);
         } else {
             Assert.fail("No data in table - cannot check refresh function");
@@ -82,16 +84,16 @@ public class MyGroupTicketsTest extends BaseTestCase {
     @Test(priority = 4, testName = "Export from My Group Tickets", description = "Export from My Group Tickets")
     @Description("Export from My Group Tickets")
     public void exportFromMyGroupTickets() {
-        myTicketsPage = new MyTicketsPage(driver, webDriverWait).openView(driver, BASIC_URL);
+        myGroupTicketsPage = new MyGroupTicketsPage(driver, webDriverWait).openView(driver, BASIC_URL);
         try {
-            myTicketsPage.exportFromSearchViewTable(EXPORT_WIZARD_ID);
+            myGroupTicketsPage.exportFromSearchViewTable(EXPORT_WIZARD_ID);
         } catch (RuntimeException e) {
             Assert.fail(e.getMessage());
         }
         notificationWrapperPage = new NotificationWrapperPage(driver);
 
         Assert.assertEquals(notificationWrapperPage.amountOfNotifications(), 0);
-        Assert.assertTrue(myTicketsPage.checkIfFileIsNotEmpty(DOWNLOAD_FILE));
+        Assert.assertTrue(myGroupTicketsPage.checkIfFileIsNotEmpty(DOWNLOAD_FILE));
     }
 
     @Test(priority = 5, testName = "My Tickets Check", description = "Change assignee and check if ticket is visible in My Ticket View")
