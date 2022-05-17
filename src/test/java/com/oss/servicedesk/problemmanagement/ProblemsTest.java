@@ -91,7 +91,7 @@ public class ProblemsTest extends BaseTestCase {
         issueDetailsPage = problemDashboardPage.openIssueDetailsView(problemId, BASIC_URL, PROBLEM_ISSUE_TYPE);
         issueDetailsPage.maximizeWindow(DETAILS_TABS_CONTAINER_ID);
         issueDetailsPage.changeIssueAssignee(NewAssignee);
-        issueDetailsPage.changeProblemStatus(STATUS_IN_PROGRESS);
+        issueDetailsPage.changeIssueStatus(STATUS_IN_PROGRESS);
         goToProblemDashboardPage();
 
         Assert.assertEquals(problemDashboardPage.getProblemAssignee(PROBLEM_NAME_DESCRIPTION_TXT), NewAssignee);

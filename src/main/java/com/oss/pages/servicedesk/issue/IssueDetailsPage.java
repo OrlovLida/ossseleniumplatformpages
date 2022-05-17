@@ -44,7 +44,7 @@ public class IssueDetailsPage extends BaseSDPage {
     private static final String DETAILS_VIEW_ACTIONS_CONTAINER_ID = "_detailsWindow-windowToolbar";
     private static final String ALLOW_EDIT_LABEL = "Edit";
     private static final String ISSUE_ASSIGNEE_ID = "assignee";
-    private static final String PROBLEM_STATUS_ID = "status-input";
+    private static final String STATUS_INPUT = "status-input";
     private static final String CHECKLIST_APP_ID = "_checklistApp";
     private static final String SKIP_BUTTON_LABEL = "SKIP";
     private static final String EXTERNAL_TAB_ARIA_CONTROLS = "_detailsExternalTab";
@@ -235,16 +235,16 @@ public class IssueDetailsPage extends BaseSDPage {
         return ComponentFactory.create(ISSUE_ASSIGNEE_ID, Input.ComponentType.SEARCH_FIELD, driver, wait).getStringValue();
     }
 
-    @Step("Change problem status")
-    public void changeProblemStatus(String status) {
-        ComponentFactory.create(PROBLEM_STATUS_ID, Input.ComponentType.COMBOBOX, driver, wait)
+    @Step("Change issue status")
+    public void changeIssueStatus(String status) {
+        ComponentFactory.create(STATUS_INPUT, Input.ComponentType.COMBOBOX, driver, wait)
                 .setSingleStringValue(status);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    @Step("Check status in problem status combobox")
-    public String checkProblemStatus() {
-        return ComponentFactory.create(PROBLEM_STATUS_ID, Input.ComponentType.COMBOBOX, driver, wait).getStringValue();
+    @Step("Check status in issue status combobox")
+    public String checkIssueStatus() {
+        return ComponentFactory.create(STATUS_INPUT, Input.ComponentType.COMBOBOX, driver, wait).getStringValue();
     }
 
     public String checkExistingDictionary() {
