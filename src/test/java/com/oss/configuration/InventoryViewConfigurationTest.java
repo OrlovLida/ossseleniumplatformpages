@@ -28,7 +28,7 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
     
     private static final String TEST_PERSON_TYPE = "TestPerson";
     private final static String GROUP_NAME = "SeleniumTests";
-    private final static String CONFIGURATION_NAME_IV = "IV";
+    private final static String CONFIGURATION_NAME_IV = "IV_" + LocalDate.now();
     private final static String CONFIGURATION_NAME_IV_DEFAULT_FOR_USER = "IV_Default_For_User";
     private final static String CONFIGURATION_NAME_IV_TYPE_DEFAULT_FOR_GROUP = "IV_Default_For_GROUP_TYPE";
     private final static String DEFAULT_CONFIGURATION = "DEFAULT";
