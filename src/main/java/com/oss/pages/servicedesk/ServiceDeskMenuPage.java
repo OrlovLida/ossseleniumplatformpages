@@ -22,18 +22,16 @@ public class ServiceDeskMenuPage extends BaseSDPage {
         return new ServiceDeskMenuPage(driver, wait);
     }
 
-    @Step("Go to {0} from Trouble Tickets Left Side Menu")
+    @Step("Go to {menuPage} from Trouble Tickets Left Side Menu")
     public void chooseFromTroubleTicketsMenu(String menuPage) {
-        chooseFromLeftSideMenu("Trouble Tickets");
-        chooseFromLeftSideMenu(menuPage);
+        chooseFromLeftSideMenu(menuPage, "Incident Management");
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Going to {} from Left Side Menu", menuPage);
     }
 
-    @Step("Go to {0} from Problem Management Left Side Menu")
+    @Step("Go to {menuPage} from Problem Management Left Side Menu")
     public void chooseFromProblemManagementMenu(String menuPage) {
-        chooseFromLeftSideMenu("Problem Management");
-        chooseFromLeftSideMenu(menuPage);
+        chooseFromLeftSideMenu(menuPage, "Problem Management");
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Going to {} from Left Side Menu", menuPage);
     }

@@ -46,7 +46,7 @@ public class TaskDashboardPage extends BaseSDPage {
     @Step("Check if Task Dashboard is opened")
     public boolean isTaskDashboardOpened(String basicURL) {
         log.info("Current URL is {}", driver.getCurrentUrl());
-        return driver.getCurrentUrl().equals(String.format(TASKS_URL_PATTERN, basicURL));
+        return driver.getCurrentUrl().contains(String.format(TASKS_URL_PATTERN, basicURL));
     }
 
     @Step("I open create task wizard")

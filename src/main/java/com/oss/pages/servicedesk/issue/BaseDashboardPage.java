@@ -43,7 +43,7 @@ public abstract class BaseDashboardPage extends BaseSDPage {
 
     @Step("Check if current url leads to dashboard {dashboardName}")
     public boolean isDashboardOpen(String basicURL, String dashboardName) {
-        return driver.getCurrentUrl().equals(getDashboardURL(basicURL, dashboardName));
+        return driver.getCurrentUrl().contains(getDashboardURL(basicURL, dashboardName));
     }
 
     public String getMessageFromPrompt() {
