@@ -4,7 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.openqa.selenium.Cookie;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -167,6 +169,10 @@ public class BaseTestCase implements IHookable {
 
     private void logout() {
         LoginPanel.create(driver, webDriverWait).open().logOut();
+        WebElement webElement = driver.switchTo().activeElement();
+        if (webElement.isSelected()) {
+            webElement.sendKeys(Keys.ENTER);
+        }
     }
 
 }
