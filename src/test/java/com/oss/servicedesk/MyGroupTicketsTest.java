@@ -20,6 +20,7 @@ import io.qameta.allure.Description;
 
 import static com.oss.pages.servicedesk.ServiceDeskConstants.DETAILS_TABS_CONTAINER_ID;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.DOWNLOAD_FILE;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.EXPORT_WIZARD_ID;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.ID_ATTRIBUTE;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.TROUBLE_TICKET_ISSUE_TYPE;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.USER_NAME;
@@ -34,7 +35,6 @@ public class MyGroupTicketsTest extends BaseTestCase {
     private SDWizardPage sdWizardPage;
     private String ticketID;
 
-    private static final String EXPORT_WIZARD_ID = "exportgui-mainview";
     private static final String TT_WIZARD_ASSIGNEE = "TT_WIZARD_INPUT_ASSIGNEE_LABEL";
 
     @BeforeMethod
