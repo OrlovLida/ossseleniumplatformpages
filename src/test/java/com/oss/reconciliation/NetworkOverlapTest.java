@@ -1,5 +1,14 @@
 package com.oss.reconciliation;
 
+import java.net.URISyntaxException;
+import java.util.List;
+
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
+
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
@@ -13,15 +22,8 @@ import com.oss.pages.reconciliation.NetworkOverlapPage;
 import com.oss.pages.reconciliation.ResolveConflictWizardPage;
 import com.oss.pages.reconciliation.SamplesManagementPage;
 import com.oss.utils.TestListener;
-import io.qameta.allure.Description;
-import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Listeners;
-import org.testng.annotations.Test;
-import org.testng.asserts.SoftAssert;
 
-import java.net.URISyntaxException;
-import java.util.List;
+import io.qameta.allure.Description;
 
 @Listeners({TestListener.class})
 public class NetworkOverlapTest extends BaseTestCase {
@@ -163,7 +165,7 @@ public class NetworkOverlapTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkOverlapPage.clickResolve();
         ResolveConflictWizardPage resolveConflictWizardPage = new ResolveConflictWizardPage(driver);
-        resolveConflictWizardPage.clickChooseManually();
+        resolveConflictWizardPage.setChooseManually();
         resolveConflictWizardPage.setLeadingDomain(CM_DOMAIN_NAME);
         resolveConflictWizardPage.clickSubmit();
     }

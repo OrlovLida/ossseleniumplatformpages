@@ -1,12 +1,14 @@
 package com.oss.pages.reconciliation;
 
+import org.openqa.selenium.WebDriver;
+
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
+
 import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
 
 public class ResolveConflictWizardPage extends BasePage {
 
@@ -23,7 +25,7 @@ public class ResolveConflictWizardPage extends BasePage {
     }
 
     @Step("Click on 'choose manually' radio button")
-    public void clickChooseManually() {
+    public void setChooseManually() {
         DelayUtils.waitForPageToLoad(driver, wait);
         wizard.setComponentValue(CHOOSE_MANUALLY_ID, CHOOSE_MANUALLY, Input.ComponentType.RADIO_BUTTON);
     }
