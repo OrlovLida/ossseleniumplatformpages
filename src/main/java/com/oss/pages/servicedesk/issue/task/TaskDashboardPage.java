@@ -92,11 +92,6 @@ public class TaskDashboardPage extends BaseSDPage {
         return getTasksTable().getCellValue(getRowForTaskWithName(taskName), TASKS_TABLE_TASK_ID);
     }
 
-    public void selectTask(int taskIndex) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        OldTable.createById(driver, wait, TASKS_TABLE_ID).selectRow(taskIndex);
-    }
-
     @Step("I open edit task wizard")
     public SDWizardPage openEditTaskWizard() {
         DelayUtils.waitForPageToLoad(driver, wait);
