@@ -51,7 +51,7 @@ public abstract class BaseSearchPage extends BaseSDPage {
     @Step("Check if current url leads to {1} page")
     public boolean isPageOpened(String basicURL) {
         log.info("Current URL is: {}", driver.getCurrentUrl());
-        return driver.getCurrentUrl().equals(String.format(VIEWS_URL_PATTERN, basicURL, getSearchPageUrl()));
+        return driver.getCurrentUrl().contains(String.format(VIEWS_URL_PATTERN, basicURL, getSearchPageUrl()));
     }
 
     @Step("I filter issues by text attribute {attributeName} set to {attributeValue}")
