@@ -17,6 +17,7 @@ import io.qameta.allure.Description;
 
 import static com.oss.pages.servicedesk.ServiceDeskConstants.CHANGE_ISSUE_TYPE;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.DOWNLOAD_FILE;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.EXPORT_WIZARD_ID;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.ID_ATTRIBUTE;
 
 public class ClosedChangesTest extends BaseTestCase {
@@ -32,7 +33,6 @@ public class ClosedChangesTest extends BaseTestCase {
     private static final String STATUS_IMPLEMENTED = "Implemented";
     private static final String STATUS_VERIFIED = "Verified";
     private static final String STATUS_CLOSED = "Closed";
-    private static final String EXPORT_WIZARD_ID = "exportgui-mainview_prompt-card";
     private static final String CHANGE_DESCRIPTION = "Selenium Test - Closed Change";
 
     @BeforeClass
