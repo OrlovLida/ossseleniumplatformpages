@@ -17,6 +17,7 @@ import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.servicedesk.BaseSDPage;
 import com.oss.pages.servicedesk.issue.tabs.AttachmentsTab;
+import com.oss.pages.servicedesk.issue.tabs.DescriptionTab;
 import com.oss.pages.servicedesk.issue.tabs.ExternalTab;
 import com.oss.pages.servicedesk.issue.tabs.MessagesTab;
 import com.oss.pages.servicedesk.issue.tabs.ParticipantsTab;
@@ -65,6 +66,8 @@ public class IssueDetailsPage extends BaseSDPage {
     private static final String RELATED_CHANGES_TAB_ID = "_relatedChangesTab";
     private static final String MORE_BUTTON_LABEL = "More";
     private static final String ROLES_TAB_ID = "_detailsRoles";
+    private static final String DESCRIPTIONS_WINDOW_ID = "_descriptionsWindow";
+    private static final String DESCRIPTION_TAB_ID = "_descriptionTab";
 
     public IssueDetailsPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -180,6 +183,13 @@ public class IssueDetailsPage extends BaseSDPage {
         log.info("Selecting Related Changes Tab");
 
         return new RelatedChangesTab(driver, wait);
+    }
+
+    public DescriptionTab selectDescriptionTab() {
+        selectTabFromTabsWidget(DESCRIPTIONS_WINDOW_ID, DESCRIPTION_TAB_ID);
+        log.info("Selecting Description Tab");
+
+        return new DescriptionTab(driver, wait);
     }
 
     public RolesTab selectRolesTab() {
