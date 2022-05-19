@@ -38,6 +38,7 @@ public class NetworkViewPage extends BasePage {
 
     public static final String ATTRIBUTES_AND_TERMINATIONS_ACTION = "EDIT_Attributes and terminations-null";
     public static final String CREATE_DEVICE_ACTION = "CREATE_Create Device-null";
+    public static final String CREATE_OBJECTS_FROM_TEMPLATE_ACTION = "CREATE_Create Objects from Template-null";
     public static final String DELETE_TRAIL_ACTION = "Delete Trail";
     public static final String DELETE_ELEMENT_ACTION = "Delete Element-null";
     public static final String DELETE_DEVICE_ACTION = "EDIT_Delete Device-null";
@@ -66,7 +67,7 @@ public class NetworkViewPage extends BasePage {
     private static final String SUPPRESSION_WIZARD_CONTEXT_ACTION_ID = "frameworkCustomMore_Suppression wizard";
     private static final String PROPERTY_PANEL_ID = "NetworkViewPropertyPanelWidget";
     private static final String BOTTOM_TABS_ID = "bottomTabs";
-    private static final String ACTION_CONTAINER_ID = "undefined-windowToolbar";
+    private static final String ACTION_CONTAINER_ID = "logicalview-windowToolbar";
     private static final String TRAIL_TYPE_WIZARD_ID = "trailTypesPopup_prompt-card";
 
     public NetworkViewPage(WebDriver driver) {

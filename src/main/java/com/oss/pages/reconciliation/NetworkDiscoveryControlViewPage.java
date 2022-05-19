@@ -13,7 +13,6 @@ import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.components.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
-import com.oss.framework.widgets.table.TableInterface;
 import com.oss.framework.widgets.tabs.TabsInterface;
 import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.framework.widgets.tree.TreeWidget;
@@ -38,6 +37,9 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     private static final String RECO_STATE_REFRESH_BUTTON_ID = "tableRefreshButton";
     private static final String STATUS = "Status";
     private static final String TAB_ID = "narComponent_networkDiscoveryControlViewIdcmDomainWindowId";
+    private static final String ISSUE_LEVEL = "Issue Level";
+    private static final String REASON = "Reason";
+    private static final String CONFLICT = "conflict";
 
     protected NetworkDiscoveryControlViewPage(WebDriver driver) {
         super(driver);
@@ -94,7 +96,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         OldTable.createById(driver, wait, RECONCILIATION_TAB_ID).callAction(ActionsContainer.KEBAB_GROUP_ID, RECO_STATE_REFRESH_BUTTON_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         String status = OldTable.createById(driver, wait, RECONCILIATION_STATE_TABLE_ID).getCellValue(0, STATUS);
-        while (status.equals("IN_PROGRESS") || status.equals("PENDING")) {
+        while (status.contains("IN_PROGRESS") || status.contains("PENDING")) {
             DelayUtils.sleep(5000);
             DelayUtils.waitForPageToLoad(driver, wait);
             OldTable.createById(driver, wait, RECONCILIATION_TAB_ID).callAction(ActionsContainer.KEBAB_GROUP_ID, RECO_STATE_REFRESH_BUTTON_ID);
@@ -149,7 +151,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     @Step("Check if there are Issues with type {errorType}")
     public boolean checkIssues(IssueLevel errorType) {
         String type = String.valueOf(errorType);
-        getIssuesTable().searchByAttributeWithLabel("Issue Level", ComponentType.TEXT_FIELD, type);
+        getIssuesTable().searchByAttributeWithLabel(ISSUE_LEVEL, ComponentType.TEXT_FIELD, type);
         DelayUtils.sleep(2000);
         DelayUtils.waitForPageToLoad(driver, wait);
         if (getIssuesTable().hasNoData()) {
@@ -162,8 +164,14 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     @Step("Select latest reconciliation state")
     public void selectLatestReconciliationState() {
-        TableInterface table = OldTable.createById(driver, wait, RECONCILIATION_STATE_TABLE_ID);
-        table.selectRow(0);
+        OldTable.createById(driver, wait, RECONCILIATION_STATE_TABLE_ID).selectRow(0);
+    }
+
+    @Step("Check if conflict event appeared during reconciliation")
+    public boolean isConflictEventPresent() {
+        getIssuesTable().searchByAttributeWithLabel(ISSUE_LEVEL, ComponentType.TEXT_FIELD, "");
+        getIssuesTable().searchByAttributeWithLabel(REASON, ComponentType.TEXT_FIELD, CONFLICT);
+        return getIssuesTable().getCellValue(0, REASON).contains(CONFLICT);
     }
 
     private void logIssues(String type) {
@@ -182,12 +190,16 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     private void printIssues(String type, int issuesNumber) {
         for (int i = 0; i < issuesNumber; i++) {
-            log.info("[{}] {}", type, getIssuesTable().getCellValue(i, "Reason"));
+            log.info("[{}] {}", type, getIssuesTable().getCellValue(i, REASON));
         }
     }
 
     private OldTable getIssuesTable() {
         return OldTable.createById(driver, wait, ISSUES_TABLE_ID);
+    }
+
+    private TabsInterface getTabsInterface() {
+        return TabsWidget.createById(driver, wait, TAB_ID);
     }
 
     public enum IssueLevel {
@@ -196,9 +208,5 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         ERROR,
         FATAL,
         STARTUP_FATAL
-    }
-
-    private TabsInterface getTabsInterface(){
-        return TabsWidget.createById(driver, wait, TAB_ID);
     }
 }

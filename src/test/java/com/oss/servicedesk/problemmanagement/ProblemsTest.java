@@ -28,6 +28,7 @@ import static com.oss.pages.servicedesk.ServiceDeskConstants.CSV_FILE;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.DETAILS_TABS_CONTAINER_ID;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.FILE_TO_UPLOAD_PATH;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.PROBLEM_ISSUE_TYPE;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.TABS_WIDGET_ID;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.USER_NAME;
 
 public class ProblemsTest extends BaseTestCase {
@@ -102,7 +103,7 @@ public class ProblemsTest extends BaseTestCase {
     @Description("Add attachment to problem")
     public void addAttachment() {
         issueDetailsPage = problemDashboardPage.openIssueDetailsView(problemId, BASIC_URL, PROBLEM_ISSUE_TYPE);
-        attachmentsTab = issueDetailsPage.selectAttachmentsTab(DETAILS_TABS_CONTAINER_ID);
+        attachmentsTab = issueDetailsPage.selectAttachmentsTab(TABS_WIDGET_ID);
 
         Assert.assertTrue(attachmentsTab.isAttachmentListEmpty());
         attachmentsTab.addAttachment(FILE_TO_UPLOAD_PATH);
@@ -115,7 +116,7 @@ public class ProblemsTest extends BaseTestCase {
     @Description("Download the Attachment from Attachment tab in Problem Details")
     public void downloadAttachment() {
         issueDetailsPage = problemDashboardPage.openIssueDetailsView(problemId, BASIC_URL, PROBLEM_ISSUE_TYPE);
-        attachmentsTab = issueDetailsPage.selectAttachmentsTab(DETAILS_TABS_CONTAINER_ID);
+        attachmentsTab = issueDetailsPage.selectAttachmentsTab(TABS_WIDGET_ID);
 
         Assert.assertFalse(attachmentsTab.isAttachmentListEmpty());
         attachmentsTab.clickDownloadAttachment();
@@ -128,7 +129,7 @@ public class ProblemsTest extends BaseTestCase {
     @Description("Delete the Attachment from Attachment tab in Problem Details")
     public void deleteAttachment() {
         issueDetailsPage = problemDashboardPage.openIssueDetailsView(problemId, BASIC_URL, PROBLEM_ISSUE_TYPE);
-        attachmentsTab = issueDetailsPage.selectAttachmentsTab(DETAILS_TABS_CONTAINER_ID);
+        attachmentsTab = issueDetailsPage.selectAttachmentsTab(TABS_WIDGET_ID);
 
         Assert.assertFalse(attachmentsTab.isAttachmentListEmpty());
         attachmentsTab.clickDeleteAttachment();
