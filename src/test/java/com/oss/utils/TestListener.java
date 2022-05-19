@@ -1,9 +1,5 @@
 package com.oss.utils;
 
-import static com.oss.utils.AttachmentsManager.attachConsoleLogs;
-import static com.oss.utils.AttachmentsManager.saveLink;
-import static com.oss.utils.AttachmentsManager.saveScreenshotPNG;
-
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -17,6 +13,10 @@ import org.testng.ITestResult;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
+
+import static com.oss.utils.AttachmentsManager.attachConsoleLogs;
+import static com.oss.utils.AttachmentsManager.saveLink;
+import static com.oss.utils.AttachmentsManager.saveScreenshotPNG;
 
 public class TestListener extends BaseTestCase implements ITestListener {
     
