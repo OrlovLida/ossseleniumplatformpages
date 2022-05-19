@@ -5,7 +5,6 @@ import org.openqa.selenium.WebDriver;
 import com.oss.framework.components.data.Data;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.commonhierarchy.CommonHierarchyApp;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 
@@ -26,21 +25,16 @@ public abstract class TrafficClassWizardPage extends BasePage {
     private static final String ACCESS_LIST_FIELD_ID = "uid-accessList";
     private static final String INPUT_INTERFACE_FIELD_ID = "uid-inputInterface-input";
     private static final String PROTOCOL_FIELD_ID = "uid-protocol";
-    private static final String COMPONENT_ID = "trafficClassWizard";
-    private static final String WIDGET_ID = "CommonHierarchyApp-hierarchyAppId";
+    private static final String CIR_INGRESS_FIELD_ID = "uid-cirIngress";
+    private static final String CIR_EGRESS_FIELD_ID = "uid-cirEgress";
+    private static final String PIR_INGRESS_FIELD_ID = "uid-pirIngress";
+    private static final String PIR_EGRESS_FIELD_ID = "uid-pirEgress";
 
     public TrafficClassWizardPage(WebDriver webDriver) {
         super(webDriver);
     }
 
     public abstract Wizard getWizard();
-
-    @Step("Navigate through Common Hierarchy app widget selecting {location} -> {deviceName}")
-    public void selectLocationAndDevice(String location, String deviceName) {
-        CommonHierarchyApp commonHierarchyApp = CommonHierarchyApp.create(driver, wait, WIDGET_ID);
-        commonHierarchyApp.navigateToPath(location, deviceName);
-        DelayUtils.waitForPageToLoad(driver, wait);
-    }
 
     @Step("Click next step button")
     public void clickNextStep() {
@@ -107,6 +101,30 @@ public abstract class TrafficClassWizardPage extends BasePage {
         Input inputInterfaceComponent = getEmptyComboBoxComponent(INPUT_INTERFACE_FIELD_ID);
         inputInterfaceComponent.setValueContains(Data.createSingleData(inputInterface));
         DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    @Step("Set CIR Ingress to {cirIngress}")
+    public void setCirIngress(String cirIngress) {
+        Input cirIngressComponent = getEmptyTextFieldComponent(CIR_INGRESS_FIELD_ID);
+        cirIngressComponent.setSingleStringValue(cirIngress);
+    }
+
+    @Step("Set CIR Egress to {cirEgress}")
+    public void setCirEgress(String cirEgress) {
+        Input cirEgressComponent = getEmptyTextFieldComponent(CIR_EGRESS_FIELD_ID);
+        cirEgressComponent.setSingleStringValue(cirEgress);
+    }
+
+    @Step("Set PIR Ingress to {pirIngress}")
+    public void setPirIngress(String pirIngress) {
+        Input pirIngressComponent = getEmptyTextFieldComponent(PIR_INGRESS_FIELD_ID);
+        pirIngressComponent.setSingleStringValue(pirIngress);
+    }
+
+    @Step("Set PIR Egress to {pirEgress}")
+    public void setPirEgress(String pirEgress) {
+        Input pirEgressComponent = getEmptyTextFieldComponent(PIR_EGRESS_FIELD_ID);
+        pirEgressComponent.setSingleStringValue(pirEgress);
     }
 
     private Input getEmptyTextFieldComponent(String componentId) {
