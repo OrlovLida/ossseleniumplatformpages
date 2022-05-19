@@ -32,7 +32,6 @@ import com.oss.pages.platform.LogManagerPage;
 import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.reconciliation.CmDomainWizardPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
-import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage.IssueLevel;
 import com.oss.pages.reconciliation.NetworkInconsistenciesViewPage;
 import com.oss.pages.reconciliation.SamplesManagementPage;
 import com.oss.pages.templatecm.changeconfig.ChangeConfigurationPage;
@@ -415,17 +414,20 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         networkDiscoveryControlViewPage.runReconciliation();
         checkMessageType(MessageType.INFO);
         waitForPageToLoad();
-        Assert.assertEquals(networkDiscoveryControlViewPage.waitForEndOfReco(), "SUCCESS");
-        waitForPageToLoad();
+        String status = networkDiscoveryControlViewPage.waitForEndOfReco();
         networkDiscoveryControlViewPage.selectLatestReconciliationState();
-        waitForPageToLoad();
-        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(IssueLevel.STARTUP_FATAL));
-        waitForPageToLoad();
-        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(IssueLevel.FATAL));
-        waitForPageToLoad();
-        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(IssueLevel.ERROR));
-        waitForPageToLoad();
-        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(IssueLevel.WARNING));
+        if (status.equals("SUCCESS")) {
+            waitForPageToLoad();
+            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.ERROR));
+            waitForPageToLoad();
+            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.WARNING));
+        } else {
+            waitForPageToLoad();
+            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.STARTUP_FATAL));
+            waitForPageToLoad();
+            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.FATAL));
+        }
+        Assert.assertEquals(status, "SUCCESS");
     }
 
     @Test(priority = 19, description = "Apply inconsistencies", dependsOnMethods = {"runReconciliation"})
