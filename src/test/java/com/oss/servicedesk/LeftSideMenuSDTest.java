@@ -147,7 +147,7 @@ public class LeftSideMenuSDTest extends BaseTestCase {
     @Test(testName = "Go to Closed Problems", description = "Going to Closed Problems from Left Side Menu")
     @Description("Going to Closed Problems from Left Side Menu")
     public void goToClosedProblems() {
-        serviceDeskMenuPage.chooseFromTroubleTicketsMenu(CLOSED_PROBLEMS_PAGE);
+        serviceDeskMenuPage.chooseFromProblemManagementMenu(CLOSED_PROBLEMS_PAGE);
         closedProblemsPage = new ClosedProblemsPage(driver, webDriverWait);
         Assert.assertTrue(closedProblemsPage.isPageOpened(BASIC_URL));
         Assert.assertEquals(closedProblemsPage.getViewTitle(), CLOSED_PROBLEMS_PAGE);

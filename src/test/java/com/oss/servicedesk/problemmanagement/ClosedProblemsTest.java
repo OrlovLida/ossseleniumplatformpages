@@ -16,6 +16,7 @@ import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
 import io.qameta.allure.Description;
 
 import static com.oss.pages.servicedesk.ServiceDeskConstants.DOWNLOAD_FILE;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.EXPORT_WIZARD_ID;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.ID_ATTRIBUTE;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.PROBLEM_ISSUE_TYPE;
 
@@ -30,7 +31,6 @@ public class ClosedProblemsTest extends BaseTestCase {
     private static final String STATUS_IN_PROGRESS = "In Progress";
     private static final String STATUS_RESOLVED = "Resolved";
     private static final String STATUS_CLOSED = "Closed";
-    private static final String EXPORT_WIZARD_ID = "exportgui-mainview_prompt-card";
     private static final String PROBLEM_DESCRIPTION = "Selenium Test - Closed Problem";
 
     @BeforeClass

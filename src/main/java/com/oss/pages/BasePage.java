@@ -4,6 +4,7 @@ import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
+import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
 import org.openqa.selenium.WebDriver;
@@ -32,7 +33,7 @@ public class BasePage {
         PageFactory.initElements(driver, this);
     }
 
-    public BasePage(WebDriver driver, WebDriverWait wait){
+    public BasePage(WebDriver driver, WebDriverWait wait) {
         this.driver = driver;
         this.wait = wait;
     }
@@ -55,6 +56,22 @@ public class BasePage {
 
     public void chooseGroupContext(String groupName) {
         LoginPanel.create(driver, wait).chooseGroupContext(groupName);
+    }
+
+    public void chooseDataFormat(DateTimeFormatter inputDateFormat, DateTimeFormatter outputDateFormat) {
+        LoginPanel.create(driver, wait).chooseDataFormat(inputDateFormat, outputDateFormat);
+    }
+
+    public void disableAutoTimeZone() {
+        LoginPanel.create(driver, wait).disableAutoTimeZone();
+    }
+
+    public void enableAutoTimeZone() {
+        LoginPanel.create(driver, wait).enableAutoTimeZone();
+    }
+
+    public void chooseTimeZone(String timeZone) {
+        LoginPanel.create(driver, wait).chooseTimeZone(timeZone);
     }
 
     public LoginPanelPage openLoginPanel() {

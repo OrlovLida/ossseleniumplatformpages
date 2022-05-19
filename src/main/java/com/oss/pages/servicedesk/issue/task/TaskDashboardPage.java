@@ -46,7 +46,7 @@ public class TaskDashboardPage extends BaseSDPage {
     @Step("Check if Task Dashboard is opened")
     public boolean isTaskDashboardOpened(String basicURL) {
         log.info("Current URL is {}", driver.getCurrentUrl());
-        return driver.getCurrentUrl().equals(String.format(TASKS_URL_PATTERN, basicURL));
+        return driver.getCurrentUrl().contains(String.format(TASKS_URL_PATTERN, basicURL));
     }
 
     @Step("I open create task wizard")
@@ -90,11 +90,6 @@ public class TaskDashboardPage extends BaseSDPage {
     public String getIDForTaskWithName(String taskName) {
 
         return getTasksTable().getCellValue(getRowForTaskWithName(taskName), TASKS_TABLE_TASK_ID);
-    }
-
-    public void selectTask(int taskIndex) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        OldTable.createById(driver, wait, TASKS_TABLE_ID).selectRow(taskIndex);
     }
 
     @Step("I open edit task wizard")

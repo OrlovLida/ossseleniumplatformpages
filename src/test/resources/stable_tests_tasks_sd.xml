@@ -1,7 +1,7 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="TasksSD" thread-count="2" parallel="tests" verbose="1">
     <test name="CreateTask">
-        <parameter name="parentProblem" value="142"/>
+        <parameter name="parentProblem" value="50"/>
         <parameter name="taskAssignee" value="ca_kodrobinska"/>
         <classes>
             <class name="com.oss.servicedesk.problemmanagement.TasksTest"/>
