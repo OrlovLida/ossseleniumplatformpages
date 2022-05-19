@@ -67,7 +67,7 @@ public class ProblemsTest extends BaseTestCase {
         problemDashboardPage = new ProblemDashboardPage(driver, webDriverWait).goToPage(driver, BASIC_URL);
         if (problemId != null) {
             issueDetailsPage = problemDashboardPage.openIssueDetailsView(problemId, BASIC_URL, PROBLEM_ISSUE_TYPE);
-        } else if (!method.getName().equals("createChange")) {
+        } else if (!method.getName().equals("createProblem")) {
             Assert.fail("Problem has not been created.");
         }
     }
