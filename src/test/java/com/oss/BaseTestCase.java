@@ -7,9 +7,7 @@ import org.openqa.selenium.Cookie;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
@@ -35,6 +33,8 @@ import com.oss.pages.platform.LoginPage;
 import com.oss.transport.infrastructure.Environment;
 import com.oss.transport.infrastructure.EnvironmentRequestClient;
 import com.oss.utils.TestListener;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
 
 import static com.oss.configuration.Configuration.CONFIGURATION;
 
@@ -125,16 +125,7 @@ public class BaseTestCase implements IHookable {
 
     private void setWebDriver(ChromeOptions options) {
         boolean isLocally = CONFIGURATION.isLocally();
-        boolean isWebRunner = Boolean.parseBoolean(CONFIGURATION.getValue("webRunner"));
-
-        if (isLocally) {
-            System.setProperty("webdriver.chrome.driver", CONFIGURATION.getValue("chromeDriverPath"));
-        } else if (isWebRunner) {
-            System.setProperty("webdriver.chrome.driver", CONFIGURATION.getValue("chromeDriverWebRunner"));
-            options.addArguments("--window-size=1920,1080");
-            options.addArguments("--headless");
-        } else {
-            System.setProperty("webdriver.chrome.driver", CONFIGURATION.getValue("chromeDriverLinuxPath"));
+        if (!isLocally) {
             options.addArguments("--window-size=1920,1080");
             options.addArguments("--headless");
         }
@@ -143,7 +134,7 @@ public class BaseTestCase implements IHookable {
     private void startChromeDriver() {
         ChromeOptions options = getAdditionalOptions();
         setWebDriver(options);
-        driver = new ChromeDriver(options);
+        driver = WebDriverManager.chromedriver().capabilities(options).create();
     }
 
     private void startFirefoxDriver() {
@@ -152,13 +143,10 @@ public class BaseTestCase implements IHookable {
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--width=1920");
         options.addArguments("--height=1080");
-        if (CONFIGURATION.isLocally()) {
-            System.setProperty("webdriver.gecko.driver", CONFIGURATION.getValue("geckoDriverPath"));
-        } else {
-            System.setProperty("webdriver.gecko.driver", CONFIGURATION.getValue("geckoDriverLinuxPath"));
+        if (!CONFIGURATION.isLocally()) {
             options.addArguments("--headless");
         }
-        driver = new FirefoxDriver(options);
+        driver = WebDriverManager.firefoxdriver().capabilities(options).create();
         driver.manage().window().maximize();
     }
 
