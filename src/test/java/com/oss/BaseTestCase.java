@@ -1,6 +1,9 @@
 package com.oss;
 
+import static com.oss.configuration.Configuration.CONFIGURATION;
+
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.openqa.selenium.Cookie;
@@ -25,7 +28,6 @@ import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.config.ObjectMapperConfig;
 import com.jayway.restassured.config.RestAssuredConfig;
 import com.oss.framework.components.alerts.SystemMessageContainer;
-import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.mainheader.LoginPanel;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.HomePage;
@@ -34,20 +36,18 @@ import com.oss.transport.infrastructure.Environment;
 import com.oss.transport.infrastructure.EnvironmentRequestClient;
 import com.oss.utils.TestListener;
 
-import static com.oss.configuration.Configuration.CONFIGURATION;
-
 @Listeners({TestListener.class})
 public class BaseTestCase implements IHookable {
-
+    
     public static final String BASIC_URL = CONFIGURATION.getUrl();
     public static final String MOCK_PATH = CONFIGURATION.getValue("mockPath");
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseTestCase.class);
-
+    
     public WebDriver driver;
     public WebDriverWait webDriverWait;
     protected HomePage homePage;
     protected EnvironmentRequestClient environmentRequestClient;
-
+    
     @BeforeClass
     public void openBrowser() {
         RestAssured.config = prepareRestAssureConfig();
@@ -63,7 +63,7 @@ public class BaseTestCase implements IHookable {
         addCookies(driver);
         this.homePage = loginPage.login();
     }
-
+    
     @AfterClass
     public void closeBrowser() {
         if (driver != null) {
@@ -77,27 +77,33 @@ public class BaseTestCase implements IHookable {
             driver.quit();
         }
     }
-
+    
     @Override
     public void run(IHookCallBack cb, ITestResult testResult) {
         cb.runTestMethod(testResult);
         if (CONFIGURATION.getCheckErrors().equals("true")) {
-            SystemMessageInterface systemMessage = SystemMessageContainer.create(this.driver, new WebDriverWait(this.driver, 5));
-            Assert.assertFalse(systemMessage.isErrorDisplayed(false), "Some errors occurred during the test. Please check logs for details.\n");
+            try {
+                SystemMessageContainer systemMessage = SystemMessageContainer.create(this.driver, new WebDriverWait(this.driver, 5));
+                List<String> errors = systemMessage.getErrors();
+                errors.forEach(LOGGER::error);
+                Assert.assertTrue(errors.isEmpty(), "Some errors occurred during the test. Please check logs for details.\n");
+            } catch (Exception e) {
+                Assert.fail("Page didn't load.");
+            }
         }
     }
-
+    
     private Cookie createCookie() {
         return new Cookie("i18nCurrentLocale", "en", BASIC_URL.split("//")[1].split(":")[0], "/", null, false, false);
     }
-
+    
     private void addCookies(WebDriver driver) {
         boolean isWebRunner = Boolean.parseBoolean(CONFIGURATION.getValue("webRunner"));
         if (!isWebRunner) {
             driver.manage().addCookie(createCookie());
         }
     }
-
+    
     private Map<String, Object> getPreferences() {
         Map<String, Object> prefs = new HashMap<>();
         prefs.put("download.prompt_for_download", false);
@@ -106,7 +112,7 @@ public class BaseTestCase implements IHookable {
         prefs.put("download.default_directory", CONFIGURATION.getDownloadDir());
         return prefs;
     }
-
+    
     private ChromeOptions getAdditionalOptions() {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--no-sandbox");
@@ -120,11 +126,11 @@ public class BaseTestCase implements IHookable {
         options.setExperimentalOption("prefs", getPreferences());
         return options;
     }
-
+    
     private void setWebDriver(ChromeOptions options) {
         boolean isLocally = CONFIGURATION.isLocally();
         boolean isWebRunner = Boolean.parseBoolean(CONFIGURATION.getValue("webRunner"));
-
+        
         if (isLocally) {
             System.setProperty("webdriver.chrome.driver", CONFIGURATION.getValue("chromeDriverPath"));
         } else if (isWebRunner) {
@@ -137,13 +143,13 @@ public class BaseTestCase implements IHookable {
             options.addArguments("--headless");
         }
     }
-
+    
     private void startChromeDriver() {
         ChromeOptions options = getAdditionalOptions();
         setWebDriver(options);
         driver = new ChromeDriver(options);
     }
-
+    
     private void startFirefoxDriver() {
         FirefoxOptions options = new FirefoxOptions();
         options.addArguments("--no-sandbox");
@@ -159,14 +165,14 @@ public class BaseTestCase implements IHookable {
         driver = new FirefoxDriver(options);
         driver.manage().window().maximize();
     }
-
+    
     protected RestAssuredConfig prepareRestAssureConfig() {
         return RestAssuredConfig.config()
                 .objectMapperConfig(new ObjectMapperConfig().jackson2ObjectMapperFactory((clazz, s) -> JDK8ObjectMapper.getMapper()));
     }
-
+    
     private void logout() {
         LoginPanel.create(driver, webDriverWait).open().logOut();
     }
-
+    
 }
