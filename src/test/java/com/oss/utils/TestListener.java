@@ -19,29 +19,29 @@ import static com.oss.utils.AttachmentsManager.saveLink;
 import static com.oss.utils.AttachmentsManager.saveScreenshotPNG;
 
 public class TestListener extends BaseTestCase implements ITestListener {
-
+    
     private static final Logger log = LoggerFactory.getLogger(TestListener.class);
-
+    
     private static String getTestMethodName(ITestResult iTestResult) {
         return iTestResult.getMethod().getConstructorOrMethod().getName();
     }
-
+    
     @Override
     public void onStart(ITestContext iTestContext) {
         log.info("I am in onStart method " + iTestContext.getName());
         iTestContext.setAttribute("WebDriver", this.driver);
     }
-
+    
     @Override
     public void onFinish(ITestContext iTestContext) {
         log.info("I am in onFinish method " + iTestContext.getName());
     }
-
+    
     @Override
     public void onTestStart(ITestResult iTestResult) {
         log.info("I am in onTestStart method " + getTestMethodName(iTestResult) + " start");
     }
-
+    
     @Override
     public void onTestSuccess(ITestResult iTestResult) {
         log.info("I am in onTestSuccess method " + getTestMethodName(iTestResult) + " succeed");
@@ -50,37 +50,39 @@ public class TestListener extends BaseTestCase implements ITestListener {
         if (driver != null) {
             log.info("Screenshot captured for test case:" + getTestMethodName(iTestResult));
             saveScreenshotPNG(driver);
+            saveLink(driver);
         }
     }
-
+    
     @Override
     public void onTestFailure(ITestResult iTestResult) {
         String testMethodName = getTestMethodName(iTestResult);
         log.info("I am in onTestFailure method " + testMethodName + " failed");
-        //Get driver from BaseTest and assign to local webdriver variable.
+        // Get driver from BaseTest and assign to local webdriver variable.
         Object testClass = iTestResult.getInstance();
         WebDriver driver = ((BaseTestCase) testClass).driver;
-        //Allure ScreenShotRobot and SaveTestLog
+        // Allure ScreenShotRobot and SaveTestLog
         if (driver != null) {
             log.info("Screenshot captured for test case:" + testMethodName);
             saveScreenshotPNG(driver);
-            SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, 5));
-            if (systemMessage.isErrorDisplayed(true)) {
+            try {
+                SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, 5));
                 systemMessage.close();
+            } catch (Exception e) {
+                log.error("Page didn't load.");
             }
             saveLink(driver);
-            //Take base64Screenshot screenshot for extent reports
-            String base64Screenshot = "data:image/png;base64," + ((TakesScreenshot) driver).
-                    getScreenshotAs(OutputType.BASE64);
+            // Take base64Screenshot screenshot for extent reports
+            String base64Screenshot = "data:image/png;base64," + ((TakesScreenshot) driver).getScreenshotAs(OutputType.BASE64);
             attachConsoleLogs(driver);
         }
     }
-
+    
     @Override
     public void onTestSkipped(ITestResult iTestResult) {
         log.info("I am in onTestSkipped method " + getTestMethodName(iTestResult) + " skipped");
     }
-
+    
     @Override
     public void onTestFailedButWithinSuccessPercentage(ITestResult iTestResult) {
         log.info("Test failed but it is in defined success ratio " + getTestMethodName(iTestResult));
