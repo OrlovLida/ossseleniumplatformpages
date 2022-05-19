@@ -7,9 +7,19 @@
             <class name="com.oss.servicedesk.EditReleaseFunctionalityTest"/>
         </classes>
     </test>
-    <test name="LeftSideMenuTests">
+    <test name="LeftSideMenuTests - Incident Management">
         <classes>
-            <class name="com.oss.servicedesk.LeftSideMenuSDTest"/>
+            <class name="com.oss.servicedesk.leftsidemenu.LeftSideMenuTicketTest"/>
+        </classes>
+    </test>
+    <test name="LeftSideMenuTests - Problem Management">
+        <classes>
+            <class name="com.oss.servicedesk.leftsidemenu.LeftSideMenuProblemTest"/>
+        </classes>
+    </test>
+    <test name="LeftSideMenuTests - Change Management">
+        <classes>
+            <class name="com.oss.servicedesk.leftsidemenu.LeftSideMenuChangeTest"/>
         </classes>
     </test>
 </suite>
