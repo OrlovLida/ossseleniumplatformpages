@@ -35,4 +35,11 @@ public class ServiceDeskMenuPage extends BaseSDPage {
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Going to {} from Left Side Menu", menuPage);
     }
+
+    @Step("Go to {menuPage} from Change Management Left Side Menu")
+    public void chooseFromChangeManagementMenu(String menuPage) {
+        chooseFromLeftSideMenu(menuPage, "Change Management");
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Going to {} from Left Side Menu", menuPage);
+    }
 }
