@@ -13,6 +13,7 @@ import com.oss.BaseTestCase;
 import com.oss.pages.servicedesk.changemanagement.ChangeDashboardPage;
 import com.oss.pages.servicedesk.issue.IssueDetailsPage;
 import com.oss.pages.servicedesk.issue.tabs.AttachmentsTab;
+import com.oss.pages.servicedesk.issue.tabs.DescriptionTab;
 import com.oss.pages.servicedesk.issue.tabs.MessagesTab;
 import com.oss.pages.servicedesk.issue.tabs.ParticipantsTab;
 import com.oss.pages.servicedesk.issue.tabs.RelatedChangesTab;
@@ -41,6 +42,7 @@ public class ChangesTest extends BaseTestCase {
     private RolesTab rolesTab;
     private ParticipantsTab participantsTab;
     private AttachmentsTab attachmentsTab;
+    private DescriptionTab descriptionTab;
     private String changeID;
 
     private static final String RISK_ASSESSMENT_ID = "TT_WIZARD_INPUT_RISK_ASSESSMENT_LABEL";
@@ -50,9 +52,7 @@ public class ChangesTest extends BaseTestCase {
     private static final String INCIDENT_DESCRIPTION_ID = "TT_WIZARD_INPUT_INCIDENT_DESCRIPTION_LABEL";
     private static final String INCIDENT_DESCRIPTION_TXT = "Selenium Incident Description";
     private static final String INCIDENT_DESCRIPTION_TXT_EDITED = "Selenium Incident Description Edited";
-    private static final String DESCRIPTION_TAB_ID = "_descriptionTab";
-    private static final String DESCRIPTION_FIELD_ID = "_descriptionWidget";
-    private static final String DESCRIPTION_WINDOW_ID = "_descriptionsWindow";
+    private static final String INCIDENT_DESCRIPTION_TXT_MODIFY = "Selenium Incident Description Modified in description Tab";
     private static final String NOTIFICATION_INTERNAL_MSG = "Test Selenium Internal Message";
     private static final String NOTIFICATION_EMAIL_MSG = "Test Selenium Email Message";
     private static final String TABLES_WINDOW_ID = "_tablesWindow";
@@ -108,8 +108,11 @@ public class ChangesTest extends BaseTestCase {
     @Test(priority = 3, testName = "Check description", description = "Check change description on Description tab")
     @Description("Check change description on Description tab")
     public void checkDescription() {
-        issueDetailsPage.selectTabFromTabsWidget(DESCRIPTION_WINDOW_ID, DESCRIPTION_TAB_ID);
-        Assert.assertEquals(issueDetailsPage.getDisplayedText(DESCRIPTION_WINDOW_ID, DESCRIPTION_FIELD_ID), INCIDENT_DESCRIPTION_TXT_EDITED);
+        descriptionTab = issueDetailsPage.selectDescriptionTab();
+        Assert.assertEquals(descriptionTab.getDescriptionMessage(), INCIDENT_DESCRIPTION_TXT_EDITED);
+
+        descriptionTab.addDescription(INCIDENT_DESCRIPTION_TXT_MODIFY);
+        Assert.assertEquals(descriptionTab.getDescriptionMessage(), INCIDENT_DESCRIPTION_TXT_MODIFY);
     }
 
     @Parameters({"messageTo"})
