@@ -6,6 +6,7 @@ import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Prope
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -73,6 +74,9 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_PERSON_TYPE);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         tableWidget = inventoryViewPage.getMainTable();
+        List<String> pageConfigurationsName = inventoryViewPage.getPageConfigurationsName();
+        List<String> savedConfiguration = pageConfigurationsName.stream().filter(name -> !name.equals("MODEL") && !name.equals("DEFAULT")).collect(Collectors.toList());
+        inventoryViewPage.deletePageConfigurations(savedConfiguration);
     }
     
     @Test(priority = 1)
