@@ -12,9 +12,11 @@ import com.oss.framework.components.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
-import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 import com.oss.pages.bpm.TasksPage;
+import com.oss.pages.bpm.processinstances.ProcessWizardPage;
+import com.oss.pages.platform.HierarchyViewPage;
 import com.oss.pages.platform.NewInventoryViewPage;
+import com.oss.pages.platform.SearchObjectTypePage;
 import com.oss.pages.transport.VLANInterfaceWizardPage;
 import com.oss.pages.transport.ipam.IPAddressAssignmentWizardPage;
 import com.oss.pages.transport.ipam.IPAddressManagementViewPage;
@@ -23,7 +25,10 @@ import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
 
-@Listeners({ TestListener.class })
+import static com.oss.framework.components.contextactions.ActionsContainer.CREATE_GROUP_ID;
+import static com.oss.framework.components.contextactions.ActionsContainer.SHOW_ON_GROUP_ID;
+
+@Listeners({TestListener.class})
 public class VLANInterfaceTest extends BaseTestCase {
 
     private NewInventoryViewPage newInventoryViewPage;
@@ -31,8 +36,7 @@ public class VLANInterfaceTest extends BaseTestCase {
 
     private static final String VLAN_INTERFACE_TYPE = "Subinterface";
     private static final String VLAN_SUBINTERFACE_ID = "100";
-    private static final String DEVICE = "VLANInterfaceTest";
-    private static final String LOCATION = "SELENIUM_TRANSPORT_LOCATION";
+    private static final String DEVICE = "SeleniumTestDeviceVLANInterface";
     private static final String IP_SUBNET = "126.0.0.0/24 [VLANInterfaceSeleniumTest]";
     private static final String IP_NETWORK = "VLANInterfaceSeleniumTest";
     private static final String IP_ADDRESS = "126.0.0.12";
@@ -41,6 +45,10 @@ public class VLANInterfaceTest extends BaseTestCase {
     private static final String MTU_VALUE = "1432";
     private static final String VLAN_INTERFACE_SEARCH_NIV = "VLAN Interface";
     private static final String DESCRIPTION = "VLANInterfaceSeleniumTest" + (int) (Math.random() * 1001);
+    private static final String HIERARCHY_VIEW_ID = "HierarchyView";
+    private static final String PORT_NAME = "GE 0";
+    private static final String CREATE_VLAN_ACTION_ID = "CreateVLANInterfaceContextAction";
+    private static final String LABEL_PATH = DEVICE + ".Ports." + PORT_NAME + ".Termination Points.EthernetInterface_TP." + PORT_NAME;
 
     @BeforeClass
     public void openWebConsole() {
@@ -71,17 +79,22 @@ public class VLANInterfaceTest extends BaseTestCase {
     @Test(priority = 3)
     @Description("Create new VLAN Interface")
     public void createNewVLANInterface() {
-        homePage.goToSpecificPageWithContext(driver, "/#/view/transport/ip/ethernet/vlan-interface");
+        homePage.chooseFromLeftSideMenu("Inventory View", "Resource Inventory ");
+        SearchObjectTypePage searchObjectTypePage = new SearchObjectTypePage(driver, webDriverWait);
+        searchObjectTypePage.searchType("Physical Device");
+        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
+        newInventoryViewPage.searchObject(DEVICE).selectFirstRow();
+        newInventoryViewPage.callAction(SHOW_ON_GROUP_ID, HIERARCHY_VIEW_ID);
+        HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
+        hierarchyViewPage.selectNodeByLabelsPath(LABEL_PATH);
+        hierarchyViewPage.useTreeContextAction(CREATE_GROUP_ID, CREATE_VLAN_ACTION_ID);
+
         waitForPageToLoad();
         VLANInterfaceWizardPage vlanInterfaceWizardPage = new VLANInterfaceWizardPage(driver);
         waitForPageToLoad();
         vlanInterfaceWizardPage.setType(VLAN_INTERFACE_TYPE);
         waitForPageToLoad();
         vlanInterfaceWizardPage.setSubinterfaceId(VLAN_SUBINTERFACE_ID);
-        waitForPageToLoad();
-        vlanInterfaceWizardPage.clickNext();
-        waitForPageToLoad();
-        vlanInterfaceWizardPage.setInterface(LOCATION, DEVICE, "EthernetInterface", LOCATION + "-Router-5\\GE 0\\1");
         waitForPageToLoad();
         vlanInterfaceWizardPage.clickAccept();
         waitForPageToLoad();
