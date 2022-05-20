@@ -2,7 +2,6 @@ package com.oss.pages.transport.traffic.classs;
 
 import org.openqa.selenium.WebDriver;
 
-import com.oss.framework.components.data.Data;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
@@ -43,100 +42,73 @@ public abstract class TrafficClassWizardPage extends BasePage {
 
     @Step("Set name to {name}")
     public void setName(String name) {
-        Input nameComponent = getEmptyTextFieldComponent(NAME_FIELD_ID);
-        nameComponent.setSingleStringValue(name);
+        getWizard().setComponentValue(NAME_FIELD_ID, name, Input.ComponentType.TEXT_FIELD);
     }
 
     @Step("Set description to {description}")
     public void setDescription(String description) {
-        Input descriptionComponent = getEmptyTextFieldComponent(DESCRIPTION_FIELD_ID);
-        descriptionComponent.setSingleStringValue(description);
+        getWizard().setComponentValue(DESCRIPTION_FIELD_ID, description, Input.ComponentType.TEXT_FIELD);
     }
 
     @Step("Set Ip precedence to {ipPrecedence}")
     public void setIpPrecedence(String ipPrecedence) {
-        Input ipComponent = getEmptyTextFieldComponent(IP_PRECEDENCE_FIELD_ID);
-        ipComponent.setSingleStringValue(ipPrecedence);
+        getWizard().setComponentValue(IP_PRECEDENCE_FIELD_ID, ipPrecedence, Input.ComponentType.TEXT_FIELD);
     }
 
     @Step("Set Mpls to {mpls}")
     public void setMpls(String mpls) {
-        Input mplsComponent = getEmptyTextFieldComponent(MPLS_FIELD_ID);
-        mplsComponent.setSingleStringValue(mpls);
+        getWizard().setComponentValue(MPLS_FIELD_ID, mpls, Input.ComponentType.TEXT_FIELD);
     }
 
     @Step("Set Mpsl Top to {mplsTop}")
     public void setMplsTop(String mplsTop) {
-        Input mplsTopComponent = getEmptyTextFieldComponent(MPLS_TOP_FIELD_ID);
-        mplsTopComponent.setSingleStringValue(mplsTop);
+        getWizard().setComponentValue(MPLS_TOP_FIELD_ID, mplsTop, Input.ComponentType.TEXT_FIELD);
     }
 
     @Step("Set Access list to {accessList}")
     public void setAccessList(String accessList) {
-        Input accessListComponent = getEmptyTextFieldComponent(ACCESS_LIST_FIELD_ID);
-        accessListComponent.setSingleStringValue(accessList);
+        getWizard().setComponentValue(ACCESS_LIST_FIELD_ID, accessList, Input.ComponentType.TEXT_FIELD);
     }
 
     @Step("Set Protocol to {protocol}")
     public void setProtocol(String protocol) {
-        Input protocolComponent = getEmptyTextFieldComponent(PROTOCOL_FIELD_ID);
-        protocolComponent.setSingleStringValue(protocol);
+        getWizard().setComponentValue(PROTOCOL_FIELD_ID, protocol, Input.ComponentType.TEXT_FIELD);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     @Step("Set Match type to {type}")
     public void setMatchType(String type) {
-        Input typeComponent = getEmptyComboBoxComponent(MATCH_FIELD_ID);
-        typeComponent.setSingleStringValue(type);
+        getWizard().setComponentValue(MATCH_FIELD_ID, type, Input.ComponentType.COMBOBOX);
     }
 
     @Step("Set Ip dscp to {ipDscp}")
     public void setIpDscp(String ipDscp) {
-        Input ipDscpComponent = getEmptyComboBoxComponent(IP_DSCP_FIELD_ID);
-        ipDscpComponent.setSingleStringValue(ipDscp);
+        getWizard().setComponentValue(IP_DSCP_FIELD_ID, ipDscp, Input.ComponentType.COMBOBOX);
     }
 
     @Step("Set Input interface to {inputInterface}")
     public void setInputInterface(String inputInterface) {
-        Input inputInterfaceComponent = getEmptyComboBoxComponent(INPUT_INTERFACE_FIELD_ID);
-        inputInterfaceComponent.setValueContains(Data.createSingleData(inputInterface));
+        getWizard().setComponentValue(INPUT_INTERFACE_FIELD_ID, inputInterface, Input.ComponentType.COMBOBOX);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     @Step("Set CIR Ingress to {cirIngress}")
     public void setCirIngress(String cirIngress) {
-        Input cirIngressComponent = getEmptyTextFieldComponent(CIR_INGRESS_FIELD_ID);
-        cirIngressComponent.setSingleStringValue(cirIngress);
+        getWizard().setComponentValue(CIR_INGRESS_FIELD_ID, cirIngress, Input.ComponentType.TEXT_FIELD);
     }
 
     @Step("Set CIR Egress to {cirEgress}")
     public void setCirEgress(String cirEgress) {
-        Input cirEgressComponent = getEmptyTextFieldComponent(CIR_EGRESS_FIELD_ID);
-        cirEgressComponent.setSingleStringValue(cirEgress);
+        getWizard().setComponentValue(CIR_EGRESS_FIELD_ID, cirEgress, Input.ComponentType.TEXT_FIELD);
     }
 
     @Step("Set PIR Ingress to {pirIngress}")
     public void setPirIngress(String pirIngress) {
-        Input pirIngressComponent = getEmptyTextFieldComponent(PIR_INGRESS_FIELD_ID);
-        pirIngressComponent.setSingleStringValue(pirIngress);
+        getWizard().setComponentValue(PIR_INGRESS_FIELD_ID, pirIngress, Input.ComponentType.TEXT_FIELD);
     }
 
     @Step("Set PIR Egress to {pirEgress}")
     public void setPirEgress(String pirEgress) {
-        Input pirEgressComponent = getEmptyTextFieldComponent(PIR_EGRESS_FIELD_ID);
-        pirEgressComponent.setSingleStringValue(pirEgress);
+        getWizard().setComponentValue(PIR_EGRESS_FIELD_ID, pirEgress, Input.ComponentType.TEXT_FIELD);
     }
-
-    private Input getEmptyTextFieldComponent(String componentId) {
-        Input component = getWizard().getComponent(componentId, Input.ComponentType.TEXT_FIELD);
-        component.clear();
-        return component;
-    }
-
-    private Input getEmptyComboBoxComponent(String componentId) {
-        Input component = getWizard().getComponent(componentId, Input.ComponentType.COMBOBOX);
-        component.clear();
-        return component;
-    }
-
 }
