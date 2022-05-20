@@ -30,4 +30,5 @@ public class ServiceDeskConstants {
     public static final String FILE_TO_UPLOAD_PATH = "DataSourceCSV/CPU_USAGE_INFO_RAW-MAP.xlsx";
     public static final String CSV_FILE = "*CPU_USAGE_INFO_RAW-MAP*.*";
     public static final String USER_NAME = "sd_seleniumtest";
+    public static final String EXPORT_WIZARD_ID = "exportgui-mainview_prompt-card";
 }

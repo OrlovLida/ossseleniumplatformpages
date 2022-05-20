@@ -52,14 +52,11 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
     private static final String TEST_ACTOR_TYPE = "TestActor";
     private static final String TEST_DIRECTOR_TYPE = "TestDirector";
     private static final String INTERESTS = "Interests";
-    private static final String OTHER_TYPE = "Other";
-    private static final String PLANNING_INFO = "Planning Info";
-    private static final String VALDATION_RESULTS = "Validation Results";
+    private static final String MATERIALS = "Materials";
     private static final String TABLE_TYPE = "Table";
     private static final String MOVIES = "Movies";
     private static final String ME = "Me";
     private static final String HORIZONTAL_60_40_BUTTON_ID = "TWO_ROWS_60_40";
-    private static final String HORIZONTAL_40_60_BUTTON_ID = "TWO_ROWS_40_60";
     private static final String HORIZONTAL_50_50_BUTTON_ID = "TWO_ROWS_50_50";
     private final static String USER2 = "webseleniumtests2";
     private static final String PASSWORD_2 = "oss";
@@ -86,7 +83,7 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
         
         saveConfigurationForTabsForSuperType(TEST_ACTOR_TYPE, TABLE_TYPE, INTERESTS,
                 CONFIGURATION_TEST_ACTOR_TABS_WIDGET_USED_IN_VIEW_CONFIG);
-        saveConfigurationForTabsForSuperType(TEST_DIRECTOR_TYPE, OTHER_TYPE, PLANNING_INFO,
+        saveConfigurationForTabsForSuperType(TEST_DIRECTOR_TYPE, TABLE_TYPE, MATERIALS,
                 CONFIGURATION_TEST_DIRECTOR_TABS_WIDGET_USED_IN_VIEW_CONFIG);
         
         inventoryViewPage.setHorizontalLayout(HORIZONTAL_60_40_BUTTON_ID);
@@ -103,7 +100,7 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
         
         Assert.assertTrue(columnHeaders.contains(GENDER_LABEL));
         assertTabsNotVisible(TEST_ACTOR_TYPE, INTERESTS);
-        assertTabsNotVisible(TEST_DIRECTOR_TYPE, PLANNING_INFO);
+        assertTabsNotVisible(TEST_DIRECTOR_TYPE, MATERIALS);
         Assert.assertTrue(inventoryViewPage.isHorizontal(HORIZONTAL_50_50_BUTTON_ID));
     }
     
@@ -115,7 +112,7 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
         
         Assert.assertFalse(columnHeaders.contains(GENDER_LABEL));
         assertTabsVisible(TEST_ACTOR_TYPE, INTERESTS);
-        assertTabsVisible(TEST_DIRECTOR_TYPE, PLANNING_INFO);
+        assertTabsVisible(TEST_DIRECTOR_TYPE, MATERIALS);
         Assert.assertTrue(inventoryViewPage.isHorizontal(HORIZONTAL_60_40_BUTTON_ID));
     }
     
@@ -193,7 +190,7 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
         inventoryViewPage.saveNewConfigurationForMainTable(CONFIGURATION_NAME_TABLE_WIDGET_USED_IN_DEFAULT_VIEW_CONFIG,
                 createField(TYPE, TEST_DIRECTOR_TYPE));
         inventoryViewPage.selectFirstRow();
-        inventoryViewPage.enableWidget(OTHER_TYPE, VALDATION_RESULTS);
+        inventoryViewPage.enableWidget(TABLE_TYPE, MOVIES);
         inventoryViewPage.saveConfigurationForTabs(CONFIGURATION_TEST_PERSON_TABS_WIDGET_USED_IN_DEFAULT_VIEW_CONFIG,
                 createField(TYPE, TEST_PERSON_TYPE));
         inventoryViewPage.saveNewPageConfiguration(CONFIGURATION_NAME_IV_DEFAULT_FOR_USER, createField(DEFAULT_VIEW_FOR, ME));
@@ -203,13 +200,13 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
     @Test(priority = 10)
     public void saveDefaultViewConfigurationForGroupForType() {
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_PERSON_TYPE);
-        saveConfigurationForTabsForSuperType(TEST_DIRECTOR_TYPE, OTHER_TYPE, PLANNING_INFO,
+        saveConfigurationForTabsForSuperType(TEST_DIRECTOR_TYPE, TABLE_TYPE, MATERIALS,
                 CONFIGURATION_TEST_DIRECTOR_TABS_WIDGET_USED_IN_DEFAULT_GROUP_CONFIG);
         inventoryViewPage.saveNewPageConfiguration(CONFIGURATION_NAME_IV_TYPE_DEFAULT_FOR_GROUP, createField(GROUPS, GROUP_NAME));
         
         assertSuccessMessage();
         inventoryViewPage.chooseGroupContext(GROUP_NAME);
-        assertTabsVisible(TEST_DIRECTOR_TYPE, PLANNING_INFO);
+        assertTabsVisible(TEST_DIRECTOR_TYPE, MATERIALS);
     }
     
     @Test(priority = 11)
@@ -222,8 +219,8 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
         int offset = 400;
         inventoryViewPage.chooseGroupContext(GROUP_NAME);
         inventoryViewPage.selectFirstRow();
-        Assert.assertTrue(inventoryViewPage.isTabVisible(PLANNING_INFO));
-        Assert.assertFalse(inventoryViewPage.isTabVisible(VALDATION_RESULTS));
+        Assert.assertTrue(inventoryViewPage.isTabVisible(MATERIALS));
+        Assert.assertFalse(inventoryViewPage.isTabVisible(MOVIES));
         
         inventoryViewPage.changeUser(USER1, PASSWORD_1);
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_DIRECTOR_TYPE);
@@ -233,8 +230,8 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
         Assert.assertEquals(defaultSize + offset, newSize);
         inventoryViewPage.selectFirstRow();
         
-        Assert.assertFalse(inventoryViewPage.isTabVisible(PLANNING_INFO));
-        Assert.assertTrue(inventoryViewPage.isTabVisible(VALDATION_RESULTS));
+        Assert.assertFalse(inventoryViewPage.isTabVisible(MATERIALS));
+        Assert.assertTrue(inventoryViewPage.isTabVisible(MOVIES));
         
         inventoryViewPage.deletePageConfiguration(CONFIGURATION_NAME_IV_DEFAULT_FOR_USER);
         assertSuccessMessage();
