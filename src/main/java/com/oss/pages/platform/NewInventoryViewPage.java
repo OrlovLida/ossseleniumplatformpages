@@ -385,8 +385,22 @@ public class NewInventoryViewPage extends BasePage {
     @Step("Get all Configurations for page")
     public List<String> getPageConfigurationsName() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        ButtonPanel.create(driver, wait).clickButton(KEBAB_OBJECT_GROUP_ID, SAVE_CONFIGURATION_BUTTON_ID);
+        ButtonPanel.create(driver, wait).clickButton(KEBAB_OBJECT_GROUP_ID, CHOOSE_CONFIGURATION_PAGE_ID);
        return getChooseConfigurationWizard().getConfigurationNames();
+    }
+
+    @Step("Get all Configurations for MainTable")
+    public List<String> getTableConfigurationsName() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getMainTable().callAction(ActionsContainer.KEBAB_GROUP_ID, CHOOSE_CONFIG_ID);
+        return getChooseConfigurationWizard().getConfigurationNames();
+    }
+
+    @Step("Get all Configurations for tabs")
+    public List<String> getTabsConfigurationsName() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getTabsWidget().callActionById(ActionsContainer.KEBAB_GROUP_ID, CHOOSE_CONFIG_ID);
+        return getChooseConfigurationWizard().getConfigurationNames();
     }
     
     @Step("Save configuration for tabs")
@@ -453,10 +467,9 @@ public class NewInventoryViewPage extends BasePage {
         getChooseConfigurationWizard().deleteConfiguration(configurationName).cancel();
     }
 
-    @Step("Delete all configurations for page")
-    public void deletePageConfigurations(List<String> configurationsName) {
+    @Step("Delete all configurations")
+    public void deleteConfigurations(List<String> configurationsName) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        ButtonPanel.create(driver, wait).clickButton(KEBAB_OBJECT_GROUP_ID, CHOOSE_CONFIGURATION_PAGE_ID);
         getChooseConfigurationWizard().deleteConfigurations(configurationsName).cancel();
     }
     
