@@ -216,15 +216,15 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         return OldTable.createById(driver, wait, ISSUES_TABLE_ID);
     }
 
+    private TabsInterface getTabsInterface() {
+        return TabsWidget.createById(driver, wait, TAB_ID);
+    }
+
     public enum IssueLevel {
         INFO,
         WARNING,
         ERROR,
         FATAL,
         STARTUP_FATAL
-    }
-
-    private TabsInterface getTabsInterface(){
-        return TabsWidget.createById(driver, wait, TAB_ID);
     }
 }
