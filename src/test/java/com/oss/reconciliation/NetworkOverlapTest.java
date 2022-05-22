@@ -72,20 +72,22 @@ public class NetworkOverlapTest extends BaseTestCase {
     @Description("Go to Network Discovery Control View and run reconciliation and check if it ended without errors")
     public void runReconciliationWithFullSample1() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.runReconciliation();
         checkPopupMessageType();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertEquals(networkDiscoveryControlViewPage.waitForEndOfReco(), "SUCCESS");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        String status = networkDiscoveryControlViewPage.waitForEndOfReco();
         networkDiscoveryControlViewPage.selectLatestReconciliationState();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.STARTUP_FATAL));
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.FATAL));
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.ERROR));
+        if (status.contains("SUCCESS")){
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.ERROR));
+        } else {
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.STARTUP_FATAL));
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.FATAL));
+        }
     }
 
     @Test(priority = 4, description = "Create CM Domain", dependsOnMethods = {"runReconciliationWithFullSample1"})
@@ -115,21 +117,22 @@ public class NetworkOverlapTest extends BaseTestCase {
     @Description("Go to Network Discovery Control View and run reconciliation and check if it ended without errors")
     public void runReconciliationWithFullSample2() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME_2);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.runReconciliation();
         checkPopupMessageType();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertEquals(networkDiscoveryControlViewPage.waitForEndOfReco(), "SUCCESS");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        String status = networkDiscoveryControlViewPage.waitForEndOfReco();
         networkDiscoveryControlViewPage.selectLatestReconciliationState();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.STARTUP_FATAL));
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.FATAL));
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.ERROR));
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        if (status.contains("SUCCESS")){
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.ERROR));
+        } else {
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.STARTUP_FATAL));
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.FATAL));
+        }
     }
 
     @Test(priority = 7, description = "Check conflict event", dependsOnMethods = {"runReconciliationWithFullSample2"})
@@ -167,27 +170,28 @@ public class NetworkOverlapTest extends BaseTestCase {
         ResolveConflictWizardPage resolveConflictWizardPage = new ResolveConflictWizardPage(driver);
         resolveConflictWizardPage.setChooseManually();
         resolveConflictWizardPage.setLeadingDomain(CM_DOMAIN_NAME);
+        resolveConflictWizardPage.setComment("Example comment");
         resolveConflictWizardPage.clickSubmit();
     }
 
-    @Test(priority = 11, description = "Run reconciliation and check results", dependsOnMethods = {"resolveConflict"})
+    @Test(priority = 11, description = "Run reconciliation and check results")
     @Description("Go to Network Discovery Control View and run reconciliation and check if it ended without errors")
     public void runReconciliationWithFullSample1Again() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.runReconciliation();
-        checkPopupMessageType();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertEquals(networkDiscoveryControlViewPage.waitForEndOfReco(), "SUCCESS");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        String status = networkDiscoveryControlViewPage.waitForEndOfReco();
         networkDiscoveryControlViewPage.selectLatestReconciliationState();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.STARTUP_FATAL));
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.FATAL));
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.ERROR));
+        if (status.contains("SUCCESS")){
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.ERROR));
+        } else {
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.STARTUP_FATAL));
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.FATAL));
+        }
     }
 
     @Test(priority = 12, description = "Search and open router in Inventory View", dependsOnMethods = {"runReconciliationWithFullSample1Again"})
@@ -205,12 +209,15 @@ public class NetworkOverlapTest extends BaseTestCase {
         Assert.assertFalse(newInventoryViewPage.checkIfTableIsEmpty());
     }
 
-    @Test(priority = 13, description = "Check if conflict is resolved", dependsOnMethods = {"searchInGlobalSearchAndOpenInventoryView"})
-    @Description("Check if conflict is now resolved")
+    @Test(priority = 13, description = "Check if conflict is resolved and check comment", dependsOnMethods = {"searchInGlobalSearchAndOpenInventoryView"})
+    @Description("Check if conflict is now resolved and check comment")
     public void checkIfConflictIsResolved() {
         networkOverlapPage = NetworkOverlapPage.goToNetworkOverlapPage(driver, BASIC_URL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkOverlapPage.searchByObjectName(DEVICE_1_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertEquals(networkOverlapPage.getConflictStatus(0), "RESOLVED");
+        Assert.assertEquals(networkOverlapPage.getConflictComment(0), "Example comment");
     }
 
     @Test(priority = 14, description = "Delete CM Domain 1", dependsOnMethods = {"createCmDomain1"})
@@ -224,7 +231,31 @@ public class NetworkOverlapTest extends BaseTestCase {
         Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
     }
 
-    @Test(priority = 15, description = "Delete CM Domain 2", dependsOnMethods = {"createCmDomain2"})
+    @Test(priority = 15, description = "Check if conflict is open", dependsOnMethods = {"resolveConflict","deleteCmDomain1"})
+    @Description("Check if conflict is now open after removing domain1")
+    public void checkIfConflictIsOpen() {
+        networkOverlapPage = NetworkOverlapPage.goToNetworkOverlapPage(driver, BASIC_URL);
+        networkOverlapPage.searchByObjectName(DEVICE_1_NAME);
+        Assert.assertEquals(networkOverlapPage.getConflictStatus(0), "OPEN");
+    }
+
+    @Test(priority = 16, description = "Resolve and Reopen conflict and then check if conflict is open", dependsOnMethods = {"checkIfConflictIsOpen"})
+    @Description("Resolve and Reopen conflict and assert open")
+    public void resolveAndReopenAndAssertOpen() {
+        networkOverlapPage.selectConflict(0);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkOverlapPage.clickResolve();
+        ResolveConflictWizardPage resolveConflictWizardPage = new ResolveConflictWizardPage(driver);
+        resolveConflictWizardPage.clickSubmit();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkOverlapPage.selectConflict(0);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkOverlapPage.reopenConflict();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        Assert.assertEquals(networkOverlapPage.getConflictStatus(0), "OPEN");
+    }
+
+    @Test(priority = 17, description = "Delete CM Domain 2", dependsOnMethods = {"createCmDomain2"})
     @Description("Delete CM Domain2")
     public void deleteCmDomain2() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
@@ -233,6 +264,16 @@ public class NetworkOverlapTest extends BaseTestCase {
         networkDiscoveryControlViewPage.deleteCmDomain();
         checkPopupMessageType();
         Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME_2 + " finished");
+    }
+
+    @Test(priority = 18, description = "Check if conflict is terminated", dependsOnMethods = {"checkIfConflictIsOpen","deleteCmDomain2"})
+    @Description("Check if conflict is now terminated after removing both domains")
+    public void checkIfConflictIsTerminated() {
+        networkOverlapPage = NetworkOverlapPage.goToNetworkOverlapPage(driver, BASIC_URL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkOverlapPage.searchByObjectName(DEVICE_1_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        Assert.assertEquals(networkOverlapPage.getConflictStatus(0), "TERMINATED");
     }
 
     private void checkPopupMessageType() {

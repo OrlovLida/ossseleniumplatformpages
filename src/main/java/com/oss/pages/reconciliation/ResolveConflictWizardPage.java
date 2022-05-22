@@ -17,6 +17,7 @@ public class ResolveConflictWizardPage extends BasePage {
     private static final String CHOOSE_MANUALLY = "choose manually";
     private static final String SUBMIT_BUTTON_ID = "ConflictResolverFormSubmitButtonApp-2";
     private static final String LEADING_DOMAIN_ID = "destinationCmDomain-input";
+    private static final String COMMENT_ID = "comment";
     private final Wizard wizard;
 
     public ResolveConflictWizardPage(WebDriver driver) {
@@ -43,4 +44,9 @@ public class ResolveConflictWizardPage extends BasePage {
         wizard.setComponentValue(LEADING_DOMAIN_ID, name, Input.ComponentType.COMBOBOX);
     }
 
+    @Step("Add comment")
+    public void setComment(String comment) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        wizard.setComponentValue(COMMENT_ID, comment, Input.ComponentType.TEXT_FIELD);
+    }
 }

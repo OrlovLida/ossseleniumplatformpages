@@ -3,6 +3,8 @@ package com.oss.pages.reconciliation;
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.prompts.ConfirmationBox;
+import com.oss.framework.components.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.EditableList;
 import com.oss.framework.widgets.table.OldTable;
@@ -16,10 +18,12 @@ public class NetworkOverlapPage extends BasePage {
 
     private static final String CONFLICT_TAB = "CurrentConflictTableTabApp";
     private static final String RESOLVE = "cmInventoryIntegration_CONFLICTActionRESOLVEId";
+    private static final String REOPEN = "cmInventoryIntegration_CONFLICTActionREOPENId";
     private static final String CONFLICTED_OBJECTS_TAB = "ConflictTabViewApp";
     private static final String EDITABLE_LIST_ID = "ExtendedList-ConflictedObjectEditableListTabApp";
     private static final String NETWORK_ELEMENT_NAME = "name";
     private static final String STATUS_LABEL = "Status";
+    private static final String COMMENT_LABEL = "Comment";
     private static final String DOMAIN_HEADER_ID = "overlapCmDomain";
 
     protected NetworkOverlapPage(WebDriver driver) {
@@ -38,6 +42,12 @@ public class NetworkOverlapPage extends BasePage {
         return getOldTable().getCellValue(rowIndex, STATUS_LABEL);
     }
 
+    @Step("Get conflict comment")
+    public String getConflictComment(int rowIndex) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return getOldTable().getCellValue(rowIndex, CONFLICT_TAB);
+    }
+
     @Step("Select row with given index")
     public void selectConflict(int rowIndex) {
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -47,6 +57,13 @@ public class NetworkOverlapPage extends BasePage {
     @Step("click Resolve button")
     public void clickResolve() {
         getTabsInterface().callActionById(RESOLVE);
+    }
+
+    @Step("click Reopen button")
+    public void reopenConflict() {
+        getTabsInterface().callActionById(REOPEN);
+        ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
+        prompt.clickButtonByLabel("Accept");
     }
 
     @Step("Get Domain Name from Conflicted Objects tab")
