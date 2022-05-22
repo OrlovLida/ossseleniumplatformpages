@@ -79,7 +79,7 @@ public class NetworkOverlapTest extends BaseTestCase {
         checkPopupMessageType();
         String status = networkDiscoveryControlViewPage.waitForEndOfReco();
         networkDiscoveryControlViewPage.selectLatestReconciliationState();
-        if (status.contains("SUCCESS")){
+        if (status.contains("SUCCESS")) {
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.ERROR));
         } else {
@@ -124,7 +124,7 @@ public class NetworkOverlapTest extends BaseTestCase {
         checkPopupMessageType();
         String status = networkDiscoveryControlViewPage.waitForEndOfReco();
         networkDiscoveryControlViewPage.selectLatestReconciliationState();
-        if (status.contains("SUCCESS")){
+        if (status.contains("SUCCESS")) {
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.ERROR));
         } else {
@@ -183,7 +183,7 @@ public class NetworkOverlapTest extends BaseTestCase {
         networkDiscoveryControlViewPage.runReconciliation();
         String status = networkDiscoveryControlViewPage.waitForEndOfReco();
         networkDiscoveryControlViewPage.selectLatestReconciliationState();
-        if (status.contains("SUCCESS")){
+        if (status.contains("SUCCESS")) {
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.ERROR));
         } else {
@@ -231,7 +231,7 @@ public class NetworkOverlapTest extends BaseTestCase {
         Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
     }
 
-    @Test(priority = 15, description = "Check if conflict is open", dependsOnMethods = {"resolveConflict","deleteCmDomain1"})
+    @Test(priority = 15, description = "Check if conflict is open", dependsOnMethods = {"resolveConflict", "deleteCmDomain1"})
     @Description("Check if conflict is now open after removing domain1")
     public void checkIfConflictIsOpen() {
         networkOverlapPage = NetworkOverlapPage.goToNetworkOverlapPage(driver, BASIC_URL);
@@ -266,7 +266,7 @@ public class NetworkOverlapTest extends BaseTestCase {
         Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME_2 + " finished");
     }
 
-    @Test(priority = 18, description = "Check if conflict is terminated", dependsOnMethods = {"checkIfConflictIsOpen","deleteCmDomain2"})
+    @Test(priority = 18, description = "Check if conflict is terminated", dependsOnMethods = {"checkIfConflictIsOpen", "deleteCmDomain2"})
     @Description("Check if conflict is now terminated after removing both domains")
     public void checkIfConflictIsTerminated() {
         networkOverlapPage = NetworkOverlapPage.goToNetworkOverlapPage(driver, BASIC_URL);
