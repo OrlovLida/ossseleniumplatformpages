@@ -9,14 +9,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.contextactions.ButtonContainer;
+import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.HtmlEditor;
 import com.oss.framework.components.layout.Card;
 import com.oss.framework.components.mainheader.ToolbarWidget;
+import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.BasePage;
 import com.oss.pages.servicedesk.issue.IssueDetailsPage;
+import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
 import com.oss.untils.FileDownload;
 
 import io.qameta.allure.Step;
@@ -129,5 +132,13 @@ public abstract class BaseSDPage extends BasePage {
 
     public boolean isIssueTypeTicket() {
         return getViewTitle().contains("Ticket");
+    }
+
+    public SDWizardPage openCreateWizard(String flowType, String createButtonId, String wizardId) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        Button.createById(driver, createButtonId).click();
+        DropdownList.create(driver, wait).selectOptionById(flowType);
+
+        return new SDWizardPage(driver, wait, wizardId);
     }
 }

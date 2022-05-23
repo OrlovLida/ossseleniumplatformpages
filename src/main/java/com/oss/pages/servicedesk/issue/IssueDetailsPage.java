@@ -21,11 +21,13 @@ import com.oss.pages.servicedesk.issue.tabs.DescriptionTab;
 import com.oss.pages.servicedesk.issue.tabs.ExternalTab;
 import com.oss.pages.servicedesk.issue.tabs.MessagesTab;
 import com.oss.pages.servicedesk.issue.tabs.ParticipantsTab;
+import com.oss.pages.servicedesk.issue.tabs.ProblemSolutionTab;
 import com.oss.pages.servicedesk.issue.tabs.RelatedChangesTab;
 import com.oss.pages.servicedesk.issue.tabs.RelatedProblemsTab;
 import com.oss.pages.servicedesk.issue.tabs.RelatedTicketsTab;
 import com.oss.pages.servicedesk.issue.tabs.RolesTab;
 import com.oss.pages.servicedesk.issue.tabs.RootCausesTab;
+import com.oss.pages.servicedesk.issue.tabs.TasksTab;
 import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
 
 import io.qameta.allure.Step;
@@ -68,6 +70,9 @@ public class IssueDetailsPage extends BaseSDPage {
     private static final String ROLES_TAB_ID = "_detailsRoles";
     private static final String DESCRIPTIONS_WINDOW_ID = "_descriptionsWindow";
     private static final String DESCRIPTION_TAB_ID = "_descriptionTab";
+    private static final String PROBLEM_SOLUTION_TAB_ID = "_problemSolutionTab";
+    private static final String TASK_TAB_WIDGET_ID = "_taskWindow";
+    private static final String TASK_TAB_ID = "_tasksWindow";
 
     public IssueDetailsPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -192,6 +197,20 @@ public class IssueDetailsPage extends BaseSDPage {
         return new DescriptionTab(driver, wait);
     }
 
+    public ProblemSolutionTab selectProblemSolutionTab() {
+        selectTabFromTabsWidget(DESCRIPTIONS_WINDOW_ID, PROBLEM_SOLUTION_TAB_ID);
+        log.info("Selecting Problem Solution Tab");
+
+        return new ProblemSolutionTab(driver, wait);
+    }
+
+    public TasksTab selectTaskTab() {
+        selectTabFromTabsWidget(TASK_TAB_WIDGET_ID, TASK_TAB_ID);
+        log.info("Selecting Task Tab");
+
+        return new TasksTab(driver, wait);
+    }
+
     public RolesTab selectRolesTab() {
         selectTabFromDetailsWindow(ROLES_TAB_ID);
         log.info("Selecting Roles Tab");
@@ -223,7 +242,8 @@ public class IssueDetailsPage extends BaseSDPage {
 
     @Step("Changing status to {statusName}")
     public void changeTicketStatus(String statusName) {
-        ComponentFactory.create(CHANGE_TICKET_STATUS_COMBOBOX_ID, Input.ComponentType.COMBOBOX, driver, wait).setSingleStringValue(statusName);
+        ComponentFactory.create(CHANGE_TICKET_STATUS_COMBOBOX_ID, Input.ComponentType.COMBOBOX, driver, wait)
+                .setSingleStringValue(statusName);
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Changing status to {}", statusName);
     }
