@@ -174,13 +174,14 @@ public class NetworkOverlapTest extends BaseTestCase {
         resolveConflictWizardPage.clickSubmit();
     }
 
-    @Test(priority = 11, description = "Run reconciliation and check results")
+    @Test(priority = 11, description = "Run reconciliation and check results", dependsOnMethods = {"resolveConflict"})
     @Description("Go to Network Discovery Control View and run reconciliation and check if it ended without errors")
     public void runReconciliationWithFullSample1Again() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.runReconciliation();
+        checkPopupMessageType();
         String status = networkDiscoveryControlViewPage.waitForEndOfReco();
         networkDiscoveryControlViewPage.selectLatestReconciliationState();
         if (status.contains("SUCCESS")) {

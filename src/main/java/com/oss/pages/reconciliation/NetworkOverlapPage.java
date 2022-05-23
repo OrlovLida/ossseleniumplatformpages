@@ -45,7 +45,7 @@ public class NetworkOverlapPage extends BasePage {
     @Step("Get conflict comment")
     public String getConflictComment(int rowIndex) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        return getOldTable().getCellValue(rowIndex, CONFLICT_TAB);
+        return getOldTable().getCellValue(rowIndex, COMMENT_LABEL);
     }
 
     @Step("Select row with given index")
