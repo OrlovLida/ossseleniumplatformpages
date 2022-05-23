@@ -82,11 +82,11 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_DIRECTOR_TYPE);
         deleteOldConfigurations(inventoryViewPage.getTableConfigurationsName());
         deleteOldConfigurations(inventoryViewPage.getPageConfigurationsName());
+        inventoryViewPage.selectFirstRow();
         deleteOldConfigurations(inventoryViewPage.getTabsConfigurationsName());
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_PERSON_TYPE);
         deleteOldConfigurations(inventoryViewPage.getPageConfigurationsName());
         deleteOldConfigurations(inventoryViewPage.getTableConfigurationsName());
-        inventoryViewPage.getMainTable().unselectAllRows();
     }
 
     private void deleteOldConfigurations(List<String> configurationNames) {
