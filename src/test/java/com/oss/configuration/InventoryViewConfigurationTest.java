@@ -80,12 +80,12 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
 
     private void deleteOldConfiguration(){
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_DIRECTOR_TYPE);
+        deleteOldConfigurations(inventoryViewPage.getTableConfigurationsName());
         deleteOldConfigurations(inventoryViewPage.getPageConfigurationsName());
+        deleteOldConfigurations(inventoryViewPage.getTabsConfigurationsName());
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_PERSON_TYPE);
         deleteOldConfigurations(inventoryViewPage.getPageConfigurationsName());
         deleteOldConfigurations(inventoryViewPage.getTableConfigurationsName());
-        selectObjectOfSuperType(TEST_DIRECTOR_TYPE);
-        deleteOldConfigurations(inventoryViewPage.getTabsConfigurationsName());
         inventoryViewPage.getMainTable().unselectAllRows();
     }
 
