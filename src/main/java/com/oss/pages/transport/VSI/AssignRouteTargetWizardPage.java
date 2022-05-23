@@ -19,33 +19,32 @@ public class AssignRouteTargetWizardPage extends BasePage {
 
     private final Wizard wizard;
 
-    public AssignRouteTargetWizardPage(WebDriver driver){
+    public AssignRouteTargetWizardPage(WebDriver driver) {
         super(driver);
         wizard = Wizard.createByComponentId(driver, wait, COMPONENT_ID);
     }
 
     @Step("Set Route Target {routeTarget}")
-    public void setRouteTarget(String routeTarget){
+    public void setRouteTarget(String routeTarget) {
         wizard.setComponentValue(ROUTE_TARGET_FIELD_ID, routeTarget, Input.ComponentType.SEARCH_FIELD);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     @Step("Set import to {imp}")
-    public void setImport(){
-        wizard.setComponentValue(IMPORT_FIELD_ID, "true", Input.ComponentType.CHECKBOX);
+    public void setImport(String value) {
+        wizard.setComponentValue(IMPORT_FIELD_ID, value, Input.ComponentType.CHECKBOX);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     @Step("Set export to {exp}")
-    public void setExport(){
-        wizard.setComponentValue(EXPORT_FIELD_ID, "false", Input.ComponentType.CHECKBOX);
+    public void setExport(String value) {
+        wizard.setComponentValue(EXPORT_FIELD_ID, value, Input.ComponentType.CHECKBOX);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     @Step("Click accept button")
     public NewInventoryViewPage clickAccept() {
         wizard.clickAccept();
-        DelayUtils.waitForPageToLoad(driver, wait);
         return new NewInventoryViewPage(driver, wait);
     }
 }

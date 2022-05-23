@@ -9,9 +9,10 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.commonhierarchy.CommonHierarchyApp;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
-import com.oss.pages.platform.NewInventoryViewPage;
 
 import io.qameta.allure.Step;
+
+import static com.oss.configuration.Configuration.CONFIGURATION;
 
 /**
  * @author Kamil Sikora
@@ -26,11 +27,15 @@ public class VSIWizardPage extends BasePage {
     private static final String DESCRIPTION_FIELD_ID = "uidFieldDescription";
     private static final String COMPONENT_ID = "vsiApp";
 
-    private final Wizard wizard;
-
     public VSIWizardPage(WebDriver driver) {
         super(driver);
-        wizard = Wizard.createByComponentId(driver, wait, COMPONENT_ID);
+    }
+
+    public VSIWizardPage goToVSIWizardPage() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        driver.get(String.format("%s/#/view/transport/ip/mpls/vsi?perspective=LIVE", CONFIGURATION.getUrl()));
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return new VSIWizardPage(driver);
     }
 
     @Step("Set VPN id to {vpnId}")
@@ -55,19 +60,19 @@ public class VSIWizardPage extends BasePage {
 
     @Step("Set device to {device}")
     public void setDevice(String device) {
-        wizard.setComponentValue(DEVICE_FIELD_ID, device, Input.ComponentType.SEARCH_FIELD);
+        getWizard().setComponentValue(DEVICE_FIELD_ID, device, Input.ComponentType.SEARCH_FIELD);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     @Step("Set description to {description}")
     public void setDescription(String description) {
-        wizard.setComponentValue(DESCRIPTION_FIELD_ID, description, Input.ComponentType.TEXT_AREA);
+        getWizard().setComponentValue(DESCRIPTION_FIELD_ID, description, Input.ComponentType.TEXT_AREA);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     @Step("Click next step button")
     public void clickNextStep() {
-        wizard.clickNextStep();
+        getWizard().clickNextStep();
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
@@ -79,18 +84,16 @@ public class VSIWizardPage extends BasePage {
 
     @Step("Click accept button")
     public void clickAccept() {
-        wizard.clickAccept();
+        getWizard().clickAccept();
     }
 
     private void setTextFieldComponentValue(String componentId, String value) {
-        wizard.setComponentValue(componentId, value, Input.ComponentType.TEXT_FIELD);
+        getWizard().setComponentValue(componentId, value, Input.ComponentType.TEXT_FIELD);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    private void setComponentValue(Input component, String value) {
-        component.setSingleStringValue(value);
-        DelayUtils.waitForPageToLoad(driver, wait);
+    private Wizard getWizard() {
+        return Wizard.createByComponentId(driver, wait, COMPONENT_ID);
     }
-
 }
 
