@@ -13,6 +13,7 @@ import com.oss.pages.servicedesk.issue.tabs.RelatedProblemsTab;
 import com.oss.pages.servicedesk.issue.tabs.RelatedTicketsTab;
 import com.oss.pages.servicedesk.issue.tabs.RootCausesTab;
 import com.oss.pages.servicedesk.issue.ticket.TicketDashboardPage;
+import com.oss.pages.servicedesk.issue.ticket.TicketOverviewTab;
 import com.oss.pages.servicedesk.issue.ticket.TicketSearchPage;
 import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
 import com.oss.utils.TestListener;
@@ -20,6 +21,7 @@ import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 
 import static com.oss.pages.servicedesk.ServiceDeskConstants.ID_ATTRIBUTE;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.TROUBLE_TICKET_ISSUE_TYPE;
 
 @Listeners({TestListener.class})
 public class EditReleaseFunctionalityTest extends BaseTestCase {
@@ -28,6 +30,7 @@ public class EditReleaseFunctionalityTest extends BaseTestCase {
     private TicketSearchPage ticketSearchPage;
     private SDWizardPage sdWizardPage;
     private IssueDetailsPage issueDetailsPage;
+    private TicketOverviewTab ticketOverviewTab;
     private RootCausesTab rootCausesTab;
     private RelatedTicketsTab relatedTicketsTab;
     private ParticipantsTab participantsTab;
@@ -54,7 +57,8 @@ public class EditReleaseFunctionalityTest extends BaseTestCase {
         ticketSearchPage = new TicketSearchPage(driver, webDriverWait).openView(driver, BASIC_URL);
         ticketSearchPage.filterByTextField(ID_ATTRIBUTE, ticketID);
         issueDetailsPage = ticketSearchPage.openIssueDetailsViewFromSearchPage("0", BASIC_URL);
-        issueDetailsPage.allowEditingTicket();
+        ticketOverviewTab = (TicketOverviewTab) issueDetailsPage.selectOverviewTab(TROUBLE_TICKET_ISSUE_TYPE);
+        ticketOverviewTab.allowEditingTicket();
 
         Assert.assertTrue(issueDetailsPage.areSkipButtonsActive());
     }
@@ -90,7 +94,7 @@ public class EditReleaseFunctionalityTest extends BaseTestCase {
     @Test(priority = 7, testName = "Checklist - read only mode", description = "Read only mode - check if Skip buttons are not available")
     @Description("Read only mode - check if Skip buttons are available")
     public void checklistOnReadOnlyMode() {
-        issueDetailsPage.releaseTicket();
+        ticketOverviewTab.releaseTicket();
 
         Assert.assertFalse(issueDetailsPage.areSkipButtonsActive());
     }
