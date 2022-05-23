@@ -15,12 +15,13 @@ public class RouteTargetWizardPage extends BasePage {
 
     private static final String ROUTE_TARGET_VALUE_DATA_ATTRIBUTENAME = "uid.field.value";
     private static final String DESCRIPTION_DATA_ATTRIBUTENAME = "uid.field.description";
+    private static final String COMPONENT_ID = "vpn.routetarget.app";
 
     private final Wizard wizard;
 
     public RouteTargetWizardPage(WebDriver driver) {
         super(driver);
-        wizard = Wizard.createWizard(driver, wait);
+        wizard = Wizard.createByComponentId(driver, wait, COMPONENT_ID);
     }
 
     @Step("Set Route Target value to {routeTarget}")
@@ -34,8 +35,7 @@ public class RouteTargetWizardPage extends BasePage {
     }
 
     @Step("Click accept button")
-    public RouteTargetOverviewPage clickAccept() {
+    public void clickAccept() {
         wizard.clickAccept();
-        return new RouteTargetOverviewPage(driver);
     }
 }

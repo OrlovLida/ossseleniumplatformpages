@@ -9,6 +9,7 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.commonhierarchy.CommonHierarchyApp;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
+import com.oss.pages.platform.NewInventoryViewPage;
 
 import io.qameta.allure.Step;
 
@@ -23,13 +24,13 @@ public class VSIWizardPage extends BasePage {
     private static final String VE_ID_FIELD_ID = "uidFieldVeId";
     private static final String ROUTE_DISTINGUISHER_FIELD_ID = "uidFieldRouteDistinguisher";
     private static final String DESCRIPTION_FIELD_ID = "uidFieldDescription";
-    private static final String WIDGET_ID = "CommonHierarchyApp-vsiAppSelect";
+    private static final String COMPONENT_ID = "vsiApp";
 
     private final Wizard wizard;
 
     public VSIWizardPage(WebDriver driver) {
         super(driver);
-        wizard = Wizard.createWizard(driver, wait);
+        wizard = Wizard.createByComponentId(driver, wait, COMPONENT_ID);
     }
 
     @Step("Set VPN id to {vpnId}")
@@ -72,15 +73,13 @@ public class VSIWizardPage extends BasePage {
 
     @Step("Navigate through common hierarchy app widget selecting {deviceName} -> {interfaceType} and interface values")
     public void navigateThroughSecondPhase(String deviceName, String interfaceType, String... interfaceValues) {
-        CommonHierarchyApp commonHierarchyApp = CommonHierarchyApp.create(driver, wait, WIDGET_ID);
+        CommonHierarchyApp commonHierarchyApp = CommonHierarchyApp.create(driver, wait, COMPONENT_ID);
         commonHierarchyApp.callAvailableAction(Arrays.asList(interfaceValues), deviceName, interfaceType);
     }
 
     @Step("Click accept button")
-    public VSIOverviewPage clickAccept() {
+    public void clickAccept() {
         wizard.clickAccept();
-        DelayUtils.waitForPageToLoad(driver, wait);
-        return new VSIOverviewPage(driver);
     }
 
     private void setTextFieldComponentValue(String componentId, String value) {
