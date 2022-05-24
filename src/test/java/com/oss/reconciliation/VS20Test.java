@@ -24,6 +24,8 @@ import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
 import com.oss.pages.reconciliation.SamplesManagementPage;
 import com.oss.pages.reconciliation.VS20Page;
 
+import io.qameta.allure.Description;
+
 public class VS20Test extends BaseTestCase {
 
     private static final Logger log = LoggerFactory.getLogger(VS20Test.class);
@@ -33,6 +35,17 @@ public class VS20Test extends BaseTestCase {
     private static final String DISTINGUISH_NAME = "Device_VS20_TEST";
     private static final String SKIPPING_TEST_MESSAGE = "Skipping tests because resource was not available.";
     private static final String NOTIFICATION_MESSAGE = "Generation of VS Objects Metamodel for CM Interface: Comarch finished";
+
+    private static final List<String> assertionFilterList = new ImmutableList.Builder<String>()
+            .add("CM Domain Id")
+            .add("CM Domain Name")
+            .add("Type")
+            .add("Distinguish Name")
+            .add("Is Changed")
+            .add("Is Removed")
+            .add("Is Root")
+            .build();
+
     private static final List<String> assertionVS20ColumnsList = new ImmutableList.Builder<String>()
             .add("CM Domain Name")
             .add("Type")
@@ -41,6 +54,7 @@ public class VS20Test extends BaseTestCase {
             .add("Is Removed")
             .add("Is Root")
             .build();
+
     private static final List<String> assertionInventoryViewColumnsList = new ImmutableList.Builder<String>()
             .add("CM Domain Name")
             .add("Distinguish Name")
@@ -69,6 +83,7 @@ public class VS20Test extends BaseTestCase {
             .add("relation-HostedFunctionsList")
             .add("relation-ManagementSystem")
             .build();
+
     private static final List<String> assertionList = new ImmutableList.Builder<String>()
             .add("CM Domain Id")
             .add("CM Domain Name")
@@ -100,6 +115,7 @@ public class VS20Test extends BaseTestCase {
             .add("relation-HostedFunctionsList")
             .add("relation-ManagementSystem")
             .build();
+
     SoftAssert softAssert = new SoftAssert();
     private VS20Page vs20Page;
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
@@ -112,7 +128,8 @@ public class VS20Test extends BaseTestCase {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
     }
 
-    @Test(priority = 1)
+    @Test(priority = 1, description = "Create CMDomain")
+    @Description("Create CMDomain")
     public void createCmDomain() {
         networkDiscoveryControlViewPage.openCmDomainWizard();
         CmDomainWizardPage wizard = new CmDomainWizardPage(driver);
@@ -123,7 +140,8 @@ public class VS20Test extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 2)
+    @Test(priority = 2, description = "Upload reconciliation samples", dependsOnMethods = {"createCmDomain"})
+    @Description("Go to Sample Management View and upload reconciliation samples")
     public void uploadSamples() throws URISyntaxException {
         DelayUtils.sleep(1000);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
@@ -136,7 +154,8 @@ public class VS20Test extends BaseTestCase {
         samplesManagementPage.uploadSamples("recoSamples/VS20Viewer/DEVICE_VS20_TEST.json");
     }
 
-    @Test(priority = 3)
+    @Test(priority = 3, description = "Run reconciliation with full samples", dependsOnMethods = {"uploadSamples"})
+    @Description("Run reconciliation with full samples")
     public void runReconciliationWithFullSample() {
         openNetworkDiscoveryControlView();
         DelayUtils.sleep(100);
@@ -146,7 +165,7 @@ public class VS20Test extends BaseTestCase {
         checkPopupMessageType();
         String status = networkDiscoveryControlViewPage.waitForEndOfReco();
         networkDiscoveryControlViewPage.selectLatestReconciliationState();
-        if (status.contains("SUCCESS")){
+        if (status.contains("SUCCESS")) {
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.ERROR));
         } else {
@@ -157,7 +176,8 @@ public class VS20Test extends BaseTestCase {
         }
     }
 
-    @Test(priority = 4)
+    @Test(priority = 4, description = "Search for object in Metamodel Page", dependsOnMethods = {"runReconciliationWithFullSample"})
+    @Description("Search for object in Metamodel Page")
     public void searchForObjectInMetamodelPage() {
         metamodelPage = MetamodelPage.goToMetamodelPage(driver, BASIC_URL);
         metamodelPage.searchInterfaceByName(INTERFACE_NAME);
@@ -170,21 +190,40 @@ public class VS20Test extends BaseTestCase {
         }
     }
 
-    @Test(priority = 5)
-    public void selectRowOnVS20Page() {
+    @Test(priority = 5, description = "Assert Filters", dependsOnMethods = {"searchForObjectInMetamodelPage"})
+    @Description("Assert Filters on VS 2.0 Viewer Page")
+    public void assertFilters() {
         vs20Page = VS20Page.goToVS20Page(driver, BASIC_URL);
+        List<String> attributes = vs20Page.getAvailableFilters();
+        log.info(String.valueOf(attributes.size()));
+        log.info(String.valueOf(attributes));
+        log.info(String.valueOf(assertionFilterList.size()));
+        log.info(String.valueOf(assertionFilterList));
+        Assert.assertEquals(attributes.size(), assertionFilterList.size());
+        for (int i = 0; i < attributes.size(); i++) {
+            log.info("Checking attribute with index: " + i + ", which equals: '" + assertionFilterList.get(i) + "' on declared assertionList, and equals '" + attributes.get(i) + "' on properties list taken from GUI");
+            softAssert.assertEquals((attributes.get(i)), assertionFilterList.get(i));
+        }
+        softAssert.assertAll();
+    }
+
+    @Test(priority = 6, description = "Select first row on VS2.0 Viewer Page", dependsOnMethods = {"searchForObjectInMetamodelPage"})
+    @Description("Select first row on VS2.0 Viewer Page")
+    public void selectRowOnVS20Page() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         vs20Page.searchItemByCMDomainName(CM_DOMAIN_NAME);
         vs20Page.searchItemByType(OBJECT_TYPE);
         vs20Page.clickFirstItem();
     }
 
-    @Test(priority = 6)
+    @Test(priority = 7, description = "Assert all of properties are correct", dependsOnMethods = {"selectRowOnVS20Page"})
+    @Description("Assert all of properties are correct")
     public void assertProperties() {
         List<String> attributes = vs20Page.getPropertiesToList();
-        System.out.println(attributes.size());
-        System.out.println(attributes);
-        System.out.println(assertionList.size());
-        System.out.println(assertionList);
+        log.info(String.valueOf(attributes.size()));
+        log.info(String.valueOf(attributes));
+        log.info(String.valueOf(assertionList.size()));
+        log.info(String.valueOf(assertionList));
         Assert.assertEquals(attributes.size(), assertionList.size());
         for (int i = 0; i < attributes.size(); i++) {
             log.info("Checking attribute with index: " + i + ", which equals: '" + assertionList.get(i) + "' on declared assertionList, and equals '" + attributes.get(i) + "' on properties list taken from GUI");
@@ -193,7 +232,8 @@ public class VS20Test extends BaseTestCase {
         softAssert.assertAll();
     }
 
-    @Test(priority = 7)
+    @Test(priority = 8, description = "Assert columns in VS2.0 Viewer Page", dependsOnMethods = {"selectRowOnVS20Page"})
+    @Description("Assert columns in VS2.0 Viewer Page")
     public void assertColumnsInVS20Viewer() {
         List<String> columnsList = vs20Page.getColumnsIds();
         Assert.assertEquals(columnsList.size(), assertionVS20ColumnsList.size());
@@ -203,12 +243,14 @@ public class VS20Test extends BaseTestCase {
         }
     }
 
-    @Test(priority = 8)
+    @Test(priority = 9, description = "Click Show On and Inventory View", dependsOnMethods = {"selectRowOnVS20Page"})
+    @Description("Click Show On and Inventory View")
     public void showOnInventoryView() {
         vs20Page.navigateToInventoryView();
     }
 
-    @Test(priority = 9)
+    @Test(priority = 10, description = "Assert columns in Inventory View", dependsOnMethods = {"showOnInventoryView"})
+    @Description("Assert columns in Inventory View")
     public void assertColumnsInInventoryView() {
         inventoryView_vsObject95_page = new InventoryViewVSObject95Page(driver);
         List<String> columnsList = inventoryView_vsObject95_page.getColumnsIds();
@@ -220,7 +262,8 @@ public class VS20Test extends BaseTestCase {
         }
     }
 
-    @Test(priority = 10)
+    @Test(priority = 11, description = "Delete CMDomain", dependsOnMethods = {"createCmDomain"})
+    @Description("Delete CMDomain")
     public void deleteCMDomain() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);

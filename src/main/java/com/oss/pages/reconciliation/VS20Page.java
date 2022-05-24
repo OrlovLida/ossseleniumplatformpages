@@ -13,7 +13,7 @@ import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
 
 public class VS20Page extends BasePage {
-    private static final String TABLE_WIDGET = "InventoryView_MainWidget_VS_Object";
+    private static final String TABLE_WIDGET = "InventoryView_MainCard_VS_Object";
     private static final String CM_DOMAIN_NAME = "cmDomainName";
     private static final String DISTINGUISH_NAME = "distinguishName";
     private static final String NATIVE_TYPE = "nativeType";
@@ -51,24 +51,24 @@ public class VS20Page extends BasePage {
 
     public void clickFirstItem() {
         getTableWidget().clickRow(0);
-
     }
 
     public List<String> getColumnsIds() {
         return getTableWidget().getActiveColumnHeaders();
-
     }
 
     @Step("Go to Network Discovery Control View")
     public void goToNDCV() {
         getTableWidget().callAction(NAVIGATION_ID);
-
     }
 
     @Step("Get value of property")
     public String getPropertyValue() {
         return getPropertyPanel().getPropertyValue(CM_DOMAIN_NAME);
+    }
 
+    public List<String> getAvailableFilters() {
+        return getTableWidget().getAllVisibleFilters();
     }
 
     public void navigateToInventoryView() {
