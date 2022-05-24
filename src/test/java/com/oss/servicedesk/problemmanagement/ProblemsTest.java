@@ -15,6 +15,7 @@ import com.oss.pages.servicedesk.issue.problem.ProblemDashboardPage;
 import com.oss.pages.servicedesk.issue.tabs.AttachmentsTab;
 import com.oss.pages.servicedesk.issue.tabs.DescriptionTab;
 import com.oss.pages.servicedesk.issue.tabs.ExternalTab;
+import com.oss.pages.servicedesk.issue.tabs.OverviewTab;
 import com.oss.pages.servicedesk.issue.tabs.MessagesTab;
 import com.oss.pages.servicedesk.issue.tabs.ParticipantsTab;
 import com.oss.pages.servicedesk.issue.tabs.ProblemSolutionTab;
@@ -43,6 +44,7 @@ public class ProblemsTest extends BaseTestCase {
     private ProblemDashboardPage problemDashboardPage;
     private SDWizardPage sdWizardPage;
     private IssueDetailsPage issueDetailsPage;
+    private OverviewTab problemOverviewTab;
     private AttachmentsTab attachmentsTab;
     private ExternalTab externalTab;
     private ExternalPromptPage externalPromptPage;
@@ -121,8 +123,9 @@ public class ProblemsTest extends BaseTestCase {
             @Optional("sd_seleniumtest") String NewAssignee
     ) {
         issueDetailsPage.maximizeWindow(DETAILS_TABS_CONTAINER_ID);
-        issueDetailsPage.changeIssueAssignee(NewAssignee);
-        issueDetailsPage.changeIssueStatus(STATUS_IN_PROGRESS);
+        problemOverviewTab = issueDetailsPage.selectOverviewTab(PROBLEM_ISSUE_TYPE);
+        problemOverviewTab.changeIssueAssignee(NewAssignee);
+        problemOverviewTab.changeIssueStatus(STATUS_IN_PROGRESS);
         problemDashboardPage = new ProblemDashboardPage(driver, webDriverWait).goToPage(driver, BASIC_URL);
 
         Assert.assertEquals(problemDashboardPage.getProblemAssignee(PROBLEM_NAME_DESCRIPTION_TXT), NewAssignee);

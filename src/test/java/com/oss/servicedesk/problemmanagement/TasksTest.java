@@ -11,6 +11,7 @@ import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.pages.servicedesk.issue.IssueDetailsPage;
+import com.oss.pages.servicedesk.issue.tabs.OverviewTab;
 import com.oss.pages.servicedesk.issue.task.MyTasksPage;
 import com.oss.pages.servicedesk.issue.task.TaskDashboardPage;
 import com.oss.utils.TestListener;
@@ -28,6 +29,7 @@ public class TasksTest extends BaseTestCase {
 
     private TaskDashboardPage taskDashboardPage;
     private IssueDetailsPage issueDetailsPage;
+    private OverviewTab taskOverviewTab;
     private MyTasksPage myTasksPage;
     private com.oss.pages.servicedesk.issue.wizard.SDWizardPage SDWizardPage;
     private String taskID;
@@ -69,8 +71,9 @@ public class TasksTest extends BaseTestCase {
     public void editTask() {
         issueDetailsPage = taskDashboardPage.openIssueDetailsView(taskID, BASIC_URL, PROBLEM_ISSUE_TYPE);
         issueDetailsPage.maximizeWindow(DETAILS_TABS_CONTAINER_ID);
-        issueDetailsPage.changeIssueAssignee(TASK_NEW_ASSIGNEE);
-        issueDetailsPage.changeIssueStatus(TASK_NEW_STATUS);
+        taskOverviewTab = issueDetailsPage.selectOverviewTab(PROBLEM_ISSUE_TYPE);
+        taskOverviewTab.changeIssueAssignee(TASK_NEW_ASSIGNEE);
+        taskOverviewTab.changeIssueStatus(TASK_NEW_STATUS);
         goToTaskDashboardPage();
 
         Assert.assertEquals(taskDashboardPage.getAssigneeForNthTaskInTasksTable(0), TASK_NEW_ASSIGNEE);

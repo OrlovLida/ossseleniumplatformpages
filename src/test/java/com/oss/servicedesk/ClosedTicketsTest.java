@@ -11,6 +11,7 @@ import com.oss.pages.platform.NotificationWrapperPage;
 import com.oss.pages.servicedesk.issue.IssueDetailsPage;
 import com.oss.pages.servicedesk.issue.ticket.ClosedTicketsPage;
 import com.oss.pages.servicedesk.issue.ticket.TicketDashboardPage;
+import com.oss.pages.servicedesk.issue.ticket.TicketOverviewTab;
 import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
 
 import io.qameta.allure.Description;
@@ -25,6 +26,7 @@ public class ClosedTicketsTest extends BaseTestCase {
     private TicketDashboardPage ticketDashboardPage;
     private SDWizardPage sdWizardPage;
     private IssueDetailsPage issueDetailsPage;
+    private TicketOverviewTab ticketOverviewTab;
     private ClosedTicketsPage closedTicketsPage;
     private NotificationWrapperPage notificationWrapperPage;
     private String ticketID;
@@ -49,16 +51,17 @@ public class ClosedTicketsTest extends BaseTestCase {
         sdWizardPage.createTicket(MOIdentifier, ttAssignee);
         ticketID = ticketDashboardPage.getIdFromMessage();
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
-        issueDetailsPage.allowEditingTicket();
+        ticketOverviewTab = (TicketOverviewTab) issueDetailsPage.selectOverviewTab(TROUBLE_TICKET_ISSUE_TYPE);
+        ticketOverviewTab.allowEditingTicket();
         issueDetailsPage.skipAllActionsOnCheckList();
-        issueDetailsPage.changeTicketStatus(STATUS_ACKNOWLEDGED);
+        ticketOverviewTab.changeTicketStatus(STATUS_ACKNOWLEDGED);
         issueDetailsPage.skipAllActionsOnCheckList();
-        issueDetailsPage.changeTicketStatus(STATUS_IN_PROGRESS);
+        ticketOverviewTab.changeTicketStatus(STATUS_IN_PROGRESS);
         issueDetailsPage.skipAllActionsOnCheckList();
-        issueDetailsPage.changeTicketStatus(STATUS_RESOLVED);
+        ticketOverviewTab.changeTicketStatus(STATUS_RESOLVED);
         issueDetailsPage.skipAllActionsOnCheckList();
-        issueDetailsPage.changeTicketStatus(STATUS_CLOSED);
-        Assert.assertEquals(issueDetailsPage.checkTicketStatus(), STATUS_CLOSED);
+        ticketOverviewTab.changeTicketStatus(STATUS_CLOSED);
+        Assert.assertEquals(ticketOverviewTab.checkTicketStatus(), STATUS_CLOSED);
     }
 
     @Test(priority = 2, testName = "Check Closed Tickets View", description = "Refresh, search and check if ticket is shown in the closed tickets table")

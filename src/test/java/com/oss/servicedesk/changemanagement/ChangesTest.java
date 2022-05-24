@@ -15,6 +15,7 @@ import com.oss.pages.servicedesk.issue.IssueDetailsPage;
 import com.oss.pages.servicedesk.issue.tabs.AttachmentsTab;
 import com.oss.pages.servicedesk.issue.tabs.DescriptionTab;
 import com.oss.pages.servicedesk.issue.tabs.MessagesTab;
+import com.oss.pages.servicedesk.issue.tabs.OverviewTab;
 import com.oss.pages.servicedesk.issue.tabs.ParticipantsTab;
 import com.oss.pages.servicedesk.issue.tabs.RelatedChangesTab;
 import com.oss.pages.servicedesk.issue.tabs.RelatedProblemsTab;
@@ -35,6 +36,7 @@ public class ChangesTest extends BaseTestCase {
     private ChangeDashboardPage changeDashboardPage;
     private SDWizardPage sdWizardPage;
     private IssueDetailsPage issueDetailsPage;
+    private OverviewTab changeOverviewTab;
     private MessagesTab messagesTab;
     private RelatedChangesTab relatedChangesTab;
     private RootCausesTab rootCausesTab;
@@ -96,12 +98,13 @@ public class ChangesTest extends BaseTestCase {
     public void editChange(
             @Optional("ca_kodrobinska") String newAssignee
     ) {
-        sdWizardPage = issueDetailsPage.openEditChangeWizard();
+        changeOverviewTab = issueDetailsPage.selectOverviewTab(CHANGE_ISSUE_TYPE);
+        sdWizardPage = changeOverviewTab.openEditIssueWizard();
         sdWizardPage.insertValueToSearchComponent(newAssignee, ASSIGNEE_ID);
         sdWizardPage.insertValueToTextAreaComponent(INCIDENT_DESCRIPTION_TXT_EDITED, INCIDENT_DESCRIPTION_ID);
         sdWizardPage.clickNextButtonInWizard();
         sdWizardPage.clickAcceptButtonInWizard();
-        Assert.assertEquals(issueDetailsPage.checkAssignee(), newAssignee);
+        Assert.assertEquals(changeOverviewTab.checkAssignee(), newAssignee);
     }
 
     @Test(priority = 3, testName = "Check description", description = "Check change description on Description tab")

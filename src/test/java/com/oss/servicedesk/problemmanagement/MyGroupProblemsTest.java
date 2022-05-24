@@ -13,6 +13,7 @@ import com.oss.pages.servicedesk.issue.IssueDetailsPage;
 import com.oss.pages.servicedesk.issue.problem.MyGroupProblemsPage;
 import com.oss.pages.servicedesk.issue.problem.MyProblemsPage;
 import com.oss.pages.servicedesk.issue.problem.ProblemDashboardPage;
+import com.oss.pages.servicedesk.issue.tabs.OverviewTab;
 import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
 import com.oss.utils.TestListener;
 
@@ -32,6 +33,7 @@ public class MyGroupProblemsTest extends BaseTestCase {
     private MyGroupProblemsPage myGroupProblemsPage;
     private NotificationWrapperPage notificationWrapperPage;
     private IssueDetailsPage issueDetailsPage;
+    private OverviewTab problemOverviewTab;
     private SDWizardPage sdWizardPage;
     private String problemID;
 
@@ -101,7 +103,8 @@ public class MyGroupProblemsTest extends BaseTestCase {
     public void myProblemsCheck() {
         issueDetailsPage = problemDashboardPage.openIssueDetailsView(problemID, BASIC_URL, PROBLEM_ISSUE_TYPE);
         issueDetailsPage.maximizeWindow(DETAILS_TABS_CONTAINER_ID);
-        issueDetailsPage.changeIssueAssignee(USER_NAME);
+        problemOverviewTab = issueDetailsPage.selectOverviewTab(PROBLEM_ISSUE_TYPE);
+        problemOverviewTab.changeIssueAssignee(USER_NAME);
         myProblemsPage = new MyProblemsPage(driver, webDriverWait).openView(driver, BASIC_URL);
         Assert.assertFalse(myProblemsPage.isIssueTableEmpty());
 
