@@ -11,16 +11,16 @@ import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageContainer.Message;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.ActionsContainer;
-import com.oss.framework.components.inputs.Input.ComponentType;
 import com.oss.framework.components.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
+import com.oss.pages.platform.NewInventoryViewPage;
+import com.oss.pages.platform.SearchObjectTypePage;
 import com.oss.pages.transport.VLANPoolWizardPage;
 
 import io.qameta.allure.Description;
 
 public class VLANPoolTest extends BaseTestCase {
-
+    private NewInventoryViewPage newInventoryViewPage;
     private static final String LOCATION_NAME = "SELENIUM_TRANSPORT_LOCATION";
     private static final String IPDEVICE_NAME = "VLANPoolSeleniumTest";
     private static final String VLAN_POOL_NAME_BEFORE = "VLANPoolSeleniumTestBefore";
@@ -35,92 +35,103 @@ public class VLANPoolTest extends BaseTestCase {
 
     @BeforeClass
     public void openWebConsole() {
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
+        waitForPageToLoad();
     }
 
     @Test(priority = 1)
     @Description("Set fields and create VLAN Pool")
     public void createVLANPool() {
-        homePage.chooseFromLeftSideMenu("Legacy Inventory Dashboard", "Resource Inventory ");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        homePage.setOldObjectType("VLAN Pool");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        OldInventoryViewPage oldInventoryViewPage = new OldInventoryViewPage(driver);
-        oldInventoryViewPage.useContextAction(ActionsContainer.CREATE_GROUP_ID, CREATE_VLAN_POOL_ACTION_ID);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        homePage.chooseFromLeftSideMenu("Inventory View", "Resource Inventory ");
+        waitForPageToLoad();
+        SearchObjectTypePage searchObjectType = new SearchObjectTypePage(driver, webDriverWait);
+        searchObjectType.searchType("VLAN Pool");
+        waitForPageToLoad();
+        newInventoryViewPage.callAction(ActionsContainer.CREATE_GROUP_ID, CREATE_VLAN_POOL_ACTION_ID);
+        waitForPageToLoad();
         VLANPoolWizardPage wizardPage = new VLANPoolWizardPage(driver);
         wizardPage.setName(VLAN_POOL_NAME_BEFORE);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         wizardPage.setDescription(VLAN_DESCRIPTION_BEFORE);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         wizardPage.setVlanRange(VLAN_RANGE_BEFORE);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         wizardPage.clickNextStep();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         wizardPage.selectLocationAndDevice(LOCATION_NAME, IPDEVICE_NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         wizardPage.clickAccept();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
+        SystemMessageContainer.create(driver, webDriverWait).clickMessageLink();
     }
 
     @Test(priority = 2)
     @Description("Check if VLAN Pool is created")
     public void checkIfVLANPoolIsCreated() {
-        OldInventoryViewPage oldInventoryViewPage = new OldInventoryViewPage(driver);
-        oldInventoryViewPage.getTableWidget().searchByAttributeWithLabel("Name", ComponentType.TEXT_FIELD, VLAN_POOL_NAME_AFTER);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertTrue(oldInventoryViewPage.getTableWidget().hasNoData());
-        oldInventoryViewPage.filterObject("Name", VLAN_POOL_NAME_BEFORE);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertFalse(oldInventoryViewPage.getTableWidget().hasNoData());
+        newInventoryViewPage.searchObject(VLAN_POOL_NAME_AFTER);
+        Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());
+        newInventoryViewPage.refreshMainTable();
+        waitForPageToLoad();
+        newInventoryViewPage.searchObject(VLAN_POOL_NAME_BEFORE);
+        newInventoryViewPage.refreshMainTable();
+        waitForPageToLoad();
+        Assert.assertFalse(newInventoryViewPage.checkIfTableIsEmpty());
     }
 
     @Test(priority = 3)
     @Description("Edit VLAN Pool")
     public void editVLANPool() {
-        OldInventoryViewPage oldInventoryViewPage = new OldInventoryViewPage(driver);
-        oldInventoryViewPage.useContextAction(ActionsContainer.EDIT_GROUP_ID, EDIT_VLAN_POOL_ACTION_ID);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        newInventoryViewPage.selectFirstRow().callAction(ActionsContainer.EDIT_GROUP_ID, EDIT_VLAN_POOL_ACTION_ID);
+        waitForPageToLoad();
         VLANPoolWizardPage wizardPage = new VLANPoolWizardPage(driver);
         wizardPage.setName(VLAN_POOL_NAME_AFTER);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         wizardPage.setDescription(VLAN_DESCRIPTION_AFTER);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         wizardPage.setVlanRange(VLAN_RANGE_AFTER);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         wizardPage.clickNextStep();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         wizardPage.clickAccept();
+        waitForPageToLoad();
+        SystemMessageContainer.create(driver, webDriverWait).clickMessageLink();
     }
 
     @Test(priority = 4)
     @Description("Check if VLAN Pool is edited")
     public void checkIfVLANPoolIsEdited() {
-        OldInventoryViewPage oldInventoryViewPage = new OldInventoryViewPage(driver);
-        oldInventoryViewPage.getTableWidget().searchByAttributeWithLabel("Name", ComponentType.TEXT_FIELD, VLAN_POOL_NAME_BEFORE);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertTrue(oldInventoryViewPage.getTableWidget().hasNoData());
-        oldInventoryViewPage.filterObject("Name", VLAN_POOL_NAME_AFTER);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertFalse(oldInventoryViewPage.getTableWidget().hasNoData());
+        newInventoryViewPage.unselectObjectByRowId(0);
+        waitForPageToLoad();
+        newInventoryViewPage.searchObject(VLAN_POOL_NAME_BEFORE);
+        newInventoryViewPage.refreshMainTable();
+        waitForPageToLoad();
+        Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());
+        waitForPageToLoad();
+        newInventoryViewPage.searchObject(VLAN_POOL_NAME_AFTER);
+        newInventoryViewPage.refreshMainTable();
+        waitForPageToLoad();
+        Assert.assertFalse(newInventoryViewPage.checkIfTableIsEmpty());
     }
 
     @Test(priority = 5)
-    @Description("Delete VLAN Range")
-    public void deleteVLANRange() {
-        OldInventoryViewPage oldInventoryViewPage = new OldInventoryViewPage(driver);
-        oldInventoryViewPage.useContextAction(ActionsContainer.EDIT_GROUP_ID, DELETE_VLAN_POOL_ACTION_ID);
-        oldInventoryViewPage.clickConfirmRemovalButton();
+    @Description("Delete VLAN Pool")
+    public void deleteVLANPool() {
+        newInventoryViewPage.selectFirstRow().callAction(ActionsContainer.EDIT_GROUP_ID, DELETE_VLAN_POOL_ACTION_ID).clickConfirmationRemovalButton();
         checkPopup();
-        oldInventoryViewPage.getTableWidget().searchByAttributeWithLabel("Name", ComponentType.TEXT_FIELD, VLAN_POOL_NAME_BEFORE);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertTrue(oldInventoryViewPage.getTableWidget().hasNoData());
-        oldInventoryViewPage.getTableWidget().searchByAttributeWithLabel("Name", ComponentType.TEXT_FIELD, VLAN_POOL_NAME_AFTER);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertTrue(oldInventoryViewPage.getTableWidget().hasNoData());
+        waitForPageToLoad();
+        newInventoryViewPage.unselectObjectByRowId(0);
+        newInventoryViewPage.refreshMainTable();
+        waitForPageToLoad();
+        newInventoryViewPage.searchObject(VLAN_POOL_NAME_BEFORE);
+        waitForPageToLoad();
+        Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());
+        waitForPageToLoad();
+        newInventoryViewPage.searchObject(VLAN_POOL_NAME_AFTER);
+        newInventoryViewPage.refreshMainTable();
+        waitForPageToLoad();
+        Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());
     }
 
     private void checkPopup() {
@@ -129,5 +140,9 @@ public class VLANPoolTest extends BaseTestCase {
         Assert.assertNotNull(messages);
         Assert.assertEquals(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType(),
                 SystemMessageContainer.MessageType.SUCCESS);
+    }
+
+    private void waitForPageToLoad() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 }
