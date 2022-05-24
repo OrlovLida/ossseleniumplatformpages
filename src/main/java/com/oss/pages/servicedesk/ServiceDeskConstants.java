@@ -31,4 +31,8 @@ public class ServiceDeskConstants {
     public static final String CSV_FILE = "*CPU_USAGE_INFO_RAW-MAP*.*";
     public static final String USER_NAME = "sd_seleniumtest";
     public static final String EXPORT_WIZARD_ID = "exportgui-mainview_prompt-card";
+    public static final String CHANGE_WIZARD_ID = "TT_WIZARD";
+    public static final String NORMAL_BUTTON_ID = "Normal";
+    public static final String CREATE_CHANGE_BUTTON_ID = "CM_WIZARD_CREATE_TITLE";
+    public static final String TASK_LABEL = "Task - Selenium Test";
 }

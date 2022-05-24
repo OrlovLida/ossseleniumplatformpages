@@ -13,6 +13,7 @@ import com.oss.pages.servicedesk.issue.IssueDetailsPage;
 import com.oss.pages.servicedesk.issue.ticket.MyGroupTicketsPage;
 import com.oss.pages.servicedesk.issue.ticket.MyTicketsPage;
 import com.oss.pages.servicedesk.issue.ticket.TicketDashboardPage;
+import com.oss.pages.servicedesk.issue.ticket.TicketOverviewTab;
 import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
 import com.oss.utils.TestListener;
 
@@ -32,6 +33,7 @@ public class MyGroupTicketsTest extends BaseTestCase {
     private MyGroupTicketsPage myGroupTicketsPage;
     private NotificationWrapperPage notificationWrapperPage;
     private IssueDetailsPage issueDetailsPage;
+    private TicketOverviewTab ticketOverviewTab;
     private SDWizardPage sdWizardPage;
     private String ticketID;
 
@@ -100,9 +102,10 @@ public class MyGroupTicketsTest extends BaseTestCase {
     @Description("Change assignee and check if ticket is visible in My Ticket View")
     public void myTicketsCheck() {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
-        issueDetailsPage.allowEditingTicket();
+        ticketOverviewTab = (TicketOverviewTab) issueDetailsPage.selectOverviewTab(TROUBLE_TICKET_ISSUE_TYPE);
+        ticketOverviewTab.allowEditingTicket();
         issueDetailsPage.maximizeWindow(DETAILS_TABS_CONTAINER_ID);
-        sdWizardPage = issueDetailsPage.openEditTicketWizard();
+        sdWizardPage = ticketOverviewTab.openEditTicketWizard();
         sdWizardPage.clickNextButtonInWizard();
         sdWizardPage.insertValueToSearchComponent(USER_NAME, TT_WIZARD_ASSIGNEE);
         sdWizardPage.clickNextButtonInWizard();

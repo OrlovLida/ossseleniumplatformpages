@@ -334,7 +334,7 @@ public class CellSiteConfigurationPage extends BasePage {
         hostOnDeviceWizard.clickAccept();
     }
 
-    @Step("Create Hosting on Antenna Array with Name = {deviceName}")
+    @Step("Create Hosting on Antenna Array with Name = {antennaName}")
     public void createHostingOnAntennaArray(String antennaName) {
         selectTab(HOSTING_TAB_LABEL);
         clickPlusIconAndSelectOption(HOST_ON_ANTENNA_ARRAY_ACTION_LABEL);

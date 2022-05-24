@@ -1,17 +1,18 @@
 package com.oss.pages.acd.scenarioSummaryView;
 
-import com.oss.framework.components.inputs.ComponentFactory;
-import com.oss.framework.components.inputs.Input;
-import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.wizard.Wizard;
-import com.oss.framework.iaa.widgets.servicedeskadvancedsearch.ServiceDeskAdvancedSearch;
-import com.oss.framework.widgets.table.OldTable;
-import com.oss.pages.acd.BaseACDPage;
-import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.oss.framework.components.inputs.ComponentFactory;
+import com.oss.framework.components.inputs.Input;
+import com.oss.framework.iaa.widgets.servicedeskadvancedsearch.ServiceDeskAdvancedSearch;
+import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.table.OldTable;
+import com.oss.pages.acd.BaseACDPage;
+
+import io.qameta.allure.Step;
 
 import static com.oss.framework.components.inputs.Input.ComponentType.MULTI_SEARCH_FIELD;
 
@@ -19,7 +20,7 @@ public class AsdScenarioSummaryViewPage extends BaseACDPage {
 
     private static final Logger log = LoggerFactory.getLogger(AsdScenarioSummaryViewPage.class);
 
-    private final String DETECTED_ISSUES_WINDOW_ID = "DetectedIssuesWindowId";
+    private static final String DETECTED_ISSUES_WINDOW_ID = "DetectedIssuesWindowId";
 
     private final OldTable table;
     private final ServiceDeskAdvancedSearch advancedSearch;

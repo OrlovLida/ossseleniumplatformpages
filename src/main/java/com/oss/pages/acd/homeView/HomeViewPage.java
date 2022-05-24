@@ -1,32 +1,33 @@
 package com.oss.pages.acd.homeView;
 
-import com.oss.framework.iaa.widgets.timeperiodchooser.TimePeriodChooser;
-import com.oss.framework.components.inputs.Button;
-import com.oss.framework.components.inputs.ComponentFactory;
-import com.oss.framework.components.inputs.Input;
-import com.oss.framework.utils.CSSUtils;
-import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.components.chart.ChartComponent;
-import com.oss.framework.iaa.widgets.servicedeskadvancedsearch.ServiceDeskAdvancedSearch;
-import com.oss.framework.widgets.table.OldTable;
-import com.oss.pages.acd.BaseACDPage;
-import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.oss.framework.components.chart.ChartComponent;
+import com.oss.framework.components.inputs.Button;
+import com.oss.framework.components.inputs.ComponentFactory;
+import com.oss.framework.components.inputs.Input;
+import com.oss.framework.iaa.widgets.servicedeskadvancedsearch.ServiceDeskAdvancedSearch;
+import com.oss.framework.iaa.widgets.timeperiodchooser.TimePeriodChooser;
+import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.table.OldTable;
+import com.oss.pages.acd.BaseACDPage;
+
+import io.qameta.allure.Step;
+
 public class HomeViewPage extends BaseACDPage {
 
     private static final Logger log = LoggerFactory.getLogger(HomeViewPage.class);
 
-    private final String columnChartViewId = "ColumnChartWindowId";
-    private final String columnChartRefreshButtonId = "columnChartRefreshButtonId-0";
-    private final String pieChartViewId = "PieChartTableWindowId";
-    private final String pieChartRefreshButtonId = "pieChartRefreshButtonId-0";
-    private final String homeIssueTableWindowId = "IssueTableWindowId";
-    private final String homeIssueTableId = "issueTableId";
-    private final String issuesTableRefreshButtonId = "issueTableButtonsId-0";
+    private static final String columnChartViewId = "ColumnChartWindowId";
+    private static final String columnChartRefreshButtonId = "columnChartRefreshButtonId-0";
+    private static final String pieChartViewId = "PieChartTableWindowId";
+    private static final String pieChartRefreshButtonId = "pieChartRefreshButtonId-0";
+    private static final String homeIssueTableWindowId = "IssueTableWindowId";
+    private static final String homeIssueTableId = "issueTableId";
+    private static final String issuesTableRefreshButtonId = "issueTableButtonsId-0";
 
     private final OldTable table;
     private final ServiceDeskAdvancedSearch advancedSearch;
@@ -73,7 +74,7 @@ public class HomeViewPage extends BaseACDPage {
     @Step("Refresh pie chart")
     public void refreshPieChart() {
         log.info("Refreshing pie chart");
-        Button button = Button.createById(driver,pieChartRefreshButtonId);
+        Button button = Button.createById(driver, pieChartRefreshButtonId);
         button.click();
     }
 
@@ -117,6 +118,26 @@ public class HomeViewPage extends BaseACDPage {
         DelayUtils.sleep();
     }
 
+    @Step("Set value in multiComboBox")
+    public void setValueInMultiComboBox(String attributeName, String inputValue) {
+
+        if (isMultiComboBoxFilled(attributeName)) {
+            clearMultiComboBox(attributeName);
+        }
+
+        DelayUtils.waitForPageToLoad(driver, wait);
+        ComponentFactory.create(attributeName, Input.ComponentType.MULTI_COMBOBOX, driver, wait)
+                .setSingleStringValue(inputValue);
+        log.info("Setting value in MultiComboBox");
+    }
+
+    @Step("Clear time period chooser")
+    public void clearTimePeriod(String widgetId) {
+        TimePeriodChooser timePeriod = TimePeriodChooser.create(driver, wait, widgetId);
+        timePeriod.clickClearValue();
+        log.info("Clearing time period chooser");
+    }
+
     @Step("Check if there is data in issues table")
     public Boolean isDataInScenarioTable() {
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -139,31 +160,11 @@ public class HomeViewPage extends BaseACDPage {
         log.info("Clearing multiSearch");
     }
 
-    @Step("Clear time period chooser")
-    public void clearTimePeriod(String widgetId) {
-        TimePeriodChooser timePeriod = TimePeriodChooser.create(driver, wait, widgetId);
-        timePeriod.clickClearValue();
-        log.info("Clearing time period chooser");
-    }
-
     @Step("Refresh Issues table")
     public void refreshIssuesTable() {
-        Button button = Button.createById(driver,issuesTableRefreshButtonId);
+        Button button = Button.createById(driver, issuesTableRefreshButtonId);
         button.click();
         log.info("Clicking refresh issues table button");
-    }
-
-    @Step("Set value in multiComboBox")
-    public void setValueInMultiComboBox(String attributeName, String inputValue) {
-
-        if (isMultiComboBoxFilled(attributeName)) {
-            clearMultiComboBox(attributeName);
-        }
-
-        DelayUtils.waitForPageToLoad(driver, wait);
-        ComponentFactory.create(attributeName, Input.ComponentType.MULTI_COMBOBOX, driver, wait)
-                .setSingleStringValue(inputValue);
-        log.info("Setting value in MultiComboBox");
     }
 
     @Step("Check if multiComboBox is filled")

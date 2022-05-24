@@ -34,7 +34,7 @@ public class ProblemDashboardPage extends BaseDashboardPage {
 
     @Step("I open create problem wizard")
     public SDWizardPage clickCreateProblem() {
-        return openCreateWizard(PROBLEM_BUTTON_ID, CREATE_PROBLEM_BUTTON_ID, COMMON_WIZARD_ID);
+        return SDWizardPage.openCreateWizard(driver, wait, PROBLEM_BUTTON_ID, CREATE_PROBLEM_BUTTON_ID, COMMON_WIZARD_ID);
     }
 
     @Step("Check if problem with {problemName} is in the table")
