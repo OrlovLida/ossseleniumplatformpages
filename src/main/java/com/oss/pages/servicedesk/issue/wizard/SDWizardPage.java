@@ -10,8 +10,10 @@ import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.contextactions.ButtonContainer;
 import com.oss.framework.components.data.Data;
+import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.servicedesk.BaseSDPage;
@@ -250,5 +252,13 @@ public class SDWizardPage extends BaseSDPage {
 
     private void insertValueToComponent(String text, String componentId, Input.ComponentType componentType) {
         wizard.setComponentValue(componentId, text, componentType);
+    }
+
+    public static SDWizardPage openCreateWizard(String flowType, String createButtonId, String wizardId) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        Button.createById(driver, createButtonId).click();
+        DropdownList.create(driver, wait).selectOptionById(flowType);
+
+        return new SDWizardPage(driver, wait, wizardId);
     }
 }
