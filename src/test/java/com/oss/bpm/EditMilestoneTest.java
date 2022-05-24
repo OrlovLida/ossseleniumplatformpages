@@ -31,17 +31,39 @@ import com.oss.utils.TestListener;
  */
 @Listeners({TestListener.class})
 public class EditMilestoneTest extends BaseTestCase {
-    private final String BPM_USER_LOGIN = "bpm_webselenium";
-    private final String BPM_USER_PASSWORD = "Webtests123!";
-    private final String BPM_ADMIN_USER_LOGIN = "bpm_admin_webselenium";
-    private final String BPM_ADMIN_USER_PASSWORD = "Webtests123!";
+    private static final String BPM_USER_LOGIN = "bpm_webselenium";
+    private static final String BPM_USER_PASSWORD = "Webtests123!";
+    private static final String BPM_ADMIN_USER_LOGIN = "bpm_admin_webselenium";
+    private static final String BPM_ADMIN_USER_PASSWORD = "Webtests123!";
+
+    private static final String BPM_MILESTONE_MODIFY_DATE = "modifyDate";
+    private static final String BPM_MILESTONE_MODIFY_USER = "modifierUser.name";
+    private static final String BPM_MILESTONE_DESCRIPTION = "description";
+    private static final String BPM_MILESTONE_RELATED_TASK_NAME = "relatedTaskName";
+    private static final String BPM_MILESTONE_LEAD_TIME = "leadTime";
+    private static final String BPM_MILESTONE_DUE_DATE = "dueDate";
+    private static final String BPM_MILESTONE_MANUAL_COMPLETION = "manualCompletion";
+    private static final String BPM_MILESTONE_NAME = "name";
 
     private static final Logger log = LoggerFactory.getLogger(EditMilestoneTest.class);
-    private final static String EDIT_MILESTONE_BUTTON = "editMilestonesContextAction";
+    private static final String EDIT_MILESTONE_BUTTON = "editMilestonesContextAction";
 
     private String description = "Milestone Update " + (Math.random() * 1001);
     private String milestoneName = "Milestone Update " + (Math.random() * 1001);
     private String leadTime = String.valueOf((int) (Math.random() * 101));
+
+    public void enableMilestoneAttributes(MilestoneViewPage milestoneViewPage) {
+        milestoneViewPage.selectFirstMilestone();
+        milestoneViewPage.enableMilestoneAttribute("Name");
+        milestoneViewPage.enableMilestoneAttribute("Name", "Modifier Name");
+        milestoneViewPage.enableMilestoneAttribute("Description");
+        milestoneViewPage.enableMilestoneAttribute("Lead Time");
+        milestoneViewPage.enableMilestoneAttribute("Due Date");
+        milestoneViewPage.enableMilestoneAttribute("Manual Completion");
+        milestoneViewPage.enableMilestoneAttribute("Related Process Name");
+        milestoneViewPage.selectFirstMilestone();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
 
     @BeforeClass
     public void createMilestone() {
@@ -67,7 +89,6 @@ public class EditMilestoneTest extends BaseTestCase {
         processWizardPage.definedMilestoneInProcess(processName, 5L,
                 "Data Correction Process").addMilestoneRow(milestone1);
         processWizardPage.clickAcceptButton();
-
     }
 
     @Test(priority = 1, description = "Edit Description")
@@ -79,15 +100,15 @@ public class EditMilestoneTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         // when
         milestoneViewPage.selectMilestone(milestoneName);
-        String modifyDate = milestoneViewPage.getMilestoneAttribute("modifyDate");
+        String modifyDate = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_DATE);
         milestoneViewPage.callAction(EDIT_MILESTONE_BUTTON);
         EditMilestoneWizardPage editWizard = new EditMilestoneWizardPage(driver);
         Milestone updated_description = Milestone.builder().setDescription(description).build();
         // then
         editWizard.editMilestone(updated_description);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        String newDescriptionValue = milestoneViewPage.getMilestoneAttribute("description");
-        String newModifyDate = milestoneViewPage.getMilestoneAttribute("modifyDate");
+        String newDescriptionValue = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_DESCRIPTION);
+        String newModifyDate = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_DATE);
         Assert.assertEquals(description, newDescriptionValue);
         Assert.assertNotEquals(newModifyDate, modifyDate);
     }
@@ -101,14 +122,14 @@ public class EditMilestoneTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         // when
         milestoneViewPage.selectMilestone(milestoneName);
-        String modifyDate = milestoneViewPage.getMilestoneAttribute("modifyDate");
+        String modifyDate = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_DATE);
         milestoneViewPage.callAction(EDIT_MILESTONE_BUTTON);
         EditMilestoneWizardPage editWizard = new EditMilestoneWizardPage(driver);
         Milestone updated_leadTime = Milestone.builder().setLeadTime(leadTime).build();
         // then
         editWizard.editMilestone(updated_leadTime);
-        String newLeadTimeValue = milestoneViewPage.getMilestoneAttribute("leadTime");
-        String newModifyDate = milestoneViewPage.getMilestoneAttribute("modifyDate");
+        String newLeadTimeValue = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_LEAD_TIME);
+        String newModifyDate = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_DATE);
         Assert.assertEquals(leadTime, newLeadTimeValue);
         Assert.assertNotEquals(newModifyDate, modifyDate);
         log.info("test");
@@ -125,7 +146,7 @@ public class EditMilestoneTest extends BaseTestCase {
         EditMilestoneWizardPage editWizard = new EditMilestoneWizardPage(driver);
         Milestone setProcess = Milestone.builder().setRelatedTask("").build();
         editWizard.editMilestone(setProcess);
-        String relatedTask = milestoneViewPage.getMilestoneAttribute("relatedTaskName");
+        String relatedTask = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_RELATED_TASK_NAME);
         Assert.assertEquals(relatedTask, "");
 
     }
@@ -139,15 +160,15 @@ public class EditMilestoneTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         // when
         milestoneViewPage.selectMilestone(milestoneName);
-        String modifyDate = milestoneViewPage.getMilestoneAttribute("modifyDate");
-        String dueDate = milestoneViewPage.getMilestoneAttribute("dueDate");
+        String modifyDate = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_DATE);
+        String dueDate = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_DUE_DATE);
         milestoneViewPage.callAction(EDIT_MILESTONE_BUTTON);
         EditMilestoneWizardPage editWizard = new EditMilestoneWizardPage(driver);
         Milestone updated_dueDate = Milestone.builder().setDueDate(LocalDate.parse(dueDate).minusDays(10).toString()).build();
         // then
         editWizard.editMilestone(updated_dueDate);
-        String newDueDateValue = milestoneViewPage.getMilestoneAttribute("dueDate");
-        String newModifyDate = milestoneViewPage.getMilestoneAttribute("modifyDate");
+        String newDueDateValue = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_DUE_DATE);
+        String newModifyDate = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_DATE);
         Assert.assertEquals(updated_dueDate.getDueDate().get(), newDueDateValue);
         Assert.assertNotEquals(newModifyDate, modifyDate);
     }
@@ -161,16 +182,16 @@ public class EditMilestoneTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         // when
         milestoneViewPage.selectMilestone(milestoneName);
-        String modifyDate = milestoneViewPage.getMilestoneAttribute("modifyDate");
-        String dueDate = milestoneViewPage.getMilestoneAttribute("dueDate");
+        String modifyDate = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_DATE);
+        String dueDate = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_DUE_DATE);
         milestoneViewPage.callAction(EDIT_MILESTONE_BUTTON);
         EditMilestoneWizardPage editWizard = new EditMilestoneWizardPage(driver);
         Milestone updated_dueDate = Milestone.builder().setDueDate(LocalDate.parse(dueDate).plusDays(10).toString()).build();
         // then
         editWizard.editMilestone(updated_dueDate);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        String newDueDateValue = milestoneViewPage.getMilestoneAttribute("dueDate");
-        String newModifyDate = milestoneViewPage.getMilestoneAttribute("modifyDate");
+        String newDueDateValue = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_DUE_DATE);
+        String newModifyDate = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_DATE);
         Assert.assertEquals(updated_dueDate.getDueDate().get(), newDueDateValue);
         Assert.assertNotEquals(newModifyDate, modifyDate);
 
@@ -203,13 +224,13 @@ public class EditMilestoneTest extends BaseTestCase {
         MilestoneViewPage milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         milestoneViewPage.selectMilestone(milestoneName);
-        String modifyDate = milestoneViewPage.getMilestoneAttribute("modifyDate");
+        String modifyDate = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_DATE);
         milestoneViewPage.callAction(EDIT_MILESTONE_BUTTON);
         EditMilestoneWizardPage editWizard = new EditMilestoneWizardPage(driver);
         Milestone aTrue = Milestone.builder().setIsManualCompletion("true").build();
         editWizard.editMilestone(aTrue);
-        String newIsManualCompletionValue = milestoneViewPage.getMilestoneAttribute("manualCompletion");
-        String newModifyDate = milestoneViewPage.getMilestoneAttribute("modifyDate");
+        String newIsManualCompletionValue = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MANUAL_COMPLETION);
+        String newModifyDate = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_DATE);
         Assert.assertEquals(aTrue.getIsManualCompletion().get(), newIsManualCompletionValue);
         Assert.assertNotEquals(newModifyDate, modifyDate);
     }
@@ -224,8 +245,10 @@ public class EditMilestoneTest extends BaseTestCase {
         milestoneViewPage.changeUser(BPM_ADMIN_USER_LOGIN, BPM_ADMIN_USER_PASSWORD);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         milestoneViewPage.selectMilestone(milestoneName);
-        String modifyDate = milestoneViewPage.getMilestoneAttribute("modifyDate");
-        String modifyUser = milestoneViewPage.getMilestoneAttribute("modifierUser.name");
+        milestoneViewPage.enableMilestoneAttribute("Name", "Modifier Name");
+        //milestoneViewPage.setAttributesConfiguration("bpm_selenium");
+        String modifyDate = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_DATE);
+        String modifyUser = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_USER);
         // when
         milestoneViewPage.callAction(EDIT_MILESTONE_BUTTON);
         EditMilestoneWizardPage editWizard = new EditMilestoneWizardPage(driver);
@@ -234,9 +257,9 @@ public class EditMilestoneTest extends BaseTestCase {
         // then
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         milestoneViewPage.selectMilestone(updated_name.getName().get());
-        milestoneName = milestoneViewPage.getMilestoneAttribute("name");
-        String newModifyDate = milestoneViewPage.getMilestoneAttribute("modifyDate");
-        String newModifyUser = milestoneViewPage.getMilestoneAttribute("modifierUser.name");
+        milestoneName = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_NAME);
+        String newModifyDate = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_DATE);
+        String newModifyUser = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_USER);
         Assert.assertEquals(updated_name.getName().get(), milestoneName);
         Assert.assertNotEquals(newModifyDate, modifyDate);
         Assert.assertNotEquals(newModifyUser, modifyUser);
