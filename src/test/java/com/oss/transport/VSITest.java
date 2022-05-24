@@ -14,7 +14,6 @@ import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.table.TableComponent;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.TableWidget;
-import com.oss.framework.wizard.Wizard;
 import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.transport.VSI.AssignRouteTargetWizardPage;
 import com.oss.pages.transport.VSI.VSIWizardPage;
@@ -42,8 +41,6 @@ public class VSITest extends BaseTestCase {
     private static final String EDIT_VSI_ACTION_ID = "EditVSIContextAction";
     private static final String DELETE_VSI_ACTION_ID = "DeleteVSIContextAction";
     private static final String DELETE_ROUTE_TARGET_ACTION_ID = "DeleteRouteTargetContextAction";
-    private static final String DELETE_VSI_COMPONENT_ID = "deleteAppId_prompt-card";
-    private static final String DELETE_ROUTE_TARGET_COMPONENT_ID = "remove_id_prompt-card";
     private static final String INTERFACES_TABLE_COMPONENT_ID = "ServerTerminationPointsWidget";
     private static final String ROUTE_TARGETS_TABLE_COMPONENT_ID = "VsiImpExpWidget";
 
@@ -208,16 +205,6 @@ public class VSITest extends BaseTestCase {
     private VSIWizardPage clickEdit() {
         newInventoryViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, EDIT_VSI_ACTION_ID);
         return new VSIWizardPage(driver);
-    }
-
-    @Step("Click delete button")
-    private void clickDelete() {
-        Wizard.createByComponentId(driver, webDriverWait, DELETE_VSI_COMPONENT_ID).clickButtonByLabel("OK");
-    }
-
-    @Step("Click Ok button")
-    private void clickOk() {
-        Wizard.createByComponentId(driver, webDriverWait, DELETE_ROUTE_TARGET_COMPONENT_ID).clickButtonByLabel("Ok");
     }
 
     @Step("Delete VSI")

@@ -263,10 +263,9 @@ public class NewInventoryViewPage extends BasePage {
         return (PropertyPanel) getTabsWidget().getWidget(propertyPanelId, WidgetType.PROPERTY_PANEL);
     }
 
-    public String getPropertyPanelValue(String attributeName){
+    public String getPropertyPanelValue(String attributeName) {
         return getPropertyPanel(PROPERTY_PANEL_ID).getPropertyValue(attributeName);
     }
-
 
     public String getActiveTabLabel() {
         return getTabsWidget().getActiveTabLabel();
@@ -342,7 +341,7 @@ public class NewInventoryViewPage extends BasePage {
 
     @Step("Change Properties order")
     public void changePropertiesOrder(int rowId, String widgetId, String propertyId,
-            int position) {
+                                      int position) {
         getPropertyPanel(rowId, widgetId).changePropertyOrder(propertyId, position);
     }
 
@@ -392,7 +391,7 @@ public class NewInventoryViewPage extends BasePage {
     public List<String> getPageConfigurationsName() {
         DelayUtils.waitForPageToLoad(driver, wait);
         ButtonPanel.create(driver, wait).clickButton(KEBAB_OBJECT_GROUP_ID, CHOOSE_CONFIGURATION_PAGE_ID);
-       return getChooseConfigurationWizard().getConfigurationNames();
+        return getChooseConfigurationWizard().getConfigurationNames();
     }
 
     @Step("Get all Configurations for MainTable")

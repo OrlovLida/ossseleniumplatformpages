@@ -30,13 +30,13 @@ public class AssignRouteTargetWizardPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    @Step("Set import to {imp}")
+    @Step("Set import to {value}")
     public void setImport(String value) {
         wizard.setComponentValue(IMPORT_FIELD_ID, value, Input.ComponentType.CHECKBOX);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    @Step("Set export to {exp}")
+    @Step("Set export to {value}")
     public void setExport(String value) {
         wizard.setComponentValue(EXPORT_FIELD_ID, value, Input.ComponentType.CHECKBOX);
         DelayUtils.waitForPageToLoad(driver, wait);
