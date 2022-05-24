@@ -1,18 +1,20 @@
 package com.oss.pages.filterpanel;
 
-import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.BasePage;
-import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
+import com.oss.framework.utils.DelayUtils;
+import com.oss.pages.BasePage;
+
+import io.qameta.allure.Step;
+
 public class FilterSettings extends BasePage {
+
+    private static final String PARTIAL_TAB_XPATH = "//div[@class='filters-buttons-container']/div[text()='";
 
     public FilterSettings(WebDriver driver) {
         super(driver);
     }
-
-    private final String PARTIAL_TAB_XPATH = "//div[@class='filters-buttons-container']/div[text()='";
 
     @Step("Change Tab to Filters Tab")
     public FilterSettingsFilter changeTabToFilters() {
