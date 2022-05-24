@@ -509,7 +509,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Locations");
         locationOverviewPage.filterObjectInSpecificTab(TabName.LOCATIONS, NAME, SUBLOCATION_NAME);
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.LOCATIONS, "Create Sublocation");
+        locationOverviewPage.clickActionById(LocationOverviewPage.TabName.LOCATIONS, "frameworkCustomMore_sublocation-create-action");
         SublocationWizardPage sublocationWizardPage = new SublocationWizardPage(driver);
         sublocationWizardPage.setSublocationType("Row");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
