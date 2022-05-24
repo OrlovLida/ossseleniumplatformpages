@@ -15,10 +15,14 @@ import com.oss.pages.servicedesk.issue.problem.ProblemDashboardPage;
 import com.oss.pages.servicedesk.issue.tabs.AttachmentsTab;
 import com.oss.pages.servicedesk.issue.tabs.DescriptionTab;
 import com.oss.pages.servicedesk.issue.tabs.ExternalTab;
+import com.oss.pages.servicedesk.issue.tabs.MessagesTab;
 import com.oss.pages.servicedesk.issue.tabs.ParticipantsTab;
+import com.oss.pages.servicedesk.issue.tabs.ProblemSolutionTab;
+import com.oss.pages.servicedesk.issue.tabs.RelatedChangesTab;
 import com.oss.pages.servicedesk.issue.tabs.RelatedProblemsTab;
 import com.oss.pages.servicedesk.issue.tabs.RelatedTicketsTab;
 import com.oss.pages.servicedesk.issue.tabs.RootCausesTab;
+import com.oss.pages.servicedesk.issue.tabs.TasksTab;
 import com.oss.pages.servicedesk.issue.wizard.ExternalPromptPage;
 import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
 
@@ -31,6 +35,7 @@ import static com.oss.pages.servicedesk.ServiceDeskConstants.DETAILS_TABS_CONTAI
 import static com.oss.pages.servicedesk.ServiceDeskConstants.FILE_TO_UPLOAD_PATH;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.PROBLEM_ISSUE_TYPE;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.TABS_WIDGET_ID;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.TASK_LABEL;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.USER_NAME;
 
 public class ProblemsTest extends BaseTestCase {
@@ -46,6 +51,10 @@ public class ProblemsTest extends BaseTestCase {
     private ParticipantsTab participantsTab;
     private RelatedProblemsTab relatedProblemsTab;
     private DescriptionTab descriptionTab;
+    private ProblemSolutionTab problemSolutionTab;
+    private MessagesTab messagesTab;
+    private RelatedChangesTab relatedChangesTab;
+    private TasksTab tasksTab;
     private String problemId;
     private static final String PROBLEM_NAME_DESCRIPTION_ID = "TT_WIZARD_INPUT_PROBLEM_NAME_DESCRIPTION";
     private static final String PROBLEM_NAME_DESCRIPTION_TXT = "Selenium test Problem " + LocalDateTime.now().format(CREATE_DATE_FILTER_DATE_FORMATTER);
@@ -61,6 +70,19 @@ public class ProblemsTest extends BaseTestCase {
     private static final String PARTICIPANT_ROLE = "Contact";
     private static final String PARTICIPANT_FIRST_NAME_EDITED = "SeleniumTestEdited";
     private static final String DESCRIPTION_NOTE = "Test description note Selenium";
+    private static final String PROBLEM_SOLUTION_NOTE = "Problem Solution Note added by automatic test";
+    private static final String NOTIFICATION_EMAIL_MSG = "Test Selenium Email Message in Problems";
+    private static final String NOTIFICATION_INTERNAL_MSG = "Test Selenium Internal Message in Problems";
+    private static final String INTERNAL_COMMENT_MSG = "Test Selenium Message Comment in Problem";
+    private static final String TITLE_ID = "ISSUE_TITLE";
+    private static final String TITLE_TEXT = "Change in Related Tab";
+    private static final String DESCRIPTION_CHANGE = "Change description in related tab";
+    private static final String SOURCE_ID = "TT_WIZARD_INPUT_SOURCE_LABEL";
+    private static final String INTERNAL_TEXT = "Internal";
+    private static final String TASK_NAME = "Selenium Task" + LocalDateTime.now();
+    private static final String EDITED_TASK_NAME = "Edited Selenium Task" + LocalDateTime.now();
+    private static final String TASK_WIZARD_NAME = "name";
+    private static final String SAVE_EDITED_TASK_BUTTON_ID = "_taskDetailsSubmitId-1";
 
     @BeforeMethod
     public void goToProblemDashboardPage(Method method) {
@@ -326,8 +348,116 @@ public class ProblemsTest extends BaseTestCase {
     @Description("Add Description To Problem in Description Tab")
     public void addDescription() {
         descriptionTab = issueDetailsPage.selectDescriptionTab();
-        descriptionTab.addDescription(DESCRIPTION_NOTE);
+        descriptionTab.addTextNote(DESCRIPTION_NOTE);
 
-        Assert.assertEquals(descriptionTab.getDescriptionMessage(), DESCRIPTION_NOTE);
+        Assert.assertEquals(descriptionTab.getTextMessage(), DESCRIPTION_NOTE);
+    }
+
+    @Test(priority = 22, testName = "Add Problem Solution", description = "Add Problem Solution")
+    @Description("Add Problem Solution")
+    public void addProblemSolution() {
+        problemSolutionTab = issueDetailsPage.selectProblemSolutionTab();
+        problemSolutionTab.addTextNote(PROBLEM_SOLUTION_NOTE);
+
+        Assert.assertEquals(problemSolutionTab.getTextMessage(), PROBLEM_SOLUTION_NOTE);
+    }
+
+    @Parameters({"messageTo"})
+    @Test(priority = 23, testName = "Add Internal Notification in Change", description = "Add Internal Notification in Change")
+    @Description("Add Internal Notification in Change")
+    public void addInternalNotification(
+            @Optional("ca_kodrobinska") String messageTo
+    ) {
+        issueDetailsPage.maximizeWindow(TABS_WIDGET_ID);
+        messagesTab = issueDetailsPage.selectMessagesTab();
+        sdWizardPage = messagesTab.createNewNotificationOnMessagesTab();
+        sdWizardPage.createInternalNotification(NOTIFICATION_INTERNAL_MSG, messageTo);
+
+        Assert.assertFalse(messagesTab.isMessagesTabEmpty());
+        Assert.assertEquals(messagesTab.getMessageText(0), NOTIFICATION_INTERNAL_MSG);
+        Assert.assertEquals(messagesTab.checkMessageType(0), "NOTIFICATION");
+        Assert.assertEquals(messagesTab.getBadgeTextFromMessage(0, 0), "New");
+    }
+
+    @Parameters({"notificationEmailTo", "notificationEmailFrom"})
+    @Test(priority = 24, testName = "Add Email Notification in Change", description = "Add Email Notification in Change")
+    @Description("Add Email Notification in Change")
+    public void addEmailNotification(
+            @Optional("kornelia.odrobinska@comarch.com") String notificationEmailTo,
+            @Optional("switch.ticket@comarch.com") String notificationEmailFrom
+    ) {
+        issueDetailsPage.maximizeWindow(TABS_WIDGET_ID);
+        messagesTab = issueDetailsPage.selectMessagesTab();
+        sdWizardPage = messagesTab.createNewNotificationOnMessagesTab();
+        sdWizardPage.createEmailNotification(notificationEmailTo, notificationEmailFrom, NOTIFICATION_EMAIL_MSG);
+
+        Assert.assertFalse(messagesTab.isMessagesTabEmpty());
+        Assert.assertEquals(messagesTab.getMessageText(0), NOTIFICATION_EMAIL_MSG);
+        Assert.assertEquals(messagesTab.checkMessageType(0), "NOTIFICATION");
+    }
+
+    @Test(priority = 25, testName = "Add Internal Comment", description = "Add Internal Comment")
+    @Description("Add Internal Comment")
+    public void addInternalComment() {
+        issueDetailsPage.maximizeWindow(TABS_WIDGET_ID);
+        messagesTab = issueDetailsPage.selectMessagesTab();
+        messagesTab.addInternalComment(INTERNAL_COMMENT_MSG);
+
+        Assert.assertFalse(messagesTab.isMessagesTabEmpty());
+        Assert.assertEquals(messagesTab.checkMessageType(0), "COMMENT");
+        Assert.assertEquals(messagesTab.getMessageText(0), INTERNAL_COMMENT_MSG);
+        Assert.assertEquals(messagesTab.checkCommentType(0), "internal");
+    }
+
+    @Parameters({"userName"})
+    @Test(priority = 26, testName = "Add related Change to Problem", description = "dd related Change to Problem")
+    @Description("dd related Change to Problem")
+    public void addChangeToProblem(
+            @Optional("sd_seleniumtest") String userName
+    ) {
+        relatedChangesTab = issueDetailsPage.selectRelatedChangesTab();
+        Assert.assertTrue(relatedChangesTab.isRelatedIssueTableEmpty());
+
+        sdWizardPage = relatedChangesTab.openCreateChangeWizard();
+        sdWizardPage.insertValueToTextComponent(TITLE_TEXT, TITLE_ID);
+        sdWizardPage.insertValueToComboBoxComponent(INTERNAL_TEXT, SOURCE_ID);
+        sdWizardPage.createChange(userName, userName, DESCRIPTION_CHANGE);
+        Assert.assertFalse(relatedChangesTab.isRelatedIssueTableEmpty());
+        Assert.assertEquals(relatedChangesTab.getIncidentDescriptionFromTable(), DESCRIPTION_CHANGE);
+    }
+
+    @Test(priority = 27, testName = "Export Related Changes", description = "Export Related Changes")
+    @Description("Export Related Changes")
+    public void exportRelatedChanges() {
+        relatedChangesTab = issueDetailsPage.selectRelatedChangesTab();
+        relatedChangesTab.exportFromTabTable();
+        int amountOfNotifications = relatedChangesTab.openNotificationPanel().amountOfNotifications();
+
+        Assert.assertEquals(amountOfNotifications, 0);
+        Assert.assertTrue(relatedChangesTab.isRelatedIssuesFileNotEmpty());
+    }
+
+    @Parameters({"taskAssignee"})
+    @Test(priority = 28, testName = "Add task in Problem Detail View", description = "Add task in Problem Detail View")
+    @Description("Add task in Problem Detail View")
+    public void addTaskInProblemView(
+            @Optional("sd_seleniumtest") String taskAssignee
+    ) {
+        tasksTab = issueDetailsPage.selectTaskTab();
+        sdWizardPage = tasksTab.clickAddTaskInProblemView();
+        sdWizardPage.createTask(TASK_NAME, taskAssignee, TASK_LABEL);
+
+        Assert.assertEquals(tasksTab.getTaskName(), TASK_NAME);
+    }
+
+    @Test(priority = 29, testName = "Edit task in Problem Detail View", description = "Edit task in Problem Detail View")
+    @Description("Edit task in Problem Detail View")
+    public void editTaskInProblemView() {
+        tasksTab = issueDetailsPage.selectTaskTab();
+        sdWizardPage = tasksTab.clickDetailsButtonInFirstTask();
+        sdWizardPage.insertValueToTextComponent(EDITED_TASK_NAME, TASK_WIZARD_NAME);
+        sdWizardPage.clickButton(SAVE_EDITED_TASK_BUTTON_ID);
+
+        Assert.assertEquals(tasksTab.getTaskName(), EDITED_TASK_NAME);
     }
 }

@@ -10,12 +10,13 @@ import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.contextactions.ButtonContainer;
 import com.oss.framework.components.data.Data;
+import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.servicedesk.BaseSDPage;
-import com.oss.pages.servicedesk.changemanagement.ChangeDashboardPage;
 import com.oss.pages.servicedesk.issue.problem.ProblemDashboardPage;
 import com.oss.pages.servicedesk.issue.ticket.TicketDashboardPage;
 
@@ -53,6 +54,10 @@ public class SDWizardPage extends BaseSDPage {
     private static final String NOTIFICATION_WIZARD_SUBJECT_ID = "subject-component";
     private static final String NOTIFICATION_CHANNEL_EMAIL = "E-mail";
     private static final String NOTIFICATION_SUBJECT = "Email notification test";
+    private static final String TASK_WIZARD_NAME = "name";
+    private static final String TASK_WIZARD_ASSIGNEE = "assignee";
+    private static final String TASK_WIZARD_LABEL = "label";
+    private static final String TASK_WIZARD_CREATE_TASK_BUTTON = "_createTaskSubmitId-1";
 
     private final MOStep moStep;
     private final Wizard wizard;
@@ -212,14 +217,20 @@ public class SDWizardPage extends BaseSDPage {
         return new ProblemDashboardPage(driver, wait);
     }
 
-    public ChangeDashboardPage createChange(String requester, String assignee, String description) {
+    public void createChange(String requester, String assignee, String description) {
         insertValueToTextComponent("LOW", CHANGE_RISK_ASSESSMENT_ID);
         insertValueToSearchComponent(requester, TT_WIZARD_REQUESTER);
         insertValueToSearchComponent(assignee, TT_WIZARD_ASSIGNEE);
         insertValueToTextAreaComponent(description, CHANGE_INCIDENT_DESCRIPTION_ID);
         clickNextButtonInWizard();
         clickAcceptButtonInWizard();
-        return new ChangeDashboardPage(driver, wait);
+    }
+
+    public void createTask(String taskName, String taskAssignee, String taskLabel) {
+        insertValueToTextComponent(taskName, TASK_WIZARD_NAME);
+        insertValueToSearchComponent(taskAssignee, TASK_WIZARD_ASSIGNEE);
+        insertValueToTextComponent(taskLabel, TASK_WIZARD_LABEL);
+        clickButton(TASK_WIZARD_CREATE_TASK_BUTTON);
     }
 
     public void createInternalNotification(String textMessage, String messageTo) {
@@ -241,5 +252,12 @@ public class SDWizardPage extends BaseSDPage {
 
     private void insertValueToComponent(String text, String componentId, Input.ComponentType componentType) {
         wizard.setComponentValue(componentId, text, componentType);
+    }
+
+    public static SDWizardPage openCreateWizard(WebDriver driver, WebDriverWait wait, String flowType, String createButtonId, String wizardId) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        Button.createById(driver, createButtonId).click();
+        DropdownList.create(driver, wait).selectOptionById(flowType);
+        return new SDWizardPage(driver, wait, wizardId);
     }
 }
