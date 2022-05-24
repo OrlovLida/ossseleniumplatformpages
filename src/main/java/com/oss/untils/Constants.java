@@ -5,9 +5,6 @@ package com.oss.untils;
  */
 public class Constants {
 
-    private Constants() {
-    }
-
     //params
     public static final String ID = "id";
     public static final String IDS = "ids";
@@ -18,13 +15,12 @@ public class Constants {
     public static final String GENERATE_CONTROLLER_ID = "generateControllerId";
     public static final String GENERATE_BASE_STATION_ID = "generateBaseStationId";
     public static final String GENERATE_CELL_ID = "generateCellId";
-    public static final String SHOULD_CREATE_MISSING_ADDRESS_ITEMS ="shouldCreateMissingAddressItems";
+    public static final String SHOULD_CREATE_MISSING_ADDRESS_ITEMS = "shouldCreateMissingAddressItems";
     public static final String RSQL = "rsql";
     public static final String TYPES = "types";
     public static final String NAME_PARAM = "Name";
     public static final String PORT_ID = "portId";
     public static final String DEVICE_ID = "deviceId";
-
     //models
     //Generic
     public static final String GENERIC_BSC_MODEL = "Generic BSC";
@@ -51,10 +47,9 @@ public class Constants {
     public static final String ATADU2022v07MHA_MODEL = "ATADU2022v07";
     //RFS
     public static final String RFS_MANUFACTURER = "RFS";
-    public static String LCF1250J_2m_CABLE = "1/2\"\" LCF 12-50J 2.0m";
-    public static String LCF1250J_3m_CABLE = "1/2\"\" LCF 12-50J 3.0m";
-    public static String LCF1250J12_CABLE = "LCF 12-50J 1/2\"\"";
-
+    public static final String LCF1250J_2m_CABLE = "1/2\"\" LCF 12-50J 2.0m";
+    public static final String LCF1250J_3m_CABLE = "1/2\"\" LCF 12-50J 3.0m";
+    public static final String LCF1250J12_CABLE = "LCF 12-50J 1/2\"\"";
     //types
     public static final String ADDRESS_TYPE = "Address";
     public static final String PHYSICAL_ELEMENT = "PhysicalElement";
@@ -83,9 +78,10 @@ public class Constants {
     public static final String TECH_3G = "3G";
     public static final String TECH_4G = "4G";
     public static final String TECH_5G = "5G";
-
     //common attributes like name, identifier, description etc. Specific type's attributes should be added in the types section.
     public static final String COMMON_NAME_ATTRIBUTE = "name";
     public static final String COMMON_IDENTIFIER_ATTRIBUTE = "identifier";
+    private Constants() {
+    }
 
 }
