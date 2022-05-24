@@ -29,7 +29,7 @@ public abstract class TrafficClassWizardPage extends BasePage {
     private static final String PIR_INGRESS_FIELD_ID = "uid-pirIngress";
     private static final String PIR_EGRESS_FIELD_ID = "uid-pirEgress";
 
-    public TrafficClassWizardPage(WebDriver webDriver) {
+    protected TrafficClassWizardPage(WebDriver webDriver) {
         super(webDriver);
     }
 
