@@ -26,9 +26,8 @@ import com.oss.pages.servicedesk.issue.tabs.RelatedProblemsTab;
 import com.oss.pages.servicedesk.issue.tabs.RelatedTicketsTab;
 import com.oss.pages.servicedesk.issue.tabs.RolesTab;
 import com.oss.pages.servicedesk.issue.tabs.RootCausesTab;
-import com.oss.pages.servicedesk.issue.ticket.TicketOverviewTab;
 import com.oss.pages.servicedesk.issue.tabs.TasksTab;
-import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
+import com.oss.pages.servicedesk.issue.ticket.TicketOverviewTab;
 
 import io.qameta.allure.Step;
 
