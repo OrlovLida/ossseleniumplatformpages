@@ -130,12 +130,4 @@ public abstract class BaseSDPage extends BasePage {
     public boolean isIssueTypeTicket() {
         return getViewTitle().contains("Ticket");
     }
-
-//    public SDWizardPage openCreateWizard(String flowType, String createButtonId, String wizardId) {
-//        DelayUtils.waitForPageToLoad(driver, wait);
-//        Button.createById(driver, createButtonId).click();
-//        DropdownList.create(driver, wait).selectOptionById(flowType);
-//
-//        return new SDWizardPage(driver, wait, wizardId);
-//    }
 }

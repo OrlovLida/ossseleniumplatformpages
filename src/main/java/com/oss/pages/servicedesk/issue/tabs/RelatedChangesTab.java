@@ -24,7 +24,7 @@ public class RelatedChangesTab extends RelatedTab {
     }
 
     public SDWizardPage openCreateChangeWizard() {
-        return openCreateWizard(NORMAL_BUTTON_ID, CREATE_CHANGE_BUTTON_ID, CHANGE_WIZARD_ID);
+        return SDWizardPage.openCreateWizard(driver, wait, NORMAL_BUTTON_ID, CREATE_CHANGE_BUTTON_ID, CHANGE_WIZARD_ID);
     }
 
     public String getIncidentDescriptionFromTable() {

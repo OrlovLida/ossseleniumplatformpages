@@ -254,11 +254,10 @@ public class SDWizardPage extends BaseSDPage {
         wizard.setComponentValue(componentId, text, componentType);
     }
 
-    public static SDWizardPage openCreateWizard(String flowType, String createButtonId, String wizardId) {
+    public static SDWizardPage openCreateWizard(WebDriver driver, WebDriverWait wait, String flowType, String createButtonId, String wizardId) {
         DelayUtils.waitForPageToLoad(driver, wait);
         Button.createById(driver, createButtonId).click();
         DropdownList.create(driver, wait).selectOptionById(flowType);
-
         return new SDWizardPage(driver, wait, wizardId);
     }
 }

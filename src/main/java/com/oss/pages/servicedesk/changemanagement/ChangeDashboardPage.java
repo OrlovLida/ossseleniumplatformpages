@@ -30,7 +30,7 @@ public class ChangeDashboardPage extends BaseDashboardPage {
     }
 
     public SDWizardPage openCreateChangeWizard() {
-        return openCreateWizard(NORMAL_BUTTON_ID, CREATE_CHANGE_BUTTON_ID, CHANGE_WIZARD_ID);
+        return SDWizardPage.openCreateWizard(driver, wait, NORMAL_BUTTON_ID, CREATE_CHANGE_BUTTON_ID, CHANGE_WIZARD_ID);
     }
 
     @Step("Check if change with {description} is in the table")
