@@ -543,7 +543,7 @@ public class ISPConfigurationTest extends BaseTestCase {
     public void preciseRackLocation() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.filterObjectInSpecificTab(TabName.LOCATIONS, NAME, MOUNTING_EDITOR_NAME);
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.LOCATIONS, "Edit Location");
+        locationOverviewPage.clickActionById(TabName.LOCATIONS, "frameworkCustomMore_location-update-action");
         SublocationWizardPage sublocationWizardPage = new SublocationWizardPage(driver);
         sublocationWizardPage.setPreciseLocation("Footprint1");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -657,17 +657,17 @@ public class ISPConfigurationTest extends BaseTestCase {
         locationOverviewPage.selectTab("Locations");
 
         locationOverviewPage.filterObjectInSpecificTab(TabName.LOCATIONS, NAME, "Footprint1");
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.LOCATIONS, "Delete Location");
+        locationOverviewPage.clickActionById(TabName.LOCATIONS, "frameworkCustomMore_location-delete-action");
         locationOverviewPage.clickButtonInConfirmationBox("Delete");
         checkPopupAndCloseMessage();
 
         locationOverviewPage.filterObjectInSpecificTab(TabName.LOCATIONS, NAME, "Footprint2");
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.LOCATIONS, "Delete Location");
+        locationOverviewPage.clickActionById(TabName.LOCATIONS, "frameworkCustomMore_location-delete-action");
         locationOverviewPage.clickButtonInConfirmationBox("Delete");
         checkPopupAndCloseMessage();
 
         locationOverviewPage.filterObjectInSpecificTab(TabName.LOCATIONS, NAME, "Footprint3");
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.LOCATIONS, "Delete Location");
+        locationOverviewPage.clickActionById(TabName.LOCATIONS, "frameworkCustomMore_location-delete-action");
         locationOverviewPage.clickButtonInConfirmationBox("Delete");
         checkPopupAndCloseMessage();
     }
@@ -677,7 +677,7 @@ public class ISPConfigurationTest extends BaseTestCase {
     public void deleteRow() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.filterObjectInSpecificTab(TabName.LOCATIONS, NAME, "Row1");
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.LOCATIONS, "Delete Location");
+        locationOverviewPage.clickActionById(TabName.LOCATIONS, "frameworkCustomMore_location-delete-action");
         locationOverviewPage.clickButtonInConfirmationBox("Delete");
         checkPopupAndCloseMessage();
     }
@@ -688,7 +688,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Locations");
         locationOverviewPage.filterObjectInSpecificTab(TabName.LOCATIONS, NAME, SUBLOCATION_NAME);
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.LOCATIONS, "Delete Location");
+        locationOverviewPage.clickActionById(TabName.LOCATIONS, "frameworkCustomMore_location-delete-action");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         locationOverviewPage.clickButtonInConfirmationBox("Delete");
         checkPopupAndCloseMessage();
