@@ -12,6 +12,8 @@ import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
+import static com.oss.configuration.Configuration.CONFIGURATION;
+
 /**
  * @author Kamil Sikora
  */
@@ -23,13 +25,17 @@ public class VSIWizardPage extends BasePage {
     private static final String VE_ID_FIELD_ID = "uidFieldVeId";
     private static final String ROUTE_DISTINGUISHER_FIELD_ID = "uidFieldRouteDistinguisher";
     private static final String DESCRIPTION_FIELD_ID = "uidFieldDescription";
-    private static final String WIDGET_ID = "CommonHierarchyApp-vsiAppSelect";
-
-    private final Wizard wizard;
+    private static final String COMPONENT_ID = "vsiApp";
 
     public VSIWizardPage(WebDriver driver) {
         super(driver);
-        wizard = Wizard.createWizard(driver, wait);
+    }
+
+    public VSIWizardPage goToVSIWizardPage() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        driver.get(String.format("%s/#/view/transport/ip/mpls/vsi?perspective=LIVE", CONFIGURATION.getUrl()));
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return new VSIWizardPage(driver);
     }
 
     @Step("Set VPN id to {vpnId}")
@@ -54,44 +60,40 @@ public class VSIWizardPage extends BasePage {
 
     @Step("Set device to {device}")
     public void setDevice(String device) {
-        wizard.setComponentValue(DEVICE_FIELD_ID, device, Input.ComponentType.SEARCH_FIELD);
+        getWizard().setComponentValue(DEVICE_FIELD_ID, device, Input.ComponentType.SEARCH_FIELD);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     @Step("Set description to {description}")
     public void setDescription(String description) {
-        wizard.setComponentValue(DESCRIPTION_FIELD_ID, description, Input.ComponentType.TEXT_AREA);
+        getWizard().setComponentValue(DESCRIPTION_FIELD_ID, description, Input.ComponentType.TEXT_AREA);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     @Step("Click next step button")
     public void clickNextStep() {
-        wizard.clickNextStep();
+        getWizard().clickNextStep();
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     @Step("Navigate through common hierarchy app widget selecting {deviceName} -> {interfaceType} and interface values")
     public void navigateThroughSecondPhase(String deviceName, String interfaceType, String... interfaceValues) {
-        CommonHierarchyApp commonHierarchyApp = CommonHierarchyApp.create(driver, wait, WIDGET_ID);
+        CommonHierarchyApp commonHierarchyApp = CommonHierarchyApp.create(driver, wait, COMPONENT_ID);
         commonHierarchyApp.callAvailableAction(Arrays.asList(interfaceValues), deviceName, interfaceType);
     }
 
     @Step("Click accept button")
-    public VSIOverviewPage clickAccept() {
-        wizard.clickAccept();
-        DelayUtils.waitForPageToLoad(driver, wait);
-        return new VSIOverviewPage(driver);
+    public void clickAccept() {
+        getWizard().clickAccept();
     }
 
     private void setTextFieldComponentValue(String componentId, String value) {
-        wizard.setComponentValue(componentId, value, Input.ComponentType.TEXT_FIELD);
+        getWizard().setComponentValue(componentId, value, Input.ComponentType.TEXT_FIELD);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    private void setComponentValue(Input component, String value) {
-        component.setSingleStringValue(value);
-        DelayUtils.waitForPageToLoad(driver, wait);
+    private Wizard getWizard() {
+        return Wizard.createByComponentId(driver, wait, COMPONENT_ID);
     }
-
 }
 
