@@ -8,7 +8,12 @@
         <parameter name="RelatedTicketID" value="100"/>
         <parameter name="ProblemToLinkId" value="100"/>
         <classes>
-            <class name="com.oss.servicedesk.ProblemsVFNZTest"/>
+            <class name="com.oss.servicedesk.problemmanagement.ProblemsTest"/>
+        </classes>
+    </test>
+    <test name="ExportFromDashboard">
+        <classes>
+            <class name="com.oss.servicedesk.problemmanagement.ProblemsDashboardTest"/>
         </classes>
     </test>
 </suite>

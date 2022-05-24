@@ -15,7 +15,9 @@ import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.servicedesk.BaseSDPage;
-import com.oss.pages.servicedesk.issue.BaseDashboardPage;
+import com.oss.pages.servicedesk.changemanagement.ChangeDashboardPage;
+import com.oss.pages.servicedesk.issue.problem.ProblemDashboardPage;
+import com.oss.pages.servicedesk.issue.ticket.TicketDashboardPage;
 
 import io.qameta.allure.Step;
 
@@ -24,6 +26,7 @@ public class SDWizardPage extends BaseSDPage {
     private static final Logger log = LoggerFactory.getLogger(SDWizardPage.class);
 
     private static final String INCIDENT_DESCRIPTION_ID = "TT_WIZARD_INPUT_INCIDENT_DESCRIPTION";
+    private static final String CHANGE_INCIDENT_DESCRIPTION_ID = "TT_WIZARD_INPUT_INCIDENT_DESCRIPTION_LABEL";
     private static final String EMAIL_MESSAGE_ID = "message-component";
     private static final String CREATE_EXTERNAL_LABEL = "Create External";
     private static final String EXPECTED_RESOLUTION_DATE_ID = "TT_WIZARD_INPUT_EXPECTED_RESOLUTION_DATE_LABEL";
@@ -31,11 +34,25 @@ public class SDWizardPage extends BaseSDPage {
     private static final String LINK_TICKETS_BUTTON_ID = "_buttonsApp-1";
     private static final String UNLINK_CONFIRMATION_BUTTON_ID = "ConfirmationBox__confirmUnlinkProblemApp_action_button";
     private static final String TT_WIZARD_ASSIGNEE = "TT_WIZARD_INPUT_ASSIGNEE_LABEL";
+    private static final String TT_WIZARD_REQUESTER = "TT_WIZARD_INPUT_REQUESTER_LABEL";
     private static final String TEST_SELENIUM_ID = "12345";
     private static final String TT_WIZARD_CORRELATION_ID = "ISSUE_CORRELATION_ID";
     private static final String TT_WIZARD_REFERENCE_ID = "TT_WIZARD_INPUT_REFERENCE_ID_LABEL";
     private static final String TT_WIZARD_ISSUE_START_DATE_ID = "IssueStartDate";
     private static final String TT_WIZARD_MESSAGE_DATE_ID = "PleaseProvideTheTimeOnTheHandsetTheTxtMessageArrived";
+    private static final String PROBLEM_NAME_DESCRIPTION_ID = "TT_WIZARD_INPUT_PROBLEM_NAME_DESCRIPTION";
+    private static final String CHANGE_RISK_ASSESSMENT_ID = "TT_WIZARD_INPUT_RISK_ASSESSMENT_LABEL";
+    private static final String NOTIFICATION_CHANNEL_INTERNAL = "Internal";
+    private static final String NOTIFICATION_WIZARD_CHANNEL_ID = "channel-component-input";
+    private static final String NOTIFICATION_WIZARD_MESSAGE_ID = "message-component";
+    private static final String NOTIFICATION_WIZARD_INTERNAL_TO_ID = "internal-to-component";
+    private static final String NOTIFICATION_WIZARD_TYPE_ID = "internal-type-component";
+    private static final String NOTIFICATION_TYPE = "Success";
+    private static final String NOTIFICATION_WIZARD_TO_ID = "to-component";
+    private static final String NOTIFICATION_WIZARD_FROM_ID = "from-component";
+    private static final String NOTIFICATION_WIZARD_SUBJECT_ID = "subject-component";
+    private static final String NOTIFICATION_CHANNEL_EMAIL = "E-mail";
+    private static final String NOTIFICATION_SUBJECT = "Email notification test";
 
     private final MOStep moStep;
     private final Wizard wizard;
@@ -104,10 +121,18 @@ public class SDWizardPage extends BaseSDPage {
     }
 
     @Step("I insert {text} to multi search component with id {componentId}")
-    public void insertValueToMultiSearchComponent(String text, String componentId) {
+    public SDWizardPage insertValueToMultiSearchComponent(String text, String componentId) {
         DelayUtils.waitForPageToLoad(driver, wait);
         getWizard().getComponent(componentId, Input.ComponentType.MULTI_SEARCH_FIELD).setValueContains(Data.createSingleData(text));
         log.info("Value {} inserted to multi searchfield", text);
+        return this;
+    }
+
+    @Step("I insert {text} to multi search box component with id {componentId}")
+    public void insertValueToSearchBoxComponent(String text, String componentId) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getWizard().getComponent(componentId, Input.ComponentType.SEARCH_BOX).setValueContains(Data.createSingleData(text));
+        log.info("Value {} inserted to search box", text);
     }
 
     @Step("I insert {text} to text component with id {componentId}")
@@ -159,7 +184,7 @@ public class SDWizardPage extends BaseSDPage {
         log.info("Clicking {} combobox", componentId);
     }
 
-    public BaseDashboardPage createTicket(String moIdentifier, String assignee) {
+    public TicketDashboardPage createTicket(String moIdentifier, String assignee) {
         getMoStep().enterTextIntoSearchComponent(moIdentifier);
         getMoStep().selectObjectInMOTable(moIdentifier);
         clickNextButtonInWizard();
@@ -173,7 +198,45 @@ public class SDWizardPage extends BaseSDPage {
         insertValueToTextComponent(date, TT_WIZARD_ISSUE_START_DATE_ID);
         insertValueToTextComponent(date, TT_WIZARD_MESSAGE_DATE_ID);
         clickAcceptButtonInWizard();
-        return new BaseDashboardPage(driver, wait);
+        return new TicketDashboardPage(driver, wait);
+    }
+
+    public ProblemDashboardPage createProblem(String moIdentifier, String assignee, String description) {
+        getMoStep().enterTextIntoSearchComponent(moIdentifier);
+        getMoStep().selectObjectInMOTable(moIdentifier);
+        clickNextButtonInWizard();
+        insertValueToTextAreaComponent(description, PROBLEM_NAME_DESCRIPTION_ID);
+        insertValueToSearchComponent(assignee, TT_WIZARD_ASSIGNEE);
+        clickNextButtonInWizard();
+        clickAcceptButtonInWizard();
+        return new ProblemDashboardPage(driver, wait);
+    }
+
+    public ChangeDashboardPage createChange(String requester, String assignee, String description) {
+        insertValueToTextComponent("LOW", CHANGE_RISK_ASSESSMENT_ID);
+        insertValueToSearchComponent(requester, TT_WIZARD_REQUESTER);
+        insertValueToSearchComponent(assignee, TT_WIZARD_ASSIGNEE);
+        insertValueToTextAreaComponent(description, CHANGE_INCIDENT_DESCRIPTION_ID);
+        clickNextButtonInWizard();
+        clickAcceptButtonInWizard();
+        return new ChangeDashboardPage(driver, wait);
+    }
+
+    public void createInternalNotification(String textMessage, String messageTo) {
+        insertValueToComboBoxComponent(NOTIFICATION_CHANNEL_INTERNAL, NOTIFICATION_WIZARD_CHANNEL_ID);
+        insertValueToTextAreaComponent(textMessage, NOTIFICATION_WIZARD_MESSAGE_ID);
+        insertValueToMultiComboBoxComponent(messageTo, NOTIFICATION_WIZARD_INTERNAL_TO_ID);
+        insertValueToComboBoxComponent(NOTIFICATION_TYPE, NOTIFICATION_WIZARD_TYPE_ID);
+        clickAcceptButtonInWizard();
+    }
+
+    public void createEmailNotification(String notificationEmailTo, String notificationEmailFrom, String textMessage) {
+        insertValueToComboBoxComponent(NOTIFICATION_CHANNEL_EMAIL, NOTIFICATION_WIZARD_CHANNEL_ID);
+        insertValueToMultiSearchComponent(notificationEmailTo, NOTIFICATION_WIZARD_TO_ID);
+        insertValueToComboBoxComponent(notificationEmailFrom, NOTIFICATION_WIZARD_FROM_ID);
+        insertValueToTextComponent(NOTIFICATION_SUBJECT, NOTIFICATION_WIZARD_SUBJECT_ID);
+        enterEmailMessage(textMessage);
+        clickAcceptButtonInWizard();
     }
 
     private void insertValueToComponent(String text, String componentId, Input.ComponentType componentType) {

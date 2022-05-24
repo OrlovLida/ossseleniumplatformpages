@@ -50,7 +50,7 @@ public class TP_OSS_RM_RAN_003_Test extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    @Test(priority = 2, description = "Start DCP")
+    @Test(priority = 2, description = "Start DCP", dependsOnMethods = {"createNewProcess"})
     @Description("Start newly created Data Correction Process")
     public void startDCP() {
         openView(BPM_TASKS, BPM_AND_PLANNING, BUSINESS_PROCESS_MANAGEMENT);
@@ -61,8 +61,8 @@ public class TP_OSS_RM_RAN_003_Test extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    @Test(priority = 3, description = "Find location and open it in Cell Site Configuration view")
-    @Description("Find location in old Inventory View and open location in Cell Site Configuration view")
+    @Test(priority = 3, description = "Find location and open it in Cell Site Configuration view", dependsOnMethods = {"startDCP"})
+    @Description("Find location in new Inventory View and open location in Cell Site Configuration view")
     public void findLocation() {
         openView("Inventory View", "Resource Inventory ");
         waitForPageToLoad();
@@ -78,7 +78,7 @@ public class TP_OSS_RM_RAN_003_Test extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    @Test(priority = 4, description = "Modify cells")
+    @Test(priority = 4, description = "Modify cells", dependsOnMethods = {"findLocation"})
     @Description("Modify Cells 4G parameters in bulk wizard")
     public void modifyCell4Gparameters() {
         CellSiteConfigurationPage cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);
@@ -105,7 +105,7 @@ public class TP_OSS_RM_RAN_003_Test extends BaseTestCase {
         checkPopup("Cells 4G updated successfully");
     }
 
-    @Test(priority = 5, description = "Finish DCP")
+    @Test(priority = 5, description = "Finish DCP", dependsOnMethods = {"modifyCell4Gparameters"})
     @Description("Finish Data Correction Process")
     public void finnishDCP() {
         openView(BPM_TASKS, BPM_AND_PLANNING, BUSINESS_PROCESS_MANAGEMENT);

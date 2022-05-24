@@ -5,7 +5,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.pages.bigdata.dfe.BaseDfePage;
 
@@ -26,6 +25,8 @@ public class KqiPage extends BaseDfePage {
     private static final String PARAMETERS_TAB = "Parameters";
     private static final String PARAMETERS_TABLE_ID = "kqi/tabs/parametersAppId";
     private static final String PROPERTY_PANEL_ID = "detailsId";
+    private static final String NAME_PROPERTY = "Name";
+    private static final String FORMULA_PROPERTY = "Formula";
     private static final String TAB_WIDGET_ID = "card-content_kqiTabsWindow";
 
     public KqiPage(WebDriver driver, WebDriverWait wait) {
@@ -74,12 +75,16 @@ public class KqiPage extends BaseDfePage {
         selectTab(TAB_WIDGET_ID, DETAILS_TAB);
     }
 
-    @Step("Check label and value in details tab")
-    public String checkValueForPropertyInDetails(String propertyName) {
-        String propertyValue = OldPropertyPanel.createById(driver, wait, PROPERTY_PANEL_ID).getPropertyValue(propertyName);
-        log.info("Value of: {} is: {}", propertyName, propertyValue);
+    @Step("Check name value in details tab")
+    public String checkNameInPropertyPanel() {
+        return checkValueInPropertyPanel(PROPERTY_PANEL_ID,
+                NAME_PROPERTY);
 
-        return propertyValue;
+    }
+    @Step("Check label value in details tab")
+    public String checkFormulaInPropertyPanel() {
+        return checkValueInPropertyPanel(PROPERTY_PANEL_ID,
+                FORMULA_PROPERTY);
     }
 
     @Step("I click Parameters Tab")

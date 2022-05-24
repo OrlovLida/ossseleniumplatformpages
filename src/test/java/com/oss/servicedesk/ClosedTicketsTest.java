@@ -8,35 +8,34 @@ import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.pages.platform.NotificationWrapperPage;
-import com.oss.pages.servicedesk.issue.BaseDashboardPage;
 import com.oss.pages.servicedesk.issue.IssueDetailsPage;
-import com.oss.pages.servicedesk.issue.ticket.MyTicketsPage;
+import com.oss.pages.servicedesk.issue.ticket.ClosedTicketsPage;
+import com.oss.pages.servicedesk.issue.ticket.TicketDashboardPage;
 import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
 
 import io.qameta.allure.Description;
 
 import static com.oss.pages.servicedesk.ServiceDeskConstants.DOWNLOAD_FILE;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.EXPORT_WIZARD_ID;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.ID_ATTRIBUTE;
-import static com.oss.pages.servicedesk.ServiceDeskConstants.TICKET_DASHBOARD;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.TROUBLE_TICKET_ISSUE_TYPE;
 
 public class ClosedTicketsTest extends BaseTestCase {
 
-    private BaseDashboardPage baseDashboardPage;
+    private TicketDashboardPage ticketDashboardPage;
     private SDWizardPage sdWizardPage;
     private IssueDetailsPage issueDetailsPage;
-    private MyTicketsPage closedTicketsPage;
+    private ClosedTicketsPage closedTicketsPage;
     private NotificationWrapperPage notificationWrapperPage;
     private String ticketID;
     private static final String STATUS_ACKNOWLEDGED = "Acknowledged";
     private static final String STATUS_IN_PROGRESS = "In Progress";
     private static final String STATUS_RESOLVED = "Resolved";
     private static final String STATUS_CLOSED = "Closed";
-    private static final String EXPORT_WIZARD_ID = "exportgui-mainview";
 
     @BeforeClass
     public void goToTicketDashboard() {
-        baseDashboardPage = new BaseDashboardPage(driver, webDriverWait).goToPage(driver, BASIC_URL, TICKET_DASHBOARD);
+        ticketDashboardPage = new TicketDashboardPage(driver, webDriverWait).goToPage(driver, BASIC_URL);
     }
 
     @Parameters({"MOIdentifier", "ttAssignee"})
@@ -46,10 +45,10 @@ public class ClosedTicketsTest extends BaseTestCase {
             @Optional("CFS_Access_Product_Selenium_1") String MOIdentifier,
             @Optional("Tier 2 Mobile") String ttAssignee
     ) {
-        sdWizardPage = baseDashboardPage.openCreateTicketWizard("CTT");
+        sdWizardPage = ticketDashboardPage.openCreateTicketWizard("CTT");
         sdWizardPage.createTicket(MOIdentifier, ttAssignee);
-        ticketID = baseDashboardPage.getIdFromMessage();
-        issueDetailsPage = baseDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
+        ticketID = ticketDashboardPage.getIdFromMessage();
+        issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
         issueDetailsPage.allowEditingTicket();
         issueDetailsPage.skipAllActionsOnCheckList();
         issueDetailsPage.changeTicketStatus(STATUS_ACKNOWLEDGED);
@@ -65,7 +64,7 @@ public class ClosedTicketsTest extends BaseTestCase {
     @Test(priority = 2, testName = "Check Closed Tickets View", description = "Refresh, search and check if ticket is shown in the closed tickets table")
     @Description("Refresh, search and check if ticket is shown in the closed tickets table")
     public void checkClosedTicketView() {
-        closedTicketsPage = new MyTicketsPage(driver, webDriverWait).goToClosedTickets(driver, BASIC_URL);
+        closedTicketsPage = new ClosedTicketsPage(driver, webDriverWait).openView(driver, BASIC_URL);
         closedTicketsPage.clickRefresh();
         closedTicketsPage.filterByTextField(ID_ATTRIBUTE, ticketID);
         Assert.assertEquals(closedTicketsPage.getIdForNthTicketInTable(0), ticketID);
@@ -74,7 +73,7 @@ public class ClosedTicketsTest extends BaseTestCase {
     @Test(priority = 3, testName = "Export Closed Ticket", description = "Export Closed Ticket")
     @Description("Export Closed Ticket")
     public void ExportClosedTicket() {
-        closedTicketsPage = new MyTicketsPage(driver, webDriverWait).goToClosedTickets(driver, BASIC_URL);
+        closedTicketsPage = new ClosedTicketsPage(driver, webDriverWait).openView(driver, BASIC_URL);
         try {
             closedTicketsPage.exportFromSearchViewTable(EXPORT_WIZARD_ID);
         } catch (RuntimeException e) {

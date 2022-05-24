@@ -1,5 +1,7 @@
 package com.oss.pages.platform.configuration;
 
+import java.util.List;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -34,6 +36,15 @@ public class ChooseConfigurationWizard {
         ListGroup.create(driver, wait).callAction(name, "Delete configuration");
         Popup.create(driver, wait).clickButtonByLabel("Delete");
         return this;
+    }
+    public ChooseConfigurationWizard deleteConfigurations(List<String> names){
+        names.forEach(item ->{ListGroup.create(driver, wait).callAction(item, "Delete configuration");
+            Popup.create(driver, wait).clickButtonByLabel("Delete");});
+        return this;
+    }
+
+    public List<String> getConfigurationNames(){
+       return ListGroup.create(driver,wait).getItemsName();
     }
     
     public void apply() {

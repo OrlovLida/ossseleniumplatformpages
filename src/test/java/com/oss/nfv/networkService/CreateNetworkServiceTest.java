@@ -2,6 +2,7 @@ package com.oss.nfv.networkService;
 
 import java.util.List;
 
+import com.oss.pages.logicalfunction.LogicalFunctionWizardPreStep;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
@@ -9,19 +10,15 @@ import org.testng.asserts.SoftAssert;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.nfv.common.ResourceSpecificationsViewService;
 import com.oss.nfv.common.SideMenuService;
-import com.oss.nfv.common.WebDriversData;
 import com.oss.pages.nfv.networkservice.NetworkServiceWizardFirstStep;
 import com.oss.pages.nfv.networkservice.NetworkServiceWizardPage;
 import com.oss.pages.nfv.networkservice.NetworkServiceWizardSecondStep;
 import com.oss.pages.nfv.networkservice.NetworkServiceWizardStep;
 import com.oss.pages.nfv.networkservice.NetworkServiceWizardThirdStep;
-import com.oss.pages.resourcecatalog.ResourceSpecificationsViewPage;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 
-import static com.oss.nfv.networkService.CreateNetworkServiceTestConstants.NETWORK_SERVICE_IDENTIFIER;
 import static com.oss.nfv.networkService.CreateNetworkServiceTestConstants.NETWORK_SERVICE_NAME;
 import static com.oss.nfv.networkService.CreateNetworkServiceTestConstants.NEW_NETWORK_SERVICE_NAME;
 import static org.testng.Assert.assertEquals;
@@ -35,13 +32,12 @@ public class CreateNetworkServiceTest extends BaseNetworkServiceTest {
     public void openCreateNetworkServiceWizard() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         //given
-        SideMenuService.goToResourceSpecificationsView(driver, webDriverWait);
+        SideMenuService.goToCreateNetworkServiceView(driver, webDriverWait);
         //when
-        ResourceSpecificationsViewService.openCreateLogicalFunctionWizard(
-                NETWORK_SERVICE_IDENTIFIER,
-                NETWORK_SERVICE_NAME,
-                WebDriversData.create(driver, webDriverWait)
-        );
+        LogicalFunctionWizardPreStep logicalFunctionWizardPreStep = LogicalFunctionWizardPreStep.create(driver, webDriverWait);
+        logicalFunctionWizardPreStep.searchResourceSpecification(NETWORK_SERVICE_NAME);
+        logicalFunctionWizardPreStep.clickAccept();
+
         //then
         assertThatNetworkServiceWizardIsOpenAndStructureTreeIsVisible();
     }

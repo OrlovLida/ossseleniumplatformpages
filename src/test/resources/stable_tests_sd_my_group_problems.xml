@@ -1,0 +1,17 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="My Problems, My Group Problems and Closed Problems Tests" thread-count="2" parallel="tests" verbose="1">
+    <test name="MyGroupProblems">
+        <parameter name="MOIdentifier" value="TEST_MO"/>
+        <parameter name="problemAssignee" value="Tier 2 Mobile"/>
+        <classes>
+            <class name="com.oss.servicedesk.problemmanagement.MyGroupProblemsTest"/>
+        </classes>
+    </test>
+    <test name="ClosedProblemsTest">
+        <parameter name="MOIdentifier" value="TEST_MO"/>
+        <parameter name="problemAssignee" value="Tier 2 Mobile"/>
+        <classes>
+            <class name="com.oss.servicedesk.problemmanagement.ClosedProblemsTest"/>
+        </classes>
+    </test>
+</suite>

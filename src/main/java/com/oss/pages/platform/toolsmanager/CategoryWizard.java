@@ -9,8 +9,8 @@ import com.oss.framework.wizard.Wizard;
 
 public class CategoryWizard {
     
-    private static final String NAME_FIELD_ID_IN_CATEGORY_POPUP = "category-popup--input1";
-    private static final String DESCRIPTION_FIELD_ID_IN_CATEGORY_POPUP = "category-popup--input2";
+    private static final String NAME_FIELD_ID_IN_CATEGORY_POPUP = "input_category-popup--input1";
+    private static final String DESCRIPTION_FIELD_ID_IN_CATEGORY_POPUP = "input_category-popup--input2";
     
     private WebDriver driver;
     private WebDriverWait wait;

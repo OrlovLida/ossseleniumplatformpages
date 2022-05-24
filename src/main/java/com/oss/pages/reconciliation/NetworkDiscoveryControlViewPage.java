@@ -13,7 +13,6 @@ import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.components.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
-import com.oss.framework.widgets.table.TableInterface;
 import com.oss.framework.widgets.tabs.TabsInterface;
 import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.framework.widgets.tree.TreeWidget;
@@ -42,6 +41,9 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     private static final String TAB_ID = "narComponent_networkDiscoveryControlViewIdcmDomainWindowId";
     private static final String DETAILS_ID = "narComponent_CmDomainActionDetailsId";
     private static final String TEXT_TO_FIND_CMDOMAINID = "Reason";
+    private static final String ISSUE_LEVEL = "Issue Level";
+    private static final String REASON = "Reason";
+    private static final String CONFLICT = "conflict";
 
     protected NetworkDiscoveryControlViewPage(WebDriver driver) {
         super(driver);
@@ -161,7 +163,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     @Step("Check if there are Issues with type {errorType}")
     public boolean checkIssues(IssueLevel errorType) {
         String type = String.valueOf(errorType);
-        getIssuesTable().searchByAttributeWithLabel("Issue Level", ComponentType.TEXT_FIELD, type);
+        getIssuesTable().searchByAttributeWithLabel(ISSUE_LEVEL, ComponentType.TEXT_FIELD, type);
         DelayUtils.sleep(2000);
         DelayUtils.waitForPageToLoad(driver, wait);
         if (getIssuesTable().hasNoData()) {
@@ -174,8 +176,14 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     @Step("Select latest reconciliation state")
     public void selectLatestReconciliationState() {
-        TableInterface table = OldTable.createById(driver, wait, RECONCILIATION_STATE_TABLE_ID);
-        table.selectRow(0);
+        OldTable.createById(driver, wait, RECONCILIATION_STATE_TABLE_ID).selectRow(0);
+    }
+
+    @Step("Check if conflict event appeared during reconciliation")
+    public boolean isConflictEventPresent() {
+        getIssuesTable().searchByAttributeWithLabel(ISSUE_LEVEL, ComponentType.TEXT_FIELD, "");
+        getIssuesTable().searchByAttributeWithLabel(REASON, ComponentType.TEXT_FIELD, CONFLICT);
+        return getIssuesTable().getCellValue(0, REASON).contains(CONFLICT);
     }
 
     @Step("Get Reconciliation starting event")
@@ -208,7 +216,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     private void printIssues(String type, int issuesNumber) {
         for (int i = 0; i < issuesNumber; i++) {
-            log.info("[{}] {}", type, getIssuesTable().getCellValue(i, "Reason"));
+            log.info("[{}] {}", type, getIssuesTable().getCellValue(i, REASON));
         }
     }
 

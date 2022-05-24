@@ -1,18 +1,15 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="MyGroupTicketsSD and LeftSideMenuTest" thread-count="2" parallel="tests" verbose="1">
+<suite name="My Tickets, My Group Tickets and Closed Tickets Tests" thread-count="2" parallel="tests" verbose="1">
     <test name="MyGroupTickets">
-        <parameter name="MOIdentifier" value="CFS_Access_Product_Selenium_1"/>
-        <parameter name="ProblemAssignee" value="Tier 2 Mobile"/>
+        <parameter name="MOIdentifier" value="TEST_MO"/>
+        <parameter name="ttAssignee" value="Tier 2 Mobile"/>
         <classes>
-            <class name="com.oss.servicedesk.MyGroupTicketsVFNZTest"/>
-        </classes>
-    </test>
-    <test name="LeftSideMenuTests">
-        <classes>
-            <class name="com.oss.servicedesk.LeftSideMenuSDTest"/>
+            <class name="com.oss.servicedesk.MyGroupTicketsTest"/>
         </classes>
     </test>
     <test name="ClosedTicketTest">
+        <parameter name="MOIdentifier" value="TEST_MO"/>
+        <parameter name="ttAssignee" value="Tier 2 Mobile"/>
         <classes>
             <class name="com.oss.servicedesk.ClosedTicketsTest"/>
         </classes>

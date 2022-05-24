@@ -77,11 +77,4 @@ public class ArSettingsTest extends BaseTestCase {
         arSettingsPage.selectFirstActionTemplateFromTable();
         arSettingsPage.deleteActionTemplate();
     }
-
-    @Test(priority = 4, testName = "Check Subsystems Health", description = "Check Subsystems Health")
-    @Description("Check Subsystems Health")
-    public void checkSubsystemsHealth() {
-        arSettingsPage.goToSubsystemsHealthTab(SUBSYSTEMS_HEALTH_TAB);
-        Assert.assertTrue(arSettingsPage.isSubsystemUpAndRunning());
-    }
 }

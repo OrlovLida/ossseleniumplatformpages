@@ -17,11 +17,14 @@ import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.servicedesk.BaseSDPage;
 import com.oss.pages.servicedesk.issue.tabs.AttachmentsTab;
+import com.oss.pages.servicedesk.issue.tabs.DescriptionTab;
 import com.oss.pages.servicedesk.issue.tabs.ExternalTab;
 import com.oss.pages.servicedesk.issue.tabs.MessagesTab;
 import com.oss.pages.servicedesk.issue.tabs.ParticipantsTab;
+import com.oss.pages.servicedesk.issue.tabs.RelatedChangesTab;
 import com.oss.pages.servicedesk.issue.tabs.RelatedProblemsTab;
 import com.oss.pages.servicedesk.issue.tabs.RelatedTicketsTab;
+import com.oss.pages.servicedesk.issue.tabs.RolesTab;
 import com.oss.pages.servicedesk.issue.tabs.RootCausesTab;
 import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
 
@@ -29,6 +32,7 @@ import io.qameta.allure.Step;
 
 import static com.oss.pages.servicedesk.ServiceDeskConstants.COMMON_WIZARD_ID;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.DETAILS_TABS_CONTAINER_ID;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.TABS_WIDGET_ID;
 
 public class IssueDetailsPage extends BaseSDPage {
 
@@ -40,8 +44,8 @@ public class IssueDetailsPage extends BaseSDPage {
     private static final String RELEASE_BUTTON_LABEL = "Release";
     private static final String DETAILS_VIEW_ACTIONS_CONTAINER_ID = "_detailsWindow-windowToolbar";
     private static final String ALLOW_EDIT_LABEL = "Edit";
-    private static final String PROBLEM_ASSIGNEE_ID = "assignee";
-    private static final String PROBLEM_STATUS_ID = "status-input";
+    private static final String ISSUE_ASSIGNEE_ID = "assignee";
+    private static final String STATUS_INPUT = "status-input";
     private static final String CHECKLIST_APP_ID = "_checklistApp";
     private static final String SKIP_BUTTON_LABEL = "SKIP";
     private static final String EXTERNAL_TAB_ARIA_CONTROLS = "_detailsExternalTab";
@@ -59,19 +63,29 @@ public class IssueDetailsPage extends BaseSDPage {
     private static final String RELATED_TICKETS_TAB_ARIA_CONTROLS = "_relatedTicketsTab";
     private static final String PARTICIPANTS_TAB_ARIA_CONTROLS = "_participantsTabApp";
     private static final String RELATED_PROBLEMS_TAB_ARIA_CONTROLS = "_relatedProblems";
+    private static final String RELATED_CHANGES_TAB_ID = "_relatedChangesTab";
     private static final String MORE_BUTTON_LABEL = "More";
-    private static final String TABS_WIDGET_ID = "_tablesWindow";
-    private static final String DESCRIPTION_FIELD_ID = "_incidentDescriptionApp";
+    private static final String ROLES_TAB_ID = "_detailsRoles";
+    private static final String DESCRIPTIONS_WINDOW_ID = "_descriptionsWindow";
+    private static final String DESCRIPTION_TAB_ID = "_descriptionTab";
 
     public IssueDetailsPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
     }
 
-    @Step("I open edit ticket wizard")
+    @Step("Open edit ticket wizard")
     public SDWizardPage openEditTicketWizard() {
         DelayUtils.waitForPageToLoad(driver, wait);
         getDetailsViewOldActionsContainer().callActionByLabel(MORE_BUTTON_LABEL, EDIT_DETAILS_LABEL);
         log.info("Ticket Wizard edit is opened");
+        return new SDWizardPage(driver, wait, COMMON_WIZARD_ID);
+    }
+
+    @Step("Open edit change wizard")
+    public SDWizardPage openEditChangeWizard() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getDetailsViewOldActionsContainer().callActionByLabel(EDIT_DETAILS_LABEL);
+        log.info("Edit Change Wizard is opened");
         return new SDWizardPage(driver, wait, COMMON_WIZARD_ID);
     }
 
@@ -99,21 +113,24 @@ public class IssueDetailsPage extends BaseSDPage {
     }
 
     @Step("Selecting tab {tabId}")
-    public void selectTabFromTablesWindow(String tabId) {
+    public void selectTabFromTabsWidget(String widgetId, String tabId) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        TabsWidget.createById(driver, wait, TABS_WIDGET_ID).selectTabById(tabId);
+        TabsWidget.createById(driver, wait, widgetId).selectTabById(tabId);
         log.info("Selecting tab {}", tabId);
     }
 
     @Step("Selecting tab {tabId}")
-    public void selectTabFromDetailsWindow(String tabId) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        TabsWidget.createById(driver, wait, DETAILS_TABS_CONTAINER_ID).selectTabById(tabId);
-        log.info("Selecting tab {}", tabId);
+    public void selectTabFromTablesWindow(String tabId) {
+        selectTabFromTabsWidget(TABS_WIDGET_ID, tabId);
     }
 
-    public AttachmentsTab selectAttachmentsTab() {
-        selectTabFromDetailsWindow(ATTACHMENTS_TAB_ARIA_CONTROLS);
+    @Step("Selecting tab {tabId}")
+    public void selectTabFromDetailsWindow(String tabId) {
+        selectTabFromTabsWidget(DETAILS_TABS_CONTAINER_ID, tabId);
+    }
+
+    public AttachmentsTab selectAttachmentsTab(String widgetId) {
+        selectTabFromTabsWidget(widgetId, ATTACHMENTS_TAB_ARIA_CONTROLS);
         log.info("Selecting tab Attachments");
 
         return new AttachmentsTab(driver, wait);
@@ -161,6 +178,26 @@ public class IssueDetailsPage extends BaseSDPage {
         return new RelatedProblemsTab(driver, wait);
     }
 
+    public RelatedChangesTab selectRelatedChangesTab() {
+        selectTabFromTablesWindow(RELATED_CHANGES_TAB_ID);
+        log.info("Selecting Related Changes Tab");
+
+        return new RelatedChangesTab(driver, wait);
+    }
+
+    public DescriptionTab selectDescriptionTab() {
+        selectTabFromTabsWidget(DESCRIPTIONS_WINDOW_ID, DESCRIPTION_TAB_ID);
+        log.info("Selecting Description Tab");
+
+        return new DescriptionTab(driver, wait);
+    }
+
+    public RolesTab selectRolesTab() {
+        selectTabFromDetailsWindow(ROLES_TAB_ID);
+        log.info("Selecting Roles Tab");
+        return new RolesTab(driver, wait);
+    }
+
     @Step("Skipping all actions on checklist")
     public void skipAllActionsOnCheckList() {
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -172,6 +209,16 @@ public class IssueDetailsPage extends BaseSDPage {
                 });
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Skipping all actions on checklist");
+    }
+
+    @Step("Checking if Skip buttons are present for all actions on checklist")
+    public boolean areSkipButtonsActive() {
+        return CommonList.create(driver, wait, CHECKLIST_APP_ID)
+                .getRows()
+                .stream().allMatch(row -> {
+                    DelayUtils.waitForPageToLoad(driver, wait);
+                    return row.isActionIconPresentByLabel(SKIP_BUTTON_LABEL);
+                });
     }
 
     @Step("Changing status to {statusName}")
@@ -186,18 +233,28 @@ public class IssueDetailsPage extends BaseSDPage {
         return ComponentFactory.create(CHANGE_TICKET_STATUS_COMBOBOX_ID, Input.ComponentType.COMBOBOX, driver, wait).getStringValue();
     }
 
-    @Step("Change problem assignee")
-    public void changeProblemAssignee(String assignee) {
-        ComponentFactory.create(PROBLEM_ASSIGNEE_ID, Input.ComponentType.SEARCH_FIELD, driver, wait)
+    @Step("Change Issue assignee")
+    public void changeIssueAssignee(String assignee) {
+        ComponentFactory.create(ISSUE_ASSIGNEE_ID, Input.ComponentType.SEARCH_FIELD, driver, wait)
                 .setSingleStringValue(assignee);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    @Step("Change problem status")
-    public void changeProblemStatus(String status) {
-        ComponentFactory.create(PROBLEM_STATUS_ID, Input.ComponentType.COMBOBOX, driver, wait)
+    @Step("Check Issue Assignee")
+    public String checkAssignee() {
+        return ComponentFactory.create(ISSUE_ASSIGNEE_ID, Input.ComponentType.SEARCH_FIELD, driver, wait).getStringValue();
+    }
+
+    @Step("Change issue status")
+    public void changeIssueStatus(String status) {
+        ComponentFactory.create(STATUS_INPUT, Input.ComponentType.COMBOBOX, driver, wait)
                 .setSingleStringValue(status);
         DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    @Step("Check status in issue status combobox")
+    public String checkIssueStatus() {
+        return ComponentFactory.create(STATUS_INPUT, Input.ComponentType.COMBOBOX, driver, wait).getStringValue();
     }
 
     public String checkExistingDictionary() {
@@ -205,8 +262,8 @@ public class IssueDetailsPage extends BaseSDPage {
         return OldTable.createById(driver, wait, DICTIONARIES_TABLE_ID).getCellValue(0, DICTIONARY_VALUE_TABLE_LABEL);
     }
 
-    public String getDisplayedText(String windowId) {
-        return ListApp.createFromParent(driver, wait, windowId).getValueFromField(DESCRIPTION_FIELD_ID);
+    public String getDisplayedText(String windowId, String fieldId) {
+        return ListApp.createFromParent(driver, wait, windowId).getValueFromField(fieldId);
     }
 
     public boolean isAllActionsSkipped() {

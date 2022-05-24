@@ -88,7 +88,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
         Assertions.assertThat(messages.get(0).getText()).contains(processNRPCode);
     }
 
-    @Test(priority = 2, description = "Start 'High Level Planning' Task")
+    @Test(priority = 2, description = "Start 'High Level Planning' Task", dependsOnMethods = {"createProcessNRP"})
     @Description("Start 'High Level Planning' Task")
     public void startHLPTask() {
         // given
@@ -106,7 +106,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .isEqualTo("The task properly assigned.");
     }
 
-    @Test(priority = 3, description = "Create First Physical Device")
+    @Test(priority = 3, description = "Create First Physical Device", dependsOnMethods = {"startHLPTask"})
     @Description("Create First Physical Device")
     public void createFirstPhysicalDevice() {
 
@@ -142,7 +142,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
     }
 
-    @Test(priority = 4, description = "Complete 'High Level Planning' Task")
+    @Test(priority = 4, description = "Complete 'High Level Planning' Task", dependsOnMethods = {"createFirstPhysicalDevice"})
     @Description("Complete 'High Level Planning' Task")
     public void completeHLPTask() {
         // given
@@ -160,7 +160,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .contains("Task properly completed.");
     }
 
-    @Test(priority = 5, description = "Start 'Low Level Planning' Task")
+    @Test(priority = 5, description = "Start 'Low Level Planning' Task", dependsOnMethods = {"completeHLPTask"})
     @Description("Start 'Low Level Planning' Task")
     public void startLLPTask() {
         // given
@@ -183,7 +183,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
         Assertions.assertThat(perspectiveContext).contains("PLAN");
     }
 
-    @Test(priority = 6, description = "Assign File to 'Low Level Planning' Task")
+    @Test(priority = 6, description = "Assign File to 'Low Level Planning' Task", dependsOnMethods = {"startLLPTask"})
     @Description("Assign File to 'Low Level Planning' Task")
     public void assignFile() {
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
@@ -207,7 +207,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
 
     }
 
-    @Test(priority = 7, description = "Create Second Physical Device")
+    @Test(priority = 7, description = "Create Second Physical Device", dependsOnMethods = {"startLLPTask"})
     @Description("Create Second Physical Device")
     public void createSecondPhysicalDevice() {
         // DeviceWizardPage deviceWizardPage =
@@ -244,7 +244,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
     }
 
-    @Test(priority = 8, description = "Complete 'Low Level Design' Task")
+    @Test(priority = 8, description = "Complete 'Low Level Design' Task", dependsOnMethods = {"createSecondPhysicalDevice"})
     @Description("Complete 'Low Level Design' Task")
     public void completeLLPTask() {
         // given
@@ -262,7 +262,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .contains("Task properly completed.");
     }
 
-    @Test(priority = 9, description = "Start 'Ready for Integration' Task")
+    @Test(priority = 9, description = "Start 'Ready for Integration' Task", dependsOnMethods = {"completeLLPTask"})
     @Description("Start 'Ready for Integration' Task")
     public void startRFITask() {
         // given
@@ -280,7 +280,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .isEqualTo("The task properly assigned.");
     }
 
-    @Test(priority = 10, description = "Setup Integration")
+    @Test(priority = 10, description = "Setup Integration", dependsOnMethods = {"startRFITask"})
     @Description("Setup Integration")
     public void setupIntegration() {
         // given
@@ -294,12 +294,14 @@ public class CreateProcessNRPTest extends BaseTestCase {
         integrationWizard.defineIntegrationProcess(processIPName2, "2020-07-02", 1);
         DelayUtils.sleep();
         integrationWizard.clickNext();
-        integrationWizard.dragAndDrop(deviceName1, processNRPCode, processIPName1);
-        integrationWizard.dragAndDrop(deviceName2, processNRPCode, processIPName2);
+        DelayUtils.sleep(1500);
+        String processNRPCodeName = processNRPName + " (" + processNRPCode + ")";
+        integrationWizard.dragAndDrop(deviceName1, processNRPCodeName, processIPName1);
+        integrationWizard.dragAndDrop(deviceName2, processNRPCodeName, processIPName2);
         integrationWizard.clickAccept();
     }
 
-    @Test(priority = 11, description = "Get 'Integration Process' Code")
+    @Test(priority = 11, description = "Get 'Integration Process' Code", dependsOnMethods = {"setupIntegration"})
     @Description("Get 'Integration Process' Code")
     public void getIPCode() {
 
@@ -315,7 +317,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
         log.info(processIPCode1 + processIPCode2);
     }
 
-    @Test(priority = 12, description = "Complete 'Ready for Integration' Task")
+    @Test(priority = 12, description = "Complete 'Ready for Integration' Task", dependsOnMethods = {"getIPCode"})
     @Description("Complete 'Ready for Integration' Task")
     public void completeRFITask() {
         // given
@@ -333,7 +335,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .contains("Task properly completed.");
     }
 
-    @Test(priority = 13, description = "Start 'Scope Definition' Task in First Integration Process")
+    @Test(priority = 13, description = "Start 'Scope Definition' Task in First Integration Process", dependsOnMethods = {"completeRFITask"})
     @Description("Start 'Scope Definition' Task in First Integration Process")
     public void startSDTaskIP1() {
         // given
@@ -351,7 +353,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .isEqualTo("The task properly assigned.");
     }
 
-    @Test(priority = 14, description = "Complete 'Scope Definition' Task in First Integration Process")
+    @Test(priority = 14, description = "Complete 'Scope Definition' Task in First Integration Process", dependsOnMethods = {"startSDTaskIP1"})
     @Description("Complete 'Scope Definition' Task in First Integration Process")
     public void completeSDTaskIP1() {
         // given
@@ -369,7 +371,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .contains("Task properly completed.");
     }
 
-    @Test(priority = 15, description = "Start 'Implementation' Task in First Integration Process")
+    @Test(priority = 15, description = "Start 'Implementation' Task in First Integration Process", dependsOnMethods = {"completeSDTaskIP1"})
     @Description("Start 'Implementation' Task in First Integration Process")
     public void startImplementationTaskIP1() {
         // given
@@ -387,7 +389,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .isEqualTo("The task properly assigned.");
     }
 
-    @Test(priority = 16, description = "Complete 'Implementation' Task in First Integration Process")
+    @Test(priority = 16, description = "Complete 'Implementation' Task in First Integration Process", dependsOnMethods = {"startImplementationTaskIP1"})
     @Description("Complete 'Implementation' Task in First Integration Process")
     public void completeImplementationTaskIP1() {
         // given
@@ -405,7 +407,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .contains("Task properly completed.");
     }
 
-    @Test(priority = 17, description = "Start 'Acceptance' Task in First Integration Process")
+    @Test(priority = 17, description = "Start 'Acceptance' Task in First Integration Process", dependsOnMethods = {"completeImplementationTaskIP1"})
     @Description("Start 'Acceptance' Task in First Integration Process")
     public void startAcceptanceTaskIP1() {
         // given
@@ -423,7 +425,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .isEqualTo("The task properly assigned.");
     }
 
-    @Test(priority = 18, description = "Complete 'Acceptance' Task in First Integration Process")
+    @Test(priority = 18, description = "Complete 'Acceptance' Task in First Integration Process", dependsOnMethods = {"startAcceptanceTaskIP1"})
     @Description("Complete 'Acceptance' Task in First Integration Process")
     public void completeAcceptanceTaskIP1() {
         // given
@@ -441,7 +443,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .contains("Task properly completed.");
     }
 
-    @Test(priority = 19, description = "Start 'Scope Definition' Task in Second Integration Process")
+    @Test(priority = 19, description = "Start 'Scope Definition' Task in Second Integration Process", dependsOnMethods = {"completeAcceptanceTaskIP1"})
     @Description("Start 'Scope Definition' Task in Second Integration Process")
     public void startSDTaskIP2() {
         // given
@@ -459,7 +461,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .isEqualTo("The task properly assigned.");
     }
 
-    @Test(priority = 20, description = "Complete 'Scope Definition' Task in Second Integration Process")
+    @Test(priority = 20, description = "Complete 'Scope Definition' Task in Second Integration Process", dependsOnMethods = {"startSDTaskIP2"})
     @Description("Complete 'Scope Definition' Task in Second Integration Process")
     public void completeSDTaskIP2() {
         // given
@@ -477,7 +479,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .contains("Task properly completed.");
     }
 
-    @Test(priority = 21, description = "Start 'Implementation' Task in Second Integration Process")
+    @Test(priority = 21, description = "Start 'Implementation' Task in Second Integration Process", dependsOnMethods = {"completeSDTaskIP2"})
     @Description("Start 'Implementation' Task in Second Integration Process")
     public void startImplementationTaskIP2() {
         // given
@@ -495,7 +497,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .isEqualTo("The task properly assigned.");
     }
 
-    @Test(priority = 22, description = "Complete 'Implementation' Task in Second Integration Process")
+    @Test(priority = 22, description = "Complete 'Implementation' Task in Second Integration Process", dependsOnMethods = {"startImplementationTaskIP2"})
     @Description("Complete 'Implementation' Task in Second Integration Process")
     public void completeImplementationTaskIP2() {
         // given
@@ -513,7 +515,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .contains("Task properly completed.");
     }
 
-    @Test(priority = 23, description = "Start 'Acceptance' Task in Second Integration Process")
+    @Test(priority = 23, description = "Start 'Acceptance' Task in Second Integration Process", dependsOnMethods = {"completeImplementationTaskIP2"})
     @Description("Start 'Acceptance' Task in Second Integration Process")
     public void startAcceptanceTaskIP2() {
         // given
@@ -531,7 +533,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .isEqualTo("The task properly assigned.");
     }
 
-    @Test(priority = 24, description = "Complete 'Acceptance' Task in Second Integration Process")
+    @Test(priority = 24, description = "Complete 'Acceptance' Task in Second Integration Process", dependsOnMethods = {"startAcceptanceTaskIP2"})
     @Description("Complete 'Acceptance' Task in Second Integration Process")
     public void completeAcceptanceTaskIP2() {
         // given
@@ -549,7 +551,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .contains("Task properly completed.");
     }
 
-    @Test(priority = 25, description = "Start 'Verification' Task in NRP")
+    @Test(priority = 25, description = "Start 'Verification' Task in NRP", dependsOnMethods = {"completeAcceptanceTaskIP2"})
     @Description("Start 'Verification' Task in NRP")
     public void startVerificationTask() {
         // given
@@ -567,7 +569,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .isEqualTo("The task properly assigned.");
     }
 
-    @Test(priority = 26, description = "Complete 'Verification' Task")
+    @Test(priority = 26, description = "Complete 'Verification' Task", dependsOnMethods = {"startVerificationTask"})
     @Description("Complete 'Verification' Task")
     public void completeVerificationTask() {
         // given
@@ -585,7 +587,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .contains("Task properly completed.");
     }
 
-    @Test(priority = 27, description = "Check Process status")
+    @Test(priority = 27, description = "Check Process status", dependsOnMethods = {"completeVerificationTask"})
     @Description("Check Process status")
     public void checkProcessStatus() {
         // given
@@ -604,7 +606,8 @@ public class CreateProcessNRPTest extends BaseTestCase {
     @AfterClass()
     public void switchToLivePerspective() {
         PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
-        perspectiveChooser.setLivePerspective();
+        if (!perspectiveChooser.getCurrentPerspective().equalsIgnoreCase("live"))
+            perspectiveChooser.setLivePerspective();
     }
 
 }

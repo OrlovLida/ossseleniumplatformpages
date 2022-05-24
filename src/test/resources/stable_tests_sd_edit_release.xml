@@ -1,0 +1,25 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="EditRelease and Left Side Menu tests" thread-count="2" parallel="tests" verbose="1">
+    <test name="EditReadOnlyMode">
+        <parameter name="MOIdentifier" value="TEST_MO"/>
+        <parameter name="ttAssignee" value="ca_kodrobinska"/>
+        <classes>
+            <class name="com.oss.servicedesk.EditReleaseFunctionalityTest"/>
+        </classes>
+    </test>
+    <test name="LeftSideMenuTests - Incident Management">
+        <classes>
+            <class name="com.oss.servicedesk.leftsidemenu.LeftSideMenuTicketTest"/>
+        </classes>
+    </test>
+    <test name="LeftSideMenuTests - Problem Management">
+        <classes>
+            <class name="com.oss.servicedesk.leftsidemenu.LeftSideMenuProblemTest"/>
+        </classes>
+    </test>
+    <test name="LeftSideMenuTests - Change Management">
+        <classes>
+            <class name="com.oss.servicedesk.leftsidemenu.LeftSideMenuChangeTest"/>
+        </classes>
+    </test>
+</suite>

@@ -7,6 +7,7 @@
 package com.oss.nfv.manualOnboardNetworkService;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.assertj.core.util.Lists;
 
@@ -15,6 +16,7 @@ import com.comarch.oss.logical.function.api.dto.LogicalLocationDTO;
 import com.comarch.oss.logical.function.api.dto.ModelIdentificationDTO;
 import com.comarch.oss.logical.function.v2.api.dto.LogicalFunctionBulkDTO;
 import com.comarch.oss.logical.function.v2.api.dto.LogicalFunctionSyncDTO;
+import com.comarch.oss.resourcecatalog.tmf.api.dto.ResourceSpecCharacteristicDTO;
 import com.comarch.oss.resourcecatalog.tmf.api.dto.ResourceSpecificationCreationDTO;
 import com.comarch.oss.resourcecatalog.tmf.api.dto.ResourceSpecificationCreationDTO.TypeEnum;
 import com.oss.nfv.common.ResourceSpecification;
@@ -30,7 +32,13 @@ import static com.oss.nfv.manualOnboardNetworkService.ManualOnboardNetworkServic
 import static com.oss.nfv.manualOnboardNetworkService.ManualOnboardNetworkServiceConstants.NS_PACKAGE_BASE_TYPE;
 import static com.oss.nfv.manualOnboardNetworkService.ManualOnboardNetworkServiceConstants.NS_PACKAGE_DESCRIPTION;
 import static com.oss.nfv.manualOnboardNetworkService.ManualOnboardNetworkServiceConstants.NS_PACKAGE_IDENTIFIER;
+import static com.oss.nfv.manualOnboardNetworkService.ManualOnboardNetworkServiceConstants.NS_PACKAGE_PATH_CHARACTERISTIC_TYPE;
+import static com.oss.nfv.manualOnboardNetworkService.ManualOnboardNetworkServiceConstants.NS_PACKAGE_PATH_CHAR_NAME;
+import static com.oss.nfv.manualOnboardNetworkService.ManualOnboardNetworkServiceConstants.NS_PACKAGE_PATH_CHAR_VALUE;
 import static com.oss.nfv.manualOnboardNetworkService.ManualOnboardNetworkServiceConstants.NS_PACKAGE_VERSION;
+import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.VNFPKG_PATH_CHARACTERISTIC_DEFAULT_VALUE;
+import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.VNFPKG_PATH_CHARACTERISTIC_NAME;
+import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.VNFPKG_PATH_CHARACTERISTIC_TYPE;
 
 /**
  * @author Marcin Kozioł
@@ -50,9 +58,10 @@ public class ManualOnboardNetworkServiceDTOBuilder {
                 .baseType(NS_PACKAGE_BASE_TYPE)
                 .instanceType(NS_PACKAGE_BASE_TYPE)
                 .inventoryType(ResourceSpecification.LOGICAL_FUNCTION.getInventoryType())
-                .type(TypeEnum.TEMPLATE)
+                .type(TypeEnum.R)
                 .version(NS_PACKAGE_VERSION)
                 .description(NS_PACKAGE_DESCRIPTION)
+                .addResourceSpecCharacteristic(getPathCharacteristic())
                 .build();
     }
 
@@ -90,6 +99,18 @@ public class ManualOnboardNetworkServiceDTOBuilder {
         return ModelIdentificationDTO.builder()
                 .identifier(ERICSSON_NFVO_IDENTIFIER)
                 .resourceSpecification(true)
+                .build();
+    }
+
+    private static ResourceSpecCharacteristicDTO getPathCharacteristic() {
+        return ResourceSpecCharacteristicDTO.builder()
+                .name(NS_PACKAGE_PATH_CHAR_NAME)
+                .defaultValue(NS_PACKAGE_PATH_CHAR_VALUE)
+                .isEnum(false)
+                .isUnique(false)
+                .mandatory(false)
+                .isBusinessAdditionalAttr(true)
+                .type(NS_PACKAGE_PATH_CHARACTERISTIC_TYPE)
                 .build();
     }
 

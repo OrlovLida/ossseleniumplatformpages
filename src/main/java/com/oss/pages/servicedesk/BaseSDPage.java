@@ -25,7 +25,7 @@ import static com.oss.pages.servicedesk.issue.IssueDetailsPage.DETAILS_PAGE_URL_
 
 public abstract class BaseSDPage extends BasePage {
 
-    private static final Logger log = LoggerFactory.getLogger(BaseSDPage.class);
+    protected static final Logger log = LoggerFactory.getLogger(BaseSDPage.class);
 
     private static final String CREATE_DATE_FILTER_DATE_PATTERN = "yyyy-MM-dd HH:mm:ss";
     private static final String DATE_FORMAT = "yyMMddHHmmSS";
@@ -100,6 +100,13 @@ public abstract class BaseSDPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         ButtonContainer.create(driver, wait).callActionById(contextActionLabel);
         log.info("Clicking Context action {}", contextActionLabel);
+    }
+
+    @Step("Check if Context action {contextActionID} is present")
+    public boolean isActionPresent(String contextActionID) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Checking if Context action {} is present", contextActionID);
+        return ButtonContainer.create(driver, wait).isElementPresent(contextActionID);
     }
 
     public void clickExportFromTable(String tableId) {
