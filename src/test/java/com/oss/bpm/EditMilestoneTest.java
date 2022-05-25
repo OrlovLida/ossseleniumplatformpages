@@ -231,7 +231,7 @@ public class EditMilestoneTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         milestoneViewPage.changeUser(BPM_ADMIN_USER_LOGIN, BPM_ADMIN_USER_PASSWORD);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        milestoneViewPage.selectMilestone("Milestone 1.405");
+        milestoneViewPage.selectMilestone(milestoneName);
         milestoneViewPage.chooseMilestoneAttributesConfiguration("bpm_selenium");
         String modifyDate = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_DATE);
         String modifyUser = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_USER);
