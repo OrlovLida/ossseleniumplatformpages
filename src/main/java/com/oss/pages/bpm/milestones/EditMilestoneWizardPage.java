@@ -44,46 +44,43 @@ public class EditMilestoneWizardPage extends BasePage {
         EditableList milestoneList = EditableList.createById(driver, wait, EDIT_MILESTONE_LIST);
         EditableList.Row editMilestoneRow = milestoneList.getVisibleRows().get(0);
         DelayUtils.sleep(2000);
-        if (milestone.getName().isPresent()) {
+
+        milestone.getName().ifPresent(name -> {
             if (!editMilestoneRow.isAttributeEditable(BPM_MILESTONE_NAME)) {
                 throw new RuntimeException("Name is not editable. You need Admin permission");
             }
-            editMilestoneRow.setValue(milestone.getName().get(), BPM_MILESTONE_NAME, BPM_MILESTONE_NAME_INPUT,
+            editMilestoneRow.setValue(name, BPM_MILESTONE_NAME, BPM_MILESTONE_NAME_INPUT,
                     Input.ComponentType.TEXT_FIELD);
-        }
-        if (milestone.getDueDate().isPresent()) {
-            editMilestoneRow.setValue(milestone.getDueDate().get(), BPM_MILESTONE_DUE_DATE, BPM_MILESTONE_DUE_DATE_INPUT,
-                    Input.ComponentType.DATE);
-        }
-        if (milestone.getLeadTime().isPresent()) {
-            editMilestoneRow.setValue(milestone.getLeadTime().get(), BPM_MILESTONE_LEAD_TIME, BPM_MILESTONE_LEAD_TIME_INPUT,
-                    Input.ComponentType.NUMBER_FIELD);
-        }
-        if (milestone.getDescription().isPresent()) {
-            editMilestoneRow.setValue(milestone.getDescription().get(), BPM_MILESTONE_DESCRIPTION,
-                    BPM_MILESTONE_DESCRIPTION_INPUT,
-                    Input.ComponentType.TEXT_FIELD);
-        }
-        if (milestone.getRelatedTask().isPresent()) {
-            if (milestone.getRelatedTask().get().isEmpty()) {
+        });
+
+        milestone.getDueDate().ifPresent(dueDate -> editMilestoneRow.setValue(dueDate, BPM_MILESTONE_DUE_DATE, BPM_MILESTONE_DUE_DATE_INPUT,
+                Input.ComponentType.DATE));
+
+        milestone.getLeadTime().ifPresent(leadTime -> editMilestoneRow.setValue(leadTime, BPM_MILESTONE_LEAD_TIME, BPM_MILESTONE_LEAD_TIME_INPUT,
+                Input.ComponentType.NUMBER_FIELD));
+
+        milestone.getDescription().ifPresent(description -> editMilestoneRow.setValue(description, BPM_MILESTONE_DESCRIPTION,
+                BPM_MILESTONE_DESCRIPTION_INPUT,
+                Input.ComponentType.TEXT_FIELD));
+
+        milestone.getRelatedTask().ifPresent(relatedTask -> {
+            if (relatedTask.isEmpty()) {
                 editMilestoneRow.clearValue(BPM_MILESTONE_RELATED_TASK, BPM_MILESTONE_RELATED_TASK_INPUT, Input.ComponentType.COMBOBOX);
             } else {
-                editMilestoneRow.setValue(milestone.getRelatedTask().get(), BPM_MILESTONE_RELATED_TASK,
+                editMilestoneRow.setValue(relatedTask, BPM_MILESTONE_RELATED_TASK,
                         BPM_MILESTONE_RELATED_TASK_INPUT,
                         Input.ComponentType.COMBOBOX);
             }
-        }
-        if (milestone.getIsManualCompletion().isPresent()) {
-            editMilestoneRow.setValue(milestone.getIsManualCompletion().get(), BPM_MILESTONE_IS_MANUAL_COMPLETION,
-                    BPM_MILESTONE_MANUAL_COMPLETION_INPUT,
-                    Input.ComponentType.CHECKBOX);
-        }
+        });
+
+        milestone.getIsManualCompletion().ifPresent(isManualCompletion -> editMilestoneRow.setValue(isManualCompletion, BPM_MILESTONE_IS_MANUAL_COMPLETION,
+                BPM_MILESTONE_MANUAL_COMPLETION_INPUT,
+                Input.ComponentType.CHECKBOX));
+
         Milestone editedMilestone = getMilestoneFromRow(milestoneList, 0);
         if (driver.getPageSource().contains("milestones-edit_delay-reason")) {
-            {
-                editWizard.setComponentValue("milestones-edit_delay-reason", "Selenium Test - Delay reason",
-                        Input.ComponentType.TEXT_FIELD);
-            }
+            editWizard.setComponentValue("milestones-edit_delay-reason", "Selenium Test - Delay reason",
+                    Input.ComponentType.TEXT_FIELD);
         }
         editWizard.clickButtonById(ACCEPT_BUTTON);
         return editedMilestone;

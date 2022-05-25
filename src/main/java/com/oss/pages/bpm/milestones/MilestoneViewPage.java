@@ -27,7 +27,6 @@ public class MilestoneViewPage extends BasePage {
     }
 
     private static final String MILESTONE_TABLE_ID = "bpm_milestones_view_milestonesTableWidget";
-    private static final String EDIT_MILESTONE_BUTTON = "editMilestonesContextAction";
     private static final String SETTINGS_ID = "frameworkCustomButtonsSecondaryGroup";
     private static final String CHOOSE_CONFIGURATION_ID = "chooseConfiguration";
 
