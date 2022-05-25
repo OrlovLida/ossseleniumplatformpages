@@ -1,4 +1,4 @@
-package com.oss.pages.acd.homeView;
+package com.oss.pages.acd.homeview;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -28,7 +28,6 @@ public class HomeViewPage extends BaseACDPage {
 
     public HomeViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
-
         table = OldTable.createById(driver, wait, HOME_ISSUE_TABLE_ID);
     }
 

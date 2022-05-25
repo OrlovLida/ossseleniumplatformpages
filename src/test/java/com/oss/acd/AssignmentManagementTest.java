@@ -8,7 +8,7 @@ import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.pages.acd.BaseACDPage;
-import com.oss.pages.acd.settingsView.AssignmentManagementPage;
+import com.oss.pages.acd.settingsview.AssignmentManagementPage;
 
 import io.qameta.allure.Description;
 

@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 import com.oss.BaseTestCase;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.acd.BaseACDPage;
-import com.oss.pages.acd.homeView.HomeViewPage;
+import com.oss.pages.acd.homeview.HomeViewPage;
 import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;

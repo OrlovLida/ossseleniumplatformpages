@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.acd.scenarioSummaryView.AbgadScenarioSummaryViewPage;
+import com.oss.pages.acd.scenariosummaryview.AbgadScenarioSummaryViewPage;
 import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;

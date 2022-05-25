@@ -7,7 +7,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
-import com.oss.pages.acd.settingsView.SubsystemsHealthPage;
+import com.oss.pages.acd.settingsview.SubsystemsHealthPage;
 
 import io.qameta.allure.Description;
 

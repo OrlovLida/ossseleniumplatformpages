@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.pages.acd.BaseACDPage;
-import com.oss.pages.acd.settingsView.ArSettingsPage;
+import com.oss.pages.acd.settingsview.ArSettingsPage;
 import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
