@@ -5,16 +5,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.oss.framework.components.icons.StatusIcon;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.prompts.ConfirmationBox;
-import com.oss.framework.components.prompts.ConfirmationBoxInterface;
-import com.oss.framework.utils.CSSUtils;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
-import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.acd.BaseACDPage;
 
@@ -24,11 +20,10 @@ public class ArSettingsPage extends BaseACDPage {
 
     private static final Logger log = LoggerFactory.getLogger(ArSettingsPage.class);
 
-    private static final String ADD_ACTION_TEMPLATE_BUTTON = "undefined-1";
-    private static final String REMOVE_ACTION_TEMPLATE_BUTTON = "undefined-0";
+    private static final String ADD_ACTION_TEMPLATE_BUTTON = "actionTemplateButtons-1";
+    private static final String REMOVE_ACTION_TEMPLATE_BUTTON = "actionTemplateButtons-0";
     private static final String ACTION_TEMPLATE_TABLE_ID = "actionTemplateTable";
     private static final String DELETE_LABEL = "Delete";
-    private static final String TAB_ID = "kaSettingsTabsContainer";
     private final OldTable table;
 
     public ArSettingsPage(WebDriver driver, WebDriverWait wait) {
@@ -62,26 +57,20 @@ public class ArSettingsPage extends BaseACDPage {
         log.info("Setting value in ComboBox: {}", value);
     }
 
-    @Step("I set value in InputField")
-    public void setValueInInputField(String fieldName, String value) {
-        ComponentFactory.create(fieldName, Input.ComponentType.TEXT_FIELD, driver, wait).setSingleStringValue(value);
-        DelayUtils.sleep();
-    }
-
     @Step("I click Save button")
     public void clickSaveButton() {
         Button.createByLabel(driver, "Save").click();
     }
 
     @Step("I search for Action Template")
-    public Boolean searchingThroughActionTemplates(String comboBoxId, String value) {
+    public Boolean searchingThroughActionTemplates(String multiSearchFIeldId, String value) {
         DelayUtils.waitForPageToLoad(driver, wait);
 
         if (!isDataInActionTemplatesTable()) {
             log.info("Action Template table has no data");
             return false;
         }
-        ComponentFactory.create(comboBoxId, Input.ComponentType.MULTI_SEARCH_FIELD, driver, wait).setSingleStringValue(value);
+        ComponentFactory.create(multiSearchFIeldId, Input.ComponentType.MULTI_SEARCH_FIELD, driver, wait).setSingleStringValue(value);
         log.info("I am searching for created Action Template");
         return true;
     }
@@ -99,6 +88,15 @@ public class ArSettingsPage extends BaseACDPage {
         }
         log.info("Action Id of newly created object is = {} ", firstActionIdInTable);
         return true;
+    }
+
+    @Step("I Clear multiSearchBox")
+    public void clearMultiSearchBox(String multiSearchFieldId) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Clearing multiSearchBox");
+        ComponentFactory.create(multiSearchFieldId, Input.ComponentType.MULTI_SEARCH_FIELD, driver, wait)
+                .clear();
+        log.info("MultiSearchBox is cleared");
     }
 
     @Step("I check if there is data in Action Template table")
