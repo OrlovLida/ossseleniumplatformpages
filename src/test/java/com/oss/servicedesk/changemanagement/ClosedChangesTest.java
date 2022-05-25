@@ -11,6 +11,7 @@ import com.oss.pages.platform.NotificationWrapperPage;
 import com.oss.pages.servicedesk.changemanagement.ChangeDashboardPage;
 import com.oss.pages.servicedesk.changemanagement.ClosedChangesPage;
 import com.oss.pages.servicedesk.issue.IssueDetailsPage;
+import com.oss.pages.servicedesk.issue.tabs.OverviewTab;
 import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
 
 import io.qameta.allure.Description;
@@ -25,6 +26,7 @@ public class ClosedChangesTest extends BaseTestCase {
     private ChangeDashboardPage changeDashboardPage;
     private SDWizardPage sdWizardPage;
     private IssueDetailsPage issueDetailsPage;
+    private OverviewTab changeOverviewTab;
     private ClosedChangesPage closedChangesPage;
     private NotificationWrapperPage notificationWrapperPage;
     private String changeID;
@@ -51,12 +53,13 @@ public class ClosedChangesTest extends BaseTestCase {
         sdWizardPage.createChange(changeRequester, changeAssignee, CHANGE_DESCRIPTION);
         changeID = changeDashboardPage.getIdFromMessage();
         issueDetailsPage = changeDashboardPage.openIssueDetailsView(changeID, BASIC_URL, CHANGE_ISSUE_TYPE);
-        issueDetailsPage.changeIssueStatus(STATUS_READY_FOR_APPROVAL);
-        issueDetailsPage.changeIssueStatus(STATUS_APPROVED);
-        issueDetailsPage.changeIssueStatus(STATUS_IMPLEMENTED);
-        issueDetailsPage.changeIssueStatus(STATUS_VERIFIED);
-        issueDetailsPage.changeIssueStatus(STATUS_CLOSED);
-        Assert.assertEquals(issueDetailsPage.checkIssueStatus(), STATUS_CLOSED);
+        changeOverviewTab = issueDetailsPage.selectOverviewTab(CHANGE_ISSUE_TYPE);
+        changeOverviewTab.changeIssueStatus(STATUS_READY_FOR_APPROVAL);
+        changeOverviewTab.changeIssueStatus(STATUS_APPROVED);
+        changeOverviewTab.changeIssueStatus(STATUS_IMPLEMENTED);
+        changeOverviewTab.changeIssueStatus(STATUS_VERIFIED);
+        changeOverviewTab.changeIssueStatus(STATUS_CLOSED);
+        Assert.assertEquals(changeOverviewTab.checkIssueStatus(), STATUS_CLOSED);
     }
 
     @Test(priority = 2, testName = "Check Closed Changes View", description = "Refresh, search and check if change is shown in the closed changes table")
