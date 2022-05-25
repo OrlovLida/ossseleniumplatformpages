@@ -14,6 +14,7 @@ import com.oss.framework.widgets.list.CommonList;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.servicedesk.BaseSDPage;
+import com.oss.pages.servicedesk.issue.tabs.AffectedTab;
 import com.oss.pages.servicedesk.issue.tabs.AttachmentsTab;
 import com.oss.pages.servicedesk.issue.tabs.DescriptionTab;
 import com.oss.pages.servicedesk.issue.tabs.ExternalTab;
@@ -63,6 +64,7 @@ public class IssueDetailsPage extends BaseSDPage {
     private static final String PROBLEM_SOLUTION_TAB_ID = "_problemSolutionTab";
     private static final String TASK_TAB_WIDGET_ID = "_taskWindow";
     private static final String TASK_TAB_ID = "_tasksWindow";
+    private static final String AFFECTED_TAB_ID = "_affectedServicesTab";
 
     public IssueDetailsPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -185,6 +187,12 @@ public class IssueDetailsPage extends BaseSDPage {
         selectTabFromDetailsWindow(ROLES_TAB_ID);
         log.info("Selecting Roles Tab");
         return new RolesTab(driver, wait);
+    }
+
+    public AffectedTab selectAffectedTab() {
+        selectTabFromTablesWindow(AFFECTED_TAB_ID);
+        log.info("Selecting Affected Tab");
+        return new AffectedTab(driver, wait);
     }
 
     @Step("Skipping all actions on checklist")
