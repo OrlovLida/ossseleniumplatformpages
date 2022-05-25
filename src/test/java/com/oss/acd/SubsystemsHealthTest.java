@@ -34,7 +34,7 @@ public class SubsystemsHealthTest extends BaseTestCase {
     @Description("Check ASD Subsystems Health")
     public void checkASDSubsystemsHealth() {
         log.info("I go to ASD Settings View");
-        subsystemsHealthPage.goToSettingsView(driver, ASD_SETTINGS_VIEW_SUFFIX_URL, BASIC_URL);
+        SubsystemsHealthPage.goToSettingsView(driver, ASD_SETTINGS_VIEW_SUFFIX_URL, BASIC_URL);
         log.info("I check ASD Subsystems Health");
         Assert.assertTrue(subsystemsHealthPage.isSubsystemUpAndRunning());
     }
@@ -43,7 +43,7 @@ public class SubsystemsHealthTest extends BaseTestCase {
     @Description("Check ABGAD Subsystems Health")
     public void checkABGADSubsystemsHealth() {
         log.info("I go to ABGAD Settings View");
-        subsystemsHealthPage.goToSettingsView(driver, ABGAD_SETTINGS_VIEW_SUFFIX_URL, BASIC_URL);
+        SubsystemsHealthPage.goToSettingsView(driver, ABGAD_SETTINGS_VIEW_SUFFIX_URL, BASIC_URL);
         subsystemsHealthPage.goToSubsystemsHealthTab(ABGAD_SETTINGS_TAB_ID, SUBSYSTEMS_HEALTH_TAB);
         log.info("I check ABGAD Subsystems Health");
         Assert.assertTrue(subsystemsHealthPage.isSubsystemUpAndRunning());
@@ -53,7 +53,7 @@ public class SubsystemsHealthTest extends BaseTestCase {
     @Description("Check APD Subsystems Health")
     public void checkAPDSubsystemsHealth() {
         log.info("I go to APD Settings View");
-        subsystemsHealthPage.goToSettingsView(driver, APD_SETTINGS_VIEW_SUFFIX_URL, BASIC_URL);
+        SubsystemsHealthPage.goToSettingsView(driver, APD_SETTINGS_VIEW_SUFFIX_URL, BASIC_URL);
         log.info("I check APD Subsystems Health");
         Assert.assertTrue(subsystemsHealthPage.isSubsystemUpAndRunning());
     }
@@ -62,7 +62,7 @@ public class SubsystemsHealthTest extends BaseTestCase {
     @Description("Check AR Subsystems Health")
     public void checkARSubsystemsHealth() {
         log.info("I go to AR Settings View");
-        subsystemsHealthPage.goToSettingsView(driver, AR_SETTINGS_VIEW_SUFFIX_URL, BASIC_URL);
+        SubsystemsHealthPage.goToSettingsView(driver, AR_SETTINGS_VIEW_SUFFIX_URL, BASIC_URL);
         subsystemsHealthPage.goToSubsystemsHealthTab(AR_SETTINGS_TAB_ID, SUBSYSTEMS_HEALTH_TAB);
         log.info("I check AR Subsystems Health");
         Assert.assertTrue(subsystemsHealthPage.isSubsystemUpAndRunning());
