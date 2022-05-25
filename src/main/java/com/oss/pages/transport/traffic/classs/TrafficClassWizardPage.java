@@ -2,6 +2,7 @@ package com.oss.pages.transport.traffic.classs;
 
 import org.openqa.selenium.WebDriver;
 
+import com.oss.framework.components.data.Data;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
@@ -88,7 +89,8 @@ public abstract class TrafficClassWizardPage extends BasePage {
 
     @Step("Set Input interface to {inputInterface}")
     public void setInputInterface(String inputInterface) {
-        getWizard().setComponentValue(INPUT_INTERFACE_FIELD_ID, inputInterface, Input.ComponentType.COMBOBOX);
+        Input inputInterfaceComponent = getEmptyComboBoxComponent(INPUT_INTERFACE_FIELD_ID);
+        inputInterfaceComponent.setValueContains(Data.createSingleData(inputInterface));
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
@@ -110,5 +112,11 @@ public abstract class TrafficClassWizardPage extends BasePage {
     @Step("Set PIR Egress to {pirEgress}")
     public void setPirEgress(String pirEgress) {
         getWizard().setComponentValue(PIR_EGRESS_FIELD_ID, pirEgress, Input.ComponentType.TEXT_FIELD);
+    }
+
+    private Input getEmptyComboBoxComponent(String componentId) {
+        Input component = getWizard().getComponent(componentId, Input.ComponentType.COMBOBOX);
+        component.clear();
+        return component;
     }
 }
