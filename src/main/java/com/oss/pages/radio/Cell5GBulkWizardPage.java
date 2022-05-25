@@ -10,10 +10,6 @@ import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.CHECKBOX;
-import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
-import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
-
 public class Cell5GBulkWizardPage extends BasePage {
     private static final String USE_FIRST_AVAILABLE_ID = "useFirstAvailableId";
     private static final String USE_SAME_LOCATION_AS_BASE_STATION = "sameLocationAsBS";
@@ -68,10 +64,10 @@ public class Cell5GBulkWizardPage extends BasePage {
         int rowNumber = amountOfCells;
         for (String cellName : cellNames) {
             Row row = EditableList.createById(driver, wait, CELLS_LIST_ID).getRow(rowNumber - 1);
-            row.setValue(cellName, COLUMN_NAME, NAME, TEXT_FIELD);
-            row.setValue(String.valueOf(localCellsId[rowNumber - 1]), COLUMN_LOCAL_CELL_ID, LOCAL_CELL_ID, TEXT_FIELD);
-            row.setValue("5", COLUMN_PCI, PCI, TEXT_FIELD);
-            row.setValue("10", COLUMN_RSI, RSI, TEXT_FIELD);
+            row.setValue(cellName, COLUMN_NAME, NAME);
+            row.setValue(String.valueOf(localCellsId[rowNumber - 1]), COLUMN_LOCAL_CELL_ID, LOCAL_CELL_ID);
+            row.setValue("5", COLUMN_PCI, PCI);
+            row.setValue("10", COLUMN_RSI, RSI);
             rowNumber--;
         }
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -80,51 +76,51 @@ public class Cell5GBulkWizardPage extends BasePage {
 
     @Step("Set Amount of cells")
     public void setCellsAmount(String cellsAmount) {
-        wizard.setComponentValue(CELLS_AMOUNT, cellsAmount, TEXT_FIELD);
+        wizard.setComponentValue(CELLS_AMOUNT, cellsAmount);
     }
 
     @Step("Set Carrier")
     public void setCarrier(String carrier) {
-        wizard.setComponentValue(CARRIER, carrier, COMBOBOX);
+        wizard.setComponentValue(CARRIER, carrier);
     }
 
     @Step("Set BandwidthUL")
     public void setBandwidthUl(String bandwidthUl) {
-        wizard.setComponentValue(BANDWIDTH_UL, bandwidthUl, TEXT_FIELD);
+        wizard.setComponentValue(BANDWIDTH_UL, bandwidthUl);
     }
 
     @Step("Set BandwidthDL")
     public void setBandwidthDl(String bandwidthDl) {
-        wizard.setComponentValue(BANDWIDTH_DL, bandwidthDl, TEXT_FIELD);
+        wizard.setComponentValue(BANDWIDTH_DL, bandwidthDl);
     }
 
     @Step("Set TX Power")
     public void setTxPower(String txPower) {
-        wizard.setComponentValue(TX_POWER, txPower, TEXT_FIELD);
+        wizard.setComponentValue(TX_POWER, txPower);
     }
 
     @Step("Set TAC")
     public void setTac(String tac) {
-        wizard.setComponentValue(TAC, tac, TEXT_FIELD);
+        wizard.setComponentValue(TAC, tac);
     }
 
     @Step("Set MIMO")
     public void setMimo(String mimo) {
-        wizard.setComponentValue(MIMO, mimo, COMBOBOX);
+        wizard.setComponentValue(MIMO, mimo);
     }
 
     @Step("Set TX Direction")
     public void setTxDirection(String txDirection) {
-        wizard.setComponentValue(TX_DIRECTION, txDirection, COMBOBOX);
+        wizard.setComponentValue(TX_DIRECTION, txDirection);
     }
 
     @Step("Click Same Location as Base Station checkbox")
     public void setSameLocation() {
-        wizard.setComponentValue(USE_SAME_LOCATION_AS_BASE_STATION, "true", CHECKBOX);
+        wizard.setComponentValue(USE_SAME_LOCATION_AS_BASE_STATION, "true");
     }
 
     @Step("Click Set First Available ID")
     public void setFirstAvailableId() {
-        wizard.setComponentValue(USE_FIRST_AVAILABLE_ID, "true", CHECKBOX);
+        wizard.setComponentValue(USE_FIRST_AVAILABLE_ID, "true");
     }
 }
