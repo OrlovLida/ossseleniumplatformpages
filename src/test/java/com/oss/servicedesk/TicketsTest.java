@@ -14,6 +14,7 @@ import com.oss.pages.servicedesk.BaseSearchPage;
 import com.oss.pages.servicedesk.issue.IssueDetailsPage;
 import com.oss.pages.servicedesk.issue.MoreDetailsPage;
 import com.oss.pages.servicedesk.issue.RemainderForm;
+import com.oss.pages.servicedesk.issue.tabs.AffectedTab;
 import com.oss.pages.servicedesk.issue.tabs.AttachmentsTab;
 import com.oss.pages.servicedesk.issue.tabs.ExternalTab;
 import com.oss.pages.servicedesk.issue.tabs.MessagesTab;
@@ -58,6 +59,7 @@ public class TicketsTest extends BaseTestCase {
     private RelatedTicketsTab relatedTicketsTab;
     private ParticipantsTab participantsTab;
     private RelatedProblemsTab relatedProblemsTab;
+    private AffectedTab affectedTab;
     private String ticketID;
 
     private static final String TT_DESCRIPTION = "TestSelenium";
@@ -581,6 +583,20 @@ public class TicketsTest extends BaseTestCase {
         Assert.assertFalse(mostImportantInfoTab.isMessagesTabEmpty());
         Assert.assertEquals(mostImportantInfoTab.getMessageText(0), NOTIFICATION_MESSAGE_COMMENT_IMPORTANT);
         Assert.assertEquals(mostImportantInfoTab.getBadgeTextFromMessage(0, 1), "IMPORTANT");
+    }
+
+    @Parameters({"serviceMOIdentifier"})
+    @Test(priority = 33, testName = "Add Affected", description = "Add Affected Service to the Ticket")
+    @Description("Add Affected Service to the Ticket")
+    public void addAffected(
+            @Optional("TEST_MO_ABS_SRV") String serviceMOIdentifier
+    ) {
+        issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
+        affectedTab = issueDetailsPage.selectAffectedTab();
+        int initialServiceCount = affectedTab.countServicesInTable();
+        affectedTab.addServiceToTable(serviceMOIdentifier);
+
+        Assert.assertEquals(affectedTab.countServicesInTable(), initialServiceCount + 1);
     }
 }
 

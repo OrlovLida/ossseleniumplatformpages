@@ -12,6 +12,7 @@ import org.testng.annotations.Test;
 import com.oss.BaseTestCase;
 import com.oss.pages.servicedesk.changemanagement.ChangeDashboardPage;
 import com.oss.pages.servicedesk.issue.IssueDetailsPage;
+import com.oss.pages.servicedesk.issue.tabs.AffectedTab;
 import com.oss.pages.servicedesk.issue.tabs.AttachmentsTab;
 import com.oss.pages.servicedesk.issue.tabs.DescriptionTab;
 import com.oss.pages.servicedesk.issue.tabs.MessagesTab;
@@ -45,6 +46,7 @@ public class ChangesTest extends BaseTestCase {
     private ParticipantsTab participantsTab;
     private AttachmentsTab attachmentsTab;
     private DescriptionTab descriptionTab;
+    private AffectedTab affectedTab;
     private String changeID;
 
     private static final String RISK_ASSESSMENT_ID = "TT_WIZARD_INPUT_RISK_ASSESSMENT_LABEL";
@@ -63,6 +65,7 @@ public class ChangesTest extends BaseTestCase {
     private static final String PARTICIPANT_SURNAME = LocalDateTime.now().toString();
     private static final String PARTICIPANT_ROLE = "Contact";
     private static final String TABS_WIDGET_ID = "_tablesWindow";
+    private static final String COMBOBOX_LINK_CHANGE_ID = "linkChange";
 
     @BeforeMethod
     public void goToChangeDashboardOrIssue(Method method) {
@@ -171,9 +174,7 @@ public class ChangesTest extends BaseTestCase {
             @Optional("35") String RelatedChangeID
     ) {
         relatedChangesTab = issueDetailsPage.selectRelatedChangesTab();
-        sdWizardPage = relatedChangesTab.openLinkIssueWizard();
-        sdWizardPage.insertValueToMultiSearchComponent(RelatedChangeID, "linkChange");
-        sdWizardPage.clickLinkButton();
+        relatedChangesTab.linkIssue(RelatedChangeID, COMBOBOX_LINK_CHANGE_ID);
 
         Assert.assertEquals(relatedChangesTab.checkRelatedIssueId(0), RelatedChangeID);
     }
@@ -343,5 +344,18 @@ public class ChangesTest extends BaseTestCase {
         attachmentsTab.clickDeleteAttachment();
 
         Assert.assertTrue(attachmentsTab.isAttachmentListEmpty());
+    }
+
+    @Parameters({"serviceMOIdentifier"})
+    @Test(priority = 30, testName = "Add Affected", description = "Add Affected Service to the Change")
+    @Description("Add Affected Service to the Change")
+    public void addAffected(
+            @Optional("TEST_MO_ABS_SRV") String serviceMOIdentifier
+    ) {
+        affectedTab = issueDetailsPage.selectAffectedTab();
+        int initialServiceCount = affectedTab.countServicesInTable();
+        affectedTab.addServiceToTable(serviceMOIdentifier);
+
+        Assert.assertEquals(affectedTab.countServicesInTable(), initialServiceCount + 1);
     }
 }
