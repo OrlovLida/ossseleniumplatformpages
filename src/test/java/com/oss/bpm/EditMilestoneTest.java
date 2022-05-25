@@ -52,19 +52,6 @@ public class EditMilestoneTest extends BaseTestCase {
     private String milestoneName = "Milestone Update " + (Math.random() * 1001);
     private String leadTime = String.valueOf((int) (Math.random() * 101));
 
-    public void enableMilestoneAttributes(MilestoneViewPage milestoneViewPage) {
-        milestoneViewPage.selectFirstMilestone();
-        milestoneViewPage.enableMilestoneAttribute("Name");
-        milestoneViewPage.enableMilestoneAttribute("Name", "Modifier Name");
-        milestoneViewPage.enableMilestoneAttribute("Description");
-        milestoneViewPage.enableMilestoneAttribute("Lead Time");
-        milestoneViewPage.enableMilestoneAttribute("Due Date");
-        milestoneViewPage.enableMilestoneAttribute("Manual Completion");
-        milestoneViewPage.enableMilestoneAttribute("Related Process Name");
-        milestoneViewPage.selectFirstMilestone();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-    }
-
     @BeforeClass
     public void createMilestone() {
         ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
@@ -244,9 +231,8 @@ public class EditMilestoneTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         milestoneViewPage.changeUser(BPM_ADMIN_USER_LOGIN, BPM_ADMIN_USER_PASSWORD);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        milestoneViewPage.selectMilestone(milestoneName);
-        milestoneViewPage.enableMilestoneAttribute("Name", "Modifier Name");
-        //milestoneViewPage.setAttributesConfiguration("bpm_selenium");
+        milestoneViewPage.selectMilestone("Milestone 1.405");
+        milestoneViewPage.chooseMilestoneAttributesConfiguration("bpm_selenium");
         String modifyDate = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_DATE);
         String modifyUser = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_USER);
         // when

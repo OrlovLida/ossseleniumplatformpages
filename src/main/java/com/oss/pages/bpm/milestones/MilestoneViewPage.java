@@ -6,6 +6,7 @@
  */
 package com.oss.pages.bpm.milestones;
 
+import com.oss.pages.platform.configuration.ChooseConfigurationWizard;
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.inputs.Input;
@@ -66,12 +67,6 @@ public class MilestoneViewPage extends BasePage {
         propertyPanel.enableAttributeByLabel(attributeLabel);
     }
 
-    public void setAttributesConfiguration(String configurationName) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        PropertyPanel propertyPanel = PropertyPanel.createById(driver, wait, PROPERTY_PANEL_WIDGET);
-        propertyPanel.setAttributesConfiguration(configurationName);
-    }
-
     public int getRowNumber(String value, String attributeNameLabel) {
         TableWidget milestoneTable = TableWidget.createById(driver, MILESTONE_TABLE_ID, wait);
         return milestoneTable.getRowNumber(value, attributeNameLabel);
@@ -86,6 +81,16 @@ public class MilestoneViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         TableWidget milestoneTable = TableWidget.createById(driver, MILESTONE_TABLE_ID, wait);
         milestoneTable.enableColumnByLabel(columnAttributeLabel);
+    }
+
+    public void chooseMilestoneAttributesConfiguration(String configurationName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        PropertyPanel propertyPanel = PropertyPanel.createById(driver, wait, PROPERTY_PANEL_WIDGET);
+        propertyPanel.openChooseConfigurationWizard();
+        DelayUtils.waitForPageToLoad(driver, wait);
+        ChooseConfigurationWizard chooseConfigurationWizard = ChooseConfigurationWizard.create(driver, wait);
+        chooseConfigurationWizard.chooseConfiguration(configurationName);
+        chooseConfigurationWizard.apply();
     }
 
     public void selectAll() {
