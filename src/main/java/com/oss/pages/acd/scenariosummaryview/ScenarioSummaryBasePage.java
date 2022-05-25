@@ -1,4 +1,4 @@
-package com.oss.pages.acd.scenarioSummaryView;
+package com.oss.pages.acd.scenariosummaryview;
 
 import java.util.List;
 import java.util.stream.Collectors;
