@@ -32,6 +32,7 @@ public class VLANPoolTest extends BaseTestCase {
     private static final String CREATE_VLAN_POOL_ACTION_ID = "CreateVLANPoolContextAction";
     private static final String EDIT_VLAN_POOL_ACTION_ID = "EditVLANPoolContextAction";
     private static final String DELETE_VLAN_POOL_ACTION_ID = "DeleteVLANPoolContextAction";
+    private static final String CONFIRM_REMOVAL_BUTTON_ID = "ConfirmationBox_deleteBoxAppId_action_button";
 
     @BeforeClass
     public void openWebConsole() {
@@ -118,7 +119,7 @@ public class VLANPoolTest extends BaseTestCase {
     @Test(priority = 5)
     @Description("Delete VLAN Pool")
     public void deleteVLANPool() {
-        newInventoryViewPage.selectFirstRow().callAction(ActionsContainer.EDIT_GROUP_ID, DELETE_VLAN_POOL_ACTION_ID).clickConfirmationRemovalButton();
+        newInventoryViewPage.selectFirstRow().callAction(ActionsContainer.EDIT_GROUP_ID, DELETE_VLAN_POOL_ACTION_ID).clickConfirmationBox(CONFIRM_REMOVAL_BUTTON_ID);
         checkPopup();
         waitForPageToLoad();
         newInventoryViewPage.unselectObjectByRowId(0);

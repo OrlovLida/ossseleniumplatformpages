@@ -31,6 +31,7 @@ public class VLANRangeTest extends BaseTestCase {
     private static final String VLAN_DESCRIPTION_2 = "DescriptionAfter";
     private static final String DELETE_VLAN_RANGE_ACTION_ID = "DeleteVLANRangeContextAction";
     private static final String CREATE_VLAN_RANGE_ACTION_ID = "CreateVLANRangeContextAction";
+    private static final String CONFIRM_REMOVAL_BUTTON_ID = "ConfirmationBox_deleteBoxAppId_action_button";
 
     @BeforeClass
     public void openWebConsole() {
@@ -100,7 +101,7 @@ public class VLANRangeTest extends BaseTestCase {
     public void deleteVLANRange() {
         newInventoryViewPage.selectFirstRow();
         newInventoryViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, DELETE_VLAN_RANGE_ACTION_ID);
-        newInventoryViewPage.clickConfirmationRemovalButton();
+        newInventoryViewPage.clickConfirmationBox(CONFIRM_REMOVAL_BUTTON_ID);
         waitForPageToLoad();
         checkPopup();
         waitForPageToLoad();
