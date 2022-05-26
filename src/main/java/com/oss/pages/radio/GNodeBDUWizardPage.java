@@ -2,7 +2,6 @@ package com.oss.pages.radio;
 
 import org.openqa.selenium.WebDriver;
 
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
@@ -38,22 +37,22 @@ public class GNodeBDUWizardPage extends BasePage {
 
     @Step("Set name")
     public void setName(String name) {
-        getWizard().setComponentValue(NAME_DATA_ATTRIBUTE_NAME, name, Input.ComponentType.TEXT_FIELD);
+        getWizard().setComponentValue(NAME_DATA_ATTRIBUTE_NAME, name);
     }
 
     @Step("Set controller")
     public void setController(String controller) {
-        getWizard().setComponentValue(CONTROLLER_DATA_ATTRIBUTE_NAME, controller, Input.ComponentType.SEARCH_FIELD);
+        getWizard().setComponentValue(CONTROLLER_DATA_ATTRIBUTE_NAME, controller);
     }
 
     @Step("Set gNodeB Id")
     public void setENodeBId(String id) {
-        getWizard().setComponentValue(ID_DATA_ATTRIBUTE_NAME, id, Input.ComponentType.TEXT_FIELD);
+        getWizard().setComponentValue(ID_DATA_ATTRIBUTE_NAME, id);
     }
 
     @Step("Set gNodeB Model")
     public void setENodeBModel(String model) {
-        getWizard().setComponentValue(MODEL_DATA_ATTRIBUTE_NAME, model, Input.ComponentType.COMBOBOX);
+        getWizard().setComponentValue(MODEL_DATA_ATTRIBUTE_NAME, model);
     }
 
     private Wizard getWizard() {

@@ -14,8 +14,6 @@ import com.oss.pages.physical.DeviceWizardPage;
 
 import io.qameta.allure.Step;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
-
 /**
  * @author Milena Miętkiewicz
  */
@@ -116,15 +114,6 @@ public class CellSiteConfigurationPage extends BasePage {
         waitForPageToLoad();
     }
 
-    private void selectTreeTable(String type, String manufacturer, String name) {
-        OldTreeTableWidget widget = OldTreeTableWidget.create(driver, wait, TREE_TABLE_ID);
-        widget.expandNode(type, "Type");
-        waitForPageToLoad();
-        widget.expandNode(manufacturer, "Type");
-        waitForPageToLoad();
-        widget.selectNode(name, "Name");
-    }
-
     @Step("Remove base station {objectName}")
     public void removeBaseStation(String columnName, String objectName) {
         selectTab(BASE_STATIONS_TAB);
@@ -191,7 +180,7 @@ public class CellSiteConfigurationPage extends BasePage {
     @Step("Select trail type")
     public void selectTrailType(String trailType) {
         Wizard wizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
-        wizard.setComponentValue(TRAIL_TYPE_ID, trailType, COMBOBOX);
+        wizard.setComponentValue(TRAIL_TYPE_ID, trailType);
         wizard.clickAccept();
     }
 
@@ -347,6 +336,15 @@ public class CellSiteConfigurationPage extends BasePage {
     public void editCellsInBulk(int cellsNumber, String pci, String rsi, String referencePower, String[] tac, String paOutput) {
         clickEditIcon();
         new EditCell4GBulkWizardPage(driver).editCellsBulk(cellsNumber, pci, rsi, referencePower, tac, paOutput);
+    }
+
+    private void selectTreeTable(String type, String manufacturer, String name) {
+        OldTreeTableWidget widget = OldTreeTableWidget.create(driver, wait, TREE_TABLE_ID);
+        widget.expandNode(type, "Type");
+        waitForPageToLoad();
+        widget.expandNode(manufacturer, "Type");
+        waitForPageToLoad();
+        widget.selectNode(name, "Name");
     }
 
     private Cell5GBulkWizardPage openCell5GBulkWizard() {
