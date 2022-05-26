@@ -9,13 +9,6 @@ import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
-import static com.oss.framework.components.inputs.Input.ComponentType.DATE_TIME;
-import static com.oss.framework.components.inputs.Input.ComponentType.SEARCH_FIELD;
-import static com.oss.framework.components.inputs.Input.ComponentType.OBJECT_SEARCH_FIELD;
-import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_AREA;
-import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
-
 public class DeviceWizardPage extends BasePage {
 
     public static final String DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME = "preciseLocation_OSF";
@@ -84,128 +77,128 @@ public class DeviceWizardPage extends BasePage {
 
     @Step("Set Model using contains")
     public void setModel(String model) {
-        getDeviceWizard().getComponent(DEVICE_MODEL_DATA_ATTRIBUTE_NAME, SEARCH_FIELD).setSingleStringValueContains(model);
+        getDeviceWizard().getComponent(DEVICE_MODEL_DATA_ATTRIBUTE_NAME).setSingleStringValueContains(model);
     }
 
     @Step("Set Name")
     public void setName(String name) {
-        getDeviceWizard().setComponentValue(DEVICE_NAME_DATA_ATTRIBUTE_NAME, name, TEXT_FIELD);
+        getDeviceWizard().setComponentValue(DEVICE_NAME_DATA_ATTRIBUTE_NAME, name);
     }
 
     @Step("Set Network Function Name")
     public void setNetworkFunctionName(String networkFunctionName) {
-        getDeviceWizard().setComponentValue(DEVICE_NETWORK_FUNCTION_NAME_TYPE_DATA_ATTRIBUTE_NAME, networkFunctionName, TEXT_FIELD);
+        getDeviceWizard().setComponentValue(DEVICE_NETWORK_FUNCTION_NAME_TYPE_DATA_ATTRIBUTE_NAME, networkFunctionName);
     }
 
     @Step("Set Chassis Id")
     public void setChassisId(String chassisId) {
-        getDeviceWizard().setComponentValue(DEVICE_CHASSIS_ID_DATA_ATTRIBUTE_NAME, chassisId, TEXT_FIELD);
+        getDeviceWizard().setComponentValue(DEVICE_CHASSIS_ID_DATA_ATTRIBUTE_NAME, chassisId);
     }
 
     @Step("Set Location using contains")
     public void setLocation(String location) {
-        if (getDeviceWizard().getComponent(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME, OBJECT_SEARCH_FIELD)
+        if (getDeviceWizard().getComponent(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME)
                 .getStringValue().isEmpty()) {
-            getDeviceWizard().getComponent(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME, OBJECT_SEARCH_FIELD)
+            getDeviceWizard().getComponent(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME)
                     .setSingleStringValueContains(location);
         }
     }
 
     @Step("Set Physical Location using contains")
     public void setPhysicalLocation(String preciseLocation) {
-        if (getDeviceWizard().getComponent(DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, OBJECT_SEARCH_FIELD)
+        if (getDeviceWizard().getComponent(DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME)
                 .getStringValue().isEmpty()) {
-            getDeviceWizard().getComponent(DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, OBJECT_SEARCH_FIELD)
+            getDeviceWizard().getComponent(DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME)
                     .setSingleStringValueContains(preciseLocation);
         }
     }
 
     @Step("Set Precise Location using contains")
     public void setPreciseLocation(String preciseLocation) {
-        if (getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, OBJECT_SEARCH_FIELD)
+        if (getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME)
                 .getStringValue().isEmpty()) {
-            getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, OBJECT_SEARCH_FIELD)
+            getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME)
                     .setSingleStringValueContains(preciseLocation);
         }
     }
 
     @Step("Set Available Mounting Positions")
     public void setFirstAvailableMountingPosition() {
-        Input mountingPositionInput = getDeviceWizard().getComponent(DEVICE_AVAILABLE_MOUNTING_POSITIONS_DATA_ATTRIBUTE_NAME, COMBOBOX);
+        Input mountingPositionInput = getDeviceWizard().getComponent(DEVICE_AVAILABLE_MOUNTING_POSITIONS_DATA_ATTRIBUTE_NAME);
         mountingPositionInput.setSingleStringValueContains("");
     }
 
     @Step("Set Logical Location")
     public void setLogicalLocation(String logicalLocation) {
-        getDeviceWizard().setComponentValue(DEVICE_LOGICAL_LOCATION_DATA_ATTRIBUTE_NAME, logicalLocation, SEARCH_FIELD);
+        getDeviceWizard().setComponentValue(DEVICE_LOGICAL_LOCATION_DATA_ATTRIBUTE_NAME, logicalLocation);
     }
 
     @Step("Set Network Domain")
     public void setNetworkDomain(String networkDomain) {
-        getDeviceWizard().setComponentValue(DEVICE_NETWORK_DOMAIN_DATA_ATTRIBUTE_NAME, networkDomain, SEARCH_FIELD);
+        getDeviceWizard().setComponentValue(DEVICE_NETWORK_DOMAIN_DATA_ATTRIBUTE_NAME, networkDomain);
     }
 
     @Step("Set Serial Number")
     public void setSerialNumber(String serialNumber) {
-        getDeviceWizard().setComponentValue(DEVICE_SERIAL_NUMBER_DATA_ATTRIBUTE_NAME, serialNumber, TEXT_FIELD);
+        getDeviceWizard().setComponentValue(DEVICE_SERIAL_NUMBER_DATA_ATTRIBUTE_NAME, serialNumber);
     }
 
     @Step("Set Hostname")
     public void setHostname(String hostname) {
-        getDeviceWizard().setComponentValue(DEVICE_HOSTNAME_DATA_ATTRIBUTE_NAME, hostname, TEXT_FIELD);
+        getDeviceWizard().setComponentValue(DEVICE_HOSTNAME_DATA_ATTRIBUTE_NAME, hostname);
     }
 
     @Step("Set Oss")
     public void setOss(String oss) {
-        getDeviceWizard().setComponentValue(DEVICE_OSS_DATA_ATTRIBUTE_NAME, oss, SEARCH_FIELD);
+        getDeviceWizard().setComponentValue(DEVICE_OSS_DATA_ATTRIBUTE_NAME, oss);
     }
 
     @Step("Set Manufacture Date")
     public void setManufactureDate(String manufactureDate) {
-        getDeviceWizard().setComponentValue(DEVICE_MANUFACTURE_DATE_DATA_ATTRIBUTE_NAME, manufactureDate, DATE_TIME);
+        getDeviceWizard().setComponentValue(DEVICE_MANUFACTURE_DATE_DATA_ATTRIBUTE_NAME, manufactureDate);
     }
 
     @Step("Set Firmware Version")
     public void setFirmwareVersion(String firmwareVersion) {
-        getDeviceWizard().setComponentValue(DEVICE_FIRMWARE_VERSION_DATA_ATTRIBUTE_NAME, firmwareVersion, TEXT_FIELD);
+        getDeviceWizard().setComponentValue(DEVICE_FIRMWARE_VERSION_DATA_ATTRIBUTE_NAME, firmwareVersion);
     }
 
     @Step("Set Hardware Version")
     public void setHardwareVersion(String hardwareVersion) {
-        getDeviceWizard().setComponentValue(DEVICE_HARDWARE_VERSION_DATA_ATTRIBUTE_NAME, hardwareVersion, TEXT_FIELD);
+        getDeviceWizard().setComponentValue(DEVICE_HARDWARE_VERSION_DATA_ATTRIBUTE_NAME, hardwareVersion);
     }
 
     @Step("Set Description")
     public void setDescription(String description) {
-        getDeviceWizard().setComponentValue(DEVICE_DESCRIPTION_DATA_ATTRIBUTE_NAME, description, TEXT_AREA);
+        getDeviceWizard().setComponentValue(DEVICE_DESCRIPTION_DATA_ATTRIBUTE_NAME, description);
     }
 
     @Step("Set Cooling Capacity")
     public void setCoolingCapacity(String coolingCapacity) {
         String deviceCoolingCapacityDataAttributeName =
                 DEVICE_TYPE_PATTERN + getEquipmentType() + "___CoolingCapacity";
-        getDeviceWizard().setComponentValue(deviceCoolingCapacityDataAttributeName, coolingCapacity, TEXT_FIELD);
+        getDeviceWizard().setComponentValue(deviceCoolingCapacityDataAttributeName, coolingCapacity);
     }
 
     @Step("Set Heat Emission")
     public void setHeatEmission(String heatEmission) {
         String deviceHeatEmissionDataAttributeName =
                 DEVICE_TYPE_PATTERN + getEquipmentType() + "___HeatEmission";
-        getDeviceWizard().setComponentValue(deviceHeatEmissionDataAttributeName, heatEmission, TEXT_FIELD);
+        getDeviceWizard().setComponentValue(deviceHeatEmissionDataAttributeName, heatEmission);
     }
 
     @Step("Set Power Consumption")
     public void setPowerConsumption(String powerConsumption) {
         String devicePowerConsumptionDataAttributeName =
                 DEVICE_TYPE_PATTERN + getEquipmentType() + "___PowerConsumption";
-        getDeviceWizard().setComponentValue(devicePowerConsumptionDataAttributeName, powerConsumption, TEXT_FIELD);
+        getDeviceWizard().setComponentValue(devicePowerConsumptionDataAttributeName, powerConsumption);
     }
 
     @Step("Set Power Capacity")
     public void setPowerCapacity(String powerCapacity) {
         String devicePowerCapacityDataAttributeName =
                 DEVICE_TYPE_PATTERN + getEquipmentType() + "___PowerCapacity";
-        getDeviceWizard().setComponentValue(devicePowerCapacityDataAttributeName, powerCapacity, TEXT_FIELD);
+        getDeviceWizard().setComponentValue(devicePowerCapacityDataAttributeName, powerCapacity);
     }
 
     @Step("Click Cancel button")
@@ -255,7 +248,7 @@ public class DeviceWizardPage extends BasePage {
     }
 
     private String getEquipmentType() {
-        String equipmentType = getDeviceWizard().getComponent(DEVICE_EQUIPMENT_TYPE_DATA_ATTRIBUTE_NAME, SEARCH_FIELD).getStringValue().trim().replaceAll("\\s", "");
+        String equipmentType = getDeviceWizard().getComponent(DEVICE_EQUIPMENT_TYPE_DATA_ATTRIBUTE_NAME).getStringValue().trim().replaceAll("\\s", "");
         if (equipmentType.equals("DWDMDevice")) {
             return "DWDM";
         }
@@ -272,6 +265,6 @@ public class DeviceWizardPage extends BasePage {
 
     @Step("Set Equipment Type")
     public void setEquipmentType(String equipmentType) {
-        getDeviceWizard().setComponentValue(DEVICE_EQUIPMENT_TYPE_DATA_ATTRIBUTE_NAME, equipmentType, COMBOBOX);
+        getDeviceWizard().setComponentValue(DEVICE_EQUIPMENT_TYPE_DATA_ATTRIBUTE_NAME, equipmentType);
     }
 }

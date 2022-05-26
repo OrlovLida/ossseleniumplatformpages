@@ -8,6 +8,7 @@
         <parameter name="notificationEmailFrom" value="switch.ticket@comarch.com"/>
         <parameter name="RelatedChangeID" value="35"/>
         <parameter name="SecondMOIdentifier" value="TEST_MO"/>
+        <parameter name="serviceMOIdentifier" value="TEST_MO_ABS_SRV"/>
         <classes>
             <class name="com.oss.servicedesk.changemanagement.ChangesTest"/>
         </classes>

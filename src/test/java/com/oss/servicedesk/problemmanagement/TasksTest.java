@@ -11,6 +11,7 @@ import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.pages.servicedesk.issue.IssueDetailsPage;
+import com.oss.pages.servicedesk.issue.tabs.OverviewTab;
 import com.oss.pages.servicedesk.issue.task.MyTasksPage;
 import com.oss.pages.servicedesk.issue.task.TaskDashboardPage;
 import com.oss.utils.TestListener;
@@ -21,25 +22,22 @@ import static com.oss.pages.servicedesk.ServiceDeskConstants.DETAILS_TABS_CONTAI
 import static com.oss.pages.servicedesk.ServiceDeskConstants.ISSUE_OUT_ASSIGNEE_ATTR;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.ISSUE_OUT_STATUS_ATTR;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.PROBLEM_ISSUE_TYPE;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.TASK_LABEL;
 
 @Listeners({TestListener.class})
 public class TasksTest extends BaseTestCase {
 
     private TaskDashboardPage taskDashboardPage;
     private IssueDetailsPage issueDetailsPage;
+    private OverviewTab taskOverviewTab;
     private MyTasksPage myTasksPage;
     private com.oss.pages.servicedesk.issue.wizard.SDWizardPage SDWizardPage;
     private String taskID;
 
-    private static final String TASK_WIZARD_NAME = "name";
-    private static final String TASK_WIZARD_ASSIGNEE = "assignee";
     private static final String TASK_WIZARD_PARENT_PROBLEM = "parentProblem";
-    private static final String TASK_WIZARD_LABEL = "label";
-    private static final String TASK_WIZARD_CREATE_TASK_BUTTON = "_createTaskSubmitId-1";
 
     private static final String TASK_NAME = "Task " + LocalDateTime.now();
     private static final String TASK_NEW_ASSIGNEE = "sd_seleniumtest";
-    private static final String TASK_LABEL = "Task - Selenium Test";
     private static final String TASK_NEW_STATUS = "In Progress";
 
     private static final String PROBLEM_OUT_PREFIX = "problemOut";
@@ -61,11 +59,8 @@ public class TasksTest extends BaseTestCase {
             @Optional("ca_kodrobinska") String taskAssignee
     ) {
         SDWizardPage = taskDashboardPage.openCreateTaskWizard();
-        SDWizardPage.insertValueToTextComponent(TASK_NAME, TASK_WIZARD_NAME);
-        SDWizardPage.insertValueToSearchComponent(taskAssignee, TASK_WIZARD_ASSIGNEE);
         SDWizardPage.insertValueToSearchComponent(parentProblem, TASK_WIZARD_PARENT_PROBLEM);
-        SDWizardPage.insertValueToTextComponent(TASK_LABEL, TASK_WIZARD_LABEL);
-        SDWizardPage.clickButton(TASK_WIZARD_CREATE_TASK_BUTTON);
+        SDWizardPage.createTask(TASK_NAME, taskAssignee, TASK_LABEL);
         taskID = taskDashboardPage.getIDForTaskWithName(TASK_NAME);
 
         Assert.assertEquals(taskDashboardPage.getAssigneeForNthTaskInTasksTable(0), taskAssignee);
@@ -76,8 +71,9 @@ public class TasksTest extends BaseTestCase {
     public void editTask() {
         issueDetailsPage = taskDashboardPage.openIssueDetailsView(taskID, BASIC_URL, PROBLEM_ISSUE_TYPE);
         issueDetailsPage.maximizeWindow(DETAILS_TABS_CONTAINER_ID);
-        issueDetailsPage.changeIssueAssignee(TASK_NEW_ASSIGNEE);
-        issueDetailsPage.changeIssueStatus(TASK_NEW_STATUS);
+        taskOverviewTab = issueDetailsPage.selectOverviewTab(PROBLEM_ISSUE_TYPE);
+        taskOverviewTab.changeIssueAssignee(TASK_NEW_ASSIGNEE);
+        taskOverviewTab.changeIssueStatus(TASK_NEW_STATUS);
         goToTaskDashboardPage();
 
         Assert.assertEquals(taskDashboardPage.getAssigneeForNthTaskInTasksTable(0), TASK_NEW_ASSIGNEE);

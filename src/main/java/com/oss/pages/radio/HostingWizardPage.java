@@ -7,9 +7,6 @@ import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.CHECKBOX;
-import static com.oss.framework.components.inputs.Input.ComponentType.MULTI_COMBOBOX;
-
 public class HostingWizardPage extends BasePage {
 
     private static final String HOSTING_WIZARD_DATA_ATTRIBUTE_NAME = "hosting-wizard";
@@ -30,30 +27,29 @@ public class HostingWizardPage extends BasePage {
 
     @Step("Use 'Only Compatible' checkbox")
     public void onlyCompatible(String showOnlyCompatible) {
-        getHostingWizard().setComponentValue(ONLY_COMPATIBLE_DATA_ATTRIBUTE_NAME, showOnlyCompatible, CHECKBOX);
+        getHostingWizard().setComponentValue(ONLY_COMPATIBLE_DATA_ATTRIBUTE_NAME, showOnlyCompatible);
     }
 
     @Step("Set hosting device using contains")
     public HostingWizardPage setDevice(String deviceName) {
-        getHostingWizard().getComponent(DEVICES_ON_LOCATION_DATA_ATTRIBUTE_NAME, MULTI_COMBOBOX).setSingleStringValueContains(deviceName);
+        getHostingWizard().getComponent(DEVICES_ON_LOCATION_DATA_ATTRIBUTE_NAME).setSingleStringValueContains(deviceName);
         return this;
     }
 
     @Step("Set hosting logic using contains")
     public HostingWizardPage setObjectType(String objectType) {
-        getHostingWizard().getComponent(OBJECT_TYPE_DATA_ATTRIBUTE_NAME, MULTI_COMBOBOX).setSingleStringValueContains(objectType);
+        getHostingWizard().getComponent(OBJECT_TYPE_DATA_ATTRIBUTE_NAME).setSingleStringValueContains(objectType);
         return this;
     }
 
     @Step("Select hosting object using contains")
-    public HostingWizardPage setHostingContains(String hostingObjectName) {
-        getHostingWizard().getComponent(HOSTING_DATA_ATTRIBUTE_NAME, MULTI_COMBOBOX).setSingleStringValueContains(hostingObjectName);
-        return this;
+    public void setHostingContains(String hostingObjectName) {
+        getHostingWizard().getComponent(HOSTING_DATA_ATTRIBUTE_NAME).setSingleStringValueContains(hostingObjectName);
     }
 
     @Step("Select hosting object")
     public HostingWizardPage setHosting(String hostingObjectName) {
-        getHostingWizard().setComponentValue(HOSTING_DATA_ATTRIBUTE_NAME, hostingObjectName, MULTI_COMBOBOX);
+        getHostingWizard().setComponentValue(HOSTING_DATA_ATTRIBUTE_NAME, hostingObjectName);
         return this;
     }
 

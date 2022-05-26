@@ -1,10 +1,11 @@
 package com.oss.pages.radio;
 
-import com.oss.framework.components.inputs.Input;
+import org.openqa.selenium.WebDriver;
+
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
+
 import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
 
 public class Cell3GWizardPage extends BasePage {
 
@@ -53,31 +54,28 @@ public class Cell3GWizardPage extends BasePage {
 
     @Step("Set name")
     public Cell3GWizardPage setName(String cell4GName) {
-        getCell3GWizard().setComponentValue(CELL3G_NAME_DATA_ATTRIBUTE_NAME, cell4GName, Input.ComponentType.TEXT_FIELD);
+        getCell3GWizard().setComponentValue(CELL3G_NAME_DATA_ATTRIBUTE_NAME, cell4GName);
         return this;
     }
 
     @Step("Set NodeB name")
-    public Cell3GWizardPage setNodeBName(String nodeBName) {
-        getCell3GWizard().setComponentValue(CELL3G_NODE_B_ID_DATA_ATTRIBUTE_NAME, nodeBName, Input.ComponentType.SEARCH_FIELD);
-        return this;
+    public void setNodeBName(String nodeBName) {
+        getCell3GWizard().setComponentValue(CELL3G_NODE_B_ID_DATA_ATTRIBUTE_NAME, nodeBName);
     }
 
     @Step("Set Cell 3G Id")
-    public Cell3GWizardPage setCell3GId(String cellId) {
-        getCell3GWizard().setComponentValue(CELL3G_CELL_ID_DATA_ATTRIBUTE_NAME, cellId, Input.ComponentType.TEXT_FIELD);
-        return this;
+    public void setCell3GId(String cellId) {
+        getCell3GWizard().setComponentValue(CELL3G_CELL_ID_DATA_ATTRIBUTE_NAME, cellId);
     }
 
     @Step("Set Carrier 3G using contains")
-    public Cell3GWizardPage setCarrier3G(String carrier3G) {
-        getCell3GWizard().getComponent(CELL3G_CARRIER_DATA_ATTRIBUTE_NAME, Input.ComponentType.COMBOBOX).setSingleStringValueContains(carrier3G);
-        return this;
+    public void setCarrier3G(String carrier3G) {
+        getCell3GWizard().getComponent(CELL3G_CARRIER_DATA_ATTRIBUTE_NAME).setSingleStringValueContains(carrier3G);
     }
 
     @Step("Set description")
     public Cell3GWizardPage setDescription(String description) {
-        getCell3GWizard().setComponentValue(CELL3G_DESCRIPTION_DATA_ATTRIBUTE_NAME, description, Input.ComponentType.TEXT_FIELD);
+        getCell3GWizard().setComponentValue(CELL3G_DESCRIPTION_DATA_ATTRIBUTE_NAME, description);
         return this;
     }
 

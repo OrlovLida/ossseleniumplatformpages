@@ -33,7 +33,7 @@ public class IPAddressAssignmentWizardPage extends BasePage {
     private static final String IP_ADDRESS_MANUAL_MODE_COMPONENT_ID = "hostAssignmentWizardMainStepAddressManualModeFieldComponentId";
     private static final String IP_ADDRESS_AUTOMATIC_MODE_COMPONENT_ID = "hostAssignmentWizardMainStepAddressAutomaticModeFieldComponentId";
     private static final String IP_ADDRESS_RESERVED_MODE_COMPONENT_ID = "hostAssignmentWizardMainStepASIPHostAddressFieldComponentId";
-    private static final String IP_SUBNET_COMPONENT_ID = "hostAssignmentWizardMainStepSubnetFieldComponentId";
+    private static final String IP_SUBNET_COMPONENT_ID = "hostAssignmentWizardMainStepSubnetFieldComponentId_OSF";
     private static final String MASK_COMPONENT_ID = "hostAssignmentWizardMainStepMaskFieldComponentId";
     private static final String IP_NETWORK_COMPONENT_ID = "hostAssignmentWizardMainStepIPNetworkSearchFieldComponentId";
     private static final String IS_PRIMARY_COMPONENT_ID = "hostAssignmentWizardAssignmentStepIsPrimaryFieldComponentId";

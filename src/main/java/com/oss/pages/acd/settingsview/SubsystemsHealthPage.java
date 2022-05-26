@@ -1,4 +1,4 @@
-package com.oss.pages.acd.settingsView;
+package com.oss.pages.acd.settingsview;
 
 import java.util.HashMap;
 

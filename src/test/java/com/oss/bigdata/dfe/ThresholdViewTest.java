@@ -30,7 +30,7 @@ public class ThresholdViewTest extends BaseTestCase {
     private static final String GROUPING_FLAG = "Yes";
     private static final String FILTERING_TYPE = "NONE";
     private static final String MO_ID_PATTERN = "$[d1.d1]";
-    private static final String CATEGORIES_TYPE = "selenium";
+    private static final String CATEGORIES_TYPE = "OTT Service";
     private ThresholdPage thresholdPage;
     private String thresholdName;
     private String updatedThresholdName;

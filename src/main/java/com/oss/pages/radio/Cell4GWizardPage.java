@@ -1,11 +1,12 @@
 package com.oss.pages.radio;
 
-import com.oss.framework.components.inputs.Input;
+import org.openqa.selenium.WebDriver;
+
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
+
 import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
 
 public class Cell4GWizardPage extends BasePage {
 
@@ -57,31 +58,28 @@ public class Cell4GWizardPage extends BasePage {
 
     @Step("Set name")
     public Cell4GWizardPage setName(String cell4GName) {
-        getCell4GWizard().setComponentValue(CELL4G_NAME_DATA_ATTRIBUTE_NAME, cell4GName, Input.ComponentType.TEXT_FIELD);
+        getCell4GWizard().setComponentValue(CELL4G_NAME_DATA_ATTRIBUTE_NAME, cell4GName);
         return this;
     }
 
     @Step("Set eNodeB name")
-    public Cell4GWizardPage setENodeBName(String eNodeBName) {
-        getCell4GWizard().setComponentValue(CELL4G_E_NODE_B_ID_DATA_ATTRIBUTE_NAME, eNodeBName, Input.ComponentType.SEARCH_FIELD);
-        return this;
+    public void setENodeBName(String eNodeBName) {
+        getCell4GWizard().setComponentValue(CELL4G_E_NODE_B_ID_DATA_ATTRIBUTE_NAME, eNodeBName);
     }
 
     @Step("Set Cell 4G Id")
-    public Cell4GWizardPage setCell4GId(String cellId) {
-        getCell4GWizard().setComponentValue(CELL4G_CELL_ID_DATA_ATTRIBUTE_NAME, cellId, Input.ComponentType.TEXT_FIELD);
-        return this;
+    public void setCell4GId(String cellId) {
+        getCell4GWizard().setComponentValue(CELL4G_CELL_ID_DATA_ATTRIBUTE_NAME, cellId);
     }
 
     @Step("Set Carrier 4G using contains")
-    public Cell4GWizardPage setCarrier4G(String carrier4G) {
-        getCell4GWizard().getComponent(CELL4G_CARRIER_DATA_ATTRIBUTE_NAME, Input.ComponentType.COMBOBOX).setSingleStringValueContains(carrier4G);
-        return this;
+    public void setCarrier4G(String carrier4G) {
+        getCell4GWizard().getComponent(CELL4G_CARRIER_DATA_ATTRIBUTE_NAME).setSingleStringValueContains(carrier4G);
     }
 
     @Step("Set description")
     public Cell4GWizardPage setDescription(String description) {
-        getCell4GWizard().setComponentValue(CELL4G_DESCRIPTION_DATA_ATTRIBUTE_NAME, description, Input.ComponentType.TEXT_FIELD);
+        getCell4GWizard().setComponentValue(CELL4G_DESCRIPTION_DATA_ATTRIBUTE_NAME, description);
         return this;
     }
 

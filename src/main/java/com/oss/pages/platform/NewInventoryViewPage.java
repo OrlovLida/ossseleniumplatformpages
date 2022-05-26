@@ -54,6 +54,7 @@ public class NewInventoryViewPage extends BasePage {
     private static final String OPEN_HIERARCHY_VIEW_ACTION_ID = "OpenHierarchyViewContext";
     public static final String KEBAB_OBJECT_GROUP_ID = "frameworkObjectButtonsGroup";
     private static final String CONFIRM_REMOVAL_BUTTON_ID = "ConfirmationBox_deleteAppId_action_button";
+    private static final String PROPERTY_PANEL_ID = "PropertyPanelWidget";
 
     public NewInventoryViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -260,6 +261,10 @@ public class NewInventoryViewPage extends BasePage {
     public PropertyPanel getPropertyPanel(String propertyPanelId) {
         Widget.waitForWidget(wait, PropertyPanel.PROPERTY_PANEL_CLASS);
         return (PropertyPanel) getTabsWidget().getWidget(propertyPanelId, WidgetType.PROPERTY_PANEL);
+    }
+
+    public String getPropertyPanelValue(String attributeName) {
+        return getPropertyPanel(PROPERTY_PANEL_ID).getPropertyValue(attributeName);
     }
 
     public String getActiveTabLabel() {

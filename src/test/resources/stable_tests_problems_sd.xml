@@ -7,6 +7,12 @@
         <parameter name="SecondMOIdentifier" value="CFS_Access_Product_Selenium_2"/>
         <parameter name="RelatedTicketID" value="100"/>
         <parameter name="ProblemToLinkId" value="100"/>
+        <parameter name="messageTo" value="ca_kodrobinska"/>
+        <parameter name="notificationEmailTo" value="kornelia.odrobinska@comarch.com"/>
+        <parameter name="notificationEmailFrom" value="switch.ticket@comarch.com"/>
+        <parameter name="userName" value="sd_seleniumtest"/>
+        <parameter name="taskAssignee" value="sd_seleniumtest"/>
+        <parameter name="serviceMOIdentifier" value="TEST_MO_ABS_SRV"/>
         <classes>
             <class name="com.oss.servicedesk.problemmanagement.ProblemsTest"/>
         </classes>
