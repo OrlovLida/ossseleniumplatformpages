@@ -51,4 +51,5 @@ public class ServiceDeskConstants {
     public static final String AFFECTED_TAB_LABEL = "Affected";
     public static final String DICTIONARIES_TAB_LABEL = "Dictionaries";
     public static final String MOST_IMPORTANT_INFO_TAB_LABEL = "Most Important Info";
+    public static final String SUMMATY_TAB_LABEL = "Summary";
 }

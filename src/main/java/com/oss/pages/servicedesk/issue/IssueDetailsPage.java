@@ -27,6 +27,7 @@ import com.oss.pages.servicedesk.issue.tabs.RelatedProblemsTab;
 import com.oss.pages.servicedesk.issue.tabs.RelatedTicketsTab;
 import com.oss.pages.servicedesk.issue.tabs.RolesTab;
 import com.oss.pages.servicedesk.issue.tabs.RootCausesTab;
+import com.oss.pages.servicedesk.issue.tabs.SummaryTab;
 import com.oss.pages.servicedesk.issue.tabs.TasksTab;
 import com.oss.pages.servicedesk.issue.ticket.TicketOverviewTab;
 
@@ -46,6 +47,7 @@ import static com.oss.pages.servicedesk.ServiceDeskConstants.RELATED_PROBLEMS_TA
 import static com.oss.pages.servicedesk.ServiceDeskConstants.RELATED_TICKETS_TAB_LABEL;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.ROLES_TAB_LABEL;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.ROOT_CAUSES_TAB_LABEL;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.SUMMATY_TAB_LABEL;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.TABS_WIDGET_ID;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.TASKS_TAB_LABEL;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.TROUBLE_TICKET_ISSUE_TYPE;
@@ -79,6 +81,7 @@ public class IssueDetailsPage extends BaseSDPage {
     private static final String TASK_TAB_WIDGET_ID = "_taskWindow";
     private static final String TASK_TAB_ID = "_tasksWindow";
     private static final String AFFECTED_TAB_ID = "_affectedServicesTab";
+    private static final String SUMMARY_TAB_ID = "_summaryTab";
 
     public IssueDetailsPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -187,6 +190,13 @@ public class IssueDetailsPage extends BaseSDPage {
         log.info("Selecting Description Tab");
 
         return new DescriptionTab(driver, wait);
+    }
+
+    public SummaryTab selectSummaryTab() {
+        selectTabFromTabsWidget(DESCRIPTIONS_WINDOW_ID, SUMMARY_TAB_ID, SUMMATY_TAB_LABEL);
+        log.info("Selecting Description Tab");
+
+        return new SummaryTab(driver, wait);
     }
 
     public ProblemSolutionTab selectProblemSolutionTab() {

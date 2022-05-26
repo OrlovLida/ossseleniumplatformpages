@@ -10,6 +10,7 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
+import com.oss.pages.platform.NotificationWrapperPage;
 import com.oss.pages.servicedesk.issue.IssueDetailsPage;
 import com.oss.pages.servicedesk.issue.tabs.OverviewTab;
 import com.oss.pages.servicedesk.issue.task.MyTasksPage;
@@ -32,6 +33,7 @@ public class TasksTest extends BaseTestCase {
     private OverviewTab taskOverviewTab;
     private MyTasksPage myTasksPage;
     private com.oss.pages.servicedesk.issue.wizard.SDWizardPage SDWizardPage;
+    private NotificationWrapperPage notificationWrapperPage;
     private String taskID;
 
     private static final String TASK_WIZARD_PARENT_PROBLEM = "parentProblem";
@@ -45,6 +47,7 @@ public class TasksTest extends BaseTestCase {
     private static final String MY_TASKS_ASSIGNEE_ATTRIBUTE = PROBLEM_OUT_PREFIX + "." + ISSUE_OUT_ASSIGNEE_ATTR;
     private static final String MY_TASKS_STATUS_ATTRIBUTE = PROBLEM_OUT_PREFIX + "." + ISSUE_OUT_STATUS_ATTR;
     private static final String MY_TASKS_NAME_ATTRIBUTE = PROBLEM_OUT_PREFIX + "." + NAME_ATTR;
+    private static final String TASKS_DOWNLOAD_FILE = "Problem*.xlsx";
 
     @BeforeMethod
     public void goToTaskDashboardPage() {
@@ -90,5 +93,15 @@ public class TasksTest extends BaseTestCase {
 
         Assert.assertEquals(myTasksPage.countIssuesInTable(), 1);
         Assert.assertEquals(myTasksPage.getIssueID(0), taskID);
+    }
+
+    @Test(priority = 4, testName = "Tasks Export", description = "Export Tasks from Task Dashboard")
+    @Description("Export Tasks from Task Dashboard")
+    public void exportTasks() {
+        taskDashboardPage.exportFromDashboard(TASKS_DOWNLOAD_FILE);
+        notificationWrapperPage = taskDashboardPage.openNotificationPanel();
+
+        Assert.assertEquals(notificationWrapperPage.amountOfNotifications(), 0);
+        Assert.assertTrue(taskDashboardPage.checkIfFileIsNotEmpty(TASKS_DOWNLOAD_FILE));
     }
 }

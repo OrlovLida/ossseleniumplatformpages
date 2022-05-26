@@ -22,6 +22,7 @@ import com.oss.pages.servicedesk.issue.tabs.RelatedChangesTab;
 import com.oss.pages.servicedesk.issue.tabs.RelatedProblemsTab;
 import com.oss.pages.servicedesk.issue.tabs.RolesTab;
 import com.oss.pages.servicedesk.issue.tabs.RootCausesTab;
+import com.oss.pages.servicedesk.issue.tabs.SummaryTab;
 import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
 
 import io.qameta.allure.Description;
@@ -47,7 +48,8 @@ public class ChangesTest extends BaseTestCase {
     private AttachmentsTab attachmentsTab;
     private DescriptionTab descriptionTab;
     private AffectedTab affectedTab;
-    private String changeID;
+    private SummaryTab summaryTab;
+    private String changeID = "64";
 
     private static final String RISK_ASSESSMENT_ID = "TT_WIZARD_INPUT_RISK_ASSESSMENT_LABEL";
     private static final String RISK = "LOW";
@@ -66,6 +68,7 @@ public class ChangesTest extends BaseTestCase {
     private static final String PARTICIPANT_ROLE = "Contact";
     private static final String TABS_WIDGET_ID = "_tablesWindow";
     private static final String COMBOBOX_LINK_CHANGE_ID = "linkChange";
+    private static final String SUMMARY_TEXT = "Test Selenium Summary Note";
 
     @BeforeMethod
     public void goToChangeDashboardOrIssue(Method method) {
@@ -357,5 +360,14 @@ public class ChangesTest extends BaseTestCase {
         affectedTab.addServiceToTable(serviceMOIdentifier);
 
         Assert.assertEquals(affectedTab.countServicesInTable(), initialServiceCount + 1);
+    }
+
+    @Test(priority = 31, testName = "Add Summary", description = "Add Summary on Summary tab")
+    @Description("Add Summary on Summary tab")
+    public void checkSummary() {
+        summaryTab = issueDetailsPage.selectSummaryTab();
+
+        summaryTab.addTextNote(SUMMARY_TEXT);
+        Assert.assertEquals(summaryTab.getTextMessage(), SUMMARY_TEXT);
     }
 }
