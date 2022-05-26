@@ -62,8 +62,10 @@ public class ImportExportModelTest extends BaseTestCase {
             String absolutePatch = Paths.get(resource.toURI()).toFile().getAbsolutePath();
             importModelWizardPage.attachFile(absolutePatch);
             DelayUtils.sleep(1000);
-            Assert.assertEquals("Upload success", importModelWizardPage.getImportStatus());
+            Assert.assertEquals(importModelWizardPage.getImportStatus(), "Upload success");
             importModelWizardPage.importButton();
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            Assert.assertFalse(importModelWizardPage.isImportWizardVisible());
         } catch (URISyntaxException e) {
             throw new RuntimeException("Cannot load file", e);
         }
