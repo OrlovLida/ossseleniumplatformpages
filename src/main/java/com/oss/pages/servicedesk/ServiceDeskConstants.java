@@ -35,4 +35,20 @@ public class ServiceDeskConstants {
     public static final String NORMAL_BUTTON_ID = "Normal";
     public static final String CREATE_CHANGE_BUTTON_ID = "CM_WIZARD_CREATE_TITLE";
     public static final String TASK_LABEL = "Task - Selenium Test";
+    public static final String ATTACHMENTS_TAB_LABEL = "Attachments";
+    public static final String OVERVIEW_TAB_LABEL = "Overview";
+    public static final String EXTERNAL_TAB_LABEL = "External";
+    public static final String MESSAGES_TAB_LABEL = "Messages";
+    public static final String ROOT_CAUSES_TAB_LABEL = "Root Causes";
+    public static final String RELATED_TICKETS_TAB_LABEL = "Related Tickets";
+    public static final String PARTICIPANTS_TAB_LABEL = "Participants";
+    public static final String RELATED_PROBLEMS_TAB_LABEL = "Related Problems";
+    public static final String RELATED_CHANGES_TAB_LABEL = "Related Changes";
+    public static final String DESCRIPTION_TAB_LABEL = "Description";
+    public static final String PROBLEM_SOLUTION_TAB_LABEL = "Problem Solution";
+    public static final String TASKS_TAB_LABEL = "Tasks";
+    public static final String ROLES_TAB_LABEL = "Roles";
+    public static final String AFFECTED_TAB_LABEL = "Affected";
+    public static final String DICTIONARIES_TAB_LABEL = "Dictionaries";
+    public static final String MOST_IMPORTANT_INFO_TAB_LABEL = "Most Important Info";
 }
