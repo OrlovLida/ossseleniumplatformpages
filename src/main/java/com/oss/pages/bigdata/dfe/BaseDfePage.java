@@ -26,13 +26,10 @@ import static com.oss.framework.utils.DelayUtils.waitForPageToLoad;
 public abstract class BaseDfePage extends BasePage implements BaseDfePageInterface {
 
     private static final Logger log = LoggerFactory.getLogger(BaseDfePage.class);
+    private static final String SAVE_LABEL = "Save";
 
     protected BaseDfePage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
-    }
-
-    public OldTable getTable(WebDriver driver, WebDriverWait wait) {
-        return OldTable.createById(driver, wait, getTableId());
     }
 
     public static void openDfePage(WebDriver driver, String basicURL, WebDriverWait wait, String viewName) {
@@ -40,6 +37,23 @@ public abstract class BaseDfePage extends BasePage implements BaseDfePageInterfa
         driver.get(pageUrl);
         waitForPageToLoad(driver, wait);
         log.info("Opening page: {}", pageUrl);
+    }
+
+    public OldTable getTable(WebDriver driver, WebDriverWait wait) {
+        return OldTable.createById(driver, wait, getTableId());
+    }
+
+    @Step("Attach downloaded file to report")
+    public void attachFileToReport(String fileName) {
+        FileDownload.attachDownloadedFileToReport(fileName);
+        log.info("Attaching downloaded file to report");
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    @Step("Check if file is not empty")
+    public boolean checkIfFileIsNotEmpty(String fileName) {
+        log.info("Checking if file is not empty");
+        return FileDownload.checkIfFileIsNotEmpty(fileName);
     }
 
     protected void searchFeed(String searchText) {
@@ -91,6 +105,10 @@ public abstract class BaseDfePage extends BasePage implements BaseDfePageInterfa
         ConfirmationBox.create(driver, wait).clickButtonByLabel(deleteLabel);
     }
 
+    protected void confirmDeactivation() {
+        ConfirmationBox.create(driver, wait).clickButtonByLabel(SAVE_LABEL);
+    }
+
     protected void clickRefreshTabTable(String widgetId, String refreshLabel) {
         TabsWidget.createById(driver, wait, widgetId).callActionByLabel(refreshLabel);
         log.debug("Click context action: {}", refreshLabel);
@@ -116,19 +134,6 @@ public abstract class BaseDfePage extends BasePage implements BaseDfePageInterfa
         return OldTable
                 .createById(driver, wait, logsTableTabId)
                 .getCellValue(0, columnLabel);
-    }
-
-    @Step("Attach downloaded file to report")
-    public void attachFileToReport(String fileName) {
-        FileDownload.attachDownloadedFileToReport(fileName);
-        log.info("Attaching downloaded file to report");
-        DelayUtils.waitForPageToLoad(driver, wait);
-    }
-
-    @Step("Check if file is not empty")
-    public boolean checkIfFileIsNotEmpty(String fileName) {
-        log.info("Checking if file is not empty");
-        return FileDownload.checkIfFileIsNotEmpty(fileName);
     }
 
     protected String checkValueInPropertyPanel(String propertyPanelId, String propertyName) {
