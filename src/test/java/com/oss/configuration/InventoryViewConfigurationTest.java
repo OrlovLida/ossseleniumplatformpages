@@ -6,8 +6,11 @@ import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Prope
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.aspectj.lang.annotation.After;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
@@ -31,6 +34,7 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
     private final static String CONFIGURATION_NAME_IV = "IV_" + LocalDate.now();
     private final static String CONFIGURATION_NAME_IV_DEFAULT_FOR_USER = "IV_Default_For_User";
     private final static String CONFIGURATION_NAME_IV_TYPE_DEFAULT_FOR_GROUP = "IV_Default_For_GROUP_TYPE";
+    private static final String DEFAULT = "DEFAULT";
     private final static String DEFAULT_CONFIGURATION = "DEFAULT";
     private final static String CONFIGURATION_NAME_TABLE_WIDGET_USED_IN_VIEW_CONFIG =
             "Table_Widget_Used_In_View_Configuration_Selenium_Test_" + LocalDate.now();
@@ -61,17 +65,35 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
     private static final String PASSWORD_2 = "oss";
     private final static String USER1 = "webseleniumtests";
     private static final String PASSWORD_1 = "Webtests123!";
-    
+    private static final String MODEL = "MODEL";
+
     private NewInventoryViewPage inventoryViewPage;
     private TableWidget tableWidget;
     
     @BeforeClass
     public void goToInventoryView() {
+        deleteOldConfiguration();
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_PERSON_TYPE);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         tableWidget = inventoryViewPage.getMainTable();
     }
-    
+
+    private void deleteOldConfiguration(){
+        inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_DIRECTOR_TYPE);
+        deleteOldConfigurations(inventoryViewPage.getTableConfigurationsName());
+        deleteOldConfigurations(inventoryViewPage.getPageConfigurationsName());
+        inventoryViewPage.selectFirstRow();
+        deleteOldConfigurations(inventoryViewPage.getTabsConfigurationsName());
+        inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_PERSON_TYPE);
+        deleteOldConfigurations(inventoryViewPage.getPageConfigurationsName());
+        deleteOldConfigurations(inventoryViewPage.getTableConfigurationsName());
+    }
+
+    private void deleteOldConfigurations(List<String> configurationNames) {
+        List<String> savedConfigurations = configurationNames.stream().filter(name-> !name.equals(MODEL) && !name.equals(DEFAULT)).collect(Collectors.toList());
+        inventoryViewPage.deleteConfigurations(savedConfigurations);
+    }
+
     @Test(priority = 1)
     public void saveNewConfigurationForIVPage() {
         inventoryViewPage.disableColumnAndApply(GENDER_LABEL);
@@ -126,9 +148,7 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
         inventoryViewPage.disableColumnAndApply(TYPE_LABEL);
         inventoryViewPage.updateConfigurationForMainTable();
         inventoryViewPage.updatePageConfiguration();
-        
         driver.navigate().refresh();
-        
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         List<String> columnHeaders = inventoryViewPage.getActiveColumnsHeaders();
         Assert.assertFalse(columnHeaders.contains(TYPE_LABEL));
@@ -147,7 +167,6 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
     @Test(priority = 7)
     public void tryRemoveConfigurationUsedInConfigurationOfPage() {
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_PERSON_TYPE);
-        
         inventoryViewPage.deleteConfigurationForMainTable(CONFIGURATION_NAME_TABLE_WIDGET_USED_IN_VIEW_CONFIG);
         assertDangerMessage();
         
@@ -159,17 +178,16 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
     @Test(priority = 8)
     public void removePageConfiguration() {
         inventoryViewPage.deletePageConfiguration(CONFIGURATION_NAME_IV);
-        
         assertSuccessMessage();
-        
+
         inventoryViewPage.deleteConfigurationForMainTable(CONFIGURATION_NAME_TABLE_WIDGET_USED_IN_VIEW_CONFIG);
         assertSuccessMessage();
-        
+
         selectObjectOfSuperType(TEST_ACTOR_TYPE);
         inventoryViewPage.removeConfigurationForTabs(CONFIGURATION_TEST_ACTOR_TABS_WIDGET_USED_IN_VIEW_CONFIG);
         assertSuccessMessage();
+
         tableWidget.unselectAllRows();
-        
         selectObjectOfSuperType(TEST_DIRECTOR_TYPE);
         inventoryViewPage.removeConfigurationForTabs(CONFIGURATION_TEST_DIRECTOR_TABS_WIDGET_USED_IN_VIEW_CONFIG);
         assertSuccessMessage();
@@ -224,19 +242,11 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
         TableWidget tableWidget1 = inventoryViewPage.getMainTable();
         int newSize = tableWidget1.getFirstColumnSize();
         Assert.assertEquals(defaultSize + offset, newSize);
+
         inventoryViewPage.selectFirstRow();
-        
         Assert.assertFalse(inventoryViewPage.isTabVisible(MATERIALS));
         Assert.assertTrue(inventoryViewPage.isTabVisible(MOVIES));
-        
-        inventoryViewPage.deletePageConfiguration(CONFIGURATION_NAME_IV_DEFAULT_FOR_USER);
-        assertSuccessMessage();
-        inventoryViewPage.deletePageConfiguration(CONFIGURATION_NAME_IV_TYPE_DEFAULT_FOR_GROUP);
-        assertSuccessMessage();
-        
-        inventoryViewPage.removeConfigurationForTabs(CONFIGURATION_TEST_DIRECTOR_TABS_WIDGET_USED_IN_DEFAULT_GROUP_CONFIG);
-        inventoryViewPage.removeConfigurationForTabs(CONFIGURATION_TEST_PERSON_TABS_WIDGET_USED_IN_DEFAULT_VIEW_CONFIG);
-        inventoryViewPage.deleteConfigurationForMainTable(CONFIGURATION_NAME_TABLE_WIDGET_USED_IN_DEFAULT_VIEW_CONFIG);
+
     }
     
     @AfterMethod
@@ -244,6 +254,15 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
         if (!tableWidget.getSelectedObjectCount().equals("0 selected")) {
             tableWidget.unselectAllRows();
         }
+    }
+
+    @AfterClass
+    public void deleteConfiguration(){
+        inventoryViewPage.deletePageConfiguration(CONFIGURATION_NAME_IV_DEFAULT_FOR_USER);
+        inventoryViewPage.deletePageConfiguration(CONFIGURATION_NAME_IV_TYPE_DEFAULT_FOR_GROUP);
+        inventoryViewPage.removeConfigurationForTabs(CONFIGURATION_TEST_DIRECTOR_TABS_WIDGET_USED_IN_DEFAULT_GROUP_CONFIG);
+        inventoryViewPage.removeConfigurationForTabs(CONFIGURATION_TEST_PERSON_TABS_WIDGET_USED_IN_DEFAULT_VIEW_CONFIG);
+        inventoryViewPage.deleteConfigurationForMainTable(CONFIGURATION_NAME_TABLE_WIDGET_USED_IN_DEFAULT_VIEW_CONFIG);
     }
     
     private SaveConfigurationWizard.Field createField(SaveConfigurationWizard.Property property, String... values) {
@@ -255,7 +274,6 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
         inventoryViewPage.enableWidget(widgetType, widgetLabel);
         inventoryViewPage.saveConfigurationForTabs(configurationName, createField(TYPE, typeValue));
         tableWidget.unselectAllRows();
-        
     }
     
     private void selectObjectOfSuperType(String typeValue) {

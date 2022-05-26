@@ -12,9 +12,11 @@ import org.testng.annotations.Test;
 import com.oss.BaseTestCase;
 import com.oss.pages.servicedesk.changemanagement.ChangeDashboardPage;
 import com.oss.pages.servicedesk.issue.IssueDetailsPage;
+import com.oss.pages.servicedesk.issue.tabs.AffectedTab;
 import com.oss.pages.servicedesk.issue.tabs.AttachmentsTab;
 import com.oss.pages.servicedesk.issue.tabs.DescriptionTab;
 import com.oss.pages.servicedesk.issue.tabs.MessagesTab;
+import com.oss.pages.servicedesk.issue.tabs.OverviewTab;
 import com.oss.pages.servicedesk.issue.tabs.ParticipantsTab;
 import com.oss.pages.servicedesk.issue.tabs.RelatedChangesTab;
 import com.oss.pages.servicedesk.issue.tabs.RelatedProblemsTab;
@@ -35,6 +37,7 @@ public class ChangesTest extends BaseTestCase {
     private ChangeDashboardPage changeDashboardPage;
     private SDWizardPage sdWizardPage;
     private IssueDetailsPage issueDetailsPage;
+    private OverviewTab changeOverviewTab;
     private MessagesTab messagesTab;
     private RelatedChangesTab relatedChangesTab;
     private RootCausesTab rootCausesTab;
@@ -43,6 +46,7 @@ public class ChangesTest extends BaseTestCase {
     private ParticipantsTab participantsTab;
     private AttachmentsTab attachmentsTab;
     private DescriptionTab descriptionTab;
+    private AffectedTab affectedTab;
     private String changeID;
 
     private static final String RISK_ASSESSMENT_ID = "TT_WIZARD_INPUT_RISK_ASSESSMENT_LABEL";
@@ -55,13 +59,13 @@ public class ChangesTest extends BaseTestCase {
     private static final String INCIDENT_DESCRIPTION_TXT_MODIFY = "Selenium Incident Description Modified in description Tab";
     private static final String NOTIFICATION_INTERNAL_MSG = "Test Selenium Internal Message";
     private static final String NOTIFICATION_EMAIL_MSG = "Test Selenium Email Message";
-    private static final String TABLES_WINDOW_ID = "_tablesWindow";
     private static final String INTERNAL_COMMENT_MSG = "Test Selenium Message Comment in Change";
     private static final String PARTICIPANT_FIRST_NAME = "SeleniumTest";
     private static final String PARTICIPANT_FIRST_NAME_EDITED = "SeleniumTestEdited";
     private static final String PARTICIPANT_SURNAME = LocalDateTime.now().toString();
     private static final String PARTICIPANT_ROLE = "Contact";
     private static final String TABS_WIDGET_ID = "_tablesWindow";
+    private static final String COMBOBOX_LINK_CHANGE_ID = "linkChange";
 
     @BeforeMethod
     public void goToChangeDashboardOrIssue(Method method) {
@@ -97,22 +101,23 @@ public class ChangesTest extends BaseTestCase {
     public void editChange(
             @Optional("ca_kodrobinska") String newAssignee
     ) {
-        sdWizardPage = issueDetailsPage.openEditChangeWizard();
+        changeOverviewTab = issueDetailsPage.selectOverviewTab(CHANGE_ISSUE_TYPE);
+        sdWizardPage = changeOverviewTab.openEditIssueWizard();
         sdWizardPage.insertValueToSearchComponent(newAssignee, ASSIGNEE_ID);
         sdWizardPage.insertValueToTextAreaComponent(INCIDENT_DESCRIPTION_TXT_EDITED, INCIDENT_DESCRIPTION_ID);
         sdWizardPage.clickNextButtonInWizard();
         sdWizardPage.clickAcceptButtonInWizard();
-        Assert.assertEquals(issueDetailsPage.checkAssignee(), newAssignee);
+        Assert.assertEquals(changeOverviewTab.checkAssignee(), newAssignee);
     }
 
     @Test(priority = 3, testName = "Check description", description = "Check change description on Description tab")
     @Description("Check change description on Description tab")
     public void checkDescription() {
         descriptionTab = issueDetailsPage.selectDescriptionTab();
-        Assert.assertEquals(descriptionTab.getDescriptionMessage(), INCIDENT_DESCRIPTION_TXT_EDITED);
+        Assert.assertEquals(descriptionTab.getTextMessage(), INCIDENT_DESCRIPTION_TXT_EDITED);
 
-        descriptionTab.addDescription(INCIDENT_DESCRIPTION_TXT_MODIFY);
-        Assert.assertEquals(descriptionTab.getDescriptionMessage(), INCIDENT_DESCRIPTION_TXT_MODIFY);
+        descriptionTab.addTextNote(INCIDENT_DESCRIPTION_TXT_MODIFY);
+        Assert.assertEquals(descriptionTab.getTextMessage(), INCIDENT_DESCRIPTION_TXT_MODIFY);
     }
 
     @Parameters({"messageTo"})
@@ -121,7 +126,7 @@ public class ChangesTest extends BaseTestCase {
     public void addInternalNotification(
             @Optional("ca_kodrobinska") String messageTo
     ) {
-        issueDetailsPage.maximizeWindow(TABLES_WINDOW_ID);
+        issueDetailsPage.maximizeWindow(TABS_WIDGET_ID);
         messagesTab = issueDetailsPage.selectMessagesTab();
         sdWizardPage = messagesTab.createNewNotificationOnMessagesTab();
         sdWizardPage.createInternalNotification(NOTIFICATION_INTERNAL_MSG, messageTo);
@@ -139,7 +144,7 @@ public class ChangesTest extends BaseTestCase {
             @Optional("kornelia.odrobinska@comarch.com") String notificationEmailTo,
             @Optional("switch.ticket@comarch.com") String notificationEmailFrom
     ) {
-        issueDetailsPage.maximizeWindow(TABLES_WINDOW_ID);
+        issueDetailsPage.maximizeWindow(TABS_WIDGET_ID);
         messagesTab = issueDetailsPage.selectMessagesTab();
         sdWizardPage = messagesTab.createNewNotificationOnMessagesTab();
         sdWizardPage.createEmailNotification(notificationEmailTo, notificationEmailFrom, NOTIFICATION_EMAIL_MSG);
@@ -152,7 +157,7 @@ public class ChangesTest extends BaseTestCase {
     @Test(priority = 6, testName = "Add Internal Comment", description = "Add Internal Comment")
     @Description("Add Internal Comment")
     public void addInternalComment() {
-        issueDetailsPage.maximizeWindow(TABLES_WINDOW_ID);
+        issueDetailsPage.maximizeWindow(TABS_WIDGET_ID);
         messagesTab = issueDetailsPage.selectMessagesTab();
         messagesTab.addInternalComment(INTERNAL_COMMENT_MSG);
 
@@ -169,9 +174,7 @@ public class ChangesTest extends BaseTestCase {
             @Optional("35") String RelatedChangeID
     ) {
         relatedChangesTab = issueDetailsPage.selectRelatedChangesTab();
-        sdWizardPage = relatedChangesTab.openLinkIssueWizard();
-        sdWizardPage.insertValueToMultiSearchComponent(RelatedChangeID, "linkChange");
-        sdWizardPage.clickLinkButton();
+        relatedChangesTab.linkIssue(RelatedChangeID, COMBOBOX_LINK_CHANGE_ID);
 
         Assert.assertEquals(relatedChangesTab.checkRelatedIssueId(0), RelatedChangeID);
     }
@@ -341,5 +344,18 @@ public class ChangesTest extends BaseTestCase {
         attachmentsTab.clickDeleteAttachment();
 
         Assert.assertTrue(attachmentsTab.isAttachmentListEmpty());
+    }
+
+    @Parameters({"serviceMOIdentifier"})
+    @Test(priority = 30, testName = "Add Affected", description = "Add Affected Service to the Change")
+    @Description("Add Affected Service to the Change")
+    public void addAffected(
+            @Optional("TEST_MO_ABS_SRV") String serviceMOIdentifier
+    ) {
+        affectedTab = issueDetailsPage.selectAffectedTab();
+        int initialServiceCount = affectedTab.countServicesInTable();
+        affectedTab.addServiceToTable(serviceMOIdentifier);
+
+        Assert.assertEquals(affectedTab.countServicesInTable(), initialServiceCount + 1);
     }
 }

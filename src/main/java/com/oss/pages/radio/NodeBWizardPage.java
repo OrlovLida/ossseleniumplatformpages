@@ -1,10 +1,11 @@
 package com.oss.pages.radio;
 
-import com.oss.framework.components.inputs.Input;
+import org.openqa.selenium.WebDriver;
+
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
+
 import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
 
 public class NodeBWizardPage extends BasePage {
 
@@ -38,31 +39,28 @@ public class NodeBWizardPage extends BasePage {
 
     @Step("Set name")
     public NodeBWizardPage setName(String eNodeBName) {
-        getNodeBWizard().setComponentValue(NODE_B_NAME_DATA_ATTRIBUTE_NAME, eNodeBName, Input.ComponentType.TEXT_FIELD);
+        getNodeBWizard().setComponentValue(NODE_B_NAME_DATA_ATTRIBUTE_NAME, eNodeBName);
         return this;
     }
 
     @Step("Set NodeB Id")
-    public NodeBWizardPage setNodeBId(String nodeBId) {
-        getNodeBWizard().setComponentValue(NODE_B_ID_DATA_ATTRIBUTE_NAME, nodeBId, Input.ComponentType.TEXT_FIELD);
-        return this;
+    public void setNodeBId(String nodeBId) {
+        getNodeBWizard().setComponentValue(NODE_B_ID_DATA_ATTRIBUTE_NAME, nodeBId);
     }
 
     @Step("Set NodeB Model")
-    public NodeBWizardPage setNodeBModel(String nodeBModel) {
-        getNodeBWizard().setComponentValue(NODE_B_MODEL_DATA_ATTRIBUTE_NAME, nodeBModel, Input.ComponentType.COMBOBOX);
-        return this;
+    public void setNodeBModel(String nodeBModel) {
+        getNodeBWizard().setComponentValue(NODE_B_MODEL_DATA_ATTRIBUTE_NAME, nodeBModel);
     }
 
     @Step("Set RNC")
-    public NodeBWizardPage setRNC(String rnc) {
-        getNodeBWizard().setComponentValue(NODE_B_RNC_DATA_ATTRIBUTE_NAME, rnc, Input.ComponentType.SEARCH_FIELD);
-        return this;
+    public void setRNC(String rnc) {
+        getNodeBWizard().setComponentValue(NODE_B_RNC_DATA_ATTRIBUTE_NAME, rnc);
     }
 
     @Step("Set description")
     public NodeBWizardPage setDescription(String description) {
-        getNodeBWizard().setComponentValue(NODE_B_DESCRIPTION_DATA_ATTRIBUTE_NAME, description, Input.ComponentType.TEXT_FIELD);
+        getNodeBWizard().setComponentValue(NODE_B_DESCRIPTION_DATA_ATTRIBUTE_NAME, description);
         return this;
     }
 

@@ -6,6 +6,7 @@ import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Prope
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
@@ -31,6 +32,8 @@ public class TabsConfigurationTest extends BaseTestCase {
     private final static String CONFIGURATION_NAME_TABS_WIDGET_DEFAULT_FOR_USER =
             "Tabs_Widget_Supertype_Default_For_User_" + LocalDate.now();
     private final static String CONFIGURATION_NAME_TABS_WIDGET_GROUP = "Tabs_Widget_Group_" + LocalDate.now();
+    private static final String DEFAULT = "DEFAULT";
+    private static final String MODEL = "MODEL";
 
     private NewInventoryViewPage newInventoryViewPage;
     private TableWidget tableWidget;
@@ -51,21 +54,34 @@ public class TabsConfigurationTest extends BaseTestCase {
 
     @BeforeClass
     public void goToInventoryView() {
-        // given
+        deleteOldConfiguration();
         newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_PERSON);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
+    private void deleteOldConfiguration(){
+        newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_DIRECTOR);
+        List<String> pageConfigurationsNameDirector = newInventoryViewPage.getPageConfigurationsName().stream().filter(name-> !name.equals(MODEL) && !name.equals(DEFAULT)).collect(Collectors.toList());
+        newInventoryViewPage.deleteConfigurations(pageConfigurationsNameDirector);
+        newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_PERSON);
+        deleteOldTabsConfigurations(TEST_DIRECTOR);
+        deleteOldTabsConfigurations(TEST_ACTOR);
+    }
+
+    private void deleteOldTabsConfigurations(String objectType) {
+        selectObjectOfSuperType(objectType);
+        List<String> tabsConfigurationsName = newInventoryViewPage.getTabsConfigurationsName().stream().filter(name -> !name.equals(MODEL) && !name.equals(DEFAULT)).collect(Collectors.toList());
+        newInventoryViewPage.deleteConfigurations(tabsConfigurationsName);
+        newInventoryViewPage.getMainTable().unselectAllRows();
+    }
+
     @Test(priority = 1)
     public void saveNewConfigurationForTabsWidgetForSupertype() {
-        // when
-
         selectObjectOfSuperType(TEST_ACTOR);
         newInventoryViewPage.enableWidget(TABLE_TYPE, MATERIALS);
         newInventoryViewPage.enableWidget(TABLE_TYPE, INTERESTS);
         newInventoryViewPage.saveConfigurationForTabs(CONFIGURATION_NAME_TABS_WIDGET, createField(TYPE, TEST_ACTOR));
 
-        // then
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
 
@@ -172,7 +188,6 @@ public class TabsConfigurationTest extends BaseTestCase {
         // when
         newInventoryViewPage.changeUser(USER2, PASSWORD_2);
         newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_PERSON);
-
         newInventoryViewPage.chooseGroupContext(GROUP_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         selectObjectOfSuperType(TEST_DIRECTOR);

@@ -8,11 +8,6 @@ import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
-import static com.oss.framework.components.inputs.Input.ComponentType.OBJECT_SEARCH_FIELD;
-import static com.oss.framework.components.inputs.Input.ComponentType.SEARCH_FIELD;
-import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
-
 public class RanAntennaWizardPage extends BasePage {
 
     private static final String RAN_ANTENNA_WIZARD_DATA_ATTRIBUTE_NAME = "antenna-wizard";
@@ -43,55 +38,55 @@ public class RanAntennaWizardPage extends BasePage {
 
     @Step("Set name")
     public void setName(String name) {
-        getRanAntennaWizard().setComponentValue(RAN_ANTENNA_NAME_DATA_ATTRIBUTE_NAME, name, TEXT_FIELD);
+        getRanAntennaWizard().setComponentValue(RAN_ANTENNA_NAME_DATA_ATTRIBUTE_NAME, name);
     }
 
     @Step("Set description")
     public void setDescription(String description) {
-        getRanAntennaWizard().setComponentValue(RAN_ANTENNA_DESCRIPTION_DATA_ATTRIBUTE_NAME, description, TEXT_FIELD);
+        getRanAntennaWizard().setComponentValue(RAN_ANTENNA_DESCRIPTION_DATA_ATTRIBUTE_NAME, description);
     }
 
     @Step("Set model")
     public void setModel(String model) {
-        getRanAntennaWizard().getComponent(RAN_ANTENNA_MODEL_DATA_ATTRIBUTE_NAME, COMBOBOX).setSingleStringValueContains(model);
+        getRanAntennaWizard().setComponentValue(RAN_ANTENNA_MODEL_DATA_ATTRIBUTE_NAME, model);
     }
 
     @Step("Set location")
     public void setLocation(String location) {
-        if (getRanAntennaWizard().getComponent(RAN_ANTENNA_LOCATION_DATA_ATTRIBUTE_NAME, OBJECT_SEARCH_FIELD)
+        if (getRanAntennaWizard().getComponent(RAN_ANTENNA_LOCATION_DATA_ATTRIBUTE_NAME)
                 .getStringValue().isEmpty()) {
-            getRanAntennaWizard().setComponentValue(RAN_ANTENNA_LOCATION_DATA_ATTRIBUTE_NAME, location, OBJECT_SEARCH_FIELD);
+            getRanAntennaWizard().setComponentValue(RAN_ANTENNA_LOCATION_DATA_ATTRIBUTE_NAME, location);
         }
     }
 
     @Step("Set precise location")
     public void setPreciseLocation(String location) {
-        getRanAntennaWizard().setComponentValue(RAN_ANTENNA_PRECISE_LOCATION_DATA_ATTRIBUTE_NAME, location, OBJECT_SEARCH_FIELD);
+        getRanAntennaWizard().setComponentValue(RAN_ANTENNA_PRECISE_LOCATION_DATA_ATTRIBUTE_NAME, location);
     }
 
     @Step("Set mechanical tilt")
     public void setMechanicalTilt(String mechanicalTilt) {
-        getRanAntennaWizard().setComponentValue(RAN_ANTENNA_MECHANICAL_TILT_DATA_ATTRIBUTE_NAME, mechanicalTilt, TEXT_FIELD);
+        getRanAntennaWizard().setComponentValue(RAN_ANTENNA_MECHANICAL_TILT_DATA_ATTRIBUTE_NAME, mechanicalTilt);
     }
 
     @Step("Set azimuth")
     public void setAzimuth(String azimuth) {
-        getRanAntennaWizard().setComponentValue(RAN_ANTENNA_AZIMUTH_DATA_ATTRIBUTE_NAME, azimuth, TEXT_FIELD);
+        getRanAntennaWizard().setComponentValue(RAN_ANTENNA_AZIMUTH_DATA_ATTRIBUTE_NAME, azimuth);
     }
 
     @Step("Set height")
     public void setHeight(String height) {
-        getRanAntennaWizard().setComponentValue(RAN_ANTENNA_HEIGHT_AGL_DATA_ATTRIBUTE_NAME, height, TEXT_FIELD);
+        getRanAntennaWizard().setComponentValue(RAN_ANTENNA_HEIGHT_AGL_DATA_ATTRIBUTE_NAME, height);
     }
 
     @Step("Set side tilt")
     public void setSideTilt(String sideTilt) {
-        getRanAntennaWizard().setComponentValue(RAN_ANTENNA_SIDE_TILT_DATA_ATTRIBUTE_NAME, sideTilt, TEXT_FIELD);
+        getRanAntennaWizard().setComponentValue(RAN_ANTENNA_SIDE_TILT_DATA_ATTRIBUTE_NAME, sideTilt);
     }
 
     @Step("Set mounting type")
     public void setMountingType(String mountingType) {
-        getRanAntennaWizard().setComponentValue(RAN_ANTENNA_MOUNTING_TYPE_DATA_ATTRIBUTE_NAME, mountingType, COMBOBOX);
+        getRanAntennaWizard().setComponentValue(RAN_ANTENNA_MOUNTING_TYPE_DATA_ATTRIBUTE_NAME, mountingType);
     }
 
     @Step("Click Accept button")

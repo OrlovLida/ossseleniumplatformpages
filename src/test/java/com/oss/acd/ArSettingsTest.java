@@ -1,19 +1,18 @@
 package com.oss.acd;
 
-import com.oss.BaseTestCase;
-import com.oss.framework.components.inputs.Button;
-import com.oss.pages.acd.BaseACDPage;
-import com.oss.pages.acd.settingsView.ArSettingsPage;
-import com.oss.utils.TestListener;
-
-import io.qameta.allure.Description;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+
+import com.oss.BaseTestCase;
+import com.oss.pages.acd.BaseACDPage;
+import com.oss.pages.acd.settingsview.ArSettingsPage;
+import com.oss.utils.TestListener;
+
+import io.qameta.allure.Description;
 
 @Listeners({TestListener.class})
 public class ArSettingsTest extends BaseTestCase {
@@ -24,17 +23,16 @@ public class ArSettingsTest extends BaseTestCase {
     private BaseACDPage baseACDPage;
 
     private final String arSettingsViewSuffixUrl = "%s/#/view/acd/kaSettings";
-    private String TYPE_ACTION_TEMPLATE_COMBOBOX_ID = "type-input";
-    private String REASON_ACTION_TEMPLATE_COMBOBOX_ID = "reason-input";
-    private String SCENARIO_ACTION_TEMPLATE_COMBOBOX_ID = "scenario-input";
-    private String ACTION_TEMPLATE_TYPE_VALUE = "Software";
-    private String ACTION_TEMPLATE_REASON_VALUE = "Fix";
-    private String ALL_SCENARIOS = "ALL";
-    private String DESCRIPTION_COMBO_BOX = "description";
-    private String DESCRIPTION_COMBO_BOX_VALUE = "Test123!?@Desc";
-    private String PARAM_COMBO_BOX = "param";
-    private String PARAM_COMBO_BOX_VALUE = "Test123!?@Param";
-    private String SUBSYSTEMS_HEALTH_TAB = "Subsystems Health";
+    private final String TYPE_ACTION_TEMPLATE_COMBOBOX_ID = "type-input";
+    private final String REASON_ACTION_TEMPLATE_COMBOBOX_ID = "reason-input";
+    private final String SCENARIO_ACTION_TEMPLATE_COMBOBOX_ID = "scenario-input";
+    private final String ACTION_TEMPLATE_TYPE_VALUE = "Software";
+    private final String ACTION_TEMPLATE_REASON_VALUE = "Fix";
+    private final String ALL_SCENARIOS = "ALL";
+    private final String DESCRIPTION_MULTI_SEARCH = "description";
+    private final String DESCRIPTION_MULTI_SEARCH_VALUE = "Desc123";
+    private final String PARAM_MULTI_SEARCH = "param";
+    private final String PARAM_MULTI_SEARCH_VALUE = "Param123";
 
     @BeforeClass
     public void goToArSettingsView() {
@@ -48,8 +46,8 @@ public class ArSettingsTest extends BaseTestCase {
         arSettingsPage.clickAddActionTemplate();
         arSettingsPage.chooseOptionInComboBox(TYPE_ACTION_TEMPLATE_COMBOBOX_ID, ACTION_TEMPLATE_TYPE_VALUE);
         arSettingsPage.chooseOptionInComboBox(REASON_ACTION_TEMPLATE_COMBOBOX_ID, ACTION_TEMPLATE_REASON_VALUE);
-        arSettingsPage.setValueInInputField(DESCRIPTION_COMBO_BOX, DESCRIPTION_COMBO_BOX_VALUE);
-        arSettingsPage.setValueInInputField(PARAM_COMBO_BOX, PARAM_COMBO_BOX_VALUE);
+        baseACDPage.setValueInInputField(DESCRIPTION_MULTI_SEARCH, DESCRIPTION_MULTI_SEARCH_VALUE);
+        baseACDPage.setValueInInputField(PARAM_MULTI_SEARCH, PARAM_MULTI_SEARCH_VALUE);
         arSettingsPage.chooseOptionInComboBox(SCENARIO_ACTION_TEMPLATE_COMBOBOX_ID, ALL_SCENARIOS);
         arSettingsPage.clickSaveButton();
         log.info("Action Template has been created");
@@ -59,22 +57,32 @@ public class ArSettingsTest extends BaseTestCase {
     @Description("Verify if created Action Template exists")
     public void searchingForActionTemplate() {
 
-        if (!arSettingsPage.searchingThroughActionTemplates(DESCRIPTION_COMBO_BOX, DESCRIPTION_COMBO_BOX_VALUE)) {
+        if (!arSettingsPage.searchingThroughActionTemplates(DESCRIPTION_MULTI_SEARCH, DESCRIPTION_MULTI_SEARCH_VALUE)) {
             log.error("Action Template table is empty");
+            arSettingsPage.clearMultiSearchBox(DESCRIPTION_MULTI_SEARCH);
             Assert.fail();
         }
 
         if (!arSettingsPage.isThereActionTemplateCreated()) {
             log.error("Action Template table doesn't contain data for provided filters");
+            arSettingsPage.clearMultiSearchBox(DESCRIPTION_MULTI_SEARCH);
             Assert.fail();
         }
-        log.info("Action Template has been found");
+        log.info("Action Template has been found. I clear MultiSearchBox.");
+        arSettingsPage.clearMultiSearchBox(DESCRIPTION_MULTI_SEARCH);
     }
 
     @Test(priority = 3, testName = "Delete Action Template", description = "Delete Action Template")
     @Description("Delete Action Template")
     public void deleteActionTemplate() {
+
+        if (!arSettingsPage.searchingThroughActionTemplates(DESCRIPTION_MULTI_SEARCH, DESCRIPTION_MULTI_SEARCH_VALUE)) {
+            log.error("Action Template table is empty");
+            arSettingsPage.clearMultiSearchBox(DESCRIPTION_MULTI_SEARCH);
+            Assert.fail();
+        }
         arSettingsPage.selectFirstActionTemplateFromTable();
         arSettingsPage.deleteActionTemplate();
+        arSettingsPage.clearMultiSearchBox(DESCRIPTION_MULTI_SEARCH);
     }
 }

@@ -14,6 +14,7 @@ import com.oss.pages.servicedesk.BaseSearchPage;
 import com.oss.pages.servicedesk.issue.IssueDetailsPage;
 import com.oss.pages.servicedesk.issue.MoreDetailsPage;
 import com.oss.pages.servicedesk.issue.RemainderForm;
+import com.oss.pages.servicedesk.issue.tabs.AffectedTab;
 import com.oss.pages.servicedesk.issue.tabs.AttachmentsTab;
 import com.oss.pages.servicedesk.issue.tabs.ExternalTab;
 import com.oss.pages.servicedesk.issue.tabs.MessagesTab;
@@ -22,6 +23,7 @@ import com.oss.pages.servicedesk.issue.tabs.RelatedProblemsTab;
 import com.oss.pages.servicedesk.issue.tabs.RelatedTicketsTab;
 import com.oss.pages.servicedesk.issue.tabs.RootCausesTab;
 import com.oss.pages.servicedesk.issue.ticket.TicketDashboardPage;
+import com.oss.pages.servicedesk.issue.ticket.TicketOverviewTab;
 import com.oss.pages.servicedesk.issue.ticket.TicketSearchPage;
 import com.oss.pages.servicedesk.issue.wizard.ExternalPromptPage;
 import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
@@ -45,6 +47,7 @@ public class TicketsTest extends BaseTestCase {
     private TicketSearchPage ticketSearchPage;
     private SDWizardPage sdWizardPage;
     private IssueDetailsPage issueDetailsPage;
+    private TicketOverviewTab ticketOverviewTab;
     private MessagesTab messagesTab;
     private MoreDetailsPage moreDetailsPage;
     private RemainderForm remainderForm;
@@ -56,6 +59,7 @@ public class TicketsTest extends BaseTestCase {
     private RelatedTicketsTab relatedTicketsTab;
     private ParticipantsTab participantsTab;
     private RelatedProblemsTab relatedProblemsTab;
+    private AffectedTab affectedTab;
     private String ticketID;
 
     private static final String TT_DESCRIPTION = "TestSelenium";
@@ -93,7 +97,6 @@ public class TicketsTest extends BaseTestCase {
     private static final String TT_WIZARD_MESSAGE_DATE_ID = "PleaseProvideTheTimeOnTheHandsetTheTxtMessageArrived";
 
     private static final String STATUS_ACKNOWLEDGED = "Acknowledged";
-    private static final String OVERVIEW_TAB_ARIA_CONTROLS = "most-wanted";
     private static final String DICTIONARIES_TAB_ARIA_CONTROLS = "_dictionariesTab";
     private static final String DESCRIPTION_TAB_ARIA_CONTROLS = "_descriptionTab";
     private static final String MOST_IMPORTANT_INFO_TAB_ARIA_CONTROLS = "_mostImportantTab";
@@ -169,8 +172,9 @@ public class TicketsTest extends BaseTestCase {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
         issueDetailsPage.maximizeWindow(DETAILS_TABS_CONTAINER_ID);
         ticketID = issueDetailsPage.getOpenedIssueId();
-        issueDetailsPage.allowEditingTicket();
-        sdWizardPage = issueDetailsPage.openEditTicketWizard();
+        ticketOverviewTab = (TicketOverviewTab) issueDetailsPage.selectOverviewTab(TROUBLE_TICKET_ISSUE_TYPE);
+        ticketOverviewTab.allowEditingTicket();
+        sdWizardPage = ticketOverviewTab.openEditTicketWizard();
         sdWizardPage.clickNextButtonInWizard();
         sdWizardPage.insertValueToSearchComponent(NewAssignee, TT_WIZARD_ASSIGNEE);
         sdWizardPage.enterIncidentDescription(TT_DESCRIPTION_EDITED);
@@ -186,8 +190,8 @@ public class TicketsTest extends BaseTestCase {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
         issueDetailsPage.skipAllActionsOnCheckList();
         Assert.assertTrue(issueDetailsPage.isAllActionsSkipped());
-        issueDetailsPage.changeTicketStatus(STATUS_ACKNOWLEDGED);
-        Assert.assertEquals(issueDetailsPage.checkTicketStatus(), STATUS_ACKNOWLEDGED);
+        ticketOverviewTab.changeTicketStatus(STATUS_ACKNOWLEDGED);
+        Assert.assertEquals(ticketOverviewTab.checkTicketStatus(), STATUS_ACKNOWLEDGED);
     }
 
     @Parameters({"NewAssignee"})
@@ -326,11 +330,11 @@ public class TicketsTest extends BaseTestCase {
     @Description("Add Remainder")
     public void addRemainderTest() {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
-        issueDetailsPage.selectTabFromDetailsWindow(OVERVIEW_TAB_ARIA_CONTROLS);
-        issueDetailsPage.maximizeWindow(DETAILS_TABS_CONTAINER_ID);
-        remainderForm = issueDetailsPage.clickAddRemainder();
+        ticketOverviewTab = (TicketOverviewTab) issueDetailsPage.selectOverviewTab(TROUBLE_TICKET_ISSUE_TYPE);
+        ticketOverviewTab.maximizeWindow(DETAILS_TABS_CONTAINER_ID);
+        remainderForm = ticketOverviewTab.clickAddRemainder();
         remainderForm.createReminderWithNote(REMAINDER_NOTE);
-        moreDetailsPage = issueDetailsPage.clickMoreDetails();
+        moreDetailsPage = ticketOverviewTab.clickMoreDetails();
         Assert.assertTrue(moreDetailsPage.isReminderNoteInLogsTable(REMAINDER_NOTE));
         goToTicketDashboardPage();
         Assert.assertTrue(ticketDashboardPage.isReminderPresent(ticketDashboardPage.getRowForIssueWithID(ticketID), REMAINDER_NOTE));
@@ -340,9 +344,9 @@ public class TicketsTest extends BaseTestCase {
     @Description("Edit Reminder")
     public void editRemainderTest() {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
-        issueDetailsPage.selectTabFromTablesWindow(OVERVIEW_TAB_ARIA_CONTROLS);
-        issueDetailsPage.maximizeWindow(DETAILS_TABS_CONTAINER_ID);
-        remainderForm = issueDetailsPage.clickEditRemainder();
+        ticketOverviewTab = (TicketOverviewTab) issueDetailsPage.selectOverviewTab(TROUBLE_TICKET_ISSUE_TYPE);
+        ticketOverviewTab.maximizeWindow(DETAILS_TABS_CONTAINER_ID);
+        remainderForm = ticketOverviewTab.clickEditRemainder();
         remainderForm.createReminderWithNote(EDITED_REMAINDER_NOTE);
         goToTicketDashboardPage();
         Assert.assertTrue(ticketDashboardPage.isReminderPresent(ticketDashboardPage.getRowForIssueWithID(ticketID), EDITED_REMAINDER_NOTE));
@@ -352,9 +356,9 @@ public class TicketsTest extends BaseTestCase {
     @Description("Delete Remainder")
     public void deleteRemainderTest() {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
-        issueDetailsPage.selectTabFromTablesWindow(OVERVIEW_TAB_ARIA_CONTROLS);
-        issueDetailsPage.maximizeWindow(DETAILS_TABS_CONTAINER_ID);
-        issueDetailsPage.clickRemoveRemainder();
+        ticketOverviewTab = (TicketOverviewTab) issueDetailsPage.selectOverviewTab(TROUBLE_TICKET_ISSUE_TYPE);
+        ticketOverviewTab.maximizeWindow(DETAILS_TABS_CONTAINER_ID);
+        ticketOverviewTab.clickRemoveRemainder();
         goToTicketDashboardPage();
         Assert.assertFalse(ticketDashboardPage.isReminderPresent(ticketDashboardPage.getRowForIssueWithID(ticketID), EDITED_REMAINDER_NOTE));
     }
@@ -579,6 +583,20 @@ public class TicketsTest extends BaseTestCase {
         Assert.assertFalse(mostImportantInfoTab.isMessagesTabEmpty());
         Assert.assertEquals(mostImportantInfoTab.getMessageText(0), NOTIFICATION_MESSAGE_COMMENT_IMPORTANT);
         Assert.assertEquals(mostImportantInfoTab.getBadgeTextFromMessage(0, 1), "IMPORTANT");
+    }
+
+    @Parameters({"serviceMOIdentifier"})
+    @Test(priority = 33, testName = "Add Affected", description = "Add Affected Service to the Ticket")
+    @Description("Add Affected Service to the Ticket")
+    public void addAffected(
+            @Optional("TEST_MO_ABS_SRV") String serviceMOIdentifier
+    ) {
+        issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
+        affectedTab = issueDetailsPage.selectAffectedTab();
+        int initialServiceCount = affectedTab.countServicesInTable();
+        affectedTab.addServiceToTable(serviceMOIdentifier);
+
+        Assert.assertEquals(affectedTab.countServicesInTable(), initialServiceCount + 1);
     }
 }
 
