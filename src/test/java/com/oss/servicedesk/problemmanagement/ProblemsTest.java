@@ -12,11 +12,12 @@ import org.testng.annotations.Test;
 import com.oss.BaseTestCase;
 import com.oss.pages.servicedesk.issue.IssueDetailsPage;
 import com.oss.pages.servicedesk.issue.problem.ProblemDashboardPage;
+import com.oss.pages.servicedesk.issue.tabs.AffectedTab;
 import com.oss.pages.servicedesk.issue.tabs.AttachmentsTab;
 import com.oss.pages.servicedesk.issue.tabs.DescriptionTab;
 import com.oss.pages.servicedesk.issue.tabs.ExternalTab;
-import com.oss.pages.servicedesk.issue.tabs.OverviewTab;
 import com.oss.pages.servicedesk.issue.tabs.MessagesTab;
+import com.oss.pages.servicedesk.issue.tabs.OverviewTab;
 import com.oss.pages.servicedesk.issue.tabs.ParticipantsTab;
 import com.oss.pages.servicedesk.issue.tabs.ProblemSolutionTab;
 import com.oss.pages.servicedesk.issue.tabs.RelatedChangesTab;
@@ -57,6 +58,7 @@ public class ProblemsTest extends BaseTestCase {
     private MessagesTab messagesTab;
     private RelatedChangesTab relatedChangesTab;
     private TasksTab tasksTab;
+    private AffectedTab affectedTab;
     private String problemId;
     private static final String PROBLEM_NAME_DESCRIPTION_ID = "TT_WIZARD_INPUT_PROBLEM_NAME_DESCRIPTION";
     private static final String PROBLEM_NAME_DESCRIPTION_TXT = "Selenium test Problem " + LocalDateTime.now().format(CREATE_DATE_FILTER_DATE_FORMATTER);
@@ -462,5 +464,18 @@ public class ProblemsTest extends BaseTestCase {
         sdWizardPage.clickButton(SAVE_EDITED_TASK_BUTTON_ID);
 
         Assert.assertEquals(tasksTab.getTaskName(), EDITED_TASK_NAME);
+    }
+
+    @Parameters({"serviceMOIdentifier"})
+    @Test(priority = 30, testName = "Add Affected", description = "Add Affected Service to the Problem")
+    @Description("Add Affected Service to the Problem")
+    public void addAffected(
+            @Optional("TEST_MO_ABS_SRV") String serviceMOIdentifier
+    ) {
+        affectedTab = issueDetailsPage.selectAffectedTab();
+        int initialServiceCount = affectedTab.countServicesInTable();
+        affectedTab.addServiceToTable(serviceMOIdentifier);
+
+        Assert.assertEquals(affectedTab.countServicesInTable(), initialServiceCount + 1);
     }
 }

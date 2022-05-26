@@ -8,10 +8,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.oss.framework.components.contextactions.ButtonContainer;
 import com.oss.framework.components.data.Data;
 import com.oss.framework.components.inputs.Button;
-import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.utils.DelayUtils;
@@ -29,11 +27,8 @@ public class SDWizardPage extends BaseSDPage {
     private static final String INCIDENT_DESCRIPTION_ID = "TT_WIZARD_INPUT_INCIDENT_DESCRIPTION";
     private static final String CHANGE_INCIDENT_DESCRIPTION_ID = "TT_WIZARD_INPUT_INCIDENT_DESCRIPTION_LABEL";
     private static final String EMAIL_MESSAGE_ID = "message-component";
-    private static final String CREATE_EXTERNAL_LABEL = "Create External";
     private static final String EXPECTED_RESOLUTION_DATE_ID = "TT_WIZARD_INPUT_EXPECTED_RESOLUTION_DATE_LABEL";
     private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss";
-    private static final String LINK_TICKETS_BUTTON_ID = "_buttonsApp-1";
-    private static final String UNLINK_CONFIRMATION_BUTTON_ID = "ConfirmationBox__confirmUnlinkProblemApp_action_button";
     private static final String TT_WIZARD_ASSIGNEE = "TT_WIZARD_INPUT_ASSIGNEE_LABEL";
     private static final String TT_WIZARD_REQUESTER = "TT_WIZARD_INPUT_REQUESTER_LABEL";
     private static final String TEST_SELENIUM_ID = "12345";
@@ -99,16 +94,9 @@ public class SDWizardPage extends BaseSDPage {
         log.info("Clicking {} button in the wizard", buttonID);
     }
 
-    @Step("I click Create External button in wizard")
-    public void clickCreateExternalButtonInWizard() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        ButtonContainer.create(driver, wait).callActionByLabel(CREATE_EXTERNAL_LABEL);
-        log.info("Clicking Create External button in the wizard");
-    }
-
     @Step("I insert {text} to multi combo box component with id {componentId}")
     public void insertValueToMultiComboBoxComponent(String text, String componentId) {
-        getWizard().getComponent(componentId, Input.ComponentType.MULTI_COMBOBOX).setValueContains(Data.createSingleData(text));
+        wizard.getComponent(componentId, Input.ComponentType.MULTI_COMBOBOX).setValueContains(Data.createSingleData(text));
         log.info("Value {} inserted to multi combobox", text);
     }
 
@@ -128,7 +116,7 @@ public class SDWizardPage extends BaseSDPage {
     @Step("I insert {text} to multi search component with id {componentId}")
     public SDWizardPage insertValueToMultiSearchComponent(String text, String componentId) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getWizard().getComponent(componentId, Input.ComponentType.MULTI_SEARCH_FIELD).setValueContains(Data.createSingleData(text));
+        wizard.getComponent(componentId, Input.ComponentType.MULTI_SEARCH_FIELD).setValueContains(Data.createSingleData(text));
         log.info("Value {} inserted to multi searchfield", text);
         return this;
     }
@@ -136,7 +124,7 @@ public class SDWizardPage extends BaseSDPage {
     @Step("I insert {text} to multi search box component with id {componentId}")
     public void insertValueToSearchBoxComponent(String text, String componentId) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getWizard().getComponent(componentId, Input.ComponentType.SEARCH_BOX).setValueContains(Data.createSingleData(text));
+        wizard.getComponent(componentId, Input.ComponentType.SEARCH_BOX).setValueContains(Data.createSingleData(text));
         log.info("Value {} inserted to search box", text);
     }
 
@@ -162,7 +150,7 @@ public class SDWizardPage extends BaseSDPage {
     @Step("Insert Expected resolution date: plus 5 days from now")
     public void enterExpectedResolutionDate() {
         String date = LocalDateTime.now().plusDays(5).format(DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN));
-        ComponentFactory.create(EXPECTED_RESOLUTION_DATE_ID, Input.ComponentType.TEXT_FIELD, driver, wait).setSingleStringValue(date);
+        wizard.setComponentValue(EXPECTED_RESOLUTION_DATE_ID, date, Input.ComponentType.TEXT_FIELD);
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Insert Expected resolution date: plus 5 days from now");
     }
@@ -172,16 +160,6 @@ public class SDWizardPage extends BaseSDPage {
         DelayUtils.waitForPageToLoad(driver, wait);
         setValueInHtmlEditor(message, EMAIL_MESSAGE_ID);
         log.info("Incident description: {} is entered", message);
-    }
-
-    @Step("Click Link Button")
-    public void clickLinkButton() {
-        clickButton(LINK_TICKETS_BUTTON_ID);
-    }
-
-    @Step("Click Unlink Button")
-    public void clickUnlinkConfirmationButton() {
-        clickButton(UNLINK_CONFIRMATION_BUTTON_ID);
     }
 
     public void clickComboBox(String componentId) {

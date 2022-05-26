@@ -40,7 +40,7 @@ public class ProcessWizardPage extends BasePage {
     private static final String RELEASE_ATTRIBUTE_ID = "release-combobox-input";
     private static final String PROCESS_NAME_ATTRIBUTE_ID = "bpm_processes_view_start-process-details-prompt_processCreateFormId";
     private static final String FINISH_DUE_DATE_ID = "FINISHED_DUE_DATE";
-    private static final String RELATED_TASK_IDENTIFIER = "relatedTaskIdentifier-COMBOBOX";
+    private static final String RELATED_TASK_IDENTIFIER = "relatedTaskIdentifier-input";
     private static final String CREATE_PROCESS_BUTTON = "Create new process";
     private static final String ACCEPT_BUTTON = "wizard-submit-button-start-process-wizard";
     private static final String CREATE_BUTTON = "wizard-submit-button-bpm_processes_view_start-process-details-prompt_processCreateFormId";

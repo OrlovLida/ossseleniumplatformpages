@@ -12,6 +12,7 @@
         <parameter name="notificationEmailFrom" value="switch.ticket@comarch.com"/>
         <parameter name="userName" value="sd_seleniumtest"/>
         <parameter name="taskAssignee" value="sd_seleniumtest"/>
+        <parameter name="serviceMOIdentifier" value="TEST_MO_ABS_SRV"/>
         <classes>
             <class name="com.oss.servicedesk.problemmanagement.ProblemsTest"/>
         </classes>
