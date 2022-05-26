@@ -448,7 +448,7 @@ public class ProblemsTest extends BaseTestCase {
     public void addTaskInProblemView(
             @Optional("sd_seleniumtest") String taskAssignee
     ) {
-        tasksTab = issueDetailsPage.selectTaskTab();
+        tasksTab = issueDetailsPage.selectTasksTab();
         sdWizardPage = tasksTab.clickAddTaskInProblemView();
         sdWizardPage.createTask(TASK_NAME, taskAssignee, TASK_LABEL);
 
@@ -458,7 +458,7 @@ public class ProblemsTest extends BaseTestCase {
     @Test(priority = 29, testName = "Edit task in Problem Detail View", description = "Edit task in Problem Detail View")
     @Description("Edit task in Problem Detail View")
     public void editTaskInProblemView() {
-        tasksTab = issueDetailsPage.selectTaskTab();
+        tasksTab = issueDetailsPage.selectTasksTab();
         sdWizardPage = tasksTab.clickDetailsButtonInFirstTask();
         sdWizardPage.insertValueToTextComponent(EDITED_TASK_NAME, TASK_WIZARD_NAME);
         sdWizardPage.clickButton(SAVE_EDITED_TASK_BUTTON_ID);

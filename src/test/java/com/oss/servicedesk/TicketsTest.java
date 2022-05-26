@@ -33,10 +33,13 @@ import io.qameta.allure.Description;
 
 import static com.oss.pages.servicedesk.BaseSDPage.CREATE_DATE_FILTER_DATE_FORMATTER;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.CSV_FILE;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.DESCRIPTION_TAB_LABEL;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.DETAILS_TABS_CONTAINER_ID;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.DICTIONARIES_TAB_LABEL;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.FILE_TO_UPLOAD_PATH;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.ISSUE_OUT_ASSIGNEE_ATTR;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.ISSUE_OUT_STATUS_ATTR;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.MOST_IMPORTANT_INFO_TAB_LABEL;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.TROUBLE_TICKET_ISSUE_TYPE;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.USER_NAME;
 
@@ -129,6 +132,7 @@ public class TicketsTest extends BaseTestCase {
     private static final String CREATE_PROBLEM_WIZARD_ASSIGNEE_ID = "TT_WIZARD_INPUT_ASSIGNEE_LABEL";
     private static final String CREATE_PROBLEM_NAME = "Related Problem - Selenium Test";
     private static final String CREATE_PROBLEM_ASSIGNEE = "sd_seleniumtest";
+    private static final String SAME_MO_TT_TAB_LABEL = "Same MO TT";
 
     @BeforeMethod
     public void goToTicketDashboardPage() {
@@ -253,7 +257,7 @@ public class TicketsTest extends BaseTestCase {
     @Description("Add dictionary to ticket")
     public void addDictionaryToTicket() {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
-        issueDetailsPage.selectTabFromDetailsWindow(DICTIONARIES_TAB_ARIA_CONTROLS);
+        issueDetailsPage.selectTabFromDetailsWindow(DICTIONARIES_TAB_ARIA_CONTROLS, DICTIONARIES_TAB_LABEL);
         issueDetailsPage.clickContextAction(ADD_TO_LIBRARY_LABEL);
         SDWizardPage dictionarySDWizardPage = new SDWizardPage(driver, webDriverWait, ADD_TO_LIBRARY_WIZARD_ID);
         dictionarySDWizardPage.insertValueToComboBoxComponent(TT_LIBRARY_TYPE, WIZARD_LIBRARY_TYPE_ID);
@@ -266,7 +270,7 @@ public class TicketsTest extends BaseTestCase {
     @Description("Check Description Tab")
     public void checkDescriptionTab() {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
-        issueDetailsPage.selectTabFromTablesWindow(DESCRIPTION_TAB_ARIA_CONTROLS);
+        issueDetailsPage.selectTabFromTablesWindow(DESCRIPTION_TAB_ARIA_CONTROLS, DESCRIPTION_TAB_LABEL);
         Assert.assertEquals(issueDetailsPage.getDisplayedText(TABLES_WINDOW_ID, DESCRIPTION_FIELD_ID), TT_DESCRIPTION_EDITED);
     }
 
@@ -413,7 +417,7 @@ public class TicketsTest extends BaseTestCase {
     @Description("Check Same MO TT Tab")
     public void checkSameMOTTTab() {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
-        issueDetailsPage.selectTabFromTablesWindow(SAME_MO_TT_TAB_ARIA_CONTROLS);
+        issueDetailsPage.selectTabFromTablesWindow(SAME_MO_TT_TAB_ARIA_CONTROLS, SAME_MO_TT_TAB_LABEL);
         Assert.assertTrue(issueDetailsPage.checkIfSameMOTTTableIsNotEmpty());
     }
 
@@ -578,7 +582,7 @@ public class TicketsTest extends BaseTestCase {
         messagesTab.markAsImportant(0);
         Assert.assertEquals(messagesTab.getBadgeTextFromMessage(0, 1), "IMPORTANT");
 
-        issueDetailsPage.selectTabFromTablesWindow(MOST_IMPORTANT_INFO_TAB_ARIA_CONTROLS);
+        issueDetailsPage.selectTabFromTablesWindow(MOST_IMPORTANT_INFO_TAB_ARIA_CONTROLS, MOST_IMPORTANT_INFO_TAB_LABEL);
         mostImportantInfoTab = new MessagesTab(driver, webDriverWait);
         Assert.assertFalse(mostImportantInfoTab.isMessagesTabEmpty());
         Assert.assertEquals(mostImportantInfoTab.getMessageText(0), NOTIFICATION_MESSAGE_COMMENT_IMPORTANT);
