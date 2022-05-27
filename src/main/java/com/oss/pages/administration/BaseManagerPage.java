@@ -6,7 +6,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.oss.framework.components.contextactions.ButtonContainer;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.ComponentFactory;
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.CommonList;
 import com.oss.pages.BasePage;
@@ -27,7 +26,7 @@ public abstract class BaseManagerPage extends BasePage {
 
     @Step("Search element in the list")
     public void searchInList(String searchFieldId, String searchedName) {
-        ComponentFactory.create(searchFieldId, Input.ComponentType.SEARCH_BOX, driver, wait)
+        ComponentFactory.create(searchFieldId, driver, wait)
                 .setSingleStringValue(searchedName);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
