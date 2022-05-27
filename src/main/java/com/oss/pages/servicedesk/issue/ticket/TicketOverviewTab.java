@@ -10,11 +10,8 @@ import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.servicedesk.issue.RemainderForm;
 import com.oss.pages.servicedesk.issue.tabs.OverviewTab;
-import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
 
 import io.qameta.allure.Step;
-
-import static com.oss.pages.servicedesk.ServiceDeskConstants.COMMON_WIZARD_ID;
 
 public class TicketOverviewTab extends OverviewTab {
 
@@ -31,14 +28,6 @@ public class TicketOverviewTab extends OverviewTab {
 
     public TicketOverviewTab(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
-    }
-
-    @Step("Open edit ticket wizard")
-    public SDWizardPage openEditTicketWizard() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        getDetailsViewOldActionsContainer().callActionByLabel(MORE_BUTTON_LABEL, EDIT_DETAILS_LABEL);
-        log.info("Ticket Wizard edit is opened");
-        return new SDWizardPage(driver, wait, COMMON_WIZARD_ID);
     }
 
     @Step("Click release ticket")
