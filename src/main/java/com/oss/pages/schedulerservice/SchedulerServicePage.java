@@ -12,10 +12,6 @@ import io.qameta.allure.Step;
 
 public class SchedulerServicePage extends BasePage {
 
-    public SchedulerServicePage(WebDriver driver) {
-        super(driver);
-    }
-
     @FindBy(xpath = "//div[@data-attributename ='search']//input")
     private WebElement searchField;
     @FindBy(xpath = "(//div[contains (@class, 'Cell Row') and contains(@class, 'radio')])[1]")
@@ -28,31 +24,15 @@ public class SchedulerServicePage extends BasePage {
     private WebElement permanentDeleteJobAction;
     @FindBy(xpath = "//button[contains(@class, 'actionButton') and contains (@class, 'danger')]")
     private WebElement confirmDeleteButton;
+    public SchedulerServicePage(WebDriver driver) {
+        super(driver);
+    }
 
     @Step("Open Scheduler Service Page")
     public static SchedulerServicePage goToSchedulerServicePage(WebDriver driver, String basicURL) {
         driver.get(String.format("%s/#/view/scheduler-service-view/main/global" +
                 "?perspective=LIVE", basicURL));
         return new SchedulerServicePage(driver);
-    }
-
-    private void typeInSearchField(String value) {
-        DelayUtils.waitForVisibility(wait, searchField);
-        searchField.sendKeys(value);
-    }
-
-    private boolean isRowContainsTextVisible(String text) {
-        DelayUtils.waitForVisibility(wait, firstJob);
-        return driver.findElements(By.xpath(getPathOfRowContainsText(text))).size() > 0;
-    }
-
-    private void clickOnRowContainsText(String text) {
-        DelayUtils.waitByXPath(wait, getPathOfRowContainsText(text));
-        driver.findElement(By.xpath(getPathOfRowContainsText(text))).click();
-    }
-
-    private String getPathOfRowContainsText(String text) {
-        return "//div[contains(@class, 'Cell Row')]/div[contains(text(),'" + text + "')]";
     }
 
     public String getTextOfJob(String text) {
@@ -97,5 +77,24 @@ public class SchedulerServicePage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         clickOnRowContainsText(text);
         return this;
+    }
+
+    private void typeInSearchField(String value) {
+        DelayUtils.waitForVisibility(wait, searchField);
+        searchField.sendKeys(value);
+    }
+
+    private boolean isRowContainsTextVisible(String text) {
+        DelayUtils.waitForVisibility(wait, firstJob);
+        return !driver.findElements(By.xpath(getPathOfRowContainsText(text))).isEmpty();
+    }
+
+    private void clickOnRowContainsText(String text) {
+        DelayUtils.waitByXPath(wait, getPathOfRowContainsText(text));
+        driver.findElement(By.xpath(getPathOfRowContainsText(text))).click();
+    }
+
+    private String getPathOfRowContainsText(String text) {
+        return "//div[contains(@class, 'Cell Row')]/div[contains(text(),'" + text + "')]";
     }
 }
