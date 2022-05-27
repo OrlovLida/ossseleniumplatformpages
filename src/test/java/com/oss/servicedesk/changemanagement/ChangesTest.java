@@ -106,7 +106,6 @@ public class ChangesTest extends BaseTestCase {
     @Test(priority = 2, testName = "Check Attributes", description = "Check Attributes")
     @Description("Check Attributes")
     public void checkAttributes() {
-        issueDetailsPage = changeDashboardPage.openIssueDetailsView(changeID, BASIC_URL, CHANGE_ISSUE_TYPE);
         changeOverviewTab = issueDetailsPage.selectOverviewTab(CHANGE_ISSUE_TYPE);
         changeOverviewTab.maximizeWindow(DETAILS_TABS_CONTAINER_ID);
         moreDetailsPage = changeOverviewTab.clickMoreDetails();
@@ -116,7 +115,6 @@ public class ChangesTest extends BaseTestCase {
     @Test(priority = 3, testName = "Check Logs", description = "Check Logs")
     @Description("Check Logs")
     public void checkLogs() {
-        issueDetailsPage = changeDashboardPage.openIssueDetailsView(changeID, BASIC_URL, CHANGE_ISSUE_TYPE);
         changeOverviewTab = issueDetailsPage.selectOverviewTab(CHANGE_ISSUE_TYPE);
         changeOverviewTab.maximizeWindow(DETAILS_TABS_CONTAINER_ID);
         moreDetailsPage = changeOverviewTab.clickMoreDetails();

@@ -63,7 +63,7 @@ public class TicketsTest extends BaseTestCase {
     private ParticipantsTab participantsTab;
     private RelatedProblemsTab relatedProblemsTab;
     private AffectedTab affectedTab;
-    private String ticketID = "123";
+    private String ticketID;
 
     private static final String TT_DESCRIPTION = "TestSelenium";
     private static final String TT_DESCRIPTION_EDITED = "TestSelenium_edited";
@@ -100,7 +100,7 @@ public class TicketsTest extends BaseTestCase {
     private static final String TT_WIZARD_MESSAGE_DATE_ID = "PleaseProvideTheTimeOnTheHandsetTheTxtMessageArrived";
 
     private static final String TYPE_ATTRIBUTE = "Type";
-    private static final String TICKET_OPENED_LOG = "Ticket has been opened.";
+    private static final String TICKET_OPENED_LOG = "type CTT has been created and set to status New.";
     private static final String STATUS_ACKNOWLEDGED = "Acknowledged";
     private static final String DICTIONARIES_TAB_ARIA_CONTROLS = "_dictionariesTab";
     private static final String DESCRIPTION_TAB_ARIA_CONTROLS = "_descriptionTab";

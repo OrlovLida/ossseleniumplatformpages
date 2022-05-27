@@ -15,7 +15,7 @@ import io.qameta.allure.Step;
 public class MoreDetailsPage extends BaseSDPage {
     private static final Logger log = LoggerFactory.getLogger(MoreDetailsPage.class);
 
-    private static final String LOGS_TABLE_ID = "_logsApp";
+    private static final String LOGS_TABLE_ID = "_logsApp_details";
     private static final String MESSAGE_COLUMN_NAME = "Message";
     private static final String PROPERTY_PANEL_ID = "_detailsPropertyPanel";
 
@@ -25,7 +25,7 @@ public class MoreDetailsPage extends BaseSDPage {
 
     @Step("Check if logs table has entry with note")
     public boolean isNoteInLogsTable(String note) {
-        log.info("Check if logs table has entry with Remainder note");
+        log.info("Check if logs table has entry with note");
         return CommonList.create(driver, wait, LOGS_TABLE_ID)
                 .getRowContains(MESSAGE_COLUMN_NAME, note)
                 .getValue(MESSAGE_COLUMN_NAME)

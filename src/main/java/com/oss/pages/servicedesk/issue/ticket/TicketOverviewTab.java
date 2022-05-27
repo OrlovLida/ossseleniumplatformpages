@@ -17,7 +17,6 @@ public class TicketOverviewTab extends OverviewTab {
 
     private static final Logger log = LoggerFactory.getLogger(TicketOverviewTab.class);
 
-    private static final String EDIT_DETAILS_LABEL = "Edit details";
     private static final String RELEASE_BUTTON_LABEL = "Release";
     private static final String ALLOW_EDIT_LABEL = "Edit";
     private static final String ADD_REMAINDER_LABEL = "Add Reminder";
