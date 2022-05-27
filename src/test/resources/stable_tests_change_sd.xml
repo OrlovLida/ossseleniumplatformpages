@@ -13,4 +13,9 @@
             <class name="com.oss.servicedesk.changemanagement.ChangesTest"/>
         </classes>
     </test>
+    <test name="DashboardTest">
+        <classes>
+            <class name="com.oss.servicedesk.changemanagement.ChangeDashboardTest"/>
+        </classes>
+    </test>
 </suite>
