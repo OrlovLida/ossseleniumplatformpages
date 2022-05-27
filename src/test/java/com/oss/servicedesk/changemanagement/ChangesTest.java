@@ -387,7 +387,7 @@ public class ChangesTest extends BaseTestCase {
         Assert.assertEquals(affectedTab.countServicesInTable(), initialServiceCount + 1);
     }
 
-    @Test(priority = 31, testName = "Add Summary", description = "Add Summary on Summary tab")
+    @Test(priority = 25, testName = "Add Summary", description = "Add Summary on Summary tab")
     @Description("Add Summary on Summary tab")
     public void checkSummary() {
         summaryTab = issueDetailsPage.selectSummaryTab();
