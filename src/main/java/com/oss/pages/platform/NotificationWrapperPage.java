@@ -19,12 +19,14 @@ public class NotificationWrapperPage extends BasePage {
         super(driver);
     }
 
+    @Step("Clear Notifications")
     public NotificationWrapperPage clearNotifications() {
         Notifications.create(driver, wait).clearAllNotification();
         DelayUtils.waitForPageToLoad(driver, wait);
         return this;
     }
 
+    @Step("Wait for Export to Finish")
     public NotificationWrapperPage waitForExportFinish() {
         DelayUtils.waitByXPath(wait, "//a[contains (text(), 'Download file')]");
         return this;
@@ -38,6 +40,7 @@ public class NotificationWrapperPage extends BasePage {
         return Notifications.create(driver, wait).countNotifications();
     }
 
+    @Step("Close Notification Panel")
     public BasePage close() {
         ToolbarWidget.create(driver, wait).closeNotificationPanel();
         return new BasePage(driver);

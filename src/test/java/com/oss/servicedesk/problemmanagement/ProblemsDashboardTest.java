@@ -25,16 +25,8 @@ public class ProblemsDashboardTest extends BaseTestCase {
     @Test(priority = 1, testName = "Export from Problems Dashboard", description = "Export XLSX file from Problems Dashboard")
     @Description("Export XLSX file from Problems Dashboard")
     public void exportFromProblemsDashboard() {
+        problemDashboardPage.exportFromDashboard(PROBLEM_DOWNLOAD_FILE);
         notificationWrapperPage = problemDashboardPage.openNotificationPanel();
-        notificationWrapperPage.clearNotifications();
-        notificationWrapperPage.close();
-        problemDashboardPage.clickExport();
-        notificationWrapperPage = problemDashboardPage.openNotificationPanel();
-        notificationWrapperPage.waitForExportFinish();
-        notificationWrapperPage.clickDownload();
-        notificationWrapperPage.openNotificationPanel();
-        notificationWrapperPage.clearNotifications();
-        problemDashboardPage.attachFileToReport(PROBLEM_DOWNLOAD_FILE);
 
         Assert.assertEquals(notificationWrapperPage.amountOfNotifications(), 0);
         Assert.assertTrue(problemDashboardPage.checkIfFileIsNotEmpty(PROBLEM_DOWNLOAD_FILE));
