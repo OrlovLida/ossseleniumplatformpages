@@ -1,5 +1,10 @@
 package com.oss.transport.infrastructure.device;
 
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 import com.comarch.oss.physicalinventory.api.dto.AttributeDTO;
 import com.comarch.oss.physicalinventory.api.dto.CardDTO;
 import com.comarch.oss.physicalinventory.api.dto.ImmutablePhysicalDeviceDTO;
@@ -13,17 +18,13 @@ import com.oss.transport.infrastructure.planning.InventoryModuleRepository;
 import com.oss.transport.infrastructure.planning.PlanningContext;
 import com.oss.transport.infrastructure.resource.catalog.control.ModelRepository;
 
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
 public class DeviceFactory {
 
     public static final String CARD_TYPE = "Card";
     public static final String CARD_MODEL = "CardModel";
+    public static final String MISSING_DEVICE_TYPE_EXCEPTION = "Missing device type";
     private static final String PLUGGABLE_MODULE_MODEL = "PluggableModuleModel";
-
+    public static final String MISSING_PORT_DTO_ID_EXCEPTION = "Missing PortDTO ID";
     private final InventoryModuleRepository inventoryClient;
     private final DeviceClient physicalClient;
     private final ModelRepository modelRepository;
@@ -35,14 +36,14 @@ public class DeviceFactory {
     }
 
     public Long getOrCreatePhysicalDevice(ObjectIdentifier device, ObjectIdentifier model, Optional<RefId> locationId,
-            Optional<RefId> preciseLocationId, PlanningContext context) {
+                                          Optional<RefId> preciseLocationId, PlanningContext context) {
 
         Optional<Long> radioEquipId = inventoryClient.getObjectIdByName(device.getName(), device.getType(), context);
         return radioEquipId.orElseGet(() -> createPhysicalDevice(device, model, locationId, preciseLocationId, context));
     }
 
     public Long createPhysicalDevice(ObjectIdentifier device, ObjectIdentifier model, Optional<RefId> locationId,
-            Optional<RefId> preciseLocationId, PlanningContext context) {
+                                     Optional<RefId> preciseLocationId, PlanningContext context) {
 
         Long modelId = getOrCreateDeviceModel(model.getName(), model.getType());
         ImmutablePhysicalDeviceDTO.Builder builder = PhysicalDeviceDTO.builder()
@@ -66,7 +67,7 @@ public class DeviceFactory {
 
     public Long getOrCreatePhysicalDevice(PhysicalDeviceDTO dto, PlanningContext context) {
         String name = dto.getName().orElseThrow(() -> new IllegalStateException("Cannot get device without Name"));
-        Optional<Long> deviceId = inventoryClient.getObjectIdByName(name, dto.getType().get(), context);
+        Optional<Long> deviceId = inventoryClient.getObjectIdByName(name, dto.getType().orElseThrow(() -> new IllegalStateException(MISSING_DEVICE_TYPE_EXCEPTION)), context);
         return deviceId.orElseGet(() -> createPhysicalDevice(dto, context));
     }
 
@@ -77,22 +78,6 @@ public class DeviceFactory {
     public Long getOrCreateCard(String name, String modelName, Long deviceId, String chassis, String slot, PlanningContext context) {
         Optional<Long> cardId = inventoryClient.getObjectIdByName(name, CARD_TYPE, context);
         return cardId.orElseGet(() -> createCard(name, modelName, deviceId, chassis, slot, context));
-    }
-
-    private Long createCard(String name, String modelName, Long deviceId, String chassis, String slot, PlanningContext context) {
-        Long modelId = getOrCreateCardModel(modelName);
-        CardDTO dto = CardDTO.builder()
-                .deviceId(deviceId)
-                .name(name)
-                .type(CARD_TYPE)
-                .cardModel(AttributeDTO.builder()
-                        .id(modelId)
-                        .type(CARD_MODEL)
-                        .build())
-                .chassisName(chassis)
-                .slotName(slot)
-                .build();
-        return physicalClient.createCard(dto, context);
     }
 
     public Long getOrCreateDeviceModel(String modelName, String modelType) {
@@ -122,13 +107,29 @@ public class DeviceFactory {
     public Map<String, Long> getDevicePortsIds(Long deviceId, PlanningContext context) {
         PhysicalDeviceDTO device = physicalClient.getDeviceStructure(deviceId, context);
         return device.getPorts().stream().filter(this::isPortIdNotEmpty)
-                .collect(Collectors.toMap(PortDTO::getName, dto -> dto.getId().get()));
+                .collect(Collectors.toMap(PortDTO::getName, dto -> dto.getId().orElseThrow(() -> new IllegalStateException(MISSING_PORT_DTO_ID_EXCEPTION))));
     }
 
     public Map<String, PortDTO> getDevicePortObjects(Long deviceId, PlanningContext context) {
         PhysicalDeviceDTO device = physicalClient.getDeviceStructure(deviceId, context);
         return device.getPorts().stream().filter(this::isPortIdNotEmpty)
                 .collect(Collectors.toMap(PortDTO::getName, Function.identity()));
+    }
+
+    private Long createCard(String name, String modelName, Long deviceId, String chassis, String slot, PlanningContext context) {
+        Long modelId = getOrCreateCardModel(modelName);
+        CardDTO dto = CardDTO.builder()
+                .deviceId(deviceId)
+                .name(name)
+                .type(CARD_TYPE)
+                .cardModel(AttributeDTO.builder()
+                        .id(modelId)
+                        .type(CARD_MODEL)
+                        .build())
+                .chassisName(chassis)
+                .slotName(slot)
+                .build();
+        return physicalClient.createCard(dto, context);
     }
 
     private boolean isPortIdNotEmpty(PortDTO dto) {

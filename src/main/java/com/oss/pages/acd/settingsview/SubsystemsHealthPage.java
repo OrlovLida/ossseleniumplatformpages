@@ -18,7 +18,7 @@ public class SubsystemsHealthPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(SubsystemsHealthPage.class);
 
-    public HashMap<String, Boolean> iconsMap = new HashMap<>();
+    private final HashMap<String, Boolean> iconsMap = new HashMap<>();
 
     public SubsystemsHealthPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -54,10 +54,10 @@ public class SubsystemsHealthPage extends BasePage {
                 .stream()
                 .forEach(
                         pair -> {
-                            if (pair.getValue() != true) {
-                                log.info("Subsystem - {} is down", pair.getKey());
-                            } else {
+                            if (Boolean.TRUE.equals(pair.getValue())) {
                                 log.info("Subsystem - {} is up and running", pair.getKey());
+                            } else {
+                                log.info("Subsystem - {} is down", pair.getKey());
                             }
                         }
                 );
