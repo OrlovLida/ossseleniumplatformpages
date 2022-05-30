@@ -24,7 +24,6 @@ public class OverviewTab extends IssueDetailsPage {
     private static final String ISSUE_ASSIGNEE_ID = "assignee";
     private static final String STATUS_INPUT = "status-input";
     private static final String MORE_DETAILS_LABEL = "More details";
-    private static final String MORE_BUTTON_LABEL = "More";
 
     public OverviewTab(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
