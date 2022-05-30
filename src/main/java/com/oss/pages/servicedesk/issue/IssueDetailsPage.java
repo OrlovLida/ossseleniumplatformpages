@@ -47,7 +47,7 @@ import static com.oss.pages.servicedesk.ServiceDeskConstants.RELATED_PROBLEMS_TA
 import static com.oss.pages.servicedesk.ServiceDeskConstants.RELATED_TICKETS_TAB_LABEL;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.ROLES_TAB_LABEL;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.ROOT_CAUSES_TAB_LABEL;
-import static com.oss.pages.servicedesk.ServiceDeskConstants.SUMMATY_TAB_LABEL;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.SUMMARY_TAB_LABEL;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.TABS_WIDGET_ID;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.TASKS_TAB_LABEL;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.TROUBLE_TICKET_ISSUE_TYPE;
@@ -193,7 +193,7 @@ public class IssueDetailsPage extends BaseSDPage {
     }
 
     public SummaryTab selectSummaryTab() {
-        selectTabFromTabsWidget(DESCRIPTIONS_WINDOW_ID, SUMMARY_TAB_ID, SUMMATY_TAB_LABEL);
+        selectTabFromTabsWidget(DESCRIPTIONS_WINDOW_ID, SUMMARY_TAB_ID, SUMMARY_TAB_LABEL);
         log.info("Selecting Description Tab");
 
         return new SummaryTab(driver, wait);

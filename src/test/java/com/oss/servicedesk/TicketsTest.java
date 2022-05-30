@@ -282,7 +282,7 @@ public class TicketsTest extends BaseTestCase {
         sdWizardPage = messagesTab.createNewNotificationOnMessagesTab();
         sdWizardPage.insertValueToComboBoxComponent(NOTIFICATION_CHANNEL_INTERNAL, NOTIFICATION_WIZARD_CHANNEL_ID);
         sdWizardPage.insertValueToTextAreaComponent(NOTIFICATION_MESSAGE_INTERNAL, NOTIFICATION_WIZARD_MESSAGE_ID);
-        sdWizardPage.insertValueToMultiComboBoxComponent(NOTIFICATION_INTERNAL_TO, NOTIFICATION_WIZARD_INTERNAL_TO_ID);
+        sdWizardPage.insertValueContainsToMultiComboBox(NOTIFICATION_INTERNAL_TO, NOTIFICATION_WIZARD_INTERNAL_TO_ID);
         sdWizardPage.clickComboBox(NOTIFICATION_WIZARD_TEMPLATE_ID);
         sdWizardPage.insertValueToComboBoxComponent(NOTIFICATION_TYPE, NOTIFICATION_WIZARD_TYPE_ID);
         sdWizardPage.clickAcceptButtonInWizard();
