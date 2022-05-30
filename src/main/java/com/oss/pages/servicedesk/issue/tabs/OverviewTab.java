@@ -33,7 +33,7 @@ public class OverviewTab extends IssueDetailsPage {
     @Step("Open edit issue wizard")
     public SDWizardPage openEditIssueWizard() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        callOldActionsContainer(EDIT_DETAILS_LABEL);
+        getDetailsViewOldActionsContainer().callActionByLabel(EDIT_DETAILS_LABEL);
         log.info("Edit Issue Wizard is opened");
         return new SDWizardPage(driver, wait, COMMON_WIZARD_ID);
     }
@@ -64,16 +64,8 @@ public class OverviewTab extends IssueDetailsPage {
 
     @Step("Click More Details")
     public MoreDetailsPage clickMoreDetails() {
-        callOldActionsContainer(MORE_DETAILS_LABEL);
+        getDetailsViewOldActionsContainer().callActionByLabel(MORE_DETAILS_LABEL);
         log.info("Clicking More Details");
         return new MoreDetailsPage(driver, wait);
-    }
-
-    private void callOldActionsContainer(String label) {
-        try {
-            getDetailsViewOldActionsContainer().callActionByLabel(label);
-        } catch (Exception e) {
-            getDetailsViewOldActionsContainer().callActionByLabel(MORE_BUTTON_LABEL, label);
-        }
     }
 }

@@ -22,7 +22,6 @@ public class TicketOverviewTab extends OverviewTab {
     private static final String ADD_REMAINDER_LABEL = "Add Reminder";
     private static final String EDIT_REMAINDER_LABEL = "Edit Reminder";
     private static final String REMOVE_REMAINDER_LABEL = "Remove Reminder";
-    private static final String MORE_BUTTON_LABEL = "More";
     private static final String CHANGE_TICKET_STATUS_COMBOBOX_ID = "change-ticket-status-combobox-input";
 
     public TicketOverviewTab(WebDriver driver, WebDriverWait wait) {
@@ -47,21 +46,21 @@ public class TicketOverviewTab extends OverviewTab {
 
     @Step("Click Add Remainder")
     public RemainderForm clickAddRemainder() {
-        getDetailsViewOldActionsContainer().callActionByLabel(MORE_BUTTON_LABEL, ADD_REMAINDER_LABEL);
+        getDetailsViewOldActionsContainer().callActionByLabel(ADD_REMAINDER_LABEL);
         log.info("Clicking Add Remainder");
         return new RemainderForm(driver, wait);
     }
 
     @Step("Click Edit Remainder")
     public RemainderForm clickEditRemainder() {
-        getDetailsViewOldActionsContainer().callActionByLabel(MORE_BUTTON_LABEL, EDIT_REMAINDER_LABEL);
+        getDetailsViewOldActionsContainer().callActionByLabel(EDIT_REMAINDER_LABEL);
         log.info("Clicking Edit Remainder");
         return new RemainderForm(driver, wait);
     }
 
     @Step("Click Remove Remainder")
     public void clickRemoveRemainder() {
-        getDetailsViewOldActionsContainer().callActionByLabel(MORE_BUTTON_LABEL, REMOVE_REMAINDER_LABEL);
+        getDetailsViewOldActionsContainer().callActionByLabel(REMOVE_REMAINDER_LABEL);
         log.info("Clicking Remove Remainder");
     }
 
