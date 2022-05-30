@@ -1,6 +1,8 @@
 package com.oss.pages.bpm.processmodels;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.*;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -13,6 +15,8 @@ import com.oss.framework.wizard.Wizard;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.table.TableInterface;
 import com.oss.pages.BasePage;
+
+import static com.oss.configuration.Configuration.CONFIGURATION;
 
 /**
  * @author Paweł Rother
@@ -83,7 +87,8 @@ public class ProcessModelsPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    public boolean isFileDownloaded(String downloadPath, String fileName) {
+    public boolean isFileDownloaded(String fileName) throws IOException {
+        String downloadPath = CONFIGURATION.getDownloadDir();
         File dir = new File(downloadPath);
         File[] dirContents = dir.listFiles();
         if (dirContents == null) {
@@ -92,9 +97,10 @@ public class ProcessModelsPage extends BasePage {
 
         for (int i = 0; i < dirContents.length; i++) {
             if (dirContents[i].getName().contains(fileName)) {
+                boolean isFileNotEmpty = dirContents[i].length() > 0;
                 // File has been found, it can now be deleted:
-                dirContents[i].delete();
-                return true;
+                Files.delete(Paths.get(dirContents[i].getAbsolutePath()));
+                return isFileNotEmpty;
             }
         }
         return false;
@@ -102,7 +108,7 @@ public class ProcessModelsPage extends BasePage {
 
     public void deleteModel(String modelName) {
         Wizard deleteWizard = openWizardForSelectedModel(modelName, MODEL_OPERATIONS_GROUPING_ACTION_BUTTON_ID, DELETE_ACTION_BUTTON_ID, DELETE_MODEL_POPUP_ID);
-
+        DelayUtils.waitForPageToLoad(driver, wait);
         deleteWizard.clickButtonById(DELETE_MODEL_CONFIRMATION_BUTTON_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
