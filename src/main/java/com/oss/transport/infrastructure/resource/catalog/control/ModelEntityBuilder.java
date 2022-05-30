@@ -1,5 +1,16 @@
 package com.oss.transport.infrastructure.resource.catalog.control;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 import com.comarch.oss.planning.api.dto.PerformObjectIdDTO;
 import com.comarch.oss.planning.api.dto.PerformObjectResultDTO;
 import com.comarch.oss.planning.api.dto.PlannedObjectDTO;
@@ -26,27 +37,14 @@ import com.oss.transport.infrastructure.resource.catalog.entity.PluggableModuleS
 import com.oss.transport.infrastructure.resource.catalog.entity.PortModelEntity;
 import com.oss.transport.infrastructure.resource.catalog.entity.SlotEntity;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
 class ModelEntityBuilder {
 
+    public static final String MISSING_MANUFACTURER_ID_EXCEPTION = "Missing manufacturer ID";
     static final String PORT_HOLDER_MODEL = "PortHolderModel";
     static final String PLUGGABLE_MODULE_MODEL = "PluggableModuleModel";
-
     static final String MODEL_NAME = "Name";
-
     static final String MANUFACTURER = "MasterManufacturer";
     static final String MANUFACTURER_TYPE = "Manufacturer";
-
     static final String EQUIPMENT_TYPE = "MasterEquipmentType";
     private final Map<String, Long> typeIds = new HashMap<>();
     private final ResourceCatalogClient resourceCatalogClient;
@@ -196,11 +194,7 @@ class ModelEntityBuilder {
     }
 
     private Long getEquipmentType(String name) {
-        if (!typeIds.containsKey(name)) {
-            Long id = planningClient.getExistingObjectId(name, "EquipmentType", PlanningContext.perspectiveLive());
-            typeIds.put(name, id);
-        }
-        return typeIds.get(name);
+        return typeIds.computeIfAbsent(name, id -> planningClient.getExistingObjectId(name, "EquipmentType", PlanningContext.perspectiveLive()));
     }
 
     private Long getOrCreateManufacturer(String name) {
@@ -211,7 +205,7 @@ class ModelEntityBuilder {
                     .filter(dto -> dto.getName().isPresent() && Objects.equals(name, dto.getName().get()))
                     .findAny();
             if (manufacturer.isPresent()) {
-                manufacturerId = manufacturer.get().getId().get();
+                manufacturerId = manufacturer.get().getId().orElseThrow(() -> new IllegalStateException(MISSING_MANUFACTURER_ID_EXCEPTION));
             } else {
                 manufacturerId = createManufacturer(name);
             }
