@@ -15,4 +15,7 @@ public class OldInventoryViewConstants {
     public static final String CHP_DETAIL_LOCATIONS_TABLE = "DetailLocationsInLocation(CharacteristicPointLocation)";
     public static final String MORE_BUTTON_PATH = "//button[@class='btn btn-default dropdown-toggle' and .//div[contains(., 'More')]]";
 
+    private OldInventoryViewConstants() {
+        throw new IllegalStateException("Utility class");
+    }
 }
