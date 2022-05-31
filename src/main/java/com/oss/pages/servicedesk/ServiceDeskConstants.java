@@ -7,6 +7,7 @@ public class ServiceDeskConstants {
     }
 
     public static final String VIEWS_URL_PATTERN = "%s/#/views/service-desk/%s";
+    public static final String INFO_MANAGEMENT_URL_PATTERN = "%s/#/view/info-management/%s";
     public static final String PREDEFINED_DASHBOARD_URL_PATTERN = "%s/#/dashboard/predefined/id/%s";
     public static final String TICKET_DASHBOARD = "_TroubleTickets";
     public static final String TROUBLE_TICKET_ISSUE_TYPE = "trouble-ticket";
@@ -51,5 +52,5 @@ public class ServiceDeskConstants {
     public static final String AFFECTED_TAB_LABEL = "Affected";
     public static final String DICTIONARIES_TAB_LABEL = "Dictionaries";
     public static final String MOST_IMPORTANT_INFO_TAB_LABEL = "Most Important Info";
-    public static final String SUMMATY_TAB_LABEL = "Summary";
+    public static final String SUMMARY_TAB_LABEL = "Summary";
 }

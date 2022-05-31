@@ -95,8 +95,15 @@ public class SDWizardPage extends BaseSDPage {
     }
 
     @Step("I insert {text} to multi combo box component with id {componentId}")
-    public void insertValueToMultiComboBoxComponent(String text, String componentId) {
+    public void insertValueContainsToMultiComboBox(String text, String componentId) {
+        DelayUtils.waitForPageToLoad(driver, wait);
         wizard.getComponent(componentId, Input.ComponentType.MULTI_COMBOBOX).setValueContains(Data.createSingleData(text));
+        log.info("Value {} inserted to multi combobox", text);
+    }
+
+    @Step("I insert {text} to multi combo box component with id {componentId}")
+    public void insertValueToMultiCombobox(String text, String componentId) {
+        insertValueToComponent(text, componentId, Input.ComponentType.MULTI_COMBOBOX);
         log.info("Value {} inserted to multi combobox", text);
     }
 
@@ -108,7 +115,6 @@ public class SDWizardPage extends BaseSDPage {
 
     @Step("I insert {text} to search component with id {componentId}")
     public void insertValueToSearchComponent(String text, String componentId) {
-        DelayUtils.waitForPageToLoad(driver, wait);
         insertValueToComponent(text, componentId, Input.ComponentType.SEARCH_FIELD);
         log.info("Value {} inserted to searchfield", text);
     }
@@ -214,7 +220,7 @@ public class SDWizardPage extends BaseSDPage {
     public void createInternalNotification(String textMessage, String messageTo) {
         insertValueToComboBoxComponent(NOTIFICATION_CHANNEL_INTERNAL, NOTIFICATION_WIZARD_CHANNEL_ID);
         insertValueToTextAreaComponent(textMessage, NOTIFICATION_WIZARD_MESSAGE_ID);
-        insertValueToMultiComboBoxComponent(messageTo, NOTIFICATION_WIZARD_INTERNAL_TO_ID);
+        insertValueContainsToMultiComboBox(messageTo, NOTIFICATION_WIZARD_INTERNAL_TO_ID);
         insertValueToComboBoxComponent(NOTIFICATION_TYPE, NOTIFICATION_WIZARD_TYPE_ID);
         clickAcceptButtonInWizard();
     }
@@ -229,6 +235,7 @@ public class SDWizardPage extends BaseSDPage {
     }
 
     private void insertValueToComponent(String text, String componentId, Input.ComponentType componentType) {
+        DelayUtils.waitForPageToLoad(driver, wait);
         wizard.setComponentValue(componentId, text, componentType);
     }
 
