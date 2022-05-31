@@ -24,8 +24,8 @@ public class XDRBrowserPage extends BaseDfePage {
     private static final Logger log = LoggerFactory.getLogger(XDRBrowserPage.class);
 
     private static final String ETL_NAME_COMBOBOX_ID = "etlProcessId-input";
-    private static final String TIME_PERIOD_ID = "etlTime";
-    private static final String SEARCH_BUTTON_LABEL = "Search";
+    private static final String TIME_PERIOD_ID = "input_etlTime";
+    private static final String SEARCH_BUTTON_ID = "Search_Button-0";
     private static final String XDR_TABLE_ID = "xdrTableId";
     private static final String EXPORT_BUTTON = "tableExportButton";
     private static final String ADVANCED_SEARCH_CLASS = "advanced-search_component";
@@ -58,16 +58,19 @@ public class XDRBrowserPage extends BaseDfePage {
     public void setValueInTimePeriodChooser(int days, int hours, int minutes) {
         log.info("Setting value for last option in time period chooser: {} days, {} hours, {} minutes", days, hours, minutes);
         waitForPageToLoad(driver, wait);
-        TimePeriodChooser timePeriodChooser = TimePeriodChooser.create(driver, wait, TIME_PERIOD_ID);
-        timePeriodChooser.clickClearValue();
-        timePeriodChooser.chooseOption(TimePeriodChooser.TimePeriodChooserOption.LAST);
-        timePeriodChooser.setLastPeriod(days, hours, minutes);
+        getTimePeriodChooser().clickClearValue();
+        getTimePeriodChooser().chooseOption(TimePeriodChooser.TimePeriodChooserOption.LAST);
+        getTimePeriodChooser().setLastPeriod(days, hours, minutes);
+    }
+
+    private TimePeriodChooser getTimePeriodChooser() {
+        return TimePeriodChooser.create(driver, wait, TIME_PERIOD_ID);
     }
 
     @Step("I click Search")
     public void clickSearch() {
         waitForPageToLoad(driver, wait);
-        Button.createByLabel(driver, SEARCH_BUTTON_LABEL).click();
+        Button.createById(driver, SEARCH_BUTTON_ID).click();
         waitForPageToLoad(driver, wait);
         sleep(3000);
         log.info("Searching for ETL");

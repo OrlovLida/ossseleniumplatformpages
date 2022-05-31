@@ -58,7 +58,7 @@ public class UC_NAR_004_Test extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 2, description = "Upload reconciliation samples")
+    @Test(priority = 2, description = "Upload reconciliation samples", dependsOnMethods = {"createCmDomain"})
     @Description("Go to Sample Management View and upload reconciliation samples")
     public void uploadSamples() throws URISyntaxException {
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
@@ -76,7 +76,7 @@ public class UC_NAR_004_Test extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 3, description = "Run reconciliation and check results")
+    @Test(priority = 3, description = "Run reconciliation and check results", dependsOnMethods = {"uploadSamples"})
     @Description("Go to Network Discovery Control View and run reconciliation and check if it ended without errors")
     public void runReconciliationWithFullSample() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
@@ -85,18 +85,23 @@ public class UC_NAR_004_Test extends BaseTestCase {
         networkDiscoveryControlViewPage.runReconciliation();
         checkPopupMessageType();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertEquals(networkDiscoveryControlViewPage.waitForEndOfReco(), "SUCCESS");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        String status = networkDiscoveryControlViewPage.waitForEndOfReco();
         networkDiscoveryControlViewPage.selectLatestReconciliationState();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.STARTUP_FATAL));
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.FATAL));
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.ERROR));
+        if (status.equals("SUCCESS")) {
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.ERROR));
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.WARNING));
+        } else {
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.STARTUP_FATAL));
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.FATAL));
+        }
+        Assert.assertEquals(status, "SUCCESS");
     }
 
-    @Test(priority = 4, description = "Check inconsistencies")
+    @Test(priority = 4, description = "Check inconsistencies", dependsOnMethods = {"runReconciliationWithFullSample"})
     @Description("Go to Network Inconsistencies View and check discrepancy type")
     public void checkOperationType() {
         networkDiscoveryControlViewPage.moveToNivFromNdcv();
@@ -109,7 +114,7 @@ public class UC_NAR_004_Test extends BaseTestCase {
         Assert.assertTrue(networkInconsistenciesViewPage.checkInconsistenciesOperationType().contentEquals("CREATION"));
     }
 
-    @Test(priority = 5, description = "Search and open router in Inventory View")
+    @Test(priority = 5, description = "Search and open router in Inventory View", dependsOnMethods = {"runReconciliationWithFullSample"})
     @Description("Set Network perspective and search for router in Global Search and check it in New Inventory View")
     public void searchInGlobalSearchAndOpenInventoryView() {
         PerspectiveChooser.create(driver, webDriverWait).setNetworkPerspective();
@@ -124,7 +129,7 @@ public class UC_NAR_004_Test extends BaseTestCase {
         Assert.assertFalse(newInventoryViewPage.checkIfTableIsEmpty());
     }
 
-    @Test(priority = 6, description = "Change reconciliation samples to empty ones")
+    @Test(priority = 6, description = "Change reconciliation samples to empty ones", dependsOnMethods = {"createCmDomain"})
     @Description("Move to Samples Management from Network Discovery Control View, delete old reconciliation samples and upload empty samples")
     public void deleteOldSamplesAndPutNewOne() throws URISyntaxException {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
@@ -144,7 +149,7 @@ public class UC_NAR_004_Test extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 7, description = "Run reconciliation and check results")
+    @Test(priority = 7, description = "Run reconciliation and check results", dependsOnMethods = {"deleteOldSamplesAndPutNewOne"})
     @Description("Go to Network Discovery Control View, run reconciliation and check if it ended without errors")
     public void runReconciliationWithEmptySample() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
@@ -153,20 +158,23 @@ public class UC_NAR_004_Test extends BaseTestCase {
         networkDiscoveryControlViewPage.runReconciliation();
         checkPopupMessageType();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertEquals(networkDiscoveryControlViewPage.waitForEndOfReco(), "SUCCESS");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        String status = networkDiscoveryControlViewPage.waitForEndOfReco();
         networkDiscoveryControlViewPage.selectLatestReconciliationState();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.STARTUP_FATAL));
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.FATAL));
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.ERROR));
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.WARNING));
+        if (status.equals("SUCCESS")) {
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.ERROR));
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.WARNING));
+        } else {
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.STARTUP_FATAL));
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.FATAL));
+        }
+        Assert.assertEquals(status, "SUCCESS");
     }
 
-    @Test(priority = 8, description = "Delete CM Domain")
+    @Test(priority = 8, description = "Delete CM Domain", dependsOnMethods = {"createCmDomain"})
     @Description("Delete CM Domain")
     public void deleteCmDomain() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);

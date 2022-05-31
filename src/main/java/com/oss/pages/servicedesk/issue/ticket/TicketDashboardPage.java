@@ -30,7 +30,7 @@ public class TicketDashboardPage extends BaseDashboardPage {
 
     @Step("I open create ticket wizard for flow {flowType}")
     public SDWizardPage openCreateTicketWizard(String flowType) {
-        return openCreateWizard(flowType, CREATE_TICKET_BUTTON_ID, COMMON_WIZARD_ID);
+        return SDWizardPage.openCreateWizard(driver, wait, flowType, CREATE_TICKET_BUTTON_ID, COMMON_WIZARD_ID);
     }
 
     public String getAssigneeForNthTicketInTable(int n) {

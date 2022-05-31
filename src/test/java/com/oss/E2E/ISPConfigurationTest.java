@@ -99,7 +99,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopup();
     }
 
-    @Test(priority = 2, description = "Show building in Location Overview")
+    @Test(priority = 2, description = "Show building in Location Overview", dependsOnMethods = {"createBuilding"})
     @Description("Show newly created building in Location Overview")
     public void showLocationOverviewFromPopup() {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
@@ -109,7 +109,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         LOCATION_OVERVIEW_URL = driver.getCurrentUrl();
     }
 
-    @Test(priority = 3, description = "Open Create Sublocation wizard")
+    @Test(priority = 3, description = "Open Create Sublocation wizard", dependsOnMethods = {"showLocationOverviewFromPopup"})
     @Description("Open Create Sublocation wizard")
     public void openSublocationWizard() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
@@ -117,7 +117,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 4, description = "Create room")
+    @Test(priority = 4, description = "Create room", dependsOnMethods = {"openSublocationWizard"})
     @Description("Create room and check confirmation system message")
     public void createRoom() {
         SublocationWizardPage sublocationWizardPage = new SublocationWizardPage(driver);
@@ -133,7 +133,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 5, description = "Open Create Device wizard")
+    @Test(priority = 5, description = "Open Create Device wizard", dependsOnMethods = {"createRoom"})
     @Description("Open Create Device wizard")
     public void openDeviceWizard() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
@@ -141,7 +141,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 6, description = "Create physical device")
+    @Test(priority = 6, description = "Create physical device", dependsOnMethods = {"openDeviceWizard"})
     @Description("Create physical device and check confirmation system message")
     public void createPhysicalDevice() {
         DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
@@ -156,7 +156,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopup();
     }
 
-    @Test(priority = 7, description = "Show device in Hierarchy View")
+    @Test(priority = 7, description = "Show device in Hierarchy View", dependsOnMethods = {"createPhysicalDevice"})
     @Description("Show device in Hierarchy View by clicking in direct link from system message")
     public void showHierarchyViewFromPopup() {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
@@ -165,7 +165,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 8, description = "Open Change Model wizard")
+    @Test(priority = 8, description = "Open Change Model wizard", dependsOnMethods = {"showHierarchyViewFromPopup"})
     @Description("Select device and open Change Model wizard")
     public void openChangeModelWizard() {
         HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
@@ -175,7 +175,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 9, description = "Change device model")
+    @Test(priority = 9, description = "Change device model", dependsOnMethods = {"openChangeModelWizard"})
     @Description("Change device model and check confirmation system message")
     public void changeDeviceModel() {
         ChangeModelWizardPage changeModelWizardPage = new ChangeModelWizardPage(driver);
@@ -186,7 +186,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 10, description = "Open Create Card wizard")
+    @Test(priority = 10, description = "Open Create Card wizard", dependsOnMethods = {"changeDeviceModel"})
     @Description("Open Create Card wizard")
     public void openCreateCardWizard() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -195,45 +195,45 @@ public class ISPConfigurationTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 11, description = "Create card")
+    @Test(priority = 11, description = "Create card", dependsOnMethods = {"openCreateCardWizard"})
     @Description("Create card and check confirmation system message")
     public void createCard() {
         CardCreateWizardPage cardCreateWizardPage = new CardCreateWizardPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cardCreateWizardPage.setModel("Alcatel NELT-B");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        cardCreateWizardPage.setSlot("LT3");
+        cardCreateWizardPage.setSlot("Chassis\\LT3");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        cardCreateWizardPage.setSlot("LT4");
+        cardCreateWizardPage.setSlot("Chassis\\LT4");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         cardCreateWizardPage.clickAccept();
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 12, description = "Open Change Card Model wizard")
+    @Test(priority = 12, description = "Open Change Card Model wizard", dependsOnMethods = {"createCard"})
     @Description("Refresh page, select newly created card and open Change Card Model wizard")
     public void openChangeCardWizard() {
         driver.navigate().refresh();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
-        String labelpath = PHYSICAL_DEVICE_NAME + ".Chassis." + PHYSICAL_DEVICE_NAME + "/Chassis.Slots.LT3.Card.NELT-B";
+        String labelpath = PHYSICAL_DEVICE_NAME + ".Chassis.Chassis.Slots.LT3.Card.NELT-B";
         hierarchyViewPage.selectNodeByLabelsPath(labelpath);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        hierarchyViewPage.useTreeContextAction(ActionsContainer.EDIT_GROUP_ID, "CardChangeModelAction");
+        hierarchyViewPage.useTreeContextAction(ActionsContainer.EDIT_GROUP_ID, "ChangeCardModelAction");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 13, description = "Change Card Model")
+    @Test(priority = 13, description = "Change Card Model", dependsOnMethods = {"openChangeCardWizard"})
     @Description("Change Card Model and check confirmation system message")
     public void changeCardModel() {
         ChangeCardModelWizard changeCardModelWizard = new ChangeCardModelWizard(driver);
         changeCardModelWizard.setModelCard("Alcatel NELT-A");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        changeCardModelWizard.clickUpdate();
+        changeCardModelWizard.clickSubmit();
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 14, description = "Open Mounting Editor wizard")
+    @Test(priority = 14, description = "Open Mounting Editor wizard", dependsOnMethods = {"changeCardModel"})
     @Description("Refresh page, select device and open Mounting Editor wizard")
     public void openMountingEditorWizard() {
         driver.navigate().refresh();
@@ -245,7 +245,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 15, description = "Set Mounting Editor")
+    @Test(priority = 15, description = "Set Mounting Editor", dependsOnMethods = {"openMountingEditorWizard"})
     @Description("Set Mounting Editor and check confirmation system message")
     public void setMountingEditor() {
         MountingEditorWizardPage mountingEditorWizardPage = new MountingEditorWizardPage(driver);
@@ -263,7 +263,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 16, description = "Move to Location Overview and create cooling zone")
+    @Test(priority = 16, description = "Move to Location Overview and create cooling zone", dependsOnMethods = {"showLocationOverviewFromPopup"})
     @Description("Move to Location Overview by direct link, create cooling zone from Cooling Zones tab and check confirmation system message")
     public void createCoolingZone() {
         driver.get(format(LOCATION_OVERVIEW_URL, BASIC_URL));
@@ -277,7 +277,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 17, description = "Create cooling unit")
+    @Test(priority = 17, description = "Create cooling unit", dependsOnMethods = {"createCoolingZone"})
     @Description("Create cooling unit from Devices tab and check confirmation system message")
     public void createCoolingUnit() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
@@ -298,7 +298,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 18, description = "Assign cooling unit to cooling zone")
+    @Test(priority = 18, description = "Assign cooling unit to cooling zone", dependsOnMethods = {"createCoolingUnit"})
     @Description("Assign cooling unit to cooling zone")
     public void assignCoolingUnitToCoolingZone() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
@@ -313,7 +313,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 19, description = "Create second device")
+    @Test(priority = 19, description = "Create second device", dependsOnMethods = {"showLocationOverviewFromPopup"})
     @Description("Create second device and check confirmation system message")
     public void createSecondDevice() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
@@ -338,7 +338,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 20, description = "Assign second device to cooling zone")
+    @Test(priority = 20, description = "Assign second device to cooling zone", dependsOnMethods = {"createSecondDevice"})
     @Description("Assign second device to cooling zone")
     public void assignSecondDeviceToCoolingZone() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
@@ -353,7 +353,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         DelayUtils.sleep(10000);
     }
 
-    @Test(priority = 21, description = "Check cooling values")
+    @Test(priority = 21, description = "Check cooling values", dependsOnMethods = {"assignSecondDeviceToCoolingZone"})
     @Description("Refresh page and check cooling values in Cooling Zones tab")
     public void checkCoolingValues() {
         driver.navigate().refresh();
@@ -376,7 +376,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         COOLING_ZONE_CAPACITY = coolingCapacity;
     }
 
-    @Test(priority = 22, description = "Create third device")
+    @Test(priority = 22, description = "Create third device", dependsOnMethods = {"showLocationOverviewFromPopup"})
     @Description("Create third device and check confirmation system message")
     public void createThirdDevice() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
@@ -399,7 +399,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 23, description = "Assign third device to cooling zone")
+    @Test(priority = 23, description = "Assign third device to cooling zone", dependsOnMethods = {"createThirdDevice"})
     @Description("Assign third device to cooling zone")
     public void assignThirdDeviceToCoolingZone() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
@@ -413,7 +413,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 24, description = "Update cooling unit")
+    @Test(priority = 24, description = "Update cooling unit", dependsOnMethods = {"assignThirdDeviceToCoolingZone"})
     @Description("Update Cooling Unit and check confirmation system message")
     public void updateCoolingUnit() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
@@ -430,7 +430,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 25, description = "Check updated cooling values")
+    @Test(priority = 25, description = "Check updated cooling values", dependsOnMethods = {"updateCoolingUnit"})
     @Description("Refresh page and check updated cooling values in cooling zones tab")
     public void checkUpdatedCoolingValues() {
         driver.navigate().refresh();
@@ -450,7 +450,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         Assert.assertNotEquals(coolingLoadRatio, COOLING_ZONE_LOAD_RATIO, String.format(ASSERT_NOT_EQUALS, coolingLoadRatio, COOLING_ZONE_LOAD_RATIO));
     }
 
-    @Test(priority = 26, description = "Create power device")
+    @Test(priority = 26, description = "Create power device", dependsOnMethods = {"showLocationOverviewFromPopup"})
     @Description("Create power device from Devices tab and check confirmation system message")
     public void createPowerDevice() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
@@ -469,7 +469,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 27, description = "Check power values")
+    @Test(priority = 27, description = "Check power values", dependsOnMethods = {"createPowerDevice"})
     @Description("Check power values in Power Management tab")
     public void checkPowerValues() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
@@ -485,7 +485,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         Assert.assertNotEquals(rowValue, "0", String.format(ASSERT_NOT_EQUALS, rowValue, "0"));
     }
 
-    @Test(priority = 28, description = "Create power supply unit")
+    @Test(priority = 28, description = "Create power supply unit", dependsOnMethods = {"checkPowerValues"})
     @Description("Create power supply unit and check confirmation system message")
     public void createPowerSupplyUnit() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
@@ -503,13 +503,13 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 29, description = "Create row")
+    @Test(priority = 29, description = "Create row", dependsOnMethods = {"showLocationOverviewFromPopup"})
     @Description("Create row and check confirmation system message")
     public void createRow() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Locations");
         locationOverviewPage.filterObjectInSpecificTab(TabName.LOCATIONS, NAME, SUBLOCATION_NAME);
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.LOCATIONS, "Create Sublocation");
+        locationOverviewPage.clickActionById(TabName.LOCATIONS, "frameworkCustomMore_sublocation-create-action");
         SublocationWizardPage sublocationWizardPage = new SublocationWizardPage(driver);
         sublocationWizardPage.setSublocationType("Row");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -518,12 +518,12 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 30, description = "Create 3 footprints")
+    @Test(priority = 30, description = "Create 3 footprints", dependsOnMethods = {"showLocationOverviewFromPopup"})
     @Description("Create 3 footprints and check confirmation system message")
     public void createFootprint() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
-        locationOverviewPage.filterObjectInSpecificTab(TabName.LOCATIONS, NAME, "rh01");
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.LOCATIONS, "Create Sublocation");
+        locationOverviewPage.filterObjectInSpecificTab(TabName.LOCATIONS, NAME, "Row1");
+        locationOverviewPage.clickActionById(TabName.LOCATIONS, "frameworkCustomMore_sublocation-create-action");
         SublocationWizardPage sublocationWizardPage = new SublocationWizardPage(driver);
         sublocationWizardPage.setSublocationType("Footprint");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -538,20 +538,20 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 31, description = "Set rack Precise Location to footprint")
+    @Test(priority = 31, description = "Set rack Precise Location to footprint", dependsOnMethods = {"setMountingEditor"})
     @Description("Set rack Precise Location to footprint and check confirmation system message")
     public void preciseRackLocation() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.filterObjectInSpecificTab(TabName.LOCATIONS, NAME, MOUNTING_EDITOR_NAME);
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.LOCATIONS, "Edit Location");
+        locationOverviewPage.clickActionById(TabName.LOCATIONS, "frameworkCustomMore_location-update-action");
         SublocationWizardPage sublocationWizardPage = new SublocationWizardPage(driver);
-        sublocationWizardPage.setPreciseLocation("fp01");
+        sublocationWizardPage.setPreciseLocation("Footprint1");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         sublocationWizardPage.clickAccept();
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 32, description = "Set device Precise Location to footprint")
+    @Test(priority = 32, description = "Set device Precise Location to footprint", dependsOnMethods = {"createFootprint"})
     @Description("Set Device Precise Location to footprint and check confirmation system message")
     public void preciseDeviceLocation() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
@@ -562,14 +562,14 @@ public class ISPConfigurationTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.nextUpdateWizard();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        deviceWizardPage.setPreciseLocation("fp03");
+        deviceWizardPage.setPreciseLocation("Footprint3");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.acceptUpdateWizard();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 33, description = "Delete power supply unit")
+    @Test(priority = 33, description = "Delete power supply unit", dependsOnMethods = {"createPowerSupplyUnit"})
     @Description("Delete power supply unit and check confirmation system message")
     public void deletePowerSupplyUnit() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
@@ -579,7 +579,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 34, description = "Delete power device")
+    @Test(priority = 34, description = "Delete power device", dependsOnMethods = {"createPowerDevice"})
     @Description("Delete power device and check confirmation system message")
     public void deletePowerDevice() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
@@ -590,7 +590,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 35, description = "Delete third device")
+    @Test(priority = 35, description = "Delete third device", dependsOnMethods = {"createThirdDevice"})
     @Description("Delete third device and check confirmation system message")
     public void deleteThirdDevice() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
@@ -602,7 +602,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 36, description = "Delete second device")
+    @Test(priority = 36, description = "Delete second device", dependsOnMethods = {"createSecondDevice"})
     @Description("Delete second device and check confirmation system message")
     public void deleteSecondDevice() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
@@ -614,7 +614,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 37, description = "Delete first device")
+    @Test(priority = 37, description = "Delete first device", dependsOnMethods = {"createPhysicalDevice"})
     @Description("Delete first device and check confirmation system message")
     public void deletePhysicalDevice() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
@@ -626,7 +626,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 38, description = "Delete cooling unit")
+    @Test(priority = 38, description = "Delete cooling unit", dependsOnMethods = {"createCoolingUnit"})
     @Description("Delete cooling unit and check confirmation system message")
     public void deleteCoolingUnit() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
@@ -638,7 +638,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 39, description = "Delete cooling zone")
+    @Test(priority = 39, description = "Delete cooling zone", dependsOnMethods = {"createCoolingZone"})
     @Description("Delete cooling zone and check confirmation system message")
     public void deleteCoolingZone() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
@@ -650,51 +650,51 @@ public class ISPConfigurationTest extends BaseTestCase {
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 40, description = "Delete 3 footprints")
+    @Test(priority = 40, description = "Delete 3 footprints", dependsOnMethods = {"createFootprint"})
     @Description("Delete 3 footprints and check confirmation system message")
     public void deleteFootprints() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Locations");
 
-        locationOverviewPage.filterObjectInSpecificTab(TabName.LOCATIONS, NAME, "fp01");
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.LOCATIONS, "Delete Location");
+        locationOverviewPage.filterObjectInSpecificTab(TabName.LOCATIONS, NAME, "Footprint1");
+        locationOverviewPage.clickActionById(TabName.LOCATIONS, "frameworkCustomMore_location-delete-action");
         locationOverviewPage.clickButtonInConfirmationBox("Delete");
         checkPopupAndCloseMessage();
 
-        locationOverviewPage.filterObjectInSpecificTab(TabName.LOCATIONS, NAME, "fp02");
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.LOCATIONS, "Delete Location");
+        locationOverviewPage.filterObjectInSpecificTab(TabName.LOCATIONS, NAME, "Footprint2");
+        locationOverviewPage.clickActionById(TabName.LOCATIONS, "frameworkCustomMore_location-delete-action");
         locationOverviewPage.clickButtonInConfirmationBox("Delete");
         checkPopupAndCloseMessage();
 
-        locationOverviewPage.filterObjectInSpecificTab(TabName.LOCATIONS, NAME, "fp03");
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.LOCATIONS, "Delete Location");
+        locationOverviewPage.filterObjectInSpecificTab(TabName.LOCATIONS, NAME, "Footprint3");
+        locationOverviewPage.clickActionById(TabName.LOCATIONS, "frameworkCustomMore_location-delete-action");
         locationOverviewPage.clickButtonInConfirmationBox("Delete");
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 41, description = "Delete row")
+    @Test(priority = 41, description = "Delete row", dependsOnMethods = {"createRow"})
     @Description("Delete row and check confirmation system message")
     public void deleteRow() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
-        locationOverviewPage.filterObjectInSpecificTab(TabName.LOCATIONS, NAME, "rh01");
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.LOCATIONS, "Delete Location");
+        locationOverviewPage.filterObjectInSpecificTab(TabName.LOCATIONS, NAME, "Row1");
+        locationOverviewPage.clickActionById(TabName.LOCATIONS, "frameworkCustomMore_location-delete-action");
         locationOverviewPage.clickButtonInConfirmationBox("Delete");
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 42, description = "Delete room")
+    @Test(priority = 42, description = "Delete room", dependsOnMethods = {"createRoom"})
     @Description("Delete room and check confirmation system message")
     public void deleteRoom() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Locations");
         locationOverviewPage.filterObjectInSpecificTab(TabName.LOCATIONS, NAME, SUBLOCATION_NAME);
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.LOCATIONS, "Delete Location");
+        locationOverviewPage.clickActionById(TabName.LOCATIONS, "frameworkCustomMore_location-delete-action");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         locationOverviewPage.clickButtonInConfirmationBox("Delete");
         checkPopupAndCloseMessage();
     }
 
-    @Test(priority = 43, description = "Delete location")
+    @Test(priority = 43, description = "Delete location", dependsOnMethods = {"createBuilding"})
     @Description("Delete location")
     public void deleteLocation() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);

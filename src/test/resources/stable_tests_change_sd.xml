@@ -2,8 +2,20 @@
 <suite name="change_sd" thread-count="2" parallel="tests" verbose="1">
     <test name="CreateChange">
         <parameter name="userName" value="sd_seleniumtest"/>
+        <parameter name="newAssignee" value="ca_kodrobinska"/>
+        <parameter name="messageTo" value="ca_kodrobinska"/>
+        <parameter name="notificationEmailTo" value="kornelia.odrobinska@comarch.com"/>
+        <parameter name="notificationEmailFrom" value="switch.ticket@comarch.com"/>
+        <parameter name="RelatedChangeID" value="35"/>
+        <parameter name="SecondMOIdentifier" value="TEST_MO"/>
+        <parameter name="serviceMOIdentifier" value="TEST_MO_ABS_SRV"/>
         <classes>
-            <class name="com.oss.servicedesk.changemanagement.CreateChangeTest"/>
+            <class name="com.oss.servicedesk.changemanagement.ChangesTest"/>
+        </classes>
+    </test>
+    <test name="DashboardTest">
+        <classes>
+            <class name="com.oss.servicedesk.changemanagement.ChangeDashboardTest"/>
         </classes>
     </test>
 </suite>

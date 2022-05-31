@@ -1,5 +1,14 @@
 package com.oss.untils;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.base.Preconditions;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -11,14 +20,6 @@ import com.jayway.restassured.path.json.JsonPath;
 import com.jayway.restassured.response.Response;
 import com.jayway.restassured.specification.RequestSpecification;
 import com.oss.configuration.Configuration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 public class Environment {
 
@@ -58,8 +59,8 @@ public class Environment {
     private final int serviceDiscoveryPort;
     private final String keycloakUserName;
     private final String keycloakUserPassword;
-    private Map<String, LocalService> serviceCache = new HashMap<>();
-    private LoadingCache<Integer, String> keycloakTokenCache = CacheBuilder.newBuilder()
+    private final Map<String, LocalService> serviceCache = new HashMap<>();
+    private final LoadingCache<Integer, String> keycloakTokenCache = CacheBuilder.newBuilder()
             .maximumSize(1)
             .refreshAfterWrite(15, TimeUnit.MINUTES)
             .build(
@@ -74,12 +75,12 @@ public class Environment {
         serviceDiscoveryUri = "http://" + System.getProperty(DISCOVERY_IP_PROP, new Configuration().getApplicationIp());
         serviceDiscoveryPort = Integer.parseInt(System.getProperty(DISCOVERY_PORT_PROP, new Configuration().getApplicationPort()));
 
-        LOGGER.info("Prefix URI for service discovery and keycloak: " + serviceDiscoveryUri + ":" + serviceDiscoveryPort);
-        LOGGER.info("It can be changed using java properties: " + DISCOVERY_IP_PROP + " and " + DISCOVERY_PORT_PROP);
-        
+        LOGGER.info("Prefix URI for service discovery and keycloak: {}:{}", serviceDiscoveryUri, serviceDiscoveryPort);
+        LOGGER.info("It can be changed using java properties: {} and {}", DISCOVERY_IP_PROP, DISCOVERY_PORT_PROP);
+
         keycloakUserName = System.getProperty(KEYCLOAK_USERNAME_PROP, CONFIGURATION.getLogin());
         keycloakUserPassword = System.getProperty(KEYCLOAK_PASS_PROP, CONFIGURATION.getPassword());
-        
+
         Preconditions.checkNotNull(keycloakUserName, "Provide keycloak.username java parameter");
         Preconditions.checkNotNull(keycloakUserPassword, "Provide keycloak.pass java parameter");
 
@@ -100,61 +101,11 @@ public class Environment {
         }
     }
 
-    private String createNewToken() {
-        String token =
-                RestAssured.given()
-                        .baseUri(serviceDiscoveryUri)
-                        .port(serviceDiscoveryPort)
-                        .basePath("/auth/realms/OSS/protocol/openid-connect/token")
-                        .contentType(ContentType.URLENC)
-                        .content("username=" + keycloakUserName + "&password=" + keycloakUserPassword
-                                + "&client_id=JBossCore&grant_type=password")
-                        .post()
-                        .body()
-                        .jsonPath()
-                        .getString("access_token");
-
-        LOGGER.info("Created session: " + token);
-        return token;
-    }
-
-    protected RequestSpecification findApplicationBasePath(String applicationName) {
-        LocalService service = getServiceFromSDCached(applicationName);
-
-        return RestAssured.given()
-                .baseUri("http://" + service.getHost())
-                .port(service.getPort())
-                .basePath(service.getUrl());
-    }
-
     public LocalService getServiceFromSDCached(String applicationName) {
         if (serviceCache.containsKey(applicationName)) {
             return serviceCache.get(applicationName);
         }
         return getServiceFromSD(applicationName);
-    }
-
-    private LocalService getServiceFromSD(String applicationName) {
-        LocalService service = new LocalService();
-        Response response = RestAssured.given()
-                .baseUri(serviceDiscoveryUri)
-                .port(serviceDiscoveryPort)
-                .authentication().oauth2(getKeycloackToken(), OAuthSignature.HEADER)
-                .contentType(ContentType.JSON)
-                .get("rest/discovery/v2/service/" + applicationName);
-
-        if (response.getStatusCode() != 200) {
-            throw new RuntimeException(
-                    "Service discovery lookup failed. Missing: " + applicationName + ". Status: " + response.getStatusCode());
-        }
-
-        JsonPath jsonPath = response.jsonPath();
-        service.setHost(jsonPath.getString("host"));
-        service.setUrl(jsonPath.getString("url"));
-        service.setPort(jsonPath.getInt("port"));
-
-        serviceCache.put(applicationName, service);
-        return service;
     }
 
     public RequestSpecification getLocationInventoryCoreRequestSpecification() {
@@ -221,14 +172,21 @@ public class Environment {
         return getRequestSpecificationByName(TRAIL_CORE);
     }
 
-    public RequestSpecification getNFVCoreSpecification() { return getRequestSpecificationByName(NFV_CORE); }
+    public RequestSpecification getNFVCoreSpecification() {
+        return getRequestSpecificationByName(NFV_CORE);
+    }
 
-    public RequestSpecification getNetworkServiceCoreSpecification() { return getRequestSpecificationByName(NETWORK_SERVICE_CORE); }
+    public RequestSpecification getNetworkServiceCoreSpecification() {
+        return getRequestSpecificationByName(NETWORK_SERVICE_CORE);
+    }
 
-    public RequestSpecification getNetworkSliceCoreSpecification() { return getRequestSpecificationByName(NETWORK_SLICE_CORE); }
+    public RequestSpecification getNetworkSliceCoreSpecification() {
+        return getRequestSpecificationByName(NETWORK_SLICE_CORE);
+    }
 
-    public RequestSpecification getTMFResourceCatalog() { return getRequestSpecificationByName(TMF_CATALOG_CORE); }
-
+    public RequestSpecification getTMFResourceCatalog() {
+        return getRequestSpecificationByName(TMF_CATALOG_CORE);
+    }
 
     public RequestSpecification getRequestSpecificationByName(String pName) {
         RequestSpecification findApplicationBasePath = findApplicationBasePath(pName);
@@ -238,6 +196,69 @@ public class Environment {
     public RequestSpecification prepareRequestSpecificationWithoutUri() {
         RequestSpecification given = RestAssured.given();
         return prepareRequestSpecification(given);
+    }
+
+    public void closeSession() {
+        if (Objects.isNull(getKeycloackToken())) {
+            LOGGER.warn("There is no session to close!");
+            return;
+        }
+        findApplicationBasePath("keycloak-auth-service")
+                .basePath("/auth/realms/OSS/protocol/openid-connect/logout")
+                .contentType(ContentType.URLENC)
+                .content("refresh_token=" + getKeycloackToken() + "&client_id=JBossCore")
+                .post();
+        LOGGER.info("Closed session: {}", getKeycloackToken());
+    }
+
+    private String createNewToken() {
+        String token =
+                RestAssured.given()
+                        .baseUri(serviceDiscoveryUri)
+                        .port(serviceDiscoveryPort)
+                        .basePath("/auth/realms/OSS/protocol/openid-connect/token")
+                        .contentType(ContentType.URLENC)
+                        .content("username=" + keycloakUserName + "&password=" + keycloakUserPassword
+                                + "&client_id=JBossCore&grant_type=password")
+                        .post()
+                        .body()
+                        .jsonPath()
+                        .getString("access_token");
+
+        LOGGER.info("Created session: {}", token);
+        return token;
+    }
+
+    protected RequestSpecification findApplicationBasePath(String applicationName) {
+        LocalService service = getServiceFromSDCached(applicationName);
+
+        return RestAssured.given()
+                .baseUri("http://" + service.getHost())
+                .port(service.getPort())
+                .basePath(service.getUrl());
+    }
+
+    private LocalService getServiceFromSD(String applicationName) {
+        LocalService service = new LocalService();
+        Response response = RestAssured.given()
+                .baseUri(serviceDiscoveryUri)
+                .port(serviceDiscoveryPort)
+                .authentication().oauth2(getKeycloackToken(), OAuthSignature.HEADER)
+                .contentType(ContentType.JSON)
+                .get("rest/discovery/v2/service/" + applicationName);
+
+        if (response.getStatusCode() != 200) {
+            throw new RuntimeException(
+                    "Service discovery lookup failed. Missing: " + applicationName + ". Status: " + response.getStatusCode());
+        }
+
+        JsonPath jsonPath = response.jsonPath();
+        service.setHost(jsonPath.getString("host"));
+        service.setUrl(jsonPath.getString("url"));
+        service.setPort(jsonPath.getInt("port"));
+
+        serviceCache.put(applicationName, service);
+        return service;
     }
 
     private RequestSpecification prepareRequestSpecification(RequestSpecification pRequestSpecification) {
@@ -251,19 +272,6 @@ public class Environment {
                 .path()
                 .log()
                 .body();
-    }
-
-    public void closeSession() {
-        if (Objects.isNull(getKeycloackToken())) {
-            LOGGER.warn("There is no session to close!");
-            return;
-        }
-        findApplicationBasePath("keycloak-auth-service")
-                .basePath("/auth/realms/OSS/protocol/openid-connect/logout")
-                .contentType(ContentType.URLENC)
-                .content("refresh_token=" + getKeycloackToken() + "&client_id=JBossCore")
-                .post();
-        LOGGER.info("Closed session: " + getKeycloackToken());
     }
 
     public static class LocalService {

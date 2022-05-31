@@ -1,11 +1,12 @@
 package com.oss.pages.radio;
 
-import com.oss.framework.components.inputs.Input;
+import org.openqa.selenium.WebDriver;
+
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
+
 import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
 
 public class Cell5GWizardPage extends BasePage {
 
@@ -56,31 +57,28 @@ public class Cell5GWizardPage extends BasePage {
 
     @Step("Set name")
     public Cell5GWizardPage setName(String cell5GName) {
-        getCell5GWizard().setComponentValue(CELL5G_NAME_DATA_ATTRIBUTE_NAME, cell5GName, Input.ComponentType.TEXT_FIELD);
+        getCell5GWizard().setComponentValue(CELL5G_NAME_DATA_ATTRIBUTE_NAME, cell5GName);
         return this;
     }
 
     @Step("Set gNodeB name")
-    public Cell5GWizardPage setGNodeBName(String gNodeBName) {
-        getCell5GWizard().setComponentValue(CELL5G_G_NODE_B_ID_DATA_ATTRIBUTE_NAME, gNodeBName, Input.ComponentType.SEARCH_FIELD);
-        return this;
+    public void setGNodeBName(String gNodeBName) {
+        getCell5GWizard().setComponentValue(CELL5G_G_NODE_B_ID_DATA_ATTRIBUTE_NAME, gNodeBName);
     }
 
     @Step("Set Cell 5G Id")
-    public Cell5GWizardPage setCell5GId(String cellId) {
-        getCell5GWizard().setComponentValue(CELL5G_CELL_ID_DATA_ATTRIBUTE_NAME, cellId, Input.ComponentType.TEXT_FIELD);
-        return this;
+    public void setCell5GId(String cellId) {
+        getCell5GWizard().setComponentValue(CELL5G_CELL_ID_DATA_ATTRIBUTE_NAME, cellId);
     }
 
     @Step("Set Carrier 5G using contains")
-    public Cell5GWizardPage setCarrier5G(String carrier5G) {
-        getCell5GWizard().getComponent(CELL5G_CARRIER_DATA_ATTRIBUTE_NAME, Input.ComponentType.COMBOBOX).setSingleStringValueContains(carrier5G);
-        return this;
+    public void setCarrier5G(String carrier5G) {
+        getCell5GWizard().getComponent(CELL5G_CARRIER_DATA_ATTRIBUTE_NAME).setSingleStringValueContains(carrier5G);
     }
 
     @Step("Set description")
     public Cell5GWizardPage setDescription(String description) {
-        getCell5GWizard().setComponentValue(CELL5G_DESCRIPTION_DATA_ATTRIBUTE_NAME, description, Input.ComponentType.TEXT_FIELD);
+        getCell5GWizard().setComponentValue(CELL5G_DESCRIPTION_DATA_ATTRIBUTE_NAME, description);
         return this;
     }
 

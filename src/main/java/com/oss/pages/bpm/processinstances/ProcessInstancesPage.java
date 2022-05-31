@@ -90,6 +90,7 @@ public class ProcessInstancesPage extends BasePage {
     
     public void selectMilestoneTab(String processAttributeName, String value) {
         findProcess(processAttributeName,value);
+        DelayUtils.waitForPageToLoad(driver,wait);
         TabsWidget milestoneTab = TabsWidget.createById(driver, wait, PROCESS_TABS);
         milestoneTab.selectTabById(MILESTONE_TAB);
     }

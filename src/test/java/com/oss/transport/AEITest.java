@@ -1,17 +1,27 @@
 package com.oss.transport;
 
-import com.oss.BaseTestCase;
-import com.oss.framework.components.alerts.SystemMessageContainer;
-import com.oss.framework.components.alerts.SystemMessageInterface;
-import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.table.OldTable;
-import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
-import com.oss.pages.transport.aei.AEIWizardPage;
-import io.qameta.allure.Step;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.util.*;
+import com.oss.BaseTestCase;
+import com.oss.framework.components.alerts.SystemMessageContainer;
+import com.oss.framework.components.alerts.SystemMessageInterface;
+import com.oss.framework.components.contextactions.ActionsContainer;
+import com.oss.framework.navigation.sidemenu.SideMenu;
+import com.oss.framework.widgets.table.OldTable;
+import com.oss.pages.platform.NewInventoryViewPage;
+import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
+import com.oss.pages.platform.SearchObjectTypePage;
+import com.oss.pages.transport.aei.AEIWizardPage;
+
+import io.qameta.allure.Step;
+
+import static com.oss.framework.components.contextactions.ActionsContainer.CREATE_GROUP_ID;
 
 /**
  * @author Kamil Jacko
@@ -31,7 +41,7 @@ public class AEITest extends BaseTestCase {
     private static final String SERVER_TERMINATION_POINTS_TABLE_NAME_COLUMN_LABEL = "Name";
     private static final String BOTTOM_SERVER_TERMINATION_POINTS_TAB_ID = "Tab:DetailServerNodes(AggregatedEthernetInterface)";
     private static final String BOTTOM_SERVER_TERMINATION_POINTS_TABLE_TEST_ID = "DetailServerNodes(AggregatedEthernetInterface)";
-    private static final String BOTTOM_PROPERTIES_TABLE_TEST_ID = "properties(AggregatedEthernetInterface)";
+    private static final String CREATE_AGGREGATED_ETHERNET_INTERFACE = "CreateAggregateEthernetInterfaceContextAction";
 
     private Map<String, String> propertyNamesToValues;
 
@@ -39,40 +49,38 @@ public class AEITest extends BaseTestCase {
     @Step("Create Aggregated Ethernet Interface with set all attributes")
     public void createAEI() {
         AEIAttributes aeiAttributes = getAEIAttributesForCreate();
-
         AEIWizardPage aeiWizard = goToAEIWizardPage();
         fillAEIWizardToCreate(aeiAttributes, aeiWizard);
-        OldInventoryViewPage inventoryViewPage = aeiWizard.clickAccept();
-        inventoryViewPage.selectRowInTableAtIndex(0);
-        propertyNamesToValues = inventoryViewPage.getProperties(BOTTOM_PROPERTIES_TABLE_TEST_ID);
+        NewInventoryViewPage newInventoryViewPage = aeiWizard.clickAccept();
+        SystemMessageContainer.create(driver, webDriverWait).clickMessageLink();
+        newInventoryViewPage.refreshMainTable();
+        newInventoryViewPage.searchObject(aeiAttributes.deviceName).selectFirstRow();
 
-        assertAEIAttributes(aeiAttributes);
-        assertAssignedInterfaces(inventoryViewPage, INTERFACE1_NAME, INTERFACE2_NAME);
+        Assert.assertFalse(newInventoryViewPage.checkIfTableIsEmpty());
     }
 
     @Test(priority = 2)
     @Step("Update all Aggregated Ethernet Interface attributes to other values")
     public void updateAEI() {
         AEIAttributes aeiAttributes = getAEIAttributesForUpdate();
-
         AEIWizardPage aeiWizard = goToWizardAtUpdate();
         fillAEIWizardToUpdate(aeiAttributes, aeiWizard);
-        OldInventoryViewPage inventoryViewPage = aeiWizard.clickAccept();
-        inventoryViewPage.selectRowInTableAtIndex(0);
-        propertyNamesToValues = inventoryViewPage.getProperties(BOTTOM_PROPERTIES_TABLE_TEST_ID);
+        NewInventoryViewPage inventoryViewPage = aeiWizard.clickAccept();
+        inventoryViewPage.searchObject(aeiAttributes.deviceName).selectFirstRow();
 
-        assertAEIAttributes(aeiAttributes);
-        assertAssignedInterfaces(inventoryViewPage, INTERFACE3_NAME, INTERFACE4_NAME);
+        Assert.assertFalse(inventoryViewPage.checkIfTableIsEmpty());
     }
 
     @Test(priority = 3)
     @Step("Remove Aggregated Ethernet Interface")
     public void removeAEI() {
-        OldInventoryViewPage inventoryViewPage = new OldInventoryViewPage(driver);
-        inventoryViewPage.expandEditAndChooseAction(DELETE_AGGREGATED_ETHERNET_INTERFACE_CONTEXT_ACTION_ID);
-        inventoryViewPage.clickConfirmRemovalButton();
+        NewInventoryViewPage inventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
+        inventoryViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, DELETE_AGGREGATED_ETHERNET_INTERFACE_CONTEXT_ACTION_ID);
+        inventoryViewPage.clickConfirmationRemovalButton();
 
         Assert.assertTrue(isRemovalPopupCorrect());
+        inventoryViewPage.refreshMainTable();
+        Assert.assertTrue(inventoryViewPage.checkIfTableIsEmpty());
     }
 
     private AEIAttributes getAEIAttributesForCreate() {
@@ -110,10 +118,14 @@ public class AEITest extends BaseTestCase {
     }
 
     private AEIWizardPage goToAEIWizardPage() {
-        //SideMenu sidemenu = SideMenu.create(driver, webDriverWait);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        //sidemenu.callActionByLabel("Create Aggregated Ethernet Interface", "Network domains", "Transport & IP");
-        driver.get(String.format("%s/#/view/transport/ip/ethernet/aei?perspective=LIVE", BASIC_URL));
+        SideMenu sidemenu = SideMenu.create(driver, webDriverWait);
+        sidemenu.callActionByLabel("Inventory View", "Resource Inventory ");
+        SearchObjectTypePage searchObjectTypePage = new SearchObjectTypePage(driver, webDriverWait);
+        searchObjectTypePage.searchType("Physical Device");
+
+        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
+        newInventoryViewPage.searchObject(PRE_CREATED_DEVICE).selectFirstRow();
+        newInventoryViewPage.callAction(CREATE_GROUP_ID, CREATE_AGGREGATED_ETHERNET_INTERFACE);
 
         return new AEIWizardPage(driver);
     }
@@ -191,8 +203,8 @@ public class AEITest extends BaseTestCase {
     }
 
     private AEIWizardPage goToWizardAtUpdate() {
-        OldInventoryViewPage inventoryViewPage = new OldInventoryViewPage(driver);
-        inventoryViewPage.expandEditAndChooseAction(EDIT_AGGREGATED_ETHERNET_INTERFACE_CONTEXT_ACTION_ID);
+        NewInventoryViewPage inventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
+        inventoryViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, EDIT_AGGREGATED_ETHERNET_INTERFACE_CONTEXT_ACTION_ID);
         return new AEIWizardPage(driver);
     }
 

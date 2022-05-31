@@ -25,4 +25,14 @@
             <class name="com.oss.acd.ArSettingsTest"/>
         </classes>
     </test>
+    <test name="SubsystemsHealthTest">
+        <classes>
+            <class name="com.oss.acd.SubsystemsHealthTest"/>
+        </classes>
+    </test>
+    <test name="AssignmentManagementTest">
+        <classes>
+            <class name="com.oss.acd.AssignmentManagementTest"/>
+        </classes>
+    </test>
 </suite>

@@ -53,6 +53,8 @@ public class NewInventoryViewPage extends BasePage {
     private static final String TABS_CONTAINER_ID = "DetailTabsWidget";
     private static final String OPEN_HIERARCHY_VIEW_ACTION_ID = "OpenHierarchyViewContext";
     public static final String KEBAB_OBJECT_GROUP_ID = "frameworkObjectButtonsGroup";
+    private static final String CONFIRM_REMOVAL_BUTTON_ID = "ConfirmationBox_deleteAppId_action_button";
+    private static final String PROPERTY_PANEL_ID = "PropertyPanelWidget";
 
     public NewInventoryViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -134,6 +136,7 @@ public class NewInventoryViewPage extends BasePage {
     public Multimap<String, String> searchByAttributeValue(String attributeId, String attributeValue, ComponentType componentType) {
         TableWidget mainTable = getMainTable();
         mainTable.searchByAttribute(attributeId, componentType, attributeValue);
+        DelayUtils.waitForPageToLoad(driver, wait);
         Multimap<String, String> filterValues = mainTable.getAppliedFilters();
         DelayUtils.waitForPageToLoad(driver, wait);
         return filterValues;
@@ -260,6 +263,10 @@ public class NewInventoryViewPage extends BasePage {
         return (PropertyPanel) getTabsWidget().getWidget(propertyPanelId, WidgetType.PROPERTY_PANEL);
     }
 
+    public String getPropertyPanelValue(String attributeName) {
+        return getPropertyPanel(PROPERTY_PANEL_ID).getPropertyValue(attributeName);
+    }
+
     public String getActiveTabLabel() {
         return getTabsWidget().getActiveTabLabel();
     }
@@ -296,6 +303,10 @@ public class NewInventoryViewPage extends BasePage {
 
     public void clickConfirmationBox(String buttonId) {
         getConfirmationBox().clickButtonById(buttonId);
+    }
+
+    public void clickConfirmationRemovalButton() {
+        clickConfirmationBox(CONFIRM_REMOVAL_BUTTON_ID);
     }
 
     @Step("Change layout to Horizontal Orientation")
@@ -335,8 +346,7 @@ public class NewInventoryViewPage extends BasePage {
     }
 
     @Step("Save configuration for properties")
-    public void saveConfigurationForProperties(int rowId, String widgetId, String
-            configurationName, Field... fields) {
+    public void saveConfigurationForProperties(int rowId, String widgetId, String configurationName, Field... fields) {
         DelayUtils.waitForPageToLoad(driver, wait);
         getPropertyPanel(rowId, widgetId).callAction(SETTINGS_ID, SAVE_PROPERTY_CONFIG_ID);
         getSaveConfigurationWizard().saveAsNew(configurationName, fields);
@@ -375,6 +385,27 @@ public class NewInventoryViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         ButtonPanel.create(driver, wait).clickButton(KEBAB_OBJECT_GROUP_ID, SAVE_CONFIGURATION_BUTTON_ID);
         getSaveConfigurationWizard().saveAsNew(configurationName, fields);
+    }
+
+    @Step("Get all Configurations for page")
+    public List<String> getPageConfigurationsName() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        ButtonPanel.create(driver, wait).clickButton(KEBAB_OBJECT_GROUP_ID, CHOOSE_CONFIGURATION_PAGE_ID);
+        return getChooseConfigurationWizard().getConfigurationNames();
+    }
+
+    @Step("Get all Configurations for MainTable")
+    public List<String> getTableConfigurationsName() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getMainTable().callAction(ActionsContainer.KEBAB_GROUP_ID, CHOOSE_CONFIG_ID);
+        return getChooseConfigurationWizard().getConfigurationNames();
+    }
+
+    @Step("Get all Configurations for tabs")
+    public List<String> getTabsConfigurationsName() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getTabsWidget().callActionById(ActionsContainer.KEBAB_GROUP_ID, CHOOSE_CONFIG_ID);
+        return getChooseConfigurationWizard().getConfigurationNames();
     }
 
     @Step("Save configuration for tabs")
@@ -420,8 +451,7 @@ public class NewInventoryViewPage extends BasePage {
     }
 
     @Step("Apply configuration for properties")
-    public void applyConfigurationForProperties(int rowId, String widgetId, String
-            configurationName) {
+    public void applyConfigurationForProperties(int rowId, String widgetId, String configurationName) {
         DelayUtils.waitForPageToLoad(driver, wait);
         getPropertyPanel(rowId, widgetId).callAction(SETTINGS_ID, CHOOSE_PROPERTY_CONFIG_ID);
         getChooseConfigurationWizard().chooseConfiguration(configurationName).apply();
@@ -439,6 +469,12 @@ public class NewInventoryViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         ButtonPanel.create(driver, wait).clickButton(KEBAB_OBJECT_GROUP_ID, CHOOSE_CONFIGURATION_PAGE_ID);
         getChooseConfigurationWizard().deleteConfiguration(configurationName).cancel();
+    }
+
+    @Step("Delete all configurations")
+    public void deleteConfigurations(List<String> configurationsName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getChooseConfigurationWizard().deleteConfigurations(configurationsName).cancel();
     }
 
     @Step("Delete configuration for main table")

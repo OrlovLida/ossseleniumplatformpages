@@ -4,19 +4,39 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.oss.framework.widgets.table.TableWidget;
-import com.oss.pages.servicedesk.GraphQLSearchPage;
+import com.oss.pages.servicedesk.BaseSearchPage;
 
-public class ProblemSearchPage extends GraphQLSearchPage {
+import io.qameta.allure.Step;
 
-    private static final String TABLE_ID = "problem-search-graphql-table";
+import static com.oss.pages.servicedesk.ServiceDeskConstants.PROBLEMS_TABLE_ID;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.PROBLEM_ISSUE_TYPE;
+
+public class ProblemSearchPage extends BaseSearchPage {
+
+    private static final String PROBLEMS_SEARCH = "problem-search";
 
     public ProblemSearchPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
     }
 
     @Override
+    @Step("I open Problems Search View")
+    public ProblemSearchPage openView(WebDriver driver, String basicURL) {
+        goToPage(driver, basicURL, PROBLEMS_SEARCH);
+        return this;
+    }
+
+    public String getSearchPageUrl() {
+        return PROBLEMS_SEARCH;
+    }
+
+    public String getIssueType() {
+        return PROBLEM_ISSUE_TYPE;
+    }
+
+    @Override
     public TableWidget getIssueTable() {
-        return TableWidget.createById(driver, TABLE_ID, wait);
+        return TableWidget.createById(driver, PROBLEMS_TABLE_ID, wait);
     }
 }
 

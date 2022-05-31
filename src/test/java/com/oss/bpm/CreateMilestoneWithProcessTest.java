@@ -91,6 +91,7 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
         // then
         processInstancesPage.selectMilestoneTab("Name", processName);
         // Status
+        DelayUtils.waitForPageToLoad(driver,webDriverWait);
         String statusMilestone1 = processInstancesPage.getMilestoneValue(nameMilestone1, "Status");
         String statusMilestone2 = processInstancesPage.getMilestoneValue(nameMilestone2, "Status");
         String statusPredefinedMilestone = processInstancesPage.getMilestoneValue(namePredefinedMilestone, "Status");
@@ -172,6 +173,7 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
         String nameMilestone3 = milestone3_updated.getName().orElseThrow(() -> new RuntimeException("Missing name"));
 
         // Status
+        DelayUtils.waitForPageToLoad(driver,webDriverWait);
         String statusMilestone1 = processInstancesPage.getMilestoneValue(nameMilestone1, "Status");
         String statusMilestone2 = processInstancesPage.getMilestoneValue(nameMilestone2, "Status");
         String statusMilestone3 = processInstancesPage.getMilestoneValue(nameMilestone3, "Status");
@@ -248,6 +250,7 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
         String nameMilestone2 = milestone2.getName().orElseThrow(() -> new RuntimeException("Missing Name"));
 
         // Status
+        DelayUtils.waitForPageToLoad(driver,webDriverWait);
         String statusMilestone1 = processInstancesPage.getMilestoneValue(nameMilestone1, "Status");
         String statusMilestone2 = processInstancesPage.getMilestoneValue(nameMilestone2, "Status");
         Assert.assertEquals(statusMilestone1, "New");
