@@ -49,7 +49,7 @@ public class ChangesTest extends BaseTestCase {
     private DescriptionTab descriptionTab;
     private AffectedTab affectedTab;
     private SummaryTab summaryTab;
-    private String changeID = "64";
+    private String changeID;
 
     private static final String RISK_ASSESSMENT_ID = "TT_WIZARD_INPUT_RISK_ASSESSMENT_LABEL";
     private static final String RISK = "LOW";
@@ -257,10 +257,12 @@ public class ChangesTest extends BaseTestCase {
         rolesTab.fillUser(rolesTab.getImplementerSearchBoxId(), userForRoles);
         rolesTab.fillUser(rolesTab.getApproverSearchBoxId(), userForRoles);
         rolesTab.fillUser(rolesTab.getCoordinatorSearchBoxId(), userForRoles);
+        rolesTab.fillUser(rolesTab.getManagerSearchBoxId(), userForRoles);
 
         Assert.assertEquals(rolesTab.getValueFromSearchBox(rolesTab.getImplementerSearchBoxId()), userForRoles);
         Assert.assertEquals(rolesTab.getValueFromSearchBox(rolesTab.getApproverSearchBoxId()), userForRoles);
         Assert.assertEquals(rolesTab.getValueFromSearchBox(rolesTab.getCoordinatorSearchBoxId()), userForRoles);
+        Assert.assertEquals(rolesTab.getValueFromSearchBox(rolesTab.getManagerSearchBoxId()), userForRoles);
     }
 
     @Test(priority = 15, testName = "Check Participants", description = "Check Participants Tab - add Participant")
