@@ -33,13 +33,13 @@ public class ProcessModelsPage extends BasePage {
     private static final String EXPORT_AS_BAR_ACTION_BUTTON_ID = "export-bar";
     private static final String EXPORT_AS_XML_ACTION_BUTTON_ID = "export-with-configuration-files";
 
-    private static final String DELETE_MODEL_POPUP_ID = "bpm_models_view_delete-model-popup";
+    private static final String DELETE_MODEL_POPUP_ID = "bpm_models_view_delete-model-popup_prompt-card";
     private static final String DELETE_MODEL_CONFIRMATION_BUTTON_ID = "ConfirmationBox_bpm_models_view_delete-model-popup_DELETE_MODEL_CONFIRMATION_BOX_VIEW_ID_action_button";
 
-    private static final String CLONE_MODEL_POPUP_ID = "bpm_models_view_clone-model-popup";
+    private static final String CLONE_MODEL_POPUP_ID = "bpm_models_view_clone-model-popup_prompt-card";
     private static final String CLONE_MODEL_ACCEPT_BUTTON_ID = "bpm_models_view_clone-model-popup_clone-model-buttons-1";
 
-    private static final String EDIT_KEYWORDS_POPUP_ID = "bpm_models_view_edit-keywords-popup";
+    private static final String EDIT_KEYWORDS_POPUP_ID = "bpm_models_view_edit-keywords-popup_prompt-card";
     private static final String EDIT_KEYWORDS_ACCEPT_BUTTON_ID = "wizard-submit-button-bpm_models_view_edit-keywords-popup_prompt-form-id";
 
     public ProcessModelsPage(WebDriver driver) {
