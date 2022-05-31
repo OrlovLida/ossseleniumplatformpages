@@ -105,7 +105,7 @@ public class MyGroupTicketsTest extends BaseTestCase {
         ticketOverviewTab = (TicketOverviewTab) issueDetailsPage.selectOverviewTab(TROUBLE_TICKET_ISSUE_TYPE);
         ticketOverviewTab.allowEditingTicket();
         issueDetailsPage.maximizeWindow(DETAILS_TABS_CONTAINER_ID);
-        sdWizardPage = ticketOverviewTab.openEditTicketWizard();
+        sdWizardPage = ticketOverviewTab.openEditIssueWizard();
         sdWizardPage.clickNextButtonInWizard();
         sdWizardPage.insertValueToSearchComponent(USER_NAME, TT_WIZARD_ASSIGNEE);
         sdWizardPage.clickNextButtonInWizard();
