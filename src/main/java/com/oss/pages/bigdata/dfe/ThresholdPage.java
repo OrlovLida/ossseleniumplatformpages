@@ -7,12 +7,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.oss.framework.components.data.Data;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
-import com.oss.framework.wizard.Wizard;
 
 import io.qameta.allure.Step;
 
@@ -51,14 +48,12 @@ public class ThresholdPage extends BaseDfePage {
     private static final String PROBLEM_ID_COLUMN_LABEL = "Problem ID";
     private static final String ACTIVATE_BATCH_LABEL = "Activate Batch of Thresholds Configuration";
     private static final String DEACTIVATE_BATCH_LABEL = "Deactivate Batch of Thresholds Configuration";
-    private static final String WIZARD_ID = "deactivateItemsId_prompt-card";
-    private static final String SAVE_LABEL = "Save";
 
     private ThresholdPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
     }
 
-    @Step("I Open Thresholds View")
+    @Step("Open Thresholds View")
     public static ThresholdPage goToPage(WebDriver driver, String basicURL) {
         WebDriverWait wait = new WebDriverWait(driver, 45);
 
@@ -66,48 +61,41 @@ public class ThresholdPage extends BaseDfePage {
         return new ThresholdPage(driver, wait);
     }
 
-    @Step("I click add new Threshold")
+    @Step("Click add new Threshold")
     public void clickAddNewThreshold() {
         clickContextActionAdd();
     }
 
-    @Step("I click edit Threshold")
+    @Step("Click edit Threshold")
     public void clickEditThreshold() {
         clickContextActionEdit();
     }
 
-    @Step("I click delete Threshold")
+    @Step("Click delete Threshold")
     public void clickDeleteThreshold() {
         clickContextActionDelete();
     }
 
-    @Step("I click Activate Batch")
+    @Step("Click Activate Batch")
     public void clickActivateBatch() {
         clickContextAction(ACTIVATE_BATCH_LABEL);
     }
 
-    @Step("I click Deactivate Batch")
+    @Step("Click Deactivate Batch")
     public void clickDeactivateBatch() {
         clickContextAction(DEACTIVATE_BATCH_LABEL);
     }
 
-    @Step("I click Save")
-    public void clickSave() {
-        Wizard.createByComponentId(driver, wait, WIZARD_ID).clickSave();
-        log.info("Confirmation by clicking 'Save'");
-    }
-
-    @Step("I check if Threshold: {thresholdName} exists into the table")
-    public Boolean thresholdExistsIntoTable(String thresholdName) {
-        DelayUtils.waitForPageToLoad(driver, wait);
+    @Step("Check if Threshold: {thresholdName} exists into the table")
+    public boolean thresholdExistsIntoTable(String thresholdName) {
+        waitForPageToLoad(driver, wait);
         return feedExistIntoTable(thresholdName, NAME_COLUMN_LABEL);
     }
 
     @Step("Check if Threshold is Active")
-    public Boolean thresholdISActive() {
-        String isActive = getTable(driver, wait).getCellValue(0, IS_ACTIVE_COLUMN_LABEL);
-        DelayUtils.waitForPageToLoad(driver, wait);
-        return isActive.contains("Yes");
+    public boolean isThresholdActive() {
+        waitForPageToLoad(driver, wait);
+        return getTable(driver, wait).getCellValue(0, IS_ACTIVE_COLUMN_LABEL).equalsIgnoreCase("Yes");
     }
 
     @Step("I select found Threshold")
@@ -158,44 +146,40 @@ public class ThresholdPage extends BaseDfePage {
         return statusOfThreshold;
     }
 
-    @Step("I look for Threshold with set categories")
-    public void searchCategories(String categories) {
+    @Step("Search for Threshold with category {category}")
+    public void searchCategories(String category) {
         waitForPageToLoad(driver, wait);
-        Input searchCategoriesComponent = ComponentFactory.create(SEARCH_CATEGORIES_ID, MULTI_COMBOBOX, driver, wait);
-        searchCategoriesComponent.setValue(Data.createSingleData(categories));
-        log.debug("Filled categories with: {}", categories);
+        ComponentFactory.create(SEARCH_CATEGORIES_ID, MULTI_COMBOBOX, driver, wait).setSingleStringValue(category);
+        log.debug("Filled category with: {}", category);
     }
 
-    @Step("I look for Threshold with set Problem ID")
+    @Step("Search for Threshold with Problem ID")
     public void searchProblemId(String problemId) {
         waitForPageToLoad(driver, wait);
-        Input searchIdComponent = ComponentFactory.create(SEARCH_PROBLEM_ID, MULTI_COMBOBOX, driver, wait);
-        searchIdComponent.setValue(Data.createSingleData(problemId));
-        log.debug("Filled Problem ID with: {}", problemId);
+        ComponentFactory.create(SEARCH_PROBLEM_ID, MULTI_COMBOBOX, driver, wait).setSingleStringValue(problemId);
+        log.debug("Filled Problem ID with id: {}", problemId);
     }
 
     @Step("Choose Status")
     public void chooseStatus(String status) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        Input searchStatusComponent = ComponentFactory.create(SEARCH_STATUS_ID, Input.ComponentType.MULTI_COMBOBOX, driver, wait);
-        searchStatusComponent.setSingleStringValue(status);
+        waitForPageToLoad(driver, wait);
+        ComponentFactory.create(SEARCH_STATUS_ID, Input.ComponentType.MULTI_COMBOBOX, driver, wait).setSingleStringValue(status);
         log.info("Choose status: {}", status);
     }
 
     @Step("Choose 'Is Active' Status")
     public void chooseIsActive(String activity) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        Input searchActiveComponent = ComponentFactory.create(SEARCH_IS_ACTIVE_ID, Input.ComponentType.MULTI_COMBOBOX, driver, wait);
-        searchActiveComponent.setSingleStringValue(activity);
-        log.info("Is Active: {}", activity);
+        waitForPageToLoad(driver, wait);
+        ComponentFactory.create(SEARCH_IS_ACTIVE_ID, Input.ComponentType.MULTI_COMBOBOX, driver, wait).setSingleStringValue(activity);
+        log.info("Setting is Active to: {}", activity);
     }
 
-    @Step("I look for category name")
+    @Step("Get category name")
     public String getCategoryName(int index) {
         return getTable(driver, wait).getCellValue(index, CATEGORY_COLUMN_LABEL);
     }
 
-    @Step("I look for problem ID")
+    @Step("Get problem ID")
     public String getProblemId(int index) {
         return getTable(driver, wait).getCellValue(index, PROBLEM_ID_COLUMN_LABEL);
     }
@@ -205,7 +189,7 @@ public class ThresholdPage extends BaseDfePage {
         return getTable(driver, wait).getCellValue(index, IS_ACTIVE_COLUMN_LABEL);
     }
 
-    @Step("I look for status name")
+    @Step("Get status name")
     public String getStatus(int index) {
         return getTable(driver, wait).getCellValue(index, STATUS_COLUMN_LABEL);
     }
@@ -217,13 +201,12 @@ public class ThresholdPage extends BaseDfePage {
 
     @Step("Check name value in details tab")
     public String checkNameInPropertyPanel() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        return checkValueInPropertyPanel(PROPERTY_PANEL_ID,
-                NAME_PROPERTY);
+        waitForPageToLoad(driver, wait);
+        return checkValueInPropertyPanel(PROPERTY_PANEL_ID, NAME_PROPERTY);
     }
 
-    @Step("I check if Conditions Table contains simple and else condition")
-    public Boolean isSimpleAndElseConditionInTable() {
+    @Step("Check if Conditions Table contains simple and else condition")
+    public boolean isSimpleAndElseConditionInTable() {
         log.info("Check if there are at least 2 conditions in Conditions Table");
         return OldTable
                 .createById(driver, wait, PARAMETERS_TABLE_ID)

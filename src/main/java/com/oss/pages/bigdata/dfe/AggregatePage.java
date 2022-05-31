@@ -90,7 +90,7 @@ public class AggregatePage extends BaseDfePage {
     }
 
     @Step("I check if IfRuns are not empty")
-    public Boolean ifRunsNotEmpty() {
+    public boolean ifRunsNotEmpty() {
         boolean ifRunsExists = OldTable
                 .createById(driver, wait, TABLE_TAB_ID)
                 .countRows(COLUMN_REQUEST_GENERATION_TIME_LABEL) >= 1;
@@ -105,7 +105,7 @@ public class AggregatePage extends BaseDfePage {
     }
 
     @Step("I check if Last Request Generation Time is fresh - up to 60 min old")
-    public boolean IsIfRunsFresh() {
+    public boolean isIfRunsFresh() {
         return isLastLogTimeFresh(lastIfRunTime());
     }
 
