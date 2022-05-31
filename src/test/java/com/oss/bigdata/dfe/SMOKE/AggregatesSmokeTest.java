@@ -18,7 +18,7 @@ public class AggregatesSmokeTest extends BaseTestCase {
 
     private static final Logger log = LoggerFactory.getLogger(AggregatesSmokeTest.class);
     private AggregatePage aggregatePage;
-    private static final String AGGREGATE_NAME = "t:SMOKE#AGGRforMonitoring";
+    private static final String AGGREGATE_NAME = "t:SMOKE#AGGRForKqis";
 
 
     @BeforeClass
