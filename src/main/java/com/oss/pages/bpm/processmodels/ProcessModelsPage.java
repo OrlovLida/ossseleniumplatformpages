@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
 
+import com.oss.framework.widgets.list.CommonList;
+import com.oss.framework.widgets.tabs.TabsWidget;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -41,6 +43,10 @@ public class ProcessModelsPage extends BasePage {
 
     private static final String EDIT_KEYWORDS_POPUP_ID = "bpm_models_view_edit-keywords-popup_prompt-card";
     private static final String EDIT_KEYWORDS_ACCEPT_BUTTON_ID = "wizard-submit-button-bpm_models_view_edit-keywords-popup_prompt-form-id";
+    private static final String MODELS_TABS_ID = "bpm_models_view_tabs-container";
+    private static final String MILESTONE_TAB_ID = "tab_bpm_models_view_milestones-tab";
+    private static final String MILESTONE_LIST_ID = "milestones-data";
+    private static final String INITIAL_PARAMETERS_TAB_ID = "tab_bpm_models_view_initial-parameters-tab";
 
     public ProcessModelsPage(WebDriver driver) {
         super(driver);
@@ -123,7 +129,7 @@ public class ProcessModelsPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    public void setWizardAttributeValue(Wizard wizard, String attributeId, Input.ComponentType inputType, String value) {
+    private void setWizardAttributeValue(Wizard wizard, String attributeId, Input.ComponentType inputType, String value) {
         Input attribute = wizard.getComponent(attributeId, inputType);
         attribute.clear();
         attribute.setSingleStringValue(value);
@@ -164,4 +170,25 @@ public class ProcessModelsPage extends BasePage {
         return OldTable.createById(driver, wait, MODEL_LIST_TABLE_ID);
     }
 
+    public void selectInitialParametersTab(String processModelName) {
+        selectModelByName(processModelName);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        TabsWidget milestoneTab = TabsWidget.createById(driver, wait, MODELS_TABS_ID);
+        milestoneTab.selectTabById(INITIAL_PARAMETERS_TAB_ID);
+    }
+
+    public void selectMilestoneTab(String processModelName) {
+        selectModelByName(processModelName);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        TabsWidget milestoneTab = TabsWidget.createById(driver, wait, MODELS_TABS_ID);
+        milestoneTab.selectTabById(MILESTONE_TAB_ID);
+    }
+
+    public String getMilestoneValue(String milestoneName, String attributeName) {
+        CommonList milestoneList = CommonList.create(driver, wait, MILESTONE_LIST_ID);
+        return milestoneList.getRow("Name", milestoneName).getValue(attributeName);
+    }
+
 }
+
+

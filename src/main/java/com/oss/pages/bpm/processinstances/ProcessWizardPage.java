@@ -9,6 +9,7 @@ package com.oss.pages.bpm.processinstances;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.oss.pages.bpm.milestones.EditMilestoneDefinitionPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -161,80 +162,82 @@ public class ProcessWizardPage extends BasePage {
         }
 
         public Milestone addMilestoneRow(Milestone milestone) {
-            EditableList addMilestoneList = EditableList.createById(driver, wait, ADD_MILESTONE_LIST);
-            EditableList.Row row = addMilestoneList.addRow();
-            row.setValue(milestone.getName().get(), BPM_MILESTONE_NAME, "name-TEXT_FIELD", Input.ComponentType.TEXT_FIELD);
-            if (milestone.getDueDate().isPresent()) {
-                row.setValue(milestone.getDueDate().get(), BPM_MILESTONE_DUE_DATE, "dueDate-DATE",
-                        Input.ComponentType.DATE);
-            }
-            if (milestone.getLeadTime().isPresent()) {
-                row.setValue(milestone.getLeadTime().get(), BPM_MILESTONE_LEAD_TIME, "leadTime-NUMBER_FIELD",
-                        Input.ComponentType.NUMBER_FIELD);
-            }
-            if (milestone.getDescription().isPresent()) {
-                row.setValue(milestone.getDescription().get(), BPM_MILESTONE_DESCRIPTION, "description-TEXT_FIELD",
-                        Input.ComponentType.TEXT_FIELD);
-            }
-            if (milestone.getRelatedTask().isPresent()) {
-                row.setValue(milestone.getRelatedTask().get(), BPM_MILESTONE_RELATED_TASK,
-                        RELATED_TASK_IDENTIFIER,
-                        Input.ComponentType.COMBOBOX);
-            }
-            if (milestone.getIsActive().isPresent()) {
-                row.setValue(milestone.getIsActive().get(), BPM_MILESTONE_IS_ACTIVE, "active-CHECKBOX",
-                        Input.ComponentType.CHECKBOX);
-            }
-            if (milestone.getIsManualCompletion().isPresent()) {
-                row.setValue(milestone.getIsManualCompletion().get(), BPM_MILESTONE_IS_MANUAL_COMPLETION,
-                        "isManualCompletion-CHECKBOX",
-                        Input.ComponentType.CHECKBOX);
-            }
-            return getMilestoneFromRow(addMilestoneList, addMilestoneList.getVisibleRows().size() - 1);
+            return EditMilestoneDefinitionPage.addMilestoneRow(milestone, ADD_MILESTONE_LIST, driver, wait);
+//            EditableList addMilestoneList = EditableList.createById(driver, wait, ADD_MILESTONE_LIST);
+//            EditableList.Row row = addMilestoneList.addRow();
+//            row.setValue(milestone.getName().get(), BPM_MILESTONE_NAME, "name-TEXT_FIELD", Input.ComponentType.TEXT_FIELD);
+//            if (milestone.getDueDate().isPresent()) {
+//                row.setValue(milestone.getDueDate().get(), BPM_MILESTONE_DUE_DATE, "dueDate-DATE",
+//                        Input.ComponentType.DATE);
+//            }
+//            if (milestone.getLeadTime().isPresent()) {
+//                row.setValue(milestone.getLeadTime().get(), BPM_MILESTONE_LEAD_TIME, "leadTime-NUMBER_FIELD",
+//                        Input.ComponentType.NUMBER_FIELD);
+//            }
+//            if (milestone.getDescription().isPresent()) {
+//                row.setValue(milestone.getDescription().get(), BPM_MILESTONE_DESCRIPTION, "description-TEXT_FIELD",
+//                        Input.ComponentType.TEXT_FIELD);
+//            }
+//            if (milestone.getRelatedTask().isPresent()) {
+//                row.setValue(milestone.getRelatedTask().get(), BPM_MILESTONE_RELATED_TASK,
+//                        RELATED_TASK_IDENTIFIER,
+//                        Input.ComponentType.COMBOBOX);
+//            }
+//            if (milestone.getIsActive().isPresent()) {
+//                row.setValue(milestone.getIsActive().get(), BPM_MILESTONE_IS_ACTIVE, "active-CHECKBOX",
+//                        Input.ComponentType.CHECKBOX);
+//            }
+//            if (milestone.getIsManualCompletion().isPresent()) {
+//                row.setValue(milestone.getIsManualCompletion().get(), BPM_MILESTONE_IS_MANUAL_COMPLETION,
+//                        "isManualCompletion-CHECKBOX",
+//                        Input.ComponentType.CHECKBOX);
+//            }
+//            return getMilestoneFromRow(addMilestoneList, addMilestoneList.getVisibleRows().size() - 1);
         }
 
         public Milestone editPredefinedMilestone(Milestone milestone, int row) {
-            EditableList predefinedMilestoneList = getMilestonePredefinedList();
-            EditableList.Row predefineMilestoneRow = predefinedMilestoneList.getRow(row - 1);
-            if (milestone.getName().isPresent()) {
-                predefineMilestoneRow.setValue(milestone.getName().get(), BPM_MILESTONE_NAME, "name-TEXT_FIELD",
-                        Input.ComponentType.TEXT_FIELD);
-            }
-
-            if (milestone.getDueDate().isPresent()) {
-                predefineMilestoneRow.setValue(milestone.getDueDate().get(), BPM_MILESTONE_DUE_DATE, "dueDate-DATE",
-                        Input.ComponentType.DATE);
-            }
-            if (milestone.getLeadTime().isPresent()) {
-                predefineMilestoneRow.setValue(milestone.getLeadTime().get(), BPM_MILESTONE_LEAD_TIME,
-                        "leadTime-NUMBER_FIELD",
-                        Input.ComponentType.NUMBER_FIELD);
-            }
-            if (milestone.getDescription().isPresent()) {
-                predefineMilestoneRow.setValue(milestone.getDescription().get(), BPM_MILESTONE_DESCRIPTION,
-                        "description-TEXT_FIELD",
-                        Input.ComponentType.TEXT_FIELD);
-            }
-            if (milestone.getRelatedTask().isPresent()) {
-                if (milestone.getRelatedTask().get().equals("")) {
-                    predefineMilestoneRow.clearValue(BPM_MILESTONE_RELATED_TASK, RELATED_TASK_IDENTIFIER,
-                            Input.ComponentType.COMBOBOX);
-                } else {
-                    predefineMilestoneRow.setValue(milestone.getRelatedTask().get(), BPM_MILESTONE_RELATED_TASK,
-                            RELATED_TASK_IDENTIFIER,
-                            Input.ComponentType.COMBOBOX);
-                }
-            }
-            if (milestone.getIsActive().isPresent()) {
-                predefineMilestoneRow.setValue(milestone.getIsActive().get(), BPM_MILESTONE_IS_ACTIVE, "active-CHECKBOX",
-                        Input.ComponentType.CHECKBOX);
-            }
-            if (milestone.getIsManualCompletion().isPresent()) {
-                predefineMilestoneRow.setValue(milestone.getIsManualCompletion().get(), BPM_MILESTONE_IS_MANUAL_COMPLETION,
-                        "isManualCompletion-CHECKBOX",
-                        Input.ComponentType.CHECKBOX);
-            }
-            return getMilestoneFromRow(predefinedMilestoneList, row - 1);
+            return EditMilestoneDefinitionPage.editMilestoneRow(milestone, row, PREDEFINED_MILESTONE_LIST, driver, wait);
+//            EditableList predefinedMilestoneList = getMilestonePredefinedList();
+//            EditableList.Row predefineMilestoneRow = predefinedMilestoneList.getRow(row - 1);
+//            if (milestone.getName().isPresent()) {
+//                predefineMilestoneRow.setValue(milestone.getName().get(), BPM_MILESTONE_NAME, "name-TEXT_FIELD",
+//                        Input.ComponentType.TEXT_FIELD);
+//            }
+//
+//            if (milestone.getDueDate().isPresent()) {
+//                predefineMilestoneRow.setValue(milestone.getDueDate().get(), BPM_MILESTONE_DUE_DATE, "dueDate-DATE",
+//                        Input.ComponentType.DATE);
+//            }
+//            if (milestone.getLeadTime().isPresent()) {
+//                predefineMilestoneRow.setValue(milestone.getLeadTime().get(), BPM_MILESTONE_LEAD_TIME,
+//                        "leadTime-NUMBER_FIELD",
+//                        Input.ComponentType.NUMBER_FIELD);
+//            }
+//            if (milestone.getDescription().isPresent()) {
+//                predefineMilestoneRow.setValue(milestone.getDescription().get(), BPM_MILESTONE_DESCRIPTION,
+//                        "description-TEXT_FIELD",
+//                        Input.ComponentType.TEXT_FIELD);
+//            }
+//            if (milestone.getRelatedTask().isPresent()) {
+//                if (milestone.getRelatedTask().get().equals("")) {
+//                    predefineMilestoneRow.clearValue(BPM_MILESTONE_RELATED_TASK, RELATED_TASK_IDENTIFIER,
+//                            Input.ComponentType.COMBOBOX);
+//                } else {
+//                    predefineMilestoneRow.setValue(milestone.getRelatedTask().get(), BPM_MILESTONE_RELATED_TASK,
+//                            RELATED_TASK_IDENTIFIER,
+//                            Input.ComponentType.COMBOBOX);
+//                }
+//            }
+//            if (milestone.getIsActive().isPresent()) {
+//                predefineMilestoneRow.setValue(milestone.getIsActive().get(), BPM_MILESTONE_IS_ACTIVE, "active-CHECKBOX",
+//                        Input.ComponentType.CHECKBOX);
+//            }
+//            if (milestone.getIsManualCompletion().isPresent()) {
+//                predefineMilestoneRow.setValue(milestone.getIsManualCompletion().get(), BPM_MILESTONE_IS_MANUAL_COMPLETION,
+//                        "isManualCompletion-CHECKBOX",
+//                        Input.ComponentType.CHECKBOX);
+//            }
+//            return getMilestoneFromRow(predefinedMilestoneList, row - 1);
         }
 
         public void clickAcceptButton() {
@@ -245,22 +248,22 @@ public class ProcessWizardPage extends BasePage {
             Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2).clickButtonById(CANCEL_BUTTON);
         }
 
-        private Milestone getMilestoneFromRow(EditableList list, int row) {
-            String name = list.getRow(row).getCellValue(BPM_MILESTONE_NAME);
-            String dueDate = list.getRow(row).getCellValue(BPM_MILESTONE_DUE_DATE);
-            String leadTime = list.getRow(row).getCellValue(BPM_MILESTONE_LEAD_TIME);
-            String description = list.getRow(row).getCellValue(BPM_MILESTONE_DESCRIPTION);
-            String relatedTask = list.getRow(row).getCellValue(BPM_MILESTONE_RELATED_TASK);
-            String isActive = list.getRow(row).getCellValue(BPM_MILESTONE_IS_ACTIVE);
-            String isManualCompletion = list.getRow(row).getCellValue(BPM_MILESTONE_IS_MANUAL_COMPLETION);
-            return Milestone.builder().setName(name)
-                    .setDueDate(dueDate)
-                    .setLeadTime(leadTime)
-                    .setDescription(description)
-                    .setRelatedTask(relatedTask)
-                    .setIsActive(isActive)
-                    .setIsManualCompletion(isManualCompletion)
-                    .build();
-        }
+//        private Milestone getMilestoneFromRow(EditableList list, int row) {
+//            String name = list.getRow(row).getCellValue(BPM_MILESTONE_NAME);
+//            String dueDate = list.getRow(row).getCellValue(BPM_MILESTONE_DUE_DATE);
+//            String leadTime = list.getRow(row).getCellValue(BPM_MILESTONE_LEAD_TIME);
+//            String description = list.getRow(row).getCellValue(BPM_MILESTONE_DESCRIPTION);
+//            String relatedTask = list.getRow(row).getCellValue(BPM_MILESTONE_RELATED_TASK);
+//            String isActive = list.getRow(row).getCellValue(BPM_MILESTONE_IS_ACTIVE);
+//            String isManualCompletion = list.getRow(row).getCellValue(BPM_MILESTONE_IS_MANUAL_COMPLETION);
+//            return Milestone.builder().setName(name)
+//                    .setDueDate(dueDate)
+//                    .setLeadTime(leadTime)
+//                    .setDescription(description)
+//                    .setRelatedTask(relatedTask)
+//                    .setIsActive(isActive)
+//                    .setIsManualCompletion(isManualCompletion)
+//                    .build();
+//        }
     }
 }
