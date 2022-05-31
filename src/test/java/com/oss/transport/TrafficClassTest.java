@@ -34,6 +34,7 @@ public class TrafficClassTest extends BaseTestCase {
     private static final String EDIT_BUTTON_INSIDE_EDIT_GROUP_TEST_ID = "TrafficClassEditContextAction";
     private static final String REMOVE_BUTTON_INSIDE_EDIT_GROUP_TEST_ID = "TrafficClassDeleteContextAction";
     private static final String CREATE_TRAFFIC_CLASS = "CreateTrafficClassContextAction";
+    private static final String CONFIRMATION_REMOVE_BUTTON = "ConfirmationBox_deleteAppId_action_button";
 
     Random rand = new Random();
 
@@ -186,7 +187,7 @@ public class TrafficClassTest extends BaseTestCase {
         inventoryView.selectFirstRow();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         inventoryView.callAction(ActionsContainer.EDIT_GROUP_ID, REMOVE_BUTTON_INSIDE_EDIT_GROUP_TEST_ID);
-        inventoryView.clickConfirmationRemovalButton();
+        inventoryView.clickConfirmationBox(CONFIRMATION_REMOVE_BUTTON);
     }
 
     private boolean hasBeenDeleted() {
