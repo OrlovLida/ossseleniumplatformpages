@@ -89,9 +89,8 @@ public abstract class TrafficClassWizardPage extends BasePage {
 
     @Step("Set Input interface to {inputInterface}")
     public void setInputInterface(String inputInterface) {
-        Input inputInterfaceComponent = getEmptyComboBoxComponent(INPUT_INTERFACE_FIELD_ID);
-        inputInterfaceComponent.setValueContains(Data.createSingleData(inputInterface));
-        DelayUtils.waitForPageToLoad(driver, wait);
+        Input component = getWizard().getComponent(INPUT_INTERFACE_FIELD_ID, Input.ComponentType.COMBOBOX);
+        component.setValueContains(Data.createSingleData(inputInterface));
     }
 
     @Step("Set CIR Ingress to {cirIngress}")
@@ -114,9 +113,4 @@ public abstract class TrafficClassWizardPage extends BasePage {
         getWizard().setComponentValue(PIR_EGRESS_FIELD_ID, pirEgress, Input.ComponentType.TEXT_FIELD);
     }
 
-    private Input getEmptyComboBoxComponent(String componentId) {
-        Input component = getWizard().getComponent(componentId, Input.ComponentType.COMBOBOX);
-        component.clear();
-        return component;
-    }
 }
