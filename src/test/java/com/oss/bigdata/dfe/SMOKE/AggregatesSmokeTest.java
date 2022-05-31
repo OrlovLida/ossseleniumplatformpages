@@ -1,9 +1,5 @@
 package com.oss.bigdata.dfe.SMOKE;
 
-import com.oss.BaseTestCase;
-import com.oss.pages.bigdata.dfe.AggregatePage;
-import com.oss.utils.TestListener;
-import io.qameta.allure.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -11,6 +7,11 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
+import com.oss.BaseTestCase;
+import com.oss.pages.bigdata.dfe.AggregatePage;
+import com.oss.utils.TestListener;
+
+import io.qameta.allure.Description;
 
 @Listeners({TestListener.class})
 public class AggregatesSmokeTest extends BaseTestCase {
@@ -37,7 +38,7 @@ public class AggregatesSmokeTest extends BaseTestCase {
             boolean ifRunsExists = aggregatePage.ifRunsNotEmpty();
             Assert.assertTrue(ifRunsExists);
 
-            boolean isIfRunsFresh = aggregatePage.IsIfRunsFresh();
+            boolean isIfRunsFresh = aggregatePage.isIfRunsFresh();
             Assert.assertTrue(isIfRunsFresh);
 
             Assert.assertEquals(aggregatePage.checkStatus(), "Success");

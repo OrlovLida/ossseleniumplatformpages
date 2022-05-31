@@ -1,13 +1,15 @@
 package com.oss.bigdata.dfe.SMOKE;
 
-import com.oss.BaseTestCase;
-import com.oss.pages.bigdata.dfe.EtlDataCollectionsPage;
-import io.qameta.allure.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
+import com.oss.BaseTestCase;
+import com.oss.pages.bigdata.dfe.EtlDataCollectionsPage;
+
+import io.qameta.allure.Description;
 
 public class EtlSmokeTest extends BaseTestCase {
 
@@ -29,7 +31,7 @@ public class EtlSmokeTest extends BaseTestCase {
             etlDataCollectionsPage.selectExecutionHistoryTab();
             etlDataCollectionsPage.clickRefreshInTabTable();
 
-            boolean ifRunsFresh = etlDataCollectionsPage.IsIfRunsFresh();
+            boolean ifRunsFresh = etlDataCollectionsPage.isIfRunsFresh();
             Assert.assertTrue(ifRunsFresh);
 
             Assert.assertEquals(etlDataCollectionsPage.checkStatus(), "Success");

@@ -90,7 +90,7 @@ public class ThresholdRegressionTests extends BaseTestCase {
         boolean thresholdExists = thresholdPage.thresholdExistsIntoTable(thresholdName);
         if (thresholdExists) {
             thresholdPage.selectFoundThreshold();
-            boolean activeThresholdExist = thresholdPage.thresholdISActive();
+            boolean activeThresholdExist = thresholdPage.isThresholdActive();
             if (activeThresholdExist) {
                 thresholdPage.clickDeactivateBatch();
                 thresholdPage.confirmDeactivationOrActivation();
