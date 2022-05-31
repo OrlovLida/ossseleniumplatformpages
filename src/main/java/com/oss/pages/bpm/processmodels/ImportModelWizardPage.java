@@ -11,9 +11,9 @@ import com.oss.pages.BasePage;
 
 public class ImportModelWizardPage extends BasePage {
     private static final String FILE_COMPONENT_ID = "bpm_models_view_import-model-popup_model-import-form";
-    private static final String WIZARD_ID = "bpm_models_view_import-model-popup";
+    private static final String WIZARD_ID = "bpm_models_view_import-model-popup_prompt-card";
     private static final String IMPORT_BUTTON_ID = "bpm_models_view_import-model-popup_model-import-button-1";
-    private Wizard importModelWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
+    private final Wizard importModelWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
 
     public ImportModelWizardPage(WebDriver driver) {
         super(driver);
@@ -41,6 +41,15 @@ public class ImportModelWizardPage extends BasePage {
     public String getImportStatus() {
         FileChooser input = (FileChooser) importModelWizard.getComponent(FILE_COMPONENT_ID, Input.ComponentType.FILE_CHOOSER);
         return input.getStatus();
+    }
+
+    public Boolean isImportWizardVisible() {
+        try {
+            Wizard.createByComponentId(driver, wait, WIZARD_ID);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
 }
