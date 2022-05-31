@@ -90,5 +90,19 @@ public abstract class BaseDashboardPage extends BaseSDPage {
         return getTable().getCellValue(getRowWithIssueAssignee(assignee), ID_UPPERCASE_ATTRIBUTE);
     }
 
+    public BaseDashboardPage exportFromDashboard(String fileName) {
+        openNotificationPanel()
+                .clearNotifications()
+                .close();
+        clickExport();
+        openNotificationPanel()
+                .waitForExportFinish()
+                .clickDownload();
+        openNotificationPanel()
+                .clearNotifications();
+        attachFileToReport(fileName);
+        return this;
+    }
+
     protected abstract String getTableID();
 }

@@ -46,16 +46,15 @@ public class CreateProcessNRPTest extends BaseTestCase {
     private static final String BPM_ADMIN_USER_PASSWORD = "Webtests123!";
 
     private static final Logger log = LoggerFactory.getLogger(CreateProcessNRPTest.class);
-
-    private String processNRPName;
-    private String processIPName1 = "S.1-" + (int) (Math.random() * 1001);
-    private String processIPName2 = "S.2-" + (int) (Math.random() * 1001);
-    private String processNRPCode;
-    private String processIPCode1;
-    private String processIPCode2;
+    private final String processIPName1 = "S.1-" + (int) (Math.random() * 1001);
+    private final String processIPName2 = "S.2-" + (int) (Math.random() * 1001);
     public String perspectiveContext;
     public String deviceName1 = "Device-Selenium-" + (int) (Math.random() * 1001);
     public String deviceName2 = "Device-Selenium-" + (int) (Math.random() * 1001);
+    private String processNRPName;
+    private String processNRPCode;
+    private String processIPCode1;
+    private String processIPCode2;
 
     @BeforeClass
     public void openProcessInstancesPage() {
@@ -203,7 +202,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
         DelayUtils.sleep(2000);
         List<String> files = tasksPage.getListOfAttachments();
         Assertions.assertThat(files.get(0)).contains("SeleniumTest");
-        Assertions.assertThat(files.size()).isPositive();
+        Assertions.assertThat(files).isNotEmpty();
 
     }
 

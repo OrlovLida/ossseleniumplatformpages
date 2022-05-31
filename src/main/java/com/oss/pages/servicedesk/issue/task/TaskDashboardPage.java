@@ -8,12 +8,12 @@ import org.slf4j.LoggerFactory;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
-import com.oss.pages.servicedesk.BaseSDPage;
+import com.oss.pages.servicedesk.issue.BaseDashboardPage;
 import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
 
 import io.qameta.allure.Step;
 
-public class TaskDashboardPage extends BaseSDPage {
+public class TaskDashboardPage extends BaseDashboardPage {
 
     private static final Logger log = LoggerFactory.getLogger(TaskDashboardPage.class);
 
@@ -29,6 +29,11 @@ public class TaskDashboardPage extends BaseSDPage {
 
     public TaskDashboardPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
+    }
+
+    @Override
+    protected String getTableID() {
+        return TASKS_TABLE_ID;
     }
 
     @Step("I Open task dashboard View")

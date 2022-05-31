@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.attributechooser.ListAttributesChooser;
 import com.oss.framework.components.inputs.ComponentFactory;
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.layout.Card;
 import com.oss.framework.components.mainheader.ButtonPanel;
 import com.oss.framework.components.mainheader.Share;
@@ -276,8 +275,7 @@ public class KpiViewPage extends BasePage {
 
     @Step("I fill field: Display series for child objects from level")
     public void fillLevelOfChildObjects(String level) {
-        ComponentFactory.create(CHILD_OBJECT_LEVEL_INPUT_ID, Input.ComponentType.TEXT_FIELD, driver, wait)
-                .setSingleStringValue(level);
+        ComponentFactory.create(CHILD_OBJECT_LEVEL_INPUT_ID, driver, wait).setSingleStringValue(level);
     }
 
     @Step("I check if expected number of charts is visible")

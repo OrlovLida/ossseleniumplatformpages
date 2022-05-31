@@ -5,9 +5,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.oss.framework.components.data.Data;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.TextField;
-import com.oss.framework.components.data.Data;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
@@ -22,7 +22,7 @@ public abstract class BasePopupPage extends BasePage {
     private static final String DESCRIPTION_INPUT_ID = "description";
     private static final String WIZARD_ID = "Popup";
 
-    public BasePopupPage(WebDriver driver, WebDriverWait wait) {
+    protected BasePopupPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
     }
 

@@ -85,16 +85,8 @@ public class ExportTest extends BaseTestCase {
     @Test(priority = 3, testName = "Export form Ticket Dashboard", description = "Export form Ticket Dashboard")
     @Description("Export form Ticket Dashboard")
     public void exportFromTicketDashboard() {
+        ticketDashboardPage.exportFromDashboard(TT_DOWNLOAD_FILE);
         notificationWrapperPage = ticketDashboardPage.openNotificationPanel();
-        notificationWrapperPage.clearNotifications();
-        notificationWrapperPage.close();
-        ticketDashboardPage.clickExport();
-        notificationWrapperPage = ticketDashboardPage.openNotificationPanel();
-        notificationWrapperPage.waitForExportFinish();
-        notificationWrapperPage.clickDownload();
-        notificationWrapperPage.waitAndGetFinishedNotificationText();
-        notificationWrapperPage.clearNotifications();
-        ticketDashboardPage.attachFileToReport(TT_DOWNLOAD_FILE);
 
         Assert.assertEquals(notificationWrapperPage.amountOfNotifications(), 0);
         Assert.assertTrue(ticketDashboardPage.checkIfFileIsNotEmpty(TT_DOWNLOAD_FILE));

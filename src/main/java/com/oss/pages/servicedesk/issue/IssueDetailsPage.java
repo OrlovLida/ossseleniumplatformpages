@@ -27,13 +27,29 @@ import com.oss.pages.servicedesk.issue.tabs.RelatedProblemsTab;
 import com.oss.pages.servicedesk.issue.tabs.RelatedTicketsTab;
 import com.oss.pages.servicedesk.issue.tabs.RolesTab;
 import com.oss.pages.servicedesk.issue.tabs.RootCausesTab;
+import com.oss.pages.servicedesk.issue.tabs.SummaryTab;
 import com.oss.pages.servicedesk.issue.tabs.TasksTab;
 import com.oss.pages.servicedesk.issue.ticket.TicketOverviewTab;
 
 import io.qameta.allure.Step;
 
+import static com.oss.pages.servicedesk.ServiceDeskConstants.AFFECTED_TAB_LABEL;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.ATTACHMENTS_TAB_LABEL;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.DESCRIPTION_TAB_LABEL;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.DETAILS_TABS_CONTAINER_ID;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.EXTERNAL_TAB_LABEL;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.MESSAGES_TAB_LABEL;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.OVERVIEW_TAB_LABEL;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.PARTICIPANTS_TAB_LABEL;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.PROBLEM_SOLUTION_TAB_LABEL;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.RELATED_CHANGES_TAB_LABEL;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.RELATED_PROBLEMS_TAB_LABEL;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.RELATED_TICKETS_TAB_LABEL;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.ROLES_TAB_LABEL;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.ROOT_CAUSES_TAB_LABEL;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.SUMMARY_TAB_LABEL;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.TABS_WIDGET_ID;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.TASKS_TAB_LABEL;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.TROUBLE_TICKET_ISSUE_TYPE;
 
 public class IssueDetailsPage extends BaseSDPage {
@@ -65,6 +81,7 @@ public class IssueDetailsPage extends BaseSDPage {
     private static final String TASK_TAB_WIDGET_ID = "_taskWindow";
     private static final String TASK_TAB_ID = "_tasksWindow";
     private static final String AFFECTED_TAB_ID = "_affectedServicesTab";
+    private static final String SUMMARY_TAB_ID = "_summaryTab";
 
     public IssueDetailsPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -78,24 +95,30 @@ public class IssueDetailsPage extends BaseSDPage {
     }
 
     @Step("Selecting tab {tabId}")
-    public void selectTabFromTabsWidget(String widgetId, String tabId) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        TabsWidget.createById(driver, wait, widgetId).selectTabById(tabId);
+    public void selectTabFromTabsWidget(String widgetId, String tabId, String tabLabel) {
+        if (!isTabActive(widgetId, tabLabel)) {
+            DelayUtils.waitForPageToLoad(driver, wait);
+            TabsWidget.createById(driver, wait, widgetId).selectTabById(tabId);
+        }
         log.info("Selecting tab {}", tabId);
     }
 
-    @Step("Selecting tab {tabId}")
-    public void selectTabFromTablesWindow(String tabId) {
-        selectTabFromTabsWidget(TABS_WIDGET_ID, tabId);
+    public boolean isTabActive(String widgetId, String tabLabel) {
+        return TabsWidget.createById(driver, wait, widgetId).getActiveTabLabel().equals(tabLabel);
     }
 
     @Step("Selecting tab {tabId}")
-    public void selectTabFromDetailsWindow(String tabId) {
-        selectTabFromTabsWidget(DETAILS_TABS_CONTAINER_ID, tabId);
+    public void selectTabFromTablesWindow(String tabId, String tabLabel) {
+        selectTabFromTabsWidget(TABS_WIDGET_ID, tabId, tabLabel);
+    }
+
+    @Step("Selecting tab {tabId}")
+    public void selectTabFromDetailsWindow(String tabId, String tabLabel) {
+        selectTabFromTabsWidget(DETAILS_TABS_CONTAINER_ID, tabId, tabLabel);
     }
 
     public AttachmentsTab selectAttachmentsTab(String widgetId) {
-        selectTabFromTabsWidget(widgetId, ATTACHMENTS_TAB_ARIA_CONTROLS);
+        selectTabFromTabsWidget(widgetId, ATTACHMENTS_TAB_ARIA_CONTROLS, ATTACHMENTS_TAB_LABEL);
         log.info("Selecting tab Attachments");
 
         return new AttachmentsTab(driver, wait);
@@ -105,92 +128,99 @@ public class IssueDetailsPage extends BaseSDPage {
         log.info("Selecting tab Overview");
 
         if (issueType.equals(TROUBLE_TICKET_ISSUE_TYPE)) {
-            selectTabFromDetailsWindow(TICKET_OVERVIEW_TAB_ARIA_CONTROLS);
+            selectTabFromDetailsWindow(TICKET_OVERVIEW_TAB_ARIA_CONTROLS, OVERVIEW_TAB_LABEL);
             return new TicketOverviewTab(driver, wait);
         } else {
-            selectTabFromDetailsWindow(ISSUE_OVERVIEW_TAB_ARIA_CONTROLS);
+            selectTabFromDetailsWindow(ISSUE_OVERVIEW_TAB_ARIA_CONTROLS, OVERVIEW_TAB_LABEL);
             return new OverviewTab(driver, wait);
         }
     }
 
     public ExternalTab selectExternalTab() {
-        selectTabFromDetailsWindow(EXTERNAL_TAB_ARIA_CONTROLS);
+        selectTabFromDetailsWindow(EXTERNAL_TAB_ARIA_CONTROLS, EXTERNAL_TAB_LABEL);
         log.info("Selecting tab External");
 
         return new ExternalTab(driver, wait);
     }
 
     public MessagesTab selectMessagesTab() {
-        selectTabFromTablesWindow(MESSAGES_TAB_ARIA_CONTROLS);
+        selectTabFromTablesWindow(MESSAGES_TAB_ARIA_CONTROLS, MESSAGES_TAB_LABEL);
         log.info("Selecting Messages Tab");
 
         return new MessagesTab(driver, wait);
     }
 
     public RootCausesTab selectRootCauseTab() {
-        selectTabFromTablesWindow(ROOT_CAUSES_TAB_ARIA_CONTROLS);
+        selectTabFromTablesWindow(ROOT_CAUSES_TAB_ARIA_CONTROLS, ROOT_CAUSES_TAB_LABEL);
         log.info("Selecting Root Cause Tab");
 
         return new RootCausesTab(driver, wait);
     }
 
     public RelatedTicketsTab selectRelatedTicketsTab() {
-        selectTabFromTablesWindow(RELATED_TICKETS_TAB_ARIA_CONTROLS);
+        selectTabFromTablesWindow(RELATED_TICKETS_TAB_ARIA_CONTROLS, RELATED_TICKETS_TAB_LABEL);
         log.info("Selecting Related Tickets Tab");
 
         return new RelatedTicketsTab(driver, wait);
     }
 
     public ParticipantsTab selectParticipantsTab() {
-        selectTabFromTablesWindow(PARTICIPANTS_TAB_ARIA_CONTROLS);
+        selectTabFromTablesWindow(PARTICIPANTS_TAB_ARIA_CONTROLS, PARTICIPANTS_TAB_LABEL);
         log.info("Selecting Participants Tab");
 
         return new ParticipantsTab(driver, wait);
     }
 
     public RelatedProblemsTab selectRelatedProblemsTab() {
-        selectTabFromTablesWindow(RELATED_PROBLEMS_TAB_ARIA_CONTROLS);
+        selectTabFromTablesWindow(RELATED_PROBLEMS_TAB_ARIA_CONTROLS, RELATED_PROBLEMS_TAB_LABEL);
         log.info("Selecting Related Problems Tab");
 
         return new RelatedProblemsTab(driver, wait);
     }
 
     public RelatedChangesTab selectRelatedChangesTab() {
-        selectTabFromTablesWindow(RELATED_CHANGES_TAB_ID);
+        selectTabFromTablesWindow(RELATED_CHANGES_TAB_ID, RELATED_CHANGES_TAB_LABEL);
         log.info("Selecting Related Changes Tab");
 
         return new RelatedChangesTab(driver, wait);
     }
 
     public DescriptionTab selectDescriptionTab() {
-        selectTabFromTabsWidget(DESCRIPTIONS_WINDOW_ID, DESCRIPTION_TAB_ID);
+        selectTabFromTabsWidget(DESCRIPTIONS_WINDOW_ID, DESCRIPTION_TAB_ID, DESCRIPTION_TAB_LABEL);
         log.info("Selecting Description Tab");
 
         return new DescriptionTab(driver, wait);
     }
 
+    public SummaryTab selectSummaryTab() {
+        selectTabFromTabsWidget(DESCRIPTIONS_WINDOW_ID, SUMMARY_TAB_ID, SUMMARY_TAB_LABEL);
+        log.info("Selecting Description Tab");
+
+        return new SummaryTab(driver, wait);
+    }
+
     public ProblemSolutionTab selectProblemSolutionTab() {
-        selectTabFromTabsWidget(DESCRIPTIONS_WINDOW_ID, PROBLEM_SOLUTION_TAB_ID);
+        selectTabFromTabsWidget(DESCRIPTIONS_WINDOW_ID, PROBLEM_SOLUTION_TAB_ID, PROBLEM_SOLUTION_TAB_LABEL);
         log.info("Selecting Problem Solution Tab");
 
         return new ProblemSolutionTab(driver, wait);
     }
 
-    public TasksTab selectTaskTab() {
-        selectTabFromTabsWidget(TASK_TAB_WIDGET_ID, TASK_TAB_ID);
-        log.info("Selecting Task Tab");
+    public TasksTab selectTasksTab() {
+        selectTabFromTabsWidget(TASK_TAB_WIDGET_ID, TASK_TAB_ID, TASKS_TAB_LABEL);
+        log.info("Selecting Tasks Tab");
 
         return new TasksTab(driver, wait);
     }
 
     public RolesTab selectRolesTab() {
-        selectTabFromDetailsWindow(ROLES_TAB_ID);
+        selectTabFromDetailsWindow(ROLES_TAB_ID, ROLES_TAB_LABEL);
         log.info("Selecting Roles Tab");
         return new RolesTab(driver, wait);
     }
 
     public AffectedTab selectAffectedTab() {
-        selectTabFromTablesWindow(AFFECTED_TAB_ID);
+        selectTabFromTablesWindow(AFFECTED_TAB_ID, AFFECTED_TAB_LABEL);
         log.info("Selecting Affected Tab");
         return new AffectedTab(driver, wait);
     }
@@ -218,7 +248,6 @@ public class IssueDetailsPage extends BaseSDPage {
                 });
     }
 
-
     public String checkExistingDictionary() {
         DelayUtils.waitForPageToLoad(driver, wait);
         return OldTable.createById(driver, wait, DICTIONARIES_TABLE_ID).getCellValue(0, DICTIONARY_VALUE_TABLE_LABEL);
@@ -242,7 +271,6 @@ public class IssueDetailsPage extends BaseSDPage {
     public String getOpenedIssueId() {
         return getViewTitle().split("#")[1];
     }
-
 
     @Step("I check Same MO TT table")
     public boolean checkIfSameMOTTTableIsNotEmpty() {

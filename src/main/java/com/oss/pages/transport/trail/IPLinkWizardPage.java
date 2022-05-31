@@ -13,7 +13,7 @@ import org.openqa.selenium.WebDriver;
  */
 public class IPLinkWizardPage extends TrailWizardPage {
 
-    private final static String TRAIl_TYPE = "IP Link";
+    private static final String TRAIl_TYPE = "IP Link";
 
     public IPLinkWizardPage(WebDriver driver) {
         super(driver);
