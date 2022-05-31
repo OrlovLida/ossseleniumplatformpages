@@ -95,7 +95,7 @@ public class EtlDataCollectionsPage extends BaseDfePage {
     }
 
     @Step("I check if Last Request Generation Time is fresh - up to 60 min old")
-    public boolean IsIfRunsFresh() {
+    public boolean isIfRunsFresh() {
         return isLastLogTimeFresh(lastIfRunTime());
     }
 
