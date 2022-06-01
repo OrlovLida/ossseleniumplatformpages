@@ -118,10 +118,11 @@ public class ProcessInstancesPage extends BasePage {
         callAction(CREATE_MILESTONES_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         Wizard addMilestonesWizard = Wizard.createByComponentId(driver, wait, ADD_MILESTONES_WIZARD_ID);
+        MilestoneWizardPage milestoneWizardPage = new MilestoneWizardPage(driver);
 
         List<Milestone> out = Lists.newArrayList();
         for (Milestone milestone : milestones) {
-            out.add(MilestoneWizardPage.addMilestoneRow(milestone, ADD_MILESTONES_LIST_ID, driver, wait));
+            out.add(milestoneWizardPage.addMilestoneRow(milestone, ADD_MILESTONES_LIST_ID));
         }
         DelayUtils.waitForPageToLoad(driver, wait);
         addMilestonesWizard.clickAccept();

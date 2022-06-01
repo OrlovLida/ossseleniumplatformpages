@@ -153,11 +153,13 @@ public class ProcessWizardPage extends BasePage {
         }
 
         public Milestone addMilestoneRow(Milestone milestone) {
-            return MilestoneWizardPage.addMilestoneRow(milestone, ADD_MILESTONE_LIST, driver, wait);
+            MilestoneWizardPage milestoneWizardPage = new MilestoneWizardPage(driver);
+            return milestoneWizardPage.addMilestoneRow(milestone, ADD_MILESTONE_LIST);
         }
 
         public Milestone editPredefinedMilestone(Milestone milestone, int row) {
-            return MilestoneWizardPage.editMilestoneRow(milestone, row, PREDEFINED_MILESTONE_LIST, driver, wait);
+            MilestoneWizardPage milestoneWizardPage = new MilestoneWizardPage(driver);
+            return milestoneWizardPage.editMilestoneRow(milestone, row, PREDEFINED_MILESTONE_LIST);
         }
 
         public void clickAcceptButton() {

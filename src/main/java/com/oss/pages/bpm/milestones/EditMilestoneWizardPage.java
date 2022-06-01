@@ -27,7 +27,8 @@ public class EditMilestoneWizardPage extends BasePage {
 
     public Milestone editMilestone(Milestone milestone) throws RuntimeException {
         Wizard editWizard = Wizard.createByComponentId(driver, wait, MILESTONE_EDIT_WIZARD_ID);
-        Milestone editedMilestone = MilestoneWizardPage.editMilestoneRow(milestone, 1, EDIT_MILESTONE_LIST, driver, wait);
+        MilestoneWizardPage milestoneWizardPage = new MilestoneWizardPage(driver);
+        Milestone editedMilestone = milestoneWizardPage.editMilestoneRow(milestone, 1, EDIT_MILESTONE_LIST);
         if (driver.getPageSource().contains("milestones-edit_delay-reason")) {
             editWizard.setComponentValue("milestones-edit_delay-reason", "Selenium Test - Delay reason",
                     Input.ComponentType.TEXT_FIELD);

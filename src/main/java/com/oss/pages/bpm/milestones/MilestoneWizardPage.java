@@ -6,7 +6,6 @@ import com.oss.framework.widgets.list.EditableList;
 import com.oss.pages.BasePage;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  * @author Paweł Rother
@@ -32,7 +31,7 @@ public class MilestoneWizardPage extends BasePage {
         super(driver);
     }
 
-    public static Milestone addMilestoneRow(Milestone milestone, String addMilestonesListId, WebDriver driver, WebDriverWait wait) {
+    public Milestone addMilestoneRow(Milestone milestone, String addMilestonesListId) {
         EditableList addMilestoneList = EditableList.createById(driver, wait, addMilestonesListId);
         EditableList.Row row = addMilestoneList.addRow();
 
@@ -68,7 +67,7 @@ public class MilestoneWizardPage extends BasePage {
         return getMilestoneFromRow(addMilestoneList, addMilestoneList.getVisibleRows().size() - 1);
     }
 
-    public static Milestone editMilestoneRow(Milestone milestone, int row, String milestonesListId, WebDriver driver, WebDriverWait wait) {
+    public Milestone editMilestoneRow(Milestone milestone, int row, String milestonesListId) {
         EditableList milestoneList = EditableList.createById(driver, wait, milestonesListId);
         EditableList.Row editMilestoneRow = milestoneList.getRow(row - 1);
         DelayUtils.sleep(2000);
@@ -116,7 +115,7 @@ public class MilestoneWizardPage extends BasePage {
         return getMilestoneFromRow(milestoneList, row - 1);
     }
 
-    private static Milestone getMilestoneFromRow(EditableList list, int row) {
+    private Milestone getMilestoneFromRow(EditableList list, int row) {
         String name = list.getRow(row).getCellValue(BPM_MILESTONE_NAME);
         String dueDate = list.getRow(row).getCellValue(BPM_MILESTONE_DUE_DATE);
         String leadTime = list.getRow(row).getCellValue(BPM_MILESTONE_LEAD_TIME);
