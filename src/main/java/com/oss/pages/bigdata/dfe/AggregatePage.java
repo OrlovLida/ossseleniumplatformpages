@@ -66,7 +66,7 @@ public class AggregatePage extends BaseDfePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         int numberOfRowsInTable = getNumberOfRowsInTable(NAME_COLUMN_LABEL);
         log.trace("Found rows count: {}. Filtered by {}", numberOfRowsInTable, aggregateName);
-        return numberOfRowsInTable == 1;
+        return numberOfRowsInTable >= 1;
     }
 
     @Step("I select found Aggregate")
