@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.inputs.ComponentFactory;
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.servicedesk.BaseSDPage;
 
@@ -16,7 +15,7 @@ public class RolesTab extends BaseSDPage {
 
     private static final Logger log = LoggerFactory.getLogger(RolesTab.class);
 
-    private static final String MANAGER_SEARCH_BOX_ID = "manager";
+    private static final String MANAGER_SEARCH_BOX_ID = "rolesManager";
     private static final String APPROVER_SEARCH_BOX_ID = "approver";
     private static final String IMPLEMENTER_SEARCH_BOX_ID = "implementer";
     private static final String COORDINATOR_SEARCH_BOX_ID = "coordinator";
@@ -27,7 +26,7 @@ public class RolesTab extends BaseSDPage {
 
     @Step("Fill {user} in search box with id {componentId}")
     public void fillUser(String componentId, String user) {
-        ComponentFactory.create(componentId, Input.ComponentType.SEARCH_BOX, driver, wait)
+        ComponentFactory.create(componentId, driver, wait)
                 .setSingleStringValue(user);
         DelayUtils.waitForPageToLoad(driver, wait);
 
@@ -36,7 +35,7 @@ public class RolesTab extends BaseSDPage {
 
     @Step("Get value from search box with id: {componentId}")
     public String getValueFromSearchBox(String componentId) {
-        return ComponentFactory.create(componentId, Input.ComponentType.SEARCH_BOX, driver, wait).getStringValue();
+        return ComponentFactory.create(componentId, driver, wait).getStringValue();
     }
 
     public String getManagerSearchBoxId() {

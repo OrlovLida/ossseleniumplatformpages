@@ -1,8 +1,13 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="RegressionSuiteWeb-INVESTGA" thread-count="2" parallel="tests" verbose="1">
-    <test name="ChangeMilestoneStateTest">
+    <test name="CreateProcessNRPTest">
         <classes>
-            <class name="com.oss.bpm.ChangeMilestoneStateTest"/>
+            <class name="com.oss.bpm.CreateProcessNRPTest"/>
+        </classes>
+    </test>
+    <test name="ImportExportModelTest">
+        <classes>
+            <class name="com.oss.bpm.ImportExportModelTest"/>
         </classes>
     </test>
     <test name="CreateMilestoneWithProcessTest">
@@ -10,9 +15,9 @@
             <class name="com.oss.bpm.CreateMilestoneWithProcessTest"/>
         </classes>
     </test>
-    <test name="CreateProcessNRPTest">
+    <test name="ChangeMilestoneStateTest">
         <classes>
-            <class name="com.oss.bpm.CreateProcessNRPTest"/>
+            <class name="com.oss.bpm.ChangeMilestoneStateTest"/>
         </classes>
     </test>
     <test name="EditMilestoneTest">

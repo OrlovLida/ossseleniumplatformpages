@@ -11,6 +11,7 @@ import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.pages.servicedesk.issue.IssueDetailsPage;
+import com.oss.pages.servicedesk.issue.MoreDetailsPage;
 import com.oss.pages.servicedesk.issue.problem.ProblemDashboardPage;
 import com.oss.pages.servicedesk.issue.tabs.AffectedTab;
 import com.oss.pages.servicedesk.issue.tabs.AttachmentsTab;
@@ -45,6 +46,7 @@ public class ProblemsTest extends BaseTestCase {
     private ProblemDashboardPage problemDashboardPage;
     private SDWizardPage sdWizardPage;
     private IssueDetailsPage issueDetailsPage;
+    private MoreDetailsPage moreDetailsPage;
     private OverviewTab problemOverviewTab;
     private AttachmentsTab attachmentsTab;
     private ExternalTab externalTab;
@@ -87,6 +89,8 @@ public class ProblemsTest extends BaseTestCase {
     private static final String EDITED_TASK_NAME = "Edited Selenium Task" + LocalDateTime.now();
     private static final String TASK_WIZARD_NAME = "name";
     private static final String SAVE_EDITED_TASK_BUTTON_ID = "_taskDetailsSubmitId-1";
+    private static final String NAME_ATTRIBUTE = "Name";
+    private static final String PROBLEM_CREATED_LOG = "Problem has been created";
 
     @BeforeMethod
     public void goToProblemDashboardPage(Method method) {
@@ -118,8 +122,26 @@ public class ProblemsTest extends BaseTestCase {
         problemId = problemDashboardPage.getProblemIdWithProblemName(PROBLEM_NAME_DESCRIPTION_TXT);
     }
 
+    @Test(priority = 2, testName = "Check Attributes", description = "Check Attributes")
+    @Description("Check Attributes")
+    public void checkAttributes() {
+        problemOverviewTab = issueDetailsPage.selectOverviewTab(PROBLEM_ISSUE_TYPE);
+        problemOverviewTab.maximizeWindow(DETAILS_TABS_CONTAINER_ID);
+        moreDetailsPage = problemOverviewTab.clickMoreDetails();
+        Assert.assertEquals(moreDetailsPage.checkValueOfAttribute(NAME_ATTRIBUTE), PROBLEM_NAME_DESCRIPTION_TXT);
+    }
+
+    @Test(priority = 3, testName = "Check Logs", description = "Check Logs")
+    @Description("Check Logs")
+    public void checkLogs() {
+        problemOverviewTab = issueDetailsPage.selectOverviewTab(PROBLEM_ISSUE_TYPE);
+        problemOverviewTab.maximizeWindow(DETAILS_TABS_CONTAINER_ID);
+        moreDetailsPage = problemOverviewTab.clickMoreDetails();
+        Assert.assertTrue(moreDetailsPage.isNoteInLogsTable(PROBLEM_CREATED_LOG));
+    }
+
     @Parameters({"NewAssignee"})
-    @Test(priority = 2, testName = "check overview tab: assignee and status", description = "check possibility to change assignee and status in overview tab")
+    @Test(priority = 4, testName = "check overview tab: assignee and status", description = "check possibility to change assignee and status in overview tab")
     @Description("check possibility to change assignee and status in overview tab")
     public void checkOverviewTab(
             @Optional("sd_seleniumtest") String NewAssignee
@@ -134,7 +156,7 @@ public class ProblemsTest extends BaseTestCase {
         Assert.assertEquals(problemDashboardPage.getProblemStatus(PROBLEM_NAME_DESCRIPTION_TXT), STATUS_IN_PROGRESS);
     }
 
-    @Test(priority = 3, testName = "Add attachment to problem", description = "Add attachment to problem")
+    @Test(priority = 5, testName = "Add attachment to problem", description = "Add attachment to problem")
     @Description("Add attachment to problem")
     public void addAttachment() {
         attachmentsTab = issueDetailsPage.selectAttachmentsTab(TABS_WIDGET_ID);
@@ -146,7 +168,7 @@ public class ProblemsTest extends BaseTestCase {
         Assert.assertEquals(attachmentsTab.getAttachmentOwner(), USER_NAME);
     }
 
-    @Test(priority = 4, testName = "Download Attachment", description = "Download the Attachment from Attachment tab in Problem Details")
+    @Test(priority = 6, testName = "Download Attachment", description = "Download the Attachment from Attachment tab in Problem Details")
     @Description("Download the Attachment from Attachment tab in Problem Details")
     public void downloadAttachment() {
         attachmentsTab = issueDetailsPage.selectAttachmentsTab(TABS_WIDGET_ID);
@@ -158,7 +180,7 @@ public class ProblemsTest extends BaseTestCase {
         Assert.assertTrue(issueDetailsPage.checkIfFileIsNotEmpty(CSV_FILE));
     }
 
-    @Test(priority = 5, testName = "Delete Attachment", description = "Delete the Attachment from Attachment tab in Problem Details")
+    @Test(priority = 7, testName = "Delete Attachment", description = "Delete the Attachment from Attachment tab in Problem Details")
     @Description("Delete the Attachment from Attachment tab in Problem Details")
     public void deleteAttachment() {
         attachmentsTab = issueDetailsPage.selectAttachmentsTab(TABS_WIDGET_ID);
@@ -169,7 +191,7 @@ public class ProblemsTest extends BaseTestCase {
         Assert.assertTrue(attachmentsTab.isAttachmentListEmpty());
     }
 
-    @Test(priority = 6, testName = "Add External to Problem", description = "Add External to Problem")
+    @Test(priority = 8, testName = "Add External to Problem", description = "Add External to Problem")
     @Description("Add External to Problem")
     public void addExternalToProblem() {
         externalTab = issueDetailsPage.selectExternalTab();
@@ -181,7 +203,7 @@ public class ProblemsTest extends BaseTestCase {
         Assert.assertTrue(externalTab.isExternalCreated(PROBLEM_EXTERNAL, EXTERNAL_LIST_ID));
     }
 
-    @Test(priority = 7, testName = "Edit External in Problem", description = "Edit External in Problem")
+    @Test(priority = 9, testName = "Edit External in Problem", description = "Edit External in Problem")
     @Description("Edit External in Problem")
     public void editExternalInProblem() {
         externalTab = issueDetailsPage.selectExternalTab();
@@ -193,7 +215,7 @@ public class ProblemsTest extends BaseTestCase {
         Assert.assertTrue(externalTab.isExternalCreated(PROBLEM_EXTERNAL_EDITED, EXTERNAL_LIST_ID));
     }
 
-    @Test(priority = 8, testName = "Delete External", description = "Delete External in Problem")
+    @Test(priority = 10, testName = "Delete External", description = "Delete External in Problem")
     @Description("Delete External in Problem")
     public void deleteExternalInProblem() {
         externalTab = issueDetailsPage.selectExternalTab();
@@ -204,7 +226,7 @@ public class ProblemsTest extends BaseTestCase {
     }
 
     @Parameters({"SecondMOIdentifier"})
-    @Test(priority = 9, testName = "Add second MO in Root Causes tab", description = "Add second MO in Root Causes tab")
+    @Test(priority = 11, testName = "Add second MO in Root Causes tab", description = "Add second MO in Root Causes tab")
     @Description("Add second MO in Root Causes tab")
     public void addRootCause(
             @Optional("CFS_Access_Product_Selenium_2") String SecondMOIdentifier
@@ -220,7 +242,7 @@ public class ProblemsTest extends BaseTestCase {
     }
 
     @Parameters({"RelatedTicketID"})
-    @Test(priority = 10, testName = "Check Related Tickets Tab - link Ticket", description = "Check Related Tickets Tab - link Ticket")
+    @Test(priority = 12, testName = "Check Related Tickets Tab - link Ticket", description = "Check Related Tickets Tab - link Ticket")
     @Description("Check Related Tickets Tab - link Ticket")
     public void linkTicketToTicket(
             @Optional("100") String RelatedTicketID
@@ -231,7 +253,7 @@ public class ProblemsTest extends BaseTestCase {
         Assert.assertEquals(relatedTicketsTab.checkRelatedIssueId(0), RelatedTicketID);
     }
 
-    @Test(priority = 11, testName = "Export Related Tickets", description = "Export Related Tickets")
+    @Test(priority = 13, testName = "Export Related Tickets", description = "Export Related Tickets")
     @Description("Export Related Tickets")
     public void exportRelatedTickets() {
         relatedTicketsTab = issueDetailsPage.selectRelatedTicketsTab();
@@ -242,7 +264,7 @@ public class ProblemsTest extends BaseTestCase {
         Assert.assertTrue(relatedTicketsTab.isRelatedIssuesFileNotEmpty());
     }
 
-    @Test(priority = 12, testName = "Check Related Tickets Tab - unlink Ticket", description = "Check Related Tickets Tab - unlink Ticket")
+    @Test(priority = 14, testName = "Check Related Tickets Tab - unlink Ticket", description = "Check Related Tickets Tab - unlink Ticket")
     @Description("Check Related Tickets Tab - unlink Ticket")
     public void unlinkTicketFromTicket() {
         relatedTicketsTab = issueDetailsPage.selectRelatedTicketsTab();
@@ -254,7 +276,7 @@ public class ProblemsTest extends BaseTestCase {
     }
 
     @Parameters({"RelatedTicketID"})
-    @Test(priority = 13, testName = "Check Related Tickets Tab - show archived switcher", description = "Check Related Tickets Tab - show archived switcher")
+    @Test(priority = 15, testName = "Check Related Tickets Tab - show archived switcher", description = "Check Related Tickets Tab - show archived switcher")
     @Description("Check Related Tickets Tab - show archived switcher")
     public void showArchived(
             @Optional("100") String RelatedTicketID
@@ -265,7 +287,7 @@ public class ProblemsTest extends BaseTestCase {
         Assert.assertEquals(relatedTicketsTab.checkRelatedIssueId(0), RelatedTicketID);
     }
 
-    @Test(priority = 14, testName = "Check Participants", description = "Check Participants Tab - add Participant")
+    @Test(priority = 16, testName = "Check Participants", description = "Check Participants Tab - add Participant")
     @Description("Check Participants Tab - add Participant")
     public void addParticipant() {
         participantsTab = issueDetailsPage.selectParticipantsTab();
@@ -277,7 +299,7 @@ public class ProblemsTest extends BaseTestCase {
         Assert.assertEquals(participantsTab.checkParticipantRole(newParticipantRow), PARTICIPANT_ROLE.toUpperCase());
     }
 
-    @Test(priority = 15, testName = "Edit participant", description = "Edit participant")
+    @Test(priority = 17, testName = "Edit participant", description = "Edit participant")
     @Description("Edit participant")
     public void editParticipant() {
         participantsTab = issueDetailsPage.selectParticipantsTab();
@@ -291,7 +313,7 @@ public class ProblemsTest extends BaseTestCase {
         Assert.assertEquals(participantsTab.checkParticipantRole(editedParticipantRow), PARTICIPANT_ROLE.toUpperCase());
     }
 
-    @Test(priority = 16, testName = "Unlink Participant", description = "Unlink Edited Participant")
+    @Test(priority = 18, testName = "Unlink Participant", description = "Unlink Edited Participant")
     @Description("Unlink Edited Participant")
     public void unlinkParticipant() {
         participantsTab = issueDetailsPage.selectParticipantsTab();
@@ -302,7 +324,7 @@ public class ProblemsTest extends BaseTestCase {
         Assert.assertEquals(participantsTab.countParticipantsInTable(), participantsInTable - 1);
     }
 
-    @Test(priority = 17, testName = "Remove Participant", description = "Remove Edited Participant")
+    @Test(priority = 19, testName = "Remove Participant", description = "Remove Edited Participant")
     @Description("Remove Edited Participant")
     public void removeParticipant() {
         participantsTab = issueDetailsPage.selectParticipantsTab();
@@ -316,7 +338,7 @@ public class ProblemsTest extends BaseTestCase {
     }
 
     @Parameters({"ProblemToLinkId"})
-    @Test(priority = 18, testName = "Link Problem to Problem", description = "Link Problem to Problem")
+    @Test(priority = 20, testName = "Link Problem to Problem", description = "Link Problem to Problem")
     @Description("Link Problem to Problem")
     public void linkProblem(
             @Optional("35") String ProblemToLinkId
@@ -327,7 +349,7 @@ public class ProblemsTest extends BaseTestCase {
         Assert.assertEquals(relatedProblemsTab.checkRelatedIssueId(0), ProblemToLinkId);
     }
 
-    @Test(priority = 19, testName = "Export from Related Problems tab", description = "Export from Related Problems tab")
+    @Test(priority = 21, testName = "Export from Related Problems tab", description = "Export from Related Problems tab")
     @Description("Export from Related Problems tab")
     public void exportFromRelatedProblemsTab() {
         relatedProblemsTab = issueDetailsPage.selectRelatedProblemsTab();
@@ -338,7 +360,7 @@ public class ProblemsTest extends BaseTestCase {
         Assert.assertTrue(relatedProblemsTab.isRelatedIssuesFileNotEmpty());
     }
 
-    @Test(priority = 20, testName = "Unlink Problem from Problem", description = "Unlink Problem from Problem")
+    @Test(priority = 22, testName = "Unlink Problem from Problem", description = "Unlink Problem from Problem")
     @Description("Unlink Problem from Problem")
     public void unlinkProblem() {
         relatedProblemsTab = issueDetailsPage.selectRelatedProblemsTab();
@@ -349,7 +371,7 @@ public class ProblemsTest extends BaseTestCase {
         Assert.assertTrue(relatedProblemsTab.isRelatedIssueTableEmpty());
     }
 
-    @Test(priority = 21, testName = "Add Description To Problem", description = "Add Description To Problem in Description Tab")
+    @Test(priority = 23, testName = "Add Description To Problem", description = "Add Description To Problem in Description Tab")
     @Description("Add Description To Problem in Description Tab")
     public void addDescription() {
         descriptionTab = issueDetailsPage.selectDescriptionTab();
@@ -358,7 +380,7 @@ public class ProblemsTest extends BaseTestCase {
         Assert.assertEquals(descriptionTab.getTextMessage(), DESCRIPTION_NOTE);
     }
 
-    @Test(priority = 22, testName = "Add Problem Solution", description = "Add Problem Solution")
+    @Test(priority = 24, testName = "Add Problem Solution", description = "Add Problem Solution")
     @Description("Add Problem Solution")
     public void addProblemSolution() {
         problemSolutionTab = issueDetailsPage.selectProblemSolutionTab();
@@ -368,7 +390,7 @@ public class ProblemsTest extends BaseTestCase {
     }
 
     @Parameters({"messageTo"})
-    @Test(priority = 23, testName = "Add Internal Notification in Change", description = "Add Internal Notification in Change")
+    @Test(priority = 25, testName = "Add Internal Notification in Change", description = "Add Internal Notification in Change")
     @Description("Add Internal Notification in Change")
     public void addInternalNotification(
             @Optional("ca_kodrobinska") String messageTo
@@ -385,7 +407,7 @@ public class ProblemsTest extends BaseTestCase {
     }
 
     @Parameters({"notificationEmailTo", "notificationEmailFrom"})
-    @Test(priority = 24, testName = "Add Email Notification in Change", description = "Add Email Notification in Change")
+    @Test(priority = 26, testName = "Add Email Notification in Change", description = "Add Email Notification in Change")
     @Description("Add Email Notification in Change")
     public void addEmailNotification(
             @Optional("kornelia.odrobinska@comarch.com") String notificationEmailTo,
@@ -401,7 +423,7 @@ public class ProblemsTest extends BaseTestCase {
         Assert.assertEquals(messagesTab.checkMessageType(0), "NOTIFICATION");
     }
 
-    @Test(priority = 25, testName = "Add Internal Comment", description = "Add Internal Comment")
+    @Test(priority = 27, testName = "Add Internal Comment", description = "Add Internal Comment")
     @Description("Add Internal Comment")
     public void addInternalComment() {
         issueDetailsPage.maximizeWindow(TABS_WIDGET_ID);
@@ -415,7 +437,7 @@ public class ProblemsTest extends BaseTestCase {
     }
 
     @Parameters({"userName"})
-    @Test(priority = 26, testName = "Add related Change to Problem", description = "dd related Change to Problem")
+    @Test(priority = 28, testName = "Add related Change to Problem", description = "dd related Change to Problem")
     @Description("dd related Change to Problem")
     public void addChangeToProblem(
             @Optional("sd_seleniumtest") String userName
@@ -431,7 +453,7 @@ public class ProblemsTest extends BaseTestCase {
         Assert.assertEquals(relatedChangesTab.getIncidentDescriptionFromTable(), DESCRIPTION_CHANGE);
     }
 
-    @Test(priority = 27, testName = "Export Related Changes", description = "Export Related Changes")
+    @Test(priority = 29, testName = "Export Related Changes", description = "Export Related Changes")
     @Description("Export Related Changes")
     public void exportRelatedChanges() {
         relatedChangesTab = issueDetailsPage.selectRelatedChangesTab();
@@ -443,7 +465,7 @@ public class ProblemsTest extends BaseTestCase {
     }
 
     @Parameters({"taskAssignee"})
-    @Test(priority = 28, testName = "Add task in Problem Detail View", description = "Add task in Problem Detail View")
+    @Test(priority = 30, testName = "Add task in Problem Detail View", description = "Add task in Problem Detail View")
     @Description("Add task in Problem Detail View")
     public void addTaskInProblemView(
             @Optional("sd_seleniumtest") String taskAssignee
@@ -455,7 +477,7 @@ public class ProblemsTest extends BaseTestCase {
         Assert.assertEquals(tasksTab.getTaskName(), TASK_NAME);
     }
 
-    @Test(priority = 29, testName = "Edit task in Problem Detail View", description = "Edit task in Problem Detail View")
+    @Test(priority = 31, testName = "Edit task in Problem Detail View", description = "Edit task in Problem Detail View")
     @Description("Edit task in Problem Detail View")
     public void editTaskInProblemView() {
         tasksTab = issueDetailsPage.selectTasksTab();
@@ -467,7 +489,7 @@ public class ProblemsTest extends BaseTestCase {
     }
 
     @Parameters({"serviceMOIdentifier"})
-    @Test(priority = 30, testName = "Add Affected", description = "Add Affected Service to the Problem")
+    @Test(priority = 32, testName = "Add Affected", description = "Add Affected Service to the Problem")
     @Description("Add Affected Service to the Problem")
     public void addAffected(
             @Optional("TEST_MO_ABS_SRV") String serviceMOIdentifier

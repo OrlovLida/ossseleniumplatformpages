@@ -13,6 +13,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
@@ -32,9 +33,10 @@ public class ImportExportModelTest extends BaseTestCase {
     private static final String DOMAIN = "Inventory Processes";
     private static final String MODEL_NAME = "bpm_selenium_test_process";
     private static final String FILE_NAME = MODEL_NAME.replaceAll(" ", "+");
+    private static final String BAR_EXTENSION = ".bar";
+    private static final String ZIP_EXTENSION = ".zip";
     private static final String OTHER_GROUP_ID = "other";
     private static final String IMPORT_ID = "import";
-    private static final String EXPORT_PATH_LOCAL = "C:\\Projects\\ossseleniumplatformpages\\target\\downloadFiles";  //działa tylko lokalnie
     private static final String IMPORT_PATH = "bpm/bpm_selenium_test_process.bar";
 
     @BeforeClass
@@ -62,15 +64,17 @@ public class ImportExportModelTest extends BaseTestCase {
             String absolutePatch = Paths.get(resource.toURI()).toFile().getAbsolutePath();
             importModelWizardPage.attachFile(absolutePatch);
             DelayUtils.sleep(1000);
-            Assert.assertEquals("Upload success", importModelWizardPage.getImportStatus());
+            Assert.assertEquals(importModelWizardPage.getImportStatus(), "Upload success");
             importModelWizardPage.importButton();
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            Assert.assertFalse(importModelWizardPage.isImportWizardVisible());
         } catch (URISyntaxException e) {
             throw new RuntimeException("Cannot load file", e);
         }
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 2, description = "Export model to BAR")
+    @Test(priority = 2, description = "Export model to BAR", dependsOnMethods = {"importModel"})
     @Description("Export model to BAR")
     public void exportModelBar() {
         ProcessModelsPage processModelsPage = ProcessModelsPage.goToProcessModelsPage(driver, BASIC_URL);
@@ -78,10 +82,14 @@ public class ImportExportModelTest extends BaseTestCase {
         processModelsPage.chooseDomain(DOMAIN);
         //export bar
         processModelsPage.exportModelAsBAR(MODEL_NAME);
-        Assert.assertTrue(processModelsPage.isFileDownloaded(EXPORT_PATH_LOCAL, FILE_NAME));
+        try {
+            Assert.assertTrue(processModelsPage.isFileDownloaded(FILE_NAME + BAR_EXTENSION));
+        } catch (IOException e) {
+            throw new RuntimeException("File is not properly deleted");
+        }
     }
 
-    @Test(priority = 3, description = "Export model to XML")
+    @Test(priority = 3, description = "Export model to XML", dependsOnMethods = {"importModel"})
     @Description("Export model to XML")
     public void exportModelXml() {
         ProcessModelsPage processModelsPage = ProcessModelsPage.goToProcessModelsPage(driver, BASIC_URL);
@@ -89,7 +97,13 @@ public class ImportExportModelTest extends BaseTestCase {
         processModelsPage.chooseDomain(DOMAIN);
         //export xml
         processModelsPage.exportModelAsXML(MODEL_NAME);
-        Assert.assertTrue(processModelsPage.isFileDownloaded(EXPORT_PATH_LOCAL, FILE_NAME));
+        try {
+            Assert.assertTrue(processModelsPage.isFileDownloaded(FILE_NAME + ZIP_EXTENSION));
+        } catch (IOException e) {
+            throw new RuntimeException("File is not properly deleted");
+        }
+
+
     }
 
     @AfterClass
