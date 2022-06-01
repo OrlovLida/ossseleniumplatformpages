@@ -394,6 +394,13 @@ public class NewInventoryViewPage extends BasePage {
         return getChooseConfigurationWizard().getConfigurationNames();
     }
 
+    @Step("Get all Configurations for Properties")
+    public List<String> getPropertiesConfigurationsName(int rowId, String widgetId ) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getPropertyPanel(rowId, widgetId).callAction(SETTINGS_ID, CHOOSE_PROPERTY_CONFIG_ID);
+        return getChooseConfigurationWizard().getConfigurationNames();
+    }
+
     @Step("Get all Configurations for MainTable")
     public List<String> getTableConfigurationsName() {
         DelayUtils.waitForPageToLoad(driver, wait);

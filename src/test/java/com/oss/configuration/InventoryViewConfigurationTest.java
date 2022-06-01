@@ -34,7 +34,6 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
     private final static String CONFIGURATION_NAME_IV = "IV_" + LocalDate.now();
     private final static String CONFIGURATION_NAME_IV_DEFAULT_FOR_USER = "IV_Default_For_User";
     private final static String CONFIGURATION_NAME_IV_TYPE_DEFAULT_FOR_GROUP = "IV_Default_For_GROUP_TYPE";
-    private static final String DEFAULT = "DEFAULT";
     private final static String DEFAULT_CONFIGURATION = "DEFAULT";
     private final static String CONFIGURATION_NAME_TABLE_WIDGET_USED_IN_VIEW_CONFIG =
             "Table_Widget_Used_In_View_Configuration_Selenium_Test_" + LocalDate.now();
@@ -49,7 +48,6 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
     private final static String CONFIGURATION_TEST_DIRECTOR_TABS_WIDGET_USED_IN_VIEW_CONFIG =
             "Tabs_Widget_Director_Configuration_Used_In_View_Configuration_Selenium_Tests_" + LocalDate.now();
     private final static String TYPE_LABEL = "Type";
-    private static final String LIFECYCLE_STATE_LABEL = "Lifecycle State";
     private final static String GENDER_LABEL = "Gender";
     private static final String ATTRIBUTE_ID_TYPE = "type";
     private static final String TEST_ACTOR_TYPE = "TestActor";
@@ -65,7 +63,9 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
     private static final String PASSWORD_2 = "oss";
     private final static String USER1 = "webseleniumtests";
     private static final String PASSWORD_1 = "Webtests123!";
-    private static final String MODEL = "MODEL";
+    private static final String TABS_WIDGET = "Tabs_Widget";
+    private static final String TABLE = "Table";
+    private static final String IV = "IV_";
 
     private NewInventoryViewPage inventoryViewPage;
     private TableWidget tableWidget;
@@ -90,7 +90,7 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
     }
 
     private void deleteOldConfigurations(List<String> configurationNames) {
-        List<String> savedConfigurations = configurationNames.stream().filter(name-> !name.equals(MODEL) && !name.equals(DEFAULT)).collect(Collectors.toList());
+        List<String> savedConfigurations = configurationNames.stream().filter(name-> name.contains(TABS_WIDGET) && name.contains(TABLE) && name.contains(IV)).collect(Collectors.toList());
         inventoryViewPage.deleteConfigurations(savedConfigurations);
     }
 
@@ -204,7 +204,7 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
         inventoryViewPage.saveNewConfigurationForMainTable(CONFIGURATION_NAME_TABLE_WIDGET_USED_IN_DEFAULT_VIEW_CONFIG,
                 createField(TYPE, TEST_DIRECTOR_TYPE));
         inventoryViewPage.selectFirstRow();
-        inventoryViewPage.enableWidget(TABLE_TYPE, MOVIES);
+        inventoryViewPage.enableWidget(TABLE_TYPE, INTERESTS);
         inventoryViewPage.saveConfigurationForTabs(CONFIGURATION_TEST_PERSON_TABS_WIDGET_USED_IN_DEFAULT_VIEW_CONFIG,
                 createField(TYPE, TEST_PERSON_TYPE));
         inventoryViewPage.saveNewPageConfiguration(CONFIGURATION_NAME_IV_DEFAULT_FOR_USER, createField(DEFAULT_VIEW_FOR, ME));
@@ -245,7 +245,7 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
 
         inventoryViewPage.selectFirstRow();
         Assert.assertFalse(inventoryViewPage.isTabVisible(MATERIALS));
-        Assert.assertTrue(inventoryViewPage.isTabVisible(MOVIES));
+        Assert.assertTrue(inventoryViewPage.isTabVisible(INTERESTS));
 
     }
     
@@ -260,6 +260,7 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
     public void deleteConfiguration(){
         inventoryViewPage.deletePageConfiguration(CONFIGURATION_NAME_IV_DEFAULT_FOR_USER);
         inventoryViewPage.deletePageConfiguration(CONFIGURATION_NAME_IV_TYPE_DEFAULT_FOR_GROUP);
+        inventoryViewPage.selectFirstRow();
         inventoryViewPage.removeConfigurationForTabs(CONFIGURATION_TEST_DIRECTOR_TABS_WIDGET_USED_IN_DEFAULT_GROUP_CONFIG);
         inventoryViewPage.removeConfigurationForTabs(CONFIGURATION_TEST_PERSON_TABS_WIDGET_USED_IN_DEFAULT_VIEW_CONFIG);
         inventoryViewPage.deleteConfigurationForMainTable(CONFIGURATION_NAME_TABLE_WIDGET_USED_IN_DEFAULT_VIEW_CONFIG);

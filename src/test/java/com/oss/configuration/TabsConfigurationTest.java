@@ -32,12 +32,6 @@ public class TabsConfigurationTest extends BaseTestCase {
     private final static String CONFIGURATION_NAME_TABS_WIDGET_DEFAULT_FOR_USER =
             "Tabs_Widget_Supertype_Default_For_User_" + LocalDate.now();
     private final static String CONFIGURATION_NAME_TABS_WIDGET_GROUP = "Tabs_Widget_Group_" + LocalDate.now();
-    private static final String DEFAULT = "DEFAULT";
-    private static final String MODEL = "MODEL";
-
-    private NewInventoryViewPage newInventoryViewPage;
-    private TableWidget tableWidget;
-
     private final static String DEFAULT_CONFIGURATION = "DEFAULT";
     private static final String TEST_PERSON = "TestPerson";
     private static final String TEST_DIRECTOR = "TestDirector";
@@ -51,6 +45,8 @@ public class TabsConfigurationTest extends BaseTestCase {
     private static final String PASSWORD_2 = "oss";
     private final static String USER1 = "webseleniumtests";
     private static final String PASSWORD_1 = "Webtests123!";
+    private static final String TABS_WIDGET = "Tabs_Widget_";
+    private NewInventoryViewPage newInventoryViewPage;
 
     @BeforeClass
     public void goToInventoryView() {
@@ -61,8 +57,7 @@ public class TabsConfigurationTest extends BaseTestCase {
 
     private void deleteOldConfiguration(){
         newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_DIRECTOR);
-        List<String> pageConfigurationsNameDirector = newInventoryViewPage.getPageConfigurationsName().stream().filter(name-> !name.equals(MODEL) && !name.equals(DEFAULT)).collect(Collectors.toList());
-        newInventoryViewPage.deleteConfigurations(pageConfigurationsNameDirector);
+        deleteConfigurations(newInventoryViewPage.getPageConfigurationsName());
         newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_PERSON);
         deleteOldTabsConfigurations(TEST_DIRECTOR);
         deleteOldTabsConfigurations(TEST_ACTOR);
@@ -70,9 +65,13 @@ public class TabsConfigurationTest extends BaseTestCase {
 
     private void deleteOldTabsConfigurations(String objectType) {
         selectObjectOfSuperType(objectType);
-        List<String> tabsConfigurationsName = newInventoryViewPage.getTabsConfigurationsName().stream().filter(name -> !name.equals(MODEL) && !name.equals(DEFAULT)).collect(Collectors.toList());
-        newInventoryViewPage.deleteConfigurations(tabsConfigurationsName);
+        deleteConfigurations(newInventoryViewPage.getTabsConfigurationsName());
         newInventoryViewPage.getMainTable().unselectAllRows();
+    }
+
+    private void deleteConfigurations(List<String> tabsConfigurationsName2) {
+        List<String> tabsConfigurationsName = tabsConfigurationsName2.stream().filter(name -> name.equals(TABS_WIDGET)).collect(Collectors.toList());
+        newInventoryViewPage.deleteConfigurations(tabsConfigurationsName);
     }
 
     @Test(priority = 1)
