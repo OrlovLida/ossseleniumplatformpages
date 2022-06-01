@@ -56,7 +56,7 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
     @Description("Create Process with Milestone")
     public void createProcessWithMilestones() {
         ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
-        //processInstancesPage.clearAllColumnFilters();
+        processInstancesPage.clearAllColumnFilters();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         String processName = "Selenium Test.Milestone-" + (int) (Math.random() * 100001);
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
