@@ -9,7 +9,7 @@ package com.oss.pages.bpm.processinstances;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.oss.pages.bpm.milestones.EditMilestoneDefinitionPage;
+import com.oss.pages.bpm.milestones.MilestoneWizardPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -153,11 +153,11 @@ public class ProcessWizardPage extends BasePage {
         }
 
         public Milestone addMilestoneRow(Milestone milestone) {
-            return EditMilestoneDefinitionPage.addMilestoneRow(milestone, ADD_MILESTONE_LIST, driver, wait);
+            return MilestoneWizardPage.addMilestoneRow(milestone, ADD_MILESTONE_LIST, driver, wait);
         }
 
         public Milestone editPredefinedMilestone(Milestone milestone, int row) {
-            return EditMilestoneDefinitionPage.editMilestoneRow(milestone, row, PREDEFINED_MILESTONE_LIST, driver, wait);
+            return MilestoneWizardPage.editMilestoneRow(milestone, row, PREDEFINED_MILESTONE_LIST, driver, wait);
         }
 
         public void clickAcceptButton() {

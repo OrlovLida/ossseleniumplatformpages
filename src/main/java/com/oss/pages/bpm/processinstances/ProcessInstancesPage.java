@@ -8,7 +8,7 @@ package com.oss.pages.bpm.processinstances;
 
 import com.google.common.collect.Lists;
 import com.oss.framework.wizard.Wizard;
-import com.oss.pages.bpm.milestones.EditMilestoneDefinitionPage;
+import com.oss.pages.bpm.milestones.MilestoneWizardPage;
 import com.oss.pages.bpm.milestones.Milestone;
 import org.openqa.selenium.WebDriver;
 
@@ -121,7 +121,7 @@ public class ProcessInstancesPage extends BasePage {
 
         List<Milestone> out = Lists.newArrayList();
         for (Milestone milestone : milestones) {
-            out.add(EditMilestoneDefinitionPage.addMilestoneRow(milestone, ADD_MILESTONES_LIST_ID, driver, wait));
+            out.add(MilestoneWizardPage.addMilestoneRow(milestone, ADD_MILESTONES_LIST_ID, driver, wait));
         }
         DelayUtils.waitForPageToLoad(driver, wait);
         addMilestonesWizard.clickAccept();

@@ -11,7 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 /**
  * @author Paweł Rother
  */
-public class EditMilestoneDefinitionPage extends BasePage {
+public class MilestoneWizardPage extends BasePage {
     private static final String BPM_MILESTONE_NAME = "name";
     private static final String BPM_MILESTONE_DESCRIPTION = "description";
     private static final String BPM_MILESTONE_LEAD_TIME = "leadTime";
@@ -28,7 +28,7 @@ public class EditMilestoneDefinitionPage extends BasePage {
     private static final String BPM_MILESTONE_IS_ACTIVE_INPUT = "active-CHECKBOX";
 
 
-    public EditMilestoneDefinitionPage(WebDriver driver) {
+    public MilestoneWizardPage(WebDriver driver) {
         super(driver);
     }
 
