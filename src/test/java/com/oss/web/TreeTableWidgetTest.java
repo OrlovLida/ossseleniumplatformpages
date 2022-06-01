@@ -1,24 +1,15 @@
 package com.oss.web;
 
-import java.time.LocalDate;
 import java.util.List;
-
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import org.testng.asserts.SoftAssert;
-
 import com.oss.BaseTestCase;
-import com.oss.framework.components.mainheader.ToolbarWidget;
 import com.oss.framework.components.pagination.PaginationComponent;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.TableRow;
 import com.oss.framework.widgets.treetable.TreeTableWidget;
 import com.oss.pages.bpm.PlannersViewPage;
-import com.oss.pages.bpm.milestones.ChangeStateMilestoneWizardPage;
-import com.oss.pages.bpm.milestones.Milestone;
-import com.oss.pages.bpm.processinstances.ProcessInstancesPage;
-import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 
 /**
  * @author Faustyna Szczepanik
