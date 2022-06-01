@@ -1,10 +1,8 @@
 package com.oss.pages.bpm;
 
 import java.util.List;
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import com.oss.framework.components.attributechooser.AttributesChooser;
 import com.oss.framework.components.pagination.PaginationComponent;
 import com.oss.framework.utils.DelayUtils;
@@ -15,7 +13,6 @@ import com.oss.pages.BasePage;
 public class PlannersViewPage extends BasePage {
 
     private static final String TREE_TABLE_ID = "process_instance_hierarchy_table";
-
     public PlannersViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
     }
@@ -30,7 +27,6 @@ public class PlannersViewPage extends BasePage {
     public TreeTableWidget getTreeTable() {
         DelayUtils.waitForPageToLoad(driver, wait);
         return TreeTableWidget.createById(driver, wait, TREE_TABLE_ID);
-
     }
 
     public void selectObjectByRowId(int rowId) {
