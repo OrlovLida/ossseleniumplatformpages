@@ -72,11 +72,11 @@ public class FiltersTest extends BaseTestCase {
             
             advancedSearch.setFilter(ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, VALUE_FOR_FILTER2);
             advancedSearch.saveAsNewFilter(FILTER2_NAME);
-            waitForMessageDisappear();
+            closeMessages();
             
             advancedSearch.setFilter(ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, VALUE_FOR_FILTER3);
             advancedSearch.saveAsNewFilter(FILTER3_NAME);
-            waitForMessageDisappear();
+            closeMessages();
             
             Assert.assertEquals(inventoryViewPage.getSavedFilters().size(), 3);
         }
@@ -86,7 +86,7 @@ public class FiltersTest extends BaseTestCase {
     @Description("Adding filter to favorite, checking that the star icon for that filter is filled")
     public void addingFilterToFavorite() {
         advancedSearch.markFavoriteFilter(FILTER2_NAME);
-        waitForMessageDisappear();
+        closeMessages();
         Assert.assertTrue(advancedSearch.getFavoriteFilters().contains(FILTER2_NAME));
     }
 
@@ -105,7 +105,7 @@ public class FiltersTest extends BaseTestCase {
         advancedSearch.selectSavedFilterByLabel(FILTER3_NAME);
         advancedSearch.setFilter(ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, VALUE_FOR_FILTER3_AFTER_EDIT);
         advancedSearch.saveFilter();
-        waitForMessageDisappear();
+        closeMessages();
         advancedSearch.selectSavedFilterByLabel(FILTER2_NAME);
         advancedSearch.selectSavedFilterByLabel(FILTER3_NAME);
         
@@ -268,7 +268,7 @@ public class FiltersTest extends BaseTestCase {
         Assert.assertEquals(filterManagerPage.howManyFolders(), 1);
     }
     
-    private void waitForMessageDisappear() {
-        SystemMessageContainer.create(driver, webDriverWait).waitForMessageDisappear();
+    private void closeMessages() {
+        SystemMessageContainer.create(driver, webDriverWait).close();
     }
 }
