@@ -2,12 +2,18 @@ package com.oss.pages.transport.regulatoryLicense;
 
 import org.openqa.selenium.WebDriver;
 
+import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
+import com.oss.pages.platform.NewInventoryViewPage;
+import com.oss.pages.transport.VSI.VSIWizardPage;
+import com.oss.pages.transport.routeTarget.RouteTargetWizardPage;
 
 import io.qameta.allure.Step;
+
+import static com.oss.configuration.Configuration.CONFIGURATION;
 
 public class RegulatoryLicenseWizardPage extends BasePage {
 
@@ -19,57 +25,73 @@ public class RegulatoryLicenseWizardPage extends BasePage {
     private static final String STATUS_FIELD_ID = "regulatory-license-status-field";
     private static final String TYPE_FIELD_ID = "regulatory-license-type-field";
     private static final String DESCRIPTION_FIELD_ID = "regulatory-license-description-field";
-
-    private final Wizard wizard;
+    private static final String COMPONENT_ID = "wizard-regulatory-license-view_prompt-card";
 
     public RegulatoryLicenseWizardPage(WebDriver driver) {
         super(driver);
-        wizard = Wizard.createByComponentId(driver, wait, "wizard-regulatory-license-view");
     }
 
     @Step("Set Number to {number}")
     public void setNumber(String number) {
-        wizard.setComponentValue(NUMBER_FIELD_ID, number, Input.ComponentType.TEXT_FIELD);
+        setTextFieldComponentValue(NUMBER_FIELD_ID, number);
     }
 
     @Step("Set Regulatory Agency to {regulatoryAgency}")
     public void setRegulatoryAgency(String regulatoryAgency) {
-        wizard.setComponentValue(REGULATORY_AGENCY_FIELD_ID, regulatoryAgency, Input.ComponentType.COMBOBOX);
+        setComboBoxFieldComponentValue(REGULATORY_AGENCY_FIELD_ID, regulatoryAgency);
     }
 
     @Step("Set Starting Date to {startingDate}")
     public void setStartingDate(String startingDate) {
-        wizard.setComponentValue(STARTING_DATE_FIELD_ID, startingDate, Input.ComponentType.DATE);
+        setDateFieldComponentValue(STARTING_DATE_FIELD_ID, startingDate);
     }
 
     @Step("Set Expiration Date to {expirationDate}")
     public void setExpirationDate(String expirationDate) {
-        wizard.setComponentValue(EXPIRATION_DATE_FIELD_ID, expirationDate, Input.ComponentType.DATE);
+        setDateFieldComponentValue(EXPIRATION_DATE_FIELD_ID, expirationDate);
     }
 
     @Step("Set Operating Hours to {operatingHours}")
     public void setOperatingHours(String operatingHours) {
-        wizard.setComponentValue(OPERATING_HOURS_FIELD_ID, operatingHours, Input.ComponentType.TEXT_FIELD);
+        setTextFieldComponentValue(OPERATING_HOURS_FIELD_ID, operatingHours);
     }
 
     @Step("Set Status to {status}")
     public void setStatus(String status) {
-        wizard.setComponentValue(STATUS_FIELD_ID, status, Input.ComponentType.COMBOBOX);
+        setComboBoxFieldComponentValue(STATUS_FIELD_ID, status);
     }
 
     @Step("Set Type to {type}")
     public void setType(String type) {
-        wizard.setComponentValue(TYPE_FIELD_ID, type, Input.ComponentType.COMBOBOX);
+        setComboBoxFieldComponentValue(TYPE_FIELD_ID, type);
     }
 
     @Step("Set Description to {description}")
     public void setDescription(String description) {
-        wizard.setComponentValue(DESCRIPTION_FIELD_ID, description, Input.ComponentType.TEXT_FIELD);
+        setTextFieldComponentValue(DESCRIPTION_FIELD_ID, description);
     }
 
     @Step("Click accept button")
     public void clickAccept() {
-        wizard.clickAccept();
+        getWizard().clickAccept();
         DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    private void setTextFieldComponentValue(String componentId, String value) {
+        getWizard().setComponentValue(componentId, value, Input.ComponentType.TEXT_FIELD);
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    private void setComboBoxFieldComponentValue(String componentId, String value) {
+        getWizard().setComponentValue(componentId, value, Input.ComponentType.COMBOBOX);
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    private void setDateFieldComponentValue(String componentId, String value){
+        getWizard().setComponentValue(componentId, value, Input.ComponentType.DATE);
+    }
+
+    private Wizard getWizard() {
+        return Wizard.createByComponentId(driver, wait, COMPONENT_ID);
     }
 }
