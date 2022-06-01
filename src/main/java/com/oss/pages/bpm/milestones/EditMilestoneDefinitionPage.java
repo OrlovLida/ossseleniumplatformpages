@@ -23,7 +23,7 @@ public class EditMilestoneDefinitionPage extends BasePage {
     private static final String BPM_MILESTONE_NAME_INPUT = "name-TEXT_FIELD";
     private static final String BPM_MILESTONE_DUE_DATE_INPUT = "dueDate-DATE";
     private static final String BPM_MILESTONE_LEAD_TIME_INPUT = "leadTime-NUMBER_FIELD";
-    private static final String BPM_MILESTONE_MANUAL_COMPLETION_INPUT = "isManualCompletion-CHECKBOX";
+    private static final String BPM_MILESTONE_IS_MANUAL_COMPLETION_INPUT = "isManualCompletion-CHECKBOX";
     private static final String BPM_MILESTONE_DESCRIPTION_INPUT = "description-TEXT_FIELD";
     private static final String BPM_MILESTONE_IS_ACTIVE_INPUT = "active-CHECKBOX";
 
@@ -62,7 +62,7 @@ public class EditMilestoneDefinitionPage extends BasePage {
 
         milestone.getIsManualCompletion().ifPresent(isManualCompletion -> row.setValue(isManualCompletion,
                 BPM_MILESTONE_IS_MANUAL_COMPLETION,
-                BPM_MILESTONE_MANUAL_COMPLETION_INPUT,
+                BPM_MILESTONE_IS_MANUAL_COMPLETION_INPUT,
                 Input.ComponentType.CHECKBOX));
 
         return getMilestoneFromRow(addMilestoneList, addMilestoneList.getVisibleRows().size() - 1);
@@ -107,7 +107,7 @@ public class EditMilestoneDefinitionPage extends BasePage {
 
         milestone.getIsManualCompletion().ifPresent(isManualCompletion -> editMilestoneRow.setValue(isManualCompletion,
                 BPM_MILESTONE_IS_MANUAL_COMPLETION,
-                BPM_MILESTONE_MANUAL_COMPLETION_INPUT,
+                BPM_MILESTONE_IS_MANUAL_COMPLETION_INPUT,
                 Input.ComponentType.CHECKBOX));
 
         milestone.getIsActive().ifPresent(isActive -> editMilestoneRow.setValue(isActive, BPM_MILESTONE_IS_ACTIVE,
@@ -123,7 +123,7 @@ public class EditMilestoneDefinitionPage extends BasePage {
         String description = list.getRow(row).getCellValue(BPM_MILESTONE_DESCRIPTION);
         String relatedTask = list.getRow(row).getCellValue(BPM_MILESTONE_RELATED_TASK);
         String isActive = "";
-        if (list.getRow(row).isCellVisible(BPM_MILESTONE_IS_ACTIVE)) {
+        if (list.getColumnHeadersLabels().contains("Active")) {
             isActive = list.getRow(row).getCellValue(BPM_MILESTONE_IS_ACTIVE);
         }
         String isManualCompletion = list.getRow(row).getCellValue(BPM_MILESTONE_IS_MANUAL_COMPLETION);
