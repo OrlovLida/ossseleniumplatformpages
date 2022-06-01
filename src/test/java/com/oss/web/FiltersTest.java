@@ -28,7 +28,6 @@ import io.qameta.allure.Description;
 public class FiltersTest extends BaseTestCase {
     
     private static final Logger log = LoggerFactory.getLogger(FiltersTest.class);
-    
     private NewInventoryViewPage inventoryViewPage;
     private AdvancedSearch advancedSearch;
     private FilterManagerPage filterManagerPage;
@@ -89,7 +88,7 @@ public class FiltersTest extends BaseTestCase {
         closeMessages();
         Assert.assertTrue(advancedSearch.getFavoriteFilters().contains(FILTER2_NAME));
     }
-
+    
     @Test(priority = 3)
     @Description("Checking that filter is applied properly and name of the filter is displayed in Filter Panel")
     public void isFilterApply() {
@@ -168,7 +167,6 @@ public class FiltersTest extends BaseTestCase {
     @Test(priority = 10)
     @Description("Sharing an existing Filters, Folder and checking that shared filters are visible for second user")
     public void sharingAnExistingFilter() {
-        filterManagerPage = FilterManagerPage.goToFilterManagerPage(driver, BASIC_URL);
         filterManagerPage
                 .expandAllCategories()
                 .shareFilter(FILTER_NAME, USER2_LOGIN, "W")
