@@ -7,6 +7,7 @@
 package com.oss.bpm;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,7 @@ import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
+import org.testng.collections.Lists;
 
 /**
  * @author Gabriela Kasza
@@ -91,7 +93,7 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
         // then
         processInstancesPage.selectMilestoneTab("Name", processName);
         // Status
-        DelayUtils.waitForPageToLoad(driver,webDriverWait);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         String statusMilestone1 = processInstancesPage.getMilestoneValue(nameMilestone1, "Status");
         String statusMilestone2 = processInstancesPage.getMilestoneValue(nameMilestone2, "Status");
         String statusPredefinedMilestone = processInstancesPage.getMilestoneValue(namePredefinedMilestone, "Status");
@@ -173,7 +175,7 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
         String nameMilestone3 = milestone3_updated.getName().orElseThrow(() -> new RuntimeException("Missing name"));
 
         // Status
-        DelayUtils.waitForPageToLoad(driver,webDriverWait);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         String statusMilestone1 = processInstancesPage.getMilestoneValue(nameMilestone1, "Status");
         String statusMilestone2 = processInstancesPage.getMilestoneValue(nameMilestone2, "Status");
         String statusMilestone3 = processInstancesPage.getMilestoneValue(nameMilestone3, "Status");
@@ -222,7 +224,7 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
         ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
-        String processName = "Selenium Test.Milestone-" + (int) (Math.random() * 1001);
+        String processName = "Selenium Test.Milestone-" + (int) (Math.random() * 100001);
         ProcessWizardPage.MilestoneStepWizard milestoneStepWizard =
                 processWizardPage.definedMilestoneInProcess(processName, 10L, "Data Correction Process");
         Milestone milestone1 = Milestone.builder()
@@ -250,7 +252,7 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
         String nameMilestone2 = milestone2.getName().orElseThrow(() -> new RuntimeException("Missing Name"));
 
         // Status
-        DelayUtils.waitForPageToLoad(driver,webDriverWait);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         String statusMilestone1 = processInstancesPage.getMilestoneValue(nameMilestone1, "Status");
         String statusMilestone2 = processInstancesPage.getMilestoneValue(nameMilestone2, "Status");
         Assert.assertEquals(statusMilestone1, "New");
@@ -282,7 +284,75 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
         Assert.assertEquals(descriptionMilestone2, "");
     }
 
-    @Test(priority = 4, description = "Check if Name is not editable for predefined Milestone")
+    @Test(priority = 4, description = "Add Milestone for existing Data Correction Process")
+    @Description("Add Milestone for existing Data Correction Process")
+    public void addMilestoneForExistingProcess() {
+        ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
+        String processName = "Selenium Test.Milestone-" + (int) (Math.random() * 100001);
+
+        List<Milestone> milestones = Lists.newArrayList(
+                Milestone.builder()
+                        .setLeadTime("10")
+                        .setDescription("Milestone 1 - Selenium Test")
+                        .setIsManualCompletion("true")
+                        .setIsActive("true")
+                        .setName(milestoneName1).build(),
+
+                Milestone.builder()
+                        .setDueDate(LocalDate.now().plusDays(5).toString())
+                        .setName(milestoneName2)
+                        .setRelatedTask("Correct data")
+                        .setIsManualCompletion("true")
+                        .setIsActive("false")
+                        .build());
+
+
+        String processDCPCode = processWizardPage.createProcess(processName, 10L, "Data Correction Process");
+
+        processInstancesPage.addMilestonesForProcess(processDCPCode, milestones);
+
+        processInstancesPage.selectMilestoneTab("Code", processDCPCode);
+
+        String nameMilestone1 = milestones.get(0).getName().orElseThrow(() -> new RuntimeException("Missing Name"));
+        String nameMilestone2 = milestones.get(1).getName().orElseThrow(() -> new RuntimeException("Missing Name"));
+
+
+        // Status
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        String statusMilestone1 = processInstancesPage.getMilestoneValue(nameMilestone1, "Status");
+        String statusMilestone2 = processInstancesPage.getMilestoneValue(nameMilestone2, "Status");
+        Assert.assertEquals(statusMilestone1, "New");
+        Assert.assertEquals(statusMilestone2, "Not Needed");
+
+        // Due date
+        String leadTimeMilestone1 = milestones.get(0).getLeadTime().get();
+        String dueDateMilestone1 = processInstancesPage.getMilestoneValue(nameMilestone1, "Due Date");
+        String dueDateMilestone2 = processInstancesPage.getMilestoneValue(nameMilestone2, "Due Date");
+        Assert.assertEquals(dueDateMilestone1, LocalDate.now().plusDays(Long.parseLong(leadTimeMilestone1)).toString());
+        Assert.assertEquals(dueDateMilestone2, LocalDate.now().plusDays(5).toString());
+
+        // Date of Completion
+        String completionDateMilestone1 = processInstancesPage.getMilestoneValue(nameMilestone1, "Date of Completion");
+        String completionDateMilestone2 = processInstancesPage.getMilestoneValue(nameMilestone2, "Date of Completion");
+        Assert.assertEquals(completionDateMilestone1, LocalDate.now().plusDays(Long.parseLong(leadTimeMilestone1)).toString());
+        Assert.assertEquals(completionDateMilestone2, "");
+
+        // Related Object
+        String relatedObjectMilestone1 = processInstancesPage.getMilestoneValue(nameMilestone1, "Related Object");
+        String relatedObjectMilestone2 = processInstancesPage.getMilestoneValue(nameMilestone2, "Related Object");
+        Assert.assertEquals(relatedObjectMilestone1, "Process");
+        Assert.assertEquals(relatedObjectMilestone2, "Task" + "(" + milestones.get(1).getRelatedTask().get() + ")");
+
+        // Description
+        String descriptionMilestone1 = processInstancesPage.getMilestoneValue(nameMilestone1, "Description");
+        String descriptionMilestone2 = processInstancesPage.getMilestoneValue(nameMilestone2, "Description");
+        Assert.assertEquals(descriptionMilestone1, "Milestone 1 - Selenium Test");
+        Assert.assertEquals(descriptionMilestone2, "");
+    }
+
+    @Test(priority = 5, description = "Check if Name is not editable for predefined Milestone")
     @Description("Check if Name is not editable for predefined Milestone")
     public void checkIfNameIsNotEditableForPredefinedMilestone() {
         ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
