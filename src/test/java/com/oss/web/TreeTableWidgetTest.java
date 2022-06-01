@@ -1,17 +1,24 @@
 package com.oss.web;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 import com.oss.BaseTestCase;
+import com.oss.framework.components.mainheader.ToolbarWidget;
 import com.oss.framework.components.pagination.PaginationComponent;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.TableRow;
 import com.oss.framework.widgets.treetable.TreeTableWidget;
 import com.oss.pages.bpm.PlannersViewPage;
+import com.oss.pages.bpm.milestones.ChangeStateMilestoneWizardPage;
+import com.oss.pages.bpm.milestones.Milestone;
+import com.oss.pages.bpm.processinstances.ProcessInstancesPage;
+import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 
 /**
  * @author Faustyna Szczepanik
@@ -22,7 +29,6 @@ public class TreeTableWidgetTest extends BaseTestCase {
     private static final String DOMAIN_COLUMN_ID = "Domain";
     private static final int PAGE_SIZE_OPTION_100 = 100;
     private static final int PAGE_SIZE_OPTION_50 = 50;
-
     private PlannersViewPage plannersViewPage;
     private TreeTableWidget treeTableWidget;
 
@@ -168,7 +174,20 @@ public class TreeTableWidgetTest extends BaseTestCase {
         Assert.assertEquals(defaultFirstColumn, activeColumnsHeaders.get(0));
         Assert.assertEquals(plannersViewPage.getColumnSize(activeColumnsHeaders.get(0)), defaultFirstColumnSize);
         Assert.assertEquals(defaultActiveHeaders, activeColumnsHeaders);
+    }
 
+    @Test(priority = 14)
+    public void singleSelect() {
+        plannersViewPage.expandNode(0);
+        plannersViewPage.expandNode(1);
+        plannersViewPage.selectObjectByRowId(3);
+        plannersViewPage.expandNode(7);
+        plannersViewPage.expandNode(8);
+        plannersViewPage.selectObjectByRowId(9);
+        treeTableWidget.clickRow(10);
+
+        List<TableRow> selectedRows = plannersViewPage.getSelectedRows();
+        Assert.assertEquals(selectedRows.size(), 1);
     }
 
     private int getRowsCount() {
