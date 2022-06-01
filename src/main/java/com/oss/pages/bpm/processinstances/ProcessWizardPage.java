@@ -41,8 +41,6 @@ public class ProcessWizardPage extends BasePage {
     private static final String RELEASE_ATTRIBUTE_ID = "release-combobox-input";
     private static final String PROCESS_NAME_ATTRIBUTE_ID = "bpm_processes_view_start-process-details-prompt_processCreateFormId";
     private static final String FINISH_DUE_DATE_ID = "FINISHED_DUE_DATE";
-    private static final String RELATED_TASK_IDENTIFIER = "relatedTaskIdentifier-input";
-    private static final String CREATE_PROCESS_BUTTON = "Create new process";
     private static final String ACCEPT_BUTTON = "wizard-submit-button-start-process-wizard";
     private static final String CREATE_BUTTON = "wizard-submit-button-bpm_processes_view_start-process-details-prompt_processCreateFormId";
     private static final String NEXT_BUTTON = "wizard-next-button-bpm_processes_view_start-process-details-prompt_processCreateFormId";
@@ -54,13 +52,6 @@ public class ProcessWizardPage extends BasePage {
     private static final String DCP = "Data Correction Process";
     private static final String PREDEFINED_MILESTONE_LIST = "editMilestonesComponentId";
     private static final String ADD_MILESTONE_LIST = "addMilestonesComponentId";
-    private static final String BPM_MILESTONE_NAME = "name";
-    private static final String BPM_MILESTONE_DESCRIPTION = "description";
-    private static final String BPM_MILESTONE_LEAD_TIME = "leadTime";
-    private static final String BPM_MILESTONE_DUE_DATE = "dueDate";
-    private static final String BPM_MILESTONE_RELATED_TASK = "relatedTaskIdentifier";
-    private static final String BPM_MILESTONE_IS_ACTIVE = "active";
-    private static final String BPM_MILESTONE_IS_MANUAL_COMPLETION = "isManualCompletion";
 
     public ProcessWizardPage(WebDriver driver) {
         super(driver);
@@ -163,81 +154,10 @@ public class ProcessWizardPage extends BasePage {
 
         public Milestone addMilestoneRow(Milestone milestone) {
             return EditMilestoneDefinitionPage.addMilestoneRow(milestone, ADD_MILESTONE_LIST, driver, wait);
-//            EditableList addMilestoneList = EditableList.createById(driver, wait, ADD_MILESTONE_LIST);
-//            EditableList.Row row = addMilestoneList.addRow();
-//            row.setValue(milestone.getName().get(), BPM_MILESTONE_NAME, "name-TEXT_FIELD", Input.ComponentType.TEXT_FIELD);
-//            if (milestone.getDueDate().isPresent()) {
-//                row.setValue(milestone.getDueDate().get(), BPM_MILESTONE_DUE_DATE, "dueDate-DATE",
-//                        Input.ComponentType.DATE);
-//            }
-//            if (milestone.getLeadTime().isPresent()) {
-//                row.setValue(milestone.getLeadTime().get(), BPM_MILESTONE_LEAD_TIME, "leadTime-NUMBER_FIELD",
-//                        Input.ComponentType.NUMBER_FIELD);
-//            }
-//            if (milestone.getDescription().isPresent()) {
-//                row.setValue(milestone.getDescription().get(), BPM_MILESTONE_DESCRIPTION, "description-TEXT_FIELD",
-//                        Input.ComponentType.TEXT_FIELD);
-//            }
-//            if (milestone.getRelatedTask().isPresent()) {
-//                row.setValue(milestone.getRelatedTask().get(), BPM_MILESTONE_RELATED_TASK,
-//                        RELATED_TASK_IDENTIFIER,
-//                        Input.ComponentType.COMBOBOX);
-//            }
-//            if (milestone.getIsActive().isPresent()) {
-//                row.setValue(milestone.getIsActive().get(), BPM_MILESTONE_IS_ACTIVE, "active-CHECKBOX",
-//                        Input.ComponentType.CHECKBOX);
-//            }
-//            if (milestone.getIsManualCompletion().isPresent()) {
-//                row.setValue(milestone.getIsManualCompletion().get(), BPM_MILESTONE_IS_MANUAL_COMPLETION,
-//                        "isManualCompletion-CHECKBOX",
-//                        Input.ComponentType.CHECKBOX);
-//            }
-//            return getMilestoneFromRow(addMilestoneList, addMilestoneList.getVisibleRows().size() - 1);
         }
 
         public Milestone editPredefinedMilestone(Milestone milestone, int row) {
             return EditMilestoneDefinitionPage.editMilestoneRow(milestone, row, PREDEFINED_MILESTONE_LIST, driver, wait);
-//            EditableList predefinedMilestoneList = getMilestonePredefinedList();
-//            EditableList.Row predefineMilestoneRow = predefinedMilestoneList.getRow(row - 1);
-//            if (milestone.getName().isPresent()) {
-//                predefineMilestoneRow.setValue(milestone.getName().get(), BPM_MILESTONE_NAME, "name-TEXT_FIELD",
-//                        Input.ComponentType.TEXT_FIELD);
-//            }
-//
-//            if (milestone.getDueDate().isPresent()) {
-//                predefineMilestoneRow.setValue(milestone.getDueDate().get(), BPM_MILESTONE_DUE_DATE, "dueDate-DATE",
-//                        Input.ComponentType.DATE);
-//            }
-//            if (milestone.getLeadTime().isPresent()) {
-//                predefineMilestoneRow.setValue(milestone.getLeadTime().get(), BPM_MILESTONE_LEAD_TIME,
-//                        "leadTime-NUMBER_FIELD",
-//                        Input.ComponentType.NUMBER_FIELD);
-//            }
-//            if (milestone.getDescription().isPresent()) {
-//                predefineMilestoneRow.setValue(milestone.getDescription().get(), BPM_MILESTONE_DESCRIPTION,
-//                        "description-TEXT_FIELD",
-//                        Input.ComponentType.TEXT_FIELD);
-//            }
-//            if (milestone.getRelatedTask().isPresent()) {
-//                if (milestone.getRelatedTask().get().equals("")) {
-//                    predefineMilestoneRow.clearValue(BPM_MILESTONE_RELATED_TASK, RELATED_TASK_IDENTIFIER,
-//                            Input.ComponentType.COMBOBOX);
-//                } else {
-//                    predefineMilestoneRow.setValue(milestone.getRelatedTask().get(), BPM_MILESTONE_RELATED_TASK,
-//                            RELATED_TASK_IDENTIFIER,
-//                            Input.ComponentType.COMBOBOX);
-//                }
-//            }
-//            if (milestone.getIsActive().isPresent()) {
-//                predefineMilestoneRow.setValue(milestone.getIsActive().get(), BPM_MILESTONE_IS_ACTIVE, "active-CHECKBOX",
-//                        Input.ComponentType.CHECKBOX);
-//            }
-//            if (milestone.getIsManualCompletion().isPresent()) {
-//                predefineMilestoneRow.setValue(milestone.getIsManualCompletion().get(), BPM_MILESTONE_IS_MANUAL_COMPLETION,
-//                        "isManualCompletion-CHECKBOX",
-//                        Input.ComponentType.CHECKBOX);
-//            }
-//            return getMilestoneFromRow(predefinedMilestoneList, row - 1);
         }
 
         public void clickAcceptButton() {
@@ -247,23 +167,5 @@ public class ProcessWizardPage extends BasePage {
         public void clickCancelButton() {
             Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2).clickButtonById(CANCEL_BUTTON);
         }
-
-//        private Milestone getMilestoneFromRow(EditableList list, int row) {
-//            String name = list.getRow(row).getCellValue(BPM_MILESTONE_NAME);
-//            String dueDate = list.getRow(row).getCellValue(BPM_MILESTONE_DUE_DATE);
-//            String leadTime = list.getRow(row).getCellValue(BPM_MILESTONE_LEAD_TIME);
-//            String description = list.getRow(row).getCellValue(BPM_MILESTONE_DESCRIPTION);
-//            String relatedTask = list.getRow(row).getCellValue(BPM_MILESTONE_RELATED_TASK);
-//            String isActive = list.getRow(row).getCellValue(BPM_MILESTONE_IS_ACTIVE);
-//            String isManualCompletion = list.getRow(row).getCellValue(BPM_MILESTONE_IS_MANUAL_COMPLETION);
-//            return Milestone.builder().setName(name)
-//                    .setDueDate(dueDate)
-//                    .setLeadTime(leadTime)
-//                    .setDescription(description)
-//                    .setRelatedTask(relatedTask)
-//                    .setIsActive(isActive)
-//                    .setIsManualCompletion(isManualCompletion)
-//                    .build();
-//        }
     }
 }

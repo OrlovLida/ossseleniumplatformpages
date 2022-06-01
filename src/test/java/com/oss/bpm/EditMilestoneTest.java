@@ -49,7 +49,7 @@ public class EditMilestoneTest extends BaseTestCase {
     private static final String EDIT_MILESTONE_BUTTON = "editMilestonesContextAction";
 
     private String description = "Milestone Update " + (Math.random() * 1001);
-    private String milestoneName = "Milestone Update " + (Math.random() * 1001);
+    private String milestoneName = "Milestone Update " + (Math.random() * 100001);
     private String leadTime = String.valueOf((int) (Math.random() * 101));
 
     @BeforeClass
@@ -64,7 +64,7 @@ public class EditMilestoneTest extends BaseTestCase {
         }
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
-        String processName = "Selenium Test.Milestone-" + (int) (Math.random() * 1001);
+        String processName = "Selenium Test.Milestone-" + (int) (Math.random() * 100001);
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
 
         Milestone milestone1 = Milestone.builder()

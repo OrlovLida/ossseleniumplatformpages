@@ -35,10 +35,10 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
     private final String BPM_ADMIN_USER_LOGIN = "bpm_admin_webselenium";
     private final String BPM_ADMIN_USER_PASSWORD = "Webtests123!";
 
-    private final String milestoneName1 = "Milestone Update " + (int) (Math.random() * 10001);
-    private final String milestoneName2 = "Milestone Update " + (int) (Math.random() * 10001);
-    private final String milestoneName3 = "Milestone Update " + (int) (Math.random() * 10001);
-    private final String description = "Milestone Update " + (Math.random() * 1001);
+    private final String milestoneName1 = "Milestone Update " + (int) (Math.random() * 100001);
+    private final String milestoneName2 = "Milestone Update " + (int) (Math.random() * 100001);
+    private final String milestoneName3 = "Milestone Update " + (int) (Math.random() * 100001);
+    private final String description = "Milestone Update " + (Math.random() * 100001);
     private static final String CHANGE_STATE_BUTTON = "setMilestonesStateContextAction";
     private static final String NEW_STATE = "New";
     private static final String NOT_NEEDED_STATE = "Not Needed";
@@ -66,7 +66,8 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         changeStateMilestoneWizardPage.setState(nextState);
         changeStateMilestoneWizardPage.setReason(reason);
         changeStateMilestoneWizardPage.accept();
-        String message = SystemMessageContainer.create(driver, webDriverWait).getFirstMessage().orElseThrow(() -> new RuntimeException("There is no any System Message")).getText();
+        String message = SystemMessageContainer.create(driver, webDriverWait).getFirstMessage().orElseThrow(()
+                -> new RuntimeException("There is no any System Message")).getText();
         Assert.assertEquals(message, "All milestones changed state successfully.");
     }
 
@@ -90,7 +91,8 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         }
         changeStateMilestoneWizardPage.accept();
 
-        String message = SystemMessageContainer.create(driver, webDriverWait).getFirstMessage().orElseThrow(() -> new RuntimeException("There is no any System Message")).getText();
+        String message = SystemMessageContainer.create(driver, webDriverWait).getFirstMessage().orElseThrow(()
+                -> new RuntimeException("There is no any System Message")).getText();
         Assert.assertEquals(message, "All milestones changed state successfully.");
         DelayUtils.sleep(1000);
         String newStateValue = milestoneViewPage.getMilestoneAttribute("state");
@@ -160,8 +162,8 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
                 .setIsManualCompletion("true")
                 .setName(milestoneName3).build();
 
-        ProcessWizardPage.MilestoneStepWizard milestoneStep = processWizardPage.definedMilestoneInProcess(processName, 5L,
-                "Data Correction Process");
+        ProcessWizardPage.MilestoneStepWizard milestoneStep = processWizardPage.definedMilestoneInProcess(processName,
+                5L, "Data Correction Process");
 
         milestoneStep.addMilestoneRow(milestone1);
         milestoneStep.addMilestoneRow(milestone2);
@@ -204,7 +206,8 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         changeStateMilestoneWizardPage.setState(COMPLETED_STATE);
         changeStateMilestoneWizardPage.setApprovalDate(PLUS_DAYS);
         changeStateMilestoneWizardPage.accept();
-        String message = SystemMessageContainer.create(driver, webDriverWait).getFirstMessage().orElseThrow(() -> new RuntimeException("There is no any System Message")).getText();
+        String message = SystemMessageContainer.create(driver, webDriverWait).getFirstMessage().orElseThrow(()
+                -> new RuntimeException("There is no any System Message")).getText();
         Assert.assertEquals("Not all milestones changed state.\n" +
                 "Following milestones cannot be manually completed:" + milestoneName2 + ".", message);
         String newModifyDate = milestoneViewPage.getMilestoneAttribute("modifyDate");
@@ -244,7 +247,8 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         changeMilestoneState(NEW_STATE, NOT_NEEDED_STATE, CHANGE_STATE_REASON, true);
     }
 
-    @Test(priority = 4, description = "Multiselect Milestones Change State")
+    @Test(priority = 4, description = "Multiselect Milestones Change State",
+            dependsOnMethods = {"firstMilestoneFlow", "thirdMilestoneFlow"})
     @Description("Multiselect Milestones Change State:\n not needed → new → in progress → suspended → in progress")
     public void multiChangeState() {
         /**
@@ -276,7 +280,8 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         Assert.assertEquals(state2, IN_PROGRESS_STATE);
     }
 
-    @Test(priority = 5, description = "Multiselect Milestones Change State (Different States)")
+    @Test(priority = 5, description = "Multiselect Milestones Change State (Different States)",
+            dependsOnMethods = {"firstMilestoneFlow", "secondMilestoneFlow"})
     @Description("Multiselect Milestones Change State (Different States)")
     public void checkMultiChangeStateDifferent() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);

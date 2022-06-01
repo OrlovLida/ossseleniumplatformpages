@@ -46,11 +46,11 @@ public class CreateProcessNRPTest extends BaseTestCase {
     private static final String BPM_ADMIN_USER_PASSWORD = "Webtests123!";
 
     private static final Logger log = LoggerFactory.getLogger(CreateProcessNRPTest.class);
-    private final String processIPName1 = "S.1-" + (int) (Math.random() * 1001);
-    private final String processIPName2 = "S.2-" + (int) (Math.random() * 1001);
+    private final String processIPName1 = "S.1-" + (int) (Math.random() * 100001);
+    private final String processIPName2 = "S.2-" + (int) (Math.random() * 100001);
     public String perspectiveContext;
-    public String deviceName1 = "Device-Selenium-" + (int) (Math.random() * 1001);
-    public String deviceName2 = "Device-Selenium-" + (int) (Math.random() * 1001);
+    public String deviceName1 = "Device-Selenium-" + (int) (Math.random() * 100001);
+    public String deviceName2 = "Device-Selenium-" + (int) (Math.random() * 100001);
     private String processNRPName;
     private String processNRPCode;
     private String processIPCode1;

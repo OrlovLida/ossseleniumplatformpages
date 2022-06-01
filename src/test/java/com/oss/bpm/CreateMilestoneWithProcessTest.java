@@ -37,8 +37,8 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
 
     private static final Logger log = LoggerFactory.getLogger(CreateMilestoneWithProcessTest.class);
 
-    private String milestoneName1 = "Milestone 1." + (int) (Math.random() * 1001);
-    private String milestoneName2 = "Milestone 2." + (int) (Math.random() * 1001);
+    private String milestoneName1 = "Milestone 1." + (int) (Math.random() * 100001);
+    private String milestoneName2 = "Milestone 2." + (int) (Math.random() * 100001);
 
     @BeforeClass
     public void openProcessInstancesPage() {
@@ -58,7 +58,7 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
         ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
         processInstancesPage.clearAllColumnFilters();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        String processName = "Selenium Test.Milestone-" + (int) (Math.random() * 1001);
+        String processName = "Selenium Test.Milestone-" + (int) (Math.random() * 100001);
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
         ProcessWizardPage.MilestoneStepWizard milestoneStep =
                 processWizardPage.definedMilestoneInProcess(processName, 10L, "GK Milestones");
@@ -132,7 +132,7 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
     public void updatePredefinedMilestone() {
         ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        String processName = "Selenium Test.Milestone-" + (int) (Math.random() * 1001);
+        String processName = "Selenium Test.Milestone-" + (int) (Math.random() * 100001);
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
         ProcessWizardPage.MilestoneStepWizard milestoneStepWizard =
                 processWizardPage.definedMilestoneInProcess(processName, 10L, "GK Milestones");
