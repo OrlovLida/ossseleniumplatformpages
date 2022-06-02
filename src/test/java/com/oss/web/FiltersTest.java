@@ -28,7 +28,6 @@ import io.qameta.allure.Description;
 public class FiltersTest extends BaseTestCase {
     
     private static final Logger log = LoggerFactory.getLogger(FiltersTest.class);
-    
     private NewInventoryViewPage inventoryViewPage;
     private AdvancedSearch advancedSearch;
     private FilterManagerPage filterManagerPage;
@@ -72,11 +71,11 @@ public class FiltersTest extends BaseTestCase {
             
             advancedSearch.setFilter(ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, VALUE_FOR_FILTER2);
             advancedSearch.saveAsNewFilter(FILTER2_NAME);
-            waitForMessageDisappear();
+            closeMessages();
             
             advancedSearch.setFilter(ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, VALUE_FOR_FILTER3);
             advancedSearch.saveAsNewFilter(FILTER3_NAME);
-            waitForMessageDisappear();
+            closeMessages();
             
             Assert.assertEquals(inventoryViewPage.getSavedFilters().size(), 3);
         }
@@ -86,10 +85,10 @@ public class FiltersTest extends BaseTestCase {
     @Description("Adding filter to favorite, checking that the star icon for that filter is filled")
     public void addingFilterToFavorite() {
         advancedSearch.markFavoriteFilter(FILTER2_NAME);
-        waitForMessageDisappear();
+        closeMessages();
         Assert.assertTrue(advancedSearch.getFavoriteFilters().contains(FILTER2_NAME));
     }
-
+    
     @Test(priority = 3)
     @Description("Checking that filter is applied properly and name of the filter is displayed in Filter Panel")
     public void isFilterApply() {
@@ -105,7 +104,7 @@ public class FiltersTest extends BaseTestCase {
         advancedSearch.selectSavedFilterByLabel(FILTER3_NAME);
         advancedSearch.setFilter(ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, VALUE_FOR_FILTER3_AFTER_EDIT);
         advancedSearch.saveFilter();
-        waitForMessageDisappear();
+        closeMessages();
         advancedSearch.selectSavedFilterByLabel(FILTER2_NAME);
         advancedSearch.selectSavedFilterByLabel(FILTER3_NAME);
         
@@ -168,7 +167,6 @@ public class FiltersTest extends BaseTestCase {
     @Test(priority = 10)
     @Description("Sharing an existing Filters, Folder and checking that shared filters are visible for second user")
     public void sharingAnExistingFilter() {
-        filterManagerPage = FilterManagerPage.goToFilterManagerPage(driver, BASIC_URL);
         filterManagerPage
                 .expandAllCategories()
                 .shareFilter(FILTER_NAME, USER2_LOGIN, "W")
@@ -268,7 +266,7 @@ public class FiltersTest extends BaseTestCase {
         Assert.assertEquals(filterManagerPage.howManyFolders(), 1);
     }
     
-    private void waitForMessageDisappear() {
-        SystemMessageContainer.create(driver, webDriverWait).waitForMessageDisappear();
+    private void closeMessages() {
+        SystemMessageContainer.create(driver, webDriverWait).close();
     }
 }
