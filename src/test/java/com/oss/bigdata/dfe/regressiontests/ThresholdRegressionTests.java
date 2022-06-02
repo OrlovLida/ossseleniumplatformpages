@@ -3,7 +3,7 @@ package com.oss.bigdata.dfe.regressiontests;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -18,7 +18,7 @@ public class ThresholdRegressionTests extends BaseTestCase {
     private static final Logger log = LoggerFactory.getLogger(ThresholdRegressionTests.class);
     private ThresholdPage thresholdPage;
 
-    @BeforeClass
+    @BeforeMethod
     public void goToThresholdsView() {
         thresholdPage = ThresholdPage.goToPage(driver, BASIC_URL);
     }
