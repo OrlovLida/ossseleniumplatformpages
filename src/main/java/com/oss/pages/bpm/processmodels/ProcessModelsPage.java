@@ -3,9 +3,14 @@ package com.oss.pages.bpm.processmodels;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import com.oss.framework.widgets.list.CommonList;
 import com.oss.framework.widgets.tabs.TabsWidget;
+import com.oss.pages.bpm.milestones.Milestone;
+import com.oss.pages.bpm.milestones.MilestoneWizardPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -44,9 +49,12 @@ public class ProcessModelsPage extends BasePage {
     private static final String EDIT_KEYWORDS_POPUP_ID = "bpm_models_view_edit-keywords-popup_prompt-card";
     private static final String EDIT_KEYWORDS_ACCEPT_BUTTON_ID = "wizard-submit-button-bpm_models_view_edit-keywords-popup_prompt-form-id";
     private static final String MODELS_TABS_ID = "bpm_models_view_tabs-container";
-    private static final String MILESTONE_TAB_ID = "tab_bpm_models_view_milestones-tab";
+    private static final String MILESTONE_TAB_ID = "bpm_models_view_milestones-tab";
     private static final String MILESTONE_LIST_ID = "milestones-data";
     private static final String INITIAL_PARAMETERS_TAB_ID = "tab_bpm_models_view_initial-parameters-tab";
+    private static final String EDIT_MILESTONE_ACTION_ID = "edit-milestones";
+    private static final String EDIT_MILESTONES_WIZARD_ID = "bpm_models_view_milestones-popup_wizard-app-id";
+    private static final String EDIT_MILESTONES_LIST_ID = "bpm_models_view_milestones-popup_wizard-editable-list-id";
 
     public ProcessModelsPage(WebDriver driver) {
         super(driver);
@@ -101,11 +109,11 @@ public class ProcessModelsPage extends BasePage {
             return false;
         }
 
-        for (int i = 0; i < dirContents.length; i++) {
-            if (dirContents[i].getName().contains(fileName)) {
-                boolean isFileNotEmpty = dirContents[i].length() > 0;
+        for (File dirContent : dirContents) {
+            if (dirContent.getName().contains(fileName)) {
+                boolean isFileNotEmpty = dirContent.length() > 0;
                 // File has been found, it can now be deleted:
-                Files.delete(Paths.get(dirContents[i].getAbsolutePath()));
+                Files.delete(Paths.get(dirContent.getAbsolutePath()));
                 return isFileNotEmpty;
             }
         }
@@ -187,6 +195,49 @@ public class ProcessModelsPage extends BasePage {
     public String getMilestoneValue(String milestoneName, String attributeName) {
         CommonList milestoneList = CommonList.create(driver, wait, MILESTONE_LIST_ID);
         return milestoneList.getRow("Name", milestoneName).getValue(attributeName);
+    }
+
+    public List<Milestone> addMilestonesForProcessModel(String processModelName, List<Milestone> milestones) {
+        selectModelByName(processModelName);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        callAction(MODEL_OPERATIONS_GROUPING_ACTION_BUTTON_ID, EDIT_MILESTONE_ACTION_ID);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        Wizard editMilestonesWizard = Wizard.createByComponentId(driver, wait, EDIT_MILESTONES_WIZARD_ID);
+        MilestoneWizardPage milestoneWizardPage = new MilestoneWizardPage(driver);
+        List<Milestone> out = milestones.stream().map(milestone -> milestoneWizardPage.addMilestoneRow(milestone,
+                EDIT_MILESTONES_LIST_ID)).collect(Collectors.toList());
+        DelayUtils.waitForPageToLoad(driver, wait);
+        editMilestonesWizard.clickAccept();
+        return out;
+    }
+
+    public List<Milestone> editMilestonesForProcessModel(String processModelName, List<Milestone> milestones) {
+        selectModelByName(processModelName);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        callAction(MODEL_OPERATIONS_GROUPING_ACTION_BUTTON_ID, EDIT_MILESTONE_ACTION_ID);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        Wizard editMilestonesWizard = Wizard.createByComponentId(driver, wait, EDIT_MILESTONES_WIZARD_ID);
+        MilestoneWizardPage milestoneWizardPage = new MilestoneWizardPage(driver);
+        
+        AtomicInteger row = new AtomicInteger(1);
+        List<Milestone> out = milestones.stream().map(milestone -> milestoneWizardPage.
+                editMilestoneRow(milestone, row.getAndIncrement(), MILESTONE_LIST_ID)).collect(Collectors.toList());
+
+        DelayUtils.waitForPageToLoad(driver, wait);
+        editMilestonesWizard.clickAccept();
+        return out;
+    }
+
+    public void removeFirstMilestoneForProcessModel(String processModelName) {
+        selectModelByName(processModelName);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        callAction(MODEL_OPERATIONS_GROUPING_ACTION_BUTTON_ID, EDIT_MILESTONE_ACTION_ID);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        Wizard editMilestonesWizard = Wizard.createByComponentId(driver, wait, EDIT_MILESTONES_WIZARD_ID);
+        MilestoneWizardPage milestoneWizardPage = new MilestoneWizardPage(driver);
+        milestoneWizardPage.removeMilestoneRow(1, MILESTONE_LIST_ID);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        editMilestonesWizard.clickAccept();
     }
 
 }

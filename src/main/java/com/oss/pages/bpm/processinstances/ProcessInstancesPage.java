@@ -6,7 +6,6 @@
  */
 package com.oss.pages.bpm.processinstances;
 
-import com.google.common.collect.Lists;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.bpm.milestones.MilestoneWizardPage;
 import com.oss.pages.bpm.milestones.Milestone;
@@ -21,6 +20,7 @@ import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.BasePage;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Gabriela Kasza
@@ -119,11 +119,8 @@ public class ProcessInstancesPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         Wizard addMilestonesWizard = Wizard.createByComponentId(driver, wait, ADD_MILESTONES_WIZARD_ID);
         MilestoneWizardPage milestoneWizardPage = new MilestoneWizardPage(driver);
-
-        List<Milestone> out = Lists.newArrayList();
-        for (Milestone milestone : milestones) {
-            out.add(milestoneWizardPage.addMilestoneRow(milestone, ADD_MILESTONES_LIST_ID));
-        }
+        List<Milestone> out = milestones.stream().map(milestone -> milestoneWizardPage.addMilestoneRow(milestone,
+                ADD_MILESTONES_LIST_ID)).collect(Collectors.toList());
         DelayUtils.waitForPageToLoad(driver, wait);
         addMilestonesWizard.clickAccept();
         return out;

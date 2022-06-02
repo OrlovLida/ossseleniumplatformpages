@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
+import java.util.Objects;
 
 /**
  * @author Paweł Rother
@@ -61,7 +62,7 @@ public class ImportExportModelTest extends BaseTestCase {
         ImportModelWizardPage importModelWizardPage = new ImportModelWizardPage(driver);
         try {
             URL resource = ImportExportModelTest.class.getClassLoader().getResource(IMPORT_PATH);
-            String absolutePatch = Paths.get(resource.toURI()).toFile().getAbsolutePath();
+            String absolutePatch = Paths.get(Objects.requireNonNull(resource).toURI()).toFile().getAbsolutePath();
             importModelWizardPage.attachFile(absolutePatch);
             DelayUtils.sleep(1000);
             Assert.assertEquals(importModelWizardPage.getImportStatus(), "Upload success");
@@ -102,8 +103,6 @@ public class ImportExportModelTest extends BaseTestCase {
         } catch (IOException e) {
             throw new RuntimeException("File is not properly deleted");
         }
-
-
     }
 
     @AfterClass

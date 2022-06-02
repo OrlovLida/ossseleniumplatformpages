@@ -25,6 +25,7 @@ public class MilestoneWizardPage extends BasePage {
     private static final String BPM_MILESTONE_IS_MANUAL_COMPLETION_INPUT = "isManualCompletion-CHECKBOX";
     private static final String BPM_MILESTONE_DESCRIPTION_INPUT = "description-TEXT_FIELD";
     private static final String BPM_MILESTONE_IS_ACTIVE_INPUT = "active-CHECKBOX";
+    private static final String DELETE_MILESTONE_ROW_ACTION_ID = "deleteButton1";
 
 
     public MilestoneWizardPage(WebDriver driver) {
@@ -115,9 +116,19 @@ public class MilestoneWizardPage extends BasePage {
         return getMilestoneFromRow(milestoneList, row - 1);
     }
 
+    public void removeMilestoneRow(int row, String milestonesListId) {
+        EditableList milestoneList = EditableList.createById(driver, wait, milestonesListId);
+        EditableList.Row editMilestoneRow = milestoneList.getRow(row - 1);
+        DelayUtils.sleep(2000);
+        editMilestoneRow.callAction(DELETE_MILESTONE_ROW_ACTION_ID);
+    }
+
     private Milestone getMilestoneFromRow(EditableList list, int row) {
         String name = list.getRow(row).getCellValue(BPM_MILESTONE_NAME);
-        String dueDate = list.getRow(row).getCellValue(BPM_MILESTONE_DUE_DATE);
+        String dueDate = "";
+        if (list.getColumnHeadersLabels().contains("Due Date")) {
+            dueDate = list.getRow(row).getCellValue(BPM_MILESTONE_DUE_DATE);
+        }
         String leadTime = list.getRow(row).getCellValue(BPM_MILESTONE_LEAD_TIME);
         String description = list.getRow(row).getCellValue(BPM_MILESTONE_DESCRIPTION);
         String relatedTask = list.getRow(row).getCellValue(BPM_MILESTONE_RELATED_TASK);

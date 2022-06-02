@@ -288,6 +288,7 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
     @Description("Add Milestone for existing Data Correction Process")
     public void addMilestoneForExistingProcess() {
         ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
+        processInstancesPage.clearAllColumnFilters();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
         String processName = "Selenium Test.Milestone-" + (int) (Math.random() * 100001);
