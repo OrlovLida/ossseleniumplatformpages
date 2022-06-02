@@ -6,13 +6,12 @@
  */
 package com.oss.pages.logicalfunction;
 
-import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.wizard.Wizard;
-import com.oss.pages.BasePage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.SEARCH_FIELD;
+import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.wizard.Wizard;
+import com.oss.pages.BasePage;
 
 /**
  * @author Marcin Kozioł
@@ -20,7 +19,7 @@ import static com.oss.framework.components.inputs.Input.ComponentType.SEARCH_FIE
 public class LogicalFunctionWizardPreStep extends BasePage {
 
     private static final String WIZARD_ID = "wizard-widget-id";
-    private static final String RESOURCE_SPECIFICATION_COMPONENT_ID = "step0-search-comp-id";
+    private static final String RESOURCE_SPECIFICATION_COMPONENT_ID = "step0-search-comp-id_OSF";
     private final Wizard wizard;
 
     private LogicalFunctionWizardPreStep(WebDriver driver, WebDriverWait wait) {
@@ -32,8 +31,8 @@ public class LogicalFunctionWizardPreStep extends BasePage {
         return new LogicalFunctionWizardPreStep(driver, wait);
     }
 
-    public void searchResourceSpecification(String name){
-        wizard.setComponentValue(RESOURCE_SPECIFICATION_COMPONENT_ID, name, SEARCH_FIELD);
+    public void searchResourceSpecification(String name) {
+        wizard.setComponentValue(RESOURCE_SPECIFICATION_COMPONENT_ID, name);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
