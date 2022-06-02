@@ -36,10 +36,10 @@ public class RegulatoryLicenseTest extends BaseTestCase {
     private static final String TYPE = "INTERNATIONAL";
     private static final String DESCRIPTION = "Opis3";
 
-    private static final String LOCATION = "SELENIUM_LOCATION_RL";
+    private static final String LOCATION = "SELENIUM_LOCATION1";
     private static final String MICROWAVE_ANTENNA = "SELENIUM_MWANT_RL";
-    private static final String MICROWAVE_LINK = "MicrowaveLink 8420";
-    private static final String MICROWAVE_CHANNEL = "MicrowaveChannel 26562";
+    private static final String MICROWAVE_LINK = "MicrowaveLink 1006";
+    private static final String MICROWAVE_CHANNEL = "MicrowaveChannel 3464";
 
     private static final String NUMBER2 = "234SELENIUM";
     private static final String REGULATORY_AGENCY2 = "SELENIUM_AGENCY2";
@@ -98,6 +98,7 @@ public class RegulatoryLicenseTest extends BaseTestCase {
 
         waitForPageToLoad();
         newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
+        newInventoryViewPage.doRefreshWhileNoData();
         newInventoryViewPage.selectFirstRow();
         waitForPageToLoad();
         assertRegulatoryLicenseAttributes(newInventoryViewPage, regulatoryLicenseAttributes);
