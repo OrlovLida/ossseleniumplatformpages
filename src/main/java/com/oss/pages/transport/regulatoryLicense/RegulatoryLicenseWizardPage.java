@@ -2,18 +2,12 @@ package com.oss.pages.transport.regulatoryLicense;
 
 import org.openqa.selenium.WebDriver;
 
-import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
-import com.oss.pages.platform.NewInventoryViewPage;
-import com.oss.pages.transport.VSI.VSIWizardPage;
-import com.oss.pages.transport.routeTarget.RouteTargetWizardPage;
 
 import io.qameta.allure.Step;
-
-import static com.oss.configuration.Configuration.CONFIGURATION;
 
 public class RegulatoryLicenseWizardPage extends BasePage {
 
@@ -87,7 +81,7 @@ public class RegulatoryLicenseWizardPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    private void setDateFieldComponentValue(String componentId, String value){
+    private void setDateFieldComponentValue(String componentId, String value) {
         getWizard().setComponentValue(componentId, value, Input.ComponentType.DATE);
     }
 
