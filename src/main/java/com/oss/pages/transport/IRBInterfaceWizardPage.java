@@ -10,8 +10,6 @@ import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
 
 public class IRBInterfaceWizardPage extends BasePage {
-
-    private static final String IRB_DEVICE_ID = "irb-main-device";
     private static final String IRB_VLANID_ID = "irb-main-vlanid";
     private static final String IRB_MTU_ID = "irb-main-mtu";
     private static final String IRB_DESCRIPTION_ID = "irb-main-description";
@@ -22,9 +20,8 @@ public class IRBInterfaceWizardPage extends BasePage {
         super(driver);
     }
 
-    @Step("Create IRB Interface with device name {device} and VlanID {vlanId}")
-    public IRBInterfaceWizardPage createIRBInterface(String device, String vlanId) {
-        getWizard().setComponentValue(IRB_DEVICE_ID, device, Input.ComponentType.SEARCH_FIELD);
+    @Step("Create IRB Interface with VlanID {vlanId}")
+    public IRBInterfaceWizardPage createIRBInterface(String vlanId) {
         waitForPageToLoad();
         getWizard().setComponentValue(IRB_VLANID_ID, vlanId, Input.ComponentType.TEXT_FIELD);
         waitForPageToLoad();
