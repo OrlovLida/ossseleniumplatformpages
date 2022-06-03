@@ -31,7 +31,7 @@ import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
 
 import io.qameta.allure.Description;
 
-import static com.oss.pages.servicedesk.BaseSDPage.CREATE_DATE_FILTER_DATE_FORMATTER;
+import static com.oss.pages.servicedesk.BaseSDPage.DATE_TIME_FORMATTER;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.COMBOBOX_LINK_PROBLEM_ID;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.CSV_FILE;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.DETAILS_TABS_CONTAINER_ID;
@@ -63,7 +63,7 @@ public class ProblemsTest extends BaseTestCase {
     private AffectedTab affectedTab;
     private String problemId;
     private static final String PROBLEM_NAME_DESCRIPTION_ID = "TT_WIZARD_INPUT_PROBLEM_NAME_DESCRIPTION";
-    private static final String PROBLEM_NAME_DESCRIPTION_TXT = "Selenium test Problem " + LocalDateTime.now().format(CREATE_DATE_FILTER_DATE_FORMATTER);
+    private static final String PROBLEM_NAME_DESCRIPTION_TXT = "Selenium test Problem " + LocalDateTime.now().format(DATE_TIME_FORMATTER);
     private static final String SEVERITY_COMBOBOX_ID = "TT_WIZARD_INPUT_SEVERITY_LABEL-input";
     private static final String PROBLEM_SEVERITY = "Critical";
     private static final String ASSIGNEE_SEARCH_ID = "TT_WIZARD_INPUT_ASSIGNEE_LABEL";

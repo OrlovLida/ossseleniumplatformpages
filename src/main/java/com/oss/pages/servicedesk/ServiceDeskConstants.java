@@ -9,6 +9,8 @@ public class ServiceDeskConstants {
     public static final String VIEWS_URL_PATTERN = "%s/#/views/service-desk/%s";
     public static final String INFO_MANAGEMENT_URL_PATTERN = "%s/#/view/info-management/%s";
     public static final String PREDEFINED_DASHBOARD_URL_PATTERN = "%s/#/dashboard/predefined/id/%s";
+    public static final String DATE_PATTERN = "yyyy-MM-dd HH:mm:ss";
+    public static final String DATE_PATTERN_WITHOUT_SPACE = "yyMMddHHmmSS";
     public static final String TICKET_DASHBOARD = "_TroubleTickets";
     public static final String TROUBLE_TICKET_ISSUE_TYPE = "trouble-ticket";
     public static final String PROBLEM_ISSUE_TYPE = "problem";

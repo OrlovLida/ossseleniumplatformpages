@@ -21,16 +21,16 @@ import com.oss.untils.FileDownload;
 
 import io.qameta.allure.Step;
 
+import static com.oss.pages.servicedesk.ServiceDeskConstants.DATE_PATTERN;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.DATE_PATTERN_WITHOUT_SPACE;
 import static com.oss.pages.servicedesk.issue.IssueDetailsPage.DETAILS_PAGE_URL_PATTERN;
 
 public abstract class BaseSDPage extends BasePage {
 
     protected static final Logger log = LoggerFactory.getLogger(BaseSDPage.class);
 
-    private static final String CREATE_DATE_FILTER_DATE_PATTERN = "yyyy-MM-dd HH:mm:ss";
-    private static final String DATE_FORMAT = "yyMMddHHmmSS";
-    public static final DateTimeFormatter CREATE_DATE_FILTER_DATE_FORMATTER = DateTimeFormatter.ofPattern(CREATE_DATE_FILTER_DATE_PATTERN);
-    public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(DATE_FORMAT);
+    public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_PATTERN);
+    public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(DATE_PATTERN_WITHOUT_SPACE);
     private static final String GROUP_ID_OLD_ACTIONS_CONTAINER = "frameworkCustomEllipsis";
     private static final String EXPORT_BUTTON_ID = "EXPORT";
 
@@ -53,8 +53,8 @@ public abstract class BaseSDPage extends BasePage {
     }
 
     public String getTimePeriodForLastNMinutes(int minutes) {
-        String startDate = LocalDateTime.now().minusMinutes(minutes).format(CREATE_DATE_FILTER_DATE_FORMATTER);
-        String endDate = LocalDateTime.now().format(CREATE_DATE_FILTER_DATE_FORMATTER);
+        String startDate = LocalDateTime.now().minusMinutes(minutes).format(DATE_TIME_FORMATTER);
+        String endDate = LocalDateTime.now().format(DATE_TIME_FORMATTER);
         return startDate + " - " + endDate;
     }
 
