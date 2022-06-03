@@ -39,8 +39,8 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
 
     private static final Logger log = LoggerFactory.getLogger(CreateMilestoneWithProcessTest.class);
 
-    private String milestoneName1 = "Milestone 1." + (int) (Math.random() * 100001);
-    private String milestoneName2 = "Milestone 2." + (int) (Math.random() * 100001);
+    private final String milestoneName1 = "Milestone 1." + (int) (Math.random() * 100001);
+    private final String milestoneName2 = "Milestone 2." + (int) (Math.random() * 100001);
 
     @BeforeClass
     public void openProcessInstancesPage() {
@@ -309,7 +309,6 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
                         .setIsActive("false")
                         .build());
 
-
         String processDCPCode = processWizardPage.createProcess(processName, 10L, "Data Correction Process");
 
         processInstancesPage.addMilestonesForProcess(processDCPCode, milestones);
@@ -318,7 +317,6 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
 
         String nameMilestone1 = milestones.get(0).getName().orElseThrow(() -> new RuntimeException("Missing Name"));
         String nameMilestone2 = milestones.get(1).getName().orElseThrow(() -> new RuntimeException("Missing Name"));
-
 
         // Status
         DelayUtils.waitForPageToLoad(driver, webDriverWait);

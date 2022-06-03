@@ -48,9 +48,9 @@ public class EditMilestoneTest extends BaseTestCase {
     private static final Logger log = LoggerFactory.getLogger(EditMilestoneTest.class);
     private static final String EDIT_MILESTONE_BUTTON = "editMilestonesContextAction";
 
-    private String description = "Milestone Update " + (Math.random() * 1001);
+    private final String description = "Milestone Update " + (Math.random() * 1001);
     private String milestoneName = "Milestone Update " + (Math.random() * 100001);
-    private String leadTime = String.valueOf((int) (Math.random() * 101));
+    private final String leadTime = String.valueOf((int) (Math.random() * 101));
 
     @BeforeClass
     public void createMilestone() {
@@ -201,7 +201,6 @@ public class EditMilestoneTest extends BaseTestCase {
         });
         editWizard.cancel();
         Assert.assertEquals(runtimeException.getMessage(), "Name is not editable. You need Admin permission");
-
     }
 
     @Test(priority = 7, description = "Edit Manual Completion")

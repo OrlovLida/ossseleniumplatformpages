@@ -18,7 +18,7 @@ public class MilestoneWizardPage extends BasePage {
     private static final String BPM_MILESTONE_RELATED_TASK = "relatedTaskIdentifier";
     private static final String BPM_MILESTONE_IS_ACTIVE = "active";
     private static final String BPM_MILESTONE_IS_MANUAL_COMPLETION = "isManualCompletion";
-    private static final String BPM_MILESTONE_RELATED_TASK_INPUT = "relatedTaskIdentifier-input";
+    private static final String BPM_MILESTONE_RELATED_TASK_INPUT = "relatedTaskIdentifier";
     private static final String BPM_MILESTONE_NAME_INPUT = "name-TEXT_FIELD";
     private static final String BPM_MILESTONE_DUE_DATE_INPUT = "dueDate-DATE";
     private static final String BPM_MILESTONE_LEAD_TIME_INPUT = "leadTime-NUMBER_FIELD";
@@ -26,44 +26,34 @@ public class MilestoneWizardPage extends BasePage {
     private static final String BPM_MILESTONE_DESCRIPTION_INPUT = "description-TEXT_FIELD";
     private static final String BPM_MILESTONE_IS_ACTIVE_INPUT = "active-CHECKBOX";
     private static final String DELETE_MILESTONE_ROW_ACTION_ID = "deleteButton1";
-
-
     public MilestoneWizardPage(WebDriver driver) {
         super(driver);
     }
-
     public Milestone addMilestoneRow(Milestone milestone, String addMilestonesListId) {
         EditableList addMilestoneList = EditableList.createById(driver, wait, addMilestonesListId);
         EditableList.Row row = addMilestoneList.addRow();
 
         milestone.getName().ifPresent(name -> row.setValue(milestone.getName().get(), BPM_MILESTONE_NAME,
-                BPM_MILESTONE_NAME_INPUT,
-                Input.ComponentType.TEXT_FIELD));
+                BPM_MILESTONE_NAME_INPUT));
 
         milestone.getDueDate().ifPresent(dueDate -> row.setValue(dueDate, BPM_MILESTONE_DUE_DATE,
-                BPM_MILESTONE_DUE_DATE_INPUT,
-                Input.ComponentType.DATE));
+                BPM_MILESTONE_DUE_DATE_INPUT));
 
         milestone.getLeadTime().ifPresent(leadTime -> row.setValue(leadTime, BPM_MILESTONE_LEAD_TIME,
-                BPM_MILESTONE_LEAD_TIME_INPUT,
-                Input.ComponentType.NUMBER_FIELD));
+                BPM_MILESTONE_LEAD_TIME_INPUT));
 
         milestone.getDescription().ifPresent(description -> row.setValue(description, BPM_MILESTONE_DESCRIPTION,
-                BPM_MILESTONE_DESCRIPTION_INPUT,
-                Input.ComponentType.TEXT_FIELD));
+                BPM_MILESTONE_DESCRIPTION_INPUT));
 
         milestone.getRelatedTask().ifPresent(relatedTask -> row.setValue(relatedTask, BPM_MILESTONE_RELATED_TASK,
-                BPM_MILESTONE_RELATED_TASK_INPUT,
-                Input.ComponentType.COMBOBOX));
+                BPM_MILESTONE_RELATED_TASK_INPUT));
 
         milestone.getIsActive().ifPresent(isActive -> row.setValue(isActive, BPM_MILESTONE_IS_ACTIVE,
-                BPM_MILESTONE_IS_ACTIVE_INPUT,
-                Input.ComponentType.CHECKBOX));
+                BPM_MILESTONE_IS_ACTIVE_INPUT));
 
         milestone.getIsManualCompletion().ifPresent(isManualCompletion -> row.setValue(isManualCompletion,
                 BPM_MILESTONE_IS_MANUAL_COMPLETION,
-                BPM_MILESTONE_IS_MANUAL_COMPLETION_INPUT,
-                Input.ComponentType.CHECKBOX));
+                BPM_MILESTONE_IS_MANUAL_COMPLETION_INPUT));
 
         return getMilestoneFromRow(addMilestoneList, addMilestoneList.getVisibleRows().size() - 1);
     }
@@ -77,22 +67,18 @@ public class MilestoneWizardPage extends BasePage {
             if (!editMilestoneRow.isAttributeEditable(BPM_MILESTONE_NAME)) {
                 throw new RuntimeException("Name is not editable. You need Admin permission");
             }
-            editMilestoneRow.setValue(name, BPM_MILESTONE_NAME, BPM_MILESTONE_NAME_INPUT,
-                    Input.ComponentType.TEXT_FIELD);
+            editMilestoneRow.setValue(name, BPM_MILESTONE_NAME, BPM_MILESTONE_NAME_INPUT);
         });
 
         milestone.getDueDate().ifPresent(dueDate -> editMilestoneRow.setValue(dueDate, BPM_MILESTONE_DUE_DATE,
-                BPM_MILESTONE_DUE_DATE_INPUT,
-                Input.ComponentType.DATE));
+                BPM_MILESTONE_DUE_DATE_INPUT));
 
         milestone.getLeadTime().ifPresent(leadTime -> editMilestoneRow.setValue(leadTime, BPM_MILESTONE_LEAD_TIME,
-                BPM_MILESTONE_LEAD_TIME_INPUT,
-                Input.ComponentType.NUMBER_FIELD));
+                BPM_MILESTONE_LEAD_TIME_INPUT));
 
         milestone.getDescription().ifPresent(description -> editMilestoneRow.setValue(description,
                 BPM_MILESTONE_DESCRIPTION,
-                BPM_MILESTONE_DESCRIPTION_INPUT,
-                Input.ComponentType.TEXT_FIELD));
+                BPM_MILESTONE_DESCRIPTION_INPUT));
 
         milestone.getRelatedTask().ifPresent(relatedTask -> {
             if (relatedTask.isEmpty()) {
@@ -100,15 +86,13 @@ public class MilestoneWizardPage extends BasePage {
                         Input.ComponentType.COMBOBOX);
             } else {
                 editMilestoneRow.setValue(relatedTask, BPM_MILESTONE_RELATED_TASK,
-                        BPM_MILESTONE_RELATED_TASK_INPUT,
-                        Input.ComponentType.COMBOBOX);
+                        BPM_MILESTONE_RELATED_TASK_INPUT);
             }
         });
 
         milestone.getIsManualCompletion().ifPresent(isManualCompletion -> editMilestoneRow.setValue(isManualCompletion,
                 BPM_MILESTONE_IS_MANUAL_COMPLETION,
-                BPM_MILESTONE_IS_MANUAL_COMPLETION_INPUT,
-                Input.ComponentType.CHECKBOX));
+                BPM_MILESTONE_IS_MANUAL_COMPLETION_INPUT));
 
         milestone.getIsActive().ifPresent(isActive -> editMilestoneRow.setValue(isActive, BPM_MILESTONE_IS_ACTIVE,
                 BPM_MILESTONE_IS_ACTIVE_INPUT));

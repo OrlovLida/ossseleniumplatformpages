@@ -36,10 +36,10 @@ public class ProcessWizardPage extends BasePage {
     private static final String TABLE_PROCESSES = "bpm_processes_view_processes";
     private static final String PROCESS_WIZARD_STEP_1 = "start-process-wizard";
     private static final String PROCESS_WIZARD_STEP_2 = "bpm_processes_view_start-process-details-prompt_processCreateFormId";
-    private static final String DOMAIN_ATTRIBUTE_ID = "domain-combobox-input";
-    private static final String DEFINITION_ATTRIBUTE_ID = "definition-combobox-input";
-    private static final String RELEASE_ATTRIBUTE_ID = "release-combobox-input";
-    private static final String PROCESS_NAME_ATTRIBUTE_ID = "bpm_processes_view_start-process-details-prompt_processCreateFormId";
+    private static final String DOMAIN_ATTRIBUTE_ID = "domain-combobox";
+    private static final String DEFINITION_ATTRIBUTE_ID = "definition-combobox";
+    private static final String RELEASE_ATTRIBUTE_ID = "release-combobox";
+    private static final String PROCESS_NAME_ATTRIBUTE_ID = "processNameTextFieldId";
     private static final String FINISH_DUE_DATE_ID = "FINISHED_DUE_DATE";
     private static final String ACCEPT_BUTTON = "wizard-submit-button-start-process-wizard";
     private static final String CREATE_BUTTON = "wizard-submit-button-bpm_processes_view_start-process-details-prompt_processCreateFormId";
