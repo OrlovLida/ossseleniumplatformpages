@@ -5,8 +5,8 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.EditableList;
 import com.oss.pages.BasePage;
 
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
-
 /**
  * @author Paweł Rother
  */
@@ -26,6 +26,7 @@ public class MilestoneWizardPage extends BasePage {
     private static final String BPM_MILESTONE_DESCRIPTION_INPUT = "description-TEXT_FIELD";
     private static final String BPM_MILESTONE_IS_ACTIVE_INPUT = "active-CHECKBOX";
     private static final String DELETE_MILESTONE_ROW_ACTION_ID = "deleteButton1";
+
     public MilestoneWizardPage(WebDriver driver) {
         super(driver);
     }
@@ -65,7 +66,7 @@ public class MilestoneWizardPage extends BasePage {
 
         milestone.getName().ifPresent(name -> {
             if (!editMilestoneRow.isAttributeEditable(BPM_MILESTONE_NAME)) {
-                throw new RuntimeException("Name is not editable. You need Admin permission");
+                throw new NoSuchElementException("Name is not editable. You need Admin permission");
             }
             editMilestoneRow.setValue(name, BPM_MILESTONE_NAME, BPM_MILESTONE_NAME_INPUT);
         });

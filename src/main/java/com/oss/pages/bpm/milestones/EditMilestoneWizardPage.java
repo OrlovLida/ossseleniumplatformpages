@@ -12,6 +12,8 @@ import com.oss.framework.components.inputs.Input;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 
+import java.util.NoSuchElementException;
+
 /**
  * @author Gabriela Kasza
  */
@@ -25,7 +27,7 @@ public class EditMilestoneWizardPage extends BasePage {
         super(driver);
     }
 
-    public Milestone editMilestone(Milestone milestone) throws RuntimeException {
+    public Milestone editMilestone(Milestone milestone) throws NoSuchElementException {
         Wizard editWizard = Wizard.createByComponentId(driver, wait, MILESTONE_EDIT_WIZARD_ID);
         MilestoneWizardPage milestoneWizardPage = new MilestoneWizardPage(driver);
         Milestone editedMilestone = milestoneWizardPage.editMilestoneRow(milestone, 1, EDIT_MILESTONE_LIST);

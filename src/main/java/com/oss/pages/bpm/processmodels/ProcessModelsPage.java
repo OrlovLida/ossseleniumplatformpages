@@ -204,11 +204,11 @@ public class ProcessModelsPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         Wizard editMilestonesWizard = Wizard.createByComponentId(driver, wait, EDIT_MILESTONES_WIZARD_ID);
         MilestoneWizardPage milestoneWizardPage = new MilestoneWizardPage(driver);
-        List<Milestone> out = milestones.stream().map(milestone -> milestoneWizardPage.addMilestoneRow(milestone,
+        List<Milestone> addedMilestones = milestones.stream().map(milestone -> milestoneWizardPage.addMilestoneRow(milestone,
                 EDIT_MILESTONES_LIST_ID)).collect(Collectors.toList());
         DelayUtils.waitForPageToLoad(driver, wait);
         editMilestonesWizard.clickAccept();
-        return out;
+        return addedMilestones;
     }
 
     public List<Milestone> editMilestonesForProcessModel(String processModelName, List<Milestone> milestones) {
@@ -220,12 +220,12 @@ public class ProcessModelsPage extends BasePage {
         MilestoneWizardPage milestoneWizardPage = new MilestoneWizardPage(driver);
 
         AtomicInteger row = new AtomicInteger(1);
-        List<Milestone> out = milestones.stream().map(milestone -> milestoneWizardPage.
+        List<Milestone> editedMilestones = milestones.stream().map(milestone -> milestoneWizardPage.
                 editMilestoneRow(milestone, row.getAndIncrement(), EDIT_MILESTONES_LIST_ID)).collect(Collectors.toList());
 
         DelayUtils.waitForPageToLoad(driver, wait);
         editMilestonesWizard.clickAccept();
-        return out;
+        return editedMilestones;
     }
 
     public void removeMilestonesForProcessModel(String processModelName, int deleteMilestonesNumber) {
