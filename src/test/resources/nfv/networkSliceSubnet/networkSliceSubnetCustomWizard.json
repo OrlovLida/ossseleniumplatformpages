@@ -1,0 +1,24 @@
+{
+  "instanceType": [
+    {
+      "name": "NFVSeleniumTestRANSliceSubnet"
+    }
+  ],
+  "customWizardLinks": [
+    {
+      "type": "CREATE",
+      "serviceName": "network-slice-view",
+      "relativePath": "/network-slice-subnet-wizard/step-wizard-config"
+    },
+    {
+      "type": "UPDATE",
+      "serviceName": "network-slice-view",
+      "relativePath": "/network-slice-subnet-wizard/step-wizard-config"
+    },
+    {
+      "type": "DELETE_SUBMIT",
+      "serviceName": "network-slice-core",
+      "relativePath": "/network-slice-subnet"
+    }
+  ]
+}

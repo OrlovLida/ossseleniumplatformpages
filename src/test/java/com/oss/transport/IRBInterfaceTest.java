@@ -11,17 +11,19 @@ import com.oss.framework.components.alerts.SystemMessageContainer.Message;
 import com.oss.framework.components.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.wizard.Wizard;
 import com.oss.pages.bpm.TasksPage;
 import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 import com.oss.pages.platform.NewInventoryViewPage;
+import com.oss.pages.platform.SearchObjectTypePage;
 import com.oss.pages.transport.IRBInterfaceWizardPage;
 import com.oss.pages.transport.ipam.IPAddressAssignmentWizardPage;
-import com.oss.pages.transport.ipam.IPAddressManagementViewPage;
 import com.oss.pages.transport.ipam.helper.IPAddressAssignmentWizardProperties;
 import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
+
+import static com.oss.framework.components.contextactions.ActionsContainer.CREATE_GROUP_ID;
+import static com.oss.framework.components.contextactions.ActionsContainer.EDIT_GROUP_ID;
 
 @Listeners({TestListener.class})
 public class IRBInterfaceTest extends BaseTestCase {
@@ -31,10 +33,12 @@ public class IRBInterfaceTest extends BaseTestCase {
     private static final String DESCRIPTION = "IRBInterfaceSeleniumTest" + (int) (Math.random() * 1001);
     private static final String IRB_INTERFACE_DEVICE_NAME = "IRBInterfaceSeleniumTest";
     private static final String IP_SUBNET = "10.10.20.0/24 [E2ESeleniumTest]";
-    private static final String IP_NETWORK = "E2ESeleniumTest";
-    private static final String IP_ADDRESS = "10.10.20.2";
+    private static final String IP_ADDRESS = "10.10.20.3";
     private static final String IRB_INTERFACE_SEARCH_NIV = "IRB Interface";
-    private static final String COMPONENT_ID = "irbInterfaceWizard";
+    private static final String CREATE_IRB_INTERFACE_ID = "CreateIRBInterfaceContextAction";
+    private static final String DELETE_ADDRESS_IP_ID = "DeleteIPHostAddressAssignmentInternalAction";
+    private static final String CONFIRMATION_REMOVAL_BOX_ID = "ConfirmationBox_deleteBoxAppId_action_button";
+    private static final String CONFIRMATION_IP_REMOVAL_BOX_ID = "ConfirmationBox_removeBoxId_action_button";
     private NewInventoryViewPage newInventoryViewPage;
     private String processNRPCode;
 
@@ -67,22 +71,24 @@ public class IRBInterfaceTest extends BaseTestCase {
     @Test(priority = 3)
     @Description("Create new IRB Interface")
     public void createNewIRBInterface() {
-        homePage.goToSpecificPageWithContext(driver, "/#/view/transport/ip/ethernet/irb-interface");
+        searchInInventoryView("Physical Device");
+        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
+        newInventoryViewPage.searchObject(IRB_INTERFACE_DEVICE_NAME).selectFirstRow();
+        newInventoryViewPage.callAction(CREATE_GROUP_ID, CREATE_IRB_INTERFACE_ID);
+
         waitForPageToLoad();
         IRBInterfaceWizardPage irbInterfaceWizardPage = new IRBInterfaceWizardPage(driver);
         waitForPageToLoad();
-        irbInterfaceWizardPage.createIRBInterface(IRB_INTERFACE_DEVICE_NAME, IRB_INTERFACE_ID);
+        irbInterfaceWizardPage.createIRBInterface(IRB_INTERFACE_ID);
         waitForPageToLoad();
     }
 
     @Test(priority = 4)
     @Description("Checks if IRB Interface is visible in New Inventory View")
     public void checkIRBInterface() {
-        homePage.goToSpecificPageWithContext(driver, "/#/dashboard/predefined/id/startDashboard");
+        searchInInventoryView(IRB_INTERFACE_SEARCH_NIV);
         waitForPageToLoad();
-        homePage.setNewObjectType(IRB_INTERFACE_SEARCH_NIV);
-        waitForPageToLoad();
-        newInventoryViewPage.searchObject(IRB_INTERFACE_DEVICE_NAME);
+        newInventoryViewPage.searchObject("IRB:" + IRB_INTERFACE_ID);
         waitForPageToLoad();
         Assert.assertFalse(newInventoryViewPage.checkIfTableIsEmpty());
     }
@@ -125,27 +131,22 @@ public class IRBInterfaceTest extends BaseTestCase {
     @Test(priority = 8)
     @Description("Delete IP Address")
     public void deleteIPAddressAssignment() {
-        IPAddressManagementViewPage ipAddressManagementViewPage =
-                IPAddressManagementViewPage.goToIPAddressManagementViewPageLive(driver, BASIC_URL);
-        ipAddressManagementViewPage.searchIpNetwork(IP_NETWORK);
-        ipAddressManagementViewPage.expandTreeRow(IP_NETWORK);
-        ipAddressManagementViewPage.expandTreeRowContains("%");
-        ipAddressManagementViewPage.deleteIPHost(IP_ADDRESS + "/24");
+        searchInInventoryView("IP Host Assignment");
+        newInventoryViewPage.searchObject(IP_ADDRESS).selectFirstRow();
+        newInventoryViewPage.callAction(EDIT_GROUP_ID, DELETE_ADDRESS_IP_ID).clickConfirmationBox(CONFIRMATION_IP_REMOVAL_BOX_ID);
     }
 
     @Test(priority = 9)
     @Description("Delete IRB Interface")
     public void deleteIRBInterface() {
-        homePage.goToSpecificPageWithContext(driver, "/#/dashboard/predefined/id/startDashboard");
+        searchInInventoryView(IRB_INTERFACE_SEARCH_NIV);
         waitForPageToLoad();
-        homePage.setNewObjectType(IRB_INTERFACE_SEARCH_NIV);
-        waitForPageToLoad();
-        newInventoryViewPage.searchObject(IRB_INTERFACE_DEVICE_NAME);
+        newInventoryViewPage.searchObject("IRB:" + IRB_INTERFACE_ID);
         waitForPageToLoad();
         newInventoryViewPage.selectFirstRow();
         newInventoryViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, "DeleteIRBInterfaceContextAction");
         waitForPageToLoad();
-        Wizard.createByComponentId(driver, webDriverWait, COMPONENT_ID).clickButtonByLabel("OK");
+        newInventoryViewPage.clickConfirmationBox(CONFIRMATION_REMOVAL_BOX_ID);
         checkMessageType();
         newInventoryViewPage.refreshMainTable();
         Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());
@@ -179,6 +180,12 @@ public class IRBInterfaceTest extends BaseTestCase {
     private void checkTaskAssignment() {
         checkMessageType();
         checkMessageText();
+    }
+
+    private void searchInInventoryView(String object_type) {
+        homePage.chooseFromLeftSideMenu("Inventory View", "Resource Inventory ");
+        SearchObjectTypePage searchObjectTypePage = new SearchObjectTypePage(driver, webDriverWait);
+        searchObjectTypePage.searchType(object_type);
     }
 
     private void waitForPageToLoad() {

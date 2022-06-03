@@ -35,7 +35,7 @@ public class VLANInterfaceTest extends BaseTestCase {
     private static final String DEVICE = "SeleniumTestDeviceVLANInterface";
     private static final String IP_SUBNET = "126.0.0.0/24 [VLANInterfaceSeleniumTest]";
     private static final String IP_NETWORK = "VLANInterfaceSeleniumTest";
-    private static final String IP_ADDRESS = "126.0.0.20";
+    private static final String IP_ADDRESS = "126.0.0.2";
     private static final String EDIT_VLAN_INTERFACE_ACTION_ID = "EditVLANInterfaceContextAction";
     private static final String DELETE_VLAN_INTERFACE_ACTION_ID = "DeleteVLANInterfaceContextAction";
     private static final String MTU_VALUE = "1432";
@@ -46,7 +46,8 @@ public class VLANInterfaceTest extends BaseTestCase {
     private static final String CREATE_VLAN_ACTION_ID = "CreateVLANInterfaceContextAction";
     private static final String LABEL_PATH = DEVICE + ".Ports." + PORT_NAME + ".Termination Points.EthernetInterface_TP." + PORT_NAME;
     private static final String DELETE_ADDRESS_IP_ID = "DeleteIPHostAddressAssignmentInternalAction";
-    private static final String CONFIRMATION_REMOVAL_BOX_ID = "ConfirmationBox_removeBoxId_action_button";
+    private static final String CONFIRMATION_REMOVAL_IP_BOX_ID = "ConfirmationBox_removeBoxId_action_button";
+    private static final String CONFIRMATION_REMOVAL_BOX_ID = "ConfirmationBox_deleteBoxAppId_action_button";
     private NewInventoryViewPage newInventoryViewPage;
     private String processNRPCode;
 
@@ -86,7 +87,6 @@ public class VLANInterfaceTest extends BaseTestCase {
         HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
         hierarchyViewPage.selectNodeByLabelsPath(LABEL_PATH);
         hierarchyViewPage.useTreeContextAction(CREATE_GROUP_ID, CREATE_VLAN_ACTION_ID);
-
         waitForPageToLoad();
         VLANInterfaceWizardPage vlanInterfaceWizardPage = new VLANInterfaceWizardPage(driver);
         waitForPageToLoad();
@@ -131,7 +131,6 @@ public class VLANInterfaceTest extends BaseTestCase {
         DelayUtils.sleep(3000);
         newInventoryViewPage.refreshMainTable();
         newInventoryViewPage.selectFirstRow();
-
         waitForPageToLoad();
         Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "mtu"), MTU_VALUE);
     }
@@ -148,7 +147,7 @@ public class VLANInterfaceTest extends BaseTestCase {
     public void deleteIPAddressAssignment() {
         searchInInventoryView("IP Host Assignment");
         newInventoryViewPage.searchObject(IP_NETWORK).selectFirstRow();
-        newInventoryViewPage.callAction(EDIT_GROUP_ID, DELETE_ADDRESS_IP_ID).clickConfirmationBox(CONFIRMATION_REMOVAL_BOX_ID);
+        newInventoryViewPage.callAction(EDIT_GROUP_ID, DELETE_ADDRESS_IP_ID).clickConfirmationBox(CONFIRMATION_REMOVAL_IP_BOX_ID);
     }
 
     @Test(priority = 9)
@@ -160,7 +159,7 @@ public class VLANInterfaceTest extends BaseTestCase {
         newInventoryViewPage.selectFirstRow();
         newInventoryViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, DELETE_VLAN_INTERFACE_ACTION_ID);
         waitForPageToLoad();
-        newInventoryViewPage.clickConfirmationRemovalButton();
+        newInventoryViewPage.clickConfirmationBox(CONFIRMATION_REMOVAL_BOX_ID);
         checkMessageType();
         newInventoryViewPage.refreshMainTable();
         Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());

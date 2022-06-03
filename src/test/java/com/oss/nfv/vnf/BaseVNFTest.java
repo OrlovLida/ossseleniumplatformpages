@@ -12,7 +12,7 @@ import org.testng.annotations.Listeners;
 import com.comarch.oss.logical.function.api.dto.LogicalFunctionIdentificationDTO;
 import com.comarch.oss.resourcecatalog.tmf.api.dto.ResourceSpecificationDTO;
 import com.oss.BaseTestCase;
-import com.oss.services.LogicalFunctionClient;
+import com.oss.services.LogicalFunctionCoreClient;
 import com.oss.services.nfv.vnf.OnboardClient;
 import com.oss.services.nfv.vnf.VNFApiClient;
 import com.oss.services.nfv.vnf.VNFSpecificationClient;
@@ -50,7 +50,7 @@ public abstract class BaseVNFTest extends BaseTestCase {
 
     private void deleteAnyVNFInstances() {
         VNFApiClient vnfApiClient = VNFApiClient.getInstance(env);
-        LogicalFunctionClient.getInstance(env).getLogicalFunctionBySpecification(VNF_INSTANTIATION_LEVEL_0_IDENTIFIER)
+        LogicalFunctionCoreClient.getInstance(env).getLogicalFunctionBySpecification(VNF_INSTANTIATION_LEVEL_0_IDENTIFIER)
                 .getLogicalFunctionsIdentifications().stream().map(LogicalFunctionIdentificationDTO::getId)
                 .forEach(id -> vnfApiClient.deleteVnfById(id.toString()));
     }

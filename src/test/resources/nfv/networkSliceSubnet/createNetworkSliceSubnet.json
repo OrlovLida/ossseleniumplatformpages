@@ -1,6 +1,6 @@
 [
   {
-    "name": "NETWORK-SLICE-SUBNET-EDIT-SELENIUM-TEST",
+    "name": "NETWORK-SLICE-SUBNET-SELENIUM-TEST",
     "resourceSpecificationId": "RANSliceSubnet",
     "attributes": [
       {

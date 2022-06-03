@@ -22,9 +22,17 @@ public class SideMenuService {
     public static final String RESOURCE_SPECIFICATIONS_ACTION_LABEL = "Resource Specifications";
     public static final String RESOURCE_CATALOG_PATH = "Resource Catalog";
 
+    public static final String LOGICAL_FUNCTIONS_PATH = "Logical Functions";
+    public static final String CREATE_LOGICAL_FUNCTION_LABEL = "Create Logical Function";
+
     public static void goToResourceSpecificationsView(WebDriver driver, WebDriverWait webDriverWait) {
         SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
         sideMenu.callActionByLabel(RESOURCE_SPECIFICATIONS_ACTION_LABEL, RESOURCE_CATALOG_PATH, RESOURCE_CATALOG_PATH);
+    }
+
+    public static void goToCreateLogicalFunctionView(WebDriver driver, WebDriverWait webDriverWait) {
+        SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
+        sideMenu.callActionByLabel(CREATE_LOGICAL_FUNCTION_LABEL, NETWORK_DOMAINS_PATH, LOGICAL_FUNCTIONS_PATH);
     }
 
     public static void goToCreateNetworkServiceView(WebDriver driver, WebDriverWait webDriverWait) {
