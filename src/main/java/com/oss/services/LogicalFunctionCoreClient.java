@@ -13,27 +13,27 @@ import com.jayway.restassured.http.ContentType;
 import com.oss.untils.Constants;
 import com.oss.untils.Environment;
 
-public class LogicalFunctionClient {
+public class LogicalFunctionCoreClient {
 
     private static final String BULK_V2 = "/v2/bulk";
     private static final String SPECIFICATION = "/specification";
     private static final String NAME = "/name";
-    private static LogicalFunctionClient instance;
-    private final Environment ENV;
+    private static LogicalFunctionCoreClient instance;
+    private final Environment env;
 
-    private LogicalFunctionClient(Environment environment) {
-        ENV = environment;
+    private LogicalFunctionCoreClient(Environment environment) {
+        env = environment;
     }
 
-    public static LogicalFunctionClient getInstance(Environment environment) {
+    public static LogicalFunctionCoreClient getInstance(Environment environment) {
         if (instance == null) {
-            instance = new LogicalFunctionClient(environment);
+            instance = new LogicalFunctionCoreClient(environment);
         }
         return instance;
     }
 
     public LogicalFunctionBulkIdentificationsDTO createLogicalFunctionBulk(LogicalFunctionBulkDTO dto) {
-        return ENV.getLogicalFunctionSpecification()
+        return env.getLogicalFunctionCoreSpecification()
                 .given()
                 .contentType(ContentType.JSON)
                 .body(dto)
@@ -47,7 +47,7 @@ public class LogicalFunctionClient {
     }
 
     public void deleteLogicalFunction(long id) {
-        ENV.getLogicalFunctionSpecification()
+        env.getLogicalFunctionCoreSpecification()
                 .given()
                 .contentType(ContentType.JSON)
                 .when()
@@ -58,7 +58,7 @@ public class LogicalFunctionClient {
     }
 
     public LogicalFunctionIdentificationsDTO getLogicalFunctionBySpecification(String identifier) {
-        return ENV.getLogicalFunctionSpecification()
+        return env.getLogicalFunctionCoreSpecification()
                 .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
                 .queryParam(Constants.IDS, identifier)
                 .get(SPECIFICATION)
@@ -69,7 +69,7 @@ public class LogicalFunctionClient {
     }
 
     public List<LogicalFunctionViewDTO> getLogicalFunctionByName(String name) {
-        return Lists.newArrayList(ENV.getLogicalFunctionSpecification()
+        return Lists.newArrayList(env.getLogicalFunctionCoreSpecification()
                 .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
                 .queryParam(Constants.NAME_PARAM.toLowerCase(), name)
                 .get(NAME)

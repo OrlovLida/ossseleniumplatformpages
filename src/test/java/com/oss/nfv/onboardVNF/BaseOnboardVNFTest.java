@@ -4,7 +4,7 @@ import com.comarch.oss.logical.function.api.dto.LogicalFunctionSyncIdentificatio
 import com.comarch.oss.logical.function.api.dto.LogicalFunctionViewDTO;
 import com.comarch.oss.logical.function.v2.api.dto.LogicalFunctionBulkDTO;
 import com.oss.BaseTestCase;
-import com.oss.services.LogicalFunctionClient;
+import com.oss.services.LogicalFunctionCoreClient;
 import com.oss.services.resourcecatalog.tmf.TMFCatalogClient;
 import com.oss.untils.Environment;
 import com.oss.utils.TestListener;
@@ -25,12 +25,12 @@ import static com.oss.nfv.onboardVNF.OnboardVNFConstants.VNFPKG_SPECIFICATION_ID
 public class BaseOnboardVNFTest extends BaseTestCase {
 
     protected Environment env = Environment.getInstance();
-    private LogicalFunctionClient logicalFunctionClient;
+    private LogicalFunctionCoreClient logicalFunctionCoreClient;
     private TMFCatalogClient tmfCatalogClient;
 
     @BeforeClass
     public void prepareData() throws IOException {
-        logicalFunctionClient = LogicalFunctionClient.getInstance(env);
+        logicalFunctionCoreClient = LogicalFunctionCoreClient.getInstance(env);
         tmfCatalogClient = TMFCatalogClient.getInstance(env);
 
         deleteLogicalFunctions();
@@ -53,7 +53,7 @@ public class BaseOnboardVNFTest extends BaseTestCase {
     }
 
     private LogicalFunctionSyncIdentificationDTO createLogicalFunction(LogicalFunctionBulkDTO logicalFunctionBulkDTO) {
-        return logicalFunctionClient
+        return logicalFunctionCoreClient
                 .createLogicalFunctionBulk(logicalFunctionBulkDTO)
                 .getLogicalFunctionsIdentifications()
                 .get(0);
@@ -77,11 +77,11 @@ public class BaseOnboardVNFTest extends BaseTestCase {
     }
 
     private void deleteLogicalFunctionsByName(String masterOSSName) {
-        logicalFunctionClient.getLogicalFunctionByName(masterOSSName).stream()
+        logicalFunctionCoreClient.getLogicalFunctionByName(masterOSSName).stream()
                 .map(LogicalFunctionViewDTO::getId)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
-                .forEach(logicalFunctionClient::deleteLogicalFunction);
+                .forEach(logicalFunctionCoreClient::deleteLogicalFunction);
     }
 
 }

@@ -10,7 +10,7 @@ package com.oss.nfv.networkSliceSubnet;
  * @author Marcin Kozioł
  */
 public class EditNetworkSliceSubnetConstants {
-    public static final String NETWORK_SLICE_SUBNET_NAME = "NETWORK-SLICE-SUBNET-EDIT-SELENIUM-TEST";
+    public static final String NETWORK_SLICE_SUBNET_NAME = "NETWORK-SLICE-SUBNET-SELENIUM-TEST";
     public static final String NETWORK_SLICE_SUBNET_DESCRIPTION_NEW = "NETWORK-SLICE-SUBNET-EDIT-DESCRIPTION-NEW";
     public static final String EDIT_LOGICAL_ELEMENT_ACTION_LABEL = "Edit Logical Element";
 

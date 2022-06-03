@@ -3,7 +3,7 @@ package com.oss.nfv.networkService;
 import com.comarch.oss.logical.function.api.dto.LogicalFunctionIdentificationDTO;
 import com.comarch.oss.resourcecatalog.tmf.api.dto.ResourceSpecificationDTO;
 import com.oss.BaseTestCase;
-import com.oss.services.LogicalFunctionClient;
+import com.oss.services.LogicalFunctionCoreClient;
 import com.oss.services.nfv.networkservice.NetworkServiceApiClient;
 import com.oss.services.nfv.networkservice.OnboardClient;
 import com.oss.services.nfv.vnf.VNFSpecificationClient;
@@ -58,7 +58,7 @@ public abstract class BaseNetworkServiceTest extends BaseTestCase {
 
     private void deleteAnyNetworkServiceInstances() {
         NetworkServiceApiClient logicalFunctionClient = NetworkServiceApiClient.getInstance(env);
-        LogicalFunctionClient.getInstance(env).getLogicalFunctionBySpecification(NETWORK_SERVICE_IDENTIFIER)
+        LogicalFunctionCoreClient.getInstance(env).getLogicalFunctionBySpecification(NETWORK_SERVICE_IDENTIFIER)
                 .getLogicalFunctionsIdentifications().stream().map(LogicalFunctionIdentificationDTO::getId)
                 .forEach(logicalFunctionClient::deleteNetworkServiceById);
     }

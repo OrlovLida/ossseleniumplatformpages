@@ -5,16 +5,16 @@ import com.comarch.oss.logical.function.api.dto.LogicalFunctionSyncIdentificatio
 import com.comarch.oss.logical.function.api.dto.ModelIdentificationDTO;
 import com.comarch.oss.logical.function.v2.api.dto.LogicalFunctionBulkDTO;
 import com.comarch.oss.logical.function.v2.api.dto.LogicalFunctionSyncDTO;
-import com.oss.services.LogicalFunctionClient;
+import com.oss.services.LogicalFunctionCoreClient;
 import com.oss.untils.Environment;
 
 public class LogicalFunctionRepository {
 
     private static LogicalFunctionRepository instance;
-    private final LogicalFunctionClient logicalFunctionClient;
+    private final LogicalFunctionCoreClient logicalFunctionCoreClient;
 
     private LogicalFunctionRepository(Environment environment) {
-        logicalFunctionClient = LogicalFunctionClient.getInstance(environment);
+        logicalFunctionCoreClient = LogicalFunctionCoreClient.getInstance(environment);
     }
 
     public static LogicalFunctionRepository getInstance(Environment environment) {
@@ -37,7 +37,7 @@ public class LogicalFunctionRepository {
     }
 
     public void deleteLogicalFunction(long id) {
-        logicalFunctionClient.deleteLogicalFunction(id);
+        logicalFunctionCoreClient.deleteLogicalFunction(id);
     }
 
 
@@ -54,7 +54,7 @@ public class LogicalFunctionRepository {
                                                                 .description(name)
                                                                 .build())
                                          .build();
-        LogicalFunctionBulkIdentificationsDTO logicalFunction = logicalFunctionClient.createLogicalFunctionBulk(dto);
+        LogicalFunctionBulkIdentificationsDTO logicalFunction = logicalFunctionCoreClient.createLogicalFunctionBulk(dto);
         return logicalFunction.getLogicalFunctionsIdentifications()
                    .stream()
                    .map(LogicalFunctionSyncIdentificationDTO::getId)

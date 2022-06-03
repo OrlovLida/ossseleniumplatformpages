@@ -37,6 +37,7 @@ public class Environment {
     private static final String RESOURCE_CATALOG_CORE = "resource-catalog-core";
     private static final String PLANNING_CORE = "planning-core";
     private static final String LOGICAL_FUNCTION_CORE = "logical-function-core";
+    private static final String LOGICAL_INVENTORY_VIEW = "logical-inventory-view";
     private static final String TP_SERVICE = "tp-service";
     private static final String CONNECTIVITY_CORE = "physical-connectivity-core";
     private static final String NFV_CORE = "nfv-core";
@@ -152,10 +153,12 @@ public class Environment {
         return getRequestSpecificationByName(PLANNING_CORE);
     }
 
-    public RequestSpecification getLogicalFunctionSpecification() {
+    public RequestSpecification getLogicalFunctionCoreSpecification() {
         return getRequestSpecificationByName(LOGICAL_FUNCTION_CORE);
     }
-
+    public RequestSpecification getLogicalInventoryViewSpecification() {
+        return getRequestSpecificationByName(LOGICAL_INVENTORY_VIEW);
+    }
     public RequestSpecification getTPServiceSpecification() {
         return getRequestSpecificationByName(TP_SERVICE);
     }

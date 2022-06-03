@@ -11,7 +11,6 @@ package com.oss.nfv.networkSlice;
  */
 public class CreateNetworkSliceConstants {
 
-    public static final String NETWORK_SLICE_SPECIFICATION_IDENTIFIER = "NetworkSlice";
     public static final String NETWORK_SLICE_SPECIFICATION_NAME = "Network Slice";
 
     public static final String NETWORK_SLICE_NAME = "NETWORK-SLICE-CREATE-SELENIUM-TEST";
