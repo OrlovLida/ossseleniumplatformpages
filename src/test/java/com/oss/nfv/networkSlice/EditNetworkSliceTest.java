@@ -17,7 +17,7 @@ import com.oss.pages.nfv.networkslice.NetworkSliceWizardPage;
 import com.oss.pages.nfv.networkslice.NetworkSliceWizardSecondStep;
 import com.oss.pages.nfv.vnf.VNFWizardPage;
 import com.oss.pages.platform.NewInventoryViewPage;
-import com.oss.services.LogicalFunctionClient;
+import com.oss.services.LogicalFunctionCoreClient;
 import com.oss.services.nfv.networkslice.NetworkSliceApiClient;
 import com.oss.untils.Environment;
 import com.oss.utils.TestListener;
@@ -68,7 +68,7 @@ public class EditNetworkSliceTest extends BaseTestCase {
 
     private void deleteAnyNetworkSliceInstancesByName() {
         NetworkSliceApiClient networkSliceApiClient = NetworkSliceApiClient.getInstance(env);
-        LogicalFunctionClient.getInstance(env).getLogicalFunctionByName(NETWORK_SLICE_NAME).stream()
+        LogicalFunctionCoreClient.getInstance(env).getLogicalFunctionByName(NETWORK_SLICE_NAME).stream()
                 .map(LogicalFunctionViewDTO::getId)
                 .filter(Optional::isPresent)
                 .map(Optional::get)

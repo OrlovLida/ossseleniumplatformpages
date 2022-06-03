@@ -11,7 +11,7 @@ import org.testng.annotations.BeforeClass;
 import com.comarch.oss.logical.function.api.dto.LogicalFunctionBulkIdentificationsDTO;
 import com.comarch.oss.logical.function.api.dto.LogicalFunctionSyncIdentificationDTO;
 import com.oss.BaseTestCase;
-import com.oss.services.LogicalFunctionClient;
+import com.oss.services.LogicalFunctionCoreClient;
 import com.oss.services.resourcecatalog.tmf.TMFCatalogClient;
 import com.oss.untils.Environment;
 
@@ -25,7 +25,7 @@ import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.VNFPKG_IDENTIFIER;
 public class BaseVNFPKGManualOnboardingTest extends BaseTestCase {
 
     private final Environment env = Environment.getInstance();
-    private final LogicalFunctionClient logicalFunctionClient = LogicalFunctionClient.getInstance(env);
+    private final LogicalFunctionCoreClient logicalFunctionCoreClient = LogicalFunctionCoreClient.getInstance(env);
     private final TMFCatalogClient tmfCatalogClient = TMFCatalogClient.getInstance(env);
     protected final Map<String, Long> idByNameMap = new HashMap<>();
 
@@ -52,14 +52,14 @@ public class BaseVNFPKGManualOnboardingTest extends BaseTestCase {
     }
 
     private void deleteTestInstances() {
-        logicalFunctionClient.deleteLogicalFunction(idByNameMap.get(EOCMNFVO_NAME));
-        logicalFunctionClient.deleteLogicalFunction(idByNameMap.get(SamsungNFVO_NAME));
+        logicalFunctionCoreClient.deleteLogicalFunction(idByNameMap.get(EOCMNFVO_NAME));
+        logicalFunctionCoreClient.deleteLogicalFunction(idByNameMap.get(SamsungNFVO_NAME));
     }
 
     private void deleteRelatedObjects() {
-        logicalFunctionClient.deleteLogicalFunction(idByNameMap.get(VNFM_EOCMNFVO_NAME));
-        logicalFunctionClient.deleteLogicalFunction(idByNameMap.get(MARKETPLACE_SAMSUNGNFVO_NAME));
-        logicalFunctionClient.deleteLogicalFunction(idByNameMap.get(VIM_SAMSUNGNFVO_NAME));
+        logicalFunctionCoreClient.deleteLogicalFunction(idByNameMap.get(VNFM_EOCMNFVO_NAME));
+        logicalFunctionCoreClient.deleteLogicalFunction(idByNameMap.get(MARKETPLACE_SAMSUNGNFVO_NAME));
+        logicalFunctionCoreClient.deleteLogicalFunction(idByNameMap.get(VIM_SAMSUNGNFVO_NAME));
     }
 
     private void createTestInstances() {
@@ -68,13 +68,13 @@ public class BaseVNFPKGManualOnboardingTest extends BaseTestCase {
     }
 
     private void createNFVOs() {
-        LogicalFunctionBulkIdentificationsDTO bulkResponse = logicalFunctionClient
+        LogicalFunctionBulkIdentificationsDTO bulkResponse = logicalFunctionCoreClient
             .createLogicalFunctionBulk(VNFPKGManualOnboardingDtoBuilder.getNFVOsCreateDto());
         idByNameMap.putAll(getIdByNameMap(bulkResponse));
     }
 
     private void createRelatedObjects() {
-        LogicalFunctionBulkIdentificationsDTO bulkResponse = logicalFunctionClient
+        LogicalFunctionBulkIdentificationsDTO bulkResponse = logicalFunctionCoreClient
             .createLogicalFunctionBulk(VNFPKGManualOnboardingDtoBuilder.getRelatedObjectsCreateDto(idByNameMap.get(EOCMNFVO_NAME), idByNameMap.get(SamsungNFVO_NAME)));
         idByNameMap.putAll(getIdByNameMap(bulkResponse));
     }

@@ -6,8 +6,6 @@
  */
 package com.oss.nfv.networkSliceSubnet;
 
-import com.comarch.oss.logical.function.api.dto.LogicalFunctionViewDTO;
-import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.ActionsContainer;
@@ -17,12 +15,9 @@ import com.oss.pages.nfv.networkslicesubnet.NetworkSliceSubnetWizardPage;
 import com.oss.pages.nfv.networkslicesubnet.NetworkSliceSubnetWizardSecondStep;
 import com.oss.pages.nfv.vnf.VNFWizardPage;
 import com.oss.pages.platform.NewInventoryViewPage;
-import com.oss.services.LogicalFunctionClient;
 import com.oss.services.nfv.networkslice.NetworkSliceApiClient;
-import com.oss.untils.Environment;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -32,7 +27,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Optional;
 
 import static com.oss.nfv.networkSliceSubnet.EditNetworkSliceSubnetConstants.MCC_VALUE;
 import static com.oss.nfv.networkSliceSubnet.EditNetworkSliceSubnetConstants.MNC_VALUE;
@@ -50,28 +44,12 @@ import static org.testng.Assert.assertTrue;
  * @author Marcin Kozioł
  */
 @Listeners({TestListener.class})
-public class EditNetworkSliceSubnetTest extends BaseTestCase {
+public class EditNetworkSliceSubnetTest extends BaseNetworkSliceSubnetTest {
     private final String JSON_FILE_PATH_TO_TEST = "src/test/resources/nfv/networkSliceSubnet/createNetworkSliceSubnet.json";
-    protected Environment env = Environment.getInstance();
 
     @BeforeClass
     public void prepareData() throws IOException {
-        deleteAnyNetworkSliceSubnetInstancesByName();
         createNetworkSliceSubnetInstance();
-    }
-
-    @AfterClass(alwaysRun = true)
-    public void cleanData() {
-        deleteAnyNetworkSliceSubnetInstancesByName();
-    }
-
-    private void deleteAnyNetworkSliceSubnetInstancesByName() {
-        NetworkSliceApiClient networkSliceApiClient = NetworkSliceApiClient.getInstance(env);
-        LogicalFunctionClient.getInstance(env).getLogicalFunctionByName(NETWORK_SLICE_SUBNET_NAME).stream()
-                .map(LogicalFunctionViewDTO::getId)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .forEach(networkSliceApiClient::deleteNetworkSliceSubnet);
     }
 
     private void createNetworkSliceSubnetInstance() throws IOException {

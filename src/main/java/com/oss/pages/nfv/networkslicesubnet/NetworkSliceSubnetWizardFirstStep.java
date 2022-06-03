@@ -10,7 +10,7 @@ import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD
 public class NetworkSliceSubnetWizardFirstStep extends NetworkSliceSubnetWizardStep {
     private static final String NAME_COMPONENT_ID = "attribute-networkSliceSubnetNameTextFieldnetworkSliceSubnetStep1Id";
     private static final String DESCRIPTION_COMPONENT_ID = "attribute-networkSliceSubnetDescriptionTextFieldnetworkSliceSubnetStep1Id";
-    private static final String OPERATIONAL_STATE_COMPONENT_ID = "##RANSliceSubnet-operationalStatenetworkSliceSubnetStep1Id";
+    private static final String OPERATIONAL_STATE_COMPONENT_ID = "##NFVSeleniumTestRANSliceSubnet-operationalStatenetworkSliceSubnetStep1Id";
 
     private NetworkSliceSubnetWizardFirstStep(WebDriver driver, WebDriverWait wait, Wizard networkSliceWizard) {
         super(driver, wait, networkSliceWizard);
