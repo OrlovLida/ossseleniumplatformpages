@@ -31,7 +31,7 @@ import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
 
-import static com.oss.pages.servicedesk.BaseSDPage.CREATE_DATE_FILTER_DATE_FORMATTER;
+import static com.oss.pages.servicedesk.BaseSDPage.DATE_TIME_FORMATTER;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.CSV_FILE;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.DESCRIPTION_TAB_LABEL;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.DETAILS_TABS_CONTAINER_ID;
@@ -160,7 +160,7 @@ public class TicketsTest extends BaseTestCase {
         sdWizardPage.enterExpectedResolutionDate();
         sdWizardPage.insertValueToTextComponent(TT_CORRELATION_ID, TT_WIZARD_CORRELATION_ID);
         sdWizardPage.clickNextButtonInWizard();
-        String date = LocalDateTime.now().minusMinutes(5).format(CREATE_DATE_FILTER_DATE_FORMATTER);
+        String date = LocalDateTime.now().minusMinutes(5).format(DATE_TIME_FORMATTER);
         sdWizardPage.insertValueToTextComponent(date, TT_WIZARD_ISSUE_START_DATE_ID);
         sdWizardPage.insertValueToTextComponent(date, TT_WIZARD_MESSAGE_DATE_ID);
         sdWizardPage.clickAcceptButtonInWizard();
@@ -229,8 +229,8 @@ public class TicketsTest extends BaseTestCase {
         ticketSearchPage = new TicketSearchPage(driver, webDriverWait);
         ticketSearchPage.openView(driver, BASIC_URL);
         ticketSearchPage.filterByTextField(TICKETS_SEARCH_ASSIGNEE_ATTRIBUTE, NewAssignee);
-        String startDate = LocalDateTime.now().minusMinutes(10).format(CREATE_DATE_FILTER_DATE_FORMATTER);
-        String endDate = LocalDateTime.now().format(CREATE_DATE_FILTER_DATE_FORMATTER);
+        String startDate = LocalDateTime.now().minusMinutes(10).format(DATE_TIME_FORMATTER);
+        String endDate = LocalDateTime.now().format(DATE_TIME_FORMATTER);
         String date = startDate + " - " + endDate;
         ticketSearchPage.filterByTextField(BaseSearchPage.CREATION_TIME_ATTRIBUTE, date);
         ticketSearchPage.filterByTextField(BaseSearchPage.DESCRIPTION_ATTRIBUTE, TT_DESCRIPTION_EDITED);

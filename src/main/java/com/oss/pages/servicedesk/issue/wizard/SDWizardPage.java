@@ -183,7 +183,7 @@ public class SDWizardPage extends BaseSDPage {
         enterExpectedResolutionDate();
         insertValueToTextComponent(TEST_SELENIUM_ID, TT_WIZARD_CORRELATION_ID);
         clickNextButtonInWizard();
-        String date = LocalDateTime.now().minusMinutes(5).format(CREATE_DATE_FILTER_DATE_FORMATTER);
+        String date = LocalDateTime.now().minusMinutes(5).format(DATE_TIME_FORMATTER);
         insertValueToTextComponent(date, TT_WIZARD_ISSUE_START_DATE_ID);
         insertValueToTextComponent(date, TT_WIZARD_MESSAGE_DATE_ID);
         clickAcceptButtonInWizard();

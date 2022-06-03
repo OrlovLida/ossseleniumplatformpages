@@ -1,15 +1,26 @@
 package com.oss.transport;
 
-import com.oss.BaseTestCase;
-import com.oss.configuration.Configuration;
-import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.transport.regulatoryLicense.*;
-import io.qameta.allure.Step;
-import org.testng.Assert;
-import org.testng.annotations.Test;
+import java.util.Random;
 
-import java.util.Arrays;
-import java.util.List;
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
+
+import com.oss.BaseTestCase;
+import com.oss.framework.components.alerts.SystemMessageContainer;
+import com.oss.framework.components.alerts.SystemMessageInterface;
+import com.oss.framework.components.contextactions.ActionsContainer;
+import com.oss.framework.components.table.TableComponent;
+import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.table.TableWidget;
+import com.oss.pages.platform.NewInventoryViewPage;
+import com.oss.pages.transport.regulatoryLicense.RegulatoryLicenseAssignmentWizardPage;
+import com.oss.pages.transport.regulatoryLicense.RegulatoryLicenseWizardPage;
+
+import io.qameta.allure.Step;
+
+import static com.oss.configuration.Configuration.CONFIGURATION;
 
 /**
  * @author Kamil Szota
@@ -21,16 +32,14 @@ public class RegulatoryLicenseTest extends BaseTestCase {
     private static final String STARTING_DATE = "2030-08-12";
     private static final String EXPIRATION_DATE = "2030-09-12";
     private static final String OPERATING_HOURS = "30h";
-    private static final String STATUS = "REQUESTED";
+    private static final String STATUS = "EXPIRED";
     private static final String TYPE = "INTERNATIONAL";
     private static final String DESCRIPTION = "Opis3";
 
-    private static final String LOCATION = "SELENIUM_LOCATION_RL";
+    private static final String LOCATION = "SELENIUM_LOCATION1";
     private static final String MICROWAVE_ANTENNA = "SELENIUM_MWANT_RL";
-    private static final String MICROWAVE_LINK = "SELENIUM_LOCATION_RL - SELENIUM_LOCATION2_RL 242";
-    private static final String MICROWAVE_LINK_LABEL = "MicrowaveLink 2911";
-    private static final String MICROWAVE_CHANNEL = "29 MHz  (Working) (43501422)";
-    private static final String MICROWAVE_CHANNEL_LABEL = "MicrowaveChannel 9376";
+    private static final String MICROWAVE_LINK = "MicrowaveLink 1006";
+    private static final String MICROWAVE_CHANNEL = "MicrowaveChannel 3464";
 
     private static final String NUMBER2 = "234SELENIUM";
     private static final String REGULATORY_AGENCY2 = "SELENIUM_AGENCY2";
@@ -38,264 +47,365 @@ public class RegulatoryLicenseTest extends BaseTestCase {
     private static final String EXPIRATION_DATE2 = "2042-03-30";
     private static final String OPERATING_HOURS2 = "48h";
     private static final String STATUS2 = "DELETED";
-    private static final String TYPE2 = "NATIONAL";
     private static final String DESCRIPTION2 = "DESC78";
 
-    private static final String ENVIRONMENT_INDEPENDENT_URL_PART_AFTER_REMOVAL_REDIRECT = "/#/view/transport/microwave/licenses?perspective=LIVE&withRemoved=false";
+    private static final String LOCATIONS_TAB_LABEL = "Locations";
+    private static final String LOCATIONS_TABLE_COMPONENT_ID = "RegulatoryLicenseLocationsWidget";
+    private static final String MICROWAVE_ANTENNAS_TAB_LABEL = "Microwave Antennas";
+    private static final String MICROWAVE_ANTENNAS_TABLE_COMPONENT_ID = "RegulatoryLicenseAntennasWidget";
+    private static final String MICROWAVE_LINKS_TAB_LABEL = "Microwave Links";
+    private static final String MICROWAVE_LINKS_TABLE_COMPONENT_ID = "RegulatoryLicenseMicrowaveLinksWidget";
+    private static final String MICROWAVE_CHANNELS_TAB_LABEL = "Microwave Channels";
+    private static final String MICROWAVE_CHANNELS_TABLE_COMPONENT_ID = "RegulatoryLicenseMicrowaveChannelsWidget";
+    private static final String PROPERTIES_TAB_LABEL = "Properties";
+    private static final String LOCATION_DETACHMENT_CLOSE_BUTTON_ID = "ConfirmationBox_confirmationBoxAppRemoveLocation_action_button";
+    private static final String MICROWAVE_ANTENNA_DETACHMENT_CLOSE_BUTTON_ID = "ConfirmationBox_confirmationBoxAppRemoveLocation_action_button";
+    private static final String MICROWAVE_LINK__DETACHMENT_CLOSE_BUTTON_ID = "ConfirmationBox_confirmationBoxAppRemoveLocation_action_button";
+    private static final String MICROWAVE_CHANNEL_DETACHMENT_CLOSE_BUTTON_ID = "ConfirmationBox_confirmationBoxAppRemoveLocation_action_button";
+    private static final String REGULATORY_LICENSE_REMOVAL_CLOSE_BUTTON_ID = "ConfirmationBox_confirmationBoxApp_close_button";
+
+    private static final String CREATE_REGULATORY_LICENSE_ACTION_ID = "CreateRegulatoryLicenseApplicationContextAction";
+    private static final String EDIT_REGULATORY_LICENSE_ACTION_ID = "ModifyRegulatoryLicenseApplicationContextAction";
+    private static final String ASSIGN_REGULATORY_LICENSE_TO_OBJECT_ACTION_ID = "AssignToRegulatoryLicenseApplicationContextAction";
+    private static final String DETACH_LOCATION_FROM_REGULATORY_LICENSE_ACTION_ID = "DetachLocationFromRegulatoryLicenseApplicationContextAction";
+    private static final String DETACH_MICROWAVE_ANTENNA_FROM_REGULATORY_LICENSE_ACTION_ID = "DetachAntennaFromRegulatoryLicenseApplicationContextAction";
+    private static final String DETACH_MICROWAVE_LINK_FROM_REGULATORY_LICENSE_ACTION_ID = "DetachMicrowaveLinkFromRegulatoryLicenseApplicationContextAction";
+    private static final String DETACH_MICROWAVE_CHANNEL_FROM_REGULATORY_LICENSE_ACTION_ID = "DetachMicrowaveChannelFromRegulatoryLicenseApplicationContextAction";
+    private static final String DELETE_REGULATORY_LICENSE_ACTION_ID = "DeleteRegulatoryLicenseApplicationContextAction";
+
+    private SoftAssert softAssert;
+    private NewInventoryViewPage newInventoryViewPage;
+    private static Random rand = new Random();
+
+    @BeforeClass
+    public void openConsole() {
+        softAssert = new SoftAssert();
+        waitForPageToLoad();
+    }
 
     @Test(priority = 1)
     @Step("Create Regulatory License")
     public void createRegulatoryLicense() {
+        goToRegulatoryLicenseInventoryView();
         RegulatoryLicenseAttributes regulatoryLicenseAttributes = getRegulatoryLicenseAttributesToCreate();
+        newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
+        RegulatoryLicenseWizardPage regulatoryLicenseWizard = clickCreate();
 
-        RegulatoryLicensesListPage regulatoryLicensesList = goToListOfRegulatoryLicenses();
-        RegulatoryLicenseWizardPage regulatoryLicenseWizard = regulatoryLicensesList.clickCreate();
-        fillRegulatoryLicenseWizardToCreate(regulatoryLicenseAttributes, regulatoryLicenseWizard);
+        goThroughWizard(regulatoryLicenseWizard, regulatoryLicenseAttributes);
         regulatoryLicenseWizard.clickAccept();
-        regulatoryLicensesList.openRegulatoryLicenseOverview();
+        checkSystemMessage();
+        SystemMessageContainer.create(driver, webDriverWait).clickMessageLink();
 
-        assertRegulatoryLicenseAttributes(regulatoryLicenseAttributes, new RegulatoryLicenseOverviewPage(driver));
+        waitForPageToLoad();
+        newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
+        newInventoryViewPage.doRefreshWhileNoData();
+        newInventoryViewPage.selectFirstRow();
+        waitForPageToLoad();
+        assertRegulatoryLicenseAttributes(newInventoryViewPage, regulatoryLicenseAttributes);
     }
 
     @Test(priority = 2)
     @Step("Assign Location")
-    public void addLocation() {
-        RegulatoryLicenseOverviewPage rlOverviewBeforeAssign = new RegulatoryLicenseOverviewPage(driver);
-        rlOverviewBeforeAssign.openLocationsTab();
-        RegulatoryLicenseLocationsWizardPage locationsWizard = rlOverviewBeforeAssign.clickAddLocationButton();
-        assignLocation(locationsWizard);
-        RegulatoryLicenseOverviewPage regulatoryLicenseOverviewAfterLocationAssignment = locationsWizard.clickAccept();
-
-        assertAssignedLocations(regulatoryLicenseOverviewAfterLocationAssignment, LOCATION);
+    public void assignLocation() {
+        RegulatoryLicenseAssignmentWizardPage regulatoryLicenseAssignmentWizardPage = clickAssign();
+        regulatoryLicenseAssignmentWizardPage.assignLocationToRegulatoryLicense(LOCATION);
+        openTab(LOCATIONS_TAB_LABEL);
+        assertAssignedLocations();
     }
 
     @Test(priority = 3)
     @Step("Assign Microwave Antenna")
-    public void addMicrowaveAntenna() {
-        RegulatoryLicenseOverviewPage rlOverviewBeforeAssign = new RegulatoryLicenseOverviewPage(driver);
-        rlOverviewBeforeAssign.openMicrowaveAntennasTab();
-        RegulatoryLicenseMicrowaveAntennasWizardPage microwaveAntennasWizard = rlOverviewBeforeAssign.clickAddMicrowaveAntennaButton();
-        assignMicrowaveAntenna(microwaveAntennasWizard);
-        RegulatoryLicenseOverviewPage regulatoryLicenseOverviewAfterMicrowaveAntennaAssignment = microwaveAntennasWizard.clickAccept();
-
-        assertAssignedMicrowaveAntennas(regulatoryLicenseOverviewAfterMicrowaveAntennaAssignment, MICROWAVE_ANTENNA);
+    public void assignMicrowaveAntenna() {
+        RegulatoryLicenseAssignmentWizardPage regulatoryLicenseAssignmentWizardPage = clickAssign();
+        regulatoryLicenseAssignmentWizardPage.assignMicrowaveAntennaToRegulatoryLicense(MICROWAVE_ANTENNA);
+        openTab(MICROWAVE_ANTENNAS_TAB_LABEL);
+        assertAssignedMicrowaveAntennas();
     }
 
     @Test(priority = 4)
-    @Step("Assign Microwave Channel")
-    public void addMicrowaveChannel() {
-        RegulatoryLicenseOverviewPage rlOverviewBeforeAssign = new RegulatoryLicenseOverviewPage(driver);
-        rlOverviewBeforeAssign.openMicrowaveChannelsTab();
-        RegulatoryLicenseMicrowaveChannelsWizardPage microwaveChannelsWizard = rlOverviewBeforeAssign.clickAddMicrowaveChannelButton();
-        assignMicrowaveChannel(microwaveChannelsWizard);
-        RegulatoryLicenseOverviewPage regulatoryLicenseOverviewAfterMicrowaveChannelAssignment = microwaveChannelsWizard.clickAccept();
-
-        assertAssignedMicrowaveChannels(regulatoryLicenseOverviewAfterMicrowaveChannelAssignment, MICROWAVE_CHANNEL_LABEL);
-    }
-
-    @Test(priority = 5)
     @Step("Assign Microwave Link")
-    public void addMicrowaveLink() {
-        RegulatoryLicenseOverviewPage rlOverviewBeforeAssign = new RegulatoryLicenseOverviewPage(driver);
-        rlOverviewBeforeAssign.openMicrowaveLinksTab();
-        RegulatoryLicenseMicrowaveLinksWizardPage microwaveLinksWizard = rlOverviewBeforeAssign.clickAddMicrowaveLinkButton();
-        assignMicrowaveLinks(microwaveLinksWizard);
-        RegulatoryLicenseOverviewPage regulatoryLicenseOverviewAfterMicrowaveLinkAssignment = microwaveLinksWizard.clickAccept();
-
-        assertAssignedMicrowaveLinks(regulatoryLicenseOverviewAfterMicrowaveLinkAssignment, MICROWAVE_LINK_LABEL);
+    public void assignMicrowaveLink() {
+        RegulatoryLicenseAssignmentWizardPage regulatoryLicenseAssignmentWizardPage = clickAssign();
+        regulatoryLicenseAssignmentWizardPage.assignMicrowaveLinkToRegulatoryLicense(MICROWAVE_LINK);
+        openTab(MICROWAVE_LINKS_TAB_LABEL);
+        assertAssignedMicrowaveLinks();
     }
 
     @Test(priority = 5)
-    @Step("Update Regulatory License attributes")
-    public void updateRegulatoryLicense() {
-        RegulatoryLicenseAttributes regulatoryLicenseAttributes = getRegulatoryLicenseAttributesToUpdate();
-
-        RegulatoryLicenseOverviewPage regulatoryLicenseOverviewBeforeUpdate = new RegulatoryLicenseOverviewPage(driver);
-        RegulatoryLicenseWizardPage regulatoryLicenseWizard = regulatoryLicenseOverviewBeforeUpdate.clickEdit();
-        fillRegulatoryLicenseWizardToUpdate(regulatoryLicenseAttributes, regulatoryLicenseWizard);
-        regulatoryLicenseWizard.clickAccept();
-
-        assertRegulatoryLicenseAttributes(regulatoryLicenseAttributes, new RegulatoryLicenseOverviewPage(driver));
+    @Step("Assign Microwave Channel")
+    public void assignMicrowaveChannel() {
+        RegulatoryLicenseAssignmentWizardPage regulatoryLicenseAssignmentWizardPage = clickAssign();
+        regulatoryLicenseAssignmentWizardPage.assignMicrowaveChannelToRegulatoryLicense(MICROWAVE_CHANNEL);
+        openTab(MICROWAVE_CHANNELS_TAB_LABEL);
+        assertAssignedMicrowaveChannels();
     }
 
     @Test(priority = 6)
-    @Step("Detach assigned Microwave Link")
-    public void detachMicrowaveLink() {
-        RegulatoryLicenseOverviewPage regulatoryLicenseOverview = new RegulatoryLicenseOverviewPage(driver);
-        regulatoryLicenseOverview.openMicrowaveLinksTab();
-        regulatoryLicenseOverview.removeFirstMicrowaveLink();
+    @Step("Update Regulatory License attributes")
+    public void updateRegulatoryLicense() {
+        RegulatoryLicenseAttributes regulatoryLicenseAttributes = getRegulatoryLicenseAttributesToUpdate();
+        newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
+        RegulatoryLicenseWizardPage regulatoryLicenseWizard = clickEdit();
 
-        assertAssignedMicrowaveLinks(regulatoryLicenseOverview);
+        goThroughWizard(regulatoryLicenseWizard, regulatoryLicenseAttributes);
+        regulatoryLicenseWizard.clickAccept();
+        checkSystemMessage();
+
+        openTab(PROPERTIES_TAB_LABEL);
+        assertRegulatoryLicenseAttributes(newInventoryViewPage, regulatoryLicenseAttributes);
     }
 
     @Test(priority = 7)
-    @Step("Detach assigned Microwave Channel")
-    public void detachMicrowaveChannel() {
-        RegulatoryLicenseOverviewPage regulatoryLicenseOverview = new RegulatoryLicenseOverviewPage(driver);
-        regulatoryLicenseOverview.openMicrowaveChannelsTab();
-        regulatoryLicenseOverview.removeFirstMicrowaveChannel();
-
-        assertAssignedMicrowaveChannels(regulatoryLicenseOverview);
+    @Step("Detach assigned Location")
+    public void detachLocation() {
+        openTab(LOCATIONS_TAB_LABEL);
+        detachLocationFromRegulatoryLicense();
+        checkIfLocationsTabIsEmpty();
     }
 
     @Test(priority = 8)
     @Step("Detach assigned Microwave Antenna")
     public void detachMicrowaveAntenna() {
-        RegulatoryLicenseOverviewPage regulatoryLicenseOverview = new RegulatoryLicenseOverviewPage(driver);
-        regulatoryLicenseOverview.openMicrowaveAntennasTab();
-        regulatoryLicenseOverview.removeFirstMicrowaveAntenna();
-
-        assertAssignedMicrowaveAntennas(regulatoryLicenseOverview);
+        openTab(MICROWAVE_ANTENNAS_TAB_LABEL);
+        detachMicrowaveAntennaFromRegulatoryLicense();
+        checkIfMicrowaveAntennasTabIsEmpty();
     }
 
     @Test(priority = 9)
-    @Step("Check if all Locations were detached")
-    public void checkLocations() {
-        RegulatoryLicenseOverviewPage regulatoryLicenseOverview = new RegulatoryLicenseOverviewPage(driver);
-        regulatoryLicenseOverview.openLocationsTab();
+    @Step("Detach assigned Microwave Link")
+    public void detachMicrowaveLink() {
+        openTab(MICROWAVE_LINKS_TAB_LABEL);
+        detachMicrowaveLinkFromRegulatoryLicense();
+        checkIfMicrowaveLinksTabIsEmpty();
+    }
 
-        assertAssignedLocations(regulatoryLicenseOverview);
+    @Test(priority = 10)
+    @Step("Detach assigned Microwave Channel")
+    public void detachMicrowaveChannel() {
+        openTab(MICROWAVE_CHANNELS_TAB_LABEL);
+        detachMicrowaveChannelFromRegulatoryLicense();
+        checkIfMicrowaveChannelsTabIsEmpty();
     }
 
     @Test(priority = 10)
     @Step("Remove Regulatory License")
     public void removeRegulatoryLicense() {
-        RegulatoryLicenseOverviewPage regulatoryLicenseOverview = new RegulatoryLicenseOverviewPage(driver);
-        regulatoryLicenseOverview.removeRegulatoryLicense();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        deleteRegulatoryLicense();
+        checkRegulatoryLicenseRemoval();
+    }
 
-        assertRegulatoryLicenseRemoval();
+    private void goToRegulatoryLicenseInventoryView() {
+        driver.get(String.format("%s/#/views/management/views/inventory-view/RegulatoryLicense?perspective=LIVE", CONFIGURATION.getUrl()));
+        waitForPageToLoad();
     }
 
     private RegulatoryLicenseAttributes getRegulatoryLicenseAttributesToCreate() {
-        RegulatoryLicenseAttributes regLicAttributes = new RegulatoryLicenseAttributes();
-        regLicAttributes.number = NUMBER;
-        regLicAttributes.regulatoryAgency = REGULATORY_AGENCY;
-        regLicAttributes.startingDate = STARTING_DATE;
-        regLicAttributes.expirationDate = EXPIRATION_DATE;
-        regLicAttributes.operatingHours = OPERATING_HOURS;
-        regLicAttributes.status = STATUS;
-        regLicAttributes.type = TYPE;
-        regLicAttributes.description = DESCRIPTION;
-        return regLicAttributes;
+        RegulatoryLicenseAttributes attributes = new RegulatoryLicenseAttributes();
+        attributes.number = NUMBER + rand.nextInt(99 + 1) * 100;
+        attributes.regulatoryAgency = REGULATORY_AGENCY;
+        attributes.startingDate = STARTING_DATE;
+        attributes.expirationDate = EXPIRATION_DATE;
+        attributes.operatingHours = OPERATING_HOURS;
+        attributes.status = STATUS;
+        attributes.type = TYPE;
+        attributes.description = DESCRIPTION;
+        return attributes;
     }
 
     private RegulatoryLicenseAttributes getRegulatoryLicenseAttributesToUpdate() {
         RegulatoryLicenseAttributes regLicAttributes = new RegulatoryLicenseAttributes();
-        regLicAttributes.number = NUMBER2;
+        regLicAttributes.number = NUMBER2 + rand.nextInt(99 + 1) * 100;
         regLicAttributes.regulatoryAgency = REGULATORY_AGENCY2;
         regLicAttributes.startingDate = STARTING_DATE2;
         regLicAttributes.expirationDate = EXPIRATION_DATE2;
         regLicAttributes.operatingHours = OPERATING_HOURS2;
         regLicAttributes.status = STATUS2;
-        regLicAttributes.type = TYPE2;
+        regLicAttributes.type = TYPE;
         regLicAttributes.description = DESCRIPTION2;
         return regLicAttributes;
     }
 
-    public RegulatoryLicensesListPage goToListOfRegulatoryLicenses() {
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        //SideMenu sidemenu = SideMenu.create(driver, webDriverWait);
-        //sidemenu.callActionByLabel(REGULATORY_LICENSE, VIEWS, TRANSPORT);
-        driver.get(String.format("%s/#/view/transport/microwave/licenses?perspective=LIVE", BASIC_URL));
-        return new RegulatoryLicensesListPage(driver);
+    private TableWidget getLocationsTable() {
+        waitForPageToLoad();
+        return TableWidget.createById(driver, LOCATIONS_TABLE_COMPONENT_ID, webDriverWait);
     }
 
-    private void fillRegulatoryLicenseWizardToCreate(RegulatoryLicenseAttributes regulatoryLicenseAttributes, RegulatoryLicenseWizardPage regulatoryLicenseWizard) {
-        fulfillWizard(regulatoryLicenseWizard, regulatoryLicenseAttributes);
+    private TableWidget getMicrowaveAntennasTable() {
+        waitForPageToLoad();
+        return TableWidget.createById(driver, MICROWAVE_ANTENNAS_TABLE_COMPONENT_ID, webDriverWait);
     }
 
-    private void fillRegulatoryLicenseWizardToUpdate(RegulatoryLicenseAttributes regulatoryLicenseAttributes, RegulatoryLicenseWizardPage regulatoryLicenseWizard) {
-        fulfillWizard(regulatoryLicenseWizard, regulatoryLicenseAttributes);
+    private TableWidget getMicrowaveLinksTable() {
+        waitForPageToLoad();
+        return TableWidget.createById(driver, MICROWAVE_LINKS_TABLE_COMPONENT_ID, webDriverWait);
     }
 
-    private void fulfillWizard(RegulatoryLicenseWizardPage rlWizard, RegulatoryLicenseTest.RegulatoryLicenseAttributes rlAttributes) {
-        rlWizard.setNumber(rlAttributes.number);
-        rlWizard.setRegulatoryAgency(rlAttributes.regulatoryAgency);
-        rlWizard.setStartingDate(rlAttributes.startingDate);
-        rlWizard.setExpirationDate(rlAttributes.expirationDate);
-        rlWizard.setOperatingHours(rlAttributes.operatingHours);
-        rlWizard.setStatus(rlAttributes.status);
-        rlWizard.setType(rlAttributes.type);
-        rlWizard.setDescription(rlAttributes.description);
+    private TableWidget getMicrowaveChannelsTable() {
+        waitForPageToLoad();
+        return TableWidget.createById(driver, MICROWAVE_CHANNELS_TABLE_COMPONENT_ID, webDriverWait);
     }
 
-    private void assignLocation(RegulatoryLicenseLocationsWizardPage locationWizard) {
-        locationWizard.selectLocation(LOCATION);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    @Step("Click create button")
+    private RegulatoryLicenseWizardPage clickCreate() {
+        newInventoryViewPage.callAction(ActionsContainer.CREATE_GROUP_ID, CREATE_REGULATORY_LICENSE_ACTION_ID);
+        return new RegulatoryLicenseWizardPage(driver);
     }
 
-    private void assignMicrowaveAntenna(RegulatoryLicenseMicrowaveAntennasWizardPage microwaveAntennasWizard) {
-        microwaveAntennasWizard.selectMicrowaveAntenna(MICROWAVE_ANTENNA);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    @Step("Click edit button")
+    private RegulatoryLicenseWizardPage clickEdit() {
+        newInventoryViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, EDIT_REGULATORY_LICENSE_ACTION_ID);
+        return new RegulatoryLicenseWizardPage(driver);
     }
 
-    private void assignMicrowaveChannel(RegulatoryLicenseMicrowaveChannelsWizardPage microwaveChannelsWizard) {
-        microwaveChannelsWizard.selectMicrowaveChannel(MICROWAVE_CHANNEL);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    @Step("Click assign object button")
+    private RegulatoryLicenseAssignmentWizardPage clickAssign() {
+        newInventoryViewPage.callAction(ActionsContainer.ASSIGN_GROUP_ID, ASSIGN_REGULATORY_LICENSE_TO_OBJECT_ACTION_ID);
+        return new RegulatoryLicenseAssignmentWizardPage(driver);
     }
 
-    private void assignMicrowaveLinks(RegulatoryLicenseMicrowaveLinksWizardPage microwaveLinksWizard) {
-        microwaveLinksWizard.selectMicrowaveLinks(MICROWAVE_LINK);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    @Step("Click detach object button")
+    private RegulatoryLicenseAssignmentWizardPage clickDetach(String objectType) {
+        newInventoryViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, objectType);
+        waitForPageToLoad();
+        newInventoryViewPage.clickConfirmationRemovalButton();
+        return new RegulatoryLicenseAssignmentWizardPage(driver);
     }
 
-    private void assertRegulatoryLicenseAttributes(RegulatoryLicenseTest.RegulatoryLicenseAttributes regulatoryLicenseAttributes, RegulatoryLicenseOverviewPage regulatoryLicenseOverview) {
-        String numberValue = regulatoryLicenseOverview.getNumberValue();
-        String statusValue = regulatoryLicenseOverview.getStatusValue();
-        String startingDateValue = regulatoryLicenseOverview.getStartingDateValue();
-        String expirationDateValue = regulatoryLicenseOverview.getExpirationDateValue();
-        String operatingHoursValue = regulatoryLicenseOverview.getOperatingHoursValue();
-        String regulatoryAgencyValue = regulatoryLicenseOverview.getRegulatoryAgencyValue();
-        String typeValue = regulatoryLicenseOverview.getTypeValue();
-        String descriptionValue = regulatoryLicenseOverview.getDescriptionValue();
-
-        Assert.assertEquals(regulatoryLicenseAttributes.number, numberValue);
-        Assert.assertEquals(regulatoryLicenseAttributes.status, statusValue);
-        Assert.assertEquals(regulatoryLicenseAttributes.startingDate, startingDateValue);
-        Assert.assertEquals(regulatoryLicenseAttributes.expirationDate, expirationDateValue);
-        Assert.assertEquals(regulatoryLicenseAttributes.operatingHours, operatingHoursValue);
-        Assert.assertEquals(regulatoryLicenseAttributes.regulatoryAgency, regulatoryAgencyValue);
-        Assert.assertEquals(regulatoryLicenseAttributes.type, typeValue);
-        Assert.assertEquals(regulatoryLicenseAttributes.description, descriptionValue);
+    private void goThroughWizard(RegulatoryLicenseWizardPage regulatoryLicenseWizardPage, RegulatoryLicenseAttributes regulatoryLicenseAttributes) {
+        fillRegulatoryLicenseWizard(regulatoryLicenseWizardPage, regulatoryLicenseAttributes);
     }
 
-    private void assertAssignedLocations(RegulatoryLicenseOverviewPage regulatoryLicenseOverview, String... expectedLocations) {
-        List<String> assignedLocations = regulatoryLicenseOverview.getAssignedLocations();
-
-        boolean doesAllLocationsMatch = assignedLocations.containsAll(Arrays.asList(expectedLocations));
-
-        Assert.assertTrue(doesAllLocationsMatch);
+    private void fillRegulatoryLicenseWizard(RegulatoryLicenseWizardPage regulatoryLicenseWizardPage, RegulatoryLicenseAttributes regulatoryLicenseAttributes) {
+        regulatoryLicenseWizardPage.setNumber(regulatoryLicenseAttributes.number);
+        regulatoryLicenseWizardPage.setRegulatoryAgency(regulatoryLicenseAttributes.regulatoryAgency);
+        regulatoryLicenseWizardPage.setStartingDate(regulatoryLicenseAttributes.startingDate);
+        regulatoryLicenseWizardPage.setExpirationDate(regulatoryLicenseAttributes.expirationDate);
+        regulatoryLicenseWizardPage.setOperatingHours(regulatoryLicenseAttributes.operatingHours);
+        regulatoryLicenseWizardPage.setStatus(regulatoryLicenseAttributes.status);
+        regulatoryLicenseWizardPage.setType(regulatoryLicenseAttributes.type);
+        regulatoryLicenseWizardPage.setDescription(regulatoryLicenseAttributes.description);
     }
 
-    private void assertAssignedMicrowaveAntennas(RegulatoryLicenseOverviewPage regulatoryLicenseOverview, String... expectedMicrowaveAntennas) {
-        List<String> assignedMicrowaveAntennas = regulatoryLicenseOverview.getAssignedMicrowaveAntennas();
+    private void assertRegulatoryLicenseAttributes(NewInventoryViewPage newInventoryViewPage, RegulatoryLicenseAttributes regulatoryLicenseAttributes) {
+        String number = newInventoryViewPage.getPropertyPanelValue("licenseNumber");
+        String startingDate = newInventoryViewPage.getPropertyPanelValue("startingDate");
+        String expirationDate = newInventoryViewPage.getPropertyPanelValue("expirationDate");
+        String operatingHours = newInventoryViewPage.getPropertyPanelValue("operatingHours");
+        String type = newInventoryViewPage.getPropertyPanelValue("type");
+        String status = newInventoryViewPage.getPropertyPanelValue("status");
 
-        boolean doesAllMicrowaveAntennasMatch = assignedMicrowaveAntennas.containsAll(Arrays.asList(expectedMicrowaveAntennas));
-
-        Assert.assertTrue(doesAllMicrowaveAntennasMatch);
+        Assert.assertEquals(number, regulatoryLicenseAttributes.number);
+        Assert.assertEquals(startingDate, regulatoryLicenseAttributes.startingDate);
+        Assert.assertEquals(expirationDate, regulatoryLicenseAttributes.expirationDate);
+        Assert.assertEquals(operatingHours, regulatoryLicenseAttributes.operatingHours);
+        Assert.assertEquals(type.toLowerCase(), regulatoryLicenseAttributes.type.toLowerCase());
+        Assert.assertEquals(status.toLowerCase(), regulatoryLicenseAttributes.status.toLowerCase());
     }
 
-    private void assertAssignedMicrowaveChannels(RegulatoryLicenseOverviewPage regulatoryLicenseOverview, String... expectedMicrowaveChannels) {
-        List<String> assignedMicrowaveChannels = regulatoryLicenseOverview.getAssignedMicrowaveChannels();
-
-        boolean doesAllMicrowaveChannelsMatch = assignedMicrowaveChannels.containsAll(Arrays.asList(expectedMicrowaveChannels));
-
-        Assert.assertTrue(doesAllMicrowaveChannelsMatch);
+    private void openTab(String tabLabel) {
+        newInventoryViewPage.selectTabByLabel(tabLabel);
+        waitForPageToLoad();
     }
 
-    private void assertAssignedMicrowaveLinks(RegulatoryLicenseOverviewPage regulatoryLicenseOverview, String... expectedMicrowaveLinks) {
-        List<String> assignedMicrowaveLinks = regulatoryLicenseOverview.getAssignedMicrowaveLinks();
+    private void assertAssignedLocations() {
+        String assignedLocation = selectObjectInTab(0, "name", LOCATIONS_TABLE_COMPONENT_ID);
 
-        boolean doesAllMicrowaveLinksMatch = assignedMicrowaveLinks.containsAll(Arrays.asList(expectedMicrowaveLinks));
-
-        Assert.assertTrue(doesAllMicrowaveLinksMatch);
+        Assert.assertEquals(assignedLocation, LOCATION);
     }
 
-    private void assertRegulatoryLicenseRemoval() {
-        String properUrlAfterRemoval = Configuration.CONFIGURATION.getUrl() + ENVIRONMENT_INDEPENDENT_URL_PART_AFTER_REMOVAL_REDIRECT;
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertEquals(properUrlAfterRemoval, driver.getCurrentUrl());
+    private void assertAssignedMicrowaveAntennas() {
+        String assignedMicrowaveAntenna = selectObjectInTab(0, "name", MICROWAVE_ANTENNAS_TABLE_COMPONENT_ID);
+
+        Assert.assertEquals(assignedMicrowaveAntenna, MICROWAVE_ANTENNA);
+    }
+
+    private void assertAssignedMicrowaveLinks() {
+        String assignedMicrowaveLink = selectObjectInTab(0, "label", MICROWAVE_LINKS_TABLE_COMPONENT_ID);
+
+        Assert.assertEquals(assignedMicrowaveLink, MICROWAVE_LINK);
+    }
+
+    private void assertAssignedMicrowaveChannels() {
+        String assignedMicrowaveChannels = selectObjectInTab(0, "label", MICROWAVE_CHANNELS_TABLE_COMPONENT_ID);
+
+        Assert.assertEquals(assignedMicrowaveChannels, MICROWAVE_CHANNEL);
+    }
+
+    private void checkRegulatoryLicenseRemoval() {
+        Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());
+    }
+
+    private void checkIfLocationsTabIsEmpty() {
+        waitForPageToLoad();
+        Assert.assertTrue(getLocationsTable().hasNoData());
+    }
+
+    private void checkIfMicrowaveAntennasTabIsEmpty() {
+        waitForPageToLoad();
+        Assert.assertTrue(getMicrowaveAntennasTable().hasNoData());
+    }
+
+    private void checkIfMicrowaveLinksTabIsEmpty() {
+        waitForPageToLoad();
+        Assert.assertTrue(getMicrowaveLinksTable().hasNoData());
+    }
+
+    private void checkIfMicrowaveChannelsTabIsEmpty() {
+        waitForPageToLoad();
+        Assert.assertTrue(getMicrowaveChannelsTable().hasNoData());
+    }
+
+    private void checkSystemMessage() {
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
+        softAssert.assertEquals((systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType()), SystemMessageContainer.MessageType.SUCCESS);
+    }
+
+    private void detachLocationFromRegulatoryLicense() {
+        callActionInLocationsTab(ActionsContainer.EDIT_GROUP_ID, DETACH_LOCATION_FROM_REGULATORY_LICENSE_ACTION_ID);
+        newInventoryViewPage.clickConfirmationBox(LOCATION_DETACHMENT_CLOSE_BUTTON_ID);
+    }
+
+    private void detachMicrowaveAntennaFromRegulatoryLicense() {
+        callActionInMicrowaveAntennasTab(ActionsContainer.EDIT_GROUP_ID, DETACH_MICROWAVE_ANTENNA_FROM_REGULATORY_LICENSE_ACTION_ID);
+        newInventoryViewPage.clickConfirmationBox(MICROWAVE_ANTENNA_DETACHMENT_CLOSE_BUTTON_ID);
+    }
+
+    private void detachMicrowaveLinkFromRegulatoryLicense() {
+        callActionInMicrowaveLinksTab(ActionsContainer.EDIT_GROUP_ID, DETACH_MICROWAVE_LINK_FROM_REGULATORY_LICENSE_ACTION_ID);
+        newInventoryViewPage.clickConfirmationBox(MICROWAVE_LINK__DETACHMENT_CLOSE_BUTTON_ID);
+    }
+
+    private void detachMicrowaveChannelFromRegulatoryLicense() {
+        callActionInMicrowaveChannelsTab(ActionsContainer.EDIT_GROUP_ID, DETACH_MICROWAVE_CHANNEL_FROM_REGULATORY_LICENSE_ACTION_ID);
+        newInventoryViewPage.clickConfirmationBox(MICROWAVE_CHANNEL_DETACHMENT_CLOSE_BUTTON_ID);
+    }
+
+    private NewInventoryViewPage callActionInLocationsTab(String groupId, String actionId) {
+        getLocationsTable().callAction(groupId, actionId);
+        return new NewInventoryViewPage(driver, webDriverWait);
+    }
+
+    private NewInventoryViewPage callActionInMicrowaveAntennasTab(String groupId, String actionId) {
+        getMicrowaveAntennasTable().callAction(groupId, actionId);
+        return new NewInventoryViewPage(driver, webDriverWait);
+    }
+
+    private NewInventoryViewPage callActionInMicrowaveLinksTab(String groupId, String actionId) {
+        getMicrowaveLinksTable().callAction(groupId, actionId);
+        return new NewInventoryViewPage(driver, webDriverWait);
+    }
+
+    private NewInventoryViewPage callActionInMicrowaveChannelsTab(String groupId, String actionId) {
+        getMicrowaveChannelsTable().callAction(groupId, actionId);
+        return new NewInventoryViewPage(driver, webDriverWait);
+    }
+
+    @Step("Delete Regulatory License")
+    private void deleteRegulatoryLicense() {
+        newInventoryViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, DELETE_REGULATORY_LICENSE_ACTION_ID);
+        waitForPageToLoad();
+        newInventoryViewPage.clickConfirmationBox(REGULATORY_LICENSE_REMOVAL_CLOSE_BUTTON_ID);
+        waitForPageToLoad();
     }
 
     private static class RegulatoryLicenseAttributes {
@@ -307,5 +417,16 @@ public class RegulatoryLicenseTest extends BaseTestCase {
         private String status;
         private String type;
         private String description;
+    }
+
+    private void waitForPageToLoad() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    private String selectObjectInTab(Integer index, String column, String componentId) {
+        waitForPageToLoad();
+        TableComponent tableComponent = TableComponent.create(driver, webDriverWait, componentId);
+        tableComponent.selectRow(index);
+        return tableComponent.getCellValue(index, column);
     }
 }

@@ -28,6 +28,7 @@ public class RemainderForm extends BaseSDPage {
     public void createReminderWithNote(String noteText) {
         fillNote(noteText);
         clickAccept();
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     @Step("Fill description note in Remainder wizard")
