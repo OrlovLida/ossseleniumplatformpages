@@ -1,5 +1,6 @@
 package com.oss.web;
 
+import org.assertj.core.api.Assertions;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -7,7 +8,6 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
-import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.exportguiwizard.ExportGuiWizardPage;
 import com.oss.pages.languageservice.LanguageServicePage;
 import com.oss.pages.schedulerservice.SchedulerServicePage;
@@ -48,8 +48,9 @@ public class ExportByScheduleTest extends BaseTestCase {
                 .closeTheWizard();
         schedulerServicePage = SchedulerServicePage.goToSchedulerServicePage(driver, BASIC_URL);
         schedulerServicePage
-                .findJobAndClickOnIt(TASK_NAME);
-        Assert.assertEquals(schedulerServicePage.getTextOfJob(TASK_NAME), TASK_NAME);
+                .search(TASK_NAME);
+        Assertions.assertThat(schedulerServicePage.getVisibleJobNames()).contains(TASK_NAME);
+
     }
     
     @Test(priority = 2)
@@ -64,8 +65,8 @@ public class ExportByScheduleTest extends BaseTestCase {
                 .closeTheWizard();
         schedulerServicePage = SchedulerServicePage.goToSchedulerServicePage(driver, BASIC_URL);
         schedulerServicePage
-                .findJobAndClickOnIt(TASK_NAME);
-        Assert.assertEquals(schedulerServicePage.getTextOfJob(TASK_NAME), TASK_NAME);
+                .search(TASK_NAME);
+        Assertions.assertThat(schedulerServicePage.getVisibleJobNames()).contains(TASK_NAME);
     }
     
     @Test(priority = 3)
@@ -81,8 +82,8 @@ public class ExportByScheduleTest extends BaseTestCase {
                 .closeTheWizard();
         schedulerServicePage = SchedulerServicePage.goToSchedulerServicePage(driver, BASIC_URL);
         schedulerServicePage
-                .findJobAndClickOnIt(TASK_NAME);
-        Assert.assertEquals(schedulerServicePage.getTextOfJob(TASK_NAME), TASK_NAME);
+                .search(TASK_NAME);
+        Assertions.assertThat(schedulerServicePage.getVisibleJobNames()).contains(TASK_NAME);
     }
     
     @Test(priority = 4)
@@ -98,8 +99,8 @@ public class ExportByScheduleTest extends BaseTestCase {
                 .closeTheWizard();
         schedulerServicePage = SchedulerServicePage.goToSchedulerServicePage(driver, BASIC_URL);
         schedulerServicePage
-                .findJobAndClickOnIt(TASK_NAME);
-        Assert.assertEquals(schedulerServicePage.getTextOfJob(TASK_NAME), TASK_NAME);
+                .search(TASK_NAME);
+        Assertions.assertThat(schedulerServicePage.getVisibleJobNames()).contains(TASK_NAME);
     }
     
     @Test(priority = 5)
@@ -116,15 +117,15 @@ public class ExportByScheduleTest extends BaseTestCase {
                 .closeTheWizard();
         schedulerServicePage = SchedulerServicePage.goToSchedulerServicePage(driver, BASIC_URL);
         schedulerServicePage
-                .findJobAndClickOnIt(TASK_NAME);
-        Assert.assertEquals(schedulerServicePage.getTextOfJob(TASK_NAME), TASK_NAME);
+                .search(TASK_NAME);
+        Assertions.assertThat(schedulerServicePage.getVisibleJobNames()).contains(TASK_NAME);
     }
     
     @AfterMethod
     public void deleteJobFromScheduleService() {
         schedulerServicePage
-                .deleteSelectedJob()
-                .selectDeletedJob(TASK_NAME)
-                .permanentlyRemoveJob();
+                .selectJob(TASK_NAME)
+                .retireJob()
+                .permanentlyDeleteJob();
     }
 }
