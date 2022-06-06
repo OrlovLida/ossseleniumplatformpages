@@ -22,7 +22,7 @@ public class TicketOverviewTab extends OverviewTab {
     private static final String ADD_REMAINDER_LABEL = "Add Reminder";
     private static final String EDIT_REMAINDER_LABEL = "Edit Reminder";
     private static final String REMOVE_REMAINDER_LABEL = "Remove Reminder";
-    private static final String CHANGE_TICKET_STATUS_COMBOBOX_ID = "change-ticket-status-combobox-input";
+    private static final String CHANGE_TICKET_STATUS_COMBOBOX_ID = "change-ticket-status-combobox";
 
     public TicketOverviewTab(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
