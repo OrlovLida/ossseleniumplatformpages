@@ -38,7 +38,7 @@ import io.qameta.allure.Description;
  */
 public class NewNavigationTest extends BaseTestCase {
     private static final String CATEGORY_NAME = "Selenium Test Navigation " + FakeGenerator.getIdNumber();
-    //private static final String CATEGORY_NAME = "Selenium Test Navigation 718-98-3065";
+    //private static final String CATEGORY_NAME = "Selenium Test Navigation 804-45-3515";
     private static final String CATEGORY_NAME_UPDATE = CATEGORY_NAME + " Update";
     private static final String DESCRIPTION = FakeGenerator.getCharacter(FakeGenerator.FilmTitle.LORD_OF_THE_RING);
     private static final String ICON_ID = "AI_CONTROL_DESK";
@@ -65,7 +65,10 @@ public class NewNavigationTest extends BaseTestCase {
     private static final String TEST_MOVIE_TYPE = "TestMovie";
     private static final String INVENTORY_VIEW_LINK = "#/views/management/views/inventory-view";
     private static final String LINK_IS_NOT_AVAILABLE_EXCEPTION = "Link is not available";
-    
+    private static final String DELETE_BUTTON = "Delete";
+    private static final String FAVOURITES_MENU_CATEGORY = "Favourites";
+    private static final String TOOLS_MENU_CATEGORY = "Tools";
+
     private ToolsManagerWindow toolsManagerWindow;
     
     @BeforeClass
@@ -320,7 +323,7 @@ public class NewNavigationTest extends BaseTestCase {
         changeUser(USER_1, PASSWORD_1);
         toolsManagerWindow.callAction(CATEGORY_NAME_UPDATE, DELETE_CATEGORY_BUTTON_ID);
         Popup.create(driver,webDriverWait).clickButtonByLabel("Delete");
-        DelayUtils.sleep(5000);
+        DelayUtils.sleep(8000);
         List<String> categoriesName = toolsManagerWindow.getCategoriesName();
         Assertions.assertThat(categoriesName).doesNotContain(CATEGORY_NAME_UPDATE).isNotEmpty();
     }
@@ -356,7 +359,7 @@ public class NewNavigationTest extends BaseTestCase {
     }
     
     private void confirmDelete() {
-        Popup.create(driver, webDriverWait).clickButtonByLabel("Delete");
+        Popup.create(driver, webDriverWait).clickButtonByLabel(DELETE_BUTTON);
     }
     
     private void goToHomePage() {
@@ -366,11 +369,8 @@ public class NewNavigationTest extends BaseTestCase {
     }
     
     private void openViewBySideMenu(String applicationName) {
-        SideMenu.create(driver, webDriverWait).callActionByLabel(applicationName, "Favourites", "Tools");
+        SideMenu.create(driver, webDriverWait).callActionByLabel(applicationName, FAVOURITES_MENU_CATEGORY, TOOLS_MENU_CATEGORY);
     }
 
-    private void waitUntilMessageDisappear(){
-        SystemMessageContainer.create(driver,webDriverWait).waitForMessageDisappear();
-    }
     
 }

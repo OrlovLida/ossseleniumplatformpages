@@ -11,7 +11,7 @@ import com.oss.framework.wizard.Wizard;
 
 public class ApplicationWizard {
     
-    private static final String APPLICATION_INPUT_ID = "application-input";
+    private static final String APPLICATION_INPUT_ID = "application";
     private static final String NAME_TEXT_FIELD_ID = "name";
     private static final String DESCRIPTION_TEXT_AREA_ID = "description";
     private static final String SAVE_BUTTON_FULL_XPATH = "//div[@class='popupBackground']//a[@class='CommonButton btn btn-primary btn-md']";
@@ -20,7 +20,7 @@ public class ApplicationWizard {
     private static final String EDITABLE_LIST_VALUE_COMPONENT_ID = "value-TEXT_FIELD";
     private static final String PATH_TYPE = "Path";
     private static final String TYPE_COLUMN_ID = "type";
-    private static final String COMBOBOX_ID = "type-input";
+    private static final String COMBOBOX_ID = "type";
     private static final String VALUE_COLUMN_ID = "value";
     private static final String EDITABLE_LIST_ID = "ExtendedList-additionalQueryParamsList";
     
@@ -40,7 +40,7 @@ public class ApplicationWizard {
     }
     
     public void setApplication(String application) {
-        Input applicationInput = ComponentFactory.create(APPLICATION_INPUT_ID, Input.ComponentType.COMBOBOX, driver, wait);
+        Input applicationInput = ComponentFactory.create(APPLICATION_INPUT_ID, driver, wait);
         applicationInput.setSingleStringValue(application);
     }
     
@@ -54,12 +54,12 @@ public class ApplicationWizard {
     
     public void setPolicies(String policiesType, String politicsName) {
         togglePolicies("true");
-        wizard.setComponentValue("politics_type", policiesType, Input.ComponentType.COMBOBOX);
-        wizard.setComponentValue("politics_name", politicsName, Input.ComponentType.COMBOBOX);
+        wizard.setComponentValue("politics_type", policiesType);
+        wizard.setComponentValue("politics_name", politicsName);
     }
     
     private void togglePolicies(String value) {
-        wizard.setComponentValue("politics", value, Input.ComponentType.CHECKBOX);
+        wizard.setComponentValue("politics", value);
     }
     
     public void clickSave() {
@@ -68,14 +68,14 @@ public class ApplicationWizard {
     
     public void addQueryParam(String key, String testValue) {
         EditableList.Row firstRow = getRow();
-        firstRow.setValue(key, KEY_COLUMN_ID, EDITABLE_LIST_KEY_COMPONENT_ID, Input.ComponentType.TEXT_FIELD);
-        firstRow.setValue(testValue, VALUE_COLUMN_ID, EDITABLE_LIST_VALUE_COMPONENT_ID, Input.ComponentType.TEXT_FIELD);
+        firstRow.setValue(key, KEY_COLUMN_ID, EDITABLE_LIST_KEY_COMPONENT_ID);
+        firstRow.setValue(testValue, VALUE_COLUMN_ID, EDITABLE_LIST_VALUE_COMPONENT_ID);
     }
     
     public void addPathParam(String value) {
         EditableList.Row firstRow = getRow();
-        firstRow.setValue(PATH_TYPE, TYPE_COLUMN_ID, COMBOBOX_ID, Input.ComponentType.COMBOBOX);
-        firstRow.setValue(value, VALUE_COLUMN_ID, EDITABLE_LIST_VALUE_COMPONENT_ID, Input.ComponentType.TEXT_FIELD);
+        firstRow.setValue(PATH_TYPE, TYPE_COLUMN_ID, COMBOBOX_ID);
+        firstRow.setValue(value, VALUE_COLUMN_ID, EDITABLE_LIST_VALUE_COMPONENT_ID);
     }
     
     public void addApplication(String application, String name) {
