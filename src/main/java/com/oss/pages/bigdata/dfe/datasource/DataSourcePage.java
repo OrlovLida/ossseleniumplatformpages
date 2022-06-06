@@ -38,7 +38,7 @@ public class DataSourcePage extends BaseDfePage {
     private static final String REFRESH_LABEL = "Refresh";
     private static final String SHOW_FILE_LABEL = "Show file";
     private static final String TIME_PERIOD_ID = "input_timePeriod";
-    private static final String SEVERITY_COMBOBOX_ID = "severityLogs-input";
+    private static final String SEVERITY_COMBOBOX_ID = "severityLogs";
     private static final String LOG_TAB_TABLE_ID = "LogsId";
     private static final String COLUMN_TIME_LABEL = "Time";
     private static final String COLUMN_SEVERITY_LABEL = "Severity";

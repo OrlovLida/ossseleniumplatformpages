@@ -16,7 +16,7 @@ import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
 public class DataSourceAndProcessingPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(DataSourceAndProcessingPage.class);
-    private static final String FEED_INPUT_ID = "dataSource-input";
+    private static final String FEED_INPUT_ID = "dataSource";
     private final Wizard dsAndProcessingWizard;
 
     public DataSourceAndProcessingPage(WebDriver driver, WebDriverWait wait, String wizardId) {

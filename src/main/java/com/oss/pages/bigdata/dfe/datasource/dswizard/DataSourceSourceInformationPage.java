@@ -18,11 +18,11 @@ import static com.oss.framework.utils.DelayUtils.waitForPageToLoad;
 public class DataSourceSourceInformationPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(DataSourceSourceInformationPage.class);
-    private static final String DATABASE_INPUT_ID = "dataSourceDatabaseId-input";
+    private static final String DATABASE_INPUT_ID = "dataSourceDatabaseId";
     private static final String QUERY_INPUT_ID = "script-component";
     private static final String WIZARD_ID = "dataSourcesWizardId";
     private static final String UPLOAD_WIZARD = "dataSourceUploadDataFormatId";
-    private static final String DS_TYPE_INPUT_ID = "dataSourceDataSourceTypeId-input";
+    private static final String DS_TYPE_INPUT_ID = "dataSourceDataSourceTypeId";
 
     private final Wizard sourceInformationWizard;
 

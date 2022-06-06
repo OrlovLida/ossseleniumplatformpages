@@ -15,7 +15,7 @@ public class EtlProcessColumnMappingPage extends ColumnMappingPage {
 
     private static final Logger log = LoggerFactory.getLogger(EtlProcessColumnMappingPage.class);
     private static final String LINKAGE_TO_DIMENSION_TABLE_ID = "linkageToDimensionTable";
-    private static final String LINKAGE_TO_DIMENSION_TABLE_INPUT_ID = "linkageToDimensionTable-input";
+    private static final String LINKAGE_TO_DIMENSION_TABLE_INPUT_ID = "linkageToDimensionTable";
     private static final String ETL_WIZARD_ID = "etlWizardWindow";
 
     public EtlProcessColumnMappingPage(WebDriver driver, WebDriverWait wait) {

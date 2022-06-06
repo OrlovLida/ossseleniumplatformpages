@@ -18,8 +18,8 @@ public class DataSourceSpecificInfoPage extends BasePage {
 
     public static final String FILLED_SPECIFIC_INFORMATION_WIZARD_PAGE = "Filled Specific Information Wizard Page";
     private static final Logger log = LoggerFactory.getLogger(DataSourceSpecificInfoPage.class);
-    private static final String OFFSET_INPUT_ID = "dataSourceOffsetId-input";
-    private static final String INTERVAL_UNIT_INPUT_ID = "dataSourceIntervalUnitId-input";
+    private static final String OFFSET_INPUT_ID = "dataSourceOffsetId";
+    private static final String INTERVAL_UNIT_INPUT_ID = "dataSourceIntervalUnitId";
     private static final String INTERVAL_AMOUNT_INPUT_ID = "dataSourceIntervalAmountId";
     private static final String WIZARD_ID = "dataSourcesWizardId";
     private static final String SERVER_GROUP_INPUT_ID = "dataSourceServerGroupNameId";
