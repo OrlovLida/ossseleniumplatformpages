@@ -111,10 +111,10 @@ public class TicketsTest extends BaseTestCase {
     private static final String ADD_TO_LIBRARY_LABEL = "Add to Library";
     private static final String ADD_TO_LIBRARY_WIZARD_ID = "addToLibraryPrompt_prompt-card";
     private static final String WIZARD_LIBRARY_TYPE_ID = "{\"identifier\":\"type\",\"parentIdentifier\":\"type\",\"parentValueIdentifier\":\"\",\"groupId\":\"type\"}";
-    private static final String WIZARD_CATEGORY_ID = "{\"identifier\":\"Category\",\"parentIdentifier\":\"type\",\"parentValueIdentifier\":\"\",\"groupId\":\"Category\"}-input";
+    private static final String WIZARD_CATEGORY_ID = "{\"identifier\":\"Category\",\"parentIdentifier\":\"type\",\"parentValueIdentifier\":\"\",\"groupId\":\"Category\"}";
     private static final String TABLES_WINDOW_ID = "_tablesWindow";
 
-    private static final String NOTIFICATION_WIZARD_CHANNEL_ID = "channel-component-input";
+    private static final String NOTIFICATION_WIZARD_CHANNEL_ID = "channel-component";
     private static final String NOTIFICATION_WIZARD_MESSAGE_ID = "message-component";
     private static final String NOTIFICATION_WIZARD_INTERNAL_TO_ID = "internal-to-component";
     private static final String NOTIFICATION_WIZARD_TO_ID = "to-component";
@@ -216,6 +216,7 @@ public class TicketsTest extends BaseTestCase {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
         issueDetailsPage.skipAllActionsOnCheckList();
         Assert.assertTrue(issueDetailsPage.isAllActionsSkipped());
+        ticketOverviewTab = (TicketOverviewTab) issueDetailsPage.selectOverviewTab(TROUBLE_TICKET_ISSUE_TYPE);
         ticketOverviewTab.changeTicketStatus(STATUS_ACKNOWLEDGED);
         Assert.assertEquals(ticketOverviewTab.checkTicketStatus(), STATUS_ACKNOWLEDGED);
     }
