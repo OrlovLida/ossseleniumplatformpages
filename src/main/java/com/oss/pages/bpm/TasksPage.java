@@ -57,6 +57,17 @@ public class TasksPage extends BasePage {
     private static final String PROCESS_CODE = "Process Code";
     private static final String NAME = "Name";
     private static final String ASSIGNEE = "Assignee";
+    private static final String REFRESH_TABLE_ID = "refreshTable";
+    private static final String NON_EXISTING_TASK_EXCEPTION = "There is no task for specified values";
+    private static final String UPLOAD_ANYWAY_LABEL = "Upload anyway";
+    private static final String PERFORM_CONFIGURATION_BUTTON_LABEL = "Perform Configuration";
+    private static final String PLAN_VIEW_BUTTON_LABEL = "Plan View";
+    private static final String SHOW_WITH_COMPLETED_FILTER_LABEL = "Show with Completed";
+    private static final String CODE_LABEL = "Code";
+    private static final String ATTACHMENTS_LIST_ID = "attachmentManagerBusinessView_commonTreeTable_BPMTask";
+    private static final String ATTACHMENTS_AND_DIRECTORIES = "Attachments and directories";
+    private static final String HOME_LABEL = "HOME";
+    private static final String PROCEED_BUTTON_LABEL = "Proceed";
 
     public TasksPage(WebDriver driver) {
         super(driver);
@@ -80,7 +91,7 @@ public class TasksPage extends BasePage {
         table.searchByAttributeWithLabel(PROCESS_CODE, Input.ComponentType.TEXT_FIELD, processCode);
         DelayUtils.waitForPageToLoad(driver, wait);
         table.searchByAttributeWithLabel(NAME, Input.ComponentType.TEXT_FIELD, taskName);
-        table.doRefreshWhileNoData(10000, "refreshTable");
+        table.doRefreshWhileNoData(10000, REFRESH_TABLE_ID);
         table.selectRowByAttributeValueWithLabel(PROCESS_CODE, processCode);
     }
 
@@ -91,7 +102,7 @@ public class TasksPage extends BasePage {
         table.searchByAttributeWithLabel(NAME, Input.ComponentType.TEXT_FIELD, taskName);
         DelayUtils.waitForPageToLoad(driver, wait);
         if (table.hasNoData()) {
-            return "There is no task for specified values";
+            return NON_EXISTING_TASK_EXCEPTION;
         } else {
             return getProcessCodeAndStartItIfNotStarted(username, taskName);
         }
@@ -133,7 +144,7 @@ public class TasksPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         getTab().callActionById(ATTACH_FILE_BUTTON_ID);
         AttachFileWizardPage attachFileWizardPage = new AttachFileWizardPage(driver);
-        attachFileWizardPage.selectRadioButton("Upload anyway");
+        attachFileWizardPage.selectRadioButton(UPLOAD_ANYWAY_LABEL);
         attachFileWizardPage.attachFile(filePath);
         attachFileWizardPage.skipAndAccept();
     }
@@ -143,23 +154,23 @@ public class TasksPage extends BasePage {
     }
 
     public void clickPerformConfigurationButton() {
-        Button button = Button.createByLabel(driver, TABS_TASKS_VIEW_ID, "Perform Configuration");
+        Button button = Button.createByLabel(driver, TABS_TASKS_VIEW_ID, PERFORM_CONFIGURATION_BUTTON_LABEL);
         button.click();
     }
 
     public void clickPlanViewButton() {
-        Button button = Button.createByLabel(driver, "Plan View");
+        Button button = Button.createByLabel(driver, PLAN_VIEW_BUTTON_LABEL);
         button.click();
     }
 
     public void showCompletedTasks() {
-        getOldTable().selectPredefinedFilter("Show with Completed");
+        getOldTable().selectPredefinedFilter(SHOW_WITH_COMPLETED_FILTER_LABEL);
     }
 
     public String getIPCodeByProcessName(String processIPName) {
         TableInterface ipTable = getIPTable();
         int rowNumber = ipTable.getRowNumber(processIPName, NAME);
-        return ipTable.getCellValue(rowNumber, "Code");
+        return ipTable.getCellValue(rowNumber, CODE_LABEL);
     }
 
     public void completeNRP(String processCode) {
@@ -185,7 +196,7 @@ public class TasksPage extends BasePage {
         findTask(processCode, READY_FOR_INTEGRATION_TASK);
         DelayUtils.sleep(3000);
         TableInterface ipTable = getIPTable();
-        String ipCode = ipTable.getCellValue(0, "Code");
+        String ipCode = ipTable.getCellValue(0, CODE_LABEL);
         startTask(ipCode, SCOPE_DEFINITION_TASK);
         completeTask(ipCode, SCOPE_DEFINITION_TASK);
         startTask(ipCode, IMPLEMENTATION_TASK);
@@ -194,9 +205,9 @@ public class TasksPage extends BasePage {
 
     public List<String> getListOfAttachments() {
         OldTreeTableWidget treeTable =
-                OldTreeTableWidget.create(driver, wait, "attachmentManagerBusinessView_commonTreeTable_BPMTask");
-        List<String> allNodes = treeTable.getAllVisibleNodes("Attachments and directories");
-        return allNodes.stream().filter(node -> !node.equals("HOME")).collect(Collectors.toList());
+                OldTreeTableWidget.create(driver, wait, ATTACHMENTS_LIST_ID);
+        List<String> allNodes = treeTable.getAllVisibleNodes(ATTACHMENTS_AND_DIRECTORIES);
+        return allNodes.stream().filter(node -> !node.equals(HOME_LABEL)).collect(Collectors.toList());
     }
 
     public void clearFilter() {
@@ -217,10 +228,10 @@ public class TasksPage extends BasePage {
     private String getProcessCodeAndStartItIfNotStarted(String username, String taskName) {
         OldTable table = getOldTable();
         String processCode = table.getCellValue(0, PROCESS_CODE);
-        log.debug("Process Code = {}", processCode);
-        String assigne = table.getCellValue(0, ASSIGNEE);
-        log.debug("Assignee = {}", assigne);
-        if (!assigne.equals(username)) {
+        log.debug(PROCESS_CODE + " = {}", processCode);
+        String assignee = table.getCellValue(0, ASSIGNEE);
+        log.debug(ASSIGNEE + " = {}", assignee);
+        if (!assignee.equals(username)) {
             startTask(processCode, taskName);
         }
         return processCode;
@@ -241,6 +252,6 @@ public class TasksPage extends BasePage {
         getTab().callActionById(actionId);
         DelayUtils.waitForPageToLoad(driver, wait);
         ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
-        prompt.clickButtonByLabel("Proceed");
+        prompt.clickButtonByLabel(PROCEED_BUTTON_LABEL);
     }
 }
