@@ -18,7 +18,7 @@ import com.oss.pages.BasePage;
  * @author Gabriela Kasza
  */
 public class IntegrationProcessWizardPage extends BasePage {
-    static final String WIZARD_ID = "ipd_integration_wizard_SetupIntegrationComponentId";
+    private static final String WIZARD_ID = "ipd_integration_wizard_SetupIntegrationComponentId";
     private static final String IP_LIST = "IntegrationProcessWizardComponentId";
     private static final String PROCESS_NAME_COLUMN_ID = "processNameId";
     private static final String PROCESS_NAME_ATTRIBUTE_ID = "processNameId-TEXT_FIELD";
