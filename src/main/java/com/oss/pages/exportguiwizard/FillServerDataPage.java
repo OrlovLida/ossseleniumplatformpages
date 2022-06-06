@@ -1,6 +1,5 @@
 package com.oss.pages.exportguiwizard;
 
-import com.oss.framework.components.data.Data;
 import com.oss.framework.utils.DelayUtils;
 
 import io.qameta.allure.Step;
@@ -18,32 +17,32 @@ public class FillServerDataPage extends ExportGuiWizardPage{
 
     @Step("Type Server Address")
     public FillServerDataPage typeServerAddress(String serverAddress) {
-        setValueOnTextField(SERVER_ADDRESS_ID,Data.createSingleData(serverAddress));
+        setTextValue(SERVER_ADDRESS_ID,serverAddress);
         return this;
     }
 
     @Step("Type Remote Directory Path")
     public FillServerDataPage typeRemoteDirectoryPath(String remoteDirectoryPath) {
-        setValueOnTextField(REMOTE_DIRECTORY_PATH_ID,Data.createSingleData(remoteDirectoryPath));
+        setTextValue(REMOTE_DIRECTORY_PATH_ID, remoteDirectoryPath);
         return this;
     }
 
     @Step("Type User Name")
     public FillServerDataPage typeUserName(String userName) {
-        setValueOnTextField(USER_NAME_ID,Data.createSingleData(userName));
+        setTextValue(USER_NAME_ID, userName);
         return this;
     }
 
     @Step("Type password")
     public FillServerDataPage typePassword(String password) {
-        setValueOnTextField(PASSWORD_ID,Data.createSingleData(password));
+        setTextValue(PASSWORD_ID,password);
         return this;
     }
 
     @Step("Choose Protocole Type")
     public FillServerDataPage chooseProtocoleType(String type){
         DelayUtils.waitForPageToLoad(driver, wait);
-        setValueOnCombobox(PROTOCOLE_TYPE_ID, type);
+        setComboboxValue(PROTOCOLE_TYPE_ID, type);
         return this;
     }
 }

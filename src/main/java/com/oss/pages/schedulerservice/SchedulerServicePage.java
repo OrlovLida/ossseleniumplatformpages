@@ -1,100 +1,83 @@
 package com.oss.pages.schedulerservice;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
+import org.openqa.selenium.WebDriver;
+import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.table.OldTable;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
 public class SchedulerServicePage extends BasePage {
-
-    @FindBy(xpath = "//div[@data-attributename ='search']//input")
-    private WebElement searchField;
-    @FindBy(xpath = "(//div[contains (@class, 'Cell Row') and contains(@class, 'radio')])[1]")
-    private WebElement firstJob;
-    @FindBy(id = "EDIT")
-    private WebElement editContextAction;
-    @FindBy(id = "schedulerServiceRetireJobAct")
-    private WebElement deleteJobAction;
-    @FindBy(id = "schedulerServicePermanentlyDeleteJobAct")
-    private WebElement permanentDeleteJobAction;
-    @FindBy(xpath = "//button[contains(@class, 'actionButton') and contains (@class, 'danger')]")
-    private WebElement confirmDeleteButton;
+    
+    private static final String SCHEDULER_SERVICE_LIST_ID = "schedulerServiceListAppId";
+    private static final String JOB_NAME_COLUMN = "Job name";
+    private static final String EDIT_ACTION_ID = "EDIT";
+    private static final String RETIRE_JOB_ACTION_ID = "schedulerServiceRetireJobAct";
+    private static final String RETIRE_CONFIRMATION_BUTTON = "ConfirmationBox_retireJobConfirmationBox_action_button";
+    private static final String PERMANENTLY_DELETE_JOB_ACTION_ID = "schedulerServicePermanentlyDeleteJobAct";
+    private static final String PERMANENTLY_REMOVE_JOB_CONFIRMATION_BUTTON =
+            "ConfirmationBox_permanentlyRemoveJobConfirmationBox_action_button";
+    
     public SchedulerServicePage(WebDriver driver) {
         super(driver);
     }
-
+    
     @Step("Open Scheduler Service Page")
     public static SchedulerServicePage goToSchedulerServicePage(WebDriver driver, String basicURL) {
         driver.get(String.format("%s/#/view/scheduler-service-view/main/global" +
                 "?perspective=LIVE", basicURL));
         return new SchedulerServicePage(driver);
     }
-
-    public String getTextOfJob(String text) {
-        return driver.findElement(By.xpath(getPathOfRowContainsText(text))).getText();
-    }
-
-    @Step("Find created Job and click on it")
-    public SchedulerServicePage findJobAndClickOnIt(String name) {
-        if (!isRowContainsTextVisible(name)) {
-            typeInSearchField(name);
+    
+    public List<String> getVisibleJobNames() {
+        OldTable table = getTable();
+        List<String> names = new ArrayList<>(Collections.emptyList());
+        int rowNumber = table.countRows(JOB_NAME_COLUMN);
+        for (int i = 0; i < rowNumber; i++) {
+            String jobNameValue = table.getCellValue(i, JOB_NAME_COLUMN);
+            names.add(jobNameValue);
         }
-        clickOnRowContainsText(name);
+        return names;
+    }
+    
+    @Step("Find created Job and click on it")
+    public SchedulerServicePage search(String name) {
+        typeInSearchField(name);
         return this;
     }
-
+    
     @Step("Delete created Job")
-    public SchedulerServicePage deleteSelectedJob() {
-        DelayUtils.waitForVisibility(wait, editContextAction);
-        editContextAction.click();
-        deleteJobAction.click();
-        DelayUtils.waitForVisibility(wait, confirmDeleteButton);
-        confirmDeleteButton.click();
+    public SchedulerServicePage retireJob() {
+        getTable().callAction(EDIT_ACTION_ID, RETIRE_JOB_ACTION_ID);
+        ConfirmationBox.create(driver, wait).clickButtonById(RETIRE_CONFIRMATION_BUTTON);
         DelayUtils.waitForPageToLoad(driver, wait);
         return this;
     }
-
+    
     @Step("Permanently delete created Job")
-    public SchedulerServicePage permanentlyRemoveJob() {
-        DelayUtils.waitForVisibility(wait, editContextAction);
-        editContextAction.click();
-        permanentDeleteJobAction.click();
-        DelayUtils.waitForVisibility(wait, confirmDeleteButton);
-        confirmDeleteButton.click();
+    public SchedulerServicePage permanentlyDeleteJob() {
+        getTable().callAction(EDIT_ACTION_ID, PERMANENTLY_DELETE_JOB_ACTION_ID);
+        ConfirmationBox.create(driver, wait).clickButtonById(PERMANENTLY_REMOVE_JOB_CONFIRMATION_BUTTON);
         DelayUtils.waitForPageToLoad(driver, wait);
         return this;
     }
-
-    @Step("Select deleted Job")
-    public SchedulerServicePage selectDeletedJob(String text) {
-        DelayUtils.waitForClickability(wait, driver.findElement(By.xpath("//div[contains(@class, 'Cell Row')]/div[contains(text(),'" + text + "')]")));
-        clickOnRowContainsText(text);
-        DelayUtils.waitForPageToLoad(driver, wait);
-        clickOnRowContainsText(text);
-        return this;
-    }
-
+    
     private void typeInSearchField(String value) {
-        DelayUtils.waitForVisibility(wait, searchField);
-        searchField.sendKeys(value);
+        getTable().fullTextSearch(value);
     }
-
-    private boolean isRowContainsTextVisible(String text) {
-        DelayUtils.waitForVisibility(wait, firstJob);
-        return !driver.findElements(By.xpath(getPathOfRowContainsText(text))).isEmpty();
+    
+    public SchedulerServicePage selectJob(String text) {
+        getTable().selectRowByAttributeValueWithLabel(JOB_NAME_COLUMN, text);
+        return this;
+        
     }
-
-    private void clickOnRowContainsText(String text) {
-        DelayUtils.waitByXPath(wait, getPathOfRowContainsText(text));
-        driver.findElement(By.xpath(getPathOfRowContainsText(text))).click();
-    }
-
-    private String getPathOfRowContainsText(String text) {
-        return "//div[contains(@class, 'Cell Row')]/div[contains(text(),'" + text + "')]";
+    
+    private OldTable getTable() {
+        return OldTable.createById(driver, wait, SCHEDULER_SERVICE_LIST_ID);
     }
 }
