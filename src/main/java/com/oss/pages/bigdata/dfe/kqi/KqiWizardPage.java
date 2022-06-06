@@ -20,8 +20,8 @@ public class KqiWizardPage extends BasePage {
     private static final Logger log = LoggerFactory.getLogger(KqiWizardPage.class);
 
     private static final String KPI_NAME_INPUT_ID = "kqiNameId";
-    private static final String VALUE_TYPE_ID = "kqiValueType-input";
-    private static final String UNIT_TYPE_ID = "kqiUnitId-input";
+    private static final String VALUE_TYPE_ID = "kqiValueType";
+    private static final String UNIT_TYPE_ID = "kqiUnitId";
     private static final String FORMULA_ID = "kqiFormulaId";
     private static final String KQI_WIZARD_ID = "kqiWizardWidgetId";
     private final Wizard kqiWizard;

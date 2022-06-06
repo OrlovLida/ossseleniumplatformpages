@@ -18,7 +18,7 @@ public class ServerGroupPopupPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(ServerGroupPopupPage.class);
     private static final String SERVER_GROUP_NAME_INPUT_ID = "name";
-    private static final String PROTOCOL_INPUT_ID = "protocol-input";
+    private static final String PROTOCOL_INPUT_ID = "protocol";
 
     private final Wizard serverGroupPopupWizard;
 

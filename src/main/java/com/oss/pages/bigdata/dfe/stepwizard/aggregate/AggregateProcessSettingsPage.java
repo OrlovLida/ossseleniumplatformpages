@@ -17,8 +17,8 @@ public class AggregateProcessSettingsPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(AggregateProcessSettingsPage.class);
 
-    private static final String ON_FAILURE_INPUT_ID = "failure-input";
-    private static final String STORAGE_POLICY_INPUT_ID = "storagePolicy-input";
+    private static final String ON_FAILURE_INPUT_ID = "failure";
+    private static final String STORAGE_POLICY_INPUT_ID = "storagePolicy";
     private static final String AGGREGATE_WIZARD_ID = "aggregatesWizardWindow";
     private final Wizard processSettingsWizard;
 

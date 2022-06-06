@@ -23,7 +23,7 @@ public class XDRBrowserPage extends BaseDfePage {
 
     private static final Logger log = LoggerFactory.getLogger(XDRBrowserPage.class);
 
-    private static final String ETL_NAME_COMBOBOX_ID = "etlProcessId-input";
+    private static final String ETL_NAME_COMBOBOX_ID = "etlProcessId";
     private static final String TIME_PERIOD_ID = "input_etlTime";
     private static final String SEARCH_BUTTON_ID = "Search_Button-0";
     private static final String XDR_TABLE_ID = "xdrTableId";
