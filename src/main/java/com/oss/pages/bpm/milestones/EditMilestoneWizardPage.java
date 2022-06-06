@@ -12,7 +12,7 @@ import com.oss.framework.components.inputs.Input;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 
-import java.util.NoSuchElementException;
+import org.openqa.selenium.NoSuchElementException;
 
 /**
  * @author Gabriela Kasza
@@ -22,6 +22,8 @@ public class EditMilestoneWizardPage extends BasePage {
     private static final String CANCEL_BUTTON = "wizard-cancel-button-milestones-edit_wizard-app";
     private static final String EDIT_MILESTONE_LIST = "milestones-edit_wizard-editable-list";
     private static final String MILESTONE_EDIT_WIZARD_ID = "milestones-edit_wizard-app";
+    private static final String DELAY_REASON_ID = "milestones-edit_delay-reason";
+    private static final String DELAY_REASON_TEXT = "Selenium Test - Delay reason";
 
     public EditMilestoneWizardPage(WebDriver driver) {
         super(driver);
@@ -31,8 +33,8 @@ public class EditMilestoneWizardPage extends BasePage {
         Wizard editWizard = Wizard.createByComponentId(driver, wait, MILESTONE_EDIT_WIZARD_ID);
         MilestoneWizardPage milestoneWizardPage = new MilestoneWizardPage(driver);
         Milestone editedMilestone = milestoneWizardPage.editMilestoneRow(milestone, 1, EDIT_MILESTONE_LIST);
-        if (driver.getPageSource().contains("milestones-edit_delay-reason")) {
-            editWizard.setComponentValue("milestones-edit_delay-reason", "Selenium Test - Delay reason",
+        if (driver.getPageSource().contains(DELAY_REASON_ID)) {
+            editWizard.setComponentValue(DELAY_REASON_ID, DELAY_REASON_TEXT,
                     Input.ComponentType.TEXT_FIELD);
         }
         editWizard.clickButtonById(ACCEPT_BUTTON);

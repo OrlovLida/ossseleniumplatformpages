@@ -29,6 +29,11 @@ import static com.oss.configuration.Configuration.CONFIGURATION;
  * @author Paweł Rother
  */
 public class ProcessModelsPage extends BasePage {
+    private static final String KEYWORDS_INPUT_ID = "keywordsComponentId";
+    private static final String IDENTIFIER_FIELD_ID = "identifier-field";
+    private static final String DESCRIPTION_FIELD_ID = "description-field";
+    private static final String NAME_FIELD_ID = "name-field";
+    private static final String NAME_LABEL = "Name";
     private static final String DOMAIN_CHOOSER_COMBOBOX_ID = "domain";
     private static final String MODEL_LIST_TABLE_ID = "bpm_models_view_app-model-list";
     private static final String MODEL_OPERATIONS_GROUPING_ACTION_BUTTON_ID = "grouping-action-model-operations";
@@ -50,6 +55,10 @@ public class ProcessModelsPage extends BasePage {
     private static final String EDIT_MILESTONE_ACTION_ID = "edit-milestones";
     private static final String EDIT_MILESTONES_WIZARD_ID = "bpm_models_view_milestones-popup_wizard-app-id";
     private static final String EDIT_MILESTONES_LIST_ID = "bpm_models_view_milestones-popup_wizard-editable-list-id";
+    private static final String BPM_AND_PLANNING = "BPM and Planning";
+    private static final String PROCESS_MODELS = "Process Models";
+    private static final String VIEWS = "Views";
+    private static final String BPM = "Business Process Management";
 
     public ProcessModelsPage(WebDriver driver) {
         super(driver);
@@ -57,10 +66,10 @@ public class ProcessModelsPage extends BasePage {
 
     public static ProcessModelsPage goToProcessModelsPage(WebDriver driver, WebDriverWait webDriverWait) {
         SideMenu sidemenu = SideMenu.create(driver, webDriverWait);
-        if (driver.getPageSource().contains("BPM and Planning"))
-            sidemenu.callActionByLabel("Process Models", "BPM and Planning", "Business Process Management");
+        if (driver.getPageSource().contains(BPM_AND_PLANNING))
+            sidemenu.callActionByLabel(PROCESS_MODELS, BPM_AND_PLANNING, BPM);
         else
-            sidemenu.callActionByLabel("Process Models", "Views", "Business Process Management");
+            sidemenu.callActionByLabel(PROCESS_MODELS, VIEWS, BPM);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         return new ProcessModelsPage(driver);
     }
@@ -81,7 +90,7 @@ public class ProcessModelsPage extends BasePage {
     }
 
     public void selectModelByName(String name) {
-        getModelsTable().searchByAttributeWithLabel("Name", Input.ComponentType.TEXT_FIELD, name);
+        getModelsTable().searchByAttributeWithLabel(NAME_LABEL, Input.ComponentType.TEXT_FIELD, name);
         getModelsTable().selectRow(0);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
@@ -124,9 +133,9 @@ public class ProcessModelsPage extends BasePage {
 
     public void cloneModel(String baseModelName, String clonedModelName, String clonedIdentifier, String clonedDescription) {
         Wizard cloneWizard = openWizardForSelectedModel(baseModelName, MODEL_OPERATIONS_GROUPING_ACTION_BUTTON_ID, CLONE_ACTION_BUTTON_ID, CLONE_MODEL_POPUP_ID);
-        setWizardAttributeValue(cloneWizard, "name-field", Input.ComponentType.TEXT_FIELD, clonedModelName);
-        setWizardAttributeValue(cloneWizard, "identifier-field", Input.ComponentType.TEXT_FIELD, clonedIdentifier);
-        setWizardAttributeValue(cloneWizard, "description-field", Input.ComponentType.TEXT_FIELD, clonedDescription);
+        setWizardAttributeValue(cloneWizard, NAME_FIELD_ID, Input.ComponentType.TEXT_FIELD, clonedModelName);
+        setWizardAttributeValue(cloneWizard, IDENTIFIER_FIELD_ID, Input.ComponentType.TEXT_FIELD, clonedIdentifier);
+        setWizardAttributeValue(cloneWizard, DESCRIPTION_FIELD_ID, Input.ComponentType.TEXT_FIELD, clonedDescription);
 
         cloneWizard.clickButtonById(CLONE_MODEL_ACCEPT_BUTTON_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -140,7 +149,7 @@ public class ProcessModelsPage extends BasePage {
 
     public void setKeyword(String modelName, String keyword) {
         Wizard editKeywordsWizard = openWizardForSelectedModel(modelName, MODEL_OPERATIONS_GROUPING_ACTION_BUTTON_ID, EDIT_KEYWORDS_ACTION_BUTTON_ID, EDIT_KEYWORDS_POPUP_ID);
-        setWizardAttributeValue(editKeywordsWizard, "keywordsComponentId", Input.ComponentType.MULTI_SEARCH_FIELD, keyword);
+        setWizardAttributeValue(editKeywordsWizard, KEYWORDS_INPUT_ID, Input.ComponentType.MULTI_SEARCH_FIELD, keyword);
         editKeywordsWizard.clickButtonById(EDIT_KEYWORDS_ACCEPT_BUTTON_ID);
     }
 
@@ -189,7 +198,7 @@ public class ProcessModelsPage extends BasePage {
 
     public String getMilestoneValue(String milestoneName, String attributeName) {
         CommonList milestoneList = CommonList.create(driver, wait, MILESTONE_LIST_ID);
-        return milestoneList.getRow("Name", milestoneName).getFullContent(attributeName);
+        return milestoneList.getRow(NAME_LABEL, milestoneName).getFullContent(attributeName);
     }
 
     public boolean isMilestonesTabEmpty() {

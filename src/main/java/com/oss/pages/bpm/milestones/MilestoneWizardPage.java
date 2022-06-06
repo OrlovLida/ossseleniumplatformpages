@@ -1,12 +1,12 @@
 package com.oss.pages.bpm.milestones;
 
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.EditableList;
 import com.oss.pages.BasePage;
 
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+
 /**
  * @author Paweł Rother
  */
@@ -26,13 +26,19 @@ public class MilestoneWizardPage extends BasePage {
     private static final String BPM_MILESTONE_DESCRIPTION_INPUT = "description-TEXT_FIELD";
     private static final String BPM_MILESTONE_IS_ACTIVE_INPUT = "active-CHECKBOX";
     private static final String DELETE_MILESTONE_ROW_ACTION_ID = "deleteButton1";
+    private static final String NAME_NOT_EDITABLE_EXCEPTION = "Name is not editable. You need Admin permission";
+    private static final String DUE_DATE_LABEL = "Due Date";
+    private static final String ACTIVE_LABEL = "Active";
 
     public MilestoneWizardPage(WebDriver driver) {
         super(driver);
     }
+
     public Milestone addMilestoneRow(Milestone milestone, String addMilestonesListId) {
+        DelayUtils.waitForPageToLoad(driver, wait);
         EditableList addMilestoneList = EditableList.createById(driver, wait, addMilestonesListId);
         EditableList.Row row = addMilestoneList.addRow();
+        DelayUtils.waitForPageToLoad(driver, wait);
 
         milestone.getName().ifPresent(name -> row.setValue(milestone.getName().get(), BPM_MILESTONE_NAME,
                 BPM_MILESTONE_NAME_INPUT));
@@ -60,13 +66,14 @@ public class MilestoneWizardPage extends BasePage {
     }
 
     public Milestone editMilestoneRow(Milestone milestone, int row, String milestonesListId) {
+        DelayUtils.waitForPageToLoad(driver, wait);
         EditableList milestoneList = EditableList.createById(driver, wait, milestonesListId);
         EditableList.Row editMilestoneRow = milestoneList.getRow(row - 1);
         DelayUtils.sleep(2000);
 
         milestone.getName().ifPresent(name -> {
             if (!editMilestoneRow.isAttributeEditable(BPM_MILESTONE_NAME)) {
-                throw new NoSuchElementException("Name is not editable. You need Admin permission");
+                throw new NoSuchElementException(NAME_NOT_EDITABLE_EXCEPTION);
             }
             editMilestoneRow.setValue(name, BPM_MILESTONE_NAME, BPM_MILESTONE_NAME_INPUT);
         });
@@ -83,8 +90,7 @@ public class MilestoneWizardPage extends BasePage {
 
         milestone.getRelatedTask().ifPresent(relatedTask -> {
             if (relatedTask.isEmpty()) {
-                editMilestoneRow.clearValue(BPM_MILESTONE_RELATED_TASK, BPM_MILESTONE_RELATED_TASK_INPUT,
-                        Input.ComponentType.COMBOBOX);
+                editMilestoneRow.clearValue(BPM_MILESTONE_RELATED_TASK, BPM_MILESTONE_RELATED_TASK_INPUT);
             } else {
                 editMilestoneRow.setValue(relatedTask, BPM_MILESTONE_RELATED_TASK,
                         BPM_MILESTONE_RELATED_TASK_INPUT);
@@ -111,14 +117,14 @@ public class MilestoneWizardPage extends BasePage {
     private Milestone getMilestoneFromRow(EditableList list, int row) {
         String name = list.getRow(row).getCellValue(BPM_MILESTONE_NAME);
         String dueDate = "";
-        if (list.getColumnHeadersLabels().contains("Due Date")) {
+        if (list.getColumnHeadersLabels().contains(DUE_DATE_LABEL)) {
             dueDate = list.getRow(row).getCellValue(BPM_MILESTONE_DUE_DATE);
         }
         String leadTime = list.getRow(row).getCellValue(BPM_MILESTONE_LEAD_TIME);
         String description = list.getRow(row).getCellValue(BPM_MILESTONE_DESCRIPTION);
         String relatedTask = list.getRow(row).getCellValue(BPM_MILESTONE_RELATED_TASK);
         String isActive = "";
-        if (list.getColumnHeadersLabels().contains("Active")) {
+        if (list.getColumnHeadersLabels().contains(ACTIVE_LABEL)) {
             isActive = list.getRow(row).getCellValue(BPM_MILESTONE_IS_ACTIVE);
         }
         String isManualCompletion = list.getRow(row).getCellValue(BPM_MILESTONE_IS_MANUAL_COMPLETION);

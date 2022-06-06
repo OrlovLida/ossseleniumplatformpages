@@ -36,6 +36,10 @@ public class ProcessInstancesPage extends BasePage {
     private static final String TERMINATE_PROCESS_ACTION_ID = "kill-process";
     private static final String EDIT_PROCESS_ATTRIBUTES_ACTION_ID = "edit-processes";
     private static final String ADD_MILESTONES_WIZARD_ID = "WIZARD_APP_ID";
+    private static final String CODE_LABEL = "Code";
+    private static final String STATUS_LABEL = "Status";
+    private static final String NAME_LABEL = "Name";
+    private static final String REFRESH_TABLE_ID = "refresh-table";
 
     protected ProcessInstancesPage(WebDriver driver) {
         super(driver);
@@ -60,29 +64,29 @@ public class ProcessInstancesPage extends BasePage {
 
     public String getProcessStatus(String code) {
         OldTable processTable = OldTable.createById(driver, wait, PROCESS_VIEW);
-        processTable.searchByAttributeWithLabel("Code", Input.ComponentType.TEXT_FIELD, code);
-        int index = processTable.getRowNumber(code, "Code");
-        return processTable.getCellValue(index, "Status");
+        processTable.searchByAttributeWithLabel(CODE_LABEL, Input.ComponentType.TEXT_FIELD, code);
+        int index = processTable.getRowNumber(code, CODE_LABEL);
+        return processTable.getCellValue(index, STATUS_LABEL);
     }
 
     public String getProcessName(String code) {
         OldTable processTable = OldTable.createById(driver, wait, PROCESS_VIEW);
-        processTable.searchByAttributeWithLabel("Code", Input.ComponentType.TEXT_FIELD, code);
-        int index = processTable.getRowNumber(code, "Code");
-        return processTable.getCellValue(index, "Name");
+        processTable.searchByAttributeWithLabel(CODE_LABEL, Input.ComponentType.TEXT_FIELD, code);
+        int index = processTable.getRowNumber(code, CODE_LABEL);
+        return processTable.getCellValue(index, NAME_LABEL);
     }
 
     public String getProcessCode(String processName) {
         DelayUtils.waitForPageToLoad(driver, wait);
         OldTable processTable = OldTable.createById(driver, wait, PROCESS_VIEW);
-        processTable.searchByAttributeWithLabel("Name", Input.ComponentType.TEXT_FIELD, processName);
-        processTable.doRefreshWhileNoData(1000, "refresh-table");
-        int index = processTable.getRowNumber(processName, "Name");
-        return processTable.getCellValue(index, "Code");
+        processTable.searchByAttributeWithLabel(NAME_LABEL, Input.ComponentType.TEXT_FIELD, processName);
+        processTable.doRefreshWhileNoData(1000, REFRESH_TABLE_ID);
+        int index = processTable.getRowNumber(processName, NAME_LABEL);
+        return processTable.getCellValue(index, CODE_LABEL);
     }
 
     public void findProcess(String processCode) {
-        findProcess("Code", processCode);
+        findProcess(CODE_LABEL, processCode);
     }
 
     private void findProcess(String attributeName, String value) {
@@ -90,13 +94,13 @@ public class ProcessInstancesPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         table.searchByAttributeWithLabel(attributeName, Input.ComponentType.TEXT_FIELD, value);
         DelayUtils.waitForPageToLoad(driver, wait);
-        table.doRefreshWhileNoData(10000, "refresh-table");
+        table.doRefreshWhileNoData(10000, REFRESH_TABLE_ID);
         table.selectRowByAttributeValueWithLabel(attributeName, value);
     }
 
     public String getMilestoneValue(String milestoneName, String attributeName) {
         CommonList milestoneList = CommonList.create(driver, wait, MILESTONE_LIST);
-        return milestoneList.getRow("Name", milestoneName).getValue(attributeName);
+        return milestoneList.getRow(NAME_LABEL, milestoneName).getValue(attributeName);
     }
 
     public void selectMilestoneTab(String processAttributeName, String value) {

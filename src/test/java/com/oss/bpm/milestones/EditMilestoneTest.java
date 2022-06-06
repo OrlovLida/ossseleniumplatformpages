@@ -4,10 +4,13 @@
  * duplication or redistribution of this software is allowed only according to
  * separate agreement prepared in written between Comarch and authorized party.
  */
-package com.oss.bpm;
+package com.oss.bpm.milestones;
 
 import java.time.LocalDate;
 
+import org.openqa.selenium.NoSuchElementException;
+
+import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.mainheader.ToolbarWidget;
 import io.qameta.allure.Description;
 import org.slf4j.Logger;
@@ -36,6 +39,13 @@ public class EditMilestoneTest extends BaseTestCase {
     private static final String BPM_ADMIN_USER_LOGIN = "bpm_admin_webselenium";
     private static final String BPM_ADMIN_USER_PASSWORD = "Webtests123!";
 
+    private static final String CORRECT_DATA_TASK_NAME = "Correct data";
+    private static final String DCP = "Data Correction Process";
+    private static final String MILESTONE_UPDATE_NAME = "Edit Name";
+    private static final String NON_EDITABLE_NAME_EXCEPTION = "Name is not editable. You need Admin permission";
+    private static final String BPM_CONFIGURATION_NAME = "bpm_selenium";
+    private static final String MILESTONE_NAME = "Milestone U.";
+    private static final String PROCESS_NAME = "Selenium Test.Milestone-";
     private static final String BPM_MILESTONE_MODIFY_DATE = "modifyDate";
     private static final String BPM_MILESTONE_MODIFY_USER = "modifierUser.name";
     private static final String BPM_MILESTONE_DESCRIPTION = "description";
@@ -44,9 +54,9 @@ public class EditMilestoneTest extends BaseTestCase {
     private static final String BPM_MILESTONE_DUE_DATE = "dueDate";
     private static final String BPM_MILESTONE_MANUAL_COMPLETION = "manualCompletion";
     private static final String BPM_MILESTONE_NAME = "name";
-
-    private static final Logger log = LoggerFactory.getLogger(EditMilestoneTest.class);
     private static final String EDIT_MILESTONE_BUTTON = "editMilestonesContextAction";
+    private static final String SUCCESS_UPDATE_MILESTONES_MESSAGE = "Milestones were updated";
+    private static final String NO_SYSTEM_MESSAGE_EXCEPTION = "There is no any System Message";
 
     private final String description = "Milestone Update " + (Math.random() * 1001);
     private String milestoneName = "Milestone Update " + (Math.random() * 100001);
@@ -64,17 +74,16 @@ public class EditMilestoneTest extends BaseTestCase {
         }
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
-        String processName = "Selenium Test.Milestone-" + (int) (Math.random() * 100001);
+        String processName = PROCESS_NAME + (int) (Math.random() * 100001);
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
 
         Milestone milestone1 = Milestone.builder()
                 .setLeadTime("10")
-                .setRelatedTask("Correct data")
+                .setRelatedTask(CORRECT_DATA_TASK_NAME)
                 .setIsActive("true")
                 .setName(milestoneName).build();
 
-        processWizardPage.definedMilestoneInProcess(processName, 5L,
-                "Data Correction Process").addMilestoneRow(milestone1);
+        processWizardPage.definedMilestoneInProcess(processName, 5L, DCP).addMilestoneRow(milestone1);
         processWizardPage.clickAcceptButton();
     }
 
@@ -93,6 +102,11 @@ public class EditMilestoneTest extends BaseTestCase {
         Milestone updated_description = Milestone.builder().setDescription(description).build();
         // then
         editWizard.editMilestone(updated_description);
+
+        String message = SystemMessageContainer.create(driver, webDriverWait).getFirstMessage().orElseThrow(()
+                -> new RuntimeException(NO_SYSTEM_MESSAGE_EXCEPTION)).getText();
+        Assert.assertEquals(message, SUCCESS_UPDATE_MILESTONES_MESSAGE);
+
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         String newDescriptionValue = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_DESCRIPTION);
         String newModifyDate = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_DATE);
@@ -115,11 +129,15 @@ public class EditMilestoneTest extends BaseTestCase {
         Milestone updated_leadTime = Milestone.builder().setLeadTime(leadTime).build();
         // then
         editWizard.editMilestone(updated_leadTime);
+
+        String message = SystemMessageContainer.create(driver, webDriverWait).getFirstMessage().orElseThrow(()
+                -> new RuntimeException(NO_SYSTEM_MESSAGE_EXCEPTION)).getText();
+        Assert.assertEquals(message, SUCCESS_UPDATE_MILESTONES_MESSAGE);
+
         String newLeadTimeValue = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_LEAD_TIME);
         String newModifyDate = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_DATE);
         Assert.assertEquals(leadTime, newLeadTimeValue);
         Assert.assertNotEquals(newModifyDate, modifyDate);
-        log.info("test");
     }
 
     @Test(priority = 3, description = "Edit related Task")
@@ -133,6 +151,11 @@ public class EditMilestoneTest extends BaseTestCase {
         EditMilestoneWizardPage editWizard = new EditMilestoneWizardPage(driver);
         Milestone setProcess = Milestone.builder().setRelatedTask("").build();
         editWizard.editMilestone(setProcess);
+
+        String message = SystemMessageContainer.create(driver, webDriverWait).getFirstMessage().orElseThrow(()
+                -> new RuntimeException(NO_SYSTEM_MESSAGE_EXCEPTION)).getText();
+        Assert.assertEquals(message, SUCCESS_UPDATE_MILESTONES_MESSAGE);
+
         String relatedTask = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_RELATED_TASK_NAME);
         Assert.assertEquals(relatedTask, "");
 
@@ -154,6 +177,11 @@ public class EditMilestoneTest extends BaseTestCase {
         Milestone updated_dueDate = Milestone.builder().setDueDate(LocalDate.parse(dueDate).minusDays(10).toString()).build();
         // then
         editWizard.editMilestone(updated_dueDate);
+
+        String message = SystemMessageContainer.create(driver, webDriverWait).getFirstMessage().orElseThrow(()
+                -> new RuntimeException(NO_SYSTEM_MESSAGE_EXCEPTION)).getText();
+        Assert.assertEquals(message, SUCCESS_UPDATE_MILESTONES_MESSAGE);
+
         String newDueDateValue = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_DUE_DATE);
         String newModifyDate = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_DATE);
         Assert.assertEquals(updated_dueDate.getDueDate().get(), newDueDateValue);
@@ -176,6 +204,11 @@ public class EditMilestoneTest extends BaseTestCase {
         Milestone updated_dueDate = Milestone.builder().setDueDate(LocalDate.parse(dueDate).plusDays(10).toString()).build();
         // then
         editWizard.editMilestone(updated_dueDate);
+
+        String message = SystemMessageContainer.create(driver, webDriverWait).getFirstMessage().orElseThrow(()
+                -> new RuntimeException(NO_SYSTEM_MESSAGE_EXCEPTION)).getText();
+        Assert.assertEquals(message, SUCCESS_UPDATE_MILESTONES_MESSAGE);
+
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         String newDueDateValue = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_DUE_DATE);
         String newModifyDate = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_DATE);
@@ -194,13 +227,12 @@ public class EditMilestoneTest extends BaseTestCase {
         milestoneViewPage.selectMilestone(milestoneName);
         milestoneViewPage.callAction(EDIT_MILESTONE_BUTTON);
         EditMilestoneWizardPage editWizard = new EditMilestoneWizardPage(driver);
-        Milestone updated_name = Milestone.builder().setName("Edit Name").build();
+        Milestone updated_name = Milestone.builder().setName(MILESTONE_UPDATE_NAME).build();
         // then
-        RuntimeException runtimeException = Assert.expectThrows(RuntimeException.class, () -> {
-            editWizard.editMilestone(updated_name);
-        });
+        RuntimeException runtimeException = Assert.expectThrows(NoSuchElementException.class, ()
+                -> editWizard.editMilestone(updated_name));
         editWizard.cancel();
-        Assert.assertEquals(runtimeException.getMessage(), "Name is not editable. You need Admin permission");
+        Assert.assertTrue(runtimeException.getMessage().contains(NON_EDITABLE_NAME_EXCEPTION));
     }
 
     @Test(priority = 7, description = "Edit Manual Completion")
@@ -215,6 +247,11 @@ public class EditMilestoneTest extends BaseTestCase {
         EditMilestoneWizardPage editWizard = new EditMilestoneWizardPage(driver);
         Milestone aTrue = Milestone.builder().setIsManualCompletion("true").build();
         editWizard.editMilestone(aTrue);
+
+        String message = SystemMessageContainer.create(driver, webDriverWait).getFirstMessage().orElseThrow(()
+                -> new RuntimeException(NO_SYSTEM_MESSAGE_EXCEPTION)).getText();
+        Assert.assertEquals(message, SUCCESS_UPDATE_MILESTONES_MESSAGE);
+
         String newIsManualCompletionValue = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MANUAL_COMPLETION);
         String newModifyDate = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_DATE);
         Assert.assertEquals(aTrue.getIsManualCompletion().get(), newIsManualCompletionValue);
@@ -231,14 +268,19 @@ public class EditMilestoneTest extends BaseTestCase {
         milestoneViewPage.changeUser(BPM_ADMIN_USER_LOGIN, BPM_ADMIN_USER_PASSWORD);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         milestoneViewPage.selectMilestone(milestoneName);
-        milestoneViewPage.chooseMilestoneAttributesConfiguration("bpm_selenium");
+        milestoneViewPage.chooseMilestoneAttributesConfiguration(BPM_CONFIGURATION_NAME);
         String modifyDate = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_DATE);
         String modifyUser = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_USER);
         // when
         milestoneViewPage.callAction(EDIT_MILESTONE_BUTTON);
         EditMilestoneWizardPage editWizard = new EditMilestoneWizardPage(driver);
-        Milestone updated_name = Milestone.builder().setName("Milestone U." + (int) (Math.random() * 1001)).build();
+        Milestone updated_name = Milestone.builder().setName(MILESTONE_NAME + (int) (Math.random() * 1001)).build();
         editWizard.editMilestone(updated_name);
+
+        String message = SystemMessageContainer.create(driver, webDriverWait).getFirstMessage().orElseThrow(()
+                -> new RuntimeException(NO_SYSTEM_MESSAGE_EXCEPTION)).getText();
+        Assert.assertEquals(message, SUCCESS_UPDATE_MILESTONES_MESSAGE);
+
         // then
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         milestoneViewPage.selectMilestone(updated_name.getName().get());

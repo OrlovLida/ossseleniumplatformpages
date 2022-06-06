@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.oss.pages.bpm.milestones.MilestoneWizardPage;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -33,6 +34,7 @@ import io.qameta.allure.Description;
  */
 public class ProcessWizardPage extends BasePage {
 
+    private static final String CANNOT_EXTRACT_PROCESS_CODE_EXCEPTION = "Cannot extract Process Code from message: ";
     private static final String TABLE_PROCESSES = "bpm_processes_view_processes";
     private static final String PROCESS_WIZARD_STEP_1 = "start-process-wizard";
     private static final String PROCESS_WIZARD_STEP_2 = "bpm_processes_view_start-process-details-prompt_processCreateFormId";
@@ -52,6 +54,10 @@ public class ProcessWizardPage extends BasePage {
     private static final String DCP = "Data Correction Process";
     private static final String PREDEFINED_MILESTONE_LIST = "editMilestonesComponentId";
     private static final String ADD_MILESTONE_LIST = "addMilestonesComponentId";
+    private static final String CREATE_GROUP_ACTION_ID = "create";
+    private static final String START_PROCESS_ACTION_ID = "start-process";
+    private static final String ADD_MILESTONE_OPTION_LABEL = "Add Milestones";
+    private static final String MILESTONE_ENABLED_CHECKBOX_ID = "milestonesEnabledCheckboxId";
 
     public ProcessWizardPage(WebDriver driver) {
         super(driver);
@@ -75,7 +81,7 @@ public class ProcessWizardPage extends BasePage {
 
     public String createProcess(String processName, Long plusDays, String processType) {
         TableInterface table = OldTable.createById(driver, wait, TABLE_PROCESSES);
-        table.callAction("create", "start-process");
+        table.callAction(CREATE_GROUP_ACTION_ID, START_PROCESS_ACTION_ID);
         definedBasicProcess(processName, processType, plusDays).clickButtonById(CREATE_BUTTON);
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, wait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
@@ -86,10 +92,10 @@ public class ProcessWizardPage extends BasePage {
     @Description("Go to Milestone Step)")
     public MilestoneStepWizard definedMilestoneInProcess(String processName, Long plusDays, String processType) {
         TableInterface table = OldTable.createById(driver, wait, TABLE_PROCESSES);
-        table.callAction("create", "start-process");
+        table.callAction(CREATE_GROUP_ACTION_ID, START_PROCESS_ACTION_ID);
         Wizard processWizard = definedBasicProcess(processName, processType, plusDays);
-        if (driver.getPageSource().contains("Add Milestones")) {
-            processWizard.setComponentValue("milestonesEnabledCheckboxId", "true", Input.ComponentType.CHECKBOX);
+        if (driver.getPageSource().contains(ADD_MILESTONE_OPTION_LABEL)) {
+            processWizard.setComponentValue(MILESTONE_ENABLED_CHECKBOX_ID, "true");
         }
         DelayUtils.sleep();
         processWizard.clickButtonById(NEXT_BUTTON);
@@ -106,22 +112,22 @@ public class ProcessWizardPage extends BasePage {
 
     private Wizard definedBasicProcess(String processName, String processType, Long plusDays) {
         Wizard wizardFirstStep = Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_1);
-        Input componentDomain = wizardFirstStep.getComponent(DOMAIN_ATTRIBUTE_ID, Input.ComponentType.COMBOBOX);
+        Input componentDomain = wizardFirstStep.getComponent(DOMAIN_ATTRIBUTE_ID);
         if (!componentDomain.getValue().getStringValue().equals(INVENTORY_PROCESS)) {
             componentDomain.setSingleStringValue(INVENTORY_PROCESS);
         }
-        Input componentDefinition = wizardFirstStep.getComponent(DEFINITION_ATTRIBUTE_ID, Input.ComponentType.COMBOBOX);
+        Input componentDefinition = wizardFirstStep.getComponent(DEFINITION_ATTRIBUTE_ID);
         componentDefinition.setSingleStringValue(processType);
         DelayUtils.sleep(1000);
-        Input componentRelease = wizardFirstStep.getComponent(RELEASE_ATTRIBUTE_ID, Input.ComponentType.COMBOBOX);
+        Input componentRelease = wizardFirstStep.getComponent(RELEASE_ATTRIBUTE_ID);
         componentRelease.clear();
         componentRelease.setSingleStringValue(LATEST);
         wizardFirstStep.clickButtonById(ACCEPT_BUTTON);
         Wizard wizardSecondStep = Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2);
-        Input processNameTextField = wizardSecondStep.getComponent(PROCESS_NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD);
+        Input processNameTextField = wizardSecondStep.getComponent(PROCESS_NAME_ATTRIBUTE_ID);
         processNameTextField.setSingleStringValue(processName);
         if (driver.getPageSource().contains(FINISH_DUE_DATE_ID)) {
-            Input finishedDueDate = wizardSecondStep.getComponent(FINISH_DUE_DATE_ID, Input.ComponentType.DATE);
+            Input finishedDueDate = wizardSecondStep.getComponent(FINISH_DUE_DATE_ID);
             finishedDueDate.setSingleStringValue(LocalDate.now().plusDays(plusDays).toString());
         }
         return Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2);
@@ -135,7 +141,7 @@ public class ProcessWizardPage extends BasePage {
                 return part;
             }
         }
-        throw new RuntimeException("Cannot extract Process Code from message: " + message);
+        throw new NoSuchElementException(CANNOT_EXTRACT_PROCESS_CODE_EXCEPTION + message);
     }
 
     public static class MilestoneStepWizard {

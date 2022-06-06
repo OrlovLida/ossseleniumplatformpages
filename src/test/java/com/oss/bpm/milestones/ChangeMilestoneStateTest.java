@@ -1,4 +1,4 @@
-package com.oss.bpm;
+package com.oss.bpm.milestones;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
@@ -29,12 +29,22 @@ import java.time.LocalDate;
 
 @Listeners({TestListener.class})
 public class ChangeMilestoneStateTest extends BaseTestCase {
+    private static final String BPM_USER_LOGIN = "bpm_webselenium";
+    private static final String BPM_USER_PASSWORD = "Webtests123!";
+    private static final String BPM_ADMIN_USER_LOGIN = "bpm_admin_webselenium";
+    private static final String BPM_ADMIN_USER_PASSWORD = "Webtests123!";
 
-    private final String BPM_USER_LOGIN = "bpm_webselenium";
-    private final String BPM_USER_PASSWORD = "Webtests123!";
-    private final String BPM_ADMIN_USER_LOGIN = "bpm_admin_webselenium";
-    private final String BPM_ADMIN_USER_PASSWORD = "Webtests123!";
-
+    private static final String PROCESS_NAME = "Selenium Test.Milestone-";
+    private static final String MODIFY_DATE_ID = "modifyDate";
+    private static final String DUE_DATE_ID = "dueDate";
+    private static final String COMPLETION_DATE_ID = "completionDate";
+    private static final String STATE_ID = "state";
+    private static final String CORRECT_DATA_TASK_NAME = "Correct data";
+    private static final String DCP = "Data Correction Process";
+    private static final String CHANGE_STATE_MILESTONES_SUCCESS_MESSAGE = "All milestones changed state successfully.";
+    private static final String NO_SYSTEM_MESSAGE_EXCEPTION = "There is no any System Message";
+    private static final String NOT_ALL_MILESTONE_CHANGED_STATE_MESSAGE = "Not all milestones changed state.\n" +
+            "Following milestones cannot be manually completed:";
     private final String milestoneName1 = "Milestone Update " + (int) (Math.random() * 100001);
     private final String milestoneName2 = "Milestone Update " + (int) (Math.random() * 100001);
     private final String milestoneName3 = "Milestone Update " + (int) (Math.random() * 100001);
@@ -48,7 +58,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
     private static final String CHANGE_STATE_REASON = "CHANGE STATE SELENIUM TEST";
     private static final String VALIDATION_MESSAGE = "Cannot change states of selected milestones. All selected milestones should have the same state.";
     private static final String LEAD_TIME = "10";
-    private static final long PLUS_DAYS = 5L;
+    private final long PLUS_DAYS = 5L;
 
     private MilestoneViewPage milestoneViewPage;
     private ChangeStateMilestoneWizardPage changeStateMilestoneWizardPage;
@@ -61,30 +71,30 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         }
     }
 
-    private void changeMilestoneStateSimple(String nextState, String reason) {
+    private void changeMilestoneStateSimple(String nextState) {
         milestoneViewPage.callAction(CHANGE_STATE_BUTTON);
         changeStateMilestoneWizardPage.setState(nextState);
-        changeStateMilestoneWizardPage.setReason(reason);
+        changeStateMilestoneWizardPage.setReason(ChangeMilestoneStateTest.CHANGE_STATE_REASON);
         changeStateMilestoneWizardPage.accept();
         String message = SystemMessageContainer.create(driver, webDriverWait).getFirstMessage().orElseThrow(()
-                -> new RuntimeException("There is no any System Message")).getText();
-        Assert.assertEquals(message, "All milestones changed state successfully.");
+                -> new RuntimeException(NO_SYSTEM_MESSAGE_EXCEPTION)).getText();
+        Assert.assertEquals(message, CHANGE_STATE_MILESTONES_SUCCESS_MESSAGE);
     }
 
-    private void changeMilestoneState(String previousState, String nextState, String reason, boolean isReasonMandatory) {
+    private void changeMilestoneState(String previousState, String nextState, boolean isReasonMandatory) {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         DelayUtils.sleep(500);
 
-        String startModifyDate = milestoneViewPage.getMilestoneAttribute("modifyDate");
-        String startDueDate = milestoneViewPage.getMilestoneAttribute("dueDate");
-        String startCompletionDate = milestoneViewPage.getMilestoneAttribute("completionDate");
+        String startModifyDate = milestoneViewPage.getMilestoneAttribute(MODIFY_DATE_ID);
+        String startDueDate = milestoneViewPage.getMilestoneAttribute(DUE_DATE_ID);
+        String startCompletionDate = milestoneViewPage.getMilestoneAttribute(COMPLETION_DATE_ID);
 
         milestoneViewPage.callAction(CHANGE_STATE_BUTTON);
         changeStateMilestoneWizardPage.setState(nextState);
         boolean isMandatory = changeStateMilestoneWizardPage.isReasonMandatory();
         Assert.assertEquals(isMandatory, isReasonMandatory);
         if (isMandatory) {
-            changeStateMilestoneWizardPage.setReason(reason);
+            changeStateMilestoneWizardPage.setReason(ChangeMilestoneStateTest.CHANGE_STATE_REASON);
         }
         if (nextState.equals(COMPLETED_STATE)) {
             changeStateMilestoneWizardPage.setApprovalDate(PLUS_DAYS);
@@ -92,13 +102,13 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         changeStateMilestoneWizardPage.accept();
 
         String message = SystemMessageContainer.create(driver, webDriverWait).getFirstMessage().orElseThrow(()
-                -> new RuntimeException("There is no any System Message")).getText();
-        Assert.assertEquals(message, "All milestones changed state successfully.");
+                -> new RuntimeException(NO_SYSTEM_MESSAGE_EXCEPTION)).getText();
+        Assert.assertEquals(message, CHANGE_STATE_MILESTONES_SUCCESS_MESSAGE);
         DelayUtils.sleep(1000);
-        String newStateValue = milestoneViewPage.getMilestoneAttribute("state");
-        String newModifyDate = milestoneViewPage.getMilestoneAttribute("modifyDate");
-        String newDueDate = milestoneViewPage.getMilestoneAttribute("dueDate");
-        String newCompletionDate = milestoneViewPage.getMilestoneAttribute("completionDate");
+        String newStateValue = milestoneViewPage.getMilestoneAttribute(STATE_ID);
+        String newModifyDate = milestoneViewPage.getMilestoneAttribute(MODIFY_DATE_ID);
+        String newDueDate = milestoneViewPage.getMilestoneAttribute(DUE_DATE_ID);
+        String newCompletionDate = milestoneViewPage.getMilestoneAttribute(COMPLETION_DATE_ID);
         String approvalDate = LocalDate.now().plusDays(PLUS_DAYS).toString();
         String currentLeadDate = LocalDate.now().plusDays(Long.parseLong(LEAD_TIME)).toString();
         Assert.assertEquals(nextState, newStateValue);
@@ -143,27 +153,27 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         }
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
-        String processName = "Selenium Test.Milestone-" + (int) (Math.random() * 1001);
+        String processName = PROCESS_NAME + (int) (Math.random() * 1001);
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
 
         Milestone milestone1 = Milestone.builder()
                 .setLeadTime(LEAD_TIME)
-                .setRelatedTask("Correct data")
+                .setRelatedTask(CORRECT_DATA_TASK_NAME)
                 .setDueDate(LocalDate.now().toString())
                 .setName(milestoneName1).build();
         Milestone milestone2 = Milestone.builder()
                 .setLeadTime(LEAD_TIME)
-                .setRelatedTask("Correct data")
+                .setRelatedTask(CORRECT_DATA_TASK_NAME)
                 .setIsActive("true")
                 .setName(milestoneName2).build();
         Milestone milestone3 = Milestone.builder()
                 .setLeadTime(LEAD_TIME)
-                .setRelatedTask("Correct data")
+                .setRelatedTask(CORRECT_DATA_TASK_NAME)
                 .setIsManualCompletion("true")
                 .setName(milestoneName3).build();
 
         ProcessWizardPage.MilestoneStepWizard milestoneStep = processWizardPage.definedMilestoneInProcess(processName,
-                5L, "Data Correction Process");
+                5L, DCP);
 
         milestoneStep.addMilestoneRow(milestone1);
         milestoneStep.addMilestoneRow(milestone2);
@@ -182,9 +192,9 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         milestoneViewPage.selectMilestone(milestoneName1);
 
-        changeMilestoneState(NOT_NEEDED_STATE, NEW_STATE, CHANGE_STATE_REASON, true);
-        changeMilestoneState(NEW_STATE, IN_PROGRESS_STATE, CHANGE_STATE_REASON, false);
-        changeMilestoneState(IN_PROGRESS_STATE, NOT_NEEDED_STATE, CHANGE_STATE_REASON, true);
+        changeMilestoneState(NOT_NEEDED_STATE, NEW_STATE, true);
+        changeMilestoneState(NEW_STATE, IN_PROGRESS_STATE, false);
+        changeMilestoneState(IN_PROGRESS_STATE, NOT_NEEDED_STATE, true);
     }
 
     @Test(priority = 2, description = "Second Milestone Change State Flow")
@@ -198,20 +208,19 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         milestoneViewPage.selectMilestone(milestoneName2);
 
-        changeMilestoneState(NEW_STATE, IN_PROGRESS_STATE, CHANGE_STATE_REASON, false);
+        changeMilestoneState(NEW_STATE, IN_PROGRESS_STATE, false);
 
         //try to change state to Completed
-        String startModifyDate = milestoneViewPage.getMilestoneAttribute("modifyDate");
+        String startModifyDate = milestoneViewPage.getMilestoneAttribute(MODIFY_DATE_ID);
         milestoneViewPage.callAction(CHANGE_STATE_BUTTON);
         changeStateMilestoneWizardPage.setState(COMPLETED_STATE);
         changeStateMilestoneWizardPage.setApprovalDate(PLUS_DAYS);
         changeStateMilestoneWizardPage.accept();
         String message = SystemMessageContainer.create(driver, webDriverWait).getFirstMessage().orElseThrow(()
-                -> new RuntimeException("There is no any System Message")).getText();
-        Assert.assertEquals("Not all milestones changed state.\n" +
-                "Following milestones cannot be manually completed:" + milestoneName2 + ".", message);
-        String newModifyDate = milestoneViewPage.getMilestoneAttribute("modifyDate");
-        String newStateValue = milestoneViewPage.getMilestoneAttribute("state");
+                -> new RuntimeException(NO_SYSTEM_MESSAGE_EXCEPTION)).getText();
+        Assert.assertEquals(NOT_ALL_MILESTONE_CHANGED_STATE_MESSAGE + milestoneName2 + ".", message);
+        String newModifyDate = milestoneViewPage.getMilestoneAttribute(MODIFY_DATE_ID);
+        String newStateValue = milestoneViewPage.getMilestoneAttribute(STATE_ID);
         Assert.assertEquals(startModifyDate, newModifyDate);
         Assert.assertEquals(newStateValue, IN_PROGRESS_STATE);
 
@@ -220,7 +229,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         changeStateMilestoneWizardPage.changeUser(BPM_ADMIN_USER_LOGIN, BPM_ADMIN_USER_PASSWORD);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         milestoneViewPage.selectMilestone(milestoneName2);
-        changeMilestoneState(IN_PROGRESS_STATE, COMPLETED_STATE, CHANGE_STATE_REASON, false);
+        changeMilestoneState(IN_PROGRESS_STATE, COMPLETED_STATE, false);
     }
 
     @Test(priority = 3, description = "Third Milestone Change State Flow")
@@ -237,14 +246,14 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
 
         milestoneViewPage.selectMilestone(milestoneName3);
 
-        changeMilestoneState(NOT_NEEDED_STATE, NEW_STATE, CHANGE_STATE_REASON, true);
-        changeMilestoneState(NEW_STATE, SUSPENDED_STATE, CHANGE_STATE_REASON, true);
-        changeMilestoneState(SUSPENDED_STATE, IN_PROGRESS_STATE, CHANGE_STATE_REASON, false);
-        changeMilestoneState(IN_PROGRESS_STATE, COMPLETED_STATE, CHANGE_STATE_REASON, false);
-        changeMilestoneState(COMPLETED_STATE, IN_PROGRESS_STATE, CHANGE_STATE_REASON, true);
-        changeMilestoneState(IN_PROGRESS_STATE, SUSPENDED_STATE, CHANGE_STATE_REASON, true);
-        changeMilestoneState(SUSPENDED_STATE, NEW_STATE, CHANGE_STATE_REASON, false);
-        changeMilestoneState(NEW_STATE, NOT_NEEDED_STATE, CHANGE_STATE_REASON, true);
+        changeMilestoneState(NOT_NEEDED_STATE, NEW_STATE, true);
+        changeMilestoneState(NEW_STATE, SUSPENDED_STATE, true);
+        changeMilestoneState(SUSPENDED_STATE, IN_PROGRESS_STATE, false);
+        changeMilestoneState(IN_PROGRESS_STATE, COMPLETED_STATE, false);
+        changeMilestoneState(COMPLETED_STATE, IN_PROGRESS_STATE, true);
+        changeMilestoneState(IN_PROGRESS_STATE, SUSPENDED_STATE, true);
+        changeMilestoneState(SUSPENDED_STATE, NEW_STATE, false);
+        changeMilestoneState(NEW_STATE, NOT_NEEDED_STATE, true);
     }
 
     @Test(priority = 4, description = "Multiselect Milestones Change State",
@@ -260,22 +269,22 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
 
         milestoneViewPage.selectMilestone(milestoneName1);
         milestoneViewPage.selectMilestone(milestoneName3);
-        changeMilestoneStateSimple(NEW_STATE, CHANGE_STATE_REASON);
-        changeMilestoneStateSimple(IN_PROGRESS_STATE, CHANGE_STATE_REASON);
-        changeMilestoneStateSimple(SUSPENDED_STATE, CHANGE_STATE_REASON);
-        changeMilestoneStateSimple(IN_PROGRESS_STATE, CHANGE_STATE_REASON);
+        changeMilestoneStateSimple(NEW_STATE);
+        changeMilestoneStateSimple(IN_PROGRESS_STATE);
+        changeMilestoneStateSimple(SUSPENDED_STATE);
+        changeMilestoneStateSimple(IN_PROGRESS_STATE);
 
         milestoneViewPage.clearFilters();
         milestoneViewPage.selectAll();
         milestoneViewPage.selectAll();
         milestoneViewPage.selectMilestone(milestoneName1);
-        String state1 = milestoneViewPage.getMilestoneAttribute("state");
+        String state1 = milestoneViewPage.getMilestoneAttribute(STATE_ID);
 
         milestoneViewPage.clearFilters();
         milestoneViewPage.selectAll();
         milestoneViewPage.selectAll();
         milestoneViewPage.selectMilestone(milestoneName3);
-        String state2 = milestoneViewPage.getMilestoneAttribute("state");
+        String state2 = milestoneViewPage.getMilestoneAttribute(STATE_ID);
         Assert.assertEquals(state1, IN_PROGRESS_STATE);
         Assert.assertEquals(state2, IN_PROGRESS_STATE);
     }
