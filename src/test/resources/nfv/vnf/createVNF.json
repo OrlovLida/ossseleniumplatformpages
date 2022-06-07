@@ -397,7 +397,7 @@
   ],
   "hostRelations": [],
   "masterRelations": [{
-    "name": "MasterVNFPKG",
+    "name": "MasterDeploymentPackage",
     "value": null
   }, {
     "name": "MasterTenant",
