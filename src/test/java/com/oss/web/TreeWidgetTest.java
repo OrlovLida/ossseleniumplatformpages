@@ -157,7 +157,7 @@ public class TreeWidgetTest extends BaseTestCase {
     public void expandNextLevel() {
         hierarchyViewPage.expandNextLevel(LOCATION_NAME);
         Node nodeRoom = hierarchyViewPage.getMainTree()
-                .getNodeByLabelsPath(PATH_ROOM_1);
+                .getNode(PATH_ROOM_1);
         Assertions.assertThat(nodeRoom.isExpanded()).isFalse();
     }
     
@@ -333,10 +333,10 @@ public class TreeWidgetTest extends BaseTestCase {
 
     @AfterClass
     private void deleteObjects() {
+        deleteDevice();
         LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);
         locationInventoryRepository.deleteSubLocation(roomId_2.toString());
         locationInventoryRepository.deleteSubLocation(roomId_4.toString());
-        deleteDevice();
     }
     
     private String createBuilding(Long addressId) {
