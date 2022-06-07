@@ -3,7 +3,7 @@ variables:
   GIT_SSL_NO_VERIFY: "true"
   TELCO_BOT: "false"
   CITEMPLATE_PROJECT: 'ssh://git@gitlab.czk.comarch:2222/toss/devops/cicd/citemplate.git'
-  CITEMPLATE_BRANCH: '4.5.0'
+  CITEMPLATE_BRANCH: '4.5.1'
 
 include:
   - project: toss/devops/cicd/citemplate
