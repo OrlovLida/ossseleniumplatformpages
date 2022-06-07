@@ -12,7 +12,7 @@ import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
 
 public class SearchObjectTypePage extends BasePage {
 
-    private static final String TYPE_INPUT_ID = "type-chooser-input";
+    private static final String TYPE_INPUT_ID = "type-chooser";
     private static final String OPEN_BUTTON_ID = "open-button";
 
     public SearchObjectTypePage(WebDriver driver, WebDriverWait wait) {

@@ -17,7 +17,7 @@ public class Cell5GBulkWizardPage extends BasePage {
     private static final String COLUMN_PCI = "pci";
     private static final String COLUMN_RSI = "rootSequenceIndex";
     private static final String CELLS_AMOUNT = "amountCells";
-    private static final String CARRIER = "carrier-input";
+    private static final String CARRIER = "carrier";
     private static final String BANDWIDTH_UL = "bandwidth_ul";
     private static final String BANDWIDTH_DL = "bandwidth_dl";
     private static final String TX_POWER = "txPower";

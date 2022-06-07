@@ -1,12 +1,15 @@
 package com.oss.pages.transport.ipam;
 
+import org.openqa.selenium.WebDriver;
+
 import com.oss.framework.components.data.Data;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
-import org.openqa.selenium.WebDriver;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.*;
+import static com.oss.framework.components.inputs.Input.ComponentType.CHECKBOX;
+import static com.oss.framework.components.inputs.Input.ComponentType.SEARCH_FIELD;
+import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 
 /**
  * @author Ewa Frączek
@@ -15,7 +18,7 @@ import static com.oss.framework.components.inputs.Input.ComponentType.*;
 class ReserveIPAddressWizardPage extends BasePage {
     private static final String HOST_RESERVE_IP_ADDRESS_FIELD_UID = "host-reserve-ip-address-field-uid";
     private static final String HOST_RESERVE_DESCRIPTION_FIELD_UID = "host-reserve-description-field-uid";
-    private static final String HOST_RESERVE_MODE_UID_INPUT = "host-reserve-mode-uid-input";
+    private static final String HOST_RESERVE_MODE_UID_INPUT = "host-reserve-mode-uid";
     private static final String HOST_RESERVE_NUMBER_ADDRESSES_FIELD_UID = "host-reserve-number-addresses-field-uid";
     private static final String RESERVE_MULTIPLE_ADDRESSES = "Reserve multiple addresses";
     private static final String HOST_RESERVE_CONSECUTIVE_FIELD_UID = "host-reserve-consecutive-field-uid";
