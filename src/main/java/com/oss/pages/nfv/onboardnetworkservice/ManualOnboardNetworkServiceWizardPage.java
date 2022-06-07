@@ -8,7 +8,7 @@ import com.oss.framework.wizard.Wizard;
 public class ManualOnboardNetworkServiceWizardPage extends OnboardWizardPage {
 
     private static final String WIZARD_ID = "nsManualOnboardWizardId";
-    private static final String ONBOARD_NFVO_SEARCH_FIELD_ID = "manualOnboardNFVOSearchFieldId";
+    private static final String ONBOARD_NFVO_SEARCH_FIELD_ID = "manualOnboardNFVOSearchFieldId_OSF";
     private static final String ONBOARD_DEFAULT_REMOTE_FOLDER_TEXT_FIELD_ID = "manualOnboardDefaultRemoteFolderTextFieldId";
 
     private ManualOnboardNetworkServiceWizardPage(WebDriver driver, WebDriverWait wait) {
