@@ -17,13 +17,13 @@ public abstract class TrafficClassWizardPage extends BasePage {
 
     private static final String NAME_FIELD_ID = "uid-name";
     private static final String DESCRIPTION_FIELD_ID = "uid-description";
-    private static final String MATCH_FIELD_ID = "uid-match-input";
+    private static final String MATCH_FIELD_ID = "uid-match";
     private static final String IP_PRECEDENCE_FIELD_ID = "uid-ipPrecedence";
     private static final String MPLS_FIELD_ID = "uid-mplsExperimental";
     private static final String MPLS_TOP_FIELD_ID = "uid-mplsExperimentalTopmost";
-    private static final String IP_DSCP_FIELD_ID = "uid-ipDSCP-input";
+    private static final String IP_DSCP_FIELD_ID = "uid-ipDSCP";
     private static final String ACCESS_LIST_FIELD_ID = "uid-accessList";
-    private static final String INPUT_INTERFACE_FIELD_ID = "uid-inputInterface-input";
+    private static final String INPUT_INTERFACE_FIELD_ID = "uid-inputInterface";
     private static final String PROTOCOL_FIELD_ID = "uid-protocol";
     private static final String CIR_INGRESS_FIELD_ID = "uid-cirIngress";
     private static final String CIR_EGRESS_FIELD_ID = "uid-cirEgress";

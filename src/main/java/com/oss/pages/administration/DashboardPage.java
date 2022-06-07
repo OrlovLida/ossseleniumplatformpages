@@ -12,7 +12,7 @@ import com.oss.pages.BasePage;
 
 public class DashboardPage extends BasePage {
 
-    private static final String WIDGET_TYPE_ID = "registeredId-input";
+    private static final String WIDGET_TYPE_ID = "registeredId";
     private static final String WIDGET_TITLE_ID = "title";
     private static final String WIDGET_SAVE_LABEL = "Save";
     private static final String ADD_WIDGET = "Add Widget";

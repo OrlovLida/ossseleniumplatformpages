@@ -39,7 +39,7 @@ public class SDWizardPage extends BaseSDPage {
     private static final String PROBLEM_NAME_DESCRIPTION_ID = "TT_WIZARD_INPUT_PROBLEM_NAME_DESCRIPTION";
     private static final String CHANGE_RISK_ASSESSMENT_ID = "TT_WIZARD_INPUT_RISK_ASSESSMENT_LABEL";
     private static final String NOTIFICATION_CHANNEL_INTERNAL = "Internal";
-    private static final String NOTIFICATION_WIZARD_CHANNEL_ID = "channel-component-input";
+    private static final String NOTIFICATION_WIZARD_CHANNEL_ID = "channel-component";
     private static final String NOTIFICATION_WIZARD_MESSAGE_ID = "message-component";
     private static final String NOTIFICATION_WIZARD_INTERNAL_TO_ID = "internal-to-component";
     private static final String NOTIFICATION_WIZARD_TYPE_ID = "internal-type-component";

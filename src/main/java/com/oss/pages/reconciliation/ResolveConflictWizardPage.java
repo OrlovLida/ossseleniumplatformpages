@@ -16,7 +16,7 @@ public class ResolveConflictWizardPage extends BasePage {
     private static final String CHOOSE_MANUALLY_ID = "conflictResolutionOption";
     private static final String CHOOSE_MANUALLY = "choose manually";
     private static final String SUBMIT_BUTTON_ID = "ConflictResolverFormSubmitButtonApp-2";
-    private static final String LEADING_DOMAIN_ID = "destinationCmDomain-input";
+    private static final String LEADING_DOMAIN_ID = "destinationCmDomain";
     private final Wizard wizard;
 
     public ResolveConflictWizardPage(WebDriver driver) {

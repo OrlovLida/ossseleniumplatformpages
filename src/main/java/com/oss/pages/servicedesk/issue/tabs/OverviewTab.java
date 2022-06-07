@@ -22,7 +22,7 @@ public class OverviewTab extends IssueDetailsPage {
 
     private static final String EDIT_DETAILS_LABEL = "Edit details";
     private static final String ISSUE_ASSIGNEE_ID = "assignee";
-    private static final String STATUS_INPUT = "status-input";
+    private static final String STATUS_INPUT = "status";
     private static final String MORE_DETAILS_LABEL = "More details";
 
     public OverviewTab(WebDriver driver, WebDriverWait wait) {
