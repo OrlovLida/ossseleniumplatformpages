@@ -47,7 +47,7 @@ public class LocationOverviewPage extends BasePage {
         getTabTable(tabName).callActionByLabel(actionLabel);
     }
 
-    @Step("Click {actionLabel} in specific tab")
+    @Step("Click {actionId} in specific tab")
     public void clickActionById(TabName tabName, String actionId) {
         getTabTable(tabName).callAction(actionId);
     }
