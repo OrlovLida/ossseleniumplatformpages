@@ -49,11 +49,6 @@ public class AssignmentManagementPage extends BaseACDPage {
         log.info("Clicking Create new rule button");
     }
 
-    @Step("I click Label button")
-    public void clickLabelButton(String label) {
-        Button.createByLabel(driver, label).click();
-    }
-
     @Step("I search for Assignment Management rule")
     public Boolean searchingThroughTable(String comboBoxId, String value) {
         DelayUtils.waitForPageToLoad(driver, wait);

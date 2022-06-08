@@ -9,12 +9,11 @@ import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.icons.StatusIcon;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.tabs.TabsWidget;
-import com.oss.pages.BasePage;
+import com.oss.pages.acd.BaseACDPage;
 
 import io.qameta.allure.Step;
 
-public class SubsystemsHealthPage extends BasePage {
+public class SubsystemsHealthPage extends BaseACDPage {
 
     private static final Logger log = LoggerFactory.getLogger(SubsystemsHealthPage.class);
 
@@ -34,13 +33,6 @@ public class SubsystemsHealthPage extends BasePage {
         log.info("Opened page: {}", pageUrl);
 
         return new SubsystemsHealthPage(driver, wait);
-    }
-
-    @Step("I go to Subsystems Health tab")
-    public void goToSubsystemsHealthTab(String tabId, String tabLabel) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        TabsWidget.createById(driver, wait, tabId).selectTabByLabel(tabLabel);
-        log.info("I opened Subsystems Health tab");
     }
 
     @Step("I check if subsystems are up and running")
