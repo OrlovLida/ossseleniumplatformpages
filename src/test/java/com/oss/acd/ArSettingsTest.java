@@ -22,17 +22,17 @@ public class ArSettingsTest extends BaseTestCase {
     private ArSettingsPage arSettingsPage;
     private BaseACDPage baseACDPage;
 
-    private final String arSettingsViewSuffixUrl = "%s/#/view/acd/kaSettings";
-    private final String TYPE_ACTION_TEMPLATE_COMBOBOX_ID = "type-input";
-    private final String REASON_ACTION_TEMPLATE_COMBOBOX_ID = "reason-input";
-    private final String SCENARIO_ACTION_TEMPLATE_COMBOBOX_ID = "scenario-input";
-    private final String ACTION_TEMPLATE_TYPE_VALUE = "Software";
-    private final String ACTION_TEMPLATE_REASON_VALUE = "Fix";
-    private final String ALL_SCENARIOS = "ALL";
-    private final String DESCRIPTION_MULTI_SEARCH = "description";
-    private final String DESCRIPTION_MULTI_SEARCH_VALUE = "Desc123";
-    private final String PARAM_MULTI_SEARCH = "param";
-    private final String PARAM_MULTI_SEARCH_VALUE = "Param123";
+    private static final String arSettingsViewSuffixUrl = "%s/#/view/acd/kaSettings";
+    private static final String TYPE_ACTION_TEMPLATE_COMBOBOX_ID = "type";
+    private static final String REASON_ACTION_TEMPLATE_COMBOBOX_ID = "reason";
+    private static final String SCENARIO_ACTION_TEMPLATE_COMBOBOX_ID = "scenario";
+    private static final String ACTION_TEMPLATE_TYPE_VALUE = "Software";
+    private static final String ACTION_TEMPLATE_REASON_VALUE = "Fix";
+    private static final String ALL_SCENARIOS = "ALL";
+    private static final String DESCRIPTION_MULTI_SEARCH = "description";
+    private static final String DESCRIPTION_MULTI_SEARCH_VALUE = "Desc123";
+    private static final String PARAM_MULTI_SEARCH = "param";
+    private static final String PARAM_MULTI_SEARCH_VALUE = "Param123";
 
     @BeforeClass
     public void goToArSettingsView() {
@@ -46,8 +46,8 @@ public class ArSettingsTest extends BaseTestCase {
         arSettingsPage.clickAddActionTemplate();
         arSettingsPage.chooseOptionInComboBox(TYPE_ACTION_TEMPLATE_COMBOBOX_ID, ACTION_TEMPLATE_TYPE_VALUE);
         arSettingsPage.chooseOptionInComboBox(REASON_ACTION_TEMPLATE_COMBOBOX_ID, ACTION_TEMPLATE_REASON_VALUE);
-        baseACDPage.setValueInInputField(DESCRIPTION_MULTI_SEARCH, DESCRIPTION_MULTI_SEARCH_VALUE);
-        baseACDPage.setValueInInputField(PARAM_MULTI_SEARCH, PARAM_MULTI_SEARCH_VALUE);
+        baseACDPage.setValueInTextField(DESCRIPTION_MULTI_SEARCH, DESCRIPTION_MULTI_SEARCH_VALUE);
+        baseACDPage.setValueInTextField(PARAM_MULTI_SEARCH, PARAM_MULTI_SEARCH_VALUE);
         arSettingsPage.chooseOptionInComboBox(SCENARIO_ACTION_TEMPLATE_COMBOBOX_ID, ALL_SCENARIOS);
         arSettingsPage.clickSaveButton();
         log.info("Action Template has been created");

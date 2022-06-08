@@ -12,10 +12,10 @@ import io.qameta.allure.Step;
 
 public class LocationWizardPage extends BasePage {
 
-    private static final String LOCATION_TYPE_DATA_ATTRIBUTE_NAME = "type-input";
+    private static final String LOCATION_TYPE_DATA_ATTRIBUTE_NAME = "type";
     private static final String LOCATION_PARENT_LOCATION_DATA_ATTRIBUTE_NAME = "parentLocation";
     private static final String LOCATION_DIRECT_PHYSICAL_LOCATION_DATA_ATTRIBUTE_NAME = "physicalLocation";
-    private static final String LOGICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME = "logicalLocationType-input";
+    private static final String LOGICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME = "logicalLocationType";
     private static final String LOCATION_NAME_DATA_ATTRIBUTE_NAME = "name";
     private static final String LOCATION_ABBREVIATION_DATA_ATTRIBUTE_NAME = "abbreviation";
     private static final String LOCATION_ADDRESS_DATA_ATTRIBUTE_NAME = "address";

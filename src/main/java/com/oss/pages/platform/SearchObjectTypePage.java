@@ -8,11 +8,9 @@ import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.pages.BasePage;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
-
 public class SearchObjectTypePage extends BasePage {
 
-    private static final String TYPE_INPUT_ID = "type-chooser-input";
+    private static final String TYPE_INPUT_ID = "type-chooser";
     private static final String OPEN_BUTTON_ID = "open-button";
 
     public SearchObjectTypePage(WebDriver driver, WebDriverWait wait) {
@@ -34,6 +32,6 @@ public class SearchObjectTypePage extends BasePage {
     }
 
     private Input getSearchTypeInput() {
-        return ComponentFactory.create(TYPE_INPUT_ID, COMBOBOX, driver, wait);
+        return ComponentFactory.create(TYPE_INPUT_ID, driver, wait);
     }
 }

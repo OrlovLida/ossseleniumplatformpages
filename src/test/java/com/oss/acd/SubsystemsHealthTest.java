@@ -44,7 +44,7 @@ public class SubsystemsHealthTest extends BaseTestCase {
     public void checkABGADSubsystemsHealth() {
         log.info("I go to ABGAD Settings View");
         SubsystemsHealthPage.goToSettingsView(driver, ABGAD_SETTINGS_VIEW_SUFFIX_URL, BASIC_URL);
-        subsystemsHealthPage.goToSubsystemsHealthTab(ABGAD_SETTINGS_TAB_ID, SUBSYSTEMS_HEALTH_TAB);
+        subsystemsHealthPage.goToTab(ABGAD_SETTINGS_TAB_ID, SUBSYSTEMS_HEALTH_TAB);
         log.info("I check ABGAD Subsystems Health");
         Assert.assertTrue(subsystemsHealthPage.isSubsystemUpAndRunning());
     }
@@ -63,7 +63,7 @@ public class SubsystemsHealthTest extends BaseTestCase {
     public void checkARSubsystemsHealth() {
         log.info("I go to AR Settings View");
         SubsystemsHealthPage.goToSettingsView(driver, AR_SETTINGS_VIEW_SUFFIX_URL, BASIC_URL);
-        subsystemsHealthPage.goToSubsystemsHealthTab(AR_SETTINGS_TAB_ID, SUBSYSTEMS_HEALTH_TAB);
+        subsystemsHealthPage.goToTab(AR_SETTINGS_TAB_ID, SUBSYSTEMS_HEALTH_TAB);
         log.info("I check AR Subsystems Health");
         Assert.assertTrue(subsystemsHealthPage.isSubsystemUpAndRunning());
     }

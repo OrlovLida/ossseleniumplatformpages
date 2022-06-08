@@ -1,18 +1,20 @@
 package com.oss.pages.transport.trail;
 
+import org.openqa.selenium.WebDriver;
+
+import com.oss.framework.components.data.Data;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.SearchField;
-import com.oss.framework.components.data.Data;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
+
 import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
 
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 
 public class MicrowaveLinkWizardPage extends BasePage {
     private final Wizard wizard;
-    private static final String MODE_COMBOBOX_ID = "wizardModeComboboxId-input";
+    private static final String MODE_COMBOBOX_ID = "wizardModeComboboxId";
     private static final String USER_LABEL_ID = "oss.transport.trail.type.MicrowaveLink.UserLabel";
     private static final String CAPACITY_UNIT_ID = "trailCapacityUnitComponent";
     private static final String CAPACITY_VALUE_ID = "trailCapacityValueComponent";

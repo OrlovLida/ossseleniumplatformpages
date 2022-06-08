@@ -35,4 +35,9 @@
             <class name="com.oss.acd.AssignmentManagementTest"/>
         </classes>
     </test>
+    <test name="NotificationManagementTest">
+        <classes>
+            <class name="com.oss.acd.NotificationManagementTest"/>
+        </classes>
+    </test>
 </suite>
