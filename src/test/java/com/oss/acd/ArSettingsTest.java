@@ -46,8 +46,8 @@ public class ArSettingsTest extends BaseTestCase {
         arSettingsPage.clickAddActionTemplate();
         arSettingsPage.chooseOptionInComboBox(TYPE_ACTION_TEMPLATE_COMBOBOX_ID, ACTION_TEMPLATE_TYPE_VALUE);
         arSettingsPage.chooseOptionInComboBox(REASON_ACTION_TEMPLATE_COMBOBOX_ID, ACTION_TEMPLATE_REASON_VALUE);
-        baseACDPage.setValueInInputField(DESCRIPTION_MULTI_SEARCH, DESCRIPTION_MULTI_SEARCH_VALUE);
-        baseACDPage.setValueInInputField(PARAM_MULTI_SEARCH, PARAM_MULTI_SEARCH_VALUE);
+        baseACDPage.setValueInTextField(DESCRIPTION_MULTI_SEARCH, DESCRIPTION_MULTI_SEARCH_VALUE);
+        baseACDPage.setValueInTextField(PARAM_MULTI_SEARCH, PARAM_MULTI_SEARCH_VALUE);
         arSettingsPage.chooseOptionInComboBox(SCENARIO_ACTION_TEMPLATE_COMBOBOX_ID, ALL_SCENARIOS);
         arSettingsPage.clickSaveButton();
         log.info("Action Template has been created");

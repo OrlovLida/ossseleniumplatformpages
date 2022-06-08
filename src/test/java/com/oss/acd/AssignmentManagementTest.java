@@ -47,16 +47,16 @@ public class AssignmentManagementTest extends BaseTestCase {
     @Description("Add new Assignment Management rule")
     public void addNewAssignmentManagementRule() {
         assignmentManagementPage.clickCreateNewRule();
-        baseACDPage.setValueInInputField(DISTRIBUTION_NAME_FIELD_ID, DISTRIBUTION_NAME_VALUE);
+        baseACDPage.setValueInTextField(DISTRIBUTION_NAME_FIELD_ID, DISTRIBUTION_NAME_VALUE);
         baseACDPage.setValueInComboBox(STATUS_COMBO_BOX_ID, "Active");
         baseACDPage.setValueInComboBox(ASSIGNMENT_TYPE_COMBO_BOX_ID, "Early");
         baseACDPage.setValueInComboBox(SEARCHING_CLASS_COMBO_BOX_ID, "Root Classification");
-        baseACDPage.setValueInInputField(QUERY_STRING_FIELD_ID, QUERY_STRING_FIELD_VALUE);
+        baseACDPage.setValueInTextField(QUERY_STRING_FIELD_ID, QUERY_STRING_FIELD_VALUE);
         baseACDPage.setValueInComboBox(SCENARIO_COMBO_BOX_ID, "APD");
         baseACDPage.setValueInComboBox(RULE_ORDER_COMBO_BOX_ID, "1");
         baseACDPage.setValueInComboBox(ASSIGNED_GROUP_COMBO_BOX_ID, "APD SysAdmin");
         baseACDPage.setValueInComboBox(ASSIGNED_USER_COMBO_BOX_ID, "acdadmin");
-        assignmentManagementPage.clickLabelButton("Save");
+        assignmentManagementPage.clickButtonByLabel("Save");
         assignmentManagementPage.setValueInScenarioBox("scenario", "APD");
         log.info("Assignment Management rule has been created with ID: {}", assignmentManagementPage.getNewRuleId());
         Assert.assertFalse(assignmentManagementPage.getNewRuleId().isEmpty());
@@ -84,8 +84,8 @@ public class AssignmentManagementTest extends BaseTestCase {
         assignmentManagementPage.setValueInScenarioBox("scenario", "APD");
         assignmentManagementPage.selectFirstRuleFromTable();
         assignmentManagementPage.clickTabsContainerButton(EDIT_RULE_BUTTON);
-        baseACDPage.setValueInInputField(DISTRIBUTION_NAME_FIELD_ID, DISTRIBUTION_NAME_VALUE_V2);
-        assignmentManagementPage.clickLabelButton("Save");
+        baseACDPage.setValueInTextField(DISTRIBUTION_NAME_FIELD_ID, DISTRIBUTION_NAME_VALUE_V2);
+        assignmentManagementPage.clickButtonByLabel("Save");
         assignmentManagementPage.setValueInScenarioBox("scenario", "APD");
         Assert.assertEquals(assignmentManagementPage.getRuleName(), DISTRIBUTION_NAME_VALUE_V2);
     }
@@ -98,6 +98,6 @@ public class AssignmentManagementTest extends BaseTestCase {
         assignmentManagementPage.deleteRule(DELETE_RULE_BUTTON);
         assignmentManagementPage.searchingThroughTable(DISTRIBUTION_COMBO_BOX, DISTRIBUTION_NAME_VALUE_V2);
         assignmentManagementPage.setValueInScenarioBox("scenario", "APD");
-        Assert.assertTrue(!assignmentManagementPage.isDataInAssignmentManagementTable());
+        Assert.assertFalse(assignmentManagementPage.isDataInAssignmentManagementTable());
     }
 }

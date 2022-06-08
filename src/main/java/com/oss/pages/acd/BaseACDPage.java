@@ -11,7 +11,7 @@ import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.layout.Card;
 import com.oss.framework.iaa.widgets.timeperiodchooser.TimePeriodChooser;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.wizard.Wizard;
+import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
@@ -52,6 +52,12 @@ public class BaseACDPage extends BasePage {
         log.info("Clicking context button");
     }
 
+    @Step("I click Label button")
+    public void clickButtonByLabel(String label) {
+        Button.createByLabel(driver, label).click();
+        log.info("Clicking {} button", label);
+    }
+
     @Step("Clear multiSearchField")
     public void clearMultiSearch(String multiSearchFieldId) {
         Input multiSearchField = ComponentFactory.create(multiSearchFieldId, Input.ComponentType.MULTI_SEARCH_FIELD, driver, wait);
@@ -62,8 +68,8 @@ public class BaseACDPage extends BasePage {
     @Step("Set value in ComboBox")
     public void setValueInComboBox(String componentId, String value) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        Wizard.createByComponentId(driver, wait, componentId).setComponentValue(componentId, value, Input.ComponentType.COMBOBOX);
-        log.info("Setting value of {componentId} attribute as {value}");
+        ComponentFactory.create(componentId, driver, wait).setSingleStringValue(value);
+        log.info("Setting value of {} attribute as {}", componentId, value);
     }
 
     @Step("I Set value in multiComboBox")
@@ -120,9 +126,9 @@ public class BaseACDPage extends BasePage {
         return TimePeriodChooser.create(driver, wait, widgetId).toString() != null;
     }
 
-    @Step("I set value in InputField")
-    public void setValueInInputField(String fieldNameId, String value) {
-        ComponentFactory.create(fieldNameId, Input.ComponentType.TEXT_FIELD, driver, wait).setSingleStringValue(value);
+    @Step("I set value in Text field")
+    public void setValueInTextField(String fieldNameId, String value) {
+        ComponentFactory.create(fieldNameId, driver, wait).setSingleStringValue(value);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
@@ -136,5 +142,13 @@ public class BaseACDPage extends BasePage {
     public void refreshIssuesTable(String issuesTableRefreshButtonId) {
         Button.createById(driver, issuesTableRefreshButtonId).click();
         log.info("Clicking refresh issues table button");
+    }
+
+    @Step("I go to {tabLabel} tab")
+    public void goToTab(String tabId, String tabLabel) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        TabsWidget.createById(driver, wait, tabId).selectTabByLabel(tabLabel);
+        log.info("I opened {} tab", tabLabel);
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 }
