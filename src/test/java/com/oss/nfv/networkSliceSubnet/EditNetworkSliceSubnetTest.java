@@ -49,6 +49,7 @@ public class EditNetworkSliceSubnetTest extends BaseNetworkSliceSubnetTest {
 
     @BeforeClass
     public void prepareData() throws IOException {
+        super.prepareData();
         createNetworkSliceSubnetInstance();
     }
 
