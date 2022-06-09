@@ -1,7 +1,7 @@
 [
   {
     "name": "NETWORK-SLICE-SUBNET-SELENIUM-TEST",
-    "resourceSpecificationId": "RANSliceSubnet",
+    "resourceSpecificationId": "NFVSeleniumTestRANSliceSubnet",
     "attributes": [
       {
         "name": "operationalState",
