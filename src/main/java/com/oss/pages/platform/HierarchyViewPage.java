@@ -56,7 +56,6 @@ public class HierarchyViewPage extends BasePage {
     }
 
     public TreeWidgetV2 getMainTree() {
-        DelayUtils.waitForPageToLoad(driver, wait);
         return TreeWidgetV2.create(driver, wait, HIERARCHY_VIEW_TREE_WIDGET_ID);
     }
 
@@ -137,7 +136,6 @@ public class HierarchyViewPage extends BasePage {
 
     @Step("Select tree node by labels - {labels}")
     public void selectNodeByLabelsPath(String labels) {
-        DelayUtils.waitForPageToLoad(driver, wait);
         Node node = getMainTree().getNodeByLabelsPath(labels);
         if (!node.isToggled()) {
             node.toggleNode();

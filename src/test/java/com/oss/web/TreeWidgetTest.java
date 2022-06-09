@@ -157,7 +157,7 @@ public class TreeWidgetTest extends BaseTestCase {
     public void expandNextLevel() {
         hierarchyViewPage.expandNextLevel(LOCATION_NAME);
         Node nodeRoom = hierarchyViewPage.getMainTree()
-                .getNodeByLabelsPath(PATH_ROOM_1);
+                .getNode(PATH_ROOM_1);
         Assertions.assertThat(nodeRoom.isExpanded()).isFalse();
     }
     
@@ -199,7 +199,6 @@ public class TreeWidgetTest extends BaseTestCase {
         DelayUtils.sleep(5000);
         sublocation.clickNext();
         sublocation.clickAccept();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hierarchyViewPage.unselectFirstObject();
         hierarchyViewPage.expandNextLevel(LOCATION_NAME);
         List<String> nodes = hierarchyViewPage.getVisibleNodesLabel();
@@ -237,9 +236,7 @@ public class TreeWidgetTest extends BaseTestCase {
         driver.navigate().refresh();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hierarchyViewPage.getMainTree().searchByAttribute(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, LOCATION_NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hierarchyViewPage.selectNodeByLabelsPath(PORT_01_PATH);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hierarchyViewPage.selectNodeByLabelsPath(PORT_02_PATH);
         hierarchyViewPage.getMainTree().callActionById(ActionsContainer.CREATE_GROUP_ID, CREATE_PM_ACTION);
         CreatePluggableModuleWizardPage pmWizard = new CreatePluggableModuleWizardPage(driver);
@@ -333,10 +330,10 @@ public class TreeWidgetTest extends BaseTestCase {
 
     @AfterClass
     private void deleteObjects() {
+        deleteDevice();
         LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);
         locationInventoryRepository.deleteSubLocation(roomId_2.toString());
         locationInventoryRepository.deleteSubLocation(roomId_4.toString());
-        deleteDevice();
     }
     
     private String createBuilding(Long addressId) {
