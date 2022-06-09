@@ -8,11 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.table.OldTable;
 
 import io.qameta.allure.Step;
-
-import static com.oss.framework.utils.DelayUtils.waitForPageToLoad;
 
 public class EtlDataCollectionsPage extends BaseDfePage {
 
@@ -22,7 +19,6 @@ public class EtlDataCollectionsPage extends BaseDfePage {
     private static final String ADD_ETL_PROCESS_LABEL = "Add New ETL Process";
     private static final String EDIT_ETL_PROCESS_LABEL = "Edit ETL Process";
     private static final String DELETE_ETL_PROCESS_LABEL = "Delete ETL Process";
-
     private static final String SEARCH_INPUT_ID = "data-collection-listSearchAppId";
     private static final String NAME_COLUMN_LABEL = "Name";
     private static final String DELETE_LABEL = "Delete";
@@ -34,11 +30,11 @@ public class EtlDataCollectionsPage extends BaseDfePage {
     private static final String COLUMN_STATUS_LABEL = "Status";
     private static final String TAB_WIDGET_ID = "card-content_tabsId";
     private static final String FORMAT_TAB = "Format";
-    private static final String FORMAT_TABLE_ID = "formatTableId";
     private static final String DETAILS_TAB = "Details";
     private static final String PROPERTY_PANEL_ID = "detailsId";
     private static final String NAME_PROPERTY = "Name";
     private static final String MEASURES_TAB = "Measures";
+    private static final String FORMAT_TABLE_ID = "formatTableId";
     private static final String MEASURES_TABLE_ID = "measuresTable";
 
     private EtlDataCollectionsPage(WebDriver driver, WebDriverWait wait) {
@@ -123,26 +119,9 @@ public class EtlDataCollectionsPage extends BaseDfePage {
         selectTab(TAB_WIDGET_ID, FORMAT_TAB);
     }
 
-    @Step("Check if Format Table is empty")
-    public Boolean isFormatTableEmpty() {
-        log.info("Check if Format Table is empty");
-        waitForPageToLoad(driver, wait);
-        return OldTable
-                .createById(driver, wait, FORMAT_TABLE_ID)
-                .hasNoData();
-    }
-
     @Step("Select Measures Tab")
     public void selectMeasuresTab() {
         selectTab(TAB_WIDGET_ID, MEASURES_TAB);
-    }
-
-    @Step("Check if Measures Table is empty")
-    public Boolean isMeasuresTableEmpty() {
-        log.info("Check if Measures Table is empty");
-        return OldTable
-                .createById(driver, wait, MEASURES_TABLE_ID)
-                .hasNoData();
     }
 
     @Step("Select Details Tab")
@@ -156,6 +135,12 @@ public class EtlDataCollectionsPage extends BaseDfePage {
         return checkValueInPropertyPanel(PROPERTY_PANEL_ID,
                 NAME_PROPERTY);
     }
+
+    @Step("Check if Format Tab Table is empty")
+    public boolean isFormatTabTableEmpty()  { return isTabTableEmpty(FORMAT_TABLE_ID); }
+
+    @Step("Check if Measures Tab Table is empty")
+    public boolean isMeasuresTabTableEmpty()  { return isTabTableEmpty(MEASURES_TABLE_ID); }
 
     @Override
     public String getTableId() {

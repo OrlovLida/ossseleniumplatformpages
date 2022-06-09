@@ -34,7 +34,6 @@ public class DimensionsSmokeTest extends BaseTestCase {
 
             Assert.assertEquals(dimensionsPage.checkSeverity(), "Info");
         } else {
-            log.info("Cannot find existing dimension {}", DIMENSION_NAME);
             Assert.fail("Cannot find existing dimension " + DIMENSION_NAME);
         }
     }

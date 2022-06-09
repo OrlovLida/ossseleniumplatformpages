@@ -31,9 +31,7 @@ public class ThresholdPage extends BaseDfePage {
     private static final String COLUMN_REQUEST_GENERATION_TIME_LABEL = "Request Generation Time";
     private static final String COLUMN_STATUS_LABEL = "Status";
     private static final String REFRESH_LABEL = "Refresh";
-    private static final String SEARCH_CATEGORIES_ID = "category";
     private static final String NAME_COLUMN_LABEL = "Name";
-    private static final String CATEGORY_COLUMN_LABEL = "Category";
     private static final String DELETE_LABEL = "Delete";
     private static final String TAB_WIDGET_ID = "card-content_tabsId";
     private static final String PROPERTY_PANEL_ID = "detailsId";
@@ -146,13 +144,6 @@ public class ThresholdPage extends BaseDfePage {
         return statusOfThreshold;
     }
 
-    @Step("Search for Threshold with category {category}")
-    public void searchCategories(String category) {
-        waitForPageToLoad(driver, wait);
-        ComponentFactory.create(SEARCH_CATEGORIES_ID, MULTI_COMBOBOX, driver, wait).setSingleStringValue(category);
-        log.debug("Filled category with: {}", category);
-    }
-
     @Step("Search for Threshold with Problem ID")
     public void searchProblemId(String problemId) {
         waitForPageToLoad(driver, wait);
@@ -172,11 +163,6 @@ public class ThresholdPage extends BaseDfePage {
         waitForPageToLoad(driver, wait);
         ComponentFactory.create(SEARCH_IS_ACTIVE_ID, Input.ComponentType.MULTI_COMBOBOX, driver, wait).setSingleStringValue(activity);
         log.info("Setting is Active to: {}", activity);
-    }
-
-    @Step("Get category name")
-    public String getCategoryName(int index) {
-        return getTable(driver, wait).getCellValue(index, CATEGORY_COLUMN_LABEL);
     }
 
     @Step("Get problem ID")

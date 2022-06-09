@@ -1,7 +1,5 @@
 package com.oss.bigdata.dfe.regressiontests;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Optional;
@@ -15,7 +13,6 @@ import io.qameta.allure.Description;
 
 public class ETLRegressionTests extends BaseTestCase {
 
-    private static final Logger log = LoggerFactory.getLogger(ETLRegressionTests.class);
     private EtlDataCollectionsPage etlDataCollectionsPage;
 
     @BeforeMethod
@@ -39,7 +36,7 @@ public class ETLRegressionTests extends BaseTestCase {
         if (etlExists) {
             etlDataCollectionsPage.selectFoundEtlProcess();
             etlDataCollectionsPage.selectFormatTab();
-            Assert.assertFalse(etlDataCollectionsPage.isFormatTableEmpty());
+            Assert.assertFalse(etlDataCollectionsPage.isFormatTabTableEmpty());
         } else {
             Assert.fail("Cannot find ETL: " + etlName);
         }
@@ -72,7 +69,7 @@ public class ETLRegressionTests extends BaseTestCase {
         if (etlExists) {
             etlDataCollectionsPage.selectFoundEtlProcess();
             etlDataCollectionsPage.selectMeasuresTab();
-            Assert.assertFalse(etlDataCollectionsPage.isMeasuresTableEmpty());
+            Assert.assertFalse(etlDataCollectionsPage.isMeasuresTabTableEmpty());
         } else {
             Assert.fail("Cannot find ETL: " + etlName);
 

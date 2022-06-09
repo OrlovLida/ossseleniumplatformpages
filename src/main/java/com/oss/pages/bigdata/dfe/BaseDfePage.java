@@ -56,6 +56,27 @@ public abstract class BaseDfePage extends BasePage implements BaseDfePageInterfa
         return FileDownload.checkIfFileIsNotEmpty(fileName);
     }
 
+    @Step("Get category name")
+    public String getCategoryName(int index, String columnLabel) {
+        return getTable(driver, wait).getCellValue(index, columnLabel);
+    }
+
+    @Step("Search category")
+    public void searchCategories(String category, String categoriesID) {
+        waitForPageToLoad(driver, wait);
+        ComponentFactory.create(categoriesID, driver, wait).setSingleStringValue(category);
+        log.debug("Filled category with: {}", category);
+    }
+
+    @Step("Check if Table is empty")
+    public Boolean isTabTableEmpty(String tableId) {
+        log.info("Check if table with id: {} is empty", tableId);
+        waitForPageToLoad(driver, wait);
+        return OldTable
+                .createById(driver, wait, tableId)
+                .hasNoData();
+    }
+
     protected void searchFeed(String searchText) {
         Input search = ComponentFactory.create(getSearchId(), Input.ComponentType.SEARCH_BOX, driver, wait);
         search.setSingleStringValue(searchText);
