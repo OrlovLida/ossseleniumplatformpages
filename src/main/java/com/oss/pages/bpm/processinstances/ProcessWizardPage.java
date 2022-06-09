@@ -9,7 +9,6 @@ package com.oss.pages.bpm.processinstances;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.oss.pages.bpm.milestones.MilestoneWizardPage;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -26,6 +25,7 @@ import com.oss.framework.widgets.table.TableInterface;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 import com.oss.pages.bpm.milestones.Milestone;
+import com.oss.pages.bpm.milestones.MilestoneWizardPage;
 
 import io.qameta.allure.Description;
 
@@ -36,8 +36,8 @@ public class ProcessWizardPage extends BasePage {
 
     private static final String CANNOT_EXTRACT_PROCESS_CODE_EXCEPTION = "Cannot extract Process Code from message: ";
     private static final String TABLE_PROCESSES = "bpm_processes_view_processes";
-    private static final String PROCESS_WIZARD_STEP_1 = "start-process-wizard";
-    private static final String PROCESS_WIZARD_STEP_2 = "bpm_processes_view_start-process-details-prompt_processCreateFormId";
+    private static final String PROCESS_WIZARD_STEP_1 = "bpm_processes_view_start-process-prompt_prompt-card";
+    private static final String PROCESS_WIZARD_STEP_2 = "bpm_processes_view_start-process-details-prompt_prompt-card";
     private static final String DOMAIN_ATTRIBUTE_ID = "domain-combobox";
     private static final String DEFINITION_ATTRIBUTE_ID = "definition-combobox";
     private static final String RELEASE_ATTRIBUTE_ID = "release-combobox";
@@ -115,20 +115,20 @@ public class ProcessWizardPage extends BasePage {
         Input componentDomain = wizardFirstStep.getComponent(DOMAIN_ATTRIBUTE_ID);
         if (!componentDomain.getValue().getStringValue().equals(INVENTORY_PROCESS)) {
             componentDomain.setSingleStringValue(INVENTORY_PROCESS);
+            wizardFirstStep.waitForWizardToLoad();
         }
-        Input componentDefinition = wizardFirstStep.getComponent(DEFINITION_ATTRIBUTE_ID);
-        componentDefinition.setSingleStringValue(processType);
-        DelayUtils.sleep(1000);
+        wizardFirstStep.setComponentValue(DEFINITION_ATTRIBUTE_ID, processType);
+        wizardFirstStep.waitForWizardToLoad();
         Input componentRelease = wizardFirstStep.getComponent(RELEASE_ATTRIBUTE_ID);
-        componentRelease.clear();
-        componentRelease.setSingleStringValue(LATEST);
+        if (!componentRelease.getValue().getStringValue().equals(LATEST)) {
+            componentRelease.setSingleStringValue(LATEST);
+            wizardFirstStep.waitForWizardToLoad();
+        }
         wizardFirstStep.clickButtonById(ACCEPT_BUTTON);
         Wizard wizardSecondStep = Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2);
-        Input processNameTextField = wizardSecondStep.getComponent(PROCESS_NAME_ATTRIBUTE_ID);
-        processNameTextField.setSingleStringValue(processName);
+        wizardSecondStep.setComponentValue(PROCESS_NAME_ATTRIBUTE_ID, processName);
         if (driver.getPageSource().contains(FINISH_DUE_DATE_ID)) {
-            Input finishedDueDate = wizardSecondStep.getComponent(FINISH_DUE_DATE_ID);
-            finishedDueDate.setSingleStringValue(LocalDate.now().plusDays(plusDays).toString());
+            wizardSecondStep.setComponentValue(FINISH_DUE_DATE_ID, LocalDate.now().plusDays(plusDays).toString());
         }
         return Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2);
     }
