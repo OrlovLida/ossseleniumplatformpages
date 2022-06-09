@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.data.Data;
 import com.oss.framework.components.inputs.Button;
+import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.utils.DelayUtils;
@@ -244,5 +245,14 @@ public class SDWizardPage extends BaseSDPage {
         Button.createById(driver, createButtonId).click();
         DropdownList.create(driver, wait).selectOptionById(flowType);
         return new SDWizardPage(driver, wait, wizardId);
+    }
+
+    @Step("Turn On switcher")
+    public void turnOnSwitcher(String switcherID) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Turn On switcher");
+        ComponentFactory.create(switcherID, Input.ComponentType.SWITCHER, driver, wait)
+                .setSingleStringValue(Boolean.TRUE.toString());
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 }
