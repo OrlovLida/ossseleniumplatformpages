@@ -1,19 +1,24 @@
 package com.oss.pages.reconciliation;
 
 import java.util.List;
+import java.util.Map;
 
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.table.TableComponent;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.propertypanel.PropertyPanel;
 import com.oss.framework.widgets.table.TableWidget;
+import com.oss.framework.widgets.tabs.TabsInterface;
+import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
 public class VS20Page extends BasePage {
     private static final String TABLE_WIDGET = "InventoryView_MainCard_VS_Object";
+    private static final String PROPERTIES_TABLE_WIDGET = "InventoryView_DetailsTabs_VS_Object";
     private static final String CM_DOMAIN_NAME = "cmDomainName";
     private static final String DISTINGUISH_NAME = "distinguishName";
     private static final String NATIVE_TYPE = "nativeType";
@@ -57,6 +62,10 @@ public class VS20Page extends BasePage {
         return getTableWidget().getActiveColumnHeaders();
     }
 
+    public Map<String, String> getColumnsValues() {
+        return getPropertyPanel().getPropertiesValuesToList();
+    }
+
     @Step("Go to Network Discovery Control View")
     public void goToNDCV() {
         getTableWidget().callAction(NAVIGATION_ID);
@@ -80,6 +89,11 @@ public class VS20Page extends BasePage {
         return getPropertyPanel().getPropertyLabels();
     }
 
+    @Step("Get all properties IDs to list")
+    public List<String> getPropertiesIdsToList() {
+        return getPropertyPanel().getPropertiesToList();
+    }
+
     @Step("Get property value")
     public String getPropertyValue(String propertyName) {
         return getPropertyPanel().getPropertyValue(propertyName);
@@ -92,5 +106,4 @@ public class VS20Page extends BasePage {
     private TableWidget getTableWidget() {
         return TableWidget.createById(driver, TABLE_WIDGET, wait);
     }
-
 }

@@ -36,6 +36,41 @@ public class VS20Test extends BaseTestCase {
     private static final String SKIPPING_TEST_MESSAGE = "Skipping tests because resource was not available.";
     private static final String NOTIFICATION_MESSAGE = "Generation of VS Objects Metamodel for CM Interface: Comarch finished";
 
+//    private static final Map<String, String> rightHereMap = new HashMap<String, String>()
+//    {
+//        {
+//            put("VS_Comarch_COM_x_95_x_Device_Description", "Cisco IOS XR Software (Cisco ASR9K Series), Version 6.2.3[Default]rnCopyright (c) 2018 by Cisco Systems, Inc.");
+//            put("isRoot", "true");
+//            put("cmDomainName", "AT-SYS-VS20-TEST");
+//            put("VS_Comarch_COM_x_95_x_Device_NBI_x_95_x_FDN", "MD=CISCO_EPNM!ND=Device_VS20_TEST");
+//            put("VS_Comarch_COM_x_95_x_Device_PartNumber", "");
+//            put("VS_Comarch_COM_x_95_x_Device_Software", "6.2.3[Default]");
+//            put("type", "VS_Comarch_COM_x_95_x_Device");
+//            put("VS_Comarch_COM_x_95_x_Device_HardwareVersion", "V01");
+//            put("VS_Comarch_COM_x_95_x_Device_NetworkDomain", "");
+//            put("isRemoved", "false");
+//            put("VS_Comarch_COM_x_95_x_Device_DeviceCategory", "");
+//            put("VS_Comarch_COM_x_95_x_Device_NeFunctionName", "");
+//            put("isChanged", "true");
+//            put("VS_Comarch_COM_x_95_x_Device_ManagementDomain", "ChangeModel_test");
+//            put("VS_Comarch_COM_x_95_x_Device_relation_x_45_x_HostedFunctionsList", "Device@@Device_VS20_TEST##IPDeviceFunction@@8a864a1e-418b-48ad-a6d4-257204046339");
+//            put("VS_Comarch_COM_x_95_x_Device_ManufactureDate", "2019-01-23T10:40:15.778-03:00");
+//            put("VS_Comarch_COM_x_95_x_Device_ChassisID", "");
+//            put("VS_Comarch_COM_x_95_x_Device_SerialNumber", "FOX2141P2PZ");
+//            put("VS_Comarch_COM_x_95_x_Device_relation_x_45_x_ManagementSystem", "");
+//            put("VS_Comarch_COM_x_95_x_Device_Location", "Provincia: AMBA; Localidad: Merlo; Centro: MRL; Ubicacion: Riobamba 494 y Sarandi; Piso: 2; Sala: Transmision Nueva; Traza: Guemes-Merlo;: GEO -34.66711, -58.725129:;");
+//            put("VS_Comarch_COM_x_95_x_Device_ModelName", "");
+//            put("VS_Comarch_COM_x_95_x_Device_Type", "IPDevice");
+//            put("VS_Comarch_COM_x_95_x_Device_ManagementAddress", "10.193.0.9");
+//            put("VS_Comarch_COM_x_95_x_Device_ManagementAddressType", "IPv4");
+//            put("distinguishName", "Device@@Device_VS20_TEST");
+//            put("VS_Comarch_COM_x_95_x_Device_Manufacturer", "Cisco Systems Inc.");
+//            put("nativeType", "COM_Device");
+//            put("VS_Comarch_COM_x_95_x_Device_Name", "Device_VS20_TEST");
+//            put("cmDomainId", "ef0e5edd-c7cb-4e14-bb67-714f1c3cb3b8");
+//        }
+//    };
+
     private static final List<String> assertionFilterList = new ImmutableList.Builder<String>()
             .add("CM Domain Id")
             .add("CM Domain Name")
@@ -128,7 +163,25 @@ public class VS20Test extends BaseTestCase {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
     }
 
-    @Test(priority = 1, description = "Create CMDomain")
+    @BeforeMethod
+    protected void skipExceptionTest() {
+        if (skipTest) {
+            throw new SkipException(SKIPPING_TEST_MESSAGE);
+        }
+    }
+
+    @Test(priority = 1, description = "Delete CMDomain")
+    @Description("Delete CMDomain")
+    public void deleteCMDomain() {
+        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
+        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
+        networkDiscoveryControlViewPage.clearOldNotifications();
+        networkDiscoveryControlViewPage.deleteCmDomain();
+        checkPopupMessageType();
+        Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
+    }
+
+    @Test(priority = 2, description = "Create CMDomain", dependsOnMethods = {"deleteCMDomain"})
     @Description("Create CMDomain")
     public void createCmDomain() {
         networkDiscoveryControlViewPage.openCmDomainWizard();
@@ -140,7 +193,7 @@ public class VS20Test extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 2, description = "Upload reconciliation samples", dependsOnMethods = {"createCmDomain"})
+    @Test(priority = 3, description = "Upload reconciliation samples", dependsOnMethods = {"createCmDomain"})
     @Description("Go to Sample Management View and upload reconciliation samples")
     public void uploadSamples() throws URISyntaxException {
         DelayUtils.sleep(1000);
@@ -154,7 +207,7 @@ public class VS20Test extends BaseTestCase {
         samplesManagementPage.uploadSamples("recoSamples/VS20Viewer/DEVICE_VS20_TEST.json");
     }
 
-    @Test(priority = 3, description = "Run reconciliation with full samples", dependsOnMethods = {"uploadSamples"})
+    @Test(priority = 4, description = "Run reconciliation with full samples", dependsOnMethods = {"uploadSamples"})
     @Description("Run reconciliation with full samples")
     public void runReconciliationWithFullSample() {
         openNetworkDiscoveryControlView();
@@ -176,7 +229,7 @@ public class VS20Test extends BaseTestCase {
         }
     }
 
-    @Test(priority = 4, description = "Search for object in Metamodel Page", dependsOnMethods = {"runReconciliationWithFullSample"})
+    @Test(priority = 5, description = "Search for object in Metamodel Page", dependsOnMethods = {"runReconciliationWithFullSample"})
     @Description("Search for object in Metamodel Page")
     public void searchForObjectInMetamodelPage() {
         metamodelPage = MetamodelPage.goToMetamodelPage(driver, BASIC_URL);
@@ -190,7 +243,7 @@ public class VS20Test extends BaseTestCase {
         }
     }
 
-    @Test(priority = 5, description = "Assert Filters", dependsOnMethods = {"searchForObjectInMetamodelPage"})
+    @Test(priority = 6, description = "Assert Filters", dependsOnMethods = {"searchForObjectInMetamodelPage"})
     @Description("Assert Filters on VS 2.0 Viewer Page")
     public void assertFilters() {
         vs20Page = VS20Page.goToVS20Page(driver, BASIC_URL);
@@ -207,7 +260,7 @@ public class VS20Test extends BaseTestCase {
         softAssert.assertAll();
     }
 
-    @Test(priority = 6, description = "Select first row on VS2.0 Viewer Page", dependsOnMethods = {"searchForObjectInMetamodelPage"})
+    @Test(priority = 7, description = "Select first row on VS2.0 Viewer Page", dependsOnMethods = {"searchForObjectInMetamodelPage"})
     @Description("Select first row on VS2.0 Viewer Page")
     public void selectRowOnVS20Page() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -216,7 +269,7 @@ public class VS20Test extends BaseTestCase {
         vs20Page.clickFirstItem();
     }
 
-    @Test(priority = 7, description = "Assert all of properties are correct", dependsOnMethods = {"selectRowOnVS20Page"})
+    @Test(priority = 8, description = "Assert all of properties are correct", dependsOnMethods = {"selectRowOnVS20Page"})
     @Description("Assert all of properties are correct")
     public void assertProperties() {
         List<String> attributes = vs20Page.getPropertiesToList();
@@ -232,7 +285,7 @@ public class VS20Test extends BaseTestCase {
         softAssert.assertAll();
     }
 
-    @Test(priority = 8, description = "Assert columns in VS2.0 Viewer Page", dependsOnMethods = {"selectRowOnVS20Page"})
+    @Test(priority = 9, description = "Assert columns in VS2.0 Viewer Page", dependsOnMethods = {"selectRowOnVS20Page"})
     @Description("Assert columns in VS2.0 Viewer Page")
     public void assertColumnsInVS20Viewer() {
         List<String> columnsList = vs20Page.getColumnsIds();
@@ -243,13 +296,13 @@ public class VS20Test extends BaseTestCase {
         }
     }
 
-    @Test(priority = 9, description = "Click Show On and Inventory View", dependsOnMethods = {"selectRowOnVS20Page"})
+    @Test(priority = 10, description = "Click Show On and Inventory View", dependsOnMethods = {"selectRowOnVS20Page"})
     @Description("Click Show On and Inventory View")
     public void showOnInventoryView() {
         vs20Page.navigateToInventoryView();
     }
 
-    @Test(priority = 10, description = "Assert columns in Inventory View", dependsOnMethods = {"showOnInventoryView"})
+    @Test(priority = 11, description = "Assert columns in Inventory View", dependsOnMethods = {"showOnInventoryView"})
     @Description("Assert columns in Inventory View")
     public void assertColumnsInInventoryView() {
         inventoryView_vsObject95_page = new InventoryViewVSObject95Page(driver);
@@ -259,24 +312,6 @@ public class VS20Test extends BaseTestCase {
             log.info("Checking attribute with name: " + assertionInventoryViewColumnsList.get(i));
             log.info("Checking attribute with index: " + i + ", which equals: '" + assertionInventoryViewColumnsList.get(i) + "' on declared assertionList, and equals '" + columnsList.get(i) + "' on properties list taken from GUI");
             Assert.assertEquals(assertionInventoryViewColumnsList.get(i), columnsList.get(i));
-        }
-    }
-
-    @Test(priority = 11, description = "Delete CMDomain", dependsOnMethods = {"createCmDomain"})
-    @Description("Delete CMDomain")
-    public void deleteCMDomain() {
-        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
-        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
-        networkDiscoveryControlViewPage.clearOldNotifications();
-        networkDiscoveryControlViewPage.deleteCmDomain();
-        checkPopupMessageType();
-        Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
-    }
-
-    @BeforeMethod
-    protected void checkEnvironment() {
-        if (skipTest) {
-            throw new SkipException(SKIPPING_TEST_MESSAGE);
         }
     }
 
