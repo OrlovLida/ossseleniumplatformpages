@@ -27,20 +27,20 @@ public class LoopbackInterfaceWizardPage extends BasePage {
     }
 
     public void setNumber(String number) {
-        wizard.setComponentValue(NUMBER_FIELD_ID, number, Input.ComponentType.TEXT_FIELD);
+        wizard.setComponentValue(NUMBER_FIELD_ID, number);
     }
 
     public void setDescription(String description) {
-        wizard.setComponentValue(DESCRIPTION_FIELD_ID, description, Input.ComponentType.TEXT_FIELD);
+        wizard.setComponentValue(DESCRIPTION_FIELD_ID, description);
     }
 
     public void clearNumber() {
-        Input numberComponent = wizard.getComponent(NUMBER_FIELD_ID, Input.ComponentType.TEXT_FIELD);
+        Input numberComponent = wizard.getComponent(NUMBER_FIELD_ID);
         numberComponent.clearByAction();
     }
 
     public void clearDescription() {
-        Input descriptionComponent = wizard.getComponent(DESCRIPTION_FIELD_ID, Input.ComponentType.TEXT_FIELD);
+        Input descriptionComponent = wizard.getComponent(DESCRIPTION_FIELD_ID);
         descriptionComponent.clearByAction();
     }
 

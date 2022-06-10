@@ -27,17 +27,17 @@ public class VLANPoolWizardPage extends BasePage {
 
     @Step("Set Name to {name}")
     public void setName(String name) {
-        getWizard().setComponentValue(NAME_ID, name, Input.ComponentType.TEXT_FIELD);
+        getWizard().setComponentValue(NAME_ID, name);
     }
 
     @Step("Set Description to {description}")
     public void setDescription(String description) {
-        getWizard().setComponentValue(DESCRIPTION_ID, description, Input.ComponentType.TEXT_FIELD);
+        getWizard().setComponentValue(DESCRIPTION_ID, description);
     }
 
     @Step("Set VLAN Range to {vlanRange}")
     public void setVlanRange(String vlanRange) {
-        getWizard().setComponentValue(VLAN_RANGE_ID, vlanRange, ComponentType.SEARCH_FIELD);
+        getWizard().setComponentValue(VLAN_RANGE_ID, vlanRange);
     }
 
     @Step("Click next step")

@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.openqa.selenium.WebDriver;
 
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.commonhierarchy.CommonHierarchyApp;
 import com.oss.framework.wizard.Wizard;
@@ -98,7 +97,7 @@ public class AEIWizardPage extends BasePage {
     @Step("Set LACP short period to {value}")
     public void setLACPShortPeriod(String value) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        wizard.setComponentValue(LACP_SHORT_PERIOD_PATH, value, Input.ComponentType.CHECKBOX);
+        wizard.setComponentValue(LACP_SHORT_PERIOD_PATH, value);
     }
 
     @Step("Click next step button")
@@ -122,10 +121,10 @@ public class AEIWizardPage extends BasePage {
     }
 
     private void setTextFieldComponentValue(String componentId, String value) {
-        wizard.setComponentValue(componentId, value, Input.ComponentType.TEXT_FIELD);
+        wizard.setComponentValue(componentId, value);
     }
 
     private void setComboBoxComponentValue(String componentId, String value) {
-        wizard.setComponentValue(componentId, value, Input.ComponentType.COMBOBOX);
+        wizard.setComponentValue(componentId, value);
     }
 }
