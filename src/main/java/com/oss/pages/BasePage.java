@@ -6,6 +6,7 @@ import java.net.URL;
 import java.nio.file.Paths;
 import java.security.SecureRandom;
 import java.time.format.DateTimeFormatter;
+import java.util.NoSuchElementException;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
@@ -87,7 +88,14 @@ public class BasePage {
     @Step("Type object name in 'Search in OSS objects' field")
     public GlobalSearchPage searchInGlobalSearch(String value) {
         ToolbarWidget globalSearchInput = ToolbarWidget.create(driver, wait);
-        globalSearchInput.typeAndEnterInGlobalSearch(value);
+        globalSearchInput.searchInGlobalSearch(value);
+        return new GlobalSearchPage(driver);
+    }
+
+    @Step("Type object name in 'Search in OSS objects' field")
+    public GlobalSearchPage searchInGlobalSearchContains(String value) {
+        ToolbarWidget globalSearchInput = ToolbarWidget.create(driver, wait);
+        globalSearchInput.searchInGlobalSearchContains(value);
         return new GlobalSearchPage(driver);
     }
 
@@ -101,10 +109,11 @@ public class BasePage {
     public String getAbsolutePath(String path) {
         try {
             URL res = getClass().getClassLoader().getResource(path);
+            assert res != null;
             File file = Paths.get(res.toURI()).toFile();
             return file.getAbsolutePath();
         } catch (URISyntaxException e) {
-            throw new RuntimeException("Cannot find file", e);
+            throw new NoSuchElementException("Cannot find file");
         }
     }
 
