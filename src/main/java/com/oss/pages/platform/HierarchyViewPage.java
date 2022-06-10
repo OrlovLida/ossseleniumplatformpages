@@ -56,6 +56,7 @@ public class HierarchyViewPage extends BasePage {
     }
 
     public TreeWidgetV2 getMainTree() {
+        DelayUtils.waitForPageToLoad(driver, wait);
         return TreeWidgetV2.create(driver, wait, HIERARCHY_VIEW_TREE_WIDGET_ID);
     }
 
