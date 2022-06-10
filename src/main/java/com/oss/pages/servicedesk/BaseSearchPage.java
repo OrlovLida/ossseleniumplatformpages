@@ -23,7 +23,7 @@ import static com.oss.pages.servicedesk.issue.IssueDetailsPage.DETAILS_PAGE_URL_
 
 public abstract class BaseSearchPage extends BaseSDPage {
 
-    private static final Logger log = LoggerFactory.getLogger(BaseSearchPage.class);
+    protected static final Logger log = LoggerFactory.getLogger(BaseSearchPage.class);
 
     public static final String CREATION_TIME_ATTRIBUTE = "createDate";
     public static final String DESCRIPTION_ATTRIBUTE = "incidentDescription";
@@ -36,13 +36,17 @@ public abstract class BaseSearchPage extends BaseSDPage {
         super(driver, wait);
     }
 
-    public abstract TableWidget getIssueTable();
+    public TableWidget getIssueTable() {
+        return TableWidget.createById(driver, getTableId(), wait);
+    }
 
     public abstract BaseSearchPage openView(WebDriver driver, String basicURL);
 
     public abstract String getSearchPageUrl();
 
     public abstract String getIssueType();
+
+    public abstract String getTableId();
 
     public void goToPage(WebDriver driver, String basicURL, String pageURL) {
         openPage(driver, String.format(VIEWS_URL_PATTERN, basicURL, pageURL));
@@ -77,10 +81,6 @@ public abstract class BaseSearchPage extends BaseSDPage {
         return attributeValue;
     }
 
-    public TableWidget getTable(WebDriver driver, WebDriverWait wait, String tableWidgetId) {
-        return TableWidget.createById(driver, tableWidgetId, wait);
-    }
-
     public void filterBy(String attributeName, String attributeValue, Input.ComponentType componentType) {
         DelayUtils.waitForPageToLoad(driver, wait);
         getIssueTable().searchByAttribute(attributeName, componentType, attributeValue);
@@ -93,11 +93,16 @@ public abstract class BaseSearchPage extends BaseSDPage {
     }
 
     @Step("Click Export button in GraphQL Page")
-    public ExportWizardPage clickExportInTicketSearch() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        getIssueTable().callAction(ActionsContainer.KEBAB_GROUP_ID, EXPORT_BUTTON_ID);
-        log.info("Clicking Export Button");
+    public ExportWizardPage clickExportInSearchTable() {
+        clickExportFromTable(getTableId());
         return new ExportWizardPage(driver, wait, EXPORT_WIZARD_ID);
+    }
+
+    @Override
+    public void clickExportFromTable(String tableId) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        TableWidget.createById(driver, getTableId(), wait).callAction(ActionsContainer.KEBAB_GROUP_ID, EXPORT_BUTTON_ID);
+        log.info("Clicking Export Button");
     }
 
     @Step("Count number of visible issues")
@@ -126,7 +131,7 @@ public abstract class BaseSearchPage extends BaseSDPage {
                 }
                 filterByTextField(BaseSearchPage.CREATION_TIME_ATTRIBUTE, getTimePeriodForLastNMinutes(minutes));
             }
-            clickExportInTicketSearch();
+            clickExportInSearchTable();
             ExportWizardPage exportWizardPage = new ExportWizardPage(driver, wait, exportWizardId);
             String exportFileName = "Selenium test " + BaseSDPage.getDateFormat();
             exportWizardPage.fillFileName(exportFileName);

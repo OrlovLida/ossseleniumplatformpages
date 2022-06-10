@@ -3,7 +3,6 @@ package com.oss.pages.servicedesk.issue.task;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.oss.framework.widgets.table.TableWidget;
 import com.oss.pages.servicedesk.BaseSearchPage;
 
 import io.qameta.allure.Step;
@@ -34,7 +33,8 @@ public class MyTasksPage extends BaseSearchPage {
         return PROBLEM_ISSUE_TYPE;
     }
 
-    public TableWidget getIssueTable() {
-        return TableWidget.createById(driver, PROBLEMS_TABLE_ID, wait);
+    @Override
+    public String getTableId() {
+        return PROBLEMS_TABLE_ID;
     }
 }

@@ -48,7 +48,7 @@ public class ExportTest extends BaseTestCase {
                 }
                 ticketSearchPage.filterByTextField(BaseSearchPage.CREATION_TIME_ATTRIBUTE, ticketSearchPage.getTimePeriodForLastNMinutes(minutes));
             }
-            exportWizardPage = ticketSearchPage.clickExportInTicketSearch();
+            exportWizardPage = ticketSearchPage.clickExportInSearchTable();
             exportWizardPage.fillFileName(EXPORT_FILE_NAME);
             exportWizardPage.fillDateMask(DATE_MASK);
             exportWizardPage.clickAccept();
