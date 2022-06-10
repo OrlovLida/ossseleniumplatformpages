@@ -3,7 +3,6 @@ package com.oss.pages.servicedesk.issue.ticket;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.oss.framework.widgets.table.TableWidget;
 import com.oss.pages.servicedesk.BaseSearchPage;
 
 import io.qameta.allure.Step;
@@ -35,7 +34,7 @@ public class MyTicketsPage extends BaseSearchPage {
     }
 
     @Override
-    public TableWidget getIssueTable() {
-        return TableWidget.createById(driver, TICKETS_TABLE_ID, wait);
+    public String getTableId() {
+        return TICKETS_TABLE_ID;
     }
 }

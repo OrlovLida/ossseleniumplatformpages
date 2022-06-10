@@ -81,26 +81,12 @@ public abstract class BaseDashboardPage extends BaseSDPage {
         return getTable().getRowNumber(assignee, ASSIGNEE_ATTRIBUTE);
     }
 
-    @Step("Click Export")
-    public void clickExport() {
-        clickExportFromTable(getTableID());
-    }
-
     public String getIssueIdWithAssignee(String assignee) {
         return getTable().getCellValue(getRowWithIssueAssignee(assignee), ID_UPPERCASE_ATTRIBUTE);
     }
 
     public BaseDashboardPage exportFromDashboard(String fileName) {
-        openNotificationPanel()
-                .clearNotifications()
-                .close();
-        clickExport();
-        openNotificationPanel()
-                .waitForExportFinish()
-                .clickDownload();
-        openNotificationPanel()
-                .clearNotifications();
-        attachFileToReport(fileName);
+        exportFromTable(getTableID(), fileName);
         return this;
     }
 

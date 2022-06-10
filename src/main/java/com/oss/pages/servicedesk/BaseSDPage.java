@@ -116,6 +116,19 @@ public abstract class BaseSDPage extends BasePage {
         log.info("Exporting file");
     }
 
+    public void exportFromTable(String tableId, String fileName) {
+        openNotificationPanel()
+                .clearNotifications()
+                .close();
+        clickExportFromTable(tableId);
+        openNotificationPanel()
+                .waitForExportFinish()
+                .clickDownload();
+        openNotificationPanel()
+                .clearNotifications();
+        attachFileToReport(fileName);
+    }
+
     public void clickExportFromTab(String tabContainerId) {
         DelayUtils.waitForPageToLoad(driver, wait);
         TabsWidget.createById(driver, wait, tabContainerId).callActionById(GROUP_ID_OLD_ACTIONS_CONTAINER, EXPORT_BUTTON_ID);

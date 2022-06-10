@@ -34,8 +34,13 @@ public class TicketSearchPage extends BaseSearchPage {
         return TROUBLE_TICKET_ISSUE_TYPE;
     }
 
+    @Override
+    public String getTableId() {
+        return TICKETS_TABLE_ID;
+    }
+
     public TableWidget getIssueTable() {
-        return TableWidget.createById(driver, TICKETS_TABLE_ID, wait);
+        return TableWidget.createById(driver, getTableId(), wait);
     }
 }
 
