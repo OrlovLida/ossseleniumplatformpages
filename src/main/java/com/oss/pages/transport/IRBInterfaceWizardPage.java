@@ -2,7 +2,6 @@ package com.oss.pages.transport;
 
 import org.openqa.selenium.WebDriver;
 
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
@@ -23,7 +22,7 @@ public class IRBInterfaceWizardPage extends BasePage {
     @Step("Create IRB Interface with VlanID {vlanId}")
     public IRBInterfaceWizardPage createIRBInterface(String vlanId) {
         waitForPageToLoad();
-        getWizard().setComponentValue(IRB_VLANID_ID, vlanId, Input.ComponentType.TEXT_FIELD);
+        getWizard().setComponentValue(IRB_VLANID_ID, vlanId);
         waitForPageToLoad();
         getWizard().clickAccept();
         return this;
@@ -32,9 +31,9 @@ public class IRBInterfaceWizardPage extends BasePage {
     @Step("Edit IRB Interface and set MTU {mtu} and description {description}")
     public IRBInterfaceWizardPage editIRBInterface(String mtu, String description) {
         waitForPageToLoad();
-        getEditWizard().setComponentValue(IRB_MTU_ID, mtu, Input.ComponentType.TEXT_FIELD);
+        getEditWizard().setComponentValue(IRB_MTU_ID, mtu);
         waitForPageToLoad();
-        getEditWizard().setComponentValue(IRB_DESCRIPTION_ID, description, Input.ComponentType.TEXT_FIELD);
+        getEditWizard().setComponentValue(IRB_DESCRIPTION_ID, description);
         waitForPageToLoad();
         getEditWizard().clickAccept();
         return this;
