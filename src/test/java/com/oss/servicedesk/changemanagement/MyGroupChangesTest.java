@@ -35,7 +35,7 @@ public class MyGroupChangesTest extends BaseTestCase {
     private IssueDetailsPage issueDetailsPage;
     private OverviewTab changeOverviewTab;
     private SDWizardPage sdWizardPage;
-    private String changeID = "66";
+    private String changeID;
 
     private static final String CHANGE_DESCRIPTION = "Selenium Test Change";
 
