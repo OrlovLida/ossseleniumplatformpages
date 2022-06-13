@@ -75,6 +75,6 @@ public class ManualMatchingPage extends BasePage {
     }
 
     private TableWidget getTableWidget() {
-        return TableWidget.createById(driver, TABLE_WIDGET_ID, wait);
+        return TableWidget.createById(driver, TABLE_ID, wait);
     }
 }
