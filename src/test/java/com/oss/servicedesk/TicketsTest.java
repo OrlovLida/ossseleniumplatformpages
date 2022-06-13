@@ -63,7 +63,7 @@ public class TicketsTest extends BaseTestCase {
     private ParticipantsTab participantsTab;
     private RelatedProblemsTab relatedProblemsTab;
     private AffectedTab affectedTab;
-    private String ticketID = "157";
+    private String ticketID;
 
     private static final String TT_DESCRIPTION = "TestSelenium";
     private static final String TT_DESCRIPTION_EDITED = "TestSelenium_edited";
@@ -153,16 +153,16 @@ public class TicketsTest extends BaseTestCase {
         sdWizardPage.getMoStep().enterTextIntoSearchComponent(MOIdentifier);
         sdWizardPage.getMoStep().selectObjectInMOTable(MOIdentifier);
         sdWizardPage.clickNextButtonInWizard();
-        sdWizardPage.insertValueToSearchComponent(ttAssignee, TT_WIZARD_ASSIGNEE);
-        sdWizardPage.insertValueToSearchComponent(EscalatedTo1, TT_WIZARD_ESCALATED_TO);
-        sdWizardPage.insertValueToTextComponent(TT_REFERENCE_ID, TT_WIZARD_REFERENCE_ID);
+        sdWizardPage.insertValueToComponent(ttAssignee, TT_WIZARD_ASSIGNEE);
+        sdWizardPage.insertValueToComponent(EscalatedTo1, TT_WIZARD_ESCALATED_TO);
+        sdWizardPage.insertValueToComponent(TT_REFERENCE_ID, TT_WIZARD_REFERENCE_ID);
         sdWizardPage.enterIncidentDescription(TT_DESCRIPTION);
         sdWizardPage.enterExpectedResolutionDate();
-        sdWizardPage.insertValueToTextComponent(TT_CORRELATION_ID, TT_WIZARD_CORRELATION_ID);
+        sdWizardPage.insertValueToComponent(TT_CORRELATION_ID, TT_WIZARD_CORRELATION_ID);
         sdWizardPage.clickNextButtonInWizard();
         String date = LocalDateTime.now().minusMinutes(5).format(DATE_TIME_FORMATTER);
-        sdWizardPage.insertValueToTextComponent(date, TT_WIZARD_ISSUE_START_DATE_ID);
-        sdWizardPage.insertValueToTextComponent(date, TT_WIZARD_MESSAGE_DATE_ID);
+        sdWizardPage.insertValueToComponent(date, TT_WIZARD_ISSUE_START_DATE_ID);
+        sdWizardPage.insertValueToComponent(date, TT_WIZARD_MESSAGE_DATE_ID);
         sdWizardPage.clickAcceptButtonInWizard();
         ticketID = ticketDashboardPage.getIssueIdWithAssignee(ttAssignee);
         Assert.assertEquals(ticketDashboardPage.getAssigneeForNthTicketInTable(0), ttAssignee);
@@ -202,10 +202,10 @@ public class TicketsTest extends BaseTestCase {
         ticketOverviewTab.allowEditingTicket();
         sdWizardPage = ticketOverviewTab.openEditIssueWizard();
         sdWizardPage.clickNextButtonInWizard();
-        sdWizardPage.insertValueToSearchComponent(NewAssignee, TT_WIZARD_ASSIGNEE);
+        sdWizardPage.insertValueToComponent(NewAssignee, TT_WIZARD_ASSIGNEE);
         sdWizardPage.enterIncidentDescription(TT_DESCRIPTION_EDITED);
-        sdWizardPage.insertValueToSearchComponent(EscalatedTo, TT_WIZARD_ESCALATED_TO);
-        sdWizardPage.insertValueToComboBoxComponent(TT_SEVERITY, TT_WIZARD_SEVERITY);
+        sdWizardPage.insertValueToComponent(EscalatedTo, TT_WIZARD_ESCALATED_TO);
+        sdWizardPage.insertValueToComponent(TT_SEVERITY, TT_WIZARD_SEVERITY);
         sdWizardPage.clickNextButtonInWizard();
         sdWizardPage.clickAcceptButtonInWizard();
     }
@@ -283,8 +283,8 @@ public class TicketsTest extends BaseTestCase {
         issueDetailsPage.selectTabFromDetailsWindow(DICTIONARIES_TAB_ARIA_CONTROLS, DICTIONARIES_TAB_LABEL);
         issueDetailsPage.clickContextAction(ADD_TO_LIBRARY_LABEL);
         SDWizardPage dictionarySDWizardPage = new SDWizardPage(driver, webDriverWait, ADD_TO_LIBRARY_WIZARD_ID);
-        dictionarySDWizardPage.insertValueToComboBoxComponent(TT_LIBRARY_TYPE, WIZARD_LIBRARY_TYPE_ID);
-        dictionarySDWizardPage.insertValueToComboBoxComponent(TT_CATEGORY_NAME, WIZARD_CATEGORY_ID);
+        dictionarySDWizardPage.insertValueToComponent(TT_LIBRARY_TYPE, WIZARD_LIBRARY_TYPE_ID);
+        dictionarySDWizardPage.insertValueToComponent(TT_CATEGORY_NAME, WIZARD_CATEGORY_ID);
         dictionarySDWizardPage.clickAcceptButtonInWizard();
         Assert.assertEquals(issueDetailsPage.checkExistingDictionary(), TT_CATEGORY_NAME);
     }
@@ -303,11 +303,11 @@ public class TicketsTest extends BaseTestCase {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
         messagesTab = issueDetailsPage.selectMessagesTab();
         sdWizardPage = messagesTab.createNewNotificationOnMessagesTab();
-        sdWizardPage.insertValueToComboBoxComponent(NOTIFICATION_CHANNEL_INTERNAL, NOTIFICATION_WIZARD_CHANNEL_ID);
-        sdWizardPage.insertValueToTextAreaComponent(NOTIFICATION_MESSAGE_INTERNAL, NOTIFICATION_WIZARD_MESSAGE_ID);
-        sdWizardPage.insertValueContainsToMultiComboBox(NOTIFICATION_INTERNAL_TO, NOTIFICATION_WIZARD_INTERNAL_TO_ID);
+        sdWizardPage.insertValueToComponent(NOTIFICATION_CHANNEL_INTERNAL, NOTIFICATION_WIZARD_CHANNEL_ID);
+        sdWizardPage.insertValueToComponent(NOTIFICATION_MESSAGE_INTERNAL, NOTIFICATION_WIZARD_MESSAGE_ID);
+        sdWizardPage.insertValueContainsToComponent(NOTIFICATION_INTERNAL_TO, NOTIFICATION_WIZARD_INTERNAL_TO_ID);
         sdWizardPage.clickComboBox(NOTIFICATION_WIZARD_TEMPLATE_ID);
-        sdWizardPage.insertValueToComboBoxComponent(NOTIFICATION_TYPE, NOTIFICATION_WIZARD_TYPE_ID);
+        sdWizardPage.insertValueToComponent(NOTIFICATION_TYPE, NOTIFICATION_WIZARD_TYPE_ID);
         sdWizardPage.clickAcceptButtonInWizard();
 
         Assert.assertFalse(messagesTab.isMessagesTabEmpty());
@@ -326,10 +326,10 @@ public class TicketsTest extends BaseTestCase {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
         messagesTab = issueDetailsPage.selectMessagesTab();
         sdWizardPage = messagesTab.createNewNotificationOnMessagesTab();
-        sdWizardPage.insertValueToComboBoxComponent(NOTIFICATION_CHANNEL_EMAIL, NOTIFICATION_WIZARD_CHANNEL_ID);
-        sdWizardPage.insertValueToMultiSearchComponent(NotificationEmailTo, NOTIFICATION_WIZARD_TO_ID);
-        sdWizardPage.insertValueToComboBoxComponent(NotificationEmailFrom, NOTIFICATION_WIZARD_FROM_ID);
-        sdWizardPage.insertValueToTextComponent(NOTIFICATION_SUBJECT, NOTIFICATION_WIZARD_SUBJECT_ID);
+        sdWizardPage.insertValueToComponent(NOTIFICATION_CHANNEL_EMAIL, NOTIFICATION_WIZARD_CHANNEL_ID);
+        sdWizardPage.insertValueContainsToComponent(NotificationEmailTo, NOTIFICATION_WIZARD_TO_ID);
+        sdWizardPage.insertValueToComponent(NotificationEmailFrom, NOTIFICATION_WIZARD_FROM_ID);
+        sdWizardPage.insertValueToComponent(NOTIFICATION_SUBJECT, NOTIFICATION_WIZARD_SUBJECT_ID);
         sdWizardPage.enterEmailMessage(NOTIFICATION_MESSAGE_EMAIL);
         sdWizardPage.clickAcceptButtonInWizard();
 
@@ -531,8 +531,8 @@ public class TicketsTest extends BaseTestCase {
         relatedProblemsTab = issueDetailsPage.selectRelatedProblemsTab();
         sdWizardPage = relatedProblemsTab.openCreateProblemWizard();
         sdWizardPage.clickNextButtonInWizard();
-        sdWizardPage.insertValueToTextAreaComponent(CREATE_PROBLEM_NAME, CREATE_PROBLEM_WIZARD_NAME_ID);
-        sdWizardPage.insertValueToSearchComponent(CREATE_PROBLEM_ASSIGNEE, CREATE_PROBLEM_WIZARD_ASSIGNEE_ID);
+        sdWizardPage.insertValueToComponent(CREATE_PROBLEM_NAME, CREATE_PROBLEM_WIZARD_NAME_ID);
+        sdWizardPage.insertValueToComponent(CREATE_PROBLEM_ASSIGNEE, CREATE_PROBLEM_WIZARD_ASSIGNEE_ID);
         sdWizardPage.clickNextButtonInWizard();
         sdWizardPage.clickAcceptButtonInWizard();
 

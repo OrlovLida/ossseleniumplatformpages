@@ -95,56 +95,12 @@ public class SDWizardPage extends BaseSDPage {
         log.info("Clicking {} button in the wizard", buttonID);
     }
 
-    @Step("I insert {text} to multi combo box component with id {componentId}")
-    public void insertValueContainsToMultiComboBox(String text, String componentId) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        wizard.getComponent(componentId, Input.ComponentType.MULTI_COMBOBOX).setValueContains(Data.createSingleData(text));
-        log.info("Value {} inserted to multi combobox", text);
-    }
-
-    @Step("I insert {text} to multi combo box component with id {componentId}")
-    public void insertValueToMultiCombobox(String text, String componentId) {
-        insertValueToComponent(text, componentId, Input.ComponentType.MULTI_COMBOBOX);
-        log.info("Value {} inserted to multi combobox", text);
-    }
-
-    @Step("I insert {text} to combo box component with id {componentId}")
-    public void insertValueToComboBoxComponent(String text, String componentId) {
-        insertValueToComponent(text, componentId, Input.ComponentType.COMBOBOX);
-        log.info("Value {} inserted to combobox", text);
-    }
-
-    @Step("I insert {text} to search component with id {componentId}")
-    public void insertValueToSearchComponent(String text, String componentId) {
-        insertValueToComponent(text, componentId, Input.ComponentType.SEARCH_FIELD);
-        log.info("Value {} inserted to searchfield", text);
-    }
-
-    @Step("I insert {text} to multi search component with id {componentId}")
-    public SDWizardPage insertValueToMultiSearchComponent(String text, String componentId) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        wizard.getComponent(componentId, Input.ComponentType.MULTI_SEARCH_FIELD).setValueContains(Data.createSingleData(text));
-        log.info("Value {} inserted to multi searchfield", text);
-        return this;
-    }
-
     @Step("I insert {text} to multi search box component with id {componentId}")
-    public void insertValueToSearchBoxComponent(String text, String componentId) {
+    public SDWizardPage insertValueContainsToComponent(String text, String componentId) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        wizard.getComponent(componentId, Input.ComponentType.SEARCH_BOX).setValueContains(Data.createSingleData(text));
+        wizard.getComponent(componentId).setValueContains(Data.createSingleData(text));
         log.info("Value {} inserted to search box", text);
-    }
-
-    @Step("I insert {text} to text component with id {componentId}")
-    public void insertValueToTextComponent(String text, String componentId) {
-        insertValueToComponent(text, componentId, Input.ComponentType.TEXT_FIELD);
-        log.info("Value {} inserted to textfield", text);
-    }
-
-    @Step("I insert {text} to text area component with id {componentId}")
-    public void insertValueToTextAreaComponent(String text, String componentId) {
-        insertValueToComponent(text, componentId, Input.ComponentType.TEXT_AREA);
-        log.info("Value {} inserted to textarea", text);
+        return this;
     }
 
     @Step("I insert {description} to Incident Description field")
@@ -170,7 +126,7 @@ public class SDWizardPage extends BaseSDPage {
     }
 
     public void clickComboBox(String componentId) {
-        wizard.getComponent(componentId, Input.ComponentType.COMBOBOX).click();
+        wizard.getComponent(componentId).click();
         log.info("Clicking {} combobox", componentId);
     }
 
@@ -178,15 +134,15 @@ public class SDWizardPage extends BaseSDPage {
         getMoStep().enterTextIntoSearchComponent(moIdentifier);
         getMoStep().selectObjectInMOTable(moIdentifier);
         clickNextButtonInWizard();
-        insertValueToSearchComponent(assignee, TT_WIZARD_ASSIGNEE);
-        insertValueToTextComponent(TEST_SELENIUM_ID, TT_WIZARD_REFERENCE_ID);
+        insertValueToComponent(assignee, TT_WIZARD_ASSIGNEE);
+        insertValueToComponent(TEST_SELENIUM_ID, TT_WIZARD_REFERENCE_ID);
         enterIncidentDescription("Selenium Test ticket");
         enterExpectedResolutionDate();
-        insertValueToTextComponent(TEST_SELENIUM_ID, TT_WIZARD_CORRELATION_ID);
+        insertValueToComponent(TEST_SELENIUM_ID, TT_WIZARD_CORRELATION_ID);
         clickNextButtonInWizard();
         String date = LocalDateTime.now().minusMinutes(5).format(DATE_TIME_FORMATTER);
-        insertValueToTextComponent(date, TT_WIZARD_ISSUE_START_DATE_ID);
-        insertValueToTextComponent(date, TT_WIZARD_MESSAGE_DATE_ID);
+        insertValueToComponent(date, TT_WIZARD_ISSUE_START_DATE_ID);
+        insertValueToComponent(date, TT_WIZARD_MESSAGE_DATE_ID);
         clickAcceptButtonInWizard();
         return new TicketDashboardPage(driver, wait);
     }
@@ -195,49 +151,50 @@ public class SDWizardPage extends BaseSDPage {
         getMoStep().enterTextIntoSearchComponent(moIdentifier);
         getMoStep().selectObjectInMOTable(moIdentifier);
         clickNextButtonInWizard();
-        insertValueToTextAreaComponent(description, PROBLEM_NAME_DESCRIPTION_ID);
-        insertValueToSearchComponent(assignee, TT_WIZARD_ASSIGNEE);
+        insertValueToComponent(description, PROBLEM_NAME_DESCRIPTION_ID);
+        insertValueToComponent(assignee, TT_WIZARD_ASSIGNEE);
         clickNextButtonInWizard();
         clickAcceptButtonInWizard();
         return new ProblemDashboardPage(driver, wait);
     }
 
     public void createChange(String requester, String assignee, String description) {
-        insertValueToTextComponent("LOW", CHANGE_RISK_ASSESSMENT_ID);
-        insertValueToSearchComponent(requester, TT_WIZARD_REQUESTER);
-        insertValueToSearchComponent(assignee, TT_WIZARD_ASSIGNEE);
-        insertValueToTextAreaComponent(description, CHANGE_INCIDENT_DESCRIPTION_ID);
+        insertValueToComponent("LOW", CHANGE_RISK_ASSESSMENT_ID);
+        insertValueToComponent(requester, TT_WIZARD_REQUESTER);
+        insertValueToComponent(assignee, TT_WIZARD_ASSIGNEE);
+        insertValueToComponent(description, CHANGE_INCIDENT_DESCRIPTION_ID);
         clickNextButtonInWizard();
         clickAcceptButtonInWizard();
     }
 
     public void createTask(String taskName, String taskAssignee, String taskLabel) {
-        insertValueToTextComponent(taskName, TASK_WIZARD_NAME);
-        insertValueToSearchComponent(taskAssignee, TASK_WIZARD_ASSIGNEE);
-        insertValueToTextComponent(taskLabel, TASK_WIZARD_LABEL);
+        insertValueToComponent(taskName, TASK_WIZARD_NAME);
+        insertValueToComponent(taskAssignee, TASK_WIZARD_ASSIGNEE);
+        insertValueToComponent(taskLabel, TASK_WIZARD_LABEL);
         clickButton(TASK_WIZARD_CREATE_TASK_BUTTON);
     }
 
     public void createInternalNotification(String textMessage, String messageTo) {
-        insertValueToComboBoxComponent(NOTIFICATION_CHANNEL_INTERNAL, NOTIFICATION_WIZARD_CHANNEL_ID);
-        insertValueToTextAreaComponent(textMessage, NOTIFICATION_WIZARD_MESSAGE_ID);
-        insertValueContainsToMultiComboBox(messageTo, NOTIFICATION_WIZARD_INTERNAL_TO_ID);
-        insertValueToComboBoxComponent(NOTIFICATION_TYPE, NOTIFICATION_WIZARD_TYPE_ID);
+        insertValueToComponent(NOTIFICATION_CHANNEL_INTERNAL, NOTIFICATION_WIZARD_CHANNEL_ID);
+        insertValueToComponent(textMessage, NOTIFICATION_WIZARD_MESSAGE_ID);
+        insertValueContainsToComponent(messageTo, NOTIFICATION_WIZARD_INTERNAL_TO_ID);
+        insertValueToComponent(NOTIFICATION_TYPE, NOTIFICATION_WIZARD_TYPE_ID);
         clickAcceptButtonInWizard();
     }
 
     public void createEmailNotification(String notificationEmailTo, String notificationEmailFrom, String textMessage) {
-        insertValueToComboBoxComponent(NOTIFICATION_CHANNEL_EMAIL, NOTIFICATION_WIZARD_CHANNEL_ID);
-        insertValueToMultiSearchComponent(notificationEmailTo, NOTIFICATION_WIZARD_TO_ID);
-        insertValueToComboBoxComponent(notificationEmailFrom, NOTIFICATION_WIZARD_FROM_ID);
-        insertValueToTextComponent(NOTIFICATION_SUBJECT, NOTIFICATION_WIZARD_SUBJECT_ID);
+        insertValueToComponent(NOTIFICATION_CHANNEL_EMAIL, NOTIFICATION_WIZARD_CHANNEL_ID);
+        insertValueContainsToComponent(notificationEmailTo, NOTIFICATION_WIZARD_TO_ID);
+        insertValueToComponent(notificationEmailFrom, NOTIFICATION_WIZARD_FROM_ID);
+        insertValueToComponent(NOTIFICATION_SUBJECT, NOTIFICATION_WIZARD_SUBJECT_ID);
         enterEmailMessage(textMessage);
         clickAcceptButtonInWizard();
     }
 
-    private void insertValueToComponent(String text, String componentId, Input.ComponentType componentType) {
+    public void insertValueToComponent(String text, String componentId) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        wizard.setComponentValue(componentId, text, componentType);
+        wizard.setComponentValue(componentId, text);
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public static SDWizardPage openCreateWizard(WebDriver driver, WebDriverWait wait, String flowType, String createButtonId, String wizardId) {
@@ -251,7 +208,7 @@ public class SDWizardPage extends BaseSDPage {
     public void turnOnSwitcher(String switcherID) {
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Turn On switcher");
-        ComponentFactory.create(switcherID, Input.ComponentType.SWITCHER, driver, wait)
+        ComponentFactory.create(switcherID, driver, wait)
                 .setSingleStringValue(Boolean.TRUE.toString());
         DelayUtils.waitForPageToLoad(driver, wait);
     }
