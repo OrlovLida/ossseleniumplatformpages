@@ -25,7 +25,7 @@ public class AbgadScenarioSummaryViewTest extends BaseTestCase {
 
     private static final String PREDEFINED_FILTERS_WINDOW_ID = "PredefinedFiltersWindowId";
     private static final String DETECTED_ISSUES_WINDOW_ID = "DetectedIssuesWindowId";
-    private static final String SWITCHER_ID = "switcherId";
+    private static final String SWITCHER_ID = "switcherValue";
 
     @BeforeClass
     public void goToABGADScenarioSummaryView() {
@@ -61,14 +61,14 @@ public class AbgadScenarioSummaryViewTest extends BaseTestCase {
                 Assert.fail();
             } else {
                 log.info("table contains data for issues without roots");
-                abgadScenarioSummaryViewPage.setValueInMultiComboBox("creation_type", "Automatically");
+                abgadScenarioSummaryViewPage.setAttributeValue("creation_type", "Automatically");
                 //abgadScenarioSummaryViewPage.setValueInTimePeriodChooser("create_time", 3, 12, 33); //TODO after fix ACD-3363
                 abgadScenarioSummaryViewPage.setValueOfIssueIdSearch();
             }
         } else {
             log.info("table contains data for issues with roots");
             abgadScenarioSummaryViewPage.turnOnSwitcher(SWITCHER_ID);
-            abgadScenarioSummaryViewPage.setValueInMultiComboBox("creation_type", "Automatically");
+            abgadScenarioSummaryViewPage.setAttributeValue("creation_type", "Automatically");
             //abgadScenarioSummaryViewPage.setValueInTimePeriodChooser("create_time", 3, 12, 33); //TODO after fix ACD-3363
             abgadScenarioSummaryViewPage.setValueOfIssueIdSearch();
 
@@ -83,8 +83,8 @@ public class AbgadScenarioSummaryViewTest extends BaseTestCase {
     }
 
     private void clearIssueTableFilters() {
-        abgadScenarioSummaryViewPage.clearMultiComboBox("creation_type");
-        abgadScenarioSummaryViewPage.clearMultiSearch("id");
+        abgadScenarioSummaryViewPage.clearAttributeValue("creation_type");
+        abgadScenarioSummaryViewPage.clearAttributeValue("id");
         //baseACDPage.clearTimePeriod("create_time"); //TODO after fix ACD-3363
     }
 }

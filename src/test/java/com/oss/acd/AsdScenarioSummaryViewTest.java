@@ -26,7 +26,7 @@ public class AsdScenarioSummaryViewTest extends BaseTestCase {
     private static final String issuesTableRefreshButtonId = "undefined-1";
     private static final String PREDEFINED_FILTERS_WINDOW_ID = "PredefinedFiltersWindowId";
     private static final String DETECTED_ISSUES_WINDOW_ID = "DetectedIssuesWindowId";
-    private static final String SWITCHER_ID = "switcherId";
+    private static final String SWITCHER_ID = "switcherValue";
 
     @BeforeClass
     public void goToASDScenarioSummaryView() {
@@ -68,14 +68,14 @@ public class AsdScenarioSummaryViewTest extends BaseTestCase {
                 Assert.fail();
             } else {
                 log.info("table contains data for issues without roots");
-                asdScenarioSummaryViewPage.setValueInMultiComboBox("creation_type", "Automatically");
+                asdScenarioSummaryViewPage.setAttributeValue("creation_type", "Automatically");
                 //asdScenarioSummaryViewPage.setValueInTimePeriodChooser("create_time", 3, 12, 33); //TODO after fix ACD-3363
                 asdScenarioSummaryViewPage.setValueOfIssueIdSearch();
             }
         } else {
             log.info("table contains data for issues with roots");
             asdScenarioSummaryViewPage.turnOnSwitcher(SWITCHER_ID);
-            asdScenarioSummaryViewPage.setValueInMultiComboBox("creation_type", "Automatically");
+            asdScenarioSummaryViewPage.setAttributeValue("creation_type", "Automatically");
             //asdScenarioSummaryViewPage.setValueInTimePeriodChooser("create_time", 3, 12, 33); //TODO after fix ACD-3363
             asdScenarioSummaryViewPage.setValueOfIssueIdSearch();
 
@@ -91,8 +91,8 @@ public class AsdScenarioSummaryViewTest extends BaseTestCase {
     }
 
     private void clearIssueTableFilters() {
-        asdScenarioSummaryViewPage.clearMultiComboBox("creation_type");
-        asdScenarioSummaryViewPage.clearMultiSearch("id");
+        asdScenarioSummaryViewPage.clearAttributeValue("creation_type");
+        asdScenarioSummaryViewPage.clearAttributeValue("id");
         //asdScenarioSummaryViewPage.clearTimePeriod("create_time"); //TODO after fix ACD-3363
     }
 }

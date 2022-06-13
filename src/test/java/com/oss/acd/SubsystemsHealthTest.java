@@ -22,7 +22,7 @@ public class SubsystemsHealthTest extends BaseTestCase {
     private static final String ABGAD_SETTINGS_VIEW_SUFFIX_URL = "%s/#/view/acd/abgadSettings";
     private static final String AR_SETTINGS_VIEW_SUFFIX_URL = "%s/#/view/acd/kaSettings";
     private static final String ABGAD_SETTINGS_TAB_ID = "abgadSettingsTabsContainer";
-    private static final String AR_SETTINGS_TAB_ID = "kaSettingsTabsContainer";
+    private static final String AR_SETTINGS_TAB_ID = "arSettingsTabsContainer";
     private static final String SUBSYSTEMS_HEALTH_TAB = "Subsystems Health";
 
     @BeforeClass

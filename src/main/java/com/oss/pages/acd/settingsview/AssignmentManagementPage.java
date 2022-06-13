@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.ComponentFactory;
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
@@ -57,7 +56,7 @@ public class AssignmentManagementPage extends BaseACDPage {
             log.info("Assignment Management table has no data");
             return false;
         }
-        ComponentFactory.create(comboBoxId, Input.ComponentType.MULTI_SEARCH_FIELD, driver, wait).setSingleStringValue(value);
+        ComponentFactory.create(comboBoxId, driver, wait).setSingleStringValue(value);
         log.info("I am searching for created rule");
         return true;
     }
@@ -81,23 +80,6 @@ public class AssignmentManagementPage extends BaseACDPage {
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("I am clicking tabsContainer button: {}", buttonId);
         Button.createById(driver, buttonId).click();
-    }
-
-    @Step("I set value in MultiComboBox")
-    public void setValueInScenarioBox(String multiComboBoxId, String inputValue) {
-
-        if (Boolean.TRUE.equals(isMultiComboBoxFilled(multiComboBoxId))) {
-            log.info("MultiComboBox is not empty");
-            clearMultiComboBox(multiComboBoxId);
-            log.info("MultiComboBox has been cleared");
-        }
-
-        DelayUtils.waitForPageToLoad(driver, wait);
-
-        ComponentFactory.create(multiComboBoxId, Input.ComponentType.MULTI_COMBOBOX, driver, wait)
-                .setSingleStringValue(inputValue);
-
-        log.info("Setting value in MultiComboBox: {}", inputValue);
     }
 
     @Step("I get new rule id")
