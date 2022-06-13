@@ -13,7 +13,7 @@ import io.qameta.allure.Step;
 public class DeleteTemplateFolderPromptPage extends BasePage {
 
     private static final String DELETE_TEMPLATE_FORM_ID = "card-content_deleteFolderPromptId_prompt-card";
-    private static final String DELETE_BUTTON_ID = "undefined-1";
+    private static final String DELETE_BUTTON_ID = "TemplateFolderRemovalButtonApp-1";
 
     private final Wizard deleteTemplateFolderWizard;
 
