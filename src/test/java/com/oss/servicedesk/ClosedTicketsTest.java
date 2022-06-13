@@ -69,7 +69,7 @@ public class ClosedTicketsTest extends BaseTestCase {
     public void checkClosedTicketView() {
         closedTicketsPage = new ClosedTicketsPage(driver, webDriverWait).openView(driver, BASIC_URL);
         closedTicketsPage.clickRefresh();
-        closedTicketsPage.filterByTextField(ID_ATTRIBUTE, ticketID);
+        closedTicketsPage.filterBy(ID_ATTRIBUTE, ticketID);
         Assert.assertEquals(closedTicketsPage.getIdForNthTicketInTable(0), ticketID);
     }
 

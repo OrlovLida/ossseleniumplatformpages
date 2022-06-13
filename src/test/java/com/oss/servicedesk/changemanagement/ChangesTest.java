@@ -92,10 +92,10 @@ public class ChangesTest extends BaseTestCase {
             @Optional("sd_seleniumtest") String userName
     ) {
         sdWizardPage = changeDashboardPage.openCreateChangeWizard();
-        sdWizardPage.insertValueToTextComponent(RISK, RISK_ASSESSMENT_ID);
-        sdWizardPage.insertValueToSearchComponent(userName, REQUESTER_ID);
-        sdWizardPage.insertValueToSearchComponent(userName, ASSIGNEE_ID);
-        sdWizardPage.insertValueToTextAreaComponent(INCIDENT_DESCRIPTION_TXT, INCIDENT_DESCRIPTION_ID);
+        sdWizardPage.insertValueToComponent(RISK, RISK_ASSESSMENT_ID);
+        sdWizardPage.insertValueToComponent(userName, REQUESTER_ID);
+        sdWizardPage.insertValueToComponent(userName, ASSIGNEE_ID);
+        sdWizardPage.insertValueToComponent(INCIDENT_DESCRIPTION_TXT, INCIDENT_DESCRIPTION_ID);
         sdWizardPage.clickNextButtonInWizard();
         sdWizardPage.clickAcceptButtonInWizard();
         changeID = changeDashboardPage.getIdFromMessage();
@@ -129,8 +129,8 @@ public class ChangesTest extends BaseTestCase {
     ) {
         changeOverviewTab = issueDetailsPage.selectOverviewTab(CHANGE_ISSUE_TYPE);
         sdWizardPage = changeOverviewTab.openEditIssueWizard();
-        sdWizardPage.insertValueToSearchComponent(newAssignee, ASSIGNEE_ID);
-        sdWizardPage.insertValueToTextAreaComponent(INCIDENT_DESCRIPTION_TXT_EDITED, INCIDENT_DESCRIPTION_ID);
+        sdWizardPage.insertValueToComponent(newAssignee, ASSIGNEE_ID);
+        sdWizardPage.insertValueToComponent(INCIDENT_DESCRIPTION_TXT_EDITED, INCIDENT_DESCRIPTION_ID);
         sdWizardPage.clickNextButtonInWizard();
         sdWizardPage.clickAcceptButtonInWizard();
         Assert.assertEquals(changeOverviewTab.checkAssignee(), newAssignee);

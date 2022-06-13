@@ -61,7 +61,7 @@ public class MyGroupProblemsTest extends BaseTestCase {
     @Description("Check My Group Problems")
     public void checkMyGroupProblems() {
         myGroupProblemsPage = new MyGroupProblemsPage(driver, webDriverWait).openView(driver, BASIC_URL);
-        myGroupProblemsPage.filterByTextField(ID_ATTRIBUTE, problemID);
+        myGroupProblemsPage.filterBy(ID_ATTRIBUTE, problemID);
         myGroupProblemsPage.getIdForNthTicketInTable(0);
         Assert.assertFalse(myGroupProblemsPage.isIssueTableEmpty());
         Assert.assertEquals(myGroupProblemsPage.getIdForNthTicketInTable(0), problemID);
@@ -108,7 +108,7 @@ public class MyGroupProblemsTest extends BaseTestCase {
         myProblemsPage = new MyProblemsPage(driver, webDriverWait).openView(driver, BASIC_URL);
         Assert.assertFalse(myProblemsPage.isIssueTableEmpty());
 
-        myProblemsPage.filterByTextField(ID_ATTRIBUTE, problemID);
+        myProblemsPage.filterBy(ID_ATTRIBUTE, problemID);
         Assert.assertFalse(myProblemsPage.isIssueTableEmpty());
     }
 }

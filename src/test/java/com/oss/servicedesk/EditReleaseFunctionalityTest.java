@@ -55,7 +55,7 @@ public class EditReleaseFunctionalityTest extends BaseTestCase {
     @Description("Edit mode - check if Skip buttons are available")
     public void checklistOnEditMode() {
         ticketSearchPage = new TicketSearchPage(driver, webDriverWait).openView(driver, BASIC_URL);
-        ticketSearchPage.filterByTextField(ID_ATTRIBUTE, ticketID);
+        ticketSearchPage.filterBy(ID_ATTRIBUTE, ticketID);
         issueDetailsPage = ticketSearchPage.openIssueDetailsViewFromSearchPage("0", BASIC_URL);
         ticketOverviewTab = (TicketOverviewTab) issueDetailsPage.selectOverviewTab(TROUBLE_TICKET_ISSUE_TYPE);
         ticketOverviewTab.allowEditingTicket();

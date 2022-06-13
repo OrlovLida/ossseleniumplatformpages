@@ -63,7 +63,7 @@ public class ClosedProblemsTest extends BaseTestCase {
     public void checkClosedProblemsView() {
         closedProblemsPage = new ClosedProblemsPage(driver, webDriverWait).openView(driver, BASIC_URL);
         closedProblemsPage.clickRefresh();
-        closedProblemsPage.filterByTextField(ID_ATTRIBUTE, problemID);
+        closedProblemsPage.filterBy(ID_ATTRIBUTE, problemID);
         Assert.assertEquals(closedProblemsPage.getIdForNthTicketInTable(0), problemID);
     }
 

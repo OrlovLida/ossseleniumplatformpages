@@ -113,9 +113,9 @@ public class ProblemsTest extends BaseTestCase {
         sdWizardPage.getMoStep().enterTextIntoSearchComponent(MOIdentifier);
         sdWizardPage.getMoStep().selectRowInMOTable("0");
         sdWizardPage.clickNextButtonInWizard();
-        sdWizardPage.insertValueToTextAreaComponent(PROBLEM_NAME_DESCRIPTION_TXT, PROBLEM_NAME_DESCRIPTION_ID);
-        sdWizardPage.insertValueToComboBoxComponent(PROBLEM_SEVERITY, SEVERITY_COMBOBOX_ID);
-        sdWizardPage.insertValueToSearchComponent(ProblemAssignee, ASSIGNEE_SEARCH_ID);
+        sdWizardPage.insertValueToComponent(PROBLEM_NAME_DESCRIPTION_TXT, PROBLEM_NAME_DESCRIPTION_ID);
+        sdWizardPage.insertValueToComponent(PROBLEM_SEVERITY, SEVERITY_COMBOBOX_ID);
+        sdWizardPage.insertValueToComponent(ProblemAssignee, ASSIGNEE_SEARCH_ID);
         sdWizardPage.clickNextButtonInWizard();
         sdWizardPage.clickAcceptButtonInWizard();
         Assert.assertTrue(problemDashboardPage.isProblemCreated(PROBLEM_NAME_DESCRIPTION_TXT));
@@ -446,8 +446,8 @@ public class ProblemsTest extends BaseTestCase {
         Assert.assertTrue(relatedChangesTab.isRelatedIssueTableEmpty());
 
         sdWizardPage = relatedChangesTab.openCreateChangeWizard();
-        sdWizardPage.insertValueToTextComponent(TITLE_TEXT, TITLE_ID);
-        sdWizardPage.insertValueToComboBoxComponent(INTERNAL_TEXT, SOURCE_ID);
+        sdWizardPage.insertValueToComponent(TITLE_TEXT, TITLE_ID);
+        sdWizardPage.insertValueToComponent(INTERNAL_TEXT, SOURCE_ID);
         sdWizardPage.createChange(userName, userName, DESCRIPTION_CHANGE);
         Assert.assertFalse(relatedChangesTab.isRelatedIssueTableEmpty());
         Assert.assertEquals(relatedChangesTab.getIncidentDescriptionFromTable(), DESCRIPTION_CHANGE);
@@ -482,7 +482,7 @@ public class ProblemsTest extends BaseTestCase {
     public void editTaskInProblemView() {
         tasksTab = issueDetailsPage.selectTasksTab();
         sdWizardPage = tasksTab.clickDetailsButtonInFirstTask();
-        sdWizardPage.insertValueToTextComponent(EDITED_TASK_NAME, TASK_WIZARD_NAME);
+        sdWizardPage.insertValueToComponent(EDITED_TASK_NAME, TASK_WIZARD_NAME);
         sdWizardPage.clickButton(SAVE_EDITED_TASK_BUTTON_ID);
 
         Assert.assertEquals(tasksTab.getTaskName(), EDITED_TASK_NAME);

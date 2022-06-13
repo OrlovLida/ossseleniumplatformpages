@@ -54,9 +54,9 @@ public class TemplatesTest extends BaseTestCase {
     @Description("Create Header")
     public void createHeader() {
         sdWizardPage = templatesPage.clickCreateHeader();
-        sdWizardPage.insertValueToComboBoxComponent(SYSTEM, SYSTEM_COMBOBOX_ID);
-        sdWizardPage.insertValueToTextComponent(HEADER_NAME, WIZARD_NAME_FIELD_ID);
-        sdWizardPage.insertValueToComboBoxComponent(OBJECT_TYPE_TT, OBJECT_TYPE_COMBOBOX_ID);
+        sdWizardPage.insertValueToComponent(SYSTEM, SYSTEM_COMBOBOX_ID);
+        sdWizardPage.insertValueToComponent(HEADER_NAME, WIZARD_NAME_FIELD_ID);
+        sdWizardPage.insertValueToComponent(OBJECT_TYPE_TT, OBJECT_TYPE_COMBOBOX_ID);
         sdWizardPage.setValueInHtmlEditor(TEMPLATE_TEXT, TEMPLATE_HTML_EDITOR_ID);
         sdWizardPage.clickAcceptButtonInWizard();
 
@@ -72,7 +72,7 @@ public class TemplatesTest extends BaseTestCase {
         Assert.assertFalse(templatesPage.isTemplatesTableEmpty());
         if (templatesPage.isObjectInTable(HEADER_NAME)) {
             sdWizardPage = templatesPage.clickEditOnObjectWithName(HEADER_NAME);
-            sdWizardPage.insertValueToTextComponent(EDITED_HEADER_NAME, WIZARD_NAME_FIELD_ID);
+            sdWizardPage.insertValueToComponent(EDITED_HEADER_NAME, WIZARD_NAME_FIELD_ID);
             sdWizardPage.clickAcceptButtonInWizard();
         } else {
             Assert.fail("Header with name: " + HEADER_NAME + " is not in the Table");
@@ -87,9 +87,9 @@ public class TemplatesTest extends BaseTestCase {
     @Description("Create Footer")
     public void createFooter() {
         sdWizardPage = templatesPage.clickCreateFooter();
-        sdWizardPage.insertValueToMultiCombobox(SYSTEM, SYSTEM_COMBOBOX_ID);
-        sdWizardPage.insertValueToTextComponent(FOOTER_NAME, WIZARD_NAME_FIELD_ID);
-        sdWizardPage.insertValueToMultiCombobox(OBJECT_TYPE_TT, OBJECT_TYPE_COMBOBOX_ID);
+        sdWizardPage.insertValueToComponent(SYSTEM, SYSTEM_COMBOBOX_ID);
+        sdWizardPage.insertValueToComponent(FOOTER_NAME, WIZARD_NAME_FIELD_ID);
+        sdWizardPage.insertValueToComponent(OBJECT_TYPE_TT, OBJECT_TYPE_COMBOBOX_ID);
         sdWizardPage.setValueInHtmlEditor(TEMPLATE_TEXT, TEMPLATE_HTML_EDITOR_ID);
         sdWizardPage.clickAcceptButtonInWizard();
 
@@ -103,7 +103,7 @@ public class TemplatesTest extends BaseTestCase {
     @Description("Edit Footer")
     public void EditFooter() {
         sdWizardPage = templatesPage.clickEditOnObjectWithName(FOOTER_NAME);
-        sdWizardPage.insertValueToTextComponent(EDITED_FOOTER_NAME, WIZARD_NAME_FIELD_ID);
+        sdWizardPage.insertValueToComponent(EDITED_FOOTER_NAME, WIZARD_NAME_FIELD_ID);
         sdWizardPage.clickAcceptButtonInWizard();
 
         Assert.assertFalse(templatesPage.isTemplatesTableEmpty(), "Template list is empty");
@@ -115,12 +115,12 @@ public class TemplatesTest extends BaseTestCase {
     @Description("Create Template with Header and Footer")
     public void createTemplateWithHeaderAndFooter() {
         sdWizardPage = templatesPage.clickCreateTemplate();
-        sdWizardPage.insertValueToTextComponent(TEMPLATE_WITH_HEADER_AND_FOOTER_NAME, WIZARD_NAME_FIELD_ID);
-        sdWizardPage.insertValueToComboBoxComponent(CHANNEL_EMAIL, CHANNEL_COMBOBOX_ID);
-        sdWizardPage.insertValueToComboBoxComponent(SYSTEM, SYSTEM_COMBOBOX_ID);
-        sdWizardPage.insertValueToComboBoxComponent(OBJECT_TYPE_TT, OBJECT_TYPE_COMBOBOX_ID);
-        sdWizardPage.insertValueToComboBoxComponent(EDITED_HEADER_NAME, WIZARD_HEADER_COMBOBOX_ID);
-        sdWizardPage.insertValueToComboBoxComponent(EDITED_FOOTER_NAME, WIZARD_FOOTER_COMBOBOX_ID);
+        sdWizardPage.insertValueToComponent(TEMPLATE_WITH_HEADER_AND_FOOTER_NAME, WIZARD_NAME_FIELD_ID);
+        sdWizardPage.insertValueToComponent(CHANNEL_EMAIL, CHANNEL_COMBOBOX_ID);
+        sdWizardPage.insertValueToComponent(SYSTEM, SYSTEM_COMBOBOX_ID);
+        sdWizardPage.insertValueToComponent(OBJECT_TYPE_TT, OBJECT_TYPE_COMBOBOX_ID);
+        sdWizardPage.insertValueToComponent(EDITED_HEADER_NAME, WIZARD_HEADER_COMBOBOX_ID);
+        sdWizardPage.insertValueToComponent(EDITED_FOOTER_NAME, WIZARD_FOOTER_COMBOBOX_ID);
         sdWizardPage.clickAcceptButtonInWizard();
 
         Assert.assertFalse(templatesPage.isTemplatesTableEmpty(), "Template list is empty");
@@ -146,11 +146,11 @@ public class TemplatesTest extends BaseTestCase {
     @Description("Create Template")
     public void createTemplate() {
         sdWizardPage = templatesPage.clickCreateTemplate();
-        sdWizardPage.insertValueToTextComponent(TEMPLATE_NAME, WIZARD_NAME_FIELD_ID);
-        sdWizardPage.insertValueToComboBoxComponent(CHANNEL_INTERNAL, CHANNEL_COMBOBOX_ID);
-        sdWizardPage.insertValueToComboBoxComponent(SYSTEM, SYSTEM_COMBOBOX_ID);
-        sdWizardPage.insertValueToComboBoxComponent(OBJECT_TYPE_TT, OBJECT_TYPE_COMBOBOX_ID);
-        sdWizardPage.insertValueToComboBoxComponent(TYPE_SUCCESS, TYPE_COMBOBOX_ID);
+        sdWizardPage.insertValueToComponent(TEMPLATE_NAME, WIZARD_NAME_FIELD_ID);
+        sdWizardPage.insertValueToComponent(CHANNEL_INTERNAL, CHANNEL_COMBOBOX_ID);
+        sdWizardPage.insertValueToComponent(SYSTEM, SYSTEM_COMBOBOX_ID);
+        sdWizardPage.insertValueToComponent(OBJECT_TYPE_TT, OBJECT_TYPE_COMBOBOX_ID);
+        sdWizardPage.insertValueToComponent(TYPE_SUCCESS, TYPE_COMBOBOX_ID);
         sdWizardPage.clickAcceptButtonInWizard();
 
         Assert.assertFalse(templatesPage.isTemplatesTableEmpty(), "Template list is empty");
@@ -162,7 +162,7 @@ public class TemplatesTest extends BaseTestCase {
     @Description("Edit Template")
     public void editTemplate() {
         sdWizardPage = templatesPage.clickEditOnObjectWithName(TEMPLATE_NAME);
-        sdWizardPage.insertValueToTextComponent(EDITED_TEMPLATE_NAME, WIZARD_NAME_FIELD_ID);
+        sdWizardPage.insertValueToComponent(EDITED_TEMPLATE_NAME, WIZARD_NAME_FIELD_ID);
         sdWizardPage.clickAcceptButtonInWizard();
 
         Assert.assertFalse(templatesPage.isTemplatesTableEmpty(), "Template list is empty");
