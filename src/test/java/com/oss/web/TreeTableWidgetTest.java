@@ -37,7 +37,6 @@ public class TreeTableWidgetTest extends BaseTestCase {
     @BeforeClass
     public void goToPlannersView() {
         plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         treeTableWidget = plannersViewPage.getTreeTable();
     }
 
@@ -220,7 +219,6 @@ public class TreeTableWidgetTest extends BaseTestCase {
         Assert.assertEquals(codeFromPropertiesTab, codeFromTreeTable);
         plannersViewPage.unselectObjectByRowId(0);
         plannersViewPage.clearFilters();
-
     }
 
     @Test(priority = 18)
