@@ -67,7 +67,7 @@ public class ClosedChangesTest extends BaseTestCase {
     public void checkClosedChangesView() {
         closedChangesPage = new ClosedChangesPage(driver, webDriverWait).openView(driver, BASIC_URL);
         closedChangesPage.clickRefresh();
-        closedChangesPage.filterByTextField(ID_ATTRIBUTE, changeID);
+        closedChangesPage.filterBy(ID_ATTRIBUTE, changeID);
         Assert.assertEquals(closedChangesPage.getIdForNthTicketInTable(0), changeID);
     }
 

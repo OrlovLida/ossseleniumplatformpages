@@ -40,13 +40,13 @@ public class ExportTest extends BaseTestCase {
         notificationWrapperPage = ticketSearchPage.openNotificationPanel();
         notificationWrapperPage.clearNotifications();
         if (!ticketSearchPage.isIssueTableEmpty()) {
-            ticketSearchPage.filterByTextField(BaseSearchPage.CREATION_TIME_ATTRIBUTE, ticketSearchPage.getTimePeriodForLastNMinutes(minutes));
+            ticketSearchPage.filterByDate(BaseSearchPage.CREATION_TIME_ATTRIBUTE, ticketSearchPage.getTimePeriodForLastNMinutes(minutes));
             while (ticketSearchPage.isIssueTableEmpty()) {
                 minutes += 30;
                 if (minutes > maxSearchTime6hours) {
                     Assert.fail("No tickets to export created within last 6 hours");
                 }
-                ticketSearchPage.filterByTextField(BaseSearchPage.CREATION_TIME_ATTRIBUTE, ticketSearchPage.getTimePeriodForLastNMinutes(minutes));
+                ticketSearchPage.filterByDate(BaseSearchPage.CREATION_TIME_ATTRIBUTE, ticketSearchPage.getTimePeriodForLastNMinutes(minutes));
             }
             exportWizardPage = ticketSearchPage.clickExportInSearchTable();
             exportWizardPage.fillFileName(EXPORT_FILE_NAME);

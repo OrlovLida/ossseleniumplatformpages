@@ -63,7 +63,7 @@ public class TicketsTest extends BaseTestCase {
     private ParticipantsTab participantsTab;
     private RelatedProblemsTab relatedProblemsTab;
     private AffectedTab affectedTab;
-    private String ticketID;
+    private String ticketID = "157";
 
     private static final String TT_DESCRIPTION = "TestSelenium";
     private static final String TT_DESCRIPTION_EDITED = "TestSelenium_edited";
@@ -229,13 +229,13 @@ public class TicketsTest extends BaseTestCase {
     ) {
         ticketSearchPage = new TicketSearchPage(driver, webDriverWait);
         ticketSearchPage.openView(driver, BASIC_URL);
-        ticketSearchPage.filterByTextField(TICKETS_SEARCH_ASSIGNEE_ATTRIBUTE, NewAssignee);
+        ticketSearchPage.filterBy(TICKETS_SEARCH_ASSIGNEE_ATTRIBUTE, NewAssignee);
         String startDate = LocalDateTime.now().minusMinutes(10).format(DATE_TIME_FORMATTER);
         String endDate = LocalDateTime.now().format(DATE_TIME_FORMATTER);
         String date = startDate + " - " + endDate;
-        ticketSearchPage.filterByTextField(BaseSearchPage.CREATION_TIME_ATTRIBUTE, date);
-        ticketSearchPage.filterByTextField(BaseSearchPage.DESCRIPTION_ATTRIBUTE, TT_DESCRIPTION_EDITED);
-        ticketSearchPage.filterByComboBox(TICKETS_SEARCH_STATUS_ATTRIBUTE, STATUS_ACKNOWLEDGED);
+        ticketSearchPage.filterByDate(BaseSearchPage.CREATION_TIME_ATTRIBUTE, date);
+        ticketSearchPage.filterBy(BaseSearchPage.DESCRIPTION_ATTRIBUTE, TT_DESCRIPTION_EDITED);
+        ticketSearchPage.filterBy(TICKETS_SEARCH_STATUS_ATTRIBUTE, STATUS_ACKNOWLEDGED);
         issueDetailsPage = ticketSearchPage.openIssueDetailsViewFromSearchPage("0", BASIC_URL);
         Assert.assertEquals(issueDetailsPage.getOpenedIssueId(), ticketID);
     }

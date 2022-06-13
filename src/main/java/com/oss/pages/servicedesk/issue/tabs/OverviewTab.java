@@ -39,14 +39,14 @@ public class OverviewTab extends IssueDetailsPage {
 
     @Step("Change Issue assignee")
     public void changeIssueAssignee(String assignee) {
-        ComponentFactory.create(ISSUE_ASSIGNEE_ID, Input.ComponentType.SEARCH_FIELD, driver, wait)
+        ComponentFactory.create(ISSUE_ASSIGNEE_ID, driver, wait)
                 .setSingleStringValue(assignee);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     @Step("Check Issue Assignee")
     public String checkAssignee() {
-        return ComponentFactory.create(ISSUE_ASSIGNEE_ID, Input.ComponentType.SEARCH_FIELD, driver, wait).getStringValue();
+        return ComponentFactory.create(ISSUE_ASSIGNEE_ID, driver, wait).getStringValue();
     }
 
     @Step("Change issue status")

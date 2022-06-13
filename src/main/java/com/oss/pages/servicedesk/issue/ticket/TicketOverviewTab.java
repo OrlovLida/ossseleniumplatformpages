@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.inputs.ComponentFactory;
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.servicedesk.issue.RemainderForm;
 import com.oss.pages.servicedesk.issue.tabs.OverviewTab;
@@ -66,13 +65,13 @@ public class TicketOverviewTab extends OverviewTab {
 
     @Step("Changing status to {statusName}")
     public void changeTicketStatus(String statusName) {
-        ComponentFactory.create(CHANGE_TICKET_STATUS_COMBOBOX_ID, Input.ComponentType.COMBOBOX, driver, wait).setSingleStringValue(statusName);
+        ComponentFactory.create(CHANGE_TICKET_STATUS_COMBOBOX_ID, driver, wait).setSingleStringValue(statusName);
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Changing status to {}", statusName);
     }
 
     @Step("Check status in ticket status combobox")
     public String checkTicketStatus() {
-        return ComponentFactory.create(CHANGE_TICKET_STATUS_COMBOBOX_ID, Input.ComponentType.COMBOBOX, driver, wait).getStringValue();
+        return ComponentFactory.create(CHANGE_TICKET_STATUS_COMBOBOX_ID, driver, wait).getStringValue();
     }
 }

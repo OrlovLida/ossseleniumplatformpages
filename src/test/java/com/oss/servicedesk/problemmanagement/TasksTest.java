@@ -87,9 +87,9 @@ public class TasksTest extends BaseTestCase {
     public void myTasks() {
         myTasksPage = new MyTasksPage(driver, webDriverWait);
         myTasksPage.openView(driver, BASIC_URL);
-        myTasksPage.filterByTextField(MY_TASKS_NAME_ATTRIBUTE, TASK_NAME);
-        myTasksPage.filterByTextField(MY_TASKS_ASSIGNEE_ATTRIBUTE, TASK_NEW_ASSIGNEE);
-        myTasksPage.filterByComboBox(MY_TASKS_STATUS_ATTRIBUTE, TASK_NEW_STATUS);
+        myTasksPage.filterBy(MY_TASKS_NAME_ATTRIBUTE, TASK_NAME);
+        myTasksPage.filterBy(MY_TASKS_ASSIGNEE_ATTRIBUTE, TASK_NEW_ASSIGNEE);
+        myTasksPage.filterBy(MY_TASKS_STATUS_ATTRIBUTE, TASK_NEW_STATUS);
 
         Assert.assertEquals(myTasksPage.countIssuesInTable(), 1);
         Assert.assertEquals(myTasksPage.getIssueID(0), taskID);
