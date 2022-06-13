@@ -61,7 +61,7 @@ public class HomeViewPage extends BaseACDPage {
     public void setValueOfIssueIdSearch() {
 
         if (Boolean.TRUE.equals(isMultiSearchFilled("id"))) {
-            clearMultiSearch("id");
+            clearAttributeValue("id");
         }
 
         if (Boolean.FALSE.equals(isDataInScenarioTable())) {
@@ -69,9 +69,7 @@ public class HomeViewPage extends BaseACDPage {
         } else {
             String firstIdInTable = table.getCellValue(0, "Issue Id");
             log.info("Setting value of Issue Id");
-            ComponentFactory.create("id", Input.ComponentType.MULTI_SEARCH_FIELD, driver, wait)
-                    .setSingleStringValue(firstIdInTable);
-
+            ComponentFactory.create("id", driver, wait).setSingleStringValue(firstIdInTable);
             DelayUtils.sleep();
         }
     }

@@ -94,10 +94,10 @@ public class HomeViewTest extends BaseTestCase {
 
     private void checkScenarioTableWithFilters(String issueType) {
 
-        homeViewPage.setValueInMultiComboBox("issue_type", issueType);
+        homeViewPage.setAttributeValue("issue_type", issueType);
 
         if (!homeViewPage.isDataInScenarioTable()) {
-            homeViewPage.clearMultiComboBox("issue_type");
+            homeViewPage.clearAttributeValue("issue_type");
             log.error("Table doesn't have data for issueType: " + issueType);
             Assert.fail();
         }
@@ -106,7 +106,7 @@ public class HomeViewTest extends BaseTestCase {
 
         if (!homeViewPage.isDataInScenarioTable()) {
             homeViewPage.clearTimePeriod("input_create_time");
-            homeViewPage.clearMultiComboBox("issue_type");
+            homeViewPage.clearAttributeValue("issue_type");
             log.error("Table doesn't have data for provided filters");
             Assert.fail();
         }
@@ -114,14 +114,14 @@ public class HomeViewTest extends BaseTestCase {
 
         if (!homeViewPage.isDataInScenarioTable()) {
             homeViewPage.clearTimePeriod("input_create_time");
-            homeViewPage.clearMultiComboBox("issue_type");
-            homeViewPage.clearMultiSearch("id");
+            homeViewPage.clearAttributeValue("issue_type");
+            homeViewPage.clearAttributeValue("id");
             Assert.fail();
         }
 
         DelayUtils.sleep();
         homeViewPage.clearTimePeriod("input_create_time");
-        homeViewPage.clearMultiComboBox("issue_type");
-        homeViewPage.clearMultiSearch("id");
+        homeViewPage.clearAttributeValue("issue_type");
+        homeViewPage.clearAttributeValue("id");
     }
 }
