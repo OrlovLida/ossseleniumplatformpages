@@ -16,7 +16,8 @@ public class CreateEditTemplateFolderPromptPage extends BasePage {
     private static final String EDIT_TEMPLATE_FOLDER_WINDOW_ID = "editTemplateFolderWindow";
     private static final String FOLDER_NAME_ID = "folderName";
     private static final String DESCRIPTION_ID = "description";
-    private static final String SAVE_BUTTON_ID = "undefined-1";
+    private static final String CREATE_SAVE_BUTTON_ID = "CreateTemplateFolderSubmitButtonApp-1";
+    private static final String EDIT_SAVE_BUTTON_ID = "EditTemplateFolderSubmitButtonApp-1";
 
     private final Wizard createEditTemplateFolderWizard;
 
@@ -36,7 +37,12 @@ public class CreateEditTemplateFolderPromptPage extends BasePage {
     }
 
     @Step("Click save button")
-    public void clickSaveButton() {
-        createEditTemplateFolderWizard.clickButtonById(SAVE_BUTTON_ID);
+    public void clickCreateSaveButton() {
+        createEditTemplateFolderWizard.clickButtonById(CREATE_SAVE_BUTTON_ID);
+    }
+
+    @Step("Click save button")
+    public void clickEditSaveButton() {
+        createEditTemplateFolderWizard.clickButtonById(EDIT_SAVE_BUTTON_ID);
     }
 }
