@@ -21,7 +21,7 @@ public class AggregatePage extends BaseDfePage {
     private static final String ADD_NEW_AGGREGATE_LABEL = "Add New Aggregate";
     private static final String EDIT_AGGREGATE_LABEL = "Edit Aggregate";
     private static final String DELETE_AGGREGATE_LABEL = "Delete Aggregate";
-    private static final String SEARCH_INPUT_ID = "aggregates-tableSearchAppId";
+    private static final String SEARCH_INPUT_ID = "input_aggregates-tableSearchAppId";
 
     private static final String NAME_COLUMN_LABEL = "Name";
     private static final String DELETE_LABEL = "Delete";

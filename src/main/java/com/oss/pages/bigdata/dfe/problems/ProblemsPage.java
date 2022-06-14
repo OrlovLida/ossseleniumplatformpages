@@ -14,7 +14,7 @@ public class ProblemsPage extends BaseDfePage {
     private static final String ADD_NEW_PROBLEM_LABEL = "Add New Problems Configuration";
     private static final String EDIT_PROBLEM_LABEL = "Edit Problems Configuration";
     private static final String DELETE_PROBLEM_LABEL = "Delete Problems Configuration";
-    private static final String SEARCH_INPUT_ID = "problemsSearchAppId";
+    private static final String SEARCH_INPUT_ID = "input_problemsSearchAppId";
 
     private static final String NAME_COLUMN_LABEL = "Name";
     private static final String DELETE_LABEL = "Delete";

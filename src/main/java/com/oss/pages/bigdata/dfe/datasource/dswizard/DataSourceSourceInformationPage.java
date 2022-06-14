@@ -5,13 +5,11 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
 import static com.oss.framework.components.inputs.Input.ComponentType.SCRIPT_COMPONENT;
 import static com.oss.framework.utils.DelayUtils.waitForPageToLoad;
 
@@ -34,7 +32,7 @@ public class DataSourceSourceInformationPage extends BasePage {
     @Step("I fill Database with: {database}")
     public void fillDatabase(String database) {
         waitForPageToLoad(driver, wait);
-        sourceInformationWizard.setComponentValue(DATABASE_INPUT_ID, database, COMBOBOX);
+        sourceInformationWizard.setComponentValue(DATABASE_INPUT_ID, database);
         log.debug("Setting database with: {}", database);
     }
 
@@ -47,15 +45,13 @@ public class DataSourceSourceInformationPage extends BasePage {
 
     @Step("I upload a Data Source file")
     public void uploadCSVFile(String path) {
-        Wizard wizard = Wizard.createByComponentId(driver, wait, UPLOAD_WIZARD);
-        Input input = wizard.getComponent(UPLOAD_WIZARD, Input.ComponentType.FILE_CHOOSER);
-        input.setSingleStringValue(getAbsolutePath(path));
+        sourceInformationWizard.getComponent(UPLOAD_WIZARD).setSingleStringValue(getAbsolutePath(path));
     }
 
     @Step("I fill Data Source Type with {dsType}")
     public void selectDSType(String dsType) {
         waitForPageToLoad(driver, wait);
-        sourceInformationWizard.setComponentValue(DS_TYPE_INPUT_ID, dsType, COMBOBOX);
+        sourceInformationWizard.setComponentValue(DS_TYPE_INPUT_ID, dsType);
         log.debug("Setting Data Source Type with: {}", dsType);
     }
 }

@@ -10,7 +10,7 @@ import io.qameta.allure.Step;
 public class ServerGroupPage extends BaseDfePage {
 
     private static final String TABLE_ID = "server-groupAppId";
-    private static final String SEARCH_INPUT_ID = "server-groupSearchAppId";
+    private static final String SEARCH_INPUT_ID = "input_server-groupSearchAppId";
     private static final String ADD_NEW_SERVER_GROUP_LABEL = "Add New Server Group";
     private static final String EDIT_SERVER_GROUP_LABEL = "Edit Server Group";
     private static final String DELETE_SERVER_GROUP_LABEL = "Delete Server Group";

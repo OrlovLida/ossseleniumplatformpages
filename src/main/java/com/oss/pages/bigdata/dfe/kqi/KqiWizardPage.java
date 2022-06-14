@@ -11,10 +11,6 @@ import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
-import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_AREA;
-import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
-
 public class KqiWizardPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(KqiWizardPage.class);
@@ -32,22 +28,22 @@ public class KqiWizardPage extends BasePage {
     }
 
     public void fillName(String name) {
-        kqiWizard.setComponentValue(KPI_NAME_INPUT_ID, name, TEXT_FIELD);
+        kqiWizard.setComponentValue(KPI_NAME_INPUT_ID, name);
         log.debug("Setting name with: {}", name);
     }
 
     public void fillValueType(String valueType) {
-        kqiWizard.setComponentValue(VALUE_TYPE_ID, valueType, COMBOBOX);
+        kqiWizard.setComponentValue(VALUE_TYPE_ID, valueType);
         log.debug("Setting value type to: {}", valueType);
     }
 
     public void fillUnitType(String unitType) {
-        kqiWizard.setComponentValue(UNIT_TYPE_ID, unitType, COMBOBOX);
+        kqiWizard.setComponentValue(UNIT_TYPE_ID, unitType);
         log.debug("Setting unit type to: {}", unitType);
     }
 
     public void fillFormula(String formula) {
-        kqiWizard.setComponentValue(FORMULA_ID, formula, TEXT_AREA);
+        kqiWizard.setComponentValue(FORMULA_ID, formula);
         log.debug("Setting formula with: {}", formula);
     }
 

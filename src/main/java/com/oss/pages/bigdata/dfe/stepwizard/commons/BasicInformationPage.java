@@ -11,10 +11,6 @@ import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
-import static com.oss.framework.components.inputs.Input.ComponentType.MULTI_SEARCH_FIELD;
-import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
-
 public class BasicInformationPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(BasicInformationPage.class);
@@ -30,17 +26,17 @@ public class BasicInformationPage extends BasePage {
     }
 
     public void fillCategory(String category) {
-        basicInfoWizard.setComponentValue(CATEGORY_INPUT_ID, category, MULTI_SEARCH_FIELD);
+        basicInfoWizard.setComponentValue(CATEGORY_INPUT_ID, category);
         log.debug("Setting category with: {}", category);
     }
 
     public void fillName(String name) {
-        basicInfoWizard.setComponentValue(NAME_INPUT_ID, name, TEXT_FIELD);
+        basicInfoWizard.setComponentValue(NAME_INPUT_ID, name);
         log.debug("Setting name with: {}", name);
     }
 
     public void fillProcess(String process) {
-        basicInfoWizard.setComponentValue(PROCESS_ID, process, COMBOBOX);
+        basicInfoWizard.setComponentValue(PROCESS_ID, process);
         log.debug("Setting process with: {}", process);
     }
 

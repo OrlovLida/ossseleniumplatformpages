@@ -11,8 +11,6 @@ import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
-
 public class DataSourceAndProcessingPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(DataSourceAndProcessingPage.class);
@@ -26,7 +24,7 @@ public class DataSourceAndProcessingPage extends BasePage {
 
     @Step("I fill Data Source and Processing Step with feed name: {feedName}")
     public void fillFeed(String feedName) {
-        dsAndProcessingWizard.setComponentValue(FEED_INPUT_ID, feedName, COMBOBOX);
+        dsAndProcessingWizard.setComponentValue(FEED_INPUT_ID, feedName);
         log.debug("Setting feed name with: {}", feedName);
         log.info("Filled Data Source and Processing Step");
     }
