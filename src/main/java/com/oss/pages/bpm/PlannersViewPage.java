@@ -32,20 +32,17 @@ public class PlannersViewPage extends BasePage {
     }
 
     public TreeTableWidget getTreeTable() {
-        DelayUtils.waitForPageToLoad(driver, wait);
         return TreeTableWidget.createById(driver, wait, TREE_TABLE_ID);
     }
 
     public void selectObjectByRowId(int rowId) {
         TreeTableWidget treeTable = getTreeTable();
         treeTable.selectNode(rowId);
-        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public void unselectObjectByRowId(int rowId) {
         TreeTableWidget treeTable = getTreeTable();
         treeTable.unselectNode(rowId);
-        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public List<TableRow> getSelectedRows() {
@@ -84,22 +81,18 @@ public class PlannersViewPage extends BasePage {
     }
 
     public void expandNode(String label, String columnId) {
-        DelayUtils.waitForPageToLoad(driver, wait);
         getTreeTable().expandNode(label, columnId);
     }
 
     public void expandNode(int index) {
-        DelayUtils.waitForPageToLoad(driver, wait);
         getTreeTable().expandNode(index);
     }
 
     public void collapseNode(int index) {
-        DelayUtils.waitForPageToLoad(driver, wait);
         getTreeTable().collapseNode(index);
     }
 
     public boolean isNodeExpanded(int index) {
-        DelayUtils.waitForPageToLoad(driver, wait);
         return getTreeTable().isRowExpanded(index);
     }
 
@@ -122,7 +115,6 @@ public class PlannersViewPage extends BasePage {
     public void disableColumnAndApply(String columnLabel) {
         TreeTableWidget treeTable = getTreeTable();
         treeTable.disableColumnByLabel(columnLabel);
-        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public int getColumnSize(String columnId) {

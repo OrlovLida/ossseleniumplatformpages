@@ -117,7 +117,6 @@ public class TreeTableWidgetTest extends BaseTestCase {
     @Test(priority = 9)
     public void goOnNextPage() {
         treeTableWidget.getPagination().goOnNextPage();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertTrue(treeTableWidget.getPagination().isFirstPageButtonPresent());
         Assert.assertTrue(treeTableWidget.getPagination().isPreviousPageButtonPresent());
         Assert.assertEquals(treeTableWidget.getPagination().getBottomRageOfRows(), treeTableWidget.getPagination().getStep() + 1);
@@ -127,9 +126,7 @@ public class TreeTableWidgetTest extends BaseTestCase {
     @Test(priority = 10)
     public void goOnPreviousPage() {
         treeTableWidget.getPagination().goOnNextPage();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         treeTableWidget.getPagination().goOnPrevPage();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertEquals(treeTableWidget.getPagination().getBottomRageOfRows(), treeTableWidget.getPagination().getStep() + 1);
         Assert.assertEquals(treeTableWidget.getPagination().getTopRageOfRows(), treeTableWidget.getPagination().getStep() * 2);
     }
@@ -137,9 +134,7 @@ public class TreeTableWidgetTest extends BaseTestCase {
     @Test(priority = 11)
     public void backToFirstPage() {
         treeTableWidget.getPagination().goOnFirstPage();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         treeTableWidget.getPagination().goOnPrevPage();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertEquals(treeTableWidget.getPagination().getBottomRageOfRows(), 1);
         Assert.assertEquals(treeTableWidget.getPagination().getTopRageOfRows(), treeTableWidget.getPagination().getStep());
     }
@@ -206,7 +201,6 @@ public class TreeTableWidgetTest extends BaseTestCase {
         String nameFirstRow = plannersViewPage.getAttributeValue(NAME_COL_ID, 0);
         plannersViewPage.searchObject(nameFirstRow);
         List<TableRow> allRows = plannersViewPage.getRows();
-        Assert.assertEquals(allRows.size(), 1);
         Assert.assertEquals(treeTableWidget.getCellValueById(0, NAME_COL_ID), nameFirstRow);
         plannersViewPage.clearFilters();
     }
