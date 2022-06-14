@@ -20,7 +20,7 @@ public class DimensionsPage extends BaseDfePage {
     private static final String ADD_NEW_DIMENSION_LABEL = "Add New Dimension";
     private static final String EDIT_DIMENSION_LABEL = "Edit Dimension";
     private static final String DELETE_DIMENSION_LABEL = "Delete Dimension";
-    private static final String SEARCH_INPUT_ID = "dimension-listSearchAppId";
+    private static final String SEARCH_INPUT_ID = "input_dimension-listSearchAppId";
     private static final String LOGS_TAB = "Logs";
     private static final String REFRESH_LABEL = "Refresh";
     private static final String LOGS_TABLE_TAB_ID = "logsId";
@@ -145,19 +145,29 @@ public class DimensionsPage extends BaseDfePage {
     }
 
     @Step("Check if Log Tab Table is empty")
-    public boolean isLogTabTableEmpty()  { return isTabTableEmpty(LOGS_TABLE_TAB); }
+    public boolean isLogTabTableEmpty() {
+        return isTabTableEmpty(LOGS_TABLE_TAB);
+    }
 
     @Step("Check if Format Tab Table is empty")
-    public boolean isFormatTabTableEmpty()  { return isTabTableEmpty(FORMAT_TABLE_TAB); }
+    public boolean isFormatTabTableEmpty() {
+        return isTabTableEmpty(FORMAT_TABLE_TAB);
+    }
 
     @Step("Check if Used In Table is empty")
-    public boolean isUsedInTabTableEmpty()  { return isTabTableEmpty(USED_IN_TABLE_TAB); }
+    public boolean isUsedInTabTableEmpty() {
+        return isTabTableEmpty(USED_IN_TABLE_TAB);
+    }
 
     @Step("Check if Data Tab Table is empty")
-    public boolean isDataTabTableEmpty()  { return isTabTableEmpty(DATA_TABLE_TAB); }
+    public boolean isDataTabTableEmpty() {
+        return isTabTableEmpty(DATA_TABLE_TAB);
+    }
 
     @Step("Check if Hierarchy Tab Table is empty")
-    public boolean isHierarchyTabTableEmpty()  { return isTabTableEmpty(HIERARCHY_TABLE_TAB); }
+    public boolean isHierarchyTabTableEmpty() {
+        return isTabTableEmpty(HIERARCHY_TABLE_TAB);
+    }
 
     @Override
     public String getTableId() {

@@ -24,7 +24,7 @@ public class DictionaryPage extends BaseDfePage {
     private static final String ADD_NEW_DICTIONARY_LABEL = "Add New Dictionary";
     private static final String EDIT_DICTIONARY_LABEL = "Edit Dictionary";
     private static final String DELETE_DICTIONARY_LABEL = "Delete Dictionary";
-    private static final String SEARCH_INPUT_ID = "dictionariesSearchAppId";
+    private static final String SEARCH_INPUT_ID = "input_dictionariesSearchAppId";
     private static final String ADD_NEW_ENTRY_LABEL = "Add New Entry";
     private static final String NAME_COLUMN_LABEL = "Name";
     private static final String DELETE_LABEL = "Delete";

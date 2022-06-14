@@ -10,10 +10,6 @@ import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
-import static com.oss.framework.components.inputs.Input.ComponentType.SEARCH_FIELD;
-import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
-
 public class DataSourceSpecificInfoPage extends BasePage {
 
     public static final String FILLED_SPECIFIC_INFORMATION_WIZARD_PAGE = "Filled Specific Information Wizard Page";
@@ -57,37 +53,37 @@ public class DataSourceSpecificInfoPage extends BasePage {
     }
 
     private void fillOffset(String offset) {
-        specificInfoWizard.setComponentValue(OFFSET_INPUT_ID, offset, COMBOBOX);
+        specificInfoWizard.setComponentValue(OFFSET_INPUT_ID, offset);
         log.debug("Setting offset with: {}", offset);
     }
 
     private void fillIntervalUnit(String unit) {
-        specificInfoWizard.setComponentValue(INTERVAL_UNIT_INPUT_ID, unit, COMBOBOX);
+        specificInfoWizard.setComponentValue(INTERVAL_UNIT_INPUT_ID, unit);
         log.debug("Setting interval unit with: {}", unit);
     }
 
     private void fillIntervalAmount(String intervalAmount) {
-        specificInfoWizard.setComponentValue(INTERVAL_AMOUNT_INPUT_ID, intervalAmount, TEXT_FIELD);
+        specificInfoWizard.setComponentValue(INTERVAL_AMOUNT_INPUT_ID, intervalAmount);
         log.debug("Setting interval amount with: {}", intervalAmount);
     }
 
     private void fillServerGroup(String serverGroupName) {
-        specificInfoWizard.setComponentValue(SERVER_GROUP_INPUT_ID, serverGroupName, SEARCH_FIELD);
+        specificInfoWizard.setComponentValue(SERVER_GROUP_INPUT_ID, serverGroupName);
         log.debug("Setting Server Group name with: {}", serverGroupName);
     }
 
     private void fillBaseInterval(String interval) {
-        specificInfoWizard.setComponentValue(BASE_INTERVAL_ID, interval, TEXT_FIELD);
+        specificInfoWizard.setComponentValue(BASE_INTERVAL_ID, interval);
         log.debug("Setting Base Interval with: {}", interval);
     }
 
     private void fillTopic(String topic) {
-        specificInfoWizard.setComponentValue(TOPIC_ID, topic, TEXT_FIELD);
+        specificInfoWizard.setComponentValue(TOPIC_ID, topic);
         log.debug("Setting Topic with: {}", topic);
     }
 
     private void fillEventType(String eventType) {
-        specificInfoWizard.setComponentValue(EVENT_TYPE_ID, eventType, COMBOBOX);
+        specificInfoWizard.setComponentValue(EVENT_TYPE_ID, eventType);
         log.debug("Setting Event Type with: {}", eventType);
     }
 }

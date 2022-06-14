@@ -13,7 +13,7 @@ public class KqiPage extends BaseDfePage {
     private static final String ADD_NEW_KQI_LABEL = "Add New KQI";
     private static final String TABLE_ID = "kqi-listAppId";
     private static final String KQI_NAME_COLUMN_LABEL = "Name";
-    private static final String SEARCH_INPUT_ID = "kqi-listSearchAppId";
+    private static final String SEARCH_INPUT_ID = "input_kqi-listSearchAppId";
     private static final String EDIT_KQI_LABEL = "Edit KQI";
     private static final String DELETE_KQI_LABEL = "Delete KQI";
     private static final String CONFIRM_DELETE_LABEL = "Delete";

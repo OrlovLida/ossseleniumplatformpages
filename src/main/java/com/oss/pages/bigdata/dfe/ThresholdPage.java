@@ -24,7 +24,7 @@ public class ThresholdPage extends BaseDfePage {
     private static final String ADD_NEW_THRESHOLD_LABEL = "Add New Threshold";
     private static final String EDIT_THRESHOLD_LABEL = "Edit Threshold";
     private static final String DELETE_THRESHOLD_LABEL = "Delete Threshold";
-    private static final String SEARCH_INPUT_ID = "thresholdsSearchAppId";
+    private static final String SEARCH_INPUT_ID = "input_thresholdsSearchAppId";
     private static final String TABS_WIDGET_ID = "card-content_tabsId";
     private static final String EXECUTION_HISTORY_TAB = "Execution History";
     private static final String TABLE_TAB_ID = "logsId";

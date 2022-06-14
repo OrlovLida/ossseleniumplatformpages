@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.inputs.ComponentFactory;
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
@@ -78,8 +77,7 @@ public abstract class BaseDfePage extends BasePage implements BaseDfePageInterfa
     }
 
     protected void searchFeed(String searchText) {
-        Input search = ComponentFactory.create(getSearchId(), Input.ComponentType.SEARCH_BOX, driver, wait);
-        search.setSingleStringValue(searchText);
+        ComponentFactory.create(getSearchId(), driver, wait).setSingleStringValue(searchText);
         log.debug("Searching feed {}", searchText);
     }
 
