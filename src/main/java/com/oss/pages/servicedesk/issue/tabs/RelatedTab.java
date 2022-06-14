@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.inputs.ComponentFactory;
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
@@ -19,7 +18,7 @@ public abstract class RelatedTab extends BaseSDPage {
 
     private static final Logger log = LoggerFactory.getLogger(RelatedTab.class);
 
-    private static final String SHOW_ARCHIVED_SWITCHER_ID = "_relatedTicketsSwitcherApp";
+    private static final String SHOW_ARCHIVED_SWITCHER_ID = "with_archived";
     private static final String TABS_CONTAINER_ID = "_tablesWindow";
     private static final String CONFIRM_UNLINK_BUTTON_LABEL = "Unlink";
     private static final String LINK_ISSUE_BUTTON_ID = "_buttonsApp-1";
@@ -80,14 +79,14 @@ public abstract class RelatedTab extends BaseSDPage {
     public void turnOnShowArchived() {
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Turn On Show archived switcher");
-        ComponentFactory.create(SHOW_ARCHIVED_SWITCHER_ID, Input.ComponentType.SWITCHER, driver, wait)
+        ComponentFactory.create(SHOW_ARCHIVED_SWITCHER_ID, driver, wait)
                 .setSingleStringValue(Boolean.TRUE.toString());
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public RelatedTab linkIssue(String issueId, String componentId) {
         openLinkIssueWizard()
-                .insertValueToMultiSearchComponent(issueId, componentId)
+                .insertValueContainsToComponent(issueId, componentId)
                 .clickButton(LINK_ISSUE_BUTTON_ID);
         return this;
     }

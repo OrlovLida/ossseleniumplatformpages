@@ -139,8 +139,4 @@ public abstract class BaseSDPage extends BasePage {
     public String getViewTitle() {
         return ToolbarWidget.create(driver, wait).getViewTitle();
     }
-
-    public boolean isIssueTypeTicket() {
-        return getViewTitle().contains("Ticket");
-    }
 }

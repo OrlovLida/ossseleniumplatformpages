@@ -68,24 +68,24 @@ public class NotificationManagementTest extends BaseTestCase {
     public void addNewNotificationRule() {
         notificationManagementPage.goToTab(SYSTEM_SETTINGS_TAB_ID, MANAGEMENT_TAB);
         notificationManagementPage.clickContextButton(ADD_NOTIFICATION_BUTTON);
-        notificationManagementPage.setValueInTextField(NAME_FIELD_ID, NAME_FIELD_VALUE + '_' + date.replace(":", "_"));
-        notificationManagementPage.setValueInComboBox(STATUS_COMBOBOX_ID, STATUS_COMBOBOX_VALUE);
-        notificationManagementPage.setValueInComboBox(SEND_TYPE_COMBOBOX_ID, SEND_TYPE_COMBOBOX_VALUE);
-        notificationManagementPage.setValueInComboBox(CREATION_TYPE_COMBOBOX_ID, CREATION_TYPE_COMBOBOX_VALUE);
-        notificationManagementPage.setValueInComboBox(NOTIFICATION_TYPE_COMBOBOX_ID, NOTIFICATION_TYPE_COMBOBOX_VALUE);
-        notificationManagementPage.setValueInTextField(TITLE_ID, TITLE_VALUE);
-        notificationManagementPage.setValueInTextField(RECIPIENT_ID, RECIPIENT_VALUE);
-        notificationManagementPage.setValueInTextArea(BODY_ID, BODY_VALUE);
-        notificationManagementPage.setValueInComboBox(SCENARIO_ID, SCENARIO_VALUE);
-        notificationManagementPage.setValueInComboBox(EVENT_TYPE_ID, EVENT_TYPE_VALUE);
-        notificationManagementPage.setValueInComboBox(SEARCHING_CLASS_ID, SEARCHING_CLASS_VALUE);
-        notificationManagementPage.setValueInTextField(QUERY_STRING_ID, QUERY_STRING_VALUE);
+        notificationManagementPage.setAttributeValue(NAME_FIELD_ID, NAME_FIELD_VALUE + '_' + date.replace(":", "_"));
+        notificationManagementPage.setAttributeValue(STATUS_COMBOBOX_ID, STATUS_COMBOBOX_VALUE);
+        notificationManagementPage.setAttributeValue(SEND_TYPE_COMBOBOX_ID, SEND_TYPE_COMBOBOX_VALUE);
+        notificationManagementPage.setAttributeValue(CREATION_TYPE_COMBOBOX_ID, CREATION_TYPE_COMBOBOX_VALUE);
+        notificationManagementPage.setAttributeValue(NOTIFICATION_TYPE_COMBOBOX_ID, NOTIFICATION_TYPE_COMBOBOX_VALUE);
+        notificationManagementPage.setAttributeValue(TITLE_ID, TITLE_VALUE);
+        notificationManagementPage.setAttributeValue(RECIPIENT_ID, RECIPIENT_VALUE);
+        notificationManagementPage.setAttributeValue(BODY_ID, BODY_VALUE);
+        notificationManagementPage.setAttributeValue(SCENARIO_ID, SCENARIO_VALUE);
+        notificationManagementPage.setAttributeValue(EVENT_TYPE_ID, EVENT_TYPE_VALUE);
+        notificationManagementPage.setAttributeValue(SEARCHING_CLASS_ID, SEARCHING_CLASS_VALUE);
+        notificationManagementPage.setAttributeValue(QUERY_STRING_ID, QUERY_STRING_VALUE);
         log.info("Form has been completed. I try to save it.");
         try {
             notificationManagementPage.clickButtonByLabel(SAVE_RULE_BUTTON_LABEL);
             log.info("I clicked Save button");
         } catch (Exception e) {
-            log.info("I couldn't click Apply button");
+            log.info("I couldn't click Save button");
             log.error(e.getMessage());
             Assert.fail();
         }
@@ -96,7 +96,7 @@ public class NotificationManagementTest extends BaseTestCase {
     public void searchForNewRule() {
 
         notificationManagementPage.clickContextButton(SHOW_FILTER_BUTTON_ID);
-        notificationManagementPage.setValueInTextField(SEARCH_NAME_ID, NAME_FIELD_VALUE);
+        notificationManagementPage.setAttributeValue(SEARCH_NAME_ID, NAME_FIELD_VALUE);
 
         try {
             notificationManagementPage.clickButtonByLabel(APPLY_FILTER_BUTTON_LABEL);
@@ -115,7 +115,7 @@ public class NotificationManagementTest extends BaseTestCase {
         try {
             notificationManagementPage.selectFirstNotificationRuleFromTable();
             notificationManagementPage.clickContextButton(EDIT_NOTIFICATION_BUTTON_ID);
-            notificationManagementPage.setValueInTextField(NAME_FIELD_ID, EDITED_NAME_FIELD_VALUE);
+            notificationManagementPage.setAttributeValue(NAME_FIELD_ID, EDITED_NAME_FIELD_VALUE);
             notificationManagementPage.clickButtonByLabel(SAVE_RULE_BUTTON_LABEL);
             Assert.assertTrue(notificationManagementPage.getRuleName().contains(EDITED_NAME_FIELD_VALUE));
         } catch (Exception e) {
@@ -153,7 +153,7 @@ public class NotificationManagementTest extends BaseTestCase {
                 notificationManagementPage.selectFirstNotificationRuleFromTable();
                 notificationManagementPage.clickContextButton(DELETE_STATUS_BUTTON_ID);
                 notificationManagementPage.confirmChanges("Delete");
-                Assert.assertTrue(!notificationManagementPage.isDataInNotificationRulesTable());
+                Assert.assertFalse(notificationManagementPage.isDataInNotificationRulesTable());
                 log.info("Selected rule has been deleted");
                 notificationManagementPage.clearFilters();
                 log.info("Filters have been cleared");

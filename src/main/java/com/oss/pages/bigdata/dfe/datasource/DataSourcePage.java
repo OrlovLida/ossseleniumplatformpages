@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.inputs.ComponentFactory;
-import com.oss.framework.components.inputs.Input.ComponentType;
 import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.iaa.widgets.timeperiodchooser.TimePeriodChooser;
 import com.oss.framework.utils.DelayUtils;
@@ -24,7 +23,7 @@ public class DataSourcePage extends BaseDfePage {
     private static final Logger log = LoggerFactory.getLogger(DataSourcePage.class);
 
     private static final String TABLE_ID = "datasource/datasource-listAppId";
-    private static final String SEARCH_INPUT_ID = "datasource/datasource-listSearchAppId";
+    private static final String SEARCH_INPUT_ID = "input_datasource/datasource-listSearchAppId";
     private static final String ADD_NEW_DS_LABEL = "ADD";
     private static final String CREATE_DS_QUERY = "OPEN_MODAL_QUERY";
     private static final String CREATE_DS_CSV = "OPEN_MODAL_CSV";
@@ -142,8 +141,7 @@ public class DataSourcePage extends BaseDfePage {
 
     @Step("I choose option from Severity combobox")
     public void setSeverityInCombobox(String severity) {
-        ComponentFactory.create(SEVERITY_COMBOBOX_ID, ComponentType.COMBOBOX, driver, wait)
-                .setSingleStringValue(severity);
+        ComponentFactory.create(SEVERITY_COMBOBOX_ID, driver, wait).setSingleStringValue(severity);
         log.info("setting severity: {}", severity);
     }
 

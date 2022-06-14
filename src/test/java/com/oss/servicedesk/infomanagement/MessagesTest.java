@@ -48,7 +48,7 @@ public class MessagesTest extends BaseTestCase {
         String startDate = LocalDateTime.now().minusMinutes(5).format(DATE_TIME_FORMATTER);
         String endDate = LocalDateTime.now().format(DATE_TIME_FORMATTER);
         String date = startDate + " - " + endDate;
-        messagesPage.filterByTextField(DATE_ID_IN_FILTER_PANEL, date);
+        messagesPage.filterByDate(DATE_ID_IN_FILTER_PANEL, date);
 
         Assert.assertFalse(messagesPage.isMessagesTableEmpty());
 
@@ -66,9 +66,9 @@ public class MessagesTest extends BaseTestCase {
             @Optional("switch.ticket@comarch.com") String emailFrom
     ) {
         messagesPage.searchFullText(MESSAGE_SUBJECT);
-        messagesPage.filterByComboBox(MESSAGE_TYPE_COMBOBOX_ID, MESSAGE_TYPE);
-        messagesPage.filterByTextField(FROM_ID, emailFrom);
-        messagesPage.filterByTextField(TO_ID, emailTo);
+        messagesPage.filterBy(MESSAGE_TYPE_COMBOBOX_ID, MESSAGE_TYPE);
+        messagesPage.filterBy(FROM_ID, emailFrom);
+        messagesPage.filterBy(TO_ID, emailTo);
 
         Assert.assertEquals(messagesPage.getMessageType(), MESSAGE_TYPE);
         Assert.assertEquals(messagesPage.getMessageFrom(), emailFrom);

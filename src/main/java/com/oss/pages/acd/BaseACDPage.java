@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.ComponentFactory;
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.layout.Card;
 import com.oss.framework.iaa.widgets.timeperiodchooser.TimePeriodChooser;
 import com.oss.framework.utils.DelayUtils;
@@ -58,46 +57,31 @@ public class BaseACDPage extends BasePage {
         log.info("Clicking {} button", label);
     }
 
-    @Step("Clear multiSearchField")
-    public void clearMultiSearch(String multiSearchFieldId) {
-        Input multiSearchField = ComponentFactory.create(multiSearchFieldId, Input.ComponentType.MULTI_SEARCH_FIELD, driver, wait);
-        multiSearchField.clear();
-        log.info("Clearing multiSearch");
-    }
+    @Step("I search by attribute")
+    public void setAttributeValue(String attributeId, String inputValue) {
 
-    @Step("Set value in ComboBox")
-    public void setValueInComboBox(String componentId, String value) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        ComponentFactory.create(componentId, driver, wait).setSingleStringValue(value);
-        log.info("Setting value of {} attribute as {}", componentId, value);
-    }
-
-    @Step("I Set value in multiComboBox")
-    public void setValueInMultiComboBox(String attributeName, String inputValue) {
-
-        if (Boolean.TRUE.equals(isMultiComboBoxFilled(attributeName))) {
-            clearMultiComboBox(attributeName);
+        if (Boolean.TRUE.equals(isAttributeFilled(attributeId))) {
+            log.info("Input is not empty");
+            clearAttributeValue(attributeId);
+            log.info("Input has been cleared");
         }
 
         DelayUtils.waitForPageToLoad(driver, wait);
-        ComponentFactory.create(attributeName, Input.ComponentType.MULTI_COMBOBOX, driver, wait)
-                .setSingleStringValue(inputValue);
-        log.info("Setting value in MultiComboBox");
+        ComponentFactory.create(attributeId, driver, wait).setSingleStringValue(inputValue);
+        log.info("Setting value of {} attribute as {}", attributeId, inputValue);
     }
 
-    @Step("I Clear multiComboBox")
-    public void clearMultiComboBox(String multiComboBoxId) {
-        Input multiComboBox = ComponentFactory.create(multiComboBoxId, Input.ComponentType.MULTI_COMBOBOX, driver, wait);
-        multiComboBox.clear();
-        log.info("MultiComboBox is cleared");
+    @Step("I Clear Attribute value")
+    public void clearAttributeValue(String attributeId) {
+        ComponentFactory.create(attributeId, driver, wait).clear();
+        log.info("Attribute value is cleared");
     }
 
     @Step("Check if multiComboBox is filled")
-    public Boolean isMultiComboBoxFilled(String multiComboBoxId) {
+    public Boolean isAttributeFilled(String attributeId) {
         log.info("Checking if MultiComboBox is empty");
-        return !ComponentFactory.create(multiComboBoxId, Input.ComponentType.MULTI_COMBOBOX, driver, wait)
-                .getStringValues()
-                .isEmpty();
+
+        return !ComponentFactory.create(attributeId, driver, wait).getStringValues().isEmpty();
     }
 
     @Step("I set value in time period chooser")
@@ -134,7 +118,7 @@ public class BaseACDPage extends BasePage {
 
     @Step("Turn On Include Issues without Roots switcher")
     public void turnOnSwitcher(String switcherID) {
-        ComponentFactory.create(switcherID, Input.ComponentType.SWITCHER, driver, wait).click();
+        ComponentFactory.create(switcherID, driver, wait).click();
         log.info("Turning on Include Issues without Roots switcher");
     }
 

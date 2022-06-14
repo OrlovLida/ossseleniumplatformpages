@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.inputs.ComponentFactory;
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.servicedesk.issue.IssueDetailsPage;
 import com.oss.pages.servicedesk.issue.MoreDetailsPage;
@@ -39,26 +38,26 @@ public class OverviewTab extends IssueDetailsPage {
 
     @Step("Change Issue assignee")
     public void changeIssueAssignee(String assignee) {
-        ComponentFactory.create(ISSUE_ASSIGNEE_ID, Input.ComponentType.SEARCH_FIELD, driver, wait)
+        ComponentFactory.create(ISSUE_ASSIGNEE_ID, driver, wait)
                 .setSingleStringValue(assignee);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     @Step("Check Issue Assignee")
     public String checkAssignee() {
-        return ComponentFactory.create(ISSUE_ASSIGNEE_ID, Input.ComponentType.SEARCH_FIELD, driver, wait).getStringValue();
+        return ComponentFactory.create(ISSUE_ASSIGNEE_ID, driver, wait).getStringValue();
     }
 
     @Step("Change issue status")
     public void changeIssueStatus(String status) {
-        ComponentFactory.create(STATUS_INPUT, Input.ComponentType.COMBOBOX, driver, wait)
+        ComponentFactory.create(STATUS_INPUT, driver, wait)
                 .setSingleStringValue(status);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     @Step("Check status in issue status combobox")
     public String checkIssueStatus() {
-        return ComponentFactory.create(STATUS_INPUT, Input.ComponentType.COMBOBOX, driver, wait).getStringValue();
+        return ComponentFactory.create(STATUS_INPUT, driver, wait).getStringValue();
     }
 
     @Step("Click More Details")

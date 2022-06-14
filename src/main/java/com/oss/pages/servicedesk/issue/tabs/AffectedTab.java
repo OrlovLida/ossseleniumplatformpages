@@ -40,7 +40,7 @@ public class AffectedTab extends BaseSDPage {
     @Step("Click Add Service and fill prompt")
     public AffectedTab addServiceToTable(String serviceMOIdentifier) {
         clickAddServices()
-                .insertValueToMultiSearchComponent(serviceMOIdentifier, SERVICE_MULTI_SEARCH_ID)
+                .insertValueContainsToComponent(serviceMOIdentifier, SERVICE_MULTI_SEARCH_ID)
                 .clickButton(ADD_SERVICE_IN_PROMPT_ID);
         return this;
     }

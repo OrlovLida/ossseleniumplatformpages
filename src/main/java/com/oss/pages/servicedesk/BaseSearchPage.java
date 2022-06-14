@@ -58,18 +58,6 @@ public abstract class BaseSearchPage extends BaseSDPage {
         return driver.getCurrentUrl().contains(String.format(VIEWS_URL_PATTERN, basicURL, getSearchPageUrl()));
     }
 
-    @Step("I filter issues by text attribute {attributeName} set to {attributeValue}")
-    public void filterByTextField(String attributeName, String attributeValue) {
-        log.info("Filtering issues by text attribute {} set to {}", attributeName, attributeValue);
-        filterBy(attributeName, attributeValue, Input.ComponentType.TEXT_FIELD);
-    }
-
-    @Step("I filter issues by combo-box attribute {attributeName} set to {attributeValue}")
-    public void filterByComboBox(String attributeName, String attributeValue) {
-        log.info("Filtering issues by combo-box attribute {} set to {}", attributeName, attributeValue);
-        filterBy(attributeName, attributeValue, Input.ComponentType.MULTI_COMBOBOX);
-    }
-
     public String getIdForNthTicketInTable(int n) {
         DelayUtils.waitForPageToLoad(driver, wait);
         return getAttributeFromTable(n, ID_ATTRIBUTE);
@@ -81,9 +69,17 @@ public abstract class BaseSearchPage extends BaseSDPage {
         return attributeValue;
     }
 
-    public void filterBy(String attributeName, String attributeValue, Input.ComponentType componentType) {
+    @Step("Filter by: set in component with id {attributeName} value: {attributeValue}")
+    public void filterBy(String attributeName, String attributeValue) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getIssueTable().searchByAttribute(attributeName, componentType, attributeValue);
+        getIssueTable().searchByAttribute(attributeName, attributeValue);
+        log.info("Filtering issues by component with id {} set to {}", attributeName, attributeValue);
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    public void filterByDate(String attributeName, String attributeValue) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getIssueTable().searchByAttribute(attributeName, Input.ComponentType.TEXT_FIELD, attributeValue);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
@@ -123,13 +119,13 @@ public abstract class BaseSearchPage extends BaseSDPage {
         notificationWrapperPage.clearNotifications();
         if (!isIssueTableEmpty()) {
             int minutes = 60;
-            filterByTextField(BaseSearchPage.CREATION_TIME_ATTRIBUTE, getTimePeriodForLastNMinutes(minutes));
+            filterByDate(BaseSearchPage.CREATION_TIME_ATTRIBUTE, getTimePeriodForLastNMinutes(minutes));
             while (isIssueTableEmpty()) {
                 minutes += 30;
                 if (minutes > MAX_SEARCH_TIME_6_HOURS) {
                     throw new RuntimeException("No tickets to export created within last 6 hours");
                 }
-                filterByTextField(BaseSearchPage.CREATION_TIME_ATTRIBUTE, getTimePeriodForLastNMinutes(minutes));
+                filterByDate(BaseSearchPage.CREATION_TIME_ATTRIBUTE, getTimePeriodForLastNMinutes(minutes));
             }
             clickExportInSearchTable();
             ExportWizardPage exportWizardPage = new ExportWizardPage(driver, wait, exportWizardId);

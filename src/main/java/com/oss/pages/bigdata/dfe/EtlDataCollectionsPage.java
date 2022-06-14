@@ -19,7 +19,7 @@ public class EtlDataCollectionsPage extends BaseDfePage {
     private static final String ADD_ETL_PROCESS_LABEL = "Add New ETL Process";
     private static final String EDIT_ETL_PROCESS_LABEL = "Edit ETL Process";
     private static final String DELETE_ETL_PROCESS_LABEL = "Delete ETL Process";
-    private static final String SEARCH_INPUT_ID = "data-collection-listSearchAppId";
+    private static final String SEARCH_INPUT_ID = "input_data-collection-listSearchAppId";
     private static final String NAME_COLUMN_LABEL = "Name";
     private static final String DELETE_LABEL = "Delete";
     private static final String TABS_WIDGET_ID = "card-content_tabsId";
@@ -137,10 +137,14 @@ public class EtlDataCollectionsPage extends BaseDfePage {
     }
 
     @Step("Check if Format Tab Table is empty")
-    public boolean isFormatTabTableEmpty()  { return isTabTableEmpty(FORMAT_TABLE_ID); }
+    public boolean isFormatTabTableEmpty() {
+        return isTabTableEmpty(FORMAT_TABLE_ID);
+    }
 
     @Step("Check if Measures Tab Table is empty")
-    public boolean isMeasuresTabTableEmpty()  { return isTabTableEmpty(MEASURES_TABLE_ID); }
+    public boolean isMeasuresTabTableEmpty() {
+        return isTabTableEmpty(MEASURES_TABLE_ID);
+    }
 
     @Override
     public String getTableId() {

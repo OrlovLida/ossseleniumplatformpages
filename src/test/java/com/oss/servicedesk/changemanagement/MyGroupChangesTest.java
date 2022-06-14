@@ -61,7 +61,7 @@ public class MyGroupChangesTest extends BaseTestCase {
     @Description("Check My Group Changes")
     public void checkMyGroupChanges() {
         myGroupChangesPage = new MyGroupChangesPage(driver, webDriverWait).openView(driver, BASIC_URL);
-        myGroupChangesPage.filterByTextField(ID_ATTRIBUTE, changeID);
+        myGroupChangesPage.filterBy(ID_ATTRIBUTE, changeID);
         myGroupChangesPage.getIdForNthTicketInTable(0);
         Assert.assertFalse(myGroupChangesPage.isIssueTableEmpty());
         Assert.assertEquals(myGroupChangesPage.getIdForNthTicketInTable(0), changeID);
@@ -108,7 +108,7 @@ public class MyGroupChangesTest extends BaseTestCase {
         myChangesPage = new MyChangesPage(driver, webDriverWait).openView(driver, BASIC_URL);
         Assert.assertFalse(myChangesPage.isIssueTableEmpty());
 
-        myChangesPage.filterByTextField(ID_ATTRIBUTE, changeID);
+        myChangesPage.filterBy(ID_ATTRIBUTE, changeID);
         Assert.assertFalse(myChangesPage.isIssueTableEmpty());
     }
 }

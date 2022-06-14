@@ -45,21 +45,21 @@ public class ConfigurationPanelTest extends BaseTestCase {
     @Description("Create New Configuration")
     public void createNewConfiguration() {
         sdWizardPage = configurationPanelPage.clickCreateNewConfiguration();
-        sdWizardPage.insertValueToTextComponent(MAILBOX_NAME, WIZARD_NAME_FIELD_ID);
-        sdWizardPage.insertValueToTextComponent(EMAIL, WIZARD_EMAIL_FIELD_ID);
+        sdWizardPage.insertValueToComponent(MAILBOX_NAME, WIZARD_NAME_FIELD_ID);
+        sdWizardPage.insertValueToComponent(EMAIL, WIZARD_EMAIL_FIELD_ID);
         sdWizardPage.turnOnSwitcher("mailbox-wizard-active");
-        sdWizardPage.insertValueToComboBoxComponent(PROTOCOL_IN, WIZARD_INCOMING_PREFIX + PROTOCOL_COMBOBOX_ID);
-        sdWizardPage.insertValueToTextComponent(HOST, WIZARD_INCOMING_PREFIX + WIZARD_HOST_FIELD_ID);
-        sdWizardPage.insertValueToTextComponent(PORT, WIZARD_INCOMING_PREFIX + WIZARD_PORT_FIELD_ID);
-        sdWizardPage.insertValueToTextComponent(USERNAME, WIZARD_INCOMING_PREFIX + WIZARD_USERNAME_FIELD_ID);
-        sdWizardPage.insertValueToTextComponent(PASSWORD, WIZARD_INCOMING_PREFIX + WIZARD_PASSWORD_FIELD_ID);
-        sdWizardPage.insertValueToTextComponent(INBOX_FOLDER, WIZARD_INBOX_FOLDER_FIELD_ID);
+        sdWizardPage.insertValueToComponent(PROTOCOL_IN, WIZARD_INCOMING_PREFIX + PROTOCOL_COMBOBOX_ID);
+        sdWizardPage.insertValueToComponent(HOST, WIZARD_INCOMING_PREFIX + WIZARD_HOST_FIELD_ID);
+        sdWizardPage.insertValueToComponent(PORT, WIZARD_INCOMING_PREFIX + WIZARD_PORT_FIELD_ID);
+        sdWizardPage.insertValueToComponent(USERNAME, WIZARD_INCOMING_PREFIX + WIZARD_USERNAME_FIELD_ID);
+        sdWizardPage.insertValueToComponent(PASSWORD, WIZARD_INCOMING_PREFIX + WIZARD_PASSWORD_FIELD_ID);
+        sdWizardPage.insertValueToComponent(INBOX_FOLDER, WIZARD_INBOX_FOLDER_FIELD_ID);
 
-        sdWizardPage.insertValueToComboBoxComponent(PROTOCOL_OUT, WIZARD_OUTGOING_PREFIX + PROTOCOL_COMBOBOX_ID);
-        sdWizardPage.insertValueToTextComponent(HOST, WIZARD_OUTGOING_PREFIX + WIZARD_HOST_FIELD_ID);
-        sdWizardPage.insertValueToTextComponent(PORT, WIZARD_OUTGOING_PREFIX + WIZARD_PORT_FIELD_ID);
-        sdWizardPage.insertValueToTextComponent(USERNAME, WIZARD_OUTGOING_PREFIX + WIZARD_USERNAME_FIELD_ID);
-        sdWizardPage.insertValueToTextComponent(PASSWORD, WIZARD_OUTGOING_PREFIX + WIZARD_PASSWORD_FIELD_ID);
+        sdWizardPage.insertValueToComponent(PROTOCOL_OUT, WIZARD_OUTGOING_PREFIX + PROTOCOL_COMBOBOX_ID);
+        sdWizardPage.insertValueToComponent(HOST, WIZARD_OUTGOING_PREFIX + WIZARD_HOST_FIELD_ID);
+        sdWizardPage.insertValueToComponent(PORT, WIZARD_OUTGOING_PREFIX + WIZARD_PORT_FIELD_ID);
+        sdWizardPage.insertValueToComponent(USERNAME, WIZARD_OUTGOING_PREFIX + WIZARD_USERNAME_FIELD_ID);
+        sdWizardPage.insertValueToComponent(PASSWORD, WIZARD_OUTGOING_PREFIX + WIZARD_PASSWORD_FIELD_ID);
         sdWizardPage.clickAcceptButtonInWizard();
 
         Assert.assertFalse(configurationPanelPage.isMailboxesTableEmpty(), "Mailboxes list is empty");
@@ -72,9 +72,9 @@ public class ConfigurationPanelTest extends BaseTestCase {
         Assert.assertFalse(configurationPanelPage.isMailboxesTableEmpty());
         if (configurationPanelPage.isObjectInTable(MAILBOX_NAME)) {
             sdWizardPage = configurationPanelPage.clickEditOnObjectWithName(MAILBOX_NAME);
-            sdWizardPage.insertValueToTextComponent(EDITED_MAILBOX_EMAIL, WIZARD_EMAIL_FIELD_ID);
-            sdWizardPage.insertValueToTextComponent(PASSWORD, WIZARD_INCOMING_PREFIX + WIZARD_PASSWORD_FIELD_ID);
-            sdWizardPage.insertValueToTextComponent(PASSWORD, WIZARD_OUTGOING_PREFIX + WIZARD_PASSWORD_FIELD_ID);
+            sdWizardPage.insertValueToComponent(EDITED_MAILBOX_EMAIL, WIZARD_EMAIL_FIELD_ID);
+            sdWizardPage.insertValueToComponent(PASSWORD, WIZARD_INCOMING_PREFIX + WIZARD_PASSWORD_FIELD_ID);
+            sdWizardPage.insertValueToComponent(PASSWORD, WIZARD_OUTGOING_PREFIX + WIZARD_PASSWORD_FIELD_ID);
             sdWizardPage.clickAcceptButtonInWizard();
         } else {
             Assert.fail("Mailbox with name: " + MAILBOX_NAME + " is not in the Table");
