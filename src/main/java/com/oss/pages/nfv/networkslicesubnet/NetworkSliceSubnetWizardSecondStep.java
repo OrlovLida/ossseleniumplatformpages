@@ -22,7 +22,7 @@ public class NetworkSliceSubnetWizardSecondStep extends NetworkSliceSubnetWizard
         super(driver, wait, networkSliceWizard);
     }
 
-    public static final NetworkSliceSubnetWizardSecondStep create(WebDriver driver, WebDriverWait wait, Wizard networkSliceWizard) {
+    public static NetworkSliceSubnetWizardSecondStep create(WebDriver driver, WebDriverWait wait, Wizard networkSliceWizard) {
         return new NetworkSliceSubnetWizardSecondStep(driver, wait, networkSliceWizard);
     }
 
@@ -37,43 +37,43 @@ public class NetworkSliceSubnetWizardSecondStep extends NetworkSliceSubnetWizard
     }
 
     public void setSliceProfileName(String name) {
-        networkSliceSubnetWizard.setComponentValue(NAME_COMPONENT_ID, name, TEXT_FIELD);
+        networkSliceSubnetWizard.setComponentValue(NAME_COMPONENT_ID, name);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public String getSliceProfileName() {
-        return networkSliceSubnetWizard.getComponent(NAME_COMPONENT_ID, TEXT_FIELD).getStringValue();
+        return networkSliceSubnetWizard.getComponent(NAME_COMPONENT_ID).getStringValue();
     }
 
     public void setPLMNInfoMCC(String value) {
-        networkSliceSubnetWizard.setComponentValue(MCC_COMPONENT_ID, value, NUMBER_FIELD);
+        networkSliceSubnetWizard.setComponentValue(MCC_COMPONENT_ID, value);
     }
 
     public String getPLMNInfoMCC() {
-        return StringUtils.deleteWhitespace(networkSliceSubnetWizard.getComponent(MCC_COMPONENT_ID, NUMBER_FIELD).getStringValue());
+        return StringUtils.deleteWhitespace(networkSliceSubnetWizard.getComponent(MCC_COMPONENT_ID).getStringValue());
     }
 
     public void setPLMNInfoMNC(String value) {
-        networkSliceSubnetWizard.setComponentValue(MNC_COMPONENT_ID, value, NUMBER_FIELD);
+        networkSliceSubnetWizard.setComponentValue(MNC_COMPONENT_ID, value);
     }
 
     public String getPLMNInfoMNC() {
-        return StringUtils.deleteWhitespace(networkSliceSubnetWizard.getComponent(MNC_COMPONENT_ID, NUMBER_FIELD).getStringValue());
+        return StringUtils.deleteWhitespace(networkSliceSubnetWizard.getComponent(MNC_COMPONENT_ID).getStringValue());
     }
 
     public void setPLMNInfoSD(String value) {
-        networkSliceSubnetWizard.setComponentValue(SD_COMPONENT_ID, value, NUMBER_FIELD);
+        networkSliceSubnetWizard.setComponentValue(SD_COMPONENT_ID, value);
     }
 
     public String getPLMNInfoSD() {
-        return StringUtils.deleteWhitespace(networkSliceSubnetWizard.getComponent(SD_COMPONENT_ID, NUMBER_FIELD).getStringValue());
+        return StringUtils.deleteWhitespace(networkSliceSubnetWizard.getComponent(SD_COMPONENT_ID).getStringValue());
     }
 
     public void setPLMNInfoSST(String value) {
-        networkSliceSubnetWizard.setComponentValue(SST_COMPONENT_ID, value, NUMBER_FIELD);
+        networkSliceSubnetWizard.setComponentValue(SST_COMPONENT_ID, value);
     }
 
     public String getPLMNInfoSST() {
-        return StringUtils.deleteWhitespace(networkSliceSubnetWizard.getComponent(SST_COMPONENT_ID, NUMBER_FIELD).getStringValue());
+        return StringUtils.deleteWhitespace(networkSliceSubnetWizard.getComponent(SST_COMPONENT_ID).getStringValue());
     }
 }

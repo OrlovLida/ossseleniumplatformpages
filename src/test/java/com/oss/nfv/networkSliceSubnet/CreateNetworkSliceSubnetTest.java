@@ -24,6 +24,7 @@ import com.oss.pages.nfv.vnf.VNFWizardPage;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 
+import static com.oss.nfv.networkSliceSubnet.CreateNetworkSliceSubnetConstants.ADMINISTRATIVE_STATE_VALUE;
 import static com.oss.nfv.networkSliceSubnet.CreateNetworkSliceSubnetConstants.MCC_VALUE;
 import static com.oss.nfv.networkSliceSubnet.CreateNetworkSliceSubnetConstants.MNC_VALUE;
 import static com.oss.nfv.networkSliceSubnet.CreateNetworkSliceSubnetConstants.NETWORK_SLICE_SUBNET_DESCRIPTION;
@@ -99,6 +100,7 @@ public class CreateNetworkSliceSubnetTest extends BaseNetworkSliceSubnetTest {
     private void fillNetworkSliceSubnetParams(NetworkSliceSubnetWizardFirstStep firstStep) {
         firstStep.setName(NETWORK_SLICE_SUBNET_NAME);
         firstStep.setDescription(NETWORK_SLICE_SUBNET_DESCRIPTION);
+        firstStep.setAdministrativeState(ADMINISTRATIVE_STATE_VALUE);
         firstStep.setOperationalState(OPERATIONAL_STATE_VALUE);
     }
 
@@ -106,6 +108,7 @@ public class CreateNetworkSliceSubnetTest extends BaseNetworkSliceSubnetTest {
         SoftAssert softly = new SoftAssert();
         softly.assertEquals(firstStep.getName(), NETWORK_SLICE_SUBNET_NAME, "Name has not been set");
         softly.assertEquals(firstStep.getDescription(), NETWORK_SLICE_SUBNET_DESCRIPTION, "Description has not been set");
+        softly.assertEquals(firstStep.getAdministrativeState(), ADMINISTRATIVE_STATE_VALUE, "Administrative State has not been set");
         softly.assertEquals(firstStep.getOperationalState(), OPERATIONAL_STATE_VALUE, "Operational State has not been set");
         softly.assertAll();
     }

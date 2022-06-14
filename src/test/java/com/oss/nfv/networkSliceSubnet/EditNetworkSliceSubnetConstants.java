@@ -13,6 +13,8 @@ public class EditNetworkSliceSubnetConstants {
     public static final String NETWORK_SLICE_SUBNET_NAME = "NETWORK-SLICE-SUBNET-SELENIUM-TEST";
     public static final String NETWORK_SLICE_SUBNET_DESCRIPTION_NEW = "NETWORK-SLICE-SUBNET-EDIT-DESCRIPTION-NEW";
     public static final String EDIT_LOGICAL_ELEMENT_ACTION_LABEL = "Edit Logical Element";
+    public static final String OPERATIONAL_STATE_VALUE = "ENABLED";
+    public static final String ADMINISTRATIVE_STATE_VALUE = "UNLOCKED";
 
     public static final String SLICE_PROFILE_NAME = "SLICE-PROFILE-EDIT-SELENIUM-TEST";
     public static final String PLMN_INFO_DEFAULT_LABEL_PATH = SLICE_PROFILE_NAME
