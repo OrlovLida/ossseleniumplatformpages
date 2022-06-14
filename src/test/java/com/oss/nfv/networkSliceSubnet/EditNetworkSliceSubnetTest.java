@@ -28,6 +28,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
+import static com.oss.nfv.networkSliceSubnet.EditNetworkSliceSubnetConstants.ADMINISTRATIVE_STATE_VALUE;
+import static com.oss.nfv.networkSliceSubnet.EditNetworkSliceSubnetConstants.OPERATIONAL_STATE_VALUE;
 import static com.oss.nfv.networkSliceSubnet.EditNetworkSliceSubnetConstants.MCC_VALUE;
 import static com.oss.nfv.networkSliceSubnet.EditNetworkSliceSubnetConstants.MNC_VALUE;
 import static com.oss.nfv.networkSliceSubnet.EditNetworkSliceSubnetConstants.NETWORK_SLICE_SUBNET_DESCRIPTION_NEW;
@@ -78,7 +80,7 @@ public class EditNetworkSliceSubnetTest extends BaseNetworkSliceSubnetTest {
         NetworkSliceSubnetWizardPage wizard = NetworkSliceSubnetWizardPage.create(driver, webDriverWait);
         NetworkSliceSubnetWizardFirstStep firstStep = wizard.getFirstStep();
         //when
-        changeNetworkSliceSubnetDescription(firstStep);
+        changeNetworkSliceSubnetFirstStepParams(firstStep);
         //then
         validateNetworkSliceSubnetFirstStepParams(firstStep);
         //when
@@ -133,14 +135,18 @@ public class EditNetworkSliceSubnetTest extends BaseNetworkSliceSubnetTest {
         inventoryViewPage.searchObject(NETWORK_SLICE_SUBNET_NAME);
     }
 
-    private void changeNetworkSliceSubnetDescription(NetworkSliceSubnetWizardFirstStep firstStep) {
+    private void changeNetworkSliceSubnetFirstStepParams(NetworkSliceSubnetWizardFirstStep firstStep) {
         firstStep.setDescription(NETWORK_SLICE_SUBNET_DESCRIPTION_NEW);
+        firstStep.setAdministrativeState(ADMINISTRATIVE_STATE_VALUE);
+        firstStep.setOperationalState(OPERATIONAL_STATE_VALUE);
     }
 
     private void validateNetworkSliceSubnetFirstStepParams(NetworkSliceSubnetWizardFirstStep firstStep) {
         SoftAssert softly = new SoftAssert();
         softly.assertEquals(firstStep.getName(), NETWORK_SLICE_SUBNET_NAME, "Name has not been set");
         softly.assertEquals(firstStep.getDescription(), NETWORK_SLICE_SUBNET_DESCRIPTION_NEW, "Description has not been set");
+        softly.assertEquals(firstStep.getAdministrativeState(), ADMINISTRATIVE_STATE_VALUE, "Administrative State has not been set");
+        softly.assertEquals(firstStep.getOperationalState(), OPERATIONAL_STATE_VALUE, "Operational State has not been set");
         softly.assertAll();
     }
 

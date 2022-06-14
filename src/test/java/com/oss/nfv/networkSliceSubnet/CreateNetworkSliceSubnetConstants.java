@@ -15,6 +15,7 @@ public class CreateNetworkSliceSubnetConstants {
     public static final String NETWORK_SLICE_SUBNET_NAME = "NETWORK-SLICE-SUBNET-SELENIUM-TEST";
     public static final String NETWORK_SLICE_SUBNET_DESCRIPTION = "NETWORK-SLICE-SUBNET-CREATE-DESCRIPTION";
     public static final String OPERATIONAL_STATE_VALUE = "ENABLED";
+    public static final String ADMINISTRATIVE_STATE_VALUE = "UNLOCKED";
     public static final String SLICE_PROFILE_NAME = "SLICE-PROFILE-CREATE-SELENIUM-TEST";
 
     public static final String SLICE_PROFILE_DEFAULT_LABEL_PATH = "Slice Profile 1";
