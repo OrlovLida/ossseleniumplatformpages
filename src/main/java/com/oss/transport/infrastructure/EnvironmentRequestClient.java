@@ -124,7 +124,7 @@ public class EnvironmentRequestClient {
         return servicesClient.getRequestSpecificationByName("software-management-core");
     }
 
-    public RequestSpecification getSoftwareManagementCoreSpecificationXXX() {
+    public RequestSpecification getRecoConfigSpecification() {
         return servicesClient.getRequestSpecificationByName("reco-config");
     }
 
