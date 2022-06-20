@@ -11,10 +11,11 @@ import io.qameta.allure.Step;
 public class NotificationPreviewPage extends BaseSDPage {
 
     private final NotificationPreview notificationPreview;
+    private static final String NOTIFICATION_PREVIEW_ID = "notification-preview";
 
     public NotificationPreviewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
-        notificationPreview = NotificationPreview.create(driver, wait);
+        notificationPreview = NotificationPreview.createById(driver, wait, NOTIFICATION_PREVIEW_ID);
     }
 
     @Step("Check if New Badge is present")
