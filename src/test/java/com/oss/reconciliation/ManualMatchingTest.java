@@ -30,7 +30,7 @@ public class ManualMatchingTest extends BaseTestCase {
 
     private static final Logger log = LoggerFactory.getLogger(ManualMatchingTest.class);
     private static final String CM_DOMAIN_NAME = "Selenium-ManualMatchingTest";
-    private static final String RECO_CONFIG_BODY = "{\"networkInventoryObjectMatching\":\"true\",\"adaptation-comarch-to-r1\":{\"createBlackboxModels\":\"false\",\"assignGenericModels\":\"false\"}}";
+    private static final String RECO_CONFIG_BODY = "{\"supportInventoryObjectMatching\":\"true\",\"adaptation-comarch-to-r1\":{\"createBlackboxModels\":\"false\",\"assignGenericModels\":\"false\"}}";
     private static final String CREATE_BUTTON_ID = "createNewInventoryObjectCheckboxId";
     private static final String INTERFACE_NAME = "Comarch";
     private static final String DOMAIN = "Comarch";
@@ -60,61 +60,77 @@ public class ManualMatchingTest extends BaseTestCase {
 
     }
 
-//    @Test(priority = 1, description = "Create CM Domain")
-//    @Description("Go to Network Discovery Control View and Create CM Domain")
-//    public void createCmDomain() {
-//        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        networkDiscoveryControlViewPage.createCMDomain(CM_DOMAIN_NAME, INTERFACE_NAME, DOMAIN);
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//    }
-//
-//    @Test(priority = 2, description = "Upload reconciliation samples", dependsOnMethods = {"createCmDomain"})
-//    @Description("Go to Sample Management View and upload reconciliation samples")
-//    public void uploadSamples() throws URISyntaxException {
-//        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
-//        networkDiscoveryControlViewPage.moveToSamplesManagement();
-//        SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
-//        samplesManagementPage.selectPath();
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        samplesManagementPage.createDirectory(CM_DOMAIN_NAME);
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        samplesManagementPage.uploadSamples("recoSamples/manualMatching/ROUTER_MATCHING_AG.json");
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//    }
-//
-//    @Test(priority = 3, description = "Run reconciliation and check results", dependsOnMethods = {"uploadSamples"})
-//    @Description("Go to Network Discovery Control View and run reconciliation and check if it ended without errors")
-//    public void runReconciliationWithFullSample() {
-//        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
-//        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        networkDiscoveryControlViewPage.runReconciliation();
-//        checkPopupMessageType();
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        Assert.assertEquals(networkDiscoveryControlViewPage.waitForEndOfReco(), "SUCCESS");
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        networkDiscoveryControlViewPage.selectLatestReconciliationState();
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.STARTUP_FATAL));
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.FATAL));
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.ERROR));
-//    }
+    @Test(priority = 1)
+    public void createCmDomain() {
+        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkDiscoveryControlViewPage.createCMDomain(CM_DOMAIN_NAME, INTERFACE_NAME, DOMAIN);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
 
-//    @Test
-//    public void assertColumnsHeaders() {
-//        manualMatchingPage = ManualMatchingPage.goToManualMatchingPage(driver, BASIC_URL);
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        List<String> attributes = manualMatchingPage.getColumnHeaders();
-//        Assert.assertEquals(attributes.size(), columnsHeadersAssertionList.size());
-//        for (int i = 0; i< attributes.size(); i++) {
-//            log.info("Checking attribute with index: " + i + ", which equals: '" + columnsHeadersAssertionList.get(i) + "' on declared assertionList, and equals '" + attributes.get(i) + "' on properties list taken from GUI");
-//            softAssert.assertEquals(attributes.get(i), columnsHeadersAssertionList.get(i));
-//        }
-//        softAssert.assertAll();
-//    }
+    @Test(priority = 2)
+    public void uploadSamples() throws URISyntaxException {
+        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
+        networkDiscoveryControlViewPage.moveToSamplesManagement();
+        SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
+        samplesManagementPage.selectPath();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        samplesManagementPage.createDirectory(CM_DOMAIN_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        samplesManagementPage.uploadSamples("recoSamples/manualMatching/ROUTER_MATCHING_AG.json");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    @Test(priority = 3)
+    public void runReconciliationWithFullSample() {
+        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
+        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkDiscoveryControlViewPage.runReconciliation();
+        checkPopupMessageType();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        String status = networkDiscoveryControlViewPage.waitForEndOfReco();
+        networkDiscoveryControlViewPage.selectLatestReconciliationState();
+        if (status.contains("SUCCESS")) {
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.ERROR));
+        } else {
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.STARTUP_FATAL));
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.FATAL));
+        }
+    }
+
+    @Test(priority = 4)
+    public void createDevice() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        deviceWizardPage = DeviceWizardPage.goToDeviceWizardPageLive(driver, BASIC_URL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        deviceWizardPage.setModel("Cisco Systems Inc. WS-C6509");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        deviceWizardPage.setName("AT-SYS-DEVICE_TO_MATCH");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        deviceWizardPage.next();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        deviceWizardPage.setLocation("x");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        deviceWizardPage.accept();
+    }
+
+    @Test(priority = 5)
+    public void assertColumnsHeaders() {
+        manualMatchingPage = ManualMatchingPage.goToManualMatchingPage(driver, BASIC_URL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        List<String> attributes = manualMatchingPage.getColumnHeaders();
+        Assert.assertEquals(attributes.size(), columnsHeadersAssertionList.size());
+        for (int i = 0; i< attributes.size(); i++) {
+            log.info("Checking attribute with index: " + i + ", which equals: '" + columnsHeadersAssertionList.get(i) + "' on declared assertionList, and equals '" + attributes.get(i) + "' on properties list taken from GUI");
+            softAssert.assertEquals(attributes.get(i), columnsHeadersAssertionList.get(i));
+        }
+        softAssert.assertAll();
+    }
+
 
 
 //    @Test(priority = 2)
@@ -125,36 +141,67 @@ public class ManualMatchingTest extends BaseTestCase {
 //        manualMatchingPage.selectFirstRow();
 //    }
 
-//    @Test
-//    public void createDevice() {
+    @Test(priority = 6)
+    public void createEmptyMatching() {
+        manualMatchingPage = ManualMatchingPage.goToManualMatchingPage(driver, BASIC_URL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        manualMatchingPage.clickCreate();
+        createMatchingWizardPage = new CreateMatchingWizardPage(driver);
+        createMatchingWizardPage.selectTO("Device@@DEVICE_FOR_MATCHING_3");
 //        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        deviceWizardPage = DeviceWizardPage.goToDeviceWizardPageLive(driver, BASIC_URL);
+        createMatchingWizardPage.createNewIO();
 //        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        deviceWizardPage.setModel("Cisco Systems Inc. WS-C6509");
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        deviceWizardPage.setName("Selenium_example_xxx");
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        deviceWizardPage.next();
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        deviceWizardPage.setLocation(" ");
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        deviceWizardPage.accept();
-//    }
+        createMatchingWizardPage.clickAccept();
+    }
 
-//    @Test
-//    public void createMatching() {
-//        manualMatchingPage = ManualMatchingPage.goToManualMatchingPage(driver, BASIC_URL);
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        manualMatchingPage.clickCreate();
-//        createMatchingWizardPage = new CreateMatchingWizardPage(driver);
-//        createMatchingWizardPage.selectTO("Device@@poznan_c");
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        createMatchingWizardPage.clickNext();
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        createMatchingWizardPage.searchByName("Selenium_example_xxx");
-//        createMatchingWizardPage.selectFirstIO();
-//        createMatchingWizardPage.clickAccept();
-//    }
+    @Test(priority = 7)
+    public void createMatching() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        manualMatchingPage.clickCreate();
+        createMatchingWizardPage = new CreateMatchingWizardPage(driver);
+        createMatchingWizardPage.selectTO("Device@@DEVICE_FOR_MATCHING_1");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        createMatchingWizardPage.clickNext();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        createMatchingWizardPage.searchByName("AT-SYS-DEVICE_TO_MATCH");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        createMatchingWizardPage.selectFirstIO();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        createMatchingWizardPage.clickAccept();
+    }
+
+    @Test(priority = 8)
+    public void assertCreatedMatchings() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        manualMatchingPage.searchByNetworkName("DEVICE_FOR_MATCHING_1");
+        Assert.assertEquals(manualMatchingPage.getCellValue(0, "Network Name"), "DEVICE_FOR_MATCHING_1");
+        Assert.assertEquals(manualMatchingPage.getCellValue(0, "Inventory Name"), "AT-SYS-DEVICE_TO_MATCH");
+        manualMatchingPage = ManualMatchingPage.goToManualMatchingPage(driver, BASIC_URL);
+        manualMatchingPage.searchByNetworkName("DEVICE_FOR_MATCHING_3");
+        Assert.assertEquals(manualMatchingPage.getCellValue(0, "Network Name"), "DEVICE_FOR_MATCHING_3");
+    }
+
+    @Test(priority = 9)
+    @Description("Go to Network Discovery Control View and run reconciliation and check if it ended without errors")
+    public void runReconciliationAgain() {
+        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
+        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkDiscoveryControlViewPage.runReconciliation();
+        checkPopupMessageType();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        String status = networkDiscoveryControlViewPage.waitForEndOfReco();
+        networkDiscoveryControlViewPage.selectLatestReconciliationState();
+        if (status.contains("SUCCESS")) {
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.ERROR));
+        } else {
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.STARTUP_FATAL));
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.FATAL));
+        }
+    }
 
 //    @Test
 //    public void ddd() {
@@ -171,15 +218,15 @@ public class ManualMatchingTest extends BaseTestCase {
 //        Button.createById(driver, CREATE_BUTTON_ID).click();
 //    }
 //
-    @Test
-    public void deleteMatching() {
-        manualMatchingPage = ManualMatchingPage.goToManualMatchingPage(driver, BASIC_URL);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+//    @Test
+//    public void deleteMatching() {
+//        manualMatchingPage = ManualMatchingPage.goToManualMatchingPage(driver, BASIC_URL);
+//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
 //        manualMatchingPage.searchByNetworkName("poznan_c");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        manualMatchingPage.selectRow(2);
-        manualMatchingPage.deleteMatching();
-    }
+//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+//        manualMatchingPage.selectRow(2);
+//        manualMatchingPage.deleteMatching();
+//    }
 
     private void checkPopupMessageType() {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);

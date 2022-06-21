@@ -77,8 +77,8 @@ public class ManualMatchingPage extends BasePage {
         System.out.println(getOldTable().getRowValues(index));
     }
 
-    public void getCellValue(int index, String attributeLabel) {
-        getOldTable().getCellValue(index, attributeLabel);
+    public String getCellValue(int index, String attributeLabel) {
+        return getOldTable().getCellValue(index, attributeLabel);
     }
 
     public void showOnTechnicalObjectStructure() {

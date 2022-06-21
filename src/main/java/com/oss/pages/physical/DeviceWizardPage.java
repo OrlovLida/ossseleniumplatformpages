@@ -101,7 +101,8 @@ public class DeviceWizardPage extends BasePage {
         if (getDeviceWizard().getComponent(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME)
                 .getStringValue().isEmpty()) {
             getDeviceWizard().getComponent(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME)
-                    .setSingleStringValueContains(location);
+                    .setSingleStringValueContains("");
+//                    .setSingleStringValueContains(location);
         }
     }
 

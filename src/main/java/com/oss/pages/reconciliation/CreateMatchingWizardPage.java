@@ -3,6 +3,7 @@ package com.oss.pages.reconciliation;
 import org.openqa.selenium.WebDriver;
 
 import com.google.common.collect.Table;
+import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.components.table.TableComponent;
@@ -33,7 +34,8 @@ public class CreateMatchingWizardPage extends BasePage {
     }
 
     public void clickNext() {
-        wizard.clickNext();
+//        wizard.clickNext();
+        Button.createById(driver, "wizard-next-button-MatchingWizardConfig");
     }
 
     public void selectFirstIO() {
