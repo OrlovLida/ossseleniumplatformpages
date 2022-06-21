@@ -60,7 +60,25 @@ public class ManualMatchingTest extends BaseTestCase {
 
     }
 
-    @Test(priority = 1)
+//    @Test(priority = 1, description = "Check if CMDomain1 is deleted")
+//    @Description("Check if CMDomain1 is deleted")
+//    public void checkIfDomain1IsDeleted() {
+//        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
+//        networkDiscoveryControlViewPage.searchForCmDomain(CM_DOMAIN_NAME);
+//        if (networkDiscoveryControlViewPage.checkIfCmDomainExists(CM_DOMAIN_NAME)) {
+//            networkDiscoveryControlViewPage.selectCmDomain(CM_DOMAIN_NAME);
+//            networkDiscoveryControlViewPage.clearOldNotifications();
+//            networkDiscoveryControlViewPage.deleteCmDomain();
+//            checkPopupMessageType();
+//            Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
+//        }
+//        else {
+//            log.info("CMDomain with name: " + CM_DOMAIN_NAME + " doesn't exist");
+//        }
+//    }
+
+
+    @Test(priority = 2)
     public void createCmDomain() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -68,7 +86,7 @@ public class ManualMatchingTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 2)
+    @Test(priority = 3)
     public void uploadSamples() throws URISyntaxException {
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.moveToSamplesManagement();
@@ -81,7 +99,7 @@ public class ManualMatchingTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 3)
+    @Test(priority = 4)
     public void runReconciliationWithFullSample() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
@@ -102,7 +120,7 @@ public class ManualMatchingTest extends BaseTestCase {
         }
     }
 
-    @Test(priority = 4)
+    @Test(priority = 5)
     public void createDevice() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage = DeviceWizardPage.goToDeviceWizardPageLive(driver, BASIC_URL);
@@ -118,7 +136,7 @@ public class ManualMatchingTest extends BaseTestCase {
         deviceWizardPage.accept();
     }
 
-    @Test(priority = 5)
+    @Test(priority = 6)
     public void assertColumnsHeaders() {
         manualMatchingPage = ManualMatchingPage.goToManualMatchingPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -141,7 +159,7 @@ public class ManualMatchingTest extends BaseTestCase {
 //        manualMatchingPage.selectFirstRow();
 //    }
 
-    @Test(priority = 6)
+    @Test(priority = 7)
     public void createEmptyMatching() {
         manualMatchingPage = ManualMatchingPage.goToManualMatchingPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -154,7 +172,7 @@ public class ManualMatchingTest extends BaseTestCase {
         createMatchingWizardPage.clickAccept();
     }
 
-    @Test(priority = 7)
+    @Test(priority = 8)
     public void createMatching() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         manualMatchingPage.clickCreate();
@@ -170,7 +188,7 @@ public class ManualMatchingTest extends BaseTestCase {
         createMatchingWizardPage.clickAccept();
     }
 
-    @Test(priority = 8)
+    @Test(priority = 9)
     public void assertCreatedMatchings() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         manualMatchingPage.searchByNetworkName("DEVICE_FOR_MATCHING_1");
@@ -181,7 +199,7 @@ public class ManualMatchingTest extends BaseTestCase {
         Assert.assertEquals(manualMatchingPage.getCellValue(0, "Network Name"), "DEVICE_FOR_MATCHING_3");
     }
 
-    @Test(priority = 9)
+    @Test(priority = 10)
     @Description("Go to Network Discovery Control View and run reconciliation and check if it ended without errors")
     public void runReconciliationAgain() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
