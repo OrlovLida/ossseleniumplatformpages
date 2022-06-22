@@ -170,18 +170,23 @@ public class VS20Test extends BaseTestCase {
         }
     }
 
-    @Test(priority = 1, description = "Delete CMDomain")
-    @Description("Delete CMDomain")
-    public void deleteCMDomain() {
+    @Test(priority = 1, description = "Delete CMDomain if it exists")
+    @Description("Delete CMDomain if it exists")
+    public void deleteCMDomainIfExists() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
-        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
-        networkDiscoveryControlViewPage.clearOldNotifications();
-        networkDiscoveryControlViewPage.deleteCmDomain();
-        checkPopupMessageType();
-        Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
+        networkDiscoveryControlViewPage.searchForCmDomain(CM_DOMAIN_NAME);
+        if (networkDiscoveryControlViewPage.checkIfCmDomainExists(CM_DOMAIN_NAME)) {
+            networkDiscoveryControlViewPage.selectCmDomain(CM_DOMAIN_NAME);
+            networkDiscoveryControlViewPage.clearOldNotifications();
+            networkDiscoveryControlViewPage.deleteCmDomain();
+            Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
+        } else {
+            log.info("CMDomain with name: " + CM_DOMAIN_NAME + " doesn't exist");
+        }
     }
 
-    @Test(priority = 2, description = "Create CMDomain", dependsOnMethods = {"deleteCMDomain"})
+
+    @Test(priority = 2, description = "Create CMDomain")
     @Description("Create CMDomain")
     public void createCmDomain() {
         networkDiscoveryControlViewPage.openCmDomainWizard();

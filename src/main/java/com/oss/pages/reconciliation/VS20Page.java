@@ -62,9 +62,9 @@ public class VS20Page extends BasePage {
         return getTableWidget().getActiveColumnHeaders();
     }
 
-    public Map<String, String> getColumnsValues() {
-        return getPropertyPanel().getPropertiesValuesToList();
-    }
+//    public Map<String, String> getColumnsValues() {
+//        return getPropertyPanel().getPropertiesValuesToList();
+//    }
 
     @Step("Go to Network Discovery Control View")
     public void goToNDCV() {
@@ -89,10 +89,10 @@ public class VS20Page extends BasePage {
         return getPropertyPanel().getPropertyLabels();
     }
 
-    @Step("Get all properties IDs to list")
-    public List<String> getPropertiesIdsToList() {
-        return getPropertyPanel().getPropertiesToList();
-    }
+//    @Step("Get all properties IDs to list")
+//    public List<String> getPropertiesIdsToList() {
+//        return getPropertyPanel().getPropertiesToList();
+//    }
 
     @Step("Get property value")
     public String getPropertyValue(String propertyName) {
