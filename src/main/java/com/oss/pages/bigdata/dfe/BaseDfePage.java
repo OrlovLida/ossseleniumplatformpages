@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.inputs.ComponentFactory;
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
@@ -26,13 +25,10 @@ import static com.oss.framework.utils.DelayUtils.waitForPageToLoad;
 public abstract class BaseDfePage extends BasePage implements BaseDfePageInterface {
 
     private static final Logger log = LoggerFactory.getLogger(BaseDfePage.class);
+    private static final String SAVE_LABEL = "Save";
 
     protected BaseDfePage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
-    }
-
-    public OldTable getTable(WebDriver driver, WebDriverWait wait) {
-        return OldTable.createById(driver, wait, getTableId());
     }
 
     public static void openDfePage(WebDriver driver, String basicURL, WebDriverWait wait, String viewName) {
@@ -42,9 +38,46 @@ public abstract class BaseDfePage extends BasePage implements BaseDfePageInterfa
         log.info("Opening page: {}", pageUrl);
     }
 
+    public OldTable getTable(WebDriver driver, WebDriverWait wait) {
+        return OldTable.createById(driver, wait, getTableId());
+    }
+
+    @Step("Attach downloaded file to report")
+    public void attachFileToReport(String fileName) {
+        FileDownload.attachDownloadedFileToReport(fileName);
+        log.info("Attaching downloaded file to report");
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    @Step("Check if file is not empty")
+    public boolean checkIfFileIsNotEmpty(String fileName) {
+        log.info("Checking if file is not empty");
+        return FileDownload.checkIfFileIsNotEmpty(fileName);
+    }
+
+    @Step("Get category name")
+    public String getCategoryName(int index, String columnLabel) {
+        return getTable(driver, wait).getCellValue(index, columnLabel);
+    }
+
+    @Step("Search category")
+    public void searchCategories(String category, String categoriesID) {
+        waitForPageToLoad(driver, wait);
+        ComponentFactory.create(categoriesID, driver, wait).setSingleStringValue(category);
+        log.debug("Filled category with: {}", category);
+    }
+
+    @Step("Check if Table is empty")
+    public Boolean isTabTableEmpty(String tableId) {
+        log.info("Check if table with id: {} is empty", tableId);
+        waitForPageToLoad(driver, wait);
+        return OldTable
+                .createById(driver, wait, tableId)
+                .hasNoData();
+    }
+
     protected void searchFeed(String searchText) {
-        Input search = ComponentFactory.create(getSearchId(), Input.ComponentType.SEARCH_BOX, driver, wait);
-        search.setSingleStringValue(searchText);
+        ComponentFactory.create(getSearchId(), driver, wait).setSingleStringValue(searchText);
         log.debug("Searching feed {}", searchText);
     }
 
@@ -91,6 +124,10 @@ public abstract class BaseDfePage extends BasePage implements BaseDfePageInterfa
         ConfirmationBox.create(driver, wait).clickButtonByLabel(deleteLabel);
     }
 
+    protected void confirmDeactivation() {
+        ConfirmationBox.create(driver, wait).clickButtonByLabel(SAVE_LABEL);
+    }
+
     protected void clickRefreshTabTable(String widgetId, String refreshLabel) {
         TabsWidget.createById(driver, wait, widgetId).callActionByLabel(refreshLabel);
         log.debug("Click context action: {}", refreshLabel);
@@ -116,19 +153,6 @@ public abstract class BaseDfePage extends BasePage implements BaseDfePageInterfa
         return OldTable
                 .createById(driver, wait, logsTableTabId)
                 .getCellValue(0, columnLabel);
-    }
-
-    @Step("Attach downloaded file to report")
-    public void attachFileToReport(String fileName) {
-        FileDownload.attachDownloadedFileToReport(fileName);
-        log.info("Attaching downloaded file to report");
-        DelayUtils.waitForPageToLoad(driver, wait);
-    }
-
-    @Step("Check if file is not empty")
-    public boolean checkIfFileIsNotEmpty(String fileName) {
-        log.info("Checking if file is not empty");
-        return FileDownload.checkIfFileIsNotEmpty(fileName);
     }
 
     protected String checkValueInPropertyPanel(String propertyPanelId, String propertyName) {

@@ -4,8 +4,9 @@ import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
+import java.security.SecureRandom;
 import java.time.format.DateTimeFormatter;
-import java.util.Random;
+import java.util.NoSuchElementException;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
@@ -26,6 +27,7 @@ import io.qameta.allure.Step;
 public class BasePage {
     protected final WebDriver driver;
     protected final WebDriverWait wait;
+    private final SecureRandom rand = new SecureRandom();
 
     public BasePage(WebDriver driver) {
         this.driver = driver;
@@ -36,16 +38,6 @@ public class BasePage {
     public BasePage(WebDriver driver, WebDriverWait wait) {
         this.driver = driver;
         this.wait = wait;
-    }
-
-    protected String randomInteger(int length) {
-        Random rand = new Random();
-        String random = "";
-
-        for (int i = 0; i < length; i++) {
-            random += rand.nextInt(9);
-        }
-        return random;
     }
 
     public void changeUser(String user, String password) {
@@ -96,7 +88,14 @@ public class BasePage {
     @Step("Type object name in 'Search in OSS objects' field")
     public GlobalSearchPage searchInGlobalSearch(String value) {
         ToolbarWidget globalSearchInput = ToolbarWidget.create(driver, wait);
-        globalSearchInput.typeAndEnterInGlobalSearch(value);
+        globalSearchInput.searchInGlobalSearch(value);
+        return new GlobalSearchPage(driver);
+    }
+
+    @Step("Type object name in 'Search in OSS objects' field")
+    public GlobalSearchPage searchInGlobalSearchContains(String value) {
+        ToolbarWidget globalSearchInput = ToolbarWidget.create(driver, wait);
+        globalSearchInput.searchInGlobalSearchContains(value);
         return new GlobalSearchPage(driver);
     }
 
@@ -110,10 +109,20 @@ public class BasePage {
     public String getAbsolutePath(String path) {
         try {
             URL res = getClass().getClassLoader().getResource(path);
+            assert res != null;
             File file = Paths.get(res.toURI()).toFile();
             return file.getAbsolutePath();
         } catch (URISyntaxException e) {
-            throw new RuntimeException("Cannot find file", e);
+            throw new NoSuchElementException("Cannot find file");
         }
+    }
+
+    protected String randomInteger(int length) {
+        StringBuilder random = new StringBuilder(length);
+
+        for (int i = 0; i < length; i++) {
+            random.append(rand.nextInt(9));
+        }
+        return random.toString();
     }
 }

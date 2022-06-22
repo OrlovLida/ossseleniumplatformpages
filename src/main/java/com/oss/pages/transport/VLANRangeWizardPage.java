@@ -21,19 +21,19 @@ public class VLANRangeWizardPage extends BasePage {
 
     @Step("Set Name to {name}")
     public VLANRangeWizardPage setName(String name) {
-        getWizard().setComponentValue(NAME_ATTRIBUTE_ID, name, Input.ComponentType.TEXT_FIELD);
+        getWizard().setComponentValue(NAME_ATTRIBUTE_ID, name);
         return this;
     }
 
     @Step("Set Range to {range}")
     public VLANRangeWizardPage setRange(String range) {
-        getWizard().setComponentValue(RANGE_ATTRIBUTE_ID, range, Input.ComponentType.TEXT_FIELD);
+        getWizard().setComponentValue(RANGE_ATTRIBUTE_ID, range);
         return this;
     }
 
     @Step("Set Description to {description}")
     public VLANRangeWizardPage setDescription(String description) {
-        getWizard().setComponentValue(DESCRIPTION_ATTRIBUTE_ID, description, Input.ComponentType.TEXT_AREA);
+        getWizard().setComponentValue(DESCRIPTION_ATTRIBUTE_ID, description);
         return this;
     }
 

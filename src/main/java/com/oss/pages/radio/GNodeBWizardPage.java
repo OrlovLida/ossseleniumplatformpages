@@ -2,7 +2,6 @@ package com.oss.pages.radio;
 
 import org.openqa.selenium.WebDriver;
 
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
@@ -34,40 +33,39 @@ public class GNodeBWizardPage extends BasePage {
     }
 
     @Step("Create gNodeB with mandatory fields (Name, gNodeB ID, gNodeB Model, MCC-MNC Primary) filled in")
-    public void createGNodeB(String gNodeBName, String gNodeBId, String gNodeBModel, String MCCMNCPrimary) {
+    public void createGNodeB(String gNodeBName, String gNodeBId, String gNodeBModel, String mccMncPrimary) {
         setName(gNodeBName);
         setId(gNodeBId);
         setModel(gNodeBModel);
-        setMccMncPrimary(MCCMNCPrimary);
+        setMccMncPrimary(mccMncPrimary);
         DelayUtils.waitForPageToLoad(driver, wait);
         accept();
     }
 
     @Step("Set name")
     public GNodeBWizardPage setName(String gNodeBName) {
-        getGNodeBWizard().setComponentValue(G_NODE_B_NAME_DATA_ATTRIBUTE_NAME, gNodeBName, Input.ComponentType.TEXT_FIELD);
+        getGNodeBWizard().setComponentValue(G_NODE_B_NAME_DATA_ATTRIBUTE_NAME, gNodeBName);
         return this;
     }
 
     @Step("Set gNodeB Id")
     public void setId(String gNodeBId) {
-        getGNodeBWizard().setComponentValue(G_NODE_B_ID_DATA_ATTRIBUTE_NAME, gNodeBId, Input.ComponentType.TEXT_FIELD);
+        getGNodeBWizard().setComponentValue(G_NODE_B_ID_DATA_ATTRIBUTE_NAME, gNodeBId);
     }
 
     @Step("Set gNodeB Model")
     public void setModel(String gNodeBModel) {
-        getGNodeBWizard().setComponentValue(G_NODE_B_MODEL_DATA_ATTRIBUTE_NAME, gNodeBModel, Input.ComponentType.COMBOBOX);
+        getGNodeBWizard().setComponentValue(G_NODE_B_MODEL_DATA_ATTRIBUTE_NAME, gNodeBModel);
     }
 
     @Step("Set MCC-MNC Primary")
-    public void setMccMncPrimary(String MCCMNCPrimary) {
-        getGNodeBWizard().getComponent(G_NODE_B_MCC_MNC_DATA_ATTRIBUTE_NAME, Input.ComponentType.COMBOBOX).click();
-        getGNodeBWizard().setComponentValue(G_NODE_B_SEARCH_MCC_MNC_DATA_ATTRIBUTE_NAME, MCCMNCPrimary, Input.ComponentType.COMBOBOX);
+    public void setMccMncPrimary(String mccMncPrimary) {
+        getGNodeBWizard().setComponentValue(G_NODE_B_MCC_MNC_DATA_ATTRIBUTE_NAME, mccMncPrimary);
     }
 
     @Step("Set description")
     public GNodeBWizardPage setDescription(String description) {
-        getGNodeBWizard().setComponentValue(G_NODE_B_DESCRIPTION_DATA_ATTRIBUTE_NAME, description, Input.ComponentType.TEXT_FIELD);
+        getGNodeBWizard().setComponentValue(G_NODE_B_DESCRIPTION_DATA_ATTRIBUTE_NAME, description);
         return this;
     }
 

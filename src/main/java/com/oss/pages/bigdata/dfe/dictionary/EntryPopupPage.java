@@ -10,8 +10,6 @@ import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
-
 public class EntryPopupPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(EntryPopupPage.class);
@@ -26,12 +24,12 @@ public class EntryPopupPage extends BasePage {
     }
 
     public void fillKey(String key) {
-        entryWizard.setComponentValue(KEY_INPUT_ID, key, TEXT_FIELD);
+        entryWizard.setComponentValue(KEY_INPUT_ID, key);
         log.debug("Setting name with: {}", key);
     }
 
     public void fillValue(String value) {
-        entryWizard.setComponentValue(VALUE_INPUT_ID, value, TEXT_FIELD);
+        entryWizard.setComponentValue(VALUE_INPUT_ID, value);
         log.debug("Setting description with: {}", value);
     }
 

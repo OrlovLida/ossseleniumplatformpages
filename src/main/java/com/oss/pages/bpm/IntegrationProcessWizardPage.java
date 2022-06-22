@@ -8,7 +8,6 @@ package com.oss.pages.bpm;
 
 import org.openqa.selenium.WebDriver;
 
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.list.DraggableList;
 import com.oss.framework.utils.DragAndDrop;
 import com.oss.framework.widgets.list.EditableList;
@@ -36,8 +35,8 @@ public class IntegrationProcessWizardPage extends BasePage {
     public void defineIntegrationProcess(String processName, String finishDueDate, int row) {
         EditableList editableList = EditableList.createById(driver, wait, IP_LIST);
         editableList.addRow();
-        editableList.setValue(row, processName, PROCESS_NAME_COLUMN_ID, PROCESS_NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD);
-        editableList.setValue(row, finishDueDate, FINISH_DUE_DATE_COLUMN_ID, FINISH_DUE_DATE_ATTRIBUTE_ID, Input.ComponentType.DATE);
+        editableList.setValue(row, processName, PROCESS_NAME_COLUMN_ID, PROCESS_NAME_ATTRIBUTE_ID);
+        editableList.setValue(row, finishDueDate, FINISH_DUE_DATE_COLUMN_ID, FINISH_DUE_DATE_ATTRIBUTE_ID);
     }
 
     public void deleteIntegrationProcess(String processName) {

@@ -20,12 +20,12 @@ import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
 
-import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_1x1;
-import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_2x1;
-import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_2x2;
-import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_3x2;
-import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_3x3;
-import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_4x4;
+import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_1X1;
+import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_2X1;
+import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_2X2;
+import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_3X2;
+import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_3X3;
+import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_4X4;
 import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel.LayoutType.LAYOUT_AUTO;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
@@ -264,18 +264,18 @@ public class IndicatorsViewTest extends BaseTestCase {
         try {
             kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
             assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
-            kpiToolbarPanel.changeLayout(LAYOUT_1x1);
-            assertEquals(kpiToolbarPanel.layoutButtonStatus(LAYOUT_1x1), LAYOUT_EXPECTED_STATUS);
-            kpiToolbarPanel.changeLayout(LAYOUT_2x1);
-            assertEquals(kpiToolbarPanel.layoutButtonStatus(LAYOUT_2x1), LAYOUT_EXPECTED_STATUS);
-            kpiToolbarPanel.changeLayout(LAYOUT_2x2);
-            assertEquals(kpiToolbarPanel.layoutButtonStatus(LAYOUT_2x2), LAYOUT_EXPECTED_STATUS);
-            kpiToolbarPanel.changeLayout(LAYOUT_4x4);
-            assertEquals(kpiToolbarPanel.layoutButtonStatus(LAYOUT_4x4), LAYOUT_EXPECTED_STATUS);
-            kpiToolbarPanel.changeLayout(LAYOUT_3x3);
-            assertEquals(kpiToolbarPanel.layoutButtonStatus(LAYOUT_3x3), LAYOUT_EXPECTED_STATUS);
-            kpiToolbarPanel.changeLayout(LAYOUT_3x2);
-            assertEquals(kpiToolbarPanel.layoutButtonStatus(LAYOUT_3x2), LAYOUT_EXPECTED_STATUS);
+            kpiToolbarPanel.changeLayout(LAYOUT_1X1);
+            assertEquals(kpiToolbarPanel.layoutButtonStatus(LAYOUT_1X1), LAYOUT_EXPECTED_STATUS);
+            kpiToolbarPanel.changeLayout(LAYOUT_2X1);
+            assertEquals(kpiToolbarPanel.layoutButtonStatus(LAYOUT_2X1), LAYOUT_EXPECTED_STATUS);
+            kpiToolbarPanel.changeLayout(LAYOUT_2X2);
+            assertEquals(kpiToolbarPanel.layoutButtonStatus(LAYOUT_2X2), LAYOUT_EXPECTED_STATUS);
+            kpiToolbarPanel.changeLayout(LAYOUT_4X4);
+            assertEquals(kpiToolbarPanel.layoutButtonStatus(LAYOUT_4X4), LAYOUT_EXPECTED_STATUS);
+            kpiToolbarPanel.changeLayout(LAYOUT_3X3);
+            assertEquals(kpiToolbarPanel.layoutButtonStatus(LAYOUT_3X3), LAYOUT_EXPECTED_STATUS);
+            kpiToolbarPanel.changeLayout(LAYOUT_3X2);
+            assertEquals(kpiToolbarPanel.layoutButtonStatus(LAYOUT_3X2), LAYOUT_EXPECTED_STATUS);
             kpiToolbarPanel.changeLayout(LAYOUT_AUTO);
             assertEquals(kpiToolbarPanel.layoutButtonStatus(LAYOUT_AUTO), LAYOUT_EXPECTED_STATUS);
         } catch (Exception e) {

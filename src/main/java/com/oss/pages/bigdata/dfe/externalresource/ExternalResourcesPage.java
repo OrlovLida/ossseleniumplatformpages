@@ -18,7 +18,7 @@ public class ExternalResourcesPage extends BaseDfePage {
     private static final String ADD_NEW_EXTERNAL_RESOURCE_LABEL = "Add New External Resource";
     private static final String EDIT_EXTERNAL_RESOURCE_LABEL = "Edit External Resource";
     private static final String DELETE_EXTERNAL_RESOURCE_LABEL = "Delete External Resource";
-    private static final String SEARCH_INPUT_ID = "external-resources-listSearchAppId";
+    private static final String SEARCH_INPUT_ID = "input_external-resources-listSearchAppId";
 
     private static final String NAME_COLUMN_LABEL = "Name";
     private static final String DELETE_LABEL = "Delete";

@@ -11,11 +11,11 @@ import static com.oss.framework.components.inputs.Input.ComponentType.OBJECT_SEA
 
 public class VNFPKGManualOnboardingWizardFirstStep extends VNFPKGManualOnboardingWizardStep {
 
-    private static final String SELECT_NFVO_COMPONENT_ID = "manualOnboardNFVOSearchFieldId";
-    private static final String SEARCH_VNFM_COMPONENT_ID = "manualOnboardVNFMSearchFieldId";
-    private static final String SEARCH_VIM_COMPONENT_ID = "manualOnboardVIMSearchFieldId";
+    private static final String SELECT_NFVO_COMPONENT_ID = "manualOnboardNFVOSearchFieldId_OSF";
+    private static final String SEARCH_VNFM_COMPONENT_ID = "manualOnboardVNFMSearchFieldId_OSF";
+    private static final String SEARCH_VIM_COMPONENT_ID = "manualOnboardVIMSearchFieldId_OSF";
     private static final String SELECT_DEFAULT_REMOTE_FOLDER_COMPONENT_ID = "manualOnboardDefaultRemoteFolderTextFieldId";
-    private static final String SEARCH_MARKETPLACE_COMPONENT_ID = "manualOnboardMarketplaceSearchFieldId";
+    private static final String SEARCH_MARKETPLACE_COMPONENT_ID = "manualOnboardMarketplaceSearchFieldId_OSF";
 
     private VNFPKGManualOnboardingWizardFirstStep(WebDriver driver, WebDriverWait wait, Wizard vnfpkgWizard) {
         super(driver, wait, vnfpkgWizard);

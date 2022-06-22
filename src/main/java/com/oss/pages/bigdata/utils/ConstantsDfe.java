@@ -5,15 +5,13 @@ import java.util.Date;
 
 public class ConstantsDfe {
 
-    private static String seleniumName;
-
-    public ConstantsDfe() {
+    private ConstantsDfe() {
+        throw new IllegalStateException("Utility class");
     }
 
     public static String createName() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy_MM_dd");
         String date = simpleDateFormat.format(new Date());
-        seleniumName = "Selenium_" + date;
-        return seleniumName;
+        return "Selenium_" + date;
     }
 }

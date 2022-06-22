@@ -11,8 +11,6 @@ import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
-
 public class StoragePage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(StoragePage.class);
@@ -39,7 +37,7 @@ public class StoragePage extends BasePage {
     }
 
     private void fillTableName(String tableName) {
-        storageWizard.setComponentValue(TABLE_NAME_INPUT_ID, tableName, TEXT_FIELD);
+        storageWizard.setComponentValue(TABLE_NAME_INPUT_ID, tableName);
         log.debug("Setting table name with {}", tableName);
     }
 }

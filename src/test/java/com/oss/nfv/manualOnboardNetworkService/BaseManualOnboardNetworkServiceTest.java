@@ -11,7 +11,7 @@ import com.comarch.oss.logical.function.api.dto.LogicalFunctionSyncIdentificatio
 import com.comarch.oss.logical.function.api.dto.LogicalFunctionViewDTO;
 import com.comarch.oss.resourcecatalog.tmf.api.dto.ResourceSpecificationDTO;
 import com.oss.BaseTestCase;
-import com.oss.services.LogicalFunctionClient;
+import com.oss.services.LogicalFunctionCoreClient;
 import com.oss.services.resourcecatalog.tmf.TMFCatalogClient;
 import com.oss.untils.Environment;
 import com.oss.utils.TestListener;
@@ -23,7 +23,7 @@ import static com.oss.nfv.manualOnboardNetworkService.ManualOnboardNetworkServic
 public class BaseManualOnboardNetworkServiceTest extends BaseTestCase {
 
     private final Environment env = Environment.getInstance();
-    private final LogicalFunctionClient logicalFunctionClient = LogicalFunctionClient.getInstance(env);
+    private final LogicalFunctionCoreClient logicalFunctionCoreClient = LogicalFunctionCoreClient.getInstance(env);
     private final TMFCatalogClient tmfCatalogClient = TMFCatalogClient.getInstance(env);
 
     @BeforeClass
@@ -48,7 +48,7 @@ public class BaseManualOnboardNetworkServiceTest extends BaseTestCase {
     }
 
     private LogicalFunctionSyncIdentificationDTO createEricssonNFVOLogicalFunction() {
-        return logicalFunctionClient
+        return logicalFunctionCoreClient
                 .createLogicalFunctionBulk(ManualOnboardNetworkServiceDTOBuilder.buildNFVOLogicalFunctionBulkDTO())
                 .getLogicalFunctionsIdentifications()
                 .get(0);
@@ -62,11 +62,11 @@ public class BaseManualOnboardNetworkServiceTest extends BaseTestCase {
     }
 
     private void deleteEricssonNFVOLogicalFunction() {
-        logicalFunctionClient.getLogicalFunctionByName(ERICSSON_NFVO_NAME).stream()
+        logicalFunctionCoreClient.getLogicalFunctionByName(ERICSSON_NFVO_NAME).stream()
                 .map(LogicalFunctionViewDTO::getId)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
-                .forEach(logicalFunctionClient::deleteLogicalFunction);
+                .forEach(logicalFunctionCoreClient::deleteLogicalFunction);
     }
 
     private void deleteNSPackageSpecification() {

@@ -14,11 +14,11 @@ public class OnboardVNFWizardPage extends BasePage {
 
     private static final String WIZARD_ID = "onboardWizardId";
     private static final String ONBOARD_RADIO_BUTTONS_COMPONENT_ID = "onboardTypeRadioButtonsId";
-    private static final String ONBOARD_DOWNLOAD_NFVO_COMPONENT_ID = "onboardDownloadNFVOSearchFieldId";
+    private static final String ONBOARD_DOWNLOAD_NFVO_COMPONENT_ID = "onboardDownloadNFVOSearchFieldId_OSF";
     private static final String ONBOARD_DOWNLOAD_VNFPKG_COMPONENT_ID = "onboardDownloadVNFPKGSearchFieldId_OSF";
-    private static final String ONBOARD_NFVO_COMPONENT_ID = "onboardNFVOSearchFieldId";
-    private static final String ONBOARD_MARKETPLACE_COMPONENT_ID = "onboardMarketplaceSearchFieldId";
-    private static final String ONBOARD_VIM_SEARCH_COMPONENT_ID = "onboardVIMSearchFieldId";
+    private static final String ONBOARD_NFVO_COMPONENT_ID = "onboardNFVOSearchFieldId_OSF";
+    private static final String ONBOARD_MARKETPLACE_COMPONENT_ID = "onboardMarketplaceSearchFieldId_OSF";
+    private static final String ONBOARD_VIM_SEARCH_COMPONENT_ID = "onboardVIMSearchFieldId_OSF";
     private static final String ONBOARD_DEFAULT_REMOTE_FOLDER_COMPONENT_ID = "onboardDefaultRemoteFolderTextFieldId";
 
     private final Wizard wizard;

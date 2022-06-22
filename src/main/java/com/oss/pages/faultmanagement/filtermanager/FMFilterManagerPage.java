@@ -118,7 +118,7 @@ public class FMFilterManagerPage extends BasePage {
     public void createFilter(String name, String description, String type) {
         FMCreateWizardPage fmWizardPage = openCreateNewFilterWizard();
         fmWizardPage.setName(name).setDescription(description).setTypeValue(type);
-        fmWizardPage.clickOnAddConditon();
+        fmWizardPage.clickOnAddCondition();
         Popup popup = Popup.create(driver, wait);
         TreeComponent tree = popup.getTreeComponent();
         tree.getNodeByLabelsPath(ADAPTER_NAME_LABEL);

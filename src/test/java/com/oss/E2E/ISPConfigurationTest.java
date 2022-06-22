@@ -60,7 +60,10 @@ public class ISPConfigurationTest extends BaseTestCase {
     private static final String POWER_SUPPLY_UNIT_MODEL = "Generic Power Supply Unit";
     private static final String POWER_SUPPLY_UNIT_NAME = "Power Supply Unit";
     private static final String POWER_SUPPLY_UNIT_CAPACITY = "5";
-    private static final String DELETE_DEVICE = "Delete Device";
+    private static final String DELETE_DEVICE_ACTION_ID = "frameworkCustomMore_DeleteDeviceWizardAction";
+    private static final String CREATE_DEVICE_ACTION_ID = "CreateDeviceOnLocationWizardAction";
+    private static final String COOLING_ZONE_EDITOR_ACTION_ID = "frameworkCustomMore_cooling_zone_editor_button";
+    private static final String DELETE_COOLING_ZONE_ACTION_ID = "cooling-zone-delete-action";
     private static final String UPDATE_DEVICE = "frameworkCustomMore_UpdateDeviceWizardAction";
     private static final String NAME = "Name";
     private static final String ASSERT_NOT_EQUALS = "The checked value is %s and it shouldn't be equal to the defined %s value";
@@ -137,7 +140,7 @@ public class ISPConfigurationTest extends BaseTestCase {
     @Description("Open Create Device wizard")
     public void openDeviceWizard() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
-        locationOverviewPage.clickButton("Create Device");
+        locationOverviewPage.clickButton("Create Physical Device");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -219,7 +222,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         String labelpath = PHYSICAL_DEVICE_NAME + ".Chassis.Chassis.Slots.LT3.Card.NELT-B";
         hierarchyViewPage.selectNodeByLabelsPath(labelpath);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        hierarchyViewPage.useTreeContextAction(ActionsContainer.EDIT_GROUP_ID, "ChangeCardModelAction");
+        hierarchyViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, "ChangeCardModelAction");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -241,7 +244,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
         hierarchyViewPage.selectNodeByLabel(PHYSICAL_DEVICE_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        hierarchyViewPage.useTreeContextAction(ActionsContainer.SHOW_ON_GROUP_ID, "MountingEditorForPhysicalElementAction");
+        hierarchyViewPage.callAction(ActionsContainer.SHOW_ON_GROUP_ID, "MountingEditorForPhysicalElementAction");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -269,7 +272,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         driver.get(format(LOCATION_OVERVIEW_URL, BASIC_URL));
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Cooling Zones");
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.COOLING_ZONES, "Create Cooling Zone");
+        locationOverviewPage.clickActionById(TabName.COOLING_ZONES, "cooling-zone-location-context-create-action");
         CreateCoolingZoneWizardPage coolingZoneWizard = new CreateCoolingZoneWizardPage(driver);
         coolingZoneWizard.setName(COOLING_ZONE_NAME);
         coolingZoneWizard.clickAccept();
@@ -282,7 +285,7 @@ public class ISPConfigurationTest extends BaseTestCase {
     public void createCoolingUnit() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Devices");
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.DEVICES, "Create Device");
+        locationOverviewPage.clickActionById(TabName.DEVICES, CREATE_DEVICE_ACTION_ID);
         DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
         deviceWizardPage.setModel(COOLING_UNIT_MODEL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -304,7 +307,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Devices");
         locationOverviewPage.filterObjectInSpecificTab(TabName.DEVICES, NAME, COOLING_UNIT_NAME);
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.DEVICES, "Cooling Zone Editor");
+        locationOverviewPage.clickActionById(TabName.DEVICES, COOLING_ZONE_EDITOR_ACTION_ID);
         CoolingZoneEditorWizardPage coolingZoneWizard = new CoolingZoneEditorWizardPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         coolingZoneWizard.selectNameFromList(COOLING_ZONE_NAME);
@@ -318,7 +321,7 @@ public class ISPConfigurationTest extends BaseTestCase {
     public void createSecondDevice() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Devices");
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.DEVICES, "Create Device");
+        locationOverviewPage.clickActionById(TabName.DEVICES, CREATE_DEVICE_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -344,7 +347,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Devices");
         locationOverviewPage.filterObjectInSpecificTab(TabName.DEVICES, NAME, PHYSICAL_DEVICE_NAME2);
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.DEVICES, "Cooling Zone Editor");
+        locationOverviewPage.clickActionById(TabName.DEVICES, COOLING_ZONE_EDITOR_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         CoolingZoneEditorWizardPage coolingZoneWizardPage = new CoolingZoneEditorWizardPage(driver);
         coolingZoneWizardPage.selectNameFromList(COOLING_ZONE_NAME);
@@ -381,7 +384,7 @@ public class ISPConfigurationTest extends BaseTestCase {
     public void createThirdDevice() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Devices");
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.DEVICES, "Create Device");
+        locationOverviewPage.clickActionById(TabName.DEVICES, CREATE_DEVICE_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -405,7 +408,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Devices");
         locationOverviewPage.filterObjectInSpecificTab(TabName.DEVICES, NAME, PHYSICAL_DEVICE_NAME3);
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.DEVICES, "Cooling Zone Editor");
+        locationOverviewPage.clickActionById(TabName.DEVICES, COOLING_ZONE_EDITOR_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         CoolingZoneEditorWizardPage coolingZoneWizardPage = new CoolingZoneEditorWizardPage(driver);
         coolingZoneWizardPage.selectNameFromList(COOLING_ZONE_NAME);
@@ -455,7 +458,7 @@ public class ISPConfigurationTest extends BaseTestCase {
     public void createPowerDevice() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Devices");
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.DEVICES, "Create Device");
+        locationOverviewPage.clickActionById(TabName.DEVICES, CREATE_DEVICE_ACTION_ID);
         DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
         deviceWizardPage.setModel(POWER_DEVICE_MODEL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -490,7 +493,7 @@ public class ISPConfigurationTest extends BaseTestCase {
     public void createPowerSupplyUnit() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Devices");
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.DEVICES, "Create Device");
+        locationOverviewPage.clickActionById(TabName.DEVICES, CREATE_DEVICE_ACTION_ID);
         DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
         deviceWizardPage.setModel(POWER_SUPPLY_UNIT_MODEL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -509,7 +512,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Locations");
         locationOverviewPage.filterObjectInSpecificTab(TabName.LOCATIONS, NAME, SUBLOCATION_NAME);
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.LOCATIONS, "Create Sublocation");
+        locationOverviewPage.clickActionById(TabName.LOCATIONS, "frameworkCustomMore_sublocation-create-action");
         SublocationWizardPage sublocationWizardPage = new SublocationWizardPage(driver);
         sublocationWizardPage.setSublocationType("Row");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -522,8 +525,8 @@ public class ISPConfigurationTest extends BaseTestCase {
     @Description("Create 3 footprints and check confirmation system message")
     public void createFootprint() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
-        locationOverviewPage.filterObjectInSpecificTab(TabName.LOCATIONS, NAME, "rh01");
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.LOCATIONS, "Create Sublocation");
+        locationOverviewPage.filterObjectInSpecificTab(TabName.LOCATIONS, NAME, "Row1");
+        locationOverviewPage.clickActionById(TabName.LOCATIONS, "frameworkCustomMore_sublocation-create-action");
         SublocationWizardPage sublocationWizardPage = new SublocationWizardPage(driver);
         sublocationWizardPage.setSublocationType("Footprint");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -543,9 +546,9 @@ public class ISPConfigurationTest extends BaseTestCase {
     public void preciseRackLocation() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.filterObjectInSpecificTab(TabName.LOCATIONS, NAME, MOUNTING_EDITOR_NAME);
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.LOCATIONS, "Edit Location");
+        locationOverviewPage.clickActionById(TabName.LOCATIONS, "frameworkCustomMore_location-update-action");
         SublocationWizardPage sublocationWizardPage = new SublocationWizardPage(driver);
-        sublocationWizardPage.setPreciseLocation("fp01");
+        sublocationWizardPage.setPreciseLocation("Footprint1");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         sublocationWizardPage.clickAccept();
         checkPopupAndCloseMessage();
@@ -562,7 +565,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.nextUpdateWizard();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        deviceWizardPage.setPreciseLocation("fp03");
+        deviceWizardPage.setPreciseLocation("Footprint3");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.acceptUpdateWizard();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -574,7 +577,7 @@ public class ISPConfigurationTest extends BaseTestCase {
     public void deletePowerSupplyUnit() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.filterObjectInSpecificTab(TabName.DEVICES, NAME, POWER_SUPPLY_UNIT_NAME);
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.DEVICES, DELETE_DEVICE);
+        locationOverviewPage.clickActionById(TabName.DEVICES, DELETE_DEVICE_ACTION_ID);
         locationOverviewPage.clickButtonInConfirmationBox("Yes");
         checkPopupAndCloseMessage();
     }
@@ -585,7 +588,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Devices");
         locationOverviewPage.filterObjectInSpecificTab(TabName.DEVICES, NAME, POWER_DEVICE_NAME);
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.DEVICES, DELETE_DEVICE);
+        locationOverviewPage.clickActionById(TabName.DEVICES, DELETE_DEVICE_ACTION_ID);
         locationOverviewPage.clickButtonInConfirmationBox("Yes");
         checkPopupAndCloseMessage();
     }
@@ -596,7 +599,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Devices");
         locationOverviewPage.filterObjectInSpecificTab(TabName.DEVICES, NAME, PHYSICAL_DEVICE_NAME3);
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.DEVICES, DELETE_DEVICE);
+        locationOverviewPage.clickActionById(TabName.DEVICES, DELETE_DEVICE_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         locationOverviewPage.clickButtonInConfirmationBox("Yes");
         checkPopupAndCloseMessage();
@@ -608,7 +611,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Devices");
         locationOverviewPage.filterObjectInSpecificTab(TabName.DEVICES, NAME, PHYSICAL_DEVICE_NAME2);
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.DEVICES, DELETE_DEVICE);
+        locationOverviewPage.clickActionById(TabName.DEVICES, DELETE_DEVICE_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         locationOverviewPage.clickButtonInConfirmationBox("Yes");
         checkPopupAndCloseMessage();
@@ -620,7 +623,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Devices");
         locationOverviewPage.filterObjectInSpecificTab(TabName.DEVICES, NAME, PHYSICAL_DEVICE_NAME);
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.DEVICES, DELETE_DEVICE);
+        locationOverviewPage.clickActionById(TabName.DEVICES, DELETE_DEVICE_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         locationOverviewPage.clickButtonInConfirmationBox("Yes");
         checkPopupAndCloseMessage();
@@ -632,7 +635,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Devices");
         locationOverviewPage.filterObjectInSpecificTab(TabName.DEVICES, NAME, COOLING_UNIT_NAME);
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.DEVICES, DELETE_DEVICE);
+        locationOverviewPage.clickActionById(TabName.DEVICES, DELETE_DEVICE_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         locationOverviewPage.clickButtonInConfirmationBox("Yes");
         checkPopupAndCloseMessage();
@@ -644,7 +647,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Cooling Zones");
         locationOverviewPage.filterObjectInSpecificTab(TabName.COOLING_ZONES, NAME, COOLING_ZONE_NAME);
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.COOLING_ZONES, "Delete Cooling Zone");
+        locationOverviewPage.clickActionById(TabName.COOLING_ZONES, DELETE_COOLING_ZONE_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         locationOverviewPage.clickButtonInConfirmationBox("Delete");
         checkPopupAndCloseMessage();
@@ -656,18 +659,18 @@ public class ISPConfigurationTest extends BaseTestCase {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Locations");
 
-        locationOverviewPage.filterObjectInSpecificTab(TabName.LOCATIONS, NAME, "fp01");
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.LOCATIONS, "Delete Location");
+        locationOverviewPage.filterObjectInSpecificTab(TabName.LOCATIONS, NAME, "Footprint1");
+        locationOverviewPage.clickActionById(TabName.LOCATIONS, "frameworkCustomMore_location-delete-action");
         locationOverviewPage.clickButtonInConfirmationBox("Delete");
         checkPopupAndCloseMessage();
 
-        locationOverviewPage.filterObjectInSpecificTab(TabName.LOCATIONS, NAME, "fp02");
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.LOCATIONS, "Delete Location");
+        locationOverviewPage.filterObjectInSpecificTab(TabName.LOCATIONS, NAME, "Footprint2");
+        locationOverviewPage.clickActionById(TabName.LOCATIONS, "frameworkCustomMore_location-delete-action");
         locationOverviewPage.clickButtonInConfirmationBox("Delete");
         checkPopupAndCloseMessage();
 
-        locationOverviewPage.filterObjectInSpecificTab(TabName.LOCATIONS, NAME, "fp03");
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.LOCATIONS, "Delete Location");
+        locationOverviewPage.filterObjectInSpecificTab(TabName.LOCATIONS, NAME, "Footprint3");
+        locationOverviewPage.clickActionById(TabName.LOCATIONS, "frameworkCustomMore_location-delete-action");
         locationOverviewPage.clickButtonInConfirmationBox("Delete");
         checkPopupAndCloseMessage();
     }
@@ -676,8 +679,8 @@ public class ISPConfigurationTest extends BaseTestCase {
     @Description("Delete row and check confirmation system message")
     public void deleteRow() {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
-        locationOverviewPage.filterObjectInSpecificTab(TabName.LOCATIONS, NAME, "rh01");
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.LOCATIONS, "Delete Location");
+        locationOverviewPage.filterObjectInSpecificTab(TabName.LOCATIONS, NAME, "Row1");
+        locationOverviewPage.clickActionById(TabName.LOCATIONS, "frameworkCustomMore_location-delete-action");
         locationOverviewPage.clickButtonInConfirmationBox("Delete");
         checkPopupAndCloseMessage();
     }
@@ -688,7 +691,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         LocationOverviewPage locationOverviewPage = new LocationOverviewPage(driver);
         locationOverviewPage.selectTab("Locations");
         locationOverviewPage.filterObjectInSpecificTab(TabName.LOCATIONS, NAME, SUBLOCATION_NAME);
-        locationOverviewPage.clickButtonByLabelInSpecificTab(TabName.LOCATIONS, "Delete Location");
+        locationOverviewPage.clickActionById(TabName.LOCATIONS, "frameworkCustomMore_location-delete-action");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         locationOverviewPage.clickButtonInConfirmationBox("Delete");
         checkPopupAndCloseMessage();

@@ -53,7 +53,7 @@ public class TemplateManagerOperationsTest extends BaseTestCase {
 
         CreateEditTemplateFolderPromptPage createEditTemplateFolderPromptPage = new CreateEditTemplateFolderPromptPage(driver);
         createEditTemplateFolderPromptPage.setFolderName(CREATED_FOLDER_NAME);
-        createEditTemplateFolderPromptPage.clickSaveButton();
+        createEditTemplateFolderPromptPage.clickCreateSaveButton();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         templateTreePage.selectTemplateFolder(CREATED_FOLDER_NAME);
@@ -72,7 +72,7 @@ public class TemplateManagerOperationsTest extends BaseTestCase {
 
         CreateEditTemplateFolderPromptPage createEditTemplateFolderPromptPage = new CreateEditTemplateFolderPromptPage(driver);
         createEditTemplateFolderPromptPage.setFolderDescription(EDITED_FOLDER_DESCRIPTION);
-        createEditTemplateFolderPromptPage.clickSaveButton();
+        createEditTemplateFolderPromptPage.clickEditSaveButton();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         templateTreePage.selectTemplateFolder(CREATED_FOLDER_NAME);

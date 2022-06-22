@@ -35,8 +35,13 @@ public class MyProblemsPage extends BaseSearchPage {
     }
 
     @Override
+    public String getTableId() {
+        return PROBLEMS_TABLE_ID;
+    }
+
+    @Override
     public TableWidget getIssueTable() {
-        return TableWidget.createById(driver, PROBLEMS_TABLE_ID, wait);
+        return TableWidget.createById(driver, getTableId(), wait);
     }
 }
 

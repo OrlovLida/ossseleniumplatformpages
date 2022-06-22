@@ -22,7 +22,7 @@ public class SaveConfigurationWizard {
     private static final String WIZARD_ID = "configuration_popup";
     private static final String SAVE_AS_NEW_ID = "configuration_popup_button_save_as_new";
     private static final String SAVE_ID = "configuration_popup_button_save";
-    private static final String GROUPS_ID = "groups-input";
+    private static final String GROUPS_ID = "groups";
     private static final String GROUPS_DROPDOWN_ID = "groups";
     private final WebDriver driver;
     private final WebDriverWait wait;
@@ -60,22 +60,19 @@ public class SaveConfigurationWizard {
         return Wizard.createByComponentId(driver, wait, WIZARD_ID);
     }
 
-    private SaveConfigurationWizard setName(String name) {
+    private void setName(String name) {
         getWizard().getComponent(NAME_TEXTFIELD_ID, Input.ComponentType.TEXT_FIELD).setSingleStringValue(name);
-        return this;
     }
 
-    private SaveConfigurationWizard setDescription(String description) {
+    private void setDescription(String description) {
         getWizard().getComponent(DESCRIPTION_TEXTFIELD_ID, Input.ComponentType.TEXT_FIELD).setSingleStringValue(description);
-        return this;
     }
 
-    private SaveConfigurationWizard setAsDefault(String value) {
+    private void setAsDefault(String value) {
         getWizard().getComponent(DEFAULT_VIEW_COMBOBOX_ID, Input.ComponentType.COMBOBOX).setSingleStringValue(value);
-        return this;
     }
 
-    private SaveConfigurationWizard setAsDefaultForGroup(List<String> groupNames) {
+    private void setAsDefaultForGroup(List<String> groupNames) {
         setAsDefault("Groups");
         DelayUtils.waitForPageToLoad(driver, wait);
         getWizard().getComponent(GROUPS_ID, Input.ComponentType.COMBOBOX).click();
@@ -83,12 +80,10 @@ public class SaveConfigurationWizard {
             getWizard().getComponent(GROUPS_DROPDOWN_ID, Input.ComponentType.MULTI_COMBOBOX).setSingleStringValue(groupName);
         }
         getWizard().getComponent(NAME_TEXTFIELD_ID, Input.ComponentType.COMBOBOX).click();
-        return this;
     }
 
-    private SaveConfigurationWizard setType(String type) {
+    private void setType(String type) {
         getWizard().getComponent(TYPE_COMBOBOX_ID, Input.ComponentType.COMBOBOX).setSingleStringValueContains(type);
-        return this;
     }
 
     private void clickOnSaveAsNew() {

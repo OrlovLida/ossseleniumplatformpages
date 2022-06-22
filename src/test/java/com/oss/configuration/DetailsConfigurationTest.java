@@ -5,6 +5,7 @@ import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Prope
 import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Property.TYPE;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
@@ -48,18 +49,31 @@ public class DetailsConfigurationTest extends BaseTestCase {
     private static final String PASSWORD_2 = "oss";
     private final static String USER1 = "webseleniumtests";
     private static final String PASSWORD_1 = "Webtests123!";
-    
+    private static final String PROPERTIES = "Properties_";
+
     private NewInventoryViewPage inventoryViewPage;
     
     @BeforeClass
     public void goToInventoryView() {
+        deleteOldConfigurations();
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_PERSON_TYPE);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
     
+    private void deleteOldConfigurations() {
+        inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_ACTOR_TYPE);
+        deletePropertiesConfigurations(inventoryViewPage.getPropertiesConfigurationsName(ROW_ID_0, PROPERTY_PANEL_ID));
+        inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_DIRECTOR_TYPE);
+        deletePropertiesConfigurations(inventoryViewPage.getPropertiesConfigurationsName(ROW_ID_0, PROPERTY_PANEL_ID));
+    }
+
+    private void deletePropertiesConfigurations(List<String> tabsConfigurationsName2) {
+        List<String> tabsConfigurationsName = tabsConfigurationsName2.stream().filter(name -> name.contains(PROPERTIES)).collect(Collectors.toList());
+        inventoryViewPage.deleteConfigurations(tabsConfigurationsName);
+    }
+    
     @Test(priority = 1)
-    public void saveNewConfigurationForPropertiesForSuperType() {
-        inventoryViewPage.searchByAttributeValue(ATTRIBUTE_ID_TYPE, TEST_ACTOR_TYPE, Input.ComponentType.MULTI_COMBOBOX);
+    public void saveNewConfigurationForPropertiesForSuperType() { inventoryViewPage.searchByAttributeValue(ATTRIBUTE_ID_TYPE, TEST_ACTOR_TYPE, Input.ComponentType.MULTI_COMBOBOX);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         PropertyPanel propertyPanel = inventoryViewPage.getPropertyPanel(ROW_ID_0, PROPERTY_PANEL_ID);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);

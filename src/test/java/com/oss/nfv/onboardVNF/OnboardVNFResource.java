@@ -16,6 +16,7 @@ import com.oss.nfv.common.ResourceSpecification;
 
 import org.assertj.core.util.Lists;
 
+import java.util.Collections;
 import java.util.List;
 
 import static com.oss.nfv.onboardVNF.OnboardVNFConstants.MARKETPLACE_NAME;
@@ -38,6 +39,7 @@ public class OnboardVNFResource {
     private static final String TYPE_POP = "PoP";
     private static final String MARKETPLACE = "Marketplace";
     private static final String VIM = "VIM";
+    private static final String GENERIC = "Generic";
     private static final String VNFPKG = "VNFPKG";
 
     public static ResourceSpecificationCreationDTO buildVNFPKGResourceSpecificationCreationDTO() {
@@ -109,25 +111,48 @@ public class OnboardVNFResource {
     }
 
     public static LogicalFunctionBulkDTO buildMarketplaceLogicalFunctionBulkDTO(Long masterOSS) {
-        return buildLogicalFunctionBulkDTO(MARKETPLACE, MARKETPLACE_NAME, masterOSS);
+        return buildLogicalFunctionBulkDTO(MARKETPLACE, MARKETPLACE_NAME, getMarketplaceAttributes(masterOSS));
+    }
+
+    private static List<AttributeDTO> getMarketplaceAttributes(Long masterOSS) {
+        return Collections.singletonList(getMasterOSS(masterOSS));
     }
 
     public static LogicalFunctionBulkDTO buildVIMLogicalFunctionBulkDTO(Long masterOSS) {
-        return buildLogicalFunctionBulkDTO(VIM, VIM_NAME, masterOSS);
+        return buildLogicalFunctionBulkDTO(VIM, VIM_NAME, getVIMAttributes(masterOSS));
     }
 
-    private static LogicalFunctionBulkDTO buildLogicalFunctionBulkDTO(String identifier, String name, Long masterOSS) {
-        return LogicalFunctionBulkDTO.builder()
-                .addCreateOrUpdate(getLogicalFunctionSyncDTO(identifier, name, masterOSS))
+    private static List<AttributeDTO> getVIMAttributes(Long masterOSS) {
+        return Lists.newArrayList(
+                getMasterOSS(masterOSS),
+                getAttributeDTO(CATEGORY, VIM),
+                getAttributeDTO(VENDOR, GENERIC)
+        );
+    }
+
+    private static AttributeDTO getAttributeDTO(String name, String value) {
+        return AttributeDTO.builder()
+                .name(name)
+                .value(value)
                 .build();
     }
 
-    private static LogicalFunctionSyncDTO getLogicalFunctionSyncDTO(String identifier, String name, Long masterOSS) {
+    private static LogicalFunctionBulkDTO buildLogicalFunctionBulkDTO(String identifier,
+                                                                      String name,
+                                                                      List<AttributeDTO>  attributeDTOS) {
+        return LogicalFunctionBulkDTO.builder()
+                .addCreateOrUpdate(getLogicalFunctionSyncDTO(identifier, name, attributeDTOS))
+                .build();
+    }
+
+    private static LogicalFunctionSyncDTO getLogicalFunctionSyncDTO(String identifier,
+                                                                    String name,
+                                                                    List<AttributeDTO> attributeDTOS) {
         return LogicalFunctionSyncDTO.builder()
                 .name(name)
                 .type(identifier)
                 .model(getModelIdentification(identifier))
-                .addAttributes(getMasterOSS(masterOSS))
+                .addAllAttributes(attributeDTOS)
                 .build();
     }
 

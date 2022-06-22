@@ -7,33 +7,24 @@
 package com.oss.nfv.networkSliceSubnet;
 
 import java.util.List;
-import java.util.Optional;
 
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
+import com.oss.pages.logicalfunction.LogicalFunctionWizardPreStep;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
-import com.comarch.oss.logical.function.api.dto.LogicalFunctionViewDTO;
-import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.nfv.common.ResourceSpecificationsViewService;
 import com.oss.nfv.common.SideMenuService;
-import com.oss.nfv.common.WebDriversData;
 import com.oss.pages.nfv.networkslicesubnet.NetworkSliceSubnetWizardFirstStep;
 import com.oss.pages.nfv.networkslicesubnet.NetworkSliceSubnetWizardPage;
 import com.oss.pages.nfv.networkslicesubnet.NetworkSliceSubnetWizardSecondStep;
 import com.oss.pages.nfv.vnf.VNFWizardPage;
-import com.oss.pages.resourcecatalog.ResourceSpecificationsViewPage;
-import com.oss.services.LogicalFunctionClient;
-import com.oss.services.nfv.networkslice.NetworkSliceApiClient;
-import com.oss.untils.Environment;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 
+import static com.oss.nfv.networkSliceSubnet.CreateNetworkSliceSubnetConstants.ADMINISTRATIVE_STATE_VALUE;
 import static com.oss.nfv.networkSliceSubnet.CreateNetworkSliceSubnetConstants.MCC_VALUE;
 import static com.oss.nfv.networkSliceSubnet.CreateNetworkSliceSubnetConstants.MNC_VALUE;
 import static com.oss.nfv.networkSliceSubnet.CreateNetworkSliceSubnetConstants.NETWORK_SLICE_SUBNET_DESCRIPTION;
@@ -51,40 +42,18 @@ import static org.testng.Assert.assertEquals;
  * @author Marcin Kozioł
  */
 @Listeners({TestListener.class})
-public class CreateNetworkSliceSubnetTest extends BaseTestCase {
-    protected Environment env = Environment.getInstance();
-
-    @BeforeClass
-    public void prepareData() {
-        deleteAnyNetworkSliceSubnetInstancesByName();
-    }
-
-    @AfterClass(alwaysRun = true)
-    public void cleanData() {
-        deleteAnyNetworkSliceSubnetInstancesByName();
-    }
-
-    private void deleteAnyNetworkSliceSubnetInstancesByName() {
-        NetworkSliceApiClient networkSliceApiClient = NetworkSliceApiClient.getInstance(env);
-        LogicalFunctionClient.getInstance(env).getLogicalFunctionByName(NETWORK_SLICE_SUBNET_NAME).stream()
-                .map(LogicalFunctionViewDTO::getId)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .forEach(networkSliceApiClient::deleteNetworkSliceSubnet);
-    }
+public class CreateNetworkSliceSubnetTest extends BaseNetworkSliceSubnetTest {
 
     @Test(priority = 1, description = "Open 'Create NetworkSliceSubnet' wizard")
     @Description("Got to Resource Specifications view, find and select NetworkSliceSubnet specification and open NetworkSliceSubnet wizard from context menu")
     public void openCreateNetworkSliceSubnetWizard() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         //given
-        SideMenuService.goToResourceSpecificationsView(driver, webDriverWait);
+        SideMenuService.goToCreateLogicalFunctionView(driver, webDriverWait);
         //when
-        ResourceSpecificationsViewService.openCreateLogicalFunctionWizard(
-                NETWORK_SLICE_SUBNET_SPECIFICATION_IDENTIFIER,
-                NETWORK_SLICE_SUBNET_SPECIFICATION_IDENTIFIER,
-                WebDriversData.create(driver, webDriverWait)
-        );
+        LogicalFunctionWizardPreStep logicalFunctionWizardPreStep = LogicalFunctionWizardPreStep.create(driver, webDriverWait);
+        logicalFunctionWizardPreStep.searchResourceSpecification(NETWORK_SLICE_SUBNET_SPECIFICATION_IDENTIFIER);
+        logicalFunctionWizardPreStep.clickAccept();
     }
 
     @Test(priority = 2, description = "Edit NetworkSliceSubnet in wizard")
@@ -131,6 +100,7 @@ public class CreateNetworkSliceSubnetTest extends BaseTestCase {
     private void fillNetworkSliceSubnetParams(NetworkSliceSubnetWizardFirstStep firstStep) {
         firstStep.setName(NETWORK_SLICE_SUBNET_NAME);
         firstStep.setDescription(NETWORK_SLICE_SUBNET_DESCRIPTION);
+        firstStep.setAdministrativeState(ADMINISTRATIVE_STATE_VALUE);
         firstStep.setOperationalState(OPERATIONAL_STATE_VALUE);
     }
 
@@ -138,6 +108,7 @@ public class CreateNetworkSliceSubnetTest extends BaseTestCase {
         SoftAssert softly = new SoftAssert();
         softly.assertEquals(firstStep.getName(), NETWORK_SLICE_SUBNET_NAME, "Name has not been set");
         softly.assertEquals(firstStep.getDescription(), NETWORK_SLICE_SUBNET_DESCRIPTION, "Description has not been set");
+        softly.assertEquals(firstStep.getAdministrativeState(), ADMINISTRATIVE_STATE_VALUE, "Administrative State has not been set");
         softly.assertEquals(firstStep.getOperationalState(), OPERATIONAL_STATE_VALUE, "Operational State has not been set");
         softly.assertAll();
     }

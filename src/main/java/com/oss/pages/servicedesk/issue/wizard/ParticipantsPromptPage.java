@@ -20,25 +20,25 @@ public class ParticipantsPromptPage extends SDWizardPage {
 
     @Step("Set Participant Name")
     public ParticipantsPromptPage setParticipantName(String participantName) {
-        insertValueToTextComponent(participantName, PARTICIPANT_FIRST_NAME_ID);
+        insertValueToComponent(participantName, PARTICIPANT_FIRST_NAME_ID);
         return this;
     }
 
     @Step("Set Participant Surname")
     public ParticipantsPromptPage setParticipantSurname(String participantSurname) {
-        insertValueToTextComponent(participantSurname, PARTICIPANT_SURNAME_ID);
+        insertValueToComponent(participantSurname, PARTICIPANT_SURNAME_ID);
         return this;
     }
 
     @Step("Set Participant Role")
     public ParticipantsPromptPage setParticipantRole(String participantRole) {
-        insertValueToComboBoxComponent(participantRole, PARTICIPANT_ROLE_ID);
+        insertValueToComponent(participantRole, PARTICIPANT_ROLE_ID);
         return this;
     }
 
     @Step("Search for existing participant")
     public ParticipantsPromptPage searchParticipant(String participantName) {
-        insertValueToSearchBoxComponent(participantName, SEARCH_PARTICIPANT_BOX_ID);
+        insertValueContainsToComponent(participantName, SEARCH_PARTICIPANT_BOX_ID);
         return this;
     }
 

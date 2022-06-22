@@ -12,10 +12,10 @@ import io.qameta.allure.Step;
 
 public class LocationWizardPage extends BasePage {
 
-    private static final String LOCATION_TYPE_DATA_ATTRIBUTE_NAME = "type-input";
+    private static final String LOCATION_TYPE_DATA_ATTRIBUTE_NAME = "type";
     private static final String LOCATION_PARENT_LOCATION_DATA_ATTRIBUTE_NAME = "parentLocation";
     private static final String LOCATION_DIRECT_PHYSICAL_LOCATION_DATA_ATTRIBUTE_NAME = "physicalLocation";
-    private static final String LOGICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME = "logicalLocationType-input";
+    private static final String LOGICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME = "logicalLocationType";
     private static final String LOCATION_NAME_DATA_ATTRIBUTE_NAME = "name";
     private static final String LOCATION_ABBREVIATION_DATA_ATTRIBUTE_NAME = "abbreviation";
     private static final String LOCATION_ADDRESS_DATA_ATTRIBUTE_NAME = "address";
@@ -31,6 +31,7 @@ public class LocationWizardPage extends BasePage {
     private static final String MODEL_DATA_ATTRIBUTE_NAME = "masterModel_OSF";
     private static final String STREET_NUMBER_DATA_ATTRIBUTE_NAME = "Street_OSF";
     private static final String WIZARD_ID = "optional_prompt-card";
+    private static final String CANCEL_BUTTON_ID = "wizard-cancel-button-physical-location-wizard";
 
     public LocationWizardPage(WebDriver driver) {
         super(driver);
@@ -151,6 +152,11 @@ public class LocationWizardPage extends BasePage {
     @Step("Click Next Step button")
     public void clickNext() {
         locationWizard.clickNext();
+    }
+
+    @Step("Click Cancel button")
+    public void clickCancel() {
+        locationWizard.clickButtonById(CANCEL_BUTTON_ID);
     }
 
     @Step("Click Accept button")

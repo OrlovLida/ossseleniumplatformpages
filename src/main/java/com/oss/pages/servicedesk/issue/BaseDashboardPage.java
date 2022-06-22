@@ -6,12 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.alerts.SystemMessageContainer;
-import com.oss.framework.components.inputs.Button;
-import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.pages.servicedesk.BaseSDPage;
-import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
 
 import io.qameta.allure.Step;
 
@@ -31,14 +28,6 @@ public abstract class BaseDashboardPage extends BaseSDPage {
 
     public String getDashboardURL(String basicURL, String dashboardName) {
         return String.format(PREDEFINED_DASHBOARD_URL_PATTERN, basicURL, dashboardName);
-    }
-
-    public SDWizardPage openCreateWizard(String flowType, String createButtonId, String wizardId) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        Button.createById(driver, createButtonId).click();
-        DropdownList.create(driver, wait).selectOptionById(flowType);
-
-        return new SDWizardPage(driver, wait, wizardId);
     }
 
     @Step("Check if current url leads to dashboard {dashboardName}")
@@ -92,13 +81,13 @@ public abstract class BaseDashboardPage extends BaseSDPage {
         return getTable().getRowNumber(assignee, ASSIGNEE_ATTRIBUTE);
     }
 
-    @Step("Click Export")
-    public void clickExport() {
-        clickExportFromTable(getTableID());
-    }
-
     public String getIssueIdWithAssignee(String assignee) {
         return getTable().getCellValue(getRowWithIssueAssignee(assignee), ID_UPPERCASE_ATTRIBUTE);
+    }
+
+    public BaseDashboardPage exportFromDashboard(String fileName) {
+        exportFromTable(getTableID(), fileName);
+        return this;
     }
 
     protected abstract String getTableID();

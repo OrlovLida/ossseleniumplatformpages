@@ -9,6 +9,7 @@ package com.oss.nfv.networkSlice;
 import java.util.List;
 import java.util.Optional;
 
+import com.oss.pages.logicalfunction.LogicalFunctionWizardPreStep;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
@@ -20,15 +21,12 @@ import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.nfv.common.ResourceSpecificationsViewService;
 import com.oss.nfv.common.SideMenuService;
-import com.oss.nfv.common.WebDriversData;
 import com.oss.pages.nfv.networkslice.NetworkSliceWizardFirstStep;
 import com.oss.pages.nfv.networkslice.NetworkSliceWizardPage;
 import com.oss.pages.nfv.networkslice.NetworkSliceWizardSecondStep;
 import com.oss.pages.nfv.vnf.VNFWizardPage;
-import com.oss.pages.resourcecatalog.ResourceSpecificationsViewPage;
-import com.oss.services.LogicalFunctionClient;
+import com.oss.services.LogicalFunctionCoreClient;
 import com.oss.services.nfv.networkslice.NetworkSliceApiClient;
 import com.oss.untils.Environment;
 import com.oss.utils.TestListener;
@@ -38,7 +36,6 @@ import static com.oss.nfv.networkSlice.CreateNetworkSliceConstants.MCC_VALUE;
 import static com.oss.nfv.networkSlice.CreateNetworkSliceConstants.MNC_VALUE;
 import static com.oss.nfv.networkSlice.CreateNetworkSliceConstants.NETWORK_SLICE_DESCRIPTION;
 import static com.oss.nfv.networkSlice.CreateNetworkSliceConstants.NETWORK_SLICE_NAME;
-import static com.oss.nfv.networkSlice.CreateNetworkSliceConstants.NETWORK_SLICE_SPECIFICATION_IDENTIFIER;
 import static com.oss.nfv.networkSlice.CreateNetworkSliceConstants.NETWORK_SLICE_SPECIFICATION_NAME;
 import static com.oss.nfv.networkSlice.CreateNetworkSliceConstants.OPERATIONAL_STATE_VALUE;
 import static com.oss.nfv.networkSlice.CreateNetworkSliceConstants.PLMN_INFO_DEFAULT_LABEL_PATH;
@@ -67,7 +64,7 @@ public class CreateNetworkSliceTest extends BaseTestCase {
 
     private void deleteAnyNetworkSliceInstancesByName() {
         NetworkSliceApiClient networkSliceApiClient = NetworkSliceApiClient.getInstance(env);
-        LogicalFunctionClient.getInstance(env).getLogicalFunctionByName(NETWORK_SLICE_NAME).stream()
+        LogicalFunctionCoreClient.getInstance(env).getLogicalFunctionByName(NETWORK_SLICE_NAME).stream()
                 .map(LogicalFunctionViewDTO::getId)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
@@ -79,13 +76,11 @@ public class CreateNetworkSliceTest extends BaseTestCase {
     public void openCreateNetworkSliceWizard() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         //given
-        SideMenuService.goToResourceSpecificationsView(driver, webDriverWait);
+        SideMenuService.goToCreateLogicalFunctionView(driver, webDriverWait);
         //when
-        ResourceSpecificationsViewService.openCreateLogicalFunctionWizard(
-                NETWORK_SLICE_SPECIFICATION_IDENTIFIER,
-                NETWORK_SLICE_SPECIFICATION_NAME,
-                WebDriversData.create(driver, webDriverWait)
-        );
+        LogicalFunctionWizardPreStep logicalFunctionWizardPreStep = LogicalFunctionWizardPreStep.create(driver, webDriverWait);
+        logicalFunctionWizardPreStep.searchResourceSpecification(NETWORK_SLICE_SPECIFICATION_NAME);
+        logicalFunctionWizardPreStep.clickAccept();
     }
 
     @Test(priority = 2, description = "Edit NetworkSlice in wizard")

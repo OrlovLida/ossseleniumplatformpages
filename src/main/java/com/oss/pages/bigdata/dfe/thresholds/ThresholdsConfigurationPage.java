@@ -12,11 +12,6 @@ import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
-import static com.oss.framework.components.inputs.Input.ComponentType.MULTI_SEARCH_FIELD;
-import static com.oss.framework.components.inputs.Input.ComponentType.SEARCH_FIELD;
-import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_AREA;
-import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 import static com.oss.framework.utils.DelayUtils.sleep;
 import static com.oss.framework.utils.DelayUtils.waitForPageToLoad;
 
@@ -45,28 +40,28 @@ public class ThresholdsConfigurationPage extends BasePage {
 
     public void fillName(String name) {
         waitForPageToLoad(driver, wait);
-        configurationWizard.setComponentValue(NAME_INPUT_ID, name, TEXT_FIELD);
+        configurationWizard.setComponentValue(NAME_INPUT_ID, name);
         log.debug("Setting name with: {}", name);
     }
 
     public void fillActiveCombobox(String notificationStatus) {
-        configurationWizard.setComponentValue(ACTIVE_COMBOBOX_ID, notificationStatus, COMBOBOX);
+        configurationWizard.setComponentValue(ACTIVE_COMBOBOX_ID, notificationStatus);
         log.debug("Setting notification status with: {}", notificationStatus);
     }
 
     public void fillProblemNameSearchField(String problemName) {
-        configurationWizard.setComponentValue(PROBLEM_NAME_FIELD_ID, problemName, SEARCH_FIELD);
+        configurationWizard.setComponentValue(PROBLEM_NAME_FIELD_ID, problemName);
         log.debug("Setting problem name with: {}", problemName);
     }
 
     public void fillAggregationCombobox(String aggregationPeriod) {
-        configurationWizard.setComponentValue(AGGREGATION_COMBOBOX_ID, aggregationPeriod, COMBOBOX);
+        configurationWizard.setComponentValue(AGGREGATION_COMBOBOX_ID, aggregationPeriod);
         log.debug("Setting aggregation period with: {}", aggregationPeriod);
     }
 
     public void fillDebugCombobox(String debugMode) {
         waitForPageToLoad(driver, wait);
-        configurationWizard.setComponentValue(DEBUG_COMBOBOX_ID, debugMode, COMBOBOX);
+        configurationWizard.setComponentValue(DEBUG_COMBOBOX_ID, debugMode);
         log.debug("Setting debug mode: {}", debugMode);
     }
 
@@ -79,25 +74,25 @@ public class ThresholdsConfigurationPage extends BasePage {
 
     public void fillConditionTypeCombobox(String conditionType) {
         waitForPageToLoad(driver, wait);
-        configurationWizard.setComponentValue(CONDITION_COMBOBOX_ID, conditionType, COMBOBOX);
+        configurationWizard.setComponentValue(CONDITION_COMBOBOX_ID, conditionType);
         log.debug("Setting condition type with: {}", conditionType);
     }
 
     public void fillFormula(String formula) {
         waitForPageToLoad(driver, wait);
-        configurationWizard.setComponentValue(FORMULA_AREA_ID, formula, TEXT_AREA);
+        configurationWizard.setComponentValue(FORMULA_AREA_ID, formula);
         log.debug("Setting description with: {}", formula);
     }
 
     public void fillSeverityCombobox(String severity) {
         waitForPageToLoad(driver, wait);
-        configurationWizard.setComponentValue(SEVERITY_COMBOBOX_ID, severity, COMBOBOX);
+        configurationWizard.setComponentValue(SEVERITY_COMBOBOX_ID, severity);
         log.debug("Setting severity for simple condition with: {}", severity);
     }
 
     public void fillElseSeverityCombobox(String severity) {
         waitForPageToLoad(driver, wait);
-        configurationWizard.setComponentValue(ELSE_SEVERITY_COMBOBOX_ID, severity, COMBOBOX);
+        configurationWizard.setComponentValue(ELSE_SEVERITY_COMBOBOX_ID, severity);
         log.debug("Setting severity for else condition with: {}", severity);
     }
 
@@ -111,8 +106,7 @@ public class ThresholdsConfigurationPage extends BasePage {
     @Step("Fill Category field")
     public void fillCategories(String categories) {
         waitForPageToLoad(driver, wait);
-        configurationWizard.getComponent(CATEGORIES_NAME_FIELD_ID, MULTI_SEARCH_FIELD)
-                .setValueContains(Data.createSingleData(categories));
+        configurationWizard.getComponent(CATEGORIES_NAME_FIELD_ID).setValueContains(Data.createSingleData(categories));
         log.debug("Filling categories with: {}", categories);
     }
 

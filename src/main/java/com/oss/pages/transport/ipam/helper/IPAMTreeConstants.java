@@ -127,4 +127,8 @@ public class IPAMTreeConstants {
     public static final String LOGICAL_FUNCTION = "Logical Function";
     public static final String CARD = "Card";
     public static final String LOCATION = "Location";
+
+    private IPAMTreeConstants() {
+        throw new IllegalStateException("Utility class");
+    }
 }

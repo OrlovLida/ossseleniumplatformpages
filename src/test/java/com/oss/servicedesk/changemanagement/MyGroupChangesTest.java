@@ -13,6 +13,7 @@ import com.oss.pages.servicedesk.changemanagement.ChangeDashboardPage;
 import com.oss.pages.servicedesk.changemanagement.MyChangesPage;
 import com.oss.pages.servicedesk.changemanagement.MyGroupChangesPage;
 import com.oss.pages.servicedesk.issue.IssueDetailsPage;
+import com.oss.pages.servicedesk.issue.tabs.OverviewTab;
 import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
 import com.oss.utils.TestListener;
 
@@ -32,6 +33,7 @@ public class MyGroupChangesTest extends BaseTestCase {
     private MyGroupChangesPage myGroupChangesPage;
     private NotificationWrapperPage notificationWrapperPage;
     private IssueDetailsPage issueDetailsPage;
+    private OverviewTab changeOverviewTab;
     private SDWizardPage sdWizardPage;
     private String changeID;
 
@@ -59,7 +61,7 @@ public class MyGroupChangesTest extends BaseTestCase {
     @Description("Check My Group Changes")
     public void checkMyGroupChanges() {
         myGroupChangesPage = new MyGroupChangesPage(driver, webDriverWait).openView(driver, BASIC_URL);
-        myGroupChangesPage.filterByTextField(ID_ATTRIBUTE, changeID);
+        myGroupChangesPage.filterBy(ID_ATTRIBUTE, changeID);
         myGroupChangesPage.getIdForNthTicketInTable(0);
         Assert.assertFalse(myGroupChangesPage.isIssueTableEmpty());
         Assert.assertEquals(myGroupChangesPage.getIdForNthTicketInTable(0), changeID);
@@ -101,11 +103,12 @@ public class MyGroupChangesTest extends BaseTestCase {
     public void myChangesCheck() {
         issueDetailsPage = changeDashboardPage.openIssueDetailsView(changeID, BASIC_URL, CHANGE_ISSUE_TYPE);
         issueDetailsPage.maximizeWindow(DETAILS_TABS_CONTAINER_ID);
-        issueDetailsPage.changeIssueAssignee(USER_NAME);
+        changeOverviewTab = issueDetailsPage.selectOverviewTab(CHANGE_ISSUE_TYPE);
+        changeOverviewTab.changeIssueAssignee(USER_NAME);
         myChangesPage = new MyChangesPage(driver, webDriverWait).openView(driver, BASIC_URL);
         Assert.assertFalse(myChangesPage.isIssueTableEmpty());
 
-        myChangesPage.filterByTextField(ID_ATTRIBUTE, changeID);
+        myChangesPage.filterBy(ID_ATTRIBUTE, changeID);
         Assert.assertFalse(myChangesPage.isIssueTableEmpty());
     }
 }

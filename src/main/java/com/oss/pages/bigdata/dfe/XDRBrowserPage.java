@@ -9,7 +9,6 @@ import com.google.common.collect.Multimap;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.ComponentFactory;
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.iaa.widgets.timeperiodchooser.TimePeriodChooser;
 import com.oss.framework.widgets.table.TableWidget;
@@ -23,7 +22,7 @@ public class XDRBrowserPage extends BaseDfePage {
 
     private static final Logger log = LoggerFactory.getLogger(XDRBrowserPage.class);
 
-    private static final String ETL_NAME_COMBOBOX_ID = "etlProcessId-input";
+    private static final String ETL_NAME_COMBOBOX_ID = "etlProcessId";
     private static final String TIME_PERIOD_ID = "input_etlTime";
     private static final String SEARCH_BUTTON_ID = "Search_Button-0";
     private static final String XDR_TABLE_ID = "xdrTableId";
@@ -44,14 +43,14 @@ public class XDRBrowserPage extends BaseDfePage {
 
     @Step("I select ETL name from Combobox")
     public void selectETLName(String etlName) {
-        ComponentFactory.create(ETL_NAME_COMBOBOX_ID, Input.ComponentType.COMBOBOX, driver, wait)
+        ComponentFactory.create(ETL_NAME_COMBOBOX_ID, driver, wait)
                 .setSingleStringValue(etlName);
         log.info("I select ETL: {}", etlName);
     }
 
     @Step("I check value of ETL name in XDR Browser search Combobox")
     public String getETLName() {
-        return ComponentFactory.create(ETL_NAME_COMBOBOX_ID, Input.ComponentType.COMBOBOX, driver, wait).getStringValue();
+        return ComponentFactory.create(ETL_NAME_COMBOBOX_ID, driver, wait).getStringValue();
     }
 
     @Step("I set value in time period chooser")
