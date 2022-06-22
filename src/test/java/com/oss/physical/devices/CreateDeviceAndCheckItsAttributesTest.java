@@ -186,7 +186,7 @@ public class CreateDeviceAndCheckItsAttributesTest extends BaseTestCase {
 
     @Step("Delete created device")
     private void deleteDevice() {
-        hierarchyViewPage.useTreeContextAction("EDIT", DELETE_DEVICE_WIZARD_ACTION_ID);
+        hierarchyViewPage.callAction("EDIT", DELETE_DEVICE_WIZARD_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hierarchyViewPage.clickButtonInConfirmationBox("Yes");
     }
