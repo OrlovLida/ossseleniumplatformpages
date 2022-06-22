@@ -30,7 +30,7 @@ public class HV_Smoke_Test extends BaseTestCase {
         searchObjectTypePage.searchType("Physical Device");
         waitForPageToLoad();
         AdvancedSearchWidget advancedSearchWidget = AdvancedSearchWidget.createById(driver, webDriverWait, "advancedSearch");
-        advancedSearchWidget.getTableComponent("advancedSearch").selectRow(0);
+        advancedSearchWidget.getTableComponent().selectRow(0);
         advancedSearchWidget.clickAdd();
     }
 
