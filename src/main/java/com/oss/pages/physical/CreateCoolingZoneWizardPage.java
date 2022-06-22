@@ -16,6 +16,7 @@ public class CreateCoolingZoneWizardPage extends BasePage {
     private static final String WIZARD_ID = "wizard_prompt-card";
     private static final String ACCEPT_ID = "wizard-submit-button-cooling-zone-update-wizard";
     private Wizard wizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
+
     public CreateCoolingZoneWizardPage(WebDriver driver) {
         super(driver);
     }
@@ -23,11 +24,6 @@ public class CreateCoolingZoneWizardPage extends BasePage {
     @Step("Click Accept")
     public void clickAccept() {
         wizard.clickButtonById(ACCEPT_ID);
-    }
-
-    @Step("Click Update")
-    public void clickUpdate() {
-        Wizard.createWizard(driver, wait).clickUpdate();
     }
 
     @Step("Set Cooling Zone name")

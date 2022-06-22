@@ -112,8 +112,13 @@ public class HierarchyViewPage extends BasePage {
     }
 
     @Step("Use tree context action")
-    public void useTreeContextAction(String groupId, String actionId) {
+    public void callAction(String groupId, String actionId) {
         getMainTree().callActionById(groupId, actionId);
+    }
+
+    @Step("Use tree context action")
+    public void callActionByLabel(String groupLabel, String actionLabel) {
+        getMainTree().callActionByLabel(groupLabel, actionLabel);
     }
 
     @Step("Click {label} in Confirmation box")

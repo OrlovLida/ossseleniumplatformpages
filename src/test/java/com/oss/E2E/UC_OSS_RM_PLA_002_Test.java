@@ -170,7 +170,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         String labelpath = DEVICE_NAME + ".Ports." + PORT_NAME + ".Termination Points.EthernetInterface_TP." + PORT_NAME;
         hierarchyViewPage.selectNodeByLabelsPath(labelpath);
         waitForPageToLoad();
-        hierarchyViewPage.useTreeContextAction(ActionsContainer.SHOW_ON_GROUP_ID, "InventoryView");
+        hierarchyViewPage.callAction(ActionsContainer.SHOW_ON_GROUP_ID, "InventoryView");
     }
 
     @Test(priority = 7, description = "Assign IP V4 address", dependsOnMethods = {"selectEthernetInterface"})

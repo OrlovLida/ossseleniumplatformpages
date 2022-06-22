@@ -222,7 +222,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         String labelpath = PHYSICAL_DEVICE_NAME + ".Chassis.Chassis.Slots.LT3.Card.NELT-B";
         hierarchyViewPage.selectNodeByLabelsPath(labelpath);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        hierarchyViewPage.useTreeContextAction(ActionsContainer.EDIT_GROUP_ID, "ChangeCardModelAction");
+        hierarchyViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, "ChangeCardModelAction");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -244,7 +244,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
         hierarchyViewPage.selectNodeByLabel(PHYSICAL_DEVICE_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        hierarchyViewPage.useTreeContextAction(ActionsContainer.SHOW_ON_GROUP_ID, "MountingEditorForPhysicalElementAction");
+        hierarchyViewPage.callAction(ActionsContainer.SHOW_ON_GROUP_ID, "MountingEditorForPhysicalElementAction");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
