@@ -37,11 +37,11 @@ import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_AREA;
 public class NetworkViewPage extends BasePage {
 
     public static final String ATTRIBUTES_AND_TERMINATIONS_ACTION = "EDIT_Attributes and terminations-null";
-    public static final String CREATE_DEVICE_ACTION = "CREATE_Create Device-null";
+    public static final String CREATE_DEVICE_ACTION = "CREATE_Create Physical Device-null";
     public static final String CREATE_OBJECTS_FROM_TEMPLATE_ACTION = "CREATE_Create Objects from Template-null";
     public static final String DELETE_TRAIL_ACTION = "Delete Trail";
     public static final String DELETE_ELEMENT_ACTION = "Delete Element-null";
-    public static final String DELETE_DEVICE_ACTION = "EDIT_Delete Device-null";
+    public static final String DELETE_DEVICE_ACTION = "EDIT_Delete Physical Device-null";
     public static final String ADD_TO_VIEW_ACTION = "add_to_view_group";
     public static final String CREATE_MEDIATION_CONFIGURATION_ID = "CREATE_Mediation Configuration-null";
     public static final String DELETE_CONNECTION_ID = "EDIT_Delete-null";

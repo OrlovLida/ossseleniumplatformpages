@@ -16,7 +16,7 @@ public class ColumnMappingPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(ColumnMappingPage.class);
     private static final String LIST_ID = "ExtendedList-column-mapping-data";
-    private static final String COLUMN_ROLE_INPUT_ID = "columnRole-input";
+    private static final String COLUMN_ROLE_INPUT_ID = "columnRole";
     private static final String COLUMN_DATA_ID = "columnName";
     private static final String COLUMN_ROLE_ID = "columnRole";
     private final Wizard columnMappingWizard;

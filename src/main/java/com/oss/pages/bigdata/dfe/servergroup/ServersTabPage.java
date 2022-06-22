@@ -69,9 +69,9 @@ public class ServersTabPage extends BaseTabPage {
     }
 
     @Step("I check if server is deleted")
-    public Boolean isServerDeleted() {
+    public boolean isServerDeleted() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        Boolean serverDeleted = createTabTable().hasNoData();
+        boolean serverDeleted = createTabTable().hasNoData();
         log.info("Server is deleted: {}", serverDeleted);
 
         return serverDeleted;

@@ -10,8 +10,6 @@ import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
-import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 import static com.oss.framework.utils.DelayUtils.sleep;
 import static com.oss.framework.utils.DelayUtils.waitForPageToLoad;
 
@@ -34,19 +32,19 @@ public class ThresholdsDimensionsFilteringPage extends BasePage {
 
     public void fillDimensionCombobox(String dimension) {
         waitForPageToLoad(driver, wait);
-        dimensionsFilterWizard.setComponentValue(DIMENSION_COMBOBOX, dimension, COMBOBOX);
+        dimensionsFilterWizard.setComponentValue(DIMENSION_COMBOBOX, dimension);
         log.debug("Setting dimension with: {}", dimension);
     }
 
     public void fillGroupingCombobox(String grouping) {
         waitForPageToLoad(driver, wait);
-        dimensionsFilterWizard.setComponentValue(GROUPING_COMBOBOX, grouping, COMBOBOX);
+        dimensionsFilterWizard.setComponentValue(GROUPING_COMBOBOX, grouping);
         log.debug("Setting grouping with: {}", grouping);
     }
 
     public void fillFilteringTypeCombobox(String filteringType) {
         waitForPageToLoad(driver, wait);
-        dimensionsFilterWizard.setComponentValue(FILTERING_TYPE_COMBOBOX, filteringType, COMBOBOX);
+        dimensionsFilterWizard.setComponentValue(FILTERING_TYPE_COMBOBOX, filteringType);
         log.debug("Setting filteringType with: {}", filteringType);
     }
 
@@ -59,7 +57,7 @@ public class ThresholdsDimensionsFilteringPage extends BasePage {
 
     public void fillMOPatternField(String moPattern) {
         waitForPageToLoad(driver, wait);
-        dimensionsFilterWizard.setComponentValue(MO_PATTERN_ID, moPattern, TEXT_FIELD);
+        dimensionsFilterWizard.setComponentValue(MO_PATTERN_ID, moPattern);
         log.debug("Setting MO Identifier pattern with: {}", moPattern);
     }
 

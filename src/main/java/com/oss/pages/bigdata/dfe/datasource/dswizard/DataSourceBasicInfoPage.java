@@ -10,8 +10,6 @@ import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
-
 public class DataSourceBasicInfoPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(DataSourceBasicInfoPage.class);
@@ -26,7 +24,7 @@ public class DataSourceBasicInfoPage extends BasePage {
     }
 
     public void fillName(String name) {
-        basicInfoWizard.setComponentValue(NAME_INPUT_ID, name, TEXT_FIELD);
+        basicInfoWizard.setComponentValue(NAME_INPUT_ID, name);
         log.debug("Setting name with: {}", name);
     }
 

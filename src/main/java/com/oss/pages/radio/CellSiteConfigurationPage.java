@@ -14,8 +14,6 @@ import com.oss.pages.physical.DeviceWizardPage;
 
 import io.qameta.allure.Step;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
-
 /**
  * @author Milena Miętkiewicz
  */
@@ -27,20 +25,21 @@ public class CellSiteConfigurationPage extends BasePage {
     private static final String CREATE_CELL_BULK_ACTION = "Cell %s Bulk Wizard";
     private static final String TRAIL_TYPE_ID = "trailType";
     private static final String ADD_LABEL = "ADD";
+    private static final String ADD_ID = "add";
     private static final String EDIT_LABEL = "Edit";
     private static final String DELETE_LABEL = "Delete";
     private static final String BASE_STATION_ROW = "Base Stations";
-    private static final String CREATE_ENODEB_ACTION = "Create eNodeB";
-    private static final String CREATE_GNODEB_ACTION = "Create gNodeB";
-    private static final String CREATE_GNODEB_DU_ACTION = "Create gNodeB DU";
+    private static final String CREATE_ENODEB_ACTION_ID = "ADD_ENODE";
+    private static final String CREATE_GNODEB_ACTION_ID = "ADD_GNODE";
+    private static final String CREATE_GNODEB_DU_ACTION_ID = "ADD_GNODE_DU";
     private static final String TYPE_4G = "4G";
     private static final String TYPE_5G = "5G";
     private static final String DEVICES_TAB = "Devices";
     private static final String BASE_STATIONS_TAB = "Base Stations";
-    private static final String CREATE_DEVICE_ACTION = "Create Device";
-    private static final String CREATE_RAN_ANTENNA_ACTION = "Create RAN Antenna";
-    private static final String HOST_ON_DEVICE_ACTION_LABEL = "Host on Device";
-    private static final String HOST_ON_ANTENNA_ARRAY_ACTION_LABEL = "Host on Antenna Array";
+    private static final String CREATE_DEVICE_ACTION_ID = "CreateDeviceOnLocationWizardAction";
+    private static final String CREATE_RAN_ANTENNA_ACTION_ID = "createAntenna";
+    private static final String HOST_ON_DEVICE_ACTION_ID = "hostOnLogicalFunction";
+    private static final String HOST_ON_ANTENNA_ARRAY_ACTION_ID = "hostOnAntennaArray";
     private static final String HOSTING_TAB_LABEL = "Hosting";
     private static final String WIZARD_ID = "Popup";
     private static final String TREE_TABLE_ID = "DevicesTableApp";
@@ -59,6 +58,11 @@ public class CellSiteConfigurationPage extends BasePage {
     @Step("Click plus icon and select {option} from the drop-down list")
     public void clickPlusIconAndSelectOption(String option) {
         getTabTable().callActionByLabel(ADD_LABEL, option);
+    }
+
+    @Step("Click plus icon and select {optionId} from the drop-down list")
+    public void clickPlusIconAndSelectOptionById(String optionId) {
+        getTabTable().callAction(ADD_ID, optionId);
     }
 
     @Step("Select {tabName} tab")
@@ -116,15 +120,6 @@ public class CellSiteConfigurationPage extends BasePage {
         waitForPageToLoad();
     }
 
-    private void selectTreeTable(String type, String manufacturer, String name) {
-        OldTreeTableWidget widget = OldTreeTableWidget.create(driver, wait, TREE_TABLE_ID);
-        widget.expandNode(type, "Type");
-        waitForPageToLoad();
-        widget.expandNode(manufacturer, "Type");
-        waitForPageToLoad();
-        widget.selectNode(name, "Name");
-    }
-
     @Step("Remove base station {objectName}")
     public void removeBaseStation(String columnName, String objectName) {
         selectTab(BASE_STATIONS_TAB);
@@ -179,6 +174,7 @@ public class CellSiteConfigurationPage extends BasePage {
 
     @Step("Use table context action")
     public void useTableContextActionById(String id) {
+        waitForPageToLoad();
         getTabTable().callAction(id);
     }
 
@@ -191,7 +187,7 @@ public class CellSiteConfigurationPage extends BasePage {
     @Step("Select trail type")
     public void selectTrailType(String trailType) {
         Wizard wizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
-        wizard.setComponentValue(TRAIL_TYPE_ID, trailType, COMBOBOX);
+        wizard.setComponentValue(TRAIL_TYPE_ID, trailType);
         wizard.clickAccept();
     }
 
@@ -221,7 +217,7 @@ public class CellSiteConfigurationPage extends BasePage {
 
     @Step("Create eNodeB with following attributes: Name = {eNodeBName}, ID = {eNodeBid}, Model = {eNodeBModel}, MCCMNC = {mccmncPrimary}")
     public void createENodeB(String eNodeBName, String eNodeBid, String eNodeBModel, String mccmncPrimary) {
-        clickPlusIconAndSelectOption(CREATE_ENODEB_ACTION);
+        clickPlusIconAndSelectOptionById(CREATE_ENODEB_ACTION_ID);
         waitForPageToLoad();
         ENodeBWizardPage eNodeBWizard = new ENodeBWizardPage(driver);
         eNodeBWizard.createENodeB(eNodeBName, eNodeBid, eNodeBModel, mccmncPrimary);
@@ -229,14 +225,14 @@ public class CellSiteConfigurationPage extends BasePage {
 
     @Step("Create gNodeB with following attributes: Name = {gNodeBName}, ID = {gNodeBId}, Model = {gNodeBModel}, MCCMNC = {mccmncPrimary}")
     public void createGNodeB(String gNodeBName, String gNodeBId, String gNodeBModel, String mccmncPrimary) {
-        clickPlusIconAndSelectOption(CREATE_GNODEB_ACTION);
+        clickPlusIconAndSelectOptionById(CREATE_GNODEB_ACTION_ID);
         new GNodeBWizardPage(driver)
                 .createGNodeB(gNodeBName, gNodeBId, gNodeBModel, mccmncPrimary);
     }
 
     @Step("Create gNodeB DU with following attributes: Name = {gNodeBName}, ID = {gNodeBId}, Model = {gNodeBModel}, Controller = {controller}")
     public void createGNodeBDU(String gNodeBName, String gNodeBId, String gNodeBModel, String controller) {
-        clickPlusIconAndSelectOption(CREATE_GNODEB_DU_ACTION);
+        clickPlusIconAndSelectOptionById(CREATE_GNODEB_DU_ACTION_ID);
         new GNodeBDUWizardPage(driver)
                 .createGNodeBDU(gNodeBName, gNodeBId, gNodeBModel, controller);
     }
@@ -256,7 +252,7 @@ public class CellSiteConfigurationPage extends BasePage {
         waitForPageToLoad();
         selectTab(DEVICES_TAB);
         waitForPageToLoad();
-        clickPlusIconAndSelectOption(CREATE_DEVICE_ACTION);
+        clickPlusIconAndSelectOptionById(CREATE_DEVICE_ACTION_ID);
         DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
         waitForPageToLoad();
         deviceWizardPage.setEquipmentType(bbuEquipmentType);
@@ -274,7 +270,7 @@ public class CellSiteConfigurationPage extends BasePage {
 
     @Step("Create Radio Unit with following attributes: Type = {radioUnitEquipmentType}, Name = {radioUnitName}, Model = {radioUnitModel}, Location = {locationName}")
     public void createRadioUnit(String radioUnitEquipmentType, String radioUnitModel, String radioUnitName, String locationName) {
-        clickPlusIconAndSelectOption(CREATE_DEVICE_ACTION);
+        clickPlusIconAndSelectOptionById(CREATE_DEVICE_ACTION_ID);
         DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
         waitForPageToLoad();
         deviceWizardPage.setEquipmentType(radioUnitEquipmentType);
@@ -292,7 +288,7 @@ public class CellSiteConfigurationPage extends BasePage {
 
     @Step("Create Ran Antenna and Array with following attributes: Name = {antennaName}, Model = {ranAntennaModel}, Location = {locationName}")
     public void createRanAntennaAndArray(String antennaName, String ranAntennaModel, String locationName) {
-        clickPlusIconAndSelectOption(CREATE_RAN_ANTENNA_ACTION);
+        clickPlusIconAndSelectOptionById(CREATE_RAN_ANTENNA_ACTION_ID);
         RanAntennaWizardPage ranAntennaWizardPage = new RanAntennaWizardPage(driver);
         waitForPageToLoad();
         ranAntennaWizardPage.setName(antennaName);
@@ -312,7 +308,7 @@ public class CellSiteConfigurationPage extends BasePage {
     public void createHostingOnDevice(String deviceName, boolean onlyCompatible) {
         selectTab(HOSTING_TAB_LABEL);
         waitForPageToLoad();
-        useTableContextActionByLabel(HOST_ON_DEVICE_ACTION_LABEL);
+        useTableContextActionById(HOST_ON_DEVICE_ACTION_ID);
         HostingWizardPage hostOnDeviceWizard = new HostingWizardPage(driver);
         waitForPageToLoad();
         hostOnDeviceWizard.onlyCompatible(String.valueOf(onlyCompatible));
@@ -326,7 +322,7 @@ public class CellSiteConfigurationPage extends BasePage {
     public void createHostingOnDevice(String deviceName) {
         selectTab(HOSTING_TAB_LABEL);
         waitForPageToLoad();
-        clickPlusIconAndSelectOption(HOST_ON_DEVICE_ACTION_LABEL);
+        clickPlusIconAndSelectOptionById(HOST_ON_DEVICE_ACTION_ID);
         HostingWizardPage hostOnDeviceWizard = new HostingWizardPage(driver);
         waitForPageToLoad();
         hostOnDeviceWizard.setDevice(deviceName);
@@ -334,10 +330,10 @@ public class CellSiteConfigurationPage extends BasePage {
         hostOnDeviceWizard.clickAccept();
     }
 
-    @Step("Create Hosting on Antenna Array with Name = {deviceName}")
+    @Step("Create Hosting on Antenna Array with Name = {antennaName}")
     public void createHostingOnAntennaArray(String antennaName) {
         selectTab(HOSTING_TAB_LABEL);
-        clickPlusIconAndSelectOption(HOST_ON_ANTENNA_ARRAY_ACTION_LABEL);
+        clickPlusIconAndSelectOptionById(HOST_ON_ANTENNA_ARRAY_ACTION_ID);
         HostingWizardPage hostOnAntennaWizard = new HostingWizardPage(driver);
         hostOnAntennaWizard.setHostingContains(antennaName);
         waitForPageToLoad();
@@ -347,6 +343,15 @@ public class CellSiteConfigurationPage extends BasePage {
     public void editCellsInBulk(int cellsNumber, String pci, String rsi, String referencePower, String[] tac, String paOutput) {
         clickEditIcon();
         new EditCell4GBulkWizardPage(driver).editCellsBulk(cellsNumber, pci, rsi, referencePower, tac, paOutput);
+    }
+
+    private void selectTreeTable(String type, String manufacturer, String name) {
+        OldTreeTableWidget widget = OldTreeTableWidget.create(driver, wait, TREE_TABLE_ID);
+        widget.expandNode(type, "Type");
+        waitForPageToLoad();
+        widget.expandNode(manufacturer, "Type");
+        waitForPageToLoad();
+        widget.selectNode(name, "Name");
     }
 
     private Cell5GBulkWizardPage openCell5GBulkWizard() {

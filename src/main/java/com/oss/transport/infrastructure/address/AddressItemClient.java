@@ -1,5 +1,12 @@
 package com.oss.transport.infrastructure.address;
 
+import java.net.URI;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Optional;
+
+import javax.ws.rs.core.Response.Status;
+
 import com.comarch.oss.addressinventory.api.dto.AddressItemBrowseDTO;
 import com.comarch.oss.addressinventory.api.dto.AddressItemDTO;
 import com.comarch.oss.addressinventory.api.dto.AddressItemSearchResultDTO;
@@ -8,14 +15,11 @@ import com.google.common.collect.ImmutableList;
 import com.jayway.restassured.http.ContentType;
 import com.oss.transport.infrastructure.EnvironmentRequestClient;
 
-import javax.ws.rs.core.Response.Status;
-import java.net.URI;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Optional;
-
 public class AddressItemClient {
 
+    public static final String ADDRESS_ITEM_PATH = "/addressitem";
+    public static final String ADDRESS_ITEM_TYPE_PATH = "/addressitemtypes";
+    public static final String MISSING_ADDRESS_ITEM_DTO_EXCEPTION = "Missing AddressItemDTO";
     private final EnvironmentRequestClient requestClient;
 
     public AddressItemClient(EnvironmentRequestClient requestClient) {
@@ -25,7 +29,7 @@ public class AddressItemClient {
     public AddressItemDTO createAddressItem(AddressItemDTO dto) {
         URI[] uris = requestClient.getAddressCoreRequestSpecification()
                 .given().contentType(ContentType.JSON).body(ImmutableList.of(dto))
-                .when().post(getAddressItemPath())
+                .when().post(ADDRESS_ITEM_PATH)
                 .then().log().status().log().body()
                 .assertThat().statusCode(Status.OK.getStatusCode()).contentType(ContentType.JSON)
                 .extract().as(URI[].class);
@@ -34,7 +38,7 @@ public class AddressItemClient {
                 .then().log().status().log().body()
                 .assertThat().contentType(ContentType.JSON)
                 .extract().as(AddressItemBrowseDTO[].class)[0];
-        AddressItemDTO newAddressItem = addressItemBrowse.getAddressItem().get();
+        AddressItemDTO newAddressItem = addressItemBrowse.getAddressItem().orElseThrow(() -> new IllegalStateException(MISSING_ADDRESS_ITEM_DTO_EXCEPTION));
         return AddressItemDTO.builder().from(newAddressItem).directParentId(dto.getDirectParentId()).build();
     }
 
@@ -49,15 +53,9 @@ public class AddressItemClient {
         return addressItem.map(item -> AddressItemDTO.builder().from(item).directParentId(parentId.map(String::valueOf)).build());
     }
 
-    private AddressItemDTO getAddressItem(String uri) {
-        return requestClient.prepareRequestSpecificationWithoutUri().given()
-                .when().get(uri)
-                .then().contentType(ContentType.JSON).extract().as(AddressItemBrowseDTO[].class)[0].getAddressItem().get();
-    }
-
     public Collection<AddressItemTypeDTO> getAddressItemTypes() {
         AddressItemTypeDTO[] results = requestClient.getAddressCoreRequestSpecification()
-                .when().get(getAddressItemTypePath())
+                .when().get(ADDRESS_ITEM_TYPE_PATH)
                 .then().log().status().log().body()
                 .assertThat().statusCode(Status.OK.getStatusCode()).contentType(ContentType.JSON)
                 .extract().as(AddressItemTypeDTO[].class);
@@ -71,8 +69,10 @@ public class AddressItemClient {
                 .assertThat().statusCode(Status.ACCEPTED.getStatusCode());
     }
 
-    private String getAddressItemPath() {
-        return "/addressitem";
+    private AddressItemDTO getAddressItem(String uri) {
+        return requestClient.prepareRequestSpecificationWithoutUri().given()
+                .when().get(uri)
+                .then().contentType(ContentType.JSON).extract().as(AddressItemBrowseDTO[].class)[0].getAddressItem().orElseThrow(() -> new IllegalStateException(MISSING_ADDRESS_ITEM_DTO_EXCEPTION));
     }
 
     private String getAddressItemSearchPath(String name, String type, Optional<Long> parentId) {
@@ -81,10 +81,6 @@ public class AddressItemClient {
             path += ";parent==" + parentId.get();
         }
         return path;
-    }
-
-    private String getAddressItemTypePath() {
-        return "/addressitemtypes";
     }
 
     private String getAddressItemDeletePath(Long id) {

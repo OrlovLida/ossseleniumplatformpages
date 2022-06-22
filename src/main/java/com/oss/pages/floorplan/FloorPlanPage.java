@@ -12,10 +12,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.oss.framework.components.inputs.Button;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.floorplan.FloorPlanTab;
 import com.oss.framework.widgets.floorplan.FloorPlanTable;
 import com.oss.framework.widgets.floorplan.FloorPlanTree;
-import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.BasePage;
 import com.oss.pages.platform.HomePage;
 
@@ -111,7 +111,7 @@ public class FloorPlanPage extends BasePage {
 
     @Step("Get cell value")
     public String getCellValue(String nodeName, int columnNr) {
-        return getTree("cell_floorPlanObjectHome_tab_2").geCellValue(nodeName, columnNr);
+        return getTree(SUMMARY_TABLE_ID).geCellValue(nodeName, columnNr);
     }
 
     private FloorPlanTree getTree(String treeId) {

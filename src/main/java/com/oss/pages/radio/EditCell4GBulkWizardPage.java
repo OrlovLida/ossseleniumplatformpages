@@ -3,15 +3,12 @@ package com.oss.pages.radio;
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.inputs.Button;
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.EditableList;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
-
-import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 
 public class EditCell4GBulkWizardPage extends BasePage {
 
@@ -21,7 +18,7 @@ public class EditCell4GBulkWizardPage extends BasePage {
     private static final String RSI_DATA_ATTRIBUTE_NAME = "rootSequenceIndex";
     private static final String RS_POWER_DATA_ATTRIBUTE_NAME = "referenceSignalPower";
     private static final String PA_OUTPUT_DATA_ATTRIBUTE_NAME = "paOutput";
-    private static final String PA_INPUT_DATA_ATTRIBUTE_NAME = "pa-input";
+    private static final String PA_INPUT_DATA_ATTRIBUTE_NAME = "pa";
     private static final String TAC_NUMBER_FIELD_DATA_ATTRIBUTE_NAME = "tac-NUMBER_FIELD";
     private static final String TAC_COLUMN_ID = "tac";
     private static final String ACCEPT_BUTTON_DATA_ATTRIBUTE_NAME = "wizard-submit-button-cell-bulk-wizard-4g";
@@ -35,33 +32,33 @@ public class EditCell4GBulkWizardPage extends BasePage {
 
     @Step("Set PCI")
     public void setPCIBulk(String pci) {
-        wizard.setComponentValue(PCI_DATA_ATTRIBUTE_NAME, pci, TEXT_FIELD);
+        wizard.setComponentValue(PCI_DATA_ATTRIBUTE_NAME, pci);
     }
 
     @Step("Set RSI")
     public void setRSIBulk(String rsi) {
-        wizard.setComponentValue(RSI_DATA_ATTRIBUTE_NAME, rsi, TEXT_FIELD);
+        wizard.setComponentValue(RSI_DATA_ATTRIBUTE_NAME, rsi);
     }
 
     @Step("Set reference power")
     public void setReferencePowerBulk(String power) {
-        wizard.setComponentValue(RS_POWER_DATA_ATTRIBUTE_NAME, power, TEXT_FIELD);
+        wizard.setComponentValue(RS_POWER_DATA_ATTRIBUTE_NAME, power);
     }
 
     @Step("Set RSI")
     public void setTAC(int rowNumber, String tac) {
         EditableList list = EditableList.createById(driver, wait, LIST_ID);
-        list.setValue(rowNumber, tac, TAC_COLUMN_ID, TAC_NUMBER_FIELD_DATA_ATTRIBUTE_NAME, Input.ComponentType.TEXT_FIELD);
+        list.setValue(rowNumber, tac, TAC_COLUMN_ID, TAC_NUMBER_FIELD_DATA_ATTRIBUTE_NAME);
     }
 
     @Step("Set Pa Output")
     public void setPaOutputBulk(String pa) {
-        wizard.setComponentValue(PA_OUTPUT_DATA_ATTRIBUTE_NAME, pa, TEXT_FIELD);
+        wizard.setComponentValue(PA_OUTPUT_DATA_ATTRIBUTE_NAME, pa);
     }
 
     @Step("Set Pa Input")
     public void setPaInputBulk(String pa) {
-        wizard.setComponentValue(PA_INPUT_DATA_ATTRIBUTE_NAME, pa, TEXT_FIELD);
+        wizard.setComponentValue(PA_INPUT_DATA_ATTRIBUTE_NAME, pa);
     }
 
     @Step("Click Accept button")

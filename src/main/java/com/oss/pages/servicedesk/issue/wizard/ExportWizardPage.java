@@ -34,7 +34,7 @@ public class ExportWizardPage extends BaseSDPage {
 
     @Step("Fill date mask")
     public void fillDateMask(String dateMask) {
-        ComponentFactory.create(DATE_MASK_ID, Input.ComponentType.COMBOBOX, driver, wait).setSingleStringValueContains(dateMask);
+        ComponentFactory.create(DATE_MASK_ID, driver, wait).setSingleStringValueContains(dateMask);
         log.info("Filling date mask containing: {}", dateMask);
     }
 

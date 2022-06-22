@@ -13,18 +13,18 @@ import com.oss.pages.BasePage;
  */
 public class EIWizardPage extends BasePage {
 
-    private static final String ADMINISTRATIVE_STATE_FIELD_ID = "uid-administrativeState-input";
-    private static final String AUTO_NEGOTIATION_FILED_ID = "uid-autoNegotiation-input";
-    private static final String ADMINISTRATIVE_SPEED_FIELD_ID = "uid-administrativeSpeed-input";
-    private static final String ADMINISTRATIVE_DUPLEX_MODE_FIELD_ID = "uid-administrativeDuplexMode-input";
+    private static final String ADMINISTRATIVE_STATE_FIELD_ID = "uid-administrativeState";
+    private static final String AUTO_NEGOTIATION_FILED_ID = "uid-autoNegotiation";
+    private static final String ADMINISTRATIVE_SPEED_FIELD_ID = "uid-administrativeSpeed";
+    private static final String ADMINISTRATIVE_DUPLEX_MODE_FIELD_ID = "uid-administrativeDuplexMode";
     private static final String MAXIMUM_FRAME_SIZE_FIELD_DATA_ATTRIBUTE_NAME = "uid-maxFrameSize";
-    private static final String FLOW_CONTROL_FIELD_ID = "uid-flowControl-input";
+    private static final String FLOW_CONTROL_FIELD_ID = "uid-flowControl";
     private static final String MTU_FIELD_DATA_ATTRIBUTE_NAME = "uid-mtu";
-    private static final String ENCAPSULATION_FIELD_ID = "uid-encapsulation-input";
+    private static final String ENCAPSULATION_FIELD_ID = "uid-encapsulation";
     private static final String BANDWIDTH_FIELD_DATA_ATTRIBUTE_NAME = "uid-bandwidth";
-    private static final String SWITCH_PORT_FIELD_ID = "uid-switchport-input";
-    private static final String SWITCH_MODE_FIELD_ID = "uid-switchportMode-input";
-    private static final String ACCESS_FUNCTION_FIELD_ID = "uid-accessFunction-input";
+    private static final String SWITCH_PORT_FIELD_ID = "uid-switchport";
+    private static final String SWITCH_MODE_FIELD_ID = "uid-switchportMode";
+    private static final String ACCESS_FUNCTION_FIELD_ID = "uid-accessFunction";
     private static final String DESCRIPTION_FIELD_DATA_ATTRIBUTE_NAME = "uid-description";
     private final Wizard wizard;
 

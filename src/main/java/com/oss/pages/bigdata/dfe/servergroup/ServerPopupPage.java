@@ -11,8 +11,6 @@ import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
-
 public class ServerPopupPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(ServerPopupPage.class);
@@ -30,27 +28,27 @@ public class ServerPopupPage extends BasePage {
     }
 
     public void fillServerName(String serverName) {
-        serverWizard.setComponentValue(SERVER_NAME_LABEL, serverName, TEXT_FIELD);
+        serverWizard.setComponentValue(SERVER_NAME_LABEL, serverName);
         log.debug("Setting Server Name with {}", serverName);
     }
 
     public void fillServerAddress(String serverAddress) {
-        serverWizard.setComponentValue(SERVER_ADDRESS_LABEL, serverAddress, TEXT_FIELD);
+        serverWizard.setComponentValue(SERVER_ADDRESS_LABEL, serverAddress);
         log.debug("Setting Server Address with {}", serverAddress);
     }
 
     public void fillUserName(String userName) {
-        serverWizard.setComponentValue(USER_NAME_LABEL, userName, TEXT_FIELD);
+        serverWizard.setComponentValue(USER_NAME_LABEL, userName);
         log.debug("Setting User Name with {}", userName);
     }
 
     public void fillPassword(String password) {
-        serverWizard.setComponentValue(PASSWORD_LABEL, password, TEXT_FIELD);
+        serverWizard.setComponentValue(PASSWORD_LABEL, password);
         log.debug("Setting Password with {}", password);
     }
 
     public void fillDirectory(String directory) {
-        serverWizard.setComponentValue(DIRECTORY_LABEL, directory, TEXT_FIELD);
+        serverWizard.setComponentValue(DIRECTORY_LABEL, directory);
         log.debug("Setting Directory with {}", directory);
     }
 

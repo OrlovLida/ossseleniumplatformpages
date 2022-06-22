@@ -14,6 +14,7 @@ import com.oss.pages.servicedesk.BaseSearchPage;
 import com.oss.pages.servicedesk.issue.IssueDetailsPage;
 import com.oss.pages.servicedesk.issue.MoreDetailsPage;
 import com.oss.pages.servicedesk.issue.RemainderForm;
+import com.oss.pages.servicedesk.issue.tabs.AffectedTab;
 import com.oss.pages.servicedesk.issue.tabs.AttachmentsTab;
 import com.oss.pages.servicedesk.issue.tabs.ExternalTab;
 import com.oss.pages.servicedesk.issue.tabs.MessagesTab;
@@ -22,6 +23,7 @@ import com.oss.pages.servicedesk.issue.tabs.RelatedProblemsTab;
 import com.oss.pages.servicedesk.issue.tabs.RelatedTicketsTab;
 import com.oss.pages.servicedesk.issue.tabs.RootCausesTab;
 import com.oss.pages.servicedesk.issue.ticket.TicketDashboardPage;
+import com.oss.pages.servicedesk.issue.ticket.TicketOverviewTab;
 import com.oss.pages.servicedesk.issue.ticket.TicketSearchPage;
 import com.oss.pages.servicedesk.issue.wizard.ExternalPromptPage;
 import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
@@ -29,12 +31,15 @@ import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
 
-import static com.oss.pages.servicedesk.BaseSDPage.CREATE_DATE_FILTER_DATE_FORMATTER;
+import static com.oss.pages.servicedesk.BaseSDPage.DATE_TIME_FORMATTER;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.CSV_FILE;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.DESCRIPTION_TAB_LABEL;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.DETAILS_TABS_CONTAINER_ID;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.DICTIONARIES_TAB_LABEL;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.FILE_TO_UPLOAD_PATH;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.ISSUE_OUT_ASSIGNEE_ATTR;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.ISSUE_OUT_STATUS_ATTR;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.MOST_IMPORTANT_INFO_TAB_LABEL;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.TROUBLE_TICKET_ISSUE_TYPE;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.USER_NAME;
 
@@ -45,6 +50,7 @@ public class TicketsTest extends BaseTestCase {
     private TicketSearchPage ticketSearchPage;
     private SDWizardPage sdWizardPage;
     private IssueDetailsPage issueDetailsPage;
+    private TicketOverviewTab ticketOverviewTab;
     private MessagesTab messagesTab;
     private MoreDetailsPage moreDetailsPage;
     private RemainderForm remainderForm;
@@ -56,6 +62,7 @@ public class TicketsTest extends BaseTestCase {
     private RelatedTicketsTab relatedTicketsTab;
     private ParticipantsTab participantsTab;
     private RelatedProblemsTab relatedProblemsTab;
+    private AffectedTab affectedTab;
     private String ticketID;
 
     private static final String TT_DESCRIPTION = "TestSelenium";
@@ -92,8 +99,9 @@ public class TicketsTest extends BaseTestCase {
     private static final String TT_WIZARD_ISSUE_START_DATE_ID = "IssueStartDate";
     private static final String TT_WIZARD_MESSAGE_DATE_ID = "PleaseProvideTheTimeOnTheHandsetTheTxtMessageArrived";
 
+    private static final String TYPE_ATTRIBUTE = "Type";
+    private static final String TICKET_OPENED_LOG = "type CTT has been created and set to status New.";
     private static final String STATUS_ACKNOWLEDGED = "Acknowledged";
-    private static final String OVERVIEW_TAB_ARIA_CONTROLS = "most-wanted";
     private static final String DICTIONARIES_TAB_ARIA_CONTROLS = "_dictionariesTab";
     private static final String DESCRIPTION_TAB_ARIA_CONTROLS = "_descriptionTab";
     private static final String MOST_IMPORTANT_INFO_TAB_ARIA_CONTROLS = "_mostImportantTab";
@@ -103,10 +111,10 @@ public class TicketsTest extends BaseTestCase {
     private static final String ADD_TO_LIBRARY_LABEL = "Add to Library";
     private static final String ADD_TO_LIBRARY_WIZARD_ID = "addToLibraryPrompt_prompt-card";
     private static final String WIZARD_LIBRARY_TYPE_ID = "{\"identifier\":\"type\",\"parentIdentifier\":\"type\",\"parentValueIdentifier\":\"\",\"groupId\":\"type\"}";
-    private static final String WIZARD_CATEGORY_ID = "{\"identifier\":\"Category\",\"parentIdentifier\":\"type\",\"parentValueIdentifier\":\"\",\"groupId\":\"Category\"}-input";
+    private static final String WIZARD_CATEGORY_ID = "{\"identifier\":\"Category\",\"parentIdentifier\":\"type\",\"parentValueIdentifier\":\"\",\"groupId\":\"Category\"}";
     private static final String TABLES_WINDOW_ID = "_tablesWindow";
 
-    private static final String NOTIFICATION_WIZARD_CHANNEL_ID = "channel-component-input";
+    private static final String NOTIFICATION_WIZARD_CHANNEL_ID = "channel-component";
     private static final String NOTIFICATION_WIZARD_MESSAGE_ID = "message-component";
     private static final String NOTIFICATION_WIZARD_INTERNAL_TO_ID = "internal-to-component";
     private static final String NOTIFICATION_WIZARD_TO_ID = "to-component";
@@ -126,6 +134,7 @@ public class TicketsTest extends BaseTestCase {
     private static final String CREATE_PROBLEM_WIZARD_ASSIGNEE_ID = "TT_WIZARD_INPUT_ASSIGNEE_LABEL";
     private static final String CREATE_PROBLEM_NAME = "Related Problem - Selenium Test";
     private static final String CREATE_PROBLEM_ASSIGNEE = "sd_seleniumtest";
+    private static final String SAME_MO_TT_TAB_LABEL = "Same MO TT";
 
     @BeforeMethod
     public void goToTicketDashboardPage() {
@@ -144,23 +153,43 @@ public class TicketsTest extends BaseTestCase {
         sdWizardPage.getMoStep().enterTextIntoSearchComponent(MOIdentifier);
         sdWizardPage.getMoStep().selectObjectInMOTable(MOIdentifier);
         sdWizardPage.clickNextButtonInWizard();
-        sdWizardPage.insertValueToSearchComponent(ttAssignee, TT_WIZARD_ASSIGNEE);
-        sdWizardPage.insertValueToSearchComponent(EscalatedTo1, TT_WIZARD_ESCALATED_TO);
-        sdWizardPage.insertValueToTextComponent(TT_REFERENCE_ID, TT_WIZARD_REFERENCE_ID);
+        sdWizardPage.insertValueToComponent(ttAssignee, TT_WIZARD_ASSIGNEE);
+        sdWizardPage.insertValueToComponent(EscalatedTo1, TT_WIZARD_ESCALATED_TO);
+        sdWizardPage.insertValueToComponent(TT_REFERENCE_ID, TT_WIZARD_REFERENCE_ID);
         sdWizardPage.enterIncidentDescription(TT_DESCRIPTION);
         sdWizardPage.enterExpectedResolutionDate();
-        sdWizardPage.insertValueToTextComponent(TT_CORRELATION_ID, TT_WIZARD_CORRELATION_ID);
+        sdWizardPage.insertValueToComponent(TT_CORRELATION_ID, TT_WIZARD_CORRELATION_ID);
         sdWizardPage.clickNextButtonInWizard();
-        String date = LocalDateTime.now().minusMinutes(5).format(CREATE_DATE_FILTER_DATE_FORMATTER);
-        sdWizardPage.insertValueToTextComponent(date, TT_WIZARD_ISSUE_START_DATE_ID);
-        sdWizardPage.insertValueToTextComponent(date, TT_WIZARD_MESSAGE_DATE_ID);
+        String date = LocalDateTime.now().minusMinutes(5).format(DATE_TIME_FORMATTER);
+        sdWizardPage.insertValueToComponent(date, TT_WIZARD_ISSUE_START_DATE_ID);
+        sdWizardPage.insertValueToComponent(date, TT_WIZARD_MESSAGE_DATE_ID);
         sdWizardPage.clickAcceptButtonInWizard();
         ticketID = ticketDashboardPage.getIssueIdWithAssignee(ttAssignee);
         Assert.assertEquals(ticketDashboardPage.getAssigneeForNthTicketInTable(0), ttAssignee);
     }
 
+    @Test(priority = 2, testName = "Check Attributes", description = "Check Attributes")
+    @Description("Check Attributes")
+    public void checkAttributes() {
+        issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
+        ticketOverviewTab = (TicketOverviewTab) issueDetailsPage.selectOverviewTab(TROUBLE_TICKET_ISSUE_TYPE);
+        ticketOverviewTab.maximizeWindow(DETAILS_TABS_CONTAINER_ID);
+        moreDetailsPage = ticketOverviewTab.clickMoreDetails();
+        Assert.assertEquals(moreDetailsPage.checkValueOfAttribute(TYPE_ATTRIBUTE), "CTT");
+    }
+
+    @Test(priority = 3, testName = "Check Logs", description = "Check Logs")
+    @Description("Check Logs")
+    public void checkLogs() {
+        issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
+        ticketOverviewTab = (TicketOverviewTab) issueDetailsPage.selectOverviewTab(TROUBLE_TICKET_ISSUE_TYPE);
+        ticketOverviewTab.maximizeWindow(DETAILS_TABS_CONTAINER_ID);
+        moreDetailsPage = ticketOverviewTab.clickMoreDetails();
+        Assert.assertTrue(moreDetailsPage.isNoteInLogsTable(TICKET_OPENED_LOG));
+    }
+
     @Parameters({"NewAssignee", "EscalatedTo"})
-    @Test(priority = 2, testName = "Edit Ticket Details", description = "Edit Ticket Details")
+    @Test(priority = 4, testName = "Edit Ticket Details", description = "Edit Ticket Details")
     @Description("Edit Ticket Details")
     public void editTicketDetails(
             @Optional("Tier2_Mobile") String NewAssignee,
@@ -169,47 +198,49 @@ public class TicketsTest extends BaseTestCase {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
         issueDetailsPage.maximizeWindow(DETAILS_TABS_CONTAINER_ID);
         ticketID = issueDetailsPage.getOpenedIssueId();
-        issueDetailsPage.allowEditingTicket();
-        sdWizardPage = issueDetailsPage.openEditTicketWizard();
+        ticketOverviewTab = (TicketOverviewTab) issueDetailsPage.selectOverviewTab(TROUBLE_TICKET_ISSUE_TYPE);
+        ticketOverviewTab.allowEditingTicket();
+        sdWizardPage = ticketOverviewTab.openEditIssueWizard();
         sdWizardPage.clickNextButtonInWizard();
-        sdWizardPage.insertValueToSearchComponent(NewAssignee, TT_WIZARD_ASSIGNEE);
+        sdWizardPage.insertValueToComponent(NewAssignee, TT_WIZARD_ASSIGNEE);
         sdWizardPage.enterIncidentDescription(TT_DESCRIPTION_EDITED);
-        sdWizardPage.insertValueToSearchComponent(EscalatedTo, TT_WIZARD_ESCALATED_TO);
-        sdWizardPage.insertValueToComboBoxComponent(TT_SEVERITY, TT_WIZARD_SEVERITY);
+        sdWizardPage.insertValueToComponent(EscalatedTo, TT_WIZARD_ESCALATED_TO);
+        sdWizardPage.insertValueToComponent(TT_SEVERITY, TT_WIZARD_SEVERITY);
         sdWizardPage.clickNextButtonInWizard();
         sdWizardPage.clickAcceptButtonInWizard();
     }
 
-    @Test(priority = 3, testName = "Skip checklist actions and change status", description = "Skip checklist actions and change status")
+    @Test(priority = 5, testName = "Skip checklist actions and change status", description = "Skip checklist actions and change status")
     @Description("Skip checklist actions and change status")
     public void checkOverview() {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
         issueDetailsPage.skipAllActionsOnCheckList();
         Assert.assertTrue(issueDetailsPage.isAllActionsSkipped());
-        issueDetailsPage.changeTicketStatus(STATUS_ACKNOWLEDGED);
-        Assert.assertEquals(issueDetailsPage.checkTicketStatus(), STATUS_ACKNOWLEDGED);
+        ticketOverviewTab = (TicketOverviewTab) issueDetailsPage.selectOverviewTab(TROUBLE_TICKET_ISSUE_TYPE);
+        ticketOverviewTab.changeTicketStatus(STATUS_ACKNOWLEDGED);
+        Assert.assertEquals(ticketOverviewTab.checkTicketStatus(), STATUS_ACKNOWLEDGED);
     }
 
     @Parameters({"NewAssignee"})
-    @Test(priority = 4, testName = "Open Ticket Details from Tickets Search view", description = "Open Ticket Details from Tickets Search view")
+    @Test(priority = 6, testName = "Open Ticket Details from Tickets Search view", description = "Open Ticket Details from Tickets Search view")
     @Description("Open Ticket Details from Tickets Search view")
     public void openTicketDetailsFromTicketsSearchView(
             @Optional("Tier2_Mobile") String NewAssignee
     ) {
         ticketSearchPage = new TicketSearchPage(driver, webDriverWait);
         ticketSearchPage.openView(driver, BASIC_URL);
-        ticketSearchPage.filterByTextField(TICKETS_SEARCH_ASSIGNEE_ATTRIBUTE, NewAssignee);
-        String startDate = LocalDateTime.now().minusMinutes(10).format(CREATE_DATE_FILTER_DATE_FORMATTER);
-        String endDate = LocalDateTime.now().format(CREATE_DATE_FILTER_DATE_FORMATTER);
+        ticketSearchPage.filterBy(TICKETS_SEARCH_ASSIGNEE_ATTRIBUTE, NewAssignee);
+        String startDate = LocalDateTime.now().minusMinutes(10).format(DATE_TIME_FORMATTER);
+        String endDate = LocalDateTime.now().format(DATE_TIME_FORMATTER);
         String date = startDate + " - " + endDate;
-        ticketSearchPage.filterByTextField(BaseSearchPage.CREATION_TIME_ATTRIBUTE, date);
-        ticketSearchPage.filterByTextField(BaseSearchPage.DESCRIPTION_ATTRIBUTE, TT_DESCRIPTION_EDITED);
-        ticketSearchPage.filterByComboBox(TICKETS_SEARCH_STATUS_ATTRIBUTE, STATUS_ACKNOWLEDGED);
+        ticketSearchPage.filterByDate(BaseSearchPage.CREATION_TIME_ATTRIBUTE, date);
+        ticketSearchPage.filterBy(BaseSearchPage.DESCRIPTION_ATTRIBUTE, TT_DESCRIPTION_EDITED);
+        ticketSearchPage.filterBy(TICKETS_SEARCH_STATUS_ATTRIBUTE, STATUS_ACKNOWLEDGED);
         issueDetailsPage = ticketSearchPage.openIssueDetailsViewFromSearchPage("0", BASIC_URL);
         Assert.assertEquals(issueDetailsPage.getOpenedIssueId(), ticketID);
     }
 
-    @Test(priority = 5, testName = "Add External to ticket", description = "Add External to ticket")
+    @Test(priority = 7, testName = "Add External to ticket", description = "Add External to ticket")
     @Description("Add External to ticket")
     public void addExternalToTicket() {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
@@ -221,7 +252,7 @@ public class TicketsTest extends BaseTestCase {
         Assert.assertTrue(externalTab.isExternalCreated(TT_EXTERNAL, EXTERNAL_LIST_ID));
     }
 
-    @Test(priority = 6, testName = "Edit External in Problem", description = "Edit External in Ticket")
+    @Test(priority = 8, testName = "Edit External in Problem", description = "Edit External in Ticket")
     @Description("Edit External in Ticket")
     public void editExternalInTicket() {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
@@ -234,7 +265,7 @@ public class TicketsTest extends BaseTestCase {
         Assert.assertTrue(externalTab.isExternalCreated(TT_EXTERNAL_EDITED, EXTERNAL_LIST_ID));
     }
 
-    @Test(priority = 7, testName = "Delete External", description = "Delete External in Ticket")
+    @Test(priority = 9, testName = "Delete External", description = "Delete External in Ticket")
     @Description("Delete External in Ticket")
     public void deleteExternalInTicket() {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
@@ -245,38 +276,38 @@ public class TicketsTest extends BaseTestCase {
         Assert.assertTrue(externalTab.isExternalListEmpty(EXTERNAL_LIST_ID));
     }
 
-    @Test(priority = 8, testName = "Add dictionary to ticket", description = "Add dictionary to ticket")
+    @Test(priority = 10, testName = "Add dictionary to ticket", description = "Add dictionary to ticket")
     @Description("Add dictionary to ticket")
     public void addDictionaryToTicket() {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
-        issueDetailsPage.selectTabFromDetailsWindow(DICTIONARIES_TAB_ARIA_CONTROLS);
+        issueDetailsPage.selectTabFromDetailsWindow(DICTIONARIES_TAB_ARIA_CONTROLS, DICTIONARIES_TAB_LABEL);
         issueDetailsPage.clickContextAction(ADD_TO_LIBRARY_LABEL);
         SDWizardPage dictionarySDWizardPage = new SDWizardPage(driver, webDriverWait, ADD_TO_LIBRARY_WIZARD_ID);
-        dictionarySDWizardPage.insertValueToComboBoxComponent(TT_LIBRARY_TYPE, WIZARD_LIBRARY_TYPE_ID);
-        dictionarySDWizardPage.insertValueToComboBoxComponent(TT_CATEGORY_NAME, WIZARD_CATEGORY_ID);
+        dictionarySDWizardPage.insertValueToComponent(TT_LIBRARY_TYPE, WIZARD_LIBRARY_TYPE_ID);
+        dictionarySDWizardPage.insertValueToComponent(TT_CATEGORY_NAME, WIZARD_CATEGORY_ID);
         dictionarySDWizardPage.clickAcceptButtonInWizard();
         Assert.assertEquals(issueDetailsPage.checkExistingDictionary(), TT_CATEGORY_NAME);
     }
 
-    @Test(priority = 9, testName = "Check Description Tab", description = "Check Description Tab")
+    @Test(priority = 11, testName = "Check Description Tab", description = "Check Description Tab")
     @Description("Check Description Tab")
     public void checkDescriptionTab() {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
-        issueDetailsPage.selectTabFromTablesWindow(DESCRIPTION_TAB_ARIA_CONTROLS);
+        issueDetailsPage.selectTabFromTablesWindow(DESCRIPTION_TAB_ARIA_CONTROLS, DESCRIPTION_TAB_LABEL);
         Assert.assertEquals(issueDetailsPage.getDisplayedText(TABLES_WINDOW_ID, DESCRIPTION_FIELD_ID), TT_DESCRIPTION_EDITED);
     }
 
-    @Test(priority = 10, testName = "Check Messages Tab - add Internal Notification", description = "Check Messages Tab - add Internal Notification")
+    @Test(priority = 12, testName = "Check Messages Tab - add Internal Notification", description = "Check Messages Tab - add Internal Notification")
     @Description("Check Messages Tab - add Internal Notification")
     public void addInternalNotification() {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
         messagesTab = issueDetailsPage.selectMessagesTab();
         sdWizardPage = messagesTab.createNewNotificationOnMessagesTab();
-        sdWizardPage.insertValueToComboBoxComponent(NOTIFICATION_CHANNEL_INTERNAL, NOTIFICATION_WIZARD_CHANNEL_ID);
-        sdWizardPage.insertValueToTextAreaComponent(NOTIFICATION_MESSAGE_INTERNAL, NOTIFICATION_WIZARD_MESSAGE_ID);
-        sdWizardPage.insertValueToMultiComboBoxComponent(NOTIFICATION_INTERNAL_TO, NOTIFICATION_WIZARD_INTERNAL_TO_ID);
+        sdWizardPage.insertValueToComponent(NOTIFICATION_CHANNEL_INTERNAL, NOTIFICATION_WIZARD_CHANNEL_ID);
+        sdWizardPage.insertValueToComponent(NOTIFICATION_MESSAGE_INTERNAL, NOTIFICATION_WIZARD_MESSAGE_ID);
+        sdWizardPage.insertValueContainsToComponent(NOTIFICATION_INTERNAL_TO, NOTIFICATION_WIZARD_INTERNAL_TO_ID);
         sdWizardPage.clickComboBox(NOTIFICATION_WIZARD_TEMPLATE_ID);
-        sdWizardPage.insertValueToComboBoxComponent(NOTIFICATION_TYPE, NOTIFICATION_WIZARD_TYPE_ID);
+        sdWizardPage.insertValueToComponent(NOTIFICATION_TYPE, NOTIFICATION_WIZARD_TYPE_ID);
         sdWizardPage.clickAcceptButtonInWizard();
 
         Assert.assertFalse(messagesTab.isMessagesTabEmpty());
@@ -286,7 +317,7 @@ public class TicketsTest extends BaseTestCase {
     }
 
     @Parameters({"NotificationEmailTo", "NotificationEmailFrom"})
-    @Test(priority = 11, testName = "Check Messages Tab - add Email Notification", description = "Check Messages Tab - add Email Notification")
+    @Test(priority = 13, testName = "Check Messages Tab - add Email Notification", description = "Check Messages Tab - add Email Notification")
     @Description("Check Messages Tab - add Email Notification")
     public void addEmailNotification(
             @Optional("kornelia.odrobinska@comarch.com") String NotificationEmailTo,
@@ -295,10 +326,10 @@ public class TicketsTest extends BaseTestCase {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
         messagesTab = issueDetailsPage.selectMessagesTab();
         sdWizardPage = messagesTab.createNewNotificationOnMessagesTab();
-        sdWizardPage.insertValueToComboBoxComponent(NOTIFICATION_CHANNEL_EMAIL, NOTIFICATION_WIZARD_CHANNEL_ID);
-        sdWizardPage.insertValueToMultiSearchComponent(NotificationEmailTo, NOTIFICATION_WIZARD_TO_ID);
-        sdWizardPage.insertValueToComboBoxComponent(NotificationEmailFrom, NOTIFICATION_WIZARD_FROM_ID);
-        sdWizardPage.insertValueToTextComponent(NOTIFICATION_SUBJECT, NOTIFICATION_WIZARD_SUBJECT_ID);
+        sdWizardPage.insertValueToComponent(NOTIFICATION_CHANNEL_EMAIL, NOTIFICATION_WIZARD_CHANNEL_ID);
+        sdWizardPage.insertValueContainsToComponent(NotificationEmailTo, NOTIFICATION_WIZARD_TO_ID);
+        sdWizardPage.insertValueToComponent(NotificationEmailFrom, NOTIFICATION_WIZARD_FROM_ID);
+        sdWizardPage.insertValueToComponent(NOTIFICATION_SUBJECT, NOTIFICATION_WIZARD_SUBJECT_ID);
         sdWizardPage.enterEmailMessage(NOTIFICATION_MESSAGE_EMAIL);
         sdWizardPage.clickAcceptButtonInWizard();
 
@@ -307,7 +338,7 @@ public class TicketsTest extends BaseTestCase {
         Assert.assertEquals(messagesTab.checkMessageType(0), "NOTIFICATION");
     }
 
-    @Test(priority = 12, testName = "Check Messages Tab - add Internal Comment", description = "Check Messages Tab - add Internal Comment")
+    @Test(priority = 14, testName = "Check Messages Tab - add Internal Comment", description = "Check Messages Tab - add Internal Comment")
     @Description("Check Messages Tab - add Internal Comment")
     public void addInternalComment() {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
@@ -322,45 +353,45 @@ public class TicketsTest extends BaseTestCase {
         Assert.assertEquals(messagesTab.checkCommentType(0), "internal");
     }
 
-    @Test(priority = 13, testName = "Add Remainder", description = "Add Remainder")
+    @Test(priority = 15, testName = "Add Remainder", description = "Add Remainder")
     @Description("Add Remainder")
     public void addRemainderTest() {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
-        issueDetailsPage.selectTabFromDetailsWindow(OVERVIEW_TAB_ARIA_CONTROLS);
-        issueDetailsPage.maximizeWindow(DETAILS_TABS_CONTAINER_ID);
-        remainderForm = issueDetailsPage.clickAddRemainder();
+        ticketOverviewTab = (TicketOverviewTab) issueDetailsPage.selectOverviewTab(TROUBLE_TICKET_ISSUE_TYPE);
+        ticketOverviewTab.maximizeWindow(DETAILS_TABS_CONTAINER_ID);
+        remainderForm = ticketOverviewTab.clickAddRemainder();
         remainderForm.createReminderWithNote(REMAINDER_NOTE);
-        moreDetailsPage = issueDetailsPage.clickMoreDetails();
-        Assert.assertTrue(moreDetailsPage.isReminderNoteInLogsTable(REMAINDER_NOTE));
+        moreDetailsPage = ticketOverviewTab.clickMoreDetails();
+        Assert.assertTrue(moreDetailsPage.isNoteInLogsTable(REMAINDER_NOTE));
         goToTicketDashboardPage();
         Assert.assertTrue(ticketDashboardPage.isReminderPresent(ticketDashboardPage.getRowForIssueWithID(ticketID), REMAINDER_NOTE));
     }
 
-    @Test(priority = 14, testName = "Edit Reminder", description = "Edit Reminder")
+    @Test(priority = 16, testName = "Edit Reminder", description = "Edit Reminder")
     @Description("Edit Reminder")
     public void editRemainderTest() {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
-        issueDetailsPage.selectTabFromTablesWindow(OVERVIEW_TAB_ARIA_CONTROLS);
-        issueDetailsPage.maximizeWindow(DETAILS_TABS_CONTAINER_ID);
-        remainderForm = issueDetailsPage.clickEditRemainder();
+        ticketOverviewTab = (TicketOverviewTab) issueDetailsPage.selectOverviewTab(TROUBLE_TICKET_ISSUE_TYPE);
+        ticketOverviewTab.maximizeWindow(DETAILS_TABS_CONTAINER_ID);
+        remainderForm = ticketOverviewTab.clickEditRemainder();
         remainderForm.createReminderWithNote(EDITED_REMAINDER_NOTE);
         goToTicketDashboardPage();
         Assert.assertTrue(ticketDashboardPage.isReminderPresent(ticketDashboardPage.getRowForIssueWithID(ticketID), EDITED_REMAINDER_NOTE));
     }
 
-    @Test(priority = 15, testName = "Delete Remainder", description = "Delete Remainder")
+    @Test(priority = 17, testName = "Delete Remainder", description = "Delete Remainder")
     @Description("Delete Remainder")
     public void deleteRemainderTest() {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
-        issueDetailsPage.selectTabFromTablesWindow(OVERVIEW_TAB_ARIA_CONTROLS);
-        issueDetailsPage.maximizeWindow(DETAILS_TABS_CONTAINER_ID);
-        issueDetailsPage.clickRemoveRemainder();
+        ticketOverviewTab = (TicketOverviewTab) issueDetailsPage.selectOverviewTab(TROUBLE_TICKET_ISSUE_TYPE);
+        ticketOverviewTab.maximizeWindow(DETAILS_TABS_CONTAINER_ID);
+        ticketOverviewTab.clickRemoveRemainder();
         goToTicketDashboardPage();
         Assert.assertFalse(ticketDashboardPage.isReminderPresent(ticketDashboardPage.getRowForIssueWithID(ticketID), EDITED_REMAINDER_NOTE));
     }
 
     @Parameters({"RelatedTicketID"})
-    @Test(priority = 16, testName = "Check Related Tickets Tab - link Ticket", description = "Check Related Tickets Tab - link Ticket")
+    @Test(priority = 18, testName = "Check Related Tickets Tab - link Ticket", description = "Check Related Tickets Tab - link Ticket")
     @Description("Check Related Tickets Tab - link Ticket")
     public void linkTicketToTicket(@Optional("100") String RelatedTicketID) {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
@@ -370,7 +401,7 @@ public class TicketsTest extends BaseTestCase {
         Assert.assertEquals(relatedTicketsTab.checkRelatedIssueId(0), RelatedTicketID);
     }
 
-    @Test(priority = 17, testName = "Export Related Tickets", description = "Export Related Tickets")
+    @Test(priority = 19, testName = "Export Related Tickets", description = "Export Related Tickets")
     @Description("Export Related Tickets")
     public void exportRelatedTickets() {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
@@ -382,7 +413,7 @@ public class TicketsTest extends BaseTestCase {
         Assert.assertTrue(relatedTicketsTab.isRelatedIssuesFileNotEmpty());
     }
 
-    @Test(priority = 18, testName = "Check Related Tickets Tab - unlink Ticket", description = "Check Related Tickets Tab - unlink Ticket")
+    @Test(priority = 20, testName = "Check Related Tickets Tab - unlink Ticket", description = "Check Related Tickets Tab - unlink Ticket")
     @Description("Check Related Tickets Tab - unlink Ticket")
     public void unlinkTicketFromTicket() {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
@@ -395,7 +426,7 @@ public class TicketsTest extends BaseTestCase {
     }
 
     @Parameters({"RelatedTicketID"})
-    @Test(priority = 19, testName = "Check Related Tickets Tab - show archived switcher", description = "Check Related Tickets Tab - show archived switcher")
+    @Test(priority = 21, testName = "Check Related Tickets Tab - show archived switcher", description = "Check Related Tickets Tab - show archived switcher")
     @Description("Check Related Tickets Tab - show archived switcher")
     public void showArchived(@Optional("100") String RelatedTicketID) {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
@@ -405,15 +436,15 @@ public class TicketsTest extends BaseTestCase {
         Assert.assertEquals(relatedTicketsTab.checkRelatedIssueId(0), RelatedTicketID);
     }
 
-    @Test(priority = 20, testName = "Check Same MO TT Tab", description = "Check Same MO TT Tab")
+    @Test(priority = 22, testName = "Check Same MO TT Tab", description = "Check Same MO TT Tab")
     @Description("Check Same MO TT Tab")
     public void checkSameMOTTTab() {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
-        issueDetailsPage.selectTabFromTablesWindow(SAME_MO_TT_TAB_ARIA_CONTROLS);
+        issueDetailsPage.selectTabFromTablesWindow(SAME_MO_TT_TAB_ARIA_CONTROLS, SAME_MO_TT_TAB_LABEL);
         Assert.assertTrue(issueDetailsPage.checkIfSameMOTTTableIsNotEmpty());
     }
 
-    @Test(priority = 21, testName = "Check Root Causes Tree Table", description = "Check Root Causes Tree Table")
+    @Test(priority = 23, testName = "Check Root Causes Tree Table", description = "Check Root Causes Tree Table")
     @Description("Check Root Causes Tree Table")
     public void checkRootCause() {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
@@ -425,7 +456,7 @@ public class TicketsTest extends BaseTestCase {
     }
 
     @Parameters({"SecondMOIdentifier"})
-    @Test(priority = 22, testName = "Add second MO in Root Causes tab", description = "Add second MO in Root Causes tab")
+    @Test(priority = 24, testName = "Add second MO in Root Causes tab", description = "Add second MO in Root Causes tab")
     @Description("Add second MO in Root Causes tab")
     public void addRootCause(@Optional("CFS_Access_Product_Selenium_2") String SecondMOIdentifier) {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
@@ -439,7 +470,7 @@ public class TicketsTest extends BaseTestCase {
         Assert.assertTrue(rootCausesTab.checkIfMOIdentifierIsPresentOnRootCauses(SecondMOIdentifier));
     }
 
-    @Test(priority = 23, testName = "Check Participants", description = "Check Participants Tab - add Participant")
+    @Test(priority = 25, testName = "Check Participants", description = "Check Participants Tab - add Participant")
     @Description("Check Participants Tab - add Participant")
     public void addParticipant() {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
@@ -452,7 +483,7 @@ public class TicketsTest extends BaseTestCase {
         Assert.assertEquals(participantsTab.checkParticipantRole(newParticipantRow), PARTICIPANT_ROLE.toUpperCase());
     }
 
-    @Test(priority = 24, testName = "Edit participant", description = "Edit participant")
+    @Test(priority = 26, testName = "Edit participant", description = "Edit participant")
     @Description("Edit participant")
     public void editParticipant() {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
@@ -467,7 +498,7 @@ public class TicketsTest extends BaseTestCase {
         Assert.assertEquals(participantsTab.checkParticipantRole(editedParticipantRow), PARTICIPANT_ROLE.toUpperCase());
     }
 
-    @Test(priority = 25, testName = "Unlink Participant", description = "Unlink Edited Participant")
+    @Test(priority = 27, testName = "Unlink Participant", description = "Unlink Edited Participant")
     @Description("Unlink Edited Participant")
     public void unlinkParticipant() {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
@@ -479,7 +510,7 @@ public class TicketsTest extends BaseTestCase {
         Assert.assertEquals(participantsTab.countParticipantsInTable(), participantsInTable - 1);
     }
 
-    @Test(priority = 26, testName = "Remove Participant", description = "Remove Edited Participant")
+    @Test(priority = 28, testName = "Remove Participant", description = "Remove Edited Participant")
     @Description("Remove Edited Participant")
     public void removeParticipant() {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
@@ -493,15 +524,15 @@ public class TicketsTest extends BaseTestCase {
         Assert.assertEquals(participantsTab.countParticipantsInTable(), participantsInTable - 1);
     }
 
-    @Test(priority = 27, testName = "Check Related Problems tab", description = "Check Related Problems tab - Create Problem")
+    @Test(priority = 29, testName = "Check Related Problems tab", description = "Check Related Problems tab - Create Problem")
     @Description("Check Related Problems tab - Create Problem")
     public void createProblemRelatedToTicket() {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
         relatedProblemsTab = issueDetailsPage.selectRelatedProblemsTab();
         sdWizardPage = relatedProblemsTab.openCreateProblemWizard();
         sdWizardPage.clickNextButtonInWizard();
-        sdWizardPage.insertValueToTextAreaComponent(CREATE_PROBLEM_NAME, CREATE_PROBLEM_WIZARD_NAME_ID);
-        sdWizardPage.insertValueToSearchComponent(CREATE_PROBLEM_ASSIGNEE, CREATE_PROBLEM_WIZARD_ASSIGNEE_ID);
+        sdWizardPage.insertValueToComponent(CREATE_PROBLEM_NAME, CREATE_PROBLEM_WIZARD_NAME_ID);
+        sdWizardPage.insertValueToComponent(CREATE_PROBLEM_ASSIGNEE, CREATE_PROBLEM_WIZARD_ASSIGNEE_ID);
         sdWizardPage.clickNextButtonInWizard();
         sdWizardPage.clickAcceptButtonInWizard();
 
@@ -509,7 +540,7 @@ public class TicketsTest extends BaseTestCase {
         Assert.assertEquals(relatedProblemsTab.checkRelatedProblemAssignee(0), CREATE_PROBLEM_ASSIGNEE);
     }
 
-    @Test(priority = 28, testName = "Export from Related Problems tab", description = "Export from Related Problems tab")
+    @Test(priority = 30, testName = "Export from Related Problems tab", description = "Export from Related Problems tab")
     @Description("Export from Related Problems tab")
     public void exportFromRelatedProblemsTab() {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
@@ -521,7 +552,7 @@ public class TicketsTest extends BaseTestCase {
         Assert.assertTrue(relatedProblemsTab.isRelatedIssuesFileNotEmpty());
     }
 
-    @Test(priority = 29, testName = "Add attachment to ticket", description = "Add attachment to ticket")
+    @Test(priority = 31, testName = "Add attachment to ticket", description = "Add attachment to ticket")
     @Description("Add attachment to ticket")
     public void addAttachment() {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
@@ -535,7 +566,7 @@ public class TicketsTest extends BaseTestCase {
         Assert.assertEquals(attachmentsTab.getAttachmentOwner(), USER_NAME);
     }
 
-    @Test(priority = 30, testName = "Download Attachment", description = "Download the Attachment from Attachment tab in Ticket Details")
+    @Test(priority = 32, testName = "Download Attachment", description = "Download the Attachment from Attachment tab in Ticket Details")
     @Description("Download the Attachment from Attachment tab in Ticket Details")
     public void downloadAttachment() {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
@@ -549,7 +580,7 @@ public class TicketsTest extends BaseTestCase {
         Assert.assertTrue(issueDetailsPage.checkIfFileIsNotEmpty(CSV_FILE));
     }
 
-    @Test(priority = 31, testName = "Delete Attachment", description = "Delete the Attachment from Attachment tab in Ticket Details")
+    @Test(priority = 33, testName = "Delete Attachment", description = "Delete the Attachment from Attachment tab in Ticket Details")
     @Description("Delete the Attachment from Attachment tab in Ticket Details")
     public void deleteAttachment() {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
@@ -562,7 +593,7 @@ public class TicketsTest extends BaseTestCase {
         Assert.assertTrue(attachmentsTab.isAttachmentListEmpty());
     }
 
-    @Test(priority = 32, testName = "Most Important Info test", description = "add comment as important and check if it is displayed in most important info tab")
+    @Test(priority = 34, testName = "Most Important Info test", description = "add comment as important and check if it is displayed in most important info tab")
     @Description("add comment as important and check if it is displayed in most important info tab")
     public void mostImportantInfoTest() {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
@@ -574,11 +605,25 @@ public class TicketsTest extends BaseTestCase {
         messagesTab.markAsImportant(0);
         Assert.assertEquals(messagesTab.getBadgeTextFromMessage(0, 1), "IMPORTANT");
 
-        issueDetailsPage.selectTabFromTablesWindow(MOST_IMPORTANT_INFO_TAB_ARIA_CONTROLS);
+        issueDetailsPage.selectTabFromTablesWindow(MOST_IMPORTANT_INFO_TAB_ARIA_CONTROLS, MOST_IMPORTANT_INFO_TAB_LABEL);
         mostImportantInfoTab = new MessagesTab(driver, webDriverWait);
         Assert.assertFalse(mostImportantInfoTab.isMessagesTabEmpty());
         Assert.assertEquals(mostImportantInfoTab.getMessageText(0), NOTIFICATION_MESSAGE_COMMENT_IMPORTANT);
         Assert.assertEquals(mostImportantInfoTab.getBadgeTextFromMessage(0, 1), "IMPORTANT");
+    }
+
+    @Parameters({"serviceMOIdentifier"})
+    @Test(priority = 35, testName = "Add Affected", description = "Add Affected Service to the Ticket")
+    @Description("Add Affected Service to the Ticket")
+    public void addAffected(
+            @Optional("TEST_MO_ABS_SRV") String serviceMOIdentifier
+    ) {
+        issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
+        affectedTab = issueDetailsPage.selectAffectedTab();
+        int initialServiceCount = affectedTab.countServicesInTable();
+        affectedTab.addServiceToTable(serviceMOIdentifier);
+
+        Assert.assertEquals(affectedTab.countServicesInTable(), initialServiceCount + 1);
     }
 }
 

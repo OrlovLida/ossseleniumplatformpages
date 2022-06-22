@@ -40,15 +40,15 @@ public class ExportTest extends BaseTestCase {
         notificationWrapperPage = ticketSearchPage.openNotificationPanel();
         notificationWrapperPage.clearNotifications();
         if (!ticketSearchPage.isIssueTableEmpty()) {
-            ticketSearchPage.filterByTextField(BaseSearchPage.CREATION_TIME_ATTRIBUTE, ticketSearchPage.getTimePeriodForLastNMinutes(minutes));
+            ticketSearchPage.filterByDate(BaseSearchPage.CREATION_TIME_ATTRIBUTE, ticketSearchPage.getTimePeriodForLastNMinutes(minutes));
             while (ticketSearchPage.isIssueTableEmpty()) {
                 minutes += 30;
                 if (minutes > maxSearchTime6hours) {
                     Assert.fail("No tickets to export created within last 6 hours");
                 }
-                ticketSearchPage.filterByTextField(BaseSearchPage.CREATION_TIME_ATTRIBUTE, ticketSearchPage.getTimePeriodForLastNMinutes(minutes));
+                ticketSearchPage.filterByDate(BaseSearchPage.CREATION_TIME_ATTRIBUTE, ticketSearchPage.getTimePeriodForLastNMinutes(minutes));
             }
-            exportWizardPage = ticketSearchPage.clickExportInTicketSearch();
+            exportWizardPage = ticketSearchPage.clickExportInSearchTable();
             exportWizardPage.fillFileName(EXPORT_FILE_NAME);
             exportWizardPage.fillDateMask(DATE_MASK);
             exportWizardPage.clickAccept();
@@ -85,16 +85,8 @@ public class ExportTest extends BaseTestCase {
     @Test(priority = 3, testName = "Export form Ticket Dashboard", description = "Export form Ticket Dashboard")
     @Description("Export form Ticket Dashboard")
     public void exportFromTicketDashboard() {
+        ticketDashboardPage.exportFromDashboard(TT_DOWNLOAD_FILE);
         notificationWrapperPage = ticketDashboardPage.openNotificationPanel();
-        notificationWrapperPage.clearNotifications();
-        notificationWrapperPage.close();
-        ticketDashboardPage.clickExport();
-        notificationWrapperPage = ticketDashboardPage.openNotificationPanel();
-        notificationWrapperPage.waitForExportFinish();
-        notificationWrapperPage.clickDownload();
-        notificationWrapperPage.waitAndGetFinishedNotificationText();
-        notificationWrapperPage.clearNotifications();
-        ticketDashboardPage.attachFileToReport(TT_DOWNLOAD_FILE);
 
         Assert.assertEquals(notificationWrapperPage.amountOfNotifications(), 0);
         Assert.assertTrue(ticketDashboardPage.checkIfFileIsNotEmpty(TT_DOWNLOAD_FILE));

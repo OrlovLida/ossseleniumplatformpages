@@ -13,7 +13,7 @@ public abstract class BaseTabPage extends BaseDfePage {
     private static final Logger log = LoggerFactory.getLogger(BaseTabPage.class);
     private final TabsWidget tabsWidget;
 
-    public BaseTabPage(WebDriver driver, WebDriverWait wait, String widgetId) {
+    protected BaseTabPage(WebDriver driver, WebDriverWait wait, String widgetId) {
         super(driver, wait);
         tabsWidget = TabsWidget.createById(driver, wait, widgetId);
     }

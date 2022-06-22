@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class PortModel implements Model {
     
     @JsonIgnore
-    private final String type = "EquipmentInterfaceType";
+    private static final String type = "EquipmentInterfaceType";
     
     private String instanceName;
     private Map<String, String> simpleAttributes = Collections.emptyMap();

@@ -1,13 +1,10 @@
 package com.oss.pages.exportguiwizard;
 
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.Input.ComponentType;
-import com.oss.framework.components.inputs.TextField;
-import com.oss.framework.components.data.Data;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
-import com.oss.pages.languageservice.LanguageServicePage;
+
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 
@@ -23,11 +20,10 @@ public class ExportGuiWizardPage extends BasePage {
     private static final String CHECKBOX_SCHEDULE_EXPORT_TASK_ID = "exportgui-components-scheduleexportcheckbox";
     private static final String CHECKBOX_SEND_BY_EMAIL_ID = "exportgui-components-sendbyemailcheckbox";
     private static final String CHECKBOX_REMOTE_UPLOAD_ID = "exportgui-components-remoteuploadcheckbox";
-    private static final String COMBOBOX_FILE_TYPE_ID = "exportgui-components-filetypechoose-input";
-    private static final String TEXT_FIELD_FILE_NAME_ID = "exportgui-components-filenametxt";
-    private static final String COMBOBOX_DATE_MASK_ID = "exportgui-components-dateMaskchoose-input";
-    private static final String COMBOBOX_CSV_DELIMITER_ID = "exportgui-components-csvdelimitertxt-input";
-    private static final String COMBOBOX_QUOTE_CHARACTER_ID = "exportgui-components-csvquotechartxt-input";
+    private static final String COMBOBOX_FILE_TYPE_ID = "exportgui-components-filetypechoose";
+    private static final String COMBOBOX_DATE_MASK_ID = "exportgui-components-dateMaskchoose";
+    private static final String COMBOBOX_CSV_DELIMITER_ID = "exportgui-components-csvdelimitertxt";
+    private static final String COMBOBOX_QUOTE_CHARACTER_ID = "exportgui-components-csvquotechartxt";
     private static final String WIZARD_ID = "exportgui-wizard-widget";
 
     public Wizard getWizard() {
@@ -36,25 +32,25 @@ public class ExportGuiWizardPage extends BasePage {
 
     @Step("Choose CSV File Type")
     public ExportGuiWizardPage chooseCSV() {
-        setValueOnCombobox(COMBOBOX_FILE_TYPE_ID, "CSV");
+        setComboboxValue(COMBOBOX_FILE_TYPE_ID, "CSV");
         return this;
     }
 
     @Step("Choose XLSX File Type")
     public ExportGuiWizardPage chooseXLSX() {
-        setValueOnCombobox(COMBOBOX_FILE_TYPE_ID, "XLSX");
+        setComboboxValue(COMBOBOX_FILE_TYPE_ID, "XLSX");
         return this;
     }
 
     @Step("Choose XLS File Type")
     public ExportGuiWizardPage chooseXLS() {
-        setValueOnCombobox(COMBOBOX_FILE_TYPE_ID, "XLS");
+        setComboboxValue(COMBOBOX_FILE_TYPE_ID, "XLS");
         return this;
     }
 
     @Step("Choose XML File Type")
     public ExportGuiWizardPage chooseXML() {
-        setValueOnCombobox(COMBOBOX_FILE_TYPE_ID, "XML");
+        setComboboxValue(COMBOBOX_FILE_TYPE_ID, "XML");
         return this;
     }
 
@@ -94,16 +90,10 @@ public class ExportGuiWizardPage extends BasePage {
         return this;
     }
 
-    public ExportGuiWizardPage typeFileName(String fileName) {
-        setValueOnTextField(TEXT_FIELD_FILE_NAME_ID, Data.createSingleData(fileName));
-        return this;
-    }
-
     @Step("Close the wizard")
-    public LanguageServicePage closeTheWizard() {
+    public void closeTheWizard() {
         DelayUtils.sleep(300);
         clickOnAccept();
-        return new LanguageServicePage(driver);
     }
 
     @Step("Go to next step of wizard - Fill Server Data")
@@ -127,59 +117,35 @@ public class ExportGuiWizardPage extends BasePage {
         return new SendFileByEmailPage(driver);
     }
 
-    @Step("Uncheck the Export to File with Headers checkbox")
-    public ExportGuiWizardPage uncheckTheExportToFileWithHeaders() {
-        uncheckTheCheckbox(CHECKBOX_EXPORT_WITH_HEADERS_ID);
-        return this;
-    }
-
     @Step("Change Quote Character on Combobox")
     public ExportGuiWizardPage changeQuoteCharacter(String value) {
-        setValueContainsOnCombobox(COMBOBOX_QUOTE_CHARACTER_ID, value);
+        setComboboxValue(COMBOBOX_QUOTE_CHARACTER_ID, value);
         return this;
     }
 
     @Step("Change CSV Delimiter on Combobox")
     public ExportGuiWizardPage changeCSVDelimiter(String value) {
-        setValueOnCombobox(COMBOBOX_CSV_DELIMITER_ID, value);
+        setComboboxValue(COMBOBOX_CSV_DELIMITER_ID, value);
         return this;
     }
 
     @Step("Change Date Mask on Combobox")
     public ExportGuiWizardPage changeDateMask(String value) {
-        setValueContainsOnCombobox(COMBOBOX_DATE_MASK_ID, value);
+        setComboboxValue(COMBOBOX_DATE_MASK_ID, value);
         return this;
     }
 
 
-    void setValueOnCombobox(String comboboxId, String value) {
-        getWizard().getComponent(comboboxId, ComponentType.COMBOBOX)
-                .setSingleStringValue(value);
+    void setComboboxValue(String comboboxId, String value) {
+        getWizard().setComponentValue(comboboxId, value,ComponentType.COMBOBOX);
     }
 
-    private void setValueContainsOnCombobox(String comboboxId, String value) {
-        getWizard().getComponent(comboboxId, ComponentType.COMBOBOX).clear();
-        getWizard().getComponent(comboboxId, ComponentType.COMBOBOX)
-                .setSingleStringValueContains(value);
-    }
-
-    void setValueOnTextField(String textFieldId, Data value) {
-        TextField textField = (TextField) getComponent(textFieldId, Input.ComponentType.TEXT_FIELD);
-        textField.setValue(value);
+    void setTextValue(String textFieldId, String value) {
+       getWizard().setComponentValue(textFieldId, value);
     }
 
     void checkTheCheckbox(String checkboxId) {
-        Input checkBox = getWizard().getComponent(checkboxId, ComponentType.CHECKBOX);
-        checkBox.setSingleStringValue("true");
-    }
-
-    private void uncheckTheCheckbox(String checkboxId) {
-        Input checkBox = getWizard().getComponent(checkboxId, ComponentType.CHECKBOX);
-        checkBox.setSingleStringValue("false");
-    }
-
-    private Input getComponent(String componentId, Input.ComponentType componentType) {
-        return getWizard().getComponent(componentId, componentType);
+        getWizard().setComponentValue(checkboxId, "true");
     }
 
     private void clickOnAccept() {

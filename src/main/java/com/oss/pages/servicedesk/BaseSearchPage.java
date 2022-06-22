@@ -23,7 +23,7 @@ import static com.oss.pages.servicedesk.issue.IssueDetailsPage.DETAILS_PAGE_URL_
 
 public abstract class BaseSearchPage extends BaseSDPage {
 
-    private static final Logger log = LoggerFactory.getLogger(BaseSearchPage.class);
+    protected static final Logger log = LoggerFactory.getLogger(BaseSearchPage.class);
 
     public static final String CREATION_TIME_ATTRIBUTE = "createDate";
     public static final String DESCRIPTION_ATTRIBUTE = "incidentDescription";
@@ -36,13 +36,17 @@ public abstract class BaseSearchPage extends BaseSDPage {
         super(driver, wait);
     }
 
-    public abstract TableWidget getIssueTable();
+    public TableWidget getIssueTable() {
+        return TableWidget.createById(driver, getTableId(), wait);
+    }
 
     public abstract BaseSearchPage openView(WebDriver driver, String basicURL);
 
     public abstract String getSearchPageUrl();
 
     public abstract String getIssueType();
+
+    public abstract String getTableId();
 
     public void goToPage(WebDriver driver, String basicURL, String pageURL) {
         openPage(driver, String.format(VIEWS_URL_PATTERN, basicURL, pageURL));
@@ -52,18 +56,6 @@ public abstract class BaseSearchPage extends BaseSDPage {
     public boolean isPageOpened(String basicURL) {
         log.info("Current URL is: {}", driver.getCurrentUrl());
         return driver.getCurrentUrl().contains(String.format(VIEWS_URL_PATTERN, basicURL, getSearchPageUrl()));
-    }
-
-    @Step("I filter issues by text attribute {attributeName} set to {attributeValue}")
-    public void filterByTextField(String attributeName, String attributeValue) {
-        log.info("Filtering issues by text attribute {} set to {}", attributeName, attributeValue);
-        filterBy(attributeName, attributeValue, Input.ComponentType.TEXT_FIELD);
-    }
-
-    @Step("I filter issues by combo-box attribute {attributeName} set to {attributeValue}")
-    public void filterByComboBox(String attributeName, String attributeValue) {
-        log.info("Filtering issues by combo-box attribute {} set to {}", attributeName, attributeValue);
-        filterBy(attributeName, attributeValue, Input.ComponentType.MULTI_COMBOBOX);
     }
 
     public String getIdForNthTicketInTable(int n) {
@@ -77,13 +69,17 @@ public abstract class BaseSearchPage extends BaseSDPage {
         return attributeValue;
     }
 
-    public TableWidget getTable(WebDriver driver, WebDriverWait wait, String tableWidgetId) {
-        return TableWidget.createById(driver, tableWidgetId, wait);
+    @Step("Filter by: set in component with id {attributeName} value: {attributeValue}")
+    public void filterBy(String attributeName, String attributeValue) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getIssueTable().searchByAttribute(attributeName, attributeValue);
+        log.info("Filtering issues by component with id {} set to {}", attributeName, attributeValue);
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    public void filterBy(String attributeName, String attributeValue, Input.ComponentType componentType) {
+    public void filterByDate(String attributeName, String attributeValue) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getIssueTable().searchByAttribute(attributeName, componentType, attributeValue);
+        getIssueTable().searchByAttribute(attributeName, Input.ComponentType.TEXT_FIELD, attributeValue);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
@@ -93,11 +89,16 @@ public abstract class BaseSearchPage extends BaseSDPage {
     }
 
     @Step("Click Export button in GraphQL Page")
-    public ExportWizardPage clickExportInTicketSearch() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        getIssueTable().callAction(ActionsContainer.KEBAB_GROUP_ID, EXPORT_BUTTON_ID);
-        log.info("Clicking Export Button");
+    public ExportWizardPage clickExportInSearchTable() {
+        clickExportFromTable(getTableId());
         return new ExportWizardPage(driver, wait, EXPORT_WIZARD_ID);
+    }
+
+    @Override
+    public void clickExportFromTable(String tableId) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        TableWidget.createById(driver, getTableId(), wait).callAction(ActionsContainer.KEBAB_GROUP_ID, EXPORT_BUTTON_ID);
+        log.info("Clicking Export Button");
     }
 
     @Step("Count number of visible issues")
@@ -118,15 +119,15 @@ public abstract class BaseSearchPage extends BaseSDPage {
         notificationWrapperPage.clearNotifications();
         if (!isIssueTableEmpty()) {
             int minutes = 60;
-            filterByTextField(BaseSearchPage.CREATION_TIME_ATTRIBUTE, getTimePeriodForLastNMinutes(minutes));
+            filterByDate(BaseSearchPage.CREATION_TIME_ATTRIBUTE, getTimePeriodForLastNMinutes(minutes));
             while (isIssueTableEmpty()) {
                 minutes += 30;
                 if (minutes > MAX_SEARCH_TIME_6_HOURS) {
                     throw new RuntimeException("No tickets to export created within last 6 hours");
                 }
-                filterByTextField(BaseSearchPage.CREATION_TIME_ATTRIBUTE, getTimePeriodForLastNMinutes(minutes));
+                filterByDate(BaseSearchPage.CREATION_TIME_ATTRIBUTE, getTimePeriodForLastNMinutes(minutes));
             }
-            clickExportInTicketSearch();
+            clickExportInSearchTable();
             ExportWizardPage exportWizardPage = new ExportWizardPage(driver, wait, exportWizardId);
             String exportFileName = "Selenium test " + BaseSDPage.getDateFormat();
             exportWizardPage.fillFileName(exportFileName);

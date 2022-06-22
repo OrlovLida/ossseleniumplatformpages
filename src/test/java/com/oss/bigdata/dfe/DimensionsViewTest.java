@@ -55,6 +55,39 @@ public class DimensionsViewTest extends BaseTestCase {
         Assert.assertTrue(dimensionIsCreated);
     }
 
+    @Test(priority = 2, testName = "Edit Dimension", description = "Edit Dimension")
+    @Description("Edit Dimension")
+    public void editDimension() {
+        boolean dimensionExists = dimensionsPage.dimensionExistsIntoTable(dimensionName);
+        if (dimensionExists) {
+            dimensionsPage.selectFoundDimension();
+            dimensionsPage.clickEditDimension();
+            handleEditDimensionWizard();
+            boolean dimensionIsCreated = dimensionsPage.dimensionExistsIntoTable(updatedDimensionName);
+
+            Assert.assertTrue(dimensionIsCreated);
+
+        } else {
+            Assert.fail("Dimension with name: {} doesn't exist"+ updatedDimensionName);
+        }
+    }
+
+    @Test(priority = 3, testName = "Delete Dimension", description = "Delete Dimension")
+    @Description("Delete Dimension")
+    public void deleteDimension() {
+        boolean dimensionExists = dimensionsPage.dimensionExistsIntoTable(updatedDimensionName);
+        if (dimensionExists) {
+            dimensionsPage.selectFoundDimension();
+            dimensionsPage.clickDeleteDimension();
+            dimensionsPage.confirmDelete();
+            boolean dimensionDeleted = !dimensionsPage.dimensionExistsIntoTable(updatedDimensionName);
+
+            Assert.assertTrue(dimensionDeleted);
+        } else {
+            Assert.fail("Dimension with name: {} was not deleted"+ updatedDimensionName);
+        }
+    }
+
     private void handleAddDimensionWizard() {
 
         BasicInformationPage dimensionBasicInfoWizard = new BasicInformationPage(driver, webDriverWait, DIMENSION_WIZARD_ID);
@@ -77,24 +110,6 @@ public class DimensionsViewTest extends BaseTestCase {
         dimStoragePage.clickAccept();
     }
 
-    @Test(priority = 2, testName = "Edit Dimension", description = "Edit Dimension")
-    @Description("Edit Dimension")
-    public void editDimension() {
-        boolean dimensionExists = dimensionsPage.dimensionExistsIntoTable(dimensionName);
-        if (dimensionExists) {
-            dimensionsPage.selectFoundDimension();
-            dimensionsPage.clickEditDimension();
-            handleEditDimensionWizard();
-            boolean dimensionIsCreated = dimensionsPage.dimensionExistsIntoTable(updatedDimensionName);
-
-            Assert.assertTrue(dimensionIsCreated);
-
-        } else {
-            log.error("Dimension with name: {} doesn't exist", updatedDimensionName);
-            Assert.fail();
-        }
-    }
-
     private void handleEditDimensionWizard() {
         BasicInformationPage dimensionBasicInfoWizard = new BasicInformationPage(driver, webDriverWait, DIMENSION_WIZARD_ID);
         dimensionBasicInfoWizard.fillName(updatedDimensionName);
@@ -111,22 +126,5 @@ public class DimensionsViewTest extends BaseTestCase {
 
         StoragePage dimStorageWizard = new StoragePage(driver, webDriverWait, DIMENSION_WIZARD_ID);
         dimStorageWizard.clickAccept();
-    }
-
-    @Test(priority = 3, testName = "Delete Dimension", description = "Delete Dimension")
-    @Description("Delete Dimension")
-    public void deleteDimension() {
-        boolean dimensionExists = dimensionsPage.dimensionExistsIntoTable(updatedDimensionName);
-        if (dimensionExists) {
-            dimensionsPage.selectFoundDimension();
-            dimensionsPage.clickDeleteDimension();
-            dimensionsPage.confirmDelete();
-            boolean dimensionDeleted = !dimensionsPage.dimensionExistsIntoTable(updatedDimensionName);
-
-            Assert.assertTrue(dimensionDeleted);
-        } else {
-            log.error("Dimension with name: {} was not deleted", updatedDimensionName);
-            Assert.fail();
-        }
     }
 }

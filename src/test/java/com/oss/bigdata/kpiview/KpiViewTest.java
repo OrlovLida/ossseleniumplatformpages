@@ -1,5 +1,14 @@
 package com.oss.bigdata.kpiview;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
+import org.testng.annotations.Test;
+
 import com.oss.BaseTestCase;
 import com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel;
 import com.oss.pages.bigdata.kqiview.ChartActionsPanelPage;
@@ -7,11 +16,8 @@ import com.oss.pages.bigdata.kqiview.KpiToolbarPanelPage;
 import com.oss.pages.bigdata.kqiview.KpiViewPage;
 import com.oss.pages.bigdata.kqiview.KpiViewSetupPage;
 import com.oss.utils.TestListener;
+
 import io.qameta.allure.Description;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.Assert;
-import org.testng.annotations.*;
 
 import static com.oss.utils.AttachmentsManager.attachConsoleLogs;
 import static com.oss.utils.AttachmentsManager.saveScreenshotPNG;
@@ -72,7 +78,7 @@ public class KpiViewTest extends BaseTestCase {
     ) {
         try {
             kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
-            kpiToolbarPanel.changeLayout(LayoutPanel.LayoutType.LAYOUT_2x2);
+            kpiToolbarPanel.changeLayout(LayoutPanel.LayoutType.LAYOUT_2X2);
             saveScreenshotPNG(driver);
 
             kpiViewPage.maximizeDataView();

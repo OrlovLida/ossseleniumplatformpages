@@ -1,6 +1,5 @@
 package com.oss.pages.exportguiwizard;
 
-import com.oss.framework.components.data.Data;
 import com.oss.framework.utils.DelayUtils;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
@@ -15,49 +14,44 @@ public class ScheduleTaskPage extends ExportGuiWizardPage{
 
     private static final String TASK_NAME_ID = "exportgui-components-scheduledtasknametxt";
     private static final String TYPE_OF_SCHEDULE_ID = "exportgui-components-scheduledcronexprtxt";
-    private static final String DATA_SINGLE_ID = "dateSingle ";
     private static final String TIME_SINGLE_ID = "timeSingle";
-    private static final String OCCURRENCE_INPUT_DAILY_SINGLE_ID = "occurrenceInputDaily";
-    private static final String TIME_INPUT_ID = "timeInput";
     private static final String COMBO_MONTH_ID = "comboMonthYearly";
-    private static final String COMBO_DAY_ID = "comboDay";
     private static final String COMBO_DAY_MONTH_ID = "comboDayMonthly";
     private static final String COMBO_DAY_YEAR_ID = "comboDayYearly";
-    private static final String DAY_BUTTON_CONTAINER_ID= "dayButtonContainer";
 
     @Step("Choose XLS File Type")
     public ScheduleTaskPage typeTaskName(String taskName){
-        setValueOnTextField(TASK_NAME_ID, Data.createSingleData(taskName));
+        setTextValue(TASK_NAME_ID, taskName);
     return this;
     }
 
     @Step("Choose Single Schedule")
     public ScheduleTaskPage chooseSingleSchedule(){
-        setValueOnCombobox(TYPE_OF_SCHEDULE_ID, "Single");
+        setComboboxValue(TYPE_OF_SCHEDULE_ID, "Single");
         return this;
     }
 
     @Step("Choose Daily Schedule")
     public ScheduleTaskPage chooseDailySchedule(){
-        setValueOnCombobox(TYPE_OF_SCHEDULE_ID, "Daily");
+        setComboboxValue(TYPE_OF_SCHEDULE_ID, "Daily");
         return this;
     }
 
     @Step("Choose Weekly Schedule")
     public ScheduleTaskPage chooseWeeklySchedule(){
-        setValueOnCombobox(TYPE_OF_SCHEDULE_ID, "Weekly");
+        setComboboxValue(TYPE_OF_SCHEDULE_ID, "Weekly");
         return this;
     }
 
     @Step("Choose Monthly Schedule")
     public ScheduleTaskPage chooseMonthlySchedule(){
-        setValueOnCombobox(TYPE_OF_SCHEDULE_ID, "Monthly");
+        setComboboxValue(TYPE_OF_SCHEDULE_ID, "Monthly");
         return this;
     }
 
     @Step("Choose Yearly Schedule")
     public ScheduleTaskPage chooseYearlySchedule(){
-        setValueOnCombobox(TYPE_OF_SCHEDULE_ID, "Yearly");
+        setComboboxValue(TYPE_OF_SCHEDULE_ID, "Yearly");
         return this;
     }
 
@@ -69,19 +63,19 @@ public class ScheduleTaskPage extends ExportGuiWizardPage{
 
     @Step("Type number of months to repeat")
     public ScheduleTaskPage repeatEveryDayMonthly(String howManyDays){
-        setValueOnCombobox(COMBO_DAY_MONTH_ID,howManyDays);
+        setComboboxValue(COMBO_DAY_MONTH_ID,howManyDays);
         return this;
     }
 
     @Step("Choose number of years to repeat")
     public ScheduleTaskPage repeatEveryDayYearly(String howManyDays){
-        setValueOnCombobox(COMBO_DAY_YEAR_ID,howManyDays);
+        setComboboxValue(COMBO_DAY_YEAR_ID,howManyDays);
         return this;
     }
 
     @Step("Chose month to repeat ")
     public ScheduleTaskPage repeatEveryMonth(String monthName){
-        setValueOnCombobox(COMBO_MONTH_ID,(monthName));
+        setComboboxValue(COMBO_MONTH_ID,(monthName));
         return this;
     }
 
@@ -102,7 +96,7 @@ public class ScheduleTaskPage extends ExportGuiWizardPage{
 
     @Step("Set Time")
     public ScheduleTaskPage setTime (String HHMM){
-        setValueOnTextField(TIME_SINGLE_ID, Data.createSingleData(HHMM));
+        setTextValue(TIME_SINGLE_ID, HHMM);
         return this;
     }
 

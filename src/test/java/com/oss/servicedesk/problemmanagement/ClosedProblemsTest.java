@@ -11,6 +11,7 @@ import com.oss.pages.platform.NotificationWrapperPage;
 import com.oss.pages.servicedesk.issue.IssueDetailsPage;
 import com.oss.pages.servicedesk.issue.problem.ClosedProblemsPage;
 import com.oss.pages.servicedesk.issue.problem.ProblemDashboardPage;
+import com.oss.pages.servicedesk.issue.tabs.OverviewTab;
 import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
 
 import io.qameta.allure.Description;
@@ -25,6 +26,7 @@ public class ClosedProblemsTest extends BaseTestCase {
     private ProblemDashboardPage problemDashboardPage;
     private SDWizardPage sdWizardPage;
     private IssueDetailsPage issueDetailsPage;
+    private OverviewTab problemOverviewTab;
     private ClosedProblemsPage closedProblemsPage;
     private NotificationWrapperPage notificationWrapperPage;
     private String problemID;
@@ -49,10 +51,11 @@ public class ClosedProblemsTest extends BaseTestCase {
         sdWizardPage.createProblem(MOIdentifier, problemAssignee, PROBLEM_DESCRIPTION);
         problemID = problemDashboardPage.getProblemIdWithProblemName(PROBLEM_DESCRIPTION);
         issueDetailsPage = problemDashboardPage.openIssueDetailsView(problemID, BASIC_URL, PROBLEM_ISSUE_TYPE);
-        issueDetailsPage.changeIssueStatus(STATUS_IN_PROGRESS);
-        issueDetailsPage.changeIssueStatus(STATUS_RESOLVED);
-        issueDetailsPage.changeIssueStatus(STATUS_CLOSED);
-        Assert.assertEquals(issueDetailsPage.checkIssueStatus(), STATUS_CLOSED);
+        problemOverviewTab = issueDetailsPage.selectOverviewTab(PROBLEM_ISSUE_TYPE);
+        problemOverviewTab.changeIssueStatus(STATUS_IN_PROGRESS);
+        problemOverviewTab.changeIssueStatus(STATUS_RESOLVED);
+        problemOverviewTab.changeIssueStatus(STATUS_CLOSED);
+        Assert.assertEquals(problemOverviewTab.checkIssueStatus(), STATUS_CLOSED);
     }
 
     @Test(priority = 2, testName = "Check Closed Problems View", description = "Refresh, search and check if problem is shown in the closed problems table")
@@ -60,7 +63,7 @@ public class ClosedProblemsTest extends BaseTestCase {
     public void checkClosedProblemsView() {
         closedProblemsPage = new ClosedProblemsPage(driver, webDriverWait).openView(driver, BASIC_URL);
         closedProblemsPage.clickRefresh();
-        closedProblemsPage.filterByTextField(ID_ATTRIBUTE, problemID);
+        closedProblemsPage.filterBy(ID_ATTRIBUTE, problemID);
         Assert.assertEquals(closedProblemsPage.getIdForNthTicketInTable(0), problemID);
     }
 

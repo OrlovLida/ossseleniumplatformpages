@@ -1,19 +1,19 @@
 package com.oss.acd;
 
-import com.oss.BaseTestCase;
-import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.acd.BaseACDPage;
-import com.oss.pages.acd.homeView.HomeViewPage;
-import com.oss.utils.TestListener;
-
-import io.qameta.allure.Description;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+
+import com.oss.BaseTestCase;
+import com.oss.framework.utils.DelayUtils;
+import com.oss.pages.acd.BaseACDPage;
+import com.oss.pages.acd.homeview.HomeViewPage;
+import com.oss.utils.TestListener;
+
+import io.qameta.allure.Description;
 
 @Listeners({TestListener.class})
 public class HomeViewTest extends BaseTestCase {
@@ -57,7 +57,7 @@ public class HomeViewTest extends BaseTestCase {
             homeViewPage.seePieChartIsDisplayed();
             baseACDPage.minimizeWindow(PIE_CHART_WINDOW_ID);
             Assert.assertFalse(baseACDPage.checkCardMaximize(PIE_CHART_WINDOW_ID));
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             Assert.fail();
         }
@@ -94,36 +94,34 @@ public class HomeViewTest extends BaseTestCase {
 
     private void checkScenarioTableWithFilters(String issueType) {
 
-        homeViewPage.setValueInMultiComboBox("issue_type", issueType);
+        homeViewPage.setAttributeValue("issue_type", issueType);
 
         if (!homeViewPage.isDataInScenarioTable()) {
-            homeViewPage.clearMultiComboBox("issue_type");
+            homeViewPage.clearAttributeValue("issue_type");
             log.error("Table doesn't have data for issueType: " + issueType);
             Assert.fail();
         }
 
-        //homeViewPage.setValueInMultiComboBox("creation_type", "Automatically");
-        //homeViewPage.checkValueOfCreationTypeAttribute();
-        homeViewPage.setValueInTimePeriodChooser("create_time", 1, 2, 3);
+        homeViewPage.setValueInTimePeriodChooser("input_create_time", 1, 2, 3);
 
         if (!homeViewPage.isDataInScenarioTable()) {
-            homeViewPage.clearTimePeriod("create_time");
-            homeViewPage.clearMultiComboBox("issue_type");
+            homeViewPage.clearTimePeriod("input_create_time");
+            homeViewPage.clearAttributeValue("issue_type");
             log.error("Table doesn't have data for provided filters");
             Assert.fail();
         }
         homeViewPage.setValueOfIssueIdSearch();
 
         if (!homeViewPage.isDataInScenarioTable()) {
-            homeViewPage.clearTimePeriod("create_time");
-            homeViewPage.clearMultiComboBox("issue_type");
-            homeViewPage.clearMultiSearch("id");
+            homeViewPage.clearTimePeriod("input_create_time");
+            homeViewPage.clearAttributeValue("issue_type");
+            homeViewPage.clearAttributeValue("id");
             Assert.fail();
         }
 
         DelayUtils.sleep();
-        homeViewPage.clearTimePeriod("create_time");
-        homeViewPage.clearMultiComboBox("issue_type");
-        homeViewPage.clearMultiSearch("id");
+        homeViewPage.clearTimePeriod("input_create_time");
+        homeViewPage.clearAttributeValue("issue_type");
+        homeViewPage.clearAttributeValue("id");
     }
 }

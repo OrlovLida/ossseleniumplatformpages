@@ -11,9 +11,6 @@ import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
-import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
-
 public class ExternalResourcesPopupPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(ExternalResourcesPopupPage.class);
@@ -30,17 +27,17 @@ public class ExternalResourcesPopupPage extends BasePage {
     }
 
     public void fillName(String name) {
-        externalResourcesWizard.setComponentValue(NAME_INPUT_ID, name, TEXT_FIELD);
+        externalResourcesWizard.setComponentValue(NAME_INPUT_ID, name);
         log.debug("Setting name with: {}", name);
     }
 
     public void fillType(String type) {
-        externalResourcesWizard.setComponentValue(TYPE_INPUT_ID, type, COMBOBOX);
+        externalResourcesWizard.setComponentValue(TYPE_INPUT_ID, type);
         log.debug("Setting External Resource Type with: {}", type);
     }
 
     public void fillConnectionUrl(String connection) {
-        externalResourcesWizard.setComponentValue(CONNECTION_INPUT_ID, connection, TEXT_FIELD);
+        externalResourcesWizard.setComponentValue(CONNECTION_INPUT_ID, connection);
         log.debug("Setting Connection Url with: {}", connection);
     }
 

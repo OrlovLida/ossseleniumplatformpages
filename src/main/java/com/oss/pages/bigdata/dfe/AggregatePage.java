@@ -21,7 +21,7 @@ public class AggregatePage extends BaseDfePage {
     private static final String ADD_NEW_AGGREGATE_LABEL = "Add New Aggregate";
     private static final String EDIT_AGGREGATE_LABEL = "Edit Aggregate";
     private static final String DELETE_AGGREGATE_LABEL = "Delete Aggregate";
-    private static final String SEARCH_INPUT_ID = "aggregates-tableSearchAppId";
+    private static final String SEARCH_INPUT_ID = "input_aggregates-tableSearchAppId";
 
     private static final String NAME_COLUMN_LABEL = "Name";
     private static final String DELETE_LABEL = "Delete";
@@ -66,7 +66,7 @@ public class AggregatePage extends BaseDfePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         int numberOfRowsInTable = getNumberOfRowsInTable(NAME_COLUMN_LABEL);
         log.trace("Found rows count: {}. Filtered by {}", numberOfRowsInTable, aggregateName);
-        return numberOfRowsInTable == 1;
+        return numberOfRowsInTable >= 1;
     }
 
     @Step("I select found Aggregate")
@@ -90,7 +90,7 @@ public class AggregatePage extends BaseDfePage {
     }
 
     @Step("I check if IfRuns are not empty")
-    public Boolean ifRunsNotEmpty() {
+    public boolean ifRunsNotEmpty() {
         boolean ifRunsExists = OldTable
                 .createById(driver, wait, TABLE_TAB_ID)
                 .countRows(COLUMN_REQUEST_GENERATION_TIME_LABEL) >= 1;
@@ -105,7 +105,7 @@ public class AggregatePage extends BaseDfePage {
     }
 
     @Step("I check if Last Request Generation Time is fresh - up to 60 min old")
-    public boolean IsIfRunsFresh() {
+    public boolean isIfRunsFresh() {
         return isLastLogTimeFresh(lastIfRunTime());
     }
 

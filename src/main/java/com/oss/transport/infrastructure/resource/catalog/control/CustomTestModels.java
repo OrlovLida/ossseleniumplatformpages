@@ -1,12 +1,5 @@
 package com.oss.transport.infrastructure.resource.catalog.control;
 
-import com.comarch.oss.services.infrastructure.objectmapper.JDK8ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.oss.transport.infrastructure.resource.catalog.control.json.CardModelDTO;
-import com.oss.transport.infrastructure.resource.catalog.control.json.DeviceModelDTO;
-import com.oss.transport.infrastructure.resource.catalog.control.json.PluggableModuleModelDTO;
-import com.oss.transport.infrastructure.resource.catalog.control.json.PluggableModuleSlotModelDTO;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -14,20 +7,32 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import com.comarch.oss.services.infrastructure.objectmapper.JDK8ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.oss.transport.infrastructure.resource.catalog.control.json.CardModelDTO;
+import com.oss.transport.infrastructure.resource.catalog.control.json.DeviceModelDTO;
+import com.oss.transport.infrastructure.resource.catalog.control.json.PluggableModuleModelDTO;
+import com.oss.transport.infrastructure.resource.catalog.control.json.PluggableModuleSlotModelDTO;
+
 public class CustomTestModels {
 
-    private static Map<String, DeviceModelDTO> deviceModels = new HashMap<>();
-    private static Map<String, CardModelDTO> cardModels = new HashMap<>();
-    private static Map<String, PluggableModuleSlotModelDTO> pluggableModuleSlotModels = new HashMap<>();
-    private static Map<String, PluggableModuleModelDTO> pluggableModuleModels = new HashMap<>();
+    public static final String CANNOT_LOAD_MODEL_S_S_N = "Cannot load model %s: %s %n";
+    private static final Map<String, DeviceModelDTO> deviceModels = new HashMap<>();
+    private static final Map<String, CardModelDTO> cardModels = new HashMap<>();
+    private static final Map<String, PluggableModuleSlotModelDTO> pluggableModuleSlotModels = new HashMap<>();
+    private static final Map<String, PluggableModuleModelDTO> pluggableModuleModels = new HashMap<>();
 
-    private static ObjectMapper mapper = JDK8ObjectMapper.getMapper();
+    private static final ObjectMapper mapper = JDK8ObjectMapper.getMapper();
 
     static {
         loadModels("src/test/resources/model/device", CustomTestModels::loadDeviceModel);
         loadModels("src/test/resources/model/card", CustomTestModels::loadCardModel);
         loadModels("src/test/resources/model/pluggableModuleSlot", CustomTestModels::loadPluggableModuleSlotModel);
         loadModels("src/test/resources/model/pluggableModule", CustomTestModels::loadPluggableModuleModel);
+    }
+
+    private CustomTestModels() {
+        throw new IllegalStateException("Utility class");
     }
 
     public static Map<String, CardModelDTO> getCardModels() {
@@ -61,7 +66,7 @@ public class CustomTestModels {
             String name = getFileName(modelFile);
             deviceModels.put(name, model);
         } catch (IOException e) {
-            System.out.println("Cannot load model " + modelFile.getName() + ": " + e.getMessage());
+            System.out.printf(CANNOT_LOAD_MODEL_S_S_N, modelFile.getName(), e.getMessage());
         }
     }
 
@@ -71,7 +76,7 @@ public class CustomTestModels {
             String name = getFileName(modelFile);
             cardModels.put(name, model);
         } catch (IOException e) {
-            System.out.println("Cannot load model " + modelFile.getName() + ": " + e.getMessage());
+            System.out.printf(CANNOT_LOAD_MODEL_S_S_N, modelFile.getName(), e.getMessage());
         }
     }
 
@@ -81,7 +86,7 @@ public class CustomTestModels {
             String name = getFileName(modelFile);
             pluggableModuleSlotModels.put(name, model);
         } catch (IOException e) {
-            System.out.println("Cannot load model " + modelFile.getName() + ": " + e.getMessage());
+            System.out.printf(CANNOT_LOAD_MODEL_S_S_N, modelFile.getName(), e.getMessage());
         }
     }
 
@@ -91,7 +96,7 @@ public class CustomTestModels {
             String name = getFileName(modelFile);
             pluggableModuleModels.put(name, model);
         } catch (IOException e) {
-            System.out.println("Cannot load model " + modelFile.getName() + ": " + e.getMessage());
+            System.out.printf(CANNOT_LOAD_MODEL_S_S_N, modelFile.getName(), e.getMessage());
         }
     }
 

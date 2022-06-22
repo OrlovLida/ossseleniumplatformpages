@@ -1,7 +1,6 @@
 package com.oss.pages.platform;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -38,8 +37,7 @@ public class HierarchyViewPage extends BasePage {
     }
 
     public static HierarchyViewPage openHierarchyViewPage(WebDriver driver, String basicURL, String type) {
-        driver.get(String.format("%s/#/views/management/views/hierarchy-view/" + type +
-                "?perspective=LIVE", basicURL));
+        driver.get(String.format("%s/#/views/management/views/hierarchy-view/%s?perspective=LIVE", basicURL, type));
         WebDriverWait wait = new WebDriverWait(driver, 45);
         DelayUtils.waitForPageToLoad(driver, wait);
         return new HierarchyViewPage(driver, wait);
@@ -47,15 +45,13 @@ public class HierarchyViewPage extends BasePage {
 
     @Step("Open Hierarchy View")
     public static HierarchyViewPage goToHierarchyViewPage(WebDriver driver, String basicURL, String type, String xid) {
-        driver.get(String.format("%s/#/views/management/views/hierarchy-view/" + type + "?id=" + xid +
-                "&perspective=LIVE", basicURL));
+        driver.get(String.format("%s/#/views/management/views/hierarchy-view/%s?id=%s&perspective=LIVE", basicURL, type, xid));
         return new HierarchyViewPage(driver);
     }
 
     @Step("Open Hierarchy View In Plan Perspective")
     public static HierarchyViewPage goToHierarchyViewPage(WebDriver driver, String basicURL, String type, String xid, String projectId) {
-        driver.get(String.format("%s/#/views/management/views/hierarchy-view/" + type + "?project_id=" + projectId +
-                "&perspective=PLAN&id=" + xid, basicURL));
+        driver.get(String.format("%s/#/views/management/views/hierarchy-view/%s?project_id=%s&perspective=PLAN&id=%s", basicURL, type, projectId, xid));
         return new HierarchyViewPage(driver);
     }
 
@@ -141,7 +137,6 @@ public class HierarchyViewPage extends BasePage {
 
     @Step("Select tree node by labels - {labels}")
     public void selectNodeByLabelsPath(String labels) {
-        DelayUtils.waitForPageToLoad(driver, wait);
         Node node = getMainTree().getNodeByLabelsPath(labels);
         if (!node.isToggled()) {
             node.toggleNode();
@@ -153,7 +148,7 @@ public class HierarchyViewPage extends BasePage {
     }
 
     public Optional<Popup> expandNextLevel(String pathLabel) {
-       return getMainTree().getNodeByLabelsPath(pathLabel).expandNextLevel();
+        return getMainTree().getNodeByLabelsPath(pathLabel).expandNextLevel();
     }
 
     public boolean isNodePresent(String pathLabel) {

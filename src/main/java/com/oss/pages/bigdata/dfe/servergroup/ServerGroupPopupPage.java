@@ -11,14 +11,11 @@ import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
-import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
-
 public class ServerGroupPopupPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(ServerGroupPopupPage.class);
     private static final String SERVER_GROUP_NAME_INPUT_ID = "name";
-    private static final String PROTOCOL_INPUT_ID = "protocol-input";
+    private static final String PROTOCOL_INPUT_ID = "protocol";
 
     private final Wizard serverGroupPopupWizard;
 
@@ -28,12 +25,12 @@ public class ServerGroupPopupPage extends BasePage {
     }
 
     public void fillName(String name) {
-        serverGroupPopupWizard.setComponentValue(SERVER_GROUP_NAME_INPUT_ID, name, TEXT_FIELD);
+        serverGroupPopupWizard.setComponentValue(SERVER_GROUP_NAME_INPUT_ID, name);
         log.debug("Setting name with: {}", name);
     }
 
     public void fillProtocol(String protocol) {
-        serverGroupPopupWizard.setComponentValue(PROTOCOL_INPUT_ID, protocol, COMBOBOX);
+        serverGroupPopupWizard.setComponentValue(PROTOCOL_INPUT_ID, protocol);
         log.debug("Setting protocol type with: {}", protocol);
     }
 

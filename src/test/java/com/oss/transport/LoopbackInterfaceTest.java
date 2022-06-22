@@ -24,19 +24,16 @@ public class LoopbackInterfaceTest extends BaseTestCase {
 
     private static final String PRE_CREATED_LOCATION_NAME = "SELENIUM_TRANSPORT_LOCATION";
     private static final String PRE_CREATED_DEVICE_NAME = "SeleniumTestDeviceLI";
-
     private static final String NUMBER = "1" + (int) (Math.random() * 100);
     private static final String NUMBER2 = "2" + (int) (Math.random() * 100);
     private static final String DESCRIPTION = "Opis1";
     private static final String DESCRIPTION2 = "Opis2";
-
     private static final String DESCRIPTION_ATTRIBUTE_NAME = "Description";
     private static final String BOTTOM_PROPERTIES_TABLE_TEST_ID = "properties(LoopbackInterface)";
     private static final String EDIT_LOOPBACK_INTERFACE_CONTEXT_ACTION_ID = "EditLoopbackInterfaceContextAction";
     private static final String DELETE_LOOPBACK_INTERFACE_CONTEXT_ACTION_ID = "DeleteLoopbackInterfaceContextAction";
     private static final String EMPTY_NUMBER_ATTRIBUTE_VALUE = "";
     private static final String EMPTY_DESCRIPTION_ATTRIBUTE_VALUE = "";
-
     private Map<String, String> propertyNamesToValues;
 
     @Test(priority = 1)
@@ -51,8 +48,6 @@ public class LoopbackInterfaceTest extends BaseTestCase {
         inventoryView.searchObject("Loopback" + loopbackAttributes.number);
 
         Assert.assertFalse(inventoryView.checkIfTableIsEmpty());
-
-        /* assertLoopbackDescription(loopbackAttributes, inventoryView);*/
     }
 
     @Test(priority = 2)
@@ -68,8 +63,6 @@ public class LoopbackInterfaceTest extends BaseTestCase {
         inventoryView.searchObject("Loopback" + loopbackAttributes.number);
 
         Assert.assertFalse(inventoryView.checkIfTableIsEmpty());
-
-        /*assertLoopbackDescription(loopbackAttributes, inventoryView);*/
     }
 
     @Test(priority = 3)
@@ -84,7 +77,6 @@ public class LoopbackInterfaceTest extends BaseTestCase {
         NewInventoryViewPage inventoryView = loopbackWizard.clickAccept();
         inventoryView.selectFirstRow();
         Assert.assertFalse(inventoryView.checkIfTableIsEmpty());
-        /*assertLoopbackDescription(loopbackAttributes, inventoryView);*/
     }
 
     @Test(priority = 4)

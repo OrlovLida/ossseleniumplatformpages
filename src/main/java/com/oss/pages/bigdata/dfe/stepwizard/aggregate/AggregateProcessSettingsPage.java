@@ -11,14 +11,12 @@ import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
-
 public class AggregateProcessSettingsPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(AggregateProcessSettingsPage.class);
 
-    private static final String ON_FAILURE_INPUT_ID = "failure-input";
-    private static final String STORAGE_POLICY_INPUT_ID = "storagePolicy-input";
+    private static final String ON_FAILURE_INPUT_ID = "failure";
+    private static final String STORAGE_POLICY_INPUT_ID = "storagePolicy";
     private static final String AGGREGATE_WIZARD_ID = "aggregatesWizardWindow";
     private final Wizard processSettingsWizard;
 
@@ -28,12 +26,12 @@ public class AggregateProcessSettingsPage extends BasePage {
     }
 
     private void fillOnFailure(String onFailure) {
-        processSettingsWizard.setComponentValue(ON_FAILURE_INPUT_ID, onFailure, COMBOBOX);
+        processSettingsWizard.setComponentValue(ON_FAILURE_INPUT_ID, onFailure);
         log.debug("Setting on failure: {}", onFailure);
     }
 
     private void fillStoragePolicy(String storagePolicy) {
-        processSettingsWizard.setComponentValue(STORAGE_POLICY_INPUT_ID, storagePolicy, COMBOBOX);
+        processSettingsWizard.setComponentValue(STORAGE_POLICY_INPUT_ID, storagePolicy);
         log.debug("Setting storage policy: {}", storagePolicy);
     }
 

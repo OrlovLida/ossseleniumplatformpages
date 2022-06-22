@@ -4,7 +4,6 @@ import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.list.DraggableList;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
@@ -32,21 +31,21 @@ public class FMCreateWizardPage extends BasePage {
 
     @Step("I set Name of the wizard")
     public FMCreateWizardPage setName(String name) {
-        folderWizard.getComponent(NAME_TEXT_FIELD_ID, Input.ComponentType.TEXT_FIELD).setSingleStringValue(name);
+        folderWizard.getComponent(NAME_TEXT_FIELD_ID).setSingleStringValue(name);
         log.info("Setting name: {}", name);
         return this;
     }
 
     @Step("I set description of the wizard")
     public FMCreateWizardPage setDescription(String description) {
-        folderWizard.getComponent(DESCRIPTION_TEXT_FIELD_ID, Input.ComponentType.TEXT_FIELD).setSingleStringValue(description);
+        folderWizard.getComponent(DESCRIPTION_TEXT_FIELD_ID).setSingleStringValue(description);
         log.info("Setting description: {}", description);
         return this;
     }
 
     @Step("Type Name of the folder")
     public FMCreateWizardPage setTypeValue(String type) {
-        folderWizard.setComponentValue(TYPE_FIELD_ID, type, Input.ComponentType.COMBOBOX);
+        folderWizard.setComponentValue(TYPE_FIELD_ID, type);
         log.info("Setting type value to: {}", type);
         return this;
     }
@@ -63,7 +62,7 @@ public class FMCreateWizardPage extends BasePage {
         log.info("Clicking on label: {}", label);
     }
 
-    public void clickOnAddConditon() {
+    public void clickOnAddCondition() {
         folderWizard.clickButtonById("Add", CONDITION_ID);
         log.info("Clicking on Add condition");
     }

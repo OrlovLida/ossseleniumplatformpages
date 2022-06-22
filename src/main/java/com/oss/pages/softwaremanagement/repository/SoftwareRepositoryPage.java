@@ -81,7 +81,7 @@ public class SoftwareRepositoryPage extends BasePage {
 
     @Step("Open folder creation popup")
     public void openFolderCreationPopup() {
-        softwareRepositoryTree.callActionById(ActionsContainer.CREATE_GROUP_ID, CREATE_DIRECTORY_ACTION_ID);
+        softwareRepositoryTree.callActionById(CREATE_DIRECTORY_ACTION_ID);
     }
 
     @Step("Open rename popup")
