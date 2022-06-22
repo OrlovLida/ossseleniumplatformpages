@@ -35,7 +35,7 @@ public class NetworkOverlapTest extends BaseTestCase {
     private static final String CM_DOMAIN_NAME_2 = "Selenium-NetworkOverlapTest-Domain2";
     private static final String INTERFACE_NAME = "Comarch";
     private static final String DOMAIN = "Comarch";
-    private static final String DEVICE_1_NAME = "Selenium-Overlap-Device1";
+    private static final String DEVICE_1_NAME = "AT-SYS-Selenium-Overlap-Device1";
     private static final String EQUIPMENT_TYPE = "Physical Device";
 
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
@@ -101,7 +101,7 @@ public class NetworkOverlapTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         samplesManagementPage.createDirectory(CM_DOMAIN_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        samplesManagementPage.uploadSamples("recoSamples/NetworkOverlap/Selenium-Overlap-Device.json");
+        samplesManagementPage.uploadSamples("recoSamples/NetworkOverlap/AT-SYS-Selenium-Overlap-Device.json");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -146,7 +146,7 @@ public class NetworkOverlapTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         samplesManagementPage.createDirectory(CM_DOMAIN_NAME_2);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        samplesManagementPage.uploadSamples("recoSamples/NetworkOverlap/Selenium-Overlap-Device.json");
+        samplesManagementPage.uploadSamples("recoSamples/NetworkOverlap/AT-SYS-Selenium-Overlap-Device.json");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
