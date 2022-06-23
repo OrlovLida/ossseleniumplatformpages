@@ -83,21 +83,18 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     @Step("Check if CMDomain exists in Network Discovery Control View")
     public boolean checkIfCmDomainExists(String cmDomainName) {
-        DelayUtils.waitForPageToLoad(driver, wait);
         return getTreeView()
                 .checkIfRowExists(cmDomainName);
     }
 
     @Step("Search for CMDomain in Network Discovery Control View")
     public void searchForCmDomain(String cmDomainName) {
-        DelayUtils.waitForPageToLoad(driver, wait);
         getTreeView()
                 .search(cmDomainName);
     }
 
     @Step("Select CM Domain in Network Discovery Control View")
     public void selectCmDomain(String cmDomainName) {
-        DelayUtils.waitForPageToLoad(driver, wait);
         getTreeView()
                 .selectTreeRow(cmDomainName);
     }

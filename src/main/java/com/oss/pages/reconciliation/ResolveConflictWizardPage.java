@@ -16,7 +16,7 @@ public class ResolveConflictWizardPage extends BasePage {
     private static final String CHOOSE_MANUALLY_ID = "conflictResolutionOption";
     private static final String CHOOSE_MANUALLY = "choose manually";
     private static final String SUBMIT_BUTTON_ID = "ConflictResolverFormSubmitButtonApp-2";
-    private static final String LEADING_DOMAIN_ID = "destinationCmDomain-input";
+    private static final String LEADING_DOMAIN_ID = "destinationCmDomain";
     private static final String COMMENT_ID = "comment";
     private final Wizard wizard;
 
@@ -27,26 +27,22 @@ public class ResolveConflictWizardPage extends BasePage {
 
     @Step("Click on 'choose manually' radio button")
     public void setChooseManually() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        wizard.setComponentValue(CHOOSE_MANUALLY_ID, CHOOSE_MANUALLY, Input.ComponentType.RADIO_BUTTON);
+        wizard.setComponentValue(CHOOSE_MANUALLY_ID, CHOOSE_MANUALLY);
     }
 
     @Step("Click Submit button")
     public void clickSubmit() {
-        DelayUtils.waitForPageToLoad(driver, wait);
         Button button = Button.createById(driver, SUBMIT_BUTTON_ID);
         button.click();
     }
 
     @Step("Set Leading Domain")
     public void setLeadingDomain(String name) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        wizard.setComponentValue(LEADING_DOMAIN_ID, name, Input.ComponentType.COMBOBOX);
+        wizard.setComponentValue(LEADING_DOMAIN_ID, name);
     }
 
     @Step("Add comment")
     public void setComment(String comment) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        wizard.setComponentValue(COMMENT_ID, comment, Input.ComponentType.TEXT_FIELD);
+        wizard.setComponentValue(COMMENT_ID, comment);
     }
 }

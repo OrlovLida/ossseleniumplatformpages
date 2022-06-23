@@ -86,9 +86,7 @@ public class NetworkOverlapTest extends BaseTestCase {
     @Description("Go to Network Discovery Control View and Create CM Domain")
     public void createCmDomain1() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.createCMDomain(CM_DOMAIN_NAME, INTERFACE_NAME, DOMAIN);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
     @Test(priority = 4, description = "Upload reconciliation samples", dependsOnMethods = {"createCmDomain1"})
