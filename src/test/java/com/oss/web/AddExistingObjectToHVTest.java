@@ -13,9 +13,11 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
+import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.table.TableComponent;
+import com.oss.framework.utils.CSSUtils;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.advancedsearch.AdvancedSearchWidget;
 import com.oss.pages.platform.HierarchyViewPage;
@@ -47,20 +49,19 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
     private String buildingId2;
     private String buildingId3;
     private HierarchyViewPage hierarchyView;
-    private AdvancedSearchWidget advancedSearch;
+
 
     @BeforeClass
     public void openHierarchyView() {
-        createLocations();
-        hierarchyView = HierarchyViewPage.goToHierarchyViewPage(driver, BASIC_URL, LOCATION_TYPE, buildingId2);
-        advancedSearch = AdvancedSearchWidget.createById(driver, webDriverWait, ADVANCED_SEARCH_ID);
+        //createLocations();
+        hierarchyView = HierarchyViewPage.goToHierarchyViewPage(driver, BASIC_URL, LOCATION_TYPE, "28786700");
 
     }
 
     private void createLocations(){
-        buildingId1 = createBuilding(BUILDING_NAME_1);
+        //buildingId1 = createBuilding(BUILDING_NAME_1);
         buildingId2 = createBuilding(BUILDING_NAME_2);
-        buildingId3 = createBuilding(BUILDING_NAME_3);
+        //buildingId3 = createBuilding(BUILDING_NAME_3);
         Long roomId1 = createRoom(buildingId2, ROOM_NAME_1);
         Long roomId2 = createRoom(buildingId2, ROOM_NAME_2);
     }
@@ -68,14 +69,14 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
     @Test
     public void addObjects() {
         hierarchyView.getMainTree().callActionById(ADD_OBJECT_BUTTON);
+        AdvancedSearchWidget advancedSearch = AdvancedSearchWidget.createById(driver, webDriverWait, ADVANCED_SEARCH_ID);
         advancedSearch.setFilter("name", BUILDING_NAME_1);
         DelayUtils.sleep();
         TableComponent tableComponent = advancedSearch.getTableComponent();
         tableComponent.selectRow(0);
-        String label = tableComponent.getCellValue(0, "name");
         advancedSearch.clickAdd();
         List<String> visibleNodesLabel = hierarchyView.getVisibleNodesLabel();
-        Assertions.assertThat(visibleNodesLabel).contains(label);
+        Assertions.assertThat(visibleNodesLabel).contains(BUILDING_NAME_1);
 
         hierarchyView.getMainTree().callActionById(ADD_OBJECT_BUTTON);
         advancedSearch.setFilter("name", BUILDING_NAME_1);
@@ -88,9 +89,23 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
     }
 
     @Test
+    public void addSubtypeOfRootObject() {
+        hierarchyView.getMainTree().callActionById(ADD_OBJECT_BUTTON);
+        AdvancedSearchWidget advancedSearch = AdvancedSearchWidget.createById(driver, webDriverWait, ADVANCED_SEARCH_ID);
+        advancedSearch.setFilter("name", ROOM_NAME_1);
+        TableComponent tableComponent = advancedSearch.getTableComponent();
+        tableComponent.selectRow(0);
+        advancedSearch.clickAdd();
+        List<String> visibleNodesLabel = hierarchyView.getVisibleNodesLabel();
+        Assertions.assertThat(visibleNodesLabel).contains(ROOM_NAME_1);
+    }
+
+    @Test
     public void expandNodeAndAddObject() {
         hierarchyView.expandNextLevel(BUILDING_NAME_2);
 
+        List<String> visibleNodesLabel = hierarchyView.getVisibleNodesLabel();
+        Assertions.assertThat(visibleNodesLabel).contains(BUILDING_NAME_3, ROOM_NAME_1, ROOM_NAME_2);
     }
 
     @Test
@@ -99,11 +114,23 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
 
     @Test
     public void addMoreThan500Objects() {
+        hierarchyView.getMainTree().callActionById(ADD_OBJECT_BUTTON);
+        AdvancedSearchWidget advancedSearch = AdvancedSearchWidget.createById(driver, webDriverWait, ADVANCED_SEARCH_ID);
+        TableComponent tableComponent = advancedSearch.getTableComponent();
+        tableComponent.getPaginationComponent().changeRowsCount(500);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        tableComponent.selectAll();
+        advancedSearch.clickAdd();
+        List<SystemMessageContainer.Message> errors = SystemMessageContainer.create(driver, webDriverWait).getMessages();
+        advancedSearch.clickCancel();
+        Assertions.assertThat(errors.size()).isEqualTo(1);
+        Assertions.assertThat(errors.get(0).getText()).isEqualTo("The maximum number of objects is 500.");
     }
 
-
     @Test
-    public void addSubtypeOfRootObject() {
+    public void checkIsAddObjectButtonIsUnavailable() {
+        hierarchyView.selectFirstObject();
+        Assertions.assertThat(CSSUtils.isElementPresent(driver,ADD_OBJECT_BUTTON)).isTrue();
     }
 
     @Test
