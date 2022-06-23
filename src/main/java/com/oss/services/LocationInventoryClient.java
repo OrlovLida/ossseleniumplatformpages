@@ -92,6 +92,15 @@ public class LocationInventoryClient {
         return response.jsonPath().getList("searchResult.id");
     }
 
+    public List<Integer> getPhysicalLocation() {
+        com.jayway.restassured.response.Response response = env.getLocationInventoryCoreRequestSpecification()
+                .given()
+                .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
+                .when()
+                .get(LocationInventoryClient.PHYSICAL_LOCATIONS_API_PATH);
+        return response.jsonPath().getList("searchResult.id");
+    }
+
     public ResourceDTO createSubLocation(SublocationDTO subLocation) {
         return env.getLocationInventoryCoreRequestSpecification()
                 .given()

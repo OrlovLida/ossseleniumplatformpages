@@ -32,6 +32,10 @@ public class LocationInventoryRepository {
         return createLocation(locationName, locationType, addressId);
     }
 
+    public List<Integer> getLocationsIds(){
+        return client.getPhysicalLocation();
+    }
+
     public String createLocation(String locationName, String locationType, Long addressId) {
         ResourceDTO resourceDTO = client.createPhysicalLocation(buildLocation(locationType, locationName, addressId, ""));
         String locationId = resourceDTO.getUri().toString();
@@ -62,7 +66,7 @@ public class LocationInventoryRepository {
     public void updateLocation(String locationName, String locationType, String locationId, Long addressId, String description, long projectId){
         client.updateLocation(buildLocation(locationType, locationName, addressId,description),locationId, projectId);
     }
-
+    @Deprecated
     public void deleteLocation(String locationId, String locationType){
         client.deleteLocation(locationId, locationType);
     }
