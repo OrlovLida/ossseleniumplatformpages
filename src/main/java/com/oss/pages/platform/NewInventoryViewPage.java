@@ -51,7 +51,7 @@ public class NewInventoryViewPage extends BasePage {
     private static final String SAVE_NEW_CONFIG_ID = "saveNewConfig";
     private static final String CHANGE_LABEL = "Change";
     private static final String TABS_CONTAINER_ID = "DetailTabsWidget";
-    private static final String OPEN_HIERARCHY_VIEW_ACTION_ID = "OpenHierarchyViewContext";
+    private static final String OPEN_HIERARCHY_VIEW_ACTION_ID = "HierarchyView";
     public static final String KEBAB_OBJECT_GROUP_ID = "frameworkObjectButtonsGroup";
     private static final String CONFIRM_REMOVAL_BUTTON_ID = "ConfirmationBox_deleteAppId_action_button";
     private static final String PROPERTY_PANEL_ID = "PropertyPanelWidget";
