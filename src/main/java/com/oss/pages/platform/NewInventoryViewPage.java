@@ -209,6 +209,10 @@ public class NewInventoryViewPage extends BasePage {
         getMainTable().callAction(actionId);
     }
 
+    public String getGroupActionLabel(String groupId){
+        return getMainTable().getContextActions().getGroupActionLabel(groupId);
+    }
+
     @Step("Change columns order")
     public void changeColumnsOrderInMainTable(String columnLabel, int position) {
         getMainTable().changeColumnsOrder(columnLabel, position);
