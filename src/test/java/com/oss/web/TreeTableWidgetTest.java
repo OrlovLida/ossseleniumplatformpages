@@ -208,6 +208,7 @@ public class TreeTableWidgetTest extends BaseTestCase {
     @Test(priority = 17)
     public void checkDataInTreeTable() {
         PropertyPanel propertyPanel = plannersViewPage.getPropertyPanel(0, PROPERTY_PANEL_ID);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         String codeFromPropertiesTab = propertyPanel.getPropertyValue(CODE_ID);
         String codeFromTreeTable = plannersViewPage.getAttributeValue(CODE_ID, 0);
         Assert.assertEquals(codeFromPropertiesTab, codeFromTreeTable);
