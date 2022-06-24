@@ -57,10 +57,6 @@ public class ManualMatchingPage extends BasePage {
         return getOldTable().getColumnsHeaders();
     }
 
-    public Map<String, OldTable.Column> getColumnsMap() {
-        return getOldTable().getColumns();
-    }
-
     public void deleteMatching() {
         getOldTable().callAction(ActionsContainer.EDIT_GROUP_ID, DELETE_BUTTON_ID);
         Wizard wizard = Wizard.createByComponentId(driver, wait, DELETE_WIZARD_ID);
@@ -69,12 +65,6 @@ public class ManualMatchingPage extends BasePage {
 
     public void editMatching() {
         getOldTable().callAction(ActionsContainer.EDIT_GROUP_ID, EDIT_BUTTON_ID);
-    }
-
-    //not implemented in OldTable yet
-    public void getRowValues(int index) {
-        getOldTable().selectRow(0);
-        System.out.println(getOldTable().getRowValues(index));
     }
 
     public String getCellValue(int index, String attributeLabel) {
