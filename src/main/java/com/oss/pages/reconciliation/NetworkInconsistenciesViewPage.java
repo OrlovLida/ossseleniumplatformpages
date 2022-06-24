@@ -13,6 +13,7 @@ import com.oss.framework.widgets.table.TableInterface;
 import com.oss.framework.widgets.tabs.TabsInterface;
 import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.framework.widgets.tree.TreeWidget;
+import com.oss.framework.widgets.treetable.OldTreeTableWidget;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 import com.oss.pages.physical.DeviceWizardPage;
@@ -51,6 +52,12 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
+    @Step("Expand two tree levels of Inconsistencies")
+    public void expandTreeRowContains(String rowName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getTreeView().expandTreeRowContains(rowName);
+    }
+
     @Step("Select {inconsistencyName} and use Physical Device Update Wizard to assign location")
     public void assignLocation(String inconsistencyName, String preciseLocation) {
         getTreeView().selectTreeRow(inconsistencyName);
@@ -64,6 +71,12 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         wizard.setComponentValue(DeviceWizardPage.DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, preciseLocation, ComponentType.OBJECT_SEARCH_FIELD);
         DelayUtils.waitForPageToLoad(driver, wait);
         wizard.clickButtonById(ACCEPT_CHANGE_LOCATION_BUTTON_ID);
+    }
+
+    @Step("Select {inconsistencyName} and use Physical Device Update Wizard to assign location")
+    public boolean assertInconsistency(String inconsistencyName) {
+        TreeWidget treeWidget = getTreeView();
+        return treeWidget.checkIfRowExists(inconsistencyName);
     }
 
     @Step("Select {inconsistencyName} and use assign location option")
@@ -120,8 +133,37 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         return table.getCellValue(0, "Operation Type");
     }
 
+    @Step("Get inconsistency LIVE name")
+    public String getLiveName() {
+        OldTreeTableWidget table = OldTreeTableWidget.create(driver, wait, PHYSICAL_INCONSITENCIES_TABLE_ID);
+        return table.getCellValue(0, "Live");
+    }
+
+    @Step("Get inconsistency NETWORK name")
+    public String getNetworkName() {
+        OldTreeTableWidget table = OldTreeTableWidget.create(driver, wait, PHYSICAL_INCONSITENCIES_TABLE_ID);
+        return table.getCellValue(0, "Network");
+    }
+
+    @Step("Get inconsistency NETWORK info by rowName")
+    public String getNetworkInfoByRowName(String rowName) {
+        OldTreeTableWidget table = OldTreeTableWidget.create(driver, wait, PHYSICAL_INCONSITENCIES_TABLE_ID);
+        return table.getCellValue(table.getRowNumber(rowName, "Element"), "Network");
+    }
+
     @Step("Select object on inconsistencies tree")
     public void selectTreeObjectByRowOrder(int number) {
         getTreeView().selectTreeRowByOrder(number);
+    }
+
+    @Step("Select object on inconsistencies tree")
+    public void selectTreeObjectByName(String name) {
+        getTreeView().selectTreeRow(name);
+    }
+
+    @Step("Expand info about inconsistency by rowName")
+    public void expandInfoAboutInconsistency(String rowName) {
+        OldTreeTableWidget table = OldTreeTableWidget.create(driver, wait, PHYSICAL_INCONSITENCIES_TABLE_ID);
+        table.expandNode(rowName, "Element");
     }
 }

@@ -14,15 +14,17 @@ import com.google.common.collect.ImmutableList;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
-import com.oss.framework.components.inputs.Button;
+import com.oss.framework.components.contextactions.ActionsContainer;
+import com.oss.framework.components.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.physical.DeviceWizardPage;
+import com.oss.pages.platform.GlobalSearchPage;
 import com.oss.pages.reconciliation.CreateMatchingWizardPage;
 import com.oss.pages.reconciliation.ManualMatchingPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
+import com.oss.pages.reconciliation.NetworkInconsistenciesViewPage;
 import com.oss.pages.reconciliation.SamplesManagementPage;
 import com.oss.reconciliation.infrastructure.recoConfig.RecoConfigClient;
-import com.oss.softwaremanagement.infrastructure.repository.SoftwareRepositoryClient;
 
 import io.qameta.allure.Description;
 
@@ -31,17 +33,13 @@ public class ManualMatchingTest extends BaseTestCase {
     private static final Logger log = LoggerFactory.getLogger(ManualMatchingTest.class);
     private static final String CM_DOMAIN_NAME = "Selenium-ManualMatchingTest";
     private static final String RECO_CONFIG_BODY = "{\"supportInventoryObjectMatching\":\"true\",\"adaptation-comarch-to-r1\":{\"createBlackboxModels\":\"false\",\"assignGenericModels\":\"false\"}}";
-    private static final String CREATE_BUTTON_ID = "createNewInventoryObjectCheckboxId";
     private static final String INTERFACE_NAME = "Comarch";
     private static final String DOMAIN = "Comarch";
-
-    private ManualMatchingPage manualMatchingPage;
-    private SoftAssert softAssert;
-    private RecoConfigClient recoConfigClient;
-    private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
-    private DeviceWizardPage deviceWizardPage;
-    private CreateMatchingWizardPage createMatchingWizardPage;
-
+    private static final String EQUIPMENT_TYPE = "Physical Device";
+    private static final String DEVICE_NAME_1 = "DEVICE_FOR_MATCHING_1";
+    private static final String DEVICE_NAME_3 = "DEVICE_FOR_MATCHING_3";
+    private static final String DEVICE_TO_MATCH_NAME = "AT-SYS-DEVICE_TO_MATCH";
+    private static final String CREATION_OPERATION_TYPE = "CREATION";
     private static final List<String> columnsHeadersAssertionList = new ImmutableList.Builder<String>()
             .add("Network Type")
             .add("Network Name")
@@ -50,6 +48,13 @@ public class ManualMatchingTest extends BaseTestCase {
             .add("Inventory ID")
             .add("User")
             .build();
+    private ManualMatchingPage manualMatchingPage;
+    private SoftAssert softAssert;
+    private RecoConfigClient recoConfigClient;
+    private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
+    private DeviceWizardPage deviceWizardPage;
+    private CreateMatchingWizardPage createMatchingWizardPage;
+    private NetworkInconsistenciesViewPage networkInconsistenciesViewPage;
 
     @BeforeClass
     public void openConsole() {
@@ -57,36 +62,35 @@ public class ManualMatchingTest extends BaseTestCase {
         softAssert = new SoftAssert();
         recoConfigClient = RecoConfigClient.getInstance(environmentRequestClient);
         recoConfigClient.createRecoConfig(RECO_CONFIG_BODY, CM_DOMAIN_NAME);
-
     }
 
-//    @Test(priority = 1, description = "Check if CMDomain1 is deleted")
-//    @Description("Check if CMDomain1 is deleted")
-//    public void checkIfDomain1IsDeleted() {
-//        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
-//        networkDiscoveryControlViewPage.searchForCmDomain(CM_DOMAIN_NAME);
-//        if (networkDiscoveryControlViewPage.checkIfCmDomainExists(CM_DOMAIN_NAME)) {
-//            networkDiscoveryControlViewPage.selectCmDomain(CM_DOMAIN_NAME);
-//            networkDiscoveryControlViewPage.clearOldNotifications();
-//            networkDiscoveryControlViewPage.deleteCmDomain();
-//            checkPopupMessageType();
-//            Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
-//        }
-//        else {
-//            log.info("CMDomain with name: " + CM_DOMAIN_NAME + " doesn't exist");
-//        }
-//    }
+    @Test(priority = 1, description = "Delete CMDomain is it exists")
+    @Description("Delete CMDomain is it exists")
+    public void deleteDomainIfExists() {
+        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
+        networkDiscoveryControlViewPage.searchForCmDomain(CM_DOMAIN_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        if (networkDiscoveryControlViewPage.checkIfCmDomainExists(CM_DOMAIN_NAME)) {
+            networkDiscoveryControlViewPage.selectCmDomain(CM_DOMAIN_NAME);
+            networkDiscoveryControlViewPage.clearOldNotifications();
+            networkDiscoveryControlViewPage.deleteCmDomain();
+            checkPopupMessageType();
+            Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
+        } else {
+            log.info("CMDomain with name: " + CM_DOMAIN_NAME + " doesn't exist");
+        }
+    }
 
-
-    @Test(priority = 2)
+    @Test(priority = 2, description = "Create CM Domain")
+    @Description("Go to Network Discovery Control View and Create CM Domain")
     public void createCmDomain() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.createCMDomain(CM_DOMAIN_NAME, INTERFACE_NAME, DOMAIN);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 3)
+    @Test(priority = 3, description = "Upload reconciliation samples", dependsOnMethods = {"createCmDomain"})
+    @Description("Go to Sample Management View and upload reconciliation samples")
     public void uploadSamples() throws URISyntaxException {
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.moveToSamplesManagement();
@@ -99,7 +103,8 @@ public class ManualMatchingTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 4)
+    @Test(priority = 4, description = "Run reconciliation and check results", dependsOnMethods = {"uploadSamples"})
+    @Description("Go to Network Discovery Control View and run reconciliation and check if it ended without errors")
     public void runReconciliationWithFullSample() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
@@ -120,7 +125,8 @@ public class ManualMatchingTest extends BaseTestCase {
         }
     }
 
-    @Test(priority = 5)
+    @Test(priority = 5, description = "Create Physical Device", dependsOnMethods = {"runReconciliationWithFullSample"})
+    @Description("Create PhysicalDevice on PhysicalInventoryPage")
     public void createDevice() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage = DeviceWizardPage.goToDeviceWizardPageLive(driver, BASIC_URL);
@@ -136,47 +142,41 @@ public class ManualMatchingTest extends BaseTestCase {
         deviceWizardPage.accept();
     }
 
-    @Test(priority = 6)
+    @Test(priority = 6, description = "Assert Columns Headers", dependsOnMethods = {"createDevice"})
+    @Description("Assert columns headers on Manual Matching Page")
     public void assertColumnsHeaders() {
         manualMatchingPage = ManualMatchingPage.goToManualMatchingPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         List<String> attributes = manualMatchingPage.getColumnHeaders();
         Assert.assertEquals(attributes.size(), columnsHeadersAssertionList.size());
-        for (int i = 0; i< attributes.size(); i++) {
+        for (int i = 0; i < attributes.size(); i++) {
             log.info("Checking attribute with index: " + i + ", which equals: '" + columnsHeadersAssertionList.get(i) + "' on declared assertionList, and equals '" + attributes.get(i) + "' on properties list taken from GUI");
             softAssert.assertEquals(attributes.get(i), columnsHeadersAssertionList.get(i));
         }
         softAssert.assertAll();
     }
 
-
-
-//    @Test(priority = 2)
-//    public void selectFirstRow() {
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        manualMatchingPage.searchByNetworkName("poznan_b");
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        manualMatchingPage.selectFirstRow();
-//    }
-
-    @Test(priority = 7)
+    @Test(priority = 7, description = "Create empty matching", dependsOnMethods = {"createDevice"})
+    @Description("Create Matching that is not connected with any Inventory Object")
     public void createEmptyMatching() {
         manualMatchingPage = ManualMatchingPage.goToManualMatchingPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         manualMatchingPage.clickCreate();
         createMatchingWizardPage = new CreateMatchingWizardPage(driver);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         createMatchingWizardPage.selectTO("Device@@DEVICE_FOR_MATCHING_3");
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         createMatchingWizardPage.createNewIO();
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         createMatchingWizardPage.clickAccept();
     }
 
-    @Test(priority = 8)
+    @Test(priority = 8, description = "Create matching", dependsOnMethods = {"createEmptyMatching"})
+    @Description("Create matching that is connected with Inventory Object")
     public void createMatching() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         manualMatchingPage.clickCreate();
         createMatchingWizardPage = new CreateMatchingWizardPage(driver);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         createMatchingWizardPage.selectTO("Device@@DEVICE_FOR_MATCHING_1");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         createMatchingWizardPage.clickNext();
@@ -188,19 +188,40 @@ public class ManualMatchingTest extends BaseTestCase {
         createMatchingWizardPage.clickAccept();
     }
 
-    @Test(priority = 9)
-    public void assertCreatedMatchings() {
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        manualMatchingPage.searchByNetworkName("DEVICE_FOR_MATCHING_1");
-        Assert.assertEquals(manualMatchingPage.getCellValue(0, "Network Name"), "DEVICE_FOR_MATCHING_1");
-        Assert.assertEquals(manualMatchingPage.getCellValue(0, "Inventory Name"), "AT-SYS-DEVICE_TO_MATCH");
+    @Test(priority = 9, description = "Delete and create matching", dependsOnMethods = {"createMatching"})
+    @Description("Delete and create matching again to check if deletion works correctly")
+    public void deleteAndCreateMatching() {
         manualMatchingPage = ManualMatchingPage.goToManualMatchingPage(driver, BASIC_URL);
-        manualMatchingPage.searchByNetworkName("DEVICE_FOR_MATCHING_3");
-        Assert.assertEquals(manualMatchingPage.getCellValue(0, "Network Name"), "DEVICE_FOR_MATCHING_3");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        manualMatchingPage.searchByNetworkName(DEVICE_NAME_3);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        manualMatchingPage.selectRow(0);
+        manualMatchingPage.deleteMatching();
+        manualMatchingPage = ManualMatchingPage.goToManualMatchingPage(driver, BASIC_URL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        manualMatchingPage.clickCreate();
+        createMatchingWizardPage = new CreateMatchingWizardPage(driver);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        createMatchingWizardPage.selectTO("Device@@DEVICE_FOR_MATCHING_3");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        createMatchingWizardPage.createNewIO();
+        createMatchingWizardPage.clickAccept();
     }
 
-    @Test(priority = 10)
-    @Description("Go to Network Discovery Control View and run reconciliation and check if it ended without errors")
+    @Test(priority = 10, description = "Assert created matchings", dependsOnMethods = {"deleteAndCreateMatching"})
+    @Description("Assert if created matchings have proper names")
+    public void assertCreatedMatchings() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        manualMatchingPage.searchByNetworkName(DEVICE_NAME_1);
+        Assert.assertEquals(manualMatchingPage.getCellValue(0, "Network Name"), DEVICE_NAME_1);
+        Assert.assertEquals(manualMatchingPage.getCellValue(0, "Inventory Name"), DEVICE_TO_MATCH_NAME);
+        manualMatchingPage = ManualMatchingPage.goToManualMatchingPage(driver, BASIC_URL);
+        manualMatchingPage.searchByNetworkName(DEVICE_NAME_3);
+        Assert.assertEquals(manualMatchingPage.getCellValue(0, "Network Name"), DEVICE_NAME_3);
+    }
+
+    @Test(priority = 11, description = "Run reconciliation again", dependsOnMethods = {"deleteAndCreateMatching"})
+    @Description("Run reconciliation again to create Inventory Objects after matching them")
     public void runReconciliationAgain() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
@@ -221,30 +242,38 @@ public class ManualMatchingTest extends BaseTestCase {
         }
     }
 
-//    @Test
-//    public void ddd() {
-//        manualMatchingPage = ManualMatchingPage.goToManualMatchingPage(driver, BASIC_URL);
-//        manualMatchingPage.getCellValue(0, );
-//    }
-//
-//    @Test
-//    public void createNewIO() {
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        CreateMatchingWizardPage createMatchingWizardPage = new CreateMatchingWizardPage(driver);
-//        createMatchingWizardPage.selectTO("Device@@poznan_c");
-//        createMatchingWizardPage.createNewIO();
-//        Button.createById(driver, CREATE_BUTTON_ID).click();
-//    }
-//
-//    @Test
-//    public void deleteMatching() {
-//        manualMatchingPage = ManualMatchingPage.goToManualMatchingPage(driver, BASIC_URL);
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        manualMatchingPage.searchByNetworkName("poznan_c");
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        manualMatchingPage.selectRow(2);
-//        manualMatchingPage.deleteMatching();
-//    }
+    @Test(priority = 12, description = "Assert consistencies", dependsOnMethods = {"runReconciliationAgain"})
+    @Description("Assert if consistencies are correct")
+    public void assertInconsistencies() {
+        networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
+        networkInconsistenciesViewPage.expandTreeRowContains("IPDevice");
+        networkInconsistenciesViewPage.expandTreeRowContains(DEVICE_NAME_1);
+        networkInconsistenciesViewPage.expandTreeRowContains(DEVICE_NAME_3);
+        Assert.assertTrue(networkInconsistenciesViewPage.assertInconsistency(DEVICE_NAME_1));
+        Assert.assertTrue(networkInconsistenciesViewPage.assertInconsistency(DEVICE_NAME_3));
+        networkInconsistenciesViewPage.selectTreeObjectByName(DEVICE_NAME_1);
+        Assert.assertEquals(networkInconsistenciesViewPage.getLiveName(), DEVICE_TO_MATCH_NAME);
+        Assert.assertEquals(networkInconsistenciesViewPage.getNetworkName(), DEVICE_NAME_1);
+        Assert.assertEquals(networkInconsistenciesViewPage.checkInconsistenciesOperationType(), CREATION_OPERATION_TYPE);
+        networkInconsistenciesViewPage.selectTreeObjectByName(DEVICE_NAME_3);
+        Assert.assertEquals(networkInconsistenciesViewPage.getLiveName(), "");
+        Assert.assertEquals(networkInconsistenciesViewPage.getNetworkName(), DEVICE_NAME_3);
+        Assert.assertEquals(networkInconsistenciesViewPage.checkInconsistenciesOperationType(), CREATION_OPERATION_TYPE);
+    }
+
+    @Test(priority = 13, description = "Search for Device and delete it", dependsOnMethods = {"runReconciliationAgain"})
+    @Description("Search for device in Global Search and Delete it")
+    public void searchInGlobalSearchAndOpenInventoryView() {
+        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
+        PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkDiscoveryControlViewPage.searchInGlobalSearch(DEVICE_TO_MATCH_NAME);
+        GlobalSearchPage globalSearchPage = new GlobalSearchPage(driver);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        globalSearchPage.filterObjectType(EQUIPMENT_TYPE);
+        globalSearchPage.expandShowOnAndChooseView(DEVICE_TO_MATCH_NAME, ActionsContainer.EDIT_GROUP_ID, "DeleteDeviceWizardAction");
+        globalSearchPage.confirmDeletion();
+    }
 
     private void checkPopupMessageType() {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);

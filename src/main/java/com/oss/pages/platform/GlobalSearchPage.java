@@ -5,6 +5,8 @@ import org.openqa.selenium.WebDriver;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.Input.ComponentType;
+import com.oss.framework.components.prompts.ConfirmationBox;
+import com.oss.framework.components.prompts.ConfirmationBoxInterface;
 import com.oss.framework.widgets.list.CommonList;
 import com.oss.pages.BasePage;
 
@@ -22,13 +24,19 @@ public class GlobalSearchPage extends BasePage {
 
     @Step("Expand {option} and select {viewName} from the drop-down list")
     public void expandShowOnAndChooseView(String objectName, String option, String viewName) {
-        getResultsList().getRowContains(ATTRIBUTE, objectName).callAction(option,viewName);
+        getResultsList().getRowContains(ATTRIBUTE, objectName).callAction(option, viewName);
     }
 
     @Step("Filter by object type {objectType}")
     public void filterObjectType(String objectType) {
         Input input = ComponentFactory.create(OBJECT_TYPE_FILTER_COMBOBOX_ID, ComponentType.MULTI_COMBOBOX, driver, wait);
         input.setSingleStringValue(objectType);
+    }
+
+    @Step("Confirm deletion of object")
+    public void confirmDeletion() {
+        ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
+        prompt.clickButtonByLabel("Yes");
     }
 
     public CommonList getResultsList() {

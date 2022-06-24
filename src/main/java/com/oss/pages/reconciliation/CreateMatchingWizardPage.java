@@ -2,18 +2,12 @@ package com.oss.pages.reconciliation;
 
 import org.openqa.selenium.WebDriver;
 
-import com.google.common.collect.Table;
-import com.oss.framework.components.inputs.Button;
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.components.table.TableComponent;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.TableWidget;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
-import com.oss.pages.platform.NewInventoryViewPage;
-
-import javafx.scene.control.Tab;
 
 public class CreateMatchingWizardPage extends BasePage {
 
@@ -29,25 +23,18 @@ public class CreateMatchingWizardPage extends BasePage {
     }
 
     public void createNewIO() {
-        wizard.getComponent("createNewInventoryObjectCheckboxId", Input.ComponentType.CHECKBOX)
-                .click();
+        wizard.setComponentValue("createNewInventoryObjectCheckboxId", "true");
     }
 
     public void clickNext() {
-//        wizard.clickNext();
-        Button.createById(driver, "wizard-next-button-MatchingWizardConfig");
+        wizard.clickNext();
     }
 
     public void selectFirstIO() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-
-//        TableComponent tableComponent = TableComponent.create(driver, wait, "table-undefined_result_PhysicalDevice");
-//        tableComponent.selectRow(0);
         getTableComponent().selectRow(0);
     }
 
     public void clickAccept() {
-        DelayUtils.waitForPageToLoad(driver, wait);
         wizard.clickAccept();
     }
 
@@ -62,7 +49,6 @@ public class CreateMatchingWizardPage extends BasePage {
     }
 
     public void selectTO(String distName) {
-        DelayUtils.waitForPageToLoad(driver, wait);
         getTableComponent().getRow(distName, DIST_NAME_HEADER_ID).clickRow();
     }
 
