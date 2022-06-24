@@ -1,7 +1,5 @@
 package com.oss.smoketests;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -51,9 +49,11 @@ public class IV_Smoke_Test extends BaseTestCase {
     private void checkErrorPage() {
         ErrorCard errorCard = ErrorCard.create(driver, webDriverWait);
         if (errorCard.isErrorPagePresent()) {
-            List<String> errors = errorCard.getErrors();
-            errors.forEach(LOGGER::error);
-            Assert.assertEquals(errors.size(), 0);
+            ErrorCard.ErrorInformation errorInformation = errorCard.getErrorInformation();
+            LOGGER.error(errorInformation.getErrorText());
+            LOGGER.error(errorInformation.getErrorDescription());
+            LOGGER.error(errorInformation.getErrorMessage());
+            Assert.fail("Error Page is shown.");
         }
     }
 
