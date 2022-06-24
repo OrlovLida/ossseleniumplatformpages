@@ -49,7 +49,7 @@ public class NetworkViewPage extends BasePage {
     public static final String HIERARCHY_VIEW_ACTION = "NAVIGATION_Hierarchy View-null";
     public static final String DEVICE_ACTION = "add_to_view_group_Device-null";
     public static final String CONNECTION_ACTION = "add_to_view_group_Connection-null";
-    private static final String CREATE_CONNECTION_ACTION = "Create Connection";
+    private static final String CREATE_CONNECTION_ACTION = "CREATE_Create Connection-null";
     private static final String DELETE_TERMINATION_ACTION = "Delete termination";
     private static final String START_EDITING_CONNECTION_ACTION = "EDIT_Start editing Connection-null";
     private static final String STOP_EDITING_CONNECTION_ACTION = "EDIT_Stop editing Connection-null";
@@ -62,7 +62,7 @@ public class NetworkViewPage extends BasePage {
     private static final String LEFT_PANEL_TAB_ID = "LeftPanelWidget";
     private static final String VALIDATION_RESULT_ID = "Validation Results";
     private static final String ROUTING_TABLE_APP_ID = "routing-table-app";
-    private static final String TRAIL_TYPES_POPUP_ID = "trailTypesPopup";
+    private static final String TRAIL_TYPES_POPUP_ID = "trailTypesPopup_prompt-card";
     private static final String SUPPRESSION_WIZARD_ID = "plaSuppressionWizard";
     private static final String SUPPRESSION_WIZARD_CONTEXT_ACTION_ID = "frameworkCustomMore_Suppression wizard";
     private static final String PROPERTY_PANEL_ID = "NetworkViewPropertyPanelWidget";
@@ -105,7 +105,7 @@ public class NetworkViewPage extends BasePage {
     public void openWizardPage(String trailType) {
         useContextAction(ActionsContainer.CREATE_GROUP_ID, CREATE_CONNECTION_ACTION);
         selectTrailType(trailType);
-        clickConfirmationBoxButtonByLabel(ACCEPT_BUTTON);
+        acceptTrailType();
     }
 
     @Step("Add selected objects to Routing")
@@ -208,6 +208,7 @@ public class NetworkViewPage extends BasePage {
     public void selectObjectInViewContent(String name, String value) {
         waitForPageToLoad();
         TableInterface table = OldTable.createById(driver, wait, LEFT_PANEL_TAB_ID);
+
         table.selectRowByAttributeValueWithLabel(name, value);
     }
 
@@ -459,6 +460,11 @@ public class NetworkViewPage extends BasePage {
 
     private void expandAttributesPanel() {
         expandDockedPanel("right");
+        waitForPageToLoad();
+    }
+
+    public void expandContentPanel() {
+        expandDockedPanel("left");
         waitForPageToLoad();
     }
 
