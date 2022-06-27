@@ -48,6 +48,7 @@ public class ManualMatchingTest extends BaseTestCase {
             .add("Inventory ID")
             .add("User")
             .build();
+    private static final String DELETE_IN_GLOBALSEARCH_ID = "DeleteDeviceWizardAction";
     private ManualMatchingPage manualMatchingPage;
     private SoftAssert softAssert;
     private RecoConfigClient recoConfigClient;
@@ -64,68 +65,68 @@ public class ManualMatchingTest extends BaseTestCase {
         recoConfigClient.createRecoConfig(RECO_CONFIG_BODY, CM_DOMAIN_NAME);
     }
 
-    @Test(priority = 1, description = "Delete CMDomain is it exists")
-    @Description("Delete CMDomain is it exists")
-    public void deleteDomainIfExists() {
-        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
-        networkDiscoveryControlViewPage.searchForCmDomain(CM_DOMAIN_NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        if (networkDiscoveryControlViewPage.checkIfCmDomainExists(CM_DOMAIN_NAME)) {
-            networkDiscoveryControlViewPage.selectCmDomain(CM_DOMAIN_NAME);
-            networkDiscoveryControlViewPage.clearOldNotifications();
-            networkDiscoveryControlViewPage.deleteCmDomain();
-            checkPopupMessageType();
-            Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
-        } else {
-            log.info("CMDomain with name: " + CM_DOMAIN_NAME + " doesn't exist");
-        }
-    }
+//    @Test(priority = 1, description = "Delete CMDomain is it exists")
+//    @Description("Delete CMDomain is it exists")
+//    public void deleteDomainIfExists() {
+//        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
+//        networkDiscoveryControlViewPage.searchForCmDomain(CM_DOMAIN_NAME);
+//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+//        if (networkDiscoveryControlViewPage.checkIfCmDomainExists(CM_DOMAIN_NAME)) {
+//            networkDiscoveryControlViewPage.selectCmDomain(CM_DOMAIN_NAME);
+//            networkDiscoveryControlViewPage.clearOldNotifications();
+//            networkDiscoveryControlViewPage.deleteCmDomain();
+//            checkPopupMessageType();
+//            Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
+//        } else {
+//            log.info("CMDomain with name: " + CM_DOMAIN_NAME + " doesn't exist");
+//        }
+//    }
+//
+//    @Test(priority = 2, description = "Create CM Domain")
+//    @Description("Go to Network Discovery Control View and Create CM Domain")
+//    public void createCmDomain() {
+//        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
+//        networkDiscoveryControlViewPage.createCMDomain(CM_DOMAIN_NAME, INTERFACE_NAME, DOMAIN);
+//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+//    }
+//
+//    @Test(priority = 3, description = "Upload reconciliation samples", dependsOnMethods = {"createCmDomain"})
+//    @Description("Go to Sample Management View and upload reconciliation samples")
+//    public void uploadSamples() throws URISyntaxException {
+//        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
+//        networkDiscoveryControlViewPage.moveToSamplesManagement();
+//        SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
+//        samplesManagementPage.selectPath();
+//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+//        samplesManagementPage.createDirectory(CM_DOMAIN_NAME);
+//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+//        samplesManagementPage.uploadSamples("recoSamples/manualMatching/ROUTER_MATCHING_AG.json");
+//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+//    }
+//
+//    @Test(priority = 4, description = "Run reconciliation and check results", dependsOnMethods = {"uploadSamples"})
+//    @Description("Go to Network Discovery Control View and run reconciliation and check if it ended without errors")
+//    public void runReconciliationWithFullSample() {
+//        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
+//        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
+//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+//        networkDiscoveryControlViewPage.runReconciliation();
+//        checkPopupMessageType();
+//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+//        String status = networkDiscoveryControlViewPage.waitForEndOfReco();
+//        networkDiscoveryControlViewPage.selectLatestReconciliationState();
+//        if (status.contains("SUCCESS")) {
+//            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+//            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.ERROR));
+//        } else {
+//            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+//            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.STARTUP_FATAL));
+//            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+//            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.FATAL));
+//        }
+//    }
 
-    @Test(priority = 2, description = "Create CM Domain")
-    @Description("Go to Network Discovery Control View and Create CM Domain")
-    public void createCmDomain() {
-        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
-        networkDiscoveryControlViewPage.createCMDomain(CM_DOMAIN_NAME, INTERFACE_NAME, DOMAIN);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-    }
-
-    @Test(priority = 3, description = "Upload reconciliation samples", dependsOnMethods = {"createCmDomain"})
-    @Description("Go to Sample Management View and upload reconciliation samples")
-    public void uploadSamples() throws URISyntaxException {
-        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
-        networkDiscoveryControlViewPage.moveToSamplesManagement();
-        SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
-        samplesManagementPage.selectPath();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        samplesManagementPage.createDirectory(CM_DOMAIN_NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        samplesManagementPage.uploadSamples("recoSamples/manualMatching/ROUTER_MATCHING_AG.json");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-    }
-
-    @Test(priority = 4, description = "Run reconciliation and check results", dependsOnMethods = {"uploadSamples"})
-    @Description("Go to Network Discovery Control View and run reconciliation and check if it ended without errors")
-    public void runReconciliationWithFullSample() {
-        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
-        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkDiscoveryControlViewPage.runReconciliation();
-        checkPopupMessageType();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        String status = networkDiscoveryControlViewPage.waitForEndOfReco();
-        networkDiscoveryControlViewPage.selectLatestReconciliationState();
-        if (status.contains("SUCCESS")) {
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.ERROR));
-        } else {
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.STARTUP_FATAL));
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.FATAL));
-        }
-    }
-
-    @Test(priority = 5, description = "Create Physical Device", dependsOnMethods = {"runReconciliationWithFullSample"})
+    @Test(priority = 5, description = "Create Physical Device")
     @Description("Create PhysicalDevice on PhysicalInventoryPage")
     public void createDevice() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -133,7 +134,7 @@ public class ManualMatchingTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.setModel("Cisco Systems Inc. WS-C6509");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        deviceWizardPage.setName("AT-SYS-DEVICE_TO_MATCH");
+        deviceWizardPage.setName(DEVICE_TO_MATCH_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.next();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -164,7 +165,7 @@ public class ManualMatchingTest extends BaseTestCase {
         manualMatchingPage.clickCreate();
         createMatchingWizardPage = new CreateMatchingWizardPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        createMatchingWizardPage.selectTO("Device@@DEVICE_FOR_MATCHING_3");
+        createMatchingWizardPage.selectTO(DEVICE_NAME_3);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         createMatchingWizardPage.createNewIO();
         createMatchingWizardPage.clickAccept();
@@ -177,11 +178,11 @@ public class ManualMatchingTest extends BaseTestCase {
         manualMatchingPage.clickCreate();
         createMatchingWizardPage = new CreateMatchingWizardPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        createMatchingWizardPage.selectTO("Device@@DEVICE_FOR_MATCHING_1");
+        createMatchingWizardPage.selectTO(DEVICE_NAME_1);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         createMatchingWizardPage.clickNext();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        createMatchingWizardPage.searchByName("AT-SYS-DEVICE_TO_MATCH");
+        createMatchingWizardPage.searchByName(DEVICE_TO_MATCH_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         createMatchingWizardPage.selectFirstIO();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -202,7 +203,7 @@ public class ManualMatchingTest extends BaseTestCase {
         manualMatchingPage.clickCreate();
         createMatchingWizardPage = new CreateMatchingWizardPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        createMatchingWizardPage.selectTO("Device@@DEVICE_FOR_MATCHING_3");
+        createMatchingWizardPage.selectTO(DEVICE_NAME_3);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         createMatchingWizardPage.createNewIO();
         createMatchingWizardPage.clickAccept();
@@ -263,7 +264,7 @@ public class ManualMatchingTest extends BaseTestCase {
 
     @Test(priority = 13, description = "Search for Device and delete it", dependsOnMethods = {"runReconciliationAgain"})
     @Description("Search for device in Global Search and Delete it")
-    public void searchInGlobalSearchAndOpenInventoryView() {
+    public void searchInGlobalSearchAndDeleteObject() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -271,7 +272,7 @@ public class ManualMatchingTest extends BaseTestCase {
         GlobalSearchPage globalSearchPage = new GlobalSearchPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         globalSearchPage.filterObjectType(EQUIPMENT_TYPE);
-        globalSearchPage.expandShowOnAndChooseView(DEVICE_TO_MATCH_NAME, ActionsContainer.EDIT_GROUP_ID, "DeleteDeviceWizardAction");
+        globalSearchPage.expandShowOnAndChooseView(DEVICE_TO_MATCH_NAME, ActionsContainer.EDIT_GROUP_ID, DELETE_IN_GLOBALSEARCH_ID);
         globalSearchPage.confirmDeletion();
     }
 
