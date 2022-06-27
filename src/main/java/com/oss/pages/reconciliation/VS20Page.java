@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.openqa.selenium.WebDriver;
 
+import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.table.TableComponent;
 import com.oss.framework.utils.DelayUtils;
@@ -17,13 +18,12 @@ import com.oss.pages.BasePage;
 import io.qameta.allure.Step;
 
 public class VS20Page extends BasePage {
+
     private static final String TABLE_WIDGET = "InventoryView_MainCard_VS_Object";
-    private static final String PROPERTIES_TABLE_WIDGET = "InventoryView_DetailsTabs_VS_Object";
     private static final String CM_DOMAIN_NAME = "cmDomainName";
     private static final String DISTINGUISH_NAME = "distinguishName";
     private static final String NATIVE_TYPE = "nativeType";
     private static final String PROPERTY_PANEL_ID = "PropertyPanel";
-    private static final String NAVIGATION_ID = "NAVIGATION";
     private static final String INVENTORY_VIEW_ID = "InventoryView";
 
     public VS20Page(WebDriver driver) {
@@ -39,62 +39,49 @@ public class VS20Page extends BasePage {
     @Step("Search for item by CMDomain name")
     public void searchItemByCMDomainName(String cmDomainName) {
         getTableWidget().searchByAttribute(CM_DOMAIN_NAME, Input.ComponentType.TEXT_FIELD, cmDomainName);
-        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     @Step("Search for item by distinguish name")
     public void searchItemByDistinguishName(String distName) {
         getTableWidget().searchByAttribute(DISTINGUISH_NAME, Input.ComponentType.TEXT_FIELD, distName);
-        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     @Step("Search for item by type")
     public void searchItemByType(String objectType) {
         getTableWidget().searchByAttribute(NATIVE_TYPE, Input.ComponentType.TEXT_FIELD, objectType);
-        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    public void clickFirstItem() {
+    @Step("Select first row")
+    public void selectFirstRow() {
         getTableWidget().clickRow(0);
     }
 
+    @Step("Get active column headers")
     public List<String> getColumnsIds() {
         return getTableWidget().getActiveColumnHeaders();
     }
 
-//    public Map<String, String> getColumnsValues() {
-//        return getPropertyPanel().getPropertiesValuesToList();
-//    }
-
-    @Step("Go to Network Discovery Control View")
-    public void goToNDCV() {
-        getTableWidget().callAction(NAVIGATION_ID);
-    }
-
-    @Step("Get value of property")
-    public String getPropertyValue() {
+    @Step("Get domain name from property value")
+    public String getCmDomainNameFromPropertyValue() {
         return getPropertyPanel().getPropertyValue(CM_DOMAIN_NAME);
     }
 
+    @Step("Get all available fiters to list")
     public List<String> getAvailableFilters() {
         return getTableWidget().getAllVisibleFilters();
     }
 
+    @Step("Navigate to Inventory View")
     public void navigateToInventoryView() {
-        getTableWidget().callAction(NAVIGATION_ID, INVENTORY_VIEW_ID);
+        getTableWidget().callAction(ActionsContainer.SHOW_ON_GROUP_ID, INVENTORY_VIEW_ID);
     }
 
     @Step("Get all properties to list")
-    public List<String> getPropertiesToList() {
+    public List<String> getPropertiesLabels() {
         return getPropertyPanel().getPropertyLabels();
     }
 
-//    @Step("Get all properties IDs to list")
-//    public List<String> getPropertiesIdsToList() {
-//        return getPropertyPanel().getPropertiesToList();
-//    }
-
-    @Step("Get property value")
+    @Step("Get property value by {propertyName}")
     public String getPropertyValue(String propertyName) {
         return getPropertyPanel().getPropertyValue(propertyName);
     }

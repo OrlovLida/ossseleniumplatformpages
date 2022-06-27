@@ -16,9 +16,10 @@ import com.google.common.collect.ImmutableList;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
+import com.oss.framework.components.mainheader.Notifications;
+import com.oss.framework.components.mainheader.NotificationsInterface;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.reconciliation.CmDomainWizardPage;
-import com.oss.pages.reconciliation.InventoryViewVSObject95Page;
+import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.reconciliation.MetamodelPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
 import com.oss.pages.reconciliation.SamplesManagementPage;
@@ -35,43 +36,9 @@ public class VS20Test extends BaseTestCase {
     private static final String DISTINGUISH_NAME = "Device_VS20_TEST";
     private static final String SKIPPING_TEST_MESSAGE = "Skipping tests because resource was not available.";
     private static final String NOTIFICATION_MESSAGE = "Generation of VS Objects Metamodel for CM Interface: Comarch finished";
+    private static final String TABLE_ID = "InventoryView_MainCard_VS_Comarch_COM_x_95_x_Device";
 
-//    private static final Map<String, String> rightHereMap = new HashMap<String, String>()
-//    {
-//        {
-//            put("VS_Comarch_COM_x_95_x_Device_Description", "Cisco IOS XR Software (Cisco ASR9K Series), Version 6.2.3[Default]rnCopyright (c) 2018 by Cisco Systems, Inc.");
-//            put("isRoot", "true");
-//            put("cmDomainName", "AT-SYS-VS20-TEST");
-//            put("VS_Comarch_COM_x_95_x_Device_NBI_x_95_x_FDN", "MD=CISCO_EPNM!ND=Device_VS20_TEST");
-//            put("VS_Comarch_COM_x_95_x_Device_PartNumber", "");
-//            put("VS_Comarch_COM_x_95_x_Device_Software", "6.2.3[Default]");
-//            put("type", "VS_Comarch_COM_x_95_x_Device");
-//            put("VS_Comarch_COM_x_95_x_Device_HardwareVersion", "V01");
-//            put("VS_Comarch_COM_x_95_x_Device_NetworkDomain", "");
-//            put("isRemoved", "false");
-//            put("VS_Comarch_COM_x_95_x_Device_DeviceCategory", "");
-//            put("VS_Comarch_COM_x_95_x_Device_NeFunctionName", "");
-//            put("isChanged", "true");
-//            put("VS_Comarch_COM_x_95_x_Device_ManagementDomain", "ChangeModel_test");
-//            put("VS_Comarch_COM_x_95_x_Device_relation_x_45_x_HostedFunctionsList", "Device@@Device_VS20_TEST##IPDeviceFunction@@8a864a1e-418b-48ad-a6d4-257204046339");
-//            put("VS_Comarch_COM_x_95_x_Device_ManufactureDate", "2019-01-23T10:40:15.778-03:00");
-//            put("VS_Comarch_COM_x_95_x_Device_ChassisID", "");
-//            put("VS_Comarch_COM_x_95_x_Device_SerialNumber", "FOX2141P2PZ");
-//            put("VS_Comarch_COM_x_95_x_Device_relation_x_45_x_ManagementSystem", "");
-//            put("VS_Comarch_COM_x_95_x_Device_Location", "Provincia: AMBA; Localidad: Merlo; Centro: MRL; Ubicacion: Riobamba 494 y Sarandi; Piso: 2; Sala: Transmision Nueva; Traza: Guemes-Merlo;: GEO -34.66711, -58.725129:;");
-//            put("VS_Comarch_COM_x_95_x_Device_ModelName", "");
-//            put("VS_Comarch_COM_x_95_x_Device_Type", "IPDevice");
-//            put("VS_Comarch_COM_x_95_x_Device_ManagementAddress", "10.193.0.9");
-//            put("VS_Comarch_COM_x_95_x_Device_ManagementAddressType", "IPv4");
-//            put("distinguishName", "Device@@Device_VS20_TEST");
-//            put("VS_Comarch_COM_x_95_x_Device_Manufacturer", "Cisco Systems Inc.");
-//            put("nativeType", "COM_Device");
-//            put("VS_Comarch_COM_x_95_x_Device_Name", "Device_VS20_TEST");
-//            put("cmDomainId", "ef0e5edd-c7cb-4e14-bb67-714f1c3cb3b8");
-//        }
-//    };
-
-    private static final List<String> assertionFilterList = new ImmutableList.Builder<String>()
+    private static final List<String> filterList = new ImmutableList.Builder<String>()
             .add("CM Domain Id")
             .add("CM Domain Name")
             .add("Type")
@@ -150,12 +117,14 @@ public class VS20Test extends BaseTestCase {
             .add("relation-HostedFunctionsList")
             .add("relation-ManagementSystem")
             .build();
+    private static final String COMARCH = "Comarch";
 
     SoftAssert softAssert = new SoftAssert();
     private VS20Page vs20Page;
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
     private MetamodelPage metamodelPage;
-    private InventoryViewVSObject95Page inventoryView_vsObject95_page;
+    private NewInventoryViewPage inventoryViewPage;
+    private NotificationsInterface notifications;
     private boolean skipTest = false;
 
     @BeforeClass
@@ -174,14 +143,18 @@ public class VS20Test extends BaseTestCase {
     @Description("Delete CMDomain if it exists")
     public void deleteCMDomainIfExists() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.searchForCmDomain(CM_DOMAIN_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         if (networkDiscoveryControlViewPage.checkIfCmDomainExists(CM_DOMAIN_NAME)) {
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
             networkDiscoveryControlViewPage.selectCmDomain(CM_DOMAIN_NAME);
-            networkDiscoveryControlViewPage.clearOldNotifications();
+            notifications = Notifications.create(driver, webDriverWait);
+            notifications.clearAllNotification();
             networkDiscoveryControlViewPage.deleteCmDomain();
-            Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
+            Assert.assertEquals(notifications.getNotificationMessage(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
         } else {
-            log.info("CMDomain with name: " + CM_DOMAIN_NAME + " doesn't exist");
+            log.info("CMDomain with name: {} doesn't exist", CM_DOMAIN_NAME);
         }
     }
 
@@ -189,13 +162,8 @@ public class VS20Test extends BaseTestCase {
     @Test(priority = 2, description = "Create CMDomain")
     @Description("Create CMDomain")
     public void createCmDomain() {
-        networkDiscoveryControlViewPage.openCmDomainWizard();
-        CmDomainWizardPage wizard = new CmDomainWizardPage(driver);
-        wizard.setName(CM_DOMAIN_NAME);
-        wizard.setInterface("Comarch");
-        wizard.setDomain("Comarch");
-        wizard.save();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
+        networkDiscoveryControlViewPage.createCMDomain(CM_DOMAIN_NAME, COMARCH, COMARCH);
     }
 
     @Test(priority = 3, description = "Upload reconciliation samples", dependsOnMethods = {"createCmDomain"})
@@ -239,11 +207,16 @@ public class VS20Test extends BaseTestCase {
     public void searchForObjectInMetamodelPage() {
         metamodelPage = MetamodelPage.goToMetamodelPage(driver, BASIC_URL);
         metamodelPage.searchInterfaceByName(INTERFACE_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         metamodelPage.searchForObject(OBJECT_TYPE);
-        if (!metamodelPage.checkIfObjectExists(OBJECT_TYPE)) {
-            metamodelPage.clearNotification();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        if (!metamodelPage.isObjectDisplayed(OBJECT_TYPE)) {
+            notifications = Notifications.create(driver, webDriverWait);
+            notifications.clearAllNotification();
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
             metamodelPage.generateMetamodel();
-            Assert.assertEquals(metamodelPage.checkNotificationMessage(), NOTIFICATION_MESSAGE);
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            Assert.assertEquals(notifications.getNotificationMessage(), NOTIFICATION_MESSAGE);
             skipTest = true;
         }
     }
@@ -255,12 +228,12 @@ public class VS20Test extends BaseTestCase {
         List<String> attributes = vs20Page.getAvailableFilters();
         log.info(String.valueOf(attributes.size()));
         log.info(String.valueOf(attributes));
-        log.info(String.valueOf(assertionFilterList.size()));
-        log.info(String.valueOf(assertionFilterList));
-        Assert.assertEquals(attributes.size(), assertionFilterList.size());
+        log.info(String.valueOf(filterList.size()));
+        log.info(String.valueOf(filterList));
+        Assert.assertEquals(attributes.size(), filterList.size());
         for (int i = 0; i < attributes.size(); i++) {
-            log.info("Checking attribute with index: " + i + ", which equals: '" + assertionFilterList.get(i) + "' on declared assertionList, and equals '" + attributes.get(i) + "' on properties list taken from GUI");
-            softAssert.assertEquals((attributes.get(i)), assertionFilterList.get(i));
+            log.info("Checking attribute with index: {}, which equals: '{}' on declared assertionList, and equals '{}' on properties list taken from GUI", i, filterList.get(i), attributes.get(i));
+            softAssert.assertEquals((attributes.get(i)), filterList.get(i));
         }
         softAssert.assertAll();
     }
@@ -270,21 +243,23 @@ public class VS20Test extends BaseTestCase {
     public void selectRowOnVS20Page() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         vs20Page.searchItemByCMDomainName(CM_DOMAIN_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         vs20Page.searchItemByType(OBJECT_TYPE);
-        vs20Page.clickFirstItem();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        vs20Page.selectFirstRow();
     }
 
     @Test(priority = 8, description = "Assert all of properties are correct", dependsOnMethods = {"selectRowOnVS20Page"})
     @Description("Assert all of properties are correct")
     public void assertProperties() {
-        List<String> attributes = vs20Page.getPropertiesToList();
+        List<String> attributes = vs20Page.getPropertiesLabels();
         log.info(String.valueOf(attributes.size()));
         log.info(String.valueOf(attributes));
         log.info(String.valueOf(assertionList.size()));
         log.info(String.valueOf(assertionList));
         Assert.assertEquals(attributes.size(), assertionList.size());
         for (int i = 0; i < attributes.size(); i++) {
-            log.info("Checking attribute with index: " + i + ", which equals: '" + assertionList.get(i) + "' on declared assertionList, and equals '" + attributes.get(i) + "' on properties list taken from GUI");
+            log.info("Checking attribute with index: {}, which equals: '{}' on declared assertionList, and equals '{}' on properties list taken from GUI", i, assertionList.get(i), attributes.get(i));
             softAssert.assertEquals((attributes.get(i)), assertionList.get(i));
         }
         softAssert.assertAll();
@@ -296,7 +271,7 @@ public class VS20Test extends BaseTestCase {
         List<String> columnsList = vs20Page.getColumnsIds();
         Assert.assertEquals(columnsList.size(), assertionVS20ColumnsList.size());
         for (int i = 0; i < assertionVS20ColumnsList.size(); i++) {
-            log.info("Checking attribute with index: " + i + ", which equals: '" + assertionVS20ColumnsList.get(i) + "' on declared assertionList, and equals '" + columnsList.get(i) + "' on properties list taken from GUI");
+            log.info("Checking attribute with index: {}, which equals: '{}' on declared assertionList, and equals '{}' on properties list taken from GUI", i, assertionVS20ColumnsList.get(i), columnsList.get(i));
             Assert.assertEquals(assertionVS20ColumnsList.get(i), columnsList.get(i));
         }
     }
@@ -310,12 +285,12 @@ public class VS20Test extends BaseTestCase {
     @Test(priority = 11, description = "Assert columns in Inventory View", dependsOnMethods = {"showOnInventoryView"})
     @Description("Assert columns in Inventory View")
     public void assertColumnsInInventoryView() {
-        inventoryView_vsObject95_page = new InventoryViewVSObject95Page(driver);
-        List<String> columnsList = inventoryView_vsObject95_page.getColumnsIds();
+        inventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait, TABLE_ID);
+        List<String> columnsList = inventoryViewPage.getColumnsHeaders();
         Assert.assertEquals(columnsList.size(), assertionInventoryViewColumnsList.size());
         for (int i = 0; i < assertionInventoryViewColumnsList.size(); i++) {
-            log.info("Checking attribute with name: " + assertionInventoryViewColumnsList.get(i));
-            log.info("Checking attribute with index: " + i + ", which equals: '" + assertionInventoryViewColumnsList.get(i) + "' on declared assertionList, and equals '" + columnsList.get(i) + "' on properties list taken from GUI");
+            log.info("Checking attribute with name: {}", assertionInventoryViewColumnsList.get(i));
+            log.info("Checking attribute with index: {}, which equals: '{}' on declared assertionList, and equals '{}' on properties list taken from GUI", i, assertionInventoryViewColumnsList.get(i), columnsList.get(i));
             Assert.assertEquals(assertionInventoryViewColumnsList.get(i), columnsList.get(i));
         }
     }

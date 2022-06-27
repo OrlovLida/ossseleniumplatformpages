@@ -3,8 +3,6 @@ package com.oss.pages.reconciliation;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.components.mainheader.Notifications;
-import com.oss.framework.components.mainheader.NotificationsInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.propertypanel.PropertyPanel;
 import com.oss.framework.widgets.tabs.TabsInterface;
@@ -16,7 +14,7 @@ import org.openqa.selenium.WebDriver;
 
 public class MetamodelPage extends BasePage {
 
-    private static final String CM_INTERFACE_ID = "narComponent_metamodelEditorViewIdsearchCmInterfaceId";
+    private static final String INTERFACE_ID = "narComponent_metamodelEditorViewIdsearchCmInterfaceId";
     private static final String GENERATE_METAMODEL_ID = "narComponent_MetamodelTypeActionGenerateMetamodelId";
     private static final String TREE_WIDGET_ID = "narComponent_metamodelEditorViewIdobjectTypesTreeWindowId";
     private static final String PROPERTY_PANEL_ID = "card-content_narComponent_metamodelEditorViewIdobjectTypePropertiesWindowId";
@@ -32,33 +30,24 @@ public class MetamodelPage extends BasePage {
         return new MetamodelPage(driver);
     }
 
-    @Step("Search for CMInterface by its name")
-    public void searchInterfaceByName(String cmInterfaceName) {
-        Input searchField = getComponent(CM_INTERFACE_ID, Input.ComponentType.SEARCH_BOX);
-        searchField.setSingleStringValue(cmInterfaceName);
-        DelayUtils.waitForPageToLoad(driver, wait);
+    @Step("Search for Interface by name = {interfaceName}")
+    public void searchInterfaceByName(String interfaceName) {
+        getComponent(INTERFACE_ID).setSingleStringValue(interfaceName);
     }
 
-    @Step("Generate new Metamodel for CMInterface")
+    @Step("Generate new Metamodel for Interface")
     public void generateMetamodel() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        TreeWidget objectsTree = getTreeWidget();
-        objectsTree.callActionById(ActionsContainer.OTHER_GROUP_ID, GENERATE_METAMODEL_ID);
-        DelayUtils.waitForPageToLoad(driver, wait);
+        getTreeWidget().callActionById(ActionsContainer.OTHER_GROUP_ID, GENERATE_METAMODEL_ID);
     }
 
-    @Step("Search for object by name")
+    @Step("Search for object by name = {objectName}")
     public void searchForObject(String objectName) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        TreeWidget objectsTree = getTreeWidget();
-        objectsTree.search(objectName);
-        DelayUtils.waitForPageToLoad(driver, wait);
+        getTreeWidget().search(objectName);
     }
 
-    @Step("Check if object exists by name")
-    public boolean checkIfObjectExists(String objectName) {
-        TreeWidget treeWidget = getTreeWidget();
-        return treeWidget.isRowPresent(objectName);
+    @Step("Check if object exists by name = {objectName}")
+    public boolean isObjectDisplayed(String objectName) {
+        return getTreeWidget().isRowPresent(objectName);
     }
 
     @Step("Check if Object name is correct")
@@ -66,23 +55,7 @@ public class MetamodelPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         PropertyPanel propertyPanel = getPropertyPanel();
         String value = propertyPanel.getPropertyValue("Class Name");
-        if (value.equals(objectName)) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-    @Step("Check Notificaiton")
-    public String checkNotificationMessage() {
-        return Notifications.create(driver, wait).getNotificationMessage();
-    }
-
-    @Step("Clear old notification")
-    public void clearNotification() {
-        NotificationsInterface notifications = Notifications.create(driver, wait);
-        notifications.clearAllNotification();
+        return value.equals(objectName);
     }
 
     private PropertyPanel getPropertyPanel() {
@@ -93,8 +66,8 @@ public class MetamodelPage extends BasePage {
         return TreeWidget.createById(driver, wait, TREE_WIDGET_ID);
     }
 
-    private Input getComponent(String componentId, Input.ComponentType componentType) {
-        return ComponentFactory.create(componentId, componentType, driver, wait);
+    private Input getComponent(String componentId) {
+        return ComponentFactory.create(componentId, driver, wait);
     }
 
     private TabsInterface getTabsInterface(){

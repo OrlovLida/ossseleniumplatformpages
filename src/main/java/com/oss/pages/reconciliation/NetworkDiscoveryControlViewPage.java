@@ -24,8 +24,6 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(NetworkDiscoveryControlViewPage.class);
 
-    private static final String MORE_GROUP_ID = "moreActions";
-    private static final String OTHER_GROUP_ID = "OTHER";
     private static final String TREE_ID = "narComponent_networkDiscoveryControlViewIdcmDomainsTreeId";
     private static final String RECONCILIATION_ACTION_ID = "narComponent_CmDomainActionFullReconciliationId";
     private static final String RECONCILIATION_TAB_ID = "narComponent_networkDiscoveryControlViewIdcmDomainTabsId";
@@ -40,10 +38,10 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     private static final String STATUS = "Status";
     private static final String TAB_ID = "narComponent_networkDiscoveryControlViewIdcmDomainWindowId";
     private static final String DETAILS_ID = "narComponent_CmDomainActionDetailsId";
-    private static final String TEXT_TO_FIND_CMDOMAINID = "Reason";
     private static final String ISSUE_LEVEL = "Issue Level";
     private static final String REASON = "Reason";
     private static final String CONFLICT = "conflict";
+    private static final String RECONCILIATION_WITH_ID = "Reconciliation with ID";
 
     protected NetworkDiscoveryControlViewPage(WebDriver driver) {
         super(driver);
@@ -87,21 +85,16 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     @Step("Check if CMDomain exists in Network Discovery Control View")
     public boolean checkIfCmDomainExists(String cmDomainName) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        return getTreeView()
-                .isRowPresent(cmDomainName);
+        return getTreeView().isRowPresent(cmDomainName);
     }
 
     @Step("Search for CMDomain in Network Discovery Control View")
     public void searchForCmDomain(String cmDomainName) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        getTreeView()
-                .search(cmDomainName);
+        getTreeView().search(cmDomainName);
     }
 
     @Step("Select CM Domain in Network Discovery Control View")
     public void selectCmDomain(String cmDomainName) {
-        DelayUtils.waitForPageToLoad(driver, wait);
         getTreeView()
                 .selectTreeRow(cmDomainName);
     }
@@ -143,17 +136,6 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         tabs.callActionById(ActionsContainer.EDIT_GROUP_ID, DELETE_CM_DOMAIN_ACTION_ID);
         ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
         prompt.clickButtonByLabel("Delete");
-    }
-
-    @Step("Check notification after deleting CM Domain")
-    public String checkDeleteCmDomainNotification() {
-        return Notifications.create(driver, wait).getNotificationMessage();
-    }
-
-    @Step("Clear old notifications")
-    public void clearOldNotifications() {
-        NotificationsInterface notifications = Notifications.create(driver, wait);
-        notifications.clearAllNotification();
     }
 
     @Step("Move from Network Discovery Control View to Network Inconsistencies View in context of selected CM Domain")
@@ -209,9 +191,9 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     @Step("Get Reconciliation starting event")
     public String getRecoStartingEvent() {
-        getIssuesTable().searchByAttributeWithLabel(TEXT_TO_FIND_CMDOMAINID, ComponentType.TEXT_FIELD, "Reconciliation with ID");
+        getIssuesTable().searchByAttributeWithLabel(REASON, ComponentType.TEXT_FIELD, RECONCILIATION_WITH_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
-        return getIssuesTable().getCellValue(0, "Reason");
+        return getIssuesTable().getCellValue(0, REASON);
     }
 
     @Step("Get CMDomain ID from reconciliation starting event")
