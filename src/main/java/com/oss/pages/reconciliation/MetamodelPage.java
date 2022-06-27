@@ -58,7 +58,7 @@ public class MetamodelPage extends BasePage {
     @Step("Check if object exists by name")
     public boolean checkIfObjectExists(String objectName) {
         TreeWidget treeWidget = getTreeWidget();
-        return treeWidget.isElementPresent(objectName);
+        return treeWidget.isRowPresent(objectName);
     }
 
     @Step("Check if Object name is correct")
