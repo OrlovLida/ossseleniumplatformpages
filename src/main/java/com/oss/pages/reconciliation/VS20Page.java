@@ -1,18 +1,13 @@
 package com.oss.pages.reconciliation;
 
 import java.util.List;
-import java.util.Map;
 
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.components.table.TableComponent;
-import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.propertypanel.PropertyPanel;
 import com.oss.framework.widgets.table.TableWidget;
-import com.oss.framework.widgets.tabs.TabsInterface;
-import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;

@@ -132,13 +132,6 @@ public class VS20Test extends BaseTestCase {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
     }
 
-    @BeforeMethod
-    protected void skipExceptionTest() {
-        if (skipTest) {
-            throw new SkipException(SKIPPING_TEST_MESSAGE);
-        }
-    }
-
     @Test(priority = 1, description = "Delete CMDomain if it exists")
     @Description("Delete CMDomain if it exists")
     public void deleteCMDomainIfExists() {
@@ -157,7 +150,6 @@ public class VS20Test extends BaseTestCase {
             log.info("CMDomain with name: {} doesn't exist", CM_DOMAIN_NAME);
         }
     }
-
 
     @Test(priority = 2, description = "Create CMDomain")
     @Description("Create CMDomain")
@@ -292,6 +284,13 @@ public class VS20Test extends BaseTestCase {
             log.info("Checking attribute with name: {}", assertionInventoryViewColumnsList.get(i));
             log.info("Checking attribute with index: {}, which equals: '{}' on declared assertionList, and equals '{}' on properties list taken from GUI", i, assertionInventoryViewColumnsList.get(i), columnsList.get(i));
             Assert.assertEquals(assertionInventoryViewColumnsList.get(i), columnsList.get(i));
+        }
+    }
+
+    @BeforeMethod
+    protected void skipExceptionTest() {
+        if (skipTest) {
+            throw new SkipException(SKIPPING_TEST_MESSAGE);
         }
     }
 

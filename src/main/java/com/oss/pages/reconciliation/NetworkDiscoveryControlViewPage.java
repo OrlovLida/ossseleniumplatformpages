@@ -138,6 +138,17 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         prompt.clickButtonByLabel("Delete");
     }
 
+    @Step("Check notification after deleting CM Domain")
+    public String checkDeleteCmDomainNotification() {
+        return Notifications.create(driver, wait).getNotificationMessage();
+    }
+
+    @Step("Clear old notifications")
+    public void clearOldNotifications() {
+        NotificationsInterface notifications = Notifications.create(driver, wait);
+        notifications.clearAllNotification();
+    }
+
     @Step("Move from Network Discovery Control View to Network Inconsistencies View in context of selected CM Domain")
     public void moveToNivFromNdcv() {
         TabsInterface ndcvTabs = getTabsInterface();
