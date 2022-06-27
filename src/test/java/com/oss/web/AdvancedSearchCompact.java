@@ -200,7 +200,7 @@ public class AdvancedSearchCompact extends BaseTestCase {
         ObjectSearchField actorsOSF =
                 (ObjectSearchField) tableWidget.getAdvancedSearch().getComponent(ACTORS_OSF_ID, Input.ComponentType.OBJECT_SEARCH_FIELD);
         AdvancedSearchWidget advancedSearchWidget = actorsOSF.openAdvancedSearchWidget();
-        TableComponent tableComponent = advancedSearchWidget.getTableComponent(ADVANCED_SEARCH_TABLE_ID);
+        TableComponent tableComponent = advancedSearchWidget.getTableComponent();
         String lastName = tableComponent.getCellValue(1, LAST_NAME_ID);
         String placeOfBirth = tableComponent.getCellValue(1, PLACE_OF_BIRTH_NAME_COLUMN_ID);
         advancedSearchWidget.getComponent(LAST_NAME_ID, Input.ComponentType.TEXT_FIELD).setSingleStringValue(lastName);
