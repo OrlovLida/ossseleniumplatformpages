@@ -43,6 +43,7 @@ public class WAMVBasicTest extends BaseTestCase {
     private static final String ROOT_CAUSE_ALARMS_TABLE_ID = "area3-root-cause-alarms";
     private static final String LOCATION_ALARMS_TABLE_ID = "area3-location-alarms";
     private static final String HISTORICAL_ALARMS_TABLE_ID = "area3-historical-alarms";
+    private static final String SHOW_EMPTY_MOST_WANTED_TAB = "most-wanted-alarm-details";
 
     private FMSMDashboardPage fmsmDashboardPage;
     private WAMVPage wamvPage;
@@ -190,7 +191,30 @@ public class WAMVBasicTest extends BaseTestCase {
     }
 
     @Parameters({"alarmListName", "alarmListRow", "alarmManagementViewRow"})
-    @Test(priority = 7, testName = "Check Alarm Changes", description = "Check Alarm Changes")
+    @Test(priority = 7, testName = "Check Show Empty Option", description = "Check Show Empty Option")
+    @Description("I verify if Show Empty Option works")
+    public void checkShowEmptyOption(
+            @Optional("Selenium_test_alarm_list") String alarmListName,
+            @Optional("1") int alarmListRow,
+            @Optional("0") int alarmManagementViewRow
+    ) {
+        try {
+            searchAndOpenWamv(alarmListName, alarmManagementViewRow);
+            wamvPage.selectSpecificRow(alarmListRow);
+            area3Page = new Area3Page(driver);
+            area3Page.clickOnMostWantedTab();
+            int nonEmptyRows = area3Page.countVisibleProperties();
+            area3Page.checkShowEmptyCheckbox(SHOW_EMPTY_MOST_WANTED_TAB);
+            int allRows = area3Page.countVisibleProperties();
+            Assert.assertTrue(nonEmptyRows < allRows);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            Assert.fail();
+        }
+    }
+
+    @Parameters({"alarmListName", "alarmListRow", "alarmManagementViewRow"})
+    @Test(priority = 8, testName = "Check Alarm Changes", description = "Check Alarm Changes")
     @Description("I verify if Alarm Changes works in WAMV")
     public void openWAMVAndCheckAlarmChanges(
             @Optional("Selenium_test_alarm_list") String alarmListName,
@@ -200,7 +224,7 @@ public class WAMVBasicTest extends BaseTestCase {
         try {
             searchAndOpenWamv(alarmListName, alarmManagementViewRow);
             wamvPage.selectSpecificRow(alarmListRow);
-//            TODO Test will be working after fix OSSNGSA-10793
+//            TODO Test will be working after fix OSSNGSA-10793, add assert - ack deack
             area3Page.clickOnAlarmChangesTab();
             Assert.assertTrue(area3Page.checkIfTableExists(ALARM_CHANGES_TABLE_ID));
         } catch (Exception e) {
@@ -210,7 +234,7 @@ public class WAMVBasicTest extends BaseTestCase {
     }
 
     @Parameters({"alarmListName", "alarmListRow", "alarmManagementViewRow"})
-    @Test(priority = 8, testName = "Check Know How", description = "Check Know How")
+    @Test(priority = 9, testName = "Check Know How", description = "Check Know How")
     @Description("I verify if Know How works in WAMV")
     public void openWAMVAndCheckKnowHow(
             @Optional("Selenium_test_alarm_list") String alarmListName,
@@ -221,7 +245,7 @@ public class WAMVBasicTest extends BaseTestCase {
             searchAndOpenWamv(alarmListName, alarmManagementViewRow);
             wamvPage.selectSpecificRow(alarmListRow);
             area3Page.clickOnKnowHowTab();
-            //TODO after fix OSSNGSA-10781 add assert
+            //TODO add assert
         } catch (Exception e) {
             log.error(e.getMessage());
             Assert.fail();
@@ -229,7 +253,7 @@ public class WAMVBasicTest extends BaseTestCase {
     }
 
     @Parameters({"alarmListName", "alarmListRow", "alarmManagementViewRow"})
-    @Test(priority = 5, testName = "Check Additional Text Tab", description = "Check Additional Text Tab")
+    @Test(priority = 10, testName = "Check Additional Text Tab", description = "Check Additional Text Tab")
     @Description("I verify if Additional Text works in WAMV")
     public void openWAMVAndCheckAdditionalText(
             @Optional("Selenium_test_alarm_list") String alarmListName,
@@ -248,7 +272,7 @@ public class WAMVBasicTest extends BaseTestCase {
     }
 
     @Parameters({"alarmListName", "alarmListRow", "alarmManagementViewRow"})
-    @Test(priority = 9, testName = "Searching in WAMV", description = "Searching in WAMV")
+    @Test(priority = 11, testName = "Searching in WAMV", description = "Searching in WAMV")
     @Description("I verify if searching in WAMV works properly")
     public void openWAMVAndCheckSearch(
             @Optional("Selenium_test_alarm_list") String alarmListName,
