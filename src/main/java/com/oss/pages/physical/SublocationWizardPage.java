@@ -3,6 +3,7 @@ package com.oss.pages.physical;
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.inputs.Input.ComponentType;
+import com.oss.framework.widgets.list.EditableList;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 
@@ -19,6 +20,11 @@ public class SublocationWizardPage extends BasePage {
     private static final String WIZARD_ID = "sublocation-wizard";
     private static final String DESCRIPTION = "description";
     private static final String SUBMIT_BUTTON_ID = "wizard-submit-button-sublocation-wizard";
+
+    private static final String CREATE_BUTTON_ID = "wizard-submit-button-sublocation-wizard";
+    private static final String NAMING_PREVIEW_LIST_ID = "namingPreviewList";
+    private static final String NAME_IN_LIST_POPUP_FIELD_ID = "name-TEXT_FIELD";
+    private static final String RECALCULATE_NAMING_BUTTON_ID = "recalculateNaming";
     private final Wizard wizard;
 
     public SublocationWizardPage(WebDriver driver) {
@@ -30,6 +36,16 @@ public class SublocationWizardPage extends BasePage {
     public void setSublocationType(String sublocationType) {
         wizard.setComponentValue(SUBLOCATION_TYPE, sublocationType, ComponentType.COMBOBOX);
 
+    }
+
+    @Step("Setting location {locationIndex} name to {subLocationName}")
+    public void setSubLocationNameInList(int locationIndex, String subLocationName) {
+        EditableList.createById(driver, wait, NAMING_PREVIEW_LIST_ID).setValue(locationIndex, subLocationName, SUBLOCATION_NAME, NAME_IN_LIST_POPUP_FIELD_ID);
+    }
+
+    @Step("Clicking on recalculate naming button using ID")
+    public void clickRecalculateNaming() {
+        wizard.clickButtonById(RECALCULATE_NAMING_BUTTON_ID);
     }
 
     @Step("Set Sublocation Name")

@@ -1,5 +1,12 @@
-package com.oss.pages.bpm;
+package com.oss.pages.bpm.taskforms;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import com.oss.framework.bpm.bpmrolloutpanel.BpmRolloutPanel;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,6 +26,8 @@ import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.framework.widgets.treetable.OldTreeTableWidget;
 import com.oss.pages.BasePage;
 import com.oss.pages.dms.AttachFileWizardPage;
+
+import io.qameta.allure.Step;
 
 /**
  * @author Paweł Rother
@@ -43,7 +52,7 @@ public class IPDTaskFormPage extends BasePage {
     private final String tabsId;
     private final TabsInterface tabWidget;
 
-    private IPDTaskFormPage(WebDriver driver, WebDriverWait wait, String tabsTasksViewId) {
+    protected IPDTaskFormPage(WebDriver driver, WebDriverWait wait, String tabsTasksViewId) {
         super(driver, wait);
         this.tabsId = tabsTasksViewId;
         this.tabWidget = getTabWidget(tabsTasksViewId);
@@ -69,6 +78,16 @@ public class IPDTaskFormPage extends BasePage {
 
     public TableInterface getIPTable() {
         return OldTable.createById(driver, wait, IP_TABLE_ID);
+    }
+
+    @Step("Searching for panel by ID = {id} and expanding it")
+    public void expandPanel(String id) {
+        BpmRolloutPanel.createById(driver, wait, id).expandRolloutPanel();
+    }
+
+    @Step("Searching for panel by ID = {id} and collapsing it")
+    public void collapsePanel(String id) {
+        BpmRolloutPanel.createById(driver, wait, id).collapseRolloutPanel();
     }
 
     private void actionTask(String actionId) {
