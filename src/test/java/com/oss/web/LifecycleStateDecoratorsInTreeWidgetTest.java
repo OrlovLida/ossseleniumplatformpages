@@ -199,7 +199,7 @@ public class LifecycleStateDecoratorsInTreeWidgetTest extends BaseTestCase {
     
     private void deleteBuilding() {
         LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);
-        locationInventoryRepository.deleteLocation(buildingId, LOCATION_TYPE_BUILDING);
+        locationInventoryRepository.deleteLocation(Long.valueOf(buildingId), LOCATION_TYPE_BUILDING);
     }
     
     private Long getGeographicalAddress() {

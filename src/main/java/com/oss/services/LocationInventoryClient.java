@@ -167,6 +167,10 @@ public class LocationInventoryClient {
                 .response();
     }
 
+    /**
+     * @deprecated duplicated method (will be removed 3.0.x release), use public void removeLocation(Long locationId, String locationType)
+     */
+    @Deprecated
     public void deleteLocation(String locationId, String locationType) {
         env.getLocationInventoryCoreRequestSpecification()
                 .given()
