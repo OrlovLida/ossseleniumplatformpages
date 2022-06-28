@@ -55,6 +55,7 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
     private static final String RESOURCE_INVENTORY = "Resource Inventory ";
     private static final String HIERARCHY_VIEW = "Hierarchy View";
     private static final String CHECKBOX_ROW_ID = "cell-row-0-col-checkbox";
+    private static final String THE_MAXIMUM_NUMBER_OF_OBJECTS_IS_500_ERROR_MESSAGE = "The maximum number of objects is 500.";
     private Environment env = Environment.getInstance();
     private String buildingId1;
     private String buildingId2;
@@ -66,19 +67,18 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
     public void openHierarchyView() {
         createLocations();
         hierarchyView = HierarchyViewPage.goToHierarchyViewPage(driver, BASIC_URL, LOCATION_TYPE, buildingId2);
-        
     }
     
     private void createLocations() {
         buildingId1 = createBuilding(BUILDING_NAME_1);
         buildingId2 = createBuilding(BUILDING_NAME_2);
-//        buildingId3 = createBuilding(BUILDING_NAME_3);
-//        buildingId4 = createBuilding(BUILDING_NAME_4);
+        buildingId3 = createBuilding(BUILDING_NAME_3);
+        buildingId4 = createBuilding(BUILDING_NAME_4);
         createRoom(buildingId2, ROOM_NAME_1);
         createRoom(buildingId2, ROOM_NAME_2);
     }
     
-    @Test
+    @Test(priority = 1)
     public void addObjects() {
         hierarchyView.getMainTree().callActionById(ADD_OBJECT_BUTTON);
         addExistingObject(BUILDING_NAME_1);
@@ -95,7 +95,7 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
         Assertions.assertThat(cursor).isEqualTo(Input.MouseCursor.NOT_ALLOWED);
     }
     
-    @Test
+    @Test(priority = 2)
     public void addSubtypeObjectOfRoot() {
         hierarchyView.getMainTree().callActionById(ADD_OBJECT_BUTTON);
         addExistingObject(ROOM_NAME_1);
@@ -103,7 +103,7 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
         Assertions.assertThat(visibleNodesLabel).contains(ROOM_NAME_1);
     }
     
-    @Test
+    @Test(priority = 3)
     public void expandNodeAndAddObject() {
         TreeComponent.Node roomRelation = hierarchyView.getNodeByLabelPath(ROOM_RELATION_PATH);
         roomRelation.expandNode();
@@ -116,7 +116,7 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
         Assertions.assertThat(hierarchyView.getVisibleNodesLabel()).contains(ROOM_NAME_1, ROOM_NAME_2, BUILDING_NAME_3);
     }
     
-    @Test
+    @Test(priority = 4)
     public void setFilterAndAddObject() {
         hierarchyView.getNodeByLabelPath(LOCATION_RELATION_PATH).searchByAttribute(NAME_ATTRIBUTE_ID, ROOM_NAME_1);
         hierarchyView.getMainTree().callActionById(ADD_OBJECT_BUTTON);
@@ -127,7 +127,7 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
         Assertions.assertThat(hierarchyView.getVisibleNodesLabel()).contains(ROOM_NAME_1, BUILDING_NAME_4).doesNotContain(ROOM_NAME_2);
     }
     
-    @Test
+    @Test(priority = 5)
     public void addMoreThan500Objects() {
         hierarchyView.getMainTree().callActionById(ADD_OBJECT_BUTTON);
         AdvancedSearchWidget advancedSearch = AdvancedSearchWidget.createById(driver, webDriverWait, ADVANCED_SEARCH_ID);
@@ -136,13 +136,15 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         tableComponent.selectAll();
         advancedSearch.clickAdd();
-        List<SystemMessageContainer.Message> errors = SystemMessageContainer.create(driver, webDriverWait).getMessages();
+        SystemMessageContainer systemMessageContainer = SystemMessageContainer.create(driver, webDriverWait);
+        List<SystemMessageContainer.Message> errors = systemMessageContainer.getMessages();
         advancedSearch.clickCancel();
         Assertions.assertThat(errors.size()).isEqualTo(1);
-        Assertions.assertThat(errors.get(0).getText()).isEqualTo("The maximum number of objects is 500.");
+        Assertions.assertThat(errors.get(0).getText()).isEqualTo(THE_MAXIMUM_NUMBER_OF_OBJECTS_IS_500_ERROR_MESSAGE);
+        systemMessageContainer.close();
     }
     
-    @Test
+    @Test(priority = 6)
     public void checkIsAddObjectButtonIsUnavailableForSelectedObject() {
         hierarchyView.selectFirstObject();
         Assertions.assertThat(CSSUtils.isElementPresent(driver, ADD_OBJECT_BUTTON)).isFalse();
@@ -151,7 +153,7 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
         Assertions.assertThat(CSSUtils.isElementPresent(driver, ADD_OBJECT_BUTTON)).isTrue();
     }
     
-    @Test
+    @Test(priority = 7)
     public void checkIsAddObjectButtonIsUnavailableWithHVQuery() {
         homePage.chooseFromLeftSideMenu(HIERARCHY_VIEW, RESOURCE_INVENTORY);
         SearchObjectTypePage searchObjectType = new SearchObjectTypePage(driver, webDriverWait);
@@ -164,8 +166,8 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
         
     }
     
-    @Test
-    @Description("Hierarchy View is opened for Location")
+    @Test(priority = 8)
+    @Description("Hierarchy View is opened from Inventory View")
     public void addObjectToHierarchyViewOpenedFromOtherView() {
         NewInventoryViewPage testPerson = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, LOCATION_TYPE);
         testPerson.searchByAttributeValue(TYPE_ATTRIBUTE_ID, ROOM_TYPE, Input.ComponentType.MULTI_COMBOBOX);
@@ -191,8 +193,8 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
     private void deleteBuildings() {
         deleteBuilding(buildingId1);
         deleteBuilding(buildingId2);
-//        deleteBuilding(buildingId3);
-//        deleteBuilding(buildingId4);
+        deleteBuilding(buildingId3);
+        deleteBuilding(buildingId4);
     }
     
     private void addExistingObject(String objectName) {
