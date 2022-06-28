@@ -37,6 +37,7 @@ public class VS20Test extends BaseTestCase {
     private static final String SKIPPING_TEST_MESSAGE = "Skipping tests because resource was not available.";
     private static final String NOTIFICATION_MESSAGE = "Generation of VS Objects Metamodel for CM Interface: Comarch finished";
     private static final String TABLE_ID = "InventoryView_MainCard_VS_Comarch_COM_x_95_x_Device";
+    private static final String COMARCH = "Comarch";
 
     private static final List<String> filterList = new ImmutableList.Builder<String>()
             .add("CM Domain Id")
@@ -117,7 +118,6 @@ public class VS20Test extends BaseTestCase {
             .add("relation-HostedFunctionsList")
             .add("relation-ManagementSystem")
             .build();
-    private static final String COMARCH = "Comarch";
 
     SoftAssert softAssert = new SoftAssert();
     private VS20Page vs20Page;
