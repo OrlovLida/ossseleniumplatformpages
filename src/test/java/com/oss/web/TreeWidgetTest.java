@@ -157,7 +157,7 @@ public class TreeWidgetTest extends BaseTestCase {
     public void expandNextLevel() {
         hierarchyViewPage.expandNextLevel(LOCATION_NAME);
         Node nodeRoom = hierarchyViewPage.getMainTree()
-                .getNode(PATH_ROOM_1);
+                .getNode(ROOM_NAME);
         Assertions.assertThat(nodeRoom.isExpanded()).isFalse();
     }
     
