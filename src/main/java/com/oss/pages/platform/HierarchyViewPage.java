@@ -148,6 +148,10 @@ public class HierarchyViewPage extends BasePage {
         }
     }
 
+    public String getGroupActionLabel(String groupId) {
+        return getMainTree().getGroupActionLabel(groupId);
+    }
+
     public List<String> getVisibleNodesLabel() {
         return getMainTree().getVisibleNodes().stream().map(Node::getLabel).collect(Collectors.toList());
     }
