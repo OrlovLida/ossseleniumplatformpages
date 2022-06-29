@@ -33,7 +33,6 @@ import io.qameta.allure.Step;
 
 public class NewInventoryViewPage extends BasePage {
 
-    private static final String TABLE_ID = "MainTableWidget";
     private static final String CHANGE_LAYOUT_BUTTON_ID = "ButtonChooseViewLayouts";
     private static final String VERTICAL_BUTTON_ID = "TWO_COLUMNS";
     private static final String SAVE_CONFIGURATION_BUTTON_ID = "ButtonSaveViewConfig";
@@ -55,6 +54,7 @@ public class NewInventoryViewPage extends BasePage {
     public static final String KEBAB_OBJECT_GROUP_ID = "frameworkObjectButtonsGroup";
     private static final String CONFIRM_REMOVAL_BUTTON_ID = "ConfirmationBox_deleteAppId_action_button";
     private static final String PROPERTY_PANEL_ID = "PropertyPanelWidget";
+    private static String table_id = "MainTableWidget";
 
     public NewInventoryViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -73,9 +73,19 @@ public class NewInventoryViewPage extends BasePage {
         return new NewInventoryViewPage(driver, wait);
     }
 
+    public static NewInventoryViewPage getInventoryViewPage(WebDriver driver, WebDriverWait wait, String mainTableId) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        table_id = mainTableId;
+        return new NewInventoryViewPage(driver, wait);
+    }
+
     public TableWidget getMainTable() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        return TableWidget.createById(driver, TABLE_ID, wait);
+        return TableWidget.createById(driver, table_id, wait);
+    }
+
+    public List<String> getColumnsHeaders() {
+        return getMainTable().getActiveColumnHeaders();
     }
 
     public NewInventoryViewPage searchObject(String text) {
