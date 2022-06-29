@@ -173,9 +173,9 @@ public class FilteringOnRelationNodesTest extends BaseTestCase {
         Assertions.assertThat(hierarchyViewPage.isNodePresent(PORT_02_PATH)).isFalse();
         Assertions.assertThat(hierarchyViewPage.isNodePresent(ROOM_PATH)).isTrue();
         Assertions.assertThat(hierarchyViewPage.isNodePresent(ROOM_2_PATH)).isFalse();
-        
-        clearFilter(hierarchyViewPage.getNodeByLabelPath(PATH_LOCATIONS_2ST_RELATION));
+
         clearFilter(hierarchyViewPage.getNodeByLabelPath(PATH_PORTS_RELATION));
+        clearFilter(hierarchyViewPage.getNodeByLabelPath(PATH_LOCATIONS_2ST_RELATION));
     }
     
     private void clearFilter(TreeComponent.Node node) {
