@@ -33,90 +33,118 @@ public class VS20Test extends BaseTestCase {
     private static final String INTERFACE_NAME = "Comarch";
     private static final String OBJECT_TYPE = "COM_Device";
     private static final String CM_DOMAIN_NAME = "AT-SYS-VS20-TEST";
-    private static final String DISTINGUISH_NAME = "Device_VS20_TEST";
     private static final String SKIPPING_TEST_MESSAGE = "Skipping tests because resource was not available.";
     private static final String NOTIFICATION_MESSAGE = "Generation of VS Objects Metamodel for CM Interface: Comarch finished";
     private static final String TABLE_ID = "InventoryView_MainCard_VS_Comarch_COM_x_95_x_Device";
-    private static final String COMARCH = "Comarch";
 
-    private static final List<String> filterList = new ImmutableList.Builder<String>()
-            .add("CM Domain Id")
-            .add("CM Domain Name")
-            .add("Type")
-            .add("Distinguish Name")
-            .add("Is Changed")
-            .add("Is Removed")
-            .add("Is Root")
+    private static final String LIST_CM_DOMAIN_ID = "CM Domain Id";
+    private static final String LIST_CM_DOMAIN_NAME = "CM Domain Name";
+    private static final String LIST_TYPE = "Type";
+    private static final String LIST_DISTINGUISH_NAME = "Distinguish Name";
+    private static final String LIST_IS_CHANGED = "Is Changed";
+    private static final String LIST_IS_REMOVED = "Is Removed";
+    private static final String LIST_IS_ROOT = "Is Root";
+    private static final String LIST_CHASSIS_ID = "ChassisID";
+    private static final String LIST_DESCRIPTION = "Description";
+    private static final String LIST_DEVICE_CATEGORY = "DeviceCategory";
+    private static final String LIST_HARDWARE_VERSION = "HardwareVersion";
+    private static final String LIST_LOCATION = "Location";
+    private static final String LIST_MANAGEMENT_ADDRESS = "ManagementAddress";
+    private static final String LIST_MANAGEMENT_ADDRESS_TYPE = "ManagementAddressType";
+    private static final String LIST_MANAGEMENT_DOMAIN = "ManagementDomain";
+    private static final String LIST_MANUFACTURE_DATE = "ManufactureDate";
+    private static final String LIST_MANUFACTURER = "Manufacturer";
+    private static final String LIST_MODEL_NAME = "ModelName";
+    private static final String LIST_NBI_FDN = "NBI_FDN";
+    private static final String LIST_NAME = "Name";
+    private static final String LIST_NE_FUNCTION_NAME = "NeFunctionName";
+    private static final String LIST_NETWORK_DOMAIN = "NetworkDomain";
+    private static final String LIST_PART_NUMBER = "PartNumber";
+    private static final String LIST_SERIAL_NUMBER = "SerialNumber";
+    private static final String LIST_SOFTWARE = "Software";
+    private static final String LIST_RELATION_HOSTED_FUNCTIONS_LIST = "relation-HostedFunctionsList";
+    private static final String LIST_RELATION_MANAGEMENT_SYSTEM = "relation-ManagementSystem";
+    private static final String LIST_METAMODEL_ENCODED_TYPE = "Metamodel Encoded Type";
+
+    private static final List<String> defaultFilterList = new ImmutableList.Builder<String>()
+            .add(LIST_CM_DOMAIN_ID)
+            .add(LIST_CM_DOMAIN_NAME)
+            .add(LIST_TYPE)
+            .add(LIST_DISTINGUISH_NAME)
+            .add(LIST_IS_CHANGED)
+            .add(LIST_IS_REMOVED)
+            .add(LIST_IS_ROOT)
             .build();
 
-    private static final List<String> assertionVS20ColumnsList = new ImmutableList.Builder<String>()
-            .add("CM Domain Name")
-            .add("Type")
-            .add("Distinguish Name")
-            .add("Is Changed")
-            .add("Is Removed")
-            .add("Is Root")
+    private static final List<String> defaultVS20ColumnsList = new ImmutableList.Builder<String>()
+            .add(LIST_CM_DOMAIN_NAME)
+            .add(LIST_TYPE)
+            .add(LIST_DISTINGUISH_NAME)
+            .add(LIST_IS_CHANGED)
+            .add(LIST_IS_REMOVED)
+            .add(LIST_IS_ROOT)
             .build();
 
-    private static final List<String> assertionInventoryViewColumnsList = new ImmutableList.Builder<String>()
-            .add("CM Domain Name")
-            .add("Distinguish Name")
-            .add("Is Changed")
-            .add("Is Removed")
-            .add("Is Root")
-            .add("ChassisID")
-            .add("Description")
-            .add("DeviceCategory")
-            .add("HardwareVersion")
-            .add("Location")
-            .add("ManagementAddress")
-            .add("ManagementAddressType")
-            .add("ManagementDomain")
-            .add("ManufactureDate")
-            .add("Manufacturer")
-            .add("ModelName")
-            .add("NBI_FDN")
-            .add("Name")
-            .add("NeFunctionName")
-            .add("NetworkDomain")
-            .add("PartNumber")
-            .add("SerialNumber")
-            .add("Software")
-            .add("Type")
-            .add("relation-HostedFunctionsList")
-            .add("relation-ManagementSystem")
+
+    private static final List<String> defaultInventoryViewColumnsList = new ImmutableList.Builder<String>()
+            .add(LIST_CM_DOMAIN_NAME)
+            .add(LIST_DISTINGUISH_NAME)
+            .add(LIST_IS_CHANGED)
+            .add(LIST_IS_REMOVED)
+            .add(LIST_IS_ROOT)
+            .add(LIST_CHASSIS_ID)
+            .add(LIST_DESCRIPTION)
+            .add(LIST_DEVICE_CATEGORY)
+            .add(LIST_HARDWARE_VERSION)
+            .add(LIST_LOCATION)
+            .add(LIST_MANAGEMENT_ADDRESS)
+            .add(LIST_MANAGEMENT_ADDRESS_TYPE)
+            .add(LIST_MANAGEMENT_DOMAIN)
+            .add(LIST_MANUFACTURE_DATE)
+            .add(LIST_MANUFACTURER)
+            .add(LIST_MODEL_NAME)
+            .add(LIST_NBI_FDN)
+            .add(LIST_NAME)
+            .add(LIST_NE_FUNCTION_NAME)
+            .add(LIST_NETWORK_DOMAIN)
+            .add(LIST_PART_NUMBER)
+            .add(LIST_SERIAL_NUMBER)
+            .add(LIST_SOFTWARE)
+            .add(LIST_TYPE)
+            .add(LIST_RELATION_HOSTED_FUNCTIONS_LIST)
+            .add(LIST_RELATION_MANAGEMENT_SYSTEM)
             .build();
 
-    private static final List<String> assertionList = new ImmutableList.Builder<String>()
-            .add("CM Domain Id")
-            .add("CM Domain Name")
-            .add("Distinguish Name")
-            .add("Is Changed")
-            .add("Is Removed")
-            .add("Is Root")
-            .add("Type")
-            .add("Metamodel Encoded Type")
-            .add("ChassisID")
-            .add("Description")
-            .add("DeviceCategory")
-            .add("HardwareVersion")
-            .add("Location")
-            .add("ManagementAddress")
-            .add("ManagementAddressType")
-            .add("ManagementDomain")
-            .add("ManufactureDate")
-            .add("Manufacturer")
-            .add("ModelName")
-            .add("NBI_FDN")
-            .add("Name")
-            .add("NeFunctionName")
-            .add("NetworkDomain")
-            .add("PartNumber")
-            .add("SerialNumber")
-            .add("Software")
-            .add("Type")
-            .add("relation-HostedFunctionsList")
-            .add("relation-ManagementSystem")
+    private static final List<String> defaultPropertiesList = new ImmutableList.Builder<String>()
+            .add(LIST_CM_DOMAIN_ID)
+            .add(LIST_CM_DOMAIN_NAME)
+            .add(LIST_DISTINGUISH_NAME)
+            .add(LIST_IS_CHANGED)
+            .add(LIST_IS_REMOVED)
+            .add(LIST_IS_ROOT)
+            .add(LIST_TYPE)
+            .add(LIST_METAMODEL_ENCODED_TYPE)
+            .add(LIST_CHASSIS_ID)
+            .add(LIST_DESCRIPTION)
+            .add(LIST_DEVICE_CATEGORY)
+            .add(LIST_HARDWARE_VERSION)
+            .add(LIST_LOCATION)
+            .add(LIST_MANAGEMENT_ADDRESS)
+            .add(LIST_MANAGEMENT_ADDRESS_TYPE)
+            .add(LIST_MANAGEMENT_DOMAIN)
+            .add(LIST_MANUFACTURE_DATE)
+            .add(LIST_MANUFACTURER)
+            .add(LIST_MODEL_NAME)
+            .add(LIST_NBI_FDN)
+            .add(LIST_NAME)
+            .add(LIST_NE_FUNCTION_NAME)
+            .add(LIST_NETWORK_DOMAIN)
+            .add(LIST_PART_NUMBER)
+            .add(LIST_SERIAL_NUMBER)
+            .add(LIST_SOFTWARE)
+            .add(LIST_TYPE)
+            .add(LIST_RELATION_HOSTED_FUNCTIONS_LIST)
+            .add(LIST_RELATION_MANAGEMENT_SYSTEM)
             .build();
 
     SoftAssert softAssert = new SoftAssert();
@@ -135,7 +163,6 @@ public class VS20Test extends BaseTestCase {
     @Test(priority = 1, description = "Delete CMDomain if it exists")
     @Description("Delete CMDomain if it exists")
     public void deleteCMDomainIfExists() {
-        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.searchForCmDomain(CM_DOMAIN_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -154,8 +181,7 @@ public class VS20Test extends BaseTestCase {
     @Test(priority = 2, description = "Create CMDomain")
     @Description("Create CMDomain")
     public void createCmDomain() {
-        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
-        networkDiscoveryControlViewPage.createCMDomain(CM_DOMAIN_NAME, COMARCH, COMARCH);
+        networkDiscoveryControlViewPage.createCMDomain(CM_DOMAIN_NAME, INTERFACE_NAME, INTERFACE_NAME);
     }
 
     @Test(priority = 3, description = "Upload reconciliation samples", dependsOnMethods = {"createCmDomain"})
@@ -183,11 +209,10 @@ public class VS20Test extends BaseTestCase {
         checkPopupMessageType();
         String status = networkDiscoveryControlViewPage.waitForEndOfReco();
         networkDiscoveryControlViewPage.selectLatestReconciliationState();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         if (status.contains("SUCCESS")) {
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
             Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.ERROR));
         } else {
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
             Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.STARTUP_FATAL));
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.FATAL));
@@ -220,12 +245,12 @@ public class VS20Test extends BaseTestCase {
         List<String> attributes = vs20Page.getAvailableFilters();
         log.info(String.valueOf(attributes.size()));
         log.info(String.valueOf(attributes));
-        log.info(String.valueOf(filterList.size()));
-        log.info(String.valueOf(filterList));
-        Assert.assertEquals(attributes.size(), filterList.size());
+        log.info(String.valueOf(defaultFilterList.size()));
+        log.info(String.valueOf(defaultFilterList));
+        Assert.assertEquals(attributes.size(), defaultFilterList.size());
         for (int i = 0; i < attributes.size(); i++) {
-            log.info("Checking attribute with index: {}, which equals: '{}' on declared assertionList, and equals '{}' on properties list taken from GUI", i, filterList.get(i), attributes.get(i));
-            softAssert.assertEquals((attributes.get(i)), filterList.get(i));
+            log.info("Checking attribute with index: {}, which equals: '{}' on declared assertionList, and equals '{}' on properties list taken from GUI", i, defaultFilterList.get(i), attributes.get(i));
+            softAssert.assertEquals((attributes.get(i)), defaultFilterList.get(i));
         }
         softAssert.assertAll();
     }
@@ -234,9 +259,9 @@ public class VS20Test extends BaseTestCase {
     @Description("Select first row on VS2.0 Viewer Page")
     public void selectRowOnVS20Page() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        vs20Page.searchItemByCMDomainName(CM_DOMAIN_NAME);
+        vs20Page.searchByCMDomainName(CM_DOMAIN_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        vs20Page.searchItemByType(OBJECT_TYPE);
+        vs20Page.searchByType(OBJECT_TYPE);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         vs20Page.selectFirstRow();
     }
@@ -247,12 +272,12 @@ public class VS20Test extends BaseTestCase {
         List<String> attributes = vs20Page.getPropertiesLabels();
         log.info(String.valueOf(attributes.size()));
         log.info(String.valueOf(attributes));
-        log.info(String.valueOf(assertionList.size()));
-        log.info(String.valueOf(assertionList));
-        Assert.assertEquals(attributes.size(), assertionList.size());
+        log.info(String.valueOf(defaultPropertiesList.size()));
+        log.info(String.valueOf(defaultPropertiesList));
+        Assert.assertEquals(attributes.size(), defaultPropertiesList.size());
         for (int i = 0; i < attributes.size(); i++) {
-            log.info("Checking attribute with index: {}, which equals: '{}' on declared assertionList, and equals '{}' on properties list taken from GUI", i, assertionList.get(i), attributes.get(i));
-            softAssert.assertEquals((attributes.get(i)), assertionList.get(i));
+            log.info("Checking attribute with index: {}, which equals: '{}' on declared assertionList, and equals '{}' on properties list taken from GUI", i, defaultPropertiesList.get(i), attributes.get(i));
+            softAssert.assertEquals((attributes.get(i)), defaultPropertiesList.get(i));
         }
         softAssert.assertAll();
     }
@@ -260,11 +285,11 @@ public class VS20Test extends BaseTestCase {
     @Test(priority = 9, description = "Assert columns in VS2.0 Viewer Page", dependsOnMethods = {"selectRowOnVS20Page"})
     @Description("Assert columns in VS2.0 Viewer Page")
     public void assertColumnsInVS20Viewer() {
-        List<String> columnsList = vs20Page.getColumnsIds();
-        Assert.assertEquals(columnsList.size(), assertionVS20ColumnsList.size());
-        for (int i = 0; i < assertionVS20ColumnsList.size(); i++) {
-            log.info("Checking attribute with index: {}, which equals: '{}' on declared assertionList, and equals '{}' on properties list taken from GUI", i, assertionVS20ColumnsList.get(i), columnsList.get(i));
-            Assert.assertEquals(assertionVS20ColumnsList.get(i), columnsList.get(i));
+        List<String> columnsList = vs20Page.getColumnsHeaders();
+        Assert.assertEquals(columnsList.size(), defaultVS20ColumnsList.size());
+        for (int i = 0; i < defaultVS20ColumnsList.size(); i++) {
+            log.info("Checking attribute with index: {}, which equals: '{}' on declared assertionList, and equals '{}' on properties list taken from GUI", i, defaultVS20ColumnsList.get(i), columnsList.get(i));
+            Assert.assertEquals(defaultVS20ColumnsList.get(i), columnsList.get(i));
         }
     }
 
@@ -279,11 +304,11 @@ public class VS20Test extends BaseTestCase {
     public void assertColumnsInInventoryView() {
         inventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait, TABLE_ID);
         List<String> columnsList = inventoryViewPage.getColumnsHeaders();
-        Assert.assertEquals(columnsList.size(), assertionInventoryViewColumnsList.size());
-        for (int i = 0; i < assertionInventoryViewColumnsList.size(); i++) {
-            log.info("Checking attribute with name: {}", assertionInventoryViewColumnsList.get(i));
-            log.info("Checking attribute with index: {}, which equals: '{}' on declared assertionList, and equals '{}' on properties list taken from GUI", i, assertionInventoryViewColumnsList.get(i), columnsList.get(i));
-            Assert.assertEquals(assertionInventoryViewColumnsList.get(i), columnsList.get(i));
+        Assert.assertEquals(columnsList.size(), defaultInventoryViewColumnsList.size());
+        for (int i = 0; i < defaultInventoryViewColumnsList.size(); i++) {
+            log.info("Checking attribute with name: {}", defaultInventoryViewColumnsList.get(i));
+            log.info("Checking attribute with index: {}, which equals: '{}' on declared assertionList, and equals '{}' on properties list taken from GUI", i, defaultInventoryViewColumnsList.get(i), columnsList.get(i));
+            Assert.assertEquals(defaultInventoryViewColumnsList.get(i), columnsList.get(i));
         }
     }
 

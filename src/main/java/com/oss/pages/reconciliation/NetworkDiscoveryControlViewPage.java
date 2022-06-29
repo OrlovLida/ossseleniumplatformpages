@@ -76,11 +76,9 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     @Step("Query and select CM Domain in Network Discovery Control View")
     public void queryAndSelectCmDomain(String cmDomainName) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getTreeView()
-                .search(cmDomainName);
+        searchForCmDomain(cmDomainName);
         DelayUtils.waitForPageToLoad(driver, wait);
-        getTreeView()
-                .selectTreeRow(cmDomainName);
+        selectCmDomain(cmDomainName);
     }
 
     @Step("Check if CMDomain exists in Network Discovery Control View")
@@ -95,8 +93,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     @Step("Select CM Domain in Network Discovery Control View")
     public void selectCmDomain(String cmDomainName) {
-        getTreeView()
-                .selectTreeRow(cmDomainName);
+        getTreeView().selectTreeRow(cmDomainName);
     }
 
     @Step("Run full reconciliation for selected CM Domain")
@@ -166,12 +163,10 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    @Step("Move to Details about CMDomain")
-    public void moveToDetails() {
+    @Step("Open Details about CMDomain")
+    public void openCMDomainDetails() {
         TabsInterface ndcvTabs = getTabsInterface();
-        DelayUtils.waitForPageToLoad(driver, wait);
         ndcvTabs.callActionById(ActionsContainer.OTHER_GROUP_ID, DETAILS_ID);
-        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     @Step("Check if there are Issues with type {errorType}")
@@ -200,18 +195,18 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         return getIssuesTable().getCellValue(0, REASON).contains(CONFLICT);
     }
 
-    @Step("Get Reconciliation starting event")
-    public String getRecoStartingEvent() {
+    @Step("Get CMDomain ID from reconciliation start event")
+    public String getCMDomainIdFromRecoStartEvent() {
+        String cmDomainId = getRecoStartEvent().substring(getRecoStartEvent().indexOf("(ID:"));
+        cmDomainId = cmDomainId.substring(5, (cmDomainId.length() - 6));
+        return cmDomainId;
+    }
+
+    @Step("Get Reconciliation start event")
+    private String getRecoStartEvent() {
         getIssuesTable().searchByAttributeWithLabel(REASON, ComponentType.TEXT_FIELD, RECONCILIATION_WITH_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         return getIssuesTable().getCellValue(0, REASON);
-    }
-
-    @Step("Get CMDomain ID from reconciliation starting event")
-    public String getCMDomainIdFromRecoStartingEvent(String recoStartingEvent) {
-        String cmDomainId = recoStartingEvent.substring(recoStartingEvent.indexOf("(ID:"));
-        cmDomainId = cmDomainId.substring(5, (cmDomainId.length() - 6));
-        return cmDomainId;
     }
 
     private void logIssues(String type) {

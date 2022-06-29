@@ -31,19 +31,19 @@ public class VS20Page extends BasePage {
         return new VS20Page(driver);
     }
 
-    @Step("Search for item by CMDomain name")
-    public void searchItemByCMDomainName(String cmDomainName) {
-        getTableWidget().searchByAttribute(CM_DOMAIN_NAME, Input.ComponentType.TEXT_FIELD, cmDomainName);
+    @Step("Search for item by {cmDomainName}")
+    public void searchByCMDomainName(String cmDomainName) {
+        getTableWidget().searchByAttribute(CM_DOMAIN_NAME, cmDomainName);
     }
 
-    @Step("Search for item by distinguish name")
-    public void searchItemByDistinguishName(String distName) {
-        getTableWidget().searchByAttribute(DISTINGUISH_NAME, Input.ComponentType.TEXT_FIELD, distName);
+    @Step("Search for item by {distName}")
+    public void searchByDistinguishName(String distName) {
+        getTableWidget().searchByAttribute(DISTINGUISH_NAME, distName);
     }
 
     @Step("Search for item by type")
-    public void searchItemByType(String objectType) {
-        getTableWidget().searchByAttribute(NATIVE_TYPE, Input.ComponentType.TEXT_FIELD, objectType);
+    public void searchByType(String objectType) {
+        getTableWidget().searchByAttribute(NATIVE_TYPE, objectType);
     }
 
     @Step("Select first row")
@@ -52,7 +52,7 @@ public class VS20Page extends BasePage {
     }
 
     @Step("Get active column headers")
-    public List<String> getColumnsIds() {
+    public List<String> getColumnsHeaders() {
         return getTableWidget().getActiveColumnHeaders();
     }
 
@@ -61,7 +61,7 @@ public class VS20Page extends BasePage {
         return getPropertyPanel().getPropertyValue(CM_DOMAIN_NAME);
     }
 
-    @Step("Get all available fiters to list")
+    @Step("Get all available filters")
     public List<String> getAvailableFilters() {
         return getTableWidget().getAllVisibleFilters();
     }
@@ -71,12 +71,12 @@ public class VS20Page extends BasePage {
         getTableWidget().callAction(ActionsContainer.SHOW_ON_GROUP_ID, INVENTORY_VIEW_ID);
     }
 
-    @Step("Get all properties to list")
+    @Step("Get all properties labels")
     public List<String> getPropertiesLabels() {
         return getPropertyPanel().getPropertyLabels();
     }
 
-    @Step("Get property value by {propertyName}")
+    @Step("Get {propertyName} value from property panel")
     public String getPropertyValue(String propertyName) {
         return getPropertyPanel().getPropertyValue(propertyName);
     }
