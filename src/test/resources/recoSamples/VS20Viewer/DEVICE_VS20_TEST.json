@@ -1,0 +1,51 @@
+[
+	{
+		"type": "Device",
+		"distinguishName": "Device@@Device_VS20_TEST",
+		"isRoot": true,
+		"groupId":"Device@@Device_VS20_TEST",
+		"simpleAttributes": {
+			"Name": "Device_VS20_TEST",
+			"Manufacturer": "Cisco Systems Inc.",
+			"ManagementDomain": "ChangeModel_test",
+			"NBI_FDN": "MD=CISCO_EPNM!ND=Device_VS20_TEST",
+			"Type": "IPDevice",
+			"SerialNumber": "FOX2141P2PZ",
+			"ManagementAddressType": "IPv4",
+			"ManagementAddress": "10.193.0.9",
+			"Software": "6.2.3[Default]",
+			"Location": "Provincia: AMBA; Localidad: Merlo; Centro: MRL; Ubicacion: Riobamba 494 y Sarandi; Piso: 2; Sala: Transmision Nueva; Traza: Guemes-Merlo;: GEO -34.66711, -58.725129:;",
+			"Description": "Cisco IOS XR Software (Cisco ASR9K Series), Version 6.2.3[Default]rnCopyright (c) 2018 by Cisco Systems, Inc.",
+			"HardwareVersion": "V01",
+			"ManufactureDate": "2019-01-23T10:40:15.778-03:00",
+			"ModelName": "ASR9010"
+		},
+		"relationAttributes": [
+			{
+				"name": "HostedFunctionsList",
+				"values": [
+					"Device@@Device_VS20_TEST##IPDeviceFunction@@8a864a1e-418b-48ad-a6d4-257204046339"
+				]
+			}
+		]
+	},
+	{
+		"type": "IPDeviceFunction",
+		"distinguishName": "Device@@Device_VS20_TEST##IPDeviceFunction@@8a864a1e-418b-48ad-a6d4-257204046339",
+		"groupId":"Device@@Device_VS20_TEST",
+		"simpleAttributes": {
+			"Hostname": "Device_VS20_TEST",
+			"NBI_FDN": "MD=CISCO_EPNM!ND=Device_VS20_TEST",
+			"DeviceType": "IPDevice",
+			"Model": "ASR9010"
+		},
+		"relationAttributes": [
+			{
+				"name": "HostedByList",
+				"values": [
+					"Device@@Device_VS20_TEST"
+				]
+			}
+		]
+	}
+]
