@@ -46,7 +46,7 @@ public class RunRecoAndApplyInconsistencies extends BaseTestCase {
     @Test(priority = 2)
     public void uploadSamples() throws URISyntaxException {
         DelayUtils.sleep(1000);
-        networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
+        networkDiscoveryControlViewPage.queryAndSelectDomain(cmDomainName);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.moveToSamplesManagement();
         SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
@@ -64,7 +64,7 @@ public class RunRecoAndApplyInconsistencies extends BaseTestCase {
     public void runReconciliationWithFullSample() {
         openNetworkDiscoveryControlView();
         DelayUtils.sleep(100);
-        networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
+        networkDiscoveryControlViewPage.queryAndSelectDomain(cmDomainName);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.runReconciliation();
         checkPopupMessageType();
@@ -91,7 +91,7 @@ public class RunRecoAndApplyInconsistencies extends BaseTestCase {
     @Test(priority = 5)
     public void deleteOldSamplesAndPutNewOne() throws URISyntaxException {
         openNetworkDiscoveryControlView();
-        networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
+        networkDiscoveryControlViewPage.queryAndSelectDomain(cmDomainName);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.moveToSamplesManagement();
         SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
@@ -109,7 +109,7 @@ public class RunRecoAndApplyInconsistencies extends BaseTestCase {
     public void runReconciliationWithEmptySample() {
         openNetworkDiscoveryControlView();
         DelayUtils.sleep(100);
-        networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
+        networkDiscoveryControlViewPage.queryAndSelectDomain(cmDomainName);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.runReconciliation();
         checkPopupMessageType();
@@ -136,7 +136,7 @@ public class RunRecoAndApplyInconsistencies extends BaseTestCase {
     @Test(priority = 8)
     public void deleteCmDomain() {
         openNetworkDiscoveryControlView();
-        networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
+        networkDiscoveryControlViewPage.queryAndSelectDomain(cmDomainName);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.clearOldNotifications();
         networkDiscoveryControlViewPage.deleteCmDomain();

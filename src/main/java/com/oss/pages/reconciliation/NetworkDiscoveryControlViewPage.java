@@ -74,44 +74,29 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     }
 
     @Step("Query and select CM Domain in Network Discovery Control View")
-    public void queryAndSelectCmDomain(String cmDomainName) {
+    public void queryAndSelectDomain(String domainName) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        searchForCmDomain(cmDomainName);
+        searchForDomain(domainName);
         DelayUtils.waitForPageToLoad(driver, wait);
-        selectCmDomain(cmDomainName);
+        selectDomain(domainName);
     }
 
     @Step("Check if CMDomain exists in Network Discovery Control View")
-    public boolean checkIfCmDomainExists(String cmDomainName) {
-        return getTreeView().isRowPresent(cmDomainName);
+    public boolean checkIfCmDomainExists(String domainName) {
+        return getTreeView().isRowPresent(domainName);
     }
 
     @Step("Search for CMDomain in Network Discovery Control View")
-    public void searchForCmDomain(String cmDomainName) {
-        getTreeView().search(cmDomainName);
+    public void searchForDomain(String domainName) {
+        getTreeView().search(domainName);
     }
 
     @Step("Select CM Domain in Network Discovery Control View")
-    public void selectCmDomain(String cmDomainName) {
-        getTreeView().selectTreeRow(cmDomainName);
+    public void selectDomain(String domainName) {
+        getTreeView().selectTreeRow(domainName);
     }
 
-    @Step("Check if CMDomain exists in Network Discovery Control View")
-    public boolean checkIfCmDomainExists(String cmDomainName) {
-        return getTreeView().isRowPresent(cmDomainName);
-    }
-
-    @Step("Search for CMDomain in Network Discovery Control View")
-    public void searchForCmDomain(String cmDomainName) {
-        getTreeView().search(cmDomainName);
-    }
-
-    @Step("Select CM Domain in Network Discovery Control View")
-    public void selectCmDomain(String cmDomainName) {
-        getTreeView().selectTreeRow(cmDomainName);
-    }
-
-    @Step("Run full reconciliation for selected CM Domain")
+    @Step("Run full reconciliation for selected Domain")
     public void runReconciliation() {
         TabsInterface tabs = getTabsInterface();
         tabs.selectTabById(RECONCILIATION_TREE_TAB_ID);
@@ -141,7 +126,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         return status;
     }
 
-    @Step("Delete selected CM Domain")
+    @Step("Delete selected Domain")
     public void deleteCmDomain() {
         TabsInterface tabs = getTabsInterface();
         tabs.selectTabById(RECONCILIATION_TREE_TAB_ID);
@@ -150,7 +135,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         prompt.clickButtonByLabel("Delete");
     }
 
-    @Step("Check notification after deleting CM Domain")
+    @Step("Check notification after deleting Domain")
     public String checkDeleteCmDomainNotification() {
         return Notifications.create(driver, wait).getNotificationMessage();
     }

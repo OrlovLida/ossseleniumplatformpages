@@ -164,11 +164,11 @@ public class VS20Test extends BaseTestCase {
     @Description("Delete CMDomain if it exists")
     public void deleteCMDomainIfExists() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkDiscoveryControlViewPage.searchForCmDomain(CM_DOMAIN_NAME);
+        networkDiscoveryControlViewPage.searchForDomain(CM_DOMAIN_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         if (networkDiscoveryControlViewPage.checkIfCmDomainExists(CM_DOMAIN_NAME)) {
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            networkDiscoveryControlViewPage.selectCmDomain(CM_DOMAIN_NAME);
+            networkDiscoveryControlViewPage.selectDomain(CM_DOMAIN_NAME);
             notifications = Notifications.create(driver, webDriverWait);
             notifications.clearAllNotification();
             networkDiscoveryControlViewPage.deleteCmDomain();
@@ -188,7 +188,7 @@ public class VS20Test extends BaseTestCase {
     @Description("Go to Sample Management View and upload reconciliation samples")
     public void uploadSamples() throws URISyntaxException {
         DelayUtils.sleep(1000);
-        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
+        networkDiscoveryControlViewPage.queryAndSelectDomain(CM_DOMAIN_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.moveToSamplesManagement();
         SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
@@ -203,7 +203,7 @@ public class VS20Test extends BaseTestCase {
     public void runReconciliationWithFullSample() {
         openNetworkDiscoveryControlView();
         DelayUtils.sleep(100);
-        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
+        networkDiscoveryControlViewPage.queryAndSelectDomain(CM_DOMAIN_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.runReconciliation();
         checkPopupMessageType();

@@ -52,11 +52,11 @@ public class NetworkOverlapTest extends BaseTestCase {
     @Description("Check if CMDomain1 is deleted")
     public void checkIfDomain1IsDeleted() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
-        networkDiscoveryControlViewPage.searchForCmDomain(CM_DOMAIN_NAME);
+        networkDiscoveryControlViewPage.searchForDomain(CM_DOMAIN_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         if (networkDiscoveryControlViewPage.checkIfCmDomainExists(CM_DOMAIN_NAME)) {
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            networkDiscoveryControlViewPage.selectCmDomain(CM_DOMAIN_NAME);
+            networkDiscoveryControlViewPage.selectDomain(CM_DOMAIN_NAME);
             networkDiscoveryControlViewPage.clearOldNotifications();
             networkDiscoveryControlViewPage.deleteCmDomain();
             checkPopupMessageType();
@@ -70,11 +70,11 @@ public class NetworkOverlapTest extends BaseTestCase {
     @Description("Check if CMDomain2 is deleted")
     public void checkIfDomain2IsDeleted() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
-        networkDiscoveryControlViewPage.searchForCmDomain(CM_DOMAIN_NAME_2);
+        networkDiscoveryControlViewPage.searchForDomain(CM_DOMAIN_NAME_2);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         if (networkDiscoveryControlViewPage.checkIfCmDomainExists(CM_DOMAIN_NAME_2)) {
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            networkDiscoveryControlViewPage.selectCmDomain(CM_DOMAIN_NAME_2);
+            networkDiscoveryControlViewPage.selectDomain(CM_DOMAIN_NAME_2);
             networkDiscoveryControlViewPage.clearOldNotifications();
             networkDiscoveryControlViewPage.deleteCmDomain();
             checkPopupMessageType();
@@ -94,7 +94,7 @@ public class NetworkOverlapTest extends BaseTestCase {
     @Test(priority = 4, description = "Upload reconciliation samples", dependsOnMethods = {"createCmDomain1"})
     @Description("Go to Sample Management View and upload reconciliation samples")
     public void uploadSamples1() throws URISyntaxException {
-        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
+        networkDiscoveryControlViewPage.queryAndSelectDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.moveToSamplesManagement();
         SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
         samplesManagementPage.selectPath();
@@ -110,7 +110,7 @@ public class NetworkOverlapTest extends BaseTestCase {
     public void runReconciliationWithFullSample1() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
+        networkDiscoveryControlViewPage.queryAndSelectDomain(CM_DOMAIN_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.runReconciliation();
         checkPopupMessageType();
@@ -139,7 +139,7 @@ public class NetworkOverlapTest extends BaseTestCase {
     @Test(priority = 7, description = "Upload reconciliation samples", dependsOnMethods = {"createCmDomain2"})
     @Description("Go to Sample Management View and upload reconciliation samples")
     public void uploadSamples2() throws URISyntaxException {
-        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME_2);
+        networkDiscoveryControlViewPage.queryAndSelectDomain(CM_DOMAIN_NAME_2);
         networkDiscoveryControlViewPage.moveToSamplesManagement();
         SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
         samplesManagementPage.selectPath();
@@ -155,7 +155,7 @@ public class NetworkOverlapTest extends BaseTestCase {
     public void runReconciliationWithFullSample2() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME_2);
+        networkDiscoveryControlViewPage.queryAndSelectDomain(CM_DOMAIN_NAME_2);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.runReconciliation();
         checkPopupMessageType();
@@ -216,7 +216,7 @@ public class NetworkOverlapTest extends BaseTestCase {
     @Description("Go to Network Discovery Control View and run reconciliation and check if it ended without errors")
     public void runReconciliationWithFullSample1Again() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
-        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
+        networkDiscoveryControlViewPage.queryAndSelectDomain(CM_DOMAIN_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.runReconciliation();
         checkPopupMessageType();
@@ -264,7 +264,7 @@ public class NetworkOverlapTest extends BaseTestCase {
     @Description("Delete CM Domain1")
     public void deleteCmDomain1() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
-        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
+        networkDiscoveryControlViewPage.queryAndSelectDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.clearOldNotifications();
         networkDiscoveryControlViewPage.deleteCmDomain();
         checkPopupMessageType();
@@ -299,7 +299,7 @@ public class NetworkOverlapTest extends BaseTestCase {
     @Description("Delete CM Domain2")
     public void deleteCmDomain2() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
-        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME_2);
+        networkDiscoveryControlViewPage.queryAndSelectDomain(CM_DOMAIN_NAME_2);
         networkDiscoveryControlViewPage.clearOldNotifications();
         networkDiscoveryControlViewPage.deleteCmDomain();
         checkPopupMessageType();
