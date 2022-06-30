@@ -22,6 +22,7 @@ import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.prompts.Popup;
 import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.components.tree.TreeComponent;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.HierarchyViewPage;
 import com.oss.repositories.AddressRepository;
 import com.oss.repositories.LocationInventoryRepository;
@@ -175,6 +176,7 @@ public class FilteringOnRelationNodesTest extends BaseTestCase {
         Assertions.assertThat(hierarchyViewPage.isNodePresent(ROOM_2_PATH)).isFalse();
 
         clearFilter(hierarchyViewPage.getNodeByLabelPath(PATH_PORTS_RELATION));
+        DelayUtils.sleep();
         clearFilter(hierarchyViewPage.getNodeByLabelPath(PATH_LOCATIONS_2ST_RELATION));
     }
     
