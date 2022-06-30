@@ -8,7 +8,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.util.List;
 
 /**
@@ -143,29 +142,24 @@ public class TasksPageV2 extends BasePage {
     public void completeNRP(String processCode) {
         String ipCode = proceedNRPToImplementationTask(processCode);
         completeTask(ipCode, IMPLEMENTATION_TASK);
-        startTask(ipCode, ACCEPTANCE_TASK);
-        completeTask(ipCode, ACCEPTANCE_TASK);
-        startTask(processCode, VERIFICATION_TASK);
-        completeTask(processCode, VERIFICATION_TASK);
+        startAndCompleteTask(ipCode, ACCEPTANCE_TASK);
+        startAndCompleteTask(ipCode, VERIFICATION_TASK);
     }
 
     public String proceedNRPToImplementationTask(String processCode) {
         completeTask(processCode, HIGH_LEVEL_PLANNING_TASK);
-        startTask(processCode, LOW_LEVEL_PLANNING_TASK);
-        completeTask(processCode, LOW_LEVEL_PLANNING_TASK);
+        startAndCompleteTask(processCode, LOW_LEVEL_PLANNING_TASK);
         return proceedNRPFromReadyForIntegration(processCode);
     }
 
     public String proceedNRPFromReadyForIntegration(String processCode) {
-        startTask(processCode, READY_FOR_INTEGRATION_TASK);
-        completeTask(processCode, READY_FOR_INTEGRATION_TASK);
+        startAndCompleteTask(processCode, READY_FOR_INTEGRATION_TASK);
         showCompletedTasks();
         findTask(processCode, READY_FOR_INTEGRATION_TASK);
         DelayUtils.sleep(3000);
         TableInterface ipTable = getTaskForm().getIPTable();
         String ipCode = ipTable.getCellValue(0, CODE_LABEL);
-        startTask(ipCode, SCOPE_DEFINITION_TASK);
-        completeTask(ipCode, SCOPE_DEFINITION_TASK);
+        startAndCompleteTask(ipCode, SCOPE_DEFINITION_TASK);
         startTask(ipCode, IMPLEMENTATION_TASK);
         return ipCode;
     }
@@ -180,5 +174,10 @@ public class TasksPageV2 extends BasePage {
 
     private IPDTaskFormPage getTaskForm() {
         return IPDTaskFormPage.create(driver, wait, TABS_TASKS_VIEW_ID);
+    }
+
+    public void startAndCompleteTask(String processCode, String taskName) {
+        startTask(processCode, taskName);
+        completeTask(processCode, taskName);
     }
 }
