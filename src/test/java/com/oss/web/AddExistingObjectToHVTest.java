@@ -169,11 +169,11 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
     @Test(priority = 8)
     @Description("Hierarchy View is opened from Inventory View")
     public void addObjectToHierarchyViewOpenedFromOtherView() {
-        NewInventoryViewPage testPerson = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, LOCATION_TYPE);
-        testPerson.searchByAttributeValue(TYPE_ATTRIBUTE_ID, ROOM_TYPE, Input.ComponentType.MULTI_COMBOBOX);
+        NewInventoryViewPage location = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, LOCATION_TYPE);
+        location.searchByAttributeValue(TYPE_ATTRIBUTE_ID, ROOM_TYPE, Input.ComponentType.MULTI_COMBOBOX);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        testPerson.selectFirstRow();
-        testPerson.goToHierarchyViewForSelectedObject();
+        location.selectFirstRow();
+        location.goToHierarchyViewForSelectedObject();
         HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
         hierarchyViewPage.getMainTree().callActionById(ADD_OBJECT_BUTTON);
         AdvancedSearchWidget advancedSearch = AdvancedSearchWidget.createById(driver, webDriverWait, ADVANCED_SEARCH_ID);
@@ -231,7 +231,7 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
     
     private void deleteBuilding(String locationId) {
         LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);
-        locationInventoryRepository.deleteLocation(Long.valueOf(locationId), "Building");
+        locationInventoryRepository.deleteLocation(Long.valueOf(locationId), BUILDING_TYPE);
     }
     
 }
