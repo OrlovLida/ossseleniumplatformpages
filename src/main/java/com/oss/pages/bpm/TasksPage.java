@@ -68,6 +68,7 @@ public class TasksPage extends BasePage {
         table.searchByAttributeWithLabel(NAME, Input.ComponentType.TEXT_FIELD, taskName);
         table.doRefreshWhileNoData(10000, REFRESH_TABLE_ID);
         table.selectRowByAttributeValueWithLabel(PROCESS_CODE, processCode);
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public String startTaskByUsernameAndTaskName(String username, String taskName) {
@@ -85,30 +86,22 @@ public class TasksPage extends BasePage {
 
     public void changeTransitionAndCompleteTask(String processCode, String taskName, String transition) {
         findTask(processCode, taskName);
-        DelayUtils.waitForPageToLoad(driver, wait);
         getTaskForm().setTransition(transition);
-        DelayUtils.waitForPageToLoad(driver, wait);
         getTaskForm().completeTask();
-        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public void startTask(String processCode, String taskName) {
         findTask(processCode, taskName);
-        DelayUtils.waitForPageToLoad(driver, wait);
         getTaskForm().startTask();
-        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public void completeTask(String processCode, String taskName) {
         findTask(processCode, taskName);
-        DelayUtils.waitForPageToLoad(driver, wait);
         getTaskForm().completeTask();
-        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public void setupIntegration(String processCode) {
         findTask(processCode, READY_FOR_INTEGRATION_TASK);
-        DelayUtils.waitForPageToLoad(driver, wait);
         getTaskForm().setupIntegration();
     }
 

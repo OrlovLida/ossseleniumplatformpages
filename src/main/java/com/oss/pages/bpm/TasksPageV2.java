@@ -69,6 +69,7 @@ public class TasksPageV2 extends BasePage {
         table.searchByAttribute(TASK_NAME_INPUT_ID, taskName);
         DelayUtils.waitForPageToLoad(driver, wait);
         table.selectRowByAttributeValue(PROCESS_CODE_COLUMN_ID, processCode);
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     private String getProcessCodeAndStartItIfNotStarted(String username, String taskName) {
@@ -85,21 +86,16 @@ public class TasksPageV2 extends BasePage {
 
     public void startTask(String processCode, String taskName) {
         findTask(processCode, taskName);
-        DelayUtils.waitForPageToLoad(driver, wait);
         getTaskForm().startTask();
-        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public void completeTask(String processCode, String taskName) {
         findTask(processCode, taskName);
-        DelayUtils.waitForPageToLoad(driver, wait);
         getTaskForm().completeTask();
-        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public void setupIntegration(String processCode) {
         findTask(processCode, READY_FOR_INTEGRATION_TASK);
-        DelayUtils.waitForPageToLoad(driver, wait);
         getTaskForm().setupIntegration();
     }
 
@@ -118,11 +114,8 @@ public class TasksPageV2 extends BasePage {
 
     public void changeTransitionAndCompleteTask(String processCode, String taskName, String transition) {
         findTask(processCode, taskName);
-        DelayUtils.waitForPageToLoad(driver, wait);
         getTaskForm().setTransition(transition);
-        DelayUtils.waitForPageToLoad(driver, wait);
         getTaskForm().completeTask();
-        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public void addFile(String processCode, String taskName, String filePath) {

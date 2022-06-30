@@ -75,6 +75,7 @@ public class IPDTaskFormPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
         prompt.clickButtonByLabel(PROCEED_BUTTON_LABEL);
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     private void callAction(String actionId) {
@@ -85,6 +86,7 @@ public class IPDTaskFormPage extends BasePage {
         selectTabByLabel(FORM_TAB_LABEL);
         DelayUtils.waitForPageToLoad(driver, wait);
         callAction(SETUP_INTEGRATION_ICON_ID);
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public void startTask() {
@@ -103,6 +105,7 @@ public class IPDTaskFormPage extends BasePage {
         attachFileWizardPage.selectRadioButton(UPLOAD_ANYWAY_LABEL);
         attachFileWizardPage.attachFile(filePath);
         attachFileWizardPage.skipAndAccept();
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public List<String> getListOfAttachments() {
@@ -125,6 +128,7 @@ public class IPDTaskFormPage extends BasePage {
     public void setTransition(String transitionName) {
         Input input = ComponentFactory.create(TRANSITION_COMBOBOX_ID, Input.ComponentType.BPM_COMBOBOX, driver, wait);
         input.setSingleStringValue(transitionName);
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
 
