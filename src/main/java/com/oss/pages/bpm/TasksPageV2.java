@@ -39,26 +39,11 @@ public class TasksPageV2 extends BasePage {
     private static final Logger log = LoggerFactory.getLogger(TasksPageV2.class);
     private static final String TABLE_TASKS_ID = "bpm_task_graphql_view_tasksTableWidget";
     private static final String TABS_TASKS_VIEW_ID = "bpm_task_graphql_view_tasksTabsWidget";
-    private static final String ATTACH_FILE_BUTTON_ID = "addAttachmentAction";
-    private static final String FORM_TAB_ID = "bpm_task_graphql_view_form-tab";
-    private static final String ATTACHMENT_TAB_ID = "bpm_task_graphql_view_tasks-attachments-tab";
-    private static final String ASSIGN_TASK_ICON_ID = "form.toolbar.assignTask";
-    private static final String COMPLETE_TASK_ICON_ID = "form.toolbar.closeTask";
-    private static final String SETUP_INTEGRATION_ICON_ID = "form.toolbar.setupIntegrationButton";
-    private static final String IP_TABLE_ID = "form.specific.ip_involved_nrp_group.ip_involved_nrp_table";
-    private static final String TRANSITION_COMBOBOX_ID = "transitionComboBox";
     private static final String PROCESS_CODE = "Process Code";
     private static final String NAME = "Name";
     private static final String ASSIGNEE = "Assignee";
     private static final String NON_EXISTING_TASK_EXCEPTION = "There is no task for specified values";
-    private static final String UPLOAD_ANYWAY_LABEL = "Upload anyway";
-    private static final String PERFORM_CONFIGURATION_BUTTON_LABEL = "Perform Configuration";
-    private static final String PLAN_VIEW_BUTTON_LABEL = "Plan View";
     private static final String CODE_LABEL = "Code";
-    private static final String ATTACHMENTS_LIST_ID = "attachmentManagerBusinessView_commonTreeTable_BPMTask";
-    private static final String ATTACHMENTS_AND_DIRECTORIES = "Attachments and directories";
-    private static final String HOME_LABEL = "HOME";
-    private static final String PROCEED_BUTTON_LABEL = "Proceed";
     private static final String TASK_NAME_INPUT_ID = "name";
     private static final String PROCESS_CODE_INPUT_ID = "processInstanceCode";
     private static final String PROCESS_CODE_COLUMN_ID = "processInstanceCode";
@@ -82,30 +67,9 @@ public class TasksPageV2 extends BasePage {
         return TableWidget.createById(driver, TABLE_TASKS_ID, wait);
     }
 
-    private TableInterface getIPTable() {
-        return OldTable.createById(driver, wait, IP_TABLE_ID);
-    }
-
     public void clearFilters() {
         TableWidget tasksTable = getTableWidget();
         tasksTable.clearAllFilters();
-    }
-
-    private TabsInterface getTab() {
-        return TabsWidget.createById(driver, wait, TABS_TASKS_VIEW_ID);
-    }
-
-    public void selectTab(String tabId) {
-        getTab().selectTabById(tabId);
-    }
-
-    private void actionTask(String actionId) {
-        selectTab(FORM_TAB_ID);
-        DelayUtils.waitForPageToLoad(driver, wait);
-        getTab().callActionById(actionId);
-        DelayUtils.waitForPageToLoad(driver, wait);
-        ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
-        prompt.clickButtonByLabel(PROCEED_BUTTON_LABEL);
     }
 
     public void findTask(String processCode, String taskName) {
@@ -133,21 +97,21 @@ public class TasksPageV2 extends BasePage {
     public void startTask(String processCode, String taskName) {
         findTask(processCode, taskName);
         DelayUtils.waitForPageToLoad(driver, wait);
-        actionTask(ASSIGN_TASK_ICON_ID);
+        IPDTaskFormPage.create(driver, wait, TABS_TASKS_VIEW_ID).startTask();
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public void completeTask(String processCode, String taskName) {
         findTask(processCode, taskName);
         DelayUtils.waitForPageToLoad(driver, wait);
-        actionTask(COMPLETE_TASK_ICON_ID);
+        IPDTaskFormPage.create(driver, wait, TABS_TASKS_VIEW_ID).completeTask();
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public void setupIntegration(String processCode) {
         findTask(processCode, READY_FOR_INTEGRATION_TASK);
         DelayUtils.waitForPageToLoad(driver, wait);
-        getTab().callActionById(SETUP_INTEGRATION_ICON_ID);
+        IPDTaskFormPage.create(driver, wait, TABS_TASKS_VIEW_ID).setupIntegration();
     }
 
     public String startTaskByUsernameAndTaskName(String username, String taskName) {
@@ -166,39 +130,19 @@ public class TasksPageV2 extends BasePage {
     public void changeTransitionAndCompleteTask(String processCode, String taskName, String transition) {
         findTask(processCode, taskName);
         DelayUtils.waitForPageToLoad(driver, wait);
-        Input input = ComponentFactory.create(TRANSITION_COMBOBOX_ID, Input.ComponentType.BPM_COMBOBOX, driver, wait);
-        input.setSingleStringValue(transition);
+        IPDTaskFormPage.create(driver, wait, TABS_TASKS_VIEW_ID).setTransition(transition);
         DelayUtils.waitForPageToLoad(driver, wait);
-        actionTask(COMPLETE_TASK_ICON_ID);
+        IPDTaskFormPage.create(driver, wait, TABS_TASKS_VIEW_ID).completeTask();
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public void addFile(String processCode, String taskName, String filePath) {
         findTask(processCode, taskName);
-        selectTab(ATTACHMENT_TAB_ID);
-        DelayUtils.waitForPageToLoad(driver, wait);
-        getTab().callActionById(ATTACH_FILE_BUTTON_ID);
-        AttachFileWizardPage attachFileWizardPage = new AttachFileWizardPage(driver);
-        attachFileWizardPage.selectRadioButton(UPLOAD_ANYWAY_LABEL);
-        attachFileWizardPage.attachFile(filePath);
-        attachFileWizardPage.skipAndAccept();
+        IPDTaskFormPage.create(driver, wait, TABS_TASKS_VIEW_ID).attachFile(filePath);
     }
 
     public List<String> getListOfAttachments() {
-        OldTreeTableWidget treeTable =
-                OldTreeTableWidget.create(driver, wait, ATTACHMENTS_LIST_ID);
-        List<String> allNodes = treeTable.getAllVisibleNodes(ATTACHMENTS_AND_DIRECTORIES);
-        return allNodes.stream().filter(node -> !node.equals(HOME_LABEL)).collect(Collectors.toList());
-    }
-
-    public void clickPerformConfigurationButton() {
-        Button button = Button.createByLabel(driver, TABS_TASKS_VIEW_ID, PERFORM_CONFIGURATION_BUTTON_LABEL);
-        button.click();
-    }
-
-    public void clickPlanViewButton() {
-        Button button = Button.createByLabel(driver, PLAN_VIEW_BUTTON_LABEL);
-        button.click();
+        return IPDTaskFormPage.create(driver, wait, TABS_TASKS_VIEW_ID).getListOfAttachments();
     }
 
     public void showCompletedTasks() {
@@ -209,7 +153,7 @@ public class TasksPageV2 extends BasePage {
     }
 
     public String getIPCodeByProcessName(String processIPName) {
-        TableInterface ipTable = getIPTable();
+        TableInterface ipTable = IPDTaskFormPage.create(driver, wait, TABS_TASKS_VIEW_ID).getIPTable();
         int rowNumber = ipTable.getRowNumber(processIPName, NAME);
         return ipTable.getCellValue(rowNumber, CODE_LABEL);
     }
@@ -236,11 +180,19 @@ public class TasksPageV2 extends BasePage {
         showCompletedTasks();
         findTask(processCode, READY_FOR_INTEGRATION_TASK);
         DelayUtils.sleep(3000);
-        TableInterface ipTable = getIPTable();
+        TableInterface ipTable = IPDTaskFormPage.create(driver, wait, TABS_TASKS_VIEW_ID).getIPTable();
         String ipCode = ipTable.getCellValue(0, CODE_LABEL);
         startTask(ipCode, SCOPE_DEFINITION_TASK);
         completeTask(ipCode, SCOPE_DEFINITION_TASK);
         startTask(ipCode, IMPLEMENTATION_TASK);
         return ipCode;
+    }
+
+    public void clickPerformConfigurationButton() {
+        IPDTaskFormPage.create(driver, wait, TABS_TASKS_VIEW_ID).clickPerformConfigurationButton();
+    }
+
+    public void clickPlanViewButton() {
+        IPDTaskFormPage.create(driver, wait, TABS_TASKS_VIEW_ID).clickPlanViewButton();
     }
 }
