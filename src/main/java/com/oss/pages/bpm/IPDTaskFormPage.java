@@ -39,17 +39,17 @@ public class IPDTaskFormPage extends BasePage {
     private static final String COMPLETE_TASK_ICON_ID = "form.toolbar.closeTask";
     private static final String SETUP_INTEGRATION_ICON_ID = "form.toolbar.setupIntegrationButton";
 
-
     private final String tabsId;
-    private final TabsInterface tabWidget = getTabWidget();
+    private final TabsInterface tabWidget;
 
-    public IPDTaskFormPage(WebDriver driver, WebDriverWait wait, String tabsTasksViewId) {
+    private IPDTaskFormPage(WebDriver driver, WebDriverWait wait, String tabsTasksViewId) {
         super(driver, wait);
         this.tabsId = tabsTasksViewId;
+        this.tabWidget = getTabWidget(tabsTasksViewId);
     }
 
-    private TabsInterface getTabWidget() {
-        return TabsWidget.createById(driver, wait, tabsId);
+    private TabsInterface getTabWidget(String tabWidgetId) {
+        return TabsWidget.createById(driver, wait, tabWidgetId);
     }
 
     public static IPDTaskFormPage create(WebDriver driver, WebDriverWait wait, String tabsTasksViewId) {
@@ -78,11 +78,12 @@ public class IPDTaskFormPage extends BasePage {
     }
 
     private void callAction(String actionId) {
-        selectTabByLabel(FORM_TAB_LABEL);
         tabWidget.callActionById(actionId);
     }
 
     public void setupIntegration() {
+        selectTabByLabel(FORM_TAB_LABEL);
+        DelayUtils.waitForPageToLoad(driver, wait);
         callAction(SETUP_INTEGRATION_ICON_ID);
     }
 
@@ -117,7 +118,7 @@ public class IPDTaskFormPage extends BasePage {
     }
 
     public void clickPlanViewButton() {
-        Button button = Button.createByLabel(driver, PLAN_VIEW_BUTTON_LABEL);
+        Button button = Button.createByLabel(driver, tabsId, PLAN_VIEW_BUTTON_LABEL);
         button.click();
     }
 

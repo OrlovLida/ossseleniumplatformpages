@@ -1,26 +1,15 @@
 package com.oss.pages.bpm;
 
-import com.oss.framework.components.inputs.Button;
-import com.oss.framework.components.inputs.ComponentFactory;
-import com.oss.framework.components.inputs.Input;
-import com.oss.framework.components.prompts.ConfirmationBox;
-import com.oss.framework.components.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.table.TableInterface;
 import com.oss.framework.widgets.table.TableWidget;
-import com.oss.framework.widgets.tabs.TabsInterface;
-import com.oss.framework.widgets.tabs.TabsWidget;
-import com.oss.framework.widgets.treetable.OldTreeTableWidget;
 import com.oss.pages.BasePage;
-import com.oss.pages.dms.AttachFileWizardPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author Paweł Rother
@@ -97,21 +86,21 @@ public class TasksPageV2 extends BasePage {
     public void startTask(String processCode, String taskName) {
         findTask(processCode, taskName);
         DelayUtils.waitForPageToLoad(driver, wait);
-        IPDTaskFormPage.create(driver, wait, TABS_TASKS_VIEW_ID).startTask();
+        getTaskForm().startTask();
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public void completeTask(String processCode, String taskName) {
         findTask(processCode, taskName);
         DelayUtils.waitForPageToLoad(driver, wait);
-        IPDTaskFormPage.create(driver, wait, TABS_TASKS_VIEW_ID).completeTask();
+        getTaskForm().completeTask();
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public void setupIntegration(String processCode) {
         findTask(processCode, READY_FOR_INTEGRATION_TASK);
         DelayUtils.waitForPageToLoad(driver, wait);
-        IPDTaskFormPage.create(driver, wait, TABS_TASKS_VIEW_ID).setupIntegration();
+        getTaskForm().setupIntegration();
     }
 
     public String startTaskByUsernameAndTaskName(String username, String taskName) {
@@ -130,19 +119,19 @@ public class TasksPageV2 extends BasePage {
     public void changeTransitionAndCompleteTask(String processCode, String taskName, String transition) {
         findTask(processCode, taskName);
         DelayUtils.waitForPageToLoad(driver, wait);
-        IPDTaskFormPage.create(driver, wait, TABS_TASKS_VIEW_ID).setTransition(transition);
+        getTaskForm().setTransition(transition);
         DelayUtils.waitForPageToLoad(driver, wait);
-        IPDTaskFormPage.create(driver, wait, TABS_TASKS_VIEW_ID).completeTask();
+        getTaskForm().completeTask();
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public void addFile(String processCode, String taskName, String filePath) {
         findTask(processCode, taskName);
-        IPDTaskFormPage.create(driver, wait, TABS_TASKS_VIEW_ID).attachFile(filePath);
+        getTaskForm().attachFile(filePath);
     }
 
     public List<String> getListOfAttachments() {
-        return IPDTaskFormPage.create(driver, wait, TABS_TASKS_VIEW_ID).getListOfAttachments();
+        return getTaskForm().getListOfAttachments();
     }
 
     public void showCompletedTasks() {
@@ -153,7 +142,7 @@ public class TasksPageV2 extends BasePage {
     }
 
     public String getIPCodeByProcessName(String processIPName) {
-        TableInterface ipTable = IPDTaskFormPage.create(driver, wait, TABS_TASKS_VIEW_ID).getIPTable();
+        TableInterface ipTable = getTaskForm().getIPTable();
         int rowNumber = ipTable.getRowNumber(processIPName, NAME);
         return ipTable.getCellValue(rowNumber, CODE_LABEL);
     }
@@ -180,7 +169,7 @@ public class TasksPageV2 extends BasePage {
         showCompletedTasks();
         findTask(processCode, READY_FOR_INTEGRATION_TASK);
         DelayUtils.sleep(3000);
-        TableInterface ipTable = IPDTaskFormPage.create(driver, wait, TABS_TASKS_VIEW_ID).getIPTable();
+        TableInterface ipTable = getTaskForm().getIPTable();
         String ipCode = ipTable.getCellValue(0, CODE_LABEL);
         startTask(ipCode, SCOPE_DEFINITION_TASK);
         completeTask(ipCode, SCOPE_DEFINITION_TASK);
@@ -189,10 +178,14 @@ public class TasksPageV2 extends BasePage {
     }
 
     public void clickPerformConfigurationButton() {
-        IPDTaskFormPage.create(driver, wait, TABS_TASKS_VIEW_ID).clickPerformConfigurationButton();
+        getTaskForm().clickPerformConfigurationButton();
     }
 
     public void clickPlanViewButton() {
-        IPDTaskFormPage.create(driver, wait, TABS_TASKS_VIEW_ID).clickPlanViewButton();
+        getTaskForm().clickPlanViewButton();
+    }
+
+    private IPDTaskFormPage getTaskForm() {
+        return IPDTaskFormPage.create(driver, wait, TABS_TASKS_VIEW_ID);
     }
 }
