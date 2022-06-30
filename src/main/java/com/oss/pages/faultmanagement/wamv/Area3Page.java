@@ -6,6 +6,9 @@ import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.oss.framework.components.data.Data;
+import com.oss.framework.components.inputs.ComponentFactory;
+import com.oss.framework.components.inputs.Input;
 import com.oss.framework.iaa.widgets.list.ListApp;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
@@ -20,6 +23,7 @@ public class Area3Page extends WAMVPage {
 
     private static final String ADDITIONAL_TEXT_TAB_ID = "additional-text";
     private static final String ALARM_DETAILS_TAB_ID = "alarm-details";
+    private static final String MOST_WANTED_TAB_ID = "most-wanted";
     private static final String MO_PROPERTIES_TAB_ID = "mo-properties";
     private static final String SAME_MO_ALARMS_TAB_ID = "mo-alarms";
     private static final String CORRELATED_ALARMS_TAB_ID = "correlated-alarms";
@@ -37,6 +41,7 @@ public class Area3Page extends WAMVPage {
     private static final String PERCEIVED_SEVERITY_VALUE = "Perceived Severity";
     private static final String IDENTIFIER_VALUE = "Identifier";
     private static final String PROPERTY_PANEL_ID = "card-content_AREA3";
+    private static final String CHECKBOX_SHOW_EMPTY_ID_PATTERN = "checkbox|%s|show-empty";
 
     public Area3Page(WebDriver driver) {
         super(driver);
@@ -59,6 +64,12 @@ public class Area3Page extends WAMVPage {
     public void clickOnAlarmDetailsTab() {
         selectTabFromArea3(ALARM_DETAILS_TAB_ID);
         log.info("Clicking on Alarm Details tab");
+    }
+
+    @Step("I click on Most Wanted tab")
+    public void clickOnMostWantedTab() {
+        selectTabFromArea3(MOST_WANTED_TAB_ID);
+        log.info("Clicking on Most Wanted tab");
     }
 
     @Step("I click on MO Properties tab")
@@ -172,11 +183,17 @@ public class Area3Page extends WAMVPage {
             return false;
         }
     }
-//      TODO method will be working after fix OSSWEB-18155 - add proper data-testid and update it
-//    public void checkShowEmptyCheckbox(){
-//        Input showEmptyCheckbox = ComponentFactory.create(CHECKBOX_DATA_TEST_ID, Input.ComponentType.CHECKBOX, driver, wait);
-//        showEmptyCheckbox.click();
-//    }
+
+    public void checkShowEmptyCheckbox(String tabName) {
+        Input showEmptyCheckbox = ComponentFactory.create(String.format(CHECKBOX_SHOW_EMPTY_ID_PATTERN, tabName), driver, wait);
+        showEmptyCheckbox.setValue(Data.createSingleData("true"));
+    }
+
+    public int countVisibleProperties() {
+        int rowsNumber = getPropertyPanel().countRows();
+        log.info("Number of visible rows: '{}'", rowsNumber);
+        return rowsNumber;
+    }
 
     private OldPropertyPanel getPropertyPanel() {
         return OldPropertyPanel.createById(driver, wait, PROPERTY_PANEL_ID);
