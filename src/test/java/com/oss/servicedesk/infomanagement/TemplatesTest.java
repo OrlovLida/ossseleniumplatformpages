@@ -2,6 +2,8 @@ package com.oss.servicedesk.infomanagement;
 
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
@@ -32,6 +34,7 @@ public class TemplatesTest extends BaseTestCase {
     private static final String HEADER_TYPE = "HEADER";
     private static final String TEMPLATE_TYPE = "TEMPLATE";
     private static final String TEMPLATE_NAME = "Selenium Test Template";
+    private static final String TEMPLATE_TO_SHARE_NAME = "Selenium Test Template to Share";
     private static final String TEMPLATE_WITH_HEADER_AND_FOOTER_NAME = "Selenium Template with Header and Footer";
     private static final String EDITED_TEMPLATE_NAME = "Selenium Test Template Edited";
     private static final String CHANNEL_COMBOBOX_ID = "template-wizard-channel";
@@ -44,6 +47,7 @@ public class TemplatesTest extends BaseTestCase {
     private static final String CHANNEL_EMAIL_IN_SEARCH_PANEL = "EMAIL";
     private static final String NAME_LABEL = "Name";
     private static final String TYPE_LABEL = "Type";
+    private static final String TEMPLATES_EXPRESSION_EDITOR_ID = "template-wizard-content";
 
     @BeforeMethod
     public void goToTemplatesPage() {
@@ -238,5 +242,38 @@ public class TemplatesTest extends BaseTestCase {
         }
 
         Assert.assertFalse(templatesPage.isObjectInTable(EDITED_FOOTER_NAME));
+    }
+
+    @Parameters({"shareToUser", "password"})
+    @Test(priority = 15, testName = "Share Template", description = "Share template to other user")
+    @Description("Share template to other user")
+    public void shareTemplate(
+            @Optional("sd_seleniumtest2") String shareToUser,
+            @Optional("oss") String password
+    ) {
+        sdWizardPage = templatesPage.clickCreateTemplate();
+        sdWizardPage.insertValueToComponent(TEMPLATE_TO_SHARE_NAME, WIZARD_NAME_FIELD_ID);
+        sdWizardPage.insertValueToComponent(CHANNEL_INTERNAL, CHANNEL_COMBOBOX_ID);
+        sdWizardPage.insertValueToComponent(SYSTEM, SYSTEM_COMBOBOX_ID);
+        sdWizardPage.insertValueToComponent(OBJECT_TYPE_TT, OBJECT_TYPE_COMBOBOX_ID);
+        sdWizardPage.insertValueToComponent(TYPE_SUCCESS, TYPE_COMBOBOX_ID);
+        sdWizardPage.clickAcceptButtonInWizard();
+        Assert.assertTrue(templatesPage.isObjectInTable(TEMPLATE_TO_SHARE_NAME));
+
+        templatesPage.shareObjectWithName(TEMPLATE_TO_SHARE_NAME);
+        templatesPage.searchForUser(shareToUser);
+        templatesPage.shareToUser(shareToUser);
+        templatesPage.closeSharePanel();
+        templatesPage.openLoginPanel().changeUser(shareToUser, password);
+        Assert.assertTrue(templatesPage.isObjectInTable(TEMPLATE_TO_SHARE_NAME));
+
+        sdWizardPage = templatesPage.clickEditOnObjectWithName(TEMPLATE_TO_SHARE_NAME);
+        sdWizardPage.setValueInExpressionEditor(TEMPLATES_EXPRESSION_EDITOR_ID, TEMPLATE_NAME);
+        sdWizardPage.clickAcceptButtonInWizard();
+        Assert.assertEquals(templatesPage.getMessageFromPrompt(), "This template is shared with you in read only mode. You cannot change it.");
+
+        templatesPage.clickDeleteOnObjectWithName(TEMPLATE_TO_SHARE_NAME);
+        templatesPage.clickConfirmDelete();
+        Assert.assertFalse(templatesPage.isObjectInTable(TEMPLATE_TO_SHARE_NAME));
     }
 }
