@@ -73,10 +73,10 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         wizard.clickButtonById(ACCEPT_CHANGE_LOCATION_BUTTON_ID);
     }
 
-    @Step("Select {inconsistencyName} and use Physical Device Update Wizard to assign location")
-    public boolean assertInconsistency(String inconsistencyName) {
+    @Step("Check if inconsistency is present by {inconsistencyName}")
+    public boolean isInconsistencyPresent(String inconsistencyName) {
         TreeWidget treeWidget = getTreeView();
-        return treeWidget.checkIfRowExists(inconsistencyName);
+        return treeWidget.isRowPresent(inconsistencyName);
     }
 
     @Step("Select {inconsistencyName} and use assign location option")

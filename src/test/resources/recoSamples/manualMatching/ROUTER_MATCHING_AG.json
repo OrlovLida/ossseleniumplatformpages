@@ -1,43 +1,43 @@
 [
   {
     "type": "IPDeviceFunction",
-	"distinguishName": "IPDeviceFunction@@DEVICE_FOR_MATCHING_1",
+	"distinguishName": "IPDeviceFunction@@SELENIUM_DEVICE_FOR_MATCHING_1",
 	"isRoot": true,
-	"groupId": "IPDeviceFunction@@DEVICE_FOR_MATCHING_1",
+	"groupId": "IPDeviceFunction@@SELENIUM_DEVICE_FOR_MATCHING_1",
 	"simpleAttributes": {
-	  "Hostname": "DEVICE_FOR_MATCHING_1",
-	  "Name": "DEVICE_FOR_MATCHING_1",
+	  "Hostname": "SELENIUM_DEVICE_FOR_MATCHING_1",
+	  "Name": "SELENIUM_DEVICE_FOR_MATCHING_1",
 	  "DeviceType": "IPDevice"
 	}	
   },
   {
     "type": "IPDeviceFunction",
-	"distinguishName": "IPDeviceFunction@@DEVICE_FOR_MATCHING_2",
+	"distinguishName": "IPDeviceFunction@@SELENIUM_DEVICE_FOR_MATCHING_2",
 	"isRoot": true,
-	"groupId": "IPDeviceFunction@@DEVICE_FOR_MATCHING_2",
+	"groupId": "IPDeviceFunction@@SELENIUM_DEVICE_FOR_MATCHING_2",
 	"simpleAttributes": {
-	  "Hostname": "DEVICE_FOR_MATCHING_2",
-	  "Name": "DEVICE_FOR_MATCHING_2",
+	  "Hostname": "SELENIUM_DEVICE_FOR_MATCHING_2",
+	  "Name": "SELENIUM_DEVICE_FOR_MATCHING_2",
 	  "DeviceType": "IPDevice"
 	}	
   },
   {
     "type": "IPDeviceFunction",
-	"distinguishName": "IPDeviceFunction@@DEVICE_FOR_MATCHING_3",
-	"groupId": "IPDeviceFunction@@DEVICE_FOR_MATCHING_3",
+	"distinguishName": "IPDeviceFunction@@SELENIUM_DEVICE_FOR_MATCHING_3",
+	"groupId": "IPDeviceFunction@@SELENIUM_DEVICE_FOR_MATCHING_3",
 	"isRoot": true,
 	"simpleAttributes": {
-	  "Hostname": "DEVICE_FOR_MATCHING_3",
-	  "Name": "DEVICE_FOR_MATCHING_3",
+	  "Hostname": "SELENIUM_DEVICE_FOR_MATCHING_3",
+	  "Name": "SELENIUM_DEVICE_FOR_MATCHING_3",
 	  "DeviceType": "IPDevice"
 	}	
   },
   {
     "type": "Device",
-    "distinguishName": "IPDeviceFunction@@DEVICE_FOR_MATCHING_1##Device@@DEVICE_FOR_MATCHING_1",
-	"groupId": "IPDeviceFunction@@DEVICE_FOR_MATCHING_1",
+    "distinguishName": "IPDeviceFunction@@SELENIUM_DEVICE_FOR_MATCHING_1##Device@@SELENIUM_DEVICE_FOR_MATCHING_1",
+	"groupId": "IPDeviceFunction@@SELENIUM_DEVICE_FOR_MATCHING_1",
     "simpleAttributes": {
-      "Name": "DEVICE_FOR_MATCHING_1",
+      "Name": "SELENIUM_DEVICE_FOR_MATCHING_1",
       "Type": "IPDevice",
       "Manufacturer": "Alcatel",
       "ManagementDomain": "Comarch",
@@ -56,10 +56,10 @@
   },
   {
     "type": "Device",
-    "distinguishName": "IPDeviceFunction@@DEVICE_FOR_MATCHING_12##Device@@DEVICE_FOR_MATCHING_2",
-	"groupId": "IPDeviceFunction@@DEVICE_FOR_MATCHING_2",
+    "distinguishName": "IPDeviceFunction@@SELENIUM_DEVICE_FOR_MATCHING_12##Device@@SELENIUM_DEVICE_FOR_MATCHING_2",
+	"groupId": "IPDeviceFunction@@SELENIUM_DEVICE_FOR_MATCHING_2",
     "simpleAttributes": {
-      "Name": "DEVICE_FOR_MATCHING_2",
+      "Name": "SELENIUM_DEVICE_FOR_MATCHING_2",
       "Type": "IPDevice",
       "Manufacturer": "Alcatel",
       "ManagementDomain": "Comarch",
@@ -78,10 +78,10 @@
   },
   {
     "type": "Device",
-    "distinguishName": "IPDeviceFunction@@DEVICE_FOR_MATCHING_13##Device@@DEVICE_FOR_MATCHING_3",
-	"groupId": "IPDeviceFunction@@DEVICE_FOR_MATCHING_3",
+    "distinguishName": "IPDeviceFunction@@SELENIUM_DEVICE_FOR_MATCHING_13##Device@@SELENIUM_DEVICE_FOR_MATCHING_3",
+	"groupId": "IPDeviceFunction@@SELENIUM_DEVICE_FOR_MATCHING_3",
     "simpleAttributes": {
-      "Name": "DEVICE_FOR_MATCHING_3",
+      "Name": "SELENIUM_DEVICE_FOR_MATCHING_3",
       "Type": "IPDevice",
       "Manufacturer": "Alcatel",
       "ManagementDomain": "Comarch",

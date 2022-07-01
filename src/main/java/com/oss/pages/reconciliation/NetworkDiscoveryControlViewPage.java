@@ -96,24 +96,6 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         getTreeView().selectTreeRow(cmDomainName);
     }
 
-    @Step("Check if CMDomain exists in Network Discovery Control View")
-    public boolean checkIfCmDomainExists(String cmDomainName) {
-        return getTreeView()
-                .checkIfRowExists(cmDomainName);
-    }
-
-    @Step("Search for CMDomain in Network Discovery Control View")
-    public void searchForCmDomain(String cmDomainName) {
-        getTreeView()
-                .search(cmDomainName);
-    }
-
-    @Step("Select CM Domain in Network Discovery Control View")
-    public void selectCmDomain(String cmDomainName) {
-        getTreeView()
-                .selectTreeRow(cmDomainName);
-    }
-
     @Step("Run full reconciliation for selected CM Domain")
     public void runReconciliation() {
         TabsInterface tabs = getTabsInterface();

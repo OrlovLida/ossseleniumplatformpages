@@ -101,8 +101,24 @@ public class DeviceWizardPage extends BasePage {
         if (getDeviceWizard().getComponent(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME)
                 .getStringValue().isEmpty()) {
             getDeviceWizard().getComponent(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME)
+                    .setSingleStringValueContains(location);
+        }
+    }
+
+    @Step("Set Location using contains")
+    public void setFirstAvailableLocation() {
+        if (getDeviceWizard().getComponent(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME)
+                .getStringValue().isEmpty()) {
+            getDeviceWizard().getComponent(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME)
                     .setSingleStringValueContains("");
-//                    .setSingleStringValueContains(location);
+            if (getDeviceWizard().getComponent(DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME).getStringValue().equals("")) {
+                getDeviceWizard().getComponent(DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME)
+                        .setSingleStringValueContains("");
+            }
+            if (getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME).getStringValue().equals("")) {
+                getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME)
+                        .setSingleStringValueContains("");
+            }
         }
     }
 

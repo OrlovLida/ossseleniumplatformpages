@@ -36,10 +36,14 @@ public class ManualMatchingTest extends BaseTestCase {
     private static final String INTERFACE_NAME = "Comarch";
     private static final String DOMAIN = "Comarch";
     private static final String EQUIPMENT_TYPE = "Physical Device";
-    private static final String DEVICE_NAME_1 = "DEVICE_FOR_MATCHING_1";
-    private static final String DEVICE_NAME_3 = "DEVICE_FOR_MATCHING_3";
+    private static final String DEVICE_NAME_1 = "SELENIUM_DEVICE_FOR_MATCHING_1";
+    private static final String DEVICE_NAME_3 = "SELENIUM_DEVICE_FOR_MATCHING_3";
     private static final String DEVICE_TO_MATCH_NAME = "AT-SYS-DEVICE_TO_MATCH";
     private static final String CREATION_OPERATION_TYPE = "CREATION";
+    private static final String DELETE_IN_GLOBALSEARCH_ID = "DeleteDeviceWizardAction";
+    private static final String CISCO_MODEL_NAME = "Cisco Systems Inc. WS-C6509";
+    private static final String SAMPLES_PATH = "recoSamples/manualMatching/ROUTER_MATCHING_AG.json";
+
     private static final List<String> columnsHeadersAssertionList = new ImmutableList.Builder<String>()
             .add("Network Type")
             .add("Network Name")
@@ -48,7 +52,7 @@ public class ManualMatchingTest extends BaseTestCase {
             .add("Inventory ID")
             .add("User")
             .build();
-    private static final String DELETE_IN_GLOBALSEARCH_ID = "DeleteDeviceWizardAction";
+
     private ManualMatchingPage manualMatchingPage;
     private SoftAssert softAssert;
     private RecoConfigClient recoConfigClient;
@@ -64,7 +68,7 @@ public class ManualMatchingTest extends BaseTestCase {
         recoConfigClient = RecoConfigClient.getInstance(environmentRequestClient);
         recoConfigClient.createRecoConfig(RECO_CONFIG_BODY, CM_DOMAIN_NAME);
     }
-
+//
 //    @Test(priority = 1, description = "Delete CMDomain is it exists")
 //    @Description("Delete CMDomain is it exists")
 //    public void deleteDomainIfExists() {
@@ -100,7 +104,7 @@ public class ManualMatchingTest extends BaseTestCase {
 //        DelayUtils.waitForPageToLoad(driver, webDriverWait);
 //        samplesManagementPage.createDirectory(CM_DOMAIN_NAME);
 //        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        samplesManagementPage.uploadSamples("recoSamples/manualMatching/ROUTER_MATCHING_AG.json");
+//        samplesManagementPage.uploadSamples(SAMPLES_PATH);
 //        DelayUtils.waitForPageToLoad(driver, webDriverWait);
 //    }
 //
@@ -125,25 +129,25 @@ public class ManualMatchingTest extends BaseTestCase {
 //            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.FATAL));
 //        }
 //    }
+//
+//    @Test(priority = 5, description = "Create Physical Device", dependsOnMethods = {"runReconciliationWithFullSample"})
+//    @Description("Create PhysicalDevice on PhysicalInventoryPage")
+//    public void createDevice() {
+//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+//        deviceWizardPage = DeviceWizardPage.goToDeviceWizardPageLive(driver, BASIC_URL);
+//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+//        deviceWizardPage.setModel(CISCO_MODEL_NAME);
+//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+//        deviceWizardPage.setName(DEVICE_TO_MATCH_NAME);
+//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+//        deviceWizardPage.next();
+//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+//        deviceWizardPage.setFirstAvailableLocation();
+//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+//        deviceWizardPage.accept();
+//    }
 
-    @Test(priority = 5, description = "Create Physical Device")
-    @Description("Create PhysicalDevice on PhysicalInventoryPage")
-    public void createDevice() {
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        deviceWizardPage = DeviceWizardPage.goToDeviceWizardPageLive(driver, BASIC_URL);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        deviceWizardPage.setModel("Cisco Systems Inc. WS-C6509");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        deviceWizardPage.setName(DEVICE_TO_MATCH_NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        deviceWizardPage.next();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        deviceWizardPage.setLocation("x");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        deviceWizardPage.accept();
-    }
-
-    @Test(priority = 6, description = "Assert Columns Headers", dependsOnMethods = {"createDevice"})
+    @Test(priority = 6, description = "Assert Columns Headers")
     @Description("Assert columns headers on Manual Matching Page")
     public void assertColumnsHeaders() {
         manualMatchingPage = ManualMatchingPage.goToManualMatchingPage(driver, BASIC_URL);
@@ -157,7 +161,7 @@ public class ManualMatchingTest extends BaseTestCase {
         softAssert.assertAll();
     }
 
-    @Test(priority = 7, description = "Create empty matching", dependsOnMethods = {"createDevice"})
+    @Test(priority = 7, description = "Create empty matching")
     @Description("Create Matching that is not connected with any Inventory Object")
     public void createEmptyMatching() {
         manualMatchingPage = ManualMatchingPage.goToManualMatchingPage(driver, BASIC_URL);
@@ -165,7 +169,7 @@ public class ManualMatchingTest extends BaseTestCase {
         manualMatchingPage.clickCreate();
         createMatchingWizardPage = new CreateMatchingWizardPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        createMatchingWizardPage.selectTO(DEVICE_NAME_3);
+        createMatchingWizardPage.selectDeviceTO(DEVICE_NAME_3);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         createMatchingWizardPage.createNewIO();
         createMatchingWizardPage.clickAccept();
@@ -174,11 +178,12 @@ public class ManualMatchingTest extends BaseTestCase {
     @Test(priority = 8, description = "Create matching", dependsOnMethods = {"createEmptyMatching"})
     @Description("Create matching that is connected with Inventory Object")
     public void createMatching() {
+        manualMatchingPage = ManualMatchingPage.goToManualMatchingPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         manualMatchingPage.clickCreate();
         createMatchingWizardPage = new CreateMatchingWizardPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        createMatchingWizardPage.selectTO(DEVICE_NAME_1);
+        createMatchingWizardPage.selectDeviceTO(DEVICE_NAME_1);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         createMatchingWizardPage.clickNext();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -203,7 +208,7 @@ public class ManualMatchingTest extends BaseTestCase {
         manualMatchingPage.clickCreate();
         createMatchingWizardPage = new CreateMatchingWizardPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        createMatchingWizardPage.selectTO(DEVICE_NAME_3);
+        createMatchingWizardPage.selectDeviceTO(DEVICE_NAME_3);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         createMatchingWizardPage.createNewIO();
         createMatchingWizardPage.clickAccept();
@@ -250,8 +255,8 @@ public class ManualMatchingTest extends BaseTestCase {
         networkInconsistenciesViewPage.expandTreeRowContains("IPDevice");
         networkInconsistenciesViewPage.expandTreeRowContains(DEVICE_NAME_1);
         networkInconsistenciesViewPage.expandTreeRowContains(DEVICE_NAME_3);
-        Assert.assertTrue(networkInconsistenciesViewPage.assertInconsistency(DEVICE_NAME_1));
-        Assert.assertTrue(networkInconsistenciesViewPage.assertInconsistency(DEVICE_NAME_3));
+        Assert.assertTrue(networkInconsistenciesViewPage.isInconsistencyPresent(DEVICE_NAME_1));
+        Assert.assertTrue(networkInconsistenciesViewPage.isInconsistencyPresent(DEVICE_NAME_3));
         networkInconsistenciesViewPage.selectTreeObjectByName(DEVICE_NAME_1);
         Assert.assertEquals(networkInconsistenciesViewPage.getLiveName(), DEVICE_TO_MATCH_NAME);
         Assert.assertEquals(networkInconsistenciesViewPage.getNetworkName(), DEVICE_NAME_1);

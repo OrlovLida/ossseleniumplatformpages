@@ -15,6 +15,7 @@ public class CreateMatchingWizardPage extends BasePage {
     private static final String TECHNICAL_OBJECT_TABLE_WIDGET = "table-technicalObjectTable";
     private static final String DIST_NAME_HEADER_ID = "toDistName";
     private static final String NEW_TABLE_ID = "table-undefined_result_PhysicalDevice";
+    private static final String CREATE_NEW_IO_ID = "createNewInventoryObjectCheckboxId";
     private final Wizard wizard;
 
     public CreateMatchingWizardPage(WebDriver driver) {
@@ -23,7 +24,7 @@ public class CreateMatchingWizardPage extends BasePage {
     }
 
     public void createNewIO() {
-        wizard.setComponentValue("createNewInventoryObjectCheckboxId", "true");
+        wizard.setComponentValue(CREATE_NEW_IO_ID, "true");
     }
 
     public void clickNext() {
@@ -48,8 +49,8 @@ public class CreateMatchingWizardPage extends BasePage {
         advancedSearch.clickApply();
     }
 
-    public void selectTO(String distName) {
-        getTableComponent().getRow(distName, DIST_NAME_HEADER_ID).clickRow();
+    public void selectDeviceTO(String distName) {
+        getTableComponent().getRow("Device@@" + distName, DIST_NAME_HEADER_ID).clickRow();
     }
 
     private TableWidget getTableWidget() {
