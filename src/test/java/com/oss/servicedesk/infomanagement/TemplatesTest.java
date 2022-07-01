@@ -274,10 +274,6 @@ public class TemplatesTest extends BaseTestCase {
         sdWizardPage.clickAcceptButtonInWizard();
         Assert.assertEquals(templatesPage.getMessageFromPrompt(), "This template is shared with you in read only mode. You cannot change it.");
 
-        templatesPage.clickDeleteOnObjectWithName(TEMPLATE_TO_SHARE_NAME);
-        templatesPage.clickConfirmDelete();
-        Assert.assertFalse(templatesPage.isObjectInTable(TEMPLATE_TO_SHARE_NAME));
-
         sdWizardPage.clickButton(CANCEL_BUTTON_IN_TEMPLATE_WIZARD_ID);
         templatesPage.openLoginPanel().changeUser(CONFIGURATION.getLogin(), CONFIGURATION.getPassword());
         templatesPage.clickDeleteOnObjectWithName(TEMPLATE_TO_SHARE_NAME);
