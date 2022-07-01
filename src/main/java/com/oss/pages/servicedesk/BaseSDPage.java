@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.contextactions.ButtonContainer;
 import com.oss.framework.components.inputs.HtmlEditor;
 import com.oss.framework.components.layout.Card;
@@ -138,5 +139,12 @@ public abstract class BaseSDPage extends BasePage {
 
     public String getViewTitle() {
         return ToolbarWidget.create(driver, wait).getViewTitle();
+    }
+
+    public String getMessageFromPrompt() {
+        return SystemMessageContainer.create(driver, wait)
+                .getFirstMessage()
+                .map(SystemMessageContainer.Message::getText)
+                .orElse(null);
     }
 }
