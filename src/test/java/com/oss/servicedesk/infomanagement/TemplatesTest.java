@@ -12,6 +12,7 @@ import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
 
 import io.qameta.allure.Description;
 
+import static com.oss.configuration.Configuration.CONFIGURATION;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.USER_NAME;
 
 public class TemplatesTest extends BaseTestCase {
@@ -48,6 +49,7 @@ public class TemplatesTest extends BaseTestCase {
     private static final String NAME_LABEL = "Name";
     private static final String TYPE_LABEL = "Type";
     private static final String TEMPLATES_EXPRESSION_EDITOR_ID = "template-wizard-content";
+    private static final String CANCEL_BUTTON_IN_TEMPLATE_WIZARD_ID = "wizard-cancel-button-template-wizard-wizard";
 
     @BeforeMethod
     public void goToTemplatesPage() {
@@ -272,6 +274,12 @@ public class TemplatesTest extends BaseTestCase {
         sdWizardPage.clickAcceptButtonInWizard();
         Assert.assertEquals(templatesPage.getMessageFromPrompt(), "This template is shared with you in read only mode. You cannot change it.");
 
+        templatesPage.clickDeleteOnObjectWithName(TEMPLATE_TO_SHARE_NAME);
+        templatesPage.clickConfirmDelete();
+        Assert.assertFalse(templatesPage.isObjectInTable(TEMPLATE_TO_SHARE_NAME));
+
+        sdWizardPage.clickButton(CANCEL_BUTTON_IN_TEMPLATE_WIZARD_ID);
+        templatesPage.openLoginPanel().changeUser(CONFIGURATION.getLogin(), CONFIGURATION.getPassword());
         templatesPage.clickDeleteOnObjectWithName(TEMPLATE_TO_SHARE_NAME);
         templatesPage.clickConfirmDelete();
         Assert.assertFalse(templatesPage.isObjectInTable(TEMPLATE_TO_SHARE_NAME));
