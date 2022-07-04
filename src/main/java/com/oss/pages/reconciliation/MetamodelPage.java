@@ -16,7 +16,7 @@ import io.qameta.allure.Step;
 
 public class MetamodelPage extends BasePage {
 
-    private static final String INTERFACE_ID = "narComponent_metamodelEditorViewIdsearchCmInterfaceId";
+    private static final String INTERFACE_ID = "input_narComponent_metamodelEditorViewIdsearchCmInterfaceId";
     private static final String GENERATE_METAMODEL_ID = "narComponent_MetamodelTypeActionGenerateMetamodelId";
     private static final String TREE_WIDGET_ID = "narComponent_metamodelEditorViewIdobjectTypesTreeWindowId";
     private static final String PROPERTY_PANEL_ID = "card-content_narComponent_metamodelEditorViewIdobjectTypePropertiesWindowId";
