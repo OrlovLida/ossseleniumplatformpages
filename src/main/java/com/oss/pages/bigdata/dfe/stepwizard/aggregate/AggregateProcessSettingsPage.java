@@ -46,6 +46,7 @@ public class AggregateProcessSettingsPage extends BasePage {
     public void clickNextStep() {
         DelayUtils.waitForPageToLoad(driver, wait);
         processSettingsWizard.clickNextStep();
+        DelayUtils.waitForPageToLoad(driver, wait);
         log.info("I click Next Step");
     }
 }

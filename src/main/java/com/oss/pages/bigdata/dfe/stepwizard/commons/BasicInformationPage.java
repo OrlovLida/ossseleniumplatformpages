@@ -44,6 +44,7 @@ public class BasicInformationPage extends BasePage {
     public void clickNextStep() {
         DelayUtils.waitForPageToLoad(driver, wait);
         basicInfoWizard.clickNextStep();
+        DelayUtils.waitForPageToLoad(driver, wait);
         log.info("I click Next Step");
     }
 }
