@@ -7,9 +7,12 @@ import java.util.Collections;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.prompts.ConfirmationBox;
+import com.oss.framework.components.prompts.Modal;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.commonhierarchy.CommonHierarchyApp;
 import com.oss.framework.widgets.list.CommonList;
 import com.oss.pages.servicedesk.BaseSDPage;
 import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
@@ -39,6 +42,9 @@ public class TemplatesPage extends BaseSDPage {
     private static final String SORT_BY_TYPE_ASC_ID = "TYPE_ASC";
     private static final String CREATION_DATE_LABEL = "Creation Date";
     private static final String CHANNEL_ID = "channel";
+    private static final String SHARE_BUTTON_ACTION_LABEL = "SHARE";
+    private static final String SHARE_SEARCH_BOX_ID = "input_userSearch";
+    private static final String USERS_SHARE_LIST_ID = "CommonHierarchyApp-usersList";
 
     public TemplatesPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -109,6 +115,30 @@ public class TemplatesPage extends BaseSDPage {
     public SDWizardPage clickEditOnObjectWithName(String objectName) {
         getTemplatesList().getRow(NAME_LABEL, objectName).callActionIcon(EDIT_BUTTON_ICON_LABEL);
         return new SDWizardPage(driver, wait, WIZARD_ID);
+    }
+
+    @Step("Click Share Object with name: {objectName}")
+    public void shareObjectWithName(String objectName) {
+        getTemplatesList().getRow(NAME_LABEL, objectName).callActionIcon(SHARE_BUTTON_ACTION_LABEL);
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    @Step("Search for user: {userName} in Share template view")
+    public void searchForUser(String userName) {
+        ComponentFactory.create(SHARE_SEARCH_BOX_ID, driver, wait).setSingleStringValue(userName);
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    @Step("Share template to user: {userName}")
+    public void shareToUser(String userName) {
+        CommonHierarchyApp.create(driver, wait, USERS_SHARE_LIST_ID)
+                .callAction(new ArrayList<>(Collections.singletonList(userName)), "R", "all users");
+    }
+
+    @Step("Click Close Share Panel")
+    public void closeSharePanel() {
+        Modal.create(driver, wait).clickClose();
+        log.info("Clicking close share panel");
     }
 
     @Step("Click Delete object with name {objectName}")

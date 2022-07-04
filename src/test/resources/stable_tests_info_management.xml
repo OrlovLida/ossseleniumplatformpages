@@ -1,6 +1,8 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="ServicesGuiServiceDesk" thread-count="2" parallel="tests" verbose="1">
     <test name="Templates/Dashboard">
+        <parameter name="shareToUser" value="sd_seleniumtest2"/>
+        <parameter name="password" value="oss"/>
         <classes>
             <class name="com.oss.servicedesk.infomanagement.TemplatesTest"/>
         </classes>
