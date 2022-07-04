@@ -84,8 +84,7 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
         processInstancesPage.clearAllColumnFilters();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         String processName = PROCESS_NAME + (int) (Math.random() * 100001);
-        processInstancesPage.openProcessCreationWizard();
-        ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
+        ProcessWizardPage processWizardPage = processInstancesPage.openProcessCreationWizard();
         ProcessWizardPage.MilestoneStepWizard milestoneStep =
                 processWizardPage.definedMilestoneInProcess(processName, 10L, GK_MILESTONES);
         Milestone milestone1 = Milestone.builder()
@@ -159,8 +158,7 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
         ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         String processName = PROCESS_NAME + (int) (Math.random() * 100001);
-        processInstancesPage.openProcessCreationWizard();
-        ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
+        ProcessWizardPage processWizardPage = processInstancesPage.openProcessCreationWizard();
         ProcessWizardPage.MilestoneStepWizard milestoneStepWizard =
                 processWizardPage.definedMilestoneInProcess(processName, 10L, GK_MILESTONES);
 
@@ -249,8 +247,7 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
         ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         String processName = PROCESS_NAME + (int) (Math.random() * 100001);
-        processInstancesPage.openProcessCreationWizard();
-        ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
+        ProcessWizardPage processWizardPage = processInstancesPage.openProcessCreationWizard();
         ProcessWizardPage.MilestoneStepWizard milestoneStepWizard =
                 processWizardPage.definedMilestoneInProcess(processName, 10L, DCP);
         Milestone milestone1 = Milestone.builder()
@@ -382,8 +379,7 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
     public void checkIfNameIsNotEditableForPredefinedMilestone() {
         ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        processInstancesPage.openProcessCreationWizard();
-        ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
+        ProcessWizardPage processWizardPage = processInstancesPage.openProcessCreationWizard();
         ProcessWizardPage.MilestoneStepWizard milestoneStepWizard =
                 processWizardPage.definedMilestoneInProcess(PROCESS_NAME, 0L, GK_MILESTONES);
         boolean isEditable = milestoneStepWizard.getMilestonePredefinedList().getRow(0).isAttributeEditable(NAME_COLUMN_ID);

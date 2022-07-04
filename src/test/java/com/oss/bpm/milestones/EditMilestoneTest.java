@@ -82,8 +82,7 @@ public class EditMilestoneTest extends BaseTestCase {
                 .setIsActive("true")
                 .setName(milestoneName).build();
 
-        processInstancesPage.openProcessCreationWizard();
-        ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
+        ProcessWizardPage processWizardPage = processInstancesPage.openProcessCreationWizard();
         processWizardPage.definedMilestoneInProcess(processName, 5L, DCP).addMilestoneRow(milestone1);
         processWizardPage.clickAcceptButton();
     }

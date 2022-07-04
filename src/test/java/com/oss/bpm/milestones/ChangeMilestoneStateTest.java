@@ -171,8 +171,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
                 .setIsManualCompletion("true")
                 .setName(milestoneName3).build();
 
-        processInstancesPage.openProcessCreationWizard();
-        ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
+        ProcessWizardPage processWizardPage = processInstancesPage.openProcessCreationWizard();
         ProcessWizardPage.MilestoneStepWizard milestoneStep = processWizardPage.definedMilestoneInProcess(processName,
                 5L, DCP);
 
