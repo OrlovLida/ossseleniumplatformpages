@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.oss.framework.components.data.Data;
 import com.oss.framework.iaa.widgets.dfe.aggregatesmanager.AggregatesManagerWidget;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
@@ -19,6 +20,7 @@ public class AggregateConfigurationPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(AggregateConfigurationPage.class);
     private static final String AGGREGATES_WIZARD_ID = "aggregatesWizardWindow";
+    private static final String HASH_PARTITION_CHECKBOX = "confirmation-checkbox-id";
     private final Wizard aggrConfWizard;
 
     public AggregateConfigurationPage(WebDriver driver, WebDriverWait wait) {
@@ -44,11 +46,12 @@ public class AggregateConfigurationPage extends BasePage {
             log.debug("Setting configuration base table name: {}", baseTableName);
             configuration.setDimensions(selectedDimension);
             log.debug("Setting configuration dimension: {}", selectedDimension);
+            clickHashPartitionCheckbox();
         }
         log.info("Filled Aggregates Configuration Step");
     }
 
-    @Step
+    @Step("Click Accept")
     public void clickAccept() {
         waitForPageToLoad(driver, wait);
         aggrConfWizard.clickAccept();
@@ -59,5 +62,12 @@ public class AggregateConfigurationPage extends BasePage {
     private void addNewAggregateConfiguration(AggregatesManagerWidget aggregatesManager) {
         aggregatesManager.clickAdd();
         log.debug("Adding new aggregate configuration");
+    }
+
+    private void clickHashPartitionCheckbox() {
+        if (aggrConfWizard.isElementPresentById(HASH_PARTITION_CHECKBOX)) {
+            aggrConfWizard.getComponent(HASH_PARTITION_CHECKBOX).setValue(Data.createSingleData("true"));
+            log.info("Clicking configuration checkbox: changed Hash partitioning parameters ");
+        }
     }
 }
