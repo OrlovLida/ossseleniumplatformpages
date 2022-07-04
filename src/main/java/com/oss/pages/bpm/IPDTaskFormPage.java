@@ -58,10 +58,12 @@ public class IPDTaskFormPage extends BasePage {
 
     public void selectTabById(String tabId) {
         tabWidget.selectTabById(tabId);
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public void selectTabByLabel(String tabLabel) {
         tabWidget.selectTabByLabel(tabLabel);
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public TableInterface getIPTable() {
@@ -70,9 +72,7 @@ public class IPDTaskFormPage extends BasePage {
 
     private void actionTask(String actionId) {
         selectTabByLabel(FORM_TAB_LABEL);
-        DelayUtils.waitForPageToLoad(driver, wait);
         callAction(actionId);
-        DelayUtils.waitForPageToLoad(driver, wait);
         ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
         prompt.clickButtonByLabel(PROCEED_BUTTON_LABEL);
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -80,13 +80,12 @@ public class IPDTaskFormPage extends BasePage {
 
     private void callAction(String actionId) {
         tabWidget.callActionById(actionId);
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public void setupIntegration() {
         selectTabByLabel(FORM_TAB_LABEL);
-        DelayUtils.waitForPageToLoad(driver, wait);
         callAction(SETUP_INTEGRATION_ICON_ID);
-        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public void startTask() {
@@ -99,7 +98,6 @@ public class IPDTaskFormPage extends BasePage {
 
     public void attachFile(String filePath) {
         selectTabByLabel(TASK_ATTACHMENTS_TAB_LABEL);
-        DelayUtils.waitForPageToLoad(driver, wait);
         callAction(ATTACH_FILE_BUTTON_ID);
         AttachFileWizardPage attachFileWizardPage = new AttachFileWizardPage(driver);
         attachFileWizardPage.selectRadioButton(UPLOAD_ANYWAY_LABEL);
