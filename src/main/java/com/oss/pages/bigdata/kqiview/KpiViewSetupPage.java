@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.inputs.Button;
+import com.oss.framework.components.inputs.ComponentFactory;
+import com.oss.framework.components.portals.DropdownList;
 import com.oss.framework.iaa.widgets.dpe.toolbarpanel.FiltersPanel;
 import com.oss.framework.iaa.widgets.dpe.toolbarpanel.KpiToolbarPanel;
 import com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsPanel;
@@ -27,6 +29,7 @@ public class KpiViewSetupPage extends BasePage {
     private static final String INDICATORS_TREE_ID = "_Indicators";
     private static final String DIMENSIONS_TREE_ID = "_Dimensions";
     private static final String DIMENSION_OPTIONS_BUTTON_ID = "dimension-options-button";
+    private static final String DIMENSION_DISPLAY_SERIES_MODE_ID = "DimensionSeriesChanged";
     private final KpiViewPage kpiViewPage;
     private final KpiToolbarPanelPage kpiToolbarPanel;
 
@@ -108,6 +111,13 @@ public class KpiViewSetupPage extends BasePage {
             Button.createById(driver, DIMENSION_OPTIONS_BUTTON_ID).click();
             log.info("I click on option button in first dimension node");
         }
+    }
+
+    @Step("Selecting: {displaySeriesMode} in Display Series Mode for Dimension")
+    public void selectDisplaySeriesMode(String displaySeriesMode) {
+        ComponentFactory.create(DIMENSION_DISPLAY_SERIES_MODE_ID, driver, wait).click();
+        DropdownList.create(driver, wait).selectOptionContains(displaySeriesMode);
+        log.info("Selecting: {} in Display Series Mode for Dimension", displaySeriesMode);
     }
 
     @Step("I search for Object in tree search toolbar")
