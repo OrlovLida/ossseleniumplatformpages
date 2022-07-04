@@ -6,18 +6,17 @@
  */
 package com.oss.pages.bpm.processinstances;
 
-import com.oss.framework.wizard.Wizard;
-import com.oss.pages.bpm.milestones.MilestoneWizardPage;
-import com.oss.pages.bpm.milestones.Milestone;
-import org.openqa.selenium.WebDriver;
-
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.widgets.list.CommonList;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.list.CommonList;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.table.TableInterface;
 import com.oss.framework.widgets.tabs.TabsWidget;
+import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
+import com.oss.pages.bpm.milestones.Milestone;
+import com.oss.pages.bpm.milestones.MilestoneWizardPage;
+import org.openqa.selenium.WebDriver;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -126,6 +125,10 @@ public class ProcessInstancesPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
+    public String createProcessIPD(String processName, Long plusDays, String processType) {
+        return openProcessCreationWizard().createProcessIPD(processName, plusDays, processType);
+    }
+
     public List<Milestone> addMilestonesForProcess(String processCode, List<Milestone> milestones) {
         findProcess(processCode);
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -140,30 +143,23 @@ public class ProcessInstancesPage extends BasePage {
         return out;
     }
 
+    public String createDCPWithPlusDays(Long plusDays) {
+        return openProcessCreationWizard().createDCPWithPlusDays(plusDays);
+    }
+
     public ProcessWizardPage openProcessCreationWizard() {
         callAction(CREATE_GROUP_ACTION_ID, START_PROCESS_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         return new ProcessWizardPage(driver);
     }
 
-    public String createSimpleNRP() {
-        return openProcessCreationWizard().createSimpleNRPV2();
-    }
-
-    public String createSimpleDCP() {
-        return openProcessCreationWizard().createSimpleDCPV2();
-    }
-
-    public String createDCPWithPlusDays(Long plusDays) {
-        return openProcessCreationWizard().createDCPWithPlusDays(plusDays);
-    }
+    public String createSimpleNRP() {return openProcessCreationWizard().createSimpleNRPV2();}
 
     public String createNRPWithPlusDays(Long plusDays) {
         return openProcessCreationWizard().createNRPWithPlusDays(plusDays);
     }
 
-    public String createProcessIPD(String processName, Long plusDays, String processType) {
-        return openProcessCreationWizard().createProcessIPD(processName, plusDays, processType);
-    }
+    public String createSimpleDCP() {return openProcessCreationWizard().createSimpleDCPV2();}
+
 
 }
