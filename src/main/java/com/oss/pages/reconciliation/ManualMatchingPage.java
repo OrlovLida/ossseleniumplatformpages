@@ -49,6 +49,10 @@ public class ManualMatchingPage extends BasePage {
         getOldTable().searchByAttribute(NETWORK_NAME_ID, Input.ComponentType.TEXT_FIELD, networkName);
     }
 
+    public boolean isTableEmpty() {
+        return getOldTable().hasNoData();
+    }
+
     public void selectRow(int index) {
         getOldTable().selectRow(index);
     }
