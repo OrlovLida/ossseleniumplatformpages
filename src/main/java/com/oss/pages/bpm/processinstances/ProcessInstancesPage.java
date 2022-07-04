@@ -35,6 +35,8 @@ public class ProcessInstancesPage extends BasePage {
     private static final String CHANGE_FDD_ACTION_ID = "inventory-processes_change_finished_due_date";
     private static final String TERMINATE_PROCESS_ACTION_ID = "kill-process";
     private static final String EDIT_PROCESS_ATTRIBUTES_ACTION_ID = "edit-processes";
+    private static final String CREATE_GROUP_ACTION_ID = "create";
+    private static final String START_PROCESS_ACTION_ID = "start-process";
     private static final String ADD_MILESTONES_WIZARD_ID = "WIZARD_APP_ID";
     private static final String CODE_LABEL = "Code";
     private static final String STATUS_LABEL = "Status";
@@ -114,6 +116,14 @@ public class ProcessInstancesPage extends BasePage {
         TableInterface table = OldTable.createById(driver, wait, PROCESS_VIEW);
         DelayUtils.waitForPageToLoad(driver, wait);
         table.callAction(actionId);
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    public void callAction(String groupId, String actionId) {
+        TableInterface table = OldTable.createById(driver, wait, PROCESS_VIEW);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        table.callAction(groupId, actionId);
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public List<Milestone> addMilestonesForProcess(String processCode, List<Milestone> milestones) {
@@ -128,6 +138,32 @@ public class ProcessInstancesPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         addMilestonesWizard.clickAccept();
         return out;
+    }
+
+    public ProcessWizardPage openProcessCreationWizard() {
+        callAction(CREATE_GROUP_ACTION_ID, START_PROCESS_ACTION_ID);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return new ProcessWizardPage(driver);
+    }
+
+    public String createSimpleNRP() {
+        return openProcessCreationWizard().createSimpleNRPV2();
+    }
+
+    public String createSimpleDCP() {
+        return openProcessCreationWizard().createSimpleDCPV2();
+    }
+
+    public String createDCPWithPlusDays(Long plusDays) {
+        return openProcessCreationWizard().createDCPWithPlusDays(plusDays);
+    }
+
+    public String createNRPWithPlusDays(Long plusDays) {
+        return openProcessCreationWizard().createNRPWithPlusDays(plusDays);
+    }
+
+    public String createProcessIPD(String processName, Long plusDays, String processType) {
+        return openProcessCreationWizard().createProcessIPD(processName, plusDays, processType);
     }
 
 }

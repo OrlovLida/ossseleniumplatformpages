@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
+import com.oss.pages.bpm.PlannersViewPage;
 import com.oss.pages.bpm.TasksPageV2;
 import org.assertj.core.api.Assertions;
 import org.slf4j.Logger;
@@ -89,15 +90,12 @@ public class CreateProcessNRPTest extends BaseTestCase {
     @Test(priority = 1, description = "Create Network Resource Process")
     @Description("Create Network Resource Process")
     public void createProcessNRP() {
-        // given
-        ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
+        ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
 
-        // when
-        processNRPCode = processWizardPage.createProcess(processNRPName, 0L, NRP);
+        processNRPCode = processInstancesPage.createProcessIPD(processNRPName, 0L, NRP);
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
 
-        // then
         Assertions.assertThat(messages).hasSize(1);
         Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
         Assertions.assertThat(messages.get(0).getText()).contains(processNRPCode);
