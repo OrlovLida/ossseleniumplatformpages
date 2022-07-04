@@ -166,7 +166,7 @@ public class VS20Test extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.searchForCmDomain(CM_DOMAIN_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        if (networkDiscoveryControlViewPage.checkIfCmDomainExists(CM_DOMAIN_NAME)) {
+        if (networkDiscoveryControlViewPage.isCmDomainPresent(CM_DOMAIN_NAME)) {
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             networkDiscoveryControlViewPage.selectCmDomain(CM_DOMAIN_NAME);
             notifications = Notifications.create(driver, webDriverWait);

@@ -1,39 +1,43 @@
 [
   {
     "type": "IPDeviceFunction",
-	"distinguishName": "IPDeviceFunction@@Selenium-Overlap-Device1",
+	"distinguishName": "IPDeviceFunction@@AT-SYS-Selenium-Overlap-Device1",
 	"isRoot": true,
+	"groupId": "IPDeviceFunction@@AT-SYS-Selenium-Overlap-Device1",
 	"simpleAttributes": {
-	  "Hostname": "Selenium-Overlap-Device1",
-	  "Name": "Selenium-Overlap-Device1",
+	  "Hostname": "AT-SYS-Selenium-Overlap-Device1",
+	  "Name": "AT-SYS-Selenium-Overlap-Device1",
 	  "DeviceType": "IPDevice"
 	}	
   },
   {
     "type": "IPDeviceFunction",
-	"distinguishName": "IPDeviceFunction@@Selenium-Overlap-Device2",
+	"distinguishName": "IPDeviceFunction@@AT-SYS-Selenium-Overlap-Device2",
 	"isRoot": true,
+	"groupId": "IPDeviceFunction@@AT-SYS-Selenium-Overlap-Device2",
 	"simpleAttributes": {
-	  "Hostname": "Selenium-Overlap-Device2",
-	  "Name": "Selenium-Overlap-Device2",
+	  "Hostname": "AT-SYS-Selenium-Overlap-Device2",
+	  "Name": "AT-SYS-Selenium-Overlap-Device2",
 	  "DeviceType": "IPDevice"
 	}	
   },
   {
     "type": "IPDeviceFunction",
-	"distinguishName": "IPDeviceFunction@@Selenium-Overlap-Device3",
+	"distinguishName": "IPDeviceFunction@@AT-SYS-Selenium-Overlap-Device3",
 	"isRoot": true,
+	"groupId": "IPDeviceFunction@@AT-SYS-Selenium-Overlap-Device3",
 	"simpleAttributes": {
-	  "Hostname": "Selenium-Overlap-Device3",
-	  "Name": "Selenium-Overlap-Device3",
+	  "Hostname": "AT-SYS-Selenium-Overlap-Device3",
+	  "Name": "AT-SYS-Selenium-Overlap-Device3",
 	  "DeviceType": "IPDevice"
 	}	
   },
   {
     "type": "Device",
-    "distinguishName": "IPDeviceFunction@@Selenium-Overlap-Device1##Device@@Selenium-Overlap-Device1",
+    "distinguishName": "IPDeviceFunction@@AT-SYS-Selenium-Overlap-Device1##Device@@AT-SYS-Selenium-Overlap-Device1",
+	"groupId": "IPDeviceFunction@@AT-SYS-Selenium-Overlap-Device1",
     "simpleAttributes": {
-      "Name": "Selenium-Overlap-Device1",
+      "Name": "AT-SYS-Selenium-Overlap-Device1",
       "Type": "IPDevice",
       "Manufacturer": "Alcatel",
       "ManagementDomain": "Comarch",
@@ -51,9 +55,10 @@
   },
   {
     "type": "Device",
-    "distinguishName": "IPDeviceFunction@@Selenium-Overlap-Device12##Device@@Selenium-Overlap-Device2",
+    "distinguishName": "IPDeviceFunction@@AT-SYS-Selenium-Overlap-Device12##Device@@AT-SYS-Selenium-Overlap-Device2",
+	"groupId": "IPDeviceFunction@@AT-SYS-Selenium-Overlap-Device2",
     "simpleAttributes": {
-      "Name": "Selenium-Overlap-Device2",
+      "Name": "AT-SYS-Selenium-Overlap-Device2",
       "Type": "IPDevice",
       "Manufacturer": "Alcatel",
       "ManagementDomain": "Comarch",
@@ -71,9 +76,10 @@
   },
   {
     "type": "Device",
-    "distinguishName": "IPDeviceFunction@@Selenium-Overlap-Device13##Device@@Selenium-Overlap-Device3",
+    "distinguishName": "IPDeviceFunction@@AT-SYS-Selenium-Overlap-Device13##Device@@AT-SYS-Selenium-Overlap-Device3",
+	"groupId": "IPDeviceFunction@@AT-SYS-Selenium-Overlap-Device3",
     "simpleAttributes": {
-      "Name": "Selenium-Overlap-Device3",
+      "Name": "AT-SYS-Selenium-Overlap-Device3",
       "Type": "IPDevice",
       "Manufacturer": "Alcatel",
       "ManagementDomain": "Comarch",

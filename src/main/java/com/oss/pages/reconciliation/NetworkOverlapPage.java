@@ -2,8 +2,8 @@ package com.oss.pages.reconciliation;
 
 import org.openqa.selenium.WebDriver;
 
-import com.oss.framework.components.inputs.Input;
-import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.components.prompts.ConfirmationBox;
+import com.oss.framework.components.prompts.ConfirmationBoxInterface;
 import com.oss.framework.widgets.list.EditableList;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.tabs.TabsInterface;
@@ -14,13 +14,16 @@ import io.qameta.allure.Step;
 
 public class NetworkOverlapPage extends BasePage {
 
-    private static final String CONFLICT_TAB = "CurrentConflictTableTabApp";
     private static final String RESOLVE = "cmInventoryIntegration_CONFLICTActionRESOLVEId";
+    private static final String REOPEN = "cmInventoryIntegration_CONFLICTActionREOPENId";
     private static final String CONFLICTED_OBJECTS_TAB = "ConflictTabViewApp";
     private static final String EDITABLE_LIST_ID = "ExtendedList-ConflictedObjectEditableListTabApp";
     private static final String NETWORK_ELEMENT_NAME = "name";
     private static final String STATUS_LABEL = "Status";
+    private static final String COMMENT_LABEL = "Comment";
     private static final String DOMAIN_HEADER_ID = "overlapCmDomain";
+    private static final String ARCHIVE_CONFLICT_ID = "ARCHIVE_CONFLICT";
+    private String conflictTab = "CurrentConflictTableTabApp";
 
     protected NetworkOverlapPage(WebDriver driver) {
         super(driver);
@@ -34,13 +37,16 @@ public class NetworkOverlapPage extends BasePage {
 
     @Step("Get conflict status for given rowIndex")
     public String getConflictStatus(int rowIndex) {
-        DelayUtils.waitForPageToLoad(driver, wait);
         return getOldTable().getCellValue(rowIndex, STATUS_LABEL);
+    }
+
+    @Step("Get conflict comment")
+    public String getConflictComment(int rowIndex) {
+        return getOldTable().getCellValue(rowIndex, COMMENT_LABEL);
     }
 
     @Step("Select row with given index")
     public void selectConflict(int rowIndex) {
-        DelayUtils.waitForPageToLoad(driver, wait);
         getOldTable().selectRow(rowIndex);
     }
 
@@ -49,15 +55,27 @@ public class NetworkOverlapPage extends BasePage {
         getTabsInterface().callActionById(RESOLVE);
     }
 
+    @Step("click Reopen button")
+    public void reopenConflict() {
+        getTabsInterface().callActionById(REOPEN);
+        ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
+        prompt.clickButtonByLabel("Accept");
+    }
+
     @Step("Get Domain Name from Conflicted Objects tab")
     public String getDomainFromConflictedObjectsTab(int rowIndex) {
-        DelayUtils.waitForPageToLoad(driver, wait);
         return getConflictedObjects().getRow(rowIndex).getCellValue(DOMAIN_HEADER_ID);
     }
 
     @Step("Search for object by name")
     public void searchByObjectName(String name) {
-        getOldTable().searchByAttribute(NETWORK_ELEMENT_NAME, Input.ComponentType.TEXT_FIELD, name);
+        getOldTable().searchByAttribute(NETWORK_ELEMENT_NAME, name);
+    }
+
+    @Step("Open archive tab")
+    public void openArchiveTab() {
+        getTabsInterface().selectTabById(ARCHIVE_CONFLICT_ID);
+        conflictTab = "ArchiveConflictTableTabApp";
     }
 
     private EditableList getConflictedObjects() {
@@ -65,7 +83,7 @@ public class NetworkOverlapPage extends BasePage {
     }
 
     private OldTable getOldTable() {
-        return OldTable.createById(driver, wait, CONFLICT_TAB);
+        return OldTable.createById(driver, wait, conflictTab);
     }
 
     private TabsInterface getTabsInterface() {
