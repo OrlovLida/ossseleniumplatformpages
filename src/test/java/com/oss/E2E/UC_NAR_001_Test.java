@@ -57,7 +57,7 @@ public class UC_NAR_001_Test extends BaseTestCase {
     @Test(priority = 2, description = "Upload basic samples", dependsOnMethods = {"createCmDomain"})
     @Description("Go to Samples Management view and upload basic samples")
     public void uploadBasicSamples() throws URISyntaxException {
-        networkDiscoveryControlViewPage.queryAndSelectDomain(CM_DOMAIN_NAME);
+        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.moveToSamplesManagement();
         SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
         samplesManagementPage.selectPath();
@@ -73,7 +73,7 @@ public class UC_NAR_001_Test extends BaseTestCase {
     @Description("Open Network Discovery Control View, query CM Domain, run reconciliation with basic samples and check if there are no errors after it")
     public void runReconciliationWithBasicSample() {
         openNetworkDiscoveryControlView();
-        networkDiscoveryControlViewPage.queryAndSelectDomain(CM_DOMAIN_NAME);
+        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.runReconciliation();
         checkPopupMessageType(MessageType.INFO);
@@ -112,7 +112,7 @@ public class UC_NAR_001_Test extends BaseTestCase {
     @Description("Open Network Discovery Control View, move to Samples Management View and replace old samples")
     public void replaceOldSamples() throws URISyntaxException {
         openNetworkDiscoveryControlView();
-        networkDiscoveryControlViewPage.queryAndSelectDomain(CM_DOMAIN_NAME);
+        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.moveToSamplesManagement();
         SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
         samplesManagementPage.selectPath();
@@ -172,7 +172,7 @@ public class UC_NAR_001_Test extends BaseTestCase {
     @Description("Go to Network Discovery Control View, Delete CM Domain and check notification")
     public void deleteCmDomain() {
         openNetworkDiscoveryControlView();
-        networkDiscoveryControlViewPage.queryAndSelectDomain(CM_DOMAIN_NAME);
+        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.clearOldNotifications();
         networkDiscoveryControlViewPage.deleteCmDomain();
         checkPopupMessageType(MessageType.INFO);

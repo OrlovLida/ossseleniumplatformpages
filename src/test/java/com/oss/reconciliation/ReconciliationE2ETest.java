@@ -46,7 +46,7 @@ public class ReconciliationE2ETest extends BaseTestCase {
     @Test(priority = 2)
     public void uploadSamples() throws URISyntaxException {
         DelayUtils.sleep(1000);
-        networkDiscoveryControlViewPage.queryAndSelectDomain(cmDomainName);
+        networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
         networkDiscoveryControlViewPage.moveToSamplesManagement();
         SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
         samplesManagementPage.selectPath();
@@ -63,7 +63,7 @@ public class ReconciliationE2ETest extends BaseTestCase {
     public void runReconciliationWithFullSample() {
         openNetworkDiscoveryControlView();
         DelayUtils.sleep(100);
-        networkDiscoveryControlViewPage.queryAndSelectDomain(cmDomainName);
+        networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
         networkDiscoveryControlViewPage.runReconciliation();
         checkPopupMessageType(MessageType.INFO);
         Assert.assertEquals(networkDiscoveryControlViewPage.waitForEndOfReco(), "SUCCESS");
@@ -91,7 +91,7 @@ public class ReconciliationE2ETest extends BaseTestCase {
     @Test(priority = 5)
     public void deleteOldSamplesAndPutNewOne() throws URISyntaxException {
         openNetworkDiscoveryControlView();
-        networkDiscoveryControlViewPage.queryAndSelectDomain(cmDomainName);
+        networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
         networkDiscoveryControlViewPage.moveToSamplesManagement();
         SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
         samplesManagementPage.selectPath();
@@ -108,7 +108,7 @@ public class ReconciliationE2ETest extends BaseTestCase {
     public void runReconciliationWithEmptySample() {
         openNetworkDiscoveryControlView();
         DelayUtils.sleep(100);
-        networkDiscoveryControlViewPage.queryAndSelectDomain(cmDomainName);
+        networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
         networkDiscoveryControlViewPage.runReconciliation();
         checkPopupMessageType(MessageType.INFO);
         Assert.assertEquals(networkDiscoveryControlViewPage.waitForEndOfReco(), "SUCCESS");
@@ -133,7 +133,7 @@ public class ReconciliationE2ETest extends BaseTestCase {
     @Test(priority = 8)
     public void deleteCmDomain() {
         openNetworkDiscoveryControlView();
-        networkDiscoveryControlViewPage.queryAndSelectDomain(cmDomainName);
+        networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
         networkDiscoveryControlViewPage.clearOldNotifications();
         networkDiscoveryControlViewPage.deleteCmDomain();
         checkPopupMessageType(MessageType.INFO);

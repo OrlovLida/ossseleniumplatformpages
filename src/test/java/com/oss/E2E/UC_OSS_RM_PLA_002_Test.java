@@ -391,7 +391,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
     @Test(priority = 17, description = "Upload reconciliation samples", dependsOnMethods = {"createCmDomain"})
     @Description("Go to Samples Management View and upload reconciliation samples")
     public void uploadSamples() throws URISyntaxException {
-        networkDiscoveryControlViewPage.queryAndSelectDomain(CM_DOMAIN_NAME);
+        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         waitForPageToLoad();
         networkDiscoveryControlViewPage.moveToSamplesManagement();
         SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
@@ -409,7 +409,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
     @Description("Run reconciliation and check if it ended without errors")
     public void runReconciliation() {
         NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
-        networkDiscoveryControlViewPage.queryAndSelectDomain(CM_DOMAIN_NAME);
+        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         waitForPageToLoad();
         networkDiscoveryControlViewPage.runReconciliation();
         checkMessageType(MessageType.INFO);
@@ -447,7 +447,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
     @Description("Go to Network Discovery Control View and delete CM Domain")
     public void deleteCmDomain() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
-        networkDiscoveryControlViewPage.queryAndSelectDomain(CM_DOMAIN_NAME);
+        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         waitForPageToLoad();
         networkDiscoveryControlViewPage.clearOldNotifications();
         networkDiscoveryControlViewPage.deleteCmDomain();

@@ -37,6 +37,12 @@ public class NetworkOverlapTest extends BaseTestCase {
     private static final String DOMAIN = "Comarch";
     private static final String DEVICE_1_NAME = "AT-SYS-Selenium-Overlap-Device1";
     private static final String EQUIPMENT_TYPE = "Physical Device";
+    private static final String EXAMPLE_COMMENT = "Example comment";
+    private static final String SUCCESS_STATE = "SUCCESS";
+    private static final String OPEN = "OPEN";
+    private static final String SAMPLES_PATH = "recoSamples/NetworkOverlap/AT-SYS-Selenium-Overlap-Device.json";
+    private static final String RESOLVED = "RESOLVED";
+    private static final String TERMINATED = "TERMINATED";
 
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
     private SoftAssert softAssert;
@@ -52,11 +58,11 @@ public class NetworkOverlapTest extends BaseTestCase {
     @Description("Check if CMDomain1 is deleted")
     public void checkIfDomain1IsDeleted() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
-        networkDiscoveryControlViewPage.searchForDomain(CM_DOMAIN_NAME);
+        networkDiscoveryControlViewPage.searchForCmDomain(CM_DOMAIN_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        if (networkDiscoveryControlViewPage.checkIfCmDomainExists(CM_DOMAIN_NAME)) {
+        if (networkDiscoveryControlViewPage.isCmDomainPresent(CM_DOMAIN_NAME)) {
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            networkDiscoveryControlViewPage.selectDomain(CM_DOMAIN_NAME);
+            networkDiscoveryControlViewPage.selectCmDomain(CM_DOMAIN_NAME);
             networkDiscoveryControlViewPage.clearOldNotifications();
             networkDiscoveryControlViewPage.deleteCmDomain();
             checkPopupMessageType();
@@ -70,11 +76,11 @@ public class NetworkOverlapTest extends BaseTestCase {
     @Description("Check if CMDomain2 is deleted")
     public void checkIfDomain2IsDeleted() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
-        networkDiscoveryControlViewPage.searchForDomain(CM_DOMAIN_NAME_2);
+        networkDiscoveryControlViewPage.searchForCmDomain(CM_DOMAIN_NAME_2);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        if (networkDiscoveryControlViewPage.checkIfCmDomainExists(CM_DOMAIN_NAME_2)) {
+        if (networkDiscoveryControlViewPage.isCmDomainPresent(CM_DOMAIN_NAME_2)) {
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            networkDiscoveryControlViewPage.selectDomain(CM_DOMAIN_NAME_2);
+            networkDiscoveryControlViewPage.selectCmDomain(CM_DOMAIN_NAME_2);
             networkDiscoveryControlViewPage.clearOldNotifications();
             networkDiscoveryControlViewPage.deleteCmDomain();
             checkPopupMessageType();
@@ -94,14 +100,14 @@ public class NetworkOverlapTest extends BaseTestCase {
     @Test(priority = 4, description = "Upload reconciliation samples", dependsOnMethods = {"createCmDomain1"})
     @Description("Go to Sample Management View and upload reconciliation samples")
     public void uploadSamples1() throws URISyntaxException {
-        networkDiscoveryControlViewPage.queryAndSelectDomain(CM_DOMAIN_NAME);
+        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.moveToSamplesManagement();
         SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
         samplesManagementPage.selectPath();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         samplesManagementPage.createDirectory(CM_DOMAIN_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        samplesManagementPage.uploadSamples("recoSamples/NetworkOverlap/AT-SYS-Selenium-Overlap-Device.json");
+        samplesManagementPage.uploadSamples(SAMPLES_PATH);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -110,13 +116,13 @@ public class NetworkOverlapTest extends BaseTestCase {
     public void runReconciliationWithFullSample1() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkDiscoveryControlViewPage.queryAndSelectDomain(CM_DOMAIN_NAME);
+        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.runReconciliation();
         checkPopupMessageType();
         String status = networkDiscoveryControlViewPage.waitForEndOfReco();
         networkDiscoveryControlViewPage.selectLatestReconciliationState();
-        if (status.contains("SUCCESS")) {
+        if (status.contains(SUCCESS_STATE)) {
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.ERROR));
         } else {
@@ -139,14 +145,14 @@ public class NetworkOverlapTest extends BaseTestCase {
     @Test(priority = 7, description = "Upload reconciliation samples", dependsOnMethods = {"createCmDomain2"})
     @Description("Go to Sample Management View and upload reconciliation samples")
     public void uploadSamples2() throws URISyntaxException {
-        networkDiscoveryControlViewPage.queryAndSelectDomain(CM_DOMAIN_NAME_2);
+        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME_2);
         networkDiscoveryControlViewPage.moveToSamplesManagement();
         SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
         samplesManagementPage.selectPath();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         samplesManagementPage.createDirectory(CM_DOMAIN_NAME_2);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        samplesManagementPage.uploadSamples("recoSamples/NetworkOverlap/AT-SYS-Selenium-Overlap-Device.json");
+        samplesManagementPage.uploadSamples(SAMPLES_PATH);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -155,13 +161,13 @@ public class NetworkOverlapTest extends BaseTestCase {
     public void runReconciliationWithFullSample2() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkDiscoveryControlViewPage.queryAndSelectDomain(CM_DOMAIN_NAME_2);
+        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME_2);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.runReconciliation();
         checkPopupMessageType();
         String status = networkDiscoveryControlViewPage.waitForEndOfReco();
         networkDiscoveryControlViewPage.selectLatestReconciliationState();
-        if (status.contains("SUCCESS")) {
+        if (status.contains(SUCCESS_STATE)) {
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.ERROR));
         } else {
@@ -183,7 +189,7 @@ public class NetworkOverlapTest extends BaseTestCase {
     public void selectConflict() {
         networkOverlapPage = NetworkOverlapPage.goToNetworkOverlapPage(driver, BASIC_URL);
         networkOverlapPage.searchByObjectName(DEVICE_1_NAME);
-        Assert.assertEquals(networkOverlapPage.getConflictStatus(0), "OPEN");
+        Assert.assertEquals(networkOverlapPage.getConflictStatus(0), OPEN);
         networkOverlapPage.selectConflict(0);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
@@ -208,7 +214,7 @@ public class NetworkOverlapTest extends BaseTestCase {
         ResolveConflictWizardPage resolveConflictWizardPage = new ResolveConflictWizardPage(driver);
         resolveConflictWizardPage.setChooseManually();
         resolveConflictWizardPage.setLeadingDomain(CM_DOMAIN_NAME);
-        resolveConflictWizardPage.setComment("Example comment");
+        resolveConflictWizardPage.setComment(EXAMPLE_COMMENT);
         resolveConflictWizardPage.clickSubmit();
     }
 
@@ -216,13 +222,13 @@ public class NetworkOverlapTest extends BaseTestCase {
     @Description("Go to Network Discovery Control View and run reconciliation and check if it ended without errors")
     public void runReconciliationWithFullSample1Again() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
-        networkDiscoveryControlViewPage.queryAndSelectDomain(CM_DOMAIN_NAME);
+        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkDiscoveryControlViewPage.runReconciliation();
         checkPopupMessageType();
         String status = networkDiscoveryControlViewPage.waitForEndOfReco();
         networkDiscoveryControlViewPage.selectLatestReconciliationState();
-        if (status.contains("SUCCESS")) {
+        if (status.contains(SUCCESS_STATE)) {
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.ERROR));
         } else {
@@ -255,16 +261,16 @@ public class NetworkOverlapTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkOverlapPage.searchByObjectName(DEVICE_1_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertEquals(networkOverlapPage.getConflictStatus(0), "RESOLVED");
+        Assert.assertEquals(networkOverlapPage.getConflictStatus(0), RESOLVED);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertEquals(networkOverlapPage.getConflictComment(0), "Example comment");
+        Assert.assertEquals(networkOverlapPage.getConflictComment(0), EXAMPLE_COMMENT);
     }
 
     @Test(priority = 16, description = "Delete CM Domain 1", dependsOnMethods = {"checkIfConflictIsResolved"})
     @Description("Delete CM Domain1")
     public void deleteCmDomain1() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
-        networkDiscoveryControlViewPage.queryAndSelectDomain(CM_DOMAIN_NAME);
+        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.clearOldNotifications();
         networkDiscoveryControlViewPage.deleteCmDomain();
         checkPopupMessageType();
@@ -276,7 +282,7 @@ public class NetworkOverlapTest extends BaseTestCase {
     public void checkIfConflictIsOpen() {
         networkOverlapPage = NetworkOverlapPage.goToNetworkOverlapPage(driver, BASIC_URL);
         networkOverlapPage.searchByObjectName(DEVICE_1_NAME);
-        Assert.assertEquals(networkOverlapPage.getConflictStatus(0), "OPEN");
+        Assert.assertEquals(networkOverlapPage.getConflictStatus(0), OPEN);
     }
 
     @Test(priority = 18, description = "Resolve and Reopen conflict and then check if conflict is open", dependsOnMethods = {"checkIfConflictIsOpen"})
@@ -292,14 +298,14 @@ public class NetworkOverlapTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkOverlapPage.reopenConflict();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertEquals(networkOverlapPage.getConflictStatus(0), "OPEN");
+        Assert.assertEquals(networkOverlapPage.getConflictStatus(0), OPEN);
     }
 
     @Test(priority = 17, description = "Delete CM Domain 2", dependsOnMethods = {"resolveReopenAndAssertOpen"})
     @Description("Delete CM Domain2")
     public void deleteCmDomain2() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
-        networkDiscoveryControlViewPage.queryAndSelectDomain(CM_DOMAIN_NAME_2);
+        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME_2);
         networkDiscoveryControlViewPage.clearOldNotifications();
         networkDiscoveryControlViewPage.deleteCmDomain();
         checkPopupMessageType();
@@ -315,7 +321,7 @@ public class NetworkOverlapTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkOverlapPage.searchByObjectName(DEVICE_1_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertEquals(networkOverlapPage.getConflictStatus(0), "TERMINATED");
+        Assert.assertEquals(networkOverlapPage.getConflictStatus(0), TERMINATED);
     }
 
     private void checkPopupMessageType() {
