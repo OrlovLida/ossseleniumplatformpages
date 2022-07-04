@@ -313,8 +313,6 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
         ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
         processInstancesPage.clearAllColumnFilters();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
-        String processName = PROCESS_NAME + (int) (Math.random() * 100001);
 
         List<Milestone> milestones = Lists.newArrayList(
                 Milestone.builder()

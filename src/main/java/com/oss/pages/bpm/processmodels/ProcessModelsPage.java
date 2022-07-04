@@ -1,27 +1,27 @@
 package com.oss.pages.bpm.processmodels;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.*;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
-
+import com.oss.framework.components.inputs.ComponentFactory;
+import com.oss.framework.components.inputs.Input;
+import com.oss.framework.navigation.sidemenu.SideMenu;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.CommonList;
+import com.oss.framework.widgets.table.OldTable;
+import com.oss.framework.widgets.table.TableInterface;
 import com.oss.framework.widgets.tabs.TabsWidget;
+import com.oss.framework.wizard.Wizard;
+import com.oss.pages.BasePage;
 import com.oss.pages.bpm.milestones.Milestone;
 import com.oss.pages.bpm.milestones.MilestoneWizardPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.oss.framework.components.inputs.ComponentFactory;
-import com.oss.framework.components.inputs.Input;
-import com.oss.framework.navigation.sidemenu.SideMenu;
-import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.wizard.Wizard;
-import com.oss.framework.widgets.table.OldTable;
-import com.oss.framework.widgets.table.TableInterface;
-import com.oss.pages.BasePage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import static com.oss.configuration.Configuration.CONFIGURATION;
 
@@ -125,14 +125,16 @@ public class ProcessModelsPage extends BasePage {
     }
 
     public void deleteModel(String modelName) {
-        Wizard deleteWizard = openWizardForSelectedModel(modelName, MODEL_OPERATIONS_GROUPING_ACTION_BUTTON_ID, DELETE_ACTION_BUTTON_ID, DELETE_MODEL_POPUP_ID);
+        Wizard deleteWizard = openWizardForSelectedModel(modelName, MODEL_OPERATIONS_GROUPING_ACTION_BUTTON_ID,
+                DELETE_ACTION_BUTTON_ID, DELETE_MODEL_POPUP_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         deleteWizard.clickButtonById(DELETE_MODEL_CONFIRMATION_BUTTON_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public void cloneModel(String baseModelName, String clonedModelName, String clonedIdentifier, String clonedDescription) {
-        Wizard cloneWizard = openWizardForSelectedModel(baseModelName, MODEL_OPERATIONS_GROUPING_ACTION_BUTTON_ID, CLONE_ACTION_BUTTON_ID, CLONE_MODEL_POPUP_ID);
+        Wizard cloneWizard = openWizardForSelectedModel(baseModelName, MODEL_OPERATIONS_GROUPING_ACTION_BUTTON_ID,
+                CLONE_ACTION_BUTTON_ID, CLONE_MODEL_POPUP_ID);
         setWizardAttributeValue(cloneWizard, NAME_FIELD_ID, Input.ComponentType.TEXT_FIELD, clonedModelName);
         setWizardAttributeValue(cloneWizard, IDENTIFIER_FIELD_ID, Input.ComponentType.TEXT_FIELD, clonedIdentifier);
         setWizardAttributeValue(cloneWizard, DESCRIPTION_FIELD_ID, Input.ComponentType.TEXT_FIELD, clonedDescription);
@@ -148,7 +150,8 @@ public class ProcessModelsPage extends BasePage {
     }
 
     public void setKeyword(String modelName, String keyword) {
-        Wizard editKeywordsWizard = openWizardForSelectedModel(modelName, MODEL_OPERATIONS_GROUPING_ACTION_BUTTON_ID, EDIT_KEYWORDS_ACTION_BUTTON_ID, EDIT_KEYWORDS_POPUP_ID);
+        Wizard editKeywordsWizard = openWizardForSelectedModel(modelName, MODEL_OPERATIONS_GROUPING_ACTION_BUTTON_ID,
+                EDIT_KEYWORDS_ACTION_BUTTON_ID, EDIT_KEYWORDS_POPUP_ID);
         setWizardAttributeValue(editKeywordsWizard, KEYWORDS_INPUT_ID, Input.ComponentType.MULTI_SEARCH_FIELD, keyword);
         editKeywordsWizard.clickButtonById(EDIT_KEYWORDS_ACCEPT_BUTTON_ID);
     }
@@ -212,9 +215,9 @@ public class ProcessModelsPage extends BasePage {
         callAction(MODEL_OPERATIONS_GROUPING_ACTION_BUTTON_ID, EDIT_MILESTONE_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         Wizard editMilestonesWizard = Wizard.createByComponentId(driver, wait, EDIT_MILESTONES_WIZARD_ID);
-        MilestoneWizardPage milestoneWizardPage = new MilestoneWizardPage(driver);
-        List<Milestone> addedMilestones = milestones.stream().map(milestone -> milestoneWizardPage.addMilestoneRow(milestone,
-                EDIT_MILESTONES_LIST_ID)).collect(Collectors.toList());
+        MilestoneWizardPage milestoneWizardPage = new MilestoneWizardPage(driver, EDIT_MILESTONES_LIST_ID);
+        List<Milestone> addedMilestones = milestones.stream().map(milestoneWizardPage::addMilestoneRow)
+                .collect(Collectors.toList());
         DelayUtils.waitForPageToLoad(driver, wait);
         editMilestonesWizard.clickAccept();
         return addedMilestones;
@@ -226,11 +229,11 @@ public class ProcessModelsPage extends BasePage {
         callAction(MODEL_OPERATIONS_GROUPING_ACTION_BUTTON_ID, EDIT_MILESTONE_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         Wizard editMilestonesWizard = Wizard.createByComponentId(driver, wait, EDIT_MILESTONES_WIZARD_ID);
-        MilestoneWizardPage milestoneWizardPage = new MilestoneWizardPage(driver);
+        MilestoneWizardPage milestoneWizardPage = new MilestoneWizardPage(driver, EDIT_MILESTONES_LIST_ID);
 
         AtomicInteger row = new AtomicInteger(1);
         List<Milestone> editedMilestones = milestones.stream().map(milestone -> milestoneWizardPage.
-                editMilestoneRow(milestone, row.getAndIncrement(), EDIT_MILESTONES_LIST_ID)).collect(Collectors.toList());
+                editMilestoneRow(milestone, row.getAndIncrement())).collect(Collectors.toList());
 
         DelayUtils.waitForPageToLoad(driver, wait);
         editMilestonesWizard.clickAccept();
@@ -243,9 +246,9 @@ public class ProcessModelsPage extends BasePage {
         callAction(MODEL_OPERATIONS_GROUPING_ACTION_BUTTON_ID, EDIT_MILESTONE_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         Wizard editMilestonesWizard = Wizard.createByComponentId(driver, wait, EDIT_MILESTONES_WIZARD_ID);
-        MilestoneWizardPage milestoneWizardPage = new MilestoneWizardPage(driver);
+        MilestoneWizardPage milestoneWizardPage = new MilestoneWizardPage(driver, EDIT_MILESTONES_LIST_ID);
         for (int i = 0; i < deleteMilestonesNumber; i++) {
-            milestoneWizardPage.removeMilestoneRow(1, EDIT_MILESTONES_LIST_ID);
+            milestoneWizardPage.removeMilestoneRow(1);
             DelayUtils.waitForPageToLoad(driver, wait);
         }
         editMilestonesWizard.clickAccept();

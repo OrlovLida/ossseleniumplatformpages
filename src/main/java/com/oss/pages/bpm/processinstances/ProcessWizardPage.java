@@ -6,13 +6,6 @@
  */
 package com.oss.pages.bpm.processinstances;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
 import com.oss.framework.components.alerts.SystemMessageContainer;
@@ -26,8 +19,13 @@ import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 import com.oss.pages.bpm.milestones.Milestone;
 import com.oss.pages.bpm.milestones.MilestoneWizardPage;
-
 import io.qameta.allure.Description;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.LocalDate;
+import java.util.List;
 
 /**
  * @author Gabriela Kasza
@@ -231,13 +229,13 @@ public class ProcessWizardPage extends BasePage {
         }
 
         public Milestone addMilestoneRow(Milestone milestone) {
-            MilestoneWizardPage milestoneWizardPage = new MilestoneWizardPage(driver);
-            return milestoneWizardPage.addMilestoneRow(milestone, ADD_MILESTONE_LIST);
+            MilestoneWizardPage milestoneWizardPage = new MilestoneWizardPage(driver, ADD_MILESTONE_LIST);
+            return milestoneWizardPage.addMilestoneRow(milestone);
         }
 
         public Milestone editPredefinedMilestone(Milestone milestone, int row) {
-            MilestoneWizardPage milestoneWizardPage = new MilestoneWizardPage(driver);
-            return milestoneWizardPage.editMilestoneRow(milestone, row, PREDEFINED_MILESTONE_LIST);
+            MilestoneWizardPage milestoneWizardPage = new MilestoneWizardPage(driver, PREDEFINED_MILESTONE_LIST);
+            return milestoneWizardPage.editMilestoneRow(milestone, row);
         }
 
         public void clickAcceptButton() {
