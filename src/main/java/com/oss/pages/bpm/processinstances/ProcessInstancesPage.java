@@ -6,18 +6,17 @@
  */
 package com.oss.pages.bpm.processinstances;
 
-import com.oss.framework.wizard.Wizard;
-import com.oss.pages.bpm.milestones.MilestoneWizardPage;
-import com.oss.pages.bpm.milestones.Milestone;
-import org.openqa.selenium.WebDriver;
-
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.widgets.list.CommonList;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.list.CommonList;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.table.TableInterface;
 import com.oss.framework.widgets.tabs.TabsWidget;
+import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
+import com.oss.pages.bpm.milestones.Milestone;
+import com.oss.pages.bpm.milestones.MilestoneWizardPage;
+import org.openqa.selenium.WebDriver;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,6 +34,8 @@ public class ProcessInstancesPage extends BasePage {
     private static final String CHANGE_FDD_ACTION_ID = "inventory-processes_change_finished_due_date";
     private static final String TERMINATE_PROCESS_ACTION_ID = "kill-process";
     private static final String EDIT_PROCESS_ATTRIBUTES_ACTION_ID = "edit-processes";
+    private static final String CREATE_GROUP_ACTION_ID = "create";
+    private static final String START_PROCESS_ACTION_ID = "start-process";
     private static final String ADD_MILESTONES_WIZARD_ID = "WIZARD_APP_ID";
     private static final String CODE_LABEL = "Code";
     private static final String STATUS_LABEL = "Status";
@@ -114,6 +115,18 @@ public class ProcessInstancesPage extends BasePage {
         TableInterface table = OldTable.createById(driver, wait, PROCESS_VIEW);
         DelayUtils.waitForPageToLoad(driver, wait);
         table.callAction(actionId);
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    public void callAction(String groupId, String actionId) {
+        TableInterface table = OldTable.createById(driver, wait, PROCESS_VIEW);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        table.callAction(groupId, actionId);
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    public String createProcessIPD(String processName, Long plusDays, String processType) {
+        return openProcessCreationWizard().createProcessIPD(processName, plusDays, processType);
     }
 
     public List<Milestone> addMilestonesForProcess(String processCode, List<Milestone> milestones) {
@@ -129,5 +142,24 @@ public class ProcessInstancesPage extends BasePage {
         addMilestonesWizard.clickAccept();
         return out;
     }
+
+    public String createDCPWithPlusDays(Long plusDays) {
+        return openProcessCreationWizard().createDCPWithPlusDays(plusDays);
+    }
+
+    public ProcessWizardPage openProcessCreationWizard() {
+        callAction(CREATE_GROUP_ACTION_ID, START_PROCESS_ACTION_ID);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return new ProcessWizardPage(driver);
+    }
+
+    public String createSimpleNRP() {return openProcessCreationWizard().createSimpleNRPV2();}
+
+    public String createNRPWithPlusDays(Long plusDays) {
+        return openProcessCreationWizard().createNRPWithPlusDays(plusDays);
+    }
+
+    public String createSimpleDCP() {return openProcessCreationWizard().createSimpleDCPV2();}
+
 
 }

@@ -75,7 +75,6 @@ public class EditMilestoneTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         String processName = PROCESS_NAME + (int) (Math.random() * 100001);
-        ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
 
         Milestone milestone1 = Milestone.builder()
                 .setLeadTime("10")
@@ -83,6 +82,7 @@ public class EditMilestoneTest extends BaseTestCase {
                 .setIsActive("true")
                 .setName(milestoneName).build();
 
+        ProcessWizardPage processWizardPage = processInstancesPage.openProcessCreationWizard();
         processWizardPage.definedMilestoneInProcess(processName, 5L, DCP).addMilestoneRow(milestone1);
         processWizardPage.clickAcceptButton();
     }

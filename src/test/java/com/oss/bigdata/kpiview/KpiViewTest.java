@@ -142,4 +142,35 @@ public class KpiViewTest extends BaseTestCase {
             Assert.fail();
         }
     }
+
+    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToSelect", "dimensionNodesToExpand", "filterName"})
+    @Test(priority = 5, testName = "Aggregation on the fly Dim Option", description = "Aggregation on the fly Dim Option")
+    @Description("Aggregation on the fly Dim Option")
+    public void checkAggOnTheFlyDimOption(
+            @Optional("DFE Tests,DFE Product Tests,Selenium Tests") String indicatorNodesToExpand,
+            @Optional("SUCCESS_LONG") String indicatorNodesToSelect,
+            @Optional("t:SMOKE#DimHierSelenium") String dimensionNodesToExpand,
+            @Optional("D3_01,D3_02") String dimensionNodesToSelect,
+            @Optional("DFE Tests") String filterName
+    ) {
+        try {
+            kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+            Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(2));
+
+            kpiViewSetup.clickDimensionOptions(dimensionNodesToExpand);
+            kpiViewSetup.selectDisplaySeriesMode("Aggregation on the Fly");
+            kpiToolbarPanel.applyChanges();
+
+            Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+
+            kpiViewSetup.clickDimensionOptions(dimensionNodesToExpand);
+            kpiViewSetup.selectDisplaySeriesMode("Original Series and Aggregation on the Fly");
+            kpiToolbarPanel.applyChanges();
+
+            Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(3));
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            Assert.fail();
+        }
+    }
 }

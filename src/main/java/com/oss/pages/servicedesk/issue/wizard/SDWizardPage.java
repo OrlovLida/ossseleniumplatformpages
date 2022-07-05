@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.data.Data;
+import com.oss.framework.components.expressioneditor.ExpressionEditor;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
@@ -128,6 +129,12 @@ public class SDWizardPage extends BaseSDPage {
     public void clickComboBox(String componentId) {
         wizard.getComponent(componentId).click();
         log.info("Clicking {} combobox", componentId);
+    }
+
+    @Step("Set value: {value} in expression editor")
+    public void setValueInExpressionEditor(String componentId, String value) {
+        ExpressionEditor.createById(driver, wait, componentId).setValue(value);
+        log.info("Setting value: {} in expression editor", value);
     }
 
     public TicketDashboardPage createTicket(String moIdentifier, String assignee) {

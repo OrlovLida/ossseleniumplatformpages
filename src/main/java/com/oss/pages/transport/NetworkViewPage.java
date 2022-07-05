@@ -344,7 +344,7 @@ public class NetworkViewPage extends BasePage {
         advancedSearchWidget.getComponent(componentId, componentType).clearByAction();
         advancedSearchWidget.getComponent(componentId, componentType).setSingleStringValue(value);
         waitForPageToLoad();
-        advancedSearchWidget.getTableComponent("win1").selectRow(0);
+        advancedSearchWidget.getTableComponent().selectRow(0);
         DelayUtils.sleep(500);
         waitForPageToLoad();
         advancedSearchWidget.clickAdd();

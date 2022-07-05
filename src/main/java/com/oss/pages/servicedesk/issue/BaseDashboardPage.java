@@ -5,7 +5,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.pages.servicedesk.BaseSDPage;
@@ -33,13 +32,6 @@ public abstract class BaseDashboardPage extends BaseSDPage {
     @Step("Check if current url leads to dashboard {dashboardName}")
     public boolean isDashboardOpen(String basicURL, String dashboardName) {
         return driver.getCurrentUrl().contains(getDashboardURL(basicURL, dashboardName));
-    }
-
-    public String getMessageFromPrompt() {
-        return SystemMessageContainer.create(driver, wait)
-                .getFirstMessage()
-                .map(SystemMessageContainer.Message::getText)
-                .orElse(null);
     }
 
     public String getIdFromMessage() {

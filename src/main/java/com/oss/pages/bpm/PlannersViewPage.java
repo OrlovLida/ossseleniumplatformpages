@@ -2,6 +2,7 @@ package com.oss.pages.bpm;
 
 import java.util.List;
 
+import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -19,6 +20,8 @@ public class PlannersViewPage extends BasePage {
 
     private static final String TREE_TABLE_ID = "process_instance_hierarchy_table";
     private static final String TABS_CONTAINER_ID = "process_instance_hierarchy_bottom_tabs";
+    private static final String CREATE_GROUP_ACTION_ID = "CREATE";
+    private static final String START_PROCESS_ACTION_ID = "bpm_inventory_view_action_create_process";
 
     public PlannersViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -141,6 +144,46 @@ public class PlannersViewPage extends BasePage {
         TreeTableWidget treeTable = getTreeTable();
         treeTable.clearAllFilters();
         DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    public void callAction(String actionId) {
+        TreeTableWidget treeTable = getTreeTable();
+        DelayUtils.waitForPageToLoad(driver, wait);
+        treeTable.callAction(actionId);
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    public void callAction(String groupId, String actionId) {
+        TreeTableWidget treeTable = getTreeTable();
+        DelayUtils.waitForPageToLoad(driver, wait);
+        treeTable.callAction(groupId, actionId);
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    public ProcessWizardPage openProcessCreationWizard() {
+        callAction(CREATE_GROUP_ACTION_ID, START_PROCESS_ACTION_ID);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return new ProcessWizardPage(driver);
+    }
+
+    public String createSimpleNRP() {
+        return openProcessCreationWizard().createSimpleNRPV2();
+    }
+
+    public String createSimpleDCP() {
+        return openProcessCreationWizard().createSimpleDCPV2();
+    }
+
+    public String createDCPWithPlusDays(Long plusDays) {
+        return openProcessCreationWizard().createDCPWithPlusDays(plusDays);
+    }
+
+    public String createNRPWithPlusDays(Long plusDays) {
+        return openProcessCreationWizard().createNRPWithPlusDays(plusDays);
+    }
+
+    public String createProcessIPD(String processName, Long plusDays, String processType) {
+        return openProcessCreationWizard().createProcessIPD(processName, plusDays, processType);
     }
 
 }

@@ -154,7 +154,6 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         String processName = PROCESS_NAME + (int) (Math.random() * 1001);
-        ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
 
         Milestone milestone1 = Milestone.builder()
                 .setLeadTime(LEAD_TIME)
@@ -172,6 +171,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
                 .setIsManualCompletion("true")
                 .setName(milestoneName3).build();
 
+        ProcessWizardPage processWizardPage = processInstancesPage.openProcessCreationWizard();
         ProcessWizardPage.MilestoneStepWizard milestoneStep = processWizardPage.definedMilestoneInProcess(processName,
                 5L, DCP);
 

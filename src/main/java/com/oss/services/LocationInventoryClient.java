@@ -92,6 +92,15 @@ public class LocationInventoryClient {
         return response.jsonPath().getList("searchResult.id");
     }
 
+    public List<Integer> getPhysicalLocation() {
+        com.jayway.restassured.response.Response response = env.getLocationInventoryCoreRequestSpecification()
+                .given()
+                .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
+                .when()
+                .get(LocationInventoryClient.PHYSICAL_LOCATIONS_API_PATH);
+        return response.jsonPath().getList("searchResult.id");
+    }
+
     public ResourceDTO createSubLocation(SublocationDTO subLocation) {
         return env.getLocationInventoryCoreRequestSpecification()
                 .given()
@@ -158,6 +167,10 @@ public class LocationInventoryClient {
                 .response();
     }
 
+    /**
+     * @deprecated duplicated method (will be removed 3.0.x release), use public void removeLocation(Long locationId, String locationType)
+     */
+    @Deprecated
     public void deleteLocation(String locationId, String locationType) {
         env.getLocationInventoryCoreRequestSpecification()
                 .given()
