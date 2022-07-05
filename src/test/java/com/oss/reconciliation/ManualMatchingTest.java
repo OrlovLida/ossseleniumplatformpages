@@ -76,7 +76,7 @@ public class ManualMatchingTest extends BaseTestCase {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         networkDiscoveryControlViewPage.searchForCmDomain(CM_DOMAIN_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        if (networkDiscoveryControlViewPage.checkIfCmDomainExists(CM_DOMAIN_NAME)) {
+        if (networkDiscoveryControlViewPage.isCmDomainPresent(CM_DOMAIN_NAME)) {
             networkDiscoveryControlViewPage.selectCmDomain(CM_DOMAIN_NAME);
             networkDiscoveryControlViewPage.clearOldNotifications();
             networkDiscoveryControlViewPage.deleteCmDomain();
