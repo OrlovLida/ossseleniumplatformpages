@@ -128,6 +128,7 @@ public class KpiViewSetupPage extends BasePage {
         waitForPageToLoad(driver, wait);
         kpiTreeWidget.selectResult(objectName);
         kpiTreeWidget.closeSearchToolbar();
+        waitForPageToLoad(driver, wait);
     }
 
     private void selectTreeNodes(List<String> nodesToExpand, List<String> nodesToSelect, String componentId) {
