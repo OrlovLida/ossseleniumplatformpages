@@ -41,6 +41,10 @@ public class ManualMatchingPage extends BasePage {
         return new ManualMatchingPage(driver);
     }
 
+    public static ManualMatchingPage getManualMatchingPage(WebDriver driver) {
+        return new ManualMatchingPage(driver);
+    }
+
     public void clickCreate() {
         getOldTable().callAction(ActionsContainer.CREATE_GROUP_ID, CREATE_BUTTON_ID);
     }

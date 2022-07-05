@@ -43,6 +43,7 @@ public class ManualMatchingTest extends BaseTestCase {
     private static final String DELETE_IN_GLOBALSEARCH_ID = "DeleteDeviceWizardAction";
     private static final String CISCO_MODEL_NAME = "Cisco Systems Inc. WS-C6509";
     private static final String SAMPLES_PATH = "recoSamples/manualMatching/ROUTER_MATCHING_AG.json";
+    private static final String OBJECT_MODIFICATION = "OBJECT MODIFICATION";
 
     private static final List<String> columnsHeadersAssertionList = new ImmutableList.Builder<String>()
             .add("Network Type")
@@ -147,7 +148,7 @@ public class ManualMatchingTest extends BaseTestCase {
         deviceWizardPage.accept();
     }
 
-    @Test(priority = 6, description = "Assert Columns Headers")
+    @Test(priority = 6, description = "Assert Columns Headers", dependsOnMethods = {"createDevice"})
     @Description("Assert columns headers on Manual Matching Page")
     public void assertColumnsHeaders() {
         manualMatchingPage = ManualMatchingPage.goToManualMatchingPage(driver, BASIC_URL);
@@ -161,7 +162,7 @@ public class ManualMatchingTest extends BaseTestCase {
         softAssert.assertAll();
     }
 
-    @Test(priority = 7, description = "Create empty matching")
+    @Test(priority = 7, description = "Create empty matching", dependsOnMethods = {"createDevice"})
     @Description("Create Matching that is not connected with any Inventory Object")
     public void createEmptyMatching() {
         manualMatchingPage = ManualMatchingPage.goToManualMatchingPage(driver, BASIC_URL);
@@ -175,10 +176,10 @@ public class ManualMatchingTest extends BaseTestCase {
         createMatchingWizardPage.clickAccept();
     }
 
-    @Test(priority = 8, description = "Create matching")
+    @Test(priority = 8, description = "Create matching", dependsOnMethods = {"createEmptyMatching"})
     @Description("Create matching that is connected with Inventory Object")
     public void createMatching() {
-        manualMatchingPage = ManualMatchingPage.goToManualMatchingPage(driver, BASIC_URL);
+        manualMatchingPage = ManualMatchingPage.getManualMatchingPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         manualMatchingPage.clickCreate();
         createMatchingWizardPage = new CreateMatchingWizardPage(driver);
@@ -194,7 +195,7 @@ public class ManualMatchingTest extends BaseTestCase {
         createMatchingWizardPage.clickAccept();
     }
 
-    @Test(priority = 9, description = "Delete and create matching")
+    @Test(priority = 9, description = "Delete and create matching", dependsOnMethods = {"createMatching"})
     @Description("Delete and create matching again to check if deletion works correctly")
     public void deleteAndCreateMatching() {
         manualMatchingPage = ManualMatchingPage.goToManualMatchingPage(driver, BASIC_URL);
@@ -213,7 +214,7 @@ public class ManualMatchingTest extends BaseTestCase {
         createMatchingWizardPage.clickAccept();
     }
 
-    @Test(priority = 10, description = "Assert created matchings")
+    @Test(priority = 10, description = "Assert created matchings", dependsOnMethods = {"deleteAndCreateMatching"})
     @Description("Assert if created matchings have proper names")
     public void assertCreatedMatchings() {
         manualMatchingPage = ManualMatchingPage.goToManualMatchingPage(driver, BASIC_URL);
@@ -226,7 +227,7 @@ public class ManualMatchingTest extends BaseTestCase {
         Assert.assertEquals(manualMatchingPage.getCellValue(0, "Network Name"), DEVICE_NAME_3);
     }
 
-    @Test(priority = 11, description = "Run reconciliation again")
+    @Test(priority = 11, description = "Run reconciliation again", dependsOnMethods = {"deleteAndCreateMatching"})
     @Description("Run reconciliation again to create Inventory Objects after matching them")
     public void runReconciliationAgain() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
@@ -262,7 +263,7 @@ public class ManualMatchingTest extends BaseTestCase {
         networkInconsistenciesViewPage.selectTreeObjectByName(DEVICE_NAME_1);
         Assert.assertEquals(networkInconsistenciesViewPage.getLiveName(), DEVICE_TO_MATCH_NAME);
         Assert.assertEquals(networkInconsistenciesViewPage.getNetworkName(), DEVICE_NAME_1);
-        Assert.assertEquals(networkInconsistenciesViewPage.checkInconsistenciesOperationType(), CREATION_OPERATION_TYPE);
+        Assert.assertEquals(networkInconsistenciesViewPage.checkInconsistenciesOperationType(), OBJECT_MODIFICATION);
         networkInconsistenciesViewPage.selectTreeObjectByName(DEVICE_NAME_3);
         Assert.assertEquals(networkInconsistenciesViewPage.getLiveName(), "");
         Assert.assertEquals(networkInconsistenciesViewPage.getNetworkName(), DEVICE_NAME_3);
@@ -282,30 +283,6 @@ public class ManualMatchingTest extends BaseTestCase {
         globalSearchPage.expandShowOnAndChooseView(DEVICE_TO_MATCH_NAME, ActionsContainer.EDIT_GROUP_ID, DELETE_IN_GLOBALSEARCH_ID);
         globalSearchPage.confirmDeletion();
     }
-//
-//    @Test(priority = 14, description = "Delete both matchings")
-//    @Description("Delete both created matchings")
-//    public void deleteMatchings() {
-//        manualMatchingPage = ManualMatchingPage.goToManualMatchingPage(driver, BASIC_URL);
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        manualMatchingPage.searchByNetworkName(DEVICE_NAME_3);
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        if (!manualMatchingPage.isTableEmpty()){
-//            manualMatchingPage.selectRow(0);
-//            DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//            manualMatchingPage.deleteMatching();
-//        }
-//        manualMatchingPage = ManualMatchingPage.goToManualMatchingPage(driver, BASIC_URL);
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        manualMatchingPage.searchByNetworkName(DEVICE_NAME_1);
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        if (!manualMatchingPage.isTableEmpty()) {
-//            manualMatchingPage.selectRow(0);
-//            DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//            manualMatchingPage.deleteMatching();
-//        }
-//    }
 
     private void checkPopupMessageType() {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
