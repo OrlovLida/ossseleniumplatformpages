@@ -38,7 +38,7 @@ public class WAMVPage extends BasePage {
     private static final String EVENT_TIME_COLUMN_ID = "cell-row-col-eventTime";
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_PATTERN);
 
-    private static final String PROPERTY_PANEL_ID = "card-content__modalWindow";
+    private static final String PROPERTY_PANEL_IN_MODAL_ID = "card-content__modalWindow";
     private static final String SAME_MO_ALARMS_TABLE_ID = "area3-mo-alarms";
     private static final String NOTIFICATION_IDENTIFIER_VALUE = "Notification Identifier";
 
@@ -109,9 +109,9 @@ public class WAMVPage extends BasePage {
         log.info("Open alarm details from AREA2");
     }
 
-    @Step("I get notification identifier from Alarms Details in Area2")
-    public String getNotificationIdentifierFromAlarmDetailsInArea2() {
-        log.info("Checking notification identifier value from Alarm Details in Area 2");
+    @Step("I get notification identifier from Alarms Details Modal View")
+    public String getNotificationIdentifierFromAlarmDetailsModal() {
+        log.info("Checking notification identifier value from Alarm Details Modal View");
         DelayUtils.waitForPageToLoad(driver, wait);
         return getPropertyPanel().getPropertyValue(NOTIFICATION_IDENTIFIER_VALUE);
     }
@@ -201,7 +201,7 @@ public class WAMVPage extends BasePage {
     }
 
     private OldPropertyPanel getPropertyPanel() {
-        return OldPropertyPanel.createById(driver, wait, PROPERTY_PANEL_ID);
+        return OldPropertyPanel.createById(driver, wait, PROPERTY_PANEL_IN_MODAL_ID);
     }
 
     private Modal getModal() {

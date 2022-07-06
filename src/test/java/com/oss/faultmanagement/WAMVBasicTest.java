@@ -134,7 +134,7 @@ public class WAMVBasicTest extends BaseTestCase {
             String notificationId = wamvPage.getTextFromNotificationIdentifierCell(alarmListRow);
             wamvPage.openAlarmDetails();
             Assert.assertEquals(ALARM_DETAILS_MODAL_VIEW_TITLE, wamvPage.getModalViewTitle());
-            Assert.assertEquals(notificationId, wamvPage.getNotificationIdentifierFromAlarmDetailsInArea2());
+            Assert.assertEquals(notificationId, wamvPage.getNotificationIdentifierFromAlarmDetailsModal());
             wamvPage.closeModalView();
         } catch (Exception e) {
             log.error(e.getMessage());
