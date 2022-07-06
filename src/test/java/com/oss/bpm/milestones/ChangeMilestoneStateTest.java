@@ -45,10 +45,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
     private static final String NO_SYSTEM_MESSAGE_EXCEPTION = "There is no any System Message";
     private static final String NOT_ALL_MILESTONE_CHANGED_STATE_MESSAGE = "Not all milestones changed state.\n" +
             "Following milestones cannot be manually completed:";
-    private final String milestoneName1 = "Milestone Update " + (int) (Math.random() * 100001);
-    private final String milestoneName2 = "Milestone Update " + (int) (Math.random() * 100001);
-    private final String milestoneName3 = "Milestone Update " + (int) (Math.random() * 100001);
-    private final String description = "Milestone Update " + (Math.random() * 100001);
+    private static final String EMPTY_ATTRIBUTE = "—";
     private static final String CHANGE_STATE_BUTTON = "setMilestonesStateContextAction";
     private static final String NEW_STATE = "New";
     private static final String NOT_NEEDED_STATE = "Not Needed";
@@ -58,14 +55,18 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
     private static final String CHANGE_STATE_REASON = "CHANGE STATE SELENIUM TEST";
     private static final String VALIDATION_MESSAGE = "Cannot change states of selected milestones. All selected milestones should have the same state.";
     private static final String LEAD_TIME = "10";
+    private final String milestoneName1 = "Milestone Update " + (int) (Math.random() * 100001);
+    private final String milestoneName2 = "Milestone Update " + (int) (Math.random() * 100001);
+    private final String milestoneName3 = "Milestone Update " + (int) (Math.random() * 100001);
+    private final String description = "Milestone Update " + (Math.random() * 100001);
     private final long PLUS_DAYS = 5L;
 
     private MilestoneViewPage milestoneViewPage;
     private ChangeStateMilestoneWizardPage changeStateMilestoneWizardPage;
 
     private void assertDueDate(String startDueDate, String dueDate, String newDueDate) {
-        if (startDueDate.isEmpty()) {
-            Assert.assertEquals(newDueDate, "");
+        if (startDueDate.equals(EMPTY_ATTRIBUTE)) {
+            Assert.assertEquals(newDueDate, EMPTY_ATTRIBUTE);
         } else {
             Assert.assertEquals(dueDate, newDueDate);
         }
@@ -115,7 +116,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         Assert.assertNotEquals(newModifyDate, startModifyDate);
         switch (nextState) {
             case NOT_NEEDED_STATE:
-                Assert.assertEquals(newCompletionDate, "");
+                Assert.assertEquals(newCompletionDate, EMPTY_ATTRIBUTE);
                 assertDueDate(startDueDate, startDueDate, newDueDate);
                 break;
             case NEW_STATE:
@@ -153,7 +154,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         }
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
-        String processName = PROCESS_NAME + (int) (Math.random() * 1001);
+        String processName = PROCESS_NAME + (int) (Math.random() * 100001);
 
         Milestone milestone1 = Milestone.builder()
                 .setLeadTime(LEAD_TIME)
