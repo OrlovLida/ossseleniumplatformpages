@@ -213,7 +213,7 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         addObjectToView("name", TEXT_FIELD, FIRST_INDOOR_UNIT_NAME);
         addObjectToView("name", TEXT_FIELD, SECOND_INDOOR_UNIT_NAME);
-        networkViewPage.expandContentPanel();
+        networkViewPage.expandViewContentPanel();
         networkViewPage.selectObjectInViewContent("Name", FIRST_INDOOR_UNIT_NAME);
         waitForPageToLoad();
 

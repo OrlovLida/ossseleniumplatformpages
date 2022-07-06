@@ -10,16 +10,13 @@ import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.contextactions.OldActionsContainer;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.components.mainheader.ButtonPanel;
 import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.components.prompts.ConfirmationBoxInterface;
-import com.oss.framework.components.table.TableComponent;
 import com.oss.framework.navigation.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.advancedsearch.AdvancedSearchWidget;
 import com.oss.framework.widgets.dockedpanel.DockedPanel;
 import com.oss.framework.widgets.dockedpanel.DockedPanelInterface;
-import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
 import com.oss.framework.widgets.propertypanel.PropertyPanel;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.table.TableInterface;
@@ -377,7 +374,7 @@ public class NetworkViewPage extends BasePage {
         waitForPageToLoad();
     }
 
-    private void expandViewContentPanel() {
+    public void expandViewContentPanel() {
         expandDockedPanel("left");
         waitForPageToLoad();
     }
@@ -467,11 +464,6 @@ public class NetworkViewPage extends BasePage {
 
     public void expandAttributesPanel() {
         expandDockedPanel("right");
-        waitForPageToLoad();
-    }
-
-    public void expandContentPanel() {
-        expandDockedPanel("left");
         waitForPageToLoad();
     }
 
