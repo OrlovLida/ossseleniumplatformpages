@@ -12,7 +12,6 @@ import io.qameta.allure.Step;
 
 import static com.oss.framework.components.inputs.Input.ComponentType.CHECKBOX;
 import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
-import static com.oss.framework.components.inputs.Input.ComponentType.NUMBER_FIELD;
 import static com.oss.framework.components.inputs.Input.ComponentType.SEARCH_FIELD;
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 
@@ -36,7 +35,7 @@ public class MicrowaveChannelWizardPage extends BasePage {
     private static final String ADM_FLAG_FIELD_ID = "oss.transport.trail.type.MicrowaveChannel.ADMFlag";
     private static final String REFERENCE_CHANNEL_MODULATION_FIELD_ID = "oss.transport.trail.type.MicrowaveChannel.ReferenceChannelModulation";
     private static final String HIGHEST_CHANNEL_MODULATION_FIELD_ID = "oss.transport.trail.type.MicrowaveChannel.HighestChannelModulation";
-    private static final String LOWEST_CHANNEL_MODULATION_FIELD_ID = "oss.transport.trail.type.MicrowaveChannel.HighestChannelModulation";
+    private static final String LOWEST_CHANNEL_MODULATION_FIELD_ID = "oss.transport.trail.type.MicrowaveChannel.LowestChannelModulation";
 
     private static final String START_TX_POWER_FIELD_ID = "oss.transport.trail.type.MicrowaveChannel.StartTxPower";
     private static final String END_TX_POWER_FIELD_ID = "oss.transport.trail.type.MicrowaveChannel.EndTxPower";
@@ -69,6 +68,7 @@ public class MicrowaveChannelWizardPage extends BasePage {
     @Step("Set Description = {description}")
     public void setDescription(String description) {
         wizard.setComponentValue(DESCRIPTION_FIELD_ID, description, TEXT_FIELD);
+        waitForPageToLoad();
     }
 
     @Step("Set Band = {band}")
@@ -110,14 +110,16 @@ public class MicrowaveChannelWizardPage extends BasePage {
     @Step("Set Channel Number = {channelNumber}")
     public void setChannelNumber(String channelNumber) {
         wizard.setComponentValue(CHANNEL_NUMBER_FIELD_ID, channelNumber, TEXT_FIELD);
+        waitForPageToLoad();
     }
 
     @Step("Set Configuration = {configuration}")
     public void setConfiguration(String configuration) {
         wizard.setComponentValue(CONFIGURATION_FIELD_ID, configuration, TEXT_FIELD);
+        waitForPageToLoad();
     }
 
-    @Step("Set Channel Name = {channelName}")
+    @Step("Set Microwave Frequency Plan")
     public void setMicrowaveFrequencyPlan() {
         waitForPageToLoad();
         TableComponent tableComponent = TableComponent.createById(driver, wait, MICROWAVE_FREQUENCY_PLANS_COMPONENT_ID);
@@ -140,7 +142,7 @@ public class MicrowaveChannelWizardPage extends BasePage {
     @Step("Set ADM flag to {admFlag}")
     public void setAdmFlag(String admFlag) {
         wizard.setComponentValue(ADM_FLAG_FIELD_ID, admFlag, Input.ComponentType.CHECKBOX);
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad();
     }
 
     @Step("Set Reference Channel Modulation = {referenceChannelModulation}")
@@ -164,25 +166,29 @@ public class MicrowaveChannelWizardPage extends BasePage {
     @Step("Set Start Tx Power = {startTxPower}")
     public void setStartTxPower(String startTxPower) {
         wizard.setComponentValue(START_TX_POWER_FIELD_ID, startTxPower, TEXT_FIELD);
+        waitForPageToLoad();
     }
 
     @Step("Set End Tx Power = {endTxPower}")
     public void setEndTxPower(String endTxPower) {
         wizard.setComponentValue(END_TX_POWER_FIELD_ID, endTxPower, TEXT_FIELD);
+        waitForPageToLoad();
     }
 
     @Step("Set Start Rx Power = {startRxPower}")
     public void setStartRxPower(String startRxPower) {
         wizard.setComponentValue(START_RX_POWER_FIELD_ID, startRxPower, TEXT_FIELD);
+        waitForPageToLoad();
     }
 
     @Step("Set End Rx Power = {endRxPower}")
     public void setEndRxPower(String endRxPower) {
         wizard.setComponentValue(END_RX_POWER_FIELD_ID, endRxPower, TEXT_FIELD);
+        waitForPageToLoad();
     }
 
     @Step("Set ATPC flag = {atpc}")
-    public void setATPC(String atpc){
+    public void setATPC(String atpc) {
         wizard.setComponentValue(ATPC_FIELD_ID, atpc, CHECKBOX);
         waitForPageToLoad();
     }
@@ -190,106 +196,115 @@ public class MicrowaveChannelWizardPage extends BasePage {
     @Step("Set ATPC Rx Max Level = {atpcRxMaxLevel}")
     public void setATPCRxMaxLevel(String atpcRxMaxLevel) {
         wizard.setComponentValue(ATPC_RX_MAX_LEVEL_FIELD_ID, atpcRxMaxLevel, TEXT_FIELD);
+        waitForPageToLoad();
     }
 
     @Step("Set ATPC Rx Min Level = {atpcRxMinLevel}")
     public void setATPCRxMinLevel(String atpcRxMinLevel) {
         wizard.setComponentValue(ATPC_RX_MIN_LEVEL_FIELD_ID, atpcRxMinLevel, TEXT_FIELD);
+        waitForPageToLoad();
     }
 
     @Step("Set XPOL flag = {xpolFlag}")
-    public void setXPOLflag(String xpolFlag){
+    public void setXPOLflag(String xpolFlag) {
         wizard.setComponentValue(XPOL_FLAG_FIELD_ID, xpolFlag, CHECKBOX);
+        waitForPageToLoad();
     }
 
     @Step("Set HSB flag = {hsbFlag}")
-    public void setHSBflag(String hsbFlag){
+    public void setHSBflag(String hsbFlag) {
         wizard.setComponentValue(HSB_FLAG_FIELD_ID, hsbFlag, CHECKBOX);
         waitForPageToLoad();
     }
 
     @Step("Set Start Waveguide Model = {startWaveguideModel}")
-    public void setStartWaveguideModel(String startWaveguideModel){
+    public void setStartWaveguideModel(String startWaveguideModel) {
         wizard.setComponentValue(START_WAVEGUIDE_MODEL_FIELD_ID, startWaveguideModel, COMBOBOX);
         waitForPageToLoad();
     }
 
     @Step("Set End Waveguide Model = {endWaveguideModel}")
-    public void setEndWaveguideModel(String endWaveguideModel){
+    public void setEndWaveguideModel(String endWaveguideModel) {
         wizard.setComponentValue(END_WAVEGUIDE_MODEL_FIELD_ID, endWaveguideModel, COMBOBOX);
         waitForPageToLoad();
     }
 
     @Step("Set Start Waveguide Length = {startWaveguideLength}")
-    public void setStartWaveguideLength(String startWaveguideLength){
+    public void setStartWaveguideLength(String startWaveguideLength) {
         wizard.setComponentValue(START_WAVEGUIDE_LENGTH_FIELD_ID, startWaveguideLength, TEXT_FIELD);
+        waitForPageToLoad();
     }
 
     @Step("Set End Waveguide Length = {endWaveguideLength}")
-    public void setEndWaveguideLength(String endWaveguideLength){
+    public void setEndWaveguideLength(String endWaveguideLength) {
         wizard.setComponentValue(END_WAVEGUIDE_LENGTH_FIELD_ID, endWaveguideLength, TEXT_FIELD);
+        waitForPageToLoad();
     }
 
     @Step("Set Start Diversity Waveguide Model = {startDiversityWaveguideModel}")
-    public void setStartDiversityWaveguideModel(String startDiversityWaveguideModel){
+    public void setStartDiversityWaveguideModel(String startDiversityWaveguideModel) {
         wizard.setComponentValue(START_DIVERSITY_WAVEGUIDE_MODEL_FIELD_ID, startDiversityWaveguideModel, COMBOBOX);
         waitForPageToLoad();
     }
 
     @Step("Set End Diversity Waveguide Model = {endDiversityWaveguideModel}")
-    public void setEndDiversityWaveguideModel(String endDiversityWaveguideModel){
+    public void setEndDiversityWaveguideModel(String endDiversityWaveguideModel) {
         wizard.setComponentValue(END_DIVERSITY_WAVEGUIDE_MODEL_FIELD_ID, endDiversityWaveguideModel, COMBOBOX);
         waitForPageToLoad();
     }
 
     @Step("Set Start Diversity Waveguide Length = {startDiversityWaveguideLength}")
-    public void setStartDiversityWaveguideLength(String startDiversityWaveguideLength){
+    public void setStartDiversityWaveguideLength(String startDiversityWaveguideLength) {
         wizard.setComponentValue(START_DIVERSITY_WAVEGUIDE_LENGTH_FIELD_ID, startDiversityWaveguideLength, TEXT_FIELD);
+        waitForPageToLoad();
     }
 
     @Step("Set End Diversity Waveguide Length = {endDiversityWaveguideLength}")
-    public void setEndDiversityWaveguideLength(String endDiversityWaveguideLength){
+    public void setEndDiversityWaveguideLength(String endDiversityWaveguideLength) {
         wizard.setComponentValue(END_DIVERSITY_WAVEGUIDE_LENGTH_FIELD_ID, endDiversityWaveguideLength, TEXT_FIELD);
+        waitForPageToLoad();
     }
 
     @Step("Set Start Attenuator Model = {startAttenuatorModel}")
-    public void setStartAttenuatorModel(String startAttenuatorModel){
+    public void setStartAttenuatorModel(String startAttenuatorModel) {
         wizard.setComponentValue(START_ATTENUATOR_MODEL_FIELD_ID, startAttenuatorModel, COMBOBOX);
         waitForPageToLoad();
     }
 
     @Step("Set End Attenuator Model = {endAttenuatorModel}")
-    public void setEndAttenuatorModel(String endAttenuatorModel){
+    public void setEndAttenuatorModel(String endAttenuatorModel) {
         wizard.setComponentValue(END_ATTENUATOR_MODEL_FIELD_ID, endAttenuatorModel, COMBOBOX);
         waitForPageToLoad();
     }
 
     @Step("Set Start Attenuator Mode = {startAttenuatorMode}")
-    public void setStartAttenuatorMode(String startAttenuatorMode){
+    public void setStartAttenuatorMode(String startAttenuatorMode) {
         wizard.setComponentValue(START_ATTENUATOR_MODE_FIELD_ID, startAttenuatorMode, COMBOBOX);
         waitForPageToLoad();
     }
 
     @Step("Set End Attenuator Mode = {endAttenuatorMode}")
-    public void setEndAttenuatorMode(String endAttenuatorMode){
+    public void setEndAttenuatorMode(String endAttenuatorMode) {
         wizard.setComponentValue(END_ATTENUATOR_MODE_FIELD_ID, endAttenuatorMode, COMBOBOX);
         waitForPageToLoad();
     }
+
     @Step("Set Start Termination on {terminationName}")
     public void setTermination(String terminationFieldId, String terminationName) {
         wizard.setComponentValue(terminationFieldId, terminationName, SEARCH_FIELD);
+        waitForPageToLoad();
     }
 
     @Step("Click Next button")
     public void clickNext() {
         getWizard().clickNext();
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad();
     }
 
     @Step("Click Accept button")
     public void clickAccept() {
         getWizard().clickAccept();
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad();
     }
 
     private Wizard getWizard() {

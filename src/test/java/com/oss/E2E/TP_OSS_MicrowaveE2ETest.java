@@ -1,5 +1,8 @@
 package com.oss.E2E;
 
+import java.util.Random;
+
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
@@ -10,12 +13,14 @@ import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.navigation.toolsmanager.ToolsManagerWindow;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.table.OldTable;
 import com.oss.pages.physical.CardCreateWizardPage;
 import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.platform.HierarchyViewPage;
 import com.oss.pages.platform.toolsmanager.ToolsManagerPage;
 import com.oss.pages.transport.NetworkViewPage;
 import com.oss.pages.transport.trail.v2.MicrowaveChannelWizardPage;
+import com.oss.pages.transport.trail.v2.MicrowaveLinkWizardPage;
 
 import io.qameta.allure.Description;
 
@@ -27,6 +32,7 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
     private static final String RESOURCE_INVENTORY_CATEGORY_NAME = "Resource Inventory";
     private static final String NETWORK_VIEW_APPLICATION_NAME = "Network View";
     private static final String CREATE_CARD_BUTTON_ID = "CreateCardOnDeviceAction";
+    private static final String CONENT_TAB_ID = "LeftPanelWidget";
 
     private static final String FIRST_LOCATION_NAME = "1_SeleniumE2ETest_Location";
     private static final String SECOND_LOCATION_NAME = "2_SeleniumE2ETest_Location";
@@ -39,10 +45,18 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
     private static final String SECOND_MICROWAVE_ANTENNA_NAME = "2_SeleniumE2ETest_MWANT";
     private static final String FIRST_OUTDOOR_UNIT_NAME = "1_SeleniumE2ETest_ODU";
     private static final String SECOND_OUTDOOR_UNIT_NAME = "2_SeleniumE2ETest_ODU";
-    private static final String CARD_MODEL_NAME = "Ericsson MMU2 H";
-    private static final String SLOT_NAME = "AMM 6p D\\02";
 
-    private static final String DESCRIPTION = "Desc1";
+    private static final String SLOT_NAME = "AMM 6p D\\02";
+    private static final String CARD_MODEL_NAME = "Ericsson MMU2 H";
+    private static final String CARD_NAME = "AMM 6p D\\02\\MMU2 H";
+    private static final String START_CARD_FIELD_ID = "terminationCardComponent_1";
+    private static final String END_CARD_FIELD_ID = "terminationCardComponent_2";
+
+    private static final String START_PORT_FIELD_ID = "terminationPortComponent_1";
+    private static final String END_PORT_FIELD_ID = "terminationPortComponent_2";
+    private static final String PORT_NAME = "RAU";
+
+    private static final String MWC_DESCRIPTION = "Desc1";
     private static final String BAND = "23";
     private static final String CHANNEL_BANDWIDTH = "28";
     private static final String HIGH_FREQUENCY_SITE = "Start Site";
@@ -52,12 +66,33 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
     private static final String CHANNEL_NUMBER = "40";
     private static final String CONFIGURATION = "1 + 2";
     private static final String CHANNEL_NAME = "A001";
+    private static final String LOW_FREQUENCY = "21819";
+    private static final String HIGH_FREQUENCY = "23051";
 
-    private static final String RADIO_MODEL = "HYBR9IF1HP23G28M35E1";
+    private static final String MWC_DESCRIPTION2 = "Opis2";
+    private static final String BAND2 = "38";
+    private static final String CHANNEL_BANDWIDTH2 = "14";
+    private static final String HIGH_FREQUENCY_SITE2 = "End Site";
+    private static final String POLARIZATION2 = "Vertical+Horizontal";
+    private static final String WORKING_STATUS2 = "Protecting";
+    private static final String DCN_LOCATION2 = "End Site";
+    private static final String CHANNEL_NUMBER2 = "1";
+    private static final String CONFIGURATION2 = "A + B";
+    private static final String CHANNEL_NAME2 = "001";
+    private static final String LOW_FREQUENCY2 = "37009";
+    private static final String HIGH_FREQUENCY2 = "38269";
+
+    private static final String RADIO_MODEL = "HYB_TNMMU2H/R2N_23G28M46_180";
     private static final String ADM_FLAG = "true";
     private static final String REFERENCE_CHANNEL_MODULATION = "64QAM";
     private static final String HIGHEST_CHANNEL_MODULATION = "128QAM";
     private static final String LOWEST_CHANNEL_MODULATION = "16QAM";
+
+    private static final String RADIO_MODEL2 = "HYB_TNMMU2H/R2N_38G14M21_84";
+    private static final String ADM_FLAG2 = "true";
+    private static final String REFERENCE_CHANNEL_MODULATION2 = "128QAM";
+    private static final String HIGHEST_CHANNEL_MODULATION2 = "256QAM";
+    private static final String LOWEST_CHANNEL_MODULATION2 = "64QAM";
 
     private static final String START_TX_POWER = "9";
     private static final String END_TX_POWER = "8";
@@ -68,56 +103,191 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
     private static final String ATPC_RX_MIN_LEVEL = "4";
     private static final String XPOL_FLAG = "true";
     private static final String HSB_FLAG = "true";
-    private static final String START_WAVEGUIDE_MODEL = "E220J";
-    private static final String END_WAVEGUIDE_MODEL = "Flex 23";
-    private static final String START_WAVEGUIDE_LENGTH = "10";
-    private static final String END_WAVEGUIDE_LENGTH = "20";
-    private static final String START_DIVERSITY_WAVEGUIDE_MODEL = "Flex 23";
-    private static final String END_DIVERSITY_WAVEGUIDE_MODEL = "E220J";
-    private static final String START_DIVERSITY_WAVEGUIDE_LENGTH = "30";
-    private static final String END_DIVERSITY_WAVEGUIDE_LENGTH = "40";
-    private static final String START_ATTENUATOR_MODEL = "20dB 23GHz";
-    private static final String END_ATTENUATOR_MODEL = "20dB 23GHz";
-    private static final String START_ATTENUATOR_MODE = "Rx";
-    private static final String END_ATTENUATOR_MODE = "Tx";
 
-    private static final String CARD_NAME = "AMM 6p D\\02\\MMU2 H";
-    private static final String START_CARD_FIELD_ID = "terminationCardComponent_1";
-    private static final String END_CARD_FIELD_ID = "terminationCardComponent_2";
+    private static final String START_TX_POWER2 = "87";
+    private static final String END_TX_POWER2 = "76";
+    private static final String START_RX_POWER2 = "65";
+    private static final String END_RX_POWER2 = "54";
+    private static final String ATPC2 = "true";
+    private static final String ATPC_RX_MAX_LEVEL2 = "43";
+    private static final String ATPC_RX_MIN_LEVEL2 = "32";
+    private static final String XPOL_FLAG2 = "false";
+    private static final String HSB_FLAG2 = "false";
+
+    private static final String START_WAVEGUIDE_MODEL = "E220J";
+    private static final String START_WAVEGUIDE_MANUFACTURER = "RFS";
+    private static final String START_WAVEGUIDE_LENGTH = "10";
+    private static final String START_WAVEGUIDE_TOTAL_LOSS = "2.817";
+    private static final String END_WAVEGUIDE_MODEL = "E220J";
+    private static final String END_WAVEGUIDE_MANUFACTURER = "RFS";
+    private static final String END_WAVEGUIDE_LENGTH = "20";
+    private static final String END_WAVEGUIDE_TOTAL_LOSS = "5.634";
+
+    private static final String START_WAVEGUIDE_MODEL2 = "Flex 38";
+    private static final String START_WAVEGUIDE_MANUFACTURER2 = "Generic";
+    private static final String START_WAVEGUIDE_LENGTH2 = "1";
+    private static final String START_WAVEGUIDE_TOTAL_LOSS2 = "2.5";
+    private static final String END_WAVEGUIDE_MODEL2 = "Flex 38";
+    private static final String END_WAVEGUIDE_MANUFACTURER2 = "Generic";
+    private static final String END_WAVEGUIDE_LENGTH2 = "2";
+    private static final String END_WAVEGUIDE_TOTAL_LOSS2 = "5";
+
+    private static final String START_DIVERSITY_WAVEGUIDE_MODEL = "Flex 23";
+    private static final String START_DIVERSITY_WAVEGUIDE_MANUFACTURER = "Generic";
+    private static final String START_DIVERSITY_WAVEGUIDE_LENGTH = "30";
+    private static final String START_DIVERSITY_WAVEGUIDE_TOTAL_LOSS = "45";
+    private static final String END_DIVERSITY_WAVEGUIDE_MODEL = "Flex 23";
+    private static final String END_DIVERSITY_WAVEGUIDE_MANUFACTURER = "Generic";
+    private static final String END_DIVERSITY_WAVEGUIDE_LENGTH = "40";
+    private static final String END_DIVERSITY_WAVEGUIDE_TOTAL_LOSS = "60";
+
+    private static final String START_DIVERSITY_WAVEGUIDE_MODEL2 = "Flex 38";
+    private static final String START_DIVERSITY_WAVEGUIDE_MANUFACTURER2 = "Generic";
+    private static final String START_DIVERSITY_WAVEGUIDE_LENGTH2 = "5";
+    private static final String START_DIVERSITY_WAVEGUIDE_TOTAL_LOSS2 = "12.5";
+    private static final String END_DIVERSITY_WAVEGUIDE_MODEL2 = "Flex 38";
+    private static final String END_DIVERSITY_WAVEGUIDE_MANUFACTURER2 = "Generic";
+    private static final String END_DIVERSITY_WAVEGUIDE_LENGTH2 = "6";
+    private static final String END_DIVERSITY_WAVEGUIDE_TOTAL_LOSS2 = "15";
+
+    private static final String START_ATTENUATOR_MODEL = "20dB 23GHz";
+    private static final String START_ATTENUATOR_MANUFACTURER = "Generic";
+    private static final String START_ATTENUATOR_MODE = "Rx";
+    private static final String START_ATTENUATOR_LOSS = "20";
+    private static final String END_ATTENUATOR_MODEL = "20dB 23GHz";
+    private static final String END_ATTENUATOR_MANUFACTURER = "Generic";
+    private static final String END_ATTENUATOR_MODE = "Common";
+    private static final String END_ATTENUATOR_LOSS = "20";
+
+    private static final String START_ATTENUATOR_MODEL2 = "20dB 38GHz";
+    private static final String START_ATTENUATOR_MANUFACTURER2 = "Generic";
+    private static final String START_ATTENUATOR_MODE2 = "Common";
+    private static final String START_ATTENUATOR_LOSS2 = "20";
+    private static final String END_ATTENUATOR_MODEL2 = "20dB 38GHz";
+    private static final String END_ATTENUATOR_MANUFACTURER2 = "Generic";
+    private static final String END_ATTENUATOR_MODE2 = "Tx";
+    private static final String END_ATTENUATOR_LOSS2 = "20";
+
+    private static final String USER_LABEL = "userLabel987";
+    private static final String LINK_ID = "7";
+    private static final String IQLINK_ID = "iqid796";
+    private static final String TECHNOLOGY_TYPE = "PDH";
+    private static final String AGGREGATION_CONFIGURATION = "1+1";
+    private static final String NUMBER_OF_WORKING_CHANNELS = "1";
+    private static final String NUMBER_OF_PROTECTING_CHANNELS = "1";
+    private static final String CAPACITY_VALUE = "234";
+    private static final String NETWORK = "Fixed";
+    private static final String PATH_LENGTH = "127";
+    private static final String START_SITE_IQLINK_ID = "startIqId543";
+    private static final String END_SITE_IQLINK_ID = "endIqId468";
+    private static final String MWL_DESCRIPTION = "desc691";
+
+    private static final String MICROWAVE_CHANNEL_CONFIGURATION = "SeleniumAttributesPanelMicrowaveChannel";
 
     private SoftAssert softAssert;
+    private String secondMicrowaveChannel;
+    private String firstMicrowaveChannel;
 
-    @Test(priority = 1, description = "Open Network View")
-    @Description("Open Network View")
+    private static Random rand = new Random();
+
+    @Test(priority = 1, description = "Create Physical Devices")
+    @Description("Create All Physical Devices from prerequisites")
     public void createDevices() {
         createIndoorUnit(INDOOR_UNIT_MODEL, FIRST_INDOOR_UNIT_NAME, FIRST_LOCATION_NAME);
 
         createIndoorUnit(INDOOR_UNIT_MODEL, SECOND_INDOOR_UNIT_NAME, SECOND_LOCATION_NAME);
 
-        //createMicrowaveAntenna(MICROWAVE_ANTENNA_MODEL, FIRST_MICROWAVE_ANTENNA_NAME, FIRST_LOCATION_NAME);
-
-        //createMicrowaveAntenna(MICROWAVE_ANTENNA_MODEL, SECOND_MICROWAVE_ANTENNA_NAME, SECOND_LOCATION_NAME);
-
-        //createOutdoorUnit(OUTDOOR_UNIT_MODEL, FIRST_OUTDOOR_UNIT_NAME, FIRST_LOCATION_NAME);
-
-        //createOutdoorUnit(OUTDOOR_UNIT_MODEL, SECOND_OUTDOOR_UNIT_NAME, SECOND_LOCATION_NAME);
+//        createMicrowaveAntenna(MICROWAVE_ANTENNA_MODEL, FIRST_MICROWAVE_ANTENNA_NAME, FIRST_LOCATION_NAME);
+//
+//        createMicrowaveAntenna(MICROWAVE_ANTENNA_MODEL, SECOND_MICROWAVE_ANTENNA_NAME, SECOND_LOCATION_NAME);
+//
+//        createOutdoorUnit(OUTDOOR_UNIT_MODEL, FIRST_OUTDOOR_UNIT_NAME, FIRST_LOCATION_NAME);
+//
+//        createOutdoorUnit(OUTDOOR_UNIT_MODEL, SECOND_OUTDOOR_UNIT_NAME, SECOND_LOCATION_NAME);
     }
 
-    @Test(priority = 2, description = "Create Microwave Channels")
-    @Description("Add Indoor Units to View and create Microwave Channels on them")
-    public void createMicrowaveChannels() {
+    @Test(priority = 2, description = "Create Microwave Channels with Terminations")
+    @Description("Add Indoor Units to View and create Microwave Channel on them")
+    public void createMicrowaveChannelWithTerminations() {
         openNetworkView();
+        NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         addObjectToView("name", TEXT_FIELD, FIRST_INDOOR_UNIT_NAME);
         addObjectToView("name", TEXT_FIELD, SECOND_INDOOR_UNIT_NAME);
-        NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.expandContentPanel();
         networkViewPage.selectObjectInViewContent("Name", FIRST_INDOOR_UNIT_NAME);
         waitForPageToLoad();
-        networkViewPage.openWizardPage("Microwave Channel");
 
-        MicrowaveChannelAttributes microwaveChannelAttributes = getFirstMicrowaveChannelAttributesToCreate();
-        MicrowaveChannelWizardPage microwaveChannelWizardPage = new MicrowaveChannelWizardPage(driver);
-        fillMicrowaveChannelWizard(microwaveChannelWizardPage, microwaveChannelAttributes);
+        networkViewPage.openWizardPage("Microwave Channel");
+        waitForPageToLoad();
+        MicrowaveChannelAttributes firstMicrowaveChannelAttributes = getFirstMicrowaveChannelAttributes();
+        MicrowaveChannelWizardPage firstMicrowaveChannelWizardPage = new MicrowaveChannelWizardPage(driver);
+        fillMicrowaveChannelWizardWithTerminationsStep(firstMicrowaveChannelWizardPage, firstMicrowaveChannelAttributes);
+
+        networkViewPage.expandAttributesPanel();
+        // Czekamy na: OSSWEB-18896
+        //networkViewPage.applyConfigurationForAttributesPanel(MICROWAVE_CHANNEL_CONFIGURATION);
+        waitForPageToLoad();
+        assertMicrowaveChannel(networkViewPage, firstMicrowaveChannelAttributes);
+
+        //assertMicrowaveChannelTerminations(CARD_NAME);
+
+    }
+
+    @Test(priority = 3, description = "Create Microwave Channel and add Terminations")
+    @Description("Create Microwave Channel and add terminations using Terminations Tab")
+    public void createMicrowaveChannelAndAddTerminations() {
+        NetworkViewPage networkViewPage = new NetworkViewPage(driver);
+        OldTable table = OldTable.createById(driver, webDriverWait, CONENT_TAB_ID);
+        table.searchByAttributeWithLabel("Name", TEXT_FIELD, "MicrowaveChannel");
+        firstMicrowaveChannel = getMicrowaveChannel(0);
+        networkViewPage.unselectObject(firstMicrowaveChannel);
+
+        networkViewPage.openWizardPage("Microwave Channel");
+        waitForPageToLoad();
+        MicrowaveChannelAttributes secondMicrowaveChannelAttributes = getSecondMicrowaveChannelAttributes();
+        MicrowaveChannelWizardPage secondMicrowaveChannelWizardPage = new MicrowaveChannelWizardPage(driver);
+        fillMicrowaveChannelWizard(secondMicrowaveChannelWizardPage, secondMicrowaveChannelAttributes);
+        waitForPageToLoad();
+        assertMicrowaveChannel(networkViewPage, secondMicrowaveChannelAttributes);
+        //Add Terminations using Terminations Tab
+
+        networkViewPage.startEditingSelectedTrail();
+        secondMicrowaveChannel = getMicrowaveChannel(1);
+        table.clearColumnValue("Name");
+        networkViewPage.selectObjectInViewContent("Name", FIRST_INDOOR_UNIT_NAME);
+        networkViewPage.selectObjectInViewContent("Name", SECOND_INDOOR_UNIT_NAME);
+        networkViewPage.unselectObject(secondMicrowaveChannel);
+        waitForPageToLoad();
+        networkViewPage.addSelectedObjectsToTermination();
+        waitForPageToLoad();
+        fillTerminationWizardPage();
+        //assertMicrowaveChannelTerminations(PORT_NAME);
+    }
+
+    @Test(priority = 4, description = "Create Microwave Link")
+    @Description("Create Microwave Link and add Microwave Channel to routing")
+    public void createMicrowaveLinkAndAddMicrowaveChannelToRouting() {
+        NetworkViewPage networkViewPage = new NetworkViewPage(driver);
+        networkViewPage.unselectObject(FIRST_INDOOR_UNIT_NAME);
+        waitForPageToLoad();
+        networkViewPage.unselectObject(SECOND_INDOOR_UNIT_NAME);
+        waitForPageToLoad();
+
+        networkViewPage.openWizardPage("Microwave Link");
+        waitForPageToLoad();
+        MicrowaveLinkAttributes microwaveLinkAttributes = getMicrowaveLinkAttributes();
+        MicrowaveLinkWizardPage microwaveLinkWizardPage = new MicrowaveLinkWizardPage(driver);
+        fillMicrowaveLinkWizard(microwaveLinkWizardPage, microwaveLinkAttributes);
+        waitForPageToLoad();
+        networkViewPage.expandAttributesPanel();
+        waitForPageToLoad();
+        assertMicrowaveLink(networkViewPage, microwaveLinkAttributes);
+    }
+
+    private void assertMicrowaveChannelTerminations(String objectName) {
+        NetworkViewPage networkViewPage = new NetworkViewPage(driver);
+        Boolean isCardInTerminationsTab = networkViewPage.isObjectInTerminations(objectName);
+        Assert.assertTrue(isCardInTerminationsTab);
     }
 
     private void openNetworkView() {
@@ -134,6 +304,7 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
 
     private void expandTiles(String categoryName, String applicationName) {
         ToolsManagerPage toolsManagerPage = new ToolsManagerPage(driver);
+        waitForPageToLoad();
         ToolsManagerWindow toolsManagerWindow = toolsManagerPage.getToolsManager();
         waitForPageToLoad();
         toolsManagerWindow.openApplication(categoryName, applicationName);
@@ -162,8 +333,9 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
 
     private void createIndoorUnit(String indoorUnitModel, String indoorUnitName, String locationName) {
         createPhysicalDevice(indoorUnitModel, indoorUnitName, locationName);
+        clickMessage();
         waitForPageToLoad();
-        addCardToPhysicalDevice(indoorUnitName, CARD_MODEL_NAME, SLOT_NAME);
+        addCardToPhysicalDevice(CARD_MODEL_NAME, SLOT_NAME);
         waitForPageToLoad();
     }
 
@@ -177,20 +349,20 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    private MicrowaveChannelAttributes getFirstMicrowaveChannelAttributesToCreate() {
+    private void clickMessage(){
+        SystemMessageContainer.create(driver, webDriverWait).clickMessageLink();
+    }
+
+    private MicrowaveChannelAttributes getFirstMicrowaveChannelAttributes() {
         MicrowaveChannelAttributes attributes = new MicrowaveChannelAttributes();
-        attributes.description = DESCRIPTION;
         attributes.band = BAND;
         attributes.channelBandwidth = CHANNEL_BANDWIDTH;
-        attributes.highFrequencySite = HIGH_FREQUENCY_SITE;
+        attributes.lowFrequency = LOW_FREQUENCY;
+        attributes.highFrequency = HIGH_FREQUENCY;
         attributes.polarization = POLARIZATION;
         attributes.workingStatus = WORKING_STATUS;
-        attributes.dcnLocation = DCN_LOCATION;
-        attributes.channelNumber = CHANNEL_NUMBER;
-        attributes.configuration = CONFIGURATION;
-        attributes.channelName = CHANNEL_NAME;
-        attributes.startRadioModel = RADIO_MODEL;
-        attributes.endRadioModel = RADIO_MODEL;
+        attributes.hsbFlag = HSB_FLAG;
+        attributes.xpolFlag = XPOL_FLAG;
         attributes.admFlag = ADM_FLAG;
         attributes.referenceChannelModulation = REFERENCE_CHANNEL_MODULATION;
         attributes.highestChannelModulation = HIGHEST_CHANNEL_MODULATION;
@@ -202,37 +374,130 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
         attributes.atpc = ATPC;
         attributes.atpcRxMaxLevel = ATPC_RX_MAX_LEVEL;
         attributes.atpcRxMinLevel = ATPC_RX_MIN_LEVEL;
-        attributes.xpolFlag = XPOL_FLAG;
-        attributes.hsbFlag = HSB_FLAG;
-        attributes.startWaveguideModel = START_WAVEGUIDE_MODEL;
-        attributes.endWaveguideModel = END_WAVEGUIDE_MODEL;
-        attributes.startWaveguideLength = START_WAVEGUIDE_LENGTH;
-        attributes.endWaveguideLength = END_WAVEGUIDE_LENGTH;
-        attributes.startDiversityWaveguideModel = START_DIVERSITY_WAVEGUIDE_MODEL;
-        attributes.endDiversityWaveguideModel = END_DIVERSITY_WAVEGUIDE_MODEL;
-        attributes.startDiversityWaveguideLength = START_DIVERSITY_WAVEGUIDE_LENGTH;
-        attributes.endDiversityWaveguideLength = END_DIVERSITY_WAVEGUIDE_LENGTH;
-        attributes.startAttenuatorModel = START_ATTENUATOR_MODEL;
+        attributes.dcnLocation = DCN_LOCATION;
+        attributes.endAttenuatorManufacturer = END_ATTENUATOR_MANUFACTURER;
         attributes.endAttenuatorModel = END_ATTENUATOR_MODEL;
-        attributes.startAttenuatorMode = START_ATTENUATOR_MODE;
+        attributes.endDiversityWaveguideLength = END_DIVERSITY_WAVEGUIDE_LENGTH;
+        attributes.endDiversityWaveguideManufacturer = END_DIVERSITY_WAVEGUIDE_MANUFACTURER;
+        attributes.endDiversityWaveguideModel = END_DIVERSITY_WAVEGUIDE_MODEL;
+        attributes.startAttenuatorManufacturer = START_ATTENUATOR_MANUFACTURER;
+        attributes.startAttenuatorModel = START_ATTENUATOR_MODEL;
+        attributes.startDiversityWaveguideLength = START_DIVERSITY_WAVEGUIDE_LENGTH;
+        attributes.startDiversityWaveguideManufacturer = START_DIVERSITY_WAVEGUIDE_MANUFACTURER;
+        attributes.startDiversityWaveguideModel = START_DIVERSITY_WAVEGUIDE_MODEL;
+        attributes.startDiversityWaveguideTotalLoss = START_DIVERSITY_WAVEGUIDE_TOTAL_LOSS;
+        attributes.startRadioModel = RADIO_MODEL;
+        attributes.startWaveguideManufacturer = START_WAVEGUIDE_MANUFACTURER;
+        attributes.startWaveguideModel = START_WAVEGUIDE_MODEL;
+        attributes.startWaveguideTotalLoss = START_WAVEGUIDE_TOTAL_LOSS;
+        attributes.description = MWC_DESCRIPTION;
+        attributes.channelNumber = CHANNEL_NUMBER;
+        attributes.configuration = CONFIGURATION;
+        attributes.endAttenuatorLoss = END_ATTENUATOR_LOSS;
+        attributes.endDiversityWaveguideTotalLoss = END_DIVERSITY_WAVEGUIDE_TOTAL_LOSS;
+        attributes.endRadioModel = RADIO_MODEL;
+        attributes.endWaveguideLength = END_WAVEGUIDE_LENGTH;
+        attributes.endWaveguideManufacturer = END_WAVEGUIDE_MANUFACTURER;
+        attributes.endWaveguideModel = END_WAVEGUIDE_MODEL;
+        attributes.endWaveguideTotalLoss = END_WAVEGUIDE_TOTAL_LOSS;
+        attributes.startAttenuatorLoss = START_ATTENUATOR_LOSS;
+        attributes.startWaveguideLength = START_WAVEGUIDE_LENGTH;
         attributes.endAttenuatorMode = END_ATTENUATOR_MODE;
+        attributes.highFrequencySite = HIGH_FREQUENCY_SITE;
+        attributes.startAttenuatorMode = START_ATTENUATOR_MODE;
 
         return attributes;
     }
 
+    private MicrowaveChannelAttributes getSecondMicrowaveChannelAttributes() {
+        MicrowaveChannelAttributes attributes = new MicrowaveChannelAttributes();
+        attributes.band = BAND2;
+        attributes.channelBandwidth = CHANNEL_BANDWIDTH2;
+        attributes.lowFrequency = LOW_FREQUENCY2;
+        attributes.highFrequency = HIGH_FREQUENCY2;
+        attributes.polarization = POLARIZATION2;
+        attributes.workingStatus = WORKING_STATUS2;
+        attributes.hsbFlag = HSB_FLAG2;
+        attributes.xpolFlag = XPOL_FLAG2;
+        attributes.admFlag = ADM_FLAG2;
+        attributes.referenceChannelModulation = REFERENCE_CHANNEL_MODULATION2;
+        attributes.highestChannelModulation = HIGHEST_CHANNEL_MODULATION2;
+        attributes.lowestChannelModulation = LOWEST_CHANNEL_MODULATION2;
+        attributes.startTxPower = START_TX_POWER2;
+        attributes.endTxPower = END_TX_POWER2;
+        attributes.startRxPower = START_RX_POWER2;
+        attributes.endRxPower = END_RX_POWER2;
+        attributes.atpc = ATPC2;
+        attributes.atpcRxMaxLevel = ATPC_RX_MAX_LEVEL2;
+        attributes.atpcRxMinLevel = ATPC_RX_MIN_LEVEL2;
+        attributes.dcnLocation = DCN_LOCATION2;
+        attributes.endAttenuatorManufacturer = END_ATTENUATOR_MANUFACTURER2;
+        attributes.endAttenuatorModel = END_ATTENUATOR_MODEL2;
+        attributes.endDiversityWaveguideLength = END_DIVERSITY_WAVEGUIDE_LENGTH2;
+        attributes.endDiversityWaveguideManufacturer = END_DIVERSITY_WAVEGUIDE_MANUFACTURER2;
+        attributes.endDiversityWaveguideModel = END_DIVERSITY_WAVEGUIDE_MODEL2;
+        attributes.startAttenuatorManufacturer = START_ATTENUATOR_MANUFACTURER2;
+        attributes.startAttenuatorModel = START_ATTENUATOR_MODEL2;
+        attributes.startDiversityWaveguideLength = START_DIVERSITY_WAVEGUIDE_LENGTH2;
+        attributes.startDiversityWaveguideManufacturer = START_DIVERSITY_WAVEGUIDE_MANUFACTURER2;
+        attributes.startDiversityWaveguideModel = START_DIVERSITY_WAVEGUIDE_MODEL2;
+        attributes.startDiversityWaveguideTotalLoss = START_DIVERSITY_WAVEGUIDE_TOTAL_LOSS2;
+        attributes.startRadioModel = RADIO_MODEL2;
+        attributes.startWaveguideManufacturer = START_WAVEGUIDE_MANUFACTURER2;
+        attributes.startWaveguideModel = START_WAVEGUIDE_MODEL2;
+        attributes.startWaveguideTotalLoss = START_WAVEGUIDE_TOTAL_LOSS2;
+        attributes.description = MWC_DESCRIPTION2;
+        attributes.channelNumber = CHANNEL_NUMBER2;
+        attributes.configuration = CONFIGURATION2;
+        attributes.endAttenuatorLoss = END_ATTENUATOR_LOSS2;
+        attributes.endDiversityWaveguideTotalLoss = END_DIVERSITY_WAVEGUIDE_TOTAL_LOSS2;
+        attributes.endRadioModel = RADIO_MODEL2;
+        attributes.endWaveguideLength = END_WAVEGUIDE_LENGTH2;
+        attributes.endWaveguideManufacturer = END_WAVEGUIDE_MANUFACTURER2;
+        attributes.endWaveguideModel = END_WAVEGUIDE_MODEL2;
+        attributes.endWaveguideTotalLoss = END_WAVEGUIDE_TOTAL_LOSS2;
+        attributes.startAttenuatorLoss = START_ATTENUATOR_LOSS2;
+        attributes.startWaveguideLength = START_WAVEGUIDE_LENGTH2;
+        attributes.endAttenuatorMode = END_ATTENUATOR_MODE2;
+        attributes.highFrequencySite = HIGH_FREQUENCY_SITE2;
+        attributes.startAttenuatorMode = START_ATTENUATOR_MODE2;
+
+        return attributes;
+    }
+
+    private MicrowaveLinkAttributes getMicrowaveLinkAttributes() {
+        MicrowaveLinkAttributes attributes = new MicrowaveLinkAttributes();
+        attributes.userLabel = USER_LABEL;
+        attributes.linkId = LINK_ID + rand.nextInt(990+9+1)*100;
+        attributes.iqlinkId = IQLINK_ID;
+        attributes.technologyType = TECHNOLOGY_TYPE;
+        attributes.aggregationConfiguration = AGGREGATION_CONFIGURATION;
+        attributes.numberOfWorkingChannels = NUMBER_OF_WORKING_CHANNELS;
+        attributes.numberOfProtectingChannels = NUMBER_OF_PROTECTING_CHANNELS;
+        attributes.capacityValue = CAPACITY_VALUE;
+        attributes.network = NETWORK;
+        attributes.pathLength = PATH_LENGTH;
+        attributes.startSiteIqlinkId = START_SITE_IQLINK_ID;
+        attributes.endSiteIqlinkId = END_SITE_IQLINK_ID;
+        attributes.description = MWL_DESCRIPTION;
+
+        return attributes;
+    }
+
+    private String getMicrowaveChannel(Integer index) {
+        OldTable table = OldTable.createById(driver, webDriverWait, CONENT_TAB_ID);
+        return table.getCellValue(index, "Name");
+    }
+
     private static class MicrowaveChannelAttributes {
-        private String description;
         private String band;
         private String channelBandwidth;
-        private String highFrequencySite;
+        private String lowFrequency;
+        private String highFrequency;
         private String polarization;
         private String workingStatus;
-        private String dcnLocation;
-        private String channelNumber;
-        private String configuration;
-        private String channelName;
-        private String startRadioModel;
-        private String endRadioModel;
+        private String hsbFlag;
+        private String xpolFlag;
         private String admFlag;
         private String referenceChannelModulation;
         private String highestChannelModulation;
@@ -244,20 +509,53 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
         private String atpc;
         private String atpcRxMaxLevel;
         private String atpcRxMinLevel;
-        private String xpolFlag;
-        private String hsbFlag;
-        private String startWaveguideModel;
-        private String endWaveguideModel;
-        private String startWaveguideLength;
-        private String endWaveguideLength;
-        private String startDiversityWaveguideModel;
-        private String endDiversityWaveguideModel;
-        private String startDiversityWaveguideLength;
-        private String endDiversityWaveguideLength;
-        private String startAttenuatorModel;
+        private String dcnLocation;
+        private String endAttenuatorManufacturer;
         private String endAttenuatorModel;
-        private String startAttenuatorMode;
+        private String endDiversityWaveguideLength;
+        private String endDiversityWaveguideManufacturer;
+        private String endDiversityWaveguideModel;
+        private String startAttenuatorManufacturer;
+        private String startAttenuatorModel;
+        private String startDiversityWaveguideLength;
+        private String startDiversityWaveguideManufacturer;
+        private String startDiversityWaveguideModel;
+        private String startDiversityWaveguideTotalLoss;
+        private String startRadioModel;
+        private String startWaveguideManufacturer;
+        private String startWaveguideModel;
+        private String startWaveguideTotalLoss;
+        private String description;
+        private String channelNumber;
+        private String configuration;
+        private String endAttenuatorLoss;
+        private String endDiversityWaveguideTotalLoss;
+        private String endRadioModel;
+        private String endWaveguideLength;
+        private String endWaveguideManufacturer;
+        private String endWaveguideModel;
+        private String endWaveguideTotalLoss;
+        private String startAttenuatorLoss;
+        private String startWaveguideLength;
         private String endAttenuatorMode;
+        private String highFrequencySite;
+        private String startAttenuatorMode;
+    }
+
+    private static class MicrowaveLinkAttributes {
+        private String userLabel;
+        private String linkId;
+        private String iqlinkId;
+        private String technologyType;
+        private String aggregationConfiguration;
+        private String numberOfWorkingChannels;
+        private String numberOfProtectingChannels;
+        private String capacityValue;
+        private String network;
+        private String pathLength;
+        private String startSiteIqlinkId;
+        private String endSiteIqlinkId;
+        private String description;
     }
 
     private void fillMicrowaveChannelWizard(MicrowaveChannelWizardPage microwaveChannelWizardPage, MicrowaveChannelAttributes microwaveChannelAttributes) {
@@ -265,6 +563,13 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
         fillSecondStepOfMicrowaveChannelWizard(microwaveChannelWizardPage, microwaveChannelAttributes);
         fillThirdStepOfMicrowaveChannelWizard(microwaveChannelWizardPage, microwaveChannelAttributes);
         fillForthStepOfMicrowaveChannelWizard(microwaveChannelWizardPage, microwaveChannelAttributes);
+    }
+
+    private void fillMicrowaveChannelWizardWithTerminationsStep(MicrowaveChannelWizardPage microwaveChannelWizardPage, MicrowaveChannelAttributes microwaveChannelAttributes) {
+        fillFirstStepOfMicrowaveChannelWizard(microwaveChannelWizardPage, microwaveChannelAttributes);
+        fillSecondStepOfMicrowaveChannelWizard(microwaveChannelWizardPage, microwaveChannelAttributes);
+        fillThirdStepOfMicrowaveChannelWizard(microwaveChannelWizardPage, microwaveChannelAttributes);
+        fillForthStepOfMicrowaveChannelWizardWithTerminationsStep(microwaveChannelWizardPage, microwaveChannelAttributes);
         fillFifthStepOfMicrowaveChannelWizard(microwaveChannelWizardPage, microwaveChannelAttributes);
     }
 
@@ -279,17 +584,15 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
         microwaveChannelWizardPage.setChannelNumber(microwaveChannelAttributes.channelNumber);
         microwaveChannelWizardPage.setConfiguration(microwaveChannelAttributes.configuration);
         microwaveChannelWizardPage.setMicrowaveFrequencyPlan();
-        waitForPageToLoad();
         microwaveChannelWizardPage.clickNext();
     }
 
     private void fillSecondStepOfMicrowaveChannelWizard(MicrowaveChannelWizardPage microwaveChannelWizardPage, MicrowaveChannelAttributes microwaveChannelAttributes) {
         microwaveChannelWizardPage.setStartRadioModel(microwaveChannelAttributes.startRadioModel);
         microwaveChannelWizardPage.setAdmFlag(microwaveChannelAttributes.admFlag);
-        //microwaveChannelWizardPage.setReferenceChannelModulation(microwaveChannelAttributes.referenceChannelModulation);
-        //microwaveChannelWizardPage.setHighestChannelModulation(microwaveChannelAttributes.highestChannelModulation);
-        //microwaveChannelWizardPage.setLowestChannelModulation(microwaveChannelAttributes.lowestChannelModulation);
-        waitForPageToLoad();
+        microwaveChannelWizardPage.setReferenceChannelModulation(microwaveChannelAttributes.referenceChannelModulation);
+        microwaveChannelWizardPage.setHighestChannelModulation(microwaveChannelAttributes.highestChannelModulation);
+        microwaveChannelWizardPage.setLowestChannelModulation(microwaveChannelAttributes.lowestChannelModulation);
         microwaveChannelWizardPage.clickNext();
     }
 
@@ -316,24 +619,195 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
         microwaveChannelWizardPage.setStartAttenuatorModel(microwaveChannelAttributes.startAttenuatorModel);
         microwaveChannelWizardPage.setStartAttenuatorMode(microwaveChannelAttributes.startAttenuatorMode);
         microwaveChannelWizardPage.setEndAttenuatorMode(microwaveChannelAttributes.endAttenuatorMode);
-        waitForPageToLoad();
-        microwaveChannelWizardPage.clickNext();
-    }
-
-    private void fillFifthStepOfMicrowaveChannelWizard(MicrowaveChannelWizardPage microwaveChannelWizardPage, MicrowaveChannelAttributes microwaveChannelAttributes){
-        microwaveChannelWizardPage.setTermination(START_CARD_FIELD_ID, CARD_NAME);
-        microwaveChannelWizardPage.setTermination(END_CARD_FIELD_ID, CARD_NAME);
-        waitForPageToLoad();
         microwaveChannelWizardPage.clickAccept();
     }
 
-    private void addCardToPhysicalDevice(String deviceName, String modelName, String slotName) {
+    private void fillForthStepOfMicrowaveChannelWizardWithTerminationsStep(MicrowaveChannelWizardPage microwaveChannelWizardPage, MicrowaveChannelAttributes microwaveChannelAttributes) {
+        microwaveChannelWizardPage.setStartWaveguideModel(microwaveChannelAttributes.startWaveguideModel);
+        microwaveChannelWizardPage.setStartWaveguideLength(microwaveChannelAttributes.startWaveguideLength);
+        microwaveChannelWizardPage.setEndWaveguideLength(microwaveChannelAttributes.endWaveguideLength);
+        microwaveChannelWizardPage.setStartDiversityWaveguideModel(microwaveChannelAttributes.startDiversityWaveguideModel);
+        microwaveChannelWizardPage.setStartDiversityWaveguideLength(microwaveChannelAttributes.startDiversityWaveguideLength);
+        microwaveChannelWizardPage.setEndDiversityWaveguideLength(microwaveChannelAttributes.endDiversityWaveguideLength);
+        microwaveChannelWizardPage.setStartAttenuatorModel(microwaveChannelAttributes.startAttenuatorModel);
+        microwaveChannelWizardPage.setStartAttenuatorMode(microwaveChannelAttributes.startAttenuatorMode);
+        microwaveChannelWizardPage.setEndAttenuatorMode(microwaveChannelAttributes.endAttenuatorMode);
+        microwaveChannelWizardPage.clickNext();
+    }
+
+    private void fillFifthStepOfMicrowaveChannelWizard(MicrowaveChannelWizardPage microwaveChannelWizardPage, MicrowaveChannelAttributes microwaveChannelAttributes) {
+        microwaveChannelWizardPage.setTermination(START_CARD_FIELD_ID, CARD_NAME);
+//        microwaveChannelWizardPage.setTermination(END_CARD_FIELD_ID, CARD_NAME);
+        microwaveChannelWizardPage.clickAccept();
+    }
+
+    private void fillMicrowaveLinkWizard(MicrowaveLinkWizardPage microwaveLinkWizardPage, MicrowaveLinkAttributes microwaveLinkAttributes) {
+        microwaveLinkWizardPage.setUserLabel(microwaveLinkAttributes.userLabel);
+        microwaveLinkWizardPage.setLinkId(microwaveLinkAttributes.linkId);
+        microwaveLinkWizardPage.setTechnologyType(microwaveLinkAttributes.technologyType);
+        microwaveLinkWizardPage.setAggregationConfiguration(microwaveLinkAttributes.aggregationConfiguration);
+        microwaveLinkWizardPage.setNumberOfWorkingChannels(microwaveLinkAttributes.numberOfWorkingChannels);
+        microwaveLinkWizardPage.setNumberOfProtectingChannels(microwaveLinkAttributes.numberOfProtectingChannels);
+        microwaveLinkWizardPage.setCapacityValue(microwaveLinkAttributes.capacityValue);
+        microwaveLinkWizardPage.setNetwork(microwaveLinkAttributes.network);
+        microwaveLinkWizardPage.setPathLength(microwaveLinkAttributes.pathLength);
+        microwaveLinkWizardPage.setDescription(microwaveLinkAttributes.description);
+        microwaveLinkWizardPage.clickAccept();
+    }
+
+    private void fillTerminationWizardPage() {
+        MicrowaveChannelWizardPage terminationWizardPage = new MicrowaveChannelWizardPage(driver);
+        terminationWizardPage.setTermination(START_CARD_FIELD_ID, CARD_NAME);
+        waitForPageToLoad();
+        terminationWizardPage.setTermination(END_CARD_FIELD_ID, CARD_NAME);
+        waitForPageToLoad();
+        terminationWizardPage.setTermination(END_PORT_FIELD_ID, PORT_NAME);
+        waitForPageToLoad();
+        terminationWizardPage.clickAccept();
+        waitForPageToLoad();
+    }
+
+    private void assertMicrowaveChannel(NetworkViewPage networkViewPage, MicrowaveChannelAttributes microwaveChannelAttributes) {
+        // DOPISAC Asercje na Capacity ()
+        String band = networkViewPage.getAttributeValue("Band");
+        String channelBandwidth = networkViewPage.getAttributeValue("ChannelBandwidth");
+        String lowFrequency = networkViewPage.getAttributeValue("LowFrequency");
+        String highFrequency = networkViewPage.getAttributeValue("HighFrequency");
+        String polarization = networkViewPage.getAttributeValue("Polarization");
+        String workingStatus = networkViewPage.getAttributeValue("WorkingStatus");
+        String hsbFlag = networkViewPage.getAttributeValue("HSBFlag");
+        String xpolFlag = networkViewPage.getAttributeValue("XPOLFlag");
+        String admFlag = networkViewPage.getAttributeValue("ADMFlag");
+        String referenceChannelModulation = networkViewPage.getAttributeValue("ReferenceChannelModulation");
+        String lowestChannelModulation = networkViewPage.getAttributeValue("LowestChannelModulation");
+        String highestChannelModulation = networkViewPage.getAttributeValue("HighestChannelModulation");
+        String startTxPower = networkViewPage.getAttributeValue("StartTxPower");
+        String endTxPower = networkViewPage.getAttributeValue("EndTxPower");
+        String startRxPower = networkViewPage.getAttributeValue("StartRxPower");
+        String endRxPower = networkViewPage.getAttributeValue("EndRxPower");
+        String atpc = networkViewPage.getAttributeValue("ATPC");
+        String atpcRxMinLevel = networkViewPage.getAttributeValue("ATPCRxMinLevel");
+        String atpcRxMaxLevel = networkViewPage.getAttributeValue("ATPCRxMaxLevel");
+        String dcnLocation = networkViewPage.getAttributeValue("DCNLocation");
+        String endAttenuatorManufacturer = networkViewPage.getAttributeValue("EndAttenuator1Manufacturer");
+        String endAttenuatorModel = networkViewPage.getAttributeValue("EndAttenuator1Model");
+        String endDiversityWaveguideLength = networkViewPage.getAttributeValue("EndDiversityWaveguide1Length");
+        String endDiversityWaveguideManufacturer = networkViewPage.getAttributeValue("EndDiversityWaveguide1Manufacturer");
+        String endDiversityWaveguideModel = networkViewPage.getAttributeValue("EndDiversityWaveguide1Model");
+        String startAttenuatorManufacturer = networkViewPage.getAttributeValue("StartAttenuator1Manufacturer");
+        String startAttenuatorModel = networkViewPage.getAttributeValue("StartAttenuator1Model");
+        String startDiversityWaveguideLength = networkViewPage.getAttributeValue("StartDiversityWaveguide1Length");
+        String startDiversityWaveguideManufacturer = networkViewPage.getAttributeValue("StartDiversityWaveguide1Manufacturer");
+        String startDiversityWaveguideModel = networkViewPage.getAttributeValue("StartDiversityWaveguide1Model");
+        String startDiversityWaveguideTotalLoss = networkViewPage.getAttributeValue("StartDiversityWaveguide1TotalLoss");
+        String startRadioModel = networkViewPage.getAttributeValue("StartRadioModel");
+        String startWaveguideManufacturer = networkViewPage.getAttributeValue("StartWaveguide1Manufacturer");
+        String startWaveguideModel = networkViewPage.getAttributeValue("StartWaveguide1Model");
+        String startWaveguideTotalLoss = networkViewPage.getAttributeValue("StartWaveguide1TotalLoss");
+        String description = networkViewPage.getAttributeValue("description");
+        String channelNumber = networkViewPage.getAttributeValue("ChannelNumber");
+        String configuration = networkViewPage.getAttributeValue("Configuration");
+        String endAttenuatorLoss = networkViewPage.getAttributeValue("EndAttenuator1Loss");
+        String endDiversityWaveguideTotalLoss = networkViewPage.getAttributeValue("EndDiversityWaveguide1TotalLoss");
+        String endRadioModel = networkViewPage.getAttributeValue("EndRadioModel");
+        String endWaveguideLength = networkViewPage.getAttributeValue("EndWaveguide1Length");
+        String endWaveguideManufacturer = networkViewPage.getAttributeValue("EndWaveguide1Manufacturer");
+        String endWaveguideModel = networkViewPage.getAttributeValue("EndWaveguide1Model");
+        String endWaveguideTotalLoss = networkViewPage.getAttributeValue("EndWaveguide1TotalLoss");
+        String startAttenuatorLoss = networkViewPage.getAttributeValue("StartAttenuator1Loss");
+        String startWaveguideLength = networkViewPage.getAttributeValue("StartWaveguide1Length");
+        String endAttenuatorMode = networkViewPage.getAttributeValue("EndAttenuator1Mode");
+        String highFrequencySite = networkViewPage.getAttributeValue("HighFrequencySite");
+        String startAttenuatorMode = networkViewPage.getAttributeValue("StartAttenuator1Mode");
+
+        Assert.assertEquals(band, microwaveChannelAttributes.band);
+        Assert.assertEquals(channelBandwidth, microwaveChannelAttributes.channelBandwidth);
+        Assert.assertEquals(lowFrequency, microwaveChannelAttributes.lowFrequency);
+        Assert.assertEquals(highFrequency, microwaveChannelAttributes.highFrequency);
+        Assert.assertEquals(polarization, microwaveChannelAttributes.polarization);
+        Assert.assertEquals(workingStatus, microwaveChannelAttributes.workingStatus);
+        Assert.assertEquals(hsbFlag, microwaveChannelAttributes.hsbFlag);
+        Assert.assertEquals(xpolFlag, microwaveChannelAttributes.xpolFlag);
+        Assert.assertEquals(admFlag, microwaveChannelAttributes.admFlag);
+        Assert.assertEquals(referenceChannelModulation, microwaveChannelAttributes.referenceChannelModulation);
+        Assert.assertEquals(lowestChannelModulation, microwaveChannelAttributes.lowestChannelModulation);
+        Assert.assertEquals(highestChannelModulation, microwaveChannelAttributes.highestChannelModulation);
+        Assert.assertEquals(startTxPower, microwaveChannelAttributes.startTxPower);
+        Assert.assertEquals(endTxPower, microwaveChannelAttributes.endTxPower);
+        Assert.assertEquals(startRxPower, microwaveChannelAttributes.startRxPower);
+        Assert.assertEquals(endRxPower, microwaveChannelAttributes.endRxPower);
+        Assert.assertEquals(atpc, microwaveChannelAttributes.atpc);
+        Assert.assertEquals(atpcRxMinLevel, microwaveChannelAttributes.atpcRxMinLevel);
+        Assert.assertEquals(atpcRxMaxLevel, microwaveChannelAttributes.atpcRxMaxLevel);
+        Assert.assertEquals(dcnLocation, microwaveChannelAttributes.dcnLocation);
+        Assert.assertEquals(endAttenuatorManufacturer, microwaveChannelAttributes.endAttenuatorManufacturer);
+        Assert.assertEquals(endAttenuatorModel, microwaveChannelAttributes.endAttenuatorModel);
+        Assert.assertEquals(endDiversityWaveguideLength, microwaveChannelAttributes.endDiversityWaveguideLength);
+        Assert.assertEquals(endDiversityWaveguideManufacturer, microwaveChannelAttributes.endDiversityWaveguideManufacturer);
+        Assert.assertEquals(endDiversityWaveguideModel, microwaveChannelAttributes.endDiversityWaveguideModel);
+        Assert.assertEquals(startAttenuatorManufacturer, microwaveChannelAttributes.startAttenuatorManufacturer);
+        Assert.assertEquals(startAttenuatorModel, microwaveChannelAttributes.startAttenuatorModel);
+        Assert.assertEquals(startDiversityWaveguideLength, microwaveChannelAttributes.startDiversityWaveguideLength);
+        Assert.assertEquals(startDiversityWaveguideManufacturer, microwaveChannelAttributes.startDiversityWaveguideManufacturer);
+        Assert.assertEquals(startDiversityWaveguideModel, microwaveChannelAttributes.startDiversityWaveguideModel);
+        Assert.assertEquals(startDiversityWaveguideTotalLoss, microwaveChannelAttributes.startDiversityWaveguideTotalLoss);
+        Assert.assertEquals(startRadioModel, microwaveChannelAttributes.startRadioModel);
+        Assert.assertEquals(startWaveguideManufacturer, microwaveChannelAttributes.startWaveguideManufacturer);
+        Assert.assertEquals(startWaveguideModel, microwaveChannelAttributes.startWaveguideModel);
+        Assert.assertEquals(startWaveguideTotalLoss, microwaveChannelAttributes.startWaveguideTotalLoss);
+        Assert.assertEquals(description, microwaveChannelAttributes.description);
+        Assert.assertEquals(channelNumber, microwaveChannelAttributes.channelNumber);
+        Assert.assertEquals(configuration, microwaveChannelAttributes.configuration);
+        Assert.assertEquals(endAttenuatorLoss, microwaveChannelAttributes.endAttenuatorLoss);
+        Assert.assertEquals(endDiversityWaveguideTotalLoss, microwaveChannelAttributes.endDiversityWaveguideTotalLoss);
+        Assert.assertEquals(endRadioModel, microwaveChannelAttributes.endRadioModel);
+        Assert.assertEquals(endWaveguideLength, microwaveChannelAttributes.endWaveguideLength);
+        Assert.assertEquals(endWaveguideManufacturer, microwaveChannelAttributes.endWaveguideManufacturer);
+        Assert.assertEquals(endWaveguideModel, microwaveChannelAttributes.endWaveguideModel);
+        Assert.assertEquals(endWaveguideTotalLoss, microwaveChannelAttributes.endWaveguideTotalLoss);
+        Assert.assertEquals(startAttenuatorLoss, microwaveChannelAttributes.startAttenuatorLoss);
+        Assert.assertEquals(startWaveguideLength, microwaveChannelAttributes.startWaveguideLength);
+        Assert.assertEquals(endAttenuatorMode, microwaveChannelAttributes.endAttenuatorMode);
+        Assert.assertEquals(highFrequencySite, microwaveChannelAttributes.highFrequencySite);
+        Assert.assertEquals(startAttenuatorMode, microwaveChannelAttributes.startAttenuatorMode);
+    }
+
+    private void assertMicrowaveLink(NetworkViewPage networkViewPage, MicrowaveLinkAttributes microwaveLinkAttributes
+    ) {
+        String capacityValue = networkViewPage.getAttributeValue("capacityValue");
+        String pathLength = networkViewPage.getAttributeValue("PathLength");
+        String network = networkViewPage.getAttributeValue("Network");
+        String technologyType = networkViewPage.getAttributeValue("TechnologyType");
+        String aggregationConfiguration = networkViewPage.getAttributeValue("AggregationConfiguration");
+        String userLabel = networkViewPage.getAttributeValue("UserLabel");
+        String linkId = networkViewPage.getAttributeValue("LinkID");
+        String numberOfWorkingChannels = networkViewPage.getAttributeValue("NumberOfWorkingChannels");
+        String numberOfProtectingChannels = networkViewPage.getAttributeValue("NumberOfProtectingChannels");
+        String description = networkViewPage.getAttributeValue("description");
+
+        Assert.assertEquals(capacityValue, microwaveLinkAttributes.capacityValue);
+        Assert.assertEquals(pathLength, microwaveLinkAttributes.pathLength);
+        Assert.assertEquals(network, microwaveLinkAttributes.network);
+        Assert.assertEquals(technologyType, microwaveLinkAttributes.technologyType);
+        Assert.assertEquals(aggregationConfiguration, microwaveLinkAttributes.aggregationConfiguration);
+        Assert.assertEquals(userLabel, microwaveLinkAttributes.userLabel);
+        Assert.assertEquals(linkId, microwaveLinkAttributes.linkId);
+        Assert.assertEquals(numberOfWorkingChannels, microwaveLinkAttributes.numberOfWorkingChannels);
+        Assert.assertEquals(numberOfProtectingChannels, microwaveLinkAttributes.numberOfProtectingChannels);
+        Assert.assertEquals(description, microwaveLinkAttributes.description);
+    }
+
+    private void addCardToPhysicalDevice(String modelName, String slotName) {
         HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
-        hierarchyViewPage.selectNodeByLabel(deviceName);
-        hierarchyViewPage.useTreeContextAction(ActionsContainer.CREATE_GROUP_ID, CREATE_CARD_BUTTON_ID);
+        hierarchyViewPage.selectFirstObject();
+        waitForPageToLoad();
+        hierarchyViewPage.callAction(ActionsContainer.CREATE_GROUP_ID, CREATE_CARD_BUTTON_ID);
         CardCreateWizardPage createWizardPage = new CardCreateWizardPage(driver);
+        waitForPageToLoad();
         createWizardPage.setModel(modelName);
+        waitForPageToLoad();
         createWizardPage.setSlot(slotName);
+        waitForPageToLoad();
         createWizardPage.clickAccept();
     }
 
@@ -345,5 +819,4 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
     private void waitForPageToLoad() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
-
 }
