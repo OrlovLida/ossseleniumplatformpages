@@ -126,7 +126,7 @@ public class MicrowaveLinkWizardPage extends BasePage {
     }
 
     private Wizard getWizard() {
-        return Wizard.createByComponentId(driver, wait, WIZARD_ID);
+        return wizard;
     }
 
     private void waitForPageToLoad() {
