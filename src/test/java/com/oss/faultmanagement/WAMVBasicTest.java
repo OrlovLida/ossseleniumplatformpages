@@ -34,6 +34,8 @@ public class WAMVBasicTest extends BaseTestCase {
     private static final String ALARM_MANAGEMENT_VIEW_ID = "_UserViewsListALARM_MANAGEMENT";
     private static final String AREA_3_WINDOW_ID = "AREA3";
     private static final String AREA_2_WINDOW_ID = "AREA2";
+    private static final String ALARM_DETAILS_MODAL_VIEW_TITLE = "Alarm Details";
+    private static final String EVENT_TIME_COLUMN_HEADER = "col-eventTime";
 
     private static final String SAME_MO_ALARMS_TABLE_ID = "area3-mo-alarms";
     private static final String CORRELATED_ALARMS_TABLE_ID = "area3-correlated-alarms";
@@ -118,6 +120,28 @@ public class WAMVBasicTest extends BaseTestCase {
         }
     }
 
+    @Parameters({"alarmListName", "alarmListRow", "alarmManagementViewRow"})
+    @Test(priority = 3, testName = "Check Alarm details in AREA2", description = "Check Alarm details in AREA2")
+    @Description("I verify if alarm detail works in AREA2")
+    public void CheckAlarmDetailsInArea2(
+            @Optional("Selenium_test_alarm_list") String alarmListName,
+            @Optional("2") int alarmListRow,
+            @Optional("0") int alarmManagementViewRow
+    ) {
+        try {
+            searchAndOpenWamv(alarmListName, alarmManagementViewRow);
+            wamvPage.selectSpecificRow(alarmListRow);
+            String notificationId = wamvPage.getTextFromNotificationIdentifierCell(alarmListRow);
+            wamvPage.openAlarmDetails();
+            Assert.assertEquals(ALARM_DETAILS_MODAL_VIEW_TITLE, wamvPage.getModalViewTitle());
+            Assert.assertEquals(notificationId, wamvPage.getNotificationIdentifierFromAlarmDetailsInArea2());
+            wamvPage.closeModalView();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            Assert.fail();
+        }
+    }
+
     @Parameters({"alarmListName", "alarmListRow", "alarmManagementViewRow", "adapterName"})
     @Test(priority = 4, testName = "Check  Area 3 tabs with tables from", description = "Check  Area 3 tabs with tables from")
     @Description("I verify if tables in Tabs from Area 3 are visible")
@@ -170,8 +194,8 @@ public class WAMVBasicTest extends BaseTestCase {
     }
 
     @Parameters({"alarmListName", "alarmListRow", "alarmManagementViewRow", "adapterName"})
-    @Test(priority = 6, testName = "Check Alarm Details", description = "Check Alarm Details")
-    @Description("I verify if Alarm Details works in WAMV")
+    @Test(priority = 6, testName = "Check Alarm Details in AREA3", description = "Check Alarm Details in AREA3")
+    @Description("I verify if Alarm Details works in WAMV in AREA3")
     public void openWAMVAndCheckAlarmDetails(
             @Optional("Selenium_test_alarm_list") String alarmListName,
             @Optional("1") int alarmListRow,
@@ -272,7 +296,27 @@ public class WAMVBasicTest extends BaseTestCase {
     }
 
     @Parameters({"alarmListName", "alarmListRow", "alarmManagementViewRow"})
-    @Test(priority = 11, testName = "Searching in WAMV", description = "Searching in WAMV")
+    @Test(priority = 11, testName = "Sorting in WAMV", description = "Sorting in WAMV")
+    @Description("I verify if sorting in WAMV works properly")
+    public void openWAMVAndCheckSorting(
+            @Optional("Selenium_test_alarm_list") String alarmListName,
+            @Optional("0") int alarmListRow,
+            @Optional("0") int alarmManagementViewRow
+    ) {
+        try {
+            searchAndOpenWamv(alarmListName, alarmManagementViewRow);
+            wamvPage.selectSpecificRow(alarmListRow);
+            wamvPage.sortColumnByDESC(EVENT_TIME_COLUMN_HEADER);
+            wamvPage.sortColumnByASC(EVENT_TIME_COLUMN_HEADER);
+            Assert.assertTrue(wamvPage.areDatesSorted(wamvPage.getTextFromEventTimeCell(0), wamvPage.getTextFromEventTimeCell(1)));
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            Assert.fail();
+        }
+    }
+
+    @Parameters({"alarmListName", "alarmListRow", "alarmManagementViewRow"})
+    @Test(priority = 12, testName = "Searching in WAMV", description = "Searching in WAMV")
     @Description("I verify if searching in WAMV works properly")
     public void openWAMVAndCheckSearch(
             @Optional("Selenium_test_alarm_list") String alarmListName,
@@ -294,6 +338,7 @@ public class WAMVBasicTest extends BaseTestCase {
 
     private void searchAndOpenWamv(String alarmListName, int alarmManagementViewRow) {
         fmsmDashboardPage.searchInView(ALARM_MANAGEMENT_VIEW_ID, alarmListName);
+        DelayUtils.sleep(8000); // TODO delete it after fix OSSNGSA-11102
         wamvPage = fmsmDashboardPage.openSelectedView(ALARM_MANAGEMENT_VIEW_ID, alarmManagementViewRow);
     }
 }
