@@ -95,7 +95,7 @@ public class WAMVPage extends BasePage {
 
     @Step("I add note to alarm")
     public void addNote(String note) {
-        DelayUtils.sleep(1000);
+        DelayUtils.waitForPageToLoad(driver, wait);
         createButton(BUTTON_NOTE_TEST_ID).click();
         DelayUtils.sleep(1000);
         EditNoteWizardPage editNote = new EditNoteWizardPage(driver);
@@ -132,6 +132,7 @@ public class WAMVPage extends BasePage {
 
     @Step("I return a cell text from note column")
     public String getTextFromNoteStatusCell(int row, String value) {
+        DelayUtils.waitForPageToLoad(driver, wait);
         fmsmTable.getCell(row, NOTE_COLUMN_ID).waitForExpectedValue(wait, value);
         log.info("Returning cell text from note column in row: {}", row);
         return fmsmTable.getCellValue(row, NOTE_COLUMN_ID);

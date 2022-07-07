@@ -5,9 +5,14 @@
             <class name="com.oss.faultmanagement.FilterManagerTest"/>
         </classes>
     </test>
-    <test name="WAMVBasicTest">
+    <test name="WAMVArea2Test">
         <classes>
-            <class name="com.oss.faultmanagement.WAMVBasicTest"/>
+            <class name="com.oss.faultmanagement.WAMVArea2Test"/>
+        </classes>
+    </test>
+    <test name="WAMVArea3Test">
+        <classes>
+            <class name="com.oss.faultmanagement.WAMVArea3Test"/>
         </classes>
     </test>
     <test name="CreateAlarmListTest">
