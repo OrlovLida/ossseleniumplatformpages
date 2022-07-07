@@ -297,6 +297,13 @@ public class NetworkViewPage extends BasePage {
         return isObjectInBottomTab(partialValue);
     }
 
+    @Step("Check object presence in New Terminations Tab")
+    public boolean isObjectInNewTerminationsTab(String partialValue) {
+        expandDetailsPanel();
+        openTerminationsTab();
+        return isObjectInNewTab(partialValue);
+    }
+
     @Step("Suppress incomplete routing")
     public void supressValidationResult(String reason) {
         openValidationResultsTab();
@@ -394,6 +401,12 @@ public class NetworkViewPage extends BasePage {
         String xpath =
                 String.format("//div[@data-attributename = 'bottomTabs']//div[contains(@class, 'Cell')]//a[contains(text(), '%s')]",
                         partialValue);
+        return !driver.findElements(By.xpath(xpath)).isEmpty();
+    }
+
+    private boolean isObjectInNewTab(String partialValue) {
+        String xpath = String.format("//div[@data-testid = 'table-content-scrollbar']//div[contains(@class, 'table-component__cell')]//span[contains(text(), '%s')]",
+                partialValue);
         return !driver.findElements(By.xpath(xpath)).isEmpty();
     }
 

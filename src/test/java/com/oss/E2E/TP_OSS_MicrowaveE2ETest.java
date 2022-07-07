@@ -11,6 +11,7 @@ import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.table.TableComponent;
 import com.oss.framework.navigation.toolsmanager.ToolsManagerWindow;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
@@ -27,12 +28,82 @@ import io.qameta.allure.Description;
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 
 public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
+
+    private static final String NAME_COMPONENT_ID = "name";
+    private static final String NAME_COLUMN_NAME = "Name";
+    private static final String MICROWAVE_CHANNEL_TRAIL_TYPE = "Microwave Channel";
+    private static final String MICROWAVE_LINK_TRAIL_TYPE = "Microwave Link";
     private static final String INFRASTRUCTURE_MANAGEMENT_CATEGORY_NAME = "Infrastructure management";
     private static final String CREATE_DEVICE_APPLICATION_NAME = "Create Device";
     private static final String RESOURCE_INVENTORY_CATEGORY_NAME = "Resource Inventory";
     private static final String NETWORK_VIEW_APPLICATION_NAME = "Network View";
     private static final String CREATE_CARD_BUTTON_ID = "CreateCardOnDeviceAction";
     private static final String CONENT_TAB_ID = "LeftPanelWidget";
+    private static final String CARD_SHORT_IDENTIFIER_COLUMN = "card.shortIdentifier";
+    private static final String PORT_SHORT_IDENTIFIER_COLUMN = "port.shortIdentifier";
+    private static final String TERMINATIONS_TAB_ID = "TerminationWidget";
+
+    private static final String NAME_ATTRIBUTE_LABEL = "Name";
+    private static final String BAND_ATTRIBUTE_LABEL = "Band";
+    private static final String CHANNEL_BANDWIDTH_ATTRIBUTE_LABEL = "ChannelBandwidth";
+    private static final String LOW_FREQUENCY_ATTRIBUTE_LABEL = "LowFrequency";
+    private static final String HIGH_FREQUENCY_ATTRIBUTE_LABEL = "HighFrequency";
+    private static final String POLARIZATION_ATTRIBUTE_LABEL = "Polarization";
+    private static final String WORKING_STATUS_ATTRIBUTE_LABEL = "WorkingStatus";
+    private static final String HSB_FLAG_ATTRIBUTE_LABEL = "HSBFlag";
+    private static final String XPOL_FLAG_ATTRIBUTE_LABEL = "XPOLFlag";
+    private static final String ADM_FLAG_ATTRIBUTE_LABEL = "ADMFlag";
+    private static final String REFERENCE_CHANNEL_MODULATION_ATTRIBUTE_LABEL = "ReferenceChannelModulation";
+    private static final String LOWEST_CHANNEL_MODULATION_ATTRIBUTE_LABEL = "LowestChannelModulation";
+    private static final String HIGHEST_CHANNEL_MODULATION_ATTRIBUTE_LABEL = "HighestChannelModulation";
+    private static final String START_TX_POWER_ATTRIBUTE_LABEL = "StartTxPower";
+    private static final String END_TX_POWER_ATTRIBUTE_LABEL = "EndTxPower";
+    private static final String START_RX_POWER_ATTRIBUTE_LABEL = "StartRxPower";
+    private static final String END_RX_POWER_ATTRIBUTE_LABEL = "EndRxPower";
+    private static final String ATPC_ATTRIBUTE_LABEL = "ATPC";
+    private static final String ATPC_RX_MIN_LEVEL_ATTRIBUTE_LABEL = "ATPCRxMinLevel";
+    private static final String ATPC_RX_MAX_LEVEL_ATTRIBUTE_LABEL = "ATPCRxMaxLevel";
+    private static final String DCN_LOCATION_ATTRIBUTE_LABEL = "DCNLocation";
+    private static final String END_ATTENUATOR_MANUFACTURER_ATTRIBUTE_LABEL = "EndAttenuator1Manufacturer";
+    private static final String END_ATTENUATOR_MODEL_ATTRIBUTE_LABEL = "EndAttenuator1Model";
+    private static final String END_DIVERSITY_WAVEGUIDE_LENGTH_ATTRIBUTE_LABEL = "EndDiversityWaveguide1Length";
+    private static final String END_DIVERSITY_WAVEGUIDE_MANUFACTURER_ATTRIBUTE_LABEL = "EndDiversityWaveguide1Manufacturer";
+    private static final String END_DIVERSITY_WAVEGUIDE_MODEL_ATTRIBUTE_LABEL = "EndDiversityWaveguide1Model";
+    private static final String START_ATTENUATOR_MANUFACTURER_ATTRIBUTE_LABEL = "StartAttenuator1Manufacturer";
+    private static final String START_ATTENUATOR_MODEL_ATTRIBUTE_LABEL = "StartAttenuator1Model";
+    private static final String START_DIVERSITY_WAVEGUIDE_LENGTH_ATTRIBUTE_LABEL = "StartDiversityWaveguide1Length";
+    private static final String START_DIVERSITY_WAVEGUIDE_MANUFACTURER_ATTRIBUTE_LABEL = "StartDiversityWaveguide1Manufacturer";
+    private static final String START_DIVERSITY_WAVEGUIDE_MODEL_ATTRIBUTE_LABEL = "StartDiversityWaveguide1Model";
+    private static final String START_DIVERSITY_WAVEGUIDE_TOTAL_LOSS_ATTRIBUTE_LABEL = "StartDiversityWaveguide1TotalLoss";
+    private static final String START_RADIO_MODEL_ATTRIBUTE_LABEL = "StartRadioModel";
+    private static final String START_WAVEGUIDE_MANUFACTURER_ATTRIBUTE_LABEL = "StartWaveguide1Manufacturer";
+    private static final String START_WAVEGUIDE_MODEL_ATTRIBUTE_LABEL = "StartWaveguide1Model";
+    private static final String START_WAVEGUIDE_TOTAL_LOSS_ATTRIBUTE_LABEL = "StartWaveguide1TotalLoss";
+    private static final String DESCRIPTION_ATTRIBUTE_LABEL = "description";
+    private static final String CHANNEL_NUMBER_ATTRIBUTE_LABEL = "ChannelNumber";
+    private static final String CONFIGURATION_ATTRIBUTE_LABEL = "Configuration";
+    private static final String END_ATTENUATOR_LOSS_ATTRIBUTE_LABEL = "EndAttenuator1Loss";
+    private static final String END_DIVERSITY_WAVEGUIDE_TOTAL_LOSS_ATTRIBUTE_LABEL = "EndDiversityWaveguide1TotalLoss";
+    private static final String END_RADIO_MODEL_ATTRIBUTE_LABEL = "EndRadioModel";
+    private static final String END_WAVEGUIDE_LENGTH_ATTRIBUTE_LABEL = "EndWaveguide1Length";
+    private static final String END_WAVEGUIDE_MANUFACTURER_ATTRIBUTE_LABEL = "EndWaveguide1Manufacturer";
+    private static final String END_WAVEGUIDE_MODEL_ATTRIBUTE_LABEL = "EndWaveguide1Model";
+    private static final String END_WAVEGUIDE_TOTAL_LOSS_ATTRIBUTE_LABEL = "EndWaveguide1TotalLoss";
+    private static final String START_ATTENUATOR_LOSS_ATTRIBUTE_LABEL = "StartAttenuator1Loss";
+    private static final String START_WAVEGUIDE_LENGTH_ATTRIBUTE_LABEL = "StartWaveguide1Length";
+    private static final String END_ATTENUATOR_MODE_ATTRIBUTE_LABEL = "EndAttenuator1Mode";
+    private static final String HIGH_FREQUENCY_SITE_ATTRIBUTE_LABEL = "HighFrequencySite";
+    private static final String START_ATTENUATOR_MODE_ATTRIBUTE_LABEL = "StartAttenuator1Mode";
+
+    private static final String CAPACITY_VALUE_ATTRIBUTE_LABEL = "capacityValue";
+    private static final String PATH_LENGTH_ATTRIBUTE_LABEL = "PathLength";
+    private static final String NETWORK_ATTRIBUTE_LABEL = "Network";
+    private static final String TECHNOLOGY_TYPE_ATTRIBUTE_LABEL = "TechnologyType";
+    private static final String AGGREGATION_CONFIGURATION_ATTRIBUTE_LABEL = "AggregationConfiguration";
+    private static final String USER_LABEL_ATTRIBUTE_LABEL = "UserLabel";
+    private static final String LINK_ID_ATTRIBUTE_LABEL = "LinkID";
+    private static final String NUMBER_OF_WORKING_CHANNELS_ATTRIBUTE_LABEL = "NumberOfWorkingChannels";
+    private static final String NUMBER_OF_PROTECTING_CHANNELS_ATTRIBUTE_LABEL = "NumberOfProtectingChannels";
 
     private static final String FIRST_LOCATION_NAME = "1_SeleniumE2ETest_Location";
     private static final String SECOND_LOCATION_NAME = "2_SeleniumE2ETest_Location";
@@ -170,7 +241,6 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
 
     private static final String USER_LABEL = "userLabel987";
     private static final String LINK_ID = "7";
-    private static final String IQLINK_ID = "iqid796";
     private static final String TECHNOLOGY_TYPE = "PDH";
     private static final String AGGREGATION_CONFIGURATION = "1+1";
     private static final String NUMBER_OF_WORKING_CHANNELS = "1";
@@ -178,8 +248,6 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
     private static final String CAPACITY_VALUE = "234";
     private static final String NETWORK = "Fixed";
     private static final String PATH_LENGTH = "127";
-    private static final String START_SITE_IQLINK_ID = "startIqId543";
-    private static final String END_SITE_IQLINK_ID = "endIqId468";
     private static final String MWL_DESCRIPTION = "desc691";
 
     private static final String MICROWAVE_CHANNEL_CONFIGURATION = "SeleniumAttributesPanelMicrowaveChannel";
@@ -211,13 +279,13 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
     public void createMicrowaveChannelWithTerminations() {
         openNetworkView();
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
-        addObjectToView("name", TEXT_FIELD, FIRST_INDOOR_UNIT_NAME);
-        addObjectToView("name", TEXT_FIELD, SECOND_INDOOR_UNIT_NAME);
+        addObjectToView(NAME_COMPONENT_ID, TEXT_FIELD, FIRST_INDOOR_UNIT_NAME);
+        addObjectToView(NAME_COMPONENT_ID, TEXT_FIELD, SECOND_INDOOR_UNIT_NAME);
         networkViewPage.expandViewContentPanel();
-        networkViewPage.selectObjectInViewContent("Name", FIRST_INDOOR_UNIT_NAME);
+        networkViewPage.selectObjectInViewContent(NAME_COLUMN_NAME, FIRST_INDOOR_UNIT_NAME);
         waitForPageToLoad();
 
-        networkViewPage.openWizardPage("Microwave Channel");
+        networkViewPage.openWizardPage(MICROWAVE_CHANNEL_TRAIL_TYPE);
         waitForPageToLoad();
         MicrowaveChannelAttributes firstMicrowaveChannelAttributes = getFirstMicrowaveChannelAttributes();
         MicrowaveChannelWizardPage firstMicrowaveChannelWizardPage = new MicrowaveChannelWizardPage(driver);
@@ -229,8 +297,8 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
         waitForPageToLoad();
         assertMicrowaveChannel(networkViewPage, firstMicrowaveChannelAttributes);
 
-        //assertMicrowaveChannelTerminations(CARD_NAME);
-
+        assertPresenceOfObjectInTab(0, CARD_SHORT_IDENTIFIER_COLUMN, TERMINATIONS_TAB_ID, CARD_NAME);
+        assertPresenceOfObjectInTab(1, PORT_SHORT_IDENTIFIER_COLUMN, TERMINATIONS_TAB_ID, PORT_NAME);
     }
 
     @Test(priority = 3, description = "Create Microwave Channel and add Terminations")
@@ -238,11 +306,11 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
     public void createMicrowaveChannelAndAddTerminations() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         OldTable table = OldTable.createById(driver, webDriverWait, CONENT_TAB_ID);
-        table.searchByAttributeWithLabel("Name", TEXT_FIELD, "MicrowaveChannel");
+        table.searchByAttributeWithLabel(NAME_COLUMN_NAME, TEXT_FIELD, MICROWAVE_CHANNEL_TRAIL_TYPE);
         firstMicrowaveChannel = getMicrowaveChannel(0);
         networkViewPage.unselectObject(firstMicrowaveChannel);
 
-        networkViewPage.openWizardPage("Microwave Channel");
+        networkViewPage.openWizardPage(MICROWAVE_CHANNEL_TRAIL_TYPE);
         waitForPageToLoad();
         MicrowaveChannelAttributes secondMicrowaveChannelAttributes = getSecondMicrowaveChannelAttributes();
         MicrowaveChannelWizardPage secondMicrowaveChannelWizardPage = new MicrowaveChannelWizardPage(driver);
@@ -253,15 +321,16 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
 
         networkViewPage.startEditingSelectedTrail();
         secondMicrowaveChannel = getMicrowaveChannel(1);
-        table.clearColumnValue("Name");
-        networkViewPage.selectObjectInViewContent("Name", FIRST_INDOOR_UNIT_NAME);
-        networkViewPage.selectObjectInViewContent("Name", SECOND_INDOOR_UNIT_NAME);
+        table.clearColumnValue(NAME_COLUMN_NAME);
+        networkViewPage.selectObjectInViewContent(NAME_COLUMN_NAME, FIRST_INDOOR_UNIT_NAME);
+        networkViewPage.selectObjectInViewContent(NAME_COLUMN_NAME, SECOND_INDOOR_UNIT_NAME);
         networkViewPage.unselectObject(secondMicrowaveChannel);
         waitForPageToLoad();
         networkViewPage.addSelectedObjectsToTermination();
         waitForPageToLoad();
         fillTerminationWizardPage();
-        //assertMicrowaveChannelTerminations(PORT_NAME);
+        assertPresenceOfObjectInTab(0, CARD_SHORT_IDENTIFIER_COLUMN, TERMINATIONS_TAB_ID, CARD_NAME);
+        assertPresenceOfObjectInTab(1, PORT_SHORT_IDENTIFIER_COLUMN, TERMINATIONS_TAB_ID, PORT_NAME);
     }
 
     @Test(priority = 4, description = "Create Microwave Link")
@@ -273,7 +342,7 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
         networkViewPage.unselectObject(SECOND_INDOOR_UNIT_NAME);
         waitForPageToLoad();
 
-        networkViewPage.openWizardPage("Microwave Link");
+        networkViewPage.openWizardPage(MICROWAVE_LINK_TRAIL_TYPE);
         waitForPageToLoad();
         MicrowaveLinkAttributes microwaveLinkAttributes = getMicrowaveLinkAttributes();
         MicrowaveLinkWizardPage microwaveLinkWizardPage = new MicrowaveLinkWizardPage(driver);
@@ -284,10 +353,10 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
         assertMicrowaveLink(networkViewPage, microwaveLinkAttributes);
     }
 
-    private void assertMicrowaveChannelTerminations(String objectName) {
-        NetworkViewPage networkViewPage = new NetworkViewPage(driver);
-        Boolean isCardInTerminationsTab = networkViewPage.isObjectInTerminations(objectName);
-        Assert.assertTrue(isCardInTerminationsTab);
+    private void assertPresenceOfObjectInTab(Integer index, String columnId, String tabId, String objectName) {
+        String startTermination = selectObjectInTab(index, columnId, tabId);
+
+        Assert.assertEquals(startTermination, objectName);
     }
 
     private void openNetworkView() {
@@ -349,7 +418,7 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    private void clickMessage(){
+    private void clickMessage() {
         SystemMessageContainer.create(driver, webDriverWait).clickMessageLink();
     }
 
@@ -468,8 +537,7 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
     private MicrowaveLinkAttributes getMicrowaveLinkAttributes() {
         MicrowaveLinkAttributes attributes = new MicrowaveLinkAttributes();
         attributes.userLabel = USER_LABEL;
-        attributes.linkId = LINK_ID + rand.nextInt(990+9+1)*100;
-        attributes.iqlinkId = IQLINK_ID;
+        attributes.linkId = LINK_ID + rand.nextInt(990 + 9 + 1) * 100;
         attributes.technologyType = TECHNOLOGY_TYPE;
         attributes.aggregationConfiguration = AGGREGATION_CONFIGURATION;
         attributes.numberOfWorkingChannels = NUMBER_OF_WORKING_CHANNELS;
@@ -477,8 +545,6 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
         attributes.capacityValue = CAPACITY_VALUE;
         attributes.network = NETWORK;
         attributes.pathLength = PATH_LENGTH;
-        attributes.startSiteIqlinkId = START_SITE_IQLINK_ID;
-        attributes.endSiteIqlinkId = END_SITE_IQLINK_ID;
         attributes.description = MWL_DESCRIPTION;
 
         return attributes;
@@ -486,7 +552,7 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
 
     private String getMicrowaveChannel(Integer index) {
         OldTable table = OldTable.createById(driver, webDriverWait, CONENT_TAB_ID);
-        return table.getCellValue(index, "Name");
+        return table.getCellValue(index, NAME_ATTRIBUTE_LABEL);
     }
 
     private static class MicrowaveChannelAttributes {
@@ -545,7 +611,6 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
     private static class MicrowaveLinkAttributes {
         private String userLabel;
         private String linkId;
-        private String iqlinkId;
         private String technologyType;
         private String aggregationConfiguration;
         private String numberOfWorkingChannels;
@@ -553,8 +618,6 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
         private String capacityValue;
         private String network;
         private String pathLength;
-        private String startSiteIqlinkId;
-        private String endSiteIqlinkId;
         private String description;
     }
 
@@ -637,7 +700,7 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
 
     private void fillFifthStepOfMicrowaveChannelWizard(MicrowaveChannelWizardPage microwaveChannelWizardPage, MicrowaveChannelAttributes microwaveChannelAttributes) {
         microwaveChannelWizardPage.setTermination(START_CARD_FIELD_ID, CARD_NAME);
-//        microwaveChannelWizardPage.setTermination(END_CARD_FIELD_ID, CARD_NAME);
+        microwaveChannelWizardPage.setTermination(END_PORT_FIELD_ID, PORT_NAME);
         microwaveChannelWizardPage.clickAccept();
     }
 
@@ -669,56 +732,56 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
 
     private void assertMicrowaveChannel(NetworkViewPage networkViewPage, MicrowaveChannelAttributes microwaveChannelAttributes) {
         // DOPISAC Asercje na Capacity ()
-        String band = networkViewPage.getAttributeValue("Band");
-        String channelBandwidth = networkViewPage.getAttributeValue("ChannelBandwidth");
-        String lowFrequency = networkViewPage.getAttributeValue("LowFrequency");
-        String highFrequency = networkViewPage.getAttributeValue("HighFrequency");
-        String polarization = networkViewPage.getAttributeValue("Polarization");
-        String workingStatus = networkViewPage.getAttributeValue("WorkingStatus");
-        String hsbFlag = networkViewPage.getAttributeValue("HSBFlag");
-        String xpolFlag = networkViewPage.getAttributeValue("XPOLFlag");
-        String admFlag = networkViewPage.getAttributeValue("ADMFlag");
-        String referenceChannelModulation = networkViewPage.getAttributeValue("ReferenceChannelModulation");
-        String lowestChannelModulation = networkViewPage.getAttributeValue("LowestChannelModulation");
-        String highestChannelModulation = networkViewPage.getAttributeValue("HighestChannelModulation");
-        String startTxPower = networkViewPage.getAttributeValue("StartTxPower");
-        String endTxPower = networkViewPage.getAttributeValue("EndTxPower");
-        String startRxPower = networkViewPage.getAttributeValue("StartRxPower");
-        String endRxPower = networkViewPage.getAttributeValue("EndRxPower");
-        String atpc = networkViewPage.getAttributeValue("ATPC");
-        String atpcRxMinLevel = networkViewPage.getAttributeValue("ATPCRxMinLevel");
-        String atpcRxMaxLevel = networkViewPage.getAttributeValue("ATPCRxMaxLevel");
-        String dcnLocation = networkViewPage.getAttributeValue("DCNLocation");
-        String endAttenuatorManufacturer = networkViewPage.getAttributeValue("EndAttenuator1Manufacturer");
-        String endAttenuatorModel = networkViewPage.getAttributeValue("EndAttenuator1Model");
-        String endDiversityWaveguideLength = networkViewPage.getAttributeValue("EndDiversityWaveguide1Length");
-        String endDiversityWaveguideManufacturer = networkViewPage.getAttributeValue("EndDiversityWaveguide1Manufacturer");
-        String endDiversityWaveguideModel = networkViewPage.getAttributeValue("EndDiversityWaveguide1Model");
-        String startAttenuatorManufacturer = networkViewPage.getAttributeValue("StartAttenuator1Manufacturer");
-        String startAttenuatorModel = networkViewPage.getAttributeValue("StartAttenuator1Model");
-        String startDiversityWaveguideLength = networkViewPage.getAttributeValue("StartDiversityWaveguide1Length");
-        String startDiversityWaveguideManufacturer = networkViewPage.getAttributeValue("StartDiversityWaveguide1Manufacturer");
-        String startDiversityWaveguideModel = networkViewPage.getAttributeValue("StartDiversityWaveguide1Model");
-        String startDiversityWaveguideTotalLoss = networkViewPage.getAttributeValue("StartDiversityWaveguide1TotalLoss");
-        String startRadioModel = networkViewPage.getAttributeValue("StartRadioModel");
-        String startWaveguideManufacturer = networkViewPage.getAttributeValue("StartWaveguide1Manufacturer");
-        String startWaveguideModel = networkViewPage.getAttributeValue("StartWaveguide1Model");
-        String startWaveguideTotalLoss = networkViewPage.getAttributeValue("StartWaveguide1TotalLoss");
-        String description = networkViewPage.getAttributeValue("description");
-        String channelNumber = networkViewPage.getAttributeValue("ChannelNumber");
-        String configuration = networkViewPage.getAttributeValue("Configuration");
-        String endAttenuatorLoss = networkViewPage.getAttributeValue("EndAttenuator1Loss");
-        String endDiversityWaveguideTotalLoss = networkViewPage.getAttributeValue("EndDiversityWaveguide1TotalLoss");
-        String endRadioModel = networkViewPage.getAttributeValue("EndRadioModel");
-        String endWaveguideLength = networkViewPage.getAttributeValue("EndWaveguide1Length");
-        String endWaveguideManufacturer = networkViewPage.getAttributeValue("EndWaveguide1Manufacturer");
-        String endWaveguideModel = networkViewPage.getAttributeValue("EndWaveguide1Model");
-        String endWaveguideTotalLoss = networkViewPage.getAttributeValue("EndWaveguide1TotalLoss");
-        String startAttenuatorLoss = networkViewPage.getAttributeValue("StartAttenuator1Loss");
-        String startWaveguideLength = networkViewPage.getAttributeValue("StartWaveguide1Length");
-        String endAttenuatorMode = networkViewPage.getAttributeValue("EndAttenuator1Mode");
-        String highFrequencySite = networkViewPage.getAttributeValue("HighFrequencySite");
-        String startAttenuatorMode = networkViewPage.getAttributeValue("StartAttenuator1Mode");
+        String band = networkViewPage.getAttributeValue(BAND_ATTRIBUTE_LABEL);
+        String channelBandwidth = networkViewPage.getAttributeValue(CHANNEL_BANDWIDTH_ATTRIBUTE_LABEL);
+        String lowFrequency = networkViewPage.getAttributeValue(LOW_FREQUENCY_ATTRIBUTE_LABEL);
+        String highFrequency = networkViewPage.getAttributeValue(HIGH_FREQUENCY_ATTRIBUTE_LABEL);
+        String polarization = networkViewPage.getAttributeValue(POLARIZATION_ATTRIBUTE_LABEL);
+        String workingStatus = networkViewPage.getAttributeValue(WORKING_STATUS_ATTRIBUTE_LABEL);
+        String hsbFlag = networkViewPage.getAttributeValue(HSB_FLAG_ATTRIBUTE_LABEL);
+        String xpolFlag = networkViewPage.getAttributeValue(XPOL_FLAG_ATTRIBUTE_LABEL);
+        String admFlag = networkViewPage.getAttributeValue(ADM_FLAG_ATTRIBUTE_LABEL);
+        String referenceChannelModulation = networkViewPage.getAttributeValue(REFERENCE_CHANNEL_MODULATION_ATTRIBUTE_LABEL);
+        String lowestChannelModulation = networkViewPage.getAttributeValue(LOWEST_CHANNEL_MODULATION_ATTRIBUTE_LABEL);
+        String highestChannelModulation = networkViewPage.getAttributeValue(HIGHEST_CHANNEL_MODULATION_ATTRIBUTE_LABEL);
+        String startTxPower = networkViewPage.getAttributeValue(START_TX_POWER_ATTRIBUTE_LABEL);
+        String endTxPower = networkViewPage.getAttributeValue(END_TX_POWER_ATTRIBUTE_LABEL);
+        String startRxPower = networkViewPage.getAttributeValue(START_RX_POWER_ATTRIBUTE_LABEL);
+        String endRxPower = networkViewPage.getAttributeValue(END_RX_POWER_ATTRIBUTE_LABEL);
+        String atpc = networkViewPage.getAttributeValue(ATPC_ATTRIBUTE_LABEL);
+        String atpcRxMinLevel = networkViewPage.getAttributeValue(ATPC_RX_MIN_LEVEL_ATTRIBUTE_LABEL);
+        String atpcRxMaxLevel = networkViewPage.getAttributeValue(ATPC_RX_MAX_LEVEL_ATTRIBUTE_LABEL);
+        String dcnLocation = networkViewPage.getAttributeValue(DCN_LOCATION_ATTRIBUTE_LABEL);
+        String endAttenuatorManufacturer = networkViewPage.getAttributeValue(END_ATTENUATOR_MANUFACTURER_ATTRIBUTE_LABEL);
+        String endAttenuatorModel = networkViewPage.getAttributeValue(END_ATTENUATOR_MODEL_ATTRIBUTE_LABEL);
+        String endDiversityWaveguideLength = networkViewPage.getAttributeValue(END_DIVERSITY_WAVEGUIDE_LENGTH_ATTRIBUTE_LABEL);
+        String endDiversityWaveguideManufacturer = networkViewPage.getAttributeValue(END_DIVERSITY_WAVEGUIDE_MANUFACTURER_ATTRIBUTE_LABEL);
+        String endDiversityWaveguideModel = networkViewPage.getAttributeValue(END_DIVERSITY_WAVEGUIDE_MODEL_ATTRIBUTE_LABEL);
+        String startAttenuatorManufacturer = networkViewPage.getAttributeValue(START_ATTENUATOR_MANUFACTURER_ATTRIBUTE_LABEL);
+        String startAttenuatorModel = networkViewPage.getAttributeValue(START_ATTENUATOR_MODEL_ATTRIBUTE_LABEL);
+        String startDiversityWaveguideLength = networkViewPage.getAttributeValue(START_DIVERSITY_WAVEGUIDE_LENGTH_ATTRIBUTE_LABEL);
+        String startDiversityWaveguideManufacturer = networkViewPage.getAttributeValue(START_DIVERSITY_WAVEGUIDE_MANUFACTURER_ATTRIBUTE_LABEL);
+        String startDiversityWaveguideModel = networkViewPage.getAttributeValue(START_DIVERSITY_WAVEGUIDE_MODEL_ATTRIBUTE_LABEL);
+        String startDiversityWaveguideTotalLoss = networkViewPage.getAttributeValue(START_DIVERSITY_WAVEGUIDE_TOTAL_LOSS_ATTRIBUTE_LABEL);
+        String startRadioModel = networkViewPage.getAttributeValue(START_RADIO_MODEL_ATTRIBUTE_LABEL);
+        String startWaveguideManufacturer = networkViewPage.getAttributeValue(START_WAVEGUIDE_MANUFACTURER_ATTRIBUTE_LABEL);
+        String startWaveguideModel = networkViewPage.getAttributeValue(START_WAVEGUIDE_MODEL_ATTRIBUTE_LABEL);
+        String startWaveguideTotalLoss = networkViewPage.getAttributeValue(START_WAVEGUIDE_TOTAL_LOSS_ATTRIBUTE_LABEL);
+        String description = networkViewPage.getAttributeValue(DESCRIPTION_ATTRIBUTE_LABEL);
+        String channelNumber = networkViewPage.getAttributeValue(CHANNEL_NUMBER_ATTRIBUTE_LABEL);
+        String configuration = networkViewPage.getAttributeValue(CONFIGURATION_ATTRIBUTE_LABEL);
+        String endAttenuatorLoss = networkViewPage.getAttributeValue(END_ATTENUATOR_LOSS_ATTRIBUTE_LABEL);
+        String endDiversityWaveguideTotalLoss = networkViewPage.getAttributeValue(END_DIVERSITY_WAVEGUIDE_TOTAL_LOSS_ATTRIBUTE_LABEL);
+        String endRadioModel = networkViewPage.getAttributeValue(END_RADIO_MODEL_ATTRIBUTE_LABEL);
+        String endWaveguideLength = networkViewPage.getAttributeValue(END_WAVEGUIDE_LENGTH_ATTRIBUTE_LABEL);
+        String endWaveguideManufacturer = networkViewPage.getAttributeValue(END_WAVEGUIDE_MANUFACTURER_ATTRIBUTE_LABEL);
+        String endWaveguideModel = networkViewPage.getAttributeValue(END_WAVEGUIDE_MODEL_ATTRIBUTE_LABEL);
+        String endWaveguideTotalLoss = networkViewPage.getAttributeValue(END_WAVEGUIDE_TOTAL_LOSS_ATTRIBUTE_LABEL);
+        String startAttenuatorLoss = networkViewPage.getAttributeValue(START_ATTENUATOR_LOSS_ATTRIBUTE_LABEL);
+        String startWaveguideLength = networkViewPage.getAttributeValue(START_WAVEGUIDE_LENGTH_ATTRIBUTE_LABEL);
+        String endAttenuatorMode = networkViewPage.getAttributeValue(END_ATTENUATOR_MODE_ATTRIBUTE_LABEL);
+        String highFrequencySite = networkViewPage.getAttributeValue(HIGH_FREQUENCY_SITE_ATTRIBUTE_LABEL);
+        String startAttenuatorMode = networkViewPage.getAttributeValue(START_ATTENUATOR_MODE_ATTRIBUTE_LABEL);
 
         Assert.assertEquals(band, microwaveChannelAttributes.band);
         Assert.assertEquals(channelBandwidth, microwaveChannelAttributes.channelBandwidth);
@@ -774,16 +837,16 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
 
     private void assertMicrowaveLink(NetworkViewPage networkViewPage, MicrowaveLinkAttributes microwaveLinkAttributes
     ) {
-        String capacityValue = networkViewPage.getAttributeValue("capacityValue");
-        String pathLength = networkViewPage.getAttributeValue("PathLength");
-        String network = networkViewPage.getAttributeValue("Network");
-        String technologyType = networkViewPage.getAttributeValue("TechnologyType");
-        String aggregationConfiguration = networkViewPage.getAttributeValue("AggregationConfiguration");
-        String userLabel = networkViewPage.getAttributeValue("UserLabel");
-        String linkId = networkViewPage.getAttributeValue("LinkID");
-        String numberOfWorkingChannels = networkViewPage.getAttributeValue("NumberOfWorkingChannels");
-        String numberOfProtectingChannels = networkViewPage.getAttributeValue("NumberOfProtectingChannels");
-        String description = networkViewPage.getAttributeValue("description");
+        String capacityValue = networkViewPage.getAttributeValue(CAPACITY_VALUE_ATTRIBUTE_LABEL);
+        String pathLength = networkViewPage.getAttributeValue(PATH_LENGTH_ATTRIBUTE_LABEL);
+        String network = networkViewPage.getAttributeValue(NETWORK_ATTRIBUTE_LABEL);
+        String technologyType = networkViewPage.getAttributeValue(TECHNOLOGY_TYPE_ATTRIBUTE_LABEL);
+        String aggregationConfiguration = networkViewPage.getAttributeValue(AGGREGATION_CONFIGURATION_ATTRIBUTE_LABEL);
+        String userLabel = networkViewPage.getAttributeValue(USER_LABEL_ATTRIBUTE_LABEL);
+        String linkId = networkViewPage.getAttributeValue(LINK_ID_ATTRIBUTE_LABEL);
+        String numberOfWorkingChannels = networkViewPage.getAttributeValue(NUMBER_OF_WORKING_CHANNELS_ATTRIBUTE_LABEL);
+        String numberOfProtectingChannels = networkViewPage.getAttributeValue(NUMBER_OF_PROTECTING_CHANNELS_ATTRIBUTE_LABEL);
+        String description = networkViewPage.getAttributeValue(DESCRIPTION_ATTRIBUTE_LABEL);
 
         Assert.assertEquals(capacityValue, microwaveLinkAttributes.capacityValue);
         Assert.assertEquals(pathLength, microwaveLinkAttributes.pathLength);
@@ -814,6 +877,13 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
     private void checkSystemMessage() {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         softAssert.assertEquals((systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType()), SystemMessageContainer.MessageType.SUCCESS);
+    }
+
+    private String selectObjectInTab(Integer index, String column, String componentId) {
+        waitForPageToLoad();
+        TableComponent tableComponent = TableComponent.create(driver, webDriverWait, componentId);
+        tableComponent.selectRow(index);
+        return tableComponent.getCellValue(index, column);
     }
 
     private void waitForPageToLoad() {
