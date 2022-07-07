@@ -9,8 +9,8 @@ import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bpm.TasksPage;
-import com.oss.pages.bpm.processinstances.ProcessWizardPage;
+import com.oss.pages.bpm.TasksPageV2;
+import com.oss.pages.bpm.processinstances.ProcessInstancesPage;
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.platform.SearchObjectTypePage;
@@ -44,9 +44,6 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
     private static final String CELL5G_CARRIER = "NR3600-n78-140 (642000)";
     private static final String MCCMNC_PRIMARY = "E2ETests [mcc: 0001, mnc: 01]";
     private static final int[] LOCAL_CELLS_ID = {7, 8, 9};
-    private static final String BUSINESS_PROCESS_MANAGEMENT = "Business Process Management";
-    private static final String BPM_AND_PLANNING = "BPM and Planning";
-    private static final String PROCESS_INSTANCES = "Process Instances";
     private static final String MANUFACTURER = "HUAWEI Technology Co.,Ltd";
     private String processNRPCode;
     private CellSiteConfigurationPage cellSiteConfigurationPage;
@@ -62,10 +59,8 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
     @Test(priority = 1, description = "Create NRP Process")
     @Description("Create NRP Process")
     public void createProcessNRP() {
-        homePage.chooseFromLeftSideMenu(PROCESS_INSTANCES, BPM_AND_PLANNING, BUSINESS_PROCESS_MANAGEMENT);
-        waitForPageToLoad();
-        ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
-        processNRPCode = processWizardPage.createSimpleNRP();
+        ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, webDriverWait);
+        processNRPCode = processInstancesPage.createSimpleNRP();
         checkMessageSize();
         checkMessageType();
         checkMessageContainsText(processNRPCode);
@@ -75,8 +70,8 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
     @Test(priority = 2, description = "Start High Level Planning Task", dependsOnMethods = {"createProcessNRP"})
     @Description("Start High Level Planning Task")
     public void startHLPTask() {
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.startTask(processNRPCode, TasksPage.HIGH_LEVEL_PLANNING_TASK);
+        TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        tasksPage.startTask(processNRPCode, TasksPageV2.HIGH_LEVEL_PLANNING_TASK);
         checkTaskAssignment();
         closeMessage();
     }
@@ -146,7 +141,7 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
     @Test(priority = 8, description = "Finish rest of NRP and IP Tasks", dependsOnMethods = {"createHostingRelation"})
     @Description("Finish rest of NRP and IP Tasks")
     public void finishProcessesTasks() {
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.completeNRP(processNRPCode);
     }
 

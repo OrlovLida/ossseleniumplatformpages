@@ -15,8 +15,8 @@ import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.PlanViewWizardPage;
-import com.oss.pages.bpm.TasksPage;
-import com.oss.pages.bpm.processinstances.ProcessWizardPage;
+import com.oss.pages.bpm.TasksPageV2;
+import com.oss.pages.bpm.processinstances.ProcessInstancesPage;
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.platform.SearchObjectTypePage;
@@ -53,9 +53,6 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
     private static final String TASK_ASSIGNED = "The task properly assigned.";
     private static final String SITE = "Site";
     private static final String NAME = "Name";
-    private static final String BUSINESS_PROCESS_MANAGEMENT = "Business Process Management";
-    private static final String BPM_AND_PLANNING = "BPM and Planning";
-    private static final String PROCESS_INSTANCES = "Process Instances";
     private static final String MANUFACTURER = "HUAWEI Technology Co.,Ltd";
     private SoftAssert softAssert;
 
@@ -72,10 +69,8 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
     @Test(priority = 1, description = "Create and start NRP Process")
     @Description("Create and start NRP Process")
     public void createProcessNRP() {
-        homePage.chooseFromLeftSideMenu(PROCESS_INSTANCES, BPM_AND_PLANNING, BUSINESS_PROCESS_MANAGEMENT);
-        waitForPageToLoad();
-        ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
-        processNRPCode = processWizardPage.createSimpleNRP();
+        ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, webDriverWait);
+        processNRPCode = processInstancesPage.createSimpleNRP();
         checkMessageContainsText(processNRPCode);
         checkMessageType();
     }
@@ -83,9 +78,9 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
     @Test(priority = 2, description = "Start HLP task", dependsOnMethods = {"createProcessNRP"})
     @Description("Start High Level Planning task")
     public void startHLP() {
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         waitForPageToLoad();
-        tasksPage.startTask(processNRPCode, TasksPage.HIGH_LEVEL_PLANNING_TASK);
+        tasksPage.startTask(processNRPCode, TasksPageV2.HIGH_LEVEL_PLANNING_TASK);
         checkTaskAssignment();
         waitForPageToLoad();
     }
@@ -185,18 +180,18 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
     @Description("Finish High Level Planning task")
     public void finishHLP() {
         waitForPageToLoad();
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         waitForPageToLoad();
-        tasksPage.completeTask(processNRPCode, TasksPage.HIGH_LEVEL_PLANNING_TASK);
+        tasksPage.completeTask(processNRPCode, TasksPageV2.HIGH_LEVEL_PLANNING_TASK);
         checkTaskCompleted();
     }
 
     @Test(priority = 13, description = "Start LLP task", dependsOnMethods = {"finishHLP"})
     @Description("Start Low Level Planning")
     public void startLLP() {
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         waitForPageToLoad();
-        tasksPage.startTask(processNRPCode, TasksPage.LOW_LEVEL_PLANNING_TASK);
+        tasksPage.startTask(processNRPCode, TasksPageV2.LOW_LEVEL_PLANNING_TASK);
         checkTaskAssignment();
         waitForPageToLoad();
     }
@@ -204,9 +199,9 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
     @Test(priority = 14, description = "Check validation results", dependsOnMethods = {"startLLP"})
     @Description("Check validation results")
     public void validateProjectPlan() {
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         waitForPageToLoad();
-        tasksPage.findTask(processNRPCode, TasksPage.LOW_LEVEL_PLANNING_TASK);
+        tasksPage.findTask(processNRPCode, TasksPageV2.LOW_LEVEL_PLANNING_TASK);
         waitForPageToLoad();
         tasksPage.clickPlanViewButton();
         waitForPageToLoad();
@@ -237,8 +232,8 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
         perspectiveChooser.setCurrentTask();
         waitForPageToLoad();
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.completeTask(processNRPCode, TasksPage.LOW_LEVEL_PLANNING_TASK);
+        TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        tasksPage.completeTask(processNRPCode, TasksPageV2.LOW_LEVEL_PLANNING_TASK);
         checkTaskCompleted();
         processIPCode = tasksPage.proceedNRPFromReadyForIntegration(processNRPCode);
     }
@@ -246,17 +241,17 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
     @Test(priority = 17, description = "Finish NRP and IP", dependsOnMethods = {"finishLowLevelPlanningTask"})
     @Description("Finish NRP and IP")
     public void completeProcessNRP() {
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         waitForPageToLoad();
-        tasksPage.completeTask(processIPCode, TasksPage.IMPLEMENTATION_TASK);
+        tasksPage.completeTask(processIPCode, TasksPageV2.IMPLEMENTATION_TASK);
         checkTaskCompleted();
-        tasksPage.startTask(processIPCode, TasksPage.ACCEPTANCE_TASK);
+        tasksPage.startTask(processIPCode, TasksPageV2.ACCEPTANCE_TASK);
         checkTaskAssignment();
-        tasksPage.completeTask(processIPCode, TasksPage.ACCEPTANCE_TASK);
+        tasksPage.completeTask(processIPCode, TasksPageV2.ACCEPTANCE_TASK);
         checkTaskCompleted();
-        tasksPage.startTask(processNRPCode, TasksPage.VERIFICATION_TASK);
+        tasksPage.startTask(processNRPCode, TasksPageV2.VERIFICATION_TASK);
         checkTaskAssignment();
-        tasksPage.completeTask(processNRPCode, TasksPage.VERIFICATION_TASK);
+        tasksPage.completeTask(processNRPCode, TasksPageV2.VERIFICATION_TASK);
         checkTaskCompleted();
     }
 
