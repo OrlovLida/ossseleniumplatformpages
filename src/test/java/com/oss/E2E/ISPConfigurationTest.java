@@ -98,7 +98,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         locationWizardPage.clickNext();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        locationWizardPage.accept();
+        locationWizardPage.create();
         checkPopup();
     }
 
@@ -131,7 +131,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         sublocationWizardPage.clickNext();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        sublocationWizardPage.clickAccept();
+        sublocationWizardPage.create();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         checkPopupAndCloseMessage();
     }
@@ -517,7 +517,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         sublocationWizardPage.setSublocationType("Row");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         sublocationWizardPage.clickNext();
-        sublocationWizardPage.clickAccept();
+        sublocationWizardPage.create();
         checkPopupAndCloseMessage();
     }
 
@@ -537,7 +537,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         sublocationWizardPage.clickNext();
         sublocationWizardPage.setQuantity("3");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        sublocationWizardPage.clickAccept();
+        sublocationWizardPage.create();
         checkPopupAndCloseMessage();
     }
 
@@ -550,7 +550,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         SublocationWizardPage sublocationWizardPage = new SublocationWizardPage(driver);
         sublocationWizardPage.setPreciseLocation("Footprint1");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        sublocationWizardPage.clickAccept();
+        sublocationWizardPage.create();
         checkPopupAndCloseMessage();
     }
 

@@ -1,5 +1,8 @@
 package com.oss.pages.faultmanagement;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -7,12 +10,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.inputs.Button;
+import com.oss.framework.components.prompts.Modal;
 import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.iaa.widgets.table.FMSMTable;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
+
+import static com.oss.pages.servicedesk.ServiceDeskConstants.DATE_PATTERN;
 
 /**
  * @author Bartosz Nowak
@@ -23,13 +30,17 @@ public class WAMVPage extends BasePage {
     private static final String BUTTON_ACK_TEST_ID = "Acknowledge";
     private static final String BUTTON_DEACK_TEST_ID = "Deacknowledge";
     private static final String BUTTON_NOTE_TEST_ID = "Edit Note";
+    private static final String BUTTON_ALARM_DETAILS_ID = "Details";
     private static final String ACKNOWLEDGE_COLUMN_ID = "cell-row-col-acknowledge";
     private static final String NOTIFICATION_IDENTIFIER_COLUMN_ID = "cell-row-col-notificationIdentifier";
     private static final String NOTE_COLUMN_ID = "cell-row-col-note";
     private static final String MO_IDENTIFIER_COLUMN_ID = "cell-row-col-moIdentifier";
+    private static final String EVENT_TIME_COLUMN_ID = "cell-row-col-eventTime";
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_PATTERN);
 
+    private static final String PROPERTY_PANEL_IN_MODAL_ID = "card-content__modalWindow";
     private static final String SAME_MO_ALARMS_TABLE_ID = "area3-mo-alarms";
-
+    private static final String NOTIFICATION_IDENTIFIER_VALUE = "Notification Identifier";
 
     private final FMSMTable fmsmTable = FMSMTable.createById(driver, wait, TABLE_AREA2_WIDGET_ID);
 
@@ -84,12 +95,25 @@ public class WAMVPage extends BasePage {
 
     @Step("I add note to alarm")
     public void addNote(String note) {
-        DelayUtils.sleep(1000);
+        DelayUtils.waitForPageToLoad(driver, wait);
         createButton(BUTTON_NOTE_TEST_ID).click();
         DelayUtils.sleep(1000);
         EditNoteWizardPage editNote = new EditNoteWizardPage(driver);
         editNote.typeNote(note);
         log.info("Adding note: {}", note);
+    }
+
+    @Step("Open alarm details from AREA2")
+    public void openAlarmDetails() {
+        createButton(BUTTON_ALARM_DETAILS_ID).click();
+        log.info("Open alarm details from AREA2");
+    }
+
+    @Step("I get notification identifier from Alarms Details Modal View")
+    public String getNotificationIdentifierFromAlarmDetailsModal() {
+        log.info("Checking notification identifier value from Alarm Details Modal View");
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return getPropertyPanel().getPropertyValue(NOTIFICATION_IDENTIFIER_VALUE);
     }
 
     @Step("I return a cell text from acknowledge state column")
@@ -108,6 +132,7 @@ public class WAMVPage extends BasePage {
 
     @Step("I return a cell text from note column")
     public String getTextFromNoteStatusCell(int row, String value) {
+        DelayUtils.waitForPageToLoad(driver, wait);
         fmsmTable.getCell(row, NOTE_COLUMN_ID).waitForExpectedValue(wait, value);
         log.info("Returning cell text from note column in row: {}", row);
         return fmsmTable.getCellValue(row, NOTE_COLUMN_ID);
@@ -117,6 +142,12 @@ public class WAMVPage extends BasePage {
     public String getTextFromMOIdentifierCell(int row) {
         log.info("Returning cell text from MO Identifier  in row: {}", row);
         return fmsmTable.getCellValue(row, MO_IDENTIFIER_COLUMN_ID);
+    }
+
+    @Step("I return a cell text from Event Time column")
+    public String getTextFromEventTimeCell(int row) {
+        log.info("Returning cell text from Event Time in row: {}", row);
+        return fmsmTable.getCellValue(row, EVENT_TIME_COLUMN_ID);
     }
 
     @Step("I check page title")
@@ -137,5 +168,44 @@ public class WAMVPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         AdvancedSearch.createByWidgetId(driver, wait, widgetId).fullTextSearch(searchedAttribute);
         log.info("Searching in {} for text {}", widgetId, searchedAttribute);
+    }
+
+    @Step("Sorting column {columnHeader} Ascending")
+    public void sortColumnByASC(String columnHeader) {
+        fmsmTable.sortColumnByASC(columnHeader);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Clicking on Column Options button - sort by ASC");
+    }
+
+    @Step("Sorting column {columnHeader} Descending")
+    public void sortColumnByDESC(String columnHeader) {
+        fmsmTable.sortColumnByDESC(columnHeader);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Clicking on Column Options button - sort by DESC");
+    }
+
+    @Step("Get Title of Modal View")
+    public String getModalViewTitle() {
+        return getModal().getModalTitle();
+    }
+
+    @Step("Close Modal View")
+    public void closeModalView() {
+        getModal().clickClose();
+    }
+
+    @Step("Check if dates are sorted")
+    public boolean areDatesSorted(String date1, String date2) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return LocalDateTime.parse(date2, DATE_TIME_FORMATTER)
+                .isAfter(LocalDateTime.parse(date1, DATE_TIME_FORMATTER));
+    }
+
+    private OldPropertyPanel getPropertyPanel() {
+        return OldPropertyPanel.createById(driver, wait, PROPERTY_PANEL_IN_MODAL_ID);
+    }
+
+    private Modal getModal() {
+        return Modal.create(driver, wait);
     }
 }

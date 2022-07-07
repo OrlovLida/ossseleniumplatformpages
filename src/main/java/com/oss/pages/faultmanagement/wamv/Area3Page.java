@@ -7,7 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.data.Data;
+import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.ComponentFactory;
+import com.oss.framework.components.inputs.HtmlEditor;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.iaa.widgets.list.ListApp;
 import com.oss.framework.utils.DelayUtils;
@@ -135,25 +137,28 @@ public class Area3Page extends WAMVPage {
     @Step("I get adapter name from Alarms Details Tab")
     public String getAdapterNameFromAlarmDetailsTab() {
         log.info("Checking adapter name value from Alarm Details Tab");
-        return getPropertyPanel().getPropertyValue(ADAPTER_NAME_VALUE);
+        return getArea3PropertyPanel().getPropertyValue(ADAPTER_NAME_VALUE);
     }
 
     @Step("I get notification identifier from Alarms Details Tab")
     public String getNotificationIdentifierFromAlarmDetailsTab() {
         log.info("Checking notification identifier value from Alarm Details Tab");
-        return getPropertyPanel().getPropertyValue(NOTIFICATION_IDENTIFIER_VALUE);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return getArea3PropertyPanel().getPropertyValue(NOTIFICATION_IDENTIFIER_VALUE);
     }
 
     @Step("I get perceived severity from Alarms Details Tab")
     public String getPerceivedSeverityFromAlarmDetailsTab() {
         log.info("Checking perceived severity value from Alarm Details Tab");
-        return getPropertyPanel().getPropertyValue(PERCEIVED_SEVERITY_VALUE);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return getArea3PropertyPanel().getPropertyValue(PERCEIVED_SEVERITY_VALUE);
     }
 
     @Step("I get identifier from MO Properties Tab")
     public String getIdentifierFromMOPropertiesTab() {
         log.info("Checking identifier from MO Properties  Tab");
-        return getPropertyPanel().getPropertyValue(IDENTIFIER_VALUE);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return getArea3PropertyPanel().getPropertyValue(IDENTIFIER_VALUE);
     }
 
     @Step("I check if {tableId} table exists")
@@ -190,12 +195,24 @@ public class Area3Page extends WAMVPage {
     }
 
     public int countVisibleProperties() {
-        int rowsNumber = getPropertyPanel().countRows();
+        int rowsNumber = getArea3PropertyPanel().countRows();
         log.info("Number of visible rows: '{}'", rowsNumber);
         return rowsNumber;
     }
 
-    private OldPropertyPanel getPropertyPanel() {
+    public void clickEditOnKnowHow() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        Button.createByLabel(driver, "Edit").click();
+    }
+
+    @Step("Set value in HTML Editor")
+    public void setValueInHtmlEditor(String value, String componentId) {
+        HtmlEditor htmlEditor = HtmlEditor.create(driver, wait, componentId);
+        htmlEditor.clear();
+        htmlEditor.setSingleStringValue(value);
+    }
+
+    private OldPropertyPanel getArea3PropertyPanel() {
         return OldPropertyPanel.createById(driver, wait, PROPERTY_PANEL_ID);
     }
 

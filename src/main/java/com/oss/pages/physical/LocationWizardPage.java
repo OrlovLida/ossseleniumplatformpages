@@ -32,6 +32,7 @@ public class LocationWizardPage extends BasePage {
     private static final String STREET_NUMBER_DATA_ATTRIBUTE_NAME = "Street_OSF";
     private static final String WIZARD_ID = "optional_prompt-card";
     private static final String CANCEL_BUTTON_ID = "wizard-cancel-button-physical-location-wizard";
+    private static final String SUBMIT_BUTTON_ID = "wizard-submit-button-physical-location-wizard";
 
     public LocationWizardPage(WebDriver driver) {
         super(driver);
@@ -162,6 +163,11 @@ public class LocationWizardPage extends BasePage {
     @Step("Click Accept button")
     public void accept() {
         locationWizard.clickAccept();
+    }
+
+    @Step("Click Create button")
+    public void create() {
+        locationWizard.clickButtonById(SUBMIT_BUTTON_ID);
     }
 
 }
