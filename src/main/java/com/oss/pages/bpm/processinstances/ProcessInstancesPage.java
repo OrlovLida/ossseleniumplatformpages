@@ -58,7 +58,7 @@ public class ProcessInstancesPage extends BasePage {
         return new ProcessInstancesPage(driver);
     }
 
-    public static ProcessInstancesPage goToProcessOverviewPage(WebDriver driver, WebDriverWait wait) {
+    public static ProcessInstancesPage goToProcessInstancesPage(WebDriver driver, WebDriverWait wait) {
         DelayUtils.waitForPageToLoad(driver, wait);
         HomePage homePage = new HomePage(driver);
         homePage.chooseFromLeftSideMenu(PROCESS_OVERVIEW, BPM_AND_PLANNING, NETWORK_PLANNING);
