@@ -43,7 +43,6 @@ public class WAMVArea2Test extends BaseTestCase {
             @Optional("0") int alarmManagementViewRow
     ) {
         fmsmDashboardPage = fmsmDashboardPage.goToPage(driver, BASIC_URL, chosenDashboard);
-        wamvPage = searchAndOpenWamv(alarmListName, alarmManagementViewRow);
     }
 
     @Parameters({"alarmListName", "alarmManagementViewRow"})
@@ -54,8 +53,7 @@ public class WAMVArea2Test extends BaseTestCase {
             @Optional("0") int alarmManagementViewRow
     ) {
         try {
-            fmsmDashboardPage.searchInView(ALARM_MANAGEMENT_VIEW_ID, alarmListName);
-            wamvPage = fmsmDashboardPage.openSelectedView(ALARM_MANAGEMENT_VIEW_ID, alarmManagementViewRow);
+            wamvPage = searchAndOpenWamv(alarmListName, alarmManagementViewRow);
             Assert.assertTrue(wamvPage.checkIfPageTitleIsCorrect(alarmListName));
         } catch (Exception e) {
             log.error(e.getMessage());
