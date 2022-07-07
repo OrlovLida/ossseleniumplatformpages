@@ -2,7 +2,6 @@ package com.oss.pages.bpm.processmodels;
 
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.navigation.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.CommonList;
 import com.oss.framework.widgets.table.OldTable;
@@ -12,6 +11,7 @@ import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 import com.oss.pages.bpm.milestones.Milestone;
 import com.oss.pages.bpm.milestones.MilestoneWizardPage;
+import com.oss.pages.platform.HomePage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -56,20 +56,17 @@ public class ProcessModelsPage extends BasePage {
     private static final String EDIT_MILESTONES_WIZARD_ID = "bpm_models_view_milestones-popup_wizard-app-id";
     private static final String EDIT_MILESTONES_LIST_ID = "bpm_models_view_milestones-popup_wizard-editable-list-id";
     private static final String BPM_AND_PLANNING = "BPM and Planning";
+    private static final String BPM_ADMINISTRATION = "BPM Administration";
     private static final String PROCESS_MODELS = "Process Models";
-    private static final String VIEWS = "Views";
-    private static final String BPM = "Business Process Management";
 
     public ProcessModelsPage(WebDriver driver) {
         super(driver);
     }
 
     public static ProcessModelsPage goToProcessModelsPage(WebDriver driver, WebDriverWait webDriverWait) {
-        SideMenu sidemenu = SideMenu.create(driver, webDriverWait);
-        if (driver.getPageSource().contains(BPM_AND_PLANNING))
-            sidemenu.callActionByLabel(PROCESS_MODELS, BPM_AND_PLANNING, BPM);
-        else
-            sidemenu.callActionByLabel(PROCESS_MODELS, VIEWS, BPM);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        HomePage homePage = new HomePage(driver);
+        homePage.chooseFromLeftSideMenu(PROCESS_MODELS, BPM_AND_PLANNING, BPM_ADMINISTRATION);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         return new ProcessModelsPage(driver);
     }

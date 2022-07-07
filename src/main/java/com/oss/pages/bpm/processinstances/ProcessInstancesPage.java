@@ -16,7 +16,9 @@ import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 import com.oss.pages.bpm.milestones.Milestone;
 import com.oss.pages.bpm.milestones.MilestoneWizardPage;
+import com.oss.pages.platform.HomePage;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,8 +43,11 @@ public class ProcessInstancesPage extends BasePage {
     private static final String STATUS_LABEL = "Status";
     private static final String NAME_LABEL = "Name";
     private static final String REFRESH_TABLE_ID = "refresh-table";
+    private static final String BPM_AND_PLANNING = "BPM and Planning";
+    private static final String NETWORK_PLANNING = "Network Planning";
+    private static final String PROCESS_OVERVIEW = "Process Overview";
 
-    protected ProcessInstancesPage(WebDriver driver) {
+    public ProcessInstancesPage(WebDriver driver) {
         super(driver);
     }
 
@@ -50,6 +55,14 @@ public class ProcessInstancesPage extends BasePage {
         driver.get(String.format("%s/#/view/bpm/processes" +
                 "?perspective=LIVE", basicURL));
 
+        return new ProcessInstancesPage(driver);
+    }
+
+    public static ProcessInstancesPage goToProcessOverviewPage(WebDriver driver, WebDriverWait wait) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        HomePage homePage = new HomePage(driver);
+        homePage.chooseFromLeftSideMenu(PROCESS_OVERVIEW, BPM_AND_PLANNING, NETWORK_PLANNING);
+        DelayUtils.waitForPageToLoad(driver, wait);
         return new ProcessInstancesPage(driver);
     }
 
@@ -152,13 +165,17 @@ public class ProcessInstancesPage extends BasePage {
         return new ProcessWizardPage(driver);
     }
 
-    public String createSimpleNRP() {return openProcessCreationWizard().createSimpleNRPV2();}
+    public String createSimpleNRP() {
+        return openProcessCreationWizard().createSimpleNRPV2();
+    }
 
     public String createNRPWithPlusDays(Long plusDays) {
         return openProcessCreationWizard().createNRPWithPlusDays(plusDays);
     }
 
-    public String createSimpleDCP() {return openProcessCreationWizard().createSimpleDCPV2();}
+    public String createSimpleDCP() {
+        return openProcessCreationWizard().createSimpleDCPV2();
+    }
 
 
 }
