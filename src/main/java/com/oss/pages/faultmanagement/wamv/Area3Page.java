@@ -188,21 +188,32 @@ public class Area3Page extends WAMVPage {
             return false;
         }
     }
-
+    @Step("Check 'Show Empty'")
     public void checkShowEmptyCheckbox(String tabName) {
         Input showEmptyCheckbox = ComponentFactory.create(String.format(CHECKBOX_SHOW_EMPTY_ID_PATTERN, tabName), driver, wait);
         showEmptyCheckbox.setValue(Data.createSingleData("true"));
+        log.info("Check 'Show Empty' Checkbox");
     }
 
+    @Step("Count visible rows in Property Panel")
     public int countVisibleProperties() {
         int rowsNumber = getArea3PropertyPanel().countRows();
         log.info("Number of visible rows: '{}'", rowsNumber);
         return rowsNumber;
     }
 
-    public void clickEditOnKnowHow() {
+    @Step("Click Edit")
+    public void clickEditButton() {
         DelayUtils.waitForPageToLoad(driver, wait);
         Button.createByLabel(driver, "Edit").click();
+        log.info("Click Edit Button");
+    }
+
+    @Step("Click Save")
+    public void clickSaveButton() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        Button.createByLabel(driver, "Save").click();
+        log.info("Click Save Button");
     }
 
     @Step("Set value in HTML Editor")
@@ -210,6 +221,12 @@ public class Area3Page extends WAMVPage {
         HtmlEditor htmlEditor = HtmlEditor.create(driver, wait, componentId);
         htmlEditor.clear();
         htmlEditor.setSingleStringValue(value);
+    }
+
+    @Step("Check displayed value in HTML Editor")
+    public String checkValueInHtmlEditor(String componentId) {
+        HtmlEditor htmlEditor = HtmlEditor.create(driver, wait, componentId);
+        return htmlEditor.getStringValue();
     }
 
     private OldPropertyPanel getArea3PropertyPanel() {
