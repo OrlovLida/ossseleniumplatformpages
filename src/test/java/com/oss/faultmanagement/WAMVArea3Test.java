@@ -41,6 +41,9 @@ public class WAMVArea3Test extends BaseTestCase {
     private static final String LOCATION_ALARMS_TABLE_ID = "area3-location-alarms";
     private static final String HISTORICAL_ALARMS_TABLE_ID = "area3-historical-alarms";
     private static final String SHOW_EMPTY_MOST_WANTED_TAB = "most-wanted-alarm-details";
+    private static final String KNOW_HOW_TEXT_WIDGET_ID = "text-widget";
+    private static final String KNOW_HOW_INPUT_ID = "KnowHowHTMLInput";
+    private static final String KNOW_HOW_TEXT = "Selenium Test Know How";
 
     private FMSMDashboardPage fmsmDashboardPage;
     private WAMVPage wamvPage;
@@ -160,12 +163,15 @@ public class WAMVArea3Test extends BaseTestCase {
     @Test(priority = 6, testName = "Check Know How", description = "Check Know How")
     @Description("I verify if Know How works in WAMV")
     public void openWAMVAndCheckKnowHow(
-            @Optional("1") int alarmListRow
+            @Optional("0") int alarmListRow
     ) {
         try {
             wamvPage.selectSpecificRow(alarmListRow);
             area3Page.clickOnKnowHowTab();
-            //TODO add assert
+            area3Page.clickEditButton();
+            area3Page.setValueInHtmlEditor(KNOW_HOW_TEXT, KNOW_HOW_INPUT_ID);
+            area3Page.clickSaveButton();
+            Assert.assertEquals(area3Page.checkValueInHtmlEditor(KNOW_HOW_TEXT_WIDGET_ID), KNOW_HOW_TEXT);
         } catch (Exception e) {
             log.error(e.getMessage());
             Assert.fail();

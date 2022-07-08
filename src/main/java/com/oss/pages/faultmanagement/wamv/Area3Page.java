@@ -225,6 +225,7 @@ public class Area3Page extends WAMVPage {
 
     @Step("Check displayed value in HTML Editor")
     public String checkValueInHtmlEditor(String componentId) {
+        DelayUtils.waitForPageToLoad(driver, wait);
         HtmlEditor htmlEditor = HtmlEditor.create(driver, wait, componentId);
         return htmlEditor.getStringValue();
     }
