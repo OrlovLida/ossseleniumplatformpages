@@ -5,6 +5,7 @@ import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.mainheader.ToolbarWidget;
 import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.pages.bpm.ProcessOverviewPage;
 import com.oss.pages.bpm.milestones.ChangeStateMilestoneWizardPage;
 import com.oss.pages.bpm.milestones.Milestone;
 import com.oss.pages.bpm.milestones.MilestoneViewPage;
@@ -143,8 +144,8 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
 
     @BeforeClass
     public void createProcessWithMilestones() {
-        ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
-        processInstancesPage.clearAllColumnFilters();
+        ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
+        processOverviewPage.clearAllColumnFilters();
         changeStateMilestoneWizardPage = new ChangeStateMilestoneWizardPage(driver);
 
         ToolbarWidget toolbarWidget = ToolbarWidget.create(driver, webDriverWait);
@@ -172,7 +173,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
                 .setIsManualCompletion("true")
                 .setName(milestoneName3).build();
 
-        ProcessWizardPage processWizardPage = processInstancesPage.openProcessCreationWizard();
+        ProcessWizardPage processWizardPage = processOverviewPage.openProcessCreationWizard();
         ProcessWizardPage.MilestoneStepWizard milestoneStep = processWizardPage.definedMilestoneInProcess(processName,
                 5L, DCP);
 

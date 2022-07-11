@@ -10,10 +10,10 @@ import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.mainheader.ToolbarWidget;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.pages.bpm.ProcessOverviewPage;
 import com.oss.pages.bpm.milestones.EditMilestoneWizardPage;
 import com.oss.pages.bpm.milestones.Milestone;
 import com.oss.pages.bpm.milestones.MilestoneViewPage;
-import com.oss.pages.bpm.processinstances.ProcessInstancesPage;
 import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
@@ -61,13 +61,13 @@ public class EditMilestoneTest extends BaseTestCase {
 
     @BeforeClass
     public void createMilestone() {
-        ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
-        processInstancesPage.clearAllColumnFilters();
+        ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
+        processOverviewPage.clearAllColumnFilters();
 
         ToolbarWidget toolbarWidget = ToolbarWidget.create(driver, webDriverWait);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         if (!toolbarWidget.getUserName().equals(BPM_USER_LOGIN)) {
-            processInstancesPage.changeUser(BPM_USER_LOGIN, BPM_USER_PASSWORD);
+            processOverviewPage.changeUser(BPM_USER_LOGIN, BPM_USER_PASSWORD);
         }
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
@@ -79,7 +79,7 @@ public class EditMilestoneTest extends BaseTestCase {
                 .setIsActive("true")
                 .setName(milestoneName).build();
 
-        ProcessWizardPage processWizardPage = processInstancesPage.openProcessCreationWizard();
+        ProcessWizardPage processWizardPage = processOverviewPage.openProcessCreationWizard();
         processWizardPage.definedMilestoneInProcess(processName, 5L, DCP).addMilestoneRow(milestone1);
         processWizardPage.clickAcceptButton();
     }

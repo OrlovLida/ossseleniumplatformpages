@@ -17,6 +17,7 @@ import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.table.TableInterface;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
+import com.oss.pages.bpm.ProcessOverviewPage;
 import com.oss.pages.bpm.milestones.Milestone;
 import com.oss.pages.bpm.milestones.MilestoneWizardPage;
 import io.qameta.allure.Description;
@@ -66,8 +67,8 @@ public class ProcessWizardPage extends BasePage {
      * New method is adapted to run on views other than Process Instances View.
      * As part of the method replacement, in tests where process creation is executed,
      * context action of opening process creation wizard should be called from the class of the given View, e.g.
-     * {@link ProcessInstancesPage#openProcessCreationWizard()} (for Process Instances View).
-     * It is also possible to call {@link ProcessInstancesPage#createSimpleNRP()} method
+     * {@link ProcessOverviewPage#openProcessCreationWizard()} (for Process Instances View).
+     * It is also possible to call {@link ProcessOverviewPage#createSimpleNRP()} method
      * which will open wizard and proceed process creation.
      */
     @Deprecated
@@ -80,8 +81,8 @@ public class ProcessWizardPage extends BasePage {
      * New method is adapted to run on views other than Process Instances View.
      * As part of the method replacement, in tests where process creation is executed,
      * context action of opening process creation wizard should be called from the class of the given View, e.g.
-     * {@link ProcessInstancesPage#openProcessCreationWizard()} (for Process Instances View).
-     * It is also possible to call {@link ProcessInstancesPage#createSimpleDCP()} method
+     * {@link ProcessOverviewPage#openProcessCreationWizard()} (for Process Instances View).
+     * It is also possible to call {@link ProcessOverviewPage#createSimpleDCP()} method
      * which will open wizard and proceed process creation.
      */
     @Deprecated
@@ -94,8 +95,8 @@ public class ProcessWizardPage extends BasePage {
      * New method is adapted to run on views other than Process Instances View.
      * As part of the method replacement, in tests where process creation is executed,
      * context action of opening process creation wizard should be called from the class of the given View, e.g.
-     * {@link ProcessInstancesPage#openProcessCreationWizard()} (for Process Instances View).
-     * It is also possible to call {@link ProcessInstancesPage#createDCPWithPlusDays(Long)} method
+     * {@link ProcessOverviewPage#openProcessCreationWizard()} (for Process Instances View).
+     * It is also possible to call {@link ProcessOverviewPage#createDCPWithPlusDays(Long)} method
      * which will open wizard and proceed process creation.
      */
     @Deprecated
@@ -108,8 +109,8 @@ public class ProcessWizardPage extends BasePage {
      * New method is adapted to run on views other than Process Instances View.
      * As part of the method replacement, in tests where process creation is executed,
      * context action of opening process creation wizard should be called from the class of the given View, e.g.
-     * {@link ProcessInstancesPage#openProcessCreationWizard()} (for Process Instances View).
-     * It is also possible to call {@link ProcessInstancesPage#createNRPWithPlusDays(Long)} method
+     * {@link ProcessOverviewPage#openProcessCreationWizard()} (for Process Instances View).
+     * It is also possible to call {@link ProcessOverviewPage#createNRPWithPlusDays(Long)} method
      * which will open wizard and proceed process creation.
      */
     @Deprecated
@@ -122,8 +123,8 @@ public class ProcessWizardPage extends BasePage {
      * New method is adapted to run on views other than Process Instances View.
      * As part of the method replacement, in tests where process creation is executed,
      * context action of opening process creation wizard should be called from the class of the given View, e.g.
-     * {@link ProcessInstancesPage#openProcessCreationWizard()} (for Process Instances View).
-     * It is also possible to call {@link ProcessInstancesPage#createProcessIPD(String, Long, String)} method
+     * {@link ProcessOverviewPage#openProcessCreationWizard()} (for Process Instances View).
+     * It is also possible to call {@link ProcessOverviewPage#createProcessIPD(String, Long, String)} method
      * which will open wizard and proceed process creation.
      */
     @Deprecated
