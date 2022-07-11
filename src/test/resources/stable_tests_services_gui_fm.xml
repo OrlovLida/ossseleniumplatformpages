@@ -1,5 +1,10 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="services_gui_fm" thread-count="2" parallel="tests" verbose="1">
+    <test name="UserPermissionTest">
+        <classes>
+            <class name="com.oss.faultmanagement.UserPermissionsTest"/>
+        </classes>
+    </test>
     <test name="FilterManagerTest">
         <classes>
             <class name="com.oss.faultmanagement.FilterManagerTest"/>
