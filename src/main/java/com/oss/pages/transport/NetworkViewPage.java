@@ -20,6 +20,7 @@ import com.oss.framework.widgets.dockedpanel.DockedPanelInterface;
 import com.oss.framework.widgets.propertypanel.PropertyPanel;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.table.TableInterface;
+import com.oss.framework.widgets.table.TableWidget;
 import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
@@ -73,6 +74,7 @@ public class NetworkViewPage extends BasePage {
     private static final String GEAR_OBJECT_GROUP_ID = "frameworkCustomButtonsSecondaryGroup";
     private static final String CHOOSE_CONFIGURATION_ID = "chooseConfiguration";
     private static final String ATTRIBUTES_PANEL_ID = "NetworkViewPropertyPanelWidget";
+    private static final String DETAILS_TAB_ID = "dockedPanel-bottom";
 
     public NetworkViewPage(WebDriver driver) {
         super(driver);
@@ -297,13 +299,6 @@ public class NetworkViewPage extends BasePage {
         return isObjectInBottomTab(partialValue);
     }
 
-    @Step("Check object presence in New Terminations Tab")
-    public boolean isObjectInNewTerminationsTab(String partialValue) {
-        expandDetailsPanel();
-        openTerminationsTab();
-        return isObjectInNewTab(partialValue);
-    }
-
     @Step("Suppress incomplete routing")
     public void supressValidationResult(String reason) {
         openValidationResultsTab();
@@ -404,10 +399,10 @@ public class NetworkViewPage extends BasePage {
         return !driver.findElements(By.xpath(xpath)).isEmpty();
     }
 
-    private boolean isObjectInNewTab(String partialValue) {
-        String xpath = String.format("//div[@data-testid = 'table-content-scrollbar']//div[contains(@class, 'table-component__cell')]//span[contains(text(), '%s')]",
-                partialValue);
-        return !driver.findElements(By.xpath(xpath)).isEmpty();
+    public String getObjectValueFromTab(Integer index, String column, String componentId) {
+        waitForPageToLoad();
+        TableWidget tableWidget = TableWidget.createById(driver, componentId, wait);
+        return tableWidget.getCellValue(index, column);
     }
 
     private Wizard suppressionWizard() {
@@ -430,18 +425,18 @@ public class NetworkViewPage extends BasePage {
         select1stLevelTab();
     }
 
-    private void openRoutingElementsTab() {
+    public void openRoutingElementsTab() {
         openRoutingTab();
         selectElementsTab();
     }
 
-    private void openRoutingTab() {
+    public void openRoutingTab() {
         expandDetailsPanel();
         selectTabFromBottomPanel(ROUTING);
         waitForPageToLoad();
     }
 
-    private void openTerminationsTab() {
+    public void openTerminationsTab() {
         expandDetailsPanel();
         selectTabFromBottomPanel("Terminations");
         waitForPageToLoad();

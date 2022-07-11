@@ -11,7 +11,6 @@ import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.components.table.TableComponent;
 import com.oss.framework.navigation.toolsmanager.ToolsManagerWindow;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
@@ -32,6 +31,7 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
     private static final String NAME_COMPONENT_ID = "name";
     private static final String NAME_COLUMN_NAME = "Name";
     private static final String MICROWAVE_CHANNEL_TRAIL_TYPE = "Microwave Channel";
+    private static final String MICROWAVE_CHANNEL_PARTIAL_NAME = "MicrowaveChannel";
     private static final String MICROWAVE_LINK_TRAIL_TYPE = "Microwave Link";
     private static final String INFRASTRUCTURE_MANAGEMENT_CATEGORY_NAME = "Infrastructure management";
     private static final String CREATE_DEVICE_APPLICATION_NAME = "Create Device";
@@ -42,6 +42,7 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
     private static final String CARD_SHORT_IDENTIFIER_COLUMN = "card.shortIdentifier";
     private static final String PORT_SHORT_IDENTIFIER_COLUMN = "port.shortIdentifier";
     private static final String TERMINATIONS_TAB_ID = "TerminationWidget";
+    private static final String DOCKED_PANEL_POSITION = "left";
 
     private static final String NAME_ATTRIBUTE_LABEL = "Name";
     private static final String BAND_ATTRIBUTE_LABEL = "Band";
@@ -126,6 +127,7 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
     private static final String START_PORT_FIELD_ID = "terminationPortComponent_1";
     private static final String END_PORT_FIELD_ID = "terminationPortComponent_2";
     private static final String PORT_NAME = "RAU";
+    private static final String PORT_LABEL = "AMM 6p D\\02\\MMU2 H\\RAU";
 
     private static final String MWC_DESCRIPTION = "Desc1";
     private static final String BAND = "23";
@@ -297,8 +299,9 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
         waitForPageToLoad();
         assertMicrowaveChannel(networkViewPage, firstMicrowaveChannelAttributes);
 
+        networkViewPage.openTerminationsTab();
         assertPresenceOfObjectInTab(0, CARD_SHORT_IDENTIFIER_COLUMN, TERMINATIONS_TAB_ID, CARD_NAME);
-        assertPresenceOfObjectInTab(1, PORT_SHORT_IDENTIFIER_COLUMN, TERMINATIONS_TAB_ID, PORT_NAME);
+        assertPresenceOfObjectInTab(1, PORT_SHORT_IDENTIFIER_COLUMN, TERMINATIONS_TAB_ID, PORT_LABEL);
     }
 
     @Test(priority = 3, description = "Create Microwave Channel and add Terminations")
@@ -306,7 +309,7 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
     public void createMicrowaveChannelAndAddTerminations() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         OldTable table = OldTable.createById(driver, webDriverWait, CONENT_TAB_ID);
-        table.searchByAttributeWithLabel(NAME_COLUMN_NAME, TEXT_FIELD, MICROWAVE_CHANNEL_TRAIL_TYPE);
+        table.searchByAttributeWithLabel(NAME_COLUMN_NAME, TEXT_FIELD, MICROWAVE_CHANNEL_PARTIAL_NAME);
         firstMicrowaveChannel = getMicrowaveChannel(0);
         networkViewPage.unselectObject(firstMicrowaveChannel);
 
@@ -317,6 +320,7 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
         fillMicrowaveChannelWizard(secondMicrowaveChannelWizardPage, secondMicrowaveChannelAttributes);
         waitForPageToLoad();
         assertMicrowaveChannel(networkViewPage, secondMicrowaveChannelAttributes);
+        // Czekamy na: OSSTRAIL-5488
         //Add Terminations using Terminations Tab
 
         networkViewPage.startEditingSelectedTrail();
@@ -329,18 +333,25 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
         networkViewPage.addSelectedObjectsToTermination();
         waitForPageToLoad();
         fillTerminationWizardPage();
+
+        networkViewPage.selectObject(secondMicrowaveChannel);
+        waitForPageToLoad();
+        networkViewPage.unselectObject(FIRST_INDOOR_UNIT_NAME);
+        waitForPageToLoad();
+        networkViewPage.unselectObject(SECOND_INDOOR_UNIT_NAME);
+        waitForPageToLoad();
+        networkViewPage.hideDockedPanel(DOCKED_PANEL_POSITION);
+        waitForPageToLoad();
+        networkViewPage.openTerminationsTab();
         assertPresenceOfObjectInTab(0, CARD_SHORT_IDENTIFIER_COLUMN, TERMINATIONS_TAB_ID, CARD_NAME);
-        assertPresenceOfObjectInTab(1, PORT_SHORT_IDENTIFIER_COLUMN, TERMINATIONS_TAB_ID, PORT_NAME);
+        assertPresenceOfObjectInTab(1, PORT_SHORT_IDENTIFIER_COLUMN, TERMINATIONS_TAB_ID, PORT_LABEL);
     }
 
     @Test(priority = 4, description = "Create Microwave Link")
     @Description("Create Microwave Link and add Microwave Channel to routing")
     public void createMicrowaveLinkAndAddMicrowaveChannelToRouting() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
-        networkViewPage.unselectObject(FIRST_INDOOR_UNIT_NAME);
-        waitForPageToLoad();
-        networkViewPage.unselectObject(SECOND_INDOOR_UNIT_NAME);
-        waitForPageToLoad();
+        networkViewPage.unselectObject(secondMicrowaveChannel);
 
         networkViewPage.openWizardPage(MICROWAVE_LINK_TRAIL_TYPE);
         waitForPageToLoad();
@@ -354,9 +365,10 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
     }
 
     private void assertPresenceOfObjectInTab(Integer index, String columnId, String tabId, String objectName) {
-        String startTermination = selectObjectInTab(index, columnId, tabId);
+        NetworkViewPage networkViewPage = new NetworkViewPage(driver);
+        String objectValue = networkViewPage.getObjectValueFromTab(index, columnId, tabId);
 
-        Assert.assertEquals(startTermination, objectName);
+        Assert.assertEquals(objectValue, objectName);
     }
 
     private void openNetworkView() {
@@ -700,6 +712,7 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
 
     private void fillFifthStepOfMicrowaveChannelWizard(MicrowaveChannelWizardPage microwaveChannelWizardPage, MicrowaveChannelAttributes microwaveChannelAttributes) {
         microwaveChannelWizardPage.setTermination(START_CARD_FIELD_ID, CARD_NAME);
+        microwaveChannelWizardPage.setTermination(END_CARD_FIELD_ID, CARD_NAME);
         microwaveChannelWizardPage.setTermination(END_PORT_FIELD_ID, PORT_NAME);
         microwaveChannelWizardPage.clickAccept();
     }
@@ -731,7 +744,6 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
     }
 
     private void assertMicrowaveChannel(NetworkViewPage networkViewPage, MicrowaveChannelAttributes microwaveChannelAttributes) {
-        // DOPISAC Asercje na Capacity ()
         String band = networkViewPage.getAttributeValue(BAND_ATTRIBUTE_LABEL);
         String channelBandwidth = networkViewPage.getAttributeValue(CHANNEL_BANDWIDTH_ATTRIBUTE_LABEL);
         String lowFrequency = networkViewPage.getAttributeValue(LOW_FREQUENCY_ATTRIBUTE_LABEL);
@@ -877,13 +889,6 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
     private void checkSystemMessage() {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         softAssert.assertEquals((systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType()), SystemMessageContainer.MessageType.SUCCESS);
-    }
-
-    private String selectObjectInTab(Integer index, String column, String componentId) {
-        waitForPageToLoad();
-        TableComponent tableComponent = TableComponent.create(driver, webDriverWait, componentId);
-        tableComponent.selectRow(index);
-        return tableComponent.getCellValue(index, column);
     }
 
     private void waitForPageToLoad() {
