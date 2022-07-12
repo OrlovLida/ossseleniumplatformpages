@@ -1,18 +1,20 @@
 package com.oss.pages.faultmanagement;
 
+import java.util.List;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.oss.framework.components.layout.Card;
 import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.CommonList;
 import com.oss.pages.BasePage;
-import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.List;
+import io.qameta.allure.Step;
 
 public class FMSMDashboardPage extends BasePage {
     private static final Logger log = LoggerFactory.getLogger(FMSMDashboardPage.class);
@@ -59,6 +61,7 @@ public class FMSMDashboardPage extends BasePage {
     public void searchInView(String widgetId, String searchedText) {
         AdvancedSearch search = AdvancedSearch.createByWidgetId(driver, wait, widgetId);
         DelayUtils.waitForPageToLoad(driver, wait);
+        DelayUtils.sleep(8000); //  TODO change it after fix OSSNGSA-11102
         search.fullTextSearch(searchedText);
         log.info("Searching in view: {}", widgetId);
     }
@@ -106,11 +109,9 @@ public class FMSMDashboardPage extends BasePage {
 
     @Step("I delete view by name")
     public void deleteFromView(String commonListId, int rowNumber) {
-        DelayUtils.sleep(1000);
         CommonList commonList = createCommonList(commonListId);
         commonList.getRows().get(rowNumber).selectRow();
         commonList.getRows().get(rowNumber).callAction(REMOVE_ACTION_ID);
-        DelayUtils.sleep(1000);
         ConfirmationBox confirmationBox = ConfirmationBox.create(driver, wait);
         confirmationBox.clickButtonById(CONFIRMATION_BOX_BUTTON_NAME);
         log.info("Deletion of WAMV in row {}", rowNumber);
@@ -119,6 +120,7 @@ public class FMSMDashboardPage extends BasePage {
     @Step("I check the visibility of view on the list")
     public boolean checkVisibility(String commonListId, String name) {
         log.info("Checking the visibility of {}", name);
+        DelayUtils.waitForPageToLoad(driver, wait);
         CommonList commonList = createCommonList(commonListId);
         return commonList.isRowDisplayed(COLUMN_NAME_LABEL, name);
     }
