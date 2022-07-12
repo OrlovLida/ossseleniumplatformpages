@@ -93,12 +93,12 @@ public class WAMVArea3Test extends BaseTestCase {
     @Test(priority = 2, testName = "Check MO Properties", description = "Check MO Properties")
     @Description("I verify if MO Properties works in WAMV")
     public void openWAMVAndCheckMoProperties(
-            @Optional("1") int alarmListRow
+            @Optional("1") int alarmListRowWithMO
     ) {
         try {
-            wamvPage.selectSpecificRow(alarmListRow);
+            wamvPage.selectSpecificRow(alarmListRowWithMO);
             area3Page.clickOnMOPropertiesTab();
-            Assert.assertEquals(wamvPage.getTextFromMOIdentifierCell(alarmListRow), area3Page.getIdentifierFromMOPropertiesTab());
+            Assert.assertEquals(wamvPage.getTextFromMOIdentifierCell(alarmListRowWithMO), area3Page.getIdentifierFromMOPropertiesTab());
         } catch (Exception e) {
             log.error(e.getMessage());
             Assert.fail();
@@ -182,10 +182,10 @@ public class WAMVArea3Test extends BaseTestCase {
     @Test(priority = 7, testName = "Check Additional Text Tab", description = "Check Additional Text Tab")
     @Description("I verify if Additional Text works in WAMV")
     public void openWAMVAndCheckAdditionalText(
-            @Optional("0") int alarmListRow
+            @Optional("0") int alarmListRowAdditionalText
     ) {
         try {
-            wamvPage.selectSpecificRow(alarmListRow);
+            wamvPage.selectSpecificRow(alarmListRowAdditionalText);
             area3Page.clickOnAdditionalTextTab();
             Assert.assertTrue(area3Page.isAdditionalTextDisplayed(EXPECTED_TEXT, AREA_3_WINDOW_ID));
         } catch (Exception e) {

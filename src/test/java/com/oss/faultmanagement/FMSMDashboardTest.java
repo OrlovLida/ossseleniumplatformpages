@@ -62,7 +62,7 @@ public class FMSMDashboardTest extends BaseTestCase {
     @Description("I verify if FM or SM Dashboard search panels works correctly")
     public void checkSearchPanel(
             @Optional("!@#$%^&*()_+=-|?/:;{}[]`") String searchPhrase,
-            @Optional("_AlarmCounters,_UserViewsListALARM_COUNTERS,_UserViewsListALARM_MANAGEMENT,_UserViewsListHISTORICAL_ALARM_MANAGEMENT,_UserViewsListMAP_MONITORING") String viewsForChosenDashboard
+            @Optional("_UserViewsListALARM_COUNTERS,_UserViewsListALARM_MANAGEMENT,_UserViewsListHISTORICAL_ALARM_MANAGEMENT,_UserViewsListMAP_MONITORING") String viewsForChosenDashboard
     ) {
         List<String> views = Arrays.asList(viewsForChosenDashboard.split(","));
         try {

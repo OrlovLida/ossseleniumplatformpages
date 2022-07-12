@@ -61,8 +61,8 @@ public class FMSMDashboardPage extends BasePage {
     public void searchInView(String widgetId, String searchedText) {
         AdvancedSearch search = AdvancedSearch.createByWidgetId(driver, wait, widgetId);
         DelayUtils.waitForPageToLoad(driver, wait);
-        DelayUtils.sleep(8000); //  TODO change it after fix OSSNGSA-11102
         search.fullTextSearch(searchedText);
+        DelayUtils.sleep(8000); //  TODO change it after fix OSSNGSA-11102
         log.info("Searching in view: {}", widgetId);
     }
 
