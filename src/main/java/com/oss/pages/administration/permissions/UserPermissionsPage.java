@@ -24,6 +24,8 @@ public class UserPermissionsPage extends BasePage {
     private static final String OLD_ACTIONS_CONTAINER_ID = "user_permissionsPanelAppId-windowToolbar";
     private static final String ASSIGN_ACTION_ID = "addAction";
     private static final String DIRECT_INHERITED_COLUMN_LABEL = "Direct/Inherited";
+    private static final String DIRECT_ROLE = "Direct";
+    private static final String INHERITED_ROLE = "Inherited";
     private static final String ROLE_NOT_ASSIGNED_LABEL = "None";
 
     public UserPermissionsPage(WebDriver driver, WebDriverWait wait) {
@@ -59,16 +61,19 @@ public class UserPermissionsPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
+    @Step("Search for: {searchText} in User Profile Table on Permission Panel")
     public void searchInUserProfileTable(String searchText) {
         getUserProfileTable().fullTextSearch(searchText);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
+    @Step("Click button: {label}")
     public void clickButtonWithLabel(String label) {
         Button.createByLabel(driver, label).click();
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
+    @Step("Get profile status from table")
     public String getProfileStatus() {
         if (!getUserProfileTable().hasNoData()) {
             return getUserProfileTable().getCellValue(0, DIRECT_INHERITED_COLUMN_LABEL);
@@ -76,6 +81,12 @@ public class UserPermissionsPage extends BasePage {
         return "Table has no data";
     }
 
+    @Step("Check if role is assigned direct or inherited")
+    public boolean isRoleAssigned() {
+        return getProfileStatus().equals(DIRECT_ROLE) || getProfileStatus().equals(INHERITED_ROLE);
+    }
+
+    @Step("Click Assign")
     public void assignRole() {
         if (!isAssigned()) {
             selectFirstRow();
