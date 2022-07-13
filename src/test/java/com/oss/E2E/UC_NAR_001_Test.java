@@ -32,7 +32,7 @@ public class UC_NAR_001_Test extends BaseTestCase {
     private static final String NARROW_RECO_NOTIFICATION = "Narrow reconciliation for GMOCs IPDevice finished";
     private static final String INTERFACE_NAME = "CISCO IOS XR without mediation";
     private static final String DOMAIN = "IP";
-    private static final String EQUIPMENT_TYPE = "Router";
+    private static final String EQUIPMENT_TYPE = "Physical Device";
     private static final String CONFIRM_ID = "ConfirmationBox_object_delete_wizard_confirmation_box_action_button";
     private SoftAssert softAssert;
 
