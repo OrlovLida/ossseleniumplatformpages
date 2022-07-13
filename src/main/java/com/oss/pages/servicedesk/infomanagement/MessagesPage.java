@@ -19,9 +19,14 @@ public class MessagesPage extends BaseSearchPage {
     private static final String COLUMN_TO_ID = "to";
     private static final String COLUMN_FROM_ID = "from";
     private static final String COLUMN_PREVIEW_ID = "preview";
+    private static final String COLUMN_CONTEXT_ID = "context";
+    private static final String COLUMN_DATE_ID = "receivedDate";
+    private static final String COLUMN_STATUS_ID = "notificationStatus";
     private static final String EXPORT_AS_HTML_BUTTON_ID = "notification-export-action";
     private static final String MARK_AS_READ_BUTTON_ID = "notification-mark-read-action";
     private static final String MARK_AS_UNREAD_BUTTON_ID = "notification-mark-unread-action";
+    private static final String ASSIGN_TO_OBJECT_BUTTON_ID = "notification-relink-action";
+    private static final String ASSIGN_TO_OBJECT_WIZARD_ID = "card-content_notification-relink-wizard-view_prompt-card";
 
     public MessagesPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -65,6 +70,21 @@ public class MessagesPage extends BaseSearchPage {
         return getIssueTable().getCellValue(0, COLUMN_TO_ID);
     }
 
+    @Step("Get Message Context from first row")
+    public String getMessageContext() {
+        return getIssueTable().getCellValue(0, COLUMN_CONTEXT_ID);
+    }
+
+    @Step("Get Message Date from first row")
+    public String getMessageDate() {
+        return getIssueTable().getCellValue(0, COLUMN_DATE_ID);
+    }
+
+    @Step("Get Message Status from first row")
+    public String getMessageStatus() {
+        return getIssueTable().getCellValue(0, COLUMN_STATUS_ID);
+    }
+
     @Step("Click Export")
     public void clickExport(String fileName) {
         exportFromTable(getTableId(), fileName);
@@ -92,6 +112,13 @@ public class MessagesPage extends BaseSearchPage {
     public void clickMarkAsUnread() {
         clickTableButton(MARK_AS_UNREAD_BUTTON_ID);
         log.info("Clicking Mark as unread button");
+    }
+
+    @Step("Click Assign to Object button")
+    public SDWizardPage clickAssignToObject() {
+        clickTableButton(ASSIGN_TO_OBJECT_BUTTON_ID);
+        log.info("Clicking Assign to Object button");
+        return new SDWizardPage(driver, wait, ASSIGN_TO_OBJECT_WIZARD_ID);
     }
 
     public NotificationPreviewPage getNotificationPreview() {
