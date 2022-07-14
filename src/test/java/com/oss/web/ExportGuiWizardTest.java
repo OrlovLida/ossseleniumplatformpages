@@ -1,32 +1,35 @@
 package com.oss.web;
 
 import com.oss.BaseTestCase;
+import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.pages.exportguiwizard.ExportGuiWizardPage;
 import com.oss.pages.languageservice.LanguageServicePage;
 import io.qameta.allure.Description;
 import org.testng.Assert;
 import org.testng.annotations.*;
+
+import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.utils.*;
 
 
 @Listeners({TestListener.class})
 public class ExportGuiWizardTest extends BaseTestCase {
+    private static final String EXPORT_BUTTON_ID = "exportButton";
+    private static final String TEST_MOVIE_TYPE = "TestMovie";
 
-    private LanguageServicePage languageServicePage;
+    private NewInventoryViewPage inventoryView;
     private String emailAddress = "testExport@mail.com";
 
     @BeforeClass
     public void prepareTests() {
-        this.languageServicePage = LanguageServicePage.goToLanguageServicePage(driver, BASIC_URL);
-        languageServicePage
-                .typeIdOfFirstServiceInSearch();
+        inventoryView = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_MOVIE_TYPE);
     }
 
     @BeforeMethod
     public void openExportGuiWizard() {
-        languageServicePage
-                .clearNotifications()
-                .openExportFileWizard();
+        inventoryView.openNotificationPanel().clearNotifications();
+        inventoryView.callAction(ActionsContainer.KEBAB_GROUP_ID, EXPORT_BUTTON_ID);
+
     }
 
     @Test
@@ -35,7 +38,7 @@ public class ExportGuiWizardTest extends BaseTestCase {
         new ExportGuiWizardPage(driver)
                 .chooseCSV()
                 .closeTheWizard();
-        Assert.assertEquals(languageServicePage.howManyNotifications(), 1);
+        Assert.assertEquals(countNotification(), 1);
     }
 
     @Test
@@ -44,7 +47,7 @@ public class ExportGuiWizardTest extends BaseTestCase {
         new ExportGuiWizardPage(driver)
                 .chooseXLS()
                 .closeTheWizard();
-        Assert.assertEquals(languageServicePage.howManyNotifications(), 1);
+        Assert.assertEquals(countNotification(), 1);
     }
 
     @Test
@@ -53,7 +56,7 @@ public class ExportGuiWizardTest extends BaseTestCase {
         new ExportGuiWizardPage(driver)
                 .chooseXLSX()
                 .closeTheWizard();
-        Assert.assertEquals(languageServicePage.howManyNotifications(), 1);
+        Assert.assertEquals(countNotification(), 1);
     }
 
     @Test
@@ -62,7 +65,7 @@ public class ExportGuiWizardTest extends BaseTestCase {
         new ExportGuiWizardPage(driver)
                 .chooseXML()
                 .closeTheWizard();
-        Assert.assertEquals(languageServicePage.howManyNotifications(), 1);
+        Assert.assertEquals(countNotification(), 1);
     }
 
     @Test
@@ -71,7 +74,7 @@ public class ExportGuiWizardTest extends BaseTestCase {
         new ExportGuiWizardPage(driver)
                 .chooseExportToPDF()
                 .closeTheWizard();
-        Assert.assertEquals(languageServicePage.howManyNotifications(), 1);
+        Assert.assertEquals(countNotification(), 1);
     }
 
     @Test
@@ -80,7 +83,7 @@ public class ExportGuiWizardTest extends BaseTestCase {
         new ExportGuiWizardPage(driver)
                 .chooseCompressedFile()
                 .closeTheWizard();
-        Assert.assertEquals(languageServicePage.howManyNotifications(), 1);
+        Assert.assertEquals(countNotification(), 1);
     }
 
     @Test
@@ -89,7 +92,7 @@ public class ExportGuiWizardTest extends BaseTestCase {
         new ExportGuiWizardPage(driver)
                 .chooseExportToFileWithHeaders()
                 .closeTheWizard();
-        Assert.assertEquals(languageServicePage.howManyNotifications(), 1);
+        Assert.assertEquals(countNotification(), 1);
     }
 
     @Test
@@ -99,7 +102,7 @@ public class ExportGuiWizardTest extends BaseTestCase {
                 .chooseCSV()
                 .changeDateMask("Basic")
                 .closeTheWizard();
-        Assert.assertEquals(languageServicePage.howManyNotifications(), 1);
+        Assert.assertEquals(countNotification(), 1);
     }
 
     @Test
@@ -110,7 +113,7 @@ public class ExportGuiWizardTest extends BaseTestCase {
                 .changeQuoteCharacter("Single")
                 .changeCSVDelimiter("Comma")
                 .closeTheWizard();
-        Assert.assertEquals(languageServicePage.howManyNotifications(), 1);
+        Assert.assertEquals(countNotification(), 1);
     }
 
     @Test
@@ -121,7 +124,7 @@ public class ExportGuiWizardTest extends BaseTestCase {
                 .goToSendFileByEmailPage()
                 .chooseEmail(emailAddress)
                 .closeTheWizard();
-        Assert.assertEquals(languageServicePage.howManyNotifications(), 1);
+        Assert.assertEquals(countNotification(), 1);
     }
 
     @Test
@@ -133,7 +136,7 @@ public class ExportGuiWizardTest extends BaseTestCase {
                 .chooseEmail(emailAddress)
                 .chooseAttachExportedFile()
                 .closeTheWizard();
-        Assert.assertEquals(languageServicePage.howManyNotifications(), 1);
+        Assert.assertEquals(countNotification(), 1);
     }
 
     @Test
@@ -148,7 +151,7 @@ public class ExportGuiWizardTest extends BaseTestCase {
                 .typePassword("oss")
                 .typeRemoteDirectoryPath("/home/oss/ExportGUITests")
                 .closeTheWizard();
-        Assert.assertEquals(languageServicePage.howManyNotifications(), 1);
+        Assert.assertEquals(countNotification(), 1);
     }
 
     @Test
@@ -163,6 +166,10 @@ public class ExportGuiWizardTest extends BaseTestCase {
                 .typePassword("oss")
                 .typeRemoteDirectoryPath("/home/oss/ExportGUITests")
                 .closeTheWizard();
-        Assert.assertEquals(languageServicePage.howManyNotifications(), 1);
+        Assert.assertEquals(countNotification(), 1);
+    }
+
+    private int countNotification(){
+        return inventoryView.openNotificationPanel().amountOfNotifications();
     }
 }
