@@ -24,7 +24,7 @@ public class ChangeDashboardTest extends BaseTestCase {
 
     @Test(priority = 1, testName = "Export from Changes Dashboard", description = "Export XLSX file from Changes Dashboard")
     @Description("Export XLSX file from Changes Dashboard")
-    public void exportFromProblemsDashboard() {
+    public void exportFromChangesDashboard() {
         changeDashboardPage.exportFromDashboard(CHANGES_EXPORT_FILE);
         notificationWrapperPage = changeDashboardPage.openNotificationPanel();
 
