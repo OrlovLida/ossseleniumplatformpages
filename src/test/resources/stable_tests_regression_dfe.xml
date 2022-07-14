@@ -15,4 +15,9 @@
             <class name="com.oss.bigdata.dfe.regressiontests.DimensionRegressionTests"/>
         </classes>
     </test>
+    <test name="AggregatesRegressionTests">
+        <classes>
+            <class name="com.oss.bigdata.dfe.regressiontests.AggregatesRegressionTests"/>
+       </classes>
+     </test>
 </suite>
