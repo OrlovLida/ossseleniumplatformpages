@@ -19,8 +19,6 @@ import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
-import static com.oss.pages.servicedesk.ServiceDeskConstants.DATE_PATTERN;
-
 /**
  * @author Bartosz Nowak
  */
@@ -36,7 +34,8 @@ public class WAMVPage extends BasePage {
     private static final String NOTE_COLUMN_ID = "cell-row-col-note";
     private static final String MO_IDENTIFIER_COLUMN_ID = "cell-row-col-moIdentifier";
     private static final String EVENT_TIME_COLUMN_ID = "cell-row-col-eventTime";
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_PATTERN);
+    private static final String EVENT_TIME_PATTERN = "HH:mm:ss yyyy-MM-dd";
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(EVENT_TIME_PATTERN);
 
     private static final String PROPERTY_PANEL_IN_MODAL_ID = "card-content__modalWindow";
     private static final String SAME_MO_ALARMS_TABLE_ID = "area3-mo-alarms";
@@ -67,7 +66,7 @@ public class WAMVPage extends BasePage {
     }
 
     @Step("I create a button")
-    private Button createButton(String buttonId) {
+    protected Button createButton(String buttonId) {
         log.info("Creating a button");
         return Button.createById(driver, buttonId);
     }

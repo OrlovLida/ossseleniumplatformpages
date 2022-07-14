@@ -44,6 +44,8 @@ public class Area3Page extends WAMVPage {
     private static final String IDENTIFIER_VALUE = "Identifier";
     private static final String PROPERTY_PANEL_ID = "card-content_AREA3";
     private static final String CHECKBOX_SHOW_EMPTY_ID_PATTERN = "checkbox|%s|show-empty";
+    private static final String ACTIVE_TAB_CLASS = "active";
+    private static final String EDIT_BUTTON_KNOW_HOW_TAB_ID = "btn|know-how-mo-configurator|edit";
 
     public Area3Page(WebDriver driver) {
         super(driver);
@@ -204,8 +206,7 @@ public class Area3Page extends WAMVPage {
 
     @Step("Click Edit")
     public void clickEditButton() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        Button.createByLabel(driver, "Edit").click();
+        Button.createById(driver, ACTIVE_TAB_CLASS, EDIT_BUTTON_KNOW_HOW_TAB_ID).click();
         log.info("Click Edit Button");
     }
 
