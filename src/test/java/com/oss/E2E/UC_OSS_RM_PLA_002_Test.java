@@ -20,8 +20,8 @@ import com.oss.framework.components.mainheader.Notifications;
 import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.navigation.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.pages.bpm.ProcessOverviewPage;
 import com.oss.pages.bpm.TasksPageV2;
-import com.oss.pages.bpm.processinstances.ProcessInstancesPage;
 import com.oss.pages.filtermanager.ShareFilterPage;
 import com.oss.pages.mediation.CLIConfigurationWizardPage;
 import com.oss.pages.mediation.ViewConnectionConfigurationPage;
@@ -85,7 +85,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
     @Description("Create and start NRP Process")
     public void createProcessNRP() {
         waitForPageToLoad();
-        ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, webDriverWait);
+        ProcessOverviewPage processInstancesPage = ProcessOverviewPage.goToProcessOverviewPage(driver, webDriverWait);
         processNRPCode = processInstancesPage.createSimpleNRP();
         checkMessageSize();
         checkMessageType(MessageType.SUCCESS);

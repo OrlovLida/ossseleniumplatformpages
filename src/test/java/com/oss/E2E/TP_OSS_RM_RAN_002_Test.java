@@ -9,8 +9,8 @@ import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.pages.bpm.ProcessOverviewPage;
 import com.oss.pages.bpm.TasksPageV2;
-import com.oss.pages.bpm.processinstances.ProcessInstancesPage;
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.platform.SearchObjectTypePage;
@@ -41,7 +41,7 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
     private static final String CELL5G_NAME_1 = "TP_OSS_RM_RAN_002_CELL5G_1";
     private static final String CELL5G_NAME_2 = "TP_OSS_RM_RAN_002_CELL5G_2";
     private static final String[] CELL5G_NAMES = {CELL5G_NAME_0, CELL5G_NAME_1, CELL5G_NAME_2};
-    private static final String CELL5G_CARRIER = "NR3600-n78-140 (642000)";
+    private static final String CELL5G_CARRIER = "E2E Carrier 5G (11)";
     private static final String MCCMNC_PRIMARY = "E2ETests [mcc: 0001, mnc: 01]";
     private static final int[] LOCAL_CELLS_ID = {7, 8, 9};
     private static final String MANUFACTURER = "HUAWEI Technology Co.,Ltd";
@@ -59,7 +59,7 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
     @Test(priority = 1, description = "Create NRP Process")
     @Description("Create NRP Process")
     public void createProcessNRP() {
-        ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, webDriverWait);
+        ProcessOverviewPage processInstancesPage = ProcessOverviewPage.goToProcessOverviewPage(driver, webDriverWait);
         processNRPCode = processInstancesPage.createSimpleNRP();
         checkMessageSize();
         checkMessageType();

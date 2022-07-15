@@ -11,8 +11,8 @@ import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.pages.bpm.ProcessOverviewPage;
 import com.oss.pages.bpm.TasksPageV2;
-import com.oss.pages.bpm.processinstances.ProcessInstancesPage;
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.platform.SearchObjectTypePage;
@@ -41,7 +41,7 @@ public class TP_OSS_RM_RAN_003_Test extends BaseTestCase {
     @Description("Create new Data Correction Process")
     public void createNewProcess() {
         softAssert = new SoftAssert();
-        ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, webDriverWait);
+        ProcessOverviewPage processInstancesPage = ProcessOverviewPage.goToProcessOverviewPage(driver, webDriverWait);
         processDCPCode = processInstancesPage.createSimpleDCP();
         checkPopup(processDCPCode);
         waitForPageToLoad();

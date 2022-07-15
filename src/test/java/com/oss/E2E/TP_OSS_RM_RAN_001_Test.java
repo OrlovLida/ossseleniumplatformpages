@@ -15,8 +15,8 @@ import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.PlanViewWizardPage;
+import com.oss.pages.bpm.ProcessOverviewPage;
 import com.oss.pages.bpm.TasksPageV2;
-import com.oss.pages.bpm.processinstances.ProcessInstancesPage;
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.platform.SearchObjectTypePage;
@@ -69,7 +69,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
     @Test(priority = 1, description = "Create and start NRP Process")
     @Description("Create and start NRP Process")
     public void createProcessNRP() {
-        ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, webDriverWait);
+        ProcessOverviewPage processInstancesPage = ProcessOverviewPage.goToProcessOverviewPage(driver, webDriverWait);
         processNRPCode = processInstancesPage.createSimpleNRP();
         checkMessageContainsText(processNRPCode);
         checkMessageType();
