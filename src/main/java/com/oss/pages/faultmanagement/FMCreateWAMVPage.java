@@ -1,11 +1,13 @@
 package com.oss.pages.faultmanagement;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.list.DraggableList;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.EditableList;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
@@ -19,13 +21,12 @@ public class FMCreateWAMVPage extends BasePage {
     private static final String DESCRIPTION_TEXT_FIELD_ID = "UserViewDescriptionInput";
     private static final String DROPDOWNLIST_AVAILABLE_ID = "Available";
     private static final String DROPDOWNLIST_SELECTED_ID = "Selected";
-    private static final String EXTENDED_LIST_ID = "ExtendedList-WAMVFiltersInput";
-    private final Wizard folderWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
-    private final DraggableList draggableListAvailable = DraggableList.create(driver, wait, DROPDOWNLIST_AVAILABLE_ID);
-    private final DraggableList draggableListSelected = DraggableList.create(driver, wait, DROPDOWNLIST_SELECTED_ID);
+    private static final String WIZARD_MODAL_ID = "card-content_UserViewWizardModal";
+    private final Wizard folderWizard;
 
-    public FMCreateWAMVPage(WebDriver driver) {
-        super(driver);
+    public FMCreateWAMVPage(WebDriver driver, WebDriverWait wait) {
+        super(driver, wait);
+        folderWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
     }
 
     @Step("I set Name of the WAMV")
@@ -42,13 +43,14 @@ public class FMCreateWAMVPage extends BasePage {
 
     @Step("I drag and drop filter by name")
     public void dragAndDropFilterByName(String filterName) {
-        draggableListSelected.drop(draggableListAvailable.getDraggableElement(filterName));
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getDraggableListSelected().drop(getDraggableListAvailable().getDraggableElement(filterName));
         log.info("Drag filter {} and drop it", filterName);
     }
 
     @Step("I select N-th filter from filter list")
     public void selectFilterFromList(int row) {
-        EditableList filters = EditableList.createById(driver, wait, EXTENDED_LIST_ID);
+        EditableList filters = EditableList.createById(driver, wait, WIZARD_MODAL_ID);
         filters.getRow(row).click();
         log.info("Selecting {}. filter from the list", row);
     }
@@ -57,5 +59,19 @@ public class FMCreateWAMVPage extends BasePage {
     public void clickAcceptButton() {
         folderWizard.clickAccept();
         log.info("Clicking accept button");
+    }
+
+    @Step("I click Next button")
+    public void clickNextButton() {
+        folderWizard.clickNext();
+        log.info("Clicking Next button");
+    }
+
+    private DraggableList getDraggableListAvailable() {
+        return DraggableList.create(driver, wait, DROPDOWNLIST_AVAILABLE_ID);
+    }
+
+    private DraggableList getDraggableListSelected() {
+        return DraggableList.create(driver, wait, DROPDOWNLIST_SELECTED_ID);
     }
 }

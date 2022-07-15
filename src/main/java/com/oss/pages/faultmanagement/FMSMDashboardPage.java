@@ -24,7 +24,6 @@ public class FMSMDashboardPage extends BasePage {
     private static final String COLUMN_NAME_LABEL = "Name";
     private static final String REMOVE_ACTION_ID = "remove-user-view";
     private static final String CONFIRMATION_BOX_BUTTON_NAME = "ConfirmationBox_confirmationBoxWidget_action_button";
-    private static final String ALARM_MANAGEMENT_VIEW_ID = "_UserViewsListALARM_MANAGEMENT";
 
     public FMSMDashboardPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -98,13 +97,13 @@ public class FMSMDashboardPage extends BasePage {
         return new WAMVPage(driver);
     }
 
-    @Step("I click on Create New Alarm List button")
-    public FMCreateWAMVPage clickCreateNewAlarmList() {
+    @Step("I click on Create New Alarm List button in {chosenViewId}")
+    public FMCreateWAMVPage clickCreateNewAlarmList(String chosenViewId) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        CommonList commonAlarmManagement = createCommonList(ALARM_MANAGEMENT_VIEW_ID);
+        CommonList commonAlarmManagement = createCommonList(chosenViewId);
         commonAlarmManagement.callAction(CREATE_BUTTON_ID);
-        log.info("Click Create New Alarm list");
-        return new FMCreateWAMVPage(driver);
+        log.info("Click Create New Alarm list in {}", chosenViewId);
+        return new FMCreateWAMVPage(driver, wait);
     }
 
     @Step("I delete view by name")
@@ -124,6 +123,7 @@ public class FMSMDashboardPage extends BasePage {
         CommonList commonList = createCommonList(commonListId);
         return commonList.isRowDisplayed(COLUMN_NAME_LABEL, name);
     }
+
     @Step("Maximize window")
     public void maximizeWindow(String windowId) {
         Card card = Card.createCard(driver, wait, windowId);
@@ -153,7 +153,7 @@ public class FMSMDashboardPage extends BasePage {
         log.info("Checking the visibility of header '{}' on view '{}'", headerLabel, commonListId);
         CommonList commonList = createCommonList(commonListId);
         return commonList.getRowHeaders().contains(headerLabel);
-            }
+    }
 
     public boolean isHeaderVisible(String commonListId, List<String> headerLabel) {
         CommonList commonList = createCommonList(commonListId);
