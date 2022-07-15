@@ -10,7 +10,6 @@
         <classes>
             <class name="com.oss.dpe.IndicatorsViewTest">
                 <methods>
-                    <exclude name="verifyIfYAxisOptionsWorksProperly"/>
                     <exclude name="verifyIfMiscellaneousOptionsWorkProperly"/>
                     <exclude name="searchIndicators"/>
                     <exclude name="checkLinkToIndicatorsView"/>
@@ -31,7 +30,6 @@
         <classes>
             <class name="com.oss.dpe.IndicatorsViewTest">
                 <methods>
-                    <include name="verifyIfYAxisOptionsWorksProperly"/>
                     <include name="verifyIfMiscellaneousOptionsWorkProperly"/>
                 </methods>
             </class>

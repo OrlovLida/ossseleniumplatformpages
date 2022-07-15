@@ -1,11 +1,5 @@
 package com.oss.bigdata.dfe.SMOKE;
 
-import com.oss.BaseTestCase;
-import com.oss.pages.bigdata.dfe.XDRBrowserPage;
-import com.oss.pages.bigdata.kqiview.ChartActionsPanelPage;
-import com.oss.pages.bigdata.kqiview.KpiViewPage;
-import com.oss.pages.bigdata.kqiview.KpiViewSetupPage;
-import io.qameta.allure.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -13,6 +7,14 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
+
+import com.oss.BaseTestCase;
+import com.oss.pages.bigdata.dfe.XDRBrowserPage;
+import com.oss.pages.bigdata.kqiview.ChartActionsPanelPage;
+import com.oss.pages.bigdata.kqiview.KpiViewPage;
+import com.oss.pages.bigdata.kqiview.KpiViewSetupPage;
+
+import io.qameta.allure.Description;
 
 public class LinkToXDRBrowserTest extends BaseTestCase {
 
@@ -25,12 +27,9 @@ public class LinkToXDRBrowserTest extends BaseTestCase {
     private KpiViewSetupPage kpiViewSetup;
     private ChartActionsPanelPage chartActionsPanel;
 
-    @Parameters({"kpiViewType"})
     @BeforeClass
-    public void goToKpiView(
-            @Optional("INDICATORS_VIEW") KpiViewPage.KpiViewType kpiViewType
-    ) {
-        kpiViewPage = KpiViewPage.goToPage(driver, BASIC_URL, kpiViewType);
+    public void goToKpiView() {
+        kpiViewPage = KpiViewPage.goToPage(driver, BASIC_URL);
         kpiViewSetup = new KpiViewSetupPage(driver, webDriverWait);
         chartActionsPanel = new ChartActionsPanelPage(driver, webDriverWait);
     }

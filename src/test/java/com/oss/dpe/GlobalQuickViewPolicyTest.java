@@ -29,12 +29,9 @@ public class GlobalQuickViewPolicyTest extends BaseTestCase {
     private GlobalQuickViewPolicyPage globalQuickViewPolicyPage;
     private QVPPrompt qvpPrompt;
 
-    @Parameters({"kpiViewType"})
     @BeforeClass
-    public void goToKpiView(
-            @Optional("INDICATORS_VIEW") KpiViewPage.KpiViewType kpiViewType
-    ) {
-        kpiViewPage = KpiViewPage.goToPage(driver, BASIC_URL, kpiViewType);
+    public void goToKpiView() {
+        kpiViewPage = KpiViewPage.goToPage(driver, BASIC_URL);
         kpiViewSetup = new KpiViewSetupPage(driver, webDriverWait);
     }
 

@@ -55,12 +55,11 @@ public class IndicatorsViewTest extends BaseTestCase {
     private ChartActionsPanelPage chartActionsPanel;
     private KpiToolbarPanelPage kpiToolbarPanel;
 
-    @Parameters({"kpiViewType"})
+
     @BeforeMethod
     public void goToKpiView(
-            @Optional("INDICATORS_VIEW") KpiViewPage.KpiViewType kpiViewType
     ) {
-        kpiViewPage = KpiViewPage.goToPage(driver, BASIC_URL, kpiViewType);
+        kpiViewPage = KpiViewPage.goToPage(driver, BASIC_URL);
         kpiViewSetup = new KpiViewSetupPage(driver, webDriverWait);
         chartActionsPanel = new ChartActionsPanelPage(driver, webDriverWait);
         kpiToolbarPanel = new KpiToolbarPanelPage(driver, webDriverWait);
@@ -70,7 +69,7 @@ public class IndicatorsViewTest extends BaseTestCase {
     @Test(priority = 1, testName = "Highlighting and hiding data series", description = "Highlighting and hiding data series")
     @Description("I verify if KPI View works properly")
     public void verifyIfKpiViewWorksProperly(
-            @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
+            @Optional("All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators") String indicatorNodesToExpand,
             @Optional("DBTIME") String indicatorNodesToSelect,
             @Optional() String dimensionNodesToExpand,
             @Optional("DC Type: ETL_DC") String dimensionNodesToSelect,
@@ -96,7 +95,7 @@ public class IndicatorsViewTest extends BaseTestCase {
     @Test(priority = 2, testName = "Changing chart type", description = "Changing chart type")
     @Description("I verify if changing chart type works properly")
     public void verifyIfChartTypesWorksProperly(
-            @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
+            @Optional("All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators") String indicatorNodesToExpand,
             @Optional("DBTIME") String indicatorNodesToSelect,
             @Optional() String dimensionNodesToExpand,
             @Optional("DC Type: ETL_DC") String dimensionNodesToSelect,
@@ -123,7 +122,7 @@ public class IndicatorsViewTest extends BaseTestCase {
     @Test(priority = 3, testName = "Checking time period chooser", description = "Checking time period chooser")
     @Description("I verify if Time Period Chooser works properly")
     public void verifyIfPeriodChooserWorksProperly(
-            @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
+            @Optional("All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators") String indicatorNodesToExpand,
             @Optional("DBTIME") String indicatorNodesToSelect,
             @Optional() String dimensionNodesToExpand,
             @Optional("DC Type: ETL_DC") String dimensionNodesToSelect,
@@ -146,32 +145,10 @@ public class IndicatorsViewTest extends BaseTestCase {
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
-    @Test(priority = 4, testName = "Changing Y axis option", description = "Changing Y axis option")
-    @Description("I verify if Manual Y axis option works properly")
-    public void verifyIfYAxisOptionsWorksProperly(
-            @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
-            @Optional("DBTIME,LOADED") String indicatorNodesToSelect,
-            @Optional() String dimensionNodesToExpand,
-            @Optional("DC Type: THRES_DC") String dimensionNodesToSelect,
-            @Optional("Data Collection Statistics") String filterName
-    ) {
-        try {
-            kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
-            assertTrue(kpiViewPage.shouldSeeVisibleYaxis(2));
-
-            kpiToolbarPanel.chooseManualYaxis();
-            assertTrue(kpiViewPage.shouldSeeVisibleYaxis(1));
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            fail();
-        }
-    }
-
-    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
-    @Test(priority = 5, testName = "Enabling Miscellaneous options", description = "Enabling Miscellaneous options")
+    @Test(priority = 4, testName = "Enabling Miscellaneous options", description = "Enabling Miscellaneous options")
     @Description("I verify if Miscellaneous options work properly")
     public void verifyIfMiscellaneousOptionsWorkProperly(
-            @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
+            @Optional("All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators") String indicatorNodesToExpand,
             @Optional("DBTIME,AQ_TIME") String indicatorNodesToSelect,
             @Optional() String dimensionNodesToExpand,
             @Optional("DC Type: ETL_DC") String dimensionNodesToSelect,
@@ -196,10 +173,10 @@ public class IndicatorsViewTest extends BaseTestCase {
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
-    @Test(priority = 6, testName = "Enabling Compare with other period option", description = "Enabling Compare with other period option")
+    @Test(priority = 5, testName = "Enabling Compare with other period option", description = "Enabling Compare with other period option")
     @Description("I verify if Compare with other period option works properly")
     public void verifyIfCompareWithOtherPeriodWorksProperly(
-            @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
+            @Optional("All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators") String indicatorNodesToExpand,
             @Optional("AQ_TIME") String indicatorNodesToSelect,
             @Optional() String dimensionNodesToExpand,
             @Optional("DC Type: ETL_DC") String dimensionNodesToSelect,
@@ -220,10 +197,10 @@ public class IndicatorsViewTest extends BaseTestCase {
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
-    @Test(priority = 7, testName = "Verifying resize panel option", description = "Verifying resize panel option")
+    @Test(priority = 6, testName = "Verifying resize panel option", description = "Verifying resize panel option")
     @Description("I verify if resize panel option works properly")
     public void verifyIfResizePanelOptionWorksProperly(
-            @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
+            @Optional("All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators") String indicatorNodesToExpand,
             @Optional("AQ_TIME") String indicatorNodesToSelect,
             @Optional() String dimensionNodesToExpand,
             @Optional("DC Type: ETL_DC") String dimensionNodesToSelect,
@@ -252,10 +229,10 @@ public class IndicatorsViewTest extends BaseTestCase {
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
-    @Test(priority = 8, testName = "Verifying changing layout option", description = "Verifying changing layout option")
+    @Test(priority = 7, testName = "Verifying changing layout option", description = "Verifying changing layout option")
     @Description("I verify if changing layout option works properly")
     public void changingChartLayoutOption(
-            @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
+            @Optional("All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators") String indicatorNodesToExpand,
             @Optional("AQ_TIME") String indicatorNodesToSelect,
             @Optional() String dimensionNodesToExpand,
             @Optional("DC Type: ETL_DC") String dimensionNodesToSelect,
@@ -285,7 +262,7 @@ public class IndicatorsViewTest extends BaseTestCase {
     }
 
     @Parameters({"filterName", "indicator", "dimension"})
-    @Test(priority = 9, testName = "Search in indicators and dimensions trees", description = "Verify search from indicators and dimensions trees")
+    @Test(priority = 8, testName = "Search in indicators and dimensions trees", description = "Verify search from indicators and dimensions trees")
     @Description("Verify search from indicators and dimensions trees")
     public void searchIndicators(
             @Optional("Data Collection Statistics") String filterName,
@@ -305,10 +282,10 @@ public class IndicatorsViewTest extends BaseTestCase {
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
-    @Test(priority = 10, testName = "Clicking link to chart from chart actions", description = "Clicking link to chart from chart actions")
+    @Test(priority = 9, testName = "Clicking link to chart from chart actions", description = "Clicking link to chart from chart actions")
     @Description("Clicking link to chart from chart actions")
     public void checkLinkToIndicatorsView(
-            @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
+            @Optional("All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators") String indicatorNodesToExpand,
             @Optional("AQ_TIME") String indicatorNodesToSelect,
             @Optional() String dimensionNodesToExpand,
             @Optional("DC Type: ETL_DC") String dimensionNodesToSelect,
@@ -333,10 +310,10 @@ public class IndicatorsViewTest extends BaseTestCase {
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
-    @Test(priority = 11, testName = "Sharing view", description = "Sharing view by created link")
+    @Test(priority = 10, testName = "Sharing view", description = "Sharing view by created link")
     @Description("Sharing view by created link")
     public void sharePanelTest(
-            @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
+            @Optional("All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators") String indicatorNodesToExpand,
             @Optional("AQ_TIME") String indicatorNodesToSelect,
             @Optional() String dimensionNodesToExpand,
             @Optional("DC Type: ETL_DC") String dimensionNodesToSelect,
@@ -361,7 +338,7 @@ public class IndicatorsViewTest extends BaseTestCase {
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName", "dimensionFolderWithOptions"})
-    @Test(priority = 12, testName = "Display Child Objects", description = "Display series for child objects")
+    @Test(priority = 11, testName = "Display Child Objects", description = "Display series for child objects")
     @Description("Display series for child objects")
     public void childObjectTest(
             @Optional("All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators") String indicatorNodesToExpand,
@@ -388,10 +365,10 @@ public class IndicatorsViewTest extends BaseTestCase {
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
-    @Test(priority = 13, testName = "Change display type chart/table/pieChart", description = "Change display type chart/table/pieChart")
+    @Test(priority = 12, testName = "Change display type chart/table/pieChart", description = "Change display type chart/table/pieChart")
     @Description("Change display type chart/table/pieChart")
     public void changeDisplayType(
-            @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
+            @Optional("All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators") String indicatorNodesToExpand,
             @Optional("DBTIME") String indicatorNodesToSelect,
             @Optional() String dimensionNodesToExpand,
             @Optional("DC Type: THRES_DC") String dimensionNodesToSelect,
@@ -416,10 +393,10 @@ public class IndicatorsViewTest extends BaseTestCase {
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
-    @Test(priority = 14, testName = "Check topN Panel", description = "Check topN Panel")
+    @Test(priority = 13, testName = "Check topN Panel", description = "Check topN Panel")
     @Description("Check topN Panel")
     public void checkTopNPanelForDpe(
-            @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
+            @Optional("All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators") String indicatorNodesToExpand,
             @Optional("DBTIME") String indicatorNodesToSelect,
             @Optional() String dimensionNodesToExpand,
             @Optional("DC Type: THRES_DC") String dimensionNodesToSelect,
@@ -443,7 +420,7 @@ public class IndicatorsViewTest extends BaseTestCase {
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
-    @Test(priority = 15, testName = "Aggregation Method Check", description = "Aggregation Method Check")
+    @Test(priority = 14, testName = "Aggregation Method Check", description = "Aggregation Method Check")
     @Description("Aggregation Method Check")
     public void aggregationMethodCheck(
             @Optional("All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators") String indicatorNodesToExpand,
@@ -473,10 +450,10 @@ public class IndicatorsViewTest extends BaseTestCase {
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
-    @Test(priority = 16, testName = "Zoom in/zoom out check", description = "Zoom in/zoom out check")
+    @Test(priority = 15, testName = "Zoom in/zoom out check", description = "Zoom in/zoom out check")
     @Description("Zoom in/zoom out check")
     public void zoomInChartCheck(
-            @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
+            @Optional("All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators") String indicatorNodesToExpand,
             @Optional("DBTIME") String indicatorNodesToSelect,
             @Optional() String dimensionNodesToExpand,
             @Optional("DC Type: THRES_DC") String dimensionNodesToSelect,
@@ -498,10 +475,10 @@ public class IndicatorsViewTest extends BaseTestCase {
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
-    @Test(priority = 17, testName = "table settings: sorting, adding/removing attribute columns", description = "table settings: sorting, adding/removing attribute columns")
+    @Test(priority = 16, testName = "table settings: sorting, adding/removing attribute columns", description = "table settings: sorting, adding/removing attribute columns")
     @Description("table settings: sorting, adding/removing attribute columns")
     public void checkTableSettings(
-            @Optional("self:extPM:DC Indicators") String indicatorNodesToExpand,
+            @Optional("All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators") String indicatorNodesToExpand,
             @Optional("DBTIME") String indicatorNodesToSelect,
             @Optional() String dimensionNodesToExpand,
             @Optional("DC Type: THRES_DC,DC Type: PMSTA_DC") String dimensionNodesToSelect,

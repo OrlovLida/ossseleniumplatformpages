@@ -33,36 +33,21 @@ public class KpiViewPage extends BasePage {
     private static final String IND_VIEW_TABLE_ID = "ind-view-table";
     private static final String TOP_N_BARCHART_DFE_ID = "amchart-series-DFE_y-selected";
     private static final String TOP_N_BARCHART_DPE_ID = "amchart-series-DPE_y-selected";
-    private static final String INDICATORS_VIEW_URL = "Assurance/KPIView";
-    private static final String STANDALONE_INDICATORS_VIEW_URL = "indicators-view/indicators-view";
 
     public KpiViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
     }
 
     @Step("I Open KPI View")
-    public static KpiViewPage goToPage(WebDriver driver, String basicURL, KpiViewType kpiViewType) {
+    public static KpiViewPage goToPage(WebDriver driver, String basicURL) {
         WebDriverWait wait = new WebDriverWait(driver, 90);
 
-        String pageUrl = String.format("%s/#/view/%s", basicURL, chooseKpiView(kpiViewType));
+        String pageUrl = String.format("%s/#/view/indicators-view/indicators-view", basicURL);
         driver.get(pageUrl);
         waitForPageToLoad(driver, wait);
         log.info("Opened page: {}", pageUrl);
 
         return new KpiViewPage(driver, wait);
-    }
-
-    public enum KpiViewType {
-        INDICATORS_VIEW, STANDALONE_INDICATORS_VIEW
-    }
-
-    private static String chooseKpiView(KpiViewType kpiType) {
-        if (kpiType == null) {
-            return INDICATORS_VIEW_URL;
-        } else if (kpiType == KpiViewType.STANDALONE_INDICATORS_VIEW) {
-            return STANDALONE_INDICATORS_VIEW_URL;
-        }
-        return INDICATORS_VIEW_URL;
     }
 
     @Step("I see chart is displayed")
@@ -204,13 +189,6 @@ public class KpiViewPage extends BasePage {
     public boolean shouldSeeColorChart(String expectedColor) {
         String color = KpiChartWidget.create(driver, wait).getDataSeriesColor();
         return color.equals(expectedColor);
-    }
-
-    @Step("I should see 2 visible Y axis and 1 hidden Y axis")
-    public boolean shouldSeeVisibleYaxis(int expectedVisibleYAxisNumber) {
-        waitForPageToLoad(driver, wait);
-        int visibleYaxisNumber = KpiChartWidget.create(driver, wait).countVisibleYAxis();
-        return visibleYaxisNumber == expectedVisibleYAxisNumber;
     }
 
     @Step("I should see last sample time below chart")

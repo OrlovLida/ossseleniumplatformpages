@@ -1,22 +1,25 @@
 package com.oss.pages.bigdata.kqiview;
 
-import com.oss.framework.iaa.widgets.dpe.toolbarpanel.ExportPanel;
-import com.oss.framework.iaa.widgets.dpe.toolbarpanel.KpiToolbarPanel;
-import com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel;
-import com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsPanel;
-import com.oss.pages.BasePage;
-import io.qameta.allure.Step;
+import java.util.List;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
+import com.oss.framework.iaa.widgets.dpe.toolbarpanel.ExportPanel;
+import com.oss.framework.iaa.widgets.dpe.toolbarpanel.KpiToolbarPanel;
+import com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel;
+import com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsPanel;
+import com.oss.pages.BasePage;
 
-import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsPanel.MiscellaneousOption.*;
+import io.qameta.allure.Step;
+
+import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsPanel.MiscellaneousOption.DATA_COMPLETENESS;
+import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsPanel.MiscellaneousOption.LAST_SAMPLE_TIME;
+import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsPanel.MiscellaneousOption.SHOW_TIME_ZONE;
 import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsPanel.TimePeriodChooserOption.LATEST;
 import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsPanel.TimePeriodChooserOption.SMART;
-import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsPanel.YAxisOption.MANUAL;
 import static com.oss.framework.utils.DelayUtils.waitForPageToLoad;
 
 public class KpiToolbarPanelPage extends BasePage {
@@ -104,13 +107,6 @@ public class KpiToolbarPanelPage extends BasePage {
         for (OptionsPanel.AggregationMethodOption aggOption : toUnselect) {
             kpiToolbarPanel.openOptionsPanel().chooseAggregationMethodOption(aggOption);
         }
-    }
-
-    @Step("Set Y axis manual option")
-    public void chooseManualYaxis() {
-        log.info("Setting manual Y axis");
-        waitForPageToLoad(driver, wait);
-        kpiToolbarPanel.openOptionsPanel().setYAxisOption(MANUAL);
     }
 
     @Step("I enable Data Completeness option")
