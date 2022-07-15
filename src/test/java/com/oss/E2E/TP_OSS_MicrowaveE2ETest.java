@@ -282,7 +282,9 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
         openNetworkView();
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         addObjectToView(NAME_COMPONENT_ID, TEXT_FIELD, FIRST_INDOOR_UNIT_NAME);
+        waitForPageToLoad();
         addObjectToView(NAME_COMPONENT_ID, TEXT_FIELD, SECOND_INDOOR_UNIT_NAME);
+        waitForPageToLoad();
         networkViewPage.expandViewContentPanel();
         networkViewPage.selectObjectInViewContent(NAME_COLUMN_NAME, FIRST_INDOOR_UNIT_NAME);
         waitForPageToLoad();
@@ -296,7 +298,6 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
         networkViewPage.expandAttributesPanel();
         // Czekamy na: OSSWEB-18896
         //networkViewPage.applyConfigurationForAttributesPanel(MICROWAVE_CHANNEL_CONFIGURATION);
-        waitForPageToLoad();
         assertMicrowaveChannel(networkViewPage, firstMicrowaveChannelAttributes);
 
         networkViewPage.openTerminationsTab();
@@ -311,7 +312,9 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
         OldTable table = OldTable.createById(driver, webDriverWait, CONENT_TAB_ID);
         table.searchByAttributeWithLabel(NAME_COLUMN_NAME, TEXT_FIELD, MICROWAVE_CHANNEL_PARTIAL_NAME);
         firstMicrowaveChannel = getMicrowaveChannel(0);
+        waitForPageToLoad();
         networkViewPage.unselectObject(firstMicrowaveChannel);
+        waitForPageToLoad();
 
         networkViewPage.openWizardPage(MICROWAVE_CHANNEL_TRAIL_TYPE);
         waitForPageToLoad();
@@ -324,10 +327,14 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
         //Add Terminations using Terminations Tab
 
         networkViewPage.startEditingSelectedTrail();
+        waitForPageToLoad();
         secondMicrowaveChannel = getMicrowaveChannel(1);
+        waitForPageToLoad();
         table.clearColumnValue(NAME_COLUMN_NAME);
         networkViewPage.selectObjectInViewContent(NAME_COLUMN_NAME, FIRST_INDOOR_UNIT_NAME);
+        waitForPageToLoad();
         networkViewPage.selectObjectInViewContent(NAME_COLUMN_NAME, SECOND_INDOOR_UNIT_NAME);
+        waitForPageToLoad();
         networkViewPage.unselectObject(secondMicrowaveChannel);
         waitForPageToLoad();
         networkViewPage.addSelectedObjectsToTermination();
