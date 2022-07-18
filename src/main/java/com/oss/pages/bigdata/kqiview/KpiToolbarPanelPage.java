@@ -11,6 +11,7 @@ import com.oss.framework.iaa.widgets.dpe.toolbarpanel.ExportPanel;
 import com.oss.framework.iaa.widgets.dpe.toolbarpanel.KpiToolbarPanel;
 import com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel;
 import com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsPanel;
+import com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsSidePanel;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
@@ -25,6 +26,7 @@ import static com.oss.framework.utils.DelayUtils.waitForPageToLoad;
 public class KpiToolbarPanelPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(KpiToolbarPanelPage.class);
+    private static final String MANUAL_MODE = "Manual";
 
     private final KpiToolbarPanel kpiToolbarPanel;
 
@@ -163,5 +165,25 @@ public class KpiToolbarPanelPage extends BasePage {
         kpiToolbarPanel.selectDisplayType(displayTypeId);
         waitForPageToLoad(driver, wait);
         log.info("Setting display type to: {}", displayTypeId);
+    }
+
+    private OptionsSidePanel getOptionsSidePanel() {
+        return kpiToolbarPanel.openOptionsSidePanel();
+    }
+
+    @Step("Select Y axis: {yaxisName}")
+    public void selectYaxis(String yaxisName) {
+        getOptionsSidePanel().selectYAxis(yaxisName);
+        log.info("Selecting Y axis: {}", yaxisName);
+    }
+
+    @Step("Select Y axis mode: {mode}")
+    public void selectManualYaxisParameters(String maxValue, String minValue, boolean softLimit) {
+        getOptionsSidePanel().setYaxisMode(MANUAL_MODE);
+        log.info("Selecting Y axis mode to: Manual");
+        getOptionsSidePanel().setYaxisMaxAndMinValues(maxValue, minValue);
+        if (softLimit) {
+            getOptionsSidePanel().setOnSoftLimits();
+        }
     }
 }

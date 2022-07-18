@@ -59,7 +59,7 @@ public class BookmarkTest extends BaseTestCase {
         bookmarkManagerPage = BookmarkManagerPage.goToPage(driver, BASIC_URL);
     }
 
-    @Parameters({"kpiViewType", "indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName", "productName"})
+    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName", "productName"})
     @Test(priority = 1, testName = "Creating Bookmark", description = "Creating Bookmark")
     @Description("Creating Bookmark")
     public void createBookmark(
