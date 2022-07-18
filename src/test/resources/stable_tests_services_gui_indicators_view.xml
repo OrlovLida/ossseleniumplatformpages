@@ -1,105 +1,16 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="ServicesGuiIndicatorsView" thread-count="2" parallel="tests" verbose="1">
-    <test name="IndicatorsViewTestPart1">
-        <parameter name="indicatorNodesToExpand"
-                   value="All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators"/>
-        <parameter name="indicatorNodesToSelect" value="DBTIME"/>
-        <parameter name="dimensionNodesToExpand" value="Self Monitoring Package,MOs: self:DPE:IF Run Analysis"/>
-        <parameter name="dimensionNodesToSelect" value="DC Type: THRES_DC"/>
-        <parameter name="filterName" value="All Self Monitoring"/>
+    <test name="IndicatorsViewTests">
         <classes>
-            <class name="com.oss.dpe.IndicatorsViewTest">
-                <methods>
-                    <exclude name="verifyIfMiscellaneousOptionsWorkProperly"/>
-                    <exclude name="searchIndicators"/>
-                    <exclude name="checkLinkToIndicatorsView"/>
-                    <exclude name="aggregationMethodCheck"/>
-                    <exclude name="sharePanelTest"/>
-                    <exclude name="checkTableSettings"/>
-                </methods>
-            </class>
+            <class name="com.oss.dpe.IndicatorsViewTest"/>
         </classes>
     </test>
     <test name="IndicatorsViewTestPart2">
         <parameter name="indicatorNodesToExpand"
                    value="All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators"/>
-        <parameter name="indicatorNodesToSelect" value="DBTIME,LOADED"/>
-        <parameter name="dimensionNodesToExpand" value="Self Monitoring Package,MOs: self:DPE:IF Run Analysis"/>
-        <parameter name="dimensionNodesToSelect" value="DC Type: THRES_DC"/>
-        <parameter name="filterName" value="All Self Monitoring"/>
-        <classes>
-            <class name="com.oss.dpe.IndicatorsViewTest">
-                <methods>
-                    <include name="verifyIfMiscellaneousOptionsWorkProperly"/>
-                </methods>
-            </class>
-        </classes>
-    </test>
-    <test name="IndicatorsViewTestPart3">
-        <parameter name="indicator" value="DBTIME"/>
-        <parameter name="dimension" value="DC Type: PMSTA_DC"/>
-        <parameter name="filterName" value="All Self Monitoring"/>
-        <classes>
-            <class name="com.oss.dpe.IndicatorsViewTest">
-                <methods>
-                    <include name="searchIndicators"/>
-                </methods>
-            </class>
-        </classes>
-    </test>
-    <test name="IndicatorsViewTestPart4">
-        <parameter name="indicatorNodesToExpand"
-                   value="All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators"/>
-        <parameter name="indicatorNodesToSelect" value="AQ_TIME"/>
-        <parameter name="dimensionNodesToExpand" value="Self Monitoring Package,MOs: self:DPE:IF Run Analysis"/>
-        <parameter name="dimensionNodesToSelect" value="DC Type: THRES_DC"/>
-        <parameter name="filterName" value="All Self Monitoring"/>
-        <classes>
-            <class name="com.oss.dpe.IndicatorsViewTest">
-                <methods>
-                    <include name="checkLinkToIndicatorsView"/>
-                    <include name="sharePanelTest"/>
-                </methods>
-            </class>
-        </classes>
-    </test>
-    <test name="IndicatorsViewTestPart5">
-        <parameter name="indicatorNodesToExpand"
-                   value="All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators"/>
-        <parameter name="indicatorNodesToSelect" value="DBTIME,AQ_TIME"/>
-        <parameter name="dimensionNodesToExpand" value="Self Monitoring Package,MOs: self:DPE:IF Run Analysis"/>
-        <parameter name="dimensionNodesToSelect" value="DC Type: THRES_DC"/>
-        <parameter name="filterName" value="All Self Monitoring"/>
-        <classes>
-            <class name="com.oss.dpe.IndicatorsViewTest">
-                <methods>
-                    <include name="aggregationMethodCheck"/>
-                </methods>
-            </class>
-        </classes>
-    </test>
-    <test name="IndicatorsViewTestPart6">
-        <parameter name="indicatorNodesToExpand"
-                   value="All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators"/>
         <parameter name="indicatorNodesToSelect" value="DBTIME"/>
-        <parameter name="dimensionNodesToExpand" value="Self Monitoring Package,MOs: self:DPE:IF Run Analysis"/>
-        <parameter name="dimensionNodesToSelect" value="DC Type: THRES_DC,DC Type: PMSTA_DC"/>
-        <parameter name="filterName" value="All Self Monitoring"/>
-        <classes>
-            <class name="com.oss.dpe.IndicatorsViewTest">
-                <methods>
-                    <include name="checkTableSettings"/>
-                </methods>
-            </class>
-        </classes>
-    </test>
-    <test name="IndicatorsViewTestPart7">
-        <parameter name="indicatorNodesToExpand"
-                   value="All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators"/>
-        <parameter name="indicatorNodesToSelect" value="DBTIME"/>
-        <parameter name="dimensionNodesToExpand" value="Self Monitoring Package,MOs: self:DPE:IF Run Analysis"/>
         <parameter name="dimensionNodesToSelect" value="DC Type: THRES_DC"/>
-        <parameter name="filterName" value="All Self Monitoring"/>
+        <parameter name="filterName" value="Data Collection Statistics"/>
         <classes>
             <class name="com.oss.bigdata.kpiview.KpiViewTest">
                 <methods>
@@ -108,7 +19,7 @@
             </class>
         </classes>
     </test>
-    <test name="IndicatorsViewTestPart8 - Bookmarks Test">
+    <test name="IndicatorsViewTestPart3 - Bookmarks Test">
         <classes>
             <class name="com.oss.bigdata.dfe.BookmarkTest"/>
         </classes>
