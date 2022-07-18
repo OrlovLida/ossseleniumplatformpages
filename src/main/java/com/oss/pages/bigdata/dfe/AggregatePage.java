@@ -43,6 +43,8 @@ public class AggregatePage extends BaseDfePage {
     private static final String MEASURES_TABLE_ID = "aggregateMeasuresId";
     private static final String USED_IN_TAB = "Used In";
     private static final String USED_IN_TABLE_TAB = "usedInId";
+    private static final String COLUMN_REBUILD_STATUS_LABEL = "Rebuild Status";
+    private static final String CONFIGURATION_TABLE_TAB_ID = "aggregateConfigurationsId";
 
     private AggregatePage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -57,17 +59,17 @@ public class AggregatePage extends BaseDfePage {
     }
 
     @Step("I click add new Aggregate")
-    public void clickAddNewAggregate(){
+    public void clickAddNewAggregate() {
         clickContextActionAdd();
     }
 
     @Step("I click edit Aggregate")
-    public void clickEditAggregate(){
+    public void clickEditAggregate() {
         clickContextActionEdit();
     }
 
     @Step("I click delete Aggregate")
-    public void clickDeleteAggregate(){
+    public void clickDeleteAggregate() {
         clickContextActionDelete();
     }
 
@@ -129,6 +131,18 @@ public class AggregatePage extends BaseDfePage {
         return statusOfAggregate;
     }
 
+    @Step("I check if Rebuild Status is Valid in each rows")
+    public boolean checkIfRebuildStatusIsValid(String Status) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("I check if Rebuild Status is Valid");
+        for (int row = 0; row < getNumberOfRowInConfigurationsTabTable(); row++) {
+            if (checkRebuildStatus(row).equals(Status)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Step("Select Details tab")
     public void selectDetailsTab() {
         selectTab(TAB_WIDGET_ID, DETAILS_TAB);
@@ -138,6 +152,7 @@ public class AggregatePage extends BaseDfePage {
     public void selectConfigurationsTab() {
         selectTab(TAB_WIDGET_ID, CONFIGURATIONS_TAB);
     }
+
     @Step("Select Measures tab")
     public void selectMeasuresTab() {
         selectTab(TAB_WIDGET_ID, MEASURES_TAB);
@@ -192,5 +207,19 @@ public class AggregatePage extends BaseDfePage {
     @Override
     public String getSearchId() {
         return SEARCH_INPUT_ID;
+    }
+
+    @Step("Check number of rows in Configurations Tab Table")
+    private int getNumberOfRowInConfigurationsTabTable() {
+        return getConfigurationsTabTable().countRows(COLUMN_REBUILD_STATUS_LABEL);
+    }
+
+    private OldTable getConfigurationsTabTable() {
+        return OldTable.createById(driver, wait, CONFIGURATION_TABLE_TAB_ID);
+    }
+
+    @Step("Check Rebuild Status in selected row")
+    private String checkRebuildStatus(int row) {
+        return getConfigurationsTabTable().getCellValue(row, COLUMN_REBUILD_STATUS_LABEL);
     }
 }
