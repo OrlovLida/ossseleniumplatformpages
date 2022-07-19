@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import com.oss.framework.iaa.widgets.dpe.contextaction.ContextActionPanel;
 import com.oss.pages.BasePage;
+import com.oss.pages.bigdata.dfe.XDRBrowserPage;
 
 import io.qameta.allure.Step;
 
@@ -59,10 +60,11 @@ public class ChartActionsPanelPage extends BasePage {
     }
 
     @Step("I click link to XDR Browser")
-    public void clickLinkToXDRBrowser() {
+    public XDRBrowserPage clickLinkToXDRBrowser() {
         contextActionPanel.callAction(CHART_ACTIONS_LINKS_ID, LINK_TO_XDR_LABEL);
         waitForPageToLoad(driver, wait);
         log.info("Clicking on link to XDR Browser");
+        return new XDRBrowserPage(driver, wait);
     }
 
     @Step("I click link to chart")

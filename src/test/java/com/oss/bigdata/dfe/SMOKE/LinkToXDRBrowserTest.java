@@ -10,9 +10,7 @@ import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.pages.bigdata.dfe.XDRBrowserPage;
-import com.oss.pages.bigdata.kqiview.ChartActionsPanelPage;
 import com.oss.pages.bigdata.kqiview.KpiViewPage;
-import com.oss.pages.bigdata.kqiview.KpiViewSetupPage;
 
 import io.qameta.allure.Description;
 
@@ -24,14 +22,11 @@ public class LinkToXDRBrowserTest extends BaseTestCase {
     private static final String DIMENSION_IN_XDR_FILTER = "D3_01";
 
     private KpiViewPage kpiViewPage;
-    private KpiViewSetupPage kpiViewSetup;
-    private ChartActionsPanelPage chartActionsPanel;
+    private XDRBrowserPage xdrBrowserPage;
 
     @BeforeClass
     public void goToKpiView() {
         kpiViewPage = KpiViewPage.goToPage(driver, BASIC_URL);
-        kpiViewSetup = new KpiViewSetupPage(driver, webDriverWait);
-        chartActionsPanel = new ChartActionsPanelPage(driver, webDriverWait);
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToSelect", "dimensionNodesToExpand", "filterName"})
@@ -45,12 +40,10 @@ public class LinkToXDRBrowserTest extends BaseTestCase {
             @Optional("DFE Tests") String filterName
     ) {
         try {
-            kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
-
+            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
             Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
 
-            chartActionsPanel.clickLinkToXDRBrowser();
-            XDRBrowserPage xdrBrowserPage = new XDRBrowserPage(driver, webDriverWait);
+            xdrBrowserPage = kpiViewPage.getChartActionPanel().clickLinkToXDRBrowser();
 
             Assert.assertEquals(xdrBrowserPage.getETLName(), ETL_NAME);
             Assert.assertTrue(xdrBrowserPage.checkIfFilterExist(ETL_IN_XDR_FILTER));
