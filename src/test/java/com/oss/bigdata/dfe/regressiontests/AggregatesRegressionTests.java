@@ -68,8 +68,7 @@ public class AggregatesRegressionTests extends BaseTestCase {
         if (aggregateExists) {
             aggregatePage.selectFoundAggregate();
             aggregatePage.selectConfigurationsTab();
-            aggregatePage.checkIfRebuildStatusIsValid("Valid");
-            Assert.assertTrue(aggregatePage.checkIfRebuildStatusIsValid("Valid"));
+            Assert.assertTrue(aggregatePage.isRebuildStatusValid());
         } else {
             Assert.fail("Cannot find Aggregate: " + aggregateName);
         }

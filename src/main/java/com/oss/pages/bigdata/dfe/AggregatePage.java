@@ -132,15 +132,15 @@ public class AggregatePage extends BaseDfePage {
     }
 
     @Step("I check if Rebuild Status is Valid in each rows")
-    public boolean checkIfRebuildStatusIsValid(String Status) {
+    public boolean isRebuildStatusValid() {
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("I check if Rebuild Status is Valid");
         for (int row = 0; row < getNumberOfRowInConfigurationsTabTable(); row++) {
-            if (checkRebuildStatus(row).equals(Status)) {
-                return true;
+            if (!checkRebuildStatus(row).equals("Valid")) {
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     @Step("Select Details tab")
