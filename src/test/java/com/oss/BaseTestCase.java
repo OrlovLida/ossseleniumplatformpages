@@ -5,9 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.openqa.selenium.Cookie;
-import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -40,16 +39,16 @@ import static com.oss.configuration.Configuration.CONFIGURATION;
 
 @Listeners({TestListener.class})
 public class BaseTestCase implements IHookable {
-    
+
     public static final String BASIC_URL = CONFIGURATION.getUrl();
     public static final String MOCK_PATH = CONFIGURATION.getValue("mockPath");
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseTestCase.class);
-    
+
     public WebDriver driver;
     public WebDriverWait webDriverWait;
     protected HomePage homePage;
     protected EnvironmentRequestClient environmentRequestClient;
-    
+
     @BeforeClass
     public void openBrowser() {
         RestAssured.config = prepareRestAssureConfig();
@@ -65,7 +64,7 @@ public class BaseTestCase implements IHookable {
         addCookies(driver);
         this.homePage = loginPage.login();
     }
-    
+
     @AfterClass
     public void closeBrowser() {
         if (driver != null) {
@@ -79,7 +78,7 @@ public class BaseTestCase implements IHookable {
             driver.quit();
         }
     }
-    
+
     @Override
     public void run(IHookCallBack cb, ITestResult testResult) {
         cb.runTestMethod(testResult);
@@ -94,18 +93,18 @@ public class BaseTestCase implements IHookable {
             }
         }
     }
-    
+
     private Cookie createCookie() {
         return new Cookie("i18nCurrentLocale", "en", BASIC_URL.split("//")[1].split(":")[0], "/", null, false, false);
     }
-    
+
     private void addCookies(WebDriver driver) {
         boolean isWebRunner = Boolean.parseBoolean(CONFIGURATION.getValue("webRunner"));
         if (!isWebRunner) {
             driver.manage().addCookie(createCookie());
         }
     }
-    
+
     private Map<String, Object> getPreferences() {
         Map<String, Object> prefs = new HashMap<>();
         prefs.put("download.prompt_for_download", false);
@@ -114,7 +113,7 @@ public class BaseTestCase implements IHookable {
         prefs.put("download.default_directory", CONFIGURATION.getDownloadDir());
         return prefs;
     }
-    
+
     private ChromeOptions getAdditionalOptions() {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--no-sandbox");
@@ -128,22 +127,22 @@ public class BaseTestCase implements IHookable {
         options.setExperimentalOption("prefs", getPreferences());
         return options;
     }
-    
+
     private void setWebDriver(ChromeOptions options) {
         boolean isLocally = CONFIGURATION.isLocally();
-        
+
         if (!isLocally) {
             options.addArguments("--window-size=1920,1080");
             options.addArguments("--headless");
         }
     }
-    
+
     private void startChromeDriver() {
         ChromeOptions options = getAdditionalOptions();
         setWebDriver(options);
         driver = WebDriverManager.chromedriver().capabilities(options).create();
     }
-    
+
     private void startFirefoxDriver() {
         FirefoxOptions options = new FirefoxOptions();
         options.addArguments("--no-sandbox");
@@ -156,18 +155,18 @@ public class BaseTestCase implements IHookable {
         driver = WebDriverManager.firefoxdriver().capabilities(options).create();
         driver.manage().window().maximize();
     }
-    
+
     protected RestAssuredConfig prepareRestAssureConfig() {
         return RestAssuredConfig.config()
                 .objectMapperConfig(new ObjectMapperConfig().jackson2ObjectMapperFactory((clazz, s) -> JDK8ObjectMapper.getMapper()));
     }
-    
+
     private void logout() {
         LoginPanel.create(driver, webDriverWait).open().logOut();
-        WebElement webElement = driver.switchTo().activeElement();
-        if (webElement.isSelected()) {
-            webElement.sendKeys(Keys.ENTER);
+        try {
+            driver.switchTo().alert().accept();
+        } catch (NoAlertPresentException ignored) {
         }
     }
-    
+
 }
