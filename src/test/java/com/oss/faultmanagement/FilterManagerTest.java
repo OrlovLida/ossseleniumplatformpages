@@ -1,16 +1,22 @@
 package com.oss.faultmanagement;
 
-import com.oss.BaseTestCase;
-import com.oss.pages.faultmanagement.filtermanager.FMFilterManagerPage;
-import com.oss.utils.TestListener;
-import io.qameta.allure.Description;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
-import org.testng.annotations.*;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
+import org.testng.annotations.Test;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import com.oss.BaseTestCase;
+import com.oss.pages.faultmanagement.filtermanager.FMFilterManagerPage;
+import com.oss.utils.TestListener;
+
+import io.qameta.allure.Description;
 
 /**
  * @author Bartosz Nowak
@@ -59,6 +65,30 @@ public class FilterManagerTest extends BaseTestCase {
             Assert.assertTrue(fmFilterManagerPage.checkIfFolderNameExists(folderName + "_" + date));
             fmFilterManagerPage.deleteFolder(folderName + "_" + date);
             Assert.assertTrue(fmFilterManagerPage.checkIfFolderNameNotExists(folderName + "_" + date));
+
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            Assert.fail();
+        }
+    }
+
+    @Parameters({"folderName", "description", "filterName", "filterType"})
+    @Test(priority = 3, testName = "Create new Filter and delete it", description = "Filter creation verification")
+    @Description("I verify if Filter creates without error")
+    public void createNewFilter(
+            @Optional("Selenium_test_folder") String folderName,
+            @Optional("Selenium test description") String description,
+            @Optional("Selenium_test_filter") String filterName,
+            @Optional("Historical Alarm") String filterType
+    ) {
+        try {
+            String name = filterName + "_" + date;
+            fmFilterManagerPage.createFilter(name, description, filterType, folderName);
+            fmFilterManagerPage.searchForElement(name);
+            fmFilterManagerPage.expandFilterList(folderName);
+            Assert.assertTrue(fmFilterManagerPage.checkIfFilterExists(name));
+            fmFilterManagerPage.clickDeleteFilter(name);
+            Assert.assertFalse(fmFilterManagerPage.checkIfFilterExists(name));
 
         } catch (Exception e) {
             log.error(e.getMessage());
