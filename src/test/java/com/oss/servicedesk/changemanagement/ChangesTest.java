@@ -32,7 +32,11 @@ import static com.oss.pages.servicedesk.ServiceDeskConstants.CHANGE_ISSUE_TYPE;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.COMBOBOX_LINK_PROBLEM_ID;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.CSV_FILE;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.DETAILS_TABS_CONTAINER_ID;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.EXTERNAL_TYPE;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.FILE_TO_UPLOAD_PATH;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.INTERNAL_TYPE;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.SOURCE_TYPE;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.TYPE_COMMENT;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.USER_NAME;
 
 public class ChangesTest extends BaseTestCase {
@@ -185,12 +189,49 @@ public class ChangesTest extends BaseTestCase {
     public void addInternalComment() {
         issueDetailsPage.maximizeWindow(TABS_WIDGET_ID);
         messagesTab = issueDetailsPage.selectMessagesTab();
-        messagesTab.addInternalComment(INTERNAL_COMMENT_MSG);
+        messagesTab.addComment(INTERNAL_COMMENT_MSG, INTERNAL_TYPE);
 
         Assert.assertFalse(messagesTab.isMessagesTabEmpty());
         Assert.assertEquals(messagesTab.checkMessageType(0), "COMMENT");
         Assert.assertEquals(messagesTab.getMessageText(0), INTERNAL_COMMENT_MSG);
-        Assert.assertEquals(messagesTab.checkCommentType(0), "internal");
+        Assert.assertEquals(messagesTab.checkCommentType(0), INTERNAL_TYPE.toLowerCase());
+    }
+
+    @Test(priority = 9, testName = "Add External Comment", description = "Add External Comment")
+    @Description("Add External Comment")
+    public void addExternalComment() {
+        issueDetailsPage.maximizeWindow(TABS_WIDGET_ID);
+        messagesTab = issueDetailsPage.selectMessagesTab();
+        messagesTab.addComment(INTERNAL_COMMENT_MSG + EXTERNAL_TYPE, EXTERNAL_TYPE);
+
+        Assert.assertFalse(messagesTab.isMessagesTabEmpty());
+        Assert.assertEquals(messagesTab.checkMessageType(0), TYPE_COMMENT);
+        Assert.assertEquals(messagesTab.getMessageText(0), INTERNAL_COMMENT_MSG + EXTERNAL_TYPE);
+        Assert.assertEquals(messagesTab.checkCommentType(0), EXTERNAL_TYPE.toLowerCase());
+    }
+
+    @Test(priority = 10, testName = "Add Source Comment", description = "Add Source Comment")
+    @Description("Add Source Comment")
+    public void addSourceComment() {
+        issueDetailsPage.maximizeWindow(TABS_WIDGET_ID);
+        messagesTab = issueDetailsPage.selectMessagesTab();
+        messagesTab.addComment(INTERNAL_COMMENT_MSG + SOURCE_TYPE, SOURCE_TYPE);
+
+        Assert.assertFalse(messagesTab.isMessagesTabEmpty());
+        Assert.assertEquals(messagesTab.checkMessageType(0), TYPE_COMMENT);
+        Assert.assertEquals(messagesTab.getMessageText(0), INTERNAL_COMMENT_MSG + SOURCE_TYPE);
+        Assert.assertEquals(messagesTab.checkCommentType(0), SOURCE_TYPE.toLowerCase());
+    }
+
+    @Test(priority = 11, testName = "Filtering Comments", description = "Filtering Comments")
+    @Description("Filtering Comments")
+    public void filterComments() {
+        issueDetailsPage.maximizeWindow(TABS_WIDGET_ID);
+        messagesTab = issueDetailsPage.selectMessagesTab();
+        Assert.assertFalse(messagesTab.isMessagesTabEmpty());
+        messagesTab.filterMessages(TYPE_COMMENT);
+        messagesTab.filterComments(INTERNAL_TYPE);
+        Assert.assertEquals(messagesTab.checkCommentType(0), INTERNAL_TYPE.toLowerCase());
     }
 
     @Parameters({"RelatedChangeID"})

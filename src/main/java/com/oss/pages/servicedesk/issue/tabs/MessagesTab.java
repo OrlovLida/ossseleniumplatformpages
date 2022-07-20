@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.inputs.Button;
+import com.oss.framework.components.inputs.ComponentFactory;
+import com.oss.framework.components.inputs.Input;
 import com.oss.framework.iaa.widgets.list.MessageListWidget;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tabs.TabsWidget;
@@ -15,6 +17,7 @@ import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
 import io.qameta.allure.Step;
 
 import static com.oss.pages.servicedesk.ServiceDeskConstants.TABS_WIDGET_ID;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.TYPE_COMMENT;
 
 public class MessagesTab extends BaseSDPage {
 
@@ -26,6 +29,9 @@ public class MessagesTab extends BaseSDPage {
     private static final String CREATE_NEW_NOTIFICATION_BUTTON_LABEL = "Create New Notification";
     private static final String MARK_AS_IMPORTANT_LABEL = "Mark as important";
     private static final String NEW_NOTIFICATION_PROMPT_ID = "notification-wizard_prompt-card";
+    private static final String COMMENT_TYPE_COMBOBOX_ID = "comment-type-combobox";
+    private static final String FILTER_MESSAGES_COMBOBOX_ID = "filter-messages";
+    private static final String FILTER_COMMENTS_COMBOBOX_ID = "filter-comments";
 
     public MessagesTab(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -41,6 +47,7 @@ public class MessagesTab extends BaseSDPage {
     @Step("Click create in comment editor")
     public void clickCreateCommentButton() {
         Button.createByLabel(driver, CREATE_BUTTON_LABEL).click();
+        DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Click create comment button");
     }
 
@@ -48,6 +55,12 @@ public class MessagesTab extends BaseSDPage {
     public void enterCommentMessage(String message) {
         setValueInHtmlEditor(message, COMMENT_EDITOR_ID);
         log.info("Comment message is entered");
+    }
+
+    @Step("Select comment type: {commentType}")
+    public void selectCommentType(String commentType) {
+        getInput(COMMENT_TYPE_COMBOBOX_ID).setSingleStringValue(commentType);
+        log.info("Selecting comment type: {}", commentType);
     }
 
     @Step("Create new notification on Messages Tab")
@@ -89,14 +102,16 @@ public class MessagesTab extends BaseSDPage {
     }
 
     @Step("Add internal comment")
-    public void addInternalComment(String commentMessage) {
+    public void addComment(String commentMessage, String commentType) {
         clickCreateNewCommentButton();
         enterCommentMessage(commentMessage);
+        selectCommentType(commentType);
         clickCreateCommentButton();
     }
 
     @Step("Check Comment type")
     public String checkCommentType(int messageIndex) {
+        DelayUtils.waitForPageToLoad(driver, wait);
         return getMessageListWidget().getMessageItems().get(messageIndex).getCommentType();
     }
 
@@ -104,6 +119,26 @@ public class MessagesTab extends BaseSDPage {
     public void markAsImportant(int messageIndex) {
         getMessageListWidget().getMessageItems().get(messageIndex).clickMessageAction(MARK_AS_IMPORTANT_LABEL);
         log.info("Marking message as important");
+    }
+
+    @Step("Filter messages by: {type}")
+    public void filterMessages(String type) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getInput(FILTER_MESSAGES_COMBOBOX_ID).setSingleStringValue(type);
+        log.info("Filtering messages by: {}", type);
+    }
+
+    @Step("Filter comments by: {type}")
+    public void filterComments(String type) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        if (getInput(FILTER_MESSAGES_COMBOBOX_ID).getStringValue().equals(TYPE_COMMENT)) {
+            getInput(FILTER_COMMENTS_COMBOBOX_ID).setSingleStringValue(type);
+            log.info("Filtering comments by: {}", type);
+        }
+    }
+
+    private Input getInput(String componentId) {
+        return ComponentFactory.create(componentId, driver, wait);
     }
 
     private MessageListWidget getMessageListWidget() {
