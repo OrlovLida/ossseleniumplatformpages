@@ -65,7 +65,8 @@ public class BookmarkManagerPage extends BaseManagerPage {
 
     @Step("Click Delete Bookmark")
     public void clickDeleteBookmark(String bookmarkName) {
-        clickDeleteElement(CONFIRM_DELETE_BUTTON_ID, bookmarkName);
+        clickDeleteElementOnList(bookmarkName);
+        confirmDeleteElement(CONFIRM_DELETE_BUTTON_ID);
         log.info("Click delete Bookmark");
     }
 

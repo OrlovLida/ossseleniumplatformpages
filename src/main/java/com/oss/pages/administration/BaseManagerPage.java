@@ -50,9 +50,8 @@ public abstract class BaseManagerPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    @Step("Click Delete Element")
-    public void clickDeleteElement(String confirmDeleteButtonId, String elementName) {
-        clickDeleteElementOnList(elementName);
+    @Step("Confirm Delete Element")
+    public void confirmDeleteElement(String confirmDeleteButtonId) {
         Button.createById(driver, confirmDeleteButtonId).click();
         DelayUtils.waitForPageToLoad(driver, wait);
     }

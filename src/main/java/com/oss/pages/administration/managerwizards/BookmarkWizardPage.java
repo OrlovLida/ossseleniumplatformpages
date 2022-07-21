@@ -5,7 +5,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.prompts.Popup;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.BasePage;
@@ -33,13 +32,13 @@ public class BookmarkWizardPage extends BasePage {
 
     @Step("Fill Bookmark Name")
     private void fillBookmarkName(String bookmarkName) {
-        Popup.create(driver, wait).setComponentValue(BOOKMARK_NAME_FIELD_ID, bookmarkName, Input.ComponentType.TEXT_FIELD);
+        Popup.create(driver, wait).setComponentValue(BOOKMARK_NAME_FIELD_ID, bookmarkName);
         log.info("I fill bookmark name with: {}", bookmarkName);
     }
 
     @Step("Fill Bookmark Category")
     private void fillBookmarkCategory(String categoryName) {
-        Popup.create(driver, wait).setComponentValue(BOOKMARK_CATEGORY_ID, categoryName, Input.ComponentType.COMBOBOX);
+        Popup.create(driver, wait).setComponentValue(BOOKMARK_CATEGORY_ID, categoryName);
         log.info("I fill category with: {}", categoryName);
     }
 
