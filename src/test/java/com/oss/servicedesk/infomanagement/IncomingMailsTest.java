@@ -12,13 +12,17 @@ import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
 
 import io.qameta.allure.Description;
 
+import static com.oss.pages.servicedesk.ServiceDeskConstants.COMMON_WIZARD_ID;
+
 public class IncomingMailsTest extends BaseTestCase {
     private MessagesPage messagesPage;
     private SDWizardPage sdWizardPage;
+    private String createdObjectID;
 
     private static final String DATE_ID_IN_FILTER_PANEL = "receivedDate";
     private static final String MESSAGE_STATUS_COMBOBOX_ID = "notificationStatus";
     private static final String MESSAGE_STATUS = "Manual Processing";
+    private static final String CONTEXT_TYPE = "context-object-wizard-components-context-type";
 
     @BeforeMethod
     @Parameters({"MessageSubject"})
@@ -44,7 +48,7 @@ public class IncomingMailsTest extends BaseTestCase {
         messagesPage.selectFirstMessage();
         String date = messagesPage.getMessageDate();
         sdWizardPage = messagesPage.clickAssignToObject();
-        sdWizardPage.insertValueToComponent("TroubleTicket", "context-object-wizard-components-context-type");
+        sdWizardPage.insertValueToComponent("TroubleTicket", CONTEXT_TYPE);
         sdWizardPage.insertValueToComponent(ticketID, "context-object-wizard-components-context-object");
         sdWizardPage.clickAcceptButtonInWizard();
         messagesPage.clearAllFilters();
@@ -56,5 +60,33 @@ public class IncomingMailsTest extends BaseTestCase {
 
         Assert.assertEquals(messagesPage.getMessageStatus(), "Received");
         Assert.assertEquals(messagesPage.getMessageContext(), "TroubleTicket #" + ticketID);
+    }
+
+    @Parameters({"MessageSubject"})
+    @Test(priority = 2, testName = "Create object", description = "Create object")
+    @Description("Create object")
+    public void createObject(
+            @Optional("SeleniumTest") String messageSubject
+    ) {
+        messagesPage.selectFirstMessage();
+        String date = messagesPage.getMessageDate();
+        sdWizardPage = messagesPage.getNotificationPreview().clickCreateObject();
+        sdWizardPage.insertValueToComponent("TroubleTicket", CONTEXT_TYPE);
+        sdWizardPage.insertValueToComponent("CTT", "context-object-wizard-components-context-subtype");
+        sdWizardPage.clickAcceptButtonInWizard();
+
+        sdWizardPage = new SDWizardPage(driver, webDriverWait, COMMON_WIZARD_ID);
+        sdWizardPage.createTicket("TEST_MO", "ca_kodrobinska");
+        createdObjectID = messagesPage.getIdFromMessage();
+
+        messagesPage.clearAllFilters();
+
+        messagesPage.filterByDate(DATE_ID_IN_FILTER_PANEL, date + " - " + date);
+        messagesPage.searchFullText(messageSubject);
+
+        Assert.assertFalse(messagesPage.isMessagesTableEmpty());
+
+        Assert.assertEquals(messagesPage.getMessageStatus(), "Received");
+        Assert.assertEquals(messagesPage.getMessageContext(), "TroubleTicket #" + createdObjectID);
     }
 }

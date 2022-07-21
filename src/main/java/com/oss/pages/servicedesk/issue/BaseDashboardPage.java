@@ -34,15 +34,6 @@ public abstract class BaseDashboardPage extends BaseSDPage {
         return driver.getCurrentUrl().contains(getDashboardURL(basicURL, dashboardName));
     }
 
-    public String getIdFromMessage() {
-        if (!getMessageFromPrompt().isEmpty()) {
-            String[] splitMessage = getMessageFromPrompt().split(" ");
-            log.info("id is: {}", splitMessage[1]);
-            return splitMessage[1];
-        }
-        return "No message is shown";
-    }
-
     public String getAttributeFromTable(int index, String attributeName) {
         DelayUtils.waitForPageToLoad(driver, wait);
         String attributeValue = getTable().getCellValue(index, attributeName);
