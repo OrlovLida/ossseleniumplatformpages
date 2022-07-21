@@ -121,7 +121,7 @@ public class SDWizardPage extends BaseSDPage {
         log.info("Insert Expected resolution date: plus 5 days from now");
     }
 
-    @Step("Insert Event Time: plus 5 days from now")
+    @Step("Insert Event Time")
     public void enterEventTime() {
         String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN));
         wizard.setComponentValue(EVENT_TIME_ID, date, Input.ComponentType.TEXT_FIELD);
