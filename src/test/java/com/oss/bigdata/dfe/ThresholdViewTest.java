@@ -32,7 +32,6 @@ public class ThresholdViewTest extends BaseTestCase {
     private static final String MO_ID_PATTERN = "$[d1.d1]";
     private static final String CATEGORIES_TYPE = "OTT Service";
     private static final String CATEGORY_COLUMN_LABEL = "Category";
-    private static final String SEARCH_CATEGORIES_ID = "category";
     private ThresholdPage thresholdPage;
     private String thresholdName;
     private String updatedThresholdName;
@@ -88,7 +87,7 @@ public class ThresholdViewTest extends BaseTestCase {
                 log.info("Cannot find existing edited threshold {}", updatedThresholdName);
             }
             Assert.assertTrue(thresholdIsEdited);
-            Assert.assertEquals(thresholdPage.getCategoryName(0, CATEGORY_COLUMN_LABEL), CATEGORIES_TYPE);
+            Assert.assertEquals(thresholdPage.getCategoryName(0), CATEGORIES_TYPE);
         } else {
             log.error("Cannot find existing threshold {}", thresholdName);
             Assert.fail("Cannot find existing threshold " + thresholdName);
@@ -98,8 +97,8 @@ public class ThresholdViewTest extends BaseTestCase {
     @Test(priority = 3, testName = "Check Categories", description = "Check Categories")
     @Description("Check Categories")
     public void checkCategories() {
-        thresholdPage.searchCategories(CATEGORIES_TYPE, SEARCH_CATEGORIES_ID);
-        Assert.assertEquals(thresholdPage.getCategoryName(0, CATEGORY_COLUMN_LABEL),  CATEGORIES_TYPE);
+        thresholdPage.searchCategories(CATEGORIES_TYPE);
+        Assert.assertEquals(thresholdPage.getCategoryName(0), CATEGORIES_TYPE);
     }
 
     @Test(priority = 4, testName = "Delete Threshold", description = "Delete Threshold")

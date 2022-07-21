@@ -23,7 +23,7 @@ public class AggregatesRegressionTests extends BaseTestCase {
     @Test(priority = 1, testName = "Check if Aggregates View is opened", description = "Check if Aggregates View is opened")
     @Description("Check if Aggregates View is opened")
     public void checkAggregatesView() {
-        Assert.assertEquals(driver.getTitle(), "Aggregates");
+        Assert.assertEquals(aggregatePage.getViewTitle(), "Aggregates");
     }
 
     @Parameters({"aggregateName"})

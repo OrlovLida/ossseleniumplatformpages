@@ -23,7 +23,7 @@ public class ETLRegressionTests extends BaseTestCase {
     @Test(priority = 1, testName = "Check ETL View", description = "ETL Data Collections View is opening")
     @Description("ETL Data Collections View is opening")
     public void checkETLView() {
-        Assert.assertEquals(driver.getTitle(), "ETL Data Collections");
+        Assert.assertEquals(etlDataCollectionsPage.getViewTitle(), "ETL Data Collections");
     }
 
     @Parameters({"etlName"})
