@@ -5,7 +5,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class SummaryTab extends NotesTab {
 
-    private static final String SUMMARY_TEXT_FIELD_ID = "_summaryApp";
+    private static final String SUMMARY_TEXT_FIELD_ID = "OLD_TEXT_FIELD_APP-_summaryApp";
 
     public SummaryTab(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);

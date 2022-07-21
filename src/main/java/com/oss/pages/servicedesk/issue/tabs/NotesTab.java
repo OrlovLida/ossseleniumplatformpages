@@ -24,7 +24,7 @@ public abstract class NotesTab extends BaseSDPage {
     }
 
     private Input getCommentTextFieldComponent() {
-        return ComponentFactory.create(getTextFieldId(), Input.ComponentType.COMMENT_TEXT_FIELD, driver, wait);
+        return ComponentFactory.create(getTextFieldId(), driver, wait);
     }
 
     public abstract String getTextFieldId();

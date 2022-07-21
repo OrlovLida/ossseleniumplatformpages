@@ -5,7 +5,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class ProblemSolutionTab extends NotesTab {
 
-    private static final String PROBLEM_SOLUTION_COMPONENT_ID = "_problemSolutionWidget";
+    private static final String PROBLEM_SOLUTION_COMPONENT_ID = "OLD_TEXT_FIELD_APP-_problemSolutionWidget";
 
     public ProblemSolutionTab(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
