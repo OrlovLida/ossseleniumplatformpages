@@ -234,6 +234,9 @@ public class DeviceWizardPage extends BasePage {
 
     @Step("Click Accept button in Create Device Wizard")
     public void accept() {
+        if (isNextStepPresent()) {
+            next();
+        }
         getDeviceWizard().clickAccept();
     }
 
