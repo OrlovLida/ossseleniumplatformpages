@@ -242,6 +242,9 @@ public class DeviceWizardPage extends BasePage {
 
     @Step("Click Accept button in Update Device Wizard")
     public void acceptUpdateWizard() {
+        if (isNextStepPresent()) {
+            nextUpdateWizard();
+        }
         getDeviceWizard().clickButtonById(ACCEPT_UPDATE_WIZARD_BUTTON_DATA_ATTRIBUTE_NAME);
     }
 

@@ -39,7 +39,7 @@ public class SublocationWizardPage extends BasePage {
 
     @Step("Set Sublocation Precise Location")
     public void setPreciseLocation(String preciseLocation) {
-        wizard.setComponentValue(PRECISE_LOCATION, preciseLocation, ComponentType.SEARCH_FIELD);
+        wizard.getComponent(PRECISE_LOCATION).setSingleStringValueContains(preciseLocation);
     }
 
     @Step("Set Width")
