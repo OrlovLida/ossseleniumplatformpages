@@ -5,7 +5,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.list.DraggableList;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.EditableList;
@@ -31,13 +30,13 @@ public class FMCreateWAMVPage extends BasePage {
 
     @Step("I set Name of the WAMV")
     public void setName(String name) {
-        folderWizard.getComponent(NAME_TEXT_FIELD_ID, Input.ComponentType.TEXT_FIELD).setSingleStringValue(name);
+        folderWizard.setComponentValue(NAME_TEXT_FIELD_ID, name);
         log.info("Set WAMV name {}", name);
     }
 
     @Step("I set description of the WAMV")
     public void setDescription(String description) {
-        folderWizard.getComponent(DESCRIPTION_TEXT_FIELD_ID, Input.ComponentType.TEXT_AREA).setSingleStringValue(description);
+        folderWizard.setComponentValue(DESCRIPTION_TEXT_FIELD_ID, description);
         log.info("Add following description {} to WAMV", description);
     }
 
