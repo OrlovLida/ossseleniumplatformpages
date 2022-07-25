@@ -30,8 +30,6 @@ public class KpiViewPage extends KpiViewSetupPage {
     private static final String SAVE_BOOKMARK_BUTTON_ID = "ButtonSaveBookmark";
     private static final String CHILD_OBJECT_LEVEL_INPUT_ID = "SelectChildMOLevelChanged";
     private static final String IND_VIEW_TABLE_ID = "ind-view-table";
-    private static final String TOP_N_BARCHART_DFE_ID = "amchart-series-DFE_y-selected";
-    private static final String TOP_N_BARCHART_DPE_ID = "amchart-series-DPE_y-selected";
 
     public KpiViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -61,12 +59,6 @@ public class KpiViewPage extends KpiViewSetupPage {
 
     private KpiChartWidget getKpiChartWidget() {
         return KpiChartWidget.create(driver, wait);
-    }
-
-    @Step("I hover over some point")
-    public void hoverOverPoint() {
-        log.info("Hovering over some point");
-        getKpiChartWidget().hoverMouseOverPoint();
     }
 
     @Step("Attach exported chart to report")
@@ -158,7 +150,7 @@ public class KpiViewPage extends KpiViewSetupPage {
 
     @Step("I double click on bar in TopN BarChart")
     public void doubleClickTopNDPE() {
-        getKpiChartWidget().doubleClickTopNBar(TOP_N_BARCHART_DPE_ID);
+        getKpiChartWidget().doubleClickTopNBar();
         waitForPageToLoad(driver, wait);
     }
 
@@ -191,12 +183,12 @@ public class KpiViewPage extends KpiViewSetupPage {
 
     @Step("I should see topN bar chart displayed with DFE data")
     public boolean dfeTopNBarChartIsDisplayed() {
-        return getKpiChartWidget().isTopNBarChartIsPresent(TOP_N_BARCHART_DFE_ID);
+        return getKpiChartWidget().isTopNBarChartIsPresent();
     }
 
     @Step("I should see topN bar chart displayed with DPE data")
     public boolean dpeTopNBarChartIsDisplayed() {
-        return getKpiChartWidget().isTopNBarChartIsPresent(TOP_N_BARCHART_DPE_ID);
+        return getKpiChartWidget().isTopNBarChartIsPresent();
     }
 
     @Step("I should see bar chart displayed")

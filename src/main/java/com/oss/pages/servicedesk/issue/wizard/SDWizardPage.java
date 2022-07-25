@@ -56,7 +56,7 @@ public class SDWizardPage extends BaseSDPage {
     private static final String TASK_WIZARD_NAME = "name";
     private static final String TASK_WIZARD_ASSIGNEE = "assignee";
     private static final String TASK_WIZARD_LABEL = "label";
-    private static final String TASK_WIZARD_CREATE_TASK_BUTTON = "_createTaskSubmitId-1";
+    private static final String TASK_WIZARD_CREATE_TASK_BUTTON = "SaveButtonId";
 
     private final MOStep moStep;
     private final Wizard wizard;
