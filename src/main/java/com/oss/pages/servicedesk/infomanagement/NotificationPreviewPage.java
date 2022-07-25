@@ -1,10 +1,8 @@
 package com.oss.pages.servicedesk.infomanagement;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.iaa.widgets.components.NotificationPreview;
 import com.oss.pages.servicedesk.BaseSDPage;
 import com.oss.pages.servicedesk.issue.wizard.SDWizardPage;
@@ -45,7 +43,7 @@ public class NotificationPreviewPage extends BaseSDPage {
 
     @Step("Create Object from notification")
     public SDWizardPage clickCreateObject() {
-        ActionsContainer.createFromParent(driver.findElement(By.xpath("//div[@class='notification-preview__context-buttons']")), driver, wait).callActionById(CREATE_OBJECT_ID);
+        notificationPreview.getActionsContainer().callActionById(CREATE_OBJECT_ID);
         return new SDWizardPage(driver, wait, CREATE_OBJECT_PROMPT_ID);
     }
 }
