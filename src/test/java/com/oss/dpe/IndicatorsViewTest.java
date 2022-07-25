@@ -531,4 +531,29 @@ public class IndicatorsViewTest extends BaseTestCase {
             fail(e.getMessage());
         }
     }
+
+    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
+    @Test(priority = 17, testName = "Stacked chart", description = "Check setting to stacked chart")
+    @Description("Check setting to stacked chart")
+    public void checkStackingChart(
+            @Optional("All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators") String indicatorNodesToExpand,
+            @Optional("LOADED,EXTRACTED") String indicatorNodesToSelect,
+            @Optional() String dimensionNodesToExpand,
+            @Optional("DC Type: THRES_DC") String dimensionNodesToSelect,
+            @Optional("Data Collection Statistics") String filterName
+    ) {
+        try {
+            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(2));
+
+            kpiViewPage.getChartActionPanel().clickBarChartType();
+            kpiViewPage.getChartActionPanel().clickStackedButton();
+            assertEquals(kpiViewPage.getChartActionPanel().getStackedButtonTitle(), "Change to 100% stacked chart");
+
+            kpiViewPage.getChartActionPanel().clickStackedButton();
+            assertEquals(kpiViewPage.getChartActionPanel().getStackedButtonTitle(), "Change to not stacked chart");
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
 }

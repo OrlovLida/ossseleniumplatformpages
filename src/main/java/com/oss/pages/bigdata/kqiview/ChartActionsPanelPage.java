@@ -23,6 +23,7 @@ public class ChartActionsPanelPage extends BasePage {
     private static final String LINE_CHART_BUTTON_ID = "dropdown-list-button_line";
     private static final String CHART_COLOR_BUTTON_ID = "chart-color-button";
     private static final String COLOR_PICKER_CLASS = "colorPickerWrapper";
+    private static final String STACKED_BUTTON_ID = "stacked-button";
     private static final String CHART_ACTIONS_LINKS_ID = "external-links-button";
     private static final String LINK_TO_XDR_LABEL = "Open xDR for t:SMOKE#ETLforKqis. Time condition limited to last 1 hour(s) from chosen period.";
     private static final String LINK_TO_INDICATORS_VIEW_CHART_LABEL = "Indicators View - Chart";
@@ -57,6 +58,16 @@ public class ChartActionsPanelPage extends BasePage {
     public void chooseDataSeriesColor() {
         log.info("Changing first data series color");
         contextActionPanel.callAction(CHART_COLOR_BUTTON_ID, COLOR_PICKER_CLASS, "rgb(150, 65, 54)");
+    }
+
+    @Step("Click Stacked button")
+    public void clickStackedButton() {
+        log.info("Clicking stacked button");
+        contextActionPanel.callAction(STACKED_BUTTON_ID);
+    }
+
+    public String getStackedButtonTitle() {
+        return contextActionPanel.getButtonTitle(STACKED_BUTTON_ID);
     }
 
     @Step("I click link to XDR Browser")
