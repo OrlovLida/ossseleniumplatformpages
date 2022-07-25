@@ -18,11 +18,12 @@ public class TimeSeriesViewPage extends BaseACDPage {
 
     private static final Logger log = LoggerFactory.getLogger(TimeSeriesViewPage.class);
 
-    private static final String TS_TABLE_ID = "abgadSettingsTabsContainer";
+    private static final String TIME_SERIES_TABLE_ID = "abgadSettingsTabsContainer";
     private static final String ADD_TIME_SERIES_WIZARD_ID = "addTimeSeries";
     private static final String INDICATOR_TYPE_RADIO_BUTTON_ID = "radioButtonIndicatorTypeId";
     private static final String TIME_SERIES_ID_LABEL = "Time Series Id";
     private static final String TIME_SERIES_STATUS_LABEL = "Is Removed";
+    private static final String INDICATOR_TYPE_RADIO_BUTTON_VALUE = "Any - All values";
     private String timeSeriesID;
     private String timeSeriesStatus;
 
@@ -53,7 +54,7 @@ public class TimeSeriesViewPage extends BaseACDPage {
     public void selectRadioButton() {
         Input radioButton = Wizard.createByComponentId(driver, wait, ADD_TIME_SERIES_WIZARD_ID)
                 .getComponent(INDICATOR_TYPE_RADIO_BUTTON_ID);
-        radioButton.setSingleStringValue("Any - All values");
+        radioButton.setSingleStringValue(INDICATOR_TYPE_RADIO_BUTTON_VALUE);
         log.info("I select Indicator Technical Type");
     }
 
@@ -64,40 +65,40 @@ public class TimeSeriesViewPage extends BaseACDPage {
         log.info("I select {} checkbox", checkboxId);
     }
 
-    @Step("I check if TS table is not empty")
-    public boolean isDataInTSTable() {
+    @Step("I check if Time Series table is not empty")
+    public boolean isDataInTimeSeriesTable() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        return !getTSTable().hasNoData();
+        return !getTimeSeriesTable().hasNoData();
     }
 
-    private OldTable getTSTable() {
-        return OldTable.createById(driver, wait, TS_TABLE_ID);
+    private OldTable getTimeSeriesTable() {
+        return OldTable.createById(driver, wait, TIME_SERIES_TABLE_ID);
     }
 
-    public String getTSId() {
+    public String getTimeSeriesId() {
 
-        if (!isDataInTSTable()) {
+        if (!isDataInTimeSeriesTable()) {
             log.info("Table doesn't have data for chosen filters. ID cannot be found");
         } else {
-            timeSeriesID = getTSTable().getCellValue(0, TIME_SERIES_ID_LABEL);
+            timeSeriesID = getTimeSeriesTable().getCellValue(0, TIME_SERIES_ID_LABEL);
         }
         return timeSeriesID;
     }
 
-    public String getTSStatus() {
+    public String getTimeSeriesStatus() {
 
-        if (!isDataInTSTable()) {
-            log.info("Table doesn't have data for chosen filters. ID cannot be found");
+        if (!isDataInTimeSeriesTable()) {
+            log.info("Table doesn't have data for chosen filters. Status cannot be found");
         } else {
-            timeSeriesStatus = getTSTable().getCellValue(0, TIME_SERIES_STATUS_LABEL);
+            timeSeriesStatus = getTimeSeriesTable().getCellValue(0, TIME_SERIES_STATUS_LABEL);
         }
         return timeSeriesStatus;
     }
 
-    @Step("I select first TS from table")
+    @Step("I select first Time Series from table")
     public void selectFirstTSFromTable() {
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("I select first TS from table");
-        getTSTable().selectFirstRow();
+        getTimeSeriesTable().selectFirstRow();
     }
 }

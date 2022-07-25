@@ -23,19 +23,27 @@ public class AssignmentManagementTest extends BaseTestCase {
     private final String DISTRIBUTION_NAME_FIELD_ID = "distributionNameFieldId";
     private final String DISTRIBUTION_NAME_VALUE = "SELENIUM_Distribution_Name_01";
     private final String STATUS_COMBOBOX_ID = "statusComboBoxId";
+    private final String STATUS_TYPE_VALUE = "Active";
     private final String ASSIGNMENT_TYPE_COMBOBOX_ID = "assignmentTypeComboBoxId";
+    private final String ASSIGNMENT_TYPE_VALUE = "Early";
     private final String SEARCHING_CLASS_COMBOBOX_ID = "searchingClassFieldId";
+    private final String SEARCHING_CLASS_VALUE = "Root Classification";
     private final String QUERY_STRING_FIELD_ID = "queryStringFieldId";
     private final String QUERY_STRING_FIELD_VALUE = "Test_Query_String";
     private final String SCENARIO_COMBOBOX_ID = "scenarioComboBoxId";
+    private final String SCENARIO_VALUE = "APD";
     private final String RULE_ORDER_COMBOBOX_ID = "ruleOrderSearchId";
+    private final String RULE_ORDER_VALUE = "1";
     private final String ASSIGNED_GROUP_COMBOBOX_ID = "assignedGroupComboBoxId";
+    private final String ASSIGNED_GROUP_VALUE = "APD SysAdmin";
     private final String ASSIGNED_USER_COMBOBOX_ID = "assignedUserComboBoxId";
+    private final String ASSIGNED_USER_VALUE = "acdadmin";
     private final String DISTRIBUTION_COMBOBOX_ID = "distribution_name";
     private final String DISTRIBUTION_NAME_VALUE_V2 = "Selenium_Distribution_Name_02";
-    private static final String EDIT_RULE_BUTTON = "assignmentManagementButtonId-3";
-    private static final String DELETE_RULE_BUTTON = "assignmentManagementButtonId-2";
-    private static final String CHANGE_STATUS_BUTTON = "assignmentManagementButtonId-1";
+    private final String BUTTON_SAVE_LABEL = "Save";
+    private final String SCENARIO_SEARCH_ID = "scenario";
+    private final String EDIT_RULE_BUTTON = "assignmentManagementButtonId-3";
+    private final String DELETE_RULE_BUTTON = "assignmentManagementButtonId-2";
 
     @BeforeClass
     public void goToSystemSettingsView() {
@@ -48,17 +56,17 @@ public class AssignmentManagementTest extends BaseTestCase {
     public void addNewAssignmentManagementRule() {
         assignmentManagementPage.clickCreateNewRule();
         baseACDPage.setAttributeValue(DISTRIBUTION_NAME_FIELD_ID, DISTRIBUTION_NAME_VALUE);
-        baseACDPage.setAttributeValue(STATUS_COMBOBOX_ID, "Active");
-        baseACDPage.setAttributeValue(ASSIGNMENT_TYPE_COMBOBOX_ID, "Early");
-        baseACDPage.setAttributeValue(SEARCHING_CLASS_COMBOBOX_ID, "Root Classification");
+        baseACDPage.setAttributeValue(STATUS_COMBOBOX_ID, STATUS_TYPE_VALUE);
+        baseACDPage.setAttributeValue(ASSIGNMENT_TYPE_COMBOBOX_ID, ASSIGNMENT_TYPE_VALUE);
+        baseACDPage.setAttributeValue(SEARCHING_CLASS_COMBOBOX_ID, SEARCHING_CLASS_VALUE);
         baseACDPage.setAttributeValue(QUERY_STRING_FIELD_ID, QUERY_STRING_FIELD_VALUE);
-        baseACDPage.setAttributeValue(SCENARIO_COMBOBOX_ID, "APD");
-        baseACDPage.setAttributeValue(RULE_ORDER_COMBOBOX_ID, "1");
-        baseACDPage.setAttributeValue(ASSIGNED_GROUP_COMBOBOX_ID, "APD SysAdmin");
-        baseACDPage.setAttributeValue(ASSIGNED_USER_COMBOBOX_ID, "acdadmin");
+        baseACDPage.setAttributeValue(SCENARIO_COMBOBOX_ID, SCENARIO_VALUE);
+        baseACDPage.setAttributeValue(RULE_ORDER_COMBOBOX_ID, RULE_ORDER_VALUE);
+        baseACDPage.setAttributeValue(ASSIGNED_GROUP_COMBOBOX_ID, ASSIGNED_GROUP_VALUE);
+        baseACDPage.setAttributeValue(ASSIGNED_USER_COMBOBOX_ID, ASSIGNED_USER_VALUE);
         log.info("Form has been completed. I try to save it.");
         try {
-            assignmentManagementPage.clickButtonByLabel("Save");
+            assignmentManagementPage.clickButtonByLabel(BUTTON_SAVE_LABEL);
             log.info("I clicked Save button");
         } catch (Exception e) {
             Assert.fail("I couldn't click Save button\n" + e.getMessage());
@@ -85,26 +93,26 @@ public class AssignmentManagementTest extends BaseTestCase {
     @Test(priority = 3, testName = "Edit Assignment Management rule", description = "Edit Assignment Management rule")
     @Description("Edit Assignment Management rule")
     public void editActionTemplate() {
-        assignmentManagementPage.setAttributeValue("scenario", "APD");
-        assignmentManagementPage.setAttributeValue("distribution_name", DISTRIBUTION_NAME_VALUE);
+        assignmentManagementPage.setAttributeValue(SCENARIO_SEARCH_ID, SCENARIO_VALUE);
+        assignmentManagementPage.setAttributeValue(DISTRIBUTION_COMBOBOX_ID, DISTRIBUTION_NAME_VALUE);
         assignmentManagementPage.selectFirstRuleFromTable();
         assignmentManagementPage.clickTabsContainerButton(EDIT_RULE_BUTTON);
         baseACDPage.setValueInTextField(DISTRIBUTION_NAME_FIELD_ID, DISTRIBUTION_NAME_VALUE_V2);
-        assignmentManagementPage.clickButtonByLabel("Save");
-        assignmentManagementPage.setAttributeValue("distribution_name", DISTRIBUTION_NAME_VALUE_V2);
-        assignmentManagementPage.setAttributeValue("scenario", "APD");
+        assignmentManagementPage.clickButtonByLabel(BUTTON_SAVE_LABEL);
+        assignmentManagementPage.setAttributeValue(DISTRIBUTION_COMBOBOX_ID, DISTRIBUTION_NAME_VALUE_V2);
+        assignmentManagementPage.setAttributeValue(SCENARIO_SEARCH_ID, SCENARIO_VALUE);
         Assert.assertEquals(assignmentManagementPage.getRuleName(), DISTRIBUTION_NAME_VALUE_V2);
     }
 
     @Test(priority = 4, testName = "Delete Assignment Management rule", description = "Delete Assignment Management rule")
     @Description("Delete Assignment Management rule")
     public void deleteActionTemplate() {
-        assignmentManagementPage.setAttributeValue("scenario", "APD");
-        assignmentManagementPage.setAttributeValue("distribution_name", DISTRIBUTION_NAME_VALUE_V2);
+        assignmentManagementPage.setAttributeValue(SCENARIO_SEARCH_ID, SCENARIO_VALUE);
+        assignmentManagementPage.setAttributeValue(DISTRIBUTION_COMBOBOX_ID, DISTRIBUTION_NAME_VALUE_V2);
         assignmentManagementPage.selectFirstRuleFromTable();
         assignmentManagementPage.deleteRule(DELETE_RULE_BUTTON);
         assignmentManagementPage.searchingThroughTable(DISTRIBUTION_COMBOBOX_ID, DISTRIBUTION_NAME_VALUE_V2);
-        assignmentManagementPage.setAttributeValue("scenario", "APD");
+        assignmentManagementPage.setAttributeValue(SCENARIO_SEARCH_ID, SCENARIO_VALUE);
         Assert.assertFalse(assignmentManagementPage.isDataInAssignmentManagementTable());
     }
 }

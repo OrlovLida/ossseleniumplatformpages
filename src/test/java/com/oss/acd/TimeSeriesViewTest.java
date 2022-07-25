@@ -23,19 +23,23 @@ public class TimeSeriesViewTest extends BaseTestCase {
     private final String SOURCE_SYSTEM_VALUE = "PM";
     private final String INDICATOR_NAME_ID = "indicatorIdentifiers";
     private final String INDICATOR_NAME_VALUE = "new_BSS 3G KPIs_Accessibility_T.RAB_HSDPA_DN";
+    private final String TIME_SERIES_INDICATOR_VALUE = "PM/new_BSS 3G KPIs_Accessibility_T.RAB_HSDPA_DN";
     private final String BUSINESS_INDICATOR_TYPE_ID = "indicatorBusinessComboBoxId";
     private final String BUSINESS_INDICATOR_TYPE_VALUE = "HW";
     private final String MO_ID = "dimensionIdentifiers";
     private final String MO_VALUE = "Test Service Statistics ETL";
+    private final String TIME_SERIES_MO_VALUE = "PM/Test Service Statistics ETL";
     private final String MO_DOMAIN_ID = "monitoredObjectDomainComboBoxId";
     private final String MO_DOMAIN_VALUE = "IP";
-    private final String ADD_TS_WIZARD_ID = "addTimeSeries_prompt-card";
+    private final String ADD_TIME_SERIES_WIZARD_ID = "addTimeSeries_prompt-card";
     private final String TREND_ANALYSIS_CHECKBOX_ID = "checkBoxTrendAnalysisId";
     private final String FORECAST_ANALYSIS_CHECKBOX_ID = "checkBoxForecastAnalysisId";
     private final String SOURCE_SYSTEM_MULTI_COMBOBOX_ID = "source_system";
     private final String INDICATORS_NAME_MULTI_SEARCHBOX_ID = "ABGAD_INDICATOR.identifier";
     private final String MO_NAME_MULTI_SEARCHBOX_ID = "ABGAD_MONITORED_OBJECT.identifier";
     private final String DELETE_BUTTON_LABEL = "Delete";
+    private final String YES_LABEL = "yes";
+    private final String DELETE_TIME_SERIES_BUTTON_ID = "timeSeriesButtons-1";
 
     public String timeSeriesId;
 
@@ -54,8 +58,8 @@ public class TimeSeriesViewTest extends BaseTestCase {
         timeSeriesViewPage.setValueInTextField(MO_ID, MO_VALUE);
         timeSeriesViewPage.setAttributeValue(MO_DOMAIN_ID, MO_DOMAIN_VALUE);
         timeSeriesViewPage.selectRadioButton();
-        timeSeriesViewPage.selectCheckbox(TREND_ANALYSIS_CHECKBOX_ID, ADD_TS_WIZARD_ID);
-        timeSeriesViewPage.selectCheckbox(FORECAST_ANALYSIS_CHECKBOX_ID, ADD_TS_WIZARD_ID);
+        timeSeriesViewPage.selectCheckbox(TREND_ANALYSIS_CHECKBOX_ID, ADD_TIME_SERIES_WIZARD_ID);
+        timeSeriesViewPage.selectCheckbox(FORECAST_ANALYSIS_CHECKBOX_ID, ADD_TIME_SERIES_WIZARD_ID);
         log.info("Form has been completed. I try create time series");
         try {
             timeSeriesViewPage.clickButtonByLabel("Accept");
@@ -65,35 +69,35 @@ public class TimeSeriesViewTest extends BaseTestCase {
         }
     }
 
-    @Test(priority = 2, testName = "Verify if created TS exists", description = "Verify if created TS exists")
-    @Description("Verify if created TS exists")
+    @Test(priority = 2, testName = "Verify if created Time Series exists", description = "Verify if created Time Series exists")
+    @Description("Verify if created Time Series exists")
     public void searchingForCreatedTS() {
 
-        if (!timeSeriesViewPage.isDataInTSTable()) {
+        if (!timeSeriesViewPage.isDataInTimeSeriesTable()) {
             log.error("TS table is empty");
             Assert.fail();
         }
 
         timeSeriesViewPage.setAttributeValue(SOURCE_SYSTEM_MULTI_COMBOBOX_ID, SOURCE_SYSTEM_VALUE);
-        timeSeriesViewPage.setAttributeValue(INDICATORS_NAME_MULTI_SEARCHBOX_ID, "PM/" + INDICATOR_NAME_VALUE);
-        timeSeriesViewPage.setAttributeValue(MO_NAME_MULTI_SEARCHBOX_ID, "PM/" + MO_VALUE);
-        log.info("Time Series have been created with ID: {}", timeSeriesViewPage.getTSId());
-        timeSeriesId = timeSeriesViewPage.getTSId();
-        Assert.assertFalse(timeSeriesViewPage.getTSId().isEmpty());
+        timeSeriesViewPage.setAttributeValue(INDICATORS_NAME_MULTI_SEARCHBOX_ID, TIME_SERIES_INDICATOR_VALUE);
+        timeSeriesViewPage.setAttributeValue(MO_NAME_MULTI_SEARCHBOX_ID, TIME_SERIES_MO_VALUE);
+        log.info("Time Series have been created with ID: {}", timeSeriesViewPage.getTimeSeriesId());
+        timeSeriesId = timeSeriesViewPage.getTimeSeriesId();
+        Assert.assertFalse(timeSeriesViewPage.getTimeSeriesId().isEmpty());
     }
 
-    @Test(priority = 3, testName = "I delete created TS", description = "I delete created TS")
+    @Test(priority = 3, testName = "I delete created Time Series", description = "I delete created Time Series")
     @Description("I delete created TS")
     public void deleteCreatedTS() {
 
-        if (!timeSeriesViewPage.getTSId().equals(timeSeriesId)) {
+        if (!timeSeriesViewPage.getTimeSeriesId().equals(timeSeriesId)) {
             log.info("First row in the table doesn't contain object created in the 1st test");
             Assert.fail();
         }
 
         timeSeriesViewPage.selectFirstTSFromTable();
-        timeSeriesViewPage.clickContextButton("timeSeriesButtons-1");
-        timeSeriesViewPage.clickButtonByLabel("Delete");
-        Assert.assertEquals(timeSeriesViewPage.getTSStatus(), "yes");
+        timeSeriesViewPage.clickContextButton(DELETE_TIME_SERIES_BUTTON_ID);
+        timeSeriesViewPage.clickButtonByLabel(DELETE_BUTTON_LABEL);
+        Assert.assertEquals(timeSeriesViewPage.getTimeSeriesStatus(), YES_LABEL);
     }
 }
