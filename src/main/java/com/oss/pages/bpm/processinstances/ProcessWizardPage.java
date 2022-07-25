@@ -45,6 +45,7 @@ public class ProcessWizardPage extends BasePage {
     private static final String ACCEPT_BUTTON = "wizard-submit-button-start-process-wizard";
     private static final String CREATE_BUTTON = "wizard-submit-button-bpm_processes_view_start-process-details-prompt_processCreateFormId";
     private static final String NEXT_BUTTON = "wizard-next-button-bpm_processes_view_start-process-details-prompt_processCreateFormId";
+    private static final String ACCEPT_PROGRAM_BUTTON ="wizard-submit-button-bpm_processes_view_start-process-details-prompt_processCreateFormId";
     private static final String CANCEL_BUTTON = "wizard-cancel-button-bpm_processes_view_start-process-details-prompt_processCreateFormId";
     private static final String PROCESS_NAME = "Selenium Test " + Math.random();
     private static final String INVENTORY_PROCESS = "Inventory Processes";
@@ -56,7 +57,10 @@ public class ProcessWizardPage extends BasePage {
     private static final String CREATE_GROUP_ACTION_ID = "create";
     private static final String START_PROCESS_ACTION_ID = "start-process";
     private static final String ADD_MILESTONE_OPTION_LABEL = "Add Milestones";
+    private static final String CREATE_PROCESS_OPTION_LABEL = "Create processes";
     private static final String MILESTONE_ENABLED_CHECKBOX_ID = "milestonesEnabledCheckboxId";
+
+    private static final String CREATE_PROCESS_CHECKBOX_ID= "createProcessesCheckboxId";
 
     public ProcessWizardPage(WebDriver driver) {
         super(driver);
@@ -154,6 +158,26 @@ public class ProcessWizardPage extends BasePage {
         return createProcessIPD(PROCESS_NAME, plusDays, NRP);
     }
 
+    public String createProgramWithProcess(String programName, Long plusDays, String programType, String processName, Long plusDaysProcess, String processType ) {
+        createProcessInProgram(programName, plusDays, programType);
+        definedBasicProcess(processName, processType, plusDaysProcess).clickButtonById(CREATE_BUTTON);
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, wait);
+        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
+        String text = messages.get(0).getText();
+        return extractProcessCode(text);
+    }
+
+    public ProcessWizardPage createProcessInProgram(String processName, Long plusDays, String processType) {
+        Wizard processWizard = definedBasicProcess(processName, processType, plusDays);
+        if (driver.getPageSource().contains(CREATE_PROCESS_OPTION_LABEL)) {
+            processWizard.setComponentValue(CREATE_PROCESS_CHECKBOX_ID, "true");
+        }
+        DelayUtils.sleep();
+        processWizard.clickButtonById(ACCEPT_PROGRAM_BUTTON);
+        return new ProcessWizardPage(driver);
+    }
+
+
     public String createProcessIPD(String processName, Long plusDays, String processType) {
         definedBasicProcess(processName, processType, plusDays).clickButtonById(CREATE_BUTTON);
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, wait);
@@ -172,6 +196,8 @@ public class ProcessWizardPage extends BasePage {
         processWizard.clickButtonById(NEXT_BUTTON);
         return new MilestoneStepWizard(driver, wait);
     }
+
+
 
     public void clickAcceptButton() {
         Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2).clickButtonById(CREATE_BUTTON);
