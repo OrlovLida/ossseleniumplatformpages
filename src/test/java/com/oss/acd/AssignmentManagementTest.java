@@ -75,7 +75,7 @@ public class AssignmentManagementTest extends BaseTestCase {
         }
 
         if (!assignmentManagementPage.isDataInAssignmentManagementTable()) {
-            log.error("Assignment Management  table doesn't contain data for provided filters");
+            log.error("Assignment Management table doesn't contain data for provided filters");
             Assert.fail();
         }
         log.info("Assignment Management rule has been created with ID: {}", assignmentManagementPage.getNewRuleId());
@@ -91,6 +91,7 @@ public class AssignmentManagementTest extends BaseTestCase {
         assignmentManagementPage.clickTabsContainerButton(EDIT_RULE_BUTTON);
         baseACDPage.setValueInTextField(DISTRIBUTION_NAME_FIELD_ID, DISTRIBUTION_NAME_VALUE_V2);
         assignmentManagementPage.clickButtonByLabel("Save");
+        assignmentManagementPage.setAttributeValue("distribution_name", DISTRIBUTION_NAME_VALUE_V2);
         assignmentManagementPage.setAttributeValue("scenario", "APD");
         Assert.assertEquals(assignmentManagementPage.getRuleName(), DISTRIBUTION_NAME_VALUE_V2);
     }
