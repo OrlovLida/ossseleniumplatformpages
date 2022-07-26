@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.google.common.collect.Multimap;
+import com.oss.framework.components.inputs.Input;
 import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 
 import org.openqa.selenium.WebDriver;
@@ -152,6 +154,15 @@ public class PlannersViewPage extends BasePage {
         TreeTableWidget treeTable = getTreeTable();
         treeTable.fullTextSearch(text);
         DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    public Multimap<String, String> searchByAttributeValue(String attributeId, String attributeValue, Input.ComponentType componentType) {
+        TreeTableWidget treeTable = getTreeTable();
+        treeTable.searchByAttribute(attributeId, componentType, attributeValue);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        Multimap<String, String> filterValues = treeTable.getAppliedFilters();
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return filterValues;
     }
 
     public void clearFilters() {

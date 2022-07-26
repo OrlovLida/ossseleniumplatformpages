@@ -1,13 +1,16 @@
 package com.oss.web;
 
-import org.openqa.selenium.By;
+import java.util.List;
+
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
+import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 
+import com.oss.framework.widgets.table.TableRow;
 import com.oss.framework.widgets.treetable.TreeTableWidget;
 import com.oss.pages.bpm.PlannersViewPage;
 
@@ -116,6 +119,28 @@ public class SelectionBarOnTreeTableTest extends BaseTestCase {
         Assert.assertEquals(treeTableWidget.getPagination().getTotalCount(), 2);
         Assert.assertNotEquals(treeTableWidget.getCellValue(2, NAME_ID), CHILD_PROCESSES);
 
+        treeTableWidget.unselectAllRows();
+        treeTableWidget.showAllRows();
+
+    }
+
+    @Test(priority = 8)
+    public void filterAndShowSelected() {
+        plannersViewPage.selectObjectByAttributeValue(NAME_ID, "Process Selenium 542.0490954906828");
+        plannersViewPage.searchByAttributeValue("program", "True", Input.ComponentType.MULTI_COMBOBOX);
+        treeTableWidget.showOnlySelectedRows();
+        String selectedObjectCount = treeTableWidget.getSelectedObjectCount();
+        Assert.assertEquals(selectedObjectCount, ONE_SELECTED);
+        List<TableRow> allRows = plannersViewPage.getRows();
+        Assert.assertTrue(allRows.isEmpty());
+    }
+
+    @Test(priority = 9)
+    public void unselectUnfilteredObject() {
+        treeTableWidget.unselectAllRows();
+        treeTableWidget.showAllRows();
+        String selectedObjectCount = treeTableWidget.getSelectedObjectCount();
+        Assert.assertEquals(selectedObjectCount, ZERO_SELECTED);
     }
 
     private void selectRowsOnNextPage(int... index) {
