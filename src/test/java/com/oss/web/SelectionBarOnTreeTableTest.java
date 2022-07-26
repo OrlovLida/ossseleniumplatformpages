@@ -57,9 +57,9 @@ public class SelectionBarOnTreeTableTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         treeTableWidget.showOnlySelectedRows();
         Assert.assertEquals(treeTableWidget.getPagination().getTotalCount(), 3);
-        Assert.assertFalse(treeTableWidget.canRowBeExpanded(0));
-        Assert.assertFalse(treeTableWidget.canRowBeExpanded(1));
-        Assert.assertFalse(treeTableWidget.canRowBeExpanded(2));
+        Assert.assertFalse(treeTableWidget.isExpandPresent(0));
+        Assert.assertFalse(treeTableWidget.isExpandPresent(1));
+        Assert.assertFalse(treeTableWidget.isExpandPresent(2));
     }
 
     @Test(priority = 3)
@@ -121,12 +121,13 @@ public class SelectionBarOnTreeTableTest extends BaseTestCase {
 
         treeTableWidget.unselectAllRows();
         treeTableWidget.showAllRows();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
     }
 
     @Test(priority = 8)
     public void filterAndShowSelected() {
-        plannersViewPage.selectObjectByAttributeValue(NAME_ID, "Process Selenium 542.0490954906828");
+        plannersViewPage.selectObjectByAttributeValue(NAME_ID, PROCESS_NAME);
         plannersViewPage.searchByAttributeValue("program", "True", Input.ComponentType.MULTI_COMBOBOX);
         treeTableWidget.showOnlySelectedRows();
         String selectedObjectCount = treeTableWidget.getSelectedObjectCount();
