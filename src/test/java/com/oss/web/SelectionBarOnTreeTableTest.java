@@ -1,5 +1,6 @@
 package com.oss.web;
 
+import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -9,7 +10,6 @@ import com.oss.framework.utils.DelayUtils;
 
 import com.oss.framework.widgets.treetable.TreeTableWidget;
 import com.oss.pages.bpm.PlannersViewPage;
-
 
 /**
  * @author Faustyna Szczepanik
@@ -26,13 +26,12 @@ public class SelectionBarOnTreeTableTest extends BaseTestCase {
     private static final String BPM_USER_LOGIN = "bpm_webselenium";
     private static final String BPM_USER_PASSWORD = "Webtests123!";
     private static final String USER1_LOGIN = "webseleniumtests";
-
-    private static final String NRP = "Network Resource Process";
+    private static final String NAME_ID = "name";
     private static final String PROGRAM_NAME = "Program Selenium " + (Math.random() * 1001);
     private static final String PROCESS_NAME = "Process Selenium " + (Math.random() * 1001);
     private static final String PROGRAM_TYPE = "pr_program";
     private static final String PROCESS_TYPE = "Data Correction Process";
-    private static final String RELATED_TASK = "Related Tasks";
+    private static final String CHILD_PROCESSES = "Child Processes";
 
     @BeforeClass
     public void goToPlannersView() {
@@ -52,8 +51,8 @@ public class SelectionBarOnTreeTableTest extends BaseTestCase {
     public void showSelectedForRoots() {
         plannersViewPage.expandNode(1);
         plannersViewPage.expandNode(2);
-        treeTableWidget.showOnlySelectedRows();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        treeTableWidget.showOnlySelectedRows();
         Assert.assertEquals(treeTableWidget.getPagination().getTotalCount(), 3);
         Assert.assertFalse(treeTableWidget.canRowBeExpanded(0));
         Assert.assertFalse(treeTableWidget.canRowBeExpanded(1));
@@ -86,7 +85,7 @@ public class SelectionBarOnTreeTableTest extends BaseTestCase {
         plannersViewPage.expandNode(0);
         plannersViewPage.expandNode(2);
         plannersViewPage.clearFilters();
-        plannersViewPage.selectNodeByLabelsPath(PROCESS_NAME);
+        plannersViewPage.selectObjectByAttributeValue(NAME_ID, PROCESS_NAME);
         treeTableWidget.showOnlySelectedRows();
         String selectedObjectCount = treeTableWidget.getSelectedObjectCount();
         Assert.assertEquals(treeTableWidget.getPagination().getTotalCount(), 2);
@@ -115,7 +114,7 @@ public class SelectionBarOnTreeTableTest extends BaseTestCase {
         plannersViewPage.expandNode(0);
         Assert.assertEquals(selectedObjectCount, TWO_SELECTED);
         Assert.assertEquals(treeTableWidget.getPagination().getTotalCount(), 2);
-        Assert.assertFalse(plannersViewPage.isNodePresent(RELATED_TASK));
+        Assert.assertNotEquals(treeTableWidget.getCellValue(2, NAME_ID), CHILD_PROCESSES);
 
     }
 

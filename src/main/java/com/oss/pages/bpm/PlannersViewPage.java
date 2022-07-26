@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.oss.framework.components.tree.TreeComponent;
 import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 
 import org.openqa.selenium.WebDriver;
@@ -58,11 +57,9 @@ public class PlannersViewPage extends BasePage {
         treeTable.unselectNode(rowId);
     }
 
-    public void selectNodeByLabelsPath(String labels) {
-        TreeComponent.Node node = getTreeTable().getNodeByLabelsPath(labels);
-        if (!node.isToggled()) {
-            node.toggleNode();
-        }
+    public void selectObjectByAttributeValue(String attributeId, String value) {
+        getTreeTable().selectRowByAttributeValue(attributeId, value);
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public List<TableRow> getSelectedRows() {
@@ -161,10 +158,6 @@ public class PlannersViewPage extends BasePage {
         TreeTableWidget treeTable = getTreeTable();
         treeTable.clearAllFilters();
         DelayUtils.waitForPageToLoad(driver, wait);
-    }
-
-    public boolean isNodePresent(String pathLabel) {
-        return getTreeTable().findNodeByLabelsPath(pathLabel).isPresent();
     }
 
     public void callAction(String actionId) {
