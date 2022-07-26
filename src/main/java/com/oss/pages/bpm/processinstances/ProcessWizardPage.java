@@ -59,7 +59,6 @@ public class ProcessWizardPage extends BasePage {
     private static final String ADD_MILESTONE_OPTION_LABEL = "Add Milestones";
     private static final String CREATE_PROCESS_OPTION_LABEL = "Create processes";
     private static final String MILESTONE_ENABLED_CHECKBOX_ID = "milestonesEnabledCheckboxId";
-
     private static final String CREATE_PROCESS_CHECKBOX_ID= "createProcessesCheckboxId";
 
     public ProcessWizardPage(WebDriver driver) {
@@ -177,7 +176,6 @@ public class ProcessWizardPage extends BasePage {
         return new ProcessWizardPage(driver);
     }
 
-
     public String createProcessIPD(String processName, Long plusDays, String processType) {
         definedBasicProcess(processName, processType, plusDays).clickButtonById(CREATE_BUTTON);
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, wait);
@@ -196,8 +194,6 @@ public class ProcessWizardPage extends BasePage {
         processWizard.clickButtonById(NEXT_BUTTON);
         return new MilestoneStepWizard(driver, wait);
     }
-
-
 
     public void clickAcceptButton() {
         Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2).clickButtonById(CREATE_BUTTON);
