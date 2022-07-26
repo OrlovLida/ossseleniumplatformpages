@@ -24,8 +24,6 @@ public class SelectionBarOnTreeTableTest extends BaseTestCase {
     private static final String TWO_SELECTED = "2 selected";
     private static final String ZERO_SELECTED = "0 selected";
     private static final String ONE_SELECTED = "1 selected";
-    private PlannersViewPage plannersViewPage;
-    private TreeTableWidget treeTableWidget;
     private static final String BPM_USER_LOGIN = "bpm_webselenium";
     private static final String BPM_USER_PASSWORD = "Webtests123!";
     private static final String USER1_LOGIN = "webseleniumtests";
@@ -35,6 +33,8 @@ public class SelectionBarOnTreeTableTest extends BaseTestCase {
     private static final String PROGRAM_TYPE = "pr_program";
     private static final String PROCESS_TYPE = "Data Correction Process";
     private static final String CHILD_PROCESSES = "Child Processes";
+    private PlannersViewPage plannersViewPage;
+    private TreeTableWidget treeTableWidget;
 
     @BeforeClass
     public void goToPlannersView() {
