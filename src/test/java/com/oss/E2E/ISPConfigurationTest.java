@@ -86,7 +86,7 @@ public class ISPConfigurationTest extends BaseTestCase {
     @Test(priority = 1, description = "Create building")
     @Description("Create building")
     public void createBuilding() {
-        homePage.chooseFromLeftSideMenu("Create Physical Location", "Infrastructure management", "Create Infrastructure");
+        homePage.chooseFromLeftSideMenu("Create Physical Location", "Infrastructure Management", "Create Infrastructure");
         LocationWizardPage locationWizardPage = new LocationWizardPage(driver);
         locationWizardPage.setLocationType("Building");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);

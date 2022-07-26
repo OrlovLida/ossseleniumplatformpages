@@ -61,7 +61,7 @@ public class TP_OSS_RM_RAN_003_Test extends BaseTestCase {
     @Test(priority = 3, description = "Find location and open it in Cell Site Configuration view", dependsOnMethods = {"startDCP"})
     @Description("Find location in new Inventory View and open location in Cell Site Configuration view")
     public void findLocation() {
-        openView("Inventory View", "Resource Inventory ");
+        openView("Inventory View", "Resource Inventory");
         waitForPageToLoad();
         SearchObjectTypePage searchObjectTypePage = new SearchObjectTypePage(driver, webDriverWait);
         searchObjectTypePage.searchType(SITE);

@@ -12,12 +12,12 @@ import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 import com.oss.pages.bpm.TasksPage;
+import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.NewInventoryViewPage;
-import com.oss.pages.transport.trail.ConnectionWizardPage;
 import com.oss.pages.transport.NetworkViewPage;
+import com.oss.pages.transport.trail.ConnectionWizardPage;
 import com.oss.pages.transport.trail.RoutingWizardPage;
 import com.oss.utils.TestListener;
 
@@ -170,7 +170,7 @@ public class IPLinkTest extends BaseTestCase {
         HomePage homePage = new HomePage(driver);
         homePage.goToHomePageWithContext(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        homePage.chooseFromLeftSideMenu("Legacy Inventory Dashboard", "Resource Inventory ");
+        homePage.chooseFromLeftSideMenu("Legacy Inventory Dashboard", "Resource Inventory");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         homePage.setNewObjectType("Trail");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -207,7 +207,7 @@ public class IPLinkTest extends BaseTestCase {
         homePage = new HomePage(driver);
         homePage.goToHomePageWithContext(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        homePage.chooseFromLeftSideMenu("Network View", "Resource Inventory ");
+        homePage.chooseFromLeftSideMenu("Network View", "Resource Inventory");
     }
 
     private void checkPopupStatus() {

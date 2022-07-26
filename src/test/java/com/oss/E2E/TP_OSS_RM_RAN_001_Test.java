@@ -284,7 +284,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         HomePage homePage = new HomePage(driver);
         homePage.goToHomePage(driver, BASIC_URL);
         waitForPageToLoad();
-        homePage.chooseFromLeftSideMenu("Inventory View", "Resource Inventory ");
+        homePage.chooseFromLeftSideMenu("Inventory View", "Resource Inventory");
         waitForPageToLoad();
         SearchObjectTypePage searchObjectTypePage = new SearchObjectTypePage(driver, webDriverWait);
         searchObjectTypePage.searchType(SITE);

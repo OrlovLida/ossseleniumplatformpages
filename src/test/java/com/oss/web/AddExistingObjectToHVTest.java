@@ -52,7 +52,7 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
     private static final String NAME_ATTRIBUTE_ID = "name";
     private static final String TYPE_ATTRIBUTE_ID = "type";
     private static final String SELENIUM_VALUE = "Selenium";
-    private static final String RESOURCE_INVENTORY = "Resource Inventory ";
+    private static final String RESOURCE_INVENTORY = "Resource Inventory";
     private static final String HIERARCHY_VIEW = "Hierarchy View";
     private static final String CHECKBOX_ROW_ID = "cell-row-0-col-checkbox";
     private static final String THE_MAXIMUM_NUMBER_OF_OBJECTS_IS_500_ERROR_MESSAGE = "The maximum number of objects is 500.";

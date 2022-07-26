@@ -183,7 +183,7 @@ public class IRBInterfaceTest extends BaseTestCase {
     }
 
     private void searchInInventoryView(String object_type) {
-        homePage.chooseFromLeftSideMenu("Inventory View", "Resource Inventory ");
+        homePage.chooseFromLeftSideMenu("Inventory View", "Resource Inventory");
         SearchObjectTypePage searchObjectTypePage = new SearchObjectTypePage(driver, webDriverWait);
         searchObjectTypePage.searchType(object_type);
     }

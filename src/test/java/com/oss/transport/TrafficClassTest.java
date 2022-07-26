@@ -104,7 +104,7 @@ public class TrafficClassTest extends BaseTestCase {
     private TrafficClassCreationWizard goToWizardAtCreate() {
 
         SideMenu sidemenu = SideMenu.create(driver, webDriverWait);
-        sidemenu.callActionByLabel("Inventory View", "Resource Inventory ");
+        sidemenu.callActionByLabel("Inventory View", "Resource Inventory");
         SearchObjectTypePage searchObjectTypePage = new SearchObjectTypePage(driver, webDriverWait);
         searchObjectTypePage.searchType("Physical Device");
 

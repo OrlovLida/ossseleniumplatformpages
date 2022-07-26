@@ -91,7 +91,7 @@ public class CreateDeviceAndCheckItsAttributesTest extends BaseTestCase {
 
     @Step("Open Create Device wizard from left side menu")
     private void openCreateDeviceWizardFromLeftSideMenu() {
-        homePage.chooseFromLeftSideMenu("Create Device", "Infrastructure management", "Create Infrastructure");
+        homePage.chooseFromLeftSideMenu("Create Device", "Infrastructure Management", "Create Infrastructure");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
