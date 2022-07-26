@@ -37,7 +37,7 @@ public class TimeSeriesViewTest extends BaseTestCase {
     private final String SOURCE_SYSTEM_MULTI_COMBOBOX_ID = "source_system";
     private final String INDICATORS_NAME_MULTI_SEARCHBOX_ID = "ABGAD_INDICATOR.identifier";
     private final String MO_NAME_MULTI_SEARCHBOX_ID = "ABGAD_MONITORED_OBJECT.identifier";
-    private final String DELETE_BUTTON_LABEL = "Delete";
+    private final String DELETE_BUTTON_ID = "ConfirmationBox_confirmationBox_action_button";
     private final String YES_LABEL = "yes";
     private final String DELETE_TIME_SERIES_BUTTON_ID = "timeSeriesButtons-1";
 
@@ -89,7 +89,7 @@ public class TimeSeriesViewTest extends BaseTestCase {
     @Test(priority = 3, testName = "I delete created Time Series", description = "I delete created Time Series")
     @Description("I delete created TS")
     public void deleteCreatedTS() {
-
+        
         if (!timeSeriesViewPage.getTimeSeriesId().equals(timeSeriesId)) {
             log.info("First row in the table doesn't contain object created in the 1st test");
             Assert.fail();
@@ -97,7 +97,7 @@ public class TimeSeriesViewTest extends BaseTestCase {
 
         timeSeriesViewPage.selectFirstTSFromTable();
         timeSeriesViewPage.clickContextButton(DELETE_TIME_SERIES_BUTTON_ID);
-        timeSeriesViewPage.clickButtonByLabel(DELETE_BUTTON_LABEL);
+        timeSeriesViewPage.confirmTimeSeriesDeletion(DELETE_BUTTON_ID);
         Assert.assertEquals(timeSeriesViewPage.getTimeSeriesStatus(), YES_LABEL);
     }
 }

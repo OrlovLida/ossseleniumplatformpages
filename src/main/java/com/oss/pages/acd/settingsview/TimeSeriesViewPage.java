@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.wizard.Wizard;
@@ -100,5 +101,11 @@ public class TimeSeriesViewPage extends BaseACDPage {
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("I select first TS from table");
         getTimeSeriesTable().selectFirstRow();
+    }
+
+    @Step("I confirm Time Series deletion")
+    public void confirmTimeSeriesDeletion(String buttonId) {
+        log.info("I confirm Time Series deletion");
+        ConfirmationBox.create(driver, wait).clickButtonById(buttonId);
     }
 }
