@@ -130,6 +130,5 @@ public class SelectionBarOnTreeTableTest extends BaseTestCase {
         plannersViewPage.changeUser(USER1_LOGIN, BPM_USER_PASSWORD);
 
     }
-
 }
 
