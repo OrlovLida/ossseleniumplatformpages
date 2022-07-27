@@ -172,13 +172,22 @@ public class ProcessWizardPage extends BasePage {
     }
 
     private Wizard definedBasicProgram(String programName, String programType, Long plusDays) {
+        Wizard wizardSecondStep = selectProcessDefinition(programType);
+        wizardSecondStep.setComponentValue(PROCESS_NAME_ATTRIBUTE_ID, programName);
+        if (driver.getPageSource().contains(DUE_DATE_ID)) {
+            wizardSecondStep.setComponentValue(DUE_DATE_ID, LocalDate.now().plusDays(plusDays).toString());
+        }
+        return Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2);
+    }
+
+    private Wizard selectProcessDefinition(String processType) {
         Wizard wizardFirstStep = Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_1);
         Input componentDomain = wizardFirstStep.getComponent(DOMAIN_ATTRIBUTE_ID);
         if (!componentDomain.getValue().getStringValue().equals(INVENTORY_PROCESS)) {
             componentDomain.setSingleStringValue(INVENTORY_PROCESS);
             wizardFirstStep.waitForWizardToLoad();
         }
-        wizardFirstStep.setComponentValue(DEFINITION_ATTRIBUTE_ID, programType);
+        wizardFirstStep.setComponentValue(DEFINITION_ATTRIBUTE_ID, processType);
         wizardFirstStep.waitForWizardToLoad();
         Input componentRelease = wizardFirstStep.getComponent(RELEASE_ATTRIBUTE_ID);
         if (!componentRelease.getValue().getStringValue().equals(LATEST)) {
@@ -186,11 +195,6 @@ public class ProcessWizardPage extends BasePage {
             wizardFirstStep.waitForWizardToLoad();
         }
         wizardFirstStep.clickButtonById(ACCEPT_BUTTON);
-        Wizard wizardSecondStep = Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2);
-        wizardSecondStep.setComponentValue(PROCESS_NAME_ATTRIBUTE_ID, programName);
-        if (driver.getPageSource().contains(DUE_DATE_ID)) {
-            wizardSecondStep.setComponentValue(DUE_DATE_ID, LocalDate.now().plusDays(plusDays).toString());
-        }
         return Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2);
     }
 
@@ -222,21 +226,7 @@ public class ProcessWizardPage extends BasePage {
     }
 
     private Wizard definedBasicProcess(String processName, String processType, Long plusDays) {
-        Wizard wizardFirstStep = Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_1);
-        Input componentDomain = wizardFirstStep.getComponent(DOMAIN_ATTRIBUTE_ID);
-        if (!componentDomain.getValue().getStringValue().equals(INVENTORY_PROCESS)) {
-            componentDomain.setSingleStringValue(INVENTORY_PROCESS);
-            wizardFirstStep.waitForWizardToLoad();
-        }
-        wizardFirstStep.setComponentValue(DEFINITION_ATTRIBUTE_ID, processType);
-        wizardFirstStep.waitForWizardToLoad();
-        Input componentRelease = wizardFirstStep.getComponent(RELEASE_ATTRIBUTE_ID);
-        if (!componentRelease.getValue().getStringValue().equals(LATEST)) {
-            componentRelease.setSingleStringValue(LATEST);
-            wizardFirstStep.waitForWizardToLoad();
-        }
-        wizardFirstStep.clickButtonById(ACCEPT_BUTTON);
-        Wizard wizardSecondStep = Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2);
+        Wizard wizardSecondStep = selectProcessDefinition(processType);
         wizardSecondStep.setComponentValue(PROCESS_NAME_ATTRIBUTE_ID, processName);
         if (driver.getPageSource().contains(FINISH_DUE_DATE_ID)) {
             wizardSecondStep.setComponentValue(FINISH_DUE_DATE_ID, LocalDate.now().plusDays(plusDays).toString());
