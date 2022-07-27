@@ -30,11 +30,8 @@ public class SelectionBarOnTreeTableTest extends BaseTestCase {
     private static final String NAME_ID = "name";
     private static final String PROGRAM_NAME = "Program Selenium " + (Math.random() * 1001);
     private static final String PROCESS_NAME = "Process Selenium " + (Math.random() * 1001);
-<<<<<<< HEAD
     private static final String PROGRAM_TYPE = "audit_program";
-=======
-    private static final String PROGRAM_TYPE = "pr_program";
->>>>>>> origin/OSSWEB-18767
+
     private static final String PROCESS_TYPE = "Data Correction Process";
     private static final String CHILD_PROCESSES = "Child Processes";
     private PlannersViewPage plannersViewPage;
