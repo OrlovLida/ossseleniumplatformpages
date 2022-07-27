@@ -33,7 +33,7 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
     private static final String MICROWAVE_CHANNEL_TRAIL_TYPE = "Microwave Channel";
     private static final String MICROWAVE_CHANNEL_PARTIAL_NAME = "MicrowaveChannel";
     private static final String MICROWAVE_LINK_TRAIL_TYPE = "Microwave Link";
-    private static final String INFRASTRUCTURE_MANAGEMENT_CATEGORY_NAME = "Infrastructure management";
+    private static final String INFRASTRUCTURE_MANAGEMENT_CATEGORY_NAME = "Infrastructure Management";
     private static final String CREATE_DEVICE_APPLICATION_NAME = "Create Device";
     private static final String RESOURCE_INVENTORY_CATEGORY_NAME = "Resource Inventory";
     private static final String NETWORK_VIEW_APPLICATION_NAME = "Network View";

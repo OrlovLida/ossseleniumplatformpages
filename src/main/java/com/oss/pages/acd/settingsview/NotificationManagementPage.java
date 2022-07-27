@@ -5,7 +5,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.utils.DelayUtils;
@@ -37,14 +36,7 @@ public class NotificationManagementPage extends BaseACDPage {
         return new NotificationManagementPage(driver, wait);
     }
 
-    @Step("I set value in Text Area field")
-    public void setValueInTextArea(String textAreaId, String value) {
-        ComponentFactory.create(textAreaId, driver, wait).setSingleStringValue(value);
-        DelayUtils.waitForPageToLoad(driver, wait);
-        log.info("Value: {} has been set in text area: {}", value, textAreaId);
-    }
-
-    @Step("I get current name of the rule")
+    @Step("I get name of the first rule in table")
     public String getRuleName() {
         return getNotificationManagementTable().getCellValue(0, "Notification Name");
     }

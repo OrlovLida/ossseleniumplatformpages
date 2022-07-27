@@ -24,7 +24,7 @@ public class IV_Smoke_Test extends BaseTestCase {
         waitForPageToLoad();
         checkErrorPage();
         HomePage homePage = new HomePage(driver);
-        homePage.chooseFromLeftSideMenu("Inventory View", "Resource Inventory ");
+        homePage.chooseFromLeftSideMenu("Inventory View", "Resource Inventory");
         waitForPageToLoad();
     }
 

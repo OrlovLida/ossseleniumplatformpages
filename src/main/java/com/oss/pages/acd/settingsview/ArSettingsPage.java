@@ -7,9 +7,11 @@ import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.ComponentFactory;
+import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
+import com.oss.framework.wizard.Wizard;
 import com.oss.pages.acd.BaseACDPage;
 
 import io.qameta.allure.Step;
@@ -20,7 +22,7 @@ public class ArSettingsPage extends BaseACDPage {
 
     private static final String ADD_ACTION_TEMPLATE_BUTTON = "actionTemplateButtons-1";
     private static final String REMOVE_ACTION_TEMPLATE_BUTTON = "actionTemplateButtons-0";
-    private static final String ACTION_TEMPLATE_TABLE_ID = "actionTemplateId";
+    private static final String ACTION_TEMPLATE_TABLE_ID = "actionTemplateTable";
     private static final String DELETE_LABEL = "Delete";
 
     public ArSettingsPage(WebDriver driver, WebDriverWait wait) {

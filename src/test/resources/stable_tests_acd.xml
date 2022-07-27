@@ -40,4 +40,9 @@
             <class name="com.oss.acd.NotificationManagementTest"/>
         </classes>
     </test>
+    <test name="TimeSeriesViewTest">
+        <classes>
+            <class name="com.oss.acd.TimeSeriesViewTest"/>
+        </classes>
+    </test>
 </suite>

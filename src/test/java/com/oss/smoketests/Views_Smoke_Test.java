@@ -78,7 +78,7 @@ public class Views_Smoke_Test extends BaseTestCase {
 
     @Step("Checking {viewName} page from {groupName}.")
     public void checkView(String viewName, String groupName, String path) {
-        if (viewName.equals("Floor Plan and Elevation View") || viewName.equals("Network View")) {
+        if (viewName.equals("Floor Plan and Elevation View") || viewName.equals("Network View") || viewName.equals("Packet Viewer")) {
             LOGGER.warn("{} is on ignored list.", viewName);
             return;
         }

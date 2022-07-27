@@ -119,7 +119,7 @@ public class AEITest extends BaseTestCase {
 
     private AEIWizardPage goToAEIWizardPage() {
         SideMenu sidemenu = SideMenu.create(driver, webDriverWait);
-        sidemenu.callActionByLabel("Inventory View", "Resource Inventory ");
+        sidemenu.callActionByLabel("Inventory View", "Resource Inventory");
         SearchObjectTypePage searchObjectTypePage = new SearchObjectTypePage(driver, webDriverWait);
         searchObjectTypePage.searchType("Physical Device");
 

@@ -20,8 +20,6 @@ import com.oss.pages.acd.BaseACDPage;
 
 import io.qameta.allure.Step;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.MULTI_SEARCH_FIELD;
-
 public class ScenarioSummaryBasePage extends BaseACDPage {
 
     private static final Logger log = LoggerFactory.getLogger(ScenarioSummaryBasePage.class);
@@ -35,25 +33,26 @@ public class ScenarioSummaryBasePage extends BaseACDPage {
 
     @Step("Check if there is data in issues table")
     public Boolean isDataInIssuesTable() {
-        OldTable table = OldTable.createById(driver, wait, DETECTED_ISSUES_WINDOW_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Checking if there is data in issues table");
-        return !table.hasNoData();
+        return !getIssuesTable().hasNoData();
     }
 
     @Step("Set value of Issue Id multiSearch")
     public void setValueOfIssueIdSearch() {
-        OldTable table = OldTable.createById(driver, wait, DETECTED_ISSUES_WINDOW_ID);
 
         if (Boolean.FALSE.equals(isDataInIssuesTable())) {
             log.info("Table doesn't have data for chosen filters. Issue ID cannot be set");
         } else {
-            String firstIdInTable = table.getCellValue(0, "Issue Id");
+            String firstIdInTable = getIssuesTable().getCellValue(0, "Issue Id");
             log.info("Setting value of Issue Id");
-            ComponentFactory.create("id", MULTI_SEARCH_FIELD, driver, wait)
-                    .setSingleStringValue(firstIdInTable);
+            ComponentFactory.create("id", driver, wait).setSingleStringValue(firstIdInTable);
             DelayUtils.sleep();
         }
+    }
+
+    public OldTable getIssuesTable() {
+        return OldTable.createById(driver, wait, DETECTED_ISSUES_WINDOW_ID);
     }
 
     @Step("I save Predefined Filter")
