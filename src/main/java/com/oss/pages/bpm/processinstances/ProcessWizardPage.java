@@ -20,7 +20,9 @@ import com.oss.pages.BasePage;
 import com.oss.pages.bpm.ProcessOverviewPage;
 import com.oss.pages.bpm.milestones.Milestone;
 import com.oss.pages.bpm.milestones.MilestoneWizardPage;
+
 import io.qameta.allure.Description;
+
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -42,10 +44,10 @@ public class ProcessWizardPage extends BasePage {
     private static final String RELEASE_ATTRIBUTE_ID = "release-combobox";
     private static final String PROCESS_NAME_ATTRIBUTE_ID = "processNameTextFieldId";
     private static final String FINISH_DUE_DATE_ID = "FINISHED_DUE_DATE";
+    private static final String DUE_DATE_ID = "programDueDateId";
     private static final String ACCEPT_BUTTON = "wizard-submit-button-start-process-wizard";
     private static final String CREATE_BUTTON = "wizard-submit-button-bpm_processes_view_start-process-details-prompt_processCreateFormId";
     private static final String NEXT_BUTTON = "wizard-next-button-bpm_processes_view_start-process-details-prompt_processCreateFormId";
-    private static final String ACCEPT_PROGRAM_BUTTON ="wizard-submit-button-bpm_processes_view_start-process-details-prompt_processCreateFormId";
     private static final String CANCEL_BUTTON = "wizard-cancel-button-bpm_processes_view_start-process-details-prompt_processCreateFormId";
     private static final String PROCESS_NAME = "Selenium Test " + Math.random();
     private static final String INVENTORY_PROCESS = "Inventory Processes";
@@ -59,7 +61,7 @@ public class ProcessWizardPage extends BasePage {
     private static final String ADD_MILESTONE_OPTION_LABEL = "Add Milestones";
     private static final String CREATE_PROCESS_OPTION_LABEL = "Create processes";
     private static final String MILESTONE_ENABLED_CHECKBOX_ID = "milestonesEnabledCheckboxId";
-    private static final String CREATE_PROCESS_CHECKBOX_ID= "createProcessesCheckboxId";
+    private static final String CREATE_PROCESS_CHECKBOX_ID = "createProcessesCheckboxId";
 
     public ProcessWizardPage(WebDriver driver) {
         super(driver);
@@ -157,8 +159,13 @@ public class ProcessWizardPage extends BasePage {
         return createProcessIPD(PROCESS_NAME, plusDays, NRP);
     }
 
-    public String createProgramWithProcess(String programName, Long plusDays, String programType, String processName, Long plusDaysProcess, String processType ) {
-        createProcessInProgram(programName, plusDays, programType);
+    public String createProgramWithProcess(String programName, Long plusDays, String programType, String processName, Long plusDaysProcess, String processType) {
+        Wizard programWizard = definedBasicProgram(programName, programType, plusDays);
+        if (driver.getPageSource().contains(CREATE_PROCESS_OPTION_LABEL)) {
+            programWizard.setComponentValue(CREATE_PROCESS_CHECKBOX_ID, "true");
+        }
+        DelayUtils.sleep();
+        programWizard.clickButtonById(CREATE_BUTTON);
         definedBasicProcess(processName, processType, plusDaysProcess).clickButtonById(CREATE_BUTTON);
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, wait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
@@ -166,14 +173,27 @@ public class ProcessWizardPage extends BasePage {
         return extractProcessCode(text);
     }
 
-    public ProcessWizardPage createProcessInProgram(String processName, Long plusDays, String processType) {
-        Wizard processWizard = definedBasicProcess(processName, processType, plusDays);
-        if (driver.getPageSource().contains(CREATE_PROCESS_OPTION_LABEL)) {
-            processWizard.setComponentValue(CREATE_PROCESS_CHECKBOX_ID, "true");
+    private Wizard definedBasicProgram(String programName, String programType, Long plusDays) {
+        Wizard wizardFirstStep = Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_1);
+        Input componentDomain = wizardFirstStep.getComponent(DOMAIN_ATTRIBUTE_ID);
+        if (!componentDomain.getValue().getStringValue().equals(INVENTORY_PROCESS)) {
+            componentDomain.setSingleStringValue(INVENTORY_PROCESS);
+            wizardFirstStep.waitForWizardToLoad();
         }
-        DelayUtils.sleep();
-        processWizard.clickButtonById(ACCEPT_PROGRAM_BUTTON);
-        return new ProcessWizardPage(driver);
+        wizardFirstStep.setComponentValue(DEFINITION_ATTRIBUTE_ID, programType);
+        wizardFirstStep.waitForWizardToLoad();
+        Input componentRelease = wizardFirstStep.getComponent(RELEASE_ATTRIBUTE_ID);
+        if (!componentRelease.getValue().getStringValue().equals(LATEST)) {
+            componentRelease.setSingleStringValue(LATEST);
+            wizardFirstStep.waitForWizardToLoad();
+        }
+        wizardFirstStep.clickButtonById(ACCEPT_BUTTON);
+        Wizard wizardSecondStep = Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2);
+        wizardSecondStep.setComponentValue(PROCESS_NAME_ATTRIBUTE_ID, programName);
+        if (driver.getPageSource().contains(DUE_DATE_ID)) {
+            wizardSecondStep.setComponentValue(DUE_DATE_ID, LocalDate.now().plusDays(plusDays).toString());
+        }
+        return Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2);
     }
 
     public String createProcessIPD(String processName, Long plusDays, String processType) {
