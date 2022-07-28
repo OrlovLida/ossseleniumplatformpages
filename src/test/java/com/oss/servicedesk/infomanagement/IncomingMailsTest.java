@@ -30,6 +30,7 @@ public class IncomingMailsTest extends BaseTestCase {
             @Optional("SeleniumTest") String messageSubject
     ) {
         messagesPage = new MessagesPage(driver, webDriverWait).openView(driver, BASIC_URL);
+        messagesPage.clearAllFilters();
         messagesPage.searchFullText(messageSubject);
         messagesPage.filterBy(MESSAGE_STATUS_COMBOBOX_ID, MESSAGE_STATUS);
 
