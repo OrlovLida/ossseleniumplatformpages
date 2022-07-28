@@ -117,7 +117,7 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
     }
     
     @Test(priority = 4)
-    public void setFilterAndAddObject() {
+    public void setFilterOnNodeAndAddObject() {
         hierarchyView.getNodeByLabelPath(LOCATION_RELATION_PATH).searchByAttribute(NAME_ATTRIBUTE_ID, ROOM_NAME_1);
         addExistingObject(BUILDING_NAME_4);
         
