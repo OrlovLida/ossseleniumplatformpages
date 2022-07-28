@@ -44,6 +44,7 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
     private static final String ROOM_RELATION_PATH = BUILDING_NAME_2 + ".Locations.Room";
     private static final String BUILDING_NAME_3 = FakeGenerator.getCity() + "-BU" + FakeGenerator.getRandomInt();
     private static final String BUILDING_NAME_4 = FakeGenerator.getCity() + "-BU" + FakeGenerator.getRandomInt();
+    private static final String BUILDING_NAME_5 = FakeGenerator.getCity() + "-BU" + FakeGenerator.getRandomInt();
     private static final String ROOM_NAME_1 = FakeGenerator.getIdNumber();
     private static final String ROOM_NAME_2 = FakeGenerator.getIdNumber();
     private static final String ADVANCED_SEARCH_ID = "advancedSearch";
@@ -56,13 +57,16 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
     private static final String HIERARCHY_VIEW = "Hierarchy View";
     private static final String CHECKBOX_ROW_ID = "cell-row-0-col-checkbox";
     private static final String THE_MAXIMUM_NUMBER_OF_OBJECTS_IS_500_ERROR_MESSAGE = "The maximum number of objects is 500.";
+    private static final String FILTER_VALUE = "abc";
     private Environment env = Environment.getInstance();
     private String buildingId1;
     private String buildingId2;
     private String buildingId3;
     private String buildingId4;
+    private String buildingId5;
     private HierarchyViewPage hierarchyView;
-    
+
+
     @BeforeClass
     public void openHierarchyView() {
         createLocations();
@@ -80,7 +84,6 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
     
     @Test(priority = 1)
     public void addObjects() {
-        hierarchyView.getMainTree().callActionById(ADD_OBJECT_BUTTON);
         addExistingObject(BUILDING_NAME_1);
         List<String> visibleNodesLabel = hierarchyView.getVisibleNodesLabel();
         Assertions.assertThat(visibleNodesLabel).contains(BUILDING_NAME_1);
@@ -97,7 +100,6 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
     
     @Test(priority = 2)
     public void addSubtypeObjectOfRoot() {
-        hierarchyView.getMainTree().callActionById(ADD_OBJECT_BUTTON);
         addExistingObject(ROOM_NAME_1);
         List<String> visibleNodesLabel = hierarchyView.getVisibleNodesLabel();
         Assertions.assertThat(visibleNodesLabel).contains(ROOM_NAME_1);
@@ -109,8 +111,7 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
         roomRelation.expandNode();
         List<String> visibleNodesLabel = hierarchyView.getVisibleNodesLabel();
         Assertions.assertThat(visibleNodesLabel).contains(ROOM_NAME_1, ROOM_NAME_2);
-        
-        hierarchyView.getMainTree().callActionById(ADD_OBJECT_BUTTON);
+
         addExistingObject(BUILDING_NAME_3);
         hierarchyView.getVisibleNodesLabel();
         Assertions.assertThat(hierarchyView.getVisibleNodesLabel()).contains(ROOM_NAME_1, ROOM_NAME_2, BUILDING_NAME_3);
@@ -119,7 +120,6 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
     @Test(priority = 4)
     public void setFilterAndAddObject() {
         hierarchyView.getNodeByLabelPath(LOCATION_RELATION_PATH).searchByAttribute(NAME_ATTRIBUTE_ID, ROOM_NAME_1);
-        hierarchyView.getMainTree().callActionById(ADD_OBJECT_BUTTON);
         addExistingObject(BUILDING_NAME_4);
         
         TreeComponent.Node roomRelation = hierarchyView.getNodeByLabelPath(ROOM_RELATION_PATH);
@@ -163,7 +163,6 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
         advancedSearch.clickAdd();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assertions.assertThat(CSSUtils.isElementPresent(driver, ADD_OBJECT_BUTTON)).isFalse();
-        
     }
     
     @Test(priority = 8)
@@ -186,18 +185,35 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
         Assertions.assertThat(hierarchyView.getVisibleNodesLabel()).contains(roomName);
         Assertions.assertThat(hierarchyView.getVisibleNodesLabel().size()).isEqualTo(2);
         Assertions.assertThat(type).isEqualTo(ROOM_TYPE);
-        
     }
-    
+
+    @Test
+    public void moveToAddedObjectAfterClearFilter() {
+        hierarchyView = HierarchyViewPage.goToHierarchyViewPage(driver, BASIC_URL, LOCATION_TYPE, buildingId1);
+        hierarchyView.getMainTree().getPagination().changeRowsCount(100);
+        hierarchyView.getMainTree().callActionById(ADD_OBJECT_BUTTON);
+        AdvancedSearchWidget advancedSearch = AdvancedSearchWidget.createById(driver, webDriverWait, ADVANCED_SEARCH_ID);
+        TableComponent tableComponent = advancedSearch.getTableComponent();
+        tableComponent.selectAll();
+        advancedSearch.clickAdd();
+        buildingId5 = createBuilding(BUILDING_NAME_5);
+        hierarchyView.getMainTree().searchByAttribute(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, FILTER_VALUE);
+        addExistingObject(BUILDING_NAME_5);
+        hierarchyView.clearFiltersOnMainTree();
+        Assertions.assertThat(hierarchyView.getVisibleNodesLabel()).contains(BUILDING_NAME_5);
+    }
+
     @AfterClass
     private void deleteBuildings() {
         deleteBuilding(buildingId1);
         deleteBuilding(buildingId2);
         deleteBuilding(buildingId3);
         deleteBuilding(buildingId4);
+        deleteBuilding(buildingId5);
     }
     
     private void addExistingObject(String objectName) {
+        hierarchyView.getMainTree().callActionById(ADD_OBJECT_BUTTON);
         AdvancedSearchWidget advancedSearch = setFilter(objectName);
         DelayUtils.sleep();
         TableComponent tableComponent = advancedSearch.getTableComponent();
