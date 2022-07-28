@@ -65,8 +65,7 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
     private String buildingId4;
     private String buildingId5;
     private HierarchyViewPage hierarchyView;
-
-
+    
     @BeforeClass
     public void openHierarchyView() {
         createLocations();
@@ -111,7 +110,7 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
         roomRelation.expandNode();
         List<String> visibleNodesLabel = hierarchyView.getVisibleNodesLabel();
         Assertions.assertThat(visibleNodesLabel).contains(ROOM_NAME_1, ROOM_NAME_2);
-
+        
         addExistingObject(BUILDING_NAME_3);
         hierarchyView.getVisibleNodesLabel();
         Assertions.assertThat(hierarchyView.getVisibleNodesLabel()).contains(ROOM_NAME_1, ROOM_NAME_2, BUILDING_NAME_3);
@@ -186,7 +185,7 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
         Assertions.assertThat(hierarchyView.getVisibleNodesLabel().size()).isEqualTo(2);
         Assertions.assertThat(type).isEqualTo(ROOM_TYPE);
     }
-
+    
     @Test
     public void moveToAddedObjectAfterClearFilter() {
         hierarchyView = HierarchyViewPage.goToHierarchyViewPage(driver, BASIC_URL, LOCATION_TYPE, buildingId1);
@@ -202,7 +201,7 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
         hierarchyView.clearFiltersOnMainTree();
         Assertions.assertThat(hierarchyView.getVisibleNodesLabel()).contains(BUILDING_NAME_5);
     }
-
+    
     @AfterClass
     private void deleteBuildings() {
         deleteBuilding(buildingId1);
