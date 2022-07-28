@@ -187,7 +187,7 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
     }
     
     @Test
-    public void moveToAddedObjectAfterClearFilter() {
+    public void addObjectAndClearFilter() {
         hierarchyView = HierarchyViewPage.goToHierarchyViewPage(driver, BASIC_URL, LOCATION_TYPE, buildingId1);
         hierarchyView.getMainTree().getPagination().changeRowsCount(100);
         hierarchyView.getMainTree().callActionById(ADD_OBJECT_BUTTON);
