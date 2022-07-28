@@ -49,7 +49,7 @@ public class PlannersViewPage extends BasePage {
         treeTable.selectNode(rowId);
     }
 
-    public void selectSeveralObjectsByRowId(int... indexes) {
+    public void selectObjectsByRowId(int... indexes) {
         List<Integer> rows = Arrays.stream(indexes).boxed().collect(Collectors.toList());
         rows.forEach(this::selectObjectByRowId);
     }

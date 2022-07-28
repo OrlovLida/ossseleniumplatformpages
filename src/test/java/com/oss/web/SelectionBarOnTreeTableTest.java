@@ -110,7 +110,7 @@ public class SelectionBarOnTreeTableTest extends BaseTestCase {
         plannersViewPage.searchObject(PROGRAM_NAME);
         plannersViewPage.expandNode(0);
         plannersViewPage.expandNode(1);
-        plannersViewPage.selectSeveralObjectsByRowId(2);
+        plannersViewPage.selectObjectByRowId(2);
         plannersViewPage.clearFilters();
         selectRowsOnNextPage(2);
         treeTableWidget.showOnlySelectedRows();
@@ -148,7 +148,7 @@ public class SelectionBarOnTreeTableTest extends BaseTestCase {
     private void selectRowsOnNextPage(int... index) {
         treeTableWidget.getPagination().goOnNextPage();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        plannersViewPage.selectSeveralObjectsByRowId(index);
+        plannersViewPage.selectObjectsByRowId(index);
     }
 
     public void createProgramWithProcessForTest(String programName, String processName) {
