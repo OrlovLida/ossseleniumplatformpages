@@ -44,7 +44,7 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
     private static final String ROOM_RELATION_PATH = BUILDING_NAME_2 + ".Locations.Room";
     private static final String BUILDING_NAME_3 = FakeGenerator.getCity() + "-BU" + FakeGenerator.getRandomInt();
     private static final String BUILDING_NAME_4 = FakeGenerator.getCity() + "-BU" + FakeGenerator.getRandomInt();
-    private static final String BUILDING_NAME_5 = FakeGenerator.getCity() + "-BU" + FakeGenerator.getRandomInt();
+    private static final String BUILDING_NAME_5 = "Z_"+FakeGenerator.getCity() + "-BU" + FakeGenerator.getRandomInt();
     private static final String ROOM_NAME_1 = FakeGenerator.getIdNumber();
     private static final String ROOM_NAME_2 = FakeGenerator.getIdNumber();
     private static final String ADVANCED_SEARCH_ID = "advancedSearch";
@@ -186,7 +186,7 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
         Assertions.assertThat(type).isEqualTo(ROOM_TYPE);
     }
     
-    @Test
+    @Test(priority = 9)
     public void addObjectAndClearFilter() {
         hierarchyView = HierarchyViewPage.goToHierarchyViewPage(driver, BASIC_URL, LOCATION_TYPE, buildingId1);
         hierarchyView.getMainTree().getPagination().changeRowsCount(100);
