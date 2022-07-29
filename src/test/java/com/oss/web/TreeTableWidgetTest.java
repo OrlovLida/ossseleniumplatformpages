@@ -159,7 +159,6 @@ public class TreeTableWidgetTest extends BaseTestCase {
         String defaultForthColumn = treeTableWidget.getActiveColumnIds().get(3);
 
         treeTableWidget.changeColumnsOrderById(defaultForthColumn, 2);
-        DelayUtils.sleep();
         treeTableWidget.setColumnWidth(defaultFirstColumn, String.valueOf(defaultFirstColumnSize - 50));
         plannersViewPage.enableColumn(DOMAIN_COLUMN_ID);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);

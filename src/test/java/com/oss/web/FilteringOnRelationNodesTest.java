@@ -18,6 +18,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
+import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.prompts.Popup;
 import com.oss.framework.components.search.AdvancedSearch;
@@ -36,6 +37,7 @@ import com.oss.untils.Environment;
 public class FilteringOnRelationNodesTest extends BaseTestCase {
     private static final String DONT_SHOW_MESSAGE_AGAIN_CHECKBOX_ID = "dontShowMessageAgainCheckboxId";
     private static final String TRUE = "true";
+    private static final String REFRESH_ACTION = "tree_gql_refresh";
     private Environment env = Environment.getInstance();
     private static final String DEVICE_NAME = "FORN-123-456";
     private static final String PORT_NAME_10 = "10";
@@ -116,15 +118,15 @@ public class FilteringOnRelationNodesTest extends BaseTestCase {
     
     @Test(priority = 5)
     public void filterOnRelationsAndExpandNextLevel() {
-        hierarchyViewPage.getFirstNode().expandNextLevel();
+        hierarchyViewPage.callAction(ActionsContainer.KEBAB_GROUP_ID, REFRESH_ACTION);
         TreeComponent.Node node = getNode(PATH_1ST_LOCATIONS_RELATION);
         node.searchByAttribute(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, FLOOR_NAME);
-        Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(FLOOR_NAME).doesNotContain(FLOOR_NAME_2);
         Optional<Popup> confirmationBox = hierarchyViewPage.expandNextLevel(LOCATION_NAME);
         Assertions.assertThat(confirmationBox).isPresent();
-        confirmationBox.get().setComponentValue(DONT_SHOW_MESSAGE_AGAIN_CHECKBOX_ID, TRUE, Input.ComponentType.CHECKBOX);
+        confirmationBox.get().setComponentValue(DONT_SHOW_MESSAGE_AGAIN_CHECKBOX_ID, TRUE);
         confirmationBox.get().clickButtonByLabel(EXPAND_CLEAR_FILTERS_BUTTON);
         Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(FLOOR_NAME).contains(FLOOR_NAME_2);
+        hierarchyViewPage.callAction(ActionsContainer.KEBAB_GROUP_ID, REFRESH_ACTION);
         getNode(PATH_1ST_LOCATIONS_RELATION).searchByAttribute(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, FLOOR_NAME);
         Optional<Popup> confirmationBox2 = hierarchyViewPage.expandNextLevel(LOCATION_NAME);
         Assertions.assertThat(confirmationBox2).isNotPresent();
