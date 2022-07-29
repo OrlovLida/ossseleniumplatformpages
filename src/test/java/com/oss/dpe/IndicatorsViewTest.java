@@ -333,9 +333,9 @@ public class IndicatorsViewTest extends BaseTestCase {
     public void childObjectTest(
             @Optional("All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators") String indicatorNodesToExpand,
             @Optional("DBTIME") String indicatorNodesToSelect,
-            @Optional("Self Monitoring Package,MOs: self:DPE:IF Run Analysis") String dimensionNodesToExpand,
+            @Optional() String dimensionNodesToExpand,
             @Optional("DC Type: THRES_DC") String dimensionNodesToSelect,
-            @Optional("All Self Monitoring") String filterName,
+            @Optional("Data Collection Statistics") String filterName,
             @Optional("Managed Objects") String dimensionFolderWithOptions
     ) {
         try {

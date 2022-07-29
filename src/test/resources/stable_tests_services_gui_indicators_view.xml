@@ -9,8 +9,9 @@
         <parameter name="indicatorNodesToExpand"
                    value="All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators"/>
         <parameter name="indicatorNodesToSelect" value="DBTIME"/>
+        <parameter name="dimensionNodesToExpand" value="Self Monitoring Package,MOs: self:DPE:IF Run Analysis"/>
         <parameter name="dimensionNodesToSelect" value="DC Type: THRES_DC"/>
-        <parameter name="filterName" value="Data Collection Statistics"/>
+        <parameter name="filterName" value="All Self Monitoring"/>
         <classes>
             <class name="com.oss.bigdata.kpiview.KpiViewTest">
                 <methods>
