@@ -17,13 +17,15 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.advancedsearch.AdvancedSearchWidget;
 import com.oss.framework.widgets.dockedpanel.DockedPanel;
 import com.oss.framework.widgets.dockedpanel.DockedPanelInterface;
-import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
+import com.oss.framework.widgets.propertypanel.PropertyPanel;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.table.TableInterface;
+import com.oss.framework.widgets.table.TableWidget;
 import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 import com.oss.pages.physical.DeviceWizardPage;
+import com.oss.pages.platform.configuration.ChooseConfigurationWizard;
 import com.oss.pages.transport.trail.RoutingWizardPage;
 import com.oss.pages.transport.trail.TerminationWizardPage;
 import com.oss.pages.transport.trail.TrailWizardPage;
@@ -49,11 +51,11 @@ public class NetworkViewPage extends BasePage {
     public static final String HIERARCHY_VIEW_ACTION = "NAVIGATION_Hierarchy View-null";
     public static final String DEVICE_ACTION = "add_to_view_group_Device-null";
     public static final String CONNECTION_ACTION = "add_to_view_group_Connection-null";
-    private static final String CREATE_CONNECTION_ACTION = "Create Connection";
+    private static final String CREATE_CONNECTION_ACTION = "CREATE_Create Connection-null";
     private static final String DELETE_TERMINATION_ACTION = "Delete termination";
     private static final String START_EDITING_CONNECTION_ACTION = "EDIT_Start editing Connection-null";
     private static final String STOP_EDITING_CONNECTION_ACTION = "EDIT_Stop editing Connection-null";
-    private static final String TERMINATION_ACTION = "add_to_group_Termination-null";
+    private static final String TERMINATION_ACTION = "EDIT_Add to Termination-null";
     private static final String ROUTING = "add_to_group_Routing-null";
     private static final String ACCEPT_BUTTON = "Accept";
     private static final String DELETE_BUTTON = "Delete";
@@ -62,13 +64,17 @@ public class NetworkViewPage extends BasePage {
     private static final String LEFT_PANEL_TAB_ID = "LeftPanelWidget";
     private static final String VALIDATION_RESULT_ID = "Validation Results";
     private static final String ROUTING_TABLE_APP_ID = "routing-table-app";
-    private static final String TRAIL_TYPES_POPUP_ID = "trailTypesPopup";
+    private static final String TRAIL_TYPES_POPUP_ID = "trailTypesPopup_prompt-card";
     private static final String SUPPRESSION_WIZARD_ID = "plaSuppressionWizard";
     private static final String SUPPRESSION_WIZARD_CONTEXT_ACTION_ID = "frameworkCustomMore_Suppression wizard";
     private static final String PROPERTY_PANEL_ID = "NetworkViewPropertyPanelWidget";
     private static final String BOTTOM_TABS_ID = "bottomTabs";
     private static final String ACTION_CONTAINER_ID = "logicalview-windowToolbar";
     private static final String TRAIL_TYPE_WIZARD_ID = "trailTypesPopup_prompt-card";
+    private static final String GEAR_OBJECT_GROUP_ID = "frameworkCustomButtonsSecondaryGroup";
+    private static final String CHOOSE_CONFIGURATION_ID = "chooseConfiguration";
+    private static final String ATTRIBUTES_PANEL_ID = "NetworkViewPropertyPanelWidget";
+    private static final String DETAILS_TAB_ID = "dockedPanel-bottom";
 
     public NetworkViewPage(WebDriver driver) {
         super(driver);
@@ -105,7 +111,7 @@ public class NetworkViewPage extends BasePage {
     public void openWizardPage(String trailType) {
         useContextAction(ActionsContainer.CREATE_GROUP_ID, CREATE_CONNECTION_ACTION);
         selectTrailType(trailType);
-        clickConfirmationBoxButtonByLabel(ACCEPT_BUTTON);
+        acceptTrailType();
     }
 
     @Step("Add selected objects to Routing")
@@ -122,7 +128,8 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Add selected objects to Termination")
     public TerminationWizardPage addSelectedObjectsToTermination() {
-        useContextAction(ADD_TO_GROUP_ACTION, TERMINATION_ACTION);
+        useContextAction(ActionsContainer.EDIT_GROUP_ID, TERMINATION_ACTION);
+        waitForPageToLoad();
         return new TerminationWizardPage(driver);
     }
 
@@ -208,6 +215,7 @@ public class NetworkViewPage extends BasePage {
     public void selectObjectInViewContent(String name, String value) {
         waitForPageToLoad();
         TableInterface table = OldTable.createById(driver, wait, LEFT_PANEL_TAB_ID);
+
         table.selectRowByAttributeValueWithLabel(name, value);
     }
 
@@ -333,8 +341,7 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Get value from Attributes panel")
     public String getAttributeValue(String attributeName) {
-        expandAttributesPanel();
-        OldPropertyPanel attributesPanel = OldPropertyPanel.createById(driver, wait, PROPERTY_PANEL_ID);
+        PropertyPanel attributesPanel = PropertyPanel.createById(driver, wait, PROPERTY_PANEL_ID);
         return attributesPanel.getPropertyValue(attributeName);
     }
 
@@ -369,14 +376,14 @@ public class NetworkViewPage extends BasePage {
         waitForPageToLoad();
     }
 
-    private void expandViewContentPanel() {
+    public void expandViewContentPanel() {
         expandDockedPanel("left");
         waitForPageToLoad();
     }
 
     @Deprecated //xpath allowed only in Framework
     private String getXPathForObjectInViewContentByPartialName(String partialName) {
-        return String.format("//div[contains(@class, 'Col_ColumnId_Name')]//div[contains(text(), '%s')]", partialName);
+        return String.format("//div[contains(@class, 'Col_ColumnId_Name')]//span[contains(text(), '%s')]", partialName);
     }
 
     private void selectObjectInBottomPanel(String tableId, String column, String value) {
@@ -390,6 +397,12 @@ public class NetworkViewPage extends BasePage {
                 String.format("//div[@data-attributename = 'bottomTabs']//div[contains(@class, 'Cell')]//a[contains(text(), '%s')]",
                         partialValue);
         return !driver.findElements(By.xpath(xpath)).isEmpty();
+    }
+
+    public String getObjectValueFromTab(Integer index, String column, String componentId) {
+        waitForPageToLoad();
+        TableWidget tableWidget = TableWidget.createById(driver, componentId, wait);
+        return tableWidget.getCellValue(index, column);
     }
 
     private Wizard suppressionWizard() {
@@ -412,18 +425,18 @@ public class NetworkViewPage extends BasePage {
         select1stLevelTab();
     }
 
-    private void openRoutingElementsTab() {
+    public void openRoutingElementsTab() {
         openRoutingTab();
         selectElementsTab();
     }
 
-    private void openRoutingTab() {
+    public void openRoutingTab() {
         expandDetailsPanel();
         selectTabFromBottomPanel(ROUTING);
         waitForPageToLoad();
     }
 
-    private void openTerminationsTab() {
+    public void openTerminationsTab() {
         expandDetailsPanel();
         selectTabFromBottomPanel("Terminations");
         waitForPageToLoad();
@@ -457,9 +470,21 @@ public class NetworkViewPage extends BasePage {
         driver.findElement(By.xpath(xpath)).click();
     }
 
-    private void expandAttributesPanel() {
+    public void expandAttributesPanel() {
         expandDockedPanel("right");
         waitForPageToLoad();
+    }
+
+    @Step("Set Configuration = {configurationName}")
+    public void applyConfigurationForAttributesPanel(String configurationName) {
+        waitForPageToLoad();
+        PropertyPanel propertyPanel = PropertyPanel.createById(driver, wait, ATTRIBUTES_PANEL_ID);
+        propertyPanel.callAction(GEAR_OBJECT_GROUP_ID, CHOOSE_CONFIGURATION_ID);
+        getChooseConfigurationWizard().chooseConfiguration(configurationName).apply();
+    }
+
+    private ChooseConfigurationWizard getChooseConfigurationWizard() {
+        return ChooseConfigurationWizard.create(driver, wait);
     }
 
     private void waitForPageToLoad() {

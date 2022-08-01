@@ -13,6 +13,7 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.faultmanagement.FMCreateWAMVPage;
 import com.oss.pages.faultmanagement.FMSMDashboardPage;
 import com.oss.utils.TestListener;
@@ -31,7 +32,7 @@ public class CreateAlarmListTest extends BaseTestCase {
     private FMSMDashboardPage fmsmDashboardPage;
     private FMCreateWAMVPage fmWAMVPage;
 
-    @Parameters ("chosenDashboard")
+    @Parameters("chosenDashboard")
     @BeforeMethod
     public void goToFMDashboardPage(
             @Optional("FaultManagement") String chosenDashboard
@@ -48,16 +49,18 @@ public class CreateAlarmListTest extends BaseTestCase {
             @Optional("Selenium_test_folder") String folderName
     ) {
         try {
-            fmWAMVPage = fmsmDashboardPage.clickCreateNewAlarmList();
+            fmWAMVPage = fmsmDashboardPage.clickCreateNewAlarmList(ALARM_MANAGEMENT_VIEW_ID);
             fmWAMVPage.setName(name + '_' + date.replace(":", "_"));
             fmWAMVPage.setDescription(description);
             fmWAMVPage.dragAndDropFilterByName(folderName);
             fmWAMVPage.selectFilterFromList(1);
             fmWAMVPage.clickAcceptButton();
-            Assert.assertTrue(fmsmDashboardPage.checkVisibility(ALARM_MANAGEMENT_VIEW_ID,name + '_' + date.replace(":", "_")));
+            DelayUtils.sleep(9000);  //  TODO change it after fix OSSNGSA-11102
+            Assert.assertTrue(fmsmDashboardPage.checkVisibility(ALARM_MANAGEMENT_VIEW_ID, name + '_' + date.replace(":", "_")));
             fmsmDashboardPage.searchInView(ALARM_MANAGEMENT_VIEW_ID, name + '_' + date.replace(":", "_"));
-            fmsmDashboardPage.deleteFromView(ALARM_MANAGEMENT_VIEW_ID,0);
-            Assert.assertFalse(fmsmDashboardPage.checkVisibility(ALARM_MANAGEMENT_VIEW_ID,name + '_' + date.replace(":", "_")));
+            fmsmDashboardPage.deleteFromView(ALARM_MANAGEMENT_VIEW_ID, 0);
+            DelayUtils.sleep(9000);  //  TODO change it after fix OSSNGSA-11102
+            Assert.assertFalse(fmsmDashboardPage.checkVisibility(ALARM_MANAGEMENT_VIEW_ID, name + '_' + date.replace(":", "_")));
 
         } catch (Exception e) {
             log.error(e.getMessage());

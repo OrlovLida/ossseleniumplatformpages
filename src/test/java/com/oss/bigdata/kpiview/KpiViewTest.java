@@ -11,10 +11,7 @@ import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel;
-import com.oss.pages.bigdata.kqiview.ChartActionsPanelPage;
-import com.oss.pages.bigdata.kqiview.KpiToolbarPanelPage;
 import com.oss.pages.bigdata.kqiview.KpiViewPage;
-import com.oss.pages.bigdata.kqiview.KpiViewSetupPage;
 import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
@@ -27,22 +24,13 @@ public class KpiViewTest extends BaseTestCase {
 
     private static final Logger log = LoggerFactory.getLogger(KpiViewTest.class);
     private KpiViewPage kpiViewPage;
-    private KpiViewSetupPage kpiViewSetup;
-    private ChartActionsPanelPage chartActionsPanel;
-    private KpiToolbarPanelPage kpiToolbarPanel;
 
     private static final String INDICATORS_TREE_ID = "_Indicators";
     private static final String DIMENSIONS_TREE_ID = "_Dimensions";
 
-    @Parameters({"kpiViewType"})
     @BeforeMethod
-    public void goToKpiView(
-            @Optional("INDICATORS_VIEW") KpiViewPage.KpiViewType kpiViewType
-    ) {
-        kpiViewPage = KpiViewPage.goToPage(driver, BASIC_URL, kpiViewType);
-        kpiViewSetup = new KpiViewSetupPage(driver, webDriverWait);
-        chartActionsPanel = new ChartActionsPanelPage(driver, webDriverWait);
-        kpiToolbarPanel = new KpiToolbarPanelPage(driver, webDriverWait);
+    public void goToKpiView() {
+        kpiViewPage = KpiViewPage.goToPage(driver, BASIC_URL);
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
@@ -56,8 +44,8 @@ public class KpiViewTest extends BaseTestCase {
             @Optional("Selenium Tests") String filterName
     ) {
         try {
-            kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
-            kpiToolbarPanel.exportChart();
+            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+            kpiViewPage.getKpiToolbar().exportChart();
             kpiViewPage.attachExportedChartToReport();
             attachConsoleLogs(driver);
         } catch (Exception e) {
@@ -77,8 +65,8 @@ public class KpiViewTest extends BaseTestCase {
             @Optional("Selenium Tests") String filterName
     ) {
         try {
-            kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
-            kpiToolbarPanel.changeLayout(LayoutPanel.LayoutType.LAYOUT_2X2);
+            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+            kpiViewPage.getKpiToolbar().changeLayout(LayoutPanel.LayoutType.LAYOUT_2X2);
             saveScreenshotPNG(driver);
 
             kpiViewPage.maximizeDataView();
@@ -104,13 +92,13 @@ public class KpiViewTest extends BaseTestCase {
             @Optional("DFE Tests") String filterName
     ) {
         try {
-            kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
             Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
 
-            chartActionsPanel.clickLinkToChart();
+            kpiViewPage.getChartActionPanel().clickLinkToChart();
             Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
-            Assert.assertTrue(kpiViewSetup.isNodeInTreeSelected(indicatorNodesToSelect, INDICATORS_TREE_ID));
-            Assert.assertTrue(kpiViewSetup.isNodeInTreeSelected(dimensionNodesToSelect, DIMENSIONS_TREE_ID));
+            Assert.assertTrue(kpiViewPage.isNodeInTreeSelected(indicatorNodesToSelect, INDICATORS_TREE_ID));
+            Assert.assertTrue(kpiViewPage.isNodeInTreeSelected(dimensionNodesToSelect, DIMENSIONS_TREE_ID));
         } catch (Exception e) {
             log.error(e.getMessage());
             Assert.fail();
@@ -128,12 +116,12 @@ public class KpiViewTest extends BaseTestCase {
             @Optional("DFE Tests") String filterName
     ) {
         try {
-            kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
             Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
 
-            kpiToolbarPanel.setTopNDimension("t:SMOKE#DimHierSelenium");
-            kpiToolbarPanel.setTopNLevel("1st");
-            kpiToolbarPanel.clickPerformTopN();
+            kpiViewPage.getKpiToolbar().setTopNDimension("t:SMOKE#DimHierSelenium");
+            kpiViewPage.getKpiToolbar().setTopNLevel("1st");
+            kpiViewPage.getKpiToolbar().clickPerformTopN();
 
             Assert.assertTrue(kpiViewPage.dfeTopNBarChartIsDisplayed());
             Assert.assertTrue(kpiViewPage.isExpectedNumberOfChartsVisible(2));
@@ -154,18 +142,18 @@ public class KpiViewTest extends BaseTestCase {
             @Optional("DFE Tests") String filterName
     ) {
         try {
-            kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
             Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(2));
 
-            kpiViewSetup.clickDimensionOptions(dimensionNodesToExpand);
-            kpiViewSetup.selectDisplaySeriesMode("Aggregation on the Fly");
-            kpiToolbarPanel.applyChanges();
+            kpiViewPage.clickDimensionOptions(dimensionNodesToExpand);
+            kpiViewPage.selectDisplaySeriesMode("Aggregation on the Fly");
+            kpiViewPage.getKpiToolbar().applyChanges();
 
             Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
 
-            kpiViewSetup.clickDimensionOptions(dimensionNodesToExpand);
-            kpiViewSetup.selectDisplaySeriesMode("Original Series and Aggregation on the Fly");
-            kpiToolbarPanel.applyChanges();
+            kpiViewPage.clickDimensionOptions(dimensionNodesToExpand);
+            kpiViewPage.selectDisplaySeriesMode("Original Series and Aggregation on the Fly");
+            kpiViewPage.getKpiToolbar().applyChanges();
 
             Assert.assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(3));
         } catch (Exception e) {

@@ -55,10 +55,10 @@ public class FiltersTest extends BaseTestCase {
     @Description("Creating three new filters and saving them as new filters. Checking that all three filters are created")
     public void createNewFilters() {
         String id = inventoryViewPage.getIdOfMainTableObject(0);
-        int savedFiltersNumber = inventoryViewPage.getSavedFilters().size();
-        
-        if (savedFiltersNumber > 0 && i < 1) {
-            log.info("There are " + savedFiltersNumber + " old filters. Start removing them.");
+        boolean savedFiltersPresent = inventoryViewPage.getAdvancedSearch().isSavedFiltersPresent();
+
+        if (savedFiltersPresent) {
+            log.info("There are old filters. Start removing them.");
             deleteAllFiltersAndFolders();
             i++;
             inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Location");

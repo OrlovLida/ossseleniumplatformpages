@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.inputs.ComponentFactory;
+import com.oss.framework.components.mainheader.ToolbarWidget;
 import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
@@ -26,6 +27,8 @@ public abstract class BaseDfePage extends BasePage implements BaseDfePageInterfa
 
     private static final Logger log = LoggerFactory.getLogger(BaseDfePage.class);
     private static final String SAVE_LABEL = "Save";
+    private static final String CATEGORY_COLUMN_LABEL = "Category";
+    private static final String CATEGORY_ID = "category";
 
     protected BaseDfePage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -56,14 +59,14 @@ public abstract class BaseDfePage extends BasePage implements BaseDfePageInterfa
     }
 
     @Step("Get category name")
-    public String getCategoryName(int index, String columnLabel) {
-        return getTable(driver, wait).getCellValue(index, columnLabel);
+    public String getCategoryName(int index) {
+        return getTable(driver, wait).getCellValue(index, CATEGORY_COLUMN_LABEL);
     }
 
     @Step("Search category")
-    public void searchCategories(String category, String categoriesID) {
+    public void searchCategories(String category) {
         waitForPageToLoad(driver, wait);
-        ComponentFactory.create(categoriesID, driver, wait).setSingleStringValue(category);
+        ComponentFactory.create(CATEGORY_ID, driver, wait).setSingleStringValue(category);
         log.debug("Filled category with: {}", category);
     }
 
@@ -74,6 +77,10 @@ public abstract class BaseDfePage extends BasePage implements BaseDfePageInterfa
         return OldTable
                 .createById(driver, wait, tableId)
                 .hasNoData();
+    }
+
+    public String getViewTitle() {
+        return ToolbarWidget.create(driver, wait).getViewTitle();
     }
 
     protected void searchFeed(String searchText) {

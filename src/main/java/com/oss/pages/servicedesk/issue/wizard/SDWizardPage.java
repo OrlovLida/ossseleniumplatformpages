@@ -30,8 +30,10 @@ public class SDWizardPage extends BaseSDPage {
     private static final String CHANGE_INCIDENT_DESCRIPTION_ID = "TT_WIZARD_INPUT_INCIDENT_DESCRIPTION_LABEL";
     private static final String EMAIL_MESSAGE_ID = "message-component";
     private static final String EXPECTED_RESOLUTION_DATE_ID = "TT_WIZARD_INPUT_EXPECTED_RESOLUTION_DATE_LABEL";
+    private static final String EVENT_TIME_ID = "TT_WIZARD_INPUT_EVENT_TIME_FIELD_LABEL";
     private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss";
     private static final String TT_WIZARD_ASSIGNEE = "TT_WIZARD_INPUT_ASSIGNEE_LABEL";
+    private static final String TT_WIZARD_ESCALATED_TO = "TT_WIZARD_INPUT_ESCALATED_TO_LABEL";
     private static final String TT_WIZARD_REQUESTER = "TT_WIZARD_INPUT_REQUESTER_LABEL";
     private static final String TEST_SELENIUM_ID = "12345";
     private static final String TT_WIZARD_CORRELATION_ID = "ISSUE_CORRELATION_ID";
@@ -54,7 +56,7 @@ public class SDWizardPage extends BaseSDPage {
     private static final String TASK_WIZARD_NAME = "name";
     private static final String TASK_WIZARD_ASSIGNEE = "assignee";
     private static final String TASK_WIZARD_LABEL = "label";
-    private static final String TASK_WIZARD_CREATE_TASK_BUTTON = "_createTaskSubmitId-1";
+    private static final String TASK_WIZARD_CREATE_TASK_BUTTON = "SaveButtonId";
 
     private final MOStep moStep;
     private final Wizard wizard;
@@ -119,6 +121,14 @@ public class SDWizardPage extends BaseSDPage {
         log.info("Insert Expected resolution date: plus 5 days from now");
     }
 
+    @Step("Insert Event Time")
+    public void enterEventTime() {
+        String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN));
+        wizard.setComponentValue(EVENT_TIME_ID, date, Input.ComponentType.TEXT_FIELD);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Insert Event Time");
+    }
+
     @Step("I insert {message} to Email Message field")
     public void enterEmailMessage(String message) {
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -142,9 +152,11 @@ public class SDWizardPage extends BaseSDPage {
         getMoStep().selectObjectInMOTable(moIdentifier);
         clickNextButtonInWizard();
         insertValueToComponent(assignee, TT_WIZARD_ASSIGNEE);
+        insertValueToComponent(assignee, TT_WIZARD_ESCALATED_TO);
         insertValueToComponent(TEST_SELENIUM_ID, TT_WIZARD_REFERENCE_ID);
         enterIncidentDescription("Selenium Test ticket");
         enterExpectedResolutionDate();
+        enterEventTime();
         insertValueToComponent(TEST_SELENIUM_ID, TT_WIZARD_CORRELATION_ID);
         clickNextButtonInWizard();
         String date = LocalDateTime.now().minusMinutes(5).format(DATE_TIME_FORMATTER);

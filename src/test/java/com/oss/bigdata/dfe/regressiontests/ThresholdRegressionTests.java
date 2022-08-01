@@ -26,7 +26,7 @@ public class ThresholdRegressionTests extends BaseTestCase {
     @Test(priority = 1, testName = "Threshold View is opening ", description = "Threshold View is opening")
     @Description("Threshold View is opening")
     public void checkThresholdView() {
-        Assert.assertEquals(driver.getTitle(), "Thresholds Configuration");
+        Assert.assertEquals(thresholdPage.getViewTitle(), "Thresholds Configuration");
     }
 
     @Parameters({"thresholdName"})

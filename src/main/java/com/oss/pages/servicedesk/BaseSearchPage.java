@@ -83,6 +83,12 @@ public abstract class BaseSearchPage extends BaseSDPage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
+    public void clearAllFilters() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getIssueTable().clearAllFilters();
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
     public boolean isIssueTableEmpty() {
         DelayUtils.waitForPageToLoad(driver, wait);
         return getIssueTable().hasNoData();

@@ -1,27 +1,32 @@
 package com.oss.pages.bigdata.kqiview;
 
-import com.oss.framework.iaa.widgets.dpe.toolbarpanel.ExportPanel;
-import com.oss.framework.iaa.widgets.dpe.toolbarpanel.KpiToolbarPanel;
-import com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel;
-import com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsPanel;
-import com.oss.pages.BasePage;
-import io.qameta.allure.Step;
+import java.util.List;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
+import com.oss.framework.iaa.widgets.dpe.toolbarpanel.ExportPanel;
+import com.oss.framework.iaa.widgets.dpe.toolbarpanel.KpiToolbarPanel;
+import com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel;
+import com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsPanel;
+import com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsSidePanel;
+import com.oss.pages.BasePage;
 
-import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsPanel.MiscellaneousOption.*;
+import io.qameta.allure.Step;
+
+import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsPanel.MiscellaneousOption.DATA_COMPLETENESS;
+import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsPanel.MiscellaneousOption.LAST_SAMPLE_TIME;
+import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsPanel.MiscellaneousOption.SHOW_TIME_ZONE;
 import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsPanel.TimePeriodChooserOption.LATEST;
 import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsPanel.TimePeriodChooserOption.SMART;
-import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsPanel.YAxisOption.MANUAL;
 import static com.oss.framework.utils.DelayUtils.waitForPageToLoad;
 
 public class KpiToolbarPanelPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(KpiToolbarPanelPage.class);
+    private static final String MANUAL_MODE = "Manual";
 
     private final KpiToolbarPanel kpiToolbarPanel;
 
@@ -106,13 +111,6 @@ public class KpiToolbarPanelPage extends BasePage {
         }
     }
 
-    @Step("Set Y axis manual option")
-    public void chooseManualYaxis() {
-        log.info("Setting manual Y axis");
-        waitForPageToLoad(driver, wait);
-        kpiToolbarPanel.openOptionsPanel().setYAxisOption(MANUAL);
-    }
-
     @Step("I enable Data Completeness option")
     public void enableDataCompleteness() {
         log.info("Enabling Data Completeness visibility");
@@ -167,5 +165,25 @@ public class KpiToolbarPanelPage extends BasePage {
         kpiToolbarPanel.selectDisplayType(displayTypeId);
         waitForPageToLoad(driver, wait);
         log.info("Setting display type to: {}", displayTypeId);
+    }
+
+    private OptionsSidePanel getOptionsSidePanel() {
+        return kpiToolbarPanel.openOptionsSidePanel();
+    }
+
+    @Step("Select Y axis: {yaxisName}")
+    public void selectYaxis(String yaxisName) {
+        getOptionsSidePanel().selectYAxis(yaxisName);
+        log.info("Selecting Y axis: {}", yaxisName);
+    }
+
+    @Step("Select Y axis mode: {mode}")
+    public void selectManualYaxisParameters(String maxValue, String minValue, boolean softLimit) {
+        getOptionsSidePanel().setYaxisMode(MANUAL_MODE);
+        log.info("Selecting Y axis mode to: Manual");
+        getOptionsSidePanel().setYaxisMaxAndMinValues(maxValue, minValue);
+        if (softLimit) {
+            getOptionsSidePanel().setOnSoftLimits();
+        }
     }
 }

@@ -13,10 +13,9 @@ import io.qameta.allure.Description;
 
 public class DimensionRegressionTests extends BaseTestCase {
 
-    private DimensionsPage dimensionsPage;
     private static final String CATEGORIES_TYPE = "Selenium Tests";
     private static final String CATEGORY_COLUMN_LABEL = "Category";
-    private static final String SEARCH_CATEGORIES_ID = "category";
+    private DimensionsPage dimensionsPage;
 
     @BeforeMethod
     public void goToDimensionView() {
@@ -26,7 +25,7 @@ public class DimensionRegressionTests extends BaseTestCase {
     @Test(priority = 1, testName = "Dimensions View is opening ", description = "Dimensions View is opening")
     @Description("Dimensions View is opening")
     public void checkDimensionsView() {
-        Assert.assertEquals(driver.getTitle(), "Dimensions");
+        Assert.assertEquals(dimensionsPage.getViewTitle(), "Dimensions");
     }
 
     @Parameters({"dimensionName"})
@@ -112,8 +111,8 @@ public class DimensionRegressionTests extends BaseTestCase {
     @Test(priority = 7, testName = "Check Categories", description = "Check Categories")
     @Description("Check Categories")
     public void checkCategories() {
-        dimensionsPage.searchCategories(CATEGORIES_TYPE, SEARCH_CATEGORIES_ID);
-        Assert.assertEquals(dimensionsPage.getCategoryName(0, CATEGORY_COLUMN_LABEL), CATEGORIES_TYPE);
+        dimensionsPage.searchCategories(CATEGORIES_TYPE);
+        Assert.assertEquals(dimensionsPage.getCategoryName(0), CATEGORIES_TYPE);
     }
 
 }

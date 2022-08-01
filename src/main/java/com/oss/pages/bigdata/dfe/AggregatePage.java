@@ -12,6 +12,8 @@ import com.oss.framework.widgets.table.OldTable;
 
 import io.qameta.allure.Step;
 
+import static com.oss.framework.utils.DelayUtils.waitForPageToLoad;
+
 public class AggregatePage extends BaseDfePage {
 
     private static final Logger log = LoggerFactory.getLogger(AggregatePage.class);
@@ -31,6 +33,18 @@ public class AggregatePage extends BaseDfePage {
     private static final String COLUMN_REQUEST_GENERATION_TIME_LABEL = "Request Generation Time";
     private static final String COLUMN_STATUS_LABEL = "Status";
     private static final String REFRESH_LABEL = "Refresh";
+    private static final String TAB_WIDGET_ID = "card-content_tabsId";
+    private static final String DETAILS_TAB = "Details";
+    private static final String CONFIGURATIONS_TAB = "Configurations";
+    private static final String PROPERTY_PANEL_ID = "detailsId";
+    private static final String NAME_PROPERTY = "Name";
+    private static final String CONFIGURATIONS_TABLE_TAB = "aggregateConfigurationsId";
+    private static final String MEASURES_TAB = "Measures";
+    private static final String MEASURES_TABLE_ID = "aggregateMeasuresId";
+    private static final String USED_IN_TAB = "Used In";
+    private static final String USED_IN_TABLE_TAB = "usedInId";
+    private static final String COLUMN_REBUILD_STATUS_LABEL = "Rebuild Status";
+    private static final String CONFIGURATION_TABLE_TAB_ID = "aggregateConfigurationsId";
 
     private AggregatePage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -45,17 +59,17 @@ public class AggregatePage extends BaseDfePage {
     }
 
     @Step("I click add new Aggregate")
-    public void clickAddNewAggregate(){
+    public void clickAddNewAggregate() {
         clickContextActionAdd();
     }
 
     @Step("I click edit Aggregate")
-    public void clickEditAggregate(){
+    public void clickEditAggregate() {
         clickContextActionEdit();
     }
 
     @Step("I click delete Aggregate")
-    public void clickDeleteAggregate(){
+    public void clickDeleteAggregate() {
         clickContextActionDelete();
     }
 
@@ -117,6 +131,59 @@ public class AggregatePage extends BaseDfePage {
         return statusOfAggregate;
     }
 
+    @Step("I check if Rebuild Status is Valid in each rows")
+    public boolean isRebuildStatusValid() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("I check if Rebuild Status is Valid");
+        for (int row = 0; row < getNumberOfRowInConfigurationsTabTable(); row++) {
+            if (!checkRebuildStatus(row).equals("Valid")) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Step("Select Details tab")
+    public void selectDetailsTab() {
+        selectTab(TAB_WIDGET_ID, DETAILS_TAB);
+    }
+
+    @Step("Select Configurations tab")
+    public void selectConfigurationsTab() {
+        selectTab(TAB_WIDGET_ID, CONFIGURATIONS_TAB);
+    }
+
+    @Step("Select Measures tab")
+    public void selectMeasuresTab() {
+        selectTab(TAB_WIDGET_ID, MEASURES_TAB);
+    }
+
+    @Step("Select Used In tab")
+    public void selectUsedTab() {
+        selectTab(TAB_WIDGET_ID, USED_IN_TAB);
+    }
+
+    @Step("Check name in details tab")
+    public String checkNameInPropertyPanel() {
+        waitForPageToLoad(driver, wait);
+        return checkValueInPropertyPanel(PROPERTY_PANEL_ID, NAME_PROPERTY);
+    }
+
+    @Step("Check if Configurations Tab Table is empty")
+    public boolean isConfigurationsTabTableEmpty() {
+        return isTabTableEmpty(CONFIGURATIONS_TABLE_TAB);
+    }
+
+    @Step("Check if Measures Tab Table is empty")
+    public boolean isMeasuresTabTableEmpty() {
+        return isTabTableEmpty(MEASURES_TABLE_ID);
+    }
+
+    @Step("Check if Used In Table is empty")
+    public boolean isUsedInTabTableEmpty() {
+        return isTabTableEmpty(USED_IN_TABLE_TAB);
+    }
+
     @Override
     public String getTableId() {
         return TABLE_ID;
@@ -140,5 +207,19 @@ public class AggregatePage extends BaseDfePage {
     @Override
     public String getSearchId() {
         return SEARCH_INPUT_ID;
+    }
+
+    @Step("Check number of rows in Configurations Tab Table")
+    private int getNumberOfRowInConfigurationsTabTable() {
+        return getConfigurationsTabTable().countRows(COLUMN_REBUILD_STATUS_LABEL);
+    }
+
+    private OldTable getConfigurationsTabTable() {
+        return OldTable.createById(driver, wait, CONFIGURATION_TABLE_TAB_ID);
+    }
+
+    @Step("Check Rebuild Status in selected row")
+    private String checkRebuildStatus(int row) {
+        return getConfigurationsTabTable().getCellValue(row, COLUMN_REBUILD_STATUS_LABEL);
     }
 }

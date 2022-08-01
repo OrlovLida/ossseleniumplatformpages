@@ -4,10 +4,12 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.TableInterface;
 import com.oss.framework.widgets.table.TableWidget;
 import com.oss.pages.BasePage;
+import com.oss.pages.platform.HomePage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.util.List;
 
 /**
@@ -39,6 +41,9 @@ public class TasksPageV2 extends BasePage {
     private static final String ASSIGNEE_INPUT_ID = "assigneeUser_OSF";
     private static final String STATUS_INPUT_ID = "state";
     private static final String FINISHED_STATUS = "Finished";
+    private static final String BPM_AND_PLANNING = "BPM and Planning";
+    private static final String TASKS = "Tasks";
+    private static final String PROCESS_OPERATIONS = "Process Operations";
 
     public TasksPageV2(WebDriver driver) {
         super(driver);
@@ -47,6 +52,14 @@ public class TasksPageV2 extends BasePage {
     public static TasksPageV2 goToTasksPage(WebDriver driver, WebDriverWait wait, String basicURL) {
         DelayUtils.waitForPageToLoad(driver, wait);
         driver.get(String.format("%s/#/views/bpm/tasksgql", basicURL));
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return new TasksPageV2(driver);
+    }
+
+    public static TasksPageV2 goToTasksPage(WebDriver driver, WebDriverWait wait) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        HomePage homePage = new HomePage(driver);
+        homePage.chooseFromLeftSideMenu(TASKS, BPM_AND_PLANNING, PROCESS_OPERATIONS);
         DelayUtils.waitForPageToLoad(driver, wait);
         return new TasksPageV2(driver);
     }

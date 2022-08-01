@@ -13,7 +13,6 @@ import com.oss.framework.components.mainheader.Share;
 import com.oss.framework.components.mainheader.ToolbarWidget;
 import com.oss.framework.components.table.TableComponent;
 import com.oss.framework.iaa.widgets.dpe.kpichartwidget.KpiChartWidget;
-import com.oss.pages.BasePage;
 import com.oss.pages.administration.managerwizards.BookmarkWizardPage;
 import com.oss.untils.FileDownload;
 
@@ -21,7 +20,7 @@ import io.qameta.allure.Step;
 
 import static com.oss.framework.utils.DelayUtils.waitForPageToLoad;
 
-public class KpiViewPage extends BasePage {
+public class KpiViewPage extends KpiViewSetupPage {
 
     private static final Logger log = LoggerFactory.getLogger(KpiViewPage.class);
 
@@ -31,20 +30,26 @@ public class KpiViewPage extends BasePage {
     private static final String SAVE_BOOKMARK_BUTTON_ID = "ButtonSaveBookmark";
     private static final String CHILD_OBJECT_LEVEL_INPUT_ID = "SelectChildMOLevelChanged";
     private static final String IND_VIEW_TABLE_ID = "ind-view-table";
-    private static final String TOP_N_BARCHART_DFE_ID = "amchart-series-DFE_y-selected";
-    private static final String TOP_N_BARCHART_DPE_ID = "amchart-series-DPE_y-selected";
-    private static final String INDICATORS_VIEW_URL = "Assurance/KPIView";
-    private static final String STANDALONE_INDICATORS_VIEW_URL = "indicators-view/indicators-view";
 
     public KpiViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
     }
 
+    @Step("Go to Toolbar Panel")
+    public KpiToolbarPanelPage getKpiToolbar() {
+        return new KpiToolbarPanelPage(driver, wait);
+    }
+
+    @Step("Go to Chart Action")
+    public ChartActionsPanelPage getChartActionPanel() {
+        return new ChartActionsPanelPage(driver, wait);
+    }
+
     @Step("I Open KPI View")
-    public static KpiViewPage goToPage(WebDriver driver, String basicURL, KpiViewType kpiViewType) {
+    public static KpiViewPage goToPage(WebDriver driver, String basicURL) {
         WebDriverWait wait = new WebDriverWait(driver, 90);
 
-        String pageUrl = String.format("%s/#/view/%s", basicURL, chooseKpiView(kpiViewType));
+        String pageUrl = String.format("%s/#/view/indicators-view/indicators-view", basicURL);
         driver.get(pageUrl);
         waitForPageToLoad(driver, wait);
         log.info("Opened page: {}", pageUrl);
@@ -52,29 +57,8 @@ public class KpiViewPage extends BasePage {
         return new KpiViewPage(driver, wait);
     }
 
-    public enum KpiViewType {
-        INDICATORS_VIEW, STANDALONE_INDICATORS_VIEW
-    }
-
-    private static String chooseKpiView(KpiViewType kpiType) {
-        if (kpiType == null) {
-            return INDICATORS_VIEW_URL;
-        } else if (kpiType == KpiViewType.STANDALONE_INDICATORS_VIEW) {
-            return STANDALONE_INDICATORS_VIEW_URL;
-        }
-        return INDICATORS_VIEW_URL;
-    }
-
-    @Step("I see chart is displayed")
-    public void seeChartIsDisplayed() {
-        log.info("Waiting for chart presence");
-        KpiChartWidget.create(driver, wait).waitForPresenceAndVisibility();
-    }
-
-    @Step("I hover over some point")
-    public void hoverOverPoint() {
-        log.info("Hovering over some point");
-        KpiChartWidget.create(driver, wait).hoverMouseOverPoint();
+    private KpiChartWidget getKpiChartWidget() {
+        return KpiChartWidget.create(driver, wait);
     }
 
     @Step("Attach exported chart to report")
@@ -87,54 +71,64 @@ public class KpiViewPage extends BasePage {
         Card.createCard(driver, wait, DATA_VIEW_ID).minimizeCard();
     }
 
+    private Card getCard(String cardId) {
+        return Card.createCard(driver, wait, cardId);
+    }
+
     @Step("I maximize data View")
     public void maximizeDataView() {
-        Card.createCard(driver, wait, DATA_VIEW_ID).maximizeCard();
+        getCard(DATA_VIEW_ID).maximizeCard();
     }
 
     @Step("I should see only Data View Panel displayed")
     public boolean isDataViewMaximized() {
-        return Card.createCard(driver, wait, DATA_VIEW_ID).isCardMaximized();
+        return getCard(DATA_VIEW_ID).isCardMaximized();
     }
 
     @Step("I minimize Indicators Panel")
     public void minimizeIndicatorsPanel() {
-        Card.createCard(driver, wait, INDICATORS_TREE_ID).minimizeCard();
+        getCard(INDICATORS_TREE_ID).minimizeCard();
     }
 
     @Step("I maximize Indicators Panel")
     public void maximizeIndicatorsPanel() {
-        Card.createCard(driver, wait, INDICATORS_TREE_ID).maximizeCard();
+        getCard(INDICATORS_TREE_ID).maximizeCard();
     }
 
     @Step("Indicators Panel should be maximized")
     public boolean isIndicatorsPanelMaximized() {
-        return Card.createCard(driver, wait, INDICATORS_TREE_ID).isCardMaximized();
+        return getCard(INDICATORS_TREE_ID).isCardMaximized();
     }
 
     @Step("I minimize Dimensions Panel")
     public void minimizeDimensionsPanel() {
-        Card.createCard(driver, wait, DIMENSIONS_TREE_ID).minimizeCard();
+        getCard(DIMENSIONS_TREE_ID).minimizeCard();
     }
 
     @Step("I maximize Dimensions Panel")
     public void maximizeDimensionsPanel() {
-        Card.createCard(driver, wait, DIMENSIONS_TREE_ID).maximizeCard();
+        getCard(DIMENSIONS_TREE_ID).maximizeCard();
     }
 
     @Step("Dimensions Panel should be maximized")
     public boolean isDimensionPanelMaximized() {
-        return Card.createCard(driver, wait, DIMENSIONS_TREE_ID).isCardMaximized();
+        return getCard(DIMENSIONS_TREE_ID).isCardMaximized();
     }
 
     @Step("I should see {expectedLinesCount} lines displayed")
     public boolean shouldSeeCurvesDisplayed(int expectedLinesCount) {
-        return KpiChartWidget.create(driver, wait).countLines() == expectedLinesCount;
+        waitForChartPresence();
+        return getKpiChartWidget().countLines() == expectedLinesCount;
+    }
+
+    private void waitForChartPresence() {
+        log.info("Waiting for chart presence");
+        getKpiChartWidget().waitForPresenceAndVisibility();
     }
 
     @Step("I should see {expectedPieCharts} Pie Charts displayed")
     public boolean shouldSeePieChartsDisplayed(int expectedPieCharts) {
-        return KpiChartWidget.create(driver, wait).countPieCharts() == expectedPieCharts;
+        return getKpiChartWidget().countPieCharts() == expectedPieCharts;
     }
 
     @Step("I check if Indicators View Table is empty")
@@ -145,44 +139,41 @@ public class KpiViewPage extends BasePage {
 
     @Step("I should see more than one line displayed")
     public boolean shouldSeeMoreThanOneCurveDisplayed() {
-        return KpiChartWidget.create(driver, wait).countLines() > 1;
+        return getKpiChartWidget().countLines() > 1;
     }
 
     @Step("I should see {expectedPointsCount} highlighted points displayed")
     public boolean shouldSeePointsDisplayed(int expectedPointsCount) {
-        KpiChartWidget kpiChartWidget = KpiChartWidget.create(driver, wait);
-        int pointsCount = (kpiChartWidget.countVisiblePoints()) / 2;
+        int pointsCount = (getKpiChartWidget().countVisiblePoints()) / 2;
         return pointsCount == expectedPointsCount;
     }
 
     @Step("I double click on bar in TopN BarChart")
     public void doubleClickTopNDPE() {
-        KpiChartWidget.create(driver, wait).doubleClickTopNBar(TOP_N_BARCHART_DPE_ID);
+        getKpiChartWidget().doubleClickTopNBar();
         waitForPageToLoad(driver, wait);
     }
 
     @Step("I check if TopN navigation bar is visible")
     public boolean isTopNNavigationBarVisible() {
         log.info("Checking visibility of TopN navigation bar");
-        return KpiChartWidget.create(driver, wait).isTopNNavigationBarPresent();
+        return getKpiChartWidget().isTopNNavigationBarPresent();
     }
 
     @Step("I click legend")
     public void clickLegend() {
         log.info("Clicking first element from legend");
-        KpiChartWidget.create(driver, wait).clickDataSeriesLegend();
+        getKpiChartWidget().clickDataSeriesLegend();
     }
 
     @Step("I should see {expectedLineWidth} width line displayed")
     public boolean shouldSeeDataSeriesLineWidth(String expectedLineWidth) {
-        String lineWidth = KpiChartWidget.create(driver, wait).getDataSeriesLineWidth();
-        return lineWidth.equals(expectedLineWidth);
+        return getKpiChartWidget().getDataSeriesLineWidth().equals(expectedLineWidth);
     }
 
     @Step("I should not see any lines on chart displayed")
     public boolean shouldNotSeeHiddenLine(String expectedLineVisibility) {
-        String lineVisibility = KpiChartWidget.create(driver, wait).getDataSeriesVisibility();
-        return lineVisibility.equals(expectedLineVisibility);
+        return getKpiChartWidget().getDataSeriesVisibility().equals(expectedLineVisibility);
     }
 
     @Step("Check if data-series-type is {dataSeriesType}")
@@ -192,52 +183,42 @@ public class KpiViewPage extends BasePage {
 
     @Step("I should see topN bar chart displayed with DFE data")
     public boolean dfeTopNBarChartIsDisplayed() {
-        return KpiChartWidget.create(driver, wait).isTopNBarChartIsPresent(TOP_N_BARCHART_DFE_ID);
+        return getKpiChartWidget().isTopNBarChartIsPresent();
     }
 
     @Step("I should see topN bar chart displayed with DPE data")
     public boolean dpeTopNBarChartIsDisplayed() {
-        return KpiChartWidget.create(driver, wait).isTopNBarChartIsPresent(TOP_N_BARCHART_DPE_ID);
+        return getKpiChartWidget().isTopNBarChartIsPresent();
     }
 
     @Step("I should see bar chart displayed")
     public boolean shouldSeeColorChart(String expectedColor) {
-        String color = KpiChartWidget.create(driver, wait).getDataSeriesColor();
-        return color.equals(expectedColor);
-    }
-
-    @Step("I should see 2 visible Y axis and 1 hidden Y axis")
-    public boolean shouldSeeVisibleYaxis(int expectedVisibleYAxisNumber) {
-        waitForPageToLoad(driver, wait);
-        int visibleYaxisNumber = KpiChartWidget.create(driver, wait).countVisibleYAxis();
-        return visibleYaxisNumber == expectedVisibleYAxisNumber;
+        return getKpiChartWidget().getDataSeriesColor().equals(expectedColor);
     }
 
     @Step("I should see last sample time below chart")
     public boolean shouldSeeLastSampleTime(int expectedVisibleLastSampleTimeNumber) {
         waitForPageToLoad(driver, wait);
-        int visibleLastSampleTimeNumber = KpiChartWidget.create(driver, wait).countVisibleLastSampleTime();
-        return visibleLastSampleTimeNumber == expectedVisibleLastSampleTimeNumber;
+        return getKpiChartWidget().countVisibleLastSampleTime() == expectedVisibleLastSampleTimeNumber;
     }
 
     @Step("Checking visibility of Time Zone option")
     public boolean isTimeZoneDisplayed() {
         log.info("Checking visibility of Time Zone option");
         waitForPageToLoad(driver, wait);
-        return KpiChartWidget.create(driver, wait).isTimeZonePresent();
+        return getKpiChartWidget().isTimeZonePresent();
     }
 
     @Step("I should see data completeness displayed in the legend")
     public boolean shouldSeeDataCompleteness() {
         waitForPageToLoad(driver, wait);
-        int visibleLastSampleTimeNumber = KpiChartWidget.create(driver, wait).countVisibleDataCompleteness();
-        return visibleLastSampleTimeNumber > 0;
+        return getKpiChartWidget().countVisibleDataCompleteness() > 0;
     }
 
     @Step("I should see other period displayed in the legend")
     public boolean isLegendWithOtherPeriodDisplayed() {
         waitForPageToLoad(driver, wait);
-        return KpiChartWidget.create(driver, wait).isLegendPresent("Other period");
+        return getKpiChartWidget().isLegendPresent("Other period");
     }
 
     @Step("Click Save bookmark")
@@ -248,13 +229,17 @@ public class KpiViewPage extends BasePage {
 
     @Step("I click Share View icon")
     public void clickShare() {
-        ToolbarWidget.create(driver, wait).openSharePanel();
+        getToolbar().openSharePanel();
         log.info("Click in Share icon");
+    }
+
+    private ToolbarWidget getToolbar() {
+        return ToolbarWidget.create(driver, wait);
     }
 
     @Step("I click close panel")
     public void clickCloseShare() {
-        ToolbarWidget.create(driver, wait).closeSharePanel();
+        getToolbar().closeSharePanel();
         log.info("Closing Share panel");
     }
 
@@ -280,59 +265,66 @@ public class KpiViewPage extends BasePage {
 
     @Step("I check if expected number of charts is visible")
     public boolean isExpectedNumberOfChartsVisible(int expectedNumberOfCharts) {
-        return KpiChartWidget.create(driver, wait).countCharts() == expectedNumberOfCharts;
+        return getKpiChartWidget().countCharts() == expectedNumberOfCharts;
     }
 
     @Step("I zoom the data view")
     public void zoomChart() {
-        KpiChartWidget.create(driver, wait).zoomDataView();
+        getKpiChartWidget().zoomDataView();
         waitForPageToLoad(driver, wait);
     }
 
     @Step("I check if Zoom Out button is visible")
     public boolean isZoomOutButtonVisible() {
-        return KpiChartWidget.create(driver, wait).isZoomOutButtonPresent();
+        return getKpiChartWidget().isZoomOutButtonPresent();
     }
 
     @Step("I click Zoom Out Button")
     public void clickZoomOutButton() {
-        KpiChartWidget.create(driver, wait).clickZoomOut();
+        getKpiChartWidget().clickZoomOut();
         waitForPageToLoad(driver, wait);
     }
 
     @Step("I enable column {columnId} into table")
     public void enableColumnInTheTable(String columnId) {
-        ListAttributesChooser listAttributesChooser = TableComponent.create(driver, wait, IND_VIEW_TABLE_ID).getListAttributesChooser();
-        listAttributesChooser.enableAttributeById(columnId);
-        listAttributesChooser.clickApply();
+        getListAttributesChooser().enableAttributeById(columnId);
+        getListAttributesChooser().clickApply();
         log.info("Enabling column with id: {}", columnId);
+    }
+
+    private ListAttributesChooser getListAttributesChooser() {
+        return getIndViewTable().getListAttributesChooser();
+    }
+
+    private TableComponent getIndViewTable() {
+        return TableComponent.create(driver, wait, IND_VIEW_TABLE_ID);
     }
 
     @Step("I disable column {columnId} into table")
     public void disableColumnInTheTable(String columnId) {
-        ListAttributesChooser listAttributesChooser = TableComponent.create(driver, wait, IND_VIEW_TABLE_ID).getListAttributesChooser();
-        listAttributesChooser.disableAttributeById(columnId);
-        listAttributesChooser.clickApply();
+        getListAttributesChooser().disableAttributeById(columnId);
+        getListAttributesChooser().clickApply();
         log.info("Disabling column with id: {}", columnId);
     }
 
     @Step("I check if column with Header {columnHeader} is present in the Table")
     public boolean isColumnInTable(String columnHeader) {
-        return TableComponent.create(driver, wait, IND_VIEW_TABLE_ID).getColumnHeaders().contains(columnHeader);
+        return getIndViewTable().getColumnHeaders().contains(columnHeader);
     }
 
     @Step("I change columns order to: first column - {columnId}")
     public void dragColumnToTarget(String columnId, String targetColumnId) {
-        ListAttributesChooser listAttributesChooser = TableComponent.create(driver, wait, IND_VIEW_TABLE_ID).getListAttributesChooser();
-        listAttributesChooser.enableAttributeById(columnId);
-        listAttributesChooser.dragColumnToTarget(columnId, targetColumnId);
-        listAttributesChooser.clickApply();
+        getListAttributesChooser().enableAttributeById(columnId);
+        getListAttributesChooser().dragColumnToTarget(columnId, targetColumnId);
+        getListAttributesChooser().clickApply();
         log.info("Changing columns by dragging in table options menu. First column is column with id: {}", columnId);
     }
 
     @Step("I check if column with Header {columnHeader} is first column in the Table")
     public boolean isColumnFirstInTable(String columnHeader) {
-        return TableComponent.create(driver, wait, IND_VIEW_TABLE_ID).getColumnHeaders().stream()
+        return getIndViewTable()
+                .getColumnHeaders()
+                .stream()
                 .findFirst()
                 .orElse("")
                 .equals(columnHeader);
@@ -340,30 +332,35 @@ public class KpiViewPage extends BasePage {
 
     @Step("I drag column in Table")
     public void changeColumnsOrderInTable(String columnToDragId, int position) {
-        TableComponent.create(driver, wait, IND_VIEW_TABLE_ID).changeColumnsOrderById(columnToDragId, position);
+        getIndViewTable().changeColumnsOrderById(columnToDragId, position);
         waitForPageToLoad(driver, wait);
         log.info("Dragging column with id: {} to position: {}", columnToDragId, position);
     }
 
     public void sortColumnASC(String columnId) {
-        TableComponent.create(driver, wait, IND_VIEW_TABLE_ID).sortColumnByASC(columnId);
+        getIndViewTable().sortColumnByASC(columnId);
         waitForPageToLoad(driver, wait);
         log.info("Sorting column with id: {} in ASC order", columnId);
     }
 
     public void sortColumnDESC(String columnId) {
-        TableComponent.create(driver, wait, IND_VIEW_TABLE_ID).sortColumnByDESC(columnId);
+        getIndViewTable().sortColumnByDESC(columnId);
         waitForPageToLoad(driver, wait);
         log.info("Sorting column with id: {} in DESC order", columnId);
     }
 
     public boolean isValueInGivenRow(String value, int row, String columnId) {
-        return TableComponent.create(driver, wait, IND_VIEW_TABLE_ID).getCellValue(row, columnId).equals(value);
+        return getIndViewTable().getCellValue(row, columnId).equals(value);
     }
 
     @Step("Get Bookmark Title from header")
     public String getBookmarkTitle() {
         waitForPageToLoad(driver, wait);
-        return ToolbarWidget.create(driver, wait).getViewTitle();
+        return getToolbar().getViewTitle();
+    }
+
+    @Step("Check if Value: {value} is visible on Yaxis")
+    public boolean isYaxisValueVisible(String value) {
+        return getKpiChartWidget().allYaxisVisibleValues().contains(value);
     }
 }

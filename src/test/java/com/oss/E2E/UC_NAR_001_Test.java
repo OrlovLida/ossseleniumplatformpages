@@ -186,7 +186,7 @@ public class UC_NAR_001_Test extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         homePage.goToHomePage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        homePage.chooseFromLeftSideMenu("Legacy Inventory Dashboard", "Resource Inventory ");
+        homePage.chooseFromLeftSideMenu("Legacy Inventory Dashboard", "Resource Inventory");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         homePage.setNewObjectType(EQUIPMENT_TYPE);
         NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);

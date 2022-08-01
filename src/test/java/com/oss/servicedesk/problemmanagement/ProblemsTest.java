@@ -35,10 +35,14 @@ import static com.oss.pages.servicedesk.BaseSDPage.DATE_TIME_FORMATTER;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.COMBOBOX_LINK_PROBLEM_ID;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.CSV_FILE;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.DETAILS_TABS_CONTAINER_ID;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.EXTERNAL_TYPE;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.FILE_TO_UPLOAD_PATH;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.INTERNAL_TYPE;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.PROBLEM_ISSUE_TYPE;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.SOURCE_TYPE;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.TABS_WIDGET_ID;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.TASK_LABEL;
+import static com.oss.pages.servicedesk.ServiceDeskConstants.TYPE_COMMENT;
 import static com.oss.pages.servicedesk.ServiceDeskConstants.USER_NAME;
 
 public class ProblemsTest extends BaseTestCase {
@@ -428,17 +432,54 @@ public class ProblemsTest extends BaseTestCase {
     public void addInternalComment() {
         issueDetailsPage.maximizeWindow(TABS_WIDGET_ID);
         messagesTab = issueDetailsPage.selectMessagesTab();
-        messagesTab.addInternalComment(INTERNAL_COMMENT_MSG);
+        messagesTab.addComment(INTERNAL_COMMENT_MSG, INTERNAL_TYPE);
 
         Assert.assertFalse(messagesTab.isMessagesTabEmpty());
         Assert.assertEquals(messagesTab.checkMessageType(0), "COMMENT");
         Assert.assertEquals(messagesTab.getMessageText(0), INTERNAL_COMMENT_MSG);
-        Assert.assertEquals(messagesTab.checkCommentType(0), "internal");
+        Assert.assertEquals(messagesTab.checkCommentType(0), INTERNAL_TYPE.toLowerCase());
+    }
+
+    @Test(priority = 28, testName = "Add External Comment", description = "Add External Comment")
+    @Description("Add External Comment")
+    public void addExternalComment() {
+        issueDetailsPage.maximizeWindow(TABS_WIDGET_ID);
+        messagesTab = issueDetailsPage.selectMessagesTab();
+        messagesTab.addComment(INTERNAL_COMMENT_MSG + EXTERNAL_TYPE, EXTERNAL_TYPE);
+
+        Assert.assertFalse(messagesTab.isMessagesTabEmpty());
+        Assert.assertEquals(messagesTab.checkMessageType(0), TYPE_COMMENT);
+        Assert.assertEquals(messagesTab.getMessageText(0), INTERNAL_COMMENT_MSG + EXTERNAL_TYPE);
+        Assert.assertEquals(messagesTab.checkCommentType(0), EXTERNAL_TYPE.toLowerCase());
+    }
+
+    @Test(priority = 29, testName = "Add Source Comment", description = "Add Source Comment")
+    @Description("Add Source Comment")
+    public void addSourceComment() {
+        issueDetailsPage.maximizeWindow(TABS_WIDGET_ID);
+        messagesTab = issueDetailsPage.selectMessagesTab();
+        messagesTab.addComment(INTERNAL_COMMENT_MSG + SOURCE_TYPE, SOURCE_TYPE);
+
+        Assert.assertFalse(messagesTab.isMessagesTabEmpty());
+        Assert.assertEquals(messagesTab.checkMessageType(0), TYPE_COMMENT);
+        Assert.assertEquals(messagesTab.getMessageText(0), INTERNAL_COMMENT_MSG + SOURCE_TYPE);
+        Assert.assertEquals(messagesTab.checkCommentType(0), SOURCE_TYPE.toLowerCase());
+    }
+
+    @Test(priority = 30, testName = "Filtering Comments", description = "Filtering Comments")
+    @Description("Filtering Comments")
+    public void filterComments() {
+        issueDetailsPage.maximizeWindow(TABS_WIDGET_ID);
+        messagesTab = issueDetailsPage.selectMessagesTab();
+        Assert.assertFalse(messagesTab.isMessagesTabEmpty());
+        messagesTab.filterMessages(TYPE_COMMENT);
+        messagesTab.filterComments(INTERNAL_TYPE);
+        Assert.assertEquals(messagesTab.checkCommentType(0), INTERNAL_TYPE.toLowerCase());
     }
 
     @Parameters({"userName"})
-    @Test(priority = 28, testName = "Add related Change to Problem", description = "dd related Change to Problem")
-    @Description("dd related Change to Problem")
+    @Test(priority = 31, testName = "Add related Change to Problem", description = "Add related Change to Problem")
+    @Description("Add related Change to Problem")
     public void addChangeToProblem(
             @Optional("sd_seleniumtest") String userName
     ) {
@@ -453,7 +494,7 @@ public class ProblemsTest extends BaseTestCase {
         Assert.assertEquals(relatedChangesTab.getIncidentDescriptionFromTable(), DESCRIPTION_CHANGE);
     }
 
-    @Test(priority = 29, testName = "Export Related Changes", description = "Export Related Changes")
+    @Test(priority = 32, testName = "Export Related Changes", description = "Export Related Changes")
     @Description("Export Related Changes")
     public void exportRelatedChanges() {
         relatedChangesTab = issueDetailsPage.selectRelatedChangesTab();
@@ -465,7 +506,7 @@ public class ProblemsTest extends BaseTestCase {
     }
 
     @Parameters({"taskAssignee"})
-    @Test(priority = 30, testName = "Add task in Problem Detail View", description = "Add task in Problem Detail View")
+    @Test(priority = 33, testName = "Add task in Problem Detail View", description = "Add task in Problem Detail View")
     @Description("Add task in Problem Detail View")
     public void addTaskInProblemView(
             @Optional("sd_seleniumtest") String taskAssignee
@@ -477,7 +518,7 @@ public class ProblemsTest extends BaseTestCase {
         Assert.assertEquals(tasksTab.getTaskName(), TASK_NAME);
     }
 
-    @Test(priority = 31, testName = "Edit task in Problem Detail View", description = "Edit task in Problem Detail View")
+    @Test(priority = 34, testName = "Edit task in Problem Detail View", description = "Edit task in Problem Detail View")
     @Description("Edit task in Problem Detail View")
     public void editTaskInProblemView() {
         tasksTab = issueDetailsPage.selectTasksTab();
@@ -489,7 +530,7 @@ public class ProblemsTest extends BaseTestCase {
     }
 
     @Parameters({"serviceMOIdentifier"})
-    @Test(priority = 32, testName = "Add Affected", description = "Add Affected Service to the Problem")
+    @Test(priority = 35, testName = "Add Affected", description = "Add Affected Service to the Problem")
     @Description("Add Affected Service to the Problem")
     public void addAffected(
             @Optional("TEST_MO_ABS_SRV") String serviceMOIdentifier

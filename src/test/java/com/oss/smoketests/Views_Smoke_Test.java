@@ -9,10 +9,10 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import org.testng.asserts.SoftAssert;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
@@ -31,19 +31,16 @@ public class Views_Smoke_Test extends BaseTestCase {
     private static final Logger LOGGER = LoggerFactory.getLogger(Views_Smoke_Test.class);
     private List<String> categories;
     private List<View> viewList = new ArrayList<>();
-    private SoftAssert softAssert;
 
     @BeforeClass
     public void openWebConsole() {
         waitForPageToLoad();
-        softAssert = new SoftAssert();
     }
 
     @Test(priority = 1, description = "Get Categories from main Page")
     @Description("Get Categories from main Page")
     public void getCategoriesFromToolsManager() {
         checkErrorPage("Start Page.");
-        softAssert.assertAll();
         ToolsManagerWindow toolsManagerWindow = ToolsManagerWindow.create(driver, webDriverWait);
         categories = toolsManagerWindow.getCategoriesName();
         for (String category : categories) {
@@ -77,12 +74,11 @@ public class Views_Smoke_Test extends BaseTestCase {
                 }
             }
         }
-        softAssert.assertAll();
     }
 
     @Step("Checking {viewName} page from {groupName}.")
     public void checkView(String viewName, String groupName, String path) {
-        if (viewName.equals("Floor Plan and Elevation View") || viewName.equals("Network View")) {
+        if (viewName.equals("Floor Plan and Elevation View") || viewName.equals("Network View") || viewName.equals("Packet Viewer")) {
             LOGGER.warn("{} is on ignored list.", viewName);
             return;
         }
@@ -123,7 +119,7 @@ public class Views_Smoke_Test extends BaseTestCase {
                 LOGGER.error(errorInformation.getErrorText());
                 LOGGER.error(errorInformation.getErrorDescription());
                 LOGGER.error(errorInformation.getErrorMessage());
-                softAssert.fail(String.format("Error Page is shown on %s page.", viewName));
+                Assert.fail(String.format("Error Page is shown on %s page.", viewName));
             }
         }
         checkSystemMessage();
@@ -133,7 +129,7 @@ public class Views_Smoke_Test extends BaseTestCase {
         SystemMessageContainer systemMessage = SystemMessageContainer.create(this.driver, new WebDriverWait(this.driver, 5));
         List<String> errors = systemMessage.getErrors();
         errors.forEach(LOGGER::error);
-        softAssert.assertTrue(errors.isEmpty(), "Some errors occurred during the test. Please check logs for details.\n");
+        Assert.assertTrue(errors.isEmpty(), "Some errors occurred during the test. Please check logs for details.\n");
     }
 
     private void waitForPageToLoad() {

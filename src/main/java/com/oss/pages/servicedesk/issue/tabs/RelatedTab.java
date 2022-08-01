@@ -21,7 +21,7 @@ public abstract class RelatedTab extends BaseSDPage {
     private static final String SHOW_ARCHIVED_SWITCHER_ID = "with_archived";
     private static final String TABS_CONTAINER_ID = "_tablesWindow";
     private static final String CONFIRM_UNLINK_BUTTON_LABEL = "Unlink";
-    private static final String LINK_ISSUE_BUTTON_ID = "_buttonsApp-1";
+    private static final String LINK_ISSUE_BUTTON_ID = "LinkRelatedIssueButtonId";
 
     protected RelatedTab(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);

@@ -1,23 +1,8 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="services_gui_fm" thread-count="2" parallel="tests" verbose="1">
-    <test name="FilterManagerTest">
-        <classes>
-            <class name="com.oss.faultmanagement.FilterManagerTest"/>
-        </classes>
-    </test>
-    <test name="WAMVBasicTest">
-        <classes>
-            <class name="com.oss.faultmanagement.WAMVBasicTest"/>
-        </classes>
-    </test>
-    <test name="CreateAlarmListTest">
-        <classes>
-            <class name="com.oss.faultmanagement.CreateAlarmListTest"/>
-        </classes>
-    </test>
-    <test name="FMSMDashboardTest">
-        <classes>
-            <class name="com.oss.faultmanagement.FMSMDashboardTest"/>
-        </classes>
+    <test name="FMRegressionTests">
+        <packages>
+            <package name="com.oss.faultmanagement"/>
+        </packages>
     </test>
 </suite>

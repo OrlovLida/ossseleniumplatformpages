@@ -10,8 +10,8 @@ public class ParticipantsPromptPage extends SDWizardPage {
     private static final String PARTICIPANT_FIRST_NAME_ID = "firstName";
     private static final String PARTICIPANT_SURNAME_ID = "surname";
     private static final String PARTICIPANT_ROLE_ID = "role";
-    private static final String ADD_PARTICIPANT_ID = "_searchParticipant_buttons-2";
-    private static final String SAVE_BUTTON_ID = "_editParticipantButtonsApp-1";
+    private static final String ADD_PARTICIPANT_ID = "AddParticipantButtonId";
+    private static final String SAVE_BUTTON_ID = "EditParticipantButtonId";
     private static final String SEARCH_PARTICIPANT_BOX_ID = "search_participant";
 
     public ParticipantsPromptPage(WebDriver driver, WebDriverWait wait, String wizardId) {

@@ -53,7 +53,6 @@ public class AggregateConfigurationPage extends BasePage {
 
     @Step("Click Accept")
     public void clickAccept() {
-        waitForPageToLoad(driver, wait);
         aggrConfWizard.clickAccept();
         waitForPageToLoad(driver, wait);
         log.info("Finishing Step Wizard by clicking 'Accept'");

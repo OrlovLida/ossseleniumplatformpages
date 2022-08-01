@@ -35,7 +35,7 @@ public class MountingEditorWizardPage extends BasePage {
 
     @Step("Set Precise Location")
     public void setPreciseLocation(String preciseLocation) {
-        wizard.setComponentValue(PRECISE_LOCATION, preciseLocation, Input.ComponentType.SEARCH_FIELD);
+        wizard.getComponent(PRECISE_LOCATION).setSingleStringValueContains(preciseLocation);
     }
 
     @Step("Set Name")

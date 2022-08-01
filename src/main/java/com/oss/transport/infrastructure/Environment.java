@@ -51,8 +51,8 @@ public class Environment {
             URL url = new URL(CONFIGURATION.getUrl());
             String host = url.getHost();
             int port = url.getPort();
-            String userName = CONFIGURATION.getValue("user");
-            String pass = CONFIGURATION.getValue("password");
+            String userName = CONFIGURATION.getLogin();
+            String pass = CONFIGURATION.getPassword();
             User user = new User(userName, pass);
             return Environment.builder()
                 .withEnvironmentUrl(host)

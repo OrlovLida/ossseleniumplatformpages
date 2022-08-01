@@ -30,12 +30,10 @@ public class KpiViewSetupPage extends BasePage {
     private static final String DIMENSIONS_TREE_ID = "_Dimensions";
     private static final String DIMENSION_OPTIONS_BUTTON_ID = "dimension-options-button";
     private static final String DIMENSION_DISPLAY_SERIES_MODE_ID = "DimensionSeriesChanged";
-    private final KpiViewPage kpiViewPage;
     private final KpiToolbarPanelPage kpiToolbarPanel;
 
     public KpiViewSetupPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
-        kpiViewPage = new KpiViewPage(driver, wait);
         kpiToolbarPanel = new KpiToolbarPanelPage(driver, wait);
     }
 
@@ -93,7 +91,6 @@ public class KpiViewSetupPage extends BasePage {
         kpiToolbarPanel.closeOptionsPanel();
 
         kpiToolbarPanel.applyChanges();
-        kpiViewPage.seeChartIsDisplayed();
     }
 
     @Step("Check if node is selected in the tree")
@@ -128,6 +125,7 @@ public class KpiViewSetupPage extends BasePage {
         waitForPageToLoad(driver, wait);
         kpiTreeWidget.selectResult(objectName);
         kpiTreeWidget.closeSearchToolbar();
+        waitForPageToLoad(driver, wait);
     }
 
     private void selectTreeNodes(List<String> nodesToExpand, List<String> nodesToSelect, String componentId) {

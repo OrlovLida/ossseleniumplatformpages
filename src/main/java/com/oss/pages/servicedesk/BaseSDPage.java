@@ -147,4 +147,13 @@ public abstract class BaseSDPage extends BasePage {
                 .map(SystemMessageContainer.Message::getText)
                 .orElse(null);
     }
+
+    public String getIdFromMessage() {
+        if (!getMessageFromPrompt().isEmpty()) {
+            String[] splitMessage = getMessageFromPrompt().split(" ");
+            log.info("id is: {}", splitMessage[1]);
+            return splitMessage[1];
+        }
+        return "No message is shown";
+    }
 }

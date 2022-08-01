@@ -2,12 +2,17 @@ package com.oss.pages.bigdata.dfe.servergroup;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bigdata.dfe.BaseDfePage;
 
 import io.qameta.allure.Step;
 
 public class ServerGroupPage extends BaseDfePage {
+
+    private static final Logger log = LoggerFactory.getLogger(ServerGroupPage.class);
 
     private static final String TABLE_ID = "server-groupAppId";
     private static final String SEARCH_INPUT_ID = "input_server-groupSearchAppId";
@@ -18,6 +23,10 @@ public class ServerGroupPage extends BaseDfePage {
     private static final String TABS_WIDGET_ID = "card-content_serverGroupTabsId";
     private static final String SERVERS_TAB = "Servers";
     private static final String CONFIRM_DELETE_LABEL = "Delete";
+    private static final String TAB_WIDGET_ID = "card-content_serverGroupTabsId";
+    private static final String DETAILS_TAB = "Details";
+    private static final String PROPERTY_PANEL_ID = "server-group/tabs/detailsAppId";
+    private static final String NAME_PROPERTY = "Name";
 
     public ServerGroupPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -46,6 +55,11 @@ public class ServerGroupPage extends BaseDfePage {
         getTable(driver, wait).selectRow(0);
     }
 
+    @Step("Select Details tab")
+    public void selectDetailsTab() {
+        selectTab(TAB_WIDGET_ID, DETAILS_TAB);
+    }
+
     @Step("I click edit Server Group")
     public void clickEditServerGroup() {
         clickContextActionEdit();
@@ -64,6 +78,12 @@ public class ServerGroupPage extends BaseDfePage {
     @Step("I confirm the removal")
     public void clickConfirmDelete() {
         confirmDelete(CONFIRM_DELETE_LABEL);
+    }
+
+    @Step("Check name in details tab")
+    public String checkNameInPropertyPanel() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return checkValueInPropertyPanel(PROPERTY_PANEL_ID, NAME_PROPERTY);
     }
 
     @Override

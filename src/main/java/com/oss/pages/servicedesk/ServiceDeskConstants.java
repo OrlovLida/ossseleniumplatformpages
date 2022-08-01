@@ -55,4 +55,8 @@ public class ServiceDeskConstants {
     public static final String DICTIONARIES_TAB_LABEL = "Dictionaries";
     public static final String MOST_IMPORTANT_INFO_TAB_LABEL = "Most Important Info";
     public static final String SUMMARY_TAB_LABEL = "Summary";
+    public static final String INTERNAL_TYPE = "Internal";
+    public static final String EXTERNAL_TYPE = "External";
+    public static final String SOURCE_TYPE = "Source";
+    public static final String TYPE_COMMENT = "COMMENT";
 }

@@ -149,7 +149,7 @@ public class UC_NAR_005_Test extends BaseTestCase {
     public void openNewInventoryViewAndCheckSerialNumber() {
         homePage.goToHomePage(driver, BASIC_URL);
         waitForPageToLoad();
-        homePage.chooseFromLeftSideMenu("Legacy Inventory Dashboard", "Resource Inventory ");
+        homePage.chooseFromLeftSideMenu("Legacy Inventory Dashboard", "Resource Inventory");
         waitForPageToLoad();
         homePage.setNewObjectType("Router");
         waitForPageToLoad();

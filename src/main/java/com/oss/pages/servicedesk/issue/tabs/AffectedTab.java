@@ -19,7 +19,7 @@ public class AffectedTab extends BaseSDPage {
     private static final String ADD_SERVICES_PROMPT_ID = "_assigneeServiceModal_prompt-card";
     private static final String MO_IDENTIFIER_LABEL = "MO Identifier";
     private static final String SERVICE_MULTI_SEARCH_ID = "TT_WIZARD_INPUT_MANAGED_OBJECT_LABEL";
-    private static final String ADD_SERVICE_IN_PROMPT_ID = "_formServiceButtons-1";
+    private static final String ADD_SERVICE_IN_PROMPT_ID = "SaveButtonId";
 
     public AffectedTab(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);

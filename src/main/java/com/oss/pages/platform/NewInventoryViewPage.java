@@ -54,7 +54,7 @@ public class NewInventoryViewPage extends BasePage {
     public static final String KEBAB_OBJECT_GROUP_ID = "frameworkObjectButtonsGroup";
     private static final String CONFIRM_REMOVAL_BUTTON_ID = "ConfirmationBox_deleteAppId_action_button";
     private static final String PROPERTY_PANEL_ID = "PropertyPanelWidget";
-    private static String table_id = "MainTableWidget";
+    private static String tableId = "MainTableWidget";
 
     public NewInventoryViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -75,13 +75,13 @@ public class NewInventoryViewPage extends BasePage {
 
     public static NewInventoryViewPage getInventoryViewPage(WebDriver driver, WebDriverWait wait, String mainTableId) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        table_id = mainTableId;
+        tableId = mainTableId;
         return new NewInventoryViewPage(driver, wait);
     }
 
     public TableWidget getMainTable() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        return TableWidget.createById(driver, table_id, wait);
+        return TableWidget.createById(driver, tableId, wait);
     }
 
     public List<String> getColumnsHeaders() {
@@ -118,7 +118,7 @@ public class NewInventoryViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    public void selectSeveralObjectsByRowId(int... indexes) {
+    public void selectObjectsByRowId(int... indexes) {
         List<Integer> rows = Arrays.stream(indexes).boxed().collect(Collectors.toList());
         rows.forEach(this::selectObjectByRowId);
     }

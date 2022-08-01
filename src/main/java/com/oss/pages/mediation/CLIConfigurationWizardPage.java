@@ -51,7 +51,7 @@ public class CLIConfigurationWizardPage extends BasePage {
     public void setIPHostAddress(String ipHostAddress) {
         Input ipAddressComponent = wizard.getComponent(IP_HOST_ADDRESS_FIELD, Input.ComponentType.SEARCH_FIELD);
         ipAddressComponent.clear();
-        ipAddressComponent.setSingleStringValue(ipHostAddress);
+        ipAddressComponent.setSingleStringValueContains(ipHostAddress);
     }
 
     @Step("Set Port")

@@ -6,13 +6,6 @@
  */
 package com.oss.pages.bpm.processinstances;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
 import com.oss.framework.components.alerts.SystemMessageContainer;
@@ -24,10 +17,16 @@ import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.table.TableInterface;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
+import com.oss.pages.bpm.ProcessOverviewPage;
 import com.oss.pages.bpm.milestones.Milestone;
 import com.oss.pages.bpm.milestones.MilestoneWizardPage;
-
 import io.qameta.allure.Description;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.LocalDate;
+import java.util.List;
 
 /**
  * @author Gabriela Kasza
@@ -43,6 +42,7 @@ public class ProcessWizardPage extends BasePage {
     private static final String RELEASE_ATTRIBUTE_ID = "release-combobox";
     private static final String PROCESS_NAME_ATTRIBUTE_ID = "processNameTextFieldId";
     private static final String FINISH_DUE_DATE_ID = "FINISHED_DUE_DATE";
+    private static final String DUE_DATE_ID = "programDueDateId";
     private static final String ACCEPT_BUTTON = "wizard-submit-button-start-process-wizard";
     private static final String CREATE_BUTTON = "wizard-submit-button-bpm_processes_view_start-process-details-prompt_processCreateFormId";
     private static final String NEXT_BUTTON = "wizard-next-button-bpm_processes_view_start-process-details-prompt_processCreateFormId";
@@ -56,8 +56,10 @@ public class ProcessWizardPage extends BasePage {
     private static final String ADD_MILESTONE_LIST = "addMilestonesComponentId";
     private static final String CREATE_GROUP_ACTION_ID = "create";
     private static final String START_PROCESS_ACTION_ID = "start-process";
+    private static final String CREATE_PROCESS_OPTION_LABEL = "Create processes";
     private static final String ADD_MILESTONE_OPTION_LABEL = "Add Milestones";
     private static final String MILESTONE_ENABLED_CHECKBOX_ID = "milestonesEnabledCheckboxId";
+    private static final String CREATE_PROCESS_CHECKBOX_ID = "createProcessesCheckboxId";
 
     public ProcessWizardPage(WebDriver driver) {
         super(driver);
@@ -68,8 +70,8 @@ public class ProcessWizardPage extends BasePage {
      * New method is adapted to run on views other than Process Instances View.
      * As part of the method replacement, in tests where process creation is executed,
      * context action of opening process creation wizard should be called from the class of the given View, e.g.
-     * {@link ProcessInstancesPage#openProcessCreationWizard()} (for Process Instances View).
-     * It is also possible to call {@link ProcessInstancesPage#createSimpleNRP()} method
+     * {@link ProcessOverviewPage#openProcessCreationWizard()} (for Process Instances View).
+     * It is also possible to call {@link ProcessOverviewPage#createSimpleNRP()} method
      * which will open wizard and proceed process creation.
      */
     @Deprecated
@@ -82,8 +84,8 @@ public class ProcessWizardPage extends BasePage {
      * New method is adapted to run on views other than Process Instances View.
      * As part of the method replacement, in tests where process creation is executed,
      * context action of opening process creation wizard should be called from the class of the given View, e.g.
-     * {@link ProcessInstancesPage#openProcessCreationWizard()} (for Process Instances View).
-     * It is also possible to call {@link ProcessInstancesPage#createSimpleDCP()} method
+     * {@link ProcessOverviewPage#openProcessCreationWizard()} (for Process Instances View).
+     * It is also possible to call {@link ProcessOverviewPage#createSimpleDCP()} method
      * which will open wizard and proceed process creation.
      */
     @Deprecated
@@ -96,8 +98,8 @@ public class ProcessWizardPage extends BasePage {
      * New method is adapted to run on views other than Process Instances View.
      * As part of the method replacement, in tests where process creation is executed,
      * context action of opening process creation wizard should be called from the class of the given View, e.g.
-     * {@link ProcessInstancesPage#openProcessCreationWizard()} (for Process Instances View).
-     * It is also possible to call {@link ProcessInstancesPage#createDCPWithPlusDays(Long)} method
+     * {@link ProcessOverviewPage#openProcessCreationWizard()} (for Process Instances View).
+     * It is also possible to call {@link ProcessOverviewPage#createDCPWithPlusDays(Long)} method
      * which will open wizard and proceed process creation.
      */
     @Deprecated
@@ -110,8 +112,8 @@ public class ProcessWizardPage extends BasePage {
      * New method is adapted to run on views other than Process Instances View.
      * As part of the method replacement, in tests where process creation is executed,
      * context action of opening process creation wizard should be called from the class of the given View, e.g.
-     * {@link ProcessInstancesPage#openProcessCreationWizard()} (for Process Instances View).
-     * It is also possible to call {@link ProcessInstancesPage#createNRPWithPlusDays(Long)} method
+     * {@link ProcessOverviewPage#openProcessCreationWizard()} (for Process Instances View).
+     * It is also possible to call {@link ProcessOverviewPage#createNRPWithPlusDays(Long)} method
      * which will open wizard and proceed process creation.
      */
     @Deprecated
@@ -124,8 +126,8 @@ public class ProcessWizardPage extends BasePage {
      * New method is adapted to run on views other than Process Instances View.
      * As part of the method replacement, in tests where process creation is executed,
      * context action of opening process creation wizard should be called from the class of the given View, e.g.
-     * {@link ProcessInstancesPage#openProcessCreationWizard()} (for Process Instances View).
-     * It is also possible to call {@link ProcessInstancesPage#createProcessIPD(String, Long, String)} method
+     * {@link ProcessOverviewPage#openProcessCreationWizard()} (for Process Instances View).
+     * It is also possible to call {@link ProcessOverviewPage#createProcessIPD(String, Long, String)} method
      * which will open wizard and proceed process creation.
      */
     @Deprecated
@@ -153,6 +155,47 @@ public class ProcessWizardPage extends BasePage {
 
     public String createNRPWithPlusDays(Long plusDays) {
         return createProcessIPD(PROCESS_NAME, plusDays, NRP);
+    }
+
+    public String createProgramWithProcess(String programName, Long plusDays, String programType, String processName, Long plusDaysProcess, String processType) {
+        Wizard programWizard = definedBasicProgram(programName, programType, plusDays);
+        if (driver.getPageSource().contains(CREATE_PROCESS_OPTION_LABEL)) {
+            programWizard.setComponentValue(CREATE_PROCESS_CHECKBOX_ID, "true");
+        }
+        DelayUtils.sleep();
+        programWizard.clickButtonById(CREATE_BUTTON);
+        definedBasicProcess(processName, processType, plusDaysProcess).clickButtonById(CREATE_BUTTON);
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, wait);
+        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
+        String text = messages.get(0).getText();
+        return extractProcessCode(text);
+    }
+
+    private Wizard definedBasicProgram(String programName, String programType, Long plusDays) {
+        Wizard wizardSecondStep = selectProcessDefinition(programType);
+        wizardSecondStep.setComponentValue(PROCESS_NAME_ATTRIBUTE_ID, programName);
+        if (driver.getPageSource().contains(DUE_DATE_ID)) {
+            wizardSecondStep.setComponentValue(DUE_DATE_ID, LocalDate.now().plusDays(plusDays).toString());
+        }
+        return Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2);
+    }
+
+    private Wizard selectProcessDefinition(String processType) {
+        Wizard wizardFirstStep = Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_1);
+        Input componentDomain = wizardFirstStep.getComponent(DOMAIN_ATTRIBUTE_ID);
+        if (!componentDomain.getValue().getStringValue().equals(INVENTORY_PROCESS)) {
+            componentDomain.setSingleStringValue(INVENTORY_PROCESS);
+            wizardFirstStep.waitForWizardToLoad();
+        }
+        wizardFirstStep.setComponentValue(DEFINITION_ATTRIBUTE_ID, processType);
+        wizardFirstStep.waitForWizardToLoad();
+        Input componentRelease = wizardFirstStep.getComponent(RELEASE_ATTRIBUTE_ID);
+        if (!componentRelease.getValue().getStringValue().equals(LATEST)) {
+            componentRelease.setSingleStringValue(LATEST);
+            wizardFirstStep.waitForWizardToLoad();
+        }
+        wizardFirstStep.clickButtonById(ACCEPT_BUTTON);
+        return Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2);
     }
 
     public String createProcessIPD(String processName, Long plusDays, String processType) {
@@ -183,21 +226,7 @@ public class ProcessWizardPage extends BasePage {
     }
 
     private Wizard definedBasicProcess(String processName, String processType, Long plusDays) {
-        Wizard wizardFirstStep = Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_1);
-        Input componentDomain = wizardFirstStep.getComponent(DOMAIN_ATTRIBUTE_ID);
-        if (!componentDomain.getValue().getStringValue().equals(INVENTORY_PROCESS)) {
-            componentDomain.setSingleStringValue(INVENTORY_PROCESS);
-            wizardFirstStep.waitForWizardToLoad();
-        }
-        wizardFirstStep.setComponentValue(DEFINITION_ATTRIBUTE_ID, processType);
-        wizardFirstStep.waitForWizardToLoad();
-        Input componentRelease = wizardFirstStep.getComponent(RELEASE_ATTRIBUTE_ID);
-        if (!componentRelease.getValue().getStringValue().equals(LATEST)) {
-            componentRelease.setSingleStringValue(LATEST);
-            wizardFirstStep.waitForWizardToLoad();
-        }
-        wizardFirstStep.clickButtonById(ACCEPT_BUTTON);
-        Wizard wizardSecondStep = Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2);
+        Wizard wizardSecondStep = selectProcessDefinition(processType);
         wizardSecondStep.setComponentValue(PROCESS_NAME_ATTRIBUTE_ID, processName);
         if (driver.getPageSource().contains(FINISH_DUE_DATE_ID)) {
             wizardSecondStep.setComponentValue(FINISH_DUE_DATE_ID, LocalDate.now().plusDays(plusDays).toString());
@@ -231,13 +260,13 @@ public class ProcessWizardPage extends BasePage {
         }
 
         public Milestone addMilestoneRow(Milestone milestone) {
-            MilestoneWizardPage milestoneWizardPage = new MilestoneWizardPage(driver);
-            return milestoneWizardPage.addMilestoneRow(milestone, ADD_MILESTONE_LIST);
+            MilestoneWizardPage milestoneWizardPage = new MilestoneWizardPage(driver, ADD_MILESTONE_LIST);
+            return milestoneWizardPage.addMilestoneRow(milestone);
         }
 
         public Milestone editPredefinedMilestone(Milestone milestone, int row) {
-            MilestoneWizardPage milestoneWizardPage = new MilestoneWizardPage(driver);
-            return milestoneWizardPage.editMilestoneRow(milestone, row, PREDEFINED_MILESTONE_LIST);
+            MilestoneWizardPage milestoneWizardPage = new MilestoneWizardPage(driver, PREDEFINED_MILESTONE_LIST);
+            return milestoneWizardPage.editMilestoneRow(milestone, row);
         }
 
         public void clickAcceptButton() {

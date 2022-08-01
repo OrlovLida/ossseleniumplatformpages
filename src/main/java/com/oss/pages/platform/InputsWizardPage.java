@@ -39,12 +39,12 @@ public class InputsWizardPage extends BasePage {
 
     public static final String DISABLED_FIELD_XPATH = "//div[contains(@class,'disabled')]";
 
-    private static final ImmutableSet<String> inputLabels = ImmutableSet.of(DATE_TIME_ID, COMBOBOX_ID);
     private static final ImmutableSet<String> controllerIds = ImmutableSet.of(MANDATORY_CONTROLLER_ID,
             DANGER_MESSAGE_CONTROLLER_ID,
             WARNING_MESSAGE_CONTROLLER_ID, HIDDEN_CONTROLLER_ID, DISABLED_CONTROLLER_ID, READ_ONLY_CONTROLLER_ID);
+    private static final String WIZARD_ID = "Widget1";
 
-    private Wizard wizard = Wizard.createWizard(driver, wait);
+    private Wizard wizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
 
     InputsWizardPage(WebDriver driver) {
         super(driver);

@@ -6,14 +6,18 @@
  */
 package com.oss.bpm;
 
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.Objects;
-import java.util.regex.Pattern;
-
+import com.oss.BaseTestCase;
+import com.oss.framework.components.alerts.SystemMessageContainer;
+import com.oss.framework.components.alerts.SystemMessageInterface;
+import com.oss.framework.components.mainheader.PerspectiveChooser;
+import com.oss.framework.components.mainheader.ToolbarWidget;
+import com.oss.framework.utils.DelayUtils;
+import com.oss.pages.bpm.IntegrationProcessWizardPage;
+import com.oss.pages.bpm.ProcessOverviewPage;
 import com.oss.pages.bpm.TasksPageV2;
+import com.oss.pages.physical.DeviceWizardPage;
+import com.oss.utils.TestListener;
+import io.qameta.allure.Description;
 import org.assertj.core.api.Assertions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,18 +26,12 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
-import com.oss.BaseTestCase;
-import com.oss.framework.components.alerts.SystemMessageContainer;
-import com.oss.framework.components.alerts.SystemMessageInterface;
-import com.oss.framework.components.mainheader.PerspectiveChooser;
-import com.oss.framework.components.mainheader.ToolbarWidget;
-import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bpm.IntegrationProcessWizardPage;
-import com.oss.pages.bpm.processinstances.ProcessInstancesPage;
-import com.oss.pages.physical.DeviceWizardPage;
-import com.oss.utils.TestListener;
-
-import io.qameta.allure.Description;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.Objects;
+import java.util.regex.Pattern;
 
 /**
  * @author Gabriela Kasza
@@ -63,24 +61,23 @@ public class CreateProcessNRPTest extends BaseTestCase {
     private final Logger log = LoggerFactory.getLogger(CreateProcessNRPTest.class);
     private final String processIPName1 = "S.1-" + (int) (Math.random() * 100001);
     private final String processIPName2 = "S.2-" + (int) (Math.random() * 100001);
-    public String perspectiveContext;
-    public String deviceName1 = "Device-Selenium-" + (int) (Math.random() * 100001);
-    public String deviceName2 = "Device-Selenium-" + (int) (Math.random() * 100001);
     private final String processNRPName = "Selenium Test-" + (int) (Math.random() * 100001);
+    private final String deviceName1 = "Device-Selenium-" + (int) (Math.random() * 100001);
+    private final String deviceName2 = "Device-Selenium-" + (int) (Math.random() * 100001);
     private String processNRPCode;
     private String processIPCode1;
     private String processIPCode2;
 
     @BeforeClass
     public void openProcessInstancesPage() {
-        ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
+        ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
         DelayUtils.sleep(3000);
-        processInstancesPage.clearAllColumnFilters();
+        processOverviewPage.clearAllColumnFilters();
 
         ToolbarWidget toolbarWidget = ToolbarWidget.create(driver, webDriverWait);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         if (!toolbarWidget.getUserName().equals(BPM_USER_LOGIN)) {
-            processInstancesPage.changeUser(BPM_USER_LOGIN, BPM_USER_PASSWORD);
+            processOverviewPage.changeUser(BPM_USER_LOGIN, BPM_USER_PASSWORD);
         }
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
@@ -88,9 +85,8 @@ public class CreateProcessNRPTest extends BaseTestCase {
     @Test(priority = 1, description = "Create Network Resource Process")
     @Description("Create Network Resource Process")
     public void createProcessNRP() {
-        ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
-
-        processNRPCode = processInstancesPage.createProcessIPD(processNRPName, 0L, NRP);
+        ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
+        processNRPCode = processOverviewPage.createProcessIPD(processNRPName, 0L, NRP);
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
 
@@ -190,7 +186,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 .isEqualTo(TASK_PROPERLY_ASSIGNED_MESSAGE);
         String currentUrl = driver.getCurrentUrl();
         String[] split = currentUrl.split(Pattern.quote("?"));
-        perspectiveContext = split[1];
+        String perspectiveContext = split[1];
         Assertions.assertThat(perspectiveContext).contains(PLAN_PERSPECTIVE);
     }
 
@@ -600,13 +596,13 @@ public class CreateProcessNRPTest extends BaseTestCase {
     @Description("Check Process status")
     public void checkProcessStatus() {
         // given
-        ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
-        processInstancesPage.clearAllColumnFilters();
+        ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
+        processOverviewPage.clearAllColumnFilters();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         // when
-        processInstancesPage.selectPredefinedFilter(SHOW_WITH_COMPLETED_FILTER);
-        String processStatus = processInstancesPage.getProcessStatus(processNRPCode);
+        processOverviewPage.selectPredefinedFilter(SHOW_WITH_COMPLETED_FILTER);
+        String processStatus = processOverviewPage.getProcessStatus(processNRPCode);
 
         // then
         Assertions.assertThat(processStatus).isEqualTo(COMPLETED_STATUS);

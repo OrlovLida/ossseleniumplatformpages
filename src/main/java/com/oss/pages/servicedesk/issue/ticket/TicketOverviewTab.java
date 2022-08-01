@@ -16,11 +16,11 @@ public class TicketOverviewTab extends OverviewTab {
 
     private static final Logger log = LoggerFactory.getLogger(TicketOverviewTab.class);
 
-    private static final String RELEASE_BUTTON_LABEL = "Release";
-    private static final String ALLOW_EDIT_LABEL = "Edit";
-    private static final String ADD_REMAINDER_LABEL = "Add Reminder";
-    private static final String EDIT_REMAINDER_LABEL = "Edit Reminder";
-    private static final String REMOVE_REMAINDER_LABEL = "Remove Reminder";
+    private static final String RELEASE_BUTTON_ID = "CAN_SAVE";
+    private static final String ALLOW_EDIT_ID = "CAN_EDIT";
+    private static final String ADD_REMAINDER_ID = "AddReminderButtonId";
+    private static final String EDIT_REMAINDER_ID = "EditReminderButtonId";
+    private static final String REMOVE_REMAINDER_ID = "RemoveReminderButtonId";
     private static final String CHANGE_TICKET_STATUS_COMBOBOX_ID = "change-ticket-status-combobox";
 
     public TicketOverviewTab(WebDriver driver, WebDriverWait wait) {
@@ -30,7 +30,7 @@ public class TicketOverviewTab extends OverviewTab {
     @Step("Click release ticket")
     public void releaseTicket() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getDetailsViewOldActionsContainer().callActionByLabel(RELEASE_BUTTON_LABEL);
+        getDetailsViewOldActionsContainer().callActionById(RELEASE_BUTTON_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Clicking release button");
     }
@@ -38,28 +38,28 @@ public class TicketOverviewTab extends OverviewTab {
     @Step("Allow ticket editing")
     public void allowEditingTicket() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getDetailsViewOldActionsContainer().callActionByLabel(ALLOW_EDIT_LABEL);
+        getDetailsViewOldActionsContainer().callActionById(ALLOW_EDIT_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Clicking edit button");
     }
 
     @Step("Click Add Remainder")
     public RemainderForm clickAddRemainder() {
-        getDetailsViewOldActionsContainer().callActionByLabel(ADD_REMAINDER_LABEL);
+        getDetailsViewOldActionsContainer().callActionById(ADD_REMAINDER_ID);
         log.info("Clicking Add Remainder");
         return new RemainderForm(driver, wait);
     }
 
     @Step("Click Edit Remainder")
     public RemainderForm clickEditRemainder() {
-        getDetailsViewOldActionsContainer().callActionByLabel(EDIT_REMAINDER_LABEL);
+        getDetailsViewOldActionsContainer().callActionById(EDIT_REMAINDER_ID);
         log.info("Clicking Edit Remainder");
         return new RemainderForm(driver, wait);
     }
 
     @Step("Click Remove Remainder")
     public void clickRemoveRemainder() {
-        getDetailsViewOldActionsContainer().callActionByLabel(REMOVE_REMAINDER_LABEL);
+        getDetailsViewOldActionsContainer().callActionById(REMOVE_REMAINDER_ID);
         log.info("Clicking Remove Remainder");
     }
 

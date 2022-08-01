@@ -6,26 +6,22 @@
  */
 package com.oss.bpm.milestones;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.oss.BaseTestCase;
+import com.oss.framework.components.mainheader.ToolbarWidget;
+import com.oss.framework.utils.DelayUtils;
+import com.oss.pages.bpm.ProcessOverviewPage;
+import com.oss.pages.bpm.milestones.Milestone;
+import com.oss.pages.bpm.processinstances.ProcessWizardPage;
+import com.oss.utils.TestListener;
+import io.qameta.allure.Description;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-
-import com.oss.BaseTestCase;
-import com.oss.framework.components.mainheader.ToolbarWidget;
-import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bpm.milestones.Milestone;
-import com.oss.pages.bpm.processinstances.ProcessInstancesPage;
-import com.oss.pages.bpm.processinstances.ProcessWizardPage;
-import com.oss.utils.TestListener;
-
-import io.qameta.allure.Description;
 import org.testng.collections.Lists;
+
+import java.time.LocalDate;
+import java.util.List;
 
 /**
  * @author Gabriela Kasza
@@ -67,12 +63,11 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
 
     @BeforeClass
     public void openProcessInstancesPage() {
-        ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
-
+        ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
         ToolbarWidget toolbarWidget = ToolbarWidget.create(driver, webDriverWait);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         if (!toolbarWidget.getUserName().equals(BPM_USER_LOGIN)) {
-            processInstancesPage.changeUser(BPM_USER_LOGIN, BPM_USER_PASSWORD);
+            processOverviewPage.changeUser(BPM_USER_LOGIN, BPM_USER_PASSWORD);
         }
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
@@ -80,11 +75,11 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
     @Test(priority = 1, description = "Create Process with Milestone")
     @Description("Create Process with Milestone")
     public void createProcessWithMilestones() {
-        ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
-        processInstancesPage.clearAllColumnFilters();
+        ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
+        processOverviewPage.clearAllColumnFilters();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         String processName = PROCESS_NAME + (int) (Math.random() * 100001);
-        ProcessWizardPage processWizardPage = processInstancesPage.openProcessCreationWizard();
+        ProcessWizardPage processWizardPage = processOverviewPage.openProcessCreationWizard();
         ProcessWizardPage.MilestoneStepWizard milestoneStep =
                 processWizardPage.definedMilestoneInProcess(processName, 10L, GK_MILESTONES);
         Milestone milestone1 = Milestone.builder()
@@ -114,38 +109,38 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
         processWizardPage.clickAcceptButton();
 
         // then
-        processInstancesPage.selectMilestoneTab(NAME_LABEL, processName);
+        processOverviewPage.selectMilestoneTab(NAME_LABEL, processName);
         // Status
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        String statusMilestone1 = processInstancesPage.getMilestoneValue(nameMilestone1, STATUS_LABEL);
-        String statusMilestone2 = processInstancesPage.getMilestoneValue(nameMilestone2, STATUS_LABEL);
-        String statusPredefinedMilestone = processInstancesPage.getMilestoneValue(namePredefinedMilestone, STATUS_LABEL);
+        String statusMilestone1 = processOverviewPage.getMilestoneValue(nameMilestone1, STATUS_LABEL);
+        String statusMilestone2 = processOverviewPage.getMilestoneValue(nameMilestone2, STATUS_LABEL);
+        String statusPredefinedMilestone = processOverviewPage.getMilestoneValue(namePredefinedMilestone, STATUS_LABEL);
         Assert.assertEquals(statusMilestone1, NEW_STATUS);
         Assert.assertEquals(statusMilestone2, NOT_NEEDED_STATUS);
         Assert.assertEquals(statusPredefinedMilestone, NEW_STATUS);
 
         // Due date
-        String dueDateMilestone1 = processInstancesPage.getMilestoneValue(nameMilestone1, DUE_DATE_LABEL);
-        String dueDateMilestone2 = processInstancesPage.getMilestoneValue(nameMilestone2, DUE_DATE_LABEL);
-        String dueDatePredefinedMilestone = processInstancesPage.getMilestoneValue(namePredefinedMilestone, DUE_DATE_LABEL);
+        String dueDateMilestone1 = processOverviewPage.getMilestoneValue(nameMilestone1, DUE_DATE_LABEL);
+        String dueDateMilestone2 = processOverviewPage.getMilestoneValue(nameMilestone2, DUE_DATE_LABEL);
+        String dueDatePredefinedMilestone = processOverviewPage.getMilestoneValue(namePredefinedMilestone, DUE_DATE_LABEL);
         Assert.assertEquals(dueDateMilestone1, LocalDate.now().plusDays(5).toString());
         Assert.assertEquals(dueDateMilestone2, "");
         Assert.assertEquals(dueDatePredefinedMilestone, LocalDate.now().toString());
 
         // Date of Completion
         String leadTimePredefinedMilestone = milestonePredefined_1.getLeadTime().get();
-        String completionDateMilestone1 = processInstancesPage.getMilestoneValue(nameMilestone1, COMPLETION_DATE_LABEL);
-        String completionDateMilestone2 = processInstancesPage.getMilestoneValue(nameMilestone2, COMPLETION_DATE_LABEL);
-        String completionDatePredefinedMilestone = processInstancesPage.getMilestoneValue(namePredefinedMilestone, COMPLETION_DATE_LABEL);
+        String completionDateMilestone1 = processOverviewPage.getMilestoneValue(nameMilestone1, COMPLETION_DATE_LABEL);
+        String completionDateMilestone2 = processOverviewPage.getMilestoneValue(nameMilestone2, COMPLETION_DATE_LABEL);
+        String completionDatePredefinedMilestone = processOverviewPage.getMilestoneValue(namePredefinedMilestone, COMPLETION_DATE_LABEL);
         Assert.assertEquals(completionDateMilestone1, LocalDate.now().toString());
         Assert.assertEquals(completionDateMilestone2, "");
         Assert.assertEquals(completionDatePredefinedMilestone,
                 LocalDate.now().plusDays(Long.parseLong(leadTimePredefinedMilestone)).toString());
 
         // Related Object
-        String relatedObjectMilestone1 = processInstancesPage.getMilestoneValue(nameMilestone1, RELATED_OBJECT_LABEL);
-        String relatedObjectMilestone2 = processInstancesPage.getMilestoneValue(nameMilestone2, RELATED_OBJECT_LABEL);
-        String relatedObjectPredefinedMilestone = processInstancesPage.getMilestoneValue(namePredefinedMilestone, RELATED_OBJECT_LABEL);
+        String relatedObjectMilestone1 = processOverviewPage.getMilestoneValue(nameMilestone1, RELATED_OBJECT_LABEL);
+        String relatedObjectMilestone2 = processOverviewPage.getMilestoneValue(nameMilestone2, RELATED_OBJECT_LABEL);
+        String relatedObjectPredefinedMilestone = processOverviewPage.getMilestoneValue(namePredefinedMilestone, RELATED_OBJECT_LABEL);
         Assert.assertEquals(relatedObjectMilestone1, PROCESS_LABEL);
         Assert.assertEquals(relatedObjectMilestone2, TASK_LABEL + "(" + milestone2.getRelatedTask().get() + ")");
         Assert.assertEquals(relatedObjectPredefinedMilestone,
@@ -155,10 +150,10 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
     @Test(priority = 2, description = "Update Predefined Milestone")
     @Description("Update Predefined Milestone")
     public void updatePredefinedMilestone() {
-        ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
+        ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         String processName = PROCESS_NAME + (int) (Math.random() * 100001);
-        ProcessWizardPage processWizardPage = processInstancesPage.openProcessCreationWizard();
+        ProcessWizardPage processWizardPage = processOverviewPage.openProcessCreationWizard();
         ProcessWizardPage.MilestoneStepWizard milestoneStepWizard =
                 processWizardPage.definedMilestoneInProcess(processName, 10L, GK_MILESTONES);
 
@@ -192,50 +187,50 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
         Milestone milestone3_updated = milestoneStepWizard.editPredefinedMilestone(milestone3, 3);
         milestoneStepWizard.clickAcceptButton();
 
-        processInstancesPage.selectMilestoneTab(NAME_LABEL, processName);
+        processOverviewPage.selectMilestoneTab(NAME_LABEL, processName);
         String nameMilestone1 = milestone1_updated.getName().orElseThrow(() -> new RuntimeException(MISSING_NAME_EXCEPTION));
         String nameMilestone2 = milestone2_updated.getName().orElseThrow(() -> new RuntimeException(MISSING_NAME_EXCEPTION));
         String nameMilestone3 = milestone3_updated.getName().orElseThrow(() -> new RuntimeException(MISSING_NAME_EXCEPTION));
 
         // Status
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        String statusMilestone1 = processInstancesPage.getMilestoneValue(nameMilestone1, STATUS_LABEL);
-        String statusMilestone2 = processInstancesPage.getMilestoneValue(nameMilestone2, STATUS_LABEL);
-        String statusMilestone3 = processInstancesPage.getMilestoneValue(nameMilestone3, STATUS_LABEL);
+        String statusMilestone1 = processOverviewPage.getMilestoneValue(nameMilestone1, STATUS_LABEL);
+        String statusMilestone2 = processOverviewPage.getMilestoneValue(nameMilestone2, STATUS_LABEL);
+        String statusMilestone3 = processOverviewPage.getMilestoneValue(nameMilestone3, STATUS_LABEL);
         Assert.assertEquals(statusMilestone1, NOT_NEEDED_STATUS);
         Assert.assertEquals(statusMilestone2, NEW_STATUS);
         Assert.assertEquals(statusMilestone3, NOT_NEEDED_STATUS);
 
         // Due date
         String leadTimeMilestone2 = milestone2_updated.getLeadTime().get();
-        String dueDateMilestone1 = processInstancesPage.getMilestoneValue(nameMilestone1, DUE_DATE_LABEL);
-        String dueDateMilestone2 = processInstancesPage.getMilestoneValue(nameMilestone2, DUE_DATE_LABEL);
-        String dueDateMilestone3 = processInstancesPage.getMilestoneValue(nameMilestone3, DUE_DATE_LABEL);
+        String dueDateMilestone1 = processOverviewPage.getMilestoneValue(nameMilestone1, DUE_DATE_LABEL);
+        String dueDateMilestone2 = processOverviewPage.getMilestoneValue(nameMilestone2, DUE_DATE_LABEL);
+        String dueDateMilestone3 = processOverviewPage.getMilestoneValue(nameMilestone3, DUE_DATE_LABEL);
         Assert.assertEquals(dueDateMilestone1, LocalDate.now().toString());
         Assert.assertEquals(dueDateMilestone2, LocalDate.now().plusDays(Long.parseLong(leadTimeMilestone2)).toString());
         Assert.assertEquals(dueDateMilestone3, "");
 
         // Date of Completion
-        String completionDateMilestone1 = processInstancesPage.getMilestoneValue(nameMilestone1, COMPLETION_DATE_LABEL);
-        String completionDateMilestone2 = processInstancesPage.getMilestoneValue(nameMilestone2, COMPLETION_DATE_LABEL);
-        String completionDateMilestone3 = processInstancesPage.getMilestoneValue(nameMilestone3, COMPLETION_DATE_LABEL);
+        String completionDateMilestone1 = processOverviewPage.getMilestoneValue(nameMilestone1, COMPLETION_DATE_LABEL);
+        String completionDateMilestone2 = processOverviewPage.getMilestoneValue(nameMilestone2, COMPLETION_DATE_LABEL);
+        String completionDateMilestone3 = processOverviewPage.getMilestoneValue(nameMilestone3, COMPLETION_DATE_LABEL);
 
         Assert.assertEquals(completionDateMilestone1, "");
         Assert.assertEquals(completionDateMilestone2, LocalDate.now().plusDays(Long.parseLong(leadTimeMilestone2)).toString());
         Assert.assertEquals(completionDateMilestone3, "");
 
         // Related Object
-        String relatedObjectMilestone1 = processInstancesPage.getMilestoneValue(nameMilestone1, RELATED_OBJECT_LABEL);
-        String relatedObjectMilestone2 = processInstancesPage.getMilestoneValue(nameMilestone2, RELATED_OBJECT_LABEL);
-        String relatedObjectMilestone3 = processInstancesPage.getMilestoneValue(nameMilestone3, RELATED_OBJECT_LABEL);
+        String relatedObjectMilestone1 = processOverviewPage.getMilestoneValue(nameMilestone1, RELATED_OBJECT_LABEL);
+        String relatedObjectMilestone2 = processOverviewPage.getMilestoneValue(nameMilestone2, RELATED_OBJECT_LABEL);
+        String relatedObjectMilestone3 = processOverviewPage.getMilestoneValue(nameMilestone3, RELATED_OBJECT_LABEL);
         Assert.assertEquals(relatedObjectMilestone1, PROCESS_LABEL);
         Assert.assertEquals(relatedObjectMilestone2, PROCESS_LABEL);
         Assert.assertEquals(relatedObjectMilestone3, PROCESS_LABEL);
 
         // Description
-        String descriptionMilestone1 = processInstancesPage.getMilestoneValue(nameMilestone1, DESCRIPTION_LABEL);
-        String descriptionMilestone2 = processInstancesPage.getMilestoneValue(nameMilestone2, DESCRIPTION_LABEL);
-        String descriptionMilestone3 = processInstancesPage.getMilestoneValue(nameMilestone3, DESCRIPTION_LABEL);
+        String descriptionMilestone1 = processOverviewPage.getMilestoneValue(nameMilestone1, DESCRIPTION_LABEL);
+        String descriptionMilestone2 = processOverviewPage.getMilestoneValue(nameMilestone2, DESCRIPTION_LABEL);
+        String descriptionMilestone3 = processOverviewPage.getMilestoneValue(nameMilestone3, DESCRIPTION_LABEL);
         Assert.assertEquals(descriptionMilestone1, UPDATE_DESCRIPTION_1);
         Assert.assertEquals(descriptionMilestone2, UPDATE_DESCRIPTION_2);
         Assert.assertEquals(descriptionMilestone3, UPDATE_DESCRIPTION_3);
@@ -244,10 +239,10 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
     @Test(priority = 3, description = "Add Milestone for Data Correction Process")
     @Description("Add Milestone for Data Correction Process")
     public void addMilestoneForDCP() {
-        ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
+        ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         String processName = PROCESS_NAME + (int) (Math.random() * 100001);
-        ProcessWizardPage processWizardPage = processInstancesPage.openProcessCreationWizard();
+        ProcessWizardPage processWizardPage = processOverviewPage.openProcessCreationWizard();
         ProcessWizardPage.MilestoneStepWizard milestoneStepWizard =
                 processWizardPage.definedMilestoneInProcess(processName, 10L, DCP);
         Milestone milestone1 = Milestone.builder()
@@ -269,40 +264,40 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
         milestoneStepWizard.addMilestoneRow(milestone2);
         processWizardPage.clickAcceptButton();
 
-        processInstancesPage.selectMilestoneTab(NAME_LABEL, processName);
+        processOverviewPage.selectMilestoneTab(NAME_LABEL, processName);
 
         String nameMilestone1 = milestone1.getName().orElseThrow(() -> new RuntimeException(MISSING_NAME_EXCEPTION));
         String nameMilestone2 = milestone2.getName().orElseThrow(() -> new RuntimeException(MISSING_NAME_EXCEPTION));
 
         // Status
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        String statusMilestone1 = processInstancesPage.getMilestoneValue(nameMilestone1, STATUS_LABEL);
-        String statusMilestone2 = processInstancesPage.getMilestoneValue(nameMilestone2, STATUS_LABEL);
+        String statusMilestone1 = processOverviewPage.getMilestoneValue(nameMilestone1, STATUS_LABEL);
+        String statusMilestone2 = processOverviewPage.getMilestoneValue(nameMilestone2, STATUS_LABEL);
         Assert.assertEquals(statusMilestone1, NEW_STATUS);
         Assert.assertEquals(statusMilestone2, NOT_NEEDED_STATUS);
 
         // Due date
         String leadTimeMilestone1 = milestone1.getLeadTime().get();
-        String dueDateMilestone1 = processInstancesPage.getMilestoneValue(nameMilestone1, DUE_DATE_LABEL);
-        String dueDateMilestone2 = processInstancesPage.getMilestoneValue(nameMilestone2, DUE_DATE_LABEL);
+        String dueDateMilestone1 = processOverviewPage.getMilestoneValue(nameMilestone1, DUE_DATE_LABEL);
+        String dueDateMilestone2 = processOverviewPage.getMilestoneValue(nameMilestone2, DUE_DATE_LABEL);
         Assert.assertEquals(dueDateMilestone1, LocalDate.now().plusDays(Long.parseLong(leadTimeMilestone1)).toString());
         Assert.assertEquals(dueDateMilestone2, LocalDate.now().plusDays(5).toString());
 
         // Date of Completion
-        String completionDateMilestone1 = processInstancesPage.getMilestoneValue(nameMilestone1, COMPLETION_DATE_LABEL);
-        String completionDateMilestone2 = processInstancesPage.getMilestoneValue(nameMilestone2, COMPLETION_DATE_LABEL);
+        String completionDateMilestone1 = processOverviewPage.getMilestoneValue(nameMilestone1, COMPLETION_DATE_LABEL);
+        String completionDateMilestone2 = processOverviewPage.getMilestoneValue(nameMilestone2, COMPLETION_DATE_LABEL);
         Assert.assertEquals(completionDateMilestone1, LocalDate.now().plusDays(Long.parseLong(leadTimeMilestone1)).toString());
         Assert.assertEquals(completionDateMilestone2, "");
 
         // Related Object
-        String relatedObjectMilestone1 = processInstancesPage.getMilestoneValue(nameMilestone1, RELATED_OBJECT_LABEL);
-        String relatedObjectMilestone2 = processInstancesPage.getMilestoneValue(nameMilestone2, RELATED_OBJECT_LABEL);
+        String relatedObjectMilestone1 = processOverviewPage.getMilestoneValue(nameMilestone1, RELATED_OBJECT_LABEL);
+        String relatedObjectMilestone2 = processOverviewPage.getMilestoneValue(nameMilestone2, RELATED_OBJECT_LABEL);
         Assert.assertEquals(relatedObjectMilestone1, PROCESS_LABEL);
         Assert.assertEquals(relatedObjectMilestone2, TASK_LABEL + "(" + milestone2.getRelatedTask().get() + ")");
 
         // Description
-        String descriptionMilestone1 = processInstancesPage.getMilestoneValue(nameMilestone1, DESCRIPTION_LABEL);
-        String descriptionMilestone2 = processInstancesPage.getMilestoneValue(nameMilestone2, DESCRIPTION_LABEL);
+        String descriptionMilestone1 = processOverviewPage.getMilestoneValue(nameMilestone1, DESCRIPTION_LABEL);
+        String descriptionMilestone2 = processOverviewPage.getMilestoneValue(nameMilestone2, DESCRIPTION_LABEL);
         Assert.assertEquals(descriptionMilestone1, DESCRIPTION_EDIT_1);
         Assert.assertEquals(descriptionMilestone2, "");
     }
@@ -310,11 +305,9 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
     @Test(priority = 4, description = "Add Milestone for existing Data Correction Process")
     @Description("Add Milestone for existing Data Correction Process")
     public void addMilestoneForExistingProcess() {
-        ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
-        processInstancesPage.clearAllColumnFilters();
+        ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
+        processOverviewPage.clearAllColumnFilters();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
-        String processName = PROCESS_NAME + (int) (Math.random() * 100001);
 
         List<Milestone> milestones = Lists.newArrayList(
                 Milestone.builder()
@@ -332,44 +325,44 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
                         .setIsActive("false")
                         .build());
 
-        String processDCPCode = processInstancesPage.createSimpleDCP();
+        String processDCPCode = processOverviewPage.createSimpleDCP();
 
-        processInstancesPage.addMilestonesForProcess(processDCPCode, milestones);
+        processOverviewPage.addMilestonesForProcess(processDCPCode, milestones);
 
-        processInstancesPage.selectMilestoneTab(CODE_LABEL, processDCPCode);
+        processOverviewPage.selectMilestoneTab(CODE_LABEL, processDCPCode);
 
         String nameMilestone1 = milestones.get(0).getName().orElseThrow(() -> new RuntimeException(MISSING_NAME_EXCEPTION));
         String nameMilestone2 = milestones.get(1).getName().orElseThrow(() -> new RuntimeException(MISSING_NAME_EXCEPTION));
 
         // Status
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        String statusMilestone1 = processInstancesPage.getMilestoneValue(nameMilestone1, STATUS_LABEL);
-        String statusMilestone2 = processInstancesPage.getMilestoneValue(nameMilestone2, STATUS_LABEL);
+        String statusMilestone1 = processOverviewPage.getMilestoneValue(nameMilestone1, STATUS_LABEL);
+        String statusMilestone2 = processOverviewPage.getMilestoneValue(nameMilestone2, STATUS_LABEL);
         Assert.assertEquals(statusMilestone1, NEW_STATUS);
         Assert.assertEquals(statusMilestone2, NOT_NEEDED_STATUS);
 
         // Due date
         String leadTimeMilestone1 = milestones.get(0).getLeadTime().get();
-        String dueDateMilestone1 = processInstancesPage.getMilestoneValue(nameMilestone1, DUE_DATE_LABEL);
-        String dueDateMilestone2 = processInstancesPage.getMilestoneValue(nameMilestone2, DUE_DATE_LABEL);
+        String dueDateMilestone1 = processOverviewPage.getMilestoneValue(nameMilestone1, DUE_DATE_LABEL);
+        String dueDateMilestone2 = processOverviewPage.getMilestoneValue(nameMilestone2, DUE_DATE_LABEL);
         Assert.assertEquals(dueDateMilestone1, LocalDate.now().plusDays(Long.parseLong(leadTimeMilestone1)).toString());
         Assert.assertEquals(dueDateMilestone2, LocalDate.now().plusDays(5).toString());
 
         // Date of Completion
-        String completionDateMilestone1 = processInstancesPage.getMilestoneValue(nameMilestone1, COMPLETION_DATE_LABEL);
-        String completionDateMilestone2 = processInstancesPage.getMilestoneValue(nameMilestone2, COMPLETION_DATE_LABEL);
+        String completionDateMilestone1 = processOverviewPage.getMilestoneValue(nameMilestone1, COMPLETION_DATE_LABEL);
+        String completionDateMilestone2 = processOverviewPage.getMilestoneValue(nameMilestone2, COMPLETION_DATE_LABEL);
         Assert.assertEquals(completionDateMilestone1, LocalDate.now().plusDays(Long.parseLong(leadTimeMilestone1)).toString());
         Assert.assertEquals(completionDateMilestone2, "");
 
         // Related Object
-        String relatedObjectMilestone1 = processInstancesPage.getMilestoneValue(nameMilestone1, RELATED_OBJECT_LABEL);
-        String relatedObjectMilestone2 = processInstancesPage.getMilestoneValue(nameMilestone2, RELATED_OBJECT_LABEL);
+        String relatedObjectMilestone1 = processOverviewPage.getMilestoneValue(nameMilestone1, RELATED_OBJECT_LABEL);
+        String relatedObjectMilestone2 = processOverviewPage.getMilestoneValue(nameMilestone2, RELATED_OBJECT_LABEL);
         Assert.assertEquals(relatedObjectMilestone1, PROCESS_LABEL);
         Assert.assertEquals(relatedObjectMilestone2, TASK_LABEL + "(" + milestones.get(1).getRelatedTask().get() + ")");
 
         // Description
-        String descriptionMilestone1 = processInstancesPage.getMilestoneValue(nameMilestone1, DESCRIPTION_LABEL);
-        String descriptionMilestone2 = processInstancesPage.getMilestoneValue(nameMilestone2, DESCRIPTION_LABEL);
+        String descriptionMilestone1 = processOverviewPage.getMilestoneValue(nameMilestone1, DESCRIPTION_LABEL);
+        String descriptionMilestone2 = processOverviewPage.getMilestoneValue(nameMilestone2, DESCRIPTION_LABEL);
         Assert.assertEquals(descriptionMilestone1, DESCRIPTION_EDIT_1);
         Assert.assertEquals(descriptionMilestone2, "");
     }
@@ -377,9 +370,9 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
     @Test(priority = 5, description = "Check if Name is not editable for predefined Milestone")
     @Description("Check if Name is not editable for predefined Milestone")
     public void checkIfNameIsNotEditableForPredefinedMilestone() {
-        ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
+        ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        ProcessWizardPage processWizardPage = processInstancesPage.openProcessCreationWizard();
+        ProcessWizardPage processWizardPage = processOverviewPage.openProcessCreationWizard();
         ProcessWizardPage.MilestoneStepWizard milestoneStepWizard =
                 processWizardPage.definedMilestoneInProcess(PROCESS_NAME, 0L, GK_MILESTONES);
         boolean isEditable = milestoneStepWizard.getMilestonePredefinedList().getRow(0).isAttributeEditable(NAME_COLUMN_ID);

@@ -59,11 +59,10 @@ public class BookmarkTest extends BaseTestCase {
         bookmarkManagerPage = BookmarkManagerPage.goToPage(driver, BASIC_URL);
     }
 
-    @Parameters({"kpiViewType", "indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName", "productName"})
+    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName", "productName"})
     @Test(priority = 1, testName = "Creating Bookmark", description = "Creating Bookmark")
     @Description("Creating Bookmark")
     public void createBookmark(
-            @Optional("INDICATORS_VIEW") KpiViewPage.KpiViewType kpiViewType,
             @Optional("All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators") String indicatorNodesToExpand,
             @Optional("DBTIME") String indicatorNodesToSelect,
             @Optional() String dimensionNodesToExpand,
@@ -72,7 +71,7 @@ public class BookmarkTest extends BaseTestCase {
             @Optional("_DPE") String productName
     ) {
         try {
-            kpiViewPage = KpiViewPage.goToPage(driver, BASIC_URL, kpiViewType);
+            kpiViewPage = KpiViewPage.goToPage(driver, BASIC_URL);
             kpiViewSetup = new KpiViewSetupPage(driver, webDriverWait);
             kpiViewSetup.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
             kpiToolbarPanel = new KpiToolbarPanelPage(driver, webDriverWait);

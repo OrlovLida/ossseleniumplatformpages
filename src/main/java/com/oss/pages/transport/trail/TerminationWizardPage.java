@@ -25,7 +25,7 @@ public class TerminationWizardPage extends BasePage {
 
     public TerminationWizardPage(WebDriver driver) {
         super(driver);
-        wizard = Wizard.createWizard(driver, wait);
+        wizard = Wizard.createByComponentId(driver, wait, "trailWizardId_prompt-card");
     }
 
     public void setTerminationType(TerminationType terminationType) {

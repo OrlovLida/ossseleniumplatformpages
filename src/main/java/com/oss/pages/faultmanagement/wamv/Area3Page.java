@@ -7,7 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.data.Data;
+import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.ComponentFactory;
+import com.oss.framework.components.inputs.HtmlEditor;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.iaa.widgets.list.ListApp;
 import com.oss.framework.utils.DelayUtils;
@@ -42,6 +44,8 @@ public class Area3Page extends WAMVPage {
     private static final String IDENTIFIER_VALUE = "Identifier";
     private static final String PROPERTY_PANEL_ID = "card-content_AREA3";
     private static final String CHECKBOX_SHOW_EMPTY_ID_PATTERN = "checkbox|%s|show-empty";
+    private static final String ACTIVE_TAB_CLASS = "active";
+    private static final String EDIT_BUTTON_KNOW_HOW_TAB_ID = "btn|know-how-mo-configurator|edit";
 
     public Area3Page(WebDriver driver) {
         super(driver);
@@ -135,25 +139,28 @@ public class Area3Page extends WAMVPage {
     @Step("I get adapter name from Alarms Details Tab")
     public String getAdapterNameFromAlarmDetailsTab() {
         log.info("Checking adapter name value from Alarm Details Tab");
-        return getPropertyPanel().getPropertyValue(ADAPTER_NAME_VALUE);
+        return getArea3PropertyPanel().getPropertyValue(ADAPTER_NAME_VALUE);
     }
 
     @Step("I get notification identifier from Alarms Details Tab")
     public String getNotificationIdentifierFromAlarmDetailsTab() {
         log.info("Checking notification identifier value from Alarm Details Tab");
-        return getPropertyPanel().getPropertyValue(NOTIFICATION_IDENTIFIER_VALUE);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return getArea3PropertyPanel().getPropertyValue(NOTIFICATION_IDENTIFIER_VALUE);
     }
 
     @Step("I get perceived severity from Alarms Details Tab")
     public String getPerceivedSeverityFromAlarmDetailsTab() {
         log.info("Checking perceived severity value from Alarm Details Tab");
-        return getPropertyPanel().getPropertyValue(PERCEIVED_SEVERITY_VALUE);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return getArea3PropertyPanel().getPropertyValue(PERCEIVED_SEVERITY_VALUE);
     }
 
     @Step("I get identifier from MO Properties Tab")
     public String getIdentifierFromMOPropertiesTab() {
         log.info("Checking identifier from MO Properties  Tab");
-        return getPropertyPanel().getPropertyValue(IDENTIFIER_VALUE);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return getArea3PropertyPanel().getPropertyValue(IDENTIFIER_VALUE);
     }
 
     @Step("I check if {tableId} table exists")
@@ -183,19 +190,48 @@ public class Area3Page extends WAMVPage {
             return false;
         }
     }
-
+    @Step("Check 'Show Empty'")
     public void checkShowEmptyCheckbox(String tabName) {
         Input showEmptyCheckbox = ComponentFactory.create(String.format(CHECKBOX_SHOW_EMPTY_ID_PATTERN, tabName), driver, wait);
         showEmptyCheckbox.setValue(Data.createSingleData("true"));
+        log.info("Check 'Show Empty' Checkbox");
     }
 
+    @Step("Count visible rows in Property Panel")
     public int countVisibleProperties() {
-        int rowsNumber = getPropertyPanel().countRows();
+        int rowsNumber = getArea3PropertyPanel().countRows();
         log.info("Number of visible rows: '{}'", rowsNumber);
         return rowsNumber;
     }
 
-    private OldPropertyPanel getPropertyPanel() {
+    @Step("Click Edit")
+    public void clickEditButton() {
+        Button.createById(driver, ACTIVE_TAB_CLASS, EDIT_BUTTON_KNOW_HOW_TAB_ID).click();
+        log.info("Click Edit Button");
+    }
+
+    @Step("Click Save")
+    public void clickSaveButton() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        Button.createByLabel(driver, "Save").click();
+        log.info("Click Save Button");
+    }
+
+    @Step("Set value in HTML Editor")
+    public void setValueInHtmlEditor(String value, String componentId) {
+        HtmlEditor htmlEditor = HtmlEditor.create(driver, wait, componentId);
+        htmlEditor.clear();
+        htmlEditor.setSingleStringValue(value);
+    }
+
+    @Step("Check displayed value in HTML Editor")
+    public String checkValueInHtmlEditor(String componentId) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        HtmlEditor htmlEditor = HtmlEditor.create(driver, wait, componentId);
+        return htmlEditor.getStringValue();
+    }
+
+    private OldPropertyPanel getArea3PropertyPanel() {
         return OldPropertyPanel.createById(driver, wait, PROPERTY_PANEL_ID);
     }
 
