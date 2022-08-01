@@ -198,7 +198,7 @@ public class TreeWidgetTest extends BaseTestCase {
         sublocation.setPreciseLocation(LOCATION_NAME);
         DelayUtils.sleep(5000);
         sublocation.clickNext();
-        sublocation.clickAccept();
+        sublocation.create();
         hierarchyViewPage.unselectFirstObject();
         hierarchyViewPage.expandNextLevel(LOCATION_NAME);
         List<String> nodes = hierarchyViewPage.getVisibleNodesLabel();
