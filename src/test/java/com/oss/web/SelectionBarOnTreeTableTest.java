@@ -78,7 +78,7 @@ public class SelectionBarOnTreeTableTest extends BaseTestCase {
         plannersViewPage.selectObjectByRowId(3);
         treeTableWidget.showOnlySelectedRows();
         treeTableWidget.showAllRows();
-
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertEquals(treeTableWidget.getPagination().getTotalCount(), allRows);
     }
 
