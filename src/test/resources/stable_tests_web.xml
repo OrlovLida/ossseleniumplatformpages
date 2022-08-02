@@ -55,4 +55,9 @@
             <class name="com.oss.web.TreeTableWidgetTest"/>
         </classes>
     </test>
+    <test name="SelectionBarOnTreeTableTest">
+        <classes>
+            <class name="com.oss.web.SelectionBarOnTreeTableTest"/>
+        </classes>
+    </test>
 </suite>

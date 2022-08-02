@@ -3,6 +3,8 @@ package com.oss.web;
 import java.util.List;
 
 import org.testng.Assert;
+import org.testng.annotations.AfterGroups;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -43,7 +45,7 @@ public class SelectionBarOnTreeTableTest extends BaseTestCase {
         treeTableWidget = plannersViewPage.getTreeTable();
     }
 
-    @Test(priority = 1)
+    @Test(priority = 1, groups = {"group1"})
     public void selectRoots() {
         plannersViewPage.selectObjectByRowId(0);
         selectRowsOnNextPage(1, 3);
@@ -51,7 +53,7 @@ public class SelectionBarOnTreeTableTest extends BaseTestCase {
         Assert.assertEquals(selectedObjectCount, THREE_SELECTED);
     }
 
-    @Test(priority = 2)
+    @Test(priority = 2, groups = {"group1"})
     public void showSelectedForRoots() {
         plannersViewPage.expandNode(1);
         plannersViewPage.expandNode(2);
@@ -63,7 +65,7 @@ public class SelectionBarOnTreeTableTest extends BaseTestCase {
         Assert.assertFalse(treeTableWidget.isExpandPresent(2));
     }
 
-    @Test(priority = 3)
+    @Test(priority = 3, groups = {"group1"})
     public void unselectAllObjects() {
         treeTableWidget.unselectAllRows();
         String selectedObjectCount = treeTableWidget.getSelectedObjectCount();
@@ -71,18 +73,18 @@ public class SelectionBarOnTreeTableTest extends BaseTestCase {
         treeTableWidget.showAllRows();
     }
 
-    @Test(priority = 4)
+    @Test(priority = 4, groups = {"group1"})
     public void showAllRows() {
         int allRows = treeTableWidget.getPagination().getTotalCount();
         plannersViewPage.selectObjectByRowId(0);
         plannersViewPage.selectObjectByRowId(3);
         treeTableWidget.showOnlySelectedRows();
         treeTableWidget.showAllRows();
-
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertEquals(treeTableWidget.getPagination().getTotalCount(), allRows);
     }
 
-    @Test(priority = 5)
+    @Test(priority = 5, groups = {"group1"})
     public void selectChildProcess() {
         createProgramWithProcessForTest(PROGRAM_NAME, PROCESS_NAME);
         plannersViewPage.searchObject(PROGRAM_NAME);
@@ -96,7 +98,7 @@ public class SelectionBarOnTreeTableTest extends BaseTestCase {
         Assert.assertEquals(selectedObjectCount, ONE_SELECTED);
     }
 
-    @Test(priority = 6)
+    @Test(priority = 6, groups = {"group1"})
     public void unselectChildProcess() {
         plannersViewPage.unselectObjectByRowId(0);
         treeTableWidget.showAllRows();
@@ -104,7 +106,7 @@ public class SelectionBarOnTreeTableTest extends BaseTestCase {
         Assert.assertEquals(selectedObjectCount, ZERO_SELECTED);
     }
 
-    @Test(priority = 7)
+    @Test(priority = 7, groups = {"group2"})
     public void checkIfUnselectedChildProcessAreNotVisible() {
         driver.navigate().refresh();
         plannersViewPage.searchObject(PROGRAM_NAME);
@@ -119,15 +121,18 @@ public class SelectionBarOnTreeTableTest extends BaseTestCase {
         Assert.assertEquals(selectedObjectCount, TWO_SELECTED);
         Assert.assertEquals(treeTableWidget.getPagination().getTotalCount(), 2);
         Assert.assertNotEquals(treeTableWidget.getCellValue(2, NAME_ID), CHILD_PROCESSES);
+    }
 
+    @AfterGroups("group2")
+    public void afterMethod() {
         treeTableWidget.unselectAllRows();
         treeTableWidget.showAllRows();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-
     }
 
-    @Test(priority = 8)
+    @Test(priority = 8, groups = {"group1"})
     public void filterAndShowSelected() {
+
         plannersViewPage.selectObjectByAttributeValue(NAME_ID, PROCESS_NAME);
         plannersViewPage.searchByAttributeValue("program", "True", Input.ComponentType.MULTI_COMBOBOX);
         treeTableWidget.showOnlySelectedRows();
@@ -137,7 +142,7 @@ public class SelectionBarOnTreeTableTest extends BaseTestCase {
         Assert.assertTrue(allRows.isEmpty());
     }
 
-    @Test(priority = 9)
+    @Test(priority = 9, groups = {"group1"})
     public void unselectUnfilteredObject() {
         treeTableWidget.unselectAllRows();
         treeTableWidget.showAllRows();
