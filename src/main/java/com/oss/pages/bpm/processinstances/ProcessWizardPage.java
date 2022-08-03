@@ -10,6 +10,7 @@ import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
+import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.EditableList;
@@ -60,6 +61,11 @@ public class ProcessWizardPage extends BasePage {
     private static final String ADD_MILESTONE_OPTION_LABEL = "Add Milestones";
     private static final String MILESTONE_ENABLED_CHECKBOX_ID = "milestonesEnabledCheckboxId";
     private static final String CREATE_PROCESS_CHECKBOX_ID = "createProcessesCheckboxId";
+    private static final String CREATE_MULTIPLE_OPTION_LABEL = "Create multiple";
+    private static final String CREATE_MULTIPLE_CHECKBOX_ID = "createMultipleCheckboxId";
+    private static final String NUMBER_OF_PROCESSES_ID = "createMultipleNumberComponentId";
+    private static final String PROGRAMS_SEARCH_ID = "programsSearchBoxId";
+    private static final String PROCESSES_OUT_OF_RANGE_EXCEPTION = "Number of Processes must be between 1 and 300";
 
     public ProcessWizardPage(WebDriver driver) {
         super(driver);
@@ -135,10 +141,31 @@ public class ProcessWizardPage extends BasePage {
         TableInterface table = OldTable.createById(driver, wait, TABLE_PROCESSES);
         table.callAction(CREATE_GROUP_ACTION_ID, START_PROCESS_ACTION_ID);
         definedBasicProcess(processName, processType, plusDays).clickButtonById(CREATE_BUTTON);
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, wait);
-        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        String text = messages.get(0).getText();
-        return extractProcessCode(text);
+        return extractProcessCode(getProcessCreationMessage());
+    }
+
+    private Wizard definedBasicProcess(String processName, String processType, Long plusDays) {
+        Wizard wizardSecondStep = selectProcessDefinition(processType);
+        wizardSecondStep.setComponentValue(PROCESS_NAME_ATTRIBUTE_ID, processName);
+        if (driver.getPageSource().contains(FINISH_DUE_DATE_ID)) {
+            wizardSecondStep.setComponentValue(FINISH_DUE_DATE_ID, LocalDate.now().plusDays(plusDays).toString());
+        }
+        return Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2);
+    }
+
+
+    private Wizard definedBasicProgram(String programName, String programType, Long plusDays) {
+        Wizard wizardSecondStep = selectProcessDefinition(programType);
+        wizardSecondStep.setComponentValue(PROCESS_NAME_ATTRIBUTE_ID, programName);
+        if (driver.getPageSource().contains(DUE_DATE_ID)) {
+            wizardSecondStep.setComponentValue(DUE_DATE_ID, LocalDate.now().plusDays(plusDays).toString());
+        }
+        return Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2);
+    }
+
+    public String createProcessIPD(String processName, Long plusDays, String processType) {
+        definedBasicProcess(processName, processType, plusDays).clickButtonById(CREATE_BUTTON);
+        return extractProcessCode(getProcessCreationMessage());
     }
 
     public String createSimpleNRPV2() {
@@ -157,27 +184,61 @@ public class ProcessWizardPage extends BasePage {
         return createProcessIPD(PROCESS_NAME, plusDays, NRP);
     }
 
-    public String createProgramWithProcess(String programName, Long plusDays, String programType, String processName, Long plusDaysProcess, String processType) {
-        Wizard programWizard = definedBasicProgram(programName, programType, plusDays);
+    public String createProcessLinkedToProgram(String processName, Long plusDays, String processType,
+                                               List<String> programNamesList) {
+        Wizard processWizard = definedBasicProcess(processName, processType, plusDays);
+        setProgramsToLink(programNamesList);
+        processWizard.clickButtonById(CREATE_BUTTON);
+        return extractProcessCode(getProcessCreationMessage());
+    }
+
+    public void createMultipleProcesses(String processName, Long plusDays, String processType, int processesAmount) {
+        if (processesAmount <= 0 || processesAmount > 300) {
+            throw new IllegalArgumentException(PROCESSES_OUT_OF_RANGE_EXCEPTION);
+        } else {
+            Wizard processWizard = definedBasicProcess(processName, processType, plusDays);
+            if (driver.getPageSource().contains(CREATE_MULTIPLE_OPTION_LABEL)) {
+                processWizard.setComponentValue(CREATE_MULTIPLE_CHECKBOX_ID, "true");
+            }
+            DelayUtils.sleep();
+            processWizard.setComponentValue(NUMBER_OF_PROCESSES_ID, String.valueOf(processesAmount));
+            processWizard.clickButtonById(CREATE_BUTTON);
+        }
+
+    }
+
+    public void createProgramWithMultipleProcesses(String programName, Long plusDaysProgram, String programType,
+                                                   String processName, Long plusDaysProcess, String processType,
+                                                   int processesAmount) {
+        if (processesAmount <= 0 || processesAmount > 300) {
+            throw new IllegalArgumentException(PROCESSES_OUT_OF_RANGE_EXCEPTION);
+        } else {
+            Wizard programWizard = definedBasicProgram(programName, programType, plusDaysProgram);
+            if (driver.getPageSource().contains(CREATE_PROCESS_OPTION_LABEL)) {
+                programWizard.setComponentValue(CREATE_PROCESS_CHECKBOX_ID, "true");
+            }
+            DelayUtils.sleep();
+            programWizard.clickButtonById(CREATE_BUTTON);
+            Wizard processWizard = definedBasicProcess(processName, processType, plusDaysProcess);
+            if (driver.getPageSource().contains(CREATE_MULTIPLE_OPTION_LABEL)) {
+                processWizard.setComponentValue(CREATE_MULTIPLE_CHECKBOX_ID, "true");
+            }
+            DelayUtils.sleep();
+            processWizard.setComponentValue(NUMBER_OF_PROCESSES_ID, String.valueOf(processesAmount));
+            processWizard.clickButtonById(CREATE_BUTTON);
+        }
+    }
+
+    public String createProgramWithProcess(String programName, Long plusDaysProgram, String programType,
+                                           String processName, Long plusDaysProcess, String processType) {
+        Wizard programWizard = definedBasicProgram(programName, programType, plusDaysProgram);
         if (driver.getPageSource().contains(CREATE_PROCESS_OPTION_LABEL)) {
             programWizard.setComponentValue(CREATE_PROCESS_CHECKBOX_ID, "true");
         }
         DelayUtils.sleep();
         programWizard.clickButtonById(CREATE_BUTTON);
         definedBasicProcess(processName, processType, plusDaysProcess).clickButtonById(CREATE_BUTTON);
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, wait);
-        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        String text = messages.get(0).getText();
-        return extractProcessCode(text);
-    }
-
-    private Wizard definedBasicProgram(String programName, String programType, Long plusDays) {
-        Wizard wizardSecondStep = selectProcessDefinition(programType);
-        wizardSecondStep.setComponentValue(PROCESS_NAME_ATTRIBUTE_ID, programName);
-        if (driver.getPageSource().contains(DUE_DATE_ID)) {
-            wizardSecondStep.setComponentValue(DUE_DATE_ID, LocalDate.now().plusDays(plusDays).toString());
-        }
-        return Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2);
+        return extractProcessCode(getProcessCreationMessage());
     }
 
     private Wizard selectProcessDefinition(String processType) {
@@ -198,13 +259,6 @@ public class ProcessWizardPage extends BasePage {
         return Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2);
     }
 
-    public String createProcessIPD(String processName, Long plusDays, String processType) {
-        definedBasicProcess(processName, processType, plusDays).clickButtonById(CREATE_BUTTON);
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, wait);
-        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        String text = messages.get(0).getText();
-        return extractProcessCode(text);
-    }
 
     @Description("Go to Milestone Step)")
     public MilestoneStepWizard definedMilestoneInProcess(String processName, Long plusDays, String processType) {
@@ -225,13 +279,15 @@ public class ProcessWizardPage extends BasePage {
         Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2).clickButtonById(CANCEL_BUTTON);
     }
 
-    private Wizard definedBasicProcess(String processName, String processType, Long plusDays) {
-        Wizard wizardSecondStep = selectProcessDefinition(processType);
-        wizardSecondStep.setComponentValue(PROCESS_NAME_ATTRIBUTE_ID, processName);
-        if (driver.getPageSource().contains(FINISH_DUE_DATE_ID)) {
-            wizardSecondStep.setComponentValue(FINISH_DUE_DATE_ID, LocalDate.now().plusDays(plusDays).toString());
-        }
-        return Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2);
+    private void setProgramsToLink(List<String> programNamesList) {
+        Input programs = ComponentFactory.create(PROGRAMS_SEARCH_ID, driver, wait);
+        programNamesList.forEach(programs::setSingleStringValue);
+    }
+
+    private String getProcessCreationMessage() {
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, wait);
+        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
+        return messages.get(0).getText();
     }
 
     private String extractProcessCode(String message) {
