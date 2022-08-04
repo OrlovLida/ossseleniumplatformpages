@@ -19,7 +19,7 @@ public class ExportGuiWizardPage extends BasePage {
 
     public ExportGuiWizardPage(WebDriver driver, WebDriverWait wait, String wizardId) {
         super(driver, wait);
-        WIZARD_ID = wizardId;
+        this.wizardId = wizardId;
     }
 
     private static final String CHECKBOX_EXPORT_WITH_HEADERS_ID = "exportgui-components-withheadercheckbox";
@@ -33,36 +33,58 @@ public class ExportGuiWizardPage extends BasePage {
     private static final String COMBOBOX_CSV_DELIMITER_ID = "exportgui-components-csvdelimitertxt";
     private static final String COMBOBOX_QUOTE_CHARACTER_ID = "exportgui-components-csvquotechartxt";
     private static final String TEXTFIELD_FILE_NAME_ID = "exportgui-components-filenametxt";
-    private String WIZARD_ID = "exportgui-wizard-widget";
+    private String wizardId = "exportgui-wizard-widget";
 
     public Wizard getWizard() {
-        return Wizard.createByComponentId(driver, wait, WIZARD_ID);
+        return Wizard.createByComponentId(driver, wait, wizardId);
     }
 
     @Step("Fill file name")
-    public ExportGuiWizardPage fillFileName(String fileName) {
+    public ExportGuiWizardPage steFileName(String fileName) {
         getWizard().setComponentValue(TEXTFIELD_FILE_NAME_ID, fileName);
         return this;
     }
 
+    @Step("Set File Type: {fileType}")
+    public ExportGuiWizardPage setFileType(String fileType) {
+        setComboboxValue(COMBOBOX_FILE_TYPE_ID, fileType);
+        return this;
+    }
+
+    /**
+     * @deprecated (To remove with release 3.0.x Use setFileType method instead)
+     */
+    @Deprecated
     @Step("Choose CSV File Type")
     public ExportGuiWizardPage chooseCSV() {
         setComboboxValue(COMBOBOX_FILE_TYPE_ID, "CSV");
         return this;
     }
 
+    /**
+     * @deprecated (To remove with release 3.0.x Use setFileType method instead)
+     */
+    @Deprecated
     @Step("Choose XLSX File Type")
     public ExportGuiWizardPage chooseXLSX() {
         setComboboxValue(COMBOBOX_FILE_TYPE_ID, "XLSX");
         return this;
     }
 
+    /**
+     * @deprecated (To remove with release 3.0.x Use setFileType method instead)
+     */
+    @Deprecated
     @Step("Choose XLS File Type")
     public ExportGuiWizardPage chooseXLS() {
         setComboboxValue(COMBOBOX_FILE_TYPE_ID, "XLS");
         return this;
     }
 
+    /**
+     * @deprecated (To remove with release 3.0.x Use setFileType method instead)
+     */
+    @Deprecated
     @Step("Choose XML File Type")
     public ExportGuiWizardPage chooseXML() {
         setComboboxValue(COMBOBOX_FILE_TYPE_ID, "XML");
@@ -151,7 +173,7 @@ public class ExportGuiWizardPage extends BasePage {
     }
 
     @Step("Change Date Mask on Combobox")
-    public ExportGuiWizardPage changeDateMaskContains(String dateMask) {
+    public ExportGuiWizardPage setDateMaskContains(String dateMask) {
         ComponentFactory.create(COMBOBOX_DATE_MASK_ID, driver, wait).setSingleStringValueContains(dateMask);
         return this;
     }
