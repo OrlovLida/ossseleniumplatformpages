@@ -35,7 +35,7 @@ public class OnboardVNFResource {
     private static final String CATEGORY = "Category";
     private static final String VENDOR_SAMSUNG = "Samsung";
     private static final String CATEGORY_NFVO = "NFVO";
-    private static final String MASTER_OSS = "MasterOSS";
+    private static final String MASTER_MANAGEMENT_SYSTEM = "MasterManagementSystem";
     private static final String TYPE_POP = "PoP";
     private static final String MARKETPLACE = "Marketplace";
     private static final String VIM = "VIM";
@@ -95,36 +95,36 @@ public class OnboardVNFResource {
                 .build();
     }
 
-    public static LogicalFunctionBulkDTO buildVNFPKGLogicalFunctionBulkDTO(Long masterOSS) {
+    public static LogicalFunctionBulkDTO buildVNFPKGLogicalFunctionBulkDTO(Long masterManagementSystem) {
         return LogicalFunctionBulkDTO.builder()
-                .addCreateOrUpdate(buildVNFPKGLogicalFunctionSyncDTO(masterOSS))
+                .addCreateOrUpdate(buildVNFPKGLogicalFunctionSyncDTO(masterManagementSystem))
                 .build();
     }
 
-    public static LogicalFunctionSyncDTO buildVNFPKGLogicalFunctionSyncDTO(Long masterOSS) {
+    public static LogicalFunctionSyncDTO buildVNFPKGLogicalFunctionSyncDTO(Long masterManagementSystem) {
         return LogicalFunctionSyncDTO.builder()
                 .name(VNFPKG_NAME)
                 .type(VNFPKG)
                 .model(getModelIdentification(VNFPKG_SPECIFICATION_IDENTIFIER))
-                .addAttributes(getMasterOSS(masterOSS))
+                .addAttributes(getMasterManagementSystem(masterManagementSystem))
                 .build();
     }
 
-    public static LogicalFunctionBulkDTO buildMarketplaceLogicalFunctionBulkDTO(Long masterOSS) {
-        return buildLogicalFunctionBulkDTO(MARKETPLACE, MARKETPLACE_NAME, getMarketplaceAttributes(masterOSS));
+    public static LogicalFunctionBulkDTO buildMarketplaceLogicalFunctionBulkDTO(Long masterManagementSystem) {
+        return buildLogicalFunctionBulkDTO(MARKETPLACE, MARKETPLACE_NAME, getMarketplaceAttributes(masterManagementSystem));
     }
 
-    private static List<AttributeDTO> getMarketplaceAttributes(Long masterOSS) {
-        return Collections.singletonList(getMasterOSS(masterOSS));
+    private static List<AttributeDTO> getMarketplaceAttributes(Long masterManagementSystem) {
+        return Collections.singletonList(getMasterManagementSystem(masterManagementSystem));
     }
 
-    public static LogicalFunctionBulkDTO buildVIMLogicalFunctionBulkDTO(Long masterOSS) {
-        return buildLogicalFunctionBulkDTO(VIM, VIM_NAME, getVIMAttributes(masterOSS));
+    public static LogicalFunctionBulkDTO buildVIMLogicalFunctionBulkDTO(Long masterManagementSystem) {
+        return buildLogicalFunctionBulkDTO(VIM, VIM_NAME, getVIMAttributes(masterManagementSystem));
     }
 
-    private static List<AttributeDTO> getVIMAttributes(Long masterOSS) {
+    private static List<AttributeDTO> getVIMAttributes(Long masterManagementSystem) {
         return Lists.newArrayList(
-                getMasterOSS(masterOSS),
+                getMasterManagementSystem(masterManagementSystem),
                 getAttributeDTO(CATEGORY, VIM),
                 getAttributeDTO(VENDOR, GENERIC)
         );
@@ -163,10 +163,10 @@ public class OnboardVNFResource {
                 .build();
     }
 
-    private static AttributeDTO getMasterOSS(Long masterOSS) {
+    private static AttributeDTO getMasterManagementSystem(Long masterManagementSystem) {
         return AttributeDTO.builder()
-                .name(MASTER_OSS)
-                .value(masterOSS.toString())
+                .name(MASTER_MANAGEMENT_SYSTEM)
+                .value(masterManagementSystem.toString())
                 .build();
     }
 }

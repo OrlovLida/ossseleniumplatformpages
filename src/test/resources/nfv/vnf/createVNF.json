@@ -2,7 +2,7 @@
   "id": null,
   "name": "SELENIUM-TEST",
   "description": null,
-  "resourceSpecificationId": "VNFSamsungLGU210vSPGWSELENIUMTEST210VSPGWFLAVORSELENIUMTEST0",
+  "resourceSpecificationId": "VNFSamsungLGU210vSPGWSELENIUMTEST210VNFDROOTVSPGWFLAVORSELENIUMTEST0",
   "attributes": [{
     "name": "maxScaleLevel",
     "value": "16"
@@ -409,7 +409,7 @@
     "name": "MasterVNFM",
     "value": null
   }, {
-    "name": "MasterOSS",
+    "name": "MasterManagementSystem",
     "value": null
   }
   ],
