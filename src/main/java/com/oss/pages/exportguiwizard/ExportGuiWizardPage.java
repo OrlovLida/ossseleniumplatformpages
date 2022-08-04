@@ -4,7 +4,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.oss.framework.components.inputs.ComponentFactory;
-import com.oss.framework.components.inputs.Input.ComponentType;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
@@ -39,14 +38,14 @@ public class ExportGuiWizardPage extends BasePage {
         return Wizard.createByComponentId(driver, wait, wizardId);
     }
 
-    @Step("Fill file name")
-    public ExportGuiWizardPage steFileName(String fileName) {
+    @Step("Set file name to: {fileName}")
+    public ExportGuiWizardPage setFileName(String fileName) {
         getWizard().setComponentValue(TEXTFIELD_FILE_NAME_ID, fileName);
         return this;
     }
 
-    @Step("Set File Type: {fileType}")
-    public ExportGuiWizardPage setFileType(String fileType) {
+    @Step("Choose File Type: {fileType}")
+    public ExportGuiWizardPage chooseFileType(String fileType) {
         setComboboxValue(COMBOBOX_FILE_TYPE_ID, fileType);
         return this;
     }
@@ -173,13 +172,13 @@ public class ExportGuiWizardPage extends BasePage {
     }
 
     @Step("Change Date Mask on Combobox")
-    public ExportGuiWizardPage setDateMaskContains(String dateMask) {
+    public ExportGuiWizardPage changeDateMaskContains(String dateMask) {
         ComponentFactory.create(COMBOBOX_DATE_MASK_ID, driver, wait).setSingleStringValueContains(dateMask);
         return this;
     }
 
     void setComboboxValue(String comboboxId, String value) {
-        getWizard().setComponentValue(comboboxId, value, ComponentType.COMBOBOX);
+        getWizard().setComponentValue(comboboxId, value);
     }
 
     void setTextValue(String textFieldId, String value) {
