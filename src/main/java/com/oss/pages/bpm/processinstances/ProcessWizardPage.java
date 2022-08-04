@@ -153,7 +153,6 @@ public class ProcessWizardPage extends BasePage {
         return Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2);
     }
 
-
     private Wizard definedBasicProgram(String programName, String programType, Long plusDays) {
         Wizard wizardSecondStep = selectProcessDefinition(programType);
         wizardSecondStep.setComponentValue(PROCESS_NAME_ATTRIBUTE_ID, programName);
@@ -165,6 +164,11 @@ public class ProcessWizardPage extends BasePage {
 
     public String createProcessIPD(String processName, Long plusDays, String processType) {
         definedBasicProcess(processName, processType, plusDays).clickButtonById(CREATE_BUTTON);
+        return extractProcessCode(getProcessCreationMessage());
+    }
+
+    public String createProgram(String programName, Long plusDays, String programType) {
+        definedBasicProgram(programName, programType, plusDays).clickButtonById(CREATE_BUTTON);
         return extractProcessCode(getProcessCreationMessage());
     }
 
@@ -184,8 +188,8 @@ public class ProcessWizardPage extends BasePage {
         return createProcessIPD(PROCESS_NAME, plusDays, NRP);
     }
 
-    public String createProcessLinkedToProgram(String processName, Long plusDays, String processType,
-                                               List<String> programNamesList) {
+    public String createProcessLinkedToPrograms(String processName, Long plusDays, String processType,
+                                                List<String> programNamesList) {
         Wizard processWizard = definedBasicProcess(processName, processType, plusDays);
         setProgramsToLink(programNamesList);
         processWizard.clickButtonById(CREATE_BUTTON);
@@ -204,7 +208,6 @@ public class ProcessWizardPage extends BasePage {
             processWizard.setComponentValue(NUMBER_OF_PROCESSES_ID, String.valueOf(processesAmount));
             processWizard.clickButtonById(CREATE_BUTTON);
         }
-
     }
 
     public void createProgramWithMultipleProcesses(String programName, Long plusDaysProgram, String programType,
