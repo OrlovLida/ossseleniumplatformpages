@@ -49,8 +49,8 @@ public class BaseOnboardNetworkServiceTest extends BaseTestCase {
         deleteLogicalFunctionsByName(ERICSSON_NFVO_NAME);
     }
 
-    private void deleteLogicalFunctionsByName(String masterOSSName) {
-        logicalFunctionCoreClient.getLogicalFunctionByName(masterOSSName).stream()
+    private void deleteLogicalFunctionsByName(String masterManagementSystemName) {
+        logicalFunctionCoreClient.getLogicalFunctionByName(masterManagementSystemName).stream()
                 .map(LogicalFunctionViewDTO::getId)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
