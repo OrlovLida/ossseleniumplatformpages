@@ -60,12 +60,18 @@ public class ProcessWizardPage extends BasePage {
     private static final String CREATE_PROCESS_OPTION_LABEL = "Create processes";
     private static final String ADD_MILESTONE_OPTION_LABEL = "Add Milestones";
     private static final String MILESTONE_ENABLED_CHECKBOX_ID = "milestonesEnabledCheckboxId";
+    private static final String FORECAST_ENABLED_CHECKBOX_ID = "forecastsEnabledCheckboxId";
+    private static final String ADD_FORECASTS_OPTION_LABEL = "Add Forecasts";
+    private static final String SCHEDULE_ENABLED_CHECKBOX_ID = "scheduleEnabledCheckboxId";
+    private static final String SCHEDULE_OPTION_LABEL = "Schedule";
     private static final String CREATE_PROCESS_CHECKBOX_ID = "createProcessesCheckboxId";
     private static final String CREATE_MULTIPLE_OPTION_LABEL = "Create multiple";
     private static final String CREATE_MULTIPLE_CHECKBOX_ID = "createMultipleCheckboxId";
     private static final String NUMBER_OF_PROCESSES_ID = "createMultipleNumberComponentId";
     private static final String PROGRAMS_SEARCH_ID = "programsSearchBoxId";
     private static final String PROCESSES_OUT_OF_RANGE_EXCEPTION = "Number of Processes must be between 1 and 300";
+    private static final String CHECKBOX_NOT_PRESENT_EXCEPTION = "Checkbox %s is not present in the wizard.";
+    private static final String PROGRAM_TO_LINK_EXCEPTION = "Add Programs to Link is available only with process instance creation";
 
     public ProcessWizardPage(WebDriver driver) {
         super(driver);
@@ -144,7 +150,7 @@ public class ProcessWizardPage extends BasePage {
         return extractProcessCode(getProcessCreationMessage());
     }
 
-    private Wizard definedBasicProcess(String processName, String processType, Long plusDays) {
+    protected Wizard definedBasicProcess(String processName, String processType, Long plusDays) {
         Wizard wizardSecondStep = selectProcessDefinition(processType);
         wizardSecondStep.setComponentValue(PROCESS_NAME_ATTRIBUTE_ID, processName);
         if (driver.getPageSource().contains(FINISH_DUE_DATE_ID)) {
@@ -153,7 +159,7 @@ public class ProcessWizardPage extends BasePage {
         return Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2);
     }
 
-    private Wizard definedBasicProgram(String programName, String programType, Long plusDays) {
+    protected Wizard definedBasicProgram(String programName, String programType, Long plusDays) {
         Wizard wizardSecondStep = selectProcessDefinition(programType);
         wizardSecondStep.setComponentValue(PROCESS_NAME_ATTRIBUTE_ID, programName);
         if (driver.getPageSource().contains(DUE_DATE_ID)) {
@@ -274,6 +280,14 @@ public class ProcessWizardPage extends BasePage {
         return new MilestoneStepWizard(driver, wait);
     }
 
+    private void selectCheckbox(Wizard wizard, String checkBoxId) {
+        try {
+            wizard.setComponentValue(checkBoxId, "true");
+        } catch (NoSuchElementException e) {
+            throw new NoSuchElementException(String.format(CHECKBOX_NOT_PRESENT_EXCEPTION, checkBoxId));
+        }
+    }
+
     public void clickAcceptButton() {
         Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2).clickButtonById(CREATE_BUTTON);
     }
@@ -303,6 +317,20 @@ public class ProcessWizardPage extends BasePage {
         }
         throw new NoSuchElementException(CANNOT_EXTRACT_PROCESS_CODE_EXCEPTION + message);
     }
+
+//    public void createProcess(ProcessCreationWizardProperties properties) {
+//        if (!programNamesList.isEmpty()) {
+//            if (isProgramCreation)
+//                throw new RuntimeException(PROGRAM_TO_LINK_EXCEPTION);
+//            addProgramsToLink(programNamesList);
+//        }
+//        if (!cronExpression.isEmpty()) {
+//            wizardSecondStep.clickButtonById(NEXT_BUTTON);
+//            addSchedule(cronExpression);
+//            wizardSecondStep.clickButtonById(CREATE_BUTTON);
+//        }
+//    }
+
 
     public static class MilestoneStepWizard {
 
