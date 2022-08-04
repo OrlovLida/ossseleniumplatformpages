@@ -1,17 +1,25 @@
 package com.oss.pages.exportguiwizard;
 
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input.ComponentType;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
 
 public class ExportGuiWizardPage extends BasePage {
 
     public ExportGuiWizardPage(WebDriver driver) {
         super(driver);
+    }
+
+    public ExportGuiWizardPage(WebDriver driver, WebDriverWait wait, String wizardId) {
+        super(driver, wait);
+        WIZARD_ID = wizardId;
     }
 
     private static final String CHECKBOX_EXPORT_WITH_HEADERS_ID = "exportgui-components-withheadercheckbox";
@@ -24,10 +32,17 @@ public class ExportGuiWizardPage extends BasePage {
     private static final String COMBOBOX_DATE_MASK_ID = "exportgui-components-dateMaskchoose";
     private static final String COMBOBOX_CSV_DELIMITER_ID = "exportgui-components-csvdelimitertxt";
     private static final String COMBOBOX_QUOTE_CHARACTER_ID = "exportgui-components-csvquotechartxt";
-    private static final String WIZARD_ID = "exportgui-wizard-widget";
+    private static final String TEXTFIELD_FILE_NAME_ID = "exportgui-components-filenametxt";
+    private String WIZARD_ID = "exportgui-wizard-widget";
 
     public Wizard getWizard() {
         return Wizard.createByComponentId(driver, wait, WIZARD_ID);
+    }
+
+    @Step("Fill file name")
+    public ExportGuiWizardPage fillFileName(String fileName) {
+        getWizard().setComponentValue(TEXTFIELD_FILE_NAME_ID, fileName);
+        return this;
     }
 
     @Step("Choose CSV File Type")
@@ -135,13 +150,18 @@ public class ExportGuiWizardPage extends BasePage {
         return this;
     }
 
+    @Step("Change Date Mask on Combobox")
+    public ExportGuiWizardPage changeDateMaskContains(String dateMask) {
+        ComponentFactory.create(COMBOBOX_DATE_MASK_ID, driver, wait).setSingleStringValueContains(dateMask);
+        return this;
+    }
 
     void setComboboxValue(String comboboxId, String value) {
-        getWizard().setComponentValue(comboboxId, value,ComponentType.COMBOBOX);
+        getWizard().setComponentValue(comboboxId, value, ComponentType.COMBOBOX);
     }
 
     void setTextValue(String textFieldId, String value) {
-       getWizard().setComponentValue(textFieldId, value);
+        getWizard().setComponentValue(textFieldId, value);
     }
 
     void checkTheCheckbox(String checkboxId) {
@@ -150,7 +170,7 @@ public class ExportGuiWizardPage extends BasePage {
 
     private void clickOnAccept() {
         getWizard().clickAccept();
-       DelayUtils.waitForPageToLoad(driver,wait);
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     private void clickOnNext() {
