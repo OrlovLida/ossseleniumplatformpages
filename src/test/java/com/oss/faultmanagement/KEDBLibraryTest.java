@@ -36,7 +36,7 @@ public class KEDBLibraryTest extends BaseTestCase {
     @Test(priority = 1, testName = "Disable column in KEDB Library Table", description = "Disable column in KEDB Library Table")
     @Description("Disable column in KEDB Library Table")
     public void disableColumnInTable(
-            @Optional("DM_KEDBLibrary.name") String columnLabel
+            @Optional("Name") String columnLabel
     ) {
         kedbLibraryPage.disableColumnInTable(columnLabel);
         Assert.assertFalse(kedbLibraryPage.isColumnInTable(columnLabel));
@@ -46,7 +46,7 @@ public class KEDBLibraryTest extends BaseTestCase {
     @Test(priority = 2, testName = "Enable column in KEDB Library Table", description = "Enable column in KEDB Library Table")
     @Description("Enable column in KEDB Library Table")
     public void enableColumnInTable(
-            @Optional("DM_KEDBLibrary.name") String columnLabel
+            @Optional("Name") String columnLabel
     ) {
         kedbLibraryPage.enableColumnInTable(columnLabel);
         Assert.assertTrue(kedbLibraryPage.isColumnInTable(columnLabel));
