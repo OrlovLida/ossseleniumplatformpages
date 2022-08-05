@@ -16,9 +16,8 @@ public class MilestonesStepWizardPage extends ProcessWizardPage {
     }
 
     public MilestonesStepWizardPage defineProcessAndGoToMilestonesStep(String processName, Long plusDays, String processType) {
-        ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
         Wizard processWizard = definedBasicProcess(processName, processType, plusDays);
-        processWizardPage.selectCheckbox(processWizard, MILESTONE_ENABLED_CHECKBOX_ID);
+        selectCheckbox(processWizard, MILESTONE_ENABLED_CHECKBOX_ID);
         DelayUtils.sleep();
         processWizard.clickButtonById(NEXT_BUTTON);
         return new MilestonesStepWizardPage(driver);
