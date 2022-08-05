@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.alerts.SystemMessageContainer;
+import com.oss.framework.components.attributechooser.ListAttributesChooser;
 import com.oss.framework.components.layout.Card;
 import com.oss.framework.components.table.TableComponent;
 import com.oss.framework.utils.DelayUtils;
@@ -16,10 +17,12 @@ import io.qameta.allure.Step;
 public class AlarmGeneratorPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(AlarmGeneratorPage.class);
-    private static final String HTTP_URL_TO_ALARM_GENERATOR = "%s/#/views/fault-management/alarm-generator";
+    private static final String HTTP_URL_TO_ALARM_GENERATOR = "%s/#/views/fault-management/alarm-generator?perspective=LIVE";
 
     private static final String ALARMS_GENERATOR_CARD_ID = "area2-alarm-generator-table";
     private static final String ADD_BUTTON_ID = "AddNewRowAction";
+    private static final String EDIT_BUTTON_ID = "EditRowAction";
+    private static final String REMOVE_BUTTON_ID = "RemoveRowAction";
     private static final String GENERATE_BUTTON_ID = "GENERATE";
     private static final String CREATE_ALARM_BUTTON_ID = "GenerateCreateEditAlarmsAction";
     private static final String TERMINATE_ALARM_BUTTON_ID = "GenerateRemoveAlarmsAction";
@@ -39,9 +42,21 @@ public class AlarmGeneratorPage extends BasePage {
         return new AlarmGeneratorPage(driver, wait);
     }
 
-    public void clickAddButton() {
+    public AlarmGeneratorWizardPage clickAddButton() {
         getAlarmsGeneratorCard().callActionById(ADD_BUTTON_ID);
         log.info("Clicking button 'Add'");
+        return new AlarmGeneratorWizardPage(driver, wait);
+    }
+
+    public AlarmGeneratorWizardPage clickEditButton() {
+        getAlarmsGeneratorCard().callActionById(EDIT_BUTTON_ID);
+        log.info("Clicking button 'Edit'");
+        return new AlarmGeneratorWizardPage(driver, wait);
+    }
+
+    public void clickRemoveButton() {
+        getAlarmsGeneratorCard().callActionById(REMOVE_BUTTON_ID);
+        log.info("Clicking button 'Remove'");
     }
 
     public void clickGenerateAlarmButton() {
@@ -60,16 +75,44 @@ public class AlarmGeneratorPage extends BasePage {
         log.info("Selecting first row in Alarm Generator Table");
     }
 
-    public String getMessageFromPrompt() {
-        return SystemMessageContainer.create(driver, wait)
-                .getFirstMessage()
-                .map(SystemMessageContainer.Message::getText)
-                .orElse(null);
+    public String getFirstCellValueInColumn(String columnId) {
+        log.info("Get value of first cell in column {}", columnId);
+        return getAlarmsGeneratorTable().getCellValue(0, columnId);
+    }
+
+    public boolean isAlarmTableEmpty() {
+        return getAlarmsGeneratorTable().hasNoData();
+    }
+
+    @Step("I enable column {columnId} in the table")
+    public void enableColumnInTheTable(String columnId) {
+        ListAttributesChooser listAttributesChooser = getListAttributesChooser();
+        listAttributesChooser.enableAttributeById(columnId);
+        listAttributesChooser.clickApply();
+        log.info("Enabling column with id: {}", columnId);
+    }
+
+    @Step("I disable column {columnId} in the table")
+    public void disableColumnInTheTable(String columnId) {
+        ListAttributesChooser listAttributesChooser = getListAttributesChooser();
+        listAttributesChooser.disableAttributeById(columnId);
+        listAttributesChooser.clickApply();
+        log.info("Disabling column with id: {}", columnId);
+    }
+
+    @Step("I check if column with Header {columnHeader} is present in the Table")
+    public boolean isColumnInTable(String columnHeader) {
+        log.info("Check if column with header: {} is visible", columnHeader);
+        return getAlarmsGeneratorTable().getColumnHeaders().contains(columnHeader);
     }
 
     public String getMessageTypeFromPrompt() {
         return SystemMessageContainer.create(driver, wait)
                 .getMessages().get(0).getMessageType().toString();
+    }
+
+    private ListAttributesChooser getListAttributesChooser() {
+        return getAlarmsGeneratorTable().getListAttributesChooser();
     }
 
     private Card getAlarmsGeneratorCard() {
