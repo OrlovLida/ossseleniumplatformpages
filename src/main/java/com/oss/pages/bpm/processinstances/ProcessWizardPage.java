@@ -13,14 +13,11 @@ import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.list.EditableList;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.table.TableInterface;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 import com.oss.pages.bpm.ProcessOverviewPage;
-import com.oss.pages.bpm.milestones.Milestone;
-import com.oss.pages.bpm.milestones.MilestoneWizardPage;
 import io.qameta.allure.Description;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -34,6 +31,8 @@ import java.util.List;
  */
 public class ProcessWizardPage extends BasePage {
 
+    protected static final String NEXT_BUTTON = "wizard-next-button-bpm_processes_view_start-process-details-prompt_processCreateFormId";
+    protected static final String MILESTONE_ENABLED_CHECKBOX_ID = "milestonesEnabledCheckboxId";
     private static final String CANNOT_EXTRACT_PROCESS_CODE_EXCEPTION = "Cannot extract Process Code from message: ";
     private static final String TABLE_PROCESSES = "bpm_processes_view_processes";
     private static final String PROCESS_WIZARD_STEP_1 = "bpm_processes_view_start-process-prompt_prompt-card";
@@ -46,26 +45,17 @@ public class ProcessWizardPage extends BasePage {
     private static final String DUE_DATE_ID = "programDueDateId";
     private static final String ACCEPT_BUTTON = "wizard-submit-button-start-process-wizard";
     private static final String CREATE_BUTTON = "wizard-submit-button-bpm_processes_view_start-process-details-prompt_processCreateFormId";
-    private static final String NEXT_BUTTON = "wizard-next-button-bpm_processes_view_start-process-details-prompt_processCreateFormId";
     private static final String CANCEL_BUTTON = "wizard-cancel-button-bpm_processes_view_start-process-details-prompt_processCreateFormId";
     private static final String PROCESS_NAME = "Selenium Test " + Math.random();
     private static final String INVENTORY_PROCESS = "Inventory Processes";
     private static final String LATEST = "Latest";
     private static final String NRP = "Network Resource Process";
     private static final String DCP = "Data Correction Process";
-    private static final String PREDEFINED_MILESTONE_LIST = "editMilestonesComponentId";
-    private static final String ADD_MILESTONE_LIST = "addMilestonesComponentId";
     private static final String CREATE_GROUP_ACTION_ID = "create";
     private static final String START_PROCESS_ACTION_ID = "start-process";
-    private static final String CREATE_PROCESS_OPTION_LABEL = "Create processes";
-    private static final String ADD_MILESTONE_OPTION_LABEL = "Add Milestones";
-    private static final String MILESTONE_ENABLED_CHECKBOX_ID = "milestonesEnabledCheckboxId";
     private static final String FORECAST_ENABLED_CHECKBOX_ID = "forecastsEnabledCheckboxId";
-    private static final String ADD_FORECASTS_OPTION_LABEL = "Add Forecasts";
     private static final String SCHEDULE_ENABLED_CHECKBOX_ID = "scheduleEnabledCheckboxId";
-    private static final String SCHEDULE_OPTION_LABEL = "Schedule";
     private static final String CREATE_PROCESS_CHECKBOX_ID = "createProcessesCheckboxId";
-    private static final String CREATE_MULTIPLE_OPTION_LABEL = "Create multiple";
     private static final String CREATE_MULTIPLE_CHECKBOX_ID = "createMultipleCheckboxId";
     private static final String NUMBER_OF_PROCESSES_ID = "createMultipleNumberComponentId";
     private static final String PROGRAMS_SEARCH_ID = "programsSearchBoxId";
@@ -207,10 +197,7 @@ public class ProcessWizardPage extends BasePage {
             throw new IllegalArgumentException(PROCESSES_OUT_OF_RANGE_EXCEPTION);
         } else {
             Wizard processWizard = definedBasicProcess(processName, processType, plusDays);
-            if (driver.getPageSource().contains(CREATE_MULTIPLE_OPTION_LABEL)) {
-                processWizard.setComponentValue(CREATE_MULTIPLE_CHECKBOX_ID, "true");
-            }
-            DelayUtils.sleep();
+            selectCheckbox(processWizard, CREATE_MULTIPLE_CHECKBOX_ID);
             processWizard.setComponentValue(NUMBER_OF_PROCESSES_ID, String.valueOf(processesAmount));
             processWizard.clickButtonById(CREATE_BUTTON);
         }
@@ -223,16 +210,10 @@ public class ProcessWizardPage extends BasePage {
             throw new IllegalArgumentException(PROCESSES_OUT_OF_RANGE_EXCEPTION);
         } else {
             Wizard programWizard = definedBasicProgram(programName, programType, plusDaysProgram);
-            if (driver.getPageSource().contains(CREATE_PROCESS_OPTION_LABEL)) {
-                programWizard.setComponentValue(CREATE_PROCESS_CHECKBOX_ID, "true");
-            }
-            DelayUtils.sleep();
+            selectCheckbox(programWizard, CREATE_PROCESS_CHECKBOX_ID);
             programWizard.clickButtonById(CREATE_BUTTON);
             Wizard processWizard = definedBasicProcess(processName, processType, plusDaysProcess);
-            if (driver.getPageSource().contains(CREATE_MULTIPLE_OPTION_LABEL)) {
-                processWizard.setComponentValue(CREATE_MULTIPLE_CHECKBOX_ID, "true");
-            }
-            DelayUtils.sleep();
+            selectCheckbox(processWizard, CREATE_MULTIPLE_CHECKBOX_ID);
             processWizard.setComponentValue(NUMBER_OF_PROCESSES_ID, String.valueOf(processesAmount));
             processWizard.clickButtonById(CREATE_BUTTON);
         }
@@ -241,10 +222,7 @@ public class ProcessWizardPage extends BasePage {
     public String createProgramWithProcess(String programName, Long plusDaysProgram, String programType,
                                            String processName, Long plusDaysProcess, String processType) {
         Wizard programWizard = definedBasicProgram(programName, programType, plusDaysProgram);
-        if (driver.getPageSource().contains(CREATE_PROCESS_OPTION_LABEL)) {
-            programWizard.setComponentValue(CREATE_PROCESS_CHECKBOX_ID, "true");
-        }
-        DelayUtils.sleep();
+        selectCheckbox(programWizard, CREATE_PROCESS_CHECKBOX_ID);
         programWizard.clickButtonById(CREATE_BUTTON);
         definedBasicProcess(processName, processType, plusDaysProcess).clickButtonById(CREATE_BUTTON);
         return extractProcessCode(getProcessCreationMessage());
@@ -268,24 +246,27 @@ public class ProcessWizardPage extends BasePage {
         return Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2);
     }
 
-
-    @Description("Go to Milestone Step)")
-    public MilestoneStepWizard definedMilestoneInProcess(String processName, Long plusDays, String processType) {
-        Wizard processWizard = definedBasicProcess(processName, processType, plusDays);
-        if (driver.getPageSource().contains(ADD_MILESTONE_OPTION_LABEL)) {
-            processWizard.setComponentValue(MILESTONE_ENABLED_CHECKBOX_ID, "true");
-        }
-        DelayUtils.sleep();
-        processWizard.clickButtonById(NEXT_BUTTON);
-        return new MilestoneStepWizard(driver, wait);
-    }
-
-    private void selectCheckbox(Wizard wizard, String checkBoxId) {
+    protected void selectCheckbox(Wizard wizard, String checkBoxId) {
         try {
             wizard.setComponentValue(checkBoxId, "true");
+            DelayUtils.sleep();
         } catch (NoSuchElementException e) {
             throw new NoSuchElementException(String.format(CHECKBOX_NOT_PRESENT_EXCEPTION, checkBoxId));
         }
+    }
+
+    /**
+     * @deprecated Along with the 3.0.x version this method will be replaced by
+     * {@link MilestonesStepWizardPage#defineProcessAndGoToMilestonesStep(String, Long, String)}.
+     */
+    @Description("Go to Milestone Step)")
+    @Deprecated
+    public MilestoneStepWizard definedMilestoneInProcess(String processName, Long plusDays, String processType) {
+        Wizard processWizard = definedBasicProcess(processName, processType, plusDays);
+        selectCheckbox(processWizard, MILESTONE_ENABLED_CHECKBOX_ID);
+        DelayUtils.sleep();
+        processWizard.clickButtonById(NEXT_BUTTON);
+        return new MilestoneStepWizard(driver, wait);
     }
 
     public void clickAcceptButton() {
@@ -331,37 +312,14 @@ public class ProcessWizardPage extends BasePage {
 //        }
 //    }
 
-
-    public static class MilestoneStepWizard {
-
-        WebDriver driver;
-        WebDriverWait wait;
-
+    /**
+     * @deprecated Along with the 3.0.x version this method will be replaced by
+     * {@link MilestonesStepWizardPage}.
+     */
+    @Deprecated
+    public static class MilestoneStepWizard extends MilestonesStepWizardPage {
         private MilestoneStepWizard(WebDriver driver, WebDriverWait wait) {
-            this.driver = driver;
-            this.wait = wait;
-        }
-
-        public EditableList getMilestonePredefinedList() {
-            return EditableList.createById(driver, wait, PREDEFINED_MILESTONE_LIST);
-        }
-
-        public Milestone addMilestoneRow(Milestone milestone) {
-            MilestoneWizardPage milestoneWizardPage = new MilestoneWizardPage(driver, ADD_MILESTONE_LIST);
-            return milestoneWizardPage.addMilestoneRow(milestone);
-        }
-
-        public Milestone editPredefinedMilestone(Milestone milestone, int row) {
-            MilestoneWizardPage milestoneWizardPage = new MilestoneWizardPage(driver, PREDEFINED_MILESTONE_LIST);
-            return milestoneWizardPage.editMilestoneRow(milestone, row);
-        }
-
-        public void clickAcceptButton() {
-            Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2).clickButtonById(CREATE_BUTTON);
-        }
-
-        public void clickCancelButton() {
-            Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2).clickButtonById(CANCEL_BUTTON);
+            super(driver);
         }
     }
 }

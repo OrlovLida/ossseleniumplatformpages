@@ -32,6 +32,7 @@ public class ProcessCreationWizardProperties {
     private final Optional<Multimap<String, String>> processRolesList;
 
     public static class ProcessCreationWizardPropertiesBuilder {
+
         public ProcessCreationWizardPropertiesBuilder basicProcess(String processName, String processType, Long plusDays) {
             this.processName = Optional.ofNullable(processName);
             this.processType = Optional.ofNullable(processType);

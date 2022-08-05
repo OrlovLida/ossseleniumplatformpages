@@ -9,7 +9,6 @@ import com.oss.pages.bpm.ProcessOverviewPage;
 import com.oss.pages.bpm.milestones.ChangeStateMilestoneWizardPage;
 import com.oss.pages.bpm.milestones.Milestone;
 import com.oss.pages.bpm.milestones.MilestoneViewPage;
-import com.oss.pages.bpm.processinstances.ProcessInstancesPage;
 import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
@@ -22,9 +21,7 @@ import java.time.LocalDate;
 
 /**
  * @author Paweł Rother
- */
-
-/**
+ * <p>
  * Tests must be run by user without BPMMilestone.ADMIN user permissions:
  */
 
