@@ -206,6 +206,7 @@ public class Area3Page extends WAMVPage {
 
     @Step("Click Edit")
     public void clickEditButton() {
+        DelayUtils.waitForPageToLoad(driver, wait);
         Button.createById(driver, ACTIVE_TAB_CLASS, EDIT_BUTTON_KNOW_HOW_TAB_ID).click();
         log.info("Click Edit Button");
     }
