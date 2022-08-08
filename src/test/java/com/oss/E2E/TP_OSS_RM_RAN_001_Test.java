@@ -207,12 +207,14 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         waitForPageToLoad();
         PlanViewWizardPage planViewWizardPage = new PlanViewWizardPage(driver);
         planViewWizardPage.selectTab("Validation Results");
-        Assert.assertTrue(planViewWizardPage.validationErrorsPresent());
+        Assert.assertTrue(planViewWizardPage.isValidationResultPresent());
     }
 
     @Test(priority = 15, description = "Complete cells configuration", dependsOnMethods = {"validateProjectPlan"})
     @Description("Complete cells configuration")
     public void lowLevelLogicalDesign() {
+        PlanViewWizardPage planViewWizardPage = new PlanViewWizardPage(driver);
+        planViewWizardPage.closeProcessDetailsPromt();
         openCellSiteConfiguration();
         CellSiteConfigurationPage cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);
         cellSiteConfigurationPage.expandTreeToBaseStation(SITE, LOCATION_NAME, ENODEB_NAME);
