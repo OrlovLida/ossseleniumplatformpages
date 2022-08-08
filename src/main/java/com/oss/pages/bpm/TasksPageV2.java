@@ -1,16 +1,17 @@
 package com.oss.pages.bpm;
 
-import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.table.TableInterface;
-import com.oss.framework.widgets.table.TableWidget;
-import com.oss.pages.BasePage;
-import com.oss.pages.platform.HomePage;
+import java.util.List;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
+import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.table.TableInterface;
+import com.oss.framework.widgets.table.TableWidget;
+import com.oss.pages.BasePage;
+import com.oss.pages.platform.HomePage;
 
 /**
  * @author Paweł Rother
@@ -74,6 +75,7 @@ public class TasksPageV2 extends BasePage {
     }
 
     public void findTask(String processCode, String taskName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
         TableWidget table = getTableWidget();
         table.clearAllFilters();
         table.searchByAttribute(PROCESS_CODE_INPUT_ID, processCode);
