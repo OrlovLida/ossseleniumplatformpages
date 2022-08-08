@@ -143,7 +143,11 @@ public class ManualMatchingTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.next();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        deviceWizardPage.setFirstAvailableLocation();
+        deviceWizardPage.setLocation("");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        deviceWizardPage.setPhysicalLocation("");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        deviceWizardPage.setPreciseLocation("");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.accept();
     }
@@ -281,7 +285,7 @@ public class ManualMatchingTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         globalSearchPage.filterObjectType(EQUIPMENT_TYPE);
         globalSearchPage.expandShowOnAndChooseView(DEVICE_TO_MATCH_NAME, ActionsContainer.EDIT_GROUP_ID, DELETE_IN_GLOBALSEARCH_ID);
-        globalSearchPage.confirmDeletion();
+        globalSearchPage.clickYes();
     }
 
     private void checkPopupMessageType() {

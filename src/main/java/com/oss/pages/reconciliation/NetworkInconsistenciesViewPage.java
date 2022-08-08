@@ -52,7 +52,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    @Step("Expand two tree levels of Inconsistencies")
+    @Step("Expand tree row that contains {rowName}")
     public void expandTreeRowContains(String rowName) {
         DelayUtils.waitForPageToLoad(driver, wait);
         getTreeView().expandTreeRowContains(rowName);
@@ -75,8 +75,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
 
     @Step("Check if inconsistency is present by {inconsistencyName}")
     public boolean isInconsistencyPresent(String inconsistencyName) {
-        TreeWidget treeWidget = getTreeView();
-        return treeWidget.isRowPresent(inconsistencyName);
+        return getTreeView().isRowPresent(inconsistencyName);
     }
 
     @Step("Select {inconsistencyName} and use assign location option")
@@ -135,19 +134,21 @@ public class NetworkInconsistenciesViewPage extends BasePage {
 
     @Step("Get inconsistency LIVE name")
     public String getLiveName() {
-        OldTreeTableWidget table = OldTreeTableWidget.create(driver, wait, PHYSICAL_INCONSITENCIES_TABLE_ID);
+        OldTreeTableWidget table = getOldTreeTableWidget();
         return table.getCellValue(0, "Live");
     }
 
+
+
     @Step("Get inconsistency NETWORK name")
     public String getNetworkName() {
-        OldTreeTableWidget table = OldTreeTableWidget.create(driver, wait, PHYSICAL_INCONSITENCIES_TABLE_ID);
+        OldTreeTableWidget table = getOldTreeTableWidget();
         return table.getCellValue(0, "Network");
     }
 
     @Step("Get inconsistency NETWORK info by rowName")
     public String getNetworkInfoByRowName(String rowName) {
-        OldTreeTableWidget table = OldTreeTableWidget.create(driver, wait, PHYSICAL_INCONSITENCIES_TABLE_ID);
+        OldTreeTableWidget table = getOldTreeTableWidget();
         return table.getCellValue(table.getRowNumber(rowName, "Element"), "Network");
     }
 
@@ -162,8 +163,12 @@ public class NetworkInconsistenciesViewPage extends BasePage {
     }
 
     @Step("Expand info about inconsistency by rowName")
-    public void expandInfoAboutInconsistency(String rowName) {
-        OldTreeTableWidget table = OldTreeTableWidget.create(driver, wait, PHYSICAL_INCONSITENCIES_TABLE_ID);
-        table.expandNode(rowName, "Element");
+    public void expandElementInInconsistenciesTable(String elementName) {
+        OldTreeTableWidget table = getOldTreeTableWidget();
+        table.expandNode(elementName, "Element");
+    }
+
+    private OldTreeTableWidget getOldTreeTableWidget() {
+        return OldTreeTableWidget.create(driver, wait, PHYSICAL_INCONSITENCIES_TABLE_ID);
     }
 }

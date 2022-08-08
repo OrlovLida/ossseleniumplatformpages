@@ -50,7 +50,7 @@ public class ManualMatchingPage extends BasePage {
     }
 
     public void searchByNetworkName(String networkName) {
-        getOldTable().searchByAttribute(NETWORK_NAME_ID, Input.ComponentType.TEXT_FIELD, networkName);
+        getOldTable().searchByAttribute(NETWORK_NAME_ID, networkName);
     }
 
     public boolean isTableEmpty() {

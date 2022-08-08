@@ -53,14 +53,6 @@ public class CreateMatchingWizardPage extends BasePage {
         getTableComponent().getRow("Device@@" + distName, DIST_NAME_HEADER_ID).clickRow();
     }
 
-    private TableWidget getTableWidget() {
-        return TableWidget.createById(driver, TECHNICAL_OBJECT_TABLE_WIDGET, wait);
-    }
-
-    private TableWidget getNewTableWidget() {
-        return TableWidget.createById(driver, NEW_TABLE_ID, wait);
-    }
-
     private TableComponent getTableComponent() {
         return TableComponent.create(driver, wait, WIZARD_ID);
     }

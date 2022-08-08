@@ -34,7 +34,7 @@ public class GlobalSearchPage extends BasePage {
     }
 
     @Step("Confirm deletion of object")
-    public void confirmDeletion() {
+    public void clickYes() {
         ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
         prompt.clickButtonByLabel("Yes");
     }
