@@ -2,7 +2,7 @@
 <suite name="regression_dfe" thread-count="1" parallel="tests" verbose="1">
     <test name="DfeRegressionTests">
       <packages>
-          <package name="com.oss.bigdata.dfe.regressiontests"/>
+          <package name="com.oss.iaa.bigdata.dfe.regressiontests"/>
       </packages>
     </test>
 </suite>

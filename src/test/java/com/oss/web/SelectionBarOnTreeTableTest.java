@@ -3,6 +3,8 @@ package com.oss.web;
 import java.util.List;
 
 import org.testng.Assert;
+import org.testng.annotations.AfterGroups;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -77,9 +79,11 @@ public class SelectionBarOnTreeTableTest extends BaseTestCase {
         plannersViewPage.selectObjectByRowId(0);
         plannersViewPage.selectObjectByRowId(3);
         treeTableWidget.showOnlySelectedRows();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         treeTableWidget.showAllRows();
-
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertEquals(treeTableWidget.getPagination().getTotalCount(), allRows);
+        treeTableWidget.unselectAllRows();
     }
 
     @Test(priority = 5)
@@ -104,7 +108,7 @@ public class SelectionBarOnTreeTableTest extends BaseTestCase {
         Assert.assertEquals(selectedObjectCount, ZERO_SELECTED);
     }
 
-    @Test(priority = 7)
+    @Test(priority = 7, enabled = false, groups = "group1")
     public void checkIfUnselectedChildProcessAreNotVisible() {
         driver.navigate().refresh();
         plannersViewPage.searchObject(PROGRAM_NAME);
@@ -119,17 +123,19 @@ public class SelectionBarOnTreeTableTest extends BaseTestCase {
         Assert.assertEquals(selectedObjectCount, TWO_SELECTED);
         Assert.assertEquals(treeTableWidget.getPagination().getTotalCount(), 2);
         Assert.assertNotEquals(treeTableWidget.getCellValue(2, NAME_ID), CHILD_PROCESSES);
+    }
 
+    @AfterGroups("group1")
+    public void afterMethod() {
         treeTableWidget.unselectAllRows();
         treeTableWidget.showAllRows();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-
     }
 
     @Test(priority = 8)
     public void filterAndShowSelected() {
-        plannersViewPage.selectObjectByAttributeValue(NAME_ID, PROCESS_NAME);
-        plannersViewPage.searchByAttributeValue("program", "True", Input.ComponentType.MULTI_COMBOBOX);
+        plannersViewPage.selectObjectByAttributeValue(NAME_ID, PROGRAM_NAME);
+        plannersViewPage.searchByAttributeValue("program", "False", Input.ComponentType.MULTI_COMBOBOX);
         treeTableWidget.showOnlySelectedRows();
         String selectedObjectCount = treeTableWidget.getSelectedObjectCount();
         Assert.assertEquals(selectedObjectCount, ONE_SELECTED);
@@ -151,10 +157,8 @@ public class SelectionBarOnTreeTableTest extends BaseTestCase {
         plannersViewPage.selectObjectsByRowId(index);
     }
 
-    public void createProgramWithProcessForTest(String programName, String processName) {
-        plannersViewPage.changeUser(BPM_USER_LOGIN, BPM_USER_PASSWORD);
+    private void createProgramWithProcessForTest(String programName, String processName) {
         plannersViewPage.createProgramWithProcess(programName, 5L, PROGRAM_TYPE, processName, 5L, PROCESS_TYPE);
-        plannersViewPage.changeUser(USER1_LOGIN, BPM_USER_PASSWORD);
 
     }
 }

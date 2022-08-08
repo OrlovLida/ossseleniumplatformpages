@@ -2,7 +2,7 @@
 <suite name="ServicesGuiIndicatorsView" thread-count="2" parallel="tests" verbose="1">
     <test name="IndicatorsViewTests">
         <classes>
-            <class name="com.oss.dpe.IndicatorsViewTest"/>
+            <class name="com.oss.iaa.dpe.IndicatorsViewTest"/>
         </classes>
     </test>
     <test name="IndicatorsViewTestPart2">
@@ -13,7 +13,7 @@
         <parameter name="dimensionNodesToSelect" value="DC Type: THRES_DC"/>
         <parameter name="filterName" value="All Self Monitoring"/>
         <classes>
-            <class name="com.oss.bigdata.kpiview.KpiViewTest">
+            <class name="com.oss.iaa.bigdata.kpiview.KpiViewTest">
                 <methods>
                     <include name="verifyIfKpiViewWorksProperly"/>
                 </methods>
@@ -22,7 +22,7 @@
     </test>
     <test name="IndicatorsViewTestPart3 - Bookmarks Test">
         <classes>
-            <class name="com.oss.bigdata.dfe.BookmarkTest"/>
+            <class name="com.oss.iaa.bigdata.dfe.BookmarkTest"/>
         </classes>
     </test>
 </suite>

@@ -4,22 +4,22 @@
         <parameter name="MOIdentifier" value="TEST_MO"/>
         <parameter name="ttAssignee" value="ca_kodrobinska"/>
         <classes>
-            <class name="com.oss.servicedesk.EditReleaseFunctionalityTest"/>
+            <class name="com.oss.iaa.servicedesk.EditReleaseFunctionalityTest"/>
         </classes>
     </test>
     <test name="LeftSideMenuTests - Incident Management">
         <classes>
-            <class name="com.oss.servicedesk.leftsidemenu.LeftSideMenuTicketTest"/>
+            <class name="com.oss.iaa.servicedesk.leftsidemenu.LeftSideMenuTicketTest"/>
         </classes>
     </test>
     <test name="LeftSideMenuTests - Problem Management">
         <classes>
-            <class name="com.oss.servicedesk.leftsidemenu.LeftSideMenuProblemTest"/>
+            <class name="com.oss.iaa.servicedesk.leftsidemenu.LeftSideMenuProblemTest"/>
         </classes>
     </test>
     <test name="LeftSideMenuTests - Change Management">
         <classes>
-            <class name="com.oss.servicedesk.leftsidemenu.LeftSideMenuChangeTest"/>
+            <class name="com.oss.iaa.servicedesk.leftsidemenu.LeftSideMenuChangeTest"/>
         </classes>
     </test>
 </suite>

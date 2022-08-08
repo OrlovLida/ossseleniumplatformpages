@@ -29,6 +29,7 @@ import io.qameta.allure.Step;
 public class Views_Smoke_Test extends BaseTestCase {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Views_Smoke_Test.class);
+    private static final String NOT_RESOLVED_LABEL = "navigation_";
     private List<String> categories;
     private List<View> viewList = new ArrayList<>();
 
@@ -61,12 +62,21 @@ public class Views_Smoke_Test extends BaseTestCase {
     @Test(dataProvider = "categories", priority = 2, description = "Checking views from category")
     @Description("Checking views from category")
     public void checkForCategory(String viewName) {
+        if (viewName.startsWith(NOT_RESOLVED_LABEL)) {
+            Assert.fail(String.format("Not resolved label for category %s.", viewName));
+        }
         List<View> views = viewList.stream().filter(category -> category.getCategory().equals(viewName)).collect(Collectors.toList());
         List<String> subcategories = views.stream().map(View::getSubcategory).distinct().collect(Collectors.toList());
         for (String subcategory : subcategories) {
+            if (subcategory.startsWith(NOT_RESOLVED_LABEL)) {
+                Assert.fail(String.format("Not resolved label for subcategory %s.", subcategory));
+            }
             List<View> viewsInSubcategory = views.stream().filter(subc -> subc.getSubcategory().equals(subcategory)).collect(Collectors.toList());
             List<String> applications = viewsInSubcategory.stream().map(View::getViewName).distinct().collect(Collectors.toList());
             for (String application : applications) {
+                if (application.startsWith(NOT_RESOLVED_LABEL)) {
+                    Assert.fail(String.format("Not resolved label for application %s.", application));
+                }
                 try {
                     checkView(application, viewName, subcategory);
                 } catch (TimeoutException e) {
