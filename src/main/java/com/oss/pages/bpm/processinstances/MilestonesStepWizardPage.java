@@ -1,8 +1,6 @@
 package com.oss.pages.bpm.processinstances;
 
-import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.EditableList;
-import com.oss.framework.wizard.Wizard;
 import com.oss.pages.bpm.milestones.Milestone;
 import com.oss.pages.bpm.milestones.MilestoneWizardPage;
 import org.openqa.selenium.WebDriver;
@@ -13,14 +11,6 @@ public class MilestonesStepWizardPage extends ProcessWizardPage {
 
     public MilestonesStepWizardPage(WebDriver driver) {
         super(driver);
-    }
-
-    public MilestonesStepWizardPage defineProcessAndGoToMilestonesStep(String processName, Long plusDays, String processType) {
-        Wizard processWizard = definedBasicProcess(processName, processType, plusDays);
-        selectCheckbox(processWizard, MILESTONE_ENABLED_CHECKBOX_ID);
-        DelayUtils.sleep();
-        processWizard.clickButtonById(NEXT_BUTTON);
-        return new MilestonesStepWizardPage(driver);
     }
 
     public EditableList getMilestonePredefinedList() {

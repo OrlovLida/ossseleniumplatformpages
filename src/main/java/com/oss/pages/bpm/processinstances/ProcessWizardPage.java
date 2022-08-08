@@ -257,16 +257,21 @@ public class ProcessWizardPage extends BasePage {
 
     /**
      * @deprecated Along with the 3.0.x version this method will be replaced by
-     * {@link MilestonesStepWizardPage#defineProcessAndGoToMilestonesStep(String, Long, String)}.
+     * {@link #defineProcessAndGoToMilestonesStep(String, Long, String)}.
      */
     @Description("Go to Milestone Step)")
     @Deprecated
     public MilestoneStepWizard definedMilestoneInProcess(String processName, Long plusDays, String processType) {
+        defineProcessAndGoToMilestonesStep(processName, plusDays, processType);
+        return new MilestoneStepWizard(driver, wait);
+    }
+
+    public MilestonesStepWizardPage defineProcessAndGoToMilestonesStep(String processName, Long plusDays, String processType) {
         Wizard processWizard = definedBasicProcess(processName, processType, plusDays);
         selectCheckbox(processWizard, MILESTONE_ENABLED_CHECKBOX_ID);
         DelayUtils.sleep();
         processWizard.clickButtonById(NEXT_BUTTON);
-        return new MilestoneStepWizard(driver, wait);
+        return new MilestonesStepWizardPage(driver);
     }
 
     public void clickAcceptButton() {
