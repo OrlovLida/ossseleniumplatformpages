@@ -142,6 +142,7 @@ public class TasksPageV2 extends BasePage {
     }
 
     public void showCompletedTasks() {
+        DelayUtils.waitForPageToLoad(driver, wait);
         TableWidget table = getTableWidget();
         table.clearAllFilters();
         table.searchByAttribute(STATUS_INPUT_ID, FINISHED_STATUS);
@@ -157,7 +158,9 @@ public class TasksPageV2 extends BasePage {
     public void completeNRP(String processCode) {
         String ipCode = proceedNRPToImplementationTask(processCode);
         completeTask(ipCode, IMPLEMENTATION_TASK);
+        DelayUtils.waitForPageToLoad(driver, wait);
         startAndCompleteTask(ipCode, ACCEPTANCE_TASK);
+        DelayUtils.waitForPageToLoad(driver, wait);
         startAndCompleteTask(ipCode, VERIFICATION_TASK);
     }
 
@@ -175,6 +178,7 @@ public class TasksPageV2 extends BasePage {
         TableInterface ipTable = getTaskForm().getIPTable();
         String ipCode = ipTable.getCellValue(0, CODE_LABEL);
         startAndCompleteTask(ipCode, SCOPE_DEFINITION_TASK);
+        DelayUtils.waitForPageToLoad(driver, wait);
         startTask(ipCode, IMPLEMENTATION_TASK);
         return ipCode;
     }

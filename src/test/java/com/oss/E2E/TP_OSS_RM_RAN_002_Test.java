@@ -140,6 +140,7 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
     public void finishProcessesTasks() {
         TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.completeNRP(processNRPCode);
+        waitForPageToLoad();
     }
 
     @Test(priority = 9, description = "Delete hosting relations", dependsOnMethods = {"createHostingRelation"})
