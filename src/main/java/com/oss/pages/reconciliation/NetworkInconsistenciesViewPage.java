@@ -138,8 +138,6 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         return table.getCellValue(0, "Live");
     }
 
-
-
     @Step("Get inconsistency NETWORK name")
     public String getNetworkName() {
         OldTreeTableWidget table = getOldTreeTableWidget();

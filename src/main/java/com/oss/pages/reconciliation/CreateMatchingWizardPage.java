@@ -5,7 +5,6 @@ import org.openqa.selenium.WebDriver;
 import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.components.table.TableComponent;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.table.TableWidget;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 

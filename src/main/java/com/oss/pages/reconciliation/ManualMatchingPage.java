@@ -1,21 +1,13 @@
 package com.oss.pages.reconciliation;
 
 import java.util.List;
-import java.util.Map;
 
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.contextactions.ActionsContainer;
-import com.oss.framework.components.inputs.Button;
-import com.oss.framework.components.inputs.Input;
-import com.oss.framework.components.prompts.ConfirmationBox;
-import com.oss.framework.components.prompts.ConfirmationBoxInterface;
 import com.oss.framework.widgets.table.OldTable;
-import com.oss.framework.widgets.table.TableWidget;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
-
-import javafx.scene.control.Tab;
 
 public class ManualMatchingPage extends BasePage {
 
