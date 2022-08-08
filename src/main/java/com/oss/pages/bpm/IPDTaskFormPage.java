@@ -1,5 +1,11 @@
 package com.oss.pages.bpm;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
@@ -13,11 +19,6 @@ import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.framework.widgets.treetable.OldTreeTableWidget;
 import com.oss.pages.BasePage;
 import com.oss.pages.dms.AttachFileWizardPage;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author Paweł Rother
@@ -75,7 +76,6 @@ public class IPDTaskFormPage extends BasePage {
         callAction(actionId);
         ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
         prompt.clickButtonByLabel(PROCEED_BUTTON_LABEL);
-        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     private void callAction(String actionId) {
@@ -128,6 +128,5 @@ public class IPDTaskFormPage extends BasePage {
         input.setSingleStringValue(transitionName);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
-
 
 }

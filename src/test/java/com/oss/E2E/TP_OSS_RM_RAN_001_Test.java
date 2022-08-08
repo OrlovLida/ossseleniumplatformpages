@@ -48,7 +48,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
     private static final String[] TAC = {"2", "2", "2"};
     private static final int[] LOCAL_CELLS_ID = {1, 2, 3};
     private static final int CRP = 2;
-    private static final String PA_INPUT = "2";
+    private static final String PA_INPUT = "2.0";
     private static final String TASK_COMPLETED = "Task properly completed.";
     private static final String TASK_ASSIGNED = "The task properly assigned.";
     private static final String SITE = "Site";
@@ -71,8 +71,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
     public void createProcessNRP() {
         ProcessOverviewPage processInstancesPage = ProcessOverviewPage.goToProcessOverviewPage(driver, webDriverWait);
         processNRPCode = processInstancesPage.createSimpleNRP();
-        checkMessageContainsText(processNRPCode);
-        checkMessageType();
+        closeMessage();
     }
 
     @Test(priority = 2, description = "Start HLP task", dependsOnMethods = {"createProcessNRP"})
@@ -207,12 +206,14 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         waitForPageToLoad();
         PlanViewWizardPage planViewWizardPage = new PlanViewWizardPage(driver);
         planViewWizardPage.selectTab("Validation Results");
-        Assert.assertTrue(planViewWizardPage.validationErrorsPresent());
+        Assert.assertTrue(planViewWizardPage.isValidationResultPresent());
     }
 
     @Test(priority = 15, description = "Complete cells configuration", dependsOnMethods = {"validateProjectPlan"})
     @Description("Complete cells configuration")
     public void lowLevelLogicalDesign() {
+        PlanViewWizardPage planViewWizardPage = new PlanViewWizardPage(driver);
+        planViewWizardPage.closeProcessDetailsPromt();
         openCellSiteConfiguration();
         CellSiteConfigurationPage cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);
         cellSiteConfigurationPage.expandTreeToBaseStation(SITE, LOCATION_NAME, ENODEB_NAME);
@@ -337,5 +338,10 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, 90));
         softAssert.assertEquals((systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType()), MessageType.SUCCESS);
         return systemMessage;
+    }
+
+    private void closeMessage() {
+        SystemMessageContainer.create(driver, webDriverWait).close();
+        waitForPageToLoad();
     }
 }

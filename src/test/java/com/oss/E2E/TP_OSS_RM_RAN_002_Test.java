@@ -61,9 +61,6 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
     public void createProcessNRP() {
         ProcessOverviewPage processInstancesPage = ProcessOverviewPage.goToProcessOverviewPage(driver, webDriverWait);
         processNRPCode = processInstancesPage.createSimpleNRP();
-        checkMessageSize();
-        checkMessageType();
-        checkMessageContainsText(processNRPCode);
         closeMessage();
     }
 
@@ -261,12 +258,6 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
 
     private void checkMessageText() {
         softAssert.assertEquals((getFirstMessage().getText()), "The task properly assigned.");
-    }
-
-    private void checkMessageSize() {
-        softAssert.assertEquals((SystemMessageContainer.create(driver, webDriverWait)
-                .getMessages()
-                .size()), 1);
     }
 
     private SystemMessageContainer.Message getFirstMessage() {
