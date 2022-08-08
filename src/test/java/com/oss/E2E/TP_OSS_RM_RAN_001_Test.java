@@ -48,7 +48,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
     private static final String[] TAC = {"2", "2", "2"};
     private static final int[] LOCAL_CELLS_ID = {1, 2, 3};
     private static final int CRP = 2;
-    private static final String PA_INPUT = "2";
+    private static final String PA_INPUT = "2.0";
     private static final String TASK_COMPLETED = "Task properly completed.";
     private static final String TASK_ASSIGNED = "The task properly assigned.";
     private static final String SITE = "Site";
