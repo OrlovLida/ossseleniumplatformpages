@@ -4,17 +4,17 @@
         <parameter name="shareToUser" value="sd_seleniumtest2"/>
         <parameter name="password" value="oss"/>
         <classes>
-            <class name="com.oss.servicedesk.infomanagement.TemplatesTest"/>
+            <class name="com.oss.iaa.servicedesk.infomanagement.TemplatesTest"/>
         </classes>
     </test>
     <test name="Messages">
         <classes>
-            <class name="com.oss.servicedesk.infomanagement.MessagesTest"/>
+            <class name="com.oss.iaa.servicedesk.infomanagement.MessagesTest"/>
         </classes>
     </test>
     <test name="ConfigurationPanel">
         <classes>
-            <class name="com.oss.servicedesk.infomanagement.ConfigurationPanelTest"/>
+            <class name="com.oss.iaa.servicedesk.infomanagement.ConfigurationPanelTest"/>
         </classes>
     </test>
 </suite>

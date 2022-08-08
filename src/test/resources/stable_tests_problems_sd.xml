@@ -14,12 +14,12 @@
         <parameter name="taskAssignee" value="sd_seleniumtest"/>
         <parameter name="serviceMOIdentifier" value="TEST_MO_ABS_SRV"/>
         <classes>
-            <class name="com.oss.servicedesk.problemmanagement.ProblemsTest"/>
+            <class name="com.oss.iaa.servicedesk.problemmanagement.ProblemsTest"/>
         </classes>
     </test>
     <test name="ExportFromDashboard">
         <classes>
-            <class name="com.oss.servicedesk.problemmanagement.ProblemsDashboardTest"/>
+            <class name="com.oss.iaa.servicedesk.problemmanagement.ProblemsDashboardTest"/>
         </classes>
     </test>
 </suite>

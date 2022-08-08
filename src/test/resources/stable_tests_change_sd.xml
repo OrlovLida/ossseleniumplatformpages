@@ -10,12 +10,12 @@
         <parameter name="SecondMOIdentifier" value="TEST_MO"/>
         <parameter name="serviceMOIdentifier" value="TEST_MO_ABS_SRV"/>
         <classes>
-            <class name="com.oss.servicedesk.changemanagement.ChangesTest"/>
+            <class name="com.oss.iaa.servicedesk.changemanagement.ChangesTest"/>
         </classes>
     </test>
     <test name="DashboardTest">
         <classes>
-            <class name="com.oss.servicedesk.changemanagement.ChangeDashboardTest"/>
+            <class name="com.oss.iaa.servicedesk.changemanagement.ChangeDashboardTest"/>
         </classes>
     </test>
 </suite>

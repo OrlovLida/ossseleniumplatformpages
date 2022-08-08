@@ -11,12 +11,12 @@
         <parameter name="SecondMOIdentifier" value="CFS_Access_Product_Selenium_2"/>
         <parameter name="serviceMOIdentifier" value="TEST_MO_ABS_SRV"/>
         <classes>
-            <class name="com.oss.servicedesk.TicketsTest"/>
+            <class name="com.oss.iaa.servicedesk.TicketsTest"/>
         </classes>
     </test>
     <test name="ExportTest">
         <classes>
-            <class name="com.oss.servicedesk.ExportTest"/>
+            <class name="com.oss.iaa.servicedesk.ExportTest"/>
         </classes>
     </test>
 </suite>

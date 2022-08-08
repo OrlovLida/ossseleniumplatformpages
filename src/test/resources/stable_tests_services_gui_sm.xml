@@ -5,13 +5,13 @@
         <parameter name="viewsForChosenDashboard"
                    value="_UserViewsListOBJECT_MONITORING,_UserViewsListOBJECT_STATE,_UserViewsListALARM_MANAGEMENT"/>
         <classes>
-            <class name="com.oss.faultmanagement.FMSMDashboardTest"/>
+            <class name="com.oss.iaa.faultmanagement.FMSMDashboardTest"/>
         </classes>
     </test>
     <test name="SMUserPermissionTest">
         <parameter name="component" value="SM"/>
         <classes>
-            <class name="com.oss.faultmanagement.UserPermissionsTest"/>
+            <class name="com.oss.iaa.faultmanagement.UserPermissionsTest"/>
         </classes>
     </test>
 </suite>

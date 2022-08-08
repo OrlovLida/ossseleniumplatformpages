@@ -45,11 +45,11 @@ public class BaseOnboardVNFTest extends BaseTestCase {
     }
 
     public void createRequiredInstances(){
-        LogicalFunctionSyncIdentificationDTO masterOSS =
+        LogicalFunctionSyncIdentificationDTO masterManagementSystem =
                 createLogicalFunction(OnboardVNFResource.buildNFVOLogicalFunctionBulkDTO());
-        createLogicalFunction(OnboardVNFResource.buildMarketplaceLogicalFunctionBulkDTO(masterOSS.getId()));
-        createLogicalFunction(OnboardVNFResource.buildVIMLogicalFunctionBulkDTO(masterOSS.getId()));
-        createLogicalFunction(OnboardVNFResource.buildVNFPKGLogicalFunctionBulkDTO(masterOSS.getId()));
+        createLogicalFunction(OnboardVNFResource.buildMarketplaceLogicalFunctionBulkDTO(masterManagementSystem.getId()));
+        createLogicalFunction(OnboardVNFResource.buildVIMLogicalFunctionBulkDTO(masterManagementSystem.getId()));
+        createLogicalFunction(OnboardVNFResource.buildVNFPKGLogicalFunctionBulkDTO(masterManagementSystem.getId()));
     }
 
     private LogicalFunctionSyncIdentificationDTO createLogicalFunction(LogicalFunctionBulkDTO logicalFunctionBulkDTO) {
@@ -76,8 +76,8 @@ public class BaseOnboardVNFTest extends BaseTestCase {
         deleteLogicalFunctionsByName(NFVO_NAME);
     }
 
-    private void deleteLogicalFunctionsByName(String masterOSSName) {
-        logicalFunctionCoreClient.getLogicalFunctionByName(masterOSSName).stream()
+    private void deleteLogicalFunctionsByName(String masterManagementSystemName) {
+        logicalFunctionCoreClient.getLogicalFunctionByName(masterManagementSystemName).stream()
                 .map(LogicalFunctionViewDTO::getId)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
