@@ -9,7 +9,7 @@ import com.oss.pages.bpm.ProcessOverviewPage;
 import com.oss.pages.bpm.milestones.ChangeStateMilestoneWizardPage;
 import com.oss.pages.bpm.milestones.Milestone;
 import com.oss.pages.bpm.milestones.MilestoneViewPage;
-import com.oss.pages.bpm.processinstances.ProcessWizardPage;
+import com.oss.pages.bpm.processinstances.MilestonesStepWizardPage;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 import org.testng.Assert;
@@ -170,14 +170,12 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
                 .setIsManualCompletion("true")
                 .setName(milestoneName3).build();
 
-        ProcessWizardPage processWizardPage = processOverviewPage.openProcessCreationWizard();
-        ProcessWizardPage.MilestoneStepWizard milestoneStep = processWizardPage.definedMilestoneInProcess(processName,
-                5L, DCP);
-
-        milestoneStep.addMilestoneRow(milestone1);
-        milestoneStep.addMilestoneRow(milestone2);
-        milestoneStep.addMilestoneRow(milestone3);
-        processWizardPage.clickAcceptButton();
+        MilestonesStepWizardPage milestonesStepWizardPage = processOverviewPage.openProcessCreationWizard()
+                .defineProcessAndGoToMilestonesStep(processName, 5L, DCP);
+        milestonesStepWizardPage.addMilestoneRow(milestone1);
+        milestonesStepWizardPage.addMilestoneRow(milestone2);
+        milestonesStepWizardPage.addMilestoneRow(milestone3);
+        milestonesStepWizardPage.clickAcceptButton();
     }
 
     @Test(priority = 1, description = "First Milestone Change State Flow")
