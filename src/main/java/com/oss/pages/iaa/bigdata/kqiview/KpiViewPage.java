@@ -29,7 +29,7 @@ public class KpiViewPage extends KpiViewSetupPage {
     private static final String DATA_VIEW_ID = "_Data_View";
     private static final String SAVE_BOOKMARK_BUTTON_ID = "ButtonSaveBookmark";
     private static final String CHILD_OBJECT_LEVEL_INPUT_ID = "SelectChildMOLevelChanged";
-    private static final String IND_VIEW_TABLE_ID = "ind-view-table";
+    private static final String IND_VIEW_TABLE_ID = "ind-view-table0";
 
     public KpiViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -287,8 +287,9 @@ public class KpiViewPage extends KpiViewSetupPage {
 
     @Step("I enable column {columnId} into table")
     public void enableColumnInTheTable(String columnId) {
-        getListAttributesChooser().enableAttributeById(columnId);
-        getListAttributesChooser().clickApply();
+        ListAttributesChooser listAttributesChooser = getListAttributesChooser();
+        listAttributesChooser.enableAttributeById(columnId);
+        listAttributesChooser.clickApply();
         log.info("Enabling column with id: {}", columnId);
     }
 
@@ -302,8 +303,9 @@ public class KpiViewPage extends KpiViewSetupPage {
 
     @Step("I disable column {columnId} into table")
     public void disableColumnInTheTable(String columnId) {
-        getListAttributesChooser().disableAttributeById(columnId);
-        getListAttributesChooser().clickApply();
+        ListAttributesChooser listAttributesChooser = getListAttributesChooser();
+        listAttributesChooser.disableAttributeById(columnId);
+        listAttributesChooser.clickApply();
         log.info("Disabling column with id: {}", columnId);
     }
 
