@@ -2,42 +2,42 @@
 <suite name="smoke_tests_dfe" thread-count="2" parallel="tests" verbose="1">
     <test name="AggregatesSmokeTest">
         <classes>
-            <class name="com.oss.bigdata.dfe.SMOKE.AggregatesSmokeTest"/>
+            <class name="com.oss.iaa.bigdata.dfe.SMOKE.AggregatesSmokeTest"/>
         </classes>
     </test>
     <test name="KQISmokeTest">
         <classes>
-            <class name="com.oss.bigdata.dfe.SMOKE.KqiSmokeTest"/>
+            <class name="com.oss.iaa.bigdata.dfe.SMOKE.KqiSmokeTest"/>
         </classes>
     </test>
     <test name="DimensionSmokeTest">
         <classes>
-            <class name="com.oss.bigdata.dfe.SMOKE.DimensionsSmokeTest"/>
+            <class name="com.oss.iaa.bigdata.dfe.SMOKE.DimensionsSmokeTest"/>
         </classes>
     </test>
     <test name="EtlSmokeTest">
         <classes>
-            <class name="com.oss.bigdata.dfe.SMOKE.EtlSmokeTest"/>
+            <class name="com.oss.iaa.bigdata.dfe.SMOKE.EtlSmokeTest"/>
         </classes>
     </test>
     <test name="ThresholdSmokeTest">
         <classes>
-            <class name="com.oss.bigdata.dfe.SMOKE.ThresholdSmokeTest"/>
+            <class name="com.oss.iaa.bigdata.dfe.SMOKE.ThresholdSmokeTest"/>
         </classes>
     </test>
     <test name="DataSourceSmokeTest">
         <classes>
-            <class name="com.oss.bigdata.dfe.SMOKE.DataSourceSmokeTest"/>
+            <class name="com.oss.iaa.bigdata.dfe.SMOKE.DataSourceSmokeTest"/>
         </classes>
     </test>
     <test name="XDRBrowserTest">
         <classes>
-            <class name="com.oss.bigdata.dfe.SMOKE.XDRBrowserTest"/>
+            <class name="com.oss.iaa.bigdata.dfe.SMOKE.XDRBrowserTest"/>
         </classes>
     </test>
     <test name="LinkToXDRBrowserTest">
         <classes>
-            <class name="com.oss.bigdata.dfe.SMOKE.LinkToXDRBrowserTest"/>
+            <class name="com.oss.iaa.bigdata.dfe.SMOKE.LinkToXDRBrowserTest"/>
         </classes>
     </test>
     <test name="BookmarkTest">
@@ -49,7 +49,7 @@
         <parameter name="anotherDimensionToSelect" value="D3_02"/>
         <parameter name="productName" value="_DFE"/>
         <classes>
-            <class name="com.oss.bigdata.dfe.BookmarkTest"/>
+            <class name="com.oss.iaa.bigdata.dfe.BookmarkTest"/>
         </classes>
     </test>
 </suite>

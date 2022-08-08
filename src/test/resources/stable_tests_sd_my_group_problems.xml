@@ -4,14 +4,14 @@
         <parameter name="MOIdentifier" value="TEST_MO"/>
         <parameter name="problemAssignee" value="Tier 2 Mobile"/>
         <classes>
-            <class name="com.oss.servicedesk.problemmanagement.MyGroupProblemsTest"/>
+            <class name="com.oss.iaa.servicedesk.problemmanagement.MyGroupProblemsTest"/>
         </classes>
     </test>
     <test name="ClosedProblemsTest">
         <parameter name="MOIdentifier" value="TEST_MO"/>
         <parameter name="problemAssignee" value="Tier 2 Mobile"/>
         <classes>
-            <class name="com.oss.servicedesk.problemmanagement.ClosedProblemsTest"/>
+            <class name="com.oss.iaa.servicedesk.problemmanagement.ClosedProblemsTest"/>
         </classes>
     </test>
 </suite>
