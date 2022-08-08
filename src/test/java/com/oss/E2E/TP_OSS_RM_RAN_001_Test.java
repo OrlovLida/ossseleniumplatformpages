@@ -71,8 +71,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
     public void createProcessNRP() {
         ProcessOverviewPage processInstancesPage = ProcessOverviewPage.goToProcessOverviewPage(driver, webDriverWait);
         processNRPCode = processInstancesPage.createSimpleNRP();
-        checkMessageContainsText(processNRPCode);
-        checkMessageType();
+        closeMessage();
     }
 
     @Test(priority = 2, description = "Start HLP task", dependsOnMethods = {"createProcessNRP"})
@@ -339,5 +338,10 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, 90));
         softAssert.assertEquals((systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType()), MessageType.SUCCESS);
         return systemMessage;
+    }
+
+    private void closeMessage() {
+        SystemMessageContainer.create(driver, webDriverWait).close();
+        waitForPageToLoad();
     }
 }
