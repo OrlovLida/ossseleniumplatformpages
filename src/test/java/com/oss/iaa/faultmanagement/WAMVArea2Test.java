@@ -79,32 +79,33 @@ public class WAMVArea2Test extends BaseTestCase {
         }
     }
 
-    @Parameters({"alarmListRow"})
+    @Parameters({"alarmListRowNote"})
     @Test(priority = 3, testName = "Check Note option", description = "Check Note option")
     @Description("I verify if note option works in WAMV")
     public void openSelectedWAMVAndCheckNoteFunctionality(
-            @Optional("1") int alarmListRow
+            @Optional("1") int alarmListRowNote
     ) {
         try {
-            wamvPage.selectSpecificRow(alarmListRow);
+            wamvPage.selectSpecificRow(alarmListRowNote);
             wamvPage.addNote(TEST_NOTE_VALUE);
-            Assert.assertEquals(wamvPage.getTextFromNoteStatusCell(alarmListRow, TEST_NOTE_VALUE), TEST_NOTE_VALUE);
+            Assert.assertEquals(wamvPage.getTextFromNoteStatusCell(alarmListRowNote, TEST_NOTE_VALUE), TEST_NOTE_VALUE);
             wamvPage.addNote(EMPTY_NOTE_VALUE);
-            Assert.assertEquals(wamvPage.getTextFromNoteStatusCell(alarmListRow, EMPTY_NOTE_VALUE), EMPTY_NOTE_VALUE);
+            Assert.assertEquals(wamvPage.getTextFromNoteStatusCell(alarmListRowNote, EMPTY_NOTE_VALUE), EMPTY_NOTE_VALUE);
         } catch (Exception e) {
             log.error(e.getMessage());
             Assert.fail();
         }
     }
 
-    @Parameters({"alarmListRow"})
+    @Parameters({"alarmListRowAlarmDetails"})
     @Test(priority = 4, testName = "Check Alarm details from context actions in AREA2", description = "Check Alarm details from context actions  in AREA2")
     @Description("I verify if alarm details from context actions works in AREA2")
     public void CheckAlarmDetailsInArea2(
-            @Optional("2") int alarmListRow
+            @Optional("2") int alarmListRowAlarmDetails
     ) {
         try {
-            String notificationId = wamvPage.getTextFromNotificationIdentifierCell(alarmListRow);
+            String notificationId = wamvPage.getTextFromNotificationIdentifierCell(alarmListRowAlarmDetails);
+            wamvPage.selectSpecificRow(alarmListRowAlarmDetails);
             wamvPage.openAlarmDetails();
             Assert.assertEquals(wamvPage.getModalViewTitle(), ALARM_DETAILS_MODAL_VIEW_TITLE);
             Assert.assertEquals(notificationId, wamvPage.getNotificationIdentifierFromAlarmDetailsModal());
