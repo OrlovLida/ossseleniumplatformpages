@@ -166,11 +166,13 @@ public class TasksPageV2 extends BasePage {
 
     public String proceedNRPToImplementationTask(String processCode) {
         completeTask(processCode, HIGH_LEVEL_PLANNING_TASK);
+        DelayUtils.waitForPageToLoad(driver, wait);
         startAndCompleteTask(processCode, LOW_LEVEL_PLANNING_TASK);
         return proceedNRPFromReadyForIntegration(processCode);
     }
 
     public String proceedNRPFromReadyForIntegration(String processCode) {
+        DelayUtils.waitForPageToLoad(driver, wait);
         startAndCompleteTask(processCode, READY_FOR_INTEGRATION_TASK);
         showCompletedTasks();
         findTask(processCode, READY_FOR_INTEGRATION_TASK);
