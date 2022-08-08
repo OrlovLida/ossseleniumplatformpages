@@ -174,14 +174,23 @@ public class TasksPageV2 extends BasePage {
     public String proceedNRPFromReadyForIntegration(String processCode) {
         DelayUtils.waitForPageToLoad(driver, wait);
         startAndCompleteTask(processCode, READY_FOR_INTEGRATION_TASK);
-        showCompletedTasks();
-        findTask(processCode, READY_FOR_INTEGRATION_TASK);
-        DelayUtils.sleep(3000);
-        TableInterface ipTable = getTaskForm().getIPTable();
-        String ipCode = ipTable.getCellValue(0, CODE_LABEL);
+        String ipCode = getIPCodeFromCompletedNRP(processCode);
         startAndCompleteTask(ipCode, SCOPE_DEFINITION_TASK);
         DelayUtils.waitForPageToLoad(driver, wait);
         startTask(ipCode, IMPLEMENTATION_TASK);
+        return ipCode;
+    }
+
+    private String getIPCodeFromCompletedNRP(String nrpCode) {
+        showCompletedTasks();
+        findTask(nrpCode, READY_FOR_INTEGRATION_TASK);
+        DelayUtils.sleep(3000);
+        TableInterface ipTable = getTaskForm().getIPTable();
+        String ipCode = ipTable.getCellValue(0, CODE_LABEL);
+        TableWidget table = getTableWidget();
+        table.unselectAllRows();
+        DelayUtils.waitForPageToLoad(driver, wait);
+        table.hideSelectionBar();
         return ipCode;
     }
 
