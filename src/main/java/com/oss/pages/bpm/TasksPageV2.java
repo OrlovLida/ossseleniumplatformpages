@@ -161,7 +161,7 @@ public class TasksPageV2 extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         startAndCompleteTask(ipCode, ACCEPTANCE_TASK);
         DelayUtils.waitForPageToLoad(driver, wait);
-        startAndCompleteTask(ipCode, VERIFICATION_TASK);
+        startAndCompleteTask(processCode, VERIFICATION_TASK);
     }
 
     public String proceedNRPToImplementationTask(String processCode) {
