@@ -22,8 +22,7 @@ public class AsdScenarioSummaryViewTest extends BaseTestCase {
     private AsdScenarioSummaryViewPage asdScenarioSummaryViewPage;
 
     private static final String asdScenarioSummaryViewSuffixUrl = "%s/#/view/acd/asd";
-
-    private static final String issuesTableRefreshButtonId = "undefined-1";
+    private static final String REFRESH_BUTTON_ID = "DetectedIssuesButtonId-1";
     private static final String PREDEFINED_FILTERS_WINDOW_ID = "PredefinedFiltersWindowId";
     private static final String DETECTED_ISSUES_WINDOW_ID = "DetectedIssuesWindowId";
     private static final String SWITCHER_ID = "switcherValue";
@@ -53,7 +52,7 @@ public class AsdScenarioSummaryViewTest extends BaseTestCase {
     @Test(priority = 3, testName = "Check if issues table is refreshed and minimize window", description = "Check if issues table is refreshed and minimize window")
     @Description("Check if issues table is refreshed and minimize window")
     public void refreshDetectedIssuesTable() {
-        asdScenarioSummaryViewPage.refreshIssuesTable(issuesTableRefreshButtonId);
+        asdScenarioSummaryViewPage.refreshIssuesTable(REFRESH_BUTTON_ID);
         asdScenarioSummaryViewPage.minimizeWindow(DETECTED_ISSUES_WINDOW_ID);
         Assert.assertFalse(asdScenarioSummaryViewPage.checkCardMaximize(DETECTED_ISSUES_WINDOW_ID));
     }
@@ -69,17 +68,17 @@ public class AsdScenarioSummaryViewTest extends BaseTestCase {
             } else {
                 log.info("table contains data for issues without roots");
                 asdScenarioSummaryViewPage.setAttributeValue("creation_type", "Automatically");
-                //asdScenarioSummaryViewPage.setValueInTimePeriodChooser("create_time", 3, 12, 33); //TODO after fix ACD-3363
+                asdScenarioSummaryViewPage.setValueInTimePeriodChooser("create_time", 3, 12, 33);
                 asdScenarioSummaryViewPage.setValueOfIssueIdSearch();
             }
         } else {
             log.info("table contains data for issues with roots");
             asdScenarioSummaryViewPage.turnOnSwitcher(SWITCHER_ID);
             asdScenarioSummaryViewPage.setAttributeValue("creation_type", "Automatically");
-            //asdScenarioSummaryViewPage.setValueInTimePeriodChooser("create_time", 3, 12, 33); //TODO after fix ACD-3363
+            asdScenarioSummaryViewPage.setValueInTimePeriodChooser("create_time", 3, 12, 33);
             asdScenarioSummaryViewPage.setValueOfIssueIdSearch();
 
-            if (!asdScenarioSummaryViewPage.isDataInIssuesTable()) {
+            if (Boolean.FALSE.equals(asdScenarioSummaryViewPage.isDataInIssuesTable())) {
                 clearIssueTableFilters();
                 log.error("Table doesn't have data for provided filters");
                 Assert.fail();
@@ -93,6 +92,6 @@ public class AsdScenarioSummaryViewTest extends BaseTestCase {
     private void clearIssueTableFilters() {
         asdScenarioSummaryViewPage.clearAttributeValue("creation_type");
         asdScenarioSummaryViewPage.clearAttributeValue("id");
-        //asdScenarioSummaryViewPage.clearTimePeriod("create_time"); //TODO after fix ACD-3363
+        asdScenarioSummaryViewPage.clearTimePeriod("create_time");
     }
 }
