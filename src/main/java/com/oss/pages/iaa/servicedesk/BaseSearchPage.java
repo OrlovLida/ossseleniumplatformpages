@@ -9,8 +9,8 @@ import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.TableWidget;
+import com.oss.pages.exportguiwizard.ExportGuiWizardPage;
 import com.oss.pages.iaa.servicedesk.issue.IssueDetailsPage;
-import com.oss.pages.iaa.servicedesk.issue.wizard.ExportWizardPage;
 import com.oss.pages.platform.NotificationWrapperPage;
 
 import io.qameta.allure.Step;
@@ -95,9 +95,10 @@ public abstract class BaseSearchPage extends BaseSDPage {
     }
 
     @Step("Click Export button in GraphQL Page")
-    public ExportWizardPage clickExportInSearchTable() {
+    public ExportGuiWizardPage clickExportInSearchTable() {
         clickExportFromTable(getTableId());
-        return new ExportWizardPage(driver, wait, EXPORT_WIZARD_ID);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return new ExportGuiWizardPage(driver, wait, EXPORT_WIZARD_ID);
     }
 
     @Override
@@ -134,11 +135,11 @@ public abstract class BaseSearchPage extends BaseSDPage {
                 filterByDate(BaseSearchPage.CREATION_TIME_ATTRIBUTE, getTimePeriodForLastNMinutes(minutes));
             }
             clickExportInSearchTable();
-            ExportWizardPage exportWizardPage = new ExportWizardPage(driver, wait, exportWizardId);
+            ExportGuiWizardPage exportWizardPage = new ExportGuiWizardPage(driver, wait, exportWizardId);
             String exportFileName = "Selenium test " + BaseSDPage.getDateFormat();
-            exportWizardPage.fillFileName(exportFileName);
-            exportWizardPage.fillDateMask(DATE_MASK);
-            exportWizardPage.clickAccept();
+            exportWizardPage.setFileName(exportFileName);
+            exportWizardPage.changeDateMaskContains(DATE_MASK);
+            exportWizardPage.closeTheWizard();
             notificationWrapperPage.openNotificationPanel();
             notificationWrapperPage.waitForExportFinish();
             notificationWrapperPage.clickDownload();

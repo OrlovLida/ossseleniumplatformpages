@@ -465,8 +465,8 @@ public class IndicatorsViewTest extends BaseTestCase {
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
-    @Test(priority = 16, testName = "table settings: sorting, adding/removing attribute columns", description = "table settings: sorting, adding/removing attribute columns")
-    @Description("table settings: sorting, adding/removing attribute columns")
+    @Test(priority = 16, testName = "Table settings: sorting, adding/removing attribute columns", description = "table settings: sorting, adding/removing attribute columns")
+    @Description("Table settings: sorting, adding/removing attribute columns")
     public void checkTableSettings(
             @Optional("All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators") String indicatorNodesToExpand,
             @Optional("DBTIME") String indicatorNodesToSelect,

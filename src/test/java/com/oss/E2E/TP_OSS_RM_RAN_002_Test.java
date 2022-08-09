@@ -61,9 +61,6 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
     public void createProcessNRP() {
         ProcessOverviewPage processInstancesPage = ProcessOverviewPage.goToProcessOverviewPage(driver, webDriverWait);
         processNRPCode = processInstancesPage.createSimpleNRP();
-        checkMessageSize();
-        checkMessageType();
-        checkMessageContainsText(processNRPCode);
         closeMessage();
     }
 
@@ -143,6 +140,7 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
     public void finishProcessesTasks() {
         TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.completeNRP(processNRPCode);
+        waitForPageToLoad();
     }
 
     @Test(priority = 9, description = "Delete hosting relations", dependsOnMethods = {"createHostingRelation"})
@@ -261,12 +259,6 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
 
     private void checkMessageText() {
         softAssert.assertEquals((getFirstMessage().getText()), "The task properly assigned.");
-    }
-
-    private void checkMessageSize() {
-        softAssert.assertEquals((SystemMessageContainer.create(driver, webDriverWait)
-                .getMessages()
-                .size()), 1);
     }
 
     private SystemMessageContainer.Message getFirstMessage() {

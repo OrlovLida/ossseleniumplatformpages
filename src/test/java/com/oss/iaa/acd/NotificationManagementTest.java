@@ -57,6 +57,7 @@ public class NotificationManagementTest extends BaseTestCase {
     private static final String EDIT_NOTIFICATION_BUTTON_ID = "notificationManagementButtonId-2";
     private static final String CHANGE_STATUS_BUTTON_ID = "notificationManagementButtonId-0";
     private static final String DELETE_STATUS_BUTTON_ID = "notificationManagementButtonId-1";
+    private final String notificationRuleName = NAME_FIELD_VALUE + '_' + date.replace(":", "_");
 
     @BeforeClass
     public void goToSystemSettingsView() {
@@ -68,7 +69,7 @@ public class NotificationManagementTest extends BaseTestCase {
     public void addNewNotificationRule() {
         notificationManagementPage.goToTab(SYSTEM_SETTINGS_TAB_ID, MANAGEMENT_TAB);
         notificationManagementPage.clickContextButton(ADD_NOTIFICATION_BUTTON);
-        notificationManagementPage.setAttributeValue(NAME_FIELD_ID, NAME_FIELD_VALUE + '_' + date.replace(":", "_"));
+        notificationManagementPage.setAttributeValue(NAME_FIELD_ID, notificationRuleName);
         notificationManagementPage.setAttributeValue(STATUS_COMBOBOX_ID, STATUS_COMBOBOX_VALUE);
         notificationManagementPage.setAttributeValue(SEND_TYPE_COMBOBOX_ID, SEND_TYPE_COMBOBOX_VALUE);
         notificationManagementPage.setAttributeValue(CREATION_TYPE_COMBOBOX_ID, CREATION_TYPE_COMBOBOX_VALUE);
@@ -96,11 +97,11 @@ public class NotificationManagementTest extends BaseTestCase {
     public void searchForNewRule() {
 
         notificationManagementPage.clickContextButton(SHOW_FILTER_BUTTON_ID);
-        notificationManagementPage.setAttributeValue(SEARCH_NAME_ID, NAME_FIELD_VALUE);
+        notificationManagementPage.setAttributeValue(SEARCH_NAME_ID, notificationRuleName);
 
         try {
             notificationManagementPage.clickButtonByLabel(APPLY_FILTER_BUTTON_LABEL);
-            Assert.assertTrue(notificationManagementPage.getRuleName().contains(NAME_FIELD_VALUE));
+            Assert.assertTrue(notificationManagementPage.getRuleName().contains(notificationRuleName));
 
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -117,6 +118,10 @@ public class NotificationManagementTest extends BaseTestCase {
             notificationManagementPage.clickContextButton(EDIT_NOTIFICATION_BUTTON_ID);
             notificationManagementPage.setAttributeValue(NAME_FIELD_ID, EDITED_NAME_FIELD_VALUE);
             notificationManagementPage.clickButtonByLabel(SAVE_RULE_BUTTON_LABEL);
+            notificationManagementPage.clearFilters();
+            notificationManagementPage.clickContextButton(SHOW_FILTER_BUTTON_ID);
+            notificationManagementPage.setAttributeValue(SEARCH_NAME_ID, EDITED_NAME_FIELD_VALUE);
+            notificationManagementPage.clickButtonByLabel(APPLY_FILTER_BUTTON_LABEL);
             Assert.assertTrue(notificationManagementPage.getRuleName().contains(EDITED_NAME_FIELD_VALUE));
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -128,7 +133,7 @@ public class NotificationManagementTest extends BaseTestCase {
     @Description("Change status of Notification Rule")
     public void changeStatusOfRule() {
 
-        if (notificationManagementPage.getRuleName().contains(NAME_FIELD_VALUE + "_V2")) {
+        if (notificationManagementPage.getRuleName().contains(EDITED_NAME_FIELD_VALUE)) {
             try {
                 notificationManagementPage.selectFirstNotificationRuleFromTable();
                 notificationManagementPage.clickContextButton(CHANGE_STATUS_BUTTON_ID);
@@ -148,7 +153,7 @@ public class NotificationManagementTest extends BaseTestCase {
     @Description("Delete Notification Rule")
     public void deleteRule() {
 
-        if (notificationManagementPage.getRuleName().contains(NAME_FIELD_VALUE + "_V2")) {
+        if (notificationManagementPage.getRuleName().contains(EDITED_NAME_FIELD_VALUE)) {
             try {
                 notificationManagementPage.selectFirstNotificationRuleFromTable();
                 notificationManagementPage.clickContextButton(DELETE_STATUS_BUTTON_ID);

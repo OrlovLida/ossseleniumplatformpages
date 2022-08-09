@@ -5,11 +5,11 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
+import com.oss.pages.exportguiwizard.ExportGuiWizardPage;
 import com.oss.pages.iaa.servicedesk.BaseSDPage;
 import com.oss.pages.iaa.servicedesk.BaseSearchPage;
 import com.oss.pages.iaa.servicedesk.issue.ticket.TicketDashboardPage;
 import com.oss.pages.iaa.servicedesk.issue.ticket.TicketSearchPage;
-import com.oss.pages.iaa.servicedesk.issue.wizard.ExportWizardPage;
 import com.oss.pages.platform.NotificationWrapperPage;
 
 import io.qameta.allure.Description;
@@ -21,7 +21,7 @@ public class ExportTest extends BaseTestCase {
 
     private TicketDashboardPage ticketDashboardPage;
     private TicketSearchPage ticketSearchPage;
-    private ExportWizardPage exportWizardPage;
+    private ExportGuiWizardPage exportWizardPage;
     private NotificationWrapperPage notificationWrapperPage;
     private static int minutes = 60;
     private static final int maxSearchTime6hours = 360;
@@ -49,9 +49,9 @@ public class ExportTest extends BaseTestCase {
                 ticketSearchPage.filterByDate(BaseSearchPage.CREATION_TIME_ATTRIBUTE, ticketSearchPage.getTimePeriodForLastNMinutes(minutes));
             }
             exportWizardPage = ticketSearchPage.clickExportInSearchTable();
-            exportWizardPage.fillFileName(EXPORT_FILE_NAME);
-            exportWizardPage.fillDateMask(DATE_MASK);
-            exportWizardPage.clickAccept();
+            exportWizardPage.setFileName(EXPORT_FILE_NAME);
+            exportWizardPage.changeDateMaskContains(DATE_MASK);
+            exportWizardPage.closeTheWizard();
             ticketSearchPage = new TicketSearchPage(driver, webDriverWait);
             notificationWrapperPage = ticketSearchPage.openNotificationPanel();
             notificationWrapperPage.waitForExportFinish();
