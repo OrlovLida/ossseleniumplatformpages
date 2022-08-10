@@ -25,7 +25,6 @@ import com.oss.pages.iaa.servicedesk.issue.tabs.RelatedChangesTab;
 import com.oss.pages.iaa.servicedesk.issue.tabs.RelatedProblemsTab;
 import com.oss.pages.iaa.servicedesk.issue.tabs.RelatedTicketsTab;
 import com.oss.pages.iaa.servicedesk.issue.tabs.RootCausesTab;
-import com.oss.pages.iaa.servicedesk.issue.tabs.TasksTab;
 import com.oss.pages.iaa.servicedesk.issue.wizard.ExternalPromptPage;
 import com.oss.pages.iaa.servicedesk.issue.wizard.SDWizardPage;
 
@@ -41,7 +40,6 @@ import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.INTERNAL_TYPE;
 import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.PROBLEM_ISSUE_TYPE;
 import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.SOURCE_TYPE;
 import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.TABS_WIDGET_ID;
-import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.TASK_LABEL;
 import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.TYPE_COMMENT;
 import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.USER_NAME;
 
@@ -63,7 +61,6 @@ public class ProblemsTest extends BaseTestCase {
     private ProblemSolutionTab problemSolutionTab;
     private MessagesTab messagesTab;
     private RelatedChangesTab relatedChangesTab;
-    private TasksTab tasksTab;
     private AffectedTab affectedTab;
     private String problemId;
     private static final String PROBLEM_NAME_DESCRIPTION_ID = "TT_WIZARD_INPUT_PROBLEM_NAME_DESCRIPTION";
@@ -89,10 +86,6 @@ public class ProblemsTest extends BaseTestCase {
     private static final String DESCRIPTION_CHANGE = "Change description in related tab";
     private static final String SOURCE_ID = "TT_WIZARD_INPUT_SOURCE_LABEL";
     private static final String INTERNAL_TEXT = "Internal";
-    private static final String TASK_NAME = "Selenium Task" + LocalDateTime.now();
-    private static final String EDITED_TASK_NAME = "Edited Selenium Task" + LocalDateTime.now();
-    private static final String TASK_WIZARD_NAME = "name";
-    private static final String SAVE_EDITED_TASK_BUTTON_ID = "_taskDetailsSubmitId-1";
     private static final String NAME_ATTRIBUTE = "Name";
     private static final String PROBLEM_CREATED_LOG = "Problem has been created";
 
@@ -505,32 +498,8 @@ public class ProblemsTest extends BaseTestCase {
         Assert.assertTrue(relatedChangesTab.isRelatedIssuesFileNotEmpty());
     }
 
-    @Parameters({"taskAssignee"})
-    @Test(priority = 33, testName = "Add task in Problem Detail View", description = "Add task in Problem Detail View")
-    @Description("Add task in Problem Detail View")
-    public void addTaskInProblemView(
-            @Optional("sd_seleniumtest") String taskAssignee
-    ) {
-        tasksTab = issueDetailsPage.selectTasksTab();
-        sdWizardPage = tasksTab.clickAddTaskInProblemView();
-        sdWizardPage.createTask(TASK_NAME, taskAssignee, TASK_LABEL);
-
-        Assert.assertEquals(tasksTab.getTaskName(), TASK_NAME);
-    }
-
-    @Test(priority = 34, testName = "Edit task in Problem Detail View", description = "Edit task in Problem Detail View")
-    @Description("Edit task in Problem Detail View")
-    public void editTaskInProblemView() {
-        tasksTab = issueDetailsPage.selectTasksTab();
-        sdWizardPage = tasksTab.clickDetailsButtonInFirstTask();
-        sdWizardPage.insertValueToComponent(EDITED_TASK_NAME, TASK_WIZARD_NAME);
-        sdWizardPage.clickButton(SAVE_EDITED_TASK_BUTTON_ID);
-
-        Assert.assertEquals(tasksTab.getTaskName(), EDITED_TASK_NAME);
-    }
-
     @Parameters({"serviceMOIdentifier"})
-    @Test(priority = 35, testName = "Add Affected", description = "Add Affected Service to the Problem")
+    @Test(priority = 33, testName = "Add Affected", description = "Add Affected Service to the Problem")
     @Description("Add Affected Service to the Problem")
     public void addAffected(
             @Optional("TEST_MO_ABS_SRV") String serviceMOIdentifier
