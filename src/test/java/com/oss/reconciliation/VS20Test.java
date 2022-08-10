@@ -37,7 +37,7 @@ public class VS20Test extends BaseTestCase {
     private static final String NOTIFICATION_MESSAGE = "Generation of VS Objects Metamodel for CM Interface: Comarch finished";
     private static final String TABLE_ID = "InventoryView_MainCard_VS_Comarch_COM_x_95_x_Device";
 
-    private static final String LIST_CM_DOMAIN_ID = "CM Domain Id";
+    private static final String conLIST_CM_DOMAIN_ID = "CM Domain Id";
     private static final String LIST_CM_DOMAIN_NAME = "CM Domain Name";
     private static final String LIST_TYPE = "Type";
     private static final String LIST_DISTINGUISH_NAME = "Distinguish Name";
