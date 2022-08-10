@@ -17,8 +17,10 @@ import com.oss.framework.components.mainheader.Notifications;
 import com.oss.framework.components.mainheader.NotificationsInterface;
 import com.oss.framework.components.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.pages.logicalfunction.LogicalFunctionWizardPreStep;
 import com.oss.pages.platform.GlobalSearchPage;
 import com.oss.pages.platform.NewInventoryViewPage;
+import com.oss.pages.platform.SearchObjectTypePage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
 import com.oss.pages.reconciliation.NetworkInconsistenciesViewPage;
 import com.oss.pages.reconciliation.SamplesManagementPage;
@@ -28,11 +30,13 @@ import io.qameta.allure.Description;
 public class UC_NAR_001_Test extends BaseTestCase {
 
     private static final String ROUTER_NAME = "UCNAR001Router";
+    private static final String LOGICAL_FUNCTION_NAME = "UCNAR001Router";
     private static final String CM_DOMAIN_NAME = "UC_NAR_001";
     private static final String NARROW_RECO_NOTIFICATION = "Narrow reconciliation for GMOCs IPDevice finished";
     private static final String INTERFACE_NAME = "CISCO IOS XR without mediation";
     private static final String DOMAIN = "IP";
     private static final String EQUIPMENT_TYPE = "Physical Device";
+    private static final String OBJECT_TYPE = "Logical Function";
     private static final String CONFIRM_ID = "ConfirmationBox_object_delete_wizard_confirmation_box_action_button";
     private SoftAssert softAssert;
 
@@ -179,16 +183,34 @@ public class UC_NAR_001_Test extends BaseTestCase {
         Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
     }
 
-    @Test(priority = 10, description = "Delete device", dependsOnMethods = {"applyInconsistencies"})
-    @Description("Set perspective to Live, open new Inventory View, query device, delete device and check confirmation system message")
-    public void deleteDevice() {
+    @Test(priority = 10, description = "Delete Logical Function", dependsOnMethods = {"applyInconsistencies"})
+    @Description("Set perspective to Live, open new Inventory View, query Logical Function, delete Logical Function and check confirmation system message")
+    public void deleteLogicalFunction(){
         PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        homePage.goToHomePage(driver, BASIC_URL);
+        homePage.chooseFromLeftSideMenu("Inventory View", "Resource Inventory");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        homePage.chooseFromLeftSideMenu("Legacy Inventory Dashboard", "Resource Inventory");
+        SearchObjectTypePage searchObjectTypePage = new SearchObjectTypePage(driver, webDriverWait);
+        searchObjectTypePage.searchType(OBJECT_TYPE);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        homePage.setNewObjectType(EQUIPMENT_TYPE);
+        NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        newInventoryViewPage.searchObject(LOGICAL_FUNCTION_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        newInventoryViewPage.selectFirstRow().callAction(ActionsContainer.EDIT_GROUP_ID, "logicalInventory_DeleteLogicalFunctionActionModifyId");
+        LogicalFunctionWizardPreStep logicalFunctionWizardPreStep = LogicalFunctionWizardPreStep.create(driver, webDriverWait);
+        logicalFunctionWizardPreStep.clickAccept();
+        checkPopupMessageType(MessageType.SUCCESS);
+    }
+
+    @Test(priority = 11, description = "Delete device", dependsOnMethods = {"applyInconsistencies"})
+    @Description("Open new Inventory View, query device, delete device and check confirmation system message")
+    public void deleteDevice() {
+        homePage.chooseFromLeftSideMenu("Inventory View", "Resource Inventory");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        SearchObjectTypePage searchObjectTypePage = new SearchObjectTypePage(driver, webDriverWait);
+        searchObjectTypePage.searchType(EQUIPMENT_TYPE);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         newInventoryViewPage.searchObject(ROUTER_NAME);

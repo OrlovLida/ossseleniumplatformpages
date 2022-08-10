@@ -18,7 +18,9 @@ import com.oss.framework.components.mainheader.Notifications;
 import com.oss.framework.components.mainheader.NotificationsInterface;
 import com.oss.framework.components.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.pages.logicalfunction.LogicalFunctionWizardPreStep;
 import com.oss.pages.platform.NewInventoryViewPage;
+import com.oss.pages.platform.SearchObjectTypePage;
 import com.oss.pages.reconciliation.CmDomainWizardPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
 import com.oss.pages.reconciliation.NetworkInconsistenciesViewPage;
@@ -39,6 +41,9 @@ public class UC_NAR_005_Test extends BaseTestCase {
     private static final String SERIAL_NUMBER_BEFORE = "SERIAL_NUMBER_BEFORE";
     private static final String SERIAL_NUMBER_AFTER = "SERIAL_NUMBER_AFTER";
     private static final String CONFIRM_ID = "ConfirmationBox_object_delete_wizard_confirmation_box_action_button";
+    private static final String EQUIPMENT_TYPE = "Physical Device";
+    private static final String OBJECT_TYPE = "Logical Function";
+    private static final String LOGICAL_FUNCTION_NAME = "UCNAR05";
     private SoftAssert softAssert;
 
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
@@ -149,10 +154,11 @@ public class UC_NAR_005_Test extends BaseTestCase {
     public void openNewInventoryViewAndCheckSerialNumber() {
         homePage.goToHomePage(driver, BASIC_URL);
         waitForPageToLoad();
-        homePage.chooseFromLeftSideMenu("Legacy Inventory Dashboard", "Resource Inventory");
-        waitForPageToLoad();
-        homePage.setNewObjectType("Router");
-        waitForPageToLoad();
+        homePage.chooseFromLeftSideMenu("Inventory View", "Resource Inventory");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        SearchObjectTypePage searchObjectTypePage = new SearchObjectTypePage(driver, webDriverWait);
+        searchObjectTypePage.searchType(EQUIPMENT_TYPE);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.searchObject(DEVICE_NAME);
         waitForPageToLoad();
@@ -188,13 +194,34 @@ public class UC_NAR_005_Test extends BaseTestCase {
         Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "serialNumber"), SERIAL_NUMBER_AFTER);
     }
 
-    @Test(priority = 9, description = "Delete router", dependsOnMethods = {"assignLocationAndApplyInconsistencies"})
+    @Test(priority = 9, description = "Delete Logical Function", dependsOnMethods = {"assignLocationAndApplyInconsistencies"})
+    @Description("Open new Inventory View, query Logical Function, delete Logical Function and check confirmation system message")
+    public void deleteLogicalFunction(){
+        homePage.chooseFromLeftSideMenu("Inventory View", "Resource Inventory");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        homePage.setNewObjectType(OBJECT_TYPE);
+        NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        newInventoryViewPage.searchObject(LOGICAL_FUNCTION_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        newInventoryViewPage.selectFirstRow().callAction(ActionsContainer.EDIT_GROUP_ID, "logicalInventory_DeleteLogicalFunctionActionModifyId");
+        LogicalFunctionWizardPreStep logicalFunctionWizardPreStep = LogicalFunctionWizardPreStep.create(driver, webDriverWait);
+        logicalFunctionWizardPreStep.clickAccept();
+        checkMessageType(MessageType.SUCCESS);
+    }
+
+    @Test(priority = 10, description = "Delete router", dependsOnMethods = {"assignLocationAndApplyInconsistencies"})
     @Description("Delete router")
     public void deleteRouter() {
+        homePage.chooseFromLeftSideMenu("Inventory View", "Resource Inventory");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        homePage.setNewObjectType(EQUIPMENT_TYPE);
         DelayUtils.sleep(45000);
         NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
-        newInventoryViewPage.selectFirstRow();
-        newInventoryViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, "DeleteDeviceWizardAction");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        newInventoryViewPage.searchObject(DEVICE_NAME);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        newInventoryViewPage.selectFirstRow().callAction(ActionsContainer.EDIT_GROUP_ID, "DeleteDeviceWizardAction");
         waitForPageToLoad();
         newInventoryViewPage.clickConfirmationBox(CONFIRM_ID);
         checkMessageType(MessageType.SUCCESS);
@@ -204,7 +231,7 @@ public class UC_NAR_005_Test extends BaseTestCase {
         Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());
     }
 
-    @Test(priority = 10, description = "Delete CM Domain", dependsOnMethods = {"createCmDomain"})
+    @Test(priority = 11, description = "Delete CM Domain", dependsOnMethods = {"createCmDomain"})
     @Description("Go to Network Discovery Control View, delete CM Domain and check notification")
     public void deleteCmDomain() {
         openNetworkDiscoveryControlView();
