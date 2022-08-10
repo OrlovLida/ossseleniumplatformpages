@@ -26,6 +26,10 @@ public class AbgadScenarioSummaryViewTest extends BaseTestCase {
     private static final String PREDEFINED_FILTERS_WINDOW_ID = "PredefinedFiltersWindowId";
     private static final String DETECTED_ISSUES_WINDOW_ID = "DetectedIssuesWindowId";
     private static final String SWITCHER_ID = "switcherValue";
+    private static final String CREATION_TYPE_ID = "creation_type";
+    private static final String CREATION_TYPE_VALUE = "Automatically";
+    private static final String CREATE_TIME_ID = "create_time";
+    private static final String ATTRIBUTE_ID = "id";
 
     @BeforeClass
     public void goToABGADScenarioSummaryView() {
@@ -61,15 +65,15 @@ public class AbgadScenarioSummaryViewTest extends BaseTestCase {
                 Assert.fail();
             } else {
                 log.info("table contains data for issues without roots");
-                abgadScenarioSummaryViewPage.setAttributeValue("creation_type", "Automatically");
-                //abgadScenarioSummaryViewPage.setValueInTimePeriodChooser("create_time", 3, 12, 33); //TODO after fix ACD-3363
+                abgadScenarioSummaryViewPage.setAttributeValue(CREATION_TYPE_ID, CREATION_TYPE_VALUE);
+                abgadScenarioSummaryViewPage.setValueInTimePeriodChooser(CREATE_TIME_ID, 3, 12, 33);
                 abgadScenarioSummaryViewPage.setValueOfIssueIdSearch();
             }
         } else {
             log.info("table contains data for issues with roots");
             abgadScenarioSummaryViewPage.turnOnSwitcher(SWITCHER_ID);
-            abgadScenarioSummaryViewPage.setAttributeValue("creation_type", "Automatically");
-            //abgadScenarioSummaryViewPage.setValueInTimePeriodChooser("create_time", 3, 12, 33); //TODO after fix ACD-3363
+            abgadScenarioSummaryViewPage.setAttributeValue(CREATION_TYPE_ID, CREATION_TYPE_VALUE);
+            abgadScenarioSummaryViewPage.setValueInTimePeriodChooser(CREATE_TIME_ID, 3, 12, 33);
             abgadScenarioSummaryViewPage.setValueOfIssueIdSearch();
 
             if (Boolean.FALSE.equals(abgadScenarioSummaryViewPage.isDataInIssuesTable())) {
@@ -83,8 +87,8 @@ public class AbgadScenarioSummaryViewTest extends BaseTestCase {
     }
 
     private void clearIssueTableFilters() {
-        abgadScenarioSummaryViewPage.clearAttributeValue("creation_type");
-        abgadScenarioSummaryViewPage.clearAttributeValue("id");
-        //baseACDPage.clearTimePeriod("create_time"); //TODO after fix ACD-3363
+        abgadScenarioSummaryViewPage.clearAttributeValue(CREATION_TYPE_ID);
+        abgadScenarioSummaryViewPage.clearAttributeValue(ATTRIBUTE_ID);
+        abgadScenarioSummaryViewPage.clearTimePeriod(CREATE_TIME_ID);
     }
 }
