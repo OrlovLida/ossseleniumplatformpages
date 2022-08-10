@@ -37,13 +37,14 @@ public class UC_NAR_005_Test extends BaseTestCase {
     private static final String DOMAIN_NAME = "IP";
     private static final String STOP_ON = "AUTO_ACCEPTANCE";
     private static final String SAVE_PERSPECTIVE = "NETWORK_AA";
-    private static final String DEVICE_NAME = "UCNAR05";
+    private static final String OBJECT_NAME = "UCNAR05";
     private static final String SERIAL_NUMBER_BEFORE = "SERIAL_NUMBER_BEFORE";
     private static final String SERIAL_NUMBER_AFTER = "SERIAL_NUMBER_AFTER";
     private static final String CONFIRM_ID = "ConfirmationBox_object_delete_wizard_confirmation_box_action_button";
-    private static final String EQUIPMENT_TYPE = "Physical Device";
-    private static final String OBJECT_TYPE = "Logical Function";
-    private static final String LOGICAL_FUNCTION_NAME = "UCNAR05";
+    private static final String DEVICE_TYPE = "Physical Device";
+    private static final String LF_TYPE = "Logical Function";
+    private static final String DELETE_LF_BUTTON_ID = "logicalInventory_DeleteLogicalFunctionActionModifyId";
+    private static final String DELETE_DEVICE_BUTTON_ID = "DeleteDeviceWizardAction";
     private SoftAssert softAssert;
 
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
@@ -121,14 +122,14 @@ public class UC_NAR_005_Test extends BaseTestCase {
         NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
         networkInconsistenciesViewPage.expandTree();
         waitForPageToLoad();
-        networkInconsistenciesViewPage.assignLocation(DEVICE_NAME, "1");
+        networkInconsistenciesViewPage.assignLocation(OBJECT_NAME, "1");
         checkMessageType(MessageType.SUCCESS);
         waitForPageToLoad();
         networkInconsistenciesViewPage.clearOldNotification();
         networkInconsistenciesViewPage.applyInconsistencies();
         DelayUtils.sleep(3000);
         waitForPageToLoad();
-        Assert.assertEquals(networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(), "Accepting discrepancies related to " + DEVICE_NAME + " finished");
+        Assert.assertEquals(networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(), "Accepting discrepancies related to " + OBJECT_NAME + " finished");
     }
 
     @Test(priority = 5, description = "Change reconciliation samples", dependsOnMethods = {"assignLocationAndApplyInconsistencies"})
@@ -155,12 +156,12 @@ public class UC_NAR_005_Test extends BaseTestCase {
         homePage.goToHomePage(driver, BASIC_URL);
         waitForPageToLoad();
         homePage.chooseFromLeftSideMenu("Inventory View", "Resource Inventory");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
         SearchObjectTypePage searchObjectTypePage = new SearchObjectTypePage(driver, webDriverWait);
-        searchObjectTypePage.searchType(EQUIPMENT_TYPE);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        searchObjectTypePage.searchType(DEVICE_TYPE);
+        waitForPageToLoad();
         NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
-        newInventoryViewPage.searchObject(DEVICE_NAME);
+        newInventoryViewPage.searchObject(OBJECT_NAME);
         waitForPageToLoad();
         Assert.assertFalse(newInventoryViewPage.checkIfTableIsEmpty());
         Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "serialNumber"), SERIAL_NUMBER_BEFORE);
@@ -196,15 +197,15 @@ public class UC_NAR_005_Test extends BaseTestCase {
 
     @Test(priority = 9, description = "Delete Logical Function", dependsOnMethods = {"assignLocationAndApplyInconsistencies"})
     @Description("Open new Inventory View, query Logical Function, delete Logical Function and check confirmation system message")
-    public void deleteLogicalFunction(){
+    public void deleteLogicalFunction() {
         homePage.chooseFromLeftSideMenu("Inventory View", "Resource Inventory");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        homePage.setNewObjectType(OBJECT_TYPE);
+        waitForPageToLoad();
+        homePage.setNewObjectType(LF_TYPE);
         NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        newInventoryViewPage.searchObject(LOGICAL_FUNCTION_NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        newInventoryViewPage.selectFirstRow().callAction(ActionsContainer.EDIT_GROUP_ID, "logicalInventory_DeleteLogicalFunctionActionModifyId");
+        waitForPageToLoad();
+        newInventoryViewPage.searchObject(OBJECT_NAME);
+        waitForPageToLoad();
+        newInventoryViewPage.selectFirstRow().callAction(ActionsContainer.EDIT_GROUP_ID, DELETE_LF_BUTTON_ID);
         LogicalFunctionWizardPreStep logicalFunctionWizardPreStep = LogicalFunctionWizardPreStep.create(driver, webDriverWait);
         logicalFunctionWizardPreStep.clickAccept();
         checkMessageType(MessageType.SUCCESS);
@@ -214,14 +215,14 @@ public class UC_NAR_005_Test extends BaseTestCase {
     @Description("Delete router")
     public void deleteRouter() {
         homePage.chooseFromLeftSideMenu("Inventory View", "Resource Inventory");
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        homePage.setNewObjectType(EQUIPMENT_TYPE);
+        waitForPageToLoad();
+        homePage.setNewObjectType(DEVICE_TYPE);
         DelayUtils.sleep(45000);
         NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        newInventoryViewPage.searchObject(DEVICE_NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        newInventoryViewPage.selectFirstRow().callAction(ActionsContainer.EDIT_GROUP_ID, "DeleteDeviceWizardAction");
+        waitForPageToLoad();
+        newInventoryViewPage.searchObject(OBJECT_NAME);
+        waitForPageToLoad();
+        newInventoryViewPage.selectFirstRow().callAction(ActionsContainer.EDIT_GROUP_ID, DELETE_DEVICE_BUTTON_ID);
         waitForPageToLoad();
         newInventoryViewPage.clickConfirmationBox(CONFIRM_ID);
         checkMessageType(MessageType.SUCCESS);
