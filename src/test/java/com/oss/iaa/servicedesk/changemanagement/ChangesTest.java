@@ -235,7 +235,7 @@ public class ChangesTest extends BaseTestCase {
     }
 
     @Parameters({"RelatedChangeID"})
-    @Test(priority = 9, testName = "Check Related Changes Tab - link Change", description = "Check Related Changes Tab - link Change")
+    @Test(priority = 12, testName = "Check Related Changes Tab - link Change", description = "Check Related Changes Tab - link Change")
     @Description("Check Related Changes Tab - link Change")
     public void addRelatedChange(
             @Optional("35") String RelatedChangeID
@@ -246,7 +246,7 @@ public class ChangesTest extends BaseTestCase {
         Assert.assertEquals(relatedChangesTab.checkRelatedIssueId(0), RelatedChangeID);
     }
 
-    @Test(priority = 10, testName = "Export Related Changes", description = "Export Related Changes")
+    @Test(priority = 13, testName = "Export Related Changes", description = "Export Related Changes")
     @Description("Export Related Changes")
     public void exportRelatedChanges() {
         relatedChangesTab = issueDetailsPage.selectRelatedChangesTab();
@@ -257,7 +257,7 @@ public class ChangesTest extends BaseTestCase {
         Assert.assertTrue(relatedChangesTab.isRelatedIssuesFileNotEmpty());
     }
 
-    @Test(priority = 11, testName = "Check Related Changes Tab - unlink Change", description = "Check Related Changes Tab - unlink Change")
+    @Test(priority = 14, testName = "Check Related Changes Tab - unlink Change", description = "Check Related Changes Tab - unlink Change")
     @Description("Check Related Changes Tab - unlink Change")
     public void unlinkChange() {
         relatedChangesTab = issueDetailsPage.selectRelatedChangesTab();
@@ -267,7 +267,7 @@ public class ChangesTest extends BaseTestCase {
     }
 
     @Parameters({"SecondMOIdentifier"})
-    @Test(priority = 12, testName = "Add second MO in Root Causes tab", description = "Add second MO in Root Causes tab")
+    @Test(priority = 15, testName = "Add second MO in Root Causes tab", description = "Add second MO in Root Causes tab")
     @Description("Add second MO in Root Causes tab")
     public void addRootCause(@Optional("TEST_MO") String SecondMOIdentifier) {
         rootCausesTab = issueDetailsPage.selectRootCauseTab();
@@ -280,8 +280,8 @@ public class ChangesTest extends BaseTestCase {
     }
 
     @Parameters({"ProblemToLinkId"})
-    @Test(priority = 13, testName = "Link Problem to Problem", description = "Link Problem to Problem")
-    @Description("Link Problem to Problem")
+    @Test(priority = 16, testName = "Link Problem to Change", description = "Link Problem to Change")
+    @Description("Link Problem to Change")
     public void linkProblem(
             @Optional("35") String ProblemToLinkId
     ) {
@@ -291,7 +291,7 @@ public class ChangesTest extends BaseTestCase {
         Assert.assertEquals(relatedProblemsTab.checkRelatedIssueId(0), ProblemToLinkId);
     }
 
-    @Test(priority = 14, testName = "Export from Related Problems tab", description = "Export from Related Problems tab")
+    @Test(priority = 17, testName = "Export from Related Problems tab", description = "Export from Related Problems tab")
     @Description("Export from Related Problems tab")
     public void exportFromRelatedProblemsTab() {
         relatedProblemsTab = issueDetailsPage.selectRelatedProblemsTab();
@@ -302,8 +302,8 @@ public class ChangesTest extends BaseTestCase {
         Assert.assertTrue(relatedProblemsTab.isRelatedIssuesFileNotEmpty());
     }
 
-    @Test(priority = 15, testName = "Unlink Problem from Problem", description = "Unlink Problem from Problem")
-    @Description("Unlink Problem from Problem")
+    @Test(priority = 18, testName = "Unlink Problem from Change", description = "Unlink Problem from Change")
+    @Description("Unlink Problem from Change")
     public void unlinkProblem() {
         relatedProblemsTab = issueDetailsPage.selectRelatedProblemsTab();
         relatedProblemsTab.unlinkFirstIssue();
@@ -312,7 +312,7 @@ public class ChangesTest extends BaseTestCase {
     }
 
     @Parameters({"userForRoles"})
-    @Test(priority = 16, testName = "Add Roles in Roles Tab", description = "Assign test user to roles in Roles Tab")
+    @Test(priority = 19, testName = "Add Roles in Roles Tab", description = "Assign test user to roles in Roles Tab")
     @Description("Assign test user to roles in Roles Tab")
     public void rolesTabTest(
             @Optional("sd_seleniumtest") String userForRoles
@@ -329,7 +329,7 @@ public class ChangesTest extends BaseTestCase {
         Assert.assertEquals(rolesTab.getValueFromSearchBox(rolesTab.getManagerSearchBoxId()), userForRoles);
     }
 
-    @Test(priority = 17, testName = "Check Participants", description = "Check Participants Tab - add Participant")
+    @Test(priority = 20, testName = "Check Participants", description = "Check Participants Tab - add Participant")
     @Description("Check Participants Tab - add Participant")
     public void addParticipant() {
         participantsTab = issueDetailsPage.selectParticipantsTab();
@@ -341,7 +341,7 @@ public class ChangesTest extends BaseTestCase {
         Assert.assertEquals(participantsTab.checkParticipantRole(newParticipantRow), PARTICIPANT_ROLE.toUpperCase());
     }
 
-    @Test(priority = 18, testName = "Edit participant", description = "Edit participant")
+    @Test(priority = 21, testName = "Edit participant", description = "Edit participant")
     @Description("Edit participant")
     public void editParticipant() {
         participantsTab = issueDetailsPage.selectParticipantsTab();
@@ -355,7 +355,7 @@ public class ChangesTest extends BaseTestCase {
         Assert.assertEquals(participantsTab.checkParticipantRole(editedParticipantRow), PARTICIPANT_ROLE.toUpperCase());
     }
 
-    @Test(priority = 19, testName = "Unlink Participant", description = "Unlink Edited Participant")
+    @Test(priority = 22, testName = "Unlink Participant", description = "Unlink Edited Participant")
     @Description("Unlink Edited Participant")
     public void unlinkParticipant() {
         participantsTab = issueDetailsPage.selectParticipantsTab();
@@ -366,7 +366,7 @@ public class ChangesTest extends BaseTestCase {
         Assert.assertEquals(participantsTab.countParticipantsInTable(), participantsInTable - 1);
     }
 
-    @Test(priority = 20, testName = "Remove Participant", description = "Remove Edited Participant")
+    @Test(priority = 23, testName = "Remove Participant", description = "Remove Edited Participant")
     @Description("Remove Edited Participant")
     public void removeParticipant() {
         participantsTab = issueDetailsPage.selectParticipantsTab();
@@ -379,7 +379,7 @@ public class ChangesTest extends BaseTestCase {
         Assert.assertEquals(participantsTab.countParticipantsInTable(), participantsInTable - 1);
     }
 
-    @Test(priority = 21, testName = "Add attachment to change", description = "Add attachment to change")
+    @Test(priority = 24, testName = "Add attachment to change", description = "Add attachment to change")
     @Description("Add attachment to change")
     public void addAttachment() {
         attachmentsTab = issueDetailsPage.selectAttachmentsTab(TABS_WIDGET_ID);
@@ -391,7 +391,7 @@ public class ChangesTest extends BaseTestCase {
         Assert.assertEquals(attachmentsTab.getAttachmentOwner(), USER_NAME);
     }
 
-    @Test(priority = 22, testName = "Download Attachment", description = "Download the Attachment from Attachment tab in Change")
+    @Test(priority = 25, testName = "Download Attachment", description = "Download the Attachment from Attachment tab in Change")
     @Description("Download the Attachment from Attachment tab in Change")
     public void downloadAttachment() {
         attachmentsTab = issueDetailsPage.selectAttachmentsTab(TABS_WIDGET_ID);
@@ -403,7 +403,7 @@ public class ChangesTest extends BaseTestCase {
         Assert.assertTrue(issueDetailsPage.checkIfFileIsNotEmpty(CSV_FILE));
     }
 
-    @Test(priority = 23, testName = "Delete Attachment", description = "Delete the Attachment from Attachment tab in Change")
+    @Test(priority = 26, testName = "Delete Attachment", description = "Delete the Attachment from Attachment tab in Change")
     @Description("Delete the Attachment from Attachment tab in Change")
     public void deleteAttachment() {
         attachmentsTab = issueDetailsPage.selectAttachmentsTab(TABS_WIDGET_ID);
@@ -416,7 +416,7 @@ public class ChangesTest extends BaseTestCase {
     }
 
     @Parameters({"serviceMOIdentifier"})
-    @Test(priority = 24, testName = "Add Affected", description = "Add Affected Service to the Change")
+    @Test(priority = 27, testName = "Add Affected", description = "Add Affected Service to the Change")
     @Description("Add Affected Service to the Change")
     public void addAffected(
             @Optional("TEST_MO_ABS_SRV") String serviceMOIdentifier
@@ -428,7 +428,7 @@ public class ChangesTest extends BaseTestCase {
         Assert.assertEquals(affectedTab.countServicesInTable(), initialServiceCount + 1);
     }
 
-    @Test(priority = 25, testName = "Add Summary", description = "Add Summary on Summary tab")
+    @Test(priority = 28, testName = "Add Summary", description = "Add Summary on Summary tab")
     @Description("Add Summary on Summary tab")
     public void checkSummary() {
         summaryTab = issueDetailsPage.selectSummaryTab();

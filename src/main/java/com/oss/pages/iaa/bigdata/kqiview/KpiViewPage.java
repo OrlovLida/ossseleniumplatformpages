@@ -276,7 +276,7 @@ public class KpiViewPage extends KpiViewSetupPage {
 
     @Step("I check if Zoom Out button is visible")
     public boolean isZoomOutButtonVisible() {
-        return getKpiChartWidget().isZoomOutButtonPresent();
+        return !getKpiChartWidget().isZoomOutButtonHidden();
     }
 
     @Step("I click Zoom Out Button")

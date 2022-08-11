@@ -89,11 +89,11 @@ public class WAMVArea3Test extends BaseTestCase {
         }
     }
 
-    @Parameters({"alarmListRow"})
+    @Parameters({"alarmListRowWithMO"})
     @Test(priority = 2, testName = "Check MO Properties", description = "Check MO Properties")
     @Description("I verify if MO Properties works in WAMV")
     public void openWAMVAndCheckMoProperties(
-            @Optional("1") int alarmListRowWithMO
+            @Optional("4") int alarmListRowWithMO
     ) {
         try {
             wamvPage.selectSpecificRow(alarmListRowWithMO);
@@ -178,11 +178,11 @@ public class WAMVArea3Test extends BaseTestCase {
         }
     }
 
-    @Parameters({"alarmListRow"})
+    @Parameters({"alarmListRowAdditionalText"})
     @Test(priority = 7, testName = "Check Additional Text Tab", description = "Check Additional Text Tab")
     @Description("I verify if Additional Text works in WAMV")
     public void openWAMVAndCheckAdditionalText(
-            @Optional("0") int alarmListRowAdditionalText
+            @Optional("1") int alarmListRowAdditionalText
     ) {
         try {
             wamvPage.selectSpecificRow(alarmListRowAdditionalText);

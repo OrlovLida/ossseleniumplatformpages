@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.ComponentFactory;
+import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
@@ -54,9 +55,17 @@ public class ArSettingsPage extends BaseACDPage {
             log.info("Action Template table has no data");
             return false;
         }
-        ComponentFactory.create(multiSearchFieldId, driver, wait).setSingleStringValue(value);
+        //TODO delete componenttype after framework fix - ACD-3569
+        ComponentFactory.create(multiSearchFieldId, Input.ComponentType.MULTI_SEARCHBOX, driver, wait).setSingleStringValue(value);
         log.info("I am searching for created Action Template");
         return true;
+    }
+
+    //TODO replace method used in ArSettingsTest with baseACDPage.clearAttributeValue after fix - ACD-3569
+    @Step("I clear Action Template MultiSearchBox")
+    public void clearActionTemplateSearch(String multiSearchFieldId) {
+        ComponentFactory.create(multiSearchFieldId, Input.ComponentType.MULTI_SEARCHBOX, driver, wait).clear();
+        log.info("I clear Action Template MultiSearchBox");
     }
 
     @Step("Check if created Action Template exists")
