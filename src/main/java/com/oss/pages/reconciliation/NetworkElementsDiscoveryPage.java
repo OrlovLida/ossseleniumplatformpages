@@ -3,7 +3,7 @@ package com.oss.pages.reconciliation;
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.prompts.ConfirmationBox;
-import com.oss.framework.components.prompts.ConfirmationBoxInterface;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.tree.TreeWidget;
 import com.oss.pages.BasePage;
@@ -16,6 +16,7 @@ public class NetworkElementsDiscoveryPage extends BasePage {
     private static final String CREATE_NEW_ENTRY_ID = "neDiscovery_NE_DISCOVERY_OPERATIONActionCREATEId";
     private static final String NE_DISCOVERY_OPERATION_ENTRY_TABLE_APP = "neDiscoveryOperationEntryTableApp";
     private static final String DELETE_ENTRY_ID = "neDiscovery_NE_DISCOVERY_OPERATIONActionDELETEId";
+    private static final String CONNECTION = "Connection";
 
     public NetworkElementsDiscoveryPage(WebDriver driver) {
         super(driver);
@@ -23,8 +24,15 @@ public class NetworkElementsDiscoveryPage extends BasePage {
 
     public static NetworkElementsDiscoveryPage goToNetworkElementsDiscoveryPage(WebDriver driver, String basicURL) {
         driver.get(String.format("%s/#/view/reco/network-element-discovery-view" +
-        "?perspective=LIVE&withRemoved=true", basicURL));
+                "?perspective=LIVE&withRemoved=true", basicURL));
         return new NetworkElementsDiscoveryPage(driver);
+    }
+
+    @Step("Search for element and select it by {elementName}")
+    public void queryAndSelectObjectByName(String elementName) {
+        searchForElement(elementName);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        selectElement(elementName);
     }
 
     @Step("Search for element by {elementName}")
@@ -64,12 +72,12 @@ public class NetworkElementsDiscoveryPage extends BasePage {
 
     @Step("Get Connection value by {rowIndex}")
     public String getConnectionByRowIndex(int rowIndex) {
-        return getOldTable().getCellValue(rowIndex, "Connection");
+        return getOldTable().getCellValue(rowIndex, CONNECTION);
     }
 
     @Step("Go to connection")
     public void goToConnection() {
-        getOldTable().clickLink("Connection");
+        getOldTable().clickLink(CONNECTION);
     }
 
     @Step("Delete entry")
@@ -79,7 +87,7 @@ public class NetworkElementsDiscoveryPage extends BasePage {
     }
 
     public boolean isConnectionSetByRowIndex(int rowIndex) {
-        String connection = getOldTable().getCellValue(rowIndex, "Connection");
+        String connection = getOldTable().getCellValue(rowIndex, CONNECTION);
         return !connection.isEmpty();
     }
 
@@ -90,6 +98,5 @@ public class NetworkElementsDiscoveryPage extends BasePage {
     private OldTable getOldTable() {
         return OldTable.createById(driver, wait, NE_DISCOVERY_OPERATION_ENTRY_TABLE_APP);
     }
-
 
 }
