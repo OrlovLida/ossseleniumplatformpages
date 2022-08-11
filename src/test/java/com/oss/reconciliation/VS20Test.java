@@ -293,15 +293,15 @@ public class VS20Test extends BaseTestCase {
         }
     }
 
-    @Test(priority = 10, description = "Click Show On and Inventory View", dependsOnMethods = {"selectRowOnVS20Page"})
-    @Description("Click Show On and Inventory View")
-    public void showOnInventoryView() {
+    @Test(priority = 10, description = "Click Show On and Type Specific VS Viewer", dependsOnMethods = {"selectRowOnVS20Page"})
+    @Description("Click Show On and Type Specific VS Viewer")
+    public void showOnTypeSpecificVSViewer() {
         vs20Page.navigateToInventoryView();
     }
 
-    @Test(priority = 11, description = "Assert columns in Inventory View", dependsOnMethods = {"showOnInventoryView"})
-    @Description("Assert columns in Inventory View")
-    public void assertColumnsInInventoryView() {
+    @Test(priority = 11, description = "Assert columns in Type Specific VS Viewer", dependsOnMethods = {"showOnTypeSpecificVSViewer"})
+    @Description("Assert columns in Type Specific VS Viewer")
+    public void assertColumnsInTypeSpecificVSViewer() {
         inventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait, TABLE_ID);
         List<String> columnsList = inventoryViewPage.getColumnsHeaders();
         Assert.assertEquals(columnsList.size(), defaultInventoryViewColumnsList.size());
