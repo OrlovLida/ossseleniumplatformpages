@@ -61,6 +61,13 @@ public class ArSettingsPage extends BaseACDPage {
         return true;
     }
 
+    //TODO replace method used in ArSettingsTest with baseACDPage.clearAttributeValue after fix - ACD-3569
+    @Step("I clear Action Template MultiSearchBox")
+    public void clearActionTemplateSearch(String multiSearchFieldId) {
+        ComponentFactory.create(multiSearchFieldId, Input.ComponentType.MULTI_SEARCHBOX, driver, wait).clear();
+        log.info("I clear Action Template MultiSearchBox");
+    }
+
     @Step("Check if created Action Template exists")
     public boolean isThereActionTemplateCreated() {
         log.info("I am in isThereActionTemplateCreated method");

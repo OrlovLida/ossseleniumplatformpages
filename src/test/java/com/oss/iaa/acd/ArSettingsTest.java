@@ -1,9 +1,12 @@
 package com.oss.iaa.acd;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
@@ -16,6 +19,7 @@ import io.qameta.allure.Description;
 @Listeners({TestListener.class})
 public class ArSettingsTest extends BaseTestCase {
 
+    private static final String date = new SimpleDateFormat("dd-MM-yyy_HH:mm").format(new Date());
     private static final Logger log = LoggerFactory.getLogger(AsdScenarioSummaryViewTest.class);
 
     private ArSettingsPage arSettingsPage;
@@ -29,11 +33,13 @@ public class ArSettingsTest extends BaseTestCase {
     private static final String ALL_SCENARIOS = "ALL";
     private static final String SAVE_RULE_BUTTON_LABEL = "Save";
     private static final String DESCRIPTION_MULTI_SEARCH_ID = "description";
-    private static final String DESCRIPTION_MULTI_SEARCH_VALUE = "Desc123";
+    private static final String DESCRIPTION_VALUE = "SELENIUM_DESCRIPTION";
     private static final String PARAM_MULTI_SEARCH = "param";
-    private static final String PARAM_MULTI_SEARCH_VALUE = "Param123";
+    private static final String PARAM_VALUE = "SELENIUM_PARAM";
+    private final String descriptionName = DESCRIPTION_VALUE + "_" + date.replace(":", "_");
+    private final String paramName = PARAM_VALUE + "_" + date.replace(":", "_");
 
-    @BeforeMethod
+    @BeforeClass
     public void goToArSettingsView() {
         arSettingsPage = new ArSettingsPage(driver, webDriverWait).goToPage(driver, arSettingsViewSuffixUrl, BASIC_URL);
     }
@@ -44,8 +50,8 @@ public class ArSettingsTest extends BaseTestCase {
         arSettingsPage.clickAddActionTemplate();
         arSettingsPage.setAttributeValue(TYPE_ACTION_TEMPLATE_COMBOBOX_ID, ACTION_TEMPLATE_TYPE_VALUE);
         arSettingsPage.setAttributeValue(REASON_ACTION_TEMPLATE_COMBOBOX_ID, ACTION_TEMPLATE_REASON_VALUE);
-        arSettingsPage.setAttributeValue(DESCRIPTION_MULTI_SEARCH_ID, DESCRIPTION_MULTI_SEARCH_VALUE);
-        arSettingsPage.setAttributeValue(PARAM_MULTI_SEARCH, PARAM_MULTI_SEARCH_VALUE);
+        arSettingsPage.setAttributeValue(DESCRIPTION_MULTI_SEARCH_ID, descriptionName);
+        arSettingsPage.setAttributeValue(PARAM_MULTI_SEARCH, paramName);
         arSettingsPage.setAttributeValue(SCENARIO_ACTION_TEMPLATE_COMBOBOX_ID, ALL_SCENARIOS);
         log.info("Form has been completed. I try to save it.");
         try {
@@ -62,7 +68,7 @@ public class ArSettingsTest extends BaseTestCase {
     @Description("Verify if created Action Template exists")
     public void searchingForActionTemplate() {
 
-        if (!arSettingsPage.searchingThroughActionTemplates(DESCRIPTION_MULTI_SEARCH_ID, DESCRIPTION_MULTI_SEARCH_VALUE)) {
+        if (!arSettingsPage.searchingThroughActionTemplates(DESCRIPTION_MULTI_SEARCH_ID, descriptionName)) {
             Assert.fail("Action Template table is empty");
         }
 
@@ -70,20 +76,25 @@ public class ArSettingsTest extends BaseTestCase {
             Assert.fail("Action Template table doesn't contain data for provided filters");
         }
         log.info("Action Template has been found. I clear MultiSearchBox.");
-        arSettingsPage.clearAttributeValue(DESCRIPTION_MULTI_SEARCH_ID);
+        arSettingsPage.clearActionTemplateSearch(DESCRIPTION_MULTI_SEARCH_ID);
     }
 
     @Test(priority = 3, testName = "Delete Action Template", description = "Delete Action Template")
     @Description("Delete Action Template")
     public void deleteActionTemplate() {
 
-        if (!arSettingsPage.searchingThroughActionTemplates(DESCRIPTION_MULTI_SEARCH_ID, DESCRIPTION_MULTI_SEARCH_VALUE)) {
+        if (!arSettingsPage.searchingThroughActionTemplates(DESCRIPTION_MULTI_SEARCH_ID, descriptionName)) {
             log.error("Action Template table is empty");
-            arSettingsPage.clearAttributeValue(DESCRIPTION_MULTI_SEARCH_ID);
+            arSettingsPage.clearActionTemplateSearch(DESCRIPTION_MULTI_SEARCH_ID);
             Assert.fail();
         }
         arSettingsPage.selectFirstActionTemplateFromTable();
         arSettingsPage.deleteActionTemplate();
-        arSettingsPage.clearAttributeValue(DESCRIPTION_MULTI_SEARCH_ID);
+
+        if (arSettingsPage.isDataInActionTemplatesTable()) {
+            log.error("Action Template table is not empty despite Action Template has been deleted");
+            Assert.fail();
+        }
+        arSettingsPage.clearActionTemplateSearch(DESCRIPTION_MULTI_SEARCH_ID);
     }
 }
