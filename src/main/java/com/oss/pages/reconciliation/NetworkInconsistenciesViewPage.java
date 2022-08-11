@@ -6,7 +6,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.Input.ComponentType;
 import com.oss.framework.components.mainheader.Notifications;
-import com.oss.framework.components.mainheader.NotificationsInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.table.TableInterface;
@@ -115,39 +114,33 @@ public class NetworkInconsistenciesViewPage extends BasePage {
 
     @Step("Clear old notifications")
     public void clearOldNotification() {
-        NotificationsInterface notifications = Notifications.create(driver, wait);
-        notifications.clearAllNotification();
+        Notifications.create(driver, wait).clearAllNotification();
     }
 
     @Step("Check notification about accepting inconsistencies")
     public String checkNotificationAfterApplyInconsistencies() {
-        NotificationsInterface notifications = Notifications.create(driver, new WebDriverWait(driver, 150));
-        return notifications.getNotificationMessage();
+        return Notifications.create(driver, new WebDriverWait(driver, 150)).getNotificationMessage();
     }
 
     @Step("Check inconsistencies operation type for first object")
     public String checkInconsistenciesOperationType() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        TableInterface table = OldTable.createById(driver, wait, PHYSICAL_INCONSITENCIES_TABLE_ID);
-        return table.getCellValue(0, "Operation Type");
+        return OldTable.createById(driver, wait, PHYSICAL_INCONSITENCIES_TABLE_ID).getCellValue(0, "Operation Type");
     }
 
     @Step("Get inconsistency LIVE name")
     public String getLiveName() {
-        OldTreeTableWidget table = getOldTreeTableWidget();
-        return table.getCellValue(0, "Live");
+        return getOldTreeTableWidget().getCellValue(0, "Live");
     }
 
     @Step("Get inconsistency NETWORK name")
     public String getNetworkName() {
-        OldTreeTableWidget table = getOldTreeTableWidget();
-        return table.getCellValue(0, "Network");
+        return getOldTreeTableWidget().getCellValue(0, "Network");
     }
 
     @Step("Get inconsistency NETWORK info by rowName")
     public String getNetworkInfoByRowName(String rowName) {
-        OldTreeTableWidget table = getOldTreeTableWidget();
-        return table.getCellValue(table.getRowNumber(rowName, "Element"), "Network");
+        return getOldTreeTableWidget().getCellValue(getOldTreeTableWidget().getRowNumber(rowName, "Element"), "Network");
     }
 
     @Step("Select object on inconsistencies tree")
@@ -162,8 +155,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
 
     @Step("Expand info about inconsistency by rowName")
     public void expandElementInInconsistenciesTable(String elementName) {
-        OldTreeTableWidget table = getOldTreeTableWidget();
-        table.expandNode(elementName, "Element");
+        getOldTreeTableWidget().expandNode(elementName, "Element");
     }
 
     private OldTreeTableWidget getOldTreeTableWidget() {

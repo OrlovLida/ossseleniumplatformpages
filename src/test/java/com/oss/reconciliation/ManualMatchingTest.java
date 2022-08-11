@@ -285,7 +285,7 @@ public class ManualMatchingTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         globalSearchPage.filterObjectType(EQUIPMENT_TYPE);
         globalSearchPage.expandShowOnAndChooseView(DEVICE_TO_MATCH_NAME, ActionsContainer.EDIT_GROUP_ID, DELETE_IN_GLOBALSEARCH_ID);
-        globalSearchPage.clickYes();
+        globalSearchPage.confirmByLabel("Yes");
     }
 
     private void checkPopupMessageType() {

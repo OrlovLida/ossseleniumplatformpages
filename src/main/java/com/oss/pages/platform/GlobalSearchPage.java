@@ -33,14 +33,13 @@ public class GlobalSearchPage extends BasePage {
         input.setSingleStringValue(objectType);
     }
 
-    @Step("Confirm deletion of object")
-    public void clickYes() {
+    @Step("Confirm action by {label}")
+    public void confirmByLabel(String label) {
         ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
-        prompt.clickButtonByLabel("Yes");
+        prompt.clickButtonByLabel(label);
     }
 
     public CommonList getResultsList() {
         return CommonList.create(driver, wait, OBJECTS_LIST_DATA_ATTRIBUTE_NAME);
     }
-
 }
