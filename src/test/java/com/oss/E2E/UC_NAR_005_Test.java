@@ -200,7 +200,8 @@ public class UC_NAR_005_Test extends BaseTestCase {
     public void deleteLogicalFunction() {
         homePage.chooseFromLeftSideMenu("Inventory View", "Resource Inventory");
         waitForPageToLoad();
-        homePage.setNewObjectType(LF_TYPE);
+        SearchObjectTypePage searchObjectTypePage = new SearchObjectTypePage(driver, webDriverWait);
+        searchObjectTypePage.searchType(LF_TYPE);
         NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
         waitForPageToLoad();
         newInventoryViewPage.searchObject(OBJECT_NAME);
@@ -216,7 +217,8 @@ public class UC_NAR_005_Test extends BaseTestCase {
     public void deleteRouter() {
         homePage.chooseFromLeftSideMenu("Inventory View", "Resource Inventory");
         waitForPageToLoad();
-        homePage.setNewObjectType(DEVICE_TYPE);
+        SearchObjectTypePage searchObjectTypePage = new SearchObjectTypePage(driver, webDriverWait);
+        searchObjectTypePage.searchType(DEVICE_TYPE);
         DelayUtils.sleep(45000);
         NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
         waitForPageToLoad();
