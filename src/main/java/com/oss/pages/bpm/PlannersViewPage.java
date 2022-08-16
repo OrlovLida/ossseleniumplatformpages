@@ -1,8 +1,13 @@
 package com.oss.pages.bpm;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import com.google.common.collect.Multimap;
+import com.oss.framework.components.inputs.Input;
 import com.oss.pages.bpm.processinstances.ProcessWizardPage;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -22,6 +27,7 @@ public class PlannersViewPage extends BasePage {
     private static final String TABS_CONTAINER_ID = "process_instance_hierarchy_bottom_tabs";
     private static final String CREATE_GROUP_ACTION_ID = "CREATE";
     private static final String START_PROCESS_ACTION_ID = "bpm_inventory_view_action_create_process";
+    private static final String START_PROGRAM_ACTION_ID = "bpm_inventory_view_action_create_program";
 
     public PlannersViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -43,9 +49,19 @@ public class PlannersViewPage extends BasePage {
         treeTable.selectNode(rowId);
     }
 
+    public void selectObjectsByRowId(int... indexes) {
+        List<Integer> rows = Arrays.stream(indexes).boxed().collect(Collectors.toList());
+        rows.forEach(this::selectObjectByRowId);
+    }
+
     public void unselectObjectByRowId(int rowId) {
         TreeTableWidget treeTable = getTreeTable();
         treeTable.unselectNode(rowId);
+    }
+
+    public void selectObjectByAttributeValue(String attributeId, String value) {
+        getTreeTable().selectRowByAttributeValue(attributeId, value);
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public List<TableRow> getSelectedRows() {
@@ -140,6 +156,15 @@ public class PlannersViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
+    public Multimap<String, String> searchByAttributeValue(String attributeId, String attributeValue, Input.ComponentType componentType) {
+        TreeTableWidget treeTable = getTreeTable();
+        treeTable.searchByAttribute(attributeId, componentType, attributeValue);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        Multimap<String, String> filterValues = treeTable.getAppliedFilters();
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return filterValues;
+    }
+
     public void clearFilters() {
         TreeTableWidget treeTable = getTreeTable();
         treeTable.clearAllFilters();
@@ -164,6 +189,16 @@ public class PlannersViewPage extends BasePage {
         callAction(CREATE_GROUP_ACTION_ID, START_PROCESS_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         return new ProcessWizardPage(driver);
+    }
+
+    public ProcessWizardPage openProgramCreationWizard() {
+        callAction(CREATE_GROUP_ACTION_ID, START_PROGRAM_ACTION_ID);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return new ProcessWizardPage(driver);
+    }
+
+    public String createProgramWithProcess(String programName, Long plusDays, String programType, String processName, Long plusDaysProcess, String processType) {
+        return openProgramCreationWizard().createProgramWithProcess(programName, plusDays, programType, processName, plusDaysProcess, processType);
     }
 
     public String createSimpleNRP() {

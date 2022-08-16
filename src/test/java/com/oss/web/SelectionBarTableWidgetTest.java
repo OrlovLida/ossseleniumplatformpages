@@ -88,7 +88,7 @@ public class SelectionBarTableWidgetTest extends BaseTestCase {
     public void showAllRows() {
         int allRows = tableWidget.getPagination().getTotalCount();
 
-        inventoryViewPage.selectSeveralObjectsByRowId(0, 2, 4, 6, 8);
+        inventoryViewPage.selectObjectsByRowId(0, 2, 4, 6, 8);
 
         tableWidget.showOnlySelectedRows();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -178,7 +178,7 @@ public class SelectionBarTableWidgetTest extends BaseTestCase {
         inventoryViewPage.selectObjectByRowId(0);
         inventoryViewPage.clearFilters();
 
-        inventoryViewPage.selectSeveralObjectsByRowId(10, 11);
+        inventoryViewPage.selectObjectsByRowId(10, 11);
 
         inventoryViewPage.searchByAttributeValue(attributeId, attributeValue, Input.ComponentType.NUMBER_FIELD);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -191,7 +191,7 @@ public class SelectionBarTableWidgetTest extends BaseTestCase {
     private void selectRowsOnNextPage(int... index) {
         tableWidget.getPagination().goOnNextPage();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        inventoryViewPage.selectSeveralObjectsByRowId(index);
+        inventoryViewPage.selectObjectsByRowId(index);
     }
 
 }

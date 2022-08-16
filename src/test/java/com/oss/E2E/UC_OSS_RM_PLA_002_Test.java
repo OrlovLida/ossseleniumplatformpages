@@ -255,7 +255,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         CLIConfigurationWizardPage cliConfigurationWizardPage = new CLIConfigurationWizardPage(driver);
         cliConfigurationWizardPage.setInputMethod("Search in managed addresses");
         waitForPageToLoad();
-        cliConfigurationWizardPage.setIPHostAddress(ADDRESS + " - " + IP_NETWORK);
+        cliConfigurationWizardPage.setIPHostAddress(ADDRESS);
         waitForPageToLoad();
         cliConfigurationWizardPage.setPort(PORT);
         waitForPageToLoad();

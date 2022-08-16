@@ -41,7 +41,7 @@ public class WAMVArea3Test extends BaseTestCase {
     private static final String LOCATION_ALARMS_TABLE_ID = "area3-location-alarms";
     private static final String HISTORICAL_ALARMS_TABLE_ID = "area3-historical-alarms";
     private static final String SHOW_EMPTY_MOST_WANTED_TAB = "most-wanted-alarm-details";
-    private static final String KNOW_HOW_TEXT_WIDGET_ID = "text-widget";
+    private static final String KNOW_HOW_TEXT_WIDGET_ID = "text|area3|know-how-mo-configurator";
     private static final String KNOW_HOW_INPUT_ID = "KnowHowHTMLInput";
     private static final String KNOW_HOW_TEXT = "Selenium Test Know How";
 
@@ -171,8 +171,7 @@ public class WAMVArea3Test extends BaseTestCase {
             area3Page.clickEditButton();
             area3Page.setValueInHtmlEditor(KNOW_HOW_TEXT, KNOW_HOW_INPUT_ID);
             area3Page.clickSaveButton();
-//          TODO assert will work after fix OSSNGSA-11190
-//            Assert.assertEquals(area3Page.checkValueInHtmlEditor(KNOW_HOW_TEXT_WIDGET_ID), KNOW_HOW_TEXT);
+            Assert.assertEquals(area3Page.checkValueInHtmlEditor(KNOW_HOW_TEXT_WIDGET_ID), KNOW_HOW_TEXT);
         } catch (Exception e) {
             log.error(e.getMessage());
             Assert.fail();

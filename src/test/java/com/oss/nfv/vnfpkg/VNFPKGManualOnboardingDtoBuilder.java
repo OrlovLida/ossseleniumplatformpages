@@ -1,6 +1,5 @@
 package com.oss.nfv.vnfpkg;
 
-import java.util.Collections;
 import java.util.List;
 
 import com.comarch.oss.logical.function.api.dto.AttributeDTO;
@@ -21,7 +20,7 @@ import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.EOCMNFVO_VENDOR_AT
 import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.GENERIC_ATTRIBUTE_VALUE;
 import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.MARKETPLACE_SAMSUNGNFVO_NAME;
 import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.MARKETPLACE_TYPE;
-import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.MASTER_OSS_RELATION_NAME;
+import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.MASTER_MANAGEMENT_SYSTEM_RELATION_NAME;
 import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.NFVO_CATEGORY_ATTRIBUTE_VALUE;
 import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.SamsungNFVO_NAME;
 import static com.oss.nfv.vnfpkg.VNFPKGManualOnboardConstants.SamsungNFVO_TYPE;
@@ -103,7 +102,7 @@ public class VNFPKGManualOnboardingDtoBuilder {
     }
 
     private static LogicalFunctionSyncDTO getCreateSamsungNfvoMarketplaceDto(Long samsungNfvoId) {
-        return getCreateNfvoRelatedDto(MARKETPLACE_SAMSUNGNFVO_NAME, MARKETPLACE_TYPE, getMasterOssRelation(samsungNfvoId));
+        return getCreateNfvoRelatedDto(MARKETPLACE_SAMSUNGNFVO_NAME, MARKETPLACE_TYPE, getMasterManagementSystemRelation(samsungNfvoId));
     }
 
     private static LogicalFunctionSyncDTO getCreateSamsungNfvoVimDto(Long samsungNfvoId) {
@@ -111,7 +110,7 @@ public class VNFPKGManualOnboardingDtoBuilder {
     }
 
     private static LogicalFunctionSyncDTO getCreateEocmNfvoVnfmDto(Long eocmNfvoId) {
-        return getCreateNfvoRelatedDto(VNFM_EOCMNFVO_NAME, VNFM_TYPE, getMasterOssRelation(eocmNfvoId));
+        return getCreateNfvoRelatedDto(VNFM_EOCMNFVO_NAME, VNFM_TYPE, getMasterManagementSystemRelation(eocmNfvoId));
     }
 
     private static LogicalFunctionSyncDTO getCreateNfvoRelatedDto(String name,
@@ -125,15 +124,15 @@ public class VNFPKGManualOnboardingDtoBuilder {
             .build();
     }
 
-    private static List<AttributeDTO> getMasterOssRelation(Long eocmNfvoId) {
+    private static List<AttributeDTO> getMasterManagementSystemRelation(Long eocmNfvoId) {
         return ImmutableList.of(
-            getAttribute(MASTER_OSS_RELATION_NAME, eocmNfvoId.toString())
+            getAttribute(MASTER_MANAGEMENT_SYSTEM_RELATION_NAME, eocmNfvoId.toString())
         );
     }
 
-    private static List<AttributeDTO> getVIMAttributes(Long masterOSS) {
+    private static List<AttributeDTO> getVIMAttributes(Long masterManagementSystem) {
         return Lists.newArrayList(
-                getAttribute(MASTER_OSS_RELATION_NAME, masterOSS.toString()),
+                getAttribute(MASTER_MANAGEMENT_SYSTEM_RELATION_NAME, masterManagementSystem.toString()),
                 getAttribute(CATEGORY_ATTRIBUTE_NAME, VIM_CATEGORY_ATTRIBUTE_VALUE),
                 getAttribute(VENDOR_ATTRIBUTE_NAME, GENERIC_ATTRIBUTE_VALUE)
         );
