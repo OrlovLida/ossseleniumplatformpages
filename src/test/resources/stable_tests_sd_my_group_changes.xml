@@ -4,14 +4,14 @@
         <parameter name="changeRequester" value="sd_seleniumtest"/>
         <parameter name="changeAssignee" value="Tier 2 Mobile"/>
         <classes>
-            <class name="com.oss.servicedesk.changemanagement.MyGroupChangesTest"/>
+            <class name="com.oss.iaa.servicedesk.changemanagement.MyGroupChangesTest"/>
         </classes>
     </test>
     <test name="ClosedChangesTest">
         <parameter name="changeRequester" value="sd_seleniumtest"/>
         <parameter name="changeAssignee" value="Tier 2 Mobile"/>
         <classes>
-            <class name="com.oss.servicedesk.changemanagement.ClosedChangesTest"/>
+            <class name="com.oss.iaa.servicedesk.changemanagement.ClosedChangesTest"/>
         </classes>
     </test>
 </suite>

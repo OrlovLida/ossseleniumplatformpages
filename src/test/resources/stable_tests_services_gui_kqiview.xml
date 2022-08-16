@@ -2,7 +2,7 @@
 <suite name="ServicesGuiSQM-CRUD" thread-count="1" parallel="tests" verbose="1">
     <test name="IndicatorsViewTestDFEPart1">
         <classes>
-            <class name="com.oss.bigdata.kpiview.KpiViewTest"/>
+            <class name="com.oss.iaa.bigdata.kpiview.KpiViewTest"/>
         </classes>
     </test>
     <test name="IndicatorsViewTestDFEPart2">
@@ -10,7 +10,7 @@
         <parameter name="indicator" value="numSkippedTasks"/>
         <parameter name="dimension" value="DataEngineFactETL"/>
         <classes>
-            <class name="com.oss.dpe.IndicatorsViewTest">
+            <class name="com.oss.iaa.dpe.IndicatorsViewTest">
                 <methods>
                     <include name="searchIndicators"/>
                 </methods>
@@ -25,7 +25,7 @@
         <parameter name="filterName" value="DFE Tests"/>
         <parameter name="dimensionFolderWithOptions" value="t:SMOKE#DimHierSelenium"/>
         <classes>
-            <class name="com.oss.dpe.IndicatorsViewTest">
+            <class name="com.oss.iaa.dpe.IndicatorsViewTest">
                 <methods>
                     <include name="verifyIfKpiViewWorksProperly"/>
                     <include name="verifyIfChartTypesWorksProperly"/>
@@ -49,7 +49,7 @@
         <parameter name="dimensionNodesToSelect" value="D3_01,D3_02"/>
         <parameter name="filterName" value="DFE Tests"/>
         <classes>
-            <class name="com.oss.dpe.IndicatorsViewTest">
+            <class name="com.oss.iaa.dpe.IndicatorsViewTest">
                 <methods>
                     <include name="aggregationMethodCheck"/>
                 </methods>

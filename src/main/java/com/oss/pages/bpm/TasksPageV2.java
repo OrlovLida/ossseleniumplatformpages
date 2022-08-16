@@ -1,16 +1,17 @@
 package com.oss.pages.bpm;
 
-import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.table.TableInterface;
-import com.oss.framework.widgets.table.TableWidget;
-import com.oss.pages.BasePage;
-import com.oss.pages.platform.HomePage;
+import java.util.List;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
+import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.table.TableInterface;
+import com.oss.framework.widgets.table.TableWidget;
+import com.oss.pages.BasePage;
+import com.oss.pages.platform.HomePage;
 
 /**
  * @author Paweł Rother
@@ -74,6 +75,7 @@ public class TasksPageV2 extends BasePage {
     }
 
     public void findTask(String processCode, String taskName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
         TableWidget table = getTableWidget();
         table.clearAllFilters();
         table.searchByAttribute(PROCESS_CODE_INPUT_ID, processCode);
@@ -140,6 +142,7 @@ public class TasksPageV2 extends BasePage {
     }
 
     public void showCompletedTasks() {
+        DelayUtils.waitForPageToLoad(driver, wait);
         TableWidget table = getTableWidget();
         table.clearAllFilters();
         table.searchByAttribute(STATUS_INPUT_ID, FINISHED_STATUS);
@@ -155,25 +158,39 @@ public class TasksPageV2 extends BasePage {
     public void completeNRP(String processCode) {
         String ipCode = proceedNRPToImplementationTask(processCode);
         completeTask(ipCode, IMPLEMENTATION_TASK);
+        DelayUtils.waitForPageToLoad(driver, wait);
         startAndCompleteTask(ipCode, ACCEPTANCE_TASK);
-        startAndCompleteTask(ipCode, VERIFICATION_TASK);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        startAndCompleteTask(processCode, VERIFICATION_TASK);
     }
 
     public String proceedNRPToImplementationTask(String processCode) {
         completeTask(processCode, HIGH_LEVEL_PLANNING_TASK);
+        DelayUtils.waitForPageToLoad(driver, wait);
         startAndCompleteTask(processCode, LOW_LEVEL_PLANNING_TASK);
         return proceedNRPFromReadyForIntegration(processCode);
     }
 
     public String proceedNRPFromReadyForIntegration(String processCode) {
+        DelayUtils.waitForPageToLoad(driver, wait);
         startAndCompleteTask(processCode, READY_FOR_INTEGRATION_TASK);
+        String ipCode = getIPCodeFromCompletedNRP(processCode);
+        startAndCompleteTask(ipCode, SCOPE_DEFINITION_TASK);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        startTask(ipCode, IMPLEMENTATION_TASK);
+        return ipCode;
+    }
+
+    private String getIPCodeFromCompletedNRP(String nrpCode) {
         showCompletedTasks();
-        findTask(processCode, READY_FOR_INTEGRATION_TASK);
+        findTask(nrpCode, READY_FOR_INTEGRATION_TASK);
         DelayUtils.sleep(3000);
         TableInterface ipTable = getTaskForm().getIPTable();
         String ipCode = ipTable.getCellValue(0, CODE_LABEL);
-        startAndCompleteTask(ipCode, SCOPE_DEFINITION_TASK);
-        startTask(ipCode, IMPLEMENTATION_TASK);
+        TableWidget table = getTableWidget();
+        table.unselectAllRows();
+        DelayUtils.waitForPageToLoad(driver, wait);
+        table.hideSelectionBar();
         return ipCode;
     }
 

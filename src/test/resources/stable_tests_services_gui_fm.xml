@@ -2,7 +2,7 @@
 <suite name="services_gui_fm" thread-count="2" parallel="tests" verbose="1">
     <test name="FMRegressionTests">
         <packages>
-            <package name="com.oss.faultmanagement"/>
+            <package name="com.oss.iaa.faultmanagement"/>
         </packages>
     </test>
 </suite>

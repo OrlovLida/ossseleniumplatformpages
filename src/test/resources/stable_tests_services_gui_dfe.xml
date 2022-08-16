@@ -2,62 +2,62 @@
 <suite name="ServicesGuiSQM-CRUD" thread-count="2" parallel="tests" verbose="1">
     <test name="EtlDataCollectionsTest">
         <classes>
-            <class name="com.oss.bigdata.dfe.EtlDataCollectionsTest"/>
+            <class name="com.oss.iaa.bigdata.dfe.EtlDataCollectionsTest"/>
         </classes>
     </test>
     <test name="AggregateViewTest">
         <classes>
-            <class name="com.oss.bigdata.dfe.AggregateViewTest"/>
+            <class name="com.oss.iaa.bigdata.dfe.AggregateViewTest"/>
         </classes>
     </test>
     <test name="DictionaryViewTest">
         <classes>
-            <class name="com.oss.bigdata.dfe.DictionaryViewTest"/>
+            <class name="com.oss.iaa.bigdata.dfe.DictionaryViewTest"/>
         </classes>
     </test>
     <test name="ExternalResourcesTest">
         <classes>
-            <class name="com.oss.bigdata.dfe.ExternalResourcesTest"/>
+            <class name="com.oss.iaa.bigdata.dfe.ExternalResourcesTest"/>
         </classes>
     </test>
     <test name="DimensionsViewTest">
         <classes>
-            <class name="com.oss.bigdata.dfe.DimensionsViewTest"/>
+            <class name="com.oss.iaa.bigdata.dfe.DimensionsViewTest"/>
         </classes>
     </test>
     <test name="ProblemsViewTest">
         <classes>
-            <class name="com.oss.bigdata.dfe.ProblemsViewTest"/>
+            <class name="com.oss.iaa.bigdata.dfe.ProblemsViewTest"/>
         </classes>
     </test>
     <test name="ServerGroupTest">
         <classes>
-            <class name="com.oss.bigdata.dfe.ServerGroupTest"/>
+            <class name="com.oss.iaa.bigdata.dfe.ServerGroupTest"/>
         </classes>
     </test>
     <test name="KQIsTest">
         <classes>
-            <class name="com.oss.bigdata.dfe.KQIsTest"/>
+            <class name="com.oss.iaa.bigdata.dfe.KQIsTest"/>
         </classes>
     </test>
     <test name="ThresholdViewTest">
         <classes>
-            <class name="com.oss.bigdata.dfe.ThresholdViewTest"/>
+            <class name="com.oss.iaa.bigdata.dfe.ThresholdViewTest"/>
         </classes>
     </test>
     <test name="DataSourceFromQueryTest">
         <classes>
-            <class name="com.oss.bigdata.dfe.DataSourceFromQueryTest"/>
+            <class name="com.oss.iaa.bigdata.dfe.DataSourceFromQueryTest"/>
         </classes>
     </test>
     <test name="DataSourceFromCSVTest">
         <classes>
-            <class name="com.oss.bigdata.dfe.DataSourceFromCSVTest"/>
+            <class name="com.oss.iaa.bigdata.dfe.DataSourceFromCSVTest"/>
         </classes>
     </test>
     <test name="DataSourceFromKafkaTest">
         <classes>
-            <class name="com.oss.bigdata.dfe.DataSourceFromKafkaTest"/>
+            <class name="com.oss.iaa.bigdata.dfe.DataSourceFromKafkaTest"/>
         </classes>
     </test>
 </suite>

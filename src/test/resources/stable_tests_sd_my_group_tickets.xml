@@ -4,14 +4,14 @@
         <parameter name="MOIdentifier" value="TEST_MO"/>
         <parameter name="ttAssignee" value="Tier 2 Mobile"/>
         <classes>
-            <class name="com.oss.servicedesk.MyGroupTicketsTest"/>
+            <class name="com.oss.iaa.servicedesk.MyGroupTicketsTest"/>
         </classes>
     </test>
     <test name="ClosedTicketTest">
         <parameter name="MOIdentifier" value="TEST_MO"/>
         <parameter name="ttAssignee" value="Tier 2 Mobile"/>
         <classes>
-            <class name="com.oss.servicedesk.ClosedTicketsTest"/>
+            <class name="com.oss.iaa.servicedesk.ClosedTicketsTest"/>
         </classes>
     </test>
 </suite>
