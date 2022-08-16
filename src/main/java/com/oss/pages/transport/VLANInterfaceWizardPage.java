@@ -30,7 +30,7 @@ public class VLANInterfaceWizardPage extends BasePage {
 
     @Step("Set VLAN Interface type to {type}")
     public void setType(String type) {
-        getWizard().setComponentValue(TYPE_ID, type, Input.ComponentType.COMBOBOX);
+        getWizard().setComponentValue(TYPE_ID, type);
     }
 
     @Step("Set Subinterface ID to {subinterfaceId}")
