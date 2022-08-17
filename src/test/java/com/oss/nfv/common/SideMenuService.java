@@ -9,7 +9,7 @@ import com.oss.framework.navigation.sidemenu.SideMenu;
  * @author Marzena Tolpa
  */
 public class SideMenuService {
-    public static final String NETWORK_DOMAINS_PATH = "Network domains";
+    public static final String NETWORK_DOMAINS_PATH = "Network Domains";
 
     public static final String NETWORK_SERVICES_PATH = "Network Services";
     public static final String CREATE_NETWORK_SERVICE_ACTION_LABEL = "Create Network Service";

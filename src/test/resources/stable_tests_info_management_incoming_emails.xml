@@ -4,7 +4,7 @@
         <parameter name="TicketID" value="30"/>
         <parameter name="MessageSubject" value="SeleniumTest"/>
         <classes>
-            <class name="com.oss.servicedesk.infomanagement.IncomingMailsTest"/>
+            <class name="com.oss.iaa.servicedesk.infomanagement.IncomingMailsTest"/>
         </classes>
     </test>
 </suite>

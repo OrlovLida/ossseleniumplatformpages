@@ -87,10 +87,8 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         waitForPageToLoad();
         ProcessOverviewPage processInstancesPage = ProcessOverviewPage.goToProcessOverviewPage(driver, webDriverWait);
         processNRPCode = processInstancesPage.createSimpleNRP();
-        checkMessageSize();
-        checkMessageType(MessageType.SUCCESS);
-        checkMessageContainsText(processNRPCode);
         waitForPageToLoad();
+        closeMessage();
         TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.startTask(processNRPCode, TasksPageV2.HIGH_LEVEL_PLANNING_TASK);
         checkTaskAssignment();
@@ -542,6 +540,11 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
     private void checkTaskCompleted() {
         checkMessageType(MessageType.SUCCESS);
         checkMessageContainsText("Task properly completed.");
+    }
+
+    private void closeMessage() {
+        SystemMessageContainer.create(driver, webDriverWait).close();
+        waitForPageToLoad();
     }
 
     private void waitForPageToLoad() {

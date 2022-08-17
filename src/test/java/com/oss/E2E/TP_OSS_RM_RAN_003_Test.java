@@ -43,8 +43,8 @@ public class TP_OSS_RM_RAN_003_Test extends BaseTestCase {
         softAssert = new SoftAssert();
         ProcessOverviewPage processInstancesPage = ProcessOverviewPage.goToProcessOverviewPage(driver, webDriverWait);
         processDCPCode = processInstancesPage.createSimpleDCP();
-        checkPopup(processDCPCode);
         waitForPageToLoad();
+        closeMessage();
     }
 
     @Test(priority = 2, description = "Start DCP", dependsOnMethods = {"createNewProcess"})
@@ -134,4 +134,8 @@ public class TP_OSS_RM_RAN_003_Test extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
+    private void closeMessage() {
+        SystemMessageContainer.create(driver, webDriverWait).close();
+        waitForPageToLoad();
+    }
 }
