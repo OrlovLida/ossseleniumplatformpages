@@ -28,7 +28,7 @@ public class NavigationPanelPage extends BasePage {
         return new NavigationPanelPage(driver, wait);
     }
 
-    @Step("Check if chosen subcategory button leads to url with name: {expectedSuffix}")
+    @Step("Check if chosen application button leads to url with name: {expectedSuffix}")
     public boolean isChosenUrlOpen(String expectedSuffix) {
         log.info("Check if current url contains text {}", expectedSuffix);
         return driver.getCurrentUrl().contains(expectedSuffix);
