@@ -45,4 +45,9 @@
             <class name="com.oss.iaa.acd.TimeSeriesViewTest"/>
         </classes>
     </test>
+    <test name="AcdNavigationPanelTest">
+        <classes>
+            <class name="com.oss.iaa.acd.AcdNavigationPanelTest"/>
+        </classes>
+    </test>
 </suite>
