@@ -101,21 +101,28 @@ public class AcdNavigationPanelTest extends BaseTestCase {
         Assert.assertTrue(navigationPanelPage.isChosenUrlOpen(AR_SETTINGS_URL_SUFFIX));
     }
 
-    @Test(priority = 9, testName = "Check ASD Assessments button", description = "Check ASD Assessments button")
+    @Test(priority = 9, testName = "Check System Settings button", description = "Check System Settings button")
+    @Description("Check System Settings button")
+    public void checkSystemSettingsButton() {
+        navigationPanelPage.openChosenApplication(ACD_CATEGORY, SYSTEM_SETTINGS_SUBCATEGORY);
+        Assert.assertTrue(navigationPanelPage.isChosenUrlOpen(SYSTEM_SETTINGS_URL_SUFFIX));
+    }
+
+    @Test(priority = 10, testName = "Check ASD Assessments button", description = "Check ASD Assessments button")
     @Description("Check ASD Assessment button")
     public void checkAsdAssessmentButton() {
         navigationPanelPage.openChosenApplication(ACD_CATEGORY, ASD_ASSESSMENT_SUBCATEGORY);
         Assert.assertTrue(navigationPanelPage.isChosenUrlOpen(ASD_ASSESSMENT_URL_SUFFIX));
     }
 
-    @Test(priority = 10, testName = "Check ABGAD Assessments button", description = "Check ABGAD Assessments button")
+    @Test(priority = 11, testName = "Check ABGAD Assessments button", description = "Check ABGAD Assessments button")
     @Description("Check ABGAD Assessment button")
     public void checkAbgadAssessmentButton() {
         navigationPanelPage.openChosenApplication(ACD_CATEGORY, ABGAD_ASSESSMENT_SUBCATEGORY);
         Assert.assertTrue(navigationPanelPage.isChosenUrlOpen(ABGAD_ASSESSMENT_URL_SUFFIX));
     }
 
-    @Test(priority = 11, testName = "Check APD Assessments button", description = "Check APD Assessments button")
+    @Test(priority = 12, testName = "Check APD Assessments button", description = "Check APD Assessments button")
     @Description("Check APD Assessment button")
     public void checkApdAssessmentButton() {
         navigationPanelPage.openChosenApplication(ACD_CATEGORY, APD_ASSESSMENT_SUBCATEGORY);

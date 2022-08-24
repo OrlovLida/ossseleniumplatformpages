@@ -21,10 +21,10 @@ public class FMNavigationPanelTest extends BaseTestCase {
     private static final String ALARM_GENERATOR_SUBCATEGORY = "Alarm Generator";
 
     private static final String FM_DASHBOARD_URL_SUFFIX = "dashboard/predefined/id/_FaultManagement";
-    private static final String FILTER_MANAGER_URL_SUFFIX  = "view/filter-manager/manager";
-    private static final String KEDB_CONFIGURATION_URL_SUFFIX  = "views/fault-management/kedb/configuration";
-    private static final String KEDB_LIBRARY_URL_SUFFIX  = "views/fault-management/kedb/library";
-    private static final String TAGGED_ALARM_LISTS_URL_SUFFIX  = "views/fault-management/tagged-alarm-list";
+    private static final String FILTER_MANAGER_URL_SUFFIX = "view/filter-manager/manager";
+    private static final String KEDB_CONFIGURATION_URL_SUFFIX = "views/fault-management/kedb/configuration";
+    private static final String KEDB_LIBRARY_URL_SUFFIX = "views/fault-management/kedb/library";
+    private static final String TAGGED_ALARM_LISTS_URL_SUFFIX = "views/fault-management/tagged-alarm-list";
     private static final String USER_PREFERENCES_URL_SUFFIX = "view/fault-management/preferences";
     private static final String ALARM_GENERATOR_URL_SUFFIX = "views/fault-management/alarm-generator";
 
@@ -37,56 +37,49 @@ public class FMNavigationPanelTest extends BaseTestCase {
 
     @Test(priority = 1, testName = "Check FM Dashboard button", description = "Check FM Dashboard button")
     @Description("Check FM Dashboard button")
-    public void checkFMDashboardButton(
-    ) {
+    public void checkFMDashboardButton() {
         navigationPanelPage.openChosenApplication(FAULT_MANAGEMENT_CATEGORY, DASHBOARD_SUBCATEGORY);
         Assert.assertTrue(navigationPanelPage.isChosenUrlOpen(FM_DASHBOARD_URL_SUFFIX));
     }
 
     @Test(priority = 2, testName = "Check Filter Manager button", description = "Check Filter Manager button")
     @Description("Check Filter Manager button")
-    public void checkFilterManagerButton(
-    ) {
+    public void checkFilterManagerButton() {
         navigationPanelPage.openChosenApplication(FAULT_MANAGEMENT_CATEGORY, FILTER_MANAGER_SUBCATEGORY);
         Assert.assertTrue(navigationPanelPage.isChosenUrlOpen(FILTER_MANAGER_URL_SUFFIX));
     }
 
     @Test(priority = 3, testName = "Check KEDB configuration button", description = "Check KEDB configuration button")
     @Description("Check KEDB configuration button")
-    public void checkKEDBConfigurationButton(
-    ) {
+    public void checkKEDBConfigurationButton() {
         navigationPanelPage.openChosenApplication(FAULT_MANAGEMENT_CATEGORY, KEDB_CONFIGURATION_SUBCATEGORY);
         Assert.assertTrue(navigationPanelPage.isChosenUrlOpen(KEDB_CONFIGURATION_URL_SUFFIX));
     }
 
     @Test(priority = 4, testName = "Check KEDB library button", description = "Check KEDB library button")
     @Description("Check KEDB library button")
-    public void checkKEDBLibraryButton(
-    ) {
+    public void checkKEDBLibraryButton() {
         navigationPanelPage.openChosenApplication(FAULT_MANAGEMENT_CATEGORY, KEDB_LIBRARY_SUBCATEGORY);
         Assert.assertTrue(navigationPanelPage.isChosenUrlOpen(KEDB_LIBRARY_URL_SUFFIX));
     }
 
     @Test(priority = 5, testName = "Check Tagged Alarms button", description = "Check Tagged Alarms button")
     @Description("Check Tagged Alarms button")
-    public void checkTaggedAlarmsButton(
-    ) {
+    public void checkTaggedAlarmsButton() {
         navigationPanelPage.openChosenApplication(FAULT_MANAGEMENT_CATEGORY, TAGGED_ALARM_LISTS_SUBCATEGORY);
         Assert.assertTrue(navigationPanelPage.isChosenUrlOpen(TAGGED_ALARM_LISTS_URL_SUFFIX));
     }
 
     @Test(priority = 6, testName = "Check User Preferences button", description = "Check User Preferences button")
     @Description("Check User Preferences button")
-    public void checkUserPreferencesButton(
-    ) {
+    public void checkUserPreferencesButton() {
         navigationPanelPage.openChosenApplication(FAULT_MANAGEMENT_CATEGORY, USER_PREFERENCES_SUBCATEGORY);
         Assert.assertTrue(navigationPanelPage.isChosenUrlOpen(USER_PREFERENCES_URL_SUFFIX));
     }
 
     @Test(priority = 7, testName = "Check Alarm Generator button", description = "Check Alarm Generator button")
     @Description("Check Alarm Generator button")
-    public void checkAlarmGeneratorButton(
-    ) {
+    public void checkAlarmGeneratorButton() {
         navigationPanelPage.openChosenApplication(FAULT_MANAGEMENT_CATEGORY, ALARM_GENERATOR_SUBCATEGORY);
         Assert.assertTrue(navigationPanelPage.isChosenUrlOpen(ALARM_GENERATOR_URL_SUFFIX));
     }
