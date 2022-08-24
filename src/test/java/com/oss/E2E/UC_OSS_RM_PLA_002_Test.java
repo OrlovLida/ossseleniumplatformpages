@@ -154,6 +154,8 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         waitForPageToLoad();
         networkViewPage.useContextAction(ActionsContainer.SHOW_ON_GROUP_ID, NetworkViewPage.HIERARCHY_VIEW_ACTION);
         waitForPageToLoad();
+        acceptLeavingPage();
+        waitForPageToLoad();
     }
 
     @Test(priority = 6, description = "Select ethernet interface and open it in New Inventory View", dependsOnMethods = {"moveToHierarchyView"})
@@ -506,6 +508,8 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         checkMessageSize();
         checkMessageType(MessageType.SUCCESS);
     }
+
+    private void acceptLeavingPage() { driver.switchTo().alert().accept(); }
 
     private void checkMessageType(MessageType messageType) {
         softAssert.assertEquals((getFirstMessage().getMessageType()), messageType);
