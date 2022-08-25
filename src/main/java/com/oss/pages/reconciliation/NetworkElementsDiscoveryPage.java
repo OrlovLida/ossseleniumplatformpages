@@ -13,9 +13,9 @@ import io.qameta.allure.Step;
 public class NetworkElementsDiscoveryPage extends BasePage {
 
     private static final String NE_DISCOVERY_OPERATION_WINDOW_ID = "neDiscoveryOperationWindowId";
-    private static final String CREATE_NEW_ENTRY_ID = "neDiscovery_NE_DISCOVERY_OPERATIONActionCREATEId";
+    private static final String CREATE_NEW_OPERATION_ID = "neDiscovery_NE_DISCOVERY_OPERATIONActionCREATEId";
     private static final String NE_DISCOVERY_OPERATION_ENTRY_TABLE_APP = "neDiscoveryOperationEntryTableApp";
-    private static final String DELETE_ENTRY_ID = "neDiscovery_NE_DISCOVERY_OPERATIONActionDELETEId";
+    private static final String DELETE_OPERATION_ID = "neDiscovery_NE_DISCOVERY_OPERATIONActionDELETEId";
     private static final String CONNECTION = "Connection";
 
     public NetworkElementsDiscoveryPage(WebDriver driver) {
@@ -45,9 +45,9 @@ public class NetworkElementsDiscoveryPage extends BasePage {
         getTreeView().selectTreeRow(elementName);
     }
 
-    @Step("Create new entry")
-    public void createNewEntry() {
-        getTreeView().callActionById(CREATE_NEW_ENTRY_ID);
+    @Step("Create new operation")
+    public void createNewOperation() {
+        getTreeView().callActionById(CREATE_NEW_OPERATION_ID);
     }
 
     @Step("Get IPAddress value by {rowIndex}")
@@ -58,11 +58,6 @@ public class NetworkElementsDiscoveryPage extends BasePage {
     @Step("Get Port value by {rowIndex}")
     public String getPortByRowIndex(int rowIndex) {
         return getOldTable().getCellValue(rowIndex, "Port");
-    }
-
-    @Step("Get Pingable value by {rowIndex}")
-    public String getPingableByRowIndex(int rowIndex) {
-        return getOldTable().getCellValue(rowIndex, "Pingable");
     }
 
     @Step("Get State value by {rowIndex}")
@@ -81,8 +76,8 @@ public class NetworkElementsDiscoveryPage extends BasePage {
     }
 
     @Step("Delete entry")
-    public void deleteEntry() {
-        getTreeView().callActionById(DELETE_ENTRY_ID);
+    public void deleteOperation() {
+        getTreeView().callActionById(DELETE_OPERATION_ID);
         ConfirmationBox.create(driver, wait).clickButtonByLabel("Delete");
     }
 
