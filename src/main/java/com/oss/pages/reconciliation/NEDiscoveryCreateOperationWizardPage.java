@@ -11,6 +11,9 @@ public class NEDiscoveryCreateOperationWizardPage extends BasePage {
     private static final String NAME_TEXT_FIELD_ID = "NAME_TEXT_FIELD";
     private static final String IP_ADDRESS_RANGE_TEXT_FIELD_ID = "IP_ADDRESS_RANGE_TEXT_FIELD";
     private static final String DISCOVERY_MODE_RADIO_BUTTON_ID = "DISCOVERY_MODE_RADIO_BUTTON";
+    private static final String HOLD = "Hold";
+    private static final String DISCOVERY = "Discovery";
+    private static final String RECONCILIATION = "Reconciliation";
     private Wizard wizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
 
     public NEDiscoveryCreateOperationWizardPage(WebDriver driver) {
@@ -30,14 +33,14 @@ public class NEDiscoveryCreateOperationWizardPage extends BasePage {
     }
 
     public void selectHoldOperationType() {
-        wizard.setComponentValue(DISCOVERY_MODE_RADIO_BUTTON_ID, "Hold");
+        wizard.setComponentValue(DISCOVERY_MODE_RADIO_BUTTON_ID, HOLD);
     }
 
     public void selectDiscoveryOperationType() {
-        wizard.setComponentValue(DISCOVERY_MODE_RADIO_BUTTON_ID, "Discovery");
+        wizard.setComponentValue(DISCOVERY_MODE_RADIO_BUTTON_ID, DISCOVERY);
     }
 
     public void selectReconciliationOperationType() {
-        wizard.setComponentValue(DISCOVERY_MODE_RADIO_BUTTON_ID, "Reconciliation");
+        wizard.setComponentValue(DISCOVERY_MODE_RADIO_BUTTON_ID, RECONCILIATION);
     }
 }
