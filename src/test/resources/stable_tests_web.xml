@@ -60,4 +60,9 @@
             <class name="com.oss.web.SelectionBarOnTreeTableTest"/>
         </classes>
     </test>
+    <test name="InputsWizardTest">
+        <classes>
+            <class name="com.oss.InputsWizardTest"/>
+        </classes>
+    </test>
 </suite>

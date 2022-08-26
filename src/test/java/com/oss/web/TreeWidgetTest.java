@@ -59,9 +59,11 @@ public class TreeWidgetTest extends BaseTestCase {
     private static final String SLOT_NAME_0 = "0";
     private static final String SLOT_NAME_1 = "1";
     private static final String PORT_01_PATH =
-            LOCATION_NAME + ".Hardware.Router." + DEVICE_NAME + ".Chassis.Chassis.Slots.0.Card." + CARD_MODEL + ".Ports.00";
+            LOCATION_NAME + ".Hardware.Router." + DEVICE_NAME + ".Chassis." + DEVICE_NAME + "/Chassis.Slots.0.Card." + CARD_MODEL
+                    + ".Ports.00";
     private static final String PORT_02_PATH =
-            LOCATION_NAME + ".Hardware.Router." + DEVICE_NAME + ".Chassis.Chassis.Slots.1.Card." + CARD_MODEL + ".Ports.00";;
+            LOCATION_NAME + ".Hardware.Router." + DEVICE_NAME + ".Chassis." + DEVICE_NAME + "/Chassis.Slots.1.Card." + CARD_MODEL
+                    + ".Ports.00";;
     private static final String DEVICE_MODEL_TYPE = "IPDeviceModel";
     private static final String PLUGGABLE_MODULE_01_PATH =
             PORT_01_PATH + ".Pluggable Module Slot.Slot.Pluggable Module.XFP-10G-MM-SR";
@@ -76,8 +78,7 @@ public class TreeWidgetTest extends BaseTestCase {
     private static final String PATH_ROOM_4 = PATH_RELATION_LOCATIONS + "." + SUB_LOCATION_TYPE_FLOOR + "." + FLOOR_NAME
             + ".Locations." + SUB_LOCATION_TYPE_ROOM + "." + ROOM_NAME_4;
     private static final String CARD_MODEL_TYPE = "CardModel";
-    // private static final String DEVICE_ROOT_SLOTS_RELATION_PATH = DEVICE_NAME_2 + ".Chassis."+DEVICE_NAME_2+"/Chassis.Slots";
-    private static final String DEVICE_ROOT_SLOTS_RELATION_PATH = DEVICE_NAME_2 + ".Chassis.Chassis.Slots";
+    private static final String DEVICE_ROOT_SLOTS_RELATION_PATH = DEVICE_NAME_2 + ".Chassis." + DEVICE_NAME_2 + "/Chassis.Slots";
     private static final String DEVICE_ROOT_SLOT_PATH = DEVICE_ROOT_SLOTS_RELATION_PATH + ".0";
     private static final String DEVICE_ROOT_PORT_04 = DEVICE_ROOT_SLOT_PATH + ".Card.A9K-8T-B.Ports.04";
     private static final String DEVICE_ROOT_PORT_05 = DEVICE_ROOT_SLOT_PATH + ".Card.A9K-8T-B.Ports.05";

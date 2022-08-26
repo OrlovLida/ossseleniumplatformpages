@@ -1,0 +1,11 @@
+<Alarms>
+    <Alarm>
+        <notificationIdentifier>SeleniumTestAlarm:Device_G_ImportedAlarm</notificationIdentifier>
+        <perceivedSeverity>1</perceivedSeverity>
+        <serviceAffectingEventFlag>T</serviceAffectingEventFlag>
+        <displayedText>Imported_from_File</displayedText>
+        <eventQualification></eventQualification>
+        <moIdentifier>Test_Selenium</moIdentifier>
+        <referenceId>12345</referenceId>
+    </Alarm>
+</Alarms>
