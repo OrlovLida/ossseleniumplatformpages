@@ -30,7 +30,7 @@ public class TrafficClassTest extends BaseTestCase {
     private static final String PRE_CREATED_LOCATION = "SELENIUM_TRANSPORT_LOCATION";
     private static final String PRE_CREATED_DEVICE = "SeleniumTestDeviceTC";
     private static final String INTERFACE_CREATE = "MGT LAN 0\\1";
-    private static final String INTERFACE_UPDATE = "SFP+ 0\\1";
+    private static final String INTERFACE_UPDATE = "SYNC 0\\1";
     private static final String EDIT_BUTTON_INSIDE_EDIT_GROUP_TEST_ID = "TrafficClassEditContextAction";
     private static final String REMOVE_BUTTON_INSIDE_EDIT_GROUP_TEST_ID = "TrafficClassDeleteContextAction";
     private static final String CREATE_TRAFFIC_CLASS = "CreateTrafficClassContextAction";
@@ -104,7 +104,7 @@ public class TrafficClassTest extends BaseTestCase {
     private TrafficClassCreationWizard goToWizardAtCreate() {
 
         SideMenu sidemenu = SideMenu.create(driver, webDriverWait);
-        sidemenu.callActionByLabel("Inventory View", "Resource Inventory ");
+        sidemenu.callActionByLabel("Inventory View", "Resource Inventory");
         SearchObjectTypePage searchObjectTypePage = new SearchObjectTypePage(driver, webDriverWait);
         searchObjectTypePage.searchType("Physical Device");
 
