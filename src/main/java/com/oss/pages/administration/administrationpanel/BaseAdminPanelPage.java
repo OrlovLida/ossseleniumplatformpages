@@ -16,7 +16,7 @@ import io.qameta.allure.Step;
 
 public abstract class BaseAdminPanelPage extends BasePage {
 
-    protected static final Logger log = LoggerFactory.getLogger(UsersPage.class);
+    protected static final Logger log = LoggerFactory.getLogger(BaseAdminPanelPage.class);
     private static final String HELP_WIZARD_ID = "ADMINISTRATIVE_PANEL_HELP_WIZARD_ID";
     private static final String HELP_BUTTON_ID = "USER_HELP_ACTION_ID";
     private static final String REFRESH_BUTTON_ID = "tableRefreshButton";
@@ -72,6 +72,18 @@ public abstract class BaseAdminPanelPage extends BasePage {
     @Step("Search in table")
     public void searchInTable(String tableId, String searchedText) {
         getOldTable(tableId).fullTextSearch(searchedText);
+    }
+
+    @Step("Change first column")
+    public void changeFirstColumn(String tableId, String columnLabel) {
+        getOldTable(tableId).changeColumnsOrder(columnLabel, 0);
+        log.info("Change '{}' column to be the first", columnLabel);
+    }
+
+    @Step("Get first column label")
+    public String getFirstColumnLabel(String tableId) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return getOldTable(tableId).getColumnsHeaders().get(0);
     }
 
     private OldTable getOldTable(String tableId) {

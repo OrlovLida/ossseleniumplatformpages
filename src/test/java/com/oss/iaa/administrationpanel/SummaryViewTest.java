@@ -71,4 +71,14 @@ public class SummaryViewTest extends BaseTestCase {
         summaryViewPage.clickRefreshInHostsTable();
         Assert.assertFalse(summaryViewPage.isHostsTableEmpty());
     }
+
+    @Parameters("columnLabel")
+    @Test(priority = 7, testName = "Change columns order", description = "Change columns order")
+    @Description("Change columns order")
+    public void changeColumnsOrder(
+            @Optional("Used Memory [MB]") String columnLabel
+    ) {
+        summaryViewPage.changeFirstColumnInHostsTable(columnLabel);
+        Assert.assertEquals(summaryViewPage.getFirstColumnLabelInHostsTable(), columnLabel);
+    }
 }

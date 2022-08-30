@@ -83,9 +83,21 @@ public class SummaryViewPage extends BaseAdminPanelPage {
         log.info("Clicking Refresh button in Hosts table");
     }
 
-    @Step("Check if Users table is empty")
+    @Step("Check if Hosts table is empty")
     public boolean isHostsTableEmpty() {
         return isTableEmpty(HOSTS_TABLE_ID);
+    }
+
+    @Step("Change first column in Hosts table")
+    public void changeFirstColumnInHostsTable(String columnLabel) {
+        changeFirstColumn(HOSTS_TABLE_ID, columnLabel);
+        log.info("Change column {} to be first in hosts table", columnLabel);
+    }
+
+    @Step("Check first column label in Hosts table")
+    public String getFirstColumnLabelInHostsTable() {
+        log.info("Check first column label in Hosts table");
+        return getFirstColumnLabel(HOSTS_TABLE_ID);
     }
 
     public List<String> getVisibleAttributes() {
