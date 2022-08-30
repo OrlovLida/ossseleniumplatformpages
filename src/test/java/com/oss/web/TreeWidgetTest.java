@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.assertj.core.api.Assertions;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -63,9 +62,7 @@ public class TreeWidgetTest extends BaseTestCase {
     private static final String PATH_ROOM_3_UPDATE = PATH_RELATION_LOCATIONS + "." + SUB_LOCATION_TYPE_ROOM + "." + ROOM_3_UPDATE;
     private static final String DEVICE_NAME = LocalDate.now() + "_" + FakeGenerator.getIdNumber();
     private static final String DEVICE_NAME_2 = LocalDate.now() + "_" + FakeGenerator.getIdNumber();
-
     private static final String PATH_DEVICE = LOCATION_NAME + ".Hardware.Router." + DEVICE_NAME;
-
     private static final String CARD_MODEL = "A9K-8T-B";
     private static final String SLOT_NAME_0 = "0";
     private static final String SLOT_NAME_1 = "1";
@@ -317,7 +314,6 @@ public class TreeWidgetTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         String headerNameIV = driver.findElement(By.className(HEADER_TITLE_CLASS)).getText();
         Assert.assertEquals(headerNameIV, INVENTORY_VIEW_TITLE);
-
     }
 
     @Test(priority = 17)
