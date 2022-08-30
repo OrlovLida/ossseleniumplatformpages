@@ -15,6 +15,7 @@ import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.components.contextactions.ActionsContainer;
+import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.components.tree.TreeComponent.Node;
@@ -304,9 +305,7 @@ public class TreeWidgetTest extends BaseTestCase {
         hierarchyViewPage.selectNodeByLabelsPath(PATH_ROOM_1);
         hierarchyViewPage.selectNodeByLabelsPath(PATH_DEVICE);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-
-        hierarchyViewPage.getMainTree().clickOnGroup(ActionsContainer.SHOW_ON_GROUP_ID);
-
+        Button.createById(driver, ActionsContainer.SHOW_ON_GROUP_ID).click();
         Assert.assertFalse(CSSUtils.isElementPresent(driver, OPEN_INVENTORY_VIEW_CONTEXT_ACTION_ID));
     }
 
@@ -320,6 +319,7 @@ public class TreeWidgetTest extends BaseTestCase {
         Assert.assertEquals(headerNameIV, INVENTORY_VIEW_TITLE);
 
     }
+
     @Test(priority = 17)
     public void checkBadges() {
         deviceId2 = createRouterWithCards(DEVICE_NAME_2);
