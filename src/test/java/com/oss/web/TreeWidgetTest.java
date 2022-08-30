@@ -74,7 +74,6 @@ public class TreeWidgetTest extends BaseTestCase {
     private static final String PORT_02_PATH =
             LOCATION_NAME + ".Hardware.Router." + DEVICE_NAME + ".Chassis." + DEVICE_NAME + "/Chassis.Slots.1.Card." + CARD_MODEL
                     + ".Ports.00";
-    ;
     private static final String DEVICE_MODEL_TYPE = "IPDeviceModel";
     private static final String PLUGGABLE_MODULE_01_PATH =
             PORT_01_PATH + ".Pluggable Module Slot.Slot.Pluggable Module.XFP-10G-MM-SR";
@@ -321,7 +320,6 @@ public class TreeWidgetTest extends BaseTestCase {
         Assert.assertEquals(headerNameIV, INVENTORY_VIEW_TITLE);
 
     }
-
     @Test(priority = 17)
     public void checkBadges() {
         deviceId2 = createRouterWithCards(DEVICE_NAME_2);
