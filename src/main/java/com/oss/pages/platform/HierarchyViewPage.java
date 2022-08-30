@@ -148,6 +148,13 @@ public class HierarchyViewPage extends BasePage {
         }
     }
 
+    public void unselectNodeByLabelsPath(String labels) {
+        Node node = getMainTree().getNodeByLabelsPath(labels);
+        if (node.isToggled()) {
+            node.toggleNode();
+        }
+    }
+
     public String getGroupActionLabel(String groupId) {
         return getMainTree().getGroupActionLabel(groupId);
     }
