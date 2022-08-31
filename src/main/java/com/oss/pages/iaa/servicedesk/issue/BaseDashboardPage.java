@@ -53,6 +53,19 @@ public abstract class BaseDashboardPage extends BaseSDPage {
         return OldTable.createById(driver, wait, getTableID());
     }
 
+    @Step("I check if Table exists")
+    public boolean checkIfTableExists() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("I check if table exists");
+        if (!getTable().hasNoData()) {
+            log.info("Table exists and has some data");
+            return true;
+        } else {
+            log.error("Table doesn't exist");
+            return false;
+        }
+    }
+
     @Step("Check if Reminder icon is present in Table")
     public boolean isReminderPresent(int cellIndex, String reminderText) {
         String iconTitles = getTable().getCellValue(cellIndex, STATE_ATTRIBUTE);
