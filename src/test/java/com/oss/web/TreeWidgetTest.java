@@ -24,6 +24,7 @@ import com.oss.framework.widgets.tree.TreeWidgetV2;
 import com.oss.pages.physical.CreatePluggableModuleWizardPage;
 import com.oss.pages.physical.SublocationWizardPage;
 import com.oss.pages.platform.HierarchyViewPage;
+import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.repositories.AddressRepository;
 import com.oss.repositories.LocationInventoryRepository;
 import com.oss.repositories.PhysicalInventoryRepository;
@@ -312,8 +313,8 @@ public class TreeWidgetTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hierarchyViewPage.getMainTree().callActionById(ActionsContainer.SHOW_ON_GROUP_ID, OPEN_INVENTORY_VIEW_CONTEXT_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        String headerNameIV = driver.findElement(By.className(HEADER_TITLE_CLASS)).getText();
-        Assert.assertEquals(headerNameIV, INVENTORY_VIEW_TITLE);
+        NewInventoryViewPage inventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
+        Assert.assertEquals(inventoryViewPage.getViewTitle(), INVENTORY_VIEW_TITLE);
     }
 
     @Test(priority = 17)
