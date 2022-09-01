@@ -10,6 +10,7 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
+import com.oss.framework.iaa.widgets.dpe.toolbarpanel.ExportPanel;
 import com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel;
 import com.oss.pages.iaa.bigdata.kqiview.KpiViewPage;
 import com.oss.utils.TestListener;
@@ -34,9 +35,9 @@ public class KpiViewTest extends BaseTestCase {
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
-    @Test(priority = 1)
-    @Description("I verify if KPI View works properly")
-    public void verifyIfKpiViewWorksProperly(
+    @Test(priority = 1, testName = "Check exporting chart", description = "Check exporting chart")
+    @Description("Check exporting chart")
+    public void checkExport(
             @Optional("DFE Tests,DFE Product Tests,Selenium Tests") String indicatorNodesToExpand,
             @Optional("CPU_NICE_USAGE,CPU_TOTAL_USAGE") String indicatorNodesToSelect,
             @Optional("t:SMOKE#D_HOST") String dimensionNodesToExpand,
@@ -45,7 +46,10 @@ public class KpiViewTest extends BaseTestCase {
     ) {
         try {
             kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
-            kpiViewPage.getKpiToolbar().exportChart();
+            kpiViewPage.getKpiToolbar().exportChart(ExportPanel.ExportType.JPG);
+            kpiViewPage.getKpiToolbar().exportChart(ExportPanel.ExportType.PNG);
+            kpiViewPage.getKpiToolbar().exportChart(ExportPanel.ExportType.PDF);
+            kpiViewPage.getKpiToolbar().exportChart(ExportPanel.ExportType.XLSX);
             kpiViewPage.attachExportedChartToReport();
             attachConsoleLogs(driver);
         } catch (Exception e) {
