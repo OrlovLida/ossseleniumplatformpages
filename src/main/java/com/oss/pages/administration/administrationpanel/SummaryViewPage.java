@@ -31,11 +31,9 @@ public class SummaryViewPage extends BaseAdminPanelPage {
         super(driver, wait);
     }
 
-    public static SummaryViewPage goToPage(WebDriver driver) {
+    public static SummaryViewPage goToSummaryPage(WebDriver driver) {
         WebDriverWait wait = new WebDriverWait(driver, 90);
-        driver.get(SUMMARY_PAGE_URL);
-        DelayUtils.waitForPageToLoad(driver, wait);
-        log.info("Opened page: {}", SUMMARY_PAGE_URL);
+        goToPage(driver, wait, SUMMARY_PAGE_URL);
         return new SummaryViewPage(driver, wait);
     }
 

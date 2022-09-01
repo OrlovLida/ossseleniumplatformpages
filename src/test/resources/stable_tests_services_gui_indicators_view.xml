@@ -5,22 +5,7 @@
             <class name="com.oss.iaa.dpe.IndicatorsViewTest"/>
         </classes>
     </test>
-    <test name="IndicatorsViewTestPart2">
-        <parameter name="indicatorNodesToExpand"
-                   value="All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators"/>
-        <parameter name="indicatorNodesToSelect" value="DBTIME"/>
-        <parameter name="dimensionNodesToExpand" value="Self Monitoring Package,MOs: self:DPE:IF Run Analysis"/>
-        <parameter name="dimensionNodesToSelect" value="DC Type: THRES_DC"/>
-        <parameter name="filterName" value="All Self Monitoring"/>
-        <classes>
-            <class name="com.oss.iaa.bigdata.kpiview.KpiViewTest">
-                <methods>
-                    <include name="verifyIfKpiViewWorksProperly"/>
-                </methods>
-            </class>
-        </classes>
-    </test>
-    <test name="IndicatorsViewTestPart3 - Bookmarks Test">
+    <test name="Bookmarks Test">
         <classes>
             <class name="com.oss.iaa.bigdata.dfe.BookmarkTest"/>
         </classes>

@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.HtmlEditor;
+import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.wizard.Wizard;
@@ -18,17 +19,16 @@ public abstract class BaseAdminPanelPage extends BasePage {
 
     protected static final Logger log = LoggerFactory.getLogger(BaseAdminPanelPage.class);
     private static final String HELP_WIZARD_ID = "ADMINISTRATIVE_PANEL_HELP_WIZARD_ID";
-    private static final String HELP_BUTTON_ID = "USER_HELP_ACTION_ID";
     private static final String REFRESH_BUTTON_ID = "tableRefreshButton";
 
     protected BaseAdminPanelPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
     }
 
-    @Step("Click Help button")
-    public void clickHelp(String tableId) {
-        getOldTable(tableId).callAction(HELP_BUTTON_ID);
-        log.info("Clicking Help button");
+    public static void goToPage(WebDriver driver, WebDriverWait wait, String url) {
+        driver.get(url);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Opened page: {}", url);
     }
 
     @Step("Check if text in Help is displayed")
@@ -50,6 +50,7 @@ public abstract class BaseAdminPanelPage extends BasePage {
     @Step("Click Refresh in table")
     public void clickRefreshInTable(String tableId) {
         getOldTable(tableId).callAction(ActionsContainer.KEBAB_GROUP_ID, REFRESH_BUTTON_ID);
+        log.info("Clicking Refresh in table");
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
@@ -62,6 +63,7 @@ public abstract class BaseAdminPanelPage extends BasePage {
     @Step("Select first row in table")
     public void selectFirstRowInTable(String tableId) {
         getOldTable(tableId).selectFirstRow();
+        log.info("Selecting first row in the table");
     }
 
     @Step("Get value from first row in table")
@@ -84,6 +86,19 @@ public abstract class BaseAdminPanelPage extends BasePage {
     public String getFirstColumnLabel(String tableId) {
         DelayUtils.waitForPageToLoad(driver, wait);
         return getOldTable(tableId).getColumnsHeaders().get(0);
+    }
+
+    @Step("Set Filter in Column")
+    public void setColumnFilter(String tableId, String columnLabel, String value) {
+        getOldTable(tableId).searchByAttributeWithLabel(columnLabel, Input.ComponentType.TEXT_FIELD, value);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Search in: {} for: {}", columnLabel, value);
+    }
+
+    @Step("Go to next page by clicking Pages Navigation button in table")
+    public void goToNextPage(String tableId) {
+        getOldTable(tableId).goToNextPage();
+        log.info("Clicking Pages Navigation button in table");
     }
 
     private OldTable getOldTable(String tableId) {

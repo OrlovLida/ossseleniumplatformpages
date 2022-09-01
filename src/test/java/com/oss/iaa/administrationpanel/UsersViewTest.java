@@ -17,7 +17,7 @@ public class UsersViewTest extends BaseTestCase {
 
     @BeforeMethod
     public void openUsersView() {
-        usersPage = UsersPage.goToPage(driver);
+        usersPage = UsersPage.goToUsersPage(driver);
     }
 
     @Test(priority = 1, testName = "Check Help button", description = "Check Help button")

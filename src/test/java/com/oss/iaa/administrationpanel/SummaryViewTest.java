@@ -20,7 +20,7 @@ public class SummaryViewTest extends BaseTestCase {
 
     @BeforeMethod
     public void goToAdminPanelSummaryPage() {
-        summaryViewPage = SummaryViewPage.goToPage(driver);
+        summaryViewPage = SummaryViewPage.goToSummaryPage(driver);
     }
 
     @Parameters("environmentName")
