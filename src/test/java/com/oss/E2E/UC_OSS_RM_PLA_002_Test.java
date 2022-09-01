@@ -20,8 +20,8 @@ import com.oss.framework.components.mainheader.Notifications;
 import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.navigation.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bpm.TasksPage;
-import com.oss.pages.bpm.processinstances.ProcessWizardPage;
+import com.oss.pages.bpm.ProcessOverviewPage;
+import com.oss.pages.bpm.TasksPageV2;
 import com.oss.pages.filtermanager.ShareFilterPage;
 import com.oss.pages.mediation.CLIConfigurationWizardPage;
 import com.oss.pages.mediation.ViewConnectionConfigurationPage;
@@ -60,11 +60,9 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
     private static final String PASSWORD = "cisco";
     private static final String COMMAND_TIMEOUT = "20";
     private static final String CONNECTION_TIMEOUT = "20";
+    private static final String IP_ADDRESS_WIZARD_MODE = "Existing address selection";
     private static final String IP_NETWORK = "E2ESeleniumTest";
     private static final String TEMPLATE_EXECUTION_NOTIFICATION = "Script execution finished";
-    private static final String BUSINESS_PROCESS_MANAGEMENT = "Business Process Management";
-    private static final String BPM_AND_PLANNING = "BPM and Planning";
-    private static final String PROCESS_INSTANCES = "Process Instances";
     private static final String BOOKMARKS = "Bookmarks";
     private static final String FAVOURITES = "Favourites";
     private static final String LAB_NETWORK_VIEW = "LAB Network View";
@@ -88,16 +86,12 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
     @Description("Create and start NRP Process")
     public void createProcessNRP() {
         waitForPageToLoad();
-        homePage.chooseFromLeftSideMenu(PROCESS_INSTANCES, BPM_AND_PLANNING, BUSINESS_PROCESS_MANAGEMENT);
+        ProcessOverviewPage processInstancesPage = ProcessOverviewPage.goToProcessOverviewPage(driver, webDriverWait);
+        processNRPCode = processInstancesPage.createSimpleNRP();
         waitForPageToLoad();
-        ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
-        processNRPCode = processWizardPage.createSimpleNRP();
-        checkMessageSize();
-        checkMessageType(MessageType.SUCCESS);
-        checkMessageContainsText(processNRPCode);
-        waitForPageToLoad();
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.startTask(processNRPCode, TasksPage.HIGH_LEVEL_PLANNING_TASK);
+        closeMessage();
+        TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        tasksPage.startTask(processNRPCode, TasksPageV2.HIGH_LEVEL_PLANNING_TASK);
         checkTaskAssignment();
     }
 
@@ -170,7 +164,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         String labelpath = DEVICE_NAME + ".Ports." + PORT_NAME + ".Termination Points.EthernetInterface_TP." + PORT_NAME;
         hierarchyViewPage.selectNodeByLabelsPath(labelpath);
         waitForPageToLoad();
-        hierarchyViewPage.useTreeContextAction(ActionsContainer.SHOW_ON_GROUP_ID, "InventoryView");
+        hierarchyViewPage.callAction(ActionsContainer.SHOW_ON_GROUP_ID, "InventoryView");
     }
 
     @Test(priority = 7, description = "Assign IP V4 address", dependsOnMethods = {"selectEthernetInterface"})
@@ -184,7 +178,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         waitForPageToLoad();
         IPAddressAssignmentWizardPage ipAddressAssignmentWizardPage = new IPAddressAssignmentWizardPage(driver);
         IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties = IPAddressAssignmentWizardProperties.builder()
-                .address(ADDRESS).subnet("10.10.20.0/24 [" + IP_NETWORK + "]").isPrimary("false").build();
+                .address(ADDRESS).subnet("10.10.20.0/24 [" + IP_NETWORK + "]").isPrimary("false").wizardMode(IP_ADDRESS_WIZARD_MODE).build();
         ipAddressAssignmentWizardPage.assignMoToIPAddress(ipAddressAssignmentWizardProperties);
         waitForPageToLoad();
     }
@@ -287,11 +281,11 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
     @Test(priority = 11, description = "Go through NRP task to IP Implementation task and click Perform Configuration", dependsOnMethods = {"createDevice"})
     @Description("Go through NRP task to IP Implementation task and click Perform Configuration")
     public void startImplementationTaskIP() {
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         processIPCode = tasksPage.proceedNRPToImplementationTask(processNRPCode);
         waitForPageToLoad();
         Notifications.create(driver, webDriverWait).clearAllNotification();
-        tasksPage.findTask(processIPCode, TasksPage.IMPLEMENTATION_TASK);
+        tasksPage.findTask(processIPCode, TasksPageV2.IMPLEMENTATION_TASK);
         DelayUtils.sleep(3000);
         waitForPageToLoad();
         tasksPage.clickPerformConfigurationButton();
@@ -338,12 +332,12 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
     @Test(priority = 14, description = "Assign File to Process", dependsOnMethods = {"startImplementationTaskIP"})
     @Description("Assign File to Process")
     public void assignFile() {
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         try {
             java.net.URL resource = CreateProcessNRPTest.class.getClassLoader().getResource("bpm/SeleniumTest.txt");
             assert resource != null;
             String absolutePatch = Paths.get(resource.toURI()).toFile().getAbsolutePath();
-            tasksPage.addFile(processIPCode, TasksPage.IMPLEMENTATION_TASK, absolutePatch);
+            tasksPage.addFile(processIPCode, TasksPageV2.IMPLEMENTATION_TASK, absolutePatch);
             checkMessageType(MessageType.SUCCESS);
         } catch (URISyntaxException e) {
             throw new RuntimeException("Cannot load file", e);
@@ -356,16 +350,16 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
     @Test(priority = 15, description = "Complete IP and NRP process", dependsOnMethods = {"startImplementationTaskIP"})
     @Description("Complete IP and NRP process")
     public void completeIpAndNrp() {
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.completeTask(processIPCode, TasksPage.IMPLEMENTATION_TASK);
+        TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        tasksPage.completeTask(processIPCode, TasksPageV2.IMPLEMENTATION_TASK);
         checkTaskCompleted();
-        tasksPage.startTask(processIPCode, TasksPage.ACCEPTANCE_TASK);
+        tasksPage.startTask(processIPCode, TasksPageV2.ACCEPTANCE_TASK);
         checkTaskAssignment();
-        tasksPage.completeTask(processIPCode, TasksPage.ACCEPTANCE_TASK);
+        tasksPage.completeTask(processIPCode, TasksPageV2.ACCEPTANCE_TASK);
         checkTaskCompleted();
-        tasksPage.startTask(processNRPCode, TasksPage.VERIFICATION_TASK);
+        tasksPage.startTask(processNRPCode, TasksPageV2.VERIFICATION_TASK);
         checkTaskAssignment();
-        tasksPage.completeTask(processNRPCode, TasksPage.VERIFICATION_TASK);
+        tasksPage.completeTask(processNRPCode, TasksPageV2.VERIFICATION_TASK);
         checkTaskCompleted();
     }
 
@@ -547,6 +541,11 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
     private void checkTaskCompleted() {
         checkMessageType(MessageType.SUCCESS);
         checkMessageContainsText("Task properly completed.");
+    }
+
+    private void closeMessage() {
+        SystemMessageContainer.create(driver, webDriverWait).close();
+        waitForPageToLoad();
     }
 
     private void waitForPageToLoad() {

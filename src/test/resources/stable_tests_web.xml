@@ -50,4 +50,19 @@
             <class name="com.oss.web.SetDataFormatAndTimeZoneTest"/>
         </classes>
     </test>
+    <test name="TreeTableWidgetTest">
+        <classes>
+            <class name="com.oss.web.TreeTableWidgetTest"/>
+        </classes>
+    </test>
+    <test name="SelectionBarOnTreeTableTest">
+        <classes>
+            <class name="com.oss.web.SelectionBarOnTreeTableTest"/>
+        </classes>
+    </test>
+    <test name="InputsWizardTest">
+        <classes>
+            <class name="com.oss.InputsWizardTest"/>
+        </classes>
+    </test>
 </suite>

@@ -15,7 +15,7 @@ public class VNFPKGManualOnboardConstants {
     public static final String NFVO_CATEGORY_ATTRIBUTE_VALUE = "NFVO";
     public static final String VIM_CATEGORY_ATTRIBUTE_VALUE = "VIM";
     public static final String GENERIC_ATTRIBUTE_VALUE = "Generic";
-    public static final String MASTER_OSS_RELATION_NAME = "MasterOSS";
+    public static final String MASTER_MANAGEMENT_SYSTEM_RELATION_NAME = "MasterManagementSystem";
 
     public static final String VNFPKG_IDENTIFIER = "VNFPKGSamsungLGU210vSPGW202002seleniumtest64258";
     public static final String VNFPKG_NAME = "VNFPKGSamsung-LGU210-vSPGW-202002-seleniumtest64258";

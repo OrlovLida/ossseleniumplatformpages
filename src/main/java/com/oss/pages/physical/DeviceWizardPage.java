@@ -32,6 +32,7 @@ public class DeviceWizardPage extends BasePage {
     private static final String DEVICE_FIRMWARE_VERSION_DATA_ATTRIBUTE_NAME = "firmwareVersion";
     private static final String DEVICE_HARDWARE_VERSION_DATA_ATTRIBUTE_NAME = "hardwareVersion";
     private static final String DEVICE_DESCRIPTION_DATA_ATTRIBUTE_NAME = "description";
+    private static final String DEVICE_REMARKS_DATA_ATTRIBUTE_NAME = "remarks";
     private static final String DEVICE_CREATE_WIZARD_PLAN = "device_create_wizard_view";
     private static final String DEVICE_CREATE_WIZARD_LIVE = "devices_create_wizard_view";
     private static final String DEVICE_UPDATE_WIZARD = "device_update_wizard_view";
@@ -173,6 +174,11 @@ public class DeviceWizardPage extends BasePage {
         getDeviceWizard().setComponentValue(DEVICE_DESCRIPTION_DATA_ATTRIBUTE_NAME, description);
     }
 
+    @Step("Set Remarks")
+    public void setRemarks(String remarks) {
+        getDeviceWizard().setComponentValue(DEVICE_REMARKS_DATA_ATTRIBUTE_NAME, remarks);
+    }
+
     @Step("Set Cooling Capacity")
     public void setCoolingCapacity(String coolingCapacity) {
         String deviceCoolingCapacityDataAttributeName =
@@ -228,11 +234,17 @@ public class DeviceWizardPage extends BasePage {
 
     @Step("Click Accept button in Create Device Wizard")
     public void accept() {
+        if (isNextStepPresent()) {
+            next();
+        }
         getDeviceWizard().clickAccept();
     }
 
     @Step("Click Accept button in Update Device Wizard")
     public void acceptUpdateWizard() {
+        if (isNextStepPresent()) {
+            nextUpdateWizard();
+        }
         getDeviceWizard().clickButtonById(ACCEPT_UPDATE_WIZARD_BUTTON_DATA_ATTRIBUTE_NAME);
     }
 

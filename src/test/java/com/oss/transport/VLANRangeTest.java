@@ -44,7 +44,7 @@ public class VLANRangeTest extends BaseTestCase {
     @Test(priority = 1)
     @Description("Set fields and create VLAN Range")
     public void createVLANRange() {
-        homePage.chooseFromLeftSideMenu("Inventory View", "Resource Inventory ");
+        homePage.chooseFromLeftSideMenu("Inventory View", "Resource Inventory");
         waitForPageToLoad();
         SearchObjectTypePage searchObjectType = new SearchObjectTypePage(driver, webDriverWait);
         searchObjectType.searchType("VLAN Range");

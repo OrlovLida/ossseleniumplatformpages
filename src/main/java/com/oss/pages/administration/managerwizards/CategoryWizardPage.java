@@ -11,7 +11,7 @@ public class CategoryWizardPage extends BaseWizardPage {
 
     private static final Logger log = LoggerFactory.getLogger(CategoryWizardPage.class);
 
-    private static final String CREATE_CATEGORY_WIZARD_ID = "createCategoryForm";
+    private static final String CREATE_CATEGORY_WIZARD_ID = "createCategoryForm_prompt-card";
     private static final String CATEGORY_NAME_ID = "categoryName";
 
     public CategoryWizardPage(WebDriver driver, WebDriverWait wait) {

@@ -1,0 +1,10 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="ServicesGuiServiceDesk" thread-count="2" parallel="tests" verbose="1">
+    <test name="AssignToObject">
+        <parameter name="TicketID" value="30"/>
+        <parameter name="MessageSubject" value="SeleniumTest"/>
+        <classes>
+            <class name="com.oss.iaa.servicedesk.infomanagement.IncomingMailsTest"/>
+        </classes>
+    </test>
+</suite>

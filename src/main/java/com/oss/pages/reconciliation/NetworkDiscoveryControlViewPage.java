@@ -37,9 +37,11 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     private static final String RECO_STATE_REFRESH_BUTTON_ID = "tableRefreshButton";
     private static final String STATUS = "Status";
     private static final String TAB_ID = "narComponent_networkDiscoveryControlViewIdcmDomainWindowId";
+    private static final String DETAILS_ID = "narComponent_CmDomainActionDetailsId";
     private static final String ISSUE_LEVEL = "Issue Level";
     private static final String REASON = "Reason";
     private static final String CONFLICT = "conflict";
+    private static final String RECONCILIATION_WITH_ID = "Reconciliation with ID";
 
     protected NetworkDiscoveryControlViewPage(WebDriver driver) {
         super(driver);
@@ -74,14 +76,27 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     @Step("Query and select CM Domain in Network Discovery Control View")
     public void queryAndSelectCmDomain(String cmDomainName) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getTreeView()
-                .search(cmDomainName);
+        searchForCmDomain(cmDomainName);
         DelayUtils.waitForPageToLoad(driver, wait);
-        getTreeView()
-                .selectTreeRow(cmDomainName);
+        selectCmDomain(cmDomainName);
     }
 
-    @Step("Run full reconciliation for selected CM Domain")
+    @Step("Check if CMDomain exists in Network Discovery Control View")
+    public boolean isCmDomainPresent(String cmDomainName) {
+        return getTreeView().isRowPresent(cmDomainName);
+    }
+
+    @Step("Search for CMDomain in Network Discovery Control View")
+    public void searchForCmDomain(String cmDomainName) {
+        getTreeView().search(cmDomainName);
+    }
+
+    @Step("Select CM Domain in Network Discovery Control View")
+    public void selectCmDomain(String cmDomainName) {
+        getTreeView().selectTreeRow(cmDomainName);
+    }
+
+    @Step("Run full reconciliation for selected Domain")
     public void runReconciliation() {
         TabsInterface tabs = getTabsInterface();
         tabs.selectTabById(RECONCILIATION_TREE_TAB_ID);
@@ -148,6 +163,12 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
+    @Step("Open Details about CMDomain")
+    public void openCMDomainDetails() {
+        TabsInterface ndcvTabs = getTabsInterface();
+        ndcvTabs.callActionById(ActionsContainer.OTHER_GROUP_ID, DETAILS_ID);
+    }
+
     @Step("Check if there are Issues with type {errorType}")
     public boolean checkIssues(IssueLevel errorType) {
         String type = String.valueOf(errorType);
@@ -172,6 +193,20 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         getIssuesTable().searchByAttributeWithLabel(ISSUE_LEVEL, ComponentType.TEXT_FIELD, "");
         getIssuesTable().searchByAttributeWithLabel(REASON, ComponentType.TEXT_FIELD, CONFLICT);
         return getIssuesTable().getCellValue(0, REASON).contains(CONFLICT);
+    }
+
+    @Step("Get CMDomain ID from reconciliation start event")
+    public String getCMDomainIdFromRecoStartEvent() {
+        String cmDomainId = getRecoStartEvent().substring(getRecoStartEvent().indexOf("(ID:"));
+        cmDomainId = cmDomainId.substring(5, (cmDomainId.length() - 6));
+        return cmDomainId;
+    }
+
+    @Step("Get Reconciliation start event")
+    private String getRecoStartEvent() {
+        getIssuesTable().searchByAttributeWithLabel(REASON, ComponentType.TEXT_FIELD, RECONCILIATION_WITH_ID);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return getIssuesTable().getCellValue(0, REASON);
     }
 
     private void logIssues(String type) {

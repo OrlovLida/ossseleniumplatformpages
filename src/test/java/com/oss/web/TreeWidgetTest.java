@@ -53,13 +53,17 @@ public class TreeWidgetTest extends BaseTestCase {
     private static final String ROOM_3_UPDATE = FakeGenerator.getLocation(FakeGenerator.FilmTitle.LORD_OF_THE_RING);
     private static final String PATH_ROOM_3_UPDATE = PATH_RELATION_LOCATIONS + "." + SUB_LOCATION_TYPE_ROOM + "." + ROOM_3_UPDATE;
     private static final String DEVICE_NAME = LocalDate.now() + "_" + FakeGenerator.getIdNumber();
+    private static final String DEVICE_NAME_2 = LocalDate.now() + "_" + FakeGenerator.getIdNumber();
+    
     private static final String CARD_MODEL = "A9K-8T-B";
     private static final String SLOT_NAME_0 = "0";
     private static final String SLOT_NAME_1 = "1";
     private static final String PORT_01_PATH =
-            LOCATION_NAME + ".Hardware.Router." + DEVICE_NAME + ".Chassis.Chassis.Slots.0.Card." + CARD_MODEL + ".Ports.00";
+            LOCATION_NAME + ".Hardware.Router." + DEVICE_NAME + ".Chassis." + DEVICE_NAME + "/Chassis.Slots.0.Card." + CARD_MODEL
+                    + ".Ports.00";
     private static final String PORT_02_PATH =
-            LOCATION_NAME + ".Hardware.Router." + DEVICE_NAME + ".Chassis.Chassis.Slots.1.Card." + CARD_MODEL + ".Ports.00";;
+            LOCATION_NAME + ".Hardware.Router." + DEVICE_NAME + ".Chassis." + DEVICE_NAME + "/Chassis.Slots.1.Card." + CARD_MODEL
+                    + ".Ports.00";;
     private static final String DEVICE_MODEL_TYPE = "IPDeviceModel";
     private static final String PLUGGABLE_MODULE_01_PATH =
             PORT_01_PATH + ".Pluggable Module Slot.Slot.Pluggable Module.XFP-10G-MM-SR";
@@ -74,35 +78,35 @@ public class TreeWidgetTest extends BaseTestCase {
     private static final String PATH_ROOM_4 = PATH_RELATION_LOCATIONS + "." + SUB_LOCATION_TYPE_FLOOR + "." + FLOOR_NAME
             + ".Locations." + SUB_LOCATION_TYPE_ROOM + "." + ROOM_NAME_4;
     private static final String CARD_MODEL_TYPE = "CardModel";
-    private static final String DEVICE_ROOT_SLOTS_RELATION_PATH = DEVICE_NAME + ".Chassis.Chassis.Slots";
+    private static final String DEVICE_ROOT_SLOTS_RELATION_PATH = DEVICE_NAME_2 + ".Chassis." + DEVICE_NAME_2 + "/Chassis.Slots";
     private static final String DEVICE_ROOT_SLOT_PATH = DEVICE_ROOT_SLOTS_RELATION_PATH + ".0";
     private static final String DEVICE_ROOT_PORT_04 = DEVICE_ROOT_SLOT_PATH + ".Card.A9K-8T-B.Ports.04";
-    private static final String DEVICE_ROOT_PORT_05 =  DEVICE_ROOT_SLOT_PATH + ".Card.A9K-8T-B.Ports.05";
+    private static final String DEVICE_ROOT_PORT_05 = DEVICE_ROOT_SLOT_PATH + ".Card.A9K-8T-B.Ports.05";
     private static final String BADGE_1_21 = "1/21";
     private static final String BADGE_1_1 = "1/1";
-    private static final String BADGE_1_39 = "1/39";
+    private static final String BADGE_1_38 = "1/38";
     private static final String CHECK_BUDGE_FOR_ROUTER = "Check budge for Router";
     private static final String IS_BUDGET_PRESENT_FOR_DEVICE = "Is Budget present For Device";
-    private static final String BADGE_1_37 = "1/37";
-    private static final String BADGE_2_39 = "2/39";
-    private static final String BADGE_1_19 = "1/19";
+    private static final String BADGE_1_36 = "1/36";
+    private static final String BADGE_2_38 = "2/38";
+    private static final String BADGE_1_18 = "1/18";
     private static final String BADGE_1_2 = "1/2";
-    private static final String BADGE_2_19 = "2/19";
-    private static final String BADGE_2_37 = "2/37";
-    private static final String BADGE_3_39 = "3/39";
-    private static final String BADGE_3_37 = "3/37";
-    private static final String BADGE_4_39 = "4/39";
-    private static final String BADGE_3_19 = "3/19";
+    private static final String BADGE_2_18 = "2/18";
+    private static final String BADGE_2_36 = "2/36";
+    private static final String BADGE_3_38 = "3/38";
+    private static final String BADGE_3_36 = "3/36";
+    private static final String BADGE_4_38 = "4/38";
+    private static final String BADGE_3_18 = "3/18";
     private static final String CHECKING_BADGES_FOR_SLOTS_RELATION = "Checking bages for Slots Relation";
     private static final String CHECK_BADGE_FOR_PORT_05 = "Check badge for port 05";
-
-
+    
     private Environment env = Environment.getInstance();
     private HierarchyViewPage hierarchyViewPage;
     private String locationId;
     private Long roomId_2;
     private Long roomId_4;
     private Long deviceId;
+    private Long deviceId2;
     
     @BeforeClass
     public void goToHierarchyViewPage() {
@@ -115,7 +119,7 @@ public class TreeWidgetTest extends BaseTestCase {
         hierarchyViewPage.getMainTree().searchByAttribute(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, LOCATION_NAME);
         List<String> nodesLabel = hierarchyViewPage.getVisibleNodesLabel();
         Assertions.assertThat(nodesLabel).contains(LOCATION_NAME);
-
+        
         log.info("Search Location (XID: " + locationId + ") in Hierarchy View");
     }
     
@@ -157,7 +161,7 @@ public class TreeWidgetTest extends BaseTestCase {
     public void expandNextLevel() {
         hierarchyViewPage.expandNextLevel(LOCATION_NAME);
         Node nodeRoom = hierarchyViewPage.getMainTree()
-                .getNode(PATH_ROOM_1);
+                .getNode(ROOM_NAME);
         Assertions.assertThat(nodeRoom.isExpanded()).isFalse();
     }
     
@@ -198,7 +202,7 @@ public class TreeWidgetTest extends BaseTestCase {
         sublocation.setPreciseLocation(LOCATION_NAME);
         DelayUtils.sleep(5000);
         sublocation.clickNext();
-        sublocation.clickAccept();
+        sublocation.create();
         hierarchyViewPage.unselectFirstObject();
         hierarchyViewPage.expandNextLevel(LOCATION_NAME);
         List<String> nodes = hierarchyViewPage.getVisibleNodesLabel();
@@ -232,7 +236,7 @@ public class TreeWidgetTest extends BaseTestCase {
     
     @Test(priority = 11)
     public void multiPluggableModuleCreation() {
-        createRouterWithCards();
+        deviceId = createRouterWithCards(DEVICE_NAME);
         driver.navigate().refresh();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hierarchyViewPage.getMainTree().searchByAttribute(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, LOCATION_NAME);
@@ -283,54 +287,56 @@ public class TreeWidgetTest extends BaseTestCase {
     
     @Test(priority = 15)
     public void checkBadges() {
-        HierarchyViewPage viewPage = HierarchyViewPage.goToHierarchyViewPage(driver, BASIC_URL, "Router", deviceId.toString());
+        deviceId2 = createRouterWithCards(DEVICE_NAME_2);
+        HierarchyViewPage viewPage = HierarchyViewPage.goToHierarchyViewPage(driver, BASIC_URL, "Router", deviceId2.toString());
         Node router = viewPage.getFirstNode();
         Assertions.assertThat(router.isBadgePresent()).as(IS_BUDGET_PRESENT_FOR_DEVICE).isFalse();
-
+        
         router.toggleNode();
         Assertions.assertThat(router.getBadge()).as(CHECK_BUDGE_FOR_ROUTER).isEqualTo(BADGE_1_1);
-
+        
         router.expandNextLevel();
         Assertions.assertThat(router.getBadge()).isEqualTo(BADGE_1_21);
-
+        
         Node slot = viewPage.getNodeByLabelPath(DEVICE_ROOT_SLOT_PATH);
         slot.expandNextLevel();
-        Assertions.assertThat(router.getBadge()).isEqualTo(BADGE_1_39);
-
+        Assertions.assertThat(router.getBadge()).isEqualTo(BADGE_1_38);
+        
         viewPage.selectNodeByLabel(CARD_MODEL);
-        Assertions.assertThat(viewPage.getNodeByLabelPath(DEVICE_NAME).getBadge()).isEqualTo(BADGE_2_39);
-        Assertions.assertThat(viewPage.getNodeByLabelPath(DEVICE_ROOT_SLOT_PATH).getBadge()).isEqualTo(BADGE_1_19);
-
+        Assertions.assertThat(viewPage.getNodeByLabelPath(DEVICE_NAME_2).getBadge()).isEqualTo(BADGE_2_38);
+        Assertions.assertThat(viewPage.getNodeByLabelPath(DEVICE_ROOT_SLOT_PATH).getBadge()).isEqualTo(BADGE_1_18);
+        
         Node slotsRelation = viewPage.getNodeByLabelPath(DEVICE_ROOT_SLOTS_RELATION_PATH);
-        Assertions.assertThat(slotsRelation.getBadge()).isEqualTo(BADGE_1_37);
-
+        Assertions.assertThat(slotsRelation.getBadge()).isEqualTo(BADGE_1_36);
+        
         Node port04 = viewPage.getNodeByLabelPath(DEVICE_ROOT_PORT_04);
         port04.toggleNode();
         Assertions.assertThat(port04.getBadge()).isEqualTo(BADGE_1_2);
-        Assertions.assertThat(viewPage.getNodeByLabelPath(DEVICE_ROOT_SLOT_PATH).getBadge()).isEqualTo(BADGE_2_19);
-        Assertions.assertThat(viewPage.getNodeByLabelPath(DEVICE_ROOT_SLOTS_RELATION_PATH).getBadge()).isEqualTo(BADGE_2_37);
-        Assertions.assertThat(viewPage.getNodeByLabelPath(DEVICE_NAME).getBadge()).isEqualTo(BADGE_3_39);
-
+        Assertions.assertThat(viewPage.getNodeByLabelPath(DEVICE_ROOT_SLOT_PATH).getBadge()).isEqualTo(BADGE_2_18);
+        Assertions.assertThat(viewPage.getNodeByLabelPath(DEVICE_ROOT_SLOTS_RELATION_PATH).getBadge()).isEqualTo(BADGE_2_36);
+        Assertions.assertThat(viewPage.getNodeByLabelPath(DEVICE_NAME_2).getBadge()).isEqualTo(BADGE_3_38);
+        
         Node port05 = viewPage.getNodeByLabelPath(DEVICE_ROOT_PORT_05);
         port05.toggleNode();
         Assertions.assertThat(port05.getBadge()).as(CHECK_BADGE_FOR_PORT_05).isEqualTo(BADGE_1_2);
-        Assertions.assertThat(slot.getBadge()).isEqualTo(BADGE_3_19);
-        Assertions.assertThat(slotsRelation.getBadge()).as(CHECKING_BADGES_FOR_SLOTS_RELATION).isEqualTo(BADGE_3_37);
-        Assertions.assertThat(router.getBadge()).isEqualTo(BADGE_4_39);
-
+        Assertions.assertThat(slot.getBadge()).isEqualTo(BADGE_3_18);
+        Assertions.assertThat(slotsRelation.getBadge()).as(CHECKING_BADGES_FOR_SLOTS_RELATION).isEqualTo(BADGE_3_36);
+        Assertions.assertThat(router.getBadge()).isEqualTo(BADGE_4_38);
+        
         port04.toggleNode();
         Assertions.assertThat(port04.isBadgePresent()).isFalse();
-        Assertions.assertThat(slotsRelation.getBadge()).as(CHECKING_BADGES_FOR_SLOTS_RELATION).isEqualTo(BADGE_2_37);
-        Assertions.assertThat(router.getBadge()).isEqualTo(BADGE_3_39);
-
+        Assertions.assertThat(slotsRelation.getBadge()).as(CHECKING_BADGES_FOR_SLOTS_RELATION).isEqualTo(BADGE_2_36);
+        Assertions.assertThat(router.getBadge()).isEqualTo(BADGE_3_38);
+        
         viewPage.unselectFirstObject();
-        Assertions.assertThat(router.getBadge()).isEqualTo(BADGE_2_39);
-
+        Assertions.assertThat(router.getBadge()).isEqualTo(BADGE_2_38);
+        
     }
-
+    
     @AfterClass
     private void deleteObjects() {
-        deleteDevice();
+        deleteDevice(deviceId);
+        deleteDevice(deviceId2);
         LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);
         locationInventoryRepository.deleteSubLocation(roomId_2.toString());
         locationInventoryRepository.deleteSubLocation(roomId_4.toString());
@@ -371,18 +377,20 @@ public class TreeWidgetTest extends BaseTestCase {
         return addressRepository.getFirstGeographicalAddressId();
     }
     
-    private void createRouterWithCards() {
+    private Long createRouterWithCards(String deviceName) {
         ResourceCatalogClient resourceCatalogClient = new ResourceCatalogClient(env);
         Long deviceModelId = resourceCatalogClient.getModelIds(DEVICE_MODEL);
         PhysicalInventoryRepository physicalInventoryRepository = new PhysicalInventoryRepository(env);
-        deviceId = physicalInventoryRepository.createDevice(LOCATION_TYPE_BUILDING, Long.valueOf(locationId), deviceModelId, DEVICE_NAME,
-                DEVICE_MODEL_TYPE);
+        Long deviceId =
+                physicalInventoryRepository.createDevice(LOCATION_TYPE_BUILDING, Long.valueOf(locationId), deviceModelId, deviceName,
+                        DEVICE_MODEL_TYPE);
         Long cardModelId = resourceCatalogClient.getModelIds(CARD_MODEL);
         physicalInventoryRepository.createCard(deviceId, SLOT_NAME_0, cardModelId, CARD_MODEL_TYPE);
         physicalInventoryRepository.createCard(deviceId, SLOT_NAME_1, cardModelId, CARD_MODEL_TYPE);
+        return deviceId;
     }
     
-    private void deleteDevice() {
+    private void deleteDevice(Long deviceId) {
         PhysicalInventoryRepository physicalInventoryRepository = new PhysicalInventoryRepository(env);
         physicalInventoryRepository.deleteDevice(Long.toString(deviceId));
     }

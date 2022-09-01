@@ -86,7 +86,7 @@ public class ISPConfigurationTest extends BaseTestCase {
     @Test(priority = 1, description = "Create building")
     @Description("Create building")
     public void createBuilding() {
-        homePage.chooseFromLeftSideMenu("Create Physical Location", "Infrastructure management", "Create Infrastructure");
+        homePage.chooseFromLeftSideMenu("Create Physical Location", "Infrastructure Management", "Create Infrastructure");
         LocationWizardPage locationWizardPage = new LocationWizardPage(driver);
         locationWizardPage.setLocationType("Building");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -98,7 +98,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         locationWizardPage.clickNext();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        locationWizardPage.accept();
+        locationWizardPage.create();
         checkPopup();
     }
 
@@ -131,7 +131,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         sublocationWizardPage.clickNext();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        sublocationWizardPage.clickAccept();
+        sublocationWizardPage.create();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         checkPopupAndCloseMessage();
     }
@@ -219,10 +219,10 @@ public class ISPConfigurationTest extends BaseTestCase {
         driver.navigate().refresh();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
-        String labelpath = PHYSICAL_DEVICE_NAME + ".Chassis.Chassis.Slots.LT3.Card.NELT-B";
+        String labelpath = PHYSICAL_DEVICE_NAME + ".Chassis." + PHYSICAL_DEVICE_NAME + "/Chassis.Slots.LT3.Card.NELT-B";
         hierarchyViewPage.selectNodeByLabelsPath(labelpath);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        hierarchyViewPage.useTreeContextAction(ActionsContainer.EDIT_GROUP_ID, "ChangeCardModelAction");
+        hierarchyViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, "ChangeCardModelAction");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -244,7 +244,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
         hierarchyViewPage.selectNodeByLabel(PHYSICAL_DEVICE_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        hierarchyViewPage.useTreeContextAction(ActionsContainer.SHOW_ON_GROUP_ID, "MountingEditorForPhysicalElementAction");
+        hierarchyViewPage.callAction(ActionsContainer.SHOW_ON_GROUP_ID, "MountingEditorForPhysicalElementAction");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -517,7 +517,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         sublocationWizardPage.setSublocationType("Row");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         sublocationWizardPage.clickNext();
-        sublocationWizardPage.clickAccept();
+        sublocationWizardPage.create();
         checkPopupAndCloseMessage();
     }
 
@@ -537,7 +537,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         sublocationWizardPage.clickNext();
         sublocationWizardPage.setQuantity("3");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        sublocationWizardPage.clickAccept();
+        sublocationWizardPage.create();
         checkPopupAndCloseMessage();
     }
 
@@ -550,7 +550,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         SublocationWizardPage sublocationWizardPage = new SublocationWizardPage(driver);
         sublocationWizardPage.setPreciseLocation("Footprint1");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        sublocationWizardPage.clickAccept();
+        sublocationWizardPage.create();
         checkPopupAndCloseMessage();
     }
 

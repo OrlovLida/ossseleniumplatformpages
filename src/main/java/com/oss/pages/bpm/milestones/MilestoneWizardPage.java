@@ -3,7 +3,6 @@ package com.oss.pages.bpm.milestones;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.EditableList;
 import com.oss.pages.BasePage;
-
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 
@@ -29,14 +28,16 @@ public class MilestoneWizardPage extends BasePage {
     private static final String NAME_NOT_EDITABLE_EXCEPTION = "Name is not editable. You need Admin permission";
     private static final String DUE_DATE_LABEL = "Due Date";
     private static final String ACTIVE_LABEL = "Active";
+    private final String milestonesListId;
 
-    public MilestoneWizardPage(WebDriver driver) {
+    public MilestoneWizardPage(WebDriver driver, String milestonesListId) {
         super(driver);
+        this.milestonesListId = milestonesListId;
     }
 
-    public Milestone addMilestoneRow(Milestone milestone, String addMilestonesListId) {
+    public Milestone addMilestoneRow(Milestone milestone) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        EditableList addMilestoneList = EditableList.createById(driver, wait, addMilestonesListId);
+        EditableList addMilestoneList = EditableList.createById(driver, wait, milestonesListId);
         EditableList.Row row = addMilestoneList.addRow();
         DelayUtils.waitForPageToLoad(driver, wait);
 
@@ -65,7 +66,7 @@ public class MilestoneWizardPage extends BasePage {
         return getMilestoneFromRow(addMilestoneList, addMilestoneList.getVisibleRows().size() - 1);
     }
 
-    public Milestone editMilestoneRow(Milestone milestone, int row, String milestonesListId) {
+    public Milestone editMilestoneRow(Milestone milestone, int row) {
         DelayUtils.waitForPageToLoad(driver, wait);
         EditableList milestoneList = EditableList.createById(driver, wait, milestonesListId);
         EditableList.Row editMilestoneRow = milestoneList.getRow(row - 1);
@@ -107,7 +108,7 @@ public class MilestoneWizardPage extends BasePage {
         return getMilestoneFromRow(milestoneList, row - 1);
     }
 
-    public void removeMilestoneRow(int row, String milestonesListId) {
+    public void removeMilestoneRow(int row) {
         EditableList milestoneList = EditableList.createById(driver, wait, milestonesListId);
         EditableList.Row editMilestoneRow = milestoneList.getRow(row - 1);
         DelayUtils.sleep(2000);

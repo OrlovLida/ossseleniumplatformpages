@@ -61,7 +61,7 @@ public class RanAntennaWizardPage extends BasePage {
 
     @Step("Set precise location")
     public void setPreciseLocation(String location) {
-        getRanAntennaWizard().setComponentValue(RAN_ANTENNA_PRECISE_LOCATION_DATA_ATTRIBUTE_NAME, location);
+        getRanAntennaWizard().getComponent(RAN_ANTENNA_PRECISE_LOCATION_DATA_ATTRIBUTE_NAME).setSingleStringValueContains(location);
     }
 
     @Step("Set mechanical tilt")

@@ -53,7 +53,8 @@ public class DashboardManagerPage extends BaseManagerPage {
 
     @Step("Click Delete Dashboard")
     public void clickDeleteDashboard(String dashboardName) {
-        clickDeleteElement(CONFIRM_DELETE_BUTTON_ID, dashboardName);
+        clickDeleteElementOnList(dashboardName);
+        confirmDeleteElement(CONFIRM_DELETE_BUTTON_ID);
         log.info("Click delete Dashboard");
     }
 

@@ -2,42 +2,52 @@
 <suite name="ACD-SMOKE" thread-count="2" parallel="tests" verbose="1">
     <test name="HomeViewTest">
         <classes>
-            <class name="com.oss.acd.HomeViewTest"/>
+            <class name="com.oss.iaa.acd.HomeViewTest"/>
         </classes>
     </test>
     <test name="AsdScenarioSummaryViewTest">
         <classes>
-            <class name="com.oss.acd.AsdScenarioSummaryViewTest"/>
+            <class name="com.oss.iaa.acd.AsdScenarioSummaryViewTest"/>
         </classes>
     </test>
     <test name="AbgadScenarioSummaryViewTest">
         <classes>
-            <class name="com.oss.acd.AbgadScenarioSummaryViewTest"/>
+            <class name="com.oss.iaa.acd.AbgadScenarioSummaryViewTest"/>
         </classes>
     </test>
     <test name="ApdScenarioSummaryViewTest">
         <classes>
-            <class name="com.oss.acd.ApdScenarioSummaryViewTest"/>
+            <class name="com.oss.iaa.acd.ApdScenarioSummaryViewTest"/>
         </classes>
     </test>
     <test name="ArSettingsTest">
         <classes>
-            <class name="com.oss.acd.ArSettingsTest"/>
+            <class name="com.oss.iaa.acd.ArSettingsTest"/>
         </classes>
     </test>
     <test name="SubsystemsHealthTest">
         <classes>
-            <class name="com.oss.acd.SubsystemsHealthTest"/>
+            <class name="com.oss.iaa.acd.SubsystemsHealthTest"/>
         </classes>
     </test>
     <test name="AssignmentManagementTest">
         <classes>
-            <class name="com.oss.acd.AssignmentManagementTest"/>
+            <class name="com.oss.iaa.acd.AssignmentManagementTest"/>
         </classes>
     </test>
     <test name="NotificationManagementTest">
         <classes>
-            <class name="com.oss.acd.NotificationManagementTest"/>
+            <class name="com.oss.iaa.acd.NotificationManagementTest"/>
+        </classes>
+    </test>
+    <test name="TimeSeriesViewTest">
+        <classes>
+            <class name="com.oss.iaa.acd.TimeSeriesViewTest"/>
+        </classes>
+    </test>
+    <test name="AcdNavigationPanelTest">
+        <classes>
+            <class name="com.oss.iaa.acd.AcdNavigationPanelTest"/>
         </classes>
     </test>
 </suite>

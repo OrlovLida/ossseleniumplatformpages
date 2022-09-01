@@ -39,34 +39,34 @@ public class InputsWizardPage extends BasePage {
 
     public static final String DISABLED_FIELD_XPATH = "//div[contains(@class,'disabled')]";
 
-    private static final ImmutableSet<String> inputLabels = ImmutableSet.of(DATE_TIME_ID, COMBOBOX_ID);
     private static final ImmutableSet<String> controllerIds = ImmutableSet.of(MANDATORY_CONTROLLER_ID,
             DANGER_MESSAGE_CONTROLLER_ID,
             WARNING_MESSAGE_CONTROLLER_ID, HIDDEN_CONTROLLER_ID, DISABLED_CONTROLLER_ID, READ_ONLY_CONTROLLER_ID);
+    private static final String WIZARD_ID = "Widget1";
 
-    private Wizard wizard = Wizard.createWizard(driver, wait);
+    private Wizard wizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
 
     InputsWizardPage(WebDriver driver) {
         super(driver);
     }
 
-    public void setComponentValue(String componentId, String value, Input.ComponentType componentType) {
-        Input input = getWizard().getComponent(componentId, componentType);
+    public void setComponentValue(String componentId, String value) {
+        Input input = getWizard().getComponent(componentId);
         input.setSingleStringValue(value);
     }
 
-    public String getComponentValue(String componentId, Input.ComponentType componentType) {
-        Input input = getWizard().getComponent(componentId, componentType);
+    public String getComponentValue(String componentId) {
+        Input input = getWizard().getComponent(componentId);
         return input.getStringValue();
     }
 
-    public Input getComponent(String componentId, Input.ComponentType componentType) {
-        return getWizard().getComponent(componentId, componentType);
+    public Input getComponent(String componentId) {
+        return getWizard().getComponent(componentId);
     }
 
     public void setControllerValue(String controllerId, String componentId) {
-        setComponentValue(controllerId, componentId, ComponentType.MULTI_COMBOBOX);
-        DelayUtils.sleep();
+        setComponentValue(controllerId, componentId);
+        wizard.waitForWizardToLoad();
     }
 
     public void clearController(String controllerId) {
@@ -91,7 +91,7 @@ public class InputsWizardPage extends BasePage {
     //Lazy
     private Wizard getWizard() {
         if (this.wizard == null) {
-            this.wizard = Wizard.createWizard(this.driver, this.wait);
+            this.wizard = Wizard.createByComponentId(this.driver, this.wait, WIZARD_ID);
         }
         return this.wizard;
     }

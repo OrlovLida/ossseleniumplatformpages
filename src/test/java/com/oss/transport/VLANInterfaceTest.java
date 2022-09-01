@@ -11,6 +11,7 @@ import com.oss.framework.components.alerts.SystemMessageContainer.Message;
 import com.oss.framework.components.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.pages.bpm.ProcessOverviewPage;
 import com.oss.pages.bpm.TasksPage;
 import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 import com.oss.pages.platform.HierarchyViewPage;
@@ -33,9 +34,8 @@ public class VLANInterfaceTest extends BaseTestCase {
     private static final String VLAN_INTERFACE_TYPE = "Subinterface";
     private static final String VLAN_SUBINTERFACE_ID = "100";
     private static final String DEVICE = "SeleniumTestDeviceVLANInterface";
-    private static final String IP_SUBNET = "126.0.0.0/24 [VLANInterfaceSeleniumTest]";
-    private static final String IP_NETWORK = "VLANInterfaceSeleniumTest";
     private static final String IP_ADDRESS = "126.0.0.2";
+    private static final String IP_ADDRESS_WIZARD_MODE = "Existing address selection";
     private static final String EDIT_VLAN_INTERFACE_ACTION_ID = "EditVLANInterfaceContextAction";
     private static final String DELETE_VLAN_INTERFACE_ACTION_ID = "DeleteVLANInterfaceContextAction";
     private static final String MTU_VALUE = "1432";
@@ -54,7 +54,7 @@ public class VLANInterfaceTest extends BaseTestCase {
     @BeforeClass
     public void openWebConsole() {
         waitForPageToLoad();
-        homePage.chooseFromLeftSideMenu("Process Instances", "BPM and Planning", "Business Process Management");
+        homePage.chooseFromLeftSideMenu("Process Overview", "BPM and Planning", "Network Planning");
         newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
         waitForPageToLoad();
     }
@@ -62,8 +62,10 @@ public class VLANInterfaceTest extends BaseTestCase {
     @Test(priority = 1)
     @Description("Create NRP Process")
     public void createProcessNRP() {
+        ProcessOverviewPage processOverviewPage = new ProcessOverviewPage(driver);
+        processOverviewPage.openProcessCreationWizard();
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
-        processNRPCode = processWizardPage.createSimpleNRP();
+        processNRPCode = processWizardPage.createSimpleNRPV2();
         checkMessageSize();
         checkMessageType();
         checkMessageContainsText(processNRPCode);
@@ -86,7 +88,7 @@ public class VLANInterfaceTest extends BaseTestCase {
         newInventoryViewPage.callAction(SHOW_ON_GROUP_ID, HIERARCHY_VIEW_ID);
         HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
         hierarchyViewPage.selectNodeByLabelsPath(LABEL_PATH);
-        hierarchyViewPage.useTreeContextAction(CREATE_GROUP_ID, CREATE_VLAN_ACTION_ID);
+        hierarchyViewPage.callAction(CREATE_GROUP_ID, CREATE_VLAN_ACTION_ID);
         waitForPageToLoad();
         VLANInterfaceWizardPage vlanInterfaceWizardPage = new VLANInterfaceWizardPage(driver);
         waitForPageToLoad();
@@ -102,7 +104,8 @@ public class VLANInterfaceTest extends BaseTestCase {
     @Description("Check new VLAN Interface")
     public void checkVLANInterface() {
         searchInInventoryView(VLAN_INTERFACE_SEARCH_NIV);
-        newInventoryViewPage.searchObject(DEVICE).selectFirstRow();
+        newInventoryViewPage.searchObject(DEVICE);
+        newInventoryViewPage.selectFirstRow();
         waitForPageToLoad();
         Assert.assertFalse(newInventoryViewPage.checkIfTableIsEmpty());
     }
@@ -113,7 +116,7 @@ public class VLANInterfaceTest extends BaseTestCase {
         newInventoryViewPage.callAction(ActionsContainer.ASSIGN_GROUP_ID, "AssignIPv4Host");
         IPAddressAssignmentWizardPage ipAddressAssignmentWizardPage = new IPAddressAssignmentWizardPage(driver);
         IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties = IPAddressAssignmentWizardProperties.builder()
-                .address(IP_ADDRESS).subnet(IP_SUBNET).isPrimary("false").build();
+                .address(IP_ADDRESS).isPrimary("false").wizardMode(IP_ADDRESS_WIZARD_MODE).build();
         ipAddressAssignmentWizardPage.assignMoToIPAddress(ipAddressAssignmentWizardProperties);
         waitForPageToLoad();
     }
@@ -146,7 +149,7 @@ public class VLANInterfaceTest extends BaseTestCase {
     @Description("Delete IP Address")
     public void deleteIPAddressAssignment() {
         searchInInventoryView("IP Host Assignment");
-        newInventoryViewPage.searchObject(IP_NETWORK).selectFirstRow();
+        newInventoryViewPage.searchObject(IP_ADDRESS).selectFirstRow();
         newInventoryViewPage.callAction(EDIT_GROUP_ID, DELETE_ADDRESS_IP_ID).clickConfirmationBox(CONFIRMATION_REMOVAL_IP_BOX_ID);
     }
 
@@ -200,7 +203,7 @@ public class VLANInterfaceTest extends BaseTestCase {
     }
 
     private void searchInInventoryView(String object_type) {
-        homePage.chooseFromLeftSideMenu("Inventory View", "Resource Inventory ");
+        homePage.chooseFromLeftSideMenu("Inventory View", "Resource Inventory");
         SearchObjectTypePage searchObjectTypePage = new SearchObjectTypePage(driver, webDriverWait);
         searchObjectTypePage.searchType(object_type);
     }

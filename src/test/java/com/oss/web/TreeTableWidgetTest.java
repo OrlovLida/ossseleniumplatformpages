@@ -1,12 +1,17 @@
 package com.oss.web;
 
 import java.util.List;
+
+import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
 import com.oss.BaseTestCase;
+import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.pagination.PaginationComponent;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.propertypanel.PropertyPanel;
 import com.oss.framework.widgets.table.TableRow;
 import com.oss.framework.widgets.treetable.TreeTableWidget;
 import com.oss.pages.bpm.PlannersViewPage;
@@ -18,10 +23,16 @@ import com.oss.pages.bpm.PlannersViewPage;
 public class TreeTableWidgetTest extends BaseTestCase {
     private static final String PRIORITY_COLUMN_ID = "priority";
     private static final String DOMAIN_COLUMN_ID = "Domain";
+    private static final String OPEN_INVENTORY_VIEW_CONTEXT_ACTION_ID = "InventoryView";
+    private static final String INVENTORY_VIEW_TITLE = "Inventory View";
+    private static final String HEADER_TITLE_CLASS = "header-title__title";
     private static final int PAGE_SIZE_OPTION_100 = 100;
     private static final int PAGE_SIZE_OPTION_50 = 50;
     private PlannersViewPage plannersViewPage;
     private TreeTableWidget treeTableWidget;
+    private static final String NAME_COL_ID = "name";
+    private final static String PROPERTY_PANEL_ID = "PropertyPanelWidget";
+    private final static String CODE_ID = "code";
 
     @BeforeClass
     public void goToPlannersView() {
@@ -106,7 +117,6 @@ public class TreeTableWidgetTest extends BaseTestCase {
     @Test(priority = 9)
     public void goOnNextPage() {
         treeTableWidget.getPagination().goOnNextPage();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertTrue(treeTableWidget.getPagination().isFirstPageButtonPresent());
         Assert.assertTrue(treeTableWidget.getPagination().isPreviousPageButtonPresent());
         Assert.assertEquals(treeTableWidget.getPagination().getBottomRageOfRows(), treeTableWidget.getPagination().getStep() + 1);
@@ -116,9 +126,7 @@ public class TreeTableWidgetTest extends BaseTestCase {
     @Test(priority = 10)
     public void goOnPreviousPage() {
         treeTableWidget.getPagination().goOnNextPage();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         treeTableWidget.getPagination().goOnPrevPage();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertEquals(treeTableWidget.getPagination().getBottomRageOfRows(), treeTableWidget.getPagination().getStep() + 1);
         Assert.assertEquals(treeTableWidget.getPagination().getTopRageOfRows(), treeTableWidget.getPagination().getStep() * 2);
     }
@@ -126,9 +134,7 @@ public class TreeTableWidgetTest extends BaseTestCase {
     @Test(priority = 11)
     public void backToFirstPage() {
         treeTableWidget.getPagination().goOnFirstPage();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         treeTableWidget.getPagination().goOnPrevPage();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertEquals(treeTableWidget.getPagination().getBottomRageOfRows(), 1);
         Assert.assertEquals(treeTableWidget.getPagination().getTopRageOfRows(), treeTableWidget.getPagination().getStep());
     }
@@ -179,6 +185,43 @@ public class TreeTableWidgetTest extends BaseTestCase {
 
         List<TableRow> selectedRows = plannersViewPage.getSelectedRows();
         Assert.assertEquals(selectedRows.size(), 1);
+        plannersViewPage.unselectObjectByRowId(10);
+    }
+
+    @Test(priority = 15)
+    public void searchWithNotExistingData() {
+        plannersViewPage.searchObject("hjakserzxaseer");
+        List<TableRow> allRows = plannersViewPage.getRows();
+        Assert.assertTrue(allRows.isEmpty());
+        plannersViewPage.clearFilters();
+    }
+
+    @Test(priority = 16)
+    public void searchWithExistingData() {
+        String nameFirstRow = plannersViewPage.getAttributeValue(NAME_COL_ID, 0);
+        plannersViewPage.searchObject(nameFirstRow);
+        List<TableRow> allRows = plannersViewPage.getRows();
+        Assert.assertEquals(treeTableWidget.getCellValueById(0, NAME_COL_ID), nameFirstRow);
+        plannersViewPage.clearFilters();
+    }
+
+    @Test(priority = 17)
+    public void checkDataInTreeTable() {
+        PropertyPanel propertyPanel = plannersViewPage.getPropertyPanel(0, PROPERTY_PANEL_ID);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        String codeFromPropertiesTab = propertyPanel.getPropertyValue(CODE_ID);
+        String codeFromTreeTable = plannersViewPage.getAttributeValue(CODE_ID, 0);
+        Assert.assertEquals(codeFromPropertiesTab, codeFromTreeTable);
+        plannersViewPage.unselectObjectByRowId(0);
+        plannersViewPage.clearFilters();
+    }
+
+    @Test(priority = 18)
+    public void useContextActionOnTreeTable() {
+        plannersViewPage.getFirstRow().callAction(ActionsContainer.SHOW_ON_GROUP_ID, OPEN_INVENTORY_VIEW_CONTEXT_ACTION_ID);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        String headerNameIV = driver.findElement(By.className(HEADER_TITLE_CLASS)).getText();
+        Assert.assertEquals(headerNameIV, INVENTORY_VIEW_TITLE);
     }
 
     private int getRowsCount() {

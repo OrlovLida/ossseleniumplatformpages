@@ -18,6 +18,7 @@ public class SublocationWizardPage extends BasePage {
     private static final String QUANTITY = "quantity";
     private static final String WIZARD_ID = "sublocation-wizard";
     private static final String DESCRIPTION = "description";
+    private static final String SUBMIT_BUTTON_ID = "wizard-submit-button-sublocation-wizard";
     private final Wizard wizard;
 
     public SublocationWizardPage(WebDriver driver) {
@@ -38,7 +39,7 @@ public class SublocationWizardPage extends BasePage {
 
     @Step("Set Sublocation Precise Location")
     public void setPreciseLocation(String preciseLocation) {
-        wizard.setComponentValue(PRECISE_LOCATION, preciseLocation, ComponentType.SEARCH_FIELD);
+        wizard.getComponent(PRECISE_LOCATION).setSingleStringValueContains(preciseLocation);
     }
 
     @Step("Set Width")
@@ -55,6 +56,7 @@ public class SublocationWizardPage extends BasePage {
     public void setQuantity(String quantity) {
         wizard.setComponentValue(QUANTITY, quantity, ComponentType.NUMBER_FIELD);
     }
+
     @Step("Set Description")
     public void setDescription(String description) {
         wizard.setComponentValue(DESCRIPTION, description, ComponentType.TEXT_FIELD);
@@ -68,5 +70,10 @@ public class SublocationWizardPage extends BasePage {
     @Step("Click Accept button")
     public void clickAccept() {
         wizard.clickAccept();
+    }
+
+    @Step("Click Create button")
+    public void create() {
+        wizard.clickButtonById(SUBMIT_BUTTON_ID);
     }
 }

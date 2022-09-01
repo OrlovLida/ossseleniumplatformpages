@@ -245,7 +245,7 @@ public class TableWidgetTest extends BaseTestCase {
         List<String> defaultActiveHeaders = inventoryViewPage.getMainTable().getActiveColumnIds();
         String defaultFirstColumn = inventoryViewPage.getMainTable().getActiveColumnIds().get(0);
         int defaultFirstColumnSize = inventoryViewPage.getColumnSize(defaultFirstColumn);
-        String defaultForthColumn = inventoryViewPage.getMainTable().getActiveColumnIds().get(3);
+        String defaultForthColumn = inventoryViewPage.getMainTable().getActiveColumnIds().get(2);
         
         changeColumnOrder(defaultFirstColumn, 2);
         resizeColumnByAdministration(defaultFirstColumn, defaultFirstColumnSize - 50);

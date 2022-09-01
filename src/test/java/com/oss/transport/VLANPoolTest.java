@@ -45,7 +45,7 @@ public class VLANPoolTest extends BaseTestCase {
     @Test(priority = 1)
     @Description("Set fields and create VLAN Pool")
     public void createVLANPool() {
-        homePage.chooseFromLeftSideMenu("Inventory View", "Resource Inventory ");
+        homePage.chooseFromLeftSideMenu("Inventory View", "Resource Inventory");
         waitForPageToLoad();
         SearchObjectTypePage searchObjectType = new SearchObjectTypePage(driver, webDriverWait);
         searchObjectType.searchType("VLAN Pool");

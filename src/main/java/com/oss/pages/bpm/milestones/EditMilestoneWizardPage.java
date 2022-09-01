@@ -6,13 +6,11 @@
  */
 package com.oss.pages.bpm.milestones;
 
-import org.openqa.selenium.WebDriver;
-
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
-
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
 
 /**
  * @author Gabriela Kasza
@@ -31,8 +29,8 @@ public class EditMilestoneWizardPage extends BasePage {
 
     public Milestone editMilestone(Milestone milestone) throws NoSuchElementException {
         Wizard editWizard = Wizard.createByComponentId(driver, wait, MILESTONE_EDIT_WIZARD_ID);
-        MilestoneWizardPage milestoneWizardPage = new MilestoneWizardPage(driver);
-        Milestone editedMilestone = milestoneWizardPage.editMilestoneRow(milestone, 1, EDIT_MILESTONE_LIST);
+        MilestoneWizardPage milestoneWizardPage = new MilestoneWizardPage(driver, EDIT_MILESTONE_LIST);
+        Milestone editedMilestone = milestoneWizardPage.editMilestoneRow(milestone, 1);
         if (driver.getPageSource().contains(DELAY_REASON_ID)) {
             editWizard.setComponentValue(DELAY_REASON_ID, DELAY_REASON_TEXT,
                     Input.ComponentType.TEXT_FIELD);

@@ -1,8 +1,22 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="ServicesGuiServiceDesk" thread-count="2" parallel="tests" verbose="1">
-    <test name="InfoManagement">
+    <test name="Templates/Dashboard">
+        <parameter name="shareToUser" value="sd_seleniumtest2"/>
+        <parameter name="password" value="oss"/>
         <classes>
-            <class name="com.oss.servicedesk.infomanagement.TemplatesTest"/>
+            <class name="com.oss.iaa.servicedesk.infomanagement.TemplatesTest"/>
+        </classes>
+    </test>
+    <test name="Messages">
+        <parameter name="emailTo" value="kornelia.odrobinska@comarch.com"/>
+        <parameter name="emailFrom" value="switch.ticket@comarch.com"/>
+        <classes>
+            <class name="com.oss.iaa.servicedesk.infomanagement.MessagesTest"/>
+        </classes>
+    </test>
+    <test name="ConfigurationPanel">
+        <classes>
+            <class name="com.oss.iaa.servicedesk.infomanagement.ConfigurationPanelTest"/>
         </classes>
     </test>
 </suite>

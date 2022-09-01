@@ -33,7 +33,6 @@ import io.qameta.allure.Step;
 
 public class NewInventoryViewPage extends BasePage {
 
-    private static final String TABLE_ID = "MainTableWidget";
     private static final String CHANGE_LAYOUT_BUTTON_ID = "ButtonChooseViewLayouts";
     private static final String VERTICAL_BUTTON_ID = "TWO_COLUMNS";
     private static final String SAVE_CONFIGURATION_BUTTON_ID = "ButtonSaveViewConfig";
@@ -51,10 +50,11 @@ public class NewInventoryViewPage extends BasePage {
     private static final String SAVE_NEW_CONFIG_ID = "saveNewConfig";
     private static final String CHANGE_LABEL = "Change";
     private static final String TABS_CONTAINER_ID = "DetailTabsWidget";
-    private static final String OPEN_HIERARCHY_VIEW_ACTION_ID = "OpenHierarchyViewContext";
+    private static final String OPEN_HIERARCHY_VIEW_ACTION_ID = "HierarchyView";
     public static final String KEBAB_OBJECT_GROUP_ID = "frameworkObjectButtonsGroup";
     private static final String CONFIRM_REMOVAL_BUTTON_ID = "ConfirmationBox_deleteAppId_action_button";
     private static final String PROPERTY_PANEL_ID = "PropertyPanelWidget";
+    private static String tableId = "MainTableWidget";
 
     public NewInventoryViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -73,9 +73,19 @@ public class NewInventoryViewPage extends BasePage {
         return new NewInventoryViewPage(driver, wait);
     }
 
+    public static NewInventoryViewPage getInventoryViewPage(WebDriver driver, WebDriverWait wait, String mainTableId) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        tableId = mainTableId;
+        return new NewInventoryViewPage(driver, wait);
+    }
+
     public TableWidget getMainTable() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        return TableWidget.createById(driver, TABLE_ID, wait);
+        return TableWidget.createById(driver, tableId, wait);
+    }
+
+    public List<String> getColumnsHeaders() {
+        return getMainTable().getActiveColumnHeaders();
     }
 
     public NewInventoryViewPage searchObject(String text) {
@@ -108,7 +118,7 @@ public class NewInventoryViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    public void selectSeveralObjectsByRowId(int... indexes) {
+    public void selectObjectsByRowId(int... indexes) {
         List<Integer> rows = Arrays.stream(indexes).boxed().collect(Collectors.toList());
         rows.forEach(this::selectObjectByRowId);
     }
@@ -207,6 +217,10 @@ public class NewInventoryViewPage extends BasePage {
     @Step("Call context action by ID : {actionId}")
     public void callActionById(String actionId) {
         getMainTable().callAction(actionId);
+    }
+
+    public String getGroupActionLabel(String groupId){
+        return getMainTable().getContextActions().getGroupActionLabel(groupId);
     }
 
     @Step("Change columns order")

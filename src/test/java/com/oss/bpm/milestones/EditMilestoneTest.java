@@ -6,28 +6,24 @@
  */
 package com.oss.bpm.milestones;
 
-import java.time.LocalDate;
-
-import org.openqa.selenium.NoSuchElementException;
-
+import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.mainheader.ToolbarWidget;
+import com.oss.framework.utils.DelayUtils;
+import com.oss.pages.bpm.ProcessOverviewPage;
+import com.oss.pages.bpm.milestones.EditMilestoneWizardPage;
+import com.oss.pages.bpm.milestones.Milestone;
+import com.oss.pages.bpm.milestones.MilestoneViewPage;
+import com.oss.pages.bpm.processinstances.ProcessWizardPage;
+import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.openqa.selenium.NoSuchElementException;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
-import com.oss.BaseTestCase;
-import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bpm.milestones.EditMilestoneWizardPage;
-import com.oss.pages.bpm.milestones.Milestone;
-import com.oss.pages.bpm.milestones.MilestoneViewPage;
-import com.oss.pages.bpm.processinstances.ProcessInstancesPage;
-import com.oss.pages.bpm.processinstances.ProcessWizardPage;
-import com.oss.utils.TestListener;
+import java.time.LocalDate;
 
 /**
  * @author Gabriela Kasza
@@ -57,25 +53,25 @@ public class EditMilestoneTest extends BaseTestCase {
     private static final String EDIT_MILESTONE_BUTTON = "editMilestonesContextAction";
     private static final String SUCCESS_UPDATE_MILESTONES_MESSAGE = "Milestones were updated";
     private static final String NO_SYSTEM_MESSAGE_EXCEPTION = "There is no any System Message";
+    private static final String EMPTY_ATTRIBUTE = "—";
 
     private final String description = "Milestone Update " + (Math.random() * 1001);
-    private String milestoneName = "Milestone Update " + (Math.random() * 100001);
     private final String leadTime = String.valueOf((int) (Math.random() * 101));
+    private String milestoneName = "Milestone Update " + (Math.random() * 100001);
 
     @BeforeClass
     public void createMilestone() {
-        ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
-        processInstancesPage.clearAllColumnFilters();
+        ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
+        processOverviewPage.clearAllColumnFilters();
 
         ToolbarWidget toolbarWidget = ToolbarWidget.create(driver, webDriverWait);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         if (!toolbarWidget.getUserName().equals(BPM_USER_LOGIN)) {
-            processInstancesPage.changeUser(BPM_USER_LOGIN, BPM_USER_PASSWORD);
+            processOverviewPage.changeUser(BPM_USER_LOGIN, BPM_USER_PASSWORD);
         }
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         String processName = PROCESS_NAME + (int) (Math.random() * 100001);
-        ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
 
         Milestone milestone1 = Milestone.builder()
                 .setLeadTime("10")
@@ -83,6 +79,7 @@ public class EditMilestoneTest extends BaseTestCase {
                 .setIsActive("true")
                 .setName(milestoneName).build();
 
+        ProcessWizardPage processWizardPage = processOverviewPage.openProcessCreationWizard();
         processWizardPage.definedMilestoneInProcess(processName, 5L, DCP).addMilestoneRow(milestone1);
         processWizardPage.clickAcceptButton();
     }
@@ -157,7 +154,7 @@ public class EditMilestoneTest extends BaseTestCase {
         Assert.assertEquals(message, SUCCESS_UPDATE_MILESTONES_MESSAGE);
 
         String relatedTask = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_RELATED_TASK_NAME);
-        Assert.assertEquals(relatedTask, "");
+        Assert.assertEquals(relatedTask, EMPTY_ATTRIBUTE);
 
     }
 

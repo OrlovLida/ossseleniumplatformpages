@@ -5,6 +5,8 @@ import org.openqa.selenium.WebDriver;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.Input.ComponentType;
+import com.oss.framework.components.prompts.ConfirmationBox;
+import com.oss.framework.components.prompts.ConfirmationBoxInterface;
 import com.oss.framework.widgets.list.CommonList;
 import com.oss.pages.BasePage;
 
@@ -22,7 +24,7 @@ public class GlobalSearchPage extends BasePage {
 
     @Step("Expand {option} and select {viewName} from the drop-down list")
     public void expandShowOnAndChooseView(String objectName, String option, String viewName) {
-        getResultsList().getRowContains(ATTRIBUTE, objectName).callAction(option,viewName);
+        getResultsList().getRowContains(ATTRIBUTE, objectName).callAction(option, viewName);
     }
 
     @Step("Filter by object type {objectType}")
@@ -31,8 +33,13 @@ public class GlobalSearchPage extends BasePage {
         input.setSingleStringValue(objectType);
     }
 
+    @Step("Confirm action by {label}")
+    public void confirmByLabel(String label) {
+        ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
+        prompt.clickButtonByLabel(label);
+    }
+
     public CommonList getResultsList() {
         return CommonList.create(driver, wait, OBJECTS_LIST_DATA_ATTRIBUTE_NAME);
     }
-
 }

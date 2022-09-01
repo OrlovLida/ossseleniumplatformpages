@@ -1,10 +1,17 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="services_gui_sm" thread-count="2" parallel="tests" verbose="1">
     <test name="SMDashboardTest">
-        <parameter name="chosenDashboard" value="ServiceMonitoring"></parameter>
-        <parameter name="viewsForChosenDashboard" value="_UserViewsListOBJECT_MONITORING,_UserViewsListOBJECT_STATE,_UserViewsListALARM_MANAGEMENT"></parameter>
+        <parameter name="chosenDashboard" value="ServiceMonitoring"/>
+        <parameter name="viewsForChosenDashboard"
+                   value="_UserViewsListOBJECT_MONITORING,_UserViewsListOBJECT_STATE,_UserViewsListALARM_MANAGEMENT"/>
         <classes>
-            <class name="com.oss.faultmanagement.FMSMDashboardTest"/>
+            <class name="com.oss.iaa.faultmanagement.FMSMDashboardTest"/>
+        </classes>
+    </test>
+    <test name="SMUserPermissionTest">
+        <parameter name="component" value="SM"/>
+        <classes>
+            <class name="com.oss.iaa.faultmanagement.UserPermissionsTest"/>
         </classes>
     </test>
 </suite>

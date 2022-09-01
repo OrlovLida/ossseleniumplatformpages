@@ -1,0 +1,101 @@
+[
+  {
+    "type": "IPDeviceFunction",
+	"distinguishName": "IPDeviceFunction@@SELENIUM_DEVICE_FOR_MATCHING_1",
+	"isRoot": true,
+	"groupId": "IPDeviceFunction@@SELENIUM_DEVICE_FOR_MATCHING_1",
+	"simpleAttributes": {
+	  "Hostname": "SELENIUM_DEVICE_FOR_MATCHING_1",
+	  "Name": "SELENIUM_DEVICE_FOR_MATCHING_1",
+	  "DeviceType": "IPDevice"
+	}	
+  },
+  {
+    "type": "IPDeviceFunction",
+	"distinguishName": "IPDeviceFunction@@SELENIUM_DEVICE_FOR_MATCHING_2",
+	"isRoot": true,
+	"groupId": "IPDeviceFunction@@SELENIUM_DEVICE_FOR_MATCHING_2",
+	"simpleAttributes": {
+	  "Hostname": "SELENIUM_DEVICE_FOR_MATCHING_2",
+	  "Name": "SELENIUM_DEVICE_FOR_MATCHING_2",
+	  "DeviceType": "IPDevice"
+	}	
+  },
+  {
+    "type": "IPDeviceFunction",
+	"distinguishName": "IPDeviceFunction@@SELENIUM_DEVICE_FOR_MATCHING_3",
+	"groupId": "IPDeviceFunction@@SELENIUM_DEVICE_FOR_MATCHING_3",
+	"isRoot": true,
+	"simpleAttributes": {
+	  "Hostname": "SELENIUM_DEVICE_FOR_MATCHING_3",
+	  "Name": "SELENIUM_DEVICE_FOR_MATCHING_3",
+	  "DeviceType": "IPDevice"
+	}	
+  },
+  {
+    "type": "Device",
+    "distinguishName": "IPDeviceFunction@@SELENIUM_DEVICE_FOR_MATCHING_1##Device@@SELENIUM_DEVICE_FOR_MATCHING_1",
+	"groupId": "IPDeviceFunction@@SELENIUM_DEVICE_FOR_MATCHING_1",
+    "simpleAttributes": {
+      "Name": "SELENIUM_DEVICE_FOR_MATCHING_1",
+      "Type": "IPDevice",
+      "Manufacturer": "Alcatel",
+      "ManagementDomain": "Comarch",
+	  "ModelName": "WS-C6509",
+	  "Description": "Device with given PartNumber and ModelName and not found in DL, BlackBox Device - Creation-Matching1",
+	  "PartNumber": "WS-C6509",
+	  "SerialNumber": "AT-SYS-Creation-SerialNumberComarchTestMatching1",
+	  "ManufactureDate": "2004-02-12T15:19:21+00:00",
+	  "Software": "AT-SYS-Creation-Software",
+	  "HardwareVersion": "AT-SYS-Creation-HardwareVersionComarchTestMatching1",
+	  "NeFunctionName": "AT-SYS-Creation-NeFunctionNameComarchTestMatching1",
+	  "ChassisID": "AT-SYS-Creation-ChassisIDComarchTestMatching1",
+	  "NetworkDomain": "AT-SYS-Creation-NetworkDomainComarchTestMatching1",
+	  "DeviceCategory": "AT-SYS-Creation-DeviceCategoryComarchTestMatching1"
+    }
+  },
+  {
+    "type": "Device",
+    "distinguishName": "IPDeviceFunction@@SELENIUM_DEVICE_FOR_MATCHING_12##Device@@SELENIUM_DEVICE_FOR_MATCHING_2",
+	"groupId": "IPDeviceFunction@@SELENIUM_DEVICE_FOR_MATCHING_2",
+    "simpleAttributes": {
+      "Name": "SELENIUM_DEVICE_FOR_MATCHING_2",
+      "Type": "IPDevice",
+      "Manufacturer": "Alcatel",
+      "ManagementDomain": "Comarch",
+	  "ModelName": "WS-C6509",
+	  "Description": "Device with given PartNumber and ModelName and not found in DL, BlackBox Device - CreationMatching2",
+	  "PartNumber": "WS-C6509",
+	  "SerialNumber": "AT-SYS-Creation-SerialNumberComarchTestMatching2",
+	  "ManufactureDate": "2004-02-12T15:19:21+00:00",
+	  "Software": "AT-SYS-Creation-Software",
+	  "HardwareVersion": "AT-SYS-Creation-HardwareVersionComarchTestMatching2",
+	  "NeFunctionName": "AT-SYS-Creation-NeFunctionNameComarchTestMatching2",
+	  "ChassisID": "AT-SYS-Creation-ChassisIDComarchTestMatching2",
+	  "NetworkDomain": "AT-SYS-Creation-NetworkDomainComarchTestMatching2",
+	  "DeviceCategory": "AT-SYS-Creation-DeviceCategoryComarchTestMatching2"
+    }
+  },
+  {
+    "type": "Device",
+    "distinguishName": "IPDeviceFunction@@SELENIUM_DEVICE_FOR_MATCHING_13##Device@@SELENIUM_DEVICE_FOR_MATCHING_3",
+	"groupId": "IPDeviceFunction@@SELENIUM_DEVICE_FOR_MATCHING_3",
+    "simpleAttributes": {
+      "Name": "SELENIUM_DEVICE_FOR_MATCHING_3",
+      "Type": "IPDevice",
+      "Manufacturer": "Alcatel",
+      "ManagementDomain": "Comarch",
+	  "ModelName": "WS-C6509",
+	  "Description": "Device with given PartNumber and ModelName and not found in DL, BlackBox Device - CreationMatching3",
+	  "PartNumber": "WS-C6509",
+	  "SerialNumber": "AT-SYS-Creation-SerialNumberComarchTestMatching3",
+	  "ManufactureDate": "2004-02-12T15:19:21+00:00",
+	  "Software": "AT-SYS-Creation-Software",
+	  "HardwareVersion": "AT-SYS-Creation-HardwareVersionComarchTestMatching3",
+	  "NeFunctionName": "AT-SYS-Creation-NeFunctionNameComarchTestMatching3",
+	  "ChassisID": "AT-SYS-Creation-ChassisIDComarchTestMatching3",
+	  "NetworkDomain": "AT-SYS-Creation-NetworkDomainComarchTestMatching3",
+	  "DeviceCategory": "AT-SYS-Creation-DeviceCategoryComarchTestMatching3"
+    }
+  }
+]

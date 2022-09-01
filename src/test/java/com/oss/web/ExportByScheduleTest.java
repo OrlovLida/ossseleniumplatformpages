@@ -1,15 +1,15 @@
 package com.oss.web;
 
 import org.assertj.core.api.Assertions;
-import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
+import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.pages.exportguiwizard.ExportGuiWizardPage;
-import com.oss.pages.languageservice.LanguageServicePage;
+import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.schedulerservice.SchedulerServicePage;
 import com.oss.untils.FakeGenerator;
 import com.oss.utils.TestListener;
@@ -19,20 +19,16 @@ import io.qameta.allure.Description;
 @Listeners({TestListener.class})
 public class ExportByScheduleTest extends BaseTestCase {
     
-    private static final String LANGUAGE_SERVICE_PAGE_URL = String.format("%s/#/views/languagesservice/views/translations" +
-            "?perspective=LIVE", BASIC_URL);
-    private static String TASK_NAME = "Test_Export"+ FakeGenerator.getRandomInt();
-
+    private static final String EXPORT_BUTTON_ID = "exportButton";
+    private static final String TEST_MOVIE_TYPE = "TestMovie";
+    private static String TASK_NAME = "Test_Export" + FakeGenerator.getRandomInt();
+    
     private SchedulerServicePage schedulerServicePage;
     
     @BeforeMethod
     public void openExportGuiWizard() {
-        LanguageServicePage languageServicePage = new LanguageServicePage(driver);
-        homePage.goToLanguageServicePage(LANGUAGE_SERVICE_PAGE_URL);
-        languageServicePage
-                .typeIdOfFirstServiceInSearch()
-                .clearNotifications()
-                .openExportFileWizard();
+        NewInventoryViewPage inventoryView = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_MOVIE_TYPE);
+        inventoryView.callAction(ActionsContainer.KEBAB_GROUP_ID, EXPORT_BUTTON_ID);
     }
     
     @Test(priority = 1)
@@ -50,7 +46,7 @@ public class ExportByScheduleTest extends BaseTestCase {
         schedulerServicePage
                 .search(TASK_NAME);
         Assertions.assertThat(schedulerServicePage.getVisibleJobNames()).contains(TASK_NAME);
-
+        
     }
     
     @Test(priority = 2)
