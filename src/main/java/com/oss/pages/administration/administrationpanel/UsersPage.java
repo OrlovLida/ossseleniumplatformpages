@@ -15,6 +15,7 @@ public class UsersPage extends BaseAdminPanelPage {
 
     private static final String USERS_PAGE_URL = String.format("%s/#/view/admin/users", BASIC_URL);
     private static final String USERS_TABLE_ID = "ADMINISTRATION_USERS_TABLE_APP_ID";
+    private static final String HELP_BUTTON_ID = "USER_HELP_ACTION_ID";
     private static final String HTML_EDITOR_ID = "HELP_HTML_EDITOR_READ_ONLY_COMPONENT_ID";
     private static final String HELP_HEADER_TEXT = "Administration - Users Help";
     private static final String LOGIN_COLUMN_LABEL = "Login (username)";
@@ -27,11 +28,9 @@ public class UsersPage extends BaseAdminPanelPage {
         super(driver, wait);
     }
 
-    public static UsersPage goToPage(WebDriver driver) {
+    public static UsersPage goToUsersPage(WebDriver driver) {
         WebDriverWait wait = new WebDriverWait(driver, 45);
-        driver.get(USERS_PAGE_URL);
-        DelayUtils.waitForPageToLoad(driver, wait);
-        log.info("Opened page: {}", USERS_PAGE_URL);
+        goToPage(driver, wait, USERS_PAGE_URL);
         return new UsersPage(driver, wait);
     }
 
@@ -47,7 +46,7 @@ public class UsersPage extends BaseAdminPanelPage {
 
     @Step("Click Help button")
     public void clickHelp() {
-        clickHelp(USERS_TABLE_ID);
+        callActionInTable(USERS_TABLE_ID, HELP_BUTTON_ID);
     }
 
     @Step("Check if text in Help is displayed")
