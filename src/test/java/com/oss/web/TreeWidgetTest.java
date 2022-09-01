@@ -37,7 +37,6 @@ public class TreeWidgetTest extends BaseTestCase {
     private static final String REFRESH_TREE = "tree_gql_refresh";
     private static final String OPEN_INVENTORY_VIEW_CONTEXT_ACTION_ID = "InventoryView";
     private static final String INVENTORY_VIEW_TITLE = "Inventory View";
-    private static final String HEADER_TITLE_CLASS = "header-title__title";
     private static final String CREATE_SUBLOCATION_ACTION = "CreateSublocationInLocationWizardAction";
     private static final String UPDATE_SUBLOCATION_ACTION = "UpdateSublocationWizardAction";
     private static final String REMOVE_SUBLOCATION_ACTION = "RemoveSublocationWizardAction";
@@ -392,7 +391,7 @@ public class TreeWidgetTest extends BaseTestCase {
                 Long.valueOf(locationId), LOCATION_TYPE_BUILDING);
     }
 
-    private Long createRow(Long preciseLocationId) {
+    private Long  createRow(Long preciseLocationId) {
         LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);
         return locationInventoryRepository.createSubLocation(SUB_LOCATION_TYPE_ROW, ROW_NAME, preciseLocationId, SUB_LOCATION_TYPE_ROOM,
                 Long.valueOf(locationId), LOCATION_TYPE_BUILDING);
