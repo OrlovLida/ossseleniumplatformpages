@@ -56,4 +56,20 @@ public class KafkaViewTest extends BaseTestCase {
         kafkaPage.selectFirstRowInKafkaConsumerTable();
         Assert.assertFalse(kafkaPage.isKafkaTopicTableEmpty());
     }
+
+    @Test(priority = 6, testName = "Check Displayed Partitions", description = "Check Displayed Partitions")
+    @Description("Check Displayed Partitions")
+    public void checkDisplayedPartitions() {
+        Assert.assertTrue(kafkaPage.isKafkaPartitionTableEmpty());
+        kafkaPage.selectFirstRowInKafkaTable();
+        Assert.assertEquals(kafkaPage.getItemsCountInPartitionTable(), kafkaPage.getPartitionsNumberFromKafkaTable());
+    }
+
+    @Test(priority = 7, testName = "Check Displayed Topics", description = "Check Displayed Topics")
+    @Description("Check Displayed Topics")
+    public void checkDisplayedTopics() {
+        Assert.assertTrue(kafkaPage.isKafkaTopicTableEmpty());
+        kafkaPage.selectFirstRowInKafkaConsumerTable();
+        Assert.assertEquals(kafkaPage.getItemsCountInTopicTable(), kafkaPage.getTopicNumberFromConsumerTable());
+    }
 }

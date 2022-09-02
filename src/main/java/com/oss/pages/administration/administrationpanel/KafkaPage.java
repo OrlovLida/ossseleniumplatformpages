@@ -19,7 +19,8 @@ public class KafkaPage extends BaseAdminPanelPage {
     private static final String KAFKA_CONSUMER_TABLE_ID = "ADMINISTRATION_KAFKA_CONSUMER_TABLE_APP_ID";
     private static final String KAFKA_TOPIC_TABLE_ID = "ADMINISTRATION_KAFKA_TOPIC_CONSUMER_TABLE_APP_ID";
     private static final String KAFKA_PARTITION_TABLE_ID = "ADMINISTRATION_KAFKA_PARTITION_TABLE_APP_ID";
-
+    private static final String PARTITIONS_COLUMN_LABEL = "Partitions";
+    private static final String TOPICS_COLUMN_LABEL = "Topics";
 
     public KafkaPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -94,5 +95,25 @@ public class KafkaPage extends BaseAdminPanelPage {
     @Step("Select first row in Kafka Consumer Table")
     public void selectFirstRowInKafkaConsumerTable() {
         selectFirstRowInTable(KAFKA_CONSUMER_TABLE_ID);
+    }
+
+    public int getItemsCountInPartitionTable() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return getItemsCount(KAFKA_PARTITION_TABLE_ID);
+    }
+
+    public int getItemsCountInTopicTable() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return getItemsCount(KAFKA_TOPIC_TABLE_ID);
+    }
+
+    public int getPartitionsNumberFromKafkaTable() {
+        log.info("Get value from Partition Column in Kafka Table");
+        return Integer.parseInt(getFirstValueFromTable(KAFKA_TABLE_ID, PARTITIONS_COLUMN_LABEL));
+    }
+
+    public int getTopicNumberFromConsumerTable() {
+        log.info("Get value from Topics Column in Kafka Table");
+        return Integer.parseInt(getFirstValueFromTable(KAFKA_CONSUMER_TABLE_ID, TOPICS_COLUMN_LABEL));
     }
 }

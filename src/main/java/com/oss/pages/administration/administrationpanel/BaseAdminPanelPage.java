@@ -101,6 +101,12 @@ public abstract class BaseAdminPanelPage extends BasePage {
         log.info("Clicking Pages Navigation button in table");
     }
 
+    @Step("Get total number of items in table")
+    public int getItemsCount(String tableId) {
+        log.info("Get total number of items in table {}", tableId);
+        return getOldTable(tableId).getTotalCount();
+    }
+
     private OldTable getOldTable(String tableId) {
         return OldTable.createById(driver, wait, tableId);
     }
