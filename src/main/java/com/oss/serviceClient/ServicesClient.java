@@ -28,6 +28,11 @@ public class ServicesClient {
         return prepareRequestSpecification(findApplicationBasePath);
     }
 
+    public RequestSpecification getRequestSpecificationByNameUsingBaseURL(String name) {
+        RequestSpecification findApplicationBasePath = findApplicationBasePathUsingBaseURL(name);
+        return prepareRequestSpecification(findApplicationBasePath);
+    }
+
     public RequestSpecification getRequestSpecificationByApplicationBasePath(String path) {
         RequestSpecification findApplicationBasePath = RestAssured.given()
                 .baseUri(environment.getEnvironmentUrl())
@@ -58,38 +63,45 @@ public class ServicesClient {
             services.put(applicationName, service);
         }
         Service service = services.get(applicationName);
-        if ("https".equals(environment.getEnvironmentUrl().substring(0, 5))) {
-            return RestAssured.given()
-                    .baseUri("https://" + service.host)
-                    .port(25081)
-                    .basePath(service.url);
-        }
-
         return RestAssured.given()
-                .baseUri("http://" + service.host)
+                .baseUri(service.protocol + "://" + service.host)
                 .port(service.port)
+                .basePath(service.url);
+    }
+
+    private RequestSpecification findApplicationBasePathUsingBaseURL(String applicationName) {
+        if (!services.containsKey(applicationName)) {
+            Service service = getService(applicationName);
+            services.put(applicationName, service);
+        }
+        Service service = services.get(applicationName);
+        return RestAssured.given()
+                .baseUri(environment.getEnvironmentUrl())
+                .port(environment.getEnvironmentPort())
                 .basePath(service.url);
     }
 
     private Service getService(String applicationName) {
         Response response = getServiceByName(applicationName);
         if (response.getStatusCode() != 200) {
-            throw new RuntimeException(
-                    "Service discovery lookup failed. Missing: " + applicationName + ". Status: " + response.getStatusCode());
+            throw new RuntimeException("Service discovery lookup failed. Missing: " + applicationName + ". Status: " + response.getStatusCode());
         }
 
         JsonPath jsonPath = response.jsonPath();
+
         String host = jsonPath.getString("host");
         String url = jsonPath.getString("url");
+        String protocol = jsonPath.getString("protocol");
         int port = jsonPath.getInt("port");
 
-        return new Service(host, url, port);
+        return new Service(host, url, protocol, port);
     }
 
     private Response getServiceByName(String applicationName) {
         return RestAssured.given()
                 .baseUri(environment.getEnvironmentUrl())
-                .port(environment.getEnvironmentPort()).authentication()
+                .port(environment.getEnvironmentPort())
+                .authentication()
                 .oauth2(tokenClient.getKeycloackToken(), OAuthSignature.HEADER)
                 .get("rest/discovery/v2/service/" + applicationName);
     }
@@ -118,11 +130,13 @@ public class ServicesClient {
     private static final class Service {
         private String host;
         private String url;
+        private String protocol;
         private int port;
 
-        public Service(String host, String url, int port) {
+        public Service(String host, String url, String protocol, int port) {
             this.host = host;
             this.url = url;
+            this.protocol = protocol;
             this.port = port;
         }
     }
