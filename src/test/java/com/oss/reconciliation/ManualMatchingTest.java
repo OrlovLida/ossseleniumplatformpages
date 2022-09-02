@@ -69,6 +69,7 @@ public class ManualMatchingTest extends BaseTestCase {
         recoConfigClient = RecoConfigClient.getInstance(environmentRequestClient);
         log.info("Po wzieciu instancji");
         recoConfigClient.createRecoConfig(RECO_CONFIG_BODY, CM_DOMAIN_NAME);
+        driver.manage().deleteAllCookies();
     }
 
     @Test(priority = 1, description = "Delete CMDomain is it exists")
