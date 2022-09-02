@@ -1,4 +1,4 @@
-package com.oss.transport.infrastructure;
+package com.oss.serviceClient;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -6,6 +6,7 @@ import com.google.common.cache.LoadingCache;
 import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.response.Response;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

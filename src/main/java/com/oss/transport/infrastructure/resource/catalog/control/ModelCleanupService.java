@@ -1,7 +1,7 @@
 package com.oss.transport.infrastructure.resource.catalog.control;
 
 import com.comarch.oss.resourcecatalog.api.dto.SearchDTO;
-import com.oss.transport.infrastructure.EnvironmentRequestClient;
+import com.oss.serviceClient.EnvironmentRequestClient;
 import com.oss.transport.infrastructure.resource.catalog.entity.CardModelEntity;
 import com.oss.transport.infrastructure.resource.catalog.entity.ChassisModelEntity;
 import com.oss.transport.infrastructure.resource.catalog.entity.DeviceModelEntity;

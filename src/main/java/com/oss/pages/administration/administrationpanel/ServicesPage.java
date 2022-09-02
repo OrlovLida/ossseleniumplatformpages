@@ -3,7 +3,7 @@ package com.oss.pages.administration.administrationpanel;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import static com.oss.transport.infrastructure.ServicesClient.BASIC_URL;
+import static com.oss.serviceClient.ServicesClient.BASIC_URL;
 
 public class ServicesPage extends BaseAdminPanelPage {
 

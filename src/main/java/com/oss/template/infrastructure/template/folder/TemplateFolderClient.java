@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import com.comarch.oss.cm.templatefiller.api.dto.TemplateFolderDTO;
 import com.jayway.restassured.http.ContentType;
-import com.oss.transport.infrastructure.EnvironmentRequestClient;
+import com.oss.serviceClient.EnvironmentRequestClient;
 
 /**
  * Created by Bartłomiej Jędrzejczyk on 2022-04-15

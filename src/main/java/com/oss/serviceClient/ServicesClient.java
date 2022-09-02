@@ -1,12 +1,14 @@
-package com.oss.transport.infrastructure;
+package com.oss.serviceClient;
 
 import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.authentication.OAuthSignature;
+import com.jayway.restassured.config.RestAssuredConfig;
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.path.json.JsonPath;
 import com.jayway.restassured.response.Response;
 import com.jayway.restassured.specification.RequestSpecification;
 
+import java.sql.SQLOutput;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,11 +30,19 @@ public class ServicesClient {
             Service service = getService(applicationName);
             services.put(applicationName, service);
         }
+        System.out.println("Jestem przed ostatnia czescia");
         
         Service service = services.get(applicationName);
+        System.out.println("!!!!!!!!!!!serviceHOSTNaKoncu: " + service.host);
+        System.out.println("!!!!!!!!!!!serviceHOSTNaKoncu: " + service.url);
         return RestAssured.given()
-                .baseUri("http://" + service.host)
+                .relaxedHTTPSValidation()
+                .when()
+                .post(environment.getEnvironmentUrl())
+//                .baseUri(System.getProperty("URL"))
+                .baseUri(service.host)
                 .port(service.port)
+                .config(RestAssuredConfig.config().)//do poprawki tutaj,  moze jakis config by zadzialal
                 .basePath(service.url);
     }
     
@@ -42,8 +52,12 @@ public class ServicesClient {
             throw new RuntimeException(
                     "Service discovery lookup failed. Missing: " + applicationName + ". Status: " + response.getStatusCode());
         }
+        System.out.println("!!!!!!!!!!WYCHODZE Z GETSERVICE");
 
         JsonPath jsonPath = response.jsonPath();
+        System.out.println("???????response: " + response);
+        System.out.println("??????jsonPath: " + jsonPath.prettyPrint());
+        System.out.println("??????jsonPath string host: " + jsonPath.getString("host"));
         String host = jsonPath.getString("host");
         String url = jsonPath.getString("url");
         int port = jsonPath.getInt("port");
@@ -52,6 +66,7 @@ public class ServicesClient {
     }
 
     private Response getServiceByName(String applicationName) {
+        System.out.println("??????????????getServiceByName, environment.getEnvironmentUrl: " + environment.getEnvironmentUrl());
         return RestAssured.given()
                 .baseUri(environment.getEnvironmentUrl())
                 .port(environment.getEnvironmentPort()).authentication()
