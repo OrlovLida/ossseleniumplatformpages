@@ -69,6 +69,13 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         wizard.fillCmDomainWizard(name, cmInterface, domain);
     }
 
+    @Step("Create CM Domain with Name: {name}, CM Interface: {cmInterface}, Domain: {domain}")
+    public void createCMDomain(String name, String cmInterface, String domain, String stopOn) {
+        openCmDomainWizard();
+        CmDomainWizardPage wizard = new CmDomainWizardPage(driver);
+        wizard.fillCmDomainWizard(name, cmInterface, domain, stopOn);
+    }
+
     public TreeWidget getTreeView() {
         return TreeWidget.createById(driver, wait, TREE_ID);
     }
