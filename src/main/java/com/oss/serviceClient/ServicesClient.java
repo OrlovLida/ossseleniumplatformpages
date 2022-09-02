@@ -7,6 +7,7 @@ import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.path.json.JsonPath;
 import com.jayway.restassured.response.Response;
 import com.jayway.restassured.specification.RequestSpecification;
+import com.oss.configuration.Configuration;
 
 import java.sql.SQLOutput;
 import java.util.HashMap;
@@ -35,14 +36,15 @@ public class ServicesClient {
         Service service = services.get(applicationName);
         System.out.println("!!!!!!!!!!!serviceHOSTNaKoncu: " + service.host);
         System.out.println("!!!!!!!!!!!serviceHOSTNaKoncu: " + service.url);
+        if ("https".equals(environment.getEnvironmentUrl().substring(0, 5))){
+            return RestAssured.given()
+                    .baseUri("https://" + service.host)
+                    .port(25081)
+                    .basePath(service.url);
+        }
         return RestAssured.given()
-                .relaxedHTTPSValidation()
-                .when()
-                .post(environment.getEnvironmentUrl())
-//                .baseUri(System.getProperty("URL"))
-                .baseUri(service.host)
+                .baseUri("http://" + service.host)
                 .port(service.port)
-                .config(RestAssuredConfig.config().)//do poprawki tutaj,  moze jakis config by zadzialal
                 .basePath(service.url);
     }
     
