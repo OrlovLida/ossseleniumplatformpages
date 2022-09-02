@@ -1,6 +1,6 @@
 package com.oss.transport.infrastructure.navigation;
 
-import com.oss.transport.infrastructure.ServicesClient;
+import com.oss.serviceClient.ServicesClient;
 
 import javax.ws.rs.core.UriBuilder;
 import java.util.ArrayList;

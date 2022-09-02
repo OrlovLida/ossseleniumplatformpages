@@ -13,7 +13,7 @@ import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
 
 import io.qameta.allure.Step;
 
-import static com.oss.transport.infrastructure.ServicesClient.BASIC_URL;
+import static com.oss.serviceClient.ServicesClient.BASIC_URL;
 
 public class SummaryViewPage extends BaseAdminPanelPage {
 

@@ -1,4 +1,4 @@
-package com.oss.transport.infrastructure;
+package com.oss.serviceClient;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -49,7 +49,10 @@ public class Environment {
     public static Environment createEnvironmentFromConfiguration() {
         try {
             URL url = new URL(CONFIGURATION.getUrl());
-            String host = url.getHost();
+            System.out.println("!!!!!!!!!!URL: " + url);
+            String host = url.getProtocol() + "://" + url.getHost();
+            System.out.println("!!!!!!!!!!PROTOCOL: " + url.getProtocol());
+            System.out.println("!!!!!!!!!HOST: " + host);
             int port = url.getPort();
             String userName = CONFIGURATION.getLogin();
             String pass = CONFIGURATION.getPassword();
@@ -91,7 +94,10 @@ public class Environment {
         }
         
         public Builder withEnvironmentUrl(String environmentUrl) {
-            this.environmentUrl = "http://" + environmentUrl;
+
+            this.environmentUrl = environmentUrl;
+//            this.environmentUrl = CONFIGURATION.getUrl();
+
             return this;
         }
         

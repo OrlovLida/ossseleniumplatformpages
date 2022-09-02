@@ -11,7 +11,7 @@ import com.comarch.oss.physicalinventory.api.dto.ImmutablePhysicalDeviceDTO;
 import com.comarch.oss.physicalinventory.api.dto.PhysicalDeviceDTO;
 import com.comarch.oss.physicalinventory.api.dto.PortDTO;
 import com.comarch.oss.planning.api.dto.ObjectIdDTO;
-import com.oss.transport.infrastructure.EnvironmentRequestClient;
+import com.oss.serviceClient.EnvironmentRequestClient;
 import com.oss.transport.infrastructure.ObjectIdentifier;
 import com.oss.transport.infrastructure.RefId;
 import com.oss.transport.infrastructure.planning.InventoryModuleRepository;

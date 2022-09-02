@@ -5,7 +5,7 @@ import com.comarch.oss.planning.api.dto.ObjectsDescriptionDTO;
 import com.comarch.oss.planning.api.dto.PerformObjectResultDTO;
 import com.comarch.oss.planning.api.dto.PlannedObjectDTO;
 import com.jayway.restassured.http.ContentType;
-import com.oss.transport.infrastructure.EnvironmentRequestClient;
+import com.oss.serviceClient.EnvironmentRequestClient;
 
 import java.util.Arrays;
 import java.util.HashMap;

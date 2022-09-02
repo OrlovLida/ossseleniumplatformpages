@@ -14,7 +14,7 @@ import com.comarch.oss.resourcecatalog.api.dto.StructurePortDTO;
 import com.comarch.oss.resourcecatalog.api.dto.StructureSlotDTO;
 import com.comarch.oss.resourcecatalog.api.dto.SupportedLayersDTO;
 import com.comarch.oss.resourcecatalog.api.dto.TerminationPointsDTO;
-import com.oss.transport.infrastructure.EnvironmentRequestClient;
+import com.oss.serviceClient.EnvironmentRequestClient;
 import com.oss.transport.infrastructure.planning.InventoryModuleRepository;
 import com.oss.transport.infrastructure.resource.catalog.control.json.CardModelDTO;
 import com.oss.transport.infrastructure.resource.catalog.control.json.DeviceModelDTO;
