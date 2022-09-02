@@ -125,7 +125,7 @@ public class EnvironmentRequestClient {
     }
 
     public RequestSpecification getRecoConfigSpecification() {
-        return servicesClient.getRequestSpecificationByName("reco-config");
+        return servicesClient.getRequestSpecificationByNameUsingBaseURL("reco-config");
     }
 
     public RequestSpecification prepareRequestSpecificationWithoutUri() {
@@ -146,7 +146,7 @@ public class EnvironmentRequestClient {
     }
 
     private String getUrl(Map<String, Object> pathParams, Map<String, Object> queryParams, PlanningContext planningContext,
-            LinkDTO linkDTO) {
+                          LinkDTO linkDTO) {
         UriBuilder uriBuilder = UriBuilder.fromPath(linkDTO.getHref());
         planningContext.applyPlanningContext(uriBuilder);
         uriBuilder = fillUriBuilderWithPathParams(pathParams, uriBuilder);

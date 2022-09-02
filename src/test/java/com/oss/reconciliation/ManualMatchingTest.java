@@ -67,7 +67,6 @@ public class ManualMatchingTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         softAssert = new SoftAssert();
         recoConfigClient = RecoConfigClient.getInstance(environmentRequestClient);
-        log.info("Po wzieciu instancji");
         recoConfigClient.createRecoConfig(RECO_CONFIG_BODY, CM_DOMAIN_NAME);
         driver.manage().deleteAllCookies();
     }
