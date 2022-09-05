@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.assertj.core.api.Assertions;
-import org.openqa.selenium.By;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -20,7 +19,6 @@ import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.components.tree.TreeComponent.Node;
 import com.oss.framework.utils.CSSUtils;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.tree.TreeWidgetV2;
 import com.oss.pages.physical.CreatePluggableModuleWizardPage;
 import com.oss.pages.physical.SublocationWizardPage;
 import com.oss.pages.platform.HierarchyViewPage;
@@ -285,6 +283,13 @@ public class TreeWidgetTest extends BaseTestCase {
     }
 
     @Test(priority = 14)
+    public void clickInlineAction() {
+        hierarchyViewPage.getFirstNode().callAction(ActionsContainer.SHOW_ON_GROUP_ID);
+        Assertions.assertThat(hierarchyViewPage
+                .getFirstNode().isToggled()).isFalse();
+    }
+
+    @Test(priority = 15)
     public void showOnHierarchyView() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hierarchyViewPage.getFirstNode().callAction(ActionsContainer.SHOW_ON_GROUP_ID,
@@ -293,7 +298,7 @@ public class TreeWidgetTest extends BaseTestCase {
         Assertions.assertThat(nodes).hasSize(1);
     }
 
-    @Test(priority = 15)
+    @Test(priority = 16)
     public void checkAvailabilityOsShowOnInventoryViewActionForDifferentType() {
         hierarchyViewPage = HierarchyViewPage.openHierarchyViewPage(driver, BASIC_URL, "Location");
         hierarchyViewPage.getMainTree().searchByAttribute(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, LOCATION_NAME);
@@ -306,7 +311,7 @@ public class TreeWidgetTest extends BaseTestCase {
         Assert.assertFalse(CSSUtils.isElementPresent(driver, OPEN_INVENTORY_VIEW_CONTEXT_ACTION_ID));
     }
 
-    @Test(priority = 16)
+    @Test(priority = 17)
     public void ShowOnInventoryViewActionForSameType() {
         hierarchyViewPage.unselectNodeByLabelsPath(PATH_DEVICE);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -316,7 +321,7 @@ public class TreeWidgetTest extends BaseTestCase {
         Assert.assertEquals(inventoryViewPage.getViewTitle(), INVENTORY_VIEW_TITLE);
     }
 
-    @Test(priority = 17)
+    @Test(priority = 18)
     public void checkBadges() {
         deviceId2 = createRouterWithCards(DEVICE_NAME_2);
         HierarchyViewPage viewPage = HierarchyViewPage.goToHierarchyViewPage(driver, BASIC_URL, "Router", deviceId2.toString());
@@ -391,7 +396,7 @@ public class TreeWidgetTest extends BaseTestCase {
                 Long.valueOf(locationId), LOCATION_TYPE_BUILDING);
     }
 
-    private Long  createRow(Long preciseLocationId) {
+    private Long createRow(Long preciseLocationId) {
         LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);
         return locationInventoryRepository.createSubLocation(SUB_LOCATION_TYPE_ROW, ROW_NAME, preciseLocationId, SUB_LOCATION_TYPE_ROOM,
                 Long.valueOf(locationId), LOCATION_TYPE_BUILDING);
