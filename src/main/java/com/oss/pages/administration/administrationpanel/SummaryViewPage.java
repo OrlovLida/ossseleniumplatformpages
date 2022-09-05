@@ -65,6 +65,18 @@ public class SummaryViewPage extends BaseAdminPanelPage {
         return driver.getCurrentUrl().contains(expectedSuffix);
     }
 
+    @Step("Check if chosen application button leads to page with title: {expectedTitle}")
+    public boolean isExpectedTitleDisplayed(String expectedTitle) {
+        log.info("Check if currently opened page has title {}", expectedTitle);
+        return driver.getTitle().contains(expectedTitle);
+    }
+
+    @Step("Return to previous view")
+    public void returnToPreviousView() {
+        log.info("Return to previous view");
+        driver.navigate().back();
+    }
+
     @Step("Click Help button")
     public void clickHelp() {
         callActionInTable(HOSTS_TABLE_ID, HELP_BUTTON_ID);
