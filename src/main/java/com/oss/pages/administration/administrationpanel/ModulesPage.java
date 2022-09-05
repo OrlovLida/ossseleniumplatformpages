@@ -7,7 +7,7 @@ import com.oss.untils.FileDownload;
 
 import io.qameta.allure.Step;
 
-import static com.oss.transport.infrastructure.ServicesClient.BASIC_URL;
+import static com.oss.serviceClient.ServicesClient.BASIC_URL;
 
 public class ModulesPage extends BaseAdminPanelPage {
 
