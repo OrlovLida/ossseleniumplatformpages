@@ -12,6 +12,7 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
+import com.oss.untils.FileDownload;
 
 import io.qameta.allure.Step;
 
@@ -105,6 +106,13 @@ public abstract class BaseAdminPanelPage extends BasePage {
     public int getItemsCount(String tableId) {
         log.info("Get total number of items in table {}", tableId);
         return getOldTable(tableId).getTotalCount();
+    }
+
+    @Step("Attach downloaded file to report")
+    public void attachFileToReport(String fileName) {
+        FileDownload.attachDownloadedFileToReport(fileName);
+        log.info("Attaching downloaded file to report");
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     private OldTable getOldTable(String tableId) {
