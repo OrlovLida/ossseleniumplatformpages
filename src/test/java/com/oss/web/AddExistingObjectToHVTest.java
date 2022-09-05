@@ -39,14 +39,16 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
     private static final String ADD_OBJECT_BUTTON = "addRootNode";
     private static final String LOCATION_TYPE = "Location";
     private static final String BUILDING_NAME_1 = FakeGenerator.getCity() + "-BU" + FakeGenerator.getRandomInt();
-    private static final String BUILDING_NAME_2 = FakeGenerator.getCity() + "-BU" + FakeGenerator.getRandomInt();
+    private static final String BUILDING_NAME_2 = "1_" + FakeGenerator.getCity() + "-BU" + FakeGenerator.getRandomInt();
     private static final String LOCATION_RELATION_PATH = BUILDING_NAME_2 + ".Locations";
     private static final String ROOM_RELATION_PATH = BUILDING_NAME_2 + ".Locations.Room";
     private static final String BUILDING_NAME_3 = FakeGenerator.getCity() + "-BU" + FakeGenerator.getRandomInt();
     private static final String BUILDING_NAME_4 = FakeGenerator.getCity() + "-BU" + FakeGenerator.getRandomInt();
     private static final String BUILDING_NAME_5 = "Z_" + FakeGenerator.getCity() + "-BU" + FakeGenerator.getRandomInt();
-    private static final String ROOM_NAME_1 = FakeGenerator.getIdNumber();
+    private static final String BUILDING_NAME_6 = "0_" + FakeGenerator.getCity() + "-BU" + FakeGenerator.getRandomInt();
+    private static final String ROOM_NAME_1 = "2_" + FakeGenerator.getIdNumber();
     private static final String ROOM_NAME_2 = FakeGenerator.getIdNumber();
+    private static final String ROOM_NAME_3 = FakeGenerator.getIdNumber();
     private static final String ADVANCED_SEARCH_ID = "advancedSearch";
     private static final String BUILDING_TYPE = "Building";
     private static final String ROOM_TYPE = "Room";
@@ -63,6 +65,7 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
     private String buildingId3;
     private String buildingId4;
     private String buildingId5;
+    private String buildingId6;
     private HierarchyViewPage hierarchyView;
 
     @BeforeClass
@@ -76,8 +79,10 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
         buildingId2 = createBuilding(BUILDING_NAME_2);
         buildingId3 = createBuilding(BUILDING_NAME_3);
         buildingId4 = createBuilding(BUILDING_NAME_4);
+        buildingId6 = createBuilding(BUILDING_NAME_6);
         createRoom(buildingId2, ROOM_NAME_1);
         createRoom(buildingId2, ROOM_NAME_2);
+        createRoom(buildingId6, ROOM_NAME_3);
     }
 
     @Test(priority = 1)
@@ -116,6 +121,15 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
     }
 
     @Test(priority = 4)
+    public void addObjectAndExpandNextLevel() {
+        hierarchyView.expandNextLevel(BUILDING_NAME_2);
+        addExistingObject(BUILDING_NAME_6);
+        hierarchyView.expandNextLevel(BUILDING_NAME_6);
+        hierarchyView.getVisibleNodesLabel();
+        Assertions.assertThat(hierarchyView.getVisibleNodesLabel()).contains(ROOM_NAME_3, BUILDING_NAME_6);
+    }
+
+    @Test(priority = 5)
     public void setFilterOnNodeAndAddObject() {
         hierarchyView.getNodeByLabelPath(LOCATION_RELATION_PATH).searchByAttribute(NAME_ATTRIBUTE_ID, ROOM_NAME_1);
         addExistingObject(BUILDING_NAME_4);
@@ -125,7 +139,7 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
         Assertions.assertThat(hierarchyView.getVisibleNodesLabel()).contains(ROOM_NAME_1, BUILDING_NAME_4).doesNotContain(ROOM_NAME_2);
     }
 
-    @Test(priority = 5)
+    @Test(priority = 6)
     public void addMoreThan500Objects() {
         hierarchyView.getMainTree().callActionById(ADD_OBJECT_BUTTON);
         AdvancedSearchWidget advancedSearch = AdvancedSearchWidget.createById(driver, webDriverWait, ADVANCED_SEARCH_ID);
@@ -142,7 +156,7 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
         systemMessageContainer.close();
     }
 
-    @Test(priority = 6)
+    @Test(priority = 7)
     public void checkIsAddObjectButtonIsUnavailableForSelectedObject() {
         hierarchyView.selectFirstObject();
         Assertions.assertThat(CSSUtils.isElementPresent(driver, ADD_OBJECT_BUTTON)).isFalse();
@@ -151,7 +165,7 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
         Assertions.assertThat(CSSUtils.isElementPresent(driver, ADD_OBJECT_BUTTON)).isTrue();
     }
 
-    @Test(priority = 7)
+    @Test(priority = 8)
     public void checkIsAddObjectButtonIsUnavailableWithHVQuery() {
         homePage.chooseFromLeftSideMenu(HIERARCHY_VIEW, RESOURCE_INVENTORY);
         SearchObjectTypePage searchObjectType = new SearchObjectTypePage(driver, webDriverWait);
@@ -163,7 +177,7 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
         Assertions.assertThat(CSSUtils.isElementPresent(driver, ADD_OBJECT_BUTTON)).isFalse();
     }
 
-    @Test(priority = 8)
+    @Test(priority = 9)
     @Description("Hierarchy View is opened from Inventory View")
     public void addObjectToHierarchyViewOpenedFromOtherView() {
         NewInventoryViewPage location = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, LOCATION_TYPE);
@@ -185,7 +199,7 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
         Assertions.assertThat(type).isEqualTo(ROOM_TYPE);
     }
 
-    @Test(priority = 9)
+    @Test(priority = 10)
     public void addObjectAndCheckIfScrolledToElement() {
         hierarchyView = HierarchyViewPage.goToHierarchyViewPage(driver, BASIC_URL, LOCATION_TYPE, buildingId1);
         hierarchyView.getMainTree().getPagination().changeRowsCount(100);
