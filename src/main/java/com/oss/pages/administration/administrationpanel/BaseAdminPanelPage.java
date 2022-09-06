@@ -1,5 +1,8 @@
 package com.oss.pages.administration.administrationpanel;
 
+import java.util.List;
+
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
@@ -9,6 +12,7 @@ import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.HtmlEditor;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
@@ -21,6 +25,7 @@ public abstract class BaseAdminPanelPage extends BasePage {
     protected static final Logger log = LoggerFactory.getLogger(BaseAdminPanelPage.class);
     private static final String HELP_WIZARD_ID = "ADMINISTRATIVE_PANEL_HELP_WIZARD_ID";
     private static final String REFRESH_BUTTON_ID = "tableRefreshButton";
+    private static final String NO_SUCH_ELEMENT_EXCEPTION = "Chosen Property is not visible";
 
     protected BaseAdminPanelPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -115,7 +120,38 @@ public abstract class BaseAdminPanelPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
+    @Step("Get value for {propertyName}")
+    public String getValueFromPanel(String propertyPanelId, String propertyName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        if (checkPropertyVisibility(propertyPanelId, propertyName)) {
+            return getAdminPropertyPanel(propertyPanelId).getPropertyValue(propertyName);
+        } else {
+            throw new NoSuchElementException(NO_SUCH_ELEMENT_EXCEPTION);
+        }
+    }
+
+    @Step("Click link from Panel")
+    public void clickLinkFromPanel(String propertyPanelId, String propertyName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getAdminPropertyPanel(propertyPanelId).clickLink(propertyName);
+        log.info("Click Link to {}", propertyName);
+    }
+
+    private boolean checkPropertyVisibility(String propertyPanelId, String propertyName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return getVisibleAttributes(propertyPanelId).contains(propertyName);
+    }
+
+    private List<String> getVisibleAttributes(String propertyPanelId) {
+        return getAdminPropertyPanel(propertyPanelId).getVisibleAttributes();
+    }
+
     private OldTable getOldTable(String tableId) {
         return OldTable.createById(driver, wait, tableId);
+    }
+
+    protected OldPropertyPanel getAdminPropertyPanel(String propertyPanelId) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return OldPropertyPanel.createById(driver, wait, propertyPanelId);
     }
 }
