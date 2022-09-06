@@ -42,6 +42,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     private static final String REASON = "Reason";
     private static final String CONFLICT = "conflict";
     private static final String RECONCILIATION_WITH_ID = "Reconciliation with ID";
+    private static final String MOVE_TO_NOTIFICATION_SUBSCRIPTIONS_ID = "narComponent_CmDomainActionNotificationSubscriptionsId";
 
     protected NetworkDiscoveryControlViewPage(WebDriver driver) {
         super(driver);
@@ -167,6 +168,15 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         ndcvTabs.selectTabById(RECONCILIATION_TREE_TAB_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         ndcvTabs.callActionById(ActionsContainer.SHOW_ON_GROUP_ID, SHOW_SAMPLES_MANAGEMENT_ACTION_ID);
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    @Step("Move from Network Discovery Control View to Subscription Configuration view in context of selected CM Domain")
+    public void moveToSubscriptionConfiguration() {
+        TabsInterface ndcvTabs = getTabsInterface();
+        ndcvTabs.selectTabById(RECONCILIATION_TREE_TAB_ID);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        ndcvTabs.callActionById(ActionsContainer.SHOW_ON_GROUP_ID, MOVE_TO_NOTIFICATION_SUBSCRIPTIONS_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
