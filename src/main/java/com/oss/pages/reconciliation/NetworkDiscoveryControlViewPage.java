@@ -1,5 +1,7 @@
 package com.oss.pages.reconciliation;
 
+import java.util.List;
+
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
@@ -44,7 +46,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     private static final String RECONCILIATION_WITH_ID = "Reconciliation with ID";
     private static final String MOVE_TO_NOTIFICATION_SUBSCRIPTIONS_ID = "narComponent_CmDomainActionNotificationSubscriptionsId";
 
-    protected NetworkDiscoveryControlViewPage(WebDriver driver) {
+    public NetworkDiscoveryControlViewPage(WebDriver driver) {
         super(driver);
     }
 
@@ -224,6 +226,10 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         getIssuesTable().searchByAttributeWithLabel(REASON, ComponentType.TEXT_FIELD, RECONCILIATION_WITH_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         return getIssuesTable().getCellValue(0, REASON);
+    }
+
+    public List<String> getTabsLabels() {
+        return TabsWidget.createById(driver, wait,  RECONCILIATION_TAB_ID).getTabLabels();
     }
 
     private void logIssues(String type) {
