@@ -18,7 +18,6 @@ public class NotificationManagementPage extends BaseACDPage {
     private static final Logger log = LoggerFactory.getLogger(NotificationManagementPage.class);
 
     private static final String NOTIFICATION_MANAGEMENT_TABLE_ID = "notificationManagementTableId";
-    private static final String ADVANCED_SEARCH_ID = "advanced-search_component";
 
     public NotificationManagementPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -54,7 +53,6 @@ public class NotificationManagementPage extends BaseACDPage {
     @Step("I check if there is data in Notification Management table")
     public Boolean isDataInNotificationRulesTable() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getNotificationManagementTable();
         log.info("I check if there is data in table");
         return !getNotificationManagementTable().hasNoData();
     }
@@ -63,13 +61,13 @@ public class NotificationManagementPage extends BaseACDPage {
     public void selectFirstNotificationRuleFromTable() {
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("I select first Notification rule from table");
-        OldTable.createById(driver, wait, NOTIFICATION_MANAGEMENT_TABLE_ID).selectRow(0);
+        getNotificationManagementTable().selectRow(0);
     }
 
     @Step("I clear filters")
     public void clearFilters() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        AdvancedSearch.createByClass(driver, wait, ADVANCED_SEARCH_ID).clearAllFilters();
+        AdvancedSearch.createByWidgetId(driver, wait, NOTIFICATION_MANAGEMENT_TABLE_ID).clearAllFilters();
         log.info("I clear set filter");
     }
 
