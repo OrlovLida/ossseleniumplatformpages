@@ -354,21 +354,6 @@ public class TableWidgetTest extends BaseTestCase {
         Assertions.assertThat(thirdColumnSize).isEqualTo(300);
     }
 
-    @Test(priority = 22)
-    public void changeDefaultColumnWidthAndDefaultSettings() {
-        int defaultColumnSize = inventoryViewPage.getColumnSize(ID_COLUMN_ID);
-        String newColumnSize = String.valueOf(100 + defaultColumnSize);
-        tableWidget.setColumnWidth(ID_COLUMN_ID, newColumnSize);
-        Assertions.assertThat(inventoryViewPage.getColumnSize(ID_COLUMN_ID)).isEqualTo(Integer.parseInt(newColumnSize));
-        driver.navigate().refresh();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        int columnSizeRefresh = inventoryViewPage.getColumnSize(ID_COLUMN_ID);
-        Assertions.assertThat(columnSizeRefresh).isEqualTo(Integer.parseInt(newColumnSize));
-        tableWidget = inventoryViewPage.getMainTable();
-        String defColWidth = tableWidget.getDefaultColumnWidth(ID_COLUMN_ID);
-        Assertions.assertThat(defColWidth).isEqualTo("200");
-    }
-
     private int getRowsCount() {
         tableWidget = inventoryViewPage.getMainTable();
         PaginationComponent pagination = tableWidget.getPagination();
