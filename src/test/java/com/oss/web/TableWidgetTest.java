@@ -31,6 +31,7 @@ public class TableWidgetTest extends BaseTestCase {
     public static final String TEST_ACTOR_TYPE = "TestActor";
     public static final String ID_COLUMN_ID = "id";
     public static final String MAIN_TABLE_CARD = "MainTableCard";
+    public static final String DEFAULT_WIDTH_200 = "200";
     private static final String VIEWS_MANAGEMENT_VIEWS_INVENTORY_VIEW_ULR = "views/management/views/inventory-view/";
     private NewInventoryViewPage inventoryViewPage;
     private TableWidget tableWidget;
@@ -244,7 +245,7 @@ public class TableWidgetTest extends BaseTestCase {
         Assertions.assertThat(columnSizeRefresh).isEqualTo(Integer.parseInt(newColumnSize));
         tableWidget = inventoryViewPage.getMainTable();
         String defColWidth = tableWidget.getDefaultColumnWidth(MOVIE_LENGTH_COLUMN_ID);
-        Assertions.assertThat(defColWidth).isEqualTo("200");
+        Assertions.assertThat(defColWidth).isEqualTo(DEFAULT_WIDTH_200);
     }
 
     @Test(priority = 14)
@@ -265,7 +266,7 @@ public class TableWidgetTest extends BaseTestCase {
 
         List<String> activeColumnsHeaders = inventoryViewPage.getMainTable().getActiveColumnIds();
         String defColWidth = tableWidget.getDefaultColumnWidth(defaultFirstColumn);
-        Assertions.assertThat(defColWidth).isEqualTo("200");
+        Assertions.assertThat(defColWidth).isEqualTo(DEFAULT_WIDTH_200);
         Assertions.assertThat(defaultFirstColumn).isEqualTo(activeColumnsHeaders.get(0));
         Assertions.assertThat(inventoryViewPage.getColumnSize(activeColumnsHeaders.get(0))).isEqualTo(defaultFirstColumnSize);
         Assertions.assertThat(activeColumnsHeaders).contains(defaultForthColumn).doesNotContain(TYPE_DIRECTOR_COLUMN_ID);
@@ -341,7 +342,7 @@ public class TableWidgetTest extends BaseTestCase {
         Assertions.assertThat(defaultSize + offset).isEqualTo(newSize);
         String firstColumnId = inventoryViewPage.getMainTable().getActiveColumnIds().get(0);
         String defColWidth = tableWidget.getDefaultColumnWidth(firstColumnId);
-        Assertions.assertThat(defColWidth).isEqualTo("200");
+        Assertions.assertThat(defColWidth).isEqualTo(DEFAULT_WIDTH_200);
     }
 
     @Test(priority = 21)
