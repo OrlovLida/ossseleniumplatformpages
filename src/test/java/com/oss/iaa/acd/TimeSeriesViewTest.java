@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
@@ -22,7 +24,6 @@ public class TimeSeriesViewTest extends BaseTestCase {
     private final String SOURCE_SYSTEM_COMBOBOX_ID = "sourceSystem";
     private final String SOURCE_SYSTEM_VALUE = "PM";
     private final String INDICATOR_NAME_ID = "indicatorIdentifiers";
-    private final String INDICATOR_NAME_VALUE = "new_BSS 3G KPIs_Accessibility_T.RAB_HSDPA_DN";
     private final String TIME_SERIES_INDICATOR_VALUE = "PM/new_BSS 3G KPIs_Accessibility_T.RAB_HSDPA_DN";
     private final String BUSINESS_INDICATOR_TYPE_ID = "indicatorBusinessComboBoxId";
     private final String BUSINESS_INDICATOR_TYPE_VALUE = "HW";
@@ -30,7 +31,6 @@ public class TimeSeriesViewTest extends BaseTestCase {
     private final String MO_VALUE = "Test Service Statistics ETL";
     private final String TIME_SERIES_MO_VALUE = "PM/Test Service Statistics ETL";
     private final String MO_DOMAIN_ID = "monitoredObjectDomainComboBoxId";
-    private final String MO_DOMAIN_VALUE = "IP";
     private final String ADD_TIME_SERIES_WIZARD_ID = "addTimeSeries_prompt-card";
     private final String TREND_ANALYSIS_CHECKBOX_ID = "checkBoxTrendAnalysisId";
     private final String FORECAST_ANALYSIS_CHECKBOX_ID = "checkBoxForecastAnalysisId";
@@ -48,15 +48,19 @@ public class TimeSeriesViewTest extends BaseTestCase {
         timeSeriesViewPage = TimeSeriesViewPage.goToPage(driver, timeSeriesViewSuffixUrl, BASIC_URL);
     }
 
+    @Parameters({"indicatorName", "monitoredObject"})
     @Test(priority = 1, testName = "Add new Time Series", description = "Add new Time Series")
     @Description("Add new Time Series")
-    public void addNewTimeSeries() {
+    public void addNewTimeSeries(
+            @Optional("new_BSS 3G KPIs_Accessibility_T.RAB_HSDPA_DN") String indicatorName,
+            @Optional("IP") String monitoredObject
+    ) {
         timeSeriesViewPage.addNewTimeSeries(ADD_NEW_TIME_SERIES_BUTTON_ID);
         timeSeriesViewPage.setAttributeValue(SOURCE_SYSTEM_COMBOBOX_ID, SOURCE_SYSTEM_VALUE);
-        timeSeriesViewPage.setValueInTextField(INDICATOR_NAME_ID, INDICATOR_NAME_VALUE);
+        timeSeriesViewPage.setValueInTextField(INDICATOR_NAME_ID, indicatorName);
         timeSeriesViewPage.setAttributeValue(BUSINESS_INDICATOR_TYPE_ID, BUSINESS_INDICATOR_TYPE_VALUE);
         timeSeriesViewPage.setValueInTextField(MO_ID, MO_VALUE);
-        timeSeriesViewPage.setAttributeValue(MO_DOMAIN_ID, MO_DOMAIN_VALUE);
+        timeSeriesViewPage.setAttributeValue(MO_DOMAIN_ID, monitoredObject);
         timeSeriesViewPage.selectRadioButton();
         timeSeriesViewPage.selectCheckbox(TREND_ANALYSIS_CHECKBOX_ID, ADD_TIME_SERIES_WIZARD_ID);
         timeSeriesViewPage.selectCheckbox(FORECAST_ANALYSIS_CHECKBOX_ID, ADD_TIME_SERIES_WIZARD_ID);
