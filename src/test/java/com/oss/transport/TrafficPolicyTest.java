@@ -9,12 +9,15 @@ import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.TableWidget;
 import com.oss.pages.platform.NewInventoryViewPage;
+import com.oss.pages.platform.SearchObjectTypePage;
 import com.oss.pages.transport.TrafficPolicyWizardPage;
 
 import io.qameta.allure.Step;
 
 public class TrafficPolicyTest extends BaseTestCase {
 
+    private static final String PRE_CREATED_DEVICE = "SeleniumTestDeviceTC";
+    private static final String CREATE_TRAFFIC_POLICY_ID = "CreateTrafficPolicyContextAction";
     private static final String EDIT_TRAFFIC_POLICY_ID = "TrafficPolicyEditContextAction";
     private static final String TRAFFIC_POLICY_NAME = "TrafficPolicySeleniumTest" + (int) (Math.random() * 101);
     private static final String TRAFFIC_POLICY_NAME_UPDATE = "TrafficPolicySeleniumTestUpdate" + (int) (Math.random() * 101);
@@ -26,13 +29,17 @@ public class TrafficPolicyTest extends BaseTestCase {
     private static final String ASSIGN_INTERFACE_ID = "TrafficPolicyModifyAssignmentContextAction";
     private static final String REMOVE_ENTRY_ID = "TrafficPolicyDeleteEntryContextAction";
     private static final String TRAFFIC_POLICY_REMOVE_BUTTON_ID = "TrafficPolicyDeleteContextAction";
+    private static final String ASSIGN_INTERFACE_DIRECTION = "Bidirectional";
+    private static final String CLEAR_ASSIGNED_INTERFACE_DIRECTION = "-";
+    private static final String EDIT_ENTRY_ID = "TrafficPolicyModifyEntryContextAction";
+    private static final String ADD_ENTRY_ID = "TrafficPolicyAddEntryContextAction";
 
     @Test(priority = 1)
     @Step("Create Traffic Policy")
     public void createTrafficPolicy() {
-        TrafficPolicyWizardPage trafficPolicyWizard = new TrafficPolicyWizardPage(driver);
-        trafficPolicyWizard.goToWizardAtCreate();
+        goToWizardAtCreate();
         waitForPageToLoad();
+        TrafficPolicyWizardPage trafficPolicyWizard = new TrafficPolicyWizardPage(driver);
         trafficPolicyWizard.createTrafficPolicy(TRAFFIC_POLICY_NAME);
         SystemMessageContainer.create(driver, webDriverWait).clickMessageLink();
         NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
@@ -57,6 +64,8 @@ public class TrafficPolicyTest extends BaseTestCase {
     @Test(priority = 3)
     @Step("Add Entry to Traffic Policy")
     public void addEntryToTrafficPolicy() {
+        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
+        newInventoryViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, ADD_ENTRY_ID);
         TrafficPolicyWizardPage trafficPolicyWizardPage = new TrafficPolicyWizardPage(driver);
         trafficPolicyWizardPage.addEntryToTrafficPolicy();
     }
@@ -64,6 +73,12 @@ public class TrafficPolicyTest extends BaseTestCase {
     @Test(priority = 4)
     @Step("Edit Traffic Policy Entry")
     public void editTrafficPolicyEntry() {
+        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
+        newInventoryViewPage.refreshMainTable();
+        newInventoryViewPage.selectTabByLabel(ENTRIES_TAB_ID);
+        TableWidget entriesTable = TableWidget.createById(driver, TABLE_ENTRY_ID, webDriverWait);
+        entriesTable.selectFirstRow();
+        entriesTable.callAction(ActionsContainer.EDIT_GROUP_ID, EDIT_ENTRY_ID);
         TrafficPolicyWizardPage trafficPolicyWizardPage = new TrafficPolicyWizardPage(driver);
         trafficPolicyWizardPage.editTrafficPolicyEntry();
     }
@@ -74,7 +89,7 @@ public class TrafficPolicyTest extends BaseTestCase {
         NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, ASSIGN_INTERFACE_ID);
         TrafficPolicyWizardPage trafficPolicyWizardPage = new TrafficPolicyWizardPage(driver);
-        trafficPolicyWizardPage.assignInterfaceToTrafficPolicy();
+        trafficPolicyWizardPage.setAssignInterfaceDirection(ASSIGN_INTERFACE_DIRECTION);
         newInventoryViewPage.selectTabByLabel(ASSIGNMENT_TAB_ID);
         TableWidget assignmentTable = TableWidget.createById(driver, ASSIGNMENT_TABLE_ID, webDriverWait);
         waitForPageToLoad();
@@ -94,7 +109,7 @@ public class TrafficPolicyTest extends BaseTestCase {
         newInventoryViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, ASSIGN_INTERFACE_ID);
 
         TrafficPolicyWizardPage trafficPolicyWizardPage = new TrafficPolicyWizardPage(driver);
-        trafficPolicyWizardPage.removeAssignedInterface();
+        trafficPolicyWizardPage.setAssignInterfaceDirection(CLEAR_ASSIGNED_INTERFACE_DIRECTION);
 
         entriesTable.callAction(ActionsContainer.KEBAB_GROUP_ID, TableWidget.REFRESH_ACTION_ID);
         waitForPageToLoad();
@@ -116,6 +131,16 @@ public class TrafficPolicyTest extends BaseTestCase {
         newInventoryViewPage.refreshMainTable();
         waitForPageToLoad();
         Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());
+    }
+
+    @Step("Open wizard to create Traffic Policy")
+    public void goToWizardAtCreate() {
+        homePage.chooseFromLeftSideMenu("Inventory View", "Resource Inventory");
+        SearchObjectTypePage searchObjectType = new SearchObjectTypePage(driver, webDriverWait);
+        searchObjectType.searchType("Physical Device");
+        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
+        newInventoryViewPage.searchObject(PRE_CREATED_DEVICE).selectFirstRow();
+        newInventoryViewPage.callAction(ActionsContainer.CREATE_GROUP_ID, CREATE_TRAFFIC_POLICY_ID);
     }
 
     private void waitForPageToLoad() {

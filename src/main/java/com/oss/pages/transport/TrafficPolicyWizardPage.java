@@ -2,15 +2,11 @@ package com.oss.pages.transport;
 
 import org.openqa.selenium.WebDriver;
 
-import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.EditableList;
-import com.oss.framework.widgets.table.TableWidget;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
-import com.oss.pages.platform.NewInventoryViewPage;
-import com.oss.pages.platform.SearchObjectTypePage;
 
 import io.qameta.allure.Step;
 
@@ -20,8 +16,6 @@ public class TrafficPolicyWizardPage extends BasePage {
         super(driver);
     }
 
-    private static final String PRE_CREATED_DEVICE = "SeleniumTestDeviceTC";
-    private static final String CREATE_TRAFFIC_POLICY_ID = "CreateTrafficPolicyContextAction";
     private static final String WIZARD_ID = "trafficPolicyWizardApp";
     private static final String EDIT_WIZARD_ID = "trafficPolicyModificationWizard_prompt-card";
     private static final String ADD_ENTRY_WIZARD_ID = "traffic_policy_entry_wizard_form_id";
@@ -43,13 +37,9 @@ public class TrafficPolicyWizardPage extends BasePage {
     private static final String CIR_EGRESS_FIELD_ID = "cir-egress-form";
     private static final String PIR_INGRESS_FIELD_ID = "pir-ingress-form";
     private static final String PIR_EGRESS_FIELD_ID = "pir-egress-form";
-    private static final String SAVE_BUTTON_LABEL = "Save";
-    private static final String ADD_ENTRY_ID = "TrafficPolicyAddEntryContextAction";
-    private static final String ENTRIES_TAB_ID = "Traffic Policy Entries";
-    private static final String TABLE_ENTRY_ID = "EntriesWidget";
-    private static final String EDIT_ENTRY_ID = "TrafficPolicyModifyEntryContextAction";
+    private static final String SAVE_BUTTON_ID = "buttons_app_id-1";
+    private static final String SAVE_BUTTON_ID_ASSIGNMENT = "buttons-app-id-1";
     private static final String EDITABLE_LIST_ID = "card-content_TrafficPolicyAssignInterfaceView_prompt-card";
-    private static final String ASSIGN_INTERFACE_DIRECTION = "Bidirectional";
     private static final String DIRECTION_COLUMN_ID = "direction-column-id";
 
     @Step("Create Traffic Policy with Name {name}")
@@ -74,8 +64,6 @@ public class TrafficPolicyWizardPage extends BasePage {
 
     @Step("Add Entry to Traffic Policy")
     public TrafficPolicyWizardPage addEntryToTrafficPolicy() {
-        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, wait);
-        newInventoryViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, ADD_ENTRY_ID);
         TrafficPolicyWizardPage trafficPolicyWizardPage = new TrafficPolicyWizardPage(driver);
         TrafficPolicyEntryAttributes trafficPolicyEntryAttributes = getEntryAttributesForCreate();
         fillEntryToTrafficPolicy(trafficPolicyEntryAttributes, trafficPolicyWizardPage);
@@ -85,12 +73,6 @@ public class TrafficPolicyWizardPage extends BasePage {
 
     @Step("Edit Traffic Policy Entry")
     public TrafficPolicyWizardPage editTrafficPolicyEntry() {
-        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, wait);
-        newInventoryViewPage.refreshMainTable();
-        newInventoryViewPage.selectTabByLabel(ENTRIES_TAB_ID);
-        TableWidget entriesTable = TableWidget.createById(driver, TABLE_ENTRY_ID, wait);
-        entriesTable.selectFirstRow();
-        entriesTable.callAction(ActionsContainer.EDIT_GROUP_ID, EDIT_ENTRY_ID);
         TrafficPolicyEntryAttributes trafficPolicyEntryAttributes = getEntryAttributesForUpdate();
         TrafficPolicyWizardPage trafficPolicyWizardPage = new TrafficPolicyWizardPage(driver);
         fillEntryToTrafficPolicyUpdate(trafficPolicyEntryAttributes, trafficPolicyWizardPage);
@@ -98,31 +80,12 @@ public class TrafficPolicyWizardPage extends BasePage {
         return this;
     }
 
-    @Step("Open wizard to create Traffic Policy")
-    public TrafficPolicyWizardPage goToWizardAtCreate() {
-        chooseFromLeftSideMenu("Inventory View", "Resource Inventory");
-        SearchObjectTypePage searchObjectType = new SearchObjectTypePage(driver, wait);
-        searchObjectType.searchType("Physical Device");
-        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, wait);
-        newInventoryViewPage.searchObject(PRE_CREATED_DEVICE).selectFirstRow();
-        newInventoryViewPage.callAction(ActionsContainer.CREATE_GROUP_ID, CREATE_TRAFFIC_POLICY_ID);
-        return new TrafficPolicyWizardPage(driver);
-    }
-
-    @Step("Assign Interface")
-    public void assignInterfaceToTrafficPolicy() {
+    @Step("Set Assigned Interface Direction")
+    public void setAssignInterfaceDirection(String directionValue) {
         EditableList editableList = EditableList.createById(driver, wait, EDITABLE_LIST_ID);
-        editableList.setValue(1, ASSIGN_INTERFACE_DIRECTION, DIRECTION_COLUMN_ID, DIRECTION_COLUMN_ID);
-        Button saveButton = Button.createByLabel(driver, SAVE_BUTTON_LABEL);
-        saveButton.click();
-    }
-
-    @Step("Remove assigned Interface")
-    public void removeAssignedInterface() {
-        EditableList editableList = EditableList.createById(driver, wait, EDITABLE_LIST_ID);
-        editableList.setValue(1, "-", DIRECTION_COLUMN_ID, DIRECTION_COLUMN_ID);
+        editableList.setValue(1, directionValue, DIRECTION_COLUMN_ID, DIRECTION_COLUMN_ID);
         waitForPageToLoad();
-        Button saveButton = Button.createByLabel(driver, SAVE_BUTTON_LABEL);
+        Button saveButton = Button.createById(driver, SAVE_BUTTON_ID_ASSIGNMENT);
         saveButton.click();
     }
 
@@ -209,7 +172,7 @@ public class TrafficPolicyWizardPage extends BasePage {
     @Step("Click Save button")
     public TrafficPolicyWizardPage clickSave() {
         waitForPageToLoad();
-        getEntryWizard().clickButtonByLabel(SAVE_BUTTON_LABEL);
+        getEntryWizard().clickButtonById(SAVE_BUTTON_ID);
         return this;
     }
 
