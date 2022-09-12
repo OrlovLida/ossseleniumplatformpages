@@ -36,6 +36,15 @@ public class CmDomainWizardPage extends BasePage {
         save();
     }
 
+    @Step("Fill CM Domain wizard with Name: {name}, CM Interface: {cmInterface}, Domain: {domain}, Stop On: {stopOn}")
+    public void fillCmDomainWizard(String name, String cmInterface, String domain, String stopOn) {
+        setName(name);
+        setInterface(cmInterface);
+        setDomain(domain);
+        setStopOn(stopOn);
+        save();
+    }
+
     @Step("Set name for CM Domain")
     public void setName(String name) {
         cmDomainWizard.setComponentValue(NAME_ID, name);

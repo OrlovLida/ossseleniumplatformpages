@@ -11,6 +11,7 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
+import com.oss.framework.iaa.widgets.dpe.toolbarpanel.ExportPanel;
 import com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsPanel;
 import com.oss.pages.iaa.bigdata.kqiview.KpiViewPage;
 import com.oss.utils.TestListener;
@@ -57,8 +58,8 @@ public class IndicatorsViewTest extends BaseTestCase {
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
     @Test(priority = 1, testName = "Highlighting and hiding data series", description = "Highlighting and hiding data series")
-    @Description("I verify if KPI View works properly")
-    public void verifyIfKpiViewWorksProperly(
+    @Description("Highlighting and hiding data series")
+    public void highlightingHidingDataSeries(
             @Optional("All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators") String indicatorNodesToExpand,
             @Optional("DBTIME") String indicatorNodesToSelect,
             @Optional() String dimensionNodesToExpand,
@@ -74,17 +75,38 @@ public class IndicatorsViewTest extends BaseTestCase {
             assertTrue(kpiViewPage.shouldNotSeeHiddenLine(HIDDEN_DATA_SERIES_VISIBILITY));
             kpiViewPage.clickLegend();
             assertTrue(kpiViewPage.shouldSeeDataSeriesLineWidth(NORMAL_DATA_SERIES_WIDTH));
-            kpiViewPage.getKpiToolbar().exportChart();
         } catch (Exception e) {
-            log.error(e.getMessage());
-            fail();
+            fail(e.getMessage());
         }
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
-    @Test(priority = 2, testName = "Changing chart type", description = "Changing chart type")
+    @Test(priority = 2, testName = "Exporting Chart", description = "Exporting Chart")
+    @Description("Exporting Chart")
+    public void exportingChart(
+            @Optional("All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators") String indicatorNodesToExpand,
+            @Optional("DBTIME") String indicatorNodesToSelect,
+            @Optional() String dimensionNodesToExpand,
+            @Optional("DC Type: ETL_DC") String dimensionNodesToSelect,
+            @Optional("Data Collection Statistics") String filterName
+    ) {
+        try {
+            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+            kpiViewPage.getKpiToolbar().exportChart(ExportPanel.ExportType.JPG);
+            kpiViewPage.getKpiToolbar().exportChart(ExportPanel.ExportType.PNG);
+            kpiViewPage.getKpiToolbar().exportChart(ExportPanel.ExportType.PDF);
+            kpiViewPage.getKpiToolbar().exportChart(ExportPanel.ExportType.XLSX);
+            kpiViewPage.attachExportedChartToReport();
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
+    @Test(priority = 3, testName = "Changing chart type", description = "Changing chart type")
     @Description("I verify if changing chart type works properly")
-    public void verifyIfChartTypesWorksProperly(
+    public void changeChartTypeTest(
             @Optional("All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators") String indicatorNodesToExpand,
             @Optional("DBTIME") String indicatorNodesToSelect,
             @Optional() String dimensionNodesToExpand,
@@ -103,15 +125,14 @@ public class IndicatorsViewTest extends BaseTestCase {
             kpiViewPage.getChartActionPanel().chooseDataSeriesColor();
             assertTrue(kpiViewPage.shouldSeeColorChart(FIRST_CHART_COLOR));
         } catch (Exception e) {
-            log.error(e.getMessage());
-            fail();
+            fail(e.getMessage());
         }
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
-    @Test(priority = 3, testName = "Checking time period chooser", description = "Checking time period chooser")
+    @Test(priority = 4, testName = "Checking time period chooser", description = "Checking time period chooser")
     @Description("I verify if Time Period Chooser works properly")
-    public void verifyIfPeriodChooserWorksProperly(
+    public void checkTimePeriodChooser(
             @Optional("All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators") String indicatorNodesToExpand,
             @Optional("DBTIME") String indicatorNodesToSelect,
             @Optional() String dimensionNodesToExpand,
@@ -129,15 +150,14 @@ public class IndicatorsViewTest extends BaseTestCase {
             kpiViewPage.clickLegend();
             assertTrue(kpiViewPage.shouldSeePointsDisplayed(1));
         } catch (Exception e) {
-            log.error(e.getMessage());
-            fail();
+            fail(e.getMessage());
         }
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
-    @Test(priority = 4, testName = "Enabling Miscellaneous options", description = "Enabling Miscellaneous options")
+    @Test(priority = 5, testName = "Enabling Miscellaneous options", description = "Enabling Miscellaneous options")
     @Description("I verify if Miscellaneous options work properly")
-    public void verifyIfMiscellaneousOptionsWorkProperly(
+    public void checkMiscellaneousOptions(
             @Optional("All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators") String indicatorNodesToExpand,
             @Optional("DBTIME,AQ_TIME") String indicatorNodesToSelect,
             @Optional() String dimensionNodesToExpand,
@@ -157,15 +177,14 @@ public class IndicatorsViewTest extends BaseTestCase {
             kpiViewPage.getKpiToolbar().enableLastSampleTime();
             assertTrue(kpiViewPage.shouldSeeLastSampleTime(1));
         } catch (Exception e) {
-            log.error(e.getMessage());
-            fail();
+            fail(e.getMessage());
         }
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
-    @Test(priority = 5, testName = "Enabling Compare with other period option", description = "Enabling Compare with other period option")
+    @Test(priority = 6, testName = "Enabling Compare with other period option", description = "Enabling Compare with other period option")
     @Description("I verify if Compare with other period option works properly")
-    public void verifyIfCompareWithOtherPeriodWorksProperly(
+    public void checkCompareWithOtherPeriod(
             @Optional("All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators") String indicatorNodesToExpand,
             @Optional("AQ_TIME") String indicatorNodesToSelect,
             @Optional() String dimensionNodesToExpand,
@@ -181,15 +200,14 @@ public class IndicatorsViewTest extends BaseTestCase {
             assertTrue(kpiViewPage.isLegendWithOtherPeriodDisplayed());
             assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(2));
         } catch (Exception e) {
-            log.error(e.getMessage());
-            fail();
+            fail(e.getMessage());
         }
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
-    @Test(priority = 6, testName = "Verifying resize panel option", description = "Verifying resize panel option")
+    @Test(priority = 7, testName = "Verifying resize panel option", description = "Verifying resize panel option")
     @Description("I verify if resize panel option works properly")
-    public void verifyIfResizePanelOptionWorksProperly(
+    public void checkResizePanel(
             @Optional("All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators") String indicatorNodesToExpand,
             @Optional("AQ_TIME") String indicatorNodesToSelect,
             @Optional() String dimensionNodesToExpand,
@@ -213,13 +231,12 @@ public class IndicatorsViewTest extends BaseTestCase {
 
             kpiViewPage.minimizeDimensionsPanel();
         } catch (Exception e) {
-            log.error(e.getMessage());
-            fail();
+            fail(e.getMessage());
         }
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
-    @Test(priority = 7, testName = "Verifying changing layout option", description = "Verifying changing layout option")
+    @Test(priority = 8, testName = "Verifying changing layout option", description = "Verifying changing layout option")
     @Description("I verify if changing layout option works properly")
     public void changingChartLayoutOption(
             @Optional("All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators") String indicatorNodesToExpand,
@@ -246,13 +263,12 @@ public class IndicatorsViewTest extends BaseTestCase {
             kpiViewPage.getKpiToolbar().changeLayout(LAYOUT_AUTO);
             assertEquals(kpiViewPage.getKpiToolbar().layoutButtonStatus(LAYOUT_AUTO), LAYOUT_EXPECTED_STATUS);
         } catch (Exception e) {
-            log.error(e.getMessage());
-            fail();
+            fail(e.getMessage());
         }
     }
 
     @Parameters({"filterName", "indicator", "dimension"})
-    @Test(priority = 8, testName = "Search in indicators and dimensions trees", description = "Verify search from indicators and dimensions trees")
+    @Test(priority = 9, testName = "Search in indicators and dimensions trees", description = "Verify search from indicators and dimensions trees")
     @Description("Verify search from indicators and dimensions trees")
     public void searchIndicators(
             @Optional("Data Collection Statistics") String filterName,
@@ -272,7 +288,7 @@ public class IndicatorsViewTest extends BaseTestCase {
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
-    @Test(priority = 9, testName = "Clicking link to chart from chart actions", description = "Clicking link to chart from chart actions")
+    @Test(priority = 10, testName = "Clicking link to chart from chart actions", description = "Clicking link to chart from chart actions")
     @Description("Clicking link to chart from chart actions")
     public void checkLinkToIndicatorsView(
             @Optional("All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators") String indicatorNodesToExpand,
@@ -294,13 +310,12 @@ public class IndicatorsViewTest extends BaseTestCase {
             assertTrue(kpiViewPage.isNodeInTreeSelected("AQ_TIME 1h " + activeAggMethod, INDICATORS_TREE_ID));
             assertTrue(kpiViewPage.isNodeInTreeSelected(dimensionNodesToSelect, DIMENSIONS_TREE_ID));
         } catch (Exception e) {
-            log.error(e.getMessage());
-            fail();
+            fail(e.getMessage());
         }
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
-    @Test(priority = 10, testName = "Sharing view", description = "Sharing view by created link")
+    @Test(priority = 11, testName = "Sharing view", description = "Sharing view by created link")
     @Description("Sharing view by created link")
     public void sharePanelTest(
             @Optional("All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators") String indicatorNodesToExpand,
@@ -322,13 +337,12 @@ public class IndicatorsViewTest extends BaseTestCase {
             assertTrue(kpiViewPage.isNodeInTreeSelected(indicatorNodesToSelect, INDICATORS_TREE_ID));
             assertTrue(kpiViewPage.isNodeInTreeSelected(dimensionNodesToSelect, DIMENSIONS_TREE_ID));
         } catch (Exception e) {
-            log.error(e.getMessage());
-            fail();
+            fail(e.getMessage());
         }
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName", "dimensionFolderWithOptions"})
-    @Test(priority = 11, testName = "Display Child Objects", description = "Display series for child objects")
+    @Test(priority = 12, testName = "Display Child Objects", description = "Display series for child objects")
     @Description("Display series for child objects")
     public void childObjectTest(
             @Optional("All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators") String indicatorNodesToExpand,
@@ -349,13 +363,12 @@ public class IndicatorsViewTest extends BaseTestCase {
 
             assertTrue(kpiViewPage.shouldSeeMoreThanOneCurveDisplayed());
         } catch (Exception e) {
-            log.error(e.getMessage());
-            fail();
+            fail(e.getMessage());
         }
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
-    @Test(priority = 12, testName = "Change display type chart/table/pieChart", description = "Change display type chart/table/pieChart")
+    @Test(priority = 13, testName = "Change display type chart/table/pieChart", description = "Change display type chart/table/pieChart")
     @Description("Change display type chart/table/pieChart")
     public void changeDisplayType(
             @Optional("All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators") String indicatorNodesToExpand,
@@ -377,13 +390,12 @@ public class IndicatorsViewTest extends BaseTestCase {
             kpiViewPage.getKpiToolbar().setDisplayType("Table");
             assertFalse(kpiViewPage.isIndicatorsViewTableEmpty());
         } catch (Exception e) {
-            log.error(e.getMessage());
-            fail();
+            fail(e.getMessage());
         }
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
-    @Test(priority = 13, testName = "Check topN Panel", description = "Check topN Panel")
+    @Test(priority = 14, testName = "Check topN Panel", description = "Check topN Panel")
     @Description("Check topN Panel")
     public void checkTopNPanelForDpe(
             @Optional("All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators") String indicatorNodesToExpand,
@@ -404,13 +416,12 @@ public class IndicatorsViewTest extends BaseTestCase {
             kpiViewPage.doubleClickTopNDPE();
             assertTrue(kpiViewPage.isTopNNavigationBarVisible());
         } catch (Exception e) {
-            log.error(e.getMessage());
-            fail();
+            fail(e.getMessage());
         }
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
-    @Test(priority = 14, testName = "Aggregation Method Check", description = "Aggregation Method Check")
+    @Test(priority = 15, testName = "Aggregation Method Check", description = "Aggregation Method Check")
     @Description("Aggregation Method Check")
     public void aggregationMethodCheck(
             @Optional("All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators") String indicatorNodesToExpand,
@@ -434,13 +445,12 @@ public class IndicatorsViewTest extends BaseTestCase {
             assertEquals(selectedAggMethod, "MAX");
             assertEquals(numOfActiveAggMethods, 1);
         } catch (Exception e) {
-            log.error(e.getMessage());
-            fail();
+            fail(e.getMessage());
         }
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
-    @Test(priority = 15, testName = "Zoom in/zoom out check", description = "Zoom in/zoom out check")
+    @Test(priority = 16, testName = "Zoom in/zoom out check", description = "Zoom in/zoom out check")
     @Description("Zoom in/zoom out check")
     public void zoomInChartCheck(
             @Optional("All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators") String indicatorNodesToExpand,
@@ -459,13 +469,12 @@ public class IndicatorsViewTest extends BaseTestCase {
             kpiViewPage.clickZoomOutButton();
             assertFalse(kpiViewPage.isZoomOutButtonVisible());
         } catch (Exception e) {
-            log.error(e.getMessage());
-            fail();
+            fail(e.getMessage());
         }
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
-    @Test(priority = 16, testName = "Table settings: sorting, adding/removing attribute columns", description = "table settings: sorting, adding/removing attribute columns")
+    @Test(priority = 17, testName = "Table settings: sorting, adding/removing attribute columns", description = "table settings: sorting, adding/removing attribute columns")
     @Description("Table settings: sorting, adding/removing attribute columns")
     public void checkTableSettings(
             @Optional("All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators") String indicatorNodesToExpand,
@@ -503,13 +512,12 @@ public class IndicatorsViewTest extends BaseTestCase {
             kpiViewPage.sortColumnDESC(MANAGED_OBJECT_COLUMN_DATA_COL_ID);
             assertTrue(kpiViewPage.isValueInGivenRow("DC Type: THRES_DC", 0, MANAGED_OBJECT_COLUMN_DATA_COL_ID));
         } catch (Exception e) {
-            log.error(e.getMessage());
-            fail();
+            fail(e.getMessage());
         }
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName", "yAxis"})
-    @Test(priority = 16, testName = "Check Manual Y axis", description = "Check Manual Y axis")
+    @Test(priority = 18, testName = "Check Manual Y axis", description = "Check Manual Y axis")
     @Description("Check Manual Y axis")
     public void checkYaxisOptions(
             @Optional("All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators") String indicatorNodesToExpand,
@@ -533,7 +541,7 @@ public class IndicatorsViewTest extends BaseTestCase {
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
-    @Test(priority = 17, testName = "Stacked chart", description = "Check setting to stacked chart")
+    @Test(priority = 19, testName = "Stacked chart", description = "Check setting to stacked chart")
     @Description("Check setting to stacked chart")
     public void checkStackingChart(
             @Optional("All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators") String indicatorNodesToExpand,

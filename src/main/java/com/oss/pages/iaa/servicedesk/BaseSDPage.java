@@ -12,7 +12,6 @@ import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.contextactions.ButtonContainer;
 import com.oss.framework.components.inputs.HtmlEditor;
 import com.oss.framework.components.layout.Card;
-import com.oss.framework.components.mainheader.ToolbarWidget;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.tabs.TabsWidget;
@@ -135,10 +134,6 @@ public abstract class BaseSDPage extends BasePage {
         TabsWidget.createById(driver, wait, tabContainerId).callActionById(GROUP_ID_OLD_ACTIONS_CONTAINER, EXPORT_BUTTON_ID);
 
         log.info("Exporting file");
-    }
-
-    public String getViewTitle() {
-        return ToolbarWidget.create(driver, wait).getViewTitle();
     }
 
     public String getMessageFromPrompt() {

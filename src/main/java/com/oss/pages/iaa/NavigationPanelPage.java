@@ -5,7 +5,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.oss.framework.components.mainheader.ToolbarWidget;
 import com.oss.framework.navigation.toolsmanager.ToolsManagerWindow;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.BasePage;
@@ -35,12 +34,6 @@ public class NavigationPanelPage extends BasePage {
     public boolean isChosenUrlOpen(String expectedSuffix) {
         log.info("Check if current url contains text {}", expectedSuffix);
         return driver.getCurrentUrl().contains(expectedSuffix);
-    }
-
-    @Step("Get View Title")
-    public String getViewTitle() {
-        log.info("Getting View title");
-        return ToolbarWidget.create(driver, wait).getViewTitle();
     }
 
     @Step("Open application {applicationName} from category {categoryName}")

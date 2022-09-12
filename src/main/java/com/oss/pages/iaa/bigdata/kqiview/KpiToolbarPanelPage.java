@@ -12,6 +12,7 @@ import com.oss.framework.iaa.widgets.dpe.toolbarpanel.KpiToolbarPanel;
 import com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel;
 import com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsPanel;
 import com.oss.framework.iaa.widgets.dpe.toolbarpanel.OptionsSidePanel;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
@@ -42,16 +43,10 @@ public class KpiToolbarPanelPage extends BasePage {
         waitForPageToLoad(driver, wait);
     }
 
-    @Step("I export chart")
-    public void exportChart() {
-        kpiToolbarPanel.openExportPanel().exportKpiToFile(ExportPanel.ExportType.JPG);
-        log.info("Exporting chart to JPG");
-        kpiToolbarPanel.openExportPanel().exportKpiToFile(ExportPanel.ExportType.PNG);
-        log.info("Exporting chart to PNG");
-        kpiToolbarPanel.openExportPanel().exportKpiToFile(ExportPanel.ExportType.PDF);
-        log.info("Exporting chart to PDF");
-        kpiToolbarPanel.openExportPanel().exportKpiToFile(ExportPanel.ExportType.XLSX);
-        log.info("Exporting chart to XLSX");
+    public void exportChart(ExportPanel.ExportType exportType) {
+        kpiToolbarPanel.openExportPanel().exportKpiToFile(exportType);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Exporting chart to {}", exportType);
     }
 
     @Step("I change layout")

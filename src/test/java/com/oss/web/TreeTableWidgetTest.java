@@ -15,6 +15,7 @@ import com.oss.framework.widgets.propertypanel.PropertyPanel;
 import com.oss.framework.widgets.table.TableRow;
 import com.oss.framework.widgets.treetable.TreeTableWidget;
 import com.oss.pages.bpm.PlannersViewPage;
+import com.oss.pages.platform.NewInventoryViewPage;
 
 /**
  * @author Faustyna Szczepanik
@@ -201,7 +202,7 @@ public class TreeTableWidgetTest extends BaseTestCase {
         String nameFirstRow = plannersViewPage.getAttributeValue(NAME_COL_ID, 0);
         plannersViewPage.searchObject(nameFirstRow);
         List<TableRow> allRows = plannersViewPage.getRows();
-        Assert.assertEquals(treeTableWidget.getCellValueById(0, NAME_COL_ID), nameFirstRow);
+        Assert.assertEquals(treeTableWidget.getCellValue(0, NAME_COL_ID), nameFirstRow);
         plannersViewPage.clearFilters();
     }
 
@@ -220,8 +221,8 @@ public class TreeTableWidgetTest extends BaseTestCase {
     public void useContextActionOnTreeTable() {
         plannersViewPage.getFirstRow().callAction(ActionsContainer.SHOW_ON_GROUP_ID, OPEN_INVENTORY_VIEW_CONTEXT_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        String headerNameIV = driver.findElement(By.className(HEADER_TITLE_CLASS)).getText();
-        Assert.assertEquals(headerNameIV, INVENTORY_VIEW_TITLE);
+        NewInventoryViewPage inventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
+        Assert.assertEquals(inventoryViewPage.getViewTitle(), INVENTORY_VIEW_TITLE);
     }
 
     private int getRowsCount() {

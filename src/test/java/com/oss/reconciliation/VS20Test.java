@@ -146,6 +146,8 @@ public class VS20Test extends BaseTestCase {
             .add(LIST_RELATION_HOSTED_FUNCTIONS_LIST)
             .add(LIST_RELATION_MANAGEMENT_SYSTEM)
             .build();
+    private static final String NETWORK_UPLOAD = "NETWORK_UPLOAD";
+    private static final String SUCCESS = "SUCCESS";
 
     SoftAssert softAssert = new SoftAssert();
     private VS20Page vs20Page;
@@ -157,6 +159,7 @@ public class VS20Test extends BaseTestCase {
 
     @BeforeClass
     public void openNetworkDiscoveryControlView() {
+        driver.manage().deleteAllCookies();
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
     }
 
@@ -181,7 +184,7 @@ public class VS20Test extends BaseTestCase {
     @Test(priority = 2, description = "Create CMDomain")
     @Description("Create CMDomain")
     public void createCmDomain() {
-        networkDiscoveryControlViewPage.createCMDomain(CM_DOMAIN_NAME, INTERFACE_NAME, INTERFACE_NAME);
+        networkDiscoveryControlViewPage.createCMDomain(CM_DOMAIN_NAME, INTERFACE_NAME, INTERFACE_NAME, NETWORK_UPLOAD);
     }
 
     @Test(priority = 3, description = "Upload reconciliation samples", dependsOnMethods = {"createCmDomain"})
@@ -210,7 +213,7 @@ public class VS20Test extends BaseTestCase {
         String status = networkDiscoveryControlViewPage.waitForEndOfReco();
         networkDiscoveryControlViewPage.selectLatestReconciliationState();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        if (status.contains("SUCCESS")) {
+        if (status.contains(SUCCESS)) {
             Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.ERROR));
         } else {
             Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.STARTUP_FATAL));

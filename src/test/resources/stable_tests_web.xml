@@ -65,4 +65,9 @@
             <class name="com.oss.InputsWizardTest"/>
         </classes>
     </test>
+    <test name="ExpandNextLevelOnTreeTest">
+        <classes>
+            <class name="com.oss.web.ExpandNextLevelOnTreeTest"/>
+        </classes>
+    </test>
 </suite>
