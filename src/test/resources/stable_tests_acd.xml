@@ -1,23 +1,26 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="ACD-SMOKE" thread-count="2" parallel="tests" verbose="1">
+<suite name="ACD-SMOKE" thread-count="1" parallel="tests" verbose="1">
     <test name="HomeViewTest">
         <classes>
             <class name="com.oss.iaa.acd.HomeViewTest"/>
         </classes>
     </test>
     <test name="AsdScenarioSummaryViewTest">
+        <parameter name="chosenView" value="asd"/>
         <classes>
-            <class name="com.oss.iaa.acd.AsdScenarioSummaryViewTest"/>
+            <class name="com.oss.iaa.acd.ScenarioSummaryViewTest"/>
         </classes>
     </test>
     <test name="AbgadScenarioSummaryViewTest">
+        <parameter name="chosenView" value="abgad"/>
         <classes>
-            <class name="com.oss.iaa.acd.AbgadScenarioSummaryViewTest"/>
+            <class name="com.oss.iaa.acd.ScenarioSummaryViewTest"/>
         </classes>
     </test>
     <test name="ApdScenarioSummaryViewTest">
+        <parameter name="chosenView" value="apd"/>
         <classes>
-            <class name="com.oss.iaa.acd.ApdScenarioSummaryViewTest"/>
+            <class name="com.oss.iaa.acd.ScenarioSummaryViewTest"/>
         </classes>
     </test>
     <test name="ArSettingsTest">
