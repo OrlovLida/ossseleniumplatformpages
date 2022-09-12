@@ -98,29 +98,20 @@ public class DeviceWizardPage extends BasePage {
 
     @Step("Set Location using contains")
     public void setLocation(String location) {
-        if (getDeviceWizard().getComponent(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME)
-                .getStringValue().isEmpty()) {
-            getDeviceWizard().getComponent(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME)
-                    .setSingleStringValueContains(location);
-        }
+        getDeviceWizard().getComponent(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME)
+                .setSingleStringValueContains(location);
     }
 
     @Step("Set Physical Location using contains")
     public void setPhysicalLocation(String preciseLocation) {
-        if (getDeviceWizard().getComponent(DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME)
-                .getStringValue().isEmpty()) {
-            getDeviceWizard().getComponent(DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME)
-                    .setSingleStringValueContains(preciseLocation);
-        }
+        getDeviceWizard().getComponent(DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME)
+                .setSingleStringValueContains(preciseLocation);
     }
 
     @Step("Set Precise Location using contains")
     public void setPreciseLocation(String preciseLocation) {
-        if (getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME)
-                .getStringValue().isEmpty()) {
-            getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME)
-                    .setSingleStringValueContains(preciseLocation);
-        }
+        getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME)
+                .setSingleStringValueContains(preciseLocation);
     }
 
     @Step("Set Available Mounting Positions")
