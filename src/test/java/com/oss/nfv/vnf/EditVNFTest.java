@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 import com.oss.framework.components.contextactions.ActionsContainer;
+import com.oss.framework.components.mainheader.PerspectiveChooser;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -52,6 +53,7 @@ public class EditVNFTest extends BaseVNFTest {
     @Description("Go directly to Inventory View page, find VNF, select it on results and open VNF wizard from context menu")
     public void openEditVNFWizard() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
         //given
         NewInventoryViewPage inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "LogicalFunction");
         //when

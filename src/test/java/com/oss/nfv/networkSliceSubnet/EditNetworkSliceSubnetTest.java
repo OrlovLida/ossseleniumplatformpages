@@ -9,6 +9,7 @@ package com.oss.nfv.networkSliceSubnet;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.ActionsContainer;
+import com.oss.framework.components.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.nfv.networkslicesubnet.NetworkSliceSubnetWizardFirstStep;
 import com.oss.pages.nfv.networkslicesubnet.NetworkSliceSubnetWizardPage;
@@ -66,6 +67,7 @@ public class EditNetworkSliceSubnetTest extends BaseNetworkSliceSubnetTest {
         //given
         NewInventoryViewPage inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "NetworkSliceSubnet");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
         //when
         searchForNetworkSliceSubnet(inventoryViewPage);
         selectNetworkSliceSubnetInTree(inventoryViewPage);

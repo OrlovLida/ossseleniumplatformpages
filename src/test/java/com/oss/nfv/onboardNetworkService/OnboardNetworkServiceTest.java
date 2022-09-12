@@ -1,5 +1,6 @@
 package com.oss.nfv.onboardNetworkService;
 
+import com.oss.framework.components.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.nfv.common.SideMenuService;
 import com.oss.pages.nfv.onboardnetworkservice.OnboardNetworkServiceWizardPage;
@@ -19,6 +20,7 @@ public class OnboardNetworkServiceTest extends BaseOnboardNetworkServiceTest {
     @Description("Got to Network Service Package Onboarding wizard")
     public void openOnboardNetworkServiceWizard() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
         //given
         SideMenuService.goToNetworkServicePackageOnboardingWizard(driver, webDriverWait);
         //then
