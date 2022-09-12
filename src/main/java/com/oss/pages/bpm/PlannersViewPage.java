@@ -34,7 +34,7 @@ public class PlannersViewPage extends BasePage {
     }
 
     public static PlannersViewPage goToPlannersViewPage(WebDriver driver, String basicURL) {
-        driver.get(String.format("%s/#/views/management/views/ProcessInstances?perspective=LIVE", basicURL));
+        driver.get(String.format("%s/#/views/planning/planners-view?perspective=LIVE", basicURL));
         WebDriverWait wait = new WebDriverWait(driver, 45);
         DelayUtils.waitForPageToLoad(driver, wait);
         return new PlannersViewPage(driver, wait);
@@ -46,7 +46,7 @@ public class PlannersViewPage extends BasePage {
 
     public void selectObjectByRowId(int rowId) {
         TreeTableWidget treeTable = getTreeTable();
-        treeTable.selectNode(rowId);
+        treeTable.selectRow(rowId);
     }
 
     public void selectObjectsByRowId(int... indexes) {
@@ -56,7 +56,7 @@ public class PlannersViewPage extends BasePage {
 
     public void unselectObjectByRowId(int rowId) {
         TreeTableWidget treeTable = getTreeTable();
-        treeTable.unselectNode(rowId);
+        treeTable.unselectRow(rowId);
     }
 
     public void selectObjectByAttributeValue(String attributeId, String value) {
@@ -100,15 +100,15 @@ public class PlannersViewPage extends BasePage {
     }
 
     public void expandNode(String label, String columnId) {
-        getTreeTable().expandNode(label, columnId);
+        getTreeTable().expandRow(label, columnId);
     }
 
     public void expandNode(int index) {
-        getTreeTable().expandNode(index);
+        getTreeTable().expandRow(index);
     }
 
     public void collapseNode(int index) {
-        getTreeTable().collapseNode(index);
+        getTreeTable().collapseRow(index);
     }
 
     public boolean isNodeExpanded(int index) {
