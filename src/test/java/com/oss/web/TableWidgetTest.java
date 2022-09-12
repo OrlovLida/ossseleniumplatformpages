@@ -31,6 +31,7 @@ public class TableWidgetTest extends BaseTestCase {
     public static final String TEST_ACTOR_TYPE = "TestActor";
     public static final String ID_COLUMN_ID = "id";
     public static final String MAIN_TABLE_CARD = "MainTableCard";
+    public static final String DEFAULT_WIDTH_200 = "200";
     private static final String VIEWS_MANAGEMENT_VIEWS_INVENTORY_VIEW_ULR = "views/management/views/inventory-view/";
     private NewInventoryViewPage inventoryViewPage;
     private TableWidget tableWidget;
@@ -242,6 +243,9 @@ public class TableWidgetTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         int columnSizeRefresh = inventoryViewPage.getColumnSize(MOVIE_LENGTH_COLUMN_ID);
         Assertions.assertThat(columnSizeRefresh).isEqualTo(Integer.parseInt(newColumnSize));
+        tableWidget = inventoryViewPage.getMainTable();
+        String defColWidth = tableWidget.getDefaultColumnWidth(MOVIE_LENGTH_COLUMN_ID);
+        Assertions.assertThat(defColWidth).isEqualTo(DEFAULT_WIDTH_200);
     }
 
     @Test(priority = 14)
@@ -254,12 +258,15 @@ public class TableWidgetTest extends BaseTestCase {
 
         changeColumnOrder(defaultFirstColumn, 2);
         resizeColumnByAdministration(defaultFirstColumn, defaultFirstColumnSize - 50);
+        tableWidget.resizeColumn(2, 130);
         disableColumn(defaultForthColumn);
         enableColumn(TYPE_DIRECTOR_COLUMN_ID);
 
         inventoryViewPage.setDefaultSettings();
 
         List<String> activeColumnsHeaders = inventoryViewPage.getMainTable().getActiveColumnIds();
+        String defColWidth = tableWidget.getDefaultColumnWidth(defaultFirstColumn);
+        Assertions.assertThat(defColWidth).isEqualTo(DEFAULT_WIDTH_200);
         Assertions.assertThat(defaultFirstColumn).isEqualTo(activeColumnsHeaders.get(0));
         Assertions.assertThat(inventoryViewPage.getColumnSize(activeColumnsHeaders.get(0))).isEqualTo(defaultFirstColumnSize);
         Assertions.assertThat(activeColumnsHeaders).contains(defaultForthColumn).doesNotContain(TYPE_DIRECTOR_COLUMN_ID);
@@ -319,6 +326,33 @@ public class TableWidgetTest extends BaseTestCase {
         inventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
         String id1 = inventoryViewPage.getMainTable().getCellValue(0, ID_COLUMN_ID);
         Assertions.assertThat(id).isEqualTo(id1);
+    }
+
+    @Test(priority = 20)
+    public void resizeColumnAndRefresh() {
+        tableWidget = inventoryViewPage.getMainTable();
+        int defaultSize = tableWidget.getFirstColumnSize();
+        DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
+        int offset = 400;
+        tableWidget.resizeFirstColumn(offset);
+        DelayUtils.sleep(DelayUtils.HUMAN_REACTION_MS);
+        driver.navigate().refresh();
+        tableWidget = inventoryViewPage.getMainTable();
+        int newSize = tableWidget.getFirstColumnSize();
+        Assertions.assertThat(defaultSize + offset).isEqualTo(newSize);
+        String firstColumnId = inventoryViewPage.getMainTable().getActiveColumnIds().get(0);
+        String defColWidth = tableWidget.getDefaultColumnWidth(firstColumnId);
+        Assertions.assertThat(defColWidth).isEqualTo(DEFAULT_WIDTH_200);
+    }
+
+    @Test(priority = 21)
+    public void resizeColumnAndOverwriteDefaultWidth() {
+        int offset = 400;
+        tableWidget.resizeColumn(2, offset);
+        String thirdColumnId = inventoryViewPage.getMainTable().getActiveColumnIds().get(2);
+        tableWidget.setColumnWidth(thirdColumnId, "300");
+        int thirdColumnSize = tableWidget.getColumnSize(2);
+        Assertions.assertThat(thirdColumnSize).isEqualTo(300);
     }
 
     private int getRowsCount() {

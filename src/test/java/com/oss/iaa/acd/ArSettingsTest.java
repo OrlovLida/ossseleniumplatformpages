@@ -20,7 +20,7 @@ import io.qameta.allure.Description;
 public class ArSettingsTest extends BaseTestCase {
 
     private static final String date = new SimpleDateFormat("dd-MM-yyy_HH:mm").format(new Date());
-    private static final Logger log = LoggerFactory.getLogger(AsdScenarioSummaryViewTest.class);
+    private static final Logger log = LoggerFactory.getLogger(ArSettingsTest.class);
 
     private ArSettingsPage arSettingsPage;
 

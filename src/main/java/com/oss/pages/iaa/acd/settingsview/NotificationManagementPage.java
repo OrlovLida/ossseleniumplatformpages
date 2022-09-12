@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.prompts.ConfirmationBox;
-import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.pages.iaa.acd.BaseACDPage;
@@ -67,7 +66,7 @@ public class NotificationManagementPage extends BaseACDPage {
     @Step("I clear filters")
     public void clearFilters() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        AdvancedSearch.createByWidgetId(driver, wait, NOTIFICATION_MANAGEMENT_TABLE_ID).clearAllFilters();
+        getNotificationManagementTable().clearFilters();
         log.info("I clear set filter");
     }
 

@@ -8,6 +8,7 @@ package com.oss.nfv.networkSliceSubnet;
 
 import java.util.List;
 
+import com.oss.framework.components.mainheader.PerspectiveChooser;
 import com.oss.pages.logicalfunction.LogicalFunctionWizardPreStep;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -48,6 +49,7 @@ public class CreateNetworkSliceSubnetTest extends BaseNetworkSliceSubnetTest {
     @Description("Got to Resource Specifications view, find and select NetworkSliceSubnet specification and open NetworkSliceSubnet wizard from context menu")
     public void openCreateNetworkSliceSubnetWizard() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
         //given
         SideMenuService.goToCreateLogicalFunctionView(driver, webDriverWait);
         //when
