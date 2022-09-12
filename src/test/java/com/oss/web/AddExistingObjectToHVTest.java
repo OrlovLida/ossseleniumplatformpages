@@ -220,6 +220,7 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
         deleteBuilding(buildingId3);
         deleteBuilding(buildingId4);
         deleteBuilding(buildingId5);
+        deleteBuilding(buildingId6);
     }
 
     private void addExistingObject(String objectName) {
