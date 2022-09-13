@@ -1,7 +1,7 @@
 package com.oss.pages.transport.ipam.helper;
 
 public class IPAMTreeConstants {
-    public static final String IPADDRESS_MANAGEMENT_VIEW_URL = "%s/#/view/transport/ipmgt/ipTree?";
+    public static final String IPADDRESS_MANAGEMENT_VIEW_URL = "%s/#/views/management/views/hierarchy-view/IPNetwork?";
     public static final String PERSPECTIVE = "perspective=%s";
     public static final String LIVE = "LIVE";
 
@@ -78,8 +78,6 @@ public class IPAMTreeConstants {
     public static final String ROLE_ACTION = "Role";
 
     public static final String OK_BUTTON_LABEL = "OK";
-    public static final String TREE_VIEW_CLASS = "TreeView";
-    public static final String TREE_VIEW_COMPONENT_CLASS = "TreeView";
     public static final String OSS_WINDOW_CLASS = "OssWindow";
     public static final String WINDOW_TOOLBAR_CLASS = "windowToolbar";
     public static final String TABS_CONTAINER_CLASS = "tabsContainer";
