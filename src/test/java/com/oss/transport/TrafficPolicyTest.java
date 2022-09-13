@@ -134,7 +134,7 @@ public class TrafficPolicyTest extends BaseTestCase {
     }
 
     @Step("Open wizard to create Traffic Policy")
-    public void goToWizardAtCreate() {
+    private void goToWizardAtCreate() {
         homePage.chooseFromLeftSideMenu("Inventory View", "Resource Inventory");
         SearchObjectTypePage searchObjectType = new SearchObjectTypePage(driver, webDriverWait);
         searchObjectType.searchType("Physical Device");

@@ -43,41 +43,35 @@ public class TrafficPolicyWizardPage extends BasePage {
     private static final String DIRECTION_COLUMN_ID = "direction-column-id";
 
     @Step("Create Traffic Policy with Name {name}")
-    public TrafficPolicyWizardPage createTrafficPolicy(String name) {
+    public void createTrafficPolicy(String name) {
         waitForPageToLoad();
         getWizard().setComponentValue(TRAFFIC_POLICY_NAME_ID, name);
         waitForPageToLoad();
         getWizard().clickAccept();
-        return this;
     }
 
     @Step("Edit Traffic Policy and set name {newName} and description {description}")
-    public TrafficPolicyWizardPage editTrafficPolicy(String newName, String description) {
+    public void editTrafficPolicy(String newName, String description) {
         waitForPageToLoad();
         getEditWizard().setComponentValue(TRAFFIC_POLICY_NAME_ID, newName);
         waitForPageToLoad();
         getEditWizard().setComponentValue(TRAFFIC_POLICY_DESCRIPTION_ID, description);
         waitForPageToLoad();
         getEditWizard().clickSave();
-        return this;
     }
 
     @Step("Add Entry to Traffic Policy")
-    public TrafficPolicyWizardPage addEntryToTrafficPolicy() {
-        TrafficPolicyWizardPage trafficPolicyWizardPage = new TrafficPolicyWizardPage(driver);
+    public void addEntryToTrafficPolicy() {
         TrafficPolicyEntryAttributes trafficPolicyEntryAttributes = getEntryAttributesForCreate();
-        fillEntryToTrafficPolicy(trafficPolicyEntryAttributes, trafficPolicyWizardPage);
-        trafficPolicyWizardPage.clickSave();
-        return this;
+        fillEntryToTrafficPolicy(trafficPolicyEntryAttributes);
+        clickSave();
     }
 
     @Step("Edit Traffic Policy Entry")
-    public TrafficPolicyWizardPage editTrafficPolicyEntry() {
+    public void editTrafficPolicyEntry() {
         TrafficPolicyEntryAttributes trafficPolicyEntryAttributes = getEntryAttributesForUpdate();
-        TrafficPolicyWizardPage trafficPolicyWizardPage = new TrafficPolicyWizardPage(driver);
-        fillEntryToTrafficPolicyUpdate(trafficPolicyEntryAttributes, trafficPolicyWizardPage);
-        trafficPolicyWizardPage.clickSave();
-        return this;
+        fillEntryToTrafficPolicyUpdate(trafficPolicyEntryAttributes);
+        clickSave();
     }
 
     @Step("Set Assigned Interface Direction")
@@ -236,40 +230,40 @@ public class TrafficPolicyWizardPage extends BasePage {
         return trafficPolicyEntryAttributes;
     }
 
-    private void fillEntryToTrafficPolicy(TrafficPolicyEntryAttributes trafficPolicyEntryAttributes, TrafficPolicyWizardPage trafficPolicyWizardPage) {
-        trafficPolicyWizardPage.setTrafficObject(trafficPolicyEntryAttributes.trafficObject);
-        trafficPolicyWizardPage.setMatch(trafficPolicyEntryAttributes.match);
-        trafficPolicyWizardPage.setBandwidth(trafficPolicyEntryAttributes.bandwidth);
-        trafficPolicyWizardPage.setQueueLimit(trafficPolicyEntryAttributes.queueLimit);
-        trafficPolicyWizardPage.setFairQueue(trafficPolicyEntryAttributes.fairQueue);
-        trafficPolicyWizardPage.setPriority(trafficPolicyEntryAttributes.priority);
-        trafficPolicyWizardPage.setRandomDetect(trafficPolicyEntryAttributes.randomDetect);
-        trafficPolicyWizardPage.setIPPrecedence(trafficPolicyEntryAttributes.ipPrecedence);
-        trafficPolicyWizardPage.setMPLSExperimental(trafficPolicyEntryAttributes.mplsExperimental);
-        trafficPolicyWizardPage.setShape(trafficPolicyEntryAttributes.shape);
-        trafficPolicyWizardPage.setShapeRate(trafficPolicyEntryAttributes.shapeRate);
-        trafficPolicyWizardPage.setIPDSCP(trafficPolicyEntryAttributes.ipDSCP);
-        trafficPolicyWizardPage.setCIRIngress(trafficPolicyEntryAttributes.cirIngress);
-        trafficPolicyWizardPage.setCIREgress(trafficPolicyEntryAttributes.cirEgress);
-        trafficPolicyWizardPage.setPIRIngress(trafficPolicyEntryAttributes.pirIngress);
-        trafficPolicyWizardPage.setPIREgress(trafficPolicyEntryAttributes.pirEgress);
+    private void fillEntryToTrafficPolicy(TrafficPolicyEntryAttributes trafficPolicyEntryAttributes) {
+        setTrafficObject(trafficPolicyEntryAttributes.trafficObject);
+        setMatch(trafficPolicyEntryAttributes.match);
+        setBandwidth(trafficPolicyEntryAttributes.bandwidth);
+        setQueueLimit(trafficPolicyEntryAttributes.queueLimit);
+        setFairQueue(trafficPolicyEntryAttributes.fairQueue);
+        setPriority(trafficPolicyEntryAttributes.priority);
+        setRandomDetect(trafficPolicyEntryAttributes.randomDetect);
+        setIPPrecedence(trafficPolicyEntryAttributes.ipPrecedence);
+        setMPLSExperimental(trafficPolicyEntryAttributes.mplsExperimental);
+        setShape(trafficPolicyEntryAttributes.shape);
+        setShapeRate(trafficPolicyEntryAttributes.shapeRate);
+        setIPDSCP(trafficPolicyEntryAttributes.ipDSCP);
+        setCIRIngress(trafficPolicyEntryAttributes.cirIngress);
+        setCIREgress(trafficPolicyEntryAttributes.cirEgress);
+        setPIRIngress(trafficPolicyEntryAttributes.pirIngress);
+        setPIREgress(trafficPolicyEntryAttributes.pirEgress);
     }
 
-    private void fillEntryToTrafficPolicyUpdate(TrafficPolicyEntryAttributes trafficPolicyEntryAttributes, TrafficPolicyWizardPage trafficPolicyWizardPage) {
-        trafficPolicyWizardPage.setMatch(trafficPolicyEntryAttributes.match);
-        trafficPolicyWizardPage.setBandwidth(trafficPolicyEntryAttributes.bandwidth);
-        trafficPolicyWizardPage.setQueueLimit(trafficPolicyEntryAttributes.queueLimit);
-        trafficPolicyWizardPage.setFairQueue(trafficPolicyEntryAttributes.fairQueue);
-        trafficPolicyWizardPage.setPriority(trafficPolicyEntryAttributes.priority);
-        trafficPolicyWizardPage.setRandomDetect(trafficPolicyEntryAttributes.randomDetect);
-        trafficPolicyWizardPage.setIPPrecedence(trafficPolicyEntryAttributes.ipPrecedence);
-        trafficPolicyWizardPage.setMPLSExperimental(trafficPolicyEntryAttributes.mplsExperimental);
-        trafficPolicyWizardPage.setShape(trafficPolicyEntryAttributes.shape);
-        trafficPolicyWizardPage.setShapeRate(trafficPolicyEntryAttributes.shapeRate);
-        trafficPolicyWizardPage.setIPDSCP(trafficPolicyEntryAttributes.ipDSCP);
-        trafficPolicyWizardPage.setCIRIngress(trafficPolicyEntryAttributes.cirIngress);
-        trafficPolicyWizardPage.setCIREgress(trafficPolicyEntryAttributes.cirEgress);
-        trafficPolicyWizardPage.setPIRIngress(trafficPolicyEntryAttributes.pirIngress);
-        trafficPolicyWizardPage.setPIREgress(trafficPolicyEntryAttributes.pirEgress);
+    private void fillEntryToTrafficPolicyUpdate(TrafficPolicyEntryAttributes trafficPolicyEntryAttributes) {
+        setMatch(trafficPolicyEntryAttributes.match);
+        setBandwidth(trafficPolicyEntryAttributes.bandwidth);
+        setQueueLimit(trafficPolicyEntryAttributes.queueLimit);
+        setFairQueue(trafficPolicyEntryAttributes.fairQueue);
+        setPriority(trafficPolicyEntryAttributes.priority);
+        setRandomDetect(trafficPolicyEntryAttributes.randomDetect);
+        setIPPrecedence(trafficPolicyEntryAttributes.ipPrecedence);
+        setMPLSExperimental(trafficPolicyEntryAttributes.mplsExperimental);
+        setShape(trafficPolicyEntryAttributes.shape);
+        setShapeRate(trafficPolicyEntryAttributes.shapeRate);
+        setIPDSCP(trafficPolicyEntryAttributes.ipDSCP);
+        setCIRIngress(trafficPolicyEntryAttributes.cirIngress);
+        setCIREgress(trafficPolicyEntryAttributes.cirEgress);
+        setPIRIngress(trafficPolicyEntryAttributes.pirIngress);
+        setPIREgress(trafficPolicyEntryAttributes.pirEgress);
     }
 }
