@@ -206,6 +206,8 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
         hierarchyView.getMainTree().callActionById(ADD_OBJECT_BUTTON);
         AdvancedSearchWidget advancedSearch = AdvancedSearchWidget.createById(driver, webDriverWait, ADVANCED_SEARCH_ID);
         TableComponent tableComponent = advancedSearch.getTableComponent();
+        tableComponent.getPaginationComponent().changeRowsCount(50);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         tableComponent.selectAll();
         advancedSearch.clickAdd();
         buildingId5 = createBuilding(BUILDING_NAME_5);
@@ -220,6 +222,7 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
         deleteBuilding(buildingId3);
         deleteBuilding(buildingId4);
         deleteBuilding(buildingId5);
+        deleteBuilding(buildingId6);
     }
 
     private void addExistingObject(String objectName) {
