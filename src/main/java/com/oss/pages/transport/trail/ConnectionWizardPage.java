@@ -15,7 +15,7 @@ import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD
 
 public class ConnectionWizardPage extends BasePage {
 
-    private static final String WIZARD_ID = "trailWizardId";
+    private static final String WIZARD_ID = "trailWizardId_prompt-card";
     private static final String NAME_ID = "trailNameComponent";
     private static final String TERMINATE_CARD_ID = "terminationFormCardComponent";
     private static final String TERMINATE_PORT_ID = "terminationFormPortComponent";
