@@ -9,6 +9,8 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
+import com.oss.framework.components.alerts.SystemMessageContainer;
+import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 
@@ -26,9 +28,6 @@ public class SelectionBarOnTreeTableTest extends BaseTestCase {
     private static final String TWO_SELECTED = "2 selected";
     private static final String ZERO_SELECTED = "0 selected";
     private static final String ONE_SELECTED = "1 selected";
-    private static final String BPM_USER_LOGIN = "bpm_webselenium";
-    private static final String BPM_USER_PASSWORD = "Webtests123!";
-    private static final String USER1_LOGIN = "webseleniumtests";
     private static final String NAME_ID = "name";
     private static final String PROGRAM_NAME = "Program Selenium " + (Math.random() * 1001);
     private static final String PROCESS_NAME = "Process Selenium " + (Math.random() * 1001);
@@ -36,6 +35,7 @@ public class SelectionBarOnTreeTableTest extends BaseTestCase {
 
     private static final String PROCESS_TYPE = "Data Correction Process";
     private static final String CHILD_PROCESSES = "Child Processes";
+    private static final String REFRESH_BUTTON_ID = "refreshButton";
     private PlannersViewPage plannersViewPage;
     private TreeTableWidget treeTableWidget;
 
@@ -89,11 +89,14 @@ public class SelectionBarOnTreeTableTest extends BaseTestCase {
     @Test(priority = 5)
     public void selectChildProcess() {
         createProgramWithProcessForTest(PROGRAM_NAME, PROCESS_NAME);
+        SystemMessageContainer.create(driver, webDriverWait).close();
         plannersViewPage.searchObject(PROGRAM_NAME);
         plannersViewPage.expandNode(0);
+        plannersViewPage.callAction(ActionsContainer.KEBAB_GROUP_ID, REFRESH_BUTTON_ID);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         plannersViewPage.expandNode(2);
-        plannersViewPage.clearFilters();
         plannersViewPage.selectObjectByAttributeValue(NAME_ID, PROCESS_NAME);
+        plannersViewPage.clearFilters();
         treeTableWidget.showOnlySelectedRows();
         String selectedObjectCount = treeTableWidget.getSelectedObjectCount();
         Assert.assertEquals(treeTableWidget.getPagination().getTotalCount(), 2);
