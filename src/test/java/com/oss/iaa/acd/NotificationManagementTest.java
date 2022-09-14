@@ -6,11 +6,12 @@ import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.pages.iaa.acd.settingsview.NotificationManagementPage;
+import com.oss.pages.iaa.acd.settingsview.NotificationWizardPage;
 
 import io.qameta.allure.Description;
 
@@ -21,155 +22,89 @@ public class NotificationManagementTest extends BaseTestCase {
 
     private NotificationManagementPage notificationManagementPage;
 
-    private static final String systemSettingsViewSuffixUrl = "%s/#/view/acd/systemSettings";
     private static final String SYSTEM_SETTINGS_TAB_ID = "systemTabsContainerId";
     private static final String MANAGEMENT_TAB = "Notification Management";
-    private static final String ADD_NOTIFICATION_BUTTON = "notificationManagementButtonId-3";
-    private static final String NAME_FIELD_ID = "notificationNameId";
     private static final String NAME_FIELD_VALUE = "SELENIUM_NOTIFICATION";
     private static final String EDITED_NAME_FIELD_VALUE = "SELENIUM_NOTIFICATION_EDITED";
-    private static final String STATUS_COMBOBOX_ID = "notificationStatusId";
     private static final String STATUS_COMBOBOX_VALUE = "Active";
-    private static final String SEND_TYPE_COMBOBOX_ID = "notificationSendTypeId";
+    private static final String CHANGED_STATUS_COMBOBOX_VALUE = "Inactive";
     private static final String SEND_TYPE_COMBOBOX_VALUE = "Early";
-    private static final String CREATION_TYPE_COMBOBOX_ID = "notificationIssueCreationTypeId";
     private static final String CREATION_TYPE_COMBOBOX_VALUE = "Automatically";
-    private static final String NOTIFICATION_TYPE_COMBOBOX_ID = "notificationTypeId";
     private static final String NOTIFICATION_TYPE_COMBOBOX_VALUE = "Mail";
-    private static final String TITLE_ID = "notificationMessageTitleId";
     private static final String TITLE_VALUE = "This is SELENIUM title";
-    private static final String RECIPIENT_ID = "notificationMessageAddressId";
     private static final String RECIPIENT_VALUE = "weronika.pawlowicz@comarch.com";
-    private static final String BODY_ID = "notificationMessageBodyId";
     private static final String BODY_VALUE = "This is SELENIUM notification body";
-    private static final String SCENARIO_ID = "notificationScenarioId";
     private static final String SCENARIO_VALUE = "APD";
-    private static final String EVENT_TYPE_ID = "notificationEventTypeId";
     private static final String EVENT_TYPE_VALUE = "Issue Detected";
-    private static final String SEARCHING_CLASS_ID = "notificationSearchingClassId";
     private static final String SEARCHING_CLASS_VALUE = "Root Classification";
-    private static final String QUERY_STRING_ID = "notificationQueryStringId";
     private static final String QUERY_STRING_VALUE = "Test_String";
-    private static final String SAVE_RULE_BUTTON_LABEL = "Save";
-    private static final String SHOW_FILTER_BUTTON_ID = "filters-panel-button";
-    private static final String SEARCH_NAME_ID = "notification_name";
-    private static final String APPLY_FILTER_BUTTON_LABEL = "Apply";
-    private static final String EDIT_NOTIFICATION_BUTTON_ID = "notificationManagementButtonId-2";
-    private static final String CHANGE_STATUS_BUTTON_ID = "notificationManagementButtonId-0";
-    private static final String DELETE_STATUS_BUTTON_ID = "notificationManagementButtonId-1";
     private final String notificationRuleName = NAME_FIELD_VALUE + '_' + date.replace(":", "_");
+    private final String editedNotificationRuleName = EDITED_NAME_FIELD_VALUE + '_' + date.replace(":", "_");
 
-    @BeforeClass
+    @BeforeMethod
     public void goToSystemSettingsView() {
-        notificationManagementPage = NotificationManagementPage.goToPage(driver, systemSettingsViewSuffixUrl, BASIC_URL);
+        notificationManagementPage = NotificationManagementPage.goToPage(driver, BASIC_URL);
+        notificationManagementPage.goToTab(SYSTEM_SETTINGS_TAB_ID, MANAGEMENT_TAB);
     }
 
     @Test(priority = 1, testName = "Add new Notification rule", description = "Add new Notification rule")
     @Description("Add new Notification rule")
     public void addNewNotificationRule() {
-        notificationManagementPage.goToTab(SYSTEM_SETTINGS_TAB_ID, MANAGEMENT_TAB);
-        notificationManagementPage.clickContextButton(ADD_NOTIFICATION_BUTTON);
-        notificationManagementPage.setAttributeValue(NAME_FIELD_ID, notificationRuleName);
-        notificationManagementPage.setAttributeValue(STATUS_COMBOBOX_ID, STATUS_COMBOBOX_VALUE);
-        notificationManagementPage.setAttributeValue(SEND_TYPE_COMBOBOX_ID, SEND_TYPE_COMBOBOX_VALUE);
-        notificationManagementPage.setAttributeValue(CREATION_TYPE_COMBOBOX_ID, CREATION_TYPE_COMBOBOX_VALUE);
-        notificationManagementPage.setAttributeValue(NOTIFICATION_TYPE_COMBOBOX_ID, NOTIFICATION_TYPE_COMBOBOX_VALUE);
-        notificationManagementPage.setAttributeValue(TITLE_ID, TITLE_VALUE);
-        notificationManagementPage.setAttributeValue(RECIPIENT_ID, RECIPIENT_VALUE);
-        notificationManagementPage.setAttributeValue(BODY_ID, BODY_VALUE);
-        notificationManagementPage.setAttributeValue(SCENARIO_ID, SCENARIO_VALUE);
-        notificationManagementPage.setAttributeValue(EVENT_TYPE_ID, EVENT_TYPE_VALUE);
-        notificationManagementPage.setAttributeValue(SEARCHING_CLASS_ID, SEARCHING_CLASS_VALUE);
-        notificationManagementPage.setAttributeValue(QUERY_STRING_ID, QUERY_STRING_VALUE);
-        log.info("Form has been completed. I try to save it.");
-        try {
-            notificationManagementPage.clickButtonByLabel(SAVE_RULE_BUTTON_LABEL);
-            log.info("I clicked Save button");
-        } catch (Exception e) {
-            log.info("I couldn't click Save button");
-            log.error(e.getMessage());
-            Assert.fail();
-        }
+        NotificationWizardPage notificationWizardPage = notificationManagementPage.clickAddNotification();
+        fillNotificationWizard();
+        notificationWizardPage.clickSaveButton();
+        notificationManagementPage.searchByName(notificationRuleName);
+        Assert.assertTrue(notificationManagementPage.getFirstRuleName().contains(notificationRuleName));
+
     }
 
-    @Test(priority = 2, testName = "Verify if created Notification rule exists", description = "Verify if created Notification rule exists")
-    @Description("Verify if created Notification rule exists")
-    public void searchForNewRule() {
-
-        notificationManagementPage.clickContextButton(SHOW_FILTER_BUTTON_ID);
-        notificationManagementPage.setAttributeValue(SEARCH_NAME_ID, notificationRuleName);
-
-        try {
-            notificationManagementPage.clickButtonByLabel(APPLY_FILTER_BUTTON_LABEL);
-            Assert.assertTrue(notificationManagementPage.getRuleName().contains(notificationRuleName));
-
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            Assert.fail();
-        }
-    }
-
-    @Test(priority = 3, testName = "Edit Notification Rule", description = "Edit Notification Rule")
+    @Test(priority = 2, testName = "Edit Notification Rule", description = "Edit Notification Rule")
     @Description("Edit Notification Rule")
     public void editNotificationRule() {
-
-        try {
-            notificationManagementPage.selectFirstNotificationRuleFromTable();
-            notificationManagementPage.clickContextButton(EDIT_NOTIFICATION_BUTTON_ID);
-            notificationManagementPage.setAttributeValue(NAME_FIELD_ID, EDITED_NAME_FIELD_VALUE);
-            notificationManagementPage.clickButtonByLabel(SAVE_RULE_BUTTON_LABEL);
-            notificationManagementPage.clearFilters();
-            notificationManagementPage.clickContextButton(SHOW_FILTER_BUTTON_ID);
-            notificationManagementPage.setAttributeValue(SEARCH_NAME_ID, EDITED_NAME_FIELD_VALUE);
-            notificationManagementPage.clickButtonByLabel(APPLY_FILTER_BUTTON_LABEL);
-            Assert.assertTrue(notificationManagementPage.getRuleName().contains(EDITED_NAME_FIELD_VALUE));
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            Assert.fail();
-        }
+        notificationManagementPage.searchByName(notificationRuleName);
+        notificationManagementPage.selectFirstNotificationRuleFromTable();
+        NotificationWizardPage notificationWizardPage = notificationManagementPage.clickEditNotification();
+        notificationWizardPage.setName(editedNotificationRuleName);
+        notificationWizardPage.clickSaveButton();
+        notificationManagementPage.clearFilters();
+        notificationManagementPage.searchByName(editedNotificationRuleName);
+        Assert.assertTrue(notificationManagementPage.getFirstRuleName().contains(editedNotificationRuleName));
     }
 
-    @Test(priority = 4, testName = "Change status of Notification Rule", description = "Change status of Notification Rule")
+    @Test(priority = 3, testName = "Change status of Notification Rule", description = "Change status of Notification Rule")
     @Description("Change status of Notification Rule")
     public void changeStatusOfRule() {
-
-        if (notificationManagementPage.getRuleName().contains(EDITED_NAME_FIELD_VALUE)) {
-            try {
-                notificationManagementPage.selectFirstNotificationRuleFromTable();
-                notificationManagementPage.clickContextButton(CHANGE_STATUS_BUTTON_ID);
-                notificationManagementPage.confirmChanges("Change");
-                Assert.assertTrue(notificationManagementPage.getRuleStatus().equals("Inactive"));
-            } catch (Exception e) {
-                log.error(e.getMessage());
-                Assert.fail();
-            }
-        } else {
-            log.info("Name of notification rule is different than the one created by Selenium");
-            Assert.fail();
-        }
+        notificationManagementPage.searchByName(editedNotificationRuleName);
+        notificationManagementPage.selectFirstNotificationRuleFromTable();
+        notificationManagementPage.clickChangeStatus();
+        notificationManagementPage.confirmChanges();
+        Assert.assertTrue(notificationManagementPage.getFirstRuleStatus().equals(CHANGED_STATUS_COMBOBOX_VALUE));
     }
 
-    @Test(priority = 5, testName = "Delete Notification Rule", description = "Delete Notification Rule")
+    @Test(priority = 4, testName = "Delete Notification Rule", description = "Delete Notification Rule")
     @Description("Delete Notification Rule")
     public void deleteRule() {
+        notificationManagementPage.searchByName(editedNotificationRuleName);
+        notificationManagementPage.selectFirstNotificationRuleFromTable();
+        notificationManagementPage.clickDeleteNotification();
+        notificationManagementPage.confirmDelete();
+        Assert.assertFalse(notificationManagementPage.isDataInNotificationRulesTable());
+        notificationManagementPage.clearFilters();
+    }
 
-        if (notificationManagementPage.getRuleName().contains(EDITED_NAME_FIELD_VALUE)) {
-            try {
-                notificationManagementPage.selectFirstNotificationRuleFromTable();
-                notificationManagementPage.clickContextButton(DELETE_STATUS_BUTTON_ID);
-                notificationManagementPage.confirmChanges("Delete");
-                Assert.assertFalse(notificationManagementPage.isDataInNotificationRulesTable());
-                log.info("Selected rule has been deleted");
-                notificationManagementPage.clearFilters();
-                log.info("Filters have been cleared");
-            } catch (Exception e) {
-                log.info("Rule couldn't be deleted or filters couldn't be cleared");
-                log.error(e.getMessage());
-                Assert.fail();
-            }
-        } else {
-            log.info("Name of notification rule is different than the one created by Selenium");
-            Assert.fail();
-        }
+    private void fillNotificationWizard() {
+        NotificationWizardPage notificationWizardPage = new NotificationWizardPage(driver, webDriverWait);
+        notificationWizardPage.setName(notificationRuleName);
+        notificationWizardPage.setStatus(STATUS_COMBOBOX_VALUE);
+        notificationWizardPage.setSendType(SEND_TYPE_COMBOBOX_VALUE);
+        notificationWizardPage.setCreationType(CREATION_TYPE_COMBOBOX_VALUE);
+        notificationWizardPage.setNotificationType(NOTIFICATION_TYPE_COMBOBOX_VALUE);
+        notificationWizardPage.setTitle(TITLE_VALUE);
+        notificationWizardPage.setRecipient(RECIPIENT_VALUE);
+        notificationWizardPage.setBody(BODY_VALUE);
+        notificationWizardPage.setScenario(SCENARIO_VALUE);
+        notificationWizardPage.setEventType(EVENT_TYPE_VALUE);
+        notificationWizardPage.setSearchingClass(SEARCHING_CLASS_VALUE);
+        notificationWizardPage.setQueryString(QUERY_STRING_VALUE);
     }
 }
