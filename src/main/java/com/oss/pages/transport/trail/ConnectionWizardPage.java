@@ -61,10 +61,10 @@ public class ConnectionWizardPage extends BasePage {
         wizard.clickAccept();
     }
 
-    @Step("Select connection termination by position = {position}")
-    public void selectConnectionTermination(String dataGuid) {
+    @Step("Select connection termination by dataPath = {dataPath}")
+    public void selectConnectionTermination(String dataPath) {
         TreeComponent treeComponent = wizard.getTreeComponent();
-        treeComponent.toggleNodeByPath(dataGuid);
+        treeComponent.toggleNodeByPath(dataPath);
     }
 
     @Step("Terminate Card/Component")

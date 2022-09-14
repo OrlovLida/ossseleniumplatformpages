@@ -63,7 +63,6 @@ public class BaseACDPage extends BasePage {
         if (isAttributeFilled(attributeId)) {
             log.info("Input is not empty");
             clearAttributeValue(attributeId);
-            log.info("Input has been cleared");
         }
 
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -74,11 +73,11 @@ public class BaseACDPage extends BasePage {
     @Step("I Clear Attribute value")
     public void clearAttributeValue(String attributeId) {
         ComponentFactory.create(attributeId, driver, wait).clear();
-        log.info("Attribute value is cleared");
+        log.info("{} value is cleared", attributeId);
     }
 
     @Step("Check if multiComboBox is filled")
-    public Boolean isAttributeFilled(String attributeId) {
+    public boolean isAttributeFilled(String attributeId) {
         log.info("Checking if MultiComboBox is empty");
 
         return !ComponentFactory.create(attributeId, driver, wait).getStringValues().isEmpty();
