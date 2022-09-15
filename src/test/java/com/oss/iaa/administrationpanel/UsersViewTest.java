@@ -68,6 +68,6 @@ public class UsersViewTest extends BaseTestCase {
         usersPage.clickLogoutUser();
         usersPage.confirmLogout();
         usersPage.logInUser();
-        Assert.assertFalse(usersPage.isUsersTableEmpty());
+        Assert.assertEquals(usersPage.getViewTitle(), "Home");
     }
 }

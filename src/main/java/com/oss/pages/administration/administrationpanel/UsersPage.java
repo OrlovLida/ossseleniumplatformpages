@@ -108,7 +108,7 @@ public class UsersPage extends BaseAdminPanelPage {
 
     @Step("Log in user")
     public void logInUser() {
-        new LoginPage(driver, USERS_PAGE_URL).open().login();
+        new LoginPage(driver, BASIC_URL).open().login();
         log.info("Logging user");
         DelayUtils.waitForPageToLoad(driver, wait);
     }
