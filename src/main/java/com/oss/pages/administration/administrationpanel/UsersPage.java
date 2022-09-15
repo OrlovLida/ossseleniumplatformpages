@@ -106,10 +106,20 @@ public class UsersPage extends BaseAdminPanelPage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    @Step("Log in user")
+    @Step("Open Login Page")
+    public void openLoginPage() {
+        new LoginPage(driver, BASIC_URL).open();
+        log.info("Opening Login Page");
+    }
+
+    @Step("Check if Login page is displayed")
+    public boolean isLoginPageOpened() {
+        return new LoginPage(driver, BASIC_URL).isLoginPageDisplayed();
+    }
+
+    @Step("Log in User")
     public void logInUser() {
-        new LoginPage(driver, BASIC_URL).open().login();
-        log.info("Logging user");
-        DelayUtils.waitForPageToLoad(driver, wait);
+        new LoginPage(driver, BASIC_URL).login();
+        log.info("Logging user to console");
     }
 }
