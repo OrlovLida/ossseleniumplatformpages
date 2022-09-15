@@ -68,6 +68,7 @@ public class UsersPage extends BaseAdminPanelPage {
 
     @Step("Search for user: {userName}")
     public void searchForUser(String userName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
         searchInTable(USERS_TABLE_ID, userName);
         log.info("Searching for user: {}", userName);
     }
@@ -79,6 +80,7 @@ public class UsersPage extends BaseAdminPanelPage {
 
     @Step("Select first row in Users table")
     public void selectFirstRowInUsersTable() {
+        DelayUtils.waitForPageToLoad(driver, wait);
         selectFirstRowInTable(USERS_TABLE_ID);
         log.info("Selecting first row in Users table");
     }
@@ -86,11 +88,13 @@ public class UsersPage extends BaseAdminPanelPage {
     @Step("Click Reload button")
     public void clickReloadButton() {
         callActionInTable(USERS_TABLE_ID, RELOAD_BUTTON_ID);
+        DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Clicking Reload button");
     }
 
     @Step("Click Logout user from web sessions")
     public void clickLogoutUser() {
+        DelayUtils.waitForPageToLoad(driver, wait);
         callActionInTable(USERS_TABLE_ID, LOGOUT_USER_BUTTON_ID);
         log.info("Clicking Logout user from web sessions button");
     }

@@ -59,7 +59,7 @@ public class UsersViewTest extends BaseTestCase {
         Assert.assertFalse(usersPage.isSessionsTableEmpty());
     }
 
-    @Test(priority = 5, testName = "Logout test", description = "Logging out user using Administration Panel")
+    @Test(priority = 10, testName = "Logout test", description = "Logging out user using Administration Panel")
     @Description("Logging out user using Administration Panel")
     public void logoutTest() {
         usersPage.clickReloadButton();
