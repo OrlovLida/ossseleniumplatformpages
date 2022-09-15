@@ -18,7 +18,7 @@ public class CreateNetworkSliceConstants {
     public static final String OPERATIONAL_STATE_VALUE = "ENABLED";
     public static final String SERVICE_PROFILE_NAME = "SERVICE-PROFILE-CREATE-SELENIUM-TEST";
 
-    public static final String PROFILE_SERVICE_DEFAULT_LABEL_PATH = "Profile Service 1";
+    public static final String PROFILE_SERVICE_DEFAULT_LABEL_PATH = "Service Profile 1";
     public static final String PLMN_INFO_DEFAULT_LABEL_PATH = SERVICE_PROFILE_NAME
             + ".PLMN Info 1 (mcc: , mnc: , sd: , sst: )";
 
