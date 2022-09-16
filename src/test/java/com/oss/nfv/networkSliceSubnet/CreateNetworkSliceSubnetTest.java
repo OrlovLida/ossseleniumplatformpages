@@ -26,6 +26,8 @@ import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 
 import static com.oss.nfv.networkSliceSubnet.CreateNetworkSliceSubnetConstants.ADMINISTRATIVE_STATE_VALUE;
+import static com.oss.nfv.networkSliceSubnet.CreateNetworkSliceSubnetConstants.CAPACITY_SLICE_PROFILE_DEFAULT_LABEL_PATH;
+import static com.oss.nfv.networkSliceSubnet.CreateNetworkSliceSubnetConstants.CAPACITY_SLICE_PROFILE_NAME;
 import static com.oss.nfv.networkSliceSubnet.CreateNetworkSliceSubnetConstants.MCC_VALUE;
 import static com.oss.nfv.networkSliceSubnet.CreateNetworkSliceSubnetConstants.MNC_VALUE;
 import static com.oss.nfv.networkSliceSubnet.CreateNetworkSliceSubnetConstants.NETWORK_SLICE_SUBNET_DESCRIPTION;
@@ -74,7 +76,7 @@ public class CreateNetworkSliceSubnetTest extends BaseNetworkSliceSubnetTest {
         NetworkSliceSubnetWizardSecondStep secondStep = wizard.getSecondStep();
         secondStep.clickAddSliceProfile();
         selectSliceProfile(secondStep);
-        fillServiceProfileParams(secondStep);
+        fillSliceProfileParams(secondStep);
         //then
         validateSliceProfileParams(secondStep);
         //when
@@ -83,6 +85,19 @@ public class CreateNetworkSliceSubnetTest extends BaseNetworkSliceSubnetTest {
         fillPLMNInfoParams(secondStep);
         //then
         validatePLMNInfoParams(secondStep);
+        //when
+        secondStep.clickAddCapacitySliceProfile();
+        selectCapacitySliceProfile(secondStep);
+        fillCapacitySliceProfileParams(secondStep);
+        //then
+        validateCapacitySliceProfileParams(secondStep);
+        //when
+        secondStep.clickAddPLMNInfo();
+        selectPLMNInfo(secondStep);
+        fillCapacityPLMNInfoParams(secondStep);
+        //then
+        validateCapacityPLMNInfoParams(secondStep);
+
         wizard.goToNextStep();
         wizard.goToNextStep();
         wizard.goToNextStep();
@@ -115,6 +130,10 @@ public class CreateNetworkSliceSubnetTest extends BaseNetworkSliceSubnetTest {
         softly.assertAll();
     }
 
+    private void selectCapacitySliceProfile(NetworkSliceSubnetWizardSecondStep secondStep) {
+        secondStep.selectNode(CAPACITY_SLICE_PROFILE_DEFAULT_LABEL_PATH);
+    }
+
     private void selectSliceProfile(NetworkSliceSubnetWizardSecondStep secondStep) {
         secondStep.selectNode(SLICE_PROFILE_DEFAULT_LABEL_PATH);
     }
@@ -123,12 +142,24 @@ public class CreateNetworkSliceSubnetTest extends BaseNetworkSliceSubnetTest {
         secondStep.selectNode(PLMN_INFO_DEFAULT_LABEL_PATH);
     }
 
-    private void fillServiceProfileParams(NetworkSliceSubnetWizardSecondStep secondStep) {
+    private void fillCapacitySliceProfileParams(NetworkSliceSubnetWizardSecondStep secondStep) {
+        secondStep.setSliceProfileName(CAPACITY_SLICE_PROFILE_NAME);
+    }
+
+    private void fillSliceProfileParams(NetworkSliceSubnetWizardSecondStep secondStep) {
         secondStep.setSliceProfileName(SLICE_PROFILE_NAME);
+    }
+
+    private void validateCapacitySliceProfileParams(NetworkSliceSubnetWizardSecondStep secondStep) {
+        assertEquals(secondStep.getSliceProfileName(), CAPACITY_SLICE_PROFILE_NAME, "Name has not been set");
     }
 
     private void validateSliceProfileParams(NetworkSliceSubnetWizardSecondStep secondStep) {
         assertEquals(secondStep.getSliceProfileName(), SLICE_PROFILE_NAME, "Name has not been set");
+    }
+
+    private void fillCapacityPLMNInfoParams(NetworkSliceSubnetWizardSecondStep secondStep) {
+        secondStep.setPLMNInfoSST(SST_VALUE);
     }
 
     private void fillPLMNInfoParams(NetworkSliceSubnetWizardSecondStep secondStep) {
@@ -136,6 +167,10 @@ public class CreateNetworkSliceSubnetTest extends BaseNetworkSliceSubnetTest {
         secondStep.setPLMNInfoMNC(MNC_VALUE);
         secondStep.setPLMNInfoSST(SST_VALUE);
         secondStep.setPLMNInfoSD(SD_VALUE);
+    }
+
+    private void validateCapacityPLMNInfoParams(NetworkSliceSubnetWizardSecondStep secondStep) {
+        assertEquals(secondStep.getPLMNInfoSST(), SST_VALUE, "SST has not been set");
     }
 
     private void validatePLMNInfoParams(NetworkSliceSubnetWizardSecondStep secondStep) {
