@@ -6,6 +6,7 @@ import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Prope
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
@@ -43,15 +44,29 @@ public class TableWidgetConfigurationTest extends BaseTestCase {
     private static final String TEST_ACTOR = "TestActor";
     private static final String TEST_DIRECTOR = "TestDirector";
     private static final String ME = "Me";
+    private static final String TABLE = "Table_Widget";
     int newPositionOfTypeLabel;
     
     @BeforeClass
     public void goToInventoryView() {
         // given
+        deleteOldConfiguration();
         newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_PERSON);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
-    
+
+    private void deleteOldConfiguration() {
+        newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_PERSON);
+        deleteOldConfigurations(newInventoryViewPage.getTableConfigurationsName());
+        newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_ACTOR);
+        deleteOldConfigurations(newInventoryViewPage.getTableConfigurationsName());
+    }
+
+    private void deleteOldConfigurations(List<String> tableConfigurationsName) {
+        List<String> savedConfigurations = tableConfigurationsName.stream().filter(name-> name.contains(TABLE)).collect(Collectors.toList());
+        newInventoryViewPage.deleteConfigurations(savedConfigurations);
+    }
+
     @Test(priority = 1)
     public void saveNewConfigurationForTableWidget() {
         // when
