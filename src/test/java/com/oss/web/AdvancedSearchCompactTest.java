@@ -186,14 +186,14 @@ public class AdvancedSearchCompactTest extends BaseTestCase {
         List<String> attributesAfterUnselect = inventoryViewPage.getAllVisibleFilters();
         Assert.assertFalse(attributesAfterUnselect.contains(COMBO_ATTRIBUTE_LABEL));
 
-        inventoryViewPage.getMainTable().getAdvancedSearch().backToDefault();
+        inventoryViewPage.setDefaultAdvanceSearchSettings();
         List<String> attributesAfterBackToDefault = inventoryViewPage.getAllVisibleFilters();
         Assert.assertTrue(attributesAfterBackToDefault.contains(COMBO_ATTRIBUTE_LABEL));
     }
 
     @Test(priority = 8)
     public void changeAttributeOrder() {
-        inventoryViewPage.getMainTable().getAdvancedSearch().changeAttributesOrder(ACTORS_ATTRIBUTE_ID,0);
+        inventoryViewPage.changeAdvanceSearchAttributeOrder(ACTORS_ATTRIBUTE_ID, 0);
         List<String> attributes = inventoryViewPage.getAllVisibleFilters();
         Assert.assertEquals(attributes.indexOf(ACTORS_LABEL), 0);
     }
@@ -201,7 +201,7 @@ public class AdvancedSearchCompactTest extends BaseTestCase {
     // Disabled until fix OSSWEB-19578
     @Test(priority = 9, enabled = false)
     public void unselectAttributteAndChangeOrder() {
-        inventoryViewPage.getMainTable().getAdvancedSearch().backToDefault();
+        inventoryViewPage.setDefaultAdvanceSearchSettings();
         List<String> attributesDefault = inventoryViewPage.getAllVisibleFilters();
         int defaultPosition = attributesDefault.indexOf(ACTORS_LABEL);
         List<String> attributes = new ArrayList<>();
@@ -210,12 +210,12 @@ public class AdvancedSearchCompactTest extends BaseTestCase {
         List<String> attributesAfterUnselect = inventoryViewPage.getAllVisibleFilters();
         Assert.assertFalse(attributesAfterUnselect.contains(COMBO_ATTRIBUTE_LABEL));
 
-        inventoryViewPage.getMainTable().getAdvancedSearch().changeAttributesOrder(ACTORS_ATTRIBUTE_ID,0);
+        inventoryViewPage.changeAdvanceSearchAttributeOrder(ACTORS_ATTRIBUTE_ID, 0);
         List<String> attributesAfterChangeOrder = inventoryViewPage.getAllVisibleFilters();
         Assert.assertEquals(attributesAfterChangeOrder.indexOf(ACTORS_LABEL), 0);
         Assert.assertFalse(attributesAfterChangeOrder.contains(COMBO_ATTRIBUTE_LABEL));
 
-        inventoryViewPage.getMainTable().getAdvancedSearch().backToDefault();
+        inventoryViewPage.setDefaultAdvanceSearchSettings();
         List<String> attributesAfterBackToDefault = inventoryViewPage.getAllVisibleFilters();
         Assert.assertEquals(attributesAfterBackToDefault.indexOf(ACTORS_LABEL), defaultPosition);
         Assert.assertTrue(attributesAfterBackToDefault.contains(COMBO_ATTRIBUTE_LABEL));
