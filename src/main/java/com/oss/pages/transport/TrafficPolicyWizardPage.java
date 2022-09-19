@@ -69,7 +69,7 @@ public class TrafficPolicyWizardPage extends BasePage {
 
     @Step("Edit Traffic Policy Entry")
     public void editTrafficPolicyEntry() {
-        TrafficPolicyEntryAttributes trafficPolicyEntryAttributes = getEntryAttributesForUpdate();
+        TrafficPolicyEntryAttributes trafficPolicyEntryAttributes = new TrafficPolicyEntryAttributes();
         fillEntryToTrafficPolicyUpdate(trafficPolicyEntryAttributes);
         clickSave();
     }
@@ -172,21 +172,21 @@ public class TrafficPolicyWizardPage extends BasePage {
 
     private static class TrafficPolicyEntryAttributes {
         private String trafficObject;
-        private String match;
-        private String bandwidth;
-        private String queueLimit;
-        private String fairQueue;
-        private String priority;
-        private String randomDetect;
-        private String ipPrecedence;
-        private String mplsExperimental;
-        private String shape;
-        private String shapeRate;
-        private String ipDSCP;
-        private String cirIngress;
-        private String cirEgress;
-        private String pirIngress;
-        private String pirEgress;
+        private String match = "ANY";
+        private String bandwidth = "456";
+        private String queueLimit = "15";
+        private String fairQueue = "3";
+        private String priority = "2";
+        private String randomDetect = "False";
+        private String ipPrecedence = "3";
+        private String mplsExperimental = "3";
+        private String shape = "PEAK";
+        private String shapeRate = "12";
+        private String ipDSCP = "CS2";
+        private String cirIngress = "21";
+        private String cirEgress = "31";
+        private String pirIngress = "41";
+        private String pirEgress = "101";
     }
 
     private TrafficPolicyEntryAttributes getEntryAttributesForCreate() {
@@ -210,43 +210,9 @@ public class TrafficPolicyWizardPage extends BasePage {
         return trafficPolicyEntryAttributes;
     }
 
-    private TrafficPolicyEntryAttributes getEntryAttributesForUpdate() {
-        TrafficPolicyEntryAttributes trafficPolicyEntryAttributes = new TrafficPolicyEntryAttributes();
-        trafficPolicyEntryAttributes.match = "ANY";
-        trafficPolicyEntryAttributes.bandwidth = "456";
-        trafficPolicyEntryAttributes.queueLimit = "15";
-        trafficPolicyEntryAttributes.fairQueue = "3";
-        trafficPolicyEntryAttributes.priority = "2";
-        trafficPolicyEntryAttributes.randomDetect = "False";
-        trafficPolicyEntryAttributes.ipPrecedence = "3";
-        trafficPolicyEntryAttributes.mplsExperimental = "3";
-        trafficPolicyEntryAttributes.shape = "PEAK";
-        trafficPolicyEntryAttributes.shapeRate = "12";
-        trafficPolicyEntryAttributes.ipDSCP = "CS2";
-        trafficPolicyEntryAttributes.cirIngress = "21";
-        trafficPolicyEntryAttributes.cirEgress = "31";
-        trafficPolicyEntryAttributes.pirIngress = "41";
-        trafficPolicyEntryAttributes.pirEgress = "101";
-        return trafficPolicyEntryAttributes;
-    }
-
     private void fillEntryToTrafficPolicy(TrafficPolicyEntryAttributes trafficPolicyEntryAttributes) {
         setTrafficObject(trafficPolicyEntryAttributes.trafficObject);
-        setMatch(trafficPolicyEntryAttributes.match);
-        setBandwidth(trafficPolicyEntryAttributes.bandwidth);
-        setQueueLimit(trafficPolicyEntryAttributes.queueLimit);
-        setFairQueue(trafficPolicyEntryAttributes.fairQueue);
-        setPriority(trafficPolicyEntryAttributes.priority);
-        setRandomDetect(trafficPolicyEntryAttributes.randomDetect);
-        setIPPrecedence(trafficPolicyEntryAttributes.ipPrecedence);
-        setMPLSExperimental(trafficPolicyEntryAttributes.mplsExperimental);
-        setShape(trafficPolicyEntryAttributes.shape);
-        setShapeRate(trafficPolicyEntryAttributes.shapeRate);
-        setIPDSCP(trafficPolicyEntryAttributes.ipDSCP);
-        setCIRIngress(trafficPolicyEntryAttributes.cirIngress);
-        setCIREgress(trafficPolicyEntryAttributes.cirEgress);
-        setPIRIngress(trafficPolicyEntryAttributes.pirIngress);
-        setPIREgress(trafficPolicyEntryAttributes.pirEgress);
+        fillEntryToTrafficPolicyUpdate(trafficPolicyEntryAttributes);
     }
 
     private void fillEntryToTrafficPolicyUpdate(TrafficPolicyEntryAttributes trafficPolicyEntryAttributes) {
