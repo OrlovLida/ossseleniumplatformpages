@@ -152,7 +152,7 @@ public class NewInventoryViewPage extends BasePage {
         return filterValues;
     }
 
-        public List<String> getSavedFilters() {
+    public List<String> getSavedFilters() {
         return getAdvancedSearch().getSavedFilters();
     }
 
@@ -176,14 +176,6 @@ public class NewInventoryViewPage extends BasePage {
 
     public void unselectVisibilitySearchAttributes(List<String> attributeIds) {
         getMainTable().unselectVisibilitySearchAttributes(attributeIds);
-    }
-
-    public void setDefaultASSettings() {
-        getMainTable().getAdvancedSearch().backToDefault();
-    }
-
-    public void changeASAttributeOrderById(String attributeId, int position) {
-        getMainTable().getAdvancedSearch().changeAttributesOrderById(attributeId,position);
     }
 
     public List<String> getAllVisibleFilters() {
@@ -227,7 +219,7 @@ public class NewInventoryViewPage extends BasePage {
         getMainTable().callAction(actionId);
     }
 
-    public String getGroupActionLabel(String groupId){
+    public String getGroupActionLabel(String groupId) {
         return getMainTable().getContextActions().getGroupActionLabel(groupId);
     }
 
@@ -417,7 +409,7 @@ public class NewInventoryViewPage extends BasePage {
     }
 
     @Step("Get all Configurations for Properties")
-    public List<String> getPropertiesConfigurationsName(int rowId, String widgetId ) {
+    public List<String> getPropertiesConfigurationsName(int rowId, String widgetId) {
         DelayUtils.waitForPageToLoad(driver, wait);
         getPropertyPanel(rowId, widgetId).callAction(SETTINGS_ID, CHOOSE_PROPERTY_CONFIG_ID);
         return getChooseConfigurationWizard().getConfigurationNames();
