@@ -2,8 +2,6 @@ package com.oss.iaa.dpe;
 
 import java.util.Collections;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Optional;
@@ -28,12 +26,9 @@ import static com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel.LayoutT
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
-import static org.testng.Assert.fail;
 
 @Listeners({TestListener.class})
 public class IndicatorsViewTest extends BaseTestCase {
-
-    private static final Logger log = LoggerFactory.getLogger(IndicatorsViewTest.class);
 
     private static final String HIDDEN_DATA_SERIES_VISIBILITY = "hidden";
     private static final String HIGHLIGHTED_DATA_SERIES_WIDTH = "5px";
@@ -66,18 +61,14 @@ public class IndicatorsViewTest extends BaseTestCase {
             @Optional("DC Type: ETL_DC") String dimensionNodesToSelect,
             @Optional("Data Collection Statistics") String filterName
     ) {
-        try {
-            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
-            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
-            kpiViewPage.clickLegend();
-            assertTrue(kpiViewPage.shouldSeeDataSeriesLineWidth(HIGHLIGHTED_DATA_SERIES_WIDTH));
-            kpiViewPage.clickLegend();
-            assertTrue(kpiViewPage.shouldNotSeeHiddenLine(HIDDEN_DATA_SERIES_VISIBILITY));
-            kpiViewPage.clickLegend();
-            assertTrue(kpiViewPage.shouldSeeDataSeriesLineWidth(NORMAL_DATA_SERIES_WIDTH));
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
+        kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+        assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+        kpiViewPage.clickLegend();
+        assertTrue(kpiViewPage.shouldSeeDataSeriesLineWidth(HIGHLIGHTED_DATA_SERIES_WIDTH));
+        kpiViewPage.clickLegend();
+        assertTrue(kpiViewPage.shouldNotSeeHiddenLine(HIDDEN_DATA_SERIES_VISIBILITY));
+        kpiViewPage.clickLegend();
+        assertTrue(kpiViewPage.shouldSeeDataSeriesLineWidth(NORMAL_DATA_SERIES_WIDTH));
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
@@ -90,17 +81,13 @@ public class IndicatorsViewTest extends BaseTestCase {
             @Optional("DC Type: ETL_DC") String dimensionNodesToSelect,
             @Optional("Data Collection Statistics") String filterName
     ) {
-        try {
-            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
-            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
-            kpiViewPage.getKpiToolbar().exportChart(ExportPanel.ExportType.JPG);
-            kpiViewPage.getKpiToolbar().exportChart(ExportPanel.ExportType.PNG);
-            kpiViewPage.getKpiToolbar().exportChart(ExportPanel.ExportType.PDF);
-            kpiViewPage.getKpiToolbar().exportChart(ExportPanel.ExportType.XLSX);
-            kpiViewPage.attachExportedChartToReport();
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
+        kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+        assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+        kpiViewPage.getKpiToolbar().exportChart(ExportPanel.ExportType.JPG);
+        kpiViewPage.getKpiToolbar().exportChart(ExportPanel.ExportType.PNG);
+        kpiViewPage.getKpiToolbar().exportChart(ExportPanel.ExportType.PDF);
+        kpiViewPage.getKpiToolbar().exportChart(ExportPanel.ExportType.XLSX);
+        kpiViewPage.attachExportedChartToReport();
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
@@ -113,20 +100,16 @@ public class IndicatorsViewTest extends BaseTestCase {
             @Optional("DC Type: ETL_DC") String dimensionNodesToSelect,
             @Optional("Data Collection Statistics") String filterName
     ) {
-        try {
-            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
-            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
-            kpiViewPage.getChartActionPanel().clickAreaChartType();
-            assertTrue(kpiViewPage.isDataSeriesType("area"));
-            kpiViewPage.getChartActionPanel().clickBarChartType();
-            assertTrue(kpiViewPage.isDataSeriesType("bar"));
-            kpiViewPage.getChartActionPanel().clickLineChartType();
-            assertTrue(kpiViewPage.isDataSeriesType("line"));
-            kpiViewPage.getChartActionPanel().chooseDataSeriesColor();
-            assertTrue(kpiViewPage.shouldSeeColorChart(FIRST_CHART_COLOR));
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
+        kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+        assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+        kpiViewPage.getChartActionPanel().clickAreaChartType();
+        assertTrue(kpiViewPage.isDataSeriesType("area"));
+        kpiViewPage.getChartActionPanel().clickBarChartType();
+        assertTrue(kpiViewPage.isDataSeriesType("bar"));
+        kpiViewPage.getChartActionPanel().clickLineChartType();
+        assertTrue(kpiViewPage.isDataSeriesType("line"));
+        kpiViewPage.getChartActionPanel().chooseDataSeriesColor();
+        assertTrue(kpiViewPage.shouldSeeColorChart(FIRST_CHART_COLOR));
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
@@ -139,19 +122,15 @@ public class IndicatorsViewTest extends BaseTestCase {
             @Optional("DC Type: ETL_DC") String dimensionNodesToSelect,
             @Optional("Data Collection Statistics") String filterName
     ) {
-        try {
-            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
-            kpiViewPage.getKpiToolbar().setValueInTimePeriodChooser(1, 2, 3);
-            kpiViewPage.getKpiToolbar().applyChanges();
-            kpiViewPage.getKpiToolbar().chooseSmartOptionInTimePeriodChooser();
-            kpiViewPage.getKpiToolbar().applyChanges();
-            kpiViewPage.getKpiToolbar().chooseLatestOptionInTimePeriodChooser();
-            kpiViewPage.getKpiToolbar().applyChanges();
-            kpiViewPage.clickLegend();
-            assertTrue(kpiViewPage.shouldSeePointsDisplayed(1));
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
+        kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+        kpiViewPage.getKpiToolbar().setValueInTimePeriodChooser(1, 2, 3);
+        kpiViewPage.getKpiToolbar().applyChanges();
+        kpiViewPage.getKpiToolbar().chooseSmartOptionInTimePeriodChooser();
+        kpiViewPage.getKpiToolbar().applyChanges();
+        kpiViewPage.getKpiToolbar().chooseLatestOptionInTimePeriodChooser();
+        kpiViewPage.getKpiToolbar().applyChanges();
+        kpiViewPage.clickLegend();
+        assertTrue(kpiViewPage.shouldSeePointsDisplayed(1));
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
@@ -164,21 +143,17 @@ public class IndicatorsViewTest extends BaseTestCase {
             @Optional("DC Type: ETL_DC") String dimensionNodesToSelect,
             @Optional("Data Collection Statistics") String filterName
     ) {
-        try {
-            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
-            kpiViewPage.getKpiToolbar().enableDataCompleteness();
-            kpiViewPage.getKpiToolbar().applyChanges();
-            assertTrue(kpiViewPage.shouldSeeDataCompleteness());
+        kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+        kpiViewPage.getKpiToolbar().enableDataCompleteness();
+        kpiViewPage.getKpiToolbar().applyChanges();
+        assertTrue(kpiViewPage.shouldSeeDataCompleteness());
 
-            kpiViewPage.getKpiToolbar().enableShowTimeZone();
-            kpiViewPage.getKpiToolbar().applyChanges();
-            assertTrue(kpiViewPage.isTimeZoneDisplayed());
+        kpiViewPage.getKpiToolbar().enableShowTimeZone();
+        kpiViewPage.getKpiToolbar().applyChanges();
+        assertTrue(kpiViewPage.isTimeZoneDisplayed());
 
-            kpiViewPage.getKpiToolbar().enableLastSampleTime();
-            assertTrue(kpiViewPage.shouldSeeLastSampleTime(1));
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
+        kpiViewPage.getKpiToolbar().enableLastSampleTime();
+        assertTrue(kpiViewPage.shouldSeeLastSampleTime(1));
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
@@ -191,17 +166,13 @@ public class IndicatorsViewTest extends BaseTestCase {
             @Optional("DC Type: ETL_DC") String dimensionNodesToSelect,
             @Optional("Data Collection Statistics") String filterName
     ) {
-        try {
-            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+        kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
 
-            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
-            kpiViewPage.getKpiToolbar().enableCompareWithOtherPeriod();
-            kpiViewPage.getKpiToolbar().applyChanges();
-            assertTrue(kpiViewPage.isLegendWithOtherPeriodDisplayed());
-            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(2));
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
+        assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+        kpiViewPage.getKpiToolbar().enableCompareWithOtherPeriod();
+        kpiViewPage.getKpiToolbar().applyChanges();
+        assertTrue(kpiViewPage.isLegendWithOtherPeriodDisplayed());
+        assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(2));
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
@@ -214,25 +185,21 @@ public class IndicatorsViewTest extends BaseTestCase {
             @Optional("DC Type: ETL_DC") String dimensionNodesToSelect,
             @Optional("Data Collection Statistics") String filterName
     ) {
-        try {
-            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
-            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+        kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+        assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
 
-            kpiViewPage.maximizeDataView();
-            assertTrue(kpiViewPage.isDataViewMaximized());
+        kpiViewPage.maximizeDataView();
+        assertTrue(kpiViewPage.isDataViewMaximized());
 
-            kpiViewPage.minimizeDataView();
-            kpiViewPage.maximizeIndicatorsPanel();
-            assertTrue(kpiViewPage.isIndicatorsPanelMaximized());
+        kpiViewPage.minimizeDataView();
+        kpiViewPage.maximizeIndicatorsPanel();
+        assertTrue(kpiViewPage.isIndicatorsPanelMaximized());
 
-            kpiViewPage.minimizeIndicatorsPanel();
-            kpiViewPage.maximizeDimensionsPanel();
-            assertTrue(kpiViewPage.isDimensionPanelMaximized());
+        kpiViewPage.minimizeIndicatorsPanel();
+        kpiViewPage.maximizeDimensionsPanel();
+        assertTrue(kpiViewPage.isDimensionPanelMaximized());
 
-            kpiViewPage.minimizeDimensionsPanel();
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
+        kpiViewPage.minimizeDimensionsPanel();
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
@@ -245,26 +212,22 @@ public class IndicatorsViewTest extends BaseTestCase {
             @Optional("DC Type: ETL_DC") String dimensionNodesToSelect,
             @Optional("Data Collection Statistics") String filterName
     ) {
-        try {
-            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
-            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
-            kpiViewPage.getKpiToolbar().changeLayout(LAYOUT_1X1);
-            assertEquals(kpiViewPage.getKpiToolbar().layoutButtonStatus(LAYOUT_1X1), LAYOUT_EXPECTED_STATUS);
-            kpiViewPage.getKpiToolbar().changeLayout(LAYOUT_2X1);
-            assertEquals(kpiViewPage.getKpiToolbar().layoutButtonStatus(LAYOUT_2X1), LAYOUT_EXPECTED_STATUS);
-            kpiViewPage.getKpiToolbar().changeLayout(LAYOUT_2X2);
-            assertEquals(kpiViewPage.getKpiToolbar().layoutButtonStatus(LAYOUT_2X2), LAYOUT_EXPECTED_STATUS);
-            kpiViewPage.getKpiToolbar().changeLayout(LAYOUT_4X4);
-            assertEquals(kpiViewPage.getKpiToolbar().layoutButtonStatus(LAYOUT_4X4), LAYOUT_EXPECTED_STATUS);
-            kpiViewPage.getKpiToolbar().changeLayout(LAYOUT_3X3);
-            assertEquals(kpiViewPage.getKpiToolbar().layoutButtonStatus(LAYOUT_3X3), LAYOUT_EXPECTED_STATUS);
-            kpiViewPage.getKpiToolbar().changeLayout(LAYOUT_3X2);
-            assertEquals(kpiViewPage.getKpiToolbar().layoutButtonStatus(LAYOUT_3X2), LAYOUT_EXPECTED_STATUS);
-            kpiViewPage.getKpiToolbar().changeLayout(LAYOUT_AUTO);
-            assertEquals(kpiViewPage.getKpiToolbar().layoutButtonStatus(LAYOUT_AUTO), LAYOUT_EXPECTED_STATUS);
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
+        kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+        assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+        kpiViewPage.getKpiToolbar().changeLayout(LAYOUT_1X1);
+        assertEquals(kpiViewPage.getKpiToolbar().layoutButtonStatus(LAYOUT_1X1), LAYOUT_EXPECTED_STATUS);
+        kpiViewPage.getKpiToolbar().changeLayout(LAYOUT_2X1);
+        assertEquals(kpiViewPage.getKpiToolbar().layoutButtonStatus(LAYOUT_2X1), LAYOUT_EXPECTED_STATUS);
+        kpiViewPage.getKpiToolbar().changeLayout(LAYOUT_2X2);
+        assertEquals(kpiViewPage.getKpiToolbar().layoutButtonStatus(LAYOUT_2X2), LAYOUT_EXPECTED_STATUS);
+        kpiViewPage.getKpiToolbar().changeLayout(LAYOUT_4X4);
+        assertEquals(kpiViewPage.getKpiToolbar().layoutButtonStatus(LAYOUT_4X4), LAYOUT_EXPECTED_STATUS);
+        kpiViewPage.getKpiToolbar().changeLayout(LAYOUT_3X3);
+        assertEquals(kpiViewPage.getKpiToolbar().layoutButtonStatus(LAYOUT_3X3), LAYOUT_EXPECTED_STATUS);
+        kpiViewPage.getKpiToolbar().changeLayout(LAYOUT_3X2);
+        assertEquals(kpiViewPage.getKpiToolbar().layoutButtonStatus(LAYOUT_3X2), LAYOUT_EXPECTED_STATUS);
+        kpiViewPage.getKpiToolbar().changeLayout(LAYOUT_AUTO);
+        assertEquals(kpiViewPage.getKpiToolbar().layoutButtonStatus(LAYOUT_AUTO), LAYOUT_EXPECTED_STATUS);
     }
 
     @Parameters({"filterName", "indicator", "dimension"})
@@ -297,21 +260,17 @@ public class IndicatorsViewTest extends BaseTestCase {
             @Optional("DC Type: ETL_DC") String dimensionNodesToSelect,
             @Optional("Data Collection Statistics") String filterName
     ) {
-        try {
-            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+        kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
 
-            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
-            String activeAggMethod = kpiViewPage.getKpiToolbar().activeAggMethod();
-            kpiViewPage.getKpiToolbar().closeOptionsPanel();
+        assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+        String activeAggMethod = kpiViewPage.getKpiToolbar().activeAggMethod();
+        kpiViewPage.getKpiToolbar().closeOptionsPanel();
 
-            kpiViewPage.getChartActionPanel().clickLinkToChart();
+        kpiViewPage.getChartActionPanel().clickLinkToChart();
 
-            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
-            assertTrue(kpiViewPage.isNodeInTreeSelected("AQ_TIME 1h " + activeAggMethod, INDICATORS_TREE_ID));
-            assertTrue(kpiViewPage.isNodeInTreeSelected(dimensionNodesToSelect, DIMENSIONS_TREE_ID));
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
+        assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+        assertTrue(kpiViewPage.isNodeInTreeSelected("AQ_TIME 1h " + activeAggMethod, INDICATORS_TREE_ID));
+        assertTrue(kpiViewPage.isNodeInTreeSelected(dimensionNodesToSelect, DIMENSIONS_TREE_ID));
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
@@ -324,21 +283,17 @@ public class IndicatorsViewTest extends BaseTestCase {
             @Optional("DC Type: ETL_DC") String dimensionNodesToSelect,
             @Optional("Data Collection Statistics") String filterName
     ) {
-        try {
-            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+        kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
 
-            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+        assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
 
-            kpiViewPage.clickShare();
-            kpiViewPage.goToLink();
-            kpiViewPage.clickCloseShare();
+        kpiViewPage.clickShare();
+        kpiViewPage.goToLink();
+        kpiViewPage.clickCloseShare();
 
-            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
-            assertTrue(kpiViewPage.isNodeInTreeSelected(indicatorNodesToSelect, INDICATORS_TREE_ID));
-            assertTrue(kpiViewPage.isNodeInTreeSelected(dimensionNodesToSelect, DIMENSIONS_TREE_ID));
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
+        assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+        assertTrue(kpiViewPage.isNodeInTreeSelected(indicatorNodesToSelect, INDICATORS_TREE_ID));
+        assertTrue(kpiViewPage.isNodeInTreeSelected(dimensionNodesToSelect, DIMENSIONS_TREE_ID));
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName", "dimensionFolderWithOptions"})
@@ -352,19 +307,15 @@ public class IndicatorsViewTest extends BaseTestCase {
             @Optional("Data Collection Statistics") String filterName,
             @Optional("Managed Objects") String dimensionFolderWithOptions
     ) {
-        try {
-            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+        kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
 
-            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+        assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
 
-            kpiViewPage.clickDimensionOptions(dimensionFolderWithOptions);
-            kpiViewPage.fillLevelOfChildObjects("1");
-            kpiViewPage.getKpiToolbar().applyChanges();
+        kpiViewPage.clickDimensionOptions(dimensionFolderWithOptions);
+        kpiViewPage.fillLevelOfChildObjects("1");
+        kpiViewPage.getKpiToolbar().applyChanges();
 
-            assertTrue(kpiViewPage.shouldSeeMoreThanOneCurveDisplayed());
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
+        assertTrue(kpiViewPage.shouldSeeMoreThanOneCurveDisplayed());
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
@@ -377,21 +328,17 @@ public class IndicatorsViewTest extends BaseTestCase {
             @Optional("DC Type: THRES_DC") String dimensionNodesToSelect,
             @Optional("Data Collection Statistics") String filterName
     ) {
-        try {
-            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
-            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+        kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+        assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
 
-            kpiViewPage.getKpiToolbar().setDisplayType("Pie Chart");
-            assertTrue(kpiViewPage.shouldSeePieChartsDisplayed(1));
+        kpiViewPage.getKpiToolbar().setDisplayType("Pie Chart");
+        assertTrue(kpiViewPage.shouldSeePieChartsDisplayed(1));
 
-            kpiViewPage.getKpiToolbar().setDisplayType("Chart");
-            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+        kpiViewPage.getKpiToolbar().setDisplayType("Chart");
+        assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
 
-            kpiViewPage.getKpiToolbar().setDisplayType("Table");
-            assertFalse(kpiViewPage.isIndicatorsViewTableEmpty());
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
+        kpiViewPage.getKpiToolbar().setDisplayType("Table");
+        assertFalse(kpiViewPage.isIndicatorsViewTableEmpty());
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
@@ -404,20 +351,16 @@ public class IndicatorsViewTest extends BaseTestCase {
             @Optional("DC Type: THRES_DC") String dimensionNodesToSelect,
             @Optional("Data Collection Statistics") String filterName
     ) {
-        try {
-            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
-            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+        kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+        assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
 
-            kpiViewPage.getKpiToolbar().clickPerformTopN();
+        kpiViewPage.getKpiToolbar().clickPerformTopN();
 
-            assertTrue(kpiViewPage.dpeTopNBarChartIsDisplayed());
-            assertTrue(kpiViewPage.isExpectedNumberOfChartsVisible(2));
+        assertTrue(kpiViewPage.dpeTopNBarChartIsDisplayed());
+        assertTrue(kpiViewPage.isExpectedNumberOfChartsVisible(2));
 
-            kpiViewPage.doubleClickTopNDPE();
-            assertTrue(kpiViewPage.isTopNNavigationBarVisible());
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
+        kpiViewPage.doubleClickTopNDPE();
+        assertTrue(kpiViewPage.isTopNNavigationBarVisible());
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
@@ -430,23 +373,19 @@ public class IndicatorsViewTest extends BaseTestCase {
             @Optional("DC Type: THRES_DC") String dimensionNodesToSelect,
             @Optional("Data Collection Statistics") String filterName
     ) {
-        try {
-            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
-            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(2));
+        kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+        assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(2));
 
-            kpiViewPage.getKpiToolbar().selectAggregationMethod(OptionsPanel.AggregationMethodOption.MAX);
-            kpiViewPage.getKpiToolbar().selectAggregationMethod(OptionsPanel.AggregationMethodOption.MIN);
-            kpiViewPage.getKpiToolbar().selectAggregationMethod(OptionsPanel.AggregationMethodOption.SUM);
-            kpiViewPage.getKpiToolbar().unselectEveryAggMethodOtherThan(OptionsPanel.AggregationMethodOption.MAX);
-            kpiViewPage.getKpiToolbar().applyChanges();
-            String selectedAggMethod = kpiViewPage.getKpiToolbar().activeAggMethod();
-            int numOfActiveAggMethods = kpiViewPage.getKpiToolbar().numberOfActiveAggMethods();
+        kpiViewPage.getKpiToolbar().selectAggregationMethod(OptionsPanel.AggregationMethodOption.MAX);
+        kpiViewPage.getKpiToolbar().selectAggregationMethod(OptionsPanel.AggregationMethodOption.MIN);
+        kpiViewPage.getKpiToolbar().selectAggregationMethod(OptionsPanel.AggregationMethodOption.SUM);
+        kpiViewPage.getKpiToolbar().unselectEveryAggMethodOtherThan(OptionsPanel.AggregationMethodOption.MAX);
+        kpiViewPage.getKpiToolbar().applyChanges();
+        String selectedAggMethod = kpiViewPage.getKpiToolbar().activeAggMethod();
+        int numOfActiveAggMethods = kpiViewPage.getKpiToolbar().numberOfActiveAggMethods();
 
-            assertEquals(selectedAggMethod, "MAX");
-            assertEquals(numOfActiveAggMethods, 1);
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
+        assertEquals(selectedAggMethod, "MAX");
+        assertEquals(numOfActiveAggMethods, 1);
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
@@ -459,18 +398,14 @@ public class IndicatorsViewTest extends BaseTestCase {
             @Optional("DC Type: THRES_DC") String dimensionNodesToSelect,
             @Optional("Data Collection Statistics") String filterName
     ) {
-        try {
-            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
-            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+        kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+        assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
 
-            kpiViewPage.zoomChart();
-            assertTrue(kpiViewPage.isZoomOutButtonVisible());
+        kpiViewPage.zoomChart();
+        assertTrue(kpiViewPage.isZoomOutButtonVisible());
 
-            kpiViewPage.clickZoomOutButton();
-            assertFalse(kpiViewPage.isZoomOutButtonVisible());
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
+        kpiViewPage.clickZoomOutButton();
+        assertFalse(kpiViewPage.isZoomOutButtonVisible());
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
@@ -483,37 +418,33 @@ public class IndicatorsViewTest extends BaseTestCase {
             @Optional("DC Type: THRES_DC,DC Type: PMSTA_DC") String dimensionNodesToSelect,
             @Optional("Data Collection Statistics") String filterName
     ) {
-        try {
-            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
-            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(2));
+        kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+        assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(2));
 
-            kpiViewPage.getKpiToolbar().setDisplayType("Table");
-            assertFalse(kpiViewPage.isIndicatorsViewTableEmpty());
+        kpiViewPage.getKpiToolbar().setDisplayType("Table");
+        assertFalse(kpiViewPage.isIndicatorsViewTableEmpty());
 
-            kpiViewPage.enableColumnInTheTable(IDENTIFIER_COLUMN_ID);
-            assertTrue(kpiViewPage.isColumnInTable(IDENTIFIER_COLUMN_HEADER));
-            assertFalse(kpiViewPage.isIndicatorsViewTableEmpty());
+        kpiViewPage.enableColumnInTheTable(IDENTIFIER_COLUMN_ID);
+        assertTrue(kpiViewPage.isColumnInTable(IDENTIFIER_COLUMN_HEADER));
+        assertFalse(kpiViewPage.isIndicatorsViewTableEmpty());
 
-            kpiViewPage.disableColumnInTheTable(IDENTIFIER_COLUMN_ID);
-            assertFalse(kpiViewPage.isColumnInTable(IDENTIFIER_COLUMN_HEADER));
-            assertFalse(kpiViewPage.isIndicatorsViewTableEmpty());
+        kpiViewPage.disableColumnInTheTable(IDENTIFIER_COLUMN_ID);
+        assertFalse(kpiViewPage.isColumnInTable(IDENTIFIER_COLUMN_HEADER));
+        assertFalse(kpiViewPage.isIndicatorsViewTableEmpty());
 
-            kpiViewPage.dragColumnToTarget(IDENTIFIER_COLUMN_ID, SAMPLE_TIME_COLUMN_ID);
-            assertTrue(kpiViewPage.isColumnFirstInTable(IDENTIFIER_COLUMN_HEADER));
-            assertFalse(kpiViewPage.isIndicatorsViewTableEmpty());
+        kpiViewPage.dragColumnToTarget(IDENTIFIER_COLUMN_ID, SAMPLE_TIME_COLUMN_ID);
+        assertTrue(kpiViewPage.isColumnFirstInTable(IDENTIFIER_COLUMN_HEADER));
+        assertFalse(kpiViewPage.isIndicatorsViewTableEmpty());
 
-            kpiViewPage.changeColumnsOrderInTable(SAMPLE_TIME_COLUMN_ID, 0);
-            assertTrue(kpiViewPage.isColumnFirstInTable(SAMPLE_TIME_COLUMN_HEADER));
-            assertFalse(kpiViewPage.isIndicatorsViewTableEmpty());
+        kpiViewPage.changeColumnsOrderInTable(SAMPLE_TIME_COLUMN_ID, 0);
+        assertTrue(kpiViewPage.isColumnFirstInTable(SAMPLE_TIME_COLUMN_HEADER));
+        assertFalse(kpiViewPage.isIndicatorsViewTableEmpty());
 
-            kpiViewPage.sortColumnASC(MANAGED_OBJECT_COLUMN_DATA_COL_ID);
-            assertTrue(kpiViewPage.isValueInGivenRow("DC Type: PMSTA_DC", 0, MANAGED_OBJECT_COLUMN_DATA_COL_ID));
+        kpiViewPage.sortColumnASC(MANAGED_OBJECT_COLUMN_DATA_COL_ID);
+        assertTrue(kpiViewPage.isValueInGivenRow("DC Type: PMSTA_DC", 0, MANAGED_OBJECT_COLUMN_DATA_COL_ID));
 
-            kpiViewPage.sortColumnDESC(MANAGED_OBJECT_COLUMN_DATA_COL_ID);
-            assertTrue(kpiViewPage.isValueInGivenRow("DC Type: THRES_DC", 0, MANAGED_OBJECT_COLUMN_DATA_COL_ID));
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
+        kpiViewPage.sortColumnDESC(MANAGED_OBJECT_COLUMN_DATA_COL_ID);
+        assertTrue(kpiViewPage.isValueInGivenRow("DC Type: THRES_DC", 0, MANAGED_OBJECT_COLUMN_DATA_COL_ID));
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName", "yAxis"})
@@ -527,17 +458,13 @@ public class IndicatorsViewTest extends BaseTestCase {
             @Optional("Data Collection Statistics") String filterName,
             @Optional("[days]") String yAxisName
     ) {
-        try {
-            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
-            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
+        kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+        assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(1));
 
-            kpiViewPage.getKpiToolbar().selectYaxis(yAxisName);
-            kpiViewPage.getKpiToolbar().selectManualYaxisParameters("5", "0", false);
-            assertTrue(kpiViewPage.isYaxisValueVisible("5"));
-            assertTrue(kpiViewPage.isYaxisValueVisible("0"));
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
+        kpiViewPage.getKpiToolbar().selectYaxis(yAxisName);
+        kpiViewPage.getKpiToolbar().selectManualYaxisParameters("5", "0", false);
+        assertTrue(kpiViewPage.isYaxisValueVisible("5"));
+        assertTrue(kpiViewPage.isYaxisValueVisible("0"));
     }
 
     @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName"})
@@ -550,18 +477,48 @@ public class IndicatorsViewTest extends BaseTestCase {
             @Optional("DC Type: THRES_DC") String dimensionNodesToSelect,
             @Optional("Data Collection Statistics") String filterName
     ) {
-        try {
-            kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
-            assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(2));
+        kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+        assertTrue(kpiViewPage.shouldSeeCurvesDisplayed(2));
 
-            kpiViewPage.getChartActionPanel().clickBarChartType();
-            kpiViewPage.getChartActionPanel().clickStackedButton();
-            assertEquals(kpiViewPage.getChartActionPanel().getStackedButtonTitle(), "Change to 100% stacked chart");
+        kpiViewPage.getChartActionPanel().clickBarChartType();
+        kpiViewPage.getChartActionPanel().clickStackedButton();
+        assertEquals(kpiViewPage.getChartActionPanel().getStackedButtonTitle(), "Change to 100% stacked chart");
 
-            kpiViewPage.getChartActionPanel().clickStackedButton();
-            assertEquals(kpiViewPage.getChartActionPanel().getStackedButtonTitle(), "Change to not stacked chart");
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
+        kpiViewPage.getChartActionPanel().clickStackedButton();
+        assertEquals(kpiViewPage.getChartActionPanel().getStackedButtonTitle(), "Change to not stacked chart");
+    }
+
+    @Parameters({"indicatorNodesToExpand", "indicatorNodesToSelect", "dimensionNodesToExpand", "dimensionNodesToSelect", "filterName", "multipleByMo", "multipleByIndicator"})
+    @Test(priority = 20, testName = "Common Legend and Multiple Charts by", description = "Check Common Legend and Multiple Charts by from Layout Panel")
+    @Description("Check Common Legend and Multiple Charts by from Layout Panel")
+    public void commonLegendTest(
+            @Optional("All Self Monitoring,self:DPE Monitoring,self:DPE:DC Indicators") String indicatorNodesToExpand,
+            @Optional("AQ_TIME,DBTIME") String indicatorNodesToSelect,
+            @Optional() String dimensionNodesToExpand,
+            @Optional("DC Type: THRES_DC,DC Type: PMCPX_DC") String dimensionNodesToSelect,
+            @Optional("Data Collection Statistics") String filterName,
+            @Optional("Managed Objects") String multipleByMo,
+            @Optional("KPIs") String multipleByIndicator
+    ) {
+        kpiViewPage.kpiViewSetup(indicatorNodesToExpand, indicatorNodesToSelect, dimensionNodesToExpand, dimensionNodesToSelect, filterName);
+        kpiViewPage.getKpiToolbar().setMultipleChartsBy(multipleByIndicator);
+        kpiViewPage.getKpiToolbar().changeLayout(LAYOUT_AUTO);
+        kpiViewPage.getKpiToolbar().setCommonLegendOn();
+
+        assertTrue(kpiViewPage.isCommonLegendPresent());
+        assertTrue(kpiViewPage.isExpectedNumberOfChartsVisible(2));
+
+        kpiViewPage.getKpiToolbar().setMultipleChartsBy(multipleByMo);
+        assertTrue(kpiViewPage.isExpectedNumberOfChartsVisible(4));
+
+        kpiViewPage.getKpiToolbar().clearMultipleChartsBy();
+        assertTrue(kpiViewPage.isExpectedNumberOfChartsVisible(1));
+
+        kpiViewPage.getKpiToolbar().setMultipleChartsBy(multipleByMo);
+        assertTrue(kpiViewPage.isCommonLegendPresent());
+        assertTrue(kpiViewPage.isExpectedNumberOfChartsVisible(2));
+
+        kpiViewPage.getKpiToolbar().setCommonLegendOff();
+        assertFalse(kpiViewPage.isCommonLegendPresent());
     }
 }

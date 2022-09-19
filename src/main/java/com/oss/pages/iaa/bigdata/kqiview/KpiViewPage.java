@@ -221,6 +221,12 @@ public class KpiViewPage extends KpiViewSetupPage {
         return getKpiChartWidget().isLegendPresent("Other period");
     }
 
+    @Step("Check visibility of Common Legend")
+    public boolean isCommonLegendPresent() {
+        log.info("Checking visibility of Common Legend");
+        return getKpiChartWidget().isCommonLegendPresent();
+    }
+
     @Step("Click Save bookmark")
     public BookmarkWizardPage clickSaveBookmark() {
         ButtonPanel.create(driver, wait).clickButton(SAVE_BOOKMARK_BUTTON_ID);
