@@ -70,7 +70,7 @@ public class HierarchyViewPage extends BasePage {
 
     public void searchObject(String text) {
         TreeWidgetV2 treeWidgetV2 = getMainTree();
-        treeWidgetV2.typeIntoSearch(text);
+        treeWidgetV2.fullTextSearch(text);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 

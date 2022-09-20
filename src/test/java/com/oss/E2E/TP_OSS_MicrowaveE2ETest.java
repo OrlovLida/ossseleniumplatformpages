@@ -735,6 +735,7 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
         microwaveLinkWizardPage.setNetwork(microwaveLinkAttributes.network);
         microwaveLinkWizardPage.setPathLength(microwaveLinkAttributes.pathLength);
         microwaveLinkWizardPage.setDescription(microwaveLinkAttributes.description);
+        microwaveLinkWizardPage.clickNext();
         microwaveLinkWizardPage.clickAccept();
     }
 
