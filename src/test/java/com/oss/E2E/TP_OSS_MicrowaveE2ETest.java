@@ -313,7 +313,7 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
         table.searchByAttributeWithLabel(NAME_COLUMN_NAME, TEXT_FIELD, MICROWAVE_CHANNEL_PARTIAL_NAME);
         firstMicrowaveChannel = getMicrowaveChannel(0);
         waitForPageToLoad();
-        networkViewPage.unselectObject(firstMicrowaveChannel);
+        networkViewPage.unselectObjectInViewContent(NAME_COLUMN_NAME, firstMicrowaveChannel);
         waitForPageToLoad();
 
         networkViewPage.openWizardPage(MICROWAVE_CHANNEL_TRAIL_TYPE);
@@ -335,17 +335,17 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
         waitForPageToLoad();
         networkViewPage.selectObjectInViewContent(NAME_COLUMN_NAME, SECOND_INDOOR_UNIT_NAME);
         waitForPageToLoad();
-        networkViewPage.unselectObject(secondMicrowaveChannel);
+        networkViewPage.unselectObjectInViewContent(NAME_COLUMN_NAME, secondMicrowaveChannel);
         waitForPageToLoad();
         networkViewPage.addSelectedObjectsToTermination();
         waitForPageToLoad();
         fillTerminationWizardPage();
 
-        networkViewPage.selectObject(secondMicrowaveChannel);
+        networkViewPage.selectObjectInViewContent(NAME_COLUMN_NAME, secondMicrowaveChannel);
         waitForPageToLoad();
-        networkViewPage.unselectObject(FIRST_INDOOR_UNIT_NAME);
+        networkViewPage.unselectObjectInViewContent(NAME_COLUMN_NAME, FIRST_INDOOR_UNIT_NAME);
         waitForPageToLoad();
-        networkViewPage.unselectObject(SECOND_INDOOR_UNIT_NAME);
+        networkViewPage.unselectObjectInViewContent(NAME_COLUMN_NAME, SECOND_INDOOR_UNIT_NAME);
         waitForPageToLoad();
         networkViewPage.hideDockedPanel(DOCKED_PANEL_POSITION);
         waitForPageToLoad();
@@ -358,7 +358,7 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
     @Description("Create Microwave Link and add Microwave Channel to routing")
     public void createMicrowaveLinkAndAddMicrowaveChannelToRouting() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
-        networkViewPage.unselectObject(secondMicrowaveChannel);
+        networkViewPage.unselectObjectInViewContent(NAME_COLUMN_NAME, secondMicrowaveChannel);
 
         networkViewPage.openWizardPage(MICROWAVE_LINK_TRAIL_TYPE);
         waitForPageToLoad();
@@ -735,7 +735,6 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
         microwaveLinkWizardPage.setNetwork(microwaveLinkAttributes.network);
         microwaveLinkWizardPage.setPathLength(microwaveLinkAttributes.pathLength);
         microwaveLinkWizardPage.setDescription(microwaveLinkAttributes.description);
-        microwaveLinkWizardPage.clickNext();
         microwaveLinkWizardPage.clickAccept();
     }
 
