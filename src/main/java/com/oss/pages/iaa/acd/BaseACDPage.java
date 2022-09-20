@@ -15,6 +15,8 @@ import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
+import static com.oss.framework.components.inputs.Input.ComponentType.MULTI_SEARCHBOX;
+
 public class BaseACDPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(BaseACDPage.class);
@@ -70,6 +72,19 @@ public class BaseACDPage extends BasePage {
         log.info("Setting value of {} attribute as {}", attributeId, inputValue);
     }
 
+    @Step("I search by attribute")
+    public void setAttributeValueMultiSearch(String attributeId, String inputValue) {
+
+        if (isAttributeFilled(attributeId)) {
+            log.info("Input is not empty");
+            clearAttributeValue(attributeId);
+        }
+
+        DelayUtils.waitForPageToLoad(driver, wait);
+        ComponentFactory.create(attributeId, MULTI_SEARCHBOX, driver, wait).setSingleStringValue(inputValue);
+        log.info("Setting value of {} attribute as {}", attributeId, inputValue);
+    }
+
     @Step("I Clear Attribute value")
     public void clearAttributeValue(String attributeId) {
         ComponentFactory.create(attributeId, driver, wait).clear();
@@ -112,10 +127,10 @@ public class BaseACDPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    @Step("Turn On Include Issues without Roots switcher")
+    @Step("Turn on switcher")
     public void turnOnSwitcher(String switcherID) {
         ComponentFactory.create(switcherID, driver, wait).click();
-        log.info("Turning on Include Issues without Roots switcher");
+        log.info("Turning on switcher");
     }
 
     @Step("Refresh issues table")

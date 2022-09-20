@@ -3,8 +3,6 @@ package com.oss.iaa.acd;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -18,7 +16,6 @@ import io.qameta.allure.Description;
 public class NotificationManagementTest extends BaseTestCase {
 
     private static final String date = new SimpleDateFormat("dd-MM-yyyy_HH:mm").format(new Date());
-    private static final Logger log = LoggerFactory.getLogger(NotificationManagementTest.class);
 
     private NotificationManagementPage notificationManagementPage;
 
