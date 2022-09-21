@@ -725,6 +725,7 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
     }
 
     private void fillMicrowaveLinkWizard(MicrowaveLinkWizardPage microwaveLinkWizardPage, MicrowaveLinkAttributes microwaveLinkAttributes) {
+        microwaveLinkWizardPage.clickNext();
         microwaveLinkWizardPage.setUserLabel(microwaveLinkAttributes.userLabel);
         microwaveLinkWizardPage.setLinkId(microwaveLinkAttributes.linkId);
         microwaveLinkWizardPage.setTechnologyType(microwaveLinkAttributes.technologyType);
