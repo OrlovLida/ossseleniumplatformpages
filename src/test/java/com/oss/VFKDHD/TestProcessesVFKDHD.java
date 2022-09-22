@@ -96,12 +96,11 @@ public class TestProcessesVFKDHD extends BaseTestCase {
     public void createNewProcess() {
         homePage.chooseFromLeftSideMenu(PLANNERS_VIEW, BUSINESS_PROCESS_MANAGEMENT_PATH);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        final PlannersViewPage plannersViewPage = new PlannersViewPage(driver, webDriverWait);
-        final ProcessRolesStepWizardPage processRolesStepWizardPage = plannersViewPage.openProcessCreationWizard().defineSimpleDCPAndGoToProcessRolesStep();
+        PlannersViewPage plannersViewPage = new PlannersViewPage(driver, webDriverWait);
+        ProcessRolesStepWizardPage processRolesStepWizardPage = plannersViewPage.openProcessCreationWizard().defineSimpleDCPAndGoToProcessRolesStep();
         processRolesStepWizardPage.addPlanner(PLANNERS_ID, PLANNER);
         processRolesStepWizardPage.clickAcceptButton();
-        final String massage = checkPopup(DEVICE_CREATED_SUCCESSFULLY_MASSAGE);
-        processDCPCode = getDCPProcessCodeFromString(massage);
+        processDCPCode = getDCPProcessCodeFromFirstMassage();
         checkPopup(PROCESS_CREATED_SUCCESSFULLY_FIRST_STATIC_PART_OF_MASSAGE, PROCESS_CREATED_SUCCESSFULLY_REST_STATIC_PARTS_OF_MASSAGE);
         systemMessage.close();
         //TODO check if process was created
@@ -110,7 +109,7 @@ public class TestProcessesVFKDHD extends BaseTestCase {
     @Test(priority = 1, description = "Start DCP", dependsOnMethods = {"createNewProcess"})
     @Description("Start newly created Data Correction Process")
     public void startDCP() {
-        final TasksPage tasksPage = getTasksPage();
+        TasksPage tasksPage = getTasksPage();
         tasksPage.clearAllColumnFilters();
         tasksPage.startTask(processDCPCode, TASK_NAME);
         checkPopup(THE_TASK_PROPERLY_ASSIGNED_MASSAGE);
@@ -188,9 +187,9 @@ public class TestProcessesVFKDHD extends BaseTestCase {
     @Description("Creates Device in Location")
     public void CreateDevice() {
         locationOverviewPage.selectTab("Logical Locations");
-        final OldTable logicalLocationTab = locationOverviewPage.getTabTable(LocationOverviewPage.TabName.POP);
-        final int rowWithLogicalLocation = logicalLocationTab.getRowNumber(LOGICAL_LOCATION_NAME, NAME_ATTRIBUTE_LABEL);
-        final String XIdOfLogicalLocation = logicalLocationTab.getCellValue(rowWithLogicalLocation, XID_ATTRIBUTE_LABEL);
+        OldTable logicalLocationTab = locationOverviewPage.getTabTable(LocationOverviewPage.TabName.POP);
+        int rowWithLogicalLocation = logicalLocationTab.getRowNumber(LOGICAL_LOCATION_NAME, NAME_ATTRIBUTE_LABEL);
+        String XIdOfLogicalLocation = logicalLocationTab.getCellValue(rowWithLogicalLocation, XID_ATTRIBUTE_LABEL);
         locationOverviewPage.clickButton(CREATE_PHYSICAL_DEVICE_BUTTON_NAME);
         createDeviceWizardOperations(XIdOfLogicalLocation);
         checkPopup(DEVICE_CREATED_SUCCESSFULLY_MASSAGE);
@@ -201,19 +200,19 @@ public class TestProcessesVFKDHD extends BaseTestCase {
     @Test(priority = 8, description = "Finish DCP", dependsOnMethods = {"startDCP", "createNewProcess", "findLocation", "changeStreetNumber", "createNewLocation", "CreateLogicalLocation", "CreateSubLocation", "CreateDevice"})
     @Description("Finish Data Correction Process")
     public void finnishDCP() {
-        final TasksPage tasksPage = getTasksPage();
+        TasksPage tasksPage = getTasksPage();
         tasksPage.completeTask(processDCPCode, TASK_NAME);
         checkPopup(TASK_PROPERLY_COMPLETED_MASSAGE);
         systemMessage.close();
         homePage.chooseFromLeftSideMenu(PLANNERS_VIEW, BUSINESS_PROCESS_MANAGEMENT_PATH);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        final PlannersViewPage plannersViewPage = new PlannersViewPage(driver, webDriverWait);
-        plannersViewPage.activateFiltersOnPlannersViewPage(FILTERS_USED_TO_CHECK_IF_PROCESS_IS_COMPLETED);
+        PlannersViewPage plannersViewPage = new PlannersViewPage(driver, webDriverWait);
+        plannersViewPage.searchByAttributesValue(FILTERS_USED_TO_CHECK_IF_PROCESS_IS_COMPLETED);
         softAssert.assertEquals(plannersViewPage.getProcessState(processDCPCode), EXPECTED_STATUS_AFTER_FINISHING_TASK);
     }
 
     private void createLocation() {
-        final LocationWizardPage locationWizardPage = new LocationWizardPage(driver);
+        LocationWizardPage locationWizardPage = new LocationWizardPage(driver);
         locationWizardPage.setStreet(STREET);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         locationWizardPage.setStreetNumber(String.valueOf(RANDOM.nextInt(Integer.MAX_VALUE)));
@@ -226,7 +225,7 @@ public class TestProcessesVFKDHD extends BaseTestCase {
     }
 
     private void changeStreetNumberWizardOperations() {
-        final LocationWizardPage locationWizardPage = new LocationWizardPage(driver);
+        LocationWizardPage locationWizardPage = new LocationWizardPage(driver);
         locationWizardPage.setStreetNumber(String.valueOf(RANDOM.nextInt(Integer.MAX_VALUE)));
         locationWizardPage.clickNext();
         locationWizardPage.clickNext();
@@ -235,7 +234,7 @@ public class TestProcessesVFKDHD extends BaseTestCase {
     }
 
     private void createSubLocationWizardOperations() {
-        final SublocationWizardPage sublocationWizardPage = new SublocationWizardPage(driver);
+        SublocationWizardPage sublocationWizardPage = new SublocationWizardPage(driver);
         sublocationWizardPage.setSublocationType(SUBLOCATION_TYPE);
         sublocationWizardPage.clickNext();
         sublocationWizardPage.clickNext();
@@ -257,8 +256,8 @@ public class TestProcessesVFKDHD extends BaseTestCase {
         logicalLocationWizard.clickCreate();
     }
 
-    private void createDeviceWizardOperations(final String XIdOfLogicalLocation) {
-        final DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
+    private void createDeviceWizardOperations(String XIdOfLogicalLocation) {
+        DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
         deviceWizardPage.setModel(DEVICE_MODEL);
         deviceWizardPage.next();
         deviceWizardPage.setPreciseLocation(SUB_LOCATION_NAME);
@@ -277,15 +276,20 @@ public class TestProcessesVFKDHD extends BaseTestCase {
         return new TasksPage(driver);
     }
 
-    private String getDCPProcessCodeFromString(final String massage) {
-        final int startOfDCP = massage.indexOf(OPENING_BRACKED_BEFORE_PROCES_CODE) + 1;
-        final int endOfDCP = massage.indexOf(END_BRACKED_AFTER_PROCES_CODE);
+    private String getDCPProcessCodeFromFirstMassage() {
+        String massage = getPopupMassages().get(0).getText();
+        int startOfDCP = massage.indexOf(OPENING_BRACKED_BEFORE_PROCES_CODE) + 1;
+        int endOfDCP = massage.indexOf(END_BRACKED_AFTER_PROCES_CODE);
         return massage.substring(startOfDCP, endOfDCP);
     }
 
-    private String checkPopup(String text, String... moreTexts) {
+    private List<SystemMessageContainer.Message> getPopupMassages() {
         systemMessage = SystemMessageContainer.create(driver, webDriverWait);
-        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
+        return systemMessage.getMessages();
+    }
+
+    private void checkPopup(String text, String... moreTexts) {
+        List<SystemMessageContainer.Message> messages = getPopupMassages();
         softAssert.assertEquals(messages.size(), 1);
         softAssert.assertEquals(messages.get(0).getMessageType(), SystemMessageContainer.MessageType.SUCCESS);
         String massage = messages.get(0).getText();
@@ -293,7 +297,6 @@ public class TestProcessesVFKDHD extends BaseTestCase {
         for (String nextText : moreTexts) {
             softAssert.assertTrue(massage.contains(nextText));
         }
-        return massage;
     }
 
 }

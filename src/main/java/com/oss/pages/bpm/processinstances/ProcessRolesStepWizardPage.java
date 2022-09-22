@@ -28,7 +28,7 @@ public class ProcessRolesStepWizardPage extends ProcessWizardPage {
     }
 
     @Step("Adding planner {planner} to {processRoleId}")
-    public ProcessRolesStepWizardPage addPlanner(final String processRoleId, final String planner) {
+    public ProcessRolesStepWizardPage addPlanner(String processRoleId, String planner) {
         LOGGER.info(CHANGING_PLANNER_AND_PROCESS_ROLE_ID_FROM_STRINGS_TO_HASH_MULTIMAP);
         Multimap<String, String> processRoles = HashMultimap.create(1, 1);
         processRoles.put(processRoleId, planner);
@@ -36,13 +36,13 @@ public class ProcessRolesStepWizardPage extends ProcessWizardPage {
     }
 
     @Step("Adding planners {processRoles}")
-    public ProcessRolesStepWizardPage addPlanners(final Multimap<String, String> processRoles) {
-        final Set<String> processRoleIds = processRoles.keySet();
-        final Multimap<Input, String> inputsAndAssociatedRoles = HashMultimap.create();
+    public ProcessRolesStepWizardPage addPlanners(Multimap<String, String> processRoles) {
+        Set<String> processRoleIds = processRoles.keySet();
+        Multimap<Input, String> inputsAndAssociatedRoles = HashMultimap.create();
         for (String processRoleId : processRoleIds) {
-            final Input component = getProcessRoleInput(processRoleId);
-            final HashSet<String> tempPlanners = new HashSet<>(processRoles.get(processRoleId));
-            final HashSet<String> stringValues = new HashSet<>(component.getStringValues());
+            Input component = getProcessRoleInput(processRoleId);
+            HashSet<String> tempPlanners = new HashSet<>(processRoles.get(processRoleId));
+            HashSet<String> stringValues = new HashSet<>(component.getStringValues());
             tempPlanners.removeAll(stringValues);
             inputsAndAssociatedRoles.putAll(component, tempPlanners);
         }
@@ -51,7 +51,7 @@ public class ProcessRolesStepWizardPage extends ProcessWizardPage {
     }
 
     @Step("Deleting planner {planner} from {processRoleId}")
-    public ProcessRolesStepWizardPage deletePlanner(final String processRoleId, final String planner) {
+    public ProcessRolesStepWizardPage deletePlanner(String processRoleId, String planner) {
         LOGGER.info(CHANGING_PLANNER_AND_PROCESS_ROLE_ID_FROM_STRINGS_TO_HASH_MULTIMAP);
         Multimap<String, String> processRoles = HashMultimap.create(1, 1);
         processRoles.put(processRoleId, planner);
@@ -60,11 +60,11 @@ public class ProcessRolesStepWizardPage extends ProcessWizardPage {
 
     @Step("Deleting planners {processRoles}")
     public ProcessRolesStepWizardPage deletePlanners(Multimap<String, String> processRoles) {
-        final Set<String> processRoleIds = processRoles.keySet();
-        final Multimap<Input, String> inputsAndAssociatedRoles = HashMultimap.create();
+        Set<String> processRoleIds = processRoles.keySet();
+        Multimap<Input, String> inputsAndAssociatedRoles = HashMultimap.create();
         for (String processRoleId : processRoleIds) {
-            final Input component = getProcessRoleInput(processRoleId);
-            final HashSet<String> stringValues = new HashSet<>(wizard.getComponent(processRoleId).getStringValues());
+            Input component = getProcessRoleInput(processRoleId);
+            HashSet<String> stringValues = new HashSet<>(wizard.getComponent(processRoleId).getStringValues());
             if (stringValues.containsAll(processRoles.get(processRoleId))) {
                 inputsAndAssociatedRoles.putAll(component, processRoles.get(processRoleId));
             } else {
@@ -75,7 +75,7 @@ public class ProcessRolesStepWizardPage extends ProcessWizardPage {
     }
 
     private Input getProcessRoleInput(String processRoleId) {
-        final Input component;
+        Input component;
         try {
             component = wizard.getComponent(processRoleId);
         } catch (NoSuchElementException e) {
@@ -86,7 +86,7 @@ public class ProcessRolesStepWizardPage extends ProcessWizardPage {
     }
 
     @Step("Changing planners {inputsRoles}")
-    private ProcessRolesStepWizardPage changePlannersState(final Multimap<Input, String> inputsRoles) {
+    private ProcessRolesStepWizardPage changePlannersState(Multimap<Input, String> inputsRoles) {
         inputsRoles.asMap().forEach((input, valueCollection) -> valueCollection.forEach(input::setSingleStringValue));
         return new ProcessRolesStepWizardPage(driver);
     }

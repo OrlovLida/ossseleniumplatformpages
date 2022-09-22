@@ -18,7 +18,7 @@ public class TerminateProcessWizardPage extends BasePage {
     }
 
     @Step("Setting termination reason")
-    public void setTerminationReason(final String reason) {
+    public void setTerminationReason(String reason) {
         wizard.setComponentValue(REASON_FIELD_ID, reason);
     }
 

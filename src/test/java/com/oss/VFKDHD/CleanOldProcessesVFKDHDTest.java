@@ -44,12 +44,12 @@ public class CleanOldProcessesVFKDHDTest extends BaseTestCase {
     @Test(description = "Cancel Old Data Correction Processes that were failed")
     @Description("Cancel Old Data Correction Processes that were failed")
     public void cancelOldDCP() {
-        final SoftAssert softAssert = new SoftAssert();
+        SoftAssert softAssert = new SoftAssert();
         homePage.chooseFromLeftSideMenu(PLANNERS_VIEW, BUSINESS_PROCESS_MANAGEMENT_PATH);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         PlannersViewPage plannersViewPage = new PlannersViewPage(driver, webDriverWait);
-        plannersViewPage.activateFiltersOnPlannersViewPage(USED_FILTERS);
-        final List<String> notCancellableProcesses = new ArrayList<>();
+        plannersViewPage.searchByAttributesValue(USED_FILTERS);
+        List<String> notCancellableProcesses = new ArrayList<>();
         if (!isPageEmpty(plannersViewPage)) {
             int numberOfProcesses = plannersViewPage.getTreeTable().getPagination().getTotalCount();
             cancelCancellableProcessesAndCreteListOfNotCancellableOnes(plannersViewPage, notCancellableProcesses, numberOfProcesses);
@@ -58,9 +58,9 @@ public class CleanOldProcessesVFKDHDTest extends BaseTestCase {
             homePage.chooseFromLeftSideMenu(PLANNERS_VIEW, BUSINESS_PROCESS_MANAGEMENT_PATH);
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             plannersViewPage = new PlannersViewPage(driver, webDriverWait);
-            plannersViewPage.activateFiltersOnPlannersViewPage(USED_FILTERS);
+            plannersViewPage.searchByAttributesValue(USED_FILTERS);
             cancelProcessesWhileNotCheckingForTheirCancellability(plannersViewPage, numberOfProcesses);
-            final SystemMessageContainer systemMessage = SystemMessageContainer.create(driver, webDriverWait);
+            SystemMessageContainer systemMessage = SystemMessageContainer.create(driver, webDriverWait);
             systemMessage.close();
             softAssert.assertTrue(isPageEmpty(plannersViewPage));
         }
@@ -75,21 +75,21 @@ public class CleanOldProcessesVFKDHDTest extends BaseTestCase {
     }
 
     private void cancelCancellableProcessesAndCreteListOfNotCancellableOnes(PlannersViewPage plannersViewPage, List<String> notCancellableProcesses, int numberOfProcesses) {
-        final List<String> processCodes = getAllProcessCodes(plannersViewPage, numberOfProcesses);
-        boolean cantTerminateProcess;
+        List<String> processCodes = getAllProcessCodes(plannersViewPage, numberOfProcesses);
+        boolean canTerminateProcess;
         for (int canceledCounter = 0; canceledCounter < numberOfProcesses; canceledCounter++) {
             try {
-                cantTerminateProcess = plannersViewPage.isProcessNotTerminable(processCodes.get(canceledCounter));
+                canTerminateProcess = plannersViewPage.isProcessTerminable(processCodes.get(canceledCounter));
             } catch (NoSuchElementException e) {
                 plannersViewPage.getTreeTable().getPagination().goOnNextPage();
                 DelayUtils.waitForPageToLoad(driver, webDriverWait);
-                cantTerminateProcess = plannersViewPage.isProcessNotTerminable(processCodes.get(canceledCounter));
+                canTerminateProcess = plannersViewPage.isProcessTerminable(processCodes.get(canceledCounter));
             }
-            if (cantTerminateProcess) {
+            if (canTerminateProcess) {
+                plannersViewPage.terminateProcess(CORRECTION_REASON);
+            } else {
                 notCancellableProcesses.add(processCodes.get(canceledCounter));
                 plannersViewPage.unselectObjectByProcessCode(processCodes.get(canceledCounter));
-            } else {
-                plannersViewPage.terminateProcess(CORRECTION_REASON);
             }
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
         }
@@ -113,10 +113,10 @@ public class CleanOldProcessesVFKDHDTest extends BaseTestCase {
         }
     }
 
-    private List<String> getAllProcessCodes(final PlannersViewPage plannersViewPage, final int numberOfProcesses) {
+    private List<String> getAllProcessCodes(PlannersViewPage plannersViewPage, int numberOfProcesses) {
         TreeTableWidget treeTable = plannersViewPage.getTreeTable();
-        final PaginationComponent paginationComponent = treeTable.getPagination();
-        final int paginationOption = 500, maxRowIndexOnPage = paginationOption - 1, indexOdLastProcess = numberOfProcesses - 1;
+        PaginationComponent paginationComponent = treeTable.getPagination();
+        int paginationOption = 500, maxRowIndexOnPage = paginationOption - 1, indexOdLastProcess = numberOfProcesses - 1;
         int pageNumber = 1;
         paginationComponent.changeRowsCount(paginationOption);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);

@@ -195,27 +195,27 @@ public class PlannersViewPage extends BasePage {
     }
 
     @Step("Checking if process is not cancellable")
-    public boolean isProcessNotTerminable(String processCode) {
+    public boolean isProcessTerminable(String processCode) {
         if (!getProcessState(processCode).equalsIgnoreCase(CANCELABLE_PROCESS_STATE)) {
-            return true;
+            return false;
         }
         selectObjectByAttributeValue(CODE_ATTRIBUTE_ID, processCode);
-        final TabsWidget upperTabsWidget = getProcessInstancesTopTabsWidget();
+        TabsWidget upperTabsWidget = getProcessInstancesTopTabsWidget();
         for (Map.Entry<String, String> tab : TAB_LABELS_AND_THEIR_TREEWIGET_ID.entrySet()) {
             upperTabsWidget.selectTabByLabel(tab.getKey());
             DelayUtils.waitForPageToLoad(driver, wait);
             TreeWidgetV2 treeWidgetV2 = getTreeWidget(tab.getValue());
             if (!treeWidgetV2.isEmpty()) {
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     @Step("Getting state of process")
     public String getProcessState(String processCode) {
-        final TreeTableWidget treeTable = getTreeTable();
-        final int rowNumber = treeTable.getRowNumber(processCode, CODE_ATTRIBUTE_ID);
+        TreeTableWidget treeTable = getTreeTable();
+        int rowNumber = treeTable.getRowNumber(processCode, CODE_ATTRIBUTE_ID);
         return treeTable.getCellValue(rowNumber, STATE_COLUMN_ID);
     }
 
@@ -291,8 +291,8 @@ public class PlannersViewPage extends BasePage {
         return openProcessCreationWizard().createSimpleDCPV2();
     }
 
-    public void activateFiltersOnPlannersViewPage(final Multimap<String, String> idAndValues) {
-        final TreeTableWidget treeTable = getTreeTable();
+    public void searchByAttributesValue(Multimap<String, String> idAndValues) {
+        TreeTableWidget treeTable = getTreeTable();
         idAndValues.asMap().forEach((id, valueCollection) -> valueCollection.forEach(value -> treeTable.searchByAttribute(id, value)));
         DelayUtils.waitForPageToLoad(driver, wait);
     }

@@ -39,7 +39,7 @@ public class ProcessWizardPage extends BasePage {
     private static final String CANNOT_EXTRACT_PROCESS_CODE_EXCEPTION = "Cannot extract Process Code from message: ";
     private static final String TABLE_PROCESSES = "bpm_processes_view_processes";
     private static final String PROCESS_WIZARD_STEP_1 = "bpm_processes_view_start-process-prompt_prompt-card";
-    public static final String DCP = "Data Correction Process";
+    private static final String DCP = "Data Correction Process";
     private static final String DOMAIN_ATTRIBUTE_ID = "domain-combobox";
     private static final String DEFINITION_ATTRIBUTE_ID = "definition-combobox";
     private static final String RELEASE_ATTRIBUTE_ID = "release-combobox";
