@@ -10,6 +10,7 @@ import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.framework.widgets.tree.TreeWidget;
 import com.oss.framework.widgets.treetable.OldTreeTableWidget;
+import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 import com.oss.pages.physical.DeviceWizardPage;
 
@@ -43,6 +44,9 @@ public class CellSiteConfigurationPage extends BasePage {
     private static final String TREE_TABLE_ID = "DevicesTableApp";
     private static final String CREATE_PHYSICAL_DEVICE_ACTION_ID = "CreateDeviceWithoutSelectionWizardAction";
     private static final String CONFIRM_DELETE_BUTTON_ID = "ConfirmationBox_object_delete_wizard_confirmation_box_action_button";
+    private static final String DELETE_LABEL = "Delete";
+    private static final String DELETE_BUTTON_ID = "delete-popup-buttons-app-1";
+    private static final String DELETE_WIZARD_ID = "delete-popup_prompt-card";
 
     public CellSiteConfigurationPage(WebDriver driver) {
         super(driver);
@@ -101,12 +105,20 @@ public class CellSiteConfigurationPage extends BasePage {
     }
 
     @Step("Remove object")
-    public void removeObject() {
+    public void removeObjectFromDevicesTab() {
         getTabTable().callAction(ActionsContainer.EDIT_GROUP_ID, DELETE_DEVICE_ACTION_ID);
         waitForPageToLoad();
         ConfirmationBox confirmationBox = ConfirmationBox.create(driver, wait);
         confirmationBox.clickButtonById(CONFIRM_DELETE_BUTTON_ID);
         waitForPageToLoad();
+    }
+
+    @Step("Remove object")
+    public void removeObject() {
+        getTabTable().callActionByLabel(DELETE_LABEL);
+        waitForPageToLoad();
+        Wizard wizard = Wizard.createByComponentId(driver, wait, DELETE_WIZARD_ID);
+        wizard.clickButtonById(DELETE_BUTTON_ID);
     }
 
     @Step("Remove device {objectName}")
@@ -115,7 +127,7 @@ public class CellSiteConfigurationPage extends BasePage {
         waitForPageToLoad();
         selectTreeTable(type, manufacturer, objectName);
         waitForPageToLoad();
-        removeObject();
+        removeObjectFromDevicesTab();
         waitForPageToLoad();
     }
 
