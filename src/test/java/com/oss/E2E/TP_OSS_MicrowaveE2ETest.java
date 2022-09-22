@@ -34,7 +34,7 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
     private static final String MICROWAVE_CHANNEL_PARTIAL_NAME = "MicrowaveChannel";
     private static final String MICROWAVE_LINK_TRAIL_TYPE = "Microwave Link";
     private static final String INFRASTRUCTURE_MANAGEMENT_CATEGORY_NAME = "Infrastructure Management";
-    private static final String CREATE_DEVICE_APPLICATION_NAME = "Create Device";
+    private static final String CREATE_DEVICE_APPLICATION_NAME = "Create Physical Device";
     private static final String RESOURCE_INVENTORY_CATEGORY_NAME = "Resource Inventory";
     private static final String NETWORK_VIEW_APPLICATION_NAME = "Network View";
     private static final String CREATE_CARD_BUTTON_ID = "CreateCardOnDeviceAction";
@@ -42,7 +42,8 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
     private static final String CARD_SHORT_IDENTIFIER_COLUMN = "card.shortIdentifier";
     private static final String PORT_SHORT_IDENTIFIER_COLUMN = "port.shortIdentifier";
     private static final String TERMINATIONS_TAB_ID = "TerminationWidget";
-    private static final String DOCKED_PANEL_POSITION = "left";
+    private static final String CONTENT_DOCKED_PANEL_POSITION = "left";
+    private static final String DETAILS_DOCKED_PANEL_POSITION = "bottom";
 
     private static final String NAME_ATTRIBUTE_LABEL = "Name";
     private static final String BAND_ATTRIBUTE_LABEL = "Band";
@@ -347,7 +348,7 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
         waitForPageToLoad();
         networkViewPage.unselectObjectInViewContent(NAME_COLUMN_NAME, SECOND_INDOOR_UNIT_NAME);
         waitForPageToLoad();
-        networkViewPage.hideDockedPanel(DOCKED_PANEL_POSITION);
+        networkViewPage.hideDockedPanel(CONTENT_DOCKED_PANEL_POSITION);
         waitForPageToLoad();
         networkViewPage.openTerminationsTab();
         assertPresenceOfObjectInTab(0, CARD_SHORT_IDENTIFIER_COLUMN, TERMINATIONS_TAB_ID, CARD_NAME);
@@ -358,6 +359,10 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
     @Description("Create Microwave Link and add Microwave Channel to routing")
     public void createMicrowaveLinkAndAddMicrowaveChannelToRouting() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
+        networkViewPage.hideDockedPanel(DETAILS_DOCKED_PANEL_POSITION);
+        waitForPageToLoad();
+        networkViewPage.expandViewContentPanel();
+        waitForPageToLoad();
         networkViewPage.unselectObjectInViewContent(NAME_COLUMN_NAME, secondMicrowaveChannel);
 
         networkViewPage.openWizardPage(MICROWAVE_LINK_TRAIL_TYPE);
