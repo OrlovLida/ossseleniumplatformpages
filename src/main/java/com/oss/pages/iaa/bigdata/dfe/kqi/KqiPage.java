@@ -48,7 +48,7 @@ public class KqiPage extends BaseDfePage {
 
     @Step("Select found KQI")
     public void selectFoundKQI() {
-        getTable(driver, wait).selectRow(0);
+        getTable().selectRow(0);
     }
 
     @Step("Click Edit KQI")
@@ -73,12 +73,12 @@ public class KqiPage extends BaseDfePage {
 
     @Step("Check name value in details tab")
     public String checkNameInPropertyPanel() {
-        return checkValueInPropertyPanel(PROPERTY_PANEL_ID, NAME_PROPERTY);
+        return getValueFromPropertyPanel(PROPERTY_PANEL_ID, NAME_PROPERTY);
     }
 
     @Step("Check label value in details tab")
     public String checkFormulaInPropertyPanel() {
-        return checkValueInPropertyPanel(PROPERTY_PANEL_ID, FORMULA_PROPERTY);
+        return getValueFromPropertyPanel(PROPERTY_PANEL_ID, FORMULA_PROPERTY);
     }
 
     @Step("Click Parameters Tab")

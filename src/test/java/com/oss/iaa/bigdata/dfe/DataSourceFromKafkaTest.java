@@ -55,7 +55,7 @@ public class DataSourceFromKafkaTest extends BaseTestCase {
     public void editDataSourceFromKafka() {
         boolean dataSourceExists = dataSourcePage.dataSourceExistIntoTable(dataSourceName);
         if (dataSourceExists) {
-            dataSourcePage.selectFoundDataSource();
+            dataSourcePage.selectFirstDataSourceInTable();
             dataSourcePage.clickEditDS();
             DataSourceStepWizardPage dsStepWizard = new DataSourceStepWizardPage(driver, webDriverWait);
             dsStepWizard.getBasicInfoStep().fillBasicInformationStep(dataSourceName_updated);
@@ -77,7 +77,7 @@ public class DataSourceFromKafkaTest extends BaseTestCase {
     public void deleteDsFromKafka() {
         boolean dataSourceExists = dataSourcePage.dataSourceExistIntoTable(dataSourceName);
         if (dataSourceExists) {
-            dataSourcePage.selectFoundDataSource();
+            dataSourcePage.selectFirstDataSourceInTable();
             dataSourcePage.clickDeleteDS();
             dataSourcePage.clickConfirmDelete();
             boolean dataSourceIsDeleted = !dataSourcePage.dataSourceExistIntoTable(dataSourceName);

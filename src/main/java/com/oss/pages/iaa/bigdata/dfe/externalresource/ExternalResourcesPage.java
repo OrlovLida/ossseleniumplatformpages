@@ -61,7 +61,7 @@ public class ExternalResourcesPage extends BaseDfePage {
 
     @Step("I select found External Resource")
     public void selectFoundExternalResource() {
-        getTable(driver, wait).selectRow(0);
+        getTable().selectRow(0);
     }
 
     @Step("I confirm the removal of External Resource")
