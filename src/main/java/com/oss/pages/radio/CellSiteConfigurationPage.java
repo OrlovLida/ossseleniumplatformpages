@@ -26,6 +26,7 @@ public class CellSiteConfigurationPage extends BasePage {
     private static final String CREATE_CELL_BULK_ACTION = "Cell %s Bulk Wizard";
     private static final String ADD_LABEL = "ADD";
     private static final String EDIT_LABEL = "Edit";
+    private static final String ADD_ID = "add";
     private static final String DELETE_DEVICE_ACTION_ID = "DeleteDeviceWizardAction";
     private static final String BASE_STATION_ROW = "Base Stations";
     private static final String CREATE_ENODEB_ACTION_ID = "ADD_ENODE";
@@ -59,7 +60,7 @@ public class CellSiteConfigurationPage extends BasePage {
 
     @Step("Click plus icon and select {optionId} from the drop-down list")
     public void clickPlusIconAndSelectOptionById(String optionId) {
-        getTabTable().callAction(ActionsContainer.CREATE_GROUP_ID, optionId);
+        getTabTable().callAction(ADD_ID, optionId);
     }
 
     @Step("Select {tabName} tab")
