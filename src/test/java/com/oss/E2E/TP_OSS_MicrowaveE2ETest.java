@@ -1,6 +1,7 @@
 package com.oss.E2E;
 
 import java.util.Random;
+import java.util.UUID;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -243,7 +244,6 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
     private static final String END_ATTENUATOR_LOSS2 = "20";
 
     private static final String USER_LABEL = "userLabel987";
-    private static final String LINK_ID = "7";
     private static final String TECHNOLOGY_TYPE = "PDH";
     private static final String AGGREGATION_CONFIGURATION = "1+1";
     private static final String NUMBER_OF_WORKING_CHANNELS = "1";
@@ -561,7 +561,7 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
     private MicrowaveLinkAttributes getMicrowaveLinkAttributes() {
         MicrowaveLinkAttributes attributes = new MicrowaveLinkAttributes();
         attributes.userLabel = USER_LABEL;
-        attributes.linkId = LINK_ID + rand.nextInt(990 + 9 + 1) * 100;
+        attributes.linkId = UUID.randomUUID().toString();
         attributes.technologyType = TECHNOLOGY_TYPE;
         attributes.aggregationConfiguration = AGGREGATION_CONFIGURATION;
         attributes.numberOfWorkingChannels = NUMBER_OF_WORKING_CHANNELS;
