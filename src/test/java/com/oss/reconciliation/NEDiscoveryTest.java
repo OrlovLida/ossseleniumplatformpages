@@ -55,7 +55,7 @@ public class NEDiscoveryTest extends BaseTestCase {
         sideMenu.callActionByLabel(NETWORK_ELEMENTS_DISCOVERY);
         networkElementsDiscoveryPage.searchForElement(OPERATION_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        if (networkElementsDiscoveryPage.isRowPresent(OPERATION_NAME)) {
+        if (networkElementsDiscoveryPage.isOperationPresent(OPERATION_NAME)) {
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             networkElementsDiscoveryPage.selectElement(OPERATION_NAME);
             networkElementsDiscoveryPage.deleteOperation();
@@ -63,7 +63,7 @@ public class NEDiscoveryTest extends BaseTestCase {
             LOG.info("Operation with name: " + OPERATION_NAME + " doesn't exist");
         }
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertFalse(networkElementsDiscoveryPage.isRowPresent(OPERATION_NAME));
+        Assert.assertFalse(networkElementsDiscoveryPage.isOperationPresent(OPERATION_NAME));
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 

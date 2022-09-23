@@ -36,7 +36,7 @@ public class NetworkElementsDiscoveryPage extends BasePage {
     }
 
     @Step("Check if operation exists")
-    public boolean isRowPresent(String operationName) {
+    public boolean isOperationPresent(String operationName) {
         return getTreeView().isRowPresent(operationName);
     }
 
