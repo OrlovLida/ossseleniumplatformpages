@@ -265,7 +265,7 @@ public class TestProcessesVFKDHD extends BaseTestCase {
         deviceWizardPage.next();
         deviceWizardPage.setResourceOwner(RESOURCE_OWNER);
         deviceWizardPage.next();
-        deviceWizardPage.setLocationNameInList(0, DEVICE_NAME);
+        deviceWizardPage.setDeviceNameInList(0, DEVICE_NAME);
         deviceWizardPage.clickRecalculateNaming();
         deviceWizardPage.accept();
     }
