@@ -221,6 +221,12 @@ public class KpiViewPage extends KpiViewSetupPage {
         return getKpiChartWidget().isLegendPresent("Other period");
     }
 
+    @Step("Check visibility of Common Legend")
+    public boolean isCommonLegendPresent() {
+        log.info("Checking visibility of Common Legend");
+        return getKpiChartWidget().isCommonLegendPresent();
+    }
+
     @Step("Click Save bookmark")
     public BookmarkWizardPage clickSaveBookmark() {
         ButtonPanel.create(driver, wait).clickButton(SAVE_BOOKMARK_BUTTON_ID);
@@ -276,7 +282,7 @@ public class KpiViewPage extends KpiViewSetupPage {
 
     @Step("I check if Zoom Out button is visible")
     public boolean isZoomOutButtonVisible() {
-        return getKpiChartWidget().isZoomOutButtonPresent();
+        return !getKpiChartWidget().isZoomOutButtonHidden();
     }
 
     @Step("I click Zoom Out Button")

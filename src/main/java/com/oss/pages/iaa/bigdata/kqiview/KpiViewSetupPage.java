@@ -61,12 +61,14 @@ public class KpiViewSetupPage extends BasePage {
     public void selectDimension(List<String> nodesToExpand, List<String> nodesToSelect) {
         log.info("Select dimension nodes: {}", nodesToSelect);
         selectTreeNodes(nodesToExpand, nodesToSelect, DIMENSIONS_TREE_ID);
+        waitForPageToLoad(driver, wait);
     }
 
     @Step("I select unfolded dimension")
     public void selectUnfoldedDimension(List<String> nodesToSelect) {
         log.info("Select dimension nodes: {}", nodesToSelect);
         selectUnfoldedTreeNodes(nodesToSelect, DIMENSIONS_TREE_ID);
+        waitForPageToLoad(driver, wait);
     }
 
     @Step("I setup Indicators View")

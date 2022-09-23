@@ -90,4 +90,26 @@ public class IncomingMailsTest extends BaseTestCase {
         Assert.assertEquals(messagesPage.getMessageStatus(), "Received");
         Assert.assertEquals(messagesPage.getMessageContext(), "TroubleTicket #" + createdObjectID);
     }
+
+    @Parameters({"MessageSubject"})
+    @Test(priority = 3, testName = "Manual Email Request", description = "Manual Email Request")
+    @Description("Manual Email Request")
+    public void manualEmailRequest(
+            @Optional("SeleniumTest") String messageSubject
+    ) {
+        messagesPage.selectFirstMessage();
+        String date = messagesPage.getMessageDate();
+        messagesPage.getNotificationPreview().clickProcessNotification();
+        messagesPage.getNotificationPreview().clickConfirmProcessNotification();
+        createdObjectID = messagesPage.getIdFromMessage();
+        messagesPage.clearAllFilters();
+
+        messagesPage.filterByDate(DATE_ID_IN_FILTER_PANEL, date + " - " + date);
+        messagesPage.searchFullText(messageSubject);
+
+        Assert.assertFalse(messagesPage.isMessagesTableEmpty());
+
+        Assert.assertEquals(messagesPage.getMessageStatus(), "Received");
+        Assert.assertEquals(messagesPage.getMessageContext(), "TroubleTicket #" + createdObjectID);
+    }
 }

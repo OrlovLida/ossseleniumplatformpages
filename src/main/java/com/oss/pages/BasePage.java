@@ -80,6 +80,10 @@ public class BasePage {
         return new NotificationWrapperPage(driver);
     }
 
+    public String getViewTitle() {
+        return ToolbarWidget.create(driver, wait).getViewTitle();
+    }
+
     public PerspectiveChooserPage openPerspectiveChooser() {
         ToolbarWidget.create(driver, wait).openQueryContextContainer();
         return new PerspectiveChooserPage(driver);

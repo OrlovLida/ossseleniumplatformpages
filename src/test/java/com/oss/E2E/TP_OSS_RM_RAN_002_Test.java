@@ -124,6 +124,7 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
         checkMessageType();
         closeMessage();
         cellSiteConfigurationPage.selectTreeRow(GNODEB_DU_NAME);
+        waitForPageToLoad();
         cellSiteConfigurationPage.createHostingOnDevice(BBU_NAME, false);
         checkMessageType();
         closeMessage();
@@ -140,6 +141,7 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
     public void finishProcessesTasks() {
         TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.completeNRP(processNRPCode);
+        waitForPageToLoad();
     }
 
     @Test(priority = 9, description = "Delete hosting relations", dependsOnMethods = {"createHostingRelation"})

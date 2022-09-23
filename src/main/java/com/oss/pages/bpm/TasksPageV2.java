@@ -1,22 +1,28 @@
 package com.oss.pages.bpm;
 
-import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.table.TableInterface;
-import com.oss.framework.widgets.table.TableWidget;
-import com.oss.pages.BasePage;
-import com.oss.pages.platform.HomePage;
+import java.util.List;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
+import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.table.TableInterface;
+import com.oss.framework.widgets.table.TableWidget;
+import com.oss.pages.BasePage;
+import com.oss.pages.bpm.taskforms.IPDTaskFormPage;
+import com.oss.pages.bpm.taskforms.KDTaskFormPage;
+import com.oss.pages.platform.HomePage;
+
+import io.qameta.allure.Step;
 
 /**
  * @author Paweł Rother
  */
 
 public class TasksPageV2 extends BasePage {
+
     public static final String READY_FOR_INTEGRATION_TASK = "Ready for Integration";
     public static final String IMPLEMENTATION_TASK = "Implementation";
     public static final String SCOPE_DEFINITION_TASK = "Scope definition";
@@ -41,6 +47,7 @@ public class TasksPageV2 extends BasePage {
     private static final String ASSIGNEE_INPUT_ID = "assigneeUser_OSF";
     private static final String STATUS_INPUT_ID = "state";
     private static final String FINISHED_STATUS = "Finished";
+
     private static final String BPM_AND_PLANNING = "BPM and Planning";
     private static final String TASKS = "Tasks";
     private static final String PROCESS_OPERATIONS = "Process Operations";
@@ -73,7 +80,15 @@ public class TasksPageV2 extends BasePage {
         tasksTable.clearAllFilters();
     }
 
+    @Step("Checking is task started")
+    public boolean isTaskStarted(String processCode, String taskName) {
+        findTask(processCode, taskName);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return !getTableWidget().getCellValue(0, ASSIGNEE).isEmpty();
+    }
+
     public void findTask(String processCode, String taskName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
         TableWidget table = getTableWidget();
         table.clearAllFilters();
         table.searchByAttribute(PROCESS_CODE_INPUT_ID, processCode);
@@ -98,17 +113,17 @@ public class TasksPageV2 extends BasePage {
 
     public void startTask(String processCode, String taskName) {
         findTask(processCode, taskName);
-        getTaskForm().startTask();
+        getIPDTaskForm().startTask();
     }
 
     public void completeTask(String processCode, String taskName) {
         findTask(processCode, taskName);
-        getTaskForm().completeTask();
+        getIPDTaskForm().completeTask();
     }
 
     public void setupIntegration(String processCode) {
         findTask(processCode, READY_FOR_INTEGRATION_TASK);
-        getTaskForm().setupIntegration();
+        getIPDTaskForm().setupIntegration();
     }
 
     public String startTaskByUsernameAndTaskName(String username, String taskName) {
@@ -126,20 +141,21 @@ public class TasksPageV2 extends BasePage {
 
     public void changeTransitionAndCompleteTask(String processCode, String taskName, String transition) {
         findTask(processCode, taskName);
-        getTaskForm().setTransition(transition);
-        getTaskForm().completeTask();
+        getIPDTaskForm().setTransition(transition);
+        getIPDTaskForm().completeTask();
     }
 
     public void addFile(String processCode, String taskName, String filePath) {
         findTask(processCode, taskName);
-        getTaskForm().attachFile(filePath);
+        getIPDTaskForm().attachFile(filePath);
     }
 
     public List<String> getListOfAttachments() {
-        return getTaskForm().getListOfAttachments();
+        return getIPDTaskForm().getListOfAttachments();
     }
 
     public void showCompletedTasks() {
+        DelayUtils.waitForPageToLoad(driver, wait);
         TableWidget table = getTableWidget();
         table.clearAllFilters();
         table.searchByAttribute(STATUS_INPUT_ID, FINISHED_STATUS);
@@ -147,7 +163,7 @@ public class TasksPageV2 extends BasePage {
     }
 
     public String getIPCodeByProcessName(String processIPName) {
-        TableInterface ipTable = getTaskForm().getIPTable();
+        TableInterface ipTable = getIPDTaskForm().getIPTable();
         int rowNumber = ipTable.getRowNumber(processIPName, NAME);
         return ipTable.getCellValue(rowNumber, CODE_LABEL);
     }
@@ -155,38 +171,56 @@ public class TasksPageV2 extends BasePage {
     public void completeNRP(String processCode) {
         String ipCode = proceedNRPToImplementationTask(processCode);
         completeTask(ipCode, IMPLEMENTATION_TASK);
+        DelayUtils.waitForPageToLoad(driver, wait);
         startAndCompleteTask(ipCode, ACCEPTANCE_TASK);
-        startAndCompleteTask(ipCode, VERIFICATION_TASK);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        startAndCompleteTask(processCode, VERIFICATION_TASK);
     }
 
     public String proceedNRPToImplementationTask(String processCode) {
         completeTask(processCode, HIGH_LEVEL_PLANNING_TASK);
+        DelayUtils.waitForPageToLoad(driver, wait);
         startAndCompleteTask(processCode, LOW_LEVEL_PLANNING_TASK);
         return proceedNRPFromReadyForIntegration(processCode);
     }
 
     public String proceedNRPFromReadyForIntegration(String processCode) {
+        DelayUtils.waitForPageToLoad(driver, wait);
         startAndCompleteTask(processCode, READY_FOR_INTEGRATION_TASK);
-        showCompletedTasks();
-        findTask(processCode, READY_FOR_INTEGRATION_TASK);
-        DelayUtils.sleep(3000);
-        TableInterface ipTable = getTaskForm().getIPTable();
-        String ipCode = ipTable.getCellValue(0, CODE_LABEL);
+        String ipCode = getIPCodeFromCompletedNRP(processCode);
         startAndCompleteTask(ipCode, SCOPE_DEFINITION_TASK);
+        DelayUtils.waitForPageToLoad(driver, wait);
         startTask(ipCode, IMPLEMENTATION_TASK);
         return ipCode;
     }
 
+    private String getIPCodeFromCompletedNRP(String nrpCode) {
+        showCompletedTasks();
+        findTask(nrpCode, READY_FOR_INTEGRATION_TASK);
+        DelayUtils.sleep(3000);
+        TableInterface ipTable = getIPDTaskForm().getIPTable();
+        String ipCode = ipTable.getCellValue(0, CODE_LABEL);
+        TableWidget table = getTableWidget();
+        table.unselectAllRows();
+        DelayUtils.waitForPageToLoad(driver, wait);
+        table.hideSelectionBar();
+        return ipCode;
+    }
+
     public void clickPerformConfigurationButton() {
-        getTaskForm().clickPerformConfigurationButton();
+        getIPDTaskForm().clickPerformConfigurationButton();
     }
 
     public void clickPlanViewButton() {
-        getTaskForm().clickPlanViewButton();
+        getIPDTaskForm().clickPlanViewButton();
     }
 
-    private IPDTaskFormPage getTaskForm() {
+    public IPDTaskFormPage getIPDTaskForm() {
         return IPDTaskFormPage.create(driver, wait, TABS_TASKS_VIEW_ID);
+    }
+
+    public KDTaskFormPage getKDTaskForm() {
+        return KDTaskFormPage.create(driver, wait, TABS_TASKS_VIEW_ID);
     }
 
     public void startAndCompleteTask(String processCode, String taskName) {

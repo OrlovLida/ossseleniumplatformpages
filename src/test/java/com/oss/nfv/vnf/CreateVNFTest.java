@@ -2,6 +2,7 @@ package com.oss.nfv.vnf;
 
 import java.util.List;
 
+import com.oss.framework.components.mainheader.PerspectiveChooser;
 import com.oss.pages.logicalfunction.LogicalFunctionWizardPreStep;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -33,6 +34,7 @@ public class CreateVNFTest extends BaseVNFTest {
     @Description("Got to Resource Specifications view, find and select VNF specification and open VNF wizard from context menu")
     public void openCreateVNFWizard() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
         //given
         SideMenuService.goToCreateVNFView(driver, webDriverWait);
         //when

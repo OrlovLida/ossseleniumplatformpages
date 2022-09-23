@@ -1,40 +1,62 @@
 package com.oss.pages.bpm;
 
+import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
-
-import com.google.common.collect.Multimap;
-import com.oss.framework.components.inputs.Input;
-import com.oss.pages.bpm.processinstances.ProcessWizardPage;
+import java.util.stream.Stream;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.google.common.collect.Multimap;
 import com.oss.framework.components.attributechooser.AttributesChooser;
+import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.pagination.PaginationComponent;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Widget;
 import com.oss.framework.widgets.propertypanel.PropertyPanel;
 import com.oss.framework.widgets.table.TableRow;
 import com.oss.framework.widgets.tabs.TabsWidget;
+import com.oss.framework.widgets.tree.TreeWidgetV2;
 import com.oss.framework.widgets.treetable.TreeTableWidget;
 import com.oss.pages.BasePage;
+import com.oss.pages.bpm.processinstances.ProcessWizardPage;
+import com.oss.pages.bpm.processinstances.TerminateProcessWizardPage;
+
+import io.qameta.allure.Step;
 
 public class PlannersViewPage extends BasePage {
 
     private static final String TREE_TABLE_ID = "process_instance_hierarchy_table";
+
     private static final String TABS_CONTAINER_ID = "process_instance_hierarchy_bottom_tabs";
     private static final String CREATE_GROUP_ACTION_ID = "CREATE";
     private static final String START_PROCESS_ACTION_ID = "bpm_inventory_view_action_create_process";
     private static final String START_PROGRAM_ACTION_ID = "bpm_inventory_view_action_create_program";
+    private static final String PROCESS_INSTANCE_TOP_TABS_ID = "process_instance_top_tabs";
+    private static final String FRAMEWORK_CUSTOM_BUTTONS_GROUP_ID = "frameworkCustomButtonsGroup";
+    private static final String REFRESH_BUTTON_ID = "refreshButton";
+    private static final String ONLY_SINGLE_SELECTION_IS_SUPPORTED_EXCEPTION = "Only single selection is supported";
+
+    private static final Map<String, String> TAB_LABELS_AND_THEIR_TREEWIGET_ID = Stream.of(
+                    new AbstractMap.SimpleEntry<>("Locations", "process_instance_top_tabs_locations_widget"),
+                    new AbstractMap.SimpleEntry<>("Devices", "process_instance_top_tabs_devices_widget"),
+                    new AbstractMap.SimpleEntry<>("Connections", "process_instance_top_tabs_connections_widget"))
+            .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+    private static final String CANCEL_PROCESS_BUTTON_ID = "bpm_inventory_view_action_terminate_process";
+    private static final String EDIT_GROUP_ID = "EDIT";
+    private static final String CANCELABLE_PROCESS_STATE = "In Progress";
+    private static final String CODE_ATTRIBUTE_ID = "code";
+    private static final String STATE_COLUMN_ID = "state";
 
     public PlannersViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
     }
 
     public static PlannersViewPage goToPlannersViewPage(WebDriver driver, String basicURL) {
-        driver.get(String.format("%s/#/views/management/views/ProcessInstances?perspective=LIVE", basicURL));
+        driver.get(String.format("%s/#/views/planning/planners-view?perspective=LIVE", basicURL));
         WebDriverWait wait = new WebDriverWait(driver, 45);
         DelayUtils.waitForPageToLoad(driver, wait);
         return new PlannersViewPage(driver, wait);
@@ -44,9 +66,13 @@ public class PlannersViewPage extends BasePage {
         return TreeTableWidget.createById(driver, wait, TREE_TABLE_ID);
     }
 
+    public TreeWidgetV2 getTreeWidget(String dataTestID) {
+        return TreeWidgetV2.create(driver, wait, dataTestID);
+    }
+
     public void selectObjectByRowId(int rowId) {
         TreeTableWidget treeTable = getTreeTable();
-        treeTable.selectNode(rowId);
+        treeTable.selectRow(rowId);
     }
 
     public void selectObjectsByRowId(int... indexes) {
@@ -56,7 +82,16 @@ public class PlannersViewPage extends BasePage {
 
     public void unselectObjectByRowId(int rowId) {
         TreeTableWidget treeTable = getTreeTable();
-        treeTable.unselectNode(rowId);
+        treeTable.unselectRow(rowId);
+    }
+
+    public void unselectObjectByProcessCode(String processCode) {
+        unselectObjectByAttributeValue(CODE_ATTRIBUTE_ID, processCode);
+    }
+
+    public void unselectObjectByAttributeValue(String attributeId, String value) {
+        getTreeTable().unselectRowByAttributeValue(attributeId, value);
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public void selectObjectByAttributeValue(String attributeId, String value) {
@@ -86,9 +121,17 @@ public class PlannersViewPage extends BasePage {
         return (PropertyPanel) getTabsWidget().getWidget(propertyPanelId, Widget.WidgetType.PROPERTY_PANEL);
     }
 
+    @Step("Getting process instances Tob Tab Widget")
+    public TabsWidget getProcessInstancesTopTabsWidget() {
+        if (getSelectedRows().size() != 1) {
+            throw new UnsupportedOperationException(ONLY_SINGLE_SELECTION_IS_SUPPORTED_EXCEPTION);
+        }
+        return TabsWidget.createById(driver, wait, PROCESS_INSTANCE_TOP_TABS_ID);
+    }
+
     public TabsWidget getTabsWidget() {
         if (getSelectedRows().isEmpty()) {
-            throw new UnsupportedOperationException("Only single selection is supported");
+            throw new UnsupportedOperationException(ONLY_SINGLE_SELECTION_IS_SUPPORTED_EXCEPTION);
         }
         Widget.waitForWidget(wait, TabsWidget.TABS_WIDGET_CLASS);
         return TabsWidget.createById(driver, wait, TABS_CONTAINER_ID);
@@ -100,15 +143,15 @@ public class PlannersViewPage extends BasePage {
     }
 
     public void expandNode(String label, String columnId) {
-        getTreeTable().expandNode(label, columnId);
+        getTreeTable().expandRow(label, columnId);
     }
 
     public void expandNode(int index) {
-        getTreeTable().expandNode(index);
+        getTreeTable().expandRow(index);
     }
 
     public void collapseNode(int index) {
-        getTreeTable().collapseNode(index);
+        getTreeTable().collapseRow(index);
     }
 
     public boolean isNodeExpanded(int index) {
@@ -134,6 +177,7 @@ public class PlannersViewPage extends BasePage {
     public void disableColumnAndApply(String columnLabel) {
         TreeTableWidget treeTable = getTreeTable();
         treeTable.disableColumnByLabel(columnLabel);
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public int getColumnSize(String columnId) {
@@ -148,6 +192,44 @@ public class PlannersViewPage extends BasePage {
 
     public void setDefaultSettings() {
         getTreeTable().getAttributesChooser().clickDefaultSettings();
+    }
+
+    @Step("Checking if process is not cancellable")
+    public boolean isProcessTerminable(String processCode) {
+        if (!getProcessState(processCode).equalsIgnoreCase(CANCELABLE_PROCESS_STATE)) {
+            return false;
+        }
+        selectObjectByAttributeValue(CODE_ATTRIBUTE_ID, processCode);
+        TabsWidget upperTabsWidget = getProcessInstancesTopTabsWidget();
+        for (Map.Entry<String, String> tab : TAB_LABELS_AND_THEIR_TREEWIGET_ID.entrySet()) {
+            upperTabsWidget.selectTabByLabel(tab.getKey());
+            DelayUtils.waitForPageToLoad(driver, wait);
+            TreeWidgetV2 treeWidgetV2 = getTreeWidget(tab.getValue());
+            if (!treeWidgetV2.isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Step("Getting state of process")
+    public String getProcessState(String processCode) {
+        TreeTableWidget treeTable = getTreeTable();
+        int rowNumber = treeTable.getRowNumber(processCode, CODE_ATTRIBUTE_ID);
+        return treeTable.getCellValue(rowNumber, STATE_COLUMN_ID);
+    }
+
+    @Step("Canceling process")
+    public void terminateProcess(String reason) {
+        getTreeTable().callAction(EDIT_GROUP_ID, CANCEL_PROCESS_BUTTON_ID);
+        TerminateProcessWizardPage terminateProcessWizardPage = new TerminateProcessWizardPage(driver);
+        terminateProcessWizardPage.setTerminationReason(reason);
+        terminateProcessWizardPage.clickAccept();
+    }
+
+    @Step("Clicking on refresh button")
+    public void refresh() {
+        getTreeTable().callAction(FRAMEWORK_CUSTOM_BUTTONS_GROUP_ID, REFRESH_BUTTON_ID);
     }
 
     public void searchObject(String text) {
@@ -207,6 +289,12 @@ public class PlannersViewPage extends BasePage {
 
     public String createSimpleDCP() {
         return openProcessCreationWizard().createSimpleDCPV2();
+    }
+
+    public void searchByAttributesValue(Multimap<String, String> idAndValues) {
+        TreeTableWidget treeTable = getTreeTable();
+        idAndValues.asMap().forEach((id, valueCollection) -> valueCollection.forEach(value -> treeTable.searchByAttribute(id, value)));
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public String createDCPWithPlusDays(Long plusDays) {

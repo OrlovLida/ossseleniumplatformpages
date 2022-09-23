@@ -8,6 +8,8 @@
         </classes>
     </test>
     <test name="Messages">
+        <parameter name="emailTo" value="kornelia.odrobinska@comarch.com"/>
+        <parameter name="emailFrom" value="switch.ticket@comarch.com"/>
         <classes>
             <class name="com.oss.iaa.servicedesk.infomanagement.MessagesTest"/>
         </classes>

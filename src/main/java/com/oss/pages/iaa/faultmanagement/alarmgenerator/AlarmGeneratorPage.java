@@ -27,6 +27,8 @@ public class AlarmGeneratorPage extends BasePage {
     private static final String CREATE_ALARM_BUTTON_ID = "GenerateCreateEditAlarmsAction";
     private static final String TERMINATE_ALARM_BUTTON_ID = "GenerateRemoveAlarmsAction";
     private static final String ALARMS_GENERATOR_TABLE_ID = "table-alarm-generator-table";
+    private static final String IMPORT_EXPORT_BUTTON_ID = "import-export";
+    private static final String IMPORT_ALARMS_BUTTON_ID = "import-configuration";
 
     public AlarmGeneratorPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -67,6 +69,12 @@ public class AlarmGeneratorPage extends BasePage {
     public void clickTerminateAlarmButton() {
         getAlarmsGeneratorCard().callActionById(GENERATE_BUTTON_ID, TERMINATE_ALARM_BUTTON_ID);
         log.info("Clicking button 'Generate Terminate Operation'");
+    }
+
+    public AlarmGeneratorFromFileWizardPage clickImportButton() {
+        getAlarmsGeneratorCard().callActionById(IMPORT_EXPORT_BUTTON_ID, IMPORT_ALARMS_BUTTON_ID);
+        log.info("Clicking button 'Import Alarms'");
+        return new AlarmGeneratorFromFileWizardPage(driver, wait);
     }
 
     public void selectFirstRowInTable() {

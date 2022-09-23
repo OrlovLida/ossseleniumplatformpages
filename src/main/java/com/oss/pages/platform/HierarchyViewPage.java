@@ -70,7 +70,7 @@ public class HierarchyViewPage extends BasePage {
 
     public void searchObject(String text) {
         TreeWidgetV2 treeWidgetV2 = getMainTree();
-        treeWidgetV2.typeIntoSearch(text);
+        treeWidgetV2.fullTextSearch(text);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
@@ -144,6 +144,13 @@ public class HierarchyViewPage extends BasePage {
     public void selectNodeByLabelsPath(String labels) {
         Node node = getMainTree().getNodeByLabelsPath(labels);
         if (!node.isToggled()) {
+            node.toggleNode();
+        }
+    }
+
+    public void unselectNodeByLabelsPath(String labels) {
+        Node node = getMainTree().getNodeByLabelsPath(labels);
+        if (node.isToggled()) {
             node.toggleNode();
         }
     }

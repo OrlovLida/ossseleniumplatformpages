@@ -3,6 +3,7 @@ package com.oss.pages.iaa.acd.scenariosummaryview;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
@@ -20,15 +21,29 @@ import com.oss.pages.iaa.acd.BaseACDPage;
 
 import io.qameta.allure.Step;
 
-public class ScenarioSummaryBasePage extends BaseACDPage {
+public class ScenarioSummaryPage extends BaseACDPage {
 
-    private static final Logger log = LoggerFactory.getLogger(ScenarioSummaryBasePage.class);
+    private static final Logger log = LoggerFactory.getLogger(ScenarioSummaryPage.class);
 
     private static final String CONFIRM_DELETE_BUTTON_ID = "ConfirmationBox_prompt_action_button";
     private static final String DETECTED_ISSUES_WINDOW_ID = "DetectedIssuesWindowId";
+    private static final String CREATION_TYPE_ID = "creation_type";
+    private static final String CREATE_TIME_ID = "create_time";
+    private static final String ATTRIBUTE_ID = "id";
+    private static final String SWITCHER_ID = "switcherValue";
 
-    public ScenarioSummaryBasePage(WebDriver driver, WebDriverWait wait) {
+    public ScenarioSummaryPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
+    }
+
+    @Step("I Open {suffixURL} Scenario Summary View")
+    public static ScenarioSummaryPage goToPage(WebDriver driver, String basicURL, String chosenView) {
+        WebDriverWait wait = new WebDriverWait(driver, 150);
+        String pageUrl = String.format("%s/#/view/acd/%s", basicURL, chosenView);
+        driver.get(pageUrl);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Opened page: {}", pageUrl);
+        return new ScenarioSummaryPage(driver, wait);
     }
 
     @Step("Check if there is data in issues table")
@@ -41,13 +56,13 @@ public class ScenarioSummaryBasePage extends BaseACDPage {
     @Step("Set value of Issue Id multiSearch")
     public void setValueOfIssueIdSearch() {
 
-        if (Boolean.FALSE.equals(isDataInIssuesTable())) {
-            log.info("Table doesn't have data for chosen filters. Issue ID cannot be set");
-        } else {
+        if (isDataInIssuesTable()) {
             String firstIdInTable = getIssuesTable().getCellValue(0, "Issue Id");
             log.info("Setting value of Issue Id");
             ComponentFactory.create("id", driver, wait).setSingleStringValue(firstIdInTable);
             DelayUtils.sleep();
+        } else {
+            log.info("Table doesn't have data for chosen filters. Issue ID cannot be set");
         }
     }
 
@@ -136,5 +151,38 @@ public class ScenarioSummaryBasePage extends BaseACDPage {
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Summing values of selected cells");
         return selectedCells.stream().map(c -> Integer.parseInt(c.getValue())).collect(Collectors.summingInt(Integer::intValue));
+    }
+
+    public void clearIssueTableFilters() {
+        clearAttributeValue(CREATION_TYPE_ID);
+        clearAttributeValue(ATTRIBUTE_ID);
+        clearTimePeriod(CREATE_TIME_ID);
+    }
+
+    public void setAdvancedSearchAttributes(String creationTypeValue, int days, int hours, int minutes) {
+        setAttributeValue(CREATION_TYPE_ID, creationTypeValue);
+        setValueInTimePeriodChooser(CREATE_TIME_ID, days, hours, minutes);
+        setValueOfIssueIdSearch();
+    }
+
+    public void checkIssuesTableWithFilter(String creationTypeValue, int days, int hours, int minutes) {
+
+        if (isDataInIssuesTable()) {
+            log.info("Table contains data for issues with roots");
+        } else {
+            log.info("Table doesn't have data for issues with roots");
+            turnOnSwitcher(SWITCHER_ID);
+            if (!isDataInIssuesTable()) {
+                throw new NoSuchElementException("Table doesn't have data for issues without roots");
+            } else {
+                log.info("Table contains data for issues without roots");
+            }
+        }
+        setAdvancedSearchAttributes(creationTypeValue, days, hours, minutes);
+        if (!isDataInIssuesTable()) {
+            throw new NoSuchElementException("Table doesn't have data for provided filters");
+        }
+        DelayUtils.sleep();
+        clearIssueTableFilters();
     }
 }

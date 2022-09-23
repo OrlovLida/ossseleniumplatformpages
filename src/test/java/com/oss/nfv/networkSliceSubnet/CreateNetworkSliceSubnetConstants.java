@@ -17,8 +17,10 @@ public class CreateNetworkSliceSubnetConstants {
     public static final String OPERATIONAL_STATE_VALUE = "ENABLED";
     public static final String ADMINISTRATIVE_STATE_VALUE = "UNLOCKED";
     public static final String SLICE_PROFILE_NAME = "SLICE-PROFILE-CREATE-SELENIUM-TEST";
+    public static final String CAPACITY_SLICE_PROFILE_NAME = "SLICE-PROFILE-CREATE-SELENIUM-TEST";
 
     public static final String SLICE_PROFILE_DEFAULT_LABEL_PATH = "Slice Profile 1";
+    public static final String CAPACITY_SLICE_PROFILE_DEFAULT_LABEL_PATH = "Capacity Slice Profile";
     public static final String PLMN_INFO_DEFAULT_LABEL_PATH = SLICE_PROFILE_NAME
             + ".PLMN Info 1 (mcc: , mnc: , sd: , sst: )";
 

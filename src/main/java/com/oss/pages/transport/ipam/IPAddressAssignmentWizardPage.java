@@ -15,13 +15,13 @@ import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
 import static com.oss.framework.components.inputs.Input.ComponentType.SEARCH_FIELD;
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_AREA;
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
-import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.MANUAL_ADDRESS_MODE;
 import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.CARD;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.EXISTING_ADDRESS_MODE;
 import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.INTERFACE;
 import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.LOGICAL_FUNCTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.MANUAL_ADDRESS_MODE;
 import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.NEW_ADDRESS_MODE;
 import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.PHYSICAL_DEVICE;
-import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.EXISTING_ADDRESS_MODE;
 
 /**
  * @author Ewa Frączek
@@ -32,7 +32,7 @@ public class IPAddressAssignmentWizardPage extends BasePage {
     private static final String MODE_COMPONENT_ID = "hostAssignmentWizardMainStepWizardModeComponentId";
     private static final String IP_ADDRESS_MANUAL_MODE_COMPONENT_ID = "hostAssignmentWizardMainStepAddressManualModeFieldComponentId";
     private static final String IP_ADDRESS_AUTOMATIC_MODE_COMPONENT_ID = "hostAssignmentWizardMainStepAddressAutomaticModeFieldComponentId";
-    private static final String IP_ADDRESS_RESERVED_MODE_COMPONENT_ID = "hostAssignmentWizardMainStepASIPHostAddressFieldComponentId";
+    private static final String IP_ADDRESS_RESERVED_MODE_COMPONENT_ID = "hostAssignmentWizardMainStepASIPHostAddressFieldComponentId_OSF";
     private static final String IP_SUBNET_COMPONENT_ID = "hostAssignmentWizardMainStepSubnetFieldComponentId_OSF";
     private static final String MASK_COMPONENT_ID = "hostAssignmentWizardMainStepMaskFieldComponentId";
     private static final String IP_NETWORK_COMPONENT_ID = "hostAssignmentWizardMainStepIPNetworkSearchFieldComponentId";

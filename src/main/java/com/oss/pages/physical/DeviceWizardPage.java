@@ -4,6 +4,7 @@ import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.list.EditableList;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 
@@ -23,7 +24,7 @@ public class DeviceWizardPage extends BasePage {
     private static final String DEVICE_NETWORK_FUNCTION_NAME_TYPE_DATA_ATTRIBUTE_NAME = "networkFunctionName";
     private static final String DEVICE_CHASSIS_ID_DATA_ATTRIBUTE_NAME = "chassisId";
     private static final String DEVICE_LOCATION_DATA_ATTRIBUTE_NAME = "location_OSF";
-    private static final String DEVICE_LOGICAL_LOCATION_DATA_ATTRIBUTE_NAME = "search_logical_location";
+    private static final String DEVICE_LOGICAL_LOCATION_DATA_ATTRIBUTE_NAME = "logicalLocation_OSF";
     private static final String DEVICE_NETWORK_DOMAIN_DATA_ATTRIBUTE_NAME = "networkDomain";
     private static final String DEVICE_SERIAL_NUMBER_DATA_ATTRIBUTE_NAME = "serialNumber";
     private static final String DEVICE_HOSTNAME_DATA_ATTRIBUTE_NAME = "hostname";
@@ -37,8 +38,15 @@ public class DeviceWizardPage extends BasePage {
     private static final String DEVICE_CREATE_WIZARD_LIVE = "devices_create_wizard_view";
     private static final String DEVICE_UPDATE_WIZARD = "device_update_wizard_view";
     private static final String DEVICE_AVAILABLE_MOUNTING_POSITIONS_DATA_ATTRIBUTE_NAME = "mountingPosition";
+    private static final String DEVICE_CREATE_PROMPT = "device_create_wizard_web_view_prompt-card";
 
     private static final String DEVICE_TYPE_PATTERN = "oss__046__physical__045__inventory__046__physicaldevice__046__type__046__";
+
+    private static final String RECALCULATE_NAMING_BUTTON_ID = "CalculateNamingButton";
+    private static final String NAMING_PREVIEW_LIST_ID = "ExtendedList-AttributesTable";
+    private static final String DEVICE_NAME_IN_LIST_ID = "table-element.name.id";
+    private static final String DEVICE_NAME_IN_LIST_FIELD_ID = "table-element.name.id-TEXT_FIELD";
+    private static final String DEVICE_NAME_IN_LIST_POPUP_FIELD_ID = DEVICE_NAME_IN_LIST_FIELD_ID;
 
     public DeviceWizardPage(WebDriver driver) {
         super(driver);
@@ -62,6 +70,7 @@ public class DeviceWizardPage extends BasePage {
         create();
     }
 
+    private static final String DEVICE_MODEL_DATA_OWNER_NAME = "resourceOwner_OSF";
     @Step("Create Device with mandatory fields (Equipment type, Model, Name, Location, Physical Location, Precise Location) filled in")
     public void createDevice(String model, String name, String location) {
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -76,6 +85,16 @@ public class DeviceWizardPage extends BasePage {
         accept();
     }
 
+    @Step("Clicking on Recalculate Naming button")
+    public void clickRecalculateNaming() {
+        getDeviceWizard().clickButtonById(RECALCULATE_NAMING_BUTTON_ID);
+    }
+
+    @Step("Set resource owner")
+    public void setResourceOwner(String owner) {
+        getDeviceWizard().setComponentValue(DEVICE_MODEL_DATA_OWNER_NAME, owner);
+    }
+
     @Step("Set Model using contains")
     public void setModel(String model) {
         getDeviceWizard().getComponent(DEVICE_MODEL_DATA_ATTRIBUTE_NAME).setSingleStringValueContains(model);
@@ -84,6 +103,11 @@ public class DeviceWizardPage extends BasePage {
     @Step("Set Name")
     public void setName(String name) {
         getDeviceWizard().setComponentValue(DEVICE_NAME_DATA_ATTRIBUTE_NAME, name);
+    }
+
+    @Step("Setting location {deviceIndex} name to {deviceName}")
+    public void setLocationNameInList(int deviceIndex, String deviceName) {
+        EditableList.createById(driver, wait, NAMING_PREVIEW_LIST_ID).setValue(deviceIndex, deviceName, DEVICE_NAME_IN_LIST_ID, DEVICE_NAME_IN_LIST_POPUP_FIELD_ID);
     }
 
     @Step("Set Network Function Name")
@@ -98,29 +122,20 @@ public class DeviceWizardPage extends BasePage {
 
     @Step("Set Location using contains")
     public void setLocation(String location) {
-        if (getDeviceWizard().getComponent(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME)
-                .getStringValue().isEmpty()) {
-            getDeviceWizard().getComponent(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME)
-                    .setSingleStringValueContains(location);
-        }
+        getDeviceWizard().getComponent(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME)
+                .setSingleStringValueContains(location);
     }
 
     @Step("Set Physical Location using contains")
     public void setPhysicalLocation(String preciseLocation) {
-        if (getDeviceWizard().getComponent(DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME)
-                .getStringValue().isEmpty()) {
-            getDeviceWizard().getComponent(DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME)
-                    .setSingleStringValueContains(preciseLocation);
-        }
+        getDeviceWizard().getComponent(DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME)
+                .setSingleStringValueContains(preciseLocation);
     }
 
     @Step("Set Precise Location using contains")
     public void setPreciseLocation(String preciseLocation) {
-        if (getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME)
-                .getStringValue().isEmpty()) {
-            getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME)
-                    .setSingleStringValueContains(preciseLocation);
-        }
+        getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME)
+                .setSingleStringValueContains(preciseLocation);
     }
 
     @Step("Set Available Mounting Positions")
@@ -255,6 +270,9 @@ public class DeviceWizardPage extends BasePage {
         }
         if (driver.getPageSource().contains(DEVICE_CREATE_WIZARD_LIVE)) {
             return Wizard.createByComponentId(driver, wait, DEVICE_CREATE_WIZARD_LIVE);
+        }
+        if (driver.getPageSource().contains(DEVICE_CREATE_PROMPT)) {
+            return Wizard.createByComponentId(driver, wait, DEVICE_CREATE_PROMPT);
         } else
             return Wizard.createByComponentId(driver, wait, DEVICE_UPDATE_WIZARD);
     }
