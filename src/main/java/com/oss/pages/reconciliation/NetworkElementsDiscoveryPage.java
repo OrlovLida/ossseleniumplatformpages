@@ -35,6 +35,11 @@ public class NetworkElementsDiscoveryPage extends BasePage {
         selectElement(elementName);
     }
 
+    @Step("Check if operation exists")
+    public boolean isRowPresent(String operationName) {
+        return getTreeView().isRowPresent(operationName);
+    }
+
     @Step("Search for element by {elementName}")
     public void searchForElement(String elementName) {
         getTreeView().search(elementName);
