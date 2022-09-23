@@ -13,26 +13,26 @@ public class ResourceHierarchyConverter {
 
     private ResourceHierarchyConverter() {}
 
-    public static Map<String, List<String>> toHierarchiesByParent(ResourceHierarchyDTO resourceHierarchyDTO) {
+    public static Map<String, List<String>> getHierarchiesByParent(ResourceHierarchyDTO resourceHierarchyDTO) {
         Map<ResourceIdentifierDTO, List<ResourceHierarchyElementDTO>> hierarchyByParent = resourceHierarchyDTO.getHierarchy().stream()
                 .filter(element -> element.getParentId().isPresent())
                 .collect(Collectors.groupingBy(element -> element.getParentId().get()));
 
         return hierarchyByParent.entrySet().stream()
                 .collect(Collectors.toMap(
-                        entry -> toIdWithType(entry.getKey()),
-                        entry -> toParentIdsWithTypes(entry.getValue())
+                        entry -> getIdWithType(entry.getKey()),
+                        entry -> getIdsWithTypes(entry.getValue())
                 ));
     }
 
-    private static String toIdWithType(ResourceIdentifierDTO resourceIdentifierDTO) {
+    private static String getIdWithType(ResourceIdentifierDTO resourceIdentifierDTO) {
         return resourceIdentifierDTO.getType() + "_" + resourceIdentifierDTO.getIdentifier();
     }
 
-    private static List<String> toParentIdsWithTypes(Collection<ResourceHierarchyElementDTO> resourceIdentifierDTOs) {
+    private static List<String> getIdsWithTypes(Collection<ResourceHierarchyElementDTO> resourceIdentifierDTOs) {
         return resourceIdentifierDTOs.stream()
                 .map(ResourceHierarchyElementDTO::getId)
-                .map(ResourceHierarchyConverter::toIdWithType)
+                .map(ResourceHierarchyConverter::getIdWithType)
                 .collect(Collectors.toList());
     }
 

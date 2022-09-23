@@ -395,7 +395,7 @@ public class CreateMultipleInstancesOfDeviceTest extends BaseTestCase {
 
     private String getFirstChassisIdFromHierarchy(String deviceId) {
         ResourceHierarchyDTO resourceHierarchy = getResourceHierarchyAPI(deviceId);
-        Map<String, List<String>> hierarchy = ResourceHierarchyConverter.toHierarchiesByParent(resourceHierarchy);
+        Map<String, List<String>> hierarchy = ResourceHierarchyConverter.getHierarchiesByParent(resourceHierarchy);
 
         return hierarchy.keySet().stream()
                 .filter(element -> element.contains("Chassis"))
