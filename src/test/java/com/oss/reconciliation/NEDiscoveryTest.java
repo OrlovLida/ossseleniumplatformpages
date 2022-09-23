@@ -9,7 +9,6 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 import com.oss.BaseTestCase;
-import com.oss.framework.components.mainheader.Notifications;
 import com.oss.framework.navigation.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.reconciliation.ConnectionConfigurationObjectsViewerPage;
@@ -60,8 +59,7 @@ public class NEDiscoveryTest extends BaseTestCase {
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             networkElementsDiscoveryPage.selectElement(OPERATION_NAME);
             networkElementsDiscoveryPage.deleteOperation();
-        }
-        else {
+        } else {
             LOG.info("Operation with name: " + OPERATION_NAME + " doesn't exist");
         }
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
