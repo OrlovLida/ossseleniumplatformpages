@@ -19,6 +19,7 @@ import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 import com.oss.pages.bpm.ProcessOverviewPage;
 import io.qameta.allure.Description;
+import io.qameta.allure.Step;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -33,20 +34,21 @@ public class ProcessWizardPage extends BasePage {
 
     protected static final String NEXT_BUTTON = "wizard-next-button-bpm_processes_view_start-process-details-prompt_processCreateFormId";
     protected static final String MILESTONE_ENABLED_CHECKBOX_ID = "milestonesEnabledCheckboxId";
+    protected static final String PROCESS_WIZARD_STEP_2 = "bpm_processes_view_start-process-details-prompt_prompt-card";
+    protected static final String PROCESS_NAME = "Selenium Test " + Math.random();
     private static final String CANNOT_EXTRACT_PROCESS_CODE_EXCEPTION = "Cannot extract Process Code from message: ";
     private static final String TABLE_PROCESSES = "bpm_processes_view_processes";
     private static final String PROCESS_WIZARD_STEP_1 = "bpm_processes_view_start-process-prompt_prompt-card";
-    private static final String PROCESS_WIZARD_STEP_2 = "bpm_processes_view_start-process-details-prompt_prompt-card";
     private static final String DOMAIN_ATTRIBUTE_ID = "domain-combobox";
     private static final String DEFINITION_ATTRIBUTE_ID = "definition-combobox";
     private static final String RELEASE_ATTRIBUTE_ID = "release-combobox";
     private static final String PROCESS_NAME_ATTRIBUTE_ID = "processNameTextFieldId";
     private static final String FINISH_DUE_DATE_ID = "FINISHED_DUE_DATE";
     private static final String DUE_DATE_ID = "programDueDateId";
+    private static final String PREVIOUS_BUTTON = "wizard-previous-button-bpm_processes_view_start-process-details-prompt_processCreateFormId";
     private static final String ACCEPT_BUTTON = "wizard-submit-button-start-process-wizard";
     private static final String CREATE_BUTTON = "wizard-submit-button-bpm_processes_view_start-process-details-prompt_processCreateFormId";
     private static final String CANCEL_BUTTON = "wizard-cancel-button-bpm_processes_view_start-process-details-prompt_processCreateFormId";
-    private static final String PROCESS_NAME = "Selenium Test " + Math.random();
     private static final String INVENTORY_PROCESS = "Inventory Processes";
     private static final String LATEST = "Latest";
     private static final String NRP = "Network Resource Process";
@@ -272,6 +274,16 @@ public class ProcessWizardPage extends BasePage {
         DelayUtils.sleep();
         processWizard.clickButtonById(NEXT_BUTTON);
         return new MilestonesStepWizardPage(driver);
+    }
+
+    @Step("Defining simple DCP with process roles and waiting for information's about roles")
+    public ProcessRolesStepWizardPage defineSimpleDCPAndGoToProcessRolesStep() {
+        return defineProcessAndGoToProcessRolesStep(PROCESS_NAME, (long) 0, DCP);
+    }
+
+    public ProcessRolesStepWizardPage defineProcessAndGoToProcessRolesStep(String processName, Long plusDays, String processType) {
+        definedBasicProcess(processName, processType, plusDays).clickButtonById(NEXT_BUTTON);
+        return new ProcessRolesStepWizardPage(driver);
     }
 
     public void clickAcceptButton() {
