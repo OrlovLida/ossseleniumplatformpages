@@ -69,7 +69,7 @@ public class DictionaryPage extends BaseDfePage {
 
     @Step("I select found Dictionary")
     public void selectFoundDictionary() {
-        getTable(driver, wait).selectRow(0);
+        getTable().selectRow(0);
     }
 
     @Step("I confirm the removal")

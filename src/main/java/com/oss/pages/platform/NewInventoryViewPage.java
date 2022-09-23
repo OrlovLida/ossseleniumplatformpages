@@ -152,7 +152,7 @@ public class NewInventoryViewPage extends BasePage {
         return filterValues;
     }
 
-    public List<String> getSavedFilters() {
+        public List<String> getSavedFilters() {
         return getAdvancedSearch().getSavedFilters();
     }
 
@@ -176,6 +176,14 @@ public class NewInventoryViewPage extends BasePage {
 
     public void unselectVisibilitySearchAttributes(List<String> attributeIds) {
         getMainTable().unselectVisibilitySearchAttributes(attributeIds);
+    }
+
+    public void setDefaultAdvanceSearchSettings() {
+        getMainTable().getAdvancedSearch().backToDefault();
+    }
+
+    public void changeAdvanceSearchAttributeOrder(String attributeId, int position) {
+        getMainTable().getAdvancedSearch().changeAttributesOrder(attributeId,position);
     }
 
     public List<String> getAllVisibleFilters() {

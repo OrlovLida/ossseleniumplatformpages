@@ -1,36 +1,40 @@
-[
-  {
-    "name": "NETWORK-SLICE-SUBNET-SELENIUM-TEST",
-    "resourceSpecificationId": "NFVSeleniumTestRANSliceSubnet",
+[{
+  "name": "NETWORK-SLICE-SUBNET-SELENIUM-TEST",
+  "resourceSpecificationId": "NFVSeleniumTestRANSliceSubnet",
+  "attributes": [{
+    "name": "operationalState",
+    "value": "DISABLED"
+  }, {
+    "name": "administrativeState",
+    "value": "UNLOCKED"
+  }
+  ],
+  "description": "NETWORK-SLICE-SUBNET-EDIT-DESCRIPTION",
+  "masterRelations": [
+  ],
+  "networkSliceSubnetRef": [
+  ],
+  "capacitySliceProfile": {
     "attributes": [
-      {
-        "name": "operationalState",
-        "value": "DISABLED"
-      },
-      {
-        "name": "administrativeState",
-        "value": "UNLOCKED"
-      }
     ],
-    "description": "NETWORK-SLICE-SUBNET-EDIT-DESCRIPTION",
-    "masterRelations": [
+    "name": "CAPACITY-SLICE-PROFILE-EDIT-SELENIUM-TEST",
+    "plmnInfoList": [{
+      "sst": 145
+    }
+    ]
+  },
+  "sliceProfileList": [{
+    "attributes": [
     ],
-    "networkSliceSubnetRef": [
-    ],
-    "sliceProfileList": [
-      {
-        "attributes": [
-        ],
-        "name": "SLICE-PROFILE-EDIT-SELENIUM-TEST",
-        "plmnInfoList": [
-          {
-            "mcc": "805",
-            "mnc": "6015",
-            "sd": 16007215,
-            "sst": 145
-          }
-        ]
-      }
+    "name": "SLICE-PROFILE-EDIT-SELENIUM-TEST",
+    "plmnInfoList": [{
+      "mcc": "805",
+      "mnc": "6015",
+      "sd": 16007215,
+      "sst": 145
+    }
     ]
   }
+  ]
+}
 ]

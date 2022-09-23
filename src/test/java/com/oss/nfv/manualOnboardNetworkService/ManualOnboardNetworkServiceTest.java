@@ -1,5 +1,6 @@
 package com.oss.nfv.manualOnboardNetworkService;
 
+import com.oss.framework.components.mainheader.PerspectiveChooser;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
@@ -25,6 +26,7 @@ public class ManualOnboardNetworkServiceTest extends BaseManualOnboardNetworkSer
     @Description("Got to Network Service Package Onboarding to NFVO wizard")
     public void openOnboardNetworkServiceWizard() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
         //given
         SideMenuService.goToResourceSpecificationsView(driver, webDriverWait);
         //when

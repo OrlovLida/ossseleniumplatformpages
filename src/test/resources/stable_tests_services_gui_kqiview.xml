@@ -56,4 +56,20 @@
             </class>
         </classes>
     </test>
+    <test name="IndicatorsViewTestDFEPart5">
+        <parameter name="indicatorNodesToExpand" value="DFE Tests,DFE Product Tests,Selenium Tests"/>
+        <parameter name="indicatorNodesToSelect" value="SUCCESS_LONG,ATTEMPTS_LONG"/>
+        <parameter name="dimensionNodesToExpand" value="t:SMOKE#DimHierSelenium"/>
+        <parameter name="dimensionNodesToSelect" value="D3_01,D3_02"/>
+        <parameter name="filterName" value="DFE Tests"/>
+        <parameter name="multipleByMo" value="t:SMOKE#DimHierSelenium"/>
+        <parameter name="multipleByIndicator" value="KQI"/>
+        <classes>
+            <class name="com.oss.iaa.dpe.IndicatorsViewTest">
+                <methods>
+                    <include name="commonLegendTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
 </suite>

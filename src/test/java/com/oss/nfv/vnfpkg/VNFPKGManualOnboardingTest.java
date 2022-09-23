@@ -1,5 +1,6 @@
 package com.oss.nfv.vnfpkg;
 
+import com.oss.framework.components.mainheader.PerspectiveChooser;
 import org.assertj.core.api.SoftAssertions;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -35,6 +36,7 @@ public class VNFPKGManualOnboardingTest extends BaseVNFPKGManualOnboardingTest {
     @Description("Go to Resource Specifications view, find and select VNFPKG specification and open manual wizard from context menu")
     public void openVnfpkgOnboardingWizard() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
         //given
         SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
 

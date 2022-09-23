@@ -85,7 +85,7 @@ public class AggregatePage extends BaseDfePage {
 
     @Step("I select found Aggregate")
     public void selectFoundAggregate() {
-        getTable(driver, wait).selectRow(0);
+        getTable().selectRow(0);
     }
 
     @Step("I confirm the removal of Aggregate")
@@ -164,9 +164,9 @@ public class AggregatePage extends BaseDfePage {
     }
 
     @Step("Check name in details tab")
-    public String checkNameInPropertyPanel() {
+    public String getNameFromPropertyPanel() {
         waitForPageToLoad(driver, wait);
-        return checkValueInPropertyPanel(PROPERTY_PANEL_ID, NAME_PROPERTY);
+        return getValueFromPropertyPanel(PROPERTY_PANEL_ID, NAME_PROPERTY);
     }
 
     @Step("Check if Configurations Tab Table is empty")

@@ -36,7 +36,7 @@ public class AggregatesRegressionTests extends BaseTestCase {
         if (aggregateExists) {
             aggregatePage.selectFoundAggregate();
             aggregatePage.selectDetailsTab();
-            Assert.assertEquals(aggregatePage.checkNameInPropertyPanel(), aggregateName);
+            Assert.assertEquals(aggregatePage.getNameFromPropertyPanel(), aggregateName);
         } else {
             Assert.fail("Cannot find Aggregate " + aggregateName);
         }

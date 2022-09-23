@@ -37,6 +37,7 @@ public class DeviceWizardPage extends BasePage {
     private static final String DEVICE_CREATE_WIZARD_LIVE = "devices_create_wizard_view";
     private static final String DEVICE_UPDATE_WIZARD = "device_update_wizard_view";
     private static final String DEVICE_AVAILABLE_MOUNTING_POSITIONS_DATA_ATTRIBUTE_NAME = "mountingPosition";
+    private static final String DEVICE_CREATE_PROMPT = "device_create_wizard_web_view_prompt-card";
 
     private static final String DEVICE_TYPE_PATTERN = "oss__046__physical__045__inventory__046__physicaldevice__046__type__046__";
 
@@ -98,29 +99,20 @@ public class DeviceWizardPage extends BasePage {
 
     @Step("Set Location using contains")
     public void setLocation(String location) {
-        if (getDeviceWizard().getComponent(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME)
-                .getStringValue().isEmpty()) {
-            getDeviceWizard().getComponent(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME)
-                    .setSingleStringValueContains(location);
-        }
+        getDeviceWizard().getComponent(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME)
+                .setSingleStringValueContains(location);
     }
 
     @Step("Set Physical Location using contains")
     public void setPhysicalLocation(String preciseLocation) {
-        if (getDeviceWizard().getComponent(DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME)
-                .getStringValue().isEmpty()) {
-            getDeviceWizard().getComponent(DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME)
-                    .setSingleStringValueContains(preciseLocation);
-        }
+        getDeviceWizard().getComponent(DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME)
+                .setSingleStringValueContains(preciseLocation);
     }
 
     @Step("Set Precise Location using contains")
     public void setPreciseLocation(String preciseLocation) {
-        if (getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME)
-                .getStringValue().isEmpty()) {
-            getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME)
-                    .setSingleStringValueContains(preciseLocation);
-        }
+        getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME)
+                .setSingleStringValueContains(preciseLocation);
     }
 
     @Step("Set Available Mounting Positions")
@@ -255,6 +247,9 @@ public class DeviceWizardPage extends BasePage {
         }
         if (driver.getPageSource().contains(DEVICE_CREATE_WIZARD_LIVE)) {
             return Wizard.createByComponentId(driver, wait, DEVICE_CREATE_WIZARD_LIVE);
+        }
+        if (driver.getPageSource().contains(DEVICE_CREATE_PROMPT)) {
+            return Wizard.createByComponentId(driver, wait, DEVICE_CREATE_PROMPT);
         } else
             return Wizard.createByComponentId(driver, wait, DEVICE_UPDATE_WIZARD);
     }

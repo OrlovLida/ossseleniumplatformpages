@@ -78,7 +78,7 @@ public class EtlDataCollectionsPage extends BaseDfePage {
 
     @Step("I select found ETL Process")
     public void selectFoundEtlProcess() {
-        getTable(driver, wait).selectRow(0);
+        getTable().selectRow(0);
     }
 
     @Step("I confirm the removal of ETL Process")
@@ -132,7 +132,7 @@ public class EtlDataCollectionsPage extends BaseDfePage {
     @Step("Check name value in details tab")
     public String checkNameInPropertyPanel() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        return checkValueInPropertyPanel(PROPERTY_PANEL_ID,
+        return getValueFromPropertyPanel(PROPERTY_PANEL_ID,
                 NAME_PROPERTY);
     }
 

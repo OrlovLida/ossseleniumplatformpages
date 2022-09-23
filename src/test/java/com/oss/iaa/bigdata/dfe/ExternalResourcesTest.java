@@ -53,7 +53,7 @@ public class ExternalResourcesTest extends BaseTestCase {
     public void editExternalResource() {
         boolean externalResourceExists = externalResource.externalResourceExistsIntoTable(externalResourceName);
         if (externalResourceExists) {
-            externalResource.selectFoundExternalResource();
+            externalResource.selectFirstExternalResourceInTable();
             externalResource.clickEditExternalResource();
             ExternalResourcesPopupPage externalResourceWizard = new ExternalResourcesPopupPage(driver, webDriverWait, EDIT_WIZARD_ID);
             externalResourceWizard.fillName(updatedExternalResourceName);
@@ -72,7 +72,7 @@ public class ExternalResourcesTest extends BaseTestCase {
     public void deleteExternalResource() {
         boolean externalResourceExists = externalResource.externalResourceExistsIntoTable(externalResourceName);
         if (externalResourceExists) {
-            externalResource.selectFoundExternalResource();
+            externalResource.selectFirstExternalResourceInTable();
             externalResource.clickDeleteExternalResource();
             externalResource.confirmDelete();
             boolean externalResourceDeleted = !externalResource.externalResourceExistsIntoTable(externalResourceName);

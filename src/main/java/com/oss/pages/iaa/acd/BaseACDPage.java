@@ -15,6 +15,8 @@ import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
+import static com.oss.framework.components.inputs.Input.ComponentType.MULTI_SEARCHBOX;
+
 public class BaseACDPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(BaseACDPage.class);
@@ -60,10 +62,9 @@ public class BaseACDPage extends BasePage {
     @Step("I search by attribute")
     public void setAttributeValue(String attributeId, String inputValue) {
 
-        if (Boolean.TRUE.equals(isAttributeFilled(attributeId))) {
+        if (isAttributeFilled(attributeId)) {
             log.info("Input is not empty");
             clearAttributeValue(attributeId);
-            log.info("Input has been cleared");
         }
 
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -71,14 +72,27 @@ public class BaseACDPage extends BasePage {
         log.info("Setting value of {} attribute as {}", attributeId, inputValue);
     }
 
+    @Step("I search by attribute")
+    public void setAttributeValueMultiSearch(String attributeId, String inputValue) {
+
+        if (isAttributeFilled(attributeId)) {
+            log.info("Input is not empty");
+            clearAttributeValue(attributeId);
+        }
+
+        DelayUtils.waitForPageToLoad(driver, wait);
+        ComponentFactory.create(attributeId, MULTI_SEARCHBOX, driver, wait).setSingleStringValue(inputValue);
+        log.info("Setting value of {} attribute as {}", attributeId, inputValue);
+    }
+
     @Step("I Clear Attribute value")
     public void clearAttributeValue(String attributeId) {
         ComponentFactory.create(attributeId, driver, wait).clear();
-        log.info("Attribute value is cleared");
+        log.info("{} value is cleared", attributeId);
     }
 
     @Step("Check if multiComboBox is filled")
-    public Boolean isAttributeFilled(String attributeId) {
+    public boolean isAttributeFilled(String attributeId) {
         log.info("Checking if MultiComboBox is empty");
 
         return !ComponentFactory.create(attributeId, driver, wait).getStringValues().isEmpty();
@@ -87,27 +101,24 @@ public class BaseACDPage extends BasePage {
     @Step("I set value in time period chooser")
     public void setValueInTimePeriodChooser(String widgetId, int days, int hours, int minutes) {
 
-        if (Boolean.FALSE.equals(isTimePeriodChooserFilled(widgetId))) {
+        if (isTimePeriodChooserFilled(widgetId)) {
             clearTimePeriod(widgetId);
         }
-
-        TimePeriodChooser timePeriod = TimePeriodChooser.create(driver, wait, widgetId);
-        timePeriod.chooseOption(TimePeriodChooser.TimePeriodChooserOption.LAST);
+        getTimePeriodChooser(widgetId).chooseOption(TimePeriodChooser.TimePeriodChooserOption.LAST);
         log.info("Setting value in the time period chooser");
-        timePeriod.setLastPeriod(days, hours, minutes);
+        getTimePeriodChooser(widgetId).setLastPeriod(days, hours, minutes);
         DelayUtils.sleep();
     }
 
     @Step("I clear time period chooser")
     public void clearTimePeriod(String widgetId) {
-        TimePeriodChooser.create(driver, wait, widgetId).clickClearValue();
+        getTimePeriodChooser(widgetId).clickClearValue();
         log.info("Clearing time period chooser");
     }
 
     @Step("I check if timePeriodChooser is filled")
     public Boolean isTimePeriodChooserFilled(String widgetId) {
-
-        return TimePeriodChooser.create(driver, wait, widgetId).toString() != null;
+        return getTimePeriodChooser(widgetId).isCloseIconPresent();
     }
 
     @Step("I set value in Text field")
@@ -116,10 +127,10 @@ public class BaseACDPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    @Step("Turn On Include Issues without Roots switcher")
+    @Step("Turn on switcher")
     public void turnOnSwitcher(String switcherID) {
         ComponentFactory.create(switcherID, driver, wait).click();
-        log.info("Turning on Include Issues without Roots switcher");
+        log.info("Turning on switcher");
     }
 
     @Step("Refresh issues table")
@@ -134,5 +145,10 @@ public class BaseACDPage extends BasePage {
         TabsWidget.createById(driver, wait, tabId).selectTabByLabel(tabLabel);
         log.info("I opened {} tab", tabLabel);
         DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    private TimePeriodChooser getTimePeriodChooser(String widgetId) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return TimePeriodChooser.create(driver, wait, widgetId);
     }
 }

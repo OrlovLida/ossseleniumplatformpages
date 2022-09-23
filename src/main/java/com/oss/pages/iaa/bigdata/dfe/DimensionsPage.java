@@ -77,7 +77,7 @@ public class DimensionsPage extends BaseDfePage {
 
     @Step("I select found Dimension")
     public void selectFoundDimension() {
-        getTable(driver, wait).selectRow(0);
+        getTable().selectRow(0);
     }
 
     @Step("I confirm the removal")
@@ -141,7 +141,7 @@ public class DimensionsPage extends BaseDfePage {
     @Step("Check name value in details tab")
     public String checkNameInPropertyPanel() {
         waitForPageToLoad(driver, wait);
-        return checkValueInPropertyPanel(PROPERTY_PANEL_ID, NAME_PROPERTY);
+        return getValueFromPropertyPanel(PROPERTY_PANEL_ID, NAME_PROPERTY);
     }
 
     @Step("Check if Log Tab Table is empty")
