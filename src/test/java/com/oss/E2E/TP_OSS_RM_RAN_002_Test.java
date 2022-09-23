@@ -124,6 +124,7 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
         checkMessageType();
         closeMessage();
         cellSiteConfigurationPage.selectTreeRow(GNODEB_DU_NAME);
+        waitForPageToLoad();
         cellSiteConfigurationPage.createHostingOnDevice(BBU_NAME, false);
         checkMessageType();
         closeMessage();
