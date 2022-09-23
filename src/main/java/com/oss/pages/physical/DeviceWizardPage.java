@@ -106,7 +106,7 @@ public class DeviceWizardPage extends BasePage {
     }
 
     @Step("Setting location {deviceIndex} name to {deviceName}")
-    public void setLocationNameInList(int deviceIndex, String deviceName) {
+    public void setDeviceNameInList(int deviceIndex, String deviceName) {
         EditableList.createById(driver, wait, NAMING_PREVIEW_LIST_ID).setValue(deviceIndex, deviceName, DEVICE_NAME_IN_LIST_ID, DEVICE_NAME_IN_LIST_POPUP_FIELD_ID);
     }
 
