@@ -48,11 +48,8 @@ public class NEDiscoveryTest extends BaseTestCase {
     @Test(priority = 1, description = "Delete operation if exists")
     @Description("Check if operation exists and delete it")
     public void deleteOperationIfExists() {
-        networkElementsDiscoveryPage = new NetworkElementsDiscoveryPage(driver);
-        SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
-        sideMenu.callActionByLabel(NETWORK_ELEMENTS_DISCOVERY, NETWORK_DISCOVERY_AND_RECONCILIATION);
-        sideMenu.callActionByLabel(NETWORK_DISCOVERY_CONTROL);
-        sideMenu.callActionByLabel(NETWORK_ELEMENTS_DISCOVERY);
+        networkElementsDiscoveryPage = NetworkElementsDiscoveryPage.goToNetworkElementsDiscoveryPage(driver, BASIC_URL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkElementsDiscoveryPage.searchForElement(OPERATION_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         if (networkElementsDiscoveryPage.isOperationPresent(OPERATION_NAME)) {
