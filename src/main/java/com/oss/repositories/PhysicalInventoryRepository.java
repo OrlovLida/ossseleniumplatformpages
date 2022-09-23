@@ -10,6 +10,7 @@ import com.comarch.oss.physicalinventory.api.dto.PluggableModuleDTO;
 import com.comarch.oss.physicalinventory.api.dto.PortDTO;
 import com.comarch.oss.physicalinventory.api.dto.ResourceDTO;
 import com.comarch.oss.physicalinventory.api.dto.SearchResultDTO;
+import com.comarch.oss.resourcehierarchy.api.dto.ResourceHierarchyDTO;
 import com.oss.services.PhysicalInventoryClient;
 import com.oss.untils.Environment;
 
@@ -166,5 +167,12 @@ public class PhysicalInventoryRepository {
                 .type(pluggableModuleType)
                 .build();
     }
-    
+
+    public ResourceHierarchyDTO getResourceHierarchy(String resourceType, String resourceId, String mode) {
+        return client.getResourceHierarchy(resourceType, resourceId, mode);
+    }
+
+    public PhysicalDeviceDTO getDevice(String deviceId) {
+        return client.getDevice(deviceId);
+    }
 }
