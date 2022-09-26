@@ -136,8 +136,8 @@ public class LifecycleStateDecoratorsInTreeWidgetTest extends BaseTestCase {
         updateBuilding();
         updateDevice(device3Id,DEVICE_3_NAME, project2);
         hierarchyViewPage.getMainTree().callActionById(ActionsContainer.KEBAB_GROUP_ID, REFRESH_TREE_ACTION_ID);
-        TreeComponent.Node node = getNode(DEVICE_3_PATH);
         TreeComponent.Node locationNode = hierarchyViewPage.getFirstNode();
+        TreeComponent.Node node = getNode(DEVICE_3_PATH);
         Assertions.assertThat(locationNode.countDecorators()).isEqualTo(1);
         Assertions.assertThat(locationNode.getDecoratorStatus()).isEqualTo(PURPLE);
         Assertions.assertThat(node.countDecorators()).isEqualTo(1);
@@ -216,7 +216,7 @@ public class LifecycleStateDecoratorsInTreeWidgetTest extends BaseTestCase {
         deviceWizard.setName(DEVICE_1_NAME);
         DelayUtils.sleep(5000);
         deviceWizard.next();
-        //deviceWizard.setPreciseLocation(BUILDING_NAME);
+        deviceWizard.setPreciseLocation(BUILDING_NAME);
         deviceWizard.accept();
     }
     
