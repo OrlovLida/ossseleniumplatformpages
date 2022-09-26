@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.oss.framework.components.attributechooser.AttributesChooser;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.TableInterface;
 import com.oss.framework.widgets.table.TableWidget;
@@ -32,9 +33,9 @@ public class TasksPageV2 extends BasePage {
     public static final String HIGH_LEVEL_PLANNING_TASK = "High Level Planning";
     public static final String CORRECT_DATA_TASK = "Correct data";
     public static final String UPDATE_REQUIREMENTS_TASK = "Update Requirements";
+    public static final String TABS_TASKS_VIEW_ID = "bpm_task_graphql_view_tasksTabsWidget";
     private static final Logger log = LoggerFactory.getLogger(TasksPageV2.class);
     private static final String TABLE_TASKS_ID = "bpm_task_graphql_view_tasksTableWidget";
-    private static final String TABS_TASKS_VIEW_ID = "bpm_task_graphql_view_tasksTabsWidget";
     private static final String PROCESS_CODE = "Process Code";
     private static final String NAME = "Name";
     private static final String ASSIGNEE = "Assignee";
@@ -192,6 +193,30 @@ public class TasksPageV2 extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         startTask(ipCode, IMPLEMENTATION_TASK);
         return ipCode;
+    }
+
+    public void setQuickFilter(String filterName) {
+        getTableWidget().setQuickFilter(filterName);
+    }
+
+    public List<String> getAppliedQuickFilters() {
+        return getTableWidget().getAppliedQuickFilters();
+    }
+
+    public AttributesChooser getAttributesChooser() {
+        return getTableWidget().getAttributesChooser();
+    }
+
+    public List<String> getActiveColumnHeaders() {
+        return getTableWidget().getActiveColumnHeaders();
+    }
+
+    public void selectFirstTask() {
+        getTableWidget().selectFirstRow();
+    }
+
+    public String getColumnValueFromFirstRow(String columnId) {
+        return getTableWidget().getCellValue(0, columnId);
     }
 
     private String getIPCodeFromCompletedNRP(String nrpCode) {
