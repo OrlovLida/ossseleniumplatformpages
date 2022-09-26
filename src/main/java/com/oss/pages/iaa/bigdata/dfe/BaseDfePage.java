@@ -40,7 +40,7 @@ public abstract class BaseDfePage extends BasePage implements BaseDfePageInterfa
         log.info("Opening page: {}", pageUrl);
     }
 
-    public OldTable getTable(WebDriver driver, WebDriverWait wait) {
+    public OldTable getTable() {
         return OldTable.createById(driver, wait, getTableId());
     }
 
@@ -59,7 +59,7 @@ public abstract class BaseDfePage extends BasePage implements BaseDfePageInterfa
 
     @Step("Get category name")
     public String getCategoryName(int index) {
-        return getTable(driver, wait).getCellValue(index, CATEGORY_COLUMN_LABEL);
+        return getTable().getCellValue(index, CATEGORY_COLUMN_LABEL);
     }
 
     @Step("Search category")
@@ -84,7 +84,7 @@ public abstract class BaseDfePage extends BasePage implements BaseDfePageInterfa
     }
 
     protected int getNumberOfRowsInTable(String columnLabel) {
-        return getTable(driver, wait).countRows(columnLabel);
+        return getTable().countRows(columnLabel);
     }
 
     protected void clickContextActionAdd() {
@@ -100,7 +100,7 @@ public abstract class BaseDfePage extends BasePage implements BaseDfePageInterfa
     }
 
     protected void clickContextAction(String actionLabel) {
-        getTable(driver, wait).callActionByLabel(actionLabel);
+        getTable().callActionByLabel(actionLabel);
         log.debug("Clicking context action: {}", actionLabel);
     }
 
@@ -120,6 +120,7 @@ public abstract class BaseDfePage extends BasePage implements BaseDfePageInterfa
 
     protected void selectTab(String widgetId, String label) {
         TabsWidget.createById(driver, wait, widgetId).selectTabByLabel(label);
+        waitForPageToLoad(driver, wait);
     }
 
     protected void confirmDelete(String deleteLabel) {
@@ -157,7 +158,7 @@ public abstract class BaseDfePage extends BasePage implements BaseDfePageInterfa
                 .getCellValue(0, columnLabel);
     }
 
-    protected String checkValueInPropertyPanel(String propertyPanelId, String propertyName) {
+    protected String getValueFromPropertyPanel(String propertyPanelId, String propertyName) {
         String propertyValue = OldPropertyPanel.createById(driver, wait, propertyPanelId).getPropertyValue(propertyName);
         log.info("Value of: {} is: {}", propertyName, propertyValue);
         return propertyValue;

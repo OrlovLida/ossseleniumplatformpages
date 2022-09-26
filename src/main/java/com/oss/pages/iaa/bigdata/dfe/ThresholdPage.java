@@ -93,12 +93,12 @@ public class ThresholdPage extends BaseDfePage {
     @Step("Check if Threshold is Active")
     public boolean isThresholdActive() {
         waitForPageToLoad(driver, wait);
-        return getTable(driver, wait).getCellValue(0, IS_ACTIVE_COLUMN_LABEL).equalsIgnoreCase("Yes");
+        return getTable().getCellValue(0, IS_ACTIVE_COLUMN_LABEL).equalsIgnoreCase("Yes");
     }
 
     @Step("I select found Threshold")
     public void selectFoundThreshold() {
-        getTable(driver, wait).selectRow(0);
+        getTable().selectRow(0);
     }
 
     @Step("I confirm the removal of Threshold")
@@ -167,17 +167,17 @@ public class ThresholdPage extends BaseDfePage {
 
     @Step("Get problem ID")
     public String getProblemId(int index) {
-        return getTable(driver, wait).getCellValue(index, PROBLEM_ID_COLUMN_LABEL);
+        return getTable().getCellValue(index, PROBLEM_ID_COLUMN_LABEL);
     }
 
     @Step("Check if Threshold is active")
     public String getIsActive(int index) {
-        return getTable(driver, wait).getCellValue(index, IS_ACTIVE_COLUMN_LABEL);
+        return getTable().getCellValue(index, IS_ACTIVE_COLUMN_LABEL);
     }
 
     @Step("Get status name")
     public String getStatus(int index) {
-        return getTable(driver, wait).getCellValue(index, STATUS_COLUMN_LABEL);
+        return getTable().getCellValue(index, STATUS_COLUMN_LABEL);
     }
 
     @Step("Click details tab")
@@ -188,7 +188,7 @@ public class ThresholdPage extends BaseDfePage {
     @Step("Check name value in details tab")
     public String checkNameInPropertyPanel() {
         waitForPageToLoad(driver, wait);
-        return checkValueInPropertyPanel(PROPERTY_PANEL_ID, NAME_PROPERTY);
+        return getValueFromPropertyPanel(PROPERTY_PANEL_ID, NAME_PROPERTY);
     }
 
     @Step("Check if Conditions Table contains simple and else condition")

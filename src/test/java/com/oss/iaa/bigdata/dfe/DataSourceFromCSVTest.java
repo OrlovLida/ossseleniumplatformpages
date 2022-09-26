@@ -56,7 +56,7 @@ public class DataSourceFromCSVTest extends BaseTestCase {
     public void editDSFromCSV() {
         boolean dataSourceExists = dataSourcePage.dataSourceExistIntoTable(dataSourceName);
         if (dataSourceExists) {
-            dataSourcePage.selectFoundDataSource();
+            dataSourcePage.selectFirstDataSourceInTable();
             dataSourcePage.clickEditDS();
             DataSourceStepWizardPage dsStepWizard = new DataSourceStepWizardPage(driver, webDriverWait);
             dsStepWizard.getBasicInfoStep().fillBasicInformationStep(dataSourceName_updated);
@@ -77,7 +77,7 @@ public class DataSourceFromCSVTest extends BaseTestCase {
     public void deleteDsFromCSV() {
         boolean dataSourceExists = dataSourcePage.dataSourceExistIntoTable(dataSourceName);
         if (dataSourceExists) {
-            dataSourcePage.selectFoundDataSource();
+            dataSourcePage.selectFirstDataSourceInTable();
             dataSourcePage.clickDeleteDS();
             dataSourcePage.clickConfirmDelete();
             boolean dataSourceIsDeleted = !dataSourcePage.dataSourceExistIntoTable(dataSourceName);

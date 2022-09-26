@@ -45,12 +45,22 @@ public class DataSourcePage extends BaseDfePage {
     private static final String DOWNLOAD_FILE_LABEL = "Download file";
     private static final String SHOW_FILE_TABLE_ID = "TableId";
     private static final String TAB_WIDGET_ID = "card-content_TabsId";
+    private static final String DETAILS_TAB = "Details";
+    private static final String PROPERTY_PANEL_ID = "DetailsId";
+    private static final String IS_ACTIVE_PROPERTY = "Is Active";
+    private static final String DATABASE_PROPERTY = "Database";
+    private static final String CATEGORY_SEARCH_ID = "category";
+    private static final String STATUS_SEARCH_ID = "status";
+    private static final String DATA_FORMAT_SEARCH_ID = "format";
+    private static final String REFRESH_BUTTON_ID = "REFRESH_DATA_SOURCE_MODAL";
+    private static final String FORMAT_TAB_ID = "Format";
+    private static final String FORMAT_TABLE_ID = "FormatTableAppId";
 
     public DataSourcePage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
     }
 
-    @Step("I open Data Source View")
+    @Step("Open Data Source View")
     public static DataSourcePage goToPage(WebDriver driver, String basicURL) {
         WebDriverWait wait = new WebDriverWait(driver, 45);
 
@@ -58,77 +68,117 @@ public class DataSourcePage extends BaseDfePage {
         return new DataSourcePage(driver, wait);
     }
 
-    @Step("I click add new")
+    @Step("Click add new")
     public void clickAddNewDS() {
         clickContextActionAdd();
     }
 
-    @Step("I select Create Data Source - Query Result")
+    @Step("Select Create Data Source - Query Result")
     public void selectDSFromQuery() {
         DropdownList.create(driver, wait).selectOptionById(CREATE_DS_QUERY);
     }
 
-    @Step("I select Create Data Source - CSV File")
+    @Step("Select Create Data Source - CSV File")
     public void selectDSFromCSV() {
         DropdownList.create(driver, wait).selectOptionById(CREATE_DS_CSV);
     }
 
-    @Step("I select Create Data Source - Kafka")
+    @Step("Select Create Data Source - Kafka")
     public void selectDSFromKafka() {
         DropdownList.create(driver, wait).selectOptionById(CREATE_DS_KAFKA);
     }
 
-    @Step("I check if data source: {name} exists into table")
+    @Step("Check if data source: {name} exists into table")
     public Boolean dataSourceExistIntoTable(String name) {
         return feedExistIntoTable(name, DATA_SOURCE_NAME_COLUMN);
     }
 
-    @Step("I select found Data Source")
-    public void selectFoundDataSource() {
-        getTable(driver, wait).selectRow(0);
+    @Step("Select first Data Source in table")
+    public void selectFirstDataSourceInTable() {
+        getTable().selectRow(0);
         log.info("I selected found Data Source");
     }
 
-    @Step("I click Edit Data Source")
+    @Step("Get Value of: {columnName} from first Data Source from Table")
+    public String getValueFromFirstRow(String columnName) {
+        return getTable().getCellValue(0, columnName);
+    }
+
+    @Step("Check if Data Source table is empty")
+    public boolean isDataSourceTableEmpty() {
+        return getTable().hasNoData();
+    }
+
+    @Step("Click Edit Data Source")
     public void clickEditDS() {
         clickContextActionEdit();
     }
 
-    @Step("I click Delete Data Source")
+    @Step("Click Delete Data Source")
     public void clickDeleteDS() {
         clickContextActionDelete();
     }
 
-    @Step("I confirm the removal")
+    @Step("Confirm the removal")
     public void clickConfirmDelete() {
         confirmDelete(CONFIRM_DELETE_LABEL);
     }
 
-    @Step("I select logs tab")
-    public void selectLogsTab() {
-        selectTab(TAB_WIDGET_ID, LOGS_TAB);
-        log.info("Selecting logs tab");
+    @Step("Click Refresh Data Source")
+    public void clickRefresh() {
+        getTable().callAction(REFRESH_BUTTON_ID);
+        waitForPageToLoad(driver, wait);
     }
 
-    @Step("I select Processed Files tab")
+    @Step("Select logs tab")
+    public void selectLogsTab() {
+        selectTab(TAB_WIDGET_ID, LOGS_TAB);
+        log.info("Selecting Logs tab");
+    }
+
+    @Step("Select Details Tab")
+    public void selectDetailsTab() {
+        selectTab(TAB_WIDGET_ID, DETAILS_TAB);
+        log.info("Selecting Details tab");
+    }
+
+    @Step("Select Processed Files tab")
     public void selectProcessedFilesTab() {
         selectTab(TAB_WIDGET_ID, PROCESSED_FILES_TAB);
         log.info("Selecting Processed Files Tab");
     }
 
-    @Step("I click refresh Tab Table")
+    @Step("Select Format Tab")
+    public void selectFormatTab() {
+        selectTab(TAB_WIDGET_ID, FORMAT_TAB_ID);
+        log.info("Selecting Format Tab");
+    }
+
+    @Step("Check name in details tab")
+    public String getIsActiveFromPropertyPanel() {
+        waitForPageToLoad(driver, wait);
+        return getValueFromPropertyPanel(PROPERTY_PANEL_ID, IS_ACTIVE_PROPERTY);
+    }
+
+    @Step("Check database in details tab")
+    public String getDatabaseFromPropertyPanel() {
+        waitForPageToLoad(driver, wait);
+        return getValueFromPropertyPanel(PROPERTY_PANEL_ID, DATABASE_PROPERTY);
+    }
+
+    @Step("Click refresh Tab Table")
     public void refreshLogsTable() {
         clickTabsContextAction(TAB_WIDGET_ID, REFRESH_LABEL);
     }
 
-    @Step("I click show file in Tab Table")
+    @Step("Click show file in Tab Table")
     public void showFile() {
         clickTabsContextAction(TAB_WIDGET_ID, SHOW_FILE_LABEL);
         log.info("waiting for show file table to load");
         waitForPageToLoad(driver, wait);
     }
 
-    @Step("I set value in time period chooser")
+    @Step("Set value in time period chooser")
     public void setValueInTimePeriodChooser(int days, int hours, int minutes) {
         log.info("Setting value for last option in time period chooser: {} days, {} hours, {} minutes", days, hours, minutes);
         waitForPageToLoad(driver, wait);
@@ -139,29 +189,54 @@ public class DataSourcePage extends BaseDfePage {
         timePeriodChooser.setLastPeriod(days, hours, minutes);
     }
 
-    @Step("I choose option from Severity combobox")
-    public void setSeverityInCombobox(String severity) {
+    @Step("Set Category search")
+    public void setCategory(String categoryName) {
+        ComponentFactory.create(CATEGORY_SEARCH_ID, driver, wait).setSingleStringValue(categoryName);
+        waitForPageToLoad(driver, wait);
+        log.info("Category search is set to: {}", categoryName);
+    }
+
+    @Step("Set Status search")
+    public void setStatus(String statusName) {
+        ComponentFactory.create(STATUS_SEARCH_ID, driver, wait).setSingleStringValue(statusName);
+        waitForPageToLoad(driver, wait);
+        log.info("Status search is set to: {}", statusName);
+    }
+
+    @Step("Set Data Format search")
+    public void setDataFormat(String dataFormat) {
+        ComponentFactory.create(DATA_FORMAT_SEARCH_ID, driver, wait).setSingleStringValue(dataFormat);
+        waitForPageToLoad(driver, wait);
+        log.info("Data Format search is set to: {}", dataFormat);
+    }
+
+    @Step("Choose option from Severity combobox")
+    public void setSeverity(String severity) {
         ComponentFactory.create(SEVERITY_COMBOBOX_ID, driver, wait).setSingleStringValue(severity);
         log.info("setting severity: {}", severity);
     }
 
-    @Step("I check if logs table is empty")
+    @Step("Check if logs table is empty")
     public boolean isLogsTableEmpty() {
-        waitForPageToLoad(driver, wait);
         return OldTable.createById(driver, wait, LOG_TAB_TABLE_ID).hasNoData();
     }
 
-    @Step("I check Last Request Generation Time")
+    @Step("Chek if Format table is empty")
+    public boolean isFormatTableEmpty() {
+        return OldTable.createById(driver, wait, FORMAT_TABLE_ID).hasNoData();
+    }
+
+    @Step("Check Last Request Generation Time")
     public LocalDateTime lastIfRunTime() {
         return lastLogTime(LOG_TAB_TABLE_ID, COLUMN_TIME_LABEL);
     }
 
-    @Step("I check if Last Request Generation Time is fresh - up to 60 min old")
+    @Step("Check if Last Request Generation Time is fresh - up to 60 min old")
     public boolean isIfRunsFresh() {
         return isLastLogTimeFresh(lastIfRunTime());
     }
 
-    @Step("I check Severity of Data Source from Logs tab")
+    @Step("Check Severity of Data Source from Logs tab")
     public String checkStatus() {
         String severityOfDataSource = checkLogStatus(LOG_TAB_TABLE_ID, COLUMN_SEVERITY_LABEL);
         log.info("Severity of last Data Source log in Logs Tab is {}", severityOfDataSource);
@@ -169,23 +244,23 @@ public class DataSourcePage extends BaseDfePage {
         return severityOfDataSource;
     }
 
-    @Step("I select first file from Processed Files table")
+    @Step("Select first file from Processed Files table")
     public void selectFirstFileInTheTable() {
         OldTable.createById(driver, wait, PROCESSED_FILES_TABLE_ID).selectRow(0);
         log.info("Selecting first file in the table");
     }
 
-    @Step("I check if Show File table is not empty")
-    public boolean checkIfShowFileTableIsNotEmpty() {
-        return !OldTable.createById(driver, wait, SHOW_FILE_TABLE_ID).hasNoData();
+    @Step("Check if Show File table is empty")
+    public boolean isShowFileTableEmpty() {
+        return OldTable.createById(driver, wait, SHOW_FILE_TABLE_ID).hasNoData();
     }
 
-    @Step("I check first file name")
+    @Step("Check first file name")
     public String getNameOfFirstFileInTheTable() {
         return OldTable.createById(driver, wait, PROCESSED_FILES_TABLE_ID).getCellValue(0, "Filename");
     }
 
-    @Step("I click Download File button in Processed Files Tab")
+    @Step("Click Download File button in Processed Files Tab")
     public void clickDownloadFile() {
         clickTabsContextAction(TAB_WIDGET_ID, DOWNLOAD_FILE_LABEL);
         DelayUtils.waitForPageToLoad(driver, wait);

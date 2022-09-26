@@ -27,15 +27,15 @@ public class DataSourceSmokeTest extends BaseTestCase {
     public void CheckIfDataSourceIsWorking() {
         boolean dataSourceExists = dataSourcePage.dataSourceExistIntoTable(DATA_SOURCE_NAME);
         if (dataSourceExists) {
-            dataSourcePage.selectFoundDataSource();
+            dataSourcePage.selectFirstDataSourceInTable();
             dataSourcePage.selectLogsTab();
             dataSourcePage.refreshLogsTable();
             dataSourcePage.setValueInTimePeriodChooser(1, 2, 1);
-            dataSourcePage.setSeverityInCombobox("Error");
+            dataSourcePage.setSeverity("Error");
 
             Assert.assertTrue(dataSourcePage.isLogsTableEmpty(), "In logs tab is at least one log with status Error");
 
-            dataSourcePage.setSeverityInCombobox("All");
+            dataSourcePage.setSeverity("All");
 
             Assert.assertTrue(dataSourcePage.isIfRunsFresh());
 
@@ -53,7 +53,7 @@ public class DataSourceSmokeTest extends BaseTestCase {
     public void downloadProcessFile() {
         boolean dataSourceExists = dataSourcePage.dataSourceExistIntoTable(DATA_SOURCE_NAME);
         if (dataSourceExists) {
-            dataSourcePage.selectFoundDataSource();
+            dataSourcePage.selectFirstDataSourceInTable();
             dataSourcePage.selectProcessedFilesTab();
             dataSourcePage.selectFirstFileInTheTable();
             String fileName = dataSourcePage.getNameOfFirstFileInTheTable();
@@ -72,12 +72,12 @@ public class DataSourceSmokeTest extends BaseTestCase {
     public void checkShowFile() {
         boolean dataSourceExists = dataSourcePage.dataSourceExistIntoTable(DATA_SOURCE_NAME);
         if (dataSourceExists) {
-            dataSourcePage.selectFoundDataSource();
+            dataSourcePage.selectFirstDataSourceInTable();
             dataSourcePage.selectProcessedFilesTab();
             dataSourcePage.selectFirstFileInTheTable();
             dataSourcePage.showFile();
 
-            Assert.assertTrue(dataSourcePage.checkIfShowFileTableIsNotEmpty(), "Show file Table is empty!");
+            Assert.assertFalse(dataSourcePage.isShowFileTableEmpty(), "Show file Table is empty!");
         } else {
             log.error("Data Source with name: {} doesn't exist", DATA_SOURCE_NAME);
             Assert.fail();

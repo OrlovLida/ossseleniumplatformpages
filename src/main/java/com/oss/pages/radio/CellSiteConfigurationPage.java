@@ -2,7 +2,9 @@ package com.oss.pages.radio;
 
 import org.openqa.selenium.WebDriver;
 
+import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.tabs.TabsWidget;
@@ -23,11 +25,10 @@ public class CellSiteConfigurationPage extends BasePage {
     private static final String TREE_DATA_ATTRIBUTE_NAME = "SiteHierarchyApp";
     private static final String CELL_TAB_NAME = "Cells %s";
     private static final String CREATE_CELL_BULK_ACTION = "Cell %s Bulk Wizard";
-    private static final String TRAIL_TYPE_ID = "trailType";
     private static final String ADD_LABEL = "ADD";
-    private static final String ADD_ID = "add";
     private static final String EDIT_LABEL = "Edit";
-    private static final String DELETE_LABEL = "Delete";
+    private static final String ADD_ID = "add";
+    private static final String DELETE_DEVICE_ACTION_ID = "DeleteDeviceWizardAction";
     private static final String BASE_STATION_ROW = "Base Stations";
     private static final String CREATE_ENODEB_ACTION_ID = "ADD_ENODE";
     private static final String CREATE_GNODEB_ACTION_ID = "ADD_GNODE";
@@ -37,14 +38,15 @@ public class CellSiteConfigurationPage extends BasePage {
     private static final String DEVICES_TAB = "Devices";
     private static final String BASE_STATIONS_TAB = "Base Stations";
     private static final String CREATE_DEVICE_ACTION_ID = "CreateDeviceOnLocationWizardAction";
-    private static final String CREATE_RAN_ANTENNA_ACTION_ID = "createAntenna";
     private static final String HOST_ON_DEVICE_ACTION_ID = "hostOnLogicalFunction";
     private static final String HOST_ON_ANTENNA_ARRAY_ACTION_ID = "hostOnAntennaArray";
     private static final String HOSTING_TAB_LABEL = "Hosting";
-    private static final String WIZARD_ID = "Popup";
     private static final String TREE_TABLE_ID = "DevicesTableApp";
-    private static final String DELETE_WIZARD_ID = "delete-popup_prompt-card";
+    private static final String CREATE_PHYSICAL_DEVICE_ACTION_ID = "CreateDeviceWithoutSelectionWizardAction";
+    private static final String CONFIRM_DELETE_BUTTON_ID = "ConfirmationBox_object_delete_wizard_confirmation_box_action_button";
+    private static final String DELETE_LABEL = "Delete";
     private static final String DELETE_BUTTON_ID = "delete-popup-buttons-app-1";
+    private static final String DELETE_WIZARD_ID = "delete-popup_prompt-card";
 
     public CellSiteConfigurationPage(WebDriver driver) {
         super(driver);
@@ -103,6 +105,15 @@ public class CellSiteConfigurationPage extends BasePage {
     }
 
     @Step("Remove object")
+    public void removeObjectFromDevicesTab() {
+        getTabTable().callAction(ActionsContainer.EDIT_GROUP_ID, DELETE_DEVICE_ACTION_ID);
+        waitForPageToLoad();
+        ConfirmationBox confirmationBox = ConfirmationBox.create(driver, wait);
+        confirmationBox.clickButtonById(CONFIRM_DELETE_BUTTON_ID);
+        waitForPageToLoad();
+    }
+
+    @Step("Remove object")
     public void removeObject() {
         getTabTable().callActionByLabel(DELETE_LABEL);
         waitForPageToLoad();
@@ -116,7 +127,7 @@ public class CellSiteConfigurationPage extends BasePage {
         waitForPageToLoad();
         selectTreeTable(type, manufacturer, objectName);
         waitForPageToLoad();
-        removeObject();
+        removeObjectFromDevicesTab();
         waitForPageToLoad();
     }
 
@@ -182,13 +193,6 @@ public class CellSiteConfigurationPage extends BasePage {
     public void useTableContextActionByLabel(String actionLabel) {
         waitForPageToLoad();
         getTabTable().callActionByLabel(actionLabel);
-    }
-
-    @Step("Select trail type")
-    public void selectTrailType(String trailType) {
-        Wizard wizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
-        wizard.setComponentValue(TRAIL_TYPE_ID, trailType);
-        wizard.clickAccept();
     }
 
     @Step("Get {attributeLabel} value for row number {rowNumber}")
@@ -288,20 +292,19 @@ public class CellSiteConfigurationPage extends BasePage {
 
     @Step("Create Ran Antenna and Array with following attributes: Name = {antennaName}, Model = {ranAntennaModel}, Location = {locationName}")
     public void createRanAntennaAndArray(String antennaName, String ranAntennaModel, String locationName) {
-        clickPlusIconAndSelectOptionById(CREATE_RAN_ANTENNA_ACTION_ID);
-        RanAntennaWizardPage ranAntennaWizardPage = new RanAntennaWizardPage(driver);
+        getTabTable().callAction(ActionsContainer.CREATE_GROUP_ID, CREATE_PHYSICAL_DEVICE_ACTION_ID);
+        DeviceWizardPage ranAntennaWizardPage = new DeviceWizardPage(driver);
         waitForPageToLoad();
         ranAntennaWizardPage.setName(antennaName);
         waitForPageToLoad();
         ranAntennaWizardPage.setModel(ranAntennaModel);
         waitForPageToLoad();
+        ranAntennaWizardPage.next();
+        waitForPageToLoad();
         ranAntennaWizardPage.setPreciseLocation(locationName);
         waitForPageToLoad();
-        ranAntennaWizardPage.clickAccept();
+        ranAntennaWizardPage.accept();
         waitForPageToLoad();
-        AntennaArrayWizardPage antennaArrayWizardPage = new AntennaArrayWizardPage(driver);
-        waitForPageToLoad();
-        antennaArrayWizardPage.clickAccept();
     }
 
     @Step("Create Hosting on device with Name = {deviceName}")

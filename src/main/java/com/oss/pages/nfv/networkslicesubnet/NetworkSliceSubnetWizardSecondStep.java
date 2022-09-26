@@ -6,11 +6,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.NUMBER_FIELD;
-import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
-
 public class NetworkSliceSubnetWizardSecondStep extends NetworkSliceSubnetWizardStep {
     private static final String ADD_SLICE_PROFILE_BUTTON_LABEL = "Add Slice Profile";
+    private static final String ADD_CAPACITY_SLICE_PROFILE_BUTTON_LABEL = "Add Capacity Slice Profile";
     private static final String ADD_PLMN_INFO_BUTTON_LABEL = "Add PLMN Info";
     private static final String NAME_COMPONENT_ID = "attribute-networkSliceSubnetNameTextFieldnetworkSliceSubnetStep2Id";
     private static final String MCC_COMPONENT_ID = "##PLMNInfo-mccnetworkSliceSubnetStep2Id";
@@ -24,6 +22,11 @@ public class NetworkSliceSubnetWizardSecondStep extends NetworkSliceSubnetWizard
 
     public static NetworkSliceSubnetWizardSecondStep create(WebDriver driver, WebDriverWait wait, Wizard networkSliceWizard) {
         return new NetworkSliceSubnetWizardSecondStep(driver, wait, networkSliceWizard);
+    }
+
+    public void clickAddCapacitySliceProfile() {
+        networkSliceSubnetWizard.clickButtonByLabel(ADD_CAPACITY_SLICE_PROFILE_BUTTON_LABEL);
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public void clickAddSliceProfile() {

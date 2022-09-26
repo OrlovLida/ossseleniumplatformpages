@@ -55,7 +55,7 @@ public class ProblemsPage extends BaseDfePage {
     @Step("I select found Problem")
     public void selectFoundProblem() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getTable(driver, wait).selectRow(0);
+        getTable().selectRow(0);
     }
 
     @Step("I confirm the removal")
