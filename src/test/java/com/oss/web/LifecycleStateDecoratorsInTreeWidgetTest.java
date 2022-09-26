@@ -124,7 +124,7 @@ public class LifecycleStateDecoratorsInTreeWidgetTest extends BaseTestCase {
     
     @Test(priority = 4)
     public void updateObjectsAndRefreshRelation() {
-        updateDevice(device2Id, project2);
+        updateDevice(device2Id,DEVICE_2_NAME, project2);
         getNode(HARDWARE_RELATION_PATH).callAction(REFRESH_ACTION_ID);
         TreeComponent.Node node = getNode(DEVICE_2_PATH);
         Assertions.assertThat(node.countDecorators()).as("Check number of decorators").isEqualTo(1);
@@ -134,9 +134,12 @@ public class LifecycleStateDecoratorsInTreeWidgetTest extends BaseTestCase {
     @Test(priority = 5)
     public void updateObjectsAndRefreshTree() {
         updateBuilding();
-        updateDevice(device3Id, project2);
+        updateDevice(device3Id,DEVICE_3_NAME, project2);
         hierarchyViewPage.getMainTree().callActionById(ActionsContainer.KEBAB_GROUP_ID, REFRESH_TREE_ACTION_ID);
         TreeComponent.Node node = getNode(DEVICE_3_PATH);
+        TreeComponent.Node locationNode = hierarchyViewPage.getFirstNode();
+        Assertions.assertThat(locationNode.countDecorators()).isEqualTo(1);
+        Assertions.assertThat(locationNode.getDecoratorStatus()).isEqualTo(PURPLE);
         Assertions.assertThat(node.countDecorators()).isEqualTo(1);
         Assertions.assertThat(node.getDecoratorStatus()).isEqualTo(PURPLE);
     }
@@ -213,7 +216,7 @@ public class LifecycleStateDecoratorsInTreeWidgetTest extends BaseTestCase {
         deviceWizard.setName(DEVICE_1_NAME);
         DelayUtils.sleep(5000);
         deviceWizard.next();
-        deviceWizard.setPreciseLocation(BUILDING_NAME);
+        //deviceWizard.setPreciseLocation(BUILDING_NAME);
         deviceWizard.accept();
     }
     
@@ -237,10 +240,10 @@ public class LifecycleStateDecoratorsInTreeWidgetTest extends BaseTestCase {
         deviceWizardPage.acceptUpdateWizard();
     }
     
-    private void updateDevice(Long deviceId, Long projectId) {
+    private void updateDevice(Long deviceId, String deviceName, Long projectId) {
         Long deviceModelId = getDeviceModelId();
         PhysicalInventoryRepository physicalInventoryRepository = new PhysicalInventoryRepository(env);
-        physicalInventoryRepository.updateDeviceSerialNumber(deviceId, LOCATION_TYPE_BUILDING, Long.valueOf(buildingId),
+        physicalInventoryRepository.updateDeviceSerialNumber(deviceId, deviceName, LOCATION_TYPE_BUILDING, Long.valueOf(buildingId),
                 FakeGenerator.getIdNumber(), deviceModelId, DEVICE_MODEL_TYPE,
                 projectId);
     }
