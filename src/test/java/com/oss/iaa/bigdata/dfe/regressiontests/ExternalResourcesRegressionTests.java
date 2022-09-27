@@ -27,7 +27,7 @@ public class ExternalResourcesRegressionTests extends BaseTestCase {
     @Description("Opening External Resource View")
     public void openExternalResourceViewTest() {
         Assert.assertEquals(externalResourcesPage.getViewTitle(), EXTERNAL_RESOURCE_VIEW_TITLE);
-        Assert.assertFalse(externalResourcesPage.isExternalResourceTableEmpty());
+        Assert.assertFalse(externalResourcesPage.isTableEmpty());
     }
 
     @Test(priority = 2, testName = "Check details", description = "Check displaying details of selected External Resource")

@@ -62,17 +62,7 @@ public class ExternalResourcesPage extends BaseDfePage {
 
     @Step("Select first External Resource in table")
     public void selectFirstExternalResourceInTable() {
-        getTable().selectRow(0);
-    }
-
-    @Step("Check if External Resource Table is empty")
-    public boolean isExternalResourceTableEmpty() {
-        return getTable().hasNoData();
-    }
-
-    @Step("Get first value from column: {columnName}")
-    public String getValueFromColumn(String columnName) {
-        return getTable().getCellValue(0, columnName);
+        selectFirstRowInTable();
     }
 
     @Step("Get value: {propertyName} form External Resource Property Panel")

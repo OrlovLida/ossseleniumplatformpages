@@ -18,6 +18,7 @@ import com.comarch.oss.planning.api.dto.ObjectsDescriptionDTO;
 import com.comarch.oss.planning.api.dto.PlanningPerspectiveDTO;
 import com.comarch.oss.planning.api.dto.v2.ProjectDTO;
 import com.jayway.restassured.http.ContentType;
+import com.oss.untils.Constants;
 import com.oss.untils.Environment;
 
 public class PlanningClient {
@@ -26,6 +27,7 @@ public class PlanningClient {
     private static final String QUERY_QUERY_PARAM = "query";
     private static final String RSQL_QUERY_NAME_PARAM = "Name==\"{0}\"";
     private static final String QUERY_OBJECTS_V2_PATH = "objects/v2/{0}";
+    private static final String QUERY_OBJECTS_V2_WITH_LIMIT_AND_START_POSITION_PATH = "/objects/v2/%s?objectLimit=%s&startPosition=%s";
     private static final String PROJECT_API_PATH = "/projects";
     private static final String PLANNING_API_PATH = "/planning/projects";
     
@@ -89,7 +91,20 @@ public class PlanningClient {
                 .when().get(MessageFormat.format(QUERY_OBJECTS_V2_PATH, objectType))
                 .then().log().status().log().body()
                 .extract().as(ObjectsDescriptionDTO.class);
-        
+
+    }
+
+    public ObjectsDescriptionDTO getObjectByType(String objectType, String objectLimit, String startPosition) {
+        String firstObjectByTypePath = String.format(QUERY_OBJECTS_V2_WITH_LIMIT_AND_START_POSITION_PATH, objectType, objectLimit, startPosition);
+        return ENV.getPlanningCoreSpecification()
+                .given()
+                .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
+                .when()
+                .get(firstObjectByTypePath)
+                .then()
+                .log().body()
+                .extract()
+                .as(ObjectsDescriptionDTO.class);
     }
 
     public <T> T get(Class<T> asClass, String absoluteUri, String... pathParams) {

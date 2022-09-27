@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.prompts.ConfirmationBox;
-import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.tabs.TabsWidget;
@@ -48,7 +47,7 @@ public abstract class BaseDfePage extends BasePage implements BaseDfePageInterfa
     public void attachFileToReport(String fileName) {
         FileDownload.attachDownloadedFileToReport(fileName);
         log.info("Attaching downloaded file to report");
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad(driver, wait);
     }
 
     @Step("Check if file is not empty")
@@ -69,12 +68,28 @@ public abstract class BaseDfePage extends BasePage implements BaseDfePageInterfa
         log.debug("Filled category with: {}", category);
     }
 
-    @Step("Check if Table is empty")
-    public Boolean isTabTableEmpty(String tableId) {
-        log.info("Check if table with id: {} is empty", tableId);
+    @Step("Check if table is empty")
+    public boolean isTableEmpty() {
+        waitForPageToLoad(driver, wait);
+        return getTable().hasNoData();
+    }
+
+    @Step("Select first row in table")
+    public void selectFirstRowInTable() {
+        getTable().selectRow(0);
+    }
+
+    @Step("Get first value from column: {columnName}")
+    public String getValueFromColumn(String columnName) {
+        return getTable().getCellValue(0, columnName);
+    }
+
+    @Step("Check if Tab Table is empty")
+    public boolean isTabTableEmpty(String tabTableId) {
+        log.info("Check if tab table with id: {} is empty", tabTableId);
         waitForPageToLoad(driver, wait);
         return OldTable
-                .createById(driver, wait, tableId)
+                .createById(driver, wait, tabTableId)
                 .hasNoData();
     }
 

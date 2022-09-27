@@ -39,14 +39,18 @@ public class DeviceWizardPage extends BasePage {
     private static final String DEVICE_UPDATE_WIZARD = "device_update_wizard_view";
     private static final String DEVICE_AVAILABLE_MOUNTING_POSITIONS_DATA_ATTRIBUTE_NAME = "mountingPosition";
     private static final String DEVICE_CREATE_PROMPT = "device_create_wizard_web_view_prompt-card";
+    private static final String DEVICE_QUANTITY_DATA_ATTRIBUTE_NAME = "quantity_field_uuid";
+    private static final String DEVICE_HOSTNAME_IN_LIST_ID = "table-element.hostname.id";
+    private static final String DEVICE_HOSTNAME_IN_LIST_POPUP_FIELD_ID = "table-element.hostname.id-TEXT_FIELD";
+    private static final String DEVICE_SERIAL_NUMBER_IN_LIST_ID = "table-element.serialNumber.id";
+    private static final String DEVICE_SERIAL_NUMBER_IN_LIST_POPUP_FIELD_ID = "table-element.serialNumber.id-TEXT_FIELD";
 
     private static final String DEVICE_TYPE_PATTERN = "oss__046__physical__045__inventory__046__physicaldevice__046__type__046__";
 
     private static final String RECALCULATE_NAMING_BUTTON_ID = "CalculateNamingButton";
     private static final String NAMING_PREVIEW_LIST_ID = "ExtendedList-AttributesTable";
     private static final String DEVICE_NAME_IN_LIST_ID = "table-element.name.id";
-    private static final String DEVICE_NAME_IN_LIST_FIELD_ID = "table-element.name.id-TEXT_FIELD";
-    private static final String DEVICE_NAME_IN_LIST_POPUP_FIELD_ID = DEVICE_NAME_IN_LIST_FIELD_ID;
+    private static final String DEVICE_NAME_IN_LIST_POPUP_FIELD_ID = "table-element.name.id-TEXT_FIELD";
 
     public DeviceWizardPage(WebDriver driver) {
         super(driver);
@@ -107,7 +111,8 @@ public class DeviceWizardPage extends BasePage {
 
     @Step("Setting location {deviceIndex} name to {deviceName}")
     public void setDeviceNameInList(int deviceIndex, String deviceName) {
-        EditableList.createById(driver, wait, NAMING_PREVIEW_LIST_ID).setValue(deviceIndex, deviceName, DEVICE_NAME_IN_LIST_ID, DEVICE_NAME_IN_LIST_POPUP_FIELD_ID);
+        EditableList.createById(driver, wait, NAMING_PREVIEW_LIST_ID)
+                .setValue(deviceIndex, deviceName, DEVICE_NAME_IN_LIST_ID, DEVICE_NAME_IN_LIST_POPUP_FIELD_ID);
     }
 
     @Step("Set Network Function Name")
@@ -192,6 +197,11 @@ public class DeviceWizardPage extends BasePage {
     @Step("Set Remarks")
     public void setRemarks(String remarks) {
         getDeviceWizard().setComponentValue(DEVICE_REMARKS_DATA_ATTRIBUTE_NAME, remarks);
+    }
+
+    @Step("Set Quantity")
+    public void setQuantity(String quantity) {
+        getDeviceWizard().setComponentValue(DEVICE_QUANTITY_DATA_ATTRIBUTE_NAME, quantity);
     }
 
     @Step("Set Cooling Capacity")
@@ -285,8 +295,16 @@ public class DeviceWizardPage extends BasePage {
         return equipmentType;
     }
 
+    public String getQuantity() {
+        return getDeviceWizard().getComponent(DEVICE_QUANTITY_DATA_ATTRIBUTE_NAME).getStringValue();
+    }
+
     public boolean isNextStepPresent() {
         return getDeviceWizard().isNextStepPresent();
+    }
+
+    public int countNumberOfSteps() {
+        return getDeviceWizard().countNumberOfSteps();
     }
 
     public String getCurrentStateTitle() {
@@ -296,5 +314,21 @@ public class DeviceWizardPage extends BasePage {
     @Step("Set Equipment Type")
     public void setEquipmentType(String equipmentType) {
         getDeviceWizard().setComponentValue(DEVICE_EQUIPMENT_TYPE_DATA_ATTRIBUTE_NAME, equipmentType);
+    }
+
+    public void setDeviceHostnameInList(int rowIndex, String hostname) {
+        EditableList.createById(driver, wait, NAMING_PREVIEW_LIST_ID)
+                .getRow(rowIndex)
+                .setValue(hostname, DEVICE_HOSTNAME_IN_LIST_ID, DEVICE_HOSTNAME_IN_LIST_POPUP_FIELD_ID);
+    }
+
+    public void setDeviceSerialNumberInList(int rowIndex, String serialNumber) {
+        EditableList.createById(driver, wait, NAMING_PREVIEW_LIST_ID)
+                .getRow(rowIndex)
+                .setValue(serialNumber, DEVICE_SERIAL_NUMBER_IN_LIST_ID, DEVICE_SERIAL_NUMBER_IN_LIST_POPUP_FIELD_ID);
+    }
+
+    public void clickButtonById(String buttonId) {
+        getDeviceWizard().clickButtonById(buttonId);
     }
 }
