@@ -25,6 +25,7 @@ public class Tasks_Smoke_Test extends BaseTestCase {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Tasks_Smoke_Test.class);
     private static final String UNCOMPLETED_TASKS = "Uncompleted Tasks";
+    private static final String PROCESS_NAME = "Name (Process)";
     private static final String STATUS = "Status";
     private static final String ASSIGNEE = "Assignee";
     private static final String PROCESS_INSTANCE_ID = "Process Instance Id";
@@ -128,6 +129,7 @@ public class Tasks_Smoke_Test extends BaseTestCase {
     }
 
     private static final List<String> tasksViewTestColumnsList = new ImmutableList.Builder<String>()
+            .add(PROCESS_NAME)
             .add(STATUS)
             .add(ASSIGNEE)
             .add(PROCESS_INSTANCE_ID)
