@@ -15,6 +15,7 @@ public class DictionaryPopupPage extends BasePage {
     private static final Logger log = LoggerFactory.getLogger(DictionaryPopupPage.class);
     private static final String NAME_INPUT_ID = "name";
     private static final String DESCRIPTION_INPUT_ID = "description";
+    private static final String CATEGORY_INPUT_ID = "category";
     private final Wizard dictionaryWizard;
 
     public DictionaryPopupPage(WebDriver driver, WebDriverWait wait, String wizardId) {
@@ -24,18 +25,24 @@ public class DictionaryPopupPage extends BasePage {
 
     public void fillName(String name) {
         dictionaryWizard.setComponentValue(NAME_INPUT_ID, name);
-        log.debug("Setting name with: {}", name);
+        log.info("Setting name with: {}", name);
     }
 
     public void fillDescription(String description) {
         dictionaryWizard.setComponentValue(DESCRIPTION_INPUT_ID, description);
-        log.debug("Setting name with: {}", description);
+        log.info("Setting description with: {}", description);
+    }
+
+    public void fillCategory(String categoryName) {
+        dictionaryWizard.setComponentValue(CATEGORY_INPUT_ID, categoryName);
+        log.info("Setting category with: {}", categoryName);
     }
 
     @Step("I fill Dictionary Popup fields with name: {name} and description: {description}")
-    public void fillDictionaryPopup(String name, String description) {
+    public void fillDictionaryPopup(String name, String description, String categoryName) {
         fillName(name);
         fillDescription(description);
+        fillCategory(categoryName);
         log.info("Filled Dictionary Popup fields");
     }
 

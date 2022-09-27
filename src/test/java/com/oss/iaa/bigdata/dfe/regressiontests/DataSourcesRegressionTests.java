@@ -101,7 +101,6 @@ public class DataSourcesRegressionTests extends BaseTestCase {
             dataSourcePage.selectFirstDataSourceInTable();
             dataSourcePage.selectFormatTab();
             Assert.assertFalse(dataSourcePage.isFormatTableEmpty(), "Format Table is Empty");
-
         } else {
             Assert.fail("Cannot find Data Source " + dataSourceName);
         }
