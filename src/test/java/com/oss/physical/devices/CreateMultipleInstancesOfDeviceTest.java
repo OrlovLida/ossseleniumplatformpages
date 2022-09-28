@@ -126,7 +126,6 @@ public class CreateMultipleInstancesOfDeviceTest extends BaseTestCase {
 
     @Test(priority = 3)
     public void increaseQuantityToAllowedValue() {
-        deviceWizard.setModel(MODEL_VALUE);
         deviceWizard.setQuantity(DEVICE_WIZARD_ALLOWED_QUANTITY_VALUE);
         checkNumberOfWizardSteps();
         validateIfCorrectFieldsAreGreyedOut();
