@@ -25,6 +25,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -194,6 +195,11 @@ public class ProcessWizardPage extends BasePage {
         return extractProcessCode(getProcessCreationMessage());
     }
 
+    public String createProcessLinkedToProgram(String processName, Long plusDays, String processType,
+                                               String programName) {
+        return createProcessLinkedToPrograms(processName, plusDays, processType, Collections.singletonList(programName));
+    }
+
     public void createMultipleProcesses(String processName, Long plusDays, String processType, int processesAmount) {
         if (processesAmount <= 0 || processesAmount > 300) {
             throw new IllegalArgumentException(PROCESSES_OUT_OF_RANGE_EXCEPTION);
@@ -274,6 +280,14 @@ public class ProcessWizardPage extends BasePage {
         DelayUtils.sleep();
         processWizard.clickButtonById(NEXT_BUTTON);
         return new MilestonesStepWizardPage(driver);
+    }
+
+    public ForecastsStepWizardPage defineProcessAndGoToForecastsStep(String processName, Long plusDays, String processType) {
+        Wizard processWizard = definedBasicProcess(processName, processType, plusDays);
+        selectCheckbox(processWizard, FORECAST_ENABLED_CHECKBOX_ID);
+        DelayUtils.sleep();
+        processWizard.clickButtonById(NEXT_BUTTON);
+        return new ForecastsStepWizardPage(driver);
     }
 
     @Step("Defining simple DCP with process roles and waiting for information's about roles")
