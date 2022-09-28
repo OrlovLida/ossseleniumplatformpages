@@ -20,7 +20,6 @@ public class ScheduleStepWizardPage extends ProcessWizardPage {
     private static final String NEXT_EXECUTIONS_INPUT_ID = "nextExecutionsId";
     private static final String SCHEDULE_TYPE_INPUT_ID = "scheduleTypesComboboxFieldId";
 
-
     private static final String SCHEDULE_SINGLE_DATE_INPUT_ID = "dateSingle";
     private static final String SCHEDULE_SINGLE_TIME_INPUT_ID = "timeSingle";
 
@@ -44,6 +43,7 @@ public class ScheduleStepWizardPage extends ProcessWizardPage {
     private static final String SCHEDULE_YEARLY_REPEAT_DAY_INPUT_ID = "comboDayYearly";
     private static final String SCHEDULE_YEARLY_REPEAT_MONTH_INPUT_ID = "comboMonthYearly";
     private static final String SCHEDULE_YEARLY_REPEAT_YEARS_CYCLE_INPUT_ID = "occurrenceInput";
+
     private static final String NO_ELEMENT_EXCEPTION = "There is no element with id = {}";
     private static final String WRONG_DAY_OF_THE_WEEK_ARGUMENT = "Provided day of the week is not valid.";
     private static final String WRONG_SCHEDULE_TYPE_EXCEPTION = "Provided schedule type is not valid.";
@@ -111,6 +111,7 @@ public class ScheduleStepWizardPage extends ProcessWizardPage {
 
             setInputValue(SCHEDULE_MONTHLY_TIME_INPUT_ID,
                     scheduleProperties.getTime().format(DateTimeFormatter.ofPattern(TIME_PATTERN)));
+
         } else if (scheduleProperties.getScheduleType().equals("Yearly")) {
 
             scheduleProperties.getRepeatYearsCycle().ifPresent(repeatYearsCycle ->

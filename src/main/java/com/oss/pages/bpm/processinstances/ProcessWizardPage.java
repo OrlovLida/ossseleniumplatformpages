@@ -290,6 +290,14 @@ public class ProcessWizardPage extends BasePage {
         return new ForecastsStepWizardPage(driver);
     }
 
+    public ScheduleStepWizardPage defineProcessAndGoToScheduleStep(String processName, Long plusDays, String processType) {
+        Wizard processWizard = definedBasicProcess(processName, processType, plusDays);
+        selectCheckbox(processWizard, SCHEDULE_ENABLED_CHECKBOX_ID);
+        DelayUtils.sleep();
+        processWizard.clickButtonById(NEXT_BUTTON);
+        return new ScheduleStepWizardPage(driver);
+    }
+
     @Step("Defining simple DCP with process roles and waiting for information's about roles")
     public ProcessRolesStepWizardPage defineSimpleDCPAndGoToProcessRolesStep() {
         return defineProcessAndGoToProcessRolesStep(PROCESS_NAME, (long) 0, DCP);
@@ -306,6 +314,10 @@ public class ProcessWizardPage extends BasePage {
 
     public void clickCancelButton() {
         Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2).clickButtonById(CANCEL_BUTTON);
+    }
+
+    public void clickPreviousButton() {
+        Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2).clickButtonById(PREVIOUS_BUTTON);
     }
 
     private void setProgramsToLink(List<String> programNamesList) {

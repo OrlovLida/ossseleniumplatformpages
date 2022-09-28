@@ -8,13 +8,12 @@ import lombok.Getter;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Builder
 @Getter
 public class ProcessCreationWizardProperties {
     private final Optional<List<Milestone>> milestoneList;
-    private final Optional<AtomicInteger> processAmount;
+    private final Optional<Integer> processAmount;
     private final Optional<List<String>> programNamesList;
     private final Optional<List<Forecast>> forecastsList;
     private final Optional<String> cronExpression;
@@ -68,7 +67,7 @@ public class ProcessCreationWizardProperties {
         }
 
         public ProcessCreationWizardPropertiesBuilder withMultipleProcesses(int processAmount) {
-            this.processAmount = Optional.of(new AtomicInteger(processAmount));
+            this.processAmount = Optional.of(processAmount);
             return this;
         }
 

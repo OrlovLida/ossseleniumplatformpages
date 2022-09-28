@@ -45,16 +45,16 @@ public class ForecastWizardPage extends BasePage {
     }
 
     public ForecastAttributes addForecastRow(Forecast forecast) {
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad();
         EditableList addForecastList = EditableList.createById(driver, wait, forecastsListId);
         EditableList.Row row = addForecastList.addRow();
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad();
         setForecastAttributes(forecast, row);
         return getForecastFromRow(addForecastList, addForecastList.getVisibleRows().size() - 1);
     }
 
     public ForecastAttributes editForecastRow(Forecast forecast, int row) {
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad();
         EditableList editForecastList = EditableList.createById(driver, wait, forecastsListId);
         EditableList.Row editForecastRow = editForecastList.getRow(row - 1);
         DelayUtils.sleep(2000);
@@ -70,30 +70,35 @@ public class ForecastWizardPage extends BasePage {
     }
 
     private void setForecastAttributes(Forecast forecast, EditableList.Row row) {
-        forecast.getName().ifPresent(name -> row.setValue(name, BPM_FORECAST_NAME,
+        forecast.getName().ifPresent(name -> setRowValue(row, name, BPM_FORECAST_NAME,
                 BPM_FORECAST_NAME_INPUT));
 
-        forecast.getStartPlusDays().ifPresent(startPlusDays -> row.
-                setValue(LocalDate.now().plusDays(startPlusDays).toString(),
+        forecast.getStartPlusDays().ifPresent(startPlusDays ->
+                setRowValue(row, LocalDate.now().plusDays(startPlusDays).toString(),
                         BPM_FORECAST_START_DATE, BPM_FORECAST_START_DATE_INPUT));
 
-        forecast.getEndPlusDaysShortWay().ifPresent(endPlusDaysShortWay -> row.
-                setValue(LocalDate.now().plusDays(endPlusDaysShortWay).toString(),
+        forecast.getEndPlusDaysShortWay().ifPresent(endPlusDaysShortWay ->
+                setRowValue(row, LocalDate.now().plusDays(endPlusDaysShortWay).toString(),
                         BPM_FORECAST_END_DATE_SHORT, BPM_FORECAST_END_DATE_SHORT_INPUT));
 
-        forecast.getEndPlusDaysLongWay().ifPresent(endPlusDaysLongWay -> row.
-                setValue(LocalDate.now().plusDays(endPlusDaysLongWay).toString(),
+        forecast.getEndPlusDaysLongWay().ifPresent(endPlusDaysLongWay ->
+                setRowValue(row, LocalDate.now().plusDays(endPlusDaysLongWay).toString(),
                         BPM_FORECAST_END_DATE_LONG, BPM_FORECAST_END_DATE_LONG_INPUT));
 
         forecast.getLongWorkWeakShortWay().ifPresent(longWorkWeakShortWay -> {
             if (Boolean.TRUE.equals(longWorkWeakShortWay))
-                row.setValue("7", BPM_FORECAST_WORK_DAYS_SHORT, BPM_FORECAST_WORK_DAYS_SHORT_INPUT);
+                setRowValue(row, "7", BPM_FORECAST_WORK_DAYS_SHORT, BPM_FORECAST_WORK_DAYS_SHORT_INPUT);
         });
 
         forecast.getLongWorkWeakLongWay().ifPresent(longWorkWeakLongWay -> {
             if (Boolean.TRUE.equals(longWorkWeakLongWay))
-                row.setValue("7", BPM_FORECAST_WORK_DAYS_LONG, BPM_FORECAST_WORK_DAYS_LONG_INPUT);
+                setRowValue(row, "7", BPM_FORECAST_WORK_DAYS_LONG, BPM_FORECAST_WORK_DAYS_LONG_INPUT);
         });
+    }
+
+    private void setRowValue(EditableList.Row row, String value, String columnId, String componentId) {
+        row.setValue(value, columnId, componentId);
+        waitForPageToLoad();
     }
 
     private ForecastAttributes getForecastFromRow(EditableList list, int row) {
@@ -127,5 +132,9 @@ public class ForecastWizardPage extends BasePage {
                 .leadTimeWeeksLongWay(Optional.ofNullable(leadTimeWeeksLong))
                 .workDaysLongWay(Optional.ofNullable(workDaysLong))
                 .build();
+    }
+
+    private void waitForPageToLoad() {
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 }
