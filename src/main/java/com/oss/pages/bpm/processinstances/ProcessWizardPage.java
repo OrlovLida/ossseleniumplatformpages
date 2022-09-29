@@ -30,6 +30,7 @@ import java.util.List;
 
 /**
  * @author Gabriela Kasza
+ * @author Paweł Rother
  */
 public class ProcessWizardPage extends BasePage {
 

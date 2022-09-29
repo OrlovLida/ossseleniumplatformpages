@@ -1,6 +1,5 @@
 package com.oss.pages.bpm.processinstances;
 
-import lombok.Builder;
 import lombok.Getter;
 
 import java.time.DayOfWeek;
@@ -9,9 +8,17 @@ import java.time.Month;
 import java.util.Optional;
 import java.util.Set;
 
-@Builder
+/**
+ * @author Paweł Rother
+ */
 @Getter
 public class ScheduleProperties {
+    protected static final String SINGLE_SCHEDULE = "Single";
+    protected static final String DAILY_SCHEDULE = "Daily";
+    protected static final String WEEKLY_SCHEDULE = "Weekly";
+    protected static final String MONTHLY_SCHEDULE = "Monthly";
+    protected static final String YEARLY_SCHEDULE = "Yearly";
+
     private final String scheduleType;
     private final LocalTime time;
     private final Optional<Long> plusDays;
@@ -21,4 +28,79 @@ public class ScheduleProperties {
     private final Optional<Integer> repeatMonthsCycle;
     private final Optional<Integer> repeatYearsCycle;
     private final Optional<Month> repeatMonth;
+
+    ScheduleProperties(SchedulePropertiesBuilder builder) {
+        this.scheduleType = builder.scheduleType;
+        this.time = builder.time;
+        this.plusDays = builder.plusDays;
+        this.repeatDaysCycle = builder.repeatDaysCycle;
+        this.repeatDayOfWeek = builder.repeatDayOfWeek;
+        this.repeatDay = builder.repeatDay;
+        this.repeatMonthsCycle = builder.repeatMonthsCycle;
+        this.repeatYearsCycle = builder.repeatYearsCycle;
+        this.repeatMonth = builder.repeatMonth;
+    }
+
+    public static SchedulePropertiesBuilder builder() {
+        return new SchedulePropertiesBuilder();
+    }
+
+    public static class SchedulePropertiesBuilder {
+
+        private String scheduleType;
+        private LocalTime time;
+        private Optional<Long> plusDays;
+        private Optional<Integer> repeatDaysCycle;
+        private Optional<Set<DayOfWeek>> repeatDayOfWeek;
+        private Optional<Integer> repeatDay;
+        private Optional<Integer> repeatMonthsCycle;
+        private Optional<Integer> repeatYearsCycle;
+        private Optional<Month> repeatMonth;
+
+        SchedulePropertiesBuilder() {
+        }
+
+        public SchedulePropertiesBuilder setSingleSchedule(Long plusDaysForDate, LocalTime time) {
+            this.scheduleType = SINGLE_SCHEDULE;
+            this.plusDays = Optional.ofNullable(plusDaysForDate);
+            this.time = time;
+            return this;
+        }
+
+        public SchedulePropertiesBuilder setDailySchedule(int repeatDaysCycle, LocalTime time) {
+            this.scheduleType = DAILY_SCHEDULE;
+            this.repeatDaysCycle = Optional.of(repeatDaysCycle);
+            this.time = time;
+            return this;
+        }
+
+        public SchedulePropertiesBuilder setWeeklySchedule(Set<DayOfWeek> repeatDayOfWeek, LocalTime time) {
+            this.scheduleType = WEEKLY_SCHEDULE;
+            this.repeatDayOfWeek = Optional.ofNullable(repeatDayOfWeek);
+            this.time = time;
+            return this;
+        }
+
+        public SchedulePropertiesBuilder setMonthlySchedule(int repeatMonthsCycle, int repeatDay, LocalTime time) {
+            this.scheduleType = MONTHLY_SCHEDULE;
+            this.repeatMonthsCycle = Optional.of(repeatMonthsCycle);
+            this.repeatDay = Optional.of(repeatDay);
+            this.time = time;
+            return this;
+        }
+
+        public SchedulePropertiesBuilder setYearlySchedule(int repeatYearsCycle, Month repeatMonth, int repeatDay, LocalTime time) {
+            this.scheduleType = YEARLY_SCHEDULE;
+            this.repeatYearsCycle = Optional.of(repeatYearsCycle);
+            this.repeatMonth = Optional.ofNullable(repeatMonth);
+            this.repeatDay = Optional.of(repeatDay);
+            this.time = time;
+            return this;
+        }
+
+        public ScheduleProperties build() {
+            return new ScheduleProperties(this);
+        }
+    }
+
 }

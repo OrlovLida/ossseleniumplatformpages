@@ -5,6 +5,9 @@ import com.oss.pages.bpm.milestones.Milestone;
 import com.oss.pages.bpm.milestones.MilestoneWizardPage;
 import org.openqa.selenium.WebDriver;
 
+/**
+ * @author Paweł Rother
+ */
 public class MilestonesStepWizardPage extends ProcessWizardPage {
     private static final String PREDEFINED_MILESTONE_LIST = "editMilestonesComponentId";
     private static final String ADD_MILESTONE_LIST = "addMilestonesComponentId";

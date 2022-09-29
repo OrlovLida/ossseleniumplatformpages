@@ -11,8 +11,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import static com.oss.pages.bpm.processinstances.ScheduleProperties.*;
 import static com.oss.untils.Environment.LOGGER;
 
+/**
+ * @author Paweł Rother
+ */
 public class ScheduleStepWizardPage extends ProcessWizardPage {
     private static final String TIME_PATTERN = "HH:mm";
     private static final String CRON_EXPRESSION_INPUT = "sheduleCronExpressionFieldId";
@@ -74,7 +78,7 @@ public class ScheduleStepWizardPage extends ProcessWizardPage {
 
     public ScheduleStepWizardPage setSchedule(ScheduleProperties scheduleProperties) {
         setInputValue(SCHEDULE_TYPE_INPUT_ID, scheduleProperties.getScheduleType());
-        if (scheduleProperties.getScheduleType().equals("Single")) {
+        if (scheduleProperties.getScheduleType().equals(SINGLE_SCHEDULE)) {
 
             scheduleProperties.getPlusDays().ifPresent(plusDays ->
                     setInputValue(SCHEDULE_SINGLE_DATE_INPUT_ID, LocalDate.now().plusDays(plusDays).toString()));
@@ -82,7 +86,7 @@ public class ScheduleStepWizardPage extends ProcessWizardPage {
             setInputValue(SCHEDULE_SINGLE_TIME_INPUT_ID,
                     scheduleProperties.getTime().format(DateTimeFormatter.ofPattern(TIME_PATTERN)));
 
-        } else if (scheduleProperties.getScheduleType().equals("Daily")) {
+        } else if (scheduleProperties.getScheduleType().equals(DAILY_SCHEDULE)) {
 
             scheduleProperties.getRepeatDaysCycle().ifPresent(repeatDaysCycle ->
                     setInputValue(SCHEDULE_DAILY_REPEAT_DAYS_CYCLE_INPUT_ID, String.valueOf(repeatDaysCycle)));
@@ -90,7 +94,7 @@ public class ScheduleStepWizardPage extends ProcessWizardPage {
             setInputValue(SCHEDULE_DAILY_TIME_INPUT_ID,
                     scheduleProperties.getTime().format(DateTimeFormatter.ofPattern(TIME_PATTERN)));
 
-        } else if (scheduleProperties.getScheduleType().equals("Weekly")) {
+        } else if (scheduleProperties.getScheduleType().equals(WEEKLY_SCHEDULE)) {
 
             scheduleProperties.getRepeatDayOfWeek().ifPresent(repeatDayOfWeek -> {
                 for (DayOfWeek dayOfTheWeek : repeatDayOfWeek) {
@@ -101,7 +105,7 @@ public class ScheduleStepWizardPage extends ProcessWizardPage {
             setInputValue(SCHEDULE_WEEKLY_TIME_INPUT_ID,
                     scheduleProperties.getTime().format(DateTimeFormatter.ofPattern(TIME_PATTERN)));
 
-        } else if (scheduleProperties.getScheduleType().equals("Monthly")) {
+        } else if (scheduleProperties.getScheduleType().equals(MONTHLY_SCHEDULE)) {
 
             scheduleProperties.getRepeatDay().ifPresent(repeatDay ->
                     setInputValue(SCHEDULE_MONTHLY_REPEAT_DAY_INPUT_ID, String.valueOf(repeatDay)));
@@ -112,7 +116,7 @@ public class ScheduleStepWizardPage extends ProcessWizardPage {
             setInputValue(SCHEDULE_MONTHLY_TIME_INPUT_ID,
                     scheduleProperties.getTime().format(DateTimeFormatter.ofPattern(TIME_PATTERN)));
 
-        } else if (scheduleProperties.getScheduleType().equals("Yearly")) {
+        } else if (scheduleProperties.getScheduleType().equals(YEARLY_SCHEDULE)) {
 
             scheduleProperties.getRepeatYearsCycle().ifPresent(repeatYearsCycle ->
                     setInputValue(SCHEDULE_YEARLY_REPEAT_YEARS_CYCLE_INPUT_ID, String.valueOf(repeatYearsCycle)));

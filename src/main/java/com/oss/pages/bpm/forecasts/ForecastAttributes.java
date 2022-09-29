@@ -5,6 +5,9 @@ import lombok.Getter;
 
 import java.util.Optional;
 
+/**
+ * @author Paweł Rother
+ */
 @Builder
 @Getter
 public class ForecastAttributes {

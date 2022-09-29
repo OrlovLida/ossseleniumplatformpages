@@ -8,6 +8,9 @@ import org.openqa.selenium.WebDriver;
 import java.time.LocalDate;
 import java.util.Optional;
 
+/**
+ * @author Paweł Rother
+ */
 public class ForecastWizardPage extends BasePage {
     private static final String BPM_FORECAST_NAME = "name";
     private static final String BPM_FORECAST_NAME_INPUT = "name";

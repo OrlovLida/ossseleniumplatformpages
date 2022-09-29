@@ -6,6 +6,9 @@ import com.oss.pages.bpm.forecasts.ForecastAttributes;
 import com.oss.pages.bpm.forecasts.ForecastWizardPage;
 import org.openqa.selenium.WebDriver;
 
+/**
+ * @author Paweł Rother
+ */
 public class ForecastsStepWizardPage extends ProcessWizardPage {
 
     private static final String PROCESS_FORECAST_LIST = "processActivitiesComponentId";
