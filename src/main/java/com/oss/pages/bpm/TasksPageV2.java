@@ -33,7 +33,7 @@ public class TasksPageV2 extends BasePage {
     public static final String HIGH_LEVEL_PLANNING_TASK = "High Level Planning";
     public static final String CORRECT_DATA_TASK = "Correct data";
     public static final String UPDATE_REQUIREMENTS_TASK = "Update Requirements";
-    public static final String TABS_TASKS_VIEW_ID = "bpm_task_graphql_view_tasksTabsWidget";
+    public static final String TABS_TASKS_VIEW_ID = "bpm_task_graphql_view_tasksTabsCard";
     private static final Logger log = LoggerFactory.getLogger(TasksPageV2.class);
     private static final String TABLE_TASKS_ID = "bpm_task_graphql_view_tasksTableWidget";
     private static final String PROCESS_CODE = "Process Code";
