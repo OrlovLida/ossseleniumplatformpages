@@ -29,7 +29,7 @@ public class KpiToolbarPanelPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(KpiToolbarPanelPage.class);
     private static final String MANUAL_MODE = "Manual";
-    private static final String MULTIPLE_CHARTS_BY_CUSTOM_SELECT_ID = "custom-select-undefined";
+    private static final String MULTIPLE_CHARTS_BY_CUSTOM_SELECT_ID = "custom-select-divide-chart-by-select";
     private static final String COMMON_LEGEND_SWITCHER_ID = "commonLegend";
 
     private final KpiToolbarPanel kpiToolbarPanel;
