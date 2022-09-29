@@ -31,7 +31,7 @@ public class PlannersViewPage extends BasePage {
 
     private static final String TREE_TABLE_ID = "process_instance_hierarchy_table";
 
-    private static final String TABS_CONTAINER_ID = "process_instance_hierarchy_bottom_tabs";
+    private static final String TABS_CONTAINER_ID = "process_instance_bottom_tabs";
     private static final String CREATE_GROUP_ACTION_ID = "CREATE";
     private static final String START_PROCESS_ACTION_ID = "bpm_inventory_view_action_create_process";
     private static final String START_PROGRAM_ACTION_ID = "bpm_inventory_view_action_create_program";
