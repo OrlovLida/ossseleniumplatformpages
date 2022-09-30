@@ -28,6 +28,7 @@ public class ScheduleProperties {
     private final Optional<Integer> repeatMonthsCycle;
     private final Optional<Integer> repeatYearsCycle;
     private final Optional<Month> repeatMonth;
+    private final int settingsAmount;
 
     ScheduleProperties(SchedulePropertiesBuilder builder) {
         this.scheduleType = builder.scheduleType;
@@ -39,6 +40,7 @@ public class ScheduleProperties {
         this.repeatMonthsCycle = builder.repeatMonthsCycle;
         this.repeatYearsCycle = builder.repeatYearsCycle;
         this.repeatMonth = builder.repeatMonth;
+        this.settingsAmount = builder.settingsAmount;
     }
 
     public static SchedulePropertiesBuilder builder() {
@@ -56,11 +58,13 @@ public class ScheduleProperties {
         private Optional<Integer> repeatMonthsCycle;
         private Optional<Integer> repeatYearsCycle;
         private Optional<Month> repeatMonth;
+        private int settingsAmount = 0;
 
         SchedulePropertiesBuilder() {
         }
 
         public SchedulePropertiesBuilder setSingleSchedule(Long plusDaysForDate, LocalTime time) {
+            this.settingsAmount++;
             this.scheduleType = SINGLE_SCHEDULE;
             this.plusDays = Optional.ofNullable(plusDaysForDate);
             this.time = time;
@@ -68,6 +72,7 @@ public class ScheduleProperties {
         }
 
         public SchedulePropertiesBuilder setDailySchedule(int repeatDaysCycle, LocalTime time) {
+            this.settingsAmount++;
             this.scheduleType = DAILY_SCHEDULE;
             this.repeatDaysCycle = Optional.of(repeatDaysCycle);
             this.time = time;
@@ -75,6 +80,7 @@ public class ScheduleProperties {
         }
 
         public SchedulePropertiesBuilder setWeeklySchedule(Set<DayOfWeek> repeatDayOfWeek, LocalTime time) {
+            this.settingsAmount++;
             this.scheduleType = WEEKLY_SCHEDULE;
             this.repeatDayOfWeek = Optional.ofNullable(repeatDayOfWeek);
             this.time = time;
@@ -82,6 +88,7 @@ public class ScheduleProperties {
         }
 
         public SchedulePropertiesBuilder setMonthlySchedule(int repeatMonthsCycle, int repeatDay, LocalTime time) {
+            this.settingsAmount++;
             this.scheduleType = MONTHLY_SCHEDULE;
             this.repeatMonthsCycle = Optional.of(repeatMonthsCycle);
             this.repeatDay = Optional.of(repeatDay);
@@ -90,6 +97,7 @@ public class ScheduleProperties {
         }
 
         public SchedulePropertiesBuilder setYearlySchedule(int repeatYearsCycle, Month repeatMonth, int repeatDay, LocalTime time) {
+            this.settingsAmount++;
             this.scheduleType = YEARLY_SCHEDULE;
             this.repeatYearsCycle = Optional.of(repeatYearsCycle);
             this.repeatMonth = Optional.ofNullable(repeatMonth);

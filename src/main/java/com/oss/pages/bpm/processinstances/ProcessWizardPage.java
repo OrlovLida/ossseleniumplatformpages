@@ -21,6 +21,7 @@ import com.oss.pages.bpm.ProcessOverviewPage;
 import io.qameta.allure.Description;
 import io.qameta.allure.Step;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -63,9 +64,25 @@ public class ProcessWizardPage extends BasePage {
     private static final String CREATE_MULTIPLE_CHECKBOX_ID = "createMultipleCheckboxId";
     private static final String NUMBER_OF_PROCESSES_ID = "createMultipleNumberComponentId";
     private static final String PROGRAMS_SEARCH_ID = "programsSearchBoxId";
+
+
     private static final String PROCESSES_OUT_OF_RANGE_EXCEPTION = "Number of Processes must be between 1 and 300";
     private static final String CHECKBOX_NOT_PRESENT_EXCEPTION = "Checkbox %s is not present in the wizard.";
-    private static final String PROGRAM_TO_LINK_EXCEPTION = "Add Programs to Link is available only with process instance creation";
+    private static final String INVALID_PROPERTIES_SETTING = "Invalid ProcessCreationWizardProperties settings \n";
+    private static final String PROGRAM_TO_LINK_EXCEPTION = INVALID_PROPERTIES_SETTING +
+            "\"withProgramsToLink\" is available only with Basic Process creation";
+    private static final String BASIC_PROGRAM_AND_PROCESS_EXCEPTION = INVALID_PROPERTIES_SETTING +
+            "Both of \"basicProcess\" and \"basicProgram\" options set in properties. \n" +
+            "If you want to create process with program use \"withProcessCreation\" method together with \"basicProgram\" in Properties builder.";
+    private static final String PROGRAM_WITH_SCHEDULE_EXCEPTION = INVALID_PROPERTIES_SETTING +
+            "Creating basic Program with a schedule is not available.";
+    private static final String NO_BASIC_PROCESS_PROGRAM_EXCEPTION = INVALID_PROPERTIES_SETTING +
+            "There is no set basic process or basic program creation.";
+    private static final String CREATE_PROGRAM_WITH_PROCESS_EXCEPTION = INVALID_PROPERTIES_SETTING +
+            "\"withProcessCreation\" option available only for Basic Program creation.";
+    private static final String SCHEDULE_WITH_OTHER_OPTION_EXCEPTION = INVALID_PROPERTIES_SETTING +
+            "Schedule creation is not available together with milestones, forecasts and multiple processes creation.";
+
 
     public ProcessWizardPage(WebDriver driver) {
         super(driver);
@@ -259,10 +276,15 @@ public class ProcessWizardPage extends BasePage {
         try {
             wizard.setComponentValue(checkBoxId, "true");
             DelayUtils.sleep();
-        } catch (NoSuchElementException e) {
-            throw new NoSuchElementException(String.format(CHECKBOX_NOT_PRESENT_EXCEPTION, checkBoxId));
+        } catch (TimeoutException e) {
+            throw new TimeoutException(String.format(CHECKBOX_NOT_PRESENT_EXCEPTION, checkBoxId));
         }
     }
+
+//    private List<String> getProcessWizardSteps() {
+//      TODO
+//
+//    }
 
     /**
      * @deprecated Along with the 3.0.x version this method will be replaced by
@@ -343,17 +365,57 @@ public class ProcessWizardPage extends BasePage {
         throw new NoSuchElementException(CANNOT_EXTRACT_PROCESS_CODE_EXCEPTION + message);
     }
 
-//    public void createProcess(ProcessCreationWizardProperties properties) {
-//        if (!programNamesList.isEmpty()) {
-//            if (isProgramCreation)
-//                throw new RuntimeException(PROGRAM_TO_LINK_EXCEPTION);
-//            addProgramsToLink(programNamesList);
-//        }
-//        if (!cronExpression.isEmpty()) {
-//            wizardSecondStep.clickButtonById(NEXT_BUTTON);
-//            addSchedule(cronExpression);
-//            wizardSecondStep.clickButtonById(CREATE_BUTTON);
-//        }
+//    public void createInstance(ProcessCreationWizardProperties properties) {
+//        if (properties.isProcessCreation() && properties.isProgramCreation())
+//            throw new IllegalArgumentException(BASIC_PROGRAM_AND_PROCESS_EXCEPTION);
+//
+//        if (properties.isProcessCreation()) {
+//
+//            if (properties.isProgramWithProcessCreation())
+//                throw new IllegalArgumentException(CREATE_PROGRAM_WITH_PROCESS_EXCEPTION);
+//
+//            Wizard processWizard = definedBasicProcess(properties.getProcessName(), properties.getProcessType(),
+//                    properties.getProcessPlusDays());
+//
+//            if (properties.isProgramsToLink()) {
+//                setProgramsToLink(properties.getProgramNamesList());
+//            }
+//
+//            if (properties.isScheduleCreation()) {
+//
+//                if (properties.isMultipleProcessesCreation() || properties.isForecastsCreation() ||
+//                        properties.isMilestonesCreation())
+//                    throw new IllegalArgumentException(SCHEDULE_WITH_OTHER_OPTION_EXCEPTION);
+//
+//                selectCheckbox(processWizard, SCHEDULE_ENABLED_CHECKBOX_ID);
+//                processWizard.clickNext();
+//
+//                if (properties.isProcessRolesAssignment()) {
+//                    ProcessRolesStepWizardPage processRolesStepWizardPage = new ProcessRolesStepWizardPage(driver);
+//                    processRolesStepWizardPage.addPlanners(properties.getProcessRolesList());
+//                    processWizard.clickNext();
+//                }
+//                ScheduleStepWizardPage scheduleStepWizardPage = new ScheduleStepWizardPage(driver);
+//                if (properties.getCronExpression() != null) {
+//                    scheduleStepWizardPage.setCRONExpression(properties.getCronExpression());
+//                } else {
+//                    scheduleStepWizardPage.setSchedule(properties.getScheduleProperties());
+//                }
+//                scheduleStepWizardPage.clickAcceptButton();
+//            } else {
+//
+//
+//            }
+//
+//
+//        } else if (properties.isProgramCreation()) {
+//            if (properties.isScheduleCreation())
+//                throw new IllegalArgumentException(PROGRAM_WITH_SCHEDULE_EXCEPTION);
+//            if (properties.isProgramsToLink())
+//                throw new IllegalArgumentException(PROGRAM_TO_LINK_EXCEPTION);
+//
+//        } else
+//            throw new IllegalArgumentException(NO_BASIC_PROCESS_PROGRAM_EXCEPTION);
 //    }
 
     /**
