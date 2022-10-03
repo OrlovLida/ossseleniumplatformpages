@@ -28,11 +28,6 @@ public class ServicesClient {
         return prepareRequestSpecification(findApplicationBasePath);
     }
 
-    public RequestSpecification getRequestSpecificationByNameUsingBaseURL(String name) {
-        RequestSpecification findApplicationBasePath = findApplicationBasePathUsingBaseURL(name);
-        return prepareRequestSpecification(findApplicationBasePath);
-    }
-
     public RequestSpecification getRequestSpecificationByApplicationBasePath(String path) {
         RequestSpecification findApplicationBasePath = RestAssured.given()
                 .baseUri(environment.getEnvironmentUrl())
@@ -65,20 +60,22 @@ public class ServicesClient {
         Service service = services.get(applicationName);
         return RestAssured.given()
                 .baseUri(service.protocol + "://" + service.host)
-                .port(service.port)
+                .port(getPort(service))
                 .basePath(service.url);
     }
 
-    private RequestSpecification findApplicationBasePathUsingBaseURL(String applicationName) {
-        if (!services.containsKey(applicationName)) {
-            Service service = getService(applicationName);
-            services.put(applicationName, service);
+    private int getPort(Service service) {
+        int servicePort = service.port;
+        String serviceProtocol = service.protocol;
+        if (serviceProtocol.equalsIgnoreCase("http")) {
+            return servicePort;
+        } else {
+            if (servicePort == 25080) {
+                return 25081;
+            } else {
+                return servicePort;
+            }
         }
-        Service service = services.get(applicationName);
-        return RestAssured.given()
-                .baseUri(environment.getEnvironmentUrl())
-                .port(environment.getEnvironmentPort())
-                .basePath(service.url);
     }
 
     private Service getService(String applicationName) {

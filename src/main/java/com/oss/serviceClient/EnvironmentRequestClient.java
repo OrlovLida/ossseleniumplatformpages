@@ -125,7 +125,7 @@ public class EnvironmentRequestClient {
     }
 
     public RequestSpecification getRecoConfigSpecification() {
-        return servicesClient.getRequestSpecificationByNameUsingBaseURL("reco-config");
+        return servicesClient.getRequestSpecificationByName("reco-config");
     }
 
     public RequestSpecification prepareRequestSpecificationWithoutUri() {
